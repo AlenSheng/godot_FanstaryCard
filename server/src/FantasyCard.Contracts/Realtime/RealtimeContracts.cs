@@ -1,0 +1,131 @@
+namespace FantasyCard.Contracts.Realtime;
+
+public sealed record ClientCommand(
+    string Type,
+    string? RequestId,
+    long? ExpectedRevision,
+    object? Payload);
+
+public sealed record ServerEvent(
+    string Type,
+    string TraceId,
+    object? Payload,
+    string EventId,
+    long Sequence,
+    DateTimeOffset OccurredAt,
+    string? RequestId = null,
+    long? RoomRevision = null);
+public sealed record SessionResumeCommandPayload(long LastSequence, Guid? RoomId = null, long? RoomRevision = null);
+public sealed record SessionConnectedEventPayload(Guid PlayerId);
+public sealed record SessionReplacedEventPayload(string Reason);
+public sealed record PongEventPayload(DateTimeOffset ServerTime);
+public sealed record SessionSnapshotEventPayload(Guid PlayerId, long PlayerVersion, string? SelectedClass, string Reason, long PreviousLastSequence);
+public sealed record MatchFoundEventPayload(Guid MatchId, Guid RoomId, long DeadlineUnixMs);
+public sealed record RoomReadyCommandPayload;
+public sealed record RoomReadyRequiredEventPayload(Guid MatchId, Guid RoomId, long DeadlineUnixMs, int ReadyPlayers, int RequiredPlayers);
+public sealed record RoomReadyAcceptedEventPayload(Guid MatchId, Guid RoomId, long DeadlineUnixMs, int ReadyPlayers, int RequiredPlayers);
+public sealed record RoomReadyRemovedEventPayload(Guid MatchId, string Reason);
+public sealed record RoomStartedEventPayload(Guid MatchId, Guid RoomId, int PlayerCount, RoomSnapshotEventPayload? Snapshot = null);
+public sealed record SettlementReadyEventPayload(Guid SettlementId, Guid MatchId, string Result);
+public sealed record RoomSnapshotCommandPayload;
+public sealed record RoomPositionPayload(int Row, int Column);
+public sealed record RoomMapCellPayload(int Row, int Column, bool IsBoss, bool HasSpring);
+public sealed record RoomCardPayload(Guid InstanceId, string CardId);
+public sealed record RoomCombatantPayload(int Hp, int MaximumHp, int EffectiveMaximumHp, int Shield);
+public sealed record RoomEquipmentPayload(string Slot, string Quality, string Element, string? EffectAffix, string? SecondaryTrait);
+public sealed record RoomInventoryItemPayload(string ItemId, string Kind, int Quantity, bool IsSafe, RoomEquipmentPayload? Equipment = null);
+public sealed record RoomMonsterPayload(
+    string MonsterId,
+    int MaximumHp,
+    int Hp,
+    int Shield,
+    string IntentKind,
+    int IntentValue,
+    string IntentElement,
+    long IntervalProgressMs,
+    long WindupRemainingMs,
+    long StunRemainingMs,
+    int BossPhase = 1);
+public sealed record RoomPvePayload(Guid BattleId, string Phase, string? CurrentTargetId, IReadOnlyList<RoomMonsterPayload> Monsters);
+public sealed record RoomDuelPayload(
+    Guid DuelId,
+    Guid OpponentId,
+    RoomCombatantPayload Opponent,
+    long LatePlayerUnlockAtUnixMs,
+    long LeaveWindowEndsAtUnixMs,
+    bool SelfRequestedLeave,
+    long? EscapeRemainingMs);
+public sealed record RoomCurrentCellPayload(
+    bool HasEvacuation,
+    string MonsterGroupId,
+    bool SpringConsumed,
+    IReadOnlyList<Guid> RelicPileIds);
+public sealed record RoomPlayerPayload(
+    Guid PlayerId,
+    string HeroClass,
+    string Phase,
+    RoomCombatantPayload Combat,
+    IReadOnlyList<RoomCardPayload> Hand,
+    int LibraryCount,
+    int DiscardCount,
+    string DrawCharge,
+    IReadOnlyList<RoomInventoryItemPayload> Inventory);
+public sealed record RoomSnapshotEventPayload(
+    Guid RoomId,
+    Guid? MatchId,
+    long RoomRevision,
+    string ConfigVersion,
+    RoomPositionPayload Self,
+    IReadOnlyList<RoomMapCellPayload> Map,
+    IReadOnlyList<RoomPositionPayload> LegalMoves,
+    RoomCurrentCellPayload CurrentCell,
+    RoomPlayerPayload Player,
+    RoomPvePayload? Pve,
+    RoomDuelPayload? Duel,
+    RewardChoiceEventPayload? RewardChoice,
+    long? ExtractionRemainingMs,
+    long? SpringRemainingMs,
+    IReadOnlyList<string> AllowedActions);
+public sealed record CommandRejectedEventPayload(string Code, string Detail);
+public sealed record BattlePlayCardsCommandPayload(
+    Guid BattleId,
+    string TargetId,
+    IReadOnlyList<Guid> CardInstanceIds);
+public sealed record BattleSelectTargetCommandPayload(Guid BattleId, string TargetId);
+public sealed record BattleTargetSelectedEventPayload(Guid BattleId, string TargetId);
+public sealed record BattleComboResolvedEventPayload(
+    Guid BattleId,
+    Guid AttackerId,
+    string TargetId,
+    int Damage,
+    int ShieldDamage,
+    int HpDamage,
+    int Heal,
+    int ShieldGain,
+    bool TargetDefeated,
+    bool BattleEnded);
+public sealed record RoomMoveCommandPayload(int Row, int Column);
+public sealed record RoomMovedEventPayload(Guid PlayerId, int Row, int Column);
+public sealed record DuelLeaveCommandPayload(Guid DuelId);
+public sealed record DuelLeaveEventPayload(Guid DuelId, bool Completed);
+public sealed record DuelEscapeCommandPayload(Guid DuelId);
+public sealed record DuelEscapeEventPayload(Guid DuelId, double Probability, string Status);
+public sealed record DuelStartedEventPayload(Guid DuelId, Guid FirstPlayerId, Guid LatePlayerId, long LatePlayerUnlockAtUnixMs, long LeaveWindowEndsAtUnixMs);
+public sealed record DuelEndedEventPayload(Guid DuelId, string Reason, Guid? WinnerId, bool SnapshotRequired = true);
+public sealed record PlayerDiedEventPayload(Guid PlayerId, string Cause, Guid? DuelId = null);
+public sealed record ActionExtractCommandPayload;
+public sealed record ActionExtractEventPayload(string Status, TimeSpan Remaining);
+public sealed record ActionSpringCommandPayload;
+public sealed record ActionSpringEventPayload(string Status, TimeSpan Remaining);
+public sealed record ActionPotionCommandPayload;
+public sealed record ActionPotionEventPayload(string ItemId, int Healed);
+public sealed record RelicTakeCommandPayload(Guid PileId, string ItemId, long PileVersion, string? ReplaceItemId = null);
+public sealed record RelicTakeEventPayload(Guid PileId, string ItemId, long PileVersion);
+public sealed record RelicReplaceCommandPayload(Guid PileId, string ItemId, long PileVersion, string ReplaceItemId);
+public sealed record RelicReplacedEventPayload(Guid PileId, string ItemId, string ReturnedItemId, long PileVersion);
+public sealed record RewardChoiceRefreshCommandPayload;
+public sealed record RewardChoiceClaimCommandPayload(string OptionId, string? ReplaceItemId = null);
+public sealed record RewardChoiceClaimedEventPayload(string OptionId, int Applied);
+public enum RewardChoiceKindDto : short { Equipment = 1, EquipmentFragments = 2, ImmediateHeal = 3 }
+public sealed record RewardChoiceOptionPayload(string OptionId, RewardChoiceKindDto Kind, string? ItemId, int Quantity, int HealPercent);
+public sealed record RewardChoiceEventPayload(int Layer, IReadOnlyList<RewardChoiceOptionPayload> Options, int RefreshCount, bool IsBoss = false);

@@ -1,0 +1,53 @@
+{
+  "source": "Original procedural Blender geometry and materials",
+  "script": "tools/build_reference_scenes.py",
+  "blend": "art/reference_scenes.blend",
+  "reference_images": [
+    "ui_mockups_v058/ui_hall_1920x1080.png",
+    "ui_mockups_v058/ui_pve_1920x1080.png",
+    "ui_mockups_v058/ui_action_1920x1080.png",
+    "ui_mockups_v058/ui_gear_1920x1080.png"
+  ],
+  "reference_use": "Palette, stone architecture and free foreground composition; no pixels copied",
+  "external_assets": [],
+  "imagegen": false,
+  "contains_text_or_characters": false,
+  "units": "metres",
+  "runtime_use": "Opaque UI background render; original 3D remains editable",
+  "materials_in_glb": "Base colors and geometry export; procedural noise is visible in PNG and blend only",
+  "visual_review": "Reviewed at 1920x1080 and in native Godot compositions on 2026-09-09. Clean character-free stone scenes; staging remains readable. Stylized reconstruction, not pixel-identical to reference artwork.",
+  "scenes": {
+    "dungeon_battle": {
+      "image": "client/assets/scenes/dungeon_battle.png",
+      "objects": 1106,
+      "resolution": [
+        1920,
+        1080
+      ],
+      "layout_issues": [],
+      "ground_metres": 60,
+      "clear_character_staging_metres": [
+        -6,
+        6,
+        -3,
+        3
+      ]
+    },
+    "camp_hall": {
+      "image": "client/assets/scenes/camp_hall.png",
+      "objects": 1386,
+      "resolution": [
+        1920,
+        1080
+      ],
+      "layout_issues": [],
+      "ground_metres": 60,
+      "clear_character_staging_metres": [
+        -6,
+        6,
+        -3,
+        3
+      ]
+    }
+  }
+}

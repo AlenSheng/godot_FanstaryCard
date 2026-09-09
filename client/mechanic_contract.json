@@ -1,0 +1,11 @@
+{
+  "schema": "gamefactory3a.mechanic_contract.v1",
+  "contract_version": 1,
+  "gameplay_module": "FantasyCardServerStore",
+  "authority": "Existing ASP.NET Core server, REST JSON and Protobuf v1",
+  "state": ["lobby", "room", "preparation", "ticket", "ready_prompt", "settlement", "selected_cards", "connection"],
+  "events": ["changed", "notice", "combat_feedback"],
+  "commands": ["login", "select_class", "prepare", "enqueue", "cancel_preparation", "toggle_card", "play_cards", "command", "acknowledge_settlement"],
+  "public_api_paths": ["state/game_store.gd"],
+  "constraints": ["No client damage, RNG or permanent asset authority", "State changing room intents refresh the revision before submission", "UI gates actions by private room snapshot allowed_actions"]
+}

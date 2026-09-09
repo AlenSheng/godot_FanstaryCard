@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Client-side realtime protobuf code under test (exact files Unity compiles) -->
+    <Compile Include="Program.cs" />
+    <Compile Include="E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Assets\Scripts\Game.Protocol\RealtimeProtobufCodec.cs" />
+    <Compile Include="E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Assets\Scripts\Game.Protocol\RealtimeDtos.cs" />
+    <!-- Server-side reference implementation for cross-parity -->
+    <Compile Include="E:\GitHubFiles\FantasyCard\server\src\FantasyCard.Contracts\Realtime\RealtimeContracts.cs" />
+    <Compile Include="E:\GitHubFiles\FantasyCard\server\src\FantasyCard.Contracts\Realtime\RealtimeProtobufCodec.cs" />
+  </ItemGroup>
+
+</Project>

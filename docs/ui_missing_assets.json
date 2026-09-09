@@ -1,0 +1,2684 @@
+{
+  "schema_version": 2,
+  "audit_date": "2026-09-09",
+  "scope": "当前 client/assets/imported 416 张位图（216 UI + 200 图鉴插画）；原27项请求的28个PNG全部存在，P2本轮15项接入，冰霜幽灵已供图但身份未定义。",
+  "counts": {
+    "mockup_png": 0,
+    "mockup_psd": 0,
+    "existing_ui_bitmaps": 216,
+    "existing_card_illustrations": 200,
+    "existing_card_manifest_bindings": 212,
+    "existing_monster_species_bound": 12,
+    "missing_monster_species": 0,
+    "delivered_priority_one_requests": 11,
+    "delivered_priority_one_pngs": 12,
+    "remaining_new_illustration_requests": 0,
+    "remaining_cleanup_requests": 0,
+    "optional_character_consistency_requests": 0,
+    "pending_identity_requests": 1,
+    "delivered_priority_two_pngs": 16,
+    "integrated_priority_two_requests": 15,
+    "supplied_request_files": 28,
+    "fully_delivered_requests": 27
+  },
+  "global_rules": [
+    "本清单按独立组件审核，整屏效果图只作为布局与风格参考，不作为可交互UI背景。",
+    "200张图鉴插画已齐全；212条cards绑定包括12张怪物图复用，并非212张图鉴插画。",
+    "怪物卡与战场同一物种使用相同造型，暗红框与红装品质框是两种概念。",
+    "角色、商品、装备、价格、容量、日限、生命、伤害、费用、冷却和玩家名均由真实数据驱动。",
+    "纯面板、按钮、空槽、血条、线段、字徽和状态变化优先复用9切或Godot绘制，不要求额外imageGen。",
+    "场景由Blender生成；不要把场景条目复制到imageGen任务中。"
+  ],
+  "psd_audit": {
+    "tool": "psd-tools read-only; original files unchanged",
+    "inventory": "outputs/audit_psd.json",
+    "evidence": [
+      "outputs/audit_psd_layers_1.jpg",
+      "outputs/audit_psd_layers_2.jpg",
+      "outputs/audit_psd_layers_3.jpg",
+      "outputs/audit_psd_layers_4.jpg"
+    ],
+    "findings": [
+      "所有15个PSD均有图层；存在type文字层不代表像素层无文字/内容污染。",
+      "大量图层名为无字完整底图，实际上仍保留固定角色、装备、网格、图标与抹字灰块。",
+      "map的地图标记层与地图格层均为带首领/泉水/自己位置的固定整张地图。",
+      "shop的商品像素层整块模糊，无法恢复独立商品插画。",
+      "gear角色像素层是带背景和相邻装备槽的矩形裁片。",
+      "action PSD较可用：空标题、空面板、普通/选中空行动卡、独立图标、干净地牢背景可分别提取；图标alpha需复核。"
+    ],
+    "selected_usable_layers": [
+      {
+        "psd": "ui_mockups_v058/ui_action_1920x1080.psd",
+        "layer": "标题牌_黄铜深青",
+        "bbox_xyxy": [
+          710,
+          536,
+          1210,
+          649
+        ],
+        "note": "中部空白可叠动态标题，清掉边框外场景残片后使用。"
+      },
+      {
+        "psd": "ui_mockups_v058/ui_action_1920x1080.psd",
+        "layer": "行动面板_黄铜深青框",
+        "bbox_xyxy": [
+          106,
+          610,
+          1814,
+          1034
+        ],
+        "note": "空总面板；按需要使用9切，不含交互内容。"
+      },
+      {
+        "psd": "ui_mockups_v058/ui_action_1920x1080.psd",
+        "layer": "卡面_深青石黄铜框 (药剂组)",
+        "bbox_xyxy": [
+          446,
+          644,
+          706,
+          1004
+        ],
+        "note": "空普通卡；卡框周围有深色像素，应保留深青底或清边。"
+      },
+      {
+        "psd": "ui_mockups_v058/ui_action_1920x1080.psd",
+        "layer": "卡面_深青石黄铜框 (生命泉水组)",
+        "bbox_xyxy": [
+          150,
+          638,
+          444,
+          1012
+        ],
+        "note": "空选中卡；高亮建议代码叠加以避免固定尺寸。"
+      },
+      {
+        "psd": "ui_mockups_v058/ui_action_1920x1080.psd",
+        "layer": "背景_地牢场景（已补全）",
+        "bbox_xyxy": [
+          0,
+          0,
+          1920,
+          1080
+        ],
+        "note": "没有UI与文字；泉水和门为场景装饰，只有服务器允许的行动才能生成交互按钮。"
+      }
+    ]
+  },
+  "module_reviews": [
+    {
+      "module": "map",
+      "mockup": "ui_mockups_v058/ui_map_1920x1080.png",
+      "composition": "6×6三层地图，中央格盘，右侧图例，顶左标题",
+      "reuse": "无标记砖块按三层各裁一格；图例裁首领/泉水/自己图标；动态坐标与高亮由Godot绘制。",
+      "reusable_assets": [
+        "ui_mockups_v058/ui_map_1920x1080.png",
+        "UI/CardCodex/card_codex_dialog_panel_normal.png"
+      ],
+      "limitations": "地图PSD两张地图层均带固定事件与位置，不作整图地图。",
+      "route": "godot_recompose"
+    },
+    {
+      "module": "pve",
+      "mockup": "ui_mockups_v058/ui_pve_1920x1080.png",
+      "composition": "左侧玩家大立绘、右侧1-2怪、底部五张牌和状态区",
+      "reuse": "复用Prep立绘、现有怪物、Codex品质空框、Encounter血条；用Blender无人底图。",
+      "reusable_assets": [
+        "UI/Prep",
+        "UI/Monsters",
+        "UI/Codex",
+        "UI/Encounter"
+      ],
+      "limitations": "12种怪物与3旧主体透明清理图均已接入；Battle旧背景/手牌底/牌框/词缀灯仍含固定内容，不使用。",
+      "route": "blender_and_godot"
+    },
+    {
+      "module": "pvp",
+      "mockup": "ui_mockups_v058/ui_pvp_1920x1080.png",
+      "composition": "两侧圆头像与血条、中央倒计时和放牌、两侧各五槽",
+      "reuse": "Encounter背景、五槽手牌面板、空头像框/HP/计时环/按钮全套已有。",
+      "reusable_assets": [
+        "UI/Encounter"
+      ],
+      "limitations": "3职业本命徽记已接入自己的本命区；对手职业/手牌/本命细节及逃脱概率仍须协议支持。",
+      "route": "godot_recompose"
+    },
+    {
+      "module": "choose",
+      "mockup": "ui_mockups_v058/ui_choose_1920x1080.png",
+      "composition": "中央弹窗，固定装备/碎片/回血三列，底部刷新",
+      "reuse": "CardCodex空面板+Prep品质槽+Item物品图标；泉水可裁action PSD。",
+      "reusable_assets": [
+        "UI/CardCodex",
+        "UI/Prep",
+        "UI/Item",
+        "ui_mockups_v058/ui_action_1920x1080.psd"
+      ],
+      "limitations": "choose PSD仍把固定胸甲/碎片/泉烘焙在卡内，不将整张奖励卡用作可变装备槽。",
+      "route": "godot_recompose"
+    },
+    {
+      "module": "action",
+      "mockup": "ui_mockups_v058/ui_action_1920x1080.png",
+      "composition": "上方可见地牢，下方横排泉水/药剂/各份遗物/撤离/邻格",
+      "reuse": "action PSD有可用空标题、空总框、普通/高亮空卡；物品图标优先复用Item。",
+      "reusable_assets": [
+        "ui_mockups_v058/ui_action_1920x1080.psd",
+        "UI/Item"
+      ],
+      "limitations": "泉水、遗物、撤离门独立图标均已接入；数量/玩家名/时间仍由真实数据绘制，遗物操作等待物品与版本详情。",
+      "route": "psd_extract_and_godot"
+    },
+    {
+      "module": "prep",
+      "mockup": "ui_mockups_v058/ui_prep_1920x1080.png",
+      "composition": "左角色与六槽和套装，右三档背包与网格",
+      "reuse": "Prep人物、六色空装备框、空格、属性图标和Item图标已有。",
+      "reusable_assets": [
+        "UI/Prep",
+        "UI/Item"
+      ],
+      "limitations": "旧底图含固定槽/职业文字，包档位图含容量和价格；改空面板与动态标签。",
+      "route": "godot_recompose"
+    },
+    {
+      "module": "hall",
+      "mockup": "ui_mockups_v058/ui_hall_1920x1080.png",
+      "composition": "上方三职业与货币，左角色与武器，右领域入口，底部七入口",
+      "reuse": "Hall七入口静态插画可复用；Prep立绘切换职业，武器和本命名动态绘制。",
+      "reusable_assets": [
+        "UI/Hall",
+        "UI/Prep",
+        "UI/Enhance/weapon_mage_art.png"
+      ],
+      "limitations": "原Hall背景法师已烘焙，职业选择卡含固定生命；用Blender底图和动态选择卡。",
+      "route": "blender_and_godot"
+    },
+    {
+      "module": "midlayer",
+      "mockup": "ui_mockups_v058/ui_midlayer_1920x1080.png",
+      "composition": "压暗地图背景，中央三条规则，一枚确认按钮",
+      "reuse": "CardCodex空面板和空按钮；锁图标可复用Encounter，地图/泉图标可复用或代码绘制。",
+      "reusable_assets": [
+        "UI/CardCodex",
+        "UI/Encounter/encounter_lock_icon_normal.png"
+      ],
+      "limitations": "PSD弹窗底保留抹字灰块及固定图标；不需要再生成整屏。",
+      "route": "godot_recompose"
+    },
+    {
+      "module": "remnant",
+      "mockup": "ui_mockups_v058/ui_remnant_1920x1080.png",
+      "composition": "左右两个背包格盘，中间交换提示",
+      "reuse": "Prep空格和品质框+Item资源图标+CardCodex空按钮，动态绘制遗物玩家名和背包容量。",
+      "reusable_assets": [
+        "UI/Prep",
+        "UI/Item",
+        "UI/CardCodex"
+      ],
+      "limitations": "遗物通用图标已接入；完整左右背包转移仍缺服务器物品、版本及背包元数据，属于接口缺口。",
+      "route": "godot_recompose"
+    },
+    {
+      "module": "shop",
+      "mockup": "ui_mockups_v058/ui_shop_1920x1080.png",
+      "composition": "七项商品横向货架，独立日限/价格/购买按钮",
+      "reuse": "已有魂、药剂、金币和碎片图标，空商品卡用CardCodex/Prep面板。",
+      "reusable_assets": [
+        "UI/Item",
+        "UI/CardCodex",
+        "UI/Hall/btn_prep.png"
+      ],
+      "limitations": "4张独立商品插画已接入；复用干净空面板，价格、库存、日限、商品名称由服务器商品数据驱动。",
+      "route": "godot_recompose"
+    },
+    {
+      "module": "market",
+      "mockup": "ui_mockups_v058/ui_market_1920x1080.png",
+      "composition": "左侧商品行，右侧上架与实得，顶部双标签",
+      "reuse": "Codex文字行和CardCodex标签/输入框/按钮，Item装备图标可复用。",
+      "reusable_assets": [
+        "UI/Codex",
+        "UI/CardCodex",
+        "UI/Item"
+      ],
+      "limitations": "没有专用市场空行无需imageGen，可用现有9切；交易数字不沿用示例。",
+      "route": "godot_recompose"
+    },
+    {
+      "module": "codex",
+      "mockup": "ui_mockups_v058/ui_codex_1920x1080.png",
+      "composition": "左侧卡池搜索筛选，右侧紧凑20个文字卡组槽",
+      "reuse": "200张Cards/Art全部可用；Codex品质框、费用圆标、文字行和CardCodex筛选按钮齐全。",
+      "reusable_assets": [
+        "Cards/Art",
+        "UI/Codex",
+        "UI/CardCodex"
+      ],
+      "limitations": "不能使用PSD里整排卡片或整块固定卡组；不要把200张已有插画再次报缺。",
+      "route": "godot_recompose"
+    },
+    {
+      "module": "gear",
+      "mockup": "ui_mockups_v058/ui_gear_1920x1080.png",
+      "composition": "中央角色，六槽等权环绕，右下套装预览",
+      "reuse": "Prep人物与品质格+Item六部位/武器图标+Blender无人场景。",
+      "reusable_assets": [
+        "UI/Prep",
+        "UI/Item"
+      ],
+      "limitations": "统一角色全身图已供大厅、准备、装备与战斗共用；不使用含背景和固定装备槽的旧PSD裁片。",
+      "route": "blender_and_godot"
+    },
+    {
+      "module": "enhance",
+      "mockup": "ui_mockups_v058/ui_enhance_1920x1080.png",
+      "composition": "左装备列表、中央武器大图、右等级节点和成本",
+      "reuse": "Enhance武器/胸甲立绘及空按钮可用；使用通用面板，等级节点与线由Godot绘制。",
+      "reusable_assets": [
+        "UI/Enhance",
+        "UI/Hall/weapon_priest.png",
+        "UI/Hall/weapon_guardian.png"
+      ],
+      "limitations": "旧背景含固定焚弦薪/规则数字，display_clean有补洞色块，节点图亦有抹字块。",
+      "route": "blender_and_godot"
+    },
+    {
+      "module": "cards",
+      "mockup": "ui_mockups_v058/ui_cards_1920x1080.png",
+      "composition": "普通/职业/怪物统一比例和效果区模板",
+      "reuse": "200张图鉴插画与12种怪物主体齐全；暗红怪物无字下方面板配Godot原生完整外框。",
+      "reusable_assets": [
+        "Cards/Art",
+        "UI/Codex",
+        "UI/Monsters"
+      ],
+      "limitations": "新暗红框顶部以Godot原生边框补齐；3旧怪物透明清理图已同步用于战场和卡面，不再缺图。",
+      "route": "godot_recompose"
+    }
+  ],
+  "requests": [
+    {
+      "id": "MON-THORN-MITE",
+      "name": "棘螨",
+      "priority": "P1",
+      "status": "integrated_and_reviewed",
+      "route": "imagegen",
+      "modules": [
+        "pve",
+        "cards"
+      ],
+      "reference_mockups": [
+        "ui_mockups_v058/ui_pve_1920x1080.png",
+        "ui_mockups_v058/ui_cards_1920x1080.png"
+      ],
+      "reusable_assets": [
+        "UI/Monsters/fire_bat.png",
+        "UI/Monsters/rustblade_rat.png",
+        "UI/Monsters/stone_guardian.png"
+      ],
+      "missing_reason": "已收到指定文件，尺寸与真实Alpha通过检查；深青底与浅棋盘底合成核验未见明显黑底或误抠。已登记并通过本轮原生战场/卡面显示核验。",
+      "deliverables": [
+        {
+          "filename": "UI/Monsters/thorn_mite.png",
+          "size_px": [
+            1024,
+            1024
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null
+        }
+      ],
+      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。身体矮扁、背甲布满弯曲棘刺的木属螨兽；苔绿与深棕甲壳，六条短足、短口器、藤蔓状棘冠。侧前方四分之三视角，头朝画面左侧、压低重心准备扑击；不要画成人形树精。单个全身主体，主体占画布约80%，头脚尾和外伸部件保留8%安全边；战场与本局怪物卡复用同一造型。",
+      "acceptance": [
+        "缩到实际UI显示尺寸仍可辨识，边缘无背景残留和误抠孔洞。",
+        "动态文字与数值全部由Godot绘制，不能烘焙入素材。"
+      ],
+      "server_monster_id": "thorn-mite",
+      "card_art_policy": "优先从同一透明全身图裁切到768×1152卡面窗口；如另绘卡面，只能重构图，不能改物种造型。",
+      "visual_design_status": "基于GDD名称、元素和战斗机制的新造型建议，最终以用户生成图为准。",
+      "original_status": "missing",
+      "original_missing_reason": "12种GDD怪物中，此服务器物种ID尚无独立主体图；现有200张图鉴插画不覆盖本局怪物。",
+      "generation_required": false,
+      "current_review": {
+        "deliverables": [
+          {
+            "key": "UI/Monsters/thorn_mite.png",
+            "path": "client/assets/imported/UI/Monsters/thorn_mite.png",
+            "exists": true,
+            "size_px": [
+              1024,
+              1024
+            ],
+            "mode": "RGBA",
+            "sha256": "d0a75edb9ecbc3d8b2d23445d8e54c207ea2222d2917e5a27b933e9090aaeba6",
+            "alpha_extrema": [
+              0,
+              255
+            ],
+            "alpha_zero_percent": 60.9638,
+            "alpha_opaque_percent": 33.2505,
+            "alpha_partial_percent": 5.7857,
+            "registered": true,
+            "matches_recorded_source_sha256": true
+          }
+        ],
+        "all_delivered": true,
+        "all_registered": true,
+        "native_evidence": "outputs/current_native_monster_review.jpg"
+      }
+    },
+    {
+      "id": "MON-MURK-SNAIL",
+      "name": "浊螅",
+      "priority": "P1",
+      "status": "integrated_and_reviewed",
+      "route": "imagegen",
+      "modules": [
+        "pve",
+        "cards"
+      ],
+      "reference_mockups": [
+        "ui_mockups_v058/ui_pve_1920x1080.png",
+        "ui_mockups_v058/ui_cards_1920x1080.png"
+      ],
+      "reusable_assets": [
+        "UI/Monsters/fire_bat.png",
+        "UI/Monsters/rustblade_rat.png",
+        "UI/Monsters/stone_guardian.png"
+      ],
+      "missing_reason": "已收到指定文件，尺寸与真实Alpha通过检查；深青底与浅棋盘底合成核验未见明显黑底或误抠。已登记并通过本轮原生战场/卡面显示核验。",
+      "deliverables": [
+        {
+          "filename": "UI/Monsters/murk_polyp.png",
+          "size_px": [
+            1024,
+            1024
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null
+        }
+      ],
+      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。水属浑浊水螅怪，暗青与灰蓝半透明胶质身体，粗短触须围绕口器，基底贴近地面、上身向左抬起；浊水微光沿触须流动。名称遵循GDD的浊螅，不画成带螺旋壳的蜗牛。单个全身主体，主体占画布约80%，头脚尾和外伸部件保留8%安全边；战场与本局怪物卡复用同一造型。",
+      "acceptance": [
+        "缩到实际UI显示尺寸仍可辨识，边缘无背景残留和误抠孔洞。",
+        "动态文字与数值全部由Godot绘制，不能烘焙入素材。"
+      ],
+      "server_monster_id": "murk-snail",
+      "card_art_policy": "优先从同一透明全身图裁切到768×1152卡面窗口；如另绘卡面，只能重构图，不能改物种造型。",
+      "visual_design_status": "基于GDD名称、元素和战斗机制的新造型建议，最终以用户生成图为准。",
+      "original_status": "missing",
+      "original_missing_reason": "12种GDD怪物中，此服务器物种ID尚无独立主体图；现有200张图鉴插画不覆盖本局怪物。",
+      "generation_required": false,
+      "current_review": {
+        "deliverables": [
+          {
+            "key": "UI/Monsters/murk_polyp.png",
+            "path": "client/assets/imported/UI/Monsters/murk_polyp.png",
+            "exists": true,
+            "size_px": [
+              1024,
+              1024
+            ],
+            "mode": "RGBA",
+            "sha256": "736245689892c5425abb7808ed953dad6b22ac3e1591e3f44c969507fcb0da63",
+            "alpha_extrema": [
+              0,
+              255
+            ],
+            "alpha_zero_percent": 50.0086,
+            "alpha_opaque_percent": 38.9332,
+            "alpha_partial_percent": 11.0582,
+            "registered": true,
+            "matches_recorded_source_sha256": true
+          }
+        ],
+        "all_delivered": true,
+        "all_registered": true,
+        "native_evidence": "outputs/current_native_monster_review.jpg"
+      }
+    },
+    {
+      "id": "MON-SAND-LIZARD",
+      "name": "砂蜥",
+      "priority": "P1",
+      "status": "integrated_and_reviewed",
+      "route": "imagegen",
+      "modules": [
+        "pve",
+        "cards"
+      ],
+      "reference_mockups": [
+        "ui_mockups_v058/ui_pve_1920x1080.png",
+        "ui_mockups_v058/ui_cards_1920x1080.png"
+      ],
+      "reusable_assets": [
+        "UI/Monsters/fire_bat.png",
+        "UI/Monsters/rustblade_rat.png",
+        "UI/Monsters/stone_guardian.png"
+      ],
+      "missing_reason": "已收到指定文件，尺寸与真实Alpha通过检查；深青底与浅棋盘底合成核验未见明显黑底或误抠。已登记并通过本轮原生战场/卡面显示核验。",
+      "deliverables": [
+        {
+          "filename": "UI/Monsters/sand_lizard.png",
+          "size_px": [
+            1024,
+            1024
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null
+        }
+      ],
+      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。厚重的土属砂岩蜥蜴，赭石鳞片、层叠岩甲、短壮四肢、低矮背棘与长尾；面向左侧，背甲呈盾状厚片，身体完整。不要额外画独立盾牌图标或沙漠背景。单个全身主体，主体占画布约80%，头脚尾和外伸部件保留8%安全边；战场与本局怪物卡复用同一造型。",
+      "acceptance": [
+        "缩到实际UI显示尺寸仍可辨识，边缘无背景残留和误抠孔洞。",
+        "动态文字与数值全部由Godot绘制，不能烘焙入素材。"
+      ],
+      "server_monster_id": "sand-lizard",
+      "card_art_policy": "优先从同一透明全身图裁切到768×1152卡面窗口；如另绘卡面，只能重构图，不能改物种造型。",
+      "visual_design_status": "基于GDD名称、元素和战斗机制的新造型建议，最终以用户生成图为准。",
+      "original_status": "missing",
+      "original_missing_reason": "12种GDD怪物中，此服务器物种ID尚无独立主体图；现有200张图鉴插画不覆盖本局怪物。",
+      "generation_required": false,
+      "current_review": {
+        "deliverables": [
+          {
+            "key": "UI/Monsters/sand_lizard.png",
+            "path": "client/assets/imported/UI/Monsters/sand_lizard.png",
+            "exists": true,
+            "size_px": [
+              1024,
+              1024
+            ],
+            "mode": "RGBA",
+            "sha256": "e1ad8dcc3234e8186516c6fcfd09dd2294d715cd584472e0c72d64f02549b747",
+            "alpha_extrema": [
+              0,
+              255
+            ],
+            "alpha_zero_percent": 61.7435,
+            "alpha_opaque_percent": 32.1171,
+            "alpha_partial_percent": 6.1395,
+            "registered": true,
+            "matches_recorded_source_sha256": true
+          }
+        ],
+        "all_delivered": true,
+        "all_registered": true,
+        "native_evidence": "outputs/current_native_monster_review.jpg"
+      }
+    },
+    {
+      "id": "MON-METAL-GUARD",
+      "name": "金卫",
+      "priority": "P1",
+      "status": "integrated_and_reviewed",
+      "route": "imagegen",
+      "modules": [
+        "pve",
+        "cards"
+      ],
+      "reference_mockups": [
+        "ui_mockups_v058/ui_pve_1920x1080.png",
+        "ui_mockups_v058/ui_cards_1920x1080.png"
+      ],
+      "reusable_assets": [
+        "UI/Monsters/fire_bat.png",
+        "UI/Monsters/rustblade_rat.png",
+        "UI/Monsters/stone_guardian.png"
+      ],
+      "missing_reason": "已收到指定文件，尺寸与真实Alpha通过检查；深青底与浅棋盘底合成核验未见明显黑底或误抠。已登记并通过本轮原生战场/卡面显示核验。",
+      "deliverables": [
+        {
+          "filename": "UI/Monsters/metal_guard.png",
+          "size_px": [
+            1024,
+            1024
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null
+        }
+      ],
+      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。金属构装精英卫士，褐金与灰钢厚板甲、封闭面甲、方形大盾、沉重短刃；厚重人形但不使用石甲卫的岩石皮肤，朝左站立防御。躯干、盾、双脚完整可见，锐利金属边缘与黄铜反光。单个全身主体，主体占画布约80%，头脚尾和外伸部件保留8%安全边；战场与本局怪物卡复用同一造型。",
+      "acceptance": [
+        "缩到实际UI显示尺寸仍可辨识，边缘无背景残留和误抠孔洞。",
+        "动态文字与数值全部由Godot绘制，不能烘焙入素材。"
+      ],
+      "server_monster_id": "metal-guard",
+      "card_art_policy": "优先从同一透明全身图裁切到768×1152卡面窗口；如另绘卡面，只能重构图，不能改物种造型。",
+      "visual_design_status": "基于GDD名称、元素和战斗机制的新造型建议，最终以用户生成图为准。",
+      "original_status": "missing",
+      "original_missing_reason": "12种GDD怪物中，此服务器物种ID尚无独立主体图；现有200张图鉴插画不覆盖本局怪物。",
+      "generation_required": false,
+      "current_review": {
+        "deliverables": [
+          {
+            "key": "UI/Monsters/metal_guard.png",
+            "path": "client/assets/imported/UI/Monsters/metal_guard.png",
+            "exists": true,
+            "size_px": [
+              1024,
+              1024
+            ],
+            "mode": "RGBA",
+            "sha256": "d9fe184079ce36e48c71e4f53e19694bb4b0458f542f0dbf92ab29ed59c61e8b",
+            "alpha_extrema": [
+              0,
+              255
+            ],
+            "alpha_zero_percent": 56.4629,
+            "alpha_opaque_percent": 37.1597,
+            "alpha_partial_percent": 6.3774,
+            "registered": true,
+            "matches_recorded_source_sha256": true
+          }
+        ],
+        "all_delivered": true,
+        "all_registered": true,
+        "native_evidence": "outputs/current_native_monster_review.jpg"
+      }
+    },
+    {
+      "id": "MON-FIRE-HERALD",
+      "name": "火劫使",
+      "priority": "P1",
+      "status": "integrated_and_reviewed",
+      "route": "imagegen",
+      "modules": [
+        "pve",
+        "cards"
+      ],
+      "reference_mockups": [
+        "ui_mockups_v058/ui_pve_1920x1080.png",
+        "ui_mockups_v058/ui_cards_1920x1080.png"
+      ],
+      "reusable_assets": [
+        "UI/Monsters/fire_bat.png",
+        "UI/Monsters/rustblade_rat.png",
+        "UI/Monsters/stone_guardian.png"
+      ],
+      "missing_reason": "已收到指定文件，尺寸与真实Alpha通过检查；深青底与浅棋盘底合成核验未见明显黑底或误抠。已登记并通过本轮原生战场/卡面显示核验。",
+      "deliverables": [
+        {
+          "filename": "UI/Monsters/fire_herald.png",
+          "size_px": [
+            1024,
+            1024
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null
+        }
+      ],
+      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。火属精英使者，焦黑分层甲壳与赤橙裂隙，头部火冠、双臂蓄积火焰，弓步朝左准备重击；清楚的人形上身和双腿，不画法师主角、不画蝙蝠翅膀。火焰集中在轮廓附近且不遮住主体。单个全身主体，主体占画布约80%，头脚尾和外伸部件保留8%安全边；战场与本局怪物卡复用同一造型。",
+      "acceptance": [
+        "缩到实际UI显示尺寸仍可辨识，边缘无背景残留和误抠孔洞。",
+        "动态文字与数值全部由Godot绘制，不能烘焙入素材。"
+      ],
+      "server_monster_id": "fire-herald",
+      "card_art_policy": "优先从同一透明全身图裁切到768×1152卡面窗口；如另绘卡面，只能重构图，不能改物种造型。",
+      "visual_design_status": "基于GDD名称、元素和战斗机制的新造型建议，最终以用户生成图为准。",
+      "original_status": "missing",
+      "original_missing_reason": "12种GDD怪物中，此服务器物种ID尚无独立主体图；现有200张图鉴插画不覆盖本局怪物。",
+      "generation_required": false,
+      "current_review": {
+        "deliverables": [
+          {
+            "key": "UI/Monsters/fire_herald.png",
+            "path": "client/assets/imported/UI/Monsters/fire_herald.png",
+            "exists": true,
+            "size_px": [
+              1024,
+              1024
+            ],
+            "mode": "RGBA",
+            "sha256": "268f9c409450e85a267715e16058cee06154325147f43518d5b2cc467f2b4375",
+            "alpha_extrema": [
+              0,
+              255
+            ],
+            "alpha_zero_percent": 58.003,
+            "alpha_opaque_percent": 33.6056,
+            "alpha_partial_percent": 8.3914,
+            "registered": true,
+            "matches_recorded_source_sha256": true
+          }
+        ],
+        "all_delivered": true,
+        "all_registered": true,
+        "native_evidence": "outputs/current_native_monster_review.jpg"
+      }
+    },
+    {
+      "id": "MON-MARSH-MOTHER",
+      "name": "沼母",
+      "priority": "P1",
+      "status": "integrated_and_reviewed",
+      "route": "imagegen",
+      "modules": [
+        "pve",
+        "cards"
+      ],
+      "reference_mockups": [
+        "ui_mockups_v058/ui_pve_1920x1080.png",
+        "ui_mockups_v058/ui_cards_1920x1080.png"
+      ],
+      "reusable_assets": [
+        "UI/Monsters/fire_bat.png",
+        "UI/Monsters/rustblade_rat.png",
+        "UI/Monsters/stone_guardian.png"
+      ],
+      "missing_reason": "已收到指定文件，尺寸与真实Alpha通过检查；深青底与浅棋盘底合成核验未见明显黑底或误抠。已登记并通过本轮原生战场/卡面显示核验。",
+      "deliverables": [
+        {
+          "filename": "UI/Monsters/marsh_mother.png",
+          "size_px": [
+            1024,
+            1024
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null
+        }
+      ],
+      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。水属大型沼泽母兽，低重心、宽厚身体、暗青黏湿皮肤，水草须与贝壳状肩甲，短触足支撑身体；左向防御站姿，水膜护甲只作少量轮廓高光。其机制是水攻击与护盾，不画医疗十字、治疗光环或绿色奶瓶。单个全身主体，主体占画布约80%，头脚尾和外伸部件保留8%安全边；战场与本局怪物卡复用同一造型。",
+      "acceptance": [
+        "缩到实际UI显示尺寸仍可辨识，边缘无背景残留和误抠孔洞。",
+        "动态文字与数值全部由Godot绘制，不能烘焙入素材。"
+      ],
+      "server_monster_id": "marsh-mother",
+      "card_art_policy": "优先从同一透明全身图裁切到768×1152卡面窗口；如另绘卡面，只能重构图，不能改物种造型。",
+      "visual_design_status": "基于GDD名称、元素和战斗机制的新造型建议，最终以用户生成图为准。",
+      "original_status": "missing",
+      "original_missing_reason": "12种GDD怪物中，此服务器物种ID尚无独立主体图；现有200张图鉴插画不覆盖本局怪物。",
+      "generation_required": false,
+      "current_review": {
+        "deliverables": [
+          {
+            "key": "UI/Monsters/marsh_mother.png",
+            "path": "client/assets/imported/UI/Monsters/marsh_mother.png",
+            "exists": true,
+            "size_px": [
+              1024,
+              1024
+            ],
+            "mode": "RGBA",
+            "sha256": "f0e532030e7a6ca81469ec7249503dbb20f4cd6db6c78d10fab29551ff64a582",
+            "alpha_extrema": [
+              0,
+              255
+            ],
+            "alpha_zero_percent": 53.6944,
+            "alpha_opaque_percent": 38.7594,
+            "alpha_partial_percent": 7.5461,
+            "registered": true,
+            "matches_recorded_source_sha256": true
+          }
+        ],
+        "all_delivered": true,
+        "all_registered": true,
+        "native_evidence": "outputs/current_native_monster_review.jpg"
+      }
+    },
+    {
+      "id": "MON-THORN-GUARD",
+      "name": "棘林卫",
+      "priority": "P1",
+      "status": "integrated_and_reviewed",
+      "route": "imagegen",
+      "modules": [
+        "pve",
+        "cards"
+      ],
+      "reference_mockups": [
+        "ui_mockups_v058/ui_pve_1920x1080.png",
+        "ui_mockups_v058/ui_cards_1920x1080.png"
+      ],
+      "reusable_assets": [
+        "UI/Monsters/fire_bat.png",
+        "UI/Monsters/rustblade_rat.png",
+        "UI/Monsters/stone_guardian.png"
+      ],
+      "missing_reason": "已收到指定文件，尺寸与真实Alpha通过检查；深青底与浅棋盘底合成核验未见明显黑底或误抠。已登记并通过本轮原生战场/卡面显示核验。",
+      "deliverables": [
+        {
+          "filename": "UI/Monsters/thorn_guard.png",
+          "size_px": [
+            1024,
+            1024
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null
+        }
+      ],
+      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。木属精英棘林守卫，高大树根人形，深棕木甲、苔绿叶簇、盘绕荆棘双臂，肩部和拳部尖刺显著；身体向左蓄势，脚为扎地树根。与矮小棘螨保持明显剪影区别，不画森林背景。单个全身主体，主体占画布约80%，头脚尾和外伸部件保留8%安全边；战场与本局怪物卡复用同一造型。",
+      "acceptance": [
+        "缩到实际UI显示尺寸仍可辨识，边缘无背景残留和误抠孔洞。",
+        "动态文字与数值全部由Godot绘制，不能烘焙入素材。"
+      ],
+      "server_monster_id": "thorn-guard",
+      "card_art_policy": "优先从同一透明全身图裁切到768×1152卡面窗口；如另绘卡面，只能重构图，不能改物种造型。",
+      "visual_design_status": "基于GDD名称、元素和战斗机制的新造型建议，最终以用户生成图为准。",
+      "original_status": "missing",
+      "original_missing_reason": "12种GDD怪物中，此服务器物种ID尚无独立主体图；现有200张图鉴插画不覆盖本局怪物。",
+      "generation_required": false,
+      "current_review": {
+        "deliverables": [
+          {
+            "key": "UI/Monsters/thorn_guard.png",
+            "path": "client/assets/imported/UI/Monsters/thorn_guard.png",
+            "exists": true,
+            "size_px": [
+              1024,
+              1024
+            ],
+            "mode": "RGBA",
+            "sha256": "3ed4421aac92aef25eace74a35452fe8cee3f0b6f117ad23e6b9016185fe9328",
+            "alpha_extrema": [
+              0,
+              255
+            ],
+            "alpha_zero_percent": 57.9306,
+            "alpha_opaque_percent": 31.4689,
+            "alpha_partial_percent": 10.6006,
+            "registered": true,
+            "matches_recorded_source_sha256": true
+          }
+        ],
+        "all_delivered": true,
+        "all_registered": true,
+        "native_evidence": "outputs/current_native_monster_review.jpg"
+      }
+    },
+    {
+      "id": "MON-ANNIHILATION-CORE",
+      "name": "湮核",
+      "priority": "P1",
+      "status": "integrated_and_reviewed",
+      "route": "imagegen",
+      "modules": [
+        "pve",
+        "cards"
+      ],
+      "reference_mockups": [
+        "ui_mockups_v058/ui_pve_1920x1080.png",
+        "ui_mockups_v058/ui_cards_1920x1080.png"
+      ],
+      "reusable_assets": [
+        "UI/Monsters/fire_bat.png",
+        "UI/Monsters/rustblade_rat.png",
+        "UI/Monsters/stone_guardian.png"
+      ],
+      "missing_reason": "已收到指定文件，尺寸与真实Alpha通过检查；深青底与浅棋盘底合成核验未见明显黑底或误抠。已登记并通过本轮原生战场/卡面显示核验。",
+      "deliverables": [
+        {
+          "filename": "UI/Monsters/annihilation_core_phase_1.png",
+          "size_px": [
+            1024,
+            1024
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null
+        },
+        {
+          "filename": "UI/Monsters/annihilation_core_phase_2.png",
+          "size_px": [
+            1024,
+            1024
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null
+        }
+      ],
+      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。悬浮的巨大破碎壳层核心Boss，暗石与褐金装甲环绕可见能量核，主体朝左，外轮廓宽厚有分层壳片。两张同构图变体：phase_1 生焰以赤橙火核和少量木绿纹路；phase_2 金蚀以金白能量、灰金刃片和土色岩纹。两态必须位置、尺寸、镜头一致，方便切换。不要把两张拼成一张，不画文字、血条或史诗写实背景。单个全身主体，主体占画布约80%，头脚尾和外伸部件保留8%安全边；战场与本局怪物卡复用同一造型。",
+      "acceptance": [
+        "缩到实际UI显示尺寸仍可辨识，边缘无背景残留和误抠孔洞。",
+        "动态文字与数值全部由Godot绘制，不能烘焙入素材。"
+      ],
+      "server_monster_id": "annihilation-core",
+      "card_art_policy": "优先从同一透明全身图裁切到768×1152卡面窗口；如另绘卡面，只能重构图，不能改物种造型。",
+      "visual_design_status": "基于GDD名称、元素和战斗机制的新造型建议，最终以用户生成图为准。",
+      "original_status": "missing",
+      "original_missing_reason": "12种GDD怪物中，此服务器物种ID尚无独立主体图；现有200张图鉴插画不覆盖本局怪物。",
+      "generation_required": false,
+      "current_review": {
+        "deliverables": [
+          {
+            "key": "UI/Monsters/annihilation_core_phase_1.png",
+            "path": "client/assets/imported/UI/Monsters/annihilation_core_phase_1.png",
+            "exists": true,
+            "size_px": [
+              1024,
+              1024
+            ],
+            "mode": "RGBA",
+            "sha256": "38ae660e479a7112030e865afa241c7c9a23c450252fe49353bac7e7c6dae624",
+            "alpha_extrema": [
+              0,
+              255
+            ],
+            "alpha_zero_percent": 55.378,
+            "alpha_opaque_percent": 38.7362,
+            "alpha_partial_percent": 5.8858,
+            "registered": true,
+            "matches_recorded_source_sha256": true
+          },
+          {
+            "key": "UI/Monsters/annihilation_core_phase_2.png",
+            "path": "client/assets/imported/UI/Monsters/annihilation_core_phase_2.png",
+            "exists": true,
+            "size_px": [
+              1024,
+              1024
+            ],
+            "mode": "RGBA",
+            "sha256": "7f7ab9110fab1baa5e60301ac8b19df6788b86c2f20ea5eaac5fdcd6e4896f1a",
+            "alpha_extrema": [
+              0,
+              255
+            ],
+            "alpha_zero_percent": 55.4736,
+            "alpha_opaque_percent": 38.7301,
+            "alpha_partial_percent": 5.7962,
+            "registered": true,
+            "matches_recorded_source_sha256": true
+          }
+        ],
+        "all_delivered": true,
+        "all_registered": true,
+        "native_evidence": "outputs/current_native_monster_review.jpg"
+      }
+    },
+    {
+      "id": "MON-TREASURE-BOX-SPIRIT",
+      "name": "匣灵",
+      "priority": "P1",
+      "status": "integrated_and_reviewed",
+      "route": "imagegen",
+      "modules": [
+        "pve",
+        "cards"
+      ],
+      "reference_mockups": [
+        "ui_mockups_v058/ui_pve_1920x1080.png",
+        "ui_mockups_v058/ui_cards_1920x1080.png"
+      ],
+      "reusable_assets": [
+        "UI/Monsters/fire_bat.png",
+        "UI/Monsters/rustblade_rat.png",
+        "UI/Monsters/stone_guardian.png"
+      ],
+      "missing_reason": "已收到指定文件，尺寸与真实Alpha通过检查；深青底与浅棋盘底合成核验未见明显黑底或误抠。已登记并通过本轮原生战场/卡面显示核验。",
+      "deliverables": [
+        {
+          "filename": "UI/Monsters/treasure_box_spirit.png",
+          "size_px": [
+            1024,
+            1024
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null
+        }
+      ],
+      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。活着的木箱怪物，裂开的旧木箱嘴、黄铜包角、短脚和明显眼睛，左向战斗姿态，箱盖如上下颚。它是战场小怪，必须有生物动作剪影，不是商店礼盒UI图标；色彩中性，元素通过客户端特效标记，勿固定画某一元素背景。单个全身主体，主体占画布约80%，头脚尾和外伸部件保留8%安全边；战场与本局怪物卡复用同一造型。",
+      "acceptance": [
+        "缩到实际UI显示尺寸仍可辨识，边缘无背景残留和误抠孔洞。",
+        "动态文字与数值全部由Godot绘制，不能烘焙入素材。"
+      ],
+      "server_monster_id": "treasure-box-spirit",
+      "card_art_policy": "优先从同一透明全身图裁切到768×1152卡面窗口；如另绘卡面，只能重构图，不能改物种造型。",
+      "visual_design_status": "基于GDD名称、元素和战斗机制的新造型建议，最终以用户生成图为准。",
+      "original_status": "missing",
+      "original_missing_reason": "12种GDD怪物中，此服务器物种ID尚无独立主体图；现有200张图鉴插画不覆盖本局怪物。",
+      "generation_required": false,
+      "current_review": {
+        "deliverables": [
+          {
+            "key": "UI/Monsters/treasure_box_spirit.png",
+            "path": "client/assets/imported/UI/Monsters/treasure_box_spirit.png",
+            "exists": true,
+            "size_px": [
+              1024,
+              1024
+            ],
+            "mode": "RGBA",
+            "sha256": "6105ac5adb95b845e11ebd089102dee1d10852b4cf98ec88f51d9c6bc5b676c5",
+            "alpha_extrema": [
+              0,
+              255
+            ],
+            "alpha_zero_percent": 61.3361,
+            "alpha_opaque_percent": 32.0243,
+            "alpha_partial_percent": 6.6396,
+            "registered": true,
+            "matches_recorded_source_sha256": true
+          }
+        ],
+        "all_delivered": true,
+        "all_registered": true,
+        "native_evidence": "outputs/current_native_monster_review.jpg"
+      }
+    },
+    {
+      "id": "CLEAN-MON-FIRE-BAT",
+      "name": "火蝠透明边缘修复",
+      "priority": "P2",
+      "status": "integrated_and_reviewed",
+      "route": "imagegen_edit_or_manual_mask",
+      "modules": [
+        "pve",
+        "cards"
+      ],
+      "reference_mockups": [
+        "ui_mockups_v058/ui_pve_1920x1080.png",
+        "ui_mockups_v058/ui_cards_1920x1080.png"
+      ],
+      "reusable_assets": [
+        "UI/Monsters/fire_bat.png"
+      ],
+      "missing_reason": "已收到透明清理图并替换该物种的战场与怪物卡映射；原图保留。尺寸和真实Alpha通过检查，地牢与卡面原生预览未见旧黑色矩形底或明显缺体。",
+      "deliverables": [
+        {
+          "filename": "UI/Monsters/fire_bat_clean.png",
+          "size_px": [
+            1254,
+            1254
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null
+        }
+      ],
+      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。使用给定火蝠原图做背景移除/边缘修复，保留原造型、颜色、构图和所有细节；只清除原矩形黑灰底，不重画新角色，不把眼睛、关节、甲缝、翅膜等深色主体误抠透明。",
+      "acceptance": [
+        "缩到实际UI显示尺寸仍可辨识，边缘无背景残留和误抠孔洞。",
+        "动态文字与数值全部由Godot绘制，不能烘焙入素材。"
+      ],
+      "generation_required": false,
+      "original_status": "cleanup_needed",
+      "current_review": {
+        "delivery_status": "已收到透明清理图并替换该物种的战场与怪物卡映射；原图保留。尺寸和真实Alpha通过检查，地牢与卡面原生预览未见旧黑色矩形底或明显缺体。",
+        "existing_original": {
+          "key": "UI/Monsters/fire_bat.png",
+          "path": "client/assets/imported/UI/Monsters/fire_bat.png",
+          "exists": true,
+          "size_px": [
+            1254,
+            1254
+          ],
+          "mode": "RGBA",
+          "sha256": "7085dd3354f617fb0a838462038b7e2ab358924e25dfae6d0c25ad22cbcdf550",
+          "alpha_extrema": [
+            1,
+            253
+          ],
+          "alpha_zero_percent": 0.0,
+          "alpha_opaque_percent": 0.0,
+          "alpha_partial_percent": 100.0,
+          "registered": true,
+          "matches_recorded_source_sha256": true,
+          "matches_recorded_imported_sha256": true
+        },
+        "deliverables": [
+          {
+            "key": "UI/Monsters/fire_bat_clean.png",
+            "path": "client/assets/imported/UI/Monsters/fire_bat_clean.png",
+            "exists": true,
+            "size_px": [
+              1254,
+              1254
+            ],
+            "mode": "RGBA",
+            "sha256": "d5e50669673ac54e7e9c51a4e0b6f2e877cdc8fb5dbbf20b7fd0b06c67a02bb3",
+            "alpha_extrema": [
+              0,
+              255
+            ],
+            "alpha_zero_percent": 54.5246,
+            "alpha_opaque_percent": 34.5275,
+            "alpha_partial_percent": 10.9479,
+            "registered": true,
+            "matches_recorded_source_sha256": true,
+            "matches_recorded_imported_sha256": true,
+            "expected_size_px": [
+              1254,
+              1254
+            ],
+            "matches_expected_size": true,
+            "has_real_transparent_background": true
+          }
+        ],
+        "all_delivered": true,
+        "all_registered": true,
+        "asset_evidence": [
+          "outputs/p2_asset_contact.jpg",
+          "outputs/p2_asset_dark_contact.jpg"
+        ],
+        "native_evidence": "outputs/p2_native_monster_review.jpg"
+      },
+      "generation_status": "generated_and_reviewed",
+      "original_missing_reason": "已有完整主体；原PNG Alpha最小值1、最大253，背景仍有烟灰块且没有真正全透明像素。"
+    },
+    {
+      "id": "CLEAN-MON-RUST-RAT",
+      "name": "锈刃鼠透明边缘修复",
+      "priority": "P2",
+      "status": "integrated_and_reviewed",
+      "route": "imagegen_edit_or_manual_mask",
+      "modules": [
+        "pve",
+        "cards"
+      ],
+      "reference_mockups": [
+        "ui_mockups_v058/ui_pve_1920x1080.png",
+        "ui_mockups_v058/ui_cards_1920x1080.png"
+      ],
+      "reusable_assets": [
+        "UI/Monsters/rustblade_rat.png"
+      ],
+      "missing_reason": "已收到透明清理图并替换该物种的战场与怪物卡映射；原图保留。尺寸和真实Alpha通过检查，地牢与卡面原生预览未见旧黑色矩形底或明显缺体。",
+      "deliverables": [
+        {
+          "filename": "UI/Monsters/rustblade_rat_clean.png",
+          "size_px": [
+            1254,
+            1254
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null
+        }
+      ],
+      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。使用给定锈刃鼠原图做背景移除/边缘修复，保留原造型、颜色、构图和所有细节；只清除原矩形黑灰底，不重画新角色，不把眼睛、关节、甲缝、翅膜等深色主体误抠透明。",
+      "acceptance": [
+        "缩到实际UI显示尺寸仍可辨识，边缘无背景残留和误抠孔洞。",
+        "动态文字与数值全部由Godot绘制，不能烘焙入素材。"
+      ],
+      "generation_required": false,
+      "original_status": "cleanup_needed",
+      "current_review": {
+        "delivery_status": "已收到透明清理图并替换该物种的战场与怪物卡映射；原图保留。尺寸和真实Alpha通过检查，地牢与卡面原生预览未见旧黑色矩形底或明显缺体。",
+        "existing_original": {
+          "key": "UI/Monsters/rustblade_rat.png",
+          "path": "client/assets/imported/UI/Monsters/rustblade_rat.png",
+          "exists": true,
+          "size_px": [
+            1254,
+            1254
+          ],
+          "mode": "RGB",
+          "sha256": "0c689750802633168d975d9ced663b05d879436933b5de6aa46c336556bedb7e",
+          "alpha_extrema": [
+            255,
+            255
+          ],
+          "alpha_zero_percent": 0.0,
+          "alpha_opaque_percent": 100.0,
+          "alpha_partial_percent": 0.0,
+          "registered": true,
+          "matches_recorded_source_sha256": true,
+          "matches_recorded_imported_sha256": true
+        },
+        "deliverables": [
+          {
+            "key": "UI/Monsters/rustblade_rat_clean.png",
+            "path": "client/assets/imported/UI/Monsters/rustblade_rat_clean.png",
+            "exists": true,
+            "size_px": [
+              1254,
+              1254
+            ],
+            "mode": "RGBA",
+            "sha256": "4de0c1c1c907552eb130af3c0e122b4aae425d88f74049d5bc5393154556994d",
+            "alpha_extrema": [
+              0,
+              255
+            ],
+            "alpha_zero_percent": 43.5359,
+            "alpha_opaque_percent": 45.4488,
+            "alpha_partial_percent": 11.0153,
+            "registered": true,
+            "matches_recorded_source_sha256": true,
+            "matches_recorded_imported_sha256": true,
+            "expected_size_px": [
+              1254,
+              1254
+            ],
+            "matches_expected_size": true,
+            "has_real_transparent_background": true
+          }
+        ],
+        "all_delivered": true,
+        "all_registered": true,
+        "asset_evidence": [
+          "outputs/p2_asset_contact.jpg",
+          "outputs/p2_asset_dark_contact.jpg"
+        ],
+        "native_evidence": "outputs/p2_native_monster_review.jpg"
+      },
+      "generation_status": "generated_and_reviewed",
+      "original_missing_reason": "已有完整主体；原PNG为RGB，黑底与主体未分离，直接用于战场会显示矩形。"
+    },
+    {
+      "id": "CLEAN-MON-STONE-GUARD",
+      "name": "石甲卫透明边缘修复",
+      "priority": "P2",
+      "status": "integrated_and_reviewed",
+      "route": "imagegen_edit_or_manual_mask",
+      "modules": [
+        "pve",
+        "cards"
+      ],
+      "reference_mockups": [
+        "ui_mockups_v058/ui_pve_1920x1080.png",
+        "ui_mockups_v058/ui_cards_1920x1080.png"
+      ],
+      "reusable_assets": [
+        "UI/Monsters/stone_guardian.png"
+      ],
+      "missing_reason": "已收到透明清理图并替换该物种的战场与怪物卡映射；原图保留。尺寸和真实Alpha通过检查，地牢与卡面原生预览未见旧黑色矩形底或明显缺体。",
+      "deliverables": [
+        {
+          "filename": "UI/Monsters/stone_guardian_clean.png",
+          "size_px": [
+            1254,
+            1254
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null
+        }
+      ],
+      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。使用给定石甲卫原图做背景移除/边缘修复，保留原造型、颜色、构图和所有细节；只清除原矩形黑灰底，不重画新角色，不把眼睛、关节、甲缝、翅膜等深色主体误抠透明。",
+      "acceptance": [
+        "缩到实际UI显示尺寸仍可辨识，边缘无背景残留和误抠孔洞。",
+        "动态文字与数值全部由Godot绘制，不能烘焙入素材。"
+      ],
+      "generation_required": false,
+      "original_status": "cleanup_needed",
+      "current_review": {
+        "delivery_status": "已收到透明清理图并替换该物种的战场与怪物卡映射；原图保留。尺寸和真实Alpha通过检查，地牢与卡面原生预览未见旧黑色矩形底或明显缺体。",
+        "existing_original": {
+          "key": "UI/Monsters/stone_guardian.png",
+          "path": "client/assets/imported/UI/Monsters/stone_guardian.png",
+          "exists": true,
+          "size_px": [
+            1254,
+            1254
+          ],
+          "mode": "RGB",
+          "sha256": "114d845a171732d066ce8b9646f94b3f86e85a38859fadb5b13b514349edaac4",
+          "alpha_extrema": [
+            255,
+            255
+          ],
+          "alpha_zero_percent": 0.0,
+          "alpha_opaque_percent": 100.0,
+          "alpha_partial_percent": 0.0,
+          "registered": true,
+          "matches_recorded_source_sha256": true,
+          "matches_recorded_imported_sha256": true
+        },
+        "deliverables": [
+          {
+            "key": "UI/Monsters/stone_guardian_clean.png",
+            "path": "client/assets/imported/UI/Monsters/stone_guardian_clean.png",
+            "exists": true,
+            "size_px": [
+              1254,
+              1254
+            ],
+            "mode": "RGBA",
+            "sha256": "1ed9a3d2de1e6137c5027cf5f86fe574ab2813accf4e8bf9ebc543daaff8af18",
+            "alpha_extrema": [
+              0,
+              255
+            ],
+            "alpha_zero_percent": 45.0026,
+            "alpha_opaque_percent": 47.5937,
+            "alpha_partial_percent": 7.4037,
+            "registered": true,
+            "matches_recorded_source_sha256": true,
+            "matches_recorded_imported_sha256": true,
+            "expected_size_px": [
+              1254,
+              1254
+            ],
+            "matches_expected_size": true,
+            "has_real_transparent_background": true
+          }
+        ],
+        "all_delivered": true,
+        "all_registered": true,
+        "asset_evidence": [
+          "outputs/p2_asset_contact.jpg",
+          "outputs/p2_asset_dark_contact.jpg"
+        ],
+        "native_evidence": "outputs/p2_native_monster_review.jpg"
+      },
+      "generation_status": "generated_and_reviewed",
+      "original_missing_reason": "已有完整主体；原PNG为RGB，黑底与主体未分离，直接用于战场会显示矩形。"
+    },
+    {
+      "id": "UI-MONSTER-CARD-FRAME",
+      "name": "怪物卡暗红空框",
+      "priority": "P1",
+      "status": "integrated_with_native_border",
+      "route": "imagegen",
+      "modules": [
+        "cards",
+        "pve",
+        "pvp"
+      ],
+      "reference_mockups": [
+        "ui_mockups_v058/ui_cards_1920x1080.png",
+        "ui_mockups_v058/ui_pve_1920x1080.png",
+        "ui_mockups_v058/ui_pvp_1920x1080.png"
+      ],
+      "reusable_assets": [
+        "UI/Codex/qframe_common.png",
+        "UI/Codex/qframe_orange.png",
+        "UI/Battle/battle_card_frame_monster.png"
+      ],
+      "missing_reason": "已收到436×752暗红空框。源图顶部装饰误抠、上半左右框只余细线；插画窗口多数棋盘RGB为Alpha 0。客户端使用原生暗红外框补齐轮廓，保留下方无字效果面板；源图顶框后续可修，不要求重新生成整卡。已检查原生12张怪物卡，顶部完整外框和暗红效果区均正常；此源图清理属于可选后续改善。",
+      "deliverables": [
+        {
+          "filename": "UI/Cards/card_frame_monster_clean.png",
+          "size_px": [
+            436,
+            752
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null
+        }
+      ],
+      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。生成一张与qframe_common完全相同外轮廓、分区与218:376比例的空白怪物卡框；暗红褐金边，顶部留费用/卡名/怪字徽章位置但不要画字，主体插画窗完全透明，底部效果区深暗红且空白。不要把怪物暗红框做成红色装备品质框。",
+      "acceptance": [
+        "缩到实际UI显示尺寸仍可辨识，边缘无背景残留和误抠孔洞。",
+        "动态文字与数值全部由Godot绘制，不能烘焙入素材。"
+      ],
+      "original_status": "missing",
+      "original_missing_reason": "普通品质空框已齐；现有怪物框烘焙费用1、火蝠字样和火8，不能用作所有怪物的通用模板。",
+      "generation_required": false,
+      "current_review": {
+        "deliverables": [
+          {
+            "key": "UI/Cards/card_frame_monster_clean.png",
+            "path": "client/assets/imported/UI/Cards/card_frame_monster_clean.png",
+            "exists": true,
+            "size_px": [
+              436,
+              752
+            ],
+            "mode": "RGBA",
+            "sha256": "40239ba59f9c1430668b3c10708e645ac95adef6f55df38039d1e693250a9691",
+            "alpha_extrema": [
+              0,
+              255
+            ],
+            "alpha_zero_percent": 60.9329,
+            "alpha_opaque_percent": 15.2666,
+            "alpha_partial_percent": 23.8004,
+            "registered": true,
+            "matches_recorded_source_sha256": true,
+            "diagnostics": {
+              "top_40px_alpha_extrema": [
+                0,
+                50
+              ],
+              "illustration_window_alpha_extrema": [
+                0,
+                0
+              ],
+              "note": "RGB checker colors mostly have alpha zero; top ornament is erased. See composited contact sheet and manual review."
+            }
+          }
+        ],
+        "all_delivered": true,
+        "all_registered": true,
+        "native_evidence": "outputs/current_native_monster_review.jpg"
+      }
+    },
+    {
+      "id": "UI-ELEMENT-EARTH",
+      "name": "土元素岩石图标",
+      "priority": "P1",
+      "status": "integrated_and_reviewed",
+      "route": "imagegen",
+      "modules": [
+        "cards",
+        "pve",
+        "pvp",
+        "gear"
+      ],
+      "reference_mockups": [
+        "ui_mockups_v058/ui_cards_1920x1080.png",
+        "ui_mockups_v058/ui_pve_1920x1080.png",
+        "ui_mockups_v058/ui_pvp_1920x1080.png",
+        "ui_mockups_v058/ui_gear_1920x1080.png"
+      ],
+      "reusable_assets": [
+        "UI/Battle/battle_element_icon_earth.png",
+        "UI/Battle/battle_element_icon_metal.png",
+        "UI/Battle/battle_element_icon_water.png"
+      ],
+      "missing_reason": "已收到指定文件，尺寸与真实Alpha通过检查；深青底与浅棋盘底合成核验未见明显黑底或误抠。已登记并通过本轮原生战场/卡面显示核验。",
+      "deliverables": [
+        {
+          "filename": "UI/Battle/element_earth_clean.png",
+          "size_px": [
+            128,
+            128
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null
+        }
+      ],
+      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。单个土元素图标：三块赭石色有棱角岩片围成低矮稳固山形，中间少量金褐裂隙，轮廓厚实。不要火焰、树叶、齿轮、水滴或文字。图标缩小到32像素仍能辨认石块。",
+      "acceptance": [
+        "缩到实际UI显示尺寸仍可辨识，边缘无背景残留和误抠孔洞。",
+        "动态文字与数值全部由Godot绘制，不能烘焙入素材。"
+      ],
+      "original_status": "missing",
+      "original_missing_reason": "标为earth的现有图片实际是橙色火焰，语义错误。其它元素图标和代码汉字可继续使用。",
+      "generation_required": false,
+      "current_review": {
+        "deliverables": [
+          {
+            "key": "UI/Battle/element_earth_clean.png",
+            "path": "client/assets/imported/UI/Battle/element_earth_clean.png",
+            "exists": true,
+            "size_px": [
+              128,
+              128
+            ],
+            "mode": "RGBA",
+            "sha256": "10fc54c67e3d536c0fad5876f17cd1c4978094c6505424bc9d290a7dc8d6d407",
+            "alpha_extrema": [
+              0,
+              255
+            ],
+            "alpha_zero_percent": 64.6118,
+            "alpha_opaque_percent": 29.5593,
+            "alpha_partial_percent": 5.8289,
+            "registered": true,
+            "matches_recorded_source_sha256": true
+          }
+        ],
+        "all_delivered": true,
+        "all_registered": true,
+        "native_evidence": "outputs/current_native_monster_review.jpg"
+      }
+    },
+    {
+      "id": "UI-PASSIVE-MAGE",
+      "name": "法师本命·焚弦",
+      "priority": "P2",
+      "status": "integrated_and_reviewed",
+      "route": "imagegen",
+      "modules": [
+        "pvp",
+        "pve",
+        "prep"
+      ],
+      "reference_mockups": [
+        "ui_mockups_v058/ui_pvp_1920x1080.png",
+        "ui_mockups_v058/ui_pve_1920x1080.png",
+        "ui_mockups_v058/ui_prep_1920x1080.png"
+      ],
+      "reusable_assets": [
+        "UI/Codex/class_badge_mage.png",
+        "UI/Item/exploration_prep_item_icon_mage_soul.png"
+      ],
+      "missing_reason": "已收到独立职业徽记，尺寸和真实Alpha通过检查；大厅及战斗本命区已使用新图，原生预览确认徽记随玩家实际职业切换。对手未下发的职业信息仍不伪造。",
+      "deliverables": [
+        {
+          "filename": "UI/Encounter/passive_mage_clean.png",
+          "size_px": [
+            128,
+            128
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null
+        }
+      ],
+      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。中心一束赤橙火焰沿弯曲金属弦环绕，外轮廓简洁，象征连续施法加速；不要画抽牌数字或水元素徽记。",
+      "acceptance": [
+        "缩到实际UI显示尺寸仍可辨识，边缘无背景残留和误抠孔洞。",
+        "动态文字与数值全部由Godot绘制，不能烘焙入素材。"
+      ],
+      "original_status": "missing",
+      "current_review": {
+        "delivery_status": "已收到独立职业徽记，尺寸和真实Alpha通过检查；大厅及战斗本命区已使用新图，原生预览确认徽记随玩家实际职业切换。对手未下发的职业信息仍不伪造。",
+        "deliverables": [
+          {
+            "key": "UI/Encounter/passive_mage_clean.png",
+            "path": "client/assets/imported/UI/Encounter/passive_mage_clean.png",
+            "exists": true,
+            "size_px": [
+              128,
+              128
+            ],
+            "mode": "RGBA",
+            "sha256": "b4afb6793eb9605086a16215fe691277f1433a2e9f31e76597bf0b1a8c984e08",
+            "alpha_extrema": [
+              0,
+              255
+            ],
+            "alpha_zero_percent": 62.7136,
+            "alpha_opaque_percent": 28.8757,
+            "alpha_partial_percent": 8.4106,
+            "registered": true,
+            "matches_recorded_source_sha256": true,
+            "matches_recorded_imported_sha256": true,
+            "expected_size_px": [
+              128,
+              128
+            ],
+            "matches_expected_size": true,
+            "has_real_transparent_background": true
+          }
+        ],
+        "all_delivered": true,
+        "all_registered": true,
+        "asset_evidence": [
+          "outputs/p2_asset_contact.jpg",
+          "outputs/p2_asset_dark_contact.jpg"
+        ],
+        "native_evidence": "outputs/p2_native_ui_review.jpg"
+      },
+      "generation_status": "generated_and_reviewed",
+      "original_missing_reason": "现有class_badge中心为空黑洞；Encounter仅有mage/guardian两枚同类空心占位，牧师没有独立本命徽记。可以暂时复用职业之魂物品图标或运行时字徽。",
+      "generation_required": false
+    },
+    {
+      "id": "UI-PASSIVE-PRIEST",
+      "name": "牧师本命·临渊",
+      "priority": "P2",
+      "status": "integrated_and_reviewed",
+      "route": "imagegen",
+      "modules": [
+        "pvp",
+        "pve",
+        "prep"
+      ],
+      "reference_mockups": [
+        "ui_mockups_v058/ui_pvp_1920x1080.png",
+        "ui_mockups_v058/ui_pve_1920x1080.png",
+        "ui_mockups_v058/ui_prep_1920x1080.png"
+      ],
+      "reusable_assets": [
+        "UI/Codex/class_badge_priest.png",
+        "UI/Item/exploration_prep_item_icon_priest_soul.png"
+      ],
+      "missing_reason": "已收到独立职业徽记，尺寸和真实Alpha通过检查；大厅及战斗本命区已使用新图，原生预览确认徽记随玩家实际职业切换。对手未下发的职业信息仍不伪造。",
+      "deliverables": [
+        {
+          "filename": "UI/Encounter/passive_priest_clean.png",
+          "size_px": [
+            128,
+            128
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null
+        }
+      ],
+      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。中心青色水涡包裹一颗明亮水滴，深青水纹与黄铜小底托，表达临渊的潮汐与韧性；不要画文字或具体倍率。",
+      "acceptance": [
+        "缩到实际UI显示尺寸仍可辨识，边缘无背景残留和误抠孔洞。",
+        "动态文字与数值全部由Godot绘制，不能烘焙入素材。"
+      ],
+      "original_status": "missing",
+      "current_review": {
+        "delivery_status": "已收到独立职业徽记，尺寸和真实Alpha通过检查；大厅及战斗本命区已使用新图，原生预览确认徽记随玩家实际职业切换。对手未下发的职业信息仍不伪造。",
+        "deliverables": [
+          {
+            "key": "UI/Encounter/passive_priest_clean.png",
+            "path": "client/assets/imported/UI/Encounter/passive_priest_clean.png",
+            "exists": true,
+            "size_px": [
+              128,
+              128
+            ],
+            "mode": "RGBA",
+            "sha256": "ed3529a9910d4c50e8e3d82206d1719a73a4bb3135485014eb6a521f0f701b1d",
+            "alpha_extrema": [
+              0,
+              255
+            ],
+            "alpha_zero_percent": 58.5571,
+            "alpha_opaque_percent": 31.2805,
+            "alpha_partial_percent": 10.1624,
+            "registered": true,
+            "matches_recorded_source_sha256": true,
+            "matches_recorded_imported_sha256": true,
+            "expected_size_px": [
+              128,
+              128
+            ],
+            "matches_expected_size": true,
+            "has_real_transparent_background": true
+          }
+        ],
+        "all_delivered": true,
+        "all_registered": true,
+        "asset_evidence": [
+          "outputs/p2_asset_contact.jpg",
+          "outputs/p2_asset_dark_contact.jpg"
+        ],
+        "native_evidence": "outputs/p2_native_ui_review.jpg"
+      },
+      "generation_status": "generated_and_reviewed",
+      "original_missing_reason": "现有class_badge中心为空黑洞；Encounter仅有mage/guardian两枚同类空心占位，牧师没有独立本命徽记。可以暂时复用职业之魂物品图标或运行时字徽。",
+      "generation_required": false
+    },
+    {
+      "id": "UI-PASSIVE-GUARDIAN",
+      "name": "盾卫本命·载岳",
+      "priority": "P2",
+      "status": "integrated_and_reviewed",
+      "route": "imagegen",
+      "modules": [
+        "pvp",
+        "pve",
+        "prep"
+      ],
+      "reference_mockups": [
+        "ui_mockups_v058/ui_pvp_1920x1080.png",
+        "ui_mockups_v058/ui_pve_1920x1080.png",
+        "ui_mockups_v058/ui_prep_1920x1080.png"
+      ],
+      "reusable_assets": [
+        "UI/Codex/class_badge_guardian.png",
+        "UI/Item/exploration_prep_item_icon_guardian_soul.png"
+      ],
+      "missing_reason": "已收到独立职业徽记，尺寸和真实Alpha通过检查；大厅及战斗本命区已使用新图，原生预览确认徽记随玩家实际职业切换。对手未下发的职业信息仍不伪造。",
+      "deliverables": [
+        {
+          "filename": "UI/Encounter/passive_guardian_clean.png",
+          "size_px": [
+            128,
+            128
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null
+        }
+      ],
+      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。中心褐金厚盾叠加稳定山岳形，灰钢盾边、金色岩纹，表达高生命时护盾更厚；不要画绿色治疗叶片或数字。",
+      "acceptance": [
+        "缩到实际UI显示尺寸仍可辨识，边缘无背景残留和误抠孔洞。",
+        "动态文字与数值全部由Godot绘制，不能烘焙入素材。"
+      ],
+      "original_status": "missing",
+      "current_review": {
+        "delivery_status": "已收到独立职业徽记，尺寸和真实Alpha通过检查；大厅及战斗本命区已使用新图，原生预览确认徽记随玩家实际职业切换。对手未下发的职业信息仍不伪造。",
+        "deliverables": [
+          {
+            "key": "UI/Encounter/passive_guardian_clean.png",
+            "path": "client/assets/imported/UI/Encounter/passive_guardian_clean.png",
+            "exists": true,
+            "size_px": [
+              128,
+              128
+            ],
+            "mode": "RGBA",
+            "sha256": "1c6b8f64eb90cbe20c730025aeb65987bea2b679bc1330aa6f0f2fa6457ae68c",
+            "alpha_extrema": [
+              0,
+              255
+            ],
+            "alpha_zero_percent": 65.7532,
+            "alpha_opaque_percent": 23.7854,
+            "alpha_partial_percent": 10.4614,
+            "registered": true,
+            "matches_recorded_source_sha256": true,
+            "matches_recorded_imported_sha256": true,
+            "expected_size_px": [
+              128,
+              128
+            ],
+            "matches_expected_size": true,
+            "has_real_transparent_background": true
+          }
+        ],
+        "all_delivered": true,
+        "all_registered": true,
+        "asset_evidence": [
+          "outputs/p2_asset_contact.jpg",
+          "outputs/p2_asset_dark_contact.jpg"
+        ],
+        "native_evidence": "outputs/p2_native_ui_review.jpg"
+      },
+      "generation_status": "generated_and_reviewed",
+      "original_missing_reason": "现有class_badge中心为空黑洞；Encounter仅有mage/guardian两枚同类空心占位，牧师没有独立本命徽记。可以暂时复用职业之魂物品图标或运行时字徽。",
+      "generation_required": false
+    },
+    {
+      "id": "UI-SHOP-CARD-PACK",
+      "name": "卡包独立商品插画",
+      "priority": "P2",
+      "status": "integrated_and_reviewed",
+      "route": "imagegen",
+      "modules": [
+        "shop",
+        "prep"
+      ],
+      "reference_mockups": [
+        "ui_mockups_v058/ui_shop_1920x1080.png",
+        "ui_mockups_v058/ui_prep_1920x1080.png"
+      ],
+      "reusable_assets": [
+        "UI/Hall/btn_codex.png",
+        "UI/Hall/btn_deck.png"
+      ],
+      "missing_reason": "已收到独立商品图，尺寸和真实Alpha通过检查；按服务器商品类型映射到商店，背包图亦用于准备页。已在1280/1920原生预览核验，旧商品底框白边拉伸已修复。",
+      "deliverables": [
+        {
+          "filename": "UI/Shop/card_pack.png",
+          "size_px": [
+            512,
+            512
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null
+        }
+      ],
+      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。两三张厚实深青卡背装在打开少许的黄铜护角皮套中，中央小金星压纹，三分之四视角；不能出现卡名、张数或完整卡牌效果。单个物品占画布80%，主体不含按钮边框、货架或环境。",
+      "acceptance": [
+        "缩到实际UI显示尺寸仍可辨识，边缘无背景残留和误抠孔洞。",
+        "动态文字与数值全部由Godot绘制，不能烘焙入素材。"
+      ],
+      "original_status": "standalone_missing_with_fallback",
+      "current_review": {
+        "delivery_status": "已收到独立商品图，尺寸和真实Alpha通过检查；按服务器商品类型映射到商店，背包图亦用于准备页。已在1280/1920原生预览核验，旧商品底框白边拉伸已修复。",
+        "deliverables": [
+          {
+            "key": "UI/Shop/card_pack.png",
+            "path": "client/assets/imported/UI/Shop/card_pack.png",
+            "exists": true,
+            "size_px": [
+              512,
+              512
+            ],
+            "mode": "RGBA",
+            "sha256": "a807c0023d22d79b4c25b8243525261ab770e5f68ee076fc3973ffe8bdacdfb8",
+            "alpha_extrema": [
+              0,
+              255
+            ],
+            "alpha_zero_percent": 56.9153,
+            "alpha_opaque_percent": 40.4373,
+            "alpha_partial_percent": 2.6474,
+            "registered": true,
+            "matches_recorded_source_sha256": true,
+            "matches_recorded_imported_sha256": true,
+            "expected_size_px": [
+              512,
+              512
+            ],
+            "matches_expected_size": true,
+            "has_real_transparent_background": true
+          }
+        ],
+        "all_delivered": true,
+        "all_registered": true,
+        "asset_evidence": [
+          "outputs/p2_asset_contact.jpg",
+          "outputs/p2_asset_dark_contact.jpg"
+        ],
+        "native_evidence": "outputs/p2_native_ui_review.jpg"
+      },
+      "generation_status": "generated_and_reviewed",
+      "original_missing_reason": "无可直接使用的透明独立商品插画；shop PSD对应商品区域已被整块模糊。可暂用已有卡组入口/碎片/背包入口的图标裁片，功能不受阻。",
+      "generation_required": false
+    },
+    {
+      "id": "UI-SHOP-FRAGMENT-PACK",
+      "name": "装备碎片包独立商品插画",
+      "priority": "P2",
+      "status": "integrated_and_reviewed",
+      "route": "imagegen",
+      "modules": [
+        "shop",
+        "prep"
+      ],
+      "reference_mockups": [
+        "ui_mockups_v058/ui_shop_1920x1080.png",
+        "ui_mockups_v058/ui_prep_1920x1080.png"
+      ],
+      "reusable_assets": [
+        "UI/Item/exploration_prep_item_icon_fragments.png"
+      ],
+      "missing_reason": "已收到独立商品图，尺寸和真实Alpha通过检查；按服务器商品类型映射到商店，背包图亦用于准备页。已在1280/1920原生预览核验，旧商品底框白边拉伸已修复。",
+      "deliverables": [
+        {
+          "filename": "UI/Shop/equipment_fragment_pack.png",
+          "size_px": [
+            512,
+            512
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null
+        }
+      ],
+      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。一个短粗旧皮革袋，袋口装有灰钢装甲碎片和少量青色晶纹；碎片形态与现有装备碎片图标一致，清楚看出是装碎片的整包商品。单个物品占画布80%，主体不含按钮边框、货架或环境。",
+      "acceptance": [
+        "缩到实际UI显示尺寸仍可辨识，边缘无背景残留和误抠孔洞。",
+        "动态文字与数值全部由Godot绘制，不能烘焙入素材。"
+      ],
+      "original_status": "standalone_missing_with_fallback",
+      "current_review": {
+        "delivery_status": "已收到独立商品图，尺寸和真实Alpha通过检查；按服务器商品类型映射到商店，背包图亦用于准备页。已在1280/1920原生预览核验，旧商品底框白边拉伸已修复。",
+        "deliverables": [
+          {
+            "key": "UI/Shop/equipment_fragment_pack.png",
+            "path": "client/assets/imported/UI/Shop/equipment_fragment_pack.png",
+            "exists": true,
+            "size_px": [
+              512,
+              512
+            ],
+            "mode": "RGBA",
+            "sha256": "7544b57101617256648d9f384b05d94f3bf23a27ad5b1a693a22f7063ab315f1",
+            "alpha_extrema": [
+              0,
+              255
+            ],
+            "alpha_zero_percent": 50.7893,
+            "alpha_opaque_percent": 43.4891,
+            "alpha_partial_percent": 5.7217,
+            "registered": true,
+            "matches_recorded_source_sha256": true,
+            "matches_recorded_imported_sha256": true,
+            "expected_size_px": [
+              512,
+              512
+            ],
+            "matches_expected_size": true,
+            "has_real_transparent_background": true
+          }
+        ],
+        "all_delivered": true,
+        "all_registered": true,
+        "asset_evidence": [
+          "outputs/p2_asset_contact.jpg",
+          "outputs/p2_asset_dark_contact.jpg"
+        ],
+        "native_evidence": "outputs/p2_native_ui_review.jpg"
+      },
+      "generation_status": "generated_and_reviewed",
+      "original_missing_reason": "无可直接使用的透明独立商品插画；shop PSD对应商品区域已被整块模糊。可暂用已有卡组入口/碎片/背包入口的图标裁片，功能不受阻。",
+      "generation_required": false
+    },
+    {
+      "id": "UI-SHOP-ADVANCED-BAG",
+      "name": "高级探索包独立商品插画",
+      "priority": "P2",
+      "status": "integrated_and_reviewed",
+      "route": "imagegen",
+      "modules": [
+        "shop",
+        "prep"
+      ],
+      "reference_mockups": [
+        "ui_mockups_v058/ui_shop_1920x1080.png",
+        "ui_mockups_v058/ui_prep_1920x1080.png"
+      ],
+      "reusable_assets": [
+        "UI/Hall/btn_prep.png"
+      ],
+      "missing_reason": "已收到独立商品图，尺寸和真实Alpha通过检查；按服务器商品类型映射到商店，背包图亦用于准备页。已在1280/1920原生预览核验，旧商品底框白边拉伸已修复。",
+      "deliverables": [
+        {
+          "filename": "UI/Shop/backpack_advanced.png",
+          "size_px": [
+            512,
+            512
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null
+        }
+      ],
+      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。厚实棕皮探索背包，青蓝扣件、侧挂卷筒、小紫色布标，清楚肩带和背包开口；是背包不是宝箱，不能画容量、安全格数量或价格。单个物品占画布80%，主体不含按钮边框、货架或环境。",
+      "acceptance": [
+        "缩到实际UI显示尺寸仍可辨识，边缘无背景残留和误抠孔洞。",
+        "动态文字与数值全部由Godot绘制，不能烘焙入素材。"
+      ],
+      "original_status": "standalone_missing_with_fallback",
+      "current_review": {
+        "delivery_status": "已收到独立商品图，尺寸和真实Alpha通过检查；按服务器商品类型映射到商店，背包图亦用于准备页。已在1280/1920原生预览核验，旧商品底框白边拉伸已修复。",
+        "deliverables": [
+          {
+            "key": "UI/Shop/backpack_advanced.png",
+            "path": "client/assets/imported/UI/Shop/backpack_advanced.png",
+            "exists": true,
+            "size_px": [
+              512,
+              512
+            ],
+            "mode": "RGBA",
+            "sha256": "711211ac18fe197c50679464e9d194300ef87c686ba73277b2c68c7ba15f57f1",
+            "alpha_extrema": [
+              0,
+              255
+            ],
+            "alpha_zero_percent": 48.0713,
+            "alpha_opaque_percent": 47.2862,
+            "alpha_partial_percent": 4.6425,
+            "registered": true,
+            "matches_recorded_source_sha256": true,
+            "matches_recorded_imported_sha256": true,
+            "expected_size_px": [
+              512,
+              512
+            ],
+            "matches_expected_size": true,
+            "has_real_transparent_background": true
+          }
+        ],
+        "all_delivered": true,
+        "all_registered": true,
+        "asset_evidence": [
+          "outputs/p2_asset_contact.jpg",
+          "outputs/p2_asset_dark_contact.jpg"
+        ],
+        "native_evidence": "outputs/p2_native_ui_review.jpg"
+      },
+      "generation_status": "generated_and_reviewed",
+      "original_missing_reason": "无可直接使用的透明独立商品插画；shop PSD对应商品区域已被整块模糊。可暂用已有卡组入口/碎片/背包入口的图标裁片，功能不受阻。",
+      "generation_required": false
+    },
+    {
+      "id": "UI-SHOP-TOP-BAG",
+      "name": "顶级探索包独立商品插画",
+      "priority": "P2",
+      "status": "integrated_and_reviewed",
+      "route": "imagegen",
+      "modules": [
+        "shop",
+        "prep"
+      ],
+      "reference_mockups": [
+        "ui_mockups_v058/ui_shop_1920x1080.png",
+        "ui_mockups_v058/ui_prep_1920x1080.png"
+      ],
+      "reusable_assets": [
+        "UI/Hall/btn_prep.png"
+      ],
+      "missing_reason": "已收到独立商品图，尺寸和真实Alpha通过检查；按服务器商品类型映射到商店，背包图亦用于准备页。已在1280/1920原生预览核验，旧商品底框白边拉伸已修复。",
+      "deliverables": [
+        {
+          "filename": "UI/Shop/backpack_top.png",
+          "size_px": [
+            512,
+            512
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null
+        }
+      ],
+      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。精工棕黑皮探索背包，褐金护角与黄铜扣件、金色小纹饰、侧挂卷轴；与高级包保持同一外形家族且更结实精致，是背包不是宝箱。单个物品占画布80%，主体不含按钮边框、货架或环境。",
+      "acceptance": [
+        "缩到实际UI显示尺寸仍可辨识，边缘无背景残留和误抠孔洞。",
+        "动态文字与数值全部由Godot绘制，不能烘焙入素材。"
+      ],
+      "original_status": "standalone_missing_with_fallback",
+      "current_review": {
+        "delivery_status": "已收到独立商品图，尺寸和真实Alpha通过检查；按服务器商品类型映射到商店，背包图亦用于准备页。已在1280/1920原生预览核验，旧商品底框白边拉伸已修复。",
+        "deliverables": [
+          {
+            "key": "UI/Shop/backpack_top.png",
+            "path": "client/assets/imported/UI/Shop/backpack_top.png",
+            "exists": true,
+            "size_px": [
+              512,
+              512
+            ],
+            "mode": "RGBA",
+            "sha256": "7221d58dab243991dd45685266a1eb27c136625dde5fd824bf5ba057515a6c52",
+            "alpha_extrema": [
+              0,
+              255
+            ],
+            "alpha_zero_percent": 46.3291,
+            "alpha_opaque_percent": 50.0507,
+            "alpha_partial_percent": 3.6201,
+            "registered": true,
+            "matches_recorded_source_sha256": true,
+            "matches_recorded_imported_sha256": true,
+            "expected_size_px": [
+              512,
+              512
+            ],
+            "matches_expected_size": true,
+            "has_real_transparent_background": true
+          }
+        ],
+        "all_delivered": true,
+        "all_registered": true,
+        "asset_evidence": [
+          "outputs/p2_asset_contact.jpg",
+          "outputs/p2_asset_dark_contact.jpg"
+        ],
+        "native_evidence": "outputs/p2_native_ui_review.jpg"
+      },
+      "generation_status": "generated_and_reviewed",
+      "original_missing_reason": "无可直接使用的透明独立商品插画；shop PSD对应商品区域已被整块模糊。可暂用已有卡组入口/碎片/背包入口的图标裁片，功能不受阻。",
+      "generation_required": false
+    },
+    {
+      "id": "UI-ACTION-RELIC",
+      "name": "遗物堆通用图标",
+      "priority": "P2",
+      "status": "integrated_and_reviewed",
+      "route": "imagegen_edit_or_manual_mask",
+      "modules": [
+        "action",
+        "remnant"
+      ],
+      "reference_mockups": [
+        "ui_mockups_v058/ui_action_1920x1080.png",
+        "ui_mockups_v058/ui_remnant_1920x1080.png"
+      ],
+      "reusable_assets": [
+        "ui_mockups_v058/ui_action_1920x1080.psd",
+        "UI/Item/exploration_prep_item_icon_helmet.png"
+      ],
+      "missing_reason": "已收到干净行动图标，尺寸和真实Alpha通过检查；已替换行动区图像，泉水亦用于地图标记。原生预览确认图像不拦截按钮，遗物完整操作仍受接口详情缺失限制。",
+      "deliverables": [
+        {
+          "filename": "UI/Action/relic_pile_clean.png",
+          "size_px": [
+            256,
+            256
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null
+        }
+      ],
+      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。单个无主防具遗物堆：旧钢盔、折断护手和少量灰石压在一起，暗金叶片点缀，形状与效果图头盔遗物堆一致；深暗内部不透明。不要玩家名字、墓碑文字、专属武器、血迹或数字。",
+      "acceptance": [
+        "缩到实际UI显示尺寸仍可辨识，边缘无背景残留和误抠孔洞。",
+        "动态文字与数值全部由Godot绘制，不能烘焙入素材。"
+      ],
+      "generation_required": false,
+      "original_status": "cleanup_needed",
+      "current_review": {
+        "delivery_status": "已收到干净行动图标，尺寸和真实Alpha通过检查；已替换行动区图像，泉水亦用于地图标记。原生预览确认图像不拦截按钮，遗物完整操作仍受接口详情缺失限制。",
+        "note": "本次未发现Action独立clean PNG，原PSD目录当前不在工作区；保留历史PSD提取依据与ImageGen修复描述。",
+        "deliverables": [
+          {
+            "key": "UI/Action/relic_pile_clean.png",
+            "path": "client/assets/imported/UI/Action/relic_pile_clean.png",
+            "exists": true,
+            "size_px": [
+              256,
+              256
+            ],
+            "mode": "RGBA",
+            "sha256": "d3024a263e0d12017deaf333a3c3167b50b8097c308600ba949689bbcd1ee18d",
+            "alpha_extrema": [
+              0,
+              255
+            ],
+            "alpha_zero_percent": 52.6474,
+            "alpha_opaque_percent": 29.6753,
+            "alpha_partial_percent": 17.6773,
+            "registered": true,
+            "matches_recorded_source_sha256": true,
+            "matches_recorded_imported_sha256": true,
+            "expected_size_px": [
+              256,
+              256
+            ],
+            "matches_expected_size": true,
+            "has_real_transparent_background": true
+          }
+        ],
+        "all_delivered": true,
+        "all_registered": true,
+        "asset_evidence": [
+          "outputs/p2_asset_contact.jpg",
+          "outputs/p2_asset_dark_contact.jpg"
+        ],
+        "native_evidence": "outputs/p2_native_ui_review.jpg"
+      },
+      "generation_status": "generated_and_reviewed",
+      "original_missing_reason": "action PSD虽有头盔/断剑遗物独立图标，但深色内部被误抠透明；原图中的玩家A/B、名字和数量必须动态绘制。"
+    },
+    {
+      "id": "UI-ACTION-SPRING",
+      "name": "生命泉水图标透明边缘修复",
+      "priority": "P2",
+      "status": "integrated_and_reviewed",
+      "route": "imagegen_edit_or_manual_mask",
+      "modules": [
+        "action",
+        "map",
+        "choose"
+      ],
+      "reference_mockups": [
+        "ui_mockups_v058/ui_action_1920x1080.png",
+        "ui_mockups_v058/ui_map_1920x1080.png",
+        "ui_mockups_v058/ui_choose_1920x1080.png"
+      ],
+      "reusable_assets": [
+        "ui_mockups_v058/ui_action_1920x1080.psd",
+        "UI/Battle/battle_energy_ring.png"
+      ],
+      "missing_reason": "已收到干净行动图标，尺寸和真实Alpha通过检查；已替换行动区图像，泉水亦用于地图标记。原生预览确认图像不拦截按钮，遗物完整操作仍受接口详情缺失限制。",
+      "deliverables": [
+        {
+          "filename": "UI/Action/spring_clean.png",
+          "size_px": [
+            256,
+            256
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null
+        }
+      ],
+      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。按action效果图中的生命泉水修复：矮圆形灰青石池，中心一束青色弧形喷泉，两侧小十字光点；保留完整石台与水体，清除场景背景和残余黑线。不要时钟、时间、文字或大面积矩形辉光。",
+      "acceptance": [
+        "缩到实际UI显示尺寸仍可辨识，边缘无背景残留和误抠孔洞。",
+        "动态文字与数值全部由Godot绘制，不能烘焙入素材。"
+      ],
+      "generation_required": false,
+      "original_status": "cleanup_needed",
+      "current_review": {
+        "delivery_status": "已收到干净行动图标，尺寸和真实Alpha通过检查；已替换行动区图像，泉水亦用于地图标记。原生预览确认图像不拦截按钮，遗物完整操作仍受接口详情缺失限制。",
+        "note": "本次未发现Action独立clean PNG，原PSD目录当前不在工作区；保留历史PSD提取依据与ImageGen修复描述。",
+        "deliverables": [
+          {
+            "key": "UI/Action/spring_clean.png",
+            "path": "client/assets/imported/UI/Action/spring_clean.png",
+            "exists": true,
+            "size_px": [
+              256,
+              256
+            ],
+            "mode": "RGBA",
+            "sha256": "323ab572495fd8ef89d9c26bbcda7153c9ff971489a9b9c654cd1bf7dfc0829d",
+            "alpha_extrema": [
+              0,
+              255
+            ],
+            "alpha_zero_percent": 69.5847,
+            "alpha_opaque_percent": 17.3233,
+            "alpha_partial_percent": 13.092,
+            "registered": true,
+            "matches_recorded_source_sha256": true,
+            "matches_recorded_imported_sha256": true,
+            "expected_size_px": [
+              256,
+              256
+            ],
+            "matches_expected_size": true,
+            "has_real_transparent_background": true
+          }
+        ],
+        "all_delivered": true,
+        "all_registered": true,
+        "asset_evidence": [
+          "outputs/p2_asset_contact.jpg",
+          "outputs/p2_asset_dark_contact.jpg"
+        ],
+        "native_evidence": "outputs/p2_native_ui_review.jpg"
+      },
+      "generation_status": "generated_and_reviewed",
+      "original_missing_reason": "PSD存在泉水图标，可以用于当前拼接；其石基底深色像素被误抠，浅底会显露破碎边缘，属于修复并非全新缺图。"
+    },
+    {
+      "id": "UI-ACTION-EXIT",
+      "name": "撤离石门图标透明边缘修复",
+      "priority": "P2",
+      "status": "integrated_and_reviewed",
+      "route": "imagegen_edit_or_manual_mask",
+      "modules": [
+        "action"
+      ],
+      "reference_mockups": [
+        "ui_mockups_v058/ui_action_1920x1080.png"
+      ],
+      "reusable_assets": [
+        "ui_mockups_v058/ui_action_1920x1080.psd",
+        "client/assets/portal.png"
+      ],
+      "missing_reason": "已收到干净行动图标，尺寸和真实Alpha通过检查；已替换行动区图像，泉水亦用于地图标记。原生预览确认图像不拦截按钮，遗物完整操作仍受接口详情缺失限制。",
+      "deliverables": [
+        {
+          "filename": "UI/Action/extract_gate_clean.png",
+          "size_px": [
+            256,
+            256
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null
+        }
+      ],
+      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。按action效果图中的撤离门修复：完整灰青石拱门，门内青蓝光，三阶矮台阶，左上柔光；保留暗石与门内暗区实体，不画倒计时或按钮边框。",
+      "acceptance": [
+        "缩到实际UI显示尺寸仍可辨识，边缘无背景残留和误抠孔洞。",
+        "动态文字与数值全部由Godot绘制，不能烘焙入素材。"
+      ],
+      "generation_required": false,
+      "original_status": "cleanup_needed",
+      "current_review": {
+        "delivery_status": "已收到干净行动图标，尺寸和真实Alpha通过检查；已替换行动区图像，泉水亦用于地图标记。原生预览确认图像不拦截按钮，遗物完整操作仍受接口详情缺失限制。",
+        "note": "本次未发现Action独立clean PNG，原PSD目录当前不在工作区；保留历史PSD提取依据与ImageGen修复描述。",
+        "deliverables": [
+          {
+            "key": "UI/Action/extract_gate_clean.png",
+            "path": "client/assets/imported/UI/Action/extract_gate_clean.png",
+            "exists": true,
+            "size_px": [
+              256,
+              256
+            ],
+            "mode": "RGBA",
+            "sha256": "ded320f0105c5342d97747fba56dc4953de740394e2669e064b0a5699ebb3f6e",
+            "alpha_extrema": [
+              0,
+              255
+            ],
+            "alpha_zero_percent": 53.0029,
+            "alpha_opaque_percent": 42.1692,
+            "alpha_partial_percent": 4.8279,
+            "registered": true,
+            "matches_recorded_source_sha256": true,
+            "matches_recorded_imported_sha256": true,
+            "expected_size_px": [
+              256,
+              256
+            ],
+            "matches_expected_size": true,
+            "has_real_transparent_background": true
+          }
+        ],
+        "all_delivered": true,
+        "all_registered": true,
+        "asset_evidence": [
+          "outputs/p2_asset_contact.jpg",
+          "outputs/p2_asset_dark_contact.jpg"
+        ],
+        "native_evidence": "outputs/p2_native_ui_review.jpg"
+      },
+      "generation_status": "generated_and_reviewed",
+      "original_missing_reason": "PSD可提取石门图标，但深暗石块/台阶有误抠；现有Blender门户也可做替代。"
+    },
+    {
+      "id": "CHAR-CONSISTENCY-PRIEST",
+      "name": "牧师跨界面造型一致性",
+      "priority": "P2",
+      "status": "integrated_and_reviewed",
+      "route": "imagegen",
+      "modules": [
+        "hall",
+        "prep",
+        "gear",
+        "pve",
+        "pvp"
+      ],
+      "reference_mockups": [
+        "ui_mockups_v058/ui_hall_1920x1080.png",
+        "ui_mockups_v058/ui_prep_1920x1080.png",
+        "ui_mockups_v058/ui_gear_1920x1080.png",
+        "ui_mockups_v058/ui_pve_1920x1080.png",
+        "ui_mockups_v058/ui_pvp_1920x1080.png"
+      ],
+      "reusable_assets": [
+        "UI/Prep/exploration_prep_hero_portrait_priest.png",
+        "UI/Hall/card_priest_off.png"
+      ],
+      "missing_reason": "已收到统一角色全身图，尺寸和真实Alpha通过检查；大厅、准备、装备与战斗共用同一角色资源。原生预览确认牧师兜帽、盾卫重盔轮廓与职业切换一致。",
+      "deliverables": [
+        {
+          "filename": "UI/Characters/priest_consistent.png",
+          "size_px": [
+            768,
+            1152
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null
+        }
+      ],
+      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。与Hall/card_priest_off中的潮听·临一致的深蓝兜帽轮廓，持青色临渊杖，服装以深青与银灰为主，沉稳水系法衣，朝向右侧。全身站姿，保留头脚8%安全边，锁定一套角色脸型、服装与武器；另外的头像从此图裁切。不要背景、装备槽、生命数字或名称。",
+      "acceptance": [
+        "缩到实际UI显示尺寸仍可辨识，边缘无背景残留和误抠孔洞。",
+        "动态文字与数值全部由Godot绘制，不能烘焙入素材。"
+      ],
+      "generation_required": false,
+      "original_status": "optional_consistency",
+      "current_review": {
+        "delivery_status": "已收到统一角色全身图，尺寸和真实Alpha通过检查；大厅、准备、装备与战斗共用同一角色资源。原生预览确认牧师兜帽、盾卫重盔轮廓与职业切换一致。",
+        "deliverables": [
+          {
+            "key": "UI/Characters/priest_consistent.png",
+            "path": "client/assets/imported/UI/Characters/priest_consistent.png",
+            "exists": true,
+            "size_px": [
+              768,
+              1152
+            ],
+            "mode": "RGBA",
+            "sha256": "4ec1167ef1511aa3a46a2ab05407c17af5b8e94e7611043858a1d98f23036801",
+            "alpha_extrema": [
+              0,
+              255
+            ],
+            "alpha_zero_percent": 58.6405,
+            "alpha_opaque_percent": 28.9841,
+            "alpha_partial_percent": 12.3753,
+            "registered": true,
+            "matches_recorded_source_sha256": true,
+            "matches_recorded_imported_sha256": true,
+            "expected_size_px": [
+              768,
+              1152
+            ],
+            "matches_expected_size": true,
+            "has_real_transparent_background": true
+          }
+        ],
+        "all_delivered": true,
+        "all_registered": true,
+        "asset_evidence": [
+          "outputs/p2_asset_contact.jpg",
+          "outputs/p2_asset_dark_contact.jpg"
+        ],
+        "native_evidence": "outputs/p2_native_ui_review.jpg"
+      },
+      "generation_status": "generated_and_reviewed",
+      "original_missing_reason": "已有透明全身立绘，足够用于当前客户端；但三职业的Prep立绘都近似同一法师脸，牧师/盾卫与大厅选择卡的兜帽/重盔轮廓不一致。需要最终确定统一角色外观后才重绘。"
+    },
+    {
+      "id": "CHAR-CONSISTENCY-GUARDIAN",
+      "name": "盾卫跨界面造型一致性",
+      "priority": "P2",
+      "status": "integrated_and_reviewed",
+      "route": "imagegen",
+      "modules": [
+        "hall",
+        "prep",
+        "gear",
+        "pve",
+        "pvp"
+      ],
+      "reference_mockups": [
+        "ui_mockups_v058/ui_hall_1920x1080.png",
+        "ui_mockups_v058/ui_prep_1920x1080.png",
+        "ui_mockups_v058/ui_gear_1920x1080.png",
+        "ui_mockups_v058/ui_pve_1920x1080.png",
+        "ui_mockups_v058/ui_pvp_1920x1080.png"
+      ],
+      "reusable_assets": [
+        "UI/Prep/exploration_prep_hero_portrait_guardian.png",
+        "UI/Hall/card_guardian_off.png"
+      ],
+      "missing_reason": "已收到统一角色全身图，尺寸和真实Alpha通过检查；大厅、准备、装备与战斗共用同一角色资源。原生预览确认牧师兜帽、盾卫重盔轮廓与职业切换一致。",
+      "deliverables": [
+        {
+          "filename": "UI/Characters/guardian_consistent.png",
+          "size_px": [
+            768,
+            1152
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null
+        }
+      ],
+      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。与Hall/card_guardian_off中的载山·敦一致的厚甲封闭头盔轮廓，褐金重甲与载岳盾，宽肩沉重站姿，朝向右侧。全身站姿，保留头脚8%安全边，锁定一套角色脸型、服装与武器；另外的头像从此图裁切。不要背景、装备槽、生命数字或名称。",
+      "acceptance": [
+        "缩到实际UI显示尺寸仍可辨识，边缘无背景残留和误抠孔洞。",
+        "动态文字与数值全部由Godot绘制，不能烘焙入素材。"
+      ],
+      "generation_required": false,
+      "original_status": "optional_consistency",
+      "current_review": {
+        "delivery_status": "已收到统一角色全身图，尺寸和真实Alpha通过检查；大厅、准备、装备与战斗共用同一角色资源。原生预览确认牧师兜帽、盾卫重盔轮廓与职业切换一致。",
+        "deliverables": [
+          {
+            "key": "UI/Characters/guardian_consistent.png",
+            "path": "client/assets/imported/UI/Characters/guardian_consistent.png",
+            "exists": true,
+            "size_px": [
+              768,
+              1152
+            ],
+            "mode": "RGBA",
+            "sha256": "0b653d095b860195f8420b60b86a97aaa411094cf692f4d4bac854f21cdea691",
+            "alpha_extrema": [
+              0,
+              255
+            ],
+            "alpha_zero_percent": 59.1784,
+            "alpha_opaque_percent": 34.5948,
+            "alpha_partial_percent": 6.2267,
+            "registered": true,
+            "matches_recorded_source_sha256": true,
+            "matches_recorded_imported_sha256": true,
+            "expected_size_px": [
+              768,
+              1152
+            ],
+            "matches_expected_size": true,
+            "has_real_transparent_background": true
+          }
+        ],
+        "all_delivered": true,
+        "all_registered": true,
+        "asset_evidence": [
+          "outputs/p2_asset_contact.jpg",
+          "outputs/p2_asset_dark_contact.jpg"
+        ],
+        "native_evidence": "outputs/p2_native_ui_review.jpg"
+      },
+      "generation_status": "generated_and_reviewed",
+      "original_missing_reason": "已有透明全身立绘，足够用于当前客户端；但三职业的Prep立绘都近似同一法师脸，牧师/盾卫与大厅选择卡的兜帽/重盔轮廓不一致。需要最终确定统一角色外观后才重绘。"
+    },
+    {
+      "id": "PENDING-FROST-WRAITH",
+      "name": "冰霜幽灵身份待确认",
+      "priority": "P2",
+      "status": "generated_pending_identity",
+      "route": "design_confirmation",
+      "modules": [
+        "pve",
+        "cards"
+      ],
+      "reference_mockups": [
+        "ui_mockups_v058/ui_pve_1920x1080.png",
+        "ui_mockups_v058/ui_cards_1920x1080.png"
+      ],
+      "reusable_assets": [
+        "UI/Monsters/frost_wraith.png"
+      ],
+      "missing_reason": "已收到1254×1254透明清理图，尺寸、真实Alpha和深浅底合成核验通过；文件已登记但未绑定正式怪物。GDD、配置和服务器仍无对应物种ID，不需要再次生成。",
+      "deliverables": [
+        {
+          "filename": "UI/Monsters/frost_wraith_clean.png",
+          "size_px": [
+            1254,
+            1254
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null
+        }
+      ],
+      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。仅在物种ID被设计确认后，按现有冰霜幽灵原图保留完整造型并移除黑底；确认前不生成、不导入正式物种映射。",
+      "acceptance": [
+        "缩到实际UI显示尺寸仍可辨识，边缘无背景残留和误抠孔洞。",
+        "动态文字与数值全部由Godot绘制，不能烘焙入素材。"
+      ],
+      "generation_required": false,
+      "server_monster_id": null,
+      "original_status": "pending_identity",
+      "current_review": {
+        "delivery_status": "已收到1254×1254透明清理图，尺寸、真实Alpha和深浅底合成核验通过；文件已登记但未绑定正式怪物。GDD、配置和服务器仍无对应物种ID，不需要再次生成。",
+        "deliverables": [
+          {
+            "key": "UI/Monsters/frost_wraith_clean.png",
+            "path": "client/assets/imported/UI/Monsters/frost_wraith_clean.png",
+            "exists": true,
+            "size_px": [
+              1254,
+              1254
+            ],
+            "mode": "RGBA",
+            "sha256": "b72aa80328f324255a2751abac8ce1fdc04d472170dabe5583322650823d5a63",
+            "alpha_extrema": [
+              0,
+              255
+            ],
+            "alpha_zero_percent": 55.529,
+            "alpha_opaque_percent": 29.4324,
+            "alpha_partial_percent": 15.0386,
+            "registered": true,
+            "matches_recorded_source_sha256": true,
+            "matches_recorded_imported_sha256": true,
+            "expected_size_px": [
+              1254,
+              1254
+            ],
+            "matches_expected_size": true,
+            "has_real_transparent_background": true
+          }
+        ],
+        "all_delivered": true,
+        "all_registered": true,
+        "asset_evidence": [
+          "outputs/p2_asset_contact.jpg",
+          "outputs/p2_asset_dark_contact.jpg"
+        ],
+        "existing_original": {
+          "key": "UI/Monsters/frost_wraith.png",
+          "path": "client/assets/imported/UI/Monsters/frost_wraith.png",
+          "exists": true,
+          "size_px": [
+            1254,
+            1254
+          ],
+          "mode": "RGB",
+          "sha256": "e6aee65f8056a46700fd4268cada1f252afaf86e95d02622e45a1e25c45238fa",
+          "alpha_extrema": [
+            255,
+            255
+          ],
+          "alpha_zero_percent": 0.0,
+          "alpha_opaque_percent": 100.0,
+          "alpha_partial_percent": 0.0,
+          "registered": true,
+          "matches_recorded_source_sha256": true,
+          "matches_recorded_imported_sha256": true
+        },
+        "runtime_status": "registered_unassigned_identity"
+      },
+      "generation_status": "generated_pending_identity",
+      "original_missing_reason": "已有冰霜幽灵图片，但GDD十二种怪物和现有服务器物种ID均无对应项；不能自行当作浊螅、沼母或新增怪物绑定。"
+    }
+  ],
+  "scene_work": [
+    {
+      "id": "SCENE-DUNGEON",
+      "name": "无人战斗/装备展示地牢",
+      "route": "blender",
+      "status": "generated_and_reviewed_in_godot",
+      "references": [
+        "ui_mockups_v058/ui_pve_1920x1080.png",
+        "ui_mockups_v058/ui_gear_1920x1080.png"
+      ],
+      "outputs": [
+        "client/assets/scenes/dungeon_battle.png",
+        "client/assets/scenes/dungeon_battle.glb"
+      ],
+      "source_project": "art/reference_scenes.blend",
+      "size_px": [
+        1920,
+        1080
+      ],
+      "transparent": false,
+      "nine_slice_ltrb_px": null,
+      "description": "左侧留玩家立绘，右侧留一到两只怪物，底部保留五槽手牌安全区；青灰地牢、断柱与低饱和黄铜/暖火光，无人物、怪物、文字、格子或HUD。"
+    },
+    {
+      "id": "SCENE-CAMP",
+      "name": "无人大厅/准备石厅",
+      "route": "blender",
+      "status": "generated_and_reviewed_in_godot",
+      "references": [
+        "ui_mockups_v058/ui_hall_1920x1080.png",
+        "ui_mockups_v058/ui_prep_1920x1080.png"
+      ],
+      "outputs": [
+        "client/assets/scenes/camp_hall.png",
+        "client/assets/scenes/camp_hall.glb"
+      ],
+      "source_project": "art/reference_scenes.blend",
+      "size_px": [
+        1920,
+        1080
+      ],
+      "transparent": false,
+      "nine_slice_ltrb_px": null,
+      "description": "石柱大厅，右后方青蓝传送门，左侧留角色与武器栏，底部留模块入口；场景不烘焙职业、名称、生命或按钮。"
+    }
+  ],
+  "not_missing": [
+    "200张具名图鉴卡插画",
+    "普通牌五档品质框及费用圆标",
+    "通用深青面板和橙/蓝按钮",
+    "背包空格、六色装备品质框、六部位/武器/资源图标",
+    "PVP无人背景、五槽手牌面板、空头像框、HP轨道/填充、计时环",
+    "地图无标记单砖裁片与可由代码绘制的状态高亮、箭头、连线、空槽",
+    "界面示例中的伤害、价格、属性、倒计时和规则文字",
+    "九种新增怪物主体与湮核双阶段图（共10张PNG）",
+    "土元素岩石图标",
+    "怪物暗红空效果面板，顶部轮廓由Godot原生边框补齐"
+  ],
+  "protocol_gaps": [
+    "遗物堆缺物品详情、死者名称、版本和完整背包元数据，当前只显示堆数，拾取/替换界面暂不可完整绑定。",
+    "实时协议没有按元素分类的伤害结算段与权威连放预览。",
+    "PVP对手职业/手牌、本命详情与逃脱概率不在当前快照内，界面不虚构。",
+    "市场列表只有装备ID，无法还原参考图里的完整装备名、品质和属性。"
+  ],
+  "historical_audit": {
+    "scope": "ui_mockups_v058 15 PNG + 15 PSD, UI 188 bitmap files, Cards/Art 200 illustrations, existing Godot imports",
+    "counts": {
+      "mockup_png": 15,
+      "mockup_psd": 15,
+      "existing_ui_bitmaps": 188,
+      "existing_card_illustrations": 200,
+      "existing_card_manifest_bindings": 203,
+      "existing_monster_species_bound": 3,
+      "missing_monster_species": 9
+    },
+    "note": "首次效果图/PSD审计的历史统计；当前目录结构和交付结果见current_audit。"
+  },
+  "current_audit": {
+    "audit_date": "2026-09-09",
+    "asset_root": "client/assets/imported",
+    "path_convention": "requests.deliverables.filename与UI/Cards素材引用相对于asset_root。旧ui_mockups_v058引用为首轮设计依据，当前根目录已无原UI、Cards/Art和ui_mockups_v058目录。",
+    "report": "outputs/p2_asset_audit.json",
+    "evidence": [
+      "outputs/p2_asset_contact.jpg",
+      "outputs/p2_asset_dark_contact.jpg",
+      "outputs/p2_native_ui_review.jpg",
+      "outputs/p2_native_monster_review.jpg"
+    ],
+    "repeat_command": "python tools/audit_client_art.py --phase p2",
+    "delivered_pngs": 28,
+    "remaining_new_illustrations": 0,
+    "remaining_cleanup": 0,
+    "optional_character_consistency": 0,
+    "pending_identity": 1,
+    "source_frame_limit": "已收到暗红卡框但源图顶框误抠；客户端以原生暗红外框补齐。透明窗口中可见的棋盘RGB多数Alpha=0，不能仅凭原图预览判断为不透明棋盘。",
+    "runtime_verification": {
+      "status": "p2_native_composition_reviewed",
+      "report": "client/evidence/art/report.json",
+      "layout_report_result": {
+        "fixture_only": true,
+        "layout_errors": [],
+        "ok": true,
+        "screenshots": 66
+      },
+      "visual_review_scope": "人工复核16张源图的深/浅底合成、6组12物种及怪物卡，P2角色/本命/行动/地图联系图；最终单独复核1280商店首尾与牧师准备页。66张为自动截图总量，不宣称逐张人工检查。",
+      "evidence": [
+        "outputs/p2_native_ui_review.jpg",
+        "outputs/p2_native_monster_review.jpg"
+      ],
+      "limitations": "离线测试数据预览用于资源和布局核验，不作为本轮联网交易或完整战斗验证。"
+    },
+    "newly_supplied_pngs": 16
+  },
+  "protocol_review": {
+    "review_date": "2026-09-09",
+    "remaining_evidence": [
+      {
+        "gap": "relic_details",
+        "path": "protocol/realtime/v1/realtime.proto",
+        "symbol": "RoomCurrentCell.relic_pile_ids",
+        "note": "只包含遗物ID列表；RelicTakeCommand需要item_id、pile_version，但快照不提供对应数据。"
+      },
+      {
+        "gap": "pvp_details",
+        "path": "protocol/realtime/v1/realtime.proto",
+        "symbol": "RoomDuel",
+        "note": "对手仅RoomCombatant，没有职业/手牌/本命详情和逃脱概率。"
+      },
+      {
+        "gap": "damage_segments_and_preview",
+        "path": "protocol/realtime/v1/realtime.proto",
+        "symbol": "BattleComboResolvedEvent",
+        "note": "牌ID与结算结果不包含按元素拆分伤害段或权威连放预览。"
+      },
+      {
+        "gap": "market_equipment_details",
+        "path": "server/src/FantasyCard.Contracts/Progression/EconomyContracts.cs",
+        "symbol": "MarketListingResponse",
+        "note": "提供装备ID、价格和交易状态，没有完整装备属性。"
+      }
+    ],
+    "resolved_this_round": [
+      {
+        "gap": "authoritative_boss_phase",
+        "status": "implemented_native_preview_verified",
+        "path": "protocol/realtime/v1/realtime.proto",
+        "symbol": "RoomMonster.boss_phase",
+        "note": "服务器投影真实BossPhase；Godot按阶段选择对应外观，旧包缺字段回退一阶段，不以HP推断。"
+      }
+    ]
+  },
+  "previous_audits": [
+    {
+      "audit_date": "2026-09-09",
+      "asset_root": "client/assets/imported",
+      "path_convention": "requests.deliverables.filename与UI/Cards素材引用相对于asset_root。旧ui_mockups_v058引用为首轮设计依据，当前根目录已无原UI、Cards/Art和ui_mockups_v058目录。",
+      "report": "outputs/current_asset_audit.json",
+      "evidence": [
+        "outputs/current_asset_contact.jpg",
+        "outputs/current_asset_dark_contact.jpg"
+      ],
+      "repeat_command": "python tools/audit_client_art.py",
+      "delivered_pngs": 12,
+      "remaining_new_illustrations": 7,
+      "remaining_cleanup": 6,
+      "optional_character_consistency": 2,
+      "pending_identity": 1,
+      "source_frame_limit": "已收到暗红卡框但源图顶框误抠；客户端以原生暗红外框补齐。透明窗口中可见的棋盘RGB多数Alpha=0，不能仅凭原图预览判断为不透明棋盘。",
+      "runtime_verification": {
+        "status": "native_monster_composition_reviewed",
+        "report": "client/evidence/art/report.json",
+        "layout_report_result": {
+          "fixture_only": true,
+          "layout_errors": [],
+          "ok": true,
+          "screenshots": 44
+        },
+        "visual_review_scope": "逐一检查6组12物种的战场主体与怪物卡、土元素图标和湮核双阶段预览；44张为自动截图/布局断言总量，不宣称逐屏人工看过。",
+        "evidence": "outputs/current_native_monster_review.jpg"
+      }
+    }
+  ]
+}

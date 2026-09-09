@@ -1,0 +1,257 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+[Licensing::IpcConnector] Connection attempt to the License Client on channel: "LicenseClient-shengjiahao" failed because channel doesn't exist; code: "0x80000002"
+[Licensing::Module] GetFullLicensingClientPath:	 C:/Program Files/Tuanjie 2022.3.61t13/Editor/Data/Resources/Licensing/Client/Tuanjie.Licensing.Client.exe
+[Licensing::Module] Successfully launched the LicensingClient (PId: 87148)
+[Licensing::IpcConnector] Successfully connected to the License Client on channel: "LicenseClient-shengjiahao" at "2026-09-02T10:52:53.7342418Z"
+[Licensing::Client] Error: Code 0 while verifying Licensing Client signature (process Id: 87148, path: "C:/Program Files/Tuanjie 2022.3.61t13/Editor/Data/Resources/Licensing/Client/Tuanjie.Licensing.Client.exe")
+[Licensing::Module] Error: LicensingClient has failed validation; ignoring
+[Licensing::Client] Successfully send message: {"AuthorizationCheck":"Ewh7rSymB+/KuA==","messageType":"HandshakeRequest","protocolVersion":"1.12","userAgent":"TuanjieEditor/2022.3.61t13 (Windows; U; Windows NT 10.0; zh)","externalCorrelationId":"7085063568885945150"} at 1788346373
+[Licensing::Client] Successfully receive message: {"protocolVersion":"1.12","sessionId":"173dc6aa9cf84ad0bd0e07efb3010f13","context":{"DeviceName":"YK-SHENGJIAHAO","DeviceModel":"H3CDesk X500t G2 (H3C)","PhysicalMemoryMB":"32450","SystemLanguageISO":"zh","ProcessorCount":"16","ProcessorType":"Intel(R) Core(TM) i5-14400","OperatingSystem":"Windows 10  (10.0.19045) 64bit","OperatingSystemNumeric":"1000","Legacy.MachineBinding1":"00329-00000-00003-AA326","Legacy.MachineBinding2":"00000_00_000000_00.2","Legacy.MachineBinding4":"MjEwMjAwQTA5UjUyNTZCR0IwMTQ=","Legacy.MachineBinding5":"8c:32:23:3e:c2:2b","EnvironmentUser":"shengjiahao","EnvironmentDomain":"DOBEST","EnvironmentHostname":"YK-SHENGJIAHAO"},"assemblyProductVersion":"1.14.0+76da6ae","machineId":"P1FXjuEID+Abw7Kt7QSwbOJyQsw=","correlationId":"cc1035f6a9c30e4f9c0c3465129d2edc","responseCode":200,"responseStatus":"Handshake successful","messageType":"HandshakeResponse"} at 1788346373
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.14.0+76da6ae
+  Session Id:              173dc6aa9cf84ad0bd0e07efb3010f13
+  Correlation Id:          cc1035f6a9c30e4f9c0c3465129d2edc
+  External correlation Id: 7085063568885945150
+  Machine Id:              P1FXjuEID+Abw7Kt7QSwbOJyQsw=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-shengjiahao" (connect: 2.09s, validation: 0.11s, handshake: 0.09s)
+[Licensing::IpcConnector] Successfully connected to the License Notification on channel: "LicenseClient-shengjiahao-notifications" at "2026-09-02T10:52:53.9340707Z"
+[Licensing::Module] Connected to LicensingClient (PId: 87148, launch time: 0.00, total connection time: 2.29s)
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully send message: {"AuthorizationCheck":"1Divk/5aDGoCkg==","messageType":"UpdateLicenseRequest","AccessToken":"","OrgId":"","ProjectId":"","forceUpdateLicense":true} at 1788346373
+[Licensing::Client] Successfully receive message: {"responseCode":200,"responseStatus":"Licenses updated.","messageType":"UpdateLicenseResponse","authorizationCheck":"1Divk/5aDGoCkvwabNXlZJC0aewo"} at 1788346374
+[Licensing::Client] Attempt to check time stamp (startTime: 1788346373, endTime: 1788346374)
+[Licensing::Client] Successfully updated license
+Built from 'tuanjie/1.6/staging' branch; Version is '2022.3.61t13 (e6e6a3640b39) revision 15132323'; Using compiler version '192829333'; Build Type 'Release'
+OS: 'Windows 10  (10.0.19045) 64bit Enterprise' Language: 'zh' Physical Memory: 32450 MB
+[Licensing::Client] Successfully send message: {"AuthorizationCheck":"Yq4yOVNaRFYxjw==","messageType":"EntitlementDetailsRequest","entitlementIds":["com.unity.editor.legacy.pro","com.unity.editor.headless"],"packageEntitlementIds":[],"includeCustomData":false} at 1788346374
+[Licensing::Client] Successfully receive message: {"entitlementGroups":[{"entitlementGroupId":"F4-5R4B-A6TY-885P-DF9Z-2T63","entitlementGroupIdHash":"38d480e418c7a534ee0c3957ce0e39667cb86d47","productName":"Unity Personal","productType":"TuanjieEditor","licenseType":"ULF","expiration":1788781974000,"matchedEntitlements":[{"entitlementId":"com.unity.editor.headless","isPackage":false,"count":1}]}],"responseCode":200,"responseStatus":"Found 1 entitlement groups and 0 free entitlements matching requested entitlement ids","messageType":"EntitlementDetailsResponse","authorizationCheck":"Yq4yOVNaRFYxj5OQCRJJUxI64V8s"} at 1788346374
+[Licensing::Client] Attempt to check time stamp (startTime: 1788346374, endTime: 1788346374)
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Serial number assigned to: "F4-5R4B-A6TY-885P-DF9Z-XXXX"
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 0
+[Licensing::Client] Successfully send message: {"AuthorizationCheck":"Yq4yOVNaRFYxjw==","messageType":"EntitlementDetailsRequest","entitlementIds":["com.unity.editor.headless","com.unity.editor.ui"],"packageEntitlementIds":[],"includeCustomData":false} at 1788346374
+[Licensing::Client] Successfully receive message: {"entitlementGroups":[{"entitlementGroupId":"F4-5R4B-A6TY-885P-DF9Z-2T63","entitlementGroupIdHash":"38d480e418c7a534ee0c3957ce0e39667cb86d47","productName":"Unity Personal","productType":"TuanjieEditor","licenseType":"ULF","expiration":1788781974000,"matchedEntitlements":[{"entitlementId":"com.unity.editor.ui","isPackage":false,"count":1},{"entitlementId":"com.unity.editor.headless","isPackage":false,"count":1}]}],"responseCode":200,"responseStatus":"Found 1 entitlement groups and 0 free entitlements matching requested entitlement ids","messageType":"EntitlementDetailsResponse","authorizationCheck":"Yq4yOVNaRFYxj5OQCRJJUxI64V8s"} at 1788346374
+[Licensing::Client] Attempt to check time stamp (startTime: 1788346374, endTime: 1788346374)
+[Licensing::Client] Successfully resolved entitlement details
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Tuanjie 2022.3.61t13\Editor\Tuanjie.exe
+-batchmode
+-projectPath
+E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project
+-runTests
+-testPlatform
+EditMode
+-testResults
+E:\GitHubFiles\FantasyCard\outputs\protobuf_client\editmode-results4.xml
+-logFile
+E:\GitHubFiles\FantasyCard\outputs\protobuf_client\editmode-run4.log
+Successfully changed project path to: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project
+E:/GitHubFiles/FantasyCard/FantasyCard_Unity/New Tuanjie Project
+[Memory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Player connection [23592]  Target information:
+
+Player connection [23592]  * "[IP] 10.236.17.67 [Port] 55504 [Flags] 2 [Guid] 731918642 [EditorId] 731918642 [Version] 1048832 [Id] WindowsEditor(7,YK-SHENGJIAHAO) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [23592]  * "[IP] 192.168.112.1 [Port] 55504 [Flags] 2 [Guid] 731918642 [EditorId] 731918642 [Version] 1048832 [Id] WindowsEditor(7,YK-SHENGJIAHAO) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [23592] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [23592] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+AS: AutoStreaming module initializing.
+Begin write certificate to file.
+Write certificate complete, return 1.
+StartServer, cert is C:/Users/SHENGJIAHAO/AppData/Roaming/Tuanjie/64936-rest-certificate.pem
+Start HTTP server port 38000, HTTPS server port 38443.
+[Package Manager] UpmClient::Connect -- Connected to IPC stream "Upm-64936" after 0.2 seconds.
+[Licensing::Client] Successfully send message: {"AuthorizationCheck":"Yq4yOVNaRFYxjg==","messageType":"EntitlementDetailsRequest","entitlementIds":["com.unity.editor.last.activation.date","com.unity.editor.headless"],"packageEntitlementIds":[],"includeCustomData":false} at 1788346375
+[Licensing::Client] Successfully receive message: {"entitlementGroups":[{"entitlementGroupId":"F4-5R4B-A6TY-885P-DF9Z-2T63","entitlementGroupIdHash":"38d480e418c7a534ee0c3957ce0e39667cb86d47","productName":"Unity Personal","productType":"TuanjieEditor","licenseType":"ULF","expiration":1788781974000,"matchedEntitlements":[{"entitlementId":"com.unity.editor.headless","isPackage":false,"count":1},{"entitlementId":"com.unity.editor.last.activation.date","isPackage":false,"count":1}]}],"responseCode":200,"responseStatus":"Found 1 entitlement groups and 0 free entitlements matching requested entitlement ids","messageType":"EntitlementDetailsResponse","authorizationCheck":"Yq4yOVNaRFYxjpOQCRJJU19W4UKC"} at 1788346375
+[Licensing::Client] Attempt to check time stamp (startTime: 1788346375, endTime: 1788346375)
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully send message: {"AuthorizationCheck":"Yq4yOVNaRFYxjg==","messageType":"EntitlementDetailsRequest","entitlementIds":["com.unity.editor.disable-splash-screen","com.unity.editor.headless"],"packageEntitlementIds":[],"includeCustomData":false} at 1788346375
+[Licensing::Client] Successfully receive message: {"entitlementGroups":[{"entitlementGroupId":"F4-5R4B-A6TY-885P-DF9Z-2T63","entitlementGroupIdHash":"38d480e418c7a534ee0c3957ce0e39667cb86d47","productName":"Unity Personal","productType":"TuanjieEditor","licenseType":"ULF","expiration":1788781974000,"matchedEntitlements":[{"entitlementId":"com.unity.editor.headless","isPackage":false,"count":1}]}],"responseCode":200,"responseStatus":"Found 1 entitlement groups and 0 free entitlements matching requested entitlement ids","messageType":"EntitlementDetailsResponse","authorizationCheck":"Yq4yOVNaRFYxjpOQCRJJU19W4UKC"} at 1788346375
+[Licensing::Client] Attempt to check time stamp (startTime: 1788346375, endTime: 1788346375)
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully send message: {"AuthorizationCheck":"Yq4yOVNaRFYxjg==","messageType":"EntitlementDetailsRequest","entitlementIds":["com.unity.editor.allow-mix-usage","com.unity.editor.headless"],"packageEntitlementIds":[],"includeCustomData":false} at 1788346375
+[Licensing::Client] Successfully receive message: {"entitlementGroups":[{"entitlementGroupId":"F4-5R4B-A6TY-885P-DF9Z-2T63","entitlementGroupIdHash":"38d480e418c7a534ee0c3957ce0e39667cb86d47","productName":"Unity Personal","productType":"TuanjieEditor","licenseType":"ULF","expiration":1788781974000,"matchedEntitlements":[{"entitlementId":"com.unity.editor.headless","isPackage":false,"count":1}]}],"responseCode":200,"responseStatus":"Found 1 entitlement groups and 0 free entitlements matching requested entitlement ids","messageType":"EntitlementDetailsResponse","authorizationCheck":"Yq4yOVNaRFYxjpOQCRJJU19W4UKC"} at 1788346375
+[Licensing::Client] Attempt to check time stamp (startTime: 1788346375, endTime: 1788346375)
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully send message: {"AuthorizationCheck":"Yq4yOVNaRFYxjg==","messageType":"EntitlementDetailsRequest","entitlementIds":[],"packageEntitlementIds":["cn.tuanjie.ai.generators","cn.tuanjie.codely.bridge","com.unity.ide.visualstudio","com.unity.nuget.newtonsoft-json","com.unity.test-framework","com.unity.modules.ai","com.unity.modules.androidjni","com.unity.modules.animation","com.unity.modules.assetbundle","com.unity.modules.audio","com.unity.modules.cloth","com.unity.modules.director","com.unity.modules.imageconversion","com.unity.modules.imgui","com.unity.modules.infinity","com.unity.modules.jsonserialize","com.unity.modules.particlesystem","com.unity.modules.physics","com.unity.modules.physics2d","com.unity.modules.screencapture","com.unity.modules.terrain","com.unity.modules.terrainphysics","com.unity.modules.tilemap","com.unity.modules.ui","com.unity.modules.uielements","com.unity.modules.unityanalytics","com.unity.modules.unitywebrequest","com.unity.modules.unitywebrequestassetbundle","com.unity.modules.unitywebrequestaudio","com.unity.modules.unitywebrequesttexture","com.unity.modules.unitywebrequestwww","com.unity.modules.vehicles","com.unity.modules.video","com.unity.modules.vr","com.unity.modules.wind","com.unity.modules.xr","com.unity.modules.subsystems","com.unity.ext.nunit","com.unity.ugui","com.unity.editorcoroutines"],"includeCustomData":false} at 1788346375
+[Licensing::Client] Successfully receive message: {"freeEntitlementIds":["cn.tuanjie.ai.generators","cn.tuanjie.codely.bridge","com.unity.ide.visualstudio","com.unity.nuget.newtonsoft-json","com.unity.test-framework","com.unity.modules.ai","com.unity.modules.androidjni","com.unity.modules.animation","com.unity.modules.assetbundle","com.unity.modules.audio","com.unity.modules.cloth","com.unity.modules.director","com.unity.modules.imageconversion","com.unity.modules.imgui","com.unity.modules.infinity","com.unity.modules.jsonserialize","com.unity.modules.particlesystem","com.unity.modules.physics","com.unity.modules.physics2d","com.unity.modules.screencapture","com.unity.modules.terrain","com.unity.modules.terrainphysics","com.unity.modules.tilemap","com.unity.modules.ui","com.unity.modules.uielements","com.unity.modules.unityanalytics","com.unity.modules.unitywebrequest","com.unity.modules.unitywebrequestassetbundle","com.unity.modules.unitywebrequestaudio","com.unity.modules.unitywebrequesttexture","com.unity.modules.unitywebrequestwww","com.unity.modules.vehicles","com.unity.modules.video","com.unity.modules.vr","com.unity.modules.wind","com.unity.modules.xr","com.unity.modules.subsystems","com.unity.ext.nunit","com.unity.ugui","com.unity.editorcoroutines"],"responseCode":200,"responseStatus":"Found 0 entitlement groups and 40 free entitlements matching requested entitlement ids","messageType":"EntitlementDetailsResponse","authorizationCheck":"Yq4yOVNaRFYxjpOQCRJJU19W4UKC"} at 1788346375
+[Licensing::Client] Attempt to check time stamp (startTime: 1788346375, endTime: 1788346375)
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 40 packages:
+  Packages from [https://packages.tuanjie.cn]:
+    cn.tuanjie.codely.bridge@1.0.78 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\cn.tuanjie.codely.bridge@1.0.78)
+    com.unity.ide.visualstudio@2.0.22 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.ide.visualstudio@2.0.22)
+    com.unity.nuget.newtonsoft-json@3.2.1 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.nuget.newtonsoft-json@3.2.1)
+    com.unity.test-framework@1.1.33 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.test-framework@1.1.33)
+    com.unity.ext.nunit@1.0.6 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.ext.nunit@1.0.6)
+    com.unity.editorcoroutines@1.0.1 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.editorcoroutines@1.0.1)
+  Built-in packages:
+    com.unity.modules.ai@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.ai@1.0.0)
+    com.unity.modules.androidjni@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.androidjni@1.0.0)
+    com.unity.modules.animation@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.animation@1.0.0)
+    com.unity.modules.assetbundle@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.assetbundle@1.0.0)
+    com.unity.modules.audio@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.audio@1.0.0)
+    com.unity.modules.cloth@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.cloth@1.0.0)
+    com.unity.modules.director@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.director@1.0.0)
+    com.unity.modules.imageconversion@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.imageconversion@1.0.0)
+    com.unity.modules.imgui@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.imgui@1.0.0)
+    com.unity.modules.infinity@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.infinity@1.0.0)
+    com.unity.modules.jsonserialize@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.jsonserialize@1.0.0)
+    com.unity.modules.particlesystem@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.particlesystem@1.0.0)
+    com.unity.modules.physics@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.physics@1.0.0)
+    com.unity.modules.physics2d@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.physics2d@1.0.0)
+    com.unity.modules.screencapture@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.screencapture@1.0.0)
+    com.unity.modules.terrain@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.terrain@1.0.0)
+    com.unity.modules.terrainphysics@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.terrainphysics@1.0.0)
+    com.unity.modules.tilemap@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.tilemap@1.0.0)
+    com.unity.modules.ui@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.ui@1.0.0)
+    com.unity.modules.uielements@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.uielements@1.0.0)
+    com.unity.modules.unityanalytics@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.unityanalytics@1.0.0)
+    com.unity.modules.unitywebrequest@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.unitywebrequest@1.0.0)
+    com.unity.modules.unitywebrequestassetbundle@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.unitywebrequestassetbundle@1.0.0)
+    com.unity.modules.unitywebrequestaudio@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.unitywebrequestaudio@1.0.0)
+    com.unity.modules.unitywebrequesttexture@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.unitywebrequesttexture@1.0.0)
+    com.unity.modules.unitywebrequestwww@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.unitywebrequestwww@1.0.0)
+    com.unity.modules.vehicles@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.vehicles@1.0.0)
+    com.unity.modules.video@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.video@1.0.0)
+    com.unity.modules.vr@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.vr@1.0.0)
+    com.unity.modules.wind@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.wind@1.0.0)
+    com.unity.modules.xr@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.xr@1.0.0)
+    com.unity.modules.subsystems@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.modules.subsystems@1.0.0)
+    com.unity.ugui@1.0.0 (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\Library\PackageCache\com.unity.ugui@1.0.0)
+  Local packages:
+    cn.tuanjie.ai.generators@file:E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\.codely-cli\extensions\TJGenerators\Packages\cn.tuanjie.ai.generators (location: E:\GitHubFiles\FantasyCard\FantasyCard_Unity\New Tuanjie Project\.codely-cli\extensions\TJGenerators\Packages\cn.tuanjie.ai.generators)
+[Subsystems] No new subsystems found in resolved package list.
+Package Manager log level set to [2]
+[Package Manager] Done registering packages in 0.20 seconds
+Refreshing native plugins compatible for Editor in 305.47 ms, found 7 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 2022.3.61t13 (e6e6a3640b39)
+[Subsystems] Discovering subsystems at path C:/Program Files/Tuanjie 2022.3.61t13/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path E:/GitHubFiles/FantasyCard/FantasyCard_Unity/New Tuanjie Project/Assets
+GfxDevice: creating device client; threaded=0; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce GTX 1660 (ID=0x2184)
+    Vendor:   NVIDIA
+    VRAM:     5966 MB
+    Driver:   32.0.15.9144
+[Licensing::Client] Successfully send message: {"AuthorizationCheck":"Yq4yOVNaRFYxjQ==","messageType":"EntitlementDetailsRequest","entitlementIds":["com.unity.editor.cluster","com.unity.editor.headless"],"packageEntitlementIds":[],"includeCustomData":false} at 1788346376
+[Licensing::Client] Successfully receive message: {"entitlementGroups":[{"entitlementGroupId":"F4-5R4B-A6TY-885P-DF9Z-2T63","entitlementGroupIdHash":"38d480e418c7a534ee0c3957ce0e39667cb86d47","productName":"Unity Personal","productType":"TuanjieEditor","licenseType":"ULF","expiration":1788781974000,"matchedEntitlements":[{"entitlementId":"com.unity.editor.headless","isPackage":false,"count":1}]}],"responseCode":200,"responseStatus":"Found 1 entitlement groups and 0 free entitlements matching requested entitlement ids","messageType":"EntitlementDetailsResponse","authorizationCheck":"Yq4yOVNaRFYxjZOQCRJJU+QwOMjl"} at 1788346376
+[Licensing::Client] Attempt to check time stamp (startTime: 1788346376, endTime: 1788346376)
+[Licensing::Client] Successfully resolved entitlement details
+Initialize mono
+Mono path[0] = 'C:/Program Files/Tuanjie 2022.3.61t13/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Tuanjie 2022.3.61t13/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Tuanjie 2022.3.61t13/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=0.0.0.0:56936
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+ImportWorker Server TCP listen port: 0
+Begin MonoManager ReloadAssembly
+Registering precompiled tuanjie dll's ...
+Register platform support module: C:/Program Files/Tuanjie 2022.3.61t13/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.027483 seconds.
+- Loaded All Assemblies, in  0.577 seconds
+Native extension for WindowsStandalone target not found
+[Licensing::Client] Successfully send message: {"AuthorizationCheck":"Yq4yOVNaRFYxjA==","messageType":"EntitlementDetailsRequest","entitlementIds":["com.unity.editor.minigame.subplatform.wechat","com.unity.editor.headless"],"packageEntitlementIds":[],"includeCustomData":false} at 1788346377
+[Licensing::Client] Successfully receive message: {"entitlementGroups":[{"entitlementGroupId":"F4-5R4B-A6TY-885P-DF9Z-2T63","entitlementGroupIdHash":"38d480e418c7a534ee0c3957ce0e39667cb86d47","productName":"Unity Personal","productType":"TuanjieEditor","licenseType":"ULF","expiration":1788781974000,"matchedEntitlements":[{"entitlementId":"com.unity.editor.headless","isPackage":false,"count":1},{"entitlementId":"com.unity.editor.minigame.subplatform.wechat","isPackage":false,"count":1}]}],"responseCode":200,"responseStatus":"Found 1 entitlement groups and 0 free entitlements matching requested entitlement ids","messageType":"EntitlementDetailsResponse","authorizationCheck":"Yq4yOVNaRFYxjJOQCRJJUy7BkIbr"} at 1788346377
+[Licensing::Client] Attempt to check time stamp (startTime: 1788346377, endTime: 1788346377)
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully send message: {"AuthorizationCheck":"Yq4yOVNaRFYxjA==","messageType":"EntitlementDetailsRequest","entitlementIds":["com.unity.editor.minigame.subplatform.douyin","com.unity.editor.headless"],"packageEntitlementIds":[],"includeCustomData":false} at 1788346377
+[Licensing::Client] Successfully receive message: {"entitlementGroups":[{"entitlementGroupId":"F4-5R4B-A6TY-885P-DF9Z-2T63","entitlementGroupIdHash":"38d480e418c7a534ee0c3957ce0e39667cb86d47","productName":"Unity Personal","productType":"TuanjieEditor","licenseType":"ULF","expiration":1788781974000,"matchedEntitlements":[{"entitlementId":"com.unity.editor.headless","isPackage":false,"count":1},{"entitlementId":"com.unity.editor.minigame.subplatform.douyin","isPackage":false,"count":1}]}],"responseCode":200,"responseStatus":"Found 1 entitlement groups and 0 free entitlements matching requested entitlement ids","messageType":"EntitlementDetailsResponse","authorizationCheck":"Yq4yOVNaRFYxjJOQCRJJUy7BkIbr"} at 1788346377
+[Licensing::Client] Attempt to check time stamp (startTime: 1788346377, endTime: 1788346377)
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully send message: {"AuthorizationCheck":"Yq4yOVNaRFYxjA==","messageType":"EntitlementDetailsRequest","entitlementIds":["com.unity.editor.minigame.subplatform.kuaishou","com.unity.editor.headless"],"packageEntitlementIds":[],"includeCustomData":false} at 1788346377
+[Licensing::Client] Successfully receive message: {"entitlementGroups":[{"entitlementGroupId":"F4-5R4B-A6TY-885P-DF9Z-2T63","entitlementGroupIdHash":"38d480e418c7a534ee0c3957ce0e39667cb86d47","productName":"Unity Personal","productType":"TuanjieEditor","licenseType":"ULF","expiration":1788781974000,"matchedEntitlements":[{"entitlementId":"com.unity.editor.headless","isPackage":false,"count":1},{"entitlementId":"com.unity.editor.minigame.subplatform.kuaishou","isPackage":false,"count":1}]}],"responseCode":200,"responseStatus":"Found 1 entitlement groups and 0 free entitlements matching requested entitlement ids","messageType":"EntitlementDetailsResponse","authorizationCheck":"Yq4yOVNaRFYxjJOQCRJJUy7BkIbr"} at 1788346377
+[Licensing::Client] Attempt to check time stamp (startTime: 1788346377, endTime: 1788346377)
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully send message: {"AuthorizationCheck":"Yq4yOVNaRFYxjA==","messageType":"EntitlementDetailsRequest","entitlementIds":["com.unity.editor.minigame.subplatform.minihost","com.unity.editor.headless"],"packageEntitlementIds":[],"includeCustomData":false} at 1788346377
+[Licensing::Client] Successfully receive message: {"entitlementGroups":[{"entitlementGroupId":"F4-5R4B-A6TY-885P-DF9Z-2T63","entitlementGroupIdHash":"38d480e418c7a534ee0c3957ce0e39667cb86d47","productName":"Unity Personal","productType":"TuanjieEditor","licenseType":"ULF","expiration":1788781974000,"matchedEntitlements":[{"entitlementId":"com.unity.editor.headless","isPackage":false,"count":1},{"entitlementId":"com.unity.editor.minigame.subplatform.minihost","isPackage":false,"count":1}]}],"responseCode":200,"responseStatus":"Found 1 entitlement groups and 0 free entitlements matching requested entitlement ids","messageType":"EntitlementDetailsResponse","authorizationCheck":"Yq4yOVNaRFYxjJOQCRJJUy7BkIbr"} at 1788346377
+[Licensing::Client] Attempt to check time stamp (startTime: 1788346377, endTime: 1788346377)
+[Licensing::Client] Successfully resolved entitlement details
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.458 seconds
+Domain Reload Profiling: 1028ms
+	BeginReloadAssembly (227ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (1ms)
+	RebuildCommonClasses (45ms)
+	RebuildNativeTypeToScriptingClass (11ms)
+	initialDomainReloadingComplete (105ms)
+	LoadAllAssembliesAndSetupDomain (181ms)
+		LoadAssemblies (219ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (178ms)
+			TypeCache.Refresh (176ms)
+				TypeCache.ScanAssembly (159ms)
+			ScanForSourceGeneratedMonoScriptInfo (0ms)
+			ResolveRequiredComponents (1ms)
+	FinalizeReload (459ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (395ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (24ms)
+			SetLoadedEditorAssemblies (12ms)
+			RefreshPlugins (0ms)
+			BeforeProcessingInitializeOnLoad (3ms)
+			ProcessInitializeOnLoadAttributes (326ms)
+			ProcessInitializeOnLoadMethodAttributes (29ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+[Licensing::Client] Successfully send message: {"AuthorizationCheck":"Yq4yOVNaRFYxjA==","messageType":"EntitlementDetailsRequest","entitlementIds":["com.unity.editor.legacy.pro","com.unity.editor.watermarks.disable","com.unity.editor.watermarks.prototyping","com.unity.editor.watermarks.edu","com.unity.editor.watermarks.trial","com.unity.editor.time-limited-license","com.unity.editor.cluster","com.unity.editor.unity.compliant","com.unity.editor.watermarks.forcedisable","com.unity.editor.open-harmony.analytics.disabled","com.unity.editor.mini-game.analytics.disabled","com.unity.editor.unity.expiration.2d","com.unity.editor.unity.expiration.7d","com.unity.editor.headless"],"packageEntitlementIds":[],"includeCustomData":false} at 1788346377
+[Licensing::Client] Successfully receive message: {"entitlementGroups":[{"entitlementGroupId":"F4-5R4B-A6TY-885P-DF9Z-2T63","entitlementGroupIdHash":"38d480e418c7a534ee0c3957ce0e39667cb86d47","productName":"Unity Personal","productType":"TuanjieEditor","licenseType":"ULF","expiration":1788781974000,"matchedEntitlements":[{"entitlementId":"com.unity.editor.headless","isPackage":false,"count":1},{"entitlementId":"com.unity.editor.unity.expiration.2d","isPackage":false,"count":1},{"entitlementId":"com.unity.editor.watermarks.forcedisable","isPackage":false,"count":1},{"entitlementId":"com.unity.editor.unity.compliant","isPackage":false,"count":1},{"entitlementId":"com.unity.editor.mini-game.analytics.disabled","isPackage":false,"count":1},{"entitlementId":"com.unity.editor.time-limited-license","isPackage":false,"count":1}]}],"responseCode":200,"responseStatus":"Found 1 entitlement groups and 0 free entitlements matching requested entitlement ids","messageType":"EntitlementDetailsResponse","authorizationCheck":"Yq4yOVNaRFYxjJOQCRJJUy7BkIbr"} at 1788346377
+[Licensing::Client] Attempt to check time stamp (startTime: 1788346377, endTime: 1788346377)
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+[ScriptCompilation] Requested script compilation because: Assetdatabase observed changes in script compilation related files
+Starting: C:\Program Files\Tuanjie 2022.3.61t13\Editor\Data\bee_backend.exe --dont-print-to-structured-log --ipc --defer-dag-verification --dagfile="Library/Bee/1900b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: E:/GitHubFiles/FantasyCard/FantasyCard_Unity/New Tuanjie Project
+ExitCode: 2 Duration: 0s153ms
+tundra: error: Unable to create timestamp file '(null)'
+errno: 22 (Invalid argument) GetLastError: 1224 (0x000004C8): 
+DisplayProgressbar: Compiling Scripts
+Internal build system error. read the full binlog without getting a BuildFinishedMessage, while the backend process is still running
+AssetDatabase: script compilation time: 1.147036s
+Scripts have compiler errors.
+Exiting without the bug reporter. Application will terminate with return code 1

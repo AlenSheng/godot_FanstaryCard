@@ -1,0 +1,34 @@
+{
+  "contract": "res://mechanic_contract.json",
+  "store": "/root/Game",
+  "art_manifest": "res://assets/imported/manifest.json",
+  "card_renderer": "res://ui/card_view.gd",
+  "art_preview": "res://tests/art_preview.tscn",
+  "reference_composition": "res://ui/reference_ui.gd",
+  "exploration_composition": "res://ui/exploration_view.gd",
+  "reference_images": "ui_mockups_v058",
+  "missing_assets": "docs/ui_missing_assets.json",
+  "resource_bindings": {
+    "monster_species": "assets/imported/manifest.json:monsters",
+    "monster_instances": "assets/imported/manifest.json:monster_aliases",
+    "monster_phase": "room.pve.monsters[].boss_phase",
+    "phase_variants": "assets/imported/manifest.json:monster_variants",
+    "element_icons": "ui/art.gd:element",
+    "class_portraits": "assets/imported/manifest.json:portraits",
+    "class_passives": "room.player.hero_class -> ui/art.gd:passive",
+    "shop_art": "shop.products[].kind/payload -> ui/reference_ui.gd:_product_art",
+    "backpack_stock": "inventory.consumables.advancedBagCount/topBagCount",
+    "action_art": "assets/imported/manifest.json:action_icons",
+    "asset_audit": "../outputs/current_asset_audit.json"
+  },
+  "screens": {
+    "login": ["login", "connection"],
+    "hall": ["lobby", "select_class"],
+    "prep": ["preparation", "prepare", "enqueue", "cancel_preparation"],
+    "ready": ["ready_prompt", "room.ready"],
+    "battle": ["room.player", "room.pve", "room.duel", "selected_cards", "play_cards", "battle.select_target"],
+    "map": ["room.map", "room.legal_moves", "room.move"],
+    "rewards": ["room.reward_choice", "reward.choice.claim", "reward.choice.refresh"],
+    "settlement": ["settlement", "acknowledge_settlement"]
+  }
+}

@@ -1,0 +1,88 @@
+@baseUrl = http://localhost:5080
+@deviceId = local-development-device-001
+@feetId = replace-with-bootstrap-feet-id
+
+### Service version and capabilities
+GET {{baseUrl}}/
+
+### Liveness
+GET {{baseUrl}}/health/live
+
+### Local development sign-in
+POST {{baseUrl}}/api/v1/auth/local
+Content-Type: application/json
+
+{
+  "deviceId": "{{deviceId}}",
+  "displayName": "山海客"
+}
+
+### Copy accessToken from the response above
+@accessToken = replace-me
+
+### Current player
+GET {{baseUrl}}/api/v1/players/me
+Authorization: Bearer {{accessToken}}
+
+### Hall bootstrap
+GET {{baseUrl}}/api/v1/bootstrap
+Authorization: Bearer {{accessToken}}
+
+### Unlocked cards
+GET {{baseUrl}}/api/v1/cards
+Authorization: Bearer {{accessToken}}
+
+### Three class decks
+GET {{baseUrl}}/api/v1/decks
+Authorization: Bearer {{accessToken}}
+
+### Select a hero class
+PUT {{baseUrl}}/api/v1/players/me
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "displayName": null,
+  "selectedClass": "Mage",
+  "expectedVersion": 1
+}
+
+### Save Mage deck; replace expectedVersion with the latest deck version
+PUT {{baseUrl}}/api/v1/decks/Mage
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "cardIds": [
+    "common-01", "common-02", "common-03", "common-04", "common-05",
+    "common-06", "common-07", "common-08", "common-09", "common-10",
+    "common-11", "common-12", "common-13",
+    "mage-01", "mage-02", "mage-03", "mage-04", "mage-05", "mage-06", "mage-07"
+  ],
+  "expectedVersion": 1
+}
+
+### Create preparation; replace the feet id and deck version from bootstrap
+POST {{baseUrl}}/api/v1/preparations
+Authorization: Bearer {{accessToken}}
+Idempotency-Key: prep-local-device-001-0001
+Content-Type: application/json
+
+{
+  "heroClass": "Mage",
+  "deckVersion": 1,
+  "equipmentIds": [null, null, null, null, "{{feetId}}"],
+  "backpackTier": "Free",
+  "safeSlotIndexes": [],
+  "potionCount": 0,
+  "difficulty": "Standard"
+}
+
+### Active preparation
+GET {{baseUrl}}/api/v1/preparations
+Authorization: Bearer {{accessToken}}
+
+### Cancel preparation; replace id from create response
+@preparationId = replace-me
+DELETE {{baseUrl}}/api/v1/preparations/{{preparationId}}
+Authorization: Bearer {{accessToken}}

@@ -1,0 +1,868 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>xunit.v3.runner.inproc.console</name>
+    </assembly>
+    <members>
+        <member name="T:Xunit.Runner.InProc.SystemConsole.CommandLine">
+            <summary/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.CommandLine.#ctor(Xunit.Runner.Common.ConsoleHelper,System.Reflection.Assembly,System.String[])">
+            <summary/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.CommandLine.#ctor(Xunit.Runner.Common.ConsoleHelper,System.Reflection.Assembly,System.String[],System.Collections.Generic.IReadOnlyList{Xunit.Runner.Common.IRunnerReporter})">
+            <summary/>
+        </member>
+        <member name="P:Xunit.Runner.InProc.SystemConsole.CommandLine.AutomatedRequested">
+            <summary/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.CommandLine.GetAvailableRunnerReporters">
+            <summary/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.CommandLine.LoadAssembly(System.String)">
+            <summary/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.CommandLine.Parse">
+            <summary/>
+        </member>
+        <member name="T:Xunit.Runner.InProc.SystemConsole.ConsoleRunner">
+            <summary>
+            This class is the entry point for the in-process console-based runner used for
+            xUnit.net v3 test projects.
+            </summary>
+            <param name="args">The arguments passed to the application; typically pulled from the Main method.</param>
+            <param name="testAssembly">The optional test assembly; if <c>null</c>, <see cref="M:System.Reflection.Assembly.GetEntryAssembly"/> is used
+            to find the current assembly as the test assembly</param>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.ConsoleRunner.#ctor(System.String[],System.Reflection.Assembly)">
+            <summary>
+            This class is the entry point for the in-process console-based runner used for
+            xUnit.net v3 test projects.
+            </summary>
+            <param name="args">The arguments passed to the application; typically pulled from the Main method.</param>
+            <param name="testAssembly">The optional test assembly; if <c>null</c>, <see cref="M:System.Reflection.Assembly.GetEntryAssembly"/> is used
+            to find the current assembly as the test assembly</param>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.ConsoleRunner.Cancel">
+            <summary>
+            Attempt to cancel the console runner execution.
+            </summary>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.ConsoleRunner.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.ConsoleRunner.EntryPoint(System.IO.TextReader,System.IO.TextWriter)">
+            <summary>
+            The entry point to begin running tests.
+            </summary>
+            <returns>The return value intended to be returned by the Main method.</returns>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.ConsoleRunner.Run(System.String[])">
+            <summary>
+            Creates a new <see cref="T:Xunit.Runner.InProc.SystemConsole.ConsoleRunner"/> instance and runs it via <see cref="M:Xunit.Runner.InProc.SystemConsole.ConsoleRunner.EntryPoint(System.IO.TextReader,System.IO.TextWriter)"/>.
+            </summary>
+            <param name="args">The arguments passed to the application; typically pulled from the Main method.</param>
+            <returns>The return value intended to be returned by the Main method.</returns>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.ConsoleRunner.SetOutputEncoding">
+            <summary>
+            Override this function to change the default output encoding for the system console.
+            The default is set to <see cref="P:System.Text.Encoding.UTF8"/> to support our usage of Unicode
+            characters in output (for example, the up and down arrows printed for pointers with
+            mismatched assertion values).
+            </summary>
+        </member>
+        <member name="T:Xunit.Runner.InProc.SystemConsole.ConsoleRunnerInProcess">
+            <summary/>
+            <summary/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.ConsoleRunnerInProcess.Find(Xunit.Sdk.IMessageSink,Xunit.Sdk.IMessageSink,Xunit.Runner.Common.XunitProjectAssembly,System.Threading.CancellationTokenSource)">
+            <summary/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.ConsoleRunnerInProcess.GetTestAssemblyInfo(System.Reflection.Assembly)">
+            <summary/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.ConsoleRunnerInProcess.Run(Xunit.Sdk.IMessageSink,Xunit.Sdk.IMessageSink,Xunit.Runner.Common.XunitProjectAssembly,System.Threading.CancellationTokenSource)">
+            <summary/>
+        </member>
+        <member name="T:Xunit.Runner.InProc.SystemConsole.TestingPlatform.CommandLineOptionsProvider">
+            <summary>
+            Implementation of <see cref="T:Microsoft.Testing.Platform.Extensions.CommandLine.ICommandLineOptionsProvider"/> for xUnit.net v3.
+            </summary>
+            <remarks>
+            This class is an implementation detail for Microsoft.Testing.Platform that is public for testing purposes.
+            Use this class at your own risk, as breaking changes may occur as needed.
+            </remarks>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.CommandLineOptionsProvider.#ctor">
+            <summary>
+            Implementation of <see cref="T:Microsoft.Testing.Platform.Extensions.CommandLine.ICommandLineOptionsProvider"/> for xUnit.net v3.
+            </summary>
+            <remarks>
+            This class is an implementation detail for Microsoft.Testing.Platform that is public for testing purposes.
+            Use this class at your own risk, as breaking changes may occur as needed.
+            </remarks>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.CommandLineOptionsProvider.GetCommandLineOptions">
+            <inheritdoc/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.CommandLineOptionsProvider.Parse(Microsoft.Testing.Platform.Configurations.IConfiguration,Microsoft.Testing.Platform.CommandLine.ICommandLineOptions,Xunit.Runner.Common.XunitProjectAssembly)">
+            <summary>
+            Parse the command line options, placing them into the project and project assembly configuration.
+            </summary>
+            <param name="configuration">The Microsoft.Testing.Platform <see cref="T:Microsoft.Testing.Platform.Configurations.IConfiguration"/></param>
+            <param name="commandLineOptions">The Microsoft.Testing.Platform <see cref="T:Microsoft.Testing.Platform.CommandLine.ICommandLineOptions"/></param>
+            <param name="projectAssembly">The project assembly to place the parsed values into</param>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.CommandLineOptionsProvider.ValidateCommandLineOptionsAsync(Microsoft.Testing.Platform.CommandLine.ICommandLineOptions)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.CommandLineOptionsProvider.ValidateOptionArgumentsAsync(Microsoft.Testing.Platform.Extensions.CommandLine.CommandLineOption,System.String[])">
+            <inheritdoc/>
+        </member>
+        <member name="T:Xunit.Runner.InProc.SystemConsole.TestingPlatform.ExtensionBase">
+            <summary>
+            Base class for all Microsoft.Testing.Platform classes which are extensions.
+            </summary>
+            <remarks>
+            This class is an implementation detail for Microsoft.Testing.Platform that is public for testing purposes.
+            Use this class at your own risk, as breaking changes may occur as needed.
+            </remarks>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.ExtensionBase.#ctor(System.String,System.String)">
+            <summary>
+            Base class for all Microsoft.Testing.Platform classes which are extensions.
+            </summary>
+            <remarks>
+            This class is an implementation detail for Microsoft.Testing.Platform that is public for testing purposes.
+            Use this class at your own risk, as breaking changes may occur as needed.
+            </remarks>
+        </member>
+        <member name="P:Xunit.Runner.InProc.SystemConsole.TestingPlatform.ExtensionBase.Description">
+            <inheritdoc/>
+        </member>
+        <member name="P:Xunit.Runner.InProc.SystemConsole.TestingPlatform.ExtensionBase.DisplayName">
+            <inheritdoc/>
+        </member>
+        <member name="P:Xunit.Runner.InProc.SystemConsole.TestingPlatform.ExtensionBase.Uid">
+            <inheritdoc/>
+        </member>
+        <member name="P:Xunit.Runner.InProc.SystemConsole.TestingPlatform.ExtensionBase.Version">
+            <inheritdoc/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.ExtensionBase.IsEnabledAsync">
+            <inheritdoc/>
+        </member>
+        <member name="T:Xunit.Runner.InProc.SystemConsole.TestingPlatform.LoggerDiagnosticMessageSink">
+            <summary>
+            Implementation of <see cref="T:Xunit.Sdk.IMessageSink"/> which forwards diagnostic messages to
+            an implementation of <see cref="T:Microsoft.Testing.Platform.Logging.ILogger"/>.
+            </summary>
+            <remarks>
+            This class is an implementation detail for Microsoft.Testing.Platform that is public for testing purposes.
+            Use this class at your own risk, as breaking changes may occur as needed.
+            </remarks>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.LoggerDiagnosticMessageSink.#ctor(Microsoft.Testing.Platform.Logging.ILogger,System.Boolean,System.Boolean)">
+            <summary>
+            Implementation of <see cref="T:Xunit.Sdk.IMessageSink"/> which forwards diagnostic messages to
+            an implementation of <see cref="T:Microsoft.Testing.Platform.Logging.ILogger"/>.
+            </summary>
+            <remarks>
+            This class is an implementation detail for Microsoft.Testing.Platform that is public for testing purposes.
+            Use this class at your own risk, as breaking changes may occur as needed.
+            </remarks>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.LoggerDiagnosticMessageSink.OnMessage(Xunit.Sdk.IMessageSinkMessage)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.LoggerDiagnosticMessageSink.TryCreate(Microsoft.Testing.Platform.Logging.ILogger,System.Boolean,System.Boolean)">
+            <summary>
+            Factory function for the message sink
+            </summary>
+        </member>
+        <member name="T:Xunit.Runner.InProc.SystemConsole.TestingPlatform.LoggerRunnerLogger">
+            <summary>
+            Implementation of <see cref="T:Xunit.Runner.Common.IRunnerLogger"/> which forwards the messages onto
+            an implementation of <see cref="T:Microsoft.Testing.Platform.Logging.ILogger"/>.
+            </summary>
+            <remarks>
+            This class is an implementation detail for Microsoft.Testing.Platform that is public for testing purposes.
+            Use this class at your own risk, as breaking changes may occur as needed.
+            </remarks>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.LoggerRunnerLogger.#ctor(Microsoft.Testing.Platform.Logging.ILogger)">
+            <summary>
+            Implementation of <see cref="T:Xunit.Runner.Common.IRunnerLogger"/> which forwards the messages onto
+            an implementation of <see cref="T:Microsoft.Testing.Platform.Logging.ILogger"/>.
+            </summary>
+            <remarks>
+            This class is an implementation detail for Microsoft.Testing.Platform that is public for testing purposes.
+            Use this class at your own risk, as breaking changes may occur as needed.
+            </remarks>
+        </member>
+        <member name="P:Xunit.Runner.InProc.SystemConsole.TestingPlatform.LoggerRunnerLogger.LockObject">
+            <inheritdoc/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.LoggerRunnerLogger.LogError(Xunit.Runner.Common.StackFrameInfo,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.LoggerRunnerLogger.LogImportantMessage(Xunit.Runner.Common.StackFrameInfo,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.LoggerRunnerLogger.LogMessage(Xunit.Runner.Common.StackFrameInfo,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.LoggerRunnerLogger.LogRaw(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.LoggerRunnerLogger.LogWarning(Xunit.Runner.Common.StackFrameInfo,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.LoggerRunnerLogger.WaitForAcknowledgment">
+            <inheritdoc/>
+        </member>
+        <member name="T:Xunit.Runner.InProc.SystemConsole.TestingPlatform.OutputDeviceDataProducerBase">
+            <summary>
+            Abstract base class that implements <see cref="T:Microsoft.Testing.Platform.Extensions.OutputDevice.IOutputDeviceDataProducer"/>.
+            </summary>
+            <param name="componentName">The component name</param>
+            <param name="uid">The component UID</param>
+            <remarks>
+            This class is an implementation detail for Microsoft.Testing.Platform that is public for testing purposes.
+            Use this class at your own risk, as breaking changes may occur as needed.
+            </remarks>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.OutputDeviceDataProducerBase.#ctor(System.String,System.String)">
+            <summary>
+            Abstract base class that implements <see cref="T:Microsoft.Testing.Platform.Extensions.OutputDevice.IOutputDeviceDataProducer"/>.
+            </summary>
+            <param name="componentName">The component name</param>
+            <param name="uid">The component UID</param>
+            <remarks>
+            This class is an implementation detail for Microsoft.Testing.Platform that is public for testing purposes.
+            Use this class at your own risk, as breaking changes may occur as needed.
+            </remarks>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.OutputDeviceDataProducerBase.ToMessageWithColor(System.String,System.ConsoleColor)">
+            <summary>
+            Creates an instance of <see cref="T:Microsoft.Testing.Platform.OutputDevice.IOutputDeviceData"/> with the given message, to
+            be printed in the given color.
+            </summary>
+            <param name="message">The message</param>
+            <param name="color">The message color</param>
+        </member>
+        <member name="T:Xunit.Runner.InProc.SystemConsole.TestingPlatform.OutputDeviceDiagnosticMessageSink">
+            <summary>
+            Implementation of <see cref="T:Xunit.Sdk.IMessageSink"/> and <see cref="T:Microsoft.Testing.Platform.Extensions.OutputDevice.IOutputDeviceDataProducer"/> that
+            forwards diagnostic messages to the <see cref="T:Microsoft.Testing.Platform.OutputDevice.IOutputDevice"/>. It wraps an existing implementation
+            of <see cref="T:Xunit.Sdk.IMessageSink"/> to forward all messages to.
+            </summary>
+            <remarks>
+            This class is an implementation detail for Microsoft.Testing.Platform that is public for testing purposes.
+            Use this class at your own risk, as breaking changes may occur as needed.
+            </remarks>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.OutputDeviceDiagnosticMessageSink.#ctor(Microsoft.Testing.Platform.OutputDevice.IOutputDevice,System.Boolean,System.Boolean,Xunit.Sdk.IMessageSink)">
+            <summary>
+            Implementation of <see cref="T:Xunit.Sdk.IMessageSink"/> and <see cref="T:Microsoft.Testing.Platform.Extensions.OutputDevice.IOutputDeviceDataProducer"/> that
+            forwards diagnostic messages to the <see cref="T:Microsoft.Testing.Platform.OutputDevice.IOutputDevice"/>. It wraps an existing implementation
+            of <see cref="T:Xunit.Sdk.IMessageSink"/> to forward all messages to.
+            </summary>
+            <remarks>
+            This class is an implementation detail for Microsoft.Testing.Platform that is public for testing purposes.
+            Use this class at your own risk, as breaking changes may occur as needed.
+            </remarks>
+        </member>
+        <member name="P:Xunit.Runner.InProc.SystemConsole.TestingPlatform.OutputDeviceDiagnosticMessageSink.InnerSink">
+            <summary>
+            Gets the inner message sink.
+            </summary>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.OutputDeviceDiagnosticMessageSink.OnMessage(Xunit.Sdk.IMessageSinkMessage)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.OutputDeviceDiagnosticMessageSink.TryCreate(Microsoft.Testing.Platform.Logging.ILogger,Microsoft.Testing.Platform.OutputDevice.IOutputDevice,System.Boolean,System.Boolean)">
+            <summary>
+            Factory function for the message sink
+            </summary>
+        </member>
+        <member name="T:Xunit.Runner.InProc.SystemConsole.TestingPlatform.OutputDeviceRunnerLogger">
+            <summary>
+            Implementation of <see cref="T:Xunit.Runner.Common.IRunnerLogger"/> and <see cref="T:Microsoft.Testing.Platform.Extensions.OutputDevice.IOutputDeviceDataProducer"/>
+            that sends log messages to the <see cref="T:Microsoft.Testing.Platform.OutputDevice.IOutputDevice"/>. It optionally wraps an existing
+            implementation of <see cref="T:Xunit.Runner.Common.IRunnerLogger"/> to forward all messages to. The <paramref name="rawOnly"/>
+            flag is used to only output raw log messages (typically used by reporter message handlers that need
+            to output text that is designed to be consumed programatically).
+            </summary>
+            <remarks>
+            This class is an implementation detail for Microsoft.Testing.Platform that is public for testing purposes.
+            Use this class at your own risk, as breaking changes may occur as needed.
+            </remarks>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.OutputDeviceRunnerLogger.#ctor(Microsoft.Testing.Platform.OutputDevice.IOutputDevice,Xunit.Runner.Common.IRunnerLogger,System.Boolean)">
+            <summary>
+            Implementation of <see cref="T:Xunit.Runner.Common.IRunnerLogger"/> and <see cref="T:Microsoft.Testing.Platform.Extensions.OutputDevice.IOutputDeviceDataProducer"/>
+            that sends log messages to the <see cref="T:Microsoft.Testing.Platform.OutputDevice.IOutputDevice"/>. It optionally wraps an existing
+            implementation of <see cref="T:Xunit.Runner.Common.IRunnerLogger"/> to forward all messages to. The <paramref name="rawOnly"/>
+            flag is used to only output raw log messages (typically used by reporter message handlers that need
+            to output text that is designed to be consumed programatically).
+            </summary>
+            <remarks>
+            This class is an implementation detail for Microsoft.Testing.Platform that is public for testing purposes.
+            Use this class at your own risk, as breaking changes may occur as needed.
+            </remarks>
+        </member>
+        <member name="P:Xunit.Runner.InProc.SystemConsole.TestingPlatform.OutputDeviceRunnerLogger.LockObject">
+            <inheritdoc/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.OutputDeviceRunnerLogger.LogError(Xunit.Runner.Common.StackFrameInfo,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.OutputDeviceRunnerLogger.LogImportantMessage(Xunit.Runner.Common.StackFrameInfo,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.OutputDeviceRunnerLogger.LogMessage(Xunit.Runner.Common.StackFrameInfo,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.OutputDeviceRunnerLogger.LogRaw(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.OutputDeviceRunnerLogger.LogWarning(Xunit.Runner.Common.StackFrameInfo,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.OutputDeviceRunnerLogger.WaitForAcknowledgment">
+            <inheritdoc/>
+        </member>
+        <member name="T:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestConfig">
+            <summary>
+            Consumer of <see cref="T:Microsoft.Testing.Platform.Configurations.IConfiguration"/> for xUnit.net v3.
+            </summary>
+            <remarks>
+            This class is an implementation detail for Microsoft.Testing.Platform that is public for testing purposes.
+            Use this class at your own risk, as breaking changes may occur as needed.
+            </remarks>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestConfig.Parse(Microsoft.Testing.Platform.Configurations.IConfiguration,Xunit.Runner.Common.XunitProjectAssembly)">
+            <summary>
+            Parses configuration from <see cref="T:Microsoft.Testing.Platform.Configurations.IConfiguration"/> and places the values into
+            an instance of <see cref="T:Xunit.Runner.Common.XunitProjectAssembly"/>.
+            </summary>
+            <param name="configuration">The configuration</param>
+            <param name="projectAssembly">The project assembly to put config values into</param>
+        </member>
+        <member name="T:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestConfig.Keys">
+            <summary>
+            The values of the configuration keys
+            </summary>
+        </member>
+        <member name="F:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestConfig.Keys.AssertEquivalentMaxDepth">
+            <summary/>
+        </member>
+        <member name="F:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestConfig.Keys.Culture">
+            <summary/>
+        </member>
+        <member name="F:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestConfig.Keys.DiagnosticMessages">
+            <summary/>
+        </member>
+        <member name="F:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestConfig.Keys.Explicit">
+            <summary/>
+        </member>
+        <member name="F:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestConfig.Keys.FailSkips">
+            <summary/>
+        </member>
+        <member name="F:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestConfig.Keys.FailWarns">
+            <summary/>
+        </member>
+        <member name="F:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestConfig.Keys.InternalDiagnosticMessages">
+            <summary/>
+        </member>
+        <member name="F:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestConfig.Keys.LongRunningTestSeconds">
+            <summary/>
+        </member>
+        <member name="F:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestConfig.Keys.MaxParallelThreads">
+            <summary/>
+        </member>
+        <member name="F:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestConfig.Keys.MethodDisplay">
+            <summary/>
+        </member>
+        <member name="F:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestConfig.Keys.MethodDisplayOptions">
+            <summary/>
+        </member>
+        <member name="F:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestConfig.Keys.ParallelAlgorithm">
+            <summary/>
+        </member>
+        <member name="F:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestConfig.Keys.ParallelizeTestCollections">
+            <summary/>
+        </member>
+        <member name="F:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestConfig.Keys.PreEnumerateTheories">
+            <summary/>
+        </member>
+        <member name="F:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestConfig.Keys.PrintMaxEnumerableLength">
+            <summary/>
+        </member>
+        <member name="F:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestConfig.Keys.PrintMaxObjectDepth">
+            <summary/>
+        </member>
+        <member name="F:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestConfig.Keys.PrintMaxObjectMemberCount">
+            <summary/>
+        </member>
+        <member name="F:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestConfig.Keys.PrintMaxStringLength">
+            <summary/>
+        </member>
+        <member name="F:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestConfig.Keys.Seed">
+            <summary/>
+        </member>
+        <member name="F:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestConfig.Keys.ShowLiveOutput">
+            <summary/>
+        </member>
+        <member name="F:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestConfig.Keys.StopOnFail">
+            <summary/>
+        </member>
+        <member name="T:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestPlatformDiscoveryMessageSink">
+            <summary>
+            Implementation of <see cref="T:Xunit.Sdk.IMessageSink"/> and <see cref="T:Microsoft.Testing.Platform.Extensions.Messages.IDataProducer"/> in order to convert
+            xUnit.net v3 discovery messages into Microsoft.Testing.Platform <see cref="T:Microsoft.Testing.Platform.Extensions.Messages.TestNode"/> messages.
+            </summary>
+            <param name="innerSink">The inner sink to delegate messages to</param>
+            <param name="assemblyFullName">The full name of the test assembly (via <see cref="P:System.Reflection.Assembly.FullName"/>)</param>
+            <param name="sessionUid">The MTP session UID</param>
+            <param name="testNodeMessageBus">The message bus for reporting MTP messages to</param>
+            <param name="cancellationToken">The cancellation token provided by MTP</param>
+            <remarks>
+            This class is an implementation detail for Microsoft.Testing.Platform that is public for testing purposes.
+            Use this class at your own risk, as breaking changes may occur as needed.
+            </remarks>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestPlatformDiscoveryMessageSink.#ctor(Xunit.Sdk.IMessageSink,System.String,Microsoft.Testing.Platform.TestHost.SessionUid,Microsoft.Testing.Platform.Messages.IMessageBus,System.Threading.CancellationToken)">
+            <summary>
+            Implementation of <see cref="T:Xunit.Sdk.IMessageSink"/> and <see cref="T:Microsoft.Testing.Platform.Extensions.Messages.IDataProducer"/> in order to convert
+            xUnit.net v3 discovery messages into Microsoft.Testing.Platform <see cref="T:Microsoft.Testing.Platform.Extensions.Messages.TestNode"/> messages.
+            </summary>
+            <param name="innerSink">The inner sink to delegate messages to</param>
+            <param name="assemblyFullName">The full name of the test assembly (via <see cref="P:System.Reflection.Assembly.FullName"/>)</param>
+            <param name="sessionUid">The MTP session UID</param>
+            <param name="testNodeMessageBus">The message bus for reporting MTP messages to</param>
+            <param name="cancellationToken">The cancellation token provided by MTP</param>
+            <remarks>
+            This class is an implementation detail for Microsoft.Testing.Platform that is public for testing purposes.
+            Use this class at your own risk, as breaking changes may occur as needed.
+            </remarks>
+        </member>
+        <member name="P:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestPlatformDiscoveryMessageSink.DataTypesProduced">
+            <inheritdoc/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestPlatformDiscoveryMessageSink.OnMessage(Xunit.Sdk.IMessageSinkMessage)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestPlatformExecutionMessageSink">
+            <summary>
+            Implementation of <see cref="T:Xunit.Sdk.IMessageSink"/> and <see cref="T:Microsoft.Testing.Platform.Extensions.Messages.IDataProducer"/> in order to convert
+            xUnit.net v3 execution messages into Microsoft.Testing.Platform <see cref="T:Microsoft.Testing.Platform.Extensions.Messages.TestNode"/> messages.
+            </summary>
+            <param name="innerSink">The inner sink to delegate messages to</param>
+            <param name="sessionUid">The MTP session UID</param>
+            <param name="testNodeMessageBus">The message bus for reporting MTP messages to</param>
+            <param name="trxCapability">Information class that knows whether TRX reporting is enabled</param>
+            <param name="outputDevice">The output device to write messages to</param>
+            <param name="showLiveOutput">A flag to indicate whether live output should be shown</param>
+            <param name="serverMode">A flag to indicate if we're running in server mode (inside Test Explorer)</param>
+            <param name="cancellationToken">The cancellation token provided by MTP</param>
+            <remarks>
+            This class is an implementation detail for Microsoft.Testing.Platform that is public for testing purposes.
+            Use this class at your own risk, as breaking changes may occur as needed.
+            </remarks>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestPlatformExecutionMessageSink.#ctor(Xunit.Sdk.IMessageSink,Microsoft.Testing.Platform.TestHost.SessionUid,Microsoft.Testing.Platform.Messages.IMessageBus,Xunit.Runner.InProc.SystemConsole.TestingPlatform.XunitTrxCapability,Microsoft.Testing.Platform.OutputDevice.IOutputDevice,System.Boolean,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Implementation of <see cref="T:Xunit.Sdk.IMessageSink"/> and <see cref="T:Microsoft.Testing.Platform.Extensions.Messages.IDataProducer"/> in order to convert
+            xUnit.net v3 execution messages into Microsoft.Testing.Platform <see cref="T:Microsoft.Testing.Platform.Extensions.Messages.TestNode"/> messages.
+            </summary>
+            <param name="innerSink">The inner sink to delegate messages to</param>
+            <param name="sessionUid">The MTP session UID</param>
+            <param name="testNodeMessageBus">The message bus for reporting MTP messages to</param>
+            <param name="trxCapability">Information class that knows whether TRX reporting is enabled</param>
+            <param name="outputDevice">The output device to write messages to</param>
+            <param name="showLiveOutput">A flag to indicate whether live output should be shown</param>
+            <param name="serverMode">A flag to indicate if we're running in server mode (inside Test Explorer)</param>
+            <param name="cancellationToken">The cancellation token provided by MTP</param>
+            <remarks>
+            This class is an implementation detail for Microsoft.Testing.Platform that is public for testing purposes.
+            Use this class at your own risk, as breaking changes may occur as needed.
+            </remarks>
+        </member>
+        <member name="P:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestPlatformExecutionMessageSink.DataTypesProduced">
+            <inheritdoc/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestPlatformExecutionMessageSink.OnMessage(Xunit.Sdk.IMessageSinkMessage)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestPlatformTestFramework">
+            <summary>
+            Implementation of <see cref="T:Microsoft.Testing.Platform.Extensions.TestFramework.ITestFramework"/> to run xUnit.net v3 test projects.
+            </summary>
+            <remarks>
+            This class is an implementation detail for Microsoft.Testing.Platform that is public for testing purposes.
+            Use this class at your own risk, as breaking changes may occur as needed. The only guaranteed stable API
+            in this class is <see cref="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestPlatformTestFramework.RunAsync(System.String[],System.Action{Microsoft.Testing.Platform.Builder.ITestApplicationBuilder,System.String[]})"/>.
+            </remarks>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestPlatformTestFramework.#ctor(Xunit.Runner.Common.IRunnerLogger,Xunit.Runner.Common.IRunnerReporter,Xunit.Sdk.IMessageSink,Xunit.Runner.Common.XunitProjectAssembly,System.Reflection.Assembly,Xunit.Runner.InProc.SystemConsole.TestingPlatform.XunitTrxCapability,Microsoft.Testing.Platform.OutputDevice.IOutputDevice,System.Boolean)">
+            <summary/>
+        </member>
+        <member name="P:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestPlatformTestFramework.DataTypesProduced">
+            <inheritdoc/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestPlatformTestFramework.CloseTestSession(Microsoft.Testing.Platform.TestHost.SessionUid)">
+            <summary/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestPlatformTestFramework.CreateTestSession(Microsoft.Testing.Platform.TestHost.SessionUid)">
+            <summary/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestPlatformTestFramework.OnDiscover(Microsoft.Testing.Platform.TestHost.SessionUid,Microsoft.Testing.Platform.Messages.IMessageBus,System.Action,System.Threading.CancellationToken)">
+            <summary/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestPlatformTestFramework.OnExecute(Microsoft.Testing.Platform.TestHost.SessionUid,Microsoft.Testing.Platform.Requests.ITestExecutionFilter,Microsoft.Testing.Platform.Messages.IMessageBus,System.Action,System.Threading.CancellationToken)">
+            <summary/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestPlatformTestFramework.RunAsync(System.String[],System.Action{Microsoft.Testing.Platform.Builder.ITestApplicationBuilder,System.String[]})">
+            <summary>
+            Runs the test project.
+            </summary>
+            <param name="args">The command line arguments that were passed to the executable</param>
+            <param name="extensionRegistration">The extension registration callback</param>
+            <returns>The return code to be returned from <c>Main</c></returns>
+        </member>
+        <member name="T:Xunit.Runner.InProc.SystemConsole.TestingPlatform.XunitException">
+            <summary>
+            An exception type that is used to <see cref="T:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestPlatformExecutionMessageSink"/> to report failed
+            test exception information back to Microsoft.Testing.Platform.
+            </summary>
+            <param name="metadata"></param>
+            <remarks>
+            This class is an implementation detail for Microsoft.Testing.Platform that is public for testing purposes.
+            Use this class at your own risk, as breaking changes may occur as needed.
+            </remarks>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.XunitException.#ctor(Xunit.Sdk.IErrorMetadata)">
+            <summary>
+            An exception type that is used to <see cref="T:Xunit.Runner.InProc.SystemConsole.TestingPlatform.TestPlatformExecutionMessageSink"/> to report failed
+            test exception information back to Microsoft.Testing.Platform.
+            </summary>
+            <param name="metadata"></param>
+            <remarks>
+            This class is an implementation detail for Microsoft.Testing.Platform that is public for testing purposes.
+            Use this class at your own risk, as breaking changes may occur as needed.
+            </remarks>
+        </member>
+        <member name="P:Xunit.Runner.InProc.SystemConsole.TestingPlatform.XunitException.StackTrace">
+            <inheritdoc/>
+        </member>
+        <member name="T:Xunit.Runner.InProc.SystemConsole.TestingPlatform.XunitTrxCapability">
+            <summary>
+            Implementation of <see cref="T:Microsoft.Testing.Extensions.TrxReport.Abstractions.ITrxReportCapability"/> to supplement TRX reporting
+            with xUnit.net v3 information.
+            </summary>
+            <remarks>
+            This class is an implementation detail for Microsoft.Testing.Platform that is public for testing purposes.
+            Use this class at your own risk, as breaking changes may occur as needed.
+            </remarks>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.XunitTrxCapability.#ctor(System.Boolean)">
+            <summary>
+            Implementation of <see cref="T:Microsoft.Testing.Extensions.TrxReport.Abstractions.ITrxReportCapability"/> to supplement TRX reporting
+            with xUnit.net v3 information.
+            </summary>
+            <remarks>
+            This class is an implementation detail for Microsoft.Testing.Platform that is public for testing purposes.
+            Use this class at your own risk, as breaking changes may occur as needed.
+            </remarks>
+        </member>
+        <member name="P:Xunit.Runner.InProc.SystemConsole.TestingPlatform.XunitTrxCapability.IsTrxEnabled">
+            <summary>
+            Gets a flag to indicate whether TRX reporting is enabled
+            </summary>
+        </member>
+        <member name="P:Xunit.Runner.InProc.SystemConsole.TestingPlatform.XunitTrxCapability.IsSupported">
+            <inheritdoc/>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.TestingPlatform.XunitTrxCapability.Enable">
+            <inheritdoc/>
+        </member>
+        <member name="T:Xunit.Runner.InProc.SystemConsole.AutomatedMode">
+            <summary>
+            A flag which indicates the automated mode we're running in.
+            </summary>
+        </member>
+        <member name="F:Xunit.Runner.InProc.SystemConsole.AutomatedMode.Off">
+            <summary>
+            We are running in non-automated mode
+            </summary>
+        </member>
+        <member name="F:Xunit.Runner.InProc.SystemConsole.AutomatedMode.Async">
+            <summary>
+            We are running in automated mode, without synchronous message reporting
+            </summary>
+        </member>
+        <member name="F:Xunit.Runner.InProc.SystemConsole.AutomatedMode.Sync">
+            <summary>
+            We are running in automated mode, with synchronous message reporting
+            </summary>
+        </member>
+        <member name="T:Xunit.Runner.InProc.SystemConsole.ProjectAssemblyRunner">
+            <summary>
+            The project assembly runner class, used by <see cref="T:Xunit.Runner.InProc.SystemConsole.ConsoleRunner"/>.
+            </summary>
+            <param name="testAssembly">The assembly under test</param>
+            <param name="automatedMode">The automated mode we're running in</param>
+            <param name="sourceInformationProvider">The source information provider</param>
+            <param name="cancellationTokenSource">The cancellation token source used to indicate cancellation</param>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.ProjectAssemblyRunner.#ctor(System.Reflection.Assembly,Xunit.Runner.InProc.SystemConsole.AutomatedMode,Xunit.Runner.Common.ISourceInformationProvider,System.Threading.CancellationTokenSource)">
+            <summary>
+            The project assembly runner class, used by <see cref="T:Xunit.Runner.InProc.SystemConsole.ConsoleRunner"/>.
+            </summary>
+            <param name="testAssembly">The assembly under test</param>
+            <param name="automatedMode">The automated mode we're running in</param>
+            <param name="sourceInformationProvider">The source information provider</param>
+            <param name="cancellationTokenSource">The cancellation token source used to indicate cancellation</param>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.ProjectAssemblyRunner.#ctor(System.Reflection.Assembly,Xunit.Runner.InProc.SystemConsole.AutomatedMode,System.Threading.CancellationTokenSource)">
+            <summary>
+            Initializes an instance of the <see cref="T:Xunit.Runner.InProc.SystemConsole.ProjectAssemblyRunner"/> class, without support
+            for source information.
+            </summary>
+            <param name="testAssembly">The assembly under test</param>
+            <param name="automatedMode">The automated mode we're running in</param>
+            <param name="cancellationTokenSource">The cancellation token source used to indicate cancellation</param>
+        </member>
+        <member name="P:Xunit.Runner.InProc.SystemConsole.ProjectAssemblyRunner.Banner">
+            <summary>
+            Gets a one-line banner to be printed when the runner is executed.
+            </summary>
+        </member>
+        <member name="P:Xunit.Runner.InProc.SystemConsole.ProjectAssemblyRunner.TestExecutionSummaries">
+            <summary>
+            Gets the summaries of the test execution, once it is finished.
+            </summary>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.ProjectAssemblyRunner.Discover(Xunit.Runner.Common.XunitProjectAssembly,Xunit.v3.ITestPipelineStartup,Xunit.Sdk.IMessageSink,Xunit.Sdk.IMessageSink,System.Collections.Generic.IList{System.ValueTuple{Xunit.Sdk.ITestCase,System.Boolean}})">
+            <summary>
+            Discovers tests in the given test project.
+            </summary>
+            <param name="assembly">The test project assembly</param>
+            <param name="pipelineStartup">The pipeline startup object</param>
+            <param name="messageSink">The optional message sink to send messages to</param>
+            <param name="diagnosticMessageSink">The optional message sink to send diagnostic messages to</param>
+            <param name="testCases">A collection to contain the test cases to run, if desired</param>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.ProjectAssemblyRunner.InvokePipelineStartup(System.Reflection.Assembly,Xunit.Sdk.IMessageSink)">
+            <summary>
+            Invoke the instance of <see cref="T:Xunit.v3.ITestPipelineStartup"/>, if it exists, and returns the instance
+            that was created.
+            </summary>
+            <param name="testAssembly">The test assembly under test</param>
+            <param name="diagnosticMessageSink">The optional diagnostic message sink to report diagnostic messages to</param>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.ProjectAssemblyRunner.PrintHeader(Xunit.Runner.Common.ConsoleHelper)">
+            <summary>
+            Prints the program header.
+            </summary>
+            <param name="consoleHelper">The console helper to use for output</param>
+        </member>
+        <member name="M:Xunit.Runner.InProc.SystemConsole.ProjectAssemblyRunner.Run(Xunit.Runner.Common.XunitProjectAssembly,Xunit.Sdk.IMessageSink,Xunit.Sdk.IMessageSink,Xunit.Runner.Common.IRunnerLogger,Xunit.v3.ITestPipelineStartup,System.Collections.Generic.HashSet{System.String})">
+            <summary>
+            Runs the given test project.
+            </summary>
+            <param name="assembly">The test project assembly</param>
+            <param name="messageSink">The message sink to send messages to</param>
+            <param name="diagnosticMessageSink">The optional message sink to send diagnostic messages to</param>
+            <param name="runnerLogger">The runner logger, to log console output to</param>
+            <param name="pipelineStartup">The pipeline startup object</param>
+            <param name="testCaseIDsToRun">An optional list of test case unique IDs to run</param>
+            <returns>Returns <c>0</c> if there were no failures; non-<c>zero</c> failure count, otherwise</returns>
+        </member>
+        <member name="T:Xunit.Runner.Common.RunnerLoggerExtensions">
+            <summary>
+            Extension methods for <see cref="T:Xunit.Runner.Common.IRunnerLogger"/>.
+            </summary>
+        </member>
+        <member name="M:Xunit.Runner.Common.RunnerLoggerExtensions.WriteMessage(Xunit.Runner.Common.IRunnerLogger,Xunit.Sdk.IMessageSinkMessage)">
+            <summary>
+            Writes a message to the console, and waits for acknowledge as appropriate.
+            </summary>
+            <param name="runnerLogger"></param>
+            <param name="message">The message to write</param>
+        </member>
+        <member name="T:System.Diagnostics.CodeAnalysis.AllowNullAttribute">
+            <summary>Specifies that null is allowed as an input even if the corresponding type disallows it.</summary>
+        </member>
+        <member name="T:System.Diagnostics.CodeAnalysis.DisallowNullAttribute">
+            <summary>Specifies that null is disallowed as an input even if the corresponding type allows it.</summary>
+        </member>
+        <member name="T:System.Diagnostics.CodeAnalysis.MaybeNullAttribute">
+            <summary>Specifies that an output may be null even if the corresponding type disallows it.</summary>
+        </member>
+        <member name="T:System.Diagnostics.CodeAnalysis.NotNullAttribute">
+            <summary>Specifies that an output will not be null even if the corresponding type allows it.</summary>
+        </member>
+        <member name="T:System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute">
+            <summary>Specifies that when a method returns <see cref="P:System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute.ReturnValue"/>, the parameter may be null even if the corresponding type disallows it.</summary>
+        </member>
+        <member name="M:System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute.#ctor(System.Boolean)">
+            <summary>Initializes the attribute with the specified return value condition.</summary>
+            <param name="returnValue">
+            The return value condition. If the method returns this value, the associated parameter may be null.
+            </param>
+        </member>
+        <member name="P:System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute.ReturnValue">
+            <summary>Gets the return value condition.</summary>
+        </member>
+        <member name="T:System.Diagnostics.CodeAnalysis.NotNullWhenAttribute">
+            <summary>Specifies that when a method returns <see cref="P:System.Diagnostics.CodeAnalysis.NotNullWhenAttribute.ReturnValue"/>, the parameter will not be null even if the corresponding type allows it.</summary>
+        </member>
+        <member name="M:System.Diagnostics.CodeAnalysis.NotNullWhenAttribute.#ctor(System.Boolean)">
+            <summary>Initializes the attribute with the specified return value condition.</summary>
+            <param name="returnValue">
+            The return value condition. If the method returns this value, the associated parameter will not be null.
+            </param>
+        </member>
+        <member name="P:System.Diagnostics.CodeAnalysis.NotNullWhenAttribute.ReturnValue">
+            <summary>Gets the return value condition.</summary>
+        </member>
+        <member name="T:System.Diagnostics.CodeAnalysis.NotNullIfNotNullAttribute">
+            <summary>Specifies that the output will be non-null if the named parameter is non-null.</summary>
+        </member>
+        <member name="M:System.Diagnostics.CodeAnalysis.NotNullIfNotNullAttribute.#ctor(System.String)">
+            <summary>Initializes the attribute with the associated parameter name.</summary>
+            <param name="parameterName">
+            The associated parameter name.  The output will be non-null if the argument to the parameter specified is non-null.
+            </param>
+        </member>
+        <member name="P:System.Diagnostics.CodeAnalysis.NotNullIfNotNullAttribute.ParameterName">
+            <summary>Gets the associated parameter name.</summary>
+        </member>
+        <member name="T:System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute">
+            <summary>Applied to a method that will never return under any circumstance.</summary>
+        </member>
+        <member name="T:System.Diagnostics.CodeAnalysis.DoesNotReturnIfAttribute">
+            <summary>Specifies that the method will not return if the associated Boolean parameter is passed the specified value.</summary>
+        </member>
+        <member name="M:System.Diagnostics.CodeAnalysis.DoesNotReturnIfAttribute.#ctor(System.Boolean)">
+            <summary>Initializes the attribute with the specified parameter value.</summary>
+            <param name="parameterValue">
+            The condition parameter value. Code after the method will be considered unreachable by diagnostics if the argument to
+            the associated parameter matches this value.
+            </param>
+        </member>
+        <member name="P:System.Diagnostics.CodeAnalysis.DoesNotReturnIfAttribute.ParameterValue">
+            <summary>Gets the condition parameter value.</summary>
+        </member>
+        <member name="T:System.Diagnostics.CodeAnalysis.SetsRequiredMembersAttribute">
+            <summary/>
+        </member>
+        <member name="T:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute">
+            <summary>
+            Specifies the syntax used in a string.
+            </summary>
+        </member>
+        <member name="M:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.#ctor(System.String)">
+            <summary>
+            Initializes the <see cref="T:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute"/> with the identifier of the syntax used.
+            </summary>
+            <param name="syntax">The syntax identifier.</param>
+        </member>
+        <member name="M:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.#ctor(System.String,System.Object[])">
+            <summary>
+            Initializes the <see cref="T:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute"/> with the identifier of the syntax used.
+            </summary>
+            <param name="syntax">The syntax identifier.</param>
+            <param name="arguments">Optional arguments associated with the specific syntax employed.</param>
+        </member>
+        <member name="P:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.Syntax">
+            <summary>
+            Gets the identifier of the syntax used.
+            </summary>
+        </member>
+        <member name="P:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.Arguments">
+            <summary>
+            Optional arguments associated with the specific syntax employed.
+            </summary>
+        </member>
+        <member name="F:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.CompositeFormat">
+            <summary>
+            The syntax identifier for strings containing composite formats for string formatting.
+            </summary>
+        </member>
+        <member name="F:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.DateOnlyFormat">
+            <summary>
+            The syntax identifier for strings containing date format specifiers.
+            </summary>
+        </member>
+        <member name="F:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.DateTimeFormat">
+            <summary>
+            The syntax identifier for strings containing date and time format specifiers.
+            </summary>
+        </member>
+        <member name="F:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.EnumFormat">
+            <summary>
+            The syntax identifier for strings containing <see cref="T:System.Enum"/> format specifiers.
+            </summary>
+        </member>
+        <member name="F:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.GuidFormat">
+            <summary>
+            The syntax identifier for strings containing <see cref="T:System.Guid"/> format specifiers.
+            </summary>
+        </member>
+        <member name="F:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.Json">
+            <summary>
+            The syntax identifier for strings containing JavaScript Object Notation (JSON).
+            </summary>
+        </member>
+        <member name="F:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.NumericFormat">
+            <summary>
+            The syntax identifier for strings containing numeric format specifiers.
+            </summary>
+        </member>
+        <member name="F:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.Regex">
+            <summary>
+            The syntax identifier for strings containing regular expressions.
+            </summary>
+        </member>
+        <member name="F:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.TimeOnlyFormat">
+            <summary>
+            The syntax identifier for strings containing time format specifiers.
+            </summary>
+        </member>
+        <member name="F:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.TimeSpanFormat">
+            <summary>
+            The syntax identifier for strings containing <see cref="T:System.TimeSpan"/> format specifiers.
+            </summary>
+        </member>
+        <member name="F:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.Uri">
+            <summary>
+            The syntax identifier for strings containing URIs.
+            </summary>
+        </member>
+        <member name="F:System.Diagnostics.CodeAnalysis.StringSyntaxAttribute.Xml">
+            <summary>
+            The syntax identifier for strings containing XML.
+            </summary>
+        </member>
+        <member name="T:System.Runtime.CompilerServices.RequiredMemberAttribute">
+            <summary/>
+        </member>
+        <member name="T:System.Runtime.CompilerServices.CompilerFeatureRequiredAttribute">
+            <summary/>
+        </member>
+        <member name="M:System.Runtime.CompilerServices.CompilerFeatureRequiredAttribute.#ctor(System.String)">
+            <summary/>
+        </member>
+        <member name="P:System.Runtime.CompilerServices.CompilerFeatureRequiredAttribute.FeatureName">
+            <summary/>
+        </member>
+        <member name="P:System.Runtime.CompilerServices.CompilerFeatureRequiredAttribute.IsOptional">
+            <summary/>
+        </member>
+    </members>
+</doc>
