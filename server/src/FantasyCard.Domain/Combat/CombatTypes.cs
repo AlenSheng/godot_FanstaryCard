@@ -27,11 +27,13 @@ public sealed record CombatCardEffect(
     int ResonanceBonus = 0,
     double ConflictCancelBonus = 0,
     double ConflictHealCoefficient = 0,
-    bool IsClassReveal = false);
+    bool IsClassReveal = false,
+    int SecondaryElementalDamage = 0,
+    CardElement SecondaryElement = CardElement.None);
 
 public sealed record CombatCardDefinition(string CardId, CombatCardEffect Effect);
 
-public sealed record CombatCardInstance(Guid InstanceId, string CardId);
+public sealed record CombatCardInstance(Guid InstanceId, string CardId, int Level = 0, CardElement? ElementOverride = null);
 
 public sealed record CombatDeckSnapshot(
     IReadOnlyList<CombatCardInstance> Hand,
@@ -55,7 +57,8 @@ public sealed record PlayerCombatSnapshot(
     TimeSpan StunRemaining,
     TimeSpan DrawBlockRemaining,
     IReadOnlyList<TargetStunWindowSnapshot> TargetStunWindows,
-    CombatEquipmentProfile? Equipment = null);
+    CombatEquipmentProfile? Equipment = null,
+    TimeSpan DrawBlockSpeedRemaining = default);
 
 public enum MonsterIntentKind : short
 {
@@ -134,7 +137,9 @@ public sealed record RoomPlayerSnapshot(
     Rooms.SpringDrinkSnapshot? SpringDrink = null,
     bool IsBot = false,
     TimeSpan? BotPveRemaining = null,
-    IReadOnlyList<Rooms.RewardRefreshReceiptSnapshot>? RewardRefreshReceipts = null);
+    IReadOnlyList<Rooms.RewardRefreshReceiptSnapshot>? RewardRefreshReceipts = null,
+    IReadOnlyList<Rooms.ExplorationItem>? RecycledEquipment = null,
+    string? DisplayName = null);
 
 public enum DuelEndReason : short
 {
@@ -189,6 +194,38 @@ public sealed record BattleRoomSnapshot(
     IReadOnlyList<BotDuelTimerSnapshot>? BotDuelTimers = null,
     RoomRandomStreamsSnapshot? RandomStreams = null);
 
+public sealed record CombatDamageSegment(string Kind, int Amount);
+
+public sealed record CombatPassiveInfo(
+    string Kind,
+    int Combo,
+    CardElement? CoreElement,
+    double HealBonus,
+    double ControlBonus,
+    double ShieldBonus,
+    double WeaponBonus,
+    int ShieldFlatBonus);
+
+public sealed record CombatantPublicInfo(
+    Guid PlayerId,
+    string? DisplayName,
+    Players.HeroClass HeroClass,
+    int Hp,
+    int MaximumHp,
+    int EffectiveMaximumHp,
+    int Shield,
+    int WeaponLevel,
+    IReadOnlyList<Rooms.ExplorationItem> WornArmor,
+    CombatEquipmentProfile Equipment,
+    CombatPassiveInfo Passive,
+    double DrawIntervalSeconds);
+
+public sealed record RoomCombatInfo(
+    CombatantPublicInfo Self,
+    CombatantPublicInfo? Opponent,
+    double? EscapeProbability,
+    long RoomRevision);
+
 public sealed record CombatResolution(
     Guid BattleId,
     Guid AttackerId,
@@ -200,7 +237,20 @@ public sealed record CombatResolution(
     int ShieldGain,
     bool TargetDefeated,
     bool BattleEnded,
-    long RoomRevision);
+    long RoomRevision,
+    IReadOnlyList<CombatDamageSegment>? DamageSegments = null,
+    CardElement? CoreElement = null,
+    int CoreCount = 0,
+    double StunSeconds = 0,
+    double DrawBlockSeconds = 0,
+    int HealthCost = 0,
+    double DrawCharge = 0,
+    int ImmediateDraw = 0,
+    double DrawSpeedSeconds = 0,
+    double DrawSpeedModifier = 0,
+    double DrawBlockSpeedSeconds = 0);
+
+public sealed record CombatFeedbackResolution(string SourceId, CombatResolution Resolution);
 
 public sealed record CardResolutionDraft(
     int Damage,
@@ -214,4 +264,5 @@ public sealed record CardResolutionDraft(
     double DrawSpeedModifier,
     int HealthCost,
     CardElement? CoreElement,
-    int CoreCount);
+    int CoreCount,
+    IReadOnlyList<CombatDamageSegment>? DamageSegments = null);

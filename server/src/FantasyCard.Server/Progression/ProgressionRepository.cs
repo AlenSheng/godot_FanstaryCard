@@ -23,7 +23,7 @@ public sealed record SaveDeckResult(SaveDeckStatus Status, DeckResponse? Deck = 
 public enum SaveLoadoutStatus { Updated, VersionConflict, NotFound, AssetUnavailable }
 public sealed record SaveLoadoutResult(SaveLoadoutStatus Status, LoadoutResponse? Loadout = null, string? Detail = null);
 
-public sealed class ProgressionRepository(NpgsqlDataSource dataSource)
+public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource)
 {
     private static readonly string[] EquipmentSlots = ["Head", "Chest", "Hands", "Legs", "Feet"];
 
@@ -216,10 +216,12 @@ public sealed class ProgressionRepository(NpgsqlDataSource dataSource)
         var element = reader.IsDBNull(6) ? null : reader.GetString(6);
         var effectAffix = reader.IsDBNull(7) ? null : reader.GetString(7);
         var secondaryTrait = reader.IsDBNull(8) ? null : reader.GetString(8);
-        if (location is "MarketListed" or "PreparationLocked" || level >= 5) throw new DomainValidationException("Equipment cannot be enhanced in its current state.");
+        if (location is not ("Inventory" or "Equipped") || level >= 5) throw new DomainValidationException("Equipment cannot be enhanced in its current state.");
         if (version != request.ExpectedVersion) throw new DomainValidationException("Equipment changed. Reload and retry.");
         var cost = FragmentCost(quality, level + 1);
         var materialId = request.MaterialEquipmentId;
+        if (level < 3 && materialId is not null)
+            throw new DomainValidationException("This enhancement does not consume a material equipment item.");
         await reader.DisposeAsync();
         if (level >= 3)
         {
@@ -406,27 +408,37 @@ public sealed class ProgressionRepository(NpgsqlDataSource dataSource)
     {
         await using var command = dataSource.CreateCommand(
             """
-            SELECT card_id, hero_class, rarity, unlocked, copy_count, level, version
-            FROM player_cards
-            WHERE player_id = $1
-            ORDER BY hero_class NULLS FIRST, card_id
+            SELECT c.card_id, c.hero_class, c.rarity, c.unlocked, c.copy_count, c.level, c.version,
+                   COALESCE((SELECT max(copies) FROM (
+                       SELECT count(*) AS copies FROM player_deck_cards dc
+                       JOIN player_decks d ON d.deck_id=dc.deck_id
+                       WHERE d.player_id=c.player_id AND dc.card_id=c.card_id
+                       GROUP BY d.deck_id) required), 0)::integer
+            FROM player_cards c
+            WHERE c.player_id = $1
             """);
         command.Parameters.AddWithValue(playerId);
         await using var reader = await command.ExecuteReaderAsync(cancellationToken);
-        var result = new List<CardResponse>();
+        var owned = new Dictionary<string, CardResponse>(StringComparer.Ordinal);
         while (await reader.ReadAsync(cancellationToken))
         {
-            result.Add(new CardResponse(
+            var card = new CardResponse(
                 reader.GetString(0),
                 reader.IsDBNull(1) ? null : (HeroClassDto?)reader.GetInt16(1),
                 ((CardRarity)reader.GetInt16(2)).ToString(),
                 reader.GetBoolean(3),
                 reader.GetInt32(4),
                 reader.GetInt32(5),
-                reader.GetInt64(6)));
+                reader.GetInt64(6));
+            var definition = GameConfigCatalog.Current.Cards.SingleOrDefault(item =>
+                item.CardId == card.CardId && item.IsCodex && item.Enabled);
+            if (definition is not null)
+                owned.Add(card.CardId, QuoteCard(definition, card, reader.GetInt32(7)));
         }
 
-        return result;
+        return GameConfigCatalog.Current.Cards.Where(card => card.IsCodex && card.Enabled)
+            .Select(card => owned.GetValueOrDefault(card.CardId) ?? QuoteCard(card, EmptyCard(card), 0))
+            .ToArray();
     }
 
     public async Task<IReadOnlyList<DeckResponse>> GetDecksAsync(

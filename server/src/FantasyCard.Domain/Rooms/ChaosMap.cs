@@ -1,3 +1,5 @@
+using FantasyCard.Domain.Combat;
+
 namespace FantasyCard.Domain.Rooms;
 
 public enum ChaosMapLayer : byte { Outer = 0, Middle = 1, Core = 2 }
@@ -7,7 +9,8 @@ public readonly record struct MapPosition(int Row, int Column)
     public int ManhattanDistance(MapPosition other) => Math.Abs(Row - other.Row) + Math.Abs(Column - other.Column);
 }
 
-public sealed record ChaosMapCell(MapPosition Position, ChaosMapLayer Layer, bool IsBoss, bool HasSpring, bool HasEvacuation, string MonsterGroupId = "O1");
+public sealed record ChaosMapCell(MapPosition Position, ChaosMapLayer Layer, bool IsBoss, bool HasSpring, bool HasEvacuation,
+    string MonsterGroupId = "O1", CardElement? TreasureElement = null);
 public sealed record ChaosMapSnapshot(
     IReadOnlyList<ChaosMapCell> Cells,
     MapPosition BossPosition,
@@ -94,8 +97,30 @@ public static class ChaosMapGenerator
         var spawnPositions = PickSpawns(random, positions.Where(p => layers[p] == ChaosMapLayer.Outer).ToArray(), playerCount);
         var cells = positions.Select(position => new ChaosMapCell(
             position, layers[position], position == boss, springs.Contains(position), evacuations.Contains(position),
-            position == boss ? "BOSS" : GroupFor(random, layers[position]))).ToArray();
+            position == boss ? "BOSS" : GroupFor(random, layers[position], position, spawnPositions.Contains(position)))).ToArray();
+        // Keep existing map rolls stable while pinning each treasure's position and element once.
+        var treasureRandom = new Random(unchecked(seed ^ 0x54524541));
+        var treasureCount = RollTreasureCount(treasureRandom.Next(100));
+        var treasurePositions = new HashSet<MapPosition>();
+        AddRandom(treasureRandom, treasurePositions, positions.Where(p => layers[p] == ChaosMapLayer.Outer).ToArray(), treasureCount);
+        for (var index = 0; index < cells.Length; index++)
+        {
+            if (treasurePositions.Contains(cells[index].Position))
+                cells[index] = cells[index] with { MonsterGroupId = "BOX", TreasureElement = RollTreasureElement(treasureRandom.Next(100)) };
+        }
         return new ChaosMapState(cells, boss, spawnPositions);
+    }
+
+    public static int RollTreasureCount(int roll)
+    {
+        if (roll is < 0 or > 99) throw new ArgumentOutOfRangeException(nameof(roll));
+        return roll < 40 ? 0 : roll < 75 ? 1 : roll < 95 ? 2 : 3;
+    }
+
+    public static CardElement RollTreasureElement(int roll)
+    {
+        if (roll is < 0 or > 99) throw new ArgumentOutOfRangeException(nameof(roll));
+        return roll < 80 ? (CardElement)(roll / 16 + 1) : CardElement.None;
     }
 
     private static ChaosMapLayer LayerOf(MapPosition position)
@@ -114,10 +139,10 @@ public static class ChaosMapGenerator
 
     private static int WeightedCount(Random random, int first, int second, int firstWeight) => random.Next(100) < firstWeight ? first : second;
 
-    private static string GroupFor(Random random, ChaosMapLayer layer) => layer switch
+    private static string GroupFor(Random random, ChaosMapLayer layer, MapPosition position, bool isSpawn) => layer switch
     {
-        ChaosMapLayer.Outer => $"O{random.Next(1, 9)}",
-        ChaosMapLayer.Middle => $"M{random.Next(1, 6)}",
+        ChaosMapLayer.Outer => $"O{random.Next(1, isSpawn ? 6 : 9)}",
+        ChaosMapLayer.Middle when position.Row is 1 or 4 && position.Column is 1 or 4 => $"M{random.Next(1, 6)}",
         _ => $"E{random.Next(1, 7)}"
     };
 

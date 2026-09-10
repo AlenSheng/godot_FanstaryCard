@@ -33,6 +33,7 @@ public sealed class SettlementCoordinator(SettlementRepository repository)
                 snapshot.Revision,
                 player.Phase,
                 player.Position,
+                heroClass = player.HeroClass.ToString(),
                 assetCount = assets.Length
             }));
             await repository.SettleAsync(
@@ -50,6 +51,7 @@ public sealed class SettlementCoordinator(SettlementRepository repository)
         var assets = (player.Inventory?.Items ?? [])
             .Select(item => ToAsset(item, "Inventory"))
             .Concat((player.WornArmor ?? []).Select(item => ToAsset(item, "Equipped")))
+            .Concat((player.RecycledEquipment ?? []).Select(item => ToAsset(item, "Recycled")))
             .ToList();
         return [.. assets];
     }
@@ -66,6 +68,7 @@ public sealed class SettlementCoordinator(SettlementRepository repository)
             .SelectMany(pile => pile.Items)
             .Where(item => item.Kind == ExplorationItemKind.Equipment)
             .Select(item => ToAsset(item, "RelicPile")));
+        assets.AddRange((player.RecycledEquipment ?? []).Select(item => ToAsset(item, "Recycled")));
         if (player.Inventory?.Capacity == 28)
             assets.Add(new("Backpack", "Advanced", false));
         else if (player.Inventory?.Capacity == 36)
@@ -74,6 +77,7 @@ public sealed class SettlementCoordinator(SettlementRepository repository)
     }
 
     private static SettlementAsset ToAsset(ExplorationItem item, string equipmentDestination) =>
-        new(item.Kind.ToString(), item.ItemId, item.IsSafe, item.Quantity, item.Equipment,
+        new(item.Kind.ToString(), item.ItemId, item.IsSafe, item.Quantity,
+            item.IsGenerated == false ? null : item.Equipment,
             item.Kind == ExplorationItemKind.Equipment ? equipmentDestination : null);
 }

@@ -317,7 +317,7 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
         await EnsurePaidBagCapacityAsync(connection, transaction, playerId, kind, payload, request.Quantity, cancellationToken);
         var total = checked(price * request.Quantity);
         var goldAfter = await SpendGoldAsync(connection, transaction, playerId, total, cancellationToken);
-        var granted = await GrantAsync(connection, transaction, playerId, kind, payload, request.Quantity, cancellationToken);
+        var granted = await GrantAsync(connection, transaction, playerId, kind, payload, request.Quantity, requestId, cancellationToken);
         await using (var insert = new NpgsqlCommand(
             "INSERT INTO shop_purchases(purchase_id,player_id,reset_key,product_id,request_id,request_hash,quantity,price_gold,granted_json,created_at) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)", connection, transaction))
         {
@@ -335,11 +335,24 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
     public async Task<IReadOnlyList<MarketListingResponse>> GetMarketAsync(CancellationToken cancellationToken)
     {
         await ExpireListingsAsync(cancellationToken);
-        await using var command = dataSource.CreateCommand("SELECT listing_id,seller_id,equipment_id,price_gold,status,version,created_at,expires_at FROM market_listings WHERE status='Active' AND expires_at > $1 ORDER BY created_at DESC");
+        await using var command = dataSource.CreateCommand(
+            """
+            SELECT l.listing_id,l.seller_id,l.equipment_id,l.price_gold,l.status,l.version,l.created_at,l.expires_at,
+                   e.slot,e.quality,e.level,e.is_bound,e.location,e.version,e.element,e.effect_affix,e.secondary_trait
+            FROM market_listings l JOIN equipments e ON e.instance_id=l.equipment_id
+            WHERE l.status='Active' AND l.expires_at > $1 ORDER BY l.created_at DESC
+            """);
         command.Parameters.AddWithValue(timeProvider.GetUtcNow());
         await using var reader = await command.ExecuteReaderAsync(cancellationToken);
         var result = new List<MarketListingResponse>();
-        while (await reader.ReadAsync(cancellationToken)) result.Add(ReadListing(reader));
+        while (await reader.ReadAsync(cancellationToken))
+            result.Add(ReadListing(reader) with
+            {
+                Equipment = new(reader.GetGuid(2), reader.GetString(8), reader.GetString(9),
+                    reader.GetInt32(10), reader.GetBoolean(11), reader.GetString(12), reader.GetInt64(13),
+                    reader.IsDBNull(14) ? null : reader.GetString(14), reader.IsDBNull(15) ? null : reader.GetString(15),
+                    reader.IsDBNull(16) ? null : reader.GetString(16))
+            });
         return result;
     }
 
@@ -599,16 +612,24 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
     { await using var cmd = new NpgsqlCommand("INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,request_id,created_at) VALUES($1,$2,$3,$4,$5,$6,$7,CURRENT_TIMESTAMP)", c, t); cmd.Parameters.AddWithValue(Guid.CreateVersion7()); cmd.Parameters.AddWithValue(player); cmd.Parameters.AddWithValue(item); cmd.Parameters.AddWithValue(from); cmd.Parameters.AddWithValue(to); cmd.Parameters.AddWithValue(reason); cmd.Parameters.AddWithValue((object?)requestId ?? DBNull.Value); await cmd.ExecuteNonQueryAsync(ct); }
     private static MarketListingResponse ReadListing(NpgsqlDataReader r) => new(r.GetGuid(0),r.GetGuid(1),r.GetGuid(2),r.GetInt64(3),r.GetString(4),r.GetInt64(5),r.GetFieldValue<DateTimeOffset>(6),r.GetFieldValue<DateTimeOffset>(7));
 
-    private static async Task<string> GrantAsync(NpgsqlConnection c, NpgsqlTransaction t, Guid player, string kind, string payload, int quantity, CancellationToken ct)
+    private static async Task<string> GrantAsync(NpgsqlConnection c, NpgsqlTransaction t, Guid player, string kind, string payload, int quantity, string requestId, CancellationToken ct)
     {
         using var json = JsonDocument.Parse(payload); var amount = json.RootElement.TryGetProperty("amount", out var a) ? a.GetInt64() * quantity : 0;
         var column = kind switch { "WarriorSoul" => "warrior_soul", "EquipmentFragments" => "equipment_fragments", "ClassSoul" => json.RootElement.GetProperty("heroClass").GetString()!.ToLowerInvariant() + "_soul", "HealthPotion" => "health_potion_count", "AdvancedBag" => "advanced_bag_count", "TopBag" => "top_bag_count", _ => null };
         if (column is not null)
         {
             var table = kind is "HealthPotion" or "AdvancedBag" or "TopBag" ? "player_consumables" : "player_materials";
-            await using var command = new NpgsqlCommand($"UPDATE {table} SET {column}={column}+$1,version=version+1 WHERE player_id=$2", c, t); command.Parameters.AddWithValue(amount); command.Parameters.AddWithValue(player);
-            if (await command.ExecuteNonQueryAsync(ct) != 1)
+            await using var command = new NpgsqlCommand($"UPDATE {table} SET {column}={column}+$1,version=version+1 WHERE player_id=$2 RETURNING {column}", c, t); command.Parameters.AddWithValue(amount); command.Parameters.AddWithValue(player);
+            var balance = await command.ExecuteScalarAsync(ct);
+            if (balance is null)
                 throw new InvalidOperationException("The player grant aggregate is missing.");
+            if (table == "player_materials")
+            {
+                var currency = kind == "ClassSoul"
+                    ? json.RootElement.GetProperty("heroClass").GetString() + "Soul" : kind;
+                await WriteLedgerAsync(c, t, player, amount, Convert.ToInt64(balance, CultureInfo.InvariantCulture),
+                    currency, "shop.purchase", ct, requestId);
+            }
         }
         if (kind == "Cards")
         {

@@ -1,5 +1,6 @@
 using FantasyCard.Domain.Players;
 using FantasyCard.Domain.Configuration;
+using FantasyCard.Domain.Cards;
 
 namespace FantasyCard.Domain.Combat;
 
@@ -13,10 +14,32 @@ public sealed class CombatCardCatalog
         _definitions = definitions.ToDictionary(definition => definition.CardId, StringComparer.Ordinal);
     }
 
-    public CombatCardDefinition Get(string cardId) =>
-        _definitions.TryGetValue(cardId, out var definition)
-            ? definition
-            : throw new DomainValidationException($"Combat card '{cardId}' is not present in the active config.");
+    public CombatCardDefinition Get(string cardId, int level = 0, CardElement? elementOverride = null)
+    {
+        if (!_definitions.TryGetValue(cardId, out var definition))
+            throw new DomainValidationException($"Combat card '{cardId}' is not present in the active config.");
+        if (elementOverride is { } element)
+        {
+            if (cardId != "M-BOXSPIRIT" || level != 0 || !Enum.IsDefined(element))
+                throw new DomainValidationException("Only a base-level box spirit card can override its encounter element.");
+            var damage = definition.Effect.ElementalDamage + definition.Effect.DirectDamage;
+            return definition with
+            {
+                Effect = definition.Effect with
+                {
+                    Element = element,
+                    ElementalDamage = element == CardElement.None ? 0 : damage,
+                    DirectDamage = element == CardElement.None ? damage : 0
+                }
+            };
+        }
+        return level == 0 ? definition : definition with
+        {
+            Effect = CardEconomyRules.ApplyLevel(cardId, definition.Effect, level)
+        };
+    }
+
+    public bool Contains(string cardId) => _definitions.ContainsKey(cardId);
 
     public static CombatCardCatalog CreatePrototype()
     {

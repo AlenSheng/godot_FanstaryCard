@@ -7,7 +7,7 @@ public sealed class SettlementAssetClassifierTests
     [Fact]
     public void Death_returns_safe_items_but_moves_unsafe_items_and_armor_to_the_relic_pile()
     {
-        var inventory = new ExplorationInventory(20, 0);
+        var inventory = new ExplorationInventory(28, 1);
         inventory.TryAdd(new ExplorationItem("gold", ExplorationItemKind.Gold, 10, true));
         inventory.TryAdd(new ExplorationItem("potion:1", ExplorationItemKind.HealthPotion));
         var armor = new SettlementAsset("Equipment", "armor-1", false);

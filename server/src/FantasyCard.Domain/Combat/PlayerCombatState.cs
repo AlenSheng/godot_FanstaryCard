@@ -13,7 +13,8 @@ public sealed class PlayerCombatState
         IReadOnlyList<string> cardIds,
         Random random,
         int weaponLevel = 0,
-        CombatEquipmentProfile? equipment = null)
+        CombatEquipmentProfile? equipment = null,
+        IReadOnlyList<int>? cardLevels = null)
     {
         HeroClass = heroClass;
         MaximumHp = heroClass switch
@@ -28,7 +29,7 @@ public sealed class PlayerCombatState
         Equipment = equipment ?? CombatEquipmentProfile.Empty;
         ArgumentNullException.ThrowIfNull(random);
         _random = new CombatRandom(random.Next());
-        Deck = CombatDeck.Create(cardIds, _random);
+        Deck = CombatDeck.Create(cardIds, _random, cardLevels);
     }
 
     public HeroClass HeroClass { get; }
@@ -36,7 +37,7 @@ public sealed class PlayerCombatState
     public int Hp { get; private set; }
     public int Shield { get; private set; }
     public int WeaponLevel { get; }
-    public CombatEquipmentProfile Equipment { get; }
+    public CombatEquipmentProfile Equipment { get; private set; }
     public int EffectiveMaximumHp => Math.Min(
         (int)Math.Floor(MaximumHp * (1 + Equipment.VitalityOvercapBonus)),
         (int)Math.Floor(MaximumHp * 1.40));
@@ -47,7 +48,29 @@ public sealed class PlayerCombatState
     public double DrawSpeedModifier { get; private set; }
     public TimeSpan StunRemaining { get; private set; }
     public TimeSpan DrawBlockRemaining { get; private set; }
+    public TimeSpan DrawBlockSpeedRemaining { get; private set; }
     public bool IsDead => Hp <= 0;
+    public double DrawIntervalSeconds => Math.Clamp(
+        4 * (1 + Equipment.DrawIntervalModifier) * (1 + DrawSpeedModifier),
+        Equipment.HasRapidDraw ? 1.5 : 1.8, 6.0) / (DrawBlockSpeedRemaining > TimeSpan.Zero ? 2 : 1);
+
+    public CombatPassiveInfo GetPassiveInfo()
+    {
+        var hpRatio = Math.Clamp((double)Hp / MaximumHp, 0, 1);
+        return HeroClass switch
+        {
+            HeroClass.Priest => new("LinYuan", 0, null, .80 * (1 - hpRatio), .40 * (1 - hpRatio), 0, WeaponPercentBonus(), 0),
+            HeroClass.Mage => new("FenXian", FenxianCombo, LastFenxianCore, 0, 0, 0, WeaponPercentBonus(), 0),
+            HeroClass.Guardian => new("ZaiYue", 0, null, 0, 0, .45 * hpRatio, 0, WeaponLevel >= 4 ? 3 : WeaponLevel >= 2 ? 2 : 1),
+            _ => throw new DomainValidationException("Unknown hero class.")
+        };
+    }
+
+    public void UpdateEquipment(CombatEquipmentProfile equipment)
+    {
+        Equipment = equipment ?? throw new ArgumentNullException(nameof(equipment));
+        Hp = Math.Min(Hp, EffectiveMaximumHp);
+    }
 
     public (int ShieldDamage, int HpDamage) TakeDamage(int damage)
     {
@@ -120,6 +143,23 @@ public sealed class PlayerCombatState
         }
     }
 
+    public void ApplyDrawBlockSpeed(TimeSpan duration)
+    {
+        if (duration > DrawBlockSpeedRemaining) DrawBlockSpeedRemaining = duration;
+    }
+
+    public TimeSpan ResolveTargetStun(string targetId, TimeSpan duration)
+    {
+        if (duration <= TimeSpan.Zero) return TimeSpan.Zero;
+        if (!_targetStunWindows.TryGetValue(targetId, out var window))
+        {
+            SetTargetStunWindow(targetId, TimeSpan.FromSeconds(8), 1);
+            return duration;
+        }
+        _targetStunWindows[targetId] = window with { Count = window.Count + 1 };
+        return window.Count == 1 ? duration / 2 : TimeSpan.Zero;
+    }
+
     public void SetFenxian(CardElement? core, int combo)
     {
         LastFenxianCore = core;
@@ -152,7 +192,7 @@ public sealed class PlayerCombatState
         return (charge, draw);
     }
 
-    public int ResolveHeal(int cardHeal)
+    public int ResolveHeal(double cardHeal)
     {
         var value = (double)cardHeal;
         if (HeroClass == HeroClass.Priest)
@@ -164,13 +204,14 @@ public sealed class PlayerCombatState
         return (int)Math.Floor(value * (1 + Equipment.VitalityHealBonus));
     }
 
-    public int ResolveShield(int cardShield)
+    public int ResolveShield(int cardShield, int healthCost = 0)
     {
+        if (cardShield <= 0) return 0;
         var value = (double)cardShield;
         if (HeroClass == HeroClass.Guardian)
         {
-            var hpRatio = Math.Clamp((double)Hp / MaximumHp, 0, 1);
-            value = Math.Floor(value * (1 + 0.45 * hpRatio));
+            var hpRatio = Math.Clamp((double)Math.Max(1, Hp - Math.Max(0, healthCost)) / MaximumHp, 0, 1);
+            value *= 1 + 0.45 * hpRatio;
         }
         value = Math.Floor(value * (1 + Equipment.BulwarkShieldBonus));
         if (HeroClass == HeroClass.Guardian)
@@ -192,10 +233,10 @@ public sealed class PlayerCombatState
         {
             return cardControl;
         }
-        var missingRatio = Math.Clamp(1 - (double)Hp / MaximumHp, 0, 1);
-        var seconds = Math.Floor(cardControl.TotalSeconds * (1 + 0.40 * missingRatio) * 1000) / 1000;
-        seconds = Math.Floor(seconds * (1 + WeaponPercentBonus()) * 1000) / 1000;
-        return TimeSpan.FromSeconds(seconds);
+        var missingRatio = Math.Clamp(1 - (decimal)Hp / MaximumHp, 0, 1);
+        var milliseconds = decimal.Floor((decimal)cardControl.TotalMilliseconds * (1 + .40m * missingRatio));
+        milliseconds = decimal.Floor(milliseconds * (1 + (decimal)WeaponPercentBonus()));
+        return TimeSpan.FromMilliseconds((double)milliseconds);
     }
 
     public void SetTargetStunWindow(string targetId, TimeSpan remaining, int count)
@@ -213,6 +254,7 @@ public sealed class PlayerCombatState
         DrawSpeedModifier = 0;
         StunRemaining = TimeSpan.Zero;
         DrawBlockRemaining = TimeSpan.Zero;
+        DrawBlockSpeedRemaining = TimeSpan.Zero;
         _targetStunWindows.Clear();
     }
 
@@ -223,8 +265,25 @@ public sealed class PlayerCombatState
             return;
         }
 
+        if (drawEnabled)
+        {
+            var boundaries = new[] { TimeSpan.Zero, delta, StunRemaining, DrawBlockRemaining, DrawSpeedRemaining, DrawBlockSpeedRemaining }
+                .Where(value => value >= TimeSpan.Zero && value <= delta).Distinct().Order().ToArray();
+            for (var index = 1; index < boundaries.Length; index++)
+            {
+                var start = boundaries[index - 1];
+                if (start < StunRemaining || start < DrawBlockRemaining) continue;
+                var speed = start < DrawSpeedRemaining ? DrawSpeedModifier : 0;
+                var interval = Math.Clamp(4 * (1 + Equipment.DrawIntervalModifier) * (1 + speed),
+                    Equipment.HasRapidDraw ? 1.5 : 1.8, 6.0);
+                var rate = start < DrawBlockSpeedRemaining ? 2 : 1;
+                Deck.AddCharge((boundaries[index] - start).TotalSeconds / interval * rate, _random);
+            }
+        }
+
         StunRemaining = Reduce(StunRemaining, delta);
         DrawBlockRemaining = Reduce(DrawBlockRemaining, delta);
+        DrawBlockSpeedRemaining = Reduce(DrawBlockSpeedRemaining, delta);
         DrawSpeedRemaining = Reduce(DrawSpeedRemaining, delta);
         if (DrawSpeedRemaining == TimeSpan.Zero)
         {
@@ -244,15 +303,6 @@ public sealed class PlayerCombatState
             }
         }
 
-        if (drawEnabled && StunRemaining == TimeSpan.Zero && DrawBlockRemaining == TimeSpan.Zero)
-        {
-            var minimum = Equipment.HasRapidDraw ? 1.5 : 1.8;
-            var intervalSeconds = Math.Clamp(
-                4 * (1 + Equipment.DrawIntervalModifier) * (1 + DrawSpeedModifier),
-                minimum,
-                6.0);
-            Deck.AddCharge(delta.TotalSeconds / intervalSeconds, _random);
-        }
     }
 
     public PlayerCombatSnapshot Capture() =>
@@ -270,7 +320,8 @@ public sealed class PlayerCombatState
             StunRemaining,
             DrawBlockRemaining,
             _targetStunWindows.Values.OrderBy(value => value.TargetId, StringComparer.Ordinal).ToArray(),
-            Equipment);
+            Equipment,
+            DrawBlockSpeedRemaining);
 
     public void Restore(PlayerCombatSnapshot snapshot)
     {
@@ -291,6 +342,7 @@ public sealed class PlayerCombatState
         DrawSpeedModifier = snapshot.DrawSpeedModifier;
         StunRemaining = snapshot.StunRemaining;
         DrawBlockRemaining = snapshot.DrawBlockRemaining;
+        DrawBlockSpeedRemaining = snapshot.DrawBlockSpeedRemaining;
         _targetStunWindows.Clear();
         foreach (var window in snapshot.TargetStunWindows)
         {

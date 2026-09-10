@@ -1,4 +1,5 @@
 using FantasyCard.Domain.Configuration;
+using FantasyCard.Domain.Combat;
 using FantasyCard.Domain.Rooms;
 
 namespace FantasyCard.Domain.Tests.Configuration;
@@ -10,7 +11,7 @@ public sealed class GameConfigCatalogTests
     {
         var catalog = GameConfigCatalog.Current;
 
-        Assert.Equal("gdd-0.67-shop-rotation-1", catalog.Version);
+        Assert.Equal("gdd-0.67-gameplay-completion-1", catalog.Version);
         Assert.Equal(212, catalog.Cards.Count);
         Assert.Equal(200, catalog.Cards.Count(card => card.IsCodex));
         Assert.Equal(12, catalog.Cards.Count(card => !card.IsCodex));
@@ -28,6 +29,11 @@ public sealed class GameConfigCatalogTests
         Assert.Equal(600, finalLevel.SoulCost);
         Assert.True(finalLevel.RequiresCopy);
         Assert.Equal(0.4, finalLevel.DurationBonus);
+        Assert.True(catalog.Cards.Single(card => card.CardId == "GO10").Effect.IsClassReveal);
+        var voidCore = catalog.Cards.Single(card => card.CardId == "M-VOIDCORE").Effect;
+        Assert.Equal((8, CardElement.Fire, 8, CardElement.Metal, 8),
+            (voidCore.ElementalDamage, voidCore.Element, voidCore.SecondaryElementalDamage,
+                voidCore.SecondaryElement, voidCore.Shield));
     }
 
     [Fact]

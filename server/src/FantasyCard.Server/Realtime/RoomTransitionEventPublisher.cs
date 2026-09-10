@@ -10,6 +10,25 @@ internal sealed class RoomTransitionEventPublisher(
 {
     private BattleRoomSnapshot _previous = initial;
 
+    public async Task ObserveCombatAsync(BattleRoomSnapshot current, IReadOnlyList<CombatFeedbackResolution> feedback)
+    {
+        foreach (var entry in feedback)
+        {
+            var result = entry.Resolution;
+            if (!Guid.TryParse(result.TargetId, out var targetId)) continue;
+            var target = current.Players.SingleOrDefault(player => player.PlayerId == targetId);
+            if (target is null || target.IsBot || targetId == result.AttackerId) continue;
+            var payload = new BattleComboResolvedEventPayload(result.BattleId, result.AttackerId, result.TargetId,
+                result.Damage, result.ShieldDamage, result.HpDamage, result.Heal, result.ShieldGain,
+                result.TargetDefeated, result.BattleEnded,
+                result.DamageSegments?.Select(segment => new CombatDamageSegmentPayload(segment.Kind, segment.Amount)).ToArray(),
+                SourceId: entry.SourceId);
+            var message = eventStore.Create(targetId, "combat.hit", "room-combat", payload, roomRevision: result.RoomRevision);
+            if (connections is not null)
+                await connections.SendPresentationAsync(targetId, message);
+        }
+    }
+
     public async Task ObserveAsync(BattleRoomSnapshot current)
     {
         var previous = _previous;
@@ -75,7 +94,7 @@ internal sealed class RoomTransitionEventPublisher(
 
         if (connections is null) return;
         foreach (var delivery in deliveries)
-            await connections.SendIfConnectedAsync(delivery.PlayerId, delivery.Event, CancellationToken.None);
+            await connections.SendPresentationAsync(delivery.PlayerId, delivery.Event);
 
         void AddIfHuman(RoomPlayerSnapshot player, string type, object payload)
         {

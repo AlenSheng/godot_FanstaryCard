@@ -30,7 +30,8 @@ public sealed record PreparationSnapshotResponse(
     int PotionCount,
     string Difficulty,
     string ConfigVersion,
-    IReadOnlyList<PreparationEquipmentSnapshotResponse>? EquipmentSnapshots = null);
+    IReadOnlyList<PreparationEquipmentSnapshotResponse>? EquipmentSnapshots = null,
+    IReadOnlyList<int>? CardLevels = null);
 
 public sealed record PreparationEquipmentSnapshotResponse(
     Guid InstanceId,

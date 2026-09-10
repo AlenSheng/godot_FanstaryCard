@@ -2,6 +2,10 @@ extends RefCounted
 
 const Art = preload("res://ui/art.gd")
 const P = preload("res://ui/palette.gd")
+const BoundedBar = preload("res://ui/bounded_bar.gd")
+const InventoryView = preload("res://ui/inventory_view.gd")
+const Details = preload("res://ui/equipment_details.gd")
+const BattleDetails = preload("res://ui/battle_details.gd")
 const PANEL := "UI/CardCodex/card_codex_dialog_panel_normal.png"
 const SLOT := "UI/Prep/exploration_prep_backpack_cell_empty_normal.png"
 const ITEM := "UI/Item/exploration_prep_item_icon_"
@@ -13,6 +17,8 @@ static func build(ui: Control, host: Control) -> void:
 		_battle(ui, host, state)
 	elif state.has("reward_choice"):
 		_rewards(ui, host, state.reward_choice)
+	elif host.get_meta("inventory_open", false) and phase == "ActionBar":
+		InventoryView.build(ui, host, state)
 	elif host.get_meta("exploration_map_open", false):
 		_map(ui, host, state)
 	else:
@@ -41,15 +47,13 @@ static func _picture(ui: Control, texture: Texture2D, rect: Rect2) -> TextureRec
 	return node
 
 static func _bar(ui: Control, rect: Rect2, value: float, maximum: float, fill: String, track: String) -> void:
-	var bar := ProgressBar.new()
+	var bar := BoundedBar.new()
+	bar.configure(fill, track)
 	bar.position = rect.position
 	bar.size = rect.size
-	bar.show_percentage = false
 	bar.max_value = maxf(1, maximum)
 	bar.value = value
 	bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	bar.add_theme_stylebox_override("background", Art.style(track))
-	bar.add_theme_stylebox_override("fill", Art.style(fill))
 	ui.add_child(bar)
 
 static func _health(ui: Control, combat: Dictionary, rect: Rect2, enemy: bool = false) -> void:
@@ -64,10 +68,12 @@ static func _passive(ui: Control, hero_class: String, rect: Rect2) -> void:
 	var names := {"Mage": "焚弦", "Priest": "临渊", "Guardian": "载岳"}
 	if not names.has(hero_class): return
 	var descriptions := {"Mage": "同核连放，加快抽牌", "Priest": "生命越低，治疗与控场越强", "Guardian": "生命越高，上盾越厚"}
+	var status: Dictionary = Game.room.get("player", {}).get("battle_status", {})
+	if not status.is_empty(): descriptions[hero_class] = BattleDetails.passive_text(status)
 	var frame: Control = ui.panel(rect)
 	frame.name = "PlayerPassive_" + hero_class
 	frame.mouse_filter = Control.MOUSE_FILTER_PASS
-	frame.tooltip_text = "本命 · %s\n%s" % [names[hero_class], descriptions[hero_class]]
+	frame.tooltip_text = "本命 · %s\n%s" % [names[hero_class], BattleDetails.description(status) if not status.is_empty() else descriptions[hero_class]]
 	var icon: TextureRect = _picture(ui, Art.passive(hero_class), Rect2(rect.position + Vector2(12, 9), Vector2(66, rect.size.y - 18)))
 	icon.name = "PlayerPassiveIcon_" + hero_class
 	ui.text("本命 · " + names[hero_class], Rect2(rect.position + Vector2(89, 8), Vector2(rect.size.x - 100, 36)), 25, P.GOLD)
@@ -77,6 +83,7 @@ static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 	var player: Dictionary = state.get("player", {})
 	var pvp: bool = state.has("duel")
 	_title(ui, "遭遇战" if pvp else "混沌战斗", true)
+	ui.button("战斗属性 / 套装", Rect2(1452, 49, 375, 61), func(): host._show_battle_details(player.get("battle_status", {}))).name = "BattleStats"
 	if pvp:
 		_duel(ui, host, state)
 	else:
@@ -124,20 +131,54 @@ static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 static func _hand(ui: Control, host: Control, state: Dictionary) -> void:
 	var player: Dictionary = state.get("player", {})
 	var hand: Array = player.get("hand", [])
+	_preview(ui)
 	var origin := Vector2(458, 622)
 	for index in range(5):
 		var rect := Rect2(origin + Vector2(index * 232, 0), Vector2(218, 376))
 		if index < hand.size():
 			var card: Dictionary = hand[index]
-			ui.card(host, card.get("card_id", ""), rect, func(): Game.toggle_card(card.instance_id), card.get("instance_id", "") in Game.selected_cards, not Game.allowed("battle.play_cards"))
+			ui.card(host, card.get("card_id", ""), rect, func(): Game.toggle_card(card.instance_id), card.get("instance_id", "") in Game.selected_cards, not Game.allowed("battle.play_cards"), {"level": int(card.get("level", 0)), "element_override": str(card.get("element_override", ""))})
 		else:
 			ui.panel(rect, "UI/Codex/qframe_common.png")
 	ui.button("放", Rect2(1650, 822, 194, 142), Game.play_cards, Game.selected_cards.is_empty() or not Game.allowed("battle.play_cards"), "UI/Battle/battle_play_button.png")
-	ui.picture(Art.texture("UI/Battle/battle_energy_ring.png"), Rect2(77, 843, 84, 84))
+	ui.picture(Art.texture("UI/Battle/battle_energy_ring_clean.png"), Rect2(83, 840, 72, 84))
 	ui.text("抽牌", Rect2(170, 838, 230, 43), 26, P.TEAL)
-	_bar(ui, Rect2(171, 889, 225, 22), clampf(float(player.get("draw_charge", "0")), 0, 1), 1, "UI/Battle/battle_energy_cell_lit.png", "UI/Battle/battle_energy_cell_unlit.png")
+	_bar(ui, Rect2(171, 885, 225, 32), clampf(float(player.get("draw_charge", "0")), 0, 1), 1, "UI/Battle/battle_energy_cell_lit.png", "UI/Battle/battle_energy_cell_unlit.png")
 	ui.text("牌库 %s · 弃牌 %s" % [player.get("library_count", 0), player.get("discard_count", 0)], Rect2(79, 940, 330, 32), 21, P.MUTED)
 	_center(ui.text("已选 %s 张    1–5 选牌 / 空格放出" % Game.selected_cards.size(), Rect2(573, 1005, 765, 36), 23, P.PAPER))
+
+static func _preview(ui: Control) -> void:
+	if Game.selected_cards.is_empty(): return
+	var preview: Dictionary = Game.combat_preview
+	var area := Rect2(460, 572, 1380, 47)
+	var panel: Control = ui.panel(area)
+	panel.name = "CombatPreview"
+	if preview.is_empty():
+		ui.text("正在计算所选牌效果…", Rect2(479, 578, 1000, 33), 22, P.MUTED)
+		return
+	var x := 478.0
+	var core: String = preview.get("core_element", "")
+	var headline := "预览" + (" · %s核×%s" % [P.word(core), preview.get("core_count", 0)] if not core.is_empty() else "")
+	ui.text(headline, Rect2(x, 578, 245, 34), 22, P.GOLD)
+	x += 244
+	for segment in preview.get("damage_segments", []):
+		ui.text("%s %s" % ["直伤" if segment.kind == "Direct" else P.word(segment.kind), segment.amount], Rect2(x, 578, 140, 34), 25, P.ELEMENT.get(segment.kind, Color.WHITE))
+		x += 140
+	for entry in [["heal", "回复", P.TEAL], ["shield_gain", "盾", Color("c4d2d4")]]:
+		if int(preview.get(entry[0], 0)) > 0:
+			ui.text("%s +%s" % [entry[1], preview[entry[0]]], Rect2(x, 578, 149, 34), 24, entry[2])
+			x += 150
+	var effects: Array[String] = []
+	for entry in [["stun_seconds", "眩晕", "秒"], ["draw_block_seconds", "锁抽", "秒"], ["health_cost", "自损", ""], ["immediate_draw", "抽牌", "张"]]:
+		if float(preview.get(entry[0], 0)) > 0: effects.append("%s %s%s" % [entry[1], preview[entry[0]], entry[2]])
+	if float(preview.get("draw_charge", "0")) > 0: effects.append("充能 +%s%%" % Details.percent(float(preview.draw_charge)))
+	if float(preview.get("draw_speed_seconds", "0")) > 0:
+		effects.append("抽牌间隔 %s%% / %s秒" % [Details.percent(float(preview.get("draw_speed_modifier", "0"))), preview.draw_speed_seconds])
+	if float(preview.get("draw_block_speed_seconds", "0")) > 0: effects.append("充能×2 / %s秒" % preview.draw_block_speed_seconds)
+	var tail: Label = ui.text(" · ".join(effects), Rect2(x, 578, maxf(1, 1824 - x), 34), 20, P.PAPER)
+	tail.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	panel.mouse_filter = Control.MOUSE_FILTER_PASS
+	panel.tooltip_text = "扣盾 %s · 扣血 %s\n%s\n按当前战斗状态结算，状态变化后会重新计算" % [preview.get("shield_damage", 0), preview.get("hp_damage", 0), " · ".join(effects)]
 
 static func _duel(ui: Control, host: Control, state: Dictionary) -> void:
 	var player: Dictionary = state.player
@@ -147,21 +188,23 @@ static func _duel(ui: Control, host: Control, state: Dictionary) -> void:
 	ui.text(P.CLASSES.get(player.get("hero_class", Game.hero_class), P.CLASSES.Mage)[0], Rect2(372, 161, 422, 53), 38, P.GOLD)
 	_health(ui, player.get("combat", {}), Rect2(370, 229, 409, 120))
 	ui.picture(Art.texture("UI/Encounter/encounter_vs_emblem_normal.png"), Rect2(855, 153, 216, 193))
-	var opponent: Control = _picture(ui, Art.texture("UI/Encounter/encounter_enemy_frame_normal.png"), Rect2(1516, 142, 268, 308))
+	var opponent_class: String = duel.get("opponent_class", "")
+	var opponent: Control = _picture(ui, Art.portrait(opponent_class) if P.CLASSES.has(opponent_class) else Art.texture("UI/Encounter/encounter_enemy_frame_normal.png"), Rect2(1516, 142, 268, 308))
 	host._combat_panels[duel.get("opponent_id", "")] = opponent
-	_center(ui.text("同格旅人", Rect2(1535, 242, 233, 72), 34, P.GOLD))
-	ui.text("对手", Rect2(1129, 161, 340, 53), 38, P.GOLD)
+	ui.text(duel.get("opponent_name", "同格旅人") + " · " + P.word(opponent_class), Rect2(1129, 161, 380, 53), 31, P.GOLD)
+	ui.button("对手属性", Rect2(1534, 462, 252, 55), func(): host._show_battle_details(duel.get("opponent_status", {})))
 	_health(ui, duel.get("opponent", {}), Rect2(1128, 229, 358, 120), true)
 	var seconds: float = maxf(0, (float(duel.get("leave_window_ends_at_unix_ms", 0)) - Time.get_unix_time_from_system() * 1000) / 1000)
 	ui.button("已请求离开" if duel.get("self_requested_leave", false) else "双方离开", Rect2(400, 398, 350, 66), func(): Game.command("duel.leave", {"duel_id": duel.duel_id}), not Game.allowed("duel.leave"))
 	if seconds > 0: _center(ui.text("离开窗口 %.1f 秒" % seconds, Rect2(400, 480, 350, 44), 26, P.GOLD))
 	ui.button("强制逃脱", Rect2(803, 395, 310, 70), func(): Game.command("duel.escape", {"duel_id": duel.duel_id}), not Game.allowed("duel.escape"))
+	if not str(duel.get("escape_probability", "")).is_empty():
+		ui.text("成功率 %s%%" % Details.percent(float(duel.escape_probability)), Rect2(812, 353, 308, 37), 23, P.MUTED)
 	if duel.has("escape_remaining_ms"):
 		_center(ui.text("逃脱中 %.1f 秒" % (float(duel.escape_remaining_ms) / 1000), Rect2(803, 480, 310, 44), 27, P.TEAL))
 	if not Game.allowed("battle.play_cards"):
 		ui.picture(Art.texture("UI/Encounter/encounter_lock_icon_normal.png"), Rect2(1290, 443, 47, 48))
 		ui.text("等待行动", Rect2(1350, 443, 330, 48), 26, P.GOLD)
-	# The opponent's class and hand are private in the current snapshot.
 	ui.text("自己的手牌", Rect2(80, 622, 330, 54), 34, P.GOLD)
 	_passive(ui, player.get("hero_class", ""), Rect2(80, 703, 330, 117))
 
@@ -208,7 +251,7 @@ static func _map(ui: Control, host: Control, state: Dictionary) -> void:
 		ui.text(["首领", "源泉", "自己"][index], Rect2(1535, 394 + index * 114, 220, 55), 34, tint)
 	ui.text("高亮邻格可前往", Rect2(1431, 725, 330, 38), 24, P.GOLD)
 	ui.text("向内探索后无法返回外层。\n源泉常亮，可规划补给路线。", Rect2(80, 265, 293, 171), 26, P.MUTED)
-	ui.button("返回当前格", Rect2(80, 985, 262, 56), func(): host.set_meta("exploration_map_open", false); host._schedule_render())
+	ui.button("返回", Rect2(80, 985, 262, 56), func(): host.set_meta("exploration_map_open", false); host._schedule_render())
 
 static func _actions(ui: Control, host: Control, state: Dictionary) -> void:
 	_title(ui, "当前格行动")
@@ -221,7 +264,8 @@ static func _actions(ui: Control, host: Control, state: Dictionary) -> void:
 	var inventory: Array = player.get("inventory", [])
 	ui.panel(Rect2(1228, 158, 574, 363))
 	ui.text("临时行囊", Rect2(1268, 182, 480, 54), 34, P.GOLD)
-	ui.text("已用 %s 格" % inventory.size(), Rect2(1268, 240, 466, 40), 25, P.PAPER)
+	ui.text("已用 %s / %s 格" % [inventory.size(), player.get("inventory_capacity", 0)], Rect2(1268, 240, 466, 40), 25, P.PAPER)
+	ui.button("打开行囊", Rect2(1556, 180, 206, 52), func(): InventoryView.open(host), not Game.allowed("inventory.move")).name = "OpenInventory"
 	for index in range(mini(6, inventory.size())):
 		var item: Dictionary = inventory[index]
 		var x: float = 1268 + index % 3 * 162
@@ -232,29 +276,40 @@ static func _actions(ui: Control, host: Control, state: Dictionary) -> void:
 	var actions: Array = []
 	for action in ["action.spring", "action.potion", "action.extract"]:
 		if Game.allowed(action): actions.append(action)
-	var piles: Array = state.get("current_cell", {}).get("relic_pile_ids", [])
-	if not piles.is_empty(): actions.append("relic")
+	var piles: Array = state.get("current_cell", {}).get("relic_piles", [])
 	actions.append("map")
-	ui.panel(Rect2(80, 571, 1758, 393))
-	_center(ui.text("选择接下来的行动", Rect2(610, 539, 680, 82), 43, P.GOLD))
-	var start: float = 960 - actions.size() * 286.0 / 2
+	ui.panel(Rect2(80, 539, 1758, 425)).name = "ActionPanel"
+	_center(ui.text("选择接下来的行动", Rect2(610, 558, 680, 62), 40, P.GOLD)).name = "ActionTitle"
+	var scroll: ScrollContainer = ui._scroll(Rect2(107, 632, 1702, 300), true)
+	var strip := HBoxContainer.new()
+	strip.add_theme_constant_override("separation", 22)
+	scroll.add_child(strip)
+	for pile in piles: actions.append("relic:" + str(pile.pile_id))
 	for index in range(actions.size()):
 		var action: String = actions[index]
-		var rect := Rect2(start + index * 286, 639, 264, 278)
-		var title: String = {"action.spring": "饮用生命泉水", "action.potion": "使用生命药剂", "action.extract": "撤离", "map": "走邻格", "relic": "遗物 %s 堆" % piles.size()}[action]
+		var tile: Control = ui.get_script().new()
+		tile.custom_minimum_size = Vector2(264, 278)
+		strip.add_child(tile)
+		var rect := Rect2(0, 0, 264, 278)
+		var relic: bool = action.begins_with("relic:")
+		var title: String = {"action.spring": "饮用生命泉水", "action.potion": "使用生命药剂", "action.extract": "撤离", "map": "走邻格"}.get(action, "")
 		var callback: Callable = func(): Game.command(action)
 		if action == "map": callback = func(): host.set_meta("exploration_map_open", true); host._schedule_render()
-		var action_name: String = action.trim_prefix("action.")
-		var action_button: Button = ui.button("", rect, callback, action == "relic", SLOT)
+		if relic:
+			var pile_id := action.trim_prefix("relic:")
+			for pile in piles:
+				if pile.pile_id == pile_id: title = str(pile.get("owner_name", "旅人")) + "的遗物"; break
+			callback = func(): InventoryView.open(host, pile_id)
+		var action_name: String = "relic" if relic else action.trim_prefix("action.")
+		var action_button: Button = tile.button("", rect, callback, relic and not Game.allowed("relic.read"), SLOT)
 		action_button.name = "Action_" + action_name
-		var key: String = {"action.spring": "UI/Action/spring_clean.png", "action.potion": ITEM + "potion.png", "action.extract": "UI/Action/extract_gate_clean.png", "relic": "UI/Action/relic_pile_clean.png"}.get(action, "")
+		var key: String = {"action.spring": "UI/Action/spring_clean.png", "action.potion": ITEM + "potion.png", "action.extract": "UI/Action/extract_gate_clean.png"}.get(action, "UI/Action/relic_pile_clean.png" if relic else "")
 		if key.is_empty():
-			_center(ui.text("→", Rect2(rect.position + Vector2(55, 27), Vector2(154, 149)), 96, P.TEAL))
+			_center(tile.text("→", Rect2(rect.position + Vector2(55, 27), Vector2(154, 149)), 96, P.TEAL))
 		else:
-			var icon: TextureRect = _picture(ui, Art.texture(key), Rect2(rect.position + Vector2(42, 20), Vector2(180, 160)))
+			var icon: TextureRect = _picture(tile, Art.texture(key), Rect2(rect.position + Vector2(42, 20), Vector2(180, 160)))
 			icon.name = "ActionIcon_" + action_name
-		_center(ui.text(title, Rect2(rect.position + Vector2(12, 183), Vector2(240, 44)), 28, P.PAPER))
-		if action == "relic": _center(ui.text("暂不可拾取", Rect2(rect.position + Vector2(12, 230), Vector2(240, 35)), 21, P.MUTED))
+		_center(tile.text(title, Rect2(rect.position + Vector2(12, 183), Vector2(240, 75)), 26, P.PAPER))
 	for key in ["extraction_remaining_ms", "spring_remaining_ms"]:
 		if state.has(key):
 			_center(ui.text(("撤离中 " if key.begins_with("extraction") else "饮用泉水 ") + "%.1f 秒" % (float(state[key]) / 1000), Rect2(615, 453, 560, 67), 36, P.TEAL))
@@ -272,7 +327,7 @@ static func _rewards(ui: Control, host: Control, reward: Dictionary) -> void:
 	_title(ui, "战利品三选一")
 	var options: Array = reward.get("options", [])
 	for index in range(3):
-		var rect := Rect2(285 + index * 458, 226, 424, 564)
+		var rect := Rect2(285 + index * 458, 226, 424, 588)
 		ui.panel(rect)
 		if index >= options.size():
 			_center(ui.text("等待战利品", Rect2(rect.position + Vector2(24, 220), Vector2(376, 70)), 32, P.MUTED))
@@ -281,12 +336,20 @@ static func _rewards(ui: Control, host: Control, reward: Dictionary) -> void:
 		var kind: int = int(option.get("kind", 0))
 		var title: String = {1: "装备", 2: "碎片堆", 3: "即时回血"}.get(kind, "战利品")
 		_center(ui.text(title, Rect2(rect.position + Vector2(24, 28), Vector2(376, 62)), 42, P.PAPER))
-		var key: String = {1: "UI/Enhance/armor_chest_art.png", 2: ITEM + "fragments.png"}.get(kind, "")
-		if kind == 3: _center(ui.text("+", Rect2(rect.position + Vector2(67, 114), Vector2(290, 259)), 156, P.TEAL))
-		else: ui.picture(Art.texture(key), Rect2(rect.position + Vector2(67, 114), Vector2(290, 259)))
-		var description: String = "%s%% 生命" % option.get("heal_percent", 0) if kind == 3 else "数量 ×%s" % option.get("quantity", 0)
-		_center(ui.text(description, Rect2(rect.position + Vector2(25, 382), Vector2(374, 63)), 33, P.TEAL))
-		ui.button("选择", Rect2(rect.position + Vector2(59, 460), Vector2(306, 69)), func(): host._claim(option), not Game.allowed("reward.choice.claim"))
+		var item := {"kind": "Equipment", "equipment": option.get("equipment", {})}
+		if kind == 3: _center(ui.text("+", Rect2(rect.position + Vector2(112, 103), Vector2(200, 165)), 120, P.TEAL))
+		else: ui.picture(_item_icon(item) if kind == 1 else Art.texture(ITEM + "fragments.png"), Rect2(rect.position + Vector2(127, 103), Vector2(170, 165)))
+		var description: String = "数量 ×%s" % option.get("quantity", 0)
+		if kind == 1: description = Details.description(item)
+		elif kind == 3:
+			var combat: Dictionary = Game.room.get("player", {}).get("combat", {})
+			var maximum: int = int(combat.get("maximum_hp", 0))
+			var amount: int = mini(maxi(0, int(combat.get("effective_maximum_hp", maximum)) - int(combat.get("hp", 0))), int(maximum * int(option.get("heal_percent", 0)) / 100.0))
+			description = "%s%% 最大生命 · 预计回复 %s" % [option.get("heal_percent", 0), amount]
+		ui.text(description, Rect2(rect.position + Vector2(25, 281), Vector2(374, 168)), 23, P.TEAL)
+		ui.button("收入背包" if kind != 3 else "立即回复", Rect2(rect.position + Vector2(25, 459), Vector2(374, 61)), func(): host._claim(option), not Game.allowed("reward.choice.claim"))
+		if kind == 1:
+			ui.button("对比 / 直接穿戴", Rect2(rect.position + Vector2(25, 525), Vector2(374, 58)), func(): host._show_equipment_details(item, func(): host._claim(option, true), "直接穿戴（回收旧装）"), not Game.allowed("reward.choice.claim"))
 	var count: int = clampi(int(reward.get("refresh_count", 0)), 0, 3)
 	ui.text("本局刷新 %s / 3" % count, Rect2(311, 840, 370, 66), 31, P.GOLD)
 	ui.button("刷新 %s 金币" % [60, 180, 450][mini(count, 2)] if count < 3 else "刷新已用尽", Rect2(746, 830, 425, 91), func(): Game.command("reward.choice.refresh"), count >= 3 or not Game.allowed("reward.choice.refresh"))
@@ -304,7 +367,7 @@ static func build_settlement(ui: Control, _host: Control) -> void:
 		ui.text(title, Rect2(633, y, 390, 52), 30, P.PAPER)
 		ui.text(str(details[key]), Rect2(1113, y, 170, 52), 32, P.GOLD)
 		y += 55
-	ui.button("收下结算，返回营地", Rect2(649, 754, 625, 81), Game.acknowledge_settlement, Game.busy)
+	ui.button("返回", Rect2(649, 754, 625, 81), Game.acknowledge_settlement, Game.busy)
 
 static func show_midlayer(ui: Control, host: Control, row: int, column: int) -> void:
 	var overlay := Control.new()
@@ -322,6 +385,7 @@ static func show_midlayer(ui: Control, host: Control, row: int, column: int) -> 
 	for entry in [["进入中层", 54, 285], ["进入后不能退回外层", 30, 433], ["随机撤离点不会显示在小地图", 30, 526], ["源泉常亮，可规划绕路回血", 30, 619]]:
 		var label := Label.new()
 		label.text = entry[0]
+		label.add_theme_font_override("font", P.font_for_text(entry[0], entry[1]))
 		label.position = Vector2(583, entry[2])
 		label.size = Vector2(754, 76)
 		label.add_theme_font_size_override("font_size", entry[1])

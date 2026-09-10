@@ -4,6 +4,12 @@ const P = preload("res://ui/palette.gd")
 const Art = preload("res://ui/art.gd")
 const CardView = preload("res://ui/card_view.gd")
 const ReferenceUI = preload("res://ui/reference_ui.gd")
+const BoundedBar = preload("res://ui/bounded_bar.gd")
+const EquipmentDetails = preload("res://ui/equipment_details.gd")
+const InventoryView = preload("res://ui/inventory_view.gd")
+const CardDetails = preload("res://ui/card_details.gd")
+const BattleDetails = preload("res://ui/battle_details.gd")
+const AudioSettings = preload("res://ui/audio_settings.gd")
 const CATALOG = preload("res://data/catalog.json")
 const DESCRIPTIONS = preload("res://data/card_descriptions.json")
 var screen := "hall"
@@ -37,6 +43,13 @@ var _market_item := ""
 var _shop_inventory_ready := false
 var _market_price := 100
 var _view_cell := ""
+var _codex_card := ""
+var _codex_scroll := 0
+var _codex_deck_scroll := 0
+var _codex_ready := false
+var _codex_mutating := false
+var _enhancement_quote: Dictionary = {}
+var _enhancement_quote_key := ""
 
 func _ready() -> void:
 	theme = P.theme()
@@ -46,6 +59,9 @@ func _ready() -> void:
 	Game.notice.connect(_toast)
 	Game.combat_feedback.connect(_feedback)
 	_build_shell()
+	var audio_settings := AudioSettings.new()
+	audio_settings.name = "AudioSettings"
+	add_child(audio_settings)
 	_render()
 
 func _build_shell() -> void:
@@ -82,7 +98,7 @@ func _build_shell() -> void:
 	scroll.add_child(content)
 	toast_label = _label(self, "", 20, P.GOLD)
 	toast_label.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-	toast_label.offset_left = 48
+	toast_label.offset_left = 260
 	toast_label.offset_right = -600
 	toast_label.offset_top = -40
 	toast_label.offset_bottom = -4
@@ -101,6 +117,8 @@ func _render() -> void:
 	var room_cell := "%s:%s:%s" % [Game.room.get("room_id", ""), Game.room.get("self", {}).get("row", -1), Game.room.get("self", {}).get("column", -1)]
 	if room_cell != _view_cell or Game.room.get("player", {}).get("phase", "") != "ActionBar":
 		set_meta("exploration_map_open", false)
+		for key in ["inventory_open", "relic_pile", "inventory_selected", "relic_selected"]:
+			if has_meta(key): remove_meta(key)
 		if has_meta("pending_move"): remove_meta("pending_move")
 	_view_cell = room_cell
 	if is_instance_valid(_reference):
@@ -127,6 +145,9 @@ func _render() -> void:
 		var scene_path := "res://assets/scenes/dungeon_battle.png" if not Game.room.is_empty() else "res://assets/scenes/camp_hall.png"
 		if ResourceLoader.exists(scene_path):
 			_background.texture = load(scene_path)
+			_background.modulate = Color.WHITE
+		if screen == "cards" and Game.room.is_empty() and Game.settlement.is_empty():
+			_background.texture = Art.texture("UI/CardCodex/card_codex_background_normal.png")
 			_background.modulate = Color.WHITE
 		_reference = ReferenceUI.new()
 		add_child(_reference)
@@ -162,6 +183,7 @@ func _render() -> void:
 
 func _label(parent: Node, text: String, size: int = 24, color: Color = P.PAPER) -> Label:
 	var node := Label.new()
+	node.add_theme_font_override("font", P.font_for_text(text, size))
 	node.text = text
 	node.add_theme_font_size_override("font_size", size)
 	node.add_theme_color_override("font_color", color)
@@ -205,13 +227,18 @@ func _login() -> void:
 	name_input.max_length = 20
 	name_input.text_changed.connect(func(value): _login_name = value)
 	panel.add_child(name_input)
-	_label(panel, "本地开发服务器", 22, P.MUTED)
+	_label(panel, "服务器地址", 22, P.MUTED)
 	var address := LineEdit.new()
 	address.text = _login_address
 	address.text_changed.connect(func(value): _login_address = value)
 	panel.add_child(address)
-	_button(panel, "正在连接…" if Game.busy else "进入营地", func(): Game.login(_login_address.strip_edges(), _login_name.strip_edges()), Game.busy)
-	_label(panel, "本地开发登录 · Steam 登录尚未接入", 20, P.MUTED)
+	if Game.platform.local_login_enabled():
+		_button(panel, "正在连接…" if Game.busy else "本地验证登录", func(): Game.login(_login_address.strip_edges(), _login_name.strip_edges()), Game.busy)
+	var steam_reason: String = Game.platform.login_unavailable_reason()
+	_button(panel, "Steam 登录", func(): Game.login_steam(_login_address.strip_edges(), _login_name.strip_edges()), Game.busy or not steam_reason.is_empty())
+	if not steam_reason.is_empty(): _label(panel, steam_reason, 20, P.MUTED)
+	if not Game.authentication_reason.is_empty(): _label(panel, Game.authentication_reason, 22, P.GOLD)
+	if not Game.configuration_error.is_empty(): _label(panel, Game.configuration_error, 22, P.GOLD)
 	var about := _panel(row, 680)
 	_label(about, "每一次深入，都是新的抉择", 34, P.GOLD)
 	for value in ["三种职业 · 一套属于你的二十张牌", "五行连放 · 实时抽牌与目标选择", "只向内探索 · 在战斗与撤离之间取舍"]:
@@ -228,7 +255,12 @@ func _nav() -> void:
 func _navigate(value: String) -> void:
 	screen = value
 	edit_mode = false
+	_codex_card = ""
+	_codex_scroll = 0
+	_enhancement_quote_key = ""
+	_enhancement_quote = {}
 	if value == "shop": _shop_inventory_ready = false
+	if value == "cards": _codex_ready = false
 	if value in ["cards", "gear", "enhance", "shop", "market", "prep"]:
 		screen_loading = true
 		_render()
@@ -236,7 +268,10 @@ func _navigate(value: String) -> void:
 		var result: Dictionary = await Game.gateway.request("/api/v1" + path)
 		if result.ok:
 			match value:
-				"cards": owned = result.data; deck_draft = Game.deck().get("cardIds", []).duplicate()
+				"cards":
+					owned = result.data
+					_codex_ready = true
+					deck_draft = Game.deck().get("cardIds", []).duplicate()
 				"gear", "enhance", "prep":
 					inventory = result.data
 					gear_draft = Game.loadout().get("equipmentIds", []).duplicate()
@@ -337,13 +372,14 @@ func _ready_screen() -> void:
 	_label(panel, "确认剩余 %s 秒" % remaining, 32, P.TEAL)
 	_button(panel, "准备就绪", func(): Game.gateway.send("room.ready"), not Game.gateway.online)
 
-func _card_text(id: String) -> String:
-	var info: Dictionary = cards.get(id, {})
+func _card_text(id: String, level: int = 0, element_override: String = "") -> String:
+	var info: Dictionary = CardDetails.with_element(cards.get(id, {}), element_override)
 	var source: String = info.get("source", "")
 	var badge := "怪" if not info.get("is_codex", true) else P.word(info.get("hero_class", ""))
 	var name: String = info.get("name", id)
 	var descriptions: Dictionary = DESCRIPTIONS.data.get("zh-CN", DESCRIPTIONS.data.get("zh", {}))
 	var description: String = descriptions.get("card.face.desc." + id, "")
+	if level > 0 or not element_override.is_empty(): description = CardDetails.effect_text(CardDetails.at_level(info, level))
 	if description.is_empty():
 		var lines: Array = []
 		for key in ["elemental_damage", "direct_damage", "heal", "shield"]:
@@ -352,13 +388,56 @@ func _card_text(id: String) -> String:
 		description = " / ".join(lines)
 	return "%s %s\n%s\n\n%s" % [badge, name, P.word(info.get("quality", "")) if source != "Monster" else "暗红 · 本局", description]
 
-func _card_button(parent: Node, id: String, callback: Callable, selected: bool = false, disabled: bool = false) -> Button:
+func _card_button(parent: Node, id: String, callback: Callable, selected: bool = false, disabled: bool = false, options: Dictionary = {}) -> Button:
 	var button := CardView.new()
+	button.set_meta("sound_cue", "" if options.get("preview", false) else "card_select")
 	button.disabled = disabled
 	button.pressed.connect(callback)
 	parent.add_child(button)
-	button.configure(id, cards.get(id, {}), _card_text(id), selected)
+	var element_override: String = options.get("element_override", "")
+	button.configure(id, CardDetails.with_element(cards.get(id, {}), element_override), _card_text(id, int(options.get("level", 0)), element_override), selected, options)
 	return button
+
+func _owned_card(id: String) -> Dictionary:
+	for entry in owned:
+		if entry.get("cardId") == id: return entry
+	return {}
+
+func _card_material(kind: String) -> int:
+	var field := kind.left(1).to_lower() + kind.substr(1)
+	return int(Game.lobby.get("materials", {}).get(field, 0))
+
+func _card_action(id: String, action: String) -> void:
+	if Game.busy or _codex_mutating or not _codex_ready: return
+	var entry := _owned_card(id)
+	if entry.is_empty() or not entry.has("craftCost"): return
+	if action == "dismantle" and deck_draft.count(id) >= int(entry.get("copyCount", 0)):
+		_toast("当前编组正在使用这张卡，请先从编组移除")
+		return
+	_codex_mutating = true
+	Game.busy = true
+	_render()
+	var generation: int = Game.gateway.session_generation
+	var result: Dictionary = await Game.gateway.request("/api/v1/cards/%s/%s" % [id.uri_encode(), action], HTTPClient.METHOD_POST, {"expectedVersion": int(entry.get("version", 0))})
+	if not _session_result_current(generation, result):
+		_codex_mutating = false
+		return
+	if result.ok:
+		if result.data.get("materials") is Dictionary: Game.lobby["materials"] = result.data.materials
+		Sound.play_cue("upgrade" if action == "upgrade" else "reward")
+		_toast({"craft": "合成成功，已获得 1 张卡牌", "dismantle": "分解成功，材料已返还", "upgrade": "升级成功，卡牌效果已提升"}.get(action, "操作完成"))
+	else: Sound.play_cue("error")
+	var refreshed: Dictionary = await Game.gateway.request("/api/v1/cards")
+	if not _session_result_current(generation, refreshed):
+		_codex_mutating = false
+		return
+	_codex_ready = refreshed.ok
+	if refreshed.ok: owned = refreshed.data
+	await Game.refresh_lobby()
+	_codex_mutating = false
+	if not _session_result_current(generation): return
+	Game.busy = false
+	_render()
 
 func _codex() -> void:
 	var header := _row(content)
@@ -389,10 +468,26 @@ func _codex() -> void:
 		button.tooltip_text += "\n已编入 %s / 持有 %s · 等级 %s" % [deck_draft.count(id), card.copyCount, card.level]
 
 func _save_deck() -> void:
-	await _mutate("/decks/" + Game.hero_class, HTTPClient.METHOD_PUT, {"cardIds": deck_draft, "expectedVersion": Game.deck().get("version", 0)})
+	if Game.busy: return
+	Game.busy = true
+	_render()
+	var generation: int = Game.gateway.session_generation
+	var result: Dictionary = await Game.gateway.request("/api/v1/decks/" + Game.hero_class, HTTPClient.METHOD_PUT, {"cardIds": deck_draft, "expectedVersion": Game.deck().get("version", 0)})
+	if not _session_result_current(generation, result): return
+	await Game.refresh_lobby()
+	if not _session_result_current(generation): return
+	var refreshed: Dictionary = await Game.gateway.request("/api/v1/cards")
+	if not _session_result_current(generation, refreshed): return
+	_codex_ready = refreshed.ok
+	if refreshed.ok: owned = refreshed.data
+	Game.busy = false
+	if result.ok:
+		Sound.play_cue("equip")
+		_toast("编组已保存")
+	_render()
 
 func _equipment_name(item: Dictionary) -> String:
-	return "%s%s %s +%s" % [P.word(item.get("quality", "")), P.word(item.get("element", "")), P.word(item.get("slot", "装备")), item.get("level", 0)]
+	return EquipmentDetails.title(item)
 
 func _equipment() -> void:
 	_label(content, "行装与本命", 44, P.GOLD)
@@ -402,7 +497,7 @@ func _equipment() -> void:
 	var top := _row(content)
 	Art.image(top, Art.texture("UI/Item/exploration_prep_item_icon_weapon_%s.png" % Game.hero_class.to_lower()), Vector2(80, 100))
 	_label(top, "锁定 · %s  +%s" % [P.CLASSES[Game.hero_class][1], weapon.get("level", 0)], 30, P.GOLD)
-	_button(top, "强化专属武器", func(): _confirm("专属武器强化仅消耗装备碎片。", func(): _mutate("/class-weapons/" + Game.hero_class + "/enhance", HTTPClient.METHOD_POST, {"expectedVersion": weapon.get("version", 0)})), Game.busy or int(weapon.get("level", 0)) >= 5)
+	_button(top, "强化专属武器", _enhance_weapon, Game.busy or int(weapon.get("level", 0)) >= 5)
 	_label(content, "装备碎片 %s" % Game.lobby.get("materials", {}).get("equipmentFragments", 0), 24, P.MUTED)
 	var slot_names := ["头部", "胸甲", "手部", "腿部", "鞋子"]
 	var row := _row(content)
@@ -430,22 +525,96 @@ func _equip(item: Dictionary) -> void:
 	gear_draft[slots[item.slot]] = item.instanceId
 	_render()
 
+func _comparison(item: Dictionary) -> String:
+	var gear: Dictionary = EquipmentDetails.equipment(item)
+	var worn: Array = Game.room.get("player", {}).get("equipped_items", []) if not Game.room.is_empty() else inventory.get("equipments", []).filter(func(value): return value.get("instanceId", "") in gear_draft)
+	var current: Dictionary = {}
+	for candidate in worn:
+		if EquipmentDetails.equipment(candidate).get("slot", "") == gear.get("slot", ""):
+			current = candidate
+			break
+	return "所选装备\n%s\n\n当前同部位\n%s" % [EquipmentDetails.description(item), "未穿戴" if current.is_empty() else EquipmentDetails.description(current)]
+
+func _show_equipment_details(item: Dictionary, action: Callable = Callable(), action_title: String = "穿戴") -> void:
+	var dialog := AcceptDialog.new()
+	dialog.title = "装备对比"
+	var column := VBoxContainer.new()
+	column.custom_minimum_size.x = 680
+	dialog.add_child(column)
+	_label(column, _comparison(item), 24)
+	if action.is_valid(): _button(column, action_title, func(): dialog.queue_free(); action.call(), Game.busy)
+	add_child(dialog)
+	dialog.confirmed.connect(dialog.queue_free)
+	dialog.canceled.connect(dialog.queue_free)
+	dialog.popup_centered(Vector2i(750, 690))
+
+func _show_battle_details(status: Dictionary) -> void:
+	var dialog := AcceptDialog.new()
+	dialog.title = "当前战斗属性与套装"
+	dialog.dialog_text = BattleDetails.description(status) if not status.is_empty() else "等待战斗属性同步"
+	add_child(dialog)
+	dialog.confirmed.connect(dialog.queue_free)
+	dialog.canceled.connect(dialog.queue_free)
+	dialog.popup_centered(Vector2i(700, 630))
+
 func _enhance(item: Dictionary) -> void:
-	var body := {"expectedVersion": item.version}
-	if int(item.level) < 3:
-		_confirm("确认消耗装备碎片强化这件装备？", func(): _mutate("/equipment/" + item.instanceId + "/enhance", HTTPClient.METHOD_POST, body))
+	if Game.busy: return
+	var result: Dictionary = await Game.gateway.request("/api/v1/equipment/" + item.instanceId + "/enhancement-quote")
+	if not result.ok: return
+	var quote: Dictionary = result.data
+	if not quote.get("canEnhance", false): _toast("无法强化：碎片、同品质材料或物品状态不满足要求"); return
+	var body := {"expectedVersion": quote.expectedVersion}
+	var cost_text := "消耗 %s 装备碎片，强化到 +%s" % [quote.fragmentCost, quote.nextLevel]
+	if int(quote.materialCount) == 0:
+		_confirm(cost_text + "？", func(): _mutate("/equipment/" + item.instanceId + "/enhance", HTTPClient.METHOD_POST, body))
 		return
 	var dialog := AcceptDialog.new()
 	dialog.title = "选择强化材料 · 材料将被消耗"
+	var scroll := ScrollContainer.new()
+	scroll.custom_minimum_size = Vector2(720, 390)
+	dialog.add_child(scroll)
 	var column := VBoxContainer.new()
-	dialog.add_child(column)
+	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(column)
+	_label(column, cost_text + "，另需同品质防具 ×1", 24)
+	var count := 0
 	for material in inventory.get("equipments", []):
 		if material.instanceId == item.instanceId or material.get("location") != "Inventory" or material.quality != item.quality: continue
-		_button(column, _equipment_name(material), func(): body.materialEquipmentId = material.instanceId; dialog.queue_free(); _confirm("材料装备会被消耗，确认强化？", func(): _mutate("/equipment/" + item.instanceId + "/enhance", HTTPClient.METHOD_POST, body)))
-	if column.get_child_count() == 0: _label(column, "没有可用的同品质仓库材料。")
+		count += 1
+		_button(column, _equipment_name(material), func(): body.materialEquipmentId = material.instanceId; dialog.queue_free(); _confirm(cost_text + "，并消耗 " + _equipment_name(material) + "？", func(): _mutate("/equipment/" + item.instanceId + "/enhance", HTTPClient.METHOD_POST, body)))
+	if count == 0: _label(column, "没有可用的同品质仓库材料。")
 	add_child(dialog)
 	dialog.popup_centered(Vector2i(750, 360))
 	dialog.confirmed.connect(dialog.queue_free)
+	dialog.canceled.connect(dialog.queue_free)
+
+func _enhance_weapon() -> void:
+	if Game.busy: return
+	var hero_class: String = Game.hero_class
+	var result: Dictionary = await Game.gateway.request("/api/v1/class-weapons/" + hero_class + "/enhancement-quote")
+	if not result.ok: return
+	var quote: Dictionary = result.data
+	if not quote.get("canEnhance", false): _toast("无法强化：碎片不足或已达最高等级"); return
+	_confirm("消耗 %s 装备碎片，将本命武器强化到 +%s？" % [quote.fragmentCost, quote.nextLevel], func(): _mutate("/class-weapons/" + hero_class + "/enhance", HTTPClient.METHOD_POST, {"expectedVersion": quote.expectedVersion}))
+
+func _read_enhancement_quote(item: Dictionary, weapon: Dictionary) -> void:
+	var id: String = item.get("instanceId", Game.hero_class)
+	var key := "%s:%s" % [id, item.get("version", weapon.get("version", 0))]
+	if key == _enhancement_quote_key: return
+	_enhancement_quote_key = key
+	_enhancement_quote = {}
+	var prefix := "/equipment/" if not item.is_empty() else "/class-weapons/"
+	var result: Dictionary = await Game.gateway.request("/api/v1" + prefix + id + "/enhancement-quote")
+	if key != _enhancement_quote_key or screen != "enhance": return
+	_enhancement_quote = result.data if result.ok else {"error": true}
+	_schedule_render()
+
+func _weapon_benefit(level: int) -> String:
+	var percent: int = [6, 8, 10, 11, 13, 14][clampi(level, 0, 5)]
+	match Game.hero_class:
+		"Priest": return "治疗 +%s%%" % percent
+		"Mage": return "焚弦额外充能 +%s%%（总充能上限 50%%）" % percent
+		_: return "上盾额外 +%s" % (3 if level >= 4 else (2 if level >= 2 else 1))
 
 func _shop() -> void:
 	_label(content, "旅人补给", 44, P.GOLD)
@@ -490,11 +659,23 @@ func _market() -> void:
 func _mutate(path: String, method: int, body: Variant = null) -> void:
 	if Game.busy: return
 	Game.busy = true
+	var generation: int = Game.gateway.session_generation
 	var result: Dictionary = await Game.gateway.request("/api/v1" + path, method, body)
-	if result.ok: _toast("操作成功")
+	if not _session_result_current(generation, result): return
+	if result.ok:
+		var cue := "equip"
+		if path.ends_with("/enhance"): cue = "upgrade"
+		elif path == "/shop/purchases" or path.contains("/purchase?"): cue = "purchase"
+		Sound.play_cue(cue)
+		_toast("操作成功")
+	else: Sound.play_cue("error")
 	await Game.refresh_lobby()
+	if not _session_result_current(generation): return
 	Game.busy = false
 	await _navigate(screen)
+
+func _session_result_current(generation: int, result: Dictionary = {}) -> bool:
+	return generation == Game.gateway.session_generation and not result.get("stale_session", false)
 
 func _confirm(message: String, action: Callable) -> void:
 	var dialog := ConfirmationDialog.new()
@@ -557,10 +738,10 @@ func _battle(state: Dictionary) -> void:
 			_health_bar(enemy, monster)
 			var intent: String = {"Charge": "蓄力", "Empower": "强化", "Shield": "护盾"}.get(monster.intent_kind, P.word(monster.intent_element))
 			_label(enemy, "意图 %s %s" % [intent, monster.intent_value if int(monster.intent_value) > 0 else ""], 23, P.ELEMENT.get(monster.intent_element, Color.WHITE))
-	var charge := ProgressBar.new()
+	var charge := BoundedBar.new()
+	charge.configure("UI/Battle/battle_energy_cell_lit.png", "UI/Battle/battle_energy_cell_unlit.png")
 	charge.max_value = 1.0
 	charge.value = float(state.player.get("draw_charge", "0"))
-	charge.show_percentage = false
 	charge.custom_minimum_size.y = 16
 	content.add_child(charge)
 	_label(content, "1–5 选牌 / 空格放出 / R 同步    已选 %s 张" % Game.selected_cards.size(), 22, P.MUTED)
@@ -641,20 +822,30 @@ func _rewards(reward: Dictionary) -> void:
 	if count < 3:
 		_button(content, "刷新 · %s 金币 · 剩余 %s 次" % [[60, 180, 450][count], 3 - count], func(): Game.command("reward.choice.refresh"), not Game.allowed("reward.choice.refresh"))
 
-func _claim(option: Dictionary) -> void:
-	var items: Array = Game.room.get("player", {}).get("inventory", [])
-	var capacity: int = Game.preparation.get("snapshot", {}).get("backpackCapacity", 20)
-	if int(option.kind) != 3 and items.size() >= capacity:
+func _claim(option: Dictionary, equip: bool = false) -> void:
+	var player: Dictionary = Game.room.get("player", {})
+	var items: Array = player.get("inventory", [])
+	var reward_item := {"kind": "Equipment" if int(option.kind) == 1 else "EquipmentFragments", "item_id": option.get("item_id", "")}
+	var payload := {"option_id": option.option_id, "equip": equip}
+	if not equip and int(option.kind) != 3 and not InventoryView.can_add(player, reward_item):
 		var dialog := AcceptDialog.new()
 		dialog.title = "包满替换 · 换下物品会被系统回收"
+		var scroll := ScrollContainer.new()
+		scroll.custom_minimum_size = Vector2(720, 460)
+		dialog.add_child(scroll)
 		var column := VBoxContainer.new()
-		dialog.add_child(column)
+		column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		scroll.add_child(column)
 		for item in items:
-			_button(column, "%s ×%s" % [P.word(item.kind), item.quantity], func(): dialog.queue_free(); Game.command("reward.choice.claim", {"option_id": option.option_id, "replace_item_id": item.item_id}))
+			_button(column, "%s ×%s%s" % [EquipmentDetails.title(item), item.quantity, " · 安全格" if item.get("is_safe", false) else ""], func():
+				dialog.queue_free()
+				_confirm("回收 %s 并领取战利品？" % EquipmentDetails.title(item), func(): payload.replace_item_id = item.item_id; Game.command("reward.choice.claim", payload)))
 		add_child(dialog)
 		dialog.confirmed.connect(dialog.queue_free)
 		dialog.popup_centered(Vector2i(750, 550))
-	else: Game.command("reward.choice.claim", {"option_id": option.option_id})
+	elif equip:
+		_confirm("直接穿戴新防具，同部位旧装会被系统回收。", func(): Game.command("reward.choice.claim", payload))
+	else: Game.command("reward.choice.claim", payload)
 
 func _settlement() -> void:
 	_label(content, P.word(Game.settlement.get("result", "旅程结束")), 66, P.GOLD)
@@ -662,7 +853,7 @@ func _settlement() -> void:
 	var details: Dictionary = Game.settlement.get("details", {})
 	for key in ["gold", "goldEarned", "equipmentFragments", "warriorSoul"]:
 		if details.has(key): _label(content, "%s  %s" % [P.word(key), details[key]], 30)
-	_button(content, "收下结算，返回营地", Game.acknowledge_settlement, Game.busy)
+	_button(content, "返回", Game.acknowledge_settlement, Game.busy)
 
 func _toast(message: String) -> void:
 	_toast_serial += 1
@@ -672,49 +863,59 @@ func _toast(message: String) -> void:
 	if serial == _toast_serial: toast_label.text = ""
 
 func _health_bar(parent: Node, combat: Dictionary) -> void:
-	var bar := ProgressBar.new()
+	var bar := BoundedBar.new()
+	bar.configure("UI/Encounter/encounter_hp_fill_normal.png", "UI/Encounter/encounter_hp_track_normal.png")
 	bar.max_value = maxf(1, float(combat.get("effective_maximum_hp", combat.get("maximum_hp", 1))))
 	bar.value = float(combat.get("hp", 0))
-	bar.show_percentage = false
 	bar.custom_minimum_size.y = 20
-	bar.add_theme_stylebox_override("background", Art.style("UI/Encounter/encounter_hp_track_normal.png"))
-	bar.add_theme_stylebox_override("fill", Art.style("UI/Encounter/encounter_hp_fill_normal.png"))
 	parent.add_child(bar)
 	if int(combat.get("shield", 0)) > 0:
-		var shield := ProgressBar.new()
+		var shield := BoundedBar.new()
+		shield.configure_solid(Color("102128"), Color("c4d2d4"))
 		shield.max_value = bar.max_value
 		shield.value = float(combat.shield)
-		shield.show_percentage = false
 		shield.custom_minimum_size.y = 8
-		for part in ["background", "fill"]:
-			var style := P.box(Color("c4d2d4") if part == "fill" else Color("102128"), Color("102128"), 0)
-			style.content_margin_top = 0
-			style.content_margin_bottom = 0
-			shield.add_theme_stylebox_override(part, style)
 		parent.add_child(shield)
 
 func _feedback(payload: Dictionary) -> void:
-	# Only heal/shield components are typed in v1. Total damage is not an
-	# elemental segment and must never be presented as one white damage number.
 	var target: Control = _combat_panels.get(payload.get("target_id", ""))
 	if is_instance_valid(target):
-		target.pivot_offset = target.size / 2
-		var tween := target.create_tween().set_parallel(true)
-		tween.tween_property(target, "modulate", Color(1.3, 1.3, 1.3), 0.08)
-		tween.tween_property(target, "scale", Vector2(0.97, 0.97), 0.08)
-		tween.chain().tween_property(target, "modulate", Color.WHITE, 0.15)
-		tween.parallel().tween_property(target, "scale", Vector2.ONE, 0.15)
-	var source: Control = _combat_panels.get(payload.get("attacker_id", ""))
+		_pulse(target, 0.97)
+		var index := 0
+		for segment in payload.get("damage_segments", []):
+			if int(segment.get("amount", 0)) <= 0: continue
+			_float_number(target, "%s %s" % ["直" if segment.kind == "Direct" else P.word(segment.kind), segment.amount], P.ELEMENT.get(segment.kind, Color.WHITE), index)
+			index += 1
+	var source_id: String = payload.get("source_id", "")
+	if source_id.is_empty(): source_id = payload.get("attacker_id", "")
+	var source: Control = _combat_panels.get(source_id)
 	if is_instance_valid(source):
+		_pulse(source, 1.03)
 		for key in ["heal", "shield_gain"]:
 			if int(payload.get(key, 0)) <= 0: continue
-			var number := _label(self, "+%s" % payload[key], 42, P.TEAL if key == "heal" else Color("c4d2d4"))
-			number.position = source.global_position + Vector2(110, 50 if key == "heal" else 110)
-			number.mouse_filter = Control.MOUSE_FILTER_IGNORE
-			var tween := number.create_tween().set_parallel(true)
-			tween.tween_property(number, "position:y", number.position.y - 60, 0.8)
-			tween.tween_property(number, "modulate:a", 0.0, 0.8)
-			tween.chain().tween_callback(number.queue_free)
+			_float_number(source, "+%s" % payload[key], P.TEAL if key == "heal" else Color("c4d2d4"), 0 if key == "heal" else 1)
+
+func _pulse(node: Control, factor: float) -> void:
+	var previous: Variant = node.get_meta("hit_tween") if node.has_meta("hit_tween") else null
+	if previous is Tween and previous.is_running(): previous.kill()
+	node.pivot_offset = node.size / 2
+	var tween := node.create_tween().set_parallel(true)
+	node.set_meta("hit_tween", tween)
+	tween.tween_property(node, "modulate", Color(1.3, 1.3, 1.3), 0.08)
+	tween.tween_property(node, "scale", Vector2.ONE * factor, 0.08)
+	tween.chain().tween_property(node, "modulate", Color.WHITE, 0.15)
+	tween.parallel().tween_property(node, "scale", Vector2.ONE, 0.15)
+
+func _float_number(node: Control, value: String, tint: Color, index: int) -> void:
+	var number := _label(self, value, 42, tint)
+	number.add_theme_font_override("font", P.font("number"))
+	number.name = "CombatNumber"
+	number.position = node.global_position + Vector2(70 + index * 43, 35 + index * 50)
+	number.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var tween := number.create_tween().set_parallel(true)
+	tween.tween_property(number, "position:y", number.position.y - 65, 0.8)
+	tween.tween_property(number, "modulate:a", 0.0, 0.8)
+	tween.chain().tween_callback(number.queue_free)
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if not event is InputEventKey or not event.pressed or event.echo or Game.room.is_empty(): return

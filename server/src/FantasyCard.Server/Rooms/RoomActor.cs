@@ -20,7 +20,8 @@ public sealed class RoomActor : IAsyncDisposable
         TimeProvider timeProvider,
         bool startTicker = true,
         Func<BattleRoomSnapshot, Task>? snapshotObserver = null,
-        ServerMetrics? metrics = null)
+        ServerMetrics? metrics = null,
+        Func<BattleRoomSnapshot, IReadOnlyList<CombatFeedbackResolution>, Task>? combatObserver = null)
     {
         RoomId = room?.RoomId ?? throw new ArgumentNullException(nameof(room));
         ArgumentNullException.ThrowIfNull(timeProvider);
@@ -31,7 +32,7 @@ public sealed class RoomActor : IAsyncDisposable
             SingleWriter = false,
             AllowSynchronousContinuations = false
         });
-        _reader = RunReaderAsync(room, snapshotObserver);
+        _reader = RunReaderAsync(room, snapshotObserver, combatObserver);
         if (startTicker)
         {
             _ticker = RunTickerAsync(timeProvider, _shutdown.Token);
@@ -92,12 +93,19 @@ public sealed class RoomActor : IAsyncDisposable
         _shutdown.Dispose();
     }
 
-    private async Task RunReaderAsync(BattleRoom room, Func<BattleRoomSnapshot, Task>? snapshotObserver)
+    private async Task RunReaderAsync(BattleRoom room, Func<BattleRoomSnapshot, Task>? snapshotObserver,
+        Func<BattleRoomSnapshot, IReadOnlyList<CombatFeedbackResolution>, Task>? combatObserver)
     {
         await foreach (var command in _commands.Reader.ReadAllAsync())
         {
             _metrics?.ObserveRoomActorQueueLength(Interlocked.Decrement(ref _queuedCommands));
             command.Execute(room);
+            var feedback = room.DrainCombatFeedback();
+            if (combatObserver is not null && feedback.Count > 0)
+            {
+                try { await combatObserver(room.Capture(), feedback); }
+                catch { /* A disconnected presentation sink must not stop authoritative room processing. */ }
+            }
             if (snapshotObserver is not null)
             {
                 try

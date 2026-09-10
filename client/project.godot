@@ -17,6 +17,7 @@ config/features=PackedStringArray("4.7")
 [autoload]
 
 Game="*res://state/game_store.gd"
+Sound="*res://audio/sound_service.gd"
 
 [display]
 
@@ -27,6 +28,13 @@ window/size/window_height_override=720
 window/stretch/mode="canvas_items"
 window/size/min_width=960
 window/size/min_height=540
+
+[platform]
+
+server_url=""
+development/local_auth=true
+steam/app_id=0
+steam/web_api_identity=""
 
 [rendering]
 

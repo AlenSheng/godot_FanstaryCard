@@ -1,5 +1,5 @@
 {
-  "sha256": "893870e26ea922eef9e49db159dd1fe26d0ee093b07221f0122611042ff0a102",
+  "sha256": "ea49a837f674ab93babddea02c217fcae51a0540c7757d8eaf26d319964d45e2",
   "messages": {
     "ClientEnvelope": {
       "1": {
@@ -317,6 +317,18 @@
         "type": "string",
         "repeated": false,
         "optional": false
+      },
+      "3": {
+        "name": "level",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "element_override",
+        "type": "string",
+        "repeated": false,
+        "optional": true
       }
     },
     "RoomCombatant": {
@@ -341,6 +353,84 @@
       "4": {
         "name": "shield",
         "type": "int32",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RoomStat": {
+      "1": {
+        "name": "key",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "value",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RoomSet": {
+      "1": {
+        "name": "kind",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "count",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "required",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "active",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RoomBattleStatus": {
+      "1": {
+        "name": "passive_kind",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "combo",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "core_element",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "bonuses",
+        "type": "RoomStat",
+        "repeated": true,
+        "optional": false
+      },
+      "5": {
+        "name": "sets",
+        "type": "RoomSet",
+        "repeated": true,
+        "optional": false
+      },
+      "6": {
+        "name": "draw_interval_seconds",
+        "type": "string",
         "repeated": false,
         "optional": false
       }
@@ -375,6 +465,18 @@
         "type": "string",
         "repeated": false,
         "optional": false
+      },
+      "6": {
+        "name": "level",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "is_bound",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
       }
     },
     "RoomInventoryItem": {
@@ -406,6 +508,38 @@
         "name": "equipment",
         "type": "RoomEquipment",
         "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "slot_index",
+        "type": "int32",
+        "repeated": false,
+        "optional": true
+      }
+    },
+    "RoomRelicPile": {
+      "1": {
+        "name": "pile_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "owner_name",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "items",
+        "type": "RoomInventoryItem",
+        "repeated": true,
         "optional": false
       }
     },
@@ -545,6 +679,30 @@
         "type": "int64",
         "repeated": false,
         "optional": true
+      },
+      "8": {
+        "name": "opponent_class",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "9": {
+        "name": "opponent_name",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "10": {
+        "name": "escape_probability",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "11": {
+        "name": "opponent_status",
+        "type": "RoomBattleStatus",
+        "repeated": false,
+        "optional": false
       }
     },
     "RoomCurrentCell": {
@@ -569,6 +727,12 @@
       "4": {
         "name": "relic_pile_ids",
         "type": "string",
+        "repeated": true,
+        "optional": false
+      },
+      "5": {
+        "name": "relic_piles",
+        "type": "RoomRelicPile",
         "repeated": true,
         "optional": false
       }
@@ -626,6 +790,36 @@
         "name": "inventory",
         "type": "RoomInventoryItem",
         "repeated": true,
+        "optional": false
+      },
+      "10": {
+        "name": "inventory_capacity",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "11": {
+        "name": "safe_slot_indexes",
+        "type": "int32",
+        "repeated": true,
+        "optional": false
+      },
+      "12": {
+        "name": "equipped_items",
+        "type": "RoomInventoryItem",
+        "repeated": true,
+        "optional": false
+      },
+      "13": {
+        "name": "weapon_level",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "14": {
+        "name": "battle_status",
+        "type": "RoomBattleStatus",
+        "repeated": false,
         "optional": false
       }
     },
@@ -861,6 +1055,98 @@
         "type": "bool",
         "repeated": false,
         "optional": false
+      },
+      "11": {
+        "name": "damage_segments",
+        "type": "CombatDamageSegment",
+        "repeated": true,
+        "optional": false
+      },
+      "12": {
+        "name": "core_element",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "13": {
+        "name": "core_count",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "14": {
+        "name": "stun_seconds",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "15": {
+        "name": "draw_block_seconds",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "16": {
+        "name": "health_cost",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "17": {
+        "name": "draw_charge",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "18": {
+        "name": "immediate_draw",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "19": {
+        "name": "card_instance_ids",
+        "type": "string",
+        "repeated": true,
+        "optional": false
+      },
+      "20": {
+        "name": "source_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "21": {
+        "name": "draw_speed_seconds",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "22": {
+        "name": "draw_speed_modifier",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "23": {
+        "name": "draw_block_speed_seconds",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "CombatDamageSegment": {
+      "1": {
+        "name": "kind",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "amount",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
       }
     },
     "BattleSelectTargetCommand": {
@@ -904,6 +1190,12 @@
         "type": "string",
         "repeated": false,
         "optional": false
+      },
+      "3": {
+        "name": "equip",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
       }
     },
     "RewardChoiceOption": {
@@ -934,6 +1226,12 @@
       "5": {
         "name": "heal_percent",
         "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "equipment",
+        "type": "RoomEquipment",
         "repeated": false,
         "optional": false
       }
@@ -1094,6 +1392,14 @@
         "optional": false
       }
     },
+    "RelicReadCommand": {
+      "1": {
+        "name": "pile_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
     "RelicReplaceCommand": {
       "1": {
         "name": "pile_id",
@@ -1142,6 +1448,50 @@
       "4": {
         "name": "pile_version",
         "type": "int64",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "InventoryMoveCommand": {
+      "1": {
+        "name": "item_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "target_slot_index",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "InventoryEquipCommand": {
+      "1": {
+        "name": "item_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "InventoryUnequipCommand": {
+      "1": {
+        "name": "slot",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "InventoryChangedEvent": {
+      "1": {
+        "name": "action",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "item_id",
+        "type": "string",
         "repeated": false,
         "optional": false
       }

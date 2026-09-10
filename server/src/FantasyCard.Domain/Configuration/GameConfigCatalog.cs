@@ -340,7 +340,9 @@ public sealed class GameConfigCatalog
             table.Int(row, "resonance_bonus"),
             table.Double(row, "conflict_cancel_bonus"),
             table.Double(row, "conflict_heal_coefficient"),
-            table.Bool(row, "is_class_reveal")),
+            table.Bool(row, "is_class_reveal"),
+            table.OptionalInt(row, "secondary_elemental_damage"),
+            ParseElement(table.OptionalText(row, "secondary_element"))),
         table.Bool(row, "is_codex"),
         table.Bool(row, "initially_unlocked"),
         table.Int(row, "unlock_cost"),
@@ -368,7 +370,9 @@ internal sealed class ConfigTable(string name, IReadOnlyList<string> columns, IR
     public string Name { get; } = name;
     public IReadOnlyList<object?[]> Rows { get; } = rows;
     public string Text(object?[] row, string name) => OptionalText(row, name) ?? throw new InvalidDataException($"{Name}.{name} is required.");
-    public string? OptionalText(object?[] row, string name) => row[_indexes[name]] as string;
+    public string? OptionalText(object?[] row, string name) => _indexes.TryGetValue(name, out var index) ? row[index] as string : null;
+    public int OptionalInt(object?[] row, string name) => _indexes.TryGetValue(name, out var index)
+        ? checked((int)(long)(row[index] ?? 0L)) : 0;
     public int Int(object?[] row, string name) => checked((int)(long)(row[_indexes[name]] ?? 0L));
     public double Double(object?[] row, string name) => row[_indexes[name]] is double value ? value : 0;
     public bool Bool(object?[] row, string name) => row[_indexes[name]] is true;

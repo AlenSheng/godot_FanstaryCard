@@ -13,7 +13,7 @@ from engine_adapters.godot import GodotClient
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("action", choices=["create", "validate", "test", "play", "integration", "art-preview", "assets", "import"])
+    parser.add_argument("action", choices=["create", "validate", "test", "play", "integration", "art-preview", "codex-preview", "codex-integration", "assets", "import"])
     args = parser.parse_args()
     executable = os.environ.get("A3GAME_GODOT_EXECUTABLE")
     if not executable:
@@ -34,12 +34,16 @@ def main():
         result = client.assets.register_resource(resource_path="res://assets/portal.png", asset_type="texture", asset_id="camp-portal")
     elif args.action == "import":
         result = client.runtime.launch_editor(extra_args=["--headless", "--import", "--quit", "--log-file", str(ROOT / "client/import.log")])
-    elif args.action in ("integration", "art-preview"):
+    elif args.action in ("integration", "art-preview", "codex-preview", "codex-integration"):
         preview = args.action == "art-preview"
-        report = ROOT / ("client/evidence/art/report.json" if preview else "client/evidence/live/report.json")
+        codex = args.action.startswith("codex-")
+        evidence = {"art-preview": "art", "integration": "live", "codex-preview": "codex", "codex-integration": "codex-live"}[args.action]
+        report = ROOT / f"client/evidence/{evidence}/report.json"
         previous = report.stat().st_mtime_ns if report.exists() else 0
         scene = "res://tests/art_preview.tscn" if preview else "res://tests/integration.tscn"
-        log = "client/art-preview.log" if preview else "client/integration.log"
+        if codex:
+            scene = "res://tests/" + args.action.replace("-", "_") + ".tscn"
+        log = f"client/{args.action}.log"
         result = client.runtime.launch_game(scene_path=scene, headless=False, extra_args=["--resolution", "1920x1080", "--log-file", str(ROOT / log)])
         if result.get("ok"):
             process_id = result["payload"]["process_id"]

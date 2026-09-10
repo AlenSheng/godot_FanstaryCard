@@ -5,6 +5,8 @@ var layout_errors: Array = []
 var screenshot_count := 0
 
 func _ready() -> void:
+	var evidence_directory := OS.get_environment("FANTASYCARD_ART_EVIDENCE")
+	if not evidence_directory.is_empty(): output = evidence_directory
 	Game.gateway.set_process(false)
 	Game.gateway.persist_session = false
 	Game.gateway.online = true
@@ -20,12 +22,31 @@ func _capture(name: String, rebuild: bool = true) -> void:
 	await get_tree().create_timer(0.4).timeout
 	if not is_instance_valid($UI._reference): layout_errors.append(name + ": reference composition not active")
 	else:
+		for label in $UI._reference.find_children("*", "Label", true, false):
+			if label.is_visible_in_tree() and not label.text.is_empty() and label.get_visible_line_count() == 0:
+				layout_errors.append(name + ": no visible text line: " + label.text.left(40))
 		for node in $UI._reference.get_children():
 			if node is Button and not Rect2(0, 0, 1921, 1081).encloses(Rect2(node.position, node.size * node.scale)):
 				layout_errors.append(name + ": button outside canvas: " + node.text)
+		for bar in get_tree().get_nodes_in_group("bounded_progress"):
+			if not bar.slot_rect().encloses(bar.fill_rect()):
+				layout_errors.append(name + ": progress fill outside its artwork slot")
+			var track: Control = bar.get_child(0)
+			var clip: Control = bar.get_node("FillClip")
+			if not track.is_visible_in_tree() or not track.size.is_equal_approx(bar.size):
+				layout_errors.append(name + ": progress artwork is missing or incorrectly sized")
+			if not clip.size.is_equal_approx(bar.fill_rect().size) or not clip.position.is_equal_approx(bar.fill_rect().position):
+				layout_errors.append(name + ": rendered fill does not match its value")
+			if bar.value > bar.min_value and not clip.is_visible_in_tree():
+				layout_errors.append(name + ": nonempty progress fill is hidden")
+		var action_panel: Control = $UI._reference.get_node_or_null("ActionPanel")
+		var action_title: Control = $UI._reference.get_node_or_null("ActionTitle")
+		if action_panel != null and action_title != null and not action_panel.get_global_rect().encloses(action_title.get_global_rect()):
+			layout_errors.append(name + ": action heading outside panel")
 	RenderingServer.force_draw(false)
-	get_viewport().get_texture().get_image().save_png(output + "/" + name + ".png")
-	screenshot_count += 1
+	var save_error := get_viewport().get_texture().get_image().save_png(output + "/" + name + ".png")
+	if save_error == OK: screenshot_count += 1
+	else: layout_errors.append("Screenshot save failed: " + name)
 
 func _run() -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output))
@@ -82,7 +103,7 @@ func _run() -> void:
 		for y in range(6):
 			for x in range(6): Game.room.map.append({"row": y, "column": x, "has_spring": y == 0 and x == 3, "is_boss": y == 2 and x == 2})
 		Game.room.legal_moves = [{"row": 2, "column": 2}, {"row": 3, "column": 3}]
-		Game.room.current_cell = {"has_evacuation": true, "spring_consumed": false, "relic_pile_ids": ["preview-relic"]}
+		Game.room.current_cell = {"has_evacuation": true, "spring_consumed": false, "relic_pile_ids": ["preview-relic"], "relic_piles": [{"pile_id": "preview-relic", "owner_name": "旅人", "version": 1, "items": []}]}
 		Game.room.allowed_actions = ["room.move", "action.spring", "action.potion", "action.extract"]
 		$UI.set_meta("exploration_map_open", false)
 		await _capture("action" + suffix)
@@ -164,12 +185,16 @@ func _passive_previews(suffix: String) -> void:
 func _check_action_icons() -> void:
 	var Art = preload("res://ui/art.gd")
 	for kind in ["spring", "relic", "extract"]:
-		var icon: TextureRect = $UI._reference.get_node_or_null("ActionIcon_" + kind)
+		var icon: TextureRect = $UI._reference.find_child("ActionIcon_" + kind, true, false)
 		if icon == null or icon.texture != Art.action_icon(kind.capitalize()) or icon.mouse_filter != Control.MOUSE_FILTER_IGNORE:
 			layout_errors.append("Missing/obstructing action icon: " + kind)
-	var relic: Button = $UI._reference.get_node_or_null("Action_relic")
-	if relic == null or not relic.disabled: layout_errors.append("Relic without item details must stay disabled")
-	$UI._reference.get_node("Action_map").pressed.emit()
+	var relic: Button = $UI._reference.find_child("Action_relic", true, false)
+	if relic == null or not relic.disabled: layout_errors.append("Relic without read permission must stay disabled")
+	var map: Button = $UI._reference.find_child("Action_map", true, false)
+	if map == null:
+		layout_errors.append("Map action missing")
+		return
+	map.pressed.emit()
 	if not $UI.get_meta("exploration_map_open", false): layout_errors.append("Action artwork prevented map navigation")
 
 func _monster_previews(suffix: String) -> void:

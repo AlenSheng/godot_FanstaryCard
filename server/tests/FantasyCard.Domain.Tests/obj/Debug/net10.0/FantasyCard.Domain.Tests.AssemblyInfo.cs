@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FantasyCard.Domain.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1c5fab5c0e2580e8aec9330cd5e51a689780e5f2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a5ca9b40d0b4a88d8da3f6baf601bf91dbac18dd")]
 [assembly: System.Reflection.AssemblyProductAttribute("FantasyCard.Domain.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FantasyCard.Domain.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

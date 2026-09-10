@@ -18,6 +18,15 @@ public static class ProgressionEndpoints
     {
         var cards = endpoints.MapGroup("/api/v1/cards").WithTags("Progression");
         cards.MapGet("/", GetCardsAsync).Produces<IReadOnlyList<CardResponse>>().ProducesProblem(401);
+        cards.MapPost("/{cardId}/craft", CraftCardAsync)
+            .RequireRateLimiting(RequestLimitOptions.WritePolicy)
+            .Produces<CardMutationResponse>().ProducesProblem(400).ProducesProblem(401).ProducesProblem(409);
+        cards.MapPost("/{cardId}/dismantle", DismantleCardAsync)
+            .RequireRateLimiting(RequestLimitOptions.WritePolicy)
+            .Produces<CardMutationResponse>().ProducesProblem(400).ProducesProblem(401).ProducesProblem(409);
+        cards.MapPost("/{cardId}/upgrade", UpgradeCardAsync)
+            .RequireRateLimiting(RequestLimitOptions.WritePolicy)
+            .Produces<CardMutationResponse>().ProducesProblem(400).ProducesProblem(401).ProducesProblem(409);
 
         var decks = endpoints.MapGroup("/api/v1/decks").WithTags("Progression");
         decks.MapGet("/", GetDecksAsync).Produces<IReadOnlyList<DeckResponse>>().ProducesProblem(401);
@@ -47,6 +56,8 @@ public static class ProgressionEndpoints
             .ProducesProblem(409);
 
         var equipment = endpoints.MapGroup("/api/v1/equipment").WithTags("Progression");
+        equipment.MapGet("/{equipmentId:guid}/enhancement-quote", EquipmentEnhancementQuoteAsync)
+            .Produces<EnhancementQuoteResponse>().ProducesProblem(401).ProducesProblem(404);
         equipment.MapPost("/{equipmentId:guid}/enhance", EnhanceEquipmentAsync)
             .RequireRateLimiting(RequestLimitOptions.WritePolicy)
             .Produces<EnhanceResult>()
@@ -56,6 +67,8 @@ public static class ProgressionEndpoints
             .ProducesProblem(409);
 
         var weapons = endpoints.MapGroup("/api/v1/class-weapons").WithTags("Progression");
+        weapons.MapGet("/{heroClass}/enhancement-quote", WeaponEnhancementQuoteAsync)
+            .Produces<EnhancementQuoteResponse>().ProducesProblem(400).ProducesProblem(401).ProducesProblem(404);
         weapons.MapPost("/{heroClass}/enhance", EnhanceWeaponAsync)
             .RequireRateLimiting(RequestLimitOptions.WritePolicy)
             .Produces<EnhanceResult>()
@@ -64,6 +77,47 @@ public static class ProgressionEndpoints
             .ProducesProblem(404)
             .ProducesProblem(409);
         return endpoints;
+    }
+
+    private static Task<IResult> CraftCardAsync(
+        string cardId, CardMutationRequest request, HttpContext context,
+        IdentityService identityService, ProgressionRepository repository, CancellationToken cancellationToken) =>
+        MutateCardAsync(cardId, request, true, context, identityService, repository, cancellationToken);
+
+    private static Task<IResult> DismantleCardAsync(
+        string cardId, CardMutationRequest request, HttpContext context,
+        IdentityService identityService, ProgressionRepository repository, CancellationToken cancellationToken) =>
+        MutateCardAsync(cardId, request, false, context, identityService, repository, cancellationToken);
+
+    private static Task<IResult> UpgradeCardAsync(
+        string cardId, CardMutationRequest request, HttpContext context,
+        IdentityService identityService, ProgressionRepository repository, CancellationToken cancellationToken) =>
+        MutateCardAsync(cardId, request, false, context, identityService, repository, cancellationToken, upgrade: true);
+
+    private static async Task<IResult> MutateCardAsync(
+        string cardId, CardMutationRequest request, bool craft, HttpContext context,
+        IdentityService identityService, ProgressionRepository repository, CancellationToken cancellationToken, bool upgrade = false)
+    {
+        var player = await context.AuthenticatePlayerAsync(identityService, cancellationToken);
+        if (player is null) return context.UnauthorizedProblem();
+        var requestId = IdempotencyKeys.Read(context);
+        if (requestId is null) return IdempotencyKeys.InvalidProblem(context);
+        if (request.ExpectedVersion < 0)
+            return Problem(context, 400, "Invalid version", "expectedVersion must be nonnegative.");
+        try
+        {
+            return Results.Ok(upgrade
+                ? await repository.UpgradeCardAsync(player.UserId, cardId, requestId, request, cancellationToken)
+                : await repository.MutateCardAsync(player.UserId, cardId, requestId, request, craft, cancellationToken));
+        }
+        catch (IdempotencyConflictException)
+        {
+            return Problem(context, 409, "Idempotency conflict", "The Idempotency-Key was already used with a different request.");
+        }
+        catch (DomainValidationException exception)
+        {
+            return Problem(context, 409, "Card operation rejected", exception.Message);
+        }
     }
 
     private static async Task<IResult> GetInventoryAsync(
@@ -132,6 +186,28 @@ public static class ProgressionEndpoints
         var loadout = await repository.GetLoadoutAsync(
             player.UserId, (HeroClass)(int)dto, cancellationToken);
         return loadout is null ? Results.NotFound() : Results.Ok(loadout);
+    }
+
+    private static async Task<IResult> EquipmentEnhancementQuoteAsync(
+        Guid equipmentId, HttpContext context, IdentityService identityService,
+        ProgressionRepository repository, CancellationToken cancellationToken)
+    {
+        var player = await context.AuthenticatePlayerAsync(identityService, cancellationToken);
+        if (player is null) return context.UnauthorizedProblem();
+        var quote = await repository.GetEquipmentEnhancementQuoteAsync(player.UserId, equipmentId, cancellationToken);
+        return quote is null ? Problem(context, 404, "Equipment not found", "Equipment was not found.") : Results.Ok(quote);
+    }
+
+    private static async Task<IResult> WeaponEnhancementQuoteAsync(
+        string heroClass, HttpContext context, IdentityService identityService,
+        ProgressionRepository repository, CancellationToken cancellationToken)
+    {
+        var player = await context.AuthenticatePlayerAsync(identityService, cancellationToken);
+        if (player is null) return context.UnauthorizedProblem();
+        if (!Enum.TryParse<HeroClassDto>(heroClass, true, out var dto) || !Enum.IsDefined(dto))
+            return Problem(context, 400, "Unknown hero class", "Use Priest, Mage, or Guardian.");
+        var quote = await repository.GetWeaponEnhancementQuoteAsync(player.UserId, (HeroClass)(int)dto, cancellationToken);
+        return quote is null ? Problem(context, 404, "Class weapon not found", "Class weapon was not found.") : Results.Ok(quote);
     }
 
     private static async Task<IResult> EnhanceEquipmentAsync(

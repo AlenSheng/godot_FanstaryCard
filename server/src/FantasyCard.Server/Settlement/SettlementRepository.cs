@@ -1,6 +1,7 @@
 using System.Text.Json;
 using FantasyCard.Contracts.Matchmaking;
 using FantasyCard.Domain.Rooms;
+using FantasyCard.Domain.Players;
 using FantasyCard.Server.Common;
 using FantasyCard.Server.Rooms;
 using Npgsql;
@@ -432,6 +433,8 @@ public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvid
             }
             foreach (var hold in holds)
                 await ApplyCommittedAssetAsync(connection, transaction, hold, cancellationToken);
+            if (holds.Count > 0)
+                await RestoreExtractionLoadoutAsync(connection, transaction, settlementId, holds, cancellationToken);
         }
         var count = 0;
         foreach (var hold in holds)
@@ -455,20 +458,34 @@ public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvid
         {
             if (!Guid.TryParse(asset.AssetId, out var equipmentId)) throw new InvalidOperationException("Equipment asset id is invalid.");
             var destination = asset.Destination ?? "Inventory";
-            if (destination is not ("Inventory" or "Equipped" or "RelicPile"))
+            if (destination is not ("Inventory" or "Equipped" or "RelicPile" or "Recycled"))
                 throw new InvalidOperationException("Equipment settlement destination is invalid.");
+            // A looter may finish before the victim's worker; commit the earlier custody transfer first.
+            await using (var predecessor = new NpgsqlCommand(
+                """
+                SELECT EXISTS (
+                    SELECT 1 FROM settlement_asset_holds h
+                    JOIN match_settlements earlier ON earlier.settlement_id=h.settlement_id
+                    JOIN match_settlements current ON current.settlement_id=$1
+                    WHERE h.asset_kind='Equipment' AND h.asset_ref=$2 AND h.state='Pending'
+                      AND (earlier.created_at,earlier.settlement_id) < (current.created_at,current.settlement_id))
+                """, connection, transaction))
+            {
+                predecessor.Parameters.AddWithValue(hold.SettlementId);
+                predecessor.Parameters.AddWithValue(asset.AssetId);
+                if (await predecessor.ExecuteScalarAsync(cancellationToken) is true)
+                    throw new InvalidOperationException("An earlier settlement still holds this equipment.");
+            }
             if (asset.Equipment is { } generated)
             {
                 if (!EquipmentRewardRules.IsValid(generated))
                     throw new InvalidOperationException("Generated equipment attributes are invalid.");
-                if (destination == "Equipped")
-                    throw new InvalidOperationException("Generated reward equipment cannot be equipped during settlement.");
                 await using var create = new NpgsqlCommand(
                     """
                     INSERT INTO equipments(
                         instance_id,owner_id,slot,quality,level,is_bound,location,version,created_at,
                         element,effect_affix,secondary_trait)
-                    VALUES($1,$2,$3,$4,0,false,$5,1,CURRENT_TIMESTAMP,$6,$7,$8)
+                    VALUES($1,$2,$3,$4,$9,$10,$5,1,CURRENT_TIMESTAMP,$6,$7,$8)
                     ON CONFLICT (instance_id) DO NOTHING
                     """, connection, transaction);
                 create.Parameters.AddWithValue(equipmentId);
@@ -479,19 +496,19 @@ public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvid
                 create.Parameters.AddWithValue(generated.Element);
                 create.Parameters.AddWithValue(generated.EffectAffix ?? (object)DBNull.Value);
                 create.Parameters.AddWithValue(generated.SecondaryTrait);
+                create.Parameters.AddWithValue(generated.Level);
+                create.Parameters.AddWithValue(generated.IsBound);
                 if (await create.ExecuteNonQueryAsync(cancellationToken) == 1)
                 {
                     await WriteEquipmentMovementAsync(connection, transaction, hold.PlayerId, equipmentId,
-                        "MatchReward", destination, destination == "RelicPile" ? "settlement.death" : "settlement.extract", cancellationToken);
+                        "MatchReward", destination, EquipmentSettlementReason(destination), cancellationToken);
                     return;
                 }
-                if (destination == "RelicPile")
-                    throw new InvalidOperationException("The generated settlement equipment id already exists.");
             }
             Guid previousOwner;
             string source;
             await using (var select = new NpgsqlCommand(
-                "SELECT owner_id,location FROM equipments WHERE instance_id=$1 FOR UPDATE", connection, transaction))
+                "SELECT owner_id,location,slot,quality,level,is_bound,element,effect_affix,secondary_trait FROM equipments WHERE instance_id=$1 FOR UPDATE", connection, transaction))
             {
                 select.Parameters.AddWithValue(equipmentId);
                 await using var reader = await select.ExecuteReaderAsync(cancellationToken);
@@ -499,14 +516,21 @@ public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvid
                     throw new InvalidOperationException("The settlement equipment is missing.");
                 previousOwner = reader.GetGuid(0);
                 source = reader.GetString(1);
+                if (asset.Equipment is { } expected &&
+                    (reader.GetString(2) != expected.Slot || reader.GetString(3) != expected.Quality ||
+                     reader.GetInt32(4) != expected.Level || reader.GetBoolean(5) != expected.IsBound ||
+                     reader.GetString(6) != expected.Element ||
+                     (reader.IsDBNull(7) ? null : reader.GetString(7)) != expected.EffectAffix ||
+                     (reader.IsDBNull(8) ? null : reader.GetString(8)) != expected.SecondaryTrait))
+                    throw new InvalidOperationException("The existing equipment does not match its reward snapshot.");
             }
             if (source is not ("InMatchBackpack" or "InMatchEquipped" or "RelicPile"))
                 throw new InvalidOperationException("The settlement equipment is no longer held by the match.");
             var validTransition = (source, destination) switch
             {
-                ("InMatchBackpack", "Inventory" or "RelicPile") => true,
-                ("InMatchEquipped", "Equipped" or "RelicPile") => true,
-                ("RelicPile", "Inventory") => true,
+                ("InMatchBackpack", "Inventory" or "Equipped" or "RelicPile" or "Recycled") => true,
+                ("InMatchEquipped", "Equipped" or "Inventory" or "RelicPile" or "Recycled") => true,
+                ("RelicPile", "Inventory" or "Equipped" or "RelicPile" or "Recycled") => true,
                 _ => false
             };
             if (!validTransition)
@@ -521,10 +545,10 @@ public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvid
                 equipment.Parameters.AddWithValue(equipmentId);
                 await equipment.ExecuteNonQueryAsync(cancellationToken);
             }
-            if (destination == "RelicPile")
+            if (destination != "Equipped" || previousOwner != hold.PlayerId)
                 await RemoveEquipmentFromLoadoutsAsync(connection, transaction, previousOwner, equipmentId, cancellationToken);
             await WriteEquipmentMovementAsync(connection, transaction, hold.PlayerId, equipmentId,
-                source, destination, destination == "RelicPile" ? "settlement.death" : "settlement.extract", cancellationToken);
+                source, destination, EquipmentSettlementReason(destination), cancellationToken);
             return;
         }
         if (asset.AssetKind == "Gold")
@@ -551,6 +575,9 @@ public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvid
             {
                 "warrior_soul" => "WarriorSoul",
                 "equipment_fragments" => "EquipmentFragments",
+                "priest_soul" => "PriestSoul",
+                "mage_soul" => "MageSoul",
+                "guardian_soul" => "GuardianSoul",
                 _ => "ClassSoul"
             };
             await WriteEconomyLedgerAsync(connection, transaction, hold, asset.Quantity, materialAfter, currency, cancellationToken);
@@ -582,6 +609,66 @@ public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvid
             return;
         }
         throw new InvalidOperationException($"Unsupported settlement asset kind '{asset.AssetKind}'.");
+    }
+
+    private static string EquipmentSettlementReason(string destination) => destination switch
+    {
+        "RelicPile" => "settlement.death",
+        "Recycled" => "reward.recycle",
+        _ => "settlement.extract"
+    };
+
+    private static async Task RestoreExtractionLoadoutAsync(
+        NpgsqlConnection connection,
+        NpgsqlTransaction transaction,
+        Guid settlementId,
+        List<SettlementHoldRecord> holds,
+        CancellationToken cancellationToken)
+    {
+        string? className;
+        await using (var metadata = new NpgsqlCommand(
+            "SELECT details_json->>'heroClass' FROM match_settlements WHERE settlement_id=$1 AND result='Extracted'",
+            connection, transaction))
+        {
+            metadata.Parameters.AddWithValue(settlementId);
+            className = await metadata.ExecuteScalarAsync(cancellationToken) as string;
+        }
+        // Settlements written before room equipment changes did not contain a class-specific loadout.
+        if (className is null) return;
+        if (!Enum.TryParse<HeroClass>(className, out var heroClass) || !Enum.IsDefined(heroClass))
+            throw new InvalidOperationException("The settlement loadout class is invalid.");
+        var assets = holds.Select(hold => JsonSerializer.Deserialize<SettlementAsset>(hold.AssetSnapshot)!).ToArray();
+        var equippedIds = assets.Where(asset => asset.AssetKind == "Equipment" && asset.Destination == "Equipped")
+            .Select(asset => Guid.Parse(asset.AssetId)).ToArray();
+        var playerId = holds[0].PlayerId;
+        var equipped = new Dictionary<string, Guid>(StringComparer.Ordinal);
+        var valuableCount = 0;
+        await using (var select = new NpgsqlCommand(
+            "SELECT instance_id,slot,quality FROM equipments WHERE instance_id=ANY($1) AND owner_id=$2 AND location='Equipped' FOR UPDATE",
+            connection, transaction))
+        {
+            select.Parameters.AddWithValue(equippedIds);
+            select.Parameters.AddWithValue(playerId);
+            await using var reader = await select.ExecuteReaderAsync(cancellationToken);
+            while (await reader.ReadAsync(cancellationToken))
+            {
+                if (!equipped.TryAdd(reader.GetString(1), reader.GetGuid(0)))
+                    throw new InvalidOperationException("The settlement has multiple armor pieces in one slot.");
+                if (reader.GetString(2) is "Orange" or "Red") valuableCount++;
+            }
+        }
+        if (equipped.Count != equippedIds.Length || valuableCount > 1)
+            throw new InvalidOperationException("The settlement loadout equipment is invalid.");
+        await using var update = new NpgsqlCommand(
+            "UPDATE player_loadouts SET head_id=$1,chest_id=$2,hands_id=$3,legs_id=$4,feet_id=$5,version=version+1 WHERE player_id=$6 AND hero_class=$7",
+            connection, transaction);
+        foreach (var slot in new[] { "Head", "Chest", "Hands", "Legs", "Feet" })
+            update.Parameters.Add(new NpgsqlParameter { NpgsqlDbType = NpgsqlDbType.Uuid,
+                Value = equipped.TryGetValue(slot, out var itemId) ? itemId : DBNull.Value });
+        update.Parameters.AddWithValue(playerId);
+        update.Parameters.AddWithValue((short)heroClass);
+        if (await update.ExecuteNonQueryAsync(cancellationToken) != 1)
+            throw new InvalidOperationException("The settlement loadout is missing.");
     }
 
     private static async Task RemoveEquipmentFromLoadoutsAsync(

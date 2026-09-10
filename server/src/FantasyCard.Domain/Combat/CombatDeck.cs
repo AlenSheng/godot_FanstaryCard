@@ -14,7 +14,7 @@ public sealed class CombatDeck
     public IReadOnlyList<CombatCardInstance> Discard => _discard;
     public double DrawCharge { get; private set; }
 
-    public static CombatDeck Create(IReadOnlyList<string> cardIds, Random random)
+    public static CombatDeck Create(IReadOnlyList<string> cardIds, Random random, IReadOnlyList<int>? cardLevels = null)
     {
         ArgumentNullException.ThrowIfNull(cardIds);
         ArgumentNullException.ThrowIfNull(random);
@@ -22,11 +22,13 @@ public sealed class CombatDeck
         {
             throw new DomainValidationException("A combat deck cannot be empty.");
         }
+        if (cardLevels is not null && (cardLevels.Count != cardIds.Count || cardLevels.Any(level => level is < 0 or > 5)))
+            throw new DomainValidationException("Card levels must match the deck slots and be between zero and five.");
 
         var deck = new CombatDeck
         {
             _library = cardIds
-                .Select(cardId => new CombatCardInstance(Guid.CreateVersion7(), cardId))
+                .Select((cardId, index) => new CombatCardInstance(Guid.CreateVersion7(), cardId, cardLevels?[index] ?? 0))
                 .ToList()
         };
         Shuffle(deck._library, random);
@@ -44,6 +46,8 @@ public sealed class CombatDeck
     public void Restore(CombatDeckSnapshot snapshot)
     {
         ArgumentNullException.ThrowIfNull(snapshot);
+        if (snapshot.Hand.Concat(snapshot.Library).Concat(snapshot.Discard).Any(card => !ValidCard(card)))
+            throw new DomainValidationException("A combat deck snapshot contains an invalid card level or element override.");
         _hand = snapshot.Hand.ToList();
         _library = snapshot.Library.ToList();
         _discard = snapshot.Discard.ToList();
@@ -93,6 +97,15 @@ public sealed class CombatDeck
             }
         }
         _discard.AddRange(selected);
+    }
+
+    public void AddToDiscard(CombatCardInstance card)
+    {
+        ArgumentNullException.ThrowIfNull(card);
+        if (!ValidCard(card)) throw new DomainValidationException("The card instance is invalid.");
+        if (_hand.Concat(_library).Concat(_discard).Any(existing => existing.InstanceId == card.InstanceId))
+            throw new DomainValidationException("A card instance cannot enter the combat pool twice.");
+        _discard.Add(card);
     }
 
     public void AddCharge(double amount, Random random)
@@ -159,4 +172,7 @@ public sealed class CombatDeck
             (values[index], values[remaining]) = (values[remaining], values[index]);
         }
     }
+
+    private static bool ValidCard(CombatCardInstance card) => card.Level is >= 0 and <= 5 &&
+        (card.ElementOverride is null || card.CardId == "M-BOXSPIRIT" && card.Level == 0 && Enum.IsDefined(card.ElementOverride.Value));
 }

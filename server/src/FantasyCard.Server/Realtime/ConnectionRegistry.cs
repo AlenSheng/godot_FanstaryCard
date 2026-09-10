@@ -27,6 +27,28 @@ public sealed class ConnectionRegistry
 
     public bool IsConnected(Guid playerId) => _connections.ContainsKey(playerId);
 
+    public async Task<bool> SendPresentationAsync(Guid playerId, FantasyCard.Contracts.Realtime.ServerEvent message)
+    {
+        if (!_connections.TryGetValue(playerId, out var connection)) return false;
+        using var timeout = new CancellationTokenSource(TimeSpan.FromMilliseconds(250));
+        try
+        {
+            await connection.SendAsync(message, timeout.Token);
+            return true;
+        }
+        catch (OperationCanceledException)
+        {
+            connection.Socket.Abort();
+            Unregister(playerId, connection);
+            return false;
+        }
+        catch (Exception exception) when (exception is System.Net.WebSockets.WebSocketException or ObjectDisposedException)
+        {
+            Unregister(playerId, connection);
+            return false;
+        }
+    }
+
     public async Task<bool> SendIfConnectedAsync(
         Guid playerId,
         FantasyCard.Contracts.Realtime.ServerEvent message,

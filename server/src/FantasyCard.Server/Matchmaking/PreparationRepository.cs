@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using FantasyCard.Contracts.Matchmaking;
 using FantasyCard.Contracts.Players;
+using FantasyCard.Domain.Cards;
 using FantasyCard.Domain.Configuration;
 using FantasyCard.Domain.Matches;
 using FantasyCard.Domain.Players;
@@ -166,7 +167,8 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
             request.PotionCount,
             "Standard",
             BootstrapRepository.CurrentConfigVersion,
-            equipmentValidation.Items);
+            equipmentValidation.Items,
+            await LoadCardLevelsAsync(connection, transaction, playerId, deck.Value.CardIds, cancellationToken));
         var preparation = new PreparationResponse(
             Guid.CreateVersion7(),
             "Active",
@@ -464,6 +466,28 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
         command.Parameters.AddWithValue(deckId);
         var cardIds = (string[])(await command.ExecuteScalarAsync(cancellationToken) ?? Array.Empty<string>());
         return (version, cardIds);
+    }
+
+    private static async Task<IReadOnlyList<int>> LoadCardLevelsAsync(
+        NpgsqlConnection connection, NpgsqlTransaction transaction, Guid playerId,
+        IReadOnlyList<string> cardIds, CancellationToken cancellationToken)
+    {
+        var levels = new Dictionary<string, int>(StringComparer.Ordinal);
+        var counts = new Dictionary<string, int>(StringComparer.Ordinal);
+        await using var command = new NpgsqlCommand(
+            "SELECT card_id,level,copy_count FROM player_cards WHERE player_id=$1 AND unlocked=true AND card_id=ANY($2) FOR SHARE",
+            connection, transaction);
+        command.Parameters.AddWithValue(playerId);
+        command.Parameters.AddWithValue(cardIds.ToArray());
+        await using var reader = await command.ExecuteReaderAsync(cancellationToken);
+        while (await reader.ReadAsync(cancellationToken))
+        {
+            levels.Add(reader.GetString(0), reader.GetInt32(1));
+            counts.Add(reader.GetString(0), reader.GetInt32(2));
+        }
+        if (cardIds.GroupBy(id => id).Any(group => counts.GetValueOrDefault(group.Key) < group.Count()))
+            throw new DomainValidationException("A prepared deck requires owned copies for every slot.");
+        return CardEconomyRules.DeckLevels(cardIds, levels);
     }
 
     private static async Task<(string? Error, IReadOnlyList<PreparationEquipmentSnapshotResponse> Items)> ValidateEquipmentAsync(

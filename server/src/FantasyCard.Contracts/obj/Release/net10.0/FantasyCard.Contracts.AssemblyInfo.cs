@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FantasyCard.Contracts")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a3280d1828f172ef4c565222f97c101426098f01")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a5ca9b40d0b4a88d8da3f6baf601bf91dbac18dd")]
 [assembly: System.Reflection.AssemblyProductAttribute("FantasyCard.Contracts")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FantasyCard.Contracts")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

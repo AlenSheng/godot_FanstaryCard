@@ -13,12 +13,12 @@ public sealed record GetRoomSnapshotCommand : IRoomCommand<BattleRoomSnapshot>
     public BattleRoomSnapshot Execute(BattleRoom room) => room.Capture();
 }
 
-public sealed record RoomClientState(BattleRoomSnapshot Snapshot, ChaosMapProjection Map);
+public sealed record RoomClientState(BattleRoomSnapshot Snapshot, ChaosMapProjection Map, RoomCombatInfo? CombatInfo = null);
 
 public sealed record GetRoomClientStateCommand(Guid PlayerId) : IRoomCommand<RoomClientState>
 {
     public RoomClientState Execute(BattleRoom room) =>
-        new(room.Capture(), room.GetMapProjection(PlayerId));
+        new(room.Capture(), room.GetMapProjection(PlayerId), room.GetCombatInfo(PlayerId));
 }
 
 public sealed record AdvanceRoomTimeCommand(TimeSpan Delta, DateTimeOffset? Now = null) : IRoomCommand<BattleRoomSnapshot>
@@ -168,9 +168,29 @@ public sealed record RefreshRewardChoiceCommand(Guid PlayerId, long ExpectedRevi
     public RewardRefreshReceiptSnapshot Execute(BattleRoom room) => room.RefreshRewardChoice(PlayerId, ExpectedRevision, AccountGoldAvailable, RequestId);
 }
 
-public sealed record ClaimRewardCommand(Guid PlayerId, string OptionId, string? ReplaceItemId) : IRoomCommand<int>
+public sealed record ClaimRewardCommand(Guid PlayerId, string OptionId, string? ReplaceItemId, bool Equip = false) : IRoomCommand<int>
 {
-    public int Execute(BattleRoom room) => room.ClaimReward(PlayerId, OptionId, ReplaceItemId);
+    public int Execute(BattleRoom room) => room.ClaimReward(PlayerId, OptionId, ReplaceItemId, Equip);
+}
+
+public sealed record MoveInventoryItemCommand(Guid PlayerId, string ItemId, int TargetSlotIndex) : IRoomCommand<long>
+{
+    public long Execute(BattleRoom room) => room.MoveInventoryItem(PlayerId, ItemId, TargetSlotIndex);
+}
+
+public sealed record EquipInventoryItemCommand(Guid PlayerId, string ItemId) : IRoomCommand<long>
+{
+    public long Execute(BattleRoom room) => room.EquipInventoryItem(PlayerId, ItemId);
+}
+
+public sealed record UnequipArmorCommand(Guid PlayerId, string Slot) : IRoomCommand<long>
+{
+    public long Execute(BattleRoom room) => room.UnequipArmor(PlayerId, Slot);
+}
+
+public sealed record GetRelicPilesCommand(Guid PlayerId) : IRoomCommand<IReadOnlyList<RelicPileSnapshot>>
+{
+    public IReadOnlyList<RelicPileSnapshot> Execute(BattleRoom room) => room.GetAvailableRelicPiles(PlayerId);
 }
 
 public sealed record PlayRoomCardsCommand(
@@ -183,6 +203,23 @@ public sealed record PlayRoomCardsCommand(
 {
     public CombatResolution Execute(BattleRoom room) =>
         room.PlayCards(PlayerId, BattleId, TargetId, CardInstanceIds, ExpectedRevision, Now);
+}
+
+public sealed record PreviewRoomCardsCommand(
+    Guid PlayerId,
+    Guid BattleId,
+    string TargetId,
+    IReadOnlyList<Guid> CardInstanceIds,
+    long ExpectedRevision,
+    DateTimeOffset Now) : IRoomCommand<CombatResolution>
+{
+    public CombatResolution Execute(BattleRoom room) =>
+        room.PreviewCards(PlayerId, BattleId, TargetId, CardInstanceIds, ExpectedRevision, Now);
+}
+
+public sealed record GetCombatInfoCommand(Guid PlayerId) : IRoomCommand<RoomCombatInfo>
+{
+    public RoomCombatInfo Execute(BattleRoom room) => room.GetCombatInfo(PlayerId);
 }
 
 public sealed record SelectPveTargetCommand(

@@ -1,11 +1,11 @@
 {
   "schema_version": 2,
-  "audit_date": "2026-09-09",
-  "scope": "当前 client/assets/imported 416 张位图（216 UI + 200 图鉴插画）；原27项请求的28个PNG全部存在，P2本轮15项接入，冰霜幽灵已供图但身份未定义。",
+  "audit_date": "2026-09-10",
+  "scope": "当前导入目录共418张位图（217 UI + 200图鉴插画 + 1怪物卡背景），全部登记且文件存在；原27项/28 PNG已供齐。战斗表现与历史协议缺口已补齐；本轮另交付并接入2份完整思源字体和22个原创短音效，原生14项通过。源文件归档与最终视觉验收见supporting_work；冰霜幽灵身份待定，暗红卡框待复核。",
   "counts": {
     "mockup_png": 0,
     "mockup_psd": 0,
-    "existing_ui_bitmaps": 216,
+    "existing_ui_bitmaps": 217,
     "existing_card_illustrations": 200,
     "existing_card_manifest_bindings": 212,
     "existing_monster_species_bound": 12,
@@ -19,7 +19,16 @@
     "delivered_priority_two_pngs": 16,
     "integrated_priority_two_requests": 15,
     "supplied_request_files": 28,
-    "fully_delivered_requests": 27
+    "fully_delivered_requests": 27,
+    "existing_card_backgrounds": 1,
+    "existing_bitmap_files": 418,
+    "existing_png_files": 416,
+    "existing_jpg_files": 2,
+    "registered_files": 418,
+    "boss_phase_variant_images": 2,
+    "supporting_work_items": 7,
+    "bundled_font_files": 2,
+    "bundled_audio_files": 22
   },
   "global_rules": [
     "本清单按独立组件审核，整屏效果图只作为布局与风格参考，不作为可交互UI背景。",
@@ -102,7 +111,8 @@
         ],
         "note": "没有UI与文字；泉水和门为场景装饰，只有服务器允许的行动才能生成交互按钮。"
       }
-    ]
+    ],
+    "source_availability": "历史审计记录；原15个PSD与效果图目录当前不在工作区，需恢复归档，不代表从未交付。"
   },
   "module_reviews": [
     {
@@ -139,7 +149,7 @@
       "reusable_assets": [
         "UI/Encounter"
       ],
-      "limitations": "3职业本命徽记已接入自己的本命区；对手职业/手牌/本命细节及逃脱概率仍须协议支持。",
+      "limitations": "3职业本命徽记已接入；对手职业、名称、公开本命/套装状态与操作前逃脱概率已由服务器提供。对手手牌、机器人身份保持隐藏，不按效果图虚构。",
       "route": "godot_recompose"
     },
     {
@@ -165,7 +175,7 @@
         "ui_mockups_v058/ui_action_1920x1080.psd",
         "UI/Item"
       ],
-      "limitations": "泉水、遗物、撤离门独立图标均已接入；数量/玩家名/时间仍由真实数据绘制，遗物操作等待物品与版本详情。",
+      "limitations": "泉水、遗物、撤离门图标均已接入；按每份遗物死者名称与版本展示，点击读取完整物品。多行动项可横向滚动，数量与时间来自真实数据。",
       "route": "psd_extract_and_godot"
     },
     {
@@ -215,7 +225,7 @@
         "UI/Item",
         "UI/CardCodex"
       ],
-      "limitations": "遗物通用图标已接入；完整左右背包转移仍缺服务器物品、版本及背包元数据，属于接口缺口。",
+      "limitations": "遗物详情、左右格盘、背包完整容量与安全位置、拾取和满包替换已接入；替换旧物返回原堆。整理与换装仅在已清怪的行动阶段开放。",
       "route": "godot_recompose"
     },
     {
@@ -292,7 +302,7 @@
         "UI/Codex",
         "UI/Monsters"
       ],
-      "limitations": "新暗红框顶部以Godot原生边框补齐；3旧怪物透明清理图已同步用于战场和卡面，不再缺图。",
+      "limitations": "暗红空框已交付，顶部轮廓按UI-FRAME-REVIEW重新核验；3旧怪物透明清理图已用于战场和卡面，不再缺图。",
       "route": "godot_recompose"
     }
   ],
@@ -1270,7 +1280,7 @@
       "id": "UI-MONSTER-CARD-FRAME",
       "name": "怪物卡暗红空框",
       "priority": "P1",
-      "status": "integrated_with_native_border",
+      "status": "integrated_pending_visual_review",
       "route": "imagegen",
       "modules": [
         "cards",
@@ -1287,7 +1297,7 @@
         "UI/Codex/qframe_orange.png",
         "UI/Battle/battle_card_frame_monster.png"
       ],
-      "missing_reason": "已收到436×752暗红空框。源图顶部装饰误抠、上半左右框只余细线；插画窗口多数棋盘RGB为Alpha 0。客户端使用原生暗红外框补齐轮廓，保留下方无字效果面板；源图顶框后续可修，不要求重新生成整卡。已检查原生12张怪物卡，顶部完整外框和暗红效果区均正常；此源图清理属于可选后续改善。",
+      "missing_reason": "436×752暗红空框已交付并接入。历史源图核验发现顶部装饰误抠；当前card_view.gd常态外框使用StyleBoxEmpty，旧原生补边结论不能证明当前轮廓完整，需实际界面复核及局部修边，不需重新生成整卡。",
       "deliverables": [
         {
           "filename": "UI/Cards/card_frame_monster_clean.png",
@@ -1309,43 +1319,70 @@
       "original_missing_reason": "普通品质空框已齐；现有怪物框烘焙费用1、火蝠字样和火8，不能用作所有怪物的通用模板。",
       "generation_required": false,
       "current_review": {
+        "review_date": "2026-09-10",
+        "method": "static_files_and_code",
+        "all_delivered": true,
+        "all_registered": true,
+        "native_review_performed": false,
         "deliverables": [
           {
             "key": "UI/Cards/card_frame_monster_clean.png",
-            "path": "client/assets/imported/UI/Cards/card_frame_monster_clean.png",
             "exists": true,
-            "size_px": [
-              436,
-              752
-            ],
-            "mode": "RGBA",
-            "sha256": "40239ba59f9c1430668b3c10708e645ac95adef6f55df38039d1e693250a9691",
-            "alpha_extrema": [
-              0,
-              255
-            ],
-            "alpha_zero_percent": 60.9329,
-            "alpha_opaque_percent": 15.2666,
-            "alpha_partial_percent": 23.8004,
             "registered": true,
-            "matches_recorded_source_sha256": true,
-            "diagnostics": {
-              "top_40px_alpha_extrema": [
-                0,
-                50
-              ],
-              "illustration_window_alpha_extrema": [
-                0,
-                0
-              ],
-              "note": "RGB checker colors mostly have alpha zero; top ornament is erased. See composited contact sheet and manual review."
-            }
+            "sha256": "40239ba59f9c1430668b3c10708e645ac95adef6f55df38039d1e693250a9691"
           }
         ],
-        "all_delivered": true,
-        "all_registered": true,
-        "native_evidence": "outputs/current_native_monster_review.jpg"
-      }
+        "evidence": [
+          "client/ui/card_view.gd",
+          "client/assets/imported/manifest.json"
+        ],
+        "follow_up": "UI-FRAME-REVIEW"
+      },
+      "previous_reviews": [
+        {
+          "audit_date": "2026-09-09",
+          "status": "integrated_with_native_border",
+          "missing_reason": "已收到436×752暗红空框。源图顶部装饰误抠、上半左右框只余细线；插画窗口多数棋盘RGB为Alpha 0。客户端使用原生暗红外框补齐轮廓，保留下方无字效果面板；源图顶框后续可修，不要求重新生成整卡。已检查原生12张怪物卡，顶部完整外框和暗红效果区均正常；此源图清理属于可选后续改善。",
+          "current_review": {
+            "deliverables": [
+              {
+                "key": "UI/Cards/card_frame_monster_clean.png",
+                "path": "client/assets/imported/UI/Cards/card_frame_monster_clean.png",
+                "exists": true,
+                "size_px": [
+                  436,
+                  752
+                ],
+                "mode": "RGBA",
+                "sha256": "40239ba59f9c1430668b3c10708e645ac95adef6f55df38039d1e693250a9691",
+                "alpha_extrema": [
+                  0,
+                  255
+                ],
+                "alpha_zero_percent": 60.9329,
+                "alpha_opaque_percent": 15.2666,
+                "alpha_partial_percent": 23.8004,
+                "registered": true,
+                "matches_recorded_source_sha256": true,
+                "diagnostics": {
+                  "top_40px_alpha_extrema": [
+                    0,
+                    50
+                  ],
+                  "illustration_window_alpha_extrema": [
+                    0,
+                    0
+                  ],
+                  "note": "RGB checker colors mostly have alpha zero; top ornament is erased. See composited contact sheet and manual review."
+                }
+              }
+            ],
+            "all_delivered": true,
+            "all_registered": true,
+            "native_evidence": "outputs/current_native_monster_review.jpg"
+          }
+        }
+      ]
     },
     {
       "id": "UI-ELEMENT-EARTH",
@@ -2000,7 +2037,7 @@
         "ui_mockups_v058/ui_action_1920x1080.psd",
         "UI/Item/exploration_prep_item_icon_helmet.png"
       ],
-      "missing_reason": "已收到干净行动图标，尺寸和真实Alpha通过检查；已替换行动区图像，泉水亦用于地图标记。原生预览确认图像不拦截按钮，遗物完整操作仍受接口详情缺失限制。",
+      "missing_reason": "已收到干净行动图标，尺寸和真实Alpha通过检查；已替换行动区图像，泉水亦用于地图标记。原生预览确认图像不拦截按钮，该历史批次的遗物操作曾受接口详情限制；2026-09-10 已补齐详情、拾取与替换。",
       "deliverables": [
         {
           "filename": "UI/Action/relic_pile_clean.png",
@@ -2021,7 +2058,7 @@
       "generation_required": false,
       "original_status": "cleanup_needed",
       "current_review": {
-        "delivery_status": "已收到干净行动图标，尺寸和真实Alpha通过检查；已替换行动区图像，泉水亦用于地图标记。原生预览确认图像不拦截按钮，遗物完整操作仍受接口详情缺失限制。",
+        "delivery_status": "已收到干净行动图标，尺寸和真实Alpha通过检查；已替换行动区图像，泉水亦用于地图标记。原生预览确认图像不拦截按钮，该历史批次的遗物操作曾受接口详情限制；2026-09-10 已补齐详情、拾取与替换。",
         "note": "本次未发现Action独立clean PNG，原PSD目录当前不在工作区；保留历史PSD提取依据与ImageGen修复描述。",
         "deliverables": [
           {
@@ -2083,7 +2120,7 @@
         "ui_mockups_v058/ui_action_1920x1080.psd",
         "UI/Battle/battle_energy_ring.png"
       ],
-      "missing_reason": "已收到干净行动图标，尺寸和真实Alpha通过检查；已替换行动区图像，泉水亦用于地图标记。原生预览确认图像不拦截按钮，遗物完整操作仍受接口详情缺失限制。",
+      "missing_reason": "已收到干净行动图标，尺寸和真实Alpha通过检查；已替换行动区图像，泉水亦用于地图标记。原生预览确认图像不拦截按钮，该历史批次的遗物操作曾受接口详情限制；2026-09-10 已补齐详情、拾取与替换。",
       "deliverables": [
         {
           "filename": "UI/Action/spring_clean.png",
@@ -2104,7 +2141,7 @@
       "generation_required": false,
       "original_status": "cleanup_needed",
       "current_review": {
-        "delivery_status": "已收到干净行动图标，尺寸和真实Alpha通过检查；已替换行动区图像，泉水亦用于地图标记。原生预览确认图像不拦截按钮，遗物完整操作仍受接口详情缺失限制。",
+        "delivery_status": "已收到干净行动图标，尺寸和真实Alpha通过检查；已替换行动区图像，泉水亦用于地图标记。原生预览确认图像不拦截按钮，该历史批次的遗物操作曾受接口详情限制；2026-09-10 已补齐详情、拾取与替换。",
         "note": "本次未发现Action独立clean PNG，原PSD目录当前不在工作区；保留历史PSD提取依据与ImageGen修复描述。",
         "deliverables": [
           {
@@ -2162,7 +2199,7 @@
         "ui_mockups_v058/ui_action_1920x1080.psd",
         "client/assets/portal.png"
       ],
-      "missing_reason": "已收到干净行动图标，尺寸和真实Alpha通过检查；已替换行动区图像，泉水亦用于地图标记。原生预览确认图像不拦截按钮，遗物完整操作仍受接口详情缺失限制。",
+      "missing_reason": "已收到干净行动图标，尺寸和真实Alpha通过检查；已替换行动区图像，泉水亦用于地图标记。原生预览确认图像不拦截按钮，该历史批次的遗物操作曾受接口详情限制；2026-09-10 已补齐详情、拾取与替换。",
       "deliverables": [
         {
           "filename": "UI/Action/extract_gate_clean.png",
@@ -2183,7 +2220,7 @@
       "generation_required": false,
       "original_status": "cleanup_needed",
       "current_review": {
-        "delivery_status": "已收到干净行动图标，尺寸和真实Alpha通过检查；已替换行动区图像，泉水亦用于地图标记。原生预览确认图像不拦截按钮，遗物完整操作仍受接口详情缺失限制。",
+        "delivery_status": "已收到干净行动图标，尺寸和真实Alpha通过检查；已替换行动区图像，泉水亦用于地图标记。原生预览确认图像不拦截按钮，该历史批次的遗物操作曾受接口详情限制；2026-09-10 已补齐详情、拾取与替换。",
         "note": "本次未发现Action独立clean PNG，原PSD目录当前不在工作区；保留历史PSD提取依据与ImageGen修复描述。",
         "deliverables": [
           {
@@ -2555,14 +2592,9 @@
     "界面示例中的伤害、价格、属性、倒计时和规则文字",
     "九种新增怪物主体与湮核双阶段图（共10张PNG）",
     "土元素岩石图标",
-    "怪物暗红空效果面板，顶部轮廓由Godot原生边框补齐"
+    "怪物暗红空效果面板文件已交付；顶部轮廓需按UI-FRAME-REVIEW重新核验"
   ],
-  "protocol_gaps": [
-    "遗物堆缺物品详情、死者名称、版本和完整背包元数据，当前只显示堆数，拾取/替换界面暂不可完整绑定。",
-    "实时协议没有按元素分类的伤害结算段与权威连放预览。",
-    "PVP对手职业/手牌、本命详情与逃脱概率不在当前快照内，界面不虚构。",
-    "市场列表只有装备ID，无法还原参考图里的完整装备名、品质和属性。"
-  ],
+  "protocol_gaps": [],
   "historical_audit": {
     "scope": "ui_mockups_v058 15 PNG + 15 PSD, UI 188 bitmap files, Cards/Art 200 illustrations, existing Godot imports",
     "counts": {
@@ -2577,77 +2609,197 @@
     "note": "首次效果图/PSD审计的历史统计；当前目录结构和交付结果见current_audit。"
   },
   "current_audit": {
-    "audit_date": "2026-09-09",
+    "audit_date": "2026-09-10",
+    "method": "static_files_manifest_and_code_review",
     "asset_root": "client/assets/imported",
-    "path_convention": "requests.deliverables.filename与UI/Cards素材引用相对于asset_root。旧ui_mockups_v058引用为首轮设计依据，当前根目录已无原UI、Cards/Art和ui_mockups_v058目录。",
-    "report": "outputs/p2_asset_audit.json",
-    "evidence": [
-      "outputs/p2_asset_contact.jpg",
-      "outputs/p2_asset_dark_contact.jpg",
-      "outputs/p2_native_ui_review.jpg",
-      "outputs/p2_native_monster_review.jpg"
-    ],
-    "repeat_command": "python tools/audit_client_art.py --phase p2",
-    "delivered_pngs": 28,
+    "path_convention": "requests素材相对于asset_root；supporting_work.evidence相对于仓库根目录。旧效果图路径为历史引用。",
+    "counts": {
+      "bitmap_files": 418,
+      "ui_bitmaps": 217,
+      "card_illustrations": 200,
+      "card_backgrounds": 1,
+      "registered_files": 418,
+      "card_bindings": 212,
+      "monster_species_bound": 12,
+      "boss_phase_variants": 2,
+      "supplied_request_files": 28,
+      "fully_delivered_requests": 27,
+      "requests_by_status": {
+        "integrated_and_reviewed": 25,
+        "integrated_pending_visual_review": 1,
+        "generated_pending_identity": 1
+      }
+    },
+    "unregistered_bitmaps": [],
+    "invalid_manifest_resources": [],
+    "missing_card_bindings": [],
+    "missing_monster_bindings": [],
+    "missing_variant_files": [],
+    "missing_request_files": [],
     "remaining_new_illustrations": 0,
     "remaining_cleanup": 0,
-    "optional_character_consistency": 0,
     "pending_identity": 1,
-    "source_frame_limit": "已收到暗红卡框但源图顶框误抠；客户端以原生暗红外框补齐。透明窗口中可见的棋盘RGB多数Alpha=0，不能仅凭原图预览判断为不透明棋盘。",
+    "legacy_source_paths_present": {
+      "UI": false,
+      "Cards/Art": false,
+      "ui_mockups_v058": false
+    },
+    "source_frame_limit": "436×752暗红空框已交付并接入。历史源图核验发现顶部装饰误抠；当前card_view.gd常态外框使用StyleBoxEmpty，旧原生补边结论不能证明当前轮廓完整，需实际界面复核及局部修边，不需重新生成整卡。",
+    "evidence": [
+      "client/assets/imported/manifest.json",
+      "client/ui/art.gd",
+      "client/ui/card_view.gd",
+      "client/ui/palette.gd",
+      "client/ui/reference_ui.gd",
+      "client/ui/main.gd"
+    ],
     "runtime_verification": {
-      "status": "p2_native_composition_reviewed",
-      "report": "client/evidence/art/report.json",
+      "performed_this_audit": true,
+      "status": "gameplay_local_validation_passed",
+      "report": "client/evidence/gameplay-completion/report.json",
       "layout_report_result": {
         "fixture_only": true,
-        "layout_errors": [],
         "ok": true,
-        "screenshots": 66
+        "layout_errors": [],
+        "screenshots": 34,
+        "checks_passed": 78
       },
-      "visual_review_scope": "人工复核16张源图的深/浅底合成、6组12物种及怪物卡，P2角色/本命/行动/地图联系图；最终单独复核1280商店首尾与牧师准备页。66张为自动截图总量，不宣称逐张人工检查。",
-      "evidence": [
-        "outputs/p2_native_ui_review.jpg",
-        "outputs/p2_native_monster_review.jpg"
-      ],
-      "limitations": "离线测试数据预览用于资源和布局核验，不作为本轮联网交易或完整战斗验证。"
+      "native_tests_passed": 12,
+      "http_session_checks_passed": 9,
+      "domain_tests_passed": 202,
+      "server_tests_passed": 157,
+      "server_test_report": "artifacts/gameplay-validation/gameplay-final.trx",
+      "limitations": "新增界面截图为离线测试数据，不代表逐张人工终审或实际交易结果。真实网络测试覆盖PVP、遗物、撤离、关键快照落盘后强杀及二次恢复；不证明任意操作确认后立即强杀零丢失，不替代大规模负载、互联网延迟或Steam正式发布验收。"
     },
-    "newly_supplied_pngs": 16
+    "font_audio_delivery": {
+      "report": "docs/FONT_AUDIO_INTEGRATION_20260910.md",
+      "fonts": {
+        "count": 2,
+        "total_bytes": 41230364,
+        "license": "OFL-1.1",
+        "full_original_files": true,
+        "system_fallback": false,
+        "manifest": "client/assets/fonts/manifest.json",
+        "static_characters_checked": 796,
+        "missing_characters": 0,
+        "native_checks_passed": 6
+      },
+      "audio": {
+        "count": 22,
+        "sample_rate_hz": 48000,
+        "format": "mono PCM16 WAV",
+        "license": "CC0-1.0",
+        "source": "tools/generate_game_audio.py",
+        "manifest": "client/assets/audio/manifest.json",
+        "asset_validation_passed": true,
+        "byte_identical_reproduction_passed": true,
+        "max_voices": 8,
+        "limiter": true,
+        "per_cue_throttling": true
+      },
+      "native_tests_passed": 14,
+      "native_stderr_empty": true,
+      "native_report": "artifacts/audio-font-validation/native-tests.json",
+      "mixer_settings_preview": {
+        "ok": true,
+        "checks_passed": 40,
+        "mixer_checks": 16,
+        "settings_checks": 15,
+        "rest_session_checks": 9,
+        "screenshots": 6,
+        "resolutions": [
+          [
+            1920,
+            1080
+          ],
+          [
+            1280,
+            720
+          ],
+          [
+            960,
+            540
+          ]
+        ],
+        "report": "client/evidence/audio-fonts/report.json"
+      },
+      "limitations": "本轮交付不改写历史418位图、27项28PNG和功能测试统计；不替代全套视觉、实际发布包与设备听感验收。",
+      "text_layout_regression": {
+        "gameplay_checks_passed": 78,
+        "gameplay_screenshots": 34,
+        "gameplay_report": "client/evidence/audio-fonts/gameplay-final/report.json",
+      "art_screenshots": 66,
+      "art_report": "client/evidence/audio-fonts/full-art-final/report.json",
+      "codex_screenshots": 7,
+      "codex_report": "client/evidence/audio-fonts/codex-final/report.json",
+      "invisible_text_line_checks": true
+      },
+      "http_session_checks_passed": 9
+    }
   },
   "protocol_review": {
-    "review_date": "2026-09-09",
-    "remaining_evidence": [
-      {
-        "gap": "relic_details",
-        "path": "protocol/realtime/v1/realtime.proto",
-        "symbol": "RoomCurrentCell.relic_pile_ids",
-        "note": "只包含遗物ID列表；RelicTakeCommand需要item_id、pile_version，但快照不提供对应数据。"
-      },
-      {
-        "gap": "pvp_details",
-        "path": "protocol/realtime/v1/realtime.proto",
-        "symbol": "RoomDuel",
-        "note": "对手仅RoomCombatant，没有职业/手牌/本命详情和逃脱概率。"
-      },
-      {
-        "gap": "damage_segments_and_preview",
-        "path": "protocol/realtime/v1/realtime.proto",
-        "symbol": "BattleComboResolvedEvent",
-        "note": "牌ID与结算结果不包含按元素拆分伤害段或权威连放预览。"
-      },
-      {
-        "gap": "market_equipment_details",
-        "path": "server/src/FantasyCard.Contracts/Progression/EconomyContracts.cs",
-        "symbol": "MarketListingResponse",
-        "note": "提供装备ID、价格和交易状态，没有完整装备属性。"
-      }
-    ],
+    "review_date": "2026-09-10",
+    "remaining_evidence": [],
     "resolved_this_round": [
       {
         "gap": "authoritative_boss_phase",
         "status": "implemented_native_preview_verified",
         "path": "protocol/realtime/v1/realtime.proto",
         "symbol": "RoomMonster.boss_phase",
-        "note": "服务器投影真实BossPhase；Godot按阶段选择对应外观，旧包缺字段回退一阶段，不以HP推断。"
+        "note": "服务器投影真实BossPhase；Godot按阶段选择对应外观，旧包缺字段回退一阶段，不以HP推断。该项为历史接入成果，本次只核对代码，未重跑预览。",
+        "verification_date": "2026-09-09"
+      },
+      {
+        "gap": "relic_details",
+        "path": "protocol/realtime/v1/realtime.proto",
+        "symbol": "RoomRelicPile / RelicReadCommand / RoomInventory",
+        "note": "遗物摘要提供死者名称与版本，relic.read按堆读取完整物品；快照提供背包容量、真实格位、安全格与穿戴装备，避免所有堆详情膨胀超过16 KiB。",
+        "original_gap_note": "只包含遗物ID列表；RelicTakeCommand需要item_id、pile_version，但快照不提供对应数据。",
+        "status": "implemented_local_validation_passed",
+        "verification_date": "2026-09-10"
+      },
+      {
+        "gap": "pvp_details",
+        "path": "protocol/realtime/v1/realtime.proto",
+        "symbol": "RoomDuel / RoomBattleStatus",
+        "note": "提供对手职业、名称、公开本命/套装状态与操作前逃脱概率。对手手牌和机器人身份属于隐藏信息，不视为待补功能。",
+        "original_gap_note": "RoomDuel快照的对手仅RoomCombatant，无职业/手牌/本命详情与操作前逃脱概率；逃脱事件已有probability。公开内容仍须遵循协议边界。",
+        "status": "implemented_local_validation_passed",
+        "verification_date": "2026-09-10"
+      },
+      {
+        "gap": "damage_segments_and_preview",
+        "path": "protocol/realtime/v1/realtime.proto",
+        "symbol": "BattleComboResolvedEvent / BattlePlayCardsCommand",
+        "note": "combat.preview调用克隆房间真实结算，返回分段伤害、治疗/护盾、控场、耗血、抽牌及定时速度变化；请求与版本匹配，过期预览和历史战斗反馈被过滤。",
+        "original_gap_note": "牌ID与结算结果不包含按元素拆分伤害段或权威连放预览。",
+        "status": "implemented_local_validation_passed",
+        "verification_date": "2026-09-10"
+      },
+      {
+        "gap": "market_equipment_details",
+        "path": "server/src/FantasyCard.Contracts/Progression/EconomyContracts.cs",
+        "symbol": "MarketListingResponse.Equipment",
+        "note": "市场返回完整装备属性，界面支持同部位对比。",
+        "original_gap_note": "提供装备ID、价格和交易状态，没有完整装备属性。",
+        "status": "implemented_local_validation_passed",
+        "verification_date": "2026-09-10"
+      },
+      {
+        "gap": "reward_equipment_details",
+        "path": "protocol/realtime/v1/realtime.proto",
+        "symbol": "RewardChoiceOption.Equipment / RewardClaimCommand.Equip",
+        "note": "奖励返回完整装备属性，支持同部位对比、直接穿戴与满包选择替换物。",
+        "original_gap_note": "奖励选项只有ID、类型、数量和回血比例，没有完整装备品质/属性。",
+        "status": "implemented_local_validation_passed",
+        "verification_date": "2026-09-10"
       }
+    ],
+    "scope_note": "仅关闭本清单此前列出的协议缺口；完整发布和可靠性边界见docs/FUNCTION_COMPLETION_20260910.md。",
+    "evidence": [
+      "artifacts/gameplay-validation/gameplay-final.trx",
+      "client/evidence/gameplay-completion/report.json",
+      "docs/FUNCTION_COMPLETION_20260910.md"
     ]
   },
   "previous_audits": [
@@ -2679,6 +2831,223 @@
         "visual_review_scope": "逐一检查6组12物种的战场主体与怪物卡、土元素图标和湮核双阶段预览；44张为自动截图/布局断言总量，不宣称逐屏人工看过。",
         "evidence": "outputs/current_native_monster_review.jpg"
       }
+    },
+    {
+      "audit_date": "2026-09-09",
+      "asset_root": "client/assets/imported",
+      "path_convention": "requests.deliverables.filename与UI/Cards素材引用相对于asset_root。旧ui_mockups_v058引用为首轮设计依据，当前根目录已无原UI、Cards/Art和ui_mockups_v058目录。",
+      "report": "outputs/p2_asset_audit.json",
+      "evidence": [
+        "outputs/p2_asset_contact.jpg",
+        "outputs/p2_asset_dark_contact.jpg",
+        "outputs/p2_native_ui_review.jpg",
+        "outputs/p2_native_monster_review.jpg"
+      ],
+      "repeat_command": "python tools/audit_client_art.py --phase p2",
+      "delivered_pngs": 28,
+      "remaining_new_illustrations": 0,
+      "remaining_cleanup": 0,
+      "optional_character_consistency": 0,
+      "pending_identity": 1,
+      "source_frame_limit": "已收到暗红卡框但源图顶框误抠；客户端以原生暗红外框补齐。透明窗口中可见的棋盘RGB多数Alpha=0，不能仅凭原图预览判断为不透明棋盘。",
+      "runtime_verification": {
+        "status": "p2_native_composition_reviewed",
+        "report": "client/evidence/art/report.json",
+        "layout_report_result": {
+          "fixture_only": true,
+          "layout_errors": [],
+          "ok": true,
+          "screenshots": 66
+        },
+        "visual_review_scope": "人工复核16张源图的深/浅底合成、6组12物种及怪物卡，P2角色/本命/行动/地图联系图；最终单独复核1280商店首尾与牧师准备页。66张为自动截图总量，不宣称逐张人工检查。",
+        "evidence": [
+          "outputs/p2_native_ui_review.jpg",
+          "outputs/p2_native_monster_review.jpg"
+        ],
+        "limitations": "离线测试数据预览用于资源和布局核验，不作为本轮联网交易或完整战斗验证。"
+      },
+      "newly_supplied_pngs": 16
+    }
+  ],
+  "count_convention": "existing_card_illustrations仅计200张图鉴插画，Cards/Art另有1张怪物卡背景；418位图不含导入目录之外的场景/门户。requests交付数量与remaining_*统计仅针对原27项补图，配套待办另列supporting_work。",
+  "supporting_work": [
+    {
+      "id": "FONT-CJK",
+      "name": "可随游戏分发的中文字体",
+      "priority": "P1",
+      "category": "font",
+      "status": "delivered_and_integrated_local_validation_passed",
+      "image_generation_required": false,
+      "evidence": [
+        "client/assets/fonts/manifest.json",
+        "client/assets/fonts/verification.json",
+        "client/assets/fonts/LICENSE-SourceHanSans.txt",
+        "client/assets/fonts/LICENSE-SourceHanSerif.txt",
+        "client/ui/palette.gd",
+        "client/tests/test_bundled_fonts.gd",
+        "artifacts/audio-font-validation/native-tests.json",
+        "docs/FONT_AUDIO_INTEGRATION_20260910.md",
+        "client/evidence/audio-fonts/report.json",
+        "client/evidence/audio-fonts/full-art-final/report.json",
+        "client/tests/test_card_view.gd"
+      ],
+      "current_state": "思源宋体SC SemiBold 2.003标题、思源黑体SC Regular 2.005正文/原生等宽数字已接入；两份完整OTF原版约39.3MiB、未裁字，附SIL OFL 1.1及上游哈希，关闭系统字体回退。现有796字符静态核验零缺字，原生字体加载/角色/覆盖/数字6项检查通过。 已修正新字体行高造成的卡名、等级及生命数字裁切，并验证真实可见行数和边界。",
+      "deliverables": [
+        "字体文件与分发许可/版权说明",
+        "标题、正文、数字三档字体或字重配置"
+      ],
+      "acceptance": [
+        "未安装开发机字体的发布环境中文不缺字",
+        "目标窗口尺寸下卡牌长文、数字、价格清晰且不溢出"
+      ],
+      "scope_note": "资源交付与本地接入已完成；原发布环境和目标尺寸验收要求保留，整体最终验收归VISUAL-ACCEPTANCE。"
+    },
+    {
+      "id": "AUDIO-SFX",
+      "name": "音效资源与播放接入",
+      "priority": "P1",
+      "category": "audio",
+      "status": "delivered_and_integrated_local_validation_passed",
+      "image_generation_required": false,
+      "evidence": [
+        "client/assets/audio/manifest.json",
+        "client/assets/audio/LICENSE.txt",
+        "client/assets/audio/README.md",
+        "tools/generate_game_audio.py",
+        "client/audio/sound_service.gd",
+        "client/ui/audio_settings.gd",
+        "client/tests/test_audio_events.gd",
+        "artifacts/audio-font-validation/sound_validation.json",
+        "artifacts/audio-font-validation/sound_reproducibility.json",
+        "artifacts/audio-font-validation/native-tests.json",
+        "docs/FONT_AUDIO_INTEGRATION_20260910.md",
+        "client/evidence/audio-fonts/report.json"
+      ],
+      "current_state": "22个原创单声道48kHz PCM16短WAV已交付并接入Sound，CC0 1.0，生成源文件和哈希/电平清单已保存。纸牌/石材/黄铜与五行反馈对应项目风格；独立音效总线、8通道上限、限幅器、逐音效节流，事件层过滤重连/预览/重复/旧战斗。左下音效入口提供音量、静音、试听，F10快捷静音，本机保存设置。",
+      "suggested_scope": [
+        "按钮/选牌",
+        "抽牌/出牌",
+        "受击/治疗/护盾",
+        "领奖/购买",
+        "撤离/死亡"
+      ],
+      "deliverables": [
+        "可供Godot导入的音频及来源/使用许可",
+        "事件到文件的映射及音量约定"
+      ],
+      "acceptance": [
+        "实际事件正确触发音效",
+        "重放/重连不重复播历史反馈，连续战斗不产生明显叠音失控"
+      ],
+      "scope_note": "22文件格式/电平/无削波及重复生成一致性已核验，原生事件过滤回归通过；混音、三分辨率设置与失效会话操作40/40项通过，6张截图见接入文档。GDD未明确背景音乐，本轮不列为必交缺项。"
+    },
+    {
+      "id": "PRESENTATION-COMBAT",
+      "name": "战斗反馈与动态信息",
+      "priority": "P1",
+      "category": "presentation",
+      "status": "implemented_local_validation_passed",
+      "image_generation_required": false,
+      "evidence": [
+        "client/ui/main.gd",
+        "client/ui/exploration_view.gd",
+        "protocol/realtime/v1/realtime.proto",
+        "client/ui/battle_details.gd",
+        "client/evidence/gameplay-completion/report.json",
+        "artifacts/gameplay-validation/gameplay-final.trx"
+      ],
+      "current_state": "攻击/受击提亮缩放、分类型伤害/治疗/护盾飘字、服务端连放预览、本命/套装状态已接入；过滤过期预览、旧战斗和重连回放反馈。",
+      "work": [
+        "复用现有贴图实现反馈与预览，功能已通过本地验证；整套视觉风格审核仍归VISUAL-ACCEPTANCE。"
+      ],
+      "acceptance": [
+        "同类伤害合并、异类分组且颜色与卡面/意图一致",
+        "反馈不阻挡下一手操作"
+      ],
+      "scope_note": "不新增骨骼攻击、弹道、刀光或全屏特效资产。"
+    },
+    {
+      "id": "UI-FRAME-REVIEW",
+      "name": "怪物卡框与专属武器框",
+      "priority": "P2",
+      "category": "ui_correction",
+      "status": "correction_and_visual_review_pending",
+      "image_generation_required": false,
+      "related_request": "UI-MONSTER-CARD-FRAME",
+      "evidence": [
+        "client/ui/card_view.gd",
+        "client/ui/reference_ui.gd"
+      ],
+      "current_state": "旧原生补边结论与当前StyleBoxEmpty实现不一致；专武槽仍复用橙装备框。",
+      "work": [
+        "复核暗红框顶部，按实机结果局部修边或代码补边",
+        "专武槽改为对应职业本命色"
+      ],
+      "acceptance": [
+        "卡框轮廓完整，暗红怪物框不与红装混淆",
+        "三职业专武不误示橙色品质"
+      ]
+    },
+    {
+      "id": "PENDING-FROST-WRAITH",
+      "name": "冰霜幽灵身份",
+      "priority": "P2",
+      "category": "design_identity",
+      "status": "generated_pending_identity",
+      "image_generation_required": false,
+      "related_request": "PENDING-FROST-WRAITH",
+      "evidence": [
+        "client/assets/imported/manifest.json",
+        "GDD.md"
+      ],
+      "current_state": "清理图已登记，无正式物种ID。",
+      "work": [
+        "决定是否纳入及正式定义，按批准ID绑定"
+      ],
+      "acceptance": [
+        "不得自行替换已有物种或重复生成图片"
+      ]
+    },
+    {
+      "id": "SOURCE-ARCHIVE",
+      "name": "效果图与原始资源归档",
+      "priority": "P2",
+      "category": "source_archive",
+      "status": "source_archive_pending",
+      "image_generation_required": false,
+      "evidence": [
+        "outputs/audit_psd.json",
+        "client/assets/imported/manifest.json"
+      ],
+      "current_state": "原UI、Cards/Art、ui_mockups_v058目录不在工作区；15模块效果图/PSD曾审计并用于接入。",
+      "deliverables": [
+        "恢复原始资源、15模块效果图和PSD",
+        "来源/版本索引及导入哈希追溯"
+      ],
+      "acceptance": [
+        "设计源文件可打开并能对应导入版本"
+      ],
+      "scope_note": "恢复源文件，不按缺图重新生成15张运行时背景。"
+    },
+    {
+      "id": "VISUAL-ACCEPTANCE",
+      "name": "全套视觉与发布包验收",
+      "priority": "P2",
+      "category": "visual_acceptance",
+      "status": "final_review_pending",
+      "image_generation_required": false,
+      "evidence": [
+        "client/evidence/art/report.json",
+        "client/evidence/ui-bounds/report.json",
+        "client/evidence/codex/report.json",
+        "client/evidence/gameplay-completion/report.json"
+      ],
+      "current_state": "本轮新增34张双分辨率功能预览，78项断言通过；抽查升级、强化、背包、匣灵和战斗反馈。历史整套美术记录继续保留，最终风格一致性和发布环境验收未完成。",
+      "acceptance": [
+        "1920×1080和1280×720检查三职业、12物种、卡面、透明边缘、面板材质、文字和本命色",
+        "图鉴另检查960×540",
+        "结合真实操作复核，不以离线截图总量代替最终验收"
+      ]
     }
   ]
 }

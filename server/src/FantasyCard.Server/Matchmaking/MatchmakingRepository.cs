@@ -30,7 +30,10 @@ public sealed record MatchPlayerAssignment(
     int PotionCount = 0,
     IReadOnlyList<Guid>? EquipmentIds = null,
     int WeaponLevel = 0,
-    IReadOnlyList<CombatEquipmentItem>? Equipment = null);
+    IReadOnlyList<CombatEquipmentItem>? Equipment = null,
+    IReadOnlyList<int>? CardLevels = null,
+    IReadOnlyList<int>? SafeSlotIndexes = null,
+    string? DisplayName = null);
 
 public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvider timeProvider, ServerMetrics metrics)
 {
@@ -337,7 +340,7 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
     private static async Task<List<MatchPlayerAssignment>> ReadActiveHumansAsync(NpgsqlConnection connection, NpgsqlTransaction transaction, Guid matchId, CancellationToken cancellationToken)
     {
         var result = new List<MatchPlayerAssignment>();
-        await using var command = new NpgsqlCommand("SELECT mp.player_id,p.snapshot_json->>'heroClass',p.snapshot_json->'cardIds',p.snapshot_json->>'backpackCapacity',jsonb_array_length(p.snapshot_json->'safeSlotIndexes'),p.snapshot_json->>'potionCount',p.snapshot_json->'equipmentIds',p.snapshot_json->>'classWeaponLevel',p.snapshot_json->'equipmentSnapshots' FROM match_players mp JOIN preparations p ON p.preparation_id=mp.preparation_id WHERE mp.match_id=$1 AND mp.is_bot=false AND mp.state='Active' ORDER BY mp.player_id", connection, transaction);
+        await using var command = new NpgsqlCommand("SELECT mp.player_id,p.snapshot_json->>'heroClass',p.snapshot_json->'cardIds',p.snapshot_json->>'backpackCapacity',jsonb_array_length(p.snapshot_json->'safeSlotIndexes'),p.snapshot_json->>'potionCount',p.snapshot_json->'equipmentIds',p.snapshot_json->>'classWeaponLevel',p.snapshot_json->'equipmentSnapshots',p.snapshot_json->'cardLevels',p.snapshot_json->'safeSlotIndexes',u.display_name FROM match_players mp JOIN preparations p ON p.preparation_id=mp.preparation_id JOIN players u ON u.user_id=mp.player_id WHERE mp.match_id=$1 AND mp.is_bot=false AND mp.state='Active' ORDER BY mp.player_id", connection, transaction);
         command.Parameters.AddWithValue(matchId);
         await using var reader = await command.ExecuteReaderAsync(cancellationToken);
         while (await reader.ReadAsync(cancellationToken))
@@ -346,7 +349,9 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
             var equipmentIds = JsonSerializer.Deserialize<Guid?[]>(reader.GetString(6))?.Where(id => id.HasValue).Select(id => id!.Value).ToArray() ?? [];
             var equipmentSnapshots = reader.IsDBNull(8) ? [] : JsonSerializer.Deserialize<PreparationEquipmentSnapshotResponse[]>(reader.GetString(8), SnapshotSerializerOptions) ?? [];
             var equipment = equipmentSnapshots.Select(item => new CombatEquipmentItem(item.InstanceId, item.Slot, item.Quality, item.Level, Enum.Parse<CardElement>(item.Element, true), item.EffectAffix, item.SecondaryTrait)).ToArray();
-            result.Add(new(reader.GetGuid(0), false, heroClass, JsonSerializer.Deserialize<string[]>(reader.GetString(2)) ?? [], int.Parse(reader.GetString(3), CultureInfo.InvariantCulture), reader.GetInt32(4), int.Parse(reader.GetString(5), CultureInfo.InvariantCulture), equipmentIds, int.Parse(reader.GetString(7), CultureInfo.InvariantCulture), equipment));
+            var cardLevels = reader.IsDBNull(9) ? null : JsonSerializer.Deserialize<int[]>(reader.GetString(9));
+            var safeSlotIndexes = JsonSerializer.Deserialize<int[]>(reader.GetString(10));
+            result.Add(new(reader.GetGuid(0), false, heroClass, JsonSerializer.Deserialize<string[]>(reader.GetString(2)) ?? [], int.Parse(reader.GetString(3), CultureInfo.InvariantCulture), reader.GetInt32(4), int.Parse(reader.GetString(5), CultureInfo.InvariantCulture), equipmentIds, int.Parse(reader.GetString(7), CultureInfo.InvariantCulture), equipment, cardLevels, safeSlotIndexes, reader.GetString(11)));
         }
         return result;
     }
@@ -429,7 +434,8 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
         foreach (var botId in botIds)
         {
             var represented = Enum.GetValues<HeroClass>().Select(heroClass => (HeroClass: heroClass, Count: assignments.Count(player => player.HeroClass == heroClass))).GroupBy(value => value.Count).OrderBy(group => group.Key).First().Select(value => value.HeroClass).OrderBy(_ => random.Next()).First();
-            assignments.Add(new(botId, true, represented, DefaultCards(represented), PotionCount: BotRules.StartingPotions, WeaponLevel: averageWeaponLevel));
+            var displayName = BotRules.PickDisplayName(assignments.Select(player => player.DisplayName).OfType<string>().ToArray(), random.Next());
+            assignments.Add(new(botId, true, represented, DefaultCards(represented), PotionCount: BotRules.StartingPotions, WeaponLevel: averageWeaponLevel, DisplayName: displayName));
         }
         if (assignments.Count != 4) throw new InvalidOperationException("A ready match must launch with exactly four players.");
         return assignments;

@@ -1,5 +1,10 @@
 extends RefCounted
 
+static var _body_font: FontFile = preload("res://assets/fonts/SourceHanSansSC-Regular.otf")
+static var _title_font: FontFile = preload("res://assets/fonts/SourceHanSerifSC-SemiBold.otf")
+static var _number_font: FontVariation
+static var _fonts_ready := false
+
 const INK := Color("172d35")
 const PAPER := Color("efe3c7")
 const MUTED := Color("a5bbb7")
@@ -13,6 +18,37 @@ const CLASSES := {"Priest": ["潮听 · 临", "临渊杖", 80, "潮汐将至，�
 static func word(value: Variant) -> String:
 	if value == null: return ""
 	return WORDS.get(str(value), str(value))
+
+static func font(role: String = "body") -> Font:
+	if not _fonts_ready:
+		_body_font.allow_system_fallback = false
+		_title_font.allow_system_fallback = false
+		_title_font.fallbacks = [_body_font]
+		_number_font = FontVariation.new()
+		_number_font.base_font = _body_font
+		# Source Han Sans ships equal-width default figures; keep proportional widths off.
+		_number_font.opentype_features = {"pwid": 0}
+		_fonts_ready = true
+	match role:
+		"title": return _title_font
+		"number": return _number_font
+	return _body_font
+
+static func font_for_text(value: String, size: int = 24) -> Font:
+	var numeric := not value.is_empty()
+	for character in value:
+		if character not in "0123456789+-−.,:%/ ×":
+			numeric = false
+			break
+	if numeric: return font("number")
+	return font("title") if size >= 32 and value.length() <= 26 and not value.contains("\n") else font("body")
+
+static func fit_font_size(typeface: Font, requested: int, height: float) -> int:
+	var fitted := requested
+	# Fixed reference rectangles must accommodate at least one full CJK line.
+	while fitted > 1 and ceilf(typeface.get_height(fitted)) > height:
+		fitted -= 1
+	return fitted
 
 static func box(color: Color = INK, border: Color = Color("47626a"), width: int = 2) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
@@ -28,10 +64,12 @@ static func box(color: Color = INK, border: Color = Color("47626a"), width: int 
 
 static func theme() -> Theme:
 	var result := Theme.new()
-	var font := SystemFont.new()
-	font.font_names = PackedStringArray(["Microsoft YaHei", "Noto Sans CJK SC", "WenQuanYi Zen Hei"])
-	result.default_font = font
+	result.default_font = font("body")
 	result.default_font_size = 24
+	result.set_font("font", "Button", font("title"))
+	result.set_font("font", "LineEdit", font("body"))
+	result.set_font("font", "TextEdit", font("body"))
+	result.set_font("normal_font", "RichTextLabel", font("body"))
 	result.set_color("font_color", "Label", PAPER)
 	result.set_color("font_color", "Button", PAPER)
 	result.set_color("font_hover_color", "Button", Color.WHITE)

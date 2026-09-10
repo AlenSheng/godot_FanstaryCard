@@ -3,16 +3,20 @@ extends Node
 signal failed(message: String)
 signal event_received(kind: String, payload: Dictionary)
 signal connection_changed(state: String)
+signal authentication_required(reason: String)
 
 const Proto = preload("res://network/protobuf.gd")
 const COMMANDS := {
 	"ping": "", "session.resume": "SessionResumeCommand", "room.ready": "RoomReadyCommand",
 	"room.snapshot.read": "RoomSnapshotCommand", "room.move": "RoomMoveCommand",
 	"battle.play_cards": "BattlePlayCardsCommand", "battle.select_target": "BattleSelectTargetCommand",
+	"combat.preview": "BattlePlayCardsCommand",
 	"reward.choice.refresh": "RewardChoiceRefreshCommand", "reward.choice.claim": "RewardChoiceClaimCommand",
 	"duel.leave": "DuelLeaveCommand", "duel.escape": "DuelEscapeCommand",
 	"action.extract": "ActionExtractCommand", "action.spring": "ActionSpringCommand",
-	"action.potion": "ActionPotionCommand", "relic.take": "RelicTakeCommand", "relic.replace": "RelicReplaceCommand"
+	"action.potion": "ActionPotionCommand", "relic.take": "RelicTakeCommand", "relic.replace": "RelicReplaceCommand",
+	"inventory.move": "InventoryMoveCommand", "inventory.equip": "InventoryEquipCommand", "inventory.unequip": "InventoryUnequipCommand",
+	"relic.read": "RelicReadCommand"
 }
 const EVENTS := {
 	"session.connected": "SessionConnectedEvent", "session.replaced": "SessionReplacedEvent",
@@ -22,17 +26,24 @@ const EVENTS := {
 	"room.snapshot": "RoomSnapshotEvent", "room.moved": "RoomMovedEvent",
 	"settlement.ready": "SettlementReadyEvent", "match.settled": "SettlementReadyEvent",
 	"error.command_rejected": "CommandRejectedEvent", "battle.combo_resolved": "BattleComboResolvedEvent",
+	"combat.previewed": "BattleComboResolvedEvent",
+	"combat.hit": "BattleComboResolvedEvent",
 	"battle.target_selected": "BattleTargetSelectedEvent", "reward.choice": "RewardChoiceEvent",
 	"reward.choice.refreshed": "RewardChoiceEvent", "reward.choice.claimed": "RewardChoiceClaimedEvent",
+	"reward.choice_claimed": "RewardChoiceClaimedEvent",
 	"duel.started": "DuelStartedEvent", "duel.ended": "DuelEndedEvent", "duel.leave": "DuelLeaveEvent",
 	"duel.escape_started": "DuelEscapeEvent", "duel.escape_failed": "DuelEscapeEvent",
 	"duel.escape_interrupted": "DuelEscapeEvent", "player.died": "PlayerDiedEvent",
-	"action.potion_used": "ActionPotionEvent", "relic.taken": "RelicTakeEvent", "relic.replaced": "RelicReplacedEvent"
+	"action.potion_used": "ActionPotionEvent", "relic.taken": "RelicTakeEvent", "relic.replaced": "RelicReplacedEvent",
+	"inventory.changed": "InventoryChangedEvent", "relic.contents": "RoomRelicPile"
 }
 
 var base_url := "http://127.0.0.1:5080"
 var persist_session := true
 var token := ""
+var token_expires_at: float = 0.0
+var authenticated_user_id := ""
+var session_generation: int = 0
 var device_id := ""
 var last_sequence: int = 0
 var room_id := ""
@@ -49,6 +60,7 @@ var _pending_http: Dictionary = {}
 var _command_cooldown: int = 0
 var _connected_sequence: int = 0
 var _last_snapshot_read: int = 0
+var _preview_request_ids: Dictionary = {}
 
 func _ready() -> void:
 	var config := ConfigFile.new()
@@ -58,6 +70,8 @@ func _ready() -> void:
 		room_id = config.get_value("session", "room_id", "")
 		room_revision = int(config.get_value("session", "revision", 0))
 		base_url = config.get_value("session", "base_url", base_url)
+		authenticated_user_id = config.get_value("session", "user_id", "")
+	if not OS.is_debug_build(): base_url = str(ProjectSettings.get_setting("platform/server_url", ""))
 	if device_id.is_empty(): device_id = "godot-" + new_id()
 	_save_session()
 
@@ -73,11 +87,70 @@ func _save_session() -> void:
 	config.set_value("session", "room_id", room_id)
 	config.set_value("session", "revision", room_revision)
 	config.set_value("session", "base_url", base_url)
+	config.set_value("session", "user_id", authenticated_user_id)
 	config.save("user://session.cfg")
 
+func begin_sign_in(address: String) -> void:
+	end_session("", false)
+	if base_url != address: clear_replay()
+	base_url = address
+	_save_session()
+
+func accept_session(access_token: String, expires_at: String, user_id: String) -> bool:
+	if access_token.is_empty() or user_id.is_empty(): return false
+	var expiry := parse_expiry(expires_at)
+	if expiry <= Time.get_unix_time_from_system(): return false
+	if authenticated_user_id != user_id: clear_replay()
+	authenticated_user_id = user_id
+	token = access_token
+	token_expires_at = expiry
+	_save_session()
+	return true
+
+static func parse_expiry(value: String) -> float:
+	var normalized := value.strip_edges()
+	if normalized.length() < 19: return 0.0
+	var offset := 0
+	var tail := normalized.substr(19)
+	for sign_value in ["+", "-"]:
+		var index := tail.find(sign_value)
+		if index >= 0:
+			var parts := tail.substr(index + 1).split(":")
+			if parts.size() != 2 or not parts[0].is_valid_int() or not parts[1].is_valid_int(): return 0.0
+			offset = (int(parts[0]) * 60 + int(parts[1])) * 60 * (1 if sign_value == "+" else -1)
+	return float(Time.get_unix_time_from_datetime_string(normalized.substr(0, 19))) - offset
+
+func clear_replay() -> void:
+	last_sequence = 0
+	room_id = ""
+	room_revision = 0
+	_connected_sequence = 0
+
+func end_session(reason: String, notify: bool = true) -> void:
+	session_generation += 1
+	token = ""
+	token_expires_at = 0.0
+	reconnect_enabled = false
+	online = false
+	recovering = false
+	_retry_at = 0
+	_command_cooldown = 0
+	_preview_request_ids = {}
+	socket.close()
+	if notify:
+		connection_changed.emit(reason)
+		authentication_required.emit(reason)
+
+func session_expired() -> bool:
+	return not token.is_empty() and token_expires_at > 0.0 and Time.get_unix_time_from_system() >= token_expires_at
+
 func request(path: String, method: int = HTTPClient.METHOD_GET, data: Variant = null, quiet_statuses: Array = []) -> Dictionary:
+	if session_expired():
+		end_session("登录已过期，请重新登录")
+		return {"ok": false, "status": 401, "error": "登录已过期，请重新登录"}
+	var generation := session_generation
 	data = normalize_request(data)
-	var fingerprint := str(method) + path + JSON.stringify(data)
+	var fingerprint := str(generation) + ":" + str(method) + path + JSON.stringify(data)
 	if _pending_http.has(fingerprint):
 		return {"ok": false, "status": 0, "error": "请求正在处理"}
 	_pending_http[fingerprint] = true
@@ -88,6 +161,7 @@ func request(path: String, method: int = HTTPClient.METHOD_GET, data: Variant = 
 	var result: Dictionary = {}
 	# One logical request retains exactly one key across transport and throttling retries.
 	for attempt in range(3):
+		if generation != session_generation: break
 		var http := HTTPRequest.new()
 		http.timeout = 10.0
 		add_child(http)
@@ -98,6 +172,7 @@ func request(path: String, method: int = HTTPClient.METHOD_GET, data: Variant = 
 		else:
 			var response: Array = await http.request_completed
 			http.queue_free()
+			if generation != session_generation: break
 			var code: int = response[1]
 			var parser := JSON.new()
 			var parse_status := parser.parse(response[3].get_string_from_utf8())
@@ -107,13 +182,12 @@ func request(path: String, method: int = HTTPClient.METHOD_GET, data: Variant = 
 			if parsed is Dictionary: message = str(parsed.get("detail", parsed.get("title", message)))
 			result = {"ok": success, "status": code, "data": parsed, "error": message}
 			if code == 401:
-				token = ""
-				reconnect_enabled = false
-				socket.close()
-				connection_changed.emit("登录已过期")
+				end_session("Steam 登录票据无效，请重试" if path == "/api/v1/auth/steam" else "登录已过期，请重新登录")
 			if success or code not in [0, 429, 502, 503, 504]: break
 		if attempt < 2: await get_tree().create_timer(pow(2.0, attempt)).timeout
 	_pending_http.erase(fingerprint)
+	if generation != session_generation:
+		return {"ok": false, "status": 401, "error": "登录状态已改变，请重新登录", "stale_session": true}
 	if not result.ok and result.status not in quiet_statuses: failed.emit(result.error)
 	return result
 
@@ -138,6 +212,7 @@ static func normalize_response(data: Variant) -> Variant:
 	return data
 
 func connect_realtime() -> void:
+	if session_expired(): end_session("登录已过期，请重新登录")
 	if token.is_empty(): return
 	reconnect_enabled = true
 	online = false
@@ -157,6 +232,7 @@ func _schedule_reconnect() -> void:
 	connection_changed.emit("连接中断，正在重连")
 
 func _process(_delta: float) -> void:
+	if session_expired(): end_session("登录已过期，请重新登录")
 	if not reconnect_enabled: return
 	socket.poll()
 	var state := socket.get_ready_state()
@@ -167,6 +243,7 @@ func _process(_delta: float) -> void:
 				failed.emit("实时协议需要二进制帧")
 				continue
 			_receive(packet)
+			if not reconnect_enabled: return
 		if online and Time.get_ticks_msec() - _last_ping > 10000:
 			send("ping")
 			_last_ping = Time.get_ticks_msec()
@@ -183,15 +260,21 @@ func _process(_delta: float) -> void:
 		_schedule_reconnect()
 
 func send(kind: String, payload: Dictionary = {}, request_id: String = "") -> bool:
+	if session_expired():
+		end_session("登录已过期，请重新登录")
+		return false
 	if not COMMANDS.has(kind) or socket.get_ready_state() != WebSocketPeer.STATE_OPEN: return false
 	if Time.get_ticks_msec() < _command_cooldown: return false
 	if recovering and kind not in ["ping", "session.resume", "room.snapshot.read"]: return false
 	var proto := Proto.new()
 	var envelope := {"protocol_version": 1, "type": kind, "request_id": new_id() if request_id.is_empty() else request_id}
 	if not COMMANDS[kind].is_empty(): envelope.payload = proto.encode(COMMANDS[kind], payload)
-	if kind not in ["ping", "session.resume", "room.snapshot.read", "room.ready"]:
+	if kind not in ["ping", "session.resume", "room.snapshot.read", "room.ready", "relic.read"]:
 		envelope.expected_revision = room_revision
 	var sent := socket.put_packet(proto.encode("ClientEnvelope", envelope)) == OK
+	if sent and kind == "combat.preview":
+		_preview_request_ids[envelope.request_id] = true
+		if _preview_request_ids.size() > 32: _preview_request_ids.erase(_preview_request_ids.keys()[0])
 	if sent: socket.poll()
 	return sent
 
@@ -210,6 +293,16 @@ func _receive(packet: PackedByteArray) -> void:
 	if not proto.error.is_empty():
 		failed.emit("服务器消息内容损坏")
 		return
+	# Keep presentation silent for every replay packet, including after a snapshot
+	# or the final replay advances the recovery cursor.
+	payload["_replayed"] = recovering or (sequence > 0 and sequence < _connected_sequence)
+	payload["_sequence"] = sequence
+	payload["_request_id"] = envelope.get("request_id", "")
+	payload["_event_revision"] = envelope.get("room_revision", -1)
+	if kind in ["combat.previewed", "error.command_rejected"]:
+		payload["_request_id"] = envelope.get("request_id", "")
+		payload["_room_revision"] = envelope.get("room_revision", -1)
+	if kind == "combat.previewed": _preview_request_ids.erase(envelope.get("request_id", ""))
 	if kind == "session.connected":
 		_connected_sequence = sequence
 		online = true
@@ -222,10 +315,7 @@ func _receive(packet: PackedByteArray) -> void:
 		else: last_sequence = sequence
 		return
 	if kind == "session.replaced":
-		reconnect_enabled = false
-		online = false
-		socket.close()
-		connection_changed.emit("账号已在其他窗口连接")
+		end_session("账号已在其他窗口连接，请在此窗口重新登录后继续")
 		return
 	if sequence <= last_sequence: return
 	if sequence > last_sequence + 1 and kind not in ["session.snapshot", "room.snapshot"]:
@@ -251,6 +341,10 @@ func _receive(packet: PackedByteArray) -> void:
 		_command_cooldown = Time.get_ticks_msec() + 2000
 		failed.emit("操作过快，请稍后重试")
 	if kind == "error.command_rejected":
+		if _preview_request_ids.has(payload.get("_request_id", "")):
+			_preview_request_ids.erase(payload._request_id)
+			event_received.emit("combat.preview_rejected", payload)
+			return
 		failed.emit(payload.get("detail", "操作被拒绝"))
 		if payload.get("code", "") == "NOT_IN_ROOM":
 			room_id = ""

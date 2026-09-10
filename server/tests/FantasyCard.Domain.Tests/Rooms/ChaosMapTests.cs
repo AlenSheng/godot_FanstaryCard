@@ -20,6 +20,41 @@ public sealed class ChaosMapTests
     }
 
     [Fact]
+    public void Every_non_treasure_spawn_has_a_single_outer_monster_for_the_whole_room()
+    {
+        for (var seed = 0; seed < 100; seed++)
+        {
+            var map = ChaosMapGenerator.Generate(seed, 4);
+            foreach (var position in map.SpawnPositions)
+            {
+                var cell = map.GetCell(position);
+                if (cell.MonsterGroupId == "BOX") continue;
+                Assert.StartsWith("O", cell.MonsterGroupId, StringComparison.Ordinal);
+                Assert.InRange(int.Parse(cell.MonsterGroupId.AsSpan(1), System.Globalization.CultureInfo.InvariantCulture), 1, 5);
+                Assert.Single(FantasyCard.Domain.Combat.PveBattleFactory.Create(cell).Monsters);
+            }
+        }
+    }
+
+    [Fact]
+    public void Middle_cells_adjacent_to_the_core_use_elites_and_four_corners_use_middle_groups()
+    {
+        for (var seed = 0; seed < 100; seed++)
+        {
+            var map = ChaosMapGenerator.Generate(seed, 4);
+            var middle = map.Cells.Where(cell => cell.Layer == ChaosMapLayer.Middle).ToArray();
+            Assert.Equal(8, middle.Count(cell => cell.MonsterGroupId.StartsWith('E')));
+            Assert.Equal(4, middle.Count(cell => cell.MonsterGroupId.StartsWith('M')));
+            foreach (var cell in middle)
+            {
+                var neighborsCore = map.GetNeighbors(cell.Position).Any(position => map.GetCell(position).Layer == ChaosMapLayer.Core);
+                Assert.StartsWith(neighborsCore ? "E" : "M", cell.MonsterGroupId, StringComparison.Ordinal);
+                Assert.InRange(int.Parse(cell.MonsterGroupId.AsSpan(1), System.Globalization.CultureInfo.InvariantCulture), 1, neighborsCore ? 6 : 5);
+            }
+        }
+    }
+
+    [Fact]
     public void CanMove_allows_same_ring_and_inward_but_not_outward()
     {
         var map = ChaosMapGenerator.Generate(17, 1);

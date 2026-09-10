@@ -18,7 +18,49 @@ public sealed record CardResponse(
     bool Unlocked,
     int CopyCount,
     int Level,
-    long Version);
+    long Version,
+    long CraftCost = 0,
+    long UpgradeSoulSpent = 0,
+    long DismantleRefund = 0,
+    string CurrencyKind = "WarriorSoul",
+    bool CanDismantle = false,
+    string? BlockedReason = null,
+    long UpgradeCost = 0,
+    int UpgradeCopyCost = 0,
+    bool CanUpgrade = false,
+    string? UpgradeBlockedReason = null,
+    CardEffectResponse? CurrentEffect = null,
+    CardEffectResponse? NextEffect = null);
+
+public sealed record CardEffectResponse(
+    int ElementalDamage,
+    string Element,
+    int DirectDamage,
+    int Heal,
+    int Shield,
+    double DrawCharge,
+    int ImmediateDraw,
+    double DrawSpeedModifier,
+    double DrawSpeedSeconds,
+    double StunSeconds,
+    double DrawBlockSeconds,
+    int HealthCost,
+    int SameElementBonus,
+    int ResonanceBonus,
+    double ConflictCancelBonus,
+    double ConflictHealCoefficient,
+    bool IsClassReveal,
+    int SecondaryElementalDamage = 0,
+    string SecondaryElement = "None");
+
+public sealed record CardMutationRequest(long ExpectedVersion);
+
+public sealed record CardMutationResponse(
+    CardResponse Card,
+    MaterialsResponse Materials,
+    string CurrencyKind,
+    long SoulAmount,
+    int ConsumedCopies = 0);
 
 public sealed record DeckResponse(
     Guid DeckId,
@@ -67,6 +109,19 @@ public sealed record UpdateLoadoutRequest(
 public sealed record EnhanceEquipmentRequest(
     long ExpectedVersion,
     Guid? MaterialEquipmentId = null);
+
+public sealed record EnhancementQuoteResponse(
+    string TargetKind,
+    int CurrentLevel,
+    int? NextLevel,
+    long ExpectedVersion,
+    long FragmentCost,
+    int MaterialCount,
+    string? MaterialQuality,
+    long AvailableFragments,
+    int AvailableMaterialCount,
+    bool CanEnhance,
+    string? BlockedReason);
 
 public sealed record EnhanceResult(
     EquipmentResponse Equipment,

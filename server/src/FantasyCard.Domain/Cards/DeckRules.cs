@@ -5,9 +5,10 @@ namespace FantasyCard.Domain.Cards;
 public enum CardRarity : short
 {
     White = 1,
-    Blue = 2,
-    Purple = 3,
-    Orange = 4
+    Green = 2,
+    Blue = 3,
+    Purple = 4,
+    Orange = 5
 }
 
 public sealed record OwnedCard(

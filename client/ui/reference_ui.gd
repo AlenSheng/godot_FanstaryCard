@@ -3,6 +3,7 @@ extends Control
 const Art = preload("res://ui/art.gd")
 const P = preload("res://ui/palette.gd")
 const Exploration = preload("res://ui/exploration_view.gd")
+const Codex = preload("res://ui/codex_view.gd")
 const BLUE := "UI/CardCodex/card_codex_action_button_blue.png"
 const ORANGE := "UI/CardCodex/card_codex_action_button_orange.png"
 var host: Control
@@ -40,7 +41,9 @@ func build(source: Control) -> void:
 func text(value: String, rect: Rect2, font_size: int = 24, color: Color = P.PAPER) -> Label:
 	var label := Label.new()
 	label.text = value
-	label.add_theme_font_size_override("font_size", font_size)
+	var typeface := P.font_for_text(value, font_size)
+	label.add_theme_font_override("font", typeface)
+	label.add_theme_font_size_override("font_size", P.fit_font_size(typeface, font_size, rect.size.y))
 	label.add_theme_color_override("font_color", color)
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -76,8 +79,8 @@ func button(value: String, rect: Rect2, action: Callable, disabled: bool = false
 	node.size = rect.size
 	return node
 
-func card(source: Control, id: String, rect: Rect2, action: Callable, selected: bool = false, disabled: bool = false) -> Button:
-	var node: Button = source._card_button(self, id, action, selected, disabled)
+func card(source: Control, id: String, rect: Rect2, action: Callable, selected: bool = false, disabled: bool = false, options: Dictionary = {}) -> Button:
+	var node: Button = source._card_button(self, id, action, selected, disabled, options)
 	node.name = "Card_" + id
 	node.position = rect.position
 	node.size = Vector2(218, 376)
@@ -94,12 +97,15 @@ func _scroll(rect: Rect2, horizontal: bool = false) -> ScrollContainer:
 	return node
 
 func _header() -> void:
+	if host.screen == "cards":
+		Codex.header(self, host)
+		return
 	panel(Rect2(24, 18, 1872, 82))
 	var names := {"hall": "幻想牌域", "cards": "卡牌图鉴", "prep": "探索准备", "gear": "装备穿戴", "enhance": "碎片强化", "shop": "金币商店", "market": "金币市场"}
 	if host.screen == "hall":
 		picture(Art.texture("UI/Hall/logo.png"), Rect2(55, 29, 255, 58))
 	else:
-		button("返回营地", Rect2(40, 32, 170, 52), host._navigate.bind("hall"), Game.busy or not Game.ticket.is_empty())
+		button("返回", Rect2(60, 32, 170, 52), host._navigate.bind("hall"), Game.busy or not Game.ticket.is_empty()).name = "ReturnButton"
 		text(names.get(host.screen, "营地"), Rect2(240, 30, 500, 60), 38, P.GOLD)
 	picture(_item("Gold"), Rect2(1490, 35, 44, 44))
 	text("金币 %s" % Game.lobby.get("wallet", {}).get("gold", 0), Rect2(1546, 38, 310, 46), 28, P.GOLD)
@@ -131,61 +137,14 @@ func _hall() -> void:
 		picture(Art.texture("UI/Hall/btn_%s.png" % entries[i][1]), rect)
 
 func _codex() -> void:
-	panel(Rect2(25, 115, 1378, 915))
-	panel(Rect2(1425, 115, 470, 915))
-	var search := LineEdit.new()
-	search.placeholder_text = "按名称或卡牌 ID 搜索，回车确认"
-	search.text = host._search
-	search.text_submitted.connect(func(value): host._search = value.strip_edges(); host._render())
-	add_child(search)
-	search.position = Vector2(55, 142)
-	search.size = Vector2(595, 60)
-	var qualities := ["", "White", "Green", "Blue", "Purple", "Orange"]
-	for i in range(qualities.size()):
-		var quality: String = qualities[i]
-		button("全部" if quality.is_empty() else P.word(quality), Rect2(684 + i * 111, 145, 100, 54), func(): host._quality = quality; host._render(), false, ORANGE if quality == host._quality else BLUE)
-	var scroll := _scroll(Rect2(56, 230, 1320, 767))
-	var grid := GridContainer.new()
-	grid.columns = 5
-	grid.add_theme_constant_override("h_separation", 40)
-	grid.add_theme_constant_override("v_separation", 26)
-	scroll.add_child(grid)
-	var shown := 0
-	for owned in host.owned:
-		var id: String = owned.cardId
-		var info: Dictionary = host.cards.get(id, {})
-		var hero_class: Variant = owned.get("heroClass")
-		if hero_class != null and hero_class != Game.hero_class: continue
-		if not host._quality.is_empty() and info.get("quality") != host._quality: continue
-		if not host._search.is_empty() and not (host._search.to_lower() in (id + str(info.get("name", ""))).to_lower()): continue
-		var can_add: bool = owned.get("unlocked", false) and host.deck_draft.size() < 20 and host.deck_draft.count(id) < int(owned.get("copyCount", 0))
-		if info.get("quality") == "Orange":
-			for entry in host.deck_draft:
-				var existing: Dictionary = host.cards.get(entry, {})
-				if existing.get("quality") == "Orange" and (existing.get("hero_class") == null) == (hero_class == null): can_add = false
-		var node: Button = host._card_button(grid, id, func(): host.deck_draft.append(id); host._render(), false, not can_add)
-		node.tooltip_text += "\n已编入 %s · 持有 %s · 等级 %s" % [host.deck_draft.count(id), owned.copyCount, owned.level]
-		shown += 1
-	if shown == 0: text("没有符合条件的卡牌", Rect2(110, 330, 1000, 80), 32, P.MUTED)
-	text("当前编组  %s / 20" % host.deck_draft.size(), Rect2(1460, 140, 400, 65), 34, P.GOLD)
-	var deck_scroll := _scroll(Rect2(1455, 218, 405, 674))
-	var rows := VBoxContainer.new()
-	rows.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	rows.add_theme_constant_override("separation", 4)
-	deck_scroll.add_child(rows)
-	for i in range(host.deck_draft.size()):
-		var id: String = host.deck_draft[i]
-		var info: Dictionary = host.cards.get(id, {})
-		var row := Button.new()
-		row.text = "%02d  %s    ×" % [i + 1, info.get("name", id)]
-		row.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		row.custom_minimum_size = Vector2(395, 38)
-		row.add_theme_font_size_override("font_size", 20)
-		Art.button(row, "UI/Codex/deck_row_%s.png" % str(info.get("quality", "White")).to_lower())
-		row.pressed.connect(func(): host.deck_draft.remove_at(i); host._render())
-		rows.add_child(row)
-	button("还原", Rect2(1460, 930, 165, 62), func(): host.deck_draft = Game.deck().get("cardIds", []).duplicate(); host._render())
-	button("保存编组", Rect2(1642, 930, 200, 62), host._save_deck, Game.busy or host.deck_draft.size() != 20, ORANGE)
+	Codex.build(self, host)
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if host != null and host.screen == "cards" and not host._codex_card.is_empty() and event.is_action_pressed("ui_cancel"):
+		get_viewport().set_input_as_handled()
+		if not host._codex_mutating:
+			host._codex_card = ""
+			host._render()
 
 func _loadout(rect: Rect2, editable: bool, snapshot: Dictionary = {}) -> void:
 	var hero_class: String = snapshot.get("heroClass", Game.hero_class)
@@ -203,7 +162,7 @@ func _loadout(rect: Rect2, editable: bool, snapshot: Dictionary = {}) -> void:
 		var point: Vector2 = rect.position + locations[i]
 		var quality: String = str(item.get("quality", "common")).to_lower()
 		var slot := button("", Rect2(point, Vector2(120, 120)), func(): host.gear_draft.resize(5); host.gear_draft[i] = null; host._render(), not editable or id == null, "UI/Prep/exploration_prep_equipment_slot_frame_%s.png" % quality)
-		slot.tooltip_text = host._equipment_name(item) if not item.is_empty() else P.word(slots[i]) + " · 未穿戴"
+		slot.tooltip_text = host.EquipmentDetails.description(item) if not item.is_empty() else P.word(slots[i]) + " · 未穿戴"
 		picture(_item(slots[i]), Rect2(point + Vector2(18, 12), Vector2(84, 84))).modulate.a = 1.0 if id != null else 0.35
 		text(P.word(slots[i]) + (" +%s" % item.get("level", 0) if id != null else ""), Rect2(point + Vector2(2, 125), Vector2(148, 40)), 22, P.MUTED)
 	var weapon_pos := rect.position + Vector2(rect.size.x - 165, 507)
@@ -275,7 +234,8 @@ func _gear() -> void:
 		var row := HBoxContainer.new()
 		list.add_child(row)
 		Art.image(row, _item(item.slot), Vector2(68, 70))
-		var entry: Button = host._button(row, host._equipment_name(item), func(): host._equip(item), Game.busy or item.get("location") not in ["Inventory", "Equipped"])
+		var entry: Button = host._button(row, host._equipment_name(item), func(): host._show_equipment_details(item, func(): host._equip(item)), Game.busy or item.get("location") not in ["Inventory", "Equipped"])
+		entry.tooltip_text = host.EquipmentDetails.description(item)
 		entry.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	if list.get_child_count() == 0: text("仓库暂无装备\n探索撤离后可带回战利品", Rect2(1255, 362, 530, 160), 28, P.MUTED)
 	button("碎片强化", Rect2(1260, 930, 530, 64), host._navigate.bind("enhance"))
@@ -298,21 +258,27 @@ func _enhance() -> void:
 	for entry in Game.lobby.get("classWeapons", []):
 		if entry.heroClass == Game.hero_class: weapon = entry
 	var level: int = int(selected.get("level", weapon.get("level", 0)))
+	host._read_enhancement_quote(selected, weapon)
+	var quote: Dictionary = host._enhancement_quote
 	var title: String = host._equipment_name(selected) if not selected.is_empty() else P.CLASSES[Game.hero_class][1]
 	text(title, Rect2(625, 178, 590, 68), 42, P.GOLD)
 	var image: Texture2D = _item(selected.get("slot", "")) if not selected.is_empty() else Art.texture("UI/Item/exploration_prep_item_icon_weapon_%s.png" % Game.hero_class.to_lower())
-	picture(image, Rect2(645, 290, 540, 540))
-	text("+%s" % level, Rect2(810, 882, 290, 88), 58, P.GOLD)
+	picture(image, Rect2(720, 275, 350, 350))
+	var benefit: String = host.EquipmentDetails.enhancement_text(selected) if not selected.is_empty() else "当前：%s\n下一级：%s" % [host._weapon_benefit(level), host._weapon_benefit(mini(5, level + 1))]
+	text(benefit if level < 5 else "已达最高等级", Rect2(591, 636, 642, 306), 23, P.TEAL)
 	text("强化进度", Rect2(1375, 175, 450, 70), 38, P.GOLD)
 	for i in range(5):
 		var color := P.GOLD if i < level else P.MUTED
 		text("+%s" % (i + 1), Rect2(1370 + i * 95, 300, 85, 72), 30, color)
 	picture(_item("EquipmentFragments"), Rect2(1430, 439, 90, 108))
 	text("装备碎片\n持有 %s" % Game.lobby.get("materials", {}).get("equipmentFragments", 0), Rect2(1535, 445, 300, 115), 30)
-	text("本命武器只消耗碎片\n防具 +4 / +5 需同品质材料", Rect2(1370, 630, 470, 115), 26, P.MUTED)
+	var cost: String = "正在读取强化费用…" if quote.is_empty() else "所需碎片 %s\n同品质材料 %s / %s 件" % [quote.get("fragmentCost", 0), quote.get("availableMaterialCount", 0), quote.get("materialCount", 0)]
+	if quote.get("error", false): cost = "报价读取失败，请重新进入强化"
+	elif not quote.is_empty() and not quote.get("canEnhance", false) and level < 5: cost += "\n碎片、材料或物品状态不满足要求"
+	text(cost, Rect2(1370, 604, 470, 176), 25, P.MUTED)
 	button("已达上限" if level >= 5 else "强化到 +%s" % (level + 1), Rect2(1380, 823, 440, 86), func():
 		if not selected.is_empty(): host._enhance(selected)
-		else: host._confirm("专属武器强化仅消耗装备碎片。", func(): host._mutate("/class-weapons/" + Game.hero_class + "/enhance", HTTPClient.METHOD_POST, {"expectedVersion": weapon.get("version", 0)})), Game.busy or level >= 5 or (not selected.is_empty() and selected.get("location") not in ["Inventory", "Equipped"]), ORANGE)
+		else: host._enhance_weapon(), Game.busy or level >= 5 or not quote.get("canEnhance", false), ORANGE)
 
 func _shop() -> void:
 	panel(Rect2(28, 138, 1864, 864))
@@ -335,6 +301,7 @@ func _shop() -> void:
 		row.add_child(item_panel)
 		var title := Label.new()
 		title.text = product_title
+		title.add_theme_font_override("font", P.font("title"))
 		title.position = Vector2(20, 32)
 		title.size = Vector2(200, 70)
 		title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -397,13 +364,15 @@ func _market() -> void:
 	for listing in host.listings:
 		var row := HBoxContainer.new()
 		list.add_child(row)
-		var name: Label = host._label(row, "装备 " + str(listing.equipmentId).left(8), 26)
+		var gear: Dictionary = listing.get("equipment", {}) if listing.get("equipment") is Dictionary else {}
+		var name: Button = host._button(row, host._equipment_name(gear) if not gear.is_empty() else "装备详情暂不可用", func(): host._show_equipment_details(gear), gear.is_empty())
+		name.tooltip_text = host.EquipmentDetails.description(gear) if not gear.is_empty() else ""
 		name.custom_minimum_size.x = 660
 		host._label(row, "%s" % listing.priceGold, 30, P.GOLD).custom_minimum_size.x = 240
 		if listing.sellerId == Game.lobby.get("player", {}).get("userId", ""):
 			host._button(row, "下架", func(): host._mutate("/market/listings/" + listing.listingId, HTTPClient.METHOD_DELETE), Game.busy)
 		else:
-			host._button(row, "购买", func(): host._confirm("花费 %s 金币购买此装备？" % listing.priceGold, func(): host._mutate("/market/" + listing.listingId + "/purchase?expectedVersion=" + str(int(listing.version)), HTTPClient.METHOD_POST)), Game.busy or int(listing.priceGold) > int(Game.lobby.get("wallet", {}).get("gold", 0)))
+			host._button(row, "购买", func(): host._confirm("花费 %s 金币购买 %s？" % [listing.priceGold, host._equipment_name(gear)], func(): host._mutate("/market/" + listing.listingId + "/purchase?expectedVersion=" + str(int(listing.version)), HTTPClient.METHOD_POST)), Game.busy or gear.is_empty() or int(listing.priceGold) > int(Game.lobby.get("wallet", {}).get("gold", 0)))
 	if list.get_child_count() == 0: text("集市暂时没有挂单", Rect2(356, 453, 730, 100), 32, P.MUTED)
 	text("本次上架", Rect2(1390, 175, 440, 67), 34, P.GOLD)
 	var choices := OptionButton.new()

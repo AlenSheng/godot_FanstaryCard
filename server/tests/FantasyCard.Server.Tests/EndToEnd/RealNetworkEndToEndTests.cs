@@ -15,7 +15,7 @@ using FantasyCard.Server.Tests.Persistence;
 
 namespace FantasyCard.Server.Tests.EndToEnd;
 
-public sealed class RealNetworkEndToEndTests
+public sealed partial class RealNetworkEndToEndTests
 {
     private static readonly JsonSerializerOptions WebJson = CreateWebJson();
 
@@ -133,7 +133,7 @@ public sealed class RealNetworkEndToEndTests
     private static NetworkServerProcess StartServer(string connectionString, int port)
     {
         var serverProjectDirectory = FindServerProjectDirectory();
-        var serverDll = Path.Combine(
+        var serverDll = Environment.GetEnvironmentVariable("FANTASYCARD_E2E_SERVER_DLL") ?? Path.Combine(
             serverProjectDirectory,
             "bin",
             "Release",

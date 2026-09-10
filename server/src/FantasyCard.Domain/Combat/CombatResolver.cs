@@ -1,3 +1,5 @@
+using FantasyCard.Domain.Players;
+
 namespace FantasyCard.Domain.Combat;
 
 public static class CombatResolver
@@ -18,84 +20,136 @@ public static class CombatResolver
     {
         ArgumentNullException.ThrowIfNull(cards);
         ArgumentNullException.ThrowIfNull(attacker);
+        if (cards.Count == 0) throw new DomainValidationException("At least one card is required for combat resolution.");
         var elemental = cards
-            .Where(card => card.Effect.ElementalDamage > 0 && card.Effect.Element != CardElement.None)
+            .Where(card => card.Effect.ElementalDamage > 0 && card.Effect.Element != CardElement.None &&
+                card.Effect.SecondaryElementalDamage == 0)
             .ToArray();
         var counts = elemental
             .GroupBy(card => card.Effect.Element)
             .ToDictionary(group => group.Key, group => group.Count());
-        var bases = elemental.Select(card =>
+        var revealElement = attacker.HeroClass switch
         {
-            var sameElementOthers = counts[card.Effect.Element] - 1;
-            return card.Effect.ElementalDamage +
+            Players.HeroClass.Mage => CardElement.Fire,
+            Players.HeroClass.Priest => CardElement.Water,
+            _ => CardElement.Earth
+        };
+        var reveal = cards.Any(card => card.Effect.IsClassReveal);
+        var bases = cards.Select(card =>
+        {
+            var sameElementOthers = counts.GetValueOrDefault(card.Effect.Element) - 1;
+            var value = card.Effect.ElementalDamage +
                 card.Effect.SameElementBonus * Math.Max(0, sameElementOthers - 2);
+            return reveal && card.Effect.Element == revealElement ? (int)Math.Floor(value * 1.3) : value;
         }).ToArray();
 
         CardElement? core = null;
         var coreCount = 0;
         var elementalDamage = 0;
+        var conflictPairCount = 0;
+        var conflictHeal = 0;
+        var segments = new List<CombatDamageSegment>();
         if (elemental.Length > 0)
         {
             coreCount = counts.Values.Max();
             core = elemental.First(card => counts[card.Effect.Element] == coreCount).Effect.Element;
-            var coreBase = elemental
+            var coreBase = cards
                 .Select((card, index) => (card, index))
-                .Where(value => value.card.Effect.Element == core)
+                .Where(value => value.card.Effect.Element == core && value.card.Effect.SecondaryElementalDamage == 0)
                 .Sum(value => bases[value.index]);
-            var conflictPairCount = ConflictPairs.Sum(pair =>
+            conflictPairCount = ConflictPairs.Sum(pair =>
+                (pair.Left == core || pair.Right == core) &&
                 counts.TryGetValue(pair.Left, out var left) && counts.TryGetValue(pair.Right, out var right)
                     ? Math.Min(left, right)
                     : 0);
-            if (conflictPairCount == 0)
+            var resonanceBonus = cards.Any(card => card.Effect.ResonanceBonus > 0) ? 1 : 0;
+            var resonance = coreCount == 5 && resonanceBonus > 0 ? 3.5 : Resonance(coreCount + resonanceBonus);
+            var equipmentBonus = attacker.Equipment.DamageBonus(core.Value);
+            var resistance = targetResistance?.Invoke(core.Value) ?? 0;
+            var beforeConflict = coreBase * resonance * (1 + equipmentBonus) * (1 - resistance);
+            var cancellation = 0d;
+            if (conflictPairCount > 0)
             {
-                var resonanceBonus = cards.Sum(card => card.Effect.ResonanceBonus);
-                var resonance = Resonance(coreCount + resonanceBonus);
-                if (resonanceBonus > 0)
-                {
-                    resonance = Math.Min(3.5, resonance);
-                }
-                var equipmentBonus = attacker.Equipment.DamageBonus(core.Value);
-                var resistance = targetResistance?.Invoke(core.Value) ?? 0;
-                elementalDamage = (int)Math.Floor(coreBase * resonance * (1 + equipmentBonus) * (1 - resistance));
+                var cancelBonus = cards.Max(card => card.Effect.ConflictCancelBonus);
+                cancellation = Math.Min(0.80, Math.Min(0.65, 0.20 * conflictPairCount) + cancelBonus);
+                var healCoefficient = Math.Max(0.50, cards.Max(card => card.Effect.ConflictHealCoefficient));
+                conflictHeal = attacker.ResolveRecovery((int)Math.Floor(beforeConflict * cancellation * healCoefficient) + 2 * conflictPairCount);
             }
-            else
+            elementalDamage = Math.Max(0, (int)Math.Floor(beforeConflict * (1 - cancellation)));
+            if (elementalDamage > 0) segments.Add(new(core.Value.ToString(), elementalDamage));
+        }
+
+        // The boss card resolves its two printed elements independently, outside resonance and conflict.
+        foreach (var (card, index) in cards.Select((card, index) => (card, index))
+                     .Where(value => value.card.Effect.SecondaryElementalDamage > 0))
+        {
+            var secondary = card.Effect.SecondaryElementalDamage;
+            if (reveal && card.Effect.SecondaryElement == revealElement) secondary = (int)Math.Floor(secondary * 1.3);
+            foreach (var (element, value) in new[] { (card.Effect.Element, bases[index]), (card.Effect.SecondaryElement, secondary) })
             {
-                var cancelBonus = cards.Sum(card => card.Effect.ConflictCancelBonus);
-                var cancellation = Math.Min(0.65 + cancelBonus, 0.20 * conflictPairCount + cancelBonus);
-                var equipmentBonus = attacker.Equipment.DamageBonus(core.Value);
-                var resistance = targetResistance?.Invoke(core.Value) ?? 0;
-                elementalDamage = (int)Math.Floor(
-                    coreBase * Resonance(coreCount) * (1 + equipmentBonus) * (1 - resistance) * (1 - cancellation));
+                var damage = Math.Max(0, (int)Math.Floor(value * (1 + attacker.Equipment.DamageBonus(element)) *
+                    (1 - (targetResistance?.Invoke(element) ?? 0))));
+                if (damage > 0) segments.Add(new(element.ToString(), damage));
+                elementalDamage += damage;
             }
         }
 
         var directDamage = cards.Sum(card => card.Effect.DirectDamage);
         var piercingDamage = cards.Select((card, index) =>
         {
-            var elementalIndex = Array.IndexOf(elemental, card);
-            var elementalBase = elementalIndex >= 0 ? bases[elementalIndex] : 0;
-            var damageBase = elementalBase + card.Effect.DirectDamage;
+            var secondary = card.Effect.SecondaryElementalDamage;
+            if (reveal && card.Effect.SecondaryElement == revealElement) secondary = (int)Math.Floor(secondary * 1.3);
+            var damageBase = bases[index] + secondary + card.Effect.DirectDamage;
             return (int)Math.Floor(damageBase * attacker.Equipment.PiercingBonus);
         }).Sum();
-        var heal = cards.Sum(card => card.Effect.Heal);
+        if (directDamage + piercingDamage > 0) segments.Add(new("Direct", directDamage + piercingDamage));
+        var heal = cards.Sum(card => card.Effect.Heal) * (1 + .25 * conflictPairCount);
         var shield = cards.Sum(card => card.Effect.Shield);
+        var healthCost = cards.Sum(card => card.Effect.HealthCost);
         var stunSeconds = cards.Max(card => card.Effect.StunSeconds);
         var blockSeconds = cards.Max(card => card.Effect.DrawBlockSeconds);
         var speedSeconds = cards.Max(card => card.Effect.DrawSpeedSeconds);
         var speedModifier = cards.Min(card => card.Effect.DrawSpeedModifier);
         return new CardResolutionDraft(
             elementalDamage + directDamage + piercingDamage,
-            attacker.ResolveHeal(heal),
-            attacker.ResolveShield(shield),
+            attacker.ResolveHeal(heal) + conflictHeal,
+            attacker.ResolveShield(shield, healthCost),
             attacker.ResolveControl(TimeSpan.FromSeconds(stunSeconds)),
-            TimeSpan.FromSeconds(blockSeconds),
+            attacker.ResolveControl(TimeSpan.FromSeconds(blockSeconds)),
             cards.Sum(card => card.Effect.DrawCharge),
             cards.Sum(card => card.Effect.ImmediateDraw),
             TimeSpan.FromSeconds(speedSeconds),
             speedModifier,
-            cards.Sum(card => card.Effect.HealthCost),
+            healthCost,
             core,
-            coreCount);
+            coreCount,
+            segments.GroupBy(segment => segment.Kind, StringComparer.Ordinal)
+                .Select(group => new CombatDamageSegment(group.Key, group.Sum(segment => segment.Amount))).ToArray());
+    }
+
+    public static IReadOnlyList<CombatDamageSegment> ResolveDamageSegments(
+        IReadOnlyList<CombatDamageSegment> segments, int actualDamage, double multiplier = 1)
+    {
+        ArgumentNullException.ThrowIfNull(segments);
+        if (actualDamage <= 0) return [];
+        if (multiplier < 0 || multiplier > 1) throw new ArgumentOutOfRangeException(nameof(multiplier));
+        var grouped = segments.Where(segment => segment.Amount > 0)
+            .GroupBy(segment => segment.Kind, StringComparer.Ordinal)
+            .Select(group => new CombatDamageSegment(group.Key, group.Sum(segment => segment.Amount)))
+            .ToArray();
+        if (grouped.Length == 0) return [new("Direct", actualDamage)];
+        var reduced = grouped.Select(segment => segment with { Amount = (int)Math.Floor(segment.Amount * multiplier) }).ToArray();
+        var expected = (int)Math.Floor(grouped.Sum(segment => segment.Amount) * multiplier);
+        var largest = Array.FindIndex(grouped, segment => segment.Amount == grouped.Max(value => value.Amount));
+        reduced[largest] = reduced[largest] with { Amount = reduced[largest].Amount + expected - reduced.Sum(segment => segment.Amount) };
+        if (expected != actualDamage)
+        {
+            // Overkill cannot create visible damage beyond the shield and HP actually removed.
+            var scale = expected == 0 ? 0 : (double)actualDamage / expected;
+            reduced = reduced.Select(segment => segment with { Amount = (int)Math.Floor(segment.Amount * scale) }).ToArray();
+            reduced[largest] = reduced[largest] with { Amount = reduced[largest].Amount + actualDamage - reduced.Sum(segment => segment.Amount) };
+        }
+        return reduced.Where(segment => segment.Amount > 0).ToArray();
     }
 
     private static double Resonance(int count) => count switch

@@ -28,7 +28,8 @@ public sealed record MarketListingResponse(
     string Status,
     long Version,
     DateTimeOffset CreatedAt,
-    DateTimeOffset ExpiresAt);
+    DateTimeOffset ExpiresAt,
+    EquipmentResponse? Equipment = null);
 
 public sealed record MarketPurchaseResponse(
     MarketListingResponse Listing,

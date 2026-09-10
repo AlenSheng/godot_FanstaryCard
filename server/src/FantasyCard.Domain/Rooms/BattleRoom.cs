@@ -15,7 +15,10 @@ public sealed record BattleRoomPlayerSetup(
     int SafeSlots = 0,
     IReadOnlyList<ExplorationItem>? WornArmor = null,
     bool IsBot = false,
-    CombatEquipmentProfile? Equipment = null);
+    CombatEquipmentProfile? Equipment = null,
+    IReadOnlyList<int>? SafeSlotIndexes = null,
+    string? DisplayName = null,
+    IReadOnlyList<int>? CardLevels = null);
 
 public sealed record DuelEscapeRequestResult(Guid DuelId, double Probability, long RoomRevision);
 public sealed record RoomMoveResult(MapPosition Position, DuelStateSnapshot? StartedDuel, long RoomRevision);
@@ -31,14 +34,17 @@ public sealed class RoomPlayerState
         int inventoryCapacity,
         int safeSlots,
         IReadOnlyList<ExplorationItem>? wornArmor,
-        bool isBot)
+        bool isBot,
+        IReadOnlyList<int>? safeSlotIndexes,
+        string? displayName)
     {
         PlayerId = playerId;
         HeroClass = heroClass;
         Combat = combat;
         Pve = pve;
-        Inventory = new ExplorationInventory(inventoryCapacity, safeSlots);
-        WornArmor = wornArmor ?? [];
+        Inventory = new ExplorationInventory(inventoryCapacity, safeSlots, safeSlotIndexes);
+        WornArmor = (wornArmor ?? []).Select(item => item with { SlotIndex = -1, IsSafe = false }).ToArray();
+        DisplayName = displayName;
         IsBot = isBot;
         Phase = pve is null ? RoomPlayerPhase.ActionBar : RoomPlayerPhase.Pve;
     }
@@ -51,7 +57,9 @@ public sealed class RoomPlayerState
     public PveBattleState? Pve { get; internal set; }
     public MapPosition? Position { get; internal set; }
     public ExplorationInventory Inventory { get; }
-    public IReadOnlyList<ExplorationItem> WornArmor { get; }
+    public IReadOnlyList<ExplorationItem> WornArmor { get; internal set; }
+    public string? DisplayName { get; }
+    internal List<ExplorationItem> RecycledEquipment { get; } = [];
     public bool IsBot { get; }
     public RewardChoiceState? RewardChoice { get; internal set; }
     public int RewardRefreshCount { get; internal set; }
@@ -83,7 +91,9 @@ public sealed class RoomPlayerState
             springDrink,
             IsBot,
             botPveRemaining,
-            RewardRefreshReceipts.ToArray());
+            RewardRefreshReceipts.ToArray(),
+            RecycledEquipment.ToArray(),
+            DisplayName);
 }
 
 public sealed class DuelState
@@ -233,7 +243,7 @@ internal sealed record Ceasefire(Guid FirstPlayerId, Guid SecondPlayerId, TimeSp
         (FirstPlayerId == second && SecondPlayerId == first);
 }
 
-public sealed class BattleRoom
+public sealed partial class BattleRoom
 {
     private readonly CombatCardCatalog _catalog;
     private readonly CombatRandom _legacyRandom;
@@ -253,6 +263,7 @@ public sealed class BattleRoom
     private readonly Dictionary<Guid, SpringDrinkSnapshot> _springDrinks = [];
     private readonly Dictionary<Guid, TimeSpan> _botPveRemaining = [];
     private readonly Dictionary<Guid, TimeSpan> _botDuelRemaining = [];
+    private readonly List<CombatFeedbackResolution> _combatFeedback = [];
 
     public BattleRoom(Guid roomId, string configVersion, CombatCardCatalog catalog, int seed)
     {
@@ -276,6 +287,13 @@ public sealed class BattleRoom
     public Guid RoomId { get; }
     public string ConfigVersion { get; }
     public long Revision { get; private set; }
+
+    public IReadOnlyList<CombatFeedbackResolution> DrainCombatFeedback()
+    {
+        var feedback = _combatFeedback.ToArray();
+        _combatFeedback.Clear();
+        return feedback;
+    }
     public TimeSpan Elapsed { get; private set; }
     public ChaosMapState? Map { get; private set; }
 
@@ -355,9 +373,11 @@ public sealed class BattleRoom
         {
             throw new DomainValidationException("Room player is invalid, duplicated, or exceeds the four-player limit.");
         }
-        foreach (var cardId in setup.CardIds)
+        if (setup.CardLevels is not null && setup.CardLevels.Count != setup.CardIds.Count)
+            throw new DomainValidationException("Card levels must match the deck slots.");
+        for (var index = 0; index < setup.CardIds.Count; index++)
         {
-            _catalog.Get(cardId);
+            _catalog.Get(setup.CardIds[index], setup.CardLevels?[index] ?? 0);
         }
 
         var combat = new PlayerCombatState(
@@ -365,8 +385,9 @@ public sealed class BattleRoom
             setup.CardIds,
             new Random(PlayerSeedRandom.Next()),
             setup.WeaponLevel,
-            setup.Equipment);
-        var player = new RoomPlayerState(setup.PlayerId, setup.HeroClass, combat, setup.Pve, setup.InventoryCapacity, setup.SafeSlots, setup.WornArmor, setup.IsBot);
+            setup.Equipment,
+            setup.CardLevels);
+        var player = new RoomPlayerState(setup.PlayerId, setup.HeroClass, combat, setup.Pve, setup.InventoryCapacity, setup.SafeSlots, setup.WornArmor, setup.IsBot, setup.SafeSlotIndexes, setup.DisplayName);
         _players.Add(player.PlayerId, player);
         return player;
     }
@@ -421,15 +442,20 @@ public sealed class BattleRoom
         return receipt;
     }
 
-    public int ClaimReward(Guid playerId, string optionId, string? replaceItemId = null)
+    public int ClaimReward(Guid playerId, string optionId, string? replaceItemId = null, bool equip = false)
     {
         var player = GetPlayer(playerId);
         if (player.Phase != RoomPlayerPhase.Choice || player.RewardChoice is null)
             throw new DomainValidationException("The player has no pending reward choice.");
         var option = player.RewardChoice.Get(optionId);
+        if (equip && option.Kind != RewardChoiceKind.Equipment)
+            throw new DomainValidationException("Only an equipment reward can be equipped.");
+        if (option.Kind == RewardChoiceKind.ImmediateHeal && replaceItemId is not null)
+            throw new DomainValidationException("Healing does not replace inventory items.");
         var applied = option.Kind == RewardChoiceKind.ImmediateHeal
             ? player.Combat.Heal(player.Combat.ResolveRecovery(
                 (int)Math.Floor(player.Combat.MaximumHp * option.HealPercent / 100d)))
+            : equip ? EquipReward(player, option.Item!, replaceItemId)
             : ClaimItemReward(player, option.Item!, replaceItemId);
         player.RewardChoice = null;
         if (player.Position is { } clearedPosition) player.ClearedCells.Add(clearedPosition);
@@ -440,11 +466,11 @@ public sealed class BattleRoom
 
     private static int ClaimItemReward(RoomPlayerState player, ExplorationItem item, string? replaceItemId)
     {
-        if (player.Inventory.TryAdd(item)) return item.Quantity;
+        if (replaceItemId is null && player.Inventory.TryAdd(item)) return item.Quantity;
         if (string.IsNullOrWhiteSpace(replaceItemId))
             throw new DomainValidationException("The inventory is full; an explicit replacement is required.");
         var pending = player.Inventory.BeginChoiceReplacement(replaceItemId, item);
-        player.Inventory.FinalizeChoiceReplacement(pending.Token);
+        TrackRecycled(player, player.Inventory.FinalizeChoiceReplacement(pending.Token));
         return item.Quantity;
     }
 
@@ -487,21 +513,23 @@ public sealed class BattleRoom
             var cards = playerSnapshot.Combat.Deck.Hand
                 .Concat(playerSnapshot.Combat.Deck.Library)
                 .Concat(playerSnapshot.Combat.Deck.Discard)
-                .Select(card => card.CardId)
                 .ToArray();
             var inventory = playerSnapshot.Inventory
                 ?? throw new InvalidOperationException("A room player snapshot is missing inventory state.");
             var player = room.AddPlayer(new BattleRoomPlayerSetup(
                 playerSnapshot.PlayerId,
                 playerSnapshot.HeroClass,
-                cards,
+                cards.Select(card => card.CardId).ToArray(),
                 null,
                 playerSnapshot.Combat.WeaponLevel,
                 inventory.Capacity,
                 inventory.SafeSlots,
                 playerSnapshot.WornArmor,
                 playerSnapshot.IsBot,
-                playerSnapshot.Combat.Equipment));
+                playerSnapshot.Combat.Equipment,
+                SafeSlotIndexes: inventory.SafeSlotIndexes,
+                DisplayName: playerSnapshot.DisplayName,
+                CardLevels: cards.Select(card => card.Level).ToArray()));
             player.Combat.Restore(playerSnapshot.Combat);
             player.Pve = playerSnapshot.Pve is null ? null : PveBattleState.Rehydrate(playerSnapshot.Pve);
             player.Position = playerSnapshot.Position;
@@ -522,8 +550,8 @@ public sealed class BattleRoom
             if (player.RewardRefreshCount is < 0 or > 3 ||
                 player.RewardChoice is { } restoredChoice && restoredChoice.RefreshCount != player.RewardRefreshCount)
                 throw new InvalidOperationException("The snapshot contains inconsistent reward refresh counts.");
-            foreach (var item in inventory.Items)
-                if (!player.Inventory.TryAdd(item)) throw new InvalidOperationException("A room inventory snapshot exceeds its capacity.");
+            player.Inventory.Apply(ExplorationInventory.Restore(inventory));
+            player.RecycledEquipment.AddRange(playerSnapshot.RecycledEquipment ?? []);
             if (playerSnapshot.ExtractionRemaining is { } extraction && extraction > TimeSpan.Zero)
                 room._extractions[player.PlayerId] = extraction;
             if (playerSnapshot.DisconnectedRemaining is { } disconnected && disconnected > TimeSpan.Zero)
@@ -706,11 +734,7 @@ public sealed class BattleRoom
 
     public long TakeRelicItem(Guid playerId, Guid pileId, string itemId, long expectedVersion, string? replaceItemId = null)
     {
-        var player = GetPlayer(playerId);
-        if (player.Phase is not RoomPlayerPhase.ActionBar)
-            throw new DomainValidationException("Relics can only be retrieved from the action bar.");
-        if (_springDrinks.ContainsKey(playerId))
-            throw new DomainValidationException("Relics cannot be retrieved while drinking from a spring.");
+        var player = GetInventoryPlayer(playerId);
         if (!_relicPiles.TryGetValue(pileId, out var pile))
             throw new DomainValidationException("Relic pile is not in this room.");
         if (player.Position != pile.Position)
@@ -859,6 +883,7 @@ public sealed class BattleRoom
         else if (attacker.Phase == RoomPlayerPhase.Pve && attacker.Pve?.BattleId == battleId)
         {
             pveTarget = attacker.Pve.GetTarget(targetId);
+            if (pveTarget.IsDead) throw new DomainValidationException("A defeated monster cannot be attacked again.");
         }
         else
         {
@@ -870,20 +895,27 @@ public sealed class BattleRoom
             throw new DomainValidationException("A stunned player cannot play cards.");
         }
         var selected = attacker.Combat.Deck.SelectFromHand(cardInstanceIds);
-        var definitions = selected.Select(card => _catalog.Get(card.CardId)).ToArray();
+        var definitions = selected.Select(card => _catalog.Get(card.CardId, card.Level, card.ElementOverride)).ToArray();
         var draft = CombatResolver.Resolve(
             definitions,
             attacker.Combat,
             pvpTarget is not null ? pvpTarget.Combat.ElementalResistance : pveTarget!.ElementalResistance);
+        var stun = attacker.Combat.ResolveTargetStun($"{battleId:D}:{targetId}", draft.Stun);
+        var blockSpeed = attacker.Combat.ResolveControl(TimeSpan.FromSeconds(definitions.Max(card => card.Effect.DrawBlockSeconds) / 2));
+        var healthBeforeCost = attacker.Combat.Hp;
         attacker.Combat.PayHealthCost(draft.HealthCost);
+        var healthCost = healthBeforeCost - attacker.Combat.Hp;
         var heal = attacker.Combat.Heal(draft.Heal);
         var shieldGain = attacker.Combat.GainShield(draft.Shield);
+        attacker.Combat.Deck.DiscardPlayed(selected);
         attacker.Combat.AddDrawCharge(draft.DrawCharge);
         attacker.Combat.DrawImmediate(draft.ImmediateDraw);
         attacker.Combat.ApplyDrawSpeed(draft.DrawSpeedDuration, draft.DrawSpeedModifier);
         var fenxian = attacker.Combat.UpdateFenxian(draft.CoreElement, draft.CoreCount);
         attacker.Combat.AddDrawCharge(fenxian.Charge);
         attacker.Combat.DrawImmediate(fenxian.Draw);
+        if (pveTarget is not null)
+            attacker.Combat.ApplyDrawBlockSpeed(blockSpeed);
 
         int shieldDamage;
         int hpDamage;
@@ -895,10 +927,9 @@ public sealed class BattleRoom
             var target = pvpTarget!;
             resolvedDamage = target.Combat.ResolveIncomingDamage(draft.Damage);
             (shieldDamage, hpDamage) = target.Combat.TakeDamage(resolvedDamage);
-            target.Combat.ApplyStun(draft.Stun);
+            target.Combat.ApplyStun(stun);
             target.Combat.ApplyDrawBlock(draft.DrawBlock);
             defeated = target.Combat.IsDead;
-            attacker.Combat.Deck.DiscardPlayed(selected);
             battleEnded = defeated;
             if (defeated)
             {
@@ -913,9 +944,9 @@ public sealed class BattleRoom
         {
             var target = pveTarget!;
             (shieldDamage, hpDamage) = target.TakeDamage(draft.Damage);
-            target.ApplyStun(draft.Stun);
+            target.ApplyStun(stun);
             defeated = target.IsDead;
-            attacker.Combat.Deck.DiscardPlayed(selected);
+            if (defeated) AddMonsterCard(attacker, target);
             var pve = attacker.Pve!;
             pve.RefreshPhase();
             battleEnded = pve.IsCleared;
@@ -923,7 +954,7 @@ public sealed class BattleRoom
             if (!battleEnded) Revision++;
         }
 
-        return new CombatResolution(
+        var resolution = new CombatResolution(
             battleId,
             playerId,
             targetId,
@@ -934,7 +965,35 @@ public sealed class BattleRoom
             shieldGain,
             defeated,
             battleEnded,
-            Revision);
+            Revision,
+            CombatResolver.ResolveDamageSegments(draft.DamageSegments ?? [], shieldDamage + hpDamage,
+                pvpTarget?.HeroClass == HeroClass.Guardian ? 1 - pvpTarget.Combat.Equipment.BulwarkDamageReduction : 1),
+            draft.CoreElement, draft.CoreCount, stun.TotalSeconds,
+            pvpTarget is not null ? draft.DrawBlock.TotalSeconds : 0, healthCost,
+            draft.DrawCharge + fenxian.Charge, draft.ImmediateDraw + fenxian.Draw,
+            draft.DrawSpeedDuration.TotalSeconds, draft.DrawSpeedModifier,
+            pveTarget is not null ? blockSpeed.TotalSeconds : 0);
+        _combatFeedback.Add(new CombatFeedbackResolution(playerId.ToString("D"), resolution));
+        return resolution;
+    }
+
+    private void AddMonsterCard(RoomPlayerState player, MonsterCombatState monster)
+    {
+        var monsterId = monster.MonsterId;
+        var speciesId = monsterId.EndsWith("-a", StringComparison.Ordinal) || monsterId.EndsWith("-b", StringComparison.Ordinal)
+            ? monsterId[..^2] : monsterId;
+        var monsterType = speciesId switch
+        {
+            "fire-bat" => "FireBat", "thorn-mite" => "ThornMite", "murk-snail" => "MudHydra",
+            "sand-lizard" => "SandLizard", "rust-rat" => "RustRat", "box-spirit" => "BoxSpirit",
+            "metal-guard" => "GoldGuard", "fire-herald" => "FireReaver", "marsh-mother" => "SwampMother",
+            "stone-guard" => "StoneGuard", "thorn-guard" => "ThornGuard", "annihilation-core" => "VoidCore",
+            _ => null
+        };
+        var card = monsterType is null ? null : GameConfigCatalog.Current.Cards.FirstOrDefault(value => value.MonsterType == monsterType);
+        if (card is not null && _catalog.Contains(card.CardId))
+            player.Combat.Deck.AddToDiscard(new CombatCardInstance(Guid.CreateVersion7(), card.CardId,
+                ElementOverride: monsterType == "BoxSpirit" ? monster.Intents[0].Element : null));
     }
 
     private void OpenRewardChoice(RoomPlayerState player)
@@ -943,7 +1002,9 @@ public sealed class BattleRoom
             throw new DomainValidationException("A cleared PVE battle must have a map position.");
         AddPveVictoryDrops(player, Map.GetCell(position));
         player.Pve!.RefreshPhase();
-        player.RewardChoice = RewardChoiceState.Create(Map.GetCell(position).Layer, RewardRandom, Map.GetCell(position).IsBoss, player.RewardRefreshCount);
+        var cell = Map.GetCell(position);
+        player.RewardChoice = RewardChoiceState.Create(cell.Layer, RewardRandom, cell.IsBoss, player.RewardRefreshCount,
+            isTreasure: cell.MonsterGroupId == "BOX");
         player.Phase = RoomPlayerPhase.Choice;
         Revision++;
     }
@@ -968,6 +1029,7 @@ public sealed class BattleRoom
     {
         ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(delta, TimeSpan.Zero);
         var tickNow = now ?? DateTimeOffset.UtcNow;
+        var firstTickFeedback = _combatFeedback.Count;
         Elapsed += delta;
         var disconnectedPlayers = new List<Guid>();
         foreach (var playerId in _disconnects.Keys.ToArray())
@@ -1091,7 +1153,14 @@ public sealed class BattleRoom
                     var damage = monster.ResolveIntentDamage(
                         intent,
                         player.Combat.ElementalResistance(intent.Element));
-                    player.Combat.TakeDamage(player.Combat.ResolveIncomingDamage(damage));
+                    var resolvedDamage = player.Combat.ResolveIncomingDamage(damage);
+                    var (shieldDamage, hpDamage) = player.Combat.TakeDamage(resolvedDamage);
+                    var kind = intent.Kind == MonsterIntentKind.Direct || intent.Element == CardElement.None
+                        ? "Direct" : intent.Element.ToString();
+                    _combatFeedback.Add(new CombatFeedbackResolution(monster.MonsterId, new CombatResolution(
+                        player.Pve.BattleId, Guid.Empty, player.PlayerId.ToString("D"), resolvedDamage,
+                        shieldDamage, hpDamage, 0, 0, player.Combat.IsDead, player.Combat.IsDead, Revision,
+                        shieldDamage + hpDamage > 0 ? [new(kind, shieldDamage + hpDamage)] : [])));
                     if (player.Combat.IsDead)
                     {
                         player.Phase = RoomPlayerPhase.Dead;
@@ -1108,6 +1177,11 @@ public sealed class BattleRoom
         }
         TerminateBotsWhenNoRealPlayersRemain();
         Revision++;
+        for (var index = firstTickFeedback; index < _combatFeedback.Count; index++)
+            _combatFeedback[index] = _combatFeedback[index] with
+            {
+                Resolution = _combatFeedback[index].Resolution with { RoomRevision = Revision }
+            };
     }
 
     private bool TerminateBotsWhenNoRealPlayersRemain()
@@ -1184,7 +1258,10 @@ public sealed class BattleRoom
             BotRules.PveHpLossPercent(layer));
         player.Combat.PayHealthCost(player.Combat.Hp - targetHp);
         foreach (var monster in player.Pve.Monsters.Where(monster => !monster.IsDead))
+        {
             monster.TakeDamage(int.MaxValue);
+            AddMonsterCard(player, monster);
+        }
         OpenRewardChoice(player);
         return true;
     }
@@ -1224,7 +1301,7 @@ public sealed class BattleRoom
         if (player.Combat.StunRemaining > TimeSpan.Zero) return true;
         var hand = player.Combat.Deck.Hand;
         var choices = BotRules.SelectDuelCards(
-            hand.Select(card => ToBotCard(_catalog.Get(card.CardId))).ToArray(),
+            hand.Select(card => ToBotCard(_catalog.Get(card.CardId, card.Level, card.ElementOverride))).ToArray(),
             BotRules.HpPercent(player.Combat.Hp, player.Combat.MaximumHp));
         if (choices.Length == 0) return true;
         PlayCards(
@@ -1333,13 +1410,14 @@ public sealed class BattleRoom
     {
         if (_relicPiles.Values.Any(pile => pile.VictimId == player.PlayerId.ToString("D"))) return;
         if (player.Position is not { } position) return;
-        var pile = new RelicPile(Guid.CreateVersion7(), player.PlayerId.ToString("D"), position);
+        var pile = new RelicPile(Guid.CreateVersion7(), player.PlayerId.ToString("D"), position, player.DisplayName);
         foreach (var item in player.Inventory.Items.Where(item => !item.IsSafe).ToArray())
         {
             pile.Add(item with { IsSafe = false });
             player.Inventory.TryRemove(item.ItemId, out _);
         }
         foreach (var armor in player.WornArmor) pile.Add(armor);
+        player.WornArmor = [];
         _relicPiles.Add(pile.PileId, pile);
     }
 

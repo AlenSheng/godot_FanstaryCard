@@ -175,6 +175,8 @@ public sealed class BattleRoomSnapshotTests
             HeroClass.Mage,
             Enumerable.Range(1, 20).Select(index => $"common-{index:D2}").ToArray(),
             CreatePve(),
+            InventoryCapacity: 28,
+            SafeSlots: 1,
             WornArmor: [new ExplorationItem("armor-1", ExplorationItemKind.Equipment)]));
         room.AddPlayer(new BattleRoomPlayerSetup(
             winnerId,

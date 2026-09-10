@@ -53,10 +53,14 @@ message RoomReadyRemovedEvent { string match_id = 1; string reason = 2; }
 message RoomSnapshotCommand {}
 message RoomPosition { int32 row = 1; int32 column = 2; }
 message RoomMapCell { int32 row = 1; int32 column = 2; bool is_boss = 3; bool has_spring = 4; }
-message RoomCard { string instance_id = 1; string card_id = 2; }
+message RoomCard { string instance_id = 1; string card_id = 2; int32 level = 3; optional string element_override = 4; }
 message RoomCombatant { int32 hp = 1; int32 maximum_hp = 2; int32 effective_maximum_hp = 3; int32 shield = 4; }
-message RoomEquipment { string slot = 1; string quality = 2; string element = 3; string effect_affix = 4; string secondary_trait = 5; }
-message RoomInventoryItem { string item_id = 1; string kind = 2; int32 quantity = 3; bool is_safe = 4; RoomEquipment equipment = 5; }
+message RoomStat { string key = 1; string value = 2; }
+message RoomSet { string kind = 1; int32 count = 2; int32 required = 3; bool active = 4; }
+message RoomBattleStatus { string passive_kind = 1; int32 combo = 2; string core_element = 3; repeated RoomStat bonuses = 4; repeated RoomSet sets = 5; string draw_interval_seconds = 6; }
+message RoomEquipment { string slot = 1; string quality = 2; string element = 3; string effect_affix = 4; string secondary_trait = 5; int32 level = 6; bool is_bound = 7; }
+message RoomInventoryItem { string item_id = 1; string kind = 2; int32 quantity = 3; bool is_safe = 4; RoomEquipment equipment = 5; optional int32 slot_index = 6; }
+message RoomRelicPile { string pile_id = 1; string owner_name = 2; int64 version = 3; repeated RoomInventoryItem items = 4; }
 message RoomMonster {
   string monster_id = 1;
   int32 maximum_hp = 2;
@@ -80,8 +84,12 @@ message RoomDuel {
   int64 leave_window_ends_at_unix_ms = 5;
   bool self_requested_leave = 6;
   optional int64 escape_remaining_ms = 7;
+  string opponent_class = 8;
+  string opponent_name = 9;
+  string escape_probability = 10;
+  RoomBattleStatus opponent_status = 11;
 }
-message RoomCurrentCell { bool has_evacuation = 1; string monster_group_id = 2; bool spring_consumed = 3; repeated string relic_pile_ids = 4; }
+message RoomCurrentCell { bool has_evacuation = 1; string monster_group_id = 2; bool spring_consumed = 3; repeated string relic_pile_ids = 4; repeated RoomRelicPile relic_piles = 5; }
 message RoomPlayer {
   string player_id = 1;
   string hero_class = 2;
@@ -92,6 +100,11 @@ message RoomPlayer {
   int32 discard_count = 7;
   string draw_charge = 8;
   repeated RoomInventoryItem inventory = 9;
+  int32 inventory_capacity = 10;
+  repeated int32 safe_slot_indexes = 11;
+  repeated RoomInventoryItem equipped_items = 12;
+  int32 weapon_level = 13;
+  RoomBattleStatus battle_status = 14;
 }
 message RoomSnapshotEvent {
   string room_id = 1;
@@ -139,13 +152,27 @@ message BattleComboResolvedEvent {
   int32 shield_gain = 8;
   bool target_defeated = 9;
   bool battle_ended = 10;
+  repeated CombatDamageSegment damage_segments = 11;
+  string core_element = 12;
+  int32 core_count = 13;
+  string stun_seconds = 14;
+  string draw_block_seconds = 15;
+  int32 health_cost = 16;
+  string draw_charge = 17;
+  int32 immediate_draw = 18;
+  repeated string card_instance_ids = 19;
+  string source_id = 20;
+  string draw_speed_seconds = 21;
+  string draw_speed_modifier = 22;
+  string draw_block_speed_seconds = 23;
 }
+message CombatDamageSegment { string kind = 1; int32 amount = 2; }
 message BattleSelectTargetCommand { string battle_id = 1; string target_id = 2; }
 message BattleTargetSelectedEvent { string battle_id = 1; string target_id = 2; }
 
 message RewardChoiceRefreshCommand {}
-message RewardChoiceClaimCommand { string option_id = 1; string replace_item_id = 2; }
-message RewardChoiceOption { string option_id = 1; int32 kind = 2; string item_id = 3; int32 quantity = 4; int32 heal_percent = 5; }
+message RewardChoiceClaimCommand { string option_id = 1; string replace_item_id = 2; bool equip = 3; }
+message RewardChoiceOption { string option_id = 1; int32 kind = 2; string item_id = 3; int32 quantity = 4; int32 heal_percent = 5; RoomEquipment equipment = 6; }
 message RewardChoiceEvent { int32 layer = 1; repeated RewardChoiceOption options = 2; int32 refresh_count = 3; bool is_boss = 4; }
 message RewardChoiceClaimedEvent { string option_id = 1; int32 applied = 2; }
 message RoomMovedEvent { string player_id = 1; int32 row = 2; int32 column = 3; }
@@ -156,8 +183,13 @@ message ActionExtractEvent { string status = 1; int64 remaining_ms = 2; }
 message ActionSpringEvent { string status = 1; int64 remaining_ms = 2; }
 message ActionPotionEvent { string item_id = 1; int32 healed = 2; }
 message RelicTakeEvent { string pile_id = 1; string item_id = 2; int64 pile_version = 3; }
+message RelicReadCommand { string pile_id = 1; }
 message RelicReplaceCommand { string pile_id = 1; string item_id = 2; int64 pile_version = 3; string replace_item_id = 4; }
 message RelicReplacedEvent { string pile_id = 1; string item_id = 2; string returned_item_id = 3; int64 pile_version = 4; }
+message InventoryMoveCommand { string item_id = 1; int32 target_slot_index = 2; }
+message InventoryEquipCommand { string item_id = 1; }
+message InventoryUnequipCommand { string slot = 1; }
+message InventoryChangedEvent { string action = 1; string item_id = 2; }
 message RoomMoveCommand { int32 row = 1; int32 column = 2; }
 message DuelLeaveCommand { string duel_id = 1; }
 message DuelEscapeCommand { string duel_id = 1; }

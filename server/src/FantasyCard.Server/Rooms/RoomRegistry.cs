@@ -95,7 +95,8 @@ public sealed partial class RoomRegistry(
                         }
                     }
                 });
-            var actor = new RoomActor(room, timeProvider, startTicker, observer, metrics);
+            var actor = new RoomActor(room, timeProvider, startTicker, observer, metrics,
+                transitionPublisher is null ? null : transitionPublisher.ObserveCombatAsync);
             _rooms.Add(room.RoomId, actor);
             _roomMatches.Add(room.RoomId, matchId);
             if (lifecycleTracker is not null)

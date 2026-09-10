@@ -118,12 +118,20 @@ public sealed partial class RoomReadyCoordinator(
         foreach (var player in assignment.Players)
         {
             var wornArmor = (player.EquipmentIds ?? []).Select(id =>
-                new ExplorationItem(id.ToString("D"), ExplorationItemKind.Equipment)).ToArray();
+            {
+                var item = player.Equipment?.SingleOrDefault(value => value.ItemId == id);
+                var details = item is null ? null : new EquipmentRewardData(
+                    item.Slot, item.Quality, item.Element.ToString(), item.EffectAffix,
+                    item.SecondaryTrait ?? "DrawInterval", item.Level);
+                return new ExplorationItem(id.ToString("D"), ExplorationItemKind.Equipment,
+                    Equipment: details, IsGenerated: false);
+            }).ToArray();
             var equipment = EquipmentCombatRules.Calculate(player.Equipment);
             var state = room.AddPlayer(new BattleRoomPlayerSetup(player.PlayerId, player.HeroClass,
                 player.CardIds, null, WeaponLevel: player.WeaponLevel,
                 InventoryCapacity: player.InventoryCapacity, SafeSlots: player.SafeSlots,
-                WornArmor: wornArmor, IsBot: player.IsBot, Equipment: equipment));
+                WornArmor: wornArmor, IsBot: player.IsBot, Equipment: equipment,
+                SafeSlotIndexes: player.SafeSlotIndexes, DisplayName: player.DisplayName, CardLevels: player.CardLevels));
             for (var potion = 0; potion < player.PotionCount; potion++)
                 if (!state.Inventory.TryAdd(new ExplorationItem($"health_potion:{potion + 1}", ExplorationItemKind.HealthPotion)))
                     throw new InvalidOperationException("Preparation potion count exceeds the exploration inventory capacity.");

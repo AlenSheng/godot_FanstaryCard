@@ -73,6 +73,7 @@ public sealed class MonsterCombatState
 
     public void ApplyStun(TimeSpan duration)
     {
+        if (duration <= TimeSpan.Zero) return;
         if (duration > StunRemaining)
         {
             StunRemaining = duration;

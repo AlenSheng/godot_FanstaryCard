@@ -10,6 +10,8 @@ public static class PveBattleFactory
         ArgumentNullException.ThrowIfNull(cell);
         MonsterCombatState[] monsters = cell.MonsterGroupId switch
         {
+            "BOX" when cell.Layer == ChaosMapLayer.Outer && cell.TreasureElement is { } element && Enum.IsDefined(element) =>
+                [Monster("box-spirit", 84, 0, 4, element == CardElement.None ? MonsterIntentKind.Direct : MonsterIntentKind.Attack, 3, element)],
             "O1" => [Monster("fire-bat", 78, 0, 3.6, MonsterIntentKind.Attack, 3, CardElement.Fire)],
             "O2" => [Monster("thorn-mite", 84, 0, 4.0, MonsterIntentKind.Attack, 3, CardElement.Wood)],
             "O3" => [Monster("murk-snail", 86, 0, 4.2, MonsterIntentKind.Attack, 3, CardElement.Water)],

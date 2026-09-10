@@ -113,6 +113,10 @@ public static class RoomCheckpointPolicy
                 optionIds = player.RewardChoice.Options.Select(option => option.OptionId).ToArray()
             },
             pendingReplacement = player.Inventory?.PendingReplacement?.Token,
+            inventoryItems = player.Inventory?.Items.OrderBy(item => item.SlotIndex),
+            safeSlots = player.Inventory?.SafeSlotIndexes,
+            wornArmor = player.WornArmor?.OrderBy(item => item.ItemId),
+            recycledEquipment = player.RecycledEquipment?.OrderBy(item => item.ItemId),
             clearedCells = player.ClearedCells?.OrderBy(position => position.Row).ThenBy(position => position.Column),
             consumedSprings = player.ConsumedSprings?.OrderBy(position => position.Row).ThenBy(position => position.Column)
         }),

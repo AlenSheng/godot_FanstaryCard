@@ -1,0 +1,103 @@
+{
+  "date": "2026-09-10",
+  "method": "fontTools 4.64.0, upstream Git blob SHA-1, SHA-256, Unicode cmap, hmtx and GSUB inspection",
+  "source_files": [
+    "client/ui/art.gd",
+    "client/ui/audio_settings.gd",
+    "client/ui/battle_details.gd",
+    "client/ui/bounded_bar.gd",
+    "client/ui/card_details.gd",
+    "client/ui/card_view.gd",
+    "client/ui/codex_view.gd",
+    "client/ui/drag_scroll.gd",
+    "client/ui/equipment_details.gd",
+    "client/ui/exploration_view.gd",
+    "client/ui/inventory_slot.gd",
+    "client/ui/inventory_view.gd",
+    "client/ui/main.gd",
+    "client/ui/palette.gd",
+    "client/ui/reference_ui.gd",
+    "client/data/catalog.json",
+    "client/state/game_store.gd",
+    "client/network/gateway.gd"
+  ],
+  "checks": [
+    {
+      "font": "SourceHanSansSC-Regular.otf",
+      "upstream_binary_identical": true,
+      "project_characters_checked": 796,
+      "missing_project_characters": [],
+      "digit_advances": {
+        "0": 555,
+        "1": 555,
+        "2": 555,
+        "3": 555,
+        "4": 555,
+        "5": 555,
+        "6": 555,
+        "7": 555,
+        "8": 555,
+        "9": 555
+      },
+      "units_per_em": 1000,
+      "native_digits_tabular": true,
+      "gsub_features": [
+        "aalt",
+        "calt",
+        "ccmp",
+        "dlig",
+        "fwid",
+        "hist",
+        "hwid",
+        "liga",
+        "ljmo",
+        "locl",
+        "pwid",
+        "ruby",
+        "tjmo",
+        "vert",
+        "vjmo",
+        "vrt2"
+      ]
+    },
+    {
+      "font": "SourceHanSerifSC-SemiBold.otf",
+      "upstream_binary_identical": true,
+      "project_characters_checked": 796,
+      "missing_project_characters": [],
+      "digit_advances": {
+        "0": 578,
+        "1": 468,
+        "2": 579,
+        "3": 578,
+        "4": 577,
+        "5": 579,
+        "6": 579,
+        "7": 571,
+        "8": 579,
+        "9": 582
+      },
+      "units_per_em": 1000,
+      "native_digits_tabular": false,
+      "gsub_features": [
+        "aalt",
+        "calt",
+        "ccmp",
+        "dlig",
+        "fwid",
+        "hist",
+        "hwid",
+        "liga",
+        "ljmo",
+        "locl",
+        "pwid",
+        "ruby",
+        "tjmo",
+        "vert",
+        "vjmo",
+        "vrt2"
+      ]
+    }
+  ],
+  "runtime_validation": "Performed separately by the client presentation smoke tests."
+}

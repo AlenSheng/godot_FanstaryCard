@@ -151,6 +151,7 @@ public sealed partial class RealtimeCommandRouter
             return [CreateRoomSnapshot(player.UserId, traceId, command.RequestId, state, snapshotMatchId)];
         }
         if (!string.Equals(command.Type, "battle.play_cards", StringComparison.Ordinal) &&
+            !string.Equals(command.Type, "combat.preview", StringComparison.Ordinal) &&
             !string.Equals(command.Type, "battle.select_target", StringComparison.Ordinal) &&
             !string.Equals(command.Type, "room.move", StringComparison.Ordinal) &&
             !string.Equals(command.Type, "map.move", StringComparison.Ordinal) &&
@@ -162,6 +163,10 @@ public sealed partial class RealtimeCommandRouter
             !string.Equals(command.Type, "action.potion", StringComparison.Ordinal) &&
             !string.Equals(command.Type, "relic.take", StringComparison.Ordinal) &&
             !string.Equals(command.Type, "relic.replace", StringComparison.Ordinal) &&
+            !string.Equals(command.Type, "relic.read", StringComparison.Ordinal) &&
+            !string.Equals(command.Type, "inventory.move", StringComparison.Ordinal) &&
+            !string.Equals(command.Type, "inventory.equip", StringComparison.Ordinal) &&
+            !string.Equals(command.Type, "inventory.unequip", StringComparison.Ordinal) &&
             !string.Equals(command.Type, "reward.choice.read", StringComparison.Ordinal) &&
             !string.Equals(command.Type, "choice.read", StringComparison.Ordinal) &&
             !string.Equals(command.Type, "reward.choice.refresh", StringComparison.Ordinal) &&
@@ -207,6 +212,63 @@ public sealed partial class RealtimeCommandRouter
             ];
         }
         var expectedRevision = command.ExpectedRevision ?? 0;
+
+        if (command.Type == "relic.read")
+        {
+            if (command.Payload is not RelicReadCommandPayload read || read.PileId == Guid.Empty)
+                return [Reject(player.UserId, traceId, command.RequestId, "INVALID_PAYLOAD", "pileId is required.")];
+            try
+            {
+                var piles = await actor.ExecuteAsync(new GetRelicPilesCommand(player.UserId), cancellationToken);
+                var pile = piles.SingleOrDefault(value => value.PileId == read.PileId)
+                    ?? throw new DomainValidationException("This relic pile is not available in the current cell.");
+                var state = await actor.ExecuteAsync(new GetRoomClientStateCommand(player.UserId), cancellationToken);
+                var name = pile.VictimName ?? state.Snapshot.Players.FirstOrDefault(value => value.PlayerId.ToString("D") == pile.VictimId)?.DisplayName ?? "旅人";
+                return [_eventStore.Create(player.UserId, "relic.contents", traceId,
+                    new RoomRelicPilePayload(pile.PileId, name, pile.Version, pile.Items.Select(RoomSnapshotProjection.ToInventoryItem).ToArray()),
+                    command.RequestId, state.Snapshot.Revision)];
+            }
+            catch (DomainValidationException exception)
+            {
+                return [Reject(player.UserId, traceId, command.RequestId, "COMMAND_REJECTED", exception.Message)];
+            }
+        }
+
+        if (command.Type is "inventory.move" or "inventory.equip" or "inventory.unequip")
+        {
+            try
+            {
+                var revision = command.Payload switch
+                {
+                    InventoryMoveCommandPayload move when command.Type == "inventory.move" &&
+                        !string.IsNullOrWhiteSpace(move.ItemId) && move.TargetSlotIndex is >= 0 and < 36 =>
+                        await actor.ExecuteAsync(new MoveInventoryItemCommand(player.UserId, move.ItemId, move.TargetSlotIndex), expectedRevision, cancellationToken),
+                    InventoryEquipCommandPayload equip when command.Type == "inventory.equip" && !string.IsNullOrWhiteSpace(equip.ItemId) =>
+                        await actor.ExecuteAsync(new EquipInventoryItemCommand(player.UserId, equip.ItemId), expectedRevision, cancellationToken),
+                    InventoryUnequipCommandPayload unequip when command.Type == "inventory.unequip" && !string.IsNullOrWhiteSpace(unequip.Slot) =>
+                        await actor.ExecuteAsync(new UnequipArmorCommand(player.UserId, unequip.Slot), expectedRevision, cancellationToken),
+                    _ => throw new DomainValidationException("A valid inventory item and destination are required.")
+                };
+                var itemId = command.Payload switch
+                {
+                    InventoryMoveCommandPayload move => move.ItemId,
+                    InventoryEquipCommandPayload equip => equip.ItemId,
+                    InventoryUnequipCommandPayload unequip => unequip.Slot,
+                    _ => ""
+                };
+                var state = await actor.ExecuteAsync(new GetRoomClientStateCommand(player.UserId), cancellationToken);
+                return
+                [
+                    _eventStore.Create(player.UserId, "inventory.changed", traceId,
+                        new InventoryChangedEventPayload(command.Type, itemId), command.RequestId, revision),
+                    CreateRoomSnapshot(player.UserId, traceId, command.RequestId, state, currentMatchId)
+                ];
+            }
+            catch (Exception exception) when (exception is DomainValidationException or InvalidOperationException or ArgumentException)
+            {
+                return [Reject(player.UserId, traceId, command.RequestId, "COMMAND_REJECTED", exception.Message)];
+            }
+        }
 
         if (string.Equals(command.Type, "battle.select_target", StringComparison.Ordinal))
         {
@@ -343,7 +405,7 @@ public sealed partial class RealtimeCommandRouter
                 return [Reject(player.UserId, traceId, command.RequestId, "INVALID_PAYLOAD", "optionId is required.")];
             try
             {
-                var applied = await actor.ExecuteAsync(new ClaimRewardCommand(player.UserId, claim.OptionId, claim.ReplaceItemId), expectedRevision, cancellationToken);
+                var applied = await actor.ExecuteAsync(new ClaimRewardCommand(player.UserId, claim.OptionId, claim.ReplaceItemId, claim.Equip), expectedRevision, cancellationToken);
                 return [_eventStore.Create(player.UserId, "reward.choice_claimed", traceId,
                     new RewardChoiceClaimedEventPayload(claim.OptionId, applied), command.RequestId, roomRevision: null)];
             }
@@ -519,8 +581,11 @@ public sealed partial class RealtimeCommandRouter
 
         try
         {
-            var resolution = await actor.ExecuteAsync(
-                new PlayRoomCardsCommand(
+            var preview = command.Type == "combat.preview";
+            var resolution = preview
+                ? await actor.ExecuteAsync(new PreviewRoomCardsCommand(player.UserId, payload.BattleId,
+                    payload.TargetId, payload.CardInstanceIds, expectedRevision, _timeProvider.GetUtcNow()), cancellationToken)
+                : await actor.ExecuteAsync(new PlayRoomCardsCommand(
                     player.UserId,
                     payload.BattleId,
                     payload.TargetId,
@@ -532,7 +597,7 @@ public sealed partial class RealtimeCommandRouter
             [
                 _eventStore.Create(
                     player.UserId,
-                    "battle.combo_resolved",
+                    preview ? "combat.previewed" : "battle.combo_resolved",
                     traceId,
                     new BattleComboResolvedEventPayload(
                         resolution.BattleId,
@@ -544,7 +609,16 @@ public sealed partial class RealtimeCommandRouter
                         resolution.Heal,
                         resolution.ShieldGain,
                         resolution.TargetDefeated,
-                        resolution.BattleEnded),
+                        resolution.BattleEnded,
+                        resolution.DamageSegments?.Select(segment => new CombatDamageSegmentPayload(segment.Kind, segment.Amount)).ToArray(),
+                        resolution.CoreElement?.ToString(), resolution.CoreCount,
+                        resolution.StunSeconds.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
+                        resolution.DrawBlockSeconds.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
+                        resolution.HealthCost, resolution.DrawCharge.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
+                        resolution.ImmediateDraw, payload.CardInstanceIds, resolution.AttackerId.ToString("D"),
+                        resolution.DrawSpeedSeconds.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
+                        resolution.DrawSpeedModifier.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
+                        resolution.DrawBlockSpeedSeconds.ToString("R", System.Globalization.CultureInfo.InvariantCulture)),
                     command.RequestId,
                     resolution.RoomRevision)
             ];
@@ -615,7 +689,7 @@ public sealed partial class RealtimeCommandRouter
     }
 
     private static bool IsReadCommand(string type) =>
-        type is "room.snapshot.read" or "reward.choice.read" or "choice.read";
+        type is "room.snapshot.read" or "reward.choice.read" or "choice.read" or "relic.read";
 
     private IReadOnlyList<ServerEvent> Resume(
         PlayerProfile player,
@@ -659,7 +733,8 @@ public sealed partial class RealtimeCommandRouter
     }
 
     private static RewardChoiceOptionPayload ToPayload(FantasyCard.Domain.Rooms.RewardChoiceOption option) =>
-        new(option.OptionId, (RewardChoiceKindDto)option.Kind, option.Item?.ItemId, option.Item?.Quantity ?? 0, option.HealPercent);
+        new(option.OptionId, (RewardChoiceKindDto)option.Kind, option.Item?.ItemId, option.Item?.Quantity ?? 0, option.HealPercent,
+            RoomSnapshotProjection.ToEquipment(option.Item?.Equipment));
 
     private ServerEvent CreateRoomSnapshot(
         Guid playerId,

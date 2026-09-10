@@ -20,7 +20,7 @@ internal static class RoomSnapshotProjection
         var extractionRemaining = PositiveMilliseconds(player.ExtractionRemaining);
         var springRemaining = PositiveMilliseconds(player.SpringDrink?.Remaining);
         var reward = player.RewardChoice is null ? null : ToReward(player.RewardChoice);
-        var duel = BuildDuel(snapshot, player);
+        var duel = BuildDuel(snapshot, player, state.CombatInfo);
         var allowedActions = BuildAllowedActions(snapshot, player, state.Map, relics, extractionRemaining, springRemaining, now);
 
         return new RoomSnapshotEventPayload(
@@ -42,17 +42,29 @@ internal static class RoomSnapshotProjection
                 state.Map.CurrentCell.HasEvacuation,
                 state.Map.CurrentCell.MonsterGroupId,
                 state.Map.CurrentCell.SpringConsumed,
-                relics.Select(pile => pile.PileId).ToArray()),
+                relics.Select(pile => pile.PileId).ToArray(),
+                allowedActions.Contains("relic.take")
+                    ? relics.Select(pile => new RoomRelicPilePayload(
+                        pile.PileId,
+                        pile.VictimName ?? snapshot.Players.FirstOrDefault(value => value.PlayerId.ToString("D") == pile.VictimId)?.DisplayName ?? "旅人",
+                        pile.Version, [])).ToArray()
+                    : []),
             new RoomPlayerPayload(
                 player.PlayerId,
                 player.HeroClass.ToString(),
                 player.Phase.ToString(),
                 ToCombatant(player.Combat),
-                player.Combat.Deck.Hand.Select(card => new RoomCardPayload(card.InstanceId, card.CardId)).ToArray(),
+                player.Combat.Deck.Hand.Select(card => new RoomCardPayload(card.InstanceId, card.CardId, card.Level, card.ElementOverride?.ToString())).ToArray(),
                 player.Combat.Deck.Library.Count,
                 player.Combat.Deck.Discard.Count,
                 player.Combat.Deck.DrawCharge.ToString("R", CultureInfo.InvariantCulture),
-                (player.Inventory?.Items ?? []).Select(ToInventoryItem).ToArray()),
+                (player.Inventory?.Items ?? []).Select(ToInventoryItem).ToArray(),
+                player.Inventory?.Capacity ?? 0,
+                player.Inventory?.SafeSlotIndexes ?? Enumerable.Range(
+                    (player.Inventory?.Capacity ?? 0) - (player.Inventory?.SafeSlots ?? 0), player.Inventory?.SafeSlots ?? 0).ToArray(),
+                (player.WornArmor ?? []).Select(ToInventoryItem).ToArray(),
+                player.Combat.WeaponLevel,
+                state.CombatInfo is null ? null : ToBattleStatus(state.CombatInfo.Self)),
             player.Pve is null ? null : ToPve(player.Pve),
             duel,
             reward,
@@ -120,11 +132,13 @@ internal static class RoomSnapshotProjection
             actions.Add("action.potion");
         if (map.CurrentCell.HasEvacuation && (player.Pve is null || player.Pve.Phase == PveBattlePhase.Cleared))
             actions.Add("action.extract");
-        if (relics.Count > 0) actions.Add("relic.take");
+        actions.AddRange(["inventory.move", "inventory.equip", "inventory.unequip"]);
+        if (relics.Count > 0 && (player.Pve is null || player.Pve.Phase == PveBattlePhase.Cleared))
+            actions.AddRange(["relic.read", "relic.take", "relic.replace"]);
         return actions;
     }
 
-    private static RoomDuelPayload? BuildDuel(BattleRoomSnapshot snapshot, RoomPlayerSnapshot player)
+    private static RoomDuelPayload? BuildDuel(BattleRoomSnapshot snapshot, RoomPlayerSnapshot player, RoomCombatInfo? info)
     {
         if (player.CurrentDuelId is not { } duelId) return null;
         var duel = snapshot.Duels.Single(value => value.DuelId == duelId);
@@ -139,7 +153,43 @@ internal static class RoomSnapshotProjection
             (duel.LeaveRequests ?? []).Contains(player.PlayerId),
             duel.EscapeAttempt?.PlayerId == player.PlayerId
                 ? PositiveMilliseconds(duel.EscapeAttempt.Remaining)
-                : null);
+                : null,
+            opponent.HeroClass.ToString(),
+            opponent.DisplayName ?? "旅人",
+            info?.EscapeProbability?.ToString("R", CultureInfo.InvariantCulture),
+            info?.Opponent is { } opponentInfo ? ToBattleStatus(opponentInfo) : null);
+    }
+
+    private static RoomBattleStatusPayload ToBattleStatus(CombatantPublicInfo info)
+    {
+        var passive = info.Passive;
+        var equipment = info.Equipment;
+        var bonuses = new List<RoomStatPayload>();
+        void Add(string key, double value)
+        {
+            if (value != 0) bonuses.Add(new(key, value.ToString("R", CultureInfo.InvariantCulture)));
+        }
+        Add("passive_heal", passive.HealBonus); Add("passive_control", passive.ControlBonus);
+        Add("passive_shield", passive.ShieldBonus); Add("weapon_bonus", passive.WeaponBonus);
+        Add("shield_flat", passive.ShieldFlatBonus);
+        Add("piercing", equipment.PiercingBonus); Add("bulwark_reduction", equipment.BulwarkDamageReduction);
+        Add("bulwark_shield", equipment.BulwarkShieldBonus); Add("vitality_heal", equipment.VitalityHealBonus);
+        Add("vitality_overcap", equipment.VitalityOvercapBonus); Add("draw_interval", equipment.DrawIntervalModifier);
+        Add("forced_escape", equipment.ForcedEscapeBonus);
+        foreach (var element in Enum.GetValues<CardElement>().Where(value => value != CardElement.None))
+        {
+            Add("damage_" + element, equipment.DamageBonus(element));
+            Add("resistance_" + element, equipment.Resistance(element));
+        }
+        var sets = info.WornArmor.Where(item => item.Equipment?.EffectAffix is not null)
+            .GroupBy(item => item.Equipment!.EffectAffix!, StringComparer.Ordinal)
+            .Select(group =>
+            {
+                var required = group.Any(item => item.Equipment!.Quality is "Orange" or "Red") ? 2 : 3;
+                return new RoomSetPayload(group.Key, group.Count(), required, group.Count() >= required);
+            }).ToArray();
+        return new(passive.Kind, passive.Combo, passive.CoreElement?.ToString(), bonuses, sets,
+            info.DrawIntervalSeconds.ToString("R", CultureInfo.InvariantCulture));
     }
 
     private static RoomPvePayload ToPve(PveBattleSnapshot pve) => new(
@@ -163,19 +213,16 @@ internal static class RoomSnapshotProjection
                 monster.BossPhase);
         }).ToArray());
 
-    private static RoomInventoryItemPayload ToInventoryItem(ExplorationItem item) => new(
+    internal static RoomInventoryItemPayload ToInventoryItem(ExplorationItem item) => new(
         item.ItemId,
         item.Kind.ToString(),
         item.Quantity,
         item.IsSafe,
-        item.Equipment is null
-            ? null
-            : new RoomEquipmentPayload(
-                item.Equipment.Slot,
-                item.Equipment.Quality,
-                item.Equipment.Element,
-                item.Equipment.EffectAffix,
-                item.Equipment.SecondaryTrait));
+        ToEquipment(item.Equipment),
+        item.SlotIndex);
+
+    internal static RoomEquipmentPayload? ToEquipment(EquipmentRewardData? item) => item is null ? null :
+        new(item.Slot, item.Quality, item.Element, item.EffectAffix, item.SecondaryTrait, item.Level, item.IsBound);
 
     private static RewardChoiceEventPayload ToReward(RewardChoiceSnapshot reward) => new(
         (int)reward.Layer,
@@ -184,12 +231,14 @@ internal static class RoomSnapshotProjection
             (RewardChoiceKindDto)option.Kind,
             option.Item?.ItemId,
             option.Item?.Quantity ?? 0,
-            option.HealPercent)).ToArray(),
+            option.HealPercent,
+            ToEquipment(option.Item?.Equipment))).ToArray(),
         reward.RefreshCount,
         reward.IsBoss);
 
     private static RoomCombatantPayload ToCombatant(PlayerCombatSnapshot combat) =>
-        new(combat.Hp, combat.MaximumHp, combat.MaximumHp, combat.Shield);
+        new(combat.Hp, combat.MaximumHp,
+            (int)Math.Floor(combat.MaximumHp * (1 + Math.Min(0.40, combat.Equipment?.VitalityOvercapBonus ?? 0))), combat.Shield);
 
     private static RoomPositionPayload ToPosition(MapPosition position) =>
         new(position.Row, position.Column);

@@ -1,6 +1,7 @@
 param(
     [string]$InputWorkbook = "config/FantasyCard_Config.xlsx",
-    [string]$ConfigVersion = "gdd-0.64-config-1"
+    [string]$ConfigVersion = "gdd-0.67-gameplay-completion-1",
+    [string]$PythonExecutable = "python"
 )
 $ErrorActionPreference = "Stop"
 $repoRoot = Split-Path -Parent $PSScriptRoot
@@ -10,6 +11,8 @@ try {
         --input (Join-Path $repoRoot $InputWorkbook) `
         --version $ConfigVersion `
         --server-output (Join-Path $repoRoot "server/config/generated") `
-        --client-output (Join-Path $repoRoot "FantasyCard_Unity/New Tuanjie Project/Assets/StreamingAssets/Config")
+        --client-output (Join-Path $repoRoot "client/data/generated")
     if ($LASTEXITCODE -ne 0) { throw "Config export failed with exit code $LASTEXITCODE" }
+    & $PythonExecutable (Join-Path $repoRoot "tools/export_client_catalog.py")
+    if ($LASTEXITCODE -ne 0) { throw "Godot catalog export failed with exit code $LASTEXITCODE" }
 } finally { Pop-Location }
