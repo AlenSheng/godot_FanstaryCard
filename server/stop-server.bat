@@ -7,11 +7,11 @@ set "COMPOSE_PROJECT_NAME=fantasycard-local"
 set "NO_PAUSE="
 if /I "%~1"=="--no-pause" set "NO_PAUSE=1"
 
+if exist "%~dp0.artifacts\local-server\state.json" goto :native
+call "%~dp0docker-env.bat"
 where docker >nul 2>nul
 if errorlevel 1 (
-    echo [ERROR] Docker was not found. The stop command cannot be executed.
-    set "EXIT_CODE=1"
-    goto :end
+    goto :native
 )
 
 set "COMPOSE_CMD=docker compose"
@@ -38,6 +38,11 @@ if errorlevel 1 (
 echo.
 echo [STOPPED] Local services are stopped. PostgreSQL data is preserved.
 echo           Double-click start-server.bat to start again.
+goto :end
+
+:native
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0local-server.ps1" -Action Stop
+set "EXIT_CODE=%ERRORLEVEL%"
 
 :end
 echo.

@@ -12,7 +12,10 @@ python tools/client_engine.py play
 
 也可用 Godot 4.7.2 打开 `client/project.godot`，按 F6/F5 运行。
 默认连接 `http://127.0.0.1:5080`，登录页可更改地址。
-本地设备账号独立保存，访问 token 仅在内存中。调试构建可使用本地开发登录；
+本地开发登录使用唯一账号名称：同名登录原账号，新名称自动注册新的 UID；
+名称由服务端统一去除首尾空白、规范化 Unicode 并忽略大小写。设备 ID 不决定账号，
+成功登录后记住服务端返回的名称，下次启动默认填入。访问 token 仅在内存中。
+切换账号会清空上一账号的房间、职业选择、图鉴与装备页面缓存。调试构建可使用本地开发登录；
 Steam 登录适配已接入，真实验票需配置 AppID、GodotSteam 插件与服务端平台参数。
 引擎路径读取 `A3GAME_GODOT_EXECUTABLE` 或本机 `tools/engine-local` 的验证记录。
 首次资源导入可运行 `python tools/client_engine.py import`。
@@ -47,7 +50,7 @@ python tools/client_engine.py codex-integration
 ```
 
 联调会创建独立测试账号，在现有开发服务器执行真实准备、匹配、战斗和结算；
-不使用正常玩家的设备 ID，也不写正常客户端的会话存档。
+账号名称和设备 ID 均使用独立随机标识，也不写正常客户端的会话存档。
 `evidence/live/report.json` 保存检查、事件数量和最后快照；截图和录像也在该目录。
 截图按 1920×1080 保存；录制帧按 960×540、2 FPS 保存。
 视频编码：安装 `imageio-ffmpeg` 至 `tools/.deps` 后运行 `tools/make_client_video.py`。

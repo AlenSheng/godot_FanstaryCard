@@ -1,6 +1,7 @@
 @echo off
 setlocal
 cd /d "%~dp0"
+call "%~dp0docker-env.bat"
 
 set "EXIT_CODE=0"
 set "COMPOSE_PROJECT_NAME=fantasycard-local"

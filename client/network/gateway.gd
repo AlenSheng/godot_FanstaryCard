@@ -43,6 +43,7 @@ var persist_session := true
 var token := ""
 var token_expires_at: float = 0.0
 var authenticated_user_id := ""
+var local_account_name := ""
 var session_generation: int = 0
 var device_id := ""
 var last_sequence: int = 0
@@ -71,6 +72,7 @@ func _ready() -> void:
 		room_revision = int(config.get_value("session", "revision", 0))
 		base_url = config.get_value("session", "base_url", base_url)
 		authenticated_user_id = config.get_value("session", "user_id", "")
+		local_account_name = config.get_value("session", "local_account_name", "")
 	if not OS.is_debug_build(): base_url = str(ProjectSettings.get_setting("platform/server_url", ""))
 	if device_id.is_empty(): device_id = "godot-" + new_id()
 	_save_session()
@@ -80,7 +82,7 @@ func new_id() -> String:
 
 func _save_session() -> void:
 	if not persist_session: return
-	# Tokens stay in process memory; only the development device identity is persisted.
+	# Tokens stay in process memory; persisted names are only a login convenience.
 	var config := ConfigFile.new()
 	config.set_value("session", "device_id", device_id)
 	config.set_value("session", "sequence", last_sequence)
@@ -88,7 +90,12 @@ func _save_session() -> void:
 	config.set_value("session", "revision", room_revision)
 	config.set_value("session", "base_url", base_url)
 	config.set_value("session", "user_id", authenticated_user_id)
+	config.set_value("session", "local_account_name", local_account_name)
 	config.save("user://session.cfg")
+
+func remember_local_account(server_name: String) -> void:
+	local_account_name = server_name
+	_save_session()
 
 func begin_sign_in(address: String) -> void:
 	end_session("", false)

@@ -18,7 +18,7 @@ func _process(_delta: float) -> void:
 
 func _run() -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output))
-	var login: Dictionary = await Game.gateway.request("/api/v1/auth/local", HTTPClient.METHOD_POST, {"deviceId": Game.gateway.device_id, "displayName": "图鉴联调"})
+	var login: Dictionary = await Game.gateway.request("/api/v1/auth/local", HTTPClient.METHOD_POST, {"deviceId": Game.gateway.device_id, "displayName": "图鉴联调-" + Game.gateway.new_id().left(12)})
 	if not _check(login.ok, "Independent development account login"): return _finish(false)
 	Game.gateway.token = login.data.accessToken
 	await Game.refresh_lobby()

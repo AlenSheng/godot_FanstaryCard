@@ -89,6 +89,14 @@ public static class PlayerEndpoints
                 detail: "The Idempotency-Key was already used with a different request.",
                 extensions: new Dictionary<string, object?> { ["traceId"] = context.TraceIdentifier });
         }
+        catch (PlayerNameConflictException exception)
+        {
+            return Results.Problem(
+                statusCode: StatusCodes.Status409Conflict,
+                title: "Player name conflict",
+                detail: exception.Message,
+                extensions: new Dictionary<string, object?> { ["traceId"] = context.TraceIdentifier });
+        }
     }
 
     private static IResult Conflict(HttpContext context) => Results.Problem(

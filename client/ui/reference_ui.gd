@@ -107,6 +107,10 @@ func _header() -> void:
 	else:
 		button("返回", Rect2(60, 32, 170, 52), host._navigate.bind("hall"), Game.busy or not Game.ticket.is_empty()).name = "ReturnButton"
 		text(names.get(host.screen, "营地"), Rect2(240, 30, 500, 60), 38, P.GOLD)
+	var player: Dictionary = Game.lobby.get("player", {})
+	var identity := text("%s\nUID %s" % [player.get("displayName", ""), player.get("userId", "")], Rect2(745, 25, 530, 70), 20, P.MUTED)
+	identity.name = "AccountIdentity"
+	button("切换账号", Rect2(1285, 32, 180, 52), Game.logout, Game.busy).name = "SwitchAccountButton"
 	picture(_item("Gold"), Rect2(1490, 35, 44, 44))
 	text("金币 %s" % Game.lobby.get("wallet", {}).get("gold", 0), Rect2(1546, 38, 310, 46), 28, P.GOLD)
 

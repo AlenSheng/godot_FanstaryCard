@@ -44,12 +44,14 @@ public static class IdentityEndpoints
         group.MapPost("/local", SignInLocalAsync)
             .RequireRateLimiting(RequestLimitOptions.AuthPolicy)
             .Produces<LocalSignInResponse>()
-            .ProducesProblem(StatusCodes.Status400BadRequest);
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .ProducesProblem(StatusCodes.Status409Conflict);
         group.MapPost("/steam", SignInSteamAsync)
             .RequireRateLimiting(RequestLimitOptions.AuthPolicy)
             .Produces<LocalSignInResponse>()
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status401Unauthorized)
+            .ProducesProblem(StatusCodes.Status409Conflict)
             .ProducesProblem(StatusCodes.Status503ServiceUnavailable);
 
         return endpoints;
@@ -87,6 +89,10 @@ public static class IdentityEndpoints
                 detail: exception.Message,
                 extensions: new Dictionary<string, object?> { ["traceId"] = context.TraceIdentifier });
         }
+        catch (PlayerNameConflictException exception)
+        {
+            return NameConflict(context, exception);
+        }
     }
 
     private static async Task<IResult> SignInSteamAsync(
@@ -120,6 +126,10 @@ public static class IdentityEndpoints
                 detail: exception.Message,
                 extensions: new Dictionary<string, object?> { ["traceId"] = context.TraceIdentifier });
         }
+        catch (PlayerNameConflictException exception)
+        {
+            return NameConflict(context, exception);
+        }
         catch (Exception exception) when (exception is HttpRequestException or TaskCanceledException or JsonException)
         {
             metrics.IdentitySignInFailed("steam", "provider_unavailable");
@@ -129,6 +139,12 @@ public static class IdentityEndpoints
                 extensions: new Dictionary<string, object?> { ["traceId"] = context.TraceIdentifier });
         }
     }
+
+    private static IResult NameConflict(HttpContext context, PlayerNameConflictException exception) => Results.Problem(
+        statusCode: StatusCodes.Status409Conflict,
+        title: "Player name conflict",
+        detail: exception.Message,
+        extensions: new Dictionary<string, object?> { ["traceId"] = context.TraceIdentifier });
 }
 
 public static class LocalAuthPolicy

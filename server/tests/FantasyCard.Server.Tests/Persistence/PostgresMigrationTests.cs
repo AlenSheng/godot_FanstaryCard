@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using System.Text;
 using FantasyCard.Server.Persistence;
 using Microsoft.Extensions.Logging.Abstractions;
 using Npgsql;
@@ -39,6 +41,29 @@ public sealed class PostgresMigrationTests
             await first.StartAsync(timeout.Token);
             Assert.Equal(before, await ReadMigrationRecordsAsync(isolated));
 
+            var assembly = typeof(DatabaseMigrator).Assembly;
+            var firstMigrationResource = assembly.GetManifestResourceNames()
+                .Single(name => name.Contains(".Migrations.V001__", StringComparison.Ordinal));
+            using var stream = assembly.GetManifestResourceStream(firstMigrationResource)!;
+            using var reader = new StreamReader(stream, Encoding.UTF8);
+            var sql = await reader.ReadToEndAsync(timeout.Token);
+            var lfSql = sql.Replace("\r\n", "\n", StringComparison.Ordinal);
+            await using (var canonical = isolated.CreateCommand("SELECT checksum FROM schema_migrations WHERE version=1"))
+                Assert.Equal(RawChecksum(lfSql), await canonical.ExecuteScalarAsync(timeout.Token));
+
+            // Simulate a database created by an older build on a Windows checkout.
+            var legacyChecksum = RawChecksum(lfSql.Replace("\n", "\r\n", StringComparison.Ordinal));
+            await using (var legacy = isolated.CreateCommand("UPDATE schema_migrations SET checksum=$1 WHERE version=1"))
+            {
+                legacy.Parameters.AddWithValue(legacyChecksum);
+                Assert.Equal(1, await legacy.ExecuteNonQueryAsync(timeout.Token));
+            }
+
+            var legacyRecords = await ReadMigrationRecordsAsync(isolated);
+            await first.StartAsync(timeout.Token);
+            await second.StartAsync(timeout.Token);
+            Assert.Equal(legacyRecords, await ReadMigrationRecordsAsync(isolated));
+
             await using (var tamper = isolated.CreateCommand("UPDATE schema_migrations SET checksum=repeat('0',64) WHERE version=1"))
                 Assert.Equal(1, await tamper.ExecuteNonQueryAsync(timeout.Token));
             var exception = await Assert.ThrowsAsync<InvalidOperationException>(() => first.StartAsync(timeout.Token));
@@ -53,6 +78,9 @@ public sealed class PostgresMigrationTests
             await cleanup.ExecuteNonQueryAsync(cleanupTimeout.Token);
         }
     }
+
+    private static string RawChecksum(string sql) =>
+        Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(sql))).ToLowerInvariant();
 
     private static async Task<string> ReadMigrationRecordsAsync(NpgsqlDataSource source)
     {

@@ -58,7 +58,7 @@ func _capture(name: String) -> void:
 
 func _run() -> void:
 	await _capture("00_login")
-	await Game.login("http://127.0.0.1:5080", "联调旅人")
+	await Game.login("http://127.0.0.1:5080", "联调旅人-" + Game.gateway.new_id().left(12))
 	if not _check(not Game.lobby.is_empty(), "real local login and bootstrap"):
 		_finish(false, "Login failed")
 		return

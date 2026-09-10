@@ -118,7 +118,7 @@ public sealed class PostgresRoomEquipmentTests
     {
         var now = DateTimeOffset.UtcNow;
         return (await new IdentityRepository(database.DataSource, new PlayerProvisioningService()).SignInLocalAsync(
-            Guid.NewGuid().ToString("N"), "Inventory player", RandomNumberGenerator.GetBytes(32), now, now.AddHours(1),
+            Guid.NewGuid().ToString("N"), "Inventory " + Guid.NewGuid().ToString("N")[..8], RandomNumberGenerator.GetBytes(32), now, now.AddHours(1),
             TestContext.Current.CancellationToken)).UserId;
     }
 

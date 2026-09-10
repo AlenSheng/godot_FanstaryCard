@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using FantasyCard.Server.Common;
@@ -61,7 +60,7 @@ public sealed partial class DatabaseMigrator(
             {
                 if (applied.TryGetValue(migration.Version, out var checksum))
                 {
-                    if (!string.Equals(checksum, migration.Checksum, StringComparison.Ordinal))
+                    if (!MigrationChecksum.Matches(migration.Sql, checksum))
                     {
                         throw new InvalidOperationException(
                             $"Migration V{migration.Version:D3} checksum changed after it was applied.");
@@ -166,7 +165,7 @@ public sealed partial class DatabaseMigrator(
                 ?? throw new InvalidOperationException($"Embedded migration '{resourceName}' cannot be read.");
             using var reader = new StreamReader(stream, Encoding.UTF8);
             var sql = reader.ReadToEnd();
-            var checksum = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(sql))).ToLowerInvariant();
+            var checksum = MigrationChecksum.Calculate(sql);
             migrations.Add(new Migration(
                 int.Parse(match.Groups["version"].Value, System.Globalization.CultureInfo.InvariantCulture),
                 match.Groups["name"].Value,

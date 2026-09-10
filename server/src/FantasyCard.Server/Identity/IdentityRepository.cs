@@ -1,4 +1,5 @@
 using FantasyCard.Domain.Players;
+using FantasyCard.Server.Players;
 using FantasyCard.Server.Progression;
 using Npgsql;
 using NpgsqlTypes;
@@ -26,8 +27,9 @@ public sealed class IdentityRepository(
         DateTimeOffset expiresAt,
         CancellationToken cancellationToken)
     {
+        // Keep deviceId in the existing API for client compatibility; it no longer selects the account.
         return await SignInExternalAsync(
-            "local", deviceId, displayName, tokenHash, now, expiresAt, cancellationToken);
+            "local-name", displayName, displayName, tokenHash, now, expiresAt, cancellationToken);
     }
 
     public async Task<PlayerProfile> SignInExternalAsync(
@@ -41,6 +43,18 @@ public sealed class IdentityRepository(
     {
         await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
         await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
+
+        if (string.Equals(provider, "local-name", StringComparison.Ordinal))
+        {
+            displayName = PlayerProfile.NormalizeDisplayName(displayName);
+            // Use the database's normalization and casing rules for both the account key and its lock.
+            await using var nameKeyCommand = new NpgsqlCommand(
+                "SELECT lower(normalize(btrim($1), NFKC))",
+                connection,
+                transaction);
+            nameKeyCommand.Parameters.AddWithValue(displayName);
+            externalSubject = (string)(await nameKeyCommand.ExecuteScalarAsync(cancellationToken))!;
+        }
 
         await using (var lockCommand = new NpgsqlCommand(
             "SELECT pg_advisory_xact_lock(hashtextextended($1, 0))",
@@ -201,7 +215,16 @@ public sealed class IdentityRepository(
             playerCommand.Parameters.AddWithValue(profile.Version);
             playerCommand.Parameters.AddWithValue(profile.CreatedAt);
             playerCommand.Parameters.AddWithValue(profile.UpdatedAt);
-            await playerCommand.ExecuteNonQueryAsync(cancellationToken);
+            try
+            {
+                await playerCommand.ExecuteNonQueryAsync(cancellationToken);
+            }
+            catch (PostgresException exception) when (
+                exception.SqlState == PostgresErrorCodes.UniqueViolation &&
+                exception.ConstraintName == PlayerNameConflictException.UniqueIndexName)
+            {
+                throw new PlayerNameConflictException("Display name is already in use. Choose a different name.", exception);
+            }
         }
 
         await using (var identityCommand = new NpgsqlCommand(

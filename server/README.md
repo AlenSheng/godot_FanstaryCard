@@ -4,7 +4,7 @@
 
 ## 已实现
 
-- 本地设备身份登录：`POST /api/v1/auth/local`（仅 Development）
+- 本地名称账号登录：`POST /api/v1/auth/local`（仅 Development）；同名重登原 UID，新名称创建独立 UID
 - Steam 票据登录：`POST /api/v1/auth/steam`（默认关闭，服务端向 Steamworks 验票）
 - 当前玩家档案：`GET/PUT /api/v1/players/me`（PUT 要求 `Idempotency-Key`）
 - 乐观并发版本，避免档案静默覆盖
@@ -31,10 +31,12 @@ Staging/Production 发布、drain、回滚、备份恢复和事故处置见 [`do
 
 ## 启动
 
-需要先安装并启动 Docker Desktop。Windows 下可直接双击：
+Windows 下可直接双击 `start-server.bat`。脚本优先使用 Docker Desktop，并自动识别系统安装和当前用户安装目录，不要求手工添加 PATH。Docker 不存在时改用本机 .NET；已安装但未启动 Docker 时会提示先启动 Docker Desktop，也可传 `--native` 明确使用本机模式。
 
 - `start-server.bat`：构建、后台启动并等待健康检查通过
-- `stop-server.bat`：停止服务器与 PostgreSQL，但保留数据库内容
+- `run-local-server.bat`：使用本机 .NET 构建、后台启动，连接已配置的 PostgreSQL
+- `stop-server.bat`：Docker 模式停止服务器与 PostgreSQL；本机模式只停止本脚本启动的应用，保留数据库内容
+- `update_server.bat`：重新构建当前模式的服务器；本机模式可显式传 `--native`
 - `clear-local-database.bat`：确认后删除**仅本地** PostgreSQL 数据卷，重建数据库、应用全部迁移并重新启动服务
 - `backup-all-local-data.bat`：将完整本地 PostgreSQL 数据库复制到 `local-backups/`，并生成 SHA-256 校验文件
 
@@ -43,6 +45,7 @@ Staging/Production 发布、drain、回滚、备份恢复和事故处置见 [`do
 ```powershell
 cd server
 .\start-server.bat --no-pause
+.\start-server.bat --native --no-pause
 .\stop-server.bat --no-pause
 .\clear-local-database.bat --no-pause
 .\backup-all-local-data.bat --no-pause
@@ -61,12 +64,18 @@ docker compose up -d --build
 
 服务地址为 `http://localhost:5080`。可用 `http/FantasyCard.Server.http` 依次调用服务信息、健康检查、登录、Bootstrap、图鉴/编组和准备接口。
 
-只在本机运行应用时，需要安装 **.NET SDK 10.0.400**（版本由 `global.json` 锁定），并先启动 PostgreSQL：
+只在本机运行应用时，需要安装 **.NET SDK 10.0.400**（版本由 `global.json` 锁定），并先启动 PostgreSQL。本机启动器连接现有数据库，不创建或清空数据库；默认使用 `localhost:5432/fantasycard`，也可以通过 `ConnectionStrings__Postgres` 环境变量指定连接。本机停止脚本不会停止由外部管理的 PostgreSQL。
 
 ```powershell
 docker compose up -d postgres
-dotnet run --project src/FantasyCard.Server
+.\run-local-server.bat --no-pause
 ```
+
+本机启动每次在 `.artifacts/local-build/` 重新还原和构建，避免使用从旧电脑复制来的 `bin/obj` 和绝对路径缓存。后台进程身份与日志保存在 `.artifacts/local-server/`；启动失败会打印日志，重复启动会检查现有进程是否健康。自定义本机监听地址可设置 `ASPNETCORE_URLS`。更新本机程序前先运行 `stop-server.bat`，更新后再启动。
+
+迁移 SQL 的校验统一使用 LF 换行，并兼容旧版本写入的 LF/CRLF 校验值，因此 Windows/Linux 或 Git 换行转换不会误报迁移内容变化。实际 SQL 改动仍会阻止启动，不会自动改写历史校验值；遇到此类错误不要用清库脚本绕过，应恢复原迁移并新增版本。
+
+Docker 模式复用已有基础镜像，只在缺失时下载；本地登录通过 Compose 的 Development 配置显式开启。数据库备份/清理脚本只操作固定 Docker 项目；使用外部 PostgreSQL 时应使用对应数据库的备份工具。
 
 运行测试：
 

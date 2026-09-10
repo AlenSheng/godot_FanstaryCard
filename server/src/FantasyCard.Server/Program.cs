@@ -14,6 +14,9 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
+// Console logging works in containers and on Windows without Event Log permissions.
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 var requestLimitDefaults = builder.Configuration
     .GetSection(RequestLimitOptions.SectionName)
     .Get<RequestLimitOptions>() ?? new RequestLimitOptions();

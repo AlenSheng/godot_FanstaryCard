@@ -7,6 +7,7 @@ from pathlib import Path
 import subprocess
 import threading
 import time
+import unicodedata
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -24,10 +25,14 @@ class Handler(BaseHTTPRequestHandler):
         elif path == "/health/ready":
             self.respond(200, {"status": "Healthy"})
         elif path == "/api/v1/bootstrap":
+            account = self.current_account()
+            if account is None:
+                self.respond(401, {"detail": "Unknown fixture session"})
+                return
             self.respond(200, {
                 "configVersion": "outdated" if prefix == "bootstrap-mismatch" else VERSION,
-                "player": {"userId": "fixture-player", "displayName": "Fixture", "selectedClass": "Mage"},
-                "wallet": {"gold": 0}, "decks": [], "equippedLoadouts": [],
+                "player": account["player"],
+                "wallet": {"gold": account["gold"]}, "decks": [], "equippedLoadouts": [],
                 "unfinishedMatch": None, "unfinishedSettlement": None,
             })
         elif path == "/late-unauthorized":
@@ -40,14 +45,38 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         size = int(self.headers.get("Content-Length", "0"))
-        if size:
-            self.rfile.read(size)
+        data = json.loads(self.rfile.read(size)) if size else {}
         prefix, path = self.normalized_path()
         if path == "/api/v1/auth/local":
             self.server.sign_ins[prefix] = self.server.sign_ins.get(prefix, 0) + 1
-            self.respond(200, {"accessToken": "isolated-fixture-token", "expiresAt": "2030-01-01T00:00:00Z", "player": {"userId": "fixture-player"}})
+            self.server.login_requests.append({"body": data, "authorization": self.headers.get("Authorization")})
+            name = unicodedata.normalize("NFKC", data.get("displayName", "")).strip()
+            if not name or name == "Unavailable fixture":
+                self.respond(400, {"detail": "Invalid fixture account name"})
+                return
+            key = name.casefold()
+            if key not in self.server.accounts:
+                self.server.accounts[key] = {
+                    "player": {"userId": f"fixture-player-{len(self.server.accounts) + 1}", "displayName": name, "selectedClass": "Mage"},
+                    "gold": 0,
+                }
+            account = self.server.accounts[key]
+            token = "isolated-token-" + account["player"]["userId"]
+            self.server.tokens[token] = account
+            self.respond(200, {"accessToken": token, "expiresAt": "2030-01-01T00:00:00Z", "player": account["player"]})
+        elif path == "/fixture/account-progress":
+            account = self.current_account()
+            if account is None:
+                self.respond(401, {"detail": "Unknown fixture session"})
+                return
+            account["gold"] = data["gold"]
+            account["player"]["selectedClass"] = data["selectedClass"]
+            self.respond(200, {})
         else:
             self.respond(404, {})
+
+    def current_account(self):
+        return self.server.tokens.get(self.headers.get("Authorization", "").removeprefix("Bearer "))
 
     def normalized_path(self):
         for prefix in ["bootstrap-mismatch", "mismatch"]:
@@ -74,6 +103,9 @@ def main():
     server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
     server.daemon_threads = True
     server.sign_ins = {}
+    server.login_requests = []
+    server.accounts = {}
+    server.tokens = {}
     threading.Thread(target=server.serve_forever, daemon=True).start()
     environment = dict(os.environ, FANTASYCARD_SESSION_TEST_URL=f"http://127.0.0.1:{server.server_port}")
     try:
@@ -82,8 +114,12 @@ def main():
         if run.stderr:
             print(run.stderr)
         no_early_sign_in = server.sign_ins.get("mismatch", 0) == 0
-        print(json.dumps({"config_mismatch_prevented_sign_in": no_early_sign_in, "isolated_http_sign_ins": server.sign_ins}))
-        return 0 if run.returncode == 0 and "SCRIPT ERROR" not in run.stderr and no_early_sign_in else 1
+        no_old_token = all(request["authorization"] is None for request in server.login_requests)
+        no_empty_name = all(request["body"].get("displayName", "").strip() for request in server.login_requests)
+        same_device = {request["body"].get("deviceId") for request in server.login_requests} == {"isolated-session-fixture"}
+        fixture_checks = {"config_mismatch_prevented_sign_in": no_early_sign_in, "login_omits_old_token": no_old_token, "empty_name_prevented_sign_in": no_empty_name, "account_switch_uses_same_device": same_device}
+        print(json.dumps({"fixture_checks": fixture_checks, "isolated_http_sign_ins": server.sign_ins, "isolated_accounts": len(server.accounts)}))
+        return 0 if run.returncode == 0 and "SCRIPT ERROR" not in run.stderr and all(fixture_checks.values()) else 1
     finally:
         server.shutdown()
         server.server_close()

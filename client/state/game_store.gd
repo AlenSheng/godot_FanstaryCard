@@ -71,6 +71,7 @@ func _clear_authenticated_state() -> void:
 	ticket = {}
 	ready_prompt = {}
 	settlement = {}
+	hero_class = "Mage"
 	selected_cards = []
 	relic_details = {}
 	clear_combat_preview()
@@ -99,6 +100,10 @@ func _on_authentication_required(reason: String) -> void:
 
 func _login(address: String, display_name: String, steam_login: bool) -> void:
 	if busy: return
+	display_name = display_name.strip_edges()
+	if not steam_login and display_name.is_empty():
+		notice.emit("请输入账号名称")
+		return
 	address = address.strip_edges().trim_suffix("/")
 	if not (address.begins_with("http://") or address.begins_with("https://")):
 		notice.emit("请输入 http:// 或 https:// 服务器地址")
@@ -143,7 +148,9 @@ func _login(address: String, display_name: String, steam_login: bool) -> void:
 					if steam_login: platform.release_ticket()
 					if result.ok and result.data is Dictionary:
 						if gateway.accept_session(str(result.data.get("accessToken", "")), str(result.data.get("expiresAt", "")), str(result.data.get("player", {}).get("userId", ""))):
+							if not steam_login: gateway.remember_local_account(str(result.data.get("player", {}).get("displayName", "")))
 							await refresh_lobby()
+							if generation != gateway.session_generation: return
 							if not lobby.is_empty() and configuration_error.is_empty(): gateway.connect_realtime()
 						else: gateway.end_session("服务器未返回有效登录凭证，请重试")
 				else:
@@ -166,6 +173,7 @@ func validate_config(version: String, source: String) -> bool:
 	return false
 
 func refresh_lobby() -> void:
+	var generation: int = gateway.session_generation
 	var result: Dictionary = await gateway.request("/api/v1/bootstrap")
 	if not result.ok: return
 	if not result.data is Dictionary or not validate_config(str(result.data.get("configVersion", "")), "大厅"): return
@@ -180,6 +188,7 @@ func refresh_lobby() -> void:
 		gateway.room_id = ""
 		gateway.room_revision = 0
 		var active: Dictionary = await gateway.request("/api/v1/preparations", HTTPClient.METHOD_GET, null, [404])
+		if generation != gateway.session_generation: return
 		if active.ok:
 			if not _preparation_config_valid(active.data): return
 			preparation = active.data

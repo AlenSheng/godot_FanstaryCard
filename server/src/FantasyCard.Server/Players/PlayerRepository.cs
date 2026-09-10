@@ -62,6 +62,27 @@ public sealed class PlayerRepository(NpgsqlDataSource dataSource)
             return new UpdatePlayerOutcome(UpdatePlayerResult.VersionConflict);
 
         profile.Update(request.DisplayName, request.SelectedClass.ToDomain(), now);
+        if (request.DisplayName is not null)
+        {
+            await using var nameIdentity = new NpgsqlCommand(
+                """
+                SELECT EXISTS (
+                    SELECT 1 FROM external_identities
+                    WHERE player_id = $1 AND provider = 'local-name'
+                      AND external_subject <> lower(normalize(btrim($2), NFKC))
+                )
+                """,
+                connection,
+                transaction);
+            nameIdentity.Parameters.AddWithValue(playerId);
+            nameIdentity.Parameters.AddWithValue(profile.DisplayName);
+            if ((bool)(await nameIdentity.ExecuteScalarAsync(cancellationToken))!)
+            {
+                throw new PlayerNameConflictException(
+                    "A local account's name is its sign-in identity. Sign in with a new name to create a different account.");
+            }
+        }
+
         await using var command = new NpgsqlCommand(
             """
             UPDATE players
@@ -83,7 +104,18 @@ public sealed class PlayerRepository(NpgsqlDataSource dataSource)
         command.Parameters.AddWithValue(profile.UserId);
         command.Parameters.AddWithValue(request.ExpectedVersion);
 
-        var affected = await command.ExecuteNonQueryAsync(cancellationToken);
+        int affected;
+        try
+        {
+            affected = await command.ExecuteNonQueryAsync(cancellationToken);
+        }
+        catch (PostgresException exception) when (
+            exception.SqlState == PostgresErrorCodes.UniqueViolation &&
+            exception.ConstraintName == PlayerNameConflictException.UniqueIndexName)
+        {
+            throw new PlayerNameConflictException("Display name is already in use. Choose a different name.", exception);
+        }
+
         if (affected != 1) return new UpdatePlayerOutcome(UpdatePlayerResult.VersionConflict);
 
         var response = profile.ToResponse();

@@ -31,7 +31,8 @@ var screen_loading := false
 var _render_pending := false
 var _midlayer_seen: Dictionary = {}
 var _login_address := "http://127.0.0.1:5080"
-var _login_name := "山海旅人"
+var _login_name := ""
+var _session_generation: int = -1
 var _search := ""
 var _toast_serial := 0
 var _combat_panels: Dictionary = {}
@@ -55,6 +56,8 @@ func _ready() -> void:
 	theme = P.theme()
 	for card in CATALOG.data.tables.Cards: cards[card.id] = card
 	_login_address = Game.gateway.base_url
+	if not Game.gateway.local_account_name.is_empty(): _login_name = Game.gateway.local_account_name
+	_session_generation = Game.gateway.session_generation
 	Game.changed.connect(_schedule_render)
 	Game.notice.connect(_toast)
 	Game.combat_feedback.connect(_feedback)
@@ -108,9 +111,55 @@ func _build_shell() -> void:
 	toast_label.custom_minimum_size.y = 34
 
 func _schedule_render() -> void:
+	_sync_account_session()
 	if _render_pending: return
 	_render_pending = true
 	_render.call_deferred()
+
+func _sync_account_session() -> void:
+	if _session_generation != Game.gateway.session_generation:
+		_session_generation = Game.gateway.session_generation
+		_reset_account_ui()
+	if not Game.lobby.is_empty() and not Game.gateway.token.is_empty() and not Game.gateway.local_account_name.is_empty():
+		_login_name = Game.gateway.local_account_name
+
+func _reset_account_ui() -> void:
+	screen = "hall"
+	owned = []
+	inventory = {}
+	shop = {}
+	listings = []
+	deck_draft = []
+	gear_draft = []
+	bag_tier = "Free"
+	potion_count = 0
+	edit_mode = false
+	screen_loading = false
+	_midlayer_seen.clear()
+	_search = ""
+	_quality = ""
+	_enhance_item = ""
+	_market_item = ""
+	_market_price = 100
+	_view_cell = ""
+	_codex_card = ""
+	_codex_scroll = 0
+	_codex_deck_scroll = 0
+	_codex_ready = false
+	_codex_mutating = false
+	_shop_inventory_ready = false
+	_enhancement_quote = {}
+	_enhancement_quote_key = ""
+	_combat_panels.clear()
+	_toast_serial += 1
+	if is_instance_valid(toast_label): toast_label.text = ""
+	for key in ["exploration_map_open", "inventory_open", "relic_pile", "inventory_selected", "relic_selected", "pending_move", "item_detail_scroll"]:
+		if has_meta(key): remove_meta(key)
+	# Account-bound dialogs must not retain actions against the next login.
+	for child in get_children():
+		if child is Window:
+			remove_child(child)
+			child.queue_free()
 
 func _render() -> void:
 	_render_pending = false
@@ -221,19 +270,22 @@ func _login() -> void:
 	var row := _row(content)
 	var panel := _panel(row, 680)
 	_label(panel, "启程", 40)
-	_label(panel, "旅人称呼", 22, P.MUTED)
+	_label(panel, "账号名称", 22, P.MUTED)
 	var name_input := LineEdit.new()
 	name_input.text = _login_name
+	name_input.placeholder_text = "输入唯一账号名称"
 	name_input.max_length = 20
 	name_input.text_changed.connect(func(value): _login_name = value)
 	panel.add_child(name_input)
+	if Game.platform.local_login_enabled():
+		_label(panel, "同名登录原账号，新名称自动注册新账号。", 20, P.MUTED)
 	_label(panel, "服务器地址", 22, P.MUTED)
 	var address := LineEdit.new()
 	address.text = _login_address
 	address.text_changed.connect(func(value): _login_address = value)
 	panel.add_child(address)
 	if Game.platform.local_login_enabled():
-		_button(panel, "正在连接…" if Game.busy else "本地验证登录", func(): Game.login(_login_address.strip_edges(), _login_name.strip_edges()), Game.busy)
+		_button(panel, "正在连接…" if Game.busy else "本地登录 / 注册", func(): Game.login(_login_address.strip_edges(), _login_name.strip_edges()), Game.busy)
 	var steam_reason: String = Game.platform.login_unavailable_reason()
 	_button(panel, "Steam 登录", func(): Game.login_steam(_login_address.strip_edges(), _login_name.strip_edges()), Game.busy or not steam_reason.is_empty())
 	if not steam_reason.is_empty(): _label(panel, steam_reason, 20, P.MUTED)
@@ -253,6 +305,7 @@ func _nav() -> void:
 		if screen == key: button.add_theme_stylebox_override("normal", Art.style("UI/CardCodex/card_codex_action_button_orange.png"))
 
 func _navigate(value: String) -> void:
+	var generation: int = Game.gateway.session_generation
 	screen = value
 	edit_mode = false
 	_codex_card = ""
@@ -266,6 +319,7 @@ func _navigate(value: String) -> void:
 		_render()
 		var path: String = {"cards": "/cards", "gear": "/inventory", "enhance": "/inventory", "shop": "/shop/", "market": "/market/", "prep": "/inventory"}[value]
 		var result: Dictionary = await Game.gateway.request("/api/v1" + path)
+		if not _session_result_current(generation, result): return
 		if result.ok:
 			match value:
 				"cards":
@@ -279,18 +333,23 @@ func _navigate(value: String) -> void:
 				"shop":
 					shop = result.data
 					var stock: Dictionary = await Game.gateway.request("/api/v1/inventory")
+					if not _session_result_current(generation, stock): return
 					if stock.ok:
 						inventory = stock.data
 						_shop_inventory_ready = true
 				"market":
 					listings = result.data
 					var bag: Dictionary = await Game.gateway.request("/api/v1/inventory")
+					if not _session_result_current(generation, bag): return
 					if bag.ok: inventory = bag.data
 		screen_loading = false
 	_render()
 
 func _hall() -> void:
 	_label(content, "余火营地", 56, P.GOLD)
+	var identity := _row(content)
+	_label(identity, "%s · UID %s" % [Game.lobby.player.get("displayName", ""), Game.lobby.player.get("userId", "")], 20, P.MUTED)
+	_button(identity, "切换账号", Game.logout, Game.busy)
 	var classes := _row(content)
 	for key in P.CLASSES:
 		var info: Array = P.CLASSES[key]
@@ -559,7 +618,9 @@ func _show_battle_details(status: Dictionary) -> void:
 
 func _enhance(item: Dictionary) -> void:
 	if Game.busy: return
+	var generation: int = Game.gateway.session_generation
 	var result: Dictionary = await Game.gateway.request("/api/v1/equipment/" + item.instanceId + "/enhancement-quote")
+	if not _session_result_current(generation, result): return
 	if not result.ok: return
 	var quote: Dictionary = result.data
 	if not quote.get("canEnhance", false): _toast("无法强化：碎片、同品质材料或物品状态不满足要求"); return
@@ -590,8 +651,10 @@ func _enhance(item: Dictionary) -> void:
 
 func _enhance_weapon() -> void:
 	if Game.busy: return
+	var generation: int = Game.gateway.session_generation
 	var hero_class: String = Game.hero_class
 	var result: Dictionary = await Game.gateway.request("/api/v1/class-weapons/" + hero_class + "/enhancement-quote")
+	if not _session_result_current(generation, result): return
 	if not result.ok: return
 	var quote: Dictionary = result.data
 	if not quote.get("canEnhance", false): _toast("无法强化：碎片不足或已达最高等级"); return
@@ -604,7 +667,9 @@ func _read_enhancement_quote(item: Dictionary, weapon: Dictionary) -> void:
 	_enhancement_quote_key = key
 	_enhancement_quote = {}
 	var prefix := "/equipment/" if not item.is_empty() else "/class-weapons/"
+	var generation: int = Game.gateway.session_generation
 	var result: Dictionary = await Game.gateway.request("/api/v1" + prefix + id + "/enhancement-quote")
+	if not _session_result_current(generation, result): return
 	if key != _enhancement_quote_key or screen != "enhance": return
 	_enhancement_quote = result.data if result.ok else {"error": true}
 	_schedule_render()

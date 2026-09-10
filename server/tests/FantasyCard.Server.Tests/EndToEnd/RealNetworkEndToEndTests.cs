@@ -133,12 +133,9 @@ public sealed partial class RealNetworkEndToEndTests
     private static NetworkServerProcess StartServer(string connectionString, int port)
     {
         var serverProjectDirectory = FindServerProjectDirectory();
-        var serverDll = Environment.GetEnvironmentVariable("FANTASYCARD_E2E_SERVER_DLL") ?? Path.Combine(
-            serverProjectDirectory,
-            "bin",
-            "Release",
-            "net10.0",
-            "FantasyCard.Server.dll");
+        // Use this test build, not a Release binary left by another machine or checkout.
+        var serverDll = Environment.GetEnvironmentVariable("FANTASYCARD_E2E_SERVER_DLL")
+            ?? typeof(FantasyCard.Server.Persistence.DatabaseMigrator).Assembly.Location;
         Assert.True(File.Exists(serverDll), $"Server assembly was not built: {serverDll}");
 
         var startInfo = new ProcessStartInfo

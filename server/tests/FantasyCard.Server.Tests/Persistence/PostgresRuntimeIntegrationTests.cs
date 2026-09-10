@@ -528,7 +528,7 @@ public sealed class PostgresRuntimeIntegrationTests
 
         var profiles = await Task.WhenAll(Enumerable.Range(0, 8).Select(index =>
             repository.SignInLocalAsync(
-                subject,
+                subject + index,
                 "Concurrent player",
                 TokenHash($"concurrent-token-{index}-{subject}"),
                 now,
@@ -539,7 +539,7 @@ public sealed class PostgresRuntimeIntegrationTests
         Assert.Equal(1L, await database.ScalarAsync<long>(
             "SELECT count(*) FROM players WHERE user_id=$1", playerId));
         Assert.Equal(1L, await database.ScalarAsync<long>(
-            "SELECT count(*) FROM external_identities WHERE provider='local' AND external_subject=$1", subject));
+            "SELECT count(*) FROM external_identities WHERE provider='local-name' AND external_subject=$1", "concurrent player"));
         Assert.Equal(8L, await database.ScalarAsync<long>(
             "SELECT count(*) FROM player_sessions WHERE player_id=$1", playerId));
         await AssertProvisionedAggregateAsync(database, playerId);
@@ -614,17 +614,38 @@ public sealed class PostgresRuntimeIntegrationTests
             await command.ExecuteNonQueryAsync(cancellationToken);
         }
 
+        await database.ExecuteAsync(
+            """
+            CREATE TABLE player_wallets (
+                player_id uuid PRIMARY KEY REFERENCES players(user_id) ON DELETE CASCADE,
+                gold bigint NOT NULL DEFAULT 0 CHECK (gold >= 0),
+                diamond bigint NOT NULL DEFAULT 0 CHECK (diamond >= 0),
+                version bigint NOT NULL DEFAULT 1 CHECK (version > 0));
+            """);
+        await using (var wallet = database.DataSource.CreateCommand(
+            "INSERT INTO player_wallets(player_id,gold,diamond,version) VALUES($1,777,3,5)"))
+        {
+            wallet.Parameters.AddWithValue(playerId);
+            await wallet.ExecuteNonQueryAsync(cancellationToken);
+        }
+
         await database.MigrateAsync();
         var repository = CreateIdentityRepository(database.DataSource);
         var first = await repository.SignInLocalAsync(
-            subject, "Ignored rename", TokenHash("legacy-token-1"), now, now.AddHours(1), cancellationToken);
+            subject, "Legacy player", TokenHash("legacy-token-1"), now, now.AddHours(1), cancellationToken);
         var second = await repository.SignInLocalAsync(
-            subject, "Ignored rename", TokenHash("legacy-token-2"), now, now.AddHours(1), cancellationToken);
+            "another-device", "Legacy player", TokenHash("legacy-token-2"), now, now.AddHours(1), cancellationToken);
 
         Assert.Equal(playerId, first.UserId);
         Assert.Equal(playerId, second.UserId);
         Assert.Equal("Legacy player", first.DisplayName);
         await AssertProvisionedAggregateAsync(database, playerId);
+        Assert.Equal(777L, await database.ScalarAsync<long>("SELECT gold FROM player_wallets WHERE player_id=$1", playerId));
+        Assert.Equal(5L, await database.ScalarAsync<long>("SELECT version FROM player_wallets WHERE player_id=$1", playerId));
+        var newName = await repository.SignInLocalAsync(
+            subject, "New account", TokenHash("legacy-new-name"), now, now.AddHours(1), cancellationToken);
+        Assert.NotEqual(playerId, newName.UserId);
+        Assert.Equal(0L, await database.ScalarAsync<long>("SELECT gold FROM player_wallets WHERE player_id=$1", newName.UserId));
     }
 
     [Fact(Skip = "Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.",
