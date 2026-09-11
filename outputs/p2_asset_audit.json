@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-09-09T15:23:29.566565+00:00",
+  "generated_at_utc": "2026-09-10T20:14:59.465501+00:00",
   "asset_root": "client/assets/imported",
   "read_only_source_audit": true,
   "legacy_source_paths_present": {
@@ -8,15 +8,15 @@
     "ui_mockups_v058": false
   },
   "counts": {
-    "bitmap_files": 416,
-    "ui_bitmaps": 216,
-    "card_illustrations": 200,
-    "registered_files": 416,
+    "bitmap_files": 544,
+    "ui_bitmaps": 218,
+    "card_illustrations": 201,
+    "registered_files": 544,
     "card_bindings": 212,
     "monster_species_bound": 12,
     "requests_by_status": {
       "integrated_and_reviewed": 25,
-      "integrated_with_native_border": 1,
+      "integrated_pending_visual_review": 1,
       "generated_pending_identity": 1
     },
     "fully_delivered_requests": 27,
@@ -567,7 +567,7 @@
       "id": "UI-MONSTER-CARD-FRAME",
       "name": "怪物卡暗红空框",
       "priority": "P1",
-      "review_status": "integrated_with_native_border",
+      "review_status": "integrated_pending_visual_review",
       "deliverables": [
         {
           "key": "UI/Cards/card_frame_monster_clean.png",
@@ -1163,8 +1163,17 @@
     "report": "client/evidence/art/report.json",
     "report_result": {
       "fixture_only": true,
-      "layout_errors": [],
-      "ok": true,
+      "layout_errors": [
+        "Missing/obstructing action icon: spring",
+        "Missing/obstructing action icon: relic",
+        "Missing/obstructing action icon: extract",
+        "Relic without item details must stay disabled",
+        "Missing/obstructing action icon: spring",
+        "Missing/obstructing action icon: relic",
+        "Missing/obstructing action icon: extract",
+        "Relic without item details must stay disabled"
+      ],
+      "ok": false,
       "screenshots": 66
     },
     "contact_sheet": "outputs/p2_native_monster_review.jpg",

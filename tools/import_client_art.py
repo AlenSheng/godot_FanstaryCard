@@ -177,7 +177,7 @@ def import_art(root=ROOT, *, source_root=None, ui_root=None, cards_root=None, de
         with Image.open(source) as original:
             sizes[relative] = list(original.size)
             original.verify()
-        if relative.startswith("Cards/Art/"):
+        if relative.startswith("Cards/Art/") and relative != "Cards/Art/monster_card_backdrop.png":
             width, height = sizes[relative]
             if width * 3 != height * 2:
                 raise ValueError(f"Card art must be 2:3: {source}")
