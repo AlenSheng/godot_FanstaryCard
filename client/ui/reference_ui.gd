@@ -10,6 +10,7 @@ var host: Control
 
 func build(source: Control) -> void:
 	host = source
+	host.edit_mode = host.screen == "deck"
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	if not Game.settlement.is_empty():
@@ -30,7 +31,7 @@ func build(source: Control) -> void:
 			return
 		match host.screen:
 			"hall": _hall()
-			"cards": _codex()
+			"cards", "deck": _codex()
 			"prep": _preparation()
 			"gear": _gear()
 			"enhance": _enhance()
@@ -40,6 +41,7 @@ func build(source: Control) -> void:
 
 func text(value: String, rect: Rect2, font_size: int = 24, color: Color = P.PAPER) -> Label:
 	var label := Label.new()
+	value = I18n.t(value)
 	label.text = value
 	var typeface := P.font_for_text(value, font_size)
 	label.add_theme_font_override("font", typeface)
@@ -70,7 +72,7 @@ func panel(rect: Rect2, key: String = "UI/CardCodex/card_codex_dialog_panel_norm
 
 func button(value: String, rect: Rect2, action: Callable, disabled: bool = false, key: String = BLUE) -> Button:
 	var node := Button.new()
-	node.text = value
+	node.text = I18n.t(value)
 	node.disabled = disabled
 	node.pressed.connect(action)
 	Art.button(node, key)
@@ -97,10 +99,10 @@ func _scroll(rect: Rect2, horizontal: bool = false) -> ScrollContainer:
 	return node
 
 func _header() -> void:
-	if host.screen == "cards":
+	if host.screen in ["cards", "deck"]:
 		Codex.header(self, host)
 		return
-	panel(Rect2(24, 18, 1872, 82))
+	panel(Rect2(24, 18, 1872, 82), "UI/CardCodex/card_codex_title_bar_normal.png")
 	var names := {"hall": "幻想牌域", "cards": "卡牌图鉴", "prep": "探索准备", "gear": "装备穿戴", "enhance": "碎片强化", "shop": "金币商店", "market": "金币市场"}
 	if host.screen == "hall":
 		picture(Art.texture("UI/Hall/logo.png"), Rect2(55, 29, 255, 58))
@@ -133,7 +135,7 @@ func _hall() -> void:
 	text(P.CLASSES[Game.hero_class][1] + "\n已锁定", Rect2(95, 650, 180, 90), 26, P.GOLD)
 	picture(Art.texture("UI/Hall/portal_panel.png"), Rect2(990, 153, 835, 550))
 	button("探索准备", Rect2(1140, 640, 520, 96), host._navigate.bind("prep"), Game.busy, ORANGE)
-	var entries := [["cards", "codex"], ["gear", "gear"], ["cards", "deck"], ["shop", "shop"], ["market", "market"], ["prep", "prep"], ["enhance", "enhance"]]
+	var entries := [["cards", "codex"], ["gear", "gear"], ["deck", "deck"], ["shop", "shop"], ["market", "market"], ["prep", "prep"], ["enhance", "enhance"]]
 	for i in range(entries.size()):
 		var rect := Rect2(56 + i * 259, 802, 242, 223)
 		var node := button("", rect, host._navigate.bind(entries[i][0]), Game.busy or not Game.ticket.is_empty())
@@ -144,7 +146,7 @@ func _codex() -> void:
 	Codex.build(self, host)
 
 func _unhandled_key_input(event: InputEvent) -> void:
-	if host != null and host.screen == "cards" and not host._codex_card.is_empty() and event.is_action_pressed("ui_cancel"):
+	if host != null and host.screen in ["cards", "deck"] and not host._codex_card.is_empty() and event.is_action_pressed("ui_cancel"):
 		get_viewport().set_input_as_handled()
 		if not host._codex_mutating:
 			host._codex_card = ""
@@ -170,7 +172,7 @@ func _loadout(rect: Rect2, editable: bool, snapshot: Dictionary = {}) -> void:
 		picture(_item(slots[i]), Rect2(point + Vector2(18, 12), Vector2(84, 84))).modulate.a = 1.0 if id != null else 0.35
 		text(P.word(slots[i]) + (" +%s" % item.get("level", 0) if id != null else ""), Rect2(point + Vector2(2, 125), Vector2(148, 40)), 22, P.MUTED)
 	var weapon_pos := rect.position + Vector2(rect.size.x - 165, 507)
-	panel(Rect2(weapon_pos, Vector2(120, 120)), "UI/Prep/exploration_prep_equipment_slot_frame_orange.png")
+	panel(Rect2(weapon_pos, Vector2(120, 120)), "UI/Prep/class_weapon_frame_%s.png" % hero_class.to_lower())
 	picture(Art.texture("UI/Item/exploration_prep_item_icon_weapon_%s.png" % hero_class.to_lower()), Rect2(weapon_pos + Vector2(12, 12), Vector2(96, 96)))
 	text("本命 +%s · 锁定" % snapshot.classWeaponLevel if snapshot.has("classWeaponLevel") else "本命 · 锁定", Rect2(weapon_pos + Vector2(-8, 127), Vector2(180, 40)), 21, P.GOLD)
 
@@ -205,7 +207,7 @@ func _preparation() -> void:
 			tab.tooltip_text = "持有 %s 个" % stock[key]
 	for index in range(capacity):
 		var point := Vector2(850 + (index % 6) * 163, 342 + (index / 6) * 82)
-		panel(Rect2(point, Vector2(145, 73)), "UI/Prep/exploration_prep_backpack_cell_empty_normal.png")
+		panel(Rect2(point, Vector2(145, 73)), "UI/Prep/backpack_cell_frame_normal.png")
 		if index in safe_slots:
 			picture(Art.texture("UI/Prep/icon_safe.png"), Rect2(point + Vector2(42, 5), Vector2(58, 58)))
 		else: text(str(index + 1), Rect2(point + Vector2(8, 8), Vector2(110, 48)), 19, P.MUTED)
@@ -304,7 +306,7 @@ func _shop() -> void:
 		item_panel.add_theme_stylebox_override("panel", Art.style("UI/CardCodex/card_codex_dialog_panel_normal.png"))
 		row.add_child(item_panel)
 		var title := Label.new()
-		title.text = product_title
+		title.text = I18n.t(product_title)
 		title.add_theme_font_override("font", P.font("title"))
 		title.position = Vector2(20, 32)
 		title.size = Vector2(200, 70)
@@ -318,7 +320,7 @@ func _shop() -> void:
 		image.size = Vector2(180, 230)
 		var detail := Label.new()
 		var amount: int = int(payload.get("amount", payload.get("count", 0)))
-		detail.text = ("每份 ×%s\n" % amount if amount > 0 else "") + "今日 %s / %s\n\n%s 金币" % [item.purchased, item.limit, item.priceGold]
+		detail.text = I18n.t(("每份 ×%s\n" % amount if amount > 0 else "") + "今日 %s / %s\n\n%s 金币" % [item.purchased, item.limit, item.priceGold])
 		detail.position = Vector2(20, 371)
 		detail.size = Vector2(200, 160)
 		detail.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -328,7 +330,7 @@ func _shop() -> void:
 		var stock_full: bool = is_bag and paid_bags + maxi(1, amount) > 3
 		var stock_unknown: bool = is_bag and not host._shop_inventory_ready
 		var buy_text := "刷新库存" if stock_unknown else ("库存已满" if stock_full else "购买")
-		var buy: Button = host._button(item_panel, buy_text, func(): host._confirm("花费 %s 金币购买%s？" % [item.priceGold, product_title], func(): host._mutate("/shop/purchases", HTTPClient.METHOD_POST, {"productId": item.productId, "quantity": 1})), Game.busy or stock_unknown or stock_full or int(item.purchased) >= int(item.limit) or int(item.priceGold) > int(Game.lobby.get("wallet", {}).get("gold", 0)))
+		var buy: Button = host._button(item_panel, buy_text, host._purchase_product.bind(item, product_title), Game.busy or stock_unknown or stock_full or int(item.purchased) >= int(item.limit))
 		buy.name = "Purchase"
 		Art.button(buy, ORANGE)
 		buy.position = Vector2(26, 546)
@@ -413,7 +415,7 @@ func _ready_prompt() -> void:
 	text("已确认 %s / %s" % [Game.ready_prompt.get("ready_players", 0), Game.ready_prompt.get("required_players", 1)], Rect2(720, 455, 600, 80), 36)
 	var deadline: float = float(Game.ready_prompt.get("deadline_unix_ms", 0)) / 1000.0
 	var remaining := text("", Rect2(720, 552, 600, 60), 28, P.TEAL)
-	var update_time: Callable = func(): remaining.text = "确认剩余 %s 秒" % maxi(0, int(deadline - Time.get_unix_time_from_system()))
+	var update_time: Callable = func(): remaining.text = I18n.t("确认剩余 %s 秒" % maxi(0, int(deadline - Time.get_unix_time_from_system())))
 	update_time.call()
 	var timer := Timer.new()
 	timer.wait_time = 0.25

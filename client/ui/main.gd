@@ -10,6 +10,7 @@ const InventoryView = preload("res://ui/inventory_view.gd")
 const CardDetails = preload("res://ui/card_details.gd")
 const BattleDetails = preload("res://ui/battle_details.gd")
 const AudioSettings = preload("res://ui/audio_settings.gd")
+const SettingsPanel = preload("res://ui/settings_panel.gd")
 const CATALOG = preload("res://data/catalog.json")
 const DESCRIPTIONS = preload("res://data/card_descriptions.json")
 var screen := "hall"
@@ -35,6 +36,7 @@ var _login_name := ""
 var _session_generation: int = -1
 var _search := ""
 var _toast_serial := 0
+var _toast_tween: Tween
 var _combat_panels: Dictionary = {}
 var _background: TextureRect
 var _reference: Control
@@ -60,11 +62,12 @@ func _ready() -> void:
 	_session_generation = Game.gateway.session_generation
 	Game.changed.connect(_schedule_render)
 	Game.notice.connect(_toast)
+	I18n.language_changed.connect(func(_locale): _render())
 	Game.combat_feedback.connect(_feedback)
 	_build_shell()
-	var audio_settings := AudioSettings.new()
-	audio_settings.name = "AudioSettings"
-	add_child(audio_settings)
+	var settings_panel := SettingsPanel.new()
+	settings_panel.name = "SettingsPanel"
+	add_child(settings_panel)
 	_render()
 
 func _build_shell() -> void:
@@ -99,16 +102,22 @@ func _build_shell() -> void:
 	content = VBoxContainer.new()
 	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(content)
-	toast_label = _label(self, "", 20, P.GOLD)
-	toast_label.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-	toast_label.offset_left = 260
-	toast_label.offset_right = -600
-	toast_label.offset_top = -40
-	toast_label.offset_bottom = -4
+	toast_label = _label(self, "", 28, P.GOLD)
+	toast_label.name = "FloatingTips"
+	toast_label.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	toast_label.offset_left = -460
+	toast_label.offset_right = 460
+	toast_label.offset_top = 210
+	toast_label.offset_bottom = 290
+	toast_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	toast_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	toast_label.z_index = 100
 	toast_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	toast_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	toast_label.custom_minimum_size.y = 34
+	toast_label.add_theme_color_override("font_shadow_color", Color.BLACK)
+	toast_label.add_theme_constant_override("shadow_offset_x", 2)
+	toast_label.add_theme_constant_override("shadow_offset_y", 2)
+	toast_label.hide()
 
 func _schedule_render() -> void:
 	_sync_account_session()
@@ -185,7 +194,7 @@ func _render() -> void:
 	for node in content.get_children():
 		content.remove_child(node)
 		node.queue_free()
-	status_label.text = Game.connection
+	status_label.text = I18n.t(Game.connection)
 	if not Game.lobby.is_empty(): status_label.text += "    金币 %s" % Game.lobby.get("wallet", {}).get("gold", 0)
 	var use_reference: bool = not Game.lobby.is_empty() and Game.lobby.get("unfinishedMatch") == null
 	if not Game.room.is_empty() or not Game.settlement.is_empty(): use_reference = true
@@ -195,7 +204,7 @@ func _render() -> void:
 		if ResourceLoader.exists(scene_path):
 			_background.texture = load(scene_path)
 			_background.modulate = Color.WHITE
-		if screen == "cards" and Game.room.is_empty() and Game.settlement.is_empty():
+		if screen in ["cards", "deck"] and Game.room.is_empty() and Game.settlement.is_empty():
 			_background.texture = Art.texture("UI/CardCodex/card_codex_background_normal.png")
 			_background.modulate = Color.WHITE
 		_reference = ReferenceUI.new()
@@ -224,8 +233,9 @@ func _render() -> void:
 		return
 	match screen:
 		"hall": _hall()
+		"mail": _mail()
 		"prep": _preparation()
-		"cards": _codex()
+		"cards", "deck": _codex()
 		"gear": _equipment()
 		"shop": _shop()
 		"market": _market()
@@ -233,7 +243,7 @@ func _render() -> void:
 func _label(parent: Node, text: String, size: int = 24, color: Color = P.PAPER) -> Label:
 	var node := Label.new()
 	node.add_theme_font_override("font", P.font_for_text(text, size))
-	node.text = text
+	node.text = I18n.t(text)
 	node.add_theme_font_size_override("font_size", size)
 	node.add_theme_color_override("font_color", color)
 	parent.add_child(node)
@@ -241,7 +251,7 @@ func _label(parent: Node, text: String, size: int = 24, color: Color = P.PAPER) 
 
 func _button(parent: Node, text: String, callback: Callable, disabled: bool = false) -> Button:
 	var button := Button.new()
-	button.text = text
+	button.text = I18n.t(text)
 	button.disabled = disabled
 	button.custom_minimum_size.y = 62
 	button.pressed.connect(callback)
@@ -273,7 +283,7 @@ func _login() -> void:
 	_label(panel, "账号名称", 22, P.MUTED)
 	var name_input := LineEdit.new()
 	name_input.text = _login_name
-	name_input.placeholder_text = "输入唯一账号名称"
+	name_input.placeholder_text = I18n.t("输入唯一账号名称")
 	name_input.max_length = 20
 	name_input.text_changed.connect(func(value): _login_name = value)
 	panel.add_child(name_input)
@@ -298,7 +308,7 @@ func _login() -> void:
 
 func _nav() -> void:
 	var nav := _row(content)
-	var names := {"hall": "营地", "cards": "图鉴 / 编组", "gear": "穿戴 / 强化", "shop": "金币商店", "market": "金币市场", "prep": "探索准备"}
+	var names := {"hall": "营地", "mail": "📬 邮件" + ("  [%s]" % Game.mail_unread if Game.mail_unread > 0 else ""), "cards": "卡牌图鉴", "deck": "卡组编成", "gear": "穿戴 / 强化", "shop": "金币商店", "market": "金币市场", "prep": "探索准备"}
 	for key in names:
 		var button := _button(nav, names[key], _navigate.bind(key), Game.busy or not Game.ticket.is_empty())
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -307,22 +317,22 @@ func _nav() -> void:
 func _navigate(value: String) -> void:
 	var generation: int = Game.gateway.session_generation
 	screen = value
-	edit_mode = false
+	edit_mode = value == "deck"
 	_codex_card = ""
 	_codex_scroll = 0
 	_enhancement_quote_key = ""
 	_enhancement_quote = {}
 	if value == "shop": _shop_inventory_ready = false
-	if value == "cards": _codex_ready = false
-	if value in ["cards", "gear", "enhance", "shop", "market", "prep"]:
+	if value in ["cards", "deck"]: _codex_ready = false
+	if value in ["cards", "deck", "gear", "enhance", "shop", "market", "prep"]:
 		screen_loading = true
 		_render()
-		var path: String = {"cards": "/cards", "gear": "/inventory", "enhance": "/inventory", "shop": "/shop/", "market": "/market/", "prep": "/inventory"}[value]
+		var path: String = {"cards": "/cards", "deck": "/cards", "gear": "/inventory", "enhance": "/inventory", "shop": "/shop/", "market": "/market/", "prep": "/inventory"}[value]
 		var result: Dictionary = await Game.gateway.request("/api/v1" + path)
 		if not _session_result_current(generation, result): return
 		if result.ok:
 			match value:
-				"cards":
+				"cards", "deck":
 					owned = result.data
 					_codex_ready = true
 					deck_draft = Game.deck().get("cardIds", []).duplicate()
@@ -370,7 +380,21 @@ func _hall() -> void:
 	_label(portal, "混沌领域", 60, P.GOLD)
 	_label(portal, "六乘六的未知旅途\n四名旅人，向领域中心前进。", 28)
 	_button(portal, "探索准备   →", _navigate.bind("prep"))
+	_button(identity, "📬 邮件" + ("  (%s)" % Game.mail_unread if Game.mail_unread > 0 else ""), _navigate.bind("mail"), Game.busy)
 	_label(portal, "怪物各自迎战，同格可能触发决斗。", 22, P.MUTED)
+
+func _mail() -> void:
+	_label(content, "📬 邮件", 56, P.GOLD)
+	for item in Game.mail:
+		var panel := _panel(content)
+		_label(panel, item.title, 32, P.GOLD if not item.isRead else P.MUTED)
+		_label(panel, item.body, 24)
+		if not item.claimed: _button(panel, "领取附件", _claim_mail.bind(str(item.mailId)), Game.busy)
+
+func _claim_mail(mail_id: String) -> void:
+	var result: Dictionary = await Game.gateway.request("/api/v1/mail/%s/claim" % mail_id, HTTPClient.METHOD_POST)
+	if result.ok: await Game.refresh_lobby()
+	_render()
 
 func _preparation() -> void:
 	_label(content, "带上勇气，留出归途", 46, P.GOLD)
@@ -414,7 +438,7 @@ func _preparation() -> void:
 	var safe: int = {"Free": 0, "Advanced": 1, "Top": 3}[bag_tier]
 	for index in range(capacity):
 		var cell := _button(grid, str(index + 1), func(): pass, true)
-		Art.button(cell, "UI/Prep/exploration_prep_backpack_cell_empty_normal.png")
+		Art.button(cell, "UI/Prep/backpack_cell_frame_normal.png")
 		cell.custom_minimum_size = Vector2(112, 72)
 		if index >= capacity - safe:
 			cell.add_theme_stylebox_override("disabled", P.box(P.INK, P.GOLD, 3))
@@ -436,7 +460,8 @@ func _card_text(id: String, level: int = 0, element_override: String = "") -> St
 	var source: String = info.get("source", "")
 	var badge := "怪" if not info.get("is_codex", true) else P.word(info.get("hero_class", ""))
 	var name: String = info.get("name", id)
-	var descriptions: Dictionary = DESCRIPTIONS.data.get("zh-CN", DESCRIPTIONS.data.get("zh", {}))
+	var description_locale := "en" if I18n.locale == "en" else "zh"
+	var descriptions: Dictionary = DESCRIPTIONS.data.get(description_locale, DESCRIPTIONS.data.get("zh", {}))
 	var description: String = descriptions.get("card.face.desc." + id, "")
 	if level > 0 or not element_override.is_empty(): description = CardDetails.effect_text(CardDetails.at_level(info, level))
 	if description.is_empty():
@@ -499,32 +524,10 @@ func _card_action(id: String, action: String) -> void:
 	_render()
 
 func _codex() -> void:
-	var header := _row(content)
-	_label(header, "卡牌图鉴", 42, P.GOLD)
-	_label(header, "编组 %s / 20" % deck_draft.size(), 30)
-	_button(header, "保存编组", _save_deck, deck_draft.size() != 20 or Game.busy)
-	_button(header, "还原", func(): deck_draft = Game.deck().get("cardIds", []).duplicate(); _render())
-	var deck_row := HFlowContainer.new()
-	content.add_child(deck_row)
-	for index in range(deck_draft.size()):
-		var id: String = deck_draft[index]
-		_button(deck_row, "%s ×" % cards.get(id, {}).get("name", id), func(): deck_draft.remove_at(index); _render())
-	var resources: Dictionary = Game.lobby.get("materials", {})
-	_label(content, "勇士之魂 %s   ·   职业之魂 %s" % [resources.get("warriorSoul", 0), resources.get(Game.hero_class.to_lower() + "Soul", 0)], 22, P.MUTED)
-	var grid := GridContainer.new()
-	grid.columns = 6
-	content.add_child(grid)
-	for card in owned:
-		var class_value: Variant = card.get("heroClass")
-		if class_value != null and class_value != Game.hero_class: continue
-		var id: String = card.cardId
-		var can_add: bool = card.get("unlocked", false) and deck_draft.size() < 20 and deck_draft.count(id) < int(card.get("copyCount", 0))
-		if cards.get(id, {}).get("quality", "") == "Orange":
-			for entry in deck_draft:
-				var existing: Dictionary = cards.get(entry, {})
-				if existing.get("quality") == "Orange" and (existing.get("hero_class") == null) == (class_value == null): can_add = false
-		var button := _card_button(grid, id, func(): deck_draft.append(id); _render(), false, not can_add)
-		button.tooltip_text += "\n已编入 %s / 持有 %s · 等级 %s" % [deck_draft.count(id), card.copyCount, card.level]
+	# Both routes share card rendering, but expose separate collection/deck actions.
+	_reference = ReferenceUI.new()
+	add_child(_reference)
+	_reference.build(self)
 
 func _save_deck() -> void:
 	if Game.busy: return
@@ -922,10 +925,24 @@ func _settlement() -> void:
 
 func _toast(message: String) -> void:
 	_toast_serial += 1
-	var serial := _toast_serial
-	toast_label.text = message
-	await get_tree().create_timer(8.0).timeout
-	if serial == _toast_serial: toast_label.text = ""
+	if is_instance_valid(_toast_tween): _toast_tween.kill()
+	toast_label.text = I18n.t(message)
+	toast_label.offset_top = 210
+	toast_label.offset_bottom = 290
+	toast_label.modulate.a = 1.0
+	toast_label.show()
+	_toast_tween = create_tween()
+	_toast_tween.set_parallel(true)
+	_toast_tween.tween_property(toast_label, "position:y", 162.0, 2.2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	_toast_tween.tween_property(toast_label, "modulate:a", 0.0, 0.5).set_delay(1.7)
+	_toast_tween.chain().tween_callback(func(): toast_label.text = ""; toast_label.hide())
+
+func _purchase_product(item: Dictionary, product_title: String) -> void:
+	if Game.busy: return
+	if int(item.priceGold) > int(Game.lobby.get("wallet", {}).get("gold", 0)):
+		_toast("金币不足")
+		return
+	_confirm("花费 %s 金币购买%s？" % [item.priceGold, product_title], func(): _mutate("/shop/purchases", HTTPClient.METHOD_POST, {"productId": item.productId, "quantity": 1}))
 
 func _health_bar(parent: Node, combat: Dictionary) -> void:
 	var bar := BoundedBar.new()

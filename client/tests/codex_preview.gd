@@ -89,14 +89,11 @@ func _run() -> void:
 	var results: int = $UI._reference.find_child("CardGrid", true, false).get_child_count()
 	_check(results > 0 and results < 200, "Search must match effect descriptions")
 	$UI._search = ""
-	$UI.edit_mode = true
+	$UI.screen = "deck"
 	$UI.deck_draft = ["C01", "C02", "MAG-01"]
 	await _capture("deck")
-	$UI._codex_card = "PRI-01"
-	$UI._render()
-	_check($UI._reference.find_child("AddCardToDeck", true, false).disabled, "Other class card cannot enter current deck")
-	$UI._codex_card = ""
-	$UI.edit_mode = false
+	_check($UI._reference.find_child("Card_PRI-01", true, false).disabled, "Other class card cannot enter current deck")
+	$UI.screen = "cards"
 	get_window().size = Vector2i(960, 540)
 	await _capture("collection_960")
 	$UI._codex_card = missing_id

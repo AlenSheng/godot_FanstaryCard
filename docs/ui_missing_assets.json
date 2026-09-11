@@ -1,8 +1,9 @@
 {
   "schema_version": 2,
-  "audit_date": "2026-09-10",
+  "mail_ui_assets": [{"path":"client/assets/imported/UI/Hall/mail_icon.png","status":"待出图","runtime_px":[64,64]},{"path":"client/assets/imported/UI/Hall/mail_panel.png","status":"待出图","runtime_px":[384,96],"nine_patch_margin_px":24,"display_target_px":[960,180]},{"path":"client/assets/imported/UI/Hall/mail_unread_badge.png","status":"待出图","runtime_px":[64,64]},{"path":"client/assets/imported/UI/Hall/mail_claim_button.png","status":"待出图","runtime_px":[256,64],"nine_patch":true},{"path":"client/assets/imported/UI/Item/mail_attachment_diamond.png","status":"待出图","runtime_px":[96,96]}],
+  "audit_date": "2026-09-11",
   "full_ui_checklist": "docs/UI_ASSET_MASTER_CHECKLIST.md",
-  "scope_boundary": "本文件保留原27项补图批次统计；remaining_new_illustration_requests=0不代表全项目装备与UI美术齐全。完整需求、125个当前防具外观组合与25个红装预留组合见full_ui_checklist。本轮仅补充清单指针，未生成图片。",
+  "scope_boundary": "本文件保留原27项补图批次统计；remaining_new_illustration_requests=0不代表全项目装备与UI美术齐全。完整需求、125个当前防具外观组合与25个红装预留组合见full_ui_checklist。本轮新增9张UI透明PNG并已登记，仍需实际界面视觉验收。",
   "scope": "当前导入目录共418张位图（217 UI + 200图鉴插画 + 1怪物卡背景），全部登记且文件存在；原27项/28 PNG已供齐。战斗表现与历史协议缺口已补齐；本轮另交付并接入2份完整思源字体和22个原创短音效，原生14项通过。源文件归档与最终视觉验收见supporting_work；冰霜幽灵身份待定，暗红卡框待复核。",
   "counts": {
     "mockup_png": 0,
@@ -309,6 +310,59 @@
     }
   ],
   "requests": [
+    {
+      "id": "DECK-UI-01",
+      "name": "编卡右侧技能行品质底框与状态变体",
+      "priority": "P2",
+      "category": "deck_composition_ui",
+      "status": "generated_and_integrated",
+      "image_generation_required": false,
+      "current_state": "5张透明PNG已生成、写入导入目录并登记 manifest；运行时文字继续由代码绘制，待实际界面视觉验收。",
+      "deliverables": [
+        "可伸缩品质行底框",
+        "通用/职业橙卡边框",
+        "选中与禁用状态"
+      ],
+      "acceptance": [
+        "透明 PNG",
+        "适配右侧技能名和简短效果布局"
+      ],
+      "queued_files": [
+        "deck_row_common_orange.png",
+        "deck_row_class_orange.png",
+        "deck_row_selected.png"
+      ],
+      "generated_files": [
+        "UI/Codex/deck_row_common_orange.png",
+        "UI/Codex/deck_row_class_orange.png",
+        "UI/Codex/deck_row_selected.png"
+      ]
+    },
+    {
+      "id": "DECK-UI-02",
+      "name": "编卡右侧空状态与容量提示装饰",
+      "priority": "P2",
+      "category": "deck_composition_ui",
+      "status": "generated_and_integrated",
+      "image_generation_required": false,
+      "current_state": "2张透明PNG已生成、写入导入目录并登记 manifest；容量与空状态文字继续由代码绘制，待实际界面视觉验收。",
+      "deliverables": [
+        "空卡组装饰",
+        "容量提示装饰"
+      ],
+      "acceptance": [
+        "透明 PNG",
+        "可伸缩或九宫格"
+      ],
+      "queued_files": [
+        "deck_empty_state.png",
+        "deck_capacity_badge.png"
+      ],
+      "generated_files": [
+        "UI/Codex/deck_empty_state.png",
+        "UI/Codex/deck_capacity_badge.png"
+      ]
+    },
     {
       "id": "MON-THORN-MITE",
       "name": "棘螨",
@@ -2536,6 +2590,86 @@
       },
       "generation_status": "generated_pending_identity",
       "original_missing_reason": "已有冰霜幽灵图片，但GDD十二种怪物和现有服务器物种ID均无对应项；不能自行当作浊螅、沼母或新增怪物绑定。"
+    },
+    {
+      "id": "BATTLE-UI-01",
+      "name": "战斗卡牌选中框",
+      "priority": "P1",
+      "category": "battle_ui",
+      "status": "generated_and_integrated",
+      "image_generation_required": false,
+      "current_state": "已生成透明选中框，边缘外发光，中间半透黑色遮罩并接入 card_view。",
+      "deliverables": [
+        "UI/Codex/card_selection_battle_glow.png"
+      ]
+    },
+    {
+      "id": "SEASON-UI-01",
+      "name": "赛季结算主展示面板",
+      "priority": "P2",
+      "category": "season_ui",
+      "status": "generated_and_integrated",
+      "image_generation_required": false,
+      "current_state": "透明PNG已生成、写入导入目录并登记 manifest；待实际界面视觉验收。",
+      "deliverables": [
+        "season_settlement_panel.png"
+      ],
+      "acceptance": [
+        "透明PNG",
+        "可九宫格伸缩",
+        "不含文字和固定数值"
+      ]
+    },
+    {
+      "id": "SEASON-UI-02",
+      "name": "远征奖励展示面板",
+      "priority": "P2",
+      "category": "season_ui",
+      "status": "generated_and_integrated",
+      "image_generation_required": false,
+      "current_state": "透明PNG已生成、写入导入目录并登记 manifest；奖励内容继续由运行时渲染，待实际界面视觉验收。",
+      "deliverables": [
+        "expedition_reward_panel.png"
+      ],
+      "acceptance": [
+        "透明PNG",
+        "可容纳魂石增幅、背包容量和基础卡奖励运行时内容"
+      ]
+    },
+    {
+      "id": "SEASON-UI-03",
+      "name": "保留数据展示面板",
+      "priority": "P2",
+      "category": "season_ui",
+      "status": "generated_and_integrated",
+      "image_generation_required": false,
+      "current_state": "透明PNG已生成、写入导入目录并登记 manifest；资源数量继续由运行时渲染，待实际界面视觉验收。",
+      "deliverables": [
+        "season_retain_data_panel.png"
+      ],
+      "acceptance": [
+        "透明PNG",
+        "可九宫格伸缩",
+        "不得烘焙资源数量"
+      ]
+    },
+    {
+      "id": "SEASON-UI-04",
+      "name": "远征清空确认警告框",
+      "priority": "P1",
+      "category": "season_ui",
+      "status": "generated_and_integrated",
+      "image_generation_required": false,
+      "current_state": "透明PNG已生成、写入导入目录并登记 manifest；正文与按钮继续由多语言运行时控件渲染，待实际界面视觉验收。",
+      "deliverables": [
+        "expedition_reset_warning_panel.png"
+      ],
+      "acceptance": [
+        "透明PNG",
+        "可九宫格伸缩",
+        "警告图标与边框可独立识别",
+        "正文由多语言表运行时渲染"
+      ]
     }
   ],
   "scene_work": [
@@ -2730,11 +2864,11 @@
         "gameplay_checks_passed": 78,
         "gameplay_screenshots": 34,
         "gameplay_report": "client/evidence/audio-fonts/gameplay-final/report.json",
-      "art_screenshots": 66,
-      "art_report": "client/evidence/audio-fonts/full-art-final/report.json",
-      "codex_screenshots": 7,
-      "codex_report": "client/evidence/audio-fonts/codex-final/report.json",
-      "invisible_text_line_checks": true
+        "art_screenshots": 66,
+        "art_report": "client/evidence/audio-fonts/full-art-final/report.json",
+        "codex_screenshots": 7,
+        "codex_report": "client/evidence/audio-fonts/codex-final/report.json",
+        "invisible_text_line_checks": true
       },
       "http_session_checks_passed": 9
     }
@@ -3050,6 +3184,134 @@
         "图鉴另检查960×540",
         "结合真实操作复核，不以离线截图总量代替最终验收"
       ]
+    }
+  ],
+  "required_ui_art_requests": [
+    {
+      "id": "UI-ART-01",
+      "name": "登录连接与会话状态组件",
+      "priority": "P1",
+      "category": "ui_material",
+      "status": "待制作",
+      "image_generation_required": true,
+      "current_state": "原由代码绘制，已提取为后续素材需求单，等待美术制作与接入"
+    },
+    {
+      "id": "UI-ART-02",
+      "name": "大厅入口状态徽章",
+      "priority": "P1",
+      "category": "ui_material",
+      "status": "待制作",
+      "image_generation_required": true,
+      "current_state": "原由代码绘制，已提取为后续素材需求单，等待美术制作与接入"
+    },
+    {
+      "id": "UI-ART-03",
+      "name": "图鉴与卡组状态覆盖层",
+      "priority": "P1",
+      "category": "ui_material",
+      "status": "待制作",
+      "image_generation_required": true,
+      "current_state": "原由代码绘制，已提取为后续素材需求单，等待美术制作与接入"
+    },
+    {
+      "id": "UI-ART-04",
+      "name": "卡牌详情结果提示组件",
+      "priority": "P1",
+      "category": "ui_material",
+      "status": "待制作",
+      "image_generation_required": true,
+      "current_state": "原由代码绘制，已提取为后续素材需求单，等待美术制作与接入"
+    },
+    {
+      "id": "UI-ART-05",
+      "name": "装备对比与强化状态组件",
+      "priority": "P1",
+      "category": "ui_material",
+      "status": "待制作",
+      "image_generation_required": true,
+      "current_state": "原由代码绘制，已提取为后续素材需求单，等待美术制作与接入"
+    },
+    {
+      "id": "UI-ART-06",
+      "name": "匹配队列状态组件",
+      "priority": "P1",
+      "category": "ui_material",
+      "status": "待制作",
+      "image_generation_required": true,
+      "current_state": "原由代码绘制，已提取为后续素材需求单，等待美术制作与接入"
+    },
+    {
+      "id": "UI-ART-07",
+      "name": "地图格与移动提示组件",
+      "priority": "P1",
+      "category": "ui_material",
+      "status": "待制作",
+      "image_generation_required": true,
+      "current_state": "原由代码绘制，已提取为后续素材需求单，等待美术制作与接入"
+    },
+    {
+      "id": "UI-ART-08",
+      "name": "战斗信息与反馈组件",
+      "priority": "P1",
+      "category": "ui_material",
+      "status": "待制作",
+      "image_generation_required": true,
+      "current_state": "原由代码绘制，已提取为后续素材需求单，等待美术制作与接入"
+    },
+    {
+      "id": "UI-ART-09",
+      "name": "遗物泉水撤离状态组件",
+      "priority": "P1",
+      "category": "ui_material",
+      "status": "待制作",
+      "image_generation_required": true,
+      "current_state": "原由代码绘制，已提取为后续素材需求单，等待美术制作与接入"
+    },
+    {
+      "id": "UI-ART-10",
+      "name": "背包格状态角标组件",
+      "priority": "P1",
+      "category": "ui_material",
+      "status": "待制作",
+      "image_generation_required": true,
+      "current_state": "原由代码绘制，已提取为后续素材需求单，等待美术制作与接入"
+    },
+    {
+      "id": "UI-ART-11",
+      "name": "商店市场交易状态组件",
+      "priority": "P1",
+      "category": "ui_material",
+      "status": "待制作",
+      "image_generation_required": true,
+      "current_state": "原由代码绘制，已提取为后续素材需求单，等待美术制作与接入"
+    },
+    {
+      "id": "UI-ART-12",
+      "name": "结算与风险提示组件",
+      "priority": "P1",
+      "category": "ui_material",
+      "status": "待制作",
+      "image_generation_required": true,
+      "current_state": "原由代码绘制，已提取为后续素材需求单，等待美术制作与接入"
+    },
+    {
+      "id": "UI-ART-13",
+      "name": "套装属性详情组件",
+      "priority": "P1",
+      "category": "ui_material",
+      "status": "待制作",
+      "image_generation_required": true,
+      "current_state": "原由代码绘制，已提取为后续素材需求单，等待美术制作与接入"
+    },
+    {
+      "id": "UI-ART-14",
+      "name": "全局控件状态皮肤",
+      "priority": "P1",
+      "category": "ui_material",
+      "status": "待制作",
+      "image_generation_required": true,
+      "current_state": "原由代码绘制，已提取为后续素材需求单，等待美术制作与接入"
     }
   ]
 }

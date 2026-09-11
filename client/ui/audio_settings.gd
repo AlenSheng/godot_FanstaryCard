@@ -1,6 +1,7 @@
 extends CanvasLayer
 
 const P = preload("res://ui/palette.gd")
+const I18n = preload("res://ui/i18n.gd")
 const Art = preload("res://ui/art.gd")
 var _toggle: Button
 var _popup: PopupPanel
@@ -21,7 +22,7 @@ func _ready() -> void:
 	_toggle.offset_top = -54
 	_toggle.offset_bottom = -8
 	_toggle.add_theme_font_size_override("font_size", 23)
-	_toggle.tooltip_text = "调整音效音量；F10 快捷静音"
+	_toggle.tooltip_text = I18n.t("调整音效音量；F10 快捷静音")
 	Art.button(_toggle, "UI/CardCodex/card_codex_action_button_blue.png")
 	_toggle.pressed.connect(show_settings)
 	overlay.add_child(_toggle)
@@ -29,7 +30,7 @@ func _ready() -> void:
 	_refresh()
 
 func _refresh() -> void:
-	_toggle.text = "音效 · 静音" if Sound.muted or Sound.volume <= 0 else "音效 · %s%%" % roundi(Sound.volume * 100)
+	_toggle.text = I18n.t("音效 · 静音" if Sound.muted or Sound.volume <= 0 else "音效 · %s%%" % roundi(Sound.volume * 100))
 
 func show_settings() -> void:
 	if is_instance_valid(_popup):
@@ -47,13 +48,13 @@ func show_settings() -> void:
 	column.custom_minimum_size = Vector2(590, 330)
 	_popup.add_child(column)
 	var title := Label.new()
-	title.text = "音效设置"
+	title.text = I18n.t("音效设置")
 	title.add_theme_font_override("font", P.font("title"))
 	title.add_theme_font_size_override("font_size", 34)
 	title.add_theme_color_override("font_color", P.GOLD)
 	column.add_child(title)
 	var value := Label.new()
-	value.text = "音效音量 %s%%" % roundi(Sound.volume * 100)
+	value.text = I18n.t("音效音量 %s%%" % roundi(Sound.volume * 100))
 	value.add_theme_font_override("font", P.font("number"))
 	column.add_child(value)
 	var slider := HSlider.new()
@@ -65,7 +66,7 @@ func show_settings() -> void:
 	slider.custom_minimum_size.y = 44
 	slider.value_changed.connect(func(level):
 		Sound.set_volume(float(level) / 100.0, false)
-		value.text = "音效音量 %s%%" % roundi(level)
+		value.text = I18n.t("音效音量 %s%%" % roundi(level))
 	)
 	slider.drag_ended.connect(func(changed):
 		if changed:
@@ -76,17 +77,17 @@ func show_settings() -> void:
 	var mute := CheckButton.new()
 	_mute_button = mute
 	mute.name = "SoundMute"
-	mute.text = "静音"
+	mute.text = I18n.t("静音")
 	mute.button_pressed = Sound.muted
 	mute.toggled.connect(Sound.set_muted)
 	column.add_child(mute)
 	var sample := Button.new()
-	sample.text = "试听 · 黄铜与纸牌"
+	sample.text = I18n.t("试听 · 黄铜与纸牌")
 	sample.set_meta("sound_cue", "card_play")
 	Art.button(sample, "UI/CardCodex/card_codex_action_button_blue.png")
 	column.add_child(sample)
 	var back := Button.new()
-	back.text = "返回"
+	back.text = I18n.t("返回")
 	Art.button(back, "UI/CardCodex/card_codex_action_button_blue.png")
 	back.pressed.connect(_popup.hide)
 	column.add_child(back)

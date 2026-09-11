@@ -66,3 +66,12 @@ target.write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding="ut
 descriptions = json.loads((ROOT / "config/card_descriptions.json").read_text(encoding="utf-8"))
 (ROOT / "client/data/card_descriptions.json").write_text(json.dumps(descriptions, ensure_ascii=False), encoding="utf-8")
 print({name: len(rows) for name, rows in output["tables"].items()})
+
+
+ui_text = ROOT / "config/ui_text.json"
+if ui_text.exists():
+    (ROOT / "client/data/ui_text.json").write_text(ui_text.read_text(encoding="utf-8"), encoding="utf-8")
+for season_file in ["season_templates.json", "season_transition_rules.json"]:
+    source = ROOT / "config" / season_file
+    if source.exists():
+        (ROOT / "client/data" / season_file).write_text(source.read_text(encoding="utf-8"), encoding="utf-8")

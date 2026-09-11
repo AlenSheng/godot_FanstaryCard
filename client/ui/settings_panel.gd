@@ -1,0 +1,114 @@
+extends CanvasLayer
+
+const P = preload("res://ui/palette.gd")
+const Art = preload("res://ui/art.gd")
+var _popup: PopupPanel
+var _language: OptionButton
+
+func _ready() -> void:
+	layer = 30
+	var overlay := Control.new()
+	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	overlay.theme = P.theme()
+	add_child(overlay)
+	var toggle := Button.new()
+	toggle.name = "SettingsButton"
+	toggle.text = I18n.t("设置")
+	toggle.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	toggle.offset_left = -250
+	toggle.offset_right = -48
+	toggle.offset_top = 22
+	toggle.offset_bottom = 78
+	toggle.mouse_filter = Control.MOUSE_FILTER_STOP
+	Art.button(toggle, "UI/CardCodex/card_codex_action_button_blue.png")
+	toggle.pressed.connect(show_settings)
+	overlay.add_child(toggle)
+	I18n.language_changed.connect(func(_locale): toggle.text = I18n.t("设置"))
+
+func show_settings() -> void:
+	if is_instance_valid(_popup):
+		_popup.popup_centered()
+		return
+	_popup = PopupPanel.new()
+	_popup.name = "SettingsPopup"
+	_popup.theme = P.theme()
+	_popup.add_theme_stylebox_override("panel", P.box(P.INK, P.GOLD))
+	add_child(_popup)
+	var column := VBoxContainer.new()
+	column.custom_minimum_size = Vector2(590, 450)
+	_popup.add_child(column)
+	var title := Label.new()
+	title.name = "SettingsTitle"
+	title.text = I18n.t("设置")
+	title.add_theme_font_override("font", P.font("title"))
+	title.add_theme_font_size_override("font_size", 36)
+	title.add_theme_color_override("font_color", P.GOLD)
+	column.add_child(title)
+	var language_label := Label.new()
+	language_label.text = I18n.t("语言")
+	column.add_child(language_label)
+	_language = OptionButton.new()
+	_language.name = "LanguageSelector"
+	for key in ["zh", "en"]: _language.add_item(I18n.locale_name(key), _language.item_count)
+	_language.selected = 0 if I18n.locale == "zh" else 1
+	_language.item_selected.connect(func(index):
+		I18n.set_language("zh" if index == 0 else "en")
+		_refresh_text(column)
+	)
+	column.add_child(_language)
+	var audio_title := Label.new()
+	audio_title.name = "AudioTitle"
+	audio_title.text = I18n.t("音量")
+	column.add_child(audio_title)
+	var slider := HSlider.new()
+	slider.name = "Volume"
+	slider.min_value = 0
+	slider.max_value = 100
+	slider.step = 1
+	slider.value = roundi(Sound.volume * 100)
+	slider.value_changed.connect(func(level): Sound.set_volume(float(level) / 100.0, false))
+	column.add_child(slider)
+	var mute := CheckButton.new()
+	mute.name = "Mute"
+	mute.text = I18n.t("静音")
+	mute.button_pressed = Sound.muted
+	mute.toggled.connect(Sound.set_muted)
+	column.add_child(mute)
+	var logout := Button.new()
+	logout.name = "Logout"
+	logout.text = I18n.t("退出登录")
+	Art.button(logout, "UI/CardCodex/card_codex_action_button_orange.png")
+	logout.pressed.connect(_logout)
+	column.add_child(logout)
+	var close := Button.new()
+	close.name = "Close"
+	close.text = I18n.t("返回")
+	Art.button(close, "UI/CardCodex/card_codex_action_button_blue.png")
+	close.pressed.connect(_popup.hide)
+	column.add_child(close)
+	_popup.popup_hide.connect(func():
+		Sound.save_settings()
+		_popup.queue_free()
+	)
+	_popup.popup_centered()
+
+func _refresh_text(column: VBoxContainer) -> void:
+	for child in column.get_children():
+		if child.name == "AudioTitle": child.text = I18n.t("音量")
+		elif child.name == "Mute": child.text = I18n.t("静音")
+		elif child.name == "Logout": child.text = I18n.t("退出登录")
+		elif child.name == "Close": child.text = I18n.t("返回")
+		elif child.name == "SettingsTitle": child.text = I18n.t("设置")
+
+func _logout() -> void:
+	var confirm := ConfirmationDialog.new()
+	confirm.dialog_text = I18n.t("确认退出登录？")
+	confirm.ok_button_text = I18n.t("确认")
+	confirm.cancel_button_text = I18n.t("取消")
+	confirm.confirmed.connect(func():
+		if is_instance_valid(_popup): _popup.hide()
+		Game.logout()
+	)
+	add_child(confirm)
+	confirm.popup_centered()

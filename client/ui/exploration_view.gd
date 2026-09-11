@@ -2,6 +2,7 @@ extends RefCounted
 
 const Art = preload("res://ui/art.gd")
 const P = preload("res://ui/palette.gd")
+const I18n = preload("res://ui/i18n.gd")
 const BoundedBar = preload("res://ui/bounded_bar.gd")
 const InventoryView = preload("res://ui/inventory_view.gd")
 const Details = preload("res://ui/equipment_details.gd")
@@ -73,7 +74,7 @@ static func _passive(ui: Control, hero_class: String, rect: Rect2) -> void:
 	var frame: Control = ui.panel(rect)
 	frame.name = "PlayerPassive_" + hero_class
 	frame.mouse_filter = Control.MOUSE_FILTER_PASS
-	frame.tooltip_text = "本命 · %s\n%s" % [names[hero_class], BattleDetails.description(status) if not status.is_empty() else descriptions[hero_class]]
+	frame.tooltip_text = I18n.t("本命 · %s\n%s" % [names[hero_class], BattleDetails.description(status) if not status.is_empty() else descriptions[hero_class]])
 	var icon: TextureRect = _picture(ui, Art.passive(hero_class), Rect2(rect.position + Vector2(12, 9), Vector2(66, rect.size.y - 18)))
 	icon.name = "PlayerPassiveIcon_" + hero_class
 	ui.text("本命 · " + names[hero_class], Rect2(rect.position + Vector2(89, 8), Vector2(rect.size.x - 100, 36)), 25, P.GOLD)
@@ -153,9 +154,6 @@ static func _preview(ui: Control) -> void:
 	var area := Rect2(460, 572, 1380, 47)
 	var panel: Control = ui.panel(area)
 	panel.name = "CombatPreview"
-	if preview.is_empty():
-		ui.text("正在计算所选牌效果…", Rect2(479, 578, 1000, 33), 22, P.MUTED)
-		return
 	var x := 478.0
 	var core: String = preview.get("core_element", "")
 	var headline := "预览" + (" · %s核×%s" % [P.word(core), preview.get("core_count", 0)] if not core.is_empty() else "")
@@ -384,7 +382,7 @@ static func show_midlayer(ui: Control, host: Control, row: int, column: int) -> 
 	overlay.add_child(frame)
 	for entry in [["进入中层", 54, 285], ["进入后不能退回外层", 30, 433], ["随机撤离点不会显示在小地图", 30, 526], ["源泉常亮，可规划绕路回血", 30, 619]]:
 		var label := Label.new()
-		label.text = entry[0]
+		label.text = I18n.t(entry[0])
 		label.add_theme_font_override("font", P.font_for_text(entry[0], entry[1]))
 		label.position = Vector2(583, entry[2])
 		label.size = Vector2(754, 76)
@@ -393,7 +391,7 @@ static func show_midlayer(ui: Control, host: Control, row: int, column: int) -> 
 		_center(label)
 		overlay.add_child(label)
 	var confirm := Button.new()
-	confirm.text = "确认进入"
+	confirm.text = I18n.t("确认进入")
 	confirm.position = Vector2(735, 758)
 	confirm.size = Vector2(450, 87)
 	confirm.add_theme_font_size_override("font_size", 35)
@@ -405,7 +403,7 @@ static func show_midlayer(ui: Control, host: Control, row: int, column: int) -> 
 		Game.command("room.move", {"row": row, "column": column}))
 	overlay.add_child(confirm)
 	var cancel := Button.new()
-	cancel.text = "暂不进入"
+	cancel.text = I18n.t("暂不进入")
 	cancel.position = Vector2(750, 861)
 	cancel.size = Vector2(420, 60)
 	Art.button(cancel, "UI/CardCodex/card_codex_action_button_blue.png")

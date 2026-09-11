@@ -1,6 +1,7 @@
 extends RefCounted
 
 const P = preload("res://ui/palette.gd")
+const I18n = preload("res://ui/i18n.gd")
 const Art = preload("res://ui/art.gd")
 const Details = preload("res://ui/equipment_details.gd")
 const Slot = preload("res://ui/inventory_slot.gd")
@@ -36,11 +37,11 @@ static func build(ui: Control, host: Control, state: Dictionary) -> void:
 		slot.item_id = item.get("item_id", "")
 		slot.position = Vector2(992 + (index % 6) * 136, 283 + int(index / 6) * 99)
 		slot.size = Vector2(126, 90)
-		slot.text = ("安全 " if index in safe_slots else "") + str(index + 1)
+		slot.text = I18n.t(("安全 " if index in safe_slots else "") + str(index + 1))
 		if not item.is_empty(): slot.text += "\n" + Details.title(item) + "\n×%s" % item.get("quantity", 1)
 		slot.add_theme_font_size_override("font_size", 16)
 		slot.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		slot.tooltip_text = Details.description(item) if not item.is_empty() else "空格"
+		slot.tooltip_text = I18n.t(Details.description(item) if not item.is_empty() else "空格")
 		Art.button(slot, CELL)
 		if index in safe_slots: slot.add_theme_color_override("font_color", P.GOLD)
 		if item.get("item_id", "") == selected.get("item_id", "unused"):
@@ -67,7 +68,7 @@ static func _equipment(ui: Control, host: Control, player: Dictionary, selected:
 			if candidate.get("equipment", {}).get("slot", "") == slot: item = candidate; break
 		var button: Button = ui.button(P.word(slot) + " · " + (Details.title(item) if not item.is_empty() else "未穿戴"), Rect2(112, 235 + index * 69, 586, 60), func(): host._confirm("卸下这件防具并放入背包？", func(): Game.command("inventory.unequip", {"slot": slot})), item.is_empty() or not Game.allowed("inventory.unequip"))
 		button.add_theme_font_size_override("font_size", 24)
-		button.tooltip_text = Details.description(item) if not item.is_empty() else "未穿戴"
+		button.tooltip_text = I18n.t(Details.description(item) if not item.is_empty() else "未穿戴")
 	ui.text("本命武器 +%s · 锁定，不掉落" % player.get("weapon_level", 0), Rect2(118, 598, 740, 44), 27, P.TEAL)
 	if selected.is_empty():
 		ui.text("选择包中物品查看详情。\n点击已穿防具可以卸下。", Rect2(118, 670, 736, 102), 27, P.PAPER)
@@ -98,7 +99,7 @@ static func _relic(ui: Control, host: Control, state: Dictionary, pile_id: Strin
 	scroll.add_child(column)
 	for item in pile.get("items", []):
 		var button := Button.new()
-		button.text = Details.title(item) + " ×%s" % item.get("quantity", 1)
+		button.text = I18n.t(Details.title(item) + " ×%s" % item.get("quantity", 1))
 		button.tooltip_text = Details.description(item)
 		button.custom_minimum_size.y = 63
 		button.add_theme_font_size_override("font_size", 25)

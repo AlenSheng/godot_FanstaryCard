@@ -11,12 +11,16 @@ public static class ProgressionEndpoints
     public static IServiceCollection AddProgressionModule(this IServiceCollection services)
     {
         services.AddSingleton<ProgressionRepository>();
+        services.AddSingleton<MailRepository>();
         return services;
     }
 
     public static IEndpointRouteBuilder MapProgressionEndpoints(this IEndpointRouteBuilder endpoints)
     {
         var cards = endpoints.MapGroup("/api/v1/cards").WithTags("Progression");
+        var mail = endpoints.MapGroup("/api/v1/mail").WithTags("Mail");
+        mail.MapGet("/", ListMailAsync).Produces<IReadOnlyList<object>>().ProducesProblem(401);
+        mail.MapPost("/{mailId:guid}/claim", ClaimMailAsync).RequireRateLimiting(RequestLimitOptions.WritePolicy).ProducesProblem(401).ProducesProblem(404);
         cards.MapGet("/", GetCardsAsync).Produces<IReadOnlyList<CardResponse>>().ProducesProblem(401);
         cards.MapPost("/{cardId}/craft", CraftCardAsync)
             .RequireRateLimiting(RequestLimitOptions.WritePolicy)
@@ -119,6 +123,11 @@ public static class ProgressionEndpoints
             return Problem(context, 409, "Card operation rejected", exception.Message);
         }
     }
+
+    private static async Task<IResult> ListMailAsync(HttpContext context, IdentityService identityService, MailRepository repository, CancellationToken ct)
+    { var player = await context.AuthenticatePlayerAsync(identityService, ct); return player is null ? context.UnauthorizedProblem() : Results.Ok(await repository.ListAsync(player.UserId, ct)); }
+    private static async Task<IResult> ClaimMailAsync(Guid mailId, HttpContext context, IdentityService identityService, MailRepository repository, CancellationToken ct)
+    { var player = await context.AuthenticatePlayerAsync(identityService, ct); if (player is null) return context.UnauthorizedProblem(); return await repository.ClaimAsync(player.UserId, mailId, ct) ? Results.Ok() : Results.NotFound(); }
 
     private static async Task<IResult> GetInventoryAsync(
         HttpContext context,

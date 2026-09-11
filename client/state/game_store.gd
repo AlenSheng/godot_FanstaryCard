@@ -8,6 +8,7 @@ signal authentication_required(reason: String)
 
 const Gateway = preload("res://network/gateway.gd")
 const PlatformService = preload("res://platform/platform_service.gd")
+const CardDetails = preload("res://ui/card_details.gd")
 const CATALOG = preload("res://data/catalog.json")
 var gateway: Node
 var platform: Node
@@ -26,6 +27,8 @@ var ready_prompt: Dictionary = {}
 var settlement: Dictionary = {}
 var hero_class := "Mage"
 var selected_cards: Array = []
+var mail: Array = []
+var mail_unread := 0
 var busy := false
 var connection := "未连接"
 var _settlement_loading := ""
@@ -37,10 +40,6 @@ var _sound_seen: Dictionary = {}
 var _sound_terminal_rooms: Dictionary = {}
 
 func _process(_delta: float) -> void:
-	if not combat_preview.is_empty() and Time.get_ticks_msec() >= _preview_deadline:
-		combat_preview = {}
-		_preview_request = {}
-		changed.emit()
 	if not _queued_command.is_empty() and Time.get_ticks_msec() > _queue_deadline:
 		_queued_command = {}
 		notice.emit("操作未发出，请在连接恢复后重试")
@@ -73,6 +72,8 @@ func _clear_authenticated_state() -> void:
 	settlement = {}
 	hero_class = "Mage"
 	selected_cards = []
+	mail = []
+	mail_unread = 0
 	relic_details = {}
 	clear_combat_preview()
 	_queued_command = {}
@@ -178,6 +179,12 @@ func refresh_lobby() -> void:
 	if not result.ok: return
 	if not result.data is Dictionary or not validate_config(str(result.data.get("configVersion", "")), "大厅"): return
 	lobby = result.data
+	var mail_result: Dictionary = await gateway.request("/api/v1/mail")
+	if mail_result.ok and mail_result.data is Array:
+		mail = mail_result.data
+		mail_unread = 0
+		for item in mail:
+			if not bool(item.get("isRead", false)): mail_unread += 1
 	if lobby.player.get("selectedClass") != null: hero_class = lobby.player.selectedClass
 	if lobby.get("unfinishedMatch") != null:
 		gateway.room_id = lobby.unfinishedMatch.roomId
@@ -292,8 +299,7 @@ func toggle_card(instance_id: String) -> void:
 	if instance_id in selected_cards: selected_cards.erase(instance_id)
 	else: selected_cards.append(instance_id)
 	sound_requested.emit("card_select")
-	clear_combat_preview()
-	request_combat_preview(selected_cards)
+	_update_local_combat_preview()
 	changed.emit()
 
 func clear_combat_preview() -> void:
@@ -306,42 +312,72 @@ func _preview_context(ids: Array) -> Dictionary:
 	return {"room_id": room.get("room_id", ""), "battle_id": battle.get("duel_id", battle.get("battle_id", "")), "target_id": battle.get("opponent_id", battle.get("current_target_id", "")), "card_instance_ids": ids.duplicate()}
 
 func request_combat_preview(ids: Array) -> void:
-	if not gateway.EVENTS.has("combat.previewed"): return
-	if ids.is_empty() or not allowed("battle.play_cards"):
-		clear_combat_preview()
-		return
-	var context := _preview_context(ids)
-	if not _intent_valid("battle.play_cards", context):
-		clear_combat_preview()
-		return
-	if _preview_request.get("context") == context and Time.get_ticks_msec() < _preview_deadline: return
-	clear_combat_preview()
-	var request_id: String = gateway.new_id()
-	if gateway.send("room.snapshot.read"):
-		_preview_request = {"request_id": request_id, "context": context, "revision": -1, "awaiting_snapshot": true}
-		_preview_deadline = Time.get_ticks_msec() + 1000
+	selected_cards = ids.duplicate()
+	_update_local_combat_preview()
 
 func _dispatch_combat_preview() -> void:
-	if _preview_request.is_empty() or not _preview_request.get("awaiting_snapshot", false): return
-	if Time.get_ticks_msec() >= _preview_deadline or not allowed("battle.play_cards"):
-		clear_combat_preview()
-		return
-	var context: Dictionary = _preview_request.context
-	if context != _preview_context(selected_cards):
-		clear_combat_preview()
-		return
-	_preview_request.revision = gateway.room_revision
-	_preview_request.awaiting_snapshot = false
-	if not gateway.send("combat.preview", {"battle_id": context.battle_id, "target_id": context.target_id, "card_instance_ids": context.card_instance_ids}, _preview_request.request_id): clear_combat_preview()
+	_update_local_combat_preview()
 
 func _accept_combat_preview(payload: Dictionary) -> void:
-	if _preview_request.is_empty() or payload.get("_request_id", "") != _preview_request.request_id: return
-	if Time.get_ticks_msec() >= _preview_deadline or _preview_request.context != _preview_context(selected_cards): return
-	if not allowed("battle.play_cards"): return
-	var revision: int = int(payload.get("_room_revision", -1))
-	if revision < int(_preview_request.revision) or revision < int(room.get("room_revision", 0)): return
-	combat_preview = payload.duplicate(true)
-	combat_preview["source_revision"] = revision
+	# Preview responses are no longer authoritative. The local estimate stays
+	# stable while selecting; the server validates the command on execution.
+	return
+
+func _update_local_combat_preview() -> void:
+	if selected_cards.is_empty():
+		clear_combat_preview()
+		return
+	var cards_by_id: Dictionary = {}
+	for card in CATALOG.data.tables.get("Cards", []): cards_by_id[str(card.get("id", ""))] = card
+	var segments: Dictionary = {}
+	var total_damage := 0
+	var total_heal := 0
+	var total_shield := 0
+	var total_stun := 0.0
+	var total_draw_block := 0.0
+	var total_health_cost := 0
+	var total_immediate_draw := 0
+	var total_draw_charge := 0.0
+	var total_draw_speed_modifier := 0.0
+	var total_draw_speed_seconds := 0.0
+	var core_counts: Dictionary = {}
+	for instance_id in selected_cards:
+		var instance: Dictionary = {}
+		for candidate in room.get("player", {}).get("hand", []):
+			if str(candidate.get("instance_id", "")) == str(instance_id): instance = candidate; break
+		var base: Dictionary = cards_by_id.get(str(instance.get("card_id", "")), {})
+		if base.is_empty(): continue
+		var effect := CardDetails.at_level(CardDetails.with_element(base, str(instance.get("element_override", ""))), int(instance.get("level", 0)))
+		var element := str(effect.get("element", "None"))
+		var elemental := int(effect.get("elemental_damage", 0))
+		if elemental > 0:
+			segments[element] = int(segments.get(element, 0)) + elemental
+			core_counts[element] = int(core_counts.get(element, 0)) + 1
+		var secondary := int(effect.get("secondary_elemental_damage", 0))
+		var secondary_element := str(effect.get("secondary_element", "None"))
+		if secondary > 0 and not secondary_element.is_empty(): segments[secondary_element] = int(segments.get(secondary_element, 0)) + secondary
+		var direct := int(effect.get("direct_damage", 0))
+		if direct > 0: segments["Direct"] = int(segments.get("Direct", 0)) + direct
+		total_damage += elemental + secondary + direct
+		total_heal += int(effect.get("heal", 0))
+		total_shield += int(effect.get("shield", 0))
+		total_stun += float(effect.get("stun_seconds", 0))
+		total_draw_block += float(effect.get("draw_block_seconds", 0))
+		total_health_cost += int(effect.get("health_cost", 0))
+		total_immediate_draw += int(effect.get("immediate_draw", 0))
+		total_draw_charge += float(effect.get("draw_charge", 0))
+		total_draw_speed_modifier += float(effect.get("draw_speed_modifier", 0))
+		total_draw_speed_seconds += float(effect.get("draw_speed_seconds", 0))
+	var damage_segments: Array = []
+	for kind in ["Fire", "Wood", "Earth", "Metal", "Water", "Direct"]:
+		if int(segments.get(kind, 0)) > 0: damage_segments.append({"kind": kind, "amount": int(segments[kind])})
+	var core_element := ""
+	var core_count := 0
+	for kind in core_counts:
+		if int(core_counts[kind]) > core_count:
+			core_element = str(kind)
+			core_count = int(core_counts[kind])
+	combat_preview = {"damage": total_damage, "damage_segments": damage_segments, "core_element": core_element, "core_count": core_count, "heal": total_heal, "shield_gain": total_shield, "stun_seconds": total_stun, "draw_block_seconds": total_draw_block, "health_cost": total_health_cost, "immediate_draw": total_immediate_draw, "draw_charge": total_draw_charge, "draw_speed_modifier": total_draw_speed_modifier, "draw_speed_seconds": total_draw_speed_seconds, "shield_damage": 0, "hp_damage": total_damage}
 
 func play_cards() -> void:
 	if selected_cards.is_empty(): return
@@ -477,10 +513,7 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 			_sound_snapshot(payload, payload)
 			var hand: Array = room.get("player", {}).get("hand", []).map(func(card): return card.instance_id)
 			selected_cards = selected_cards.filter(func(id): return id in hand)
-			if not combat_preview.is_empty() and int(room.get("room_revision", 0)) > int(combat_preview.get("source_revision", -1)): clear_combat_preview()
-			if not _preview_request.is_empty() and _preview_request.context != _preview_context(selected_cards): clear_combat_preview()
-			if _preview_request.get("awaiting_snapshot", false): _dispatch_combat_preview()
-			elif not selected_cards.is_empty(): request_combat_preview(selected_cards)
+			_update_local_combat_preview()
 			ready_prompt = {}
 			if not _queued_command.is_empty():
 				var queued: Dictionary = _queued_command

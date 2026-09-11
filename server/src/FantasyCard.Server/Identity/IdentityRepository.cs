@@ -76,6 +76,7 @@ public sealed class IdentityRepository(
             connection,
             transaction,
             profile.UserId,
+            profile.DisplayName,
             now,
             cancellationToken);
 

@@ -20,6 +20,9 @@ static func portrait(hero_class: String) -> Texture2D:
 static func passive(hero_class: String) -> Texture2D:
 	return texture(MANIFEST.data.get("passives", {}).get(hero_class, ""))
 
+static func weapon_frame(hero_class: String) -> Texture2D:
+	return texture("UI/Prep/class_weapon_frame_%s.png" % hero_class.to_lower())
+
 static func product(kind: String) -> Texture2D:
 	return texture(MANIFEST.data.get("products", {}).get(kind, ""))
 
@@ -42,7 +45,17 @@ static func style(key: String, tint: Color = Color.WHITE) -> StyleBoxTexture:
 	box.texture = texture(key)
 	box.modulate_color = tint
 	var borders: Array = MANIFEST.data.files.get(key, {}).get("border_lbrt", [12, 12, 12, 12])
-	# Source manifests use Unity's left/bottom/right/top order.
+	# Zero-border legacy exports are not valid nine-patches. Preserve the
+	# decorated ends of title bars, and keep corners fixed on other UI frames.
+	if key.contains("title_bar"):
+		borders = [64, 20, 64, 20]
+	elif borders.all(func(value): return float(value) == 0.0) and box.texture != null:
+		var inset := minf(24.0, minf(box.texture.get_width(), box.texture.get_height()) / 3.0)
+		borders = [inset, inset, inset, inset]
+	box.axis_stretch_horizontal = StyleBoxTexture.AXIS_STRETCH_MODE_TILE_FIT
+	box.axis_stretch_vertical = StyleBoxTexture.AXIS_STRETCH_MODE_TILE_FIT
+	# Source manifests use Unity's left/bottom/right/top order. Every resizable
+	# frame is rendered as a nine-patch; the center never scales the ornament.
 	for pair in [[SIDE_LEFT, 0], [SIDE_BOTTOM, 1], [SIDE_RIGHT, 2], [SIDE_TOP, 3]]:
 		box.set_texture_margin(pair[0], float(borders[pair[1]]))
 	for side in [SIDE_LEFT, SIDE_RIGHT]: box.set_content_margin(side, 24)

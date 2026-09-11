@@ -175,3 +175,6 @@ RoomActor 每 tick 调 `BotDirector.Decide`，只执行返回的意图：
 - [ ] 机器人 PVE 只模拟计时扣血；对真人走中等 1v1；无真人对局结束。
 - [ ] 断线 15 秒重连成功；超时走死亡且结算幂等。
 - [ ] 进格豁免时序与 GDD 5.5 表一致（不改行为）。
+### 邮件接口
+
+`player_mail` 保存玩家邮件、JSON 附件、已读与领取时间及过期时间。`GET /api/v1/mail` 过滤过期邮件；`POST /api/v1/mail/{mailId}/claim` 以 `claimed_at IS NULL` 保证幂等领取。奖励发放必须与领取状态在同一事务完成。

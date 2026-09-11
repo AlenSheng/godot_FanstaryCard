@@ -2,6 +2,7 @@ extends RefCounted
 
 const Art = preload("res://ui/art.gd")
 const P = preload("res://ui/palette.gd")
+const I18n = preload("res://ui/i18n.gd")
 const DragScroll = preload("res://ui/drag_scroll.gd")
 const PREFIX := "UI/CardCodex/card_codex_"
 const SOULS := ["PriestSoul", "MageSoul", "GuardianSoul", "WarriorSoul"]
@@ -10,7 +11,7 @@ const SOUL_NAMES := {"PriestSoul": "牧魂", "MageSoul": "法魂", "GuardianSoul
 static func header(ui: Control, host: Control) -> void:
 	ui.panel(Rect2(20, 18, 1880, 82), PREFIX + "title_bar_normal.png")
 	ui.button("返回", Rect2(56, 30, 136, 58), host._navigate.bind("hall"), Game.busy).name = "ReturnButton"
-	ui.text("卡牌图鉴", Rect2(232, 30, 430, 60), 36, P.GOLD)
+	ui.text("卡组编成" if host.edit_mode else "卡牌图鉴", Rect2(232, 30, 430, 60), 36, P.GOLD)
 	for i in range(SOULS.size()):
 		var kind: String = SOULS[i]
 		var x := 1010 + i * 218
@@ -23,7 +24,7 @@ static func header(ui: Control, host: Control) -> void:
 static func build(ui: Control, host: Control) -> void:
 	var search := LineEdit.new()
 	search.name = "CodexSearch"
-	search.placeholder_text = "搜索卡牌名称或效果"
+	search.placeholder_text = I18n.t("搜索卡牌名称或效果")
 	search.text = host._search
 	var search_style := Art.style(PREFIX + "search_field_normal.png")
 	search_style.set_content_margin(SIDE_LEFT, 76)
@@ -32,32 +33,31 @@ static func build(ui: Control, host: Control) -> void:
 	search.add_theme_constant_override("minimum_character_width", 1)
 	ui.add_child(search)
 	search.position = Vector2(48, 130)
-	search.size = Vector2(625, 66)
-	ui.button("完成编组" if host.edit_mode else "编辑编组", Rect2(718, 134, 216, 58), func(): host.edit_mode = not host.edit_mode; host._codex_scroll = 0; host._render(), Game.busy).name = "ToggleDeck"
-	ui.text("品质：", Rect2(997, 143, 85, 42), 22, P.GOLD)
+	search.size = Vector2(505 if host.edit_mode else 625, 66)
+	ui.text("品质：", Rect2(577 if host.edit_mode else 997, 143, 85, 42), 22, P.GOLD)
 	var qualities := ["", "White", "Green", "Blue", "Purple", "Orange"]
 	for i in range(qualities.size()):
 		var quality: String = qualities[i]
 		var selected: bool = host._quality == quality
 		var key := "filter_button_selected.png" if quality.is_empty() else "filter_button_%s%s.png" % [quality.to_lower(), "_selected" if selected else ""]
-		var filter: Button = ui.button("全部" if quality.is_empty() else P.word(quality), Rect2(1090 + i * 132, 132, 116, 62), func(): host._quality = quality; host._codex_scroll = 0; host._render(), false, PREFIX + key)
+		var filter: Button = ui.button("全部" if quality.is_empty() else P.word(quality), Rect2((666 + i * 94) if host.edit_mode else (1090 + i * 132), 132, 82 if host.edit_mode else 116, 62), func(): host._quality = quality; host._codex_scroll = 0; host._render(), false, PREFIX + key)
 		filter.name = "Filter_" + ("All" if quality.is_empty() else quality)
 	var count: Label = ui.text("", Rect2(48, 208, 1050, 35), 20, P.MUTED)
 	count.name = "CollectionCount"
-	var scroll := _scroll(ui, Rect2(42, 257, 1342 if host.edit_mode else 1840, 758))
+	var scroll := _scroll(ui, Rect2(42, 257, 1200 if host.edit_mode else 1840, 758))
 	scroll.name = "CodexScroll"
 	scroll.interaction_enabled = host._codex_card.is_empty()
 	var grid := GridContainer.new()
 	grid.name = "CardGrid"
-	grid.columns = 5 if host.edit_mode else 8
-	grid.add_theme_constant_override("h_separation", 42 if host.edit_mode else 47)
+	grid.columns = 4 if host.edit_mode else 8
+	grid.add_theme_constant_override("h_separation", 66 if host.edit_mode else 47)
 	grid.add_theme_constant_override("v_separation", 42)
 	scroll.add_child(grid)
 	_fill_grid(host, grid, scroll, count)
 	scroll.set_deferred("scroll_vertical", host._codex_scroll)
 	scroll.get_v_scroll_bar().value_changed.connect(func(value): host._codex_scroll = int(value))
 	search.text_changed.connect(func(value): host._search = value.strip_edges(); host._codex_scroll = 0; scroll.scroll_vertical = 0; _fill_grid(host, grid, scroll, count))
-	ui.text("点击卡牌查看详情 · 按住拖拽或使用滚轮浏览", Rect2(480, 1037, 850, 30), 18, P.MUTED).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	ui.text("点击左侧加入 · 点击右侧移除 · 悬停查看完整效果" if host.edit_mode else "点击卡牌查看详情与解锁 · 按住拖拽或使用滚轮浏览", Rect2(480, 1037, 850, 30), 18, P.MUTED).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	if host.edit_mode: _deck(ui, host)
 	if not host._codex_card.is_empty(): _details(ui, host)
 
@@ -76,27 +76,49 @@ static func _fill_grid(host: Control, grid: GridContainer, scroll: ScrollContain
 		var owned: Dictionary = host._owned_card(id)
 		var copies := int(owned.get("copyCount", 0)) if owned.get("unlocked", false) else 0
 		if copies > 0: collected += 1
+		if host.edit_mode and copies == 0: continue
 		if not host._quality.is_empty() and info.get("quality") != host._quality: continue
 		if not host._search.is_empty() and not host._search.to_lower() in (id + " " + host._card_text(id)).to_lower(): continue
 		var slot := Control.new()
 		slot.custom_minimum_size = Vector2(side, side * 376.0 / 218.0)
 		slot.mouse_filter = Control.MOUSE_FILTER_PASS
 		grid.add_child(slot)
+		var reason := _add_reason(host, id, info, copies) if host.edit_mode else ""
 		var node: Button = host._card_button(slot, id, func():
-			if scroll.can_activate():
+			if not scroll.can_activate(): return
+			if host.edit_mode:
+				if Game.busy or not _add_reason(host, id, info, copies).is_empty(): return
+				host.deck_draft.append(id)
+			else:
 				host._codex_card = id
-				host._render(), false, false, {"collection": true, "copy_count": copies})
+			host._render(), false, host.edit_mode and (Game.busy or not host._codex_ready or not reason.is_empty()), {"collection": true, "copy_count": copies, "level": int(owned.get("level", 0))})
 		node.name = "Card_" + id
 		node.size = Vector2(218, 376)
 		node.scale = Vector2.ONE * side / 218.0
-		node.tooltip_text += "\n持有 %s · %s" % [copies, "点击分解 / 编组" if copies > 0 else "点击合成"]
+		if host.edit_mode:
+			node.tooltip_text += "\n已编入 %s / 持有 %s · %s" % [host.deck_draft.count(id), copies, "点击加入卡组" if reason.is_empty() else reason]
+			if not reason.is_empty():
+				var hint := Label.new()
+				hint.name = "DeckRestriction"
+				hint.text = reason
+				hint.position = Vector2(14, 230)
+				hint.size = Vector2(190, 54)
+				hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+				hint.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+				hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+				hint.add_theme_font_size_override("font_size", 17)
+				hint.add_theme_stylebox_override("normal", P.box(Color("172d35"), P.GOLD, 1))
+				hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
+				node.add_child(hint)
+		else:
+			node.tooltip_text += "\n持有 %s · %s" % [copies, "点击查看养成详情" if copies > 0 else "点击解锁 / 合成"]
 		shown += 1
-	count.text = "已收集 %s / %s" % [collected, total]
+	count.text = I18n.t(("已拥有卡池 %s 种 · 当前职业：%s" % [collected, P.word(Game.hero_class)]) if host.edit_mode else ("已收集 %s / %s" % [collected, total]))
 	if shown != total: count.text += "    筛选结果 %s 张" % shown
 	if not host._codex_ready: count.text += "    持有数据未就绪，请重新进入图鉴刷新"
 	if shown == 0:
 		var empty := Label.new()
-		empty.text = "没有符合条件的卡牌"
+		empty.text = I18n.t("没有符合条件的卡牌")
 		empty.custom_minimum_size = Vector2(1000, 180)
 		empty.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		grid.add_child(empty)
@@ -119,32 +141,67 @@ static func _scroll(ui: Control, rect: Rect2) -> ScrollContainer:
 	return scroll
 
 static func _deck(ui: Control, host: Control) -> void:
-	ui.panel(Rect2(1410, 219, 487, 803))
-	ui.text("当前编组  %s / 20" % host.deck_draft.size(), Rect2(1450, 244, 410, 60), 30, P.GOLD)
-	var scroll := _scroll(ui, Rect2(1435, 324, 430, 570))
+	ui.panel(Rect2(1270, 120, 627, 902))
+	var common_orange := 0
+	var class_orange := 0
+	for id in host.deck_draft:
+		var info: Dictionary = host.cards.get(id, {})
+		if info.get("quality") != "Orange": continue
+		if info.get("hero_class") == null: common_orange += 1
+		else: class_orange += 1
+	ui.text("通用橙 %s/1     职业橙 %s/1" % [common_orange, class_orange], Rect2(1300, 140, 560, 44), 25, P.GOLD).name = "DeckOrangeCounts"
+	ui.text("当前编成  %s / 20" % host.deck_draft.size(), Rect2(1300, 198, 560, 48), 30, P.GOLD).name = "DeckCount"
+	var scroll := _scroll(ui, Rect2(1294, 263, 578, 660))
 	scroll.name = "DeckScroll"
 	scroll.interaction_enabled = host._codex_card.is_empty()
 	var rows := VBoxContainer.new()
 	rows.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	rows.add_theme_constant_override("separation", 6)
+	rows.add_theme_constant_override("separation", 3)
 	scroll.add_child(rows)
 	for i in range(host.deck_draft.size()):
 		var id: String = host.deck_draft[i]
 		var info: Dictionary = host.cards.get(id, {})
+		var entry: Dictionary = host._owned_card(id)
+		var effect: Dictionary = entry.get("currentEffect", host.CardDetails.at_level(info, int(entry.get("level", 0))))
+		var description: String = host.CardDetails.effect_text(effect)
 		var row := Button.new()
+		row.name = "DeckRow_%s" % i
 		row.disabled = Game.busy
-		row.text = "%02d  %s    ×" % [i + 1, info.get("name", id)]
-		row.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		row.custom_minimum_size = Vector2(397, 44)
-		row.add_theme_font_size_override("font_size", 22)
+		row.custom_minimum_size = Vector2(552, 30)
+		row.tooltip_text = "%s · +%s\n%s\n%s" % [info.get("name", id), entry.get("level", 0), description, I18n.t("点击移除一张")]
 		Art.button(row, "UI/Codex/deck_row_%s.png" % str(info.get("quality", "White")).to_lower())
+		for state in ["normal", "hover", "pressed", "disabled"]:
+			var style: StyleBox = row.get_theme_stylebox(state).duplicate()
+			style.set_content_margin(SIDE_TOP, 0)
+			style.set_content_margin(SIDE_BOTTOM, 0)
+			row.add_theme_stylebox_override(state, style)
+		var title := Label.new()
+		title.name = "SkillName"
+		title.text = str(info.get("name", id))
+		title.position = Vector2(12, 0)
+		title.size = Vector2(185, 30)
+		var summary := Label.new()
+		summary.name = "EffectSummary"
+		summary.text = I18n.t(description if not description.is_empty() else "辅助效果")
+		summary.position = Vector2(204, 0)
+		summary.size = Vector2(334, 30)
+		for label in [title, summary]:
+			label.add_theme_font_size_override("font_size", 18)
+			label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+			label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+			label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			row.add_child(label)
 		row.pressed.connect(func():
-			if scroll.can_activate(): host.deck_draft.remove_at(i); host._render())
+			if not Game.busy and scroll.can_activate(): host.deck_draft.remove_at(i); host._render())
 		rows.add_child(row)
+	if host.deck_draft.is_empty():
+		var empty := Label.new()
+		empty.text = I18n.t("卡组为空，点击左侧卡牌加入")
+		rows.add_child(empty)
 	scroll.set_deferred("scroll_vertical", host._codex_deck_scroll)
 	scroll.get_v_scroll_bar().value_changed.connect(func(value): host._codex_deck_scroll = int(value))
-	ui.button("还原", Rect2(1440, 936, 172, 60), func(): host.deck_draft = Game.deck().get("cardIds", []).duplicate(); host._render(), Game.busy)
-	ui.button("保存编组", Rect2(1630, 936, 230, 60), host._save_deck, Game.busy or host.deck_draft.size() != 20, ui.ORANGE)
+	ui.button("还原", Rect2(1294, 945, 210, 60), func(): host.deck_draft = Game.deck().get("cardIds", []).duplicate(); host._render(), Game.busy)
+	ui.button("保存编成", Rect2(1522, 945, 350, 60), host._save_deck, Game.busy or not host._codex_ready or host.deck_draft.size() != 20, ui.ORANGE).name = "SaveDeck"
 
 static func _details(ui: Control, host: Control) -> void:
 	var id: String = host._codex_card
@@ -237,10 +294,6 @@ static func _details(ui: Control, host: Control) -> void:
 		upgrade.name = "UpgradeCard"
 		upgrade.tooltip_text = "已达最高等级" if int(entry.get("level", 0)) >= 5 else ("需要额外同名卡，并保留各编组所用副本" if copy_cost > 0 else "只消耗魂材料")
 		modal.text("需额外同名卡 ×%s" % copy_cost, Rect2(397, 747, 321, 38), 21, P.MUTED)
-	if host.edit_mode and owned:
-		var reason := _add_reason(host, id, info, copies)
-		var add: Button = modal.button("加入编组" if reason.is_empty() else reason, Rect2(400, 884, 315, 64), func(): host.deck_draft.append(id); host._codex_card = ""; host._render(), Game.busy or not reason.is_empty())
-		add.name = "AddCardToDeck"
 
 static func _tag(ui: Control, value: String, rect: Rect2, key: String) -> void:
 	ui.panel(rect, PREFIX + key)

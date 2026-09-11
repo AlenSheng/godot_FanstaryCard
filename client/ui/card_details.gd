@@ -1,6 +1,7 @@
 extends RefCounted
 
 const P = preload("res://ui/palette.gd")
+const I18n = preload("res://ui/i18n.gd")
 const CATALOG = preload("res://data/catalog.json")
 
 static func at_level(card: Dictionary, level: int) -> Dictionary:
@@ -37,4 +38,4 @@ static func effect_text(effect: Dictionary) -> String:
 		if key == "drawSpeedModifier": text += " / %s秒" % effect.get("drawSpeedSeconds", effect.get("draw_speed_seconds", 0))
 		lines.append(text)
 	if effect.get("isClassReveal", effect.get("is_class_reveal", false)): lines.append("职业显：本职业显示元素的基础伤害 ×1.3")
-	return " · ".join(lines)
+	return I18n.t(" · ".join(lines))

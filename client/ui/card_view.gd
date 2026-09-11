@@ -2,6 +2,7 @@ extends Button
 
 const Art = preload("res://ui/art.gd")
 const P = preload("res://ui/palette.gd")
+const I18n = preload("res://ui/i18n.gd")
 const CARD_SHADER = preload("res://ui/card_view.gdshader")
 const CLASS_NAMES := {"Priest": "牧师", "Mage": "法师", "Guardian": "守护者"}
 
@@ -9,7 +10,7 @@ func configure(id: String, info: Dictionary, description: String, selected: bool
 	for child in get_children(): child.free()
 	custom_minimum_size = Vector2(218, 376)
 	clip_contents = true
-	tooltip_text = description
+	tooltip_text = I18n.t(description)
 	mouse_default_cursor_shape = Control.CURSOR_ARROW if disabled else Control.CURSOR_POINTING_HAND
 	var monster: bool = info.get("source", "") == "Monster"
 	var collection: bool = options.get("collection", false) and not options.get("preview", false) and not monster
@@ -39,7 +40,7 @@ func configure(id: String, info: Dictionary, description: String, selected: bool
 	frame.stretch_mode = TextureRect.STRETCH_SCALE
 	if not monster:
 		if frame.texture == null: frame.texture = Art.texture("UI/Codex/qframe_common.png")
-		if selected: frame.texture = Art.texture("UI/Codex/qframe_selected.png")
+		if selected: frame.texture = Art.texture("UI/Codex/card_selection_battle_glow.png")
 		frame.material = _card_material(unowned, true)
 	var lines := description.split("\n\n", true, 1)
 	var effect: String = lines[1] if lines.size() > 1 else description
