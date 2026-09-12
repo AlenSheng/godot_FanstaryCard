@@ -5,6 +5,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $serverRoot = $PSScriptRoot
+. (Join-Path $serverRoot 'config-alignment.ps1')
 $projectRoot = Join-Path $serverRoot 'src/FantasyCard.Server'
 $projectFile = Join-Path $projectRoot 'FantasyCard.Server.csproj'
 $buildRoot = Join-Path $serverRoot '.artifacts/local-build'
@@ -138,6 +139,11 @@ try {
         exit 0
     }
 
+    $publishedConfig = $null
+    if ($Action -in @('Start', 'Build')) {
+        $publishedConfig = Assert-PublishedConfigAlignment
+    }
+
     if ($Action -eq 'Build') {
         if ($null -ne (Get-RecordedProcess (Read-ServerState))) {
             throw 'Stop the local server with stop-server.bat before updating its build.'
@@ -154,8 +160,18 @@ try {
             Show-ServerLogs
             throw 'The recorded server is running but is not ready. Inspect the logs, or stop it before restarting.'
         }
-        Write-Host "[READY] Local server is already running: $($saved.healthUrl)"
-        exit 0
+        try {
+            Assert-RunningConfigAlignment $saved.healthUrl $publishedConfig
+            Write-Host "[READY] Local server is already running: $($saved.healthUrl)"
+            exit 0
+        } catch {
+            Write-Host "[UPDATE] $($_.Exception.Message) Rebuilding the local server so it matches the client."
+            Stop-Process -InputObject $ownedProcess -ErrorAction Stop
+            if (!$ownedProcess.WaitForExit(15000)) { throw 'The outdated server process did not stop within 15 seconds.' }
+            Remove-Item -LiteralPath $stateFile -Force
+            $ownedProcess = $null
+            $saved = $null
+        }
     }
     if ($null -ne $saved) { Remove-Item -LiteralPath $stateFile -Force }
 
@@ -194,6 +210,7 @@ try {
             if ($null -eq (Get-RecordedProcess (Read-ServerState))) {
                 throw 'The server exited during the readiness check.'
             }
+            Assert-RunningConfigAlignment $healthUrl $publishedConfig
             Write-Host "[READY] Local server is running: $healthUrl"
             Write-Host "[LOGS] $stateRoot"
             exit 0

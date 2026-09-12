@@ -34,6 +34,54 @@ public sealed class GameConfigCatalogTests
         Assert.Equal((8, CardElement.Fire, 8, CardElement.Metal, 8),
             (voidCore.ElementalDamage, voidCore.Element, voidCore.SecondaryElementalDamage,
                 voidCore.SecondaryElement, voidCore.Shield));
+
+    }
+
+    [Fact]
+    public void EmbeddedCatalogVersionMatchesPublishedClientPackage()
+    {
+        AssertPublishedConfigMatchesCatalog(GameConfigCatalog.Current.Version);
+    }
+
+    private static void AssertPublishedConfigMatchesCatalog(string embeddedVersion)
+    {
+        var (serverGenerated, repoRoot) = FindPublishedConfigRoots();
+        Assert.Equal(embeddedVersion, File.ReadAllText(Path.Combine(serverGenerated, "fantasycard.config.version.txt")).Trim());
+        if (repoRoot is null) return;
+
+        var clientGenerated = Path.Combine(repoRoot, "client", "data", "generated");
+        var catalogPath = Path.Combine(repoRoot, "client", "data", "catalog.json");
+        if (!Directory.Exists(clientGenerated) || !File.Exists(catalogPath)) return;
+
+        Assert.Equal(embeddedVersion, File.ReadAllText(Path.Combine(clientGenerated, "fantasycard.config.version.txt")).Trim());
+        Assert.Equal(
+            File.ReadAllBytes(Path.Combine(serverGenerated, "fantasycard.config.bytes")),
+            File.ReadAllBytes(Path.Combine(clientGenerated, "fantasycard.config.bytes")));
+        using var document = System.Text.Json.JsonDocument.Parse(File.ReadAllText(catalogPath));
+        Assert.Equal(embeddedVersion, document.RootElement.GetProperty("version").GetString());
+    }
+
+    private static (string ServerGenerated, string? RepoRoot) FindPublishedConfigRoots()
+    {
+        var directory = new DirectoryInfo(AppContext.BaseDirectory);
+        while (directory is not null)
+        {
+            var nested = Path.Combine(directory.FullName, "server", "config", "generated", "fantasycard.config.version.txt");
+            if (File.Exists(nested))
+                return (Path.GetDirectoryName(nested)!, directory.FullName);
+
+            var local = Path.Combine(directory.FullName, "config", "generated", "fantasycard.config.version.txt");
+            if (File.Exists(local))
+            {
+                var serverGenerated = Path.GetDirectoryName(local)!;
+                var repoRoot = Path.GetFullPath(Path.Combine(directory.FullName, ".."));
+                return (serverGenerated, Directory.Exists(Path.Combine(repoRoot, "client", "data")) ? repoRoot : null);
+            }
+
+            directory = directory.Parent;
+        }
+
+        throw new DirectoryNotFoundException("Could not locate the published server config version file.");
     }
 
     [Fact]
