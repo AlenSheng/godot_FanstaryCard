@@ -6,14 +6,14 @@
 | 服务版本 | `0.3.0-room-combat`（以 `GET /` 与 `FantasyCard.Server.csproj` 为准；勿再用 `0.4.0-s7-...`） |
 | SDK | `.NET SDK 10.0.400` |
 | 规则配置版本 | `gdd-0.67-gameplay-completion-1` |
-| 当前可联调范围 | 登录 → Bootstrap → 档案/图鉴/编组 → 探索准备 → 商店/市场/强化接口 → 匹配入队/15 秒 Ready/机器人补满/成房 → 混沌地图/独立 PVE/三选一奖励 → WebSocket ping/resume/room.move/battle.play_cards/combat.preview/battle.select_target/reward.choice/duel.leave/duel.escape/relic.read/take/replace/action.extract/action.spring/action.potion → 结算查询/待展示恢复/确认；死亡回城按 GDD 2.5.2 补绑定白鞋 |
+| 当前可联调范围 | 登录 → Bootstrap → 档案/图鉴/编组 → 探索准备 → 商店/市场/强化接口 → 匹配入队/15 秒 Ready/机器人补满/成房 → 混沌地图/独立 PVE/三选一奖励 → WebSocket ping/resume/room.move/battle.play_cards/combat.preview/battle.select_target/reward.choice/duel.leave/duel.escape/relic.read/take/replace/action.extract/action.spring/action.potion → 结算查询/待展示恢复/确认；死亡回大厅身上防具进遗物堆、不补鞋 |
 | 当前不可联调范围 | 市场事务中断、结算操作系统级强杀演练、服务进程强杀演练、生产负载验收 |
 
 本文以 [服务端 0→1 开发指南](./SERVER_0_TO_1_GUIDE.md) 为目标，以仓库当前代码和自动化结果为证据。只有代码、迁移、协议和测试同时存在的能力才标记为已完成。
 
 ## 0. 2026-09-12 文档对照结论
 
-对照本分支权威文档（GDD `0.2` 冻结规则 → `SERVER_SPEC` → `CLIENT_INTEGRATION`），原型必须完成的大厅、匹配、房间、战斗、结算链路已经落地。本轮只补 **GDD 2.5.2 死亡回城补绑定白鞋**：鞋子栏为空且养成包没有可穿鞋子时，结算提交同一事务发放并穿回该职业；养成包已有鞋子则不发放。
+对照本分支权威文档（GDD `0.2` 冻结规则 → `SERVER_SPEC` → `CLIENT_INTEGRATION`），原型必须完成的大厅、匹配、房间、战斗、结算链路已经落地。死亡回大厅按产品确认：**身上五件进遗物堆后配装栏保持空，系统不发放免费绑定白鞋**。GDD 2.5.2 旧条文“没鞋就补一双”已废止。
 
 **已有、文档曾写漏或写旧的能力（不是缺功能）**
 
@@ -61,7 +61,7 @@
 - S3 准备/匹配/Ready/房间入口已在真实 PostgreSQL 纵向验收：重复 enqueue 只返回原 ticket，同键改 preparation 返回幂等冲突；4 真人立即成组并在全员 Ready 后生成首份房间快照、注册 RoomActor、推进 Running。未满 4 真人等待 30 秒后进入 Ready，15 秒未确认者转 Removed 并取消 preparation，保留真人转 Active、机器人补到固定 4 席后启动。
 - S9 Running 房间启动恢复已补停机计时：恢复查询携带 `room_snapshots.updated_at`，重建 Actor 后在单读队列内按 100ms 权威 tick 回放停机时长，最终快照只观察/落库一次；失败会移除半注册 Actor。真实 PostgreSQL 已验证玩家与 matchId 映射、15 秒断线超时、RNG 子流保持和补偿快照回写。
 - S7 RoomActor→结算纵向已通过真实 PostgreSQL：权威撤离完成触发状态观察器，幂等创建 settlement/holds/outbox，后台提交金币、药剂和穿戴防具；数据库终局后从 RoomRegistry 移除 Actor 与玩家映射，避免已结束房间继续 10Hz tick。Pending 提交失败仍由数据库后台重试，不依赖 Actor 常驻。
-- S7 死亡纵向已通过真实 PostgreSQL：RoomActor 断线满 15 秒后权威判死，安全格资产与遗物堆按冻结规则分离；后台仅返还安全金币，把背包装备和穿戴防具转为 `RelicPile`、解绑配装、消耗付费包并发布可恢复 outbox，终局 Registry 随后清理。死亡提交后若职业鞋子栏为空且养成包没有可穿鞋子，同一事务补 1 件绑定白鞋并穿回该职业。
+- S7 死亡纵向已通过真实 PostgreSQL：RoomActor 断线满 15 秒后权威判死，安全格资产与遗物堆按冻结规则分离；后台仅返还安全金币，把背包装备和穿戴防具转为 `RelicPile`、解绑配装、消耗付费包并发布可恢复 outbox，终局 Registry 随后清理。死亡回大厅不补鞋。
 - 新增玩家隔离的 `room.snapshot`：连接活动房间、显式读取、事件缓存缺口或客户端房间 revision 落后时下发；只暴露 Boss/泉水/本人位置等允许情报，同时恢复本人战斗、背包、PVE/PVP、奖励、读条和可操作列表。`session.resume` 向后兼容新增可选 roomId/roomRevision。
 - S8/S9 基础切片已落地：金币商店 UTC+8 04:00 日切、市场到期后台回收、经济跨表与账本链只读对账、REST/WS 分层限流、输入上限、WS token 链路追踪脱敏、过期会话/幂等记录/房间事件清理、房间关键节点即时快照与 Running 房间启动恢复/停机计时补偿。OTLP 指标现覆盖登录成功/失败、无效/过期令牌、WS 在线/消息大小/resume/命令拒绝、排队时长、活动房间与人数、快照失败、结算创建/幂等命中/失败/Pending holds、经济对账及周期清理。房间恢复失败、活动房间快照落库失败、结算首次恢复扫描失败或存在提交失败项都会拉低 readiness；发布/回滚/备份恢复/告警 runbook 已建立。数据库迁移/聚合、结算资产提交原子性、Pending hold 应用级冷启动恢复及 Running 房间应用级恢复已在真实 PostgreSQL 验收；市场事务强杀、结算操作系统级强杀、服务进程强杀与负载验收仍未完成。
 - 配置发布改为两端文件全部暂存后提交；发布异常会清理暂存并恢复已有文件，避免服务端与客户端遗留半套配置。

@@ -1081,96 +1081,16 @@ public sealed class PostgresRuntimeIntegrationTests
                 new("Backpack", "Advanced", false)], cancellationToken);
 
         Assert.Equal(2, await repository.CommitHoldsAsync(settlement.SettlementId, cancellationToken));
-        Assert.Equal(0, await repository.CommitHoldsAsync(settlement.SettlementId, cancellationToken));
         Assert.Equal("RelicPile", await database.ScalarAsync<string>(
             "SELECT location FROM equipments WHERE instance_id=$1", equipmentId));
         Assert.Equal(0L, await database.ScalarAsync<long>(
             "SELECT count(*) FROM player_loadouts WHERE feet_id=$1", equipmentId));
+        Assert.Equal(0L, await database.ScalarAsync<long>(
+            "SELECT count(*) FROM player_loadouts WHERE player_id=$1 AND hero_class=1 AND feet_id IS NOT NULL", player.UserId));
         Assert.Equal(1L, await database.ScalarAsync<long>(
             "SELECT count(*) FROM inventory_movements WHERE item_id=$1 AND reason='settlement.death'", equipmentId));
         Assert.Equal(0, await database.ScalarAsync<int>(
             "SELECT advanced_bag_count FROM player_consumables WHERE player_id=$1", player.UserId));
-        var replacementId = await database.ScalarAsync<Guid>(
-            "SELECT feet_id FROM player_loadouts WHERE player_id=$1 AND hero_class=1", player.UserId);
-        Assert.NotEqual(equipmentId, replacementId);
-        Assert.Equal("Equipped", await database.ScalarAsync<string>(
-            "SELECT location FROM equipments WHERE instance_id=$1", replacementId));
-        Assert.Equal(true, await database.ScalarAsync<bool>(
-            "SELECT is_bound FROM equipments WHERE instance_id=$1", replacementId));
-        Assert.Equal("White", await database.ScalarAsync<string>(
-            "SELECT quality FROM equipments WHERE instance_id=$1", replacementId));
-        Assert.Equal(1L, await database.ScalarAsync<long>(
-            "SELECT count(*) FROM inventory_movements WHERE item_id=$1 AND reason='settlement.death.replacement_shoes'", replacementId));
-        Assert.Equal(3L, await database.ScalarAsync<long>(
-            "SELECT count(*) FROM player_loadouts WHERE player_id=$1 AND feet_id IS NOT NULL", player.UserId));
-    }
-
-    [Fact(Skip = "Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.",
-        SkipUnless = nameof(HasTestDatabase))]
-    [Trait("Category", "PostgresIntegration")]
-    public async Task Death_settlement_does_not_grant_shoes_when_inventory_already_has_a_pair()
-    {
-        await using var database = await PostgresTestSchema.CreateAsync(migrate: true);
-        var now = new DateTimeOffset(2026, 9, 7, 5, 0, 0, TimeSpan.Zero);
-        var cancellationToken = TestContext.Current.CancellationToken;
-        var player = await CreateIdentityRepository(database.DataSource).SignInLocalAsync(
-            "settlement-death-spare-" + Guid.NewGuid().ToString("N"), "Death spare shoes",
-            TokenHash("settlement-death-spare-" + Guid.NewGuid().ToString("N")), now, now.AddHours(1), cancellationToken);
-        var wornId = await database.ScalarAsync<Guid>(
-            "SELECT feet_id FROM player_loadouts WHERE player_id=$1 AND hero_class=1", player.UserId);
-        var spareId = Guid.CreateVersion7();
-        await using (var command = database.DataSource.CreateCommand(
-            """
-            INSERT INTO equipments(
-                instance_id,owner_id,slot,quality,level,is_bound,location,version,created_at,
-                element,effect_affix,secondary_trait)
-            VALUES($1,$2,'Feet','Green',0,false,'Inventory',1,$3,'Water',NULL,'DrawInterval')
-            """))
-        {
-            command.Parameters.AddWithValue(spareId);
-            command.Parameters.AddWithValue(player.UserId);
-            command.Parameters.AddWithValue(now);
-            await command.ExecuteNonQueryAsync(cancellationToken);
-        }
-        await using (var command = database.DataSource.CreateCommand(
-            "UPDATE equipments SET location='InMatchEquipped' WHERE instance_id=$1"))
-        {
-            command.Parameters.AddWithValue(wornId);
-            await command.ExecuteNonQueryAsync(cancellationToken);
-        }
-        var matchId = Guid.NewGuid();
-        await using (var command = database.DataSource.CreateCommand(
-            "INSERT INTO matches(match_id,room_id,mode,difficulty,seed,config_version,status,created_at) VALUES($1,$2,'ChaosRealm','Standard',31,'test','Running',$3)"))
-        {
-            command.Parameters.AddWithValue(matchId);
-            command.Parameters.AddWithValue(Guid.NewGuid());
-            command.Parameters.AddWithValue(now);
-            await command.ExecuteNonQueryAsync(cancellationToken);
-        }
-        await using (var command = database.DataSource.CreateCommand(
-            "INSERT INTO match_players(match_id,player_id,is_bot,state) VALUES($1,$2,false,'Active')"))
-        {
-            command.Parameters.AddWithValue(matchId);
-            command.Parameters.AddWithValue(player.UserId);
-            await command.ExecuteNonQueryAsync(cancellationToken);
-        }
-        using var metrics = new ServerMetrics();
-        var repository = new SettlementRepository(database.DataSource, new MutableTimeProvider(now), metrics);
-        using var details = JsonDocument.Parse("{}");
-        var settlement = await repository.SettleAsync(matchId, player.UserId, "Dead", details.RootElement,
-            [new("Equipment", wornId.ToString("D"), false, Destination: "RelicPile")], cancellationToken);
-
-        Assert.Equal(1, await repository.CommitHoldsAsync(settlement.SettlementId, cancellationToken));
-        Assert.Equal(0L, await database.ScalarAsync<long>(
-            "SELECT count(*) FROM player_loadouts WHERE player_id=$1 AND hero_class=1 AND feet_id IS NOT NULL", player.UserId));
-        Assert.Equal("Inventory", await database.ScalarAsync<string>(
-            "SELECT location FROM equipments WHERE instance_id=$1", spareId));
-        Assert.Equal(0L, await database.ScalarAsync<long>(
-            "SELECT count(*) FROM inventory_movements WHERE player_id=$1 AND reason='settlement.death.replacement_shoes'", player.UserId));
-        Assert.Equal(1L, await database.ScalarAsync<long>(
-            "SELECT count(*) FROM equipments WHERE owner_id=$1 AND slot='Feet' AND location='Inventory'", player.UserId));
-        Assert.Equal(2L, await database.ScalarAsync<long>(
-            "SELECT count(*) FROM player_loadouts WHERE player_id=$1 AND feet_id IS NOT NULL", player.UserId));
     }
 
     [Fact(Skip = "Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.",

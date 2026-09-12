@@ -48,7 +48,7 @@
 | 地图/战斗/图鉴原型场景 | 已有 | `MapScene.unity`、`BattleScene.unity`、`CodexScene.unity` |
 | 迁移、登录、玩家初始化、Bootstrap、档案、图鉴/编组、准备快照 | 已上线 | `server/src`、`server/docs/CLIENT_INTEGRATION.md` |
 | Godot 登录/大厅/准备/匹配/在线房间 | 已有纵向切片；完整界面逐屏人工验收仍见对接指南清单 | `client/`、`CLIENT_INTEGRATION.md` |
-| 服务端换装/强化/商店/市场/匹配/战斗/结算 | 原型范围已落地；死亡回城补绑定白鞋见 GDD 2.5.2 | `SERVER_IMPLEMENTATION_STATUS_AND_PLAN.md` §0 |
+| 服务端换装/强化/商店/市场/匹配/战斗/结算 | 原型范围已落地；死亡回大厅不补鞋 | `SERVER_IMPLEMENTATION_STATUS_AND_PLAN.md` §0 |
 | 会话 sequence/replay/resume | 已有内存实现与房间快照补发 | `server/src/FantasyCard.Server/Realtime` |
 | 房间快照与进程恢复 | 应用级 Running 恢复已验收；操作系统级强杀演练未做 | S9 |
 | Unity 自动化业务测试 | 未建立 | 需建立 EditMode + PlayMode 测试程序集 |
