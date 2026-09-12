@@ -262,6 +262,8 @@ Godot 的 `client/platform/platform_service.gd` 已封装 GodotSteam 单例初�
 }
 ```
 
+死亡结算提交后，若某职业配装鞋子栏为空且养成背包没有可穿鞋子，服务端按 GDD 2.5.2 补 1 件绑定白鞋并穿回该职业鞋子栏；养成包已有鞋子时不发放，由玩家自行穿戴。撤离不补鞋。专属武器始终保留，不进遗物堆。
+
 客户端完成结算弹窗数据绑定后调用：
 
 ```http
@@ -459,7 +461,20 @@ Idempotency-Key: settlement-ack-018f90dc
 
 商店购买必须复用一次 UI 操作的 `Idempotency-Key`；同键同请求回放首次结果，同键改商品或数量返回 409。日限、金币不足，以及高级/顶级探索包购买后仓库合计将超过 3 个时，服务端不会扣金币或发放物品。防具 +4/+5 材料可使用仓库中同品质、任意部位/元素/强化等级的防具；绑定材料允许，红装只接受红装材料，专属武器永远不可作材料。红装强化 UI 随红装掉落/周配额一同开放，当前原型不展示入口。失败不会扣碎片或消费材料，成功重放不会重复消费。
 
-`GET /api/v1/shop/` 每日 UTC+8 04:00 更换 `resetKey`。响应固定包含三条 `productId=daily_card_1..3` 的单卡报价；`payload` 是 JSON 字符串，含 `cardId`、`quality`、`count=1`。三张卡互不重复，仅从图鉴 White～Purple 中产生，不含 Orange；同一 resetKey 在所有服务实例上一致。价格为白 80、绿 150、蓝 280、紫 500，每张每名玩家当日限购 1。
+`GET /api/v1/shop/` 每日 UTC+8 04:00 更换 `resetKey`。货架按 GDD 6.2 固定包含：
+
+| productId | kind | 价格 | 日限 | 发放 |
+| --- | --- | --- | --- | --- |
+| `card_pack` | Cards | 250 | 5 | 3 张白～紫随机卡，权重 50/30/15/5，不含橙和职业紫/橙 |
+| `daily_card_1..3` | Cards | 白 80 / 绿 150 / 蓝 280 / 紫 500 | 各 1 | 当日轮换指定图鉴卡 1 张 |
+| `warrior_soul` | WarriorSoul | 180 | 3 | 20 勇士之魂 |
+| `equipment_fragments` | EquipmentFragments | 120 | 3 | 20 装备碎片 |
+| `priest_soul` / `mage_soul` / `guardian_soul` | ClassSoul | 400 | 各 1 | 12 该职业之魂 |
+| `health_potion` | HealthPotion | 100 | 4 | 1 瓶生命药剂 |
+| `advanced_bag` | AdvancedBag | 800 | 99 | 1 个高级探索包；仓库高级+顶级合计不得超过 3 |
+| `top_bag` | TopBag | 2200 | 99 | 1 个顶级探索包；同上合计上限 |
+
+`daily_card_*` 的 `payload` 是 JSON 字符串，含 `cardId`、`quality`、`count=1`。三张卡互不重复，仅从图鉴 White～Purple 中产生，不含 Orange；同一 resetKey 在所有服务实例上一致。
 
 ```json
 {
@@ -561,7 +576,25 @@ Idempotency-Key: settlement-ack-018f90dc
 
 - Active：204，装备从 `PreparationLocked` 恢复 `Equipped`，同时释放其他逻辑预留。
 - 不属于玩家/不存在：404。
-- 已进入其他状态：409；后续 Queued 必须走 `match.cancel`。
+- 已进入其他状态：409；后续 Queued 必须走 `DELETE /api/v1/matches/tickets/{ticketId}`。
+
+### 9.4 匹配入队
+
+`POST /api/v1/matches/enqueue` 必须带 Bearer 与 `Idempotency-Key`：
+
+```json
+{ "preparationId": "018f..." }
+```
+
+- 只接受当前玩家的 Active preparation。
+- 首次成功返回 202 与 ticket：`ticketId`、`preparationId`、`status`、`queuedAt`、可选 `matchId`。
+- 同键同准备回放原 ticket；同键改 preparationId 返回 409。
+- 重复入队（不同键）仍返回原 ticket，不生成第二张。
+- 满 4 名真人立刻开房；未满则从队内第一人入队起等 30 秒，用补位机器人补到 4。
+
+`GET /api/v1/matches/tickets/{ticketId}` 查询本人 ticket；不存在返回 404。
+
+`DELETE /api/v1/matches/tickets/{ticketId}` 必须带 `Idempotency-Key`。Queued 取消后 preparation 回到 Active，锁定装备恢复 `Equipped`。同键改 ticket 返回 409。已开房返回 409，不能用取消准备接口代替。
 
 ## 10. WebSocket
 
@@ -713,5 +746,7 @@ ws://127.0.0.1:5080/ws/v1/session?access_token={URL 编码 token}
 - [ ] 15 秒超时后未 Ready 真人收到 `room.ready_removed`，保留真人进入固定 4 席房间且首快照只含本人可见信息。
 - [ ] 卡升级与强化面板读取真实报价，+4/+5 材料及编组副本保护正确，失败不修改本地余额。
 - [ ] 局内格位移动、换装、遗物详情和交换使用权威版本；分类预览、速度字段、被动/PVP 信息与实例元素正确显示。
+- [ ] 死亡结算后鞋子栏为空且养成包无鞋时获得绑定白鞋；养成包已有鞋子时不重复发放。
+- [ ] 商店货架含礼包/魂/碎片/药剂/探索包与每日三张单卡；匹配 enqueue/cancel 使用同一 Idempotency-Key 回放。
 
 2026-09-10 最终回归：领域 202/202、服务 157/157，通过且无跳过；服务 Release 构建 0 警告、0 错误。服务全套启用独立 Docker/PostgreSQL 测试数据库，含真实 HTTP 16 路同键升级只扣一次，以及真实 WS 的 PVP 击杀、遗物读取/拾取、重复请求、已落盘撤离状态后强杀恢复及二次重启不重复结算。服务测试报告为仓库根目录 `artifacts/gameplay-validation/gameplay-final.trx`，范围见 [POSTGRES_TESTS.md](POSTGRES_TESTS.md)。该结果包含最终地图分组与匣灵实例覆写，不代表真实 Steam 平台验票、任意 ACK 后零丢失或持续生产负载验收完成。

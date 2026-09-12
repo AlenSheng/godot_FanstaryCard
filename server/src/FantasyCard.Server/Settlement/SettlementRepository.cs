@@ -435,6 +435,7 @@ public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvid
                 await ApplyCommittedAssetAsync(connection, transaction, hold, cancellationToken);
             if (holds.Count > 0)
                 await RestoreExtractionLoadoutAsync(connection, transaction, settlementId, holds, cancellationToken);
+            await EnsureDeathReplacementShoesAsync(connection, transaction, settlementId, cancellationToken);
         }
         var count = 0;
         foreach (var hold in holds)
@@ -669,6 +670,104 @@ public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvid
         update.Parameters.AddWithValue((short)heroClass);
         if (await update.ExecuteNonQueryAsync(cancellationToken) != 1)
             throw new InvalidOperationException("The settlement loadout is missing.");
+    }
+
+    private static async Task EnsureDeathReplacementShoesAsync(
+        NpgsqlConnection connection,
+        NpgsqlTransaction transaction,
+        Guid settlementId,
+        CancellationToken cancellationToken)
+    {
+        string result;
+        Guid playerId;
+        await using (var metadata = new NpgsqlCommand(
+            "SELECT result, player_id FROM match_settlements WHERE settlement_id=$1",
+            connection, transaction))
+        {
+            metadata.Parameters.AddWithValue(settlementId);
+            await using var reader = await metadata.ExecuteReaderAsync(cancellationToken);
+            if (!await reader.ReadAsync(cancellationToken))
+                throw new InvalidOperationException("The settlement record is missing.");
+            result = reader.GetString(0);
+            playerId = reader.GetGuid(1);
+        }
+        if (result != "Dead") return;
+
+        await using (var playerLock = new NpgsqlCommand(
+            "SELECT user_id FROM players WHERE user_id=$1 FOR UPDATE", connection, transaction))
+        {
+            playerLock.Parameters.AddWithValue(playerId);
+            if (await playerLock.ExecuteScalarAsync(cancellationToken) is null)
+                throw new InvalidOperationException("The settlement player is missing.");
+        }
+
+        int inventoryShoes;
+        await using (var count = new NpgsqlCommand(
+            """
+            SELECT count(*)::integer
+            FROM equipments
+            WHERE owner_id=$1 AND slot=$2 AND location='Inventory'
+            """, connection, transaction))
+        {
+            count.Parameters.AddWithValue(playerId);
+            count.Parameters.AddWithValue(DeathReturnRules.ReplacementSlot);
+            inventoryShoes = (int)(await count.ExecuteScalarAsync(cancellationToken) ?? 0);
+        }
+
+        var emptyClasses = new List<short>();
+        await using (var empty = new NpgsqlCommand(
+            "SELECT hero_class FROM player_loadouts WHERE player_id=$1 AND feet_id IS NULL ORDER BY hero_class FOR UPDATE",
+            connection, transaction))
+        {
+            empty.Parameters.AddWithValue(playerId);
+            await using var reader = await empty.ExecuteReaderAsync(cancellationToken);
+            while (await reader.ReadAsync(cancellationToken))
+                emptyClasses.Add(reader.GetInt16(0));
+        }
+
+        foreach (var heroClass in emptyClasses)
+        {
+            if (!DeathReturnRules.ShouldGrantBoundWhiteShoes(
+                    loadoutFeetEmpty: true,
+                    hasWearableInventoryShoes: inventoryShoes > 0))
+                return;
+
+            var shoeId = Guid.CreateVersion7();
+            await using (var create = new NpgsqlCommand(
+                """
+                INSERT INTO equipments(
+                    instance_id, owner_id, slot, quality, level, is_bound, location, version, created_at,
+                    element, effect_affix, secondary_trait)
+                VALUES ($1, $2, $3, $4, $5, $6, 'Equipped', 1, CURRENT_TIMESTAMP, $7, NULL, $8)
+                """, connection, transaction))
+            {
+                create.Parameters.AddWithValue(shoeId);
+                create.Parameters.AddWithValue(playerId);
+                create.Parameters.AddWithValue(DeathReturnRules.ReplacementSlot);
+                create.Parameters.AddWithValue(DeathReturnRules.ReplacementQuality);
+                create.Parameters.AddWithValue(DeathReturnRules.ReplacementLevel);
+                create.Parameters.AddWithValue(DeathReturnRules.ReplacementBound);
+                create.Parameters.AddWithValue(DeathReturnRules.ReplacementElement);
+                create.Parameters.AddWithValue(DeathReturnRules.ReplacementSecondaryTrait);
+                await create.ExecuteNonQueryAsync(cancellationToken);
+            }
+
+            await using (var loadout = new NpgsqlCommand(
+                "UPDATE player_loadouts SET feet_id=$1, version=version+1 WHERE player_id=$2 AND hero_class=$3 AND feet_id IS NULL",
+                connection, transaction))
+            {
+                loadout.Parameters.AddWithValue(shoeId);
+                loadout.Parameters.AddWithValue(playerId);
+                loadout.Parameters.AddWithValue(heroClass);
+                if (await loadout.ExecuteNonQueryAsync(cancellationToken) != 1)
+                    throw new InvalidOperationException("The death replacement loadout was not empty.");
+            }
+
+            await WriteEquipmentMovementAsync(
+                connection, transaction, playerId, shoeId,
+                DeathReturnRules.MovementSource, "Equipped", DeathReturnRules.MovementReason,
+                cancellationToken);
+        }
     }
 
     private static async Task RemoveEquipmentFromLoadoutsAsync(
