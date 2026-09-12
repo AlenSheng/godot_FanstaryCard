@@ -29,8 +29,7 @@ public sealed partial class RealNetworkEndToEndTests
         var ct = timeout.Token;
         var winner = await SeedNetworkPlayerAsync(database, "Winner", ct);
         var loser = await SeedNetworkPlayerAsync(database, "Loser", ct);
-        var equipmentId = await database.ScalarAsync<Guid>(
-            "SELECT feet_id FROM player_loadouts WHERE player_id=$1 AND hero_class=2", loser.Id);
+        var equipmentId = await database.InsertWornFeetAsync(loser.Id, HeroClass.Mage, ct);
         await ExecuteGameplaySqlAsync(database,
             "UPDATE equipments SET location='InMatchEquipped',is_bound=false WHERE instance_id=$1", ct, equipmentId);
         await database.ExecuteAsync("UPDATE player_wallets SET gold=0");

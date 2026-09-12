@@ -23,7 +23,7 @@ public sealed class PlayerProvisioningService
         {
             await InsertClassWeaponAsync(connection, transaction, playerId, heroClass, cancellationToken);
             await InsertDefaultDeckAsync(connection, transaction, playerId, heroClass, now, cancellationToken);
-            await InsertDefaultLoadoutAsync(connection, transaction, playerId, heroClass, now, cancellationToken);
+            await InsertDefaultLoadoutAsync(connection, transaction, playerId, heroClass, cancellationToken);
         }
     }
 
@@ -156,38 +156,18 @@ public sealed class PlayerProvisioningService
         NpgsqlTransaction transaction,
         Guid playerId,
         HeroClass heroClass,
-        DateTimeOffset now,
         CancellationToken cancellationToken)
     {
-        var feetId = CreateStableGuid(playerId, $"starter:{heroClass}:Feet");
-        await using (var equipmentCommand = new NpgsqlCommand(
-            """
-            INSERT INTO equipments(
-                instance_id, owner_id, slot, quality, level, is_bound, location, version, created_at,
-                element, effect_affix, secondary_trait)
-            VALUES ($1, $2, 'Feet', 'White', 0, true, 'Equipped', 1, $3, 'Fire', NULL, 'DrawInterval')
-            ON CONFLICT (instance_id) DO NOTHING
-            """,
-            connection,
-            transaction))
-        {
-            equipmentCommand.Parameters.AddWithValue(feetId);
-            equipmentCommand.Parameters.AddWithValue(playerId);
-            equipmentCommand.Parameters.AddWithValue(now);
-            await equipmentCommand.ExecuteNonQueryAsync(cancellationToken);
-        }
-
         await using var loadoutCommand = new NpgsqlCommand(
             """
             INSERT INTO player_loadouts(player_id, hero_class, head_id, chest_id, hands_id, legs_id, feet_id, version)
-            VALUES ($1, $2, NULL, NULL, NULL, NULL, $3, 1)
+            VALUES ($1, $2, NULL, NULL, NULL, NULL, NULL, 1)
             ON CONFLICT (player_id, hero_class) DO NOTHING
             """,
             connection,
             transaction);
         loadoutCommand.Parameters.AddWithValue(playerId);
         loadoutCommand.Parameters.AddWithValue((short)heroClass);
-        loadoutCommand.Parameters.AddWithValue(feetId);
         await loadoutCommand.ExecuteNonQueryAsync(cancellationToken);
     }
 

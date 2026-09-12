@@ -73,18 +73,15 @@ public sealed class PostgresRuntimeIntegrationTests
 
         Assert.Equal(new(50, 1, 49), inventory.Summary);
         Assert.Equal(new(3, 2, 1), inventory.Consumables);
-        Assert.Equal(4, inventory.Equipments.Count);
-        var item = Assert.Single(inventory.Equipments, value => value.Location == "Inventory");
+        var item = Assert.Single(inventory.Equipments);
         Assert.Equal(inventoryItemId, item.InstanceId);
+        Assert.Equal("Inventory", item.Location);
         Assert.Equal(("Head", "Purple", 2, "Water", "Vitality", "DrawInterval"),
             (item.Slot, item.Quality, item.Level, item.Element, item.EffectAffix, item.SecondaryTrait));
         Assert.NotNull(loadout);
         Assert.Equal(HeroClassDto.Priest, loadout.HeroClass);
         Assert.Equal(5, loadout.EquipmentIds.Count);
-        Assert.All(loadout.EquipmentIds.Take(4), Assert.Null);
-        Assert.NotNull(loadout.EquipmentIds[4]);
-        Assert.Contains(inventory.Equipments, value =>
-            value.InstanceId == loadout.EquipmentIds[4] && value.Location == "Equipped");
+        Assert.All(loadout.EquipmentIds, Assert.Null);
     }
 
     [Fact(Skip = "Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.",
@@ -787,6 +784,7 @@ public sealed class PostgresRuntimeIntegrationTests
             now,
             now.AddHours(1),
             cancellationToken);
+        await database.InsertWornFeetAsync(player.UserId, HeroClass.Priest, cancellationToken);
         var progression = new ProgressionRepository(database.DataSource);
         var bootstrap = await new BootstrapRepository(database.DataSource, progression, TimeProvider.System)
             .GetAsync(player, cancellationToken);
@@ -1043,8 +1041,7 @@ public sealed class PostgresRuntimeIntegrationTests
         var player = await CreateIdentityRepository(database.DataSource).SignInLocalAsync(
             "settlement-death-device-" + Guid.NewGuid().ToString("N"), "Death player",
             TokenHash("settlement-death-token-" + Guid.NewGuid().ToString("N")), now, now.AddHours(1), cancellationToken);
-        var equipmentId = await database.ScalarAsync<Guid>(
-            "SELECT feet_id FROM player_loadouts WHERE player_id=$1 AND hero_class=1", player.UserId);
+        var equipmentId = await database.InsertWornFeetAsync(player.UserId, HeroClass.Priest, cancellationToken);
         await using (var command = database.DataSource.CreateCommand(
             "UPDATE player_consumables SET advanced_bag_count=1 WHERE player_id=$1"))
         {
@@ -1175,8 +1172,7 @@ public sealed class PostgresRuntimeIntegrationTests
             cancellationToken);
         await database.ExecuteAsync(
             "UPDATE player_wallets SET gold=0; UPDATE player_consumables SET health_potion_count=0;");
-        var equipmentId = await database.ScalarAsync<Guid>(
-            "SELECT feet_id FROM player_loadouts WHERE player_id=$1 AND hero_class=2", player.UserId);
+        var equipmentId = await database.InsertWornFeetAsync(player.UserId, HeroClass.Mage, cancellationToken);
         await using (var equipment = database.DataSource.CreateCommand(
             "UPDATE equipments SET location='InMatchEquipped' WHERE instance_id=$1"))
         {
@@ -1301,8 +1297,7 @@ public sealed class PostgresRuntimeIntegrationTests
             cancellationToken);
         await database.ExecuteAsync(
             "UPDATE player_wallets SET gold=0; UPDATE player_consumables SET health_potion_count=0,advanced_bag_count=1;");
-        var wornEquipmentId = await database.ScalarAsync<Guid>(
-            "SELECT feet_id FROM player_loadouts WHERE player_id=$1 AND hero_class=2", player.UserId);
+        var wornEquipmentId = await database.InsertWornFeetAsync(player.UserId, HeroClass.Mage, cancellationToken);
         await using (var equipment = database.DataSource.CreateCommand(
             "UPDATE equipments SET location='InMatchEquipped' WHERE instance_id=$1"))
         {
@@ -1617,6 +1612,7 @@ public sealed class PostgresRuntimeIntegrationTests
             var deck = Assert.Single(
                 await progression.GetDecksAsync(profile.UserId, cancellationToken),
                 value => value.HeroClass == HeroClassDto.Priest);
+            await database.InsertWornFeetAsync(profile.UserId, HeroClass.Priest, cancellationToken);
             var loadout = Assert.IsType<LoadoutResponse>(
                 await progression.GetLoadoutAsync(profile.UserId, HeroClass.Priest, cancellationToken));
             if (index == 0)
@@ -1663,6 +1659,7 @@ public sealed class PostgresRuntimeIntegrationTests
             var deck = Assert.Single(
                 await progression.GetDecksAsync(profile.UserId, cancellationToken),
                 value => value.HeroClass == HeroClassDto.Mage);
+            await database.InsertWornFeetAsync(profile.UserId, HeroClass.Mage, cancellationToken);
             var loadout = Assert.IsType<LoadoutResponse>(
                 await progression.GetLoadoutAsync(profile.UserId, HeroClass.Mage, cancellationToken));
             var preparation = await new PreparationRepository(database.DataSource, time).CreateAsync(
@@ -1746,7 +1743,9 @@ public sealed class PostgresRuntimeIntegrationTests
         Assert.Equal(3L, await database.ScalarAsync<long>("SELECT count(*) FROM class_weapons WHERE player_id=$1", playerId));
         Assert.Equal(3L, await database.ScalarAsync<long>("SELECT count(*) FROM player_loadouts WHERE player_id=$1", playerId));
         Assert.Equal(3L, await database.ScalarAsync<long>(
-            "SELECT count(*) FROM equipments WHERE owner_id=$1 AND slot='Feet' AND is_bound AND location='Equipped'", playerId));
+            "SELECT count(*) FROM player_loadouts WHERE player_id=$1 AND feet_id IS NULL AND head_id IS NULL AND chest_id IS NULL AND hands_id IS NULL AND legs_id IS NULL", playerId));
+        Assert.Equal(0L, await database.ScalarAsync<long>(
+            "SELECT count(*) FROM equipments WHERE owner_id=$1", playerId));
     }
 }
 
@@ -1796,6 +1795,33 @@ internal sealed class PostgresTestSchema : IAsyncDisposable
     {
         await using var command = DataSource.CreateCommand(sql);
         await command.ExecuteNonQueryAsync(TestContext.Current.CancellationToken);
+    }
+
+    public async Task<Guid> InsertWornFeetAsync(Guid playerId, HeroClass heroClass, CancellationToken cancellationToken)
+    {
+        var feetId = Guid.CreateVersion7();
+        await using (var insert = DataSource.CreateCommand(
+            """
+            INSERT INTO equipments(
+                instance_id, owner_id, slot, quality, level, is_bound, location, version, created_at,
+                element, effect_affix, secondary_trait)
+            VALUES ($1, $2, 'Feet', 'White', 0, false, 'Equipped', 1, CURRENT_TIMESTAMP, 'Fire', NULL, 'DrawInterval')
+            """))
+        {
+            insert.Parameters.AddWithValue(feetId);
+            insert.Parameters.AddWithValue(playerId);
+            await insert.ExecuteNonQueryAsync(cancellationToken);
+        }
+        await using (var loadout = DataSource.CreateCommand(
+            "UPDATE player_loadouts SET feet_id=$1, version=version+1 WHERE player_id=$2 AND hero_class=$3"))
+        {
+            loadout.Parameters.AddWithValue(feetId);
+            loadout.Parameters.AddWithValue(playerId);
+            loadout.Parameters.AddWithValue((short)heroClass);
+            if (await loadout.ExecuteNonQueryAsync(cancellationToken) != 1)
+                throw new InvalidOperationException("The test loadout is missing.");
+        }
+        return feetId;
     }
 
     public async Task<T> ScalarAsync<T>(string sql, params object[] parameters)
