@@ -9,7 +9,7 @@
 - 当前玩家档案：`GET/PUT /api/v1/players/me`（PUT 要求 `Idempotency-Key`）
 - 乐观并发版本，避免档案静默覆盖
 - V001–V003 PostgreSQL 版本化迁移、checksum、迁移锁与就绪检查
-- 首次玩家幂等初始化：钱包、材料、起始卡/编组、专属武器和绑定白鞋
+- 首次玩家幂等初始化：钱包、材料、起始卡/编组、专属武器；五部位配装全空，不发放绑定白鞋
 - 大厅 Bootstrap：`GET /api/v1/bootstrap`
 - 图鉴与编组：`GET /api/v1/cards`、`GET/PUT /api/v1/decks`（PUT 要求 `Idempotency-Key`）
 - 探索准备：`GET/POST/DELETE /api/v1/preparations`，支持资产校验和幂等重试

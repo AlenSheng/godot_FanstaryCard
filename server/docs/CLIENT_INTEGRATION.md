@@ -161,7 +161,7 @@ REST 错误使用 `application/problem+json`：
 }
 ```
 
-首次登录会幂等初始化：0 余额钱包、0 材料、30 张通用白卡、每职业 7 张职业白卡、三套默认 20 张编组、三把 +0 专属武器、三双绑定白鞋。起始金币、药剂、付费包未获策划确认，保持为 0。
+首次登录会幂等初始化：0 余额钱包、0 材料、30 张通用白卡、每职业 7 张职业白卡、三套默认 20 张编组、三把 +0 专属武器、三职业五部位配装全空。**不发放绑定白鞋或任何起始防具。** 起始金币、药剂、付费包未获策划确认，保持为 0。
 
 ### `POST /api/v1/auth/steam`
 
@@ -214,7 +214,7 @@ Godot 的 `client/platform/platform_service.gd` 已封装 GodotSteam 单例初�
   "equippedLoadouts": [
     {
       "heroClass": "Mage",
-      "equipmentIds": [null, null, null, null, "018f..."],
+      "equipmentIds": [null, null, null, null, null],
       "version": 1
     }
   ],
@@ -262,7 +262,7 @@ Godot 的 `client/platform/platform_service.gd` 已封装 GodotSteam 单例初�
 }
 ```
 
-死亡结算提交后身上五件防具进遗物堆，对应配装栏保持空，**不补绑定白鞋**。专属武器始终保留，不进遗物堆。
+死亡结算提交后身上五件防具进遗物堆，对应配装栏保持空。开局与死亡都 **不发放绑定白鞋**。专属武器始终保留，不进遗物堆。
 
 客户端完成结算弹窗数据绑定后调用：
 
@@ -495,13 +495,13 @@ Idempotency-Key: settlement-ack-018f90dc
 
 `POST /api/v1/preparations`
 
-请求头必须带 `Idempotency-Key`。免费包、只穿起始鞋的示例：
+请求头必须带 `Idempotency-Key`。免费包、五部位全空的示例：
 
 ```json
 {
   "heroClass": "Mage",
   "deckVersion": 1,
-  "equipmentIds": [null, null, null, null, "从 bootstrap 取得的白鞋 ID"],
+  "equipmentIds": [null, null, null, null, null],
   "backpackTier": "Free",
   "safeSlotIndexes": [],
   "potionCount": 0,
@@ -532,18 +532,8 @@ Idempotency-Key: settlement-ack-018f90dc
     "maximumHp": 70,
     "cardIds": ["...20 cards..."],
     "cardLevels": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    "equipmentIds": [null, null, null, null, "018f..."],
-    "equipmentSnapshots": [
-      {
-        "instanceId": "018f...",
-        "slot": "Feet",
-        "quality": "White",
-        "level": 0,
-        "element": "Fire",
-        "effectAffix": null,
-        "secondaryTrait": "DrawInterval"
-      }
-    ],
+    "equipmentIds": [null, null, null, null, null],
+    "equipmentSnapshots": [],
     "classWeaponLevel": 0,
     "backpackTier": "Free",
     "backpackCapacity": 20,
@@ -732,7 +722,7 @@ ws://127.0.0.1:5080/ws/v1/session?access_token={URL 编码 token}
 以下保留客户端逐项交互验收清单；自动化服务测试通过不等于所有 Godot 界面已逐屏人工验收。
 
 - [ ] 首次登录只生成一个内部玩家，重复登录资产不重复。
-- [ ] Bootstrap 得到三职业武器、编组和白鞋；初始余额为 0。
+- [ ] Bootstrap 得到三职业武器、编组，五部位配装全空；初始余额为 0。不发放绑定白鞋。
 - [ ] 档案更新 version +1；同幂等键重试回放成功响应，旧 version 的新请求返回 409。
 - [ ] 图鉴返回全部 200 张，其中 51 张初始解锁，三套编组各 20 张。
 - [ ] 非 20 张、跨职业卡、超持有数量的编组返回 400。
@@ -746,7 +736,7 @@ ws://127.0.0.1:5080/ws/v1/session?access_token={URL 编码 token}
 - [ ] 15 秒超时后未 Ready 真人收到 `room.ready_removed`，保留真人进入固定 4 席房间且首快照只含本人可见信息。
 - [ ] 卡升级与强化面板读取真实报价，+4/+5 材料及编组副本保护正确，失败不修改本地余额。
 - [ ] 局内格位移动、换装、遗物详情和交换使用权威版本；分类预览、速度字段、被动/PVP 信息与实例元素正确显示。
-- [ ] 死亡回大厅后身上防具进遗物堆，鞋子栏保持空，不发放免费白鞋。
+- [ ] 死亡回大厅后身上防具进遗物堆，配装栏保持空；开局与死亡都不发放绑定白鞋。
 - [ ] 商店货架含礼包/魂/碎片/药剂/探索包与每日三张单卡；匹配 enqueue/cancel 使用同一 Idempotency-Key 回放。
 
 2026-09-10 最终回归：领域 202/202、服务 157/157，通过且无跳过；服务 Release 构建 0 警告、0 错误。服务全套启用独立 Docker/PostgreSQL 测试数据库，含真实 HTTP 16 路同键升级只扣一次，以及真实 WS 的 PVP 击杀、遗物读取/拾取、重复请求、已落盘撤离状态后强杀恢复及二次重启不重复结算。服务测试报告为仓库根目录 `artifacts/gameplay-validation/gameplay-final.trx`，范围见 [POSTGRES_TESTS.md](POSTGRES_TESTS.md)。该结果包含最终地图分组与匣灵实例覆写，不代表真实 Steam 平台验票、任意 ACK 后零丢失或持续生产负载验收完成。

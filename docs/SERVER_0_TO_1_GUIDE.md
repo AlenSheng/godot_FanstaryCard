@@ -21,7 +21,7 @@
 - V001–V003 版本化 SQL 迁移，带 checksum、advisory lock 和逐迁移事务。
 - PostgreSQL：身份、钱包/材料、卡牌/编组、专属武器、装备/穿戴、消耗品、准备快照与幂等记录。
 - Bearer 会话、token 哈希、30 天默认有效期。
-- 新玩家幂等 provisioning：30 通用白卡、三职业各 7 白卡、默认 20、+0 专属武器、绑定白鞋。
+- 新玩家幂等 provisioning：30 通用白卡、三职业各 7 白卡、默认 20、+0 专属武器、五部位配装全空。不发放绑定白鞋。
 - `GET /api/v1/bootstrap`、`GET /api/v1/cards`、`GET/PUT /api/v1/decks`。
 - `GET/POST/DELETE /api/v1/preparations`，带版本、资产与 `Idempotency-Key` 校验。
 - `/ws/v1/session`：session.connected、ping/pong、sequence、256 事件重放、session.resume、同账号接管、16 KiB 上限。
@@ -269,7 +269,7 @@ preparation snapshot 是不可变战局快照。进入队列后不能继续读�
 - 解锁三职业各 7 张白职业卡。
 - 创建三职业默认 20 张编组。
 - 创建三把 +0 专属武器。
-- 创建各职业所需的绑定起始白鞋/默认穿戴配置。
+- 创建三职业五部位空配装。不发放绑定白鞋或任何起始防具。
 - 创建空的 50 格养成背包视图。
 
 起始金币、钻石、药剂和付费包数量 GDD 未规定，不应由程序员随意赠送；保持配置化并由策划确认。
