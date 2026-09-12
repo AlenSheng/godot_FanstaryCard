@@ -2,10 +2,12 @@
 import json
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+import sys
 import tempfile
 import threading
 import unittest
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 import config_alignment as alignment
 
 ROOT = Path(__file__).resolve().parents[1]
