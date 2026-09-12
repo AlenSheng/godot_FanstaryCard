@@ -138,7 +138,7 @@ static func _hand(ui: Control, host: Control, state: Dictionary) -> void:
 		var rect := Rect2(origin + Vector2(index * 232, 0), Vector2(218, 376))
 		if index < hand.size():
 			var card: Dictionary = hand[index]
-			ui.card(host, card.get("card_id", ""), rect, func(): Game.toggle_card(card.instance_id), card.get("instance_id", "") in Game.selected_cards, not Game.allowed("battle.play_cards"), {"level": int(card.get("level", 0)), "element_override": str(card.get("element_override", ""))})
+			ui.card(host, card.get("card_id", ""), rect, func(): Game.toggle_card(card.instance_id), card.get("instance_id", "") in Game.selected_cards, not Game.allowed("battle.play_cards"), {"level": int(card.get("level", 0)), "element_override": str(card.get("element_override", "")), "battle": true})
 		else:
 			ui.panel(rect, "UI/Codex/qframe_common.png")
 	ui.button("放", Rect2(1650, 822, 194, 142), Game.play_cards, Game.selected_cards.is_empty() or not Game.allowed("battle.play_cards"), "UI/Battle/battle_play_button.png")
@@ -234,6 +234,10 @@ static func _map(ui: Control, host: Control, state: Dictionary) -> void:
 			button.add_theme_stylebox_override("disabled", Art.style(SLOT, Color("f2d392") if current else tint))
 			button.add_theme_color_override("font_disabled_color", P.GOLD if current else (Color("fa8c72") if cell.get("is_boss", false) else P.TEAL))
 			button.tooltip_text = "%s层%s" % [["外", "中", "内"][layer], " · 可前往" if legal else ""]
+			var map_overlay_key := "UI/Map/map_current_position_overlay.png" if current else ("UI/Map/map_tile_movable_overlay.png" if legal else "UI/Map/map_tile_normal_overlay.png")
+			var map_overlay := _picture(ui, Art.state(map_overlay_key), rect)
+			map_overlay.name = "MapOverlay_%s_%s" % [row, column]
+			map_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			if cell.get("has_spring", false) and not current and not cell.get("is_boss", false):
 				button.text = ""
 				var spring: TextureRect = _picture(ui, Art.texture("UI/Action/spring_clean.png"), Rect2(rect.position + Vector2(39, 9), Vector2(59, 58)))
@@ -307,6 +311,10 @@ static func _actions(ui: Control, host: Control, state: Dictionary) -> void:
 		else:
 			var icon: TextureRect = _picture(tile, Art.texture(key), Rect2(rect.position + Vector2(42, 20), Vector2(180, 160)))
 			icon.name = "ActionIcon_" + action_name
+		var action_state_key := "UI/Action/action_available_overlay.png" if action == "map" or Game.allowed(action) or relic else "UI/Action/action_unavailable_overlay.png"
+		var action_state := _picture(tile, Art.state(action_state_key), Rect2(rect.position + Vector2(46, 24), Vector2(172, 172)))
+		action_state.name = "ActionState_" + action_name
+		action_state.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		_center(tile.text(title, Rect2(rect.position + Vector2(12, 183), Vector2(240, 75)), 26, P.PAPER))
 	for key in ["extraction_remaining_ms", "spring_remaining_ms"]:
 		if state.has(key):
@@ -315,9 +323,8 @@ static func _actions(ui: Control, host: Control, state: Dictionary) -> void:
 
 static func _item_icon(item: Dictionary) -> Texture2D:
 	var kind: String = item.get("kind", "")
+	if kind == "Equipment": return Art.equipment(item)
 	var suffix: String = {"Gold": "gold", "EquipmentFragments": "fragments", "WarriorSoul": "warrior_soul", "HealthPotion": "potion", "ClassSoul": Game.hero_class.to_lower() + "_soul"}.get(kind, "")
-	if kind == "Equipment":
-		suffix = {"Helmet": "helmet", "Head": "helmet", "Chest": "chest", "Body": "chest", "Hands": "gauntlet", "Gloves": "gauntlet", "Legs": "legs", "Feet": "boots", "Boots": "boots"}.get(item.get("equipment", {}).get("slot", ""), "")
 	return Art.texture(ITEM + suffix + ".png") if not suffix.is_empty() else null
 
 static func _rewards(ui: Control, host: Control, reward: Dictionary) -> void:

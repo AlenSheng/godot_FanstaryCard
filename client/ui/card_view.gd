@@ -42,6 +42,12 @@ func configure(id: String, info: Dictionary, description: String, selected: bool
 		if frame.texture == null: frame.texture = Art.texture("UI/Codex/qframe_common.png")
 		if selected: frame.texture = Art.texture("UI/Codex/card_selection_battle_glow.png")
 		frame.material = _card_material(unowned, true)
+	if options.get("battle", false):
+		var battle_overlay_key := "UI/Battle/battle_card_unplayable_overlay.png" if disabled else "UI/Battle/battle_card_playable_overlay.png"
+		var battle_overlay := Art.image(self, Art.texture(battle_overlay_key), Vector2.ZERO)
+		battle_overlay.name = "BattleStateOverlay"
+		battle_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		battle_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var lines := description.split("\n\n", true, 1)
 	var effect: String = lines[1] if lines.size() > 1 else description
 	if monster:

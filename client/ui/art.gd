@@ -29,6 +29,26 @@ static func product(kind: String) -> Texture2D:
 static func action_icon(kind: String) -> Texture2D:
 	return texture(MANIFEST.data.get("action_icons", {}).get(kind, ""))
 
+static func equipment(item: Dictionary, fallback_slot: String = "") -> Texture2D:
+	# Equipment snapshots arrive both as an item wrapper and as a bare equipment
+	# record. Resolve the formal 125-image catalog before falling back to the old
+	# generic slot icons used by legacy snapshots.
+	var wrapped = item.get("equipment", {})
+	var gear: Dictionary = wrapped if wrapped is Dictionary else {}
+	if gear.is_empty(): gear = item
+	var quality := str(gear.get("quality", ""))
+	var slot := str(gear.get("slot", fallback_slot))
+	var element := str(gear.get("element", ""))
+	if quality in ["White", "Green", "Blue", "Purple", "Orange"] and slot in ["Head", "Chest", "Hands", "Legs", "Feet"] and element in ["Fire", "Wood", "Water", "Metal", "Earth"]:
+		var formal_key := "Equipment/%s/%s_%s.png" % [quality, slot.to_lower(), element.to_lower()]
+		var formal := texture(formal_key)
+		if formal != null: return formal
+	var legacy: String = str({"Head": "helmet", "Helmet": "helmet", "Chest": "chest", "Body": "chest", "Hands": "gauntlet", "Gloves": "gauntlet", "Legs": "legs", "Feet": "boots", "Boots": "boots"}.get(slot, ""))
+	return texture("UI/Item/exploration_prep_item_icon_%s.png" % legacy) if not legacy.is_empty() else null
+
+static func state(key: String) -> Texture2D:
+	return texture(key)
+
 static func monster(id: String, phase: int = 1) -> Texture2D:
 	id = MANIFEST.data.get("monster_aliases", {}).get(id, id)
 	var variants: Dictionary = MANIFEST.data.get("monster_variants", {}).get(id, {})
@@ -49,7 +69,7 @@ static func style(key: String, tint: Color = Color.WHITE) -> StyleBoxTexture:
 	# decorated ends of title bars, and keep corners fixed on other UI frames.
 	if key.contains("title_bar"):
 		borders = [64, 20, 64, 20]
-	elif borders.all(func(value): return float(value) == 0.0) and box.texture != null:
+	elif _all_zero(borders) and box.texture != null:
 		var inset := minf(24.0, minf(box.texture.get_width(), box.texture.get_height()) / 3.0)
 		borders = [inset, inset, inset, inset]
 	box.axis_stretch_horizontal = StyleBoxTexture.AXIS_STRETCH_MODE_TILE_FIT
@@ -61,6 +81,12 @@ static func style(key: String, tint: Color = Color.WHITE) -> StyleBoxTexture:
 	for side in [SIDE_LEFT, SIDE_RIGHT]: box.set_content_margin(side, 24)
 	for side in [SIDE_TOP, SIDE_BOTTOM]: box.set_content_margin(side, 12)
 	return box
+
+static func _all_zero(values: Array) -> bool:
+	for value in values:
+		if float(value) != 0.0:
+			return false
+	return true
 
 static func image(parent: Node, source: Texture2D, minimum: Vector2) -> TextureRect:
 	var node := TextureRect.new()

@@ -12,6 +12,13 @@ static func header(ui: Control, host: Control) -> void:
 	ui.panel(Rect2(20, 18, 1880, 82), PREFIX + "title_bar_normal.png")
 	ui.button("返回", Rect2(56, 30, 136, 58), host._navigate.bind("hall"), Game.busy).name = "ReturnButton"
 	ui.text("卡组编成" if host.edit_mode else "卡牌图鉴", Rect2(232, 30, 430, 60), 36, P.GOLD)
+	var mail: Button = ui.button("", Rect2(790, 30, 70, 58), host._navigate.bind("mail"), Game.busy, "UI/Global/global_button_secondary.png")
+	mail.name = "MailButton"
+	mail.tooltip_text = "邮件"
+	mail.icon = Art.state("UI/Hall/mail_button.png")
+	mail.expand_icon = true
+	mail.add_theme_constant_override("icon_max_width", 42)
+	if Game.mail_unread > 0: ui.picture(Art.state("UI/Hall/mail_unread_badge.png"), Rect2(832, 25, 27, 27))
 	for i in range(SOULS.size()):
 		var kind: String = SOULS[i]
 		var x := 1010 + i * 218

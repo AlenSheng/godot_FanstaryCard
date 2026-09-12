@@ -4,8 +4,8 @@ const Art = preload("res://ui/art.gd")
 const P = preload("res://ui/palette.gd")
 const Exploration = preload("res://ui/exploration_view.gd")
 const Codex = preload("res://ui/codex_view.gd")
-const BLUE := "UI/CardCodex/card_codex_action_button_blue.png"
-const ORANGE := "UI/CardCodex/card_codex_action_button_orange.png"
+const BLUE := "UI/Global/global_button_primary.png"
+const ORANGE := "UI/Global/global_button_selected.png"
 var host: Control
 
 func build(source: Control) -> void:
@@ -31,6 +31,7 @@ func build(source: Control) -> void:
 			return
 		match host.screen:
 			"hall": _hall()
+			"mail": _mail()
 			"cards", "deck": _codex()
 			"prep": _preparation()
 			"gear": _gear()
@@ -103,7 +104,7 @@ func _header() -> void:
 		Codex.header(self, host)
 		return
 	panel(Rect2(24, 18, 1872, 82), "UI/CardCodex/card_codex_title_bar_normal.png")
-	var names := {"hall": "幻想牌域", "cards": "卡牌图鉴", "prep": "探索准备", "gear": "装备穿戴", "enhance": "碎片强化", "shop": "金币商店", "market": "金币市场"}
+	var names := {"hall": "幻想牌域", "mail": "邮件", "cards": "卡牌图鉴", "prep": "探索准备", "gear": "装备穿戴", "enhance": "碎片强化", "shop": "金币商店", "market": "金币市场"}
 	if host.screen == "hall":
 		picture(Art.texture("UI/Hall/logo.png"), Rect2(55, 29, 255, 58))
 	else:
@@ -112,9 +113,19 @@ func _header() -> void:
 	var player: Dictionary = Game.lobby.get("player", {})
 	var identity := text("%s\nUID %s" % [player.get("displayName", ""), player.get("userId", "")], Rect2(745, 25, 530, 70), 20, P.MUTED)
 	identity.name = "AccountIdentity"
-	button("切换账号", Rect2(1285, 32, 180, 52), Game.logout, Game.busy).name = "SwitchAccountButton"
-	picture(_item("Gold"), Rect2(1490, 35, 44, 44))
-	text("金币 %s" % Game.lobby.get("wallet", {}).get("gold", 0), Rect2(1546, 38, 310, 46), 28, P.GOLD)
+	var mail_button: Button = button("", Rect2(1280, 30, 70, 58), host._navigate.bind("mail"), Game.busy or not Game.ticket.is_empty(), "UI/Global/global_button_secondary.png")
+	mail_button.name = "MailButton"
+	mail_button.tooltip_text = "邮件"
+	mail_button.icon = Art.state("UI/Hall/mail_button.png")
+	mail_button.expand_icon = true
+	mail_button.add_theme_constant_override("icon_max_width", 42)
+	if Game.mail_unread > 0:
+		var badge := picture(Art.state("UI/Hall/mail_unread_badge.png"), Rect2(1322, 25, 27, 27))
+		badge.name = "MailUnreadBadge"
+	var switch_button := button("切换账号", Rect2(1360, 32, 155, 52), Game.logout, Game.busy, "UI/Global/global_button_secondary.png")
+	switch_button.name = "SwitchAccountButton"
+	picture(_item("Gold"), Rect2(1540, 35, 44, 44))
+	text("金币 %s" % Game.lobby.get("wallet", {}).get("gold", 0), Rect2(1596, 38, 260, 46), 28, P.GOLD)
 
 func _item(kind: String) -> Texture2D:
 	var names := {"Gold": "gold", "WarriorSoul": "warrior_soul", "EquipmentFragments": "fragments", "HealthPotion": "potion", "MageSoul": "mage_soul", "PriestSoul": "priest_soul", "GuardianSoul": "guardian_soul", "Helmet": "helmet", "Head": "helmet", "Chest": "chest", "Hands": "gauntlet", "Legs": "legs", "Feet": "boots"}
@@ -141,6 +152,71 @@ func _hall() -> void:
 		var node := button("", rect, host._navigate.bind(entries[i][0]), Game.busy or not Game.ticket.is_empty())
 		node.tooltip_text = entries[i][0]
 		picture(Art.texture("UI/Hall/btn_%s.png" % entries[i][1]), rect)
+
+func _mail() -> void:
+	var mails: Array = Game.mail
+	if mails.is_empty():
+		var empty := panel(Rect2(560, 260, 800, 360), "UI/Global/global_empty_state_panel.png")
+		picture(Art.state("UI/Hall/mail_icon.png"), Rect2(905, 305, 90, 90))
+		text("暂无邮件", Rect2(670, 430, 580, 70), 38, P.MUTED).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		return
+	var scroll := _scroll(Rect2(290, 130, 1320, 860))
+	var column := VBoxContainer.new()
+	column.add_theme_constant_override("separation", 18)
+	scroll.add_child(column)
+	for item in mails:
+		var panel_node := PanelContainer.new()
+		panel_node.custom_minimum_size = Vector2(1240, 170)
+		panel_node.add_theme_stylebox_override("panel", Art.style("UI/Hall/mail_panel.png"))
+		column.add_child(panel_node)
+		var body := VBoxContainer.new()
+		body.add_theme_constant_override("separation", 8)
+		panel_node.add_child(body)
+		var heading := HBoxContainer.new()
+		body.add_child(heading)
+		Art.image(heading, Art.state("UI/Hall/mail_icon.png"), Vector2(42, 42))
+		var heading_label := Label.new()
+		heading_label.text = I18n.t(str(item.get("title", "邮件")))
+		heading_label.add_theme_font_override("font", P.font_for_text(heading_label.text, 30))
+		heading_label.add_theme_font_size_override("font_size", 30)
+		heading_label.add_theme_color_override("font_color", P.GOLD if not bool(item.get("isRead", false)) else P.MUTED)
+		heading.add_child(heading_label)
+		if not bool(item.get("isRead", false)):
+			Art.image(heading, Art.state("UI/Hall/mail_unread_badge.png"), Vector2(28, 28))
+		var message := Label.new()
+		message.text = I18n.t(str(item.get("body", "")))
+		message.add_theme_font_override("font", P.font_for_text(message.text, 21))
+		message.add_theme_font_size_override("font_size", 21)
+		message.add_theme_color_override("font_color", P.PAPER)
+		message.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		body.add_child(message)
+		var attachments = item.get("attachments", {})
+		if attachments is Dictionary:
+			for kind in attachments:
+				if attachments[kind] is Array:
+					for quality in attachments[kind]:
+						var quality_label := Label.new()
+						quality_label.text = I18n.t("装备 · %s" % str(quality))
+						quality_label.add_theme_font_size_override("font_size", 20)
+						body.add_child(quality_label)
+					continue
+				var amount := int(attachments[kind])
+				if amount <= 0: continue
+				var reward := HBoxContainer.new()
+				body.add_child(reward)
+				var icon_key := "UI/Item/mail_attachment_diamond.png" if str(kind) == "diamond" else "UI/Item/exploration_prep_item_icon_gold.png"
+				Art.image(reward, Art.state(icon_key), Vector2(34, 34))
+				var reward_label := Label.new()
+				reward_label.text = "%s ×%s" % [str(kind), amount]
+				reward_label.add_theme_font_size_override("font_size", 20)
+				reward.add_child(reward_label)
+		if not bool(item.get("claimed", false)):
+			var claim := Button.new()
+			claim.text = I18n.t("领取附件")
+			claim.pressed.connect(host._claim_mail.bind(str(item.get("mailId", ""))))
+			claim.custom_minimum_size = Vector2(180, 48)
+			Art.button(claim, "UI/Hall/mail_claim_button.png")
+			body.add_child(claim)
 
 func _codex() -> void:
 	Codex.build(self, host)
@@ -169,7 +245,7 @@ func _loadout(rect: Rect2, editable: bool, snapshot: Dictionary = {}) -> void:
 		var quality: String = str(item.get("quality", "common")).to_lower()
 		var slot := button("", Rect2(point, Vector2(120, 120)), func(): host.gear_draft.resize(5); host.gear_draft[i] = null; host._render(), not editable or id == null, "UI/Prep/exploration_prep_equipment_slot_frame_%s.png" % quality)
 		slot.tooltip_text = host.EquipmentDetails.description(item) if not item.is_empty() else P.word(slots[i]) + " · 未穿戴"
-		picture(_item(slots[i]), Rect2(point + Vector2(18, 12), Vector2(84, 84))).modulate.a = 1.0 if id != null else 0.35
+		picture(Art.equipment(item, slots[i]), Rect2(point + Vector2(18, 12), Vector2(84, 84))).modulate.a = 1.0 if id != null else 0.35
 		text(P.word(slots[i]) + (" +%s" % item.get("level", 0) if id != null else ""), Rect2(point + Vector2(2, 125), Vector2(148, 40)), 22, P.MUTED)
 	var weapon_pos := rect.position + Vector2(rect.size.x - 165, 507)
 	panel(Rect2(weapon_pos, Vector2(120, 120)), "UI/Prep/class_weapon_frame_%s.png" % hero_class.to_lower())
@@ -239,7 +315,7 @@ func _gear() -> void:
 	for item in host.inventory.get("equipments", []):
 		var row := HBoxContainer.new()
 		list.add_child(row)
-		Art.image(row, _item(item.slot), Vector2(68, 70))
+		Art.image(row, Art.equipment(item), Vector2(68, 70))
 		var entry: Button = host._button(row, host._equipment_name(item), func(): host._show_equipment_details(item, func(): host._equip(item)), Game.busy or item.get("location") not in ["Inventory", "Equipped"])
 		entry.tooltip_text = host.EquipmentDetails.description(item)
 		entry.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -268,7 +344,7 @@ func _enhance() -> void:
 	var quote: Dictionary = host._enhancement_quote
 	var title: String = host._equipment_name(selected) if not selected.is_empty() else P.CLASSES[Game.hero_class][1]
 	text(title, Rect2(625, 178, 590, 68), 42, P.GOLD)
-	var image: Texture2D = _item(selected.get("slot", "")) if not selected.is_empty() else Art.texture("UI/Item/exploration_prep_item_icon_weapon_%s.png" % Game.hero_class.to_lower())
+	var image: Texture2D = Art.equipment(selected) if not selected.is_empty() else Art.texture("UI/Item/exploration_prep_item_icon_weapon_%s.png" % Game.hero_class.to_lower())
 	picture(image, Rect2(720, 275, 350, 350))
 	var benefit: String = host.EquipmentDetails.enhancement_text(selected) if not selected.is_empty() else "当前：%s\n下一级：%s" % [host._weapon_benefit(level), host._weapon_benefit(mini(5, level + 1))]
 	text(benefit if level < 5 else "已达最高等级", Rect2(591, 636, 642, 306), 23, P.TEAL)

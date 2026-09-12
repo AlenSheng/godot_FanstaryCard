@@ -255,7 +255,7 @@ func _button(parent: Node, text: String, callback: Callable, disabled: bool = fa
 	button.disabled = disabled
 	button.custom_minimum_size.y = 62
 	button.pressed.connect(callback)
-	Art.button(button, "UI/CardCodex/card_codex_action_button_blue.png")
+	Art.button(button, "UI/Global/global_button_primary.png")
 	parent.add_child(button)
 	return button
 
@@ -387,9 +387,26 @@ func _mail() -> void:
 	_label(content, "📬 邮件", 56, P.GOLD)
 	for item in Game.mail:
 		var panel := _panel(content)
-		_label(panel, item.title, 32, P.GOLD if not item.isRead else P.MUTED)
+		panel.add_theme_stylebox_override("panel", Art.style("UI/Hall/mail_panel.png"))
+		var heading := _row(panel)
+		Art.image(heading, Art.state("UI/Hall/mail_icon.png"), Vector2(48, 48))
+		if not item.isRead: Art.image(heading, Art.state("UI/Hall/mail_unread_badge.png"), Vector2(32, 32))
+		_label(heading, item.title, 32, P.GOLD if not item.isRead else P.MUTED)
 		_label(panel, item.body, 24)
-		if not item.claimed: _button(panel, "领取附件", _claim_mail.bind(str(item.mailId)), Game.busy)
+		var attachments = item.get("attachments", {})
+		if attachments is Dictionary:
+			for kind in attachments:
+				if attachments[kind] is Array:
+					for quality in attachments[kind]: _label(panel, "装备 · %s" % str(quality), 20, P.MUTED)
+					continue
+				var amount := int(attachments[kind])
+				if amount <= 0: continue
+				var attachment_icon := Art.state("UI/Item/mail_attachment_diamond.png") if str(kind).to_lower() == "diamond" else Art.texture("UI/Item/exploration_prep_item_icon_gold.png")
+				Art.image(panel, attachment_icon, Vector2(48, 48))
+				_label(panel, "%s ×%s" % [str(kind), amount], 20, P.MUTED)
+		if not item.claimed:
+			var claim := _button(panel, "领取附件", _claim_mail.bind(str(item.mailId)), Game.busy)
+			Art.button(claim, "UI/Hall/mail_claim_button.png")
 
 func _claim_mail(mail_id: String) -> void:
 	var result: Dictionary = await Game.gateway.request("/api/v1/mail/%s/claim" % mail_id, HTTPClient.METHOD_POST)
@@ -569,7 +586,10 @@ func _equipment() -> void:
 		for item in inventory.get("equipments", []):
 			if item.instanceId == id: name = _equipment_name(item)
 		var slot := _button(row, slot_names[index] + "\n" + name + ("\n点击卸下" if id != null else ""), func(): gear_draft[index] = null; _render(), id == null)
-		slot.icon = Art.texture("UI/Item/exploration_prep_item_icon_%s.png" % ["helmet", "chest", "gauntlet", "legs", "boots"][index])
+		var equipped: Dictionary = {}
+		for candidate in inventory.get("equipments", []):
+			if candidate.instanceId == id: equipped = candidate; break
+		slot.icon = Art.equipment(equipped, ["Head", "Chest", "Hands", "Legs", "Feet"][index])
 		slot.expand_icon = true
 		slot.add_theme_constant_override("icon_max_width", 58)
 	_button(content, "保存五部位穿戴", func(): _mutate("/loadouts/" + Game.hero_class, HTTPClient.METHOD_PUT, {"equipmentIds": gear_draft, "expectedVersion": Game.loadout().get("version", 0)}), Game.busy)

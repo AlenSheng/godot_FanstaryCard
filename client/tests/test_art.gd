@@ -40,6 +40,9 @@ func run_test() -> Dictionary:
 			return {"ok": false, "message": "Class still uses old placeholder portrait: " + hero_class}
 	for kind in ["Cards", "EquipmentFragments", "AdvancedBag", "TopBag"]:
 		if Art.product(kind) == null: return {"ok": false, "message": "Missing server product art: " + kind}
+	var equipment_sample := {"kind": "Equipment", "equipment": {"quality": "Orange", "slot": "Feet", "element": "Water"}}
+	if Art.equipment(equipment_sample) == null or Art.equipment(equipment_sample) != Art.texture("Equipment/Orange/feet_water.png"):
+		return {"ok": false, "message": "Formal equipment art mapping is missing"}
 	for kind in ["Relic", "Spring", "Extract"]:
 		if Art.action_icon(kind) == null: return {"ok": false, "message": "Missing action art: " + kind}
 	if Art.monster("frost-wraith") != null or Art.texture("UI/Monsters/frost_wraith_clean.png") == null:

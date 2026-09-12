@@ -39,6 +39,9 @@ static func build(ui: Control, host: Control, state: Dictionary) -> void:
 		slot.size = Vector2(126, 90)
 		slot.text = I18n.t(("安全 " if index in safe_slots else "") + str(index + 1))
 		if not item.is_empty(): slot.text += "\n" + Details.title(item) + "\n×%s" % item.get("quantity", 1)
+		slot.icon = Art.equipment(item) if item.get("kind", "") == "Equipment" else _item_icon(item)
+		slot.expand_icon = true
+		slot.add_theme_constant_override("icon_max_width", 42)
 		slot.add_theme_font_size_override("font_size", 16)
 		slot.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		slot.tooltip_text = I18n.t(Details.description(item) if not item.is_empty() else "空格")
@@ -134,6 +137,11 @@ static func find_item(items: Array, id: String) -> Dictionary:
 	for item in items:
 		if item.get("item_id", "") == id: return item
 	return {}
+
+static func _item_icon(item: Dictionary) -> Texture2D:
+	var kind := str(item.get("kind", ""))
+	var suffix: String = str({"Gold": "gold", "EquipmentFragments": "fragments", "WarriorSoul": "warrior_soul", "HealthPotion": "potion", "ClassSoul": Game.hero_class.to_lower() + "_soul"}.get(kind, ""))
+	return Art.texture("UI/Item/exploration_prep_item_icon_%s.png" % suffix) if not suffix.is_empty() else null
 
 static func can_add(player: Dictionary, item: Dictionary) -> bool:
 	var items: Array = player.get("inventory", [])
