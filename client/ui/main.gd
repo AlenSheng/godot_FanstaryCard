@@ -12,6 +12,7 @@ const BattleDetails = preload("res://ui/battle_details.gd")
 const AudioSettings = preload("res://ui/audio_settings.gd")
 const CATALOG = preload("res://data/catalog.json")
 const DESCRIPTIONS = preload("res://data/card_descriptions.json")
+const UI_CONFIG = preload("res://data/ui_config.json")
 var screen := "hall"
 var content: VBoxContainer
 var root_column: VBoxContainer
@@ -29,6 +30,7 @@ var potion_count := 0
 var edit_mode := false
 var screen_loading := false
 var _render_pending := false
+var mail_modal_lock := false
 var _midlayer_seen: Dictionary = {}
 var _login_address := "http://127.0.0.1:5080"
 var _login_name := ""
@@ -51,6 +53,8 @@ var _codex_ready := false
 var _codex_mutating := false
 var _enhancement_quote: Dictionary = {}
 var _enhancement_quote_key := ""
+var _toast_tween: Tween
+var _game_title: Label
 
 func _ready() -> void:
 	theme = P.theme()
@@ -87,7 +91,9 @@ func _build_shell() -> void:
 	margin.add_child(root_column)
 	var top := HBoxContainer.new()
 	root_column.add_child(top)
-	_label(top, "幻境牌旅", 38, P.GOLD)
+	var game_title := _label(top, "幻境牌旅", 38, P.GOLD)
+	game_title.name = "GameTitle"
+	_game_title = game_title
 	var spacer := Control.new()
 	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	top.add_child(spacer)
@@ -100,18 +106,19 @@ func _build_shell() -> void:
 	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(content)
 	toast_label = _label(self, "", 20, P.GOLD)
-	toast_label.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-	toast_label.offset_left = 260
-	toast_label.offset_right = -600
-	toast_label.offset_top = -40
-	toast_label.offset_bottom = -4
+	toast_label.set_anchors_preset(Control.PRESET_CENTER)
+	toast_label.position = Vector2(-300, -210)
+	toast_label.size = Vector2(600, 48)
+	toast_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	toast_label.z_index = 100
 	toast_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	toast_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	toast_label.custom_minimum_size.y = 34
 
 func _schedule_render() -> void:
+	if mail_modal_lock: return
 	_sync_account_session()
+	if is_instance_valid(_game_title): _game_title.text = P.localized_text("幻境牌旅")
 	if _render_pending: return
 	_render_pending = true
 	_render.call_deferred()
@@ -185,8 +192,8 @@ func _render() -> void:
 	for node in content.get_children():
 		content.remove_child(node)
 		node.queue_free()
-	status_label.text = Game.connection
-	if not Game.lobby.is_empty(): status_label.text += "    金币 %s" % Game.lobby.get("wallet", {}).get("gold", 0)
+	status_label.text = P.localized_text(Game.connection)
+	if not Game.lobby.is_empty(): status_label.text += P.localized_text("    金币 %s" % Game.lobby.get("wallet", {}).get("gold", 0))
 	var use_reference: bool = not Game.lobby.is_empty() and Game.lobby.get("unfinishedMatch") == null
 	if not Game.room.is_empty() or not Game.settlement.is_empty(): use_reference = true
 	root_column.get_parent().visible = not use_reference
@@ -232,22 +239,36 @@ func _render() -> void:
 
 func _label(parent: Node, text: String, size: int = 24, color: Color = P.PAPER) -> Label:
 	var node := Label.new()
-	node.add_theme_font_override("font", P.font_for_text(text, size))
-	node.text = text
+	var display_text := P.localized_text(text)
+	var typeface := P.font_for_text(display_text, size)
+	node.add_theme_font_override("font", typeface)
+	node.text = display_text
 	node.add_theme_font_size_override("font_size", size)
 	node.add_theme_color_override("font_color", color)
+	node.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	node.clip_text = true
 	parent.add_child(node)
+	P.fit_control_font(node, typeface, size)
 	return node
 
-func _button(parent: Node, text: String, callback: Callable, disabled: bool = false) -> Button:
+func _button(parent: Node, text: String, callback: Callable, disabled: bool = false, key: String = "") -> Button:
 	var button := Button.new()
-	button.text = text
+	button.text = P.localized_text(text)
 	button.disabled = disabled
 	button.custom_minimum_size.y = 62
+	button.clip_text = true
+	button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	button.pressed.connect(callback)
-	Art.button(button, "UI/CardCodex/card_codex_action_button_blue.png")
+	var button_key := key if not key.is_empty() else ("UI/CardCodex/card_codex_action_button_orange.png" if _is_positive_button(text) else "UI/CardCodex/card_codex_action_button_blue.png")
+	Art.button(button, button_key)
 	parent.add_child(button)
+	P.fit_control_font(button, P.font_for_text(button.text, 24), 24, 48.0)
 	return button
+
+func _is_positive_button(value: String) -> bool:
+	for keyword in ["确认", "领取", "登录", "注册", "开始", "保存", "购买", "强化", "穿戴", "上架", "选择", "准备就绪", "探索准备"]:
+		if value.contains(keyword): return true
+	return false
 
 func _panel(parent: Node, minimum_width: float = 0) -> VBoxContainer:
 	var panel := PanelContainer.new()
@@ -273,7 +294,7 @@ func _login() -> void:
 	_label(panel, "账号名称", 22, P.MUTED)
 	var name_input := LineEdit.new()
 	name_input.text = _login_name
-	name_input.placeholder_text = "输入唯一账号名称"
+	name_input.placeholder_text = P.localized_text("输入唯一账号名称")
 	name_input.max_length = 20
 	name_input.text_changed.connect(func(value): _login_name = value)
 	panel.add_child(name_input)
@@ -354,6 +375,17 @@ func _hall() -> void:
 	for key in P.CLASSES:
 		var info: Array = P.CLASSES[key]
 		var button := _button(classes, "%s   %s\n生命上限 %s" % [P.word(key), info[0], info[2]], func(): Game.select_class(key), Game.busy or not Game.preparation.is_empty())
+		button.icon = Art.texture("UI/Codex/class_badge_%s.png" % key.to_lower())
+		button.expand_icon = true
+		button.add_theme_constant_override("icon_max_width", 44)
+		# 当前职业的元素图标放在职业条旁边，而不是职业选择框内部。
+		if Game.hero_class == key:
+			var element_icon := TextureRect.new()
+			element_icon.texture = Art.texture("UI/Battle/battle_element_icon_fire.png")
+			element_icon.custom_minimum_size = Vector2(44, 44)
+			element_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			element_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			classes.add_child(element_icon)
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		if Game.hero_class == key: button.add_theme_stylebox_override("normal", Art.style("UI/CardCodex/card_codex_action_button_orange.png"))
 	var row := _row(content)
@@ -363,7 +395,6 @@ func _hall() -> void:
 	_label(hero, info[0], 52)
 	_label(hero, info[3], 25, P.MUTED)
 	_label(hero, info[4], 30, P.TEAL)
-	_label(hero, "专属武器 · %s · 锁定" % info[1], 28, P.GOLD)
 	_label(hero, "出战编组  %s / 20" % Game.deck().get("cardIds", []).size(), 26)
 	var portal := _panel(row, 740)
 	Art.image(portal, Art.texture("UI/Hall/portal_panel.png"), Vector2(360, 240))
@@ -409,13 +440,15 @@ func _preparation() -> void:
 	_label(right, "描边为安全格，卡牌与专属武器不占格。", 22, P.MUTED)
 	var grid := GridContainer.new()
 	grid.columns = 6
+	grid.add_theme_constant_override("h_separation", Art.COMMON_CELL_GAP)
+	grid.add_theme_constant_override("v_separation", Art.COMMON_CELL_GAP)
 	right.add_child(grid)
 	var capacity: int = {"Free": 20, "Advanced": 28, "Top": 36}[bag_tier]
 	var safe: int = {"Free": 0, "Advanced": 1, "Top": 3}[bag_tier]
 	for index in range(capacity):
 		var cell := _button(grid, str(index + 1), func(): pass, true)
-		Art.button(cell, "UI/Prep/exploration_prep_backpack_cell_empty_normal.png")
-		cell.custom_minimum_size = Vector2(112, 72)
+		Art.button(cell, Art.COMMON_CELL_KEY)
+		cell.custom_minimum_size = Art.COMMON_CELL_DISPLAY_SIZE
 		if index >= capacity - safe:
 			cell.add_theme_stylebox_override("disabled", P.box(P.INK, P.GOLD, 3))
 			cell.icon = Art.texture("UI/Prep/icon_safe.png")
@@ -563,10 +596,13 @@ func _equipment() -> void:
 	for index in range(5):
 		var id: Variant = gear_draft[index] if index < gear_draft.size() else null
 		var name := "未穿戴"
+		var worn_item: Dictionary = {}
 		for item in inventory.get("equipments", []):
-			if item.instanceId == id: name = _equipment_name(item)
+			if item.instanceId == id:
+				name = _equipment_name(item)
+				worn_item = item
 		var slot := _button(row, slot_names[index] + "\n" + name + ("\n点击卸下" if id != null else ""), func(): gear_draft[index] = null; _render(), id == null)
-		slot.icon = Art.texture("UI/Item/exploration_prep_item_icon_%s.png" % ["helmet", "chest", "gauntlet", "legs", "boots"][index])
+		slot.icon = Art.equipment_texture(worn_item) if not worn_item.is_empty() else Art.texture("UI/Item/exploration_prep_item_icon_%s.png" % ["helmet", "chest", "gauntlet", "legs", "boots"][index])
 		slot.expand_icon = true
 		slot.add_theme_constant_override("icon_max_width", 58)
 	_button(content, "保存五部位穿戴", func(): _mutate("/loadouts/" + Game.hero_class, HTTPClient.METHOD_PUT, {"equipmentIds": gear_draft, "expectedVersion": Game.loadout().get("version", 0)}), Game.busy)
@@ -596,7 +632,7 @@ func _comparison(item: Dictionary) -> String:
 
 func _show_equipment_details(item: Dictionary, action: Callable = Callable(), action_title: String = "穿戴") -> void:
 	var dialog := AcceptDialog.new()
-	dialog.title = "装备对比"
+	dialog.title = P.localized_text("装备对比")
 	var column := VBoxContainer.new()
 	column.custom_minimum_size.x = 680
 	dialog.add_child(column)
@@ -609,8 +645,8 @@ func _show_equipment_details(item: Dictionary, action: Callable = Callable(), ac
 
 func _show_battle_details(status: Dictionary) -> void:
 	var dialog := AcceptDialog.new()
-	dialog.title = "当前战斗属性与套装"
-	dialog.dialog_text = BattleDetails.description(status) if not status.is_empty() else "等待战斗属性同步"
+	dialog.title = P.localized_text("当前战斗属性与套装")
+	dialog.dialog_text = BattleDetails.description(status) if not status.is_empty() else P.localized_text("等待战斗属性同步")
 	add_child(dialog)
 	dialog.confirmed.connect(dialog.queue_free)
 	dialog.canceled.connect(dialog.queue_free)
@@ -744,11 +780,13 @@ func _session_result_current(generation: int, result: Dictionary = {}) -> bool:
 
 func _confirm(message: String, action: Callable) -> void:
 	var dialog := ConfirmationDialog.new()
-	dialog.dialog_text = message
-	dialog.title = "确认操作"
-	dialog.ok_button_text = "确认"
-	dialog.cancel_button_text = "取消"
+	dialog.dialog_text = P.localized_text(message)
+	dialog.title = P.localized_text("确认操作")
+	dialog.ok_button_text = P.localized_text("确认")
+	dialog.cancel_button_text = P.localized_text("取消")
 	add_child(dialog)
+	Art.button(dialog.get_ok_button(), "UI/CardCodex/card_codex_action_button_orange.png")
+	Art.button(dialog.get_cancel_button(), "UI/CardCodex/card_codex_action_button_blue.png")
 	dialog.confirmed.connect(func(): dialog.queue_free(); action.call())
 	dialog.canceled.connect(dialog.queue_free)
 	dialog.popup_centered(Vector2i(760, 260))
@@ -923,7 +961,16 @@ func _settlement() -> void:
 func _toast(message: String) -> void:
 	_toast_serial += 1
 	var serial := _toast_serial
-	toast_label.text = message
+	if is_instance_valid(_toast_tween): _toast_tween.kill()
+	toast_label.text = P.localized_text(message)
+	toast_label.modulate = Color(1, 1, 1, 1)
+	toast_label.position = Vector2(-300, -210)
+	toast_label.scale = Vector2(0.92, 0.92)
+	_toast_tween = create_tween()
+	_toast_tween.set_parallel(true)
+	_toast_tween.tween_property(toast_label, "position:y", -282.0, 2.6).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_toast_tween.tween_property(toast_label, "scale", Vector2.ONE, 0.22).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	_toast_tween.tween_property(toast_label, "modulate:a", 0.0, 0.65).set_delay(1.95)
 	await get_tree().create_timer(8.0).timeout
 	if serial == _toast_serial: toast_label.text = ""
 

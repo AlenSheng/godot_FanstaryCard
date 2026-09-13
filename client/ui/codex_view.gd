@@ -18,12 +18,12 @@ static func header(ui: Control, host: Control) -> void:
 		var value: Label = ui.text(str(host._card_material(kind)), Rect2(x + 68, 41, 135, 40), 25, P.GOLD)
 		value.name = "Material_" + kind
 		value.mouse_filter = Control.MOUSE_FILTER_PASS
-		value.tooltip_text = SOUL_NAMES[kind]
+		value.tooltip_text = P.localized_text(SOUL_NAMES[kind])
 
 static func build(ui: Control, host: Control) -> void:
 	var search := LineEdit.new()
 	search.name = "CodexSearch"
-	search.placeholder_text = "搜索卡牌名称或效果"
+	search.placeholder_text = P.localized_text("搜索卡牌名称或效果")
 	search.text = host._search
 	var search_style := Art.style(PREFIX + "search_field_normal.png")
 	search_style.set_content_margin(SIDE_LEFT, 76)
@@ -89,14 +89,14 @@ static func _fill_grid(host: Control, grid: GridContainer, scroll: ScrollContain
 		node.name = "Card_" + id
 		node.size = Vector2(218, 376)
 		node.scale = Vector2.ONE * side / 218.0
-		node.tooltip_text += "\n持有 %s · %s" % [copies, "点击分解 / 编组" if copies > 0 else "点击合成"]
+		node.tooltip_text = P.localized_text(node.tooltip_text + "\n持有 %s · %s" % [copies, "点击分解 / 编组" if copies > 0 else "点击合成"])
 		shown += 1
-	count.text = "已收集 %s / %s" % [collected, total]
-	if shown != total: count.text += "    筛选结果 %s 张" % shown
-	if not host._codex_ready: count.text += "    持有数据未就绪，请重新进入图鉴刷新"
+	count.text = P.localized_text("已收集 %s / %s" % [collected, total])
+	if shown != total: count.text += P.localized_text("    筛选结果 %s 张" % shown)
+	if not host._codex_ready: count.text += P.localized_text("    持有数据未就绪，请重新进入图鉴刷新")
 	if shown == 0:
 		var empty := Label.new()
-		empty.text = "没有符合条件的卡牌"
+		empty.text = P.localized_text("没有符合条件的卡牌")
 		empty.custom_minimum_size = Vector2(1000, 180)
 		empty.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		grid.add_child(empty)
@@ -133,7 +133,7 @@ static func _deck(ui: Control, host: Control) -> void:
 		var info: Dictionary = host.cards.get(id, {})
 		var row := Button.new()
 		row.disabled = Game.busy
-		row.text = "%02d  %s    ×" % [i + 1, info.get("name", id)]
+		row.text = P.localized_text("%02d  %s    ×" % [i + 1, info.get("name", id)])
 		row.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		row.custom_minimum_size = Vector2(397, 44)
 		row.add_theme_font_size_override("font_size", 22)
@@ -235,7 +235,7 @@ static func _details(ui: Control, host: Control) -> void:
 		var upgrade: Button = modal.button(upgrade_title, Rect2(400, 795, 315, 67), func():
 			host._confirm("消耗 %s %s%s，将此卡升级到 +%s？" % [upgrade_cost, material, "和 1 张额外同名卡" if copy_cost > 0 else "", int(entry.get("level", 0)) + 1], host._card_action.bind(id, "upgrade")), Game.busy or not upgrade_ready)
 		upgrade.name = "UpgradeCard"
-		upgrade.tooltip_text = "已达最高等级" if int(entry.get("level", 0)) >= 5 else ("需要额外同名卡，并保留各编组所用副本" if copy_cost > 0 else "只消耗魂材料")
+		upgrade.tooltip_text = P.localized_text("已达最高等级" if int(entry.get("level", 0)) >= 5 else ("需要额外同名卡，并保留各编组所用副本" if copy_cost > 0 else "只消耗魂材料"))
 		modal.text("需额外同名卡 ×%s" % copy_cost, Rect2(397, 747, 321, 38), 21, P.MUTED)
 	if host.edit_mode and owned:
 		var reason := _add_reason(host, id, info, copies)

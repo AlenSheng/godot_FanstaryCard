@@ -3,6 +3,7 @@ using FantasyCard.Server.Players;
 using FantasyCard.Server.Progression;
 using Npgsql;
 using NpgsqlTypes;
+using System.Text.Json;
 
 namespace FantasyCard.Server.Identity;
 
@@ -19,6 +20,7 @@ public sealed class IdentityRepository(
     NpgsqlDataSource dataSource,
     PlayerProvisioningService provisioningService)
 {
+    private static readonly string[] TestEquipmentSlots = ["Head", "Chest", "Hands", "Legs", "Feet"];
     public async Task<PlayerProfile> SignInLocalAsync(
         string deviceId,
         string displayName,
@@ -79,6 +81,10 @@ public sealed class IdentityRepository(
             now,
             cancellationToken);
 
+        if (string.Equals(provider, "local-name", StringComparison.Ordinal) &&
+            externalSubject.StartsWith("test_", StringComparison.OrdinalIgnoreCase))
+            await SeedTestMailAsync(connection, transaction, profile.UserId, now, cancellationToken);
+
         await using (var sessionCommand = new NpgsqlCommand(
             """
             INSERT INTO player_sessions(session_id, player_id, token_hash, expires_at, created_at)
@@ -102,6 +108,50 @@ public sealed class IdentityRepository(
         await transaction.CommitAsync(cancellationToken);
         return profile;
     }
+
+    private static async Task SeedTestMailAsync(NpgsqlConnection connection, NpgsqlTransaction transaction, Guid playerId, DateTimeOffset now, CancellationToken cancellationToken)
+    {
+        var mails = new List<(string Title, string Body, object Attachments)>
+        {
+            ("测试邮件：金币", "测试账号奖励：金币 100000。", new[] { new { kind = "Gold", amount = 100000L } }),
+            ("测试邮件：魂晶", "测试账号奖励：各类魂晶各 100000。", new object[] {
+                new { kind = "WarriorSoul", amount = 100000L }, new { kind = "PriestSoul", amount = 100000L },
+                new { kind = "MageSoul", amount = 100000L }, new { kind = "GuardianSoul", amount = 100000L } }),
+            ("测试邮件：白色火系装备", "测试账号奖励：白色火系装备一套。", EquipmentSet("White", "Fire")),
+            ("测试邮件：绿色水系装备", "测试账号奖励：绿色水系装备一套。", EquipmentSet("Green", "Water")),
+            ("测试邮件：蓝色土系装备", "测试账号奖励：蓝色土系装备一套。", EquipmentSet("Blue", "Earth")),
+            ("测试邮件：紫色木系装备", "测试账号奖励：紫色木系装备一套。", EquipmentSet("Purple", "Wood")),
+            ("测试邮件：橙色金系装备", "测试账号奖励：橙色金系装备一套。", EquipmentSet("Orange", "Metal"))
+        };
+        foreach (var mail in mails)
+        {
+            await using var command = new NpgsqlCommand("INSERT INTO mail_messages(mail_id,player_id,title,body,sender,attachments_json,sent_at) SELECT $1,$2,$3,$4,'System',$5::jsonb,$6 WHERE NOT EXISTS (SELECT 1 FROM mail_messages WHERE player_id=$2 AND title=$3)", connection, transaction);
+            command.Parameters.AddWithValue(Guid.CreateVersion7());
+            command.Parameters.AddWithValue(playerId);
+            command.Parameters.AddWithValue(mail.Title);
+            command.Parameters.AddWithValue(mail.Body);
+            command.Parameters.AddWithValue(JsonSerializer.Serialize(mail.Attachments));
+            command.Parameters.AddWithValue(now);
+            await command.ExecuteNonQueryAsync(cancellationToken);
+
+            // Test accounts may already have a mail created by an older build.
+            // Refresh only its deterministic display payload; claimed_at is left
+            // untouched, so this never grants the reward a second time.
+            await using var repair = new NpgsqlCommand(
+                "UPDATE mail_messages SET attachments_json=$1::jsonb,body=$2,version=version+1 WHERE player_id=$3 AND title=$4 AND (attachments_json IS DISTINCT FROM $1::jsonb OR body IS DISTINCT FROM $2)",
+                connection, transaction);
+            repair.Parameters.AddWithValue(JsonSerializer.Serialize(mail.Attachments));
+            repair.Parameters.AddWithValue(mail.Body);
+            repair.Parameters.AddWithValue(playerId);
+            repair.Parameters.AddWithValue(mail.Title);
+            await repair.ExecuteNonQueryAsync(cancellationToken);
+        }
+    }
+
+    private static object[] EquipmentSet(string quality, string element) =>
+        TestEquipmentSlots
+            .Select(slot => (object)new { kind = "Equipment", amount = 1L, itemId = $"{quality}|{element}|{slot}" })
+            .ToArray();
 
     public async Task<SessionLookupResult> FindByTokenHashAsync(
         byte[] tokenHash,

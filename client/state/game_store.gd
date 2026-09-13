@@ -23,10 +23,16 @@ var room: Dictionary = {}
 var preparation: Dictionary = {}
 var ticket: Dictionary = {}
 var ready_prompt: Dictionary = {}
+var mail: Dictionary = {"items": [], "unreadCount": 0}
 var settlement: Dictionary = {}
 var hero_class := "Mage"
 var selected_cards: Array = []
 var busy := false
+var _class_switch_cooldown_until_ms: int = 0
+
+func _class_switch_config() -> Dictionary:
+	var parsed = JSON.parse_string(FileAccess.get_file_as_string("res://data/ui_config.json"))
+	return parsed if parsed is Dictionary else {"class_switch_cooldown_seconds": 2.5, "class_switch_fast_tip": "切换太快，请稍后再试"}
 var connection := "未连接"
 var _settlement_loading := ""
 var _queued_command: Dictionary = {}
@@ -70,6 +76,7 @@ func _clear_authenticated_state() -> void:
 	preparation = {}
 	ticket = {}
 	ready_prompt = {}
+	mail = {"items": [], "unreadCount": 0}
 	settlement = {}
 	hero_class = "Mage"
 	selected_cards = []
@@ -178,6 +185,7 @@ func refresh_lobby() -> void:
 	if not result.ok: return
 	if not result.data is Dictionary or not validate_config(str(result.data.get("configVersion", "")), "大厅"): return
 	lobby = result.data
+	await refresh_mail()
 	if lobby.player.get("selectedClass") != null: hero_class = lobby.player.selectedClass
 	if lobby.get("unfinishedMatch") != null:
 		gateway.room_id = lobby.unfinishedMatch.roomId
@@ -195,8 +203,65 @@ func refresh_lobby() -> void:
 		elif active.status == 404: preparation = {}
 	changed.emit()
 
+func refresh_mail() -> void:
+	if gateway.token.is_empty(): return
+	var result: Dictionary = await gateway.request("/api/v1/mail", HTTPClient.METHOD_GET, null, [404])
+	if result.ok and result.data is Dictionary:
+		mail = result.data
+		changed.emit()
+	elif result.status == 404:
+		mail = {"items": [], "unreadCount": 0}
+
+func mark_mail_read(id: String, rerender: bool = true) -> void:
+	var result: Dictionary = await gateway.request("/api/v1/mail/%s/read" % id.uri_encode(), HTTPClient.METHOD_POST, {})
+	if not result.ok: return
+	if rerender:
+		await refresh_mail()
+		return
+	for index in range(mail.get("items", []).size()):
+		var item: Dictionary = mail.items[index]
+		if str(item.get("id", item.get("mailId", ""))) == id:
+			if not bool(item.get("read", false)):
+				item["read"] = true
+				mail.items[index] = item
+				mail.unreadCount = maxi(0, int(mail.get("unreadCount", 0)) - 1)
+			break
+
+func claim_mail(id: String) -> void:
+	var result: Dictionary = await gateway.request("/api/v1/mail/%s/claim" % id.uri_encode(), HTTPClient.METHOD_POST, {})
+	if result.ok:
+		notice.emit("邮件附件已领取")
+		await refresh_lobby()
+
+func claim_all_mail() -> void:
+	var result: Dictionary = await gateway.request("/api/v1/mail/claim-all", HTTPClient.METHOD_POST, {})
+	if result.ok:
+		notice.emit("邮件附件已全部领取")
+		await refresh_lobby()
+
+func mark_all_mail_read() -> void:
+	var result: Dictionary = await gateway.request("/api/v1/mail/read-all", HTTPClient.METHOD_POST, {})
+	if result.ok: await refresh_mail()
+
+func delete_mail(id: String) -> void:
+	var result: Dictionary = await gateway.request("/api/v1/mail/%s" % id.uri_encode(), HTTPClient.METHOD_DELETE, {})
+	if result.ok:
+		notice.emit("邮件已删除")
+		await refresh_mail()
+
+func delete_read_mail() -> void:
+	var result: Dictionary = await gateway.request("/api/v1/mail/read", HTTPClient.METHOD_DELETE, {})
+	if result.ok:
+		notice.emit("已读邮件已清理")
+		await refresh_mail()
+
 func select_class(value: String) -> void:
 	if busy or not room.is_empty() or not preparation.is_empty() or not ticket.is_empty(): return
+	var now := Time.get_ticks_msec()
+	if now < _class_switch_cooldown_until_ms:
+		var config := _class_switch_config()
+		notice.emit(str(config.get("class_switch_fast_tip", "切换太快，请稍后再试")))
+		return
 	busy = true
 	var generation: int = gateway.session_generation
 	var result: Dictionary = await gateway.request("/api/v1/players/me", HTTPClient.METHOD_PUT, {"displayName": lobby.player.displayName, "selectedClass": value, "expectedVersion": lobby.player.version})
@@ -204,6 +269,7 @@ func select_class(value: String) -> void:
 	if result.ok:
 		hero_class = value
 		lobby.player = result.data
+		_class_switch_cooldown_until_ms = Time.get_ticks_msec() + int(float(_class_switch_config().get("class_switch_cooldown_seconds", 2.5)) * 1000.0)
 	busy = false
 	changed.emit()
 

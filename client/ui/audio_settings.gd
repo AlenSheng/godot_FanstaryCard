@@ -2,7 +2,7 @@ extends CanvasLayer
 
 const P = preload("res://ui/palette.gd")
 const Art = preload("res://ui/art.gd")
-var _toggle: Button
+var _toggle: BaseButton
 var _popup: PopupPanel
 var _mute_button: CheckButton
 
@@ -13,23 +13,23 @@ func _ready() -> void:
 	overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	overlay.theme = P.theme()
 	add_child(overlay)
-	_toggle = Button.new()
+	_toggle = TextureButton.new()
 	_toggle.name = "AudioSettingsButton"
-	_toggle.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
-	_toggle.offset_left = 24
-	_toggle.offset_right = 224
-	_toggle.offset_top = -54
-	_toggle.offset_bottom = -8
-	_toggle.add_theme_font_size_override("font_size", 23)
-	_toggle.tooltip_text = "调整音效音量；F10 快捷静音"
-	Art.button(_toggle, "UI/CardCodex/card_codex_action_button_blue.png")
+	_toggle.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+	_toggle.position = Vector2(-112, 26)
+	_toggle.size = Vector2(70, 70)
+	_toggle.ignore_texture_size = true
+	_toggle.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
+	_toggle.texture_normal = Art.texture("UI/Hall/settings_button.png")
+	_toggle.texture_hover = Art.texture("UI/Hall/settings_button.png")
+	_toggle.tooltip_text = P.localized("settings")
 	_toggle.pressed.connect(show_settings)
 	overlay.add_child(_toggle)
 	Sound.settings_changed.connect(_refresh)
 	_refresh()
 
 func _refresh() -> void:
-	_toggle.text = "音效 · 静音" if Sound.muted or Sound.volume <= 0 else "音效 · %s%%" % roundi(Sound.volume * 100)
+	_toggle.tooltip_text = "%s · %s %s%%" % [P.localized("settings"), P.localized("sound_volume"), roundi(Sound.volume * 100)]
 
 func show_settings() -> void:
 	if is_instance_valid(_popup):
@@ -44,18 +44,20 @@ func show_settings() -> void:
 	)
 	add_child(_popup)
 	var column := VBoxContainer.new()
-	column.custom_minimum_size = Vector2(590, 330)
+	column.custom_minimum_size = Vector2(590, 430)
 	_popup.add_child(column)
 	var title := Label.new()
-	title.text = "音效设置"
+	title.text = P.localized("settings")
 	title.add_theme_font_override("font", P.font("title"))
 	title.add_theme_font_size_override("font_size", 34)
 	title.add_theme_color_override("font_color", P.GOLD)
 	column.add_child(title)
+	P.fit_control_font(title, P.font("title"), 34)
 	var value := Label.new()
-	value.text = "音效音量 %s%%" % roundi(Sound.volume * 100)
+	value.text = "%s %s%%" % [P.localized("sound_volume"), roundi(Sound.volume * 100)]
 	value.add_theme_font_override("font", P.font("number"))
 	column.add_child(value)
+	P.fit_control_font(value, P.font("number"), 24)
 	var slider := HSlider.new()
 	slider.name = "SoundVolume"
 	slider.min_value = 0
@@ -65,7 +67,7 @@ func show_settings() -> void:
 	slider.custom_minimum_size.y = 44
 	slider.value_changed.connect(func(level):
 		Sound.set_volume(float(level) / 100.0, false)
-		value.text = "音效音量 %s%%" % roundi(level)
+		value.text = "%s %s%%" % [P.localized("sound_volume"), roundi(level)]
 	)
 	slider.drag_ended.connect(func(changed):
 		if changed:
@@ -76,20 +78,58 @@ func show_settings() -> void:
 	var mute := CheckButton.new()
 	_mute_button = mute
 	mute.name = "SoundMute"
-	mute.text = "静音"
+	mute.text = P.localized("mute")
 	mute.button_pressed = Sound.muted
 	mute.toggled.connect(Sound.set_muted)
 	column.add_child(mute)
+	P.fit_control_font(mute, P.font("body"), 24, 48.0)
+	var language_title := Label.new()
+	language_title.text = P.localized("language")
+	language_title.add_theme_font_override("font", P.font("title"))
+	language_title.add_theme_color_override("font_color", P.GOLD)
+	column.add_child(language_title)
+	P.fit_control_font(language_title, P.font("title"), 24)
+	var language := OptionButton.new()
+	for code in P.languages(): language.add_item(str(P.languages()[code].get("name", code)), language.item_count)
+	language.select(P.languages().keys().find(P.language()))
+	language.item_selected.connect(func(index):
+		var code: String = P.languages().keys()[index]
+		P.set_language(code)
+		_refresh()
+		_popup.hide()
+		Game.changed.emit()
+	)
+	column.add_child(language)
+	P.fit_control_font(language, P.font("body"), 24, 48.0)
+	var account_title := Label.new()
+	account_title.text = P.localized("account")
+	account_title.add_theme_font_override("font", P.font("title"))
+	account_title.add_theme_font_size_override("font_size", 26)
+	account_title.add_theme_color_override("font_color", P.GOLD)
+	column.add_child(account_title)
+	P.fit_control_font(account_title, P.font("title"), 26)
+	var account := Button.new()
+	account.name = "SwitchAccountButton"
+	account.text = P.localized("switch_account")
+	Art.button(account, "UI/CardCodex/card_codex_action_button_blue.png")
+	account.pressed.connect(func():
+		_popup.hide()
+		Game.logout()
+	)
+	column.add_child(account)
+	P.fit_control_font(account, P.font("title"), 24, 48.0)
 	var sample := Button.new()
-	sample.text = "试听 · 黄铜与纸牌"
+	sample.text = P.localized("sample_sound")
 	sample.set_meta("sound_cue", "card_play")
 	Art.button(sample, "UI/CardCodex/card_codex_action_button_blue.png")
 	column.add_child(sample)
+	P.fit_control_font(sample, P.font("title"), 24, 48.0)
 	var back := Button.new()
-	back.text = "返回"
+	back.text = P.localized("back")
 	Art.button(back, "UI/CardCodex/card_codex_action_button_blue.png")
 	back.pressed.connect(_popup.hide)
 	column.add_child(back)
+	P.fit_control_font(back, P.font("title"), 24, 48.0)
 	_popup.popup_hide.connect(func():
 		Sound.save_settings()
 		_popup.queue_free()

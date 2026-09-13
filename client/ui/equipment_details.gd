@@ -20,19 +20,19 @@ static func description(item: Dictionary) -> String:
 	var lines: Array[String] = [title(item)]
 	var level: int = int(gear.get("level", 0))
 	if not quality.is_empty():
-		lines.append("%s增伤 +%s%% · 抗性 +%s%%" % [P.word(gear.get("element", "")), percent(float(quality.damage_percent) + level * float(quality.damage_per_level)), percent(float(quality.resistance_percent) + level * float(quality.resistance_per_level))])
+		lines.append("%s%s +%s%% · %s +%s%%" % [P.word(gear.get("element", "")), P.localized("battle_attack_bonus"), percent(float(quality.damage_percent) + level * float(quality.damage_per_level)), P.localized("resistance"), percent(float(quality.resistance_percent) + level * float(quality.resistance_per_level))])
 		var secondary_trait: String = str(gear.get("secondary_trait", gear.get("secondaryTrait", "")))
-		if secondary_trait == "DrawInterval": lines.append("抽牌间隔 %s%%" % percent(float(quality.draw_interval_percent) + level * float(quality.draw_interval_per_level)))
-		elif secondary_trait == "ForcedEscape": lines.append("强制逃脱 +%s%%" % percent(float(quality.forced_escape_percent)))
+		if secondary_trait == "DrawInterval": lines.append("%s %s%%" % [P.localized("battle_draw_interval_seconds"), percent(float(quality.draw_interval_percent) + level * float(quality.draw_interval_per_level))])
+		elif secondary_trait == "ForcedEscape": lines.append("%s +%s%%" % [P.localized("force_escape"), percent(float(quality.forced_escape_percent))])
 	var affix: String = str(gear.get("effect_affix", gear.get("effectAffix", "")))
 	if affix not in ["", "<null>"]:
-		lines.append("%s套 · 同效果3件生效，含橙/红时2件生效" % P.word(affix))
-		var fields: Array = {"Piercing": [["piercing_percent", "穿透"]], "Bulwark": [["bulwark_reduction_percent", "减伤"], ["bulwark_shield_percent", "上盾"]], "Vitality": [["vitality_heal_percent", "治疗"], ["vitality_overcap_percent", "生命上限溢出"]]}.get(affix, [])
+		lines.append("%s%s" % [P.word(affix), P.localized("equipment_set_hint")])
+		var fields: Array = {"Piercing": [["piercing_percent", P.localized("penetration")]], "Bulwark": [["bulwark_reduction_percent", P.localized("damage_reduction")], ["bulwark_shield_percent", P.localized("shield_gain")]], "Vitality": [["vitality_heal_percent", P.localized("healing")], ["vitality_overcap_percent", P.localized("equipment_health_overcap")]]}.get(affix, [])
 		for field in fields:
-			lines.append("套装激活后贡献：%s +%s%%" % [field[1], percent(float(quality.get(field[0], 0)) + level * float(quality.get("affix_per_level", 0)))])
-		if affix == "Bulwark": lines.append("上盾适用所有职业；减伤仅盾卫生效")
+			lines.append("%s: %s +%s%%" % [P.localized("set_contribution"), field[1], percent(float(quality.get(field[0], 0)) + level * float(quality.get("affix_per_level", 0)))])
+		if affix == "Bulwark": lines.append(P.localized("bulwark_hint"))
 	if gear.get("is_bound", gear.get("isBound", false)): lines.append("绑定 · 不可上架")
-	return "\n".join(lines)
+	return P.localized_text("\n".join(lines))
 
 static func percent(value: float) -> String:
 	return ("%.2f" % (value * 100)).trim_suffix("0").trim_suffix("0").trim_suffix(".")
@@ -44,15 +44,15 @@ static func enhancement_text(item: Dictionary) -> String:
 	for row in CATALOG.data.tables.EquipmentQuality:
 		if row.id == gear.get("quality", ""): quality = row; break
 	if quality.is_empty(): return ""
-	var lines: Array[String] = ["属性 +%s → +%s" % [level, mini(level + 1, 5)]]
-	var fields: Array = [["damage_percent", "damage_per_level", P.word(gear.get("element", "")) + "增伤"], ["resistance_percent", "resistance_per_level", "抗性"]]
-	if gear.get("secondaryTrait", gear.get("secondary_trait", "")) == "DrawInterval": fields.append(["draw_interval_percent", "draw_interval_per_level", "抽牌间隔"])
+	var lines: Array[String] = [P.localized("battle_current") + " +%s → +%s" % [level, mini(level + 1, 5)]]
+	var fields: Array = [["damage_percent", "damage_per_level", P.word(gear.get("element", "")) + P.localized("battle_attack_bonus")], ["resistance_percent", "resistance_per_level", P.localized("resistance")]]
+	if gear.get("secondaryTrait", gear.get("secondary_trait", "")) == "DrawInterval": fields.append(["draw_interval_percent", "draw_interval_per_level", P.localized("battle_draw_interval_seconds")])
 	var affix: String = str(gear.get("effectAffix", gear.get("effect_affix", "")))
-	for field in {"Piercing": [["piercing_percent", "破击直伤"]], "Bulwark": [["bulwark_reduction_percent", "载壁减伤（仅盾卫）"], ["bulwark_shield_percent", "载壁上盾"]], "Vitality": [["vitality_heal_percent", "生息治疗"], ["vitality_overcap_percent", "生息超上限"]]}.get(affix, []):
+	for field in {"Piercing": [["piercing_percent", P.localized("battle_piercing_direct")]], "Bulwark": [["bulwark_reduction_percent", P.localized("battle_bulwark_reduction")], ["bulwark_shield_percent", P.localized("battle_bulwark_shield")]], "Vitality": [["vitality_heal_percent", P.localized("battle_vitality_heal")], ["vitality_overcap_percent", P.localized("battle_vitality_overcap")]]}.get(affix, []):
 		fields.append([field[0], "affix_per_level", field[1]])
 	for field in fields:
 		var current: float = float(quality.get(field[0], 0)) + level * float(quality.get(field[1], 0))
 		var next: float = float(quality.get(field[0], 0)) + mini(level + 1, 5) * float(quality.get(field[1], 0))
 		lines.append("%s %s%% → %s%%" % [field[2], percent(current), percent(next)])
-	if affix not in ["", "<null>"]: lines.append("效果词缀为本件贡献，套装激活后生效")
-	return "\n".join(lines)
+	if affix not in ["", "<null>"]: lines.append(P.localized("affix_hint"))
+	return P.localized_text("\n".join(lines))

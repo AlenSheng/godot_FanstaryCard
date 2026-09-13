@@ -42,6 +42,16 @@ func run_test() -> Dictionary:
 		if Art.product(kind) == null: return {"ok": false, "message": "Missing server product art: " + kind}
 	for kind in ["Relic", "Spring", "Extract"]:
 		if Art.action_icon(kind) == null: return {"ok": false, "message": "Missing action art: " + kind}
+	var common_cell: Texture2D = Art.texture(Art.COMMON_CELL_KEY)
+	if common_cell == null or common_cell.get_size() != Vector2(Art.COMMON_CELL_SOURCE_SIZE.x, Art.COMMON_CELL_SOURCE_SIZE.y):
+		return {"ok": false, "message": "Common item cell must remain a 144x144 square"}
+	if Art.COMMON_CELL_DISPLAY_SIZE != Vector2(96, 96) or Art.COMMON_CELL_GAP != 8:
+		return {"ok": false, "message": "Common item cell display spec changed unexpectedly"}
+	for quality in ["White", "Green", "Blue", "Purple", "Orange"]:
+		for element in ["Fire", "Wood", "Water", "Metal", "Earth"]:
+			for slot in ["Head", "Chest", "Hands", "Legs", "Feet"]:
+				var equipment: Texture2D = Art.equipment_texture({"quality": quality, "element": element, "slot": slot})
+				if equipment == null: return {"ok": false, "message": "Missing generated equipment art: %s|%s|%s" % [quality, element, slot]}
 	if Art.monster("frost-wraith") != null or Art.texture("UI/Monsters/frost_wraith_clean.png") == null:
 		return {"ok": false, "message": "Frost wraith should be registered but not assigned to an undefined species"}
 	var box: StyleBoxTexture = Art.style("UI/CardCodex/card_codex_dialog_panel_normal.png")

@@ -9,7 +9,7 @@ func configure(id: String, info: Dictionary, description: String, selected: bool
 	for child in get_children(): child.free()
 	custom_minimum_size = Vector2(218, 376)
 	clip_contents = true
-	tooltip_text = description
+	tooltip_text = P.localized_text(description)
 	mouse_default_cursor_shape = Control.CURSOR_ARROW if disabled else Control.CURSOR_POINTING_HAND
 	var monster: bool = info.get("source", "") == "Monster"
 	var collection: bool = options.get("collection", false) and not options.get("preview", false) and not monster
@@ -88,7 +88,7 @@ func _class_badge(hero_class: String, symbol: String) -> void:
 	badge.name = "ClassBadge"
 	badge.position = Vector2(172, 4)
 	badge.size = Vector2(40, 43)
-	badge.tooltip_text = "职业限定：仅%s可编入卡组" % CLASS_NAMES.get(hero_class, symbol)
+	badge.tooltip_text = P.localized_text("仅限%s职业编组" % P.localized_text(CLASS_NAMES.get(hero_class, symbol)))
 	badge.mouse_filter = Control.MOUSE_FILTER_PASS
 	var label := _text(symbol, Rect2(176, 7, 32, 36), 20, P.PAPER)
 	label.name = "ClassSymbol"
@@ -112,16 +112,19 @@ func _monster_text(id: String, info: Dictionary, effect: String, selected: bool)
 
 func _text(value: String, rect: Rect2, font_size: int, color: Color) -> Label:
 	var label := Label.new()
-	label.text = value
-	label.add_theme_font_override("font", P.font_for_text(value, font_size))
+	var display_text := P.localized_text(value)
+	label.text = display_text
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.autowrap_mode = TextServer.AUTOWRAP_ARBITRARY
 	label.clip_text = true
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	label.add_theme_font_size_override("font_size", font_size)
+	var typeface := P.font_for_text(display_text, font_size)
+	label.add_theme_font_override("font", typeface)
+	label.add_theme_font_size_override("font_size", P.fit_font_size(typeface, font_size, rect.size.y, rect.size.x - 8.0, display_text))
 	label.add_theme_color_override("font_color", color)
 	add_child(label)
 	label.position = rect.position
 	label.size = rect.size
+	P.fit_control_font(label, typeface, font_size, 8.0)
 	return label

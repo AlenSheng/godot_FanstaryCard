@@ -1,6 +1,12 @@
 extends RefCounted
 
 const MANIFEST = preload("res://assets/imported/manifest.json")
+## Shared item-cell art used by inventory, preparation and reward/mail grids.
+## The source is a 144x144 square and should be rendered 1:1 as 96x96.
+const COMMON_CELL_KEY := "UI/Prep/exploration_prep_backpack_cell_empty_normal.png"
+const COMMON_CELL_SOURCE_SIZE := Vector2i(144, 144)
+const COMMON_CELL_DISPLAY_SIZE := Vector2(96, 96)
+const COMMON_CELL_GAP := 8
 static var _textures: Dictionary = {}
 
 static func texture(key: String) -> Texture2D:
@@ -25,6 +31,14 @@ static func product(kind: String) -> Texture2D:
 
 static func action_icon(kind: String) -> Texture2D:
 	return texture(MANIFEST.data.get("action_icons", {}).get(kind, ""))
+
+static func equipment_texture(item: Dictionary) -> Texture2D:
+	var gear: Dictionary = item.get("equipment", item) if item.get("equipment", item) is Dictionary else item
+	var quality := str(gear.get("quality", "")).capitalize()
+	var element := str(gear.get("element", "")).to_lower()
+	var slot := str(gear.get("slot", "")).to_lower()
+	if quality.is_empty() or element.is_empty() or slot.is_empty(): return null
+	return texture("Equipment/%s/%s_%s.png" % [quality, slot, element])
 
 static func monster(id: String, phase: int = 1) -> Texture2D:
 	id = MANIFEST.data.get("monster_aliases", {}).get(id, id)
@@ -64,3 +78,6 @@ static func button(node: Button, key: String) -> void:
 	node.add_theme_stylebox_override("hover", style(key, Color(1.2, 1.15, 1.05)))
 	node.add_theme_stylebox_override("pressed", style(key, Color(0.8, 0.85, 0.9)))
 	node.add_theme_stylebox_override("disabled", style(key, Color(0.55, 0.55, 0.55)))
+
+static func cell_style(tint: Color = Color.WHITE) -> StyleBoxTexture:
+	return style(COMMON_CELL_KEY, tint)

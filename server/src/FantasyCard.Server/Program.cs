@@ -3,6 +3,7 @@ using FantasyCard.Server.Common;
 using FantasyCard.Server.Bootstrap;
 using FantasyCard.Server.Identity;
 using FantasyCard.Server.Matchmaking;
+using FantasyCard.Server.Mail;
 using FantasyCard.Server.Persistence;
 using FantasyCard.Server.Players;
 using FantasyCard.Server.Progression;
@@ -44,6 +45,7 @@ builder.Services.AddBootstrapModule();
 builder.Services.AddPreparationModule();
 builder.Services.AddEconomyModule();
 builder.Services.AddMatchmakingModule();
+builder.Services.AddMailModule();
 builder.Services.AddRoomsModule();
 builder.Services.AddSettlementModule();
 builder.Services.AddRealtimeModule(builder.Configuration);
@@ -123,6 +125,8 @@ var capabilities = new List<string>
     "choice.refresh",
     "choice.pick",
     "settlement.idempotent_holds"
+    ,"mail.inbox_claims"
+    ,"mail.inbox_manage"
 };
 if (LocalAuthPolicy.IsEnabled(
     app.Environment.EnvironmentName,
@@ -164,6 +168,7 @@ app.MapPreparationEndpoints();
 app.MapEconomyEndpoints();
 app.MapMatchmakingEndpoints();
 app.MapSettlementEndpoints();
+app.MapMailEndpoints();
 app.MapRealtimeEndpoints();
 
 app.Run();

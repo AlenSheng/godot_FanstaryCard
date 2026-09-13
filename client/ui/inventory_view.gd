@@ -4,7 +4,7 @@ const P = preload("res://ui/palette.gd")
 const Art = preload("res://ui/art.gd")
 const Details = preload("res://ui/equipment_details.gd")
 const Slot = preload("res://ui/inventory_slot.gd")
-const CELL := "UI/Prep/exploration_prep_backpack_cell_empty_normal.png"
+const CELL := Art.COMMON_CELL_KEY
 
 static func open(host: Control, pile_id: String = "") -> void:
 	host.set_meta("inventory_open", true)
@@ -34,14 +34,18 @@ static func build(ui: Control, host: Control, state: Dictionary) -> void:
 		slot.name = "InventorySlot_%s" % index
 		slot.slot_index = index
 		slot.item_id = item.get("item_id", "")
-		slot.position = Vector2(992 + (index % 6) * 136, 283 + int(index / 6) * 99)
-		slot.size = Vector2(126, 90)
-		slot.text = ("安全 " if index in safe_slots else "") + str(index + 1)
+		slot.position = Vector2(992 + (index % 6) * 104, 270 + int(index / 6) * 104)
+		slot.size = Art.COMMON_CELL_DISPLAY_SIZE
+		slot.text = P.localized_text(("安全 " if index in safe_slots else "") + str(index + 1))
 		if not item.is_empty(): slot.text += "\n" + Details.title(item) + "\n×%s" % item.get("quantity", 1)
 		slot.add_theme_font_size_override("font_size", 16)
 		slot.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		slot.tooltip_text = Details.description(item) if not item.is_empty() else "空格"
+		slot.tooltip_text = P.localized_text(Details.description(item) if not item.is_empty() else "空格")
 		Art.button(slot, CELL)
+		if not item.is_empty():
+			slot.icon = Art.equipment_texture(item)
+			slot.expand_icon = true
+			slot.add_theme_constant_override("icon_max_width", 58)
 		if index in safe_slots: slot.add_theme_color_override("font_color", P.GOLD)
 		if item.get("item_id", "") == selected.get("item_id", "unused"):
 			slot.add_theme_stylebox_override("normal", P.box(Color("29474a"), P.GOLD, 2))
@@ -67,7 +71,7 @@ static func _equipment(ui: Control, host: Control, player: Dictionary, selected:
 			if candidate.get("equipment", {}).get("slot", "") == slot: item = candidate; break
 		var button: Button = ui.button(P.word(slot) + " · " + (Details.title(item) if not item.is_empty() else "未穿戴"), Rect2(112, 235 + index * 69, 586, 60), func(): host._confirm("卸下这件防具并放入背包？", func(): Game.command("inventory.unequip", {"slot": slot})), item.is_empty() or not Game.allowed("inventory.unequip"))
 		button.add_theme_font_size_override("font_size", 24)
-		button.tooltip_text = Details.description(item) if not item.is_empty() else "未穿戴"
+		button.tooltip_text = P.localized_text(Details.description(item) if not item.is_empty() else "未穿戴")
 	ui.text("本命武器 +%s · 锁定，不掉落" % player.get("weapon_level", 0), Rect2(118, 598, 740, 44), 27, P.TEAL)
 	if selected.is_empty():
 		ui.text("选择包中物品查看详情。\n点击已穿防具可以卸下。", Rect2(118, 670, 736, 102), 27, P.PAPER)
@@ -98,7 +102,7 @@ static func _relic(ui: Control, host: Control, state: Dictionary, pile_id: Strin
 	scroll.add_child(column)
 	for item in pile.get("items", []):
 		var button := Button.new()
-		button.text = Details.title(item) + " ×%s" % item.get("quantity", 1)
+		button.text = P.localized_text(Details.title(item) + " ×%s" % item.get("quantity", 1))
 		button.tooltip_text = Details.description(item)
 		button.custom_minimum_size.y = 63
 		button.add_theme_font_size_override("font_size", 25)

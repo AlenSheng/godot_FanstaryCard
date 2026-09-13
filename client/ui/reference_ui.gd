@@ -38,19 +38,22 @@ func build(source: Control) -> void:
 			"market": _market()
 	text(Game.connection, Rect2(1260, 1038, 620, 30), 18, P.MUTED).horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 
-func text(value: String, rect: Rect2, font_size: int = 24, color: Color = P.PAPER) -> Label:
+func text(value: String, rect: Rect2, font_size: int = 24, color: Color = P.PAPER, parent: Node = null) -> Label:
 	var label := Label.new()
-	label.text = value
-	var typeface := P.font_for_text(value, font_size)
+	var display_text := P.localized_text(value)
+	label.text = display_text
+	var typeface := P.font_for_text(display_text, font_size)
 	label.add_theme_font_override("font", typeface)
-	label.add_theme_font_size_override("font_size", P.fit_font_size(typeface, font_size, rect.size.y))
+	label.add_theme_font_size_override("font_size", P.fit_font_size(typeface, font_size, rect.size.y, rect.size.x - 8.0, display_text))
 	label.add_theme_color_override("font_color", color)
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	label.clip_text = true
-	add_child(label)
-	label.position = rect.position
-	label.size = rect.size
+	(parent if parent != null else self).add_child(label)
+	if not (parent != null and parent is Container):
+		label.position = rect.position
+		label.size = rect.size
+	P.fit_control_font(label, typeface, font_size, 8.0)
 	return label
 
 func picture(texture: Texture2D, rect: Rect2) -> TextureRect:
@@ -59,24 +62,29 @@ func picture(texture: Texture2D, rect: Rect2) -> TextureRect:
 	image.size = rect.size
 	return image
 
-func panel(rect: Rect2, key: String = "UI/CardCodex/card_codex_dialog_panel_normal.png") -> Control:
+func panel(rect: Rect2, key: String = "UI/CardCodex/card_codex_dialog_panel_normal.png", parent: Node = null) -> Control:
 	var node := Panel.new()
 	node.add_theme_stylebox_override("panel", Art.style(key))
 	node.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(node)
-	node.position = rect.position
-	node.size = rect.size
+	(parent if parent != null else self).add_child(node)
+	if not (parent != null and parent is Container):
+		node.position = rect.position
+		node.size = rect.size
 	return node
 
-func button(value: String, rect: Rect2, action: Callable, disabled: bool = false, key: String = BLUE) -> Button:
+func button(value: String, rect: Rect2, action: Callable, disabled: bool = false, key: String = BLUE, parent: Node = null) -> Button:
 	var node := Button.new()
-	node.text = value
+	node.text = P.localized_text(value)
 	node.disabled = disabled
 	node.pressed.connect(action)
+	node.clip_text = true
+	node.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	Art.button(node, key)
-	add_child(node)
-	node.position = rect.position
-	node.size = rect.size
+	(parent if parent != null else self).add_child(node)
+	if not (parent != null and parent is Container):
+		node.position = rect.position
+		node.size = rect.size
+	P.fit_control_font(node, P.font_for_text(node.text, 24), 24, 48.0)
 	return node
 
 func card(source: Control, id: String, rect: Rect2, action: Callable, selected: bool = false, disabled: bool = false, options: Dictionary = {}) -> Button:
@@ -87,13 +95,14 @@ func card(source: Control, id: String, rect: Rect2, action: Callable, selected: 
 	node.scale = rect.size / Vector2(218, 376)
 	return node
 
-func _scroll(rect: Rect2, horizontal: bool = false) -> ScrollContainer:
+func _scroll(rect: Rect2, horizontal: bool = false, parent: Node = null) -> ScrollContainer:
 	var node := ScrollContainer.new()
 	node.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO if horizontal else ScrollContainer.SCROLL_MODE_DISABLED
 	node.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED if horizontal else ScrollContainer.SCROLL_MODE_AUTO
-	add_child(node)
-	node.position = rect.position
-	node.size = rect.size
+	(parent if parent != null else self).add_child(node)
+	if not (parent != null and parent is Container):
+		node.position = rect.position
+		node.size = rect.size
 	return node
 
 func _header() -> void:
@@ -110,9 +119,22 @@ func _header() -> void:
 	var player: Dictionary = Game.lobby.get("player", {})
 	var identity := text("%s\nUID %s" % [player.get("displayName", ""), player.get("userId", "")], Rect2(745, 25, 530, 70), 20, P.MUTED)
 	identity.name = "AccountIdentity"
-	button("切换账号", Rect2(1285, 32, 180, 52), Game.logout, Game.busy).name = "SwitchAccountButton"
+	var legacy_switch := button("切换账号", Rect2(1285, 32, 180, 52), Game.logout, Game.busy)
+	legacy_switch.name = "SwitchAccountButton"
+	legacy_switch.visible = false
 	picture(_item("Gold"), Rect2(1490, 35, 44, 44))
-	text("金币 %s" % Game.lobby.get("wallet", {}).get("gold", 0), Rect2(1546, 38, 310, 46), 28, P.GOLD)
+	var wallet_label := text("%s %s" % [P.localized_text("金币"), Game.lobby.get("wallet", {}).get("gold", 0)], Rect2(1546, 38, 220, 46), 28, P.GOLD)
+	wallet_label.name = "WalletGold"
+	if host.screen == "hall":
+		var mail_button := button("", Rect2(34, 286, 96, 82), _mail)
+		mail_button.name = "MailButton"
+		mail_button.icon = Art.texture("UI/Hall/mail_button.png")
+		mail_button.expand_icon = true
+		mail_button.add_theme_constant_override("icon_max_width", 72)
+		mail_button.tooltip_text = P.localized_text("邮件")
+		var unread := int(Game.mail.get("unreadCount", 0))
+		var unread_badge := text(str(unread) if unread > 0 else "", Rect2(105, 278, 30, 34), 22, Color("ffcf66"))
+		unread_badge.name = "HallMailUnreadCount"
 
 func _item(kind: String) -> Texture2D:
 	var names := {"Gold": "gold", "WarriorSoul": "warrior_soul", "EquipmentFragments": "fragments", "HealthPotion": "potion", "MageSoul": "mage_soul", "PriestSoul": "priest_soul", "GuardianSoul": "guardian_soul", "Helmet": "helmet", "Head": "helmet", "Chest": "chest", "Hands": "gauntlet", "Legs": "legs", "Feet": "boots"}
@@ -123,22 +145,406 @@ func _hall() -> void:
 		var hero_class: String = ["Priest", "Mage", "Guardian"][i]
 		var key := "UI/Hall/card_%s_%s.png" % [hero_class.to_lower(), "on" if hero_class == Game.hero_class else "off"]
 		var node := button("", Rect2(42 + i * 310, 118, 295, 138), Game.select_class.bind(hero_class), Game.busy or not Game.preparation.is_empty())
-		node.tooltip_text = "%s · 生命上限 %s" % [P.CLASSES[hero_class][0], P.CLASSES[hero_class][2]]
+		node.tooltip_text = P.localized_text("%s · 生命上限 %s" % [P.CLASSES[hero_class][0], P.CLASSES[hero_class][2]])
 		picture(Art.texture(key), Rect2(42 + i * 310, 118, 295, 138))
+		picture(Art.texture("UI/Codex/class_badge_%s.png" % hero_class.to_lower()), Rect2(42 + i * 310 + 244, 190, 42, 42)).name = "ClassBadge_" + hero_class
 	picture(Art.portrait(Game.hero_class), Rect2(310, 255, 570, 550)).name = "HeroPortrait"
 	picture(Art.passive(Game.hero_class), Rect2(858, 275, 84, 84)).name = "HeroPassive"
-	panel(Rect2(52, 320, 250, 435))
-	text("专属武器", Rect2(90, 343, 180, 45), 26, P.GOLD)
-	picture(Art.texture("UI/Item/exploration_prep_item_icon_weapon_%s.png" % Game.hero_class.to_lower()), Rect2(80, 408, 200, 210))
-	text(P.CLASSES[Game.hero_class][1] + "\n已锁定", Rect2(95, 650, 180, 90), 26, P.GOLD)
 	picture(Art.texture("UI/Hall/portal_panel.png"), Rect2(990, 153, 835, 550))
 	button("探索准备", Rect2(1140, 640, 520, 96), host._navigate.bind("prep"), Game.busy, ORANGE)
 	var entries := [["cards", "codex"], ["gear", "gear"], ["cards", "deck"], ["shop", "shop"], ["market", "market"], ["prep", "prep"], ["enhance", "enhance"]]
 	for i in range(entries.size()):
 		var rect := Rect2(56 + i * 259, 802, 242, 223)
 		var node := button("", rect, host._navigate.bind(entries[i][0]), Game.busy or not Game.ticket.is_empty())
-		node.tooltip_text = entries[i][0]
+		node.tooltip_text = P.localized_text(entries[i][0])
 		picture(Art.texture("UI/Hall/btn_%s.png" % entries[i][1]), rect)
+
+func _mail() -> void:
+	var existing := get_node_or_null("MailModal")
+	if existing != null:
+		return
+	var modal := Control.new()
+	modal.name = "MailModal"
+	modal.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	modal.mouse_filter = Control.MOUSE_FILTER_STOP
+	modal.z_index = 50
+	add_child(modal)
+	var overlay := ColorRect.new()
+	overlay.color = Color(0.02, 0.05, 0.06, 0.78)
+	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	modal.add_child(overlay)
+	var frame := panel(Rect2(280, 115, 1360, 850), "UI/CardCodex/card_codex_dialog_panel_normal.png", modal)
+	frame.mouse_filter = Control.MOUSE_FILTER_STOP
+	text(P.localized_text("邮件"), Rect2(334, 145, 360, 60), 42, P.GOLD, modal)
+	var unread_label := text(_mail_unread_summary(), Rect2(705, 159, 250, 38), 22, P.MUTED, modal)
+	unread_label.name = "MailUnreadCount"
+	button(P.localized_text("一键全领"), Rect2(1050, 145, 150, 52), _mail_action.bind(Game.claim_all_mail), false, ORANGE, modal)
+	button(P.localized_text("全部已读"), Rect2(1215, 145, 150, 52), _mail_action.bind(Game.mark_all_mail_read), false, ORANGE, modal)
+	button(P.localized_text("删除已读"), Rect2(1380, 145, 150, 52), _mail_action.bind(Game.delete_read_mail), false, BLUE, modal)
+	button(P.localized_text("关闭"), Rect2(1490, 892, 130, 52), modal.queue_free, false, BLUE, modal)
+	var list: Array = Game.mail.get("items", [])
+	var list_panel := Control.new()
+	list_panel.position = Vector2(340, 278)
+	list_panel.size = Vector2(760, 600)
+	modal.add_child(list_panel)
+	var detail_panel := Control.new()
+	detail_panel.position = Vector2(1130, 278)
+	detail_panel.size = Vector2(450, 600)
+	modal.add_child(detail_panel)
+	text(P.localized_text("收件箱"), Rect2(340, 224, 360, 46), 28, P.GOLD, modal)
+	text(P.localized_text("邮件详情"), Rect2(1140, 224, 360, 46), 28, P.GOLD, modal)
+	var detail_root := Control.new()
+	detail_root.name = "MailDetailRoot"
+	detail_root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	detail_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	detail_panel.add_child(detail_root)
+	modal.set_meta("mail_detail_root", detail_root)
+	modal.set_meta("mail_detail_panel", detail_panel)
+	if list.is_empty():
+		text(P.localized_text("暂无邮件"), Rect2(500, 500, 420, 60), 30, P.MUTED, modal)
+		text(P.localized_text("选择一封邮件查看详情"), Rect2(1140, 500, 400, 60), 28, P.MUTED, modal)
+		return
+	var scroll := _scroll(Rect2(340, 278, 760, 600), false, modal)
+	scroll.name = "MailListScroll"
+	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	_enable_mail_drag_scroll(scroll)
+	var column := VBoxContainer.new()
+	column.name = "MailListColumn"
+	column.add_theme_constant_override("separation", 12)
+	scroll.add_child(column)
+	modal.set_meta("mail_list_column", column)
+	_build_mail_rows(column)
+	_refresh_mail_detail(modal)
+
+func _build_mail_rows(column: VBoxContainer) -> void:
+	for child in column.get_children():
+		column.remove_child(child)
+		child.queue_free()
+	for raw_item in Game.mail.get("items", []):
+		var item: Dictionary = raw_item if raw_item is Dictionary else {}
+		var id := str(item.get("id", item.get("mailId", "")))
+		var row := HBoxContainer.new()
+		row.name = "MailRow_" + id
+		# The scrolling column sizes itself from its children. Reserve the viewport
+		# width here so the preview area is not collapsed by the action buttons.
+		row.custom_minimum_size = Vector2(760, 112)
+		column.add_child(row)
+		var title := str(item.get("title", P.localized_text("系统邮件")))
+		var unread := not bool(item.get("read", item.get("isRead", false)))
+		var attachments: Array = item.get("attachments", []) if item.get("attachments", []) is Array else []
+		var preview := str(item.get("body", "")).replace("\n", " ").strip_edges()
+		if preview.length() > 54: preview = preview.substr(0, 54) + "…"
+		var state_text := P.localized_text("未读") if unread else P.localized_text("已读")
+		var open_area := Control.new()
+		open_area.name = "MailOpenArea"
+		open_area.custom_minimum_size = Vector2(0, 104)
+		open_area.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		open_area.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		row.add_child(open_area)
+		var open := button("", Rect2(0, 0, 0, 0), func(): _mail_select_by_id(id), false, BLUE, open_area)
+		open.name = "MailOpen"
+		open.set_meta("mail_id", id)
+		open.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		open.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		var text_left := 88.0 if not attachments.is_empty() else 16.0
+		if not attachments.is_empty():
+			var attachment_icon := Art.image(open_area, _mail_attachment_texture(attachments[0]), Vector2(58, 58))
+			attachment_icon.name = "MailAttachmentPreview"
+			attachment_icon.position = Vector2(14, 22)
+			attachment_icon.size = Vector2(58, 58)
+			attachment_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var title_label := Label.new()
+		title_label.name = "MailTitle"
+		title_label.text = "● %s  %s" % [state_text, title]
+		title_label.set_anchors_preset(Control.PRESET_TOP_WIDE)
+		title_label.offset_left = text_left
+		title_label.offset_top = 10.0
+		title_label.offset_right = -14.0
+		title_label.offset_bottom = 43.0
+		title_label.clip_text = true
+		title_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		title_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		title_label.add_theme_color_override("font_color", P.PAPER if unread else P.MUTED)
+		open_area.add_child(title_label)
+		P.fit_control_font(title_label, P.font_for_text(title_label.text, 23), 23, 16.0)
+		var preview_label := Label.new()
+		preview_label.name = "MailPreviewText"
+		preview_label.text = preview if not preview.is_empty() else " "
+		preview_label.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
+		preview_label.offset_left = text_left
+		preview_label.offset_top = -49.0
+		preview_label.offset_right = -14.0
+		preview_label.offset_bottom = -10.0
+		preview_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		preview_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		preview_label.clip_text = true
+		preview_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		preview_label.add_theme_color_override("font_color", Color("a5bbb7") if unread else Color("718681"))
+		open_area.add_child(preview_label)
+		P.fit_control_font(preview_label, P.font_for_text(preview_label.text, 18), 18, 16.0)
+		if not attachments.is_empty():
+			open.tooltip_text = _mail_attachment_tooltip(attachments[0])
+		if not attachments.is_empty():
+			var claim := button(P.localized_text("领取") if not bool(item.get("claimed", false)) else P.localized_text("已领取"), Rect2(0, 0, 0, 0), _mail_action.bind(Game.claim_mail.bind(id)), bool(item.get("claimed", false)), ORANGE, row)
+			claim.name = "MailClaim"
+			claim.custom_minimum_size = Vector2(112, 104)
+		var can_delete := bool(item.get("read", false)) and (bool(item.get("claimed", false)) or attachments.is_empty())
+		var remove := button(P.localized_text("删除"), Rect2(0, 0, 0, 0), _mail_action.bind(Game.delete_mail.bind(id)), not can_delete, BLUE, row)
+		remove.name = "MailDelete"
+		remove.custom_minimum_size = Vector2(112, 104)
+
+func _mail_select(item: Dictionary) -> void:
+	var id := str(item.get("id", item.get("mailId", "")))
+	if id.is_empty(): return
+	host.set_meta("mail_selected_id", id)
+	_mark_mail_read_local(id)
+	var modal := get_node_or_null("MailModal")
+	if modal != null:
+		_update_mail_row_read_state(modal, id)
+		_refresh_mail_detail(modal)
+
+func _mail_select_by_id(id: String) -> void:
+	var item := _mail_item_by_id(id)
+	if not item.is_empty(): _mail_select(item)
+
+func _mail_item_by_id(id: String) -> Dictionary:
+	for raw_item in Game.mail.get("items", []):
+		var item: Dictionary = raw_item if raw_item is Dictionary else {}
+		if str(item.get("id", item.get("mailId", ""))) == id: return item
+	return {}
+
+func _mail_unread_summary() -> String:
+	return "%s %s / %s" % [P.localized_text("未读"), Game.mail.get("unreadCount", 0), Game.mail.get("items", []).size()]
+
+func _refresh_mail_detail(modal: Control) -> void:
+	var detail_root: Control = modal.get_meta("mail_detail_root", null)
+	if not is_instance_valid(detail_root): return
+	var selected := _mail_item_by_id(str(host.get_meta("mail_selected_id", "")))
+	var first: Dictionary = {}
+	if selected.is_empty() and not Game.mail.get("items", []).is_empty():
+		first = Game.mail.items[0] if Game.mail.items[0] is Dictionary else {}
+	if selected.is_empty() and not first.is_empty():
+		var first_id := str(first.get("id", first.get("mailId", "")))
+		host.set_meta("mail_selected_id", first_id)
+		_mark_mail_read_local(first_id)
+		if modal != null: _update_mail_row_read_state(modal, first_id)
+		selected = _mail_item_by_id(first_id)
+	var item := selected if not selected.is_empty() else first
+	if item.is_empty():
+		for child in detail_root.get_children():
+			detail_root.remove_child(child)
+			child.queue_free()
+		text(P.localized_text("暂无邮件"), Rect2(0, 210, 450, 60), 30, P.MUTED, detail_root)
+		return
+	_mail_detail_panel(detail_root, item)
+
+func _update_mail_row_states(modal: Control) -> void:
+	var unread_label: Label = modal.get_node_or_null("MailUnreadCount")
+	if unread_label != null:
+		unread_label.text = _mail_unread_summary()
+	var hall_badge: Label = get_node_or_null("HallMailUnreadCount")
+	if hall_badge != null:
+		hall_badge.text = str(Game.mail.get("unreadCount", 0)) if int(Game.mail.get("unreadCount", 0)) > 0 else ""
+	var wallet_label: Label = get_node_or_null("WalletGold")
+	if wallet_label != null:
+		wallet_label.text = "%s %s" % [P.localized_text("金币"), Game.lobby.get("wallet", {}).get("gold", 0)]
+	var column: VBoxContainer = modal.get_meta("mail_list_column", null)
+	if not is_instance_valid(column): return
+	_build_mail_rows(column)
+
+func _update_mail_row_read_state(modal: Control, id: String) -> void:
+	var unread_label: Label = modal.get_node_or_null("MailUnreadCount")
+	if unread_label != null:
+		unread_label.text = _mail_unread_summary()
+	var hall_badge: Label = get_node_or_null("HallMailUnreadCount")
+	if hall_badge != null:
+		hall_badge.text = str(Game.mail.get("unreadCount", 0)) if int(Game.mail.get("unreadCount", 0)) > 0 else ""
+	var column: VBoxContainer = modal.get_meta("mail_list_column", null)
+	if not is_instance_valid(column): return
+	var row: HBoxContainer = null
+	for candidate in column.get_children():
+		if candidate.name == "MailRow_" + id:
+			row = candidate
+			break
+	if row == null: return
+	var title_label: Label = row.get_node_or_null("MailOpenArea/MailTitle")
+	if title_label == null: return
+	var item := _mail_item_by_id(id)
+	var title := str(item.get("title", P.localized_text("系统邮件")))
+	title_label.text = "● %s  %s" % [P.localized_text("已读"), title]
+	title_label.add_theme_color_override("font_color", P.MUTED)
+
+func _mark_mail_read_local(id: String) -> void:
+	for index in range(Game.mail.get("items", []).size()):
+		var current: Dictionary = Game.mail.items[index]
+		if str(current.get("id", current.get("mailId", ""))) == id:
+			if not bool(current.get("read", current.get("isRead", false))):
+				current["read"] = true
+				Game.mail.items[index] = current
+				Game.mail.unreadCount = maxi(0, int(Game.mail.get("unreadCount", 0)) - 1)
+				Game.mark_mail_read(id, false)
+			return
+
+func _enable_mail_drag_scroll(scroll: ScrollContainer) -> void:
+	var state := {"dragging": false}
+	scroll.gui_input.connect(func(event: InputEvent):
+		if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+			state["dragging"] = event.pressed
+			if event.pressed: scroll.accept_event()
+		elif event is InputEventMouseMotion and state["dragging"]:
+			scroll.scroll_vertical = clampi(scroll.scroll_vertical - int(event.relative.y), 0, maxi(0, int(scroll.get_v_scroll_bar().max_value - scroll.get_v_scroll_bar().page)))
+			scroll.accept_event()
+	)
+
+func _mail_detail_panel(parent: Control, item: Dictionary) -> void:
+	for child in parent.get_children(): child.queue_free()
+	var id := str(item.get("id", item.get("mailId", "")))
+	if not id.is_empty() and not bool(item.get("read", item.get("isRead", false))): Game.mark_mail_read(id, false)
+	var content := MarginContainer.new()
+	content.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	content.add_theme_constant_override("margin_left", 28)
+	content.add_theme_constant_override("margin_right", 28)
+	content.add_theme_constant_override("margin_top", 24)
+	content.add_theme_constant_override("margin_bottom", 24)
+	content.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	parent.add_child(content)
+	var column := VBoxContainer.new()
+	column.add_theme_constant_override("separation", 14)
+	content.add_child(column)
+	text(str(item.get("title", P.localized_text("系统邮件"))), Rect2(0, 0, 0, 0), 34, P.GOLD, column)
+	text("%s: %s" % [P.localized_text("发件人"), item.get("sender", "System")], Rect2(0, 0, 0, 0), 20, P.MUTED, column)
+	var body := Label.new()
+	body.text = str(item.get("body", item.get("content", "")))
+	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	body.custom_minimum_size.y = 120
+	body.add_theme_font_override("font", P.font_for_text(body.text, 24))
+	body.add_theme_font_size_override("font_size", 24)
+	body.add_theme_color_override("font_color", P.PAPER)
+	column.add_child(body)
+	text(P.localized_text("附件"), Rect2(0, 0, 0, 0), 25, P.GOLD, column)
+	var grid := GridContainer.new()
+	grid.columns = 3
+	grid.add_theme_constant_override("h_separation", Art.COMMON_CELL_GAP)
+	grid.add_theme_constant_override("v_separation", Art.COMMON_CELL_GAP)
+	grid.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	column.add_child(grid)
+	var attachments: Array = item.get("attachments", []) if item.get("attachments", []) is Array else []
+	for raw_attachment in attachments:
+		var attachment: Dictionary = raw_attachment if raw_attachment is Dictionary else {}
+		var quality := _mail_attachment_quality(attachment)
+		var cell := panel(Rect2(0, 0, 0, 0), Art.COMMON_CELL_KEY, grid)
+		cell.custom_minimum_size = Art.COMMON_CELL_DISPLAY_SIZE
+		cell.mouse_filter = Control.MOUSE_FILTER_PASS
+		cell.tooltip_text = _mail_attachment_tooltip(attachment)
+		var base_frame := Art.image(cell, Art.texture(Art.COMMON_CELL_KEY), Vector2.ZERO)
+		base_frame.name = "CommonItemFrame"
+		base_frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		base_frame.modulate = _mail_quality_background(quality)
+		base_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var quality_fill := ColorRect.new()
+		quality_fill.name = "QualityBackground"
+		# The source quality frame is 192px with an approximately 12px inner
+		# border. Scale that inset with the rendered cell so the color reaches the
+		# entire interior without covering the decorative border.
+		quality_fill.color = _mail_quality_background(quality)
+		quality_fill.color.a = 1.0
+		var quality_frame := Art.image(cell, Art.texture(_mail_quality_frame_key(quality)), Vector2.ZERO)
+		quality_frame.name = "QualityFrame"
+		quality_frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		quality_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		# Equipment frames use an opaque black center. Draw the quality color after
+		# the frame and inset it so the frame's visible border remains untouched.
+		quality_fill.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		var mail_inset := Art.COMMON_CELL_DISPLAY_SIZE.x * 12.0 / 192.0
+		quality_fill.offset_left = mail_inset
+		quality_fill.offset_top = mail_inset
+		quality_fill.offset_right = -mail_inset
+		quality_fill.offset_bottom = -mail_inset
+		quality_fill.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		cell.add_child(quality_fill)
+		var cell_column := VBoxContainer.new()
+		cell_column.alignment = BoxContainer.ALIGNMENT_CENTER
+		cell_column.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		cell_column.add_theme_constant_override("separation", 0)
+		cell.add_child(cell_column)
+		var icon := Art.image(cell_column, _mail_attachment_texture(attachment), Vector2(58, 58))
+		icon.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		var kind := P.localized_word(_mail_attachment_kind(attachment))
+		text(kind, Rect2(0, 0, 0, 0), 18, P.PAPER, cell_column)
+		text("× %s" % _mail_attachment_amount(attachment), Rect2(0, 0, 0, 0), 22, P.GOLD, cell_column)
+	var actions := HBoxContainer.new()
+	actions.alignment = BoxContainer.ALIGNMENT_END
+	column.add_child(actions)
+	if not bool(item.get("claimed", false)) and not attachments.is_empty():
+		button(P.localized_text("领取"), Rect2(0, 0, 0, 0), _mail_action.bind(Game.claim_mail.bind(id)), false, ORANGE, actions).custom_minimum_size = Vector2(160, 54)
+	var can_delete := bool(item.get("read", true)) and (bool(item.get("claimed", false)) or attachments.is_empty())
+	button(P.localized_text("删除"), Rect2(0, 0, 0, 0), _mail_action.bind(Game.delete_mail.bind(id)), not can_delete, BLUE, actions).custom_minimum_size = Vector2(160, 54)
+
+func _mail_action(action: Callable) -> void:
+	host.mail_modal_lock = true
+	await action.call()
+	var modal := get_node_or_null("MailModal")
+	if modal != null:
+		_update_mail_row_states(modal)
+		_refresh_mail_detail(modal)
+	else:
+		_mail()
+	host.mail_modal_lock = false
+
+func _mail_attachment_texture(attachment: Dictionary) -> Texture2D:
+	var kind := _mail_attachment_kind(attachment)
+	if kind == "Equipment":
+		var raw_id := str(attachment.get("itemId", attachment.get("ItemId", attachment.get("item_id", ""))))
+		var parts := raw_id.split("|", false)
+		if parts.size() == 3:
+			var quality := parts[0].capitalize()
+			var element := parts[1].to_lower()
+			var slot := parts[2].to_lower()
+			var equipment_key := "Equipment/%s/%s_%s.png" % [quality, slot, element]
+			var equipment_texture := Art.texture(equipment_key)
+			if equipment_texture != null: return equipment_texture
+	if kind == "Card" and not str(attachment.get("itemId", "")).is_empty():
+		return Art.card(str(attachment.get("itemId", "")))
+	if kind in ["AdvancedBag", "TopBag"]: return Art.product(kind)
+	if kind == "Diamond": return Art.texture("UI/Item/exploration_prep_item_icon_gold.png")
+	return _item(kind)
+
+func _mail_attachment_kind(attachment: Dictionary) -> String:
+	return str(attachment.get("kind", attachment.get("Kind", "Item")))
+
+func _mail_attachment_quality(attachment: Dictionary) -> String:
+	var raw := str(attachment.get("quality", attachment.get("Quality", "")))
+	if raw.is_empty() and _mail_attachment_kind(attachment) == "Equipment":
+		var item_id := str(attachment.get("itemId", attachment.get("ItemId", attachment.get("item_id", ""))))
+		var parts := item_id.split("|", false)
+		if not parts.is_empty(): raw = parts[0]
+	var quality := raw.capitalize()
+	return quality if quality in ["Common", "White", "Green", "Blue", "Purple", "Orange", "Red"] else "Common"
+
+func _mail_quality_frame_key(quality: String) -> String:
+	return "UI/Prep/exploration_prep_equipment_slot_frame_%s.png" % quality.to_lower()
+
+func _mail_quality_background(quality: String) -> Color:
+	if quality == "Common": return Color("73777a")
+	return P.QUALITY.get(quality, Color("73777a")).darkened(0.35)
+
+func _mail_attachment_amount(attachment: Dictionary) -> int:
+	return int(attachment.get("amount", attachment.get("Amount", 1)))
+
+func _mail_attachment_tooltip(attachment: Dictionary) -> String:
+	var kind := _mail_attachment_kind(attachment)
+	var amount := _mail_attachment_amount(attachment)
+	var lines: Array[String] = [P.localized_word(kind), "%s: %s" % [P.localized("tooltip_quantity"), amount]]
+	if kind == "Equipment":
+		var raw_id := str(attachment.get("itemId", attachment.get("ItemId", attachment.get("item_id", ""))))
+		var parts := raw_id.split("|", false)
+		if parts.size() == 3:
+			lines.insert(0, "%s · %s · %s" % [P.localized_word(parts[0]), P.localized_word(parts[1]), P.localized_word(parts[2])])
+			lines.append("%s: %s" % [P.localized("tooltip_quality"), P.localized_word(parts[0])])
+			lines.append("%s: %s" % [P.localized("tooltip_element"), P.localized_word(parts[1])])
+			lines.append("%s: %s" % [P.localized("tooltip_slot"), P.localized_word(parts[2])])
+	return "\n".join(lines)
 
 func _codex() -> void:
 	Codex.build(self, host)
@@ -165,12 +571,56 @@ func _loadout(rect: Rect2, editable: bool, snapshot: Dictionary = {}) -> void:
 			if owned.instanceId == id: item = owned
 		var point: Vector2 = rect.position + locations[i]
 		var quality: String = str(item.get("quality", "common")).to_lower()
-		var slot := button("", Rect2(point, Vector2(120, 120)), func(): host.gear_draft.resize(5); host.gear_draft[i] = null; host._render(), not editable or id == null, "UI/Prep/exploration_prep_equipment_slot_frame_%s.png" % quality)
+		var slot_base := panel(Rect2(point, Vector2(120, 120)), Art.COMMON_CELL_KEY)
+		slot_base.name = "CommonItemFrame_%s" % slots[i]
+		slot_base.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		slot_base.add_theme_stylebox_override("panel", Art.style(Art.COMMON_CELL_KEY, _mail_quality_background(quality.capitalize())))
+		var slot_frame := Art.image(self, Art.texture(_mail_quality_frame_key(quality.capitalize())), Vector2.ZERO)
+		slot_frame.name = "QualityFrame_%s" % slots[i]
+		slot_frame.position = point
+		slot_frame.size = Vector2(120, 120)
+		slot_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var slot_fill := ColorRect.new()
+		slot_fill.name = "QualityBackground_%s" % slots[i]
+		slot_fill.color = _mail_quality_background(quality.capitalize())
+		slot_fill.color.a = 1.0
+		var slot_inset := 120.0 * 12.0 / 192.0
+		slot_fill.position = point + Vector2(slot_inset, slot_inset)
+		slot_fill.size = Vector2(120.0 - slot_inset * 2.0, 120.0 - slot_inset * 2.0)
+		slot_fill.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		add_child(slot_fill)
+		var slot := Button.new()
+		slot.flat = true
+		slot.position = point
+		slot.size = Vector2(120, 120)
+		slot.disabled = not editable or id == null
+		slot.pressed.connect(func(): host.gear_draft.resize(5); host.gear_draft[i] = null; host._render())
+		for state in ["normal", "hover", "pressed", "disabled"]:
+			slot.add_theme_stylebox_override(state, StyleBoxEmpty.new())
+		add_child(slot)
 		slot.tooltip_text = host.EquipmentDetails.description(item) if not item.is_empty() else P.word(slots[i]) + " · 未穿戴"
-		picture(_item(slots[i]), Rect2(point + Vector2(18, 12), Vector2(84, 84))).modulate.a = 1.0 if id != null else 0.35
+		var equipment_image := Art.equipment_texture(item) if not item.is_empty() else _item(slots[i])
+		picture(equipment_image, Rect2(point + Vector2(18, 12), Vector2(84, 84))).modulate.a = 1.0 if id != null else 0.35
 		text(P.word(slots[i]) + (" +%s" % item.get("level", 0) if id != null else ""), Rect2(point + Vector2(2, 125), Vector2(148, 40)), 22, P.MUTED)
 	var weapon_pos := rect.position + Vector2(rect.size.x - 165, 507)
-	panel(Rect2(weapon_pos, Vector2(120, 120)), "UI/Prep/exploration_prep_equipment_slot_frame_orange.png")
+	var weapon_base := panel(Rect2(weapon_pos, Vector2(120, 120)), Art.COMMON_CELL_KEY)
+	weapon_base.name = "CommonItemFrame_Weapon"
+	weapon_base.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	weapon_base.add_theme_stylebox_override("panel", Art.style(Art.COMMON_CELL_KEY, _mail_quality_background("Orange")))
+	var weapon_frame := Art.image(self, Art.texture(_mail_quality_frame_key("Orange")), Vector2.ZERO)
+	weapon_frame.name = "QualityFrame_Weapon"
+	weapon_frame.position = weapon_pos
+	weapon_frame.size = Vector2(120, 120)
+	weapon_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var weapon_fill := ColorRect.new()
+	weapon_fill.name = "QualityBackground_Weapon"
+	weapon_fill.color = _mail_quality_background("Orange")
+	weapon_fill.color.a = 1.0
+	var weapon_inset := 120.0 * 12.0 / 192.0
+	weapon_fill.position = weapon_pos + Vector2(weapon_inset, weapon_inset)
+	weapon_fill.size = Vector2(120.0 - weapon_inset * 2.0, 120.0 - weapon_inset * 2.0)
+	weapon_fill.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(weapon_fill)
 	picture(Art.texture("UI/Item/exploration_prep_item_icon_weapon_%s.png" % hero_class.to_lower()), Rect2(weapon_pos + Vector2(12, 12), Vector2(96, 96)))
 	text("本命 +%s · 锁定" % snapshot.classWeaponLevel if snapshot.has("classWeaponLevel") else "本命 · 锁定", Rect2(weapon_pos + Vector2(-8, 127), Vector2(180, 40)), 21, P.GOLD)
 
@@ -202,13 +652,13 @@ func _preparation() -> void:
 			picture(Art.product(key + "Bag"), Rect2(860 + i * 328, 226, 68, 78)).name = "BackpackIcon_" + key
 			text(title.split("\n")[0], Rect2(937 + i * 328, 228, 202, 37), 25, P.MUTED if unavailable else P.PAPER)
 			text(title.split("\n")[1], Rect2(937 + i * 328, 267, 202, 32), 20, P.GOLD if tier == key else P.MUTED)
-			tab.tooltip_text = "持有 %s 个" % stock[key]
+		tab.tooltip_text = P.localized_text("持有 %s 个" % stock[key])
 	for index in range(capacity):
-		var point := Vector2(850 + (index % 6) * 163, 342 + (index / 6) * 82)
-		panel(Rect2(point, Vector2(145, 73)), "UI/Prep/exploration_prep_backpack_cell_empty_normal.png")
+		var point := Vector2(850 + (index % 6) * 163, 342 + (index / 6) * 104)
+		panel(Rect2(point, Art.COMMON_CELL_DISPLAY_SIZE), Art.COMMON_CELL_KEY)
 		if index in safe_slots:
-			picture(Art.texture("UI/Prep/icon_safe.png"), Rect2(point + Vector2(42, 5), Vector2(58, 58)))
-		else: text(str(index + 1), Rect2(point + Vector2(8, 8), Vector2(110, 48)), 19, P.MUTED)
+			picture(Art.texture("UI/Prep/icon_safe.png"), Rect2(point + Vector2(19, 19), Vector2(58, 58)))
+		else: text(str(index + 1), Rect2(point + Vector2(8, 8), Vector2(80, 48)), 19, P.MUTED)
 	picture(_item("HealthPotion"), Rect2(850, 853, 64, 74))
 	text("生命药剂 · 持有 %s · 最多 2 瓶" % consumables.get("healthPotionCount", 0), Rect2(930, 850, 630, 45), 25)
 	var count := SpinBox.new()
@@ -237,7 +687,7 @@ func _gear() -> void:
 	for item in host.inventory.get("equipments", []):
 		var row := HBoxContainer.new()
 		list.add_child(row)
-		Art.image(row, _item(item.slot), Vector2(68, 70))
+		Art.image(row, Art.equipment_texture(item) if Art.equipment_texture(item) != null else _item(item.slot), Vector2(68, 70))
 		var entry: Button = host._button(row, host._equipment_name(item), func(): host._show_equipment_details(item, func(): host._equip(item)), Game.busy or item.get("location") not in ["Inventory", "Equipped"])
 		entry.tooltip_text = host.EquipmentDetails.description(item)
 		entry.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -266,7 +716,7 @@ func _enhance() -> void:
 	var quote: Dictionary = host._enhancement_quote
 	var title: String = host._equipment_name(selected) if not selected.is_empty() else P.CLASSES[Game.hero_class][1]
 	text(title, Rect2(625, 178, 590, 68), 42, P.GOLD)
-	var image: Texture2D = _item(selected.get("slot", "")) if not selected.is_empty() else Art.texture("UI/Item/exploration_prep_item_icon_weapon_%s.png" % Game.hero_class.to_lower())
+	var image: Texture2D = Art.equipment_texture(selected) if not selected.is_empty() else Art.texture("UI/Item/exploration_prep_item_icon_weapon_%s.png" % Game.hero_class.to_lower())
 	picture(image, Rect2(720, 275, 350, 350))
 	var benefit: String = host.EquipmentDetails.enhancement_text(selected) if not selected.is_empty() else "当前：%s\n下一级：%s" % [host._weapon_benefit(level), host._weapon_benefit(mini(5, level + 1))]
 	text(benefit if level < 5 else "已达最高等级", Rect2(591, 636, 642, 306), 23, P.TEAL)
@@ -318,7 +768,7 @@ func _shop() -> void:
 		image.size = Vector2(180, 230)
 		var detail := Label.new()
 		var amount: int = int(payload.get("amount", payload.get("count", 0)))
-		detail.text = ("每份 ×%s\n" % amount if amount > 0 else "") + "今日 %s / %s\n\n%s 金币" % [item.purchased, item.limit, item.priceGold]
+		detail.text = P.localized_text(("每份 ×%s\n" % amount if amount > 0 else "") + "今日 %s / %s\n\n%s 金币" % [item.purchased, item.limit, item.priceGold])
 		detail.position = Vector2(20, 371)
 		detail.size = Vector2(200, 160)
 		detail.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -413,7 +863,7 @@ func _ready_prompt() -> void:
 	text("已确认 %s / %s" % [Game.ready_prompt.get("ready_players", 0), Game.ready_prompt.get("required_players", 1)], Rect2(720, 455, 600, 80), 36)
 	var deadline: float = float(Game.ready_prompt.get("deadline_unix_ms", 0)) / 1000.0
 	var remaining := text("", Rect2(720, 552, 600, 60), 28, P.TEAL)
-	var update_time: Callable = func(): remaining.text = "确认剩余 %s 秒" % maxi(0, int(deadline - Time.get_unix_time_from_system()))
+	var update_time: Callable = func(): remaining.text = P.localized_text("确认剩余 %s 秒" % maxi(0, int(deadline - Time.get_unix_time_from_system())))
 	update_time.call()
 	var timer := Timer.new()
 	timer.wait_time = 0.25

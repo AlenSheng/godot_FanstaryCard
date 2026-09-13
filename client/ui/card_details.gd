@@ -26,15 +26,15 @@ static func with_element(card: Dictionary, element_override: String) -> Dictiona
 static func effect_text(effect: Dictionary) -> String:
 	var lines: Array[String] = []
 	var secondary_damage: int = int(effect.get("secondaryElementalDamage", effect.get("secondary_elemental_damage", 0)))
-	if secondary_damage > 0: lines.append("%s伤 %s（独立分段）" % [P.word(effect.get("secondaryElement", effect.get("secondary_element", "None"))), secondary_damage])
+	if secondary_damage > 0: lines.append(P.localized("battle_damage_segment") % [P.word(effect.get("secondaryElement", effect.get("secondary_element", "None"))), secondary_damage])
 	for key in ["elementalDamage", "directDamage", "heal", "shield", "drawCharge", "immediateDraw", "drawSpeedModifier", "stunSeconds", "drawBlockSeconds", "healthCost", "sameElementBonus", "resonanceBonus", "conflictCancelBonus", "conflictHealCoefficient"]:
 		var value: float = float(effect.get(key, effect.get(key.to_snake_case(), 0)))
 		if is_zero_approx(value): continue
-		var title: String = {"elementalDamage": P.word(effect.get("element", "None")) + "伤", "directDamage": "直伤", "heal": "治疗", "shield": "护盾", "drawCharge": "抽牌充能", "immediateDraw": "立即抽牌", "drawSpeedModifier": "抽牌间隔", "stunSeconds": "眩晕", "drawBlockSeconds": "锁抽", "healthCost": "自损生命", "sameElementBonus": "同核加成", "resonanceBonus": "相生加成", "conflictCancelBonus": "相克抵消", "conflictHealCoefficient": "相克治疗系数"}[key]
-		var suffix := "秒" if key.ends_with("Seconds") else ""
+		var title: String = {"elementalDamage": P.word(effect.get("element", "None")) + P.localized("battle_secondary_damage"), "directDamage": P.localized("direct_damage"), "heal": P.localized("healing"), "shield": P.localized("shield_gain"), "drawCharge": P.localized("battle_draw_charge"), "immediateDraw": P.localized("battle_immediate_draw"), "drawSpeedModifier": P.localized("draw_interval"), "stunSeconds": P.localized("stun"), "drawBlockSeconds": P.localized("draw_lock"), "healthCost": P.localized("self_damage"), "sameElementBonus": P.localized("battle_same_element"), "resonanceBonus": P.localized("battle_resonance"), "conflictCancelBonus": P.localized("battle_conflict_cancel"), "conflictHealCoefficient": P.localized("battle_conflict_heal")}[key]
+		var suffix := P.localized("seconds") if key.ends_with("Seconds") else ""
 		if key in ["drawCharge", "drawSpeedModifier", "conflictCancelBonus", "conflictHealCoefficient"]: value *= 100; suffix = "%"
 		var text := title + " " + ("%.2f" % value).trim_suffix("0").trim_suffix("0").trim_suffix(".") + suffix
-		if key == "drawSpeedModifier": text += " / %s秒" % effect.get("drawSpeedSeconds", effect.get("draw_speed_seconds", 0))
+		if key == "drawSpeedModifier": text += " / %s%s" % [effect.get("drawSpeedSeconds", effect.get("draw_speed_seconds", 0)), P.localized("seconds")]
 		lines.append(text)
-	if effect.get("isClassReveal", effect.get("is_class_reveal", false)): lines.append("职业显：本职业显示元素的基础伤害 ×1.3")
+	if effect.get("isClassReveal", effect.get("is_class_reveal", false)): lines.append(P.localized("battle_class_reveal"))
 	return " · ".join(lines)

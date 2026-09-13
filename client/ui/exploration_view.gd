@@ -7,7 +7,7 @@ const InventoryView = preload("res://ui/inventory_view.gd")
 const Details = preload("res://ui/equipment_details.gd")
 const BattleDetails = preload("res://ui/battle_details.gd")
 const PANEL := "UI/CardCodex/card_codex_dialog_panel_normal.png"
-const SLOT := "UI/Prep/exploration_prep_backpack_cell_empty_normal.png"
+const SLOT := Art.COMMON_CELL_KEY
 const ITEM := "UI/Item/exploration_prep_item_icon_"
 
 static func build(ui: Control, host: Control) -> void:
@@ -384,19 +384,25 @@ static func show_midlayer(ui: Control, host: Control, row: int, column: int) -> 
 	overlay.add_child(frame)
 	for entry in [["进入中层", 54, 285], ["进入后不能退回外层", 30, 433], ["随机撤离点不会显示在小地图", 30, 526], ["源泉常亮，可规划绕路回血", 30, 619]]:
 		var label := Label.new()
-		label.text = entry[0]
-		label.add_theme_font_override("font", P.font_for_text(entry[0], entry[1]))
+		var display_text := P.localized_text(entry[0])
+		label.text = display_text
+		label.add_theme_font_override("font", P.font_for_text(display_text, entry[1]))
 		label.position = Vector2(583, entry[2])
 		label.size = Vector2(754, 76)
-		label.add_theme_font_size_override("font_size", entry[1])
+		var typeface := P.font_for_text(display_text, entry[1])
+		label.add_theme_font_override("font", typeface)
+		label.add_theme_font_size_override("font_size", P.fit_font_size(typeface, entry[1], label.size.y, label.size.x - 12.0, display_text))
 		label.add_theme_color_override("font_color", P.GOLD if entry[1] == 54 else P.PAPER)
 		_center(label)
 		overlay.add_child(label)
+		P.fit_control_font(label, typeface, entry[1], 12.0)
 	var confirm := Button.new()
-	confirm.text = "确认进入"
+	confirm.text = P.localized_text("确认进入")
 	confirm.position = Vector2(735, 758)
 	confirm.size = Vector2(450, 87)
 	confirm.add_theme_font_size_override("font_size", 35)
+	confirm.clip_text = true
+	confirm.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	Art.button(confirm, "UI/CardCodex/card_codex_action_button_blue.png")
 	confirm.pressed.connect(func():
 		host.remove_meta("pending_move")
@@ -404,10 +410,14 @@ static func show_midlayer(ui: Control, host: Control, row: int, column: int) -> 
 		overlay.queue_free()
 		Game.command("room.move", {"row": row, "column": column}))
 	overlay.add_child(confirm)
+	P.fit_control_font(confirm, P.font_for_text(confirm.text, 35), 35, 48.0)
 	var cancel := Button.new()
-	cancel.text = "暂不进入"
+	cancel.text = P.localized_text("暂不进入")
 	cancel.position = Vector2(750, 861)
 	cancel.size = Vector2(420, 60)
 	Art.button(cancel, "UI/CardCodex/card_codex_action_button_blue.png")
+	cancel.clip_text = true
+	cancel.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	cancel.pressed.connect(func(): host.remove_meta("pending_move"); overlay.queue_free())
 	overlay.add_child(cancel)
+	P.fit_control_font(cancel, P.font_for_text(cancel.text, 24), 24, 48.0)
