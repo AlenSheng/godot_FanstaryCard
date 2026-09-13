@@ -397,7 +397,7 @@ func _hall() -> void:
 	_label(hero, info[4], 30, P.TEAL)
 	_label(hero, "出战编组  %s / 20" % Game.deck().get("cardIds", []).size(), 26)
 	var portal := _panel(row, 740)
-	Art.image(portal, Art.texture("UI/Hall/portal_panel.png"), Vector2(360, 240))
+	Art.image(portal, Art.texture("UI/Hall/portal_background_clean.png"), Vector2(360, 240))
 	_label(portal, "混沌领域", 60, P.GOLD)
 	_label(portal, "六乘六的未知旅途\n四名旅人，向领域中心前进。", 28)
 	_button(portal, "探索准备   →", _navigate.bind("prep"))
@@ -464,15 +464,19 @@ func _ready_screen() -> void:
 	_label(panel, "确认剩余 %s 秒" % remaining, 32, P.TEAL)
 	_button(panel, "准备就绪", func(): Game.gateway.send("room.ready"), not Game.gateway.online)
 
+func card_description(id: String, kind: String = "face") -> String:
+	var locale := P.language()
+	var descriptions: Dictionary = DESCRIPTIONS.data.get(locale, DESCRIPTIONS.data.get("zh", {}))
+	return str(descriptions.get("card.%s.%s" % [kind, id], ""))
+
 func _card_text(id: String, level: int = 0, element_override: String = "") -> String:
 	var info: Dictionary = CardDetails.with_element(cards.get(id, {}), element_override)
 	var source: String = info.get("source", "")
 	var badge := "怪" if not info.get("is_codex", true) else P.word(info.get("hero_class", ""))
 	var name: String = info.get("name", id)
-	var descriptions: Dictionary = DESCRIPTIONS.data.get("zh-CN", DESCRIPTIONS.data.get("zh", {}))
-	var description: String = descriptions.get("card.face.desc." + id, "")
-	if level > 0 or not element_override.is_empty(): description = CardDetails.effect_text(CardDetails.at_level(info, level))
+	var description: String = card_description(id, "face")
 	if description.is_empty():
+		# Cards without a configured face description use the structured fallback.
 		var lines: Array = []
 		for key in ["elemental_damage", "direct_damage", "heal", "shield"]:
 			if int(info.get(key, 0)) > 0:

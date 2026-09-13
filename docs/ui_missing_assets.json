@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
-  "audit_date": "2026-09-10",
+  "audit_date": "2026-09-13",
   "full_ui_checklist": "docs/UI_ASSET_MASTER_CHECKLIST.md",
-  "scope_boundary": "本文件保留原27项补图批次统计；remaining_new_illustration_requests=0不代表全项目装备与UI美术齐全。完整需求、125个当前防具外观组合与25个红装预留组合见full_ui_checklist。本轮仅补充清单指针，未生成图片。",
+  "scope_boundary": "本文件保留原27项补图批次统计；remaining_new_illustration_requests=0不代表全项目装备与UI美术齐全。完整需求、125个当前防具外观组合与25个红装预留组合见full_ui_checklist。本轮新增并导出大厅职业卡与玩法入口精灵拆分资源；玩法入口没有待补 UI，待 Godot 视觉验收。",
   "scope": "当前导入目录共418张位图（217 UI + 200图鉴插画 + 1怪物卡背景），全部登记且文件存在；原27项/28 PNG已供齐。战斗表现与历史协议缺口已补齐；本轮另交付并接入2份完整思源字体和22个原创短音效，原生14项通过。源文件归档与最终视觉验收见supporting_work；冰霜幽灵身份待定，暗红卡框待复核。",
   "counts": {
     "mockup_png": 0,
@@ -29,6 +29,7 @@
     "registered_files": 418,
     "boss_phase_variant_images": 2,
     "supporting_work_items": 7,
+    "completed_ui_split_requests": 2,
     "bundled_font_files": 2,
     "bundled_audio_files": 22
   },
@@ -2265,6 +2266,113 @@
       "original_missing_reason": "PSD可提取石门图标，但深暗石块/台阶有误抠；现有Blender门户也可做替代。"
     },
     {
+      "id": "HALL-CLASS-SPRITES",
+      "name": "大厅职业选择卡精灵拆分",
+      "priority": "P1",
+      "status": "exported_and_integrated_pending_visual_review",
+      "route": "imagegen_and_source_crop",
+      "modules": [
+        "hall"
+      ],
+      "reference_mockups": [
+        "ui_mockups_v058/ui_hall_1920x1080.png",
+        "codex-clipboard-e44bee05-a233-40d4-856c-37711a54df23.png"
+      ],
+      "reusable_assets": [
+        "UI/Prep/exploration_prep_hero_portrait_priest.png",
+        "UI/Prep/exploration_prep_hero_portrait_mage.png",
+        "UI/Prep/exploration_prep_hero_portrait_guardian.png",
+        "UI/Hall/class_card_heart.png"
+      ],
+      "missing_reason": "旧大厅职业卡PNG将头像、职业名和固定生命值烘焙为合成图，无法支持数据驱动。现改为无字卡体、职业头像、完整红心及动态文本分层组合；右侧职业徽记按当前设计删除。",
+      "deliverables": [
+        {
+          "filename": "UI/Hall/class_card_frame_off.png",
+          "size_px": [
+            928,
+            432
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null,
+          "source": "ImageGen blank-card export; tools/export_hall_class_sprites.ps1"
+        },
+        {
+          "filename": "UI/Hall/class_card_frame_on.png",
+          "size_px": [
+            928,
+            432
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null,
+          "source": "ImageGen blank-card export; tools/export_hall_class_sprites.ps1"
+        },
+        {
+          "filename": "UI/Hall/class_card_portrait_priest.png",
+          "size_px": [
+            256,
+            256
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null,
+          "source": "UI/Prep/exploration_prep_hero_portrait_priest.png"
+        },
+        {
+          "filename": "UI/Hall/class_card_portrait_mage.png",
+          "size_px": [
+            256,
+            256
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null,
+          "source": "UI/Prep/exploration_prep_hero_portrait_mage.png"
+        },
+        {
+          "filename": "UI/Hall/class_card_portrait_guardian.png",
+          "size_px": [
+            256,
+            256
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null,
+          "source": "UI/Prep/exploration_prep_hero_portrait_guardian.png"
+        },
+        {
+          "filename": "UI/Hall/class_card_heart.png",
+          "size_px": [
+            64,
+            64
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null,
+          "source": "tools/export_hall_class_sprites.ps1"
+        }
+      ],
+      "dynamic_layers": [
+        "职业名称",
+        "生命值与上限",
+        "选中/锁定/不可用状态"
+      ],
+      "acceptance": [
+        "六个新增PNG均为无文字、无数字、无固定职业信息的可复用层；透明背景真实Alpha有效。",
+        "普通与选中卡体尺寸、内边距和点击区域一致；选中态只改变边框/高亮，不改变动态信息布局。",
+        "职业名与生命值由Godot按真实职业数据绘制；完整红心使用独立精灵，右侧职业徽记不显示。"
+      ],
+      "generation_required": true,
+      "original_status": "not_listed",
+      "current_review": {
+        "delivery_status": "已通过 ImageGen 无字卡体、现有立绘裁图和完整红心导出6张PNG，登记到导入manifest并替换大厅合成职业卡渲染。",
+        "all_delivered": true,
+        "all_registered": true,
+        "note": "效果图路径仅作版式参考；旧合成职业卡和右侧职业徽记已删除，大厅现以无字卡体、职业头像、完整红心和动态文本分层组合，待 Godot 视觉验收。"
+      }
+    },
+    {
       "id": "CHAR-CONSISTENCY-PRIEST",
       "name": "牧师跨界面造型一致性",
       "priority": "P2",
@@ -2286,7 +2394,7 @@
       ],
       "reusable_assets": [
         "UI/Prep/exploration_prep_hero_portrait_priest.png",
-        "UI/Hall/card_priest_off.png"
+        "UI/Hall/class_card_portrait_priest.png"
       ],
       "missing_reason": "已收到统一角色全身图，尺寸和真实Alpha通过检查；大厅、准备、装备与战斗共用同一角色资源。原生预览确认牧师兜帽、盾卫重盔轮廓与职业切换一致。",
       "deliverables": [
@@ -2301,7 +2409,7 @@
           "nine_slice_ltrb_px": null
         }
       ],
-      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。与Hall/card_priest_off中的潮听·临一致的深蓝兜帽轮廓，持青色临渊杖，服装以深青与银灰为主，沉稳水系法衣，朝向右侧。全身站姿，保留头脚8%安全边，锁定一套角色脸型、服装与武器；另外的头像从此图裁切。不要背景、装备槽、生命数字或名称。",
+      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。与已导出的Hall职业头像中潮听·临一致的深蓝兜帽轮廓，持青色临渊杖，服装以深青与银灰为主，沉稳水系法衣，朝向右侧。全身站姿，保留头脚8%安全边，锁定一套角色脸型、服装与武器；另外的头像从此图裁切。不要背景、装备槽、生命数字或名称。",
       "acceptance": [
         "缩到实际UI显示尺寸仍可辨识，边缘无背景残留和误抠孔洞。",
         "动态文字与数值全部由Godot绘制，不能烘焙入素材。"
@@ -2372,7 +2480,7 @@
       ],
       "reusable_assets": [
         "UI/Prep/exploration_prep_hero_portrait_guardian.png",
-        "UI/Hall/card_guardian_off.png"
+        "UI/Hall/class_card_portrait_guardian.png"
       ],
       "missing_reason": "已收到统一角色全身图，尺寸和真实Alpha通过检查；大厅、准备、装备与战斗共用同一角色资源。原生预览确认牧师兜帽、盾卫重盔轮廓与职业切换一致。",
       "deliverables": [
@@ -2387,7 +2495,7 @@
           "nine_slice_ltrb_px": null
         }
       ],
-      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。与Hall/card_guardian_off中的载山·敦一致的厚甲封闭头盔轮廓，褐金重甲与载岳盾，宽肩沉重站姿，朝向右侧。全身站姿，保留头脚8%安全边，锁定一套角色脸型、服装与武器；另外的头像从此图裁切。不要背景、装备槽、生命数字或名称。",
+      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。与已导出的Hall职业头像中载山·敦一致的厚甲封闭头盔轮廓，褐金重甲与载岳盾，宽肩沉重站姿，朝向右侧。全身站姿，保留头脚8%安全边，锁定一套角色脸型、服装与武器；另外的头像从此图裁切。不要背景、装备槽、生命数字或名称。",
       "acceptance": [
         "缩到实际UI显示尺寸仍可辨识，边缘无背景残留和误抠孔洞。",
         "动态文字与数值全部由Godot绘制，不能烘焙入素材。"

@@ -81,9 +81,13 @@ public sealed class IdentityRepository(
             now,
             cancellationToken);
 
-        if (string.Equals(provider, "local-name", StringComparison.Ordinal) &&
-            externalSubject.StartsWith("test_", StringComparison.OrdinalIgnoreCase))
-            await SeedTestMailAsync(connection, transaction, profile.UserId, now, cancellationToken);
+        if (string.Equals(provider, "local-name", StringComparison.Ordinal))
+        {
+            if (externalSubject.StartsWith("test2_", StringComparison.OrdinalIgnoreCase))
+                await SeedTestMailAsync(connection, transaction, profile.UserId, now, true, cancellationToken);
+            else if (externalSubject.StartsWith("test_", StringComparison.OrdinalIgnoreCase))
+                await SeedTestMailAsync(connection, transaction, profile.UserId, now, false, cancellationToken);
+        }
 
         await using (var sessionCommand = new NpgsqlCommand(
             """
@@ -109,9 +113,21 @@ public sealed class IdentityRepository(
         return profile;
     }
 
-    private static async Task SeedTestMailAsync(NpgsqlConnection connection, NpgsqlTransaction transaction, Guid playerId, DateTimeOffset now, CancellationToken cancellationToken)
+    private static async Task SeedTestMailAsync(
+        NpgsqlConnection connection,
+        NpgsqlTransaction transaction,
+        Guid playerId,
+        DateTimeOffset now,
+        bool advancedEquipmentSet,
+        CancellationToken cancellationToken)
     {
-        var mails = new List<(string Title, string Body, object Attachments)>
+        var mails = advancedEquipmentSet
+            ? new List<(string Title, string Body, object Attachments)>
+            {
+                ("测试邮件2：橙紫双词缀套装", "test2 测试账号奖励：头部橙色、其余紫色的同词缀套装，每件带效果词缀和第二词缀。", MixedEquipmentSet("Orange", "Purple", "Metal", "Bulwark", "DrawInterval")),
+                ("测试邮件2：装备碎片", "test2 测试账号奖励：装备碎片 100000。", new[] { new { kind = "EquipmentFragments", amount = 100000L } })
+            }
+            : new List<(string Title, string Body, object Attachments)>
         {
             ("测试邮件：金币", "测试账号奖励：金币 100000。", new[] { new { kind = "Gold", amount = 100000L } }),
             ("测试邮件：魂晶", "测试账号奖励：各类魂晶各 100000。", new object[] {
@@ -148,9 +164,33 @@ public sealed class IdentityRepository(
         }
     }
 
-    private static object[] EquipmentSet(string quality, string element) =>
+    private static object[] EquipmentSet(string quality, string element, string? effectAffix = null, string? secondaryTrait = null) =>
         TestEquipmentSlots
-            .Select(slot => (object)new { kind = "Equipment", amount = 1L, itemId = $"{quality}|{element}|{slot}" })
+            .Select(slot => (object)new
+            {
+                kind = "Equipment",
+                amount = 1L,
+                itemId = $"{quality}|{element}|{slot}",
+                effectAffix,
+                secondaryTrait
+            })
+            .ToArray();
+
+    private static object[] MixedEquipmentSet(
+        string firstQuality,
+        string otherQuality,
+        string element,
+        string? effectAffix = null,
+        string? secondaryTrait = null) =>
+        TestEquipmentSlots
+            .Select((slot, index) => (object)new
+            {
+                kind = "Equipment",
+                amount = 1L,
+                itemId = $"{(index == 0 ? firstQuality : otherQuality)}|{element}|{slot}",
+                effectAffix,
+                secondaryTrait
+            })
             .ToArray();
 
     public async Task<SessionLookupResult> FindByTokenHashAsync(

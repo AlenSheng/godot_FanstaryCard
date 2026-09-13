@@ -43,7 +43,11 @@ static func build(ui: Control, host: Control, state: Dictionary) -> void:
 		slot.tooltip_text = P.localized_text(Details.description(item) if not item.is_empty() else "空格")
 		Art.button(slot, CELL)
 		if not item.is_empty():
-			slot.icon = Art.equipment_texture(item)
+			var quality_style := Art.item_cell_style(item)
+			slot.add_theme_stylebox_override("normal", quality_style)
+			slot.add_theme_stylebox_override("hover", quality_style)
+			slot.add_theme_stylebox_override("pressed", quality_style)
+			slot.icon = Art.item_texture(item)
 			slot.expand_icon = true
 			slot.add_theme_constant_override("icon_max_width", 58)
 		if index in safe_slots: slot.add_theme_color_override("font_color", P.GOLD)

@@ -112,7 +112,7 @@ func _header() -> void:
 	panel(Rect2(24, 18, 1872, 82))
 	var names := {"hall": "幻想牌域", "cards": "卡牌图鉴", "prep": "探索准备", "gear": "装备穿戴", "enhance": "碎片强化", "shop": "金币商店", "market": "金币市场"}
 	if host.screen == "hall":
-		picture(Art.texture("UI/Hall/logo.png"), Rect2(55, 29, 255, 58))
+		text(P.localized("game_title"), Rect2(55, 27, 390, 62), 46, P.GOLD).name = "HallTitle"
 	else:
 		button("返回", Rect2(60, 32, 170, 52), host._navigate.bind("hall"), Game.busy or not Game.ticket.is_empty()).name = "ReturnButton"
 		text(names.get(host.screen, "营地"), Rect2(240, 30, 500, 60), 38, P.GOLD)
@@ -137,27 +137,63 @@ func _header() -> void:
 		unread_badge.name = "HallMailUnreadCount"
 
 func _item(kind: String) -> Texture2D:
+	var configured_id: String = str({"Gold": "gold", "WarriorSoul": "warrior_soul", "EquipmentFragments": "equipment_fragments", "HealthPotion": "health_potion", "MageSoul": "class_soul:Mage", "PriestSoul": "class_soul:Priest", "GuardianSoul": "class_soul:Guardian"}.get(kind, ""))
+	if not configured_id.is_empty():
+		var configured: Texture2D = Art.item_texture({"kind": kind if not kind.ends_with("Soul") else ("ClassSoul" if kind != "WarriorSoul" else kind), "item_id": configured_id})
+		if configured != null: return configured
 	var names := {"Gold": "gold", "WarriorSoul": "warrior_soul", "EquipmentFragments": "fragments", "HealthPotion": "potion", "MageSoul": "mage_soul", "PriestSoul": "priest_soul", "GuardianSoul": "guardian_soul", "Helmet": "helmet", "Head": "helmet", "Chest": "chest", "Hands": "gauntlet", "Legs": "legs", "Feet": "boots"}
 	return Art.texture("UI/Item/exploration_prep_item_icon_%s.png" % names[kind]) if names.has(kind) else null
 
 func _hall() -> void:
 	for i in range(3):
 		var hero_class: String = ["Priest", "Mage", "Guardian"][i]
-		var key := "UI/Hall/card_%s_%s.png" % [hero_class.to_lower(), "on" if hero_class == Game.hero_class else "off"]
-		var node := button("", Rect2(42 + i * 310, 118, 295, 138), Game.select_class.bind(hero_class), Game.busy or not Game.preparation.is_empty())
+		var card_rect := Rect2(42 + i * 310, 118, 295, 138)
+		var frame_key := "UI/Hall/class_card_frame_%s.png" % ["on" if hero_class == Game.hero_class else "off"]
+		var node := button("", card_rect, Game.select_class.bind(hero_class), Game.busy or not Game.preparation.is_empty())
 		node.tooltip_text = P.localized_text("%s · 生命上限 %s" % [P.CLASSES[hero_class][0], P.CLASSES[hero_class][2]])
-		picture(Art.texture(key), Rect2(42 + i * 310, 118, 295, 138))
-		picture(Art.texture("UI/Codex/class_badge_%s.png" % hero_class.to_lower()), Rect2(42 + i * 310 + 244, 190, 42, 42)).name = "ClassBadge_" + hero_class
+		picture(Art.texture(frame_key), card_rect).name = "ClassCardFrame_" + hero_class
+		picture(Art.texture("UI/Hall/class_card_portrait_%s.png" % hero_class.to_lower()), Rect2(card_rect.position + Vector2(8, 7), Vector2(104, 124))).name = "ClassPortrait_" + hero_class
+		text(P.CLASSES[hero_class][0], Rect2(card_rect.position + Vector2(118, 25), Vector2(116, 30)), 22, P.GOLD).name = "ClassName_" + hero_class
+		picture(Art.texture("UI/Hall/class_card_heart.png"), Rect2(card_rect.position + Vector2(119, 74), Vector2(27, 27))).name = "ClassHeart"
+		text(str(P.CLASSES[hero_class][2]), Rect2(card_rect.position + Vector2(150, 75), Vector2(60, 28)), 23, P.GOLD).name = "ClassMaximumHp_" + hero_class
+		var class_label := P.localized_text({"Priest": "牧师", "Mage": "法师", "Guardian": "守护者"}[hero_class])
+		text(P.localized("hall_class_label") % class_label, Rect2(card_rect.position + Vector2(204, 75), Vector2(84, 28)), 22, P.MUTED).name = "ClassType_" + hero_class
 	picture(Art.portrait(Game.hero_class), Rect2(310, 255, 570, 550)).name = "HeroPortrait"
 	picture(Art.passive(Game.hero_class), Rect2(858, 275, 84, 84)).name = "HeroPassive"
-	picture(Art.texture("UI/Hall/portal_panel.png"), Rect2(990, 153, 835, 550))
-	button("探索准备", Rect2(1140, 640, 520, 96), host._navigate.bind("prep"), Game.busy, ORANGE)
-	var entries := [["cards", "codex"], ["gear", "gear"], ["cards", "deck"], ["shop", "shop"], ["market", "market"], ["prep", "prep"], ["enhance", "enhance"]]
+	var portal_rect := Rect2(990, 153, 835, 550)
+	picture(Art.texture("UI/Hall/portal_background_clean.png"), portal_rect)
+	var portal_frame := Panel.new()
+	portal_frame.add_theme_stylebox_override("panel", P.box(Color(0, 0, 0, 0), Color("8c6943"), 3))
+	portal_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(portal_frame)
+	portal_frame.position = portal_rect.position
+	portal_frame.size = portal_rect.size
+	text(P.localized("enter_chaos"), Rect2(1110, 180, 595, 76), 48, P.GOLD).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	button(P.localized("nav_prep"), Rect2(1140, 640, 520, 96), host._navigate.bind("prep"), Game.busy, ORANGE)
+	var entries := [["cards", "UI/Shop/card_pack.png", "hall_entry_cards"], ["gear", "UI/Item/exploration_prep_item_icon_chest.png", "hall_entry_gear"], ["cards", "UI/Shop/card_pack.png", "hall_entry_deck"], ["shop", "UI/Item/exploration_prep_item_icon_gold.png", "hall_entry_shop"], ["market", "UI/Hall/entry_icon_market.png", "hall_entry_market"], ["prep", "UI/Shop/backpack_advanced.png", "hall_entry_prep"], ["enhance", "UI/Shop/equipment_fragment_pack.png", "hall_entry_enhance"]]
 	for i in range(entries.size()):
 		var rect := Rect2(56 + i * 259, 802, 242, 223)
 		var node := button("", rect, host._navigate.bind(entries[i][0]), Game.busy or not Game.ticket.is_empty())
-		node.tooltip_text = P.localized_text(entries[i][0])
-		picture(Art.texture("UI/Hall/btn_%s.png" % entries[i][1]), rect)
+		node.tooltip_text = P.localized(entries[i][2])
+		# Keep the generated texture and icon inside the decorative frame's safe area.
+		var content_rect := Rect2(rect.position + Vector2(12, 11), rect.size - Vector2(24, 23))
+		var entry_content := Control.new()
+		entry_content.clip_contents = true
+		entry_content.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		add_child(entry_content)
+		entry_content.position = content_rect.position
+		entry_content.size = content_rect.size
+		var entry_background := Art.image(entry_content, Art.texture("UI/Hall/entry_background.png"), Vector2.ZERO)
+		entry_background.position = Vector2.ZERO
+		entry_background.size = entry_content.size
+		entry_background.stretch_mode = TextureRect.STRETCH_SCALE
+		var entry_icon := Art.image(entry_content, Art.texture(entries[i][1]), Vector2.ZERO)
+		entry_icon.position = Vector2(25, 12)
+		entry_icon.size = Vector2(168, 130)
+		picture(Art.texture("UI/Hall/entry_frame.png"), rect)
+		var entry_title := text(P.localized(entries[i][2]), Rect2(rect.position + Vector2(18, 143), Vector2(206, 50)), 28, P.GOLD)
+		entry_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		entry_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 
 func _mail() -> void:
 	var existing := get_node_or_null("MailModal")
@@ -519,15 +555,18 @@ func _mail_attachment_quality(attachment: Dictionary) -> String:
 		var item_id := str(attachment.get("itemId", attachment.get("ItemId", attachment.get("item_id", ""))))
 		var parts := item_id.split("|", false)
 		if not parts.is_empty(): raw = parts[0]
-	var quality := raw.capitalize()
-	return quality if quality in ["Common", "White", "Green", "Blue", "Purple", "Orange", "Red"] else "Common"
+	if not raw.is_empty():
+		var quality := raw.capitalize()
+		if quality == "Common": return "White"
+		if quality in ["White", "Green", "Blue", "Purple", "Orange", "Red"]: return quality
+	return Art.item_quality_name(attachment)
 
 func _mail_quality_frame_key(quality: String) -> String:
 	return "UI/Prep/exploration_prep_equipment_slot_frame_%s.png" % quality.to_lower()
 
 func _mail_quality_background(quality: String) -> Color:
 	if quality == "Common": return Color("73777a")
-	return P.QUALITY.get(quality, Color("73777a")).darkened(0.35)
+	return Art.quality_color(quality).darkened(0.35)
 
 func _mail_attachment_amount(attachment: Dictionary) -> int:
 	return int(attachment.get("amount", attachment.get("Amount", 1)))
@@ -645,14 +684,17 @@ func _preparation() -> void:
 	for i in range(3):
 		var key: String = ["Free", "Advanced", "Top"][i]
 		var title: String = ["免费包\n20 格 / 安全 0", "高级包\n28 格 / 安全 1", "顶级包\n36 格 / 安全 3"][i]
-		var unavailable: bool = locked or (i > 0 and stock[key] <= 0)
+		# Free is the built-in tier and is not represented in consumables; only
+		# paid backpack tiers are gated by their inventory counts.
+		var available_count := 0 if i == 0 else int(stock.get(key, 0))
+		var unavailable: bool = locked or (i > 0 and available_count <= 0)
 		var tab := button(title if i == 0 else "", Rect2(845 + i * 328, 219, 307, 93), func(): host.bag_tier = key; host._render(), unavailable, ORANGE if tier == key else BLUE)
 		tab.name = "Backpack_" + key
 		if i > 0:
 			picture(Art.product(key + "Bag"), Rect2(860 + i * 328, 226, 68, 78)).name = "BackpackIcon_" + key
 			text(title.split("\n")[0], Rect2(937 + i * 328, 228, 202, 37), 25, P.MUTED if unavailable else P.PAPER)
 			text(title.split("\n")[1], Rect2(937 + i * 328, 267, 202, 32), 20, P.GOLD if tier == key else P.MUTED)
-		tab.tooltip_text = P.localized_text("持有 %s 个" % stock[key])
+		tab.tooltip_text = P.localized_text("持有 %s 个" % available_count)
 	for index in range(capacity):
 		var point := Vector2(850 + (index % 6) * 163, 342 + (index / 6) * 104)
 		panel(Rect2(point, Art.COMMON_CELL_DISPLAY_SIZE), Art.COMMON_CELL_KEY)

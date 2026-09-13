@@ -6,7 +6,9 @@ public sealed record MailAttachmentResponse(
     string Kind,
     long Amount,
     string? ItemId = null,
-    string? HeroClass = null);
+    string? HeroClass = null,
+    string? EffectAffix = null,
+    string? SecondaryTrait = null);
 
 public sealed record MailItemResponse(
     Guid Id,

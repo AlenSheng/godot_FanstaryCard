@@ -3,6 +3,7 @@ extends Button
 const Art = preload("res://ui/art.gd")
 const P = preload("res://ui/palette.gd")
 const CARD_SHADER = preload("res://ui/card_view.gdshader")
+const DESCRIPTIONS = preload("res://data/card_descriptions.json")
 const CLASS_NAMES := {"Priest": "牧师", "Mage": "法师", "Guardian": "守护者"}
 
 func configure(id: String, info: Dictionary, description: String, selected: bool, options: Dictionary = {}) -> void:
@@ -42,7 +43,11 @@ func configure(id: String, info: Dictionary, description: String, selected: bool
 		if selected: frame.texture = Art.texture("UI/Codex/qframe_selected.png")
 		frame.material = _card_material(unowned, true)
 	var lines := description.split("\n\n", true, 1)
-	var effect: String = lines[1] if lines.size() > 1 else description
+	var passed_effect: String = lines[1] if lines.size() > 1 else description
+	# The card face is configuration-owned. Do not trust a caller-provided summary:
+	# older call sites used generated strings such as `火 8.0`, which caused the
+	# collection to keep showing stale text even after the table was updated.
+	var effect := _face_description(id, passed_effect)
 	if monster:
 		_monster_text(id, info, effect, selected)
 	else:
@@ -68,6 +73,13 @@ func configure(id: String, info: Dictionary, description: String, selected: bool
 	for child in get_children():
 		if child is CanvasItem and child.material == null: child.use_parent_material = true
 
+func _face_description(id: String, fallback: String) -> String:
+	var locale := P.language()
+	var tables: Dictionary = DESCRIPTIONS.data
+	var descriptions: Dictionary = tables.get(locale, tables.get("zh", {}))
+	var configured := str(descriptions.get("card.face.desc." + id, "")).strip_edges()
+	return configured if not configured.is_empty() else fallback
+
 func _card_material(grayscale: bool, reframe: bool = false) -> ShaderMaterial:
 	var result := ShaderMaterial.new()
 	result.shader = CARD_SHADER
@@ -84,13 +96,22 @@ func _copy_badge(copy_count: int) -> void:
 	count.name = "CopyCount"
 
 func _class_badge(hero_class: String, symbol: String) -> void:
+	# The pad sits below the sprite so its 28x28 rectangle cannot cover the
+	# decorative ring; the ring's opaque pixels mask the pad at the edges.
+	var center_back := ColorRect.new()
+	center_back.name = "ClassBadgeCenter"
+	center_back.color = Color("080b0c")
+	center_back.position = Vector2(171, 10)
+	center_back.size = Vector2(28, 28)
+	center_back.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(center_back)
 	var badge := Art.image(self, Art.texture("UI/Codex/class_badge_%s.png" % hero_class.to_lower()), Vector2.ZERO)
 	badge.name = "ClassBadge"
-	badge.position = Vector2(172, 4)
-	badge.size = Vector2(40, 43)
+	badge.position = Vector2(156, -5)
+	badge.size = Vector2(58, 58)
 	badge.tooltip_text = P.localized_text("仅限%s职业编组" % P.localized_text(CLASS_NAMES.get(hero_class, symbol)))
 	badge.mouse_filter = Control.MOUSE_FILTER_PASS
-	var label := _text(symbol, Rect2(176, 7, 32, 36), 20, P.PAPER)
+	var label := _text(symbol, Rect2(168, 7, 34, 34), 22, P.PAPER)
 	label.name = "ClassSymbol"
 	tooltip_text += "\n\n" + badge.tooltip_text
 

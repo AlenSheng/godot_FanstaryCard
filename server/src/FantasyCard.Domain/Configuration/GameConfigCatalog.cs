@@ -92,6 +92,15 @@ public sealed record BackpackConfig(string Id, int Capacity, int SafeSlots, int 
 
 public sealed record ShopCardPriceConfig(string Quality, int PriceGold, int DailyLimit);
 
+public sealed record ItemConfigDefinition(string Id, string Kind, int Quality, string? IconKey, bool Enabled)
+{
+    public string QualityName => Quality switch
+    {
+        1 => "White", 2 => "Green", 3 => "Blue", 4 => "Purple", 5 => "Orange", 6 => "Red",
+        _ => throw new InvalidDataException($"Item '{Id}' has unsupported quality rank '{Quality}'.")
+    };
+}
+
 public sealed record EconomyConfig(
     int MarketActiveListings,
     int MarketDurationHours,
@@ -114,6 +123,7 @@ public sealed class GameConfigCatalog
         IReadOnlyList<RewardRefreshConfig> rewardRefreshes,
         IReadOnlyList<BackpackConfig> backpacks,
         IReadOnlyList<ShopCardPriceConfig> shopCardPrices,
+        IReadOnlyList<ItemConfigDefinition> items,
         EconomyConfig economy)
     {
         Version = version;
@@ -124,6 +134,7 @@ public sealed class GameConfigCatalog
         RewardRefreshes = rewardRefreshes;
         Backpacks = backpacks;
         ShopCardPrices = shopCardPrices;
+        Items = items;
         Economy = economy;
     }
 
@@ -136,6 +147,7 @@ public sealed class GameConfigCatalog
     public IReadOnlyList<RewardRefreshConfig> RewardRefreshes { get; }
     public IReadOnlyList<BackpackConfig> Backpacks { get; }
     public IReadOnlyList<ShopCardPriceConfig> ShopCardPrices { get; }
+    public IReadOnlyList<ItemConfigDefinition> Items { get; }
     public EconomyConfig Economy { get; }
 
     public EquipmentQualityConfig EquipmentQuality(string quality) =>
@@ -161,6 +173,11 @@ public sealed class GameConfigCatalog
         ShopCardPrices.SingleOrDefault(item => string.Equals(item.Quality, quality, StringComparison.Ordinal))
         ?? throw new DomainValidationException($"Unknown shop card quality '{quality}'.");
 
+    public ItemConfigDefinition Item(string id, string kind) =>
+        Items.SingleOrDefault(item => string.Equals(item.Id, id, StringComparison.Ordinal))
+        ?? Items.FirstOrDefault(item => string.Equals(item.Kind, kind, StringComparison.Ordinal))
+        ?? throw new DomainValidationException($"Unknown item '{id}' ({kind}).");
+
     private static GameConfigCatalog LoadEmbedded()
     {
         using var stream = typeof(GameConfigCatalog).Assembly.GetManifestResourceStream(ResourceName)
@@ -174,6 +191,7 @@ public sealed class GameConfigCatalog
         var lootTable = bundle.Table("LootRules");
         var backpackTable = bundle.Table("Backpacks");
         var shopCardPriceTable = bundle.Table("ShopCardPrices");
+        var itemsTable = bundle.Table("Items");
         var economyTable = bundle.Table("Economy");
         var cards = cardsTable.Rows.Select(row => ReadCard(cardsTable, row)).Where(card => card.Enabled).ToArray();
         var levels = levelsTable.Rows.Select(row => new CardLevelConfig(
@@ -213,6 +231,10 @@ public sealed class GameConfigCatalog
         var shopCardPrices = shopCardPriceTable.Rows.Select(row => new ShopCardPriceConfig(
             shopCardPriceTable.Text(row, "id"), shopCardPriceTable.Int(row, "price_gold"),
             shopCardPriceTable.Int(row, "daily_limit"))).ToArray();
+        var items = itemsTable.Rows.Select(row => new ItemConfigDefinition(
+            itemsTable.Text(row, "id"), itemsTable.Text(row, "kind"), itemsTable.Int(row, "quality"),
+            itemsTable.OptionalText(row, "icon_key"), itemsTable.Bool(row, "enabled")))
+            .Where(item => item.Enabled).ToArray();
         var economyValues = economyTable.Rows.ToDictionary(
             row => economyTable.Text(row, "id"), row => row, StringComparer.Ordinal);
         int EconomyInt(string id) => economyTable.Int(economyValues[id], "int_value");
@@ -240,8 +262,15 @@ public sealed class GameConfigCatalog
         ValidateLoot(lootLayers, refreshes);
         ValidateBackpacks(backpacks);
         ValidateEconomy(economy, shopCardPrices, cards);
+        ValidateItems(items);
         return new GameConfigCatalog(
-            bundle.Version, cards, levels, equipment, lootLayers, refreshes, backpacks, shopCardPrices, economy);
+            bundle.Version, cards, levels, equipment, lootLayers, refreshes, backpacks, shopCardPrices, items, economy);
+    }
+
+    private static void ValidateItems(ItemConfigDefinition[] items)
+    {
+        if (items.Length == 0 || items.Any(item => item.Quality is < 1 or > 6 || string.IsNullOrWhiteSpace(item.Kind)))
+            throw new InvalidDataException("Items must contain enabled rows with quality ranks from one to six.");
     }
 
     private static void ValidateEquipment(IReadOnlyList<EquipmentQualityConfig> equipment)

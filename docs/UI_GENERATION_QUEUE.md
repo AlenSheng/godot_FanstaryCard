@@ -8,6 +8,8 @@
 
 | 批次 | 范围 | 数量 | 状态 |
 |---|---|---:|---|
+| HALL-ENTRY-LAYERED | `UI/Hall/portal_background_clean.png`、`entry_background.png`、`entry_frame.png`、`entry_icon_market.png`；门户及七入口的无字分层资源 | 4 | 已导出、已登记 manifest、已接入大厅分层渲染；旧门户和 7 张合成入口图已移除，待 Godot 视觉验收 |
+| HALL-CLASS-SPRITES | `UI/Hall/class_card_frame_{off,on}.png`、`class_card_portrait_{priest,mage,guardian}.png`、`class_card_heart.png`；职业选择卡分层卡体、头像与完整红心 | 6 | 已导出、已登记 manifest、已接入大厅分层渲染；旧合成职业卡和右侧职业图标已移除，待 Godot 视觉验收 |
 | BAG-01 | `UI/Shop/backpack_free.png`，免费探索包独立主体 | 1 | 已生成、已写入导入目录并登记 manifest；待 Godot 运行时视觉验收 |
 | EQ-CURRENT | `Equipment/{quality}/{slot}_{element}.png`，White/Green/Blue/Purple/Orange × Head/Chest/Hands/Legs/Feet × Fire/Wood/Water/Metal/Earth | 0 未完成 / 125 总数 | 白/绿/蓝/紫/橙品质五部位五元素已全部生成、写入并登记 manifest；红品质25项仍为预留 |
 

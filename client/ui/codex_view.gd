@@ -194,8 +194,10 @@ static func _details(ui: Control, host: Control) -> void:
 	if category == "伤害": category = P.word(element) + "系伤害" if element != "None" else "直接伤害"
 	_tag(modal, category, Rect2(1166, 338, 172, 60), "tag_%s.png" % element.to_lower() if element in ["Earth", "Metal", "Water", "Wood"] else "tag_normal.png")
 	modal.text("等级 +%s · 已拥有 ×%s" % [entry.get("level", 0), copies] if owned else "未拥有 · 合成后获得 +0 " + str(info.get("name", id)), Rect2(798, 424, 690, 50), 27)
-	var face: PackedStringArray = host._card_text(id, int(entry.get("level", 0))).split("\n\n", true, 1)
-	var effect_text: String = face[1] if face.size() > 1 else host._card_text(id)
+	var effect_text: String = host.card_description(id, "full")
+	if effect_text.is_empty():
+		var face: PackedStringArray = host._card_text(id, int(entry.get("level", 0))).split("\n\n", true, 1)
+		effect_text = face[1] if face.size() > 1 else host._card_text(id)
 	if entry.get("currentEffect") is Dictionary: effect_text = "当前：" + host.CardDetails.effect_text(entry.currentEffect)
 	if entry.get("nextEffect") is Dictionary: effect_text += "\n下一级：" + host.CardDetails.effect_text(entry.nextEffect)
 	modal.text(effect_text, Rect2(798, 485, 690, 174), 23)

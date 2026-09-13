@@ -197,7 +197,9 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
                 kind,
                 amount,
                 element.TryGetProperty("itemId", out var item) ? item.GetString() : null,
-                element.TryGetProperty("heroClass", out var hero) ? hero.GetString() : null));
+                element.TryGetProperty("heroClass", out var hero) ? hero.GetString() : null,
+                element.TryGetProperty("effectAffix", out var effectAffix) ? effectAffix.GetString() : null,
+                element.TryGetProperty("secondaryTrait", out var secondaryTrait) ? secondaryTrait.GetString() : null));
         }
         return result;
     }
@@ -271,15 +273,25 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
             var parts = (attachment.ItemId ?? string.Empty).Split('|', 3, StringSplitOptions.TrimEntries);
             if (parts.Length != 3 || parts.Any(string.IsNullOrWhiteSpace))
                 throw new InvalidOperationException("Equipment attachment itemId must be quality|element|slot.");
+            if (attachment.EffectAffix is not (null or "Piercing" or "Bulwark" or "Vitality"))
+                throw new InvalidOperationException("Equipment attachment effectAffix is invalid.");
+            if (attachment.SecondaryTrait is not (null or "DrawInterval" or "ForcedEscape"))
+                throw new InvalidOperationException("Equipment attachment secondaryTrait is invalid.");
+            if (attachment.SecondaryTrait == "ForcedEscape" && parts[2] != "Feet")
+                throw new InvalidOperationException("ForcedEscape is only valid for Feet equipment.");
+            if (parts[0] is "White" or "Green" or "Blue" && attachment.EffectAffix is not null)
+                throw new InvalidOperationException("Low-quality equipment cannot have an effectAffix.");
             var equipmentId = Guid.CreateVersion7();
             await using var equipment = new NpgsqlCommand(
-                "INSERT INTO equipments(instance_id,owner_id,slot,quality,level,is_bound,location,version,created_at,element,effect_affix,secondary_trait) VALUES($1,$2,$3,$4,0,false,'Inventory',1,now(),$5,NULL,NULL)",
+                "INSERT INTO equipments(instance_id,owner_id,slot,quality,level,is_bound,location,version,created_at,element,effect_affix,secondary_trait) VALUES($1,$2,$3,$4,0,false,'Inventory',1,now(),$5,$6,$7)",
                 connection, transaction);
             equipment.Parameters.AddWithValue(equipmentId);
             equipment.Parameters.AddWithValue(playerId);
             equipment.Parameters.AddWithValue(parts[2]);
             equipment.Parameters.AddWithValue(parts[0]);
             equipment.Parameters.AddWithValue(parts[1]);
+            equipment.Parameters.AddWithValue((object?)attachment.EffectAffix ?? DBNull.Value);
+            equipment.Parameters.AddWithValue((object?)attachment.SecondaryTrait ?? DBNull.Value);
             await equipment.ExecuteNonQueryAsync(cancellationToken);
             return;
         }

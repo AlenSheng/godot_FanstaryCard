@@ -9,14 +9,14 @@ func run_test() -> Dictionary:
 	(Engine.get_main_loop() as SceneTree).root.add_child(card)
 	card.size = Vector2(218, 376)
 	var info := {"name": "火球", "quality": "White", "hero_class": "Mage", "source": "Class"}
-	card.configure("MAG-01", info, "法 火球\n白\n\n火系伤害8点", false, {"collection": true, "copy_count": 0})
+	card.configure("MAG-01", info, "法 火球\n白\n\n旧调用方文本 8.0", false, {"collection": true, "copy_count": 0})
 	var errors: Array[String] = []
 	if card.disabled or card.get_node("CopyCount").text != "0": errors.append("Unowned card must show zero and remain clickable")
 	if card.material == null or not card.material.get_shader_parameter("grayscale"): errors.append("Unowned card must be grayscale")
 	if not card.get_node("Illustration").use_parent_material or not card.get_node("CardFrame").material.get_shader_parameter("grayscale"):
 		errors.append("Grayscale must cover both illustration and frame")
 	if card.get_node("Illustration").size != Vector2(190, 285): errors.append("Codex portrait must retain a 2:3 rectangle")
-	if card.get_node("CardName").position.y < 294 or card.get_node("CardEffect").text != "火系伤害8点": errors.append("Name and effect must use the bottom panel")
+	if card.get_node("CardName").position.y < 294 or card.get_node("CardEffect").text != "造成火系伤害8点": errors.append("Card face must use the configured short description")
 	_check_text(card, ["CardName", "CardEffect", "ClassSymbol", "CopyCount"], errors)
 	if card.get_node("ClassSymbol").text != "法" or not "仅法师" in card.get_node("ClassBadge").tooltip_text: errors.append("Class badge must explain its restriction")
 	if card.get_node("ClassBadge").mouse_filter != Control.MOUSE_FILTER_PASS: errors.append("Class badge must pass clicks to the card")
