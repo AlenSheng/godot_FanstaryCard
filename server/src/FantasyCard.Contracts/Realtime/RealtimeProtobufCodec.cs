@@ -193,6 +193,7 @@ public static class RealtimeProtobufCodec
             foreach (var id in value.CardInstanceIds ?? []) w.String(19, id.ToString("D"));
             w.String(20, value.SourceId);
             w.String(21, value.DrawSpeedSeconds); w.String(22, value.DrawSpeedModifier); w.String(23, value.DrawBlockSpeedSeconds);
+            w.String(24, value.ResonanceMultiplier); w.Int64(25, value.ConflictPairCount); w.String(26, value.ConflictCancellation);
         }),
         "battle.target_selected" when message.Payload is BattleTargetSelectedEventPayload value => Message(w =>
         {
@@ -255,7 +256,8 @@ public static class RealtimeProtobufCodec
                 NullIfEmpty(payload.String(14)), NullIfEmpty(payload.String(15)), checked((int)payload.Int64(16)),
                 NullIfEmpty(payload.String(17)), checked((int)payload.Int64(18)),
                 NullIfEmpty(payload.RepeatedStrings(19).Select(id => ParseGuid(id, type)).ToArray()), NullIfEmpty(payload.String(20)),
-                NullIfEmpty(payload.String(21)), NullIfEmpty(payload.String(22)), NullIfEmpty(payload.String(23))),
+                NullIfEmpty(payload.String(21)), NullIfEmpty(payload.String(22)), NullIfEmpty(payload.String(23)),
+                NullIfEmpty(payload.String(24)), checked((int)payload.Int64(25)), NullIfEmpty(payload.String(26))),
             "battle.target_selected" => new BattleTargetSelectedEventPayload(
                 ParseGuid(payload.String(1), type), payload.String(2)),
             "reward.choice" => DecodeRewardChoice(payload),

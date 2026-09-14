@@ -48,6 +48,8 @@ public static class CombatResolver
         var elementalDamage = 0;
         var conflictPairCount = 0;
         var conflictHeal = 0;
+        var resonanceMultiplier = 1d;
+        var conflictCancellation = 0d;
         var segments = new List<CombatDamageSegment>();
         if (elemental.Length > 0)
         {
@@ -63,19 +65,18 @@ public static class CombatResolver
                     ? Math.Min(left, right)
                     : 0);
             var resonanceBonus = cards.Any(card => card.Effect.ResonanceBonus > 0) ? 1 : 0;
-            var resonance = coreCount == 5 && resonanceBonus > 0 ? 3.5 : Resonance(coreCount + resonanceBonus);
+            resonanceMultiplier = coreCount == 5 && resonanceBonus > 0 ? 3.5 : Resonance(coreCount + resonanceBonus);
             var equipmentBonus = attacker.Equipment.DamageBonus(core.Value);
             var resistance = targetResistance?.Invoke(core.Value) ?? 0;
-            var beforeConflict = coreBase * resonance * (1 + equipmentBonus) * (1 - resistance);
-            var cancellation = 0d;
+            var beforeConflict = coreBase * resonanceMultiplier * (1 + equipmentBonus) * (1 - resistance);
             if (conflictPairCount > 0)
             {
                 var cancelBonus = cards.Max(card => card.Effect.ConflictCancelBonus);
-                cancellation = Math.Min(0.80, Math.Min(0.65, 0.20 * conflictPairCount) + cancelBonus);
+                conflictCancellation = Math.Min(0.80, Math.Min(0.65, 0.20 * conflictPairCount) + cancelBonus);
                 var healCoefficient = Math.Max(0.50, cards.Max(card => card.Effect.ConflictHealCoefficient));
-                conflictHeal = attacker.ResolveRecovery((int)Math.Floor(beforeConflict * cancellation * healCoefficient) + 2 * conflictPairCount);
+                conflictHeal = attacker.ResolveRecovery((int)Math.Floor(beforeConflict * conflictCancellation * healCoefficient) + 2 * conflictPairCount);
             }
-            elementalDamage = Math.Max(0, (int)Math.Floor(beforeConflict * (1 - cancellation)));
+            elementalDamage = Math.Max(0, (int)Math.Floor(beforeConflict * (1 - conflictCancellation)));
             if (elementalDamage > 0) segments.Add(new(core.Value.ToString(), elementalDamage));
         }
 
@@ -124,7 +125,8 @@ public static class CombatResolver
             core,
             coreCount,
             segments.GroupBy(segment => segment.Kind, StringComparer.Ordinal)
-                .Select(group => new CombatDamageSegment(group.Key, group.Sum(segment => segment.Amount))).ToArray());
+                .Select(group => new CombatDamageSegment(group.Key, group.Sum(segment => segment.Amount))).ToArray(),
+            resonanceMultiplier, conflictPairCount, conflictCancellation);
     }
 
     public static IReadOnlyList<CombatDamageSegment> ResolveDamageSegments(

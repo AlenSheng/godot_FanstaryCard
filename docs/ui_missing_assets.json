@@ -3077,6 +3077,32 @@
       "scope_note": "不新增骨骼攻击、弹道、刀光或全屏特效资产。"
     },
     {
+      "id": "UI-EQUIPMENT-COMPARE-SET-PANEL-CLEAN",
+      "name": "装备对比无字套装状态卡底图",
+      "priority": "P2",
+      "category": "ui_component",
+      "status": "optional_art_pending_code_fallback_integrated",
+      "image_generation_required": true,
+      "related_module": "UI-08",
+      "reference": "design/mockups/equipment-comparison-ui-v3-cross-element.png",
+      "current_state": "装备对比功能已使用通用无字代码面板完成。现有 UI/Prep/exploration_prep_set_effect_panel_normal.png 烘焙了中文标题且为固定横条，不能承载动态套装件数、激活门槛、前后数值和多语言。",
+      "deliverables": [
+        "一张无文字透明 PNG 套装状态卡底图",
+        "提供明确九宫格边距，支持单卡双列和动态高度"
+      ],
+      "acceptance": [
+        "不得烘焙套装名称、件数、百分比、箭头或激活状态",
+        "深青背景下边缘完整，缩放后角饰不变形",
+        "可同时承载破击、载壁、生息任一动态内容"
+      ],
+      "evidence": [
+        "client/ui/equipment_compare_dialog.gd",
+        "client/ui/item_visual.gd",
+        "client/evidence/equipment-comparison/report.json"
+      ],
+      "scope_note": "非阻塞美术增强；交付前继续复用代码面板，不生成固定文字效果图。"
+    },
+    {
       "id": "UI-FRAME-REVIEW",
       "name": "怪物卡框与专属武器框",
       "priority": "P2",

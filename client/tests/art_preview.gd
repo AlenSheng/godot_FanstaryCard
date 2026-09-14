@@ -149,6 +149,7 @@ func _shop_fixture() -> Dictionary:
 
 func _check_shop() -> void:
 	var Art = preload("res://ui/art.gd")
+	var P = preload("res://ui/palette.gd")
 	for product in $UI.shop.products:
 		var node: Node = $UI._reference.find_child("Product_" + product.productId, true, false)
 		if node == null:
@@ -161,6 +162,26 @@ func _check_shop() -> void:
 			layout_errors.append("New shop artwork not applied: " + product.kind)
 		if payload.has("cardId") and (image.texture != Art.card(payload.cardId) or $UI._reference._product_title(product.kind, payload) == "卡包"):
 			layout_errors.append("Guaranteed daily card incorrectly presented as a random pack")
+		if payload.has("cardId"):
+			var info: Dictionary = $UI.cards.get(str(payload.cardId), {})
+			var quality := str(info.get("quality", payload.get("quality", "White"))).capitalize()
+			var frame := node.get_node_or_null("ProductCardFrame") as TextureRect
+			var face_name := node.get_node_or_null("ShopCardName") as Label
+			var face_effect := node.get_node_or_null("ShopCardEffect") as Label
+			if frame == null or frame.texture != Art.texture("UI/Codex/qframe_%s.png" % quality.to_lower()):
+				layout_errors.append("Guaranteed card does not use its external quality frame: " + product.productId)
+			if node.get_node_or_null("CardQuality") != null:
+				layout_errors.append("Guaranteed card repeats its quality above the identifying frame: " + product.productId)
+			if face_name == null or face_name.text.is_empty() or face_effect == null or face_effect.text.is_empty():
+				layout_errors.append("Guaranteed card frame omits its name or effect: " + product.productId)
+			elif face_name.position.y + face_name.size.y >= face_effect.position.y:
+				layout_errors.append("Guaranteed card name overlaps its effect: " + product.productId)
+			elif face_effect.position.y + face_effect.size.y >= frame.position.y + frame.size.y - 18:
+				layout_errors.append("Guaranteed card effect overlaps the bottom frame decoration: " + product.productId)
+			elif face_effect.max_lines_visible != 2 or face_effect.autowrap_mode == TextServer.AUTOWRAP_OFF or face_effect.horizontal_alignment != HORIZONTAL_ALIGNMENT_CENTER:
+				layout_errors.append("Guaranteed card effect does not reserve two centered lines: " + product.productId)
+			if not node.tooltip_text.contains(P.localized_text("品质：%s色" % P.word(quality))):
+				layout_errors.append("Guaranteed card tooltip omits quality: " + product.productId)
 		if product.kind == "ClassSoul" and image.texture != Art.texture("UI/Item/exploration_prep_item_icon_%s_soul.png" % str(payload.heroClass).to_lower()):
 			layout_errors.append("Class soul icon does not match payload: " + product.productId)
 		if image.mouse_filter != Control.MOUSE_FILTER_IGNORE:

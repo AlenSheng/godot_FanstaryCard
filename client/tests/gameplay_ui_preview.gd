@@ -100,9 +100,10 @@ func _run() -> void:
 		Game.room.allowed_actions += ["battle.play_cards", "battle.select_target"]
 		Game.room.pve = {"battle_id": "completion-battle", "current_target_id": "fire-bat", "monsters": [{"monster_id": "fire-bat", "maximum_hp": 44, "hp": 31, "shield": 8, "intent_kind": "Attack", "intent_value": 5, "intent_element": "Fire"}]}
 		Game.selected_cards = ["hand-0", "hand-1"]
-		Game.combat_preview = {"core_element": "Fire", "core_count": 2, "damage_segments": [{"kind": "Fire", "amount": 51}, {"kind": "Direct", "amount": 3}], "heal": 7, "shield_gain": 8, "shield_damage": 8, "hp_damage": 46, "stun_seconds": "1.2", "draw_charge": "0.3"}
+		Game.combat_preview = {"core_element": "Fire", "core_count": 2, "damage_segments": [{"kind": "Fire", "amount": 51}, {"kind": "Direct", "amount": 3}], "heal": 7, "shield_gain": 8, "shield_damage": 8, "hp_damage": 46, "stun_seconds": "1.2", "draw_charge": "0.3", "resonance_multiplier": "1.2", "conflict_pair_count": 1, "conflict_cancellation": "0.2"}
 		await _capture("combat_preview" + suffix)
-		_check($UI._reference.get_node_or_null("CombatPreview") != null and _all_text().contains("火 51") and _all_text().contains("直伤 3"), "Typed combat preview rendered" + suffix)
+		_check($UI._reference.get_node_or_null("CombatPreview") != null and _all_text().contains("火 51") and _all_text().contains("直伤 3") and _all_text().contains("实际 54（盾8/血46）"), "Final combat preview rendered" + suffix)
+		_check($UI._reference.get_node_or_null("CombatPreview").tooltip_text.contains("相生 ×1.20") and $UI._reference.get_node_or_null("CombatPreview").tooltip_text.contains("相克 1组 · 抵消 20%"), "Combat preview formula details rendered" + suffix)
 		Game._on_event("combat.hit", {"battle_id": "completion-battle", "source_id": "preview-player", "target_id": "fire-bat", "damage_segments": [{"kind": "Fire", "amount": 51}, {"kind": "Metal", "amount": 6}, {"kind": "Direct", "amount": 3}, {"kind": "Water", "amount": 0}], "heal": 7, "shield_gain": 8})
 		await get_tree().create_timer(0.1).timeout
 		_check($UI._combat_panels["preview-player"].scale.x > 1.0 and $UI._combat_panels["fire-bat"].scale.x < 1.0, "Attack and hit pulses survive event dispatch" + suffix)

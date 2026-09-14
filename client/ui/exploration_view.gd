@@ -164,6 +164,11 @@ static func _preview(ui: Control) -> void:
 	for segment in preview.get("damage_segments", []):
 		ui.text("%s %s" % ["直伤" if segment.kind == "Direct" else P.word(segment.kind), segment.amount], Rect2(x, 578, 140, 34), 25, P.ELEMENT.get(segment.kind, Color.WHITE))
 		x += 140
+	var shield_damage := int(preview.get("shield_damage", 0))
+	var hp_damage := int(preview.get("hp_damage", 0))
+	var actual_damage := shield_damage + hp_damage
+	ui.text("实际 %s（盾%s/血%s）" % [actual_damage, shield_damage, hp_damage], Rect2(x, 578, 235, 34), 21, P.PAPER)
+	x += 235
 	for entry in [["heal", "回复", P.TEAL], ["shield_gain", "盾", Color("c4d2d4")]]:
 		if int(preview.get(entry[0], 0)) > 0:
 			ui.text("%s +%s" % [entry[1], preview[entry[0]]], Rect2(x, 578, 149, 34), 24, entry[2])
@@ -178,7 +183,13 @@ static func _preview(ui: Control) -> void:
 	var tail: Label = ui.text(" · ".join(effects), Rect2(x, 578, maxf(1, 1824 - x), 34), 20, P.PAPER)
 	tail.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	panel.mouse_filter = Control.MOUSE_FILTER_PASS
-	panel.tooltip_text = "扣盾 %s · 扣血 %s\n%s\n按当前战斗状态结算，状态变化后会重新计算" % [preview.get("shield_damage", 0), preview.get("hp_damage", 0), " · ".join(effects)]
+	var formula: Array[String] = []
+	var resonance := float(preview.get("resonance_multiplier", "1"))
+	if resonance > 1.0: formula.append("相生 ×%.2f" % resonance)
+	var conflict_pairs := int(preview.get("conflict_pair_count", 0))
+	var cancellation := float(preview.get("conflict_cancellation", "0"))
+	if conflict_pairs > 0: formula.append("相克 %s组 · 抵消 %s" % [conflict_pairs, Details.percent(cancellation)])
+	panel.tooltip_text = "最终伤害 %s（扣盾 %s · 扣血 %s）\n%s\n%s\n按当前战斗状态结算，状态变化后会重新计算" % [actual_damage, shield_damage, hp_damage, " · ".join(formula), " · ".join(effects)]
 
 static func _duel(ui: Control, host: Control, state: Dictionary) -> void:
 	var player: Dictionary = state.player

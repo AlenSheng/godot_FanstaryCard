@@ -131,7 +131,10 @@ public sealed record BattleComboResolvedEventPayload(
     string? SourceId = null,
     string? DrawSpeedSeconds = null,
     string? DrawSpeedModifier = null,
-    string? DrawBlockSpeedSeconds = null);
+    string? DrawBlockSpeedSeconds = null,
+    string? ResonanceMultiplier = null,
+    int ConflictPairCount = 0,
+    string? ConflictCancellation = null);
 public sealed record CombatDamageSegmentPayload(string Kind, int Amount);
 public sealed record RoomMoveCommandPayload(int Row, int Column);
 public sealed record RoomMovedEventPayload(Guid PlayerId, int Row, int Column);

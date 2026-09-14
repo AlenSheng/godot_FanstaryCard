@@ -248,7 +248,10 @@ public sealed record CombatResolution(
     int ImmediateDraw = 0,
     double DrawSpeedSeconds = 0,
     double DrawSpeedModifier = 0,
-    double DrawBlockSpeedSeconds = 0);
+    double DrawBlockSpeedSeconds = 0,
+    double ResonanceMultiplier = 1,
+    int ConflictPairCount = 0,
+    double ConflictCancellation = 0);
 
 public sealed record CombatFeedbackResolution(string SourceId, CombatResolution Resolution);
 
@@ -265,4 +268,7 @@ public sealed record CardResolutionDraft(
     int HealthCost,
     CardElement? CoreElement,
     int CoreCount,
-    IReadOnlyList<CombatDamageSegment>? DamageSegments = null);
+    IReadOnlyList<CombatDamageSegment>? DamageSegments = null,
+    double ResonanceMultiplier = 1,
+    int ConflictPairCount = 0,
+    double ConflictCancellation = 0);

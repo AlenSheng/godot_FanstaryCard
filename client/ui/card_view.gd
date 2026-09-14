@@ -51,14 +51,13 @@ func configure(id: String, info: Dictionary, description: String, selected: bool
 	if monster:
 		_monster_text(id, info, effect, selected)
 	else:
+		# Keep the codex/deck card name at the established bottom-panel position.
+		# The two-line effect area grows below it without moving the name.
 		var title := _text(str(info.get("name", id)), Rect2(24, 294, 170, 35), 20, P.GOLD)
 		title.add_theme_font_override("font", P.font("title"))
 		title.name = "CardName"
-		var effect_label := _text(effect, Rect2(24, 330, 170, 28), 16, P.PAPER)
+		var effect_label := _wrapped_text(effect, Rect2(24, 330, 170, 46), 14, P.PAPER)
 		effect_label.name = "CardEffect"
-		effect_label.max_lines_visible = 1
-		effect_label.autowrap_mode = TextServer.AUTOWRAP_OFF
-		effect_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 		var hero_class: String = P.word(info.get("hero_class", ""))
 		if not hero_class.is_empty(): _class_badge(str(info.get("hero_class")), hero_class)
 		if collection: _copy_badge(copy_count)
@@ -148,4 +147,24 @@ func _text(value: String, rect: Rect2, font_size: int, color: Color) -> Label:
 	label.position = rect.position
 	label.size = rect.size
 	P.fit_control_font(label, typeface, font_size, 8.0)
+	return label
+
+func _wrapped_text(value: String, rect: Rect2, font_size: int, color: Color) -> Label:
+	var label := Label.new()
+	var display_text := P.localized_text(value)
+	label.text = display_text
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.autowrap_mode = TextServer.AUTOWRAP_ARBITRARY
+	label.max_lines_visible = 2
+	label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	label.clip_text = true
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var typeface := P.font_for_text(display_text, font_size)
+	label.add_theme_font_override("font", typeface)
+	label.add_theme_font_size_override("font_size", P.fit_font_size(typeface, font_size, rect.size.y / 2.0))
+	label.add_theme_color_override("font_color", color)
+	add_child(label)
+	label.position = rect.position
+	label.size = rect.size
 	return label

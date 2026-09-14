@@ -806,14 +806,19 @@ func _shop() -> void:
 		item_panel.add_child(title)
 		var image := Art.image(item_panel, _product_art(kind, payload), Vector2.ZERO)
 		image.name = "ProductArt"
-		image.position = Vector2(30, 127)
-		image.size = Vector2(180, 230)
+		var is_guaranteed_card: bool = kind == "Cards" and payload.has("cardId")
+		if is_guaranteed_card:
+			_shop_card_presentation(item_panel, image, payload)
+		else:
+			image.position = Vector2(30, 127)
+			image.size = Vector2(180, 230)
 		var detail := Label.new()
 		var amount: int = int(payload.get("amount", payload.get("count", 0)))
-		detail.text = P.localized_text(("每份 ×%s\n" % amount if amount > 0 else "") + "今日 %s / %s\n\n%s 金币" % [item.purchased, item.limit, item.priceGold])
-		detail.position = Vector2(20, 371)
-		detail.size = Vector2(200, 160)
+		detail.text = P.localized_text(("每份 ×%s\n" % amount if amount > 0 else "") + "今日 %s / %s\n%s 金币" % [item.purchased, item.limit, item.priceGold])
+		detail.position = Vector2(20, 468) if is_guaranteed_card else Vector2(20, 371)
+		detail.size = Vector2(200, 70) if is_guaranteed_card else Vector2(200, 160)
 		detail.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		detail.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		detail.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		item_panel.add_child(detail)
 		var is_bag: bool = kind in ["AdvancedBag", "TopBag"]
@@ -828,6 +833,58 @@ func _shop() -> void:
 	if row.get_child_count() == 0: text("暂无商品，请稍后刷新", Rect2(640, 440, 790, 95), 34, P.MUTED)
 	text("高级与顶级背包合计上限 3 个 · %s" % ("持有 %s" % paid_bags if host._shop_inventory_ready else "请刷新库存"), Rect2(85, 937, 950, 45), 24, P.MUTED)
 	button("刷新", Rect2(1630, 929, 190, 54), host._navigate.bind("shop"), Game.busy)
+
+func _shop_card_presentation(item_panel: Panel, image: TextureRect, payload: Dictionary) -> void:
+	var card_id := str(payload.get("cardId", ""))
+	var card_info: Dictionary = host.cards.get(card_id, {})
+	var quality := str(card_info.get("quality", payload.get("quality", "White"))).capitalize()
+	if quality not in ["White", "Green", "Blue", "Purple", "Orange", "Red"]: quality = "White"
+	# Match the external CardView's 218x376 frame and 190x285 art window,
+	# scaled to fit the shop product column without distorting the border.
+	var scale_factor := 206.0 / 218.0
+	image.position = Vector2(17, 110) + Vector2(14, 14) * scale_factor
+	image.size = Vector2(190, 285) * scale_factor
+	var frame := Art.image(item_panel, Art.texture("UI/Codex/qframe_%s.png" % quality.to_lower()), Vector2.ZERO)
+	frame.name = "ProductCardFrame"
+	frame.position = Vector2(17, 110)
+	frame.size = Vector2(206, 376 * scale_factor)
+	frame.stretch_mode = TextureRect.STRETCH_SCALE
+	if frame.texture == null: frame.texture = Art.texture("UI/Codex/qframe_common.png")
+	# Shop cards have their own scaled layout. Keep the shop-only title offset
+	# independent from CardView so codex/deck cards retain their original position.
+	var card_name := _shop_card_face_label(item_panel, str(card_info.get("name", card_id)), Rect2(40, 334, 160, 31), 18, P.GOLD)
+	card_name.name = "ShopCardName"
+	card_name.add_theme_font_override("font", P.font("title"))
+	var effect: String = host.card_description(card_id, "face")
+	if effect.is_empty():
+		var tooltip_parts: PackedStringArray = host._card_text(card_id).split("\n\n", true, 1)
+		effect = tooltip_parts[1] if tooltip_parts.size() > 1 else ""
+	var effect_label := _shop_card_face_label(item_panel, effect, Rect2(40, 385, 160, 50), 13, P.PAPER, 2)
+	effect_label.name = "ShopCardEffect"
+	var tooltip: String = host._card_text(card_id)
+	item_panel.tooltip_text = P.localized_text(tooltip + "\n品质：%s色" % P.word(quality))
+
+func _shop_card_face_label(item_panel: Panel, value: String, rect: Rect2, font_size: int, color: Color, max_lines: int = 1) -> Label:
+	var label := Label.new()
+	var display_text := P.localized_text(value)
+	label.text = display_text
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.autowrap_mode = TextServer.AUTOWRAP_ARBITRARY if max_lines > 1 else TextServer.AUTOWRAP_OFF
+	label.max_lines_visible = max_lines
+	label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	label.clip_text = true
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var typeface := P.font_for_text(display_text, font_size)
+	label.add_theme_font_override("font", typeface)
+	var line_height := rect.size.y / float(max_lines)
+	var fit_width := -1.0 if max_lines > 1 else rect.size.x - 8.0
+	label.add_theme_font_size_override("font_size", P.fit_font_size(typeface, font_size, line_height, fit_width, display_text))
+	label.add_theme_color_override("font_color", color)
+	item_panel.add_child(label)
+	label.position = rect.position
+	label.size = rect.size
+	return label
 
 func _product_title(kind: String, payload: Dictionary) -> String:
 	if kind == "Cards":

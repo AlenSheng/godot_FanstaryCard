@@ -6,6 +6,7 @@ const CardView = preload("res://ui/card_view.gd")
 const ReferenceUI = preload("res://ui/reference_ui.gd")
 const BoundedBar = preload("res://ui/bounded_bar.gd")
 const EquipmentDetails = preload("res://ui/equipment_details.gd")
+const EquipmentCompareDialog = preload("res://ui/equipment_compare_dialog.gd")
 const InventoryView = preload("res://ui/inventory_view.gd")
 const CardDetails = preload("res://ui/card_details.gd")
 const BattleDetails = preload("res://ui/battle_details.gd")
@@ -59,7 +60,7 @@ var _game_title: Label
 func _ready() -> void:
 	theme = P.theme()
 	for card in CATALOG.data.tables.Cards: cards[card.id] = card
-	_login_address = Game.gateway.base_url
+	if not Game.gateway.base_url.strip_edges().is_empty(): _login_address = Game.gateway.base_url
 	if not Game.gateway.local_account_name.is_empty(): _login_name = Game.gateway.local_account_name
 	_session_generation = Game.gateway.session_generation
 	Game.changed.connect(_schedule_render)
@@ -303,6 +304,7 @@ func _login() -> void:
 	_label(panel, "服务器地址", 22, P.MUTED)
 	var address := LineEdit.new()
 	address.text = _login_address
+	address.placeholder_text = "http://127.0.0.1:5080"
 	address.text_changed.connect(func(value): _login_address = value)
 	panel.add_child(address)
 	if Game.platform.local_login_enabled():
@@ -467,7 +469,10 @@ func _ready_screen() -> void:
 func card_description(id: String, kind: String = "face") -> String:
 	var locale := P.language()
 	var descriptions: Dictionary = DESCRIPTIONS.data.get(locale, DESCRIPTIONS.data.get("zh", {}))
-	return str(descriptions.get("card.%s.%s" % [kind, id], ""))
+	# Description tables use the `card.<kind>.desc.<id>` namespace. Keep the
+	# lookup here aligned with both the face summary and the full detail text;
+	# the old key omitted `.desc` and silently fell back to numeric shorthand.
+	return str(descriptions.get("card.%s.desc.%s" % [kind, id], ""))
 
 func _card_text(id: String, level: int = 0, element_override: String = "") -> String:
 	var info: Dictionary = CardDetails.with_element(cards.get(id, {}), element_override)
@@ -624,28 +629,31 @@ func _equip(item: Dictionary) -> void:
 	gear_draft[slots[item.slot]] = item.instanceId
 	_render()
 
-func _comparison(item: Dictionary) -> String:
+func _equipped_items() -> Array:
+	if not Game.room.is_empty(): return Game.room.get("player", {}).get("equipped_items", [])
+	return inventory.get("equipments", []).filter(func(value): return value.get("instanceId", "") in gear_draft)
+
+func _current_equipment(item: Dictionary, worn: Array = []) -> Dictionary:
 	var gear: Dictionary = EquipmentDetails.equipment(item)
-	var worn: Array = Game.room.get("player", {}).get("equipped_items", []) if not Game.room.is_empty() else inventory.get("equipments", []).filter(func(value): return value.get("instanceId", "") in gear_draft)
+	if worn.is_empty(): worn = _equipped_items()
 	var current: Dictionary = {}
 	for candidate in worn:
 		if EquipmentDetails.equipment(candidate).get("slot", "") == gear.get("slot", ""):
 			current = candidate
 			break
-	return "所选装备\n%s\n\n当前同部位\n%s" % [EquipmentDetails.description(item), "未穿戴" if current.is_empty() else EquipmentDetails.description(current)]
+	return current
 
 func _show_equipment_details(item: Dictionary, action: Callable = Callable(), action_title: String = "穿戴") -> void:
-	var dialog := AcceptDialog.new()
-	dialog.title = P.localized_text("装备对比")
-	var column := VBoxContainer.new()
-	column.custom_minimum_size.x = 680
-	dialog.add_child(column)
-	_label(column, _comparison(item), 24)
-	if action.is_valid(): _button(column, action_title, func(): dialog.queue_free(); action.call(), Game.busy)
+	var worn := _equipped_items()
+	var current := _current_equipment(item, worn)
+	# Wearing into an empty slot has no baseline to compare. Follow the GDD/UI
+	# flow and execute the requested equip action without opening a modal.
+	if current.is_empty() and action.is_valid():
+		if not Game.busy: action.call()
+		return
+	var dialog := EquipmentCompareDialog.new()
 	add_child(dialog)
-	dialog.confirmed.connect(dialog.queue_free)
-	dialog.canceled.connect(dialog.queue_free)
-	dialog.popup_centered(Vector2i(750, 690))
+	dialog.open(item, current, worn, action, action_title, Game.busy)
 
 func _show_battle_details(status: Dictionary) -> void:
 	var dialog := AcceptDialog.new()

@@ -30,6 +30,10 @@ func run_test() -> Dictionary:
 	var title: Label = card.get_node("CardName")
 	var effect: Label = card.get_node("CardEffect")
 	if title.position.y + title.size.y > effect.position.y: errors.append("Card name must not overlap its effect line")
+	if effect.max_lines_visible != 2 or effect.autowrap_mode == TextServer.AUTOWRAP_OFF:
+		errors.append("Common card effects must reserve two wrapped lines")
+	if effect.horizontal_alignment != HORIZONTAL_ALIGNMENT_CENTER or effect.vertical_alignment != VERTICAL_ALIGNMENT_CENTER:
+		errors.append("Common card effects must stay centered")
 	if card.get_node("CardLevel").get_rect().intersects(card.get_node("ClassBadge").get_rect()): errors.append("Upgrade level must not overlap the class badge")
 	info.hero_class = null
 	card.configure("C01", info, "火系伤害8点", true)

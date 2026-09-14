@@ -44,7 +44,10 @@ def main():
         if codex:
             scene = "res://tests/" + args.action.replace("-", "_") + ".tscn"
         log = f"client/{args.action}.log"
-        result = client.runtime.launch_game(scene_path=scene, headless=False, extra_args=["--resolution", "1920x1080", "--log-file", str(ROOT / log)])
+        # Keep automated visual/self-check runs compact and non-fullscreen. The
+        # client viewport uses canvas scaling, so gameplay coordinates remain
+        # authoritative while the spawned window is a manageable 800x600.
+        result = client.runtime.launch_game(scene_path=scene, headless=False, extra_args=["--resolution", "800x600", "--log-file", str(ROOT / log)])
         if result.get("ok"):
             process_id = result["payload"]["process_id"]
             deadline = time.monotonic() + 410

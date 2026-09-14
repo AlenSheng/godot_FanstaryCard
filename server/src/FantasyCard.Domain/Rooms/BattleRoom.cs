@@ -972,7 +972,8 @@ public sealed partial class BattleRoom
             pvpTarget is not null ? draft.DrawBlock.TotalSeconds : 0, healthCost,
             draft.DrawCharge + fenxian.Charge, draft.ImmediateDraw + fenxian.Draw,
             draft.DrawSpeedDuration.TotalSeconds, draft.DrawSpeedModifier,
-            pveTarget is not null ? blockSpeed.TotalSeconds : 0);
+            pveTarget is not null ? blockSpeed.TotalSeconds : 0,
+            draft.ResonanceMultiplier, draft.ConflictPairCount, draft.ConflictCancellation);
         _combatFeedback.Add(new CombatFeedbackResolution(playerId.ToString("D"), resolution));
         return resolution;
     }

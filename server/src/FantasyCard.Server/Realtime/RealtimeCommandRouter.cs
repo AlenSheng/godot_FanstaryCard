@@ -618,7 +618,10 @@ public sealed partial class RealtimeCommandRouter
                         resolution.ImmediateDraw, payload.CardInstanceIds, resolution.AttackerId.ToString("D"),
                         resolution.DrawSpeedSeconds.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
                         resolution.DrawSpeedModifier.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
-                        resolution.DrawBlockSpeedSeconds.ToString("R", System.Globalization.CultureInfo.InvariantCulture)),
+                        resolution.DrawBlockSpeedSeconds.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
+                        resolution.ResonanceMultiplier.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
+                        resolution.ConflictPairCount,
+                        resolution.ConflictCancellation.ToString("R", System.Globalization.CultureInfo.InvariantCulture)),
                     command.RequestId,
                     resolution.RoomRevision)
             ];

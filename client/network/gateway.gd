@@ -6,6 +6,7 @@ signal connection_changed(state: String)
 signal authentication_required(reason: String)
 
 const Proto = preload("res://network/protobuf.gd")
+const DEFAULT_LOCAL_BASE_URL := "http://127.0.0.1:5080"
 const COMMANDS := {
 	"ping": "", "session.resume": "SessionResumeCommand", "room.ready": "RoomReadyCommand",
 	"room.snapshot.read": "RoomSnapshotCommand", "room.move": "RoomMoveCommand",
@@ -38,7 +39,7 @@ const EVENTS := {
 	"inventory.changed": "InventoryChangedEvent", "relic.contents": "RoomRelicPile"
 }
 
-var base_url := "http://127.0.0.1:5080"
+var base_url := DEFAULT_LOCAL_BASE_URL
 var persist_session := true
 var token := ""
 var token_expires_at: float = 0.0
@@ -70,10 +71,11 @@ func _ready() -> void:
 		last_sequence = int(config.get_value("session", "sequence", 0))
 		room_id = config.get_value("session", "room_id", "")
 		room_revision = int(config.get_value("session", "revision", 0))
-		base_url = config.get_value("session", "base_url", base_url)
+		var saved_base_url := str(config.get_value("session", "base_url", "")).strip_edges()
+		if not saved_base_url.is_empty(): base_url = saved_base_url
 		authenticated_user_id = config.get_value("session", "user_id", "")
 		local_account_name = config.get_value("session", "local_account_name", "")
-	if not OS.is_debug_build(): base_url = str(ProjectSettings.get_setting("platform/server_url", ""))
+	if not OS.is_debug_build(): base_url = str(ProjectSettings.get_setting("platform/server_url", "")).strip_edges()
 	if device_id.is_empty(): device_id = "godot-" + new_id()
 	_save_session()
 
