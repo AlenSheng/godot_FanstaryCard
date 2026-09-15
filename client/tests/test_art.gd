@@ -47,6 +47,8 @@ func run_test() -> Dictionary:
 		return {"ok": false, "message": "Common item cell must remain a 144x144 square"}
 	if Art.COMMON_CELL_DISPLAY_SIZE != Vector2(96, 96) or Art.COMMON_CELL_GAP != 8:
 		return {"ok": false, "message": "Common item cell display spec changed unexpectedly"}
+	if Art.UNEQUIPPED_SLOT_COLOR.get_luminance() >= 0.15 or Art.UNEQUIPPED_ITEM_MODULATE.get_luminance() >= 0.5:
+		return {"ok": false, "message": "Unequipped slots must remain visibly darker than White gear"}
 	for quality in ["White", "Green", "Blue", "Purple", "Orange"]:
 		for element in ["Fire", "Wood", "Water", "Metal", "Earth"]:
 			for slot in ["Head", "Chest", "Hands", "Legs", "Feet"]:

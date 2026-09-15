@@ -8,6 +8,10 @@ const COMMON_CELL_KEY := "UI/Prep/exploration_prep_backpack_cell_empty_normal.pn
 const COMMON_CELL_SOURCE_SIZE := Vector2i(144, 144)
 const COMMON_CELL_DISPLAY_SIZE := Vector2(96, 96)
 const COMMON_CELL_GAP := 8
+## Shared dark state for an empty equipment slot. Keep it visually distinct from White gear.
+const UNEQUIPPED_SLOT_COLOR := Color8(25, 28, 29, 255)
+const UNEQUIPPED_FRAME_MODULATE := Color8(105, 108, 108, 220)
+const UNEQUIPPED_ITEM_MODULATE := Color8(115, 115, 115, 200)
 static var _textures: Dictionary = {}
 
 static func texture(key: String) -> Texture2D:

@@ -21,7 +21,7 @@ public static class CardEconomyRules
     };
 
     public static long CraftCost(CardConfigDefinition card, bool owned) =>
-        owned || card.InitiallyUnlocked ? card.CopyCost : card.UnlockCost;
+        card.InitiallyUnlocked ? card.CopyCost : card.UnlockCost;
 
     public static CardLevelConfig Level(string cardId, int level)
     {
@@ -35,9 +35,7 @@ public static class CardEconomyRules
     {
         if (!unlocked || copies < 1) return "Card is not owned.";
         if (level >= 5) return "Card has reached maximum level.";
-        var cost = Level(cardId, level + 1);
-        if (cost.RequiresCopy && copies - 1 < Math.Max(1, requiredCopies))
-            return "Upgrade requires a spare same-name card beyond the copies required by saved decks.";
+        _ = Level(cardId, level + 1);
         return null;
     }
 

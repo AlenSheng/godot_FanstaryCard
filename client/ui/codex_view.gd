@@ -7,10 +7,10 @@ const PREFIX := "UI/CardCodex/card_codex_"
 const SOULS := ["PriestSoul", "MageSoul", "GuardianSoul", "WarriorSoul"]
 const SOUL_NAMES := {"PriestSoul": "牧魂", "MageSoul": "法魂", "GuardianSoul": "盾魂", "WarriorSoul": "勇士之魂"}
 
-static func header(ui: Control, host: Control) -> void:
+static func header(ui: Control, host: Control, title: String = "卡牌图鉴") -> void:
 	ui.panel(Rect2(20, 18, 1880, 82), PREFIX + "title_bar_normal.png")
 	ui.button("返回", Rect2(56, 30, 136, 58), host._navigate.bind("hall"), Game.busy).name = "ReturnButton"
-	ui.text("卡牌图鉴", Rect2(232, 30, 430, 60), 36, P.GOLD)
+	ui.text(title, Rect2(232, 30, 430, 60), 36, P.GOLD)
 	for i in range(SOULS.size()):
 		var kind: String = SOULS[i]
 		var x := 1010 + i * 218
@@ -33,7 +33,6 @@ static func build(ui: Control, host: Control) -> void:
 	ui.add_child(search)
 	search.position = Vector2(48, 130)
 	search.size = Vector2(625, 66)
-	ui.button("完成编组" if host.edit_mode else "编辑编组", Rect2(718, 134, 216, 58), func(): host.edit_mode = not host.edit_mode; host._codex_scroll = 0; host._render(), Game.busy).name = "ToggleDeck"
 	ui.text("品质：", Rect2(997, 143, 85, 42), 22, P.GOLD)
 	var qualities := ["", "White", "Green", "Blue", "Purple", "Orange"]
 	for i in range(qualities.size()):
@@ -44,31 +43,30 @@ static func build(ui: Control, host: Control) -> void:
 		filter.name = "Filter_" + ("All" if quality.is_empty() else quality)
 	var count: Label = ui.text("", Rect2(48, 208, 1050, 35), 20, P.MUTED)
 	count.name = "CollectionCount"
-	var scroll := _scroll(ui, Rect2(42, 257, 1342 if host.edit_mode else 1840, 758))
+	var scroll := _scroll(ui, Rect2(42, 257, 1840, 758))
 	scroll.name = "CodexScroll"
 	scroll.interaction_enabled = host._codex_card.is_empty()
 	var grid := GridContainer.new()
 	grid.name = "CardGrid"
-	grid.columns = 5 if host.edit_mode else 8
-	grid.add_theme_constant_override("h_separation", 42 if host.edit_mode else 47)
+	grid.columns = 8
+	grid.add_theme_constant_override("h_separation", 47)
 	grid.add_theme_constant_override("v_separation", 42)
 	scroll.add_child(grid)
-	_fill_grid(host, grid, scroll, count)
+	_fill_grid(ui, host, grid, scroll, count)
 	scroll.set_deferred("scroll_vertical", host._codex_scroll)
 	scroll.get_v_scroll_bar().value_changed.connect(func(value): host._codex_scroll = int(value))
-	search.text_changed.connect(func(value): host._search = value.strip_edges(); host._codex_scroll = 0; scroll.scroll_vertical = 0; _fill_grid(host, grid, scroll, count))
+	search.text_changed.connect(func(value): host._search = value.strip_edges(); host._codex_scroll = 0; scroll.scroll_vertical = 0; _fill_grid(ui, host, grid, scroll, count))
 	ui.text("点击卡牌查看详情 · 按住拖拽或使用滚轮浏览", Rect2(480, 1037, 850, 30), 18, P.MUTED).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	if host.edit_mode: _deck(ui, host)
 	if not host._codex_card.is_empty(): _details(ui, host)
 
-static func _fill_grid(host: Control, grid: GridContainer, scroll: ScrollContainer, count: Label) -> void:
+static func _fill_grid(ui: Control, host: Control, grid: GridContainer, scroll: ScrollContainer, count: Label) -> void:
 	for child in grid.get_children():
 		grid.remove_child(child)
 		child.queue_free()
 	var collected := 0
 	var total := 0
 	var shown := 0
-	var side: float = 218.0 if host.edit_mode else 184.0
+	var side := 184.0
 	for id in host.cards:
 		var info: Dictionary = host.cards[id]
 		if not info.get("is_codex", false): continue
@@ -84,12 +82,11 @@ static func _fill_grid(host: Control, grid: GridContainer, scroll: ScrollContain
 		grid.add_child(slot)
 		var node: Button = host._card_button(slot, id, func():
 			if scroll.can_activate():
-				host._codex_card = id
-				host._render(), false, false, {"collection": true, "copy_count": copies})
+				_open_details(ui, host, id, scroll), false, false, {"collection": true, "copy_count": copies, "level": int(owned.get("level", 0))})
 		node.name = "Card_" + id
 		node.size = Vector2(218, 376)
 		node.scale = Vector2.ONE * side / 218.0
-		node.tooltip_text = P.localized_text(node.tooltip_text + "\n持有 %s · %s" % [copies, "点击分解 / 编组" if copies > 0 else "点击合成"])
+		node.tooltip_text = P.localized_text(node.tooltip_text + "\n持有 %s · 点击查看详情" % copies)
 		shown += 1
 	count.text = P.localized_text("已收集 %s / %s" % [collected, total])
 	if shown != total: count.text += P.localized_text("    筛选结果 %s 张" % shown)
@@ -161,6 +158,7 @@ static func _details(ui: Control, host: Control) -> void:
 	var refund := int(entry.get("dismantleRefund", 0))
 	var balance: int = host._card_material(kind)
 	for control in ui.find_children("*", "Control", true, false):
+		control.set_meta("codex_previous_focus_mode", int(control.focus_mode))
 		control.focus_mode = Control.FOCUS_NONE
 	var modal: Control = ui.get_script().new()
 	modal.host = host
@@ -177,7 +175,7 @@ static func _details(ui: Control, host: Control) -> void:
 	modal.add_child(shade)
 	modal.panel(Rect2(340, 120, 1240, 876)).name = "DetailsPanel"
 	modal.text("卡牌详情", Rect2(740, 150, 440, 58), 38).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	modal.button("返回", Rect2(1406, 146, 140, 64), func(): host._codex_card = ""; host._render(), host._codex_mutating).name = "CloseCardDetails"
+	modal.button("返回", Rect2(1406, 146, 140, 64), close_details.bind(ui, host), host._codex_mutating).name = "CloseCardDetails"
 	var preview: Button = host._card_button(modal, id, func(): pass, false, false, {"preview": true, "level": int(entry.get("level", 0))})
 	preview.name = "DetailCard"
 	preview.position = Vector2(411, 271) if owned else Vector2(390, 311)
@@ -185,7 +183,7 @@ static func _details(ui: Control, host: Control) -> void:
 	preview.scale = Vector2.ONE * (1.23 if owned else 1.42)
 	preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	preview.focus_mode = Control.FOCUS_NONE
-	modal.text(info.get("name", id), Rect2(796, 242, 650, 64), 39)
+	modal.text(str(info.get("name", id)), Rect2(796, 242, 650, 64), 39)
 	_tag(modal, P.word(info.get("quality", "White")) + "色", Rect2(798, 338, 155, 60), "tag_normal.png" if info.get("quality") == "White" else "tag_q_%s.png" % str(info.get("quality")).to_lower())
 	_tag(modal, "通用卡" if hero == null else P.word(hero) + "职业卡", Rect2(974, 338, 170, 60), "tag_normal.png" if hero == null else "tag_orange.png")
 	var category: String = P.word(info.get("category", "Support"))
@@ -229,20 +227,32 @@ static func _details(ui: Control, host: Control) -> void:
 	action.name = "DismantleCard" if owned else "CraftCard"
 	modal.picture(modal._item(kind), Rect2(856, 915, 36, 43))
 	if owned:
-		var copy_cost: int = int(entry.get("upgradeCopyCost", 0))
 		var upgrade_cost: int = int(entry.get("upgradeCost", 0))
-		var upgrade_ready: bool = entry.get("canUpgrade", false) and balance >= upgrade_cost and copies - copy_cost >= maxi(1, host.deck_draft.count(id))
+		var upgrade_ready: bool = entry.get("canUpgrade", false) and balance >= upgrade_cost
 		var upgrade_title := "升至 +%s" % (int(entry.get("level", 0)) + 1)
 		if int(entry.get("level", 0)) >= 5: upgrade_title = "已达 +5"
 		var upgrade: Button = modal.button(upgrade_title, Rect2(400, 795, 315, 67), func():
-			host._confirm("消耗 %s %s%s，将此卡升级到 +%s？" % [upgrade_cost, material, "和 1 张额外同名卡" if copy_cost > 0 else "", int(entry.get("level", 0)) + 1], host._card_action.bind(id, "upgrade")), Game.busy or not upgrade_ready)
+			host._confirm("消耗 %s %s，将此卡升级到 +%s？" % [upgrade_cost, material, int(entry.get("level", 0)) + 1], host._card_action.bind(id, "upgrade")), Game.busy or not upgrade_ready)
 		upgrade.name = "UpgradeCard"
-		upgrade.tooltip_text = P.localized_text("已达最高等级" if int(entry.get("level", 0)) >= 5 else ("需要额外同名卡，并保留各编组所用副本" if copy_cost > 0 else "只消耗魂材料"))
-		modal.text("需额外同名卡 ×%s" % copy_cost, Rect2(397, 747, 321, 38), 21, P.MUTED)
-	if host.edit_mode and owned:
-		var reason := _add_reason(host, id, info, copies)
-		var add: Button = modal.button("加入编组" if reason.is_empty() else reason, Rect2(400, 884, 315, 64), func(): host.deck_draft.append(id); host._codex_card = ""; host._render(), Game.busy or not reason.is_empty())
-		add.name = "AddCardToDeck"
+		upgrade.tooltip_text = P.localized_text("已达最高等级" if int(entry.get("level", 0)) >= 5 else "只消耗魂材料")
+
+static func _open_details(ui: Control, host: Control, id: String, scroll: ScrollContainer) -> void:
+	if not host._codex_card.is_empty(): return
+	host._codex_card = id
+	scroll.interaction_enabled = false
+	_details(ui, host)
+
+static func close_details(ui: Control, host: Control) -> void:
+	if host._codex_mutating: return
+	host._codex_card = ""
+	var modal := ui.get_node_or_null("CardDetails")
+	if modal != null: modal.queue_free()
+	for control in ui.find_children("*", "Control", true, false):
+		if control.has_meta("codex_previous_focus_mode"):
+			control.focus_mode = int(control.get_meta("codex_previous_focus_mode"))
+			control.remove_meta("codex_previous_focus_mode")
+	var scroll := ui.get_node_or_null("CodexScroll") as ScrollContainer
+	if scroll != null: scroll.interaction_enabled = true
 
 static func _tag(ui: Control, value: String, rect: Rect2, key: String) -> void:
 	ui.panel(rect, PREFIX + key)

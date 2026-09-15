@@ -63,20 +63,17 @@ func _run() -> void:
 		$UI.set_meta("inventory_open", false)
 		$UI.screen = "cards"
 		$UI.deck_draft = []
-		$UI.owned = [{"cardId": "MAG-01", "unlocked": true, "copyCount": 2, "level": 3, "version": 7, "currencyKind": "MageSoul", "craftCost": 12, "dismantleRefund": 9, "canDismantle": true, "canUpgrade": true, "upgradeCost": 80, "upgradeCopyCost": 1, "currentEffect": {"element": "Fire", "elementalDamage": 11}, "nextEffect": {"element": "Fire", "elementalDamage": 12}}]
+		$UI.owned = [{"cardId": "MAG-01", "unlocked": true, "copyCount": 1, "level": 3, "version": 7, "currencyKind": "MageSoul", "craftCost": 12, "dismantleRefund": 9, "canDismantle": true, "canUpgrade": true, "upgradeCost": 80, "upgradeCopyCost": 0, "currentEffect": {"element": "Fire", "elementalDamage": 11}, "nextEffect": {"element": "Fire", "elementalDamage": 12}}]
 		$UI._codex_card = "MAG-01"
 		Game.lobby.materials.mageSoul = 300
 		await _capture("card_upgrade" + suffix)
 		_check(not $UI._reference.find_child("UpgradeCard", true, false).disabled, "Affordable upgrade enabled" + suffix)
-		_check(_all_text().contains("下一级：") and _all_text().contains("需额外同名卡"), "Upgrade effect and copy cost rendered" + suffix)
+		_check(_all_text().contains("下一级：") and not _all_text().contains("需额外同名卡"), "Upgrade effect renders without duplicate-card cost" + suffix)
 		var details: Control = $UI._reference.find_child("DetailsPanel", true, false)
 		for name in ["UpgradeCard", "DismantleCard", "CloseCardDetails"]:
 			_check(details.get_global_rect().encloses($UI._reference.find_child(name, true, false).get_global_rect()), name + " within modal" + suffix)
 		var card: Control = $UI._reference.find_child("DetailCard", true, false)
 		_check(not card.get_global_rect().intersects($UI._reference.find_child("UpgradeCard", true, false).get_global_rect()), "Upgrade control does not cover card" + suffix)
-		for label in $UI._reference.find_children("*", "Label", true, false):
-			if label.text.begins_with("需额外同名卡"):
-				_check(not card.get_global_rect().intersects(label.get_global_rect()), "Copy cost does not cover card" + suffix)
 		Game.lobby.materials.mageSoul = 0
 		await _capture("card_upgrade_insufficient" + suffix)
 		_check($UI._reference.find_child("UpgradeCard", true, false).disabled, "Insufficient upgrade disabled" + suffix)

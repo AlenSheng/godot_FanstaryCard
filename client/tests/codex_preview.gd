@@ -32,13 +32,16 @@ func _run() -> void:
 		var owned: bool = info.source == "Initial" or (info.source == "Class" and info.quality == "White")
 		var kind: String = "WarriorSoul" if info.hero_class == null else str(info.hero_class) + "Soul"
 		$UI.owned.append({"cardId": id, "heroClass": info.hero_class, "unlocked": owned, "copyCount": 1 if owned else 0, "level": 0, "version": 1, "craftCost": 10 if info.hero_class == null else 12, "dismantleRefund": 2 if info.hero_class == null else 3, "currencyKind": kind, "upgradeSoulSpent": 0, "canDismantle": owned})
+	var cached_owned_count: int = $UI.owned.size()
+	await $UI._navigate("cards")
+	_check($UI._codex_ready and $UI.owned.size() == cached_owned_count, "Re-entering the codex must reuse its session cache")
 	await _capture("collection")
 	var card_grid: Control = $UI._reference.find_child("CardGrid", true, false)
 	_check(card_grid.get_child_count() == 200, "Collection must include all 200 cards")
 	var missing_effects: Array[String] = []
 	var stale_effects: Array[String] = []
 	for child in card_grid.get_children():
-		var effect_label := child.get_node_or_null("CardEffect") as Label
+		var effect_label := child.find_child("CardEffect", true, false) as Label
 		if effect_label == null or effect_label.text.strip_edges().is_empty():
 			missing_effects.append(str(child.name))
 		elif ".0" in effect_label.text or effect_label.text.begins_with("火 ") or effect_label.text.begins_with("木 ") or effect_label.text.begins_with("水 ") or effect_label.text.begins_with("金 ") or effect_label.text.begins_with("土 ") or effect_label.text.begins_with("直伤"):
@@ -52,11 +55,15 @@ func _run() -> void:
 	var missing_id := "GW08"
 	var card: Button = $UI._reference.find_child("Card_" + missing_id, true, false)
 	_check(card != null and not card.disabled and card.material != null, "Unowned card must be gray and clickable")
+	_check($UI._reference.find_child("ToggleDeck", true, false) == null, "Codex must not expose deck editing")
 	if card == null:
 		_finish()
 		return
+	var cached_reference: Control = $UI._reference
+	var cached_grid: Control = card_grid
 	card.pressed.emit()
 	_check($UI._codex_card == missing_id, "Card activation must select the requested card")
+	_check($UI._reference == cached_reference and $UI._reference.find_child("CardGrid", true, false) == cached_grid, "Opening local details must preserve the cached card grid")
 	await _capture("craft", false)
 	var craft_button: Button = $UI._reference.find_child("CraftCard", true, false)
 	_check(craft_button != null, "Unowned click must open craft dialog")
@@ -69,13 +76,35 @@ func _run() -> void:
 	_check(details_panel.get_global_rect().encloses(return_button.get_global_rect()), "Dialog return button must stay inside its panel")
 	_check(not craft_button.disabled, "Sufficient material must enable craft")
 	_check($UI._reference.find_child("DetailCard", true, false).material == null, "Unowned preview must be in color")
+	return_button.pressed.emit()
+	await get_tree().process_frame
+	_check($UI._codex_card.is_empty() and $UI._reference.find_child("CardDetails", true, false) == null, "Closing local details must remove only the modal")
+	_check($UI._reference == cached_reference and $UI._reference.find_child("CardGrid", true, false) == cached_grid, "Closing local details must preserve the cached card grid")
+	card.pressed.emit()
+	craft_button = $UI._reference.find_child("CraftCard", true, false)
 	Game.lobby.materials[$UI._owned_card(missing_id).currencyKind.left(1).to_lower() + $UI._owned_card(missing_id).currencyKind.substr(1)] = 0
 	$UI._render()
 	_check($UI._reference.find_child("CraftCard", true, false).disabled, "Insufficient material must disable craft")
+	$UI._owned_card("MAG-07")["canUpgrade"] = true
+	$UI._owned_card("MAG-07")["upgradeCost"] = 5
+	$UI._owned_card("MAG-07")["upgradeCopyCost"] = 0
+	$UI._owned_card("MAG-07")["level"] = 2
 	$UI._codex_card = "MAG-07"
 	await _capture("dismantle")
 	_check($UI._reference.find_child("DismantleCard", true, false) != null, "Owned click must open dismantle dialog")
 	_check($UI._reference.find_child("DetailCard", true, false).get_node_or_null("ClassBadge") != null, "Class card requires its own badge")
+	var upgrade_button := $UI._reference.find_child("UpgradeCard", true, false) as Button
+	if upgrade_button != null and not upgrade_button.disabled:
+		upgrade_button.pressed.emit()
+		await get_tree().process_frame
+		var confirmation := $UI.get_node_or_null("ConfirmationModal")
+		_check(confirmation != null, "Upgrade must use the shared confirmation component")
+		if confirmation != null:
+			_check(confirmation.get_node_or_null("DialogPanel/Description") != null, "Shared confirmation requires a separate description layer")
+			_check(confirmation.get_node_or_null("DialogPanel/ConfirmButton") != null and confirmation.get_node_or_null("DialogPanel/CancelButton") != null, "Shared confirmation requires two action buttons")
+			await _capture("confirmation", false)
+			confirmation.get_node("DialogPanel/CancelButton").pressed.emit()
+			await get_tree().process_frame
 	$UI._owned_card("MAG-07")["canDismantle"] = false
 	$UI._render()
 	_check($UI._reference.find_child("DismantleCard", true, false).disabled, "Saved deck copy must not be dismantled")
@@ -104,16 +133,17 @@ func _run() -> void:
 	$UI._search = ""
 	$UI.edit_mode = true
 	$UI.deck_draft = ["C01", "C02", "MAG-01"]
-	await _capture("deck")
+	await _capture("collection_no_deck_editor")
+	_check($UI._reference.find_child("ToggleDeck", true, false) == null, "Legacy edit state must not restore the deck-edit entry")
 	$UI._codex_card = "PRI-01"
 	$UI._render()
-	_check($UI._reference.find_child("AddCardToDeck", true, false).disabled, "Other class card cannot enter current deck")
+	_check($UI._reference.find_child("AddCardToDeck", true, false) == null, "Card details must not expose deck editing")
 	$UI._codex_card = ""
 	$UI.edit_mode = false
 	get_window().size = Vector2i(960, 540)
 	await _capture("collection_960")
 	$UI._codex_card = missing_id
-	await _capture("craft_960")
+	await _capture("craft_cached_960")
 	_finish()
 
 func _finish() -> void:

@@ -71,7 +71,7 @@ func _run() -> void:
 		$UI.deck_draft = []
 		$UI.owned = []
 		for id in ["MAG-01", "MAG-04", "GP01", "MAG-10", "C01", "GG01"]:
-			$UI.owned.append({"cardId": id, "heroClass": null, "unlocked": true, "copyCount": 2, "level": 1})
+			$UI.owned.append({"cardId": id, "heroClass": null, "unlocked": true, "copyCount": 1, "level": 1})
 		await _capture("cards" + suffix)
 		Game.room = {"allowed_actions": ["battle.play_cards", "battle.select_target"], "player": {"player_id": "preview-player", "hero_class": "Mage", "phase": "Pve", "combat": {"hp": 48, "maximum_hp": 70, "shield": 6}, "draw_charge": "0.55", "hand": []}, "pve": {"battle_id": "preview", "current_target_id": "fire-bat", "monsters": []}}
 		for id in ["MAG-01", "MAG-04", "GP01", "M-FIREBAT", "M-VOIDCORE"]:
@@ -144,7 +144,7 @@ func _shop_fixture() -> Dictionary:
 		products.append({"kind": kind, "productId": "fixture-" + kind, "priceGold": 120, "purchased": 0, "limit": 3, "payload": JSON.stringify({"count": 3} if kind == "Cards" else {"amount": 1})})
 	for hero_class in ["Priest", "Mage", "Guardian"]:
 		products.append({"kind": "ClassSoul", "productId": "fixture-" + hero_class, "priceGold": 400, "purchased": 0, "limit": 1, "payload": JSON.stringify({"heroClass": hero_class, "amount": 12})})
-	products.append({"kind": "Cards", "productId": "fixture-daily", "priceGold": 150, "purchased": 0, "limit": 1, "payload": JSON.stringify({"cardId": "C01", "count": 1})})
+	products.append({"kind": "Cards", "productId": "fixture-daily", "priceGold": 150, "purchased": 0, "limit": 1, "alreadyOwned": true, "payload": JSON.stringify({"cardId": "C01", "count": 1})})
 	return {"products": products}
 
 func _check_shop() -> void:
@@ -174,6 +174,8 @@ func _check_shop() -> void:
 				layout_errors.append("Guaranteed card repeats its quality above the identifying frame: " + product.productId)
 			if face_name == null or face_name.text.is_empty() or face_effect == null or face_effect.text.is_empty():
 				layout_errors.append("Guaranteed card frame omits its name or effect: " + product.productId)
+			elif face_name.position != Vector2(40, 352):
+				layout_errors.append("Guaranteed card name lost its shop-only offset: " + product.productId)
 			elif face_name.position.y + face_name.size.y >= face_effect.position.y:
 				layout_errors.append("Guaranteed card name overlaps its effect: " + product.productId)
 			elif face_effect.position.y + face_effect.size.y >= frame.position.y + frame.size.y - 18:
@@ -182,6 +184,9 @@ func _check_shop() -> void:
 				layout_errors.append("Guaranteed card effect does not reserve two centered lines: " + product.productId)
 			if not node.tooltip_text.contains(P.localized_text("品质：%s色" % P.word(quality))):
 				layout_errors.append("Guaranteed card tooltip omits quality: " + product.productId)
+			var purchase := node.get_node_or_null("Purchase") as Button
+			if product.get("alreadyOwned", false) and (purchase == null or not purchase.disabled or purchase.text != P.localized_text("已激活")):
+				layout_errors.append("Activated shop card remains purchasable: " + product.productId)
 		if product.kind == "ClassSoul" and image.texture != Art.texture("UI/Item/exploration_prep_item_icon_%s_soul.png" % str(payload.heroClass).to_lower()):
 			layout_errors.append("Class soul icon does not match payload: " + product.productId)
 		if image.mouse_filter != Control.MOUSE_FILTER_IGNORE:
@@ -292,10 +297,11 @@ func _regressions() -> void:
 	var daily: Node = $UI._reference.find_child("Product_fixture-daily", true, false)
 	daily.get_node("Purchase").pressed.emit()
 	var confirmation_found := false
-	for child in $UI.get_children():
-		if child is ConfirmationDialog:
-			confirmation_found = str($UI.cards.C01.name) in child.dialog_text and "150" in child.dialog_text
-			child.queue_free()
+	var confirmation := $UI.get_node_or_null("ConfirmationModal")
+	if confirmation != null:
+		var description := confirmation.get_node("DialogPanel/Description") as Label
+		confirmation_found = str($UI.cards.C01.name) in description.text and "150" in description.text
+		confirmation.get_node("DialogPanel/CancelButton").pressed.emit()
 	if not confirmation_found: layout_errors.append("Daily card purchase confirmation lost card name or price")
 	$UI.screen = "market"
 	$UI._market_item = "already-listed"

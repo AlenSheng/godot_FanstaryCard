@@ -57,12 +57,11 @@ public sealed class CardUpgradeTests
     }
 
     [Fact]
-    public void Upgrade_material_protects_saved_decks_and_the_card_being_upgraded()
+    public void Upgrade_requires_only_an_activated_card_below_maximum_level()
     {
         Assert.Null(CardEconomyRules.UpgradeBlockedReason("C01", true, 1, 2, 1));
-        Assert.NotNull(CardEconomyRules.UpgradeBlockedReason("C01", true, 1, 3, 0));
-        Assert.NotNull(CardEconomyRules.UpgradeBlockedReason("C01", true, 2, 3, 2));
-        Assert.Null(CardEconomyRules.UpgradeBlockedReason("C01", true, 3, 3, 2));
+        Assert.Null(CardEconomyRules.UpgradeBlockedReason("C01", true, 1, 3, 0));
+        Assert.Null(CardEconomyRules.UpgradeBlockedReason("C01", true, 1, 4, 1));
         Assert.NotNull(CardEconomyRules.UpgradeBlockedReason("C01", true, 10, 5, 0));
         Assert.NotNull(CardEconomyRules.UpgradeBlockedReason("C01", false, 0, 0, 0));
     }

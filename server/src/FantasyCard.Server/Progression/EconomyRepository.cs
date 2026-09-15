@@ -272,8 +272,11 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
         while (await reader.ReadAsync(cancellationToken))
         {
             var productId = reader.GetString(0);
-            result.Add(new ShopProductResponse(productId, reader.GetString(1), reader.GetInt64(2), reader.GetInt32(3),
-                await PurchasedAsync(playerId, resetKey, productId, cancellationToken), reader.GetString(4)));
+            var kind = reader.GetString(1);
+            var payload = reader.GetString(4);
+            result.Add(new ShopProductResponse(productId, kind, reader.GetInt64(2), reader.GetInt32(3),
+                await PurchasedAsync(playerId, resetKey, productId, cancellationToken), payload,
+                await IsGuaranteedCardOwnedAsync(playerId, kind, payload, cancellationToken)));
         }
         return new ShopResponse(resetKey, result);
     }
@@ -312,6 +315,7 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
             if (!await reader.ReadAsync(cancellationToken)) throw new InvalidOperationException("Shop product is unavailable.");
             kind = reader.GetString(0); payload = reader.GetString(1); price = reader.GetInt64(2); limit = reader.GetInt32(3);
         }
+        await EnsureCardPurchaseAvailableAsync(connection, transaction, playerId, kind, payload, request.Quantity, cancellationToken);
         var purchased = await PurchasedAsync(connection, transaction, playerId, resetKey, request.ProductId, cancellationToken);
         if (purchased + request.Quantity > limit) throw new InvalidOperationException("Daily purchase limit reached.");
         await EnsurePaidBagCapacityAsync(connection, transaction, playerId, kind, payload, request.Quantity, cancellationToken);
@@ -602,6 +606,47 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
     private async Task<int> PurchasedAsync(Guid player, string reset, string product, CancellationToken ct)
     { await using var c = await dataSource.OpenConnectionAsync(ct); await using var cmd = new NpgsqlCommand("SELECT COALESCE(sum(quantity),0)::integer FROM shop_purchases WHERE player_id=$1 AND reset_key=$2 AND product_id=$3", c); cmd.Parameters.AddWithValue(player); cmd.Parameters.AddWithValue(reset); cmd.Parameters.AddWithValue(product); return (int)(await cmd.ExecuteScalarAsync(ct) ?? 0); }
 
+    private async Task<bool> IsGuaranteedCardOwnedAsync(Guid player, string kind, string payload, CancellationToken ct)
+    {
+        if (kind != "Cards") return false;
+        using var json = JsonDocument.Parse(payload);
+        if (!json.RootElement.TryGetProperty("cardId", out var id)) return false;
+        await using var c = await dataSource.OpenConnectionAsync(ct);
+        await using var cmd = new NpgsqlCommand("SELECT unlocked AND copy_count > 0 FROM player_cards WHERE player_id=$1 AND card_id=$2", c);
+        cmd.Parameters.AddWithValue(player);
+        cmd.Parameters.AddWithValue(id.GetString() ?? string.Empty);
+        return (await cmd.ExecuteScalarAsync(ct)) is true;
+    }
+
+    private static async Task<HashSet<string>> OwnedCardIdsAsync(NpgsqlConnection c, NpgsqlTransaction t, Guid player, CancellationToken ct)
+    {
+        await using var cmd = new NpgsqlCommand("SELECT card_id FROM player_cards WHERE player_id=$1 AND unlocked=true AND copy_count > 0 FOR SHARE", c, t);
+        cmd.Parameters.AddWithValue(player);
+        await using var reader = await cmd.ExecuteReaderAsync(ct);
+        var result = new HashSet<string>(StringComparer.Ordinal);
+        while (await reader.ReadAsync(ct)) result.Add(reader.GetString(0));
+        return result;
+    }
+
+    private static async Task EnsureCardPurchaseAvailableAsync(NpgsqlConnection c, NpgsqlTransaction t, Guid player, string kind, string payload, int quantity, CancellationToken ct)
+    {
+        if (kind != "Cards") return;
+        using var json = JsonDocument.Parse(payload);
+        var count = json.RootElement.TryGetProperty("count", out var countElement) ? countElement.GetInt32() * quantity : quantity;
+        var owned = await OwnedCardIdsAsync(c, t, player, ct);
+        if (json.RootElement.TryGetProperty("cardId", out var id))
+        {
+            var cardId = id.GetString() ?? string.Empty;
+            if (count != 1 || owned.Contains(cardId))
+                throw new InvalidOperationException("This card is already activated and cannot be purchased again.");
+            return;
+        }
+
+        var available = GameConfigCatalog.Current.Cards.Count(card => CardPackEligible(card) && !owned.Contains(card.CardId));
+        if (available < count)
+            throw new InvalidOperationException("Not enough unowned cards remain for this card pack.");
+    }
+
     private static async Task<long> SpendGoldAsync(NpgsqlConnection c, NpgsqlTransaction t, Guid player, long amount, CancellationToken ct)
     { await using var cmd = new NpgsqlCommand("UPDATE player_wallets SET gold=gold-$1,version=version+1 WHERE player_id=$2 AND gold >= $1 RETURNING gold", c, t); cmd.Parameters.AddWithValue(amount); cmd.Parameters.AddWithValue(player); var value = await cmd.ExecuteScalarAsync(ct); if (value is null) throw new InvalidOperationException("Not enough gold."); return (long)value; }
     private static async Task<long> CurrentGoldAsync(NpgsqlConnection c, NpgsqlTransaction? t, Guid player, CancellationToken ct)
@@ -635,22 +680,31 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
         {
             var count = json.RootElement.TryGetProperty("count", out var countElement) ? countElement.GetInt32() * quantity : quantity;
             var selectedCardIds = new List<string>(count);
+            var excluded = await OwnedCardIdsAsync(c, t, player, ct);
             if (json.RootElement.TryGetProperty("cardId", out var id))
             {
                 var selected = id.GetString();
                 if (string.IsNullOrWhiteSpace(selected) ||
                     GameConfigCatalog.Current.Cards.SingleOrDefault(card => card.IsCodex && card.CardId == selected) is null)
                     throw new InvalidOperationException("The shop card grant references an unknown card.");
-                selectedCardIds.AddRange(Enumerable.Repeat(selected, count));
+                if (count != 1 || excluded.Contains(selected))
+                    throw new InvalidOperationException("This card is already activated and cannot be granted again.");
+                selectedCardIds.Add(selected);
+                excluded.Add(selected);
             }
             else
             {
-                for (var index = 0; index < count; index++) selectedCardIds.Add(RollCardPackCard().CardId);
+                for (var index = 0; index < count; index++)
+                {
+                    var selected = RollCardPackCard(excluded).CardId;
+                    selectedCardIds.Add(selected);
+                    excluded.Add(selected);
+                }
             }
 
             foreach (var selected in selectedCardIds)
             {
-                await using var card = new NpgsqlCommand("UPDATE player_cards SET copy_count=copy_count+1, version=version+1, unlocked=true WHERE player_id=$1 AND card_id=$2", c, t);
+                await using var card = new NpgsqlCommand("UPDATE player_cards SET copy_count=1, version=version+1, unlocked=true WHERE player_id=$1 AND card_id=$2 AND (unlocked=false OR copy_count=0)", c, t);
                 card.Parameters.AddWithValue(player);
                 card.Parameters.AddWithValue(selected);
                 if (await card.ExecuteNonQueryAsync(ct) != 1)
@@ -661,7 +715,11 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
         return $"{amount} {kind}";
     }
 
-    private static CardConfigDefinition RollCardPackCard()
+    private static bool CardPackEligible(CardConfigDefinition card) =>
+        card.IsCodex && (card.Quality is "White" or "Green" or "Blue" or "Purple") &&
+        !(card.Quality == "Purple" && card.HeroClass is not null);
+
+    private static CardConfigDefinition RollCardPackCard(HashSet<string> excluded)
     {
         var roll = RandomNumberGenerator.GetInt32(100);
         var quality = roll switch
@@ -673,10 +731,12 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
         };
         var candidates = GameConfigCatalog.Current.Cards
             .Where(card => card.IsCodex && card.Quality == quality &&
-                           !(quality == "Purple" && card.HeroClass is not null))
+                           !(quality == "Purple" && card.HeroClass is not null) && !excluded.Contains(card.CardId))
             .ToArray();
         if (candidates.Length == 0)
-            throw new InvalidOperationException($"The card pack has no eligible {quality} card.");
+            candidates = GameConfigCatalog.Current.Cards.Where(card => CardPackEligible(card) && !excluded.Contains(card.CardId)).ToArray();
+        if (candidates.Length == 0)
+            throw new InvalidOperationException("The card pack has no unowned eligible card.");
         return candidates[RandomNumberGenerator.GetInt32(candidates.Length)];
     }
 

@@ -6,7 +6,8 @@ public sealed record ShopProductResponse(
     long PriceGold,
     int Limit,
     int Purchased,
-    string Payload);
+    string Payload,
+    bool AlreadyOwned = false);
 
 public sealed record ShopResponse(string ResetKey, IReadOnlyList<ShopProductResponse> Products);
 

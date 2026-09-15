@@ -260,8 +260,7 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
         if (kind == "Card")
         {
             if (string.IsNullOrWhiteSpace(attachment.ItemId)) throw new InvalidOperationException("Card attachment itemId is required.");
-            await using var card = new NpgsqlCommand("UPDATE player_cards SET copy_count=copy_count+$1,unlocked=true,version=version+1 WHERE player_id=$2 AND card_id=$3", connection, transaction);
-            card.Parameters.AddWithValue(checked((int)attachment.Amount));
+            await using var card = new NpgsqlCommand("UPDATE player_cards SET copy_count=1,unlocked=true,version=version + CASE WHEN unlocked AND copy_count=1 THEN 0 ELSE 1 END WHERE player_id=$1 AND card_id=$2", connection, transaction);
             card.Parameters.AddWithValue(playerId);
             card.Parameters.AddWithValue(attachment.ItemId);
             if (await card.ExecuteNonQueryAsync(cancellationToken) != 1) throw new InvalidOperationException("Card attachment references an unavailable card.");

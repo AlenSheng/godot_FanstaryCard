@@ -44,6 +44,22 @@ static func attribute_rows(item: Dictionary) -> Array[Dictionary]:
 		rows.append({"key": "forced_escape", "kind": "forced_escape", "element": "None", "value": float(quality.forced_escape_percent)})
 	return rows
 
+static func aggregate_attributes(loadout: Array) -> Dictionary:
+	var totals := {}
+	for item in loadout:
+		for row in attribute_rows(item):
+			var key := str(row.get("key", ""))
+			if key.is_empty(): continue
+			totals[key] = float(totals.get(key, 0.0)) + float(row.get("value", 0.0))
+	return totals
+
+static func present_set_states(loadout: Array) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	for kind in AFFIXES:
+		var state := set_state(loadout, kind)
+		if int(state.count) > 0: result.append(state)
+	return result
+
 static func affix_contributions(item: Dictionary) -> Dictionary:
 	var equipment := gear(item)
 	var quality := quality_row(item)
@@ -96,4 +112,3 @@ static func changed_sets(before: Array, after: Array) -> Array[Dictionary]:
 		if old_state.count != new_state.count or old_state.required != new_state.required or old_state.values != new_state.values:
 			result.append({"kind": kind, "before": old_state, "after": new_state})
 	return result
-

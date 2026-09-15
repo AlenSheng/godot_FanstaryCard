@@ -28,7 +28,7 @@ func _run() -> void:
 	var card_id := "GW08"
 	var cost: int = $UI._owned_card(card_id).craftCost
 	_check(cost == 10, "White general card costs 10 warrior souls")
-	# Use only spare cards belonging to this newly created test account to fund the craft.
+	# Use only cards belonging to this newly created test account to fund the craft.
 	var spare_cards: Array = $UI.owned.filter(func(card): return card.canDismantle and card.currencyKind == "WarriorSoul")
 	for spare in spare_cards:
 		if $UI._card_material("WarriorSoul") >= cost: break

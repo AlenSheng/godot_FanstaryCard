@@ -281,6 +281,9 @@ public sealed class PostgresRuntimeIntegrationTests
             Assert.NotNull(cardId);
             Assert.NotNull(quality);
             offeredCardIds.Add(cardId);
+            Assert.Equal(await database.ScalarAsync<int>(
+                "SELECT copy_count FROM player_cards WHERE player_id=$1 AND card_id=$2", player.UserId, cardId) > 0,
+                product.AlreadyOwned);
             var configuredPrice = GameConfigCatalog.Current.ShopCardPrice(quality);
             Assert.Equal(configuredPrice.PriceGold, product.PriceGold);
         }
@@ -291,6 +294,13 @@ public sealed class PostgresRuntimeIntegrationTests
         var selectedProduct = dailyCards[0];
         using var selectedPayload = JsonDocument.Parse(selectedProduct.Payload);
         var selectedCardId = selectedPayload.RootElement.GetProperty("cardId").GetString()!;
+        await using (var makeAvailable = database.DataSource.CreateCommand(
+            "UPDATE player_cards SET unlocked=false,copy_count=0,level=0 WHERE player_id=$1 AND card_id=$2"))
+        {
+            makeAvailable.Parameters.AddWithValue(player.UserId);
+            makeAvailable.Parameters.AddWithValue(selectedCardId);
+            await makeAvailable.ExecuteNonQueryAsync(cancellationToken);
+        }
         var copiesBefore = await database.ScalarAsync<int>(
             "SELECT copy_count FROM player_cards WHERE player_id=$1 AND card_id=$2", player.UserId, selectedCardId);
         var purchase = await firstRepository.PurchaseAsync(
@@ -298,12 +308,15 @@ public sealed class PostgresRuntimeIntegrationTests
         var replay = await firstRepository.PurchaseAsync(
             player.UserId, "daily-card-purchase", new(selectedProduct.ProductId), cancellationToken);
         Assert.Equal(purchase, replay);
-        Assert.Equal(copiesBefore + 1, await database.ScalarAsync<int>(
+        Assert.Equal(0, copiesBefore);
+        Assert.Equal(1, await database.ScalarAsync<int>(
             "SELECT copy_count FROM player_cards WHERE player_id=$1 AND card_id=$2", player.UserId, selectedCardId));
         Assert.True(await database.ScalarAsync<bool>(
             "SELECT unlocked FROM player_cards WHERE player_id=$1 AND card_id=$2", player.UserId, selectedCardId));
         await Assert.ThrowsAsync<InvalidOperationException>(() => firstRepository.PurchaseAsync(
             player.UserId, "daily-card-over-limit", new(selectedProduct.ProductId), cancellationToken));
+        Assert.True((await firstRepository.GetShopAsync(player.UserId, cancellationToken)).Products
+            .Single(product => product.ProductId == selectedProduct.ProductId).AlreadyOwned);
 
         var totalCopiesBeforePack = await database.ScalarAsync<long>(
             "SELECT sum(copy_count) FROM player_cards WHERE player_id=$1", player.UserId);

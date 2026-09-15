@@ -4,6 +4,9 @@ const Art = preload("res://ui/art.gd")
 const P = preload("res://ui/palette.gd")
 const Exploration = preload("res://ui/exploration_view.gd")
 const Codex = preload("res://ui/codex_view.gd")
+const DeckBuilder = preload("res://ui/deck_builder_view.gd")
+const EquipmentCompareModel = preload("res://ui/equipment_compare_model.gd")
+const DragScroll = preload("res://ui/drag_scroll.gd")
 const BLUE := "UI/CardCodex/card_codex_action_button_blue.png"
 const ORANGE := "UI/CardCodex/card_codex_action_button_orange.png"
 var host: Control
@@ -31,6 +34,7 @@ func build(source: Control) -> void:
 		match host.screen:
 			"hall": _hall()
 			"cards": _codex()
+			"deck": _deck_builder()
 			"prep": _preparation()
 			"gear": _gear()
 			"enhance": _enhance()
@@ -106,8 +110,8 @@ func _scroll(rect: Rect2, horizontal: bool = false, parent: Node = null) -> Scro
 	return node
 
 func _header() -> void:
-	if host.screen == "cards":
-		Codex.header(self, host)
+	if host.screen in ["cards", "deck"]:
+		Codex.header(self, host, "卡牌图鉴" if host.screen == "cards" else P.localized("deck_builder_title"))
 		return
 	panel(Rect2(24, 18, 1872, 82))
 	var names := {"hall": "幻想牌域", "cards": "卡牌图鉴", "prep": "探索准备", "gear": "装备穿戴", "enhance": "碎片强化", "shop": "金币商店", "market": "金币市场"}
@@ -155,9 +159,10 @@ func _hall() -> void:
 		picture(Art.texture("UI/Hall/class_card_portrait_%s.png" % hero_class.to_lower()), Rect2(card_rect.position + Vector2(8, 7), Vector2(104, 124))).name = "ClassPortrait_" + hero_class
 		text(P.CLASSES[hero_class][0], Rect2(card_rect.position + Vector2(118, 25), Vector2(116, 30)), 22, P.GOLD).name = "ClassName_" + hero_class
 		picture(Art.texture("UI/Hall/class_card_heart.png"), Rect2(card_rect.position + Vector2(119, 74), Vector2(27, 27))).name = "ClassHeart"
-		text(str(P.CLASSES[hero_class][2]), Rect2(card_rect.position + Vector2(150, 75), Vector2(60, 28)), 23, P.GOLD).name = "ClassMaximumHp_" + hero_class
+		text(str(P.CLASSES[hero_class][2]), Rect2(card_rect.position + Vector2(148, 75), Vector2(42, 28)), 23, P.GOLD).name = "ClassMaximumHp_" + hero_class
 		var class_label := P.localized_text({"Priest": "牧师", "Mage": "法师", "Guardian": "守护者"}[hero_class])
-		text(P.localized("hall_class_label") % class_label, Rect2(card_rect.position + Vector2(204, 75), Vector2(84, 28)), 22, P.MUTED).name = "ClassType_" + hero_class
+		var class_type_rect := Rect2(card_rect.position + Vector2(194, 73), Vector2(card_rect.size.x - 200, 32))
+		text(class_label, class_type_rect, 22, P.GOLD).name = "ClassType_" + hero_class
 	picture(Art.portrait(Game.hero_class), Rect2(310, 255, 570, 550)).name = "HeroPortrait"
 	picture(Art.passive(Game.hero_class), Rect2(858, 275, 84, 84)).name = "HeroPassive"
 	var portal_rect := Rect2(990, 153, 835, 550)
@@ -170,7 +175,7 @@ func _hall() -> void:
 	portal_frame.size = portal_rect.size
 	text(P.localized("enter_chaos"), Rect2(1110, 180, 595, 76), 48, P.GOLD).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	button(P.localized("nav_prep"), Rect2(1140, 640, 520, 96), host._navigate.bind("prep"), Game.busy, ORANGE)
-	var entries := [["cards", "UI/Shop/card_pack.png", "hall_entry_cards"], ["gear", "UI/Item/exploration_prep_item_icon_chest.png", "hall_entry_gear"], ["cards", "UI/Shop/card_pack.png", "hall_entry_deck"], ["shop", "UI/Item/exploration_prep_item_icon_gold.png", "hall_entry_shop"], ["market", "UI/Hall/entry_icon_market.png", "hall_entry_market"], ["prep", "UI/Shop/backpack_advanced.png", "hall_entry_prep"], ["enhance", "UI/Shop/equipment_fragment_pack.png", "hall_entry_enhance"]]
+	var entries := [["cards", "UI/Shop/card_pack.png", "hall_entry_cards"], ["gear", "UI/Item/exploration_prep_item_icon_chest.png", "hall_entry_gear"], ["deck", "UI/Shop/card_pack.png", "hall_entry_deck"], ["shop", "UI/Item/exploration_prep_item_icon_gold.png", "hall_entry_shop"], ["market", "UI/Hall/entry_icon_market.png", "hall_entry_market"], ["prep", "UI/Shop/backpack_advanced.png", "hall_entry_prep"], ["enhance", "UI/Shop/equipment_fragment_pack.png", "hall_entry_enhance"]]
 	for i in range(entries.size()):
 		var rect := Rect2(56 + i * 259, 802, 242, 223)
 		var node := button("", rect, host._navigate.bind(entries[i][0]), Game.busy or not Game.ticket.is_empty())
@@ -588,12 +593,14 @@ func _mail_attachment_tooltip(attachment: Dictionary) -> String:
 func _codex() -> void:
 	Codex.build(self, host)
 
+func _deck_builder() -> void:
+	DeckBuilder.build(self, host)
+
 func _unhandled_key_input(event: InputEvent) -> void:
 	if host != null and host.screen == "cards" and not host._codex_card.is_empty() and event.is_action_pressed("ui_cancel"):
 		get_viewport().set_input_as_handled()
 		if not host._codex_mutating:
-			host._codex_card = ""
-			host._render()
+			Codex.close_details(self, host)
 
 func _loadout(rect: Rect2, editable: bool, snapshot: Dictionary = {}) -> void:
 	var hero_class: String = snapshot.get("heroClass", Game.hero_class)
@@ -610,18 +617,20 @@ func _loadout(rect: Rect2, editable: bool, snapshot: Dictionary = {}) -> void:
 			if owned.instanceId == id: item = owned
 		var point: Vector2 = rect.position + locations[i]
 		var quality: String = str(item.get("quality", "common")).to_lower()
+		var slot_color := _mail_quality_background(quality.capitalize()) if id != null else Art.UNEQUIPPED_SLOT_COLOR
 		var slot_base := panel(Rect2(point, Vector2(120, 120)), Art.COMMON_CELL_KEY)
 		slot_base.name = "CommonItemFrame_%s" % slots[i]
 		slot_base.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		slot_base.add_theme_stylebox_override("panel", Art.style(Art.COMMON_CELL_KEY, _mail_quality_background(quality.capitalize())))
+		slot_base.add_theme_stylebox_override("panel", Art.style(Art.COMMON_CELL_KEY, slot_color))
 		var slot_frame := Art.image(self, Art.texture(_mail_quality_frame_key(quality.capitalize())), Vector2.ZERO)
 		slot_frame.name = "QualityFrame_%s" % slots[i]
 		slot_frame.position = point
 		slot_frame.size = Vector2(120, 120)
 		slot_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		slot_frame.modulate = Color.WHITE if id != null else Art.UNEQUIPPED_FRAME_MODULATE
 		var slot_fill := ColorRect.new()
 		slot_fill.name = "QualityBackground_%s" % slots[i]
-		slot_fill.color = _mail_quality_background(quality.capitalize())
+		slot_fill.color = slot_color
 		slot_fill.color.a = 1.0
 		var slot_inset := 120.0 * 12.0 / 192.0
 		slot_fill.position = point + Vector2(slot_inset, slot_inset)
@@ -639,7 +648,9 @@ func _loadout(rect: Rect2, editable: bool, snapshot: Dictionary = {}) -> void:
 		add_child(slot)
 		slot.tooltip_text = host.EquipmentDetails.description(item) if not item.is_empty() else P.word(slots[i]) + " · 未穿戴"
 		var equipment_image := Art.equipment_texture(item) if not item.is_empty() else _item(slots[i])
-		picture(equipment_image, Rect2(point + Vector2(18, 12), Vector2(84, 84))).modulate.a = 1.0 if id != null else 0.35
+		var equipment_icon := picture(equipment_image, Rect2(point + Vector2(18, 12), Vector2(84, 84)))
+		equipment_icon.name = ("EquippedItem_" if id != null else "UnequippedItem_") + slots[i]
+		equipment_icon.modulate = Color.WHITE if id != null else Art.UNEQUIPPED_ITEM_MODULATE
 		text(P.word(slots[i]) + (" +%s" % item.get("level", 0) if id != null else ""), Rect2(point + Vector2(2, 125), Vector2(148, 40)), 22, P.MUTED)
 	var weapon_pos := rect.position + Vector2(rect.size.x - 165, 507)
 	var weapon_base := panel(Rect2(weapon_pos, Vector2(120, 120)), Art.COMMON_CELL_KEY)
@@ -661,7 +672,9 @@ func _loadout(rect: Rect2, editable: bool, snapshot: Dictionary = {}) -> void:
 	weapon_fill.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(weapon_fill)
 	picture(Art.texture("UI/Item/exploration_prep_item_icon_weapon_%s.png" % hero_class.to_lower()), Rect2(weapon_pos + Vector2(12, 12), Vector2(96, 96)))
-	text("本命 +%s · 锁定" % snapshot.classWeaponLevel if snapshot.has("classWeaponLevel") else "本命 · 锁定", Rect2(weapon_pos + Vector2(-8, 127), Vector2(180, 40)), 21, P.GOLD)
+	var weapon_caption_offset := Vector2(27, 127) if editable else Vector2(-8, 127)
+	var weapon_caption := text("本命 +%s · 锁定" % snapshot.classWeaponLevel if snapshot.has("classWeaponLevel") else "本命 · 锁定", Rect2(weapon_pos + weapon_caption_offset, Vector2(180, 40)), 21, P.GOLD)
+	weapon_caption.name = "SignatureWeaponCaption"
 
 func _preparation() -> void:
 	var locked: bool = not Game.preparation.is_empty()
@@ -719,7 +732,9 @@ func _preparation() -> void:
 
 func _gear() -> void:
 	_loadout(Rect2(90, 135, 1030, 750), true)
-	button("保存穿戴", Rect2(410, 939, 385, 68), func(): host._mutate("/loadouts/" + Game.hero_class, HTTPClient.METHOD_PUT, {"equipmentIds": host.gear_draft, "expectedVersion": Game.loadout().get("version", 0)}), Game.busy, ORANGE)
+	_equipment_summary(host._equipped_items())
+	var save_loadout_button := button("保存穿戴", Rect2(410, 939, 385, 68), func(): host._mutate("/loadouts/" + Game.hero_class, HTTPClient.METHOD_PUT, {"equipmentIds": host.gear_draft, "expectedVersion": Game.loadout().get("version", 0)}), Game.busy, ORANGE)
+	save_loadout_button.name = "SaveLoadoutButton"
 	panel(Rect2(1190, 136, 688, 886))
 	text("仓库装备", Rect2(1235, 164, 520, 60), 36, P.GOLD)
 	var scroll := _scroll(Rect2(1225, 255, 620, 625))
@@ -735,6 +750,86 @@ func _gear() -> void:
 		entry.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	if list.get_child_count() == 0: text("仓库暂无装备\n探索撤离后可带回战利品", Rect2(1255, 362, 530, 160), 28, P.MUTED)
 	button("碎片强化", Rect2(1260, 930, 530, 64), host._navigate.bind("enhance"))
+
+func _equipment_summary(loadout: Array) -> void:
+	# Keep this panel centered on the save button below it. Both content columns
+	# use the same width and mirrored margins around that shared center line.
+	var summary_panel := panel(Rect2(225, 760, 755, 165))
+	summary_panel.name = "EquipmentSummaryPanel"
+	var attribute_title := text(P.localized("equipment_summary_title"), Rect2(265, 782, 315, 28), 21, P.GOLD)
+	attribute_title.name = "EquipmentSummaryTitle"
+	var set_title := text(P.localized("equipment_set_summary_title"), Rect2(625, 782, 315, 28), 21, P.GOLD)
+	set_title.name = "EquipmentSetSummaryTitle"
+	var attribute_lines := _equipment_attribute_lines(loadout)
+	var attribute_text := "\n".join(attribute_lines) if not attribute_lines.is_empty() else P.localized("equipment_no_attributes")
+	_equipment_summary_scroll("EquipmentAttributeScroll", "EquipmentAttributeSummary", attribute_text, Rect2(265, 814, 315, 81), 17, P.PAPER)
+	var set_lines := _equipment_set_lines(loadout)
+	var set_text := "\n".join(set_lines) if not set_lines.is_empty() else P.localized("equipment_no_sets")
+	_equipment_summary_scroll("EquipmentSetScroll", "EquipmentSetSummary", set_text, Rect2(625, 814, 315, 81), 16, P.MUTED)
+
+func _equipment_summary_scroll(scroll_name: String, label_name: String, value: String, rect: Rect2, font_size: int, color: Color) -> ScrollContainer:
+	var scroll := DragScroll.new()
+	scroll.name = scroll_name
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
+	add_child(scroll)
+	scroll.position = rect.position
+	scroll.size = rect.size
+	var label := Label.new()
+	label.name = label_name
+	label.text = value
+	label.add_theme_font_override("font", P.font_for_text(value, font_size))
+	label.add_theme_font_size_override("font_size", font_size)
+	label.add_theme_color_override("font_color", color)
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var physical_lines := maxi(1, value.count("\n") + 1)
+	label.custom_minimum_size = Vector2(rect.size.x, maxf(rect.size.y, physical_lines * 27.0))
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	label.tooltip_text = value
+	scroll.add_child(label)
+	return scroll
+
+func _equipment_attribute_lines(loadout: Array) -> Array[String]:
+	var totals := EquipmentCompareModel.aggregate_attributes(loadout)
+	var lines: Array[String] = []
+	for element in ["Fire", "Wood", "Water", "Metal", "Earth"]:
+		var damage := float(totals.get("damage_" + element, 0.0))
+		var resistance := float(totals.get("resistance_" + element, 0.0))
+		if is_zero_approx(damage) and is_zero_approx(resistance): continue
+		var values: Array[String] = []
+		if not is_zero_approx(damage): values.append("%s %s" % [P.localized("battle_attack_bonus"), _summary_percent(damage)])
+		if not is_zero_approx(resistance): values.append("%s %s" % [P.localized("resistance"), _summary_percent(resistance)])
+		lines.append("%s · %s" % [P.word(element), " · ".join(values)])
+	var secondary: Array[String] = []
+	var draw_interval := float(totals.get("draw_interval", 0.0))
+	var forced_escape := float(totals.get("forced_escape", 0.0))
+	if not is_zero_approx(draw_interval): secondary.append("%s %s" % [P.localized("battle_draw_interval_seconds"), _summary_percent(draw_interval)])
+	if not is_zero_approx(forced_escape): secondary.append("%s %s" % [P.localized("force_escape"), _summary_percent(forced_escape)])
+	if not secondary.is_empty(): lines.append(" · ".join(secondary))
+	return lines
+
+func _equipment_set_lines(loadout: Array) -> Array[String]:
+	var lines: Array[String] = []
+	for state in EquipmentCompareModel.present_set_states(loadout):
+		var status := P.localized("battle_active") if state.active else P.localized("battle_inactive")
+		var line := P.localized("equipment_set_progress") % [P.word(state.kind), state.count, state.required, status]
+		if state.active:
+			match str(state.kind):
+				"Piercing":
+					line += "\n  " + P.localized("equipment_set_piercing") % _summary_percent(float(state.values.get("piercing_percent", 0.0)))
+				"Bulwark":
+					line += "\n  " + P.localized("equipment_set_bulwark") % [_summary_percent(float(state.values.get("bulwark_shield_percent", 0.0))), _summary_percent(float(state.values.get("bulwark_reduction_percent", 0.0)))]
+				"Vitality":
+					line += "\n  " + P.localized("equipment_set_vitality") % [_summary_percent(float(state.values.get("vitality_heal_percent", 0.0))), _summary_percent(float(state.values.get("vitality_overcap_percent", 0.0)))]
+		else:
+			line += "\n  " + P.localized("equipment_set_%s_inactive" % str(state.kind).to_lower())
+		lines.append(line)
+	return lines
+
+func _summary_percent(value: float) -> String:
+	var prefix := "+" if value > 0.0 else ""
+	return prefix + host.EquipmentDetails.percent(value) + "%"
 
 func _enhance() -> void:
 	panel(Rect2(30, 132, 470, 882))
@@ -780,8 +875,13 @@ func _shop() -> void:
 	panel(Rect2(28, 138, 1864, 864))
 	var consumables: Dictionary = host.inventory.get("consumables", {})
 	var paid_bags: int = int(consumables.get("advancedBagCount", 0)) + int(consumables.get("topBagCount", 0))
-	var scroll := _scroll(Rect2(55, 210, 1810, 700), true)
+	var scroll := DragScroll.new()
 	scroll.name = "ShopScroll"
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	add_child(scroll)
+	scroll.position = Vector2(55, 210)
+	scroll.size = Vector2(1810, 700)
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 20)
 	scroll.add_child(row)
@@ -824,8 +924,9 @@ func _shop() -> void:
 		var is_bag: bool = kind in ["AdvancedBag", "TopBag"]
 		var stock_full: bool = is_bag and paid_bags + maxi(1, amount) > 3
 		var stock_unknown: bool = is_bag and not host._shop_inventory_ready
-		var buy_text := "刷新库存" if stock_unknown else ("库存已满" if stock_full else "购买")
-		var buy: Button = host._button(item_panel, buy_text, func(): host._confirm("花费 %s 金币购买%s？" % [item.priceGold, product_title], func(): host._mutate("/shop/purchases", HTTPClient.METHOD_POST, {"productId": item.productId, "quantity": 1})), Game.busy or stock_unknown or stock_full or int(item.purchased) >= int(item.limit) or int(item.priceGold) > int(Game.lobby.get("wallet", {}).get("gold", 0)))
+		var already_owned: bool = is_guaranteed_card and bool(item.get("alreadyOwned", false))
+		var buy_text := "刷新库存" if stock_unknown else ("库存已满" if stock_full else ("已激活" if already_owned else "购买"))
+		var buy: Button = host._button(item_panel, buy_text, func(): host._confirm("花费 %s 金币购买%s？" % [item.priceGold, product_title], func(): host._mutate("/shop/purchases", HTTPClient.METHOD_POST, {"productId": item.productId, "quantity": 1})), Game.busy or stock_unknown or stock_full or already_owned or int(item.purchased) >= int(item.limit) or int(item.priceGold) > int(Game.lobby.get("wallet", {}).get("gold", 0)))
 		buy.name = "Purchase"
 		Art.button(buy, ORANGE)
 		buy.position = Vector2(26, 546)
@@ -852,7 +953,7 @@ func _shop_card_presentation(item_panel: Panel, image: TextureRect, payload: Dic
 	if frame.texture == null: frame.texture = Art.texture("UI/Codex/qframe_common.png")
 	# Shop cards have their own scaled layout. Keep the shop-only title offset
 	# independent from CardView so codex/deck cards retain their original position.
-	var card_name := _shop_card_face_label(item_panel, str(card_info.get("name", card_id)), Rect2(40, 334, 160, 31), 18, P.GOLD)
+	var card_name := _shop_card_face_label(item_panel, str(card_info.get("name", card_id)), Rect2(40, 352, 160, 31), 18, P.GOLD)
 	card_name.name = "ShopCardName"
 	card_name.add_theme_font_override("font", P.font("title"))
 	var effect: String = host.card_description(card_id, "face")

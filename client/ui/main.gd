@@ -4,6 +4,7 @@ const P = preload("res://ui/palette.gd")
 const Art = preload("res://ui/art.gd")
 const CardView = preload("res://ui/card_view.gd")
 const ReferenceUI = preload("res://ui/reference_ui.gd")
+const ConfirmationModalScene = preload("res://ui/confirmation_modal.tscn")
 const BoundedBar = preload("res://ui/bounded_bar.gd")
 const EquipmentDetails = preload("res://ui/equipment_details.gd")
 const EquipmentCompareDialog = preload("res://ui/equipment_compare_dialog.gd")
@@ -50,6 +51,7 @@ var _view_cell := ""
 var _codex_card := ""
 var _codex_scroll := 0
 var _codex_deck_scroll := 0
+var _deck_builder_scroll := 0
 var _codex_ready := false
 var _codex_mutating := false
 var _enhancement_quote: Dictionary = {}
@@ -153,6 +155,7 @@ func _reset_account_ui() -> void:
 	_codex_card = ""
 	_codex_scroll = 0
 	_codex_deck_scroll = 0
+	_deck_builder_scroll = 0
 	_codex_ready = false
 	_codex_mutating = false
 	_shop_inventory_ready = false
@@ -165,7 +168,7 @@ func _reset_account_ui() -> void:
 		if has_meta(key): remove_meta(key)
 	# Account-bound dialogs must not retain actions against the next login.
 	for child in get_children():
-		if child is Window:
+		if child is Window or child.name == "ConfirmationModal":
 			remove_child(child)
 			child.queue_free()
 
@@ -203,7 +206,7 @@ func _render() -> void:
 		if ResourceLoader.exists(scene_path):
 			_background.texture = load(scene_path)
 			_background.modulate = Color.WHITE
-		if screen == "cards" and Game.room.is_empty() and Game.settlement.is_empty():
+		if screen in ["cards", "deck"] and Game.room.is_empty() and Game.settlement.is_empty():
 			_background.texture = Art.texture("UI/CardCodex/card_codex_background_normal.png")
 			_background.modulate = Color.WHITE
 		_reference = ReferenceUI.new()
@@ -234,6 +237,7 @@ func _render() -> void:
 		"hall": _hall()
 		"prep": _preparation()
 		"cards": _codex()
+		"deck": _codex()
 		"gear": _equipment()
 		"shop": _shop()
 		"market": _market()
@@ -321,7 +325,7 @@ func _login() -> void:
 
 func _nav() -> void:
 	var nav := _row(content)
-	var names := {"hall": "营地", "cards": "图鉴 / 编组", "gear": "穿戴 / 强化", "shop": "金币商店", "market": "金币市场", "prep": "探索准备"}
+	var names := {"hall": "营地", "cards": "卡牌图鉴", "gear": "穿戴 / 强化", "shop": "金币商店", "market": "金币市场", "prep": "探索准备"}
 	for key in names:
 		var button := _button(nav, names[key], _navigate.bind(key), Game.busy or not Game.ticket.is_empty())
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -333,19 +337,24 @@ func _navigate(value: String) -> void:
 	edit_mode = false
 	_codex_card = ""
 	_codex_scroll = 0
+	_deck_builder_scroll = 0
 	_enhancement_quote_key = ""
 	_enhancement_quote = {}
 	if value == "shop": _shop_inventory_ready = false
-	if value == "cards": _codex_ready = false
-	if value in ["cards", "gear", "enhance", "shop", "market", "prep"]:
+	if value in ["cards", "deck"] and _codex_ready:
+		deck_draft = Game.deck().get("cardIds", []).duplicate()
+		screen_loading = false
+		_render()
+		return
+	if value in ["cards", "deck", "gear", "enhance", "shop", "market", "prep"]:
 		screen_loading = true
 		_render()
-		var path: String = {"cards": "/cards", "gear": "/inventory", "enhance": "/inventory", "shop": "/shop/", "market": "/market/", "prep": "/inventory"}[value]
+		var path: String = {"cards": "/cards", "deck": "/cards", "gear": "/inventory", "enhance": "/inventory", "shop": "/shop/", "market": "/market/", "prep": "/inventory"}[value]
 		var result: Dictionary = await Game.gateway.request("/api/v1" + path)
 		if not _session_result_current(generation, result): return
 		if result.ok:
 			match value:
-				"cards":
+				"cards", "deck":
 					owned = result.data
 					_codex_ready = true
 					deck_draft = Game.deck().get("cardIds", []).duplicate()
@@ -508,33 +517,72 @@ func _card_material(kind: String) -> int:
 	var field := kind.left(1).to_lower() + kind.substr(1)
 	return int(Game.lobby.get("materials", {}).get(field, 0))
 
+func _card_action_block_reason(id: String, action: String) -> String:
+	var entry := _owned_card(id)
+	if entry.is_empty() or not entry.has("craftCost"): return "报价暂不可用"
+	var kind := str(entry.get("currencyKind", "WarriorSoul"))
+	var material := P.localized_word(kind)
+	var balance := _card_material(kind)
+	if action == "upgrade":
+		if int(entry.get("level", 0)) >= 5: return "已达最高等级"
+		var cost := int(entry.get("upgradeCost", 0))
+		if balance < cost: return "%s不足，还需 %s" % [material, cost - balance]
+		if not entry.get("canUpgrade", false): return "当前状态已改变，请重新选择操作"
+	elif action == "craft":
+		if entry.get("unlocked", false) or int(entry.get("copyCount", 0)) > 0: return "卡牌已激活"
+		var craft_cost := int(entry.get("craftCost", 0))
+		if balance < craft_cost: return "%s不足，还需 %s" % [material, craft_cost - balance]
+	elif action == "dismantle" and deck_draft.count(id) >= int(entry.get("copyCount", 0)):
+		return "当前编组正在使用这张卡，请先从编组移除"
+	return ""
+
+func _replace_owned_card(card: Dictionary) -> void:
+	var id := str(card.get("cardId", ""))
+	if id.is_empty(): return
+	for index in range(owned.size()):
+		if str(owned[index].get("cardId", "")) == id:
+			owned[index] = card
+			return
+	owned.append(card)
+
+func _set_codex_action_busy(value: bool) -> void:
+	if not is_instance_valid(_reference): return
+	for node_name in ["UpgradeCard", "DismantleCard", "CraftCard", "CloseCardDetails"]:
+		var button := _reference.find_child(node_name, true, false) as Button
+		if button != null: button.disabled = value
+	var primary := _reference.find_child("UpgradeCard", true, false) as Button
+	if value and primary != null: primary.text = P.localized_text("正在处理…")
+
 func _card_action(id: String, action: String) -> void:
 	if Game.busy or _codex_mutating or not _codex_ready: return
 	var entry := _owned_card(id)
 	if entry.is_empty() or not entry.has("craftCost"): return
-	if action == "dismantle" and deck_draft.count(id) >= int(entry.get("copyCount", 0)):
-		_toast("当前编组正在使用这张卡，请先从编组移除")
+	var blocked := _card_action_block_reason(id, action)
+	if not blocked.is_empty():
+		_toast(blocked)
 		return
 	_codex_mutating = true
 	Game.busy = true
-	_render()
+	_set_codex_action_busy(true)
 	var generation: int = Game.gateway.session_generation
 	var result: Dictionary = await Game.gateway.request("/api/v1/cards/%s/%s" % [id.uri_encode(), action], HTTPClient.METHOD_POST, {"expectedVersion": int(entry.get("version", 0))})
 	if not _session_result_current(generation, result):
 		_codex_mutating = false
 		return
 	if result.ok:
+		if result.data.get("card") is Dictionary: _replace_owned_card(result.data.card)
 		if result.data.get("materials") is Dictionary: Game.lobby["materials"] = result.data.materials
+		_codex_ready = true
 		Sound.play_cue("upgrade" if action == "upgrade" else "reward")
 		_toast({"craft": "合成成功，已获得 1 张卡牌", "dismantle": "分解成功，材料已返还", "upgrade": "升级成功，卡牌效果已提升"}.get(action, "操作完成"))
-	else: Sound.play_cue("error")
-	var refreshed: Dictionary = await Game.gateway.request("/api/v1/cards")
-	if not _session_result_current(generation, refreshed):
-		_codex_mutating = false
-		return
-	_codex_ready = refreshed.ok
-	if refreshed.ok: owned = refreshed.data
-	await Game.refresh_lobby()
+	else:
+		Sound.play_cue("error")
+		var refreshed: Dictionary = await Game.gateway.request("/api/v1/cards")
+		if not _session_result_current(generation, refreshed):
+			_codex_mutating = false
+			return
+		_codex_ready = refreshed.ok
+		if refreshed.ok: owned = refreshed.data
 	_codex_mutating = false
 	if not _session_result_current(generation): return
 	Game.busy = false
@@ -560,7 +608,7 @@ func _codex() -> void:
 		var class_value: Variant = card.get("heroClass")
 		if class_value != null and class_value != Game.hero_class: continue
 		var id: String = card.cardId
-		var can_add: bool = card.get("unlocked", false) and deck_draft.size() < 20 and deck_draft.count(id) < int(card.get("copyCount", 0))
+		var can_add: bool = card.get("unlocked", false) and deck_draft.size() < 20 and deck_draft.count(id) == 0
 		if cards.get(id, {}).get("quality", "") == "Orange":
 			for entry in deck_draft:
 				var existing: Dictionary = cards.get(entry, {})
@@ -577,12 +625,9 @@ func _save_deck() -> void:
 	if not _session_result_current(generation, result): return
 	await Game.refresh_lobby()
 	if not _session_result_current(generation): return
-	var refreshed: Dictionary = await Game.gateway.request("/api/v1/cards")
-	if not _session_result_current(generation, refreshed): return
-	_codex_ready = refreshed.ok
-	if refreshed.ok: owned = refreshed.data
 	Game.busy = false
 	if result.ok:
+		deck_draft = Game.deck().get("cardIds", []).duplicate()
 		Sound.play_cue("equip")
 		_toast("编组已保存")
 	_render()
@@ -614,6 +659,9 @@ func _equipment() -> void:
 		slot.icon = Art.equipment_texture(worn_item) if not worn_item.is_empty() else Art.texture("UI/Item/exploration_prep_item_icon_%s.png" % ["helmet", "chest", "gauntlet", "legs", "boots"][index])
 		slot.expand_icon = true
 		slot.add_theme_constant_override("icon_max_width", 58)
+		if id == null:
+			for state in ["normal", "hover", "pressed", "disabled", "focus"]:
+				slot.add_theme_color_override("icon_%s_color" % state, Art.UNEQUIPPED_ITEM_MODULATE)
 	_button(content, "保存五部位穿戴", func(): _mutate("/loadouts/" + Game.hero_class, HTTPClient.METHOD_PUT, {"equipmentIds": gear_draft, "expectedVersion": Game.loadout().get("version", 0)}), Game.busy)
 	for item in inventory.get("equipments", []):
 		var line := _row(_panel(content))
@@ -741,7 +789,7 @@ func _shop() -> void:
 		if payload is Dictionary and payload.has("cardId"): _label(panel, cards.get(payload.cardId, {}).get("name", payload.cardId), 26, P.TEAL)
 		_label(panel, "%s 金币" % item.priceGold, 36, P.GOLD)
 		_label(panel, "今日 %s / %s" % [item.purchased, item.limit], 22, P.MUTED)
-		_button(panel, "购买", func(): _confirm("花费 %s 金币购买？" % item.priceGold, func(): _mutate("/shop/purchases", HTTPClient.METHOD_POST, {"productId": item.productId, "quantity": 1})), Game.busy or int(item.purchased) >= int(item.limit) or int(item.priceGold) > int(Game.lobby.wallet.gold))
+		_button(panel, "已激活" if item.get("alreadyOwned", false) else "购买", func(): _confirm("花费 %s 金币购买？" % item.priceGold, func(): _mutate("/shop/purchases", HTTPClient.METHOD_POST, {"productId": item.productId, "quantity": 1})), Game.busy or item.get("alreadyOwned", false) or int(item.purchased) >= int(item.limit) or int(item.priceGold) > int(Game.lobby.wallet.gold))
 	if shop.get("products", []).is_empty(): _label(content, "暂无商品，稍后刷新。", 28)
 
 func _market() -> void:
@@ -790,18 +838,11 @@ func _mutate(path: String, method: int, body: Variant = null) -> void:
 func _session_result_current(generation: int, result: Dictionary = {}) -> bool:
 	return generation == Game.gateway.session_generation and not result.get("stale_session", false)
 
-func _confirm(message: String, action: Callable) -> void:
-	var dialog := ConfirmationDialog.new()
-	dialog.dialog_text = P.localized_text(message)
-	dialog.title = P.localized_text("确认操作")
-	dialog.ok_button_text = P.localized_text("确认")
-	dialog.cancel_button_text = P.localized_text("取消")
+func _confirm(message: String, action: Callable, options: Dictionary = {}) -> void:
+	if get_node_or_null("ConfirmationModal") != null: return
+	var dialog := ConfirmationModalScene.instantiate()
 	add_child(dialog)
-	Art.button(dialog.get_ok_button(), "UI/CardCodex/card_codex_action_button_orange.png")
-	Art.button(dialog.get_cancel_button(), "UI/CardCodex/card_codex_action_button_blue.png")
-	dialog.confirmed.connect(func(): dialog.queue_free(); action.call())
-	dialog.canceled.connect(dialog.queue_free)
-	dialog.popup_centered(Vector2i(760, 260))
+	dialog.configure(message, action, options)
 
 func _room() -> void:
 	var state: Dictionary = Game.room
