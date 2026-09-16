@@ -1,5 +1,7 @@
 extends Node
 
+const P = preload("res://ui/palette.gd")
+
 var failures: Array[String] = []
 var output := "res://evidence/deck_builder"
 
@@ -10,6 +12,7 @@ func _ready() -> void:
 	Game.gateway.persist_session = false
 	Game.gateway.reconnect_enabled = false
 	Game.gateway.socket.close()
+	Game.gateway.token = ""
 	_run.call_deferred()
 
 func _run() -> void:
@@ -52,7 +55,21 @@ func _run() -> void:
 	_check($UI._reference.find_children("DeckEmpty_*", "Label", true, false).size() == 17, "Unfilled deck slots need gray placeholders")
 	_check($UI._reference.find_child("DeckCardEffect_01", true, false) != null, "Filled rows need a short effect layer")
 	_check($UI._reference.find_child("DeckRowBackground_01", true, false) != null, "Deck row background must be a separate layer")
-	_check($UI._reference.find_child("DeckCard_" + incompatible, true, false).disabled, "Other-class owned cards stay visible but cannot be added")
+	_check(not $UI._reference.find_child("SaveDeck", true, false).disabled, "Incomplete drafts must keep Save enabled so clicking it can show the local tip")
+	$UI._reference.find_child("SaveDeck", true, false).pressed.emit()
+	await _settle()
+	_check(not Game.busy, "Incomplete drafts must be rejected locally without starting a server save")
+	_check($UI.toast_label.text == P.localized("deck_requires_twenty"), "Incomplete drafts need a localized local tip")
+	var selected_card: Button = $UI._reference.find_child("DeckCard_" + initial[0], true, false)
+	_check(selected_card != null and selected_card.get_node_or_null("SelectedIndicator") != null, "Cards already in the draft need a selected treatment")
+	if selected_card != null:
+		var draft_size_before_duplicate: int = $UI.deck_draft.size()
+		selected_card.pressed.emit()
+		await _settle()
+		_check($UI.deck_draft.size() == draft_size_before_duplicate, "Clicking an already selected card must not duplicate it")
+		_check($UI.toast_label.text == P.localized("card_already_in_deck"), "Clicking an already selected card needs a localized tip")
+	var incompatible_card: Button = $UI._reference.find_child("DeckCard_" + incompatible, true, false)
+	_check(incompatible_card != null and not incompatible_card.disabled, "Other-class cards stay clickable so they can explain why they cannot be added")
 	get_window().size = Vector2i(1920, 1080)
 	await _capture("deck_builder_1920")
 	$UI._reference.find_child("AutoBuildDeck", true, false).pressed.emit()

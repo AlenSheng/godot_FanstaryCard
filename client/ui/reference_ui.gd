@@ -2,6 +2,7 @@ extends Control
 
 const Art = preload("res://ui/art.gd")
 const P = preload("res://ui/palette.gd")
+const CardDetails = preload("res://ui/card_details.gd")
 const Exploration = preload("res://ui/exploration_view.gd")
 const Codex = preload("res://ui/codex_view.gd")
 const DeckBuilder = preload("res://ui/deck_builder_view.gd")
@@ -163,6 +164,8 @@ func _hall() -> void:
 		var class_label := P.localized_text({"Priest": "牧师", "Mage": "法师", "Guardian": "守护者"}[hero_class])
 		var class_type_rect := Rect2(card_rect.position + Vector2(194, 73), Vector2(card_rect.size.x - 200, 32))
 		text(class_label, class_type_rect, 22, P.GOLD).name = "ClassType_" + hero_class
+	# Keep the established 2D presentation in the live frontend. The 3D GLB
+	# remains in the project as an offline production asset for a later pass.
 	picture(Art.portrait(Game.hero_class), Rect2(310, 255, 570, 550)).name = "HeroPortrait"
 	picture(Art.passive(Game.hero_class), Rect2(858, 275, 84, 84)).name = "HeroPassive"
 	var portal_rect := Rect2(990, 153, 835, 550)
@@ -737,17 +740,33 @@ func _gear() -> void:
 	save_loadout_button.name = "SaveLoadoutButton"
 	panel(Rect2(1190, 136, 688, 886))
 	text("仓库装备", Rect2(1235, 164, 520, 60), 36, P.GOLD)
-	var scroll := _scroll(Rect2(1225, 255, 620, 625))
+	var scroll := DragScroll.new()
+	scroll.name = "EquipmentInventoryScroll"
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	add_child(scroll)
+	scroll.position = Vector2(1225, 255)
+	scroll.size = Vector2(620, 625)
 	var list := VBoxContainer.new()
+	list.name = "EquipmentInventoryList"
 	list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(list)
 	for item in host.inventory.get("equipments", []):
 		var row := HBoxContainer.new()
 		list.add_child(row)
 		Art.image(row, Art.equipment_texture(item) if Art.equipment_texture(item) != null else _item(item.slot), Vector2(68, 70))
-		var entry: Button = host._button(row, host._equipment_name(item), func(): host._show_equipment_details(item, func(): host._equip(item)), Game.busy or item.get("location") not in ["Inventory", "Equipped"])
-		entry.tooltip_text = host.EquipmentDetails.description(item)
+		var selected: bool = item.get("instanceId", "") in host.gear_draft
+		var entry_text: String = ("已选 · " if selected else "") + host._equipment_name(item)
+		var entry: Button = host._button(row, entry_text, func():
+			if scroll.can_activate():
+				host._show_equipment_details(item, func(): host._equip(item)),
+			Game.busy or item.get("location") not in ["Inventory", "Equipped"])
+		entry.name = "EquipmentEntry_" + str(item.get("instanceId", ""))
+		entry.tooltip_text = host.EquipmentDetails.description(item) + ("\n当前已加入本地穿戴草稿" if selected else "")
 		entry.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		if selected: entry.add_theme_stylebox_override("normal", Art.style(ORANGE))
+	scroll.set_deferred("scroll_vertical", host._equipment_scroll)
+	scroll.get_v_scroll_bar().value_changed.connect(func(value): host._equipment_scroll = int(value))
 	if list.get_child_count() == 0: text("仓库暂无装备\n探索撤离后可带回战利品", Rect2(1255, 362, 530, 160), 28, P.MUTED)
 	button("碎片强化", Rect2(1260, 930, 530, 64), host._navigate.bind("enhance"))
 
@@ -896,7 +915,7 @@ func _shop() -> void:
 		item_panel.add_theme_stylebox_override("panel", Art.style("UI/CardCodex/card_codex_dialog_panel_normal.png"))
 		row.add_child(item_panel)
 		var title := Label.new()
-		title.text = product_title
+		title.text = P.localized_text(product_title)
 		title.add_theme_font_override("font", P.font("title"))
 		title.position = Vector2(20, 32)
 		title.size = Vector2(200, 70)
@@ -914,7 +933,8 @@ func _shop() -> void:
 			image.size = Vector2(180, 230)
 		var detail := Label.new()
 		var amount: int = int(payload.get("amount", payload.get("count", 0)))
-		detail.text = P.localized_text(("每份 ×%s\n" % amount if amount > 0 else "") + "今日 %s / %s\n%s 金币" % [item.purchased, item.limit, item.priceGold])
+		var quantity_line := (P.localized("shop_quantity_line") % amount) + "\n" if amount > 0 else ""
+		detail.text = quantity_line + (P.localized("shop_purchase_count") % [item.purchased, item.limit]) + "\n" + (P.localized("shop_price") % item.priceGold)
 		detail.position = Vector2(20, 468) if is_guaranteed_card else Vector2(20, 371)
 		detail.size = Vector2(200, 70) if is_guaranteed_card else Vector2(200, 160)
 		detail.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -925,15 +945,17 @@ func _shop() -> void:
 		var stock_full: bool = is_bag and paid_bags + maxi(1, amount) > 3
 		var stock_unknown: bool = is_bag and not host._shop_inventory_ready
 		var already_owned: bool = is_guaranteed_card and bool(item.get("alreadyOwned", false))
-		var buy_text := "刷新库存" if stock_unknown else ("库存已满" if stock_full else ("已激活" if already_owned else "购买"))
+		var buy_text := P.localized("refresh_inventory") if stock_unknown else (P.localized("inventory_full") if stock_full else (P.localized("activated") if already_owned else P.localized("buy")))
 		var buy: Button = host._button(item_panel, buy_text, func(): host._confirm("花费 %s 金币购买%s？" % [item.priceGold, product_title], func(): host._mutate("/shop/purchases", HTTPClient.METHOD_POST, {"productId": item.productId, "quantity": 1})), Game.busy or stock_unknown or stock_full or already_owned or int(item.purchased) >= int(item.limit) or int(item.priceGold) > int(Game.lobby.get("wallet", {}).get("gold", 0)))
 		buy.name = "Purchase"
 		Art.button(buy, ORANGE)
 		buy.position = Vector2(26, 546)
 		buy.size = Vector2(188, 66)
 	if row.get_child_count() == 0: text("暂无商品，请稍后刷新", Rect2(640, 440, 790, 95), 34, P.MUTED)
-	text("高级与顶级背包合计上限 3 个 · %s" % ("持有 %s" % paid_bags if host._shop_inventory_ready else "请刷新库存"), Rect2(85, 937, 950, 45), 24, P.MUTED)
-	button("刷新", Rect2(1630, 929, 190, 54), host._navigate.bind("shop"), Game.busy)
+	var stock_key := "shop_stock_summary" if host._shop_inventory_ready else "shop_stock_refresh"
+	var stock_text := P.localized(stock_key) % paid_bags if host._shop_inventory_ready else P.localized(stock_key)
+	text(stock_text, Rect2(85, 937, 950, 45), 24, P.MUTED)
+	button(P.localized("refresh"), Rect2(1630, 929, 190, 54), host._navigate.bind("shop"), Game.busy)
 
 func _shop_card_presentation(item_panel: Panel, image: TextureRect, payload: Dictionary) -> void:
 	var card_id := str(payload.get("cardId", ""))
@@ -953,7 +975,7 @@ func _shop_card_presentation(item_panel: Panel, image: TextureRect, payload: Dic
 	if frame.texture == null: frame.texture = Art.texture("UI/Codex/qframe_common.png")
 	# Shop cards have their own scaled layout. Keep the shop-only title offset
 	# independent from CardView so codex/deck cards retain their original position.
-	var card_name := _shop_card_face_label(item_panel, str(card_info.get("name", card_id)), Rect2(40, 352, 160, 31), 18, P.GOLD)
+	var card_name := _shop_card_face_label(item_panel, CardDetails.localized_name(card_id, card_info), Rect2(40, 352, 160, 31), 18, P.GOLD)
 	card_name.name = "ShopCardName"
 	card_name.add_theme_font_override("font", P.font("title"))
 	var effect: String = host.card_description(card_id, "face")
@@ -989,10 +1011,12 @@ func _shop_card_face_label(item_panel: Panel, value: String, rect: Rect2, font_s
 
 func _product_title(kind: String, payload: Dictionary) -> String:
 	if kind == "Cards":
-		if payload.has("cardId"): return host.cards.get(str(payload.cardId), {}).get("name", "卡牌 " + str(payload.cardId))
-		return "卡包"
+		if payload.has("cardId"):
+			var card_id := str(payload.cardId)
+			return CardDetails.localized_name(card_id, host.cards.get(card_id, {}))
+		return P.localized("word_card_pack")
 	if kind == "ClassSoul" and payload.get("heroClass", "") in P.CLASSES:
-		return {"Mage": "法师之魂", "Priest": "牧师之魂", "Guardian": "盾卫之魂"}[payload.heroClass]
+		return P.localized("word_%s_soul" % str(payload.heroClass).to_lower())
 	return P.word(kind)
 
 func _product_art(kind: String, payload: Dictionary) -> Texture2D:

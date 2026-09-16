@@ -3,6 +3,7 @@ extends Control
 const P = preload("res://ui/palette.gd")
 const Art = preload("res://ui/art.gd")
 const CardView = preload("res://ui/card_view.gd")
+const DeckBuilder = preload("res://ui/deck_builder_view.gd")
 const ReferenceUI = preload("res://ui/reference_ui.gd")
 const ConfirmationModalScene = preload("res://ui/confirmation_modal.tscn")
 const BoundedBar = preload("res://ui/bounded_bar.gd")
@@ -12,6 +13,7 @@ const InventoryView = preload("res://ui/inventory_view.gd")
 const CardDetails = preload("res://ui/card_details.gd")
 const BattleDetails = preload("res://ui/battle_details.gd")
 const AudioSettings = preload("res://ui/audio_settings.gd")
+const TipsOverlay = preload("res://ui/tips_overlay.gd")
 const CATALOG = preload("res://data/catalog.json")
 const DESCRIPTIONS = preload("res://data/card_descriptions.json")
 const UI_CONFIG = preload("res://data/ui_config.json")
@@ -20,6 +22,7 @@ var content: VBoxContainer
 var root_column: VBoxContainer
 var status_label: Label
 var toast_label: Label
+var tips_overlay: CanvasLayer
 var cards: Dictionary = {}
 var owned: Array = []
 var inventory: Dictionary = {}
@@ -38,7 +41,6 @@ var _login_address := "http://127.0.0.1:5080"
 var _login_name := ""
 var _session_generation: int = -1
 var _search := ""
-var _toast_serial := 0
 var _combat_panels: Dictionary = {}
 var _background: TextureRect
 var _reference: Control
@@ -52,11 +54,11 @@ var _codex_card := ""
 var _codex_scroll := 0
 var _codex_deck_scroll := 0
 var _deck_builder_scroll := 0
+var _equipment_scroll := 0
 var _codex_ready := false
 var _codex_mutating := false
 var _enhancement_quote: Dictionary = {}
 var _enhancement_quote_key := ""
-var _toast_tween: Tween
 var _game_title: Label
 
 func _ready() -> void:
@@ -72,6 +74,7 @@ func _ready() -> void:
 	var audio_settings := AudioSettings.new()
 	audio_settings.name = "AudioSettings"
 	add_child(audio_settings)
+	_sync_account_session()
 	_render()
 
 func _build_shell() -> void:
@@ -108,15 +111,11 @@ func _build_shell() -> void:
 	content = VBoxContainer.new()
 	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(content)
-	toast_label = _label(self, "", 20, P.GOLD)
-	toast_label.set_anchors_preset(Control.PRESET_CENTER)
-	toast_label.position = Vector2(-300, -210)
-	toast_label.size = Vector2(600, 48)
-	toast_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	toast_label.z_index = 100
-	toast_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	toast_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	toast_label.custom_minimum_size.y = 34
+	tips_overlay = TipsOverlay.new()
+	tips_overlay.name = "TipsOverlay"
+	add_child(tips_overlay)
+	# Compatibility alias for existing UI checks; rendering and animation live in TipsOverlay.
+	toast_label = tips_overlay.label
 
 func _schedule_render() -> void:
 	if mail_modal_lock: return
@@ -130,6 +129,10 @@ func _sync_account_session() -> void:
 	if _session_generation != Game.gateway.session_generation:
 		_session_generation = Game.gateway.session_generation
 		_reset_account_ui()
+	var lobby_cards: Variant = Game.lobby.get("cards", null)
+	if lobby_cards is Array:
+		owned = lobby_cards
+		_codex_ready = true
 	if not Game.lobby.is_empty() and not Game.gateway.token.is_empty() and not Game.gateway.local_account_name.is_empty():
 		_login_name = Game.gateway.local_account_name
 
@@ -156,14 +159,14 @@ func _reset_account_ui() -> void:
 	_codex_scroll = 0
 	_codex_deck_scroll = 0
 	_deck_builder_scroll = 0
+	_equipment_scroll = 0
 	_codex_ready = false
 	_codex_mutating = false
 	_shop_inventory_ready = false
 	_enhancement_quote = {}
 	_enhancement_quote_key = ""
 	_combat_panels.clear()
-	_toast_serial += 1
-	if is_instance_valid(toast_label): toast_label.text = ""
+	if is_instance_valid(tips_overlay): tips_overlay.clear()
 	for key in ["exploration_map_open", "inventory_open", "relic_pile", "inventory_selected", "relic_selected", "pending_move", "item_detail_scroll"]:
 		if has_meta(key): remove_meta(key)
 	# Account-bound dialogs must not retain actions against the next login.
@@ -333,6 +336,7 @@ func _nav() -> void:
 
 func _navigate(value: String) -> void:
 	var generation: int = Game.gateway.session_generation
+	if value == "gear" and screen != "gear": _equipment_scroll = 0
 	screen = value
 	edit_mode = false
 	_codex_card = ""
@@ -487,7 +491,7 @@ func _card_text(id: String, level: int = 0, element_override: String = "") -> St
 	var info: Dictionary = CardDetails.with_element(cards.get(id, {}), element_override)
 	var source: String = info.get("source", "")
 	var badge := "怪" if not info.get("is_codex", true) else P.word(info.get("hero_class", ""))
-	var name: String = info.get("name", id)
+	var name := CardDetails.localized_name(id, info)
 	var description: String = card_description(id, "face")
 	if description.is_empty():
 		# Cards without a configured face description use the structured fallback.
@@ -598,7 +602,7 @@ func _codex() -> void:
 	content.add_child(deck_row)
 	for index in range(deck_draft.size()):
 		var id: String = deck_draft[index]
-		_button(deck_row, "%s ×" % cards.get(id, {}).get("name", id), func(): deck_draft.remove_at(index); _render())
+		_button(deck_row, "%s ×" % CardDetails.localized_name(id, cards.get(id, {})), func(): deck_draft.remove_at(index); _render())
 	var resources: Dictionary = Game.lobby.get("materials", {})
 	_label(content, "勇士之魂 %s   ·   职业之魂 %s" % [resources.get("warriorSoul", 0), resources.get(Game.hero_class.to_lower() + "Soul", 0)], 22, P.MUTED)
 	var grid := GridContainer.new()
@@ -618,18 +622,30 @@ func _codex() -> void:
 
 func _save_deck() -> void:
 	if Game.busy: return
+	if deck_draft.size() != DeckBuilder.DECK_SIZE:
+		_toast(P.localized("deck_requires_twenty"))
+		return
 	Game.busy = true
 	_render()
 	var generation: int = Game.gateway.session_generation
-	var result: Dictionary = await Game.gateway.request("/api/v1/decks/" + Game.hero_class, HTTPClient.METHOD_PUT, {"cardIds": deck_draft, "expectedVersion": Game.deck().get("version", 0)})
+	var result: Dictionary = await Game.gateway.request("/api/v1/decks/" + Game.hero_class, HTTPClient.METHOD_PUT, {"cardIds": deck_draft, "expectedVersion": Game.deck().get("version", 0)}, [0, 400, 409, 429, 500, 502, 503, 504])
 	if not _session_result_current(generation, result): return
-	await Game.refresh_lobby()
-	if not _session_result_current(generation): return
-	Game.busy = false
 	if result.ok:
+		await Game.refresh_lobby()
+		if not _session_result_current(generation): return
 		deck_draft = Game.deck().get("cardIds", []).duplicate()
 		Sound.play_cue("equip")
-		_toast("编组已保存")
+		_toast(P.localized("deck_saved"))
+	elif int(result.get("status", 0)) == 409:
+		await Game.refresh_lobby()
+		if not _session_result_current(generation): return
+		deck_draft = Game.deck().get("cardIds", []).duplicate()
+		_toast(P.localized("deck_changed_retry"))
+	elif int(result.get("status", 0)) == 400:
+		_toast(P.localized("deck_invalid"))
+	else:
+		_toast(P.localized("deck_save_failed"))
+	Game.busy = false
 	_render()
 
 func _equipment_name(item: Dictionary) -> String:
@@ -786,9 +802,11 @@ func _shop() -> void:
 		var panel := _panel(grid, 535)
 		_label(panel, P.word(item.kind), 30)
 		var payload: Variant = JSON.parse_string(item.get("payload", "{}"))
-		if payload is Dictionary and payload.has("cardId"): _label(panel, cards.get(payload.cardId, {}).get("name", payload.cardId), 26, P.TEAL)
-		_label(panel, "%s 金币" % item.priceGold, 36, P.GOLD)
-		_label(panel, "今日 %s / %s" % [item.purchased, item.limit], 22, P.MUTED)
+		if payload is Dictionary and payload.has("cardId"):
+			var card_id := str(payload.cardId)
+			_label(panel, CardDetails.localized_name(card_id, cards.get(card_id, {})), 26, P.TEAL)
+		_label(panel, P.localized("shop_price") % item.priceGold, 36, P.GOLD)
+		_label(panel, P.localized("shop_purchase_count") % [item.purchased, item.limit], 22, P.MUTED)
 		_button(panel, "已激活" if item.get("alreadyOwned", false) else "购买", func(): _confirm("花费 %s 金币购买？" % item.priceGold, func(): _mutate("/shop/purchases", HTTPClient.METHOD_POST, {"productId": item.productId, "quantity": 1})), Game.busy or item.get("alreadyOwned", false) or int(item.purchased) >= int(item.limit) or int(item.priceGold) > int(Game.lobby.wallet.gold))
 	if shop.get("products", []).is_empty(): _label(content, "暂无商品，稍后刷新。", 28)
 
@@ -1012,20 +1030,8 @@ func _settlement() -> void:
 	_button(content, "返回", Game.acknowledge_settlement, Game.busy)
 
 func _toast(message: String) -> void:
-	_toast_serial += 1
-	var serial := _toast_serial
-	if is_instance_valid(_toast_tween): _toast_tween.kill()
-	toast_label.text = P.localized_text(message)
-	toast_label.modulate = Color(1, 1, 1, 1)
-	toast_label.position = Vector2(-300, -210)
-	toast_label.scale = Vector2(0.92, 0.92)
-	_toast_tween = create_tween()
-	_toast_tween.set_parallel(true)
-	_toast_tween.tween_property(toast_label, "position:y", -282.0, 2.6).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	_toast_tween.tween_property(toast_label, "scale", Vector2.ONE, 0.22).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	_toast_tween.tween_property(toast_label, "modulate:a", 0.0, 0.65).set_delay(1.95)
-	await get_tree().create_timer(8.0).timeout
-	if serial == _toast_serial: toast_label.text = ""
+	if is_instance_valid(tips_overlay):
+		tips_overlay.show_tip(message)
 
 func _health_bar(parent: Node, combat: Dictionary) -> void:
 	var bar := BoundedBar.new()

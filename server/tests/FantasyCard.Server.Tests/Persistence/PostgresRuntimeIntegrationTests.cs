@@ -563,6 +563,7 @@ public sealed class PostgresRuntimeIntegrationTests
         Assert.Equal(3, bootstrap.EquippedLoadouts.Count);
         Assert.Equal(3, bootstrap.Decks.Count);
         Assert.All(bootstrap.Decks, deck => Assert.Equal(20, deck.CardIds.Count));
+        Assert.NotEmpty(bootstrap.Cards);
         Assert.Equal(0, bootstrap.InventorySummary.EquipmentCount);
         Assert.Null(bootstrap.UnfinishedMatch);
         Assert.Null(bootstrap.UnfinishedSettlement);

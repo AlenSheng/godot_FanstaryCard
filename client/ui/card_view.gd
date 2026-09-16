@@ -2,6 +2,7 @@ extends Button
 
 const Art = preload("res://ui/art.gd")
 const P = preload("res://ui/palette.gd")
+const CardDetails = preload("res://ui/card_details.gd")
 const CARD_SHADER = preload("res://ui/card_view.gdshader")
 const DESCRIPTIONS = preload("res://data/card_descriptions.json")
 const CLASS_NAMES := {"Priest": "牧师", "Mage": "法师", "Guardian": "守护者"}
@@ -52,7 +53,7 @@ func configure(id: String, info: Dictionary, description: String, selected: bool
 		_monster_text(id, info, effect, selected, int(options.get("level", 0)))
 	else:
 		var level := int(options.get("level", 0))
-		var title := _text(str(info.get("name", id)), Rect2(24, 294, 170, 35), 20, P.GOLD)
+		var title := _text(CardDetails.localized_name(id, info), Rect2(24, 294, 170, 35), 20, P.GOLD)
 		title.add_theme_font_override("font", P.font("title"))
 		title.name = "CardName"
 		var effect_label := _text(effect, Rect2(24, 330, 170, 28), 16, P.PAPER)
@@ -121,7 +122,7 @@ func _monster_text(id: String, info: Dictionary, effect: String, selected: bool,
 	banner.size = Vector2(184, 34)
 	banner.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(banner)
-	var title_text := "怪 " + str(info.get("name", id))
+	var title_text := P.localized("monster") + " " + CardDetails.localized_name(id, info)
 	var title := _text(title_text, Rect2(19, 28, 180, 34), 21, P.PAPER)
 	title.name = "MonsterName"
 	title.add_theme_font_override("font", P.font("title"))

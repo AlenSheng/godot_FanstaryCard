@@ -1,6 +1,7 @@
 extends RefCounted
 
 const CompareModel = preload("res://ui/equipment_compare_model.gd")
+const EquipmentCompareDialog = preload("res://ui/equipment_compare_dialog.gd")
 
 func run_test() -> Dictionary:
 	var current := _gear("head-current", "Head", "Purple", "Fire", "Bulwark")
@@ -20,6 +21,13 @@ func run_test() -> Dictionary:
 	var piercing_after := CompareModel.set_state(after, "Piercing")
 	var totals := CompareModel.aggregate_attributes(loadout)
 	var visible_sets := CompareModel.present_set_states(loadout)
+	var null_current := _gear("null-current", "Chest", "Blue", "Earth", "<null>")
+	var null_selected := _gear("null-selected", "Chest", "Purple", "Fire", "<null>")
+	var dialog := EquipmentCompareDialog.new()
+	dialog.open(null_selected, null_current, [null_current])
+	var has_title_close := dialog.find_child("CloseComparison", true, false) != null
+	var shows_null_affix := _all_text(dialog).contains("<null>")
+	dialog.free()
 	var checks := {
 		"Cross-element attributes stay separate": current_rows.map(func(row): return row.key) == ["damage_Fire", "resistance_Fire"] and selected_rows.map(func(row): return row.key) == ["damage_Water", "resistance_Water", "draw_interval"],
 		"GDD base values are used": is_equal_approx(current_rows[0].value, 0.15) and is_equal_approx(current_rows[1].value, 0.09) and is_equal_approx(selected_rows[0].value, 0.22) and is_equal_approx(selected_rows[1].value, 0.13) and is_equal_approx(selected_rows[2].value, -0.18),
@@ -30,8 +38,16 @@ func run_test() -> Dictionary:
 		"Piercing total follows GDD": is_equal_approx(piercing_after.values.piercing_percent, 0.27),
 		"Current loadout attributes aggregate locally": is_equal_approx(totals.damage_Fire, 0.15) and is_equal_approx(totals.resistance_Earth, 0.09) and is_equal_approx(totals.damage_Wood, 0.15),
 		"Inactive present sets remain visible": visible_sets.size() == 2 and visible_sets.any(func(state): return state.kind == "Piercing" and state.count == 1 and state.required == 3 and not state.active),
+		"Null affix placeholders stay hidden": not shows_null_affix,
+		"Comparison title has no close button": not has_title_close,
 	}
 	return {"ok": not checks.values().has(false), "checks": checks, "message": "Equipment comparison keeps elements separate and computes affix set changes"}
 
 func _gear(id: String, slot: String, quality: String, element: String, affix: String, secondary: String = "") -> Dictionary:
 	return {"instanceId": id, "slot": slot, "quality": quality, "element": element, "effectAffix": affix, "secondaryTrait": secondary, "level": 0}
+
+func _all_text(root: Node) -> String:
+	var result := ""
+	for node in root.find_children("*", "Control", true, false):
+		if node is Label or node is Button: result += node.text + "\n"
+	return result

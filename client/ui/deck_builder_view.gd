@@ -3,6 +3,7 @@ extends RefCounted
 const Art = preload("res://ui/art.gd")
 const P = preload("res://ui/palette.gd")
 const DragScroll = preload("res://ui/drag_scroll.gd")
+const CardDetails = preload("res://ui/card_details.gd")
 const PREFIX := "UI/CardCodex/card_codex_"
 const ROW_PREFIX := "UI/Codex/deck_row_"
 const DECK_SIZE := 20
@@ -71,11 +72,12 @@ static func _fill_owned_grid(host: Control, grid: GridContainer, scroll: ScrollC
 		if not host._quality.is_empty() and str(info.get("quality", "")) != host._quality: continue
 		if not host._search.is_empty() and not host._search.to_lower() in (id + " " + host._card_text(id, int(entry.get("level", 0)))).to_lower(): continue
 		var reason := _add_reason(host, id, info)
+		var in_deck: bool = id in host.deck_draft
 		var slot := Control.new()
 		slot.name = "OwnedSlot_" + id
 		slot.custom_minimum_size = Vector2(side, side * 376.0 / 218.0)
 		grid.add_child(slot)
-		var card: Button = host._card_button(slot, id, _activate_owned.bind(host, id, scroll), false, not reason.is_empty(), {"collection": true, "copy_count": 1, "level": int(entry.get("level", 0))})
+		var card: Button = host._card_button(slot, id, _activate_owned.bind(host, id, scroll), in_deck, Game.busy, {"collection": true, "copy_count": int(entry.get("copyCount", 0)), "level": int(entry.get("level", 0))})
 		card.name = "DeckCard_" + id
 		card.size = Vector2(218, 376)
 		card.scale = Vector2.ONE * side / 218.0
@@ -105,7 +107,7 @@ static func _deck_panel(ui: Control, host: Control) -> void:
 		_deck_row(ui, host, index, Rect2(rows_rect.position + Vector2(0, index * 32), Vector2(rows_rect.size.x, 30)))
 	var auto: Button = ui.button(P.localized("auto_build"), Rect2(1280, 920, 270, 68), auto_build.bind(host), Game.busy, ui.BLUE)
 	auto.name = "AutoBuildDeck"
-	var done: Button = ui.button(P.localized("finish_deck"), Rect2(1580, 920, 290, 68), host._save_deck, Game.busy or host.deck_draft.size() != DECK_SIZE, ui.ORANGE)
+	var done: Button = ui.button(P.localized("finish_deck"), Rect2(1580, 920, 290, 68), host._save_deck, Game.busy, ui.ORANGE)
 	done.name = "SaveDeck"
 	done.tooltip_text = P.localized("deck_requires_twenty") if host.deck_draft.size() != DECK_SIZE else P.localized("save_deck")
 
@@ -131,7 +133,7 @@ static func _deck_row(ui: Control, host: Control, index: int, rect: Rect2) -> vo
 		empty.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		empty.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		return
-	var name_label: Label = ui.text(str(info.get("name", id)), Rect2(rect.position + Vector2(28, 1), Vector2(205, rect.size.y - 2)), 18, P.PAPER)
+	var name_label: Label = ui.text(CardDetails.localized_name(id, info), Rect2(rect.position + Vector2(28, 1), Vector2(205, rect.size.y - 2)), 18, P.PAPER)
 	name_label.name = "DeckCardName_%02d" % (index + 1)
 	name_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	name_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
@@ -176,6 +178,19 @@ static func _add_reason(host: Control, id: String, info: Dictionary) -> String:
 	return ""
 
 static func auto_build(host: Control) -> void:
+	if Game.busy: return
+	Game.busy = true
+	host._render()
+	if not Game.gateway.token.is_empty():
+		var generation: int = Game.gateway.session_generation
+		var response: Dictionary = await Game.gateway.request("/api/v1/cards", HTTPClient.METHOD_GET, null, [0, 400, 404, 409, 429, 500, 502, 503, 504])
+		if not host._session_result_current(generation, response): return
+		if not response.ok:
+			Game.busy = false
+			host._toast(P.localized("auto_build_failed"))
+			host._render()
+			return
+		host.owned = response.data
 	var result: Array = []
 	for existing_id in host.deck_draft:
 		var id := str(existing_id)
@@ -197,6 +212,7 @@ static func auto_build(host: Control) -> void:
 		result.append(id)
 	host.deck_draft = result
 	if result.size() < DECK_SIZE: host._toast(P.localized("not_enough_deck_cards"))
+	Game.busy = false
 	host._render()
 
 static func _contains_orange_group(host: Control, ids: Array, general: bool) -> bool:

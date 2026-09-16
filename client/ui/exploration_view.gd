@@ -23,7 +23,7 @@ static func build(ui: Control, host: Control) -> void:
 		_map(ui, host, state)
 	else:
 		_actions(ui, host, state)
-	ui.button("同步", Rect2(1702, 985, 140, 56), func(): Game.gateway.send("room.snapshot.read"))
+	ui.button(P.localized("sync"), Rect2(1702, 985, 140, 56), func(): Game.gateway.send("room.snapshot.read"))
 	ui.text(Game.connection, Rect2(1450, 995, 236, 40), 20, P.MUTED)
 
 static func _title(ui: Control, value: String, battle: bool = false) -> void:
@@ -83,7 +83,7 @@ static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 	var player: Dictionary = state.get("player", {})
 	var pvp: bool = state.has("duel")
 	_title(ui, "遭遇战" if pvp else "混沌战斗", true)
-	ui.button("战斗属性 / 套装", Rect2(1452, 49, 375, 61), func(): host._show_battle_details(player.get("battle_status", {}))).name = "BattleStats"
+	ui.button(P.localized("battle_stats_set"), Rect2(1452, 49, 375, 61), func(): host._show_battle_details(player.get("battle_status", {}))).name = "BattleStats"
 	if pvp:
 		_duel(ui, host, state)
 	else:
@@ -116,7 +116,7 @@ static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 					ui.picture(Art.element(element), Rect2(x + 25, 121, 62, 62))
 				ui.text("%s %s" % [intent, number], Rect2(x + 95, 126, 250, 58), 37, P.ELEMENT.get(element, P.PAPER))
 			else:
-				_center(ui.text("已击败", Rect2(x + 24, 126, 315, 58), 32, P.MUTED))
+				_center(ui.text(P.localized("defeated"), Rect2(x + 24, 126, 315, 58), 32, P.MUTED))
 			_health(ui, monster, Rect2(x + 24, 190, 315, 114), true)
 			var name: String = host._monster_name(monster.get("monster_id", ""))
 			if monster.get("monster_id", "") == "annihilation-core": name += " · %s阶段" % ("二" if boss_phase == 2 else "一")
@@ -142,7 +142,7 @@ static func _hand(ui: Control, host: Control, state: Dictionary) -> void:
 			ui.panel(rect, "UI/Codex/qframe_common.png")
 	ui.button("放", Rect2(1650, 822, 194, 142), Game.play_cards, Game.selected_cards.is_empty() or not Game.allowed("battle.play_cards"), "UI/Battle/battle_play_button.png")
 	ui.picture(Art.texture("UI/Battle/battle_energy_ring_clean.png"), Rect2(83, 840, 72, 84))
-	ui.text("抽牌", Rect2(170, 838, 230, 43), 26, P.TEAL)
+	ui.text(P.localized("draw"), Rect2(170, 838, 230, 43), 26, P.TEAL)
 	_bar(ui, Rect2(171, 885, 225, 32), clampf(float(player.get("draw_charge", "0")), 0, 1), 1, "UI/Battle/battle_energy_cell_lit.png", "UI/Battle/battle_energy_cell_unlit.png")
 	ui.text("牌库 %s · 弃牌 %s" % [player.get("library_count", 0), player.get("discard_count", 0)], Rect2(79, 940, 330, 32), 21, P.MUTED)
 	_center(ui.text("已选 %s 张    1–5 选牌 / 空格放出" % Game.selected_cards.size(), Rect2(573, 1005, 765, 36), 23, P.PAPER))
@@ -154,7 +154,7 @@ static func _preview(ui: Control) -> void:
 	var panel: Control = ui.panel(area)
 	panel.name = "CombatPreview"
 	if preview.is_empty():
-		ui.text("正在计算所选牌效果…", Rect2(479, 578, 1000, 33), 22, P.MUTED)
+	ui.text(P.localized("calculating_preview"), Rect2(479, 578, 1000, 33), 22, P.MUTED)
 		return
 	var x := 478.0
 	var core: String = preview.get("core_element", "")
@@ -203,7 +203,7 @@ static func _duel(ui: Control, host: Control, state: Dictionary) -> void:
 	var opponent: Control = _picture(ui, Art.portrait(opponent_class) if P.CLASSES.has(opponent_class) else Art.texture("UI/Encounter/encounter_enemy_frame_normal.png"), Rect2(1516, 142, 268, 308))
 	host._combat_panels[duel.get("opponent_id", "")] = opponent
 	ui.text(duel.get("opponent_name", "同格旅人") + " · " + P.word(opponent_class), Rect2(1129, 161, 380, 53), 31, P.GOLD)
-	ui.button("对手属性", Rect2(1534, 462, 252, 55), func(): host._show_battle_details(duel.get("opponent_status", {})))
+	ui.button(P.localized("opponent_stats"), Rect2(1534, 462, 252, 55), func(): host._show_battle_details(duel.get("opponent_status", {})))
 	_health(ui, duel.get("opponent", {}), Rect2(1128, 229, 358, 120), true)
 	var seconds: float = maxf(0, (float(duel.get("leave_window_ends_at_unix_ms", 0)) - Time.get_unix_time_from_system() * 1000) / 1000)
 	ui.button("已请求离开" if duel.get("self_requested_leave", false) else "双方离开", Rect2(400, 398, 350, 66), func(): Game.command("duel.leave", {"duel_id": duel.duel_id}), not Game.allowed("duel.leave"))
@@ -215,8 +215,8 @@ static func _duel(ui: Control, host: Control, state: Dictionary) -> void:
 		_center(ui.text("逃脱中 %.1f 秒" % (float(duel.escape_remaining_ms) / 1000), Rect2(803, 480, 310, 44), 27, P.TEAL))
 	if not Game.allowed("battle.play_cards"):
 		ui.picture(Art.texture("UI/Encounter/encounter_lock_icon_normal.png"), Rect2(1290, 443, 47, 48))
-		ui.text("等待行动", Rect2(1350, 443, 330, 48), 26, P.GOLD)
-	ui.text("自己的手牌", Rect2(80, 622, 330, 54), 34, P.GOLD)
+	ui.text(P.localized("waiting_action"), Rect2(1350, 443, 330, 48), 26, P.GOLD)
+	ui.text(P.localized("own_hand"), Rect2(80, 622, 330, 54), 34, P.GOLD)
 	_passive(ui, player.get("hero_class", ""), Rect2(80, 703, 330, 117))
 
 static func _map(ui: Control, host: Control, state: Dictionary) -> void:
@@ -274,9 +274,9 @@ static func _actions(ui: Control, host: Control, state: Dictionary) -> void:
 	_health(ui, player.get("combat", {}), Rect2(596, 261, 449, 126))
 	var inventory: Array = player.get("inventory", [])
 	ui.panel(Rect2(1228, 158, 574, 363))
-	ui.text("临时行囊", Rect2(1268, 182, 480, 54), 34, P.GOLD)
+	ui.text(P.localized("temporary_bag"), Rect2(1268, 182, 480, 54), 34, P.GOLD)
 	ui.text("已用 %s / %s 格" % [inventory.size(), player.get("inventory_capacity", 0)], Rect2(1268, 240, 466, 40), 25, P.PAPER)
-	ui.button("打开行囊", Rect2(1556, 180, 206, 52), func(): InventoryView.open(host), not Game.allowed("inventory.move")).name = "OpenInventory"
+	ui.button(P.localized("open_bag"), Rect2(1556, 180, 206, 52), func(): InventoryView.open(host), not Game.allowed("inventory.move")).name = "OpenInventory"
 	for index in range(mini(6, inventory.size())):
 		var item: Dictionary = inventory[index]
 		var x: float = 1268 + index % 3 * 162
@@ -290,7 +290,7 @@ static func _actions(ui: Control, host: Control, state: Dictionary) -> void:
 	var piles: Array = state.get("current_cell", {}).get("relic_piles", [])
 	actions.append("map")
 	ui.panel(Rect2(80, 539, 1758, 425)).name = "ActionPanel"
-	_center(ui.text("选择接下来的行动", Rect2(610, 558, 680, 62), 40, P.GOLD)).name = "ActionTitle"
+	_center(ui.text(P.localized("choose_next_action"), Rect2(610, 558, 680, 62), 40, P.GOLD)).name = "ActionTitle"
 	var scroll: ScrollContainer = ui._scroll(Rect2(107, 632, 1702, 300), true)
 	var strip := HBoxContainer.new()
 	strip.add_theme_constant_override("separation", 22)

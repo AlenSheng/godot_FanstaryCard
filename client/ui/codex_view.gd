@@ -2,6 +2,7 @@ extends RefCounted
 
 const Art = preload("res://ui/art.gd")
 const P = preload("res://ui/palette.gd")
+const CardDetails = preload("res://ui/card_details.gd")
 const DragScroll = preload("res://ui/drag_scroll.gd")
 const PREFIX := "UI/CardCodex/card_codex_"
 const SOULS := ["PriestSoul", "MageSoul", "GuardianSoul", "WarriorSoul"]
@@ -33,7 +34,7 @@ static func build(ui: Control, host: Control) -> void:
 	ui.add_child(search)
 	search.position = Vector2(48, 130)
 	search.size = Vector2(625, 66)
-	ui.text("品质：", Rect2(997, 143, 85, 42), 22, P.GOLD)
+	ui.text(P.localized("quality_label"), Rect2(997, 143, 85, 42), 22, P.GOLD)
 	var qualities := ["", "White", "Green", "Blue", "Purple", "Orange"]
 	for i in range(qualities.size()):
 		var quality: String = qualities[i]
@@ -56,7 +57,7 @@ static func build(ui: Control, host: Control) -> void:
 	scroll.set_deferred("scroll_vertical", host._codex_scroll)
 	scroll.get_v_scroll_bar().value_changed.connect(func(value): host._codex_scroll = int(value))
 	search.text_changed.connect(func(value): host._search = value.strip_edges(); host._codex_scroll = 0; scroll.scroll_vertical = 0; _fill_grid(ui, host, grid, scroll, count))
-	ui.text("点击卡牌查看详情 · 按住拖拽或使用滚轮浏览", Rect2(480, 1037, 850, 30), 18, P.MUTED).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	ui.text(P.localized("browse_cards"), Rect2(480, 1037, 850, 30), 18, P.MUTED).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	if not host._codex_card.is_empty(): _details(ui, host)
 
 static func _fill_grid(ui: Control, host: Control, grid: GridContainer, scroll: ScrollContainer, count: Label) -> void:
@@ -88,7 +89,7 @@ static func _fill_grid(ui: Control, host: Control, grid: GridContainer, scroll: 
 		node.scale = Vector2.ONE * side / 218.0
 		node.tooltip_text = P.localized_text(node.tooltip_text + "\n持有 %s · 点击查看详情" % copies)
 		shown += 1
-	count.text = P.localized_text("已收集 %s / %s" % [collected, total])
+	count.text = P.localized("collected_count") % [collected, total]
 	if shown != total: count.text += P.localized_text("    筛选结果 %s 张" % shown)
 	if not host._codex_ready: count.text += P.localized_text("    持有数据未就绪，请重新进入图鉴刷新")
 	if shown == 0:
@@ -130,7 +131,7 @@ static func _deck(ui: Control, host: Control) -> void:
 		var info: Dictionary = host.cards.get(id, {})
 		var row := Button.new()
 		row.disabled = Game.busy
-		row.text = P.localized_text("%02d  %s    ×" % [i + 1, info.get("name", id)])
+		row.text = "%02d  %s    ×" % [i + 1, CardDetails.localized_name(id, info)]
 		row.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		row.custom_minimum_size = Vector2(397, 44)
 		row.add_theme_font_size_override("font_size", 22)
@@ -183,7 +184,7 @@ static func _details(ui: Control, host: Control) -> void:
 	preview.scale = Vector2.ONE * (1.23 if owned else 1.42)
 	preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	preview.focus_mode = Control.FOCUS_NONE
-	modal.text(str(info.get("name", id)), Rect2(796, 242, 650, 64), 39)
+	modal.text(CardDetails.localized_name(id, info), Rect2(796, 242, 650, 64), 39)
 	_tag(modal, P.word(info.get("quality", "White")) + "色", Rect2(798, 338, 155, 60), "tag_normal.png" if info.get("quality") == "White" else "tag_q_%s.png" % str(info.get("quality")).to_lower())
 	_tag(modal, "通用卡" if hero == null else P.word(hero) + "职业卡", Rect2(974, 338, 170, 60), "tag_normal.png" if hero == null else "tag_orange.png")
 	var category: String = P.word(info.get("category", "Support"))
@@ -191,7 +192,7 @@ static func _details(ui: Control, host: Control) -> void:
 	var element: String = str(info.get("element")) if info.get("element") != null else "None"
 	if category == "伤害": category = P.word(element) + "系伤害" if element != "None" else "直接伤害"
 	_tag(modal, category, Rect2(1166, 338, 172, 60), "tag_%s.png" % element.to_lower() if element in ["Earth", "Metal", "Water", "Wood"] else "tag_normal.png")
-	modal.text("等级 +%s · 已拥有 ×%s" % [entry.get("level", 0), copies] if owned else "未拥有 · 合成后获得 +0 " + str(info.get("name", id)), Rect2(798, 424, 690, 50), 27)
+	modal.text(P.localized_text("等级 +%s · 已拥有 ×%s" % [entry.get("level", 0), copies]) if owned else P.localized_text("未拥有 · 合成后获得 +0 ") + CardDetails.localized_name(id, info), Rect2(798, 424, 690, 50), 27)
 	var effect_text: String = host.card_description(id, "full")
 	if effect_text.is_empty():
 		var face: PackedStringArray = host._card_text(id, int(entry.get("level", 0))).split("\n\n", true, 1)

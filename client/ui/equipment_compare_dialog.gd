@@ -110,13 +110,6 @@ func _build_title(parent: Node) -> void:
 	var title := _label(row, _t("title"), 34, P.GOLD, "title")
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	var close := Button.new()
-	close.name = "CloseComparison"
-	close.tooltip_text = _t("cancel")
-	close.custom_minimum_size = Vector2(58, 54)
-	close.pressed.connect(queue_free)
-	Art.button(close, "UI/CardCodex/card_codex_close_button_normal.png")
-	row.add_child(close)
 
 func _item_card(parent: Node, item: Dictionary, heading: String, is_current: bool) -> void:
 	var panel := _panel(parent, SUBPANEL)
@@ -143,7 +136,7 @@ func _item_card(parent: Node, item: Dictionary, heading: String, is_current: boo
 	_label(info, _item_title(item), 25, Art.quality_color(quality), "title")
 	_badge(info, P.word(quality), Art.quality_color(quality))
 	var affix := str(gear.get("effect_affix", gear.get("effectAffix", "")))
-	if not affix.is_empty(): _badge(info, P.word(affix), P.TEAL)
+	if affix not in ["", "<null>"]: _badge(info, P.word(affix), P.TEAL)
 	if bool(gear.get("is_bound", gear.get("isBound", false))): _label(info, P.localized("bound_unlisted"), 16, P.MUTED)
 	if is_current: panel.get_parent().tooltip_text = _t("removed")
 

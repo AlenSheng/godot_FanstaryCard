@@ -7,6 +7,7 @@ static var _fonts_ready := false
 static var _language := "zh-CN"
 static var _locale_config: Dictionary = {}
 static var _source_aliases: Dictionary = {}
+const LANGUAGE_SETTINGS_PATH := "user://fantasycard_language.cfg"
 
 const INK := Color("172d35")
 const PAPER := Color("efe3c7")
@@ -78,17 +79,30 @@ static func _ensure_locale() -> void:
 				strings.merge(module_config.languages[code].get("strings", {}))
 				target["strings"] = strings
 				_locale_config.languages[code] = target
+		var template_config: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://data/localization_templates.json"))
+		if template_config is Dictionary:
+			for code in template_config.get("languages", {}):
+				var target: Dictionary = _locale_config.get("languages", {}).get(code, {})
+				var strings: Dictionary = target.get("strings", {})
+				strings.merge(template_config.languages[code].get("strings", {}))
+				target["strings"] = strings
+				_locale_config.languages[code] = target
 		_language = str(_locale_config.get("default_language", "zh-CN"))
+		var saved_language := _load_language()
+		if _locale_config.get("languages", {}).has(saved_language):
+			_language = saved_language
 		_build_source_aliases()
 
 static func _build_source_aliases() -> void:
 	_source_aliases.clear()
-	var strings: Dictionary = _locale_config.get("languages", {}).get("zh-CN", {}).get("strings", {})
-	for key in strings:
-		var source := str(strings[key])
-		if source.length() < 2 or source == str(key): continue
-		# If two keys share a source label, either translation is equivalent for the UI.
-		if not _source_aliases.has(source): _source_aliases[source] = str(key)
+	for language_config in _locale_config.get("languages", {}).values():
+		var strings: Dictionary = language_config.get("strings", {})
+		for key in strings:
+			var source := str(strings[key])
+			if source.length() < 2 or source == str(key): continue
+			# Accept display text authored in either language. This keeps legacy
+			# screens localizable while they migrate from text to stable keys.
+			if not _source_aliases.has(source): _source_aliases[source] = str(key)
 
 static func language() -> String:
 	_ensure_locale()
@@ -97,8 +111,20 @@ static func language() -> String:
 static func set_language(value: String) -> void:
 	_ensure_locale()
 	if not _locale_config.get("languages", {}).has(value): return
+	if _language == value: return
 	_language = value
 	_fonts_ready = false
+	_save_language()
+
+static func _save_language() -> void:
+	var settings := ConfigFile.new()
+	settings.set_value("ui", "language", _language)
+	settings.save(LANGUAGE_SETTINGS_PATH)
+
+static func _load_language() -> String:
+	var settings := ConfigFile.new()
+	if settings.load(LANGUAGE_SETTINGS_PATH) != OK: return ""
+	return str(settings.get_value("ui", "language", ""))
 
 static func localized(key: String) -> String:
 	_ensure_locale()

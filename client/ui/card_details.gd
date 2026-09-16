@@ -2,6 +2,12 @@ extends RefCounted
 
 const P = preload("res://ui/palette.gd")
 const CATALOG = preload("res://data/catalog.json")
+const NAMES = preload("res://data/card_names.json")
+
+static func localized_name(id: String, card: Dictionary = {}) -> String:
+	var fallback := str(card.get("name", id))
+	var names: Dictionary = NAMES.data.get(P.language(), {})
+	return str(names.get(id, fallback))
 
 static func at_level(card: Dictionary, level: int) -> Dictionary:
 	var effect := card.duplicate(true)

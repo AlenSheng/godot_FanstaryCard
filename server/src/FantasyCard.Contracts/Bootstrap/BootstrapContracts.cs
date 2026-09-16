@@ -20,6 +20,7 @@ public sealed record BootstrapResponse(
     IReadOnlyList<ClassWeaponResponse> ClassWeapons,
     IReadOnlyList<LoadoutResponse> EquippedLoadouts,
     IReadOnlyList<DeckResponse> Decks,
+    IReadOnlyList<CardResponse> Cards,
     InventorySummaryResponse InventorySummary,
     UnfinishedMatchResponse? UnfinishedMatch,
     SettlementResponse? UnfinishedSettlement);

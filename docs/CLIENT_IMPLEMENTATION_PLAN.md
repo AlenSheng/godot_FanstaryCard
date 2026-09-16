@@ -35,6 +35,21 @@ toggles mute. Settings persist locally.
 Only flash/scale combat feedback; no projectile or skeletal attack animation.
 No difficulty or diamond shop, no PVE escape, no hidden map intelligence.
 
+### 全局 Tips 飘字规范
+
+- Tips 必须由独立的 `ui/tips_overlay.gd` 全局覆盖层统一呈现。业务页面只调用
+  主界面的 `_toast(message)` 或发送 `Game.notice`，不得在各页面复制临时提示控件。
+- 输入优先使用多语言键，由组件在显示前通过客户端本地化模块解析；服务端返回的
+  可显示文本也使用同一入口，确保中文、英文和后续语言采用一致表现。
+- 提示出现在屏幕水平居中、垂直中心偏上的安全区域。文本使用醒目的亮黄色，
+  搭配半透明黑色通用底框和细金色描边；底框宽度随文本长度自适应，长文本最多占
+  视口宽度约 72%，随后自动换行，且提示层不拦截鼠标输入。
+- 单条提示从固定初始位置向上漂移约 56 像素，同时在约 2 秒内完成展示并渐隐消失。
+  每次新提示到达都必须终止旧动画、恢复初始位置/缩放/透明度并重新计时，避免连续
+  点击导致提示叠加、半透明残留或位置持续上移。
+- Tips 只承担轻量、无需用户确认的结果和校验提示；需要选择或确认的流程继续使用
+  模态弹窗。卡组不满等可在客户端确定的错误应先本地校验，再显示 Tips，不发服务器请求。
+
 ## Assets and acceptance
 
 - Blender portal/stone plinth: original procedural rigid assembly, no external

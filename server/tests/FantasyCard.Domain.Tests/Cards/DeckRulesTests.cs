@@ -53,6 +53,19 @@ public sealed class DeckRulesTests
     }
 
     [Fact]
+    public void Validate_RejectsIncompleteDeck()
+    {
+        var cards = Enumerable.Range(1, 19)
+            .Select(index => new OwnedCard($"card-{index}", null, CardRarity.White, 1, false))
+            .ToDictionary(card => card.CardId, StringComparer.Ordinal);
+
+        var error = Assert.Throws<DomainValidationException>(() =>
+            DeckRules.Validate(HeroClass.Mage, cards.Keys.ToArray(), cards));
+
+        Assert.Contains("exactly 20", error.Message, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void Validate_RejectsDuplicateCardNames()
     {
         var cards = Enumerable.Range(1, 20)

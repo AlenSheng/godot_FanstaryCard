@@ -1,6 +1,7 @@
 extends Node
 
 const OUTPUT := "res://evidence/equipment-comparison"
+const EquipmentCompareDialog = preload("res://ui/equipment_compare_dialog.gd")
 var errors: Array[String] = []
 var direct_equip_calls := 0
 
@@ -20,12 +21,18 @@ func _ready() -> void:
 		_gear("legs-current", "Legs", "Purple", "Wood", "Piercing"),
 		selected,
 	], "consumables": {}}
+	for index in range(14):
+		var slots := ["Head", "Chest", "Hands", "Legs", "Feet"]
+		var elements := ["Fire", "Water", "Wood", "Metal", "Earth"]
+		$UI.inventory.equipments.append(_gear("scroll-item-%02d" % index, slots[index % slots.size()], "Blue", elements[index % elements.size()], "Piercing"))
 	$UI.gear_draft = ["head-current", "chest-current", "hands-current", "legs-current", null]
 	$UI.screen = "gear"
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUTPUT))
 	await _capture(selected, Vector2i(1920, 1080))
 	await _capture(selected, Vector2i(1280, 720))
+	await _verify_null_affix_hidden()
 	await _verify_empty_slot_bypass()
+	await _verify_inventory_drag_and_draft()
 	var report := {"ok": errors.is_empty(), "errors": errors, "screenshots": 4, "direct_equip_calls": direct_equip_calls}
 	FileAccess.open(OUTPUT + "/report.json", FileAccess.WRITE).store_string(JSON.stringify(report, "  "))
 	print(JSON.stringify(report))
@@ -36,7 +43,10 @@ func _capture(selected: Dictionary, resolution: Vector2i) -> void:
 	$UI._render()
 	await get_tree().process_frame
 	await get_tree().process_frame
-	var summary_text := _all_text($UI._reference)
+	var summary_text := ""
+	for node_name in ["EquipmentSummaryTitle", "EquipmentAttributeSummary", "EquipmentSetSummary"]:
+		var summary_label: Label = $UI._reference.find_child(node_name, true, false)
+		if summary_label != null: summary_text += summary_label.text + "\n"
 	for expected in ["装备属性汇总", "火 · 增伤 +15% · 抗性 +9%", "载壁 3/3 · 已生效", "破击 1/3 · 未激活", "上盾 +24% / 减伤 +12%（仅盾卫）", "提升直伤（未生效）"]:
 		if not summary_text.contains(expected): errors.append("Missing loadout summary %s at %s" % [expected, resolution.x])
 	var summary_panel: Control = $UI._reference.find_child("EquipmentSummaryPanel", true, false)
@@ -82,6 +92,8 @@ func _capture(selected: Dictionary, resolution: Vector2i) -> void:
 		errors.append("Quality frames are not layered at %s" % resolution.x)
 	if dialog.find_children("EquipmentIcon", "TextureRect", true, false).size() != 2:
 		errors.append("Equipment icons are not layered at %s" % resolution.x)
+	if dialog.find_child("CloseComparison", true, false) != null:
+		errors.append("Comparison title close button is still visible at %s" % resolution.x)
 	var shell: Control = dialog.get_node_or_null("ComparisonShell")
 	if shell == null or not Rect2(Vector2.ZERO, Vector2(1920, 1080)).encloses(shell.get_rect()):
 		errors.append("Comparison shell outside logical canvas at %s" % resolution.x)
@@ -91,11 +103,62 @@ func _capture(selected: Dictionary, resolution: Vector2i) -> void:
 	await get_tree().process_frame
 	await get_tree().process_frame
 
+func _verify_null_affix_hidden() -> void:
+	var current := _gear("null-current", "Chest", "Blue", "Earth", "<null>")
+	var selected := _gear("null-selected", "Chest", "Purple", "Fire", "<null>")
+	var dialog := EquipmentCompareDialog.new()
+	add_child(dialog)
+	dialog.open(selected, current, [current])
+	await get_tree().process_frame
+	if _all_text(dialog).contains("<null>"):
+		errors.append("Null affix placeholder is still visible")
+	dialog.queue_free()
+	await get_tree().process_frame
+
 func _verify_empty_slot_bypass() -> void:
 	var feet := _gear("feet-selected", "Feet", "Blue", "Water", "", "ForcedEscape")
 	$UI._show_equipment_details(feet, _direct_equip, "确认穿戴")
 	if direct_equip_calls != 1: errors.append("Empty slot did not equip directly")
 	if $UI.get_node_or_null("EquipmentComparisonDialog") != null: errors.append("Empty slot opened a comparison dialog")
+
+func _verify_inventory_drag_and_draft() -> void:
+	$UI.screen = "gear"
+	$UI._render()
+	await get_tree().process_frame
+	await get_tree().process_frame
+	var scroll = $UI._reference.find_child("EquipmentInventoryScroll", true, false)
+	if scroll == null:
+		errors.append("Equipment inventory is missing its drag scroll")
+		return
+	var maximum := maxi(0, int(scroll.get_v_scroll_bar().max_value - scroll.get_v_scroll_bar().page))
+	if maximum <= 0:
+		errors.append("Equipment inventory fixture cannot scroll vertically")
+		return
+	scroll._begin(Vector2(1500, 650))
+	scroll._drag(Vector2(1500, 350))
+	var dragged_position: int = scroll.scroll_vertical
+	if dragged_position <= 0: errors.append("Dragging an equipment entry does not scroll the inventory")
+	if scroll.can_activate(): errors.append("Equipment entry can activate during a drag")
+	scroll._finish()
+	await get_tree().process_frame
+	var expected_position: int = $UI._equipment_scroll
+	var selected: Dictionary = $UI.inventory.equipments.back()
+	var draft_before: Array = $UI.gear_draft.duplicate()
+	$UI._equip(selected)
+	if Game.busy: errors.append("Local equipment draft selection entered network busy state")
+	await get_tree().process_frame
+	await get_tree().process_frame
+	var restored = $UI._reference.find_child("EquipmentInventoryScroll", true, false)
+	if restored == null or abs(restored.scroll_vertical - expected_position) > 1:
+		errors.append("Equipment inventory scroll position reset after local draft selection")
+	if selected.instanceId not in $UI.gear_draft:
+		errors.append("Selected equipment was not stored in the local draft")
+	var selected_entry: Button = $UI._reference.find_child("EquipmentEntry_" + selected.instanceId, true, false)
+	if selected_entry == null or not selected_entry.text.begins_with("已选"):
+		errors.append("Draft equipment is missing its selected treatment")
+	if _all_text($UI._reference).contains("当前没有词缀套装"):
+		errors.append("Draft equipment did not update the reserved set summary")
+	$UI.gear_draft = draft_before
 
 func _direct_equip() -> void:
 	direct_equip_calls += 1
