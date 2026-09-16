@@ -7,16 +7,22 @@ namespace FantasyCard.Domain.Tests.Configuration;
 public sealed class GameConfigCatalogTests
 {
     [Fact]
-    public void EmbeddedCatalogContainsCompleteGdd065CardSet()
+    public void EmbeddedCatalogContainsCompleteGdd068CardSet()
     {
         var catalog = GameConfigCatalog.Current;
 
-        Assert.Equal("gdd-0.67-gameplay-completion-1", catalog.Version);
-        Assert.Equal(212, catalog.Cards.Count);
-        Assert.Equal(200, catalog.Cards.Count(card => card.IsCodex));
+        Assert.Equal("gdd-0.68-element-tuning-1", catalog.Version);
+        Assert.Equal(232, catalog.Cards.Count);
+        Assert.Equal(220, catalog.Cards.Count(card => card.IsCodex));
         Assert.Equal(12, catalog.Cards.Count(card => !card.IsCodex));
         Assert.Equal(51, catalog.Cards.Count(card => card.InitiallyUnlocked));
-        Assert.Equal(1200, catalog.CardLevels.Count);
+        Assert.Equal(1320, catalog.CardLevels.Count);
+        var tuningCards = catalog.Cards.Where(card => card.Effect.IsElementTuning).ToArray();
+        Assert.Equal(20, tuningCards.Length);
+        Assert.All(Enum.GetValues<CardElement>().Where(element => element != CardElement.None),
+            element => Assert.Equal(4, tuningCards.Count(card => card.Effect.Element == element)));
+        Assert.All(new[] { "White", "Green", "Blue", "Purple" },
+            quality => Assert.Equal(5, tuningCards.Count(card => card.Quality == quality)));
 
         var apocalypse = Assert.Single(catalog.Cards, card => card.CardId == "PRI-10");
         Assert.Equal(8, apocalypse.Effect.Heal);

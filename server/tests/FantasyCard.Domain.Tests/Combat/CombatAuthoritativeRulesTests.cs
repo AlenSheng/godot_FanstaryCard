@@ -74,6 +74,25 @@ public sealed class CombatAuthoritativeRulesTests
     }
 
     [Fact]
+    public void Element_tuning_uses_resonance_without_taking_or_creating_conflict_cancellation()
+    {
+        var state = State();
+        var protectedResult = CombatResolver.Resolve(
+            [Fire(10), Tuning(CardElement.Fire, 10), Element(CardElement.Water, 1)], state);
+        var ordinaryResult = CombatResolver.Resolve(
+            [Fire(10), Fire(10), Element(CardElement.Water, 1)], state);
+        var tuningOnlyCore = CombatResolver.Resolve(
+            [Tuning(CardElement.Fire, 10), Element(CardElement.Water, 10)], state);
+
+        Assert.Equal(21, protectedResult.Damage);
+        Assert.Equal(3, protectedResult.Heal);
+        Assert.Equal(19, ordinaryResult.Damage);
+        Assert.Equal(4, ordinaryResult.Heal);
+        Assert.Equal(10, tuningOnlyCore.Damage);
+        Assert.Equal(0, tuningOnlyCore.Heal);
+    }
+
+    [Fact]
     public void Conflict_card_healing_uses_priest_then_vitality_but_conflict_recovery_only_uses_vitality()
     {
         var state = State(HeroClass.Priest, new(new(), VitalityHealBonus: .20));
@@ -162,4 +181,6 @@ public sealed class CombatAuthoritativeRulesTests
 
     private static CombatCardDefinition Fire(int value) => Element(CardElement.Fire, value);
     private static CombatCardDefinition Element(CardElement element, int value) => new("damage", new(ElementalDamage: value, Element: element));
+    private static CombatCardDefinition Tuning(CardElement element, int value) =>
+        new("tuning", new(ElementalDamage: value, Element: element, IsElementTuning: true));
 }

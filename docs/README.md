@@ -2,7 +2,7 @@
 
 | 项目 | 内容 |
 | --- | --- |
-| 基准 GDD | `GDD.md` Draft v0.64，2026-09-02 |
+| 基准 GDD | `GDD.md` Draft v0.68，2026-09-16 |
 | 客户端 | 团结引擎，Unity 2022.3 LTS 基线，C#，UGUI |
 | 服务端 | ASP.NET Core / .NET 10 LTS，SDK 10.0.400，PostgreSQL，REST + WebSocket |
 | 首发目标 | Steam Windows，标准难度原型 |
@@ -25,7 +25,7 @@
 
 发生冲突时按以下顺序处理：
 
-1. `GDD.md` 的 v0.64 锁定规则，尤其 `0.2` 冻结模块与 **5.14 补位机器人**。
+1. `GDD.md` 的 v0.68 锁定规则，尤其 `0.2` 冻结模块与 **5.14 补位机器人**。
 2. [CLIENT_SPEC.md](./CLIENT_SPEC.md) / [SERVER_SPEC.md](./SERVER_SPEC.md) 的口径裁决。
 3. 本目录中的端到端协议和开发流程。
 4. `server/docs/CLIENT_INTEGRATION.md` 中已上线接口的具体字段。
@@ -41,7 +41,7 @@
 | --- | --- | --- |
 | 客户端纯 C# 分层 | 已有 `Game.Contracts / Game.Domain / Game.Client` 三层程序集 | `FantasyCard_Unity/New Tuanjie Project/Assets/Scripts` |
 | 6×6 地图、Boss/泉水/撤离/宝箱、出生和怪组生成 | 已有本地领域实现 | `MapGenerator.cs`、`MapService.cs` |
-| 200 图鉴、三职业默认编组、编组校验 | 已有本地领域与原型 UI | `CardDatabase.cs`、`DeckService.cs`、`CodexScene.unity` |
+| 220 图鉴（含 20 张元素调节）、三职业默认编组、编组校验 | 已有本地领域与原型 UI | `CardDatabase.cs`、`DeckService.cs`、`CodexScene.unity` |
 | 战斗数值、三职业本命、装备词缀 | 已有本地领域实现 | `CombatService.cs`、`BattleState.cs`、`EquipmentData.cs` |
 | 手牌 5、弃牌洗回、1v1 三堆快照 | 已有本地领域实现 | `DeckState.cs` |
 | PVE 怪意图和同格 1v1 规则骨架 | 已有本地领域实现 | `MonsterInstance.cs`、`GridCombatManager.cs` |

@@ -28,6 +28,10 @@ public static class CombatResolver
         var counts = elemental
             .GroupBy(card => card.Effect.Element)
             .ToDictionary(group => group.Key, group => group.Count());
+        var conflictCounts = elemental
+            .Where(card => !card.Effect.IsElementTuning)
+            .GroupBy(card => card.Effect.Element)
+            .ToDictionary(group => group.Key, group => group.Count());
         var revealElement = attacker.HeroClass switch
         {
             Players.HeroClass.Mage => CardElement.Fire,
@@ -55,20 +59,28 @@ public static class CombatResolver
         {
             coreCount = counts.Values.Max();
             core = elemental.First(card => counts[card.Effect.Element] == coreCount).Effect.Element;
-            var coreBase = cards
+            var coreCards = cards
                 .Select((card, index) => (card, index))
                 .Where(value => value.card.Effect.Element == core && value.card.Effect.SecondaryElementalDamage == 0)
+                .ToArray();
+            var coreBase = coreCards
+                .Where(value => !value.card.Effect.IsElementTuning)
+                .Sum(value => bases[value.index]);
+            var protectedCoreBase = coreCards
+                .Where(value => value.card.Effect.IsElementTuning)
                 .Sum(value => bases[value.index]);
             conflictPairCount = ConflictPairs.Sum(pair =>
                 (pair.Left == core || pair.Right == core) &&
-                counts.TryGetValue(pair.Left, out var left) && counts.TryGetValue(pair.Right, out var right)
+                conflictCounts.TryGetValue(pair.Left, out var left) && conflictCounts.TryGetValue(pair.Right, out var right)
                     ? Math.Min(left, right)
                     : 0);
             var resonanceBonus = cards.Any(card => card.Effect.ResonanceBonus > 0) ? 1 : 0;
             resonanceMultiplier = coreCount == 5 && resonanceBonus > 0 ? 3.5 : Resonance(coreCount + resonanceBonus);
             var equipmentBonus = attacker.Equipment.DamageBonus(core.Value);
             var resistance = targetResistance?.Invoke(core.Value) ?? 0;
-            var beforeConflict = coreBase * resonanceMultiplier * (1 + equipmentBonus) * (1 - resistance);
+            var sharedMultiplier = resonanceMultiplier * (1 + equipmentBonus) * (1 - resistance);
+            var beforeConflict = coreBase * sharedMultiplier;
+            var protectedBeforeConflict = protectedCoreBase * sharedMultiplier;
             if (conflictPairCount > 0)
             {
                 var cancelBonus = cards.Max(card => card.Effect.ConflictCancelBonus);
@@ -76,7 +88,8 @@ public static class CombatResolver
                 var healCoefficient = Math.Max(0.50, cards.Max(card => card.Effect.ConflictHealCoefficient));
                 conflictHeal = attacker.ResolveRecovery((int)Math.Floor(beforeConflict * conflictCancellation * healCoefficient) + 2 * conflictPairCount);
             }
-            elementalDamage = Math.Max(0, (int)Math.Floor(beforeConflict * (1 - conflictCancellation)));
+            elementalDamage = Math.Max(0, (int)Math.Floor(
+                beforeConflict * (1 - conflictCancellation) + protectedBeforeConflict));
             if (elementalDamage > 0) segments.Add(new(core.Value.ToString(), elementalDamage));
         }
 

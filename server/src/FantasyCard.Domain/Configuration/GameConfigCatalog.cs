@@ -252,12 +252,12 @@ public sealed class GameConfigCatalog
             throw new InvalidDataException("Economy is missing a required runtime value.", exception);
         }
 
-        if (cards.Count(card => card.IsCodex) != 200 || cards.Count(card => !card.IsCodex) != 12)
-            throw new InvalidDataException("Active config must contain 200 codex cards and 12 monster cards.");
+        if (cards.Count(card => card.IsCodex) != 220 || cards.Count(card => !card.IsCodex) != 12)
+            throw new InvalidDataException("Active config must contain 220 codex cards and 12 monster cards.");
         if (cards.Count(card => card.InitiallyUnlocked) != 51)
             throw new InvalidDataException("Active config must contain exactly 51 initially unlocked cards.");
-        if (levels.Length != 1200)
-            throw new InvalidDataException("Active config must contain 1200 card-level rows.");
+        if (levels.Length != 1320)
+            throw new InvalidDataException("Active config must contain 1320 card-level rows.");
         ValidateEquipment(equipment);
         ValidateLoot(lootLayers, refreshes);
         ValidateBackpacks(backpacks);
@@ -344,39 +344,44 @@ public sealed class GameConfigCatalog
             throw new InvalidDataException("The active card catalog cannot fill the daily shop card slots.");
     }
 
-    private static CardConfigDefinition ReadCard(ConfigTable table, object?[] row) => new(
-        table.Text(row, "id"),
-        table.Text(row, "name"),
-        table.Text(row, "source"),
-        table.Text(row, "category"),
-        ParseHeroClass(table.OptionalText(row, "hero_class")),
-        table.OptionalText(row, "monster_type"),
-        table.OptionalText(row, "quality"),
-        new CombatCardEffect(
-            table.Int(row, "elemental_damage"),
-            ParseElement(table.OptionalText(row, "element")),
-            table.Int(row, "direct_damage"),
-            table.Int(row, "heal"),
-            table.Int(row, "shield"),
-            table.Double(row, "draw_charge"),
-            table.Int(row, "immediate_draw"),
-            table.Double(row, "draw_speed_modifier"),
-            table.Double(row, "draw_speed_seconds"),
-            table.Double(row, "stun_seconds"),
-            table.Double(row, "draw_block_seconds"),
-            table.Int(row, "health_cost"),
-            table.Int(row, "same_element_bonus"),
-            table.Int(row, "resonance_bonus"),
-            table.Double(row, "conflict_cancel_bonus"),
-            table.Double(row, "conflict_heal_coefficient"),
-            table.Bool(row, "is_class_reveal"),
-            table.OptionalInt(row, "secondary_elemental_damage"),
-            ParseElement(table.OptionalText(row, "secondary_element"))),
-        table.Bool(row, "is_codex"),
-        table.Bool(row, "initially_unlocked"),
-        table.Int(row, "unlock_cost"),
-        table.Int(row, "copy_cost"),
-        table.Bool(row, "enabled"));
+    private static CardConfigDefinition ReadCard(ConfigTable table, object?[] row)
+    {
+        var category = table.Text(row, "category");
+        return new(
+            table.Text(row, "id"),
+            table.Text(row, "name"),
+            table.Text(row, "source"),
+            category,
+            ParseHeroClass(table.OptionalText(row, "hero_class")),
+            table.OptionalText(row, "monster_type"),
+            table.OptionalText(row, "quality"),
+            new CombatCardEffect(
+                table.Int(row, "elemental_damage"),
+                ParseElement(table.OptionalText(row, "element")),
+                table.Int(row, "direct_damage"),
+                table.Int(row, "heal"),
+                table.Int(row, "shield"),
+                table.Double(row, "draw_charge"),
+                table.Int(row, "immediate_draw"),
+                table.Double(row, "draw_speed_modifier"),
+                table.Double(row, "draw_speed_seconds"),
+                table.Double(row, "stun_seconds"),
+                table.Double(row, "draw_block_seconds"),
+                table.Int(row, "health_cost"),
+                table.Int(row, "same_element_bonus"),
+                table.Int(row, "resonance_bonus"),
+                table.Double(row, "conflict_cancel_bonus"),
+                table.Double(row, "conflict_heal_coefficient"),
+                table.Bool(row, "is_class_reveal"),
+                table.OptionalInt(row, "secondary_elemental_damage"),
+                ParseElement(table.OptionalText(row, "secondary_element")),
+                IsElementTuning: string.Equals(category, "ElementTune", StringComparison.Ordinal)),
+            table.Bool(row, "is_codex"),
+            table.Bool(row, "initially_unlocked"),
+            table.Int(row, "unlock_cost"),
+            table.Int(row, "copy_cost"),
+            table.Bool(row, "enabled"));
+    }
 
     private static HeroClass? ParseHeroClass(string? value) => value is null
         ? null

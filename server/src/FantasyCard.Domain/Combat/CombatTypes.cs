@@ -29,7 +29,8 @@ public sealed record CombatCardEffect(
     double ConflictHealCoefficient = 0,
     bool IsClassReveal = false,
     int SecondaryElementalDamage = 0,
-    CardElement SecondaryElement = CardElement.None);
+    CardElement SecondaryElement = CardElement.None,
+    bool IsElementTuning = false);
 
 public sealed record CombatCardDefinition(string CardId, CombatCardEffect Effect);
 
