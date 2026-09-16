@@ -79,6 +79,10 @@ python tools/client_engine.py codex-integration
   [美术及配套资源清单](../docs/UI_MISSING_ASSETS.md)。
 - Blender 原创门户已生成并导入。源文件 `art/portal.blend`，重建脚本
   `tools/build_portal.py`；PNG/GLB 在 `client/assets`。
+- Blender 主角（蓝金法师）按四视图效果图程序化重建。源文件
+  `art/protagonist.blend`，重建脚本 `tools/build_protagonist.py`；
+  参考图 `art/references/protagonist_concept.png`；GLB 与四视图渲染在
+  `client/assets/characters/`。
 - 2026-09-10 已补完整局内背包、安全格换位、穿脱装备、遗物明细/替换、
   卡牌 +1 至 +5、权威连放预览、分类型反馈、本命/套装及 PVP 公开信息。
   奖励与市场可看完整装备并对比；强化显示服务端报价与属性变化。
