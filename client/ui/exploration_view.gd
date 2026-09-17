@@ -154,7 +154,7 @@ static func _preview(ui: Control) -> void:
 	var panel: Control = ui.panel(area)
 	panel.name = "CombatPreview"
 	if preview.is_empty():
-	ui.text(P.localized("calculating_preview"), Rect2(479, 578, 1000, 33), 22, P.MUTED)
+		ui.text(P.localized("calculating_preview"), Rect2(479, 578, 1000, 33), 22, P.MUTED)
 		return
 	var x := 478.0
 	var core: String = preview.get("core_element", "")

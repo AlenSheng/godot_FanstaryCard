@@ -437,13 +437,14 @@ func _preparation() -> void:
 	Art.image(identity, Art.portrait(Game.hero_class), Vector2(90, 110))
 	_label(identity, P.CLASSES[Game.hero_class][0], 36)
 	_label(left, "锁定武器 · " + P.CLASSES[Game.hero_class][1], 26, P.GOLD)
-	_label(left, "编组 %s / 20" % Game.deck().get("cardIds", []).size())
+	_label(left, P.localized("deck_count_summary") % Game.deck().get("cardIds", []).size())
 	var consumables: Dictionary = inventory.get("consumables", {})
 	for key in ["Free", "Advanced", "Top"]:
-		var text: String = {"Free": "轻装行囊  20 / 0  · 免费", "Advanced": "高级行囊  28 / 1  · 持有 %s" % consumables.get("advancedBagCount", 0), "Top": "顶级行囊  36 / 3  · 持有 %s" % consumables.get("topBagCount", 0)}[key]
+		var text_key: String = {"Free": "bag_option_free", "Advanced": "bag_option_advanced", "Top": "bag_option_top"}[key]
+		var text: String = P.localized(text_key)
 		var button := _button(left, text, func(): bag_tier = key; _render())
 		if bag_tier == key: button.add_theme_stylebox_override("normal", Art.style("UI/CardCodex/card_codex_action_button_orange.png"))
-	_label(left, "生命药剂 · 持有 %s · 最多携带 2 瓶" % consumables.get("healthPotionCount", 0), 22)
+	_label(left, P.localized("health_potion_summary") % consumables.get("healthPotionCount", 0), 22)
 	var potion := SpinBox.new()
 	potion.max_value = mini(2, int(consumables.get("healthPotionCount", 0)))
 	potion.value = potion_count
@@ -595,7 +596,7 @@ func _card_action(id: String, action: String) -> void:
 func _codex() -> void:
 	var header := _row(content)
 	_label(header, "卡牌图鉴", 42, P.GOLD)
-	_label(header, "编组 %s / 20" % deck_draft.size(), 30)
+	_label(header, P.localized("deck_count_summary") % deck_draft.size(), 30)
 	_button(header, "保存编组", _save_deck, deck_draft.size() != 20 or Game.busy)
 	_button(header, "还原", func(): deck_draft = Game.deck().get("cardIds", []).duplicate(); _render())
 	var deck_row := HFlowContainer.new()
@@ -735,27 +736,27 @@ func _enhance(item: Dictionary) -> void:
 	if not _session_result_current(generation, result): return
 	if not result.ok: return
 	var quote: Dictionary = result.data
-	if not quote.get("canEnhance", false): _toast("无法强化：碎片、同品质材料或物品状态不满足要求"); return
+	if not quote.get("canEnhance", false): _toast(P.localized("enhance_unavailable")); return
 	var body := {"expectedVersion": quote.expectedVersion}
-	var cost_text := "消耗 %s 装备碎片，强化到 +%s" % [quote.fragmentCost, quote.nextLevel]
+	var cost_text := P.localized("enhance_cost_confirm") % [quote.fragmentCost, quote.nextLevel]
 	if int(quote.materialCount) == 0:
 		_confirm(cost_text + "？", func(): _mutate("/equipment/" + item.instanceId + "/enhance", HTTPClient.METHOD_POST, body))
 		return
 	var dialog := AcceptDialog.new()
-	dialog.title = "选择强化材料 · 材料将被消耗"
+	dialog.title = P.localized("enhance_material_dialog")
 	var scroll := ScrollContainer.new()
 	scroll.custom_minimum_size = Vector2(720, 390)
 	dialog.add_child(scroll)
 	var column := VBoxContainer.new()
 	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(column)
-	_label(column, cost_text + "，另需同品质防具 ×1", 24)
+	_label(column, P.localized("enhance_material_cost") % cost_text, 24)
 	var count := 0
 	for material in inventory.get("equipments", []):
 		if material.instanceId == item.instanceId or material.get("location") != "Inventory" or material.quality != item.quality: continue
 		count += 1
-		_button(column, _equipment_name(material), func(): body.materialEquipmentId = material.instanceId; dialog.queue_free(); _confirm(cost_text + "，并消耗 " + _equipment_name(material) + "？", func(): _mutate("/equipment/" + item.instanceId + "/enhance", HTTPClient.METHOD_POST, body)))
-	if count == 0: _label(column, "没有可用的同品质仓库材料。")
+		_button(column, _equipment_name(material), func(): body.materialEquipmentId = material.instanceId; dialog.queue_free(); _confirm(P.localized("enhance_material_confirm") % [cost_text, _equipment_name(material)], func(): _mutate("/equipment/" + item.instanceId + "/enhance", HTTPClient.METHOD_POST, body)))
+	if count == 0: _label(column, P.localized("enhance_no_material"))
 	add_child(dialog)
 	dialog.popup_centered(Vector2i(750, 360))
 	dialog.confirmed.connect(dialog.queue_free)
@@ -769,8 +770,8 @@ func _enhance_weapon() -> void:
 	if not _session_result_current(generation, result): return
 	if not result.ok: return
 	var quote: Dictionary = result.data
-	if not quote.get("canEnhance", false): _toast("无法强化：碎片不足或已达最高等级"); return
-	_confirm("消耗 %s 装备碎片，将本命武器强化到 +%s？" % [quote.fragmentCost, quote.nextLevel], func(): _mutate("/class-weapons/" + hero_class + "/enhance", HTTPClient.METHOD_POST, {"expectedVersion": quote.expectedVersion}))
+	if not quote.get("canEnhance", false): _toast(P.localized("enhance_weapon_unavailable")); return
+	_confirm(P.localized("enhance_weapon_confirm") % [quote.fragmentCost, quote.nextLevel], func(): _mutate("/class-weapons/" + hero_class + "/enhance", HTTPClient.METHOD_POST, {"expectedVersion": quote.expectedVersion}))
 
 func _read_enhancement_quote(item: Dictionary, weapon: Dictionary) -> void:
 	var id: String = item.get("instanceId", Game.hero_class)
@@ -789,9 +790,9 @@ func _read_enhancement_quote(item: Dictionary, weapon: Dictionary) -> void:
 func _weapon_benefit(level: int) -> String:
 	var percent: int = [6, 8, 10, 11, 13, 14][clampi(level, 0, 5)]
 	match Game.hero_class:
-		"Priest": return "治疗 +%s%%" % percent
-		"Mage": return "焚弦额外充能 +%s%%（总充能上限 50%%）" % percent
-		_: return "上盾额外 +%s" % (3 if level >= 4 else (2 if level >= 2 else 1))
+		"Priest": return P.localized("weapon_benefit_heal") % percent
+		"Mage": return P.localized("weapon_benefit_charge") % [P.localized("class_mage_weapon"), percent]
+		_: return P.localized("weapon_benefit_shield") % (3 if level >= 4 else (2 if level >= 2 else 1))
 
 func _shop() -> void:
 	_label(content, "旅人补给", 44, P.GOLD)
@@ -852,6 +853,61 @@ func _mutate(path: String, method: int, body: Variant = null) -> void:
 	if not _session_result_current(generation): return
 	Game.busy = false
 	await _navigate(screen)
+
+func _purchase_shop_item(item: Dictionary, product_title: String) -> void:
+	var purchase := func(): _complete_shop_purchase(item)
+	if item.get("kind", "") == "Cards":
+		_confirm("花费 %s 金币购买%s？" % [item.get("priceGold", 0), product_title], purchase)
+	else:
+		purchase.call()
+
+func _complete_shop_purchase(item: Dictionary) -> void:
+	if Game.busy: return
+	Game.busy = true
+	var generation: int = Game.gateway.session_generation
+	var product_id: String = str(item.get("productId", ""))
+	var scroll_position := 0
+	if is_instance_valid(_reference):
+		var shop_scroll := _reference.get_node_or_null("ShopScroll") as ScrollContainer
+		if shop_scroll != null: scroll_position = shop_scroll.scroll_horizontal
+	var result: Dictionary = await Game.gateway.request("/api/v1/shop/purchases", HTTPClient.METHOD_POST, {"productId": product_id, "quantity": 1})
+	if not _session_result_current(generation, result): return
+	if result.ok:
+		_apply_shop_purchase(product_id, result.data)
+		Sound.play_cue("purchase")
+		_toast("操作成功")
+	else:
+		Sound.play_cue("error")
+	Game.busy = false
+	_render()
+	_restore_shop_scroll.call_deferred(scroll_position)
+
+func _restore_shop_scroll(scroll_position: int) -> void:
+	if screen != "shop" or not is_instance_valid(_reference): return
+	var shop_scroll := _reference.get_node_or_null("ShopScroll") as ScrollContainer
+	if shop_scroll != null: shop_scroll.scroll_horizontal = scroll_position
+
+func _apply_shop_purchase(product_id: String, response: Dictionary) -> void:
+	var quantity: int = int(response.get("quantity", 1))
+	var products: Array = shop.get("products", [])
+	for index in products.size():
+		var product: Dictionary = products[index]
+		if str(product.get("productId", "")) != product_id: continue
+		product["purchased"] = int(product.get("purchased", 0)) + quantity
+		products[index] = product
+		var kind: String = str(product.get("kind", ""))
+		if kind in ["AdvancedBag", "TopBag"]:
+			var payload: Variant = JSON.parse_string(product.get("payload", "{}"))
+			var amount: int = int(payload.get("amount", 1)) if payload is Dictionary else 1
+			var consumables: Dictionary = inventory.get("consumables", {}).duplicate()
+			var key := "advancedBagCount" if kind == "AdvancedBag" else "topBagCount"
+			consumables[key] = int(consumables.get(key, 0)) + amount * quantity
+			inventory["consumables"] = consumables
+		break
+	shop["products"] = products
+	var wallet: Dictionary = Game.lobby.get("wallet", {}).duplicate()
+	wallet["gold"] = int(response.get("goldAfter", wallet.get("gold", 0)))
+	Game.lobby["wallet"] = wallet
 
 func _session_result_current(generation: int, result: Dictionary = {}) -> bool:
 	return generation == Game.gateway.session_generation and not result.get("stale_session", false)

@@ -101,7 +101,7 @@ func card(source: Control, id: String, rect: Rect2, action: Callable, selected: 
 	return node
 
 func _scroll(rect: Rect2, horizontal: bool = false, parent: Node = null) -> ScrollContainer:
-	var node := ScrollContainer.new()
+	var node := DragScroll.new()
 	node.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO if horizontal else ScrollContainer.SCROLL_MODE_DISABLED
 	node.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED if horizontal else ScrollContainer.SCROLL_MODE_AUTO
 	(parent if parent != null else self).add_child(node)
@@ -686,20 +686,22 @@ func _preparation() -> void:
 	panel(Rect2(798, 122, 1094, 900))
 	_loadout(Rect2(45, 140, 715, 720), false, snap)
 	var card_ids: Array = snap.get("cardIds", Game.deck().get("cardIds", []))
-	text("%s %s / 20    生命上限 %s" % ["已锁定编组" if locked else "编组", card_ids.size(), snap.get("maximumHp", P.CLASSES[Game.hero_class][2])], Rect2(85, 872, 640, 70), 26)
+	var deck_summary_key := "locked_deck_summary" if locked else "deck_summary"
+	text(P.localized(deck_summary_key) % [card_ids.size(), snap.get("maximumHp", P.CLASSES[Game.hero_class][2])], Rect2(85, 872, 640, 70), 26)
 	text("卡牌与专属武器不占背包格", Rect2(85, 946, 650, 50), 22, P.MUTED)
 	text("背包", Rect2(845, 145, 550, 65), 38, P.GOLD)
 	var consumables: Dictionary = host.inventory.get("consumables", {})
 	var stock := {"Advanced": int(consumables.get("advancedBagCount", 0)), "Top": int(consumables.get("topBagCount", 0))}
 	if not locked and host.bag_tier != "Free" and stock.get(host.bag_tier, 0) <= 0:
 		host.bag_tier = "Free"
-	text("持有 高级 %s / 顶级 %s" % [stock.Advanced, stock.Top], Rect2(1390, 162, 440, 38), 23, P.MUTED)
+	text(P.localized("bag_stock_summary") % [stock.Advanced, stock.Top], Rect2(1390, 162, 440, 38), 23, P.MUTED)
 	var tier: String = snap.get("backpackTier", host.bag_tier)
 	var capacity: int = int(snap.get("backpackCapacity", {"Free": 20, "Advanced": 28, "Top": 36}.get(tier, 20)))
 	var safe_slots: Array = snap.get("safeSlotIndexes", [] if tier == "Free" else ([27] if tier == "Advanced" else [33, 34, 35]))
 	for i in range(3):
 		var key: String = ["Free", "Advanced", "Top"][i]
-		var title: String = ["免费包\n20 格 / 安全 0", "高级包\n28 格 / 安全 1", "顶级包\n36 格 / 安全 3"][i]
+		var title_key: String = ["bag_option_free", "bag_option_advanced", "bag_option_top"][i]
+		var title: String = P.localized(title_key)
 		# Free is the built-in tier and is not represented in consumables; only
 		# paid backpack tiers are gated by their inventory counts.
 		var available_count := 0 if i == 0 else int(stock.get(key, 0))
@@ -718,7 +720,7 @@ func _preparation() -> void:
 			picture(Art.texture("UI/Prep/icon_safe.png"), Rect2(point + Vector2(19, 19), Vector2(58, 58)))
 		else: text(str(index + 1), Rect2(point + Vector2(8, 8), Vector2(80, 48)), 19, P.MUTED)
 	picture(_item("HealthPotion"), Rect2(850, 853, 64, 74))
-	text("生命药剂 · 持有 %s · 最多 2 瓶" % consumables.get("healthPotionCount", 0), Rect2(930, 850, 630, 45), 25)
+	text(P.localized("health_potion_summary") % consumables.get("healthPotionCount", 0), Rect2(930, 850, 630, 45), 25)
 	var count := SpinBox.new()
 	count.max_value = mini(2, int(consumables.get("healthPotionCount", 0)))
 	count.value = snap.get("potionCount", host.potion_count)
@@ -854,7 +856,7 @@ func _enhance() -> void:
 	panel(Rect2(30, 132, 470, 882))
 	panel(Rect2(525, 130, 770, 884), "UI/Enhance/display_clean.png")
 	panel(Rect2(1320, 132, 570, 882))
-	text("选择强化物品", Rect2(70, 166, 390, 58), 34, P.GOLD)
+	text(P.localized("enhance_select_item"), Rect2(70, 166, 390, 58), 34, P.GOLD)
 	button("本命武器 · " + P.CLASSES[Game.hero_class][1], Rect2(66, 254, 393, 94), func(): host._enhance_item = ""; host._render(), false, ORANGE if host._enhance_item.is_empty() else BLUE)
 	var scroll := _scroll(Rect2(64, 378, 405, 602))
 	var list := VBoxContainer.new()
@@ -874,19 +876,19 @@ func _enhance() -> void:
 	text(title, Rect2(625, 178, 590, 68), 42, P.GOLD)
 	var image: Texture2D = Art.equipment_texture(selected) if not selected.is_empty() else Art.texture("UI/Item/exploration_prep_item_icon_weapon_%s.png" % Game.hero_class.to_lower())
 	picture(image, Rect2(720, 275, 350, 350))
-	var benefit: String = host.EquipmentDetails.enhancement_text(selected) if not selected.is_empty() else "当前：%s\n下一级：%s" % [host._weapon_benefit(level), host._weapon_benefit(mini(5, level + 1))]
-	text(benefit if level < 5 else "已达最高等级", Rect2(591, 636, 642, 306), 23, P.TEAL)
-	text("强化进度", Rect2(1375, 175, 450, 70), 38, P.GOLD)
+	var benefit: String = host.EquipmentDetails.enhancement_text(selected) if not selected.is_empty() else P.localized("enhance_current_next") % [host._weapon_benefit(level), host._weapon_benefit(mini(5, level + 1))]
+	text(benefit if level < 5 else P.localized("enhance_max_level"), Rect2(591, 636, 642, 306), 23, P.TEAL)
+	text(P.localized("enhance_progress"), Rect2(1375, 175, 450, 70), 38, P.GOLD)
 	for i in range(5):
 		var color := P.GOLD if i < level else P.MUTED
 		text("+%s" % (i + 1), Rect2(1370 + i * 95, 300, 85, 72), 30, color)
 	picture(_item("EquipmentFragments"), Rect2(1430, 439, 90, 108))
-	text("装备碎片\n持有 %s" % Game.lobby.get("materials", {}).get("equipmentFragments", 0), Rect2(1535, 445, 300, 115), 30)
-	var cost: String = "正在读取强化费用…" if quote.is_empty() else "所需碎片 %s\n同品质材料 %s / %s 件" % [quote.get("fragmentCost", 0), quote.get("availableMaterialCount", 0), quote.get("materialCount", 0)]
-	if quote.get("error", false): cost = "报价读取失败，请重新进入强化"
-	elif not quote.is_empty() and not quote.get("canEnhance", false) and level < 5: cost += "\n碎片、材料或物品状态不满足要求"
+	text(P.localized("enhance_fragments_summary") % Game.lobby.get("materials", {}).get("equipmentFragments", 0), Rect2(1535, 445, 300, 115), 30)
+	var cost: String = P.localized("enhance_loading_cost") if quote.is_empty() else P.localized("enhance_cost") % [quote.get("fragmentCost", 0), quote.get("availableMaterialCount", 0), quote.get("materialCount", 0)]
+	if quote.get("error", false): cost = P.localized("enhance_quote_error")
+	elif not quote.is_empty() and not quote.get("canEnhance", false) and level < 5: cost += "\n" + P.localized("enhance_requirement_error")
 	text(cost, Rect2(1370, 604, 470, 176), 25, P.MUTED)
-	button("已达上限" if level >= 5 else "强化到 +%s" % (level + 1), Rect2(1380, 823, 440, 86), func():
+	button(P.localized("enhance_max_button") if level >= 5 else P.localized("enhance_to_button") % (level + 1), Rect2(1380, 823, 440, 86), func():
 		if not selected.is_empty(): host._enhance(selected)
 		else: host._enhance_weapon(), Game.busy or level >= 5 or not quote.get("canEnhance", false), ORANGE)
 
@@ -946,7 +948,7 @@ func _shop() -> void:
 		var stock_unknown: bool = is_bag and not host._shop_inventory_ready
 		var already_owned: bool = is_guaranteed_card and bool(item.get("alreadyOwned", false))
 		var buy_text := P.localized("refresh_inventory") if stock_unknown else (P.localized("inventory_full") if stock_full else (P.localized("activated") if already_owned else P.localized("buy")))
-		var buy: Button = host._button(item_panel, buy_text, func(): host._confirm("花费 %s 金币购买%s？" % [item.priceGold, product_title], func(): host._mutate("/shop/purchases", HTTPClient.METHOD_POST, {"productId": item.productId, "quantity": 1})), Game.busy or stock_unknown or stock_full or already_owned or int(item.purchased) >= int(item.limit) or int(item.priceGold) > int(Game.lobby.get("wallet", {}).get("gold", 0)))
+		var buy: Button = host._button(item_panel, buy_text, func(): host._purchase_shop_item(item, product_title), Game.busy or stock_unknown or stock_full or already_owned or int(item.purchased) >= int(item.limit) or int(item.priceGold) > int(Game.lobby.get("wallet", {}).get("gold", 0)))
 		buy.name = "Purchase"
 		Art.button(buy, ORANGE)
 		buy.position = Vector2(26, 546)
@@ -1054,7 +1056,7 @@ func _market() -> void:
 	if list.get_child_count() == 0: text("集市暂时没有挂单", Rect2(356, 453, 730, 100), 32, P.MUTED)
 	text("本次上架", Rect2(1390, 175, 440, 67), 34, P.GOLD)
 	var choices := OptionButton.new()
-	choices.add_item("选择仓库装备")
+	choices.add_item(P.localized("select_stored_equipment"))
 	var items: Array = []
 	for item in host.inventory.get("equipments", []):
 		if item.get("isBound", false) or item.get("location") != "Inventory": continue
