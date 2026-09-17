@@ -36,7 +36,10 @@ git -C "$repo" fetch --filter=blob:none origin "$branch"
 if git -C "$repo" show-ref --verify --quiet "refs/heads/$branch"; then
   git -C "$repo" switch "$branch"
 else
-  git -C "$repo" switch --track -c "$branch" "origin/$branch"
+  # The original cloud checkout was cloned with --single-branch, so the
+  # remote-tracking ref origin/release may not exist yet. FETCH_HEAD was
+  # obtained directly from the configured GitHub remote above.
+  git -C "$repo" switch -c "$branch" FETCH_HEAD
 fi
 
 current=$(git -C "$repo" rev-parse HEAD)
