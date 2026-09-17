@@ -57,14 +57,14 @@ cd server
 
 ## 腾讯云更新
 
-云端跟踪 GitHub 的 `codex/UI_V2` 分支。先完成本地 `git commit`，随后运行：
+云端只跟踪 GitHub 的 `release` 分支。先在 `release` 分支完成本地 `git commit`，随后运行：
 
 ```powershell
 cd server
 .\update_server.bat --cloud --push
 ```
 
-`--push` 只推送已经提交的变更，不会自动提交工作区内容；不传它时，脚本仅部署已存在于 GitHub 的最新提交。首次使用时，把 `cloud-env.example.bat` 复制为 `cloud-env.local.bat`，并填写 SSH 私钥路径。该本地配置已被 Git 忽略。
+`--push` 只推送已经提交的 `release` 变更，不会自动提交工作区内容；不传它时，脚本仅部署已存在于 GitHub `release` 的最新提交。为避免误发布，云端批处理会拒绝非 `release` 分支。首次使用时，把 `cloud-env.example.bat` 复制为 `cloud-env.local.bat`，并填写 SSH 私钥路径。该本地配置已被 Git 忽略。
 
 云端更新会验证分支只能快进、备份 PostgreSQL、构建新应用容器并执行健康检查；不会清库或覆盖云端 `.env`。可随时执行 `cloud-status.bat` 检查已部署提交和健康状态。
 

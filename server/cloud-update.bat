@@ -2,6 +2,7 @@
 setlocal EnableExtensions
 cd /d "%~dp0.."
 set "CLOUD_SETTINGS_DIR=%CD%\server\"
+set "PUBLISH_BRANCH=release"
 
 set "EXIT_CODE=0"
 set "NO_PAUSE="
@@ -50,10 +51,18 @@ if errorlevel 1 (
     goto :end
 )
 
+for /f "usebackq delims=" %%B in (`git branch --show-current`) do set "CURRENT_BRANCH=%%B"
+if /I not "%CURRENT_BRANCH%"=="%PUBLISH_BRANCH%" (
+    echo [ERROR] Cloud deployment only accepts the %PUBLISH_BRANCH% branch. Current branch: %CURRENT_BRANCH%
+    echo         Switch to %PUBLISH_BRANCH% before deploying.
+    set "EXIT_CODE=1"
+    goto :end
+)
+
 if defined PUSH_BEFORE_DEPLOY (
     echo [1/2] Pushing committed changes to GitHub...
     git status --short
-    git push origin HEAD
+    git push origin %PUBLISH_BRANCH%
     if errorlevel 1 (
         echo [ERROR] GitHub push failed. Cloud deployment was not started.
         set "EXIT_CODE=1"
