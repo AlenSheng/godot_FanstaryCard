@@ -3,7 +3,9 @@ setlocal EnableExtensions
 cd /d "%~dp0"
 
 set "NO_PAUSE="
-set "FANTASYCARD_SERVER_URL="
+rem Double-clicking this file is for the shared Tencent Cloud test server.
+rem Use --local whenever you need the local Docker/.NET development service.
+set "FANTASYCARD_SERVER_URL=http://43.172.70.182"
 
 :args
 if "%~1"=="" goto :start
@@ -32,11 +34,7 @@ if /I "%~1"=="--no-pause" (
 goto :usage
 
 :start
-if defined FANTASYCARD_SERVER_URL (
-    echo [INFO] Connecting this client session to %FANTASYCARD_SERVER_URL%
-) else (
-    echo [INFO] Using the client saved server address.
-)
+echo [INFO] Connecting this client session to %FANTASYCARD_SERVER_URL%
 python tools\client_engine.py play
 set "EXIT_CODE=%ERRORLEVEL%"
 goto :end
