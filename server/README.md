@@ -66,7 +66,7 @@ cd server
 
 `--push` 只推送已经提交的 `release` 变更，不会自动提交工作区内容；不传它时，脚本仅部署已存在于 GitHub `release` 的最新提交。为避免误发布，云端批处理会拒绝非 `release` 分支。首次使用时，把 `cloud-env.example.bat` 复制为 `cloud-env.local.bat`，并填写 SSH 私钥路径。该本地配置已被 Git 忽略。
 
-云端更新会验证分支只能快进、备份 PostgreSQL、构建新应用容器并执行健康检查；不会清库或覆盖云端 `.env`。可随时执行 `cloud-status.bat` 检查已部署提交和健康状态。
+云端以 Git 提交号作为版本号，并在 `/opt/fantasycard-app/version-manifests/` 保存已部署版本的运行文件 MD5 清单（服务端源码、生成配置、构建与代理配置、部署脚本）。更新时，Git 仅传输仓库差异；脚本比较 MD5 清单并打印新增、修改、删除的文件。服务端运行文件变化时才备份 PostgreSQL、重建应用容器；只有 `Caddyfile` 变化时只重载代理；客户端或文档变化时无需重建服务器。MD5 只用于判断文件是否变化，版本来源仍以 Git 提交号为准。清单和版本标记在健康检查成功后一起更新；失败时下次会重新尝试。云端 `.env` 和数据库不会被覆盖或清空。可执行 `cloud-status.bat` 查看已部署提交、清单版本及健康状态。
 
 清库不可恢复，脚本默认要求按 `Y` 确认。自动化环境可额外传入 `--yes` 跳过确认；它只操作固定的 Compose 项目 `fantasycard-local`，不会用于 Staging 或 Production。
 

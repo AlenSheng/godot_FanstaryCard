@@ -9,7 +9,44 @@ compose="$app_dir/compose.cloud.yaml"
 env_file="$app_dir/.env"
 backup_dir=/opt/fantasycard-app/backups
 deployed_marker=/opt/fantasycard-app/deployed-git-commit
+manifest_dir=/opt/fantasycard-app/version-manifests
+manifest="$manifest_dir/release.md5"
+manifest_version="$manifest_dir/release.version"
 self_source="$app_dir/deploy/fantasycard-update.sh"
+
+write_manifest() {
+  local output="$1"
+  mkdir -p "$(dirname "$output")"
+  (
+    cd "$repo"
+    git ls-files -z -- \
+      server/src server/config server/protection server/deploy \
+      server/Directory.Build.props server/Directory.Packages.props \
+      server/global.json server/NuGet.Config server/.dockerignore \
+      server/compose.cloud.yaml server/Caddyfile \
+      ':(exclude)server/**/bin/**' ':(exclude)server/**/obj/**' |
+      xargs -0 -r md5sum -- |
+      awk '{ print substr($0, 35) "\t" substr($0, 1, 32) }' | LC_ALL=C sort
+  ) > "$output"
+}
+
+diff_manifests() {
+  local old="$1" new="$2"
+  awk -F '\t' '
+    NR == FNR { previous[$1] = $2; next }
+    !($1 in previous) { print "A\t" $1; next }
+    previous[$1] != $2 { print "M\t" $1 }
+    { delete previous[$1] }
+    END { for (path in previous) print "D\t" path }
+  ' "$old" "$new" | LC_ALL=C sort
+}
+
+health_check() {
+  [[ "$(curl --fail --silent --show-error --max-time 5 http://127.0.0.1:8080/health/ready)" == Healthy ]] &&
+    [[ "$(curl --fail --silent --show-error --max-time 5 \
+      --resolve www.relicbound.cn:443:127.0.0.1 \
+      https://www.relicbound.cn/health/ready)" == Healthy ]]
+}
 
 if [[ "$(id -un)" != ubuntu ]]; then
   echo '请以 ubuntu 用户运行此命令（不要在整个命令前加 sudo）。' >&2
@@ -59,39 +96,83 @@ if [[ "$current" != "$target" ]]; then
   fi
 fi
 
-if [[ "$deployed" == "$target" ]]; then
+if [[ "$current" == "$target" && "$deployed" == "$target" ]]; then
   echo "服务器已是最新版本：$target"
-  curl --fail --silent --show-error --max-time 5 http://127.0.0.1/health/ready >/dev/null
+  health_check
+  if [[ ! -f "$manifest" || ! -f "$manifest_version" || "$(cat "$manifest_version")" != "$target" ]]; then
+    umask 077
+    write_manifest "$manifest.new"
+    mv "$manifest.new" "$manifest"
+    printf '%s\n' "$target" > "$manifest_version"
+  fi
   echo '健康检查通过。'
   exit 0
 fi
 
 umask 077
-mkdir -p "$backup_dir"
-backup="$backup_dir/fantasycard-$(date -u +%Y%m%dT%H%M%SZ)-before-$target.dump"
-echo "正在备份数据库：$backup"
-sudo docker compose -f "$compose" --env-file "$env_file" exec -T postgres \
-  pg_dump -U fantasycard -d fantasycard --format=custom --no-owner --no-privileges > "$backup"
-test -s "$backup"
-sudo docker compose -f "$compose" --env-file "$env_file" exec -T postgres \
-  pg_restore --list < "$backup" >/dev/null
+changes=$(mktemp)
+trap 'rm -f "$changes" "$manifest.new"' EXIT
+baseline_valid=false
+if [[ -f "$manifest" && -f "$manifest_version" && "$(cat "$manifest_version")" == "$deployed" ]]; then
+  baseline_valid=true
+fi
 
 if [[ "$current" != "$target" ]]; then
   git -C "$repo" merge --ff-only "$target"
 fi
 
-echo "正在构建 GitHub 版本：$target"
-sudo docker compose -f "$compose" --env-file "$env_file" build server
-sudo docker compose -f "$compose" --env-file "$env_file" up -d --no-deps server caddy
+write_manifest "$manifest.new"
+runtime_changed=false
+proxy_changed=false
+if [[ "$baseline_valid" == true ]]; then
+  diff_manifests "$manifest" "$manifest.new" > "$changes"
+  echo "文件 MD5 差异：$(wc -l < "$changes" | tr -d ' ') 个；A=新增，M=修改，D=删除。"
+  if [[ -s "$changes" ]]; then cat "$changes"; fi
+  while IFS=$'\t' read -r action file; do
+    case "$file" in
+      server/Caddyfile) proxy_changed=true ;;
+      server/compose.cloud.yaml) runtime_changed=true; proxy_changed=true ;;
+      server/deploy/*) ;;
+      server/*) runtime_changed=true ;;
+    esac
+  done < "$changes"
+else
+  echo '没有与已部署版本匹配的 MD5 基线，本次完整重建服务。'
+  runtime_changed=true
+  proxy_changed=true
+fi
+
+backup=''
+if [[ "$runtime_changed" == true ]]; then
+  mkdir -p "$backup_dir"
+  backup="$backup_dir/fantasycard-$(date -u +%Y%m%dT%H%M%SZ)-before-$target.dump"
+  echo "正在备份数据库：$backup"
+  sudo docker compose -f "$compose" --env-file "$env_file" exec -T postgres \
+    pg_dump -U fantasycard -d fantasycard --format=custom --no-owner --no-privileges > "$backup"
+  test -s "$backup"
+  sudo docker compose -f "$compose" --env-file "$env_file" exec -T postgres \
+    pg_restore --list < "$backup" >/dev/null
+  echo "正在构建服务端版本：$target"
+  sudo docker compose -f "$compose" --env-file "$env_file" build server
+  sudo docker compose -f "$compose" --env-file "$env_file" up -d --no-deps server
+fi
+if [[ "$proxy_changed" == true ]]; then
+  sudo docker compose -f "$compose" --env-file "$env_file" up -d --no-deps --force-recreate caddy
+fi
+if [[ "$runtime_changed" == false && "$proxy_changed" == false ]]; then
+  echo '服务端运行文件未变化，无需重建容器。Git 已按差异拉取版本。'
+fi
 
 for attempt in {1..24}; do
-  if curl --fail --silent --show-error --max-time 3 http://127.0.0.1/health/ready >/dev/null 2>&1; then
+  if health_check >/dev/null 2>&1; then
+    mv "$manifest.new" "$manifest"
+    printf '%s\n' "$target" > "$manifest_version"
     printf '%s\n' "$target" > "$deployed_marker"
     if [[ -f "$self_source" ]]; then
       install -m 700 "$self_source" "$0"
     fi
     echo "更新成功：$target"
-    echo "数据库备份：$backup"
+    if [[ -n "$backup" ]]; then echo "数据库备份：$backup"; fi
     exit 0
   fi
   sleep 5

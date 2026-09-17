@@ -23,7 +23,7 @@ if not exist "%FANTASYCARD_CLOUD_KEY%" (
     goto :end
 )
 
-ssh -o BatchMode=yes -o ConnectTimeout=12 -i "%FANTASYCARD_CLOUD_KEY%" %FANTASYCARD_CLOUD_USER%@%FANTASYCARD_CLOUD_HOST% "cat /opt/fantasycard-app/deployed-git-commit; curl --fail --silent --show-error --max-time 5 http://127.0.0.1/health/ready >/dev/null && echo HEALTHY"
+ssh -o BatchMode=yes -o ConnectTimeout=12 -i "%FANTASYCARD_CLOUD_KEY%" %FANTASYCARD_CLOUD_USER%@%FANTASYCARD_CLOUD_HOST% "printf 'Deployed commit: '; cat /opt/fantasycard-app/deployed-git-commit; if test -f /opt/fantasycard-app/version-manifests/release.version; then printf 'Manifest version: '; cat /opt/fantasycard-app/version-manifests/release.version; printf 'Tracked server files: '; wc -l /opt/fantasycard-app/version-manifests/release.md5; fi; curl --fail --silent --show-error --max-time 5 -o /dev/null http://127.0.0.1:8080/health/ready && curl --fail --silent --show-error --max-time 5 -o /dev/null --resolve www.relicbound.cn:443:127.0.0.1 https://www.relicbound.cn/health/ready && echo HEALTHY"
 set "EXIT_CODE=%ERRORLEVEL%"
 if not "%EXIT_CODE%"=="0" echo [ERROR] Cloud health check failed.
 goto :end
