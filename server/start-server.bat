@@ -6,6 +6,8 @@ set "EXIT_CODE=0"
 set "COMPOSE_PROJECT_NAME=fantasycard-local"
 set "NO_PAUSE="
 set "FORCE_NATIVE="
+set "CLOUD_DEPLOY="
+set "PUSH_BEFORE_DEPLOY="
 
 :args
 if "%~1"=="" goto :start
@@ -19,11 +21,22 @@ if /I "%~1"=="--native" (
     shift
     goto :args
 )
-echo Usage: start-server.bat [--native] [--no-pause]
+if /I "%~1"=="--cloud" (
+    set "CLOUD_DEPLOY=1"
+    shift
+    goto :args
+)
+if /I "%~1"=="--push" (
+    set "PUSH_BEFORE_DEPLOY=1"
+    shift
+    goto :args
+)
+echo Usage: start-server.bat [--native] [--cloud] [--push] [--no-pause]
 set "EXIT_CODE=1"
 goto :end
 
 :start
+if defined CLOUD_DEPLOY goto :cloud
 echo [0/5] Checking published server/client config versions...
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0assert-config-alignment.ps1"
 if errorlevel 1 (
@@ -148,6 +161,16 @@ echo [READY] FantasyCard local server is running.
 echo         API:    http://localhost:5080
 echo         Health: http://localhost:5080/health/ready
 echo         Stop:   double-click stop-server.bat
+goto :end
+
+:cloud
+echo Starting the Tencent Cloud deployment flow...
+if defined PUSH_BEFORE_DEPLOY (
+    call "%CD%\cloud-update.bat" --push --no-pause
+) else (
+    call "%CD%\cloud-update.bat" --no-pause
+)
+set "EXIT_CODE=%ERRORLEVEL%"
 goto :end
 
 :native
