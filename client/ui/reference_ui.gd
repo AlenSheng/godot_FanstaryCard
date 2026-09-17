@@ -873,7 +873,21 @@ func _enhance() -> void:
 	host._read_enhancement_quote(selected, weapon)
 	var quote: Dictionary = host._enhancement_quote
 	var title: String = host._equipment_name(selected) if not selected.is_empty() else P.CLASSES[Game.hero_class][1]
-	text(title, Rect2(625, 178, 590, 68), 42, P.GOLD)
+	# display_clean.png contains a baked decorative title strip. Cover that strip
+	# before drawing the live name so the label remains a clean, independent UI layer.
+	var title_plate := ColorRect.new()
+	title_plate.name = "EnhanceTitlePlate"
+	title_plate.position = Vector2(800, 185)
+	title_plate.size = Vector2(250, 45)
+	title_plate.color = Color("#1a0c0a")
+	title_plate.z_index = 10
+	title_plate.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(title_plate)
+	var title_label := text(title, Rect2(625, 170, 570, 64), 42, P.GOLD)
+	title_label.name = "EnhanceTitle"
+	title_label.z_index = 11
+	title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	var image: Texture2D = Art.equipment_texture(selected) if not selected.is_empty() else Art.texture("UI/Item/exploration_prep_item_icon_weapon_%s.png" % Game.hero_class.to_lower())
 	picture(image, Rect2(720, 275, 350, 350))
 	var benefit: String = host.EquipmentDetails.enhancement_text(selected) if not selected.is_empty() else P.localized("enhance_current_next") % [host._weapon_benefit(level), host._weapon_benefit(mini(5, level + 1))]
