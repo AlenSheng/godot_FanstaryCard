@@ -87,6 +87,14 @@ static func _ensure_locale() -> void:
 				strings.merge(template_config.languages[code].get("strings", {}))
 				target["strings"] = strings
 				_locale_config.languages[code] = target
+		var brand_config: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://data/localization_brand.json"))
+		if brand_config is Dictionary:
+			for code in brand_config.get("languages", {}):
+				var target: Dictionary = _locale_config.get("languages", {}).get(code, {})
+				var strings: Dictionary = target.get("strings", {})
+				strings.merge(brand_config.languages[code].get("strings", {}))
+				target["strings"] = strings
+				_locale_config.languages[code] = target
 		_language = str(_locale_config.get("default_language", "zh-CN"))
 		var saved_language := _load_language()
 		if _locale_config.get("languages", {}).has(saved_language):

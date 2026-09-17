@@ -97,7 +97,7 @@ func _build_shell() -> void:
 	margin.add_child(root_column)
 	var top := HBoxContainer.new()
 	root_column.add_child(top)
-	var game_title := _label(top, "幻境牌旅", 38, P.GOLD)
+	var game_title := _label(top, P.localized("game_title"), 38, P.GOLD)
 	game_title.name = "GameTitle"
 	_game_title = game_title
 	var spacer := Control.new()
@@ -120,7 +120,7 @@ func _build_shell() -> void:
 func _schedule_render() -> void:
 	if mail_modal_lock: return
 	_sync_account_session()
-	if is_instance_valid(_game_title): _game_title.text = P.localized_text("幻境牌旅")
+	if is_instance_valid(_game_title): _game_title.text = P.localized("game_title")
 	if _render_pending: return
 	_render_pending = true
 	_render.call_deferred()
