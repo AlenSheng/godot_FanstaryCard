@@ -883,15 +883,15 @@ func _enhance() -> void:
 	title_plate.z_index = 10
 	title_plate.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(title_plate)
-	var title_label := text(title, Rect2(625, 170, 570, 64), 42, P.GOLD)
+	var title_label := text(title, Rect2(625, 245, 570, 64), 42, P.GOLD)
 	title_label.name = "EnhanceTitle"
 	title_label.z_index = 11
 	title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	var image: Texture2D = Art.equipment_texture(selected) if not selected.is_empty() else Art.texture("UI/Item/exploration_prep_item_icon_weapon_%s.png" % Game.hero_class.to_lower())
-	picture(image, Rect2(720, 275, 350, 350))
+	picture(image, Rect2(720, 315, 350, 350))
 	var benefit: String = host.EquipmentDetails.enhancement_text(selected) if not selected.is_empty() else P.localized("enhance_current_next") % [host._weapon_benefit(level), host._weapon_benefit(mini(5, level + 1))]
-	text(benefit if level < 5 else P.localized("enhance_max_level"), Rect2(591, 636, 642, 306), 23, P.TEAL)
+	text(benefit if level < 5 else P.localized("enhance_max_level"), Rect2(591, 690, 642, 252), 23, P.TEAL)
 	text(P.localized("enhance_progress"), Rect2(1375, 175, 450, 70), 38, P.GOLD)
 	for i in range(5):
 		var color := P.GOLD if i < level else P.MUTED
