@@ -40,6 +40,7 @@ const EVENTS := {
 }
 
 var base_url := DEFAULT_LOCAL_BASE_URL
+var launch_base_url_override := ""
 var persist_session := true
 var token := ""
 var token_expires_at: float = 0.0
@@ -65,6 +66,12 @@ var _last_snapshot_read: int = 0
 var _preview_request_ids: Dictionary = {}
 
 func _ready() -> void:
+	# A launcher may select a server for this run without changing the address
+	# remembered in user://session.cfg. This keeps local development and cloud
+	# smoke tests isolated from one another.
+	launch_base_url_override = OS.get_environment("FANTASYCARD_SERVER_URL").strip_edges().trim_suffix("/")
+	if not launch_base_url_override.is_empty():
+		base_url = launch_base_url_override
 	var config := ConfigFile.new()
 	if config.load("user://session.cfg") == OK:
 		device_id = config.get_value("session", "device_id", "")
@@ -72,10 +79,10 @@ func _ready() -> void:
 		room_id = config.get_value("session", "room_id", "")
 		room_revision = int(config.get_value("session", "revision", 0))
 		var saved_base_url := str(config.get_value("session", "base_url", "")).strip_edges()
-		if not saved_base_url.is_empty(): base_url = saved_base_url
+		if launch_base_url_override.is_empty() and not saved_base_url.is_empty(): base_url = saved_base_url
 		authenticated_user_id = config.get_value("session", "user_id", "")
 		local_account_name = config.get_value("session", "local_account_name", "")
-	if not OS.is_debug_build(): base_url = str(ProjectSettings.get_setting("platform/server_url", "")).strip_edges()
+	if not OS.is_debug_build() and launch_base_url_override.is_empty(): base_url = str(ProjectSettings.get_setting("platform/server_url", "")).strip_edges()
 	if device_id.is_empty(): device_id = "godot-" + new_id()
 	_save_session()
 
@@ -86,11 +93,12 @@ func _save_session() -> void:
 	if not persist_session: return
 	# Tokens stay in process memory; persisted names are only a login convenience.
 	var config := ConfigFile.new()
+	config.load("user://session.cfg")
 	config.set_value("session", "device_id", device_id)
 	config.set_value("session", "sequence", last_sequence)
 	config.set_value("session", "room_id", room_id)
 	config.set_value("session", "revision", room_revision)
-	config.set_value("session", "base_url", base_url)
+	if launch_base_url_override.is_empty(): config.set_value("session", "base_url", base_url)
 	config.set_value("session", "user_id", authenticated_user_id)
 	config.set_value("session", "local_account_name", local_account_name)
 	config.save("user://session.cfg")

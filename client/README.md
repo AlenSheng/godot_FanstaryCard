@@ -10,6 +10,16 @@
 python tools/client_engine.py play
 ```
 
+连接腾讯云测试服时，运行：
+
+```powershell
+.\start-client.bat --cloud
+```
+
+也可用 `--local` 显式连接本机 `http://127.0.0.1:5080`，或使用
+`--url http://主机:端口` 指定临时地址。启动参数只影响本次运行，
+不会覆盖客户端记住的服务器地址。
+
 也可用 Godot 4.7.2 打开 `client/project.godot`，按 F6/F5 运行。
 默认连接 `http://127.0.0.1:5080`，登录页可更改地址。
 本地开发登录使用唯一账号名称：同名登录原账号，新名称自动注册新的 UID；
