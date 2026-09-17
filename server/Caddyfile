@@ -1,21 +1,38 @@
-# Game clients connect to https://www.relicbound.cn and require a public CA
-# certificate. Do not add a :443 catch-all with the IP self-signed cert; that
-# replaces Let's Encrypt for the domain and Godot rejects the handshake.
+(security_headers) {
+    header {
+        -Server
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        Referrer-Policy "no-referrer"
+        Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+    }
+}
+
+# Game clients connect to the public domain. TLS terminates here with a
+# publicly trusted certificate; the application is reachable only through Caddy.
 relicbound.cn, www.relicbound.cn {
+    import security_headers
+    header Strict-Transport-Security "max-age=31536000; includeSubDomains"
+
     @admin path /admin /admin/* /api/admin /api/admin/*
     respond @admin 404
     reverse_proxy server:8080
 }
 
+# Do not expose the player API through the origin IP. Keeping the certificate
+# listener returns a uniform response without revealing application metadata.
 43.172.70.182 {
+    import security_headers
     tls /etc/caddy/certs/ip2.crt /etc/caddy/certs/ip2.key
-    @admin path /admin /admin/* /api/admin /api/admin/*
-    respond @admin 404
-    reverse_proxy server:8080
+    respond 404
 }
 
+# compose.cloud.yaml binds this listener to host loopback only. Administrators
+# must use an authenticated SSH tunnel; the API still requires X-Admin-Key.
 :20000 {
+    import security_headers
     tls /etc/caddy/certs/ip2.crt /etc/caddy/certs/ip2.key
+
     @admin path /admin /admin/* /api/admin /api/admin/*
     handle @admin {
         reverse_proxy server:8080
