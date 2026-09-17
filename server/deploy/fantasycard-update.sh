@@ -82,7 +82,7 @@ fi
 
 echo "正在构建 GitHub 版本：$target"
 sudo docker compose -f "$compose" --env-file "$env_file" build server
-sudo docker compose -f "$compose" --env-file "$env_file" up -d --no-deps server
+sudo docker compose -f "$compose" --env-file "$env_file" up -d --no-deps server caddy
 
 for attempt in {1..24}; do
   if curl --fail --silent --show-error --max-time 3 http://127.0.0.1/health/ready >/dev/null 2>&1; then

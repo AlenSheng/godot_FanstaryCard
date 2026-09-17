@@ -5,12 +5,12 @@ cd /d "%~dp0"
 set "NO_PAUSE="
 rem Double-clicking this file is for the shared Tencent Cloud test server.
 rem Use --local whenever you need the local Docker/.NET development service.
-set "FANTASYCARD_SERVER_URL=http://43.172.70.182"
+set "FANTASYCARD_SERVER_URL=https://www.relicbound.cn"
 
 :args
 if "%~1"=="" goto :start
 if /I "%~1"=="--cloud" (
-    set "FANTASYCARD_SERVER_URL=http://43.172.70.182"
+    set "FANTASYCARD_SERVER_URL=https://www.relicbound.cn"
     shift
     goto :args
 )
