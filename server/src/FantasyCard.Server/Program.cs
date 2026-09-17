@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using FantasyCard.Server.Common;
+using FantasyCard.Server.Admin;
 using FantasyCard.Server.Bootstrap;
 using FantasyCard.Server.Identity;
 using FantasyCard.Server.Matchmaking;
@@ -46,6 +47,7 @@ builder.Services.AddPreparationModule();
 builder.Services.AddEconomyModule();
 builder.Services.AddMatchmakingModule();
 builder.Services.AddMailModule();
+builder.Services.AddAdminModule();
 builder.Services.AddRoomsModule();
 builder.Services.AddSettlementModule();
 builder.Services.AddRealtimeModule(builder.Configuration);
@@ -169,6 +171,7 @@ app.MapEconomyEndpoints();
 app.MapMatchmakingEndpoints();
 app.MapSettlementEndpoints();
 app.MapMailEndpoints();
+app.MapAdminEndpoints();
 app.MapRealtimeEndpoints();
 
 app.Run();

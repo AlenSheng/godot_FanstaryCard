@@ -1,3 +1,30 @@
 relicbound.cn, www.relicbound.cn {
+    @admin path /admin /admin/* /api/admin /api/admin/*
+    respond @admin 404
     reverse_proxy server:8080
+}
+
+43.172.70.182 {
+    tls /etc/caddy/certs/ip2.crt /etc/caddy/certs/ip2.key
+    @admin path /admin /admin/* /api/admin /api/admin/*
+    respond @admin 404
+    reverse_proxy server:8080
+}
+
+:443 {
+    tls /etc/caddy/certs/ip2.crt /etc/caddy/certs/ip2.key
+    @admin path /admin /admin/* /api/admin /api/admin/*
+    respond @admin 404
+    reverse_proxy server:8080
+}
+
+:20000 {
+    tls /etc/caddy/certs/ip2.crt /etc/caddy/certs/ip2.key
+    @admin path /admin /api/admin/*
+    handle @admin {
+        reverse_proxy server:8080
+    }
+    handle {
+        respond 404
+    }
 }

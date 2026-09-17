@@ -27,6 +27,12 @@ public sealed class ConnectionRegistry
 
     public bool IsConnected(Guid playerId) => _connections.ContainsKey(playerId);
 
+    public void Disconnect(Guid playerId)
+    {
+        if (_connections.TryGetValue(playerId, out var connection))
+            connection.Socket.Abort();
+    }
+
     public async Task<bool> SendPresentationAsync(Guid playerId, FantasyCard.Contracts.Realtime.ServerEvent message)
     {
         if (!_connections.TryGetValue(playerId, out var connection)) return false;

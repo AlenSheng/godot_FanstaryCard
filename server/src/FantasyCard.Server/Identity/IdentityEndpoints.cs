@@ -93,6 +93,10 @@ public static class IdentityEndpoints
         {
             return NameConflict(context, exception);
         }
+        catch (PlayerBannedException)
+        {
+            return Results.Problem(statusCode: 403, title: "Account banned");
+        }
     }
 
     private static async Task<IResult> SignInSteamAsync(
@@ -129,6 +133,10 @@ public static class IdentityEndpoints
         catch (PlayerNameConflictException exception)
         {
             return NameConflict(context, exception);
+        }
+        catch (PlayerBannedException)
+        {
+            return Results.Problem(statusCode: 403, title: "Account banned");
         }
         catch (Exception exception) when (exception is HttpRequestException or TaskCanceledException or JsonException)
         {

@@ -74,6 +74,13 @@ public sealed class IdentityRepository(
             await InsertPlayerAsync(connection, transaction, profile, provider, externalSubject, cancellationToken);
         }
 
+        await using (var ban = new NpgsqlCommand("SELECT 1 FROM player_bans WHERE player_id=$1", connection, transaction))
+        {
+            ban.Parameters.AddWithValue(profile.UserId);
+            if (await ban.ExecuteScalarAsync(cancellationToken) is not null)
+                throw new PlayerBannedException();
+        }
+
         await provisioningService.ProvisionAsync(
             connection,
             transaction,
@@ -203,7 +210,7 @@ public sealed class IdentityRepository(
             SELECT p.user_id, p.display_name, p.selected_class, p.version, p.created_at, p.updated_at, s.expires_at
             FROM player_sessions s
             JOIN players p ON p.user_id = s.player_id
-            WHERE s.token_hash = $1
+            WHERE s.token_hash = $1 AND NOT EXISTS (SELECT 1 FROM player_bans b WHERE b.player_id=p.user_id)
             """);
         command.Parameters.Add(new NpgsqlParameter
         {
