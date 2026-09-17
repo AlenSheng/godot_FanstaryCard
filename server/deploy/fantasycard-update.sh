@@ -41,11 +41,22 @@ diff_manifests() {
   ' "$old" "$new" | LC_ALL=C sort
 }
 
+domain_certificate_ok() {
+  # Godot verifies TLS against public CAs and the requested hostname. A
+  # catch-all :443 site with the IP self-signed cert makes this check fail.
+  local cert
+  cert=$(echo | openssl s_client -connect 127.0.0.1:443 -servername www.relicbound.cn 2>/dev/null |
+    openssl x509 -noout -subject -ext subjectAltName 2>/dev/null || true)
+  printf '%s\n' "$cert" | grep -Eq 'DNS:www\.relicbound\.cn|DNS:relicbound\.cn|CN *= *www\.relicbound\.cn|CN *= *relicbound\.cn' &&
+    ! printf '%s\n' "$cert" | grep -Eq 'CN *= *43\.172\.70\.182'
+}
+
 health_check() {
   [[ "$(curl --fail --silent --show-error --max-time 5 http://127.0.0.1:8080/health/ready)" == Healthy ]] &&
     [[ "$(curl --fail --silent --show-error --max-time 5 \
       --resolve www.relicbound.cn:443:127.0.0.1 \
-      https://www.relicbound.cn/health/ready)" == Healthy ]]
+      https://www.relicbound.cn/health/ready)" == Healthy ]] &&
+    domain_certificate_ok
 }
 
 if [[ "$(id -un)" != ubuntu ]]; then
@@ -179,4 +190,7 @@ for attempt in {1..24}; do
 done
 
 echo '新版本未通过健康检查；数据库备份与原部署目录均已保留，请先排查，勿清库。' >&2
+echo 'www.relicbound.cn certificate:' >&2
+echo | openssl s_client -connect 127.0.0.1:443 -servername www.relicbound.cn 2>/dev/null |
+  openssl x509 -noout -subject -issuer -ext subjectAltName >&2 || true
 exit 1

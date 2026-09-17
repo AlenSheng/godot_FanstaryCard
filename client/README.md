@@ -7,7 +7,7 @@
 在仓库根目录双击 `start-client.bat` 即可连接腾讯云测试服：
 
 ```text
-http://43.172.70.182
+https://www.relicbound.cn
 ```
 
 也可直接运行本地客户端引擎：

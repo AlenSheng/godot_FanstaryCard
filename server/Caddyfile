@@ -1,3 +1,6 @@
+# Game clients connect to https://www.relicbound.cn and require a public CA
+# certificate. Do not add a :443 catch-all with the IP self-signed cert; that
+# replaces Let's Encrypt for the domain and Godot rejects the handshake.
 relicbound.cn, www.relicbound.cn {
     @admin path /admin /admin/* /api/admin /api/admin/*
     respond @admin 404
@@ -11,16 +14,9 @@ relicbound.cn, www.relicbound.cn {
     reverse_proxy server:8080
 }
 
-:443 {
-    tls /etc/caddy/certs/ip2.crt /etc/caddy/certs/ip2.key
-    @admin path /admin /admin/* /api/admin /api/admin/*
-    respond @admin 404
-    reverse_proxy server:8080
-}
-
 :20000 {
     tls /etc/caddy/certs/ip2.crt /etc/caddy/certs/ip2.key
-    @admin path /admin /api/admin/*
+    @admin path /admin /admin/* /api/admin /api/admin/*
     handle @admin {
         reverse_proxy server:8080
     }
