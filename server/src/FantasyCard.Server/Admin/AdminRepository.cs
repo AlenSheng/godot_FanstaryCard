@@ -16,7 +16,8 @@ public sealed record AdminBanRequest(Guid PlayerId, string Reason);
 public sealed record AdminMessageRequest(Guid PlayerId, string Title, string Body);
 public sealed record AdminEquipment(Guid InstanceId, string Slot, string Quality, string? Element, int Level);
 
-public sealed class AdminRepository(NpgsqlDataSource dataSource, TimeProvider timeProvider, ConnectionRegistry connections)
+public sealed class AdminRepository(NpgsqlDataSource dataSource, TimeProvider timeProvider, ConnectionRegistry connections,
+    RealtimeEventStore eventStore)
 {
     private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web);
     private static readonly Dictionary<string, (string Table, string Column)> Balances = new(StringComparer.Ordinal)
@@ -132,7 +133,13 @@ public sealed class AdminRepository(NpgsqlDataSource dataSource, TimeProvider ti
         }
         await AuditAsync(connection, transaction, reason is null ? "unban" : "ban", playerId, new { reason }, requestId, cancellationToken);
         await transaction.CommitAsync(cancellationToken);
-        if (reason is not null) connections.Disconnect(playerId);
+        if (reason is not null)
+        {
+            var message = eventStore.Create(playerId, "session.replaced", "admin-ban",
+                new SessionReplacedEventPayload("账号已被封禁：" + reason));
+            await connections.SendPresentationAsync(playerId, message);
+            connections.Disconnect(playerId);
+        }
         return true;
     }
 

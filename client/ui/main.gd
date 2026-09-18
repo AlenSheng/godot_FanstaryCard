@@ -69,6 +69,7 @@ func _ready() -> void:
 	_session_generation = Game.gateway.session_generation
 	Game.changed.connect(_schedule_render)
 	Game.notice.connect(_toast)
+	Game.authentication_required.connect(_show_ban_dialog)
 	Game.combat_feedback.connect(_feedback)
 	_build_shell()
 	var audio_settings := AudioSettings.new()
@@ -1109,6 +1110,16 @@ func _settlement() -> void:
 func _toast(message: String) -> void:
 	if is_instance_valid(tips_overlay):
 		tips_overlay.show_tip(message)
+
+func _show_ban_dialog(reason: String) -> void:
+	if not reason.begins_with("账号已被封禁"): return
+	var dialog := AcceptDialog.new()
+	dialog.title = "账号已被封禁"
+	dialog.dialog_text = reason
+	dialog.confirmed.connect(dialog.queue_free)
+	dialog.canceled.connect(dialog.queue_free)
+	add_child(dialog)
+	dialog.popup_centered(Vector2i(700, 360))
 
 func _health_bar(parent: Node, combat: Dictionary) -> void:
 	var bar := BoundedBar.new()

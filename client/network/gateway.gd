@@ -339,7 +339,7 @@ func _receive(packet: PackedByteArray) -> void:
 		else: last_sequence = sequence
 		return
 	if kind == "session.replaced":
-		end_session("账号已在其他窗口连接，请在此窗口重新登录后继续")
+		end_session(str(payload.get("reason", "账号已在其他窗口连接，请在此窗口重新登录后继续")))
 		return
 	if sequence <= last_sequence: return
 	if sequence > last_sequence + 1 and kind not in ["session.snapshot", "room.snapshot"]:

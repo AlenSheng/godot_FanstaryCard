@@ -15,6 +15,7 @@ var platform: Node
 var authentication_reason := ""
 var configuration_error := ""
 var server_info: Dictionary = {}
+var _server_info_address := ""
 var _client_info_socket := WebSocketPeer.new()
 var _client_info_retry_at := 0
 var _mail_refresh_at := 0
@@ -155,12 +156,12 @@ func _login(address: String, display_name: String, steam_login: bool) -> void:
 	_clear_authenticated_state()
 	authentication_reason = ""
 	configuration_error = ""
-	server_info = {}
 	gateway.begin_sign_in(address)
 	var generation: int = gateway.session_generation
 	busy = true
 	changed.emit()
-	if await _refresh_server_info():
+	var has_current_server_info: bool = not server_info.is_empty() and _server_info_address == gateway.base_url
+	if (has_current_server_info and validate_config(str(server_info.get("configVersion", "")), "服务器")) or await _refresh_server_info():
 		var capability := "identity.steam" if steam_login else "identity.local"
 		if capability not in server_info.get("capabilities", []):
 			authentication_reason = "此服务器未启用 Steam 登录" if steam_login else "此服务器未启用本地开发登录"
@@ -201,6 +202,7 @@ func _refresh_server_info() -> bool:
 	var response: Dictionary = await gateway.request("/api/v1/client-info")
 	if not response.ok or not response.data is Dictionary: return false
 	_apply_server_info(response.data)
+	_server_info_address = gateway.base_url
 	return validate_config(str(server_info.get("configVersion", "")), "服务器")
 
 func validate_config(version: String, source: String) -> bool:
