@@ -28,6 +28,10 @@ public static class AdminEndpoints
         admin.MapPost("/revoke", RevokeAsync);
         admin.MapPost("/ban", BanAsync);
         admin.MapPost("/unban", UnbanAsync);
+        admin.MapPost("/players/unlock-all-cards", UnlockAllCardsAsync);
+        admin.MapPost("/players/max-all-cards", MaxAllCardsAsync);
+        admin.MapPost("/players/grant-all-equipment", GrantAllEquipmentAsync);
+        admin.MapPost("/players/max-existing-equipment", MaxExistingEquipmentAsync);
         admin.MapGet("/client-settings", GetClientSettingsAsync);
         admin.MapPut("/client-settings", UpdateClientSettingsAsync);
         return endpoints;
@@ -133,6 +137,36 @@ public static class AdminEndpoints
     private static Task<IResult> UnbanAsync(AdminBanRequest request, HttpContext context,
         AdminRepository repository, CancellationToken cancellationToken) =>
         SetBanAsync(request.PlayerId, null, context, repository, cancellationToken);
+
+    private static Task<IResult> UnlockAllCardsAsync(AdminBulkOperationRequest request, HttpContext context,
+        AdminRepository repository, CancellationToken cancellationToken) =>
+        RunBulkOperationAsync(request, context, repository.UnlockAllCardsAsync, cancellationToken);
+
+    private static Task<IResult> MaxAllCardsAsync(AdminBulkOperationRequest request, HttpContext context,
+        AdminRepository repository, CancellationToken cancellationToken) =>
+        RunBulkOperationAsync(request, context, repository.MaxAllCardsAsync, cancellationToken);
+
+    private static Task<IResult> GrantAllEquipmentAsync(AdminBulkOperationRequest request, HttpContext context,
+        AdminRepository repository, CancellationToken cancellationToken) =>
+        RunBulkOperationAsync(request, context, repository.GrantAllEquipmentAsync, cancellationToken);
+
+    private static Task<IResult> MaxExistingEquipmentAsync(AdminBulkOperationRequest request, HttpContext context,
+        AdminRepository repository, CancellationToken cancellationToken) =>
+        RunBulkOperationAsync(request, context, repository.MaxExistingEquipmentAsync, cancellationToken);
+
+    private static async Task<IResult> RunBulkOperationAsync(AdminBulkOperationRequest request, HttpContext context,
+        Func<Guid, string, CancellationToken, Task<AdminBulkOperationResult?>> operation, CancellationToken cancellationToken)
+    {
+        if (request.PlayerId == Guid.Empty) return BadRequest("A player must be selected.");
+        var id = IdempotencyKeys.Read(context);
+        if (id is null) return IdempotencyKeys.InvalidProblem(context);
+        try
+        {
+            var result = await operation(request.PlayerId, id, cancellationToken);
+            return result is null ? Results.NotFound() : Results.Ok(result);
+        }
+        catch (AdminConflictException exception) { return Conflict(exception); }
+    }
 
     private static async Task<IResult> SetBanAsync(Guid playerId, string? reason, HttpContext context,
         AdminRepository repository, CancellationToken cancellationToken)

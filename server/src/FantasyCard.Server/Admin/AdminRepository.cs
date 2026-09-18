@@ -1,4 +1,5 @@
 using System.Text.Json;
+using FantasyCard.Domain.Configuration;
 using Npgsql;
 using FantasyCard.Contracts.Realtime;
 using FantasyCard.Server.Realtime;
@@ -16,6 +17,8 @@ public sealed record AdminRevokeRequest(Guid PlayerId, string Kind, long Amount,
 public sealed record AdminBanRequest(Guid PlayerId, string Reason);
 public sealed record AdminMessageRequest(Guid PlayerId, string Title, string Body);
 public sealed record AdminEquipment(Guid InstanceId, string Slot, string Quality, string? Element, int Level);
+public sealed record AdminBulkOperationRequest(Guid PlayerId);
+public sealed record AdminBulkOperationResult(string Operation, int Cards = 0, int Equipment = 0, int Weapons = 0);
 
 public sealed class AdminRepository(NpgsqlDataSource dataSource, TimeProvider timeProvider, ConnectionRegistry connections,
     RealtimeEventStore eventStore)
@@ -33,6 +36,11 @@ public sealed class AdminRepository(NpgsqlDataSource dataSource, TimeProvider ti
         ["AdvancedBag"] = ("player_consumables", "advanced_bag_count"),
         ["TopBag"] = ("player_consumables", "top_bag_count")
     };
+    private static readonly (string Quality, string Element, string Slot)[] AllEquipmentSpecifications =
+        [.. from quality in new[] { "White", "Green", "Blue", "Purple", "Orange", "Red" }
+            from element in new[] { "Fire", "Water", "Wood", "Earth", "Metal" }
+            from slot in new[] { "Head", "Chest", "Hands", "Legs", "Feet" }
+            select (quality, element, slot)];
 
     public static bool ValidGrant(AdminAttachment item)
     {
@@ -204,6 +212,96 @@ public sealed class AdminRepository(NpgsqlDataSource dataSource, TimeProvider ti
         await AuditAsync(connection, transaction, "revoke", request.PlayerId, request, requestId, cancellationToken);
         await transaction.CommitAsync(cancellationToken);
         return true;
+    }
+
+    public Task<AdminBulkOperationResult?> UnlockAllCardsAsync(Guid playerId, string requestId,
+        CancellationToken cancellationToken) =>
+        RunBulkOperationAsync(playerId, requestId, "unlock_all_cards", async (connection, transaction) =>
+        {
+            var changed = 0;
+            foreach (var card in GameConfigCatalog.Current.Cards.Where(card => card.IsCodex))
+            {
+                await using var command = new NpgsqlCommand(
+                    """
+                    INSERT INTO player_cards(player_id,card_id,hero_class,rarity,is_monster,unlocked,copy_count,level,version)
+                    VALUES($1,$2,$3,$4,false,true,1,0,1)
+                    ON CONFLICT(player_id,card_id) DO UPDATE SET unlocked=true,copy_count=GREATEST(player_cards.copy_count,1),
+                        version=player_cards.version+1
+                    WHERE player_cards.unlocked=false OR player_cards.copy_count<1
+                    """, connection, transaction);
+                command.Parameters.AddWithValue(playerId);
+                command.Parameters.AddWithValue(card.CardId);
+                command.Parameters.AddWithValue(card.HeroClass is { } heroClass ? (object)(short)heroClass : DBNull.Value);
+                command.Parameters.AddWithValue(card.Rarity);
+                changed += await command.ExecuteNonQueryAsync(cancellationToken);
+            }
+            return new AdminBulkOperationResult("unlock_all_cards", Cards: changed);
+        }, cancellationToken);
+
+    public Task<AdminBulkOperationResult?> MaxAllCardsAsync(Guid playerId, string requestId,
+        CancellationToken cancellationToken) =>
+        RunBulkOperationAsync(playerId, requestId, "max_all_cards", async (connection, transaction) =>
+        {
+            await using var command = new NpgsqlCommand(
+                "UPDATE player_cards SET level=5,version=version+1 WHERE player_id=$1 AND unlocked=true AND copy_count>0 AND level<5",
+                connection, transaction);
+            command.Parameters.AddWithValue(playerId);
+            return new AdminBulkOperationResult("max_all_cards", Cards: await command.ExecuteNonQueryAsync(cancellationToken));
+        }, cancellationToken);
+
+    public Task<AdminBulkOperationResult?> GrantAllEquipmentAsync(Guid playerId, string requestId,
+        CancellationToken cancellationToken) =>
+        RunBulkOperationAsync(playerId, requestId, "grant_all_equipment", async (connection, transaction) =>
+        {
+            var granted = 0;
+            foreach (var specification in AllEquipmentSpecifications)
+            {
+                await using var command = new NpgsqlCommand(
+                    """
+                    INSERT INTO equipments(instance_id,owner_id,slot,quality,level,is_bound,location,version,created_at,element,effect_affix,secondary_trait)
+                    SELECT $1,$2,$3,$4,0,false,'Inventory',1,$5,$6,NULL,NULL
+                    WHERE NOT EXISTS (
+                        SELECT 1 FROM equipments WHERE owner_id=$2 AND slot=$3 AND quality=$4 AND element=$6
+                            AND location IN ('Inventory','Equipped'))
+                    """, connection, transaction);
+                command.Parameters.AddWithValue(Guid.CreateVersion7());
+                command.Parameters.AddWithValue(playerId);
+                command.Parameters.AddWithValue(specification.Slot);
+                command.Parameters.AddWithValue(specification.Quality);
+                command.Parameters.AddWithValue(timeProvider.GetUtcNow());
+                command.Parameters.AddWithValue(specification.Element);
+                granted += await command.ExecuteNonQueryAsync(cancellationToken);
+            }
+            return new AdminBulkOperationResult("grant_all_equipment", Equipment: granted);
+        }, cancellationToken);
+
+    public Task<AdminBulkOperationResult?> MaxExistingEquipmentAsync(Guid playerId, string requestId,
+        CancellationToken cancellationToken) =>
+        RunBulkOperationAsync(playerId, requestId, "max_existing_equipment", async (connection, transaction) =>
+        {
+            await using var equipment = new NpgsqlCommand(
+                "UPDATE equipments SET level=5,version=version+1 WHERE owner_id=$1 AND location IN ('Inventory','Equipped') AND level<5",
+                connection, transaction);
+            equipment.Parameters.AddWithValue(playerId);
+            var equipmentCount = await equipment.ExecuteNonQueryAsync(cancellationToken);
+            await using var weapon = new NpgsqlCommand(
+                "UPDATE class_weapons SET level=5,version=version+1 WHERE player_id=$1 AND level<5", connection, transaction);
+            weapon.Parameters.AddWithValue(playerId);
+            return new AdminBulkOperationResult("max_existing_equipment", Equipment: equipmentCount,
+                Weapons: await weapon.ExecuteNonQueryAsync(cancellationToken));
+        }, cancellationToken);
+
+    private async Task<AdminBulkOperationResult?> RunBulkOperationAsync(Guid playerId, string requestId, string action,
+        Func<NpgsqlConnection, NpgsqlTransaction, Task<AdminBulkOperationResult>> operation, CancellationToken cancellationToken)
+    {
+        await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
+        await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
+        if (!await LockPlayerAsync(connection, transaction, playerId, cancellationToken)) return null;
+        if (await RequestExistsAsync(connection, transaction, requestId, cancellationToken)) throw new AdminConflictException();
+        var result = await operation(connection, transaction);
+        await AuditAsync(connection, transaction, action, playerId, result, requestId, cancellationToken);
+        await transaction.CommitAsync(cancellationToken);
+        return result;
     }
 
     private async Task<Guid> InsertMailAsync(NpgsqlConnection connection, NpgsqlTransaction transaction, Guid playerId,
