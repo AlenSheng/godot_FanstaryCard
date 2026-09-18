@@ -33,12 +33,11 @@ public sealed class CaddyfileTests
         Assert.Contains("ASPNETCORE_ENVIRONMENT: Production", compose, StringComparison.Ordinal);
         Assert.Contains("Identity__EnableLocalAuth: \"false\"", compose, StringComparison.Ordinal);
         Assert.Contains("FANTASYCARD_ADMIN_KEY:?", compose, StringComparison.Ordinal);
-        Assert.Contains("\"127.0.0.1:20000:20000\"", compose, StringComparison.Ordinal);
+        Assert.Contains("\"20000:20000\"", compose, StringComparison.Ordinal);
+        Assert.Contains("/opt/fantasycard-app/certs:/etc/caddy/certs:ro", compose, StringComparison.Ordinal);
         Assert.Contains("read_only: true", compose, StringComparison.Ordinal);
         Assert.Contains("no-new-privileges:true", compose, StringComparison.Ordinal);
         Assert.DoesNotContain("ASPNETCORE_ENVIRONMENT: Development", compose, StringComparison.Ordinal);
-        Assert.DoesNotContain("\"20000:20000\"", compose.Replace(
-            "\"127.0.0.1:20000:20000\"", "", StringComparison.Ordinal), StringComparison.Ordinal);
     }
 
     [Fact]

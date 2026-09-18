@@ -27,8 +27,9 @@ relicbound.cn, www.relicbound.cn {
     respond 404
 }
 
-# compose.cloud.yaml binds this listener to host loopback only. Administrators
-# must use an authenticated SSH tunnel; the API still requires X-Admin-Key.
+# The host exposes this listener for the separate management console. Access
+# still requires HTTPS and X-Admin-Key; restrict TCP 20000 in the cloud security
+# group to administrator IPs.
 :20000 {
     import security_headers
     tls /etc/caddy/certs/ip2.crt /etc/caddy/certs/ip2.key

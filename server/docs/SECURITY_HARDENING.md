@@ -15,11 +15,9 @@ is missing or too short. Production explicitly disables local authentication.
 
 The player API is served only through `https://relicbound.cn` and
 `https://www.relicbound.cn`. Requests sent to the origin IP receive 404.
-Port 20000 is bound to host loopback and must be accessed with an SSH tunnel:
-
-```bash
-ssh -L 20000:127.0.0.1:20000 ubuntu@43.172.70.182
-```
+Port 20000 exposes the separate HTTPS management console. Restrict inbound TCP
+20000 to administrator IPs in the cloud security group; the endpoint also
+requires the administrator API key.
 
 The administrator API still requires `X-Admin-Key` over the TLS tunnel.
 
@@ -64,7 +62,7 @@ Then verify:
 - the root path returns 404;
 - the domain certificate is publicly trusted;
 - the origin IP returns 404 and never proxies the player API;
-- port 20000 is unreachable remotely and reachable only through the SSH tunnel;
+- port 20000 is reachable only from the administrator IP ranges configured in the cloud security group;
 - local authentication is rejected in Production;
 - the runtime image contains no PDB, XML documentation, source, key or mapping
   files.

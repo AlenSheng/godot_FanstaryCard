@@ -59,12 +59,12 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      - "127.0.0.1:20000:20000"
+      - "20000:20000"
     volumes:
       - caddy-data:/data
       - caddy-config:/config
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - ./certs:/etc/caddy/certs:ro
+      - /opt/fantasycard-app/certs:/etc/caddy/certs:ro
     depends_on:
       server:
         condition: service_started
