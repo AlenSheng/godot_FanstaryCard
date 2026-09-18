@@ -325,7 +325,10 @@ func _login() -> void:
 	var announcement: Dictionary = Game.server_info.get("announcement", {})
 	var title := str(announcement.get("title", "")).strip_edges()
 	var body := str(announcement.get("body", "")).strip_edges()
-	_label(about, title if not title.is_empty() else "版本公告", 34, P.GOLD)
+	var announcement_title := _label(about, title if not title.is_empty() else "版本公告", 34, P.GOLD)
+	announcement_title.custom_minimum_size.y = 58
+	announcement_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	announcement_title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	var announcement_scroll := ScrollContainer.new()
 	announcement_scroll.custom_minimum_size.y = 230
 	announcement_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL

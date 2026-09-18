@@ -17,6 +17,7 @@ var configuration_error := ""
 var server_info: Dictionary = {}
 var _client_info_socket := WebSocketPeer.new()
 var _client_info_retry_at := 0
+var _mail_refresh_at := 0
 var relic_details: Dictionary = {}
 var combat_preview: Dictionary = {}
 var _preview_request: Dictionary = {}
@@ -44,9 +45,15 @@ var _sound_terminal_rooms: Dictionary = {}
 
 func _process(_delta: float) -> void:
 	_process_client_info()
+	_refresh_mail_if_due()
 	if not _queued_command.is_empty() and Time.get_ticks_msec() > _queue_deadline:
 		_queued_command = {}
 		notice.emit("操作未发出，请在连接恢复后重试")
+
+func _refresh_mail_if_due() -> void:
+	if gateway.token.is_empty() or Time.get_ticks_msec() < _mail_refresh_at: return
+	_mail_refresh_at = Time.get_ticks_msec() + 10000
+	refresh_mail()
 
 func _ready() -> void:
 	gateway = Gateway.new()
@@ -93,6 +100,7 @@ func _clear_authenticated_state() -> void:
 	ticket = {}
 	ready_prompt = {}
 	mail = {"items": [], "unreadCount": 0}
+	_mail_refresh_at = 0
 	settlement = {}
 	hero_class = "Mage"
 	selected_cards = []

@@ -142,7 +142,7 @@ public static class AdminEndpoints
         try
         {
             var applied = await repository.SetBanAsync(playerId, reason, id, cancellationToken);
-            return applied is null ? Results.NotFound() : Results.Ok(new { applied });
+            return applied is null ? Results.NotFound() : Results.Ok(new { applied, banned = reason is not null });
         }
         catch (AdminConflictException exception) { return Conflict(exception); }
     }
