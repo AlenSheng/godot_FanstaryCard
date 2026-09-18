@@ -18,7 +18,6 @@ var server_info: Dictionary = {}
 var _server_info_address := ""
 var _client_info_socket := WebSocketPeer.new()
 var _client_info_retry_at := 0
-var _mail_refresh_at := 0
 var relic_details: Dictionary = {}
 var combat_preview: Dictionary = {}
 var _preview_request: Dictionary = {}
@@ -46,15 +45,9 @@ var _sound_terminal_rooms: Dictionary = {}
 
 func _process(_delta: float) -> void:
 	_process_client_info()
-	_refresh_mail_if_due()
 	if not _queued_command.is_empty() and Time.get_ticks_msec() > _queue_deadline:
 		_queued_command = {}
 		notice.emit("操作未发出，请在连接恢复后重试")
-
-func _refresh_mail_if_due() -> void:
-	if gateway.token.is_empty() or Time.get_ticks_msec() < _mail_refresh_at: return
-	_mail_refresh_at = Time.get_ticks_msec() + 10000
-	refresh_mail()
 
 func _ready() -> void:
 	gateway = Gateway.new()
@@ -101,7 +94,6 @@ func _clear_authenticated_state() -> void:
 	ticket = {}
 	ready_prompt = {}
 	mail = {"items": [], "unreadCount": 0}
-	_mail_refresh_at = 0
 	settlement = {}
 	hero_class = "Mage"
 	selected_cards = []
@@ -262,14 +254,42 @@ func mark_mail_read(id: String, rerender: bool = true) -> void:
 func claim_mail(id: String) -> void:
 	var result: Dictionary = await gateway.request("/api/v1/mail/%s/claim" % id.uri_encode(), HTTPClient.METHOD_POST, {})
 	if result.ok:
+		_apply_claimed_mail(id, result.data.get("granted", []) if result.data is Dictionary else [])
 		notice.emit("邮件附件已领取")
-		await refresh_lobby()
+		refresh_lobby()
 
 func claim_all_mail() -> void:
 	var result: Dictionary = await gateway.request("/api/v1/mail/claim-all", HTTPClient.METHOD_POST, {})
 	if result.ok:
+		for item in mail.get("items", []):
+			if item is Dictionary and not bool(item.get("claimed", false)):
+				_apply_claimed_mail(str(item.get("id", item.get("mailId", ""))), item.get("attachments", []))
 		notice.emit("邮件附件已全部领取")
-		await refresh_lobby()
+		refresh_lobby()
+
+func _apply_claimed_mail(id: String, granted: Array) -> void:
+	for index in range(mail.get("items", []).size()):
+		var item: Dictionary = mail.items[index]
+		if str(item.get("id", item.get("mailId", ""))) != id: continue
+		if not bool(item.get("read", false)): mail.unreadCount = maxi(0, int(mail.get("unreadCount", 0)) - 1)
+		item["read"] = true
+		item["claimed"] = true
+		mail.items[index] = item
+		break
+	var wallet: Dictionary = lobby.get("wallet", {}).duplicate()
+	var materials: Dictionary = lobby.get("materials", {}).duplicate()
+	for raw in granted:
+		var attachment: Dictionary = raw if raw is Dictionary else {}
+		var kind := str(attachment.get("kind", ""))
+		var amount := int(attachment.get("amount", 0))
+		if kind == "Gold": wallet["gold"] = int(wallet.get("gold", 0)) + amount
+		elif kind == "Diamond": wallet["diamond"] = int(wallet.get("diamond", 0)) + amount
+		elif kind in ["WarriorSoul", "PriestSoul", "MageSoul", "GuardianSoul", "EquipmentFragments"]:
+			var key := kind.left(1).to_lower() + kind.substr(1)
+			materials[key] = int(materials.get(key, 0)) + amount
+	lobby["wallet"] = wallet
+	lobby["materials"] = materials
+	changed.emit()
 
 func mark_all_mail_read() -> void:
 	var result: Dictionary = await gateway.request("/api/v1/mail/read-all", HTTPClient.METHOD_POST, {})
