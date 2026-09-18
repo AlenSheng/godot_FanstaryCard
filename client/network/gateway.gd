@@ -7,6 +7,8 @@ signal authentication_required(reason: String)
 
 const Proto = preload("res://network/protobuf.gd")
 const DEFAULT_LOCAL_BASE_URL := "http://127.0.0.1:5080"
+const PRODUCTION_BASE_URL := "https://www.relicbound.cn"
+const LEGACY_CLOUD_ORIGINS := ["http://43.172.70.182", "https://43.172.70.182"]
 const COMMANDS := {
 	"ping": "", "session.resume": "SessionResumeCommand", "room.ready": "RoomReadyCommand",
 	"room.snapshot.read": "RoomSnapshotCommand", "room.move": "RoomMoveCommand",
@@ -82,6 +84,11 @@ func _ready() -> void:
 		if launch_base_url_override.is_empty() and not saved_base_url.is_empty(): base_url = saved_base_url
 		authenticated_user_id = config.get_value("session", "user_id", "")
 		local_account_name = config.get_value("session", "local_account_name", "")
+	if base_url.trim_suffix("/") in LEGACY_CLOUD_ORIGINS:
+		# Cloud hardening deliberately rejects direct origin-IP TLS requests.
+		# Preserve existing players' sessions by moving their remembered address
+		# to the public hostname before the readiness request is made.
+		base_url = PRODUCTION_BASE_URL
 	if not OS.is_debug_build() and launch_base_url_override.is_empty(): base_url = str(ProjectSettings.get_setting("platform/server_url", "")).strip_edges()
 	if device_id.is_empty(): device_id = "godot-" + new_id()
 	_save_session()
