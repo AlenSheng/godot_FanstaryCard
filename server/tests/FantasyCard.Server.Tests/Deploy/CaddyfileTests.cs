@@ -13,13 +13,32 @@ public sealed class CaddyfileTests
             SiteMatches(site.Address, "www.relicbound.cn") || SiteMatches(site.Address, "relicbound.cn"));
         Assert.DoesNotContain("tls /etc/caddy/certs/", domain.Body, StringComparison.Ordinal);
         Assert.Contains("reverse_proxy server:8080", domain.Body, StringComparison.Ordinal);
+        Assert.Contains("Strict-Transport-Security", domain.Body, StringComparison.Ordinal);
 
         var ip = Assert.Single(sites, site => SiteMatches(site.Address, "43.172.70.182"));
         Assert.Contains("tls /etc/caddy/certs/ip2.crt", ip.Body, StringComparison.Ordinal);
+        Assert.Contains("respond 404", ip.Body, StringComparison.Ordinal);
+        Assert.DoesNotContain("reverse_proxy", ip.Body, StringComparison.Ordinal);
 
         var admin = Assert.Single(sites, site => SiteMatches(site.Address, ":20000"));
         Assert.Contains("tls /etc/caddy/certs/ip2.crt", admin.Body, StringComparison.Ordinal);
         Assert.Contains("reverse_proxy server:8080", admin.Body, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Cloud_compose_must_fail_closed_in_production()
+    {
+        var compose = File.ReadAllText(FindServerFile("compose.cloud.yaml"));
+
+        Assert.Contains("ASPNETCORE_ENVIRONMENT: Production", compose, StringComparison.Ordinal);
+        Assert.Contains("Identity__EnableLocalAuth: \"false\"", compose, StringComparison.Ordinal);
+        Assert.Contains("FANTASYCARD_ADMIN_KEY:?", compose, StringComparison.Ordinal);
+        Assert.Contains("\"127.0.0.1:20000:20000\"", compose, StringComparison.Ordinal);
+        Assert.Contains("read_only: true", compose, StringComparison.Ordinal);
+        Assert.Contains("no-new-privileges:true", compose, StringComparison.Ordinal);
+        Assert.DoesNotContain("ASPNETCORE_ENVIRONMENT: Development", compose, StringComparison.Ordinal);
+        Assert.DoesNotContain("\"20000:20000\"", compose.Replace(
+            "\"127.0.0.1:20000:20000\"", "", StringComparison.Ordinal), StringComparison.Ordinal);
     }
 
     [Fact]

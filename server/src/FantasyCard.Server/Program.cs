@@ -23,7 +23,10 @@ var requestLimitDefaults = builder.Configuration
     .GetSection(RequestLimitOptions.SectionName)
     .Get<RequestLimitOptions>() ?? new RequestLimitOptions();
 builder.WebHost.ConfigureKestrel(options =>
-    options.Limits.MaxRequestBodySize = requestLimitDefaults.RestMaximumBodyBytes);
+{
+    options.AddServerHeader = false;
+    options.Limits.MaxRequestBodySize = requestLimitDefaults.RestMaximumBodyBytes;
+});
 
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
@@ -90,57 +93,24 @@ builder.Services
     });
 
 var app = builder.Build();
-var capabilities = new List<string>
+if (app.Environment.IsProduction())
 {
-    "players.profile",
-    "bootstrap",
-    "cards.read",
-    "decks.read_write",
-    "inventory.read",
-    "loadouts.read",
-    "loadouts.write",
-    "equipment.enhance",
-    "shop.gold_only",
-    "shop.daily_cards",
-    "market.gold_only",
-    "economy.reconciliation_monitor",
-    "security.layered_rate_limits",
-    "observability.otlp_metrics",
-    "identity.expired_session_cleanup",
-    "matchmaking.chaos_realm",
-    "matchmaking.ready_15s_bot_fill",
-    "preparations.create_read_cancel",
-    "realtime.ping_resume",
-    "rooms.actor",
-    "rooms.snapshot_persistence",
-    "rooms.recovery",
-    "rooms.persistence_readiness",
-    "rooms.player_projection",
-    "bots.room_runtime",
-    "battle.play_cards",
-    "battle.pve_pvp_snapshots",
-    "relic.read_take",
-    "action.extract_readbar",
-    "action.spring_readbar",
-    "action.potion_instant",
-    "reward.choice",
-    "choice.refresh",
-    "choice.pick",
-    "settlement.idempotent_holds"
-    ,"mail.inbox_claims"
-    ,"mail.inbox_manage"
-};
-if (LocalAuthPolicy.IsEnabled(
-    app.Environment.EnvironmentName,
-    app.Configuration.GetValue<bool>("Identity:EnableLocalAuth")))
-{
-    capabilities.Insert(0, "identity.local");
-}
-if (app.Configuration.GetValue<bool>("Identity:Steam:Enabled"))
-{
-    capabilities.Insert(0, "identity.steam");
+    if (app.Configuration.GetValue<bool>("Identity:EnableLocalAuth"))
+        throw new InvalidOperationException("Local authentication must be disabled in Production.");
+    if ((app.Configuration["Admin:ApiKey"]?.Length ?? 0) < 32)
+        throw new InvalidOperationException("Admin:ApiKey must contain at least 32 characters in Production.");
 }
 
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.CacheControl = "no-store";
+    context.Response.Headers["X-Content-Type-Options"] = "nosniff";
+    context.Response.Headers["X-Frame-Options"] = "DENY";
+    context.Response.Headers["Referrer-Policy"] = "no-referrer";
+    context.Response.Headers["Permissions-Policy"] =
+        "camera=(), microphone=(), geolocation=(), payment=(), usb=()";
+    await next(context);
+});
 app.UseExceptionHandler();
 app.UseMiddleware<RequestTraceMiddleware>();
 app.UseRateLimiter();
@@ -149,17 +119,7 @@ app.UseWebSockets(new WebSocketOptions
     KeepAliveInterval = TimeSpan.FromSeconds(30)
 });
 
-app.MapGet("/", () => Results.Ok(new
-{
-    service = "FantasyCard.Server",
-    version = typeof(Program).Assembly
-        .GetCustomAttributes(typeof(System.Reflection.AssemblyInformationalVersionAttribute), false)
-        .OfType<System.Reflection.AssemblyInformationalVersionAttribute>()
-        .SingleOrDefault()?.InformationalVersion ?? "unknown",
-    configVersion = BootstrapRepository.CurrentConfigVersion,
-    milestone = "S0/S1 complete; S2-S9 vertical slices available; room recovery, player snapshots, bot runtime, rate limits, and economy reconciliation",
-    capabilities
-}));
+app.MapGet("/", () => Results.NotFound());
 app.MapHealthChecks("/health/live", new() { Predicate = _ => false });
 app.MapHealthChecks("/health/ready", new() { Predicate = check => check.Tags.Contains("ready") });
 app.MapIdentityEndpoints();
