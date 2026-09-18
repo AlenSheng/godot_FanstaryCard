@@ -530,11 +530,15 @@ func _mail_action(action: Callable) -> void:
 	await action.call()
 	var modal := get_node_or_null("MailModal")
 	if modal != null:
+		_refresh_mail_claimed_resources()
 		_update_mail_row_states(modal)
 		_refresh_mail_detail(modal)
-	else:
-		_mail()
 	host.mail_modal_lock = false
+
+func _refresh_mail_claimed_resources() -> void:
+	var wallet_label := get_node_or_null("WalletGold") as Label
+	if wallet_label != null:
+		wallet_label.text = "%s %s" % [P.localized_text("金币"), Game.lobby.get("wallet", {}).get("gold", 0)]
 
 func _mail_attachment_texture(attachment: Dictionary) -> Texture2D:
 	var kind := _mail_attachment_kind(attachment)
