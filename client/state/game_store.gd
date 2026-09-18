@@ -68,7 +68,7 @@ func _process_client_info() -> void:
 				_apply_server_info(message)
 	elif _client_info_socket.get_ready_state() == WebSocketPeer.STATE_CLOSED and Time.get_ticks_msec() >= _client_info_retry_at:
 		_client_info_retry_at = Time.get_ticks_msec() + 5000
-		var url := gateway.base_url.replace("https://", "wss://").replace("http://", "ws://")
+		var url: String = gateway.base_url.replace("https://", "wss://").replace("http://", "ws://")
 		_client_info_socket = WebSocketPeer.new()
 		_client_info_socket.connect_to_url(url + "/ws/v1/client-info")
 
