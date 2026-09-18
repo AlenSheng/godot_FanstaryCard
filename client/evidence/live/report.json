@@ -58,11 +58,11 @@
 		},
 		{
 			"name": "real combo resolved",
-			"passed": true
+			"passed": false
 		},
 		{
 			"name": "disconnect and snapshot recovery",
-			"passed": true
+			"passed": false
 		},
 		{
 			"name": "authoritative settlement received",
@@ -73,91 +73,185 @@
 			"passed": true
 		}
 	],
-	"elapsed_ms": 240651,
+	"elapsed_ms": 202832,
 	"errors": [
+		"Room revision conflict. Expected 22, current 35.",
+		"Room revision conflict. Expected 40, current 44.",
+		"Room revision conflict. Expected 50, current 53.",
+		"Room revision conflict. Expected 52, current 58.",
+		"Room revision conflict. Expected 59, current 67.",
+		"Room revision conflict. Expected 66, current 72.",
+		"Room revision conflict. Expected 72, current 79.",
+		"Room revision conflict. Expected 79, current 87.",
+		"Room revision conflict. Expected 87, current 95.",
+		"Room revision conflict. Expected 93, current 100.",
+		"Room revision conflict. Expected 104, current 108.",
+		"Room revision conflict. Expected 110, current 117.",
+		"Room revision conflict. Expected 117, current 126.",
+		"Room revision conflict. Expected 128, current 134.",
+		"Room revision conflict. Expected 134, current 141.",
+		"Room revision conflict. Expected 141, current 149.",
+		"Room revision conflict. Expected 147, current 154.",
+		"Room revision conflict. Expected 157, current 162.",
+		"Room revision conflict. Expected 166, current 171.",
+		"Room revision conflict. Expected 171, current 178.",
+		"Room revision conflict. Expected 183, current 190.",
+		"Room revision conflict. Expected 186, current 193.",
+		"Room revision conflict. Expected 195, current 202.",
+		"Room revision conflict. Expected 210, current 216.",
+		"Room revision conflict. Expected 217, current 223.",
+		"Room revision conflict. Expected 223, current 228.",
+		"Room revision conflict. Expected 228, current 234.",
+		"Room revision conflict. Expected 234, current 242.",
+		"Room revision conflict. Expected 246, current 252.",
+		"Room revision conflict. Expected 258, current 261.",
+		"Room revision conflict. Expected 259, current 266.",
+		"Room revision conflict. Expected 267, current 275.",
+		"Room revision conflict. Expected 276, current 281.",
+		"Room revision conflict. Expected 280, current 288.",
+		"Room revision conflict. Expected 286, current 298.",
+		"Room revision conflict. Expected 294, current 301.",
+		"Room revision conflict. Expected 298, current 308.",
+		"Room revision conflict. Expected 300, current 324.",
+		"Room revision conflict. Expected 335, current 344.",
+		"Room revision conflict. Expected 346, current 350.",
+		"Room revision conflict. Expected 350, current 359.",
+		"Room revision conflict. Expected 357, current 364.",
+		"Room revision conflict. Expected 363, current 372.",
+		"Room revision conflict. Expected 372, current 379.",
+		"Room revision conflict. Expected 384, current 391.",
+		"Room revision conflict. Expected 388, current 394.",
+		"Room revision conflict. Expected 395, current 402.",
+		"Room revision conflict. Expected 401, current 408.",
+		"Room revision conflict. Expected 410, current 422.",
+		"Room revision conflict. Expected 424, current 428.",
+		"Room revision conflict. Expected 428, current 434.",
+		"Room revision conflict. Expected 437, current 443.",
+		"Room revision conflict. Expected 440, current 450.",
+		"Room revision conflict. Expected 442, current 456.",
+		"Room revision conflict. Expected 462, current 467.",
+		"Room revision conflict. Expected 464, current 479.",
+		"Room revision conflict. Expected 478, current 489.",
+		"Room revision conflict. Expected 489, current 496.",
+		"Room revision conflict. Expected 501, current 506.",
+		"Room revision conflict. Expected 503, current 511.",
+		"Room revision conflict. Expected 510, current 516.",
+		"Room revision conflict. Expected 519, current 524.",
+		"Room revision conflict. Expected 528, current 534.",
+		"Room revision conflict. Expected 533, current 537.",
+		"Room revision conflict. Expected 539, current 546.",
+		"Room revision conflict. Expected 549, current 556.",
+		"Room revision conflict. Expected 556, current 561.",
+		"Room revision conflict. Expected 560, current 566.",
+		"Room revision conflict. Expected 570, current 580.",
+		"Room revision conflict. Expected 581, current 587.",
+		"Room revision conflict. Expected 592, current 596.",
+		"Room revision conflict. Expected 593, current 601.",
+		"Room revision conflict. Expected 600, current 606.",
+		"Room revision conflict. Expected 607, current 616.",
+		"Room revision conflict. Expected 616, current 618.",
+		"Room revision conflict. Expected 618, current 626.",
+		"Room revision conflict. Expected 625, current 634.",
+		"Room revision conflict. Expected 634, current 639.",
+		"Room revision conflict. Expected 639, current 646.",
+		"Room revision conflict. Expected 648, current 666.",
+		"Room revision conflict. Expected 675, current 680.",
+		"Room revision conflict. Expected 677, current 685.",
+		"Room revision conflict. Expected 684, current 691.",
+		"Room revision conflict. Expected 697, current 702.",
+		"Room revision conflict. Expected 701, current 705.",
+		"Room revision conflict. Expected 709, current 716.",
+		"Room revision conflict. Expected 712, current 719.",
+		"Room revision conflict. Expected 721, current 727.",
+		"Room revision conflict. Expected 733, current 739.",
+		"Room revision conflict. Expected 738, current 742.",
+		"Room revision conflict. Expected 744, current 751.",
+		"Room revision conflict. Expected 754, current 761.",
+		"Room revision conflict. Expected 761, current 767.",
+		"Room revision conflict. Expected 766, current 773.",
+		"Room revision conflict. Expected 777, current 783.",
+		"Room revision conflict. Expected 784, current 789.",
+		"Room revision conflict. Expected 793, current 798.",
+		"Room revision conflict. Expected 801, current 806.",
+		"Room revision conflict. Expected 805, current 812.",
+		"Room revision conflict. Expected 810, current 816.",
+		"Room revision conflict. Expected 817, current 823.",
+		"Room revision conflict. Expected 823, current 830.",
+		"Room revision conflict. Expected 830, current 837.",
+		"Room revision conflict. Expected 836, current 842.",
+		"Room revision conflict. Expected 842, current 849.",
+		"Room revision conflict. Expected 849, current 856.",
+		"Room revision conflict. Expected 856, current 863.",
+		"Room revision conflict. Expected 868, current 873.",
+		"Room revision conflict. Expected 873, current 878.",
+		"Room revision conflict. Expected 882, current 889.",
+		"Room revision conflict. Expected 891, current 897.",
+		"Room revision conflict. Expected 893, current 901.",
+		"Room revision conflict. Expected 902, current 908.",
+		"Room revision conflict. Expected 908, current 914.",
+		"Room revision conflict. Expected 920, current 925.",
+		"Room revision conflict. Expected 926, current 932.",
+		"Room revision conflict. Expected 932, current 936.",
+		"Room revision conflict. Expected 936, current 943.",
+		"Room revision conflict. Expected 943, current 951.",
+		"Room revision conflict. Expected 949, current 957.",
+		"Room revision conflict. Expected 957, current 962.",
+		"Room revision conflict. Expected 969, current 972.",
+		"Room revision conflict. Expected 974, current 980.",
+		"Room revision conflict. Expected 980, current 986.",
+		"Room revision conflict. Expected 987, current 998.",
+		"Room revision conflict. Expected 994, current 1002.",
+		"Room revision conflict. Expected 1004, current 1010.",
+		"Room revision conflict. Expected 1017, current 1021.",
+		"Room revision conflict. Expected 1020, current 1027.",
+		"Room revision conflict. Expected 1026, current 1031.",
 		"当前状态已改变，请重新选择操作",
-		"Room revision conflict. Expected 230, current 231.",
-		"当前状态已改变，请重新选择操作",
-		"Room revision conflict. Expected 351, current 352.",
-		"当前状态已改变，请重新选择操作",
-		"当前状态已改变，请重新选择操作",
-		"Room revision conflict. Expected 560, current 561.",
-		"当前状态已改变，请重新选择操作",
-		"Room revision conflict. Expected 592, current 594.",
-		"当前状态已改变，请重新选择操作",
-		"当前状态已改变，请重新选择操作",
-		"Room revision conflict. Expected 754, current 755.",
-		"当前状态已改变，请重新选择操作",
-		"当前状态已改变，请重新选择操作",
-		"当前状态已改变，请重新选择操作",
-		"Room revision conflict. Expected 987, current 988.",
-		"当前状态已改变，请重新选择操作",
-		"Room revision conflict. Expected 1109, current 1110.",
-		"当前状态已改变，请重新选择操作",
-		"Room revision conflict. Expected 1209, current 1210.",
-		"Room revision conflict. Expected 1215, current 1216.",
-		"当前状态已改变，请重新选择操作",
-		"Room revision conflict. Expected 1322, current 1323.",
-		"当前状态已改变，请重新选择操作",
-		"当前状态已改变，请重新选择操作",
-		"当前状态已改变，请重新选择操作",
-		"当前状态已改变，请重新选择操作",
-		"Room revision conflict. Expected 1548, current 1549.",
-		"Room revision conflict. Expected 1554, current 1555.",
-		"当前状态已改变，请重新选择操作",
-		"Room revision conflict. Expected 1639, current 1640.",
-		"Room revision conflict. Expected 1645, current 1646.",
-		"Room revision conflict. Expected 1651, current 1652.",
-		"当前状态已改变，请重新选择操作",
-		"当前状态已改变，请重新选择操作",
-		"Room revision conflict. Expected 1866, current 1867.",
-		"Room revision conflict. Expected 1872, current 1873.",
-		"Room revision conflict. Expected 1878, current 1879.",
-		"当前状态已改变，请重新选择操作",
+		"The player is not assigned to an active room.",
+		"The player is not assigned to an active room.",
 		"The player is not assigned to an active room.",
 		"The player is not assigned to an active room."
 	],
 	"events": {
-		"action.spring_completed": 1,
-		"action.spring_started": 1,
-		"battle.combo_resolved": 18,
-		"battle.target_selected": 2,
-		"error.command_rejected": 20,
+		"combat.hit": 24,
+		"error.command_rejected": 134,
 		"match.found": 1,
 		"match.settled": 1,
 		"player.died": 1,
-		"pong": 24,
-		"reward.choice_claimed": 2,
-		"room.moved": 2,
+		"pong": 18,
 		"room.ready_accepted": 1,
 		"room.ready_required": 1,
-		"room.snapshot": 527,
+		"room.snapshot": 473,
 		"room.started": 1,
 		"settlement.ready": 1
 	},
-	"frames": 334,
+	"frames": 124,
 	"last_snapshot": {
+		"_event_revision": 1041,
+		"_replayed": false,
+		"_request_id": "ac1b37c9c0bd0761016ed3ef4f24aae7",
+		"_sequence": 649,
 		"allowed_actions": [],
-		"config_version": "gdd-0.67-shop-rotation-1",
+		"config_version": "gdd-0.68-element-tuning-1",
 		"current_cell": {
 			"has_evacuation": false,
-			"monster_group_id": "O7",
+			"monster_group_id": "O5",
 			"relic_pile_ids": [
-				"01a086c8-1a67-7755-ad83-31374333353a"
+				"01a0ae4e-e9b8-7e5d-94de-d78c2de9609e"
 			],
+			"relic_piles": [],
 			"spring_consumed": false
 		},
 		"legal_moves": [],
 		"map": [
 			{
 				"column": 0,
-				"has_spring": false,
+				"has_spring": true,
 				"is_boss": false,
 				"row": 0
 			},
 			{
 				"column": 1,
-				"has_spring": false,
+				"has_spring": true,
 				"is_boss": false,
 				"row": 0
 			},
@@ -175,7 +269,7 @@
 			},
 			{
 				"column": 4,
-				"has_spring": true,
+				"has_spring": false,
 				"is_boss": false,
 				"row": 0
 			},
@@ -199,7 +293,7 @@
 			},
 			{
 				"column": 2,
-				"has_spring": false,
+				"has_spring": true,
 				"is_boss": false,
 				"row": 1
 			},
@@ -229,7 +323,7 @@
 			},
 			{
 				"column": 1,
-				"has_spring": true,
+				"has_spring": false,
 				"is_boss": false,
 				"row": 2
 			},
@@ -271,17 +365,17 @@
 			},
 			{
 				"column": 2,
+				"has_spring": false,
+				"is_boss": false,
+				"row": 3
+			},
+			{
+				"column": 3,
 				"has_spring": false,
 				"is_boss": true,
 				"row": 3
 			},
 			{
-				"column": 3,
-				"has_spring": false,
-				"is_boss": false,
-				"row": 3
-			},
-			{
 				"column": 4,
 				"has_spring": false,
 				"is_boss": false,
@@ -295,7 +389,7 @@
 			},
 			{
 				"column": 0,
-				"has_spring": true,
+				"has_spring": false,
 				"is_boss": false,
 				"row": 4
 			},
@@ -343,7 +437,7 @@
 			},
 			{
 				"column": 2,
-				"has_spring": false,
+				"has_spring": true,
 				"is_boss": false,
 				"row": 5
 			},
@@ -355,7 +449,7 @@
 			},
 			{
 				"column": 4,
-				"has_spring": true,
+				"has_spring": false,
 				"is_boss": false,
 				"row": 5
 			},
@@ -366,8 +460,21 @@
 				"row": 5
 			}
 		],
-		"match_id": "01a086c5-2a4a-7bf8-abd7-6394b68c25c3",
+		"match_id": "01a0ae4d-5948-72d6-b4bf-ee25c0598980",
 		"player": {
+			"battle_status": {
+				"bonuses": [
+					{
+						"key": "weapon_bonus",
+						"value": "0.06"
+					}
+				],
+				"combo": 0,
+				"core_element": "",
+				"draw_interval_seconds": "4",
+				"passive_kind": "FenXian",
+				"sets": []
+			},
 			"combat": {
 				"effective_maximum_hp": 70,
 				"hp": 0,
@@ -375,53 +482,57 @@
 				"shield": 0
 			},
 			"discard_count": 0,
-			"draw_charge": "0.015588235294142994",
+			"draw_charge": "0.19999999999999998",
+			"equipped_items": [],
 			"hand": [
 				{
+					"card_id": "C05",
+					"instance_id": "01a0ae4d-5ff2-718c-b143-c87d8168b0c4",
+					"level": 0
+				},
+				{
 					"card_id": "C11",
-					"instance_id": "01a086c5-2fe7-7090-a7d4-f89696eb2b2a"
+					"instance_id": "01a0ae4d-5ff2-7e01-af54-d8634028c064",
+					"level": 0
 				},
 				{
-					"card_id": "C03",
-					"instance_id": "01a086c5-2fe7-7b50-bdaf-9bb4e2e53514"
+					"card_id": "MAG-05",
+					"instance_id": "01a0ae4d-5ff2-7414-95d5-786d637e1fa8",
+					"level": 0
 				},
 				{
-					"card_id": "MAG-03",
-					"instance_id": "01a086c5-2fe7-752e-bcb6-9d53794ffeea"
+					"card_id": "MAG-06",
+					"instance_id": "01a0ae4d-5ff2-700d-bde0-d5031370ed39",
+					"level": 0
+				},
+				{
+					"card_id": "MAG-01",
+					"instance_id": "01a0ae4d-5ff2-70b4-9386-c7d09342c81a",
+					"level": 0
 				}
 			],
 			"hero_class": "Mage",
 			"inventory": [],
-			"library_count": 17,
+			"inventory_capacity": 20,
+			"library_count": 15,
 			"phase": "Dead",
-			"player_id": "01a086c4-8485-72b1-a7d2-e87f228fe1cd"
+			"player_id": "01a0ae4c-39de-7a86-9e9f-6f75f703e3f5",
+			"safe_slot_indexes": [],
+			"weapon_level": 0
 		},
 		"pve": {
-			"battle_id": "01a086c7-5b4a-738e-b7c2-9115acebed7a",
+			"battle_id": "01a0ae4d-5ff2-7746-b1be-6072f4410a25",
 			"current_target_id": "rust-rat",
 			"monsters": [
 				{
 					"boss_phase": 1,
-					"hp": 9,
+					"hp": 80,
 					"intent_element": "Metal",
 					"intent_kind": "Attack",
-					"intent_value": 2,
+					"intent_value": 3,
 					"interval_progress_ms": 0,
-					"maximum_hp": 44,
+					"maximum_hp": 80,
 					"monster_id": "rust-rat",
-					"shield": 0,
-					"stun_remaining_ms": 0,
-					"windup_remaining_ms": 0
-				},
-				{
-					"boss_phase": 1,
-					"hp": 46,
-					"intent_element": "Wood",
-					"intent_kind": "Attack",
-					"intent_value": 2,
-					"interval_progress_ms": 2900,
-					"maximum_hp": 46,
-					"monster_id": "thorn-mite",
 					"shield": 0,
 					"stun_remaining_ms": 0,
 					"windup_remaining_ms": 0
@@ -429,19 +540,17 @@
 			],
 			"phase": "Dead"
 		},
-		"room_id": "01a086c5-2a4a-703b-b3e6-214e463c84b8",
-		"room_revision": 1977,
+		"room_id": "01a0ae4d-5948-7d53-8e7e-bf5cafd5fc08",
+		"room_revision": 1041,
 		"self": {
-			"column": 0,
-			"row": 2
+			"column": 5,
+			"row": 1
 		}
 	},
 	"message": "Live integration ended",
-	"ok": true,
+	"ok": false,
 	"phases": [
 		"Pve",
-		"Choice",
-		"ActionBar",
 		"Dead"
 	]
 }

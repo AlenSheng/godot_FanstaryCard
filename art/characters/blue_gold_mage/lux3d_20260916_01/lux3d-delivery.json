@@ -1,0 +1,22 @@
+{
+  "title": "Blue Gold Mage — Lux3D single-character correction",
+  "region": "international",
+  "lux3dTasks": [3534954, 3535086],
+  "creditsEstimated": 26,
+  "primaryModel": "single_character/blue_gold_mage_single_character.glb",
+  "assembledScene": "correction_assembled/blue_gold_mage_lux3d_scene.glb",
+  "blenderFile": "single_character/blue_gold_mage_single_character.blend",
+  "renders": [
+    "single_character/blue_gold_mage_front.png",
+    "single_character/blue_gold_mage_left_side.png",
+    "single_character/blue_gold_mage_back.png",
+    "single_character/blue_gold_mage_top.png"
+  ],
+  "checks": {
+    "primaryModelGlbValid": true,
+    "assembledSceneGlbValid": true,
+    "rendersInspected": ["front", "left_side", "back", "top"],
+    "blenderVersion": "5.2.1 LTS"
+  },
+  "limitation": "The service interpreted the original turnaround sheet as multiple geometry islands; the delivered primary model is a locally extracted single-character correction from the second Lux3D result. Exact pixel-perfect identity is not guaranteed."
+}

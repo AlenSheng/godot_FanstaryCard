@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FantasyCard.ConfigExporter")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+38a34aa5d6dbe9f544766a1a2de19874e79896a9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+be029263a08f4e3130058edacf8d206a708b013e")]
 [assembly: System.Reflection.AssemblyProductAttribute("FantasyCard.ConfigExporter")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FantasyCard.ConfigExporter")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
