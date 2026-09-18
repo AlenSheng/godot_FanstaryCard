@@ -9,6 +9,8 @@ public static class AdminEndpoints
     public static IServiceCollection AddAdminModule(this IServiceCollection services)
     {
         services.AddSingleton<AdminRepository>();
+        services.AddSingleton<ClientSettingsRepository>();
+        services.AddSingleton<ClientSettingsHub>();
         return services;
     }
 
@@ -26,6 +28,8 @@ public static class AdminEndpoints
         admin.MapPost("/revoke", RevokeAsync);
         admin.MapPost("/ban", BanAsync);
         admin.MapPost("/unban", UnbanAsync);
+        admin.MapGet("/client-settings", GetClientSettingsAsync);
+        admin.MapPut("/client-settings", UpdateClientSettingsAsync);
         return endpoints;
     }
 
@@ -148,4 +152,25 @@ public static class AdminEndpoints
         !value.Any(character => char.IsControl(character) && character is not ('\r' or '\n' or '\t'));
     private static IResult BadRequest(string detail) => Results.Problem(statusCode: 400, title: "Invalid admin request", detail: detail);
     private static IResult Conflict(AdminConflictException exception) => Results.Problem(statusCode: 409, title: "Operation conflict", detail: exception.Message);
+
+    private static async Task<IResult> GetClientSettingsAsync(ClientSettingsRepository repository,
+        CancellationToken cancellationToken) =>
+        Results.Ok(await repository.GetAsync(cancellationToken));
+
+    private static async Task<IResult> UpdateClientSettingsAsync(UpdateClientSettingsRequest request,
+        ClientSettingsRepository repository, ClientSettingsHub hub, IHostEnvironment environment,
+        IConfiguration configuration, CancellationToken cancellationToken)
+    {
+        if (request.AnnouncementTitle is null || request.AnnouncementBody is null ||
+            request.AnnouncementTitle.Length > 120 || request.AnnouncementBody.Length > 6000 ||
+            request.AnnouncementTitle.Any(char.IsControl) ||
+            request.AnnouncementBody.Any(character => char.IsControl(character) && character is not ('\r' or '\n' or '\t')))
+            return BadRequest("Announcement title or body is invalid.");
+        if (request.LocalLoginEnabled && !configuration.GetValue<bool>("Identity:AllowManagedLocalAuth"))
+            return BadRequest("Managed local login is not permitted on this server.");
+        var updated = await repository.UpdateAsync(request, cancellationToken);
+        if (updated is null) return Results.Problem(statusCode: 409, title: "Settings changed; reload before publishing");
+        await hub.PublishAsync(ClientSettingsEndpoints.PublicInfo(updated, environment, configuration), cancellationToken);
+        return Results.Ok(updated);
+    }
 }

@@ -306,7 +306,7 @@ func _login() -> void:
 	name_input.max_length = 20
 	name_input.text_changed.connect(func(value): _login_name = value)
 	panel.add_child(name_input)
-	if Game.platform.local_login_enabled():
+	if Game.platform.local_login_enabled() and "identity.local" in Game.server_info.get("capabilities", []):
 		_label(panel, "同名登录原账号，新名称自动注册新账号。", 20, P.MUTED)
 	_label(panel, "服务器地址", 22, P.MUTED)
 	var address := LineEdit.new()
@@ -314,7 +314,7 @@ func _login() -> void:
 	address.placeholder_text = "http://127.0.0.1:5080"
 	address.text_changed.connect(func(value): _login_address = value)
 	panel.add_child(address)
-	if Game.platform.local_login_enabled():
+	if Game.platform.local_login_enabled() and "identity.local" in Game.server_info.get("capabilities", []):
 		_button(panel, "正在连接…" if Game.busy else "本地登录 / 注册", func(): Game.login(_login_address.strip_edges(), _login_name.strip_edges()), Game.busy)
 	var steam_reason: String = Game.platform.login_unavailable_reason()
 	_button(panel, "Steam 登录", func(): Game.login_steam(_login_address.strip_edges(), _login_name.strip_edges()), Game.busy or not steam_reason.is_empty())
@@ -322,9 +322,27 @@ func _login() -> void:
 	if not Game.authentication_reason.is_empty(): _label(panel, Game.authentication_reason, 22, P.GOLD)
 	if not Game.configuration_error.is_empty(): _label(panel, Game.configuration_error, 22, P.GOLD)
 	var about := _panel(row, 680)
-	_label(about, "每一次深入，都是新的抉择", 34, P.GOLD)
-	for value in ["三种职业 · 一套属于你的二十张牌", "五行连放 · 实时抽牌与目标选择", "只向内探索 · 在战斗与撤离之间取舍"]:
-		_label(about, value, 25)
+	var announcement: Dictionary = Game.server_info.get("announcement", {})
+	var title := str(announcement.get("title", "")).strip_edges()
+	var body := str(announcement.get("body", "")).strip_edges()
+	_label(about, title if not title.is_empty() else "版本公告", 34, P.GOLD)
+	var announcement_scroll := ScrollContainer.new()
+	announcement_scroll.custom_minimum_size.y = 230
+	announcement_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	announcement_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	announcement_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
+	_about_scroll_content(announcement_scroll, body)
+	about.add_child(announcement_scroll)
+
+func _about_scroll_content(scroll: ScrollContainer, body: String) -> void:
+	var text := Label.new()
+	text.text = body if not body.is_empty() else "暂无公告"
+	text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	text.add_theme_font_override("font", P.font_for_text(text.text, 24))
+	text.add_theme_font_size_override("font_size", 24)
+	text.add_theme_color_override("font_color", P.PAPER)
+	scroll.add_child(text)
 
 func _nav() -> void:
 	var nav := _row(content)

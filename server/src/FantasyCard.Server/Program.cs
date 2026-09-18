@@ -93,17 +93,6 @@ builder.Services
     });
 
 var app = builder.Build();
-var clientCapabilities = new List<string>();
-if (LocalAuthPolicy.IsEnabled(
-    app.Environment.EnvironmentName,
-    app.Configuration.GetValue<bool>("Identity:EnableLocalAuth")))
-{
-    clientCapabilities.Add("identity.local");
-}
-if (app.Configuration.GetValue<bool>("Identity:Steam:Enabled"))
-{
-    clientCapabilities.Add("identity.steam");
-}
 if (app.Environment.IsProduction())
 {
     if (app.Configuration.GetValue<bool>("Identity:EnableLocalAuth"))
@@ -134,11 +123,7 @@ app.MapGet("/", () => Results.NotFound());
 // This intentionally exposes only the bootstrap facts needed before login.
 // Root remains a 404 so the public service does not advertise its framework
 // or operational details.
-app.MapGet("/api/v1/client-info", () => Results.Ok(new
-{
-    configVersion = BootstrapRepository.CurrentConfigVersion,
-    capabilities = clientCapabilities
-}));
+app.MapClientSettingsEndpoints();
 app.MapHealthChecks("/health/live", new() { Predicate = _ => false });
 app.MapHealthChecks("/health/ready", new() { Predicate = check => check.Tags.Contains("ready") });
 app.MapIdentityEndpoints();

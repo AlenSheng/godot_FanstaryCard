@@ -17,4 +17,14 @@ public sealed class LocalAuthPolicyTests
     {
         Assert.Equal(expected, LocalAuthPolicy.IsEnabled(environment, configured));
     }
+
+    [Theory]
+    [InlineData("Production", false, true, true)]
+    [InlineData("Production", false, false, false)]
+    [InlineData("Development", true, false, true)]
+    public void Managed_test_server_switch_is_separate_from_development_configuration(
+        string environment, bool configured, bool managed, bool expected)
+    {
+        Assert.Equal(expected, LocalAuthPolicy.IsEnabled(environment, configured, managed));
+    }
 }

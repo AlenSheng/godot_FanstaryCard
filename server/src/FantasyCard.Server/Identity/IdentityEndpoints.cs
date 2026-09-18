@@ -6,6 +6,7 @@ using FantasyCard.Server.Progression;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using FantasyCard.Server.Common;
+using FantasyCard.Server.Admin;
 
 namespace FantasyCard.Server.Identity;
 
@@ -62,10 +63,14 @@ public static class IdentityEndpoints
         IdentityService identityService,
         IOptions<IdentityOptions> options,
         IHostEnvironment environment,
+        IConfiguration configuration,
+        ClientSettingsRepository settingsRepository,
         HttpContext context,
         CancellationToken cancellationToken)
     {
-        if (!LocalAuthPolicy.IsEnabled(environment.EnvironmentName, options.Value.EnableLocalAuth))
+        var managed = configuration.GetValue<bool>("Identity:AllowManagedLocalAuth") &&
+            (await settingsRepository.GetAsync(cancellationToken)).LocalLoginEnabled;
+        if (!LocalAuthPolicy.IsEnabled(environment.EnvironmentName, options.Value.EnableLocalAuth, managed))
         {
             return Results.NotFound();
         }
@@ -157,6 +162,6 @@ public static class IdentityEndpoints
 
 public static class LocalAuthPolicy
 {
-    public static bool IsEnabled(string environmentName, bool configured) =>
-        configured && string.Equals(environmentName, Environments.Development, StringComparison.OrdinalIgnoreCase);
+    public static bool IsEnabled(string environmentName, bool configured, bool managed = false) =>
+        managed || configured && string.Equals(environmentName, Environments.Development, StringComparison.OrdinalIgnoreCase);
 }

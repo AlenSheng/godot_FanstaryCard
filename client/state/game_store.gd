@@ -15,6 +15,8 @@ var platform: Node
 var authentication_reason := ""
 var configuration_error := ""
 var server_info: Dictionary = {}
+var _client_info_socket := WebSocketPeer.new()
+var _client_info_retry_at := 0
 var relic_details: Dictionary = {}
 var combat_preview: Dictionary = {}
 var _preview_request: Dictionary = {}
@@ -41,6 +43,7 @@ var _sound_seen: Dictionary = {}
 var _sound_terminal_rooms: Dictionary = {}
 
 func _process(_delta: float) -> void:
+	_process_client_info()
 	if not _queued_command.is_empty() and Time.get_ticks_msec() > _queue_deadline:
 		_queued_command = {}
 		notice.emit("操作未发出，请在连接恢复后重试")
@@ -54,6 +57,25 @@ func _ready() -> void:
 	gateway.authentication_required.connect(_on_authentication_required)
 	platform = PlatformService.new()
 	add_child(platform)
+	call_deferred("_refresh_server_info")
+
+func _process_client_info() -> void:
+	_client_info_socket.poll()
+	if _client_info_socket.get_ready_state() == WebSocketPeer.STATE_OPEN:
+		while _client_info_socket.get_available_packet_count() > 0:
+			var message: Variant = JSON.parse_string(_client_info_socket.get_packet().get_string_from_utf8())
+			if message is Dictionary:
+				_apply_server_info(message)
+	elif _client_info_socket.get_ready_state() == WebSocketPeer.STATE_CLOSED and Time.get_ticks_msec() >= _client_info_retry_at:
+		_client_info_retry_at = Time.get_ticks_msec() + 5000
+		var url := gateway.base_url.replace("https://", "wss://").replace("http://", "ws://")
+		_client_info_socket = WebSocketPeer.new()
+		_client_info_socket.connect_to_url(url + "/ws/v1/client-info")
+
+func _apply_server_info(info: Dictionary) -> void:
+	if info == server_info: return
+	server_info = info
+	changed.emit()
 
 func login(address: String, display_name: String) -> void:
 	await _login(address, display_name, false)
@@ -170,7 +192,7 @@ func _reject_login(reason: String) -> void:
 func _refresh_server_info() -> bool:
 	var response: Dictionary = await gateway.request("/api/v1/client-info")
 	if not response.ok or not response.data is Dictionary: return false
-	server_info = response.data
+	_apply_server_info(response.data)
 	return validate_config(str(server_info.get("configVersion", "")), "服务器")
 
 func validate_config(version: String, source: String) -> bool:
