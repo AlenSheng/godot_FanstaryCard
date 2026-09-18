@@ -25,6 +25,9 @@ RUN mkdir -p /framework /private \
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
 COPY --from=build /input .
+# The publish output preserves restrictive source modes.  The runtime is
+# intentionally non-root, so configuration must remain readable after COPY.
+RUN chmod a+r /app/appsettings.json
 USER $APP_UID
 EXPOSE 8080
 ENTRYPOINT ["dotnet", "FantasyCard.Server.dll"]
