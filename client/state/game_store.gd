@@ -75,7 +75,7 @@ func _process_client_info() -> void:
 func _apply_server_info(info: Dictionary) -> void:
 	if info == server_info: return
 	server_info = info
-	changed.emit()
+	if lobby.is_empty(): changed.emit()
 
 func login(address: String, display_name: String) -> void:
 	await _login(address, display_name, false)

@@ -45,14 +45,18 @@ public sealed class ClientSettingsHub
         }
     }
 
-    public async Task PublishAsync(object update, CancellationToken cancellationToken)
+    public async Task PublishAsync(object update)
     {
-        foreach (var (id, subscriber) in _subscribers)
+        await Task.WhenAll(_subscribers.Select(async entry =>
         {
-            try { await SendAsync(subscriber, update, cancellationToken); }
-            catch (WebSocketException) { _subscribers.TryRemove(id, out _); }
-            catch (ObjectDisposedException) { _subscribers.TryRemove(id, out _); }
-        }
+            using var deadline = new CancellationTokenSource(TimeSpan.FromSeconds(2));
+            try { await SendAsync(entry.Value, update, deadline.Token); }
+            catch (Exception exception) when (exception is WebSocketException or ObjectDisposedException or OperationCanceledException)
+            {
+                _subscribers.TryRemove(entry.Key, out _);
+                entry.Value.Socket.Abort();
+            }
+        }));
     }
 
     private static async Task SendAsync(Subscriber subscriber, object payload, CancellationToken cancellationToken)

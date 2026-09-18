@@ -170,7 +170,7 @@ public static class AdminEndpoints
             return BadRequest("Managed local login is not permitted on this server.");
         var updated = await repository.UpdateAsync(request, cancellationToken);
         if (updated is null) return Results.Problem(statusCode: 409, title: "Settings changed; reload before publishing");
-        await hub.PublishAsync(ClientSettingsEndpoints.PublicInfo(updated, environment, configuration), cancellationToken);
+        await hub.PublishAsync(ClientSettingsEndpoints.PublicInfo(updated, environment, configuration));
         return Results.Ok(updated);
     }
 }
