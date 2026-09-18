@@ -168,7 +168,7 @@ func _reject_login(reason: String) -> void:
 	changed.emit()
 
 func _refresh_server_info() -> bool:
-	var response: Dictionary = await gateway.request("/")
+	var response: Dictionary = await gateway.request("/api/v1/client-info")
 	if not response.ok or not response.data is Dictionary: return false
 	server_info = response.data
 	return validate_config(str(server_info.get("configVersion", "")), "服务器")
