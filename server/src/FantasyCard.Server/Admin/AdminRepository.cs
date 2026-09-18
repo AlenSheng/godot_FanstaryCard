@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Npgsql;
+using FantasyCard.Contracts.Realtime;
 using FantasyCard.Server.Realtime;
 
 namespace FantasyCard.Server.Admin;
