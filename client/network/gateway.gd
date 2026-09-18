@@ -116,7 +116,9 @@ func remember_local_account(server_name: String) -> void:
 
 func begin_sign_in(address: String) -> void:
 	end_session("", false)
-	if base_url != address: clear_replay()
+	# A fresh credential must never resume terminal events (such as a prior ban)
+	# from an earlier session, even when the player and server are unchanged.
+	clear_replay()
 	base_url = address
 	_save_session()
 

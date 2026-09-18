@@ -139,8 +139,10 @@ public sealed class AdminRepository(NpgsqlDataSource dataSource, TimeProvider ti
             var message = eventStore.Create(playerId, "session.replaced", "admin-ban",
                 new SessionReplacedEventPayload("账号已被封禁：" + reason));
             await connections.SendPresentationAsync(playerId, message);
+            eventStore.Clear(playerId);
             connections.Disconnect(playerId);
         }
+        else eventStore.Clear(playerId);
         return true;
     }
 

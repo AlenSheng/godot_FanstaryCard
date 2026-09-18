@@ -36,7 +36,7 @@ func run_test() -> Dictionary:
 	ok = ok and store.selected_cards.is_empty() and store._queued_command.is_empty() and store.relic_details.is_empty()
 	ok = ok and not store.authentication_reason.is_empty() and gateway.room_id == "unfinished" and gateway.last_sequence == 20
 	gateway.begin_sign_in(gateway.base_url)
-	ok = ok and gateway.accept_session("new-token-a", "2030-01-01T00:00:00Z", "a") and gateway.last_sequence == 20
+	ok = ok and gateway.accept_session("new-token-a", "2030-01-01T00:00:00Z", "a") and gateway.last_sequence == 0 and gateway.room_id.is_empty()
 	gateway.begin_sign_in(gateway.base_url)
 	ok = ok and gateway.accept_session("token-b", "2030-01-01T00:00:00Z", "b") and gateway.last_sequence == 0 and gateway.room_id.is_empty()
 	var version: String = str(Store.CATALOG.data.version)
@@ -65,4 +65,4 @@ func run_test() -> Dictionary:
 	store.free()
 	gateway.free()
 	platform.free()
-	return {"ok": ok, "message": "Session replacement/expiry clears UI and stops retries; explicit relogin restores only same-user cursor; config mismatch blocks entry; Steam failure and ticket callbacks validated"}
+	return {"ok": ok, "message": "Session replacement/expiry clears UI and stops retries; fresh login clears replay; config mismatch blocks entry; Steam failure and ticket callbacks validated"}
