@@ -16,7 +16,19 @@ relicbound.cn, www.relicbound.cn {
 
     @admin path /admin /admin/* /api/admin /api/admin/*
     respond @admin 404
-    reverse_proxy server:8080
+
+    # Keep game API, WebSocket, and health routes on the application while
+    # serving the public website as static files at the root domain.
+    @game_api path /api/* /ws/* /health/*
+    handle @game_api {
+        reverse_proxy server:8080
+    }
+
+    handle {
+        root * /srv/site
+        try_files {path} /index.html
+        file_server
+    }
 }
 
 # Do not expose the player API through the origin IP. Keeping the certificate

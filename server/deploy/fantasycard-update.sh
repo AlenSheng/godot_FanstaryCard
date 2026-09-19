@@ -23,7 +23,7 @@ write_manifest() {
       server/src server/config server/protection server/deploy \
       server/Directory.Build.props server/Directory.Packages.props \
       server/global.json server/NuGet.Config server/.dockerignore \
-      server/compose.cloud.yaml server/Caddyfile \
+      server/compose.cloud.yaml server/Caddyfile server/site \
       ':(exclude)server/**/bin/**' ':(exclude)server/**/obj/**' |
       xargs -0 -r md5sum -- |
       awk '{ print substr($0, 35) "\t" substr($0, 1, 32) }' | LC_ALL=C sort
@@ -141,7 +141,7 @@ if [[ "$baseline_valid" == true ]]; then
   if [[ -s "$changes" ]]; then cat "$changes"; fi
   while IFS=$'\t' read -r action file; do
     case "$file" in
-      server/Caddyfile) proxy_changed=true ;;
+      server/Caddyfile|server/site/*) proxy_changed=true ;;
       server/compose.cloud.yaml) runtime_changed=true; proxy_changed=true ;;
       server/deploy/*) ;;
       server/*) runtime_changed=true ;;
