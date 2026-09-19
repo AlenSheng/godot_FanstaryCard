@@ -69,6 +69,7 @@ func _ready() -> void:
 	_session_generation = Game.gateway.session_generation
 	Game.changed.connect(_schedule_render)
 	Game.notice.connect(_toast)
+	Game.player_data_invalidated.connect(_refresh_after_admin_update)
 	Game.authentication_required.connect(_show_ban_dialog)
 	Game.combat_feedback.connect(_feedback)
 	_build_shell()
@@ -125,6 +126,12 @@ func _schedule_render() -> void:
 	if _render_pending: return
 	_render_pending = true
 	_render.call_deferred()
+
+func _refresh_after_admin_update() -> void:
+	if not Game.room.is_empty(): return
+	_codex_ready = false
+	if screen in ["cards", "deck", "gear", "enhance", "shop", "market", "prep"]:
+		_navigate.call_deferred(screen)
 
 func _sync_account_session() -> void:
 	if _session_generation != Game.gateway.session_generation:

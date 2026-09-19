@@ -2,6 +2,7 @@ extends Node
 
 signal changed
 signal notice(message: String)
+signal player_data_invalidated
 signal combat_feedback(payload: Dictionary)
 signal sound_requested(cue: String)
 signal authentication_required(reason: String)
@@ -719,7 +720,13 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 				_sound_combat(kind, payload)
 			return
 		"combat.previewed", "combat.preview_rejected": pass
-		"inventory.changed": gateway.send("room.snapshot.read")
+		"inventory.changed":
+			if str(payload.get("action", "")) == "admin.refresh":
+				refresh_lobby()
+				notice.emit("管理员更新已同步。")
+				player_data_invalidated.emit()
+			else:
+				gateway.send("room.snapshot.read")
 		"relic.contents": relic_details[str(payload.get("pile_id", ""))] = payload
 	changed.emit()
 
