@@ -17,6 +17,7 @@ const TipsOverlay = preload("res://ui/tips_overlay.gd")
 const CATALOG = preload("res://data/catalog.json")
 const DESCRIPTIONS = preload("res://data/card_descriptions.json")
 const UI_CONFIG = preload("res://data/ui_config.json")
+const RANDOM_NAMES_PATH := "res://data/random_names.json"
 var screen := "hall"
 var content: VBoxContainer
 var root_column: VBoxContainer
@@ -37,7 +38,6 @@ var screen_loading := false
 var _render_pending := false
 var mail_modal_lock := false
 var _midlayer_seen: Dictionary = {}
-var _login_address := "http://127.0.0.1:5080"
 var _login_name := ""
 var _session_generation: int = -1
 var _search := ""
@@ -64,8 +64,8 @@ var _game_title: Label
 func _ready() -> void:
 	theme = P.theme()
 	for card in CATALOG.data.tables.Cards: cards[card.id] = card
-	if not Game.gateway.base_url.strip_edges().is_empty(): _login_address = Game.gateway.base_url
 	if not Game.gateway.local_account_name.is_empty(): _login_name = Game.gateway.local_account_name
+	if _login_name.is_empty(): _login_name = _random_login_name()
 	_session_generation = Game.gateway.session_generation
 	Game.changed.connect(_schedule_render)
 	Game.notice.connect(_toast)
@@ -307,25 +307,24 @@ func _login() -> void:
 	var row := _row(content)
 	var panel := _panel(row, 680)
 	_label(panel, "启程", 40)
-	_label(panel, "账号名称", 22, P.MUTED)
+	_label(panel, P.localized("nickname"), 22, P.MUTED)
 	var name_input := LineEdit.new()
 	name_input.text = _login_name
-	name_input.placeholder_text = P.localized_text("输入唯一账号名称")
+	name_input.editable = false
 	name_input.max_length = 20
-	name_input.text_changed.connect(func(value): _login_name = value)
 	panel.add_child(name_input)
+	_button(panel, P.localized("random_name"), func():
+		_login_name = _random_login_name(_login_name)
+		name_input.text = _login_name
+	, Game.busy)
+	_label(panel, P.localized("nickname_hint"), 20, P.MUTED)
+	_label(panel, P.localized("random_name_hint"), 18, P.MUTED)
 	if Game.platform.local_login_enabled() and "identity.local" in Game.server_info.get("capabilities", []):
 		_label(panel, "同名登录原账号，新名称自动注册新账号。", 20, P.MUTED)
-	_label(panel, "服务器地址", 22, P.MUTED)
-	var address := LineEdit.new()
-	address.text = _login_address
-	address.placeholder_text = "http://127.0.0.1:5080"
-	address.text_changed.connect(func(value): _login_address = value)
-	panel.add_child(address)
 	if Game.platform.local_login_enabled() and "identity.local" in Game.server_info.get("capabilities", []):
-		_button(panel, "正在连接…" if Game.busy else "本地登录 / 注册", func(): Game.login(_login_address.strip_edges(), _login_name.strip_edges()), Game.busy)
+		_button(panel, "正在连接…" if Game.busy else "本地登录 / 注册", func(): Game.login(Game.gateway.base_url, _login_name), Game.busy)
 	var steam_reason: String = Game.platform.login_unavailable_reason()
-	_button(panel, "Steam 登录", func(): Game.login_steam(_login_address.strip_edges(), _login_name.strip_edges()), Game.busy or not steam_reason.is_empty())
+	_button(panel, "Steam 登录", func(): Game.login_steam(Game.gateway.base_url, _login_name), Game.busy or not steam_reason.is_empty())
 	if not steam_reason.is_empty(): _label(panel, steam_reason, 20, P.MUTED)
 	if not Game.authentication_reason.is_empty(): _label(panel, Game.authentication_reason, 22, P.GOLD)
 	if not Game.configuration_error.is_empty(): _label(panel, Game.configuration_error, 22, P.GOLD)
@@ -344,6 +343,22 @@ func _login() -> void:
 	announcement_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
 	_about_scroll_content(announcement_scroll, body)
 	about.add_child(announcement_scroll)
+
+func _random_login_name(previous: String = "") -> String:
+	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(RANDOM_NAMES_PATH))
+	var language_key := "zh-CN" if P.language() == "zh-CN" else "en"
+	var names: Array = []
+	if parsed is Dictionary:
+		var available: Variant = parsed.get("languages", {}).get(language_key, [])
+		if available is Array: names = available
+	if names.is_empty(): names = ["旅人"] if language_key == "zh-CN" else ["Wanderer"]
+	var random := RandomNumberGenerator.new()
+	random.randomize()
+	var candidate := previous
+	for _attempt in 4:
+		candidate = "%s#%04d" % [str(names[random.randi_range(0, names.size() - 1)]), random.randi_range(0, 9999)]
+		if candidate != previous: return candidate
+	return candidate
 
 func _about_scroll_content(scroll: ScrollContainer, body: String) -> void:
 	var text := Label.new()
