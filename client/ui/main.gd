@@ -18,6 +18,9 @@ const CATALOG = preload("res://data/catalog.json")
 const DESCRIPTIONS = preload("res://data/card_descriptions.json")
 const UI_CONFIG = preload("res://data/ui_config.json")
 const RANDOM_NAMES_PATH := "res://data/random_names.json"
+const CLOUD_SERVER_URL := "https://www.relicbound.cn"
+const LOCAL_SERVER_URL := "http://127.0.0.1:5080"
+const LOGIN_VIDEO_PATH := "res://assets/backgrounds/relicbound_login_ambient.ogv"
 var screen := "hall"
 var content: VBoxContainer
 var root_column: VBoxContainer
@@ -43,6 +46,9 @@ var _session_generation: int = -1
 var _search := ""
 var _combat_panels: Dictionary = {}
 var _background: TextureRect
+var _background_video: VideoStreamPlayer
+var _background_shade: ColorRect
+var _login_video_available := false
 var _reference: Control
 var _quality := ""
 var _enhance_item := ""
@@ -90,6 +96,27 @@ func _build_shell() -> void:
 		background.texture = load("res://assets/portal.png")
 		background.modulate = Color(0.45, 0.58, 0.59)
 	add_child(background)
+	var background_video := VideoStreamPlayer.new()
+	_background_video = background_video
+	background_video.name = "LoginAmbientVideo"
+	background_video.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	background_video.expand = true
+	background_video.loop = true
+	background_video.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(background_video)
+	var video_stream := load(LOGIN_VIDEO_PATH) as VideoStream
+	if video_stream != null:
+		background_video.stream = video_stream
+		background_video.autoplay = true
+		background_video.play()
+		_login_video_available = true
+	var background_shade := ColorRect.new()
+	_background_shade = background_shade
+	background_shade.name = "LoginAmbientShade"
+	background_shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	background_shade.color = Color(0.02, 0.055, 0.06, 0.18)
+	background_shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(background_shade)
 	var margin := MarginContainer.new()
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	for side in ["left", "right"]: margin.add_theme_constant_override("margin_" + side, 80)
@@ -203,6 +230,11 @@ func _render() -> void:
 	else:
 		_background.texture = load("res://assets/portal.png")
 		_background.modulate = Color(0.45, 0.58, 0.59)
+	var show_login_video: bool = Game.lobby.is_empty() and Game.room.is_empty() and Game.settlement.is_empty()
+	if is_instance_valid(_background_video):
+		_background_video.visible = show_login_video and _login_video_available
+		if _background_video.visible and not _background_video.is_playing(): _background_video.play()
+	if is_instance_valid(_background_shade): _background_shade.visible = show_login_video and _login_video_available
 	_combat_panels = {}
 	for node in content.get_children():
 		content.remove_child(node)
@@ -238,7 +270,7 @@ func _render() -> void:
 		return
 	if Game.lobby.get("unfinishedMatch") != null:
 		_label(content, "正在恢复上次探索…", 42, P.GOLD)
-		_button(content, "重新连接", Game.gateway.connect_realtime)
+		_button(content, "重新连接", Game.reconnect, Game.busy)
 		return
 	_nav()
 	if screen_loading:
@@ -282,7 +314,7 @@ func _button(parent: Node, text: String, callback: Callable, disabled: bool = fa
 	return button
 
 func _is_positive_button(value: String) -> bool:
-	for keyword in ["确认", "领取", "登录", "注册", "开始", "保存", "购买", "强化", "穿戴", "上架", "选择", "准备就绪", "探索准备"]:
+	for keyword in ["确认", "领取", "登录", "注册", "Login", "开始", "保存", "购买", "强化", "穿戴", "上架", "选择", "准备就绪", "探索准备", "随机起名", "Randomize"]:
 		if value.contains(keyword): return true
 	return false
 
@@ -305,7 +337,10 @@ func _login() -> void:
 	_label(content, "混沌领域", 76, P.GOLD)
 	_label(content, "搜寻遗物，组合五行，带着战利品归来。", 30)
 	var row := _row(content)
-	var panel := _panel(row, 680)
+	var panel := _panel(row)
+	var panel_frame: Control = panel.get_parent()
+	panel_frame.size_flags_stretch_ratio = 0.25
+	panel_frame.custom_minimum_size.x = 340
 	_label(panel, "启程", 40)
 	_label(panel, P.localized("nickname"), 22, P.MUTED)
 	var name_input := LineEdit.new()
@@ -317,19 +352,26 @@ func _login() -> void:
 	_button(panel, P.localized("random_name"), func():
 		_login_name = _random_login_name(_login_name)
 		name_input.text = _login_name
-	, Game.busy)
+	, Game.busy, "UI/CardCodex/card_codex_action_button_orange.png")
+	if OS.is_debug_build():
+		_button(panel, P.localized("local_dev_login"), func(): Game.login(LOCAL_SERVER_URL, _login_name), Game.busy, "UI/CardCodex/card_codex_action_button_blue.png")
 	_label(panel, P.localized("nickname_hint"), 20, P.MUTED)
 	_label(panel, P.localized("random_name_hint"), 18, P.MUTED)
-	if Game.platform.local_login_enabled() and "identity.local" in Game.server_info.get("capabilities", []):
-		_label(panel, "同名登录原账号，新名称自动注册新账号。", 20, P.MUTED)
-	if Game.platform.local_login_enabled() and "identity.local" in Game.server_info.get("capabilities", []):
-		_button(panel, "正在连接…" if Game.busy else "本地登录 / 注册", func(): Game.login(Game.gateway.base_url, _login_name), Game.busy)
+	_label(panel, "本地服仅用于开发联调；原有入口连接腾讯云外网服务器。", 18, P.MUTED)
+	_button(panel, P.localized("cloud_login"), func(): Game.login(CLOUD_SERVER_URL, _login_name), Game.busy, "UI/CardCodex/card_codex_action_button_orange.png")
 	var steam_reason: String = Game.platform.login_unavailable_reason()
-	_button(panel, "Steam 登录", func(): Game.login_steam(Game.gateway.base_url, _login_name), Game.busy or not steam_reason.is_empty())
+	_button(panel, "Steam 登录", func(): Game.login_steam(CLOUD_SERVER_URL, _login_name), Game.busy or not steam_reason.is_empty())
 	if not steam_reason.is_empty(): _label(panel, steam_reason, 20, P.MUTED)
 	if not Game.authentication_reason.is_empty(): _label(panel, Game.authentication_reason, 22, P.GOLD)
 	if not Game.configuration_error.is_empty(): _label(panel, Game.configuration_error, 22, P.GOLD)
-	var about := _panel(row, 680)
+	var center_space := Control.new()
+	center_space.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	center_space.size_flags_stretch_ratio = 0.45
+	row.add_child(center_space)
+	var about := _panel(row)
+	var about_frame: Control = about.get_parent()
+	about_frame.size_flags_stretch_ratio = 0.30
+	about_frame.custom_minimum_size.x = 400
 	var announcement: Dictionary = Game.server_info.get("announcement", {})
 	var title := str(announcement.get("title", "")).strip_edges()
 	var body := str(announcement.get("body", "")).strip_edges()

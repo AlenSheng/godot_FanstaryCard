@@ -98,6 +98,28 @@ func login_steam(address: String, display_name: String = "") -> void:
 func logout() -> void:
 	gateway.end_session("已退出登录")
 
+func reconnect() -> void:
+	if busy: return
+	# A WebSocket reconnect only works while its in-memory access token is still
+	# valid. After restarting the client, restore a local development session
+	# from the remembered account; cloud and Steam sessions must be re-authenticated.
+	if gateway.token.is_empty() or gateway.session_expired():
+		var is_local_server: bool = gateway.base_url.trim_suffix("/") == Gateway.DEFAULT_LOCAL_BASE_URL
+		if OS.is_debug_build() and is_local_server and not gateway.local_account_name.is_empty():
+			await _login(gateway.base_url, gateway.local_account_name, false)
+		else:
+			gateway.end_session("登录会话已失效，请重新登录")
+		return
+	busy = true
+	connection = "正在恢复连接…"
+	changed.emit()
+	var generation: int = gateway.session_generation
+	await refresh_lobby()
+	if generation == gateway.session_generation and not lobby.is_empty() and configuration_error.is_empty():
+		gateway.connect_realtime()
+	busy = false
+	changed.emit()
+
 func _clear_authenticated_state() -> void:
 	lobby = {}
 	room = {}
@@ -486,6 +508,10 @@ func _status_bonuses(status: Dictionary) -> Dictionary:
 func _counter(attacker: String, target: String) -> bool:
 	return [["Water", "Fire"], ["Fire", "Metal"], ["Metal", "Wood"], ["Wood", "Earth"], ["Earth", "Water"]].any(func(pair): return pair[0] == attacker and pair[1] == target)
 
+func _conflict_pair(left: String, right: String) -> bool:
+	return left != right and [["Wood", "Earth"], ["Earth", "Water"], ["Water", "Fire"], ["Fire", "Metal"], ["Metal", "Wood"]].any(func(pair):
+		return (pair[0] == left and pair[1] == right) or (pair[0] == right and pair[1] == left))
+
 func _generated(element: String) -> String:
 	return {"Wood": "Fire", "Fire": "Earth", "Earth": "Metal", "Metal": "Water", "Water": "Wood"}.get(element, "None")
 
@@ -546,16 +572,23 @@ func _calculate_combat_preview(ids: Array) -> Dictionary:
 	var conflict_pairs := 0
 	var cancellation := 0.0
 	if not core.is_empty():
-		for pair in [["Wood", "Earth"], ["Earth", "Water"], ["Water", "Fire"], ["Fire", "Metal"], ["Metal", "Wood"]]:
-			if pair[0] in counts and pair[1] in counts and (pair[0] == core or pair[1] == core): conflict_pairs += mini(int(counts[pair[0]]), int(counts[pair[1]]))
-		var resonance_count := core_count + (1 if cards.any(func(card): return int(card.get("resonance_bonus", 0)) > 0) else 0)
-		resonance = 3.5 if core_count == 5 and resonance_count > core_count else ([1.0, 1.2, 1.5, 2.0, 3.0][mini(resonance_count, 5) - 1])
-		cancellation = minf(0.80, minf(0.65, 0.20 * conflict_pairs) + cards.map(func(card): return float(card.get("conflict_cancel_bonus", 0))).max()) if conflict_pairs > 0 else 0.0
-		var core_base := 0.0
+		for card in elemental:
+			if str(card.get("element", "None")) != core and not card.get("is_element_tuning", false) and _conflict_pair(core, str(card.get("element", "None"))): conflict_pairs += 1
+		var resonance_bonus := 1 if cards.any(func(card): return int(card.get("resonance_bonus", 0)) > 0) else 0
+		# The first core card is the fixed baseline. M counts later core cards
+		# after counter cards consume their advantage.
+		var main_core_stacks: int = maxi(0, core_count - 1 + resonance_bonus - conflict_pairs)
+		resonance = 1.0 + 0.20 * main_core_stacks
+		var cancel_bonus := float(cards.map(func(card): return float(card.get("conflict_cancel_bonus", 0))).max())
+		cancellation = minf(0.80, 0.20 * conflict_pairs + cancel_bonus) if conflict_pairs > 0 else 0.0
+		var shared_multiplier: float = (1.0 + float(status.get("damage_" + core, 0.0))) * (1.0 - _target_resistance(core, battle))
 		for i in cards.size():
-			if cards[i].get("element", "None") == core and int(cards[i].get("secondary_elemental_damage", 0)) == 0: core_base += bases[i]
-		var elemental_damage: float = floor(core_base * resonance * (1.0 + float(status.get("damage_" + core, 0.0))) * (1.0 - _target_resistance(core, battle)) * (1.0 - cancellation))
-		if elemental_damage > 0: segments[core] = int(elemental_damage)
+			var card: Dictionary = cards[i]
+			if int(card.get("elemental_damage", 0)) <= 0 or str(card.get("element", "None")) == "None" or int(card.get("secondary_elemental_damage", 0)) > 0: continue
+			var element := str(card.get("element", "None"))
+			var branch_multiplier := resonance if element == core else (1.0 if card.get("is_element_tuning", false) or not _conflict_pair(core, element) else 1.0 - cancellation)
+			var value := int(floor(float(bases[i]) * shared_multiplier * branch_multiplier))
+			if value > 0: segments[element] = int(segments.get(element, 0)) + value
 	var total := int(segments.values().reduce(func(a, b): return a + b, 0))
 	var direct := 0
 	for i in cards.size():
@@ -564,11 +597,10 @@ func _calculate_combat_preview(ids: Array) -> Dictionary:
 			var secondary := int(card.get("secondary_elemental_damage", 0))
 			if reveal and card.get("secondary_element", "None") == reveal_element: secondary = int(floor(secondary * 1.3))
 			for pair in [[str(card.get("element", "None")), int(bases[i])], [str(card.get("secondary_element", "None")), secondary]]:
-				var value := int(floor(pair[1] * (1.0 + status.get("damage_" + pair[0], 0.0)) * (1.0 - _target_resistance(pair[0], battle))))
+				var elemental_multiplier := (1.0 + float(status.get("damage_" + pair[0], 0.0))) * (1.0 - _target_resistance(pair[0], battle)) if core.is_empty() else (1.0 + float(status.get("damage_" + core, 0.0))) * (1.0 - _target_resistance(core, battle))
+				var value := int(floor(pair[1] * elemental_multiplier))
 				if value > 0: segments[pair[0]] = int(segments.get(pair[0], 0)) + value; total += value
-		direct += int(card.get("direct_damage", 0))
 		direct += int(floor((bases[i] + int(card.get("secondary_elemental_damage", 0)) + int(card.get("direct_damage", 0))) * float(status.get("piercing", 0.0))))
-		direct += int(card.get("direct_damage", 0))
 	if direct > 0: segments["Direct"] = direct; total += direct
 	var target_shield := int((battle.get("opponent", {}) if battle.has("opponent") else battle.get("monsters", []).filter(func(value): return value.get("monster_id", "") == battle.get("current_target_id", "")).front()).get("shield", 0))
 	var actual := mini(total, target_shield + int((battle.get("opponent", {}) if battle.has("opponent") else battle.get("monsters", []).filter(func(value): return value.get("monster_id", "") == battle.get("current_target_id", "")).front()).get("hp", 0)))
@@ -721,7 +753,7 @@ func _retry_rejected_command(payload: Dictionary) -> bool:
 	if pending.action == "battle.play_cards": _pending_play = {}
 	# Retry only an explicit pre-execution rejection, never an ambiguous timeout.
 	if pending.retry or payload.get("_replayed", false) or Time.get_ticks_msec() > int(pending.get("deadline", 0)): return false
-	var is_revision_conflict := payload.get("code", "") == "REVISION_CONFLICT" or (
+	var is_revision_conflict: bool = payload.get("code", "") == "REVISION_CONFLICT" or (
 		payload.get("code", "") == "COMMAND_REJECTED" and
 		str(payload.get("detail", "")).begins_with("Room revision conflict."))
 	if not is_revision_conflict: return false

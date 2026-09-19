@@ -185,7 +185,7 @@ static func _preview(ui: Control) -> void:
 	panel.mouse_filter = Control.MOUSE_FILTER_PASS
 	var formula: Array[String] = []
 	var resonance := float(preview.get("resonance_multiplier", "1"))
-	if resonance > 1.0: formula.append("相生 ×%.2f" % resonance)
+	if resonance > 1.0: formula.append("主核增幅 ×%.2f" % resonance)
 	var conflict_pairs := int(preview.get("conflict_pair_count", 0))
 	var cancellation := float(preview.get("conflict_cancellation", "0"))
 	if conflict_pairs > 0: formula.append("相克 %s组 · 抵消 %s" % [conflict_pairs, Details.percent(cancellation)])

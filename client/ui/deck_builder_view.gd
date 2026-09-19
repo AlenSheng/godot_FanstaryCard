@@ -240,8 +240,8 @@ static func _ranked_auto_deck(host: Control, inventory: Dictionary = {}) -> Arra
 			var id := str(candidate.id)
 			var is_class := info.get("hero_class") != null
 			if must_fill_class and not is_class: continue
-			var is_general_orange := info.get("quality") == "Orange" and not is_class
-			var is_class_orange := info.get("quality") == "Orange" and is_class
+			var is_general_orange: bool = info.get("quality") == "Orange" and not is_class
+			var is_class_orange: bool = info.get("quality") == "Orange" and is_class
 			if is_general_orange and _contains_orange_group(host, selected, true): continue
 			if is_class_orange and _contains_orange_group(host, selected, false): continue
 			var score := _auto_card_score(info, candidate.owned, preference, weapon_level, element_counts, class_count, selected.size())
@@ -309,7 +309,7 @@ static func _equipment_element_preference(inventory: Dictionary) -> Dictionary:
 		if item.get("instanceId", null) not in equipped_ids: continue
 		var element := str(item.get("element", ""))
 		if not weights.has(element): continue
-		var quality_weight := {"White": 1.0, "Green": 1.35, "Blue": 1.75, "Purple": 2.2, "Orange": 2.8, "Red": 3.3}.get(str(item.get("quality", "White")), 1.0)
+		var quality_weight: float = float({"White": 1.0, "Green": 1.35, "Blue": 1.75, "Purple": 2.2, "Orange": 2.8, "Red": 3.3}.get(str(item.get("quality", "White")), 1.0))
 		weights[element] += quality_weight + float(int(item.get("level", 0))) * 0.35
 	var preferred := ""
 	var top := 0.0
@@ -318,8 +318,8 @@ static func _equipment_element_preference(inventory: Dictionary) -> Dictionary:
 	if preferred.is_empty(): return weights
 	# GDD conflict ring: a preferred element and its opposed element should not
 	# dominate the same auto-built deck, while the two adjacent elements remain viable.
-	var opposed := {"Wood": "Earth", "Earth": "Water", "Water": "Fire", "Fire": "Metal", "Metal": "Wood"}.get(preferred, "")
-	var attacks_preferred := {"Wood": "Metal", "Earth": "Wood", "Water": "Earth", "Fire": "Water", "Metal": "Fire"}.get(preferred, "")
+	var opposed: String = str({"Wood": "Earth", "Earth": "Water", "Water": "Fire", "Fire": "Metal", "Metal": "Wood"}.get(preferred, ""))
+	var attacks_preferred: String = str({"Wood": "Metal", "Earth": "Wood", "Water": "Earth", "Fire": "Water", "Metal": "Fire"}.get(preferred, ""))
 	weights[preferred] = float(weights[preferred]) + 8.0
 	if not opposed.is_empty(): weights[opposed] = float(weights[opposed]) - 5.0
 	if not attacks_preferred.is_empty(): weights[attacks_preferred] = float(weights[attacks_preferred]) - 2.0
