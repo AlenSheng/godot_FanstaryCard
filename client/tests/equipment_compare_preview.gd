@@ -2,6 +2,7 @@ extends Node
 
 const OUTPUT := "res://evidence/equipment-comparison"
 const EquipmentCompareDialog = preload("res://ui/equipment_compare_dialog.gd")
+const ItemVisual = preload("res://ui/item_visual.gd")
 var errors: Array[String] = []
 var direct_equip_calls := 0
 
@@ -14,6 +15,7 @@ func _ready() -> void:
 	Game.lobby = {"player": {"userId": "equipment-preview"}, "wallet": {"gold": 100000}, "classWeapons": [], "equippedLoadouts": []}
 	var current := _gear("head-current", "Head", "Purple", "Fire", "Bulwark")
 	var selected := _gear("head-selected", "Head", "Orange", "Water", "Piercing", "DrawInterval")
+	selected.quantity = 2
 	$UI.inventory = {"equipments": [
 		current,
 		_gear("chest-current", "Chest", "Purple", "Earth", "Bulwark"),
@@ -32,6 +34,7 @@ func _ready() -> void:
 	await _capture(selected, Vector2i(1280, 720))
 	await _verify_null_affix_hidden()
 	await _verify_empty_slot_bypass()
+	await _verify_zero_quantity_hidden()
 	await _verify_inventory_drag_and_draft()
 	var report := {"ok": errors.is_empty(), "errors": errors, "screenshots": 4, "direct_equip_calls": direct_equip_calls}
 	FileAccess.open(OUTPUT + "/report.json", FileAccess.WRITE).store_string(JSON.stringify(report, "  "))
@@ -92,6 +95,8 @@ func _capture(selected: Dictionary, resolution: Vector2i) -> void:
 		errors.append("Quality frames are not layered at %s" % resolution.x)
 	if dialog.find_children("EquipmentIcon", "TextureRect", true, false).size() != 2:
 		errors.append("Equipment icons are not layered at %s" % resolution.x)
+	if not text.contains("×2"):
+		errors.append("Equipment quantity badge is missing at %s" % resolution.x)
 	if dialog.find_child("CloseComparison", true, false) != null:
 		errors.append("Comparison title close button is still visible at %s" % resolution.x)
 	var shell: Control = dialog.get_node_or_null("ComparisonShell")
@@ -120,6 +125,17 @@ func _verify_empty_slot_bypass() -> void:
 	$UI._show_equipment_details(feet, _direct_equip, "确认穿戴")
 	if direct_equip_calls != 1: errors.append("Empty slot did not equip directly")
 	if $UI.get_node_or_null("EquipmentComparisonDialog") != null: errors.append("Empty slot opened a comparison dialog")
+
+func _verify_zero_quantity_hidden() -> void:
+	var parent := Control.new()
+	add_child(parent)
+	var item := _gear("zero-quantity", "Head", "Blue", "Fire", "Bulwark")
+	item.quantity = 0
+	var visual := ItemVisual.equipment(parent, item, Vector2(96, 96))
+	await get_tree().process_frame
+	if visual.get_node_or_null("Quantity") != null: errors.append("Zero-quantity item still renders a quantity badge")
+	parent.queue_free()
+	await get_tree().process_frame
 
 func _verify_inventory_drag_and_draft() -> void:
 	$UI.screen = "gear"
@@ -170,4 +186,4 @@ func _all_text(root: Node) -> String:
 	return result
 
 func _gear(id: String, slot: String, quality: String, element: String, affix: String, secondary: String = "") -> Dictionary:
-	return {"instanceId": id, "slot": slot, "quality": quality, "element": element, "effectAffix": affix, "secondaryTrait": secondary, "level": 0, "location": "Inventory", "isBound": false}
+	return {"instanceId": id, "slot": slot, "quality": quality, "element": element, "effectAffix": affix, "secondaryTrait": secondary, "level": 0, "quantity": 1, "location": "Inventory", "isBound": false}
