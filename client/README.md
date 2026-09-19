@@ -1,4 +1,4 @@
-# FantasyCard Godot 客户端
+# Relicbound（遗境行者）Godot 客户端
 
 当前为连接真实服务器的开发客户端，尚未完成整份 GDD 的美术与功能验收。
 

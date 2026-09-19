@@ -2,13 +2,13 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>FantasyCard 后台</title>
+<title>遗境行者后台管理 · Relicbound Admin</title>
 <style>
 body{font:15px/1.5 system-ui,sans-serif;background:#101827;color:#e9eef8;margin:0}main{max-width:1100px;margin:auto;padding:24px}h1{font-size:24px;margin:0 0 16px}h2{font-size:18px;margin:0 0 12px}section{background:#1b2638;border:1px solid #34445b;border-radius:10px;padding:18px;margin:14px 0}label{display:block;margin:8px 0 3px;color:#bcd0e8}input,select,textarea{box-sizing:border-box;width:100%;padding:9px;background:#0e1725;color:#fff;border:1px solid #4c5d75;border-radius:5px;font:inherit}textarea{min-height:85px}input[type=checkbox]{width:auto;margin-right:8px}button{background:#3579ca;border:0;color:white;border-radius:5px;padding:9px 14px;margin:10px 8px 0 0;cursor:pointer;font:inherit}button.danger{background:#a83e47}button:disabled{opacity:.5;cursor:default}.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.card{background:#111d2d;padding:12px;border-radius:7px;margin:9px 0}.muted{color:#9db0c6}.error{color:#ff9f9f}.ok{color:#9de4ae}#result,#settingsResult{white-space:pre-wrap}small{color:#9db0c6}
 </style>
 </head>
 <body><main>
-<h1>FantasyCard 后台管理</h1>
+<h1>遗境行者后台管理 · Relicbound Admin</h1>
 <section><label for="key">管理密钥（仅保存在此页面内存）</label><input id="key" type="password" autocomplete="off"><small>请通过 HTTPS 访问。关闭或刷新页面后需重新输入。</small></section>
 <section><h2>测试服登录与版本公告</h2><button id="loadSettings">读取当前设置</button><label><input id="localLogin" type="checkbox">启用测试服本地登录 / 注册</label><label for="announcementTitle">公告标题</label><input id="announcementTitle" maxlength="120" placeholder="版本公告"><label for="announcementBody">公告正文</label><textarea id="announcementBody" maxlength="6000" rows="10" placeholder="发布后，所有在线客户端的登录页会立即更新"></textarea><button id="publishSettings">保存并发布到客户端</button><p id="settingsResult" role="status"></p></section>
 <section><h2>查找玩家</h2><div class="row"><div><label for="query">UID / 账号 / 精确昵称</label><input id="query" autocomplete="off"></div><div><button id="search">查找</button></div></div><div id="players"></div></section>
