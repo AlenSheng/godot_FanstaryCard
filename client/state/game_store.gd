@@ -39,6 +39,11 @@ var connection := "未连接"
 var _settlement_loading := ""
 var _queued_command: Dictionary = {}
 var _queue_deadline: int = 0
+var _pending_play: Dictionary = {}
+var _play_deadline: int = 0
+var _pending_commands: Dictionary = {}
+var _snapshot_request_at: int = 0
+var _snapshot_request_pending := false
 var _sound_ready := false
 var _sound_commands: Dictionary = {}
 var _sound_seen: Dictionary = {}
@@ -46,6 +51,11 @@ var _sound_terminal_rooms: Dictionary = {}
 
 func _process(_delta: float) -> void:
 	_process_client_info()
+	if not _pending_play.is_empty() and Time.get_ticks_msec() > _play_deadline:
+		_pending_play = {}
+	for request_id in _pending_commands.keys():
+		if Time.get_ticks_msec() > int(_pending_commands[request_id].get("deadline", 0)):
+			_pending_commands.erase(request_id)
 	if not _queued_command.is_empty() and Time.get_ticks_msec() > _queue_deadline:
 		_queued_command = {}
 		notice.emit("操作未发出，请在连接恢复后重试")
@@ -101,6 +111,9 @@ func _clear_authenticated_state() -> void:
 	relic_details = {}
 	clear_combat_preview()
 	_queued_command = {}
+	_pending_play = {}
+	_pending_commands.clear()
+	_snapshot_request_pending = false
 	_settlement_loading = ""
 	busy = false
 	_sound_ready = false
@@ -110,6 +123,10 @@ func _clear_authenticated_state() -> void:
 
 func _on_connection_changed(value: String) -> void:
 	connection = value
+	_pending_play = {}
+	_pending_commands.clear()
+	_snapshot_request_pending = false
+	if _queued_command.get("retry", false): _queued_command = {}
 	_sound_ready = false
 	_sound_commands.clear()
 	changed.emit()
@@ -419,15 +436,12 @@ func allowed(action: String) -> bool:
 
 func command(action: String, payload: Dictionary = {}) -> bool:
 	if not allowed(action) or not _queued_command.is_empty(): return false
+	if action == "battle.play_cards" and not _pending_play.is_empty(): return false
 	if action == "relic.read": return gateway.send(action, payload)
-	# Room revisions advance with the 100 ms server tick. Refresh immediately
-	# before submitting the user's intent, without guessing a future revision.
-	_queued_command = {"action": action, "payload": payload.duplicate(true)}
-	_queue_deadline = Time.get_ticks_msec() + 3000
-	if not gateway.send("room.snapshot.read"):
-		_queued_command = {}
-		return false
-	return true
+	# Send the intent against the latest locally known revision. The server
+	# serializes it in the room actor; only a confirmed revision conflict reads
+	# a fresh snapshot and retries once.
+	return _send_queued_command({"action": action, "payload": payload.duplicate(true)})
 
 func toggle_card(instance_id: String) -> void:
 	if not allowed("battle.play_cards"): return
@@ -442,6 +456,13 @@ func clear_combat_preview() -> void:
 	combat_preview = {}
 	_preview_request = {}
 	_preview_deadline = 0
+
+func _request_snapshot() -> void:
+	if room.is_empty() or not gateway.online or gateway.recovering or _snapshot_request_pending: return
+	var now := Time.get_ticks_msec()
+	if now - _snapshot_request_at < 80: return
+	_snapshot_request_at = now
+	_snapshot_request_pending = gateway.send("room.snapshot.read")
 
 # Kept as a compatibility boundary for older offline tests and replay tools;
 # live selection no longer calls the network preview command.
@@ -511,7 +532,9 @@ func _calculate_combat_preview(ids: Array) -> Dictionary:
 	for element in counts:
 		if int(counts[element]) > core_count: core = element; core_count = int(counts[element])
 	var reveal_element: String = str({"Mage": "Fire", "Priest": "Water"}.get(room.get("player", {}).get("hero_class", ""), "Earth"))
-	var reveal := cards.any(func(card): return bool(card.get("is_class_reveal", false)))
+	# Catalog rows use null for cards without the flag; GDScript has no bool()
+	# conversion constructor, so test the actual boolean value directly.
+	var reveal := cards.any(func(card): return card.get("is_class_reveal", false) == true)
 	var bases: Array = []
 	for card in cards:
 		var same := int(counts.get(card.get("element", "None"), 0)) - 1
@@ -675,30 +698,73 @@ func _sound_event(kind: String, payload: Dictionary) -> void:
 	elif kind == "action.spring_completed" and payload.get("status", "") == "Completed" and _sound_once(kind, payload):
 		sound_requested.emit("heal")
 
-func _send_queued_command(queued: Dictionary) -> void:
+func _send_queued_command(queued: Dictionary) -> bool:
 	var request_id: String = gateway.new_id()
 	if gateway.send(queued.action, queued.payload, request_id):
+		var deadline := Time.get_ticks_msec() + 3000
+		_play_deadline = deadline
+		_pending_commands[request_id] = {"action": queued.action, "payload": queued.payload.duplicate(true), "room_id": room.get("room_id", ""), "retry": queued.get("retry", false), "deadline": deadline}
+		if queued.action == "battle.play_cards":
+			_pending_play = {"request_id": request_id, "room_id": room.get("room_id", ""), "payload": queued.payload.duplicate(true), "retry": queued.get("retry", false)}
 		_sound_commands[request_id] = {"action": queued.action, "room_id": room.get("room_id", "")}
 		if _sound_commands.size() > 64: _sound_commands.erase(_sound_commands.keys()[0])
+		return true
+	elif queued.get("retry", false):
+		notice.emit("操作未发出，请在连接恢复后重试")
+	return false
+
+func _retry_rejected_command(payload: Dictionary) -> bool:
+	var request_id := str(payload.get("_request_id", ""))
+	if request_id.is_empty() or not _pending_commands.has(request_id): return false
+	var pending: Dictionary = _pending_commands[request_id]
+	_pending_commands.erase(request_id)
+	if pending.action == "battle.play_cards": _pending_play = {}
+	# Retry only an explicit pre-execution rejection, never an ambiguous timeout.
+	if pending.retry or payload.get("_replayed", false) or Time.get_ticks_msec() > int(pending.get("deadline", 0)): return false
+	var is_revision_conflict := payload.get("code", "") == "REVISION_CONFLICT" or (
+		payload.get("code", "") == "COMMAND_REJECTED" and
+		str(payload.get("detail", "")).begins_with("Room revision conflict."))
+	if not is_revision_conflict: return false
+	if pending.room_id != room.get("room_id", "") or not allowed(pending.action) or not _queued_command.is_empty(): return false
+	var snapshot_id: String = gateway.new_id()
+	_queued_command = {"action": pending.action, "payload": pending.payload, "retry": true, "room_id": pending.room_id, "snapshot_id": snapshot_id}
+	_queue_deadline = Time.get_ticks_msec() + 3000
+	if not gateway.send("room.snapshot.read", {}, snapshot_id):
+		_queued_command = {}
+		return false
+	_snapshot_request_pending = true
+	_sound_commands.erase(request_id)
+	return true
 
 func _on_event(kind: String, payload: Dictionary) -> void:
 	if kind == "pong": return
+	if kind == "error.command_rejected" and _retry_rejected_command(payload):
+		payload["_retry_handled"] = true
+		return
+	var event_request_id := str(payload.get("_request_id", ""))
+	if not event_request_id.is_empty() and _pending_commands.has(event_request_id) and kind != "error.command_rejected":
+		_pending_commands.erase(event_request_id)
+	if kind == "battle.combo_resolved" and payload.get("_request_id", "") == _pending_play.get("request_id", ""):
+		_pending_play = {}
 	if kind in ["room.snapshot", "room.started"]:
 		var snapshot: Dictionary = payload.get("snapshot", {}) if kind == "room.started" else payload
 		if (not gateway.token.is_empty() or snapshot.has("config_version")) and not validate_config(str(snapshot.get("config_version", "")), "房间"): return
 	_sound_event(kind, payload)
+	if kind in ["room.moved", "battle.target_selected", "duel.leave_ack", "duel.escape_started", "duel.escape_failed", "duel.escape_interrupted", "duel.started", "duel.ended", "action.potion_used", "relic.taken", "relic.replaced", "reward.choice_claimed", "action.extract_started", "action.extract_cancelled", "action.extract_completed", "action.spring_started", "action.spring_cancelled", "action.spring_completed"]:
+		_request_snapshot()
 	match kind:
 		"room.snapshot":
+			_snapshot_request_pending = false
 			if room.get("room_id", "") != payload.get("room_id", ""): relic_details = {}
 			_sound_snapshot(payload, payload)
 			var hand: Array = room.get("player", {}).get("hand", []).map(func(card): return card.instance_id)
 			selected_cards = selected_cards.filter(func(id): return id in hand)
 			combat_preview = _calculate_combat_preview(selected_cards)
 			ready_prompt = {}
-			if not _queued_command.is_empty():
+			if not _queued_command.is_empty() and (not _queued_command.has("snapshot_id") or payload.get("_request_id", "") == _queued_command.snapshot_id):
 				var queued: Dictionary = _queued_command
 				_queued_command = {}
-				if allowed(queued.action) and _intent_valid(queued.action, queued.payload): _send_queued_command(queued)
+				if Time.get_ticks_msec() <= _queue_deadline and queued.get("room_id", room.get("room_id", "")) == room.get("room_id", "") and allowed(queued.action) and _intent_valid(queued.action, queued.payload): _send_queued_command(queued)
 				else: notice.emit("当前状态已改变，请重新选择操作")
 		"room.started":
 			clear_combat_preview()
@@ -706,7 +772,6 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 			ready_prompt = {}
 			gateway.room_id = payload.room_id
 			gateway.room_revision = room.get("room_revision", 0)
-			gateway.send("room.snapshot.read")
 		"match.found", "room.ready_required", "room.ready_accepted": ready_prompt = payload
 		"room.ready_removed":
 			ready_prompt = {}
@@ -718,6 +783,7 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 			if _feedback_is_current(payload):
 				combat_feedback.emit(payload)
 				_sound_combat(kind, payload)
+				_request_snapshot()
 			return
 		"combat.previewed", "combat.preview_rejected": pass
 		"inventory.changed":
@@ -726,7 +792,7 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 				notice.emit("管理员更新已同步。")
 				player_data_invalidated.emit()
 			else:
-				gateway.send("room.snapshot.read")
+				_request_snapshot()
 		"relic.contents": relic_details[str(payload.get("pile_id", ""))] = payload
 	changed.emit()
 

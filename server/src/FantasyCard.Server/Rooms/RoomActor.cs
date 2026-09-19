@@ -13,6 +13,12 @@ public sealed class RoomActor : IAsyncDisposable
     private readonly Task _reader;
     private readonly Task? _ticker;
     private readonly ServerMetrics? _metrics;
+    private readonly Func<BattleRoomSnapshot, Task>? _snapshotObserver;
+    private readonly Func<BattleRoomSnapshot, IReadOnlyList<CombatFeedbackResolution>, Task>? _combatObserver;
+    private readonly object _observerGate = new();
+    private readonly Queue<ObserverBatch> _observerBatches = new();
+    private Task _observerTail = Task.CompletedTask;
+    private bool _observerWorkerRunning;
     private long _queuedCommands;
 
     public RoomActor(
@@ -26,6 +32,8 @@ public sealed class RoomActor : IAsyncDisposable
         RoomId = room?.RoomId ?? throw new ArgumentNullException(nameof(room));
         ArgumentNullException.ThrowIfNull(timeProvider);
         _metrics = metrics;
+        _snapshotObserver = snapshotObserver;
+        _combatObserver = combatObserver;
         _commands = Channel.CreateUnbounded<ICommandWorkItem>(new UnboundedChannelOptions
         {
             SingleReader = true,
@@ -52,7 +60,7 @@ public sealed class RoomActor : IAsyncDisposable
     {
         public TResult Execute(BattleRoom room)
         {
-            if (room.Revision != ExpectedRevision)
+            if (ExpectedRevision > room.Revision)
                 throw new FantasyCard.Domain.Players.DomainValidationException(
                     $"Room revision conflict. Expected {ExpectedRevision}, current {room.Revision}.");
             return Inner.Execute(room);
@@ -82,14 +90,18 @@ public sealed class RoomActor : IAsyncDisposable
         try
         {
             await _reader;
-            if (_ticker is not null)
-            {
-                await _ticker;
-            }
         }
         catch (OperationCanceledException)
         {
         }
+        if (_ticker is not null)
+        {
+            try { await _ticker; }
+            catch (OperationCanceledException) { }
+        }
+        Task observerTail;
+        lock (_observerGate) observerTail = _observerTail;
+        await observerTail;
         _shutdown.Dispose();
     }
 
@@ -101,23 +113,83 @@ public sealed class RoomActor : IAsyncDisposable
             _metrics?.ObserveRoomActorQueueLength(Interlocked.Decrement(ref _queuedCommands));
             command.Execute(room);
             var feedback = room.DrainCombatFeedback();
-            if (combatObserver is not null && feedback.Count > 0)
-            {
-                try { await combatObserver(room.Capture(), feedback); }
-                catch { /* A disconnected presentation sink must not stop authoritative room processing. */ }
-            }
-            if (snapshotObserver is not null)
-            {
-                try
-                {
-                    await snapshotObserver(room.Capture());
-                }
-                catch
-                {
-                    // Persistence is retried by the settlement worker; a transient store failure must not stop the room actor.
-                }
-            }
+            var snapshot = room.Capture();
+            EnqueueObservers(snapshot, feedback);
         }
+    }
+
+    private void EnqueueObservers(
+        BattleRoomSnapshot snapshot,
+        IReadOnlyList<CombatFeedbackResolution> feedback)
+    {
+        if (_combatObserver is null && _snapshotObserver is null) return;
+        lock (_observerGate)
+        {
+            var hasCombat = _combatObserver is not null && feedback.Count > 0;
+            if (hasCombat || _snapshotObserver is null)
+            {
+                var persistenceSnapshot = _snapshotObserver is null ? null : snapshot;
+                _observerBatches.Enqueue(new ObserverBatch(
+                    hasCombat ? feedback : null,
+                    persistenceSnapshot,
+                    hasCombat ? snapshot : null));
+            }
+            else if (_observerBatches.LastOrDefault() is { Combat: null } pending)
+            {
+                // Consecutive persistence snapshots are interchangeable; keep
+                // only the newest one while preserving any queued combat
+                // presentation batches in front of it.
+                pending.Snapshot = snapshot;
+            }
+            else
+            {
+                _observerBatches.Enqueue(new ObserverBatch(null, snapshot, null));
+            }
+
+            if (_observerWorkerRunning) return;
+            _observerWorkerRunning = true;
+            _observerTail = _observerTail
+                .ContinueWith(_ => DrainObservers(), CancellationToken.None,
+                    TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default)
+                .Unwrap();
+        }
+    }
+
+    private async Task DrainObservers()
+    {
+        while (true)
+        {
+            ObserverBatch? batch;
+            lock (_observerGate)
+            {
+                if (_observerBatches.Count == 0)
+                {
+                    _observerWorkerRunning = false;
+                    return;
+                }
+                batch = _observerBatches.Dequeue();
+            }
+            if (batch.Combat is not null)
+                await ObserveSafely(() => _combatObserver!(batch.CombatSnapshot!, batch.Combat));
+            if (batch.Snapshot is not null)
+                await ObserveSafely(() => _snapshotObserver!(batch.Snapshot));
+        }
+    }
+
+    private sealed class ObserverBatch(
+        IReadOnlyList<CombatFeedbackResolution>? combat,
+        BattleRoomSnapshot? snapshot,
+        BattleRoomSnapshot? combatSnapshot)
+    {
+        public IReadOnlyList<CombatFeedbackResolution>? Combat { get; } = combat;
+        public BattleRoomSnapshot? CombatSnapshot { get; } = combatSnapshot;
+        public BattleRoomSnapshot? Snapshot { get; set; } = snapshot;
+    }
+
+    private static async Task ObserveSafely(Func<Task> work)
+    {
+        try { await work(); }
+        catch { /* Presentation and persistence must not stop authoritative room processing. */ }
     }
 
     private async Task RunTickerAsync(TimeProvider timeProvider, CancellationToken cancellationToken)

@@ -35,7 +35,25 @@ goto :usage
 
 :start
 echo [INFO] Connecting this client session to %FANTASYCARD_SERVER_URL%
-python tools\client_engine.py play
+rem Launch Godot directly.  The old Python launcher depended on the untracked
+rem GameFactory-3A checkout and tools\engine-local manifest, neither of which
+rem is present in a normal project checkout.
+set "GODOT_EXECUTABLE=%A3GAME_GODOT_EXECUTABLE%"
+if defined GODOT_EXECUTABLE if not exist "%GODOT_EXECUTABLE%" (
+    echo [WARN] A3GAME_GODOT_EXECUTABLE does not exist: %GODOT_EXECUTABLE%
+    set "GODOT_EXECUTABLE="
+)
+if not defined GODOT_EXECUTABLE if exist "%~dp0..\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64.exe" (
+    set "GODOT_EXECUTABLE=%~dp0..\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64.exe"
+)
+if not defined GODOT_EXECUTABLE (
+    echo [ERROR] Godot 4.7.2 was not found.
+    echo [ERROR] Set A3GAME_GODOT_EXECUTABLE to your Godot executable, then try again.
+    set "EXIT_CODE=1"
+    goto :end
+)
+echo [INFO] Starting Godot: %GODOT_EXECUTABLE%
+"%GODOT_EXECUTABLE%" --path "%~dp0client"
 set "EXIT_CODE=%ERRORLEVEL%"
 goto :end
 

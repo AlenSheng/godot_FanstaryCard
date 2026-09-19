@@ -63,7 +63,10 @@ static func _fill_owned_grid(host: Control, grid: GridContainer, scroll: ScrollC
 		child.queue_free()
 	var shown := 0
 	var side := 236.0
-	for entry_value in host.owned:
+	var owned_entries: Array = host.owned.duplicate()
+	owned_entries.sort_custom(func(left, right):
+		return CardDetails.card_before(str(left.get("cardId", "")), str(right.get("cardId", "")), host.cards))
+	for entry_value in owned_entries:
 		var entry: Dictionary = entry_value
 		if not entry.get("unlocked", false) or int(entry.get("copyCount", 0)) <= 0: continue
 		var id := str(entry.get("cardId", ""))
@@ -191,29 +194,141 @@ static func auto_build(host: Control) -> void:
 			host._render()
 			return
 		host.owned = response.data
-	var result: Array = []
-	for existing_id in host.deck_draft:
-		var id := str(existing_id)
-		var info: Dictionary = host.cards.get(id, {})
-		if id.is_empty() or id in result: continue
-		if info.get("hero_class") != null and info.get("hero_class") != Game.hero_class: continue
-		if info.get("quality") == "Orange" and _contains_orange_group(host, result, info.get("hero_class") == null): continue
-		result.append(id)
-		if result.size() >= DECK_SIZE: break
-	for entry_value in host.owned:
-		if result.size() >= DECK_SIZE: break
-		var entry: Dictionary = entry_value
-		if not entry.get("unlocked", false) or int(entry.get("copyCount", 0)) <= 0: continue
-		var id := str(entry.get("cardId", ""))
-		var info: Dictionary = host.cards.get(id, {})
-		if id.is_empty() or id in result or not info.get("is_codex", false): continue
-		if info.get("hero_class") != null and info.get("hero_class") != Game.hero_class: continue
-		if info.get("quality") == "Orange" and _contains_orange_group(host, result, info.get("hero_class") == null): continue
-		result.append(id)
+	# Auto-build is an intentional rebuild. It scores every owned card against the
+	# current loadout and class passive, then greedily picks the best legal set.
+	# Inventory is loaded here because the deck screen can be opened without ever
+	# visiting the equipment screen first.
+	var inventory: Dictionary = {}
+	if not Game.gateway.token.is_empty():
+		var inventory_response: Dictionary = await Game.gateway.request("/api/v1/inventory", HTTPClient.METHOD_GET, null, [0, 404, 409, 429, 500, 502, 503, 504])
+		if inventory_response.ok and inventory_response.data is Dictionary: inventory = inventory_response.data
+	if inventory.is_empty() and host.get("inventory") is Dictionary: inventory = host.get("inventory")
+	var result := _ranked_auto_deck(host, inventory)
 	host.deck_draft = result
 	if result.size() < DECK_SIZE: host._toast(P.localized("not_enough_deck_cards"))
 	Game.busy = false
 	host._render()
+
+static func _ranked_auto_deck(host: Control, inventory: Dictionary = {}) -> Array:
+	var candidates: Array = []
+	var owned_by_id: Dictionary = {}
+	for raw in host.owned:
+		var entry: Dictionary = raw if raw is Dictionary else {}
+		var id := str(entry.get("cardId", ""))
+		if id.is_empty() or not entry.get("unlocked", false) or int(entry.get("copyCount", 0)) <= 0: continue
+		owned_by_id[id] = entry
+	for id in owned_by_id:
+		var info: Dictionary = host.cards.get(id, {})
+		if not info.get("is_codex", false): continue
+		if info.get("hero_class") != null and info.get("hero_class") != Game.hero_class: continue
+		candidates.append({"id": id, "info": info, "owned": owned_by_id[id]})
+	if candidates.is_empty(): return []
+	var preference := _equipment_element_preference(inventory)
+	var weapon_level := _class_weapon_level()
+	var selected: Array = []
+	var element_counts: Dictionary = {}
+	var class_count := 0
+	var class_quota := mini(7, candidates.filter(func(value): return value.info.get("hero_class") != null).size())
+	while selected.size() < DECK_SIZE and not candidates.is_empty():
+		var best_index := -1
+		var best_score := -INF
+		var class_slots_left := class_quota - class_count
+		var must_fill_class := class_slots_left > 0 and selected.size() >= DECK_SIZE - class_slots_left
+		for index in candidates.size():
+			var candidate: Dictionary = candidates[index]
+			var info: Dictionary = candidate.info
+			var id := str(candidate.id)
+			var is_class := info.get("hero_class") != null
+			if must_fill_class and not is_class: continue
+			var is_general_orange := info.get("quality") == "Orange" and not is_class
+			var is_class_orange := info.get("quality") == "Orange" and is_class
+			if is_general_orange and _contains_orange_group(host, selected, true): continue
+			if is_class_orange and _contains_orange_group(host, selected, false): continue
+			var score := _auto_card_score(info, candidate.owned, preference, weapon_level, element_counts, class_count, selected.size())
+			# Keep the result deterministic when two cards are otherwise equivalent.
+			var wins_tie := best_index < 0 or id < str(candidates[best_index].id)
+			if score > best_score or (is_equal_approx(score, best_score) and wins_tie):
+				best_score = score
+				best_index = index
+		if best_index < 0: break
+		var chosen: Dictionary = candidates[best_index]
+		var chosen_info: Dictionary = chosen.info
+		selected.append(str(chosen.id))
+		var element := str(chosen_info.get("element", "None"))
+		if element != "None" and not element.is_empty(): element_counts[element] = int(element_counts.get(element, 0)) + 1
+		if chosen_info.get("hero_class") != null: class_count += 1
+		candidates.remove_at(best_index)
+	return selected
+
+static func _auto_card_score(info: Dictionary, owned: Dictionary, preference: Dictionary, weapon_level: int, element_counts: Dictionary, class_count: int, selected_count: int) -> float:
+	var quality_score := {"White": 0.0, "Green": 8.0, "Blue": 16.0, "Purple": 27.0, "Orange": 40.0}
+	var score: float = quality_score.get(str(info.get("quality", "White")), 0.0)
+	score += minf(8.0, float(int(owned.get("level", 0))) * 1.5)
+	score += minf(4.0, float(int(owned.get("copyCount", 0))) * 0.5)
+	var element := str(info.get("element", "None"))
+	if preference.has(element): score += float(preference[element])
+	var is_class := info.get("hero_class") != null
+	if is_class:
+		# High weapon levels make the class engine the primary reason to select a
+		# class card. At ordinary levels, only cards that fit the current deck get
+		# this extra weight, so a good general card can still win the slot.
+		score += _class_synergy_score(info, Game.hero_class)
+		if weapon_level >= 3: score += 12.0 + float(weapon_level - 2) * 5.0
+		else: score += float(weapon_level) * 1.5
+	else:
+		score += _class_synergy_score(info, Game.hero_class)
+	if element != "None" and not element.is_empty():
+		var same := int(element_counts.get(element, 0))
+		score += minf(12.0, float(same) * (2.5 if int(info.get("same_element_bonus", 0)) > 0 else 1.0))
+	if int(info.get("resonance_bonus", 0)) > 0: score += 4.0 + float(element_counts.get(element, 0)) * 1.5
+	if int(info.get("immediate_draw", 0)) > 0 or float(info.get("draw_charge", 0)) > 0.0: score += 3.0
+	if float(info.get("stun_seconds", 0)) > 0.0: score += 2.5
+	if int(info.get("heal", 0)) > 0: score += 2.0 if Game.hero_class == "Priest" else 0.5
+	if int(info.get("shield", 0)) > 0: score += 2.0 if Game.hero_class == "Guardian" else 0.5
+	# Reserve the early slots for the class engine when enough class cards exist.
+	if selected_count < 7 and is_class: score += 14.0
+	if selected_count >= 13 and not is_class and class_count < 7: score -= 18.0
+	return score
+
+static func _class_synergy_score(info: Dictionary, hero_class: String) -> float:
+	var element := str(info.get("element", "None"))
+	match hero_class:
+		"Mage":
+			return (7.0 if element == "Fire" else 0.0) + float(info.get("same_element_bonus", 0)) * 2.0 + float(info.get("resonance_bonus", 0)) * 2.0
+		"Priest":
+			return (6.0 if int(info.get("heal", 0)) > 0 else 0.0) + (2.0 if float(info.get("stun_seconds", 0)) > 0.0 else 0.0) + (1.5 if int(info.get("immediate_draw", 0)) > 0 else 0.0)
+		"Guardian":
+			return (7.0 if int(info.get("shield", 0)) > 0 else 0.0) + (3.0 if int(info.get("health_cost", 0)) > 0 else 0.0) + (2.0 if int(info.get("direct_damage", 0)) > 0 else 0.0)
+	return 0.0
+
+static func _equipment_element_preference(inventory: Dictionary) -> Dictionary:
+	var weights := {"Fire": 0.0, "Wood": 0.0, "Earth": 0.0, "Metal": 0.0, "Water": 0.0}
+	var equipped_ids: Array = Game.loadout().get("equipmentIds", [])
+	for raw in inventory.get("equipments", []):
+		var item: Dictionary = raw if raw is Dictionary else {}
+		if item.get("instanceId", null) not in equipped_ids: continue
+		var element := str(item.get("element", ""))
+		if not weights.has(element): continue
+		var quality_weight := {"White": 1.0, "Green": 1.35, "Blue": 1.75, "Purple": 2.2, "Orange": 2.8, "Red": 3.3}.get(str(item.get("quality", "White")), 1.0)
+		weights[element] += quality_weight + float(int(item.get("level", 0))) * 0.35
+	var preferred := ""
+	var top := 0.0
+	for element in weights:
+		if float(weights[element]) > top: top = float(weights[element]); preferred = element
+	if preferred.is_empty(): return weights
+	# GDD conflict ring: a preferred element and its opposed element should not
+	# dominate the same auto-built deck, while the two adjacent elements remain viable.
+	var opposed := {"Wood": "Earth", "Earth": "Water", "Water": "Fire", "Fire": "Metal", "Metal": "Wood"}.get(preferred, "")
+	var attacks_preferred := {"Wood": "Metal", "Earth": "Wood", "Water": "Earth", "Fire": "Water", "Metal": "Fire"}.get(preferred, "")
+	weights[preferred] = float(weights[preferred]) + 8.0
+	if not opposed.is_empty(): weights[opposed] = float(weights[opposed]) - 5.0
+	if not attacks_preferred.is_empty(): weights[attacks_preferred] = float(weights[attacks_preferred]) - 2.0
+	return weights
+
+static func _class_weapon_level() -> int:
+	for weapon in Game.lobby.get("classWeapons", []):
+		if weapon is Dictionary and str(weapon.get("heroClass", "")) == Game.hero_class: return int(weapon.get("level", 0))
+	return 0
 
 static func _contains_orange_group(host: Control, ids: Array, general: bool) -> bool:
 	for id in ids:

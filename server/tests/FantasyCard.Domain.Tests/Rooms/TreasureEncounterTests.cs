@@ -130,7 +130,7 @@ public sealed class TreasureEncounterTests
         Assert.Equal(new CombatDamageSegment(element == CardElement.None ? "Direct" : element.ToString(), 7), Assert.Single(result.DamageSegments!));
         room.EndDuelSurvived(duel.DuelId, DuelEndReason.MutualLeave);
         Assert.Equal(element, Assert.Single(player.Combat.Deck.Discard, value => value.CardId == "M-BOXSPIRIT").ElementOverride);
-        Assert.Equal(200, GameConfigCatalog.Current.Cards.Count(value => value.IsCodex));
+        Assert.Equal(220, GameConfigCatalog.Current.Cards.Count(value => value.IsCodex));
     }
 
     [Fact]

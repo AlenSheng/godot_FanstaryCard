@@ -38,12 +38,17 @@ static func action_icon(kind: String) -> Texture2D:
 	return texture(MANIFEST.data.get("action_icons", {}).get(kind, ""))
 
 static func equipment_texture(item: Dictionary) -> Texture2D:
+	return texture(equipment_texture_key(item))
+
+## Keeps equipment art strictly bound to the equipment's own quality.  In
+## particular, Orange must never fall through to the reserved Red asset path.
+static func equipment_texture_key(item: Dictionary) -> String:
 	var gear: Dictionary = item.get("equipment", item) if item.get("equipment", item) is Dictionary else item
-	var quality := str(gear.get("quality", "")).capitalize()
+	var quality := quality_name(gear.get("quality", ""))
 	var element := str(gear.get("element", "")).to_lower()
 	var slot := str(gear.get("slot", "")).to_lower()
-	if quality.is_empty() or element.is_empty() or slot.is_empty(): return null
-	return texture("Equipment/%s/%s_%s.png" % [quality, slot, element])
+	if quality.is_empty() or element.is_empty() or slot.is_empty(): return ""
+	return "Equipment/%s/%s_%s.png" % [quality, slot, element]
 
 static func item_texture(item: Dictionary) -> Texture2D:
 	var equipment := equipment_texture(item)

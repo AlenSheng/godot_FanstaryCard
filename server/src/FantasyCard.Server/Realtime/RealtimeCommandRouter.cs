@@ -760,6 +760,14 @@ public sealed partial class RealtimeCommandRouter
         string code,
         string detail)
     {
+        // Keep revision conflicts machine-readable so clients can perform
+        // the bounded snapshot-and-retry path without parsing presentation
+        // text.  Other command rejections retain their existing code.
+        if (code == "COMMAND_REJECTED" &&
+            detail.StartsWith("Room revision conflict.", StringComparison.Ordinal))
+        {
+            code = "REVISION_CONFLICT";
+        }
         _metrics?.RealtimeCommandRejected(code);
         return _eventStore.Create(
             playerId,

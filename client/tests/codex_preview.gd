@@ -1,5 +1,7 @@
 extends Node
 
+const CardDetails = preload("res://ui/card_details.gd")
+
 var failures: Array = []
 var output := "res://evidence/codex"
 var screenshot_count := 0
@@ -37,7 +39,14 @@ func _run() -> void:
 	_check($UI._codex_ready and $UI.owned.size() == cached_owned_count, "Re-entering the codex must reuse its session cache")
 	await _capture("collection")
 	var card_grid: Control = $UI._reference.find_child("CardGrid", true, false)
-	_check(card_grid.get_child_count() == 200, "Collection must include all 200 cards")
+	_check(card_grid.get_child_count() == 220, "Collection must include all 220 cards")
+	var expected_ids: Array = []
+	for id in CardDetails.sorted_ids($UI.cards.keys(), $UI.cards):
+		if $UI.cards[id].get("is_codex", false): expected_ids.append(str(id))
+	var rendered_ids: Array = []
+	for child in card_grid.get_children():
+		if child.name.begins_with("Card_"): rendered_ids.append(str(child.name).trim_prefix("Card_"))
+	_check(rendered_ids == expected_ids, "Codex cards must sort by quality, common/class, Priest/Mage/Guardian, then card ID")
 	var missing_effects: Array[String] = []
 	var stale_effects: Array[String] = []
 	for child in card_grid.get_children():
@@ -124,7 +133,7 @@ func _run() -> void:
 	$UI._quality = "Green"
 	$UI._codex_scroll = 0
 	$UI._render()
-	_check($UI._reference.find_child("CardGrid", true, false).get_child_count() == 49, "Green filter must contain 49 cards")
+	_check($UI._reference.find_child("CardGrid", true, false).get_child_count() == 54, "Green filter must contain 54 cards")
 	$UI._quality = ""
 	$UI._search = "抽牌"
 	$UI._render()

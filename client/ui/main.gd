@@ -736,8 +736,35 @@ func _equipment() -> void:
 func _equip(item: Dictionary) -> void:
 	var slots := {"Head": 0, "Helmet": 0, "Chest": 1, "Body": 1, "Hands": 2, "Gloves": 2, "Legs": 3, "Feet": 4, "Boots": 4}
 	if not slots.has(item.slot): _toast("未识别的装备部位"); return
-	gear_draft[slots[item.slot]] = item.instanceId
+	gear_draft.resize(5)
+	var target_slot: int = slots[item.slot]
+	var item_id: Variant = item.get("instanceId", "")
+	if gear_draft[target_slot] == item_id:
+		gear_draft[target_slot] = null
+		_render()
+		return
+	if _draft_high_quality_limit_would_block(item):
+		_toast(P.localized("loadout_high_quality_limit"))
+		return
+	gear_draft[target_slot] = item_id
 	_render()
+
+func _draft_high_quality_limit_would_block(item: Dictionary) -> bool:
+	var slots := {"Head": 0, "Helmet": 0, "Chest": 1, "Body": 1, "Hands": 2, "Gloves": 2, "Legs": 3, "Feet": 4, "Boots": 4}
+	var slot := str(item.get("slot", ""))
+	return slots.has(slot) and _draft_has_other_high_quality(item, int(slots[slot]))
+
+func _draft_has_other_high_quality(item: Dictionary, target_slot: int) -> bool:
+	var quality := Art.quality_name(item.get("quality", item.get("Quality", "")))
+	if quality not in ["Orange", "Red"]: return false
+	for index in range(gear_draft.size()):
+		if index == target_slot: continue # Replacing this slot preserves the one-item limit.
+		var draft_id: Variant = gear_draft[index]
+		if draft_id == null: continue
+		for candidate in inventory.get("equipments", []):
+			if candidate.get("instanceId", "") == draft_id and Art.quality_name(candidate.get("quality", candidate.get("Quality", ""))) in ["Orange", "Red"]:
+				return true
+	return false
 
 func _equipped_items() -> Array:
 	if not Game.room.is_empty(): return Game.room.get("player", {}).get("equipped_items", [])
@@ -846,7 +873,7 @@ func _shop() -> void:
 	content.add_child(grid)
 	for item in shop.get("products", []):
 		var panel := _panel(grid, 535)
-		_label(panel, P.word(item.kind), 30)
+		_label(panel, P.product_name(item.kind), 30)
 		var payload: Variant = JSON.parse_string(item.get("payload", "{}"))
 		if payload is Dictionary and payload.has("cardId"):
 			var card_id := str(payload.cardId)

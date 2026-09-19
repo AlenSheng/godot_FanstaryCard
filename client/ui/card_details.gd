@@ -4,6 +4,31 @@ const P = preload("res://ui/palette.gd")
 const CATALOG = preload("res://data/catalog.json")
 const NAMES = preload("res://data/card_names.json")
 
+const QUALITY_ORDER := {"White": 0, "Green": 1, "Blue": 2, "Purple": 3, "Orange": 4}
+const CLASS_ORDER := {"Priest": 0, "Mage": 1, "Guardian": 2}
+
+static func sorted_ids(ids: Array, cards: Dictionary) -> Array:
+	var result := ids.duplicate()
+	result.sort_custom(func(left, right): return card_before(str(left), str(right), cards))
+	return result
+
+static func card_before(left_id: String, right_id: String, cards: Dictionary) -> bool:
+	var left: Dictionary = cards.get(left_id, {})
+	var right: Dictionary = cards.get(right_id, {})
+	var left_quality := int(QUALITY_ORDER.get(str(left.get("quality", "")), 99))
+	var right_quality := int(QUALITY_ORDER.get(str(right.get("quality", "")), 99))
+	if left_quality != right_quality: return left_quality < right_quality
+	var left_class: Variant = left.get("hero_class", null)
+	var right_class: Variant = right.get("hero_class", null)
+	var left_is_class := left_class != null
+	var right_is_class := right_class != null
+	if left_is_class != right_is_class: return not left_is_class
+	if left_is_class:
+		var left_rank := int(CLASS_ORDER.get(str(left_class), 99))
+		var right_rank := int(CLASS_ORDER.get(str(right_class), 99))
+		if left_rank != right_rank: return left_rank < right_rank
+	return left_id < right_id
+
 static func localized_name(id: String, card: Dictionary = {}) -> String:
 	var fallback := str(card.get("name", id))
 	var names: Dictionary = NAMES.data.get(P.language(), {})

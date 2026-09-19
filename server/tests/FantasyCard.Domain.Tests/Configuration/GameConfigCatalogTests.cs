@@ -1,11 +1,14 @@
 using FantasyCard.Domain.Configuration;
 using FantasyCard.Domain.Combat;
+using FantasyCard.Domain.Players;
 using FantasyCard.Domain.Rooms;
 
 namespace FantasyCard.Domain.Tests.Configuration;
 
 public sealed class GameConfigCatalogTests
 {
+    private static readonly string[] TuningQualities = ["White", "Green", "Blue", "Purple"];
+
     [Fact]
     public void EmbeddedCatalogContainsCompleteGdd068CardSet()
     {
@@ -17,11 +20,19 @@ public sealed class GameConfigCatalogTests
         Assert.Equal(12, catalog.Cards.Count(card => !card.IsCodex));
         Assert.Equal(51, catalog.Cards.Count(card => card.InitiallyUnlocked));
         Assert.Equal(1320, catalog.CardLevels.Count);
+        var orderedCodex = catalog.Cards.Where(card => card.IsCodex).ToArray();
+        Assert.Equal(
+            orderedCodex
+                .OrderBy(card => card.Rarity)
+                .ThenBy(card => card.HeroClass is null ? 0 : 1)
+                .ThenBy(card => card.HeroClass ?? (HeroClass)short.MaxValue)
+                .ThenBy(card => card.CardId, StringComparer.Ordinal),
+            orderedCodex);
         var tuningCards = catalog.Cards.Where(card => card.Effect.IsElementTuning).ToArray();
         Assert.Equal(20, tuningCards.Length);
         Assert.All(Enum.GetValues<CardElement>().Where(element => element != CardElement.None),
             element => Assert.Equal(4, tuningCards.Count(card => card.Effect.Element == element)));
-        Assert.All(new[] { "White", "Green", "Blue", "Purple" },
+        Assert.All(TuningQualities,
             quality => Assert.Equal(5, tuningCards.Count(card => card.Quality == quality)));
 
         var apocalypse = Assert.Single(catalog.Cards, card => card.CardId == "PRI-10");

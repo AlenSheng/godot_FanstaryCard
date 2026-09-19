@@ -36,8 +36,13 @@ func run_test() -> Dictionary:
 	store._preview_deadline = Time.get_ticks_msec() - 1
 	store._accept_combat_preview(payload)
 	ok = ok and store.combat_preview.is_empty()
+	# Most catalog cards have a null is_class_reveal field. Local previews must
+	# treat that as false rather than attempting an invalid bool conversion.
+	store.room = {"room_id": "room-a", "allowed_actions": ["battle.play_cards"], "player": {"hero_class": "Mage", "hand": [{"instance_id": "card-a", "card_id": "C01", "level": 0, "element_override": ""}], "battle_status": {}}, "pve": {}}
+	var local_preview: Dictionary = store._calculate_combat_preview(["card-a"])
+	ok = ok and not local_preview.is_empty()
 	store.clear_combat_preview()
 	ok = ok and store._preview_request.is_empty()
 	store.free()
 	gateway.free()
-	return {"ok": ok, "message": "Combat previews reject wrong request IDs, old revisions, changed card selections/targets, and expired responses"}
+	return {"ok": ok, "message": "Combat previews reject stale state and safely handle null class-reveal flags"}

@@ -7,6 +7,14 @@ public sealed partial class BattleRoom
     public CombatResolution PreviewCards(Guid playerId, Guid battleId, string targetId,
         IReadOnlyList<Guid> cardInstanceIds, long expectedRevision, DateTimeOffset now)
     {
+        // A preview is a read-only projection of the state the client asked
+        // about.  Unlike a queued command, it must not silently answer for an
+        // older revision: doing so makes the UI show a legal action that can
+        // no longer be played.  Commands themselves still accept stale
+        // revisions because the room actor serializes them authoritatively.
+        if (expectedRevision != Revision)
+            throw new FantasyCard.Domain.Players.DomainValidationException(
+                $"Room revision conflict. Expected {expectedRevision}, current {Revision}.");
         var previewRoom = Restore(Capture(), _catalog, 0);
         return previewRoom.PlayCards(playerId, battleId, targetId, cardInstanceIds, expectedRevision, now)
             with { RoomRevision = Revision };

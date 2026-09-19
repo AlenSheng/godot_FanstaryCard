@@ -325,7 +325,7 @@ public sealed partial class BattleRoom
 
     public RoomMoveResult MovePlayerAndPair(Guid playerId, MapPosition target, long expectedRevision, DateTimeOffset now)
     {
-        if (expectedRevision != Revision)
+        if (expectedRevision > Revision)
             throw new DomainValidationException($"Room revision conflict. Expected {expectedRevision}, current {Revision}.");
         if (Map is null) throw new DomainValidationException("The room map is not initialized.");
         var player = GetPlayer(playerId);
@@ -424,7 +424,7 @@ public sealed partial class BattleRoom
             var replay = player.RewardRefreshReceipts.SingleOrDefault(receipt => receipt.RequestId == requestId);
             if (replay is not null) return replay;
         }
-        if (expectedRevision != Revision)
+        if (expectedRevision > Revision)
             throw new DomainValidationException($"Room revision conflict. Expected {expectedRevision}, current {Revision}.");
         var choice = player.RewardChoice ?? throw new DomainValidationException("The player has no pending reward choice.");
         if (player.Phase != RoomPlayerPhase.Choice)
@@ -755,7 +755,7 @@ public sealed partial class BattleRoom
 
     public long SelectPveTarget(Guid playerId, Guid battleId, string targetId, long expectedRevision)
     {
-        if (expectedRevision != Revision)
+        if (expectedRevision > Revision)
             throw new DomainValidationException($"Room revision conflict. Expected {expectedRevision}, current {Revision}.");
         var player = GetPlayer(playerId);
         if (player.Phase != RoomPlayerPhase.Pve || player.Pve?.BattleId != battleId)
@@ -856,7 +856,7 @@ public sealed partial class BattleRoom
         long expectedRevision,
         DateTimeOffset now)
     {
-        if (expectedRevision != Revision)
+        if (expectedRevision > Revision)
         {
             throw new DomainValidationException($"Room revision conflict. Expected {expectedRevision}, current {Revision}.");
         }

@@ -193,7 +193,15 @@ public sealed class GameConfigCatalog
         var shopCardPriceTable = bundle.Table("ShopCardPrices");
         var itemsTable = bundle.Table("Items");
         var economyTable = bundle.Table("Economy");
-        var cards = cardsTable.Rows.Select(row => ReadCard(cardsTable, row)).Where(card => card.Enabled).ToArray();
+        var cards = cardsTable.Rows
+            .Select(row => ReadCard(cardsTable, row))
+            .Where(card => card.Enabled)
+            .OrderBy(card => card.IsCodex ? 0 : 1)
+            .ThenBy(card => card.IsCodex ? card.Rarity : short.MaxValue)
+            .ThenBy(card => card.HeroClass is null ? 0 : 1)
+            .ThenBy(card => card.HeroClass ?? (HeroClass)short.MaxValue)
+            .ThenBy(card => card.CardId, StringComparer.Ordinal)
+            .ToArray();
         var levels = levelsTable.Rows.Select(row => new CardLevelConfig(
             levelsTable.Text(row, "card_id"),
             levelsTable.Int(row, "level"),

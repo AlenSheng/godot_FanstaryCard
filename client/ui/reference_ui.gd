@@ -762,15 +762,16 @@ func _gear() -> void:
 		list.add_child(row)
 		Art.image(row, Art.equipment_texture(item) if Art.equipment_texture(item) != null else _item(item.slot), Vector2(68, 70))
 		var selected: bool = item.get("instanceId", "") in host.gear_draft
-		var entry_text: String = ("已选 · " if selected else "") + host._equipment_name(item)
+		var entry_text: String = ("已穿戴 · " if selected else "穿戴 · ") + host._equipment_name(item)
 		var entry: Button = host._button(row, entry_text, func():
 			if scroll.can_activate():
-				host._show_equipment_details(item, func(): host._equip(item)),
-			Game.busy or item.get("location") not in ["Inventory", "Equipped"])
+				if selected: host._equip(item)
+				elif host._draft_high_quality_limit_would_block(item): host._toast(P.localized("loadout_high_quality_limit"))
+				else: host._show_equipment_details(item, func(): host._equip(item)),
+			Game.busy or item.get("location") not in ["Inventory", "Equipped"], BLUE if selected else ORANGE)
 		entry.name = "EquipmentEntry_" + str(item.get("instanceId", ""))
-		entry.tooltip_text = host.EquipmentDetails.description(item) + ("\n当前已加入本地穿戴草稿" if selected else "")
+		entry.tooltip_text = host.EquipmentDetails.description(item) + ("\n已穿戴草稿；再次点击卸下" if selected else "\n点击穿戴到草稿")
 		entry.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		if selected: entry.add_theme_stylebox_override("normal", Art.style(ORANGE))
 	scroll.set_deferred("scroll_vertical", host._equipment_scroll)
 	scroll.get_v_scroll_bar().value_changed.connect(func(value): host._equipment_scroll = int(value))
 	if list.get_child_count() == 0: text("仓库暂无装备\n探索撤离后可带回战利品", Rect2(1255, 362, 530, 160), 28, P.MUTED)
@@ -1037,7 +1038,7 @@ func _product_title(kind: String, payload: Dictionary) -> String:
 		return P.localized("word_card_pack")
 	if kind == "ClassSoul" and payload.get("heroClass", "") in P.CLASSES:
 		return P.localized("word_%s_soul" % str(payload.heroClass).to_lower())
-	return P.word(kind)
+	return P.product_name(kind)
 
 func _product_art(kind: String, payload: Dictionary) -> Texture2D:
 	if kind == "Cards" and payload.has("cardId"):
