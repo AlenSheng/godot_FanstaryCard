@@ -7,51 +7,47 @@
   <title>Relicbound · 遗物羁绊</title>
   <link rel="stylesheet" href="/assets/site.css">
 </head>
-<body>
+<body data-lang="zh">
   <header class="site-header">
     <a class="brand" href="#top" aria-label="Relicbound 首页"><span class="brand-mark">✦</span><span>RELICBOUND</span></a>
-    <nav aria-label="页面导航"><a href="#about">世界</a><a href="#play">玩法</a><a href="#download">下载</a><a href="#community">社群</a></nav>
+    <nav aria-label="页面导航"><a href="#about" data-i18n data-zh="世界" data-en="World">世界</a><a href="#play" data-i18n data-zh="玩法" data-en="Play">玩法</a><a href="#download" data-i18n data-zh="下载" data-en="Download">下载</a><a href="#community" data-i18n data-zh="社群" data-en="Community">社群</a></nav>
+    <button class="language-toggle" id="language-toggle" type="button" aria-label="Switch to English">EN</button>
   </header>
-
   <main id="top">
     <section class="hero" aria-labelledby="hero-title">
-      <img class="hero-art" src="/assets/relicbound-hero.png" alt="月下遗迹中漂浮着发光的遗物卡牌">
+      <img class="hero-art" src="/assets/relicbound-hero.png" alt="月下遗迹中漂浮着发光的遗物卡牌" data-alt-zh="月下遗迹中漂浮着发光的遗物卡牌" data-alt-en="Moonlit relic cards floating above ancient ruins">
       <div class="hero-shade"></div>
       <div class="hero-content">
         <p class="eyebrow">DARK FANTASY · CARD ROGUELITE</p>
-        <h1 id="hero-title">遗物苏醒，<br>命运由你落牌。</h1>
-        <p class="hero-copy">在破碎王国的边缘，收集失落遗物、编织专属牌组，并在每一次抉择后走向不同的结局。</p>
-        <a class="button button-primary" href="#download">关注客户端下载</a>
+        <h1 id="hero-title" data-i18n-html data-zh="遗物苏醒，<br>命运由你落牌。" data-en="Relics awaken.<br>Your fate is in the cards.">遗物苏醒，<br>命运由你落牌。</h1>
+        <p class="hero-copy" data-i18n data-zh="在破碎王国的边缘，收集失落遗物、编织专属牌组，并在每一次抉择后走向不同的结局。" data-en="At the edge of a broken kingdom, gather lost relics, shape a deck of your own, and let every choice lead you toward a different ending.">在破碎王国的边缘，收集失落遗物、编织专属牌组，并在每一次抉择后走向不同的结局。</p>
+        <a class="button button-primary" href="#download" data-i18n data-zh="关注客户端下载" data-en="Follow client release">关注客户端下载</a>
       </div>
-      <a class="scroll-cue" href="#about">向下探索 <span>↓</span></a>
+      <a class="scroll-cue" href="#about"><span data-i18n data-zh="向下探索" data-en="Explore below">向下探索</span> <span>↓</span></a>
     </section>
-
     <section id="about" class="section story-section">
       <p class="section-kicker">THE BOUND RELICS</p>
-      <h2>世界已经破碎，羁绊仍在延续。</h2>
-      <p class="section-lead">古老遗物散落在迷雾与废墟之间。它们会回应你的选择，也会改变你面对敌人、事件与同伴的方式。每一局，都是一次新的远征。</p>
+      <h2 data-i18n data-zh="世界已经破碎，羁绊仍在延续。" data-en="The world is broken. The bonds remain.">世界已经破碎，羁绊仍在延续。</h2>
+      <p class="section-lead" data-i18n data-zh="古老遗物散落在迷雾与废墟之间。它们会回应你的选择，也会改变你面对敌人、事件与同伴的方式。每一局，都是一次新的远征。" data-en="Ancient relics lie scattered through mist and ruins. They answer your choices, changing how you meet enemies, events, and allies. Every run is a new expedition.">古老遗物散落在迷雾与废墟之间。它们会回应你的选择，也会改变你面对敌人、事件与同伴的方式。每一局，都是一次新的远征。</p>
     </section>
-
     <section id="play" class="section feature-section" aria-labelledby="play-title">
-      <div class="section-heading"><p class="section-kicker">MAKE THE RUN YOURS</p><h2 id="play-title">构筑、探索、抉择。</h2></div>
+      <div class="section-heading"><p class="section-kicker">MAKE THE RUN YOURS</p><h2 id="play-title" data-i18n data-zh="构筑、探索、抉择。" data-en="Build, explore, decide.">构筑、探索、抉择。</h2></div>
       <div class="feature-grid">
-        <article><span class="feature-number">01</span><h3>组合你的卡牌</h3><p>用进攻、守御与技巧卡拼出适合自己的战斗节奏。</p></article>
-        <article><span class="feature-number">02</span><h3>让遗物改变战局</h3><p>每件遗物都能开启新的联动，也会带来新的取舍。</p></article>
-        <article><span class="feature-number">03</span><h3>走出你的路径</h3><p>在未知地图中前进，风险与奖励从不只摆在一条路上。</p></article>
+        <article><span class="feature-number">01</span><h3 data-i18n data-zh="组合你的卡牌" data-en="Shape your deck">组合你的卡牌</h3><p data-i18n data-zh="用进攻、守御与技巧卡拼出适合自己的战斗节奏。" data-en="Find your rhythm with attack, defense, and skill cards.">用进攻、守御与技巧卡拼出适合自己的战斗节奏。</p></article>
+        <article><span class="feature-number">02</span><h3 data-i18n data-zh="让遗物改变战局" data-en="Let relics turn the tide">让遗物改变战局</h3><p data-i18n data-zh="每件遗物都能开启新的联动，也会带来新的取舍。" data-en="Every relic unlocks new synergies—and a new trade-off.">每件遗物都能开启新的联动，也会带来新的取舍。</p></article>
+        <article><span class="feature-number">03</span><h3 data-i18n data-zh="走出你的路径" data-en="Choose your path">走出你的路径</h3><p data-i18n data-zh="在未知地图中前进，风险与奖励从不只摆在一条路上。" data-en="Move through an unknown map where risk and reward never sit on a single road.">在未知地图中前进，风险与奖励从不只摆在一条路上。</p></article>
       </div>
     </section>
-
     <section id="download" class="section download-section" aria-labelledby="download-title">
-      <div><p class="section-kicker">COMING SOON</p><h2 id="download-title">踏入遗迹的入口，正在开启。</h2><p>客户端准备完成后，会在这里提供官方、安全的下载包与版本说明。</p></div>
-      <div class="download-card"><span class="status-dot" aria-hidden="true"></span><strong>客户端筹备中</strong><small>请关注本页更新，避免通过非官方来源下载。</small><button type="button" disabled>下载即将开放</button></div>
+      <div><p class="section-kicker">COMING SOON</p><h2 id="download-title" data-i18n data-zh="踏入遗迹的入口，正在开启。" data-en="The way into the ruins is opening.">踏入遗迹的入口，正在开启。</h2><p data-i18n data-zh="客户端准备完成后，会在这里提供官方、安全的下载包与版本说明。" data-en="When the client is ready, this is where official, secure downloads and release notes will appear.">客户端准备完成后，会在这里提供官方、安全的下载包与版本说明。</p></div>
+      <div class="download-card"><span class="status-dot" aria-hidden="true"></span><strong data-i18n data-zh="客户端筹备中" data-en="Client in preparation">客户端筹备中</strong><small data-i18n data-zh="请关注本页更新，避免通过非官方来源下载。" data-en="Watch this page for updates and avoid downloads from unofficial sources.">请关注本页更新，避免通过非官方来源下载。</small><button type="button" disabled data-i18n data-zh="下载即将开放" data-en="Download coming soon">下载即将开放</button></div>
     </section>
-
     <section id="community" class="section community-section" aria-labelledby="community-title">
-      <p class="section-kicker">OFFICIAL COMMUNITY</p><h2 id="community-title">一起见证遗物苏醒。</h2><p>官方客服与玩家交流群正在筹备。链接开放后将仅在本页面公布。</p>
-      <div class="community-note">官方社群入口 · 即将公布</div>
+      <p class="section-kicker">OFFICIAL COMMUNITY</p><h2 id="community-title" data-i18n data-zh="一起见证遗物苏醒。" data-en="Witness the relics awaken together.">一起见证遗物苏醒。</h2><p data-i18n data-zh="官方客服与玩家交流群正在筹备。链接开放后将仅在本页面公布。" data-en="Official support and player communities are being prepared. Their links will be published only on this page.">官方客服与玩家交流群正在筹备。链接开放后将仅在本页面公布。</p>
+      <div class="community-note" data-i18n data-zh="官方社群入口 · 即将公布" data-en="Official community links · Coming soon">官方社群入口 · 即将公布</div>
     </section>
   </main>
-
-  <footer><span>© 2026 Relicbound</span><span>遗物羁绊 · 官方网站</span></footer>
+  <footer><span>© 2026 Relicbound</span><span data-i18n data-zh="遗物羁绊 · 官方网站" data-en="Relicbound · Official website">遗物羁绊 · 官方网站</span></footer>
+  <script src="/assets/site.js"></script>
 </body>
 </html>
