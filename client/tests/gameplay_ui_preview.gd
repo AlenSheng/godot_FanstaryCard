@@ -167,15 +167,12 @@ func _has_button(text: String, enabled: bool) -> bool:
 
 func _check_dialog_bounds(suffix: String) -> void:
 	for child in $UI.get_children():
-		if child is AcceptDialog:
-			_check(Rect2i(get_viewport().get_visible_rect()).encloses(Rect2i(child.position, child.size)), child.title + " fits window" + suffix)
+		if child.name == "BattleDetailsModal":
+			_check(Rect2i(get_viewport().get_visible_rect()).encloses(Rect2i(child.get_global_position(), child.size)), "战斗属性弹窗适配窗口" + suffix)
 
 func _close_dialogs() -> void:
 	for child in $UI.get_children():
-		if child is AcceptDialog: child.hide()
-	await get_tree().process_frame
-	for child in $UI.get_children():
-		if child is AcceptDialog: child.queue_free()
+		if child.name == "BattleDetailsModal": child.queue_free()
 	await get_tree().process_frame
 
 func _description_scroll() -> ScrollContainer:

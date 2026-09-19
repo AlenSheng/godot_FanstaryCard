@@ -553,10 +553,11 @@ func _calculate_combat_preview(ids: Array) -> Dictionary:
 	var elemental: Array = cards.filter(func(card): return int(card.get("elemental_damage", 0)) > 0 and str(card.get("element", "None")) != "None" and int(card.get("secondary_elemental_damage", 0)) == 0)
 	var counts := {}
 	for card in elemental: counts[card.element] = int(counts.get(card.element, 0)) + 1
-	var core := ""
-	var core_count := 0
-	for element in counts:
-		if int(counts[element]) > core_count: core = element; core_count = int(counts[element])
+	# The first selected elemental card establishes the core.  Do not choose
+	# the most frequent element: a later branch may contain more cards, but it
+	# must not replace the player's first-card core choice.
+	var core := str(elemental[0].get("element", "")) if not elemental.is_empty() else ""
+	var core_count := int(counts.get(core, 0))
 	var reveal_element: String = str({"Mage": "Fire", "Priest": "Water"}.get(room.get("player", {}).get("hero_class", ""), "Earth"))
 	# Catalog rows use null for cards without the flag; GDScript has no bool()
 	# conversion constructor, so test the actual boolean value directly.
@@ -600,6 +601,9 @@ func _calculate_combat_preview(ids: Array) -> Dictionary:
 				var elemental_multiplier := (1.0 + float(status.get("damage_" + pair[0], 0.0))) * (1.0 - _target_resistance(pair[0], battle)) if core.is_empty() else (1.0 + float(status.get("damage_" + core, 0.0))) * (1.0 - _target_resistance(core, battle))
 				var value := int(floor(pair[1] * elemental_multiplier))
 				if value > 0: segments[pair[0]] = int(segments.get(pair[0], 0)) + value; total += value
+		# Printed direct damage is already a direct segment.  Piercing is an
+		# additional per-card contribution and must not replace the base value.
+		direct += int(card.get("direct_damage", 0))
 		direct += int(floor((bases[i] + int(card.get("secondary_elemental_damage", 0)) + int(card.get("direct_damage", 0))) * float(status.get("piercing", 0.0))))
 	if direct > 0: segments["Direct"] = direct; total += direct
 	var target_shield := int((battle.get("opponent", {}) if battle.has("opponent") else battle.get("monsters", []).filter(func(value): return value.get("monster_id", "") == battle.get("current_target_id", "")).front()).get("shield", 0))

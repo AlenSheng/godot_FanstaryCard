@@ -31,6 +31,15 @@ func run_test() -> Dictionary:
 	if confirm_style == null or confirm_style.texture == null or cancel_style == null or cancel_style.texture == null: errors.append("Confirmation actions must use existing button artwork")
 	confirm.pressed.emit()
 	if not invoked[0]: errors.append("Confirm button must invoke its supplied action")
+	var info_modal := ModalScene.instantiate()
+	host.add_child(info_modal)
+	info_modal.configure("Battle details", Callable(), {"info_only": true, "tall": true, "title": "Battle Stats", "confirm_text": "Close"})
+	var info_panel := info_modal.get_node("DialogPanel") as Panel
+	var info_cancel := info_panel.get_node("CancelButton") as Button
+	var info_confirm := info_panel.get_node("ConfirmButton") as Button
+	if info_cancel.visible: errors.append("Information modal must hide the cancel action")
+	if info_confirm.position.x != 345.0 or info_confirm.position.y != 426.0: errors.append("Information modal must center its close action")
+	if info_panel.size.y != 600.0: errors.append("Tall information modal must reserve the detail layout")
 	host.free()
 	P.set_language(previous_language)
 	return {"ok": errors.is_empty(), "message": "Shared layered confirmation panel, localized wrapping and two sprite-backed actions" if errors.is_empty() else "; ".join(errors)}

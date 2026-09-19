@@ -835,13 +835,14 @@ func _show_equipment_details(item: Dictionary, action: Callable = Callable(), ac
 	dialog.open(item, current, worn, action, action_title, Game.busy)
 
 func _show_battle_details(status: Dictionary) -> void:
-	var dialog := AcceptDialog.new()
-	dialog.title = P.localized_text("当前战斗属性与套装")
-	dialog.dialog_text = BattleDetails.description(status) if not status.is_empty() else P.localized_text("等待战斗属性同步")
+	if get_node_or_null("BattleDetailsModal") != null: return
+	var dialog := ConfirmationModalScene.instantiate()
+	dialog.name = "BattleDetailsModal"
 	add_child(dialog)
-	dialog.confirmed.connect(dialog.queue_free)
-	dialog.canceled.connect(dialog.queue_free)
-	dialog.popup_centered(Vector2i(700, 630))
+	dialog.configure(
+		BattleDetails.description(status) if not status.is_empty() else P.localized_text("等待战斗属性同步"),
+		Callable(),
+		{"title": P.localized_text("battle_stats_set"), "confirm_text": P.localized("confirm"), "info_only": true, "tall": true})
 
 func _enhance(item: Dictionary) -> void:
 	if Game.busy: return

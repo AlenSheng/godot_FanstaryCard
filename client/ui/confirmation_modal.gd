@@ -43,6 +43,35 @@ func configure(message: String, action: Callable, options: Dictionary = {}) -> v
 	description_label.text = P.localized_text(message)
 	confirm_button.text = P.localized_text(str(options.get("confirm_text", "确认")))
 	cancel_button.text = P.localized_text(str(options.get("cancel_text", "取消")))
+	var info_only := bool(options.get("info_only", false))
+	var tall := bool(options.get("tall", false))
+	cancel_button.visible = not info_only
+	if info_only:
+		# Keep the information dialog on the same shared modal/panel artwork,
+		# but present one centered close action instead of a confirmation pair.
+		confirm_button.position = Vector2(345, 326)
+		confirm_button.size = Vector2(270, 74)
+	else:
+		confirm_button.position = Vector2(530, 326)
+		confirm_button.size = Vector2(270, 74)
+	if tall:
+		dialog_panel.offset_top = -300.0
+		dialog_panel.offset_bottom = 300.0
+		description_label.offset_bottom = 385.0
+		cancel_button.position.y = 426.0
+		cancel_button.size.y = 74.0
+		confirm_button.position.y = 426.0
+		confirm_button.size.y = 74.0
+		description_label.max_lines_visible = 12
+	else:
+		dialog_panel.offset_top = -230.0
+		dialog_panel.offset_bottom = 230.0
+		description_label.offset_bottom = 285.0
+		cancel_button.position.y = 326.0
+		cancel_button.size.y = 74.0
+		confirm_button.position.y = 326.0
+		confirm_button.size.y = 74.0
+		description_label.max_lines_visible = 4
 	P.fit_control_font(title_label, P.font("title"), 32, 36.0)
 	for button in [cancel_button, confirm_button]:
 		var typeface := P.font_for_text(button.text, 26)

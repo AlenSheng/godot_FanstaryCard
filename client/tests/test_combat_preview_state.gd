@@ -38,11 +38,17 @@ func run_test() -> Dictionary:
 	ok = ok and store.combat_preview.is_empty()
 	# Most catalog cards have a null is_class_reveal field. Local previews must
 	# treat that as false rather than attempting an invalid bool conversion.
-	store.room = {"room_id": "room-a", "allowed_actions": ["battle.play_cards"], "player": {"hero_class": "Mage", "hand": [{"instance_id": "card-a", "card_id": "C01", "level": 0, "element_override": ""}], "battle_status": {}}, "pve": {}}
+	store.room = {"room_id": "room-a", "allowed_actions": ["battle.play_cards"], "player": {"hero_class": "Mage", "hand": [{"instance_id": "card-a", "card_id": "C01", "level": 0, "element_override": ""}], "battle_status": {}}, "pve": {"battle_id": "battle-a", "current_target_id": "monster-a", "monsters": [{"monster_id": "monster-a", "hp": 100, "shield": 0}]}}
 	var local_preview: Dictionary = store._calculate_combat_preview(["card-a"])
 	ok = ok and not local_preview.is_empty()
+	store.room.player.hand = [{"instance_id": "direct-card", "card_id": "C11", "level": 0, "element_override": ""}]
+	var direct_preview: Dictionary = store._calculate_combat_preview(["direct-card"])
+	ok = ok and int(direct_preview.get("damage", 0)) == 6 and direct_preview.get("damage_segments", []).any(func(value): return value.get("kind", "") == "Direct" and int(value.get("amount", 0)) == 6)
+	store.room.player.hand = [{"instance_id": "earth-card", "card_id": "C09"}, {"instance_id": "water-card", "card_id": "C06"}]
+	var core_preview: Dictionary = store._calculate_combat_preview(["earth-card", "water-card"])
+	ok = ok and core_preview.get("core_element", "") == "Earth"
 	store.clear_combat_preview()
 	ok = ok and store._preview_request.is_empty()
 	store.free()
 	gateway.free()
-	return {"ok": ok, "message": "Combat previews reject stale state and safely handle null class-reveal flags"}
+	return {"ok": ok, "message": "Combat previews reject stale state, include printed direct damage, and preserve first-card core selection"}
