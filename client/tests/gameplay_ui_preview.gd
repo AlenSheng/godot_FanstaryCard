@@ -29,9 +29,14 @@ func _run() -> void:
 		_check($UI._reference.find_children("InventorySlot_*", "Button", true, false).size() == 36, "36 slots" + suffix)
 		for index in [33, 34, 35]:
 			var slot: Button = $UI._reference.get_node("InventorySlot_%s" % index)
-			_check(slot.text.begins_with("安全"), "Safe slot %s" % index + suffix)
+			var marker := slot.get_node_or_null("SlotMarker") as Label
+			_check((marker != null and marker.text.begins_with("安全")) or slot.text.begins_with("安全"), "Safe slot %s" % index + suffix)
 			_check(slot._can_drop_data(Vector2.ZERO, {"room_id": "completion-room", "inventory_item_id": "pack-0"}), "Same-room inventory drag" + suffix)
 			_check(not slot._can_drop_data(Vector2.ZERO, {"room_id": "different-room", "inventory_item_id": "pack-0"}), "Foreign-room drag rejected" + suffix)
+		var equipment_slot: Button = $UI._reference.get_node("InventorySlot_0")
+		_check(equipment_slot.get_node_or_null("QualityBackground") != null, "Equipment quality background" + suffix)
+		_check(equipment_slot.get_node_or_null("QualityFrame") != null, "Equipment quality frame" + suffix)
+		_check(equipment_slot.size == Vector2(96, 96), "Equipment slot keeps common cell size" + suffix)
 		var description_scroll: ScrollContainer = _description_scroll()
 		_check(description_scroll != null, "Long equipment details can scroll" + suffix)
 		if description_scroll != null:

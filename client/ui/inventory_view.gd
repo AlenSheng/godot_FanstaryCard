@@ -4,6 +4,7 @@ const P = preload("res://ui/palette.gd")
 const Art = preload("res://ui/art.gd")
 const Details = preload("res://ui/equipment_details.gd")
 const Slot = preload("res://ui/inventory_slot.gd")
+const ItemVisual = preload("res://ui/item_visual.gd")
 const CELL := Art.COMMON_CELL_KEY
 
 static func open(host: Control, pile_id: String = "") -> void:
@@ -36,20 +37,43 @@ static func build(ui: Control, host: Control, state: Dictionary) -> void:
 		slot.item_id = item.get("item_id", "")
 		slot.position = Vector2(992 + (index % 6) * 104, 270 + int(index / 6) * 104)
 		slot.size = Art.COMMON_CELL_DISPLAY_SIZE
-		slot.text = P.localized_text(("安全 " if index in safe_slots else "") + str(index + 1))
-		if not item.is_empty(): slot.text += "\n" + Details.title(item) + "\n×%s" % item.get("quantity", 1)
+		slot.custom_minimum_size = Art.COMMON_CELL_DISPLAY_SIZE
+		slot.clip_contents = true
+		var marker_text := P.localized_text(("安全 " if index in safe_slots else "") + str(index + 1))
+		slot.text = marker_text
 		slot.add_theme_font_size_override("font_size", 16)
 		slot.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		slot.tooltip_text = P.localized_text(Details.description(item) if not item.is_empty() else "空格")
 		Art.button(slot, CELL)
 		if not item.is_empty():
-			var quality_style := Art.item_cell_style(item)
-			slot.add_theme_stylebox_override("normal", quality_style)
-			slot.add_theme_stylebox_override("hover", quality_style)
-			slot.add_theme_stylebox_override("pressed", quality_style)
-			slot.icon = Art.item_texture(item)
-			slot.expand_icon = true
-			slot.add_theme_constant_override("icon_max_width", 58)
+			if item.get("kind", "") == "Equipment":
+				# Equipment slots use the shared layered visual so the quality fill and
+				# frame stay consistent with preparation, rewards and comparisons.
+				slot.text = ""
+				var equipment_visual := ItemVisual.equipment(slot, item, Art.COMMON_CELL_DISPLAY_SIZE)
+				equipment_visual.position = Vector2.ZERO
+				equipment_visual.size = Art.COMMON_CELL_DISPLAY_SIZE
+				var marker := Label.new()
+				marker.name = "SlotMarker"
+				marker.text = marker_text
+				marker.position = Vector2(6, 5)
+				marker.size = Vector2(84, 22)
+				marker.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+				marker.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+				marker.add_theme_font_override("font", P.font_for_text(marker.text, 16))
+				marker.add_theme_font_size_override("font_size", 16)
+				marker.add_theme_color_override("font_color", P.GOLD if index in safe_slots else P.MUTED)
+				marker.mouse_filter = Control.MOUSE_FILTER_IGNORE
+				slot.add_child(marker)
+			else:
+				var quality_style := Art.item_cell_style(item)
+				slot.add_theme_stylebox_override("normal", quality_style)
+				slot.add_theme_stylebox_override("hover", quality_style)
+				slot.add_theme_stylebox_override("pressed", quality_style)
+				slot.icon = Art.item_texture(item)
+				slot.expand_icon = true
+				slot.add_theme_constant_override("icon_max_width", 58)
+				if int(item.get("quantity", 1)) > 1: slot.text = marker_text + "\n×%s" % item.get("quantity", 1)
 		if index in safe_slots: slot.add_theme_color_override("font_color", P.GOLD)
 		if item.get("item_id", "") == selected.get("item_id", "unused"):
 			slot.add_theme_stylebox_override("normal", P.box(Color("29474a"), P.GOLD, 2))
