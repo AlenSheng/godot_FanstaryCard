@@ -9,16 +9,23 @@ body{font:15px/1.5 system-ui,sans-serif;background:#101827;color:#e9eef8;margin:
 </head>
 <body><main>
 <h1>遗境行者后台管理 · Relicbound Admin</h1>
-<section><label for="key">管理密钥（仅保存在此页面内存）</label><input id="key" type="password" autocomplete="off"><small>请通过 HTTPS 访问。关闭或刷新页面后需重新输入。</small></section>
+<section><h2>验证管理密钥</h2><label for="key">管理密钥（仅保存在此页面内存）</label><input id="key" type="password" autocomplete="off"><button id="verifyKey" type="button">验证密钥</button><p id="authResult" role="status"></p><small>请通过 HTTPS 访问。关闭或刷新页面后需重新输入。</small></section>
+<div id="adminContent" hidden>
 <section><h2>测试服登录与版本公告</h2><button id="loadSettings">读取当前设置</button><label><input id="localLogin" type="checkbox">启用测试服本地登录 / 注册</label><label for="announcementTitle">公告标题</label><input id="announcementTitle" maxlength="120" placeholder="版本公告"><label for="announcementBody">公告正文</label><textarea id="announcementBody" maxlength="6000" rows="10" placeholder="发布后，所有在线客户端的登录页会立即更新"></textarea><button id="publishSettings">保存并发布到客户端</button><p id="settingsResult" role="status"></p></section>
 <section><h2>查找玩家</h2><div class="row"><div><label for="query">UID / 账号 / 精确昵称</label><input id="query" autocomplete="off"></div><div><button id="search">查找</button></div></div><div id="players"></div></section>
 <section><h2>操作玩家</h2><label for="uid">玩家 UID</label><input id="uid" readonly><div class="card"><strong>一键养成</strong><br><small>操作立即写入选定账号并留下审计记录；“全部装备”会补齐尚未拥有的 150 种品质、元素与部位组合。</small><br><button id="unlockAllCards">解锁全部卡牌图鉴</button><button id="maxAllCards">全部已解锁卡牌满级</button><button id="grantAllEquipment">获取全部装备</button><button id="maxExistingEquipment">现有装备满级</button></div><button id="equipment">查看背包装备</button><div id="equipmentList"></div><div class="row"><div><label for="title">邮件标题</label><input id="title" value="系统通知"></div><div><label for="kind">道具类型</label><select id="kind"></select></div><div><label for="amount">数量</label><input id="amount" type="number" min="1" max="1000000" value="1"></div><div><label for="itemId">装备规格 / 装备实例 ID</label><input id="itemId" placeholder="发放例：White|Fire|Head"></div></div><label for="body">邮件内容 / 留言</label><textarea id="body"></textarea><button id="grant">发放道具邮件</button><button id="message">发送留言</button><label for="reason">收回或封号原因</label><input id="reason"><button id="revoke" class="danger">收回道具并通知</button><button id="ban" class="danger">封号</button><button id="unban">解封</button><p id="result" role="status"></p></section>
+</div>
 </main>
 <script>
 const $=id=>document.getElementById(id);
 const kinds=['Gold','Diamond','WarriorSoul','PriestSoul','MageSoul','GuardianSoul','EquipmentFragments','HealthPotion','AdvancedBag','TopBag','Equipment'];
 for(const kind of kinds){const option=document.createElement('option');option.value=kind;option.textContent=kind;$('kind').append(option)}
 async function api(path,method='GET',data){const headers={'X-Admin-Key':$('key').value};if(data){headers['Content-Type']='application/json';headers['Idempotency-Key']=crypto.randomUUID()}const response=await fetch('/api/admin'+path,{method,headers,body:data?JSON.stringify(data):undefined,cache:'no-store'});if(!response.ok){let detail='HTTP '+response.status;try{const problem=await response.json();detail=problem.detail||problem.title||detail}catch{}throw Error(detail)}return response.json()}
+let verifiedKey='';
+function authStatus(message,error=false){$('authResult').textContent=message;$('authResult').className=error?'error':'ok'}
+function hideAdminContent(){verifiedKey='';$('adminContent').hidden=true}
+$('key').addEventListener('input',()=>{if(verifiedKey&&$('key').value!==verifiedKey){hideAdminContent();authStatus('管理密钥已变更，请重新验证。')}});
+$('verifyKey').onclick=async()=>{try{if(!$('key').value.trim())throw Error('请输入管理密钥');$('verifyKey').disabled=true;authStatus('验证中…');await api('/client-settings');verifiedKey=$('key').value;$('adminContent').hidden=false;authStatus('验证通过，管理功能已展开。');await loadSettings()}catch(error){hideAdminContent();authStatus(error.message,true)}finally{$('verifyKey').disabled=false}};
 function show(message,error=false){$('result').textContent=message;$('result').className=error?'error':'ok'}
 function operationResult(operation,response){if(operation==='grant')return `已投递道具邮件（${response.mailId}）。`;if(operation==='message')return `已发送留言（${response.mailId}）。`;if(operation==='ban')return '封号已生效：该账号当前会话已断开，之后无法登录。';if(operation==='unban')return '账号已解封，可以重新登录。';return JSON.stringify(response,null,2)}
 let settingsVersion=null;
