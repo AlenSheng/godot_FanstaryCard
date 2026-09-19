@@ -49,6 +49,19 @@ func _run() -> void:
 			_check(_description_scroll().scroll_vertical > 0, "Equipment detail scroll survives render" + suffix)
 		$UI.set_meta("inventory_open", false)
 		await _capture("relics_multiple" + suffix)
+		var compact_scroll := $UI._reference.get_node_or_null("TemporaryBackpackScroll") as ScrollContainer
+		var compact_grid := $UI._reference.get_node_or_null("TemporaryBackpackScroll/TemporaryBackpackGrid") as GridContainer
+		_check(compact_scroll != null and compact_scroll.vertical_scroll_mode == ScrollContainer.SCROLL_MODE_AUTO and compact_scroll.horizontal_scroll_mode == ScrollContainer.SCROLL_MODE_DISABLED, "Compact backpack uses vertical drag scrolling" + suffix)
+		_check(compact_grid != null and compact_grid.columns == 3 and compact_grid.get_child_count() == 36, "Compact backpack keeps all items in a three-column grid" + suffix)
+		if compact_grid != null and compact_grid.get_child_count() >= 2:
+			_check(compact_grid.get_child(0).name == "TemporaryBagItem_pack-0" and compact_grid.get_child(1).name == "TemporaryBagItem_pack-1", "Compact backpack preserves acquisition order" + suffix)
+			_check(not compact_grid.get_child(0)._can_drop_data(Vector2.ZERO, {"inventory_item_id": "pack-0", "room_id": "completion-room"}), "Compact backpack does not exchange slots" + suffix)
+		if compact_scroll != null:
+			compact_scroll._begin(Vector2.ZERO)
+			compact_scroll._drag(Vector2(0, -100))
+			_check(compact_scroll.scroll_vertical > 0, "Compact backpack scrolls vertically by item drag" + suffix)
+			compact_scroll._finish()
+			_check(is_zero_approx(compact_scroll.get_v_scroll_bar().modulate.a), "Compact backpack hides the scrollbar" + suffix)
 		_check($UI._reference.find_children("Action_relic", "Button", true, false).size() == 2, "Two independently selectable relic piles" + suffix)
 		Game.relic_details = {"pile-a": {"pile_id": "pile-a", "owner_name": "逐风者", "version": 7, "items": [_item(90)]}, "pile-b": {"pile_id": "pile-b", "owner_name": "长夜归来的盾卫", "version": 4, "items": [_item(91), _item(92)]}}
 		$UI.set_meta("inventory_open", true)
@@ -119,6 +132,7 @@ func _run() -> void:
 		screenshot_count += 1
 		$UI._show_battle_details(Game.room.player.battle_status)
 		await _capture("battle_status" + suffix, false)
+		_check(_all_text().contains("充能等级 3/5"), "Mage charge level appears in passive details" + suffix)
 		_check_dialog_bounds("self" + suffix)
 		await _close_dialogs()
 		Game.room.player.phase = "Pvp"
@@ -184,7 +198,7 @@ func _item(index: int) -> Dictionary:
 	return {"item_id": "pack-%s" % index, "kind": "Equipment", "quantity": 1, "slot_index": index, "is_safe": index in [33, 34, 35], "equipment": {"slot": ["Head", "Chest", "Hands", "Legs", "Feet"][index % 5], "quality": "Orange" if index == 35 else "Purple", "element": "Earth", "effect_affix": "Bulwark", "secondary_trait": "DrawInterval", "level": 3}}
 
 func _status_fixture(passive: String = "FenXian") -> Dictionary:
-	return {"passive_kind": passive, "combo": 3, "core_element": "Fire", "draw_interval_seconds": "2.4", "bonuses": [{"key": "weapon_bonus", "value": "0.1"}, {"key": "passive_shield", "value": "0.18"}, {"key": "shield_flat", "value": "2"}, {"key": "damage_Fire", "value": "0.12"}, {"key": "resistance_Earth", "value": "0.15"}, {"key": "bulwark_reduction", "value": "0.06"}, {"key": "forced_escape", "value": "0.04"}], "sets": [{"kind": "Bulwark", "count": 3, "required": 3, "active": true}, {"kind": "Vitality", "count": 1, "required": 3, "active": false}]}
+	return {"passive_kind": passive, "combo": 3, "charge_level": 3, "core_element": "Fire", "draw_interval_seconds": "2.4", "bonuses": [{"key": "weapon_bonus", "value": "0.1"}, {"key": "passive_shield", "value": "0.18"}, {"key": "shield_flat", "value": "2"}, {"key": "damage_Fire", "value": "0.12"}, {"key": "resistance_Earth", "value": "0.15"}, {"key": "bulwark_reduction", "value": "0.06"}, {"key": "forced_escape", "value": "0.04"}], "sets": [{"kind": "Bulwark", "count": 3, "required": 3, "active": true}, {"kind": "Vitality", "count": 1, "required": 3, "active": false}]}
 
 func _room_fixture() -> Dictionary:
 	var inventory: Array = []

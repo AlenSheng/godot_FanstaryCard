@@ -118,6 +118,14 @@ static func _ensure_locale() -> void:
 				strings.merge(login_config.languages[code].get("strings", {}))
 				target["strings"] = strings
 				_locale_config.languages[code] = target
+		var battle_config: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://data/localization_battle.json"))
+		if battle_config is Dictionary:
+			for code in battle_config.get("languages", {}):
+				var target: Dictionary = _locale_config.get("languages", {}).get(code, {})
+				var strings: Dictionary = target.get("strings", {})
+				strings.merge(battle_config.languages[code].get("strings", {}))
+				target["strings"] = strings
+				_locale_config.languages[code] = target
 		_language = str(_locale_config.get("default_language", "zh-CN"))
 		var saved_language := _load_language()
 		if _locale_config.get("languages", {}).has(saved_language):

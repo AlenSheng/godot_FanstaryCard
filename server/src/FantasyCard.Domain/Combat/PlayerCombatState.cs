@@ -44,6 +44,7 @@ public sealed class PlayerCombatState
     public CombatDeck Deck { get; }
     public int FenxianCombo { get; private set; }
     public CardElement? LastFenxianCore { get; private set; }
+    public int FenxianChargeLevel { get; private set; }
     public TimeSpan DrawSpeedRemaining { get; private set; }
     public double DrawSpeedModifier { get; private set; }
     public TimeSpan StunRemaining { get; private set; }
@@ -60,7 +61,7 @@ public sealed class PlayerCombatState
         return HeroClass switch
         {
             HeroClass.Priest => new("LinYuan", 0, null, .80 * (1 - hpRatio), .40 * (1 - hpRatio), 0, WeaponPercentBonus(), 0),
-            HeroClass.Mage => new("FenXian", FenxianCombo, LastFenxianCore, 0, 0, 0, WeaponPercentBonus(), 0),
+            HeroClass.Mage => new("FenXian", FenxianCombo, LastFenxianCore, 0, 0, 0, WeaponPercentBonus(), 0, FenxianChargeLevel),
             HeroClass.Guardian => new("ZaiYue", 0, null, 0, 0, .45 * hpRatio, 0, WeaponLevel >= 4 ? 3 : WeaponLevel >= 2 ? 2 : 1),
             _ => throw new DomainValidationException("Unknown hero class.")
         };
@@ -160,10 +161,11 @@ public sealed class PlayerCombatState
         return window.Count == 1 ? duration / 2 : TimeSpan.Zero;
     }
 
-    public void SetFenxian(CardElement? core, int combo)
+    public void SetFenxian(CardElement? core, int combo, int chargeLevel = 0)
     {
         LastFenxianCore = core;
         FenxianCombo = Math.Max(0, combo);
+        FenxianChargeLevel = Math.Clamp(chargeLevel, 0, 5);
     }
 
     public (double Charge, int Draw) UpdateFenxian(CardElement? core, int coreCount)
@@ -172,7 +174,7 @@ public sealed class PlayerCombatState
         {
             if (HeroClass == HeroClass.Mage)
             {
-                SetFenxian(null, 0);
+                SetFenxian(null, 0, 0);
             }
             return (0, 0);
         }
@@ -180,6 +182,7 @@ public sealed class PlayerCombatState
         FenxianCombo = LastFenxianCore == core ? FenxianCombo + 1 : 1;
         LastFenxianCore = core;
         var rhythm = Math.Min(5, coreCount + FenxianCombo - 1);
+        FenxianChargeLevel = rhythm;
         var (charge, draw) = rhythm switch
         {
             1 => (0.12, 0),
@@ -250,6 +253,7 @@ public sealed class PlayerCombatState
         Deck.ResetForDuel(random);
         FenxianCombo = 0;
         LastFenxianCore = null;
+        FenxianChargeLevel = 0;
         DrawSpeedRemaining = TimeSpan.Zero;
         DrawSpeedModifier = 0;
         StunRemaining = TimeSpan.Zero;
@@ -321,7 +325,8 @@ public sealed class PlayerCombatState
             DrawBlockRemaining,
             _targetStunWindows.Values.OrderBy(value => value.TargetId, StringComparer.Ordinal).ToArray(),
             Equipment,
-            DrawBlockSpeedRemaining);
+            DrawBlockSpeedRemaining,
+            FenxianChargeLevel);
 
     public void Restore(PlayerCombatSnapshot snapshot)
     {
@@ -338,6 +343,7 @@ public sealed class PlayerCombatState
         Deck.Restore(snapshot.Deck);
         FenxianCombo = snapshot.FenxianCombo;
         LastFenxianCore = snapshot.LastFenxianCore;
+        FenxianChargeLevel = Math.Clamp(snapshot.FenxianChargeLevel, 0, 5);
         DrawSpeedRemaining = snapshot.DrawSpeedRemaining;
         DrawSpeedModifier = snapshot.DrawSpeedModifier;
         StunRemaining = snapshot.StunRemaining;

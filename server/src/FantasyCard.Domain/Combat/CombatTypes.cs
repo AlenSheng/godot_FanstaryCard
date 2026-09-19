@@ -59,7 +59,8 @@ public sealed record PlayerCombatSnapshot(
     TimeSpan DrawBlockRemaining,
     IReadOnlyList<TargetStunWindowSnapshot> TargetStunWindows,
     CombatEquipmentProfile? Equipment = null,
-    TimeSpan DrawBlockSpeedRemaining = default);
+    TimeSpan DrawBlockSpeedRemaining = default,
+    int FenxianChargeLevel = 0);
 
 public enum MonsterIntentKind : short
 {
@@ -205,7 +206,8 @@ public sealed record CombatPassiveInfo(
     double ControlBonus,
     double ShieldBonus,
     double WeaponBonus,
-    int ShieldFlatBonus);
+    int ShieldFlatBonus,
+    int ChargeLevel = 0);
 
 public sealed record CombatantPublicInfo(
     Guid PlayerId,

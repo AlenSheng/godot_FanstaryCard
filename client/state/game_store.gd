@@ -3,6 +3,7 @@ extends Node
 signal changed
 signal notice(message: String)
 signal player_data_invalidated
+signal shop_refreshed(payload: Dictionary)
 signal combat_feedback(payload: Dictionary)
 signal sound_requested(cue: String)
 signal authentication_required(reason: String)
@@ -823,6 +824,9 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 			return
 		"combat.previewed", "combat.preview_rejected": pass
 		"inventory.changed":
+			if str(payload.get("action", "")) == "shop.refresh":
+				shop_refreshed.emit(payload)
+				return
 			if str(payload.get("action", "")) == "admin.refresh":
 				refresh_lobby()
 				notice.emit("管理员更新已同步。")

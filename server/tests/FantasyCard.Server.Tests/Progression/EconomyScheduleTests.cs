@@ -26,4 +26,13 @@ public sealed class EconomyScheduleTests
         Assert.Equal(expected, RedEquipmentQuotaSchedule.GetWeekKey(
             DateTimeOffset.Parse(timestamp, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal)));
     }
+
+    [Theory]
+    [InlineData("2026-09-19T23:59:59Z", "2026-09-19")]
+    [InlineData("2026-09-20T00:00:00Z", "2026-09-20")]
+    public void Shop_refresh_quota_resets_at_server_utc_midnight(string timestamp, string expected)
+    {
+        Assert.Equal(expected, EconomySchedule.GetServerDayKey(
+            DateTimeOffset.Parse(timestamp, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal)));
+    }
 }

@@ -975,8 +975,13 @@ func _shop() -> void:
 	if row.get_child_count() == 0: text("暂无商品，请稍后刷新", Rect2(640, 440, 790, 95), 34, P.MUTED)
 	var stock_key := "shop_stock_summary" if host._shop_inventory_ready else "shop_stock_refresh"
 	var stock_text := P.localized(stock_key) % paid_bags if host._shop_inventory_ready else P.localized(stock_key)
-	text(stock_text, Rect2(85, 937, 950, 45), 24, P.MUTED)
-	button(P.localized("refresh"), Rect2(1630, 929, 190, 54), host._navigate.bind("shop"), Game.busy)
+	text(stock_text, Rect2(85, 908, 950, 34), 20, P.MUTED)
+	var refresh_used := int(host.shop.get("refreshesUsed", 0))
+	var refresh_limit := int(host.shop.get("refreshLimit", 0))
+	var refresh_remaining := maxi(0, refresh_limit - refresh_used)
+	text("每日刷新次数：剩余 %s / %s" % [refresh_remaining, refresh_limit], Rect2(85, 944, 950, 42), 24, P.GOLD)
+	var refresh_button := button(P.localized("refresh"), Rect2(1630, 929, 190, 54), host._refresh_shop, Game.busy or refresh_remaining <= 0, ORANGE)
+	refresh_button.name = "RefreshShopButton"
 
 func _shop_card_presentation(item_panel: Panel, image: TextureRect, payload: Dictionary) -> void:
 	var card_id := str(payload.get("cardId", ""))

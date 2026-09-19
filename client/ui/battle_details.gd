@@ -11,7 +11,7 @@ static func bonuses(status: Dictionary) -> Dictionary:
 static func passive_text(status: Dictionary) -> String:
 	var values := bonuses(status)
 	match status.get("passive_kind", ""):
-		"FenXian": return P.localized("battle_passive_mage") % [P.word(status.get("core_element", "None")), status.get("combo", 0), Details.percent(values.get("weapon_bonus", 0))]
+		"FenXian": return P.localized("battle_passive_mage") % [P.word(status.get("core_element", "None")), status.get("combo", 0), status.get("charge_level", 0), Details.percent(values.get("weapon_bonus", 0))]
 		"LinYuan": return P.localized("battle_passive_priest") % [Details.percent(values.get("passive_heal", 0)), Details.percent(values.get("passive_control", 0)), Details.percent(values.get("weapon_bonus", 0))]
 		"ZaiYue": return P.localized("battle_passive_guardian") % [Details.percent(values.get("passive_shield", 0)), int(values.get("shield_flat", 0))]
 	return ""

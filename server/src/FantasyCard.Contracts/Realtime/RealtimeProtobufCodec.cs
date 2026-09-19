@@ -39,6 +39,7 @@ public static class RealtimeProtobufCodec
                 w.String(1, payload.BattleId.ToString("D"));
                 w.String(2, payload.TargetId);
             }),
+            "battle.abandon" when command.Payload is BattleAbandonCommandPayload => Message(_ => { }),
             "reward.choice.refresh" or "choice.refresh" when command.Payload is RewardChoiceRefreshCommandPayload => Message(_ => { }),
             "reward.choice.claim" or "choice.pick" when command.Payload is RewardChoiceClaimCommandPayload payload => Message(w => { w.String(1, payload.OptionId); w.String(2, payload.ReplaceItemId); w.Bool(3, payload.Equip); }),
             "inventory.move" when command.Payload is InventoryMoveCommandPayload payload => Message(w => { w.String(1, payload.ItemId); w.Int64(2, payload.TargetSlotIndex); }),
@@ -74,6 +75,7 @@ public static class RealtimeProtobufCodec
             "room.snapshot.read" => new RoomSnapshotCommandPayload(),
             "battle.play_cards" or "combat.preview" => DecodeBattlePlayCards(payloadBytes),
             "battle.select_target" => DecodeBattleSelectTarget(payloadBytes),
+            "battle.abandon" => new BattleAbandonCommandPayload(),
             "reward.choice.refresh" or "choice.refresh" => new RewardChoiceRefreshCommandPayload(),
             "reward.choice.claim" or "choice.pick" => DecodeRewardClaim(payloadBytes),
             "room.move" or "map.move" => DecodeRoomMove(payloadBytes),
@@ -441,6 +443,7 @@ public static class RealtimeProtobufCodec
         foreach (var stat in value.Bonuses) w.Bytes(4, Message(s => { s.String(1, stat.Key); s.String(2, stat.Value); }));
         foreach (var set in value.Sets) w.Bytes(5, Message(s => { s.String(1, set.Kind); s.Int64(2, set.Count); s.Int64(3, set.Required); s.Bool(4, set.Active); }));
         w.String(6, value.DrawIntervalSeconds);
+        w.Int64(7, value.ChargeLevel);
     });
 
     private static RoomBattleStatusPayload DecodeBattleStatus(byte[] bytes)
@@ -448,7 +451,7 @@ public static class RealtimeProtobufCodec
         var value = Fields.Read(bytes);
         return new(value.String(1), checked((int)value.Int64(2)), NullIfEmpty(value.String(3)),
             value.RepeatedBytes(4).Select(b => { var s = Fields.Read(b); return new RoomStatPayload(s.String(1), s.String(2)); }).ToArray(),
-            value.RepeatedBytes(5).Select(b => { var s = Fields.Read(b); return new RoomSetPayload(s.String(1), checked((int)s.Int64(2)), checked((int)s.Int64(3)), s.Bool(4)); }).ToArray(), value.String(6));
+            value.RepeatedBytes(5).Select(b => { var s = Fields.Read(b); return new RoomSetPayload(s.String(1), checked((int)s.Int64(2)), checked((int)s.Int64(3)), s.Bool(4)); }).ToArray(), value.String(6), checked((int)value.Int64(7)));
     }
 
     private static byte[] EncodeEquipment(RoomEquipmentPayload value) => Message(w =>

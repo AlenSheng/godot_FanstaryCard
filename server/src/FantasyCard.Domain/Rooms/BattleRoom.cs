@@ -848,6 +848,26 @@ public sealed partial class BattleRoom
         Revision++;
     }
 
+    public void AbandonBattle(Guid playerId)
+    {
+        var player = GetPlayer(playerId);
+        if (player.Phase is RoomPlayerPhase.Pvp && player.CurrentDuelId is { } duelId && _duels.ContainsKey(duelId))
+        {
+            EndDuelWithDeath(duelId, playerId);
+            return;
+        }
+
+        if (player.Phase != RoomPlayerPhase.Pve || player.Pve is null || player.Pve.Phase != PveBattlePhase.Active)
+            throw new DomainValidationException("The player can only abandon an active battle.");
+
+        player.Combat.MarkDead();
+        player.Pve.MarkDead();
+        player.Pve = null;
+        player.Phase = RoomPlayerPhase.Dead;
+        CreateDeathRelicPile(player);
+        Revision++;
+    }
+
     public CombatResolution PlayCards(
         Guid playerId,
         Guid battleId,

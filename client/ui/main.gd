@@ -66,6 +66,14 @@ var _codex_mutating := false
 var _enhancement_quote: Dictionary = {}
 var _enhancement_quote_key := ""
 var _game_title: Label
+var _draw_charge_visual := 0.0
+var _draw_charge_authoritative := 0.0
+var _draw_charge_anchor_msec := 0
+var _draw_charge_interval := 4.0
+var _draw_charge_hand_ids: Array = []
+var _draw_charge_room_key := ""
+var _draw_charge_initialized := false
+var _draw_charge_hold_full := false
 
 func _ready() -> void:
 	theme = P.theme()
@@ -76,6 +84,7 @@ func _ready() -> void:
 	Game.changed.connect(_schedule_render)
 	Game.notice.connect(_toast)
 	Game.player_data_invalidated.connect(_refresh_after_admin_update)
+	Game.shop_refreshed.connect(_on_shop_refreshed)
 	Game.authentication_required.connect(_show_ban_dialog)
 	Game.combat_feedback.connect(_feedback)
 	_build_shell()
@@ -84,6 +93,9 @@ func _ready() -> void:
 	add_child(audio_settings)
 	_sync_account_session()
 	_render()
+
+func _process(_delta: float) -> void:
+	_update_draw_charge_visual()
 
 func _build_shell() -> void:
 	var background := TextureRect.new()
@@ -154,11 +166,99 @@ func _schedule_render() -> void:
 	_render_pending = true
 	_render.call_deferred()
 
+func _reset_draw_charge_visual() -> void:
+	_draw_charge_visual = 0.0
+	_draw_charge_authoritative = 0.0
+	_draw_charge_anchor_msec = 0
+	_draw_charge_interval = 4.0
+	_draw_charge_hand_ids = []
+	_draw_charge_room_key = ""
+	_draw_charge_initialized = false
+	_draw_charge_hold_full = false
+
+func _draw_charge_value(authoritative: float = 0.0) -> float:
+	return _draw_charge_visual if _draw_charge_initialized else clampf(authoritative, 0.0, 1.0)
+
+func _sync_draw_charge_visual() -> void:
+	var player: Dictionary = Game.room.get("player", {})
+	var phase := str(player.get("phase", ""))
+	if phase not in ["Pve", "Pvp"]:
+		_reset_draw_charge_visual()
+		return
+	var room_id := str(Game.room.get("room_id", ""))
+	var battle: Dictionary = Game.room.get("duel", Game.room.get("pve", {}))
+	var room_key := "%s:%s" % [room_id, str(battle.get("duel_id", battle.get("battle_id", "")))]
+	var authoritative := clampf(float(player.get("draw_charge", "0")), 0.0, 1.0)
+	var status: Dictionary = player.get("battle_status", {})
+	var interval := maxf(0.1, float(status.get("draw_interval_seconds", "4")))
+	var hand_ids: Array = player.get("hand", []).map(func(card): return str(card.get("instance_id", "")))
+	var now := Time.get_ticks_msec()
+	if not _draw_charge_initialized or room_key != _draw_charge_room_key:
+		_draw_charge_visual = authoritative
+		_draw_charge_authoritative = authoritative
+		_draw_charge_anchor_msec = now
+		_draw_charge_interval = interval
+		_draw_charge_hand_ids = hand_ids
+		_draw_charge_room_key = room_key
+		_draw_charge_initialized = true
+		_draw_charge_hold_full = false
+		return
+
+	var new_card_arrived := false
+	for card_id in hand_ids:
+		if card_id not in _draw_charge_hand_ids:
+			new_card_arrived = true
+			break
+	if new_card_arrived:
+		# The server snapshot is the new round's authoritative starting point.
+		# Reset only when a card actually arrived, so a full visual bar never
+		# snaps backwards while the server is still processing the draw.
+		_draw_charge_visual = authoritative
+		_draw_charge_authoritative = authoritative
+		_draw_charge_anchor_msec = now
+		_draw_charge_hold_full = false
+	elif authoritative > _draw_charge_authoritative + 0.0005:
+		# A newer authoritative charge can catch up a delayed render without
+		# making the visual bar jump backwards.
+		_draw_charge_visual = maxf(_draw_charge_visual, authoritative)
+		_draw_charge_authoritative = authoritative
+		_draw_charge_anchor_msec = now - int(maxf(0.0, _draw_charge_visual - authoritative) * interval * 1000.0)
+	elif not is_equal_approx(interval, _draw_charge_interval):
+		# Preserve the visible fraction while the server changes the interval;
+		# the remaining part then uses the new duration immediately.
+		_draw_charge_anchor_msec = now - int(maxf(0.0, _draw_charge_visual - authoritative) * interval * 1000.0)
+	_draw_charge_authoritative = authoritative
+	_draw_charge_interval = interval
+	_draw_charge_hand_ids = hand_ids
+	_draw_charge_room_key = room_key
+
+func _update_draw_charge_visual() -> void:
+	if not _draw_charge_initialized: return
+	var player: Dictionary = Game.room.get("player", {})
+	if str(player.get("phase", "")) not in ["Pve", "Pvp"]: return
+	if not _draw_charge_hold_full:
+		var elapsed := maxf(0.0, (Time.get_ticks_msec() - _draw_charge_anchor_msec) / 1000.0)
+		var expected := _draw_charge_authoritative + elapsed / maxf(0.1, _draw_charge_interval)
+		if expected >= 1.0:
+			_draw_charge_visual = 1.0
+			_draw_charge_hold_full = true
+		else:
+			_draw_charge_visual = maxf(_draw_charge_visual, expected)
+	var bar: Range = _reference.get_node_or_null("DrawChargeBar") as Range if is_instance_valid(_reference) else null
+	if bar != null:
+		bar.value = clampf(_draw_charge_visual, 0.0, 1.0)
+
 func _refresh_after_admin_update() -> void:
 	if not Game.room.is_empty(): return
 	_codex_ready = false
 	if screen in ["cards", "deck", "gear", "enhance", "shop", "market", "prep"]:
 		_navigate.call_deferred(screen)
+
+func _on_shop_refreshed(_payload: Dictionary) -> void:
+	if screen == "shop" and not Game.busy:
+		_navigate.call_deferred("shop")
+	else:
+		_toast("商店货架已刷新")
 
 func _sync_account_session() -> void:
 	if _session_generation != Game.gateway.session_generation:
@@ -201,6 +301,7 @@ func _reset_account_ui() -> void:
 	_enhancement_quote = {}
 	_enhancement_quote_key = ""
 	_combat_panels.clear()
+	_reset_draw_charge_visual()
 	if is_instance_valid(tips_overlay): tips_overlay.clear()
 	for key in ["exploration_map_open", "inventory_open", "relic_pile", "inventory_selected", "relic_selected", "pending_move", "item_detail_scroll"]:
 		if has_meta(key): remove_meta(key)
@@ -835,14 +936,17 @@ func _show_equipment_details(item: Dictionary, action: Callable = Callable(), ac
 	dialog.open(item, current, worn, action, action_title, Game.busy)
 
 func _show_battle_details(status: Dictionary) -> void:
-	if get_node_or_null("BattleDetailsModal") != null: return
+	var existing := get_node_or_null("BattleDetailsModal")
+	if existing != null:
+		if existing.has_method("dismiss"): existing.call("dismiss")
+		return
 	var dialog := ConfirmationModalScene.instantiate()
 	dialog.name = "BattleDetailsModal"
 	add_child(dialog)
 	dialog.configure(
-		BattleDetails.description(status) if not status.is_empty() else P.localized_text("等待战斗属性同步"),
+		BattleDetails.description(status) if not status.is_empty() else P.localized("battle_stats_waiting"),
 		Callable(),
-		{"title": P.localized_text("battle_stats_set"), "confirm_text": P.localized("confirm"), "info_only": true, "tall": true})
+		{"title": "battle_stats_set", "confirm_text": "confirm", "info_only": true, "tall": true})
 
 func _enhance(item: Dictionary) -> void:
 	if Game.busy: return
@@ -976,6 +1080,22 @@ func _purchase_shop_item(item: Dictionary, product_title: String) -> void:
 	else:
 		purchase.call()
 
+func _refresh_shop() -> void:
+	if Game.busy: return
+	Game.busy = true
+	var generation: int = Game.gateway.session_generation
+	var result: Dictionary = await Game.gateway.request("/api/v1/shop/refresh", HTTPClient.METHOD_POST, {})
+	if not _session_result_current(generation, result): return
+	if result.ok:
+		shop = result.data
+		Sound.play_cue("reward")
+		_toast("商店货架已刷新")
+	else:
+		Sound.play_cue("error")
+		_toast(result.error)
+	Game.busy = false
+	_render()
+
 func _complete_shop_purchase(item: Dictionary) -> void:
 	if Game.busy: return
 	Game.busy = true
@@ -1042,6 +1162,11 @@ func _room() -> void:
 	_label(row, "生命 %s / %s   护盾 %s" % [combat.get("hp", 0), combat.get("maximum_hp", 0), combat.get("shield", 0)], 28)
 	_button(row, "同步", func(): Game.gateway.send("room.snapshot.read"))
 	if player.get("phase", "") in ["Pve", "Pvp"]:
+		_button(row, P.localized("battle_exit"), func(): _confirm(
+			P.localized("battle_abandon_warning"),
+			func(): Game.command("battle.abandon"),
+			{"title": P.localized("battle_abandon_title"), "confirm_text": P.localized("battle_abandon_confirm"), "cancel_text": P.localized("cancel"), "tall": true}),
+			not Game.allowed("battle.abandon"))
 		_battle(state)
 	elif state.has("reward_choice"):
 		_rewards(state.reward_choice)
@@ -1069,24 +1194,31 @@ func _battle(state: Dictionary) -> void:
 		if Game.allowed("duel.escape"): _button(opponent, "强制逃脱", func(): Game.command("duel.escape", {"duel_id": state.duel.duel_id}))
 		if state.duel.has("escape_remaining_ms"): _label(opponent, "逃脱读条 %.1f 秒" % (float(state.duel.escape_remaining_ms) / 1000.0))
 	else:
-		for monster in state.get("pve", {}).get("monsters", []):
+		var monsters: Array = state.get("pve", {}).get("monsters", [])
+		var alive_monster_count := 0
+		for monster in monsters:
+			if int(monster.hp) > 0: alive_monster_count += 1
+		var multiple_monsters: bool = alive_monster_count > 1
+		for monster in monsters:
 			var enemy := _panel(stage, 420)
 			enemy.add_theme_constant_override("separation", 8)
 			_combat_panels[monster.monster_id] = enemy.get_parent()
-			var button := _button(enemy, _monster_name(monster.monster_id) + (" · 当前目标" if state.pve.current_target_id == monster.monster_id else " · 选择目标"), func(): Game.command("battle.select_target", {"battle_id": state.pve.battle_id, "target_id": monster.monster_id}), not Game.allowed("battle.select_target") or int(monster.hp) <= 0)
-			button.custom_minimum_size.y = 60
 			var portrait := Art.image(enemy, Art.monster(monster.monster_id), Vector2(110, 90))
 			if portrait.texture == null:
 				portrait.custom_minimum_size.y = 40
 				_label(enemy, _monster_name(monster.monster_id), 28, P.MUTED)
 			_label(enemy, "生命 %s / %s    盾 %s" % [monster.hp, monster.maximum_hp, monster.shield], 20)
 			_health_bar(enemy, monster)
+			if multiple_monsters:
+				var button := _button(enemy, _monster_name(monster.monster_id) + (" · 当前目标" if state.pve.current_target_id == monster.monster_id else " · 选择目标"), func(): Game.command("battle.select_target", {"battle_id": state.pve.battle_id, "target_id": monster.monster_id}), not Game.allowed("battle.select_target") or int(monster.hp) <= 0, "UI/CardCodex/card_codex_action_button_orange.png")
+				button.custom_minimum_size.y = 60
 			var intent: String = {"Charge": "蓄力", "Empower": "强化", "Shield": "护盾"}.get(monster.intent_kind, P.word(monster.intent_element))
 			_label(enemy, "意图 %s %s" % [intent, monster.intent_value if int(monster.intent_value) > 0 else ""], 23, P.ELEMENT.get(monster.intent_element, Color.WHITE))
 	var charge := BoundedBar.new()
+	charge.name = "DrawChargeBar"
 	charge.configure("UI/Battle/battle_energy_cell_lit.png", "UI/Battle/battle_energy_cell_unlit.png")
 	charge.max_value = 1.0
-	charge.value = float(state.player.get("draw_charge", "0"))
+	charge.value = _draw_charge_value(float(state.player.get("draw_charge", "0")))
 	charge.custom_minimum_size.y = 16
 	content.add_child(charge)
 	_label(content, "1–5 选牌 / 空格放出 / R 同步    已选 %s 张" % Game.selected_cards.size(), 22, P.MUTED)

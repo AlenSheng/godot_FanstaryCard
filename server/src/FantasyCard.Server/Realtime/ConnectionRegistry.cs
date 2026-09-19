@@ -27,6 +27,8 @@ public sealed class ConnectionRegistry
 
     public bool IsConnected(Guid playerId) => _connections.ContainsKey(playerId);
 
+    public IReadOnlyList<Guid> ConnectedPlayerIds => _connections.Keys.ToArray();
+
     public void Disconnect(Guid playerId)
     {
         if (_connections.TryGetValue(playerId, out var connection))

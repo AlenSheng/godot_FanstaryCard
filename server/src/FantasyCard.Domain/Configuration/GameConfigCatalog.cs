@@ -107,7 +107,8 @@ public sealed record EconomyConfig(
     double MarketFeeRate,
     int HealthPotionPrice,
     double HealthPotionHealRate,
-    int DailyCardSlots);
+    int DailyCardSlots,
+    int DailyShopRefreshLimit);
 
 public sealed class GameConfigCatalog
 {
@@ -253,7 +254,8 @@ public sealed class GameConfigCatalog
             economy = new EconomyConfig(
                 EconomyInt("market-active-listings"), EconomyInt("market-duration-hours"),
                 EconomyDouble("market-fee-rate"), EconomyInt("health-potion-price"),
-                EconomyDouble("health-potion-heal-rate"), EconomyInt("daily-card-slots"));
+                EconomyDouble("health-potion-heal-rate"), EconomyInt("daily-card-slots"),
+                EconomyInt("daily-shop-refresh-limit"));
         }
         catch (KeyNotFoundException exception)
         {
@@ -339,7 +341,8 @@ public sealed class GameConfigCatalog
     {
         if (economy.MarketActiveListings <= 0 || economy.MarketDurationHours <= 0 ||
             economy.MarketFeeRate is <= 0 or >= 1 || economy.HealthPotionPrice <= 0 ||
-            economy.HealthPotionHealRate is <= 0 or > 1 || economy.DailyCardSlots != 3)
+            economy.HealthPotionHealRate is <= 0 or > 1 || economy.DailyCardSlots != 3 ||
+            economy.DailyShopRefreshLimit <= 0)
             throw new InvalidDataException("Economy contains an invalid market or health-potion value.");
 
         string[] expectedQualities = ["White", "Green", "Blue", "Purple"];

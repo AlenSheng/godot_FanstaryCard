@@ -19,6 +19,7 @@ public sealed class GameplayProtocolTests
             ("inventory.unequip", new InventoryUnequipCommandPayload("Head")),
             ("relic.read", new RelicReadCommandPayload(Guid.NewGuid())),
             ("reward.choice.claim", new RewardChoiceClaimCommandPayload("reward", Equip: true)),
+            ("battle.abandon", new BattleAbandonCommandPayload()),
             ("combat.preview", new BattlePlayCardsCommandPayload(Guid.NewGuid(), "target", [Guid.NewGuid(), Guid.NewGuid()]))
         ];
         foreach (var (type, payload) in commands)

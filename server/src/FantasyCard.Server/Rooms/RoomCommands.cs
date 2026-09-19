@@ -234,6 +234,15 @@ public sealed record SelectPveTargetCommand(
 
 public sealed record SelectPveTargetResult(Guid BattleId, string TargetId, long RoomRevision);
 
+public sealed record AbandonBattleCommand(Guid PlayerId) : IRoomCommand<BattleRoomSnapshot>
+{
+    public BattleRoomSnapshot Execute(BattleRoom room)
+    {
+        room.AbandonBattle(PlayerId);
+        return room.Capture();
+    }
+}
+
 public sealed record MoveRoomPlayerResult(MapPosition Position, DuelStateSnapshot? StartedDuel, long RoomRevision);
 
 public sealed record MoveRoomPlayerCommand(Guid PlayerId, MapPosition Target, long ExpectedRevision, DateTimeOffset Now) : IRoomCommand<MoveRoomPlayerResult>
