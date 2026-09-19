@@ -310,8 +310,9 @@ func _login() -> void:
 	_label(panel, P.localized("nickname"), 22, P.MUTED)
 	var name_input := LineEdit.new()
 	name_input.text = _login_name
-	name_input.editable = false
+	name_input.placeholder_text = P.localized_text("输入唯一账号名称")
 	name_input.max_length = 20
+	name_input.text_changed.connect(func(value): _login_name = value)
 	panel.add_child(name_input)
 	_button(panel, P.localized("random_name"), func():
 		_login_name = _random_login_name(_login_name)
