@@ -69,14 +69,15 @@ function Get-ServiceRootUrl([string]$Url) {
 
 function Get-RunningConfigVersion([string]$Url) {
     $root = Get-ServiceRootUrl $Url
+    $configEndpoint = $root.TrimEnd('/') + '/api/v1/client-info'
     try {
-        $info = Invoke-RestMethod -UseBasicParsing -Uri $root -TimeoutSec 3
+        $info = Invoke-RestMethod -UseBasicParsing -Uri $configEndpoint -TimeoutSec 3
     } catch {
-        throw "Could not read configVersion from $root. $($_.Exception.Message)"
+        throw "Could not read configVersion from $configEndpoint. $($_.Exception.Message)"
     }
     $version = [string]$info.configVersion
     if ([string]::IsNullOrWhiteSpace($version)) {
-        throw "Server at $root did not return configVersion."
+        throw "Server at $configEndpoint did not return configVersion."
     }
     return $version
 }
