@@ -137,7 +137,7 @@ static func _hand(ui: Control, host: Control, state: Dictionary) -> void:
 		var rect := Rect2(origin + Vector2(index * 232, 0), Vector2(218, 376))
 		if index < hand.size():
 			var card: Dictionary = hand[index]
-			ui.card(host, card.get("card_id", ""), rect, func(): Game.toggle_card(card.instance_id), card.get("instance_id", "") in Game.selected_cards, not Game.allowed("battle.play_cards"), {"level": int(card.get("level", 0)), "element_override": str(card.get("element_override", ""))})
+			ui.card(host, card.get("card_id", ""), rect, func(): Game.toggle_card(card.instance_id), card.get("instance_id", "") in Game.selected_cards, not Game.allowed("battle.play_cards"), {"level": int(card.get("level", 0)), "element_override": str(card.get("element_override", "")), "selected_overlay": true})
 		else:
 			ui.panel(rect, "UI/Codex/qframe_common.png")
 	ui.button("放", Rect2(1650, 822, 194, 142), Game.play_cards, Game.selected_cards.is_empty() or not Game.allowed("battle.play_cards"), "UI/Battle/battle_play_button.png")

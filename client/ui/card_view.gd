@@ -33,6 +33,15 @@ func configure(id: String, info: Dictionary, description: String, selected: bool
 	illustration.size = Vector2(190, 177) if monster else Vector2(190, 285)
 	if illustration.texture == null:
 		_text("插画待补", Rect2(14, 112, 190, 60), 22, P.MUTED)
+	if selected and options.get("selected_overlay", false):
+		var selected_overlay := ColorRect.new()
+		selected_overlay.name = "SelectedIllustrationOverlay"
+		selected_overlay.color = Color(0.16, 0.18, 0.19, 0.62)
+		selected_overlay.position = illustration.position
+		selected_overlay.size = illustration.size
+		selected_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		selected_overlay.material = CanvasItemMaterial.new()
+		add_child(selected_overlay)
 	var quality: String = str(info.get("quality", "White")).to_lower()
 	var frame_key := "UI/Cards/card_frame_monster_clean.png" if monster else "UI/Codex/qframe_%s.png" % quality
 	var frame := Art.image(self, Art.texture(frame_key), Vector2.ZERO)

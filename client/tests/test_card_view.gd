@@ -43,6 +43,10 @@ func run_test() -> Dictionary:
 	_check_text(card, ["CardName", "CardEffect", "SelectedIndicator"], errors)
 	if card.get_node_or_null("ClassBadge") != null or card.get_node_or_null("CopyCount") != null: errors.append("Legacy common-card call must not gain class or quantity badges")
 	if card.get_node("CardFrame").texture != Art.texture("UI/Codex/qframe_selected.png"): errors.append("Selected hand card must retain its selected frame")
+	card.configure("C01", info, "火系伤害8点", true, {"selected_overlay": true})
+	var selected_overlay := card.get_node_or_null("SelectedIllustrationOverlay") as ColorRect
+	if selected_overlay == null or selected_overlay.position != Vector2(14, 14) or selected_overlay.size != Vector2(190, 285) or selected_overlay.color.a < 0.5:
+		errors.append("Selected battle card must dim only its illustration with a visible translucent overlay")
 	card.disabled = true
 	card.configure("C01", info, "火系伤害8点", false)
 	if not card.disabled: errors.append("Configuration must preserve the caller's disabled state")
