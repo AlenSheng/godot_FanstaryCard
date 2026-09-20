@@ -6,6 +6,8 @@ const BoundedBar = preload("res://ui/bounded_bar.gd")
 const InventoryView = preload("res://ui/inventory_view.gd")
 const Details = preload("res://ui/equipment_details.gd")
 const BattleDetails = preload("res://ui/battle_details.gd")
+const DragScroll = preload("res://ui/drag_scroll.gd")
+const TemporaryBagItem = preload("res://ui/temporary_bag_item.gd")
 const PANEL := "UI/CardCodex/card_codex_dialog_panel_normal.png"
 const SLOT := Art.COMMON_CELL_KEY
 const ITEM := "UI/Item/exploration_prep_item_icon_"
@@ -46,7 +48,7 @@ static func _picture(ui: Control, texture: Texture2D, rect: Rect2) -> TextureRec
 	node.size = rect.size
 	return node
 
-static func _bar(ui: Control, rect: Rect2, value: float, maximum: float, fill: String, track: String) -> void:
+static func _bar(ui: Control, rect: Rect2, value: float, maximum: float, fill: String, track: String) -> BoundedBar:
 	var bar := BoundedBar.new()
 	bar.configure(fill, track)
 	bar.position = rect.position
@@ -55,6 +57,7 @@ static func _bar(ui: Control, rect: Rect2, value: float, maximum: float, fill: S
 	bar.value = value
 	bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	ui.add_child(bar)
+	return bar
 
 static func _health(ui: Control, combat: Dictionary, rect: Rect2, enemy: bool = false) -> void:
 	var maximum: int = int(combat.get("effective_maximum_hp", combat.get("maximum_hp", 1)))
@@ -137,13 +140,16 @@ static func _hand(ui: Control, host: Control, state: Dictionary) -> void:
 		var rect := Rect2(origin + Vector2(index * 232, 0), Vector2(218, 376))
 		if index < hand.size():
 			var card: Dictionary = hand[index]
-			ui.card(host, card.get("card_id", ""), rect, func(): Game.toggle_card(card.instance_id), card.get("instance_id", "") in Game.selected_cards, not Game.allowed("battle.play_cards"), {"level": int(card.get("level", 0)), "element_override": str(card.get("element_override", ""))})
+			ui.card(host, card.get("card_id", ""), rect, func(): Game.toggle_card(card.instance_id), card.get("instance_id", "") in Game.selected_cards, not Game.allowed("battle.play_cards"), {"level": int(card.get("level", 0)), "element_override": str(card.get("element_override", "")), "selected_overlay": true})
 		else:
 			ui.panel(rect, "UI/Codex/qframe_common.png")
 	ui.button("放", Rect2(1650, 822, 194, 142), Game.play_cards, Game.selected_cards.is_empty() or not Game.allowed("battle.play_cards"), "UI/Battle/battle_play_button.png")
 	ui.picture(Art.texture("UI/Battle/battle_energy_ring_clean.png"), Rect2(83, 840, 72, 84))
 	ui.text(P.localized("draw"), Rect2(170, 838, 230, 43), 26, P.TEAL)
-	_bar(ui, Rect2(171, 885, 225, 32), clampf(float(player.get("draw_charge", "0")), 0, 1), 1, "UI/Battle/battle_energy_cell_lit.png", "UI/Battle/battle_energy_cell_unlit.png")
+	var charge_bar := _bar(ui, Rect2(171, 885, 225, 32), clampf(float(player.get("draw_charge", "0")), 0, 1), 1, "UI/Battle/battle_energy_cell_lit.png", "UI/Battle/battle_energy_cell_unlit.png")
+	charge_bar.name = "DrawChargeBar"
+	if host.has_method("_draw_charge_value"):
+		charge_bar.value = host._draw_charge_value(float(player.get("draw_charge", "0")))
 	ui.text("牌库 %s · 弃牌 %s" % [player.get("library_count", 0), player.get("discard_count", 0)], Rect2(79, 940, 330, 32), 21, P.MUTED)
 	_center(ui.text("已选 %s 张    1–5 选牌 / 空格放出" % Game.selected_cards.size(), Rect2(573, 1005, 765, 36), 23, P.PAPER))
 
@@ -185,7 +191,7 @@ static func _preview(ui: Control) -> void:
 	panel.mouse_filter = Control.MOUSE_FILTER_PASS
 	var formula: Array[String] = []
 	var resonance := float(preview.get("resonance_multiplier", "1"))
-	if resonance > 1.0: formula.append("相生 ×%.2f" % resonance)
+	if resonance > 1.0: formula.append("主核增幅 ×%.2f" % resonance)
 	var conflict_pairs := int(preview.get("conflict_pair_count", 0))
 	var cancellation := float(preview.get("conflict_cancellation", "0"))
 	if conflict_pairs > 0: formula.append("相克 %s组 · 抵消 %s" % [conflict_pairs, Details.percent(cancellation)])
@@ -277,13 +283,36 @@ static func _actions(ui: Control, host: Control, state: Dictionary) -> void:
 	ui.text(P.localized("temporary_bag"), Rect2(1268, 182, 480, 54), 34, P.GOLD)
 	ui.text("已用 %s / %s 格" % [inventory.size(), player.get("inventory_capacity", 0)], Rect2(1268, 240, 466, 40), 25, P.PAPER)
 	ui.button(P.localized("open_bag"), Rect2(1556, 180, 206, 52), func(): InventoryView.open(host), not Game.allowed("inventory.move")).name = "OpenInventory"
-	for index in range(mini(6, inventory.size())):
+	# The compact view always shows two rows of three items. Keep the server's
+	# inventory order (the acquisition order) instead of laying items out by
+	# slot_index; the full bag is the only place where slot exchange is allowed.
+	var bag_scroll := DragScroll.new()
+	bag_scroll.name = "TemporaryBackpackScroll"
+	bag_scroll.position = Vector2(1268, 291)
+	bag_scroll.size = Vector2(500, 182)
+	bag_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	bag_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	bag_scroll.interaction_enabled = inventory.size() > 6
+	ui.add_child(bag_scroll)
+	# The compact backpack must not expose a second scrollbar affordance. Drag
+	# inside the item area is the only scrolling control.
+	var scrollbar := bag_scroll.get_v_scroll_bar()
+	scrollbar.custom_minimum_size = Vector2.ZERO
+	scrollbar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	scrollbar.modulate.a = 0.0
+	var item_grid := GridContainer.new()
+	item_grid.name = "TemporaryBackpackGrid"
+	item_grid.columns = 3
+	item_grid.add_theme_constant_override("h_separation", 25)
+	item_grid.add_theme_constant_override("v_separation", 16)
+	item_grid.custom_minimum_size = Vector2(461, 0)
+	bag_scroll.add_child(item_grid)
+	for index in range(inventory.size()):
 		var item: Dictionary = inventory[index]
-		var x: float = 1268 + index % 3 * 162
-		var y: float = 291 + int(index / 3) * 99
-		ui.panel(Rect2(x, y, 137, 83), SLOT)
-		ui.picture(_item_icon(item), Rect2(x + 7, y + 8, 64, 60))
-		ui.text("×%s" % item.get("quantity", 0), Rect2(x + 75, y + 27, 59, 37), 23, P.GOLD if item.get("is_safe", false) else P.PAPER)
+		var item_view := TemporaryBagItem.new()
+		item_view.name = "TemporaryBagItem_%s" % str(item.get("item_id", index))
+		item_view.configure(item, _item_icon(item))
+		item_grid.add_child(item_view)
 	var actions: Array = []
 	for action in ["action.spring", "action.potion", "action.extract"]:
 		if Game.allowed(action): actions.append(action)

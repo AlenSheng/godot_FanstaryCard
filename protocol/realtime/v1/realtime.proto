@@ -57,7 +57,7 @@ message RoomCard { string instance_id = 1; string card_id = 2; int32 level = 3; 
 message RoomCombatant { int32 hp = 1; int32 maximum_hp = 2; int32 effective_maximum_hp = 3; int32 shield = 4; }
 message RoomStat { string key = 1; string value = 2; }
 message RoomSet { string kind = 1; int32 count = 2; int32 required = 3; bool active = 4; }
-message RoomBattleStatus { string passive_kind = 1; int32 combo = 2; string core_element = 3; repeated RoomStat bonuses = 4; repeated RoomSet sets = 5; string draw_interval_seconds = 6; }
+message RoomBattleStatus { string passive_kind = 1; int32 combo = 2; string core_element = 3; repeated RoomStat bonuses = 4; repeated RoomSet sets = 5; string draw_interval_seconds = 6; int32 charge_level = 7; }
 message RoomEquipment { string slot = 1; string quality = 2; string element = 3; string effect_affix = 4; string secondary_trait = 5; int32 level = 6; bool is_bound = 7; }
 message RoomInventoryItem { string item_id = 1; string kind = 2; int32 quantity = 3; bool is_safe = 4; RoomEquipment equipment = 5; optional int32 slot_index = 6; }
 message RoomRelicPile { string pile_id = 1; string owner_name = 2; int64 version = 3; repeated RoomInventoryItem items = 4; }
@@ -168,6 +168,7 @@ message BattleComboResolvedEvent {
 }
 message CombatDamageSegment { string kind = 1; int32 amount = 2; }
 message BattleSelectTargetCommand { string battle_id = 1; string target_id = 2; }
+message BattleAbandonCommand {}
 message BattleTargetSelectedEvent { string battle_id = 1; string target_id = 2; }
 
 message RewardChoiceRefreshCommand {}

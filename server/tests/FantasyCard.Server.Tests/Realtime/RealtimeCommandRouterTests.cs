@@ -149,6 +149,45 @@ public sealed class RealtimeCommandRouterTests
     }
 
     [Fact]
+    public async Task RouteAsync_BattleAbandonSettles_the_active_battle_as_dead()
+    {
+        var playerId = Guid.NewGuid();
+        var room = new BattleRoom(Guid.NewGuid(), "test", CombatCardCatalog.CreatePrototype(), seed: 19);
+        room.AddPlayer(new BattleRoomPlayerSetup(
+            playerId,
+            HeroClass.Mage,
+            Enumerable.Range(1, 20).Select(index => $"common-{index:D2}").ToArray(),
+            new PveBattleState(
+                Guid.NewGuid(),
+                "monster-1",
+                [new MonsterCombatState(
+                    "monster-1",
+                    100,
+                    100,
+                    0,
+                    TimeSpan.FromSeconds(5),
+                    [new MonsterIntentState(MonsterIntentKind.Attack, 1, CardElement.Fire)])])));
+        room.InitializeMap(ChaosMapGenerator.Generate(19, 1));
+        var store = new RealtimeEventStore(TimeProvider.System);
+        await using var registry = new RoomRegistry(TimeProvider.System);
+        registry.Register(room, startTicker: false);
+        var router = new RealtimeCommandRouter(store, TimeProvider.System, registry);
+        var player = PlayerProfile.Create(playerId, "测试玩家", DateTimeOffset.UtcNow);
+
+        var response = await router.RouteAsync(
+            player,
+            new ClientCommand("battle.abandon", "abandon-1", room.Revision, new BattleAbandonCommandPayload()),
+            "trace",
+            TestContext.Current.CancellationToken);
+
+        var snapshotMessage = Assert.Single(response);
+        Assert.Equal("room.snapshot", snapshotMessage.Type);
+        var snapshot = Assert.IsType<RoomSnapshotEventPayload>(snapshotMessage.Payload);
+        Assert.Equal(RoomPlayerPhase.Dead.ToString(), snapshot.Player.Phase);
+        Assert.Equal(RoomPlayerPhase.Dead, room.GetPlayer(playerId).Phase);
+    }
+
+    [Fact]
     public async Task RouteAsync_DuelLeaveRequiresBothParticipants()
     {
         var firstId = Guid.NewGuid();
@@ -316,6 +355,7 @@ public sealed class RealtimeCommandRouterTests
         Assert.Equal(playerId, snapshot.Player.PlayerId);
         Assert.Equal(36, snapshot.Map.Count);
         Assert.Contains("battle.play_cards", snapshot.AllowedActions);
+        Assert.Contains("battle.abandon", snapshot.AllowedActions);
         Assert.DoesNotContain(snapshot.AllowedActions, action => action == "action.potion");
         Assert.NotEqual(room.GetPlayer(otherId).Position,
             new MapPosition(snapshot.Self.Row, snapshot.Self.Column));

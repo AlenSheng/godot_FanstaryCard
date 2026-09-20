@@ -23,7 +23,7 @@ func _run() -> void:
 	Game.gateway.token = login.data.accessToken
 	await Game.refresh_lobby()
 	await $UI._navigate("cards")
-	if not _check($UI._codex_ready and $UI.owned.size() == 200, "Server returns all 200 cards with quotes"): return _finish(false)
+	if not _check($UI._codex_ready and $UI.owned.size() == 220, "Server returns all 220 cards with quotes"): return _finish(false)
 	await _capture("collection")
 	var card_id := "GW08"
 	var cost: int = $UI._owned_card(card_id).craftCost

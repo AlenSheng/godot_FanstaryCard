@@ -22,6 +22,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       Identity__EnableLocalAuth: "true"
+      Matchmaking__BotFillDelaySeconds: "0"
       ASPNETCORE_HTTP_PORTS: 8080
       ConnectionStrings__Postgres: Host=postgres;Port=5432;Database=fantasycard;Username=fantasycard;Password=fantasycard_dev
     ports:

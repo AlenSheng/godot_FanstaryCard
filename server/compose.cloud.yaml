@@ -64,6 +64,7 @@ services:
       - caddy-data:/data
       - caddy-config:/config
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./site:/srv/site:ro
       - /opt/fantasycard-app/certs:/etc/caddy/certs:ro
     depends_on:
       server:

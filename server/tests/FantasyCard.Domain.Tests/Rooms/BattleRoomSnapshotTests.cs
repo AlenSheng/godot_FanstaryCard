@@ -200,6 +200,36 @@ public sealed class BattleRoomSnapshotTests
     }
 
     [Fact]
+    public void Abandoning_pve_battle_marks_player_dead_and_keeps_only_safe_backpack_items()
+    {
+        var playerId = Guid.NewGuid();
+        var room = new BattleRoom(Guid.NewGuid(), "test-config", CombatCardCatalog.CreatePrototype(), 77);
+        room.AddPlayer(new BattleRoomPlayerSetup(
+            playerId,
+            HeroClass.Mage,
+            Enumerable.Range(1, 20).Select(index => $"common-{index:D2}").ToArray(),
+            CreatePve(),
+            InventoryCapacity: 28,
+            SafeSlots: 1,
+            WornArmor: [new ExplorationItem("armor-1", ExplorationItemKind.Equipment)]));
+        room.InitializeMap(ChaosMapGenerator.Generate(77, 1));
+
+        var player = room.GetPlayer(playerId);
+        player.Inventory.TryAdd(new ExplorationItem("safe-gold", ExplorationItemKind.Gold, 10, IsSafe: true));
+        player.Inventory.TryAdd(new ExplorationItem("unsafe-potion", ExplorationItemKind.HealthPotion));
+
+        room.AbandonBattle(playerId);
+
+        Assert.Equal(RoomPlayerPhase.Dead, player.Phase);
+        Assert.Null(player.Pve);
+        Assert.Contains(player.Inventory.Items, item => item.ItemId == "safe-gold");
+        var pile = Assert.Single(room.GetRelicPilesAt(player.Position!.Value));
+        Assert.Contains(pile.Items, item => item.ItemId == "unsafe-potion");
+        Assert.Contains(pile.Items, item => item.ItemId == "armor-1");
+        Assert.DoesNotContain(pile.Items, item => item.ItemId == "safe-gold");
+    }
+
+    [Fact]
     public void Entering_an_occupied_cell_starts_a_duel_automatically()
     {
         var firstId = Guid.NewGuid();

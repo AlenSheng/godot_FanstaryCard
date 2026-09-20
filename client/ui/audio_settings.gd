@@ -2,6 +2,8 @@ extends CanvasLayer
 
 const P = preload("res://ui/palette.gd")
 const Art = preload("res://ui/art.gd")
+const ConfirmationModalScene = preload("res://ui/confirmation_modal.tscn")
+const GOLD_BUTTON_KEY := "UI/CardCodex/card_codex_action_button_orange.png"
 var _toggle: BaseButton
 var _popup: PopupPanel
 var _mute_button: CheckButton
@@ -44,7 +46,7 @@ func show_settings() -> void:
 	)
 	add_child(_popup)
 	var column := VBoxContainer.new()
-	column.custom_minimum_size = Vector2(590, 430)
+	column.custom_minimum_size = Vector2(590, 510 if _in_battle() else 430)
 	_popup.add_child(column)
 	var title := Label.new()
 	title.text = P.localized("settings")
@@ -111,7 +113,7 @@ func show_settings() -> void:
 	var account := Button.new()
 	account.name = "SwitchAccountButton"
 	account.text = P.localized("switch_account")
-	Art.button(account, "UI/CardCodex/card_codex_action_button_blue.png")
+	Art.button(account, GOLD_BUTTON_KEY)
 	account.pressed.connect(func():
 		_popup.hide()
 		Game.logout()
@@ -121,12 +123,19 @@ func show_settings() -> void:
 	var sample := Button.new()
 	sample.text = P.localized("sample_sound")
 	sample.set_meta("sound_cue", "card_play")
-	Art.button(sample, "UI/CardCodex/card_codex_action_button_blue.png")
+	Art.button(sample, GOLD_BUTTON_KEY)
 	column.add_child(sample)
 	P.fit_control_font(sample, P.font("title"), 24, 48.0)
+	if _in_battle():
+		var exit_battle := Button.new()
+		exit_battle.text = P.localized("battle_exit")
+		Art.button(exit_battle, GOLD_BUTTON_KEY)
+		exit_battle.pressed.connect(_show_battle_abandon_confirmation)
+		column.add_child(exit_battle)
+		P.fit_control_font(exit_battle, P.font("title"), 24, 48.0)
 	var back := Button.new()
 	back.text = P.localized("back")
-	Art.button(back, "UI/CardCodex/card_codex_action_button_blue.png")
+	Art.button(back, GOLD_BUTTON_KEY)
 	back.pressed.connect(_popup.hide)
 	column.add_child(back)
 	P.fit_control_font(back, P.font("title"), 24, 48.0)
@@ -136,6 +145,22 @@ func show_settings() -> void:
 	)
 	_popup.popup_centered()
 	slider.grab_focus()
+
+func _in_battle() -> bool:
+	var phase := str(Game.room.get("player", {}).get("phase", ""))
+	return phase in ["Pve", "Pvp"]
+
+func _show_battle_abandon_confirmation() -> void:
+	if not Game.allowed("battle.abandon") or get_node_or_null("BattleAbandonConfirmation") != null: return
+	var dialog := ConfirmationModalScene.instantiate()
+	dialog.name = "BattleAbandonConfirmation"
+	add_child(dialog)
+	dialog.configure(
+		P.localized("battle_abandon_warning"),
+		func():
+			if is_instance_valid(_popup): _popup.hide()
+			Game.command("battle.abandon"),
+		{"title": P.localized("battle_abandon_title"), "confirm_text": P.localized("battle_abandon_confirm"), "cancel_text": P.localized("cancel"), "tall": true})
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if _mute_shortcut(event): get_viewport().set_input_as_handled()

@@ -9,7 +9,11 @@ public sealed record ShopProductResponse(
     string Payload,
     bool AlreadyOwned = false);
 
-public sealed record ShopResponse(string ResetKey, IReadOnlyList<ShopProductResponse> Products);
+public sealed record ShopResponse(
+    string ResetKey,
+    IReadOnlyList<ShopProductResponse> Products,
+    int RefreshesUsed = 0,
+    int RefreshLimit = 0);
 
 public sealed record PurchaseShopRequest(string ProductId, int Quantity = 1);
 

@@ -68,7 +68,7 @@ static func _fill_grid(ui: Control, host: Control, grid: GridContainer, scroll: 
 	var total := 0
 	var shown := 0
 	var side := 184.0
-	for id in host.cards:
+	for id in CardDetails.sorted_ids(host.cards.keys(), host.cards):
 		var info: Dictionary = host.cards[id]
 		if not info.get("is_codex", false): continue
 		total += 1

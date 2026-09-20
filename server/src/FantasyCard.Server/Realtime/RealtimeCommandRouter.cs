@@ -153,6 +153,7 @@ public sealed partial class RealtimeCommandRouter
         if (!string.Equals(command.Type, "battle.play_cards", StringComparison.Ordinal) &&
             !string.Equals(command.Type, "combat.preview", StringComparison.Ordinal) &&
             !string.Equals(command.Type, "battle.select_target", StringComparison.Ordinal) &&
+            !string.Equals(command.Type, "battle.abandon", StringComparison.Ordinal) &&
             !string.Equals(command.Type, "room.move", StringComparison.Ordinal) &&
             !string.Equals(command.Type, "map.move", StringComparison.Ordinal) &&
             !string.Equals(command.Type, "duel.leave", StringComparison.Ordinal) &&
@@ -282,6 +283,22 @@ public sealed partial class RealtimeCommandRouter
                 return [_eventStore.Create(player.UserId, "battle.target_selected", traceId,
                     new BattleTargetSelectedEventPayload(selected.BattleId, selected.TargetId),
                     command.RequestId, selected.RoomRevision)];
+            }
+            catch (DomainValidationException exception)
+            {
+                return [Reject(player.UserId, traceId, command.RequestId, "COMMAND_REJECTED", exception.Message)];
+            }
+        }
+
+        if (string.Equals(command.Type, "battle.abandon", StringComparison.Ordinal))
+        {
+            if (command.Payload is not BattleAbandonCommandPayload)
+                return [Reject(player.UserId, traceId, command.RequestId, "INVALID_PAYLOAD", "battle.abandon payload is required.")];
+            try
+            {
+                await actor.ExecuteAsync(new AbandonBattleCommand(player.UserId), expectedRevision, cancellationToken);
+                var state = await actor.ExecuteAsync(new GetRoomClientStateCommand(player.UserId), cancellationToken);
+                return [CreateRoomSnapshot(player.UserId, traceId, command.RequestId, state, currentMatchId)];
             }
             catch (DomainValidationException exception)
             {
@@ -760,6 +777,14 @@ public sealed partial class RealtimeCommandRouter
         string code,
         string detail)
     {
+        // Keep revision conflicts machine-readable so clients can perform
+        // the bounded snapshot-and-retry path without parsing presentation
+        // text.  Other command rejections retain their existing code.
+        if (code == "COMMAND_REJECTED" &&
+            detail.StartsWith("Room revision conflict.", StringComparison.Ordinal))
+        {
+            code = "REVISION_CONFLICT";
+        }
         _metrics?.RealtimeCommandRejected(code);
         return _eventStore.Create(
             playerId,

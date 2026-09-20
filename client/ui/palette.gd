@@ -47,8 +47,23 @@ const EXTRA_TEXT_KEYS := {
 static func word(value: Variant) -> String:
 	if value == null: return ""
 	var raw := str(value)
-	var key: String = WORD_KEYS.get(raw.to_lower(), "")
+	var key: String = WORD_KEYS.get(_word_identifier(raw), "")
 	return localized(key) if not key.is_empty() else WORDS.get(raw, raw)
+
+## Display names for shop/catalog product kinds.  Keep this at the
+## presentation boundary because the API may send PascalCase, snake_case,
+## or legacy ids (for example `health_potion`).
+static func product_name(value: Variant) -> String:
+	if value == null: return ""
+	var raw := str(value)
+	var key: String = WORD_KEYS.get(_word_identifier(raw), "")
+	return localized(key) if not key.is_empty() else word(raw)
+
+## API/catalog identifiers use both PascalCase (HealthPotion) and snake_case
+## (health_potion).  Normalize them before looking up display words so neither
+## form can leak into a localized UI.
+static func _word_identifier(value: String) -> String:
+	return value.to_lower().replace("_", "").replace("-", "").replace(" ", "")
 
 static func font(role: String = "body") -> Font:
 	_ensure_locale()
@@ -93,6 +108,22 @@ static func _ensure_locale() -> void:
 				var target: Dictionary = _locale_config.get("languages", {}).get(code, {})
 				var strings: Dictionary = target.get("strings", {})
 				strings.merge(brand_config.languages[code].get("strings", {}))
+				target["strings"] = strings
+				_locale_config.languages[code] = target
+		var login_config: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://data/login_localization.json"))
+		if login_config is Dictionary:
+			for code in login_config.get("languages", {}):
+				var target: Dictionary = _locale_config.get("languages", {}).get(code, {})
+				var strings: Dictionary = target.get("strings", {})
+				strings.merge(login_config.languages[code].get("strings", {}))
+				target["strings"] = strings
+				_locale_config.languages[code] = target
+		var battle_config: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://data/localization_battle.json"))
+		if battle_config is Dictionary:
+			for code in battle_config.get("languages", {}):
+				var target: Dictionary = _locale_config.get("languages", {}).get(code, {})
+				var strings: Dictionary = target.get("strings", {})
+				strings.merge(battle_config.languages[code].get("strings", {}))
 				target["strings"] = strings
 				_locale_config.languages[code] = target
 		_language = str(_locale_config.get("default_language", "zh-CN"))
@@ -144,6 +175,8 @@ static func localized(key: String) -> String:
 static func localized_text(value: String) -> String:
 	if value.is_empty(): return value
 	_ensure_locale()
+	var localized_identifier := word(value)
+	if localized_identifier != value: return localized_identifier
 	var aliases := TEXT_KEYS.duplicate()
 	aliases.merge(EXTRA_TEXT_KEYS)
 	aliases.merge(_source_aliases)
@@ -160,8 +193,20 @@ static func localized_text(value: String) -> String:
 
 static func localized_word(value: Variant) -> String:
 	var keys := {"gold": "word_gold", "equipmentfragments": "word_equipment_fragments", "fragmentpack": "word_equipment_fragments", "healthpotion": "word_health_potion", "warriorsoul": "word_warrior_soul", "classsoul": "word_warrior_soul", "soulpack": "word_warrior_soul", "classsoulpack": "word_warrior_soul", "priestsoul": "word_priest_soul", "magesoul": "word_mage_soul", "guardiansoul": "word_guardian_soul", "equipment": "word_equipment", "item": "word_equipment", "card": "word_card", "cardpack": "word_card", "advancedbag": "word_advanced_bag", "topbag": "word_top_bag", "diamond": "word_diamond", "white": "word_white", "green": "word_green", "blue": "word_blue", "purple": "word_purple", "orange": "word_orange", "red": "word_red", "fire": "word_fire", "wood": "word_wood", "water": "word_water", "metal": "word_metal", "earth": "word_earth", "head": "word_head", "helmet": "word_head", "chest": "word_chest", "body": "word_chest", "hands": "word_hands", "gloves": "word_hands", "legs": "word_legs", "feet": "word_feet", "boots": "word_feet", "none": "word_equipment"}
-	var key: String = keys.get(str(value).to_lower(), "")
+	var key: String = keys.get(_word_identifier(str(value)), "")
 	return localized(key) if not key.is_empty() else word(value)
+
+## Server-side validation details are not localization keys.  Use this only at
+## presentation boundaries (such as transient tips) to avoid exposing English
+## diagnostics in the Simplified Chinese client.
+static func is_unlocalized_english_sentence(value: String) -> bool:
+	if language() != "zh-CN": return false
+	var letters := 0
+	var has_sentence_separator := false
+	for character in value:
+		if character.to_lower() != character.to_upper(): letters += 1
+		if character in " .,!?:;": has_sentence_separator = true
+	return letters >= 3 and has_sentence_separator
 
 static func languages() -> Dictionary:
 	_ensure_locale()

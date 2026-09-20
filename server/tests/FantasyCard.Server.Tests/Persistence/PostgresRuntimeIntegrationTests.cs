@@ -1749,7 +1749,7 @@ public sealed class PostgresRuntimeIntegrationTests
         Assert.Equal(1L, await database.ScalarAsync<long>("SELECT count(*) FROM player_wallets WHERE player_id=$1", playerId));
         Assert.Equal(1L, await database.ScalarAsync<long>("SELECT count(*) FROM player_materials WHERE player_id=$1", playerId));
         Assert.Equal(1L, await database.ScalarAsync<long>("SELECT count(*) FROM player_consumables WHERE player_id=$1", playerId));
-        Assert.Equal(200L, await database.ScalarAsync<long>("SELECT count(*) FROM player_cards WHERE player_id=$1", playerId));
+        Assert.Equal(220L, await database.ScalarAsync<long>("SELECT count(*) FROM player_cards WHERE player_id=$1", playerId));
         Assert.Equal(51L, await database.ScalarAsync<long>("SELECT count(*) FROM player_cards WHERE player_id=$1 AND unlocked", playerId));
         Assert.Equal(3L, await database.ScalarAsync<long>("SELECT count(*) FROM player_decks WHERE player_id=$1", playerId));
         Assert.Equal(60L, await database.ScalarAsync<long>(

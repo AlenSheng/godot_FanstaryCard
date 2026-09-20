@@ -1,4 +1,4 @@
-# FantasyCard 本地服务器
+# Relicbound（遗境行者）本地服务器
 
 服务遵循 `GDD.md` 第 8 章：ASP.NET Core / .NET 10 模块化单体、PostgreSQL 权威存储、REST + WebSocket、内部 `UserId` 与平台身份隔离。开发与构建基线为 **.NET SDK 10.0.400**。当前代码已包含 S2–S9 纵向切片、RoomActor、房间恢复和补位机器人运行时；具体完成门以现状审计为准。
 

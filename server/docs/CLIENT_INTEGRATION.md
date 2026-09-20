@@ -31,7 +31,7 @@ cd server
 
 `POST /api/v1/auth/local` 默认关闭，只有 `Development` 环境且 `Identity:EnableLocalAuth=true` 时才能开启。Production 即使误配该开关也返回 404，不能把 Local Auth 当正式登录。
 
-配置源为仓库根目录 `config/FantasyCard_Config.xlsx`。`tools/export-config.ps1` 将同一份 bytes/version/hash 发布到 `server/config/generated/` 与 `client/data/generated/`，并生成 Godot 使用的 `client/data/catalog.json`。当前版本包含 200 张图鉴卡、12 张怪物卡和 1200 行成长数据；湮核 `M-VOIDCORE` 为火 8、金 8、盾 8，`GO10.is_class_reveal=true`。服务端和客户端版本不一致时先更新配置，不用客户端猜测数值。
+配置源为仓库根目录 `config/FantasyCard_Config.xlsx`。`tools/export-config.ps1` 将同一份 bytes/version/hash 发布到 `server/config/generated/` 与 `client/data/generated/`，并生成 Godot 使用的 `client/data/catalog.json`。当前版本包含 220 张图鉴卡、12 张怪物卡和 1320 行成长数据；湮核 `M-VOIDCORE` 为火 8、金 8、盾 8，`GO10.is_class_reveal=true`。服务端和客户端版本不一致时先更新配置，不用客户端猜测数值。
 
 ## 2. 客户端启动顺序
 
@@ -325,7 +325,7 @@ Idempotency-Key: settlement-ack-018f90dc
 ]
 ```
 
-返回当前配置包中全部 200 张图鉴卡（不含 12 张战局怪物卡），含尚未拥有的条目。未拥有条目 `unlocked=false`、`copyCount=0`；正常初始化行的 `version=1`，缺失的历史行则为 0。卡面使用相同 `configVersion` 的静态配置，交易价格与材料类型使用这里的服务端报价。
+返回当前配置包中全部 220 张图鉴卡（不含 12 张战局怪物卡），含尚未拥有的条目。未拥有条目 `unlocked=false`、`copyCount=0`；正常初始化行的 `version=1`，缺失的历史行则为 0。卡面使用相同 `configVersion` 的静态配置，交易价格与材料类型使用这里的服务端报价。
 
 `currencyKind` 为 `WarriorSoul`、`PriestSoul`、`MageSoul`、`GuardianSoul`，三职业材料互不通用。`canDismantle=false` 时 `blockedReason` 给出未拥有或已编组原因。品质字符串为 `White/Green/Blue/Purple/Orange`。
 
@@ -724,7 +724,7 @@ ws://127.0.0.1:5080/ws/v1/session?access_token={URL 编码 token}
 - [ ] 首次登录只生成一个内部玩家，重复登录资产不重复。
 - [ ] Bootstrap 得到三职业武器、编组，五部位配装全空；初始余额为 0。不发放绑定白鞋。
 - [ ] 档案更新 version +1；同幂等键重试回放成功响应，旧 version 的新请求返回 409。
-- [ ] 图鉴返回全部 200 张，其中 51 张初始解锁，三套编组各 20 张。
+- [ ] 图鉴返回全部 220 张，其中 51 张初始解锁，三套编组各 20 张。
 - [ ] 非 20 张、跨职业卡、超持有数量的编组返回 400。
 - [ ] 合法编组/穿戴保存 version +1；同幂等键重试回放成功响应，旧版本的新请求返回 409。
 - [ ] 免费包准备成功；重复同幂等键返回同 preparationId。

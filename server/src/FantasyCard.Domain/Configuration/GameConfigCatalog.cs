@@ -107,7 +107,8 @@ public sealed record EconomyConfig(
     double MarketFeeRate,
     int HealthPotionPrice,
     double HealthPotionHealRate,
-    int DailyCardSlots);
+    int DailyCardSlots,
+    int DailyShopRefreshLimit);
 
 public sealed class GameConfigCatalog
 {
@@ -193,7 +194,15 @@ public sealed class GameConfigCatalog
         var shopCardPriceTable = bundle.Table("ShopCardPrices");
         var itemsTable = bundle.Table("Items");
         var economyTable = bundle.Table("Economy");
-        var cards = cardsTable.Rows.Select(row => ReadCard(cardsTable, row)).Where(card => card.Enabled).ToArray();
+        var cards = cardsTable.Rows
+            .Select(row => ReadCard(cardsTable, row))
+            .Where(card => card.Enabled)
+            .OrderBy(card => card.IsCodex ? 0 : 1)
+            .ThenBy(card => card.IsCodex ? card.Rarity : short.MaxValue)
+            .ThenBy(card => card.HeroClass is null ? 0 : 1)
+            .ThenBy(card => card.HeroClass ?? (HeroClass)short.MaxValue)
+            .ThenBy(card => card.CardId, StringComparer.Ordinal)
+            .ToArray();
         var levels = levelsTable.Rows.Select(row => new CardLevelConfig(
             levelsTable.Text(row, "card_id"),
             levelsTable.Int(row, "level"),
@@ -245,7 +254,8 @@ public sealed class GameConfigCatalog
             economy = new EconomyConfig(
                 EconomyInt("market-active-listings"), EconomyInt("market-duration-hours"),
                 EconomyDouble("market-fee-rate"), EconomyInt("health-potion-price"),
-                EconomyDouble("health-potion-heal-rate"), EconomyInt("daily-card-slots"));
+                EconomyDouble("health-potion-heal-rate"), EconomyInt("daily-card-slots"),
+                EconomyInt("daily-shop-refresh-limit"));
         }
         catch (KeyNotFoundException exception)
         {
@@ -331,7 +341,8 @@ public sealed class GameConfigCatalog
     {
         if (economy.MarketActiveListings <= 0 || economy.MarketDurationHours <= 0 ||
             economy.MarketFeeRate is <= 0 or >= 1 || economy.HealthPotionPrice <= 0 ||
-            economy.HealthPotionHealRate is <= 0 or > 1 || economy.DailyCardSlots != 3)
+            economy.HealthPotionHealRate is <= 0 or > 1 || economy.DailyCardSlots != 3 ||
+            economy.DailyShopRefreshLimit <= 0)
             throw new InvalidDataException("Economy contains an invalid market or health-potion value.");
 
         string[] expectedQualities = ["White", "Green", "Blue", "Purple"];

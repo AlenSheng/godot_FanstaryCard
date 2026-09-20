@@ -17,6 +17,10 @@ const TipsOverlay = preload("res://ui/tips_overlay.gd")
 const CATALOG = preload("res://data/catalog.json")
 const DESCRIPTIONS = preload("res://data/card_descriptions.json")
 const UI_CONFIG = preload("res://data/ui_config.json")
+const RANDOM_NAMES_PATH := "res://data/random_names.json"
+const CLOUD_SERVER_URL := "https://www.relicbound.cn"
+const LOCAL_SERVER_URL := "http://127.0.0.1:5080"
+const LOGIN_VIDEO_PATH := "res://assets/backgrounds/relicbound_login_ambient.ogv"
 var screen := "hall"
 var content: VBoxContainer
 var root_column: VBoxContainer
@@ -37,12 +41,14 @@ var screen_loading := false
 var _render_pending := false
 var mail_modal_lock := false
 var _midlayer_seen: Dictionary = {}
-var _login_address := "http://127.0.0.1:5080"
 var _login_name := ""
 var _session_generation: int = -1
 var _search := ""
 var _combat_panels: Dictionary = {}
 var _background: TextureRect
+var _background_video: VideoStreamPlayer
+var _background_shade: ColorRect
+var _login_video_available := false
 var _reference: Control
 var _quality := ""
 var _enhance_item := ""
@@ -60,15 +66,25 @@ var _codex_mutating := false
 var _enhancement_quote: Dictionary = {}
 var _enhancement_quote_key := ""
 var _game_title: Label
+var _draw_charge_visual := 0.0
+var _draw_charge_authoritative := 0.0
+var _draw_charge_anchor_msec := 0
+var _draw_charge_interval := 4.0
+var _draw_charge_hand_ids: Array = []
+var _draw_charge_room_key := ""
+var _draw_charge_initialized := false
+var _draw_charge_hold_full := false
 
 func _ready() -> void:
 	theme = P.theme()
 	for card in CATALOG.data.tables.Cards: cards[card.id] = card
-	if not Game.gateway.base_url.strip_edges().is_empty(): _login_address = Game.gateway.base_url
 	if not Game.gateway.local_account_name.is_empty(): _login_name = Game.gateway.local_account_name
+	if _login_name.is_empty(): _login_name = _random_login_name()
 	_session_generation = Game.gateway.session_generation
 	Game.changed.connect(_schedule_render)
 	Game.notice.connect(_toast)
+	Game.player_data_invalidated.connect(_refresh_after_admin_update)
+	Game.shop_refreshed.connect(_on_shop_refreshed)
 	Game.authentication_required.connect(_show_ban_dialog)
 	Game.combat_feedback.connect(_feedback)
 	_build_shell()
@@ -77,6 +93,9 @@ func _ready() -> void:
 	add_child(audio_settings)
 	_sync_account_session()
 	_render()
+
+func _process(_delta: float) -> void:
+	_update_draw_charge_visual()
 
 func _build_shell() -> void:
 	var background := TextureRect.new()
@@ -89,6 +108,27 @@ func _build_shell() -> void:
 		background.texture = load("res://assets/scenes/camp_hall.png")
 		background.modulate = Color.WHITE
 	add_child(background)
+	var background_video := VideoStreamPlayer.new()
+	_background_video = background_video
+	background_video.name = "LoginAmbientVideo"
+	background_video.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	background_video.expand = true
+	background_video.loop = true
+	background_video.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(background_video)
+	var video_stream := load(LOGIN_VIDEO_PATH) as VideoStream
+	if video_stream != null:
+		background_video.stream = video_stream
+		background_video.autoplay = true
+		background_video.play()
+		_login_video_available = true
+	var background_shade := ColorRect.new()
+	_background_shade = background_shade
+	background_shade.name = "LoginAmbientShade"
+	background_shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	background_shade.color = Color(0.02, 0.055, 0.06, 0.18)
+	background_shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(background_shade)
 	var margin := MarginContainer.new()
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	for side in ["left", "right"]: margin.add_theme_constant_override("margin_" + side, 80)
@@ -125,6 +165,100 @@ func _schedule_render() -> void:
 	if _render_pending: return
 	_render_pending = true
 	_render.call_deferred()
+
+func _reset_draw_charge_visual() -> void:
+	_draw_charge_visual = 0.0
+	_draw_charge_authoritative = 0.0
+	_draw_charge_anchor_msec = 0
+	_draw_charge_interval = 4.0
+	_draw_charge_hand_ids = []
+	_draw_charge_room_key = ""
+	_draw_charge_initialized = false
+	_draw_charge_hold_full = false
+
+func _draw_charge_value(authoritative: float = 0.0) -> float:
+	return _draw_charge_visual if _draw_charge_initialized else clampf(authoritative, 0.0, 1.0)
+
+func _sync_draw_charge_visual() -> void:
+	var player: Dictionary = Game.room.get("player", {})
+	var phase := str(player.get("phase", ""))
+	if phase not in ["Pve", "Pvp"]:
+		_reset_draw_charge_visual()
+		return
+	var room_id := str(Game.room.get("room_id", ""))
+	var battle: Dictionary = Game.room.get("duel", Game.room.get("pve", {}))
+	var room_key := "%s:%s" % [room_id, str(battle.get("duel_id", battle.get("battle_id", "")))]
+	var authoritative := clampf(float(player.get("draw_charge", "0")), 0.0, 1.0)
+	var status: Dictionary = player.get("battle_status", {})
+	var interval := maxf(0.1, float(status.get("draw_interval_seconds", "4")))
+	var hand_ids: Array = player.get("hand", []).map(func(card): return str(card.get("instance_id", "")))
+	var now := Time.get_ticks_msec()
+	if not _draw_charge_initialized or room_key != _draw_charge_room_key:
+		_draw_charge_visual = authoritative
+		_draw_charge_authoritative = authoritative
+		_draw_charge_anchor_msec = now
+		_draw_charge_interval = interval
+		_draw_charge_hand_ids = hand_ids
+		_draw_charge_room_key = room_key
+		_draw_charge_initialized = true
+		_draw_charge_hold_full = false
+		return
+
+	var new_card_arrived := false
+	for card_id in hand_ids:
+		if card_id not in _draw_charge_hand_ids:
+			new_card_arrived = true
+			break
+	if new_card_arrived:
+		# The server snapshot is the new round's authoritative starting point.
+		# Reset only when a card actually arrived, so a full visual bar never
+		# snaps backwards while the server is still processing the draw.
+		_draw_charge_visual = authoritative
+		_draw_charge_authoritative = authoritative
+		_draw_charge_anchor_msec = now
+		_draw_charge_hold_full = false
+	elif authoritative > _draw_charge_authoritative + 0.0005:
+		# A newer authoritative charge can catch up a delayed render without
+		# making the visual bar jump backwards.
+		_draw_charge_visual = maxf(_draw_charge_visual, authoritative)
+		_draw_charge_authoritative = authoritative
+		_draw_charge_anchor_msec = now - int(maxf(0.0, _draw_charge_visual - authoritative) * interval * 1000.0)
+	elif not is_equal_approx(interval, _draw_charge_interval):
+		# Preserve the visible fraction while the server changes the interval;
+		# the remaining part then uses the new duration immediately.
+		_draw_charge_anchor_msec = now - int(maxf(0.0, _draw_charge_visual - authoritative) * interval * 1000.0)
+	_draw_charge_authoritative = authoritative
+	_draw_charge_interval = interval
+	_draw_charge_hand_ids = hand_ids
+	_draw_charge_room_key = room_key
+
+func _update_draw_charge_visual() -> void:
+	if not _draw_charge_initialized: return
+	var player: Dictionary = Game.room.get("player", {})
+	if str(player.get("phase", "")) not in ["Pve", "Pvp"]: return
+	if not _draw_charge_hold_full:
+		var elapsed := maxf(0.0, (Time.get_ticks_msec() - _draw_charge_anchor_msec) / 1000.0)
+		var expected := _draw_charge_authoritative + elapsed / maxf(0.1, _draw_charge_interval)
+		if expected >= 1.0:
+			_draw_charge_visual = 1.0
+			_draw_charge_hold_full = true
+		else:
+			_draw_charge_visual = maxf(_draw_charge_visual, expected)
+	var bar: Range = _reference.get_node_or_null("DrawChargeBar") as Range if is_instance_valid(_reference) else null
+	if bar != null:
+		bar.value = clampf(_draw_charge_visual, 0.0, 1.0)
+
+func _refresh_after_admin_update() -> void:
+	if not Game.room.is_empty(): return
+	_codex_ready = false
+	if screen in ["cards", "deck", "gear", "enhance", "shop", "market", "prep"]:
+		_navigate.call_deferred(screen)
+
+func _on_shop_refreshed(_payload: Dictionary) -> void:
+	if screen == "shop" and not Game.busy:
+		_navigate.call_deferred("shop")
+	else:
+		_toast("商店货架已刷新")
 
 func _sync_account_session() -> void:
 	if _session_generation != Game.gateway.session_generation:
@@ -167,6 +301,7 @@ func _reset_account_ui() -> void:
 	_enhancement_quote = {}
 	_enhancement_quote_key = ""
 	_combat_panels.clear()
+	_reset_draw_charge_visual()
 	if is_instance_valid(tips_overlay): tips_overlay.clear()
 	for key in ["exploration_map_open", "inventory_open", "relic_pile", "inventory_selected", "relic_selected", "pending_move", "item_detail_scroll"]:
 		if has_meta(key): remove_meta(key)
@@ -196,6 +331,11 @@ func _render() -> void:
 	else:
 		_background.texture = load("res://assets/scenes/camp_hall.png")
 		_background.modulate = Color.WHITE
+	var show_login_video: bool = Game.lobby.is_empty() and Game.room.is_empty() and Game.settlement.is_empty()
+	if is_instance_valid(_background_video):
+		_background_video.visible = show_login_video and _login_video_available
+		if _background_video.visible and not _background_video.is_playing(): _background_video.play()
+	if is_instance_valid(_background_shade): _background_shade.visible = show_login_video and _login_video_available
 	_combat_panels = {}
 	for node in content.get_children():
 		content.remove_child(node)
@@ -231,7 +371,7 @@ func _render() -> void:
 		return
 	if Game.lobby.get("unfinishedMatch") != null:
 		_label(content, "正在恢复上次探索…", 42, P.GOLD)
-		_button(content, "重新连接", Game.gateway.connect_realtime)
+		_button(content, "重新连接", Game.reconnect, Game.busy)
 		return
 	_nav()
 	if screen_loading:
@@ -275,7 +415,7 @@ func _button(parent: Node, text: String, callback: Callable, disabled: bool = fa
 	return button
 
 func _is_positive_button(value: String) -> bool:
-	for keyword in ["确认", "领取", "登录", "注册", "开始", "保存", "购买", "强化", "穿戴", "上架", "选择", "准备就绪", "探索准备"]:
+	for keyword in ["确认", "领取", "登录", "注册", "Login", "开始", "保存", "购买", "强化", "穿戴", "上架", "选择", "准备就绪", "探索准备", "随机起名", "Randomize"]:
 		if value.contains(keyword): return true
 	return false
 
@@ -298,31 +438,41 @@ func _login() -> void:
 	_label(content, "混沌领域", 76, P.GOLD)
 	_label(content, "搜寻遗物，组合五行，带着战利品归来。", 30)
 	var row := _row(content)
-	var panel := _panel(row, 680)
+	var panel := _panel(row)
+	var panel_frame: Control = panel.get_parent()
+	panel_frame.size_flags_stretch_ratio = 0.25
+	panel_frame.custom_minimum_size.x = 340
 	_label(panel, "启程", 40)
-	_label(panel, "账号名称", 22, P.MUTED)
+	_label(panel, P.localized("nickname"), 22, P.MUTED)
 	var name_input := LineEdit.new()
 	name_input.text = _login_name
 	name_input.placeholder_text = P.localized_text("输入唯一账号名称")
 	name_input.max_length = 20
 	name_input.text_changed.connect(func(value): _login_name = value)
 	panel.add_child(name_input)
-	if Game.platform.local_login_enabled() and "identity.local" in Game.server_info.get("capabilities", []):
-		_label(panel, "同名登录原账号，新名称自动注册新账号。", 20, P.MUTED)
-	_label(panel, "服务器地址", 22, P.MUTED)
-	var address := LineEdit.new()
-	address.text = _login_address
-	address.placeholder_text = "http://127.0.0.1:5080"
-	address.text_changed.connect(func(value): _login_address = value)
-	panel.add_child(address)
-	if Game.platform.local_login_enabled() and "identity.local" in Game.server_info.get("capabilities", []):
-		_button(panel, "正在连接…" if Game.busy else "本地登录 / 注册", func(): Game.login(_login_address.strip_edges(), _login_name.strip_edges()), Game.busy)
+	_button(panel, P.localized("random_name"), func():
+		_login_name = _random_login_name(_login_name)
+		name_input.text = _login_name
+	, Game.busy, "UI/CardCodex/card_codex_action_button_orange.png")
+	if OS.is_debug_build():
+		_button(panel, P.localized("local_dev_login"), func(): Game.login(LOCAL_SERVER_URL, _login_name), Game.busy, "UI/CardCodex/card_codex_action_button_blue.png")
+	_label(panel, P.localized("nickname_hint"), 20, P.MUTED)
+	_label(panel, P.localized("random_name_hint"), 18, P.MUTED)
+	_label(panel, "本地服仅用于开发联调；原有入口连接腾讯云外网服务器。", 18, P.MUTED)
+	_button(panel, P.localized("cloud_login"), func(): Game.login(CLOUD_SERVER_URL, _login_name), Game.busy, "UI/CardCodex/card_codex_action_button_orange.png")
 	var steam_reason: String = Game.platform.login_unavailable_reason()
-	_button(panel, "Steam 登录", func(): Game.login_steam(_login_address.strip_edges(), _login_name.strip_edges()), Game.busy or not steam_reason.is_empty())
+	_button(panel, "Steam 登录", func(): Game.login_steam(CLOUD_SERVER_URL, _login_name), Game.busy or not steam_reason.is_empty())
 	if not steam_reason.is_empty(): _label(panel, steam_reason, 20, P.MUTED)
 	if not Game.authentication_reason.is_empty(): _label(panel, Game.authentication_reason, 22, P.GOLD)
 	if not Game.configuration_error.is_empty(): _label(panel, Game.configuration_error, 22, P.GOLD)
-	var about := _panel(row, 680)
+	var center_space := Control.new()
+	center_space.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	center_space.size_flags_stretch_ratio = 0.45
+	row.add_child(center_space)
+	var about := _panel(row)
+	var about_frame: Control = about.get_parent()
+	about_frame.size_flags_stretch_ratio = 0.30
+	about_frame.custom_minimum_size.x = 400
 	var announcement: Dictionary = Game.server_info.get("announcement", {})
 	var title := str(announcement.get("title", "")).strip_edges()
 	var body := str(announcement.get("body", "")).strip_edges()
@@ -337,6 +487,22 @@ func _login() -> void:
 	announcement_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
 	_about_scroll_content(announcement_scroll, body)
 	about.add_child(announcement_scroll)
+
+func _random_login_name(previous: String = "") -> String:
+	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(RANDOM_NAMES_PATH))
+	var language_key := "zh-CN" if P.language() == "zh-CN" else "en"
+	var names: Array = []
+	if parsed is Dictionary:
+		var available: Variant = parsed.get("languages", {}).get(language_key, [])
+		if available is Array: names = available
+	if names.is_empty(): names = ["旅人"] if language_key == "zh-CN" else ["Wanderer"]
+	var random := RandomNumberGenerator.new()
+	random.randomize()
+	var candidate := previous
+	for _attempt in 4:
+		candidate = "%s#%04d" % [str(names[random.randi_range(0, names.size() - 1)]), random.randi_range(0, 9999)]
+		if candidate != previous: return candidate
+	return candidate
 
 func _about_scroll_content(scroll: ScrollContainer, body: String) -> void:
 	var text := Label.new()
@@ -713,8 +879,35 @@ func _equipment() -> void:
 func _equip(item: Dictionary) -> void:
 	var slots := {"Head": 0, "Helmet": 0, "Chest": 1, "Body": 1, "Hands": 2, "Gloves": 2, "Legs": 3, "Feet": 4, "Boots": 4}
 	if not slots.has(item.slot): _toast("未识别的装备部位"); return
-	gear_draft[slots[item.slot]] = item.instanceId
+	gear_draft.resize(5)
+	var target_slot: int = slots[item.slot]
+	var item_id: Variant = item.get("instanceId", "")
+	if gear_draft[target_slot] == item_id:
+		gear_draft[target_slot] = null
+		_render()
+		return
+	if _draft_high_quality_limit_would_block(item):
+		_toast(P.localized("loadout_high_quality_limit"))
+		return
+	gear_draft[target_slot] = item_id
 	_render()
+
+func _draft_high_quality_limit_would_block(item: Dictionary) -> bool:
+	var slots := {"Head": 0, "Helmet": 0, "Chest": 1, "Body": 1, "Hands": 2, "Gloves": 2, "Legs": 3, "Feet": 4, "Boots": 4}
+	var slot := str(item.get("slot", ""))
+	return slots.has(slot) and _draft_has_other_high_quality(item, int(slots[slot]))
+
+func _draft_has_other_high_quality(item: Dictionary, target_slot: int) -> bool:
+	var quality := Art.quality_name(item.get("quality", item.get("Quality", "")))
+	if quality not in ["Orange", "Red"]: return false
+	for index in range(gear_draft.size()):
+		if index == target_slot: continue # Replacing this slot preserves the one-item limit.
+		var draft_id: Variant = gear_draft[index]
+		if draft_id == null: continue
+		for candidate in inventory.get("equipments", []):
+			if candidate.get("instanceId", "") == draft_id and Art.quality_name(candidate.get("quality", candidate.get("Quality", ""))) in ["Orange", "Red"]:
+				return true
+	return false
 
 func _equipped_items() -> Array:
 	if not Game.room.is_empty(): return Game.room.get("player", {}).get("equipped_items", [])
@@ -743,13 +936,17 @@ func _show_equipment_details(item: Dictionary, action: Callable = Callable(), ac
 	dialog.open(item, current, worn, action, action_title, Game.busy)
 
 func _show_battle_details(status: Dictionary) -> void:
-	var dialog := AcceptDialog.new()
-	dialog.title = P.localized_text("当前战斗属性与套装")
-	dialog.dialog_text = BattleDetails.description(status) if not status.is_empty() else P.localized_text("等待战斗属性同步")
+	var existing := get_node_or_null("BattleDetailsModal")
+	if existing != null:
+		if existing.has_method("dismiss"): existing.call("dismiss")
+		return
+	var dialog := ConfirmationModalScene.instantiate()
+	dialog.name = "BattleDetailsModal"
 	add_child(dialog)
-	dialog.confirmed.connect(dialog.queue_free)
-	dialog.canceled.connect(dialog.queue_free)
-	dialog.popup_centered(Vector2i(700, 630))
+	dialog.configure(
+		BattleDetails.description(status) if not status.is_empty() else P.localized("battle_stats_waiting"),
+		Callable(),
+		{"title": "battle_stats_set", "confirm_text": "confirm", "info_only": true, "tall": true})
 
 func _enhance(item: Dictionary) -> void:
 	if Game.busy: return
@@ -823,7 +1020,7 @@ func _shop() -> void:
 	content.add_child(grid)
 	for item in shop.get("products", []):
 		var panel := _panel(grid, 535)
-		_label(panel, P.word(item.kind), 30)
+		_label(panel, P.product_name(item.kind), 30)
 		var payload: Variant = JSON.parse_string(item.get("payload", "{}"))
 		if payload is Dictionary and payload.has("cardId"):
 			var card_id := str(payload.cardId)
@@ -882,6 +1079,22 @@ func _purchase_shop_item(item: Dictionary, product_title: String) -> void:
 		_confirm("花费 %s 金币购买%s？" % [item.get("priceGold", 0), product_title], purchase)
 	else:
 		purchase.call()
+
+func _refresh_shop() -> void:
+	if Game.busy: return
+	Game.busy = true
+	var generation: int = Game.gateway.session_generation
+	var result: Dictionary = await Game.gateway.request("/api/v1/shop/refresh", HTTPClient.METHOD_POST, {})
+	if not _session_result_current(generation, result): return
+	if result.ok:
+		shop = result.data
+		Sound.play_cue("reward")
+		_toast("商店货架已刷新")
+	else:
+		Sound.play_cue("error")
+		_toast(result.error)
+	Game.busy = false
+	_render()
 
 func _complete_shop_purchase(item: Dictionary) -> void:
 	if Game.busy: return
@@ -949,6 +1162,11 @@ func _room() -> void:
 	_label(row, "生命 %s / %s   护盾 %s" % [combat.get("hp", 0), combat.get("maximum_hp", 0), combat.get("shield", 0)], 28)
 	_button(row, "同步", func(): Game.gateway.send("room.snapshot.read"))
 	if player.get("phase", "") in ["Pve", "Pvp"]:
+		_button(row, P.localized("battle_exit"), func(): _confirm(
+			P.localized("battle_abandon_warning"),
+			func(): Game.command("battle.abandon"),
+			{"title": P.localized("battle_abandon_title"), "confirm_text": P.localized("battle_abandon_confirm"), "cancel_text": P.localized("cancel"), "tall": true}),
+			not Game.allowed("battle.abandon"))
 		_battle(state)
 	elif state.has("reward_choice"):
 		_rewards(state.reward_choice)
@@ -976,24 +1194,31 @@ func _battle(state: Dictionary) -> void:
 		if Game.allowed("duel.escape"): _button(opponent, "强制逃脱", func(): Game.command("duel.escape", {"duel_id": state.duel.duel_id}))
 		if state.duel.has("escape_remaining_ms"): _label(opponent, "逃脱读条 %.1f 秒" % (float(state.duel.escape_remaining_ms) / 1000.0))
 	else:
-		for monster in state.get("pve", {}).get("monsters", []):
+		var monsters: Array = state.get("pve", {}).get("monsters", [])
+		var alive_monster_count := 0
+		for monster in monsters:
+			if int(monster.hp) > 0: alive_monster_count += 1
+		var multiple_monsters: bool = alive_monster_count > 1
+		for monster in monsters:
 			var enemy := _panel(stage, 420)
 			enemy.add_theme_constant_override("separation", 8)
 			_combat_panels[monster.monster_id] = enemy.get_parent()
-			var button := _button(enemy, _monster_name(monster.monster_id) + (" · 当前目标" if state.pve.current_target_id == monster.monster_id else " · 选择目标"), func(): Game.command("battle.select_target", {"battle_id": state.pve.battle_id, "target_id": monster.monster_id}), not Game.allowed("battle.select_target") or int(monster.hp) <= 0)
-			button.custom_minimum_size.y = 60
 			var portrait := Art.image(enemy, Art.monster(monster.monster_id), Vector2(110, 90))
 			if portrait.texture == null:
 				portrait.custom_minimum_size.y = 40
 				_label(enemy, _monster_name(monster.monster_id), 28, P.MUTED)
 			_label(enemy, "生命 %s / %s    盾 %s" % [monster.hp, monster.maximum_hp, monster.shield], 20)
 			_health_bar(enemy, monster)
+			if multiple_monsters:
+				var button := _button(enemy, _monster_name(monster.monster_id) + (" · 当前目标" if state.pve.current_target_id == monster.monster_id else " · 选择目标"), func(): Game.command("battle.select_target", {"battle_id": state.pve.battle_id, "target_id": monster.monster_id}), not Game.allowed("battle.select_target") or int(monster.hp) <= 0, "UI/CardCodex/card_codex_action_button_orange.png")
+				button.custom_minimum_size.y = 60
 			var intent: String = {"Charge": "蓄力", "Empower": "强化", "Shield": "护盾"}.get(monster.intent_kind, P.word(monster.intent_element))
 			_label(enemy, "意图 %s %s" % [intent, monster.intent_value if int(monster.intent_value) > 0 else ""], 23, P.ELEMENT.get(monster.intent_element, Color.WHITE))
 	var charge := BoundedBar.new()
+	charge.name = "DrawChargeBar"
 	charge.configure("UI/Battle/battle_energy_cell_lit.png", "UI/Battle/battle_energy_cell_unlit.png")
 	charge.max_value = 1.0
-	charge.value = float(state.player.get("draw_charge", "0"))
+	charge.value = _draw_charge_value(float(state.player.get("draw_charge", "0")))
 	charge.custom_minimum_size.y = 16
 	content.add_child(charge)
 	_label(content, "1–5 选牌 / 空格放出 / R 同步    已选 %s 张" % Game.selected_cards.size(), 22, P.MUTED)

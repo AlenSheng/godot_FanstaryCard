@@ -112,6 +112,7 @@ public sealed class AdminRepository(NpgsqlDataSource dataSource, TimeProvider ti
         await AuditAsync(connection, transaction, operation, request.PlayerId, new { mailId, request.Title, request.Body, request.Attachments },
             requestId, cancellationToken);
         await transaction.CommitAsync(cancellationToken);
+        await NotifyPlayerRefreshAsync(request.PlayerId, operation);
         return mailId;
     }
 
@@ -211,6 +212,7 @@ public sealed class AdminRepository(NpgsqlDataSource dataSource, TimeProvider ti
             $"管理员收回：{request.Kind} × {request.Amount}。原因：{request.Reason}", [], cancellationToken);
         await AuditAsync(connection, transaction, "revoke", request.PlayerId, request, requestId, cancellationToken);
         await transaction.CommitAsync(cancellationToken);
+        await NotifyPlayerRefreshAsync(request.PlayerId, "revoke");
         return true;
     }
 
@@ -301,7 +303,17 @@ public sealed class AdminRepository(NpgsqlDataSource dataSource, TimeProvider ti
         var result = await operation(connection, transaction);
         await AuditAsync(connection, transaction, action, playerId, result, requestId, cancellationToken);
         await transaction.CommitAsync(cancellationToken);
+        await NotifyPlayerRefreshAsync(playerId, action);
         return result;
+    }
+
+    private async Task NotifyPlayerRefreshAsync(Guid playerId, string operation)
+    {
+        if (!connections.IsConnected(playerId)) return;
+
+        var message = eventStore.Create(playerId, "inventory.changed", $"admin-{operation}",
+            new InventoryChangedEventPayload("admin.refresh", operation));
+        await connections.SendPresentationAsync(playerId, message);
     }
 
     private async Task<Guid> InsertMailAsync(NpgsqlConnection connection, NpgsqlTransaction transaction, Guid playerId,

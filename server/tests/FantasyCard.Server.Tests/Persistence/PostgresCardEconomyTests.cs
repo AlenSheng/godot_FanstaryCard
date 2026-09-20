@@ -22,9 +22,9 @@ public sealed class PostgresCardEconomyTests
         var player = await CreatePlayerAsync(database);
         var repository = new ProgressionRepository(database.DataSource);
         var cards = await repository.GetCardsAsync(player, ct);
-        Assert.Equal(200, cards.Count);
+        Assert.Equal(220, cards.Count);
         Assert.Equal(51, cards.Count(card => card.Unlocked));
-        Assert.Equal(149, cards.Count(card => !card.Unlocked && card.CopyCount == 0));
+        Assert.Equal(169, cards.Count(card => !card.Unlocked && card.CopyCount == 0));
         Assert.All(cards, card => Assert.True(card.CraftCost > 0));
 
         var candidates = new HeroClass?[] { null, HeroClass.Priest, HeroClass.Mage, HeroClass.Guardian }

@@ -1,6 +1,7 @@
 extends RefCounted
 
 const Art = preload("res://ui/art.gd")
+const P = preload("res://ui/palette.gd")
 
 ## Builds a reusable layered equipment visual:
 ## common cell -> quality background -> equipment icon -> quality frame.
@@ -51,5 +52,22 @@ static func equipment(parent: Node, item: Dictionary, minimum: Vector2 = Vector2
 	quality_frame.stretch_mode = TextureRect.STRETCH_SCALE
 	quality_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.add_child(quality_frame)
+
+	var quantity := int(item.get("quantity", item.get("Quantity", 1)))
+	if quantity > 0:
+		var quantity_label := Label.new()
+		quantity_label.name = "Quantity"
+		quantity_label.text = "×%s" % quantity
+		quantity_label.position = Vector2(maxf(4.0, minimum.x - 56.0), maxf(4.0, minimum.y - 31.0))
+		quantity_label.size = Vector2(minimum.x - quantity_label.position.x - 5.0, 25)
+		quantity_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		quantity_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		quantity_label.add_theme_font_override("font", P.font_for_text(quantity_label.text, 20))
+		quantity_label.add_theme_font_size_override("font_size", 20)
+		quantity_label.add_theme_color_override("font_color", P.GOLD)
+		quantity_label.add_theme_color_override("font_outline_color", Color("10191b"))
+		quantity_label.add_theme_constant_override("outline_size", 5)
+		quantity_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		root.add_child(quantity_label)
 	return root
 

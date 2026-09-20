@@ -53,7 +53,7 @@ def protected_export(executable, key, candidate, base_destination):
     working = Path(tempfile.mkdtemp(prefix="client-", dir=PRIVATE))
     package_dir = working / "package"
     package_dir.mkdir()
-    export_path = package_dir / "FantasyCard.exe"
+    export_path = package_dir / "Relicbound.exe"
     env = os.environ.copy()
     env["GODOT_SCRIPT_ENCRYPTION_KEY"] = key
     with (working / "export.log").open("w", encoding="utf-8") as log:

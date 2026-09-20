@@ -2,6 +2,8 @@ extends Node
 
 signal changed
 signal notice(message: String)
+signal player_data_invalidated
+signal shop_refreshed(payload: Dictionary)
 signal combat_feedback(payload: Dictionary)
 signal sound_requested(cue: String)
 signal authentication_required(reason: String)
@@ -38,6 +40,11 @@ var connection := "未连接"
 var _settlement_loading := ""
 var _queued_command: Dictionary = {}
 var _queue_deadline: int = 0
+var _pending_play: Dictionary = {}
+var _play_deadline: int = 0
+var _pending_commands: Dictionary = {}
+var _snapshot_request_at: int = 0
+var _snapshot_request_pending := false
 var _sound_ready := false
 var _sound_commands: Dictionary = {}
 var _sound_seen: Dictionary = {}
@@ -45,6 +52,11 @@ var _sound_terminal_rooms: Dictionary = {}
 
 func _process(_delta: float) -> void:
 	_process_client_info()
+	if not _pending_play.is_empty() and Time.get_ticks_msec() > _play_deadline:
+		_pending_play = {}
+	for request_id in _pending_commands.keys():
+		if Time.get_ticks_msec() > int(_pending_commands[request_id].get("deadline", 0)):
+			_pending_commands.erase(request_id)
 	if not _queued_command.is_empty() and Time.get_ticks_msec() > _queue_deadline:
 		_queued_command = {}
 		notice.emit("操作未发出，请在连接恢复后重试")
@@ -87,6 +99,28 @@ func login_steam(address: String, display_name: String = "") -> void:
 func logout() -> void:
 	gateway.end_session("已退出登录")
 
+func reconnect() -> void:
+	if busy: return
+	# A WebSocket reconnect only works while its in-memory access token is still
+	# valid. After restarting the client, restore a local development session
+	# from the remembered account; cloud and Steam sessions must be re-authenticated.
+	if gateway.token.is_empty() or gateway.session_expired():
+		var is_local_server: bool = gateway.base_url.trim_suffix("/") == Gateway.DEFAULT_LOCAL_BASE_URL
+		if OS.is_debug_build() and is_local_server and not gateway.local_account_name.is_empty():
+			await _login(gateway.base_url, gateway.local_account_name, false)
+		else:
+			gateway.end_session("登录会话已失效，请重新登录")
+		return
+	busy = true
+	connection = "正在恢复连接…"
+	changed.emit()
+	var generation: int = gateway.session_generation
+	await refresh_lobby()
+	if generation == gateway.session_generation and not lobby.is_empty() and configuration_error.is_empty():
+		gateway.connect_realtime()
+	busy = false
+	changed.emit()
+
 func _clear_authenticated_state() -> void:
 	lobby = {}
 	room = {}
@@ -100,6 +134,9 @@ func _clear_authenticated_state() -> void:
 	relic_details = {}
 	clear_combat_preview()
 	_queued_command = {}
+	_pending_play = {}
+	_pending_commands.clear()
+	_snapshot_request_pending = false
 	_settlement_loading = ""
 	busy = false
 	_sound_ready = false
@@ -109,6 +146,10 @@ func _clear_authenticated_state() -> void:
 
 func _on_connection_changed(value: String) -> void:
 	connection = value
+	_pending_play = {}
+	_pending_commands.clear()
+	_snapshot_request_pending = false
+	if _queued_command.get("retry", false): _queued_command = {}
 	_sound_ready = false
 	_sound_commands.clear()
 	changed.emit()
@@ -418,15 +459,12 @@ func allowed(action: String) -> bool:
 
 func command(action: String, payload: Dictionary = {}) -> bool:
 	if not allowed(action) or not _queued_command.is_empty(): return false
+	if action == "battle.play_cards" and not _pending_play.is_empty(): return false
 	if action == "relic.read": return gateway.send(action, payload)
-	# Room revisions advance with the 100 ms server tick. Refresh immediately
-	# before submitting the user's intent, without guessing a future revision.
-	_queued_command = {"action": action, "payload": payload.duplicate(true)}
-	_queue_deadline = Time.get_ticks_msec() + 3000
-	if not gateway.send("room.snapshot.read"):
-		_queued_command = {}
-		return false
-	return true
+	# Send the intent against the latest locally known revision. The server
+	# serializes it in the room actor; only a confirmed revision conflict reads
+	# a fresh snapshot and retries once.
+	return _send_queued_command({"action": action, "payload": payload.duplicate(true)})
 
 func toggle_card(instance_id: String) -> void:
 	if not allowed("battle.play_cards"): return
@@ -441,6 +479,13 @@ func clear_combat_preview() -> void:
 	combat_preview = {}
 	_preview_request = {}
 	_preview_deadline = 0
+
+func _request_snapshot() -> void:
+	if room.is_empty() or not gateway.online or gateway.recovering or _snapshot_request_pending: return
+	var now := Time.get_ticks_msec()
+	if now - _snapshot_request_at < 80: return
+	_snapshot_request_at = now
+	_snapshot_request_pending = gateway.send("room.snapshot.read")
 
 # Kept as a compatibility boundary for older offline tests and replay tools;
 # live selection no longer calls the network preview command.
@@ -463,6 +508,10 @@ func _status_bonuses(status: Dictionary) -> Dictionary:
 
 func _counter(attacker: String, target: String) -> bool:
 	return [["Water", "Fire"], ["Fire", "Metal"], ["Metal", "Wood"], ["Wood", "Earth"], ["Earth", "Water"]].any(func(pair): return pair[0] == attacker and pair[1] == target)
+
+func _conflict_pair(left: String, right: String) -> bool:
+	return left != right and [["Wood", "Earth"], ["Earth", "Water"], ["Water", "Fire"], ["Fire", "Metal"], ["Metal", "Wood"]].any(func(pair):
+		return (pair[0] == left and pair[1] == right) or (pair[0] == right and pair[1] == left))
 
 func _generated(element: String) -> String:
 	return {"Wood": "Fire", "Fire": "Earth", "Earth": "Metal", "Metal": "Water", "Water": "Wood"}.get(element, "None")
@@ -505,12 +554,15 @@ func _calculate_combat_preview(ids: Array) -> Dictionary:
 	var elemental: Array = cards.filter(func(card): return int(card.get("elemental_damage", 0)) > 0 and str(card.get("element", "None")) != "None" and int(card.get("secondary_elemental_damage", 0)) == 0)
 	var counts := {}
 	for card in elemental: counts[card.element] = int(counts.get(card.element, 0)) + 1
-	var core := ""
-	var core_count := 0
-	for element in counts:
-		if int(counts[element]) > core_count: core = element; core_count = int(counts[element])
+	# The first selected elemental card establishes the core.  Do not choose
+	# the most frequent element: a later branch may contain more cards, but it
+	# must not replace the player's first-card core choice.
+	var core := str(elemental[0].get("element", "")) if not elemental.is_empty() else ""
+	var core_count := int(counts.get(core, 0))
 	var reveal_element: String = str({"Mage": "Fire", "Priest": "Water"}.get(room.get("player", {}).get("hero_class", ""), "Earth"))
-	var reveal := cards.any(func(card): return bool(card.get("is_class_reveal", false)))
+	# Catalog rows use null for cards without the flag; GDScript has no bool()
+	# conversion constructor, so test the actual boolean value directly.
+	var reveal := cards.any(func(card): return card.get("is_class_reveal", false) == true)
 	var bases: Array = []
 	for card in cards:
 		var same := int(counts.get(card.get("element", "None"), 0)) - 1
@@ -522,16 +574,23 @@ func _calculate_combat_preview(ids: Array) -> Dictionary:
 	var conflict_pairs := 0
 	var cancellation := 0.0
 	if not core.is_empty():
-		for pair in [["Wood", "Earth"], ["Earth", "Water"], ["Water", "Fire"], ["Fire", "Metal"], ["Metal", "Wood"]]:
-			if pair[0] in counts and pair[1] in counts and (pair[0] == core or pair[1] == core): conflict_pairs += mini(int(counts[pair[0]]), int(counts[pair[1]]))
-		var resonance_count := core_count + (1 if cards.any(func(card): return int(card.get("resonance_bonus", 0)) > 0) else 0)
-		resonance = 3.5 if core_count == 5 and resonance_count > core_count else ([1.0, 1.2, 1.5, 2.0, 3.0][mini(resonance_count, 5) - 1])
-		cancellation = minf(0.80, minf(0.65, 0.20 * conflict_pairs) + cards.map(func(card): return float(card.get("conflict_cancel_bonus", 0))).max()) if conflict_pairs > 0 else 0.0
-		var core_base := 0.0
+		for card in elemental:
+			if str(card.get("element", "None")) != core and not card.get("is_element_tuning", false) and _conflict_pair(core, str(card.get("element", "None"))): conflict_pairs += 1
+		var resonance_bonus := 1 if cards.any(func(card): return int(card.get("resonance_bonus", 0)) > 0) else 0
+		# The first core card is the fixed baseline. M counts later core cards
+		# after counter cards consume their advantage.
+		var main_core_stacks: int = maxi(0, core_count - 1 + resonance_bonus - conflict_pairs)
+		resonance = 1.0 + 0.20 * main_core_stacks
+		var cancel_bonus := float(cards.map(func(card): return float(card.get("conflict_cancel_bonus", 0))).max())
+		cancellation = minf(0.80, 0.20 * conflict_pairs + cancel_bonus) if conflict_pairs > 0 else 0.0
+		var shared_multiplier: float = (1.0 + float(status.get("damage_" + core, 0.0))) * (1.0 - _target_resistance(core, battle))
 		for i in cards.size():
-			if cards[i].get("element", "None") == core and int(cards[i].get("secondary_elemental_damage", 0)) == 0: core_base += bases[i]
-		var elemental_damage: float = floor(core_base * resonance * (1.0 + float(status.get("damage_" + core, 0.0))) * (1.0 - _target_resistance(core, battle)) * (1.0 - cancellation))
-		if elemental_damage > 0: segments[core] = int(elemental_damage)
+			var card: Dictionary = cards[i]
+			if int(card.get("elemental_damage", 0)) <= 0 or str(card.get("element", "None")) == "None" or int(card.get("secondary_elemental_damage", 0)) > 0: continue
+			var element := str(card.get("element", "None"))
+			var branch_multiplier := resonance if element == core else (1.0 if card.get("is_element_tuning", false) or not _conflict_pair(core, element) else 1.0 - cancellation)
+			var value := int(floor(float(bases[i]) * shared_multiplier * branch_multiplier))
+			if value > 0: segments[element] = int(segments.get(element, 0)) + value
 	var total := int(segments.values().reduce(func(a, b): return a + b, 0))
 	var direct := 0
 	for i in cards.size():
@@ -540,11 +599,13 @@ func _calculate_combat_preview(ids: Array) -> Dictionary:
 			var secondary := int(card.get("secondary_elemental_damage", 0))
 			if reveal and card.get("secondary_element", "None") == reveal_element: secondary = int(floor(secondary * 1.3))
 			for pair in [[str(card.get("element", "None")), int(bases[i])], [str(card.get("secondary_element", "None")), secondary]]:
-				var value := int(floor(pair[1] * (1.0 + status.get("damage_" + pair[0], 0.0)) * (1.0 - _target_resistance(pair[0], battle))))
+				var elemental_multiplier := (1.0 + float(status.get("damage_" + pair[0], 0.0))) * (1.0 - _target_resistance(pair[0], battle)) if core.is_empty() else (1.0 + float(status.get("damage_" + core, 0.0))) * (1.0 - _target_resistance(core, battle))
+				var value := int(floor(pair[1] * elemental_multiplier))
 				if value > 0: segments[pair[0]] = int(segments.get(pair[0], 0)) + value; total += value
+		# Printed direct damage is already a direct segment.  Piercing is an
+		# additional per-card contribution and must not replace the base value.
 		direct += int(card.get("direct_damage", 0))
 		direct += int(floor((bases[i] + int(card.get("secondary_elemental_damage", 0)) + int(card.get("direct_damage", 0))) * float(status.get("piercing", 0.0))))
-		direct += int(card.get("direct_damage", 0))
 	if direct > 0: segments["Direct"] = direct; total += direct
 	var target_shield := int((battle.get("opponent", {}) if battle.has("opponent") else battle.get("monsters", []).filter(func(value): return value.get("monster_id", "") == battle.get("current_target_id", "")).front()).get("shield", 0))
 	var actual := mini(total, target_shield + int((battle.get("opponent", {}) if battle.has("opponent") else battle.get("monsters", []).filter(func(value): return value.get("monster_id", "") == battle.get("current_target_id", "")).front()).get("hp", 0)))
@@ -674,30 +735,73 @@ func _sound_event(kind: String, payload: Dictionary) -> void:
 	elif kind == "action.spring_completed" and payload.get("status", "") == "Completed" and _sound_once(kind, payload):
 		sound_requested.emit("heal")
 
-func _send_queued_command(queued: Dictionary) -> void:
+func _send_queued_command(queued: Dictionary) -> bool:
 	var request_id: String = gateway.new_id()
 	if gateway.send(queued.action, queued.payload, request_id):
+		var deadline := Time.get_ticks_msec() + 3000
+		_play_deadline = deadline
+		_pending_commands[request_id] = {"action": queued.action, "payload": queued.payload.duplicate(true), "room_id": room.get("room_id", ""), "retry": queued.get("retry", false), "deadline": deadline}
+		if queued.action == "battle.play_cards":
+			_pending_play = {"request_id": request_id, "room_id": room.get("room_id", ""), "payload": queued.payload.duplicate(true), "retry": queued.get("retry", false)}
 		_sound_commands[request_id] = {"action": queued.action, "room_id": room.get("room_id", "")}
 		if _sound_commands.size() > 64: _sound_commands.erase(_sound_commands.keys()[0])
+		return true
+	elif queued.get("retry", false):
+		notice.emit("操作未发出，请在连接恢复后重试")
+	return false
+
+func _retry_rejected_command(payload: Dictionary) -> bool:
+	var request_id := str(payload.get("_request_id", ""))
+	if request_id.is_empty() or not _pending_commands.has(request_id): return false
+	var pending: Dictionary = _pending_commands[request_id]
+	_pending_commands.erase(request_id)
+	if pending.action == "battle.play_cards": _pending_play = {}
+	# Retry only an explicit pre-execution rejection, never an ambiguous timeout.
+	if pending.retry or payload.get("_replayed", false) or Time.get_ticks_msec() > int(pending.get("deadline", 0)): return false
+	var is_revision_conflict: bool = payload.get("code", "") == "REVISION_CONFLICT" or (
+		payload.get("code", "") == "COMMAND_REJECTED" and
+		str(payload.get("detail", "")).begins_with("Room revision conflict."))
+	if not is_revision_conflict: return false
+	if pending.room_id != room.get("room_id", "") or not allowed(pending.action) or not _queued_command.is_empty(): return false
+	var snapshot_id: String = gateway.new_id()
+	_queued_command = {"action": pending.action, "payload": pending.payload, "retry": true, "room_id": pending.room_id, "snapshot_id": snapshot_id}
+	_queue_deadline = Time.get_ticks_msec() + 3000
+	if not gateway.send("room.snapshot.read", {}, snapshot_id):
+		_queued_command = {}
+		return false
+	_snapshot_request_pending = true
+	_sound_commands.erase(request_id)
+	return true
 
 func _on_event(kind: String, payload: Dictionary) -> void:
 	if kind == "pong": return
+	if kind == "error.command_rejected" and _retry_rejected_command(payload):
+		payload["_retry_handled"] = true
+		return
+	var event_request_id := str(payload.get("_request_id", ""))
+	if not event_request_id.is_empty() and _pending_commands.has(event_request_id) and kind != "error.command_rejected":
+		_pending_commands.erase(event_request_id)
+	if kind == "battle.combo_resolved" and payload.get("_request_id", "") == _pending_play.get("request_id", ""):
+		_pending_play = {}
 	if kind in ["room.snapshot", "room.started"]:
 		var snapshot: Dictionary = payload.get("snapshot", {}) if kind == "room.started" else payload
 		if (not gateway.token.is_empty() or snapshot.has("config_version")) and not validate_config(str(snapshot.get("config_version", "")), "房间"): return
 	_sound_event(kind, payload)
+	if kind in ["room.moved", "battle.target_selected", "duel.leave_ack", "duel.escape_started", "duel.escape_failed", "duel.escape_interrupted", "duel.started", "duel.ended", "action.potion_used", "relic.taken", "relic.replaced", "reward.choice_claimed", "action.extract_started", "action.extract_cancelled", "action.extract_completed", "action.spring_started", "action.spring_cancelled", "action.spring_completed"]:
+		_request_snapshot()
 	match kind:
 		"room.snapshot":
+			_snapshot_request_pending = false
 			if room.get("room_id", "") != payload.get("room_id", ""): relic_details = {}
 			_sound_snapshot(payload, payload)
 			var hand: Array = room.get("player", {}).get("hand", []).map(func(card): return card.instance_id)
 			selected_cards = selected_cards.filter(func(id): return id in hand)
 			combat_preview = _calculate_combat_preview(selected_cards)
 			ready_prompt = {}
-			if not _queued_command.is_empty():
+			if not _queued_command.is_empty() and (not _queued_command.has("snapshot_id") or payload.get("_request_id", "") == _queued_command.snapshot_id):
 				var queued: Dictionary = _queued_command
 				_queued_command = {}
-				if allowed(queued.action) and _intent_valid(queued.action, queued.payload): _send_queued_command(queued)
+				if Time.get_ticks_msec() <= _queue_deadline and queued.get("room_id", room.get("room_id", "")) == room.get("room_id", "") and allowed(queued.action) and _intent_valid(queued.action, queued.payload): _send_queued_command(queued)
 				else: notice.emit("当前状态已改变，请重新选择操作")
 		"room.started":
 			clear_combat_preview()
@@ -705,7 +809,6 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 			ready_prompt = {}
 			gateway.room_id = payload.room_id
 			gateway.room_revision = room.get("room_revision", 0)
-			gateway.send("room.snapshot.read")
 		"match.found", "room.ready_required", "room.ready_accepted": ready_prompt = payload
 		"room.ready_removed":
 			ready_prompt = {}
@@ -717,9 +820,19 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 			if _feedback_is_current(payload):
 				combat_feedback.emit(payload)
 				_sound_combat(kind, payload)
+				_request_snapshot()
 			return
 		"combat.previewed", "combat.preview_rejected": pass
-		"inventory.changed": gateway.send("room.snapshot.read")
+		"inventory.changed":
+			if str(payload.get("action", "")) == "shop.refresh":
+				shop_refreshed.emit(payload)
+				return
+			if str(payload.get("action", "")) == "admin.refresh":
+				refresh_lobby()
+				notice.emit("管理员更新已同步。")
+				player_data_invalidated.emit()
+			else:
+				_request_snapshot()
 		"relic.contents": relic_details[str(payload.get("pile_id", ""))] = payload
 	changed.emit()
 

@@ -51,6 +51,7 @@ func _init() -> void:
 
 func show_tip(message: String) -> void:
 	var localized := P.localized_text(message).strip_edges()
+	if P.is_unlocalized_english_sentence(localized): localized = P.localized("operation_rejected")
 	if localized.is_empty():
 		clear()
 		return

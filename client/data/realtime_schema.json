@@ -1,5 +1,5 @@
 {
-  "sha256": "ea49a837f674ab93babddea02c217fcae51a0540c7757d8eaf26d319964d45e2",
+  "sha256": "377372bb9762cee9d4c282cee8e7bb5dc3b0729a0790bbea9778ccd55b25a1d7",
   "messages": {
     "ClientEnvelope": {
       "1": {
@@ -431,6 +431,12 @@
       "6": {
         "name": "draw_interval_seconds",
         "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "charge_level",
+        "type": "int32",
         "repeated": false,
         "optional": false
       }
@@ -1181,6 +1187,7 @@
         "optional": false
       }
     },
+    "BattleAbandonCommand": {},
     "BattleTargetSelectedEvent": {
       "1": {
         "name": "battle_id",

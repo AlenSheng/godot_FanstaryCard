@@ -35,7 +35,8 @@ public sealed record RoomCombatantPayload(int Hp, int MaximumHp, int EffectiveMa
 public sealed record RoomStatPayload(string Key, string Value);
 public sealed record RoomSetPayload(string Kind, int Count, int Required, bool Active);
 public sealed record RoomBattleStatusPayload(string PassiveKind, int Combo, string? CoreElement,
-    IReadOnlyList<RoomStatPayload> Bonuses, IReadOnlyList<RoomSetPayload> Sets, string DrawIntervalSeconds);
+    IReadOnlyList<RoomStatPayload> Bonuses, IReadOnlyList<RoomSetPayload> Sets, string DrawIntervalSeconds,
+    int ChargeLevel = 0);
 public sealed record RoomEquipmentPayload(string Slot, string Quality, string Element, string? EffectAffix, string? SecondaryTrait, int Level = 0, bool IsBound = false);
 public sealed record RoomInventoryItemPayload(string ItemId, string Kind, int Quantity, bool IsSafe, RoomEquipmentPayload? Equipment = null, int SlotIndex = -1);
 public sealed record RoomRelicPilePayload(Guid PileId, string OwnerName, long Version, IReadOnlyList<RoomInventoryItemPayload> Items);
@@ -107,6 +108,7 @@ public sealed record BattlePlayCardsCommandPayload(
     string TargetId,
     IReadOnlyList<Guid> CardInstanceIds);
 public sealed record BattleSelectTargetCommandPayload(Guid BattleId, string TargetId);
+public sealed record BattleAbandonCommandPayload;
 public sealed record BattleTargetSelectedEventPayload(Guid BattleId, string TargetId);
 public sealed record BattleComboResolvedEventPayload(
     Guid BattleId,

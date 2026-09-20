@@ -12,7 +12,7 @@ const LEGACY_CLOUD_ORIGINS := ["http://43.172.70.182", "https://43.172.70.182"]
 const COMMANDS := {
 	"ping": "", "session.resume": "SessionResumeCommand", "room.ready": "RoomReadyCommand",
 	"room.snapshot.read": "RoomSnapshotCommand", "room.move": "RoomMoveCommand",
-	"battle.play_cards": "BattlePlayCardsCommand", "battle.select_target": "BattleSelectTargetCommand",
+	"battle.play_cards": "BattlePlayCardsCommand", "battle.select_target": "BattleSelectTargetCommand", "battle.abandon": "BattleAbandonCommand",
 	"combat.preview": "BattlePlayCardsCommand",
 	"reward.choice.refresh": "RewardChoiceRefreshCommand", "reward.choice.claim": "RewardChoiceClaimCommand",
 	"duel.leave": "DuelLeaveCommand", "duel.escape": "DuelEscapeCommand",
@@ -273,9 +273,6 @@ func _process(_delta: float) -> void:
 		if online and Time.get_ticks_msec() - _last_ping > 10000:
 			send("ping")
 			_last_ping = Time.get_ticks_msec()
-		if online and not room_id.is_empty() and not recovering and Time.get_ticks_msec() - _last_snapshot_read >= 500:
-			send("room.snapshot.read")
-			_last_snapshot_read = Time.get_ticks_msec()
 	elif state == WebSocketPeer.STATE_CLOSED:
 		if _retry_at == 0: _schedule_reconnect()
 		if Time.get_ticks_msec() >= _retry_at:
@@ -371,9 +368,12 @@ func _receive(packet: PackedByteArray) -> void:
 			_preview_request_ids.erase(payload._request_id)
 			event_received.emit("combat.preview_rejected", payload)
 			return
+		event_received.emit(kind, payload)
+		if payload.get("_retry_handled", false): return
 		failed.emit(payload.get("detail", "操作被拒绝"))
 		if payload.get("code", "") == "NOT_IN_ROOM":
 			room_id = ""
 			recovering = false
 		elif not room_id.is_empty(): send("room.snapshot.read")
+		return
 	event_received.emit(kind, payload)
