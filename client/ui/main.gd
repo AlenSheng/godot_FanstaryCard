@@ -85,9 +85,9 @@ func _build_shell() -> void:
 	background.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	background.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	background.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	if ResourceLoader.exists("res://assets/portal.png"):
-		background.texture = load("res://assets/portal.png")
-		background.modulate = Color(0.45, 0.58, 0.59)
+	if ResourceLoader.exists("res://assets/scenes/camp_hall.png"):
+		background.texture = load("res://assets/scenes/camp_hall.png")
+		background.modulate = Color.WHITE
 	add_child(background)
 	var margin := MarginContainer.new()
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -194,8 +194,8 @@ func _render() -> void:
 		_background.texture = Art.texture("UI/Encounter/encounter_background.png")
 		_background.modulate = Color(0.8, 0.8, 0.8)
 	else:
-		_background.texture = load("res://assets/portal.png")
-		_background.modulate = Color(0.45, 0.58, 0.59)
+		_background.texture = load("res://assets/scenes/camp_hall.png")
+		_background.modulate = Color.WHITE
 	_combat_panels = {}
 	for node in content.get_children():
 		content.remove_child(node)

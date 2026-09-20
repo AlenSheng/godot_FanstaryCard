@@ -1,5 +1,7 @@
 # 美术及配套资源清单
 
+> 2026-09-18 补充：元素调节（享受同元素共振、但不受元素抵消）20 张图鉴卡当前均指向可加载的旧攻击插画，不能再作为复用资源。已新增 `CARD-ART-ELEMENT-TUNING` 专属插画需求：每卡一张、512×768 PNG、无文字无卡框；生成后替换 manifest 对应卡 ID 的映射并重新核验。具体卡名、文件名和效果构图见下表及机器清单。
+
 > 2026-09-15 补充：二级确认弹窗已拆为通用分层组件，复用 `UI/CardCodex/card_codex_dialog_panel_normal.png` 通用底框、橙色确认按钮和蓝色取消按钮；遮罩、标题及多语言描述由客户端动态排版。现有资源完整，本项没有新增缺图需求。
 
 > 2026-09-14 补充：已按 `design/mockups/equipment-comparison-ui-v3-cross-element.png` 实现装备对比弹窗。运行时复用现有对话框底板、标题条、按钮、关闭按钮、通用物品格、品质框、装备主体和三词缀徽记；品质底色、动态文本、属性值、正负变化与激活状态由代码分层绘制。现有 `UI/Prep/exploration_prep_set_effect_panel_normal.png` 烘焙了“套装效果”文字且只有固定横条布局，不能复用于动态、多语言的前后套装对比，已登记 `UI-EQUIPMENT-COMPARE-SET-PANEL-CLEAN` 无字套装状态卡底图需求。当前以通用无字面板实现，不阻塞功能。
@@ -14,7 +16,7 @@
 
 ## 当前已齐资源
 
-- 200 张图鉴插画；212 条卡图绑定包含 12 张本局怪物卡复用，不是 212 张图鉴插画。当前运行时图鉴插画为 512×768，原始交付规格为 768×1152。
+- 200 张图鉴插画；212 条卡图绑定包含 12 张本局怪物卡复用，不是 212 张图鉴插画。当前运行时图鉴插画为 512×768，原始交付规格为 768×1152。元素调节 20 张虽已有可加载映射，但均为旧攻击图复用，已转为待补专属插画。
 - 12 个正式怪物物种均有图片映射，湮核一/二阶段分别有图；三只旧怪物的透明清理图已接入。匣灵遭遇生成与六种元素实例已实现，复用现有主体与卡图。
 - 三职业角色立绘、三本命徽记、四类商城商品、三个行动图标及已有品质框、面板、按钮、空槽、血条和资源图标均可复用。
 - `Cards/Art/monster_card_backdrop.png` 与 `UI/Battle/battle_energy_ring_clean.png` 已登记，计入当前 418 张位图。
@@ -25,6 +27,37 @@
 ## 配套交付与验收状态
 
 本节优先级用于安排剩余交付；后文 27 项的 P1/P2 是历史补图批次，不能据此重新排入生成队列。
+
+### P1 — CARD-ART-ELEMENT-TUNING：元素调节专属卡牌插画（20 张）
+
+- 状态：20 张均已生成并重绑：火、木、土、金、水各白/绿/蓝/紫 4 张；不再复用旧攻击插画。
+- 共通规格：`Cards/Art/element_tuning_*.png`，512×768、PNG RGB/RGBA、2:3 竖图；不含卡框、标题、文字、数字、徽标或水印。沿用项目卡通奇幻笔触、暖炭黑描边、深青石环境、低饱和黄铜与对应元素点光；中央主体清晰、四周保留约 8% 安全边。
+- 主题边界：画面应表达“调节/同调/共振稳定”的能量仪式；每张仍要根据品质和附效表现递进，不能画成通用元素攻击，也不得复用现有任何卡图。
+
+| 卡牌 ID / 名称 | 专属文件 | 效果构图 |
+| --- | --- | --- |
+| ET-FIRE-W 调焰 | `element_tuning_fire_w.png` | 悬浮火种被两道黄铜调音环校准，稳定暖焰。 |
+| ET-FIRE-G 引焰 | `element_tuning_fire_g.png` | 火焰沿符文风道流转，留下轻快加速轨迹。 |
+| ET-FIRE-B 炽律 | `element_tuning_fire_b.png` | 三层火焰节拍环同步脉动，炽红火星有序排列。 |
+| ET-FIRE-P 炎脉合奏 | `element_tuning_fire_p.png` | 熔火脉络汇入大型共振阵，形成庄严火焰和声。 |
+| ET-WOOD-W 理枝 | `element_tuning_wood_w.png` | 嫩枝被黄铜环与细线梳理为平衡螺旋。 |
+| ET-WOOD-G 引芽 | `element_tuning_wood_g.png` | 发光新芽牵引能量种子回流，表现蓄能。 |
+| ET-WOOD-B 森息 | `element_tuning_wood_b.png` | 林冠呼吸般扩张收束，青绿孢光汇聚。 |
+| ET-WOOD-P 万木同频 | `element_tuning_wood_p.png` | 多株古树根脉接入同一翠绿共鸣核心。 |
+| ET-EARTH-W 定土 | `element_tuning_earth_w.png` | 悬浮土石在刻度环中归位、震尘平息。 |
+| ET-EARTH-G 护脉 | `element_tuning_earth_g.png` | 岩脉共振凝成小型土石护盾。 |
+| ET-EARTH-B 地垒 | `element_tuning_earth_b.png` | 多层岩片按同心节律升起为稳固壁垒。 |
+| ET-EARTH-P 山岳同调 | `element_tuning_earth_p.png` | 山峰剖面与巨型黄铜共鸣环对齐，形成厚重护壁。 |
+| ET-METAL-W 鸣金 | `element_tuning_metal_w.png` | 小铜铃与金属片发出可见金色声波。 |
+| ET-METAL-G 锐音 | `element_tuning_metal_g.png` | 精准音叉激起细锐金光，带短暂定身感。 |
+| ET-METAL-B 金律 | `element_tuning_metal_b.png` | 金属律动环与悬空刃片同步，声波凝为控制符纹。 |
+| ET-METAL-P 天钟共鸣 | `element_tuning_metal_p.png` | 云间巨钟落下金色共振波，庄严而不含文字。 |
+| ET-WATER-W 听潮 | `element_tuning_water_w.png` | 水滴与潮纹在倾听石盘上形成平静同心圆。 |
+| ET-WATER-G 引流 | `element_tuning_water_g.png` | 清澈水流经导槽绕过共鸣核心，并牵引一张抽象空白卡片。 |
+| ET-WATER-B 澄波 | `element_tuning_water_b.png` | 澄澈波面托起抽象空白卡片，回流光点表现蓄能。 |
+| ET-WATER-P 沧海同调 | `element_tuning_water_p.png` | 深海潮柱围绕大型水晶共鸣环，空白卡片由涌流托起。 |
+
+- 验收：20 个卡 ID 一对一绑定 20 张新文件；尺寸均为 512×768；不得与旧 `Cards/Art` 文件哈希相同；卡面缩略图下能分辨元素、品质递进及对应附效。
 
 ### 已交付并接入 — FONT-CJK：可随游戏分发的中文字体
 
