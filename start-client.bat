@@ -46,6 +46,9 @@ if defined GODOT_EXECUTABLE if not exist "%GODOT_EXECUTABLE%" (
 if not defined GODOT_EXECUTABLE if exist "%~dp0..\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64.exe" (
     set "GODOT_EXECUTABLE=%~dp0..\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64.exe"
 )
+if not defined GODOT_EXECUTABLE if exist "%~dp0..\..\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64.exe" (
+    set "GODOT_EXECUTABLE=%~dp0..\..\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64.exe"
+)
 if not defined GODOT_EXECUTABLE (
     echo [ERROR] Godot 4.7.2 was not found.
     echo [ERROR] Set A3GAME_GODOT_EXECUTABLE to your Godot executable, then try again.

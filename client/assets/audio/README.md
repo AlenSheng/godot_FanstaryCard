@@ -1,14 +1,16 @@
 # FantasyCard sound library
 
 An original, short-form sound library for the project's charcoal, weathered
-stone, parchment, muted brass, and five-element fantasy style. It contains 22
-mono, 48 kHz, 16-bit PCM WAV files, with no music, voices, downloaded recordings,
-or third-party sound samples.
+stone, parchment, muted brass, and five-element fantasy style. It contains 33
+short mono, 48 kHz, 16-bit PCM WAV cues plus two looping generated room
+ambience beds. The module BGM is supplied separately as external MP3 assets
+copied from `art/BGM`; the login video is supplied there as well.
 
 ## Source and license
 
-All sound waveforms are synthesized locally by `tools/generate_game_audio.py`
-from seeded random noise and mathematical oscillators. The synthesis combines
+The WAV cues and room ambience are synthesized locally by
+`tools/generate_game_audio.py` from seeded random noise and mathematical
+oscillators. The synthesis combines
 band-limited noise, damped inharmonic material resonances, layered friction,
 air envelopes, and water-drop pitch decay. The source script is the editable
 production source; there are no missing recording sessions or sample packs.
@@ -18,8 +20,8 @@ the public domain under **CC0 1.0 Universal**. They may be used commercially,
 modified, and redistributed, including inside exported game builds. Attribution
 is welcome but is not required. No third-party asset credit is required.
 See `LICENSE.txt` and <https://creativecommons.org/publicdomain/zero/1.0/>.
-This dedication applies only to this generated sound library, not to other
-project files or third-party dependencies.
+This dedication applies only to the generated WAV library, not to the external
+MP3 BGM, login video, other project files, or third-party dependencies.
 
 ## Regenerate and verify
 
@@ -40,14 +42,17 @@ description for every sound. The generator reads each rendered WAV back and
 rejects clipping, an invalid format, silent/near-silent output, significant DC
 offset, excessive leading silence, an abrupt tail, or an incorrect target peak.
 
-The generator also writes these review artifacts outside the game export:
+The generator rebuilds only the short cues and generated ambience; it does not
+create or overwrite the external MP3 BGM. It also writes these review artifacts
+outside the game export:
 
-- `artifacts/audio-font-validation/sound_preview.wav`: all sounds in manifest
-  order, separated by 450 ms of silence.
+- `artifacts/audio-font-validation/sound_preview.wav`: all short cues in manifest
+  order, separated by 450 ms of silence; looping ambience is validated
+  separately in the manifest and numeric report.
 - `artifacts/audio-font-validation/sound_preview_index.json`: start times and
   descriptions for the listening reel.
 - `artifacts/audio-font-validation/sound_validation.json`: numeric checks for
-  all 22 files.
+  all short cues and all looping tracks.
 
 ## Playback guidance
 
@@ -60,5 +65,8 @@ dedicated SFX bus with a sensible user-adjustable master level.
 Keep repeated UI clicks quiet, suppress duplicate or recovered network events,
 and bound simultaneous voices. Choose one representative elemental impact for
 a grouped hit instead of playing all damage groups at once. Extraction start
-is a single notification, not a loop. Sounds are deliberately short (0.14-1.02
-seconds); neither long combat tails nor background music are included.
+is a single notification, not a loop. Short cues are deliberately concise
+(0.14-1.02 seconds). `ambience_hall.wav` and `ambience_battle.wav` are
+24-second low-level loops. The runtime loads the named external MP3 module BGM,
+crossfades between contexts, and exposes independent SFX, music, and ambience
+levels in the settings panel.

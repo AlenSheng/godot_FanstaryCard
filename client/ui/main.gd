@@ -14,6 +14,7 @@ const CardDetails = preload("res://ui/card_details.gd")
 const BattleDetails = preload("res://ui/battle_details.gd")
 const AudioSettings = preload("res://ui/audio_settings.gd")
 const TipsOverlay = preload("res://ui/tips_overlay.gd")
+const LayeredBackdrop = preload("res://ui/layered_backdrop.gd")
 const CATALOG = preload("res://data/catalog.json")
 const DESCRIPTIONS = preload("res://data/card_descriptions.json")
 const UI_CONFIG = preload("res://data/ui_config.json")
@@ -45,7 +46,7 @@ var _login_name := ""
 var _session_generation: int = -1
 var _search := ""
 var _combat_panels: Dictionary = {}
-var _background: TextureRect
+var _backdrop: Control
 var _background_video: VideoStreamPlayer
 var _background_shade: ColorRect
 var _login_video_available := false
@@ -98,16 +99,9 @@ func _process(_delta: float) -> void:
 	_update_draw_charge_visual()
 
 func _build_shell() -> void:
-	var background := TextureRect.new()
-	_background = background
-	background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	background.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	background.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-	background.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	if ResourceLoader.exists("res://assets/scenes/camp_hall.png"):
-		background.texture = load("res://assets/scenes/camp_hall.png")
-		background.modulate = Color.WHITE
-	add_child(background)
+	var backdrop := LayeredBackdrop.new()
+	_backdrop = backdrop
+	add_child(backdrop)
 	var background_video := VideoStreamPlayer.new()
 	_background_video = background_video
 	background_video.name = "LoginAmbientVideo"
@@ -325,13 +319,21 @@ func _render() -> void:
 		_reference.queue_free()
 		_reference = null
 	content.add_theme_constant_override("separation", 10 if not Game.room.is_empty() else 18)
-	if not Game.room.is_empty():
-		_background.texture = Art.texture("UI/Encounter/encounter_background.png")
-		_background.modulate = Color(0.8, 0.8, 0.8)
-	else:
-		_background.texture = load("res://assets/scenes/camp_hall.png")
-		_background.modulate = Color.WHITE
 	var show_login_video: bool = Game.lobby.is_empty() and Game.room.is_empty() and Game.settlement.is_empty()
+	if show_login_video:
+		Sound.set_music_context("")
+	elif not Game.room.is_empty():
+		if Sound.outcome_music_context.is_empty():
+			var phase := str(Game.room.get("player", {}).get("phase", ""))
+			Sound.set_music_context("battle" if phase in ["Pve", "Pvp"] else "hall")
+	elif not Game.settlement.is_empty():
+		Sound.set_music_context("defeat" if str(Game.settlement.get("result", "")) in ["Dead", "Defeated", "Death"] else "victory")
+	else:
+		Sound.set_music_context("shop" if screen in ["shop", "market"] else "hall")
+	if is_instance_valid(_backdrop):
+		_backdrop.visible = not show_login_video
+		if not show_login_video:
+			_backdrop.call("set_mode", "exploration" if not Game.room.is_empty() else ("codex" if screen in ["cards", "deck"] else "hall"))
 	if is_instance_valid(_background_video):
 		_background_video.visible = show_login_video and _login_video_available
 		if _background_video.visible and not _background_video.is_playing(): _background_video.play()
@@ -346,13 +348,6 @@ func _render() -> void:
 	if not Game.room.is_empty() or not Game.settlement.is_empty(): use_reference = true
 	root_column.get_parent().visible = not use_reference
 	if use_reference:
-		var scene_path := "res://assets/scenes/dungeon_battle.png" if not Game.room.is_empty() else "res://assets/scenes/camp_hall.png"
-		if ResourceLoader.exists(scene_path):
-			_background.texture = load(scene_path)
-			_background.modulate = Color.WHITE
-		if screen in ["cards", "deck"] and Game.room.is_empty() and Game.settlement.is_empty():
-			_background.texture = Art.texture("UI/CardCodex/card_codex_background_normal.png")
-			_background.modulate = Color.WHITE
 		_reference = ReferenceUI.new()
 		add_child(_reference)
 		_reference.build(self)
@@ -519,11 +514,13 @@ func _nav() -> void:
 	var names := {"hall": "营地", "cards": "卡牌图鉴", "gear": "穿戴 / 强化", "shop": "金币商店", "market": "金币市场", "prep": "探索准备"}
 	for key in names:
 		var button := _button(nav, names[key], _navigate.bind(key), Game.busy or not Game.ticket.is_empty())
+		button.set_meta("sound_cue", "")
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		if screen == key: button.add_theme_stylebox_override("normal", Art.style("UI/CardCodex/card_codex_action_button_orange.png"))
 
 func _navigate(value: String) -> void:
 	var generation: int = Game.gateway.session_generation
+	if value != screen: Sound.play_cue("ui_open")
 	if value == "gear" and screen != "gear": _equipment_scroll = 0
 	screen = value
 	edit_mode = false
@@ -603,7 +600,8 @@ func _hall() -> void:
 	Art.image(portal, Art.texture("UI/Hall/portal_background_clean.png"), Vector2(360, 240))
 	_label(portal, "混沌领域", 60, P.GOLD)
 	_label(portal, "六乘六的未知旅途\n四名旅人，向领域中心前进。", 28)
-	_button(portal, "探索准备   →", _navigate.bind("prep"))
+	var prep_button := _button(portal, "探索准备   →", _navigate.bind("prep"))
+	prep_button.set_meta("sound_cue", "")
 	_label(portal, "怪物各自迎战，同格可能触发决斗。", 22, P.MUTED)
 
 func _preparation() -> void:
@@ -1364,41 +1362,102 @@ func _health_bar(parent: Node, combat: Dictionary) -> void:
 func _feedback(payload: Dictionary) -> void:
 	var target: Control = _combat_panels.get(payload.get("target_id", ""))
 	if is_instance_valid(target):
-		_pulse(target, 0.97)
+		_hit_reaction(target)
 		var index := 0
 		for segment in payload.get("damage_segments", []):
 			if int(segment.get("amount", 0)) <= 0: continue
-			_float_number(target, "%s %s" % ["直" if segment.kind == "Direct" else P.word(segment.kind), segment.amount], P.ELEMENT.get(segment.kind, Color.WHITE), index)
+			var kind := str(segment.get("kind", "Direct"))
+			_float_number(target, "%s %s" % ["直" if _is_direct_damage(kind) else P.word(kind), segment.get("amount", 0)], _damage_color(kind), index)
 			index += 1
 	var source_id: String = payload.get("source_id", "")
 	if source_id.is_empty(): source_id = payload.get("attacker_id", "")
 	var source: Control = _combat_panels.get(source_id)
 	if is_instance_valid(source):
-		_pulse(source, 1.03)
+		_attack_reaction(source, target if is_instance_valid(target) else null)
 		for key in ["heal", "shield_gain"]:
 			if int(payload.get(key, 0)) <= 0: continue
 			_float_number(source, "+%s" % payload[key], P.TEAL if key == "heal" else Color("c4d2d4"), 0 if key == "heal" else 1)
 
-func _pulse(node: Control, factor: float) -> void:
-	var previous: Variant = node.get_meta("hit_tween") if node.has_meta("hit_tween") else null
+func _is_direct_damage(kind: String) -> bool:
+	return kind.to_lower() in ["direct", "none", ""]
+
+func _damage_color(kind: String) -> Color:
+	if _is_direct_damage(kind): return P.DIRECT_DAMAGE
+	for element in P.ELEMENT:
+		if str(element).to_lower() == kind.to_lower(): return P.ELEMENT[element]
+	return P.DIRECT_DAMAGE
+
+func _reaction_base(node: Control) -> Dictionary:
+	if not node.has_meta("combat_base_position"):
+		node.set_meta("combat_base_position", node.position)
+	if not node.has_meta("combat_base_scale"):
+		node.set_meta("combat_base_scale", node.scale)
+	if not node.has_meta("combat_base_modulate"):
+		node.set_meta("combat_base_modulate", node.modulate)
+	var previous: Variant = node.get_meta("combat_reaction_tween") if node.has_meta("combat_reaction_tween") else null
 	if previous is Tween and previous.is_running(): previous.kill()
-	node.pivot_offset = node.size / 2
-	var tween := node.create_tween().set_parallel(true)
-	node.set_meta("hit_tween", tween)
-	tween.tween_property(node, "modulate", Color(1.3, 1.3, 1.3), 0.08)
-	tween.tween_property(node, "scale", Vector2.ONE * factor, 0.08)
-	tween.chain().tween_property(node, "modulate", Color.WHITE, 0.15)
-	tween.parallel().tween_property(node, "scale", Vector2.ONE, 0.15)
+	var base_position: Vector2 = node.get_meta("combat_base_position")
+	var base_scale: Vector2 = node.get_meta("combat_base_scale")
+	var base_modulate: Color = node.get_meta("combat_base_modulate")
+	node.position = base_position
+	node.scale = base_scale
+	node.modulate = base_modulate
+	node.pivot_offset = node.size / 2.0
+	return {"position": base_position, "scale": base_scale, "modulate": base_modulate}
+
+func _hit_reaction(node: Control) -> void:
+	var base := _reaction_base(node)
+	var position: Vector2 = base.position
+	var scale: Vector2 = base.scale
+	var normal: Color = base.modulate
+	var red := Color(1.0, 0.28, 0.24, normal.a)
+	var tween := node.create_tween()
+	node.set_meta("combat_reaction_tween", tween)
+	tween.tween_property(node, "position", position + Vector2(0, -18), 0.08).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(node, "scale", scale * 0.97, 0.08)
+	tween.parallel().tween_property(node, "modulate", red, 0.06)
+	tween.tween_property(node, "position", position + Vector2(0, 7), 0.07).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	tween.parallel().tween_property(node, "modulate", red.lightened(0.12), 0.07)
+	tween.tween_property(node, "position", position + Vector2(0, -4), 0.06).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(node, "scale", scale * 0.99, 0.06)
+	tween.tween_property(node, "position", position, 0.13).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	tween.parallel().tween_property(node, "scale", scale, 0.13)
+	tween.parallel().tween_property(node, "modulate", normal, 0.16)
+
+func _attack_reaction(node: Control, target: Control) -> void:
+	var base := _reaction_base(node)
+	var position: Vector2 = base.position
+	var scale: Vector2 = base.scale
+	var direction := 1.0
+	if is_instance_valid(target) and target.global_position.x < node.global_position.x: direction = -1.0
+	var toward := Vector2(28.0 * direction, 0)
+	var recoil := Vector2(-15.0 * direction, 0)
+	var tween := node.create_tween()
+	node.set_meta("combat_reaction_tween", tween)
+	tween.tween_property(node, "position", position + toward, 0.11).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(node, "scale", scale * 1.04, 0.11)
+	tween.tween_property(node, "position", position + recoil, 0.07).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	tween.parallel().tween_property(node, "scale", scale * 0.98, 0.07)
+	tween.tween_property(node, "position", position + Vector2(7.0 * direction, 0), 0.06).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(node, "scale", scale * 1.02, 0.06)
+	tween.tween_property(node, "position", position, 0.14).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	tween.parallel().tween_property(node, "scale", scale, 0.14)
 
 func _float_number(node: Control, value: String, tint: Color, index: int) -> void:
 	var number := _label(self, value, 42, tint)
 	number.add_theme_font_override("font", P.font("number"))
 	number.name = "CombatNumber"
-	number.position = node.global_position + Vector2(70 + index * 43, 35 + index * 50)
+	number.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	number.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	number.size = Vector2(170, 54)
+	number.position = node.global_position + Vector2(maxf(0.0, node.size.x * 0.5 - 85.0) + index * 32.0, -62.0 - index * 26.0)
+	number.z_index = 20
 	number.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var tween := number.create_tween().set_parallel(true)
-	tween.tween_property(number, "position:y", number.position.y - 65, 0.8)
-	tween.tween_property(number, "modulate:a", 0.0, 0.8)
+	tween.tween_property(number, "position:y", number.position.y - 72, 0.78).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(number, "scale", Vector2(1.08, 1.08), 0.1)
+	tween.chain().tween_property(number, "scale", Vector2.ONE, 0.12)
+	tween.parallel().tween_property(number, "modulate:a", 0.0, 0.78)
 	tween.chain().tween_callback(number.queue_free)
 
 func _unhandled_key_input(event: InputEvent) -> void:

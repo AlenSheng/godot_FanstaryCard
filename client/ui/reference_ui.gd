@@ -119,7 +119,9 @@ func _header() -> void:
 	if host.screen == "hall":
 		text(P.localized("game_title"), Rect2(55, 27, 390, 62), 46, P.GOLD).name = "HallTitle"
 	else:
-		button("返回", Rect2(60, 32, 170, 52), host._navigate.bind("hall"), Game.busy or not Game.ticket.is_empty()).name = "ReturnButton"
+		var return_button := button("返回", Rect2(60, 32, 170, 52), host._navigate.bind("hall"), Game.busy or not Game.ticket.is_empty())
+		return_button.name = "ReturnButton"
+		return_button.set_meta("sound_cue", "")
 		text(names.get(host.screen, "营地"), Rect2(240, 30, 500, 60), 38, P.GOLD)
 	var player: Dictionary = Game.lobby.get("player", {})
 	var identity := text("%s\nUID %s" % [player.get("displayName", ""), player.get("userId", "")], Rect2(745, 25, 530, 70), 20, P.MUTED)
@@ -164,8 +166,8 @@ func _hall() -> void:
 		var class_label := P.localized_text({"Priest": "牧师", "Mage": "法师", "Guardian": "守护者"}[hero_class])
 		var class_type_rect := Rect2(card_rect.position + Vector2(194, 73), Vector2(card_rect.size.x - 200, 32))
 		text(class_label, class_type_rect, 22, P.GOLD).name = "ClassType_" + hero_class
-	# Keep the established 2D presentation in the live frontend. The 3D GLB
-	# remains in the project as an offline production asset for a later pass.
+	# The live frontend is deliberately 2D-only. Character art is a static
+	# portrait layer over the generated layered backdrop; no GLB is instantiated.
 	picture(Art.portrait(Game.hero_class), Rect2(310, 255, 570, 550)).name = "HeroPortrait"
 	picture(Art.passive(Game.hero_class), Rect2(858, 275, 84, 84)).name = "HeroPassive"
 	var portal_rect := Rect2(990, 153, 835, 550)
@@ -177,11 +179,13 @@ func _hall() -> void:
 	portal_frame.position = portal_rect.position
 	portal_frame.size = portal_rect.size
 	text(P.localized("enter_chaos"), Rect2(1110, 180, 595, 76), 48, P.GOLD).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	button(P.localized("nav_prep"), Rect2(1140, 640, 520, 96), host._navigate.bind("prep"), Game.busy, ORANGE)
+	var prep_button := button(P.localized("nav_prep"), Rect2(1140, 640, 520, 96), host._navigate.bind("prep"), Game.busy, ORANGE)
+	prep_button.set_meta("sound_cue", "")
 	var entries := [["cards", "UI/Shop/card_pack.png", "hall_entry_cards"], ["gear", "UI/Item/exploration_prep_item_icon_chest.png", "hall_entry_gear"], ["deck", "UI/Shop/card_pack.png", "hall_entry_deck"], ["shop", "UI/Item/exploration_prep_item_icon_gold.png", "hall_entry_shop"], ["market", "UI/Hall/entry_icon_market.png", "hall_entry_market"], ["prep", "UI/Shop/backpack_advanced.png", "hall_entry_prep"], ["enhance", "UI/Shop/equipment_fragment_pack.png", "hall_entry_enhance"]]
 	for i in range(entries.size()):
 		var rect := Rect2(56 + i * 259, 802, 242, 223)
 		var node := button("", rect, host._navigate.bind(entries[i][0]), Game.busy or not Game.ticket.is_empty())
+		node.set_meta("sound_cue", "")
 		node.tooltip_text = P.localized(entries[i][2])
 		# Keep the generated texture and icon inside the decorative frame's safe area.
 		var content_rect := Rect2(rect.position + Vector2(12, 11), rect.size - Vector2(24, 23))
@@ -712,6 +716,7 @@ func _preparation() -> void:
 		var unavailable: bool = locked or (i > 0 and available_count <= 0)
 		var tab := button(title if i == 0 else "", Rect2(845 + i * 328, 219, 307, 93), func(): host.bag_tier = key; host._render(), unavailable, ORANGE if tier == key else BLUE)
 		tab.name = "Backpack_" + key
+		tab.set_meta("sound_cue", "ui_tab")
 		if i > 0:
 			picture(Art.product(key + "Bag"), Rect2(860 + i * 328, 226, 68, 78)).name = "BackpackIcon_" + key
 			text(title.split("\n")[0], Rect2(937 + i * 328, 228, 202, 37), 25, P.MUTED if unavailable else P.PAPER)
@@ -775,7 +780,8 @@ func _gear() -> void:
 	scroll.set_deferred("scroll_vertical", host._equipment_scroll)
 	scroll.get_v_scroll_bar().value_changed.connect(func(value): host._equipment_scroll = int(value))
 	if list.get_child_count() == 0: text("仓库暂无装备\n探索撤离后可带回战利品", Rect2(1255, 362, 530, 160), 28, P.MUTED)
-	button("碎片强化", Rect2(1260, 930, 530, 64), host._navigate.bind("enhance"))
+	var enhance_button := button("碎片强化", Rect2(1260, 930, 530, 64), host._navigate.bind("enhance"))
+	enhance_button.set_meta("sound_cue", "")
 
 func _equipment_summary(loadout: Array) -> void:
 	# Keep this panel centered on the save button below it. Both content columns

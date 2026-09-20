@@ -32,7 +32,7 @@
     "supporting_work_items": 7,
     "completed_ui_split_requests": 2,
     "bundled_font_files": 2,
-    "bundled_audio_files": 22
+    "bundled_audio_files": 37
   },
   "global_rules": [
     "本清单按独立组件审核，整屏效果图只作为布局与风格参考，不作为可交互UI背景。",
@@ -2796,7 +2796,9 @@
         "native_checks_passed": 6
       },
       "audio": {
-        "count": 22,
+        "count": 33,
+        "music_tracks": 2,
+        "ambience_tracks": 2,
         "sample_rate_hz": 48000,
         "format": "mono PCM16 WAV",
         "license": "CC0-1.0",
@@ -2804,7 +2806,7 @@
         "manifest": "client/assets/audio/manifest.json",
         "asset_validation_passed": true,
         "byte_identical_reproduction_passed": true,
-        "max_voices": 8,
+        "max_voices": 10,
         "limiter": true,
         "per_cue_throttling": true
       },
@@ -3034,7 +3036,7 @@
         "docs/FONT_AUDIO_INTEGRATION_20260910.md",
         "client/evidence/audio-fonts/report.json"
       ],
-      "current_state": "22个原创单声道48kHz PCM16短WAV已交付并接入Sound，CC0 1.0，生成源文件和哈希/电平清单已保存。纸牌/石材/黄铜与五行反馈对应项目风格；独立音效总线、8通道上限、限幅器、逐音效节流，事件层过滤重连/预览/重复/旧战斗。左下音效入口提供音量、静音、试听，F10快捷静音，本机保存设置。",
+      "current_state": "33个原创单声道48kHz PCM16短WAV、六首外部模块BGM、登录视频和2条环境循环已交付并接入Sound，生成WAV的源文件和哈希/电平清单已保存。纸牌/石材/黄铜与五行反馈对应项目风格；SFX、BGM、环境音独立总线，10通道上限、双播放器交叉淡入淡出、限幅器、逐音效节流，事件层过滤重连/预览/重复/旧战斗。设置面板提供三路音量与静音，F10快捷静音，本机保存设置。",
       "suggested_scope": [
         "按钮/选牌",
         "抽牌/出牌",
@@ -3050,7 +3052,7 @@
         "实际事件正确触发音效",
         "重放/重连不重复播历史反馈，连续战斗不产生明显叠音失控"
       ],
-      "scope_note": "22文件格式/电平/无削波及重复生成一致性已核验，原生事件过滤回归通过；混音、三分辨率设置与失效会话操作40/40项通过，6张截图见接入文档。GDD未明确背景音乐，本轮不列为必交缺项。"
+      "scope_note": "33个短音效与4条循环资源的格式/电平/无削波/循环检查已通过，原生事件过滤和音频上下文切换回归通过；最终整体体验仍需发布环境与设备听感验收。"
     },
     {
       "id": "PRESENTATION-COMBAT",

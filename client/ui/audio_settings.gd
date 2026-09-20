@@ -4,6 +4,9 @@ const P = preload("res://ui/palette.gd")
 const Art = preload("res://ui/art.gd")
 const ConfirmationModalScene = preload("res://ui/confirmation_modal.tscn")
 const GOLD_BUTTON_KEY := "UI/CardCodex/card_codex_action_button_orange.png"
+const COMMON_POPUP_PANEL_KEY := "UI/CardCodex/card_codex_dialog_panel_normal.png"
+const POPUP_TARGET_SIZE := Vector2(900, 700)
+const POPUP_VIEWPORT_MARGIN := Vector2(160, 120)
 var _toggle: BaseButton
 var _popup: PopupPanel
 var _mute_button: CheckButton
@@ -40,14 +43,20 @@ func show_settings() -> void:
 	_popup = PopupPanel.new()
 	_popup.name = "AudioSettingsPopup"
 	_popup.theme = P.theme()
-	_popup.add_theme_stylebox_override("panel", P.box(P.INK, P.GOLD))
+	_popup.add_theme_stylebox_override("panel", Art.style(COMMON_POPUP_PANEL_KEY))
 	_popup.window_input.connect(func(event):
 		if _mute_shortcut(event): _popup.set_input_as_handled()
 	)
 	add_child(_popup)
+	var popup_size := _settings_popup_size()
+	var scroll := ScrollContainer.new()
+	scroll.name = "AudioSettingsScroll"
+	scroll.custom_minimum_size = popup_size
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_popup.add_child(scroll)
 	var column := VBoxContainer.new()
-	column.custom_minimum_size = Vector2(590, 510 if _in_battle() else 430)
-	_popup.add_child(column)
+	column.custom_minimum_size.x = maxf(0.0, popup_size.x - 48.0)
+	scroll.add_child(column)
 	var title := Label.new()
 	title.text = P.localized("settings")
 	title.add_theme_font_override("font", P.font("title"))
@@ -77,6 +86,50 @@ func show_settings() -> void:
 			Sound.play_cue("ui_click")
 	)
 	column.add_child(slider)
+	var music_value := Label.new()
+	music_value.text = "%s %s%%" % [P.localized("music_volume"), roundi(Sound.music_volume * 100)]
+	music_value.add_theme_font_override("font", P.font("number"))
+	column.add_child(music_value)
+	P.fit_control_font(music_value, P.font("number"), 24)
+	var music_slider := HSlider.new()
+	music_slider.name = "MusicVolume"
+	music_slider.min_value = 0
+	music_slider.max_value = 100
+	music_slider.step = 1
+	music_slider.value = roundi(Sound.music_volume * 100)
+	music_slider.custom_minimum_size.y = 44
+	music_slider.value_changed.connect(func(level):
+		Sound.set_music_volume(float(level) / 100.0, false)
+		music_value.text = "%s %s%%" % [P.localized("music_volume"), roundi(level)]
+	)
+	music_slider.drag_ended.connect(func(changed):
+		if changed:
+			Sound.save_settings()
+			Sound.play_cue("ui_click")
+	)
+	column.add_child(music_slider)
+	var ambience_value := Label.new()
+	ambience_value.text = "%s %s%%" % [P.localized("ambience_volume"), roundi(Sound.ambience_volume * 100)]
+	ambience_value.add_theme_font_override("font", P.font("number"))
+	column.add_child(ambience_value)
+	P.fit_control_font(ambience_value, P.font("number"), 24)
+	var ambience_slider := HSlider.new()
+	ambience_slider.name = "AmbienceVolume"
+	ambience_slider.min_value = 0
+	ambience_slider.max_value = 100
+	ambience_slider.step = 1
+	ambience_slider.value = roundi(Sound.ambience_volume * 100)
+	ambience_slider.custom_minimum_size.y = 44
+	ambience_slider.value_changed.connect(func(level):
+		Sound.set_ambience_volume(float(level) / 100.0, false)
+		ambience_value.text = "%s %s%%" % [P.localized("ambience_volume"), roundi(level)]
+	)
+	ambience_slider.drag_ended.connect(func(changed):
+		if changed:
+			Sound.save_settings()
+			Sound.play_cue("ui_click")
+	)
+	column.add_child(ambience_slider)
 	var mute := CheckButton.new()
 	_mute_button = mute
 	mute.name = "SoundMute"
@@ -149,6 +202,14 @@ func show_settings() -> void:
 func _in_battle() -> bool:
 	var phase := str(Game.room.get("player", {}).get("phase", ""))
 	return phase in ["Pve", "Pvp"]
+
+func _settings_popup_size() -> Vector2:
+	var viewport_size := get_viewport().get_visible_rect().size
+	var available_size := viewport_size - POPUP_VIEWPORT_MARGIN
+	return Vector2(
+		minf(POPUP_TARGET_SIZE.x, maxf(480.0, available_size.x)),
+		minf(POPUP_TARGET_SIZE.y, maxf(360.0, available_size.y))
+	)
 
 func _show_battle_abandon_confirmation() -> void:
 	if not Game.allowed("battle.abandon") or get_node_or_null("BattleAbandonConfirmation") != null: return

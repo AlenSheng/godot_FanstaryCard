@@ -152,6 +152,7 @@ func _on_connection_changed(value: String) -> void:
 	if _queued_command.get("retry", false): _queued_command = {}
 	_sound_ready = false
 	_sound_commands.clear()
+	_sound_seen.clear()
 	changed.emit()
 
 func _on_authentication_required(reason: String) -> void:
@@ -672,6 +673,10 @@ func _sound_snapshot(snapshot: Dictionary, payload: Dictionary) -> void:
 	var after_battle: Dictionary = snapshot.get("duel", snapshot.get("pve", {}))
 	var before_id: String = before_battle.get("duel_id", before_battle.get("battle_id", ""))
 	var after_id: String = after_battle.get("duel_id", after_battle.get("battle_id", ""))
+	var before_phase := str(room.get("player", {}).get("phase", ""))
+	var after_phase := str(snapshot.get("player", {}).get("phase", ""))
+	if live and after_phase in ["Pve", "Pvp"] and not after_id.is_empty() and (before_phase not in ["Pve", "Pvp"] or before_id != after_id):
+		sound_requested.emit("battle_start")
 	if live and not before_id.is_empty() and before_id == after_id:
 		var before_hand: Array = room.get("player", {}).get("hand", []).map(func(card): return card.get("instance_id", ""))
 		if snapshot.get("player", {}).get("hand", []).any(func(card): return not str(card.get("instance_id", "")).is_empty() and card.instance_id not in before_hand):
@@ -684,7 +689,12 @@ func _sound_snapshot(snapshot: Dictionary, payload: Dictionary) -> void:
 
 func _sound_combat(kind: String, payload: Dictionary) -> void:
 	if not _sound_is_live(payload) or not _sound_once(kind, payload): return
-	if kind == "battle.combo_resolved" and payload.get("attacker_id", "") == room.get("player", {}).get("player_id", "") and not payload.get("card_instance_ids", []).is_empty():
+	var player_id := str(room.get("player", {}).get("player_id", ""))
+	var attacker_id := str(payload.get("attacker_id", ""))
+	var target_id := str(payload.get("target_id", ""))
+	var player_attack := not player_id.is_empty() and attacker_id == player_id
+	var player_hit := not player_id.is_empty() and target_id == player_id
+	if kind == "battle.combo_resolved" and player_attack and not payload.get("card_instance_ids", []).is_empty():
 		sound_requested.emit("card_play")
 	var largest := 0
 	var damage_kind := "direct"
@@ -694,16 +704,20 @@ func _sound_combat(kind: String, payload: Dictionary) -> void:
 			damage_kind = str(segment.get("kind", "Direct")).to_lower()
 	if int(payload.get("damage", 0)) > 0:
 		if damage_kind not in ["direct", "fire", "water", "wood", "metal", "earth"]: damage_kind = "direct"
+		sound_requested.emit("player_attack" if player_attack else "monster_attack")
+		sound_requested.emit("player_hit" if player_hit else "monster_hit")
 		sound_requested.emit("hit_" + damage_kind)
 	if int(payload.get("heal", 0)) > 0: sound_requested.emit("heal")
 	if int(payload.get("shield_gain", 0)) > 0: sound_requested.emit("shield")
+	if bool(payload.get("battle_ended", false)) and player_attack:
+		sound_requested.emit("battle_victory")
 
 func _sound_event(kind: String, payload: Dictionary) -> void:
 	if not _sound_is_live(payload): return
 	var request_id: String = payload.get("_request_id", "")
 	var command_info: Dictionary = _sound_commands.get(request_id, {})
 	var command_action: String = command_info.get("action", "") if command_info.get("room_id", "") == room.get("room_id", "") else ""
-	var expected := {"reward.choice_claimed": "reward.choice.claim", "reward.choice.claimed": "reward.choice.claim", "relic.taken": "relic.take", "relic.replaced": "relic.replace", "action.potion_used": "action.potion", "room.moved": "room.move", "action.extract_started": "action.extract"}
+	var expected := {"reward.choice_claimed": "reward.choice.claim", "reward.choice.claimed": "reward.choice.claim", "relic.taken": "relic.take", "relic.replaced": "relic.replace", "action.potion_used": "action.potion", "room.moved": "room.move", "action.extract_started": "action.extract", "battle.target_selected": "battle.select_target"}
 	if expected.has(kind) or kind == "inventory.changed":
 		var action: String = payload.get("action", "") if kind == "inventory.changed" else expected[kind]
 		if action.is_empty() or command_action != action: return
@@ -714,8 +728,12 @@ func _sound_event(kind: String, payload: Dictionary) -> void:
 			"action.potion_used": sound_requested.emit("potion")
 			"room.moved": sound_requested.emit("move")
 			"action.extract_started": sound_requested.emit("extract_start")
+			"battle.target_selected": sound_requested.emit("battle_target")
 			"inventory.changed":
 				if action in ["inventory.equip", "inventory.unequip"]: sound_requested.emit("equip")
+				elif action in ["card.upgrade", "inventory.upgrade"]: sound_requested.emit("upgrade")
+				elif action in ["shop.buy", "market.buy", "market.sell"]: sound_requested.emit("purchase")
+				else: sound_requested.emit("ui_confirm")
 		return
 	if kind == "error.command_rejected":
 		if not command_action.is_empty():

@@ -10,6 +10,7 @@ const DragScroll = preload("res://ui/drag_scroll.gd")
 const TemporaryBagItem = preload("res://ui/temporary_bag_item.gd")
 const PANEL := "UI/CardCodex/card_codex_dialog_panel_normal.png"
 const SLOT := Art.COMMON_CELL_KEY
+const EMPTY_HAND_SLOT := "UI/Codex/qframe_empty_gray.png"
 const ITEM := "UI/Item/exploration_prep_item_icon_"
 
 static func build(ui: Control, host: Control) -> void:
@@ -25,7 +26,6 @@ static func build(ui: Control, host: Control) -> void:
 		_map(ui, host, state)
 	else:
 		_actions(ui, host, state)
-	ui.button(P.localized("sync"), Rect2(1702, 985, 140, 56), func(): Game.gateway.send("room.snapshot.read"))
 	ui.text(Game.connection, Rect2(1450, 995, 236, 40), 20, P.MUTED)
 
 static func _title(ui: Control, value: String, battle: bool = false) -> void:
@@ -42,6 +42,35 @@ static func _picture(ui: Control, texture: Texture2D, rect: Rect2) -> TextureRec
 	node.texture = texture
 	node.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	node.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	node.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	ui.add_child(node)
+	node.position = rect.position
+	node.size = rect.size
+	return node
+
+static func _battle_target_element(state: Dictionary) -> String:
+	var pve: Dictionary = state.get("pve", {})
+	var target_id := str(pve.get("current_target_id", ""))
+	var fallback := ""
+	for entry in pve.get("monsters", []):
+		if not entry is Dictionary: continue
+		var monster: Dictionary = entry
+		if int(monster.get("hp", 0)) <= 0: continue
+		var element := str(monster.get("intent_element", "None"))
+		if element not in ["Fire", "Wood", "Water", "Metal", "Earth"]: continue
+		if fallback.is_empty(): fallback = element
+		if str(monster.get("monster_id", "")) == target_id: return element
+	return fallback
+
+static func _nine_patch(ui: Control, texture: Texture2D, rect: Rect2, margins: Vector4) -> NinePatchRect:
+	var node := NinePatchRect.new()
+	node.texture = texture
+	node.set_patch_margin(SIDE_LEFT, int(margins.x))
+	node.set_patch_margin(SIDE_TOP, int(margins.y))
+	node.set_patch_margin(SIDE_RIGHT, int(margins.z))
+	node.set_patch_margin(SIDE_BOTTOM, int(margins.w))
+	node.axis_stretch_horizontal = NinePatchRect.AXIS_STRETCH_MODE_STRETCH
+	node.axis_stretch_vertical = NinePatchRect.AXIS_STRETCH_MODE_STRETCH
 	node.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	ui.add_child(node)
 	node.position = rect.position
@@ -96,6 +125,11 @@ static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 		_health(ui, player.get("combat", {}), Rect2(80, 670, 310, 115))
 		_passive(ui, player.get("hero_class", ""), Rect2(621, 443, 317, 122))
 		var monsters: Array = state.get("pve", {}).get("monsters", [])
+		var alive_monster_count := 0
+		for candidate in monsters:
+			if int(candidate.get("hp", 0)) > 0:
+				alive_monster_count += 1
+		var can_select_target := alive_monster_count > 1
 		for index in range(mini(monsters.size(), 2)):
 			var monster: Dictionary = monsters[index]
 			var x: float = 1020.0 + index * 415.0 if monsters.size() > 1 else 1200.0
@@ -123,8 +157,10 @@ static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 			_health(ui, monster, Rect2(x + 24, 190, 315, 114), true)
 			var name: String = host._monster_name(monster.get("monster_id", ""))
 			if monster.get("monster_id", "") == "annihilation-core": name += " · %s阶段" % ("二" if boss_phase == 2 else "一")
-			var button: Button = ui.button(name + (" · 目标" if selected else ""), Rect2(x + 10, 550, 350, 58), func(): Game.command("battle.select_target", {"battle_id": state.pve.battle_id, "target_id": monster.monster_id}), not Game.allowed("battle.select_target") or not alive)
-			if selected: button.add_theme_color_override("font_disabled_color", P.GOLD)
+			if can_select_target:
+				var button: Button = ui.button(name + (" · 目标" if selected else ""), Rect2(x + 10, 550, 350, 58), func(): Game.command("battle.select_target", {"battle_id": state.pve.battle_id, "target_id": monster.monster_id}), not Game.allowed("battle.select_target") or not alive)
+				button.name = "MonsterTarget_" + str(monster.get("monster_id", ""))
+				if selected: button.add_theme_color_override("font_disabled_color", P.GOLD)
 			if alive and int(monster.get("stun_remaining_ms", 0)) > 0:
 				_center(ui.text("眩晕 %.1f 秒" % (float(monster.stun_remaining_ms) / 1000), Rect2(x + 15, 502, 340, 45), 25, P.TEAL))
 			elif alive and int(monster.get("windup_remaining_ms", 0)) > 0:
@@ -134,16 +170,35 @@ static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 static func _hand(ui: Control, host: Control, state: Dictionary) -> void:
 	var player: Dictionary = state.get("player", {})
 	var hand: Array = player.get("hand", [])
+	var target_element := _battle_target_element(state)
 	_preview(ui)
 	var origin := Vector2(458, 622)
 	for index in range(5):
 		var rect := Rect2(origin + Vector2(index * 232, 0), Vector2(218, 376))
 		if index < hand.size():
 			var card: Dictionary = hand[index]
-			ui.card(host, card.get("card_id", ""), rect, func(): Game.toggle_card(card.instance_id), card.get("instance_id", "") in Game.selected_cards, not Game.allowed("battle.play_cards"), {"level": int(card.get("level", 0)), "element_override": str(card.get("element_override", "")), "selected_overlay": true})
+			ui.card(host, card.get("card_id", ""), rect, func(): Game.toggle_card(card.instance_id), card.get("instance_id", "") in Game.selected_cards, not Game.allowed("battle.play_cards"), {"level": int(card.get("level", 0)), "element_override": str(card.get("element_override", "")), "battle_target_element": target_element, "selected_overlay": true})
 		else:
-			ui.panel(rect, "UI/Codex/qframe_common.png")
-	ui.button("放", Rect2(1650, 822, 194, 142), Game.play_cards, Game.selected_cards.is_empty() or not Game.allowed("battle.play_cards"), "UI/Battle/battle_play_button.png")
+			var empty_slot := _picture(ui, Art.texture(EMPTY_HAND_SLOT), rect)
+			empty_slot.name = "EmptyHandSlot_%s" % index
+			empty_slot.stretch_mode = TextureRect.STRETCH_SCALE
+	var play_label := P.localized("battle_play_button")
+	var play_width := 220.0
+	var play_font := P.font_for_text(play_label, 30)
+	if play_font != null:
+		play_width = clampf(play_font.get_string_size(play_label, HORIZONTAL_ALIGNMENT_LEFT, -1, 30).x + 72.0, 220.0, 300.0)
+	var play_rect := Rect2(1860.0 - play_width, 845, play_width, 89)
+	var play_art := _nine_patch(ui, Art.texture("UI/Battle/battle_play_button_generated.png"), play_rect, Vector4(34, 18, 34, 18))
+	play_art.name = "PlayCardsButtonArt"
+	var play_button: Button = ui.button(P.localized("battle_play_button"), play_rect, Game.play_cards, Game.selected_cards.is_empty() or not Game.allowed("battle.play_cards"), "")
+	play_button.name = "PlayCardsButton"
+	for state_name in ["normal", "hover", "pressed", "disabled"]:
+		play_button.add_theme_stylebox_override(state_name, StyleBoxEmpty.new())
+	play_button.add_theme_font_size_override("font_size", 30)
+	play_button.add_theme_color_override("font_color", P.PAPER)
+	play_button.add_theme_color_override("font_hover_color", P.PAPER)
+	play_button.add_theme_color_override("font_pressed_color", P.PAPER)
+	play_button.add_theme_color_override("font_disabled_color", P.MUTED)
 	ui.picture(Art.texture("UI/Battle/battle_energy_ring_clean.png"), Rect2(83, 840, 72, 84))
 	ui.text(P.localized("draw"), Rect2(170, 838, 230, 43), 26, P.TEAL)
 	var charge_bar := _bar(ui, Rect2(171, 885, 225, 32), clampf(float(player.get("draw_charge", "0")), 0, 1), 1, "UI/Battle/battle_energy_cell_lit.png", "UI/Battle/battle_energy_cell_unlit.png")
@@ -151,7 +206,7 @@ static func _hand(ui: Control, host: Control, state: Dictionary) -> void:
 	if host.has_method("_draw_charge_value"):
 		charge_bar.value = host._draw_charge_value(float(player.get("draw_charge", "0")))
 	ui.text("牌库 %s · 弃牌 %s" % [player.get("library_count", 0), player.get("discard_count", 0)], Rect2(79, 940, 330, 32), 21, P.MUTED)
-	_center(ui.text("已选 %s 张    1–5 选牌 / 空格放出" % Game.selected_cards.size(), Rect2(573, 1005, 765, 36), 23, P.PAPER))
+	_center(ui.text(P.localized("battle_play_hint") % Game.selected_cards.size(), Rect2(573, 1005, 765, 36), 23, P.PAPER))
 
 static func _preview(ui: Control) -> void:
 	if Game.selected_cards.is_empty(): return

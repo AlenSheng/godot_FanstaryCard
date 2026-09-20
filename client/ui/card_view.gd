@@ -72,7 +72,9 @@ func configure(id: String, info: Dictionary, description: String, selected: bool
 		effect_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 		var hero_class: String = P.word(info.get("hero_class", ""))
 		if not hero_class.is_empty(): _class_badge(str(info.get("hero_class")), hero_class)
-		if level > 0: _level_badge(level)
+		var battle_element_hint := _battle_element_hint(str(info.get("element", "None")), str(options.get("battle_target_element", "None")))
+		if not battle_element_hint.is_empty(): _battle_element_badge(battle_element_hint)
+		elif level > 0: _level_badge(level)
 		if selected:
 			var selection := _text("已选", Rect2(75, 260, 68, 33), 18, P.GOLD)
 			selection.name = "SelectedIndicator"
@@ -103,6 +105,34 @@ func _level_badge(level: int) -> void:
 	badge.size = Vector2(37, 37)
 	var value := _text(str(level), Rect2(4, 5, 33, 33), 20, P.PAPER)
 	value.name = "CardLevel"
+
+func _battle_element_hint(card_element: String, target_element: String) -> String:
+	if card_element not in ["Fire", "Wood", "Water", "Metal", "Earth"]: return ""
+	if target_element not in ["Fire", "Wood", "Water", "Metal", "Earth"]: return ""
+	if [["Water", "Fire"], ["Fire", "Metal"], ["Metal", "Wood"], ["Wood", "Earth"], ["Earth", "Water"]].any(func(pair): return pair[0] == card_element and pair[1] == target_element):
+		return "recommended"
+	if [["Water", "Fire"], ["Fire", "Metal"], ["Metal", "Wood"], ["Wood", "Earth"], ["Earth", "Water"]].any(func(pair): return pair[0] == target_element and pair[1] == card_element):
+		return "countered"
+	return ""
+
+func _battle_element_badge(kind: String) -> void:
+	var badge := Panel.new()
+	badge.name = "BattleElementHintBadge"
+	badge.position = Vector2(2, 3)
+	badge.size = Vector2(37, 37)
+	badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color("287db6") if kind == "recommended" else Color("a9433d")
+	style.border_color = Color("8ed7f0") if kind == "recommended" else Color("f0aaa0")
+	style.set_border_width_all(2)
+	style.set_corner_radius_all(18)
+	badge.add_theme_stylebox_override("panel", style)
+	add_child(badge)
+	var badge_key := "battle_card_recommended_badge" if kind == "recommended" else "battle_card_countered_badge"
+	var tooltip_key := "battle_card_recommended_tooltip" if kind == "recommended" else "battle_card_countered_tooltip"
+	var label := _text(P.localized(badge_key), Rect2(2, 2, 33, 33), 17, P.PAPER)
+	label.name = "BattleElementHintText"
+	badge.tooltip_text = P.localized(tooltip_key)
 
 func _class_badge(hero_class: String, symbol: String) -> void:
 	# The pad sits below the sprite so its 28x28 rectangle cannot cover the

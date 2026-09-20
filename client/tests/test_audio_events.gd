@@ -35,7 +35,8 @@ func run_test() -> Dictionary:
 	sounds.clear()
 	store._on_event("room.snapshot", _snapshot("room", "battle", ["a", "b"]))
 	store._on_event("room.snapshot", _snapshot("room", "new-battle", ["c"]))
-	checks.same_hand_and_new_battle_silent = sounds.is_empty()
+	checks.new_battle_starts_once = sounds == ["battle_start"]
+	sounds.clear()
 	store.toggle_card("missing")
 	store.toggle_card("c")
 	store.toggle_card("c")
@@ -49,7 +50,7 @@ func run_test() -> Dictionary:
 	store._on_event("combat.previewed", hit)
 	checks.preview_silent = sounds.is_empty()
 	store._on_event("battle.combo_resolved", hit)
-	checks.combat_cues = sounds == ["card_play", "hit_water", "heal", "shield"]
+	checks.combat_cues = sounds == ["card_play", "player_attack", "monster_hit", "hit_water", "heal", "shield"]
 	sounds.clear()
 	store._on_event("battle.combo_resolved", hit)
 	hit._sequence = 2
@@ -62,13 +63,13 @@ func run_test() -> Dictionary:
 	hit.heal = 0
 	hit.shield_gain = 0
 	store._on_event("combat.hit", hit)
-	checks.incoming_no_card_play = sounds == ["hit_water"]
+	checks.incoming_no_card_play = sounds == ["monster_attack", "player_hit", "hit_water"]
 	sounds.clear()
 	for index in range(6):
 		hit._sequence = 3 + index
 		hit.damage_segments = [{"kind": ["Direct", "Fire", "Water", "Wood", "Metal", "Earth"][index], "amount": 9}]
 		store._on_event("combat.hit", hit)
-	checks.all_damage_types = sounds == ["hit_direct", "hit_fire", "hit_water", "hit_wood", "hit_metal", "hit_earth"]
+	checks.all_damage_types = sounds == ["monster_attack", "player_hit", "hit_direct", "monster_attack", "player_hit", "hit_fire", "monster_attack", "player_hit", "hit_water", "monster_attack", "player_hit", "hit_wood", "monster_attack", "player_hit", "hit_metal", "monster_attack", "player_hit", "hit_earth"]
 	sounds.clear()
 	hit._sequence = 9
 	hit.damage = 0
@@ -137,7 +138,10 @@ func run_test() -> Dictionary:
 	store.free()
 	gateway.free()
 	checks.wire_replay = _wire_replay_test()
-	return {"ok": checks.values().all(func(value): return value == true), "message": "Audio follows confirmed current actions; previews, duplicates, stale rooms/battles and reconnect replay stay silent", "checks": checks}
+	var failed_checks: Array = checks.keys().filter(func(key): return checks[key] != true)
+	var message := "Audio follows confirmed current actions; previews, duplicates, stale rooms/battles and reconnect replay stay silent"
+	if not failed_checks.is_empty(): message += "; failed checks: " + ", ".join(failed_checks)
+	return {"ok": failed_checks.is_empty(), "message": message, "checks": checks}
 
 func _wire_replay_test() -> bool:
 	var store = load("res://state/game_store.gd").new()

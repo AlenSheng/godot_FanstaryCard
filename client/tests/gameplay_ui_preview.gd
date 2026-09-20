@@ -119,10 +119,15 @@ func _run() -> void:
 		await _capture("combat_preview" + suffix)
 		_check($UI._reference.get_node_or_null("CombatPreview") != null and _all_text().contains("火 51") and _all_text().contains("直伤 3") and _all_text().contains("实际 54（盾8/血46）"), "Final combat preview rendered" + suffix)
 		_check($UI._reference.get_node_or_null("CombatPreview").tooltip_text.contains("相生 ×1.20") and $UI._reference.get_node_or_null("CombatPreview").tooltip_text.contains("相克 1组 · 抵消 20%"), "Combat preview formula details rendered" + suffix)
+		var source_before: Vector2 = $UI._combat_panels["preview-player"].position
+		var target_before: Vector2 = $UI._combat_panels["fire-bat"].position
 		Game._on_event("combat.hit", {"battle_id": "completion-battle", "source_id": "preview-player", "target_id": "fire-bat", "damage_segments": [{"kind": "Fire", "amount": 51}, {"kind": "Metal", "amount": 6}, {"kind": "Direct", "amount": 3}, {"kind": "Water", "amount": 0}], "heal": 7, "shield_gain": 8})
 		await get_tree().create_timer(0.1).timeout
-		_check($UI._combat_panels["preview-player"].scale.x > 1.0 and $UI._combat_panels["fire-bat"].scale.x < 1.0, "Attack and hit pulses survive event dispatch" + suffix)
-		for entry in [["火 51", $UI.P.ELEMENT.Fire], ["金 6", $UI.P.ELEMENT.Metal], ["直 3", Color.WHITE], ["+7", $UI.P.TEAL], ["+8", Color("c4d2d4")]]:
+		var source_after: Control = $UI._combat_panels["preview-player"]
+		var target_after: Control = $UI._combat_panels["fire-bat"]
+		_check(source_after.scale.x > 1.0 and source_after.position.x != source_before.x and target_after.scale.x < 1.0 and target_after.position.y < target_before.y, "Directional attack and upward hit reactions survive event dispatch" + suffix)
+		_check(target_after.modulate.r > target_after.modulate.g * 1.8 and target_after.modulate.r > target_after.modulate.b * 1.8, "Hit texture briefly turns red" + suffix)
+		for entry in [["火 51", $UI.P.ELEMENT.Fire], ["金 6", $UI.P.ELEMENT.Metal], ["直 3", $UI.P.DIRECT_DAMAGE], ["+7", $UI.P.TEAL], ["+8", Color("c4d2d4")]]:
 			var found := false
 			for child in $UI.get_children():
 				if child is Label and child.text == entry[0] and child.get_theme_color("font_color").is_equal_approx(entry[1]): found = true

@@ -39,6 +39,8 @@ func _setup() -> void:
 	dialog_panel.add_theme_stylebox_override("panel", Art.style(PANEL))
 	Art.button(confirm_button, CONFIRM_BUTTON)
 	Art.button(cancel_button, CANCEL_BUTTON)
+	confirm_button.set_meta("sound_cue", "ui_confirm")
+	cancel_button.set_meta("sound_cue", "ui_cancel")
 	for label in [title_label, description_label]:
 		label.add_theme_color_override("font_color", P.PAPER)
 		label.mouse_filter = Control.MOUSE_FILTER_IGNORE

@@ -8,8 +8,8 @@ const RISE_DISTANCE := 56.0
 const VIEWPORT_Y_RATIO := 0.28
 const MIN_WIDTH := 180.0
 const MAX_WIDTH_RATIO := 0.72
-const HORIZONTAL_PADDING := 36.0
-const VERTICAL_PADDING := 10.0
+const HORIZONTAL_PADDING := 48.0
+const VERTICAL_PADDING := 16.0
 
 var panel: PanelContainer
 var label: Label
@@ -25,9 +25,9 @@ func _init() -> void:
 	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	panel.z_index = 120
 	var background := StyleBoxFlat.new()
-	background.bg_color = Color(0.015, 0.018, 0.02, 0.92)
-	background.border_color = Color(1.0, 0.82, 0.18, 0.72)
-	background.set_border_width_all(1)
+	background.bg_color = Color("101b21")
+	background.border_color = Color("d3ae68")
+	background.set_border_width_all(2)
 	background.set_corner_radius_all(6)
 	background.content_margin_left = HORIZONTAL_PADDING * 0.5
 	background.content_margin_right = HORIZONTAL_PADDING * 0.5
