@@ -18,8 +18,7 @@ public sealed partial class ProgressionRepository
     private static CardResponse QuoteCard(CardConfigDefinition definition, CardResponse card, int requiredCopies)
     {
         var owned = card.Unlocked && card.CopyCount > 0;
-        // The aggregate stores one trained card plus untrained duplicates; spend is returned once.
-        var dismantleLevel = card.CopyCount == 1 ? card.Level : 0;
+        var dismantleLevel = card.Level;
         var blockedReason = !owned ? "Card is not owned."
             : card.CopyCount <= requiredCopies ? "Card is required by a saved deck." : null;
         var upgrade = card.Level < 5 ? CardEconomyRules.Level(card.CardId, card.Level + 1) : null;
@@ -35,7 +34,7 @@ public sealed partial class ProgressionRepository
             CanDismantle = blockedReason is null,
             BlockedReason = blockedReason,
             UpgradeCost = upgrade?.SoulCost ?? 0,
-            UpgradeCopyCost = upgrade?.RequiresCopy == true ? 1 : 0,
+            UpgradeCopyCost = 0,
             CanUpgrade = upgradeBlockedReason is null,
             UpgradeBlockedReason = upgradeBlockedReason,
             CurrentEffect = CardEffect(CardEconomyRules.ApplyLevel(card.CardId, definition.Effect, card.Level)),
@@ -111,6 +110,8 @@ public sealed partial class ProgressionRepository
             requiredCopies = (int)(await decks.ExecuteScalarAsync(cancellationToken))!;
         }
         card = QuoteCard(definition, card, requiredCopies);
+        if (craft && card.Unlocked)
+            throw new DomainValidationException("Card is already activated.");
         if (upgrade && !card.CanUpgrade)
             throw new DomainValidationException(card.UpgradeBlockedReason!);
         if (!craft && !upgrade && !card.CanDismantle)
@@ -138,8 +139,8 @@ public sealed partial class ProgressionRepository
             materials = new(reader.GetInt64(0), reader.GetInt64(1), reader.GetInt64(2), reader.GetInt64(3), reader.GetInt64(4));
         }
 
-        var consumedCopies = upgrade ? card.UpgradeCopyCost : 0;
-        var copiesAfter = checked(card.CopyCount + (upgrade ? -consumedCopies : craft ? 1 : -1));
+        const int consumedCopies = 0;
+        var copiesAfter = upgrade || craft ? 1 : 0;
         card = card with
         {
             Unlocked = copiesAfter > 0, CopyCount = copiesAfter,

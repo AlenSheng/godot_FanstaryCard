@@ -13,6 +13,9 @@ public static class CombatResolver
         Pair(CardElement.Metal, CardElement.Wood)
     ];
 
+    private static bool IsConflict(CardElement left, CardElement right) =>
+        left != right && ConflictPairs.Contains(Pair(left, right));
+
     public static CardResolutionDraft Resolve(
         IReadOnlyList<CombatCardDefinition> cards,
         PlayerCombatState attacker,
@@ -48,35 +51,53 @@ public static class CombatResolver
         var elementalDamage = 0;
         var conflictPairCount = 0;
         var conflictHeal = 0;
+        var resonanceMultiplier = 1d;
+        var conflictCancellation = 0d;
         var segments = new List<CombatDamageSegment>();
         if (elemental.Length > 0)
         {
-            coreCount = counts.Values.Max();
-            core = elemental.First(card => counts[card.Effect.Element] == coreCount).Effect.Element;
-            var coreBase = cards
-                .Select((card, index) => (card, index))
-                .Where(value => value.card.Effect.Element == core && value.card.Effect.SecondaryElementalDamage == 0)
-                .Sum(value => bases[value.index]);
-            conflictPairCount = ConflictPairs.Sum(pair =>
-                (pair.Left == core || pair.Right == core) &&
-                counts.TryGetValue(pair.Left, out var left) && counts.TryGetValue(pair.Right, out var right)
-                    ? Math.Min(left, right)
-                    : 0);
+            // The first ordinary elemental card establishes the core. Direct
+            // damage cards do not consume this position.
+            core = elemental[0].Effect.Element;
+            coreCount = elemental.Count(card => card.Effect.Element == core);
+            conflictPairCount = elemental.Count(card =>
+                card.Effect.Element != core && !card.Effect.IsElementTuning && IsConflict(core.Value, card.Effect.Element));
             var resonanceBonus = cards.Any(card => card.Effect.ResonanceBonus > 0) ? 1 : 0;
-            var resonance = coreCount == 5 && resonanceBonus > 0 ? 3.5 : Resonance(coreCount + resonanceBonus);
+            // The first core card is the unmodified baseline. M is the number
+            // of later core cards left after counter cards consume their
+            // advantage. This keeps the first card at its printed value.
+            var mainCoreStacks = Math.Max(0, coreCount - 1 + resonanceBonus - conflictPairCount);
+            resonanceMultiplier = 1 + .20 * mainCoreStacks;
             var equipmentBonus = attacker.Equipment.DamageBonus(core.Value);
             var resistance = targetResistance?.Invoke(core.Value) ?? 0;
-            var beforeConflict = coreBase * resonance * (1 + equipmentBonus) * (1 - resistance);
-            var cancellation = 0d;
+            var sharedMultiplier = (1 + equipmentBonus) * (1 - resistance);
+            var cancelBonus = cards.Max(card => card.Effect.ConflictCancelBonus);
+            conflictCancellation = conflictPairCount == 0
+                ? 0
+                : Math.Min(0.80, 0.20 * conflictPairCount + cancelBonus);
+            var coreBase = cards
+                .Select((card, index) => (card, index))
+                .Where(value => value.card.Effect.Element == core && value.card.Effect.SecondaryElementalDamage == 0 && !value.card.Effect.IsElementTuning)
+                .Sum(value => bases[value.index]);
+            var beforeConflict = coreBase * sharedMultiplier * resonanceMultiplier;
             if (conflictPairCount > 0)
             {
-                var cancelBonus = cards.Max(card => card.Effect.ConflictCancelBonus);
-                cancellation = Math.Min(0.80, Math.Min(0.65, 0.20 * conflictPairCount) + cancelBonus);
                 var healCoefficient = Math.Max(0.50, cards.Max(card => card.Effect.ConflictHealCoefficient));
-                conflictHeal = attacker.ResolveRecovery((int)Math.Floor(beforeConflict * cancellation * healCoefficient) + 2 * conflictPairCount);
+                conflictHeal = attacker.ResolveRecovery((int)Math.Floor(beforeConflict * conflictCancellation * healCoefficient) + 2 * conflictPairCount);
             }
-            elementalDamage = Math.Max(0, (int)Math.Floor(beforeConflict * (1 - cancellation)));
-            if (elementalDamage > 0) segments.Add(new(core.Value.ToString(), elementalDamage));
+
+            foreach (var (card, index) in cards.Select((card, index) => (card, index))
+                         .Where(value => value.card.Effect.ElementalDamage > 0 && value.card.Effect.Element != CardElement.None && value.card.Effect.SecondaryElementalDamage == 0))
+            {
+                var branchMultiplier = card.Effect.Element == core
+                    ? resonanceMultiplier
+                    : IsConflict(core.Value, card.Effect.Element) && !card.Effect.IsElementTuning
+                        ? 1 - conflictCancellation
+                        : 1;
+                var damage = Math.Max(0, (int)Math.Floor(bases[index] * sharedMultiplier * branchMultiplier));
+                if (damage > 0) segments.Add(new(card.Effect.Element.ToString(), damage));
+                elementalDamage += damage;
+            }
         }
 
         // The boss card resolves its two printed elements independently, outside resonance and conflict.
@@ -87,8 +108,10 @@ public static class CombatResolver
             if (reveal && card.Effect.SecondaryElement == revealElement) secondary = (int)Math.Floor(secondary * 1.3);
             foreach (var (element, value) in new[] { (card.Effect.Element, bases[index]), (card.Effect.SecondaryElement, secondary) })
             {
-                var damage = Math.Max(0, (int)Math.Floor(value * (1 + attacker.Equipment.DamageBonus(element)) *
-                    (1 - (targetResistance?.Invoke(element) ?? 0))));
+                var damageMultiplier = core is CardElement coreElement
+                    ? (1 + attacker.Equipment.DamageBonus(coreElement)) * (1 - (targetResistance?.Invoke(coreElement) ?? 0))
+                    : (1 + attacker.Equipment.DamageBonus(element)) * (1 - (targetResistance?.Invoke(element) ?? 0));
+                var damage = Math.Max(0, (int)Math.Floor(value * damageMultiplier));
                 if (damage > 0) segments.Add(new(element.ToString(), damage));
                 elementalDamage += damage;
             }
@@ -124,7 +147,8 @@ public static class CombatResolver
             core,
             coreCount,
             segments.GroupBy(segment => segment.Kind, StringComparer.Ordinal)
-                .Select(group => new CombatDamageSegment(group.Key, group.Sum(segment => segment.Amount))).ToArray());
+                .Select(group => new CombatDamageSegment(group.Key, group.Sum(segment => segment.Amount))).ToArray(),
+            resonanceMultiplier, conflictPairCount, conflictCancellation);
     }
 
     public static IReadOnlyList<CombatDamageSegment> ResolveDamageSegments(

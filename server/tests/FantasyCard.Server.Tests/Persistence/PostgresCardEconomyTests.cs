@@ -22,9 +22,9 @@ public sealed class PostgresCardEconomyTests
         var player = await CreatePlayerAsync(database);
         var repository = new ProgressionRepository(database.DataSource);
         var cards = await repository.GetCardsAsync(player, ct);
-        Assert.Equal(200, cards.Count);
+        Assert.Equal(220, cards.Count);
         Assert.Equal(51, cards.Count(card => card.Unlocked));
-        Assert.Equal(149, cards.Count(card => !card.Unlocked && card.CopyCount == 0));
+        Assert.Equal(169, cards.Count(card => !card.Unlocked && card.CopyCount == 0));
         Assert.All(cards, card => Assert.True(card.CraftCost > 0));
 
         var candidates = new HeroClass?[] { null, HeroClass.Priest, HeroClass.Mage, HeroClass.Guardian }
@@ -64,7 +64,7 @@ public sealed class PostgresCardEconomyTests
 
     [Fact(Skip = "Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.", SkipUnless = nameof(HasTestDatabase))]
     [Trait("Category", "PostgresIntegration")]
-    public async Task Saved_decks_are_protected_and_only_spare_copies_can_be_removed()
+    public async Task Saved_decks_are_protected_and_owned_cards_cannot_be_acquired_again()
     {
         await using var database = await PostgresTestSchema.CreateAsync(migrate: true);
         var ct = TestContext.Current.CancellationToken;
@@ -77,11 +77,8 @@ public sealed class PostgresCardEconomyTests
         Assert.Contains("saved deck", original.BlockedReason!, StringComparison.Ordinal);
         await Assert.ThrowsAsync<DomainValidationException>(() => repository.MutateCardAsync(
             player, cardId, "protected", new(original.Version), false, ct));
-        var duplicate = await repository.MutateCardAsync(player, cardId, "duplicate", new(original.Version), true, ct);
-        Assert.True(duplicate.Card.CanDismantle);
-        var removed = await repository.MutateCardAsync(player, cardId, "remove-spare", new(duplicate.Card.Version), false, ct);
-        Assert.Equal(1, removed.Card.CopyCount);
-        Assert.False(removed.Card.CanDismantle);
+        await Assert.ThrowsAsync<DomainValidationException>(() => repository.MutateCardAsync(
+            player, cardId, "duplicate", new(original.Version), true, ct));
         Assert.Equal(decks.SelectMany(deck => deck.CardIds),
             (await repository.GetDecksAsync(player, ct)).SelectMany(deck => deck.CardIds));
     }
@@ -96,20 +93,16 @@ public sealed class PostgresCardEconomyTests
         var repository = new ProgressionRepository(database.DataSource);
         var cardId = GameConfigCatalog.Current.Cards.First(card => card.IsCodex && card.Quality == "Blue").CardId;
         await using (var seed = database.DataSource.CreateCommand(
-            "UPDATE player_cards SET unlocked=true,copy_count=2,level=3 WHERE player_id=$1 AND card_id=$2"))
+            "UPDATE player_cards SET unlocked=true,copy_count=1,level=3 WHERE player_id=$1 AND card_id=$2"))
         {
             seed.Parameters.AddWithValue(player);
             seed.Parameters.AddWithValue(cardId);
             await seed.ExecuteNonQueryAsync(ct);
         }
-        var duplicate = (await repository.GetCardsAsync(player, ct)).Single(card => card.CardId == cardId);
-        Assert.Equal(0, duplicate.UpgradeSoulSpent);
-        Assert.Equal(12, duplicate.DismantleRefund);
-        var first = await repository.MutateCardAsync(player, cardId, "remove-duplicate", new(duplicate.Version), false, ct);
-        Assert.Equal(3, first.Card.Level);
-        Assert.Equal(84, first.Card.UpgradeSoulSpent);
-        Assert.Equal(33, first.Card.DismantleRefund);
-        var last = await repository.MutateCardAsync(player, cardId, "remove-trained", new(first.Card.Version), false, ct);
+        var trained = (await repository.GetCardsAsync(player, ct)).Single(card => card.CardId == cardId);
+        Assert.Equal(84, trained.UpgradeSoulSpent);
+        Assert.Equal(33, trained.DismantleRefund);
+        var last = await repository.MutateCardAsync(player, cardId, "remove-trained", new(trained.Version), false, ct);
         Assert.Equal(33, last.SoulAmount);
         Assert.Equal(1045, last.Materials.WarriorSoul);
         Assert.Equal(0, last.Card.Level);

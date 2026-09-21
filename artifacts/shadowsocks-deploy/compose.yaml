@@ -1,0 +1,24 @@
+name: shadowsocks
+
+services:
+  server:
+    image: ghcr.io/shadowsocks/ssserver-rust:v1.24.0
+    container_name: shadowsocks-rust
+    ports:
+      - "8388:8388/tcp"
+      - "8388:8388/udp"
+    volumes:
+      - ./config.json:/etc/shadowsocks-rust/config.json:ro
+    restart: unless-stopped
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - SETGID
+      - SETUID
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"

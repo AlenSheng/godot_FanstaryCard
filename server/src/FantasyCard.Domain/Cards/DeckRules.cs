@@ -45,6 +45,11 @@ public static class DeckRules
 
         foreach (var (cardId, count) in requestedCopies)
         {
+            if (count > 1)
+            {
+                throw new DomainValidationException("A deck cannot contain duplicate cards.");
+            }
+
             if (!ownedCards.TryGetValue(cardId, out var card) || card.CopyCount < count)
             {
                 throw new DomainValidationException($"Card '{cardId}' is not owned in the requested quantity.");

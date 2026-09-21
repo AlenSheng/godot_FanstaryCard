@@ -1,0 +1,83 @@
+name: fantasycard-cloud
+
+services:
+  postgres:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_DB: fantasycard
+      POSTGRES_USER: fantasycard
+      POSTGRES_PASSWORD: ${FANTASYCARD_DB_PASSWORD:?set FANTASYCARD_DB_PASSWORD in .env}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fantasycard -d fantasycard"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    volumes:
+      - fantasycard-postgres:/var/lib/postgresql
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      options:
+        max-size: "20m"
+        max-file: "3"
+
+  server:
+    build:
+      context: .
+      dockerfile: src/FantasyCard.Server/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_HTTP_PORTS: 8080
+      DOTNET_EnableDiagnostics: "0"
+      AllowedHosts: "localhost;127.0.0.1;relicbound.cn;www.relicbound.cn;43.172.70.182"
+      Identity__EnableLocalAuth: "false"
+      Identity__AllowManagedLocalAuth: "true"
+      Admin__ApiKey: ${FANTASYCARD_ADMIN_KEY:?set a random FANTASYCARD_ADMIN_KEY of at least 32 characters in .env}
+      ConnectionStrings__Postgres: Host=postgres;Port=5432;Database=fantasycard;Username=fantasycard;Password=${FANTASYCARD_DB_PASSWORD}
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    init: true
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+    logging:
+      options:
+        max-size: "20m"
+        max-file: "3"
+
+  caddy:
+    image: caddy:2-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+      - "20000:20000"
+    volumes:
+      - caddy-data:/data
+      - caddy-config:/config
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./site:/srv/site:ro
+      - /opt/fantasycard-app/certs:/etc/caddy/certs:ro
+    depends_on:
+      server:
+        condition: service_started
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+    logging:
+      options:
+        max-size: "20m"
+        max-file: "3"
+
+volumes:
+  fantasycard-postgres:
+  caddy-data:
+  caddy-config:

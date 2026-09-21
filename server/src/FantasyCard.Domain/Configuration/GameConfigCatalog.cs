@@ -92,13 +92,23 @@ public sealed record BackpackConfig(string Id, int Capacity, int SafeSlots, int 
 
 public sealed record ShopCardPriceConfig(string Quality, int PriceGold, int DailyLimit);
 
+public sealed record ItemConfigDefinition(string Id, string Kind, int Quality, string? IconKey, bool Enabled)
+{
+    public string QualityName => Quality switch
+    {
+        1 => "White", 2 => "Green", 3 => "Blue", 4 => "Purple", 5 => "Orange", 6 => "Red",
+        _ => throw new InvalidDataException($"Item '{Id}' has unsupported quality rank '{Quality}'.")
+    };
+}
+
 public sealed record EconomyConfig(
     int MarketActiveListings,
     int MarketDurationHours,
     double MarketFeeRate,
     int HealthPotionPrice,
     double HealthPotionHealRate,
-    int DailyCardSlots);
+    int DailyCardSlots,
+    int DailyShopRefreshLimit);
 
 public sealed class GameConfigCatalog
 {
@@ -114,6 +124,7 @@ public sealed class GameConfigCatalog
         IReadOnlyList<RewardRefreshConfig> rewardRefreshes,
         IReadOnlyList<BackpackConfig> backpacks,
         IReadOnlyList<ShopCardPriceConfig> shopCardPrices,
+        IReadOnlyList<ItemConfigDefinition> items,
         EconomyConfig economy)
     {
         Version = version;
@@ -124,6 +135,7 @@ public sealed class GameConfigCatalog
         RewardRefreshes = rewardRefreshes;
         Backpacks = backpacks;
         ShopCardPrices = shopCardPrices;
+        Items = items;
         Economy = economy;
     }
 
@@ -136,6 +148,7 @@ public sealed class GameConfigCatalog
     public IReadOnlyList<RewardRefreshConfig> RewardRefreshes { get; }
     public IReadOnlyList<BackpackConfig> Backpacks { get; }
     public IReadOnlyList<ShopCardPriceConfig> ShopCardPrices { get; }
+    public IReadOnlyList<ItemConfigDefinition> Items { get; }
     public EconomyConfig Economy { get; }
 
     public EquipmentQualityConfig EquipmentQuality(string quality) =>
@@ -161,6 +174,11 @@ public sealed class GameConfigCatalog
         ShopCardPrices.SingleOrDefault(item => string.Equals(item.Quality, quality, StringComparison.Ordinal))
         ?? throw new DomainValidationException($"Unknown shop card quality '{quality}'.");
 
+    public ItemConfigDefinition Item(string id, string kind) =>
+        Items.SingleOrDefault(item => string.Equals(item.Id, id, StringComparison.Ordinal))
+        ?? Items.FirstOrDefault(item => string.Equals(item.Kind, kind, StringComparison.Ordinal))
+        ?? throw new DomainValidationException($"Unknown item '{id}' ({kind}).");
+
     private static GameConfigCatalog LoadEmbedded()
     {
         using var stream = typeof(GameConfigCatalog).Assembly.GetManifestResourceStream(ResourceName)
@@ -174,8 +192,17 @@ public sealed class GameConfigCatalog
         var lootTable = bundle.Table("LootRules");
         var backpackTable = bundle.Table("Backpacks");
         var shopCardPriceTable = bundle.Table("ShopCardPrices");
+        var itemsTable = bundle.Table("Items");
         var economyTable = bundle.Table("Economy");
-        var cards = cardsTable.Rows.Select(row => ReadCard(cardsTable, row)).Where(card => card.Enabled).ToArray();
+        var cards = cardsTable.Rows
+            .Select(row => ReadCard(cardsTable, row))
+            .Where(card => card.Enabled)
+            .OrderBy(card => card.IsCodex ? 0 : 1)
+            .ThenBy(card => card.IsCodex ? card.Rarity : short.MaxValue)
+            .ThenBy(card => card.HeroClass is null ? 0 : 1)
+            .ThenBy(card => card.HeroClass ?? (HeroClass)short.MaxValue)
+            .ThenBy(card => card.CardId, StringComparer.Ordinal)
+            .ToArray();
         var levels = levelsTable.Rows.Select(row => new CardLevelConfig(
             levelsTable.Text(row, "card_id"),
             levelsTable.Int(row, "level"),
@@ -213,6 +240,10 @@ public sealed class GameConfigCatalog
         var shopCardPrices = shopCardPriceTable.Rows.Select(row => new ShopCardPriceConfig(
             shopCardPriceTable.Text(row, "id"), shopCardPriceTable.Int(row, "price_gold"),
             shopCardPriceTable.Int(row, "daily_limit"))).ToArray();
+        var items = itemsTable.Rows.Select(row => new ItemConfigDefinition(
+            itemsTable.Text(row, "id"), itemsTable.Text(row, "kind"), itemsTable.Int(row, "quality"),
+            itemsTable.OptionalText(row, "icon_key"), itemsTable.Bool(row, "enabled")))
+            .Where(item => item.Enabled).ToArray();
         var economyValues = economyTable.Rows.ToDictionary(
             row => economyTable.Text(row, "id"), row => row, StringComparer.Ordinal);
         int EconomyInt(string id) => economyTable.Int(economyValues[id], "int_value");
@@ -223,25 +254,33 @@ public sealed class GameConfigCatalog
             economy = new EconomyConfig(
                 EconomyInt("market-active-listings"), EconomyInt("market-duration-hours"),
                 EconomyDouble("market-fee-rate"), EconomyInt("health-potion-price"),
-                EconomyDouble("health-potion-heal-rate"), EconomyInt("daily-card-slots"));
+                EconomyDouble("health-potion-heal-rate"), EconomyInt("daily-card-slots"),
+                EconomyInt("daily-shop-refresh-limit"));
         }
         catch (KeyNotFoundException exception)
         {
             throw new InvalidDataException("Economy is missing a required runtime value.", exception);
         }
 
-        if (cards.Count(card => card.IsCodex) != 200 || cards.Count(card => !card.IsCodex) != 12)
-            throw new InvalidDataException("Active config must contain 200 codex cards and 12 monster cards.");
+        if (cards.Count(card => card.IsCodex) != 220 || cards.Count(card => !card.IsCodex) != 12)
+            throw new InvalidDataException("Active config must contain 220 codex cards and 12 monster cards.");
         if (cards.Count(card => card.InitiallyUnlocked) != 51)
             throw new InvalidDataException("Active config must contain exactly 51 initially unlocked cards.");
-        if (levels.Length != 1200)
-            throw new InvalidDataException("Active config must contain 1200 card-level rows.");
+        if (levels.Length != 1320)
+            throw new InvalidDataException("Active config must contain 1320 card-level rows.");
         ValidateEquipment(equipment);
         ValidateLoot(lootLayers, refreshes);
         ValidateBackpacks(backpacks);
         ValidateEconomy(economy, shopCardPrices, cards);
+        ValidateItems(items);
         return new GameConfigCatalog(
-            bundle.Version, cards, levels, equipment, lootLayers, refreshes, backpacks, shopCardPrices, economy);
+            bundle.Version, cards, levels, equipment, lootLayers, refreshes, backpacks, shopCardPrices, items, economy);
+    }
+
+    private static void ValidateItems(ItemConfigDefinition[] items)
+    {
+        if (items.Length == 0 || items.Any(item => item.Quality is < 1 or > 6 || string.IsNullOrWhiteSpace(item.Kind)))
+            throw new InvalidDataException("Items must contain enabled rows with quality ranks from one to six.");
     }
 
     private static void ValidateEquipment(IReadOnlyList<EquipmentQualityConfig> equipment)
@@ -302,7 +341,8 @@ public sealed class GameConfigCatalog
     {
         if (economy.MarketActiveListings <= 0 || economy.MarketDurationHours <= 0 ||
             economy.MarketFeeRate is <= 0 or >= 1 || economy.HealthPotionPrice <= 0 ||
-            economy.HealthPotionHealRate is <= 0 or > 1 || economy.DailyCardSlots != 3)
+            economy.HealthPotionHealRate is <= 0 or > 1 || economy.DailyCardSlots != 3 ||
+            economy.DailyShopRefreshLimit <= 0)
             throw new InvalidDataException("Economy contains an invalid market or health-potion value.");
 
         string[] expectedQualities = ["White", "Green", "Blue", "Purple"];
@@ -315,39 +355,44 @@ public sealed class GameConfigCatalog
             throw new InvalidDataException("The active card catalog cannot fill the daily shop card slots.");
     }
 
-    private static CardConfigDefinition ReadCard(ConfigTable table, object?[] row) => new(
-        table.Text(row, "id"),
-        table.Text(row, "name"),
-        table.Text(row, "source"),
-        table.Text(row, "category"),
-        ParseHeroClass(table.OptionalText(row, "hero_class")),
-        table.OptionalText(row, "monster_type"),
-        table.OptionalText(row, "quality"),
-        new CombatCardEffect(
-            table.Int(row, "elemental_damage"),
-            ParseElement(table.OptionalText(row, "element")),
-            table.Int(row, "direct_damage"),
-            table.Int(row, "heal"),
-            table.Int(row, "shield"),
-            table.Double(row, "draw_charge"),
-            table.Int(row, "immediate_draw"),
-            table.Double(row, "draw_speed_modifier"),
-            table.Double(row, "draw_speed_seconds"),
-            table.Double(row, "stun_seconds"),
-            table.Double(row, "draw_block_seconds"),
-            table.Int(row, "health_cost"),
-            table.Int(row, "same_element_bonus"),
-            table.Int(row, "resonance_bonus"),
-            table.Double(row, "conflict_cancel_bonus"),
-            table.Double(row, "conflict_heal_coefficient"),
-            table.Bool(row, "is_class_reveal"),
-            table.OptionalInt(row, "secondary_elemental_damage"),
-            ParseElement(table.OptionalText(row, "secondary_element"))),
-        table.Bool(row, "is_codex"),
-        table.Bool(row, "initially_unlocked"),
-        table.Int(row, "unlock_cost"),
-        table.Int(row, "copy_cost"),
-        table.Bool(row, "enabled"));
+    private static CardConfigDefinition ReadCard(ConfigTable table, object?[] row)
+    {
+        var category = table.Text(row, "category");
+        return new(
+            table.Text(row, "id"),
+            table.Text(row, "name"),
+            table.Text(row, "source"),
+            category,
+            ParseHeroClass(table.OptionalText(row, "hero_class")),
+            table.OptionalText(row, "monster_type"),
+            table.OptionalText(row, "quality"),
+            new CombatCardEffect(
+                table.Int(row, "elemental_damage"),
+                ParseElement(table.OptionalText(row, "element")),
+                table.Int(row, "direct_damage"),
+                table.Int(row, "heal"),
+                table.Int(row, "shield"),
+                table.Double(row, "draw_charge"),
+                table.Int(row, "immediate_draw"),
+                table.Double(row, "draw_speed_modifier"),
+                table.Double(row, "draw_speed_seconds"),
+                table.Double(row, "stun_seconds"),
+                table.Double(row, "draw_block_seconds"),
+                table.Int(row, "health_cost"),
+                table.Int(row, "same_element_bonus"),
+                table.Int(row, "resonance_bonus"),
+                table.Double(row, "conflict_cancel_bonus"),
+                table.Double(row, "conflict_heal_coefficient"),
+                table.Bool(row, "is_class_reveal"),
+                table.OptionalInt(row, "secondary_elemental_damage"),
+                ParseElement(table.OptionalText(row, "secondary_element")),
+                IsElementTuning: string.Equals(category, "ElementTune", StringComparison.Ordinal)),
+            table.Bool(row, "is_codex"),
+            table.Bool(row, "initially_unlocked"),
+            table.Int(row, "unlock_cost"),
+            table.Int(row, "copy_cost"),
+            table.Bool(row, "enabled"));
+    }
 
     private static HeroClass? ParseHeroClass(string? value) => value is null
         ? null

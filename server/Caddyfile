@@ -1,0 +1,56 @@
+(security_headers) {
+    header {
+        -Server
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        Referrer-Policy "no-referrer"
+        Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+    }
+}
+
+# Game clients connect to the public domain. TLS terminates here with a
+# publicly trusted certificate; the application is reachable only through Caddy.
+relicbound.cn, www.relicbound.cn {
+    import security_headers
+    header Strict-Transport-Security "max-age=31536000; includeSubDomains"
+
+    @admin path /admin /admin/* /api/admin /api/admin/*
+    respond @admin 404
+
+    # Keep game API, WebSocket, and health routes on the application while
+    # serving the public website as static files at the root domain.
+    @game_api path /api/* /ws/* /health/*
+    handle @game_api {
+        reverse_proxy server:8080
+    }
+
+    handle {
+        root * /srv/site
+        try_files {path} /index.html
+        file_server
+    }
+}
+
+# Do not expose the player API through the origin IP. Keeping the certificate
+# listener returns a uniform response without revealing application metadata.
+43.172.70.182 {
+    import security_headers
+    tls /etc/caddy/certs/ip2.crt /etc/caddy/certs/ip2.key
+    respond 404
+}
+
+# The host exposes this listener for the separate management console. Access
+# still requires HTTPS and X-Admin-Key; restrict TCP 20000 in the cloud security
+# group to administrator IPs.
+:20000 {
+    import security_headers
+    tls /etc/caddy/certs/ip2.crt /etc/caddy/certs/ip2.key
+
+    @admin path /admin /admin/* /api/admin /api/admin/*
+    handle @admin {
+        reverse_proxy server:8080
+    }
+    handle {
+        respond 404
+    }
+}

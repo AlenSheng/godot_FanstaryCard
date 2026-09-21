@@ -1,8 +1,38 @@
 extends RefCounted
 
 const P = preload("res://ui/palette.gd")
-const I18n = preload("res://ui/i18n.gd")
 const CATALOG = preload("res://data/catalog.json")
+const NAMES = preload("res://data/card_names.json")
+
+const QUALITY_ORDER := {"White": 0, "Green": 1, "Blue": 2, "Purple": 3, "Orange": 4}
+const CLASS_ORDER := {"Priest": 0, "Mage": 1, "Guardian": 2}
+
+static func sorted_ids(ids: Array, cards: Dictionary) -> Array:
+	var result := ids.duplicate()
+	result.sort_custom(func(left, right): return card_before(str(left), str(right), cards))
+	return result
+
+static func card_before(left_id: String, right_id: String, cards: Dictionary) -> bool:
+	var left: Dictionary = cards.get(left_id, {})
+	var right: Dictionary = cards.get(right_id, {})
+	var left_quality := int(QUALITY_ORDER.get(str(left.get("quality", "")), 99))
+	var right_quality := int(QUALITY_ORDER.get(str(right.get("quality", "")), 99))
+	if left_quality != right_quality: return left_quality < right_quality
+	var left_class: Variant = left.get("hero_class", null)
+	var right_class: Variant = right.get("hero_class", null)
+	var left_is_class := left_class != null
+	var right_is_class := right_class != null
+	if left_is_class != right_is_class: return not left_is_class
+	if left_is_class:
+		var left_rank := int(CLASS_ORDER.get(str(left_class), 99))
+		var right_rank := int(CLASS_ORDER.get(str(right_class), 99))
+		if left_rank != right_rank: return left_rank < right_rank
+	return left_id < right_id
+
+static func localized_name(id: String, card: Dictionary = {}) -> String:
+	var fallback := str(card.get("name", id))
+	var names: Dictionary = NAMES.data.get(P.language(), {})
+	return str(names.get(id, fallback))
 
 static func at_level(card: Dictionary, level: int) -> Dictionary:
 	var effect := card.duplicate(true)
@@ -27,15 +57,29 @@ static func with_element(card: Dictionary, element_override: String) -> Dictiona
 static func effect_text(effect: Dictionary) -> String:
 	var lines: Array[String] = []
 	var secondary_damage: int = int(effect.get("secondaryElementalDamage", effect.get("secondary_elemental_damage", 0)))
-	if secondary_damage > 0: lines.append("%s伤 %s（独立分段）" % [P.word(effect.get("secondaryElement", effect.get("secondary_element", "None"))), secondary_damage])
+	if secondary_damage > 0:
+		var secondary_element := P.word(effect.get("secondaryElement", effect.get("secondary_element", "None")))
+		lines.append("Deal %s %s elemental damage" % [secondary_damage, secondary_element] if P.language() == "en" else "追加%s系伤害%s点" % [secondary_element, secondary_damage])
 	for key in ["elementalDamage", "directDamage", "heal", "shield", "drawCharge", "immediateDraw", "drawSpeedModifier", "stunSeconds", "drawBlockSeconds", "healthCost", "sameElementBonus", "resonanceBonus", "conflictCancelBonus", "conflictHealCoefficient"]:
 		var value: float = float(effect.get(key, effect.get(key.to_snake_case(), 0)))
 		if is_zero_approx(value): continue
-		var title: String = {"elementalDamage": P.word(effect.get("element", "None")) + "伤", "directDamage": "直伤", "heal": "治疗", "shield": "护盾", "drawCharge": "抽牌充能", "immediateDraw": "立即抽牌", "drawSpeedModifier": "抽牌间隔", "stunSeconds": "眩晕", "drawBlockSeconds": "锁抽", "healthCost": "自损生命", "sameElementBonus": "同核加成", "resonanceBonus": "相生加成", "conflictCancelBonus": "相克抵消", "conflictHealCoefficient": "相克治疗系数"}[key]
-		var suffix := "秒" if key.ends_with("Seconds") else ""
+		var suffix := P.localized("seconds") if key.ends_with("Seconds") else ""
 		if key in ["drawCharge", "drawSpeedModifier", "conflictCancelBonus", "conflictHealCoefficient"]: value *= 100; suffix = "%"
-		var text := title + " " + ("%.2f" % value).trim_suffix("0").trim_suffix("0").trim_suffix(".") + suffix
-		if key == "drawSpeedModifier": text += " / %s秒" % effect.get("drawSpeedSeconds", effect.get("draw_speed_seconds", 0))
+		var number := str(int(value)) if is_equal_approx(value, round(value)) else ("%.2f" % value).trim_suffix("0").trim_suffix(".")
+		var text: String
+		if key == "elementalDamage":
+			var element := P.word(effect.get("element", "None"))
+			text = "Deal %s %s elemental damage" % [number, element] if P.language() == "en" else "造成%s系伤害%s点" % [element, number]
+		elif key == "directDamage":
+			text = "Deal %s direct damage" % number if P.language() == "en" else "造成直接伤害%s点" % number
+		elif key == "heal":
+			text = "Heal %s" % number if P.language() == "en" else "治疗%s点" % number
+		elif key == "shield":
+			text = "Gain %s shield" % number if P.language() == "en" else "获得%s点护盾" % number
+		else:
+			var title: String = {"drawCharge": P.localized("battle_draw_charge"), "immediateDraw": P.localized("battle_immediate_draw"), "drawSpeedModifier": P.localized("draw_interval"), "stunSeconds": P.localized("stun"), "drawBlockSeconds": P.localized("draw_lock"), "healthCost": P.localized("self_damage"), "sameElementBonus": P.localized("battle_same_element"), "resonanceBonus": P.localized("battle_resonance"), "conflictCancelBonus": P.localized("battle_conflict_cancel"), "conflictHealCoefficient": P.localized("battle_conflict_heal")}[key]
+			text = title + " " + number + suffix
+		if key == "drawSpeedModifier": text += " / %s%s" % [effect.get("drawSpeedSeconds", effect.get("draw_speed_seconds", 0)), P.localized("seconds")]
 		lines.append(text)
-	if effect.get("isClassReveal", effect.get("is_class_reveal", false)): lines.append("职业显：本职业显示元素的基础伤害 ×1.3")
-	return I18n.t(" · ".join(lines))
+	if effect.get("isClassReveal", effect.get("is_class_reveal", false)): lines.append(P.localized("battle_class_reveal"))
+	return " · ".join(lines)

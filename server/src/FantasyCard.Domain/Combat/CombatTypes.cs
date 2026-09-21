@@ -29,7 +29,8 @@ public sealed record CombatCardEffect(
     double ConflictHealCoefficient = 0,
     bool IsClassReveal = false,
     int SecondaryElementalDamage = 0,
-    CardElement SecondaryElement = CardElement.None);
+    CardElement SecondaryElement = CardElement.None,
+    bool IsElementTuning = false);
 
 public sealed record CombatCardDefinition(string CardId, CombatCardEffect Effect);
 
@@ -58,7 +59,8 @@ public sealed record PlayerCombatSnapshot(
     TimeSpan DrawBlockRemaining,
     IReadOnlyList<TargetStunWindowSnapshot> TargetStunWindows,
     CombatEquipmentProfile? Equipment = null,
-    TimeSpan DrawBlockSpeedRemaining = default);
+    TimeSpan DrawBlockSpeedRemaining = default,
+    int FenxianChargeLevel = 0);
 
 public enum MonsterIntentKind : short
 {
@@ -204,7 +206,8 @@ public sealed record CombatPassiveInfo(
     double ControlBonus,
     double ShieldBonus,
     double WeaponBonus,
-    int ShieldFlatBonus);
+    int ShieldFlatBonus,
+    int ChargeLevel = 0);
 
 public sealed record CombatantPublicInfo(
     Guid PlayerId,
@@ -248,7 +251,10 @@ public sealed record CombatResolution(
     int ImmediateDraw = 0,
     double DrawSpeedSeconds = 0,
     double DrawSpeedModifier = 0,
-    double DrawBlockSpeedSeconds = 0);
+    double DrawBlockSpeedSeconds = 0,
+    double ResonanceMultiplier = 1,
+    int ConflictPairCount = 0,
+    double ConflictCancellation = 0);
 
 public sealed record CombatFeedbackResolution(string SourceId, CombatResolution Resolution);
 
@@ -265,4 +271,7 @@ public sealed record CardResolutionDraft(
     int HealthCost,
     CardElement? CoreElement,
     int CoreCount,
-    IReadOnlyList<CombatDamageSegment>? DamageSegments = null);
+    IReadOnlyList<CombatDamageSegment>? DamageSegments = null,
+    double ResonanceMultiplier = 1,
+    int ConflictPairCount = 0,
+    double ConflictCancellation = 0);

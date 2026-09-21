@@ -51,4 +51,29 @@ public sealed class DeckRulesTests
         Assert.Throws<DomainValidationException>(() =>
             DeckRules.Validate(HeroClass.Guardian, cards.Keys.ToArray(), cards));
     }
+
+    [Fact]
+    public void Validate_RejectsIncompleteDeck()
+    {
+        var cards = Enumerable.Range(1, 19)
+            .Select(index => new OwnedCard($"card-{index}", null, CardRarity.White, 1, false))
+            .ToDictionary(card => card.CardId, StringComparer.Ordinal);
+
+        var error = Assert.Throws<DomainValidationException>(() =>
+            DeckRules.Validate(HeroClass.Mage, cards.Keys.ToArray(), cards));
+
+        Assert.Contains("exactly 20", error.Message, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void Validate_RejectsDuplicateCardNames()
+    {
+        var cards = Enumerable.Range(1, 20)
+            .Select(index => new OwnedCard($"card-{index}", null, CardRarity.White, 1, false))
+            .ToDictionary(card => card.CardId, StringComparer.Ordinal);
+        var deck = cards.Keys.ToArray();
+        deck[1] = deck[0];
+
+        Assert.Throws<DomainValidationException>(() => DeckRules.Validate(HeroClass.Mage, deck, cards));
+    }
 }

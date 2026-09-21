@@ -99,6 +99,19 @@ class Sound:
         samples *= 10 ** (peak_dbfs / 20) / max(np.max(np.abs(samples)), 1e-9)
         return np.round(samples * 32767).astype(np.int16)
 
+    def finish_music(self, peak_dbfs: float, crossfade_seconds: float = 0.75) -> np.ndarray:
+        """Finish a loop with a short equal-power seam at the repeat point."""
+        samples = self.samples - np.mean(self.samples)
+        count = min(round(SAMPLE_RATE * crossfade_seconds), len(samples) // 3)
+        if count > 0:
+            mix = np.linspace(0.0, 1.0, count)
+            head = samples[:count].copy()
+            tail = samples[-count:].copy()
+            samples[-count:] = tail * (1.0 - mix) + head * mix
+        samples = np.tanh(samples * 0.55)
+        samples *= 10 ** (peak_dbfs / 20) / max(np.max(np.abs(samples)), 1e-9)
+        return np.round(samples * 32767).astype(np.int16)
+
 
 def build_library() -> list[tuple[Sound, float, str]]:
     result: list[tuple[Sound, float, str]] = []
@@ -245,6 +258,98 @@ def build_library() -> list[tuple[Sound, float, str]]:
     s.stone(0, 0.38, 215)
     s.stone(0.092, 0.25, 170)
     record(s, -16, "Two quiet, descending wooden-stone knocks indicate an unavailable action.")
+
+    # Module cues extend the original parchment / stone / restrained-brass
+    # palette without turning common navigation into a noisy arcade UI.
+    s = Sound("ui_open", 0.34)
+    s.air(0, 0.22, 0.10)
+    s.brass(0.028, 0.20, 415, 0.055)
+    s.stone(0.075, 0.16, 235)
+    record(s, -16, "A quiet panel opening: air, a small bronze resonance, and a stone latch.")
+
+    s = Sound("ui_tab", 0.20)
+    s.paper(0, 0.10, 0.24)
+    s.brass(0.026, 0.17, 560, 0.035)
+    record(s, -17, "A dry parchment tab change with a tiny brass confirmation tone.")
+
+    s = Sound("ui_confirm", 0.30)
+    s.brass(0, 0.24, 520, 0.060)
+    s.brass(0.070, 0.14, 780, 0.050)
+    s.stone(0.13, 0.12, 250)
+    record(s, -16, "A warm two-note brass confirmation for committed module actions.")
+
+    s = Sound("ui_cancel", 0.25)
+    s.stone(0, 0.25, 240)
+    s.stone(0.095, 0.17, 165)
+    s.air(0.01, 0.16, 0.05, dark=True)
+    record(s, -17, "A soft descending stone knock for closing or cancelling a panel.")
+
+    s = Sound("battle_start", 0.86)
+    s.air(0, 0.62, 0.15, dark=True)
+    s.stone(0.018, 0.22, 91)
+    s.brass(0.13, 0.25, 246, 0.15)
+    s.brass(0.28, 0.18, 369, 0.13)
+    s.brass(0.44, 0.14, 554, 0.11)
+    record(s, -14, "A restrained dungeon encounter call: low stone, dark air, and rising bronze.")
+
+    s = Sound("battle_target", 0.23)
+    s.stone(0, 0.20, 275)
+    s.brass(0.025, 0.18, 620, 0.040)
+    record(s, -16, "A focused bronze mark for selecting the current combat target.")
+
+    s = Sound("player_attack", 0.36)
+    s.air(0, 0.18, 0.18)
+    s.paper(0.008, 0.12, 0.22, rough=True)
+    s.brass(0.045, 0.28, 330, 0.060)
+    s.stone(0.078, 0.22, 180)
+    record(s, -13, "A deliberate card-cast gesture: parchment sweep into a compact bronze strike.")
+
+    s = Sound("player_hit", 0.34)
+    s.stone(0, 0.56, 104)
+    s.add(s.noise(0.24, 180, 2200, 0.040), gain=0.28)
+    s.air(0.018, 0.18, 0.06, dark=True)
+    record(s, -13, "The traveller receives a grounded impact with a short dark-room tail.")
+
+    s = Sound("monster_attack", 0.43)
+    s.air(0, 0.28, 0.23, dark=True)
+    s.add(s.noise(0.22, 120, 1700, 0.050), 0.022, 0.25)
+    s.stone(0.055, 0.35, 82)
+    s.paper(0.028, 0.16, 0.16, rough=True)
+    record(s, -12, "A heavier hostile lunge: low cavern air, rough motion, and a stone body.")
+
+    s = Sound("monster_hit", 0.38)
+    s.stone(0, 0.45, 132)
+    s.brass(0.018, 0.18, 285, 0.055)
+    s.add(s.noise(0.21, 260, 3300, 0.032), 0.028, 0.28)
+    record(s, -12, "A monster impact with a dense stone core and a bruised bronze ring.")
+
+    s = Sound("battle_victory", 0.96)
+    s.air(0, 0.54, 0.09)
+    s.stone(0.012, 0.18, 104)
+    for start, frequency, gain in [(0.08, 330, 0.30), (0.23, 495, 0.24), (0.40, 660, 0.20), (0.60, 990, 0.15)]:
+        s.brass(start, gain, frequency, 0.12)
+    record(s, -14, "A contained four-step bronze release for a completed battle.")
+    return result
+
+
+def build_ambience_library() -> list[tuple[Sound, float, str, str]]:
+    """Build only the generated room ambience beds.
+
+    BGM is supplied as external licensed assets under ``art/BGM`` and is not
+    synthesized by this script anymore.
+    """
+    result: list[tuple[Sound, float, str, str]] = []
+
+    hall_air = Sound("ambience_hall", 24.0)
+    hall_air.air(0, 24.0, 0.22)
+    hall_air.add(hall_air.noise(24.0, 180, 1600, 8.0, 0.4), gain=0.06)
+    result.append((hall_air, -28, "Quiet hall air and distant stone movement, mixed below the lobby theme.", "ambience"))
+
+    battle_air = Sound("ambience_battle", 24.0)
+    battle_air.air(0, 24.0, 0.34, dark=True)
+    battle_air.add(battle_air.noise(24.0, 60, 750, 5.0, 0.5), gain=0.12)
+    battle_air.add(battle_air.modes(24.0, 54, [1, 1.49, 2.03], 7.0, 0.5), gain=0.025)
+    result.append((battle_air, -25, "Dark cavern air and a distant stone resonance for active combat.", "ambience"))
     return result
 
 
@@ -268,6 +373,13 @@ def inspect_pcm(pcm: np.ndarray) -> dict:
 def render(output: Path, evidence: Path) -> None:
     output.mkdir(parents=True, exist_ok=True)
     evidence.mkdir(parents=True, exist_ok=True)
+    # Remove the two legacy synthesized music beds so a rebuild cannot leave
+    # stale BGM beside the externally supplied MP3 library.
+    for legacy_name in ("music_hall.wav", "music_battle.wav"):
+        legacy_path = output / legacy_name
+        if legacy_path.exists(): legacy_path.unlink()
+        import_path = Path(str(legacy_path) + ".import")
+        if import_path.exists(): import_path.unlink()
     manifest = {
         "format_version": 1,
         "library": "FantasyCard - Parchment, Stone and Brass",
@@ -278,6 +390,8 @@ def render(output: Path, evidence: Path) -> None:
         "license": "CC0-1.0",
         "generator": "tools/generate_game_audio.py",
         "sounds": {},
+        "music": {},
+        "ambience": {},
     }
     preview = [np.zeros(round(0.35 * SAMPLE_RATE), dtype=np.int16)]
     position = 0.35
@@ -309,11 +423,38 @@ def render(output: Path, evidence: Path) -> None:
     (output / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     wavfile.write(evidence / "sound_preview.wav", SAMPLE_RATE, np.concatenate(preview))
     (evidence / "sound_preview_index.json").write_text(json.dumps(preview_index, indent=2) + "\n", encoding="utf-8")
-    report = {"passed": all(item["passed"] for item in checks), "sound_count": len(checks), "checks": checks}
+    ambience_checks = []
+    for sound, target_peak, description, category in build_ambience_library():
+        pcm = sound.finish_music(target_peak)
+        path = output / f"{sound.key}.wav"
+        wavfile.write(path, SAMPLE_RATE, pcm)
+        actual_rate, actual_pcm = wavfile.read(path)
+        stats = inspect_pcm(actual_pcm)
+        # Loop tracks use a crossfaded seam and are deliberately not forced to
+        # end at digital zero like one-shot cues.
+        passed = (
+            actual_rate == SAMPLE_RATE and actual_pcm.dtype == np.int16 and actual_pcm.ndim == 1
+            and stats["clipped_samples"] == 0 and stats["active_duration_seconds"] > 1.0
+            and stats["rms_dbfs"] > -48 and abs(stats["dc_offset"]) < 0.001
+            and abs(stats["peak_dbfs"] - target_peak) < 0.01
+        )
+        ambience_checks.append({"key": sound.key, "category": category, "passed": passed, **stats})
+        manifest[category][sound.key] = {
+            "path": f"res://assets/audio/{sound.key}.wav", **stats,
+            "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+            "gain_db": 0.0, "description": description,
+            "loop": True,
+        }
+    (output / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    report = {
+        "passed": all(item["passed"] for item in checks) and all(item["passed"] for item in ambience_checks),
+        "sound_count": len(checks), "music_count": 0, "ambience_count": len(ambience_checks),
+        "checks": checks, "music_checks": [], "ambience_checks": ambience_checks,
+    }
     (evidence / "sound_validation.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps({"passed": report["passed"], "sound_count": len(checks), "preview_duration_seconds": round(position, 3), "output": str(output)}, indent=2))
+    print(json.dumps({"passed": report["passed"], "sound_count": len(checks), "music_count": 0, "ambience_count": len(ambience_checks), "preview_duration_seconds": round(position, 3), "output": str(output)}, indent=2))
     if not report["passed"]:
-        failed = [item["key"] for item in checks if not item["passed"]]
+        failed = [item["key"] for item in checks + ambience_checks if not item["passed"]]
         raise SystemExit(f"Audio validation failed: {failed}")
 
 

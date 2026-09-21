@@ -35,8 +35,10 @@ public sealed record MatchPlayerAssignment(
     IReadOnlyList<int>? SafeSlotIndexes = null,
     string? DisplayName = null);
 
-public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvider timeProvider, ServerMetrics metrics)
+public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvider timeProvider, ServerMetrics metrics, IConfiguration? configuration = null)
 {
+    private readonly TimeSpan botFillDelay = TimeSpan.FromSeconds(Math.Max(0,
+        configuration?.GetValue<int?>("Matchmaking:BotFillDelaySeconds") ?? 30));
     private static readonly JsonSerializerOptions SnapshotSerializerOptions = new()
     {
         PropertyNameCaseInsensitive = true
@@ -151,7 +153,7 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
                 tickets.Add((reader.GetGuid(0), reader.GetGuid(1), reader.GetGuid(2), reader.GetFieldValue<DateTimeOffset>(3), heroClass, cards, int.Parse(reader.GetString(6), CultureInfo.InvariantCulture), reader.GetInt32(7), int.Parse(reader.GetString(8), CultureInfo.InvariantCulture), equipmentIds, int.Parse(reader.GetString(10), CultureInfo.InvariantCulture), equipment));
             }
         }
-        if (tickets.Count == 0 || (tickets.Count < 4 && now - tickets[0].Queued < TimeSpan.FromSeconds(30)))
+        if (tickets.Count == 0 || (tickets.Count < 4 && now - tickets[0].Queued < botFillDelay))
         {
             await transaction.CommitAsync(cancellationToken);
             return null;

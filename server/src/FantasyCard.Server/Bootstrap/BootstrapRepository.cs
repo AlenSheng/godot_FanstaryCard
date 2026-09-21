@@ -23,6 +23,7 @@ public sealed class BootstrapRepository(
         CancellationToken cancellationToken)
     {
         var decksTask = progressionRepository.GetDecksAsync(player.UserId, cancellationToken);
+        var cardsTask = progressionRepository.GetCardsAsync(player.UserId, cancellationToken);
         var walletTask = GetWalletAsync(player.UserId, cancellationToken);
         var materialsTask = GetMaterialsAsync(player.UserId, cancellationToken);
         var weaponsTask = GetWeaponsAsync(player.UserId, cancellationToken);
@@ -31,7 +32,7 @@ public sealed class BootstrapRepository(
         var unfinishedMatchTask = GetUnfinishedMatchAsync(player.UserId, cancellationToken);
         var unfinishedSettlementTask = GetUnfinishedSettlementAsync(player.UserId, cancellationToken);
 
-        await Task.WhenAll(decksTask, walletTask, materialsTask, weaponsTask, loadoutsTask, inventoryTask, unfinishedMatchTask, unfinishedSettlementTask);
+        await Task.WhenAll(decksTask, cardsTask, walletTask, materialsTask, weaponsTask, loadoutsTask, inventoryTask, unfinishedMatchTask, unfinishedSettlementTask);
         return new BootstrapResponse(
             timeProvider.GetUtcNow(),
             CurrentConfigVersion,
@@ -41,6 +42,7 @@ public sealed class BootstrapRepository(
             await weaponsTask,
             await loadoutsTask,
             await decksTask,
+            await cardsTask,
             await inventoryTask,
             await unfinishedMatchTask,
             await unfinishedSettlementTask);

@@ -8,11 +8,13 @@ public sealed class RequestLimitOptions
 {
     public const string SectionName = "RequestLimits";
     public const string AuthPolicy = "auth";
+    public const string AdminPolicy = "admin";
     public const string ReadPolicy = "market-read";
     public const string WritePolicy = "economy-write";
 
     public int WindowSeconds { get; init; } = 60;
     public int AuthPermitLimit { get; init; } = 10;
+    public int AdminPermitLimit { get; init; } = 60;
     public int MarketReadPermitLimit { get; init; } = 120;
     public int EconomyWritePermitLimit { get; init; } = 30;
     public int RealtimeCommandsPerSecond { get; init; } = 30;
@@ -32,6 +34,7 @@ public static class RequestLimitExtensions
                 "Request limit window must be 1-3600 seconds.")
             .Validate(options =>
                     options.AuthPermitLimit is >= 1 and <= 10_000 &&
+                    options.AdminPermitLimit is >= 1 and <= 10_000 &&
                     options.MarketReadPermitLimit is >= 1 and <= 10_000 &&
                     options.EconomyWritePermitLimit is >= 1 and <= 10_000 &&
                     options.RealtimeCommandsPerSecond is >= 1 and <= 1_000 &&
@@ -58,6 +61,8 @@ public static class RequestLimitExtensions
             };
             options.AddPolicy(RequestLimitOptions.AuthPolicy, context =>
                 FixedWindow(context, limits.AuthPermitLimit, limits.WindowSeconds));
+            options.AddPolicy(RequestLimitOptions.AdminPolicy, context =>
+                FixedWindow(context, limits.AdminPermitLimit, limits.WindowSeconds));
             options.AddPolicy(RequestLimitOptions.ReadPolicy, context =>
                 FixedWindow(context, limits.MarketReadPermitLimit, limits.WindowSeconds));
             options.AddPolicy(RequestLimitOptions.WritePolicy, context =>

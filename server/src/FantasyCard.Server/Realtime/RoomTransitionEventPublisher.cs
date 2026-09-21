@@ -22,7 +22,10 @@ internal sealed class RoomTransitionEventPublisher(
                 result.Damage, result.ShieldDamage, result.HpDamage, result.Heal, result.ShieldGain,
                 result.TargetDefeated, result.BattleEnded,
                 result.DamageSegments?.Select(segment => new CombatDamageSegmentPayload(segment.Kind, segment.Amount)).ToArray(),
-                SourceId: entry.SourceId);
+                SourceId: entry.SourceId,
+                ResonanceMultiplier: result.ResonanceMultiplier.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
+                ConflictPairCount: result.ConflictPairCount,
+                ConflictCancellation: result.ConflictCancellation.ToString("R", System.Globalization.CultureInfo.InvariantCulture));
             var message = eventStore.Create(targetId, "combat.hit", "room-combat", payload, roomRevision: result.RoomRevision);
             if (connections is not null)
                 await connections.SendPresentationAsync(targetId, message);

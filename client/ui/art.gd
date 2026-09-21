@@ -1,6 +1,17 @@
 extends RefCounted
 
 const MANIFEST = preload("res://assets/imported/manifest.json")
+const CATALOG = preload("res://data/catalog.json")
+## Shared item-cell art used by inventory, preparation and reward/mail grids.
+## The source is a 144x144 square and should be rendered 1:1 as 96x96.
+const COMMON_CELL_KEY := "UI/Prep/exploration_prep_backpack_cell_empty_normal.png"
+const COMMON_CELL_SOURCE_SIZE := Vector2i(144, 144)
+const COMMON_CELL_DISPLAY_SIZE := Vector2(96, 96)
+const COMMON_CELL_GAP := 8
+## Shared dark state for an empty equipment slot. Keep it visually distinct from White gear.
+const UNEQUIPPED_SLOT_COLOR := Color8(25, 28, 29, 255)
+const UNEQUIPPED_FRAME_MODULATE := Color8(105, 108, 108, 220)
+const UNEQUIPPED_ITEM_MODULATE := Color8(115, 115, 115, 200)
 static var _textures: Dictionary = {}
 
 static func texture(key: String) -> Texture2D:
@@ -20,34 +31,35 @@ static func portrait(hero_class: String) -> Texture2D:
 static func passive(hero_class: String) -> Texture2D:
 	return texture(MANIFEST.data.get("passives", {}).get(hero_class, ""))
 
-static func weapon_frame(hero_class: String) -> Texture2D:
-	return texture("UI/Prep/class_weapon_frame_%s.png" % hero_class.to_lower())
-
 static func product(kind: String) -> Texture2D:
 	return texture(MANIFEST.data.get("products", {}).get(kind, ""))
 
 static func action_icon(kind: String) -> Texture2D:
 	return texture(MANIFEST.data.get("action_icons", {}).get(kind, ""))
 
-static func equipment(item: Dictionary, fallback_slot: String = "") -> Texture2D:
-	# Equipment snapshots arrive both as an item wrapper and as a bare equipment
-	# record. Resolve the formal 125-image catalog before falling back to the old
-	# generic slot icons used by legacy snapshots.
-	var wrapped = item.get("equipment", {})
-	var gear: Dictionary = wrapped if wrapped is Dictionary else {}
-	if gear.is_empty(): gear = item
-	var quality := str(gear.get("quality", ""))
-	var slot := str(gear.get("slot", fallback_slot))
-	var element := str(gear.get("element", ""))
-	if quality in ["White", "Green", "Blue", "Purple", "Orange"] and slot in ["Head", "Chest", "Hands", "Legs", "Feet"] and element in ["Fire", "Wood", "Water", "Metal", "Earth"]:
-		var formal_key := "Equipment/%s/%s_%s.png" % [quality, slot.to_lower(), element.to_lower()]
-		var formal := texture(formal_key)
-		if formal != null: return formal
-	var legacy: String = str({"Head": "helmet", "Helmet": "helmet", "Chest": "chest", "Body": "chest", "Hands": "gauntlet", "Gloves": "gauntlet", "Legs": "legs", "Feet": "boots", "Boots": "boots"}.get(slot, ""))
-	return texture("UI/Item/exploration_prep_item_icon_%s.png" % legacy) if not legacy.is_empty() else null
+static func equipment_texture(item: Dictionary) -> Texture2D:
+	return texture(equipment_texture_key(item))
 
-static func state(key: String) -> Texture2D:
-	return texture(key)
+## Keeps equipment art strictly bound to the equipment's own quality.  In
+## particular, Orange must never fall through to the reserved Red asset path.
+static func equipment_texture_key(item: Dictionary) -> String:
+	var gear: Dictionary = item.get("equipment", item) if item.get("equipment", item) is Dictionary else item
+	var quality := quality_name(gear.get("quality", ""))
+	var element := str(gear.get("element", "")).to_lower()
+	var slot := str(gear.get("slot", "")).to_lower()
+	if quality.is_empty() or element.is_empty() or slot.is_empty(): return ""
+	return "Equipment/%s/%s_%s.png" % [quality, slot, element]
+
+static func item_texture(item: Dictionary) -> Texture2D:
+	var equipment := equipment_texture(item)
+	if equipment != null: return equipment
+	var id := str(item.get("item_id", item.get("itemId", "")))
+	var kind := str(item.get("kind", item.get("Kind", "")))
+	for row in CATALOG.data.get("tables", {}).get("Items", []):
+		if str(row.get("id", "")) == id or (str(row.get("kind", "")) == kind and not id.begins_with("class_soul:")):
+			var key := str(row.get("icon_key", ""))
+			if not key.is_empty(): return texture(key)
+	return null
 
 static func monster(id: String, phase: int = 1) -> Texture2D:
 	id = MANIFEST.data.get("monster_aliases", {}).get(id, id)
@@ -65,28 +77,12 @@ static func style(key: String, tint: Color = Color.WHITE) -> StyleBoxTexture:
 	box.texture = texture(key)
 	box.modulate_color = tint
 	var borders: Array = MANIFEST.data.files.get(key, {}).get("border_lbrt", [12, 12, 12, 12])
-	# Zero-border legacy exports are not valid nine-patches. Preserve the
-	# decorated ends of title bars, and keep corners fixed on other UI frames.
-	if key.contains("title_bar"):
-		borders = [64, 20, 64, 20]
-	elif _all_zero(borders) and box.texture != null:
-		var inset := minf(24.0, minf(box.texture.get_width(), box.texture.get_height()) / 3.0)
-		borders = [inset, inset, inset, inset]
-	box.axis_stretch_horizontal = StyleBoxTexture.AXIS_STRETCH_MODE_TILE_FIT
-	box.axis_stretch_vertical = StyleBoxTexture.AXIS_STRETCH_MODE_TILE_FIT
-	# Source manifests use Unity's left/bottom/right/top order. Every resizable
-	# frame is rendered as a nine-patch; the center never scales the ornament.
+	# Source manifests use Unity's left/bottom/right/top order.
 	for pair in [[SIDE_LEFT, 0], [SIDE_BOTTOM, 1], [SIDE_RIGHT, 2], [SIDE_TOP, 3]]:
 		box.set_texture_margin(pair[0], float(borders[pair[1]]))
 	for side in [SIDE_LEFT, SIDE_RIGHT]: box.set_content_margin(side, 24)
 	for side in [SIDE_TOP, SIDE_BOTTOM]: box.set_content_margin(side, 12)
 	return box
-
-static func _all_zero(values: Array) -> bool:
-	for value in values:
-		if float(value) != 0.0:
-			return false
-	return true
 
 static func image(parent: Node, source: Texture2D, minimum: Vector2) -> TextureRect:
 	var node := TextureRect.new()
@@ -103,3 +99,47 @@ static func button(node: Button, key: String) -> void:
 	node.add_theme_stylebox_override("hover", style(key, Color(1.2, 1.15, 1.05)))
 	node.add_theme_stylebox_override("pressed", style(key, Color(0.8, 0.85, 0.9)))
 	node.add_theme_stylebox_override("disabled", style(key, Color(0.55, 0.55, 0.55)))
+
+static func cell_style(tint: Color = Color.WHITE) -> StyleBoxTexture:
+	return style(COMMON_CELL_KEY, tint)
+
+static func quality_name(rank: Variant) -> String:
+	if rank is String:
+		var raw := str(rank).capitalize()
+		if raw in ["White", "Green", "Blue", "Purple", "Orange", "Red"]: return raw
+	var numeric := int(rank)
+	return ["", "White", "Green", "Blue", "Purple", "Orange", "Red"][clampi(numeric, 0, 6)]
+
+static func item_quality_rank(item: Dictionary) -> int:
+	var gear: Dictionary = item.get("equipment", {}) if item.get("equipment") is Dictionary else {}
+	if not gear.is_empty() and gear.has("quality"):
+		var gear_quality := quality_name(gear.get("quality"))
+		return ["", "White", "Green", "Blue", "Purple", "Orange", "Red"].find(gear_quality)
+	var raw_quality: Variant = item.get("quality", item.get("Quality", 0))
+	if raw_quality is String and not str(raw_quality).is_empty():
+		var named := quality_name(raw_quality)
+		var named_rank := ["", "White", "Green", "Blue", "Purple", "Orange", "Red"].find(named)
+		if named_rank > 0: return named_rank
+	if int(raw_quality) > 0: return clampi(int(raw_quality), 1, 6)
+	var id := str(item.get("item_id", item.get("itemId", "")))
+	var kind := str(item.get("kind", item.get("Kind", "")))
+	for row in CATALOG.data.get("tables", {}).get("Items", []):
+		if str(row.get("id", "")) == id: return clampi(int(row.get("quality", 1)), 1, 6)
+		if str(row.get("kind", "")) == kind and not id.begins_with("class_soul:"): return clampi(int(row.get("quality", 1)), 1, 6)
+		if kind == "ClassSoul" and id == "class_soul:" + str(row.get("id", "")).trim_prefix("class_soul:"): return clampi(int(row.get("quality", 1)), 1, 6)
+	return 1
+
+static func item_quality_name(item: Dictionary) -> String:
+	return quality_name(item_quality_rank(item))
+
+static func quality_color(rank: Variant) -> Color:
+	var quality := quality_name(rank)
+	for row in CATALOG.data.get("tables", {}).get("EquipmentQuality", []):
+		if str(row.get("id", "")) == quality:
+			var configured := str(row.get("display_color", ""))
+			if not configured.is_empty(): return Color(configured)
+	return [Color.WHITE, Color("d0c9b6"), Color("789a70"), Color("558cb8"), Color("9979b1"), Color("d99b48"), Color("ce5651")][clampi(int(rank), 1, 6)]
+
+static func item_cell_style(item: Dictionary) -> StyleBoxTexture:
+	var rank := item_quality_rank(item)
+	return cell_style(quality_color(rank).darkened(0.35))

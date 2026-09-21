@@ -6,10 +6,13 @@ signal connection_changed(state: String)
 signal authentication_required(reason: String)
 
 const Proto = preload("res://network/protobuf.gd")
+const DEFAULT_LOCAL_BASE_URL := "http://127.0.0.1:5080"
+const PRODUCTION_BASE_URL := "https://www.relicbound.cn"
+const LEGACY_CLOUD_ORIGINS := ["http://43.172.70.182", "https://43.172.70.182"]
 const COMMANDS := {
 	"ping": "", "session.resume": "SessionResumeCommand", "room.ready": "RoomReadyCommand",
 	"room.snapshot.read": "RoomSnapshotCommand", "room.move": "RoomMoveCommand",
-	"battle.play_cards": "BattlePlayCardsCommand", "battle.select_target": "BattleSelectTargetCommand",
+	"battle.play_cards": "BattlePlayCardsCommand", "battle.select_target": "BattleSelectTargetCommand", "battle.abandon": "BattleAbandonCommand",
 	"combat.preview": "BattlePlayCardsCommand",
 	"reward.choice.refresh": "RewardChoiceRefreshCommand", "reward.choice.claim": "RewardChoiceClaimCommand",
 	"duel.leave": "DuelLeaveCommand", "duel.escape": "DuelEscapeCommand",
@@ -38,7 +41,8 @@ const EVENTS := {
 	"inventory.changed": "InventoryChangedEvent", "relic.contents": "RoomRelicPile"
 }
 
-var base_url := "http://127.0.0.1:5080"
+var base_url := DEFAULT_LOCAL_BASE_URL
+var launch_base_url_override := ""
 var persist_session := true
 var token := ""
 var token_expires_at: float = 0.0
@@ -64,16 +68,28 @@ var _last_snapshot_read: int = 0
 var _preview_request_ids: Dictionary = {}
 
 func _ready() -> void:
+	# A launcher may select a server for this run without changing the address
+	# remembered in user://session.cfg. This keeps local development and cloud
+	# smoke tests isolated from one another.
+	launch_base_url_override = OS.get_environment("FANTASYCARD_SERVER_URL").strip_edges().trim_suffix("/")
+	if not launch_base_url_override.is_empty():
+		base_url = launch_base_url_override
 	var config := ConfigFile.new()
 	if config.load("user://session.cfg") == OK:
 		device_id = config.get_value("session", "device_id", "")
 		last_sequence = int(config.get_value("session", "sequence", 0))
 		room_id = config.get_value("session", "room_id", "")
 		room_revision = int(config.get_value("session", "revision", 0))
-		base_url = config.get_value("session", "base_url", base_url)
+		var saved_base_url := str(config.get_value("session", "base_url", "")).strip_edges()
+		if launch_base_url_override.is_empty() and not saved_base_url.is_empty(): base_url = saved_base_url
 		authenticated_user_id = config.get_value("session", "user_id", "")
 		local_account_name = config.get_value("session", "local_account_name", "")
-	if not OS.is_debug_build(): base_url = str(ProjectSettings.get_setting("platform/server_url", ""))
+	if base_url.trim_suffix("/") in LEGACY_CLOUD_ORIGINS:
+		# Cloud hardening deliberately rejects direct origin-IP TLS requests.
+		# Preserve existing players' sessions by moving their remembered address
+		# to the public hostname before the readiness request is made.
+		base_url = PRODUCTION_BASE_URL
+	if not OS.is_debug_build() and launch_base_url_override.is_empty(): base_url = str(ProjectSettings.get_setting("platform/server_url", "")).strip_edges()
 	if device_id.is_empty(): device_id = "godot-" + new_id()
 	_save_session()
 
@@ -84,11 +100,12 @@ func _save_session() -> void:
 	if not persist_session: return
 	# Tokens stay in process memory; persisted names are only a login convenience.
 	var config := ConfigFile.new()
+	config.load("user://session.cfg")
 	config.set_value("session", "device_id", device_id)
 	config.set_value("session", "sequence", last_sequence)
 	config.set_value("session", "room_id", room_id)
 	config.set_value("session", "revision", room_revision)
-	config.set_value("session", "base_url", base_url)
+	if launch_base_url_override.is_empty(): config.set_value("session", "base_url", base_url)
 	config.set_value("session", "user_id", authenticated_user_id)
 	config.set_value("session", "local_account_name", local_account_name)
 	config.save("user://session.cfg")
@@ -99,7 +116,9 @@ func remember_local_account(server_name: String) -> void:
 
 func begin_sign_in(address: String) -> void:
 	end_session("", false)
-	if base_url != address: clear_replay()
+	# A fresh credential must never resume terminal events (such as a prior ban)
+	# from an earlier session, even when the player and server are unchanged.
+	clear_replay()
 	base_url = address
 	_save_session()
 
@@ -254,9 +273,6 @@ func _process(_delta: float) -> void:
 		if online and Time.get_ticks_msec() - _last_ping > 10000:
 			send("ping")
 			_last_ping = Time.get_ticks_msec()
-		if online and not room_id.is_empty() and not recovering and Time.get_ticks_msec() - _last_snapshot_read >= 500:
-			send("room.snapshot.read")
-			_last_snapshot_read = Time.get_ticks_msec()
 	elif state == WebSocketPeer.STATE_CLOSED:
 		if _retry_at == 0: _schedule_reconnect()
 		if Time.get_ticks_msec() >= _retry_at:
@@ -322,7 +338,7 @@ func _receive(packet: PackedByteArray) -> void:
 		else: last_sequence = sequence
 		return
 	if kind == "session.replaced":
-		end_session("账号已在其他窗口连接，请在此窗口重新登录后继续")
+		end_session(str(payload.get("reason", "账号已在其他窗口连接，请在此窗口重新登录后继续")))
 		return
 	if sequence <= last_sequence: return
 	if sequence > last_sequence + 1 and kind not in ["session.snapshot", "room.snapshot"]:
@@ -352,9 +368,12 @@ func _receive(packet: PackedByteArray) -> void:
 			_preview_request_ids.erase(payload._request_id)
 			event_received.emit("combat.preview_rejected", payload)
 			return
+		event_received.emit(kind, payload)
+		if payload.get("_retry_handled", false): return
 		failed.emit(payload.get("detail", "操作被拒绝"))
 		if payload.get("code", "") == "NOT_IN_ROOM":
 			room_id = ""
 			recovering = false
 		elif not room_id.is_empty(): send("room.snapshot.read")
+		return
 	event_received.emit(kind, payload)

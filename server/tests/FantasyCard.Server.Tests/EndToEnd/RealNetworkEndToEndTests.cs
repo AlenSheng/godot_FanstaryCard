@@ -65,6 +65,7 @@ public sealed partial class RealNetworkEndToEndTests
         Assert.False(string.IsNullOrWhiteSpace(bootstrap.ConfigVersion));
         Assert.Equal(3, bootstrap.ClassWeapons.Count);
         Assert.Equal(3, bootstrap.Decks.Count);
+        Assert.NotEmpty(bootstrap.Cards);
 
         await using (var gold = database.DataSource.CreateCommand(
             "UPDATE player_wallets SET gold=1000 WHERE player_id=$1"))

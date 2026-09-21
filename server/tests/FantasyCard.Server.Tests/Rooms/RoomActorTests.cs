@@ -8,13 +8,13 @@ namespace FantasyCard.Server.Tests.Rooms;
 public sealed class RoomActorTests
 {
     [Fact]
-    public async Task Revision_check_runs_in_queue_after_prior_writes()
+    public async Task Revision_check_rejects_future_versions_after_prior_writes()
     {
         var room = new BattleRoom(Guid.NewGuid(), "test", CombatCardCatalog.CreatePrototype(), 1);
         await using var actor = new RoomActor(room, TimeProvider.System, startTicker: false);
         var token = TestContext.Current.CancellationToken;
         var first = actor.ExecuteAsync(new AdvanceRoomTimeCommand(TimeSpan.FromMilliseconds(100)), 0, token).AsTask();
-        var stale = actor.ExecuteAsync(new AdvanceRoomTimeCommand(TimeSpan.FromSeconds(10)), 0, token).AsTask();
+        var stale = actor.ExecuteAsync(new AdvanceRoomTimeCommand(TimeSpan.FromSeconds(10)), 2, token).AsTask();
         await first;
         await Assert.ThrowsAsync<DomainValidationException>(() => stale);
         var snapshot = await actor.ExecuteAsync(new GetRoomSnapshotCommand(), token);
@@ -140,6 +140,50 @@ public sealed class RoomActorTests
 
         Assert.All(commands, command => Assert.True(command.IsCompletedSuccessfully));
         Assert.Equal(TimeSpan.FromSeconds(2), results[^1].Elapsed);
+    }
+
+    [Fact]
+    public async Task Slow_observers_do_not_block_authoritative_commands_and_snapshots_coalesce()
+    {
+        var started = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var release = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var observed = new List<long>();
+        var observedGate = new object();
+        var room = new BattleRoom(Guid.NewGuid(), "test-config", CombatCardCatalog.CreatePrototype(), 9);
+        var actor = new RoomActor(
+            room,
+            TimeProvider.System,
+            startTicker: false,
+            snapshotObserver: async snapshot =>
+            {
+                lock (observedGate) observed.Add(snapshot.Revision);
+                started.TrySetResult();
+                await release.Task;
+            });
+
+        await actor.ExecuteAsync(new AdvanceRoomTimeCommand(RoomActor.TickInterval),
+            TestContext.Current.CancellationToken);
+        await started.Task.WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken);
+
+        // The first observer is intentionally blocked.  The actor must still
+        // accept and apply the next command, retaining only its newest
+        // snapshot for the observer queue.
+        var second = actor.ExecuteAsync(new AdvanceRoomTimeCommand(RoomActor.TickInterval),
+            TestContext.Current.CancellationToken).AsTask();
+        await second.WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken);
+        var third = actor.ExecuteAsync(new AdvanceRoomTimeCommand(RoomActor.TickInterval),
+            TestContext.Current.CancellationToken).AsTask();
+        await third.WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken);
+        var current = await actor.ExecuteAsync(new GetRoomSnapshotCommand(),
+            TestContext.Current.CancellationToken);
+        Assert.Equal(3, current.Revision);
+
+        release.TrySetResult();
+        await actor.DisposeAsync();
+        lock (observedGate)
+        {
+            Assert.Equal([1L, 3L], observed);
+        }
     }
 
     private static BattleRoomPlayerSetup CreatePlayer(Guid playerId, HeroClass heroClass) =>

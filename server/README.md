@@ -1,4 +1,4 @@
-# FantasyCard 本地服务器
+# Relicbound（遗境行者）本地服务器
 
 服务遵循 `GDD.md` 第 8 章：ASP.NET Core / .NET 10 模块化单体、PostgreSQL 权威存储、REST + WebSocket、内部 `UserId` 与平台身份隔离。开发与构建基线为 **.NET SDK 10.0.400**。当前代码已包含 S2–S9 纵向切片、RoomActor、房间恢复和补位机器人运行时；具体完成门以现状审计为准。
 
@@ -9,7 +9,7 @@
 - 当前玩家档案：`GET/PUT /api/v1/players/me`（PUT 要求 `Idempotency-Key`）
 - 乐观并发版本，避免档案静默覆盖
 - V001–V003 PostgreSQL 版本化迁移、checksum、迁移锁与就绪检查
-- 首次玩家幂等初始化：钱包、材料、起始卡/编组、专属武器和绑定白鞋
+- 首次玩家幂等初始化：钱包、材料、起始卡/编组、专属武器；五部位配装全空，不发放绑定白鞋
 - 大厅 Bootstrap：`GET /api/v1/bootstrap`
 - 图鉴与编组：`GET /api/v1/cards`、`GET/PUT /api/v1/decks`（PUT 要求 `Idempotency-Key`）
 - 探索准备：`GET/POST/DELETE /api/v1/preparations`，支持资产校验和幂等重试
@@ -36,7 +36,9 @@ Windows 下可直接双击 `start-server.bat`。脚本优先使用 Docker Deskto
 - `start-server.bat`：构建、后台启动并等待健康检查通过
 - `run-local-server.bat`：使用本机 .NET 构建、后台启动，连接已配置的 PostgreSQL
 - `stop-server.bat`：Docker 模式停止服务器与 PostgreSQL；本机模式只停止本脚本启动的应用，保留数据库内容
-- `update_server.bat`：重新构建当前模式的服务器；本机模式可显式传 `--native`
+- `update_server.bat`：重新构建当前模式的服务器；本机模式可显式传 `--native`；传 `--cloud` 则更新腾讯云
+- `cloud-update.bat`：调用腾讯云的安全更新脚本；加 `--push` 时先把已提交的当前分支推送至 GitHub
+- `cloud-status.bat`：显示腾讯云当前已部署的 Git 提交并检查服务健康状态
 - `clear-local-database.bat`：确认后删除**仅本地** PostgreSQL 数据卷，重建数据库、应用全部迁移并重新启动服务
 - `backup-all-local-data.bat`：将完整本地 PostgreSQL 数据库复制到 `local-backups/`，并生成 SHA-256 校验文件
 
@@ -46,10 +48,25 @@ Windows 下可直接双击 `start-server.bat`。脚本优先使用 Docker Deskto
 cd server
 .\start-server.bat --no-pause
 .\start-server.bat --native --no-pause
+.\update_server.bat --cloud --push --no-pause
+.\cloud-status.bat --no-pause
 .\stop-server.bat --no-pause
 .\clear-local-database.bat --no-pause
 .\backup-all-local-data.bat --no-pause
 ```
+
+## 腾讯云更新
+
+云端只跟踪 GitHub 的 `release` 分支。先在 `release` 分支完成本地 `git commit`，随后运行：
+
+```powershell
+cd server
+.\update_server.bat --cloud --push
+```
+
+`--push` 只推送已经提交的 `release` 变更，不会自动提交工作区内容；不传它时，脚本仅部署已存在于 GitHub `release` 的最新提交。为避免误发布，云端批处理会拒绝非 `release` 分支。首次使用时，把 `cloud-env.example.bat` 复制为 `cloud-env.local.bat`，并填写 SSH 私钥路径。该本地配置已被 Git 忽略。
+
+云端以 Git 提交号作为版本号，并在 `/opt/fantasycard-app/version-manifests/` 保存已部署版本的运行文件 MD5 清单（服务端源码、生成配置、构建与代理配置、部署脚本）。更新时，Git 仅传输仓库差异；脚本比较 MD5 清单并打印新增、修改、删除的文件。服务端运行文件变化时才备份 PostgreSQL、重建应用容器；只有 `Caddyfile` 变化时只重载代理；客户端或文档变化时无需重建服务器。MD5 只用于判断文件是否变化，版本来源仍以 Git 提交号为准。清单和版本标记在健康检查成功后一起更新；失败时下次会重新尝试。云端 `.env` 和数据库不会被覆盖或清空。可执行 `cloud-status.bat` 查看已部署提交、清单版本及健康状态。
 
 清库不可恢复，脚本默认要求按 `Y` 确认。自动化环境可额外传入 `--yes` 跳过确认；它只操作固定的 Compose 项目 `fantasycard-local`，不会用于 Staging 或 Production。
 

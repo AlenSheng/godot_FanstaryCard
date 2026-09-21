@@ -1,11 +1,11 @@
 extends RefCounted
 
 const P = preload("res://ui/palette.gd")
-const I18n = preload("res://ui/i18n.gd")
 const Art = preload("res://ui/art.gd")
 const Details = preload("res://ui/equipment_details.gd")
 const Slot = preload("res://ui/inventory_slot.gd")
-const CELL := "UI/Prep/exploration_prep_backpack_cell_empty_normal.png"
+const ItemVisual = preload("res://ui/item_visual.gd")
+const CELL := Art.COMMON_CELL_KEY
 
 static func open(host: Control, pile_id: String = "") -> void:
 	host.set_meta("inventory_open", true)
@@ -22,11 +22,11 @@ static func build(ui: Control, host: Control, state: Dictionary) -> void:
 	var safe_slots: Array = player.get("safe_slot_indexes", [])
 	var pile_id: String = host.get_meta("relic_pile", "")
 	var selected: Dictionary = find_item(items, host.get_meta("inventory_selected", ""))
-	ui.text("遗物检索" if not pile_id.is_empty() else "探索行囊", Rect2(90, 45, 710, 85), 44, P.GOLD)
+	ui.text(P.localized("relic_search") if not pile_id.is_empty() else P.localized("explore_bag"), Rect2(90, 45, 710, 85), 44, P.GOLD)
 	ui.panel(Rect2(75, 145, 845, 800))
 	ui.panel(Rect2(955, 145, 900, 800))
 	ui.text("背包 %s / %s · 安全格 %s" % [items.size(), capacity, safe_slots.size()], Rect2(995, 172, 790, 50), 31, P.GOLD)
-	ui.text("拖动物品换格，或选中物品后点击目标格", Rect2(995, 226, 790, 36), 22, P.MUTED)
+	ui.text(P.localized("drag_inventory_hint"), Rect2(995, 226, 790, 36), 22, P.MUTED)
 	for index in range(capacity):
 		var item: Dictionary = {}
 		for candidate in items:
@@ -35,17 +35,45 @@ static func build(ui: Control, host: Control, state: Dictionary) -> void:
 		slot.name = "InventorySlot_%s" % index
 		slot.slot_index = index
 		slot.item_id = item.get("item_id", "")
-		slot.position = Vector2(992 + (index % 6) * 136, 283 + int(index / 6) * 99)
-		slot.size = Vector2(126, 90)
-		slot.text = I18n.t(("安全 " if index in safe_slots else "") + str(index + 1))
-		if not item.is_empty(): slot.text += "\n" + Details.title(item) + "\n×%s" % item.get("quantity", 1)
-		slot.icon = Art.equipment(item) if item.get("kind", "") == "Equipment" else _item_icon(item)
-		slot.expand_icon = true
-		slot.add_theme_constant_override("icon_max_width", 42)
+		slot.position = Vector2(992 + (index % 6) * 104, 270 + int(index / 6) * 104)
+		slot.size = Art.COMMON_CELL_DISPLAY_SIZE
+		slot.custom_minimum_size = Art.COMMON_CELL_DISPLAY_SIZE
+		slot.clip_contents = true
+		var marker_text := P.localized_text(("安全 " if index in safe_slots else "") + str(index + 1))
+		slot.text = marker_text
 		slot.add_theme_font_size_override("font_size", 16)
 		slot.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		slot.tooltip_text = I18n.t(Details.description(item) if not item.is_empty() else "空格")
+		slot.tooltip_text = P.localized_text(Details.description(item) if not item.is_empty() else "空格")
 		Art.button(slot, CELL)
+		if not item.is_empty():
+			if item.get("kind", "") == "Equipment":
+				# Equipment slots use the shared layered visual so the quality fill and
+				# frame stay consistent with preparation, rewards and comparisons.
+				slot.text = ""
+				var equipment_visual := ItemVisual.equipment(slot, item, Art.COMMON_CELL_DISPLAY_SIZE)
+				equipment_visual.position = Vector2.ZERO
+				equipment_visual.size = Art.COMMON_CELL_DISPLAY_SIZE
+				var marker := Label.new()
+				marker.name = "SlotMarker"
+				marker.text = marker_text
+				marker.position = Vector2(6, 5)
+				marker.size = Vector2(84, 22)
+				marker.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+				marker.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+				marker.add_theme_font_override("font", P.font_for_text(marker.text, 16))
+				marker.add_theme_font_size_override("font_size", 16)
+				marker.add_theme_color_override("font_color", P.GOLD if index in safe_slots else P.MUTED)
+				marker.mouse_filter = Control.MOUSE_FILTER_IGNORE
+				slot.add_child(marker)
+			else:
+				var quality_style := Art.item_cell_style(item)
+				slot.add_theme_stylebox_override("normal", quality_style)
+				slot.add_theme_stylebox_override("hover", quality_style)
+				slot.add_theme_stylebox_override("pressed", quality_style)
+				slot.icon = Art.item_texture(item)
+				slot.expand_icon = true
+				slot.add_theme_constant_override("icon_max_width", 58)
+				if int(item.get("quantity", 1)) > 1: slot.text = marker_text + "\n×%s" % item.get("quantity", 1)
 		if index in safe_slots: slot.add_theme_color_override("font_color", P.GOLD)
 		if item.get("item_id", "") == selected.get("item_id", "unused"):
 			slot.add_theme_stylebox_override("normal", P.box(Color("29474a"), P.GOLD, 2))
@@ -59,10 +87,10 @@ static func build(ui: Control, host: Control, state: Dictionary) -> void:
 	if pile_id.is_empty(): _equipment(ui, host, player, selected)
 	else: _relic(ui, host, state, pile_id, selected)
 	ui.button("返回", Rect2(80, 983, 245, 58), func(): host.set_meta("inventory_open", false); host._schedule_render())
-	ui.text("安全格物品死亡后带回；身上防具不受保护", Rect2(990, 888, 800, 35), 23, P.MUTED)
+	ui.text(P.localized("safe_slot_hint"), Rect2(990, 888, 800, 35), 23, P.MUTED)
 
 static func _equipment(ui: Control, host: Control, player: Dictionary, selected: Dictionary) -> void:
-	ui.text("当前穿戴", Rect2(115, 174, 690, 48), 32, P.GOLD)
+	ui.text(P.localized("equipped"), Rect2(115, 174, 690, 48), 32, P.GOLD)
 	var worn: Array = player.get("equipped_items", [])
 	for index in range(5):
 		var slot: String = ["Head", "Chest", "Hands", "Legs", "Feet"][index]
@@ -71,10 +99,10 @@ static func _equipment(ui: Control, host: Control, player: Dictionary, selected:
 			if candidate.get("equipment", {}).get("slot", "") == slot: item = candidate; break
 		var button: Button = ui.button(P.word(slot) + " · " + (Details.title(item) if not item.is_empty() else "未穿戴"), Rect2(112, 235 + index * 69, 586, 60), func(): host._confirm("卸下这件防具并放入背包？", func(): Game.command("inventory.unequip", {"slot": slot})), item.is_empty() or not Game.allowed("inventory.unequip"))
 		button.add_theme_font_size_override("font_size", 24)
-		button.tooltip_text = I18n.t(Details.description(item) if not item.is_empty() else "未穿戴")
-	ui.text("本命武器 +%s · 锁定，不掉落" % player.get("weapon_level", 0), Rect2(118, 598, 740, 44), 27, P.TEAL)
+		button.tooltip_text = P.localized_text(Details.description(item) if not item.is_empty() else "未穿戴")
+	ui.text("%s +%s · %s" % [P.localized("signature_weapon"), player.get("weapon_level", 0), P.localized("locked")], Rect2(118, 598, 740, 44), 27, P.TEAL)
 	if selected.is_empty():
-		ui.text("选择包中物品查看详情。\n点击已穿防具可以卸下。", Rect2(118, 670, 736, 102), 27, P.PAPER)
+		ui.text(P.localized("inventory_detail_hint"), Rect2(118, 670, 736, 102), 27, P.PAPER)
 	else:
 		_description(ui, host, selected, Rect2(118, 656, 730, 185))
 		if selected.get("kind", "") == "Equipment":
@@ -87,14 +115,14 @@ static func _relic(ui: Control, host: Control, state: Dictionary, pile_id: Strin
 	for candidate in state.get("current_cell", {}).get("relic_piles", []):
 		if candidate.get("pile_id", "") == pile_id: summary = candidate; break
 	if summary.is_empty():
-		ui.text("这份遗物已不可检索，请返回当前格。", Rect2(117, 235, 725, 130), 30, P.MUTED)
+		ui.text(P.localized("relic_unavailable"), Rect2(117, 235, 725, 130), 30, P.MUTED)
 		return
 	ui.text(str(summary.get("owner_name", "旅人")) + "的遗物", Rect2(115, 172, 730, 58), 31, P.GOLD)
 	var pile: Dictionary = Game.relic_details.get(pile_id, {})
 	var fresh: bool = not pile.is_empty() and int(pile.get("version", 0)) == int(summary.get("version", 0))
 	ui.button("刷新遗物", Rect2(620, 236, 232, 53), func(): Game.command("relic.read", {"pile_id": pile_id}), not Game.allowed("relic.read"))
 	if not fresh:
-		ui.text("遗物内容已变化，请刷新后选择。", Rect2(115, 317, 730, 82), 27, P.MUTED)
+		ui.text(P.localized("relic_changed"), Rect2(115, 317, 730, 82), 27, P.MUTED)
 		return
 	var scroll: ScrollContainer = ui._scroll(Rect2(112, 312, 744, 364))
 	var column := VBoxContainer.new()
@@ -102,7 +130,7 @@ static func _relic(ui: Control, host: Control, state: Dictionary, pile_id: Strin
 	scroll.add_child(column)
 	for item in pile.get("items", []):
 		var button := Button.new()
-		button.text = I18n.t(Details.title(item) + " ×%s" % item.get("quantity", 1))
+		button.text = P.localized_text(Details.title(item) + " ×%s" % item.get("quantity", 1))
 		button.tooltip_text = Details.description(item)
 		button.custom_minimum_size.y = 63
 		button.add_theme_font_size_override("font_size", 25)
@@ -137,11 +165,6 @@ static func find_item(items: Array, id: String) -> Dictionary:
 	for item in items:
 		if item.get("item_id", "") == id: return item
 	return {}
-
-static func _item_icon(item: Dictionary) -> Texture2D:
-	var kind := str(item.get("kind", ""))
-	var suffix: String = str({"Gold": "gold", "EquipmentFragments": "fragments", "WarriorSoul": "warrior_soul", "HealthPotion": "potion", "ClassSoul": Game.hero_class.to_lower() + "_soul"}.get(kind, ""))
-	return Art.texture("UI/Item/exploration_prep_item_icon_%s.png" % suffix) if not suffix.is_empty() else null
 
 static func can_add(player: Dictionary, item: Dictionary) -> bool:
 	var items: Array = player.get("inventory", [])

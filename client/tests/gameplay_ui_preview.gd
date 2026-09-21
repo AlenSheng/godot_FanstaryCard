@@ -29,9 +29,14 @@ func _run() -> void:
 		_check($UI._reference.find_children("InventorySlot_*", "Button", true, false).size() == 36, "36 slots" + suffix)
 		for index in [33, 34, 35]:
 			var slot: Button = $UI._reference.get_node("InventorySlot_%s" % index)
-			_check(slot.text.begins_with("安全"), "Safe slot %s" % index + suffix)
+			var marker := slot.get_node_or_null("SlotMarker") as Label
+			_check((marker != null and marker.text.begins_with("安全")) or slot.text.begins_with("安全"), "Safe slot %s" % index + suffix)
 			_check(slot._can_drop_data(Vector2.ZERO, {"room_id": "completion-room", "inventory_item_id": "pack-0"}), "Same-room inventory drag" + suffix)
 			_check(not slot._can_drop_data(Vector2.ZERO, {"room_id": "different-room", "inventory_item_id": "pack-0"}), "Foreign-room drag rejected" + suffix)
+		var equipment_slot: Button = $UI._reference.get_node("InventorySlot_0")
+		_check(equipment_slot.get_node_or_null("QualityBackground") != null, "Equipment quality background" + suffix)
+		_check(equipment_slot.get_node_or_null("QualityFrame") != null, "Equipment quality frame" + suffix)
+		_check(equipment_slot.size == Vector2(96, 96), "Equipment slot keeps common cell size" + suffix)
 		var description_scroll: ScrollContainer = _description_scroll()
 		_check(description_scroll != null, "Long equipment details can scroll" + suffix)
 		if description_scroll != null:
@@ -44,6 +49,19 @@ func _run() -> void:
 			_check(_description_scroll().scroll_vertical > 0, "Equipment detail scroll survives render" + suffix)
 		$UI.set_meta("inventory_open", false)
 		await _capture("relics_multiple" + suffix)
+		var compact_scroll := $UI._reference.get_node_or_null("TemporaryBackpackScroll") as ScrollContainer
+		var compact_grid := $UI._reference.get_node_or_null("TemporaryBackpackScroll/TemporaryBackpackGrid") as GridContainer
+		_check(compact_scroll != null and compact_scroll.vertical_scroll_mode == ScrollContainer.SCROLL_MODE_AUTO and compact_scroll.horizontal_scroll_mode == ScrollContainer.SCROLL_MODE_DISABLED, "Compact backpack uses vertical drag scrolling" + suffix)
+		_check(compact_grid != null and compact_grid.columns == 3 and compact_grid.get_child_count() == 36, "Compact backpack keeps all items in a three-column grid" + suffix)
+		if compact_grid != null and compact_grid.get_child_count() >= 2:
+			_check(compact_grid.get_child(0).name == "TemporaryBagItem_pack-0" and compact_grid.get_child(1).name == "TemporaryBagItem_pack-1", "Compact backpack preserves acquisition order" + suffix)
+			_check(not compact_grid.get_child(0)._can_drop_data(Vector2.ZERO, {"inventory_item_id": "pack-0", "room_id": "completion-room"}), "Compact backpack does not exchange slots" + suffix)
+		if compact_scroll != null:
+			compact_scroll._begin(Vector2.ZERO)
+			compact_scroll._drag(Vector2(0, -100))
+			_check(compact_scroll.scroll_vertical > 0, "Compact backpack scrolls vertically by item drag" + suffix)
+			compact_scroll._finish()
+			_check(is_zero_approx(compact_scroll.get_v_scroll_bar().modulate.a), "Compact backpack hides the scrollbar" + suffix)
 		_check($UI._reference.find_children("Action_relic", "Button", true, false).size() == 2, "Two independently selectable relic piles" + suffix)
 		Game.relic_details = {"pile-a": {"pile_id": "pile-a", "owner_name": "逐风者", "version": 7, "items": [_item(90)]}, "pile-b": {"pile_id": "pile-b", "owner_name": "长夜归来的盾卫", "version": 4, "items": [_item(91), _item(92)]}}
 		$UI.set_meta("inventory_open", true)
@@ -63,20 +81,17 @@ func _run() -> void:
 		$UI.set_meta("inventory_open", false)
 		$UI.screen = "cards"
 		$UI.deck_draft = []
-		$UI.owned = [{"cardId": "MAG-01", "unlocked": true, "copyCount": 2, "level": 3, "version": 7, "currencyKind": "MageSoul", "craftCost": 12, "dismantleRefund": 9, "canDismantle": true, "canUpgrade": true, "upgradeCost": 80, "upgradeCopyCost": 1, "currentEffect": {"element": "Fire", "elementalDamage": 11}, "nextEffect": {"element": "Fire", "elementalDamage": 12}}]
+		$UI.owned = [{"cardId": "MAG-01", "unlocked": true, "copyCount": 1, "level": 3, "version": 7, "currencyKind": "MageSoul", "craftCost": 12, "dismantleRefund": 9, "canDismantle": true, "canUpgrade": true, "upgradeCost": 80, "upgradeCopyCost": 0, "currentEffect": {"element": "Fire", "elementalDamage": 11}, "nextEffect": {"element": "Fire", "elementalDamage": 12}}]
 		$UI._codex_card = "MAG-01"
 		Game.lobby.materials.mageSoul = 300
 		await _capture("card_upgrade" + suffix)
 		_check(not $UI._reference.find_child("UpgradeCard", true, false).disabled, "Affordable upgrade enabled" + suffix)
-		_check(_all_text().contains("下一级：") and _all_text().contains("需额外同名卡"), "Upgrade effect and copy cost rendered" + suffix)
+		_check(_all_text().contains("下一级：") and not _all_text().contains("需额外同名卡"), "Upgrade effect renders without duplicate-card cost" + suffix)
 		var details: Control = $UI._reference.find_child("DetailsPanel", true, false)
 		for name in ["UpgradeCard", "DismantleCard", "CloseCardDetails"]:
 			_check(details.get_global_rect().encloses($UI._reference.find_child(name, true, false).get_global_rect()), name + " within modal" + suffix)
 		var card: Control = $UI._reference.find_child("DetailCard", true, false)
 		_check(not card.get_global_rect().intersects($UI._reference.find_child("UpgradeCard", true, false).get_global_rect()), "Upgrade control does not cover card" + suffix)
-		for label in $UI._reference.find_children("*", "Label", true, false):
-			if label.text.begins_with("需额外同名卡"):
-				_check(not card.get_global_rect().intersects(label.get_global_rect()), "Copy cost does not cover card" + suffix)
 		Game.lobby.materials.mageSoul = 0
 		await _capture("card_upgrade_insufficient" + suffix)
 		_check($UI._reference.find_child("UpgradeCard", true, false).disabled, "Insufficient upgrade disabled" + suffix)
@@ -100,13 +115,19 @@ func _run() -> void:
 		Game.room.allowed_actions += ["battle.play_cards", "battle.select_target"]
 		Game.room.pve = {"battle_id": "completion-battle", "current_target_id": "fire-bat", "monsters": [{"monster_id": "fire-bat", "maximum_hp": 44, "hp": 31, "shield": 8, "intent_kind": "Attack", "intent_value": 5, "intent_element": "Fire"}]}
 		Game.selected_cards = ["hand-0", "hand-1"]
-		Game.combat_preview = {"core_element": "Fire", "core_count": 2, "damage_segments": [{"kind": "Fire", "amount": 51}, {"kind": "Direct", "amount": 3}], "heal": 7, "shield_gain": 8, "shield_damage": 8, "hp_damage": 46, "stun_seconds": "1.2", "draw_charge": "0.3"}
+		Game.combat_preview = {"core_element": "Fire", "core_count": 2, "damage_segments": [{"kind": "Fire", "amount": 51}, {"kind": "Direct", "amount": 3}], "heal": 7, "shield_gain": 8, "shield_damage": 8, "hp_damage": 46, "stun_seconds": "1.2", "draw_charge": "0.3", "resonance_multiplier": "1.2", "conflict_pair_count": 1, "conflict_cancellation": "0.2"}
 		await _capture("combat_preview" + suffix)
-		_check($UI._reference.get_node_or_null("CombatPreview") != null and _all_text().contains("火 51") and _all_text().contains("直伤 3"), "Typed combat preview rendered" + suffix)
+		_check($UI._reference.get_node_or_null("CombatPreview") != null and _all_text().contains("火 51") and _all_text().contains("直伤 3") and _all_text().contains("实际 54（盾8/血46）"), "Final combat preview rendered" + suffix)
+		_check($UI._reference.get_node_or_null("CombatPreview").tooltip_text.contains("相生 ×1.20") and $UI._reference.get_node_or_null("CombatPreview").tooltip_text.contains("相克 1组 · 抵消 20%"), "Combat preview formula details rendered" + suffix)
+		var source_before: Vector2 = $UI._combat_panels["preview-player"].position
+		var target_before: Vector2 = $UI._combat_panels["fire-bat"].position
 		Game._on_event("combat.hit", {"battle_id": "completion-battle", "source_id": "preview-player", "target_id": "fire-bat", "damage_segments": [{"kind": "Fire", "amount": 51}, {"kind": "Metal", "amount": 6}, {"kind": "Direct", "amount": 3}, {"kind": "Water", "amount": 0}], "heal": 7, "shield_gain": 8})
 		await get_tree().create_timer(0.1).timeout
-		_check($UI._combat_panels["preview-player"].scale.x > 1.0 and $UI._combat_panels["fire-bat"].scale.x < 1.0, "Attack and hit pulses survive event dispatch" + suffix)
-		for entry in [["火 51", $UI.P.ELEMENT.Fire], ["金 6", $UI.P.ELEMENT.Metal], ["直 3", Color.WHITE], ["+7", $UI.P.TEAL], ["+8", Color("c4d2d4")]]:
+		var source_after: Control = $UI._combat_panels["preview-player"]
+		var target_after: Control = $UI._combat_panels["fire-bat"]
+		_check(source_after.scale.x > 1.0 and source_after.position.x != source_before.x and target_after.scale.x < 1.0 and target_after.position.y < target_before.y, "Directional attack and upward hit reactions survive event dispatch" + suffix)
+		_check(target_after.modulate.r > target_after.modulate.g * 1.8 and target_after.modulate.r > target_after.modulate.b * 1.8, "Hit texture briefly turns red" + suffix)
+		for entry in [["火 51", $UI.P.ELEMENT.Fire], ["金 6", $UI.P.ELEMENT.Metal], ["直 3", $UI.P.DIRECT_DAMAGE], ["+7", $UI.P.TEAL], ["+8", Color("c4d2d4")]]:
 			var found := false
 			for child in $UI.get_children():
 				if child is Label and child.text == entry[0] and child.get_theme_color("font_color").is_equal_approx(entry[1]): found = true
@@ -116,6 +137,7 @@ func _run() -> void:
 		screenshot_count += 1
 		$UI._show_battle_details(Game.room.player.battle_status)
 		await _capture("battle_status" + suffix, false)
+		_check(_all_text().contains("充能等级 3/5"), "Mage charge level appears in passive details" + suffix)
 		_check_dialog_bounds("self" + suffix)
 		await _close_dialogs()
 		Game.room.player.phase = "Pvp"
@@ -164,15 +186,12 @@ func _has_button(text: String, enabled: bool) -> bool:
 
 func _check_dialog_bounds(suffix: String) -> void:
 	for child in $UI.get_children():
-		if child is AcceptDialog:
-			_check(Rect2i(get_viewport().get_visible_rect()).encloses(Rect2i(child.position, child.size)), child.title + " fits window" + suffix)
+		if child.name == "BattleDetailsModal":
+			_check(Rect2i(get_viewport().get_visible_rect()).encloses(Rect2i(child.get_global_position(), child.size)), "战斗属性弹窗适配窗口" + suffix)
 
 func _close_dialogs() -> void:
 	for child in $UI.get_children():
-		if child is AcceptDialog: child.hide()
-	await get_tree().process_frame
-	for child in $UI.get_children():
-		if child is AcceptDialog: child.queue_free()
+		if child.name == "BattleDetailsModal": child.queue_free()
 	await get_tree().process_frame
 
 func _description_scroll() -> ScrollContainer:
@@ -184,7 +203,7 @@ func _item(index: int) -> Dictionary:
 	return {"item_id": "pack-%s" % index, "kind": "Equipment", "quantity": 1, "slot_index": index, "is_safe": index in [33, 34, 35], "equipment": {"slot": ["Head", "Chest", "Hands", "Legs", "Feet"][index % 5], "quality": "Orange" if index == 35 else "Purple", "element": "Earth", "effect_affix": "Bulwark", "secondary_trait": "DrawInterval", "level": 3}}
 
 func _status_fixture(passive: String = "FenXian") -> Dictionary:
-	return {"passive_kind": passive, "combo": 3, "core_element": "Fire", "draw_interval_seconds": "2.4", "bonuses": [{"key": "weapon_bonus", "value": "0.1"}, {"key": "passive_shield", "value": "0.18"}, {"key": "shield_flat", "value": "2"}, {"key": "damage_Fire", "value": "0.12"}, {"key": "resistance_Earth", "value": "0.15"}, {"key": "bulwark_reduction", "value": "0.06"}, {"key": "forced_escape", "value": "0.04"}], "sets": [{"kind": "Bulwark", "count": 3, "required": 3, "active": true}, {"kind": "Vitality", "count": 1, "required": 3, "active": false}]}
+	return {"passive_kind": passive, "combo": 3, "charge_level": 3, "core_element": "Fire", "draw_interval_seconds": "2.4", "bonuses": [{"key": "weapon_bonus", "value": "0.1"}, {"key": "passive_shield", "value": "0.18"}, {"key": "shield_flat", "value": "2"}, {"key": "damage_Fire", "value": "0.12"}, {"key": "resistance_Earth", "value": "0.15"}, {"key": "bulwark_reduction", "value": "0.06"}, {"key": "forced_escape", "value": "0.04"}], "sets": [{"kind": "Bulwark", "count": 3, "required": 3, "active": true}, {"kind": "Vitality", "count": 1, "required": 3, "active": false}]}
 
 func _room_fixture() -> Dictionary:
 	var inventory: Array = []

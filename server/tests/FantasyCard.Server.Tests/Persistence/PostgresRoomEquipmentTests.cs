@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using System.Text.Json;
+using FantasyCard.Domain.Players;
 using FantasyCard.Domain.Rooms;
 using FantasyCard.Server.Common;
 using FantasyCard.Server.Identity;
@@ -23,7 +24,7 @@ public sealed class PostgresRoomEquipmentTests
         var match = await CreateMatchAsync(database, player);
         var oldHead = await AddHeldArmorAsync(database, player, "Head", 3, true);
         var oldChest = await AddHeldArmorAsync(database, player, "Chest", 2, false);
-        var feet = await HoldStarterFeetAsync(database, player);
+        var feet = await HoldWornFeetAsync(database, player);
         await ExecuteAsync(database, "UPDATE player_loadouts SET head_id=$1,chest_id=$2 WHERE player_id=$3 AND hero_class=2", oldHead, oldChest, player);
         var reward = Guid.NewGuid();
         using var metrics = new ServerMetrics();
@@ -63,7 +64,7 @@ public sealed class PostgresRoomEquipmentTests
         var victim = await CreatePlayerAsync(database);
         var looter = await CreatePlayerAsync(database);
         var match = await CreateMatchAsync(database, victim, looter);
-        var oldFeet = await HoldStarterFeetAsync(database, looter);
+        var oldFeet = await HoldWornFeetAsync(database, looter);
         var equipmentId = Guid.NewGuid();
         var attributes = new EquipmentRewardData("Feet", "Purple", "Wood", "Vitality", "DrawInterval");
         using var metrics = new ServerMetrics();
@@ -142,9 +143,9 @@ public sealed class PostgresRoomEquipmentTests
         return id;
     }
 
-    private static async Task<Guid> HoldStarterFeetAsync(PostgresTestSchema database, Guid player)
+    private static async Task<Guid> HoldWornFeetAsync(PostgresTestSchema database, Guid player)
     {
-        var feet = await database.ScalarAsync<Guid>("SELECT feet_id FROM player_loadouts WHERE player_id=$1 AND hero_class=2", player);
+        var feet = await database.InsertWornFeetAsync(player, HeroClass.Mage, TestContext.Current.CancellationToken);
         await ExecuteAsync(database, "UPDATE equipments SET location='InMatchEquipped' WHERE instance_id=$1", feet);
         return feet;
     }

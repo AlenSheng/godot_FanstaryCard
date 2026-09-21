@@ -53,7 +53,7 @@ public sealed class PostgresCardUpgradeTests
 
     [Fact(Skip = "Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.", SkipUnless = nameof(HasTestDatabase))]
     [Trait("Category", "PostgresIntegration")]
-    public async Task Fourth_and_fifth_levels_consume_only_spares_beyond_every_saved_deck()
+    public async Task Fourth_and_fifth_levels_consume_souls_without_card_copies()
     {
         await using var database = await PostgresTestSchema.CreateAsync(migrate: true);
         var ct = TestContext.Current.CancellationToken;
@@ -62,24 +62,14 @@ public sealed class PostgresCardUpgradeTests
         var card = (await repository.GetCardsAsync(player, ct)).Single(card => card.CardId == "C01");
         for (var level = 1; level <= 3; level++)
             card = (await repository.UpgradeCardAsync(player, card.CardId, "level-" + level, new(card.Version), ct)).Card;
-        card = (await repository.MutateCardAsync(player, card.CardId, "copy-for-deck", new(card.Version), true, ct)).Card;
-        var priest = (await repository.GetDecksAsync(player, ct)).Single(deck => deck.HeroClass == HeroClassDto.Priest);
-        var ids = priest.CardIds.ToArray();
-        ids[Array.FindIndex(ids, id => id != "C01")] = "C01";
-        await repository.SaveDeckAsync(player, HeroClass.Priest, ids, "priest-two-copies", priest.Version, DateTimeOffset.UtcNow, ct);
-        card = (await repository.GetCardsAsync(player, ct)).Single(card => card.CardId == "C01");
-        Assert.False(card.CanUpgrade);
-        Assert.Equal(1, card.UpgradeCopyCost);
-        await Assert.ThrowsAsync<DomainValidationException>(() => repository.UpgradeCardAsync(
-            player, card.CardId, "cannot-consume-deck", new(card.Version), ct));
+        Assert.True(card.CanUpgrade);
+        Assert.Equal(0, card.UpgradeCopyCost);
         for (var level = 4; level <= 5; level++)
         {
-            card = (await repository.MutateCardAsync(player, card.CardId, "spare-" + level, new(card.Version), true, ct)).Card;
-            Assert.True(card.CanUpgrade);
             var request = new CardMutationRequest(card.Version);
             var upgraded = await repository.UpgradeCardAsync(player, card.CardId, "level-" + level, request, ct);
-            Assert.Equal(1, upgraded.ConsumedCopies);
-            Assert.Equal(2, upgraded.Card.CopyCount);
+            Assert.Equal(0, upgraded.ConsumedCopies);
+            Assert.Equal(1, upgraded.Card.CopyCount);
             Assert.Equal(level, upgraded.Card.Level);
             Assert.Equal(upgraded, await repository.UpgradeCardAsync(player, card.CardId, "level-" + level, request, ct));
             card = upgraded.Card;
@@ -89,7 +79,6 @@ public sealed class PostgresCardUpgradeTests
         Assert.Equal(0, card.UpgradeCost);
         await Assert.ThrowsAsync<DomainValidationException>(() => repository.UpgradeCardAsync(
             player, card.CardId, "no-sixth-level", new(card.Version), ct));
-        Assert.Equal(ids, (await repository.GetDecksAsync(player, ct)).Single(deck => deck.HeroClass == HeroClassDto.Priest).CardIds);
     }
 
     [Fact(Skip = "Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.", SkipUnless = nameof(HasTestDatabase))]
@@ -121,7 +110,7 @@ public sealed class PostgresCardUpgradeTests
 
     [Fact(Skip = "Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.", SkipUnless = nameof(HasTestDatabase))]
     [Trait("Category", "PostgresIntegration")]
-    public async Task Preparation_freezes_trained_levels_once_per_name_despite_later_upgrades()
+    public async Task Preparation_freezes_trained_level_despite_later_upgrades()
     {
         await using var database = await PostgresTestSchema.CreateAsync(migrate: true);
         var ct = TestContext.Current.CancellationToken;
@@ -129,20 +118,18 @@ public sealed class PostgresCardUpgradeTests
         var repository = new ProgressionRepository(database.DataSource);
         var card = (await repository.GetCardsAsync(player, ct)).Single(card => card.CardId == "C01");
         card = (await repository.UpgradeCardAsync(player, card.CardId, "first-level", new(card.Version), ct)).Card;
-        card = (await repository.MutateCardAsync(player, card.CardId, "extra-copy", new(card.Version), true, ct)).Card;
         var deck = (await repository.GetDecksAsync(player, ct)).Single(deck => deck.HeroClass == HeroClassDto.Mage);
-        var ids = deck.CardIds.ToArray();
-        ids[Array.FindIndex(ids, id => id != "C01")] = "C01";
-        var saved = await repository.SaveDeckAsync(player, HeroClass.Mage, ids, "two-copies", deck.Version, DateTimeOffset.UtcNow, ct);
         var loadout = await repository.GetLoadoutAsync(player, HeroClass.Mage, ct);
         var preparations = new PreparationRepository(database.DataSource, TimeProvider.System);
         var prepared = await preparations.CreateAsync(player, "frozen-levels", new(
-            HeroClassDto.Mage, saved.Deck!.Version, loadout!.EquipmentIds, BackpackTierDto.Free, [], 0, "Standard"), ct);
+            HeroClassDto.Mage, deck.Version, loadout!.EquipmentIds, BackpackTierDto.Free, [], 0, "Standard"), ct);
         Assert.Equal(CreatePreparationStatus.Created, prepared.Status);
         var snapshot = prepared.Preparation!.Snapshot;
         Assert.Equal(20, snapshot.CardLevels!.Count);
-        Assert.Equal([0, 1], snapshot.CardIds.Select((id, index) => (id, level: snapshot.CardLevels[index]))
-            .Where(card => card.id == "C01").Select(card => card.level).Order());
+        var snapshotCard = Assert.Single(
+            snapshot.CardIds.Select((id, index) => (id, level: snapshot.CardLevels[index])),
+            item => item.id == "C01");
+        Assert.Equal(1, snapshotCard.level);
         await repository.UpgradeCardAsync(player, card.CardId, "after-preparation", new(card.Version), ct);
         var restored = await new PreparationRepository(database.DataSource, TimeProvider.System).GetActiveAsync(player, ct);
         Assert.Equal(snapshot.CardLevels, restored!.Snapshot.CardLevels);

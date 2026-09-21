@@ -1,8 +1,8 @@
-# FantasyCard 开发文档索引
+# Relicbound（遗境行者）开发文档索引
 
 | 项目 | 内容 |
 | --- | --- |
-| 基准 GDD | `GDD.md` Draft v0.64，2026-09-02 |
+| 基准 GDD | `GDD.md` Draft v0.68，2026-09-16 |
 | 客户端 | 团结引擎，Unity 2022.3 LTS 基线，C#，UGUI |
 | 服务端 | ASP.NET Core / .NET 10 LTS，SDK 10.0.400，PostgreSQL，REST + WebSocket |
 | 首发目标 | Steam Windows，标准难度原型 |
@@ -25,7 +25,7 @@
 
 发生冲突时按以下顺序处理：
 
-1. `GDD.md` 的 v0.64 锁定规则，尤其 `0.2` 冻结模块与 **5.14 补位机器人**。
+1. `GDD.md` 的 v0.68 锁定规则，尤其 `0.2` 冻结模块与 **5.14 补位机器人**。
 2. [CLIENT_SPEC.md](./CLIENT_SPEC.md) / [SERVER_SPEC.md](./SERVER_SPEC.md) 的口径裁决。
 3. 本目录中的端到端协议和开发流程。
 4. `server/docs/CLIENT_INTEGRATION.md` 中已上线接口的具体字段。
@@ -41,16 +41,16 @@
 | --- | --- | --- |
 | 客户端纯 C# 分层 | 已有 `Game.Contracts / Game.Domain / Game.Client` 三层程序集 | `FantasyCard_Unity/New Tuanjie Project/Assets/Scripts` |
 | 6×6 地图、Boss/泉水/撤离/宝箱、出生和怪组生成 | 已有本地领域实现 | `MapGenerator.cs`、`MapService.cs` |
-| 200 图鉴、三职业默认编组、编组校验 | 已有本地领域与原型 UI | `CardDatabase.cs`、`DeckService.cs`、`CodexScene.unity` |
+| 220 图鉴（含 20 张元素调节）、三职业默认编组、编组校验 | 已有本地领域与原型 UI | `CardDatabase.cs`、`DeckService.cs`、`CodexScene.unity` |
 | 战斗数值、三职业本命、装备词缀 | 已有本地领域实现 | `CombatService.cs`、`BattleState.cs`、`EquipmentData.cs` |
 | 手牌 5、弃牌洗回、1v1 三堆快照 | 已有本地领域实现 | `DeckState.cs` |
 | PVE 怪意图和同格 1v1 规则骨架 | 已有本地领域实现 | `MonsterInstance.cs`、`GridCombatManager.cs` |
 | 地图/战斗/图鉴原型场景 | 已有 | `MapScene.unity`、`BattleScene.unity`、`CodexScene.unity` |
-| 迁移、登录、玩家初始化、Bootstrap、档案、图鉴/编组、准备快照 | 已有 `0.2.0-s1-preparation` 纵向切片 | `server/src`、`server/docs/CLIENT_INTEGRATION.md` |
-| Unity 登录/大厅/准备/匹配/在线房间 | 未实现 | 本文档的首要工作 |
-| 服务端换装/强化/商店/市场/匹配/战斗/结算 | 未实现 | `SERVER_IMPLEMENTATION_STATUS_AND_PLAN.md` 的 P1–P5 |
-| 会话 sequence/replay/resume | 已有内存实现 | `server/src/FantasyCard.Server/Realtime` |
-| 房间快照与进程恢复 | 未实现 | S3/S9 必须补齐 |
+| 迁移、登录、玩家初始化、Bootstrap、档案、图鉴/编组、准备快照 | 已上线 | `server/src`、`server/docs/CLIENT_INTEGRATION.md` |
+| Godot 登录/大厅/准备/匹配/在线房间 | 已有纵向切片；完整界面逐屏人工验收仍见对接指南清单 | `client/`、`CLIENT_INTEGRATION.md` |
+| 服务端换装/强化/商店/市场/匹配/战斗/结算 | 原型范围已落地；死亡回大厅不补鞋 | `SERVER_IMPLEMENTATION_STATUS_AND_PLAN.md` §0 |
+| 会话 sequence/replay/resume | 已有内存实现与房间快照补发 | `server/src/FantasyCard.Server/Realtime` |
+| 房间快照与进程恢复 | 应用级 Running 恢复已验收；操作系统级强杀演练未做 | S9 |
 | Unity 自动化业务测试 | 未建立 | 需建立 EditMode + PlayMode 测试程序集 |
 
 当前 `BattleController`、`MapSceneController` 等是本地演示控制器，不是线上权威客户端。后续保留其表现和纯领域算法价值，但线上战局必须由服务端事件驱动，客户端不得自行决定伤害、抽牌、掉落、移动或结算。

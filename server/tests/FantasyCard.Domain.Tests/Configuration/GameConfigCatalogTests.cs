@@ -1,22 +1,39 @@
 using FantasyCard.Domain.Configuration;
 using FantasyCard.Domain.Combat;
+using FantasyCard.Domain.Players;
 using FantasyCard.Domain.Rooms;
 
 namespace FantasyCard.Domain.Tests.Configuration;
 
 public sealed class GameConfigCatalogTests
 {
+    private static readonly string[] TuningQualities = ["White", "Green", "Blue", "Purple"];
+
     [Fact]
-    public void EmbeddedCatalogContainsCompleteGdd065CardSet()
+    public void EmbeddedCatalogContainsCompleteGdd068CardSet()
     {
         var catalog = GameConfigCatalog.Current;
 
-        Assert.Equal("gdd-0.67-gameplay-completion-1", catalog.Version);
-        Assert.Equal(212, catalog.Cards.Count);
-        Assert.Equal(200, catalog.Cards.Count(card => card.IsCodex));
+        Assert.Equal("gdd-0.68-element-tuning-1", catalog.Version);
+        Assert.Equal(232, catalog.Cards.Count);
+        Assert.Equal(220, catalog.Cards.Count(card => card.IsCodex));
         Assert.Equal(12, catalog.Cards.Count(card => !card.IsCodex));
         Assert.Equal(51, catalog.Cards.Count(card => card.InitiallyUnlocked));
-        Assert.Equal(1200, catalog.CardLevels.Count);
+        Assert.Equal(1320, catalog.CardLevels.Count);
+        var orderedCodex = catalog.Cards.Where(card => card.IsCodex).ToArray();
+        Assert.Equal(
+            orderedCodex
+                .OrderBy(card => card.Rarity)
+                .ThenBy(card => card.HeroClass is null ? 0 : 1)
+                .ThenBy(card => card.HeroClass ?? (HeroClass)short.MaxValue)
+                .ThenBy(card => card.CardId, StringComparer.Ordinal),
+            orderedCodex);
+        var tuningCards = catalog.Cards.Where(card => card.Effect.IsElementTuning).ToArray();
+        Assert.Equal(20, tuningCards.Length);
+        Assert.All(Enum.GetValues<CardElement>().Where(element => element != CardElement.None),
+            element => Assert.Equal(4, tuningCards.Count(card => card.Effect.Element == element)));
+        Assert.All(TuningQualities,
+            quality => Assert.Equal(5, tuningCards.Count(card => card.Quality == quality)));
 
         var apocalypse = Assert.Single(catalog.Cards, card => card.CardId == "PRI-10");
         Assert.Equal(8, apocalypse.Effect.Heal);
@@ -34,6 +51,54 @@ public sealed class GameConfigCatalogTests
         Assert.Equal((8, CardElement.Fire, 8, CardElement.Metal, 8),
             (voidCore.ElementalDamage, voidCore.Element, voidCore.SecondaryElementalDamage,
                 voidCore.SecondaryElement, voidCore.Shield));
+
+    }
+
+    [Fact]
+    public void EmbeddedCatalogVersionMatchesPublishedClientPackage()
+    {
+        AssertPublishedConfigMatchesCatalog(GameConfigCatalog.Current.Version);
+    }
+
+    private static void AssertPublishedConfigMatchesCatalog(string embeddedVersion)
+    {
+        var (serverGenerated, repoRoot) = FindPublishedConfigRoots();
+        Assert.Equal(embeddedVersion, File.ReadAllText(Path.Combine(serverGenerated, "fantasycard.config.version.txt")).Trim());
+        if (repoRoot is null) return;
+
+        var clientGenerated = Path.Combine(repoRoot, "client", "data", "generated");
+        var catalogPath = Path.Combine(repoRoot, "client", "data", "catalog.json");
+        if (!Directory.Exists(clientGenerated) || !File.Exists(catalogPath)) return;
+
+        Assert.Equal(embeddedVersion, File.ReadAllText(Path.Combine(clientGenerated, "fantasycard.config.version.txt")).Trim());
+        Assert.Equal(
+            File.ReadAllBytes(Path.Combine(serverGenerated, "fantasycard.config.bytes")),
+            File.ReadAllBytes(Path.Combine(clientGenerated, "fantasycard.config.bytes")));
+        using var document = System.Text.Json.JsonDocument.Parse(File.ReadAllText(catalogPath));
+        Assert.Equal(embeddedVersion, document.RootElement.GetProperty("version").GetString());
+    }
+
+    private static (string ServerGenerated, string? RepoRoot) FindPublishedConfigRoots()
+    {
+        var directory = new DirectoryInfo(AppContext.BaseDirectory);
+        while (directory is not null)
+        {
+            var nested = Path.Combine(directory.FullName, "server", "config", "generated", "fantasycard.config.version.txt");
+            if (File.Exists(nested))
+                return (Path.GetDirectoryName(nested)!, directory.FullName);
+
+            var local = Path.Combine(directory.FullName, "config", "generated", "fantasycard.config.version.txt");
+            if (File.Exists(local))
+            {
+                var serverGenerated = Path.GetDirectoryName(local)!;
+                var repoRoot = Path.GetFullPath(Path.Combine(directory.FullName, ".."));
+                return (serverGenerated, Directory.Exists(Path.Combine(repoRoot, "client", "data")) ? repoRoot : null);
+            }
+
+            directory = directory.Parent;
+        }
+
+        throw new DirectoryNotFoundException("Could not locate the published server config version file.");
     }
 
     [Fact]

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>邮件系统效果预览</title>
+<style>
+@font-face{font-family:fantasy;src:url('../client/assets/fonts/SourceHanSansSC-Regular.otf')}
+@font-face{font-family:serif;src:url('../client/assets/fonts/SourceHanSerifSC-SemiBold.otf')}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0b1a20;color:#efe3c7;font-family:fantasy, sans-serif}
+body{background:linear-gradient(#102932aa,#081318cc),url('../client/assets/scenes/camp_hall.png') center/cover no-repeat}
+.topbar{height:84px;margin:18px 24px 0;border:1px solid #6c7670;background:#07171de8;display:flex;align-items:center;padding:0 34px;box-shadow:0 0 0 5px #142b31aa inset,0 8px 20px #0009}
+.logo{font-family:serif;font-size:42px;color:#f2d18a;letter-spacing:4px}.account{margin-left:auto;text-align:center;color:#a5bbb7;font-size:16px;line-height:1.55}.gold{margin-left:56px;color:#d3ae68;font-size:24px}.gear{margin-left:32px;width:48px;height:48px;border-radius:50%;border:2px solid #9d7744;background:#172f35;color:#e5c98d;font-size:25px;text-align:center;line-height:43px}
+.shade{position:absolute;inset:0;background:#061015c7}.modal{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:1360px;height:850px;padding:18px;background:#071820 url('../client/assets/imported/UI/CardCodex/card_codex_dialog_panel_normal.png') center/100% 100% no-repeat;box-shadow:0 20px 80px #000d;display:flex;flex-direction:column}
+.head{height:106px;padding:28px 34px 14px;display:flex;align-items:flex-start;border-bottom:1px solid #536b6d}.head h1{margin:0;font:38px serif;color:#f2d18a}.count{margin:13px 0 0 28px;color:#a5bbb7;font-size:18px}.actions{margin-left:auto;display:flex;gap:10px}.btn{height:46px;min-width:112px;padding:0 20px;border:0;background-color:transparent;background-image:url('../client/assets/imported/UI/CardCodex/card_codex_action_button_blue.png');background-size:100% 100%;background-repeat:no-repeat;color:#efe3c7;font:18px serif;cursor:default;text-shadow:0 1px 2px #000}.btn.primary{background-image:url('../client/assets/imported/UI/CardCodex/card_codex_action_button_orange.png');color:#fff0c9}.btn.close{position:absolute;right:32px;bottom:22px;min-width:130px}
+.content{display:grid;grid-template-columns:540px 1fr;gap:20px;padding:20px 30px 84px;min-height:0;flex:1}.list{overflow:hidden;padding-right:6px}.list-title,.detail-title{font:22px serif;color:#d3ae68;margin:0 0 12px}.mail-row{height:116px;margin-bottom:12px;border:2px solid #345a60;background:#122b33;display:flex;align-items:center;padding:12px;gap:12px}.mail-row.unread{border-color:#bd8c4d;background:#16353a}.dot{width:10px;height:10px;border-radius:50%;background:#e5b158;flex:none;box-shadow:0 0 9px #e5b158}.dot.read{background:#547377;box-shadow:none}.item-icon{width:62px;height:62px;object-fit:contain;flex:none}.row-main{min-width:0;flex:1}.row-title{font:20px serif;color:#f0d08a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.row-body{font-size:16px;color:#aac0bc;line-height:1.45;margin-top:5px}.row-state{font-size:14px;color:#d3ae68;margin-top:5px}.row-actions{display:flex;flex-direction:column;gap:7px}.small{height:34px;padding:0 13px;font-size:15px}.danger{border-color:#77585b;color:#e7b8a5;background:#3a2730}.detail{border-left:1px solid #536b6d;padding:0 10px 0 28px;min-width:0}.detail h2{font:31px serif;color:#f2d18a;margin:0 0 8px}.meta{color:#92aaa6;font-size:16px;margin-bottom:20px}.body{font-size:19px;line-height:1.8;color:#efe3c7;min-height:100px;border-top:1px solid #536b6d;border-bottom:1px solid #536b6d;padding:16px 0}.attach-label{font:21px serif;color:#d3ae68;margin:18px 0 10px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.cell{height:140px;border:1px solid #4c6d70;background:#0d2229;display:flex;flex-direction:column;align-items:center;justify-content:center}.cell img{width:62px;height:62px;object-fit:contain}.cell span{font-size:15px;margin-top:7px;color:#e7d9ba}.cell b{font-size:18px;color:#d3ae68;margin-top:2px}.detail-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:22px}
+.mail-entry{position:absolute;left:40px;top:250px;width:88px;height:88px;border:1px solid #9d7744;background:#10272e;display:flex;align-items:center;justify-content:center}.mail-entry img{width:72px;height:72px}.badge{position:absolute;right:-10px;top:-12px;width:30px;height:30px;border-radius:50%;background:#c74d3f;color:#fff4d2;text-align:center;line-height:30px;font-weight:bold}
+.gear{background:url('../client/assets/imported/UI/Hall/settings_button.png') center/contain no-repeat;border:0;border-radius:0;color:transparent;font-size:0;line-height:0}
+.list{position:relative;padding-right:20px}.list:after,.list:before{display:none}.list.has-overflow:after{display:block;content:"";position:absolute;right:1px;top:42px;width:12px;height:380px;background:url('../client/assets/imported/UI/CardCodex/card_codex_scroll_track_normal.png') center/100% 100% no-repeat;opacity:.9}.list.has-overflow:before{display:block;content:"";position:absolute;right:1px;top:48px;width:12px;height:112px;background:url('../client/assets/imported/UI/CardCodex/card_codex_scroll_thumb_normal.png') center/100% 100% no-repeat;z-index:1}.danger{background-color:transparent;background-image:none;border:6px solid transparent;border-image:url('../client/assets/imported/UI/CardCodex/card_codex_action_button_blue.png') 18 28 18 28 fill / 6px / 0 stretch;color:#efe3c7}.btn.close{right:28px;bottom:20px;min-width:112px}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="logo">幻想牌域</div><div class="account">旅人<br>UID mail-preview</div><div class="gold">◉ 金币 1,280</div><div class="gear" aria-label="设置"></div></div>
+<div class="mail-entry"><img src="../client/assets/imported/UI/Hall/mail_button.png"><span class="badge">2</span></div>
+<div class="shade"></div>
+<section class="modal">
+  <div class="head"><h1>邮件</h1><span class="count">未读 2 / 3</span><div class="actions"><button class="btn primary">一键全领</button><button class="btn primary">全部已读</button><button class="btn">删除已读</button></div></div>
+  <div class="content">
+    <div class="list"><div class="list-title">收件箱</div>
+      <div class="mail-row unread"><span class="dot"></span><img class="item-icon" src="../client/assets/imported/UI/Item/exploration_prep_item_icon_gold.png"><div class="row-main"><div class="row-title">混沌领域 · 首通奖励</div><div class="row-body">恭喜完成首次探索，以下奖励已发送至收件箱。</div><div class="row-state">未读 · 3 项附件</div></div><div class="row-actions"><button class="btn small primary">领取</button><button class="btn small danger">删除</button></div></div>
+      <div class="mail-row unread"><span class="dot"></span><img class="item-icon" src="../client/assets/imported/UI/Item/exploration_prep_item_icon_fragments.png"><div class="row-main"><div class="row-title">维护补偿</div><div class="row-body">感谢你的耐心等待，请领取本次维护补偿。</div><div class="row-state">未读 · 1 项附件</div></div><div class="row-actions"><button class="btn small primary">领取</button><button class="btn small danger">删除</button></div></div>
+      <div class="mail-row"><span class="dot read"></span><img class="item-icon" src="../client/assets/imported/UI/Item/exploration_prep_item_icon_gold.png"><div class="row-main"><div class="row-title">每日登录奖励</div><div class="row-body">今日奖励已经领取，祝你探索顺利。</div><div class="row-state">已读 · 已领取</div></div><div class="row-actions"><button class="btn small primary">打开</button><button class="btn small danger">删除</button></div></div>
+    </div>
+    <div class="detail"><div class="detail-title">邮件详情</div><h2>混沌领域 · 首通奖励</h2><div class="meta">发件人：系统　·　状态：未读</div><div class="body">恭喜完成首次探索，以下奖励已发送至收件箱。点击领取后，奖励会直接进入你的账户与背包。</div><div class="attach-label">附件</div><div class="grid">
+      <div class="cell"><img src="../client/assets/imported/UI/Item/exploration_prep_item_icon_gold.png"><span>金币</span><b>× 500</b></div>
+      <div class="cell"><img src="../client/assets/imported/UI/Item/exploration_prep_item_icon_fragments.png"><span>装备碎片</span><b>× 20</b></div>
+      <div class="cell"><img src="../client/assets/imported/UI/Item/exploration_prep_item_icon_potion.png"><span>生命药剂</span><b>× 2</b></div>
+      <div class="cell"><img src="../client/assets/imported/UI/Shop/backpack_advanced.png"><span>高级背包</span><b>× 1</b></div>
+    </div><div class="detail-actions"><button class="btn primary">领取全部附件</button><button class="btn danger">删除</button></div></div>
+  </div>
+  <button class="btn close">关闭</button>
+</section>
+</body>
+</html>

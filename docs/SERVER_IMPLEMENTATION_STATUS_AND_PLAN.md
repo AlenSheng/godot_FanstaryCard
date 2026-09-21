@@ -2,14 +2,33 @@
 
 | 项目 | 当前值 |
 | --- | --- |
-| 审计日期 | 2026-09-09 |
-| 服务版本 | `0.4.0-s7-runtime-slice+reward-choice` |
+| 审计日期 | 2026-09-12（对照 GDD v0.67 / CLIENT_INTEGRATION；下文 2026-09-09 条目保留为历史证据） |
+| 服务版本 | `0.3.0-room-combat`（以 `GET /` 与 `FantasyCard.Server.csproj` 为准；勿再用 `0.4.0-s7-...`） |
 | SDK | `.NET SDK 10.0.400` |
-| 规则配置版本 | `gdd-0.67-shop-rotation-1` |
-| 当前可联调范围 | 登录 → Bootstrap → 档案/图鉴/编组 → 探索准备 → 商店/市场/强化接口 → 匹配入队/15 秒 Ready/机器人补满/成房 → 混沌地图/独立 PVE/三选一奖励 → WebSocket ping/resume/room.move/battle.play_cards/battle.select_target/reward.choice/duel.leave/duel.escape/relic.take/relic.replace/action.extract/action.spring/action.potion → 结算查询/待展示恢复/确认 |
+| 规则配置版本 | `gdd-0.67-gameplay-completion-1` |
+| 当前可联调范围 | 登录 → Bootstrap → 档案/图鉴/编组 → 探索准备 → 商店/市场/强化接口 → 匹配入队/15 秒 Ready/机器人补满/成房 → 混沌地图/独立 PVE/三选一奖励 → WebSocket ping/resume/room.move/battle.play_cards/combat.preview/battle.select_target/reward.choice/duel.leave/duel.escape/relic.read/take/replace/action.extract/action.spring/action.potion → 结算查询/待展示恢复/确认；死亡回大厅身上防具进遗物堆、不补鞋 |
 | 当前不可联调范围 | 市场事务中断、结算操作系统级强杀演练、服务进程强杀演练、生产负载验收 |
 
 本文以 [服务端 0→1 开发指南](./SERVER_0_TO_1_GUIDE.md) 为目标，以仓库当前代码和自动化结果为证据。只有代码、迁移、协议和测试同时存在的能力才标记为已完成。
+
+## 0. 2026-09-12 文档对照结论
+
+对照本分支权威文档（GDD `0.2` 冻结规则 → `SERVER_SPEC` → `CLIENT_INTEGRATION`），原型必须完成的大厅、匹配、房间、战斗、结算链路已经落地。产品确认：**没有绑定白鞋系统**。开局不送鞋，死亡不补鞋，五部位配装可全空。
+
+**已有、文档曾写漏或写旧的能力（不是缺功能）**
+
+- 金币商店货架已含 GDD 6.2 全套：随机礼包、每日三张单卡、魂/碎片/职业魂包、药剂、两档探索包。对接指南此前只展开了每日单卡。
+- 匹配 `POST /api/v1/matches/enqueue`、ticket 查询/取消已上线，客户端已调用；对接指南此前未单独成节。
+- `combat.preview`、`relic.read`、局内背包换装、匣灵实例覆写已在 2026-09-10 功能补全中验收。
+
+**明确不做或未到开放条件（验收时不得当缺项）**
+
+- 赛季、邮件：本分支 GDD **不做赛季**；邮件只出现在 `main` 后续文档，且其实现/迁移编号不完整，本分支不移植。
+- 微信登录只留接口，当前无 `POST /api/v1/auth/wechat`。
+- 钻石购买/钻石市场、红装掉落与红装强化入口、厄运选档、临时牌池内容。
+- Redis 可选缓冲、容量/负载验收、操作系统级强杀与备份演练。
+- Bootstrap 目标字段 `shopRotation` / `activeMarketListings` 仍走独立商店/市场接口。
+- 地图权重独立发布表：运行时已消费配置包，不另做缺表。
 
 ## 1. 本轮查缺补漏结果
 
@@ -29,7 +48,7 @@
 - 湮核阶段状态已进入怪物快照：生命降至 140 后等待当前意图完成或被眩晕取消，再切到 3.8 秒金蚀循环、主金邻土抗性；未打出的阶段一蓄力不会带入阶段二。生息回复同时覆盖卡牌、三选一和生命泉，仍按有效生命上限 L′ 截断。
 - 生命泉按玩家分别记录使用次数：同一口泉每名玩家可各用一次；1.2 秒读条按外/中/核心恢复 18%/25%/35%，满血仍消耗，PVP 入侵取消且不治疗。旧快照的全局已用泉记录保守迁移到所有玩家；命令、Protobuf、关键快照与并发房间入口均已接入。
 - 场外生命药剂按 GDD v0.66 接入：仅行动栏可用，点击即时消耗 1 瓶并按 L 的 20% 基础值恢复，再吃生息回复比例并截在 L'，没有读条；满 L' 仍消耗。`action.potion/action.potion_used`、Protobuf、玩家快照 `allowed_actions` 与机器人兜底使用均已接入。
-- S1/S2 大厅读取补齐：`GET /api/v1/inventory` 现返回背包与已穿戴装备完整属性、仅按背包装备计算的 50 格容量摘要，以及药剂/高级包/顶级包仓库数量；新增 `GET /api/v1/loadouts/{class}`，固定按 Head/Chest/Hands/Legs/Feet 返回职业五槽。真实 PostgreSQL 用例验证起始绑定鞋可由配装 ID 解析、背包计数与消耗品一致。
+- S1/S2 大厅读取补齐：`GET /api/v1/inventory` 现返回背包与已穿戴装备完整属性、仅按背包装备计算的 50 格容量摘要，以及药剂/高级包/顶级包仓库数量；新增 `GET /api/v1/loadouts/{class}`，固定按 Head/Chest/Hands/Legs/Feet 返回职业五槽。真实 PostgreSQL 用例验证配装 ID 可解析到装备详情、背包计数与消耗品一致。开局不发放绑定白鞋。
 - S2 市场并发购买已在真实 PostgreSQL 验收：同一 listing 两买家并发只成功一次，失败者不扣金，获胜者扣标价、卖家收到扣除 10% 手续费后的净额，装备只转移一次。修复上架/成交遗漏 `inventory_movements`，成交装备更新增加卖家所有权与 `MarketListed` 状态条件，买卖双方 `economy_ledger` 和库存移动均关联获胜 requestId。
 - S2 商店/强化异常事务已在真实 PostgreSQL 验收：商店同键重放只扣款发货一次，同键改请求、日限、余额不足和付费探索包仓库合计超过 3 个均整笔拒绝；商店金币流水关联 requestId。防具强化碎片不足时目标、材料和账本全部回滚，成功重放不二次消耗；按 GDD 允许仓库中的绑定同品质防具作为 +4/+5 材料，材料移动与碎片流水关联 requestId。
 - S8 每日三张单卡轮换已完成：UTC+8 04:00 日切，同一 configVersion/resetKey 通过稳定哈希在所有实例生成一致的三张不重复 White～Purple 图鉴卡，Orange 不入池；价格 80/150/280/500、每张限购 1 均来自 `ShopCardPrices`。轮换创建在单事务内，既有日档不因重启改写。真库覆盖双实例并发、跨日、精确发卡、超限回滚与幂等回放；真实 HTTP 进程已验证读取和购买。同步修复随机礼包仍引用迁移前旧卡 ID 导致成功但未发货的问题，现按 50/30/15/5 权重实际增加三张并在零行更新时整笔回滚。
@@ -42,7 +61,7 @@
 - S3 准备/匹配/Ready/房间入口已在真实 PostgreSQL 纵向验收：重复 enqueue 只返回原 ticket，同键改 preparation 返回幂等冲突；4 真人立即成组并在全员 Ready 后生成首份房间快照、注册 RoomActor、推进 Running。未满 4 真人等待 30 秒后进入 Ready，15 秒未确认者转 Removed 并取消 preparation，保留真人转 Active、机器人补到固定 4 席后启动。
 - S9 Running 房间启动恢复已补停机计时：恢复查询携带 `room_snapshots.updated_at`，重建 Actor 后在单读队列内按 100ms 权威 tick 回放停机时长，最终快照只观察/落库一次；失败会移除半注册 Actor。真实 PostgreSQL 已验证玩家与 matchId 映射、15 秒断线超时、RNG 子流保持和补偿快照回写。
 - S7 RoomActor→结算纵向已通过真实 PostgreSQL：权威撤离完成触发状态观察器，幂等创建 settlement/holds/outbox，后台提交金币、药剂和穿戴防具；数据库终局后从 RoomRegistry 移除 Actor 与玩家映射，避免已结束房间继续 10Hz tick。Pending 提交失败仍由数据库后台重试，不依赖 Actor 常驻。
-- S7 死亡纵向已通过真实 PostgreSQL：RoomActor 断线满 15 秒后权威判死，安全格资产与遗物堆按冻结规则分离；后台仅返还安全金币，把背包装备和穿戴防具转为 `RelicPile`、解绑配装、消耗付费包并发布可恢复 outbox，终局 Registry 随后清理。
+- S7 死亡纵向已通过真实 PostgreSQL：RoomActor 断线满 15 秒后权威判死，安全格资产与遗物堆按冻结规则分离；后台仅返还安全金币，把背包装备和穿戴防具转为 `RelicPile`、解绑配装、消耗付费包并发布可恢复 outbox，终局 Registry 随后清理。死亡回大厅不补鞋。
 - 新增玩家隔离的 `room.snapshot`：连接活动房间、显式读取、事件缓存缺口或客户端房间 revision 落后时下发；只暴露 Boss/泉水/本人位置等允许情报，同时恢复本人战斗、背包、PVE/PVP、奖励、读条和可操作列表。`session.resume` 向后兼容新增可选 roomId/roomRevision。
 - S8/S9 基础切片已落地：金币商店 UTC+8 04:00 日切、市场到期后台回收、经济跨表与账本链只读对账、REST/WS 分层限流、输入上限、WS token 链路追踪脱敏、过期会话/幂等记录/房间事件清理、房间关键节点即时快照与 Running 房间启动恢复/停机计时补偿。OTLP 指标现覆盖登录成功/失败、无效/过期令牌、WS 在线/消息大小/resume/命令拒绝、排队时长、活动房间与人数、快照失败、结算创建/幂等命中/失败/Pending holds、经济对账及周期清理。房间恢复失败、活动房间快照落库失败、结算首次恢复扫描失败或存在提交失败项都会拉低 readiness；发布/回滚/备份恢复/告警 runbook 已建立。数据库迁移/聚合、结算资产提交原子性、Pending hold 应用级冷启动恢复及 Running 房间应用级恢复已在真实 PostgreSQL 验收；市场事务强杀、结算操作系统级强杀、服务进程强杀与负载验收仍未完成。
 - 配置发布改为两端文件全部暂存后提交；发布异常会清理暂存并恢复已有文件，避免服务端与客户端遗留半套配置。
@@ -59,7 +78,7 @@
 
 - 用 `V001–V003` 嵌入式 SQL 迁移替代启动时整段建表；包含 checksum、PostgreSQL advisory lock、逐迁移事务和篡改检测。
 - 旧数据库兼容：V001 使用 `CREATE TABLE IF NOT EXISTS` 接管已有 identity 三表，不要求删库。
-- 首次登录幂等初始化：钱包、材料、51 张起始解锁卡、三职业默认 20 张编组、三把 +0 专属武器、三职业绑定白鞋、空消耗品账户。
+- 首次登录幂等初始化：钱包、材料、51 张起始解锁卡、三职业默认 20 张编组、三把 +0 专属武器、三职业五部位空配装、空消耗品账户。不发放绑定白鞋。
 - 新增 `GET /api/v1/bootstrap`，一次返回大厅首屏所需的玩家、钱包、材料、武器、穿戴、编组和背包摘要。
 - 新增图鉴和编组接口；编组保存校验 20 张、持有数量、职业限制、怪物卡和橙卡上限，并使用版本冲突保护。
 - 新增探索准备快照；校验卡组版本、五个位置、装备归属/状态、包档、安全格、药剂、Standard 难度和 `Idempotency-Key`。
@@ -107,7 +126,7 @@
 | 阶段 | 状态 | 已有 | 主要缺口 | 下一完成门 |
 | --- | --- | --- | --- | --- |
 | S0 基础 | 基本完成 | 迁移、协议外壳、生产禁 local auth、统一业务 REST 幂等键入口与事务内持久回放、分层限流与输入上限、服务测试、25 项随机 schema PostgreSQL 真实验收（含真实 HTTP/WS 进程冒烟） | 负载验收 | 客户端补 Bootstrap 200 卡状态测试 |
-| S1 玩家聚合 | 服务端主体完成 | provisioning、bootstrap、钱包/材料、完整库存与消耗品读取、按职业五槽配装读取、200 卡图鉴与 1200 条等级配置、初始/未解锁卡、规范 ID 迁移、编组、专属武器、白鞋、双端同包配置编译与事务式文件发布、真实 PostgreSQL V013/聚合验收 | 客户端大厅状态测试 | 新/旧账号登录后大厅资产一致 |
+| S1 玩家聚合 | 服务端主体完成 | provisioning、bootstrap、钱包/材料、完整库存与消耗品读取、按职业五槽配装读取、200 卡图鉴与 1200 条等级配置、初始/未解锁卡、规范 ID 迁移、编组、专属武器、空配装、双端同包配置编译与事务式文件发布、真实 PostgreSQL V013/聚合验收 | 客户端大厅状态测试 | 新/旧账号登录后大厅资产一致 |
 | S2 大厅业务 | 基础完成 | 五部位换装、配置驱动强化、商店/市场基础事务、每日三张单卡与随机礼包、经济流水、档案/卡组/穿戴/准备/交易/强化/取消持久幂等、市场并发购买及商店/强化异常事务 PostgreSQL 验收；商店读取/购买真实 HTTP 验收 | 其余大厅写接口真实 HTTP 客户端联调 | 大厅资产事务闭环 |
 | S3 准备/匹配 | 服务端纵向完成 | 队列、取消队列、1–4 人成房、15 秒 Ready、超时真人剔除与机器人补满、Launching 恢复、装备 PreparationLocked→InMatchEquipped 托管、带入药剂扣除与付费包逻辑预留、机器人 PVE/选择/移动/泉水/即时药剂/撤离/PVP 驱动、match 表、RoomActor、不可变防具战斗快照、真实 PostgreSQL Hall→Room 纵向验收 | 真实 HTTP/WebSocket 客户端联调 | Hall → RoomStarted |
 | S4 地图 | 基础完成 | 服务端 6×6 生成、玩家隔离投影、合法移动、格状态、房间初始化、快照持久化 | 真实房间联调 | RoomStarted → PVE started |

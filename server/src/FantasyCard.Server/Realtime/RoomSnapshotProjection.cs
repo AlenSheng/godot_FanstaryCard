@@ -85,11 +85,7 @@ internal static class RoomSnapshotProjection
         if (extractionRemaining is not null || springRemaining is not null) return [];
         return player.Phase switch
         {
-            RoomPlayerPhase.Pve when player.Pve?.Phase == PveBattlePhase.Active && player.Combat.StunRemaining <= TimeSpan.Zero =>
-                player.Pve.Monsters.Count(monster => monster.Hp > 0) > 1 ||
-                player.Pve.Monsters.Any(monster => monster.Hp > 0 && monster.MonsterId != player.Pve.CurrentTargetId)
-                    ? ["battle.play_cards", "battle.select_target"]
-                    : ["battle.play_cards"],
+            RoomPlayerPhase.Pve when player.Pve?.Phase == PveBattlePhase.Active => BuildPveActions(player),
             RoomPlayerPhase.Choice => ["choice.read", "choice.refresh", "choice.pick"],
             RoomPlayerPhase.Pvp => BuildDuelActions(snapshot, player, now),
             RoomPlayerPhase.ActionBar => BuildActionBarActions(player, map, relics),
@@ -102,12 +98,12 @@ internal static class RoomSnapshotProjection
         RoomPlayerSnapshot player,
         DateTimeOffset now)
     {
-        if (player.CurrentDuelId is not { } duelId) return [];
+        var actions = new List<string> { "battle.abandon" };
+        if (player.CurrentDuelId is not { } duelId) return actions;
         var duel = snapshot.Duels.Single(value => value.DuelId == duelId);
         var opponentId = duel.FirstPlayerId == player.PlayerId ? duel.LatePlayerId : duel.FirstPlayerId;
         var opponent = snapshot.Players.Single(value => value.PlayerId == opponentId);
-        if (player.DisconnectedRemaining > TimeSpan.Zero || opponent.DisconnectedRemaining > TimeSpan.Zero) return [];
-        var actions = new List<string>();
+        if (player.DisconnectedRemaining > TimeSpan.Zero || opponent.DisconnectedRemaining > TimeSpan.Zero) return actions;
         if (player.Combat.StunRemaining <= TimeSpan.Zero &&
             (duel.LatePlayerId != player.PlayerId || now >= duel.LatePlayerUnlockAt))
             actions.Add("battle.play_cards");
@@ -116,6 +112,17 @@ internal static class RoomSnapshotProjection
         if (duel.EscapeAttempt is null &&
             !(duel.EscapeCooldowns ?? []).Any(value => value.PlayerId == player.PlayerId && value.Remaining > TimeSpan.Zero))
             actions.Add("duel.escape");
+        return actions;
+    }
+
+    private static List<string> BuildPveActions(RoomPlayerSnapshot player)
+    {
+        var actions = new List<string> { "battle.abandon" };
+        if (player.Combat.StunRemaining > TimeSpan.Zero) return actions;
+        if (player.Pve!.Monsters.Count(monster => monster.Hp > 0) > 1 ||
+            player.Pve.Monsters.Any(monster => monster.Hp > 0 && monster.MonsterId != player.Pve.CurrentTargetId))
+            actions.Add("battle.select_target");
+        actions.Insert(0, "battle.play_cards");
         return actions;
     }
 
@@ -189,7 +196,7 @@ internal static class RoomSnapshotProjection
                 return new RoomSetPayload(group.Key, group.Count(), required, group.Count() >= required);
             }).ToArray();
         return new(passive.Kind, passive.Combo, passive.CoreElement?.ToString(), bonuses, sets,
-            info.DrawIntervalSeconds.ToString("R", CultureInfo.InvariantCulture));
+            info.DrawIntervalSeconds.ToString("R", CultureInfo.InvariantCulture), passive.ChargeLevel);
     }
 
     private static RoomPvePayload ToPve(PveBattleSnapshot pve) => new(

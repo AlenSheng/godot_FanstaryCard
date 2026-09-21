@@ -22,6 +22,11 @@ public static class EconomySchedule
         if (local.Hour < 4) local = local.AddDays(-1);
         return local.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
     }
+
+    // Shop refresh quotas reset at the server's UTC midnight. The regular shop
+    // rotation keeps its existing 04:00 China-time schedule above.
+    public static string GetServerDayKey(DateTimeOffset utc) =>
+        utc.UtcDateTime.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
 }
 
 public sealed partial class EconomyMaintenanceWorker(
@@ -93,6 +98,7 @@ public sealed record PersistedRewardRefresh(
     string State,
     RewardRefreshReceiptSnapshot? Receipt);
 public sealed record PendingRewardRefresh(Guid PlayerId, string RequestId, Guid MatchId, Guid RoomId);
+public sealed record ShopRefreshResult(ShopResponse Shop, bool Replayed);
 
 public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider timeProvider)
 {
@@ -262,27 +268,101 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
 
     public async Task<ShopResponse> GetShopAsync(Guid playerId, CancellationToken cancellationToken)
     {
-        var resetKey = EconomySchedule.GetDailyResetKey(timeProvider.GetUtcNow());
+        var now = timeProvider.GetUtcNow();
+        var resetKey = EconomySchedule.GetDailyResetKey(now);
+        var refreshResetKey = EconomySchedule.GetServerDayKey(now);
         await EnsureRotationAsync(resetKey, cancellationToken);
-        await using var command = dataSource.CreateCommand(
-            "SELECT product_id, kind, price_gold, limit_count, payload_json::text FROM shop_rotations WHERE reset_key=$1 ORDER BY product_id");
-        command.Parameters.AddWithValue(resetKey);
-        await using var reader = await command.ExecuteReaderAsync(cancellationToken);
-        var result = new List<ShopProductResponse>();
-        while (await reader.ReadAsync(cancellationToken))
+        await EnsureRefreshStateAsync(refreshResetKey, resetKey, cancellationToken);
+        await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
+        var state = await ReadRefreshStateAsync(connection, null, refreshResetKey, cancellationToken);
+        return await ReadShopAsync(
+            connection,
+            null,
+            playerId,
+            resetKey,
+            state.RotationKey,
+            state.UsedCount,
+            GameConfigCatalog.Current.Economy.DailyShopRefreshLimit,
+            cancellationToken);
+    }
+
+    public async Task<ShopRefreshResult> RefreshShopAsync(Guid playerId, string requestId, CancellationToken cancellationToken)
+    {
+        var now = timeProvider.GetUtcNow();
+        var shopResetKey = EconomySchedule.GetDailyResetKey(now);
+        var refreshResetKey = EconomySchedule.GetServerDayKey(now);
+        var config = GameConfigCatalog.Current;
+        var requestHash = PersistentIdempotency.Hash(new { Action = "shop.refresh", Version = 1 });
+        await EnsureRotationAsync(shopResetKey, cancellationToken);
+        await EnsureRefreshStateAsync(refreshResetKey, shopResetKey, cancellationToken);
+
+        await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
+        await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
+        await LockPlayerAsync(connection, transaction, playerId, cancellationToken);
+        var replay = await PersistentIdempotency.ReadAsync<ShopResponse>(
+            connection,
+            transaction,
+            playerId,
+            "shop.refresh",
+            requestId,
+            requestHash,
+            cancellationToken);
+        if (replay is not null)
         {
-            var productId = reader.GetString(0);
-            result.Add(new ShopProductResponse(productId, reader.GetString(1), reader.GetInt64(2), reader.GetInt32(3),
-                await PurchasedAsync(playerId, resetKey, productId, cancellationToken), reader.GetString(4)));
+            await transaction.CommitAsync(cancellationToken);
+            return new(replay, true);
         }
-        return new ShopResponse(resetKey, result);
+
+        var state = await ReadRefreshStateAsync(connection, transaction, refreshResetKey, cancellationToken);
+        if (state.UsedCount >= config.Economy.DailyShopRefreshLimit)
+            throw new InvalidOperationException("Daily shop refresh limit reached.");
+
+        var nextCount = state.UsedCount + 1;
+        var rotationKey = $"{shopResetKey}~{nextCount}";
+        await SeedRotationAsync(connection, transaction, rotationKey,
+            $"{config.Version}:{shopResetKey}:refresh:{refreshResetKey}:{nextCount}", config, cancellationToken);
+        await using (var update = new NpgsqlCommand(
+            "UPDATE shop_refresh_states SET shop_reset_key=$1,rotation_key=$2,used_count=$3,updated_at=$4 WHERE reset_key=$5",
+            connection, transaction))
+        {
+            update.Parameters.AddWithValue(shopResetKey);
+            update.Parameters.AddWithValue(rotationKey);
+            update.Parameters.AddWithValue(nextCount);
+            update.Parameters.AddWithValue(now);
+            update.Parameters.AddWithValue(refreshResetKey);
+            await update.ExecuteNonQueryAsync(cancellationToken);
+        }
+        var result = await ReadShopAsync(
+            connection,
+            transaction,
+            playerId,
+            shopResetKey,
+            rotationKey,
+            nextCount,
+            config.Economy.DailyShopRefreshLimit,
+            cancellationToken);
+        await PersistentIdempotency.WriteAsync(
+            connection,
+            transaction,
+            playerId,
+            "shop.refresh",
+            requestId,
+            requestHash,
+            result,
+            now,
+            cancellationToken);
+        await transaction.CommitAsync(cancellationToken);
+        return new(result, false);
     }
 
     public async Task<ShopPurchaseResponse> PurchaseAsync(Guid playerId, string requestId, PurchaseShopRequest request, CancellationToken cancellationToken)
     {
         if (request.Quantity is < 1 or > 10) throw new InvalidOperationException("Quantity must be between 1 and 10.");
         var resetKey = EconomySchedule.GetDailyResetKey(timeProvider.GetUtcNow());
+        var refreshResetKey = EconomySchedule.GetServerDayKey(timeProvider.GetUtcNow());
         var hash = Hash(request);
+        await EnsureRotationAsync(resetKey, cancellationToken);
+        await EnsureRefreshStateAsync(refreshResetKey, resetKey, cancellationToken);
         await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
         await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
         await LockPlayerAsync(connection, transaction, playerId, cancellationToken);
@@ -303,15 +383,16 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
             }
         }
 
-        await EnsureRotationAsync(resetKey, cancellationToken);
+        var rotationKey = (await ReadRefreshStateAsync(connection, transaction, refreshResetKey, cancellationToken)).RotationKey;
         string kind, payload; long price; int limit;
         await using (var product = new NpgsqlCommand("SELECT kind, payload_json::text, price_gold, limit_count FROM shop_rotations WHERE reset_key=$1 AND product_id=$2", connection, transaction))
         {
-            product.Parameters.AddWithValue(resetKey); product.Parameters.AddWithValue(request.ProductId);
+            product.Parameters.AddWithValue(rotationKey); product.Parameters.AddWithValue(request.ProductId);
             await using var reader = await product.ExecuteReaderAsync(cancellationToken);
             if (!await reader.ReadAsync(cancellationToken)) throw new InvalidOperationException("Shop product is unavailable.");
             kind = reader.GetString(0); payload = reader.GetString(1); price = reader.GetInt64(2); limit = reader.GetInt32(3);
         }
+        await EnsureCardPurchaseAvailableAsync(connection, transaction, playerId, kind, payload, request.Quantity, cancellationToken);
         var purchased = await PurchasedAsync(connection, transaction, playerId, resetKey, request.ProductId, cancellationToken);
         if (purchased + request.Quantity > limit) throw new InvalidOperationException("Daily purchase limit reached.");
         await EnsurePaidBagCapacityAsync(connection, transaction, playerId, kind, payload, request.Quantity, cancellationToken);
@@ -539,19 +620,109 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
         return expired.Count;
     }
 
+    private static async Task<ShopResponse> ReadShopAsync(
+        NpgsqlConnection connection,
+        NpgsqlTransaction? transaction,
+        Guid playerId,
+        string resetKey,
+        string rotationKey,
+        int refreshesUsed,
+        int refreshLimit,
+        CancellationToken cancellationToken)
+    {
+        var products = new List<(string ProductId, string Kind, long PriceGold, int LimitCount, string Payload)>();
+        await using (var command = new NpgsqlCommand(
+            "SELECT product_id,kind,price_gold,limit_count,payload_json::text FROM shop_rotations WHERE reset_key=$1 ORDER BY product_id",
+            connection,
+            transaction))
+        {
+            command.Parameters.AddWithValue(rotationKey);
+            await using var reader = await command.ExecuteReaderAsync(cancellationToken);
+            while (await reader.ReadAsync(cancellationToken))
+                products.Add((reader.GetString(0), reader.GetString(1), reader.GetInt64(2), reader.GetInt32(3), reader.GetString(4)));
+        }
+
+        var result = new List<ShopProductResponse>(products.Count);
+        foreach (var product in products)
+        {
+            result.Add(new ShopProductResponse(
+                product.ProductId,
+                product.Kind,
+                product.PriceGold,
+                product.LimitCount,
+                await PurchasedAsync(connection, transaction, playerId, resetKey, product.ProductId, cancellationToken),
+                product.Payload,
+                await IsGuaranteedCardOwnedAsync(connection, transaction, playerId, product.Kind, product.Payload, cancellationToken)));
+        }
+        return new ShopResponse(resetKey, result, refreshesUsed, refreshLimit);
+    }
+
     private async Task EnsureRotationAsync(string resetKey, CancellationToken cancellationToken)
     {
         await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
         await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
-        var config = GameConfigCatalog.Current;
+        await SeedRotationAsync(connection, transaction, resetKey, resetKey, GameConfigCatalog.Current, cancellationToken);
+        await transaction.CommitAsync(cancellationToken);
+    }
+
+    private async Task EnsureRefreshStateAsync(
+        string refreshResetKey,
+        string shopResetKey,
+        CancellationToken cancellationToken)
+    {
+        await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
+        await using var command = new NpgsqlCommand(
+            "INSERT INTO shop_refresh_states(reset_key,shop_reset_key,rotation_key,used_count,updated_at) VALUES($1,$2,$2,0,$3) " +
+            "ON CONFLICT(reset_key) DO UPDATE SET shop_reset_key=EXCLUDED.shop_reset_key, " +
+            "rotation_key=CASE WHEN shop_refresh_states.shop_reset_key <> EXCLUDED.shop_reset_key THEN EXCLUDED.shop_reset_key ELSE shop_refresh_states.rotation_key END, " +
+            "updated_at=EXCLUDED.updated_at",
+            connection);
+        command.Parameters.AddWithValue(refreshResetKey);
+        command.Parameters.AddWithValue(shopResetKey);
+        command.Parameters.AddWithValue(timeProvider.GetUtcNow());
+        await command.ExecuteNonQueryAsync(cancellationToken);
+    }
+
+    private async Task<ShopRefreshState> ReadRefreshStateAsync(
+        string refreshResetKey,
+        CancellationToken cancellationToken)
+    {
+        await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
+        return await ReadRefreshStateAsync(connection, null, refreshResetKey, cancellationToken);
+    }
+
+    private static async Task<ShopRefreshState> ReadRefreshStateAsync(
+        NpgsqlConnection connection,
+        NpgsqlTransaction? transaction,
+        string refreshResetKey,
+        CancellationToken cancellationToken)
+    {
+        await using var command = new NpgsqlCommand(
+            "SELECT used_count,rotation_key FROM shop_refresh_states WHERE reset_key=$1" +
+            (transaction is null ? string.Empty : " FOR UPDATE"), connection, transaction);
+        command.Parameters.AddWithValue(refreshResetKey);
+        await using var reader = await command.ExecuteReaderAsync(cancellationToken);
+        if (!await reader.ReadAsync(cancellationToken))
+            throw new InvalidOperationException("Shop refresh state is unavailable.");
+        return new ShopRefreshState(reader.GetInt32(0), reader.GetString(1));
+    }
+
+    private static async Task SeedRotationAsync(
+        NpgsqlConnection connection,
+        NpgsqlTransaction transaction,
+        string rotationKey,
+        string seedKey,
+        GameConfigCatalog config,
+        CancellationToken cancellationToken)
+    {
         await using var command = new NpgsqlCommand("INSERT INTO shop_rotations(reset_key,product_id,kind,payload_json,price_gold,limit_count) VALUES ($1,'card_pack','Cards','{\"rarity\":\"WhiteToPurple\",\"count\":3}',250,5),($1,'warrior_soul','WarriorSoul','{\"amount\":20}',180,3),($1,'equipment_fragments','EquipmentFragments','{\"amount\":20}',120,3),($1,'priest_soul','ClassSoul','{\"heroClass\":\"Priest\",\"amount\":12}',400,1),($1,'mage_soul','ClassSoul','{\"heroClass\":\"Mage\",\"amount\":12}',400,1),($1,'guardian_soul','ClassSoul','{\"heroClass\":\"Guardian\",\"amount\":12}',400,1),($1,'health_potion','HealthPotion','{\"amount\":1}',$2,4),($1,'advanced_bag','AdvancedBag','{\"amount\":1}',$3,99),($1,'top_bag','TopBag','{\"amount\":1}',$4,99) ON CONFLICT DO NOTHING", connection, transaction);
-        command.Parameters.AddWithValue(resetKey);
+        command.Parameters.AddWithValue(rotationKey);
         command.Parameters.AddWithValue(config.Economy.HealthPotionPrice);
         command.Parameters.AddWithValue(config.Backpack("Advanced").PriceGold);
         command.Parameters.AddWithValue(config.Backpack("Top").PriceGold);
         await command.ExecuteNonQueryAsync(cancellationToken);
 
-        var offers = CreateDailyCardOffers(resetKey, config);
+        var offers = CreateDailyCardOffers(seedKey, config);
         for (var index = 0; index < offers.Length; index++)
         {
             var offer = offers[index];
@@ -559,7 +730,7 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
                 "INSERT INTO shop_rotations(reset_key,product_id,kind,payload_json,price_gold,limit_count) VALUES($1,$2,'Cards',$3,$4,$5) ON CONFLICT DO NOTHING",
                 connection,
                 transaction);
-            dailyCard.Parameters.AddWithValue(resetKey);
+            dailyCard.Parameters.AddWithValue(rotationKey);
             dailyCard.Parameters.AddWithValue($"daily_card_{index + 1}");
             dailyCard.Parameters.Add(new NpgsqlParameter
             {
@@ -570,9 +741,9 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
             dailyCard.Parameters.AddWithValue(offer.Price.DailyLimit);
             await dailyCard.ExecuteNonQueryAsync(cancellationToken);
         }
-
-        await transaction.CommitAsync(cancellationToken);
     }
+
+    private sealed record ShopRefreshState(int UsedCount, string RotationKey);
 
     private static DailyCardOffer[] CreateDailyCardOffers(
         string resetKey,
@@ -597,10 +768,57 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
     private static async Task LockPlayerAsync(NpgsqlConnection c, NpgsqlTransaction t, Guid id, CancellationToken ct)
     { await using var cmd = new NpgsqlCommand("SELECT user_id FROM players WHERE user_id=$1 FOR UPDATE", c, t); cmd.Parameters.AddWithValue(id); if (await cmd.ExecuteScalarAsync(ct) is null) throw new InvalidOperationException("Player was not found."); }
 
-    private static async Task<int> PurchasedAsync(NpgsqlConnection c, NpgsqlTransaction t, Guid player, string reset, string product, CancellationToken ct)
+    private static async Task<int> PurchasedAsync(NpgsqlConnection c, NpgsqlTransaction? t, Guid player, string reset, string product, CancellationToken ct)
     { await using var cmd = new NpgsqlCommand("SELECT COALESCE(sum(quantity),0)::integer FROM shop_purchases WHERE player_id=$1 AND reset_key=$2 AND product_id=$3", c, t); cmd.Parameters.AddWithValue(player); cmd.Parameters.AddWithValue(reset); cmd.Parameters.AddWithValue(product); return (int)(await cmd.ExecuteScalarAsync(ct) ?? 0); }
-    private async Task<int> PurchasedAsync(Guid player, string reset, string product, CancellationToken ct)
-    { await using var c = await dataSource.OpenConnectionAsync(ct); await using var cmd = new NpgsqlCommand("SELECT COALESCE(sum(quantity),0)::integer FROM shop_purchases WHERE player_id=$1 AND reset_key=$2 AND product_id=$3", c); cmd.Parameters.AddWithValue(player); cmd.Parameters.AddWithValue(reset); cmd.Parameters.AddWithValue(product); return (int)(await cmd.ExecuteScalarAsync(ct) ?? 0); }
+
+    private static async Task<bool> IsGuaranteedCardOwnedAsync(
+        NpgsqlConnection connection,
+        NpgsqlTransaction? transaction,
+        Guid player,
+        string kind,
+        string payload,
+        CancellationToken ct)
+    {
+        if (kind != "Cards") return false;
+        using var json = JsonDocument.Parse(payload);
+        if (!json.RootElement.TryGetProperty("cardId", out var id)) return false;
+        await using var cmd = new NpgsqlCommand(
+            "SELECT unlocked AND copy_count > 0 FROM player_cards WHERE player_id=$1 AND card_id=$2",
+            connection,
+            transaction);
+        cmd.Parameters.AddWithValue(player);
+        cmd.Parameters.AddWithValue(id.GetString() ?? string.Empty);
+        return (await cmd.ExecuteScalarAsync(ct)) is true;
+    }
+
+    private static async Task<HashSet<string>> OwnedCardIdsAsync(NpgsqlConnection c, NpgsqlTransaction t, Guid player, CancellationToken ct)
+    {
+        await using var cmd = new NpgsqlCommand("SELECT card_id FROM player_cards WHERE player_id=$1 AND unlocked=true AND copy_count > 0 FOR SHARE", c, t);
+        cmd.Parameters.AddWithValue(player);
+        await using var reader = await cmd.ExecuteReaderAsync(ct);
+        var result = new HashSet<string>(StringComparer.Ordinal);
+        while (await reader.ReadAsync(ct)) result.Add(reader.GetString(0));
+        return result;
+    }
+
+    private static async Task EnsureCardPurchaseAvailableAsync(NpgsqlConnection c, NpgsqlTransaction t, Guid player, string kind, string payload, int quantity, CancellationToken ct)
+    {
+        if (kind != "Cards") return;
+        using var json = JsonDocument.Parse(payload);
+        var count = json.RootElement.TryGetProperty("count", out var countElement) ? countElement.GetInt32() * quantity : quantity;
+        var owned = await OwnedCardIdsAsync(c, t, player, ct);
+        if (json.RootElement.TryGetProperty("cardId", out var id))
+        {
+            var cardId = id.GetString() ?? string.Empty;
+            if (count != 1 || owned.Contains(cardId))
+                throw new InvalidOperationException("This card is already activated and cannot be purchased again.");
+            return;
+        }
+
+        var available = GameConfigCatalog.Current.Cards.Count(card => CardPackEligible(card) && !owned.Contains(card.CardId));
+        if (available < count)
+            throw new InvalidOperationException("Not enough unowned cards remain for this card pack.");
+    }
 
     private static async Task<long> SpendGoldAsync(NpgsqlConnection c, NpgsqlTransaction t, Guid player, long amount, CancellationToken ct)
     { await using var cmd = new NpgsqlCommand("UPDATE player_wallets SET gold=gold-$1,version=version+1 WHERE player_id=$2 AND gold >= $1 RETURNING gold", c, t); cmd.Parameters.AddWithValue(amount); cmd.Parameters.AddWithValue(player); var value = await cmd.ExecuteScalarAsync(ct); if (value is null) throw new InvalidOperationException("Not enough gold."); return (long)value; }
@@ -635,22 +853,31 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
         {
             var count = json.RootElement.TryGetProperty("count", out var countElement) ? countElement.GetInt32() * quantity : quantity;
             var selectedCardIds = new List<string>(count);
+            var excluded = await OwnedCardIdsAsync(c, t, player, ct);
             if (json.RootElement.TryGetProperty("cardId", out var id))
             {
                 var selected = id.GetString();
                 if (string.IsNullOrWhiteSpace(selected) ||
                     GameConfigCatalog.Current.Cards.SingleOrDefault(card => card.IsCodex && card.CardId == selected) is null)
                     throw new InvalidOperationException("The shop card grant references an unknown card.");
-                selectedCardIds.AddRange(Enumerable.Repeat(selected, count));
+                if (count != 1 || excluded.Contains(selected))
+                    throw new InvalidOperationException("This card is already activated and cannot be granted again.");
+                selectedCardIds.Add(selected);
+                excluded.Add(selected);
             }
             else
             {
-                for (var index = 0; index < count; index++) selectedCardIds.Add(RollCardPackCard().CardId);
+                for (var index = 0; index < count; index++)
+                {
+                    var selected = RollCardPackCard(excluded).CardId;
+                    selectedCardIds.Add(selected);
+                    excluded.Add(selected);
+                }
             }
 
             foreach (var selected in selectedCardIds)
             {
-                await using var card = new NpgsqlCommand("UPDATE player_cards SET copy_count=copy_count+1, version=version+1, unlocked=true WHERE player_id=$1 AND card_id=$2", c, t);
+                await using var card = new NpgsqlCommand("UPDATE player_cards SET copy_count=1, version=version+1, unlocked=true WHERE player_id=$1 AND card_id=$2 AND (unlocked=false OR copy_count=0)", c, t);
                 card.Parameters.AddWithValue(player);
                 card.Parameters.AddWithValue(selected);
                 if (await card.ExecuteNonQueryAsync(ct) != 1)
@@ -661,7 +888,11 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
         return $"{amount} {kind}";
     }
 
-    private static CardConfigDefinition RollCardPackCard()
+    private static bool CardPackEligible(CardConfigDefinition card) =>
+        card.IsCodex && (card.Quality is "White" or "Green" or "Blue" or "Purple") &&
+        !(card.Quality == "Purple" && card.HeroClass is not null);
+
+    private static CardConfigDefinition RollCardPackCard(HashSet<string> excluded)
     {
         var roll = RandomNumberGenerator.GetInt32(100);
         var quality = roll switch
@@ -673,10 +904,12 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
         };
         var candidates = GameConfigCatalog.Current.Cards
             .Where(card => card.IsCodex && card.Quality == quality &&
-                           !(quality == "Purple" && card.HeroClass is not null))
+                           !(quality == "Purple" && card.HeroClass is not null) && !excluded.Contains(card.CardId))
             .ToArray();
         if (candidates.Length == 0)
-            throw new InvalidOperationException($"The card pack has no eligible {quality} card.");
+            candidates = GameConfigCatalog.Current.Cards.Where(card => CardPackEligible(card) && !excluded.Contains(card.CardId)).ToArray();
+        if (candidates.Length == 0)
+            throw new InvalidOperationException("The card pack has no unowned eligible card.");
         return candidates[RandomNumberGenerator.GetInt32(candidates.Length)];
     }
 

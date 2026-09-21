@@ -2,13 +2,15 @@ extends RefCounted
 
 const Art = preload("res://ui/art.gd")
 const P = preload("res://ui/palette.gd")
-const I18n = preload("res://ui/i18n.gd")
 const BoundedBar = preload("res://ui/bounded_bar.gd")
 const InventoryView = preload("res://ui/inventory_view.gd")
 const Details = preload("res://ui/equipment_details.gd")
 const BattleDetails = preload("res://ui/battle_details.gd")
+const DragScroll = preload("res://ui/drag_scroll.gd")
+const TemporaryBagItem = preload("res://ui/temporary_bag_item.gd")
 const PANEL := "UI/CardCodex/card_codex_dialog_panel_normal.png"
-const SLOT := "UI/Prep/exploration_prep_backpack_cell_empty_normal.png"
+const SLOT := Art.COMMON_CELL_KEY
+const EMPTY_HAND_SLOT := "UI/Codex/qframe_empty_gray.png"
 const ITEM := "UI/Item/exploration_prep_item_icon_"
 
 static func build(ui: Control, host: Control) -> void:
@@ -24,7 +26,6 @@ static func build(ui: Control, host: Control) -> void:
 		_map(ui, host, state)
 	else:
 		_actions(ui, host, state)
-	ui.button("同步", Rect2(1702, 985, 140, 56), func(): Game.gateway.send("room.snapshot.read"))
 	ui.text(Game.connection, Rect2(1450, 995, 236, 40), 20, P.MUTED)
 
 static func _title(ui: Control, value: String, battle: bool = false) -> void:
@@ -47,7 +48,36 @@ static func _picture(ui: Control, texture: Texture2D, rect: Rect2) -> TextureRec
 	node.size = rect.size
 	return node
 
-static func _bar(ui: Control, rect: Rect2, value: float, maximum: float, fill: String, track: String) -> void:
+static func _battle_target_element(state: Dictionary) -> String:
+	var pve: Dictionary = state.get("pve", {})
+	var target_id := str(pve.get("current_target_id", ""))
+	var fallback := ""
+	for entry in pve.get("monsters", []):
+		if not entry is Dictionary: continue
+		var monster: Dictionary = entry
+		if int(monster.get("hp", 0)) <= 0: continue
+		var element := str(monster.get("intent_element", "None"))
+		if element not in ["Fire", "Wood", "Water", "Metal", "Earth"]: continue
+		if fallback.is_empty(): fallback = element
+		if str(monster.get("monster_id", "")) == target_id: return element
+	return fallback
+
+static func _nine_patch(ui: Control, texture: Texture2D, rect: Rect2, margins: Vector4) -> NinePatchRect:
+	var node := NinePatchRect.new()
+	node.texture = texture
+	node.set_patch_margin(SIDE_LEFT, int(margins.x))
+	node.set_patch_margin(SIDE_TOP, int(margins.y))
+	node.set_patch_margin(SIDE_RIGHT, int(margins.z))
+	node.set_patch_margin(SIDE_BOTTOM, int(margins.w))
+	node.axis_stretch_horizontal = NinePatchRect.AXIS_STRETCH_MODE_STRETCH
+	node.axis_stretch_vertical = NinePatchRect.AXIS_STRETCH_MODE_STRETCH
+	node.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	ui.add_child(node)
+	node.position = rect.position
+	node.size = rect.size
+	return node
+
+static func _bar(ui: Control, rect: Rect2, value: float, maximum: float, fill: String, track: String) -> BoundedBar:
 	var bar := BoundedBar.new()
 	bar.configure(fill, track)
 	bar.position = rect.position
@@ -56,6 +86,7 @@ static func _bar(ui: Control, rect: Rect2, value: float, maximum: float, fill: S
 	bar.value = value
 	bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	ui.add_child(bar)
+	return bar
 
 static func _health(ui: Control, combat: Dictionary, rect: Rect2, enemy: bool = false) -> void:
 	var maximum: int = int(combat.get("effective_maximum_hp", combat.get("maximum_hp", 1)))
@@ -74,7 +105,7 @@ static func _passive(ui: Control, hero_class: String, rect: Rect2) -> void:
 	var frame: Control = ui.panel(rect)
 	frame.name = "PlayerPassive_" + hero_class
 	frame.mouse_filter = Control.MOUSE_FILTER_PASS
-	frame.tooltip_text = I18n.t("本命 · %s\n%s" % [names[hero_class], BattleDetails.description(status) if not status.is_empty() else descriptions[hero_class]])
+	frame.tooltip_text = "本命 · %s\n%s" % [names[hero_class], BattleDetails.description(status) if not status.is_empty() else descriptions[hero_class]]
 	var icon: TextureRect = _picture(ui, Art.passive(hero_class), Rect2(rect.position + Vector2(12, 9), Vector2(66, rect.size.y - 18)))
 	icon.name = "PlayerPassiveIcon_" + hero_class
 	ui.text("本命 · " + names[hero_class], Rect2(rect.position + Vector2(89, 8), Vector2(rect.size.x - 100, 36)), 25, P.GOLD)
@@ -84,7 +115,7 @@ static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 	var player: Dictionary = state.get("player", {})
 	var pvp: bool = state.has("duel")
 	_title(ui, "遭遇战" if pvp else "混沌战斗", true)
-	ui.button("战斗属性 / 套装", Rect2(1452, 49, 375, 61), func(): host._show_battle_details(player.get("battle_status", {}))).name = "BattleStats"
+	ui.button(P.localized("battle_stats_set"), Rect2(1452, 49, 375, 61), func(): host._show_battle_details(player.get("battle_status", {}))).name = "BattleStats"
 	if pvp:
 		_duel(ui, host, state)
 	else:
@@ -94,6 +125,11 @@ static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 		_health(ui, player.get("combat", {}), Rect2(80, 670, 310, 115))
 		_passive(ui, player.get("hero_class", ""), Rect2(621, 443, 317, 122))
 		var monsters: Array = state.get("pve", {}).get("monsters", [])
+		var alive_monster_count := 0
+		for candidate in monsters:
+			if int(candidate.get("hp", 0)) > 0:
+				alive_monster_count += 1
+		var can_select_target := alive_monster_count > 1
 		for index in range(mini(monsters.size(), 2)):
 			var monster: Dictionary = monsters[index]
 			var x: float = 1020.0 + index * 415.0 if monsters.size() > 1 else 1200.0
@@ -117,12 +153,14 @@ static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 					ui.picture(Art.element(element), Rect2(x + 25, 121, 62, 62))
 				ui.text("%s %s" % [intent, number], Rect2(x + 95, 126, 250, 58), 37, P.ELEMENT.get(element, P.PAPER))
 			else:
-				_center(ui.text("已击败", Rect2(x + 24, 126, 315, 58), 32, P.MUTED))
+				_center(ui.text(P.localized("defeated"), Rect2(x + 24, 126, 315, 58), 32, P.MUTED))
 			_health(ui, monster, Rect2(x + 24, 190, 315, 114), true)
 			var name: String = host._monster_name(monster.get("monster_id", ""))
 			if monster.get("monster_id", "") == "annihilation-core": name += " · %s阶段" % ("二" if boss_phase == 2 else "一")
-			var button: Button = ui.button(name + (" · 目标" if selected else ""), Rect2(x + 10, 550, 350, 58), func(): Game.command("battle.select_target", {"battle_id": state.pve.battle_id, "target_id": monster.monster_id}), not Game.allowed("battle.select_target") or not alive)
-			if selected: button.add_theme_color_override("font_disabled_color", P.GOLD)
+			if can_select_target:
+				var button: Button = ui.button(name + (" · 目标" if selected else ""), Rect2(x + 10, 550, 350, 58), func(): Game.command("battle.select_target", {"battle_id": state.pve.battle_id, "target_id": monster.monster_id}), not Game.allowed("battle.select_target") or not alive)
+				button.name = "MonsterTarget_" + str(monster.get("monster_id", ""))
+				if selected: button.add_theme_color_override("font_disabled_color", P.GOLD)
 			if alive and int(monster.get("stun_remaining_ms", 0)) > 0:
 				_center(ui.text("眩晕 %.1f 秒" % (float(monster.stun_remaining_ms) / 1000), Rect2(x + 15, 502, 340, 45), 25, P.TEAL))
 			elif alive and int(monster.get("windup_remaining_ms", 0)) > 0:
@@ -132,21 +170,43 @@ static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 static func _hand(ui: Control, host: Control, state: Dictionary) -> void:
 	var player: Dictionary = state.get("player", {})
 	var hand: Array = player.get("hand", [])
+	var target_element := _battle_target_element(state)
 	_preview(ui)
 	var origin := Vector2(458, 622)
 	for index in range(5):
 		var rect := Rect2(origin + Vector2(index * 232, 0), Vector2(218, 376))
 		if index < hand.size():
 			var card: Dictionary = hand[index]
-			ui.card(host, card.get("card_id", ""), rect, func(): Game.toggle_card(card.instance_id), card.get("instance_id", "") in Game.selected_cards, not Game.allowed("battle.play_cards"), {"level": int(card.get("level", 0)), "element_override": str(card.get("element_override", "")), "battle": true})
+			ui.card(host, card.get("card_id", ""), rect, func(): Game.toggle_card(card.instance_id), card.get("instance_id", "") in Game.selected_cards, not Game.allowed("battle.play_cards"), {"level": int(card.get("level", 0)), "element_override": str(card.get("element_override", "")), "battle_target_element": target_element, "selected_overlay": true})
 		else:
-			ui.panel(rect, "UI/Codex/qframe_common.png")
-	ui.button("放", Rect2(1650, 822, 194, 142), Game.play_cards, Game.selected_cards.is_empty() or not Game.allowed("battle.play_cards"), "UI/Battle/battle_play_button.png")
+			var empty_slot := _picture(ui, Art.texture(EMPTY_HAND_SLOT), rect)
+			empty_slot.name = "EmptyHandSlot_%s" % index
+			empty_slot.stretch_mode = TextureRect.STRETCH_SCALE
+	var play_label := P.localized("battle_play_button")
+	var play_width := 220.0
+	var play_font := P.font_for_text(play_label, 30)
+	if play_font != null:
+		play_width = clampf(play_font.get_string_size(play_label, HORIZONTAL_ALIGNMENT_LEFT, -1, 30).x + 72.0, 220.0, 300.0)
+	var play_rect := Rect2(1860.0 - play_width, 845, play_width, 89)
+	var play_art := _nine_patch(ui, Art.texture("UI/Battle/battle_play_button_generated.png"), play_rect, Vector4(34, 18, 34, 18))
+	play_art.name = "PlayCardsButtonArt"
+	var play_button: Button = ui.button(P.localized("battle_play_button"), play_rect, Game.play_cards, Game.selected_cards.is_empty() or not Game.allowed("battle.play_cards"), "")
+	play_button.name = "PlayCardsButton"
+	for state_name in ["normal", "hover", "pressed", "disabled"]:
+		play_button.add_theme_stylebox_override(state_name, StyleBoxEmpty.new())
+	play_button.add_theme_font_size_override("font_size", 30)
+	play_button.add_theme_color_override("font_color", P.PAPER)
+	play_button.add_theme_color_override("font_hover_color", P.PAPER)
+	play_button.add_theme_color_override("font_pressed_color", P.PAPER)
+	play_button.add_theme_color_override("font_disabled_color", P.MUTED)
 	ui.picture(Art.texture("UI/Battle/battle_energy_ring_clean.png"), Rect2(83, 840, 72, 84))
-	ui.text("抽牌", Rect2(170, 838, 230, 43), 26, P.TEAL)
-	_bar(ui, Rect2(171, 885, 225, 32), clampf(float(player.get("draw_charge", "0")), 0, 1), 1, "UI/Battle/battle_energy_cell_lit.png", "UI/Battle/battle_energy_cell_unlit.png")
+	ui.text(P.localized("draw"), Rect2(170, 838, 230, 43), 26, P.TEAL)
+	var charge_bar := _bar(ui, Rect2(171, 885, 225, 32), clampf(float(player.get("draw_charge", "0")), 0, 1), 1, "UI/Battle/battle_energy_cell_lit.png", "UI/Battle/battle_energy_cell_unlit.png")
+	charge_bar.name = "DrawChargeBar"
+	if host.has_method("_draw_charge_value"):
+		charge_bar.value = host._draw_charge_value(float(player.get("draw_charge", "0")))
 	ui.text("牌库 %s · 弃牌 %s" % [player.get("library_count", 0), player.get("discard_count", 0)], Rect2(79, 940, 330, 32), 21, P.MUTED)
-	_center(ui.text("已选 %s 张    1–5 选牌 / 空格放出" % Game.selected_cards.size(), Rect2(573, 1005, 765, 36), 23, P.PAPER))
+	_center(ui.text(P.localized("battle_play_hint") % Game.selected_cards.size(), Rect2(573, 1005, 765, 36), 23, P.PAPER))
 
 static func _preview(ui: Control) -> void:
 	if Game.selected_cards.is_empty(): return
@@ -154,6 +214,9 @@ static func _preview(ui: Control) -> void:
 	var area := Rect2(460, 572, 1380, 47)
 	var panel: Control = ui.panel(area)
 	panel.name = "CombatPreview"
+	if preview.is_empty():
+		ui.text(P.localized("calculating_preview"), Rect2(479, 578, 1000, 33), 22, P.MUTED)
+		return
 	var x := 478.0
 	var core: String = preview.get("core_element", "")
 	var headline := "预览" + (" · %s核×%s" % [P.word(core), preview.get("core_count", 0)] if not core.is_empty() else "")
@@ -162,6 +225,11 @@ static func _preview(ui: Control) -> void:
 	for segment in preview.get("damage_segments", []):
 		ui.text("%s %s" % ["直伤" if segment.kind == "Direct" else P.word(segment.kind), segment.amount], Rect2(x, 578, 140, 34), 25, P.ELEMENT.get(segment.kind, Color.WHITE))
 		x += 140
+	var shield_damage := int(preview.get("shield_damage", 0))
+	var hp_damage := int(preview.get("hp_damage", 0))
+	var actual_damage := shield_damage + hp_damage
+	ui.text("实际 %s（盾%s/血%s）" % [actual_damage, shield_damage, hp_damage], Rect2(x, 578, 235, 34), 21, P.PAPER)
+	x += 235
 	for entry in [["heal", "回复", P.TEAL], ["shield_gain", "盾", Color("c4d2d4")]]:
 		if int(preview.get(entry[0], 0)) > 0:
 			ui.text("%s +%s" % [entry[1], preview[entry[0]]], Rect2(x, 578, 149, 34), 24, entry[2])
@@ -176,7 +244,13 @@ static func _preview(ui: Control) -> void:
 	var tail: Label = ui.text(" · ".join(effects), Rect2(x, 578, maxf(1, 1824 - x), 34), 20, P.PAPER)
 	tail.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	panel.mouse_filter = Control.MOUSE_FILTER_PASS
-	panel.tooltip_text = "扣盾 %s · 扣血 %s\n%s\n按当前战斗状态结算，状态变化后会重新计算" % [preview.get("shield_damage", 0), preview.get("hp_damage", 0), " · ".join(effects)]
+	var formula: Array[String] = []
+	var resonance := float(preview.get("resonance_multiplier", "1"))
+	if resonance > 1.0: formula.append("主核增幅 ×%.2f" % resonance)
+	var conflict_pairs := int(preview.get("conflict_pair_count", 0))
+	var cancellation := float(preview.get("conflict_cancellation", "0"))
+	if conflict_pairs > 0: formula.append("相克 %s组 · 抵消 %s" % [conflict_pairs, Details.percent(cancellation)])
+	panel.tooltip_text = "最终伤害 %s（扣盾 %s · 扣血 %s）\n%s\n%s\n按当前战斗状态结算，状态变化后会重新计算" % [actual_damage, shield_damage, hp_damage, " · ".join(formula), " · ".join(effects)]
 
 static func _duel(ui: Control, host: Control, state: Dictionary) -> void:
 	var player: Dictionary = state.player
@@ -190,7 +264,7 @@ static func _duel(ui: Control, host: Control, state: Dictionary) -> void:
 	var opponent: Control = _picture(ui, Art.portrait(opponent_class) if P.CLASSES.has(opponent_class) else Art.texture("UI/Encounter/encounter_enemy_frame_normal.png"), Rect2(1516, 142, 268, 308))
 	host._combat_panels[duel.get("opponent_id", "")] = opponent
 	ui.text(duel.get("opponent_name", "同格旅人") + " · " + P.word(opponent_class), Rect2(1129, 161, 380, 53), 31, P.GOLD)
-	ui.button("对手属性", Rect2(1534, 462, 252, 55), func(): host._show_battle_details(duel.get("opponent_status", {})))
+	ui.button(P.localized("opponent_stats"), Rect2(1534, 462, 252, 55), func(): host._show_battle_details(duel.get("opponent_status", {})))
 	_health(ui, duel.get("opponent", {}), Rect2(1128, 229, 358, 120), true)
 	var seconds: float = maxf(0, (float(duel.get("leave_window_ends_at_unix_ms", 0)) - Time.get_unix_time_from_system() * 1000) / 1000)
 	ui.button("已请求离开" if duel.get("self_requested_leave", false) else "双方离开", Rect2(400, 398, 350, 66), func(): Game.command("duel.leave", {"duel_id": duel.duel_id}), not Game.allowed("duel.leave"))
@@ -202,8 +276,8 @@ static func _duel(ui: Control, host: Control, state: Dictionary) -> void:
 		_center(ui.text("逃脱中 %.1f 秒" % (float(duel.escape_remaining_ms) / 1000), Rect2(803, 480, 310, 44), 27, P.TEAL))
 	if not Game.allowed("battle.play_cards"):
 		ui.picture(Art.texture("UI/Encounter/encounter_lock_icon_normal.png"), Rect2(1290, 443, 47, 48))
-		ui.text("等待行动", Rect2(1350, 443, 330, 48), 26, P.GOLD)
-	ui.text("自己的手牌", Rect2(80, 622, 330, 54), 34, P.GOLD)
+	ui.text(P.localized("waiting_action"), Rect2(1350, 443, 330, 48), 26, P.GOLD)
+	ui.text(P.localized("own_hand"), Rect2(80, 622, 330, 54), 34, P.GOLD)
 	_passive(ui, player.get("hero_class", ""), Rect2(80, 703, 330, 117))
 
 static func _map(ui: Control, host: Control, state: Dictionary) -> void:
@@ -234,10 +308,6 @@ static func _map(ui: Control, host: Control, state: Dictionary) -> void:
 			button.add_theme_stylebox_override("disabled", Art.style(SLOT, Color("f2d392") if current else tint))
 			button.add_theme_color_override("font_disabled_color", P.GOLD if current else (Color("fa8c72") if cell.get("is_boss", false) else P.TEAL))
 			button.tooltip_text = "%s层%s" % [["外", "中", "内"][layer], " · 可前往" if legal else ""]
-			var map_overlay_key := "UI/Map/map_current_position_overlay.png" if current else ("UI/Map/map_tile_movable_overlay.png" if legal else "UI/Map/map_tile_normal_overlay.png")
-			var map_overlay := _picture(ui, Art.state(map_overlay_key), rect)
-			map_overlay.name = "MapOverlay_%s_%s" % [row, column]
-			map_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			if cell.get("has_spring", false) and not current and not cell.get("is_boss", false):
 				button.text = ""
 				var spring: TextureRect = _picture(ui, Art.texture("UI/Action/spring_clean.png"), Rect2(rect.position + Vector2(39, 9), Vector2(59, 58)))
@@ -265,23 +335,46 @@ static func _actions(ui: Control, host: Control, state: Dictionary) -> void:
 	_health(ui, player.get("combat", {}), Rect2(596, 261, 449, 126))
 	var inventory: Array = player.get("inventory", [])
 	ui.panel(Rect2(1228, 158, 574, 363))
-	ui.text("临时行囊", Rect2(1268, 182, 480, 54), 34, P.GOLD)
+	ui.text(P.localized("temporary_bag"), Rect2(1268, 182, 480, 54), 34, P.GOLD)
 	ui.text("已用 %s / %s 格" % [inventory.size(), player.get("inventory_capacity", 0)], Rect2(1268, 240, 466, 40), 25, P.PAPER)
-	ui.button("打开行囊", Rect2(1556, 180, 206, 52), func(): InventoryView.open(host), not Game.allowed("inventory.move")).name = "OpenInventory"
-	for index in range(mini(6, inventory.size())):
+	ui.button(P.localized("open_bag"), Rect2(1556, 180, 206, 52), func(): InventoryView.open(host), not Game.allowed("inventory.move")).name = "OpenInventory"
+	# The compact view always shows two rows of three items. Keep the server's
+	# inventory order (the acquisition order) instead of laying items out by
+	# slot_index; the full bag is the only place where slot exchange is allowed.
+	var bag_scroll := DragScroll.new()
+	bag_scroll.name = "TemporaryBackpackScroll"
+	bag_scroll.position = Vector2(1268, 291)
+	bag_scroll.size = Vector2(500, 182)
+	bag_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	bag_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	bag_scroll.interaction_enabled = inventory.size() > 6
+	ui.add_child(bag_scroll)
+	# The compact backpack must not expose a second scrollbar affordance. Drag
+	# inside the item area is the only scrolling control.
+	var scrollbar := bag_scroll.get_v_scroll_bar()
+	scrollbar.custom_minimum_size = Vector2.ZERO
+	scrollbar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	scrollbar.modulate.a = 0.0
+	var item_grid := GridContainer.new()
+	item_grid.name = "TemporaryBackpackGrid"
+	item_grid.columns = 3
+	item_grid.add_theme_constant_override("h_separation", 25)
+	item_grid.add_theme_constant_override("v_separation", 16)
+	item_grid.custom_minimum_size = Vector2(461, 0)
+	bag_scroll.add_child(item_grid)
+	for index in range(inventory.size()):
 		var item: Dictionary = inventory[index]
-		var x: float = 1268 + index % 3 * 162
-		var y: float = 291 + int(index / 3) * 99
-		ui.panel(Rect2(x, y, 137, 83), SLOT)
-		ui.picture(_item_icon(item), Rect2(x + 7, y + 8, 64, 60))
-		ui.text("×%s" % item.get("quantity", 0), Rect2(x + 75, y + 27, 59, 37), 23, P.GOLD if item.get("is_safe", false) else P.PAPER)
+		var item_view := TemporaryBagItem.new()
+		item_view.name = "TemporaryBagItem_%s" % str(item.get("item_id", index))
+		item_view.configure(item, _item_icon(item))
+		item_grid.add_child(item_view)
 	var actions: Array = []
 	for action in ["action.spring", "action.potion", "action.extract"]:
 		if Game.allowed(action): actions.append(action)
 	var piles: Array = state.get("current_cell", {}).get("relic_piles", [])
 	actions.append("map")
 	ui.panel(Rect2(80, 539, 1758, 425)).name = "ActionPanel"
-	_center(ui.text("选择接下来的行动", Rect2(610, 558, 680, 62), 40, P.GOLD)).name = "ActionTitle"
+	_center(ui.text(P.localized("choose_next_action"), Rect2(610, 558, 680, 62), 40, P.GOLD)).name = "ActionTitle"
 	var scroll: ScrollContainer = ui._scroll(Rect2(107, 632, 1702, 300), true)
 	var strip := HBoxContainer.new()
 	strip.add_theme_constant_override("separation", 22)
@@ -311,10 +404,6 @@ static func _actions(ui: Control, host: Control, state: Dictionary) -> void:
 		else:
 			var icon: TextureRect = _picture(tile, Art.texture(key), Rect2(rect.position + Vector2(42, 20), Vector2(180, 160)))
 			icon.name = "ActionIcon_" + action_name
-		var action_state_key := "UI/Action/action_available_overlay.png" if action == "map" or Game.allowed(action) or relic else "UI/Action/action_unavailable_overlay.png"
-		var action_state := _picture(tile, Art.state(action_state_key), Rect2(rect.position + Vector2(46, 24), Vector2(172, 172)))
-		action_state.name = "ActionState_" + action_name
-		action_state.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		_center(tile.text(title, Rect2(rect.position + Vector2(12, 183), Vector2(240, 75)), 26, P.PAPER))
 	for key in ["extraction_remaining_ms", "spring_remaining_ms"]:
 		if state.has(key):
@@ -323,8 +412,9 @@ static func _actions(ui: Control, host: Control, state: Dictionary) -> void:
 
 static func _item_icon(item: Dictionary) -> Texture2D:
 	var kind: String = item.get("kind", "")
-	if kind == "Equipment": return Art.equipment(item)
 	var suffix: String = {"Gold": "gold", "EquipmentFragments": "fragments", "WarriorSoul": "warrior_soul", "HealthPotion": "potion", "ClassSoul": Game.hero_class.to_lower() + "_soul"}.get(kind, "")
+	if kind == "Equipment":
+		suffix = {"Helmet": "helmet", "Head": "helmet", "Chest": "chest", "Body": "chest", "Hands": "gauntlet", "Gloves": "gauntlet", "Legs": "legs", "Feet": "boots", "Boots": "boots"}.get(item.get("equipment", {}).get("slot", ""), "")
 	return Art.texture(ITEM + suffix + ".png") if not suffix.is_empty() else null
 
 static func _rewards(ui: Control, host: Control, reward: Dictionary) -> void:
@@ -389,19 +479,25 @@ static func show_midlayer(ui: Control, host: Control, row: int, column: int) -> 
 	overlay.add_child(frame)
 	for entry in [["进入中层", 54, 285], ["进入后不能退回外层", 30, 433], ["随机撤离点不会显示在小地图", 30, 526], ["源泉常亮，可规划绕路回血", 30, 619]]:
 		var label := Label.new()
-		label.text = I18n.t(entry[0])
-		label.add_theme_font_override("font", P.font_for_text(entry[0], entry[1]))
+		var display_text := P.localized_text(entry[0])
+		label.text = display_text
+		label.add_theme_font_override("font", P.font_for_text(display_text, entry[1]))
 		label.position = Vector2(583, entry[2])
 		label.size = Vector2(754, 76)
-		label.add_theme_font_size_override("font_size", entry[1])
+		var typeface := P.font_for_text(display_text, entry[1])
+		label.add_theme_font_override("font", typeface)
+		label.add_theme_font_size_override("font_size", P.fit_font_size(typeface, entry[1], label.size.y, label.size.x - 12.0, display_text))
 		label.add_theme_color_override("font_color", P.GOLD if entry[1] == 54 else P.PAPER)
 		_center(label)
 		overlay.add_child(label)
+		P.fit_control_font(label, typeface, entry[1], 12.0)
 	var confirm := Button.new()
-	confirm.text = I18n.t("确认进入")
+	confirm.text = P.localized_text("确认进入")
 	confirm.position = Vector2(735, 758)
 	confirm.size = Vector2(450, 87)
 	confirm.add_theme_font_size_override("font_size", 35)
+	confirm.clip_text = true
+	confirm.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	Art.button(confirm, "UI/CardCodex/card_codex_action_button_blue.png")
 	confirm.pressed.connect(func():
 		host.remove_meta("pending_move")
@@ -409,10 +505,14 @@ static func show_midlayer(ui: Control, host: Control, row: int, column: int) -> 
 		overlay.queue_free()
 		Game.command("room.move", {"row": row, "column": column}))
 	overlay.add_child(confirm)
+	P.fit_control_font(confirm, P.font_for_text(confirm.text, 35), 35, 48.0)
 	var cancel := Button.new()
-	cancel.text = I18n.t("暂不进入")
+	cancel.text = P.localized_text("暂不进入")
 	cancel.position = Vector2(750, 861)
 	cancel.size = Vector2(420, 60)
 	Art.button(cancel, "UI/CardCodex/card_codex_action_button_blue.png")
+	cancel.clip_text = true
+	cancel.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	cancel.pressed.connect(func(): host.remove_meta("pending_move"); overlay.queue_free())
 	overlay.add_child(cancel)
+	P.fit_control_font(cancel, P.font_for_text(cancel.text, 24), 24, 48.0)

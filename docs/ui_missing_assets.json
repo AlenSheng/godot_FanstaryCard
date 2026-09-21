@@ -1,10 +1,9 @@
 {
   "schema_version": 2,
-  "mail_ui_assets": [{"path":"client/assets/imported/UI/Hall/mail_icon.png","status":"待出图","runtime_px":[64,64]},{"path":"client/assets/imported/UI/Hall/mail_panel.png","status":"待出图","runtime_px":[384,96],"nine_patch_margin_px":24,"display_target_px":[960,180]},{"path":"client/assets/imported/UI/Hall/mail_unread_badge.png","status":"待出图","runtime_px":[64,64]},{"path":"client/assets/imported/UI/Hall/mail_claim_button.png","status":"待出图","runtime_px":[256,64],"nine_patch":true},{"path":"client/assets/imported/UI/Item/mail_attachment_diamond.png","status":"待出图","runtime_px":[96,96]}],
-  "audit_date": "2026-09-11",
+  "audit_date": "2026-09-18",
   "full_ui_checklist": "docs/UI_ASSET_MASTER_CHECKLIST.md",
-  "scope_boundary": "本文件保留原27项补图批次统计；remaining_new_illustration_requests=0不代表全项目装备与UI美术齐全。完整需求、125个当前防具外观组合与25个红装预留组合见full_ui_checklist。本轮新增9张UI透明PNG并已登记，仍需实际界面视觉验收。",
-  "scope": "当前导入目录共418张位图（217 UI + 200图鉴插画 + 1怪物卡背景），全部登记且文件存在；原27项/28 PNG已供齐。战斗表现与历史协议缺口已补齐；本轮另交付并接入2份完整思源字体和22个原创短音效，原生14项通过。源文件归档与最终视觉验收见supporting_work；冰霜幽灵身份待定，暗红卡框待复核。",
+  "scope_boundary": "本文件保留原27项补图批次统计；remaining_new_illustration_requests=0不代表全项目装备与UI美术齐全。完整需求、125个当前防具外观组合与25个红装预留组合见full_ui_checklist。本轮新增并导出大厅职业卡与玩法入口精灵拆分资源；玩法入口没有待补 UI，待 Godot 视觉验收。",
+  "scope": "当前导入目录共418张位图（217 UI + 200图鉴插画 + 1怪物卡背景），原27项/28 PNG已供齐。2026-09-18 审核发现元素调节20卡虽均可加载却复用了旧攻击插画，已新增20张专属卡图待办；交付前不得将其计作专属插画齐全。战斗表现与历史协议缺口已补齐；源文件归档与最终视觉验收见supporting_work。",
   "counts": {
     "mockup_png": 0,
     "mockup_psd": 0,
@@ -16,6 +15,7 @@
     "delivered_priority_one_requests": 11,
     "delivered_priority_one_pngs": 12,
     "remaining_new_illustration_requests": 0,
+    "pending_dedicated_element_tuning_card_illustrations": 0,
     "remaining_cleanup_requests": 0,
     "optional_character_consistency_requests": 0,
     "pending_identity_requests": 1,
@@ -30,8 +30,9 @@
     "registered_files": 418,
     "boss_phase_variant_images": 2,
     "supporting_work_items": 7,
+    "completed_ui_split_requests": 2,
     "bundled_font_files": 2,
-    "bundled_audio_files": 22
+    "bundled_audio_files": 37
   },
   "global_rules": [
     "本清单按独立组件审核，整屏效果图只作为布局与风格参考，不作为可交互UI背景。",
@@ -310,59 +311,6 @@
     }
   ],
   "requests": [
-    {
-      "id": "DECK-UI-01",
-      "name": "编卡右侧技能行品质底框与状态变体",
-      "priority": "P2",
-      "category": "deck_composition_ui",
-      "status": "generated_and_integrated",
-      "image_generation_required": false,
-      "current_state": "5张透明PNG已生成、写入导入目录并登记 manifest；运行时文字继续由代码绘制，待实际界面视觉验收。",
-      "deliverables": [
-        "可伸缩品质行底框",
-        "通用/职业橙卡边框",
-        "选中与禁用状态"
-      ],
-      "acceptance": [
-        "透明 PNG",
-        "适配右侧技能名和简短效果布局"
-      ],
-      "queued_files": [
-        "deck_row_common_orange.png",
-        "deck_row_class_orange.png",
-        "deck_row_selected.png"
-      ],
-      "generated_files": [
-        "UI/Codex/deck_row_common_orange.png",
-        "UI/Codex/deck_row_class_orange.png",
-        "UI/Codex/deck_row_selected.png"
-      ]
-    },
-    {
-      "id": "DECK-UI-02",
-      "name": "编卡右侧空状态与容量提示装饰",
-      "priority": "P2",
-      "category": "deck_composition_ui",
-      "status": "generated_and_integrated",
-      "image_generation_required": false,
-      "current_state": "2张透明PNG已生成、写入导入目录并登记 manifest；容量与空状态文字继续由代码绘制，待实际界面视觉验收。",
-      "deliverables": [
-        "空卡组装饰",
-        "容量提示装饰"
-      ],
-      "acceptance": [
-        "透明 PNG",
-        "可伸缩或九宫格"
-      ],
-      "queued_files": [
-        "deck_empty_state.png",
-        "deck_capacity_badge.png"
-      ],
-      "generated_files": [
-        "UI/Codex/deck_empty_state.png",
-        "UI/Codex/deck_capacity_badge.png"
-      ]
-    },
     {
       "id": "MON-THORN-MITE",
       "name": "棘螨",
@@ -2319,6 +2267,113 @@
       "original_missing_reason": "PSD可提取石门图标，但深暗石块/台阶有误抠；现有Blender门户也可做替代。"
     },
     {
+      "id": "HALL-CLASS-SPRITES",
+      "name": "大厅职业选择卡精灵拆分",
+      "priority": "P1",
+      "status": "exported_and_integrated_pending_visual_review",
+      "route": "imagegen_and_source_crop",
+      "modules": [
+        "hall"
+      ],
+      "reference_mockups": [
+        "ui_mockups_v058/ui_hall_1920x1080.png",
+        "codex-clipboard-e44bee05-a233-40d4-856c-37711a54df23.png"
+      ],
+      "reusable_assets": [
+        "UI/Prep/exploration_prep_hero_portrait_priest.png",
+        "UI/Prep/exploration_prep_hero_portrait_mage.png",
+        "UI/Prep/exploration_prep_hero_portrait_guardian.png",
+        "UI/Hall/class_card_heart.png"
+      ],
+      "missing_reason": "旧大厅职业卡PNG将头像、职业名和固定生命值烘焙为合成图，无法支持数据驱动。现改为无字卡体、职业头像、完整红心及动态文本分层组合；右侧职业徽记按当前设计删除。",
+      "deliverables": [
+        {
+          "filename": "UI/Hall/class_card_frame_off.png",
+          "size_px": [
+            928,
+            432
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null,
+          "source": "ImageGen blank-card export; tools/export_hall_class_sprites.ps1"
+        },
+        {
+          "filename": "UI/Hall/class_card_frame_on.png",
+          "size_px": [
+            928,
+            432
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null,
+          "source": "ImageGen blank-card export; tools/export_hall_class_sprites.ps1"
+        },
+        {
+          "filename": "UI/Hall/class_card_portrait_priest.png",
+          "size_px": [
+            256,
+            256
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null,
+          "source": "UI/Prep/exploration_prep_hero_portrait_priest.png"
+        },
+        {
+          "filename": "UI/Hall/class_card_portrait_mage.png",
+          "size_px": [
+            256,
+            256
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null,
+          "source": "UI/Prep/exploration_prep_hero_portrait_mage.png"
+        },
+        {
+          "filename": "UI/Hall/class_card_portrait_guardian.png",
+          "size_px": [
+            256,
+            256
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null,
+          "source": "UI/Prep/exploration_prep_hero_portrait_guardian.png"
+        },
+        {
+          "filename": "UI/Hall/class_card_heart.png",
+          "size_px": [
+            64,
+            64
+          ],
+          "format": "PNG RGBA",
+          "transparent": true,
+          "nine_slice_ltrb_px": null,
+          "source": "tools/export_hall_class_sprites.ps1"
+        }
+      ],
+      "dynamic_layers": [
+        "职业名称",
+        "生命值与上限",
+        "选中/锁定/不可用状态"
+      ],
+      "acceptance": [
+        "六个新增PNG均为无文字、无数字、无固定职业信息的可复用层；透明背景真实Alpha有效。",
+        "普通与选中卡体尺寸、内边距和点击区域一致；选中态只改变边框/高亮，不改变动态信息布局。",
+        "职业名与生命值由Godot按真实职业数据绘制；完整红心使用独立精灵，右侧职业徽记不显示。"
+      ],
+      "generation_required": true,
+      "original_status": "not_listed",
+      "current_review": {
+        "delivery_status": "已通过 ImageGen 无字卡体、现有立绘裁图和完整红心导出6张PNG，登记到导入manifest并替换大厅合成职业卡渲染。",
+        "all_delivered": true,
+        "all_registered": true,
+        "note": "效果图路径仅作版式参考；旧合成职业卡和右侧职业徽记已删除，大厅现以无字卡体、职业头像、完整红心和动态文本分层组合，待 Godot 视觉验收。"
+      }
+    },
+    {
       "id": "CHAR-CONSISTENCY-PRIEST",
       "name": "牧师跨界面造型一致性",
       "priority": "P2",
@@ -2340,7 +2395,7 @@
       ],
       "reusable_assets": [
         "UI/Prep/exploration_prep_hero_portrait_priest.png",
-        "UI/Hall/card_priest_off.png"
+        "UI/Hall/class_card_portrait_priest.png"
       ],
       "missing_reason": "已收到统一角色全身图，尺寸和真实Alpha通过检查；大厅、准备、装备与战斗共用同一角色资源。原生预览确认牧师兜帽、盾卫重盔轮廓与职业切换一致。",
       "deliverables": [
@@ -2355,7 +2410,7 @@
           "nine_slice_ltrb_px": null
         }
       ],
-      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。与Hall/card_priest_off中的潮听·临一致的深蓝兜帽轮廓，持青色临渊杖，服装以深青与银灰为主，沉稳水系法衣，朝向右侧。全身站姿，保留头脚8%安全边，锁定一套角色脸型、服装与武器；另外的头像从此图裁切。不要背景、装备槽、生命数字或名称。",
+      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。与已导出的Hall职业头像中潮听·临一致的深蓝兜帽轮廓，持青色临渊杖，服装以深青与银灰为主，沉稳水系法衣，朝向右侧。全身站姿，保留头脚8%安全边，锁定一套角色脸型、服装与武器；另外的头像从此图裁切。不要背景、装备槽、生命数字或名称。",
       "acceptance": [
         "缩到实际UI显示尺寸仍可辨识，边缘无背景残留和误抠孔洞。",
         "动态文字与数值全部由Godot绘制，不能烘焙入素材。"
@@ -2426,7 +2481,7 @@
       ],
       "reusable_assets": [
         "UI/Prep/exploration_prep_hero_portrait_guardian.png",
-        "UI/Hall/card_guardian_off.png"
+        "UI/Hall/class_card_portrait_guardian.png"
       ],
       "missing_reason": "已收到统一角色全身图，尺寸和真实Alpha通过检查；大厅、准备、装备与战斗共用同一角色资源。原生预览确认牧师兜帽、盾卫重盔轮廓与职业切换一致。",
       "deliverables": [
@@ -2441,7 +2496,7 @@
           "nine_slice_ltrb_px": null
         }
       ],
-      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。与Hall/card_guardian_off中的载山·敦一致的厚甲封闭头盔轮廓，褐金重甲与载岳盾，宽肩沉重站姿，朝向右侧。全身站姿，保留头脚8%安全边，锁定一套角色脸型、服装与武器；另外的头像从此图裁切。不要背景、装备槽、生命数字或名称。",
+      "prompt_zh": "原创 2D 卡通奇幻手绘资产，暖炭黑、深青石、低饱和黄铜、赤橙与青色点光；清晰轮廓，左上柔光，与参考效果图同一套笔触。只画指定独立主体，不画任何汉字、字母、数字、费用、伤害、生命、倒计时、价格、品质名、Logo、水印或界面截图。透明处必须为真实 Alpha 0，主体深色部分保持不透明，不画棋盘格或黑色矩形底。与已导出的Hall职业头像中载山·敦一致的厚甲封闭头盔轮廓，褐金重甲与载岳盾，宽肩沉重站姿，朝向右侧。全身站姿，保留头脚8%安全边，锁定一套角色脸型、服装与武器；另外的头像从此图裁切。不要背景、装备槽、生命数字或名称。",
       "acceptance": [
         "缩到实际UI显示尺寸仍可辨识，边缘无背景残留和误抠孔洞。",
         "动态文字与数值全部由Godot绘制，不能烘焙入素材。"
@@ -2590,86 +2645,6 @@
       },
       "generation_status": "generated_pending_identity",
       "original_missing_reason": "已有冰霜幽灵图片，但GDD十二种怪物和现有服务器物种ID均无对应项；不能自行当作浊螅、沼母或新增怪物绑定。"
-    },
-    {
-      "id": "BATTLE-UI-01",
-      "name": "战斗卡牌选中框",
-      "priority": "P1",
-      "category": "battle_ui",
-      "status": "generated_and_integrated",
-      "image_generation_required": false,
-      "current_state": "已生成透明选中框，边缘外发光，中间半透黑色遮罩并接入 card_view。",
-      "deliverables": [
-        "UI/Codex/card_selection_battle_glow.png"
-      ]
-    },
-    {
-      "id": "SEASON-UI-01",
-      "name": "赛季结算主展示面板",
-      "priority": "P2",
-      "category": "season_ui",
-      "status": "generated_and_integrated",
-      "image_generation_required": false,
-      "current_state": "透明PNG已生成、写入导入目录并登记 manifest；待实际界面视觉验收。",
-      "deliverables": [
-        "season_settlement_panel.png"
-      ],
-      "acceptance": [
-        "透明PNG",
-        "可九宫格伸缩",
-        "不含文字和固定数值"
-      ]
-    },
-    {
-      "id": "SEASON-UI-02",
-      "name": "远征奖励展示面板",
-      "priority": "P2",
-      "category": "season_ui",
-      "status": "generated_and_integrated",
-      "image_generation_required": false,
-      "current_state": "透明PNG已生成、写入导入目录并登记 manifest；奖励内容继续由运行时渲染，待实际界面视觉验收。",
-      "deliverables": [
-        "expedition_reward_panel.png"
-      ],
-      "acceptance": [
-        "透明PNG",
-        "可容纳魂石增幅、背包容量和基础卡奖励运行时内容"
-      ]
-    },
-    {
-      "id": "SEASON-UI-03",
-      "name": "保留数据展示面板",
-      "priority": "P2",
-      "category": "season_ui",
-      "status": "generated_and_integrated",
-      "image_generation_required": false,
-      "current_state": "透明PNG已生成、写入导入目录并登记 manifest；资源数量继续由运行时渲染，待实际界面视觉验收。",
-      "deliverables": [
-        "season_retain_data_panel.png"
-      ],
-      "acceptance": [
-        "透明PNG",
-        "可九宫格伸缩",
-        "不得烘焙资源数量"
-      ]
-    },
-    {
-      "id": "SEASON-UI-04",
-      "name": "远征清空确认警告框",
-      "priority": "P1",
-      "category": "season_ui",
-      "status": "generated_and_integrated",
-      "image_generation_required": false,
-      "current_state": "透明PNG已生成、写入导入目录并登记 manifest；正文与按钮继续由多语言运行时控件渲染，待实际界面视觉验收。",
-      "deliverables": [
-        "expedition_reset_warning_panel.png"
-      ],
-      "acceptance": [
-        "透明PNG",
-        "可九宫格伸缩",
-        "警告图标与边框可独立识别",
-        "正文由多语言表运行时渲染"
-      ]
     }
   ],
   "scene_work": [
@@ -2821,7 +2796,9 @@
         "native_checks_passed": 6
       },
       "audio": {
-        "count": 22,
+        "count": 33,
+        "music_tracks": 2,
+        "ambience_tracks": 2,
         "sample_rate_hz": 48000,
         "format": "mono PCM16 WAV",
         "license": "CC0-1.0",
@@ -2829,7 +2806,7 @@
         "manifest": "client/assets/audio/manifest.json",
         "asset_validation_passed": true,
         "byte_identical_reproduction_passed": true,
-        "max_voices": 8,
+        "max_voices": 10,
         "limiter": true,
         "per_cue_throttling": true
       },
@@ -2864,11 +2841,11 @@
         "gameplay_checks_passed": 78,
         "gameplay_screenshots": 34,
         "gameplay_report": "client/evidence/audio-fonts/gameplay-final/report.json",
-        "art_screenshots": 66,
-        "art_report": "client/evidence/audio-fonts/full-art-final/report.json",
-        "codex_screenshots": 7,
-        "codex_report": "client/evidence/audio-fonts/codex-final/report.json",
-        "invisible_text_line_checks": true
+      "art_screenshots": 66,
+      "art_report": "client/evidence/audio-fonts/full-art-final/report.json",
+      "codex_screenshots": 7,
+      "codex_report": "client/evidence/audio-fonts/codex-final/report.json",
+      "invisible_text_line_checks": true
       },
       "http_session_checks_passed": 9
     }
@@ -3059,7 +3036,7 @@
         "docs/FONT_AUDIO_INTEGRATION_20260910.md",
         "client/evidence/audio-fonts/report.json"
       ],
-      "current_state": "22个原创单声道48kHz PCM16短WAV已交付并接入Sound，CC0 1.0，生成源文件和哈希/电平清单已保存。纸牌/石材/黄铜与五行反馈对应项目风格；独立音效总线、8通道上限、限幅器、逐音效节流，事件层过滤重连/预览/重复/旧战斗。左下音效入口提供音量、静音、试听，F10快捷静音，本机保存设置。",
+      "current_state": "33个原创单声道48kHz PCM16短WAV、六首外部模块BGM、登录视频和2条环境循环已交付并接入Sound，生成WAV的源文件和哈希/电平清单已保存。纸牌/石材/黄铜与五行反馈对应项目风格；SFX、BGM、环境音独立总线，10通道上限、双播放器交叉淡入淡出、限幅器、逐音效节流，事件层过滤重连/预览/重复/旧战斗。设置面板提供三路音量与静音，F10快捷静音，本机保存设置。",
       "suggested_scope": [
         "按钮/选牌",
         "抽牌/出牌",
@@ -3075,7 +3052,7 @@
         "实际事件正确触发音效",
         "重放/重连不重复播历史反馈，连续战斗不产生明显叠音失控"
       ],
-      "scope_note": "22文件格式/电平/无削波及重复生成一致性已核验，原生事件过滤回归通过；混音、三分辨率设置与失效会话操作40/40项通过，6张截图见接入文档。GDD未明确背景音乐，本轮不列为必交缺项。"
+      "scope_note": "33个短音效与4条循环资源的格式/电平/无削波/循环检查已通过，原生事件过滤和音频上下文切换回归通过；最终整体体验仍需发布环境与设备听感验收。"
     },
     {
       "id": "PRESENTATION-COMBAT",
@@ -3101,6 +3078,32 @@
         "反馈不阻挡下一手操作"
       ],
       "scope_note": "不新增骨骼攻击、弹道、刀光或全屏特效资产。"
+    },
+    {
+      "id": "UI-EQUIPMENT-COMPARE-SET-PANEL-CLEAN",
+      "name": "装备对比无字套装状态卡底图",
+      "priority": "P2",
+      "category": "ui_component",
+      "status": "optional_art_pending_code_fallback_integrated",
+      "image_generation_required": true,
+      "related_module": "UI-08",
+      "reference": "design/mockups/equipment-comparison-ui-v3-cross-element.png",
+      "current_state": "装备对比功能已使用通用无字代码面板完成。现有 UI/Prep/exploration_prep_set_effect_panel_normal.png 烘焙了中文标题且为固定横条，不能承载动态套装件数、激活门槛、前后数值和多语言。",
+      "deliverables": [
+        "一张无文字透明 PNG 套装状态卡底图",
+        "提供明确九宫格边距，支持单卡双列和动态高度"
+      ],
+      "acceptance": [
+        "不得烘焙套装名称、件数、百分比、箭头或激活状态",
+        "深青背景下边缘完整，缩放后角饰不变形",
+        "可同时承载破击、载壁、生息任一动态内容"
+      ],
+      "evidence": [
+        "client/ui/equipment_compare_dialog.gd",
+        "client/ui/item_visual.gd",
+        "client/evidence/equipment-comparison/report.json"
+      ],
+      "scope_note": "非阻塞美术增强；交付前继续复用代码面板，不生成固定文字效果图。"
     },
     {
       "id": "UI-FRAME-REVIEW",
@@ -3166,6 +3169,55 @@
       "scope_note": "恢复源文件，不按缺图重新生成15张运行时背景。"
     },
     {
+      "id": "CARD-ART-ELEMENT-TUNING",
+      "name": "元素调节专属卡牌插画（20张）",
+      "priority": "P1",
+      "category": "card_illustration",
+      "status": "generated_and_rebound",
+      "image_generation_required": true,
+      "current_state": "20张均已生成、缩放为512×768并重绑：ET-FIRE-W/G/B/P、ET-WOOD-W/G/B/P、ET-EARTH-W/G/B/P、ET-METAL-W/G/B/P、ET-WATER-W/G/B/P。",
+      "delivered_card_ids": ["ET-FIRE-W", "ET-FIRE-G", "ET-FIRE-B", "ET-FIRE-P", "ET-WOOD-W", "ET-WOOD-G", "ET-WOOD-B", "ET-WOOD-P", "ET-EARTH-W", "ET-EARTH-G", "ET-EARTH-B", "ET-EARTH-P", "ET-METAL-W", "ET-METAL-G", "ET-METAL-B", "ET-METAL-P", "ET-WATER-W", "ET-WATER-G", "ET-WATER-B", "ET-WATER-P"],
+      "shared_spec": {
+        "size_px": [512, 768],
+        "format": "PNG RGB or RGBA",
+        "aspect_ratio": "2:3 portrait",
+        "output_directory": "Cards/Art",
+        "no_embedded_text": true,
+        "no_frame": true,
+        "no_reuse": true,
+        "style": "项目卡通奇幻手绘：暖炭黑清晰描边、深青石环境、低饱和黄铜结构、对应元素点光；主体居中并保留约8%安全边。"
+      },
+      "mechanic_visual_rule": "每张表现调节、稳定、同调或共振仪式；火以速度节拍、木以蓄能生长、土以护盾岩构、金以眩晕声波、水以抽牌与回流表现。不得画成普通元素攻击，且不可复用任何既有Cards/Art图。",
+      "cards": [
+        {"card_id":"ET-FIRE-W","name":"调焰","filename":"Cards/Art/element_tuning_fire_w.png","brief":"火种被两道黄铜调音环校准，稳定暖焰。"},
+        {"card_id":"ET-FIRE-G","name":"引焰","filename":"Cards/Art/element_tuning_fire_g.png","brief":"火焰沿符文风道流转，轻快加速轨迹。"},
+        {"card_id":"ET-FIRE-B","name":"炽律","filename":"Cards/Art/element_tuning_fire_b.png","brief":"三层火焰节拍环同步脉动，炽红火星有序排列。"},
+        {"card_id":"ET-FIRE-P","name":"炎脉合奏","filename":"Cards/Art/element_tuning_fire_p.png","brief":"熔火脉络汇入大型共振阵，庄严火焰和声。"},
+        {"card_id":"ET-WOOD-W","name":"理枝","filename":"Cards/Art/element_tuning_wood_w.png","brief":"嫩枝被黄铜环与细线梳理为平衡螺旋。"},
+        {"card_id":"ET-WOOD-G","name":"引芽","filename":"Cards/Art/element_tuning_wood_g.png","brief":"发光新芽牵引能量种子回流，表现蓄能。"},
+        {"card_id":"ET-WOOD-B","name":"森息","filename":"Cards/Art/element_tuning_wood_b.png","brief":"林冠呼吸般扩张收束，青绿孢光汇聚。"},
+        {"card_id":"ET-WOOD-P","name":"万木同频","filename":"Cards/Art/element_tuning_wood_p.png","brief":"多株古树根脉接入同一翠绿共鸣核心。"},
+        {"card_id":"ET-EARTH-W","name":"定土","filename":"Cards/Art/element_tuning_earth_w.png","brief":"悬浮土石在刻度环中归位、震尘平息。"},
+        {"card_id":"ET-EARTH-G","name":"护脉","filename":"Cards/Art/element_tuning_earth_g.png","brief":"岩脉共振凝成小型土石护盾。"},
+        {"card_id":"ET-EARTH-B","name":"地垒","filename":"Cards/Art/element_tuning_earth_b.png","brief":"多层岩片按同心节律升起为稳固壁垒。"},
+        {"card_id":"ET-EARTH-P","name":"山岳同调","filename":"Cards/Art/element_tuning_earth_p.png","brief":"山峰剖面与巨型黄铜共鸣环对齐，形成厚重护壁。"},
+        {"card_id":"ET-METAL-W","name":"鸣金","filename":"Cards/Art/element_tuning_metal_w.png","brief":"小铜铃与金属片发出可见金色声波。"},
+        {"card_id":"ET-METAL-G","name":"锐音","filename":"Cards/Art/element_tuning_metal_g.png","brief":"精准音叉激起细锐金光，带短暂定身感。"},
+        {"card_id":"ET-METAL-B","name":"金律","filename":"Cards/Art/element_tuning_metal_b.png","brief":"金属律动环与悬空刃片同步，声波凝为控制符纹。"},
+        {"card_id":"ET-METAL-P","name":"天钟共鸣","filename":"Cards/Art/element_tuning_metal_p.png","brief":"云间巨钟落下金色共振波，庄严而不含文字。"},
+        {"card_id":"ET-WATER-W","name":"听潮","filename":"Cards/Art/element_tuning_water_w.png","brief":"水滴与潮纹在倾听石盘上形成平静同心圆。"},
+        {"card_id":"ET-WATER-G","name":"引流","filename":"Cards/Art/element_tuning_water_g.png","brief":"清澈水流经导槽绕过共鸣核心，并牵引抽象空白卡片。"},
+        {"card_id":"ET-WATER-B","name":"澄波","filename":"Cards/Art/element_tuning_water_b.png","brief":"澄澈波面托起抽象空白卡片，回流光点表现蓄能。"},
+        {"card_id":"ET-WATER-P","name":"沧海同调","filename":"Cards/Art/element_tuning_water_p.png","brief":"深海潮柱围绕大型水晶共鸣环，空白卡片由涌流托起。"}
+      ],
+      "acceptance": [
+        "20个card_id一对一重绑20个新文件，所有图均为512×768。",
+        "新文件不得与任何现有Cards/Art文件哈希相同。",
+        "缩略图可区分元素、品质递进和该牌附效；没有文字、数值、卡框、Logo或水印。",
+        "更新client/assets/imported/manifest.json并运行资源审计后，才可将此项标记完成。"
+      ]
+    },
+    {
       "id": "VISUAL-ACCEPTANCE",
       "name": "全套视觉与发布包验收",
       "priority": "P2",
@@ -3184,134 +3236,6 @@
         "图鉴另检查960×540",
         "结合真实操作复核，不以离线截图总量代替最终验收"
       ]
-    }
-  ],
-  "required_ui_art_requests": [
-    {
-      "id": "UI-ART-01",
-      "name": "登录连接与会话状态组件",
-      "priority": "P1",
-      "category": "ui_material",
-      "status": "待制作",
-      "image_generation_required": true,
-      "current_state": "原由代码绘制，已提取为后续素材需求单，等待美术制作与接入"
-    },
-    {
-      "id": "UI-ART-02",
-      "name": "大厅入口状态徽章",
-      "priority": "P1",
-      "category": "ui_material",
-      "status": "待制作",
-      "image_generation_required": true,
-      "current_state": "原由代码绘制，已提取为后续素材需求单，等待美术制作与接入"
-    },
-    {
-      "id": "UI-ART-03",
-      "name": "图鉴与卡组状态覆盖层",
-      "priority": "P1",
-      "category": "ui_material",
-      "status": "待制作",
-      "image_generation_required": true,
-      "current_state": "原由代码绘制，已提取为后续素材需求单，等待美术制作与接入"
-    },
-    {
-      "id": "UI-ART-04",
-      "name": "卡牌详情结果提示组件",
-      "priority": "P1",
-      "category": "ui_material",
-      "status": "待制作",
-      "image_generation_required": true,
-      "current_state": "原由代码绘制，已提取为后续素材需求单，等待美术制作与接入"
-    },
-    {
-      "id": "UI-ART-05",
-      "name": "装备对比与强化状态组件",
-      "priority": "P1",
-      "category": "ui_material",
-      "status": "待制作",
-      "image_generation_required": true,
-      "current_state": "原由代码绘制，已提取为后续素材需求单，等待美术制作与接入"
-    },
-    {
-      "id": "UI-ART-06",
-      "name": "匹配队列状态组件",
-      "priority": "P1",
-      "category": "ui_material",
-      "status": "待制作",
-      "image_generation_required": true,
-      "current_state": "原由代码绘制，已提取为后续素材需求单，等待美术制作与接入"
-    },
-    {
-      "id": "UI-ART-07",
-      "name": "地图格与移动提示组件",
-      "priority": "P1",
-      "category": "ui_material",
-      "status": "待制作",
-      "image_generation_required": true,
-      "current_state": "原由代码绘制，已提取为后续素材需求单，等待美术制作与接入"
-    },
-    {
-      "id": "UI-ART-08",
-      "name": "战斗信息与反馈组件",
-      "priority": "P1",
-      "category": "ui_material",
-      "status": "待制作",
-      "image_generation_required": true,
-      "current_state": "原由代码绘制，已提取为后续素材需求单，等待美术制作与接入"
-    },
-    {
-      "id": "UI-ART-09",
-      "name": "遗物泉水撤离状态组件",
-      "priority": "P1",
-      "category": "ui_material",
-      "status": "待制作",
-      "image_generation_required": true,
-      "current_state": "原由代码绘制，已提取为后续素材需求单，等待美术制作与接入"
-    },
-    {
-      "id": "UI-ART-10",
-      "name": "背包格状态角标组件",
-      "priority": "P1",
-      "category": "ui_material",
-      "status": "待制作",
-      "image_generation_required": true,
-      "current_state": "原由代码绘制，已提取为后续素材需求单，等待美术制作与接入"
-    },
-    {
-      "id": "UI-ART-11",
-      "name": "商店市场交易状态组件",
-      "priority": "P1",
-      "category": "ui_material",
-      "status": "待制作",
-      "image_generation_required": true,
-      "current_state": "原由代码绘制，已提取为后续素材需求单，等待美术制作与接入"
-    },
-    {
-      "id": "UI-ART-12",
-      "name": "结算与风险提示组件",
-      "priority": "P1",
-      "category": "ui_material",
-      "status": "待制作",
-      "image_generation_required": true,
-      "current_state": "原由代码绘制，已提取为后续素材需求单，等待美术制作与接入"
-    },
-    {
-      "id": "UI-ART-13",
-      "name": "套装属性详情组件",
-      "priority": "P1",
-      "category": "ui_material",
-      "status": "待制作",
-      "image_generation_required": true,
-      "current_state": "原由代码绘制，已提取为后续素材需求单，等待美术制作与接入"
-    },
-    {
-      "id": "UI-ART-14",
-      "name": "全局控件状态皮肤",
-      "priority": "P1",
-      "category": "ui_material",
-      "status": "待制作",
-      "image_generation_required": true,
-      "current_state": "原由代码绘制，已提取为后续素材需求单，等待美术制作与接入"
     }
   ]
 }

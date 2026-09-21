@@ -186,6 +186,11 @@ public sealed class RealtimeProtobufCodecTests
             new ClientCommand("battle.select_target", "target", 12, target)));
         Assert.Equivalent(target, Assert.IsType<BattleSelectTargetCommandPayload>(decodedTarget.Payload), strict: true);
 
+        var abandon = RealtimeProtobufCodec.DecodeClient(RealtimeProtobufCodec.EncodeClient(
+            new ClientCommand("battle.abandon", "abandon", 13, new BattleAbandonCommandPayload())));
+        Assert.IsType<BattleAbandonCommandPayload>(abandon.Payload);
+        Assert.Equal(13, abandon.ExpectedRevision);
+
         var replace = new RelicReplaceCommandPayload(Guid.NewGuid(), "loot", 7, "old-item");
         var decodedReplace = RealtimeProtobufCodec.DecodeClient(RealtimeProtobufCodec.EncodeClient(
             new ClientCommand("relic.replace", "replace", 13, replace)));

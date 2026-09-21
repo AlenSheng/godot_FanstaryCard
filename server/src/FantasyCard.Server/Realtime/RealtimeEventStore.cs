@@ -101,6 +101,10 @@ public sealed class RealtimeEventStore(TimeProvider timeProvider)
         }
     }
 
+    // Authentication revocation is terminal: its presentation event may be delivered to
+    // the current socket, but must never be replayed into a later authenticated session.
+    public void Clear(Guid playerId) => _streams.TryRemove(playerId, out _);
+
     public sealed record ReplayResult(
         bool HasGap,
         long LastSequence,

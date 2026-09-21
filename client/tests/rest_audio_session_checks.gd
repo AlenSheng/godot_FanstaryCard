@@ -23,7 +23,7 @@ func run_test(host: Control) -> Dictionary:
 	fake.online = true
 	Game.gateway = fake
 	host.screen = "hall"
-	host.owned = [{"cardId": "C01", "craftCost": 1, "copyCount": 2, "version": 1}]
+	host.owned = [{"cardId": "C01", "craftCost": 1, "copyCount": 1, "level": 0, "version": 1, "currencyKind": "WarriorSoul", "upgradeCost": 0, "upgradeCopyCost": 0, "canUpgrade": true}]
 	host._codex_ready = true
 	Sound.persist_settings = false
 	Sound.set_muted(false)
@@ -51,6 +51,19 @@ func run_test(host: Control) -> Dictionary:
 		var expected: Array = ["/api/v1/cards/C01/upgrade"] if action == "card_upgrade" else (["/api/v1/shop/purchases"] if action == "purchase" else ["/api/v1/decks/" + Game.hero_class])
 		if action == "deck_refresh_switch": expected.append("/api/v1/bootstrap")
 		checks["Stale REST stops follow-up requests: " + action] = fake.paths == expected
+	Game.busy = false
+	host._codex_mutating = false
+	host.owned = [{"cardId": "C01", "craftCost": 1, "copyCount": 1, "level": 0, "version": 1, "currencyKind": "WarriorSoul", "upgradeCost": 5, "upgradeCopyCost": 0, "canUpgrade": true}]
+	Game.lobby["materials"] = {"warriorSoul": 4}
+	fake.paths.clear()
+	await host._card_action("C01", "upgrade")
+	checks["Insufficient card upgrade is rejected before networking"] = fake.paths.is_empty()
+	Game.lobby["materials"] = {"warriorSoul": 10}
+	fake.responses = [{"result": {"ok": true, "status": 200, "data": {"card": {"cardId": "C01", "craftCost": 1, "copyCount": 1, "level": 1, "version": 2, "currencyKind": "WarriorSoul", "upgradeCost": 10, "upgradeCopyCost": 0, "canUpgrade": true}, "materials": {"warriorSoul": 5}}}}]
+	fake.paths.clear()
+	await host._card_action("C01", "upgrade")
+	checks["Successful card upgrade uses its mutation response without refresh requests"] = fake.paths == ["/api/v1/cards/C01/upgrade"]
+	checks["Successful card upgrade updates the cached level and material balance"] = int(host._owned_card("C01").get("level", 0)) == 1 and int(Game.lobby.materials.get("warriorSoul", 0)) == 5
 	Sound.cue_started.disconnect(listener)
 	Sound.stop_all()
 	Game.gateway = original_gateway

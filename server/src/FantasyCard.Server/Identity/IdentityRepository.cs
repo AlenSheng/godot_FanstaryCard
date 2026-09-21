@@ -3,6 +3,7 @@ using FantasyCard.Server.Players;
 using FantasyCard.Server.Progression;
 using Npgsql;
 using NpgsqlTypes;
+using System.Text.Json;
 
 namespace FantasyCard.Server.Identity;
 
@@ -19,6 +20,7 @@ public sealed class IdentityRepository(
     NpgsqlDataSource dataSource,
     PlayerProvisioningService provisioningService)
 {
+    private static readonly string[] TestEquipmentSlots = ["Head", "Chest", "Hands", "Legs", "Feet"];
     public async Task<PlayerProfile> SignInLocalAsync(
         string deviceId,
         string displayName,
@@ -72,6 +74,13 @@ public sealed class IdentityRepository(
             await InsertPlayerAsync(connection, transaction, profile, provider, externalSubject, cancellationToken);
         }
 
+        await using (var ban = new NpgsqlCommand("SELECT 1 FROM player_bans WHERE player_id=$1", connection, transaction))
+        {
+            ban.Parameters.AddWithValue(profile.UserId);
+            if (await ban.ExecuteScalarAsync(cancellationToken) is not null)
+                throw new PlayerBannedException();
+        }
+
         await provisioningService.ProvisionAsync(
             connection,
             transaction,
@@ -79,6 +88,14 @@ public sealed class IdentityRepository(
             profile.DisplayName,
             now,
             cancellationToken);
+
+        if (string.Equals(provider, "local-name", StringComparison.Ordinal))
+        {
+            if (externalSubject.StartsWith("test2_", StringComparison.OrdinalIgnoreCase))
+                await SeedTestMailAsync(connection, transaction, profile.UserId, now, true, cancellationToken);
+            else if (externalSubject.StartsWith("test_", StringComparison.OrdinalIgnoreCase))
+                await SeedTestMailAsync(connection, transaction, profile.UserId, now, false, cancellationToken);
+        }
 
         await using (var sessionCommand = new NpgsqlCommand(
             """
@@ -104,6 +121,86 @@ public sealed class IdentityRepository(
         return profile;
     }
 
+    private static async Task SeedTestMailAsync(
+        NpgsqlConnection connection,
+        NpgsqlTransaction transaction,
+        Guid playerId,
+        DateTimeOffset now,
+        bool advancedEquipmentSet,
+        CancellationToken cancellationToken)
+    {
+        var mails = advancedEquipmentSet
+            ? new List<(string Title, string Body, object Attachments)>
+            {
+                ("测试邮件2：橙紫双词缀套装", "test2 测试账号奖励：头部橙色、其余紫色的同词缀套装，每件带效果词缀和第二词缀。", MixedEquipmentSet("Orange", "Purple", "Metal", "Bulwark", "DrawInterval")),
+                ("测试邮件2：装备碎片", "test2 测试账号奖励：装备碎片 100000。", new[] { new { kind = "EquipmentFragments", amount = 100000L } })
+            }
+            : new List<(string Title, string Body, object Attachments)>
+        {
+            ("测试邮件：金币", "测试账号奖励：金币 100000。", new[] { new { kind = "Gold", amount = 100000L } }),
+            ("测试邮件：魂晶", "测试账号奖励：各类魂晶各 100000。", new object[] {
+                new { kind = "WarriorSoul", amount = 100000L }, new { kind = "PriestSoul", amount = 100000L },
+                new { kind = "MageSoul", amount = 100000L }, new { kind = "GuardianSoul", amount = 100000L } }),
+            ("测试邮件：白色火系装备", "测试账号奖励：白色火系装备一套。", EquipmentSet("White", "Fire")),
+            ("测试邮件：绿色水系装备", "测试账号奖励：绿色水系装备一套。", EquipmentSet("Green", "Water")),
+            ("测试邮件：蓝色土系装备", "测试账号奖励：蓝色土系装备一套。", EquipmentSet("Blue", "Earth")),
+            ("测试邮件：紫色木系装备", "测试账号奖励：紫色木系装备一套。", EquipmentSet("Purple", "Wood")),
+            ("测试邮件：橙色金系装备", "测试账号奖励：橙色金系装备一套。", EquipmentSet("Orange", "Metal"))
+        };
+        foreach (var mail in mails)
+        {
+            await using var command = new NpgsqlCommand("INSERT INTO mail_messages(mail_id,player_id,title,body,sender,attachments_json,sent_at) SELECT $1,$2,$3,$4,'System',$5::jsonb,$6 WHERE NOT EXISTS (SELECT 1 FROM mail_messages WHERE player_id=$2 AND title=$3)", connection, transaction);
+            command.Parameters.AddWithValue(Guid.CreateVersion7());
+            command.Parameters.AddWithValue(playerId);
+            command.Parameters.AddWithValue(mail.Title);
+            command.Parameters.AddWithValue(mail.Body);
+            command.Parameters.AddWithValue(JsonSerializer.Serialize(mail.Attachments));
+            command.Parameters.AddWithValue(now);
+            await command.ExecuteNonQueryAsync(cancellationToken);
+
+            // Test accounts may already have a mail created by an older build.
+            // Refresh only its deterministic display payload; claimed_at is left
+            // untouched, so this never grants the reward a second time.
+            await using var repair = new NpgsqlCommand(
+                "UPDATE mail_messages SET attachments_json=$1::jsonb,body=$2,version=version+1 WHERE player_id=$3 AND title=$4 AND (attachments_json IS DISTINCT FROM $1::jsonb OR body IS DISTINCT FROM $2)",
+                connection, transaction);
+            repair.Parameters.AddWithValue(JsonSerializer.Serialize(mail.Attachments));
+            repair.Parameters.AddWithValue(mail.Body);
+            repair.Parameters.AddWithValue(playerId);
+            repair.Parameters.AddWithValue(mail.Title);
+            await repair.ExecuteNonQueryAsync(cancellationToken);
+        }
+    }
+
+    private static object[] EquipmentSet(string quality, string element, string? effectAffix = null, string? secondaryTrait = null) =>
+        TestEquipmentSlots
+            .Select(slot => (object)new
+            {
+                kind = "Equipment",
+                amount = 1L,
+                itemId = $"{quality}|{element}|{slot}",
+                effectAffix,
+                secondaryTrait
+            })
+            .ToArray();
+
+    private static object[] MixedEquipmentSet(
+        string firstQuality,
+        string otherQuality,
+        string element,
+        string? effectAffix = null,
+        string? secondaryTrait = null) =>
+        TestEquipmentSlots
+            .Select((slot, index) => (object)new
+            {
+                kind = "Equipment",
+                amount = 1L,
+                itemId = $"{(index == 0 ? firstQuality : otherQuality)}|{element}|{slot}",
+                effectAffix,
+                secondaryTrait
+            })
+            .ToArray();
+
     public async Task<SessionLookupResult> FindByTokenHashAsync(
         byte[] tokenHash,
         DateTimeOffset now,
@@ -114,7 +211,7 @@ public sealed class IdentityRepository(
             SELECT p.user_id, p.display_name, p.selected_class, p.version, p.created_at, p.updated_at, s.expires_at
             FROM player_sessions s
             JOIN players p ON p.user_id = s.player_id
-            WHERE s.token_hash = $1
+            WHERE s.token_hash = $1 AND NOT EXISTS (SELECT 1 FROM player_bans b WHERE b.player_id=p.user_id)
             """);
         command.Parameters.Add(new NpgsqlParameter
         {

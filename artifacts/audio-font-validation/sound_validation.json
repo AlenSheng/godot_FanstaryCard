@@ -1,6 +1,7 @@
 {
   "passed": true,
-  "sound_count": 22,
+  "sound_count": 33,
+  "music_count": 4,
   "checks": [
     {
       "key": "ui_click",
@@ -265,6 +266,192 @@
       "leading_silence_seconds": 0.0005,
       "tail_level_dbfs": -56.505,
       "dc_offset": -0.0002227
+    },
+    {
+      "key": "ui_open",
+      "passed": true,
+      "duration_seconds": 0.34,
+      "peak_dbfs": -16.001,
+      "rms_dbfs": -30.863,
+      "clipped_samples": 0,
+      "active_duration_seconds": 0.2507,
+      "leading_silence_seconds": 0.0092,
+      "tail_level_dbfs": -90.309,
+      "dc_offset": 1.42e-06
+    },
+    {
+      "key": "ui_tab",
+      "passed": true,
+      "duration_seconds": 0.2,
+      "peak_dbfs": -17.001,
+      "rms_dbfs": -33.616,
+      "clipped_samples": 0,
+      "active_duration_seconds": 0.151,
+      "leading_silence_seconds": 0.0014,
+      "tail_level_dbfs": -66.227,
+      "dc_offset": 2.3e-07
+    },
+    {
+      "key": "ui_confirm",
+      "passed": true,
+      "duration_seconds": 0.3,
+      "peak_dbfs": -16.001,
+      "rms_dbfs": -30.964,
+      "clipped_samples": 0,
+      "active_duration_seconds": 0.2901,
+      "leading_silence_seconds": 0.0009,
+      "tail_level_dbfs": -60.206,
+      "dc_offset": -1.054e-05
+    },
+    {
+      "key": "ui_cancel",
+      "passed": true,
+      "duration_seconds": 0.25,
+      "peak_dbfs": -17.001,
+      "rms_dbfs": -31.021,
+      "clipped_samples": 0,
+      "active_duration_seconds": 0.2358,
+      "leading_silence_seconds": 0.0005,
+      "tail_level_dbfs": -56.158,
+      "dc_offset": -0.00014939
+    },
+    {
+      "key": "battle_start",
+      "passed": true,
+      "duration_seconds": 0.86,
+      "peak_dbfs": -14.0,
+      "rms_dbfs": -27.748,
+      "clipped_samples": 0,
+      "active_duration_seconds": 0.8388,
+      "leading_silence_seconds": 0.0181,
+      "tail_level_dbfs": -50.939,
+      "dc_offset": -8.9e-07
+    },
+    {
+      "key": "battle_target",
+      "passed": true,
+      "duration_seconds": 0.23,
+      "peak_dbfs": -16.001,
+      "rms_dbfs": -31.577,
+      "clipped_samples": 0,
+      "active_duration_seconds": 0.1862,
+      "leading_silence_seconds": 0.0006,
+      "tail_level_dbfs": -66.227,
+      "dc_offset": -5.566e-05
+    },
+    {
+      "key": "player_attack",
+      "passed": true,
+      "duration_seconds": 0.36,
+      "peak_dbfs": -13.0,
+      "rms_dbfs": -29.781,
+      "clipped_samples": 0,
+      "active_duration_seconds": 0.2791,
+      "leading_silence_seconds": 0.008,
+      "tail_level_dbfs": -65.204,
+      "dc_offset": 2.51e-06
+    },
+    {
+      "key": "player_hit",
+      "passed": true,
+      "duration_seconds": 0.34,
+      "peak_dbfs": -13.0,
+      "rms_dbfs": -30.174,
+      "clipped_samples": 0,
+      "active_duration_seconds": 0.2184,
+      "leading_silence_seconds": 0.0005,
+      "tail_level_dbfs": -66.787,
+      "dc_offset": -0.00056649
+    },
+    {
+      "key": "monster_attack",
+      "passed": true,
+      "duration_seconds": 0.43,
+      "peak_dbfs": -12.0,
+      "rms_dbfs": -28.93,
+      "clipped_samples": 0,
+      "active_duration_seconds": 0.2616,
+      "leading_silence_seconds": 0.0098,
+      "tail_level_dbfs": -66.787,
+      "dc_offset": -2.583e-05
+    },
+    {
+      "key": "monster_hit",
+      "passed": true,
+      "duration_seconds": 0.38,
+      "peak_dbfs": -12.0,
+      "rms_dbfs": -28.146,
+      "clipped_samples": 0,
+      "active_duration_seconds": 0.2376,
+      "leading_silence_seconds": 0.0004,
+      "tail_level_dbfs": -69.481,
+      "dc_offset": -0.00048718
+    },
+    {
+      "key": "battle_victory",
+      "passed": true,
+      "duration_seconds": 0.96,
+      "peak_dbfs": -14.0,
+      "rms_dbfs": -29.504,
+      "clipped_samples": 0,
+      "active_duration_seconds": 0.9452,
+      "leading_silence_seconds": 0.0121,
+      "tail_level_dbfs": -51.224,
+      "dc_offset": -1.96e-06
+    }
+  ],
+  "music_checks": [
+    {
+      "key": "music_hall",
+      "category": "music",
+      "passed": true,
+      "duration_seconds": 48.0,
+      "peak_dbfs": -18.999,
+      "rms_dbfs": -34.914,
+      "clipped_samples": 0,
+      "active_duration_seconds": 47.9959,
+      "leading_silence_seconds": 0.0041,
+      "tail_level_dbfs": -28.117,
+      "dc_offset": -1.9e-07
+    },
+    {
+      "key": "music_battle",
+      "category": "music",
+      "passed": true,
+      "duration_seconds": 48.0,
+      "peak_dbfs": -18.001,
+      "rms_dbfs": -39.397,
+      "clipped_samples": 0,
+      "active_duration_seconds": 47.9997,
+      "leading_silence_seconds": 0.0003,
+      "tail_level_dbfs": -37.46,
+      "dc_offset": -3e-07
+    },
+    {
+      "key": "ambience_hall",
+      "category": "ambience",
+      "passed": true,
+      "duration_seconds": 24.0,
+      "peak_dbfs": -28.003,
+      "rms_dbfs": -45.021,
+      "clipped_samples": 0,
+      "active_duration_seconds": 23.9232,
+      "leading_silence_seconds": 0.0768,
+      "tail_level_dbfs": -39.886,
+      "dc_offset": 1.3e-07
+    },
+    {
+      "key": "ambience_battle",
+      "category": "ambience",
+      "passed": true,
+      "duration_seconds": 24.0,
+      "peak_dbfs": -24.998,
+      "rms_dbfs": -40.315,
+      "clipped_samples": 0,
+      "active_duration_seconds": 23.9473,
+      "leading_silence_seconds": 0.0527,
+      "tail_level_dbfs": -38.645,
+      "dc_offset": 4.2e-07
     }
   ]
 }

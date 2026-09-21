@@ -325,7 +325,7 @@ public sealed partial class BattleRoom
 
     public RoomMoveResult MovePlayerAndPair(Guid playerId, MapPosition target, long expectedRevision, DateTimeOffset now)
     {
-        if (expectedRevision != Revision)
+        if (expectedRevision > Revision)
             throw new DomainValidationException($"Room revision conflict. Expected {expectedRevision}, current {Revision}.");
         if (Map is null) throw new DomainValidationException("The room map is not initialized.");
         var player = GetPlayer(playerId);
@@ -424,7 +424,7 @@ public sealed partial class BattleRoom
             var replay = player.RewardRefreshReceipts.SingleOrDefault(receipt => receipt.RequestId == requestId);
             if (replay is not null) return replay;
         }
-        if (expectedRevision != Revision)
+        if (expectedRevision > Revision)
             throw new DomainValidationException($"Room revision conflict. Expected {expectedRevision}, current {Revision}.");
         var choice = player.RewardChoice ?? throw new DomainValidationException("The player has no pending reward choice.");
         if (player.Phase != RoomPlayerPhase.Choice)
@@ -755,7 +755,7 @@ public sealed partial class BattleRoom
 
     public long SelectPveTarget(Guid playerId, Guid battleId, string targetId, long expectedRevision)
     {
-        if (expectedRevision != Revision)
+        if (expectedRevision > Revision)
             throw new DomainValidationException($"Room revision conflict. Expected {expectedRevision}, current {Revision}.");
         var player = GetPlayer(playerId);
         if (player.Phase != RoomPlayerPhase.Pve || player.Pve?.BattleId != battleId)
@@ -848,6 +848,26 @@ public sealed partial class BattleRoom
         Revision++;
     }
 
+    public void AbandonBattle(Guid playerId)
+    {
+        var player = GetPlayer(playerId);
+        if (player.Phase is RoomPlayerPhase.Pvp && player.CurrentDuelId is { } duelId && _duels.ContainsKey(duelId))
+        {
+            EndDuelWithDeath(duelId, playerId);
+            return;
+        }
+
+        if (player.Phase != RoomPlayerPhase.Pve || player.Pve is null || player.Pve.Phase != PveBattlePhase.Active)
+            throw new DomainValidationException("The player can only abandon an active battle.");
+
+        player.Combat.MarkDead();
+        player.Pve.MarkDead();
+        player.Pve = null;
+        player.Phase = RoomPlayerPhase.Dead;
+        CreateDeathRelicPile(player);
+        Revision++;
+    }
+
     public CombatResolution PlayCards(
         Guid playerId,
         Guid battleId,
@@ -856,7 +876,7 @@ public sealed partial class BattleRoom
         long expectedRevision,
         DateTimeOffset now)
     {
-        if (expectedRevision != Revision)
+        if (expectedRevision > Revision)
         {
             throw new DomainValidationException($"Room revision conflict. Expected {expectedRevision}, current {Revision}.");
         }
@@ -972,7 +992,8 @@ public sealed partial class BattleRoom
             pvpTarget is not null ? draft.DrawBlock.TotalSeconds : 0, healthCost,
             draft.DrawCharge + fenxian.Charge, draft.ImmediateDraw + fenxian.Draw,
             draft.DrawSpeedDuration.TotalSeconds, draft.DrawSpeedModifier,
-            pveTarget is not null ? blockSpeed.TotalSeconds : 0);
+            pveTarget is not null ? blockSpeed.TotalSeconds : 0,
+            draft.ResonanceMultiplier, draft.ConflictPairCount, draft.ConflictCancellation);
         _combatFeedback.Add(new CombatFeedbackResolution(playerId.ToString("D"), resolution));
         return resolution;
     }

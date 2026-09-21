@@ -75,6 +75,15 @@ OPTIONAL_ASSETS.update(PASSIVES.values())
 OPTIONAL_ASSETS.update(PRODUCTS.values())
 OPTIONAL_ASSETS.update(ACTION_ICONS.values())
 OPTIONAL_ASSETS.add("UI/Monsters/frost_wraith_clean.png")
+RETIRED_ASSETS = {
+    "UI/Hall/card_priest_off.png", "UI/Hall/card_priest_on.png",
+    "UI/Hall/card_mage_off.png", "UI/Hall/card_mage_on.png",
+    "UI/Hall/card_guardian_off.png", "UI/Hall/card_guardian_on.png",
+    "UI/Hall/portal_panel.png",
+    "UI/Hall/btn_codex.png", "UI/Hall/btn_gear.png", "UI/Hall/btn_deck.png",
+    "UI/Hall/btn_shop.png", "UI/Hall/btn_market.png", "UI/Hall/btn_prep.png",
+    "UI/Hall/btn_enhance.png",
+}
 REFERENCE_ONLY = [
     "UI/Battle/battle_background.png", "UI/Prep/background.jpg",
     "UI/Hall/background.jpg", "UI/Enhance/background.png",
@@ -165,7 +174,7 @@ def import_art(root=ROOT, *, source_root=None, ui_root=None, cards_root=None, de
     previous = read_manifest(manifest_path)
     sources, borders, warnings = collect_sources(root, destination, source_root, ui_root, cards_root)
     mapping = card_mapping(json.loads((root / "client/data/catalog.json").read_text(encoding="utf-8")), sources)
-    required = set(mapping.values()) | (set(previous.get("files", {})) - OPTIONAL_ASSETS)
+    required = set(mapping.values()) | (set(previous.get("files", {})) - OPTIONAL_ASSETS - RETIRED_ASSETS)
     required.update(path for variants in MONSTER_VARIANTS.values() for path in variants.values())
     missing = sorted(required - sources.keys())
     if missing:
@@ -186,8 +195,10 @@ def import_art(root=ROOT, *, source_root=None, ui_root=None, cards_root=None, de
 
     # Optional deliveries may be temporarily absent; retain their provenance without
     # exposing unavailable paths to runtime consumers, and recover it if reintroduced.
-    previous_files = dict(previous.get("unavailable_optional_assets", {}))
-    previous_files.update(previous.get("files", {}))
+    previous_files = {path: entry for path, entry in previous.get("unavailable_optional_assets", {}).items()
+                      if path not in RETIRED_ASSETS}
+    previous_files.update({path: entry for path, entry in previous.get("files", {}).items()
+                           if path not in RETIRED_ASSETS})
     unavailable_optional = {path: entry for path, entry in previous_files.items()
                             if path in OPTIONAL_ASSETS and path not in sources}
     files = {}

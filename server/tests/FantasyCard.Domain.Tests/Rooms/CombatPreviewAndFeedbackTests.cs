@@ -95,6 +95,7 @@ public sealed class CombatPreviewAndFeedbackTests
         Assert.Equal(3, player.Combat.Deck.Hand.Count);
         Assert.Equal(1, result.ImmediateDraw);
         Assert.Equal(1, player.Combat.FenxianCombo);
+        Assert.Equal(3, player.Combat.FenxianChargeLevel);
     }
 
     [Fact]

@@ -1,6 +1,8 @@
 using FantasyCard.Contracts.Progression;
 using FantasyCard.Server.Common;
 using FantasyCard.Server.Identity;
+using FantasyCard.Contracts.Realtime;
+using FantasyCard.Server.Realtime;
 
 namespace FantasyCard.Server.Progression;
 
@@ -20,6 +22,7 @@ public static class EconomyEndpoints
     {
         var shop = endpoints.MapGroup("/api/v1/shop").WithTags("Economy");
         shop.MapGet("/", GetShopAsync).RequireRateLimiting(RequestLimitOptions.ReadPolicy).Produces<ShopResponse>().ProducesProblem(401);
+        shop.MapPost("/refresh", RefreshShopAsync).RequireRateLimiting(RequestLimitOptions.WritePolicy).Produces<ShopResponse>().ProducesProblem(400).ProducesProblem(401).ProducesProblem(409);
         shop.MapPost("/purchases", PurchaseAsync).RequireRateLimiting(RequestLimitOptions.WritePolicy).Produces<ShopPurchaseResponse>().ProducesProblem(400).ProducesProblem(401).ProducesProblem(409);
 
         var market = endpoints.MapGroup("/api/v1/market").WithTags("Economy");
@@ -32,6 +35,45 @@ public static class EconomyEndpoints
 
     private static async Task<IResult> GetShopAsync(HttpContext context, IdentityService identity, EconomyRepository repository, CancellationToken ct)
     { var player = await context.AuthenticatePlayerAsync(identity, ct); return player is null ? context.UnauthorizedProblem() : Results.Ok(await repository.GetShopAsync(player.UserId, ct)); }
+
+    private static async Task<IResult> RefreshShopAsync(
+        HttpContext context,
+        IdentityService identity,
+        EconomyRepository repository,
+        ConnectionRegistry connections,
+        RealtimeEventStore eventStore,
+        CancellationToken ct)
+    {
+        var player = await context.AuthenticatePlayerAsync(identity, ct);
+        if (player is null) return context.UnauthorizedProblem();
+        var requestId = IdempotencyKeys.Read(context);
+        if (requestId is null) return IdempotencyKeys.InvalidProblem(context);
+        try
+        {
+            var refresh = await repository.RefreshShopAsync(player.UserId, requestId, ct);
+            if (!refresh.Replayed)
+            {
+                foreach (var connectedPlayerId in connections.ConnectedPlayerIds)
+                {
+                    var message = eventStore.Create(
+                        connectedPlayerId,
+                        "inventory.changed",
+                        context.TraceIdentifier,
+                        new InventoryChangedEventPayload("shop.refresh", refresh.Shop.ResetKey));
+                    await connections.SendPresentationAsync(connectedPlayerId, message);
+                }
+            }
+            return Results.Ok(refresh.Shop);
+        }
+        catch (IdempotencyConflictException)
+        {
+            return Problem(context, 409, "Idempotency conflict", "The Idempotency-Key was already used for another shop refresh.");
+        }
+        catch (InvalidOperationException exception)
+        {
+            return Problem(context, 409, "Shop refresh rejected", exception.Message);
+        }
+    }
 
     private static async Task<IResult> PurchaseAsync(PurchaseShopRequest request, HttpContext context, IdentityService identity, EconomyRepository repository, CancellationToken ct)
     {

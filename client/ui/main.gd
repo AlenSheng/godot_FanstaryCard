@@ -3,21 +3,31 @@ extends Control
 const P = preload("res://ui/palette.gd")
 const Art = preload("res://ui/art.gd")
 const CardView = preload("res://ui/card_view.gd")
+const DeckBuilder = preload("res://ui/deck_builder_view.gd")
 const ReferenceUI = preload("res://ui/reference_ui.gd")
+const ConfirmationModalScene = preload("res://ui/confirmation_modal.tscn")
 const BoundedBar = preload("res://ui/bounded_bar.gd")
 const EquipmentDetails = preload("res://ui/equipment_details.gd")
+const EquipmentCompareDialog = preload("res://ui/equipment_compare_dialog.gd")
 const InventoryView = preload("res://ui/inventory_view.gd")
 const CardDetails = preload("res://ui/card_details.gd")
 const BattleDetails = preload("res://ui/battle_details.gd")
 const AudioSettings = preload("res://ui/audio_settings.gd")
-const SettingsPanel = preload("res://ui/settings_panel.gd")
+const TipsOverlay = preload("res://ui/tips_overlay.gd")
+const LayeredBackdrop = preload("res://ui/layered_backdrop.gd")
 const CATALOG = preload("res://data/catalog.json")
 const DESCRIPTIONS = preload("res://data/card_descriptions.json")
+const UI_CONFIG = preload("res://data/ui_config.json")
+const RANDOM_NAMES_PATH := "res://data/random_names.json"
+const CLOUD_SERVER_URL := "https://www.relicbound.cn"
+const LOCAL_SERVER_URL := "http://127.0.0.1:5080"
+const LOGIN_VIDEO_PATH := "res://assets/backgrounds/relicbound_login_ambient.ogv"
 var screen := "hall"
 var content: VBoxContainer
 var root_column: VBoxContainer
 var status_label: Label
 var toast_label: Label
+var tips_overlay: CanvasLayer
 var cards: Dictionary = {}
 var owned: Array = []
 var inventory: Dictionary = {}
@@ -30,15 +40,16 @@ var potion_count := 0
 var edit_mode := false
 var screen_loading := false
 var _render_pending := false
+var mail_modal_lock := false
 var _midlayer_seen: Dictionary = {}
-var _login_address := "http://127.0.0.1:5080"
 var _login_name := ""
 var _session_generation: int = -1
 var _search := ""
-var _toast_serial := 0
-var _toast_tween: Tween
 var _combat_panels: Dictionary = {}
-var _background: TextureRect
+var _backdrop: Control
+var _background_video: VideoStreamPlayer
+var _background_shade: ColorRect
+var _login_video_available := false
 var _reference: Control
 var _quality := ""
 var _enhance_item := ""
@@ -49,38 +60,69 @@ var _view_cell := ""
 var _codex_card := ""
 var _codex_scroll := 0
 var _codex_deck_scroll := 0
+var _deck_builder_scroll := 0
+var _equipment_scroll := 0
 var _codex_ready := false
 var _codex_mutating := false
 var _enhancement_quote: Dictionary = {}
 var _enhancement_quote_key := ""
+var _game_title: Label
+var _draw_charge_visual := 0.0
+var _draw_charge_authoritative := 0.0
+var _draw_charge_anchor_msec := 0
+var _draw_charge_interval := 4.0
+var _draw_charge_hand_ids: Array = []
+var _draw_charge_room_key := ""
+var _draw_charge_initialized := false
+var _draw_charge_hold_full := false
 
 func _ready() -> void:
 	theme = P.theme()
 	for card in CATALOG.data.tables.Cards: cards[card.id] = card
-	_login_address = Game.gateway.base_url
 	if not Game.gateway.local_account_name.is_empty(): _login_name = Game.gateway.local_account_name
+	if _login_name.is_empty(): _login_name = _random_login_name()
 	_session_generation = Game.gateway.session_generation
 	Game.changed.connect(_schedule_render)
 	Game.notice.connect(_toast)
-	I18n.language_changed.connect(func(_locale): _render())
+	Game.player_data_invalidated.connect(_refresh_after_admin_update)
+	Game.shop_refreshed.connect(_on_shop_refreshed)
+	Game.authentication_required.connect(_show_ban_dialog)
 	Game.combat_feedback.connect(_feedback)
 	_build_shell()
-	var settings_panel := SettingsPanel.new()
-	settings_panel.name = "SettingsPanel"
-	add_child(settings_panel)
+	var audio_settings := AudioSettings.new()
+	audio_settings.name = "AudioSettings"
+	add_child(audio_settings)
+	_sync_account_session()
 	_render()
 
+func _process(_delta: float) -> void:
+	_update_draw_charge_visual()
+
 func _build_shell() -> void:
-	var background := TextureRect.new()
-	_background = background
-	background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	background.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	background.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-	background.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	if ResourceLoader.exists("res://assets/portal.png"):
-		background.texture = load("res://assets/portal.png")
-		background.modulate = Color(0.45, 0.58, 0.59)
-	add_child(background)
+	var backdrop := LayeredBackdrop.new()
+	_backdrop = backdrop
+	add_child(backdrop)
+	var background_video := VideoStreamPlayer.new()
+	_background_video = background_video
+	background_video.name = "LoginAmbientVideo"
+	background_video.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	background_video.expand = true
+	background_video.loop = true
+	background_video.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(background_video)
+	var video_stream := load(LOGIN_VIDEO_PATH) as VideoStream
+	if video_stream != null:
+		background_video.stream = video_stream
+		background_video.autoplay = true
+		background_video.play()
+		_login_video_available = true
+	var background_shade := ColorRect.new()
+	_background_shade = background_shade
+	background_shade.name = "LoginAmbientShade"
+	background_shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	background_shade.color = Color(0.02, 0.055, 0.06, 0.18)
+	background_shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(background_shade)
 	var margin := MarginContainer.new()
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	for side in ["left", "right"]: margin.add_theme_constant_override("margin_" + side, 80)
@@ -90,7 +132,9 @@ func _build_shell() -> void:
 	margin.add_child(root_column)
 	var top := HBoxContainer.new()
 	root_column.add_child(top)
-	_label(top, "幻境牌旅", 38, P.GOLD)
+	var game_title := _label(top, P.localized("game_title"), 38, P.GOLD)
+	game_title.name = "GameTitle"
+	_game_title = game_title
 	var spacer := Control.new()
 	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	top.add_child(spacer)
@@ -102,33 +146,122 @@ func _build_shell() -> void:
 	content = VBoxContainer.new()
 	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(content)
-	toast_label = _label(self, "", 28, P.GOLD)
-	toast_label.name = "FloatingTips"
-	toast_label.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
-	toast_label.offset_left = -460
-	toast_label.offset_right = 460
-	toast_label.offset_top = 210
-	toast_label.offset_bottom = 290
-	toast_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	toast_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	toast_label.z_index = 100
-	toast_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	toast_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	toast_label.add_theme_color_override("font_shadow_color", Color.BLACK)
-	toast_label.add_theme_constant_override("shadow_offset_x", 2)
-	toast_label.add_theme_constant_override("shadow_offset_y", 2)
-	toast_label.hide()
+	tips_overlay = TipsOverlay.new()
+	tips_overlay.name = "TipsOverlay"
+	add_child(tips_overlay)
+	# Compatibility alias for existing UI checks; rendering and animation live in TipsOverlay.
+	toast_label = tips_overlay.label
 
 func _schedule_render() -> void:
+	if mail_modal_lock: return
 	_sync_account_session()
+	if is_instance_valid(_game_title): _game_title.text = P.localized("game_title")
 	if _render_pending: return
 	_render_pending = true
 	_render.call_deferred()
+
+func _reset_draw_charge_visual() -> void:
+	_draw_charge_visual = 0.0
+	_draw_charge_authoritative = 0.0
+	_draw_charge_anchor_msec = 0
+	_draw_charge_interval = 4.0
+	_draw_charge_hand_ids = []
+	_draw_charge_room_key = ""
+	_draw_charge_initialized = false
+	_draw_charge_hold_full = false
+
+func _draw_charge_value(authoritative: float = 0.0) -> float:
+	return _draw_charge_visual if _draw_charge_initialized else clampf(authoritative, 0.0, 1.0)
+
+func _sync_draw_charge_visual() -> void:
+	var player: Dictionary = Game.room.get("player", {})
+	var phase := str(player.get("phase", ""))
+	if phase not in ["Pve", "Pvp"]:
+		_reset_draw_charge_visual()
+		return
+	var room_id := str(Game.room.get("room_id", ""))
+	var battle: Dictionary = Game.room.get("duel", Game.room.get("pve", {}))
+	var room_key := "%s:%s" % [room_id, str(battle.get("duel_id", battle.get("battle_id", "")))]
+	var authoritative := clampf(float(player.get("draw_charge", "0")), 0.0, 1.0)
+	var status: Dictionary = player.get("battle_status", {})
+	var interval := maxf(0.1, float(status.get("draw_interval_seconds", "4")))
+	var hand_ids: Array = player.get("hand", []).map(func(card): return str(card.get("instance_id", "")))
+	var now := Time.get_ticks_msec()
+	if not _draw_charge_initialized or room_key != _draw_charge_room_key:
+		_draw_charge_visual = authoritative
+		_draw_charge_authoritative = authoritative
+		_draw_charge_anchor_msec = now
+		_draw_charge_interval = interval
+		_draw_charge_hand_ids = hand_ids
+		_draw_charge_room_key = room_key
+		_draw_charge_initialized = true
+		_draw_charge_hold_full = false
+		return
+
+	var new_card_arrived := false
+	for card_id in hand_ids:
+		if card_id not in _draw_charge_hand_ids:
+			new_card_arrived = true
+			break
+	if new_card_arrived:
+		# The server snapshot is the new round's authoritative starting point.
+		# Reset only when a card actually arrived, so a full visual bar never
+		# snaps backwards while the server is still processing the draw.
+		_draw_charge_visual = authoritative
+		_draw_charge_authoritative = authoritative
+		_draw_charge_anchor_msec = now
+		_draw_charge_hold_full = false
+	elif authoritative > _draw_charge_authoritative + 0.0005:
+		# A newer authoritative charge can catch up a delayed render without
+		# making the visual bar jump backwards.
+		_draw_charge_visual = maxf(_draw_charge_visual, authoritative)
+		_draw_charge_authoritative = authoritative
+		_draw_charge_anchor_msec = now - int(maxf(0.0, _draw_charge_visual - authoritative) * interval * 1000.0)
+	elif not is_equal_approx(interval, _draw_charge_interval):
+		# Preserve the visible fraction while the server changes the interval;
+		# the remaining part then uses the new duration immediately.
+		_draw_charge_anchor_msec = now - int(maxf(0.0, _draw_charge_visual - authoritative) * interval * 1000.0)
+	_draw_charge_authoritative = authoritative
+	_draw_charge_interval = interval
+	_draw_charge_hand_ids = hand_ids
+	_draw_charge_room_key = room_key
+
+func _update_draw_charge_visual() -> void:
+	if not _draw_charge_initialized: return
+	var player: Dictionary = Game.room.get("player", {})
+	if str(player.get("phase", "")) not in ["Pve", "Pvp"]: return
+	if not _draw_charge_hold_full:
+		var elapsed := maxf(0.0, (Time.get_ticks_msec() - _draw_charge_anchor_msec) / 1000.0)
+		var expected := _draw_charge_authoritative + elapsed / maxf(0.1, _draw_charge_interval)
+		if expected >= 1.0:
+			_draw_charge_visual = 1.0
+			_draw_charge_hold_full = true
+		else:
+			_draw_charge_visual = maxf(_draw_charge_visual, expected)
+	var bar: Range = _reference.get_node_or_null("DrawChargeBar") as Range if is_instance_valid(_reference) else null
+	if bar != null:
+		bar.value = clampf(_draw_charge_visual, 0.0, 1.0)
+
+func _refresh_after_admin_update() -> void:
+	if not Game.room.is_empty(): return
+	_codex_ready = false
+	if screen in ["cards", "deck", "gear", "enhance", "shop", "market", "prep"]:
+		_navigate.call_deferred(screen)
+
+func _on_shop_refreshed(_payload: Dictionary) -> void:
+	if screen == "shop" and not Game.busy:
+		_navigate.call_deferred("shop")
+	else:
+		_toast("商店货架已刷新")
 
 func _sync_account_session() -> void:
 	if _session_generation != Game.gateway.session_generation:
 		_session_generation = Game.gateway.session_generation
 		_reset_account_ui()
+	var lobby_cards: Variant = Game.lobby.get("cards", null)
+	if lobby_cards is Array:
+		owned = lobby_cards
+		_codex_ready = true
 	if not Game.lobby.is_empty() and not Game.gateway.token.is_empty() and not Game.gateway.local_account_name.is_empty():
 		_login_name = Game.gateway.local_account_name
 
@@ -154,19 +287,21 @@ func _reset_account_ui() -> void:
 	_codex_card = ""
 	_codex_scroll = 0
 	_codex_deck_scroll = 0
+	_deck_builder_scroll = 0
+	_equipment_scroll = 0
 	_codex_ready = false
 	_codex_mutating = false
 	_shop_inventory_ready = false
 	_enhancement_quote = {}
 	_enhancement_quote_key = ""
 	_combat_panels.clear()
-	_toast_serial += 1
-	if is_instance_valid(toast_label): toast_label.text = ""
+	_reset_draw_charge_visual()
+	if is_instance_valid(tips_overlay): tips_overlay.clear()
 	for key in ["exploration_map_open", "inventory_open", "relic_pile", "inventory_selected", "relic_selected", "pending_move", "item_detail_scroll"]:
 		if has_meta(key): remove_meta(key)
 	# Account-bound dialogs must not retain actions against the next login.
 	for child in get_children():
-		if child is Window:
+		if child is Window or child.name == "ConfirmationModal":
 			remove_child(child)
 			child.queue_free()
 
@@ -184,29 +319,35 @@ func _render() -> void:
 		_reference.queue_free()
 		_reference = null
 	content.add_theme_constant_override("separation", 10 if not Game.room.is_empty() else 18)
-	if not Game.room.is_empty():
-		_background.texture = Art.texture("UI/Encounter/encounter_background.png")
-		_background.modulate = Color(0.8, 0.8, 0.8)
+	var show_login_video: bool = Game.lobby.is_empty() and Game.room.is_empty() and Game.settlement.is_empty()
+	if show_login_video:
+		Sound.set_music_context("")
+	elif not Game.room.is_empty():
+		if Sound.outcome_music_context.is_empty():
+			var phase := str(Game.room.get("player", {}).get("phase", ""))
+			Sound.set_music_context("battle" if phase in ["Pve", "Pvp"] else "hall")
+	elif not Game.settlement.is_empty():
+		Sound.set_music_context("defeat" if str(Game.settlement.get("result", "")) in ["Dead", "Defeated", "Death"] else "victory")
 	else:
-		_background.texture = load("res://assets/portal.png")
-		_background.modulate = Color(0.45, 0.58, 0.59)
+		Sound.set_music_context("shop" if screen in ["shop", "market"] else "hall")
+	if is_instance_valid(_backdrop):
+		_backdrop.visible = not show_login_video
+		if not show_login_video:
+			_backdrop.call("set_mode", "exploration" if not Game.room.is_empty() else ("codex" if screen in ["cards", "deck"] else "hall"))
+	if is_instance_valid(_background_video):
+		_background_video.visible = show_login_video and _login_video_available
+		if _background_video.visible and not _background_video.is_playing(): _background_video.play()
+	if is_instance_valid(_background_shade): _background_shade.visible = show_login_video and _login_video_available
 	_combat_panels = {}
 	for node in content.get_children():
 		content.remove_child(node)
 		node.queue_free()
-	status_label.text = I18n.t(Game.connection)
-	if not Game.lobby.is_empty(): status_label.text += "    金币 %s" % Game.lobby.get("wallet", {}).get("gold", 0)
+	status_label.text = P.localized_text(Game.connection)
+	if not Game.lobby.is_empty(): status_label.text += P.localized_text("    金币 %s" % Game.lobby.get("wallet", {}).get("gold", 0))
 	var use_reference: bool = not Game.lobby.is_empty() and Game.lobby.get("unfinishedMatch") == null
 	if not Game.room.is_empty() or not Game.settlement.is_empty(): use_reference = true
 	root_column.get_parent().visible = not use_reference
 	if use_reference:
-		var scene_path := "res://assets/scenes/dungeon_battle.png" if not Game.room.is_empty() else "res://assets/scenes/camp_hall.png"
-		if ResourceLoader.exists(scene_path):
-			_background.texture = load(scene_path)
-			_background.modulate = Color.WHITE
-		if screen in ["cards", "deck"] and Game.room.is_empty() and Game.settlement.is_empty():
-			_background.texture = Art.texture("UI/CardCodex/card_codex_background_normal.png")
-			_background.modulate = Color.WHITE
 		_reference = ReferenceUI.new()
 		add_child(_reference)
 		_reference.build(self)
@@ -225,7 +366,7 @@ func _render() -> void:
 		return
 	if Game.lobby.get("unfinishedMatch") != null:
 		_label(content, "正在恢复上次探索…", 42, P.GOLD)
-		_button(content, "重新连接", Game.gateway.connect_realtime)
+		_button(content, "重新连接", Game.reconnect, Game.busy)
 		return
 	_nav()
 	if screen_loading:
@@ -233,31 +374,45 @@ func _render() -> void:
 		return
 	match screen:
 		"hall": _hall()
-		"mail": _mail()
 		"prep": _preparation()
-		"cards", "deck": _codex()
+		"cards": _codex()
+		"deck": _codex()
 		"gear": _equipment()
 		"shop": _shop()
 		"market": _market()
 
 func _label(parent: Node, text: String, size: int = 24, color: Color = P.PAPER) -> Label:
 	var node := Label.new()
-	node.add_theme_font_override("font", P.font_for_text(text, size))
-	node.text = I18n.t(text)
+	var display_text := P.localized_text(text)
+	var typeface := P.font_for_text(display_text, size)
+	node.add_theme_font_override("font", typeface)
+	node.text = display_text
 	node.add_theme_font_size_override("font_size", size)
 	node.add_theme_color_override("font_color", color)
+	node.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	node.clip_text = true
 	parent.add_child(node)
+	P.fit_control_font(node, typeface, size)
 	return node
 
-func _button(parent: Node, text: String, callback: Callable, disabled: bool = false) -> Button:
+func _button(parent: Node, text: String, callback: Callable, disabled: bool = false, key: String = "") -> Button:
 	var button := Button.new()
-	button.text = I18n.t(text)
+	button.text = P.localized_text(text)
 	button.disabled = disabled
 	button.custom_minimum_size.y = 62
+	button.clip_text = true
+	button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	button.pressed.connect(callback)
-	Art.button(button, "UI/Global/global_button_primary.png")
+	var button_key := key if not key.is_empty() else ("UI/CardCodex/card_codex_action_button_orange.png" if _is_positive_button(text) else "UI/CardCodex/card_codex_action_button_blue.png")
+	Art.button(button, button_key)
 	parent.add_child(button)
+	P.fit_control_font(button, P.font_for_text(button.text, 24), 24, 48.0)
 	return button
+
+func _is_positive_button(value: String) -> bool:
+	for keyword in ["确认", "领取", "登录", "注册", "Login", "开始", "保存", "购买", "强化", "穿戴", "上架", "选择", "准备就绪", "探索准备", "随机起名", "Randomize"]:
+		if value.contains(keyword): return true
+	return false
 
 func _panel(parent: Node, minimum_width: float = 0) -> VBoxContainer:
 	var panel := PanelContainer.new()
@@ -278,52 +433,108 @@ func _login() -> void:
 	_label(content, "混沌领域", 76, P.GOLD)
 	_label(content, "搜寻遗物，组合五行，带着战利品归来。", 30)
 	var row := _row(content)
-	var panel := _panel(row, 680)
+	var panel := _panel(row)
+	var panel_frame: Control = panel.get_parent()
+	panel_frame.size_flags_stretch_ratio = 0.25
+	panel_frame.custom_minimum_size.x = 340
 	_label(panel, "启程", 40)
-	_label(panel, "账号名称", 22, P.MUTED)
+	_label(panel, P.localized("nickname"), 22, P.MUTED)
 	var name_input := LineEdit.new()
 	name_input.text = _login_name
-	name_input.placeholder_text = I18n.t("输入唯一账号名称")
+	name_input.placeholder_text = P.localized_text("输入唯一账号名称")
 	name_input.max_length = 20
 	name_input.text_changed.connect(func(value): _login_name = value)
 	panel.add_child(name_input)
-	if Game.platform.local_login_enabled():
-		_label(panel, "同名登录原账号，新名称自动注册新账号。", 20, P.MUTED)
-	_label(panel, "服务器地址", 22, P.MUTED)
-	var address := LineEdit.new()
-	address.text = _login_address
-	address.text_changed.connect(func(value): _login_address = value)
-	panel.add_child(address)
-	if Game.platform.local_login_enabled():
-		_button(panel, "正在连接…" if Game.busy else "本地登录 / 注册", func(): Game.login(_login_address.strip_edges(), _login_name.strip_edges()), Game.busy)
+	_button(panel, P.localized("random_name"), func():
+		_login_name = _random_login_name(_login_name)
+		name_input.text = _login_name
+	, Game.busy, "UI/CardCodex/card_codex_action_button_orange.png")
+	if OS.is_debug_build():
+		_button(panel, P.localized("local_dev_login"), func(): Game.login(LOCAL_SERVER_URL, _login_name), Game.busy, "UI/CardCodex/card_codex_action_button_blue.png")
+	_label(panel, P.localized("nickname_hint"), 20, P.MUTED)
+	_label(panel, P.localized("random_name_hint"), 18, P.MUTED)
+	_label(panel, "本地服仅用于开发联调；原有入口连接腾讯云外网服务器。", 18, P.MUTED)
+	_button(panel, P.localized("cloud_login"), func(): Game.login(CLOUD_SERVER_URL, _login_name), Game.busy, "UI/CardCodex/card_codex_action_button_orange.png")
 	var steam_reason: String = Game.platform.login_unavailable_reason()
-	_button(panel, "Steam 登录", func(): Game.login_steam(_login_address.strip_edges(), _login_name.strip_edges()), Game.busy or not steam_reason.is_empty())
+	_button(panel, "Steam 登录", func(): Game.login_steam(CLOUD_SERVER_URL, _login_name), Game.busy or not steam_reason.is_empty())
 	if not steam_reason.is_empty(): _label(panel, steam_reason, 20, P.MUTED)
 	if not Game.authentication_reason.is_empty(): _label(panel, Game.authentication_reason, 22, P.GOLD)
 	if not Game.configuration_error.is_empty(): _label(panel, Game.configuration_error, 22, P.GOLD)
-	var about := _panel(row, 680)
-	_label(about, "每一次深入，都是新的抉择", 34, P.GOLD)
-	for value in ["三种职业 · 一套属于你的二十张牌", "五行连放 · 实时抽牌与目标选择", "只向内探索 · 在战斗与撤离之间取舍"]:
-		_label(about, value, 25)
+	var center_space := Control.new()
+	center_space.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	center_space.size_flags_stretch_ratio = 0.45
+	row.add_child(center_space)
+	var about := _panel(row)
+	var about_frame: Control = about.get_parent()
+	about_frame.size_flags_stretch_ratio = 0.30
+	about_frame.custom_minimum_size.x = 400
+	var announcement: Dictionary = Game.server_info.get("announcement", {})
+	var title := str(announcement.get("title", "")).strip_edges()
+	var body := str(announcement.get("body", "")).strip_edges()
+	var announcement_title := _label(about, title if not title.is_empty() else "版本公告", 34, P.GOLD)
+	announcement_title.custom_minimum_size.y = 58
+	announcement_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	announcement_title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	var announcement_scroll := ScrollContainer.new()
+	announcement_scroll.custom_minimum_size.y = 230
+	announcement_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	announcement_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	announcement_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
+	_about_scroll_content(announcement_scroll, body)
+	about.add_child(announcement_scroll)
+
+func _random_login_name(previous: String = "") -> String:
+	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(RANDOM_NAMES_PATH))
+	var language_key := "zh-CN" if P.language() == "zh-CN" else "en"
+	var names: Array = []
+	if parsed is Dictionary:
+		var available: Variant = parsed.get("languages", {}).get(language_key, [])
+		if available is Array: names = available
+	if names.is_empty(): names = ["旅人"] if language_key == "zh-CN" else ["Wanderer"]
+	var random := RandomNumberGenerator.new()
+	random.randomize()
+	var candidate := previous
+	for _attempt in 4:
+		candidate = "%s#%04d" % [str(names[random.randi_range(0, names.size() - 1)]), random.randi_range(0, 9999)]
+		if candidate != previous: return candidate
+	return candidate
+
+func _about_scroll_content(scroll: ScrollContainer, body: String) -> void:
+	var text := Label.new()
+	text.text = body if not body.is_empty() else "暂无公告"
+	text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	text.add_theme_font_override("font", P.font_for_text(text.text, 24))
+	text.add_theme_font_size_override("font_size", 24)
+	text.add_theme_color_override("font_color", P.PAPER)
+	scroll.add_child(text)
 
 func _nav() -> void:
 	var nav := _row(content)
-	var names := {"hall": "营地", "mail": "📬 邮件" + ("  [%s]" % Game.mail_unread if Game.mail_unread > 0 else ""), "cards": "卡牌图鉴", "deck": "卡组编成", "gear": "穿戴 / 强化", "shop": "金币商店", "market": "金币市场", "prep": "探索准备"}
+	var names := {"hall": "营地", "cards": "卡牌图鉴", "gear": "穿戴 / 强化", "shop": "金币商店", "market": "金币市场", "prep": "探索准备"}
 	for key in names:
 		var button := _button(nav, names[key], _navigate.bind(key), Game.busy or not Game.ticket.is_empty())
+		button.set_meta("sound_cue", "")
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		if screen == key: button.add_theme_stylebox_override("normal", Art.style("UI/CardCodex/card_codex_action_button_orange.png"))
 
 func _navigate(value: String) -> void:
 	var generation: int = Game.gateway.session_generation
+	if value != screen: Sound.play_cue("ui_open")
+	if value == "gear" and screen != "gear": _equipment_scroll = 0
 	screen = value
-	edit_mode = value == "deck"
+	edit_mode = false
 	_codex_card = ""
 	_codex_scroll = 0
+	_deck_builder_scroll = 0
 	_enhancement_quote_key = ""
 	_enhancement_quote = {}
 	if value == "shop": _shop_inventory_ready = false
-	if value in ["cards", "deck"]: _codex_ready = false
+	if value in ["cards", "deck"] and _codex_ready:
+		deck_draft = Game.deck().get("cardIds", []).duplicate()
+		screen_loading = false
+		_render()
+		return
 	if value in ["cards", "deck", "gear", "enhance", "shop", "market", "prep"]:
 		screen_loading = true
 		_render()
@@ -364,6 +575,17 @@ func _hall() -> void:
 	for key in P.CLASSES:
 		var info: Array = P.CLASSES[key]
 		var button := _button(classes, "%s   %s\n生命上限 %s" % [P.word(key), info[0], info[2]], func(): Game.select_class(key), Game.busy or not Game.preparation.is_empty())
+		button.icon = Art.texture("UI/Codex/class_badge_%s.png" % key.to_lower())
+		button.expand_icon = true
+		button.add_theme_constant_override("icon_max_width", 44)
+		# 当前职业的元素图标放在职业条旁边，而不是职业选择框内部。
+		if Game.hero_class == key:
+			var element_icon := TextureRect.new()
+			element_icon.texture = Art.texture("UI/Battle/battle_element_icon_fire.png")
+			element_icon.custom_minimum_size = Vector2(44, 44)
+			element_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			element_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			classes.add_child(element_icon)
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		if Game.hero_class == key: button.add_theme_stylebox_override("normal", Art.style("UI/CardCodex/card_codex_action_button_orange.png"))
 	var row := _row(content)
@@ -373,45 +595,14 @@ func _hall() -> void:
 	_label(hero, info[0], 52)
 	_label(hero, info[3], 25, P.MUTED)
 	_label(hero, info[4], 30, P.TEAL)
-	_label(hero, "专属武器 · %s · 锁定" % info[1], 28, P.GOLD)
 	_label(hero, "出战编组  %s / 20" % Game.deck().get("cardIds", []).size(), 26)
 	var portal := _panel(row, 740)
-	Art.image(portal, Art.texture("UI/Hall/portal_panel.png"), Vector2(360, 240))
+	Art.image(portal, Art.texture("UI/Hall/portal_background_clean.png"), Vector2(360, 240))
 	_label(portal, "混沌领域", 60, P.GOLD)
 	_label(portal, "六乘六的未知旅途\n四名旅人，向领域中心前进。", 28)
-	_button(portal, "探索准备   →", _navigate.bind("prep"))
-	_button(identity, "📬 邮件" + ("  (%s)" % Game.mail_unread if Game.mail_unread > 0 else ""), _navigate.bind("mail"), Game.busy)
+	var prep_button := _button(portal, "探索准备   →", _navigate.bind("prep"))
+	prep_button.set_meta("sound_cue", "")
 	_label(portal, "怪物各自迎战，同格可能触发决斗。", 22, P.MUTED)
-
-func _mail() -> void:
-	_label(content, "📬 邮件", 56, P.GOLD)
-	for item in Game.mail:
-		var panel := _panel(content)
-		panel.add_theme_stylebox_override("panel", Art.style("UI/Hall/mail_panel.png"))
-		var heading := _row(panel)
-		Art.image(heading, Art.state("UI/Hall/mail_icon.png"), Vector2(48, 48))
-		if not item.isRead: Art.image(heading, Art.state("UI/Hall/mail_unread_badge.png"), Vector2(32, 32))
-		_label(heading, item.title, 32, P.GOLD if not item.isRead else P.MUTED)
-		_label(panel, item.body, 24)
-		var attachments = item.get("attachments", {})
-		if attachments is Dictionary:
-			for kind in attachments:
-				if attachments[kind] is Array:
-					for quality in attachments[kind]: _label(panel, "装备 · %s" % str(quality), 20, P.MUTED)
-					continue
-				var amount := int(attachments[kind])
-				if amount <= 0: continue
-				var attachment_icon := Art.state("UI/Item/mail_attachment_diamond.png") if str(kind).to_lower() == "diamond" else Art.texture("UI/Item/exploration_prep_item_icon_gold.png")
-				Art.image(panel, attachment_icon, Vector2(48, 48))
-				_label(panel, "%s ×%s" % [str(kind), amount], 20, P.MUTED)
-		if not item.claimed:
-			var claim := _button(panel, "领取附件", _claim_mail.bind(str(item.mailId)), Game.busy)
-			Art.button(claim, "UI/Hall/mail_claim_button.png")
-
-func _claim_mail(mail_id: String) -> void:
-	var result: Dictionary = await Game.gateway.request("/api/v1/mail/%s/claim" % mail_id, HTTPClient.METHOD_POST)
-	if result.ok: await Game.refresh_lobby()
-	_render()
 
 func _preparation() -> void:
 	_label(content, "带上勇气，留出归途", 46, P.GOLD)
@@ -432,13 +623,14 @@ func _preparation() -> void:
 	Art.image(identity, Art.portrait(Game.hero_class), Vector2(90, 110))
 	_label(identity, P.CLASSES[Game.hero_class][0], 36)
 	_label(left, "锁定武器 · " + P.CLASSES[Game.hero_class][1], 26, P.GOLD)
-	_label(left, "编组 %s / 20" % Game.deck().get("cardIds", []).size())
+	_label(left, P.localized("deck_count_summary") % Game.deck().get("cardIds", []).size())
 	var consumables: Dictionary = inventory.get("consumables", {})
 	for key in ["Free", "Advanced", "Top"]:
-		var text: String = {"Free": "轻装行囊  20 / 0  · 免费", "Advanced": "高级行囊  28 / 1  · 持有 %s" % consumables.get("advancedBagCount", 0), "Top": "顶级行囊  36 / 3  · 持有 %s" % consumables.get("topBagCount", 0)}[key]
+		var text_key: String = {"Free": "bag_option_free", "Advanced": "bag_option_advanced", "Top": "bag_option_top"}[key]
+		var text: String = P.localized(text_key)
 		var button := _button(left, text, func(): bag_tier = key; _render())
 		if bag_tier == key: button.add_theme_stylebox_override("normal", Art.style("UI/CardCodex/card_codex_action_button_orange.png"))
-	_label(left, "生命药剂 · 持有 %s · 最多携带 2 瓶" % consumables.get("healthPotionCount", 0), 22)
+	_label(left, P.localized("health_potion_summary") % consumables.get("healthPotionCount", 0), 22)
 	var potion := SpinBox.new()
 	potion.max_value = mini(2, int(consumables.get("healthPotionCount", 0)))
 	potion.value = potion_count
@@ -450,13 +642,15 @@ func _preparation() -> void:
 	_label(right, "描边为安全格，卡牌与专属武器不占格。", 22, P.MUTED)
 	var grid := GridContainer.new()
 	grid.columns = 6
+	grid.add_theme_constant_override("h_separation", Art.COMMON_CELL_GAP)
+	grid.add_theme_constant_override("v_separation", Art.COMMON_CELL_GAP)
 	right.add_child(grid)
 	var capacity: int = {"Free": 20, "Advanced": 28, "Top": 36}[bag_tier]
 	var safe: int = {"Free": 0, "Advanced": 1, "Top": 3}[bag_tier]
 	for index in range(capacity):
 		var cell := _button(grid, str(index + 1), func(): pass, true)
-		Art.button(cell, "UI/Prep/backpack_cell_frame_normal.png")
-		cell.custom_minimum_size = Vector2(112, 72)
+		Art.button(cell, Art.COMMON_CELL_KEY)
+		cell.custom_minimum_size = Art.COMMON_CELL_DISPLAY_SIZE
 		if index >= capacity - safe:
 			cell.add_theme_stylebox_override("disabled", P.box(P.INK, P.GOLD, 3))
 			cell.icon = Art.texture("UI/Prep/icon_safe.png")
@@ -472,16 +666,22 @@ func _ready_screen() -> void:
 	_label(panel, "确认剩余 %s 秒" % remaining, 32, P.TEAL)
 	_button(panel, "准备就绪", func(): Game.gateway.send("room.ready"), not Game.gateway.online)
 
+func card_description(id: String, kind: String = "face") -> String:
+	var locale := P.language()
+	var descriptions: Dictionary = DESCRIPTIONS.data.get(locale, DESCRIPTIONS.data.get("zh", {}))
+	# Description tables use the `card.<kind>.desc.<id>` namespace. Keep the
+	# lookup here aligned with both the face summary and the full detail text;
+	# the old key omitted `.desc` and silently fell back to numeric shorthand.
+	return str(descriptions.get("card.%s.desc.%s" % [kind, id], ""))
+
 func _card_text(id: String, level: int = 0, element_override: String = "") -> String:
 	var info: Dictionary = CardDetails.with_element(cards.get(id, {}), element_override)
 	var source: String = info.get("source", "")
 	var badge := "怪" if not info.get("is_codex", true) else P.word(info.get("hero_class", ""))
-	var name: String = info.get("name", id)
-	var description_locale := "en" if I18n.locale == "en" else "zh"
-	var descriptions: Dictionary = DESCRIPTIONS.data.get(description_locale, DESCRIPTIONS.data.get("zh", {}))
-	var description: String = descriptions.get("card.face.desc." + id, "")
-	if level > 0 or not element_override.is_empty(): description = CardDetails.effect_text(CardDetails.at_level(info, level))
+	var name := CardDetails.localized_name(id, info)
+	var description: String = card_description(id, "face")
 	if description.is_empty():
+		# Cards without a configured face description use the structured fallback.
 		var lines: Array = []
 		for key in ["elemental_damage", "direct_damage", "heal", "shield"]:
 			if int(info.get(key, 0)) > 0:
@@ -508,61 +708,131 @@ func _card_material(kind: String) -> int:
 	var field := kind.left(1).to_lower() + kind.substr(1)
 	return int(Game.lobby.get("materials", {}).get(field, 0))
 
+func _card_action_block_reason(id: String, action: String) -> String:
+	var entry := _owned_card(id)
+	if entry.is_empty() or not entry.has("craftCost"): return "报价暂不可用"
+	var kind := str(entry.get("currencyKind", "WarriorSoul"))
+	var material := P.localized_word(kind)
+	var balance := _card_material(kind)
+	if action == "upgrade":
+		if int(entry.get("level", 0)) >= 5: return "已达最高等级"
+		var cost := int(entry.get("upgradeCost", 0))
+		if balance < cost: return "%s不足，还需 %s" % [material, cost - balance]
+		if not entry.get("canUpgrade", false): return "当前状态已改变，请重新选择操作"
+	elif action == "craft":
+		if entry.get("unlocked", false) or int(entry.get("copyCount", 0)) > 0: return "卡牌已激活"
+		var craft_cost := int(entry.get("craftCost", 0))
+		if balance < craft_cost: return "%s不足，还需 %s" % [material, craft_cost - balance]
+	elif action == "dismantle" and deck_draft.count(id) >= int(entry.get("copyCount", 0)):
+		return "当前编组正在使用这张卡，请先从编组移除"
+	return ""
+
+func _replace_owned_card(card: Dictionary) -> void:
+	var id := str(card.get("cardId", ""))
+	if id.is_empty(): return
+	for index in range(owned.size()):
+		if str(owned[index].get("cardId", "")) == id:
+			owned[index] = card
+			return
+	owned.append(card)
+
+func _set_codex_action_busy(value: bool) -> void:
+	if not is_instance_valid(_reference): return
+	for node_name in ["UpgradeCard", "DismantleCard", "CraftCard", "CloseCardDetails"]:
+		var button := _reference.find_child(node_name, true, false) as Button
+		if button != null: button.disabled = value
+	var primary := _reference.find_child("UpgradeCard", true, false) as Button
+	if value and primary != null: primary.text = P.localized_text("正在处理…")
+
 func _card_action(id: String, action: String) -> void:
 	if Game.busy or _codex_mutating or not _codex_ready: return
 	var entry := _owned_card(id)
 	if entry.is_empty() or not entry.has("craftCost"): return
-	if action == "dismantle" and deck_draft.count(id) >= int(entry.get("copyCount", 0)):
-		_toast("当前编组正在使用这张卡，请先从编组移除")
+	var blocked := _card_action_block_reason(id, action)
+	if not blocked.is_empty():
+		_toast(blocked)
 		return
 	_codex_mutating = true
 	Game.busy = true
-	_render()
+	_set_codex_action_busy(true)
 	var generation: int = Game.gateway.session_generation
 	var result: Dictionary = await Game.gateway.request("/api/v1/cards/%s/%s" % [id.uri_encode(), action], HTTPClient.METHOD_POST, {"expectedVersion": int(entry.get("version", 0))})
 	if not _session_result_current(generation, result):
 		_codex_mutating = false
 		return
 	if result.ok:
+		if result.data.get("card") is Dictionary: _replace_owned_card(result.data.card)
 		if result.data.get("materials") is Dictionary: Game.lobby["materials"] = result.data.materials
+		_codex_ready = true
 		Sound.play_cue("upgrade" if action == "upgrade" else "reward")
 		_toast({"craft": "合成成功，已获得 1 张卡牌", "dismantle": "分解成功，材料已返还", "upgrade": "升级成功，卡牌效果已提升"}.get(action, "操作完成"))
-	else: Sound.play_cue("error")
-	var refreshed: Dictionary = await Game.gateway.request("/api/v1/cards")
-	if not _session_result_current(generation, refreshed):
-		_codex_mutating = false
-		return
-	_codex_ready = refreshed.ok
-	if refreshed.ok: owned = refreshed.data
-	await Game.refresh_lobby()
+	else:
+		Sound.play_cue("error")
+		var refreshed: Dictionary = await Game.gateway.request("/api/v1/cards")
+		if not _session_result_current(generation, refreshed):
+			_codex_mutating = false
+			return
+		_codex_ready = refreshed.ok
+		if refreshed.ok: owned = refreshed.data
 	_codex_mutating = false
 	if not _session_result_current(generation): return
 	Game.busy = false
 	_render()
 
 func _codex() -> void:
-	# Both routes share card rendering, but expose separate collection/deck actions.
-	_reference = ReferenceUI.new()
-	add_child(_reference)
-	_reference.build(self)
+	var header := _row(content)
+	_label(header, "卡牌图鉴", 42, P.GOLD)
+	_label(header, P.localized("deck_count_summary") % deck_draft.size(), 30)
+	_button(header, "保存编组", _save_deck, deck_draft.size() != 20 or Game.busy)
+	_button(header, "还原", func(): deck_draft = Game.deck().get("cardIds", []).duplicate(); _render())
+	var deck_row := HFlowContainer.new()
+	content.add_child(deck_row)
+	for index in range(deck_draft.size()):
+		var id: String = deck_draft[index]
+		_button(deck_row, "%s ×" % CardDetails.localized_name(id, cards.get(id, {})), func(): deck_draft.remove_at(index); _render())
+	var resources: Dictionary = Game.lobby.get("materials", {})
+	_label(content, "勇士之魂 %s   ·   职业之魂 %s" % [resources.get("warriorSoul", 0), resources.get(Game.hero_class.to_lower() + "Soul", 0)], 22, P.MUTED)
+	var grid := GridContainer.new()
+	grid.columns = 6
+	content.add_child(grid)
+	for card in owned:
+		var class_value: Variant = card.get("heroClass")
+		if class_value != null and class_value != Game.hero_class: continue
+		var id: String = card.cardId
+		var can_add: bool = card.get("unlocked", false) and deck_draft.size() < 20 and deck_draft.count(id) == 0
+		if cards.get(id, {}).get("quality", "") == "Orange":
+			for entry in deck_draft:
+				var existing: Dictionary = cards.get(entry, {})
+				if existing.get("quality") == "Orange" and (existing.get("hero_class") == null) == (class_value == null): can_add = false
+		var button := _card_button(grid, id, func(): deck_draft.append(id); _render(), false, not can_add)
+		button.tooltip_text += "\n已编入 %s / 持有 %s · 等级 %s" % [deck_draft.count(id), card.copyCount, card.level]
 
 func _save_deck() -> void:
 	if Game.busy: return
+	if deck_draft.size() != DeckBuilder.DECK_SIZE:
+		_toast(P.localized("deck_requires_twenty"))
+		return
 	Game.busy = true
 	_render()
 	var generation: int = Game.gateway.session_generation
-	var result: Dictionary = await Game.gateway.request("/api/v1/decks/" + Game.hero_class, HTTPClient.METHOD_PUT, {"cardIds": deck_draft, "expectedVersion": Game.deck().get("version", 0)})
+	var result: Dictionary = await Game.gateway.request("/api/v1/decks/" + Game.hero_class, HTTPClient.METHOD_PUT, {"cardIds": deck_draft, "expectedVersion": Game.deck().get("version", 0)}, [0, 400, 409, 429, 500, 502, 503, 504])
 	if not _session_result_current(generation, result): return
-	await Game.refresh_lobby()
-	if not _session_result_current(generation): return
-	var refreshed: Dictionary = await Game.gateway.request("/api/v1/cards")
-	if not _session_result_current(generation, refreshed): return
-	_codex_ready = refreshed.ok
-	if refreshed.ok: owned = refreshed.data
-	Game.busy = false
 	if result.ok:
+		await Game.refresh_lobby()
+		if not _session_result_current(generation): return
+		deck_draft = Game.deck().get("cardIds", []).duplicate()
 		Sound.play_cue("equip")
-		_toast("编组已保存")
+		_toast(P.localized("deck_saved"))
+	elif int(result.get("status", 0)) == 409:
+		await Game.refresh_lobby()
+		if not _session_result_current(generation): return
+		deck_draft = Game.deck().get("cardIds", []).duplicate()
+		_toast(P.localized("deck_changed_retry"))
+	elif int(result.get("status", 0)) == 400:
+		_toast(P.localized("deck_invalid"))
+	else:
+		_toast(P.localized("deck_save_failed"))
+	Game.busy = false
 	_render()
 
 func _equipment_name(item: Dictionary) -> String:
@@ -583,15 +853,18 @@ func _equipment() -> void:
 	for index in range(5):
 		var id: Variant = gear_draft[index] if index < gear_draft.size() else null
 		var name := "未穿戴"
+		var worn_item: Dictionary = {}
 		for item in inventory.get("equipments", []):
-			if item.instanceId == id: name = _equipment_name(item)
+			if item.instanceId == id:
+				name = _equipment_name(item)
+				worn_item = item
 		var slot := _button(row, slot_names[index] + "\n" + name + ("\n点击卸下" if id != null else ""), func(): gear_draft[index] = null; _render(), id == null)
-		var equipped: Dictionary = {}
-		for candidate in inventory.get("equipments", []):
-			if candidate.instanceId == id: equipped = candidate; break
-		slot.icon = Art.equipment(equipped, ["Head", "Chest", "Hands", "Legs", "Feet"][index])
+		slot.icon = Art.equipment_texture(worn_item) if not worn_item.is_empty() else Art.texture("UI/Item/exploration_prep_item_icon_%s.png" % ["helmet", "chest", "gauntlet", "legs", "boots"][index])
 		slot.expand_icon = true
 		slot.add_theme_constant_override("icon_max_width", 58)
+		if id == null:
+			for state in ["normal", "hover", "pressed", "disabled", "focus"]:
+				slot.add_theme_color_override("icon_%s_color" % state, Art.UNEQUIPPED_ITEM_MODULATE)
 	_button(content, "保存五部位穿戴", func(): _mutate("/loadouts/" + Game.hero_class, HTTPClient.METHOD_PUT, {"equipmentIds": gear_draft, "expectedVersion": Game.loadout().get("version", 0)}), Game.busy)
 	for item in inventory.get("equipments", []):
 		var line := _row(_panel(content))
@@ -604,40 +877,74 @@ func _equipment() -> void:
 func _equip(item: Dictionary) -> void:
 	var slots := {"Head": 0, "Helmet": 0, "Chest": 1, "Body": 1, "Hands": 2, "Gloves": 2, "Legs": 3, "Feet": 4, "Boots": 4}
 	if not slots.has(item.slot): _toast("未识别的装备部位"); return
-	gear_draft[slots[item.slot]] = item.instanceId
+	gear_draft.resize(5)
+	var target_slot: int = slots[item.slot]
+	var item_id: Variant = item.get("instanceId", "")
+	if gear_draft[target_slot] == item_id:
+		gear_draft[target_slot] = null
+		_render()
+		return
+	if _draft_high_quality_limit_would_block(item):
+		_toast(P.localized("loadout_high_quality_limit"))
+		return
+	gear_draft[target_slot] = item_id
 	_render()
 
-func _comparison(item: Dictionary) -> String:
+func _draft_high_quality_limit_would_block(item: Dictionary) -> bool:
+	var slots := {"Head": 0, "Helmet": 0, "Chest": 1, "Body": 1, "Hands": 2, "Gloves": 2, "Legs": 3, "Feet": 4, "Boots": 4}
+	var slot := str(item.get("slot", ""))
+	return slots.has(slot) and _draft_has_other_high_quality(item, int(slots[slot]))
+
+func _draft_has_other_high_quality(item: Dictionary, target_slot: int) -> bool:
+	var quality := Art.quality_name(item.get("quality", item.get("Quality", "")))
+	if quality not in ["Orange", "Red"]: return false
+	for index in range(gear_draft.size()):
+		if index == target_slot: continue # Replacing this slot preserves the one-item limit.
+		var draft_id: Variant = gear_draft[index]
+		if draft_id == null: continue
+		for candidate in inventory.get("equipments", []):
+			if candidate.get("instanceId", "") == draft_id and Art.quality_name(candidate.get("quality", candidate.get("Quality", ""))) in ["Orange", "Red"]:
+				return true
+	return false
+
+func _equipped_items() -> Array:
+	if not Game.room.is_empty(): return Game.room.get("player", {}).get("equipped_items", [])
+	return inventory.get("equipments", []).filter(func(value): return value.get("instanceId", "") in gear_draft)
+
+func _current_equipment(item: Dictionary, worn: Array = []) -> Dictionary:
 	var gear: Dictionary = EquipmentDetails.equipment(item)
-	var worn: Array = Game.room.get("player", {}).get("equipped_items", []) if not Game.room.is_empty() else inventory.get("equipments", []).filter(func(value): return value.get("instanceId", "") in gear_draft)
+	if worn.is_empty(): worn = _equipped_items()
 	var current: Dictionary = {}
 	for candidate in worn:
 		if EquipmentDetails.equipment(candidate).get("slot", "") == gear.get("slot", ""):
 			current = candidate
 			break
-	return "所选装备\n%s\n\n当前同部位\n%s" % [EquipmentDetails.description(item), "未穿戴" if current.is_empty() else EquipmentDetails.description(current)]
+	return current
 
 func _show_equipment_details(item: Dictionary, action: Callable = Callable(), action_title: String = "穿戴") -> void:
-	var dialog := AcceptDialog.new()
-	dialog.title = "装备对比"
-	var column := VBoxContainer.new()
-	column.custom_minimum_size.x = 680
-	dialog.add_child(column)
-	_label(column, _comparison(item), 24)
-	if action.is_valid(): _button(column, action_title, func(): dialog.queue_free(); action.call(), Game.busy)
+	var worn := _equipped_items()
+	var current := _current_equipment(item, worn)
+	# Wearing into an empty slot has no baseline to compare. Follow the GDD/UI
+	# flow and execute the requested equip action without opening a modal.
+	if current.is_empty() and action.is_valid():
+		if not Game.busy: action.call()
+		return
+	var dialog := EquipmentCompareDialog.new()
 	add_child(dialog)
-	dialog.confirmed.connect(dialog.queue_free)
-	dialog.canceled.connect(dialog.queue_free)
-	dialog.popup_centered(Vector2i(750, 690))
+	dialog.open(item, current, worn, action, action_title, Game.busy)
 
 func _show_battle_details(status: Dictionary) -> void:
-	var dialog := AcceptDialog.new()
-	dialog.title = "当前战斗属性与套装"
-	dialog.dialog_text = BattleDetails.description(status) if not status.is_empty() else "等待战斗属性同步"
+	var existing := get_node_or_null("BattleDetailsModal")
+	if existing != null:
+		if existing.has_method("dismiss"): existing.call("dismiss")
+		return
+	var dialog := ConfirmationModalScene.instantiate()
+	dialog.name = "BattleDetailsModal"
 	add_child(dialog)
-	dialog.confirmed.connect(dialog.queue_free)
-	dialog.canceled.connect(dialog.queue_free)
-	dialog.popup_centered(Vector2i(700, 630))
+	dialog.configure(
+		BattleDetails.description(status) if not status.is_empty() else P.localized("battle_stats_waiting"),
+		Callable(),
+		{"title": "battle_stats_set", "confirm_text": "confirm", "info_only": true, "tall": true})
 
 func _enhance(item: Dictionary) -> void:
 	if Game.busy: return
@@ -646,27 +953,27 @@ func _enhance(item: Dictionary) -> void:
 	if not _session_result_current(generation, result): return
 	if not result.ok: return
 	var quote: Dictionary = result.data
-	if not quote.get("canEnhance", false): _toast("无法强化：碎片、同品质材料或物品状态不满足要求"); return
+	if not quote.get("canEnhance", false): _toast(P.localized("enhance_unavailable")); return
 	var body := {"expectedVersion": quote.expectedVersion}
-	var cost_text := "消耗 %s 装备碎片，强化到 +%s" % [quote.fragmentCost, quote.nextLevel]
+	var cost_text := P.localized("enhance_cost_confirm") % [quote.fragmentCost, quote.nextLevel]
 	if int(quote.materialCount) == 0:
 		_confirm(cost_text + "？", func(): _mutate("/equipment/" + item.instanceId + "/enhance", HTTPClient.METHOD_POST, body))
 		return
 	var dialog := AcceptDialog.new()
-	dialog.title = "选择强化材料 · 材料将被消耗"
+	dialog.title = P.localized("enhance_material_dialog")
 	var scroll := ScrollContainer.new()
 	scroll.custom_minimum_size = Vector2(720, 390)
 	dialog.add_child(scroll)
 	var column := VBoxContainer.new()
 	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(column)
-	_label(column, cost_text + "，另需同品质防具 ×1", 24)
+	_label(column, P.localized("enhance_material_cost") % cost_text, 24)
 	var count := 0
 	for material in inventory.get("equipments", []):
 		if material.instanceId == item.instanceId or material.get("location") != "Inventory" or material.quality != item.quality: continue
 		count += 1
-		_button(column, _equipment_name(material), func(): body.materialEquipmentId = material.instanceId; dialog.queue_free(); _confirm(cost_text + "，并消耗 " + _equipment_name(material) + "？", func(): _mutate("/equipment/" + item.instanceId + "/enhance", HTTPClient.METHOD_POST, body)))
-	if count == 0: _label(column, "没有可用的同品质仓库材料。")
+		_button(column, _equipment_name(material), func(): body.materialEquipmentId = material.instanceId; dialog.queue_free(); _confirm(P.localized("enhance_material_confirm") % [cost_text, _equipment_name(material)], func(): _mutate("/equipment/" + item.instanceId + "/enhance", HTTPClient.METHOD_POST, body)))
+	if count == 0: _label(column, P.localized("enhance_no_material"))
 	add_child(dialog)
 	dialog.popup_centered(Vector2i(750, 360))
 	dialog.confirmed.connect(dialog.queue_free)
@@ -680,8 +987,8 @@ func _enhance_weapon() -> void:
 	if not _session_result_current(generation, result): return
 	if not result.ok: return
 	var quote: Dictionary = result.data
-	if not quote.get("canEnhance", false): _toast("无法强化：碎片不足或已达最高等级"); return
-	_confirm("消耗 %s 装备碎片，将本命武器强化到 +%s？" % [quote.fragmentCost, quote.nextLevel], func(): _mutate("/class-weapons/" + hero_class + "/enhance", HTTPClient.METHOD_POST, {"expectedVersion": quote.expectedVersion}))
+	if not quote.get("canEnhance", false): _toast(P.localized("enhance_weapon_unavailable")); return
+	_confirm(P.localized("enhance_weapon_confirm") % [quote.fragmentCost, quote.nextLevel], func(): _mutate("/class-weapons/" + hero_class + "/enhance", HTTPClient.METHOD_POST, {"expectedVersion": quote.expectedVersion}))
 
 func _read_enhancement_quote(item: Dictionary, weapon: Dictionary) -> void:
 	var id: String = item.get("instanceId", Game.hero_class)
@@ -700,9 +1007,9 @@ func _read_enhancement_quote(item: Dictionary, weapon: Dictionary) -> void:
 func _weapon_benefit(level: int) -> String:
 	var percent: int = [6, 8, 10, 11, 13, 14][clampi(level, 0, 5)]
 	match Game.hero_class:
-		"Priest": return "治疗 +%s%%" % percent
-		"Mage": return "焚弦额外充能 +%s%%（总充能上限 50%%）" % percent
-		_: return "上盾额外 +%s" % (3 if level >= 4 else (2 if level >= 2 else 1))
+		"Priest": return P.localized("weapon_benefit_heal") % percent
+		"Mage": return P.localized("weapon_benefit_charge") % [P.localized("class_mage_weapon"), percent]
+		_: return P.localized("weapon_benefit_shield") % (3 if level >= 4 else (2 if level >= 2 else 1))
 
 func _shop() -> void:
 	_label(content, "旅人补给", 44, P.GOLD)
@@ -711,12 +1018,14 @@ func _shop() -> void:
 	content.add_child(grid)
 	for item in shop.get("products", []):
 		var panel := _panel(grid, 535)
-		_label(panel, P.word(item.kind), 30)
+		_label(panel, P.product_name(item.kind), 30)
 		var payload: Variant = JSON.parse_string(item.get("payload", "{}"))
-		if payload is Dictionary and payload.has("cardId"): _label(panel, cards.get(payload.cardId, {}).get("name", payload.cardId), 26, P.TEAL)
-		_label(panel, "%s 金币" % item.priceGold, 36, P.GOLD)
-		_label(panel, "今日 %s / %s" % [item.purchased, item.limit], 22, P.MUTED)
-		_button(panel, "购买", func(): _confirm("花费 %s 金币购买？" % item.priceGold, func(): _mutate("/shop/purchases", HTTPClient.METHOD_POST, {"productId": item.productId, "quantity": 1})), Game.busy or int(item.purchased) >= int(item.limit) or int(item.priceGold) > int(Game.lobby.wallet.gold))
+		if payload is Dictionary and payload.has("cardId"):
+			var card_id := str(payload.cardId)
+			_label(panel, CardDetails.localized_name(card_id, cards.get(card_id, {})), 26, P.TEAL)
+		_label(panel, P.localized("shop_price") % item.priceGold, 36, P.GOLD)
+		_label(panel, P.localized("shop_purchase_count") % [item.purchased, item.limit], 22, P.MUTED)
+		_button(panel, "已激活" if item.get("alreadyOwned", false) else "购买", func(): _confirm("花费 %s 金币购买？" % item.priceGold, func(): _mutate("/shop/purchases", HTTPClient.METHOD_POST, {"productId": item.productId, "quantity": 1})), Game.busy or item.get("alreadyOwned", false) or int(item.purchased) >= int(item.limit) or int(item.priceGold) > int(Game.lobby.wallet.gold))
 	if shop.get("products", []).is_empty(): _label(content, "暂无商品，稍后刷新。", 28)
 
 func _market() -> void:
@@ -762,19 +1071,85 @@ func _mutate(path: String, method: int, body: Variant = null) -> void:
 	Game.busy = false
 	await _navigate(screen)
 
+func _purchase_shop_item(item: Dictionary, product_title: String) -> void:
+	var purchase := func(): _complete_shop_purchase(item)
+	if item.get("kind", "") == "Cards":
+		_confirm("花费 %s 金币购买%s？" % [item.get("priceGold", 0), product_title], purchase)
+	else:
+		purchase.call()
+
+func _refresh_shop() -> void:
+	if Game.busy: return
+	Game.busy = true
+	var generation: int = Game.gateway.session_generation
+	var result: Dictionary = await Game.gateway.request("/api/v1/shop/refresh", HTTPClient.METHOD_POST, {})
+	if not _session_result_current(generation, result): return
+	if result.ok:
+		shop = result.data
+		Sound.play_cue("reward")
+		_toast("商店货架已刷新")
+	else:
+		Sound.play_cue("error")
+		_toast(result.error)
+	Game.busy = false
+	_render()
+
+func _complete_shop_purchase(item: Dictionary) -> void:
+	if Game.busy: return
+	Game.busy = true
+	var generation: int = Game.gateway.session_generation
+	var product_id: String = str(item.get("productId", ""))
+	var scroll_position := 0
+	if is_instance_valid(_reference):
+		var shop_scroll := _reference.get_node_or_null("ShopScroll") as ScrollContainer
+		if shop_scroll != null: scroll_position = shop_scroll.scroll_horizontal
+	var result: Dictionary = await Game.gateway.request("/api/v1/shop/purchases", HTTPClient.METHOD_POST, {"productId": product_id, "quantity": 1})
+	if not _session_result_current(generation, result): return
+	if result.ok:
+		_apply_shop_purchase(product_id, result.data)
+		Sound.play_cue("purchase")
+		_toast("操作成功")
+	else:
+		Sound.play_cue("error")
+	Game.busy = false
+	_render()
+	_restore_shop_scroll.call_deferred(scroll_position)
+
+func _restore_shop_scroll(scroll_position: int) -> void:
+	if screen != "shop" or not is_instance_valid(_reference): return
+	var shop_scroll := _reference.get_node_or_null("ShopScroll") as ScrollContainer
+	if shop_scroll != null: shop_scroll.scroll_horizontal = scroll_position
+
+func _apply_shop_purchase(product_id: String, response: Dictionary) -> void:
+	var quantity: int = int(response.get("quantity", 1))
+	var products: Array = shop.get("products", [])
+	for index in products.size():
+		var product: Dictionary = products[index]
+		if str(product.get("productId", "")) != product_id: continue
+		product["purchased"] = int(product.get("purchased", 0)) + quantity
+		products[index] = product
+		var kind: String = str(product.get("kind", ""))
+		if kind in ["AdvancedBag", "TopBag"]:
+			var payload: Variant = JSON.parse_string(product.get("payload", "{}"))
+			var amount: int = int(payload.get("amount", 1)) if payload is Dictionary else 1
+			var consumables: Dictionary = inventory.get("consumables", {}).duplicate()
+			var key := "advancedBagCount" if kind == "AdvancedBag" else "topBagCount"
+			consumables[key] = int(consumables.get(key, 0)) + amount * quantity
+			inventory["consumables"] = consumables
+		break
+	shop["products"] = products
+	var wallet: Dictionary = Game.lobby.get("wallet", {}).duplicate()
+	wallet["gold"] = int(response.get("goldAfter", wallet.get("gold", 0)))
+	Game.lobby["wallet"] = wallet
+
 func _session_result_current(generation: int, result: Dictionary = {}) -> bool:
 	return generation == Game.gateway.session_generation and not result.get("stale_session", false)
 
-func _confirm(message: String, action: Callable) -> void:
-	var dialog := ConfirmationDialog.new()
-	dialog.dialog_text = message
-	dialog.title = "确认操作"
-	dialog.ok_button_text = "确认"
-	dialog.cancel_button_text = "取消"
+func _confirm(message: String, action: Callable, options: Dictionary = {}) -> void:
+	if get_node_or_null("ConfirmationModal") != null: return
+	var dialog := ConfirmationModalScene.instantiate()
 	add_child(dialog)
-	dialog.confirmed.connect(func(): dialog.queue_free(); action.call())
-	dialog.canceled.connect(dialog.queue_free)
-	dialog.popup_centered(Vector2i(760, 260))
+	dialog.configure(message, action, options)
 
 func _room() -> void:
 	var state: Dictionary = Game.room
@@ -785,6 +1160,11 @@ func _room() -> void:
 	_label(row, "生命 %s / %s   护盾 %s" % [combat.get("hp", 0), combat.get("maximum_hp", 0), combat.get("shield", 0)], 28)
 	_button(row, "同步", func(): Game.gateway.send("room.snapshot.read"))
 	if player.get("phase", "") in ["Pve", "Pvp"]:
+		_button(row, P.localized("battle_exit"), func(): _confirm(
+			P.localized("battle_abandon_warning"),
+			func(): Game.command("battle.abandon"),
+			{"title": P.localized("battle_abandon_title"), "confirm_text": P.localized("battle_abandon_confirm"), "cancel_text": P.localized("cancel"), "tall": true}),
+			not Game.allowed("battle.abandon"))
 		_battle(state)
 	elif state.has("reward_choice"):
 		_rewards(state.reward_choice)
@@ -812,24 +1192,31 @@ func _battle(state: Dictionary) -> void:
 		if Game.allowed("duel.escape"): _button(opponent, "强制逃脱", func(): Game.command("duel.escape", {"duel_id": state.duel.duel_id}))
 		if state.duel.has("escape_remaining_ms"): _label(opponent, "逃脱读条 %.1f 秒" % (float(state.duel.escape_remaining_ms) / 1000.0))
 	else:
-		for monster in state.get("pve", {}).get("monsters", []):
+		var monsters: Array = state.get("pve", {}).get("monsters", [])
+		var alive_monster_count := 0
+		for monster in monsters:
+			if int(monster.hp) > 0: alive_monster_count += 1
+		var multiple_monsters: bool = alive_monster_count > 1
+		for monster in monsters:
 			var enemy := _panel(stage, 420)
 			enemy.add_theme_constant_override("separation", 8)
 			_combat_panels[monster.monster_id] = enemy.get_parent()
-			var button := _button(enemy, _monster_name(monster.monster_id) + (" · 当前目标" if state.pve.current_target_id == monster.monster_id else " · 选择目标"), func(): Game.command("battle.select_target", {"battle_id": state.pve.battle_id, "target_id": monster.monster_id}), not Game.allowed("battle.select_target") or int(monster.hp) <= 0)
-			button.custom_minimum_size.y = 60
 			var portrait := Art.image(enemy, Art.monster(monster.monster_id), Vector2(110, 90))
 			if portrait.texture == null:
 				portrait.custom_minimum_size.y = 40
 				_label(enemy, _monster_name(monster.monster_id), 28, P.MUTED)
 			_label(enemy, "生命 %s / %s    盾 %s" % [monster.hp, monster.maximum_hp, monster.shield], 20)
 			_health_bar(enemy, monster)
+			if multiple_monsters:
+				var button := _button(enemy, _monster_name(monster.monster_id) + (" · 当前目标" if state.pve.current_target_id == monster.monster_id else " · 选择目标"), func(): Game.command("battle.select_target", {"battle_id": state.pve.battle_id, "target_id": monster.monster_id}), not Game.allowed("battle.select_target") or int(monster.hp) <= 0, "UI/CardCodex/card_codex_action_button_orange.png")
+				button.custom_minimum_size.y = 60
 			var intent: String = {"Charge": "蓄力", "Empower": "强化", "Shield": "护盾"}.get(monster.intent_kind, P.word(monster.intent_element))
 			_label(enemy, "意图 %s %s" % [intent, monster.intent_value if int(monster.intent_value) > 0 else ""], 23, P.ELEMENT.get(monster.intent_element, Color.WHITE))
 	var charge := BoundedBar.new()
+	charge.name = "DrawChargeBar"
 	charge.configure("UI/Battle/battle_energy_cell_lit.png", "UI/Battle/battle_energy_cell_unlit.png")
 	charge.max_value = 1.0
-	charge.value = float(state.player.get("draw_charge", "0"))
+	charge.value = _draw_charge_value(float(state.player.get("draw_charge", "0")))
 	charge.custom_minimum_size.y = 16
 	content.add_child(charge)
 	_label(content, "1–5 选牌 / 空格放出 / R 同步    已选 %s 张" % Game.selected_cards.size(), 22, P.MUTED)
@@ -944,25 +1331,18 @@ func _settlement() -> void:
 	_button(content, "返回", Game.acknowledge_settlement, Game.busy)
 
 func _toast(message: String) -> void:
-	_toast_serial += 1
-	if is_instance_valid(_toast_tween): _toast_tween.kill()
-	toast_label.text = I18n.t(message)
-	toast_label.offset_top = 210
-	toast_label.offset_bottom = 290
-	toast_label.modulate.a = 1.0
-	toast_label.show()
-	_toast_tween = create_tween()
-	_toast_tween.set_parallel(true)
-	_toast_tween.tween_property(toast_label, "position:y", 162.0, 2.2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	_toast_tween.tween_property(toast_label, "modulate:a", 0.0, 0.5).set_delay(1.7)
-	_toast_tween.chain().tween_callback(func(): toast_label.text = ""; toast_label.hide())
+	if is_instance_valid(tips_overlay):
+		tips_overlay.show_tip(message)
 
-func _purchase_product(item: Dictionary, product_title: String) -> void:
-	if Game.busy: return
-	if int(item.priceGold) > int(Game.lobby.get("wallet", {}).get("gold", 0)):
-		_toast("金币不足")
-		return
-	_confirm("花费 %s 金币购买%s？" % [item.priceGold, product_title], func(): _mutate("/shop/purchases", HTTPClient.METHOD_POST, {"productId": item.productId, "quantity": 1}))
+func _show_ban_dialog(reason: String) -> void:
+	if not reason.begins_with("账号已被封禁"): return
+	var dialog := AcceptDialog.new()
+	dialog.title = "账号已被封禁"
+	dialog.dialog_text = reason
+	dialog.confirmed.connect(dialog.queue_free)
+	dialog.canceled.connect(dialog.queue_free)
+	add_child(dialog)
+	dialog.popup_centered(Vector2i(700, 360))
 
 func _health_bar(parent: Node, combat: Dictionary) -> void:
 	var bar := BoundedBar.new()
@@ -982,41 +1362,102 @@ func _health_bar(parent: Node, combat: Dictionary) -> void:
 func _feedback(payload: Dictionary) -> void:
 	var target: Control = _combat_panels.get(payload.get("target_id", ""))
 	if is_instance_valid(target):
-		_pulse(target, 0.97)
+		_hit_reaction(target)
 		var index := 0
 		for segment in payload.get("damage_segments", []):
 			if int(segment.get("amount", 0)) <= 0: continue
-			_float_number(target, "%s %s" % ["直" if segment.kind == "Direct" else P.word(segment.kind), segment.amount], P.ELEMENT.get(segment.kind, Color.WHITE), index)
+			var kind := str(segment.get("kind", "Direct"))
+			_float_number(target, "%s %s" % ["直" if _is_direct_damage(kind) else P.word(kind), segment.get("amount", 0)], _damage_color(kind), index)
 			index += 1
 	var source_id: String = payload.get("source_id", "")
 	if source_id.is_empty(): source_id = payload.get("attacker_id", "")
 	var source: Control = _combat_panels.get(source_id)
 	if is_instance_valid(source):
-		_pulse(source, 1.03)
+		_attack_reaction(source, target if is_instance_valid(target) else null)
 		for key in ["heal", "shield_gain"]:
 			if int(payload.get(key, 0)) <= 0: continue
 			_float_number(source, "+%s" % payload[key], P.TEAL if key == "heal" else Color("c4d2d4"), 0 if key == "heal" else 1)
 
-func _pulse(node: Control, factor: float) -> void:
-	var previous: Variant = node.get_meta("hit_tween") if node.has_meta("hit_tween") else null
+func _is_direct_damage(kind: String) -> bool:
+	return kind.to_lower() in ["direct", "none", ""]
+
+func _damage_color(kind: String) -> Color:
+	if _is_direct_damage(kind): return P.DIRECT_DAMAGE
+	for element in P.ELEMENT:
+		if str(element).to_lower() == kind.to_lower(): return P.ELEMENT[element]
+	return P.DIRECT_DAMAGE
+
+func _reaction_base(node: Control) -> Dictionary:
+	if not node.has_meta("combat_base_position"):
+		node.set_meta("combat_base_position", node.position)
+	if not node.has_meta("combat_base_scale"):
+		node.set_meta("combat_base_scale", node.scale)
+	if not node.has_meta("combat_base_modulate"):
+		node.set_meta("combat_base_modulate", node.modulate)
+	var previous: Variant = node.get_meta("combat_reaction_tween") if node.has_meta("combat_reaction_tween") else null
 	if previous is Tween and previous.is_running(): previous.kill()
-	node.pivot_offset = node.size / 2
-	var tween := node.create_tween().set_parallel(true)
-	node.set_meta("hit_tween", tween)
-	tween.tween_property(node, "modulate", Color(1.3, 1.3, 1.3), 0.08)
-	tween.tween_property(node, "scale", Vector2.ONE * factor, 0.08)
-	tween.chain().tween_property(node, "modulate", Color.WHITE, 0.15)
-	tween.parallel().tween_property(node, "scale", Vector2.ONE, 0.15)
+	var base_position: Vector2 = node.get_meta("combat_base_position")
+	var base_scale: Vector2 = node.get_meta("combat_base_scale")
+	var base_modulate: Color = node.get_meta("combat_base_modulate")
+	node.position = base_position
+	node.scale = base_scale
+	node.modulate = base_modulate
+	node.pivot_offset = node.size / 2.0
+	return {"position": base_position, "scale": base_scale, "modulate": base_modulate}
+
+func _hit_reaction(node: Control) -> void:
+	var base := _reaction_base(node)
+	var position: Vector2 = base.position
+	var scale: Vector2 = base.scale
+	var normal: Color = base.modulate
+	var red := Color(1.0, 0.28, 0.24, normal.a)
+	var tween := node.create_tween()
+	node.set_meta("combat_reaction_tween", tween)
+	tween.tween_property(node, "position", position + Vector2(0, -18), 0.08).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(node, "scale", scale * 0.97, 0.08)
+	tween.parallel().tween_property(node, "modulate", red, 0.06)
+	tween.tween_property(node, "position", position + Vector2(0, 7), 0.07).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	tween.parallel().tween_property(node, "modulate", red.lightened(0.12), 0.07)
+	tween.tween_property(node, "position", position + Vector2(0, -4), 0.06).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(node, "scale", scale * 0.99, 0.06)
+	tween.tween_property(node, "position", position, 0.13).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	tween.parallel().tween_property(node, "scale", scale, 0.13)
+	tween.parallel().tween_property(node, "modulate", normal, 0.16)
+
+func _attack_reaction(node: Control, target: Control) -> void:
+	var base := _reaction_base(node)
+	var position: Vector2 = base.position
+	var scale: Vector2 = base.scale
+	var direction := 1.0
+	if is_instance_valid(target) and target.global_position.x < node.global_position.x: direction = -1.0
+	var toward := Vector2(28.0 * direction, 0)
+	var recoil := Vector2(-15.0 * direction, 0)
+	var tween := node.create_tween()
+	node.set_meta("combat_reaction_tween", tween)
+	tween.tween_property(node, "position", position + toward, 0.11).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(node, "scale", scale * 1.04, 0.11)
+	tween.tween_property(node, "position", position + recoil, 0.07).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	tween.parallel().tween_property(node, "scale", scale * 0.98, 0.07)
+	tween.tween_property(node, "position", position + Vector2(7.0 * direction, 0), 0.06).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(node, "scale", scale * 1.02, 0.06)
+	tween.tween_property(node, "position", position, 0.14).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	tween.parallel().tween_property(node, "scale", scale, 0.14)
 
 func _float_number(node: Control, value: String, tint: Color, index: int) -> void:
 	var number := _label(self, value, 42, tint)
 	number.add_theme_font_override("font", P.font("number"))
 	number.name = "CombatNumber"
-	number.position = node.global_position + Vector2(70 + index * 43, 35 + index * 50)
+	number.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	number.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	number.size = Vector2(170, 54)
+	number.position = node.global_position + Vector2(maxf(0.0, node.size.x * 0.5 - 85.0) + index * 32.0, -62.0 - index * 26.0)
+	number.z_index = 20
 	number.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var tween := number.create_tween().set_parallel(true)
-	tween.tween_property(number, "position:y", number.position.y - 65, 0.8)
-	tween.tween_property(number, "modulate:a", 0.0, 0.8)
+	tween.tween_property(number, "position:y", number.position.y - 72, 0.78).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(number, "scale", Vector2(1.08, 1.08), 0.1)
+	tween.chain().tween_property(number, "scale", Vector2.ONE, 0.12)
+	tween.parallel().tween_property(number, "modulate:a", 0.0, 0.78)
 	tween.chain().tween_callback(number.queue_free)
 
 func _unhandled_key_input(event: InputEvent) -> void:

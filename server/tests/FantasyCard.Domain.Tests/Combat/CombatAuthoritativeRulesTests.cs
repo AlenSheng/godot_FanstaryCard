@@ -12,11 +12,31 @@ public sealed class CombatAuthoritativeRulesTests
         var exampleB = CombatResolver.Resolve([Fire(8), Fire(3), Fire(12), Element(CardElement.Water, 7)], state, _ => -.30);
         var exampleC = CombatResolver.Resolve([Fire(8), Fire(8), Element(CardElement.Water, 7), Element(CardElement.Water, 7)], state, _ => -.30);
 
-        Assert.Equal(40, exampleB.Damage);
-        Assert.Equal(7, exampleB.Heal);
-        Assert.Equal(17, exampleC.Damage);
-        Assert.Equal(9, exampleC.Heal);
+        Assert.Equal(48, exampleB.Damage);
+        Assert.Equal(6, exampleB.Heal);
+        Assert.Equal(34, exampleC.Damage);
+        Assert.Equal(8, exampleC.Heal);
         Assert.Equal(CardElement.Fire, exampleC.CoreElement);
+    }
+
+    [Fact]
+    public void Core_first_branches_keep_unrelated_damage_and_recompute_counter_damage()
+    {
+        var state = State();
+        var result = CombatResolver.Resolve([
+            Element(CardElement.Earth, 6),
+            Element(CardElement.Water, 6),
+            Element(CardElement.Metal, 8),
+            Element(CardElement.Water, 8)], state);
+
+        Assert.Equal(CardElement.Earth, result.CoreElement);
+        Assert.Equal(1, result.CoreCount);
+        Assert.Equal(21, result.Damage);
+        Assert.Equal(new[] { new CombatDamageSegment("Earth", 6), new("Water", 7), new("Metal", 8) }, result.DamageSegments);
+
+        var directOnly = CombatResolver.Resolve([Direct(9)], state, _ => .99);
+        Assert.Null(directOnly.CoreElement);
+        Assert.Equal(9, directOnly.Damage);
     }
 
     [Fact]
@@ -27,10 +47,10 @@ public sealed class CombatAuthoritativeRulesTests
         var withoutEarth = CombatResolver.Resolve([Fire(8), Fire(8), Element(CardElement.Water, 7)], state);
         var waterFirst = CombatResolver.Resolve([Element(CardElement.Water, 7), Fire(8)], state);
 
-        Assert.Equal(withoutEarth.Damage, withEarth.Damage);
+        Assert.Equal(27, withEarth.Damage);
         Assert.Equal(withoutEarth.Heal, withEarth.Heal);
         Assert.Equal(CardElement.Water, waterFirst.CoreElement);
-        Assert.Equal(5, waterFirst.Damage);
+        Assert.Equal(13, waterFirst.Damage);
     }
 
     [Fact]
@@ -42,8 +62,8 @@ public sealed class CombatAuthoritativeRulesTests
         var normal = CombatResolver.Resolve(cards, state);
         var revealed = CombatResolver.Resolve([.. cards, new("reveal", new(IsClassReveal: true))], state);
 
-        Assert.Equal(82, normal.Damage); // 38 * 2 + (3 + 1 + 1 + 1).
-        Assert.Equal(106, revealed.Damage); // (18 + 10 + 10 + 10) * 2 + (4 + 2 + 2 + 2).
+        Assert.Equal(64, normal.Damage);
+        Assert.Equal(86, revealed.Damage);
         Assert.Equal(10, revealed.DamageSegments!.Single(segment => segment.Kind == "Direct").Amount);
         Assert.Equal(0, normal.Shield);
     }
@@ -57,9 +77,9 @@ public sealed class CombatAuthoritativeRulesTests
         var five = CombatResolver.Resolve([bonus, Fire(8), Fire(8), Fire(8), Fire(8)], state);
         var plain = CombatResolver.Resolve([Fire(8), Fire(8), Fire(8), Fire(8), Fire(8)], state);
 
-        Assert.Equal(48, three.Damage);
-        Assert.Equal(140, five.Damage);
-        Assert.Equal(120, plain.Damage);
+        Assert.Equal(36, three.Damage);
+        Assert.Equal(80, five.Damage);
+        Assert.Equal(70, plain.Damage);
     }
 
     [Fact]
@@ -69,8 +89,27 @@ public sealed class CombatAuthoritativeRulesTests
         var result = CombatResolver.Resolve([Fire(8), Fire(3), Fire(12), Element(CardElement.Water, 7),
             new("tidal", new(ConflictCancelBonus: .15, ConflictHealCoefficient: .70))], state, _ => -.30);
 
-        Assert.Equal(33, result.Damage);
-        Assert.Equal(14, result.Heal);
+        Assert.Equal(46, result.Damage);
+        Assert.Equal(12, result.Heal);
+    }
+
+    [Fact]
+    public void Element_tuning_uses_resonance_without_taking_or_creating_conflict_cancellation()
+    {
+        var state = State();
+        var protectedResult = CombatResolver.Resolve(
+            [Fire(10), Tuning(CardElement.Fire, 10), Element(CardElement.Water, 1)], state);
+        var ordinaryResult = CombatResolver.Resolve(
+            [Fire(10), Fire(10), Element(CardElement.Water, 1)], state);
+        var tuningOnlyCore = CombatResolver.Resolve(
+            [Tuning(CardElement.Fire, 10), Element(CardElement.Water, 10)], state);
+
+        Assert.Equal(20, protectedResult.Damage);
+        Assert.Equal(3, protectedResult.Heal);
+        Assert.Equal(20, ordinaryResult.Damage);
+        Assert.Equal(4, ordinaryResult.Heal);
+        Assert.Equal(18, tuningOnlyCore.Damage);
+        Assert.Equal(2, tuningOnlyCore.Heal);
     }
 
     [Fact]
@@ -99,7 +138,7 @@ public sealed class CombatAuthoritativeRulesTests
         Assert.Null(result.CoreElement);
         Assert.Equal(new[] { new CombatDamageSegment("Fire", 8), new("Metal", 9), new("Direct", 4) }, result.DamageSegments);
         Assert.Equal(1, combined.CoreCount);
-        Assert.Equal(31, combined.Damage);
+        Assert.Equal(30, combined.Damage);
         Assert.Equal(0, combined.Heal);
     }
 
@@ -162,4 +201,7 @@ public sealed class CombatAuthoritativeRulesTests
 
     private static CombatCardDefinition Fire(int value) => Element(CardElement.Fire, value);
     private static CombatCardDefinition Element(CardElement element, int value) => new("damage", new(ElementalDamage: value, Element: element));
+    private static CombatCardDefinition Direct(int value) => new("direct", new(DirectDamage: value));
+    private static CombatCardDefinition Tuning(CardElement element, int value) =>
+        new("tuning", new(ElementalDamage: value, Element: element, IsElementTuning: true));
 }

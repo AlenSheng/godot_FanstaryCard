@@ -31,7 +31,7 @@ cd server
 
 `POST /api/v1/auth/local` 默认关闭，只有 `Development` 环境且 `Identity:EnableLocalAuth=true` 时才能开启。Production 即使误配该开关也返回 404，不能把 Local Auth 当正式登录。
 
-配置源为仓库根目录 `config/FantasyCard_Config.xlsx`。`tools/export-config.ps1` 将同一份 bytes/version/hash 发布到 `server/config/generated/` 与 `client/data/generated/`，并生成 Godot 使用的 `client/data/catalog.json`。当前版本包含 200 张图鉴卡、12 张怪物卡和 1200 行成长数据；湮核 `M-VOIDCORE` 为火 8、金 8、盾 8，`GO10.is_class_reveal=true`。服务端和客户端版本不一致时先更新配置，不用客户端猜测数值。
+配置源为仓库根目录 `config/FantasyCard_Config.xlsx`。`tools/export-config.ps1` 将同一份 bytes/version/hash 发布到 `server/config/generated/` 与 `client/data/generated/`，并生成 Godot 使用的 `client/data/catalog.json`。当前版本包含 220 张图鉴卡、12 张怪物卡和 1320 行成长数据；湮核 `M-VOIDCORE` 为火 8、金 8、盾 8，`GO10.is_class_reveal=true`。服务端和客户端版本不一致时先更新配置，不用客户端猜测数值。
 
 ## 2. 客户端启动顺序
 
@@ -161,7 +161,7 @@ REST 错误使用 `application/problem+json`：
 }
 ```
 
-首次登录会幂等初始化：0 余额钱包、0 材料、30 张通用白卡、每职业 7 张职业白卡、三套默认 20 张编组、三把 +0 专属武器、三双绑定白鞋。起始金币、药剂、付费包未获策划确认，保持为 0。
+首次登录会幂等初始化：0 余额钱包、0 材料、30 张通用白卡、每职业 7 张职业白卡、三套默认 20 张编组、三把 +0 专属武器、三职业五部位配装全空。**不发放绑定白鞋或任何起始防具。** 起始金币、药剂、付费包未获策划确认，保持为 0。
 
 ### `POST /api/v1/auth/steam`
 
@@ -214,7 +214,7 @@ Godot 的 `client/platform/platform_service.gd` 已封装 GodotSteam 单例初�
   "equippedLoadouts": [
     {
       "heroClass": "Mage",
-      "equipmentIds": [null, null, null, null, "018f..."],
+      "equipmentIds": [null, null, null, null, null],
       "version": 1
     }
   ],
@@ -261,6 +261,8 @@ Godot 的 `client/platform/platform_service.gd` 已封装 GodotSteam 单例初�
   "createdAt": "2026-08-29T08:15:00+00:00"
 }
 ```
+
+死亡结算提交后身上五件防具进遗物堆，对应配装栏保持空。开局与死亡都 **不发放绑定白鞋**。专属武器始终保留，不进遗物堆。
 
 客户端完成结算弹窗数据绑定后调用：
 
@@ -323,7 +325,7 @@ Idempotency-Key: settlement-ack-018f90dc
 ]
 ```
 
-返回当前配置包中全部 200 张图鉴卡（不含 12 张战局怪物卡），含尚未拥有的条目。未拥有条目 `unlocked=false`、`copyCount=0`；正常初始化行的 `version=1`，缺失的历史行则为 0。卡面使用相同 `configVersion` 的静态配置，交易价格与材料类型使用这里的服务端报价。
+返回当前配置包中全部 220 张图鉴卡（不含 12 张战局怪物卡），含尚未拥有的条目。未拥有条目 `unlocked=false`、`copyCount=0`；正常初始化行的 `version=1`，缺失的历史行则为 0。卡面使用相同 `configVersion` 的静态配置，交易价格与材料类型使用这里的服务端报价。
 
 `currencyKind` 为 `WarriorSoul`、`PriestSoul`、`MageSoul`、`GuardianSoul`，三职业材料互不通用。`canDismantle=false` 时 `blockedReason` 给出未拥有或已编组原因。品质字符串为 `White/Green/Blue/Purple/Orange`。
 
@@ -459,7 +461,20 @@ Idempotency-Key: settlement-ack-018f90dc
 
 商店购买必须复用一次 UI 操作的 `Idempotency-Key`；同键同请求回放首次结果，同键改商品或数量返回 409。日限、金币不足，以及高级/顶级探索包购买后仓库合计将超过 3 个时，服务端不会扣金币或发放物品。防具 +4/+5 材料可使用仓库中同品质、任意部位/元素/强化等级的防具；绑定材料允许，红装只接受红装材料，专属武器永远不可作材料。红装强化 UI 随红装掉落/周配额一同开放，当前原型不展示入口。失败不会扣碎片或消费材料，成功重放不会重复消费。
 
-`GET /api/v1/shop/` 每日 UTC+8 04:00 更换 `resetKey`。响应固定包含三条 `productId=daily_card_1..3` 的单卡报价；`payload` 是 JSON 字符串，含 `cardId`、`quality`、`count=1`。三张卡互不重复，仅从图鉴 White～Purple 中产生，不含 Orange；同一 resetKey 在所有服务实例上一致。价格为白 80、绿 150、蓝 280、紫 500，每张每名玩家当日限购 1。
+`GET /api/v1/shop/` 每日 UTC+8 04:00 更换 `resetKey`。货架按 GDD 6.2 固定包含：
+
+| productId | kind | 价格 | 日限 | 发放 |
+| --- | --- | --- | --- | --- |
+| `card_pack` | Cards | 250 | 5 | 3 张白～紫随机卡，权重 50/30/15/5，不含橙和职业紫/橙 |
+| `daily_card_1..3` | Cards | 白 80 / 绿 150 / 蓝 280 / 紫 500 | 各 1 | 当日轮换指定图鉴卡 1 张 |
+| `warrior_soul` | WarriorSoul | 180 | 3 | 20 勇士之魂 |
+| `equipment_fragments` | EquipmentFragments | 120 | 3 | 20 装备碎片 |
+| `priest_soul` / `mage_soul` / `guardian_soul` | ClassSoul | 400 | 各 1 | 12 该职业之魂 |
+| `health_potion` | HealthPotion | 100 | 4 | 1 瓶生命药剂 |
+| `advanced_bag` | AdvancedBag | 800 | 99 | 1 个高级探索包；仓库高级+顶级合计不得超过 3 |
+| `top_bag` | TopBag | 2200 | 99 | 1 个顶级探索包；同上合计上限 |
+
+`daily_card_*` 的 `payload` 是 JSON 字符串，含 `cardId`、`quality`、`count=1`。三张卡互不重复，仅从图鉴 White～Purple 中产生，不含 Orange；同一 resetKey 在所有服务实例上一致。
 
 ```json
 {
@@ -480,13 +495,13 @@ Idempotency-Key: settlement-ack-018f90dc
 
 `POST /api/v1/preparations`
 
-请求头必须带 `Idempotency-Key`。免费包、只穿起始鞋的示例：
+请求头必须带 `Idempotency-Key`。免费包、五部位全空的示例：
 
 ```json
 {
   "heroClass": "Mage",
   "deckVersion": 1,
-  "equipmentIds": [null, null, null, null, "从 bootstrap 取得的白鞋 ID"],
+  "equipmentIds": [null, null, null, null, null],
   "backpackTier": "Free",
   "safeSlotIndexes": [],
   "potionCount": 0,
@@ -517,18 +532,8 @@ Idempotency-Key: settlement-ack-018f90dc
     "maximumHp": 70,
     "cardIds": ["...20 cards..."],
     "cardLevels": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    "equipmentIds": [null, null, null, null, "018f..."],
-    "equipmentSnapshots": [
-      {
-        "instanceId": "018f...",
-        "slot": "Feet",
-        "quality": "White",
-        "level": 0,
-        "element": "Fire",
-        "effectAffix": null,
-        "secondaryTrait": "DrawInterval"
-      }
-    ],
+    "equipmentIds": [null, null, null, null, null],
+    "equipmentSnapshots": [],
     "classWeaponLevel": 0,
     "backpackTier": "Free",
     "backpackCapacity": 20,
@@ -561,7 +566,25 @@ Idempotency-Key: settlement-ack-018f90dc
 
 - Active：204，装备从 `PreparationLocked` 恢复 `Equipped`，同时释放其他逻辑预留。
 - 不属于玩家/不存在：404。
-- 已进入其他状态：409；后续 Queued 必须走 `match.cancel`。
+- 已进入其他状态：409；后续 Queued 必须走 `DELETE /api/v1/matches/tickets/{ticketId}`。
+
+### 9.4 匹配入队
+
+`POST /api/v1/matches/enqueue` 必须带 Bearer 与 `Idempotency-Key`：
+
+```json
+{ "preparationId": "018f..." }
+```
+
+- 只接受当前玩家的 Active preparation。
+- 首次成功返回 202 与 ticket：`ticketId`、`preparationId`、`status`、`queuedAt`、可选 `matchId`。
+- 同键同准备回放原 ticket；同键改 preparationId 返回 409。
+- 重复入队（不同键）仍返回原 ticket，不生成第二张。
+- 满 4 名真人立刻开房；未满则从队内第一人入队起等 30 秒，用补位机器人补到 4。
+
+`GET /api/v1/matches/tickets/{ticketId}` 查询本人 ticket；不存在返回 404。
+
+`DELETE /api/v1/matches/tickets/{ticketId}` 必须带 `Idempotency-Key`。Queued 取消后 preparation 回到 Active，锁定装备恢复 `Equipped`。同键改 ticket 返回 409。已开房返回 409，不能用取消准备接口代替。
 
 ## 10. WebSocket
 
@@ -699,9 +722,9 @@ ws://127.0.0.1:5080/ws/v1/session?access_token={URL 编码 token}
 以下保留客户端逐项交互验收清单；自动化服务测试通过不等于所有 Godot 界面已逐屏人工验收。
 
 - [ ] 首次登录只生成一个内部玩家，重复登录资产不重复。
-- [ ] Bootstrap 得到三职业武器、编组和白鞋；初始余额为 0。
+- [ ] Bootstrap 得到三职业武器、编组，五部位配装全空；初始余额为 0。不发放绑定白鞋。
 - [ ] 档案更新 version +1；同幂等键重试回放成功响应，旧 version 的新请求返回 409。
-- [ ] 图鉴返回全部 200 张，其中 51 张初始解锁，三套编组各 20 张。
+- [ ] 图鉴返回全部 220 张，其中 51 张初始解锁，三套编组各 20 张。
 - [ ] 非 20 张、跨职业卡、超持有数量的编组返回 400。
 - [ ] 合法编组/穿戴保存 version +1；同幂等键重试回放成功响应，旧版本的新请求返回 409。
 - [ ] 免费包准备成功；重复同幂等键返回同 preparationId。
@@ -713,5 +736,7 @@ ws://127.0.0.1:5080/ws/v1/session?access_token={URL 编码 token}
 - [ ] 15 秒超时后未 Ready 真人收到 `room.ready_removed`，保留真人进入固定 4 席房间且首快照只含本人可见信息。
 - [ ] 卡升级与强化面板读取真实报价，+4/+5 材料及编组副本保护正确，失败不修改本地余额。
 - [ ] 局内格位移动、换装、遗物详情和交换使用权威版本；分类预览、速度字段、被动/PVP 信息与实例元素正确显示。
+- [ ] 死亡回大厅后身上防具进遗物堆，配装栏保持空；开局与死亡都不发放绑定白鞋。
+- [ ] 商店货架含礼包/魂/碎片/药剂/探索包与每日三张单卡；匹配 enqueue/cancel 使用同一 Idempotency-Key 回放。
 
 2026-09-10 最终回归：领域 202/202、服务 157/157，通过且无跳过；服务 Release 构建 0 警告、0 错误。服务全套启用独立 Docker/PostgreSQL 测试数据库，含真实 HTTP 16 路同键升级只扣一次，以及真实 WS 的 PVP 击杀、遗物读取/拾取、重复请求、已落盘撤离状态后强杀恢复及二次重启不重复结算。服务测试报告为仓库根目录 `artifacts/gameplay-validation/gameplay-final.trx`，范围见 [POSTGRES_TESTS.md](POSTGRES_TESTS.md)。该结果包含最终地图分组与匣灵实例覆写，不代表真实 Steam 平台验票、任意 ACK 后零丢失或持续生产负载验收完成。

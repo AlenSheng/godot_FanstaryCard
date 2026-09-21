@@ -2,15 +2,16 @@ extends Button
 
 const Art = preload("res://ui/art.gd")
 const P = preload("res://ui/palette.gd")
-const I18n = preload("res://ui/i18n.gd")
+const CardDetails = preload("res://ui/card_details.gd")
 const CARD_SHADER = preload("res://ui/card_view.gdshader")
+const DESCRIPTIONS = preload("res://data/card_descriptions.json")
 const CLASS_NAMES := {"Priest": "牧师", "Mage": "法师", "Guardian": "守护者"}
 
 func configure(id: String, info: Dictionary, description: String, selected: bool, options: Dictionary = {}) -> void:
 	for child in get_children(): child.free()
 	custom_minimum_size = Vector2(218, 376)
 	clip_contents = true
-	tooltip_text = I18n.t(description)
+	tooltip_text = P.localized_text(description)
 	mouse_default_cursor_shape = Control.CURSOR_ARROW if disabled else Control.CURSOR_POINTING_HAND
 	var monster: bool = info.get("source", "") == "Monster"
 	var collection: bool = options.get("collection", false) and not options.get("preview", false) and not monster
@@ -32,6 +33,15 @@ func configure(id: String, info: Dictionary, description: String, selected: bool
 	illustration.size = Vector2(190, 177) if monster else Vector2(190, 285)
 	if illustration.texture == null:
 		_text("插画待补", Rect2(14, 112, 190, 60), 22, P.MUTED)
+	if selected and options.get("selected_overlay", false):
+		var selected_overlay := ColorRect.new()
+		selected_overlay.name = "SelectedIllustrationOverlay"
+		selected_overlay.color = Color(0.16, 0.18, 0.19, 0.62)
+		selected_overlay.position = illustration.position
+		selected_overlay.size = illustration.size
+		selected_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		selected_overlay.material = CanvasItemMaterial.new()
+		add_child(selected_overlay)
 	var quality: String = str(info.get("quality", "White")).to_lower()
 	var frame_key := "UI/Cards/card_frame_monster_clean.png" if monster else "UI/Codex/qframe_%s.png" % quality
 	var frame := Art.image(self, Art.texture(frame_key), Vector2.ZERO)
@@ -40,20 +50,19 @@ func configure(id: String, info: Dictionary, description: String, selected: bool
 	frame.stretch_mode = TextureRect.STRETCH_SCALE
 	if not monster:
 		if frame.texture == null: frame.texture = Art.texture("UI/Codex/qframe_common.png")
-		if selected: frame.texture = Art.texture("UI/Codex/card_selection_battle_glow.png")
+		if selected: frame.texture = Art.texture("UI/Codex/qframe_selected.png")
 		frame.material = _card_material(unowned, true)
-	if options.get("battle", false):
-		var battle_overlay_key := "UI/Battle/battle_card_unplayable_overlay.png" if disabled else "UI/Battle/battle_card_playable_overlay.png"
-		var battle_overlay := Art.image(self, Art.texture(battle_overlay_key), Vector2.ZERO)
-		battle_overlay.name = "BattleStateOverlay"
-		battle_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		battle_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var lines := description.split("\n\n", true, 1)
-	var effect: String = lines[1] if lines.size() > 1 else description
+	var passed_effect: String = lines[1] if lines.size() > 1 else description
+	# The card face is configuration-owned. Do not trust a caller-provided summary:
+	# older call sites used generated strings such as `火 8.0`, which caused the
+	# collection to keep showing stale text even after the table was updated.
+	var effect := _face_description(id, passed_effect)
 	if monster:
-		_monster_text(id, info, effect, selected)
+		_monster_text(id, info, effect, selected, int(options.get("level", 0)))
 	else:
-		var title := _text(str(info.get("name", id)), Rect2(24, 294, 170, 35), 20, P.GOLD)
+		var level := int(options.get("level", 0))
+		var title := _text(CardDetails.localized_name(id, info), Rect2(24, 294, 170, 35), 20, P.GOLD)
 		title.add_theme_font_override("font", P.font("title"))
 		title.name = "CardName"
 		var effect_label := _text(effect, Rect2(24, 330, 170, 28), 16, P.PAPER)
@@ -63,9 +72,9 @@ func configure(id: String, info: Dictionary, description: String, selected: bool
 		effect_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 		var hero_class: String = P.word(info.get("hero_class", ""))
 		if not hero_class.is_empty(): _class_badge(str(info.get("hero_class")), hero_class)
-		if collection: _copy_badge(copy_count)
-		if int(options.get("level", 0)) > 0:
-			_text("+%s" % options.level, Rect2(150, 50, 49, 34), 21, P.GOLD).name = "CardLevel"
+		var battle_element_hint := _battle_element_hint(str(info.get("element", "None")), str(options.get("battle_target_element", "None")))
+		if not battle_element_hint.is_empty(): _battle_element_badge(battle_element_hint)
+		elif level > 0: _level_badge(level)
 		if selected:
 			var selection := _text("已选", Rect2(75, 260, 68, 33), 18, P.GOLD)
 			selection.name = "SelectedIndicator"
@@ -75,6 +84,13 @@ func configure(id: String, info: Dictionary, description: String, selected: bool
 	for child in get_children():
 		if child is CanvasItem and child.material == null: child.use_parent_material = true
 
+func _face_description(id: String, fallback: String) -> String:
+	var locale := P.language()
+	var tables: Dictionary = DESCRIPTIONS.data
+	var descriptions: Dictionary = tables.get(locale, tables.get("zh", {}))
+	var configured := str(descriptions.get("card.face.desc." + id, "")).strip_edges()
+	return configured if not configured.is_empty() else fallback
+
 func _card_material(grayscale: bool, reframe: bool = false) -> ShaderMaterial:
 	var result := ShaderMaterial.new()
 	result.shader = CARD_SHADER
@@ -82,33 +98,71 @@ func _card_material(grayscale: bool, reframe: bool = false) -> ShaderMaterial:
 	result.set_shader_parameter("reframe", reframe)
 	return result
 
-func _copy_badge(copy_count: int) -> void:
+func _level_badge(level: int) -> void:
 	var badge := Art.image(self, Art.texture("UI/Codex/mana_cost_badge.png"), Vector2.ZERO)
-	badge.name = "CopyBadge"
+	badge.name = "CardLevelBadge"
 	badge.position = Vector2(2, 3)
 	badge.size = Vector2(37, 37)
-	var count := _text(str(copy_count), Rect2(4, 5, 33, 33), 20 if copy_count < 100 else 15, P.PAPER)
-	count.name = "CopyCount"
+	var value := _text(str(level), Rect2(4, 5, 33, 33), 20, P.PAPER)
+	value.name = "CardLevel"
+
+func _battle_element_hint(card_element: String, target_element: String) -> String:
+	if card_element not in ["Fire", "Wood", "Water", "Metal", "Earth"]: return ""
+	if target_element not in ["Fire", "Wood", "Water", "Metal", "Earth"]: return ""
+	if [["Water", "Fire"], ["Fire", "Metal"], ["Metal", "Wood"], ["Wood", "Earth"], ["Earth", "Water"]].any(func(pair): return pair[0] == card_element and pair[1] == target_element):
+		return "recommended"
+	if [["Water", "Fire"], ["Fire", "Metal"], ["Metal", "Wood"], ["Wood", "Earth"], ["Earth", "Water"]].any(func(pair): return pair[0] == target_element and pair[1] == card_element):
+		return "countered"
+	return ""
+
+func _battle_element_badge(kind: String) -> void:
+	var badge := Panel.new()
+	badge.name = "BattleElementHintBadge"
+	badge.position = Vector2(2, 3)
+	badge.size = Vector2(37, 37)
+	badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color("287db6") if kind == "recommended" else Color("a9433d")
+	style.border_color = Color("8ed7f0") if kind == "recommended" else Color("f0aaa0")
+	style.set_border_width_all(2)
+	style.set_corner_radius_all(18)
+	badge.add_theme_stylebox_override("panel", style)
+	add_child(badge)
+	var badge_key := "battle_card_recommended_badge" if kind == "recommended" else "battle_card_countered_badge"
+	var tooltip_key := "battle_card_recommended_tooltip" if kind == "recommended" else "battle_card_countered_tooltip"
+	var label := _text(P.localized(badge_key), Rect2(2, 2, 33, 33), 17, P.PAPER)
+	label.name = "BattleElementHintText"
+	badge.tooltip_text = P.localized(tooltip_key)
 
 func _class_badge(hero_class: String, symbol: String) -> void:
+	# The pad sits below the sprite so its 28x28 rectangle cannot cover the
+	# decorative ring; the ring's opaque pixels mask the pad at the edges.
+	var center_back := ColorRect.new()
+	center_back.name = "ClassBadgeCenter"
+	center_back.color = Color("080b0c")
+	center_back.position = Vector2(171, 10)
+	center_back.size = Vector2(28, 28)
+	center_back.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(center_back)
 	var badge := Art.image(self, Art.texture("UI/Codex/class_badge_%s.png" % hero_class.to_lower()), Vector2.ZERO)
 	badge.name = "ClassBadge"
-	badge.position = Vector2(172, 4)
-	badge.size = Vector2(40, 43)
-	badge.tooltip_text = "职业限定：仅%s可编入卡组" % CLASS_NAMES.get(hero_class, symbol)
+	badge.position = Vector2(156, -5)
+	badge.size = Vector2(58, 58)
+	badge.tooltip_text = P.localized_text("仅限%s职业编组" % P.localized_text(CLASS_NAMES.get(hero_class, symbol)))
 	badge.mouse_filter = Control.MOUSE_FILTER_PASS
-	var label := _text(symbol, Rect2(176, 7, 32, 36), 20, P.PAPER)
+	var label := _text(symbol, Rect2(168, 7, 34, 34), 22, P.PAPER)
 	label.name = "ClassSymbol"
 	tooltip_text += "\n\n" + badge.tooltip_text
 
-func _monster_text(id: String, info: Dictionary, effect: String, selected: bool) -> void:
+func _monster_text(id: String, info: Dictionary, effect: String, selected: bool, level: int = 0) -> void:
 	var banner := ColorRect.new()
 	banner.color = Color(0.03, 0.06, 0.08, 0.88)
 	banner.position = Vector2(17, 28)
 	banner.size = Vector2(184, 34)
 	banner.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(banner)
-	var title := _text("怪 " + str(info.get("name", id)), Rect2(19, 28, 180, 34), 21, P.PAPER)
+	var title_text := P.localized("monster") + " " + CardDetails.localized_name(id, info)
+	var title := _text(title_text, Rect2(19, 28, 180, 34), 21, P.PAPER)
 	title.name = "MonsterName"
 	title.add_theme_font_override("font", P.font("title"))
 	_text(effect, Rect2(21, 258, 176, 82), 17, P.PAPER)
@@ -119,16 +173,19 @@ func _monster_text(id: String, info: Dictionary, effect: String, selected: bool)
 
 func _text(value: String, rect: Rect2, font_size: int, color: Color) -> Label:
 	var label := Label.new()
-	label.text = value
-	label.add_theme_font_override("font", P.font_for_text(value, font_size))
+	var display_text := P.localized_text(value)
+	label.text = display_text
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.autowrap_mode = TextServer.AUTOWRAP_ARBITRARY
 	label.clip_text = true
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	label.add_theme_font_size_override("font_size", font_size)
+	var typeface := P.font_for_text(display_text, font_size)
+	label.add_theme_font_override("font", typeface)
+	label.add_theme_font_size_override("font_size", P.fit_font_size(typeface, font_size, rect.size.y, rect.size.x - 8.0, display_text))
 	label.add_theme_color_override("font_color", color)
 	add_child(label)
 	label.position = rect.position
 	label.size = rect.size
+	P.fit_control_font(label, typeface, font_size, 8.0)
 	return label

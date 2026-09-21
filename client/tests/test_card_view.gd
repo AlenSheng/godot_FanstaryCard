@@ -9,33 +9,44 @@ func run_test() -> Dictionary:
 	(Engine.get_main_loop() as SceneTree).root.add_child(card)
 	card.size = Vector2(218, 376)
 	var info := {"name": "火球", "quality": "White", "hero_class": "Mage", "source": "Class"}
-	card.configure("MAG-01", info, "法 火球\n白\n\n火系伤害8点", false, {"collection": true, "copy_count": 0})
+	card.configure("MAG-01", info, "法 火球\n白\n\n旧调用方文本 8.0", false, {"collection": true, "copy_count": 0})
 	var errors: Array[String] = []
-	if card.disabled or card.get_node("CopyCount").text != "0": errors.append("Unowned card must show zero and remain clickable")
+	if card.disabled or card.get_node_or_null("CardLevel") != null: errors.append("Unowned level-zero card must hide its level badge and remain clickable")
 	if card.material == null or not card.material.get_shader_parameter("grayscale"): errors.append("Unowned card must be grayscale")
 	if not card.get_node("Illustration").use_parent_material or not card.get_node("CardFrame").material.get_shader_parameter("grayscale"):
 		errors.append("Grayscale must cover both illustration and frame")
 	if card.get_node("Illustration").size != Vector2(190, 285): errors.append("Codex portrait must retain a 2:3 rectangle")
-	if card.get_node("CardName").position.y < 294 or card.get_node("CardEffect").text != "火系伤害8点": errors.append("Name and effect must use the bottom panel")
-	_check_text(card, ["CardName", "CardEffect", "ClassSymbol", "CopyCount"], errors)
+	if card.get_node("CardName").position.y < 294 or card.get_node("CardEffect").text != "造成火系伤害8点": errors.append("Card face must use the configured short description")
+	_check_text(card, ["CardName", "CardEffect", "ClassSymbol"], errors)
 	if card.get_node("ClassSymbol").text != "法" or not "仅法师" in card.get_node("ClassBadge").tooltip_text: errors.append("Class badge must explain its restriction")
 	if card.get_node("ClassBadge").mouse_filter != Control.MOUSE_FILTER_PASS: errors.append("Class badge must pass clicks to the card")
 	card.configure("MAG-01", info, "火系伤害8点", false, {"collection": true, "copy_count": 0, "preview": true})
-	if card.material != null or card.get_node_or_null("CopyCount") != null or card.get_node("CardFrame").material.get_shader_parameter("grayscale"):
-		errors.append("Unowned detail preview must stay colored and omit the quantity badge")
-	card.configure("MAG-01", info, "火系伤害8点", false, {"collection": true, "copy_count": 12})
-	if card.material != null or card.get_node("CopyCount").text != "12": errors.append("Owned collection card must show its current quantity in color")
-	card.configure("MAG-01", info, "火系伤害8点", true, {"collection": true, "copy_count": 123, "level": 5})
-	_check_text(card, ["CardName", "CardEffect", "ClassSymbol", "CopyCount", "CardLevel", "SelectedIndicator"], errors)
+	if card.material != null or card.get_node_or_null("CardLevel") != null or card.get_node("CardFrame").material.get_shader_parameter("grayscale"):
+		errors.append("Unowned detail preview must stay colored and omit the level badge")
+	card.configure("MAG-01", info, "火系伤害8点", false, {"collection": true, "copy_count": 1})
+	if card.material != null or card.get_node_or_null("CardLevel") != null: errors.append("Owned level-zero card must be colored and hide its level badge")
+	card.configure("MAG-01", info, "火系伤害8点", true, {"collection": true, "copy_count": 1, "level": 5})
+	_check_text(card, ["CardName", "CardEffect", "ClassSymbol", "CardLevel", "SelectedIndicator"], errors)
 	var title: Label = card.get_node("CardName")
 	var effect: Label = card.get_node("CardEffect")
+	if title.text != "火球" or card.get_node("CardLevel").text != "5": errors.append("Upgraded level must appear only in the upper-left badge")
+	if card.get_node("CardLevelBadge").position != Vector2(2, 3): errors.append("Card level badge must remain in the upper-left corner")
 	if title.position.y + title.size.y > effect.position.y: errors.append("Card name must not overlap its effect line")
-	if card.get_node("CardLevel").get_rect().intersects(card.get_node("ClassBadge").get_rect()): errors.append("Upgrade level must not overlap the class badge")
+	if title.position != Vector2(24, 294) or effect.position != Vector2(24, 330) or effect.size != Vector2(170, 28):
+		errors.append("Codex/deck card text must keep its established layout")
+	if effect.max_lines_visible != 1 or effect.autowrap_mode != TextServer.AUTOWRAP_OFF:
+		errors.append("Codex/deck card effect must remain a single-line summary")
+	if effect.horizontal_alignment != HORIZONTAL_ALIGNMENT_CENTER or effect.vertical_alignment != VERTICAL_ALIGNMENT_CENTER:
+		errors.append("Codex/deck card effect must stay centered")
 	info.hero_class = null
 	card.configure("C01", info, "火系伤害8点", true)
 	_check_text(card, ["CardName", "CardEffect", "SelectedIndicator"], errors)
 	if card.get_node_or_null("ClassBadge") != null or card.get_node_or_null("CopyCount") != null: errors.append("Legacy common-card call must not gain class or quantity badges")
 	if card.get_node("CardFrame").texture != Art.texture("UI/Codex/qframe_selected.png"): errors.append("Selected hand card must retain its selected frame")
+	card.configure("C01", info, "火系伤害8点", true, {"selected_overlay": true})
+	var selected_overlay := card.get_node_or_null("SelectedIllustrationOverlay") as ColorRect
+	if selected_overlay == null or selected_overlay.position != Vector2(14, 14) or selected_overlay.size != Vector2(190, 285) or selected_overlay.color.a < 0.5:
+		errors.append("Selected battle card must dim only its illustration with a visible translucent overlay")
 	card.disabled = true
 	card.configure("C01", info, "火系伤害8点", false)
 	if not card.disabled: errors.append("Configuration must preserve the caller's disabled state")
