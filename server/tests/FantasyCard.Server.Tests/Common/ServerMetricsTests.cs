@@ -54,6 +54,7 @@ public sealed class ServerMetricsTests
         metrics.RoomClosed();
         metrics.ObserveRoomActorQueueLength(3);
         metrics.ObserveRoomActorTickDelay(TimeSpan.FromMilliseconds(12.5));
+        metrics.ObserveRealtimeCommandDuration("battle.play_cards", TimeSpan.FromMilliseconds(18.5));
         metrics.ObserveRoomSnapshotDuration(TimeSpan.FromMilliseconds(7.5));
         metrics.ObservePveDuration(TimeSpan.FromSeconds(30), "cleared");
         metrics.ObservePvpDuration(TimeSpan.FromSeconds(8), "survived");
@@ -88,6 +89,7 @@ public sealed class ServerMetricsTests
         Assert.Equal([4], measurements["fantasycard.rooms.players"]);
         Assert.Equal([3], measurements["fantasycard.room_actor.queue.length"]);
         Assert.Equal([12.5], doubleMeasurements["fantasycard.room_actor.tick.delay"]);
+        Assert.Equal([18.5], doubleMeasurements["fantasycard.realtime.command.duration"]);
         Assert.Equal([7.5], doubleMeasurements["fantasycard.room.snapshot.duration"]);
         Assert.Equal([30], doubleMeasurements["fantasycard.combat.pve.duration"]);
         Assert.Equal([8], doubleMeasurements["fantasycard.combat.pvp.duration"]);

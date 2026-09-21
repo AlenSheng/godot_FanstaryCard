@@ -15,6 +15,10 @@ public sealed record ShopResponse(
     int RefreshesUsed = 0,
     int RefreshLimit = 0);
 
+public sealed record ShopInventoryContextResponse(
+    ShopResponse Shop,
+    InventoryResponse Inventory);
+
 public sealed record PurchaseShopRequest(string ProductId, int Quantity = 1);
 
 public sealed record ShopPurchaseResponse(
@@ -35,6 +39,15 @@ public sealed record MarketListingResponse(
     DateTimeOffset CreatedAt,
     DateTimeOffset ExpiresAt,
     EquipmentResponse? Equipment = null);
+
+public sealed record MarketInventoryContextResponse(
+    IReadOnlyList<MarketListingResponse> Listings,
+    InventoryResponse Inventory);
+
+public sealed record EconomyContextResponse(
+    ShopResponse Shop,
+    IReadOnlyList<MarketListingResponse> Market,
+    InventoryResponse Inventory);
 
 public sealed record MarketPurchaseResponse(
     MarketListingResponse Listing,

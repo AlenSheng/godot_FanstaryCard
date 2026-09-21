@@ -4,6 +4,7 @@ signal failed(message: String)
 signal event_received(kind: String, payload: Dictionary)
 signal connection_changed(state: String)
 signal authentication_required(reason: String)
+signal telemetry(sample: Dictionary)
 
 const Proto = preload("res://network/protobuf.gd")
 const DEFAULT_LOCAL_BASE_URL := "http://127.0.0.1:5080"
@@ -60,8 +61,12 @@ var recovering := false
 var _retry_at: int = 0
 var _backoff: float = 1.0
 var _last_ping: int = 0
+var last_rtt_ms: int = -1
 var _connecting_at: int = 0
 var _pending_http: Dictionary = {}
+var _pending_request_started: Dictionary = {}
+var _pending_ping_request_id := ""
+var _ping_sent_at: int = 0
 var _command_cooldown: int = 0
 var _connected_sequence: int = 0
 var _last_snapshot_read: int = 0
@@ -162,6 +167,9 @@ func end_session(reason: String, notify: bool = true) -> void:
 	_retry_at = 0
 	_command_cooldown = 0
 	_preview_request_ids = {}
+	_pending_request_started = {}
+	_pending_ping_request_id = ""
+	_ping_sent_at = 0
 	socket.close()
 	if notify:
 		connection_changed.emit(reason)
@@ -180,6 +188,7 @@ func request(path: String, method: int = HTTPClient.METHOD_GET, data: Variant = 
 	if _pending_http.has(fingerprint):
 		return {"ok": false, "status": 0, "error": "请求正在处理"}
 	_pending_http[fingerprint] = true
+	var request_started_at := Time.get_ticks_msec()
 	var key := "godot-" + new_id()
 	var headers := PackedStringArray(["Content-Type: application/json", "X-Trace-Id: " + key])
 	if not token.is_empty(): headers.append("Authorization: Bearer " + token)
@@ -212,6 +221,7 @@ func request(path: String, method: int = HTTPClient.METHOD_GET, data: Variant = 
 			if success or code not in [0, 429, 502, 503, 504]: break
 		if attempt < 2: await get_tree().create_timer(pow(2.0, attempt)).timeout
 	_pending_http.erase(fingerprint)
+	telemetry.emit({"type": "http", "path": path, "method": method, "duration_ms": Time.get_ticks_msec() - request_started_at, "status": result.get("status", 0), "ok": result.get("ok", false)})
 	if generation != session_generation:
 		return {"ok": false, "status": 401, "error": "登录状态已改变，请重新登录", "stale_session": true}
 	if not result.ok and result.status not in quiet_statuses: failed.emit(result.error)
@@ -271,8 +281,8 @@ func _process(_delta: float) -> void:
 			_receive(packet)
 			if not reconnect_enabled: return
 		if online and Time.get_ticks_msec() - _last_ping > 10000:
-			send("ping")
-			_last_ping = Time.get_ticks_msec()
+			var ping_request_id := new_id()
+			if send("ping", {}, ping_request_id): _last_ping = Time.get_ticks_msec()
 	elif state == WebSocketPeer.STATE_CLOSED:
 		if _retry_at == 0: _schedule_reconnect()
 		if Time.get_ticks_msec() >= _retry_at:
@@ -290,7 +300,8 @@ func send(kind: String, payload: Dictionary = {}, request_id: String = "") -> bo
 	if Time.get_ticks_msec() < _command_cooldown: return false
 	if recovering and kind not in ["ping", "session.resume", "room.snapshot.read"]: return false
 	var proto := Proto.new()
-	var envelope := {"protocol_version": 1, "type": kind, "request_id": new_id() if request_id.is_empty() else request_id}
+	var effective_request_id := new_id() if request_id.is_empty() else request_id
+	var envelope := {"protocol_version": 1, "type": kind, "request_id": effective_request_id}
 	if not COMMANDS[kind].is_empty(): envelope.payload = proto.encode(COMMANDS[kind], payload)
 	if kind not in ["ping", "session.resume", "room.snapshot.read", "room.ready", "relic.read"]:
 		envelope.expected_revision = room_revision
@@ -298,6 +309,12 @@ func send(kind: String, payload: Dictionary = {}, request_id: String = "") -> bo
 	if sent and kind == "combat.preview":
 		_preview_request_ids[envelope.request_id] = true
 		if _preview_request_ids.size() > 32: _preview_request_ids.erase(_preview_request_ids.keys()[0])
+	if sent:
+		_pending_request_started[effective_request_id] = {"action": kind, "started_at": Time.get_ticks_msec()}
+		if _pending_request_started.size() > 128: _pending_request_started.erase(_pending_request_started.keys()[0])
+		if kind == "ping":
+			_pending_ping_request_id = effective_request_id
+			_ping_sent_at = Time.get_ticks_msec()
 	if sent: socket.poll()
 	return sent
 
@@ -322,6 +339,16 @@ func _receive(packet: PackedByteArray) -> void:
 	payload["_sequence"] = sequence
 	payload["_request_id"] = envelope.get("request_id", "")
 	payload["_event_revision"] = envelope.get("room_revision", -1)
+	var response_request_id := str(envelope.get("request_id", ""))
+	if _pending_request_started.has(response_request_id):
+		var started: Dictionary = _pending_request_started[response_request_id]
+		_pending_request_started.erase(response_request_id)
+		var duration_ms := Time.get_ticks_msec() - int(started.get("started_at", Time.get_ticks_msec()))
+		telemetry.emit({"type": "realtime", "action": started.get("action", kind), "response_type": kind, "duration_ms": duration_ms, "request_id": response_request_id, "replayed": recovering})
+	if kind == "pong" and response_request_id == _pending_ping_request_id:
+		last_rtt_ms = Time.get_ticks_msec() - _ping_sent_at
+		_pending_ping_request_id = ""
+		telemetry.emit({"type": "rtt", "duration_ms": last_rtt_ms})
 	if kind in ["combat.previewed", "error.command_rejected"]:
 		payload["_request_id"] = envelope.get("request_id", "")
 		payload["_room_revision"] = envelope.get("room_revision", -1)

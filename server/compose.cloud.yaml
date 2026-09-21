@@ -33,6 +33,15 @@ services:
       AllowedHosts: "localhost;127.0.0.1;relicbound.cn;www.relicbound.cn;43.172.70.182"
       Identity__EnableLocalAuth: "false"
       Identity__AllowManagedLocalAuth: "true"
+      Identity__Google__Enabled: "${GOOGLE_AUTH_ENABLED:-false}"
+      Identity__Google__WebClientId: "${GOOGLE_WEB_CLIENT_ID:-}"
+      Identity__Google__RequireEmailVerified: "true"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "${OTEL_EXPORTER_OTLP_ENDPOINT:-}"
+      Persistence__MaxPoolSize: "${FANTASYCARD_DB_MAX_POOL_SIZE:-16}"
+      Persistence__MinPoolSize: "${FANTASYCARD_DB_MIN_POOL_SIZE:-1}"
+      Persistence__ConnectionTimeoutSeconds: "${FANTASYCARD_DB_CONNECTION_TIMEOUT_SECONDS:-5}"
+      Persistence__CommandTimeoutSeconds: "${FANTASYCARD_DB_COMMAND_TIMEOUT_SECONDS:-10}"
+      Persistence__KeepAliveSeconds: "${FANTASYCARD_DB_KEEPALIVE_SECONDS:-30}"
       Admin__ApiKey: ${FANTASYCARD_ADMIN_KEY:?set a random FANTASYCARD_ADMIN_KEY of at least 32 characters in .env}
       ConnectionStrings__Postgres: Host=postgres;Port=5432;Database=fantasycard;Username=fantasycard;Password=${FANTASYCARD_DB_PASSWORD}
     ports:

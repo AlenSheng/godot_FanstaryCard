@@ -33,6 +33,7 @@ public sealed class ServerMetrics : IDisposable
     private readonly Histogram<long> _roomPlayerCount;
     private readonly Histogram<long> _roomActorQueueLength;
     private readonly Histogram<double> _roomActorTickDelay;
+    private readonly Histogram<double> _realtimeCommandDuration;
     private readonly Histogram<double> _roomSnapshotDuration;
     private readonly Histogram<double> _pveDuration;
     private readonly Histogram<double> _pvpDuration;
@@ -102,6 +103,8 @@ public sealed class ServerMetrics : IDisposable
             "fantasycard.room_actor.queue.length", unit: "{command}");
         _roomActorTickDelay = _meter.CreateHistogram<double>(
             "fantasycard.room_actor.tick.delay", unit: "ms");
+        _realtimeCommandDuration = _meter.CreateHistogram<double>(
+            "fantasycard.realtime.command.duration", unit: "ms");
         _roomSnapshotDuration = _meter.CreateHistogram<double>(
             "fantasycard.room.snapshot.duration", unit: "ms");
         _pveDuration = _meter.CreateHistogram<double>(
@@ -162,6 +165,10 @@ public sealed class ServerMetrics : IDisposable
     public void ObserveRoomActorQueueLength(long count) => _roomActorQueueLength.Record(Math.Max(0, count));
     public void ObserveRoomActorTickDelay(TimeSpan delay) =>
         _roomActorTickDelay.Record(Math.Max(0, delay.TotalMilliseconds));
+    public void ObserveRealtimeCommandDuration(string command, TimeSpan duration) =>
+        _realtimeCommandDuration.Record(
+            Math.Max(0, duration.TotalMilliseconds),
+            new KeyValuePair<string, object?>("command", command));
     public void ObserveRoomSnapshotDuration(TimeSpan duration) =>
         _roomSnapshotDuration.Record(Math.Max(0, duration.TotalMilliseconds));
     public void ObservePveDuration(TimeSpan duration, string outcome) =>
