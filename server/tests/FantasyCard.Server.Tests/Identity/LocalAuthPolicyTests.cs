@@ -19,7 +19,7 @@ public sealed class LocalAuthPolicyTests
     }
 
     [Theory]
-    [InlineData("Production", false, true, true)]
+    [InlineData("Production", false, true, false)]
     [InlineData("Production", false, false, false)]
     [InlineData("Development", true, false, true)]
     public void Managed_test_server_switch_is_separate_from_development_configuration(

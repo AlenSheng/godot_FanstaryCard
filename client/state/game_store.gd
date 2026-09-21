@@ -91,13 +91,37 @@ func _apply_server_info(info: Dictionary) -> void:
 	if lobby.is_empty(): changed.emit()
 
 func login(address: String, display_name: String) -> void:
-	await _login(address, display_name, false)
+	await _login(address, display_name, "local")
 
 func login_steam(address: String, display_name: String = "") -> void:
-	await _login(address, display_name, true)
+	await _login(address, display_name, "steam")
+
+func login_google(address: String, display_name: String = "") -> void:
+	await _login(address, display_name, "google")
 
 func logout() -> void:
 	gateway.end_session("已退出登录")
+
+func request_account_deletion() -> void:
+	if busy: return
+	busy = true
+	changed.emit()
+	var result: Dictionary = await gateway.request("/api/v1/account-deletion", HTTPClient.METHOD_POST, {})
+	busy = false
+	if result.ok and result.data is Dictionary:
+		notice.emit("账号删除请求已提交，冷静期结束前可在支持页面申请取消。")
+	else:
+		notice.emit(result.error)
+	changed.emit()
+
+func cancel_account_deletion() -> void:
+	if busy: return
+	busy = true
+	changed.emit()
+	var result: Dictionary = await gateway.request("/api/v1/account-deletion", HTTPClient.METHOD_DELETE)
+	busy = false
+	notice.emit("账号删除请求已取消" if result.ok else result.error)
+	changed.emit()
 
 func reconnect() -> void:
 	if busy: return
@@ -107,7 +131,7 @@ func reconnect() -> void:
 	if gateway.token.is_empty() or gateway.session_expired():
 		var is_local_server: bool = gateway.base_url.trim_suffix("/") == Gateway.DEFAULT_LOCAL_BASE_URL
 		if OS.is_debug_build() and is_local_server and not gateway.local_account_name.is_empty():
-			await _login(gateway.base_url, gateway.local_account_name, false)
+			await _login(gateway.base_url, gateway.local_account_name, "local")
 		else:
 			gateway.end_session("登录会话已失效，请重新登录")
 		return
@@ -164,10 +188,10 @@ func _on_authentication_required(reason: String) -> void:
 	notice.emit(reason)
 	changed.emit()
 
-func _login(address: String, display_name: String, steam_login: bool) -> void:
+func _login(address: String, display_name: String, provider: String) -> void:
 	if busy: return
 	display_name = display_name.strip_edges()
-	if not steam_login and display_name.is_empty():
+	if provider == "local" and display_name.is_empty():
 		_reject_login("请输入账号名称")
 		return
 	address = address.strip_edges().trim_suffix("/")
@@ -177,14 +201,26 @@ func _login(address: String, display_name: String, steam_login: bool) -> void:
 	if not OS.is_debug_build() and not address.begins_with("https://"):
 		_reject_login("正式客户端需要 HTTPS 服务器地址")
 		return
-	if not steam_login and not platform.local_login_enabled():
+	if not OS.is_debug_build():
+		var configured_server := str(ProjectSettings.get_setting("platform/server_url", "")).strip_edges().trim_suffix("/")
+		if configured_server.is_empty() or address != configured_server:
+			_reject_login("正式客户端只能连接官方服务器")
+			return
+	if provider == "local" and not platform.local_login_enabled():
 		_reject_login("本地账号仅用于开发验证，请使用 Steam 登录")
 		return
-	if steam_login:
+	if provider == "steam":
 		var unavailable: String = platform.login_unavailable_reason()
 		if not unavailable.is_empty():
 			authentication_reason = unavailable
 			notice.emit(unavailable)
+			changed.emit()
+			return
+	if provider == "google":
+		var google_unavailable: String = platform.google_login_unavailable_reason()
+		if not google_unavailable.is_empty():
+			authentication_reason = google_unavailable
+			notice.emit(google_unavailable)
 			changed.emit()
 			return
 	_clear_authenticated_state()
@@ -196,25 +232,29 @@ func _login(address: String, display_name: String, steam_login: bool) -> void:
 	changed.emit()
 	var has_current_server_info: bool = not server_info.is_empty() and _server_info_address == gateway.base_url
 	if (has_current_server_info and validate_config(str(server_info.get("configVersion", "")), "服务器")) or await _refresh_server_info():
-		var capability := "identity.steam" if steam_login else "identity.local"
+		var capability := {"local": "identity.local", "steam": "identity.steam", "google": "identity.google"}.get(provider, "")
 		if capability not in server_info.get("capabilities", []):
-			authentication_reason = "此服务器未启用 Steam 登录" if steam_login else "此服务器未启用本地开发登录"
+			authentication_reason = {"steam": "此服务器未启用 Steam 登录", "google": "此服务器未启用 Google 登录"}.get(provider, "此服务器未启用本地开发登录")
 			notice.emit(authentication_reason)
 		else:
 			var health: Dictionary = await gateway.request("/health/ready")
 			if health.ok:
 				var sign_in := {"deviceId": gateway.device_id, "displayName": display_name}
 				var ticket_result: Dictionary = {"ok": true}
-				if steam_login:
+				if provider == "steam":
 					ticket_result = await platform.request_login_ticket()
 					if ticket_result.ok: sign_in = {"ticket": ticket_result.ticket, "displayName": display_name}
+				elif provider == "google":
+					ticket_result = await platform.request_google_id_token()
+					if ticket_result.ok: sign_in = {"idToken": ticket_result.id_token, "displayName": display_name}
 				if generation != gateway.session_generation: return
 				if ticket_result.ok:
-					var result: Dictionary = await gateway.request("/api/v1/auth/steam" if steam_login else "/api/v1/auth/local", HTTPClient.METHOD_POST, sign_in)
-					if steam_login: platform.release_ticket()
+					var auth_path := {"local": "/api/v1/auth/local", "steam": "/api/v1/auth/steam", "google": "/api/v1/auth/google"}.get(provider, "")
+					var result: Dictionary = await gateway.request(auth_path, HTTPClient.METHOD_POST, sign_in)
+					if provider == "steam": platform.release_ticket()
 					if result.ok and result.data is Dictionary:
 						if gateway.accept_session(str(result.data.get("accessToken", "")), str(result.data.get("expiresAt", "")), str(result.data.get("player", {}).get("userId", ""))):
-							if not steam_login: gateway.remember_local_account(str(result.data.get("player", {}).get("displayName", "")))
+							if provider == "local": gateway.remember_local_account(str(result.data.get("player", {}).get("displayName", "")))
 							await refresh_lobby()
 							if generation != gateway.session_generation: return
 							if not lobby.is_empty() and configuration_error.is_empty(): gateway.connect_realtime()

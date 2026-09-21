@@ -1,0 +1,7 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>删除账号 · Relicbound</title><link rel="stylesheet" href="/assets/legal.css"></head>
+<body><header class="legal-header"><a class="brand" href="/"><span class="brand-mark">✦</span>RELICBOUND</a><nav class="legal-nav"><a href="/privacy.html">隐私</a><a href="/terms.html">条款</a><a href="/delete-account.html">删除账号</a><a href="/support.html">支持</a><a href="/status.html">状态</a></nav></header>
+<main><p class="eyebrow">ACCOUNT DELETION</p><h1>删除账号</h1><p class="notice">请在已登录的游戏客户端内发起删除请求。服务端会立即记录请求并进入 7 天冷静期；在冷静期内可取消，期满后账号、身份绑定和游戏进度将被永久删除。</p>
+<h2>流程</h2><ol><li>在游戏营地的账号区选择“申请删除账号”。</li><li>确认身份后提交请求，保存页面显示的请求状态。</li><li>冷静期内重新登录并选择“取消删除请求”，可保留账号。</li><li>冷静期结束后，后台任务会完成删除；完成后的账号不能恢复。</li></ol>
+<h2>无法进入游戏</h2><p>如果你无法登录，请通过<a href="/support.html">支持页面</a>提交账号删除申请。为保护账号，客服可能要求额外验证；不要在公开渠道发送登录令牌、密码或付款信息。</p>
+<h2>技术入口</h2><p>已登录客户端使用 <code>POST /api/v1/account-deletion</code> 发起、<code>GET /api/v1/account-deletion</code> 查询、<code>DELETE /api/v1/account-deletion</code> 取消。所有接口都要求有效的 Bearer 会话，不接受匿名删除。</p></main><footer>© 2026 Relicbound · <a href="/privacy.html">隐私政策</a> · <a href="/support.html">支持</a></footer></body></html>

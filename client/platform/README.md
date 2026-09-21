@@ -2,8 +2,20 @@
 
 Local login is available only in a debug build with
 `platform/development/local_auth=true` and a server that advertises
-`identity.local`. Release builds use the Steam login path; they never replace a
-failed Steam login with local authentication.
+`identity.local`. Windows release builds use the Steam login path; Android
+Production uses Google login. Neither release path replaces a failed provider
+login with local authentication.
+
+Android Production uses the Google login path. The client expects a native
+`GoogleSignIn` singleton exposing `sign_in(web_client_id)` and a
+`sign_in_completed` signal that returns an ID token. The server validates the
+token with Google, checks issuer/audience/expiry/email verification, and maps
+the stable Google `sub` to the internal UserId. Configure the real Web Client
+ID in the private Android export environment or project configuration; do not
+commit OAuth secrets. The native plugin, Android OAuth client, package/SHA-256
+fingerprint registration, and Play Console configuration are external release
+acceptance tasks. Until they exist, the release button stays disabled with an
+actionable message.
 
 Steam login requires a compatible GodotSteam 4.x native extension exposing the
 `Steam` singleton, a real AppID, and a Web API ticket identity. Configure

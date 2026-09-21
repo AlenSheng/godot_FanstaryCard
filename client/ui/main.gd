@@ -453,11 +453,15 @@ func _login() -> void:
 		_button(panel, P.localized("local_dev_login"), func(): Game.login(LOCAL_SERVER_URL, _login_name), Game.busy, "UI/CardCodex/card_codex_action_button_blue.png")
 	_label(panel, P.localized("nickname_hint"), 20, P.MUTED)
 	_label(panel, P.localized("random_name_hint"), 18, P.MUTED)
-	_label(panel, "本地服仅用于开发联调；原有入口连接腾讯云外网服务器。", 18, P.MUTED)
-	_button(panel, P.localized("cloud_login"), func(): Game.login(CLOUD_SERVER_URL, _login_name), Game.busy, "UI/CardCodex/card_codex_action_button_orange.png")
-	var steam_reason: String = Game.platform.login_unavailable_reason()
-	_button(panel, "Steam 登录", func(): Game.login_steam(CLOUD_SERVER_URL, _login_name), Game.busy or not steam_reason.is_empty())
-	if not steam_reason.is_empty(): _label(panel, steam_reason, 20, P.MUTED)
+	if OS.is_debug_build():
+		_label(panel, "本地服仅用于开发联调。", 18, P.MUTED)
+		var steam_reason: String = Game.platform.login_unavailable_reason()
+		_button(panel, "Steam 登录", func(): Game.login_steam(CLOUD_SERVER_URL, _login_name), Game.busy or not steam_reason.is_empty())
+		if not steam_reason.is_empty(): _label(panel, steam_reason, 20, P.MUTED)
+	else:
+		var google_reason: String = Game.platform.google_login_unavailable_reason()
+		_button(panel, "使用 Google 登录", func(): Game.login_google(CLOUD_SERVER_URL, _login_name), Game.busy or not google_reason.is_empty())
+		if not google_reason.is_empty(): _label(panel, google_reason, 20, P.MUTED)
 	if not Game.authentication_reason.is_empty(): _label(panel, Game.authentication_reason, 22, P.GOLD)
 	if not Game.configuration_error.is_empty(): _label(panel, Game.configuration_error, 22, P.GOLD)
 	var center_space := Control.new()
@@ -571,6 +575,8 @@ func _hall() -> void:
 	var identity := _row(content)
 	_label(identity, "%s · UID %s" % [Game.lobby.player.get("displayName", ""), Game.lobby.player.get("userId", "")], 20, P.MUTED)
 	_button(identity, "切换账号", Game.logout, Game.busy)
+	_button(identity, "申请删除账号", func(): _confirm("申请后进入 7 天冷静期，期满将永久删除账号和游戏进度。确认继续？", Game.request_account_deletion), Game.busy)
+	_button(identity, "取消删除请求", Game.cancel_account_deletion, Game.busy)
 	var classes := _row(content)
 	for key in P.CLASSES:
 		var info: Array = P.CLASSES[key]

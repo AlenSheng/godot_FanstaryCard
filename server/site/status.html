@@ -1,0 +1,4 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>服务状态 · Relicbound</title><link rel="stylesheet" href="/assets/legal.css"></head>
+<body><header class="legal-header"><a class="brand" href="/"><span class="brand-mark">✦</span>RELICBOUND</a><nav class="legal-nav"><a href="/privacy.html">隐私</a><a href="/terms.html">条款</a><a href="/delete-account.html">删除账号</a><a href="/support.html">支持</a><a href="/status.html">状态</a></nav></header>
+<main><p class="eyebrow">SERVICE STATUS</p><h1>服务状态</h1><p class="notice" id="status">正在检查服务状态…</p><p>此页面只显示公开可用性，不展示数据库、密钥、内部主机或玩家数据。</p></main><footer>© 2026 Relicbound · <a href="/support.html">支持</a></footer><script>fetch('/health/ready',{cache:'no-store'}).then(r=>{document.getElementById('status').textContent=r.ok?'服务正常':'服务需要关注';}).catch(()=>{document.getElementById('status').textContent='暂时无法取得状态';});</script></body></html>

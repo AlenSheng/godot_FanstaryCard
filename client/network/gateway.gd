@@ -66,6 +66,7 @@ var _command_cooldown: int = 0
 var _connected_sequence: int = 0
 var _last_snapshot_read: int = 0
 var _preview_request_ids: Dictionary = {}
+var _realtime_ticket_pending := false
 
 func _ready() -> void:
 	# A launcher may select a server for this run without changing the address
@@ -89,7 +90,9 @@ func _ready() -> void:
 		# Preserve existing players' sessions by moving their remembered address
 		# to the public hostname before the readiness request is made.
 		base_url = PRODUCTION_BASE_URL
-	if not OS.is_debug_build() and launch_base_url_override.is_empty(): base_url = str(ProjectSettings.get_setting("platform/server_url", "")).strip_edges()
+	if not OS.is_debug_build():
+		launch_base_url_override = ""
+		base_url = str(ProjectSettings.get_setting("platform/server_url", "")).strip_edges()
 	if device_id.is_empty(): device_id = "godot-" + new_id()
 	_save_session()
 
@@ -119,7 +122,7 @@ func begin_sign_in(address: String) -> void:
 	# A fresh credential must never resume terminal events (such as a prior ban)
 	# from an earlier session, even when the player and server are unchanged.
 	clear_replay()
-	base_url = address
+	base_url = str(ProjectSettings.get_setting("platform/server_url", "")).strip_edges() if not OS.is_debug_build() else address
 	_save_session()
 
 func accept_session(access_token: String, expires_at: String, user_id: String) -> bool:
@@ -238,15 +241,28 @@ static func normalize_response(data: Variant) -> Variant:
 	return data
 
 func connect_realtime() -> void:
+	if _realtime_ticket_pending: return
 	if session_expired(): end_session("登录已过期，请重新登录")
 	if token.is_empty(): return
 	reconnect_enabled = true
 	online = false
+	_realtime_ticket_pending = true
+	var generation := session_generation
+	var ticket_result: Dictionary = await request("/api/v1/auth/ws-ticket", HTTPClient.METHOD_POST, {})
+	_realtime_ticket_pending = false
+	if generation != session_generation or not reconnect_enabled: return
+	if not ticket_result.ok or ticket_result.data is not Dictionary:
+		_schedule_reconnect()
+		return
+	var realtime_ticket := str(ticket_result.data.get("ticket", ""))
+	if realtime_ticket.is_empty():
+		_schedule_reconnect()
+		return
 	socket = WebSocketPeer.new()
 	socket.inbound_buffer_size = 65536
 	socket.outbound_buffer_size = 32768
 	var url := base_url.replace("https://", "wss://").replace("http://", "ws://")
-	var result := socket.connect_to_url(url + "/ws/v1/session?access_token=" + token.uri_encode())
+	var result := socket.connect_to_url(url + "/ws/v1/session?ws_ticket=" + realtime_ticket.uri_encode())
 	_connecting_at = Time.get_ticks_msec()
 	connection_changed.emit("正在连接实时服务")
 	if result != OK: _schedule_reconnect()
