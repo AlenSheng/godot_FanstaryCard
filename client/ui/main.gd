@@ -542,8 +542,11 @@ func _navigate(value: String) -> void:
 	if value in ["cards", "deck", "gear", "enhance", "shop", "market", "prep"]:
 		screen_loading = true
 		_render()
-		var path: String = {"cards": "/cards", "deck": "/cards", "gear": "/inventory", "enhance": "/inventory", "shop": "/shop/", "market": "/market/", "prep": "/inventory"}[value]
+		var path: String = {"cards": "/cards", "deck": "/cards", "gear": "/inventory", "enhance": "/inventory", "shop": "/economy/context", "market": "/economy/context", "prep": "/inventory"}[value]
 		var result: Dictionary = await Game.gateway.request("/api/v1" + path)
+		if not result.ok and int(result.get("status", 0)) == 404 and value in ["shop", "market"]:
+			path = "/shop/context" if value == "shop" else "/market/context"
+			result = await Game.gateway.request("/api/v1" + path)
 		if not _session_result_current(generation, result): return
 		if result.ok:
 			match value:
@@ -556,17 +559,12 @@ func _navigate(value: String) -> void:
 					gear_draft = Game.loadout().get("equipmentIds", []).duplicate()
 					gear_draft.resize(5)
 				"shop":
-					shop = result.data
-					var stock: Dictionary = await Game.gateway.request("/api/v1/inventory")
-					if not _session_result_current(generation, stock): return
-					if stock.ok:
-						inventory = stock.data
-						_shop_inventory_ready = true
+					shop = result.data.get("shop", {})
+					inventory = result.data.get("inventory", {})
+					_shop_inventory_ready = not inventory.is_empty()
 				"market":
-					listings = result.data
-					var bag: Dictionary = await Game.gateway.request("/api/v1/inventory")
-					if not _session_result_current(generation, bag): return
-					if bag.ok: inventory = bag.data
+					listings = result.data.get("listings", [])
+					inventory = result.data.get("inventory", {})
 		screen_loading = false
 	_render()
 
@@ -1164,7 +1162,8 @@ func _room() -> void:
 	var row := _row(content)
 	_label(row, "混沌领域 / " + P.word(player.get("phase", "")), 38, P.GOLD)
 	_label(row, "生命 %s / %s   护盾 %s" % [combat.get("hp", 0), combat.get("maximum_hp", 0), combat.get("shield", 0)], 28)
-	_button(row, "同步", func(): Game.gateway.send("room.snapshot.read"))
+	if Game.has_pending_commands(): _label(row, "正在处理操作…", 24, P.TEAL)
+	_button(row, "同步", Game.refresh_room_snapshot)
 	if player.get("phase", "") in ["Pve", "Pvp"]:
 		_button(row, P.localized("battle_exit"), func(): _confirm(
 			P.localized("battle_abandon_warning"),
@@ -1473,4 +1472,4 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		var hand: Array = Game.room.get("player", {}).get("hand", [])
 		if Game.allowed("battle.play_cards") and index < hand.size(): Game.toggle_card(hand[index].instance_id)
 	elif event.keycode == KEY_SPACE: Game.play_cards()
-	elif event.keycode == KEY_R: Game.gateway.send("room.snapshot.read")
+	elif event.keycode == KEY_R: Game.refresh_room_snapshot()

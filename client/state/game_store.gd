@@ -7,11 +7,14 @@ signal shop_refreshed(payload: Dictionary)
 signal combat_feedback(payload: Dictionary)
 signal sound_requested(cue: String)
 signal authentication_required(reason: String)
+signal network_telemetry(sample: Dictionary)
 
 const Gateway = preload("res://network/gateway.gd")
 const PlatformService = preload("res://platform/platform_service.gd")
 const CardDetails = preload("res://ui/card_details.gd")
 const CATALOG = preload("res://data/catalog.json")
+const LATEST_WINS_ACTIONS := ["battle.select_target", "combat.preview"]
+const LATEST_WINS_DEBOUNCE_MS := 80
 var gateway: Node
 var platform: Node
 var authentication_reason := ""
@@ -43,8 +46,11 @@ var _queue_deadline: int = 0
 var _pending_play: Dictionary = {}
 var _play_deadline: int = 0
 var _pending_commands: Dictionary = {}
+var _latest_commands: Dictionary = {}
 var _snapshot_request_at: int = 0
 var _snapshot_request_pending := false
+var network_rtt_ms := -1
+var last_command_latency_ms := -1
 var _sound_ready := false
 var _sound_commands: Dictionary = {}
 var _sound_seen: Dictionary = {}
@@ -52,20 +58,27 @@ var _sound_terminal_rooms: Dictionary = {}
 
 func _process(_delta: float) -> void:
 	_process_client_info()
+	_flush_latest_commands()
+	var pending_changed := false
 	if not _pending_play.is_empty() and Time.get_ticks_msec() > _play_deadline:
 		_pending_play = {}
+		pending_changed = true
 	for request_id in _pending_commands.keys():
 		if Time.get_ticks_msec() > int(_pending_commands[request_id].get("deadline", 0)):
 			_pending_commands.erase(request_id)
+			pending_changed = true
 	if not _queued_command.is_empty() and Time.get_ticks_msec() > _queue_deadline:
 		_queued_command = {}
 		notice.emit("操作未发出，请在连接恢复后重试")
+		pending_changed = true
+	if pending_changed: changed.emit()
 
 func _ready() -> void:
 	gateway = Gateway.new()
 	add_child(gateway)
 	gateway.failed.connect(func(message): notice.emit(message))
 	gateway.event_received.connect(_on_event)
+	gateway.telemetry.connect(_on_gateway_telemetry)
 	gateway.connection_changed.connect(_on_connection_changed)
 	gateway.authentication_required.connect(_on_authentication_required)
 	platform = PlatformService.new()
@@ -160,6 +173,7 @@ func _clear_authenticated_state() -> void:
 	_queued_command = {}
 	_pending_play = {}
 	_pending_commands.clear()
+	_latest_commands.clear()
 	_snapshot_request_pending = false
 	_settlement_loading = ""
 	busy = false
@@ -172,6 +186,7 @@ func _on_connection_changed(value: String) -> void:
 	connection = value
 	_pending_play = {}
 	_pending_commands.clear()
+	_latest_commands.clear()
 	_snapshot_request_pending = false
 	if _queued_command.get("retry", false): _queued_command = {}
 	_sound_ready = false
@@ -232,14 +247,14 @@ func _login(address: String, display_name: String, provider: String) -> void:
 	changed.emit()
 	var has_current_server_info: bool = not server_info.is_empty() and _server_info_address == gateway.base_url
 	if (has_current_server_info and validate_config(str(server_info.get("configVersion", "")), "服务器")) or await _refresh_server_info():
-		var capability := {"local": "identity.local", "steam": "identity.steam", "google": "identity.google"}.get(provider, "")
+		var capability: String = str({"local": "identity.local", "steam": "identity.steam", "google": "identity.google"}.get(provider, ""))
 		if capability not in server_info.get("capabilities", []):
 			authentication_reason = {"steam": "此服务器未启用 Steam 登录", "google": "此服务器未启用 Google 登录"}.get(provider, "此服务器未启用本地开发登录")
 			notice.emit(authentication_reason)
 		else:
 			var health: Dictionary = await gateway.request("/health/ready")
 			if health.ok:
-				var sign_in := {"deviceId": gateway.device_id, "displayName": display_name}
+				var sign_in: Dictionary = {"deviceId": gateway.device_id, "displayName": display_name}
 				var ticket_result: Dictionary = {"ok": true}
 				if provider == "steam":
 					ticket_result = await platform.request_login_ticket()
@@ -249,7 +264,7 @@ func _login(address: String, display_name: String, provider: String) -> void:
 					if ticket_result.ok: sign_in = {"idToken": ticket_result.id_token, "displayName": display_name}
 				if generation != gateway.session_generation: return
 				if ticket_result.ok:
-					var auth_path := {"local": "/api/v1/auth/local", "steam": "/api/v1/auth/steam", "google": "/api/v1/auth/google"}.get(provider, "")
+					var auth_path: String = str({"local": "/api/v1/auth/local", "steam": "/api/v1/auth/steam", "google": "/api/v1/auth/google"}.get(provider, ""))
 					var result: Dictionary = await gateway.request(auth_path, HTTPClient.METHOD_POST, sign_in)
 					if provider == "steam": platform.release_ticket()
 					if result.ok and result.data is Dictionary:
@@ -496,10 +511,19 @@ func cancel_preparation() -> void:
 
 func allowed(action: String) -> bool:
 	var aliases := {"reward.choice.refresh": "choice.refresh", "reward.choice.claim": "choice.pick"}
+	if action not in LATEST_WINS_ACTIONS and _has_pending_action(action): return false
 	return configuration_error.is_empty() and gateway.online and not gateway.recovering and (action in room.get("allowed_actions", []) or aliases.get(action, "") in room.get("allowed_actions", []))
 
+func has_pending_commands() -> bool:
+	return not _pending_commands.is_empty() or not _latest_commands.is_empty() or not _queued_command.is_empty()
+
 func command(action: String, payload: Dictionary = {}) -> bool:
-	if not allowed(action) or not _queued_command.is_empty(): return false
+	if not allowed(action): return false
+	if action in LATEST_WINS_ACTIONS:
+		_latest_commands[action] = {"payload": payload.duplicate(true), "due": Time.get_ticks_msec() + LATEST_WINS_DEBOUNCE_MS}
+		changed.emit()
+		return true
+	if not _queued_command.is_empty() or _has_pending_action(action): return false
 	if action == "battle.play_cards" and not _pending_play.is_empty(): return false
 	if action == "relic.read": return gateway.send(action, payload)
 	# Send the intent against the latest locally known revision. The server
@@ -527,6 +551,26 @@ func _request_snapshot() -> void:
 	if now - _snapshot_request_at < 80: return
 	_snapshot_request_at = now
 	_snapshot_request_pending = gateway.send("room.snapshot.read")
+
+func refresh_room_snapshot() -> void:
+	_request_snapshot()
+
+func _has_pending_action(action: String) -> bool:
+	for pending in _pending_commands.values():
+		if str(pending.get("action", "")) == action: return true
+	return false
+
+func _flush_latest_commands() -> void:
+	var now := Time.get_ticks_msec()
+	for action in _latest_commands.keys():
+		var queued: Dictionary = _latest_commands[action]
+		if now < int(queued.get("due", 0)): continue
+		if not allowed(action) or not _queued_command.is_empty() or _has_pending_action(action):
+			queued["due"] = now + LATEST_WINS_DEBOUNCE_MS
+			_latest_commands[action] = queued
+			continue
+		_latest_commands.erase(action)
+		_send_queued_command({"action": action, "payload": queued.get("payload", {}).duplicate(true)})
 
 # Kept as a compatibility boundary for older offline tests and replay tools;
 # live selection no longer calls the network preview command.
@@ -803,6 +847,7 @@ func _send_queued_command(queued: Dictionary) -> bool:
 			_pending_play = {"request_id": request_id, "room_id": room.get("room_id", ""), "payload": queued.payload.duplicate(true), "retry": queued.get("retry", false)}
 		_sound_commands[request_id] = {"action": queued.action, "room_id": room.get("room_id", "")}
 		if _sound_commands.size() > 64: _sound_commands.erase(_sound_commands.keys()[0])
+		changed.emit()
 		return true
 	elif queued.get("retry", false):
 		notice.emit("操作未发出，请在连接恢复后重试")
@@ -845,7 +890,7 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 		var snapshot: Dictionary = payload.get("snapshot", {}) if kind == "room.started" else payload
 		if (not gateway.token.is_empty() or snapshot.has("config_version")) and not validate_config(str(snapshot.get("config_version", "")), "房间"): return
 	_sound_event(kind, payload)
-	if kind in ["room.moved", "battle.target_selected", "duel.leave_ack", "duel.escape_started", "duel.escape_failed", "duel.escape_interrupted", "duel.started", "duel.ended", "action.potion_used", "relic.taken", "relic.replaced", "reward.choice_claimed", "action.extract_started", "action.extract_cancelled", "action.extract_completed", "action.spring_started", "action.spring_cancelled", "action.spring_completed"]:
+	if kind in ["room.moved", "battle.target_selected", "duel.leave_ack", "duel.escape_started", "duel.escape_failed", "duel.escape_interrupted", "duel.started", "duel.ended", "action.potion_used", "relic.taken", "relic.replaced", "reward.choice_claimed", "action.extract_started", "action.extract_cancelled", "action.extract_completed", "action.spring_started", "action.spring_cancelled", "action.spring_completed"] and event_request_id.is_empty():
 		_request_snapshot()
 	match kind:
 		"room.snapshot":
@@ -878,7 +923,7 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 			if _feedback_is_current(payload):
 				combat_feedback.emit(payload)
 				_sound_combat(kind, payload)
-				_request_snapshot()
+				if event_request_id.is_empty(): _request_snapshot()
 			return
 		"combat.previewed", "combat.preview_rejected": pass
 		"inventory.changed":
@@ -890,9 +935,19 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 				notice.emit("管理员更新已同步。")
 				player_data_invalidated.emit()
 			else:
-				_request_snapshot()
+				if event_request_id.is_empty(): _request_snapshot()
 		"relic.contents": relic_details[str(payload.get("pile_id", ""))] = payload
 	changed.emit()
+
+func _on_gateway_telemetry(sample: Dictionary) -> void:
+	var should_render := false
+	if sample.get("type", "") == "rtt":
+		network_rtt_ms = int(sample.get("duration_ms", -1))
+		should_render = true
+	elif sample.get("type", "") == "realtime":
+		last_command_latency_ms = int(sample.get("duration_ms", -1))
+	network_telemetry.emit(sample)
+	if should_render: changed.emit()
 
 func _intent_valid(action: String, payload: Dictionary) -> bool:
 	if action == "battle.play_cards":
