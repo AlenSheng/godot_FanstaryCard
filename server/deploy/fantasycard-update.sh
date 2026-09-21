@@ -179,7 +179,7 @@ for attempt in {1..24}; do
     mv "$manifest.new" "$manifest"
     printf '%s\n' "$target" > "$manifest_version"
     printf '%s\n' "$target" > "$deployed_marker"
-    if [[ -f "$self_source" ]]; then
+    if [[ -f "$self_source" ]] && ! cmp -s "$self_source" "$0"; then
       install -m 700 "$self_source" "$0"
     fi
     echo "更新成功：$target"
