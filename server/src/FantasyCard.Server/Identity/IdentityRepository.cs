@@ -227,6 +227,54 @@ public sealed class IdentityRepository(
             : new SessionLookupResult(ReadProfile(reader), false);
     }
 
+    public async Task StoreRealtimeTicketAsync(
+        Guid playerId,
+        byte[] ticketHash,
+        DateTimeOffset now,
+        DateTimeOffset expiresAt,
+        CancellationToken cancellationToken)
+    {
+        await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
+        await using var command = new NpgsqlCommand(
+            "INSERT INTO realtime_tickets(ticket_hash,player_id,expires_at,created_at) VALUES ($1,$2,$3,$4)",
+            connection);
+        command.Parameters.Add(new NpgsqlParameter { NpgsqlDbType = NpgsqlDbType.Bytea, Value = ticketHash });
+        command.Parameters.AddWithValue(playerId);
+        command.Parameters.AddWithValue(expiresAt);
+        command.Parameters.AddWithValue(now);
+        await command.ExecuteNonQueryAsync(cancellationToken);
+    }
+
+    public async Task<PlayerProfile?> ConsumeRealtimeTicketAsync(
+        byte[] ticketHash,
+        DateTimeOffset now,
+        CancellationToken cancellationToken)
+    {
+        await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
+        await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
+        await using var consume = new NpgsqlCommand(
+            "UPDATE realtime_tickets SET used_at=$1 WHERE ticket_hash=$2 AND used_at IS NULL AND expires_at > $1 RETURNING player_id",
+            connection, transaction);
+        consume.Parameters.AddWithValue(now);
+        consume.Parameters.Add(new NpgsqlParameter { NpgsqlDbType = NpgsqlDbType.Bytea, Value = ticketHash });
+        var playerId = await consume.ExecuteScalarAsync(cancellationToken);
+        if (playerId is not Guid id)
+        {
+            await transaction.RollbackAsync(cancellationToken);
+            return null;
+        }
+
+        await using var profileCommand = new NpgsqlCommand(
+            "SELECT p.user_id,p.display_name,p.selected_class,p.version,p.created_at,p.updated_at FROM players p WHERE p.user_id=$1 AND NOT EXISTS (SELECT 1 FROM player_bans b WHERE b.player_id=p.user_id)",
+            connection, transaction);
+        profileCommand.Parameters.AddWithValue(id);
+        await using var reader = await profileCommand.ExecuteReaderAsync(cancellationToken);
+        var profile = await reader.ReadAsync(cancellationToken) ? ReadProfile(reader) : null;
+        await reader.CloseAsync();
+        await transaction.CommitAsync(cancellationToken);
+        return profile;
+    }
+
     public async Task<ExpiredDataCleanupResult> CleanupExpiredDataAsync(
         DateTimeOffset now,
         CancellationToken cancellationToken)
@@ -247,6 +295,8 @@ public sealed class IdentityRepository(
             cancellationToken);
         var sessions = await ExecuteCleanupAsync(
             connection, transaction, "DELETE FROM player_sessions WHERE expires_at <= $1", now, cancellationToken);
+        _ = await ExecuteCleanupAsync(
+            connection, transaction, "DELETE FROM realtime_tickets WHERE expires_at <= $1 OR used_at IS NOT NULL", now, cancellationToken);
         var idempotencyRecords = await ExecuteCleanupAsync(
             connection, transaction, "DELETE FROM idempotency_records WHERE expires_at <= $1", now, cancellationToken);
         var roomEvents = await ExecuteCleanupAsync(

@@ -48,6 +48,7 @@ public static class RealtimeEndpoints
         ServerMetrics metrics,
         SettlementEventPublisher settlementEvents,
         TimeProvider timeProvider,
+        IHostEnvironment environment,
         IOptions<RequestLimitOptions> requestLimits,
         CancellationToken cancellationToken)
     {
@@ -57,8 +58,22 @@ public static class RealtimeEndpoints
             return;
         }
 
-        var accessToken = context.Request.Query["access_token"].FirstOrDefault();
-        var player = await context.AuthenticatePlayerAsync(identityService, cancellationToken, accessToken);
+        var realtimeTicket = context.Request.Query["ws_ticket"].FirstOrDefault();
+        FantasyCard.Domain.Players.PlayerProfile? player;
+        if (!string.IsNullOrWhiteSpace(realtimeTicket))
+        {
+            player = await identityService.AuthenticateRealtimeTicketAsync(realtimeTicket, cancellationToken);
+        }
+        else if (environment.IsDevelopment())
+        {
+            // Kept only for local protocol tests; production requires a one-time ticket.
+            var accessToken = context.Request.Query["access_token"].FirstOrDefault();
+            player = await context.AuthenticatePlayerAsync(identityService, cancellationToken, accessToken);
+        }
+        else
+        {
+            player = null;
+        }
         if (player is null)
         {
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;

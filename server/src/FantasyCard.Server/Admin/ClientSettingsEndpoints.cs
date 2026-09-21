@@ -103,6 +103,8 @@ public static class ClientSettingsEndpoints
             result.Add("identity.local");
         if (configuration.GetValue<bool>("Identity:Steam:Enabled"))
             result.Add("identity.steam");
+        if (configuration.GetValue<bool>("Identity:Google:Enabled"))
+            result.Add("identity.google");
         return [.. result];
     }
 

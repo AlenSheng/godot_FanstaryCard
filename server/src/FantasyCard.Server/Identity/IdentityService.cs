@@ -87,6 +87,28 @@ public sealed class IdentityService(
         return result.Player;
     }
 
+    public async Task<(string Ticket, DateTimeOffset ExpiresAt)> CreateRealtimeTicketAsync(
+        Guid playerId,
+        CancellationToken cancellationToken)
+    {
+        var token = SessionToken.Create();
+        var now = timeProvider.GetUtcNow();
+        var expiresAt = now.AddSeconds(options.Value.RealtimeTicketLifetimeSeconds);
+        await repository.StoreRealtimeTicketAsync(
+            playerId, SessionToken.Hash(token), now, expiresAt, cancellationToken);
+        return (token, expiresAt);
+    }
+
+    public async Task<PlayerProfile?> AuthenticateRealtimeTicketAsync(
+        string ticket,
+        CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(ticket) || ticket.Length > 256)
+            return null;
+        return await repository.ConsumeRealtimeTicketAsync(
+            SessionToken.Hash(ticket), timeProvider.GetUtcNow(), cancellationToken);
+    }
+
     public static string NormalizeDeviceId(string? deviceId)
     {
         if (string.IsNullOrWhiteSpace(deviceId))

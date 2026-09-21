@@ -131,9 +131,11 @@ app.MapGet("/", () => Results.NotFound());
 // Root remains a 404 so the public service does not advertise its framework
 // or operational details.
 app.MapClientSettingsEndpoints();
+app.MapTelemetryEndpoints();
 app.MapHealthChecks("/health/live", new() { Predicate = _ => false });
 app.MapHealthChecks("/health/ready", new() { Predicate = check => check.Tags.Contains("ready") });
 app.MapIdentityEndpoints();
+app.MapAccountDeletionEndpoints();
 app.MapPlayerEndpoints();
 app.MapProgressionEndpoints();
 app.MapBootstrapEndpoints();
