@@ -19,6 +19,15 @@ CPU 1.7% 和系统负载 0.23 属于空闲采样，不能作为压测容量。2 
 - 只读 RoomActor 命令不再触发持久化观察快照；实时写操作与客户端房间快照合并到同一次 Actor 排队，减少一次房内往返。
 - 新增 `fantasycard.room_actor.command.wait`，记录命令进入 Actor 队列到开始执行的等待时延，用于区分排队瓶颈和执行瓶颈。
 
+## 监控接入
+
+- 应用继续使用 OpenTelemetry，新增 .NET Runtime 指标，并支持将 metrics 与 traces 分别配置出口；云端只将 metrics 发往内网 `otel-collector:4317`。
+- OTel Collector 将应用指标转换为 Prometheus 可抓取端点；Prometheus 同时采集 Collector 和 node-exporter，保存 7 天或最多 384 MB 数据。
+- Grafana 预置“FantasyCard 云端总览”仪表盘，覆盖应用采集状态、主机 CPU/内存、HTTP 请求速率与 p95、实时连接数、房间 Actor 排队等待 p95。
+- Collector、node-exporter、Prometheus、Grafana 均不映射公网端口；只在服务器回环地址提供 Prometheus `9090`、Grafana `3000`，通过 SSH 隧道访问。
+- Prometheus 已配置应用采集中断、主机指标中断、CPU 超过 85%、可用内存低于 15%、Actor 等待 p95 超过 100ms 的规则。当前规则只在 Prometheus/Grafana 内显示，不配置外部通知渠道。
+- 监控组件设置了合计约 768 MB 的容器内存上限和 0.75 CPU 配额，适配当前 2 核/3.6 GiB 实例；若后续压测发现内存回收或查询争用，再提高实例规格或下调 Prometheus 保留周期。
+
 ## 预期效果
 
 这些调整主要降低数据库连接峰值、重复查询和房间队列尾延时。它们不会凭空提高 2 核服务器的 CPU 算力，也不会把同一 RoomActor 拆成并发写队列：同一房间仍由单写者保证 Revision、随机数和 tick 顺序；不同房间的 Actor 已可并行执行。若要进一步提高 tick 吞吐，应优先做跨房间调度分片或基于不可变快照的只读通道，而不是让同一房间并发写状态。
@@ -36,4 +45,4 @@ CPU 1.7% 和系统负载 0.23 属于空闲采样，不能作为压测容量。2 
 - V027 已由云端启动迁移实际应用；部署脚本在两次更新前均保留 PostgreSQL 备份。
 - 北京时间午夜自动恢复任务已将临时压测限流恢复为 Auth=10、MarketRead=120、EconomyWrite=30。
 - 部署后小规模公网回归（5 客户端、约 90 秒）：稳定 HTTP p95 813ms，WebSocket RTT p95 287ms，实时命令 p95 272ms，错误率 0%。健康检查 p95 在容器冷启动后约 1.28s，不能直接等同于玩家操作延时。
-- 当前云端未配置 `OTEL_EXPORTER_OTLP_ENDPOINT`，因此新指标已在应用内发布但尚未导出到监控系统；下一步应接入 OTLP/主机监控后再做高阶梯压测。
+- 当前版本已包含上述监控接入配置；发布后应确认 Prometheus 的 `fantasycard`、`node` 两个采集目标为 UP，再进行高阶梯压测。

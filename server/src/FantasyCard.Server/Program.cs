@@ -56,10 +56,18 @@ builder.Services.AddSettlementModule();
 builder.Services.AddRealtimeModule(builder.Configuration);
 builder.Services.AddHealthChecks().AddCheck<PostgresHealthCheck>("postgres", tags: ["ready"]);
 
-var telemetryEndpoint = Uri.TryCreate(
-    builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"], UriKind.Absolute, out var configuredTelemetryEndpoint)
-    ? configuredTelemetryEndpoint
+var defaultTelemetryEndpoint = Uri.TryCreate(
+    builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"], UriKind.Absolute, out var configuredDefaultTelemetryEndpoint)
+    ? configuredDefaultTelemetryEndpoint
     : null;
+var tracesTelemetryEndpoint = Uri.TryCreate(
+    builder.Configuration["OTEL_EXPORTER_OTLP_TRACES_ENDPOINT"], UriKind.Absolute, out var configuredTracesTelemetryEndpoint)
+    ? configuredTracesTelemetryEndpoint
+    : defaultTelemetryEndpoint;
+var metricsTelemetryEndpoint = Uri.TryCreate(
+    builder.Configuration["OTEL_EXPORTER_OTLP_METRICS_ENDPOINT"], UriKind.Absolute, out var configuredMetricsTelemetryEndpoint)
+    ? configuredMetricsTelemetryEndpoint
+    : defaultTelemetryEndpoint;
 builder.Services
     .AddOpenTelemetry()
     .ConfigureResource(resource => resource.AddService("FantasyCard.Server"))
@@ -78,18 +86,17 @@ builder.Services
             .AddSource("FantasyCard.Server")
             .AddSource("Npgsql");
 
-        if (telemetryEndpoint is not null)
-        {
-            trace.AddOtlpExporter(options => options.Endpoint = telemetryEndpoint);
-        }
+        if (tracesTelemetryEndpoint is not null)
+            trace.AddOtlpExporter(options => options.Endpoint = tracesTelemetryEndpoint);
     })
     .WithMetrics(metrics =>
     {
         metrics.AddMeter(ServerMetrics.MeterName)
             .AddMeter("Npgsql")
+            .AddRuntimeInstrumentation()
             .AddAspNetCoreInstrumentation();
-        if (telemetryEndpoint is not null)
-            metrics.AddOtlpExporter(options => options.Endpoint = telemetryEndpoint);
+        if (metricsTelemetryEndpoint is not null)
+            metrics.AddOtlpExporter(options => options.Endpoint = metricsTelemetryEndpoint);
     });
 
 var app = builder.Build();

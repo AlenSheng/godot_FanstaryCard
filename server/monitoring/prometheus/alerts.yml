@@ -1,0 +1,47 @@
+groups:
+  - name: fantasycard-cloud
+    rules:
+      - alert: FantasyCardAppDown
+        expr: up{job="fantasycard"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: FantasyCard 应用指标采集已中断
+          description: Prometheus 连续 2 分钟无法从应用指标出口采集数据。
+
+      - alert: FantasyCardNodeExporterDown
+        expr: up{job="node"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: 云服务器主机指标采集已中断
+          description: Prometheus 连续 2 分钟无法采集主机 CPU、内存等指标。
+
+      - alert: FantasyCardHostCpuSaturation
+        expr: 1 - avg by (instance) (rate(node_cpu_seconds_total{job="node", mode="idle"}[5m])) > 0.85
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: 云服务器 CPU 持续高负载
+          description: 主机 5 分钟平均 CPU 使用率超过 85%。
+
+      - alert: FantasyCardHostMemoryLow
+        expr: node_memory_MemAvailable_bytes{job="node"} / node_memory_MemTotal_bytes{job="node"} < 0.15
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: 云服务器可用内存偏低
+          description: 主机可用内存低于物理内存的 15%。
+
+      - alert: FantasyCardRoomActorQueueWaitHigh
+        expr: histogram_quantile(0.95, sum by (le) (rate(fantasycard_room_actor_command_wait_milliseconds_bucket{job="fantasycard"}[5m]))) > 100
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: 房间 Actor 排队等待偏高
+          description: 房间命令等待时间 p95 连续 5 分钟超过 100ms。

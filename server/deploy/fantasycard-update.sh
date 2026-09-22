@@ -20,7 +20,7 @@ write_manifest() {
   (
     cd "$repo"
     git ls-files -z -- \
-      server/src server/config server/protection server/deploy \
+      server/src server/config server/protection server/deploy server/monitoring \
       server/Directory.Build.props server/Directory.Packages.props \
       server/global.json server/NuGet.Config server/.dockerignore \
       server/compose.cloud.yaml server/Caddyfile server/site \
@@ -166,6 +166,8 @@ if [[ "$runtime_changed" == true ]]; then
   echo "正在构建服务端版本：$target"
   sudo docker compose -f "$compose" --env-file "$env_file" build server
   sudo docker compose -f "$compose" --env-file "$env_file" up -d --no-deps server
+  sudo docker compose -f "$compose" --env-file "$env_file" up -d --no-deps \
+    otel-collector node-exporter prometheus grafana
 fi
 if [[ "$proxy_changed" == true ]]; then
   sudo docker compose -f "$compose" --env-file "$env_file" up -d --no-deps --force-recreate caddy
