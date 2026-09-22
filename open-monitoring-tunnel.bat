@@ -1,4 +1,5 @@
 @echo off
+chcp 65001 >nul
 setlocal
 title FantasyCard Monitoring SSH Tunnel
 
@@ -14,7 +15,7 @@ if errorlevel 1 (
 )
 
 if not exist "%SSH_KEY%" (
-    echo SSH key not found: %SSH_KEY%
+    echo SSH key not found: "%SSH_KEY%"
     pause
     exit /b 1
 )
@@ -24,17 +25,7 @@ echo Grafana:    http://localhost:3000
 echo Prometheus: http://localhost:9090
 echo Close the SSH window to stop the tunnel.
 
-start "FantasyCard Monitoring SSH Tunnel" cmd /k ssh ^
-  -o ExitOnForwardFailure=yes ^
-  -o ConnectTimeout=10 ^
-  -o ServerAliveInterval=30 ^
-  -o ServerAliveCountMax=3 ^
-  -o StrictHostKeyChecking=accept-new ^
-  -i "%SSH_KEY%" ^
-  -N ^
-  -L 3000:127.0.0.1:3000 ^
-  -L 9090:127.0.0.1:9090 ^
-  %SSH_TARGET%
+start "FantasyCard Monitoring SSH Tunnel" cmd /k ssh -o ExitOnForwardFailure=yes -o ConnectTimeout=10 -o ServerAliveInterval=30 -o ServerAliveCountMax=3 -o StrictHostKeyChecking=accept-new -i "%SSH_KEY%" -N -L 3000:127.0.0.1:3000 -L 9090:127.0.0.1:9090 %SSH_TARGET%
 
 timeout /t 3 /nobreak >nul
 start "" "%GRAFANA_URL%"
