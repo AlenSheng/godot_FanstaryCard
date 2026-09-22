@@ -41,8 +41,9 @@ CPU 1.7% 和系统负载 0.23 属于空闲采样，不能作为压测容量。2 
 
 本次改动已部署到云端 `release`：
 
-- 版本：`1073916348e8bca56cb1058ae007873481f8ea2c`；本地/公网健康检查均为 `Healthy`。
+- 版本：`7095170fb7b88de5b6f5b884d6f423f44c700580`；本地/公网健康检查均为 `Healthy`。
 - V027 已由云端启动迁移实际应用；部署脚本在两次更新前均保留 PostgreSQL 备份。
 - 北京时间午夜自动恢复任务已将临时压测限流恢复为 Auth=10、MarketRead=120、EconomyWrite=30。
 - 部署后小规模公网回归（5 客户端、约 90 秒）：稳定 HTTP p95 813ms，WebSocket RTT p95 287ms，实时命令 p95 272ms，错误率 0%。健康检查 p95 在容器冷启动后约 1.28s，不能直接等同于玩家操作延时。
-- 当前版本已包含上述监控接入配置；发布后应确认 Prometheus 的 `fantasycard`、`node` 两个采集目标为 UP，再进行高阶梯压测。
+- 监控已实际接通：Prometheus 的 `fantasycard`、`node`、`prometheus` 三个目标均为 UP，5 条规则已加载，Grafana 仪表盘“FantasyCard 云端总览”可通过 API 查询到。
+- 部署后组件实测占用约 242 MiB：Collector 约 35 MiB、node-exporter 约 9 MiB、Prometheus 约 32 MiB、Grafana 约 138 MiB；监控端口仍只绑定 `127.0.0.1`。
