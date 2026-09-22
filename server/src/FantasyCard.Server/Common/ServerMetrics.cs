@@ -32,6 +32,7 @@ public sealed class ServerMetrics : IDisposable
     private readonly UpDownCounter<long> _activeRooms;
     private readonly Histogram<long> _roomPlayerCount;
     private readonly Histogram<long> _roomActorQueueLength;
+    private readonly Histogram<double> _roomActorCommandWait;
     private readonly Histogram<double> _roomActorTickDelay;
     private readonly Histogram<double> _realtimeCommandDuration;
     private readonly Histogram<double> _roomSnapshotDuration;
@@ -101,6 +102,8 @@ public sealed class ServerMetrics : IDisposable
             "fantasycard.rooms.players", unit: "{player}");
         _roomActorQueueLength = _meter.CreateHistogram<long>(
             "fantasycard.room_actor.queue.length", unit: "{command}");
+        _roomActorCommandWait = _meter.CreateHistogram<double>(
+            "fantasycard.room_actor.command.wait", unit: "ms");
         _roomActorTickDelay = _meter.CreateHistogram<double>(
             "fantasycard.room_actor.tick.delay", unit: "ms");
         _realtimeCommandDuration = _meter.CreateHistogram<double>(
@@ -163,6 +166,10 @@ public sealed class ServerMetrics : IDisposable
     }
     public void RoomClosed() => _activeRooms.Add(-1);
     public void ObserveRoomActorQueueLength(long count) => _roomActorQueueLength.Record(Math.Max(0, count));
+    public void ObserveRoomActorCommandWait(string command, TimeSpan wait) =>
+        _roomActorCommandWait.Record(
+            Math.Max(0, wait.TotalMilliseconds),
+            new KeyValuePair<string, object?>("command", command));
     public void ObserveRoomActorTickDelay(TimeSpan delay) =>
         _roomActorTickDelay.Record(Math.Max(0, delay.TotalMilliseconds));
     public void ObserveRealtimeCommandDuration(string command, TimeSpan duration) =>
