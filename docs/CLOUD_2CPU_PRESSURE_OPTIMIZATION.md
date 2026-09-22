@@ -35,4 +35,9 @@ CPU 1.7% 和系统负载 0.23 属于空闲采样，不能作为压测容量。2 
 3. 使用 5 分钟阶梯重新压测，分别记录 10、20、30、40 客户端阶段的稳定 HTTP p95、WebSocket RTT p95、429/5xx、队列长度和 tick 延迟。
 4. 如果仍在 20 客户端附近出现 429，先判断是否为单一出口 IP 的读限流，再判断服务器资源；不要把 429 直接当作 CPU 达到上限。
 
-本次改动包含监控代码和部署配置；发布后应确认 Prometheus 的 `fantasycard`、`node` 两个采集目标为 UP，再进行高阶梯压测。云端公开接口只能确认应用版本和健康状态，不能读取宿主机私有 CPU、内存或 PostgreSQL 参数。
+本次改动已部署到云端 `release`：
+
+- 版本：`7095170fb7b88de5b6f5b884d6f423f44c700580`；本地/公网健康检查均为 `Healthy`。
+- 监控已实际接通：Prometheus 的 `fantasycard`、`node`、`prometheus` 三个目标均为 UP，5 条规则已加载，Grafana 仪表盘“FantasyCard 云端总览”可通过 API 查询到。
+- 部署后组件实测占用约 242 MiB：Collector 约 35 MiB、node-exporter 约 9 MiB、Prometheus 约 32 MiB、Grafana 约 138 MiB；监控端口仍只绑定 `127.0.0.1`。
+- 云端公开接口只能确认应用版本和健康状态，不能读取宿主机私有 CPU、内存或 PostgreSQL 参数；Prometheus/Grafana 通过 SSH 隧道访问。
