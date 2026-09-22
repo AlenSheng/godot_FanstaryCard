@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Threading.Channels;
 using FantasyCard.Domain.Combat;
 using FantasyCard.Domain.Rooms;
@@ -115,6 +116,9 @@ public sealed class RoomActor : IAsyncDisposable
         await foreach (var command in _commands.Reader.ReadAllAsync())
         {
             _metrics?.ObserveRoomActorQueueLength(Interlocked.Decrement(ref _queuedCommands));
+            _metrics?.ObserveRoomActorCommandWait(
+                command.CommandName,
+                Stopwatch.GetElapsedTime(command.EnqueuedAt));
             var snapshot = command.Execute(room);
             var feedback = room.DrainCombatFeedback();
             if (command.NotifyObservers)
@@ -213,11 +217,11 @@ public sealed class RoomActor : IAsyncDisposable
             _metrics?.ObserveRoomActorTickDelay(now - nextTickAt);
             nextTickAt = now + TickInterval;
             var command = new AdvanceRoomTimeCommand(TickInterval, now);
-            var workItem = new CommandWorkItem<BattleRoomSnapshot>(command, cancellationToken);
             if (!await _commands.Writer.WaitToWriteAsync(cancellationToken))
             {
                 return;
             }
+            var workItem = new CommandWorkItem<BattleRoomSnapshot>(command, cancellationToken);
             _metrics?.ObserveRoomActorQueueLength(Interlocked.Increment(ref _queuedCommands));
             if (!_commands.Writer.TryWrite(workItem))
             {
@@ -230,6 +234,8 @@ public sealed class RoomActor : IAsyncDisposable
 
     private interface ICommandWorkItem
     {
+        long EnqueuedAt { get; }
+        string CommandName { get; }
         bool NotifyObservers { get; }
         BattleRoomSnapshot? Execute(BattleRoom room);
     }
@@ -243,6 +249,8 @@ public sealed class RoomActor : IAsyncDisposable
 
         public Task<TResult> Task => _completion.Task;
 
+        public long EnqueuedAt { get; } = Stopwatch.GetTimestamp();
+        public string CommandName => command.GetType().Name;
         public bool NotifyObservers => command.NotifyObservers;
 
         public BattleRoomSnapshot? Execute(BattleRoom room)
@@ -260,6 +268,7 @@ public sealed class RoomActor : IAsyncDisposable
                 {
                     BattleRoomSnapshot snapshot => snapshot,
                     RoomClientState state => state.Snapshot,
+                    IRoomCommandSnapshotResult snapshotResult => snapshotResult.Snapshot,
                     _ => null
                 };
             }

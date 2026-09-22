@@ -1,4 +1,5 @@
 using FantasyCard.Domain.Combat;
+using FantasyCard.Domain.Players;
 using FantasyCard.Domain.Rooms;
 
 namespace FantasyCard.Server.Rooms;
@@ -19,6 +20,41 @@ public sealed record GetRoomSnapshotCommand : IRoomCommand<BattleRoomSnapshot>
 }
 
 public sealed record RoomClientState(BattleRoomSnapshot Snapshot, ChaosMapProjection Map, RoomCombatInfo? CombatInfo = null);
+
+public interface IRoomCommandSnapshotResult
+{
+    BattleRoomSnapshot? Snapshot { get; }
+}
+
+public sealed record RoomCommandWithClientState<TResult>(
+    TResult Result,
+    RoomClientState? ClientState) : IRoomCommandSnapshotResult
+{
+    public BattleRoomSnapshot? Snapshot => ClientState?.Snapshot;
+}
+
+public sealed record ExecuteWithClientStateCommand<TResult>(
+    IRoomCommand<TResult> Mutation,
+    Guid PlayerId) : IRoomCommand<RoomCommandWithClientState<TResult>>
+{
+    public bool NotifyObservers => Mutation.NotifyObservers;
+
+    public RoomCommandWithClientState<TResult> Execute(BattleRoom room)
+    {
+        var result = Mutation.Execute(room);
+        RoomClientState? clientState = null;
+        try
+        {
+            clientState = new GetRoomClientStateCommand(PlayerId).Execute(room);
+        }
+        catch (Exception exception) when (exception is DomainValidationException or InvalidOperationException)
+        {
+            // A mutation remains authoritative even when a transitional room
+            // cannot produce the optional map projection yet.
+        }
+        return new(result, clientState);
+    }
+}
 
 public sealed record GetRoomClientStateCommand(Guid PlayerId) : IRoomCommand<RoomClientState>
 {
