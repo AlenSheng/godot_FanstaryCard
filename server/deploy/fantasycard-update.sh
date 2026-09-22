@@ -59,6 +59,16 @@ health_check() {
     domain_certificate_ok
 }
 
+normalize_monitoring_permissions() {
+  # The deployment uses a restrictive umask. Compose services run as
+  # unprivileged users, so bind-mounted monitoring configuration must remain
+  # readable without making the repository or secrets world-readable.
+  if [[ -d "$app_dir/monitoring" ]]; then
+    find "$app_dir/monitoring" -type d -exec chmod 755 {} +
+    find "$app_dir/monitoring" -type f -exec chmod 644 {} +
+  fi
+}
+
 if [[ "$(id -un)" != ubuntu ]]; then
   echo '请以 ubuntu 用户运行此命令（不要在整个命令前加 sudo）。' >&2
   exit 1
@@ -131,6 +141,8 @@ fi
 if [[ "$current" != "$target" ]]; then
   git -C "$repo" merge --ff-only "$target"
 fi
+
+normalize_monitoring_permissions
 
 write_manifest "$manifest.new"
 runtime_changed=false
