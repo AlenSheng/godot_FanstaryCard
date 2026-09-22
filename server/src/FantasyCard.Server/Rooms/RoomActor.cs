@@ -60,6 +60,8 @@ public sealed class RoomActor : IAsyncDisposable
 
     private sealed record RevisionCheckedCommand<TResult>(IRoomCommand<TResult> Inner, long ExpectedRevision) : IRoomCommand<TResult>
     {
+        public bool NotifyObservers => Inner.NotifyObservers;
+
         public TResult Execute(BattleRoom room)
         {
             if (ExpectedRevision > room.Revision)
@@ -113,9 +115,17 @@ public sealed class RoomActor : IAsyncDisposable
         await foreach (var command in _commands.Reader.ReadAllAsync())
         {
             _metrics?.ObserveRoomActorQueueLength(Interlocked.Decrement(ref _queuedCommands));
-            var snapshot = command.Execute(room) ?? room.Capture();
+            var snapshot = command.Execute(room);
             var feedback = room.DrainCombatFeedback();
-            EnqueueObservers(snapshot, feedback);
+            if (command.NotifyObservers)
+            {
+                snapshot ??= room.Capture();
+                EnqueueObservers(snapshot, feedback);
+            }
+            else if (feedback.Count > 0)
+            {
+                EnqueueObservers(snapshot ?? room.Capture(), feedback);
+            }
         }
     }
 
@@ -220,6 +230,7 @@ public sealed class RoomActor : IAsyncDisposable
 
     private interface ICommandWorkItem
     {
+        bool NotifyObservers { get; }
         BattleRoomSnapshot? Execute(BattleRoom room);
     }
 
@@ -231,6 +242,8 @@ public sealed class RoomActor : IAsyncDisposable
             new(TaskCreationOptions.RunContinuationsAsynchronously);
 
         public Task<TResult> Task => _completion.Task;
+
+        public bool NotifyObservers => command.NotifyObservers;
 
         public BattleRoomSnapshot? Execute(BattleRoom room)
         {

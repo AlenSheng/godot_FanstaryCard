@@ -186,6 +186,34 @@ public sealed class RoomActorTests
         }
     }
 
+    [Fact]
+    public async Task Read_only_commands_do_not_enqueue_persistence_snapshots()
+    {
+        var playerId = Guid.NewGuid();
+        var room = new BattleRoom(Guid.NewGuid(), "test-config", CombatCardCatalog.CreatePrototype(), 11);
+        room.AddPlayer(new BattleRoomPlayerSetup(
+            playerId,
+            HeroClass.Mage,
+            Enumerable.Range(1, 20).Select(index => $"common-{index:D2}").ToArray(),
+            Pve: null));
+        var observed = 0;
+        await using var actor = new RoomActor(
+            room,
+            TimeProvider.System,
+            startTicker: false,
+            snapshotObserver: _ =>
+            {
+                Interlocked.Increment(ref observed);
+                return Task.CompletedTask;
+            });
+
+        _ = await actor.ExecuteAsync(new GetCombatInfoCommand(playerId), TestContext.Current.CancellationToken);
+        _ = await actor.ExecuteAsync(new GetRelicPilesCommand(playerId), TestContext.Current.CancellationToken);
+        _ = await actor.ExecuteAsync(new GetRoomSnapshotCommand(), TestContext.Current.CancellationToken);
+
+        Assert.Equal(0, observed);
+    }
+
     private static BattleRoomPlayerSetup CreatePlayer(Guid playerId, HeroClass heroClass) =>
         new(
             playerId,

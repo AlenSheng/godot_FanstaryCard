@@ -100,8 +100,12 @@ public sealed record PersistedRewardRefresh(
 public sealed record PendingRewardRefresh(Guid PlayerId, string RequestId, Guid MatchId, Guid RoomId);
 public sealed record ShopRefreshResult(ShopResponse Shop, bool Replayed);
 
-public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider timeProvider)
+public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider timeProvider) : IDisposable
 {
+    private readonly SemaphoreSlim _dailyStateGate = new(1, 1);
+    private string? _initializedShopResetKey;
+    private string? _initializedRefreshResetKey;
+
     private static readonly JsonSerializerOptions RewardRefreshJsonOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -271,8 +275,7 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
         var now = timeProvider.GetUtcNow();
         var resetKey = EconomySchedule.GetDailyResetKey(now);
         var refreshResetKey = EconomySchedule.GetServerDayKey(now);
-        await EnsureRotationAsync(resetKey, cancellationToken);
-        await EnsureRefreshStateAsync(refreshResetKey, resetKey, cancellationToken);
+        await EnsureDailyReadStateAsync(resetKey, refreshResetKey, cancellationToken);
         await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
         var state = await ReadRefreshStateAsync(connection, null, refreshResetKey, cancellationToken);
         return await ReadShopAsync(
@@ -293,8 +296,7 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
         var refreshResetKey = EconomySchedule.GetServerDayKey(now);
         var config = GameConfigCatalog.Current;
         var requestHash = PersistentIdempotency.Hash(new { Action = "shop.refresh", Version = 1 });
-        await EnsureRotationAsync(shopResetKey, cancellationToken);
-        await EnsureRefreshStateAsync(refreshResetKey, shopResetKey, cancellationToken);
+        await EnsureDailyReadStateAsync(shopResetKey, refreshResetKey, cancellationToken);
 
         await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
         await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
@@ -361,8 +363,7 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
         var resetKey = EconomySchedule.GetDailyResetKey(timeProvider.GetUtcNow());
         var refreshResetKey = EconomySchedule.GetServerDayKey(timeProvider.GetUtcNow());
         var hash = Hash(request);
-        await EnsureRotationAsync(resetKey, cancellationToken);
-        await EnsureRefreshStateAsync(refreshResetKey, resetKey, cancellationToken);
+        await EnsureDailyReadStateAsync(resetKey, refreshResetKey, cancellationToken);
         await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
         await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
         await LockPlayerAsync(connection, transaction, playerId, cancellationToken);
@@ -415,7 +416,6 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
 
     public async Task<IReadOnlyList<MarketListingResponse>> GetMarketAsync(CancellationToken cancellationToken)
     {
-        await ExpireListingsAsync(cancellationToken);
         await using var command = dataSource.CreateCommand(
             """
             SELECT l.listing_id,l.seller_id,l.equipment_id,l.price_gold,l.status,l.version,l.created_at,l.expires_at,
@@ -643,18 +643,74 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
         }
 
         var result = new List<ShopProductResponse>(products.Count);
+        var purchaseCounts = new Dictionary<string, int>(StringComparer.Ordinal);
+        await using (var purchases = new NpgsqlCommand(
+            "SELECT product_id, COALESCE(sum(quantity), 0)::integer FROM shop_purchases WHERE player_id=$1 AND reset_key=$2 GROUP BY product_id",
+            connection,
+            transaction))
+        {
+            purchases.Parameters.AddWithValue(playerId);
+            purchases.Parameters.AddWithValue(resetKey);
+            await using var reader = await purchases.ExecuteReaderAsync(cancellationToken);
+            while (await reader.ReadAsync(cancellationToken))
+                purchaseCounts[reader.GetString(0)] = reader.GetInt32(1);
+        }
+
+        var guaranteedCardIdsByProduct = new Dictionary<string, string>(StringComparer.Ordinal);
+        foreach (var product in products.Where(product => product.Kind == "Cards"))
+        {
+            using var payload = JsonDocument.Parse(product.Payload);
+            if (payload.RootElement.TryGetProperty("cardId", out var cardId) &&
+                !string.IsNullOrWhiteSpace(cardId.GetString()))
+            {
+                guaranteedCardIdsByProduct[product.ProductId] = cardId.GetString()!;
+            }
+        }
+
+        HashSet<string> ownedCardIds = guaranteedCardIdsByProduct.Count == 0
+            ? new(StringComparer.Ordinal)
+            : await OwnedCardIdsAsync(connection, transaction, playerId, cancellationToken);
         foreach (var product in products)
         {
+            var guaranteedCardOwned = guaranteedCardIdsByProduct.TryGetValue(product.ProductId, out var guaranteedCardId) &&
+                ownedCardIds.Contains(guaranteedCardId);
             result.Add(new ShopProductResponse(
                 product.ProductId,
                 product.Kind,
                 product.PriceGold,
                 product.LimitCount,
-                await PurchasedAsync(connection, transaction, playerId, resetKey, product.ProductId, cancellationToken),
+                purchaseCounts.GetValueOrDefault(product.ProductId),
                 product.Payload,
-                await IsGuaranteedCardOwnedAsync(connection, transaction, playerId, product.Kind, product.Payload, cancellationToken)));
+                guaranteedCardOwned));
         }
         return new ShopResponse(resetKey, result, refreshesUsed, refreshLimit);
+    }
+
+    private async Task EnsureDailyReadStateAsync(
+        string shopResetKey,
+        string refreshResetKey,
+        CancellationToken cancellationToken)
+    {
+        if (string.Equals(Volatile.Read(ref _initializedShopResetKey), shopResetKey, StringComparison.Ordinal) &&
+            string.Equals(Volatile.Read(ref _initializedRefreshResetKey), refreshResetKey, StringComparison.Ordinal))
+            return;
+
+        await _dailyStateGate.WaitAsync(cancellationToken);
+        try
+        {
+            if (string.Equals(_initializedShopResetKey, shopResetKey, StringComparison.Ordinal) &&
+                string.Equals(_initializedRefreshResetKey, refreshResetKey, StringComparison.Ordinal))
+                return;
+
+            await EnsureRotationAsync(shopResetKey, cancellationToken);
+            await EnsureRefreshStateAsync(refreshResetKey, shopResetKey, cancellationToken);
+            Volatile.Write(ref _initializedShopResetKey, shopResetKey);
+            Volatile.Write(ref _initializedRefreshResetKey, refreshResetKey);
+        }
+        finally
+        {
+            _dailyStateGate.Release();
+        }
     }
 
     private async Task EnsureRotationAsync(string resetKey, CancellationToken cancellationToken)
@@ -771,27 +827,7 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
     private static async Task<int> PurchasedAsync(NpgsqlConnection c, NpgsqlTransaction? t, Guid player, string reset, string product, CancellationToken ct)
     { await using var cmd = new NpgsqlCommand("SELECT COALESCE(sum(quantity),0)::integer FROM shop_purchases WHERE player_id=$1 AND reset_key=$2 AND product_id=$3", c, t); cmd.Parameters.AddWithValue(player); cmd.Parameters.AddWithValue(reset); cmd.Parameters.AddWithValue(product); return (int)(await cmd.ExecuteScalarAsync(ct) ?? 0); }
 
-    private static async Task<bool> IsGuaranteedCardOwnedAsync(
-        NpgsqlConnection connection,
-        NpgsqlTransaction? transaction,
-        Guid player,
-        string kind,
-        string payload,
-        CancellationToken ct)
-    {
-        if (kind != "Cards") return false;
-        using var json = JsonDocument.Parse(payload);
-        if (!json.RootElement.TryGetProperty("cardId", out var id)) return false;
-        await using var cmd = new NpgsqlCommand(
-            "SELECT unlocked AND copy_count > 0 FROM player_cards WHERE player_id=$1 AND card_id=$2",
-            connection,
-            transaction);
-        cmd.Parameters.AddWithValue(player);
-        cmd.Parameters.AddWithValue(id.GetString() ?? string.Empty);
-        return (await cmd.ExecuteScalarAsync(ct)) is true;
-    }
-
-    private static async Task<HashSet<string>> OwnedCardIdsAsync(NpgsqlConnection c, NpgsqlTransaction t, Guid player, CancellationToken ct)
+    private static async Task<HashSet<string>> OwnedCardIdsAsync(NpgsqlConnection c, NpgsqlTransaction? t, Guid player, CancellationToken ct)
     {
         await using var cmd = new NpgsqlCommand("SELECT card_id FROM player_cards WHERE player_id=$1 AND unlocked=true AND copy_count > 0 FOR SHARE", c, t);
         cmd.Parameters.AddWithValue(player);
@@ -887,6 +923,8 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
         }
         return $"{amount} {kind}";
     }
+
+    public void Dispose() => _dailyStateGate.Dispose();
 
     private static bool CardPackEligible(CardConfigDefinition card) =>
         card.IsCodex && (card.Quality is "White" or "Green" or "Blue" or "Purple") &&

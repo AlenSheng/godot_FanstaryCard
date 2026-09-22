@@ -6,10 +6,15 @@ namespace FantasyCard.Server.Rooms;
 public interface IRoomCommand<out TResult>
 {
     TResult Execute(BattleRoom room);
+
+    // Commands that only read a projection must not enqueue persistence work
+    // or force RoomActor to create an unrelated full-room snapshot.
+    bool NotifyObservers => true;
 }
 
 public sealed record GetRoomSnapshotCommand : IRoomCommand<BattleRoomSnapshot>
 {
+    public bool NotifyObservers => false;
     public BattleRoomSnapshot Execute(BattleRoom room) => room.Capture();
 }
 
@@ -17,6 +22,7 @@ public sealed record RoomClientState(BattleRoomSnapshot Snapshot, ChaosMapProjec
 
 public sealed record GetRoomClientStateCommand(Guid PlayerId) : IRoomCommand<RoomClientState>
 {
+    public bool NotifyObservers => false;
     public RoomClientState Execute(BattleRoom room) =>
         new(room.Capture(), room.GetMapProjection(PlayerId), room.GetCombatInfo(PlayerId));
 }
@@ -160,6 +166,7 @@ public sealed record RelicReplaceResult(Guid PileId, string ItemId, string Retur
 
 public sealed record GetRewardChoiceCommand(Guid PlayerId) : IRoomCommand<RewardChoiceSnapshot>
 {
+    public bool NotifyObservers => false;
     public RewardChoiceSnapshot Execute(BattleRoom room) => room.GetRewardChoice(PlayerId);
 }
 
@@ -190,6 +197,7 @@ public sealed record UnequipArmorCommand(Guid PlayerId, string Slot) : IRoomComm
 
 public sealed record GetRelicPilesCommand(Guid PlayerId) : IRoomCommand<IReadOnlyList<RelicPileSnapshot>>
 {
+    public bool NotifyObservers => false;
     public IReadOnlyList<RelicPileSnapshot> Execute(BattleRoom room) => room.GetAvailableRelicPiles(PlayerId);
 }
 
@@ -213,12 +221,14 @@ public sealed record PreviewRoomCardsCommand(
     long ExpectedRevision,
     DateTimeOffset Now) : IRoomCommand<CombatResolution>
 {
+    public bool NotifyObservers => false;
     public CombatResolution Execute(BattleRoom room) =>
         room.PreviewCards(PlayerId, BattleId, TargetId, CardInstanceIds, ExpectedRevision, Now);
 }
 
 public sealed record GetCombatInfoCommand(Guid PlayerId) : IRoomCommand<RoomCombatInfo>
 {
+    public bool NotifyObservers => false;
     public RoomCombatInfo Execute(BattleRoom room) => room.GetCombatInfo(PlayerId);
 }
 
