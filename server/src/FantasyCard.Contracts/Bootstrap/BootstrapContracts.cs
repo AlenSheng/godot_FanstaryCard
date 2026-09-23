@@ -1,6 +1,7 @@
 using FantasyCard.Contracts.Players;
 using FantasyCard.Contracts.Progression;
 using FantasyCard.Contracts.Matchmaking;
+using FantasyCard.Contracts.Mail;
 
 namespace FantasyCard.Contracts.Bootstrap;
 
@@ -23,4 +24,13 @@ public sealed record BootstrapResponse(
     IReadOnlyList<CardResponse> Cards,
     InventorySummaryResponse InventorySummary,
     UnfinishedMatchResponse? UnfinishedMatch,
-    SettlementResponse? UnfinishedSettlement);
+    SettlementResponse? UnfinishedSettlement)
+{
+    // Optional fields keep older bootstrap consumers compatible while giving
+    // the client a complete account snapshot in one response.
+    public InventoryResponse? Inventory { get; init; }
+    public ShopResponse? Shop { get; init; }
+    public IReadOnlyList<MarketListingResponse>? Market { get; init; }
+    public MailListResponse? Mail { get; init; }
+    public PreparationResponse? ActivePreparation { get; init; }
+}

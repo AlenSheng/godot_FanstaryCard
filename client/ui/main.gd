@@ -85,7 +85,7 @@ func _ready() -> void:
 	Game.changed.connect(_schedule_render)
 	Game.notice.connect(_toast)
 	Game.player_data_invalidated.connect(_refresh_after_admin_update)
-	Game.shop_refreshed.connect(_on_shop_refreshed)
+	Game.cache_changed.connect(_on_cache_changed)
 	Game.authentication_required.connect(_show_ban_dialog)
 	Game.combat_feedback.connect(_feedback)
 	_build_shell()
@@ -248,11 +248,15 @@ func _refresh_after_admin_update() -> void:
 	if screen in ["cards", "deck", "gear", "enhance", "shop", "market", "prep"]:
 		_navigate.call_deferred(screen)
 
-func _on_shop_refreshed(_payload: Dictionary) -> void:
-	if screen == "shop" and not Game.busy:
-		_navigate.call_deferred("shop")
-	else:
-		_toast("商店货架已刷新")
+func _on_cache_changed(module: String) -> void:
+	_sync_account_session()
+	var affected := {
+		"shop": ["shop"], "market": ["market"],
+		"inventory": ["gear", "enhance", "prep", "shop", "market"],
+		"cards": ["cards", "deck"], "decks": ["cards", "deck", "prep"], "mail": ["hall"],
+		"wallet": ["hall", "shop", "market", "prep"]
+	}
+	if screen in affected.get(module, []) and Game.room.is_empty(): _schedule_render()
 
 func _sync_account_session() -> void:
 	if _session_generation != Game.gateway.session_generation:
@@ -262,6 +266,11 @@ func _sync_account_session() -> void:
 	if lobby_cards is Array:
 		owned = lobby_cards
 		_codex_ready = true
+	if Game.lobby.get("inventory") is Dictionary:
+		inventory = Game.lobby.inventory
+		_shop_inventory_ready = not inventory.is_empty()
+	if Game.lobby.get("shop") is Dictionary: shop = Game.lobby.shop
+	if Game.lobby.get("market") is Array: listings = Game.lobby.market
 	if not Game.lobby.is_empty() and not Game.gateway.token.is_empty() and not Game.gateway.local_account_name.is_empty():
 		_login_name = Game.gateway.local_account_name
 
@@ -529,39 +538,13 @@ func _navigate(value: String) -> void:
 	_deck_builder_scroll = 0
 	_enhancement_quote_key = ""
 	_enhancement_quote = {}
-	if value == "shop": _shop_inventory_ready = false
-	if value in ["cards", "deck"] and _codex_ready:
-		deck_draft = Game.deck().get("cardIds", []).duplicate()
-		screen_loading = false
-		_render()
-		return
-	if value in ["cards", "deck", "gear", "enhance", "shop", "market", "prep"]:
-		screen_loading = true
-		_render()
-		var path: String = {"cards": "/cards", "deck": "/cards", "gear": "/inventory", "enhance": "/inventory", "shop": "/economy/context", "market": "/economy/context", "prep": "/inventory"}[value]
-		var result: Dictionary = await Game.gateway.request("/api/v1" + path)
-		if not result.ok and int(result.get("status", 0)) == 404 and value in ["shop", "market"]:
-			path = "/shop/context" if value == "shop" else "/market/context"
-			result = await Game.gateway.request("/api/v1" + path)
-		if not _session_result_current(generation, result): return
-		if result.ok:
-			match value:
-				"cards", "deck":
-					owned = result.data
-					_codex_ready = true
-					deck_draft = Game.deck().get("cardIds", []).duplicate()
-				"gear", "enhance", "prep":
-					inventory = result.data
-					gear_draft = Game.loadout().get("equipmentIds", []).duplicate()
-					gear_draft.resize(5)
-				"shop":
-					shop = result.data.get("shop", {})
-					inventory = result.data.get("inventory", {})
-					_shop_inventory_ready = not inventory.is_empty()
-				"market":
-					listings = result.data.get("listings", [])
-					inventory = result.data.get("inventory", {})
-		screen_loading = false
+	_sync_account_session()
+	if generation != Game.gateway.session_generation: return
+	if value in ["cards", "deck"]: deck_draft = Game.deck().get("cardIds", []).duplicate()
+	if value in ["gear", "enhance", "prep"]:
+		gear_draft = Game.loadout().get("equipmentIds", []).duplicate()
+		gear_draft.resize(5)
+	screen_loading = false
 	_render()
 
 func _hall() -> void:
@@ -760,6 +743,7 @@ func _card_action(id: String, action: String) -> void:
 		return
 	if result.ok:
 		if result.data.get("card") is Dictionary: _replace_owned_card(result.data.card)
+		Game.update_cache("cards", owned)
 		if result.data.get("materials") is Dictionary: Game.lobby["materials"] = result.data.materials
 		_codex_ready = true
 		Sound.play_cue("upgrade" if action == "upgrade" else "reward")
@@ -771,7 +755,9 @@ func _card_action(id: String, action: String) -> void:
 			_codex_mutating = false
 			return
 		_codex_ready = refreshed.ok
-		if refreshed.ok: owned = refreshed.data
+		if refreshed.ok:
+			owned = refreshed.data
+			Game.update_cache("cards", owned)
 	_codex_mutating = false
 	if not _session_result_current(generation): return
 	Game.busy = false
@@ -816,13 +802,17 @@ func _save_deck() -> void:
 	var result: Dictionary = await Game.gateway.request("/api/v1/decks/" + Game.hero_class, HTTPClient.METHOD_PUT, {"cardIds": deck_draft, "expectedVersion": Game.deck().get("version", 0)}, [0, 400, 409, 429, 500, 502, 503, 504])
 	if not _session_result_current(generation, result): return
 	if result.ok:
-		await Game.refresh_lobby()
-		if not _session_result_current(generation): return
+		var decks: Array = Game.lobby.get("decks", []).duplicate(true)
+		for index in decks.size():
+			if str(decks[index].get("heroClass", "")) == Game.hero_class:
+				decks[index] = result.data
+				break
+		Game.update_cache("decks", decks)
 		deck_draft = Game.deck().get("cardIds", []).duplicate()
 		Sound.play_cue("equip")
 		_toast(P.localized("deck_saved"))
 	elif int(result.get("status", 0)) == 409:
-		await Game.refresh_lobby()
+		await Game.refresh_cache("decks")
 		if not _session_result_current(generation): return
 		deck_draft = Game.deck().get("cardIds", []).duplicate()
 		_toast(P.localized("deck_changed_retry"))
@@ -1023,7 +1013,7 @@ func _shop() -> void:
 			_label(panel, CardDetails.localized_name(card_id, cards.get(card_id, {})), 26, P.TEAL)
 		_label(panel, P.localized("shop_price") % item.priceGold, 36, P.GOLD)
 		_label(panel, P.localized("shop_purchase_count") % [item.purchased, item.limit], 22, P.MUTED)
-		_button(panel, "已激活" if item.get("alreadyOwned", false) else "购买", func(): _confirm("花费 %s 金币购买？" % item.priceGold, func(): _mutate("/shop/purchases", HTTPClient.METHOD_POST, {"productId": item.productId, "quantity": 1})), Game.busy or item.get("alreadyOwned", false) or int(item.purchased) >= int(item.limit) or int(item.priceGold) > int(Game.lobby.wallet.gold))
+		_button(panel, "已激活" if item.get("alreadyOwned", false) else "购买", func(): _confirm("花费 %s 金币购买？" % item.priceGold, func(): _complete_shop_purchase(item)), Game.busy or item.get("alreadyOwned", false) or int(item.purchased) >= int(item.limit) or int(item.priceGold) > int(Game.lobby.wallet.gold))
 	if shop.get("products", []).is_empty(): _label(content, "暂无商品，稍后刷新。", 28)
 
 func _market() -> void:
@@ -1058,16 +1048,110 @@ func _mutate(path: String, method: int, body: Variant = null) -> void:
 	var result: Dictionary = await Game.gateway.request("/api/v1" + path, method, body)
 	if not _session_result_current(generation, result): return
 	if result.ok:
+		_apply_account_mutation(path, body, result.data)
 		var cue := "equip"
 		if path.ends_with("/enhance"): cue = "upgrade"
 		elif path == "/shop/purchases" or path.contains("/purchase?"): cue = "purchase"
 		Sound.play_cue(cue)
 		_toast("操作成功")
-	else: Sound.play_cue("error")
-	await Game.refresh_lobby()
-	if not _session_result_current(generation): return
+	else:
+		Sound.play_cue("error")
+		if path.begins_with("/market/"): Game.refresh_cache("market")
+		elif path.begins_with("/loadouts/"): Game.refresh_cache("inventory")
 	Game.busy = false
-	await _navigate(screen)
+	_render()
+
+func _apply_account_mutation(path: String, body: Variant, response: Variant) -> void:
+	var data: Dictionary = response if response is Dictionary else {}
+	if path.begins_with("/loadouts/") and not data.is_empty():
+		var loadouts: Array = Game.lobby.get("equippedLoadouts", []).duplicate(true)
+		for index in loadouts.size():
+			if str(loadouts[index].get("heroClass", "")) == str(data.get("heroClass", "")):
+				loadouts[index] = data
+				break
+		Game.update_cache("equippedLoadouts", loadouts)
+		gear_draft = data.get("equipmentIds", []).duplicate()
+		Game.refresh_cache("inventory")
+	elif path.ends_with("/enhance") and data.get("equipment") is Dictionary:
+		var equipment: Dictionary = data.equipment
+		var materials: Dictionary = Game.lobby.get("materials", {}).duplicate(true)
+		materials["equipmentFragments"] = int(data.get("equipmentFragments", materials.get("equipmentFragments", 0)))
+		Game.update_cache("materials", materials)
+		if str(equipment.get("slot", "")) == "ClassWeapon":
+			var weapons: Array = Game.lobby.get("classWeapons", []).duplicate(true)
+			for index in weapons.size():
+				if str(weapons[index].get("heroClass", "")) == Game.hero_class:
+					weapons[index]["level"] = equipment.get("level", weapons[index].get("level", 0))
+					weapons[index]["version"] = equipment.get("version", weapons[index].get("version", 0))
+					break
+			Game.update_cache("classWeapons", weapons)
+		else:
+			var items: Array = inventory.get("equipments", []).duplicate(true)
+			for index in items.size():
+				if str(items[index].get("instanceId", "")) == str(equipment.get("instanceId", "")):
+					items[index] = equipment
+					break
+			var consumed := str(data.get("consumedMaterialEquipmentId", ""))
+			if not consumed.is_empty(): items = items.filter(func(item): return str(item.get("instanceId", "")) != consumed)
+			_set_inventory_items(items)
+	elif path == "/market/listings" and not data.is_empty():
+		var equipment_id := str(data.get("equipmentId", ""))
+		var items: Array = inventory.get("equipments", []).duplicate(true)
+		var listing: Dictionary = data.duplicate(true)
+		for item in items:
+			if str(item.get("instanceId", "")) == equipment_id:
+				listing["equipment"] = item.duplicate(true)
+				listing.equipment["location"] = "MarketListed"
+				break
+		if not listing.has("equipment"):
+			for existing in listings:
+				if str(existing.get("listingId", "")) == str(listing.get("listingId", "")):
+					listing["equipment"] = existing.get("equipment", {})
+					break
+		items = items.filter(func(item): return str(item.get("instanceId", "")) != equipment_id)
+		_set_inventory_items(items)
+		var updated: Array = listings.duplicate(true)
+		updated = updated.filter(func(entry): return str(entry.get("listingId", "")) != str(listing.get("listingId", "")))
+		updated.push_front(listing)
+		Game.update_cache("market", updated)
+	elif path.begins_with("/market/"):
+		var listing_id := ""
+		if path.begins_with("/market/listings/"):
+			listing_id = path.trim_prefix("/market/listings/").split("/")[0]
+		else:
+			listing_id = path.trim_prefix("/market/").split("/")[0]
+		var previous: Dictionary = {}
+		for listing in listings:
+			if str(listing.get("listingId", "")) == listing_id:
+				previous = listing
+				break
+		var updated: Array = listings.filter(func(entry): return str(entry.get("listingId", "")) != listing_id)
+		Game.update_cache("market", updated)
+		if data.has("buyerGoldAfter"):
+			var wallet: Dictionary = Game.lobby.get("wallet", {}).duplicate(true)
+			wallet["gold"] = int(data.buyerGoldAfter)
+			Game.update_cache("wallet", wallet)
+		var item: Dictionary = previous.get("equipment", {})
+		if not item.is_empty():
+			item = item.duplicate(true)
+			item["location"] = "Inventory"
+			item["version"] = int(item.get("version", 0)) + 1
+			var items: Array = inventory.get("equipments", []).duplicate(true)
+			items.append(item)
+			_set_inventory_items(items)
+		else:
+			Game.refresh_cache("inventory")
+func _set_inventory_items(items: Array) -> void:
+	var next_inventory: Dictionary = inventory.duplicate(true)
+	next_inventory["equipments"] = items
+	var summary: Dictionary = next_inventory.get("summary", {}).duplicate(true)
+	var count := 0
+	for item in items:
+		if str(item.get("location", "")) == "Inventory": count += 1
+	summary["equipmentCount"] = count
+	summary["freeSlots"] = maxi(0, int(summary.get("capacity", 50)) - count)
+	next_inventory["summary"] = summary
+	Game.update_cache("inventory", next_inventory)
 
 func _purchase_shop_item(item: Dictionary, product_title: String) -> void:
 	var purchase := func(): _complete_shop_purchase(item)
@@ -1084,6 +1168,7 @@ func _refresh_shop() -> void:
 	if not _session_result_current(generation, result): return
 	if result.ok:
 		shop = result.data
+		Game.update_cache("shop", shop)
 		Sound.play_cue("reward")
 		_toast("商店货架已刷新")
 	else:
@@ -1125,20 +1210,33 @@ func _apply_shop_purchase(product_id: String, response: Dictionary) -> void:
 		var product: Dictionary = products[index]
 		if str(product.get("productId", "")) != product_id: continue
 		product["purchased"] = int(product.get("purchased", 0)) + quantity
+		if product.get("kind", "") == "Cards" and str(product.get("payload", "")).contains("cardId"):
+			product["alreadyOwned"] = true
 		products[index] = product
 		var kind: String = str(product.get("kind", ""))
-		if kind in ["AdvancedBag", "TopBag"]:
-			var payload: Variant = JSON.parse_string(product.get("payload", "{}"))
-			var amount: int = int(payload.get("amount", 1)) if payload is Dictionary else 1
+		var parsed: Variant = JSON.parse_string(product.get("payload", "{}"))
+		var payload: Dictionary = parsed if parsed is Dictionary else {}
+		var amount: int = int(payload.get("amount", 1)) * quantity
+		if kind in ["AdvancedBag", "TopBag", "HealthPotion"]:
 			var consumables: Dictionary = inventory.get("consumables", {}).duplicate()
-			var key := "advancedBagCount" if kind == "AdvancedBag" else "topBagCount"
-			consumables[key] = int(consumables.get(key, 0)) + amount * quantity
+			var key: String = {"AdvancedBag": "advancedBagCount", "TopBag": "topBagCount", "HealthPotion": "healthPotionCount"}[kind]
+			consumables[key] = int(consumables.get(key, 0)) + amount
 			inventory["consumables"] = consumables
+			Game.update_cache("inventory", inventory)
+		elif kind in ["WarriorSoul", "EquipmentFragments", "ClassSoul"]:
+			var materials: Dictionary = Game.lobby.get("materials", {}).duplicate(true)
+			var key := kind.left(1).to_lower() + kind.substr(1)
+			if kind == "ClassSoul": key = str(payload.get("heroClass", "")).to_lower() + "Soul"
+			materials[key] = int(materials.get(key, 0)) + amount
+			Game.update_cache("materials", materials)
+		elif kind == "Cards":
+			Game.refresh_cache("cards")
 		break
 	shop["products"] = products
+	Game.update_cache("shop", shop)
 	var wallet: Dictionary = Game.lobby.get("wallet", {}).duplicate()
 	wallet["gold"] = int(response.get("goldAfter", wallet.get("gold", 0)))
-	Game.lobby["wallet"] = wallet
+	Game.update_cache("wallet", wallet)
 
 func _session_result_current(generation: int, result: Dictionary = {}) -> bool:
 	return generation == Game.gateway.session_generation and not result.get("stale_session", false)

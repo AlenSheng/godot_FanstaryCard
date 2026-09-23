@@ -1,9 +1,30 @@
 using FantasyCard.Contracts.Realtime;
+using FantasyCard.Contracts.Progression;
 
 namespace FantasyCard.Server.Tests.Realtime;
 
 public sealed class RealtimeProtobufCodecTests
 {
+    [Fact]
+    public void MarketDelta_RoundTripsWithoutChangingLegacyInventoryEvent()
+    {
+        var now = DateTimeOffset.FromUnixTimeMilliseconds(1790000000123);
+        var listing = new MarketListingResponse(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),
+            150, "Active", 3, now, now.AddDays(2),
+            new EquipmentResponse(Guid.NewGuid(), "Head", "Purple", 2, false,
+                "MarketListed", 4, "Fire", "Piercing", "DrawInterval"));
+        var original = new ServerEvent("inventory.changed", "market-trace",
+            new InventoryChangedEventPayload("market.listed", listing.ListingId.ToString("D"), listing, 720),
+            "market-event", 7, now);
+        var decoded = RealtimeProtobufCodec.DecodeServer(RealtimeProtobufCodec.EncodeServer(original));
+        Assert.Equivalent(original, decoded, strict: true);
+
+        var legacy = new ServerEvent("inventory.changed", "legacy-trace",
+            new InventoryChangedEventPayload("shop.refresh", "2026-09-23"), "legacy-event", 8, now);
+        Assert.Equivalent(legacy,
+            RealtimeProtobufCodec.DecodeServer(RealtimeProtobufCodec.EncodeServer(legacy)), strict: true);
+    }
+
     [Fact]
     public void ReadyCommandAndEvents_RoundTripTypedPayloads()
     {

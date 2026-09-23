@@ -1,4 +1,5 @@
 using System.Text;
+using FantasyCard.Contracts.Progression;
 
 namespace FantasyCard.Contracts.Realtime;
 
@@ -214,7 +215,13 @@ public static class RealtimeProtobufCodec
         "relic.taken" when message.Payload is RelicTakeEventPayload value => Message(w => { w.String(1, value.PileId.ToString("D")); w.String(2, value.ItemId); w.Int64(3, value.PileVersion); }),
         "relic.contents" when message.Payload is RoomRelicPilePayload value => EncodeRelicPile(value),
         "relic.replaced" when message.Payload is RelicReplacedEventPayload value => Message(w => { w.String(1, value.PileId.ToString("D")); w.String(2, value.ItemId); w.String(3, value.ReturnedItemId); w.Int64(4, value.PileVersion); }),
-        "inventory.changed" when message.Payload is InventoryChangedEventPayload value => Message(w => { w.String(1, value.Action); w.String(2, value.ItemId); }),
+        "inventory.changed" when message.Payload is InventoryChangedEventPayload value => Message(w =>
+        {
+            w.String(1, value.Action);
+            w.String(2, value.ItemId);
+            if (value.Listing is { } listing) w.Bytes(3, EncodeMarketListing(listing));
+            w.OptionalInt64(4, value.SellerGoldAfter);
+        }),
         "duel.started" when message.Payload is DuelStartedEventPayload value => Message(w => { w.String(1, value.DuelId.ToString("D")); w.String(2, value.FirstPlayerId.ToString("D")); w.String(3, value.LatePlayerId.ToString("D")); w.Int64(4, value.LatePlayerUnlockAtUnixMs); w.Int64(5, value.LeaveWindowEndsAtUnixMs); }),
         "duel.ended" when message.Payload is DuelEndedEventPayload value => Message(w => { w.String(1, value.DuelId.ToString("D")); w.String(2, value.Reason); w.String(3, value.WinnerId?.ToString("D")); w.Bool(4, value.SnapshotRequired); }),
         "player.died" when message.Payload is PlayerDiedEventPayload value => Message(w => { w.String(1, value.PlayerId.ToString("D")); w.String(2, value.Cause); w.String(3, value.DuelId?.ToString("D")); }),
@@ -273,7 +280,10 @@ public static class RealtimeProtobufCodec
             "relic.taken" => new RelicTakeEventPayload(ParseGuid(payload.String(1), type), payload.String(2), payload.Int64(3)),
             "relic.contents" => DecodeRelicPile(payload),
             "relic.replaced" => new RelicReplacedEventPayload(ParseGuid(payload.String(1), type), payload.String(2), payload.String(3), payload.Int64(4)),
-            "inventory.changed" => new InventoryChangedEventPayload(payload.String(1), payload.String(2)),
+            "inventory.changed" => new InventoryChangedEventPayload(
+                payload.String(1), payload.String(2),
+                payload.Bytes(3).Length == 0 ? null : DecodeMarketListing(Fields.Read(payload.Bytes(3))),
+                payload.OptionalInt64(4)),
             "duel.started" => new DuelStartedEventPayload(ParseGuid(payload.String(1), type), ParseGuid(payload.String(2), type), ParseGuid(payload.String(3), type), payload.Int64(4), payload.Int64(5)),
             "duel.ended" => new DuelEndedEventPayload(ParseGuid(payload.String(1), type), payload.String(2), ParseOptionalGuid(payload.String(3), type), payload.Bool(4)),
             "player.died" => new PlayerDiedEventPayload(ParseGuid(payload.String(1), type), payload.String(2), ParseOptionalGuid(payload.String(3), type)),
@@ -362,6 +372,53 @@ public static class RealtimeProtobufCodec
         var snapshot = payload.Bytes(4);
         return new(ParseGuid(payload.String(1), "room.started"), ParseGuid(payload.String(2), "room.started"),
             checked((int)payload.Int64(3)), snapshot.Length == 0 ? null : DecodeRoomSnapshot(Fields.Read(snapshot)));
+    }
+
+    private static byte[] EncodeMarketListing(MarketListingResponse value) => Message(w =>
+    {
+        w.String(1, value.ListingId.ToString("D"));
+        w.String(2, value.SellerId.ToString("D"));
+        w.String(3, value.EquipmentId.ToString("D"));
+        w.Int64(4, value.PriceGold);
+        w.String(5, value.Status);
+        w.Int64(6, value.Version);
+        w.Int64(7, value.CreatedAt.ToUnixTimeMilliseconds());
+        w.Int64(8, value.ExpiresAt.ToUnixTimeMilliseconds());
+        if (value.Equipment is { } equipment)
+            w.Bytes(9, Message(e =>
+            {
+                e.String(1, equipment.InstanceId.ToString("D"));
+                e.String(2, equipment.Slot);
+                e.String(3, equipment.Quality);
+                e.Int64(4, equipment.Level);
+                e.Bool(5, equipment.IsBound);
+                e.String(6, equipment.Location);
+                e.Int64(7, equipment.Version);
+                e.String(8, equipment.Element);
+                e.String(9, equipment.EffectAffix);
+                e.String(10, equipment.SecondaryTrait);
+            }));
+    });
+
+    private static MarketListingResponse DecodeMarketListing(Fields value)
+    {
+        var equipmentBytes = value.Bytes(9);
+        EquipmentResponse? equipment = null;
+        if (equipmentBytes.Length > 0)
+        {
+            var item = Fields.Read(equipmentBytes);
+            equipment = new EquipmentResponse(
+                ParseGuid(item.String(1), "market.listing"), item.String(2), item.String(3),
+                checked((int)item.Int64(4)), item.Bool(5), item.String(6), item.Int64(7),
+                NullIfEmpty(item.String(8)), NullIfEmpty(item.String(9)), NullIfEmpty(item.String(10)));
+        }
+        return new MarketListingResponse(
+            ParseGuid(value.String(1), "market.listing"),
+            ParseGuid(value.String(2), "market.listing"),
+            ParseGuid(value.String(3), "market.listing"),
+            value.Int64(4), value.String(5), value.Int64(6),
+            DateTimeOffset.FromUnixTimeMilliseconds(value.Int64(7)),
+            DateTimeOffset.FromUnixTimeMilliseconds(value.Int64(8)), equipment);
     }
 
     private static byte[] EncodeRewardChoice(RewardChoiceEventPayload value) => Message(w =>

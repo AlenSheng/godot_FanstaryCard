@@ -68,6 +68,7 @@ public sealed class IdentityRepository(
         }
 
         var profile = await FindByExternalIdentityAsync(connection, transaction, provider, externalSubject, cancellationToken);
+        var created = profile is null;
         if (profile is null)
         {
             profile = PlayerProfile.Create(Guid.CreateVersion7(), displayName, now);
@@ -81,12 +82,12 @@ public sealed class IdentityRepository(
                 throw new PlayerBannedException();
         }
 
-        await provisioningService.ProvisionAsync(
-            connection,
-            transaction,
-            profile.UserId,
-            now,
-            cancellationToken);
+        if (created || !await provisioningService.IsProvisionedAsync(
+                connection, transaction, profile.UserId, cancellationToken))
+        {
+            await provisioningService.ProvisionAsync(
+                connection, transaction, profile.UserId, now, cancellationToken);
+        }
 
         if (string.Equals(provider, "local-name", StringComparison.Ordinal))
         {

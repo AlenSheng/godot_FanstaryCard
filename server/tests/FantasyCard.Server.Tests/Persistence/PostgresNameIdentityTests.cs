@@ -13,6 +13,34 @@ public sealed class PostgresNameIdentityTests
 
     [Fact(Skip = "Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.", SkipUnless = nameof(HasTestDatabase))]
     [Trait("Category", "PostgresIntegration")]
+    public async Task Returning_login_repairs_missing_cards_and_preserves_complete_account()
+    {
+        await using var database = await PostgresTestSchema.CreateAsync(migrate: true);
+        var identity = new IdentityRepository(database.DataSource, new PlayerProvisioningService());
+        var now = DateTimeOffset.UtcNow;
+        var ct = TestContext.Current.CancellationToken;
+        var player = await identity.SignInLocalAsync("device-one", "Cache player",
+            RandomNumberGenerator.GetBytes(32), now, now.AddHours(1), ct);
+        var before = await database.ScalarAsync<long>(
+            "SELECT count(*) FROM player_cards WHERE player_id=$1", player.UserId);
+        await using (var delete = database.DataSource.CreateCommand(
+            "DELETE FROM player_cards WHERE player_id=$1 AND card_id=(SELECT card_id FROM player_cards WHERE player_id=$1 LIMIT 1)"))
+        {
+            delete.Parameters.AddWithValue(player.UserId);
+            Assert.Equal(1, await delete.ExecuteNonQueryAsync(ct));
+        }
+        await identity.SignInLocalAsync("device-two", "Cache player",
+            RandomNumberGenerator.GetBytes(32), now, now.AddHours(1), ct);
+        Assert.Equal(before, await database.ScalarAsync<long>(
+            "SELECT count(*) FROM player_cards WHERE player_id=$1", player.UserId));
+        await identity.SignInLocalAsync("device-three", "Cache player",
+            RandomNumberGenerator.GetBytes(32), now, now.AddHours(1), ct);
+        Assert.Equal(before, await database.ScalarAsync<long>(
+            "SELECT count(*) FROM player_cards WHERE player_id=$1", player.UserId));
+    }
+
+    [Fact(Skip = "Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.", SkipUnless = nameof(HasTestDatabase))]
+    [Trait("Category", "PostgresIntegration")]
     public async Task Same_device_different_names_create_separate_accounts_and_returning_names_restore_assets()
     {
         await using var database = await PostgresTestSchema.CreateAsync(migrate: true);

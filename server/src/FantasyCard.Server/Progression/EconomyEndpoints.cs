@@ -25,6 +25,10 @@ public static class EconomyEndpoints
             .RequireRateLimiting(RequestLimitOptions.ReadPolicy)
             .Produces<EconomyContextResponse>()
             .ProducesProblem(401);
+        economy.MapGet("/wallet", GetWalletAsync)
+            .RequireRateLimiting(RequestLimitOptions.ReadPolicy)
+            .Produces<WalletResponse>()
+            .ProducesProblem(401);
 
         var shop = endpoints.MapGroup("/api/v1/shop").WithTags("Economy");
         shop.MapGet("/", GetShopAsync).RequireRateLimiting(RequestLimitOptions.ReadPolicy).Produces<ShopResponse>().ProducesProblem(401);
@@ -65,6 +69,12 @@ public static class EconomyEndpoints
     private static async Task<IResult> GetShopAsync(HttpContext context, IdentityService identity, EconomyRepository repository, CancellationToken ct)
     { var player = await context.AuthenticatePlayerAsync(identity, ct); return player is null ? context.UnauthorizedProblem() : Results.Ok(await repository.GetShopAsync(player.UserId, ct)); }
 
+    private static async Task<IResult> GetWalletAsync(HttpContext context, IdentityService identity, EconomyRepository repository, CancellationToken ct)
+    {
+        var player = await context.AuthenticatePlayerAsync(identity, ct);
+        return player is null ? context.UnauthorizedProblem() : Results.Ok(await repository.GetWalletAsync(player.UserId, ct));
+    }
+
     private static async Task<IResult> GetShopContextAsync(
         HttpContext context,
         IdentityService identity,
@@ -96,17 +106,7 @@ public static class EconomyEndpoints
         {
             var refresh = await repository.RefreshShopAsync(player.UserId, requestId, ct);
             if (!refresh.Replayed)
-            {
-                foreach (var connectedPlayerId in connections.ConnectedPlayerIds)
-                {
-                    var message = eventStore.Create(
-                        connectedPlayerId,
-                        "inventory.changed",
-                        context.TraceIdentifier,
-                        new InventoryChangedEventPayload("shop.refresh", refresh.Shop.ResetKey));
-                    await connections.SendPresentationAsync(connectedPlayerId, message);
-                }
-            }
+                NotifyClientsAfterResponse(context, connections, eventStore, "shop.refresh", refresh.Shop.ResetKey);
             return Results.Ok(refresh.Shop);
         }
         catch (IdempotencyConflictException)
@@ -147,35 +147,83 @@ public static class EconomyEndpoints
         return Results.Ok(new MarketInventoryContextResponse(listingsTask.Result, inventoryTask.Result));
     }
 
-    private static async Task<IResult> ListAsync(CreateMarketListingRequest request, HttpContext context, IdentityService identity, EconomyRepository repository, CancellationToken ct)
+    private static async Task<IResult> ListAsync(CreateMarketListingRequest request, HttpContext context, IdentityService identity, EconomyRepository repository, ConnectionRegistry connections, RealtimeEventStore eventStore, CancellationToken ct)
     {
         var player = await context.AuthenticatePlayerAsync(identity, ct); if (player is null) return context.UnauthorizedProblem();
         var requestId = IdempotencyKeys.Read(context);
         if (requestId is null) return IdempotencyKeys.InvalidProblem(context);
-        try { return Results.Created("/api/v1/market/listings", await repository.ListAsync(player.UserId, requestId, request, ct)); }
+        try
+        {
+            var listing = await repository.ListAsync(player.UserId, requestId, request, ct);
+            var snapshot = await repository.GetListingForEventAsync(listing.ListingId, ct);
+            if (snapshot is not null)
+                NotifyClientsAfterResponse(context, connections, eventStore, "market.listed", listing.ListingId.ToString("D"), snapshot);
+            return Results.Created("/api/v1/market/listings", listing);
+        }
         catch (IdempotencyConflictException) { return Problem(context, 409, "Idempotency conflict", "The Idempotency-Key was already used with a different request."); }
         catch (InvalidOperationException ex) { return Problem(context, 409, "Listing rejected", ex.Message); }
     }
 
-    private static async Task<IResult> PurchaseMarketAsync(Guid listingId, HttpContext context, IdentityService identity, EconomyRepository repository, CancellationToken ct)
+    private static async Task<IResult> PurchaseMarketAsync(Guid listingId, HttpContext context, IdentityService identity, EconomyRepository repository, ConnectionRegistry connections, RealtimeEventStore eventStore, CancellationToken ct)
     {
         var player = await context.AuthenticatePlayerAsync(identity, ct); if (player is null) return context.UnauthorizedProblem();
         var requestId = IdempotencyKeys.Read(context);
         if (requestId is null) return IdempotencyKeys.InvalidProblem(context);
         if (!long.TryParse(context.Request.Query["expectedVersion"], out var version)) return Problem(context, 400, "Invalid version", "expectedVersion is required.");
-        try { return Results.Ok(await repository.PurchaseMarketAsync(player.UserId, requestId, listingId, version, ct)); }
+        try
+        {
+            var purchase = await repository.PurchaseMarketAsync(player.UserId, requestId, listingId, version, ct);
+            var snapshot = await repository.GetListingForEventAsync(listingId, ct);
+            if (snapshot is not null)
+            {
+                var sellerWallet = await repository.GetWalletAsync(snapshot.SellerId, ct);
+                NotifyClientsAfterResponse(context, connections, eventStore, "market.sold", listingId.ToString("D"), snapshot, sellerWallet.Gold);
+            }
+            return Results.Ok(purchase);
+        }
         catch (IdempotencyConflictException) { return Problem(context, 409, "Idempotency conflict", "The Idempotency-Key was already used with a different request."); }
         catch (InvalidOperationException ex) { return Problem(context, 409, "Purchase rejected", ex.Message); }
     }
 
-    private static async Task<IResult> CancelListingAsync(Guid listingId, HttpContext context, IdentityService identity, EconomyRepository repository, CancellationToken ct)
+    private static async Task<IResult> CancelListingAsync(Guid listingId, HttpContext context, IdentityService identity, EconomyRepository repository, ConnectionRegistry connections, RealtimeEventStore eventStore, CancellationToken ct)
     {
         var player = await context.AuthenticatePlayerAsync(identity, ct); if (player is null) return context.UnauthorizedProblem();
         var requestId = IdempotencyKeys.Read(context);
         if (requestId is null) return IdempotencyKeys.InvalidProblem(context);
-        try { await repository.CancelListingAsync(player.UserId, listingId, requestId, ct); return Results.NoContent(); }
+        try
+        {
+            await repository.CancelListingAsync(player.UserId, listingId, requestId, ct);
+            var snapshot = await repository.GetListingForEventAsync(listingId, ct);
+            if (snapshot is not null)
+                NotifyClientsAfterResponse(context, connections, eventStore, "market.cancelled", listingId.ToString("D"), snapshot);
+            return Results.NoContent();
+        }
         catch (IdempotencyConflictException) { return Problem(context, 409, "Idempotency conflict", "The Idempotency-Key was already used for another listing."); }
         catch (InvalidOperationException ex) { return Problem(context, 409, "Cancel rejected", ex.Message); }
+    }
+
+    private static void NotifyClientsAfterResponse(
+        HttpContext context,
+        ConnectionRegistry connections,
+        RealtimeEventStore eventStore,
+        string action,
+        string itemId,
+        MarketListingResponse? listing = null,
+        long? sellerGoldAfter = null)
+    {
+        var traceId = context.TraceIdentifier;
+        context.Response.OnCompleted(async () =>
+        {
+            foreach (var batch in connections.ConnectedPlayerIds.Chunk(16))
+            {
+                await Task.WhenAll(batch.Select(async playerId =>
+                {
+                    var message = eventStore.Create(playerId, "inventory.changed", traceId,
+                        new InventoryChangedEventPayload(action, itemId, listing, sellerGoldAfter));
+                    await connections.SendPresentationAsync(playerId, message);
+                }));
+            }
+        });
     }
 
     private static IResult Problem(HttpContext context, int status, string title, string detail) => Results.Problem(statusCode: status, title: title, detail: detail, extensions: new Dictionary<string, object?> { ["traceId"] = context.TraceIdentifier });
