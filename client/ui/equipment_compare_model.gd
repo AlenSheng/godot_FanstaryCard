@@ -1,6 +1,6 @@
 extends RefCounted
 
-const CATALOG = preload("res://data/catalog.json")
+const CatalogIndex = preload("res://data/catalog_index.gd")
 const EquipmentDetails = preload("res://ui/equipment_details.gd")
 
 const AFFIXES := ["Bulwark", "Piercing", "Vitality"]
@@ -22,10 +22,7 @@ static func gear(item: Dictionary) -> Dictionary:
 	return EquipmentDetails.equipment(item)
 
 static func quality_row(item: Dictionary) -> Dictionary:
-	var quality := str(gear(item).get("quality", "")).capitalize()
-	for row in CATALOG.data.tables.EquipmentQuality:
-		if str(row.id) == quality: return row
-	return {}
+	return CatalogIndex.quality(str(gear(item).get("quality", "")).capitalize())
 
 static func attribute_rows(item: Dictionary) -> Array[Dictionary]:
 	var equipment := gear(item)

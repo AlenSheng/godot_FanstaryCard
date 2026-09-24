@@ -13,6 +13,8 @@ signal cache_changed(module: String)
 const Gateway = preload("res://network/gateway.gd")
 const PlatformService = preload("res://platform/platform_service.gd")
 const CardDetails = preload("res://ui/card_details.gd")
+const CatalogIndex = preload("res://data/catalog_index.gd")
+const ElementRules = preload("res://state/element_rules.gd")
 const CATALOG = preload("res://data/catalog.json")
 const LATEST_WINS_ACTIONS := ["battle.select_target", "combat.preview"]
 const LATEST_WINS_DEBOUNCE_MS := 80
@@ -695,18 +697,23 @@ func _status_bonuses(status: Dictionary) -> Dictionary:
 	return result
 
 func _counter(attacker: String, target: String) -> bool:
-	return [["Water", "Fire"], ["Fire", "Metal"], ["Metal", "Wood"], ["Wood", "Earth"], ["Earth", "Water"]].any(func(pair): return pair[0] == attacker and pair[1] == target)
+	return ElementRules.counters(attacker, target)
 
 func _conflict_pair(left: String, right: String) -> bool:
-	return left != right and [["Wood", "Earth"], ["Earth", "Water"], ["Water", "Fire"], ["Fire", "Metal"], ["Metal", "Wood"]].any(func(pair):
-		return (pair[0] == left and pair[1] == right) or (pair[0] == right and pair[1] == left))
+	return ElementRules.conflicts(left, right)
 
 func _generated(element: String) -> String:
-	return {"Wood": "Fire", "Fire": "Earth", "Earth": "Metal", "Metal": "Water", "Water": "Wood"}.get(element, "None")
+	return ElementRules.generated(element)
 
-func _target_resistance(element: String, battle: Dictionary) -> float:
+func _monster_by_id(battle: Dictionary) -> Dictionary:
+	var target_id = battle.get("current_target_id", "")
+	for monster in battle.get("monsters", []):
+		if monster.get("monster_id", "") == target_id: return monster
+	return {}
+
+func _target_resistance(element: String, battle: Dictionary, monster: Dictionary = {}) -> float:
 	if battle.has("opponent_status"): return _status_bonuses(battle.opponent_status).get("resistance_" + element, 0.0)
-	var monster: Dictionary = battle.get("monsters", []).filter(func(value): return value.get("monster_id", "") == battle.get("current_target_id", "")).front()
+	if monster.is_empty(): monster = _monster_by_id(battle)
 	var main := str(monster.get("intent_element", "None"))
 	if main == "None": return 0.0
 	var id := str(monster.get("monster_id", ""))
@@ -728,16 +735,18 @@ func _target_resistance(element: String, battle: Dictionary) -> float:
 func _calculate_combat_preview(ids: Array) -> Dictionary:
 	if ids.is_empty() or not allowed("battle.play_cards"): return {}
 	var battle: Dictionary = room.get("duel", room.get("pve", {}))
-	var hand: Array = room.get("player", {}).get("hand", [])
+	var hand_by_id := {}
+	for card in room.get("player", {}).get("hand", []):
+		var instance_id = card.get("instance_id", "")
+		if not hand_by_id.has(instance_id): hand_by_id[instance_id] = card
 	var cards: Array = []
 	for id in ids:
-		var instance: Dictionary = hand.filter(func(value): return value.get("instance_id", "") == id).front()
+		var instance: Dictionary = hand_by_id.get(id, {})
 		if instance.is_empty(): return {}
-		var definition: Dictionary = {}
-		for row in CATALOG.data.tables.Cards:
-			if row.id == instance.get("card_id", ""): definition = row; break
+		var definition: Dictionary = CatalogIndex.card(str(instance.get("card_id", "")))
 		if definition.is_empty(): return {}
 		cards.append(CardDetails.with_element(CardDetails.at_level(definition, int(instance.get("level", 0))), str(instance.get("element_override", ""))))
+	var target_monster := _monster_by_id(battle)
 	var status := _status_bonuses(room.get("player", {}).get("battle_status", {}))
 	var elemental: Array = cards.filter(func(card): return int(card.get("elemental_damage", 0)) > 0 and str(card.get("element", "None")) != "None" and int(card.get("secondary_elemental_damage", 0)) == 0)
 	var counts := {}
@@ -771,7 +780,7 @@ func _calculate_combat_preview(ids: Array) -> Dictionary:
 		resonance = 1.0 + 0.20 * main_core_stacks
 		var cancel_bonus := float(cards.map(func(card): return float(card.get("conflict_cancel_bonus", 0))).max())
 		cancellation = minf(0.80, 0.20 * conflict_pairs + cancel_bonus) if conflict_pairs > 0 else 0.0
-		var shared_multiplier: float = (1.0 + float(status.get("damage_" + core, 0.0))) * (1.0 - _target_resistance(core, battle))
+		var shared_multiplier: float = (1.0 + float(status.get("damage_" + core, 0.0))) * (1.0 - _target_resistance(core, battle, target_monster))
 		for i in cards.size():
 			var card: Dictionary = cards[i]
 			if int(card.get("elemental_damage", 0)) <= 0 or str(card.get("element", "None")) == "None" or int(card.get("secondary_elemental_damage", 0)) > 0: continue
@@ -787,7 +796,7 @@ func _calculate_combat_preview(ids: Array) -> Dictionary:
 			var secondary := int(card.get("secondary_elemental_damage", 0))
 			if reveal and card.get("secondary_element", "None") == reveal_element: secondary = int(floor(secondary * 1.3))
 			for pair in [[str(card.get("element", "None")), int(bases[i])], [str(card.get("secondary_element", "None")), secondary]]:
-				var elemental_multiplier := (1.0 + float(status.get("damage_" + pair[0], 0.0))) * (1.0 - _target_resistance(pair[0], battle)) if core.is_empty() else (1.0 + float(status.get("damage_" + core, 0.0))) * (1.0 - _target_resistance(core, battle))
+				var elemental_multiplier := (1.0 + float(status.get("damage_" + pair[0], 0.0))) * (1.0 - _target_resistance(pair[0], battle, target_monster)) if core.is_empty() else (1.0 + float(status.get("damage_" + core, 0.0))) * (1.0 - _target_resistance(core, battle, target_monster))
 				var value := int(floor(pair[1] * elemental_multiplier))
 				if value > 0: segments[pair[0]] = int(segments.get(pair[0], 0)) + value; total += value
 		# Printed direct damage is already a direct segment.  Piercing is an
@@ -795,8 +804,9 @@ func _calculate_combat_preview(ids: Array) -> Dictionary:
 		direct += int(card.get("direct_damage", 0))
 		direct += int(floor((bases[i] + int(card.get("secondary_elemental_damage", 0)) + int(card.get("direct_damage", 0))) * float(status.get("piercing", 0.0))))
 	if direct > 0: segments["Direct"] = direct; total += direct
-	var target_shield := int((battle.get("opponent", {}) if battle.has("opponent") else battle.get("monsters", []).filter(func(value): return value.get("monster_id", "") == battle.get("current_target_id", "")).front()).get("shield", 0))
-	var actual := mini(total, target_shield + int((battle.get("opponent", {}) if battle.has("opponent") else battle.get("monsters", []).filter(func(value): return value.get("monster_id", "") == battle.get("current_target_id", "")).front()).get("hp", 0)))
+	var target: Dictionary = battle.get("opponent", {}) if battle.has("opponent") else target_monster
+	var target_shield := int(target.get("shield", 0))
+	var actual := mini(total, target_shield + int(target.get("hp", 0)))
 	var visible_segments: Array = []
 	var remaining := actual
 	for kind in segments:

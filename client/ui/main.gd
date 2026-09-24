@@ -15,7 +15,8 @@ const BattleDetails = preload("res://ui/battle_details.gd")
 const AudioSettings = preload("res://ui/audio_settings.gd")
 const TipsOverlay = preload("res://ui/tips_overlay.gd")
 const LayeredBackdrop = preload("res://ui/layered_backdrop.gd")
-const CATALOG = preload("res://data/catalog.json")
+const CatalogIndex = preload("res://data/catalog_index.gd")
+const CellIndex = preload("res://ui/cell_index.gd")
 const DESCRIPTIONS = preload("res://data/card_descriptions.json")
 const UI_CONFIG = preload("res://data/ui_config.json")
 const RANDOM_NAMES_PATH := "res://data/random_names.json"
@@ -29,7 +30,13 @@ var status_label: Label
 var toast_label: Label
 var tips_overlay: CanvasLayer
 var cards: Dictionary = {}
-var owned: Array = []
+var owned: Array = []:
+	set(value):
+		owned = value
+		_owned_by_id.clear()
+		_owned_index_ready = false
+var _owned_by_id: Dictionary = {}
+var _owned_index_ready := false
 var inventory: Dictionary = {}
 var shop: Dictionary = {}
 var listings: Array = []
@@ -78,7 +85,7 @@ var _draw_charge_hold_full := false
 
 func _ready() -> void:
 	theme = P.theme()
-	for card in CATALOG.data.tables.Cards: cards[card.id] = card
+	cards = CatalogIndex.cards()
 	if not Game.gateway.local_account_name.is_empty(): _login_name = Game.gateway.local_account_name
 	if _login_name.is_empty(): _login_name = _random_login_name()
 	_session_generation = Game.gateway.session_generation
@@ -681,9 +688,15 @@ func _card_button(parent: Node, id: String, callback: Callable, selected: bool =
 	return button
 
 func _owned_card(id: String) -> Dictionary:
-	for entry in owned:
-		if entry.get("cardId") == id: return entry
-	return {}
+	if not _owned_index_ready:
+		_owned_index_ready = true
+		for entry in owned:
+			if entry is Dictionary:
+				var card_id := str(entry.get("cardId", ""))
+				if not card_id.is_empty() and not _owned_by_id.has(card_id):
+					_owned_by_id[card_id] = entry
+	var found: Variant = _owned_by_id.get(id, {})
+	return found if found is Dictionary else {}
 
 func _card_material(kind: String) -> int:
 	var field := kind.left(1).to_lower() + kind.substr(1)
@@ -714,8 +727,10 @@ func _replace_owned_card(card: Dictionary) -> void:
 	for index in range(owned.size()):
 		if str(owned[index].get("cardId", "")) == id:
 			owned[index] = card
+			if _owned_index_ready: _owned_by_id[id] = card
 			return
 	owned.append(card)
+	if _owned_index_ready: _owned_by_id[id] = card
 
 func _set_codex_action_busy(value: bool) -> void:
 	if not is_instance_valid(_reference): return
@@ -1339,18 +1354,18 @@ func _map(state: Dictionary) -> void:
 	var grid := GridContainer.new()
 	grid.columns = 6
 	row.add_child(grid)
+	var cells := CellIndex.by_position(state.get("map", []))
+	var moves := CellIndex.by_position(state.get("legal_moves", []))
 	for y in range(6):
 		for x in range(6):
+			var pos := Vector2i(y, x)
+			var cell: Dictionary = cells.get(pos, {})
 			var text := ""
-			for cell in state.get("map", []):
-				if int(cell.row) == y and int(cell.column) == x:
-					if cell.get("is_boss", false): text = "首领"
-					elif cell.get("has_spring", false): text = "源泉"
+			if cell.get("is_boss", false): text = "首领"
+			elif cell.get("has_spring", false): text = "源泉"
 			var current: bool = state.get("self", {}).get("row", -1) == y and state.get("self", {}).get("column", -1) == x
 			if current: text += "\n自己"
-			var legal := false
-			for move in state.get("legal_moves", []):
-				if int(move.row) == y and int(move.column) == x: legal = true
+			var legal: bool = moves.has(pos)
 			var button := _button(grid, text, _move.bind(y, x), not legal or not Game.allowed("room.move"))
 			button.custom_minimum_size = Vector2(148, 88)
 			var layer: int = mini(mini(x, y), mini(5 - x, 5 - y))

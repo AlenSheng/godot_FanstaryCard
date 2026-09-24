@@ -2,6 +2,8 @@ extends RefCounted
 
 const MANIFEST = preload("res://assets/imported/manifest.json")
 const CATALOG = preload("res://data/catalog.json")
+const CatalogIndex = preload("res://data/catalog_index.gd")
+const QUALITY_LADDER := ["", "White", "Green", "Blue", "Purple", "Orange", "Red"]
 ## Shared item-cell art used by inventory, preparation and reward/mail grids.
 ## The source is a 144x144 square and should be rendered 1:1 as 96x96.
 const COMMON_CELL_KEY := "UI/Prep/exploration_prep_backpack_cell_empty_normal.png"
@@ -13,6 +15,7 @@ const UNEQUIPPED_SLOT_COLOR := Color8(25, 28, 29, 255)
 const UNEQUIPPED_FRAME_MODULATE := Color8(105, 108, 108, 220)
 const UNEQUIPPED_ITEM_MODULATE := Color8(115, 115, 115, 200)
 static var _textures: Dictionary = {}
+static var _styles: Dictionary = {}
 
 static func texture(key: String) -> Texture2D:
 	if key.is_empty(): return null
@@ -72,7 +75,10 @@ static func element(value: String) -> Texture2D:
 	if value not in ["Fire", "Wood", "Water", "Metal"]: return null
 	return texture("UI/Battle/battle_element_icon_%s.png" % value.to_lower())
 
-static func style(key: String, tint: Color = Color.WHITE) -> StyleBoxTexture:
+static func _style_prototype(key: String, tint: Color) -> StyleBoxTexture:
+	var cache_key := "%s|%s" % [key, tint]
+	var cached: StyleBoxTexture = _styles.get(cache_key)
+	if cached != null: return cached
 	var box := StyleBoxTexture.new()
 	box.texture = texture(key)
 	box.modulate_color = tint
@@ -82,7 +88,12 @@ static func style(key: String, tint: Color = Color.WHITE) -> StyleBoxTexture:
 		box.set_texture_margin(pair[0], float(borders[pair[1]]))
 	for side in [SIDE_LEFT, SIDE_RIGHT]: box.set_content_margin(side, 24)
 	for side in [SIDE_TOP, SIDE_BOTTOM]: box.set_content_margin(side, 12)
+	_styles[cache_key] = box
 	return box
+
+## Independent copy. Search fields and scrollbars adjust margins after this returns.
+static func style(key: String, tint: Color = Color.WHITE) -> StyleBoxTexture:
+	return _style_prototype(key, tint).duplicate() as StyleBoxTexture
 
 static func image(parent: Node, source: Texture2D, minimum: Vector2) -> TextureRect:
 	var node := TextureRect.new()
@@ -95,10 +106,11 @@ static func image(parent: Node, source: Texture2D, minimum: Vector2) -> TextureR
 	return node
 
 static func button(node: Button, key: String) -> void:
-	node.add_theme_stylebox_override("normal", style(key))
-	node.add_theme_stylebox_override("hover", style(key, Color(1.2, 1.15, 1.05)))
-	node.add_theme_stylebox_override("pressed", style(key, Color(0.8, 0.85, 0.9)))
-	node.add_theme_stylebox_override("disabled", style(key, Color(0.55, 0.55, 0.55)))
+	# Buttons do not edit these boxes, so every button of the same art shares one.
+	node.add_theme_stylebox_override("normal", _style_prototype(key, Color.WHITE))
+	node.add_theme_stylebox_override("hover", _style_prototype(key, Color(1.2, 1.15, 1.05)))
+	node.add_theme_stylebox_override("pressed", _style_prototype(key, Color(0.8, 0.85, 0.9)))
+	node.add_theme_stylebox_override("disabled", _style_prototype(key, Color(0.55, 0.55, 0.55)))
 
 static func cell_style(tint: Color = Color.WHITE) -> StyleBoxTexture:
 	return style(COMMON_CELL_KEY, tint)
@@ -106,19 +118,18 @@ static func cell_style(tint: Color = Color.WHITE) -> StyleBoxTexture:
 static func quality_name(rank: Variant) -> String:
 	if rank is String:
 		var raw := str(rank).capitalize()
-		if raw in ["White", "Green", "Blue", "Purple", "Orange", "Red"]: return raw
-	var numeric := int(rank)
-	return ["", "White", "Green", "Blue", "Purple", "Orange", "Red"][clampi(numeric, 0, 6)]
+		if raw in QUALITY_LADDER and not raw.is_empty(): return raw
+	return QUALITY_LADDER[clampi(int(rank), 0, 6)]
 
 static func item_quality_rank(item: Dictionary) -> int:
 	var gear: Dictionary = item.get("equipment", {}) if item.get("equipment") is Dictionary else {}
 	if not gear.is_empty() and gear.has("quality"):
 		var gear_quality := quality_name(gear.get("quality"))
-		return ["", "White", "Green", "Blue", "Purple", "Orange", "Red"].find(gear_quality)
+		return QUALITY_LADDER.find(gear_quality)
 	var raw_quality: Variant = item.get("quality", item.get("Quality", 0))
 	if raw_quality is String and not str(raw_quality).is_empty():
 		var named := quality_name(raw_quality)
-		var named_rank := ["", "White", "Green", "Blue", "Purple", "Orange", "Red"].find(named)
+		var named_rank := QUALITY_LADDER.find(named)
 		if named_rank > 0: return named_rank
 	if int(raw_quality) > 0: return clampi(int(raw_quality), 1, 6)
 	var id := str(item.get("item_id", item.get("itemId", "")))
@@ -134,10 +145,10 @@ static func item_quality_name(item: Dictionary) -> String:
 
 static func quality_color(rank: Variant) -> Color:
 	var quality := quality_name(rank)
-	for row in CATALOG.data.get("tables", {}).get("EquipmentQuality", []):
-		if str(row.get("id", "")) == quality:
-			var configured := str(row.get("display_color", ""))
-			if not configured.is_empty(): return Color(configured)
+	var row := CatalogIndex.quality(quality)
+	if not row.is_empty():
+		var configured := str(row.get("display_color", ""))
+		if not configured.is_empty(): return Color(configured)
 	return [Color.WHITE, Color("d0c9b6"), Color("789a70"), Color("558cb8"), Color("9979b1"), Color("d99b48"), Color("ce5651")][clampi(int(rank), 1, 6)]
 
 static func item_cell_style(item: Dictionary) -> StyleBoxTexture:
