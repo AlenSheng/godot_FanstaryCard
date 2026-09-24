@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using FantasyCard.Server.Common;
 using FantasyCard.Server.Admin;
+using FantasyCard.Server.Bootstrap;
 
 namespace FantasyCard.Server.Identity;
 
@@ -100,6 +101,7 @@ public static class IdentityEndpoints
         IHostEnvironment environment,
         IConfiguration configuration,
         ClientSettingsRepository settingsRepository,
+        BootstrapRepository bootstrapRepository,
         HttpContext context,
         CancellationToken cancellationToken)
     {
@@ -109,6 +111,8 @@ public static class IdentityEndpoints
         {
             return Results.NotFound();
         }
+        if (!ConfigVersionMatches(request.ConfigVersion))
+            return ConfigVersionMismatch(context);
 
         try
         {
@@ -116,10 +120,8 @@ public static class IdentityEndpoints
                 request.DeviceId,
                 request.DisplayName,
                 cancellationToken);
-            return Results.Ok(new LocalSignInResponse(
-                result.AccessToken,
-                result.ExpiresAt,
-                result.Player.ToResponse()));
+            return Results.Ok(await FullSignInResponseAsync(result, request.IncludeBootstrap, bootstrapRepository,
+                settingsRepository, environment, configuration, cancellationToken));
         }
         catch (DomainValidationException exception)
         {
@@ -145,10 +147,16 @@ public static class IdentityEndpoints
         IdentityService identityService,
         IOptions<SteamAuthOptions> options,
         ServerMetrics metrics,
+        BootstrapRepository bootstrapRepository,
+        ClientSettingsRepository settingsRepository,
+        IHostEnvironment environment,
+        IConfiguration configuration,
         HttpContext context,
         CancellationToken cancellationToken)
     {
         if (!options.Value.Enabled) return Results.NotFound();
+        if (!ConfigVersionMatches(request.ConfigVersion))
+            return ConfigVersionMismatch(context);
         try
         {
             var steamId = await verifier.VerifyAsync(request.Ticket, cancellationToken);
@@ -159,8 +167,8 @@ public static class IdentityEndpoints
             }
             var result = await identityService.SignInExternalAsync(
                 "steam", steamId, request.DisplayName, cancellationToken);
-            return Results.Ok(new LocalSignInResponse(
-                result.AccessToken, result.ExpiresAt, result.Player.ToResponse()));
+            return Results.Ok(await FullSignInResponseAsync(result, request.IncludeBootstrap, bootstrapRepository,
+                settingsRepository, environment, configuration, cancellationToken));
         }
         catch (DomainValidationException exception)
         {
@@ -194,10 +202,16 @@ public static class IdentityEndpoints
         IdentityService identityService,
         IOptions<GoogleAuthOptions> options,
         ServerMetrics metrics,
+        BootstrapRepository bootstrapRepository,
+        ClientSettingsRepository settingsRepository,
+        IHostEnvironment environment,
+        IConfiguration configuration,
         HttpContext context,
         CancellationToken cancellationToken)
     {
         if (!options.Value.Enabled) return Results.NotFound();
+        if (!ConfigVersionMatches(request.ConfigVersion))
+            return ConfigVersionMismatch(context);
         try
         {
             var identity = await verifier.VerifyAsync(request.IdToken, cancellationToken);
@@ -208,8 +222,8 @@ public static class IdentityEndpoints
             }
             var result = await identityService.SignInExternalAsync(
                 "google", identity.Subject, request.DisplayName, cancellationToken);
-            return Results.Ok(new LocalSignInResponse(
-                result.AccessToken, result.ExpiresAt, result.Player.ToResponse()));
+            return Results.Ok(await FullSignInResponseAsync(result, request.IncludeBootstrap, bootstrapRepository,
+                settingsRepository, environment, configuration, cancellationToken));
         }
         catch (DomainValidationException exception)
         {
@@ -235,6 +249,36 @@ public static class IdentityEndpoints
                 title: "Google authentication unavailable",
                 extensions: new Dictionary<string, object?> { ["traceId"] = context.TraceIdentifier });
         }
+    }
+
+    private static bool ConfigVersionMatches(string? version) =>
+        string.IsNullOrEmpty(version) || string.Equals(version, BootstrapRepository.CurrentConfigVersion, StringComparison.Ordinal);
+
+    private static IResult ConfigVersionMismatch(HttpContext context) => Results.Problem(
+        statusCode: StatusCodes.Status409Conflict,
+        title: "Client configuration is outdated",
+        detail: "Update the client before signing in.",
+        extensions: new Dictionary<string, object?> { ["traceId"] = context.TraceIdentifier });
+
+    private static async Task<LocalSignInResponse> FullSignInResponseAsync(
+        SignInResult result,
+        bool includeBootstrap,
+        BootstrapRepository bootstrapRepository,
+        ClientSettingsRepository settingsRepository,
+        IHostEnvironment environment,
+        IConfiguration configuration,
+        CancellationToken cancellationToken)
+    {
+        var response = new LocalSignInResponse(result.AccessToken, result.ExpiresAt, result.Player.ToResponse());
+        if (!includeBootstrap) return response;
+        var bootstrapTask = bootstrapRepository.GetAsync(result.Player, cancellationToken);
+        var settingsTask = settingsRepository.GetAsync(cancellationToken);
+        await Task.WhenAll(bootstrapTask, settingsTask);
+        return response with
+        {
+            Bootstrap = await bootstrapTask,
+            ClientInfo = ClientSettingsEndpoints.PublicInfo(await settingsTask, environment, configuration)
+        };
     }
 
     private static IResult NameConflict(HttpContext context, PlayerNameConflictException exception) => Results.Problem(

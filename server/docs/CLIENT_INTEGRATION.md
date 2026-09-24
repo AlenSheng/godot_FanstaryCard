@@ -130,7 +130,9 @@ REST 错误使用 `application/problem+json`：
 ```json
 {
   "deviceId": "local-development-device-001",
-  "displayName": "山海客"
+  "displayName": "山海客",
+  "configVersion": "gdd-0.68-element-tuning-1",
+  "includeBootstrap": true
 }
 ```
 
@@ -161,6 +163,8 @@ REST 错误使用 `application/problem+json`：
 }
 ```
 
+客户端可在登录请求中带 `configVersion`。不匹配时服务端返回 409，避免创建不兼容的登录会话。设置 `includeBootstrap: true` 后，成功响应还包含 `bootstrap`（与 `GET /api/v1/bootstrap` 相同的完整账号快照）和 `clientInfo`（配置版本、能力与公告）。新客户端直接使用这两个字段进入大厅；旧客户端仍可继续单独请求 Bootstrap。
+
 首次登录会幂等初始化：0 余额钱包、0 材料、30 张通用白卡、每职业 7 张职业白卡、三套默认 20 张编组、三把 +0 专属武器、三职业五部位配装全空。**不发放绑定白鞋或任何起始防具。** 起始金币、药剂、付费包未获策划确认，保持为 0。
 
 ### `POST /api/v1/auth/steam`
@@ -176,13 +180,17 @@ Steam 登录默认关闭。服务端配置 `Identity:Steam:Enabled=true`、AppId
 
 客户端不得提交或决定 SteamID；服务端向 Steamworks 验票后使用返回的 64 位 SteamID 建立外部身份映射。成功响应与本地登录相同；无效票据返回 401，玩家名等输入非法返回 400，Steam 验票服务不可用返回 503，功能关闭返回 404。启用却缺 AppId/PublisherKey/Identity 时配置校验拒绝服务启动。PublisherKey 只存在于服务端 Secret Store。
 
+### `POST /api/v1/auth/google`
+
+Android 客户端可提交 Google Sign-In 返回的 `idToken` 和展示名。服务端验证签名、受众、发行者和邮箱验证状态后，使用稳定的 Google subject 关联内部账号；客户端不能自行提交 Google 用户 ID。请求也支持 `configVersion` 和 `includeBootstrap`，行为与本地、Steam 登录一致。
+
 Godot 的 `client/platform/platform_service.gd` 已封装 GodotSteam 单例初始化、Web API 票据回调、15 秒超时、十六进制转换及取消票据。发行环境需要安装兼容的原生组件，并配置 `platform/steam/app_id` 与 `platform/steam/web_api_identity`，后者必须和服务器票据 Identity 对应。当前项目默认 AppID 为 0、identity 为空，未完成真实 Steamworks 凭据及发行环境登录验收；本地登录和模拟验票测试不代表 Steam 生产登录通过。发行构建不开放开发本地登录入口。
 
 ## 6. Bootstrap
 
 ### `GET /api/v1/bootstrap`
 
-这是登录后大厅首屏的唯一推荐入口。不要并行拼接多个请求代替它。
+登录响应已内嵌相同的完整快照，可直接用于大厅首屏；`GET /api/v1/bootstrap` 用于断线恢复、主动刷新和兼容旧客户端。不要并行拼接多个模块请求代替它。
 
 精简响应示例：
 

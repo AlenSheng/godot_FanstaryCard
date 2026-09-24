@@ -46,7 +46,7 @@ public sealed partial class RealNetworkEndToEndTests
 
         using var signInResponse = await client.PostAsJsonAsync(
             "/api/v1/auth/local",
-            new LocalSignInRequest($"network-e2e-{Guid.NewGuid():N}", "Network E2E"),
+            new LocalSignInRequest($"network-e2e-{Guid.NewGuid():N}", "Network E2E", IncludeBootstrap: true),
             WebJson,
             timeout.Token);
         signInResponse.EnsureSuccessStatusCode();
@@ -54,6 +54,13 @@ public sealed partial class RealNetworkEndToEndTests
             await signInResponse.Content.ReadFromJsonAsync<LocalSignInResponse>(WebJson, timeout.Token));
         Assert.NotEqual(Guid.Empty, signIn.Player.UserId);
         Assert.False(string.IsNullOrWhiteSpace(signIn.AccessToken));
+        var loginSnapshot = Assert.IsType<BootstrapResponse>(signIn.Bootstrap);
+        Assert.Equal(signIn.Player.UserId, loginSnapshot.Player.UserId);
+        Assert.NotNull(loginSnapshot.Inventory);
+        Assert.NotNull(loginSnapshot.Shop);
+        Assert.NotNull(loginSnapshot.Market);
+        Assert.NotNull(loginSnapshot.Mail);
+        Assert.NotNull(signIn.ClientInfo);
 
         using var bootstrapRequest = new HttpRequestMessage(HttpMethod.Get, "/api/v1/bootstrap");
         bootstrapRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", signIn.AccessToken);
@@ -62,6 +69,7 @@ public sealed partial class RealNetworkEndToEndTests
         var bootstrap = Assert.IsType<BootstrapResponse>(
             await bootstrapResponse.Content.ReadFromJsonAsync<BootstrapResponse>(WebJson, timeout.Token));
         Assert.Equal(signIn.Player.UserId, bootstrap.Player.UserId);
+        Assert.Equal(loginSnapshot.ConfigVersion, bootstrap.ConfigVersion);
         Assert.False(string.IsNullOrWhiteSpace(bootstrap.ConfigVersion));
         Assert.Equal(3, bootstrap.ClassWeapons.Count);
         Assert.Equal(3, bootstrap.Decks.Count);

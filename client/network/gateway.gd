@@ -201,7 +201,7 @@ func request(path: String, method: int = HTTPClient.METHOD_GET, data: Variant = 
 	for attempt in range(3):
 		if generation != session_generation: break
 		var http := HTTPRequest.new()
-		http.timeout = 10.0
+		http.timeout = 30.0 if path.begins_with("/api/v1/auth/") else 10.0
 		add_child(http)
 		var start := http.request(base_url + path, headers, method, "" if data == null else JSON.stringify(data))
 		if start != OK:

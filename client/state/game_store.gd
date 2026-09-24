@@ -25,6 +25,7 @@ var configuration_error := ""
 var server_info: Dictionary = {}
 var _server_info_address := ""
 var _client_info_socket := WebSocketPeer.new()
+var _client_info_socket_address := ""
 var _client_info_retry_at := 0
 var relic_details: Dictionary = {}
 var combat_preview: Dictionary = {}
@@ -102,9 +103,13 @@ func _ready() -> void:
 	gateway.authentication_required.connect(_on_authentication_required)
 	platform = PlatformService.new()
 	add_child(platform)
-	call_deferred("_refresh_server_info")
 
 func _process_client_info() -> void:
+	if _client_info_socket_address != gateway.base_url:
+		_client_info_socket.close()
+		_client_info_socket = WebSocketPeer.new()
+		_client_info_socket_address = gateway.base_url
+		_client_info_retry_at = 0
 	_client_info_socket.poll()
 	if _client_info_socket.get_ready_state() == WebSocketPeer.STATE_OPEN:
 		while _client_info_socket.get_available_packet_count() > 0:
@@ -118,6 +123,7 @@ func _process_client_info() -> void:
 		_client_info_socket.connect_to_url(url + "/ws/v1/client-info")
 
 func _apply_server_info(info: Dictionary) -> void:
+	_server_info_address = gateway.base_url
 	if info == server_info: return
 	server_info = info
 	if lobby.is_empty():
@@ -271,38 +277,37 @@ func _login(address: String, display_name: String, provider: String) -> void:
 	var generation: int = gateway.session_generation
 	busy = true
 	changed.emit()
-	var has_current_server_info: bool = not server_info.is_empty() and _server_info_address == gateway.base_url
-	if (has_current_server_info and validate_config(str(server_info.get("configVersion", "")), "服务器")) or await _refresh_server_info():
-		var capability := {"local": "identity.local", "steam": "identity.steam", "google": "identity.google"}.get(provider, "")
-		if capability not in server_info.get("capabilities", []):
-			authentication_reason = {"steam": "此服务器未启用 Steam 登录", "google": "此服务器未启用 Google 登录"}.get(provider, "此服务器未启用本地开发登录")
-			notice.emit(authentication_reason)
-		else:
-			var health: Dictionary = await gateway.request("/health/ready")
-			if health.ok:
-				var sign_in := {"deviceId": gateway.device_id, "displayName": display_name}
-				var ticket_result: Dictionary = {"ok": true}
-				if provider == "steam":
-					ticket_result = await platform.request_login_ticket()
-					if ticket_result.ok: sign_in["ticket"] = ticket_result.ticket
-				elif provider == "google":
-					ticket_result = await platform.request_google_id_token()
-					if ticket_result.ok: sign_in["idToken"] = ticket_result.id_token
+	var sign_in: Dictionary = {
+		"deviceId": gateway.device_id,
+		"displayName": display_name,
+		"configVersion": str(CATALOG.data.version),
+		"includeBootstrap": true
+	}
+	var ticket_result: Dictionary = {"ok": true}
+	if provider == "steam":
+		ticket_result = await platform.request_login_ticket()
+		if ticket_result.ok: sign_in["ticket"] = ticket_result.ticket
+	elif provider == "google":
+		ticket_result = await platform.request_google_id_token()
+		if ticket_result.ok: sign_in["idToken"] = ticket_result.id_token
+	if generation != gateway.session_generation: return
+	if ticket_result.ok:
+		var auth_path := {"local": "/api/v1/auth/local", "steam": "/api/v1/auth/steam", "google": "/api/v1/auth/google"}.get(provider, "")
+		var result: Dictionary = await gateway.request(auth_path, HTTPClient.METHOD_POST, sign_in)
+		if provider == "steam": platform.release_ticket()
+		if generation != gateway.session_generation: return
+		if result.ok and result.data is Dictionary:
+			if gateway.accept_session(str(result.data.get("accessToken", "")), str(result.data.get("expiresAt", "")), str(result.data.get("player", {}).get("userId", ""))):
+				if provider == "local": gateway.remember_local_account(str(result.data.get("player", {}).get("displayName", "")))
+				if result.data.get("clientInfo") is Dictionary: _apply_server_info(result.data.clientInfo)
+				var snapshot: Variant = result.data.get("bootstrap", null)
+				await refresh_lobby(snapshot if snapshot is Dictionary else {})
 				if generation != gateway.session_generation: return
-				if ticket_result.ok:
-					var auth_path := {"local": "/api/v1/auth/local", "steam": "/api/v1/auth/steam", "google": "/api/v1/auth/google"}.get(provider, "")
-					var result: Dictionary = await gateway.request(auth_path, HTTPClient.METHOD_POST, sign_in)
-					if provider == "steam": platform.release_ticket()
-					if result.ok and result.data is Dictionary:
-						if gateway.accept_session(str(result.data.get("accessToken", "")), str(result.data.get("expiresAt", "")), str(result.data.get("player", {}).get("userId", ""))):
-							if provider == "local": gateway.remember_local_account(str(result.data.get("player", {}).get("displayName", "")))
-							await refresh_lobby()
-							if generation != gateway.session_generation: return
-							if not lobby.is_empty() and configuration_error.is_empty(): gateway.connect_realtime()
-						else: gateway.end_session("服务器未返回有效登录凭证，请重试")
-				else:
-					authentication_reason = ticket_result.error
-					notice.emit(authentication_reason)
+				if not lobby.is_empty() and configuration_error.is_empty(): gateway.connect_realtime()
+			else: gateway.end_session("服务器未返回有效登录凭证，请重试")
+	else:
+		authentication_reason = str(ticket_result.get("error", "无法完成登录验证"))
+		notice.emit(authentication_reason)
 	if generation != gateway.session_generation: return
 	busy = false
 	changed.emit()
@@ -326,13 +331,15 @@ func validate_config(version: String, source: String) -> bool:
 	gateway.end_session(configuration_error)
 	return false
 
-func refresh_lobby() -> void:
+func refresh_lobby(snapshot: Dictionary = {}) -> void:
 	var generation: int = gateway.session_generation
-	var result: Dictionary = await gateway.request("/api/v1/bootstrap")
-	if not result.ok: return
-	if not result.data is Dictionary or not validate_config(str(result.data.get("configVersion", "")), "大厅"): return
+	if snapshot.is_empty():
+		var result: Dictionary = await gateway.request("/api/v1/bootstrap")
+		if not result.ok or not result.data is Dictionary: return
+		snapshot = result.data
+	if not validate_config(str(snapshot.get("configVersion", "")), "大厅"): return
 	if generation != gateway.session_generation: return
-	lobby = result.data
+	lobby = snapshot
 	for module in ["shop", "market", "inventory", "cards", "decks", "wallet", "mail"]:
 		_cache_versions[module] = int(_cache_versions.get(module, 0)) + 1
 	if lobby.get("mail") is Dictionary:
