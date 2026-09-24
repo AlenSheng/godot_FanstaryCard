@@ -3,9 +3,14 @@ extends Button
 const Art = preload("res://ui/art.gd")
 const P = preload("res://ui/palette.gd")
 const CardDetails = preload("res://ui/card_details.gd")
+const ElementRules = preload("res://state/element_rules.gd")
 const CARD_SHADER = preload("res://ui/card_view.gdshader")
 const DESCRIPTIONS = preload("res://data/card_descriptions.json")
 const CLASS_NAMES := {"Priest": "牧师", "Mage": "法师", "Guardian": "守护者"}
+static var _materials: Dictionary = {}
+
+static func clear_material_cache() -> void:
+	_materials.clear()
 
 func configure(id: String, info: Dictionary, description: String, selected: bool, options: Dictionary = {}) -> void:
 	for child in get_children(): child.free()
@@ -92,11 +97,14 @@ func _face_description(id: String, fallback: String) -> String:
 	return configured if not configured.is_empty() else fallback
 
 func _card_material(grayscale: bool, reframe: bool = false) -> ShaderMaterial:
-	var result := ShaderMaterial.new()
-	result.shader = CARD_SHADER
-	result.set_shader_parameter("grayscale", grayscale)
-	result.set_shader_parameter("reframe", reframe)
-	return result
+	var key := ("gray" if grayscale else "color") + ("_frame" if reframe else "_body")
+	if not _materials.has(key):
+		var result := ShaderMaterial.new()
+		result.shader = CARD_SHADER
+		result.set_shader_parameter("grayscale", grayscale)
+		result.set_shader_parameter("reframe", reframe)
+		_materials[key] = result
+	return _materials[key]
 
 func _level_badge(level: int) -> void:
 	var badge := Art.image(self, Art.texture("UI/Codex/mana_cost_badge.png"), Vector2.ZERO)
@@ -109,10 +117,8 @@ func _level_badge(level: int) -> void:
 func _battle_element_hint(card_element: String, target_element: String) -> String:
 	if card_element not in ["Fire", "Wood", "Water", "Metal", "Earth"]: return ""
 	if target_element not in ["Fire", "Wood", "Water", "Metal", "Earth"]: return ""
-	if [["Water", "Fire"], ["Fire", "Metal"], ["Metal", "Wood"], ["Wood", "Earth"], ["Earth", "Water"]].any(func(pair): return pair[0] == card_element and pair[1] == target_element):
-		return "recommended"
-	if [["Water", "Fire"], ["Fire", "Metal"], ["Metal", "Wood"], ["Wood", "Earth"], ["Earth", "Water"]].any(func(pair): return pair[0] == target_element and pair[1] == card_element):
-		return "countered"
+	if ElementRules.counters(card_element, target_element): return "recommended"
+	if ElementRules.counters(target_element, card_element): return "countered"
 	return ""
 
 func _battle_element_badge(kind: String) -> void:

@@ -56,6 +56,15 @@ if not defined GODOT_EXECUTABLE (
     goto :end
 )
 echo [INFO] Starting Godot: %GODOT_EXECUTABLE%
+echo [INFO] Importing client assets...
+"%GODOT_EXECUTABLE%" --headless --editor --path "%~dp0client" --import --quit
+if errorlevel 1 (
+    echo [ERROR] Godot could not import the client assets.
+    echo [ERROR] Fix the import errors above, then run start-client.bat again.
+    set "EXIT_CODE=1"
+    goto :end
+)
+echo [INFO] Launching client...
 "%GODOT_EXECUTABLE%" --path "%~dp0client"
 set "EXIT_CODE=%ERRORLEVEL%"
 goto :end

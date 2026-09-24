@@ -161,7 +161,11 @@ public sealed record RelicReplacedEventPayload(Guid PileId, string ItemId, strin
 public sealed record InventoryMoveCommandPayload(string ItemId, int TargetSlotIndex);
 public sealed record InventoryEquipCommandPayload(string ItemId);
 public sealed record InventoryUnequipCommandPayload(string Slot);
-public sealed record InventoryChangedEventPayload(string Action, string ItemId);
+public sealed record InventoryChangedEventPayload(
+    string Action,
+    string ItemId,
+    FantasyCard.Contracts.Progression.MarketListingResponse? Listing = null,
+    long? SellerGoldAfter = null);
 public sealed record RewardChoiceRefreshCommandPayload;
 public sealed record RewardChoiceClaimCommandPayload(string OptionId, string? ReplaceItemId = null, bool Equip = false);
 public sealed record RewardChoiceClaimedEventPayload(string OptionId, int Applied);

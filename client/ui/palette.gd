@@ -9,6 +9,12 @@ static var _locale_config: Dictionary = {}
 static var _source_aliases: Dictionary = {}
 const LANGUAGE_SETTINGS_PATH := "user://fantasycard_language.cfg"
 
+static func clear_runtime_fonts() -> void:
+	_body_font = null
+	_title_font = null
+	_number_font = null
+	_fonts_ready = false
+
 const INK := Color("172d35")
 const PAPER := Color("efe3c7")
 const MUTED := Color("a5bbb7")
@@ -248,7 +254,9 @@ static func fit_control_font(control: Control, typeface: Font, requested: int, h
 		var height := control.size.y
 		control.add_theme_font_size_override("font_size", fit_font_size(typeface, requested, height, width, value))
 	control.resized.connect(update)
-	update.call_deferred()
+	# Resized will refit after layout. The initial size is already available
+	# here; deferring a lambda can retain a card that was returned to the pool.
+	update.call()
 
 static func box(color: Color = INK, border: Color = Color("47626a"), width: int = 2) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()

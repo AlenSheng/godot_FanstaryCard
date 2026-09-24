@@ -1,7 +1,7 @@
 extends RefCounted
 
 const P = preload("res://ui/palette.gd")
-const CATALOG = preload("res://data/catalog.json")
+const CatalogIndex = preload("res://data/catalog_index.gd")
 
 static func equipment(item: Dictionary) -> Dictionary:
 	return item.get("equipment", {}) if item.has("kind") else item
@@ -14,9 +14,7 @@ static func title(item: Dictionary) -> String:
 static func description(item: Dictionary) -> String:
 	var gear: Dictionary = equipment(item)
 	if gear.is_empty(): return "%s ×%s" % [title(item), item.get("quantity", 1)]
-	var quality: Dictionary = {}
-	for row in CATALOG.data.tables.EquipmentQuality:
-		if row.id == gear.get("quality", ""): quality = row; break
+	var quality: Dictionary = CatalogIndex.quality(str(gear.get("quality", "")))
 	var lines: Array[String] = [title(item)]
 	var level: int = int(gear.get("level", 0))
 	if not quality.is_empty():
@@ -40,9 +38,7 @@ static func percent(value: float) -> String:
 static func enhancement_text(item: Dictionary) -> String:
 	var gear := equipment(item)
 	var level: int = int(gear.get("level", 0))
-	var quality: Dictionary = {}
-	for row in CATALOG.data.tables.EquipmentQuality:
-		if row.id == gear.get("quality", ""): quality = row; break
+	var quality: Dictionary = CatalogIndex.quality(str(gear.get("quality", "")))
 	if quality.is_empty(): return ""
 	var lines: Array[String] = [P.localized("battle_current") + " +%s → +%s" % [level, mini(level + 1, 5)]]
 	var fields: Array = [["damage_percent", "damage_per_level", P.word(gear.get("element", "")) + P.localized("battle_attack_bonus")], ["resistance_percent", "resistance_per_level", P.localized("resistance")]]

@@ -213,14 +213,13 @@ func _settings_popup_size() -> Vector2:
 
 func _show_battle_abandon_confirmation() -> void:
 	if not Game.allowed("battle.abandon") or get_node_or_null("BattleAbandonConfirmation") != null: return
+	if is_instance_valid(_popup): _popup.hide()
 	var dialog := ConfirmationModalScene.instantiate()
 	dialog.name = "BattleAbandonConfirmation"
 	add_child(dialog)
 	dialog.configure(
 		P.localized("battle_abandon_warning"),
-		func():
-			if is_instance_valid(_popup): _popup.hide()
-			Game.command("battle.abandon"),
+		func(): Game.command("battle.abandon"),
 		{"title": P.localized("battle_abandon_title"), "confirm_text": P.localized("battle_abandon_confirm"), "cancel_text": P.localized("cancel"), "tall": true})
 
 func _unhandled_key_input(event: InputEvent) -> void:

@@ -45,11 +45,12 @@ func _run() -> void:
 		if $UI.cards[id].get("is_codex", false): expected_ids.append(str(id))
 	var rendered_ids: Array = []
 	for child in card_grid.get_children():
-		if child.name.begins_with("Card_"): rendered_ids.append(str(child.name).trim_prefix("Card_"))
+		if child.name.begins_with("CardSlot_"): rendered_ids.append(str(child.name).trim_prefix("CardSlot_"))
 	_check(rendered_ids == expected_ids, "Codex cards must sort by quality, common/class, Priest/Mage/Guardian, then card ID")
 	var missing_effects: Array[String] = []
 	var stale_effects: Array[String] = []
 	for child in card_grid.get_children():
+		if child.get_child_count() == 0: continue
 		var effect_label := child.find_child("CardEffect", true, false) as Label
 		if effect_label == null or effect_label.text.strip_edges().is_empty():
 			missing_effects.append(str(child.name))
@@ -62,6 +63,7 @@ func _run() -> void:
 	for kind in ["PriestSoul", "MageSoul", "GuardianSoul", "WarriorSoul"]:
 		_check($UI._reference.find_child("Material_" + kind, true, false) != null, "Missing material " + kind)
 	var missing_id := "GW08"
+	await _show_card(card_grid, missing_id)
 	var card: Button = $UI._reference.find_child("Card_" + missing_id, true, false)
 	_check(card != null and not card.disabled and card.material != null, "Unowned card must be gray and clickable")
 	_check($UI._reference.find_child("ToggleDeck", true, false) == null, "Codex must not expose deck editing")
@@ -226,6 +228,18 @@ func _drag_check() -> void:
 	await get_tree().process_frame
 	_check(scroll.scroll_vertical > before_scroll, "Touch drag must scroll the card grid")
 	_check($UI._codex_card.is_empty(), "Touch drag must not open card details")
+
+func _show_card(grid: GridContainer, id: String) -> void:
+	var index := -1
+	for i in range(grid.get_child_count()):
+		if grid.get_child(i).name == "CardSlot_" + id:
+			index = i
+			break
+	if index < 0: return
+	var scroll := $UI._reference.find_child("CodexScroll", true, false) as ScrollContainer
+	if scroll == null: return
+	scroll.scroll_vertical = int(index / 8) * int(184.0 * 376.0 / 218.0 + 42.0)
+	for i in range(4): await get_tree().process_frame
 
 func _capture(label: String, rebuild: bool = true) -> void:
 	if rebuild: $UI._render()

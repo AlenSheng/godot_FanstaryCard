@@ -615,7 +615,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 
 func _loadout(rect: Rect2, editable: bool, snapshot: Dictionary = {}) -> void:
 	var hero_class: String = snapshot.get("heroClass", Game.hero_class)
-	var equipment_ids: Array = snapshot.get("equipmentIds", host.gear_draft)
+	var equipment_ids: Array = snapshot.get("equipmentIds", host.gear_draft if editable else Game.loadout().get("equipmentIds", []))
 	var equipment_values: Array = snapshot.get("equipmentSnapshots") if snapshot.get("equipmentSnapshots") is Array else host.inventory.get("equipments", [])
 	picture(Art.portrait(hero_class), Rect2(rect.position + Vector2(rect.size.x * 0.26, 105), Vector2(rect.size.x * 0.48, 535))).name = "HeroPortrait"
 	text(P.CLASSES[hero_class][0], Rect2(rect.position + Vector2(45, 26), Vector2(400, 60)), 36, P.GOLD)
@@ -693,10 +693,14 @@ func _preparation() -> void:
 	panel(Rect2(28, 122, 752, 900))
 	panel(Rect2(798, 122, 1094, 900))
 	_loadout(Rect2(45, 140, 715, 720), false, snap)
-	var card_ids: Array = snap.get("cardIds", Game.deck().get("cardIds", []))
-	var deck_summary_key := "locked_deck_summary" if locked else "deck_summary"
-	text(P.localized(deck_summary_key) % [card_ids.size(), snap.get("maximumHp", P.CLASSES[Game.hero_class][2])], Rect2(85, 872, 640, 70), 26)
-	text("卡牌与专属武器不占背包格", Rect2(85, 946, 650, 50), 22, P.MUTED)
+	var equipped_items: Array = []
+	if snap.get("equipmentSnapshots") is Array:
+		equipped_items = snap.get("equipmentSnapshots", [])
+	else:
+		var equipped_ids: Array = Game.loadout().get("equipmentIds", [])
+		for item in host.inventory.get("equipments", []):
+			if item.get("instanceId", "") in equipped_ids: equipped_items.append(item)
+	_equipment_summary(equipped_items, Rect2(65, 822, 680, 178), int(snap.get("maximumHp", P.CLASSES[Game.hero_class][2])))
 	text("背包", Rect2(845, 145, 550, 65), 38, P.GOLD)
 	var consumables: Dictionary = host.inventory.get("consumables", {})
 	var stock := {"Advanced": int(consumables.get("advancedBagCount", 0)), "Top": int(consumables.get("topBagCount", 0))}
@@ -706,6 +710,15 @@ func _preparation() -> void:
 	var tier: String = snap.get("backpackTier", host.bag_tier)
 	var capacity: int = int(snap.get("backpackCapacity", {"Free": 20, "Advanced": 28, "Top": 36}.get(tier, 20)))
 	var safe_slots: Array = snap.get("safeSlotIndexes", [] if tier == "Free" else ([27] if tier == "Advanced" else [33, 34, 35]))
+	var safe_slot_lookup: Dictionary = {}
+	var slot_order: Array = []
+	for value in safe_slots:
+		var safe_index := int(value)
+		if safe_index >= 0 and safe_index < capacity and not safe_slot_lookup.has(safe_index):
+			safe_slot_lookup[safe_index] = true
+			slot_order.append(safe_index)
+	for slot_index in range(capacity):
+		if not safe_slot_lookup.has(slot_index): slot_order.append(slot_index)
 	for i in range(3):
 		var key: String = ["Free", "Advanced", "Top"][i]
 		var title_key: String = ["bag_option_free", "bag_option_advanced", "bag_option_top"][i]
@@ -722,27 +735,46 @@ func _preparation() -> void:
 			text(title.split("\n")[0], Rect2(937 + i * 328, 228, 202, 37), 25, P.MUTED if unavailable else P.PAPER)
 			text(title.split("\n")[1], Rect2(937 + i * 328, 267, 202, 32), 20, P.GOLD if tier == key else P.MUTED)
 		tab.tooltip_text = P.localized_text("持有 %s 个" % available_count)
-	for index in range(capacity):
-		var point := Vector2(850 + (index % 6) * 163, 342 + (index / 6) * 104)
-		panel(Rect2(point, Art.COMMON_CELL_DISPLAY_SIZE), Art.COMMON_CELL_KEY)
-		if index in safe_slots:
-			picture(Art.texture("UI/Prep/icon_safe.png"), Rect2(point + Vector2(19, 19), Vector2(58, 58)))
-		else: text(str(index + 1), Rect2(point + Vector2(8, 8), Vector2(80, 48)), 19, P.MUTED)
-	picture(_item("HealthPotion"), Rect2(850, 853, 64, 74))
-	text(P.localized("health_potion_summary") % consumables.get("healthPotionCount", 0), Rect2(930, 850, 630, 45), 25)
+	var row_count := int(ceil(float(capacity) / 6.0))
+	var bag_scroll := _scroll(Rect2(845, 342, 1000, 408))
+	bag_scroll.name = "PreparationBackpackScroll"
+	var bag_content := Control.new()
+	bag_content.name = "PreparationBackpackGrid"
+	bag_content.custom_minimum_size = Vector2(970, maxi(0, row_count * 104 - Art.COMMON_CELL_GAP))
+	bag_content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	bag_content.mouse_filter = Control.MOUSE_FILTER_PASS
+	bag_scroll.add_child(bag_content)
+	for display_index in range(capacity):
+		var slot_index: int = int(slot_order[display_index])
+		var point := Vector2((display_index % 6) * 163, int(display_index / 6) * 104)
+		var slot := Control.new()
+		slot.name = "PreparationBackpackSlot_%s" % slot_index
+		slot.position = point
+		slot.size = Art.COMMON_CELL_DISPLAY_SIZE
+		slot.custom_minimum_size = Art.COMMON_CELL_DISPLAY_SIZE
+		slot.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		slot.tooltip_text = "安全格 %s" % (slot_index + 1) if safe_slot_lookup.has(slot_index) else str(slot_index + 1)
+		bag_content.add_child(slot)
+		if safe_slot_lookup.has(slot_index):
+			Art.add_safe_slot_frame(slot)
+		else:
+			panel(Rect2(Vector2.ZERO, Art.COMMON_CELL_DISPLAY_SIZE), Art.COMMON_CELL_KEY, slot)
+			text(str(slot_index + 1), Rect2(8, 8, 80, 48), 19, P.MUTED, slot)
+	picture(_item("HealthPotion"), Rect2(850, 775, 64, 74))
+	text(P.localized("health_potion_summary") % consumables.get("healthPotionCount", 0), Rect2(930, 776, 630, 45), 25)
 	var count := SpinBox.new()
 	count.max_value = mini(2, int(consumables.get("healthPotionCount", 0)))
 	count.value = snap.get("potionCount", host.potion_count)
 	count.editable = not locked
 	count.value_changed.connect(func(value): host.potion_count = int(value))
 	add_child(count)
-	count.position = Vector2(1560, 847)
+	count.position = Vector2(1560, 773)
 	count.size = Vector2(270, 66)
 	if locked:
-		button("取消匹配 / 准备", Rect2(850, 945, 410, 61), Game.cancel_preparation, Game.busy)
-		button("正在匹配…" if not Game.ticket.is_empty() else "开始匹配", Rect2(1310, 945, 520, 61), Game.enqueue, Game.busy or not Game.gateway.online or not Game.ticket.is_empty(), ORANGE)
+		button("取消匹配 / 准备", Rect2(850, 915, 410, 61), Game.cancel_preparation, Game.busy)
+		button("正在匹配…" if not Game.ticket.is_empty() else "开始匹配", Rect2(1310, 915, 520, 61), Game.enqueue, Game.busy or not Game.gateway.online or not Game.ticket.is_empty(), ORANGE)
 	else:
-		button("确认探索准备", Rect2(1100, 945, 730, 61), func(): Game.prepare(host.bag_tier, host.potion_count), Game.busy, ORANGE)
+		button("确认探索准备", Rect2(1100, 915, 730, 61), func(): Game.prepare(host.bag_tier, host.potion_count), Game.busy, ORANGE)
 
 func _gear() -> void:
 	_loadout(Rect2(90, 135, 1030, 750), true)
@@ -783,21 +815,29 @@ func _gear() -> void:
 	var enhance_button := button("碎片强化", Rect2(1260, 930, 530, 64), host._navigate.bind("enhance"))
 	enhance_button.set_meta("sound_cue", "")
 
-func _equipment_summary(loadout: Array) -> void:
-	# Keep this panel centered on the save button below it. Both content columns
-	# use the same width and mirrored margins around that shared center line.
-	var summary_panel := panel(Rect2(225, 760, 755, 165))
+func _equipment_summary(loadout: Array, rect: Rect2 = Rect2(225, 760, 755, 165), maximum_hp: int = -1) -> void:
+	var compact := rect.size.x < 720.0
+	var margin := 30.0 if compact else 40.0
+	var gap := 30.0 if compact else 45.0
+	var column_width := (rect.size.x - margin * 2.0 - gap) / 2.0
+	var first_x := rect.position.x + margin
+	var second_x := first_x + column_width + gap
+	var title_y := rect.position.y + 22.0
+	var body_y := rect.position.y + 54.0
+	var body_height := 90.0 if compact else rect.size.y - 84.0
+	var summary_panel := panel(rect)
 	summary_panel.name = "EquipmentSummaryPanel"
-	var attribute_title := text(P.localized("equipment_summary_title"), Rect2(265, 782, 315, 28), 21, P.GOLD)
+	var attribute_title := text(P.localized("equipment_summary_title"), Rect2(first_x, title_y, column_width, 28), 21, P.GOLD)
 	attribute_title.name = "EquipmentSummaryTitle"
-	var set_title := text(P.localized("equipment_set_summary_title"), Rect2(625, 782, 315, 28), 21, P.GOLD)
+	var set_title := text(P.localized("equipment_set_summary_title"), Rect2(second_x, title_y, column_width, 28), 21, P.GOLD)
 	set_title.name = "EquipmentSetSummaryTitle"
 	var attribute_lines := _equipment_attribute_lines(loadout)
+	if maximum_hp >= 0: attribute_lines.push_front("%s %s" % [P.localized("hp"), maximum_hp])
 	var attribute_text := "\n".join(attribute_lines) if not attribute_lines.is_empty() else P.localized("equipment_no_attributes")
-	_equipment_summary_scroll("EquipmentAttributeScroll", "EquipmentAttributeSummary", attribute_text, Rect2(265, 814, 315, 81), 17, P.PAPER)
+	_equipment_summary_scroll("EquipmentAttributeScroll", "EquipmentAttributeSummary", attribute_text, Rect2(first_x, body_y, column_width, body_height), 17, P.PAPER)
 	var set_lines := _equipment_set_lines(loadout)
 	var set_text := "\n".join(set_lines) if not set_lines.is_empty() else P.localized("equipment_no_sets")
-	_equipment_summary_scroll("EquipmentSetScroll", "EquipmentSetSummary", set_text, Rect2(625, 814, 315, 81), 16, P.MUTED)
+	_equipment_summary_scroll("EquipmentSetScroll", "EquipmentSetSummary", set_text, Rect2(second_x, body_y, column_width, body_height), 16, P.MUTED)
 
 func _equipment_summary_scroll(scroll_name: String, label_name: String, value: String, rect: Rect2, font_size: int, color: Color) -> ScrollContainer:
 	var scroll := DragScroll.new()
@@ -814,9 +854,9 @@ func _equipment_summary_scroll(scroll_name: String, label_name: String, value: S
 	label.add_theme_font_size_override("font_size", font_size)
 	label.add_theme_color_override("font_color", color)
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	label.mouse_filter = Control.MOUSE_FILTER_PASS
 	var physical_lines := maxi(1, value.count("\n") + 1)
-	label.custom_minimum_size = Vector2(rect.size.x, maxf(rect.size.y, physical_lines * 27.0))
+	label.custom_minimum_size = Vector2(rect.size.x, maxf(rect.size.y, physical_lines * 30.0))
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	label.tooltip_text = value
 	scroll.add_child(label)

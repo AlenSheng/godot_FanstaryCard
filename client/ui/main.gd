@@ -3,6 +3,7 @@ extends Control
 const P = preload("res://ui/palette.gd")
 const Art = preload("res://ui/art.gd")
 const CardView = preload("res://ui/card_view.gd")
+const CardPool = preload("res://ui/card_pool.gd")
 const DeckBuilder = preload("res://ui/deck_builder_view.gd")
 const ReferenceUI = preload("res://ui/reference_ui.gd")
 const ConfirmationModalScene = preload("res://ui/confirmation_modal.tscn")
@@ -15,13 +16,18 @@ const BattleDetails = preload("res://ui/battle_details.gd")
 const AudioSettings = preload("res://ui/audio_settings.gd")
 const TipsOverlay = preload("res://ui/tips_overlay.gd")
 const LayeredBackdrop = preload("res://ui/layered_backdrop.gd")
-const CATALOG = preload("res://data/catalog.json")
+const CatalogIndex = preload("res://data/catalog_index.gd")
+const CellIndex = preload("res://ui/cell_index.gd")
 const DESCRIPTIONS = preload("res://data/card_descriptions.json")
 const UI_CONFIG = preload("res://data/ui_config.json")
 const RANDOM_NAMES_PATH := "res://data/random_names.json"
 const CLOUD_SERVER_URL := "https://www.relicbound.cn"
 const LOCAL_SERVER_URL := "http://127.0.0.1:5080"
 const LOGIN_VIDEO_PATH := "res://assets/backgrounds/relicbound_login_ambient.ogv"
+const MEMORY_PROBE_INTERVAL := 3.0
+const MEMORY_TRIM_COOLDOWN_MSEC := 30000
+const MEMORY_REDLINE_MIN_FREE_BYTES := 256 * 1024 * 1024
+const MEMORY_REDLINE_RATIO := 0.10
 var screen := "hall"
 var content: VBoxContainer
 var root_column: VBoxContainer
@@ -29,7 +35,14 @@ var status_label: Label
 var toast_label: Label
 var tips_overlay: CanvasLayer
 var cards: Dictionary = {}
-var owned: Array = []
+var owned: Array = []:
+	set(value):
+		owned = value
+		_owned_by_id.clear()
+		_owned_index_ready = false
+var _owned_by_id: Dictionary = {}
+var _owned_index_ready := false
+var _card_text_cache: Dictionary = {}
 var inventory: Dictionary = {}
 var shop: Dictionary = {}
 var listings: Array = []
@@ -51,6 +64,13 @@ var _background_video: VideoStreamPlayer
 var _background_shade: ColorRect
 var _login_video_available := false
 var _reference: Control
+var _reference_screen := ""
+var _card_page_cache: Dictionary = {}
+var _card_page_cache_keys: Dictionary = {}
+var _card_pool: Node
+var _card_prewarm_started := false
+var _memory_probe_elapsed := 0.0
+var _last_memory_trim_msec := -MEMORY_TRIM_COOLDOWN_MSEC
 var _quality := ""
 var _enhance_item := ""
 var _market_item := ""
@@ -78,14 +98,17 @@ var _draw_charge_hold_full := false
 
 func _ready() -> void:
 	theme = P.theme()
-	for card in CATALOG.data.tables.Cards: cards[card.id] = card
+	cards = CatalogIndex.cards()
 	if not Game.gateway.local_account_name.is_empty(): _login_name = Game.gateway.local_account_name
 	if _login_name.is_empty(): _login_name = _random_login_name()
 	_session_generation = Game.gateway.session_generation
+	_card_pool = CardPool.new()
+	_card_pool.name = "CardPool"
+	add_child(_card_pool)
 	Game.changed.connect(_schedule_render)
 	Game.notice.connect(_toast)
 	Game.player_data_invalidated.connect(_refresh_after_admin_update)
-	Game.shop_refreshed.connect(_on_shop_refreshed)
+	Game.cache_changed.connect(_on_cache_changed)
 	Game.authentication_required.connect(_show_ban_dialog)
 	Game.combat_feedback.connect(_feedback)
 	_build_shell()
@@ -97,6 +120,92 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	_update_draw_charge_visual()
+	_memory_probe_elapsed += _delta
+	if _memory_probe_elapsed >= MEMORY_PROBE_INTERVAL:
+		_memory_probe_elapsed = 0.0
+		_check_memory_redline()
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_OS_MEMORY_WARNING and is_instance_valid(_card_pool):
+		_trim_card_pool_for_memory(true)
+
+func _exit_tree() -> void:
+	if is_instance_valid(_card_pool): _card_pool.clear()
+	_card_page_cache.clear()
+	_card_page_cache_keys.clear()
+	CardView.clear_material_cache()
+	Art.clear_texture_cache()
+	P.clear_runtime_fonts()
+
+func _check_memory_redline() -> void:
+	if not is_instance_valid(_card_pool): return
+	var memory: Dictionary = OS.get_memory_info()
+	var physical := int(memory.get("physical", -1))
+	var free := int(memory.get("free", -1))
+	if physical <= 0 or free < 0: return
+	var redline := maxi(MEMORY_REDLINE_MIN_FREE_BYTES, int(float(physical) * MEMORY_REDLINE_RATIO))
+	if free <= redline: _trim_card_pool_for_memory()
+
+func _trim_card_pool_for_memory(force: bool = false) -> void:
+	if not is_instance_valid(_card_pool): return
+	var now := Time.get_ticks_msec()
+	if not force and now - _last_memory_trim_msec < MEMORY_TRIM_COOLDOWN_MSEC: return
+	_last_memory_trim_msec = now
+	for page in _card_page_cache.keys():
+		if _card_page_cache[page] != _reference: _discard_card_page(str(page))
+	_card_pool.trim_to_baseline()
+	Art.clear_texture_cache()
+
+func _card_page_key(page: String) -> int:
+	return hash([page, P.language(), _quality, _search, _codex_ready, _codex_mutating,
+		Game.busy, Game.hero_class, Game.connection, owned, deck_draft, Game.deck(),
+		Game.lobby.get("materials", {}), Game.lobby.get("wallet", {})])
+
+func _set_card_page_cache_key(page: String) -> void:
+	if is_instance_valid(_card_page_cache.get(page)):
+		_card_page_cache_keys[page] = _card_page_key(page)
+
+func _free_reference_view(view: Control) -> void:
+	if not is_instance_valid(view): return
+	if is_instance_valid(_card_pool): _card_pool.release_descendants(view)
+	if view.get_parent() != null: view.get_parent().remove_child(view)
+	view.queue_free()
+
+func _discard_card_page(page: String) -> void:
+	var view: Control = _card_page_cache.get(page) as Control
+	_card_page_cache.erase(page)
+	_card_page_cache_keys.erase(page)
+	if view == _reference:
+		_reference = null
+		_reference_screen = ""
+	_free_reference_view(view)
+
+func _clear_card_page_cache() -> void:
+	for page in _card_page_cache.keys(): _discard_card_page(str(page))
+
+func _park_or_free_reference() -> void:
+	if not is_instance_valid(_reference):
+		_reference = null
+		_reference_screen = ""
+		return
+	if _reference_screen in ["cards", "deck"] and _card_page_cache.get(_reference_screen) == _reference:
+		var details := _reference.get_node_or_null("CardDetails")
+		if _reference_screen == "cards" and details != null and not details.is_queued_for_deletion():
+			_discard_card_page(_reference_screen)
+		else:
+			_reference.visible = false
+			_reference = null
+			_reference_screen = ""
+		return
+	_free_reference_view(_reference)
+	_reference = null
+	_reference_screen = ""
+
+func _restore_card_page_scroll(page: String, view: Control) -> void:
+	var scroll_name := "CodexScroll" if page == "cards" else "DeckOwnedScroll"
+	var scroll := view.find_child(scroll_name, true, false) as ScrollContainer
+	if scroll != null:
+		scroll.scroll_vertical = _codex_scroll if page == "cards" else _deck_builder_scroll
 
 func _build_shell() -> void:
 	var backdrop := LayeredBackdrop.new()
@@ -248,24 +357,45 @@ func _refresh_after_admin_update() -> void:
 	if screen in ["cards", "deck", "gear", "enhance", "shop", "market", "prep"]:
 		_navigate.call_deferred(screen)
 
-func _on_shop_refreshed(_payload: Dictionary) -> void:
-	if screen == "shop" and not Game.busy:
-		_navigate.call_deferred("shop")
-	else:
-		_toast("商店货架已刷新")
+func _on_cache_changed(module: String) -> void:
+	_sync_account_session()
+	var affected := {
+		"shop": ["shop"], "market": ["market"],
+		"inventory": ["gear", "enhance", "prep", "shop", "market"],
+		"cards": ["cards", "deck"], "decks": ["cards", "deck", "prep"], "mail": ["hall"],
+		"wallet": ["hall", "shop", "market", "prep"]
+	}
+	if screen in affected.get(module, []) and Game.room.is_empty(): _schedule_render()
 
 func _sync_account_session() -> void:
-	if _session_generation != Game.gateway.session_generation:
+	var new_session: bool = _session_generation != Game.gateway.session_generation
+	if new_session:
 		_session_generation = Game.gateway.session_generation
 		_reset_account_ui()
 	var lobby_cards: Variant = Game.lobby.get("cards", null)
 	if lobby_cards is Array:
 		owned = lobby_cards
 		_codex_ready = true
+	if Game.lobby.get("inventory") is Dictionary:
+		inventory = Game.lobby.inventory
+		_shop_inventory_ready = not inventory.is_empty()
+	if Game.lobby.get("shop") is Dictionary: shop = Game.lobby.shop
+	if Game.lobby.get("market") is Array: listings = Game.lobby.market
 	if not Game.lobby.is_empty() and not Game.gateway.token.is_empty() and not Game.gateway.local_account_name.is_empty():
 		_login_name = Game.gateway.local_account_name
+	if not _card_prewarm_started and not Game.lobby.is_empty() and lobby_cards is Array:
+		_card_prewarm_started = true
+		_card_pool.begin_prewarm(cards, owned, func(id): return _card_text(id))
 
 func _reset_account_ui() -> void:
+	if is_instance_valid(_card_pool):
+		_clear_card_page_cache()
+		if is_instance_valid(_reference):
+			_free_reference_view(_reference)
+			_reference = null
+			_reference_screen = ""
+		_card_pool.clear()
+	_card_prewarm_started = false
 	screen = "hall"
 	owned = []
 	inventory = {}
@@ -314,10 +444,13 @@ func _render() -> void:
 			if has_meta(key): remove_meta(key)
 		if has_meta("pending_move"): remove_meta("pending_move")
 	_view_cell = room_cell
-	if is_instance_valid(_reference):
-		remove_child(_reference)
-		_reference.queue_free()
-		_reference = null
+	var use_reference: bool = not Game.lobby.is_empty() and Game.lobby.get("unfinishedMatch") == null
+	if not Game.room.is_empty() or not Game.settlement.is_empty(): use_reference = true
+	var card_page := screen if use_reference and screen in ["cards", "deck"] and not screen_loading and Game.room.is_empty() and Game.settlement.is_empty() and Game.ready_prompt.is_empty() else ""
+	var page_key := _card_page_key(card_page) if not card_page.is_empty() else 0
+	var cached_view: Control = _card_page_cache.get(card_page) as Control
+	var reuse_current: bool = not card_page.is_empty() and is_instance_valid(_reference) and _reference == cached_view and _card_page_cache_keys.get(card_page) == page_key
+	if not reuse_current: _park_or_free_reference()
 	content.add_theme_constant_override("separation", 10 if not Game.room.is_empty() else 18)
 	var show_login_video: bool = Game.lobby.is_empty() and Game.room.is_empty() and Game.settlement.is_empty()
 	if show_login_video:
@@ -340,16 +473,31 @@ func _render() -> void:
 	if is_instance_valid(_background_shade): _background_shade.visible = show_login_video and _login_video_available
 	_combat_panels = {}
 	for node in content.get_children():
+		_card_pool.release_descendants(node)
 		content.remove_child(node)
 		node.queue_free()
 	status_label.text = P.localized_text(Game.connection)
 	if not Game.lobby.is_empty(): status_label.text += P.localized_text("    金币 %s" % Game.lobby.get("wallet", {}).get("gold", 0))
-	var use_reference: bool = not Game.lobby.is_empty() and Game.lobby.get("unfinishedMatch") == null
-	if not Game.room.is_empty() or not Game.settlement.is_empty(): use_reference = true
 	root_column.get_parent().visible = not use_reference
 	if use_reference:
+		if not card_page.is_empty():
+			cached_view = _card_page_cache.get(card_page) as Control
+			if is_instance_valid(cached_view) and _card_page_cache_keys.get(card_page) != page_key:
+				_discard_card_page(card_page)
+				cached_view = null
+			if is_instance_valid(cached_view):
+				var was_hidden := not cached_view.visible
+				_reference = cached_view
+				_reference_screen = card_page
+				if was_hidden: _restore_card_page_scroll(card_page, cached_view)
+				cached_view.visible = true
+				return
 		_reference = ReferenceUI.new()
 		add_child(_reference)
+		_reference_screen = card_page
+		if not card_page.is_empty():
+			_card_page_cache[card_page] = _reference
+			_card_page_cache_keys[card_page] = page_key
 		_reference.build(self)
 		return
 	if not Game.settlement.is_empty():
@@ -533,39 +681,13 @@ func _navigate(value: String) -> void:
 	_deck_builder_scroll = 0
 	_enhancement_quote_key = ""
 	_enhancement_quote = {}
-	if value == "shop": _shop_inventory_ready = false
-	if value in ["cards", "deck"] and _codex_ready:
-		deck_draft = Game.deck().get("cardIds", []).duplicate()
-		screen_loading = false
-		_render()
-		return
-	if value in ["cards", "deck", "gear", "enhance", "shop", "market", "prep"]:
-		screen_loading = true
-		_render()
-		var path: String = {"cards": "/cards", "deck": "/cards", "gear": "/inventory", "enhance": "/inventory", "shop": "/economy/context", "market": "/economy/context", "prep": "/inventory"}[value]
-		var result: Dictionary = await Game.gateway.request("/api/v1" + path)
-		if not result.ok and int(result.get("status", 0)) == 404 and value in ["shop", "market"]:
-			path = "/shop/context" if value == "shop" else "/market/context"
-			result = await Game.gateway.request("/api/v1" + path)
-		if not _session_result_current(generation, result): return
-		if result.ok:
-			match value:
-				"cards", "deck":
-					owned = result.data
-					_codex_ready = true
-					deck_draft = Game.deck().get("cardIds", []).duplicate()
-				"gear", "enhance", "prep":
-					inventory = result.data
-					gear_draft = Game.loadout().get("equipmentIds", []).duplicate()
-					gear_draft.resize(5)
-				"shop":
-					shop = result.data.get("shop", {})
-					inventory = result.data.get("inventory", {})
-					_shop_inventory_ready = not inventory.is_empty()
-				"market":
-					listings = result.data.get("listings", [])
-					inventory = result.data.get("inventory", {})
-		screen_loading = false
+	_sync_account_session()
+	if generation != Game.gateway.session_generation: return
+	if value in ["cards", "deck"]: deck_draft = Game.deck().get("cardIds", []).duplicate()
+	if value in ["gear", "enhance", "prep"]:
+		gear_draft = Game.loadout().get("equipmentIds", []).duplicate()
+		gear_draft.resize(5)
+	screen_loading = false
 	_render()
 
 func _hall() -> void:
@@ -643,23 +765,35 @@ func _preparation() -> void:
 	_button(left, "确认探索准备", func(): Game.prepare(bag_tier, potion_count), Game.busy)
 	var right := _panel(row, 880)
 	_label(right, "临时背包", 34)
-	_label(right, "描边为安全格，卡牌与专属武器不占格。", 22, P.MUTED)
+	_label(right, "带锁花纹格为安全格，卡牌与专属武器不占格。", 22, P.MUTED)
+	var capacity: int = {"Free": 20, "Advanced": 28, "Top": 36}[bag_tier]
+	var safe: int = {"Free": 0, "Advanced": 1, "Top": 3}[bag_tier]
+	var slot_order: Array = []
+	for safe_index in range(capacity - safe, capacity): slot_order.append(safe_index)
+	for slot_index in range(capacity):
+		if not slot_order.has(slot_index): slot_order.append(slot_index)
+	var rows := int(ceil(float(capacity) / 6.0))
+	var scroll := ScrollContainer.new()
+	scroll.name = "PreparationBackpackScroll"
+	scroll.custom_minimum_size.y = 4 * 96 + 3 * Art.COMMON_CELL_GAP
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	right.add_child(scroll)
 	var grid := GridContainer.new()
+	grid.name = "PreparationBackpackGrid"
 	grid.columns = 6
 	grid.add_theme_constant_override("h_separation", Art.COMMON_CELL_GAP)
 	grid.add_theme_constant_override("v_separation", Art.COMMON_CELL_GAP)
-	right.add_child(grid)
-	var capacity: int = {"Free": 20, "Advanced": 28, "Top": 36}[bag_tier]
-	var safe: int = {"Free": 0, "Advanced": 1, "Top": 3}[bag_tier]
-	for index in range(capacity):
-		var cell := _button(grid, str(index + 1), func(): pass, true)
-		Art.button(cell, Art.COMMON_CELL_KEY)
+	grid.custom_minimum_size.y = rows * (96 + Art.COMMON_CELL_GAP) - Art.COMMON_CELL_GAP
+	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(grid)
+	for display_index in range(capacity):
+		var slot_index: int = int(slot_order[display_index])
+		var is_safe: bool = slot_index >= capacity - safe
+		var cell := _button(grid, "" if is_safe else str(slot_index + 1), func(): pass, true)
 		cell.custom_minimum_size = Art.COMMON_CELL_DISPLAY_SIZE
-		if index >= capacity - safe:
-			cell.add_theme_stylebox_override("disabled", P.box(P.INK, P.GOLD, 3))
-			cell.icon = Art.texture("UI/Prep/icon_safe.png")
-			cell.expand_icon = true
-			cell.add_theme_constant_override("icon_max_width", 30)
+		if is_safe: Art.apply_safe_slot_button(cell)
+		else: Art.button(cell, Art.COMMON_CELL_KEY)
 
 func _ready_screen() -> void:
 	var panel := _panel(content)
@@ -679,6 +813,8 @@ func card_description(id: String, kind: String = "face") -> String:
 	return str(descriptions.get("card.%s.desc.%s" % [kind, id], ""))
 
 func _card_text(id: String, level: int = 0, element_override: String = "") -> String:
+	var cache_key := "%s|%s|%s" % [P.language(), id, element_override]
+	if _card_text_cache.has(cache_key): return _card_text_cache[cache_key]
 	var info: Dictionary = CardDetails.with_element(cards.get(id, {}), element_override)
 	var source: String = info.get("source", "")
 	var badge := "怪" if not info.get("is_codex", true) else P.word(info.get("hero_class", ""))
@@ -691,22 +827,30 @@ func _card_text(id: String, level: int = 0, element_override: String = "") -> St
 			if int(info.get(key, 0)) > 0:
 				lines.append("%s %s" % [{"elemental_damage": P.word(info.get("element", "None")), "direct_damage": "直伤", "heal": "治疗", "shield": "护盾"}[key], info[key]])
 		description = " / ".join(lines)
-	return "%s %s\n%s\n\n%s" % [badge, name, P.word(info.get("quality", "")) if source != "Monster" else "暗红 · 本局", description]
+	var result := "%s %s\n%s\n\n%s" % [badge, name, P.word(info.get("quality", "")) if source != "Monster" else "暗红 · 本局", description]
+	_card_text_cache[cache_key] = result
+	return result
 
 func _card_button(parent: Node, id: String, callback: Callable, selected: bool = false, disabled: bool = false, options: Dictionary = {}) -> Button:
-	var button := CardView.new()
-	button.set_meta("sound_cue", "" if options.get("preview", false) else "card_select")
-	button.disabled = disabled
-	button.pressed.connect(callback)
-	parent.add_child(button)
 	var element_override: String = options.get("element_override", "")
-	button.configure(id, CardDetails.with_element(cards.get(id, {}), element_override), _card_text(id, int(options.get("level", 0)), element_override), selected, options)
-	return button
+	return _card_pool.acquire(parent, id, CardDetails.with_element(cards.get(id, {}), element_override), _card_text(id, int(options.get("level", 0)), element_override), selected, disabled, options, callback)
+
+func release_card(button: Button) -> void:
+	_card_pool.release(button)
+
+func ensure_card_pool(required: int) -> bool:
+	return _card_pool.ensure_available(required)
 
 func _owned_card(id: String) -> Dictionary:
-	for entry in owned:
-		if entry.get("cardId") == id: return entry
-	return {}
+	if not _owned_index_ready:
+		_owned_index_ready = true
+		for entry in owned:
+			if entry is Dictionary:
+				var card_id := str(entry.get("cardId", ""))
+				if not card_id.is_empty() and not _owned_by_id.has(card_id):
+					_owned_by_id[card_id] = entry
+	var found: Variant = _owned_by_id.get(id, {})
+	return found if found is Dictionary else {}
 
 func _card_material(kind: String) -> int:
 	var field := kind.left(1).to_lower() + kind.substr(1)
@@ -737,8 +881,10 @@ func _replace_owned_card(card: Dictionary) -> void:
 	for index in range(owned.size()):
 		if str(owned[index].get("cardId", "")) == id:
 			owned[index] = card
+			if _owned_index_ready: _owned_by_id[id] = card
 			return
 	owned.append(card)
+	if _owned_index_ready: _owned_by_id[id] = card
 
 func _set_codex_action_busy(value: bool) -> void:
 	if not is_instance_valid(_reference): return
@@ -766,6 +912,7 @@ func _card_action(id: String, action: String) -> void:
 		return
 	if result.ok:
 		if result.data.get("card") is Dictionary: _replace_owned_card(result.data.card)
+		Game.update_cache("cards", owned)
 		if result.data.get("materials") is Dictionary: Game.lobby["materials"] = result.data.materials
 		_codex_ready = true
 		Sound.play_cue("upgrade" if action == "upgrade" else "reward")
@@ -777,7 +924,9 @@ func _card_action(id: String, action: String) -> void:
 			_codex_mutating = false
 			return
 		_codex_ready = refreshed.ok
-		if refreshed.ok: owned = refreshed.data
+		if refreshed.ok:
+			owned = refreshed.data
+			Game.update_cache("cards", owned)
 	_codex_mutating = false
 	if not _session_result_current(generation): return
 	Game.busy = false
@@ -822,13 +971,17 @@ func _save_deck() -> void:
 	var result: Dictionary = await Game.gateway.request("/api/v1/decks/" + Game.hero_class, HTTPClient.METHOD_PUT, {"cardIds": deck_draft, "expectedVersion": Game.deck().get("version", 0)}, [0, 400, 409, 429, 500, 502, 503, 504])
 	if not _session_result_current(generation, result): return
 	if result.ok:
-		await Game.refresh_lobby()
-		if not _session_result_current(generation): return
+		var decks: Array = Game.lobby.get("decks", []).duplicate(true)
+		for index in decks.size():
+			if str(decks[index].get("heroClass", "")) == Game.hero_class:
+				decks[index] = result.data
+				break
+		Game.update_cache("decks", decks)
 		deck_draft = Game.deck().get("cardIds", []).duplicate()
 		Sound.play_cue("equip")
 		_toast(P.localized("deck_saved"))
 	elif int(result.get("status", 0)) == 409:
-		await Game.refresh_lobby()
+		await Game.refresh_cache("decks")
 		if not _session_result_current(generation): return
 		deck_draft = Game.deck().get("cardIds", []).duplicate()
 		_toast(P.localized("deck_changed_retry"))
@@ -1029,7 +1182,7 @@ func _shop() -> void:
 			_label(panel, CardDetails.localized_name(card_id, cards.get(card_id, {})), 26, P.TEAL)
 		_label(panel, P.localized("shop_price") % item.priceGold, 36, P.GOLD)
 		_label(panel, P.localized("shop_purchase_count") % [item.purchased, item.limit], 22, P.MUTED)
-		_button(panel, "已激活" if item.get("alreadyOwned", false) else "购买", func(): _confirm("花费 %s 金币购买？" % item.priceGold, func(): _mutate("/shop/purchases", HTTPClient.METHOD_POST, {"productId": item.productId, "quantity": 1})), Game.busy or item.get("alreadyOwned", false) or int(item.purchased) >= int(item.limit) or int(item.priceGold) > int(Game.lobby.wallet.gold))
+		_button(panel, "已激活" if item.get("alreadyOwned", false) else "购买", func(): _confirm("花费 %s 金币购买？" % item.priceGold, func(): _complete_shop_purchase(item)), Game.busy or item.get("alreadyOwned", false) or int(item.purchased) >= int(item.limit) or int(item.priceGold) > int(Game.lobby.wallet.gold))
 	if shop.get("products", []).is_empty(): _label(content, "暂无商品，稍后刷新。", 28)
 
 func _market() -> void:
@@ -1064,16 +1217,110 @@ func _mutate(path: String, method: int, body: Variant = null) -> void:
 	var result: Dictionary = await Game.gateway.request("/api/v1" + path, method, body)
 	if not _session_result_current(generation, result): return
 	if result.ok:
+		_apply_account_mutation(path, body, result.data)
 		var cue := "equip"
 		if path.ends_with("/enhance"): cue = "upgrade"
 		elif path == "/shop/purchases" or path.contains("/purchase?"): cue = "purchase"
 		Sound.play_cue(cue)
 		_toast("操作成功")
-	else: Sound.play_cue("error")
-	await Game.refresh_lobby()
-	if not _session_result_current(generation): return
+	else:
+		Sound.play_cue("error")
+		if path.begins_with("/market/"): Game.refresh_cache("market")
+		elif path.begins_with("/loadouts/"): Game.refresh_cache("inventory")
 	Game.busy = false
-	await _navigate(screen)
+	_render()
+
+func _apply_account_mutation(path: String, body: Variant, response: Variant) -> void:
+	var data: Dictionary = response if response is Dictionary else {}
+	if path.begins_with("/loadouts/") and not data.is_empty():
+		var loadouts: Array = Game.lobby.get("equippedLoadouts", []).duplicate(true)
+		for index in loadouts.size():
+			if str(loadouts[index].get("heroClass", "")) == str(data.get("heroClass", "")):
+				loadouts[index] = data
+				break
+		Game.update_cache("equippedLoadouts", loadouts)
+		gear_draft = data.get("equipmentIds", []).duplicate()
+		Game.refresh_cache("inventory")
+	elif path.ends_with("/enhance") and data.get("equipment") is Dictionary:
+		var equipment: Dictionary = data.equipment
+		var materials: Dictionary = Game.lobby.get("materials", {}).duplicate(true)
+		materials["equipmentFragments"] = int(data.get("equipmentFragments", materials.get("equipmentFragments", 0)))
+		Game.update_cache("materials", materials)
+		if str(equipment.get("slot", "")) == "ClassWeapon":
+			var weapons: Array = Game.lobby.get("classWeapons", []).duplicate(true)
+			for index in weapons.size():
+				if str(weapons[index].get("heroClass", "")) == Game.hero_class:
+					weapons[index]["level"] = equipment.get("level", weapons[index].get("level", 0))
+					weapons[index]["version"] = equipment.get("version", weapons[index].get("version", 0))
+					break
+			Game.update_cache("classWeapons", weapons)
+		else:
+			var items: Array = inventory.get("equipments", []).duplicate(true)
+			for index in items.size():
+				if str(items[index].get("instanceId", "")) == str(equipment.get("instanceId", "")):
+					items[index] = equipment
+					break
+			var consumed := str(data.get("consumedMaterialEquipmentId", ""))
+			if not consumed.is_empty(): items = items.filter(func(item): return str(item.get("instanceId", "")) != consumed)
+			_set_inventory_items(items)
+	elif path == "/market/listings" and not data.is_empty():
+		var equipment_id := str(data.get("equipmentId", ""))
+		var items: Array = inventory.get("equipments", []).duplicate(true)
+		var listing: Dictionary = data.duplicate(true)
+		for item in items:
+			if str(item.get("instanceId", "")) == equipment_id:
+				listing["equipment"] = item.duplicate(true)
+				listing.equipment["location"] = "MarketListed"
+				break
+		if not listing.has("equipment"):
+			for existing in listings:
+				if str(existing.get("listingId", "")) == str(listing.get("listingId", "")):
+					listing["equipment"] = existing.get("equipment", {})
+					break
+		items = items.filter(func(item): return str(item.get("instanceId", "")) != equipment_id)
+		_set_inventory_items(items)
+		var updated: Array = listings.duplicate(true)
+		updated = updated.filter(func(entry): return str(entry.get("listingId", "")) != str(listing.get("listingId", "")))
+		updated.push_front(listing)
+		Game.update_cache("market", updated)
+	elif path.begins_with("/market/"):
+		var listing_id := ""
+		if path.begins_with("/market/listings/"):
+			listing_id = path.trim_prefix("/market/listings/").split("/")[0]
+		else:
+			listing_id = path.trim_prefix("/market/").split("/")[0]
+		var previous: Dictionary = {}
+		for listing in listings:
+			if str(listing.get("listingId", "")) == listing_id:
+				previous = listing
+				break
+		var updated: Array = listings.filter(func(entry): return str(entry.get("listingId", "")) != listing_id)
+		Game.update_cache("market", updated)
+		if data.has("buyerGoldAfter"):
+			var wallet: Dictionary = Game.lobby.get("wallet", {}).duplicate(true)
+			wallet["gold"] = int(data.buyerGoldAfter)
+			Game.update_cache("wallet", wallet)
+		var item: Dictionary = previous.get("equipment", {})
+		if not item.is_empty():
+			item = item.duplicate(true)
+			item["location"] = "Inventory"
+			item["version"] = int(item.get("version", 0)) + 1
+			var items: Array = inventory.get("equipments", []).duplicate(true)
+			items.append(item)
+			_set_inventory_items(items)
+		else:
+			Game.refresh_cache("inventory")
+func _set_inventory_items(items: Array) -> void:
+	var next_inventory: Dictionary = inventory.duplicate(true)
+	next_inventory["equipments"] = items
+	var summary: Dictionary = next_inventory.get("summary", {}).duplicate(true)
+	var count := 0
+	for item in items:
+		if str(item.get("location", "")) == "Inventory": count += 1
+	summary["equipmentCount"] = count
+	summary["freeSlots"] = maxi(0, int(summary.get("capacity", 50)) - count)
+	next_inventory["summary"] = summary
+	Game.update_cache("inventory", next_inventory)
 
 func _purchase_shop_item(item: Dictionary, product_title: String) -> void:
 	var purchase := func(): _complete_shop_purchase(item)
@@ -1090,6 +1337,7 @@ func _refresh_shop() -> void:
 	if not _session_result_current(generation, result): return
 	if result.ok:
 		shop = result.data
+		Game.update_cache("shop", shop)
 		Sound.play_cue("reward")
 		_toast("商店货架已刷新")
 	else:
@@ -1131,20 +1379,33 @@ func _apply_shop_purchase(product_id: String, response: Dictionary) -> void:
 		var product: Dictionary = products[index]
 		if str(product.get("productId", "")) != product_id: continue
 		product["purchased"] = int(product.get("purchased", 0)) + quantity
+		if product.get("kind", "") == "Cards" and str(product.get("payload", "")).contains("cardId"):
+			product["alreadyOwned"] = true
 		products[index] = product
 		var kind: String = str(product.get("kind", ""))
-		if kind in ["AdvancedBag", "TopBag"]:
-			var payload: Variant = JSON.parse_string(product.get("payload", "{}"))
-			var amount: int = int(payload.get("amount", 1)) if payload is Dictionary else 1
+		var parsed: Variant = JSON.parse_string(product.get("payload", "{}"))
+		var payload: Dictionary = parsed if parsed is Dictionary else {}
+		var amount: int = int(payload.get("amount", 1)) * quantity
+		if kind in ["AdvancedBag", "TopBag", "HealthPotion"]:
 			var consumables: Dictionary = inventory.get("consumables", {}).duplicate()
-			var key := "advancedBagCount" if kind == "AdvancedBag" else "topBagCount"
-			consumables[key] = int(consumables.get(key, 0)) + amount * quantity
+			var key: String = {"AdvancedBag": "advancedBagCount", "TopBag": "topBagCount", "HealthPotion": "healthPotionCount"}[kind]
+			consumables[key] = int(consumables.get(key, 0)) + amount
 			inventory["consumables"] = consumables
+			Game.update_cache("inventory", inventory)
+		elif kind in ["WarriorSoul", "EquipmentFragments", "ClassSoul"]:
+			var materials: Dictionary = Game.lobby.get("materials", {}).duplicate(true)
+			var key := kind.left(1).to_lower() + kind.substr(1)
+			if kind == "ClassSoul": key = str(payload.get("heroClass", "")).to_lower() + "Soul"
+			materials[key] = int(materials.get(key, 0)) + amount
+			Game.update_cache("materials", materials)
+		elif kind == "Cards":
+			Game.refresh_cache("cards")
 		break
 	shop["products"] = products
+	Game.update_cache("shop", shop)
 	var wallet: Dictionary = Game.lobby.get("wallet", {}).duplicate()
 	wallet["gold"] = int(response.get("goldAfter", wallet.get("gold", 0)))
-	Game.lobby["wallet"] = wallet
+	Game.update_cache("wallet", wallet)
 
 func _session_result_current(generation: int, result: Dictionary = {}) -> bool:
 	return generation == Game.gateway.session_generation and not result.get("stale_session", false)
@@ -1247,18 +1508,18 @@ func _map(state: Dictionary) -> void:
 	var grid := GridContainer.new()
 	grid.columns = 6
 	row.add_child(grid)
+	var cells := CellIndex.by_position(state.get("map", []))
+	var moves := CellIndex.by_position(state.get("legal_moves", []))
 	for y in range(6):
 		for x in range(6):
+			var pos := Vector2i(y, x)
+			var cell: Dictionary = cells.get(pos, {})
 			var text := ""
-			for cell in state.get("map", []):
-				if int(cell.row) == y and int(cell.column) == x:
-					if cell.get("is_boss", false): text = "首领"
-					elif cell.get("has_spring", false): text = "源泉"
+			if cell.get("is_boss", false): text = "首领"
+			elif cell.get("has_spring", false): text = "源泉"
 			var current: bool = state.get("self", {}).get("row", -1) == y and state.get("self", {}).get("column", -1) == x
 			if current: text += "\n自己"
-			var legal := false
-			for move in state.get("legal_moves", []):
-				if int(move.row) == y and int(move.column) == x: legal = true
+			var legal: bool = moves.has(pos)
 			var button := _button(grid, text, _move.bind(y, x), not legal or not Game.allowed("room.move"))
 			button.custom_minimum_size = Vector2(148, 88)
 			var layer: int = mini(mini(x, y), mini(5 - x, 5 - y))

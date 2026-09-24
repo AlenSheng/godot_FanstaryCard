@@ -8,10 +8,13 @@ signal combat_feedback(payload: Dictionary)
 signal sound_requested(cue: String)
 signal authentication_required(reason: String)
 signal network_telemetry(sample: Dictionary)
+signal cache_changed(module: String)
 
 const Gateway = preload("res://network/gateway.gd")
 const PlatformService = preload("res://platform/platform_service.gd")
 const CardDetails = preload("res://ui/card_details.gd")
+const CatalogIndex = preload("res://data/catalog_index.gd")
+const ElementRules = preload("res://state/element_rules.gd")
 const CATALOG = preload("res://data/catalog.json")
 const LATEST_WINS_ACTIONS := ["battle.select_target", "combat.preview"]
 const LATEST_WINS_DEBOUNCE_MS := 80
@@ -28,6 +31,10 @@ var combat_preview: Dictionary = {}
 var _preview_request: Dictionary = {}
 var _preview_deadline: int = 0
 var lobby: Dictionary = {}
+var _cache_syncing: Dictionary = {}
+var _cache_sync_again: Dictionary = {}
+var _cache_versions: Dictionary = {}
+var _shop_rotation_check_at := 0
 var room: Dictionary = {}
 var preparation: Dictionary = {}
 var ticket: Dictionary = {}
@@ -58,6 +65,7 @@ var _sound_terminal_rooms: Dictionary = {}
 
 func _process(_delta: float) -> void:
 	_process_client_info()
+	_check_shop_rotation()
 	_flush_latest_commands()
 	var pending_changed := false
 	if not _pending_play.is_empty() and Time.get_ticks_msec() > _play_deadline:
@@ -72,6 +80,17 @@ func _process(_delta: float) -> void:
 		notice.emit("操作未发出，请在连接恢复后重试")
 		pending_changed = true
 	if pending_changed: changed.emit()
+
+func _check_shop_rotation() -> void:
+	if gateway == null or gateway.token.is_empty() or lobby.is_empty(): return
+	if Time.get_ticks_msec() < _shop_rotation_check_at: return
+	_shop_rotation_check_at = Time.get_ticks_msec() + 60000
+	var shop: Dictionary = lobby.get("shop", {})
+	if shop.is_empty(): return
+	# The server rotates the regular shop at 04:00 China time (20:00 UTC).
+	var day: Dictionary = Time.get_datetime_dict_from_unix_time(int(Time.get_unix_time_from_system()) + 4 * 3600)
+	var reset_key := "%04d-%02d-%02d" % [day.year, day.month, day.day]
+	if str(shop.get("resetKey", "")) != reset_key: refresh_cache("shop")
 
 func _ready() -> void:
 	gateway = Gateway.new()
@@ -101,7 +120,10 @@ func _process_client_info() -> void:
 func _apply_server_info(info: Dictionary) -> void:
 	if info == server_info: return
 	server_info = info
-	if lobby.is_empty(): changed.emit()
+	if lobby.is_empty():
+		changed.emit()
+	else:
+		validate_config(str(info.get("configVersion", "")), "服务器")
 
 func login(address: String, display_name: String) -> void:
 	await _login(address, display_name, "local")
@@ -160,6 +182,10 @@ func reconnect() -> void:
 
 func _clear_authenticated_state() -> void:
 	lobby = {}
+	_cache_syncing.clear()
+	_cache_sync_again.clear()
+	_cache_versions.clear()
+	_shop_rotation_check_at = 0
 	room = {}
 	preparation = {}
 	ticket = {}
@@ -252,31 +278,29 @@ func _login(address: String, display_name: String, provider: String) -> void:
 			authentication_reason = {"steam": "此服务器未启用 Steam 登录", "google": "此服务器未启用 Google 登录"}.get(provider, "此服务器未启用本地开发登录")
 			notice.emit(authentication_reason)
 		else:
-			var health: Dictionary = await gateway.request("/health/ready")
-			if health.ok:
-				var sign_in: Dictionary = {"deviceId": gateway.device_id, "displayName": display_name}
-				var ticket_result: Dictionary = {"ok": true}
-				if provider == "steam":
-					ticket_result = await platform.request_login_ticket()
-					if ticket_result.ok: sign_in = {"ticket": ticket_result.ticket, "displayName": display_name}
-				elif provider == "google":
-					ticket_result = await platform.request_google_id_token()
-					if ticket_result.ok: sign_in = {"idToken": ticket_result.id_token, "displayName": display_name}
-				if generation != gateway.session_generation: return
-				if ticket_result.ok:
-					var auth_path: String = str({"local": "/api/v1/auth/local", "steam": "/api/v1/auth/steam", "google": "/api/v1/auth/google"}.get(provider, ""))
-					var result: Dictionary = await gateway.request(auth_path, HTTPClient.METHOD_POST, sign_in)
-					if provider == "steam": platform.release_ticket()
-					if result.ok and result.data is Dictionary:
-						if gateway.accept_session(str(result.data.get("accessToken", "")), str(result.data.get("expiresAt", "")), str(result.data.get("player", {}).get("userId", ""))):
-							if provider == "local": gateway.remember_local_account(str(result.data.get("player", {}).get("displayName", "")))
-							await refresh_lobby()
-							if generation != gateway.session_generation: return
-							if not lobby.is_empty() and configuration_error.is_empty(): gateway.connect_realtime()
-						else: gateway.end_session("服务器未返回有效登录凭证，请重试")
-				else:
-					authentication_reason = ticket_result.error
-					notice.emit(authentication_reason)
+			var sign_in: Dictionary = {"deviceId": gateway.device_id, "displayName": display_name}
+			var ticket_result: Dictionary = {"ok": true}
+			if provider == "steam":
+				ticket_result = await platform.request_login_ticket()
+				if ticket_result.ok: sign_in = {"ticket": ticket_result.ticket, "displayName": display_name}
+			elif provider == "google":
+				ticket_result = await platform.request_google_id_token()
+				if ticket_result.ok: sign_in = {"idToken": ticket_result.id_token, "displayName": display_name}
+			if generation != gateway.session_generation: return
+			if ticket_result.ok:
+				var auth_path: String = str({"local": "/api/v1/auth/local", "steam": "/api/v1/auth/steam", "google": "/api/v1/auth/google"}.get(provider, ""))
+				var result: Dictionary = await gateway.request(auth_path, HTTPClient.METHOD_POST, sign_in)
+				if provider == "steam": platform.release_ticket()
+				if result.ok and result.data is Dictionary:
+					if gateway.accept_session(str(result.data.get("accessToken", "")), str(result.data.get("expiresAt", "")), str(result.data.get("player", {}).get("userId", ""))):
+						if provider == "local": gateway.remember_local_account(str(result.data.get("player", {}).get("displayName", "")))
+						await refresh_lobby()
+						if generation != gateway.session_generation: return
+						if not lobby.is_empty() and configuration_error.is_empty(): gateway.connect_realtime()
+					else: gateway.end_session("服务器未返回有效登录凭证，请重试")
+			else:
+				authentication_reason = ticket_result.error
+				notice.emit(authentication_reason)
 	if generation != gateway.session_generation: return
 	busy = false
 	changed.emit()
@@ -305,8 +329,25 @@ func refresh_lobby() -> void:
 	var result: Dictionary = await gateway.request("/api/v1/bootstrap")
 	if not result.ok: return
 	if not result.data is Dictionary or not validate_config(str(result.data.get("configVersion", "")), "大厅"): return
+	if generation != gateway.session_generation: return
 	lobby = result.data
-	await refresh_mail()
+	for module in ["shop", "market", "inventory", "cards", "decks", "wallet", "mail"]:
+		_cache_versions[module] = int(_cache_versions.get(module, 0)) + 1
+	if lobby.get("mail") is Dictionary:
+		mail = lobby.mail
+	else:
+		await refresh_mail()
+		lobby["mail"] = mail
+	if generation != gateway.session_generation: return
+	# Older servers omit the optional account snapshot fields. Fetch those only
+	# once during login/recovery, never when a module is opened.
+	if not lobby.get("shop") is Dictionary or not lobby.get("market") is Array or not lobby.get("inventory") is Dictionary:
+		var economy: Dictionary = await gateway.request("/api/v1/economy/context")
+		if generation != gateway.session_generation: return
+		if economy.ok and economy.data is Dictionary:
+			lobby["shop"] = economy.data.get("shop", {})
+			lobby["market"] = economy.data.get("market", [])
+			lobby["inventory"] = economy.data.get("inventory", {})
 	if lobby.player.get("selectedClass") != null: hero_class = lobby.player.selectedClass
 	if lobby.get("unfinishedMatch") != null:
 		gateway.room_id = lobby.unfinishedMatch.roomId
@@ -316,29 +357,81 @@ func refresh_lobby() -> void:
 	elif room.is_empty() and ticket.is_empty():
 		gateway.room_id = ""
 		gateway.room_revision = 0
-		var active: Dictionary = await gateway.request("/api/v1/preparations", HTTPClient.METHOD_GET, null, [404])
-		if generation != gateway.session_generation: return
-		if active.ok:
-			if not _preparation_config_valid(active.data): return
-			preparation = active.data
-		elif active.status == 404: preparation = {}
+		if lobby.has("activePreparation"):
+			preparation = lobby.activePreparation if lobby.activePreparation is Dictionary else {}
+		else:
+			var active: Dictionary = await gateway.request("/api/v1/preparations", HTTPClient.METHOD_GET, null, [404])
+			if generation != gateway.session_generation: return
+			if active.ok:
+				if not _preparation_config_valid(active.data): return
+				preparation = active.data
+			elif active.status == 404: preparation = {}
 	changed.emit()
+
+func update_cache(module: String, value: Variant) -> void:
+	if lobby.is_empty(): return
+	if module == "mail" and value is Dictionary: mail = value
+	lobby[module] = value
+	_cache_versions[module] = int(_cache_versions.get(module, 0)) + 1
+	cache_changed.emit(module)
+	if module == "cards" and value is Array and lobby.get("shop") is Dictionary:
+		var ownership: Dictionary = {}
+		for card in value:
+			if card is Dictionary: ownership[str(card.get("cardId", ""))] = bool(card.get("unlocked", false)) and int(card.get("copyCount", 0)) > 0
+		var next_shop: Dictionary = lobby.shop.duplicate(true)
+		var products: Array = next_shop.get("products", [])
+		var changed_shop := false
+		for index in products.size():
+			var product: Dictionary = products[index]
+			if str(product.get("kind", "")) != "Cards": continue
+			var parsed: Variant = JSON.parse_string(str(product.get("payload", "")))
+			if not parsed is Dictionary or not parsed.has("cardId"): continue
+			var owned := bool(ownership.get(str(parsed.cardId), false))
+			if bool(product.get("alreadyOwned", false)) == owned: continue
+			product["alreadyOwned"] = owned
+			products[index] = product
+			changed_shop = true
+		if changed_shop:
+			next_shop["products"] = products
+			lobby["shop"] = next_shop
+			cache_changed.emit("shop")
+
+func refresh_cache(module: String) -> void:
+	if gateway.token.is_empty() or lobby.is_empty(): return
+	if _cache_syncing.has(module):
+		_cache_sync_again[module] = true
+		return
+	var paths := {"shop": "/api/v1/shop/", "market": "/api/v1/market/", "inventory": "/api/v1/inventory/", "cards": "/api/v1/cards/", "decks": "/api/v1/decks/", "mail": "/api/v1/mail/", "wallet": "/api/v1/economy/wallet"}
+	if not paths.has(module): return
+	var generation: int = gateway.session_generation
+	_cache_syncing[module] = generation
+	while generation == gateway.session_generation:
+		_cache_sync_again.erase(module)
+		var version: int = int(_cache_versions.get(module, 0))
+		var result: Dictionary = await gateway.request(paths[module], HTTPClient.METHOD_GET, null, [404])
+		if generation != gateway.session_generation: break
+		if int(_cache_versions.get(module, 0)) != version:
+			_cache_sync_again[module] = true
+		elif result.ok:
+			update_cache(module, result.data)
+		elif module == "mail" and int(result.get("status", 0)) == 404:
+			update_cache("mail", {"items": [], "unreadCount": 0})
+		if not _cache_sync_again.has(module): break
+	if _cache_syncing.get(module) == generation:
+		_cache_syncing.erase(module)
+		_cache_sync_again.erase(module)
 
 func refresh_mail() -> void:
 	if gateway.token.is_empty(): return
 	var result: Dictionary = await gateway.request("/api/v1/mail", HTTPClient.METHOD_GET, null, [404])
 	if result.ok and result.data is Dictionary:
-		mail = result.data
-		changed.emit()
+		update_cache("mail", result.data)
 	elif result.status == 404:
-		mail = {"items": [], "unreadCount": 0}
+		update_cache("mail", {"items": [], "unreadCount": 0})
 
 func mark_mail_read(id: String, rerender: bool = true) -> void:
 	var result: Dictionary = await gateway.request("/api/v1/mail/%s/read" % id.uri_encode(), HTTPClient.METHOD_POST, {})
 	if not result.ok: return
-	if rerender:
-		await refresh_mail()
-		return
 	for index in range(mail.get("items", []).size()):
 		var item: Dictionary = mail.items[index]
 		if str(item.get("id", item.get("mailId", ""))) == id:
@@ -347,22 +440,57 @@ func mark_mail_read(id: String, rerender: bool = true) -> void:
 				mail.items[index] = item
 				mail.unreadCount = maxi(0, int(mail.get("unreadCount", 0)) - 1)
 			break
+	update_cache("mail", mail)
+	if rerender: changed.emit()
 
 func claim_mail(id: String) -> void:
 	var result: Dictionary = await gateway.request("/api/v1/mail/%s/claim" % id.uri_encode(), HTTPClient.METHOD_POST, {})
 	if result.ok:
-		_apply_claimed_mail(id, result.data.get("granted", []) if result.data is Dictionary else [])
+		if result.data is Dictionary and bool(result.data.get("alreadyClaimed", false)):
+			await refresh_lobby()
+			notice.emit("邮件附件已领取")
+			return
+		var granted: Array = result.data.get("granted", []) if result.data is Dictionary else []
+		_apply_claimed_mail(id, granted)
 		notice.emit("邮件附件已领取")
-		refresh_lobby()
+		_sync_claimed_assets(granted)
 
 func claim_all_mail() -> void:
 	var result: Dictionary = await gateway.request("/api/v1/mail/claim-all", HTTPClient.METHOD_POST, {})
 	if result.ok:
+		if not result.data is Dictionary or not result.data.get("claims") is Array:
+			# Older servers do not report which mails they actually granted. Re-read
+			# authoritative balances instead of crediting potentially stale mail.
+			await refresh_lobby()
+			notice.emit("邮件附件已全部领取")
+			return
+		var pending_ids: Dictionary = {}
 		for item in mail.get("items", []):
 			if item is Dictionary and not bool(item.get("claimed", false)):
-				_apply_claimed_mail(str(item.get("id", item.get("mailId", ""))), item.get("attachments", []))
+				pending_ids[str(item.get("id", item.get("mailId", "")))] = true
+		var actual_ids: Dictionary = {}
+		for claim in result.data.claims:
+			if claim is Dictionary: actual_ids[str(claim.get("mailId", ""))] = true
+		if pending_ids != actual_ids:
+			# A different client changed the mailbox. Reconcile all balances once.
+			await refresh_lobby()
+			notice.emit("邮件附件已全部领取")
+			return
+		var granted: Array = []
+		for claim in result.data.claims:
+			if not claim is Dictionary: continue
+			var attachments: Array = claim.get("granted", [])
+			_apply_claimed_mail(str(claim.get("mailId", "")), attachments)
+			granted.append_array(attachments)
 		notice.emit("邮件附件已全部领取")
-		refresh_lobby()
+		_sync_claimed_assets(granted)
+
+func _sync_claimed_assets(granted: Array) -> void:
+	update_cache("mail", mail)
+	if granted.any(func(item): return item is Dictionary and item.get("kind", "") in ["Equipment", "HealthPotion", "AdvancedBag", "TopBag"]):
+		refresh_cache("inventory")
+	if granted.any(func(item): return item is Dictionary and item.get("kind", "") == "Card"):
+		refresh_cache("cards")
 
 func _apply_claimed_mail(id: String, granted: Array) -> void:
 	for index in range(mail.get("items", []).size()):
@@ -386,23 +514,34 @@ func _apply_claimed_mail(id: String, granted: Array) -> void:
 			materials[key] = int(materials.get(key, 0)) + amount
 	lobby["wallet"] = wallet
 	lobby["materials"] = materials
+	cache_changed.emit("wallet")
 	changed.emit()
 
 func mark_all_mail_read() -> void:
 	var result: Dictionary = await gateway.request("/api/v1/mail/read-all", HTTPClient.METHOD_POST, {})
-	if result.ok: await refresh_mail()
+	if result.ok:
+		for index in range(mail.get("items", []).size()):
+			var item: Dictionary = mail.items[index]
+			item["read"] = true
+			mail.items[index] = item
+		mail["unreadCount"] = 0
+		update_cache("mail", mail)
 
 func delete_mail(id: String) -> void:
 	var result: Dictionary = await gateway.request("/api/v1/mail/%s" % id.uri_encode(), HTTPClient.METHOD_DELETE, {})
 	if result.ok:
 		notice.emit("邮件已删除")
-		await refresh_mail()
+		mail["items"] = mail.get("items", []).filter(func(item): return str(item.get("id", item.get("mailId", ""))) != id)
+		mail["unreadCount"] = mail.items.filter(func(item): return not bool(item.get("read", false))).size()
+		update_cache("mail", mail)
 
 func delete_read_mail() -> void:
 	var result: Dictionary = await gateway.request("/api/v1/mail/read", HTTPClient.METHOD_DELETE, {})
 	if result.ok:
 		notice.emit("已读邮件已清理")
-		await refresh_mail()
+		mail["items"] = mail.get("items", []).filter(func(item): return not bool(item.get("read", false)))
+		mail["unreadCount"] = mail.items.size()
+		update_cache("mail", mail)
 
 func select_class(value: String) -> void:
 	if busy or not room.is_empty() or not preparation.is_empty() or not ticket.is_empty(): return
@@ -460,7 +599,8 @@ func prepare(tier: String, potion_count: int) -> void:
 	if busy or deck().is_empty() or not configuration_error.is_empty(): return
 	busy = true
 	var generation: int = gateway.session_generation
-	if not await _refresh_server_info():
+	var current_info: bool = not server_info.is_empty() and _server_info_address == gateway.base_url
+	if not ((current_info and validate_config(str(server_info.get("configVersion", "")), "服务器")) or await _refresh_server_info()):
 		if generation != gateway.session_generation: return
 		busy = false
 		changed.emit()
@@ -472,7 +612,10 @@ func prepare(tier: String, potion_count: int) -> void:
 		"heroClass": hero_class, "deckVersion": deck().version, "equipmentIds": loadout().get("equipmentIds", [null, null, null, null, null]),
 		"backpackTier": tier, "safeSlotIndexes": safe, "potionCount": potion_count, "difficulty": "Standard"})
 	if generation != gateway.session_generation: return
-	if result.ok and _preparation_config_valid(result.data): preparation = result.data
+	if result.ok and _preparation_config_valid(result.data):
+		preparation = result.data
+		lobby["activePreparation"] = result.data
+		refresh_cache("inventory")
 	busy = false
 	changed.emit()
 
@@ -480,7 +623,8 @@ func enqueue() -> void:
 	if busy or preparation.is_empty() or not gateway.online or not configuration_error.is_empty(): return
 	busy = true
 	var generation: int = gateway.session_generation
-	if not await _refresh_server_info() or not _preparation_config_valid(preparation):
+	var current_info: bool = not server_info.is_empty() and _server_info_address == gateway.base_url
+	if not ((current_info and validate_config(str(server_info.get("configVersion", "")), "服务器")) or await _refresh_server_info()) or not _preparation_config_valid(preparation):
 		if generation != gateway.session_generation: return
 		busy = false
 		changed.emit()
@@ -504,7 +648,8 @@ func cancel_preparation() -> void:
 	if result.ok:
 		ticket = {}
 		preparation = {}
-		await refresh_lobby()
+		lobby["activePreparation"] = null
+		refresh_cache("inventory")
 	if generation != gateway.session_generation: return
 	busy = false
 	changed.emit()
@@ -592,18 +737,23 @@ func _status_bonuses(status: Dictionary) -> Dictionary:
 	return result
 
 func _counter(attacker: String, target: String) -> bool:
-	return [["Water", "Fire"], ["Fire", "Metal"], ["Metal", "Wood"], ["Wood", "Earth"], ["Earth", "Water"]].any(func(pair): return pair[0] == attacker and pair[1] == target)
+	return ElementRules.counters(attacker, target)
 
 func _conflict_pair(left: String, right: String) -> bool:
-	return left != right and [["Wood", "Earth"], ["Earth", "Water"], ["Water", "Fire"], ["Fire", "Metal"], ["Metal", "Wood"]].any(func(pair):
-		return (pair[0] == left and pair[1] == right) or (pair[0] == right and pair[1] == left))
+	return ElementRules.conflicts(left, right)
 
 func _generated(element: String) -> String:
-	return {"Wood": "Fire", "Fire": "Earth", "Earth": "Metal", "Metal": "Water", "Water": "Wood"}.get(element, "None")
+	return ElementRules.generated(element)
 
-func _target_resistance(element: String, battle: Dictionary) -> float:
+func _monster_by_id(battle: Dictionary) -> Dictionary:
+	var target_id = battle.get("current_target_id", "")
+	for monster in battle.get("monsters", []):
+		if monster.get("monster_id", "") == target_id: return monster
+	return {}
+
+func _target_resistance(element: String, battle: Dictionary, monster: Dictionary = {}) -> float:
 	if battle.has("opponent_status"): return _status_bonuses(battle.opponent_status).get("resistance_" + element, 0.0)
-	var monster: Dictionary = battle.get("monsters", []).filter(func(value): return value.get("monster_id", "") == battle.get("current_target_id", "")).front()
+	if monster.is_empty(): monster = _monster_by_id(battle)
 	var main := str(monster.get("intent_element", "None"))
 	if main == "None": return 0.0
 	var id := str(monster.get("monster_id", ""))
@@ -625,16 +775,18 @@ func _target_resistance(element: String, battle: Dictionary) -> float:
 func _calculate_combat_preview(ids: Array) -> Dictionary:
 	if ids.is_empty() or not allowed("battle.play_cards"): return {}
 	var battle: Dictionary = room.get("duel", room.get("pve", {}))
-	var hand: Array = room.get("player", {}).get("hand", [])
+	var hand_by_id := {}
+	for card in room.get("player", {}).get("hand", []):
+		var instance_id = card.get("instance_id", "")
+		if not hand_by_id.has(instance_id): hand_by_id[instance_id] = card
 	var cards: Array = []
 	for id in ids:
-		var instance: Dictionary = hand.filter(func(value): return value.get("instance_id", "") == id).front()
+		var instance: Dictionary = hand_by_id.get(id, {})
 		if instance.is_empty(): return {}
-		var definition: Dictionary = {}
-		for row in CATALOG.data.tables.Cards:
-			if row.id == instance.get("card_id", ""): definition = row; break
+		var definition: Dictionary = CatalogIndex.card(str(instance.get("card_id", "")))
 		if definition.is_empty(): return {}
 		cards.append(CardDetails.with_element(CardDetails.at_level(definition, int(instance.get("level", 0))), str(instance.get("element_override", ""))))
+	var target_monster := _monster_by_id(battle)
 	var status := _status_bonuses(room.get("player", {}).get("battle_status", {}))
 	var elemental: Array = cards.filter(func(card): return int(card.get("elemental_damage", 0)) > 0 and str(card.get("element", "None")) != "None" and int(card.get("secondary_elemental_damage", 0)) == 0)
 	var counts := {}
@@ -668,7 +820,7 @@ func _calculate_combat_preview(ids: Array) -> Dictionary:
 		resonance = 1.0 + 0.20 * main_core_stacks
 		var cancel_bonus := float(cards.map(func(card): return float(card.get("conflict_cancel_bonus", 0))).max())
 		cancellation = minf(0.80, 0.20 * conflict_pairs + cancel_bonus) if conflict_pairs > 0 else 0.0
-		var shared_multiplier: float = (1.0 + float(status.get("damage_" + core, 0.0))) * (1.0 - _target_resistance(core, battle))
+		var shared_multiplier: float = (1.0 + float(status.get("damage_" + core, 0.0))) * (1.0 - _target_resistance(core, battle, target_monster))
 		for i in cards.size():
 			var card: Dictionary = cards[i]
 			if int(card.get("elemental_damage", 0)) <= 0 or str(card.get("element", "None")) == "None" or int(card.get("secondary_elemental_damage", 0)) > 0: continue
@@ -684,7 +836,7 @@ func _calculate_combat_preview(ids: Array) -> Dictionary:
 			var secondary := int(card.get("secondary_elemental_damage", 0))
 			if reveal and card.get("secondary_element", "None") == reveal_element: secondary = int(floor(secondary * 1.3))
 			for pair in [[str(card.get("element", "None")), int(bases[i])], [str(card.get("secondary_element", "None")), secondary]]:
-				var elemental_multiplier := (1.0 + float(status.get("damage_" + pair[0], 0.0))) * (1.0 - _target_resistance(pair[0], battle)) if core.is_empty() else (1.0 + float(status.get("damage_" + core, 0.0))) * (1.0 - _target_resistance(core, battle))
+				var elemental_multiplier := (1.0 + float(status.get("damage_" + pair[0], 0.0))) * (1.0 - _target_resistance(pair[0], battle, target_monster)) if core.is_empty() else (1.0 + float(status.get("damage_" + core, 0.0))) * (1.0 - _target_resistance(core, battle, target_monster))
 				var value := int(floor(pair[1] * elemental_multiplier))
 				if value > 0: segments[pair[0]] = int(segments.get(pair[0], 0)) + value; total += value
 		# Printed direct damage is already a direct segment.  Piercing is an
@@ -692,8 +844,9 @@ func _calculate_combat_preview(ids: Array) -> Dictionary:
 		direct += int(card.get("direct_damage", 0))
 		direct += int(floor((bases[i] + int(card.get("secondary_elemental_damage", 0)) + int(card.get("direct_damage", 0))) * float(status.get("piercing", 0.0))))
 	if direct > 0: segments["Direct"] = direct; total += direct
-	var target_shield := int((battle.get("opponent", {}) if battle.has("opponent") else battle.get("monsters", []).filter(func(value): return value.get("monster_id", "") == battle.get("current_target_id", "")).front()).get("shield", 0))
-	var actual := mini(total, target_shield + int((battle.get("opponent", {}) if battle.has("opponent") else battle.get("monsters", []).filter(func(value): return value.get("monster_id", "") == battle.get("current_target_id", "")).front()).get("hp", 0)))
+	var target: Dictionary = battle.get("opponent", {}) if battle.has("opponent") else target_monster
+	var target_shield := int(target.get("shield", 0))
+	var actual := mini(total, target_shield + int(target.get("hp", 0)))
 	var visible_segments: Array = []
 	var remaining := actual
 	for kind in segments:
@@ -860,7 +1013,7 @@ func _retry_rejected_command(payload: Dictionary) -> bool:
 	_pending_commands.erase(request_id)
 	if pending.action == "battle.play_cards": _pending_play = {}
 	# Retry only an explicit pre-execution rejection, never an ambiguous timeout.
-	if pending.retry or payload.get("_replayed", false) or Time.get_ticks_msec() > int(pending.get("deadline", 0)): return false
+	if pending.retry or payload.get("_replayed", false) or Time.get_ticks_msec() > int(pending.get("deadline", 0)) or (pending.action == "battle.play_cards" and Time.get_ticks_msec() > _play_deadline): return false
 	var is_revision_conflict: bool = payload.get("code", "") == "REVISION_CONFLICT" or (
 		payload.get("code", "") == "COMMAND_REJECTED" and
 		str(payload.get("detail", "")).begins_with("Room revision conflict."))
@@ -928,7 +1081,11 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 		"combat.previewed", "combat.preview_rejected": pass
 		"inventory.changed":
 			if str(payload.get("action", "")) == "shop.refresh":
+				refresh_cache("shop")
 				shop_refreshed.emit(payload)
+				return
+			if str(payload.get("action", "")).begins_with("market."):
+				_apply_market_event(payload)
 				return
 			if str(payload.get("action", "")) == "admin.refresh":
 				refresh_lobby()
@@ -938,6 +1095,57 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 				if event_request_id.is_empty(): _request_snapshot()
 		"relic.contents": relic_details[str(payload.get("pile_id", ""))] = payload
 	changed.emit()
+
+func _apply_market_event(payload: Dictionary) -> void:
+	var wire: Dictionary = payload.get("listing", {})
+	if wire.is_empty():
+		refresh_cache("market")
+		return
+	var item_wire: Dictionary = wire.get("equipment", {})
+	var item := {
+		"instanceId": str(item_wire.get("instance_id", "")), "slot": str(item_wire.get("slot", "")),
+		"quality": str(item_wire.get("quality", "")), "level": int(item_wire.get("level", 0)),
+		"isBound": bool(item_wire.get("is_bound", false)), "location": str(item_wire.get("location", "")),
+		"version": int(item_wire.get("version", 0)), "element": str(item_wire.get("element", "")),
+		"effectAffix": str(item_wire.get("effect_affix", "")), "secondaryTrait": str(item_wire.get("secondary_trait", ""))
+	}
+	var listing_id := str(wire.get("listing_id", ""))
+	if listing_id.is_empty(): return
+	var entry := {
+		"listingId": listing_id, "sellerId": str(wire.get("seller_id", "")),
+		"equipmentId": str(wire.get("equipment_id", "")), "priceGold": int(wire.get("price_gold", 0)),
+		"status": str(wire.get("status", "")), "version": int(wire.get("version", 0)),
+		"createdAt": Time.get_datetime_string_from_unix_time(int(int(wire.get("created_at_unix_ms", 0)) / 1000)) + "Z",
+		"expiresAt": Time.get_datetime_string_from_unix_time(int(int(wire.get("expires_at_unix_ms", 0)) / 1000)) + "Z",
+		"equipment": item
+	}
+	var updated: Array = lobby.get("market", []).duplicate(true)
+	for existing in updated:
+		if str(existing.get("listingId", "")) == listing_id and int(existing.get("version", 0)) > int(entry.version): return
+	updated = updated.filter(func(existing): return str(existing.get("listingId", "")) != listing_id)
+	if entry.status == "Active" and int(wire.get("expires_at_unix_ms", 0)) > Time.get_unix_time_from_system() * 1000:
+		updated.push_front(entry)
+	update_cache("market", updated)
+	if entry.sellerId != str(lobby.get("player", {}).get("userId", "")): return
+	if payload.has("seller_gold_after"):
+		var wallet: Dictionary = lobby.get("wallet", {}).duplicate(true)
+		wallet["gold"] = int(payload.seller_gold_after)
+		update_cache("wallet", wallet)
+	if str(payload.get("action", "")) not in ["market.listed", "market.cancelled", "market.expired"]: return
+	var account_inventory: Dictionary = lobby.get("inventory", {}).duplicate(true)
+	if account_inventory.is_empty(): return
+	var items: Array = account_inventory.get("equipments", []).duplicate(true)
+	items = items.filter(func(value): return str(value.get("instanceId", "")) != entry.equipmentId)
+	if str(payload.get("action", "")) in ["market.cancelled", "market.expired"]: items.append(item)
+	account_inventory["equipments"] = items
+	var count := 0
+	for value in items:
+		if str(value.get("location", "")) == "Inventory": count += 1
+	var summary: Dictionary = account_inventory.get("summary", {}).duplicate(true)
+	summary["equipmentCount"] = count
+	summary["freeSlots"] = maxi(0, int(summary.get("capacity", 50)) - count)
+	account_inventory["summary"] = summary
+	update_cache("inventory", account_inventory)
 
 func _on_gateway_telemetry(sample: Dictionary) -> void:
 	var should_render := false

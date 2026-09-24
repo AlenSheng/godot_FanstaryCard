@@ -12,6 +12,7 @@ using FantasyCard.Server.Bootstrap;
 using FantasyCard.Server.Common;
 using FantasyCard.Server.Identity;
 using FantasyCard.Server.Matchmaking;
+using FantasyCard.Server.Mail;
 using FantasyCard.Server.Persistence;
 using FantasyCard.Server.Progression;
 using FantasyCard.Server.Realtime;
@@ -555,7 +556,7 @@ public sealed class PostgresRuntimeIntegrationTests
         await AssertProvisionedAggregateAsync(database, playerId);
 
         var progression = new ProgressionRepository(database.DataSource);
-        var bootstrap = await new BootstrapRepository(database.DataSource, progression, TimeProvider.System)
+        var bootstrap = await CreateBootstrapRepository(database.DataSource, progression, TimeProvider.System)
             .GetAsync(profiles[0], cancellationToken);
         Assert.Equal(playerId, bootstrap.Player.UserId);
         Assert.Equal(BootstrapRepository.CurrentConfigVersion, bootstrap.ConfigVersion);
@@ -565,6 +566,11 @@ public sealed class PostgresRuntimeIntegrationTests
         Assert.All(bootstrap.Decks, deck => Assert.Equal(20, deck.CardIds.Count));
         Assert.NotEmpty(bootstrap.Cards);
         Assert.Equal(0, bootstrap.InventorySummary.EquipmentCount);
+        Assert.NotNull(bootstrap.Inventory);
+        Assert.NotNull(bootstrap.Shop);
+        Assert.NotNull(bootstrap.Market);
+        Assert.NotNull(bootstrap.Mail);
+        Assert.Null(bootstrap.ActivePreparation);
         Assert.Null(bootstrap.UnfinishedMatch);
         Assert.Null(bootstrap.UnfinishedSettlement);
     }
@@ -800,7 +806,7 @@ public sealed class PostgresRuntimeIntegrationTests
             cancellationToken);
         await database.InsertWornFeetAsync(player.UserId, HeroClass.Priest, cancellationToken);
         var progression = new ProgressionRepository(database.DataSource);
-        var bootstrap = await new BootstrapRepository(database.DataSource, progression, TimeProvider.System)
+        var bootstrap = await CreateBootstrapRepository(database.DataSource, progression, TimeProvider.System)
             .GetAsync(player, cancellationToken);
         var deck = Assert.Single(bootstrap.Decks, value => value.HeroClass == HeroClassDto.Priest);
         var loadout = Assert.Single(
@@ -1477,7 +1483,7 @@ public sealed class PostgresRuntimeIntegrationTests
         Assert.Equal(1L, await database.ScalarAsync<long>(
             "SELECT count(*) FROM settlement_asset_holds WHERE settlement_id=$1 AND state='Pending'", settlement.SettlementId));
         var progression = new ProgressionRepository(database.DataSource);
-        var bootstrapRepository = new BootstrapRepository(database.DataSource, progression, time);
+        var bootstrapRepository = CreateBootstrapRepository(database.DataSource, progression, time);
         Assert.Null((await bootstrapRepository.GetAsync(player, cancellationToken)).UnfinishedSettlement);
         await Assert.ThrowsAsync<SettlementNotReadyException>(() => firstRepository.AcknowledgeAsync(
             player.UserId, settlement.SettlementId, "settlement-pending", cancellationToken));
@@ -1731,6 +1737,14 @@ public sealed class PostgresRuntimeIntegrationTests
         Assert.Equal(3L, await database.ScalarAsync<long>(
             "SELECT count(*) FROM match_players WHERE match_id=$1 AND is_bot=true AND state='Active'", pending.MatchId));
     }
+
+    private static BootstrapRepository CreateBootstrapRepository(
+        NpgsqlDataSource dataSource,
+        ProgressionRepository progression,
+        TimeProvider timeProvider) =>
+        new(dataSource, progression, new EconomyRepository(dataSource, timeProvider),
+            new MailRepository(dataSource, timeProvider),
+            new PreparationRepository(dataSource, timeProvider), timeProvider);
 
     private static IdentityRepository CreateIdentityRepository(NpgsqlDataSource dataSource) =>
         new(dataSource, new PlayerProvisioningService());

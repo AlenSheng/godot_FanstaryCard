@@ -9,6 +9,36 @@ namespace FantasyCard.Server.Progression;
 
 public sealed class PlayerProvisioningService
 {
+    public async Task<bool> IsProvisionedAsync(
+        NpgsqlConnection connection,
+        NpgsqlTransaction transaction,
+        Guid playerId,
+        CancellationToken cancellationToken)
+    {
+        var classCount = Enum.GetValues<HeroClass>().Length;
+        var cardCount = GameConfigCatalog.Current.Cards.Count(card => card.IsCodex);
+        await using var command = new NpgsqlCommand(
+            """
+            SELECT
+                (SELECT count(*) FROM player_cards WHERE player_id=$1) >= $2
+                AND (SELECT count(*) FROM player_decks WHERE player_id=$1) = $3
+                AND (SELECT count(*) FROM player_deck_cards dc
+                     JOIN player_decks d ON d.deck_id=dc.deck_id WHERE d.player_id=$1) = $4
+                AND (SELECT count(*) FROM class_weapons WHERE player_id=$1) = $3
+                AND (SELECT count(*) FROM player_loadouts WHERE player_id=$1) = $3
+                AND EXISTS (SELECT 1 FROM player_wallets WHERE player_id=$1)
+                AND EXISTS (SELECT 1 FROM player_materials WHERE player_id=$1)
+                AND EXISTS (SELECT 1 FROM player_consumables WHERE player_id=$1)
+            """,
+            connection,
+            transaction);
+        command.Parameters.AddWithValue(playerId);
+        command.Parameters.AddWithValue(cardCount);
+        command.Parameters.AddWithValue(classCount);
+        command.Parameters.AddWithValue(classCount * 20);
+        return (bool)(await command.ExecuteScalarAsync(cancellationToken) ?? false);
+    }
+
     public async Task ProvisionAsync(
         NpgsqlConnection connection,
         NpgsqlTransaction transaction,

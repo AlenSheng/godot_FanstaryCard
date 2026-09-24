@@ -140,6 +140,7 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
         }
 
         var attachmentCount = 0;
+        var claims = new List<MailClaimResponse>(pending.Count);
         foreach (var mail in pending)
         {
             var attachments = ReadAttachments(mail.Payload);
@@ -153,9 +154,10 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
             update.Parameters.AddWithValue(mail.Id);
             update.Parameters.AddWithValue(playerId);
             await update.ExecuteNonQueryAsync(cancellationToken);
+            claims.Add(new MailClaimResponse(mail.Id, false, attachments));
         }
 
-        var response = new MailClaimAllResponse(pending.Count, attachmentCount);
+        var response = new MailClaimAllResponse(pending.Count, attachmentCount, claims);
         await PersistentIdempotency.WriteAsync(
             connection, transaction, playerId, "mail.claim-all", requestId, requestHash, response, now, cancellationToken);
         await transaction.CommitAsync(cancellationToken);

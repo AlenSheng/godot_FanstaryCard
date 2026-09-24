@@ -2,6 +2,8 @@ using FantasyCard.Contracts.Bootstrap;
 using FantasyCard.Contracts.Matchmaking;
 using FantasyCard.Contracts.Players;
 using FantasyCard.Contracts.Progression;
+using FantasyCard.Server.Mail;
+using FantasyCard.Server.Matchmaking;
 using FantasyCard.Domain.Configuration;
 using FantasyCard.Domain.Players;
 using FantasyCard.Server.Players;
@@ -14,6 +16,9 @@ namespace FantasyCard.Server.Bootstrap;
 public sealed class BootstrapRepository(
     NpgsqlDataSource dataSource,
     ProgressionRepository progressionRepository,
+    EconomyRepository economyRepository,
+    MailRepository mailRepository,
+    PreparationRepository preparationRepository,
     TimeProvider timeProvider)
 {
     public static string CurrentConfigVersion => GameConfigCatalog.Current.Version;
@@ -28,11 +33,17 @@ public sealed class BootstrapRepository(
         var materialsTask = GetMaterialsAsync(player.UserId, cancellationToken);
         var weaponsTask = GetWeaponsAsync(player.UserId, cancellationToken);
         var loadoutsTask = GetLoadoutsAsync(player.UserId, cancellationToken);
-        var inventoryTask = GetInventorySummaryAsync(player.UserId, cancellationToken);
         var unfinishedMatchTask = GetUnfinishedMatchAsync(player.UserId, cancellationToken);
         var unfinishedSettlementTask = GetUnfinishedSettlementAsync(player.UserId, cancellationToken);
+        var inventoryFullTask = progressionRepository.GetInventoryAsync(player.UserId, cancellationToken);
+        var shopTask = economyRepository.GetShopAsync(player.UserId, cancellationToken);
+        var marketTask = economyRepository.GetMarketAsync(cancellationToken);
+        var mailTask = mailRepository.GetAsync(player.UserId, cancellationToken);
+        var activePreparationTask = preparationRepository.GetActiveAsync(player.UserId, cancellationToken);
 
-        await Task.WhenAll(decksTask, cardsTask, walletTask, materialsTask, weaponsTask, loadoutsTask, inventoryTask, unfinishedMatchTask, unfinishedSettlementTask);
+        await Task.WhenAll(decksTask, cardsTask, walletTask, materialsTask, weaponsTask, loadoutsTask,
+            unfinishedMatchTask, unfinishedSettlementTask, inventoryFullTask, shopTask, marketTask, mailTask,
+            activePreparationTask);
         return new BootstrapResponse(
             timeProvider.GetUtcNow(),
             CurrentConfigVersion,
@@ -43,9 +54,16 @@ public sealed class BootstrapRepository(
             await loadoutsTask,
             await decksTask,
             await cardsTask,
-            await inventoryTask,
+            (await inventoryFullTask).Summary,
             await unfinishedMatchTask,
-            await unfinishedSettlementTask);
+            await unfinishedSettlementTask)
+        {
+            Inventory = await inventoryFullTask,
+            Shop = await shopTask,
+            Market = await marketTask,
+            Mail = await mailTask,
+            ActivePreparation = await activePreparationTask
+        };
     }
 
     private async Task<SettlementResponse?> GetUnfinishedSettlementAsync(

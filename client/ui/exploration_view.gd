@@ -7,6 +7,7 @@ const InventoryView = preload("res://ui/inventory_view.gd")
 const Details = preload("res://ui/equipment_details.gd")
 const BattleDetails = preload("res://ui/battle_details.gd")
 const DragScroll = preload("res://ui/drag_scroll.gd")
+const CellIndex = preload("res://ui/cell_index.gd")
 const TemporaryBagItem = preload("res://ui/temporary_bag_item.gd")
 const PANEL := "UI/CardCodex/card_codex_dialog_panel_normal.png"
 const SLOT := Art.COMMON_CELL_KEY
@@ -285,15 +286,16 @@ static func _map(ui: Control, host: Control, state: Dictionary) -> void:
 	var origin := Vector2(424, 144)
 	var stride := Vector2(145, 126)
 	var colors: Array = [Color("79909c"), Color("a3a575"), Color("c6aa81")]
+	var cells := CellIndex.by_position(state.get("map", []))
+	var moves := CellIndex.by_position(state.get("legal_moves", []))
 	for row in range(6):
 		for column in range(6):
 			var layer: int = mini(mini(row, column), mini(5 - row, 5 - column))
+			var pos := Vector2i(row, column)
 			var current: bool = int(state.get("self", {}).get("row", -1)) == row and int(state.get("self", {}).get("column", -1)) == column
-			var legal: bool = state.get("legal_moves", []).any(func(move): return int(move.row) == row and int(move.column) == column)
+			var legal: bool = moves.has(pos)
 			var rect := Rect2(origin + Vector2(column * stride.x, row * stride.y), Vector2(137, 118))
-			var cell := {}
-			for candidate in state.get("map", []):
-				if int(candidate.row) == row and int(candidate.column) == column: cell = candidate; break
+			var cell: Dictionary = cells.get(pos, {})
 			var value := "自己" if current else ("首领" if cell.get("is_boss", false) else ("源泉" if cell.get("has_spring", false) else ""))
 			var tile := ColorRect.new()
 			tile.color = (Color("ad873c") if legal else colors[layer]).darkened(0.65)

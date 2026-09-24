@@ -60,6 +60,7 @@ func _run() -> void:
 	await _settle()
 	_check(not Game.busy, "Incomplete drafts must be rejected locally without starting a server save")
 	_check($UI.toast_label.text == P.localized("deck_requires_twenty"), "Incomplete drafts need a localized local tip")
+	await _show_owned_card(initial[0])
 	var selected_card: Button = $UI._reference.find_child("DeckCard_" + initial[0], true, false)
 	_check(selected_card != null and selected_card.get_node_or_null("SelectedIndicator") != null, "Cards already in the draft need a selected treatment")
 	if selected_card != null:
@@ -68,6 +69,7 @@ func _run() -> void:
 		await _settle()
 		_check($UI.deck_draft.size() == draft_size_before_duplicate, "Clicking an already selected card must not duplicate it")
 		_check($UI.toast_label.text == P.localized("card_already_in_deck"), "Clicking an already selected card needs a localized tip")
+	await _show_owned_card(incompatible)
 	var incompatible_card: Button = $UI._reference.find_child("DeckCard_" + incompatible, true, false)
 	_check(incompatible_card != null and not incompatible_card.disabled, "Other-class cards stay clickable so they can explain why they cannot be added")
 	get_window().size = Vector2i(1920, 1080)
@@ -98,6 +100,16 @@ func _run() -> void:
 
 func _owned(id: String, info: Dictionary) -> Dictionary:
 	return {"cardId": id, "heroClass": info.get("hero_class"), "unlocked": true, "copyCount": 1, "level": 0, "version": 1}
+
+func _show_owned_card(id: String) -> void:
+	var grid: GridContainer = $UI._reference.find_child("DeckOwnedGrid", true, false)
+	var scroll := $UI._reference.find_child("DeckOwnedScroll", true, false) as ScrollContainer
+	if grid == null or scroll == null: return
+	for index in range(grid.get_child_count()):
+		if grid.get_child(index).name != "OwnedSlot_" + id: continue
+		scroll.scroll_vertical = int(index / 4) * int(236.0 * 376.0 / 218.0 + 42.0)
+		for frame in range(4): await get_tree().process_frame
+		return
 
 func _settle() -> void:
 	await get_tree().process_frame

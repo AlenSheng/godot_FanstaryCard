@@ -34,7 +34,8 @@ public sealed record MailClaimResponse(
 
 public sealed record MailClaimAllResponse(
     int MailCount,
-    int AttachmentCount);
+    int AttachmentCount,
+    IReadOnlyList<MailClaimResponse>? Claims = null);
 
 public sealed record MailDeleteResponse(
     int DeletedCount);

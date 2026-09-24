@@ -190,7 +190,35 @@ message RelicReplacedEvent { string pile_id = 1; string item_id = 2; string retu
 message InventoryMoveCommand { string item_id = 1; int32 target_slot_index = 2; }
 message InventoryEquipCommand { string item_id = 1; }
 message InventoryUnequipCommand { string slot = 1; }
-message InventoryChangedEvent { string action = 1; string item_id = 2; }
+message MarketEquipment {
+  string instance_id = 1;
+  string slot = 2;
+  string quality = 3;
+  int32 level = 4;
+  bool is_bound = 5;
+  string location = 6;
+  int64 version = 7;
+  string element = 8;
+  string effect_affix = 9;
+  string secondary_trait = 10;
+}
+message MarketListing {
+  string listing_id = 1;
+  string seller_id = 2;
+  string equipment_id = 3;
+  int64 price_gold = 4;
+  string status = 5;
+  int64 version = 6;
+  int64 created_at_unix_ms = 7;
+  int64 expires_at_unix_ms = 8;
+  MarketEquipment equipment = 9;
+}
+message InventoryChangedEvent {
+  string action = 1;
+  string item_id = 2;
+  MarketListing listing = 3;
+  optional int64 seller_gold_after = 4;
+}
 message RoomMoveCommand { int32 row = 1; int32 column = 2; }
 message DuelLeaveCommand { string duel_id = 1; }
 message DuelEscapeCommand { string duel_id = 1; }

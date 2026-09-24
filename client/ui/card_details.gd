@@ -2,12 +2,22 @@ extends RefCounted
 
 const P = preload("res://ui/palette.gd")
 const CATALOG = preload("res://data/catalog.json")
+const CatalogIndex = preload("res://data/catalog_index.gd")
 const NAMES = preload("res://data/card_names.json")
 
 const QUALITY_ORDER := {"White": 0, "Green": 1, "Blue": 2, "Purple": 3, "Orange": 4}
 const CLASS_ORDER := {"Priest": 0, "Mage": 1, "Guardian": 2}
+static var _catalog_order: Array = []
 
 static func sorted_ids(ids: Array, cards: Dictionary) -> Array:
+	# The codex always sorts the full static catalog. Reuse that order instead
+	# of comparing every pair again on each rebuild.
+	if is_same(cards, CatalogIndex.cards()) and ids.size() == cards.size():
+		if _catalog_order.is_empty():
+			var ordered := ids.duplicate()
+			ordered.sort_custom(func(left, right): return card_before(str(left), str(right), cards))
+			_catalog_order = ordered
+		return _catalog_order.duplicate()
 	var result := ids.duplicate()
 	result.sort_custom(func(left, right): return card_before(str(left), str(right), cards))
 	return result
@@ -35,19 +45,19 @@ static func localized_name(id: String, card: Dictionary = {}) -> String:
 	return str(names.get(id, fallback))
 
 static func at_level(card: Dictionary, level: int) -> Dictionary:
-	var effect := card.duplicate(true)
-	for growth in CATALOG.data.tables.CardLevels:
-		if growth.card_id != card.get("id", "") or int(growth.level) != level: continue
-		for key in ["elemental_damage", "secondary_elemental_damage", "direct_damage", "heal", "shield"]:
-			if int(effect.get(key, 0)) > 0: effect[key] += int(growth.value_bonus)
-		for key in ["stun_seconds", "draw_block_seconds", "draw_speed_seconds"]:
-			if float(effect.get(key, 0)) > 0: effect[key] += float(growth.duration_bonus)
-		break
+	# Catalog rows are flat scalars, so a shallow copy keeps the source row intact.
+	var effect := card.duplicate()
+	var growth := CatalogIndex.card_level(str(card.get("id", "")), level)
+	if growth.is_empty(): return effect
+	for key in ["elemental_damage", "secondary_elemental_damage", "direct_damage", "heal", "shield"]:
+		if int(effect.get(key, 0)) > 0: effect[key] += int(growth.value_bonus)
+	for key in ["stun_seconds", "draw_block_seconds", "draw_speed_seconds"]:
+		if float(effect.get(key, 0)) > 0: effect[key] += float(growth.duration_bonus)
 	return effect
 
 static func with_element(card: Dictionary, element_override: String) -> Dictionary:
+	if card.get("id", "") != "M-BOXSPIRIT" or element_override.is_empty(): return card
 	var result := card.duplicate(true)
-	if card.get("id", "") != "M-BOXSPIRIT" or element_override.is_empty(): return result
 	var damage: int = int(card.get("elemental_damage", 7)) + int(card.get("direct_damage", 0))
 	result.element = element_override
 	result.elemental_damage = 0 if element_override == "None" else damage
