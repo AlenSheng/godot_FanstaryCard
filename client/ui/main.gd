@@ -3,6 +3,7 @@ extends Control
 const P = preload("res://ui/palette.gd")
 const Art = preload("res://ui/art.gd")
 const CardView = preload("res://ui/card_view.gd")
+const CardPool = preload("res://ui/card_pool.gd")
 const DeckBuilder = preload("res://ui/deck_builder_view.gd")
 const ReferenceUI = preload("res://ui/reference_ui.gd")
 const ConfirmationModalScene = preload("res://ui/confirmation_modal.tscn")
@@ -23,6 +24,10 @@ const RANDOM_NAMES_PATH := "res://data/random_names.json"
 const CLOUD_SERVER_URL := "https://www.relicbound.cn"
 const LOCAL_SERVER_URL := "http://127.0.0.1:5080"
 const LOGIN_VIDEO_PATH := "res://assets/backgrounds/relicbound_login_ambient.ogv"
+const MEMORY_PROBE_INTERVAL := 3.0
+const MEMORY_TRIM_COOLDOWN_MSEC := 30000
+const MEMORY_REDLINE_MIN_FREE_BYTES := 256 * 1024 * 1024
+const MEMORY_REDLINE_RATIO := 0.10
 var screen := "hall"
 var content: VBoxContainer
 var root_column: VBoxContainer
@@ -37,13 +42,7 @@ var owned: Array = []:
 		_owned_index_ready = false
 var _owned_by_id: Dictionary = {}
 var _owned_index_ready := false
-# A configured card face is expensive to rebuild. Park faces by visual signature
-# and bind a matching one again instead of constructing another.
-var _card_pool: Dictionary = {}
-var card_pool_creates := 0
-var card_pool_reuses := 0
-var card_configure_usec := 0
-var card_acquire_usec := 0
+var _card_text_cache: Dictionary = {}
 var inventory: Dictionary = {}
 var shop: Dictionary = {}
 var listings: Array = []
@@ -65,6 +64,13 @@ var _background_video: VideoStreamPlayer
 var _background_shade: ColorRect
 var _login_video_available := false
 var _reference: Control
+var _reference_screen := ""
+var _card_page_cache: Dictionary = {}
+var _card_page_cache_keys: Dictionary = {}
+var _card_pool: Node
+var _card_prewarm_started := false
+var _memory_probe_elapsed := 0.0
+var _last_memory_trim_msec := -MEMORY_TRIM_COOLDOWN_MSEC
 var _quality := ""
 var _enhance_item := ""
 var _market_item := ""
@@ -96,6 +102,9 @@ func _ready() -> void:
 	if not Game.gateway.local_account_name.is_empty(): _login_name = Game.gateway.local_account_name
 	if _login_name.is_empty(): _login_name = _random_login_name()
 	_session_generation = Game.gateway.session_generation
+	_card_pool = CardPool.new()
+	_card_pool.name = "CardPool"
+	add_child(_card_pool)
 	Game.changed.connect(_schedule_render)
 	Game.notice.connect(_toast)
 	Game.player_data_invalidated.connect(_refresh_after_admin_update)
@@ -111,6 +120,92 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	_update_draw_charge_visual()
+	_memory_probe_elapsed += _delta
+	if _memory_probe_elapsed >= MEMORY_PROBE_INTERVAL:
+		_memory_probe_elapsed = 0.0
+		_check_memory_redline()
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_OS_MEMORY_WARNING and is_instance_valid(_card_pool):
+		_trim_card_pool_for_memory(true)
+
+func _exit_tree() -> void:
+	if is_instance_valid(_card_pool): _card_pool.clear()
+	_card_page_cache.clear()
+	_card_page_cache_keys.clear()
+	CardView.clear_material_cache()
+	Art.clear_texture_cache()
+	P.clear_runtime_fonts()
+
+func _check_memory_redline() -> void:
+	if not is_instance_valid(_card_pool): return
+	var memory: Dictionary = OS.get_memory_info()
+	var physical := int(memory.get("physical", -1))
+	var free := int(memory.get("free", -1))
+	if physical <= 0 or free < 0: return
+	var redline := maxi(MEMORY_REDLINE_MIN_FREE_BYTES, int(float(physical) * MEMORY_REDLINE_RATIO))
+	if free <= redline: _trim_card_pool_for_memory()
+
+func _trim_card_pool_for_memory(force: bool = false) -> void:
+	if not is_instance_valid(_card_pool): return
+	var now := Time.get_ticks_msec()
+	if not force and now - _last_memory_trim_msec < MEMORY_TRIM_COOLDOWN_MSEC: return
+	_last_memory_trim_msec = now
+	for page in _card_page_cache.keys():
+		if _card_page_cache[page] != _reference: _discard_card_page(str(page))
+	_card_pool.trim_to_baseline()
+	Art.clear_texture_cache()
+
+func _card_page_key(page: String) -> int:
+	return hash([page, P.language(), _quality, _search, _codex_ready, _codex_mutating,
+		Game.busy, Game.hero_class, Game.connection, owned, deck_draft, Game.deck(),
+		Game.lobby.get("materials", {}), Game.lobby.get("wallet", {})])
+
+func _set_card_page_cache_key(page: String) -> void:
+	if is_instance_valid(_card_page_cache.get(page)):
+		_card_page_cache_keys[page] = _card_page_key(page)
+
+func _free_reference_view(view: Control) -> void:
+	if not is_instance_valid(view): return
+	if is_instance_valid(_card_pool): _card_pool.release_descendants(view)
+	if view.get_parent() != null: view.get_parent().remove_child(view)
+	view.queue_free()
+
+func _discard_card_page(page: String) -> void:
+	var view: Control = _card_page_cache.get(page) as Control
+	_card_page_cache.erase(page)
+	_card_page_cache_keys.erase(page)
+	if view == _reference:
+		_reference = null
+		_reference_screen = ""
+	_free_reference_view(view)
+
+func _clear_card_page_cache() -> void:
+	for page in _card_page_cache.keys(): _discard_card_page(str(page))
+
+func _park_or_free_reference() -> void:
+	if not is_instance_valid(_reference):
+		_reference = null
+		_reference_screen = ""
+		return
+	if _reference_screen in ["cards", "deck"] and _card_page_cache.get(_reference_screen) == _reference:
+		var details := _reference.get_node_or_null("CardDetails")
+		if _reference_screen == "cards" and details != null and not details.is_queued_for_deletion():
+			_discard_card_page(_reference_screen)
+		else:
+			_reference.visible = false
+			_reference = null
+			_reference_screen = ""
+		return
+	_free_reference_view(_reference)
+	_reference = null
+	_reference_screen = ""
+
+func _restore_card_page_scroll(page: String, view: Control) -> void:
+	var scroll_name := "CodexScroll" if page == "cards" else "DeckOwnedScroll"
+	var scroll := view.find_child(scroll_name, true, false) as ScrollContainer
+	if scroll != null:
+		scroll.scroll_vertical = _codex_scroll if page == "cards" else _deck_builder_scroll
 
 func _build_shell() -> void:
 	var backdrop := LayeredBackdrop.new()
@@ -273,7 +368,8 @@ func _on_cache_changed(module: String) -> void:
 	if screen in affected.get(module, []) and Game.room.is_empty(): _schedule_render()
 
 func _sync_account_session() -> void:
-	if _session_generation != Game.gateway.session_generation:
+	var new_session: bool = _session_generation != Game.gateway.session_generation
+	if new_session:
 		_session_generation = Game.gateway.session_generation
 		_reset_account_ui()
 	var lobby_cards: Variant = Game.lobby.get("cards", null)
@@ -287,9 +383,19 @@ func _sync_account_session() -> void:
 	if Game.lobby.get("market") is Array: listings = Game.lobby.market
 	if not Game.lobby.is_empty() and not Game.gateway.token.is_empty() and not Game.gateway.local_account_name.is_empty():
 		_login_name = Game.gateway.local_account_name
+	if not _card_prewarm_started and not Game.lobby.is_empty() and lobby_cards is Array:
+		_card_prewarm_started = true
+		_card_pool.begin_prewarm(cards, owned, func(id): return _card_text(id))
 
 func _reset_account_ui() -> void:
-	_discard_card_pool()
+	if is_instance_valid(_card_pool):
+		_clear_card_page_cache()
+		if is_instance_valid(_reference):
+			_free_reference_view(_reference)
+			_reference = null
+			_reference_screen = ""
+		_card_pool.clear()
+	_card_prewarm_started = false
 	screen = "hall"
 	owned = []
 	inventory = {}
@@ -338,11 +444,13 @@ func _render() -> void:
 			if has_meta(key): remove_meta(key)
 		if has_meta("pending_move"): remove_meta("pending_move")
 	_view_cell = room_cell
-	if is_instance_valid(_reference):
-		_release_card_views(_reference)
-		remove_child(_reference)
-		_reference.queue_free()
-		_reference = null
+	var use_reference: bool = not Game.lobby.is_empty() and Game.lobby.get("unfinishedMatch") == null
+	if not Game.room.is_empty() or not Game.settlement.is_empty(): use_reference = true
+	var card_page := screen if use_reference and screen in ["cards", "deck"] and not screen_loading and Game.room.is_empty() and Game.settlement.is_empty() and Game.ready_prompt.is_empty() else ""
+	var page_key := _card_page_key(card_page) if not card_page.is_empty() else 0
+	var cached_view: Control = _card_page_cache.get(card_page) as Control
+	var reuse_current: bool = not card_page.is_empty() and is_instance_valid(_reference) and _reference == cached_view and _card_page_cache_keys.get(card_page) == page_key
+	if not reuse_current: _park_or_free_reference()
 	content.add_theme_constant_override("separation", 10 if not Game.room.is_empty() else 18)
 	var show_login_video: bool = Game.lobby.is_empty() and Game.room.is_empty() and Game.settlement.is_empty()
 	if show_login_video:
@@ -364,18 +472,32 @@ func _render() -> void:
 		if _background_video.visible and not _background_video.is_playing(): _background_video.play()
 	if is_instance_valid(_background_shade): _background_shade.visible = show_login_video and _login_video_available
 	_combat_panels = {}
-	_release_card_views(content)
 	for node in content.get_children():
+		_card_pool.release_descendants(node)
 		content.remove_child(node)
 		node.queue_free()
 	status_label.text = P.localized_text(Game.connection)
 	if not Game.lobby.is_empty(): status_label.text += P.localized_text("    金币 %s" % Game.lobby.get("wallet", {}).get("gold", 0))
-	var use_reference: bool = not Game.lobby.is_empty() and Game.lobby.get("unfinishedMatch") == null
-	if not Game.room.is_empty() or not Game.settlement.is_empty(): use_reference = true
 	root_column.get_parent().visible = not use_reference
 	if use_reference:
+		if not card_page.is_empty():
+			cached_view = _card_page_cache.get(card_page) as Control
+			if is_instance_valid(cached_view) and _card_page_cache_keys.get(card_page) != page_key:
+				_discard_card_page(card_page)
+				cached_view = null
+			if is_instance_valid(cached_view):
+				var was_hidden := not cached_view.visible
+				_reference = cached_view
+				_reference_screen = card_page
+				if was_hidden: _restore_card_page_scroll(card_page, cached_view)
+				cached_view.visible = true
+				return
 		_reference = ReferenceUI.new()
 		add_child(_reference)
+		_reference_screen = card_page
+		if not card_page.is_empty():
+			_card_page_cache[card_page] = _reference
+			_card_page_cache_keys[card_page] = page_key
 		_reference.build(self)
 		return
 	if not Game.settlement.is_empty():
@@ -637,23 +759,35 @@ func _preparation() -> void:
 	_button(left, "确认探索准备", func(): Game.prepare(bag_tier, potion_count), Game.busy)
 	var right := _panel(row, 880)
 	_label(right, "临时背包", 34)
-	_label(right, "描边为安全格，卡牌与专属武器不占格。", 22, P.MUTED)
+	_label(right, "带锁花纹格为安全格，卡牌与专属武器不占格。", 22, P.MUTED)
+	var capacity: int = {"Free": 20, "Advanced": 28, "Top": 36}[bag_tier]
+	var safe: int = {"Free": 0, "Advanced": 1, "Top": 3}[bag_tier]
+	var slot_order: Array = []
+	for safe_index in range(capacity - safe, capacity): slot_order.append(safe_index)
+	for slot_index in range(capacity):
+		if not slot_order.has(slot_index): slot_order.append(slot_index)
+	var rows := int(ceil(float(capacity) / 6.0))
+	var scroll := ScrollContainer.new()
+	scroll.name = "PreparationBackpackScroll"
+	scroll.custom_minimum_size.y = 4 * 96 + 3 * Art.COMMON_CELL_GAP
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	right.add_child(scroll)
 	var grid := GridContainer.new()
+	grid.name = "PreparationBackpackGrid"
 	grid.columns = 6
 	grid.add_theme_constant_override("h_separation", Art.COMMON_CELL_GAP)
 	grid.add_theme_constant_override("v_separation", Art.COMMON_CELL_GAP)
-	right.add_child(grid)
-	var capacity: int = {"Free": 20, "Advanced": 28, "Top": 36}[bag_tier]
-	var safe: int = {"Free": 0, "Advanced": 1, "Top": 3}[bag_tier]
-	for index in range(capacity):
-		var cell := _button(grid, str(index + 1), func(): pass, true)
-		Art.button(cell, Art.COMMON_CELL_KEY)
+	grid.custom_minimum_size.y = rows * (96 + Art.COMMON_CELL_GAP) - Art.COMMON_CELL_GAP
+	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(grid)
+	for display_index in range(capacity):
+		var slot_index: int = int(slot_order[display_index])
+		var is_safe: bool = slot_index >= capacity - safe
+		var cell := _button(grid, "" if is_safe else str(slot_index + 1), func(): pass, true)
 		cell.custom_minimum_size = Art.COMMON_CELL_DISPLAY_SIZE
-		if index >= capacity - safe:
-			cell.add_theme_stylebox_override("disabled", P.box(P.INK, P.GOLD, 3))
-			cell.icon = Art.texture("UI/Prep/icon_safe.png")
-			cell.expand_icon = true
-			cell.add_theme_constant_override("icon_max_width", 30)
+		if is_safe: Art.apply_safe_slot_button(cell)
+		else: Art.button(cell, Art.COMMON_CELL_KEY)
 
 func _ready_screen() -> void:
 	var panel := _panel(content)
@@ -673,6 +807,8 @@ func card_description(id: String, kind: String = "face") -> String:
 	return str(descriptions.get("card.%s.desc.%s" % [kind, id], ""))
 
 func _card_text(id: String, level: int = 0, element_override: String = "") -> String:
+	var cache_key := "%s|%s|%s" % [P.language(), id, element_override]
+	if _card_text_cache.has(cache_key): return _card_text_cache[cache_key]
 	var info: Dictionary = CardDetails.with_element(cards.get(id, {}), element_override)
 	var source: String = info.get("source", "")
 	var badge := "怪" if not info.get("is_codex", true) else P.word(info.get("hero_class", ""))
@@ -685,127 +821,19 @@ func _card_text(id: String, level: int = 0, element_override: String = "") -> St
 			if int(info.get(key, 0)) > 0:
 				lines.append("%s %s" % [{"elemental_damage": P.word(info.get("element", "None")), "direct_damage": "直伤", "heal": "治疗", "shield": "护盾"}[key], info[key]])
 		description = " / ".join(lines)
-	return "%s %s\n%s\n\n%s" % [badge, name, P.word(info.get("quality", "")) if source != "Monster" else "暗红 · 本局", description]
+	var result := "%s %s\n%s\n\n%s" % [badge, name, P.word(info.get("quality", "")) if source != "Monster" else "暗红 · 本局", description]
+	_card_text_cache[cache_key] = result
+	return result
 
 func _card_button(parent: Node, id: String, callback: Callable, selected: bool = false, disabled: bool = false, options: Dictionary = {}) -> Button:
-	var started := Time.get_ticks_usec()
-	var info: Dictionary = cards.get(id, {})
-	var element_override := str(options.get("element_override", ""))
-	var element := element_override if info.get("id", "") == "M-BOXSPIRIT" and not element_override.is_empty() else str(info.get("element", ""))
-	var key := _card_pool_key(id, selected, options, info, element)
-	var button := _take_pooled_card(key)
-	if button == null:
-		button = CardView.new()
-		card_pool_creates += 1
-		button.disabled = disabled
-		var configured_at := Time.get_ticks_usec()
-		button.configure(id, CardDetails.with_element(info, element_override), _card_text(id, int(options.get("level", 0)), element_override), selected, options)
-		card_configure_usec += Time.get_ticks_usec() - configured_at
-		button.set_meta("card_config_key", key)
-		button.set_meta("card_base_tooltip", button.tooltip_text)
-	else:
-		card_pool_reuses += 1
-		_reset_pooled_card(button, disabled)
-	button.set_meta("sound_cue", "" if options.get("preview", false) else "card_select")
-	button.disabled = disabled
-	for connection in button.pressed.get_connections():
-		button.pressed.disconnect(connection.callable)
-	button.pressed.connect(callback)
-	parent.add_child(button)
-	card_acquire_usec += Time.get_ticks_usec() - started
-	return button
+	var element_override: String = options.get("element_override", "")
+	return _card_pool.acquire(parent, id, CardDetails.with_element(cards.get(id, {}), element_override), _card_text(id, int(options.get("level", 0)), element_override), selected, disabled, options, callback)
 
-func _card_pool_key(id: String, selected: bool, options: Dictionary, info: Dictionary, element: String) -> String:
-	var hero: Variant = info.get("hero_class", null)
-	return "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % [
-		id,
-		int(selected),
-		P.language(),
-		int(options.get("collection", false)),
-		int(options.get("copy_count", 0)),
-		int(options.get("level", 0)),
-		int(options.get("preview", false)),
-		options.get("element_override", ""),
-		options.get("battle_target_element", ""),
-		int(options.get("selected_overlay", false)),
-		info.get("quality", ""),
-		info.get("source", ""),
-		"" if hero == null else str(hero),
-		element,
-	]
+func release_card(button: Button) -> void:
+	_card_pool.release(button)
 
-func _take_pooled_card(key: String) -> Button:
-	var bucket: Array = _card_pool.get(key, [])
-	while not bucket.is_empty():
-		var button: Button = bucket.pop_back()
-		if bucket.is_empty(): _card_pool.erase(key)
-		if is_instance_valid(button): return button
-	return null
-
-func _reset_pooled_card(button: Button, disabled: bool) -> void:
-	button.visible = true
-	button.position = Vector2.ZERO
-	button.rotation = 0.0
-	button.scale = Vector2.ONE
-	button.size = Vector2(218, 376)
-	button.pivot_offset = Vector2.ZERO
-	button.modulate = Color.WHITE
-	button.mouse_filter = Control.MOUSE_FILTER_STOP
-	button.focus_mode = Control.FOCUS_ALL
-	button.size_flags_horizontal = Control.SIZE_FILL
-	button.size_flags_vertical = Control.SIZE_FILL
-	button.mouse_default_cursor_shape = Control.CURSOR_ARROW if disabled else Control.CURSOR_POINTING_HAND
-	button.tooltip_text = str(button.get_meta("card_base_tooltip", ""))
-	button.name = ""
-	for meta in ["combat_base_position", "combat_base_scale", "combat_base_modulate", "combat_reaction_tween"]:
-		if button.has_meta(meta): button.remove_meta(meta)
-
-func _release_card_views(node: Node) -> void:
-	if not is_instance_valid(node): return
-	var found: Array[Button] = []
-	_collect_card_views(node, found)
-	for button in found:
-		var parent := button.get_parent()
-		if parent != null: parent.remove_child(button)
-		for connection in button.pressed.get_connections():
-			button.pressed.disconnect(connection.callable)
-		if button.has_meta("combat_reaction_tween"):
-			var reaction: Variant = button.get_meta("combat_reaction_tween")
-			if reaction is Tween and is_instance_valid(reaction): reaction.kill()
-		button.visible = false
-		var key := str(button.get_meta("card_config_key", ""))
-		if key.is_empty():
-			button.free()
-			continue
-		if not _card_pool.has(key): _card_pool[key] = []
-		(_card_pool[key] as Array).append(button)
-
-func _collect_card_views(node: Node, found: Array[Button]) -> void:
-	if node.get_script() == CardView:
-		found.append(node)
-		return
-	for child in node.get_children():
-		_collect_card_views(child, found)
-
-func _discard_card_pool() -> void:
-	_clear_card_pool_keys(self)
-	for key in _card_pool.keys():
-		for button in _card_pool[key]:
-			if is_instance_valid(button): button.free()
-	_card_pool.clear()
-
-func _clear_card_pool_keys(node: Node) -> void:
-	if node.get_script() == CardView:
-		node.set_meta("card_config_key", "")
-		return
-	for child in node.get_children():
-		_clear_card_pool_keys(child)
-
-func _exit_tree() -> void:
-	for key in _card_pool.keys():
-		for button in _card_pool[key]:
-			if is_instance_valid(button) and button.get_parent() == null: button.free()
-	_card_pool.clear()
+func ensure_card_pool(required: int) -> bool:
+	return _card_pool.ensure_available(required)
 
 func _owned_card(id: String) -> Dictionary:
 	if not _owned_index_ready:

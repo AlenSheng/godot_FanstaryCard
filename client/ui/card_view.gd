@@ -7,6 +7,10 @@ const ElementRules = preload("res://state/element_rules.gd")
 const CARD_SHADER = preload("res://ui/card_view.gdshader")
 const DESCRIPTIONS = preload("res://data/card_descriptions.json")
 const CLASS_NAMES := {"Priest": "牧师", "Mage": "法师", "Guardian": "守护者"}
+static var _materials: Dictionary = {}
+
+static func clear_material_cache() -> void:
+	_materials.clear()
 
 func configure(id: String, info: Dictionary, description: String, selected: bool, options: Dictionary = {}) -> void:
 	for child in get_children(): child.free()
@@ -93,11 +97,14 @@ func _face_description(id: String, fallback: String) -> String:
 	return configured if not configured.is_empty() else fallback
 
 func _card_material(grayscale: bool, reframe: bool = false) -> ShaderMaterial:
-	var result := ShaderMaterial.new()
-	result.shader = CARD_SHADER
-	result.set_shader_parameter("grayscale", grayscale)
-	result.set_shader_parameter("reframe", reframe)
-	return result
+	var key := ("gray" if grayscale else "color") + ("_frame" if reframe else "_body")
+	if not _materials.has(key):
+		var result := ShaderMaterial.new()
+		result.shader = CARD_SHADER
+		result.set_shader_parameter("grayscale", grayscale)
+		result.set_shader_parameter("reframe", reframe)
+		_materials[key] = result
+	return _materials[key]
 
 func _level_badge(level: int) -> void:
 	var badge := Art.image(self, Art.texture("UI/Codex/mana_cost_badge.png"), Vector2.ZERO)

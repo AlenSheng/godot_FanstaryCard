@@ -4,6 +4,7 @@ const MANIFEST = preload("res://assets/imported/manifest.json")
 const CATALOG = preload("res://data/catalog.json")
 const CatalogIndex = preload("res://data/catalog_index.gd")
 const QUALITY_LADDER := ["", "White", "Green", "Blue", "Purple", "Orange", "Red"]
+const SAFE_SLOT_FRAME_TEXTURE: Texture2D = preload("res://assets/generated/ui/safe_slot_frame_locked.png")
 ## Shared item-cell art used by inventory, preparation and reward/mail grids.
 ## The source is a 144x144 square and should be rendered 1:1 as 96x96.
 const COMMON_CELL_KEY := "UI/Prep/exploration_prep_backpack_cell_empty_normal.png"
@@ -16,6 +17,9 @@ const UNEQUIPPED_FRAME_MODULATE := Color8(105, 108, 108, 220)
 const UNEQUIPPED_ITEM_MODULATE := Color8(115, 115, 115, 200)
 static var _textures: Dictionary = {}
 static var _styles: Dictionary = {}
+
+static func clear_texture_cache() -> void:
+	_textures.clear()
 
 static func texture(key: String) -> Texture2D:
 	if key.is_empty(): return null
@@ -114,6 +118,33 @@ static func button(node: Button, key: String) -> void:
 
 static func cell_style(tint: Color = Color.WHITE) -> StyleBoxTexture:
 	return style(COMMON_CELL_KEY, tint)
+
+static func add_safe_slot_frame(parent: Control) -> TextureRect:
+	var frame := TextureRect.new()
+	frame.name = "SafeSlotFrame"
+	frame.texture = SAFE_SLOT_FRAME_TEXTURE
+	frame.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	frame.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	parent.add_child(frame)
+	return frame
+
+static func apply_safe_slot_button(node: Button) -> void:
+	var normal := StyleBoxFlat.new()
+	normal.bg_color = Color.TRANSPARENT
+	normal.set_content_margin_all(8)
+	var hover := normal.duplicate() as StyleBoxFlat
+	hover.bg_color = Color.TRANSPARENT
+	var pressed := normal.duplicate() as StyleBoxFlat
+	pressed.bg_color = Color.TRANSPARENT
+	var disabled := normal.duplicate() as StyleBoxFlat
+	disabled.bg_color = Color.TRANSPARENT
+	node.add_theme_stylebox_override("normal", normal)
+	node.add_theme_stylebox_override("hover", hover)
+	node.add_theme_stylebox_override("pressed", pressed)
+	node.add_theme_stylebox_override("disabled", disabled)
+	add_safe_slot_frame(node)
 
 static func quality_name(rank: Variant) -> String:
 	if rank is String:

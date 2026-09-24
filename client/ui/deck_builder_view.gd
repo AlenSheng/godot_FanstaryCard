@@ -3,6 +3,7 @@ extends RefCounted
 const Art = preload("res://ui/art.gd")
 const P = preload("res://ui/palette.gd")
 const DragScroll = preload("res://ui/drag_scroll.gd")
+const CardGridView = preload("res://ui/card_grid_view.gd")
 const CardDetails = preload("res://ui/card_details.gd")
 const PREFIX := "UI/CardCodex/card_codex_"
 const ROW_PREFIX := "UI/Codex/deck_row_"
@@ -16,7 +17,8 @@ static func build(ui: Control, host: Control) -> void:
 		host._search = value.strip_edges()
 		host._deck_builder_scroll = 0
 		owned_nodes.scroll.scroll_vertical = 0
-		_fill_owned_grid(host, owned_nodes.grid, owned_nodes.scroll, owned_nodes.count))
+		_fill_owned_grid(host, owned_nodes.grid, owned_nodes.scroll, owned_nodes.count)
+		host._set_card_page_cache_key("deck"))
 	_deck_panel(ui, host)
 
 static func _search_and_filters(ui: Control, host: Control) -> LineEdit:
@@ -46,7 +48,7 @@ static func _owned_cards(ui: Control, host: Control) -> Dictionary:
 	count.name = "DeckOwnedCount"
 	var scroll := _scroll(ui, Rect2(42, 257, 1182, 758))
 	scroll.name = "DeckOwnedScroll"
-	var grid := GridContainer.new()
+	var grid := CardGridView.new()
 	grid.name = "DeckOwnedGrid"
 	grid.columns = 4
 	grid.add_theme_constant_override("h_separation", 48)
@@ -58,12 +60,7 @@ static func _owned_cards(ui: Control, host: Control) -> Dictionary:
 	return {"grid": grid, "scroll": scroll, "count": count}
 
 static func _fill_owned_grid(host: Control, grid: GridContainer, scroll: ScrollContainer, count: Label) -> void:
-	host._release_card_views(grid)
-	for child in grid.get_children():
-		grid.remove_child(child)
-		child.queue_free()
-	var shown := 0
-	var side := 236.0
+	var entries: Array = []
 	var owned_entries: Array = host.owned.duplicate()
 	owned_entries.sort_custom(func(left, right):
 		return CardDetails.card_before(str(left.get("cardId", "")), str(right.get("cardId", "")), host.cards))
@@ -77,23 +74,12 @@ static func _fill_owned_grid(host: Control, grid: GridContainer, scroll: ScrollC
 		if not host._search.is_empty() and not host._search.to_lower() in (id + " " + host._card_text(id, int(entry.get("level", 0)))).to_lower(): continue
 		var reason := _add_reason(host, id, info)
 		var in_deck: bool = id in host.deck_draft
-		var slot := Control.new()
-		slot.name = "OwnedSlot_" + id
-		slot.custom_minimum_size = Vector2(side, side * 376.0 / 218.0)
-		grid.add_child(slot)
-		var card: Button = host._card_button(slot, id, _activate_owned.bind(host, id, scroll), in_deck, Game.busy, {"collection": true, "copy_count": int(entry.get("copyCount", 0)), "level": int(entry.get("level", 0))})
-		card.name = "DeckCard_" + id
-		card.size = Vector2(218, 376)
-		card.scale = Vector2.ONE * side / 218.0
-		card.tooltip_text = P.localized_text(reason if not reason.is_empty() else "加入编组")
-		shown += 1
-	count.text = P.localized("owned_cards_count").format({"count": shown})
-	if shown == 0:
-		var empty := Label.new()
-		empty.text = P.localized_text("没有符合条件的卡牌")
-		empty.custom_minimum_size = Vector2(1100, 180)
-		empty.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		grid.add_child(empty)
+		entries.append({"id": id, "slot_name": "OwnedSlot_" + id, "card_name": "DeckCard_" + id,
+			"callback": _activate_owned.bind(host, id, scroll), "selected": in_deck, "disabled": Game.busy,
+			"options": {"collection": true, "copy_count": int(entry.get("copyCount", 0)), "level": int(entry.get("level", 0))},
+			"tooltip": reason if not reason.is_empty() else "加入编组"})
+	grid.configure(host, scroll, entries, 236.0)
+	count.text = P.localized("owned_cards_count").format({"count": entries.size()})
 
 static func _deck_panel(ui: Control, host: Control) -> void:
 	ui.panel(Rect2(1250, 114, 650, 911)).name = "DeckBuilderPanel"

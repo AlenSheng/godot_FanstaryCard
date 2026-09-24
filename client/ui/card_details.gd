@@ -56,8 +56,8 @@ static func at_level(card: Dictionary, level: int) -> Dictionary:
 	return effect
 
 static func with_element(card: Dictionary, element_override: String) -> Dictionary:
-	var result := card.duplicate()
-	if card.get("id", "") != "M-BOXSPIRIT" or element_override.is_empty(): return result
+	if card.get("id", "") != "M-BOXSPIRIT" or element_override.is_empty(): return card
+	var result := card.duplicate(true)
 	var damage: int = int(card.get("elemental_damage", 7)) + int(card.get("direct_damage", 0))
 	result.element = element_override
 	result.elemental_damage = 0 if element_override == "None" else damage
