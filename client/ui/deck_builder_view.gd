@@ -58,6 +58,7 @@ static func _owned_cards(ui: Control, host: Control) -> Dictionary:
 	return {"grid": grid, "scroll": scroll, "count": count}
 
 static func _fill_owned_grid(host: Control, grid: GridContainer, scroll: ScrollContainer, count: Label) -> void:
+	host._release_card_views(grid)
 	for child in grid.get_children():
 		grid.remove_child(child)
 		child.queue_free()

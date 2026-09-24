@@ -61,6 +61,7 @@ static func build(ui: Control, host: Control) -> void:
 	if not host._codex_card.is_empty(): _details(ui, host)
 
 static func _fill_grid(ui: Control, host: Control, grid: GridContainer, scroll: ScrollContainer, count: Label) -> void:
+	host._release_card_views(grid)
 	for child in grid.get_children():
 		grid.remove_child(child)
 		child.queue_free()
@@ -247,7 +248,9 @@ static func close_details(ui: Control, host: Control) -> void:
 	if host._codex_mutating: return
 	host._codex_card = ""
 	var modal := ui.get_node_or_null("CardDetails")
-	if modal != null: modal.queue_free()
+	if modal != null:
+		host._release_card_views(modal)
+		modal.queue_free()
 	for control in ui.find_children("*", "Control", true, false):
 		if control.has_meta("codex_previous_focus_mode"):
 			control.focus_mode = int(control.get_meta("codex_previous_focus_mode"))

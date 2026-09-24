@@ -37,6 +37,13 @@ var owned: Array = []:
 		_owned_index_ready = false
 var _owned_by_id: Dictionary = {}
 var _owned_index_ready := false
+# A configured card face is expensive to rebuild. Park faces by visual signature
+# and bind a matching one again instead of constructing another.
+var _card_pool: Dictionary = {}
+var card_pool_creates := 0
+var card_pool_reuses := 0
+var card_configure_usec := 0
+var card_acquire_usec := 0
 var inventory: Dictionary = {}
 var shop: Dictionary = {}
 var listings: Array = []
@@ -282,6 +289,7 @@ func _sync_account_session() -> void:
 		_login_name = Game.gateway.local_account_name
 
 func _reset_account_ui() -> void:
+	_discard_card_pool()
 	screen = "hall"
 	owned = []
 	inventory = {}
@@ -331,6 +339,7 @@ func _render() -> void:
 		if has_meta("pending_move"): remove_meta("pending_move")
 	_view_cell = room_cell
 	if is_instance_valid(_reference):
+		_release_card_views(_reference)
 		remove_child(_reference)
 		_reference.queue_free()
 		_reference = null
@@ -355,6 +364,7 @@ func _render() -> void:
 		if _background_video.visible and not _background_video.is_playing(): _background_video.play()
 	if is_instance_valid(_background_shade): _background_shade.visible = show_login_video and _login_video_available
 	_combat_panels = {}
+	_release_card_views(content)
 	for node in content.get_children():
 		content.remove_child(node)
 		node.queue_free()
@@ -678,14 +688,124 @@ func _card_text(id: String, level: int = 0, element_override: String = "") -> St
 	return "%s %s\n%s\n\n%s" % [badge, name, P.word(info.get("quality", "")) if source != "Monster" else "暗红 · 本局", description]
 
 func _card_button(parent: Node, id: String, callback: Callable, selected: bool = false, disabled: bool = false, options: Dictionary = {}) -> Button:
-	var button := CardView.new()
+	var started := Time.get_ticks_usec()
+	var info: Dictionary = cards.get(id, {})
+	var element_override := str(options.get("element_override", ""))
+	var element := element_override if info.get("id", "") == "M-BOXSPIRIT" and not element_override.is_empty() else str(info.get("element", ""))
+	var key := _card_pool_key(id, selected, options, info, element)
+	var button := _take_pooled_card(key)
+	if button == null:
+		button = CardView.new()
+		card_pool_creates += 1
+		button.disabled = disabled
+		var configured_at := Time.get_ticks_usec()
+		button.configure(id, CardDetails.with_element(info, element_override), _card_text(id, int(options.get("level", 0)), element_override), selected, options)
+		card_configure_usec += Time.get_ticks_usec() - configured_at
+		button.set_meta("card_config_key", key)
+		button.set_meta("card_base_tooltip", button.tooltip_text)
+	else:
+		card_pool_reuses += 1
+		_reset_pooled_card(button, disabled)
 	button.set_meta("sound_cue", "" if options.get("preview", false) else "card_select")
 	button.disabled = disabled
+	for connection in button.pressed.get_connections():
+		button.pressed.disconnect(connection.callable)
 	button.pressed.connect(callback)
 	parent.add_child(button)
-	var element_override: String = options.get("element_override", "")
-	button.configure(id, CardDetails.with_element(cards.get(id, {}), element_override), _card_text(id, int(options.get("level", 0)), element_override), selected, options)
+	card_acquire_usec += Time.get_ticks_usec() - started
 	return button
+
+func _card_pool_key(id: String, selected: bool, options: Dictionary, info: Dictionary, element: String) -> String:
+	var hero: Variant = info.get("hero_class", null)
+	return "%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s" % [
+		id,
+		int(selected),
+		P.language(),
+		int(options.get("collection", false)),
+		int(options.get("copy_count", 0)),
+		int(options.get("level", 0)),
+		int(options.get("preview", false)),
+		options.get("element_override", ""),
+		options.get("battle_target_element", ""),
+		int(options.get("selected_overlay", false)),
+		info.get("quality", ""),
+		info.get("source", ""),
+		"" if hero == null else str(hero),
+		element,
+	]
+
+func _take_pooled_card(key: String) -> Button:
+	var bucket: Array = _card_pool.get(key, [])
+	while not bucket.is_empty():
+		var button: Button = bucket.pop_back()
+		if bucket.is_empty(): _card_pool.erase(key)
+		if is_instance_valid(button): return button
+	return null
+
+func _reset_pooled_card(button: Button, disabled: bool) -> void:
+	button.visible = true
+	button.position = Vector2.ZERO
+	button.rotation = 0.0
+	button.scale = Vector2.ONE
+	button.size = Vector2(218, 376)
+	button.pivot_offset = Vector2.ZERO
+	button.modulate = Color.WHITE
+	button.mouse_filter = Control.MOUSE_FILTER_STOP
+	button.focus_mode = Control.FOCUS_ALL
+	button.size_flags_horizontal = Control.SIZE_FILL
+	button.size_flags_vertical = Control.SIZE_FILL
+	button.mouse_default_cursor_shape = Control.CURSOR_ARROW if disabled else Control.CURSOR_POINTING_HAND
+	button.tooltip_text = str(button.get_meta("card_base_tooltip", ""))
+	button.name = ""
+	for meta in ["combat_base_position", "combat_base_scale", "combat_base_modulate", "combat_reaction_tween"]:
+		if button.has_meta(meta): button.remove_meta(meta)
+
+func _release_card_views(node: Node) -> void:
+	if not is_instance_valid(node): return
+	var found: Array[Button] = []
+	_collect_card_views(node, found)
+	for button in found:
+		var parent := button.get_parent()
+		if parent != null: parent.remove_child(button)
+		for connection in button.pressed.get_connections():
+			button.pressed.disconnect(connection.callable)
+		if button.has_meta("combat_reaction_tween"):
+			var reaction: Variant = button.get_meta("combat_reaction_tween")
+			if reaction is Tween and is_instance_valid(reaction): reaction.kill()
+		button.visible = false
+		var key := str(button.get_meta("card_config_key", ""))
+		if key.is_empty():
+			button.free()
+			continue
+		if not _card_pool.has(key): _card_pool[key] = []
+		(_card_pool[key] as Array).append(button)
+
+func _collect_card_views(node: Node, found: Array[Button]) -> void:
+	if node.get_script() == CardView:
+		found.append(node)
+		return
+	for child in node.get_children():
+		_collect_card_views(child, found)
+
+func _discard_card_pool() -> void:
+	_clear_card_pool_keys(self)
+	for key in _card_pool.keys():
+		for button in _card_pool[key]:
+			if is_instance_valid(button): button.free()
+	_card_pool.clear()
+
+func _clear_card_pool_keys(node: Node) -> void:
+	if node.get_script() == CardView:
+		node.set_meta("card_config_key", "")
+		return
+	for child in node.get_children():
+		_clear_card_pool_keys(child)
+
+func _exit_tree() -> void:
+	for key in _card_pool.keys():
+		for button in _card_pool[key]:
+			if is_instance_valid(button) and button.get_parent() == null: button.free()
+	_card_pool.clear()
 
 func _owned_card(id: String) -> Dictionary:
 	if not _owned_index_ready:
