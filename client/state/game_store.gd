@@ -48,6 +48,9 @@ var _class_switch_request_active := false
 var _pending_class := ""
 var connection := "未连接"
 var _settlement_loading := ""
+var _settlement_polling := false
+var _settlement_poll_at := 0
+var _extraction_sync_at := 0
 var _queued_command: Dictionary = {}
 var _queue_deadline: int = 0
 var _pending_play: Dictionary = {}
@@ -67,6 +70,19 @@ func _process(_delta: float) -> void:
 	_process_client_info()
 	_check_shop_rotation()
 	_flush_latest_commands()
+	var now := Time.get_ticks_msec()
+	if room.has("extraction_remaining_ms"):
+		if _extraction_sync_at == 0:
+			_extraction_sync_at = now + 1000
+		elif now >= _extraction_sync_at:
+			_extraction_sync_at = now + 1000
+			if _snapshot_request_pending and now - _snapshot_request_at > 3000: _snapshot_request_pending = false
+			_request_snapshot()
+	else:
+		_extraction_sync_at = 0
+	var phase: String = str(room.get("player", {}).get("phase", ""))
+	if settlement.is_empty() and phase in ["Extracted", "Dead"] and now >= _settlement_poll_at and not _settlement_polling:
+		_poll_ready_settlement()
 	var pending_changed := false
 	if not _pending_play.is_empty() and Time.get_ticks_msec() > _play_deadline:
 		_pending_play = {}
@@ -132,7 +148,10 @@ func login_steam(address: String, display_name: String = "") -> void:
 	await _login(address, display_name, true)
 
 func logout() -> void:
-	gateway.end_session("已退出登录")
+	# End the local session and show the login screen in one state change.
+	# The gateway has no logout request to wait for.
+	gateway.end_session("", false)
+	_on_authentication_required("已退出登录")
 
 func reconnect() -> void:
 	if busy: return
@@ -178,6 +197,9 @@ func _clear_authenticated_state() -> void:
 	_latest_commands.clear()
 	_snapshot_request_pending = false
 	_settlement_loading = ""
+	_settlement_polling = false
+	_settlement_poll_at = 0
+	_extraction_sync_at = 0
 	busy = false
 	_sound_ready = false
 	_sound_commands.clear()
@@ -1137,6 +1159,23 @@ func _load_settlement(id: String) -> void:
 	if result.ok: settlement = result.data
 	_settlement_loading = ""
 	changed.emit()
+
+func _poll_ready_settlement() -> void:
+	var match_id := str(room.get("match_id", ""))
+	if match_id.is_empty() or gateway == null or gateway.token.is_empty(): return
+	_settlement_polling = true
+	_settlement_poll_at = Time.get_ticks_msec() + 2500
+	var generation: int = gateway.session_generation
+	# Bootstrap exposes only settlements whose asset holds have finished committing.
+	var result: Dictionary = await gateway.request("/api/v1/bootstrap", HTTPClient.METHOD_GET, null, [0, 502, 503, 504])
+	if generation != gateway.session_generation: return
+	_settlement_polling = false
+	if room.get("match_id", "") != match_id or not settlement.is_empty(): return
+	if not result.ok or not result.data is Dictionary: return
+	var ready: Variant = result.data.get("unfinishedSettlement")
+	if ready is Dictionary and str(ready.get("matchId", "")) == match_id:
+		settlement = ready
+		changed.emit()
 
 func acknowledge_settlement() -> void:
 	if settlement.is_empty() or busy: return

@@ -4,7 +4,9 @@ const P = preload("res://ui/palette.gd")
 const CatalogIndex = preload("res://data/catalog_index.gd")
 
 static func equipment(item: Dictionary) -> Dictionary:
-	return item.get("equipment", {}) if item.has("kind") else item
+	if not item.has("kind"): return item
+	var gear: Variant = item.get("equipment")
+	return gear if gear is Dictionary else {}
 
 static func title(item: Dictionary) -> String:
 	var gear: Dictionary = equipment(item)

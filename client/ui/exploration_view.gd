@@ -19,6 +19,8 @@ static func build(ui: Control, host: Control) -> void:
 	var phase: String = state.get("player", {}).get("phase", "")
 	if phase in ["Pve", "Pvp"]:
 		_battle(ui, host, state)
+	elif phase in ["Extracted", "Dead"]:
+		_settlement_pending(ui, phase)
 	elif state.has("reward_choice"):
 		_rewards(ui, host, state.reward_choice)
 	elif host.get_meta("inventory_open", false) and phase == "ActionBar":
@@ -452,19 +454,61 @@ static func _rewards(ui: Control, host: Control, reward: Dictionary) -> void:
 	ui.button("刷新 %s 金币" % [60, 180, 450][mini(count, 2)] if count < 3 else "刷新已用尽", Rect2(746, 830, 425, 91), func(): Game.command("reward.choice.refresh"), count >= 3 or not Game.allowed("reward.choice.refresh"))
 	ui.text("当前%s层" % ["外", "中", "内"][clampi(int(reward.get("layer", 0)), 0, 2)], Rect2(1275, 845, 334, 64), 29, P.MUTED)
 
+static func _settlement_pending(ui: Control, phase: String) -> void:
+	ui.panel(Rect2(483, 196, 954, 690))
+	_center(ui.text("撤离完成" if phase == "Extracted" else "战斗结束", Rect2(545, 285, 830, 100), 64, P.GOLD))
+	_center(ui.text("正在结算本局收获…", Rect2(598, 455, 724, 70), 34, P.PAPER))
+
 static func build_settlement(ui: Control, _host: Control) -> void:
 	ui.panel(Rect2(483, 196, 954, 690))
 	_center(ui.text(P.word(Game.settlement.get("result", "旅程结束")), Rect2(545, 253, 830, 100), 64, P.GOLD))
 	_center(ui.text("此行收获", Rect2(598, 380, 724, 65), 36, P.PAPER))
-	var details: Dictionary = Game.settlement.get("details", {})
-	var y := 469.0
-	for key in ["gold", "goldEarned", "equipmentFragments", "warriorSoul"]:
-		if not details.has(key): continue
-		var title: String = {"gold": "金币", "goldEarned": "金币", "equipmentFragments": "装备碎片", "warriorSoul": "勇士之魂"}[key]
-		ui.text(title, Rect2(633, y, 390, 52), 30, P.PAPER)
-		ui.text(str(details[key]), Rect2(1113, y, 170, 52), 32, P.GOLD)
-		y += 55
+	var items: Array = _settlement_items()
+	if items.is_empty():
+		_center(ui.text("本次结算暂无可展示的道具", Rect2(598, 521, 724, 62), 28, P.MUTED))
+	else:
+		var scroll: ScrollContainer = ui._scroll(Rect2(595, 460, 730, 274))
+		scroll.name = "SettlementItemsScroll"
+		var list := Control.new()
+		list.custom_minimum_size = Vector2(690, items.size() * 68)
+		scroll.add_child(list)
+		for index in range(items.size()):
+			var entry: Dictionary = items[index]
+			var item: Dictionary = entry.get("item", {})
+			var row := ui.panel(Rect2(0, index * 68, 690, 62), SLOT, list)
+			row.name = "SettlementItem_%s" % index
+			var icon := TextureRect.new()
+			icon.texture = Art.item_texture(item)
+			icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			icon.position = Vector2(8, 5)
+			icon.size = Vector2(54, 52)
+			icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			row.add_child(icon)
+			var title := Details.title(item)
+			if entry.get("equipped", false): title += " · 已穿戴"
+			ui.text(title, Rect2(72, 8, 500, 47), 25, P.PAPER, row)
+			ui.text("×%s" % item.get("quantity", 1), Rect2(580, 8, 100, 47), 25, P.GOLD, row).horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	ui.button("返回", Rect2(649, 754, 625, 81), Game.acknowledge_settlement, Game.busy)
+
+static func _settlement_items() -> Array:
+	var details: Dictionary = Game.settlement.get("details", {})
+	var result: Array = []
+	if details.get("items") is Array:
+		for entry in details.items:
+			if entry is Dictionary and entry.get("item") is Dictionary:
+				result.append(entry)
+		return result
+	if Game.settlement.get("matchId", "") != Game.room.get("match_id", ""): return result
+	var player: Dictionary = Game.room.get("player", {})
+	var extracted: bool = Game.settlement.get("result", "") == "Extracted"
+	for item in player.get("inventory", []):
+		if item is Dictionary and (extracted or item.get("is_safe", false)):
+			result.append({"item": item, "equipped": false})
+	if extracted:
+		for item in player.get("equipped_items", []):
+			if item is Dictionary: result.append({"item": item, "equipped": true})
+	return result
 
 static func show_midlayer(ui: Control, host: Control, row: int, column: int) -> void:
 	var overlay := Control.new()

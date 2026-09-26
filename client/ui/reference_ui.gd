@@ -43,13 +43,13 @@ func build(source: Control) -> void:
 			"market": _market()
 	text(Game.connection, Rect2(1260, 1038, 620, 30), 18, P.MUTED).horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 
-func text(value: String, rect: Rect2, font_size: int = 24, color: Color = P.PAPER, parent: Node = null) -> Label:
+func text(value: String, rect: Rect2, font_size: int = 24, color: Color = P.PAPER, parent: Node = null, fit_to_rect: bool = true) -> Label:
 	var label := Label.new()
 	var display_text := P.localized_text(value)
 	label.text = display_text
 	var typeface := P.font_for_text(display_text, font_size)
 	label.add_theme_font_override("font", typeface)
-	label.add_theme_font_size_override("font_size", P.fit_font_size(typeface, font_size, rect.size.y, rect.size.x - 8.0, display_text))
+	label.add_theme_font_size_override("font_size", P.fit_font_size(typeface, font_size, rect.size.y, rect.size.x - 8.0, display_text) if fit_to_rect else font_size)
 	label.add_theme_color_override("font_color", color)
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -58,7 +58,7 @@ func text(value: String, rect: Rect2, font_size: int = 24, color: Color = P.PAPE
 	if not (parent != null and parent is Container):
 		label.position = rect.position
 		label.size = rect.size
-	P.fit_control_font(label, typeface, font_size, 8.0)
+	if fit_to_rect: P.fit_control_font(label, typeface, font_size, 8.0)
 	return label
 
 func picture(texture: Texture2D, rect: Rect2) -> TextureRect:
