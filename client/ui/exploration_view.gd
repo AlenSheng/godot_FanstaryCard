@@ -475,7 +475,7 @@ static func build_settlement(ui: Control, _host: Control) -> void:
 		for index in range(items.size()):
 			var entry: Dictionary = items[index]
 			var item: Dictionary = entry.get("item", {})
-			var row := ui.panel(Rect2(0, index * 68, 690, 62), SLOT, list)
+			var row: Control = ui.panel(Rect2(0, index * 68, 690, 62), SLOT, list)
 			row.name = "SettlementItem_%s" % index
 			var icon := TextureRect.new()
 			icon.texture = Art.item_texture(item)
