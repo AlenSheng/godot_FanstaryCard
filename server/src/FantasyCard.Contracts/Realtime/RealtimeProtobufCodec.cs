@@ -204,6 +204,7 @@ public static class RealtimeProtobufCodec
             w.String(2, value.TargetId);
         }),
         "room.snapshot" when message.Payload is RoomSnapshotEventPayload value => EncodeRoomSnapshot(value),
+        "map.player_count" when message.Payload is MapPlayerCountEventPayload value => Message(w => w.Int64(1, value.PlayerCount)),
         "reward.choice" when message.Payload is RewardChoiceEventPayload value => EncodeRewardChoice(value),
         "reward.choice_claimed" when message.Payload is RewardChoiceClaimedEventPayload value => Message(w => { w.String(1, value.OptionId); w.Int64(2, value.Applied); }),
         "room.moved" when message.Payload is RoomMovedEventPayload value => Message(w => { w.String(1, value.PlayerId.ToString("D")); w.Int64(2, value.Row); w.Int64(3, value.Column); }),
@@ -248,6 +249,7 @@ public static class RealtimeProtobufCodec
             "settlement.ready" or "match.settled" => new SettlementReadyEventPayload(
                 ParseGuid(payload.String(1), type), ParseGuid(payload.String(2), type), payload.String(3)),
             "room.snapshot" => DecodeRoomSnapshot(payload),
+            "map.player_count" => new MapPlayerCountEventPayload(checked((int)payload.Int64(1))),
             "error.command_rejected" => new CommandRejectedEventPayload(payload.String(1), payload.String(2)),
             "battle.combo_resolved" or "combat.previewed" or "combat.hit" => new BattleComboResolvedEventPayload(
                 ParseGuid(payload.String(1), type),
@@ -464,6 +466,7 @@ public static class RealtimeProtobufCodec
         w.OptionalInt64(13, value.ExtractionRemainingMs);
         w.OptionalInt64(14, value.SpringRemainingMs);
         foreach (var action in value.AllowedActions) w.String(15, action);
+        w.Int64(16, value.MapPlayerCount);
     });
 
     private static byte[] EncodePosition(RoomPositionPayload value) =>
@@ -492,6 +495,11 @@ public static class RealtimeProtobufCodec
         foreach (var item in value.EquippedItems ?? []) w.Bytes(12, EncodeInventoryItem(item));
         w.Int64(13, value.WeaponLevel);
         if (value.BattleStatus is { } status) w.Bytes(14, EncodeBattleStatus(status));
+        w.Int64(15, value.StunRemainingMs);
+        w.Int64(16, value.DrawBlockRemainingMs);
+        w.Int64(17, value.DrawSpeedRemainingMs);
+        w.Int64(18, value.DrawBlockSpeedRemainingMs);
+        w.String(19, value.BaseDrawIntervalSeconds);
     });
 
     private static byte[] EncodeBattleStatus(RoomBattleStatusPayload value) => Message(w =>
@@ -569,6 +577,8 @@ public static class RealtimeProtobufCodec
         w.OptionalInt64(7, value.EscapeRemainingMs);
         w.String(8, value.OpponentClass); w.String(9, value.OpponentName); w.String(10, value.EscapeProbability);
         if (value.OpponentStatus is { } status) w.Bytes(11, EncodeBattleStatus(status));
+        w.Int64(12, value.OpponentStunRemainingMs);
+        w.Int64(13, value.OpponentDrawBlockRemainingMs);
     });
 
     private static RoomSnapshotEventPayload DecodeRoomSnapshot(Fields payload)
@@ -604,7 +614,8 @@ public static class RealtimeProtobufCodec
             rewardBytes.Length == 0 ? null : DecodeRewardChoice(Fields.Read(rewardBytes)),
             payload.OptionalInt64(13),
             payload.OptionalInt64(14),
-            payload.RepeatedStrings(15));
+            payload.RepeatedStrings(15),
+            checked((int)payload.Int64(16)));
     }
 
     private static RoomPositionPayload DecodePosition(byte[] bytes)
@@ -637,7 +648,8 @@ public static class RealtimeProtobufCodec
         NullIfEmpty(value.RepeatedInt64(11).Select(index => checked((int)index)).ToArray()),
         NullIfEmpty(value.RepeatedBytes(12).Select(DecodeInventoryItem).ToArray()),
         checked((int)value.Int64(13)),
-        value.Bytes(14).Length > 0 ? DecodeBattleStatus(value.Bytes(14)) : null);
+        value.Bytes(14).Length > 0 ? DecodeBattleStatus(value.Bytes(14)) : null,
+        value.Int64(15), value.Int64(16), value.Int64(17), value.Int64(18), NullIfEmpty(value.String(19)));
 
     private static RoomPvePayload DecodePve(Fields value) => new(
         ParseGuid(value.String(1), "room.snapshot"),
@@ -658,7 +670,8 @@ public static class RealtimeProtobufCodec
         DecodeCombatant(value.Bytes(3)),
         value.Int64(4), value.Int64(5), value.Bool(6), value.OptionalInt64(7),
         NullIfEmpty(value.String(8)), NullIfEmpty(value.String(9)), NullIfEmpty(value.String(10)),
-        value.Bytes(11).Length > 0 ? DecodeBattleStatus(value.Bytes(11)) : null);
+        value.Bytes(11).Length > 0 ? DecodeBattleStatus(value.Bytes(11)) : null,
+        value.Int64(12), value.Int64(13));
 
     private static byte[] Message(Action<ProtoWriter> action)
     {

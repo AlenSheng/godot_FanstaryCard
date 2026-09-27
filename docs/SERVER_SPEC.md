@@ -125,7 +125,7 @@ RoomActor 每 tick 调 `BotDirector.Decide`，只执行返回的意图：
 - **对真人 1v1**：同一套权威结算 + `SelectDuelCards` 中等出牌。不主动离开 / 逃脱。
 - **机机**：10 秒后按生命百分比定胜负并扣 15% / 35% L。
 - 无真人剩余：`ShouldEndRoom` → 立刻结束，机器人带出销毁。
-- 小地图投影仍只含 Boss、泉水、自己位置。
+- 小地图投影标 Boss 与泉水、自己的位置，并提供当前未撤离/未阵亡玩家总数；不提供其他玩家位置或交战状态。
 
 ---
 
@@ -159,7 +159,7 @@ RoomActor 每 tick 调 `BotDirector.Decide`，只执行返回的意图：
 | `duel.escape` | PVP，读条 2s，CD 12s |
 | `session.resume` | 任意在线恢复 |
 
-房间下发快照 / 增量：`room.snapshot`、`room.revision`、`duel.started`、`duel.ended`、`battle.*`、`player.died`、`settlement.ready`。小地图投影只含 Boss 格、泉水格、自己位置。
+房间下发快照 / 增量：`room.snapshot`、`room.revision`、`map.player_count`、`duel.started`、`duel.ended`、`battle.*`、`player.died`、`settlement.ready`。小地图投影含 Boss 格、泉水格、自己位置和当前地图活跃玩家总数，不含其他玩家位置。
 
 登录：原型本地开发身份；Steam 票据服务端向平台验证。微信 `code` 只留接口。
 

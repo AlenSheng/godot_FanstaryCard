@@ -104,8 +104,9 @@ public sealed class BootstrapRepository(
             FROM match_players mp
             JOIN matches m ON m.match_id=mp.match_id
             LEFT JOIN room_snapshots rs ON rs.room_id=m.room_id
-            WHERE mp.player_id=$1 AND mp.is_bot=false AND mp.state <> 'Settled'
-              AND m.status IN ('Starting','Running')
+            WHERE mp.player_id=$1 AND mp.is_bot=false
+              AND ((m.status='Starting' AND mp.state='Ready')
+                OR (m.status IN ('Launching','Running') AND mp.state='Active'))
             ORDER BY m.created_at DESC
             LIMIT 1
             """);

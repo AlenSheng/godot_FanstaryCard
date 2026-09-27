@@ -619,6 +619,7 @@ ws://127.0.0.1:5080/ws/v1/session?access_token={URL 编码 token}
 | `settlement.ready` / `match.settled` | S→C | `SettlementReadyEvent`；settlementId、matchId、result；资产托管全部提交后由持久 outbox 兼容发布两种名称，离线行在重连时投递，客户端按 settlementId/eventId 去重 |
 | `room.snapshot.read` | C→S | `RoomSnapshotCommand` |
 | `room.snapshot` | S→C | `RoomSnapshotEvent`；仅含当前玩家可见房间状态 |
+| `map.player_count` | S→C | `MapPlayerCountEvent`；当前地图未撤离且未阵亡玩家数变化时推送 |
 | `error.command_rejected` | S→C | `CommandRejectedEvent` |
 | `error.invalid_message` | S→C | 空 |
 | `error.rate_limited` | S→C | 空 |
@@ -657,7 +658,7 @@ ws://127.0.0.1:5080/ws/v1/session?access_token={URL 编码 token}
 
 客户端必须按 `sequence` 去重并持久化最后成功值；跳号时用 `SessionResumeCommand.last_sequence/room_id/room_revision` 请求恢复；未知字段忽略，未知 type 记录开发日志后忽略。缓存有缺口时服务端返回 `session.snapshot`，若玩家仍在房间会紧接玩家隔离的 `room.snapshot`；房间 revision 落后时也会补发。建立 WebSocket 连接时，若玩家处于确认阶段，服务端在 `session.connected` 后发送最新 `room.ready_required`；若已有活动房间，则主动发送 `room.snapshot`。
 
-`room.snapshot` 的全图只包含 6×6 形状、Boss 和泉水；不会下发其他玩家位置、人数、交战、已清格、随机撤离、宝箱怪或非当前格遗物。当前格上下文、自己的战斗/三堆摘要、临时包、PVE/PVP、奖励、读条与 `allowed_actions` 会一并返回。
+`room.snapshot` 的全图包含 6×6 形状、Boss、泉水和当前地图活跃玩家总数；不会下发其他玩家位置、交战、已清格、随机撤离、宝箱怪或非当前格遗物。活跃人数包含机器人，并在玩家撤离或阵亡时通过 `map.player_count` 实时推送。当前格上下文、自己的战斗/三堆摘要、临时包、PVE/PVP、奖励、读条与 `allowed_actions` 会一并返回。
 
 未知或未开放命令返回 `error.command_rejected`。常见 code：`INVALID_COMMAND`、`INVALID_REQUEST_ID`、`REQUEST_ID_REQUIRED`、`REQUEST_ID_REUSED`、`EXPECTED_REVISION_REQUIRED`、`INVALID_PAYLOAD`、`UNSUPPORTED_COMMAND`、`COMMAND_REJECTED`、`STALE_RELIC`、`NOT_IN_ROOM`、`READY_NOT_FOUND`、`READY_TIMEOUT`。单连接命令超过服务端窗口时返回 `error.rate_limited`；客户端应停止当帧发送、合并可覆盖命令并指数退避。版本冲突后读新快照，再为新操作生成新 request_id；同键改内容不会成为新请求。
 

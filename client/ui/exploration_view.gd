@@ -8,11 +8,15 @@ const Details = preload("res://ui/equipment_details.gd")
 const BattleDetails = preload("res://ui/battle_details.gd")
 const DragScroll = preload("res://ui/drag_scroll.gd")
 const CellIndex = preload("res://ui/cell_index.gd")
+const BattleTargets = preload("res://state/battle_targets.gd")
 const TemporaryBagItem = preload("res://ui/temporary_bag_item.gd")
+const ItemVisual = preload("res://ui/item_visual.gd")
 const PANEL := "UI/CardCodex/card_codex_dialog_panel_normal.png"
 const SLOT := Art.COMMON_CELL_KEY
 const EMPTY_HAND_SLOT := "UI/Codex/qframe_empty_gray.png"
 const ITEM := "UI/Item/exploration_prep_item_icon_"
+const MAP_BOSS_MARKER: Texture2D = preload("res://assets/generated/ui/map_boss_marker.png")
+const MAP_SELF_MARKER: Texture2D = preload("res://assets/generated/ui/map_self_marker.png")
 
 static func build(ui: Control, host: Control) -> void:
 	var state: Dictionary = Game.room
@@ -29,7 +33,6 @@ static func build(ui: Control, host: Control) -> void:
 		_map(ui, host, state)
 	else:
 		_actions(ui, host, state)
-	ui.text(Game.connection, Rect2(1450, 995, 236, 40), 20, P.MUTED)
 
 static func _title(ui: Control, value: String, battle: bool = false) -> void:
 	ui.picture(Art.texture("UI/Encounter/encounter_title_plate_normal.png"), Rect2(50, 28, 480, 96))
@@ -52,18 +55,9 @@ static func _picture(ui: Control, texture: Texture2D, rect: Rect2) -> TextureRec
 	return node
 
 static func _battle_target_element(state: Dictionary) -> String:
-	var pve: Dictionary = state.get("pve", {})
-	var target_id := str(pve.get("current_target_id", ""))
-	var fallback := ""
-	for entry in pve.get("monsters", []):
-		if not entry is Dictionary: continue
-		var monster: Dictionary = entry
-		if int(monster.get("hp", 0)) <= 0: continue
-		var element := str(monster.get("intent_element", "None"))
-		if element not in ["Fire", "Wood", "Water", "Metal", "Earth"]: continue
-		if fallback.is_empty(): fallback = element
-		if str(monster.get("monster_id", "")) == target_id: return element
-	return fallback
+	var monster := BattleTargets.current(state.get("pve", {}))
+	var element := str(monster.get("intent_element", "None"))
+	return element if element in ["Fire", "Wood", "Water", "Metal", "Earth"] else ""
 
 static func _nine_patch(ui: Control, texture: Texture2D, rect: Rect2, margins: Vector4) -> NinePatchRect:
 	var node := NinePatchRect.new()
@@ -99,6 +93,11 @@ static func _health(ui: Control, combat: Dictionary, rect: Rect2, enemy: bool = 
 		ui.picture(Art.texture("UI/Battle/battle_shield_badge.png"), Rect2(rect.position.x, rect.position.y + 76, 36, 40))
 		ui.text("护盾 %s" % combat.shield, Rect2(rect.position.x + 46, rect.position.y + 76, rect.size.x - 46, 40), 24, Color("c4d2d4"))
 
+static func _status(ui: Control, name: String, rect: Rect2) -> void:
+	var label: Label = ui.text("", rect, 23, P.TEAL)
+	label.name = name
+	label.visible = false
+
 static func _passive(ui: Control, hero_class: String, rect: Rect2) -> void:
 	var names := {"Mage": "焚弦", "Priest": "临渊", "Guardian": "载岳"}
 	if not names.has(hero_class): return
@@ -126,48 +125,53 @@ static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 		host._combat_panels[player.get("player_id", "")] = hero
 		ui.text(P.CLASSES.get(player.get("hero_class", Game.hero_class), P.CLASSES.Mage)[0], Rect2(80, 615, 350, 48), 34, P.GOLD)
 		_health(ui, player.get("combat", {}), Rect2(80, 670, 310, 115))
+		_status(ui, "PlayerStatus", Rect2(80, 785, 375, 32))
 		_passive(ui, player.get("hero_class", ""), Rect2(621, 443, 317, 122))
 		var monsters: Array = state.get("pve", {}).get("monsters", [])
-		var alive_monster_count := 0
-		for candidate in monsters:
-			if int(candidate.get("hp", 0)) > 0:
-				alive_monster_count += 1
-		var can_select_target := alive_monster_count > 1
-		for index in range(mini(monsters.size(), 2)):
+		var can_select_target := BattleTargets.living(state.get("pve", {})).size() > 1
+		var target_id := str(BattleTargets.current(state.get("pve", {})).get("monster_id", ""))
+		var slot_scale := minf(1.0, 2.0 / float(maxi(1, monsters.size())))
+		for index in range(monsters.size()):
 			var monster: Dictionary = monsters[index]
-			var x: float = 1020.0 + index * 415.0 if monsters.size() > 1 else 1200.0
+			var x: float = 1020.0 + index * 415.0 * slot_scale if monsters.size() > 1 else 1200.0
 			var alive: bool = int(monster.get("hp", 0)) > 0
-			var selected: bool = alive and state.pve.get("current_target_id", "") == monster.get("monster_id", "")
+			var selected: bool = alive and target_id == monster.get("monster_id", "")
 			# Older snapshots have no phase field; HP does not indicate a completed boss transition.
 			var boss_phase: int = maxi(1, int(monster.get("boss_phase", 1)))
 			var texture: Texture2D = Art.monster(monster.get("monster_id", ""), boss_phase)
-			var enemy: Control = _picture(ui, texture, Rect2(x - 45, 301, 430, 245))
+			var enemy: Control = _picture(ui, texture, Rect2(x - 45 * slot_scale, 301, 430 * slot_scale, 202 if can_select_target else 245))
 			enemy.name = "Monster_" + str(monster.get("monster_id", ""))
 			host._combat_panels[monster.get("monster_id", "")] = enemy
 			if texture == null:
-				ui.panel(Rect2(x + 45, 306, 250, 170), SLOT)
-				_center(ui.text(host._monster_name(monster.get("monster_id", "")), Rect2(x + 55, 356, 230, 65), 36, P.MUTED))
+				ui.panel(Rect2(x + 45 * slot_scale, 306, 250 * slot_scale, 170), SLOT)
+				_center(ui.text(host._monster_name(monster.get("monster_id", "")), Rect2(x + 55 * slot_scale, 356, 230 * slot_scale, 65), 36, P.MUTED))
 			if not alive: enemy.modulate.a = 0.35
 			var element: String = monster.get("intent_element", "None")
 			if alive:
 				var intent: String = {"Charge": "蓄力", "Empower": "强化", "Shield": "护盾"}.get(monster.get("intent_kind", ""), P.word(element))
 				var number: String = str(monster.get("intent_value", 0)) if int(monster.get("intent_value", 0)) > 0 else ""
 				if element != "None":
-					ui.picture(Art.element(element), Rect2(x + 25, 121, 62, 62))
-				ui.text("%s %s" % [intent, number], Rect2(x + 95, 126, 250, 58), 37, P.ELEMENT.get(element, P.PAPER))
+					ui.picture(Art.element(element), Rect2(x + 25 * slot_scale, 121, 62 * slot_scale, 62))
+				ui.text("%s %s" % [intent, number], Rect2(x + 95 * slot_scale, 126, 250 * slot_scale, 58), 37, P.ELEMENT.get(element, P.PAPER))
 			else:
-				_center(ui.text(P.localized("defeated"), Rect2(x + 24, 126, 315, 58), 32, P.MUTED))
-			_health(ui, monster, Rect2(x + 24, 190, 315, 114), true)
+				_center(ui.text(P.localized("defeated"), Rect2(x + 24 * slot_scale, 126, 315 * slot_scale, 58), 32, P.MUTED))
+			_health(ui, monster, Rect2(x + 24 * slot_scale, 190, 315 * slot_scale, 114), true)
+			_status(ui, "MonsterStatus_%d" % index, Rect2(x + 24 * slot_scale, 308, 350 * slot_scale, 32))
 			var name: String = host._monster_name(monster.get("monster_id", ""))
 			if monster.get("monster_id", "") == "annihilation-core": name += " · %s阶段" % ("二" if boss_phase == 2 else "一")
-			if can_select_target:
-				var button: Button = ui.button(name + (" · 目标" if selected else ""), Rect2(x + 10, 550, 350, 58), func(): Game.command("battle.select_target", {"battle_id": state.pve.battle_id, "target_id": monster.monster_id}), not Game.allowed("battle.select_target") or not alive)
+			if can_select_target and alive:
+				var button: Button = ui.button(name + (" · 目标" if selected else ""), Rect2(x + 10 * slot_scale, 512, 350 * slot_scale, 50), func(): Game.command("battle.select_target", {"battle_id": state.pve.battle_id, "target_id": monster.monster_id}), not Game.allowed("battle.select_target"))
 				button.name = "MonsterTarget_" + str(monster.get("monster_id", ""))
+				# Default button padding otherwise grows this row into the preview.
+				for style_name in ["normal", "hover", "pressed", "disabled"]:
+					var style: StyleBox = button.get_theme_stylebox(style_name).duplicate()
+					style.set_content_margin(SIDE_TOP, 6)
+					style.set_content_margin(SIDE_BOTTOM, 6)
+					button.add_theme_stylebox_override(style_name, style)
+				button.size = Vector2(350 * slot_scale, 50)
 				if selected: button.add_theme_color_override("font_disabled_color", P.GOLD)
-			if alive and int(monster.get("stun_remaining_ms", 0)) > 0:
-				_center(ui.text("眩晕 %.1f 秒" % (float(monster.stun_remaining_ms) / 1000), Rect2(x + 15, 502, 340, 45), 25, P.TEAL))
-			elif alive and int(monster.get("windup_remaining_ms", 0)) > 0:
-				_center(ui.text("即将行动 %.1f 秒" % (float(monster.windup_remaining_ms) / 1000), Rect2(x + 15, 502, 340, 45), 25, P.GOLD))
+			if alive and int(monster.get("stun_remaining_ms", 0)) <= 0 and int(monster.get("windup_remaining_ms", 0)) > 0:
+				_center(ui.text("即将行动 %.1f 秒" % (float(monster.windup_remaining_ms) / 1000), Rect2(x + 15 * slot_scale, 472 if can_select_target else 502, 340 * slot_scale, 35 if can_select_target else 45), 25, P.GOLD))
 	_hand(ui, host, state)
 
 static func _hand(ui: Control, host: Control, state: Dictionary) -> void:
@@ -208,6 +212,7 @@ static func _hand(ui: Control, host: Control, state: Dictionary) -> void:
 	charge_bar.name = "DrawChargeBar"
 	if host.has_method("_draw_charge_value"):
 		charge_bar.value = host._draw_charge_value(float(player.get("draw_charge", "0")))
+	ui.text("%d%%" % roundi(charge_bar.value * 100.0), Rect2(402, 880, 72, 38), 24, P.TEAL).name = "DrawChargePercent"
 	ui.text("牌库 %s · 弃牌 %s" % [player.get("library_count", 0), player.get("discard_count", 0)], Rect2(79, 940, 330, 32), 21, P.MUTED)
 	_center(ui.text(P.localized("battle_play_hint") % Game.selected_cards.size(), Rect2(573, 1005, 765, 36), 23, P.PAPER))
 
@@ -262,6 +267,7 @@ static func _duel(ui: Control, host: Control, state: Dictionary) -> void:
 	host._combat_panels[player.get("player_id", "")] = hero
 	ui.text(P.CLASSES.get(player.get("hero_class", Game.hero_class), P.CLASSES.Mage)[0], Rect2(372, 161, 422, 53), 38, P.GOLD)
 	_health(ui, player.get("combat", {}), Rect2(370, 229, 409, 120))
+	_status(ui, "PlayerStatus", Rect2(370, 350, 410, 32))
 	ui.picture(Art.texture("UI/Encounter/encounter_vs_emblem_normal.png"), Rect2(855, 153, 216, 193))
 	var opponent_class: String = duel.get("opponent_class", "")
 	var opponent: Control = _picture(ui, Art.portrait(opponent_class) if P.CLASSES.has(opponent_class) else Art.texture("UI/Encounter/encounter_enemy_frame_normal.png"), Rect2(1516, 142, 268, 308))
@@ -269,6 +275,7 @@ static func _duel(ui: Control, host: Control, state: Dictionary) -> void:
 	ui.text(duel.get("opponent_name", "同格旅人") + " · " + P.word(opponent_class), Rect2(1129, 161, 380, 53), 31, P.GOLD)
 	ui.button(P.localized("opponent_stats"), Rect2(1534, 462, 252, 55), func(): host._show_battle_details(duel.get("opponent_status", {})))
 	_health(ui, duel.get("opponent", {}), Rect2(1128, 229, 358, 120), true)
+	_status(ui, "OpponentStatus", Rect2(1128, 350, 390, 32))
 	var seconds: float = maxf(0, (float(duel.get("leave_window_ends_at_unix_ms", 0)) - Time.get_unix_time_from_system() * 1000) / 1000)
 	ui.button("已请求离开" if duel.get("self_requested_leave", false) else "双方离开", Rect2(400, 398, 350, 66), func(): Game.command("duel.leave", {"duel_id": duel.duel_id}), not Game.allowed("duel.leave"))
 	if seconds > 0: _center(ui.text("离开窗口 %.1f 秒" % seconds, Rect2(400, 480, 350, 44), 26, P.GOLD))
@@ -282,6 +289,7 @@ static func _duel(ui: Control, host: Control, state: Dictionary) -> void:
 	ui.text(P.localized("waiting_action"), Rect2(1350, 443, 330, 48), 26, P.GOLD)
 	ui.text(P.localized("own_hand"), Rect2(80, 622, 330, 54), 34, P.GOLD)
 	_passive(ui, player.get("hero_class", ""), Rect2(80, 703, 330, 117))
+	_hand(ui, host, state)
 
 static func _map(ui: Control, host: Control, state: Dictionary) -> void:
 	_title(ui, "混沌领域")
@@ -298,35 +306,57 @@ static func _map(ui: Control, host: Control, state: Dictionary) -> void:
 			var legal: bool = moves.has(pos)
 			var rect := Rect2(origin + Vector2(column * stride.x, row * stride.y), Vector2(137, 118))
 			var cell: Dictionary = cells.get(pos, {})
-			var value := "自己" if current else ("首领" if cell.get("is_boss", false) else ("源泉" if cell.get("has_spring", false) else ""))
+			var markers: Array[Dictionary] = []
+			if cell.get("is_boss", false): markers.append({"label": P.localized("boss"), "texture": MAP_BOSS_MARKER, "tint": Color("fa8c72")})
+			elif cell.get("has_spring", false): markers.append({"label": P.localized("spring"), "texture": Art.texture("UI/Action/spring_clean.png"), "tint": P.TEAL})
+			if current: markers.append({"label": P.localized("self"), "texture": MAP_SELF_MARKER, "tint": P.GOLD})
 			var tile := ColorRect.new()
 			tile.color = (Color("ad873c") if legal else colors[layer]).darkened(0.65)
 			tile.position = rect.position
 			tile.size = rect.size
 			tile.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			ui.add_child(tile)
-			var button: Button = ui.button(value, rect, func(): host._move(row, column), not legal or not Game.allowed("room.move"), SLOT)
+			var button: Button = ui.button("", rect, func(): host._move(row, column), not legal or not Game.allowed("room.move"), SLOT)
 			button.add_theme_font_size_override("font_size", 30)
 			var tint: Color = colors[layer]
 			button.add_theme_stylebox_override("normal", Art.style(SLOT, Color("e7bb66") if legal else tint))
 			button.add_theme_stylebox_override("disabled", Art.style(SLOT, Color("f2d392") if current else tint))
-			button.add_theme_color_override("font_disabled_color", P.GOLD if current else (Color("fa8c72") if cell.get("is_boss", false) else P.TEAL))
-			button.tooltip_text = "%s层%s" % [["外", "中", "内"][layer], " · 可前往" if legal else ""]
-			if cell.get("has_spring", false) and not current and not cell.get("is_boss", false):
-				button.text = ""
-				var spring: TextureRect = _picture(ui, Art.texture("UI/Action/spring_clean.png"), Rect2(rect.position + Vector2(39, 9), Vector2(59, 58)))
-				spring.name = "MapSpring_%s_%s" % [row, column]
-				_center(ui.text("源泉", Rect2(rect.position + Vector2(6, 65), Vector2(125, 40)), 29, P.TEAL))
+			var layer_names := ["外", "中", "内"]
+			var tooltip := "%s层" % layer_names[layer]
+			if legal: tooltip += " · 可前往"
+			if not markers.is_empty():
+				var marker_names: Array[String] = []
+				for marker in markers: marker_names.append(str(marker.label))
+				tooltip += " · " + ", ".join(marker_names)
+			button.tooltip_text = tooltip
+			if markers.size() == 1:
+				var marker: Dictionary = markers[0]
+				_picture(ui, marker.texture, Rect2(rect.position + Vector2(39, 5), Vector2(59, 59)))
+				_center(ui.text(marker.label, Rect2(rect.position + Vector2(6, 65), Vector2(125, 39)), 27, marker.tint))
+			elif not markers.is_empty():
+				var icon_size := 46.0 if markers.size() == 2 else 36.0
+				var gap := 8.0 if markers.size() == 2 else 2.0
+				var total_width := markers.size() * icon_size + (markers.size() - 1) * gap
+				var start_x := (rect.size.x - total_width) * 0.5
+				for marker_index in range(markers.size()):
+					var marker: Dictionary = markers[marker_index]
+					var marker_x := start_x + marker_index * (icon_size + gap)
+					_picture(ui, marker.texture, Rect2(rect.position + Vector2(marker_x, 5), Vector2(icon_size, 48)))
+					_center(ui.text(marker.label, Rect2(rect.position + Vector2(marker_x - 8, 70), Vector2(icon_size + 16, 31)), 18 if markers.size() == 2 else 14, marker.tint))
 	ui.panel(Rect2(1372, 241, 430, 548))
 	_center(ui.text("图例", Rect2(1420, 274, 333, 65), 40, P.GOLD))
 	for index in range(3):
 		var tint: Color = [Color("fa8c72"), P.TEAL, P.GOLD][index]
-		if index == 1:
-			_picture(ui, Art.texture("UI/Action/spring_clean.png"), Rect2(1423, 377 + index * 114, 88, 83))
-		else: ui.panel(Rect2(1423, 377 + index * 114, 88, 83), SLOT).modulate = tint
+		_picture(ui, [MAP_BOSS_MARKER, Art.texture("UI/Action/spring_clean.png"), MAP_SELF_MARKER][index], Rect2(1423, 377 + index * 114, 88, 83))
 		ui.text(["首领", "源泉", "自己"][index], Rect2(1535, 394 + index * 114, 220, 55), 34, tint)
 	ui.text("高亮邻格可前往", Rect2(1431, 725, 330, 38), 24, P.GOLD)
-	ui.text("向内探索后无法返回外层。\n源泉常亮，可规划补给路线。", Rect2(80, 265, 293, 171), 26, P.MUTED)
+	var map_player_count := int(state.get("map_player_count", 0))
+	var population_text := P.localized("map_player_count_unavailable")
+	if map_player_count > 0: population_text = P.localized("map_player_count") % [map_player_count]
+	# Keep both descriptions at the same size and give wrapped lines their own space.
+	ui.text(P.localized("map_encounter_hint"), Rect2(80, 265, 320, 120), 24, P.MUTED, null, false)
+	ui.text(population_text, Rect2(80, 400, 320, 44), 24, P.GOLD, null, false)
+	ui.text(P.localized("map_hint"), Rect2(80, 460, 320, 230), 24, P.MUTED, null, false)
 	ui.button("返回", Rect2(80, 985, 262, 56), func(): host.set_meta("exploration_map_open", false); host._schedule_render())
 
 static func _actions(ui: Control, host: Control, state: Dictionary) -> void:
@@ -340,7 +370,7 @@ static func _actions(ui: Control, host: Control, state: Dictionary) -> void:
 	var inventory: Array = player.get("inventory", [])
 	ui.panel(Rect2(1228, 158, 574, 363))
 	ui.text(P.localized("temporary_bag"), Rect2(1268, 182, 480, 54), 34, P.GOLD)
-	ui.text("已用 %s / %s 格" % [inventory.size(), player.get("inventory_capacity", 0)], Rect2(1268, 240, 466, 40), 25, P.PAPER)
+	ui.text(P.localized("temporary_bag_slots_used") % [inventory.size(), player.get("inventory_capacity", 0)], Rect2(1268, 240, 466, 40), 25, P.PAPER)
 	ui.button(P.localized("open_bag"), Rect2(1556, 180, 206, 52), func(): InventoryView.open(host), not Game.allowed("inventory.move")).name = "OpenInventory"
 	# The compact view always shows two rows of three items. Keep the server's
 	# inventory order (the acquisition order) instead of laying items out by
@@ -370,7 +400,7 @@ static func _actions(ui: Control, host: Control, state: Dictionary) -> void:
 		var item: Dictionary = inventory[index]
 		var item_view := TemporaryBagItem.new()
 		item_view.name = "TemporaryBagItem_%s" % str(item.get("item_id", index))
-		item_view.configure(item, _item_icon(item))
+		item_view.configure(item)
 		item_grid.add_child(item_view)
 	var actions: Array = []
 	for action in ["action.spring", "action.potion", "action.extract"]:
@@ -391,7 +421,7 @@ static func _actions(ui: Control, host: Control, state: Dictionary) -> void:
 		strip.add_child(tile)
 		var rect := Rect2(0, 0, 264, 278)
 		var relic: bool = action.begins_with("relic:")
-		var title: String = {"action.spring": "饮用生命泉水", "action.potion": "使用生命药剂", "action.extract": "撤离", "map": "走邻格"}.get(action, "")
+		var title: String = {"action.spring": "饮用生命泉水", "action.potion": P.localized("use_health_potion"), "action.extract": "撤离", "map": "走邻格"}.get(action, "")
 		var callback: Callable = func(): Game.command(action)
 		if action == "map": callback = func(): host.set_meta("exploration_map_open", true); host._schedule_render()
 		if relic:
@@ -414,13 +444,6 @@ static func _actions(ui: Control, host: Control, state: Dictionary) -> void:
 			_center(ui.text(("撤离中 " if key.begins_with("extraction") else "饮用泉水 ") + "%.1f 秒" % (float(state[key]) / 1000), Rect2(615, 453, 560, 67), 36, P.TEAL))
 	ui.button("查看地图", Rect2(80, 985, 244, 56), func(): host.set_meta("exploration_map_open", true); host._schedule_render())
 
-static func _item_icon(item: Dictionary) -> Texture2D:
-	var kind: String = item.get("kind", "")
-	var suffix: String = {"Gold": "gold", "EquipmentFragments": "fragments", "WarriorSoul": "warrior_soul", "HealthPotion": "potion", "ClassSoul": Game.hero_class.to_lower() + "_soul"}.get(kind, "")
-	if kind == "Equipment":
-		suffix = {"Helmet": "helmet", "Head": "helmet", "Chest": "chest", "Body": "chest", "Hands": "gauntlet", "Gloves": "gauntlet", "Legs": "legs", "Feet": "boots", "Boots": "boots"}.get(item.get("equipment", {}).get("slot", ""), "")
-	return Art.texture(ITEM + suffix + ".png") if not suffix.is_empty() else null
-
 static func _rewards(ui: Control, host: Control, reward: Dictionary) -> void:
 	ui.panel(Rect2(218, 141, 1484, 818))
 	_title(ui, "战利品三选一")
@@ -437,7 +460,11 @@ static func _rewards(ui: Control, host: Control, reward: Dictionary) -> void:
 		_center(ui.text(title, Rect2(rect.position + Vector2(24, 28), Vector2(376, 62)), 42, P.PAPER))
 		var item := {"kind": "Equipment", "equipment": option.get("equipment", {})}
 		if kind == 3: _center(ui.text("+", Rect2(rect.position + Vector2(112, 103), Vector2(200, 165)), 120, P.TEAL))
-		else: ui.picture(_item_icon(item) if kind == 1 else Art.texture(ITEM + "fragments.png"), Rect2(rect.position + Vector2(127, 103), Vector2(170, 165)))
+		else:
+			var reward_item: Dictionary = item if kind == 1 else {"kind": "EquipmentFragments", "item_id": "equipment_fragments", "quantity": option.get("quantity", 1)}
+			var visual := ItemVisual.item(ui, reward_item, Vector2(165, 165), false)
+			visual.position = rect.position + Vector2(129, 103)
+			visual.size = Vector2(165, 165)
 		var description: String = "数量 ×%s" % option.get("quantity", 0)
 		if kind == 1: description = Details.description(item)
 		elif kind == 3:
@@ -455,12 +482,12 @@ static func _rewards(ui: Control, host: Control, reward: Dictionary) -> void:
 	ui.text("当前%s层" % ["外", "中", "内"][clampi(int(reward.get("layer", 0)), 0, 2)], Rect2(1275, 845, 334, 64), 29, P.MUTED)
 
 static func _settlement_pending(ui: Control, phase: String) -> void:
-	ui.panel(Rect2(483, 196, 954, 690))
+	ui.picture(Art.texture(PANEL), Rect2(480, 150, 960, 766))
 	_center(ui.text("撤离完成" if phase == "Extracted" else "战斗结束", Rect2(545, 285, 830, 100), 64, P.GOLD))
 	_center(ui.text("正在结算本局收获…", Rect2(598, 455, 724, 70), 34, P.PAPER))
 
-static func build_settlement(ui: Control, _host: Control) -> void:
-	ui.panel(Rect2(483, 196, 954, 690))
+static func build_settlement(ui: Control, host: Control) -> void:
+	ui.picture(Art.texture(PANEL), Rect2(480, 150, 960, 766))
 	_center(ui.text(P.word(Game.settlement.get("result", "旅程结束")), Rect2(545, 253, 830, 100), 64, P.GOLD))
 	_center(ui.text("此行收获", Rect2(598, 380, 724, 65), 36, P.PAPER))
 	var items: Array = _settlement_items()
@@ -470,26 +497,34 @@ static func build_settlement(ui: Control, _host: Control) -> void:
 		var scroll: ScrollContainer = ui._scroll(Rect2(595, 460, 730, 274))
 		scroll.name = "SettlementItemsScroll"
 		var list := Control.new()
-		list.custom_minimum_size = Vector2(690, items.size() * 68)
+		list.custom_minimum_size = Vector2(690, items.size() * 82)
 		scroll.add_child(list)
 		for index in range(items.size()):
 			var entry: Dictionary = items[index]
 			var item: Dictionary = entry.get("item", {})
-			var row: Control = ui.panel(Rect2(0, index * 68, 690, 62), SLOT, list)
+			var row := Control.new()
 			row.name = "SettlementItem_%s" % index
-			var icon := TextureRect.new()
-			icon.texture = Art.item_texture(item)
-			icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-			icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-			icon.position = Vector2(8, 5)
-			icon.size = Vector2(54, 52)
-			icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
-			row.add_child(icon)
+			row.position = Vector2(0, index * 82)
+			row.size = Vector2(690, 82)
+			list.add_child(row)
+			var backing := Panel.new()
+			backing.position = Vector2(78, 5)
+			backing.size = Vector2(612, 72)
+			backing.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			var backing_style := StyleBoxFlat.new()
+			backing_style.bg_color = Color("07171c")
+			backing_style.border_color = Color("76664d")
+			backing_style.set_border_width_all(1)
+			backing.add_theme_stylebox_override("panel", backing_style)
+			row.add_child(backing)
+			var visual := ItemVisual.item(row, item, Vector2(68, 68), false)
+			visual.position = Vector2(0, 7)
+			visual.size = Vector2(68, 68)
 			var title := Details.title(item)
 			if entry.get("equipped", false): title += " · 已穿戴"
-			ui.text(title, Rect2(72, 8, 500, 47), 25, P.PAPER, row)
-			ui.text("×%s" % item.get("quantity", 1), Rect2(580, 8, 100, 47), 25, P.GOLD, row).horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	ui.button("返回", Rect2(649, 754, 625, 81), Game.acknowledge_settlement, Game.busy)
+			ui.text(title, Rect2(96, 16, 472, 50), 25, P.PAPER, row)
+			ui.text("×%s" % item.get("quantity", 1), Rect2(580, 16, 94, 50), 25, P.GOLD, row).horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	ui.button("返回", Rect2(716, 753, 488, 96), host._return_from_settlement, Game.busy)
 
 static func _settlement_items() -> Array:
 	var details: Dictionary = Game.settlement.get("details", {})

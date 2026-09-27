@@ -25,6 +25,7 @@ func run_test() -> Dictionary:
 	store._accept_combat_preview(payload)
 	ok = ok and store.combat_preview.is_empty()
 	store.selected_cards = ["card-a"]
+	store.room.pve.monsters.append({"monster_id": "monster-b", "hp": 10})
 	store.room.pve.current_target_id = "monster-b"
 	store._accept_combat_preview(payload)
 	ok = ok and store.combat_preview.is_empty()

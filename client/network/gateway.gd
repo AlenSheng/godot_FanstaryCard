@@ -28,6 +28,7 @@ const EVENTS := {
 	"room.ready_required": "RoomReadyRequiredEvent", "room.ready_accepted": "RoomReadyAcceptedEvent",
 	"room.ready_removed": "RoomReadyRemovedEvent", "room.started": "RoomStartedEvent",
 	"room.snapshot": "RoomSnapshotEvent", "room.moved": "RoomMovedEvent",
+	"map.player_count": "MapPlayerCountEvent",
 	"settlement.ready": "SettlementReadyEvent", "match.settled": "SettlementReadyEvent",
 	"error.command_rejected": "CommandRejectedEvent", "battle.combo_resolved": "BattleComboResolvedEvent",
 	"combat.previewed": "BattleComboResolvedEvent",
@@ -362,7 +363,14 @@ func _receive(packet: PackedByteArray) -> void:
 		connection_changed.emit("已连接")
 		if recovering:
 			send("session.resume", {"last_sequence": last_sequence, "room_id": room_id, "room_revision": room_revision})
-		else: last_sequence = sequence
+		else:
+			# The event stream can expire while the client is closed. Its new
+			# sequence is authoritative even when the cached cursor was higher.
+			last_sequence = sequence
+		# Bootstrap may report a room without the socket pushing a snapshot
+		# (for example while the old room is being settled).
+		if not room_id.is_empty(): send("room.snapshot.read")
+		_save_session()
 		return
 	if kind == "session.replaced":
 		end_session(str(payload.get("reason", "账号已在其他窗口连接，请在此窗口重新登录后继续")))
@@ -395,12 +403,14 @@ func _receive(packet: PackedByteArray) -> void:
 			_preview_request_ids.erase(payload._request_id)
 			event_received.emit("combat.preview_rejected", payload)
 			return
+		if payload.get("code", "") == "NOT_IN_ROOM":
+			room_id = ""
+			room_revision = 0
+			recovering = false
+			_save_session()
 		event_received.emit(kind, payload)
 		if payload.get("_retry_handled", false): return
 		failed.emit(payload.get("detail", "操作被拒绝"))
-		if payload.get("code", "") == "NOT_IN_ROOM":
-			room_id = ""
-			recovering = false
-		elif not room_id.is_empty(): send("room.snapshot.read")
+		if not room_id.is_empty(): send("room.snapshot.read")
 		return
 	event_received.emit(kind, payload)

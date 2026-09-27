@@ -88,6 +88,8 @@ message RoomDuel {
   string opponent_name = 9;
   string escape_probability = 10;
   RoomBattleStatus opponent_status = 11;
+  int64 opponent_stun_remaining_ms = 12;
+  int64 opponent_draw_block_remaining_ms = 13;
 }
 message RoomCurrentCell { bool has_evacuation = 1; string monster_group_id = 2; bool spring_consumed = 3; repeated string relic_pile_ids = 4; repeated RoomRelicPile relic_piles = 5; }
 message RoomPlayer {
@@ -105,6 +107,11 @@ message RoomPlayer {
   repeated RoomInventoryItem equipped_items = 12;
   int32 weapon_level = 13;
   RoomBattleStatus battle_status = 14;
+  int64 stun_remaining_ms = 15;
+  int64 draw_block_remaining_ms = 16;
+  int64 draw_speed_remaining_ms = 17;
+  int64 draw_block_speed_remaining_ms = 18;
+  string base_draw_interval_seconds = 19;
 }
 message RoomSnapshotEvent {
   string room_id = 1;

@@ -117,7 +117,11 @@ func _run() -> void:
 		if not $UI.has_meta("pending_move"): layout_errors.append("Midlayer decision lost after snapshot render")
 		$UI.remove_meta("pending_move")
 		Game.room = {}
-		Game.settlement = {"result": "Dead", "settlementId": "fixture", "details": {"equipmentFragments": 18}}
+		Game.settlement = {"result": "Dead", "settlementId": "fixture", "details": {"items": [
+			{"item": {"kind": "HealthPotion", "quantity": 1}},
+			{"item": {"kind": "EquipmentFragments", "quantity": 1}},
+			{"item": {"kind": "Equipment", "quantity": 1, "equipment": {"quality": "White", "element": "Water", "slot": "Chest", "level": 0}}}
+		]}}
 		await _capture("settlement" + suffix)
 		Game.settlement = {}
 	await _regressions()
@@ -225,7 +229,7 @@ func _check_action_icons() -> void:
 
 func _monster_previews(suffix: String) -> void:
 	var Art = preload("res://ui/art.gd")
-	var species := ["fire-bat", "thorn-mite", "murk-snail", "sand-lizard", "rust-rat", "metal-guard", "fire-herald", "marsh-mother", "stone-guard", "thorn-guard", "annihilation-core", "treasure-box-spirit"]
+	var species := ["fire-bat", "thorn-mite", "murk-snail", "sand-lizard", "rust-rat", "metal-guard", "fire-herald", "marsh-mother", "stone-guard", "thorn-guard", "annihilation-core", "box-spirit"]
 	var cards := ["M-FIREBAT", "M-THORNMITE", "M-MUDHYDRA", "M-SANDLIZARD", "M-RUSTRAT", "M-GOLDGUARD", "M-FIREREAVER", "M-SWAMPMOTHER", "M-STONEGUARD", "M-THORNGUARD", "M-VOIDCORE", "M-BOXSPIRIT"]
 	for pair in range(6):
 		Game.room.pve.monsters = []

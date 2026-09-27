@@ -99,6 +99,19 @@ internal sealed class RoomTransitionEventPublisher(
         foreach (var delivery in deliveries)
             await connections.SendPresentationAsync(delivery.PlayerId, delivery.Event);
 
+        var mapPlayerCount = ActiveMapPlayerCount(current);
+        if (mapPlayerCount == ActiveMapPlayerCount(previous)) return;
+        foreach (var player in current.Players.Where(value => !value.IsBot && IsOnMap(value)))
+        {
+            var update = eventStore.Create(
+                player.PlayerId,
+                "map.player_count",
+                "room-population",
+                new MapPlayerCountEventPayload(mapPlayerCount),
+                roomRevision: current.Revision);
+            await connections.SendPresentationAsync(player.PlayerId, update);
+        }
+
         void AddIfHuman(RoomPlayerSnapshot player, string type, object payload)
         {
             if (!player.IsBot) Add(player.PlayerId, type, payload);
@@ -114,4 +127,10 @@ internal sealed class RoomTransitionEventPublisher(
                 roomRevision: current.Revision)));
         }
     }
+
+    private static int ActiveMapPlayerCount(BattleRoomSnapshot snapshot) =>
+        snapshot.Players.Count(IsOnMap);
+
+    private static bool IsOnMap(RoomPlayerSnapshot player) =>
+        player.Phase is not (RoomPlayerPhase.Dead or RoomPlayerPhase.Extracted);
 }

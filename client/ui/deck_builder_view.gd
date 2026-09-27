@@ -128,7 +128,7 @@ static func _deck_row(ui: Control, host: Control, index: int, rect: Rect2) -> vo
 	name_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	name_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	name_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	var effect: String = host.card_description(id, "face")
+	var effect: String = host.card_description(id, "face", int(host._owned_card(id).get("level", 0)))
 	if effect.is_empty():
 		var parts: PackedStringArray = host._card_text(id).split("\n\n", true, 1)
 		effect = parts[1] if parts.size() > 1 else host._card_text(id)

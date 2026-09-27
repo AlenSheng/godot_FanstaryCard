@@ -190,15 +190,25 @@ static func _details(ui: Control, host: Control) -> void:
 		var face: PackedStringArray = host._card_text(id, int(entry.get("level", 0))).split("\n\n", true, 1)
 		effect_text = face[1] if face.size() > 1 else host._card_text(id)
 	var level_effects := PackedStringArray()
-	if entry.get("currentEffect") is Dictionary: level_effects.append("当前：" + host.CardDetails.effect_text(entry.currentEffect))
+	var level := int(entry.get("level", 0))
+	if entry.get("currentEffect") is Dictionary:
+		level_effects.append("当前：" + host.CardDetails.effect_text(entry.currentEffect))
+	elif level > 0:
+		level_effects.append("当前：" + CardDetails.effect_text(CardDetails.at_level(info, level)))
 	if entry.get("nextEffect") is Dictionary: level_effects.append("下一级：" + host.CardDetails.effect_text(entry.nextEffect))
 	if not level_effects.is_empty():
+		if level > 0 and not effect_text.is_empty(): effect_text = ("Base: " if P.language() == "en" else "基础：") + effect_text
 		if not effect_text.is_empty(): effect_text += "\n"
 		effect_text += "\n".join(level_effects)
-	# Keep the authored reading size; wrapped text uses the full space above the
-	# material panel so the description never runs into the upgrade controls.
-	var effect_label: Label = modal.text(effect_text, Rect2(798, 485, 690, 182), 23, P.PAPER, null, false)
-	effect_label.autowrap_mode = TextServer.AUTOWRAP_ARBITRARY
+	# Multi-effect cards can exceed this area once current/next-level values
+	# are included. Keep the full explanation scrollable at a readable size.
+	var effect_scroll := _scroll(modal, Rect2(798, 485, 690, 182))
+	effect_scroll.name = "CardEffectScroll"
+	var effect_label: Label = modal.text(effect_text, Rect2(), 23, P.PAPER, effect_scroll, false)
+	effect_label.name = "CardFullEffect"
+	effect_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	effect_label.clip_text = false
+	effect_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	var box := ColorRect.new()
 	box.color = Color(0.005, 0.012, 0.013, 0.94)
 	box.mouse_filter = Control.MOUSE_FILTER_IGNORE

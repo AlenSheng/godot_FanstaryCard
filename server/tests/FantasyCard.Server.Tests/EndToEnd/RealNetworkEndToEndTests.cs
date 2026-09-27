@@ -119,7 +119,23 @@ public sealed partial class RealNetworkEndToEndTests
         Assert.IsType<PongEventPayload>(pong.Payload);
         Assert.True(pong.Sequence > connected.Sequence);
 
-        await socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "test complete", timeout.Token);
+        // The old peer deliberately never reads/acknowledges its close frame.
+        // A replacement must still receive its welcome and answer commands.
+        using var replacement = new ClientWebSocket();
+        await replacement.ConnectAsync(socketUri, timeout.Token);
+        var replacementWelcome = RealtimeProtobufCodec.DecodeServer(await ReceiveBinaryAsync(replacement, timeout.Token));
+        Assert.Equal("session.connected", replacementWelcome.Type);
+        socket.Abort();
+        replacement.Abort();
+        for (var attempt = 0; attempt < 3; attempt++)
+        {
+            using var reconnect = new ClientWebSocket();
+            await reconnect.ConnectAsync(socketUri, timeout.Token);
+            Assert.Equal("session.connected", RealtimeProtobufCodec.DecodeServer(await ReceiveBinaryAsync(reconnect, timeout.Token)).Type);
+            await reconnect.SendAsync(ping, WebSocketMessageType.Binary, true, timeout.Token);
+            Assert.Equal("pong", RealtimeProtobufCodec.DecodeServer(await ReceiveBinaryAsync(reconnect, timeout.Token)).Type);
+            reconnect.Abort();
+        }
     }
 
     private static int ReserveLoopbackPort()

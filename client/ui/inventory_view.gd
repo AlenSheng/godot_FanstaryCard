@@ -66,36 +66,24 @@ static func build(ui: Control, host: Control, state: Dictionary) -> void:
 		slot.tooltip_text = P.localized_text(("安全格 · " if is_safe else "") + (Details.description(item) if not item.is_empty() else "空格"))
 		if not is_safe: Art.button(slot, CELL)
 		if not item.is_empty():
-			if item.get("kind", "") == "Equipment":
-				# Equipment slots use the shared layered visual so the quality fill and
-				# frame stay consistent with preparation, rewards and comparisons.
-				slot.text = ""
-				var equipment_visual := ItemVisual.equipment(slot, item, Art.COMMON_CELL_DISPLAY_SIZE)
-				equipment_visual.position = Vector2.ZERO
-				equipment_visual.size = Art.COMMON_CELL_DISPLAY_SIZE
-				if not is_safe:
-					var marker := Label.new()
-					marker.name = "SlotMarker"
-					marker.text = marker_text
-					marker.position = Vector2(6, 5)
-					marker.size = Vector2(84, 22)
-					marker.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
-					marker.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-					marker.add_theme_font_override("font", P.font_for_text(marker.text, 16))
-					marker.add_theme_font_size_override("font_size", 16)
-					marker.add_theme_color_override("font_color", P.MUTED)
-					marker.mouse_filter = Control.MOUSE_FILTER_IGNORE
-					slot.add_child(marker)
-			else:
-				if not is_safe:
-					var quality_style := Art.item_cell_style(item)
-					slot.add_theme_stylebox_override("normal", quality_style)
-					slot.add_theme_stylebox_override("hover", quality_style)
-					slot.add_theme_stylebox_override("pressed", quality_style)
-				slot.icon = Art.item_texture(item)
-				slot.expand_icon = true
-				slot.add_theme_constant_override("icon_max_width", 58)
-				if int(item.get("quantity", 1)) > 1: slot.text = ("×%s" % item.get("quantity", 1)) if is_safe else (marker_text + "\n×%s" % item.get("quantity", 1))
+			# All occupied slots use the configured quality background and frame.
+			slot.text = ""
+			var item_visual := ItemVisual.item(slot, item, Art.COMMON_CELL_DISPLAY_SIZE)
+			item_visual.position = Vector2.ZERO
+			item_visual.size = Art.COMMON_CELL_DISPLAY_SIZE
+			if not is_safe:
+				var marker := Label.new()
+				marker.name = "SlotMarker"
+				marker.text = marker_text
+				marker.position = Vector2(6, 5)
+				marker.size = Vector2(84, 22)
+				marker.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+				marker.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+				marker.add_theme_font_override("font", P.font_for_text(marker.text, 16))
+				marker.add_theme_font_size_override("font_size", 16)
+				marker.add_theme_color_override("font_color", P.MUTED)
+				marker.mouse_filter = Control.MOUSE_FILTER_IGNORE
+				slot.add_child(marker)
 		if is_safe: Art.apply_safe_slot_button(slot)
 		if is_safe: slot.add_theme_color_override("font_color", P.GOLD)
 		if item.get("item_id", "") == selected.get("item_id", "unused"):

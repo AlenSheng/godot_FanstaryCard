@@ -26,6 +26,24 @@ public sealed class RealtimeConnection(WebSocket socket) : IAsyncDisposable
             await Socket.CloseAsync(status, description, cancellationToken);
     }
 
+    public async Task RetireAsync(ServerEvent replacement)
+    {
+        // A killed process cannot complete a close handshake. An already
+        // disposed peer must never prevent its replacement from connecting.
+        using var timeout = new CancellationTokenSource(TimeSpan.FromMilliseconds(500));
+        try
+        {
+            await SendAsync(replacement, timeout.Token);
+            await CloseAsync(WebSocketCloseStatus.PolicyViolation,
+                "Replaced by a newer connection", timeout.Token);
+        }
+        catch (Exception exception) when (exception is WebSocketException or ObjectDisposedException or OperationCanceledException)
+        {
+            try { Socket.Abort(); }
+            catch (ObjectDisposedException) { }
+        }
+    }
+
     public ValueTask DisposeAsync()
     {
         _sendGate.Dispose();

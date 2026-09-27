@@ -139,9 +139,35 @@ func _header() -> void:
 		mail_button.expand_icon = true
 		mail_button.add_theme_constant_override("icon_max_width", 72)
 		mail_button.tooltip_text = P.localized_text("邮件")
-		var unread := int(Game.mail.get("unreadCount", 0))
-		var unread_badge := text(str(unread) if unread > 0 else "", Rect2(105, 278, 30, 34), 22, Color("ffcf66"))
+		var badge_style := StyleBoxFlat.new()
+		badge_style.bg_color = Color("#b6292b")
+		badge_style.border_color = Color("#f1b978")
+		badge_style.set_border_width_all(2)
+		badge_style.set_corner_radius_all(19)
+		var badge := Panel.new()
+		badge.name = "HallMailUnreadBadge"
+		badge.add_theme_stylebox_override("panel", badge_style)
+		badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		add_child(badge)
+		badge.position = Vector2(103, 276)
+		var unread_badge := text("", Rect2(Vector2.ZERO, Vector2(38, 38)), 21, Color.WHITE, badge, false)
 		unread_badge.name = "HallMailUnreadCount"
+		unread_badge.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		unread_badge.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		_update_hall_mail_badge()
+
+func _update_hall_mail_badge() -> void:
+	var badge: Panel = get_node_or_null("HallMailUnreadBadge")
+	if badge == null: return
+	var count := int(Game.mail.get("unreadCount", 0))
+	badge.visible = count > 0
+	if count <= 0: return
+	var count_label: Label = badge.get_node("HallMailUnreadCount")
+	count_label.text = str(count)
+	var width := maxf(38.0, 16.0 + count_label.text.length() * 14.0)
+	badge.size = Vector2(width, 38)
+	count_label.position = Vector2.ZERO
+	count_label.size = badge.size
 
 func _item(kind: String) -> Texture2D:
 	var configured_id: String = str({"Gold": "gold", "WarriorSoul": "warrior_soul", "EquipmentFragments": "equipment_fragments", "HealthPotion": "health_potion", "MageSoul": "class_soul:Mage", "PriestSoul": "class_soul:Priest", "GuardianSoul": "class_soul:Guardian"}.get(kind, ""))
@@ -159,7 +185,9 @@ func _hall() -> void:
 		var node := button("", card_rect, Game.select_class.bind(hero_class), Game.busy or not Game.preparation.is_empty())
 		node.tooltip_text = P.localized_text("%s · 生命上限 %s" % [P.CLASSES[hero_class][0], P.CLASSES[hero_class][2]])
 		picture(Art.texture(frame_key), card_rect).name = "ClassCardFrame_" + hero_class
-		picture(Art.texture("UI/Hall/class_card_portrait_%s.png" % hero_class.to_lower()), Rect2(card_rect.position + Vector2(8, 7), Vector2(104, 124))).name = "ClassPortrait_" + hero_class
+		var class_portrait: Texture2D = Art.texture("UI/Hall/class_card_portrait_%s.png" % hero_class.to_lower())
+		if hero_class == "Priest": class_portrait = Art.portrait(hero_class)
+		picture(class_portrait, Rect2(card_rect.position + Vector2(8, 7), Vector2(104, 124))).name = "ClassPortrait_" + hero_class
 		text(P.CLASSES[hero_class][0], Rect2(card_rect.position + Vector2(118, 25), Vector2(116, 30)), 22, P.GOLD).name = "ClassName_" + hero_class
 		picture(Art.texture("UI/Hall/class_card_heart.png"), Rect2(card_rect.position + Vector2(119, 74), Vector2(27, 27))).name = "ClassHeart"
 		text(str(P.CLASSES[hero_class][2]), Rect2(card_rect.position + Vector2(148, 75), Vector2(42, 28)), 23, P.GOLD).name = "ClassMaximumHp_" + hero_class
@@ -181,7 +209,7 @@ func _hall() -> void:
 	text(P.localized("enter_chaos"), Rect2(1110, 180, 595, 76), 48, P.GOLD).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	var prep_button := button(P.localized("nav_prep"), Rect2(1140, 640, 520, 96), host._navigate.bind("prep"), Game.busy, ORANGE)
 	prep_button.set_meta("sound_cue", "")
-	var entries := [["cards", "UI/Shop/card_pack.png", "hall_entry_cards"], ["gear", "UI/Item/exploration_prep_item_icon_chest.png", "hall_entry_gear"], ["deck", "UI/Shop/card_pack.png", "hall_entry_deck"], ["shop", "UI/Item/exploration_prep_item_icon_gold.png", "hall_entry_shop"], ["market", "UI/Hall/entry_icon_market.png", "hall_entry_market"], ["prep", "UI/Shop/backpack_advanced.png", "hall_entry_prep"], ["enhance", "UI/Shop/equipment_fragment_pack.png", "hall_entry_enhance"]]
+	var entries := [["cards", "UI/Shop/card_pack.png", "hall_entry_cards"], ["gear", "UI/Item/exploration_prep_item_icon_chest.png", "hall_entry_gear"], ["deck", "UI/Hall/entry_icon_deck_build.png", "hall_entry_deck"], ["shop", "UI/Item/exploration_prep_item_icon_gold.png", "hall_entry_shop"], ["market", "UI/Hall/entry_icon_market.png", "hall_entry_market"], ["prep", "UI/Shop/backpack_advanced.png", "hall_entry_prep"], ["enhance", "UI/Shop/equipment_fragment_pack.png", "hall_entry_enhance"]]
 	for i in range(entries.size()):
 		var rect := Rect2(56 + i * 259, 802, 242, 223)
 		var node := button("", rect, host._navigate.bind(entries[i][0]), Game.busy or not Game.ticket.is_empty())
@@ -391,9 +419,7 @@ func _update_mail_row_states(modal: Control) -> void:
 	var unread_label: Label = modal.get_node_or_null("MailUnreadCount")
 	if unread_label != null:
 		unread_label.text = _mail_unread_summary()
-	var hall_badge: Label = get_node_or_null("HallMailUnreadCount")
-	if hall_badge != null:
-		hall_badge.text = str(Game.mail.get("unreadCount", 0)) if int(Game.mail.get("unreadCount", 0)) > 0 else ""
+	_update_hall_mail_badge()
 	var wallet_label: Label = get_node_or_null("WalletGold")
 	if wallet_label != null:
 		wallet_label.text = "%s %s" % [P.localized_text("金币"), Game.lobby.get("wallet", {}).get("gold", 0)]
@@ -405,9 +431,7 @@ func _update_mail_row_read_state(modal: Control, id: String) -> void:
 	var unread_label: Label = modal.get_node_or_null("MailUnreadCount")
 	if unread_label != null:
 		unread_label.text = _mail_unread_summary()
-	var hall_badge: Label = get_node_or_null("HallMailUnreadCount")
-	if hall_badge != null:
-		hall_badge.text = str(Game.mail.get("unreadCount", 0)) if int(Game.mail.get("unreadCount", 0)) > 0 else ""
+	_update_hall_mail_badge()
 	var column: VBoxContainer = modal.get_meta("mail_list_column", null)
 	if not is_instance_valid(column): return
 	var row: HBoxContainer = null
@@ -662,7 +686,9 @@ func _loadout(rect: Rect2, editable: bool, snapshot: Dictionary = {}) -> void:
 		var equipment_icon := picture(equipment_image, Rect2(point + Vector2(18, 12), Vector2(84, 84)))
 		equipment_icon.name = ("EquippedItem_" if id != null else "UnequippedItem_") + slots[i]
 		equipment_icon.modulate = Color.WHITE if id != null else Art.UNEQUIPPED_ITEM_MODULATE
-		text(P.word(slots[i]) + (" +%s" % item.get("level", 0) if id != null else ""), Rect2(point + Vector2(2, 125), Vector2(148, 40)), 22, P.MUTED)
+		var caption: String = host.EquipmentDetails.title(item) if id != null and str(item.get("effectAffix", item.get("effect_affix", ""))) not in ["", "<null>"] else P.word(slots[i]) + (" +%s" % item.get("level", 0) if id != null else "")
+		var caption_label := text(caption, Rect2(point + Vector2(2, 125), Vector2(165, 48)), 21, P.MUTED)
+		caption_label.name = "EquippedCaption_%s" % slots[i]
 	var weapon_pos := rect.position + Vector2(rect.size.x - 165, 507)
 	var weapon_base := panel(Rect2(weapon_pos, Vector2(120, 120)), Art.COMMON_CELL_KEY)
 	weapon_base.name = "CommonItemFrame_Weapon"
@@ -701,7 +727,7 @@ func _preparation() -> void:
 		for item in host.inventory.get("equipments", []):
 			if item.get("instanceId", "") in equipped_ids: equipped_items.append(item)
 	_equipment_summary(equipped_items, Rect2(65, 822, 680, 178), int(snap.get("maximumHp", P.CLASSES[Game.hero_class][2])))
-	text("背包", Rect2(845, 145, 550, 65), 38, P.GOLD)
+	text(P.localized("bag"), Rect2(845, 145, 550, 65), 38, P.GOLD)
 	var consumables: Dictionary = host.inventory.get("consumables", {})
 	var stock := {"Advanced": int(consumables.get("advancedBagCount", 0)), "Top": int(consumables.get("topBagCount", 0))}
 	if not locked and host.bag_tier != "Free" and stock.get(host.bag_tier, 0) <= 0:
@@ -905,7 +931,7 @@ func _summary_percent(value: float) -> String:
 
 func _enhance() -> void:
 	panel(Rect2(30, 132, 470, 882))
-	panel(Rect2(525, 130, 770, 884), "UI/Enhance/display_clean.png")
+	panel(Rect2(525, 130, 770, 884))
 	panel(Rect2(1320, 132, 570, 882))
 	text(P.localized("enhance_select_item"), Rect2(70, 166, 390, 58), 34, P.GOLD)
 	button("本命武器 · " + P.CLASSES[Game.hero_class][1], Rect2(66, 254, 393, 94), func(): host._enhance_item = ""; host._render(), false, ORANGE if host._enhance_item.is_empty() else BLUE)
@@ -924,19 +950,8 @@ func _enhance() -> void:
 	host._read_enhancement_quote(selected, weapon)
 	var quote: Dictionary = host._enhancement_quote
 	var title: String = host._equipment_name(selected) if not selected.is_empty() else P.CLASSES[Game.hero_class][1]
-	# display_clean.png contains a baked decorative title strip. Cover that strip
-	# before drawing the live name so the label remains a clean, independent UI layer.
-	var title_plate := ColorRect.new()
-	title_plate.name = "EnhanceTitlePlate"
-	title_plate.position = Vector2(800, 185)
-	title_plate.size = Vector2(250, 45)
-	title_plate.color = Color("#1a0c0a")
-	title_plate.z_index = 10
-	title_plate.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(title_plate)
 	var title_label := text(title, Rect2(625, 245, 570, 64), 42, P.GOLD)
 	title_label.name = "EnhanceTitle"
-	title_label.z_index = 11
 	title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	var image: Texture2D = Art.equipment_texture(selected) if not selected.is_empty() else Art.texture("UI/Item/exploration_prep_item_icon_weapon_%s.png" % Game.hero_class.to_lower())
@@ -944,9 +959,7 @@ func _enhance() -> void:
 	var benefit: String = host.EquipmentDetails.enhancement_text(selected) if not selected.is_empty() else P.localized("enhance_current_next") % [host._weapon_benefit(level), host._weapon_benefit(mini(5, level + 1))]
 	text(benefit if level < 5 else P.localized("enhance_max_level"), Rect2(591, 690, 642, 252), 23, P.TEAL)
 	text(P.localized("enhance_progress"), Rect2(1375, 175, 450, 70), 38, P.GOLD)
-	for i in range(5):
-		var color := P.GOLD if i < level else P.MUTED
-		text("+%s" % (i + 1), Rect2(1370 + i * 95, 300, 85, 72), 30, color)
+	_enhance_progress(level)
 	picture(_item("EquipmentFragments"), Rect2(1430, 439, 90, 108))
 	text(P.localized("enhance_fragments_summary") % Game.lobby.get("materials", {}).get("equipmentFragments", 0), Rect2(1535, 445, 300, 115), 30)
 	var cost: String = P.localized("enhance_loading_cost") if quote.is_empty() else P.localized("enhance_cost") % [quote.get("fragmentCost", 0), quote.get("availableMaterialCount", 0), quote.get("materialCount", 0)]
@@ -956,6 +969,57 @@ func _enhance() -> void:
 	button(P.localized("enhance_max_button") if level >= 5 else P.localized("enhance_to_button") % (level + 1), Rect2(1380, 823, 440, 86), func():
 		if not selected.is_empty(): host._enhance(selected)
 		else: host._enhance_weapon(), Game.busy or level >= 5 or not quote.get("canEnhance", false), ORANGE)
+
+func _enhance_progress(level: int) -> void:
+	var achieved := clampi(level, 0, 5)
+	var count_label := text("%s / 5" % achieved, Rect2(1378, 253, 445, 43), 25, P.PAPER)
+	count_label.name = "EnhanceProgressCount"
+	count_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	var track_rect := Rect2(1378, 367, 445, 20)
+	var track_style := StyleBoxFlat.new()
+	track_style.bg_color = Color("#071b23")
+	track_style.border_color = Color("#846341")
+	track_style.set_border_width_all(2)
+	track_style.set_corner_radius_all(9)
+	var track := Panel.new()
+	track.name = "EnhanceProgressTrack"
+	track.add_theme_stylebox_override("panel", track_style)
+	track.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(track)
+	track.position = track_rect.position
+	track.size = track_rect.size
+	var stage_width := track_rect.size.x / 5.0
+	if achieved > 0:
+		var fill_style := StyleBoxFlat.new()
+		fill_style.bg_color = Color("#db9140")
+		fill_style.border_color = P.GOLD
+		fill_style.set_border_width_all(2)
+		fill_style.set_corner_radius_all(7)
+		var fill := Panel.new()
+		fill.name = "EnhanceProgressFill"
+		fill.add_theme_stylebox_override("panel", fill_style)
+		fill.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		add_child(fill)
+		fill.position = track_rect.position + Vector2(3, 3)
+		var current_marker_x := track_rect.position.x + stage_width * (float(achieved) - 0.5)
+		fill.size = Vector2(current_marker_x - fill.position.x, track_rect.size.y - 6)
+	for i in range(5):
+		var marker_x := track_rect.position.x + stage_width * (float(i) + 0.5)
+		var marker_style := StyleBoxFlat.new()
+		marker_style.bg_color = P.GOLD if i < achieved else Color("#183440")
+		marker_style.border_color = Color("#eac380") if i < achieved else Color("#7b756a")
+		marker_style.set_border_width_all(2)
+		marker_style.set_corner_radius_all(10)
+		var marker := Panel.new()
+		marker.name = "EnhanceProgressMarker_%s" % (i + 1)
+		marker.add_theme_stylebox_override("panel", marker_style)
+		marker.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		add_child(marker)
+		marker.position = Vector2(marker_x - 10, track_rect.position.y - 1)
+		marker.size = Vector2(20, 22)
+		var label := text("+%s" % (i + 1), Rect2(marker_x - 36, 298, 72, 52), 29, P.GOLD if i < achieved else P.MUTED)
+		label.name = "EnhanceProgressLabel_%s" % (i + 1)
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 
 func _shop() -> void:
 	panel(Rect2(28, 138, 1864, 864))

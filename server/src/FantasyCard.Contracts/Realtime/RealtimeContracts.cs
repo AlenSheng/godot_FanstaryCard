@@ -64,13 +64,16 @@ public sealed record RoomDuelPayload(
     string? OpponentClass = null,
     string? OpponentName = null,
     string? EscapeProbability = null,
-    RoomBattleStatusPayload? OpponentStatus = null);
+    RoomBattleStatusPayload? OpponentStatus = null,
+    long OpponentStunRemainingMs = 0,
+    long OpponentDrawBlockRemainingMs = 0);
 public sealed record RoomCurrentCellPayload(
     bool HasEvacuation,
     string MonsterGroupId,
     bool SpringConsumed,
     IReadOnlyList<Guid> RelicPileIds,
     IReadOnlyList<RoomRelicPilePayload>? RelicPiles = null);
+public sealed record MapPlayerCountEventPayload(int PlayerCount);
 public sealed record RoomPlayerPayload(
     Guid PlayerId,
     string HeroClass,
@@ -85,7 +88,12 @@ public sealed record RoomPlayerPayload(
     IReadOnlyList<int>? SafeSlotIndexes = null,
     IReadOnlyList<RoomInventoryItemPayload>? EquippedItems = null,
     int WeaponLevel = 0,
-    RoomBattleStatusPayload? BattleStatus = null);
+    RoomBattleStatusPayload? BattleStatus = null,
+    long StunRemainingMs = 0,
+    long DrawBlockRemainingMs = 0,
+    long DrawSpeedRemainingMs = 0,
+    long DrawBlockSpeedRemainingMs = 0,
+    string? BaseDrawIntervalSeconds = null);
 public sealed record RoomSnapshotEventPayload(
     Guid RoomId,
     Guid? MatchId,
@@ -101,7 +109,8 @@ public sealed record RoomSnapshotEventPayload(
     RewardChoiceEventPayload? RewardChoice,
     long? ExtractionRemainingMs,
     long? SpringRemainingMs,
-    IReadOnlyList<string> AllowedActions);
+    IReadOnlyList<string> AllowedActions,
+    int MapPlayerCount = 0);
 public sealed record CommandRejectedEventPayload(string Code, string Detail);
 public sealed record BattlePlayCardsCommandPayload(
     Guid BattleId,

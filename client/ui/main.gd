@@ -91,10 +91,9 @@ var _draw_charge_visual := 0.0
 var _draw_charge_authoritative := 0.0
 var _draw_charge_anchor_msec := 0
 var _draw_charge_interval := 4.0
-var _draw_charge_hand_ids: Array = []
 var _draw_charge_room_key := ""
+var _draw_charge_revision := -1
 var _draw_charge_initialized := false
-var _draw_charge_hold_full := false
 
 func _ready() -> void:
 	theme = P.theme()
@@ -274,10 +273,9 @@ func _reset_draw_charge_visual() -> void:
 	_draw_charge_authoritative = 0.0
 	_draw_charge_anchor_msec = 0
 	_draw_charge_interval = 4.0
-	_draw_charge_hand_ids = []
 	_draw_charge_room_key = ""
+	_draw_charge_revision = -1
 	_draw_charge_initialized = false
-	_draw_charge_hold_full = false
 
 func _draw_charge_value(authoritative: float = 0.0) -> float:
 	return _draw_charge_visual if _draw_charge_initialized else clampf(authoritative, 0.0, 1.0)
@@ -291,65 +289,81 @@ func _sync_draw_charge_visual() -> void:
 	var room_id := str(Game.room.get("room_id", ""))
 	var battle: Dictionary = Game.room.get("duel", Game.room.get("pve", {}))
 	var room_key := "%s:%s" % [room_id, str(battle.get("duel_id", battle.get("battle_id", "")))]
+	var revision := int(Game.room.get("room_revision", -1))
+	if _draw_charge_initialized and room_key == _draw_charge_room_key and revision == _draw_charge_revision: return
 	var authoritative := clampf(float(player.get("draw_charge", "0")), 0.0, 1.0)
 	var status: Dictionary = player.get("battle_status", {})
 	var interval := maxf(0.1, float(status.get("draw_interval_seconds", "4")))
-	var hand_ids: Array = player.get("hand", []).map(func(card): return str(card.get("instance_id", "")))
 	var now := Time.get_ticks_msec()
 	if not _draw_charge_initialized or room_key != _draw_charge_room_key:
 		_draw_charge_visual = authoritative
 		_draw_charge_authoritative = authoritative
 		_draw_charge_anchor_msec = now
 		_draw_charge_interval = interval
-		_draw_charge_hand_ids = hand_ids
 		_draw_charge_room_key = room_key
+		_draw_charge_revision = revision
 		_draw_charge_initialized = true
-		_draw_charge_hold_full = false
 		return
-
-	var new_card_arrived := false
-	for card_id in hand_ids:
-		if card_id not in _draw_charge_hand_ids:
-			new_card_arrived = true
-			break
-	if new_card_arrived:
-		# The server snapshot is the new round's authoritative starting point.
-		# Reset only when a card actually arrived, so a full visual bar never
-		# snaps backwards while the server is still processing the draw.
-		_draw_charge_visual = authoritative
-		_draw_charge_authoritative = authoritative
-		_draw_charge_anchor_msec = now
-		_draw_charge_hold_full = false
-	elif authoritative > _draw_charge_authoritative + 0.0005:
-		# A newer authoritative charge can catch up a delayed render without
-		# making the visual bar jump backwards.
-		_draw_charge_visual = maxf(_draw_charge_visual, authoritative)
-		_draw_charge_authoritative = authoritative
-		_draw_charge_anchor_msec = now - int(maxf(0.0, _draw_charge_visual - authoritative) * interval * 1000.0)
-	elif not is_equal_approx(interval, _draw_charge_interval):
-		# Preserve the visible fraction while the server changes the interval;
-		# the remaining part then uses the new duration immediately.
-		_draw_charge_anchor_msec = now - int(maxf(0.0, _draw_charge_visual - authoritative) * interval * 1000.0)
+	# Each snapshot is a fresh authoritative anchor. A lower value also covers
+	# full-hand draw skips, where no new card arrives to signal the next cycle.
+	_draw_charge_visual = authoritative
+	_draw_charge_anchor_msec = now
 	_draw_charge_authoritative = authoritative
 	_draw_charge_interval = interval
-	_draw_charge_hand_ids = hand_ids
 	_draw_charge_room_key = room_key
+	_draw_charge_revision = revision
 
 func _update_draw_charge_visual() -> void:
 	if not _draw_charge_initialized: return
 	var player: Dictionary = Game.room.get("player", {})
 	if str(player.get("phase", "")) not in ["Pve", "Pvp"]: return
-	if not _draw_charge_hold_full:
-		var elapsed := maxf(0.0, (Time.get_ticks_msec() - _draw_charge_anchor_msec) / 1000.0)
-		var expected := _draw_charge_authoritative + elapsed / maxf(0.1, _draw_charge_interval)
-		if expected >= 1.0:
-			_draw_charge_visual = 1.0
-			_draw_charge_hold_full = true
-		else:
-			_draw_charge_visual = maxf(_draw_charge_visual, expected)
+	var elapsed_ms := maxi(0, Time.get_ticks_msec() - _draw_charge_anchor_msec)
+	var paused_ms := maxi(int(player.get("stun_remaining_ms", 0)), int(player.get("draw_block_remaining_ms", 0)))
+	var speed_ms := int(player.get("draw_speed_remaining_ms", 0))
+	var double_ms := int(player.get("draw_block_speed_remaining_ms", 0))
+	var base_text := str(player.get("base_draw_interval_seconds", ""))
+	var base_interval := maxf(0.1, float(base_text) if not base_text.is_empty() else _draw_charge_interval)
+	var speed_interval := _draw_charge_interval * (2.0 if double_ms > 0 else 1.0)
+	var boundaries: Array[int] = [0, elapsed_ms]
+	for boundary in [paused_ms, speed_ms, double_ms]:
+		if boundary > 0 and boundary < elapsed_ms: boundaries.append(boundary)
+	boundaries.sort()
+	var predicted := _draw_charge_authoritative
+	for index in range(1, boundaries.size()):
+		var start := boundaries[index - 1]
+		if start < paused_ms: continue
+		var interval := speed_interval if start < speed_ms else base_interval
+		if start < double_ms: interval /= 2.0
+		predicted += float(boundaries[index] - start) / (1000.0 * maxf(0.1, interval))
+	_draw_charge_visual = fposmod(predicted, 1.0)
 	var bar: Range = _reference.get_node_or_null("DrawChargeBar") as Range if is_instance_valid(_reference) else null
 	if bar != null:
 		bar.value = clampf(_draw_charge_visual, 0.0, 1.0)
+	var percent: Label = _reference.get_node_or_null("DrawChargePercent") as Label if is_instance_valid(_reference) else null
+	if percent != null: percent.text = "%d%%" % roundi(_draw_charge_visual * 100.0)
+	_update_battle_status_labels(elapsed_ms)
+
+func _update_battle_status_labels(elapsed_ms: int) -> void:
+	if not is_instance_valid(_reference): return
+	var player: Dictionary = Game.room.get("player", {})
+	_set_battle_status_label("PlayerStatus", int(player.get("stun_remaining_ms", 0)), int(player.get("draw_block_remaining_ms", 0)), elapsed_ms, int(player.get("draw_speed_remaining_ms", 0)), int(player.get("draw_block_speed_remaining_ms", 0)))
+	var duel: Dictionary = Game.room.get("duel", {})
+	if not duel.is_empty():
+		_set_battle_status_label("OpponentStatus", int(duel.get("opponent_stun_remaining_ms", 0)), int(duel.get("opponent_draw_block_remaining_ms", 0)), elapsed_ms)
+	for index in range(Game.room.get("pve", {}).get("monsters", []).size()):
+		var monster: Dictionary = Game.room.pve.monsters[index]
+		_set_battle_status_label("MonsterStatus_%d" % index, int(monster.get("stun_remaining_ms", 0)), 0, elapsed_ms)
+
+func _set_battle_status_label(label_name: String, stun_ms: int, block_ms: int, elapsed_ms: int, speed_ms: int = 0, double_ms: int = 0) -> void:
+	var label: Label = _reference.get_node_or_null(label_name) as Label
+	if label == null: return
+	var parts: Array[String] = []
+	if stun_ms > elapsed_ms: parts.append("眩晕 %.1f秒" % (float(stun_ms - elapsed_ms) / 1000.0))
+	if block_ms > elapsed_ms: parts.append("禁抽 %.1f秒" % (float(block_ms - elapsed_ms) / 1000.0))
+	if speed_ms > elapsed_ms: parts.append("抽速 %.1f秒" % (float(speed_ms - elapsed_ms) / 1000.0))
+	if double_ms > elapsed_ms: parts.append("充能×2 %.1f秒" % (float(double_ms - elapsed_ms) / 1000.0))
+	label.text = " · ".join(parts)
+	label.visible = not parts.is_empty()
 
 func _refresh_after_admin_update() -> void:
 	if not Game.room.is_empty(): return
@@ -437,6 +451,7 @@ func _reset_account_ui() -> void:
 
 func _render() -> void:
 	_render_pending = false
+	_sync_draw_charge_visual()
 	var room_cell := "%s:%s:%s" % [Game.room.get("room_id", ""), Game.room.get("self", {}).get("row", -1), Game.room.get("self", {}).get("column", -1)]
 	if room_cell != _view_cell or Game.room.get("player", {}).get("phase", "") != "ActionBar":
 		set_meta("exploration_map_open", false)
@@ -514,6 +529,7 @@ func _render() -> void:
 		return
 	if Game.lobby.get("unfinishedMatch") != null:
 		_label(content, "正在恢复上次探索…", 42, P.GOLD)
+		_label(content, Game.connection, 24, P.MUTED)
 		_button(content, "重新连接", Game.reconnect, Game.busy)
 		return
 	_nav()
@@ -626,8 +642,9 @@ func _login() -> void:
 	var announcement_scroll := ScrollContainer.new()
 	announcement_scroll.custom_minimum_size.y = 230
 	announcement_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	announcement_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	announcement_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	announcement_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
+	announcement_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 	_about_scroll_content(announcement_scroll, body)
 	about.add_child(announcement_scroll)
 
@@ -798,22 +815,28 @@ func _ready_screen() -> void:
 	_label(panel, "确认剩余 %s 秒" % remaining, 32, P.TEAL)
 	_button(panel, "准备就绪", func(): Game.gateway.send("room.ready"), not Game.gateway.online)
 
-func card_description(id: String, kind: String = "face") -> String:
+func card_description(id: String, kind: String = "face", level: int = 0) -> String:
+	if kind == "face":
+		var summary := CardDetails.face_description(id, level, cards.get(id, {}))
+		if not summary.is_empty(): return summary
 	var locale := P.language()
 	var descriptions: Dictionary = DESCRIPTIONS.data.get(locale, DESCRIPTIONS.data.get("zh", {}))
-	# Description tables use the `card.<kind>.desc.<id>` namespace. Keep the
-	# lookup here aligned with both the face summary and the full detail text;
-	# the old key omitted `.desc` and silently fell back to numeric shorthand.
-	return str(descriptions.get("card.%s.desc.%s" % [kind, id], ""))
+	var description := str(descriptions.get("card.%s.desc.%s" % [kind, id], ""))
+	# Existing full descriptions use the legacy `card.desc.full.<id>` order.
+	# Keep reading them until the localized table is migrated to the newer key.
+	if description.is_empty() and kind == "full":
+		description = str(descriptions.get("card.desc.full." + id, ""))
+	return description
 
 func _card_text(id: String, level: int = 0, element_override: String = "") -> String:
-	var cache_key := "%s|%s|%s" % [P.language(), id, element_override]
+	var cache_key := "%s|%s|%s|%s" % [P.language(), id, level, element_override]
 	if _card_text_cache.has(cache_key): return _card_text_cache[cache_key]
 	var info: Dictionary = CardDetails.with_element(cards.get(id, {}), element_override)
 	var source: String = info.get("source", "")
 	var badge := "怪" if not info.get("is_codex", true) else P.word(info.get("hero_class", ""))
 	var name := CardDetails.localized_name(id, info)
-	var description: String = card_description(id, "face")
+	var description: String = CardDetails.face_description(id, level, info)
+	if description.is_empty(): description = card_description(id, "face", level)
 	if description.is_empty():
 		# Cards without a configured face description use the structured fallback.
 		var lines: Array = []
@@ -990,7 +1013,7 @@ func _equipment_name(item: Dictionary) -> String:
 	return EquipmentDetails.title(item)
 
 func _equipment() -> void:
-	_label(content, "行装与本命", 44, P.GOLD)
+	_label(content, P.localized("gear_title"), 44, P.GOLD)
 	var weapon: Dictionary = {}
 	for value in Game.lobby.get("classWeapons", []):
 		if value.heroClass == Game.hero_class: weapon = value
@@ -1467,8 +1490,8 @@ func _battle(state: Dictionary) -> void:
 				_label(enemy, _monster_name(monster.monster_id), 28, P.MUTED)
 			_label(enemy, "生命 %s / %s    盾 %s" % [monster.hp, monster.maximum_hp, monster.shield], 20)
 			_health_bar(enemy, monster)
-			if multiple_monsters:
-				var button := _button(enemy, _monster_name(monster.monster_id) + (" · 当前目标" if state.pve.current_target_id == monster.monster_id else " · 选择目标"), func(): Game.command("battle.select_target", {"battle_id": state.pve.battle_id, "target_id": monster.monster_id}), not Game.allowed("battle.select_target") or int(monster.hp) <= 0, "UI/CardCodex/card_codex_action_button_orange.png")
+			if multiple_monsters and int(monster.hp) > 0:
+				var button := _button(enemy, _monster_name(monster.monster_id) + (" · 当前目标" if Game.combat_target_id() == monster.monster_id else " · 选择目标"), func(): Game.command("battle.select_target", {"battle_id": state.pve.battle_id, "target_id": monster.monster_id}), not Game.allowed("battle.select_target"), "UI/CardCodex/card_codex_action_button_orange.png")
 				button.custom_minimum_size.y = 60
 			var intent: String = {"Charge": "蓄力", "Empower": "强化", "Shield": "护盾"}.get(monster.intent_kind, P.word(monster.intent_element))
 			_label(enemy, "意图 %s %s" % [intent, monster.intent_value if int(monster.intent_value) > 0 else ""], 23, P.ELEMENT.get(monster.intent_element, Color.WHITE))
@@ -1527,7 +1550,7 @@ func _map(state: Dictionary) -> void:
 		_label(side, "%s ×%s%s" % [P.word(item.kind), item.quantity, " · 安全" if item.is_safe else ""], 22)
 
 func _monster_name(id: String) -> String:
-	var names := {"fire-bat": "火蝠", "thorn-mite": "棘螨", "murk-snail": "浊螅", "sand-lizard": "砂蜥", "rust-rat": "锈刃鼠", "metal-guard": "金卫", "fire-herald": "火劫使", "marsh-mother": "沼母", "stone-guard": "石甲卫", "thorn-guard": "棘林卫", "annihilation-core": "湮核", "treasure-box-spirit": "匣灵"}
+	var names := {"fire-bat": "火蝠", "thorn-mite": "棘螨", "murk-snail": "浊螅", "sand-lizard": "砂蜥", "rust-rat": "锈刃鼠", "metal-guard": "金卫", "fire-herald": "火劫使", "marsh-mother": "沼母", "stone-guard": "石甲卫", "thorn-guard": "棘林卫", "annihilation-core": "湮核", "box-spirit": "匣灵", "treasure-box-spirit": "匣灵"}
 	return names.get(id.trim_suffix("-a").trim_suffix("-b"), id)
 
 func _move(row: int, column: int) -> void:
@@ -1588,7 +1611,11 @@ func _settlement() -> void:
 	var details: Dictionary = Game.settlement.get("details", {})
 	for key in ["gold", "goldEarned", "equipmentFragments", "warriorSoul"]:
 		if details.has(key): _label(content, "%s  %s" % [P.word(key), details[key]], 30)
-	_button(content, "返回", Game.acknowledge_settlement, Game.busy)
+	_button(content, "返回", _return_from_settlement, Game.busy)
+
+func _return_from_settlement() -> void:
+	Game.acknowledge_settlement()
+	_navigate("hall")
 
 func _toast(message: String) -> void:
 	if is_instance_valid(tips_overlay):

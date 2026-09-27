@@ -293,8 +293,7 @@ func _attribute_name(entry: Dictionary) -> String:
 	return str(entry.kind)
 
 func _item_title(item: Dictionary) -> String:
-	var gear := CompareModel.gear(item)
-	return "%s%s%s +%s" % [P.word(gear.get("quality", "")), P.word(gear.get("element", "")), P.word(gear.get("slot", "")), gear.get("level", 0)]
+	return EquipmentDetails.title(item)
 
 func _affix_text(contribution: Dictionary) -> String:
 	var values: Dictionary = contribution.values

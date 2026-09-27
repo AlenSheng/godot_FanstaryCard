@@ -22,6 +22,20 @@ func _run() -> void:
 	await game.login(base, "Session fixture")
 	_stop_socket()
 	checks.login = not game.lobby.is_empty() and not game.gateway.token.is_empty()
+	await game.gateway.request("/fixture/recovery", HTTPClient.METHOD_POST, {"unfinishedMatch": {"roomId": "old-room"}})
+	# Follow the same remembered-account login path after a killed client.
+	await game.login(base, game.gateway.local_account_name)
+	_stop_socket()
+	checks.cached_login_room = game.gateway.room_id == "old-room" and game.room.is_empty()
+	await game.gateway.request("/fixture/recovery", HTTPClient.METHOD_POST, {"unfinishedMatch": {"roomId": "old-room"}, "unfinishedSettlement": {"settlementId": "finished-room"}})
+	await game.reconnect()
+	_stop_socket()
+	checks.reconnect_settlement_priority = game.settlement.get("settlementId") == "finished-room" and game.gateway.room_id.is_empty()
+	game.settlement = {}
+	game.room = {"room_id": "old-room"}
+	await game._on_event("error.command_rejected", {"code": "NOT_IN_ROOM"})
+	checks.missing_room_recovers_settlement = game.room.is_empty() and game.settlement.get("settlementId") == "finished-room"
+	await game.gateway.request("/fixture/recovery", HTTPClient.METHOD_POST, {})
 	game.room = {"room_id": "stale-room"}
 	game.selected_cards = ["stale-card"]
 	var unauthorized: Dictionary = await game.gateway.request("/unauthorized")
@@ -103,7 +117,7 @@ func _check_account_switch(base: String) -> void:
 	var header: Control = load("res://ui/reference_ui.gd").new()
 	header.host = account_ui
 	header._header()
-	checks.account_identity_visible = header.get_node("AccountIdentity").text.contains(uid_a) and header.get_node("AccountIdentity").text.contains("Account A")
+	checks.account_identity_visible = header.get_node("AccountIdentity").text == load("res://ui/palette.gd").localized_text("Account A\nUID " + uid_a)
 	header.get_node("SwitchAccountButton").pressed.emit()
 	checks.switch_account_button = game.lobby.is_empty() and game.gateway.token.is_empty() and account_ui._login_name == "Account A"
 	header.free()

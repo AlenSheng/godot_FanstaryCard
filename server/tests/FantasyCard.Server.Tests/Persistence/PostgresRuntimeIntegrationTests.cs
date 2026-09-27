@@ -1665,6 +1665,7 @@ public sealed class PostgresRuntimeIntegrationTests
         using var metrics = new ServerMetrics();
         var matchmaking = new MatchmakingRepository(database.DataSource, time, metrics);
         var preparedPlayers = new List<(Guid PlayerId, Guid PreparationId)>();
+        var profiles = new List<PlayerProfile>();
 
         for (var index = 0; index < 2; index++)
         {
@@ -1675,6 +1676,7 @@ public sealed class PostgresRuntimeIntegrationTests
                 time.GetUtcNow(),
                 time.GetUtcNow().AddHours(1),
                 cancellationToken);
+            profiles.Add(profile);
             var progression = new ProgressionRepository(database.DataSource);
             var deck = Assert.Single(
                 await progression.GetDecksAsync(profile.UserId, cancellationToken),
@@ -1699,7 +1701,15 @@ public sealed class PostgresRuntimeIntegrationTests
         var pending = Assert.IsType<PendingMatch>(await matchmaking.TryCreateMatchAsync(cancellationToken));
         var readyPlayer = preparedPlayers[0];
         var removedPlayer = preparedPlayers[1];
+        var bootstrapRepository = CreateBootstrapRepository(
+            database.DataSource, new ProgressionRepository(database.DataSource), time);
+        // Merely being assigned a seat must not force combat reconnection at login.
+        Assert.Null((await bootstrapRepository.GetAsync(profiles[0], cancellationToken)).UnfinishedMatch);
+        Assert.Null((await bootstrapRepository.GetAsync(profiles[1], cancellationToken)).UnfinishedMatch);
         await matchmaking.MarkReadyAsync(readyPlayer.PlayerId, time.GetUtcNow(), cancellationToken);
+        Assert.Equal(pending.MatchId,
+            (await bootstrapRepository.GetAsync(profiles[0], cancellationToken)).UnfinishedMatch?.MatchId);
+        Assert.Null((await bootstrapRepository.GetAsync(profiles[1], cancellationToken)).UnfinishedMatch);
         time.Advance(TimeSpan.FromSeconds(15));
 
         var snapshots = new RoomSnapshotRepository(database.DataSource, time, metrics);
@@ -1736,6 +1746,12 @@ public sealed class PostgresRuntimeIntegrationTests
             "SELECT count(*) FROM equipments e JOIN preparation_assets pa ON pa.asset_id=e.instance_id::text WHERE pa.preparation_id=$1 AND e.location='Equipped'", removedPlayer.PreparationId));
         Assert.Equal(3L, await database.ScalarAsync<long>(
             "SELECT count(*) FROM match_players WHERE match_id=$1 AND is_bot=true AND state='Active'", pending.MatchId));
+        Assert.Equal(pending.MatchId,
+            (await bootstrapRepository.GetAsync(profiles[0], cancellationToken)).UnfinishedMatch?.MatchId);
+        var removedBootstrap = await bootstrapRepository.GetAsync(profiles[1], cancellationToken);
+        Assert.Null(removedBootstrap.UnfinishedMatch);
+        Assert.Null(removedBootstrap.ActivePreparation);
+        Assert.Null(removedBootstrap.UnfinishedSettlement);
     }
 
     private static BootstrapRepository CreateBootstrapRepository(

@@ -54,12 +54,12 @@ func _run() -> void:
 		var effect_label := child.find_child("CardEffect", true, false) as Label
 		if effect_label == null or effect_label.text.strip_edges().is_empty():
 			missing_effects.append(str(child.name))
-		elif ".0" in effect_label.text or effect_label.text.begins_with("火 ") or effect_label.text.begins_with("木 ") or effect_label.text.begins_with("水 ") or effect_label.text.begins_with("金 ") or effect_label.text.begins_with("土 ") or effect_label.text.begins_with("直伤"):
+		elif effect_label.text != $UI.card_description(str(child.name).trim_prefix("CardSlot_"), "face"):
 			stale_effects.append("%s=%s" % [child.name, effect_label.text])
 	_check(missing_effects.is_empty(), "Cards missing configured short descriptions: " + ", ".join(missing_effects))
 	_check(stale_effects.is_empty(), "Cards still showing legacy short descriptions: " + ", ".join(stale_effects))
 	var c01 := $UI._reference.find_child("Card_C01", true, false) as Button
-	_check(c01 != null and c01.get_node("CardEffect").text == "造成火系伤害8点", "C01 must render its configured short description")
+	_check(c01 != null and c01.get_node("CardEffect").text == "火伤8", "C01 must render its compact short description")
 	for kind in ["PriestSoul", "MageSoul", "GuardianSoul", "WarriorSoul"]:
 		_check($UI._reference.find_child("Material_" + kind, true, false) != null, "Missing material " + kind)
 	var missing_id := "GW08"

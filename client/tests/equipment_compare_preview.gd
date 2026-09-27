@@ -85,7 +85,7 @@ func _capture(selected: Dictionary, resolution: Vector2i) -> void:
 		errors.append("Missing comparison dialog at %s" % resolution.x)
 		return
 	var text := _all_text(dialog)
-	for expected in ["紫火头部 +0", "橙水头部 +0", "火元素增伤", "水元素增伤", "载壁", "破击", "3/3 已激活", "2/2 已激活", "+27%"]:
+	for expected in ["载壁·紫火头部 +0", "破击·橙水头部 +0", "火元素增伤", "水元素增伤", "载壁", "破击", "3/3 已激活", "2/2 已激活", "+27%"]:
 		if not text.contains(expected): errors.append("Missing %s at %s" % [expected, resolution.x])
 	if text.contains("+7%") or text.contains("+4%"):
 		errors.append("Cross-element stats were incorrectly subtracted at %s" % resolution.x)

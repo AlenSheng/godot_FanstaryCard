@@ -185,6 +185,14 @@
         "optional": false
       }
     },
+    "MapPlayerCountEvent": {
+      "1": {
+        "name": "player_count",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      }
+    },
     "RoomReadyCommand": {},
     "RoomReadyRequiredEvent": {
       "1": {
@@ -709,6 +717,18 @@
         "type": "RoomBattleStatus",
         "repeated": false,
         "optional": false
+      },
+      "12": {
+        "name": "opponent_stun_remaining_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "13": {
+        "name": "opponent_draw_block_remaining_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
       }
     },
     "RoomCurrentCell": {
@@ -827,6 +847,36 @@
         "type": "RoomBattleStatus",
         "repeated": false,
         "optional": false
+      },
+      "15": {
+        "name": "stun_remaining_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "16": {
+        "name": "draw_block_remaining_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "17": {
+        "name": "draw_speed_remaining_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "18": {
+        "name": "draw_block_speed_remaining_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "19": {
+        "name": "base_draw_interval_seconds",
+        "type": "string",
+        "repeated": false,
+        "optional": false
       }
     },
     "RoomSnapshotEvent": {
@@ -919,6 +969,12 @@
         "type": "string",
         "repeated": true,
         "optional": false
+      },
+      "16": {
+        "name": "map_player_count",
+        "type": "int32",
+        "repeated": false,
+        "optional": true
       }
     },
     "RoomStartedEvent": {

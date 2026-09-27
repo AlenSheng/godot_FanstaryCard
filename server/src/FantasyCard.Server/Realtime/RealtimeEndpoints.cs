@@ -72,23 +72,21 @@ public static class RealtimeEndpoints
         var commandLimiter = new RealtimeCommandRateLimiter(
             requestLimits.Value.RealtimeCommandsPerSecond);
         DateTimeOffset? lastRateLimitNotice = null;
-        await roomRegistry.MarkPlayerConnectedAsync(player.UserId);
-        if (replaced is not null)
-        {
-            var replacedEvent = eventStore.Create(
-                player.UserId,
-                "session.replaced",
-                context.TraceIdentifier,
-                new SessionReplacedEventPayload("newer_connection"));
-            await replaced.SendAsync(replacedEvent, CancellationToken.None);
-            await replaced.CloseAsync(
-                WebSocketCloseStatus.PolicyViolation,
-                "Replaced by a newer connection",
-                CancellationToken.None);
-        }
-
         try
         {
+            // Registration must always be paired with the finally cleanup,
+            // including failures while restoring room state or replacing a peer.
+            await roomRegistry.MarkPlayerConnectedAsync(player.UserId);
+            if (replaced is not null)
+            {
+                var replacedEvent = eventStore.Create(
+                    player.UserId,
+                    "session.replaced",
+                    context.TraceIdentifier,
+                    new SessionReplacedEventPayload("newer_connection"));
+                await replaced.RetireAsync(replacedEvent);
+            }
+
             await connection.SendAsync(
                 eventStore.Create(
                     player.UserId,
