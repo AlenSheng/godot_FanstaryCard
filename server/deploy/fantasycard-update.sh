@@ -56,7 +56,10 @@ health_check() {
     [[ "$(curl --fail --silent --show-error --max-time 5 \
       --resolve www.relicbound.cn:443:127.0.0.1 \
       https://www.relicbound.cn/health/ready)" == Healthy ]] &&
-    domain_certificate_ok
+    domain_certificate_ok &&
+    curl --fail --silent --show-error --max-time 5 --output /dev/null \
+      --resolve www.relicbound.cn:20000:127.0.0.1 \
+      https://www.relicbound.cn:20000/admin
 }
 
 normalize_monitoring_permissions() {

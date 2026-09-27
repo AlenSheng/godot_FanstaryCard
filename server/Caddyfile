@@ -39,12 +39,12 @@ relicbound.cn, www.relicbound.cn {
     respond 404
 }
 
-# The host exposes this listener for the separate management console. Access
-# still requires HTTPS and X-Admin-Key; restrict TCP 20000 in the cloud security
-# group to administrator IPs.
-:20000 {
+# Serve the separate management console with the public www certificate.
+# Restrict TCP 20000 to administrator IPs in the cloud security group; the API
+# also requires X-Admin-Key.
+www.relicbound.cn:20000 {
     import security_headers
-    tls /etc/caddy/certs/ip2.crt /etc/caddy/certs/ip2.key
+    header Strict-Transport-Security "max-age=31536000; includeSubDomains"
 
     @admin path /admin /admin/* /api/admin /api/admin/*
     handle @admin {

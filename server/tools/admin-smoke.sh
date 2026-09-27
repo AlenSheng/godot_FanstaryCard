@@ -3,7 +3,7 @@ set -euo pipefail
 
 app=/opt/fantasycard-github/server
 game_base=https://relicbound.cn
-admin_base=https://43.172.70.182:20000
+admin_base=https://www.relicbound.cn:20000
 name="adm_$(date -u +%s)"
 player_id=''
 key=$(sed -n 's/^FANTASYCARD_ADMIN_KEY=//p' "$app/.env" | tail -n 1)
@@ -20,11 +20,11 @@ trap cleanup EXIT
 printf 'stage=login\n'
 
 get_admin() {
-    curl -ksS --fail-with-body --max-time 10 --resolve 43.172.70.182:20000:127.0.0.1 \
+    curl -sS --fail-with-body --max-time 10 --resolve www.relicbound.cn:20000:127.0.0.1 \
         -H "X-Admin-Key: $key" "$admin_base$1"
 }
 post_admin() {
-    curl -ksS --fail-with-body --max-time 10 --resolve 43.172.70.182:20000:127.0.0.1 -X POST \
+    curl -sS --fail-with-body --max-time 10 --resolve www.relicbound.cn:20000:127.0.0.1 -X POST \
         -H "X-Admin-Key: $key" -H 'Content-Type: application/json' \
         -H "Idempotency-Key: $(cat /proc/sys/kernel/random/uuid)" \
         -d "$2" "$admin_base/api/admin/$1"
