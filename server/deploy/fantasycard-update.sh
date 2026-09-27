@@ -57,6 +57,12 @@ health_check() {
       --resolve www.relicbound.cn:443:127.0.0.1 \
       https://www.relicbound.cn/health/ready)" == Healthy ]] &&
     domain_certificate_ok &&
+    [[ "$(curl --silent --show-error --max-time 5 --output /dev/null --write-out '%{http_code}' \
+      --resolve www.relicbound.cn:443:127.0.0.1 \
+      https://www.relicbound.cn/admin)" == 404 ]] &&
+    [[ "$(curl --silent --show-error --max-time 5 --output /dev/null --write-out '%{http_code}' \
+      --resolve www.relicbound.cn:443:127.0.0.1 \
+      https://www.relicbound.cn/api/admin/client-settings)" == 404 ]] &&
     curl --fail --silent --show-error --max-time 5 --output /dev/null \
       --resolve www.relicbound.cn:20000:127.0.0.1 \
       https://www.relicbound.cn:20000/admin

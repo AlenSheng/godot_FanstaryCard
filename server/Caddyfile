@@ -15,7 +15,9 @@ relicbound.cn, www.relicbound.cn {
     header Strict-Transport-Security "max-age=31536000; includeSubDomains"
 
     @admin path /admin /admin/* /api/admin /api/admin/*
-    respond @admin 404
+    handle @admin {
+        respond 404
+    }
 
     # Keep game API, WebSocket, and health routes on the application while
     # serving the public website as static files at the root domain.

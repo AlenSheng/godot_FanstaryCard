@@ -14,6 +14,10 @@ public sealed class CaddyfileTests
         Assert.DoesNotContain("tls /etc/caddy/certs/", domain.Body, StringComparison.Ordinal);
         Assert.Contains("reverse_proxy server:8080", domain.Body, StringComparison.Ordinal);
         Assert.Contains("Strict-Transport-Security", domain.Body, StringComparison.Ordinal);
+        Assert.Contains("handle @admin", domain.Body, StringComparison.Ordinal);
+        Assert.Contains("respond 404", domain.Body, StringComparison.Ordinal);
+        Assert.True(domain.Body.IndexOf("handle @admin", StringComparison.Ordinal) <
+                    domain.Body.IndexOf("handle @game_api", StringComparison.Ordinal));
 
         var ip = Assert.Single(sites, site => SiteMatches(site.Address, "43.172.70.182"));
         Assert.Contains("tls /etc/caddy/certs/ip2.crt", ip.Body, StringComparison.Ordinal);
