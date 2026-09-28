@@ -11,12 +11,20 @@ void Reject(Action action, string name) { try { action(); } catch (Exception e) 
 const string id = "11111111-2222-3333-4444-555555555555";
 var vectors = new List<object>();
 void Vector(string name, string message, IMessage value) => vectors.Add(new { name, message, hex = Convert.ToHexString(value.ToByteArray()).ToLowerInvariant() });
+Parallel.For(0, 64, index =>
+{
+    var walletRoute = HttpProtocolRegistry.Find("GET", "/api/v1/economy/wallet")!;
+    var encoded = HttpDtoMapper.EncodeResponse(walletRoute, new FantasyCard.Contracts.Progression.WalletResponse(long.MaxValue - index, index));
+    var decoded = (FantasyCard.Contracts.Progression.WalletResponse)HttpDtoMapper.ToDto(H.WalletResponse.Parser.ParseFrom(encoded), typeof(FantasyCard.Contracts.Progression.WalletResponse));
+    if (decoded.Gold != long.MaxValue - index || decoded.Diamond != index) throw new Exception("Concurrent mapper value contamination");
+});
+Check(true, "concurrent cold metadata initialization isolates request values");
 var route = HttpProtocolRegistry.Find("POST", "/api/v1/auth/local")!;
-var login = new H.LocalSignInRequest { DeviceId = "local-test-001", DisplayName = "å±±æµ·å®¢" };
+var login = new H.LocalSignInRequest { DeviceId = "local-test-001", DisplayName = "É½º£¿Í" };
 var dto = (FantasyCard.Contracts.Identity.LocalSignInRequest)HttpDtoMapper.DecodeRequest(route, login.ToByteArray(), typeof(FantasyCard.Contracts.Identity.LocalSignInRequest));
-Check(dto.DisplayName == "å±±æµ·å®¢" && dto.DeviceId == "local-test-001", "official protobuf to login DTO UTF8");
+Check(dto.DisplayName == "É½º£¿Í" && dto.DeviceId == "local-test-001", "official protobuf to login DTO UTF8");
 Vector("local-login", "LocalSignInRequest", login);
-var player = new FantasyCard.Contracts.Players.PlayerProfileResponse(Guid.Parse(id), "å±±æµ·å®¢", null, long.MaxValue, DateTimeOffset.UnixEpoch, DateTimeOffset.UnixEpoch);
+var player = new FantasyCard.Contracts.Players.PlayerProfileResponse(Guid.Parse(id), "É½º£¿Í", null, long.MaxValue, DateTimeOffset.UnixEpoch, DateTimeOffset.UnixEpoch);
 var profile = H.PlayerProfileResponse.Parser.ParseFrom(HttpDtoMapper.EncodeResponse(HttpProtocolRegistry.Find("GET","/api/v1/players/me")!, player));
 Check(profile.Version == long.MaxValue && !profile.HasSelectedClass, "profile int64 boundary and absent enum");
 Vector("profile-int64", "PlayerProfileResponse", profile);

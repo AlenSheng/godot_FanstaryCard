@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Concurrent;
+using System.Linq.Expressions;
 using System.Globalization;
 using System.Reflection;
 using System.Text;
@@ -11,6 +13,35 @@ namespace FantasyCard.Contracts.Http;
 /// <summary>Typed wire/domain boundary. Integer values never pass through JSON or double.</summary>
 public static class HttpDtoMapper
 {
+    // Keys are application DTO types and immutable generated descriptors; no request data is cached.
+    private static readonly ConcurrentDictionary<MessageDescriptor, MessageMetadata> Messages = new();
+    private static readonly ConcurrentDictionary<Type, Dictionary<string, PropertyInfo>> Properties = new();
+    private static readonly ConcurrentDictionary<(MessageDescriptor Descriptor, Type Type), ReadBinding[]> Readers = new();
+    private static readonly ConcurrentDictionary<(MessageDescriptor Descriptor, Type Type), ConstructorMetadata> Constructors = new();
+
+    private sealed record MessageMetadata(Func<IMessage> Create, FieldDescriptor[] Fields);
+    private sealed record ReadBinding(FieldDescriptor Field, PropertyInfo? Property);
+    private sealed record ParameterBinding(FieldDescriptor? Field, Type Type, Type? ItemType, object? DefaultValue);
+    private sealed record ConstructorMetadata(ConstructorInfo Constructor, ParameterBinding[] Parameters);
+
+    private static MessageMetadata Metadata(MessageDescriptor descriptor) => Messages.GetOrAdd(descriptor, static d =>
+        new(Expression.Lambda<Func<IMessage>>(Expression.Convert(Expression.New(d.ClrType), typeof(IMessage))).Compile(),
+            d.Fields.InFieldNumberOrder().ToArray()));
+
+    private static Dictionary<string, PropertyInfo> PropertyMap(Type type) => Properties.GetOrAdd(type, static t =>
+    {
+        var result = new Dictionary<string, PropertyInfo>(StringComparer.OrdinalIgnoreCase);
+        foreach (var property in t.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+        {
+            result.TryAdd(Normalize(property.Name), property);
+            if (property.Name == "IsRead") result.TryAdd("read", property);
+            if (property.Name == "IsClaimed") result.TryAdd("claimed", property);
+        }
+        return result;
+    });
+
+    private static string Normalize(string name) => name.Replace("_", "", StringComparison.Ordinal);
+
     public static object DecodeRequest(HttpEndpointContract contract, byte[] bytes, Type dtoType)
     {
         ArgumentNullException.ThrowIfNull(contract);
@@ -35,7 +66,8 @@ public static class HttpDtoMapper
     public static IMessage FromDto(MessageDescriptor descriptor, object? value, bool wrapItems = false)
     {
         ArgumentNullException.ThrowIfNull(descriptor);
-        var message = (IMessage)Activator.CreateInstance(descriptor.ClrType)!;
+        var metadata = Metadata(descriptor);
+        var message = metadata.Create();
         if (value is null) return message;
         // Existing persistence DTOs contain JSON, but the wire always contains named typed fields.
         if (descriptor.Name == "ShopProductPayload" && value is string text)
@@ -43,9 +75,17 @@ public static class HttpDtoMapper
             using var document = JsonDocument.Parse(text);
             return FromDto(descriptor, document.RootElement);
         }
-        foreach (var field in descriptor.Fields.InFieldNumberOrder())
+        var bindings = Readers.GetOrAdd((descriptor, value.GetType()), static key =>
         {
-            object? source = wrapItems && field.Name == "items" ? value : Read(value, field.Name);
+            var properties = PropertyMap(key.Type);
+            return Metadata(key.Descriptor).Fields.Select(field =>
+                new ReadBinding(field, properties.GetValueOrDefault(Normalize(field.Name)))).ToArray();
+        });
+        foreach (var binding in bindings)
+        {
+            var field = binding.Field;
+            object? source = wrapItems && field.Name == "items" ? value
+                : value is JsonElement element ? ReadJson(element, field.Name) : binding.Property?.GetValue(value);
             if (source is null) continue;
             if (field.IsRepeated)
             {
@@ -62,24 +102,40 @@ public static class HttpDtoMapper
         ArgumentNullException.ThrowIfNull(message);
         ArgumentNullException.ThrowIfNull(dtoType);
         if (dtoType.IsInstanceOfType(message)) return message;
-        var constructor = dtoType.GetConstructors().OrderByDescending(c => c.GetParameters().Length).First();
-        var arguments = constructor.GetParameters().Select(parameter =>
+        var metadata = Constructors.GetOrAdd((message.Descriptor, dtoType), static key =>
         {
-            var field = message.Descriptor.Fields.InFieldNumberOrder().FirstOrDefault(f => SameName(f.Name, parameter.Name!));
+            var constructor = key.Type.GetConstructors().OrderByDescending(c => c.GetParameters().Length).First();
+            var fields = Metadata(key.Descriptor).Fields.ToDictionary(f => Normalize(f.Name), StringComparer.OrdinalIgnoreCase);
+            var parameters = constructor.GetParameters().Select(parameter =>
+            {
+                var field = fields.GetValueOrDefault(Normalize(parameter.Name!));
+                return new ParameterBinding(field, parameter.ParameterType,
+                    field?.IsRepeated == true ? parameter.ParameterType.GetGenericArguments()[0] : null,
+                    parameter.HasDefaultValue ? parameter.DefaultValue : Default(parameter.ParameterType));
+            }).ToArray();
+            return new ConstructorMetadata(constructor, parameters);
+        });
+        var arguments = new object?[metadata.Parameters.Length];
+        for (var i = 0; i < arguments.Length; i++)
+        {
+            var parameter = metadata.Parameters[i];
+            var field = parameter.Field;
             if (field is null || (field.HasPresence && !field.Accessor.HasValue(message)))
-                return parameter.HasDefaultValue ? parameter.DefaultValue : Default(parameter.ParameterType);
+            {
+                arguments[i] = parameter.DefaultValue;
+                continue;
+            }
             var source = field.Accessor.GetValue(message);
             if (field.IsRepeated)
             {
-                var itemType = parameter.ParameterType.GetGenericArguments()[0];
-                var items = ((IEnumerable)source).Cast<object>().Select(item => FromWire(item, itemType)).ToArray();
-                var array = Array.CreateInstance(itemType, items.Length);
-                for (var i = 0; i < items.Length; i++) array.SetValue(items[i], i);
-                return array;
+                var items = (IList)source;
+                var array = Array.CreateInstance(parameter.ItemType!, items.Count);
+                for (var j = 0; j < items.Count; j++) array.SetValue(FromWire(items[j]!, parameter.ItemType!), j);
+                arguments[i] = array;
             }
-            return FromWire(source, parameter.ParameterType);
-        }).ToArray();
-        return constructor.Invoke(arguments);
+            else arguments[i] = FromWire(source, parameter.Type);
+        }
+        return metadata.Constructor.Invoke(arguments);
     }
 
     private static object? Default(Type type) => type.IsValueType ? Activator.CreateInstance(type) : null;
@@ -133,38 +189,50 @@ public static class HttpDtoMapper
         ? element.EnumerateArray().Select(e => (object?)e)
         : ((IEnumerable)value).Cast<object?>();
 
-    private static object? Read(object source, string name)
+    private static JsonElement? ReadJson(JsonElement element, string name)
     {
-        if (source is JsonElement element)
-        {
-            if (element.ValueKind != JsonValueKind.Object) return null;
-            foreach (var property in element.EnumerateObject())
-                if (SameName(property.Name, name)) return property.Value.ValueKind == JsonValueKind.Null ? null : property.Value;
-            return null;
-        }
-        var propertyInfo = source.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
-            .FirstOrDefault(p => SameName(p.Name, name) || (name == "read" && p.Name == "IsRead") || (name == "claimed" && p.Name == "IsClaimed"));
-        return propertyInfo?.GetValue(source);
+        if (element.ValueKind != JsonValueKind.Object) return null;
+        foreach (var property in element.EnumerateObject())
+            if (SameName(property.Name, name)) return property.Value.ValueKind == JsonValueKind.Null ? null : property.Value;
+        return null;
     }
 
-    private static bool SameName(string a, string b) => string.Equals(a.Replace("_", "", StringComparison.Ordinal), b.Replace("_", "", StringComparison.Ordinal), StringComparison.OrdinalIgnoreCase);
+    private static bool SameName(string a, string b)
+    {
+        // Compare snake/camel/Pascal case without allocating normalized strings per persisted field.
+        var i = 0;
+        var j = 0;
+        while (true)
+        {
+            while (i < a.Length && a[i] == '_') i++;
+            while (j < b.Length && b[j] == '_') j++;
+            if (i == a.Length || j == b.Length) return i == a.Length && j == b.Length;
+            if (char.ToUpperInvariant(a[i++]) != char.ToUpperInvariant(b[j++])) return false;
+        }
+    }
 
     public static void Validate(IMessage message, int depth = 0)
     {
         ArgumentNullException.ThrowIfNull(message);
         if (depth > HttpProtocolRegistry.MaximumDepth) throw new InvalidDataException("HTTP protobuf nesting limit.");
-        foreach (var field in message.Descriptor.Fields.InFieldNumberOrder())
+        foreach (var field in Metadata(message.Descriptor).Fields)
         {
             var value = field.Accessor.GetValue(message);
-            if (field.IsRepeated && ((ICollection)value).Count > HttpProtocolRegistry.MaximumCollectionItems)
-                throw new InvalidDataException("HTTP protobuf collection limit.");
-            IEnumerable<object?> values = field.IsRepeated ? ((IEnumerable)value).Cast<object?>() : [value];
-            foreach (var item in values)
+            if (field.IsRepeated)
             {
-                if (item is string text && Encoding.UTF8.GetByteCount(text) > HttpProtocolRegistry.MaximumStringBytes)
-                    throw new InvalidDataException("HTTP protobuf string limit.");
-                if (item is IMessage nested) Validate(nested, depth + 1);
+                var items = (IList)value;
+                if (items.Count > HttpProtocolRegistry.MaximumCollectionItems)
+                    throw new InvalidDataException("HTTP protobuf collection limit.");
+                foreach (var item in items) ValidateValue(item, depth);
             }
+            else ValidateValue(value, depth);
         }
+    }
+
+    private static void ValidateValue(object? item, int depth)
+    {
+        if (item is string text && Encoding.UTF8.GetByteCount(text) > HttpProtocolRegistry.MaximumStringBytes)
+            throw new InvalidDataException("HTTP protobuf string limit.");
+        if (item is IMessage nested) Validate(nested, depth + 1);
     }
 }
