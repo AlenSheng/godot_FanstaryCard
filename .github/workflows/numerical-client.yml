@@ -40,12 +40,12 @@ jobs:
           tail -n 140 test-results/godot/import.log
           test "$code" -eq 0
           ! grep -E 'SCRIPT ERROR|Parse Error|Failed to load script' test-results/godot/import.log
-      - name: Numerical state and UI unit checks without network
+      - name: Numerical scene checks without production network access
         shell: bash
         run: |
           set -euo pipefail
           set +e
-          sudo -E unshare -n timeout 60 "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --headless --path client --script res://tests/test_numerical_integration.gd > test-results/godot/numerics.log 2>&1
+          sudo -E unshare -n timeout 60 "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --headless --path client res://tests/numerical_integration.tscn > test-results/godot/numerics.log 2>&1
           code=$?
           set -e
           cat test-results/godot/numerics.log
