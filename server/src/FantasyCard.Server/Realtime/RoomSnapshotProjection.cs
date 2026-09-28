@@ -72,12 +72,7 @@ internal static class RoomSnapshotProjection
                 PositiveMilliseconds(player.Combat.DrawBlockSpeedRemaining) ?? 0,
                 Math.Clamp(4 * (1 + (player.Combat.Equipment?.DrawIntervalModifier ?? 0)),
                     player.Combat.Equipment?.HasRapidDraw == true ? 1.5 : 1.8, 6.0)
-                    .ToString("R", CultureInfo.InvariantCulture),
-                snapshot.Numerics?.OptionalMonsterPool == true && player.MonsterPool is { } pool
-                    ? new RoomMonsterPoolPayload(snapshot.Numerics.MonsterCapacity,
-                        pool.Pending.Select(ToPoolCard).ToArray(), pool.Active.Select(ToPoolCard).ToArray()) : null,
-                new RoomNumericalStatePayload(player.Combat.FenxianPolicy.ToString(), player.Combat.GuardianPolicy.ToString(),
-                    player.Combat.GuardianShieldRemainderTenths)),
+                    .ToString("R", CultureInfo.InvariantCulture)),
             player.Pve is null ? null : ToPve(player.Pve),
             duel,
             reward,
@@ -97,22 +92,15 @@ internal static class RoomSnapshotProjection
         DateTimeOffset now)
     {
         if (extractionRemaining is not null || springRemaining is not null) return [];
-        var actions = player.Phase switch
+        return player.Phase switch
         {
             RoomPlayerPhase.Pve when player.Pve?.Phase == PveBattlePhase.Active => BuildPveActions(player),
             RoomPlayerPhase.Choice => ["choice.read", "choice.refresh", "choice.pick"],
             RoomPlayerPhase.Pvp => BuildDuelActions(snapshot, player, now),
             RoomPlayerPhase.ActionBar => BuildActionBarActions(player, map, relics),
-            _ => new List<string>()
+            _ => []
         };
-        if (snapshot.Numerics?.OptionalMonsterPool == true && player.DisconnectedRemaining is not { Ticks: > 0 } &&
-            player.Phase is RoomPlayerPhase.Choice or RoomPlayerPhase.ActionBar && player.MonsterPool?.Pending.Count > 0)
-            actions.Add("monster.choose");
-        return actions;
     }
-
-    private static RoomCardPayload ToPoolCard(CombatCardInstance card) =>
-        new(card.InstanceId, card.CardId, card.Level, card.ElementOverride?.ToString());
 
     private static List<string> BuildDuelActions(
         BattleRoomSnapshot snapshot,
@@ -187,10 +175,7 @@ internal static class RoomSnapshotProjection
             info?.EscapeProbability?.ToString("R", CultureInfo.InvariantCulture),
             info?.Opponent is { } opponentInfo ? ToBattleStatus(opponentInfo) : null,
             PositiveMilliseconds(opponent.Combat.StunRemaining) ?? 0,
-            PositiveMilliseconds(opponent.Combat.DrawBlockRemaining) ?? 0,
-            snapshot.Numerics?.BudgetedBotLoot == true && opponent.IsBot,
-            snapshot.Numerics?.BudgetedBotLoot == true && opponent.IsBot
-                ? (opponent.BotLoot ?? []).Select(ToInventoryItem).ToArray() : null);
+            PositiveMilliseconds(opponent.Combat.DrawBlockRemaining) ?? 0);
     }
 
     private static RoomBattleStatusPayload ToBattleStatus(CombatantPublicInfo info)

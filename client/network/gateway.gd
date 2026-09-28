@@ -16,7 +16,7 @@ const COMMANDS := {
 	"ping": "", "session.resume": "SessionResumeCommand", "room.ready": "RoomReadyCommand",
 	"room.snapshot.read": "RoomSnapshotCommand", "room.move": "RoomMoveCommand",
 	"battle.play_cards": "BattlePlayCardsCommand", "battle.select_target": "BattleSelectTargetCommand", "battle.abandon": "BattleAbandonCommand",
-	"combat.preview": "BattlePlayCardsCommand", "monster.choose": "MonsterCardChooseCommand",
+	"combat.preview": "BattlePlayCardsCommand",
 	"reward.choice.refresh": "RewardChoiceRefreshCommand", "reward.choice.claim": "RewardChoiceClaimCommand",
 	"duel.leave": "DuelLeaveCommand", "duel.escape": "DuelEscapeCommand",
 	"action.extract": "ActionExtractCommand", "action.spring": "ActionSpringCommand",

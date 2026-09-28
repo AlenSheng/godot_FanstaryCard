@@ -108,29 +108,6 @@ public sealed class CombatDeck
         _discard.Add(card);
     }
 
-    public void ReplaceMonsterInstance(Guid? replacedId, CombatCardInstance candidate)
-    {
-        ArgumentNullException.ThrowIfNull(candidate);
-        var current = Capture();
-        var all = current.Hand.Concat(current.Library).Concat(current.Discard).ToArray();
-        if (!ValidCard(candidate) || candidate.InstanceId == Guid.Empty ||
-            all.Any(card => card.InstanceId == candidate.InstanceId) ||
-            replacedId is not null && all.Count(card => card.InstanceId == replacedId) != 1)
-            throw new DomainValidationException("Monster replacement contains invalid or duplicate instances.");
-        Restore(new(
-            current.Hand.Where(card => card.InstanceId != replacedId).ToArray(),
-            current.Library.Where(card => card.InstanceId != replacedId).ToArray(),
-            current.Discard.Where(card => card.InstanceId != replacedId).Append(candidate).ToArray(),
-            current.DrawCharge));
-    }
-
-    public void RemoveMonsterInstance(Guid instanceId)
-    {
-        _hand.RemoveAll(card => card.InstanceId == instanceId);
-        _library.RemoveAll(card => card.InstanceId == instanceId);
-        _discard.RemoveAll(card => card.InstanceId == instanceId);
-    }
-
     public void AddCharge(double amount, Random random)
     {
         if (amount <= 0)

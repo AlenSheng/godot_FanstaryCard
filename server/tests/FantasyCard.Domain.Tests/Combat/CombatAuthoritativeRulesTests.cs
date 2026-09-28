@@ -69,7 +69,7 @@ public sealed class CombatAuthoritativeRulesTests
     }
 
     [Fact]
-    public void Resonance_bonus_is_at_most_one_and_raises_five_cards_to_two()
+    public void Resonance_bonus_is_at_most_one_and_only_bonus_can_raise_five_cards_to_three_point_five()
     {
         var state = State();
         var bonus = new CombatCardDefinition("bonus", new(ElementalDamage: 8, Element: CardElement.Fire, ResonanceBonus: 1));

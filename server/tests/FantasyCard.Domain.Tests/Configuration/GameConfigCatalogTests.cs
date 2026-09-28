@@ -14,7 +14,7 @@ public sealed class GameConfigCatalogTests
     {
         var catalog = GameConfigCatalog.Current;
 
-        Assert.Equal("gdd-0.70-numerical-1", catalog.Version);
+        Assert.Equal("gdd-0.68-element-tuning-1", catalog.Version);
         Assert.Equal(232, catalog.Cards.Count);
         Assert.Equal(220, catalog.Cards.Count(card => card.IsCodex));
         Assert.Equal(12, catalog.Cards.Count(card => !card.IsCodex));

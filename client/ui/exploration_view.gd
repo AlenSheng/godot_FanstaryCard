@@ -4,7 +4,6 @@ const Art = preload("res://ui/art.gd")
 const P = preload("res://ui/palette.gd")
 const BoundedBar = preload("res://ui/bounded_bar.gd")
 const InventoryView = preload("res://ui/inventory_view.gd")
-const MonsterPool = preload("res://ui/monster_pool_view.gd")
 const Details = preload("res://ui/equipment_details.gd")
 const BattleDetails = preload("res://ui/battle_details.gd")
 const DragScroll = preload("res://ui/drag_scroll.gd")
@@ -34,15 +33,6 @@ static func build(ui: Control, host: Control) -> void:
 		_map(ui, host, state)
 	else:
 		_actions(ui, host, state)
-	var pool: Dictionary = state.get("player", {}).get("monster_pool", {})
-	if not pool.is_empty() and phase in ["ActionBar", "Choice"]:
-		ui.button(MonsterPool.text("title") + " (%d)" % pool.get("pending", []).size(), Rect2(1210, 35, 340, 62), func(): MonsterPool.open(host))
-	var numerics: Dictionary = state.get("player", {}).get("numerical_state", {})
-	if numerics.get("guardian_policy", "") == "FractionalRemainder" and Game.hero_class == "Guardian":
-		ui.button("%d / 10" % int(numerics.get("guardian_remainder_tenths", 0)), Rect2(1580, 35, 120, 62), func(): preload("res://ui/numerical_details.gd").show_remainder(host))
-	var duel: Dictionary = state.get("duel", {})
-	if phase == "Pvp" and bool(duel.get("separate_loot", false)):
-		ui.button(P.localized("loot"), Rect2(1130, 49, 290, 61), func(): MonsterPool.loot(host, duel.get("searchable_loot", [])))
 
 static func _title(ui: Control, value: String, battle: bool = false) -> void:
 	ui.picture(Art.texture("UI/Encounter/encounter_title_plate_normal.png"), Rect2(50, 28, 480, 96))

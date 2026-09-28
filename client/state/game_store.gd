@@ -1192,12 +1192,6 @@ func _on_gateway_telemetry(sample: Dictionary) -> void:
 	network_telemetry.emit(sample)
 
 func _intent_valid(action: String, payload: Dictionary) -> bool:
-	if action == "monster.choose":
-		var pool: Dictionary = room.get("player", {}).get("monster_pool", {})
-		if not pool.get("pending", []).any(func(card): return card.get("instance_id", "") == payload.get("candidate_id", "")): return false
-		if payload.has("replace_instance_id"):
-			return pool.get("active", []).any(func(card): return card.get("instance_id", "") == payload.replace_instance_id)
-		return true
 	if action == "battle.play_cards":
 		var battle: Dictionary = room.get("duel", room.get("pve", {}))
 		if payload.get("battle_id") != battle.get("duel_id", battle.get("battle_id", "")): return false

@@ -299,9 +299,3 @@ public sealed record MoveRoomPlayerCommand(Guid PlayerId, MapPosition Target, lo
         return new(result.Position, result.StartedDuel, result.RoomRevision);
     }
 }
-
-public sealed record ChooseMonsterCardCommand(Guid PlayerId, Guid CandidateId, bool Accept, Guid? ReplaceId,
-    string RequestId, long ExpectedRevision) : IRoomCommand<long>
-{
-    public long Execute(BattleRoom room) => room.DecideMonsterCard(PlayerId, CandidateId, Accept, ReplaceId, RequestId, ExpectedRevision);
-}

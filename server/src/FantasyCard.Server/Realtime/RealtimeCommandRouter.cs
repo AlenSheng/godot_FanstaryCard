@@ -164,7 +164,6 @@ public sealed partial class RealtimeCommandRouter
             !string.Equals(command.Type, "combat.preview", StringComparison.Ordinal) &&
             !string.Equals(command.Type, "battle.select_target", StringComparison.Ordinal) &&
             !string.Equals(command.Type, "battle.abandon", StringComparison.Ordinal) &&
-            !string.Equals(command.Type, "monster.choose", StringComparison.Ordinal) &&
             !string.Equals(command.Type, "room.move", StringComparison.Ordinal) &&
             !string.Equals(command.Type, "map.move", StringComparison.Ordinal) &&
             !string.Equals(command.Type, "duel.leave", StringComparison.Ordinal) &&
@@ -224,25 +223,6 @@ public sealed partial class RealtimeCommandRouter
             ];
         }
         var expectedRevision = command.ExpectedRevision ?? 0;
-
-        if (command.Type == "monster.choose")
-        {
-            if (command.Payload is not MonsterCardChooseCommandPayload choice || choice.CandidateId == Guid.Empty)
-                return [Reject(player.UserId, traceId, command.RequestId, "INVALID_PAYLOAD", "A monster candidate is required.")];
-            try
-            {
-                var result = await ExecuteWithClientStateAsync(actor,
-                    new ChooseMonsterCardCommand(player.UserId, choice.CandidateId, choice.Accept,
-                        choice.ReplaceInstanceId, command.RequestId!, expectedRevision),
-                    player.UserId, expectedRevision, cancellationToken);
-                return AppendRoomSnapshot(player.UserId, traceId, command.RequestId, currentMatchId,
-                    [], result.ClientState);
-            }
-            catch (DomainValidationException exception)
-            {
-                return [Reject(player.UserId, traceId, command.RequestId, "COMMAND_REJECTED", exception.Message)];
-            }
-        }
 
         if (command.Type == "relic.read")
         {

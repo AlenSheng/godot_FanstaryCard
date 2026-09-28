@@ -1,5 +1,5 @@
 {
-  "sha256": "9938368bcf5d8dd5a5f87612a0d276f811bcdd25174094c77ec789131af006d9",
+  "sha256": "c0a020f2a393fbe27550e09e26cbea443617400c98bd953b2e295da829c96a0a",
   "messages": {
     "ClientEnvelope": {
       "1": {
@@ -721,18 +721,6 @@
         "type": "int64",
         "repeated": false,
         "optional": false
-      },
-      "14": {
-        "name": "separate_loot",
-        "type": "bool",
-        "repeated": false,
-        "optional": false
-      },
-      "15": {
-        "name": "searchable_loot",
-        "type": "RoomInventoryItem",
-        "repeated": true,
-        "optional": false
       }
     },
     "RoomCurrentCell": {
@@ -879,18 +867,6 @@
       "19": {
         "name": "base_draw_interval_seconds",
         "type": "string",
-        "repeated": false,
-        "optional": false
-      },
-      "20": {
-        "name": "monster_pool",
-        "type": "RoomMonsterPool",
-        "repeated": false,
-        "optional": false
-      },
-      "21": {
-        "name": "numerical_state",
-        "type": "RoomNumericalState",
         "repeated": false,
         "optional": false
       }
@@ -1863,66 +1839,6 @@
     "MapPlayerCountEvent": {
       "1": {
         "name": "player_count",
-        "type": "int32",
-        "repeated": false,
-        "optional": false
-      }
-    },
-    "MonsterCardChooseCommand": {
-      "1": {
-        "name": "candidate_id",
-        "type": "string",
-        "repeated": false,
-        "optional": false
-      },
-      "2": {
-        "name": "accept",
-        "type": "bool",
-        "repeated": false,
-        "optional": false
-      },
-      "3": {
-        "name": "replace_instance_id",
-        "type": "string",
-        "repeated": false,
-        "optional": false
-      }
-    },
-    "RoomMonsterPool": {
-      "1": {
-        "name": "capacity",
-        "type": "int32",
-        "repeated": false,
-        "optional": false
-      },
-      "2": {
-        "name": "pending",
-        "type": "RoomCard",
-        "repeated": true,
-        "optional": false
-      },
-      "3": {
-        "name": "active",
-        "type": "RoomCard",
-        "repeated": true,
-        "optional": false
-      }
-    },
-    "RoomNumericalState": {
-      "1": {
-        "name": "fenxian_policy",
-        "type": "string",
-        "repeated": false,
-        "optional": false
-      },
-      "2": {
-        "name": "guardian_policy",
-        "type": "string",
-        "repeated": false,
-        "optional": false
-      },
-      "3": {
-        "name": "guardian_remainder_tenths",
         "type": "int32",
         "repeated": false,
         "optional": false
