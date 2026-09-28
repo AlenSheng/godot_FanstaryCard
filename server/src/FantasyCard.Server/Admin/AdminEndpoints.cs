@@ -43,6 +43,7 @@ public static class AdminEndpoints
     private static async ValueTask<object?> AuthorizeAsync(EndpointFilterInvocationContext invocation, EndpointFilterDelegate next)
     {
         var context = invocation.HttpContext;
+        SetPrivateHeaders(context);
         if (!IsSecure(context)) return Results.Problem(statusCode: 403, title: "HTTPS required");
         var configured = context.RequestServices.GetRequiredService<IConfiguration>()["Admin:ApiKey"];
         if (string.IsNullOrEmpty(configured) || configured.Length < 32)
@@ -52,17 +53,22 @@ public static class AdminEndpoints
         var suppliedBytes = SHA256.HashData(Encoding.UTF8.GetBytes(supplied));
         if (supplied.Length is < 32 or > 256 || !CryptographicOperations.FixedTimeEquals(expectedBytes, suppliedBytes))
             return Results.Problem(statusCode: 401, title: "Admin authentication required");
-        context.Response.Headers.CacheControl = "no-store";
         return await next(invocation);
+    }
+
+    private static void SetPrivateHeaders(HttpContext context)
+    {
+        context.Response.Headers.CacheControl = "private, no-store";
+        context.Response.Headers["X-Content-Type-Options"] = "nosniff";
     }
 
     private static IResult PageAsync(HttpContext context, IConfiguration configuration)
     {
+        SetPrivateHeaders(context);
         if (!IsSecure(context)) return Results.Problem(statusCode: 403, title: "HTTPS required");
         if ((configuration["Admin:ApiKey"]?.Length ?? 0) < 32)
             return Results.Problem(statusCode: 503, title: "Admin system is not configured");
-        context.Response.Headers.CacheControl = "no-store";
-        context.Response.Headers["X-Content-Type-Options"] = "nosniff";
+
         context.Response.Headers["Content-Security-Policy"] = "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; form-action 'none'; base-uri 'none'";
         var assembly = typeof(AdminEndpoints).Assembly;
         using var stream = assembly.GetManifestResourceStream("FantasyCard.Server.Admin.admin.html")!;

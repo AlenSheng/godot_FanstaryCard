@@ -21,6 +21,7 @@ write_manifest() {
     cd "$repo"
     git ls-files -z -- \
       server/src server/config server/protection server/deploy server/monitoring \
+      protocol/http protocol/realtime .dockerignore \
       server/Directory.Build.props server/Directory.Packages.props \
       server/global.json server/NuGet.Config server/.dockerignore \
       server/compose.cloud.yaml server/Caddyfile server/site \
@@ -165,7 +166,7 @@ if [[ "$baseline_valid" == true ]]; then
       server/Caddyfile|server/site/*) proxy_changed=true ;;
       server/compose.cloud.yaml) runtime_changed=true; proxy_changed=true ;;
       server/deploy/*) ;;
-      server/*) runtime_changed=true ;;
+      server/*|protocol/*|.dockerignore) runtime_changed=true ;;
     esac
   done < "$changes"
 else

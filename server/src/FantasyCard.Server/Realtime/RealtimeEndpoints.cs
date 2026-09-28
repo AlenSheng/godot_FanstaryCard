@@ -1,4 +1,5 @@
 using System.Net.WebSockets;
+using FantasyCard.Server.ProtobufHttp;
 using FantasyCard.Contracts.Realtime;
 using FantasyCard.Server.Common;
 using FantasyCard.Server.Identity;
@@ -25,6 +26,7 @@ public static class RealtimeEndpoints
                 "Realtime cleanup interval must be 1-60 minutes.")
             .ValidateOnStart();
         services.AddSingleton<ConnectionRegistry>();
+        services.AddSingleton<RealtimeTicketStore>();
         services.AddSingleton<RealtimeEventStore>();
         services.AddSingleton<RealtimeCommandRouter>();
         services.AddHostedService<RealtimeMaintenanceWorker>();
@@ -34,12 +36,42 @@ public static class RealtimeEndpoints
     public static IEndpointRouteBuilder MapRealtimeEndpoints(this IEndpointRouteBuilder endpoints)
     {
         endpoints.MapGet("/ws/v1/session", HandleSessionAsync).WithTags("Realtime");
+        endpoints.MapPost("/api/v1/realtime/ticket", IssueTicketAsync)
+            .AddEndpointFilter<ProtobufHttpFilter>()
+            .RequireRateLimiting(RequestLimitOptions.WritePolicy).WithTags("Realtime");
         return endpoints;
+    }
+
+    private static async Task<IResult> IssueTicketAsync(
+        HttpContext context, GameBody<EmptyTicketRequest> body, IdentityService identityService, RealtimeTicketStore tickets,
+        CancellationToken cancellationToken)
+    {
+        var token = BearerToken(context);
+        var player = token is null ? null : await identityService.AuthenticateAsync(token, cancellationToken);
+        if (player is null) return context.UnauthorizedProblem();
+        context.Response.Headers.CacheControl = "no-store";
+        var issued = tickets.Issue(player.UserId, SessionToken.Hash(token!));
+        if (issued is null)
+        {
+            context.Response.Headers.RetryAfter = "30";
+            return Results.Problem(statusCode: 429, title: "Realtime ticket capacity reached");
+        }
+        return Results.Ok(issued);
+    }
+
+    public sealed record EmptyTicketRequest;
+
+    private static string? BearerToken(HttpContext context)
+    {
+        var header = context.Request.Headers.Authorization.FirstOrDefault();
+        return header?.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase) == true ? header[7..].Trim() : null;
     }
 
     private static async Task HandleSessionAsync(
         HttpContext context,
-        IdentityService identityService,
+        IdentityRepository identityRepository,
+        RealtimeTicketStore tickets,
+        IOptions<RealtimeOptions> realtimeOptions,
         ConnectionRegistry registry,
         RealtimeEventStore eventStore,
         RealtimeCommandRouter router,
@@ -57,8 +89,20 @@ public static class RealtimeEndpoints
             return;
         }
 
-        var accessToken = context.Request.Query["access_token"].FirstOrDefault();
-        var player = await context.AuthenticatePlayerAsync(identityService, cancellationToken, accessToken);
+        var ticket = context.Request.Query["ticket"].FirstOrDefault();
+        var session = tickets.Consume(ticket);
+        byte[]? sessionHash = session?.SessionHash;
+        if (ticket is null)
+        {
+            var accessToken = BearerToken(context);
+            if (accessToken is null && realtimeOptions.Value.AllowLegacyAccessTokenQuery)
+                accessToken = context.Request.Query["access_token"].FirstOrDefault();
+            if (!string.IsNullOrWhiteSpace(accessToken) && accessToken.Length <= 256)
+                sessionHash = SessionToken.Hash(accessToken);
+        }
+        var player = sessionHash is null ? null : (await identityRepository.FindByTokenHashAsync(
+            sessionHash, timeProvider.GetUtcNow(), cancellationToken)).Player;
+        if (session is not null && player?.UserId != session.PlayerId) player = null;
         if (player is null)
         {
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
@@ -69,9 +113,8 @@ public static class RealtimeEndpoints
         metrics.RealtimeConnectionOpened();
         await using var connection = new RealtimeConnection(socket);
         var replaced = registry.Register(player.UserId, connection);
-        var commandLimiter = new RealtimeCommandRateLimiter(
+        var frameReader = new RealtimeFrameReader(
             requestLimits.Value.RealtimeCommandsPerSecond);
-        DateTimeOffset? lastRateLimitNotice = null;
         try
         {
             // Registration must always be paired with the finally cleanup,
@@ -119,96 +162,110 @@ public static class RealtimeEndpoints
                     cancellationToken);
             }
 
-            while (socket.State == WebSocketState.Open && !cancellationToken.IsCancellationRequested)
+            using var connectionLifetime = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            var monitor = MonitorSessionAsync();
+            try
             {
-                var received = await ReceiveAsync(socket, cancellationToken);
-                metrics.RealtimeMessageReceived();
-                if (received.Payload is { } payload)
-                    metrics.ObserveRealtimeMessageBytes(payload.Length);
-                if (received.Status == ReceiveStatus.Closed)
+                while (socket.State == WebSocketState.Open && !cancellationToken.IsCancellationRequested)
                 {
-                    await connection.CloseAsync(
-                        WebSocketCloseStatus.NormalClosure,
-                        "Client closed",
-                        CancellationToken.None);
-                    return;
-                }
-
-                if (received.Status == ReceiveStatus.InvalidType)
-                {
-                    await connection.CloseAsync(
-                        WebSocketCloseStatus.InvalidMessageType,
-                        "Only protobuf binary messages are supported",
-                        CancellationToken.None);
-                    return;
-                }
-
-                if (received.Status == ReceiveStatus.TooLarge)
-                {
-                    await connection.CloseAsync(
-                        WebSocketCloseStatus.MessageTooBig,
-                        "Message exceeds 16 KiB",
-                        CancellationToken.None);
-                    return;
-                }
-
-                ClientCommand? command;
-                try
-                {
-                    command = RealtimeProtobufCodec.DecodeClient(received.Payload!);
-                }
-                catch (Exception exception) when (exception is InvalidDataException or OverflowException)
-                {
-                    await connection.SendAsync(
-                        eventStore.Create(
-                            player.UserId,
-                            "error.invalid_message",
-                            context.TraceIdentifier,
-                            null),
-                        cancellationToken);
-                    continue;
-                }
-
-                if (command is null)
-                {
-                    await connection.SendAsync(
-                        eventStore.Create(
-                            player.UserId,
-                            "error.invalid_message",
-                            context.TraceIdentifier,
-                            null),
-                        cancellationToken);
-                    continue;
-                }
-
-                var receivedAt = timeProvider.GetUtcNow();
-                if (!commandLimiter.TryAcquire(receivedAt))
-                {
-                    metrics.RealtimeCommandRateLimited();
-                    if (lastRateLimitNotice is null ||
-                        receivedAt - lastRateLimitNotice >= TimeSpan.FromSeconds(1))
+                    var received = await ReceiveAsync(socket, connectionLifetime.Token);
+                    metrics.RealtimeMessageReceived();
+                    if (received.Payload is { } payload)
+                        metrics.ObserveRealtimeMessageBytes(payload.Length);
+                    if (received.Status == ReceiveStatus.Closed)
                     {
-                        lastRateLimitNotice = receivedAt;
+                        await connection.CloseAsync(
+                            WebSocketCloseStatus.NormalClosure,
+                            "Client closed",
+                            CancellationToken.None);
+                        return;
+                    }
+
+                    if (received.Status == ReceiveStatus.InvalidType)
+                    {
+                        await connection.CloseAsync(
+                            WebSocketCloseStatus.InvalidMessageType,
+                            "Only protobuf binary messages are supported",
+                            CancellationToken.None);
+                        return;
+                    }
+
+                    if (received.Status == ReceiveStatus.TooLarge)
+                    {
+                        await connection.CloseAsync(
+                            WebSocketCloseStatus.MessageTooBig,
+                            "Message exceeds 16 KiB",
+                            CancellationToken.None);
+                        return;
+                    }
+
+                    if (received.Status == ReceiveStatus.TimedOut)
+                    {
+                        await connection.CloseAsync(WebSocketCloseStatus.PolicyViolation,
+                            "Fragment receive deadline exceeded", CancellationToken.None);
+                        return;
+                    }
+
+                    var frame = frameReader.Read(received.Payload!, timeProvider.GetUtcNow());
+                    if (frame.RateLimited) metrics.RealtimeCommandRateLimited();
+                    if (frame.ErrorType is { } errorType)
+                    {
                         await connection.SendAsync(
-                            eventStore.Create(
-                                player.UserId,
-                                "error.rate_limited",
-                                context.TraceIdentifier,
-                                null),
+                            eventStore.Create(player.UserId, errorType, context.TraceIdentifier, null),
                             cancellationToken);
                     }
-                    continue;
-                }
+                    if (frame.Command is not { } command) continue;
 
-                foreach (var response in await router.RouteAsync(
-                    player,
-                    command,
-                    context.TraceIdentifier,
-                    cancellationToken))
-                {
-                    await connection.SendAsync(response, cancellationToken);
+                    if (!await SessionValidAsync())
+                    {
+                        await connection.CloseAsync(WebSocketCloseStatus.PolicyViolation, "Session no longer valid", CancellationToken.None);
+                        return;
+                    }
+                    foreach (var response in await router.RouteAsync(
+                        player,
+                        command,
+                        context.TraceIdentifier,
+                        cancellationToken))
+                    {
+                        await connection.SendAsync(response, cancellationToken);
+                    }
                 }
             }
+            finally
+            {
+                await connectionLifetime.CancelAsync();
+                try { await monitor; } catch (OperationCanceledException) { }
+            }
+
+            async Task<bool> SessionValidAsync() => registry.IsCurrent(player.UserId, connection) &&
+                (await identityRepository.FindByTokenHashAsync(sessionHash!, timeProvider.GetUtcNow(), connectionLifetime.Token)).Player?.UserId == player.UserId;
+
+            async Task MonitorSessionAsync()
+            {
+                try
+                {
+                    while (!connectionLifetime.IsCancellationRequested)
+                    {
+                        await Task.Delay(TimeSpan.FromSeconds(5), connectionLifetime.Token);
+                        if (!await SessionValidAsync())
+                        {
+                            await connection.CloseAsync(WebSocketCloseStatus.PolicyViolation, "Session no longer valid", CancellationToken.None);
+                            await connectionLifetime.CancelAsync();
+                            return;
+                        }
+                    }
+                }
+                catch
+                {
+                    socket.Abort();
+                    await connectionLifetime.CancelAsync();
+                    throw;
+                }
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            socket.Abort();
         }
         catch (WebSocketException) when (socket.State != WebSocketState.Open)
         {
@@ -222,15 +279,20 @@ public static class RealtimeEndpoints
         }
     }
 
-    private static async Task<ReceiveResult> ReceiveAsync(
+    internal static async Task<ReceiveResult> ReceiveAsync(
         WebSocket socket,
         CancellationToken cancellationToken)
     {
         var buffer = new byte[MaximumMessageBytes];
         var count = 0;
+        var fragmentStarted = false;
+        using var fragments = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         while (true)
         {
-            var result = await socket.ReceiveAsync(buffer.AsMemory(count), cancellationToken);
+            ValueWebSocketReceiveResult result;
+            try { result = await socket.ReceiveAsync(buffer.AsMemory(count), fragments.Token); }
+            catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
+            { return new ReceiveResult(ReceiveStatus.TimedOut, null); }
             if (result.MessageType == WebSocketMessageType.Close)
             {
                 return new ReceiveResult(ReceiveStatus.Closed, null);
@@ -241,6 +303,11 @@ public static class RealtimeEndpoints
                 return new ReceiveResult(ReceiveStatus.InvalidType, null);
             }
 
+            if (!fragmentStarted && !result.EndOfMessage)
+            {
+                fragmentStarted = true;
+                fragments.CancelAfter(TimeSpan.FromSeconds(10));
+            }
             count += result.Count;
             if (count == MaximumMessageBytes && !result.EndOfMessage)
             {
@@ -254,13 +321,14 @@ public static class RealtimeEndpoints
         }
     }
 
-    private enum ReceiveStatus
+    internal enum ReceiveStatus
     {
         Complete,
         Closed,
         InvalidType,
-        TooLarge
+        TooLarge,
+        TimedOut
     }
 
-    private sealed record ReceiveResult(ReceiveStatus Status, byte[]? Payload);
+    internal sealed record ReceiveResult(ReceiveStatus Status, byte[]? Payload);
 }
