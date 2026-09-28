@@ -25,3 +25,7 @@ WHERE mail.sender = 'System' AND mail.title = translation.title AND mail.title_e
 UPDATE mail_messages
 SET title_en = 'System Mail'
 WHERE title = '系统通知' AND title_en = '';
+
+UPDATE mail_messages
+SET title_en = 'Item Reclamation Notice'
+WHERE title = '道具收回通知' AND title_en = '';

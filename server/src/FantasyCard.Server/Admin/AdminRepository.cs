@@ -211,7 +211,10 @@ public sealed class AdminRepository(NpgsqlDataSource dataSource, TimeProvider ti
         else throw new ArgumentException("Unsupported item kind or item ID.");
         if (changed != 1) throw new AdminConflictException("Insufficient balance or equipment is unavailable in inventory.");
         await InsertMailAsync(connection, transaction, request.PlayerId, "道具收回通知",
-            $"管理员收回：{request.Kind} × {request.Amount}。原因：{request.Reason}", [], cancellationToken);
+            $"管理员收回：{request.Kind} × {request.Amount}。原因：{request.Reason}",
+            "Item Reclamation Notice",
+            $"An administrator reclaimed {request.Kind} × {request.Amount}. Reason: {request.Reason}",
+            [], cancellationToken);
         await AuditAsync(connection, transaction, "revoke", request.PlayerId, request, requestId, cancellationToken);
         await transaction.CommitAsync(cancellationToken);
         await NotifyPlayerRefreshAsync(request.PlayerId, "revoke");
