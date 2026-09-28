@@ -38,3 +38,11 @@ Godot 导入将 622 个已跟踪 import 文件换行写回；Git 内容 diff 为
 - Docker 不可用，容器构建未运行。部署 shell 脚本未执行；没有可用 bash 进行 bash -n。
 - 没有真实 Steam 凭据、生产 TLS/云 ACL 验证；不将本地模拟或配置检查写成线上验收通过。
 - 详细分组命令、失败迭代和证据见各角色报告；最终全量测试及性能报告由独立 QA 生成。
+
+## 第三批发现与回修
+
+- 畸形实时帧原先在限流前被解析并返回错误：D 把帧预算置于解码前；100 畸形帧测试覆盖错误响应上限，Realtime 60/60 PASS。
+- 真实样本 GDScript PB 解码明显慢于原生 JSON：C 将 >8 KiB HTTP 响应放 WorkerThreadPool，完成后复核会话代次。真实跨语言20项、fixture19项、codec103项通过；3次后台任务推进14帧，最大帧间隔16.703ms，总等待66.723ms，对照同步主线程58.830ms。此改动改善主线程占用，并非总CPU更快。
+- 服务端每字段反射导致高分配：A 缓存不可变metadata，22项协议断言（含并发）和10项边界测试通过。真实样本重建后的独立对照编码分配12.86MB→0.779MB，仍高于JSON；最终原始抓包性能以QA报告为准。
+- 后台解码实现后的完整工程再次 `--headless --editor --import --quit`，exit0，无脚本解析错误，日志 `work/godot-final-parse.log`。
+- 新增真实跨语言复跑入口 `client/tests/run_migration_real_server.py`：自己启动loopback .NET进程与随机PG schema，结束后清理本次资源；不连接生产。

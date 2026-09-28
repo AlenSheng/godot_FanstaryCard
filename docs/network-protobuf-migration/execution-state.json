@@ -2,52 +2,116 @@
   "repository": "AlenSheng/godot_FanstaryCard",
   "reviewed_commit": "80148675dfbb974a4b0bdc79a9234c67a75bba49",
   "prepared_on": "2026-09-28",
-  "status": "prepared_not_started",
+  "status": "implemented_with_preexisting_test_failures",
   "agents": [
     {
       "role": "fc_protocol",
       "task": "A",
-      "status": "not_started",
-      "agent_id": null,
-      "evidence": []
+      "status": "contract_frozen",
+      "agent_id": "/root/fc_protocol",
+      "evidence": [
+        "protocol-report.md",
+        "protocol-compatibility.md",
+        "Contracts build PASS 0 warnings/errors",
+        "21 protocol assertions PASS; 8 vectors; generator check PASS",
+        "Mapper cache:22 protocol assertions +10 boundary tests PASS"
+      ],
+      "started_at": "2026-09-28T03:23:14.3030713Z"
     },
     {
       "role": "fc_server_api",
       "task": "B",
-      "status": "not_started",
-      "agent_id": null,
-      "evidence": []
+      "status": "implementation_complete",
+      "agent_id": "/root/fc_server_api",
+      "evidence": [
+        "server-api-report.md",
+        "11 HTTP boundary/database tests PASS",
+        "Mail budget preflight: three PostgreSQL overflow cases reject before grants"
+      ],
+      "started_at": "2026-09-28T03:34:16.4196244Z"
     },
     {
       "role": "fc_client",
       "task": "C",
-      "status": "not_started",
-      "agent_id": null,
-      "evidence": []
+      "status": "implementation_complete",
+      "agent_id": "/root/fc_client",
+      "evidence": [
+        "client-report.md",
+        "Godot codec103 + transport18 PASS",
+        "Real Godot-.NET-PostgreSQL:20checks PASS, including ticket WS resume and replacement",
+        "Final codec103+transport19+real-server20 PASS; large decode runs off main thread"
+      ],
+      "started_at": "2026-09-28T03:34:16.4393624Z"
     },
     {
       "role": "fc_realtime",
       "task": "D",
-      "status": "not_started",
-      "agent_id": null,
-      "evidence": []
+      "status": "implementation_complete",
+      "agent_id": "/root/fc_realtime",
+      "evidence": [
+        "realtime-report.md",
+        "60 passed /0failed /0skipped; malformed-frame flood limited before decoding; real domain snapshot5313bytes"
+      ],
+      "started_at": "2026-09-28T03:35:23.0341931Z"
     },
     {
       "role": "fc_perimeter",
       "task": "E",
-      "status": "not_started",
-      "agent_id": null,
-      "evidence": []
+      "status": "implementation_complete",
+      "agent_id": "/root/fc_perimeter",
+      "evidence": [
+        "perimeter-report.md",
+        "20 Admin/Deploy tests PASS;14 real local proxy checks PASS"
+      ],
+      "started_at": "2026-09-28T03:45:08.674055Z"
     },
     {
       "role": "fc_qa",
       "task": "F",
-      "status": "not_started",
-      "agent_id": null,
-      "evidence": []
+      "status": "validation_complete_with_existing_failures",
+      "agent_id": "/root/fc_qa",
+      "evidence": [
+        "qa-baseline.md",
+        "DB baseline Domain207pass1fail; Server205pass2fail;0skip; original HEAD isolated",
+        "qa-report.md",
+        "Final solution:439pass3fail0skip;failures match baseline",
+        "Final targeted business1pass; archived baseline resale23505 defect confirmed"
+      ],
+      "started_at": "2026-09-28T03:23:14.3109213Z"
     }
   ],
-  "project_build": "not_run",
-  "project_tests": "not_run",
-  "local_worktree_verified": false
+  "project_build": "PASS: strict solution compile and full Godot import",
+  "project_tests": "Domain207pass1fail;Server232pass2fail;0skipped;all3failures reproduce baseline;Godot103codec19transport20real-server PASS",
+  "local_worktree_verified": true,
+  "execution": {
+    "worktree": "F:\\GitHubFiles\\godot_FanstaryCard-protobuf",
+    "branch": "codex/protobuf-migration-20260928-local",
+    "head": "6fe4ae404915d8b5140fa9b9da45a546992278d6",
+    "original_worktree": "F:\\GitHubFiles\\godot_FanstaryCard",
+    "original_branch": "release",
+    "source_saved_commit": "e3fed8e",
+    "source_push": "origin/release succeeded",
+    "uncommitted_generated_outputs": "Preserved in original worktree; not pushed",
+    "missing_skill": ".agents/skills/server_create/SKILL.md",
+    "runtime_agent_tool": "collaboration.spawn_agent",
+    "id_format": "Tool returns canonical task name as agent ID; no UUID/thread ID exposed",
+    "max_runtime_slots_including_parent": 4,
+    "effective_max_parallel_subagents": 3,
+    "user_authorization": "Existing local source push authorized; migration push/deploy/merge remains prohibited",
+    "head_meaning": "HEAD before final QA/evidence commit; deliverable records final HEAD"
+  },
+  "toolchain": {
+    "godot": "4.7.2",
+    "postgres": "18.6 isolated loopback 127.0.0.1:54329",
+    "production_access": false,
+    "sdk": "10.0.400 task-local"
+  },
+  "remaining": [
+    "Three original failing regression tests",
+    "Existing market resale500 reproduced on original HEAD",
+    "Full PVP/relic/extraction/restart gate not reached",
+    "Live Steam, Docker image, production TLS/CDN/ACL not verified",
+    "One earlier Bootstrap timeout unreproduced; no stable performance advantage established",
+    "HTTP compression-on latency and Godot per-operation allocations not measured"
+  ]
 }
