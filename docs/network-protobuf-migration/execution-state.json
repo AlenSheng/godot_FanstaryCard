@@ -151,7 +151,7 @@
       "Godot decode and server PB encode allocation optimization"
     ],
     "release_deployment_authorized": false,
-    "completed_local_validation_at": "2026-09-28T04:53:44.190065+00:00",
+    "completed_local_validation_at": "2026-09-28T12:53:44.190065+08:00",
     "cleanup": "All owned services/schemas stopped or dropped; shared task-local PG54329 stopped after finalTLS; original user workspace outputs preserved"
   },
   "bootstrap_timeout_followup": {
@@ -181,6 +181,25 @@
     "historical_limit": "Earlier60/100s events lack simultaneous traces; cannot individually attribute every historical timeout",
     "package": "builds/server-protected/server-lgiop4qw",
     "cleanup": "Owned services/schema cleaned; task-local PG stopped",
-    "finished_at": "2026-09-28T05:14:29.626760+00:00"
+    "finished_at": "2026-09-28T13:14:29.62676+08:00"
+  },
+  "release_publication": {
+    "authorized_by": "User: 本地改动全部合到release远端分支并发布",
+    "authorized": true,
+    "actors": [
+      "/root",
+      "/root/fc_protocol",
+      "/root/fc_realtime"
+    ],
+    "source_commit": "fbc22e3cc2a0c447bf3875651befe29c98a29233",
+    "status": "validated_ready_to_publish",
+    "initial_linux_tests": "464/466; 2 WebSocket close handshake failures fixed",
+    "final_linux_tests": "468/468, zero failures or skips",
+    "image": "sha256:d8a704452faef9a5b4fa974b74d976c439c7084c0d9ed2d7bf2b12df24a4883a",
+    "docker_acceptance": "ok:true; 28 HTTP/WSS/restart checks; DB readiness503/live200/recovery200; Production local-auth404",
+    "vulnerabilities": "Trivy0.69.3 HIGH/CRITICAL:0",
+    "evidence": "/home/ubuntu/fc-release-qa-609e13e/tools/engine-local/protected/docker-acceptance-wd2plh5l/verification.json",
+    "preserved": "Original workspace generated outputs; no reset/clean/stash",
+    "completed_at": "2026-09-28T05:43:16.716807+00:00"
   }
 }
