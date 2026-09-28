@@ -7,6 +7,7 @@ signal authentication_required(reason: String)
 signal telemetry(sample: Dictionary)
 
 const Proto = preload("res://network/protobuf.gd")
+const HttpProtocol = preload("res://network/http_protocol.gd")
 const DEFAULT_LOCAL_BASE_URL := "http://127.0.0.1:5080"
 const PRODUCTION_BASE_URL := "https://www.relicbound.cn"
 const LEGACY_CLOUD_ORIGINS := ["http://43.172.70.182", "https://43.172.70.182"]
@@ -64,6 +65,7 @@ var _backoff: float = 1.0
 var _last_ping: int = 0
 var last_rtt_ms: int = -1
 var _connecting_at: int = 0
+var _ticket_generation: int = -1
 var _pending_http: Dictionary = {}
 var _pending_request_started: Dictionary = {}
 var _pending_ping_request_id := ""
@@ -180,28 +182,88 @@ func session_expired() -> bool:
 	return not token.is_empty() and token_expires_at > 0.0 and Time.get_unix_time_from_system() >= token_expires_at
 
 func request(path: String, method: int = HTTPClient.METHOD_GET, data: Variant = null, quiet_statuses: Array = []) -> Dictionary:
+	var generation := session_generation
+	var result: Dictionary = await _request_page(path, method, data, quiet_statuses)
+	if not result.ok or method != HTTPClient.METHOD_GET: return result
+	var canonical := path.get_slice("?", 0).trim_suffix("/")
+	var collections := []
+	if canonical in ["/api/v1/market", "/api/v1/market/context", "/api/v1/bootstrap", "/api/v1/economy/context"]:
+		collections.append({"header": "X-Market-Next-Offset", "path": "/api/v1/market", "key": "listings" if canonical == "/api/v1/market/context" else "market"})
+	if canonical in ["/api/v1/mail", "/api/v1/bootstrap"]:
+		collections.append({"header": "X-Mail-Next-Offset", "path": "/api/v1/mail", "key": "mail"})
+	var aggregate_bytes: int = result.get("body_bytes", 0)
+	for collection in collections:
+		var cursor := HttpProtocol.header(result.get("headers", PackedStringArray()), collection.header)
+		var previous := -1
+		var pages := 0
+		while not cursor.is_empty():
+			if generation != session_generation: return {"ok": false, "status": 401, "error": "登录状态已改变，请重新登录", "stale_session": true}
+			if not cursor.is_valid_int() or int(cursor) <= previous or pages >= 32:
+				return _pagination_error("服务器分页游标无效", quiet_statuses)
+			previous = int(cursor)
+			pages += 1
+			var page: Dictionary = await _request_page(collection.path + "?offset=" + cursor + "&limit=200", method, null, quiet_statuses)
+			if not page.ok: return page
+			if generation != session_generation: return {"ok": false, "status": 401, "error": "登录状态已改变，请重新登录", "stale_session": true}
+			aggregate_bytes += int(page.get("body_bytes", 0))
+			var target: Variant
+			var incoming: Variant
+			if collection.path == "/api/v1/mail":
+				var mailbox: Variant = result.data if canonical == collection.path else result.data.get(collection.key)
+				target = mailbox.get("items") if mailbox is Dictionary else null
+				incoming = page.data.get("items") if page.data is Dictionary else null
+			else:
+				target = result.data if canonical == collection.path else result.data.get(collection.key)
+				incoming = page.data
+			if not target is Array or not incoming is Array:
+				return _pagination_error("服务器分页内容无效", quiet_statuses)
+			if target.size() + incoming.size() > 4096 or aggregate_bytes > 16 * 1024 * 1024:
+				return _pagination_error("列表超过客户端读取上限，请缩小查询范围", quiet_statuses)
+			target.append_array(incoming)
+			cursor = HttpProtocol.header(page.get("headers", PackedStringArray()), collection.header)
+	return result
+
+func _pagination_error(message: String, quiet_statuses: Array) -> Dictionary:
+	if 0 not in quiet_statuses: failed.emit(message)
+	return {"ok": false, "status": 0, "error": message}
+
+func _request_page(path: String, method: int = HTTPClient.METHOD_GET, data: Variant = null, quiet_statuses: Array = []) -> Dictionary:
 	if session_expired():
 		end_session("登录已过期，请重新登录")
 		return {"ok": false, "status": 401, "error": "登录已过期，请重新登录"}
+	var contract := HttpProtocol.route(path, method)
+	var perimeter := HttpProtocol.is_perimeter(path, method)
+	if contract.is_empty() and not perimeter:
+		return {"ok": false, "status": 0, "error": "未注册的网络接口"}
 	var generation := session_generation
-	data = normalize_request(data)
-	var fingerprint := str(generation) + ":" + str(method) + path + JSON.stringify(data)
+	var body := PackedByteArray()
+	if not perimeter:
+		if data != null and not data is Dictionary:
+			return {"ok": false, "status": 0, "error": "请求数据类型错误"}
+		var proto := Proto.new(true)
+		body = proto.encode(contract.request, HttpProtocol.to_wire(contract.request, data if data is Dictionary else {}))
+		if not proto.error.is_empty(): return {"ok": false, "status": 0, "error": "请求编码失败: " + proto.error}
+	# Binary identity preserves all 64 integer bits and is never logged.
+	var fingerprint := str(generation) + ":" + str(method) + path + ("" if body.is_empty() else Marshalls.raw_to_base64(body))
 	if _pending_http.has(fingerprint):
 		return {"ok": false, "status": 0, "error": "请求正在处理"}
 	_pending_http[fingerprint] = true
 	var request_started_at := Time.get_ticks_msec()
 	var key := "godot-" + new_id()
-	var headers := PackedStringArray(["Content-Type: application/json", "X-Trace-Id: " + key])
-	if not token.is_empty(): headers.append("Authorization: Bearer " + token)
+	var media := "application/json" if perimeter else "application/protobuf"
+	var headers := PackedStringArray(["Content-Type: " + media, "Accept: " + media, "X-Trace-Id: " + key])
+	if not perimeter and not token.is_empty(): headers.append("Authorization: Bearer " + token)
 	if method != HTTPClient.METHOD_GET: headers.append("Idempotency-Key: " + key)
-	var result: Dictionary = {}
+	var result: Dictionary = {"ok": false, "status": 0, "error": "无法连接服务器"}
 	# One logical request retains exactly one key across transport and throttling retries.
 	for attempt in range(3):
 		if generation != session_generation: break
+		var delay := pow(2.0, attempt)
 		var http := HTTPRequest.new()
 		http.timeout = 10.0
+		http.body_size_limit = 2 * 1024 * 1024
 		add_child(http)
-		var start := http.request(base_url + path, headers, method, "" if data == null else JSON.stringify(data))
+		var start := http.request_raw(base_url + path, headers, method, body)
 		if start != OK:
 			http.queue_free()
 			result = {"ok": false, "status": 0, "error": "无法连接服务器"}
@@ -210,17 +272,29 @@ func request(path: String, method: int = HTTPClient.METHOD_GET, data: Variant = 
 			http.queue_free()
 			if generation != session_generation: break
 			var code: int = response[1]
-			var parser := JSON.new()
-			var parse_status := parser.parse(response[3].get_string_from_utf8())
-			var parsed: Variant = normalize_response(parser.data) if parse_status == OK else null
-			var success: bool = response[0] == HTTPRequest.RESULT_SUCCESS and code >= 200 and code < 300
+			var decoded: Dictionary
+			if perimeter:
+				var parser := JSON.new()
+				var parse_status := parser.parse(response[3].get_string_from_utf8())
+				decoded = {"ok": parse_status == OK, "data": normalize_response(parser.data) if parse_status == OK else null, "error": "服务器响应无效"}
+			else: decoded = HttpProtocol.decode_response(contract, code, response[2], response[3])
+			var parsed: Variant = decoded.data
+			var success: bool = response[0] == HTTPRequest.RESULT_SUCCESS and code >= 200 and code < 300 and decoded.ok
 			var message := "服务器不可用，请检查地址与服务器状态"
-			if parsed is Dictionary: message = str(parsed.get("detail", parsed.get("title", message)))
-			result = {"ok": success, "status": code, "data": parsed, "error": message}
+			if not decoded.ok: message = decoded.error
+			elif parsed is Dictionary: message = str(parsed.get("detail", parsed.get("title", message)))
+			result = {"ok": success, "status": code, "data": parsed, "error": message, "headers": response[2], "body_bytes": response[3].size()}
 			if code == 401:
 				end_session("Steam 登录票据无效，请重试" if path == "/api/v1/auth/steam" else "登录已过期，请重新登录")
 			if success or code not in [0, 429, 502, 503, 504]: break
-		if attempt < 2: await get_tree().create_timer(pow(2.0, attempt)).timeout
+			# Invalid received responses never trigger a retry or a format fallback.
+			if code != 0 and not decoded.ok: break
+			if response[0] in [HTTPRequest.RESULT_BODY_SIZE_LIMIT_EXCEEDED, HTTPRequest.RESULT_BODY_DECOMPRESS_FAILED]: break
+			var retry_after := HttpProtocol.header(response[2], "Retry-After")
+			if retry_after.is_valid_int(): delay = maxf(delay, float(retry_after))
+			elif parsed is Dictionary and parsed.get("retryAfterSeconds") != null: delay = maxf(delay, float(parsed.retryAfterSeconds))
+			if delay > 60.0: break
+		if attempt < 2: await get_tree().create_timer(delay).timeout
 	_pending_http.erase(fingerprint)
 	telemetry.emit({"type": "http", "path": path, "method": method, "duration_ms": Time.get_ticks_msec() - request_started_at, "status": result.get("status", 0), "ok": result.get("ok", false)})
 	if generation != session_generation:
@@ -250,16 +324,28 @@ static func normalize_response(data: Variant) -> Variant:
 
 func connect_realtime() -> void:
 	if session_expired(): end_session("登录已过期，请重新登录")
-	if token.is_empty(): return
+	if token.is_empty() or _ticket_generation == session_generation: return
+	var generation := session_generation
 	reconnect_enabled = true
 	online = false
+	_ticket_generation = generation
+	connection_changed.emit("正在连接实时服务")
+	var response: Dictionary = await request("/api/v1/realtime/ticket", HTTPClient.METHOD_POST, {}, [0, 429, 502, 503, 504])
+	if _ticket_generation == generation: _ticket_generation = -1
+	if generation != session_generation or not reconnect_enabled: return
+	if not response.ok or not response.get("data") is Dictionary:
+		_schedule_reconnect()
+		return
+	var ticket: String = str(response.data.get("ticket", ""))
+	if ticket.is_empty() or parse_expiry(str(response.data.get("expiresAt", ""))) <= Time.get_unix_time_from_system():
+		_schedule_reconnect()
+		return
 	socket = WebSocketPeer.new()
 	socket.inbound_buffer_size = 65536
 	socket.outbound_buffer_size = 32768
 	var url := base_url.replace("https://", "wss://").replace("http://", "ws://")
-	var result := socket.connect_to_url(url + "/ws/v1/session?access_token=" + token.uri_encode())
+	var result := socket.connect_to_url(url + "/ws/v1/session?ticket=" + ticket.uri_encode())
 	_connecting_at = Time.get_ticks_msec()
-	connection_changed.emit("正在连接实时服务")
 	if result != OK: _schedule_reconnect()
 
 func _schedule_reconnect() -> void:
@@ -270,7 +356,7 @@ func _schedule_reconnect() -> void:
 
 func _process(_delta: float) -> void:
 	if session_expired(): end_session("登录已过期，请重新登录")
-	if not reconnect_enabled: return
+	if not reconnect_enabled or _ticket_generation == session_generation: return
 	socket.poll()
 	var state := socket.get_ready_state()
 	if state == WebSocketPeer.STATE_OPEN:
@@ -303,10 +389,14 @@ func send(kind: String, payload: Dictionary = {}, request_id: String = "") -> bo
 	var proto := Proto.new()
 	var effective_request_id := new_id() if request_id.is_empty() else request_id
 	var envelope := {"protocol_version": 1, "type": kind, "request_id": effective_request_id}
-	if not COMMANDS[kind].is_empty(): envelope.payload = proto.encode(COMMANDS[kind], payload)
+	if not COMMANDS[kind].is_empty():
+		envelope.payload = proto.encode(COMMANDS[kind], payload)
+		if not proto.error.is_empty(): return false
 	if kind not in ["ping", "session.resume", "room.snapshot.read", "room.ready", "relic.read"]:
 		envelope.expected_revision = room_revision
-	var sent := socket.put_packet(proto.encode("ClientEnvelope", envelope)) == OK
+	var encoded := proto.encode("ClientEnvelope", envelope)
+	if not proto.error.is_empty(): return false
+	var sent := socket.put_packet(encoded) == OK
 	if sent and kind == "combat.preview":
 		_preview_request_ids[envelope.request_id] = true
 		if _preview_request_ids.size() > 32: _preview_request_ids.erase(_preview_request_ids.keys()[0])

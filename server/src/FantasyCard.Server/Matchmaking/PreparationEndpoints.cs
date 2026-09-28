@@ -1,3 +1,4 @@
+using FantasyCard.Server.ProtobufHttp;
 using FantasyCard.Contracts.Matchmaking;
 using FantasyCard.Domain.Players;
 using FantasyCard.Server.Identity;
@@ -15,7 +16,7 @@ public static class PreparationEndpoints
 
     public static IEndpointRouteBuilder MapPreparationEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup("/api/v1/preparations").WithTags("Preparation");
+        var group = endpoints.MapGroup("/api/v1/preparations").AddEndpointFilter<ProtobufHttpFilter>().WithTags("Preparation");
         group.MapGet("/", GetActiveAsync)
             .Produces<PreparationResponse>()
             .ProducesProblem(401)
@@ -55,7 +56,7 @@ public static class PreparationEndpoints
     }
 
     private static async Task<IResult> CreateAsync(
-        CreatePreparationRequest request,
+        GameBody<CreatePreparationRequest> request,
         HttpContext context,
         IdentityService identityService,
         PreparationRepository repository,

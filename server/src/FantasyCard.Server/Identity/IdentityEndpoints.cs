@@ -1,3 +1,4 @@
+using FantasyCard.Server.ProtobufHttp;
 using System.Text.Json;
 using FantasyCard.Contracts.Identity;
 using FantasyCard.Domain.Players;
@@ -40,7 +41,7 @@ public static class IdentityEndpoints
 
     public static IEndpointRouteBuilder MapIdentityEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup("/api/v1/auth").WithTags("Identity");
+        var group = endpoints.MapGroup("/api/v1/auth").AddEndpointFilter<ProtobufHttpFilter>().WithTags("Identity");
 
         group.MapPost("/local", SignInLocalAsync)
             .RequireRateLimiting(RequestLimitOptions.AuthPolicy)
@@ -59,7 +60,7 @@ public static class IdentityEndpoints
     }
 
     private static async Task<IResult> SignInLocalAsync(
-        LocalSignInRequest request,
+        GameBody<LocalSignInRequest> request,
         IdentityService identityService,
         IOptions<IdentityOptions> options,
         IHostEnvironment environment,
@@ -78,8 +79,8 @@ public static class IdentityEndpoints
         try
         {
             var result = await identityService.SignInLocalAsync(
-                request.DeviceId,
-                request.DisplayName,
+                request.Value.DeviceId,
+                request.Value.DisplayName,
                 cancellationToken);
             return Results.Ok(new LocalSignInResponse(
                 result.AccessToken,
@@ -105,7 +106,7 @@ public static class IdentityEndpoints
     }
 
     private static async Task<IResult> SignInSteamAsync(
-        SteamSignInRequest request,
+        GameBody<SteamSignInRequest> request,
         SteamTicketVerifier verifier,
         IdentityService identityService,
         IOptions<SteamAuthOptions> options,
@@ -116,14 +117,14 @@ public static class IdentityEndpoints
         if (!options.Value.Enabled) return Results.NotFound();
         try
         {
-            var steamId = await verifier.VerifyAsync(request.Ticket, cancellationToken);
+            var steamId = await verifier.VerifyAsync(request.Value.Ticket, cancellationToken);
             if (steamId is null)
             {
                 metrics.IdentitySignInFailed("steam", "invalid_ticket");
                 return context.UnauthorizedProblem();
             }
             var result = await identityService.SignInExternalAsync(
-                "steam", steamId, request.DisplayName, cancellationToken);
+                "steam", steamId, request.Value.DisplayName, cancellationToken);
             return Results.Ok(new LocalSignInResponse(
                 result.AccessToken, result.ExpiresAt, result.Player.ToResponse()));
         }

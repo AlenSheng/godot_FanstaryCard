@@ -107,7 +107,7 @@ static func _equipment(ui: Control, host: Control, player: Dictionary, selected:
 		var slot: String = ["Head", "Chest", "Hands", "Legs", "Feet"][index]
 		var item: Dictionary = {}
 		for candidate in worn:
-			if candidate.get("equipment", {}).get("slot", "") == slot: item = candidate; break
+			if candidate.get("equipment") is Dictionary and candidate.equipment.get("slot", "") == slot: item = candidate; break
 		var button: Button = ui.button(P.word(slot) + " · " + (Details.title(item) if not item.is_empty() else "未穿戴"), Rect2(112, 235 + index * 69, 586, 60), func(): host._confirm("卸下这件防具并放入背包？", func(): Game.command("inventory.unequip", {"slot": slot})), item.is_empty() or not Game.allowed("inventory.unequip"))
 		button.add_theme_font_size_override("font_size", 24)
 		button.tooltip_text = P.localized_text(Details.description(item) if not item.is_empty() else "未穿戴")

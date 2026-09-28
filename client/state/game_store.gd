@@ -103,7 +103,7 @@ func _check_shop_rotation() -> void:
 	if gateway == null or gateway.token.is_empty() or lobby.is_empty(): return
 	if Time.get_ticks_msec() < _shop_rotation_check_at: return
 	_shop_rotation_check_at = Time.get_ticks_msec() + 60000
-	var shop: Dictionary = lobby.get("shop", {})
+	var shop: Dictionary = lobby.shop if lobby.get("shop") is Dictionary else {}
 	if shop.is_empty(): return
 	# The server rotates the regular shop at 04:00 China time (20:00 UTC).
 	var day: Dictionary = Time.get_datetime_dict_from_unix_time(int(Time.get_unix_time_from_system()) + 4 * 3600)
@@ -276,7 +276,7 @@ func _login(address: String, display_name: String, steam_login: bool) -> void:
 			if ticket_result.ok:
 				var result: Dictionary = await gateway.request("/api/v1/auth/steam" if steam_login else "/api/v1/auth/local", HTTPClient.METHOD_POST, sign_in)
 				if steam_login: platform.release_ticket()
-				if result.ok and result.data is Dictionary:
+				if result.ok and result.data is Dictionary and result.data.get("player") is Dictionary:
 					if gateway.accept_session(str(result.data.get("accessToken", "")), str(result.data.get("expiresAt", "")), str(result.data.get("player", {}).get("userId", ""))):
 						if not steam_login: gateway.remember_local_account(str(result.data.get("player", {}).get("displayName", "")))
 						await refresh_lobby()
@@ -314,6 +314,10 @@ func refresh_lobby() -> void:
 	var result: Dictionary = await gateway.request("/api/v1/bootstrap")
 	if not result.ok: return
 	if not result.data is Dictionary or not validate_config(str(result.data.get("configVersion", "")), "大厅"): return
+	for required in ["player", "wallet", "materials"]:
+		if not result.data.get(required) is Dictionary:
+			notice.emit("服务器大厅数据不完整，请重试")
+			return
 	if generation != gateway.session_generation: return
 	lobby = result.data
 	if _settlement_ack_pending_id != "":
@@ -373,7 +377,7 @@ func update_cache(module: String, value: Variant) -> void:
 		for index in products.size():
 			var product: Dictionary = products[index]
 			if str(product.get("kind", "")) != "Cards": continue
-			var parsed: Variant = JSON.parse_string(str(product.get("payload", "")))
+			var parsed: Variant = product.get("payload", {})
 			if not parsed is Dictionary or not parsed.has("cardId"): continue
 			var owned := bool(ownership.get(str(parsed.cardId), false))
 			if bool(product.get("alreadyOwned", false)) == owned: continue
@@ -625,7 +629,8 @@ func enqueue() -> void:
 	changed.emit()
 
 func _preparation_config_valid(value: Dictionary) -> bool:
-	return validate_config(str(value.get("snapshot", {}).get("configVersion", "")), "准备")
+	var snapshot: Dictionary = value.snapshot if value.get("snapshot") is Dictionary else {}
+	return validate_config(str(snapshot.get("configVersion", "")), "准备")
 
 func cancel_preparation() -> void:
 	if busy: return

@@ -1,3 +1,4 @@
+using FantasyCard.Server.ProtobufHttp;
 using FantasyCard.Contracts.Mail;
 using FantasyCard.Server.Common;
 using FantasyCard.Server.Identity;
@@ -14,7 +15,7 @@ public static class MailEndpoints
 
     public static IEndpointRouteBuilder MapMailEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        var mail = endpoints.MapGroup("/api/v1/mail").WithTags("Mail");
+        var mail = endpoints.MapGroup("/api/v1/mail").AddEndpointFilter<ProtobufHttpFilter>().WithTags("Mail");
         mail.MapGet("/", GetAsync).Produces<MailListResponse>().ProducesProblem(401);
         mail.MapPost("/{mailId:guid}/read", MarkReadAsync)
             .RequireRateLimiting(RequestLimitOptions.WritePolicy)
@@ -40,7 +41,7 @@ public static class MailEndpoints
     private static async Task<IResult> GetAsync(HttpContext context, IdentityService identity, MailRepository repository, CancellationToken cancellationToken)
     {
         var player = await context.AuthenticatePlayerAsync(identity, cancellationToken);
-        return player is null ? context.UnauthorizedProblem() : Results.Ok(await repository.GetAsync(player.UserId, cancellationToken));
+        return player is null ? context.UnauthorizedProblem() : Results.Ok(await repository.GetAsync(player.UserId, cancellationToken, GamePage.Read(context).Limit, GamePage.Read(context).Offset));
     }
 
     private static async Task<IResult> MarkReadAsync(Guid mailId, HttpContext context, IdentityService identity, MailRepository repository, CancellationToken cancellationToken)

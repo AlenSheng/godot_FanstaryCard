@@ -1,0 +1,58 @@
+extends SceneTree
+const Gateway = preload("res://network/gateway.gd")
+var failures := []
+var checks := 0
+var late: Dictionary = {}
+func check(condition: bool, label: String) -> void:
+	checks += 1
+	if not condition: failures.append(label)
+func _initialize() -> void: call_deferred("run")
+func _late_request(gateway: Node) -> void:
+	late = await gateway.request("/api/v1/players/me?late=1", HTTPClient.METHOD_GET, null, [401])
+func run() -> void:
+	var gateway := Gateway.new()
+	gateway.persist_session = false
+	root.add_child(gateway)
+	gateway.base_url = "http://127.0.0.1:38971"
+	var login: Dictionary = await gateway.request("/api/v1/auth/local", HTTPClient.METHOD_POST, {"displayName":"fixture", "deviceId":"fixture-device"})
+	check(login.ok, "binary login")
+	check(gateway.accept_session(login.data.accessToken, login.data.expiresAt, login.data.player.userId), "accept session")
+	var bootstrap: Dictionary = await gateway.request("/api/v1/bootstrap")
+	check(bootstrap.ok and bootstrap.data.wallet.gold == 9223372036854775807, "binary bootstrap int64")
+	check(bootstrap.data.market.size() == 2 and bootstrap.data.mail.items.size() == 2 and bootstrap.data.mail.unreadCount == 3, "embedded market/mail pagination")
+	check(bootstrap.data.unfinishedMatch == null and bootstrap.data.unfinishedSettlement == null, "bootstrap absence")
+	var market: Dictionary = await gateway.request("/api/v1/market/")
+	check(market.ok and market.data.size() == 2, "root market pagination")
+	var bad_cursor: Dictionary = await gateway.request("/api/v1/market?loop=1", HTTPClient.METHOD_GET, null, [0])
+	check(not bad_cursor.ok and not bad_cursor.has("data"), "invalid pagination cursor rejects partial data")
+	var too_many: Dictionary = await gateway.request("/api/v1/market?many=1", HTTPClient.METHOD_GET, null, [0])
+	check(not too_many.ok and not too_many.has("data"), "aggregate limit rejects partial data")
+	var profile: Dictionary = await gateway.request("/api/v1/players/me")
+	check(profile.ok and profile.data.version == 9223372036854775807, "profile int64")
+	var purchase: Dictionary = await gateway.request("/api/v1/shop/purchases", HTTPClient.METHOD_POST, {"productId":"p","quantity":1})
+	check(purchase.ok and purchase.data.goldAfter == 9223372036854775807, "429 retry")
+	var empty: Dictionary = await gateway.request("/api/v1/mail/read-all", HTTPClient.METHOD_POST, {})
+	check(empty.ok and empty.data == null, "204 response")
+	var malformed: Dictionary = await gateway.request("/api/v1/shop/purchases?malformed=1", HTTPClient.METHOD_POST, {"productId":"p"}, [200])
+	check(not malformed.ok, "malformed write fails")
+	var proxy: Dictionary = await gateway.request("/api/v1/cards", HTTPClient.METHOD_GET, null, [200])
+	check(not proxy.ok, "proxy HTML fails")
+	gateway.connect_realtime()
+	await create_timer(.4).timeout
+	gateway.reconnect_enabled = false
+	var stats: Dictionary = await gateway.request("/api/v1/client-info")
+	check(stats.ok and stats.data.retryStable, "stable request bytes/key across retry")
+	check(stats.data.counts.get("/api/v1/shop/purchases?malformed=1",0) == 1, "no retry on malformed write")
+	check(stats.data.counts.get("/api/v1/cards",0) == 1, "no fallback on proxy error")
+	check(stats.data.websocketSafe, "ticket URL without bearer")
+	_late_request(gateway)
+	await create_timer(.05).timeout
+	gateway.end_session("",false)
+	gateway.accept_session("new-token", "2099-01-01T00:00:00Z", "new-user")
+	await create_timer(.7).timeout
+	check(late.get("stale_session",false) and gateway.token == "new-token", "old 401 callback suppressed")
+	gateway.end_session("", false)
+	gateway.queue_free()
+	await process_frame
+	print(JSON.stringify({"checks":checks,"failures":failures}))
+	quit(0 if failures.is_empty() else 1)

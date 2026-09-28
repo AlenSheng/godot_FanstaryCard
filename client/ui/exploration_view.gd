@@ -529,7 +529,7 @@ static func build_settlement(ui: Control, host: Control) -> void:
 	ui.button("返回", Rect2(716, 753, 488, 96), host._return_from_settlement, Game.busy)
 
 static func _settlement_items() -> Array:
-	var details: Dictionary = Game.settlement.get("details", {})
+	var details: Dictionary = Game.settlement.details if Game.settlement.get("details") is Dictionary else {}
 	var result: Array = []
 	if details.get("items") is Array:
 		for entry in details.items:

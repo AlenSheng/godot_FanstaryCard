@@ -50,6 +50,11 @@ public static class RequestLimitExtensions
             options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
             options.OnRejected = async (context, cancellationToken) =>
             {
+                var retryAfter = context.Lease.TryGetMetadata(MetadataName.RetryAfter, out var retry)
+                    ? Math.Max(1, (int)Math.Ceiling(retry.TotalSeconds))
+                    : limits.WindowSeconds;
+                context.HttpContext.Response.Headers.RetryAfter =
+                    retryAfter.ToString(System.Globalization.CultureInfo.InvariantCulture);
                 context.HttpContext.Response.ContentType = "application/problem+json";
                 await context.HttpContext.Response.WriteAsJsonAsync(new
                 {

@@ -1042,7 +1042,7 @@ func _shop() -> void:
 	row.add_theme_constant_override("separation", 20)
 	scroll.add_child(row)
 	for item in host.shop.get("products", []):
-		var parsed: Variant = JSON.parse_string(item.get("payload", "{}"))
+		var parsed: Variant = item.get("payload", {})
 		var payload: Dictionary = parsed if parsed is Dictionary else {}
 		var kind: String = item.get("kind", "")
 		var product_title := _product_title(kind, payload)
@@ -1122,7 +1122,7 @@ func sync_shop_state(changed_product_id: String = "") -> bool:
 		var detail := panel_node.get_node_or_null("ShopDetail") as Label
 		var buy := panel_node.get_node_or_null("Purchase") as Button
 		if detail == null or buy == null: return false
-		var parsed: Variant = JSON.parse_string(str(product.get("payload", "{}")))
+		var parsed: Variant = product.get("payload", {})
 		var payload: Dictionary = parsed if parsed is Dictionary else {}
 		var amount: int = int(payload.get("amount", payload.get("count", 0)))
 		if changed_product_id.is_empty() or str(product.get("productId", "")) == changed_product_id:

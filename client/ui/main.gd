@@ -1201,7 +1201,7 @@ func _shop() -> void:
 	for item in shop.get("products", []):
 		var panel := _panel(grid, 535)
 		_label(panel, P.product_name(item.kind), 30)
-		var payload: Variant = JSON.parse_string(item.get("payload", "{}"))
+		var payload: Variant = item.get("payload", {})
 		if payload is Dictionary and payload.has("cardId"):
 			var card_id := str(payload.cardId)
 			_label(panel, CardDetails.localized_name(card_id, cards.get(card_id, {})), 26, P.TEAL)
@@ -1325,7 +1325,7 @@ func _apply_account_mutation(path: String, body: Variant, response: Variant) -> 
 			var wallet: Dictionary = Game.lobby.get("wallet", {}).duplicate(true)
 			wallet["gold"] = int(data.buyerGoldAfter)
 			Game.update_cache("wallet", wallet)
-		var item: Dictionary = previous.get("equipment", {})
+		var item: Dictionary = previous.equipment if previous.get("equipment") is Dictionary else {}
 		if not item.is_empty():
 			item = item.duplicate(true)
 			item["location"] = "Inventory"
@@ -1406,11 +1406,11 @@ func _apply_shop_purchase(product_id: String, response: Dictionary) -> void:
 		var product: Dictionary = products[index]
 		if str(product.get("productId", "")) != product_id: continue
 		product["purchased"] = int(product.get("purchased", 0)) + quantity
-		if product.get("kind", "") == "Cards" and str(product.get("payload", "")).contains("cardId"):
+		if product.get("kind", "") == "Cards" and product.get("payload") is Dictionary and product.payload.has("cardId"):
 			product["alreadyOwned"] = true
 		products[index] = product
 		var kind: String = str(product.get("kind", ""))
-		var parsed: Variant = JSON.parse_string(product.get("payload", "{}"))
+		var parsed: Variant = product.get("payload", {})
 		var payload: Dictionary = parsed if parsed is Dictionary else {}
 		var amount: int = int(payload.get("amount", 1)) * quantity
 		if kind in ["AdvancedBag", "TopBag", "HealthPotion"]:
@@ -1618,7 +1618,7 @@ func _claim(option: Dictionary, equip: bool = false) -> void:
 func _settlement() -> void:
 	_label(content, P.word(Game.settlement.get("result", "旅程结束")), 66, P.GOLD)
 	_label(content, "本次旅程已由服务器结算。", 30)
-	var details: Dictionary = Game.settlement.get("details", {})
+	var details: Dictionary = Game.settlement.details if Game.settlement.get("details") is Dictionary else {}
 	for key in ["gold", "goldEarned", "equipmentFragments", "warriorSoul"]:
 		if details.has(key): _label(content, "%s  %s" % [P.word(key), details[key]], 30)
 	_button(content, "返回", _return_from_settlement, Game.busy)

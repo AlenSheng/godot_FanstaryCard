@@ -1,3 +1,4 @@
+using FantasyCard.Server.ProtobufHttp;
 using FantasyCard.Contracts.Bootstrap;
 using FantasyCard.Server.Identity;
 
@@ -13,7 +14,7 @@ public static class BootstrapEndpoints
 
     public static IEndpointRouteBuilder MapBootstrapEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        endpoints.MapGet("/api/v1/bootstrap", GetAsync)
+        endpoints.MapGet("/api/v1/bootstrap", GetAsync).AddEndpointFilter<ProtobufHttpFilter>()
             .WithTags("Bootstrap")
             .Produces<BootstrapResponse>()
             .ProducesProblem(401);
