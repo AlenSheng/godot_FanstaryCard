@@ -50,8 +50,8 @@ public sealed class PlayerCombatState
     public int Hp { get; private set; }
     public int Shield { get; private set; }
     public int WeaponLevel { get; }
-    public FenxianImmediateDrawPolicy FenxianDrawPolicy { get; }
-    public GuardianShieldBonusPolicy GuardianShieldPolicy { get; }
+    public FenxianImmediateDrawPolicy FenxianDrawPolicy { get; private set; }
+    public GuardianShieldBonusPolicy GuardianShieldPolicy { get; private set; }
     public int GuardianShieldRemainderTenths { get; private set; }
     public CombatEquipmentProfile Equipment { get; private set; }
     public int EffectiveMaximumHp => Math.Min(
@@ -277,13 +277,15 @@ public sealed class PlayerCombatState
         var nextRemainder = x % 10;
         var resolved = (int)value + bonus;
         var remainingCapacity = maximumShield - Shield;
-        return new(resolved, resolved > remainingCapacity ? 0 : nextRemainder);
+        // Fractional shield also overflows when the integer part exactly fills the cap.
+        return new(resolved, resolved >= remainingCapacity ? 0 : nextRemainder);
     }
 
     public void CommitGuardianShieldRemainder(int? remainderTenthsAfter)
     {
         if (remainderTenthsAfter is null) return;
-        if (GuardianShieldPolicy != GuardianShieldBonusPolicy.FractionalRemainder ||
+        if (HeroClass != HeroClass.Guardian ||
+            GuardianShieldPolicy != GuardianShieldBonusPolicy.FractionalRemainder ||
             remainderTenthsAfter is < 0 or > 9)
         {
             throw new DomainValidationException("Guardian shield remainder commit is invalid.");
@@ -373,7 +375,6 @@ public sealed class PlayerCombatState
                 _targetStunWindows[targetId] = window with { Remaining = remaining };
             }
         }
-
     }
 
     public PlayerCombatSnapshot Capture() =>
@@ -394,8 +395,12 @@ public sealed class PlayerCombatState
             Equipment,
             DrawBlockSpeedRemaining,
             FenxianChargeLevel,
-            GuardianShieldRemainderTenths);
+            GuardianShieldRemainderTenths,
+            FenxianDrawPolicy,
+            GuardianShieldPolicy);
 
+    // Only authoritative save/room snapshots may call Restore. Client commands must not supply policies.
+    // A restored preview/room inherits the saved policy, never the constructor's current default.
     public void Restore(PlayerCombatSnapshot snapshot)
     {
         ArgumentNullException.ThrowIfNull(snapshot);
@@ -405,6 +410,19 @@ public sealed class PlayerCombatState
             throw new DomainValidationException("A player combat snapshot cannot change immutable combat attributes.");
         }
 
+        var fenxianPolicy = snapshot.FenxianPolicy == 0
+            ? FenxianImmediateDrawPolicy.CurrentRhythm : snapshot.FenxianPolicy;
+        var guardianPolicy = snapshot.GuardianPolicy == 0
+            ? GuardianShieldBonusPolicy.CurrentSteps : snapshot.GuardianPolicy;
+        if (!Enum.IsDefined(fenxianPolicy) || !Enum.IsDefined(guardianPolicy) ||
+            snapshot.GuardianShieldRemainderTenths is < 0 or > 9 ||
+            snapshot.GuardianShieldRemainderTenths != 0 &&
+                (HeroClass != HeroClass.Guardian || guardianPolicy != GuardianShieldBonusPolicy.FractionalRemainder))
+        {
+            throw new DomainValidationException("A numerical policy or shield remainder snapshot is invalid.");
+        }
+
+        // Check all new fields before mutating HP, piles, random state or policy.
         Hp = snapshot.Hp;
         Shield = snapshot.Shield;
         _random.Restore(snapshot.RandomState);
@@ -412,13 +430,9 @@ public sealed class PlayerCombatState
         FenxianCombo = snapshot.FenxianCombo;
         LastFenxianCore = snapshot.LastFenxianCore;
         FenxianChargeLevel = Math.Clamp(snapshot.FenxianChargeLevel, 0, 5);
-        if (snapshot.GuardianShieldRemainderTenths is < 0 or > 9)
-        {
-            throw new DomainValidationException("Guardian shield remainder snapshot is invalid.");
-        }
-        GuardianShieldRemainderTenths = GuardianShieldPolicy == GuardianShieldBonusPolicy.FractionalRemainder
-            ? snapshot.GuardianShieldRemainderTenths
-            : 0;
+        FenxianDrawPolicy = fenxianPolicy;
+        GuardianShieldPolicy = guardianPolicy;
+        GuardianShieldRemainderTenths = snapshot.GuardianShieldRemainderTenths;
         DrawSpeedRemaining = snapshot.DrawSpeedRemaining;
         DrawSpeedModifier = snapshot.DrawSpeedModifier;
         StunRemaining = snapshot.StunRemaining;
