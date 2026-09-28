@@ -96,6 +96,10 @@ func _build() -> void:
 	var spacer := Control.new()
 	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	body.add_child(spacer)
+	var effective := Button.new()
+	effective.text = preload("res://ui/numerical_details.gd").text("title")
+	effective.pressed.connect(func(): preload("res://ui/numerical_details.gd").show_compare(self, _loadout, _selected))
+	body.add_child(effective)
 	_build_actions(body)
 	var hint := _label(body, _t("empty_hint"), 17, P.MUTED)
 	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER

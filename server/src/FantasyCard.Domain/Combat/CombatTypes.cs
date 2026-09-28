@@ -10,6 +10,20 @@ public enum CardElement : short
     Water = 5
 }
 
+public enum FenxianImmediateDrawPolicy : short
+{
+    CurrentRhythm = 1,
+    CoreCardsSpent = 2
+}
+
+public enum GuardianShieldBonusPolicy : short
+{
+    CurrentSteps = 1,
+    FractionalRemainder = 2
+}
+
+public readonly record struct GuardianShieldResolutionDraft(int Shield, int? RemainderTenthsAfter);
+
 public sealed record CombatCardEffect(
     int ElementalDamage = 0,
     CardElement Element = CardElement.None,
@@ -60,7 +74,10 @@ public sealed record PlayerCombatSnapshot(
     IReadOnlyList<TargetStunWindowSnapshot> TargetStunWindows,
     CombatEquipmentProfile? Equipment = null,
     TimeSpan DrawBlockSpeedRemaining = default,
-    int FenxianChargeLevel = 0);
+    int FenxianChargeLevel = 0,
+    int GuardianShieldRemainderTenths = 0,
+    FenxianImmediateDrawPolicy FenxianPolicy = FenxianImmediateDrawPolicy.CurrentRhythm,
+    GuardianShieldBonusPolicy GuardianPolicy = GuardianShieldBonusPolicy.CurrentSteps);
 
 public enum MonsterIntentKind : short
 {
@@ -141,7 +158,9 @@ public sealed record RoomPlayerSnapshot(
     TimeSpan? BotPveRemaining = null,
     IReadOnlyList<Rooms.RewardRefreshReceiptSnapshot>? RewardRefreshReceipts = null,
     IReadOnlyList<Rooms.ExplorationItem>? RecycledEquipment = null,
-    string? DisplayName = null);
+    string? DisplayName = null,
+    Rooms.MonsterCardPoolSnapshot? MonsterPool = null,
+    IReadOnlyList<Rooms.ExplorationItem>? BotLoot = null);
 
 public enum DuelEndReason : short
 {
@@ -194,7 +213,8 @@ public sealed record BattleRoomSnapshot(
     IReadOnlyList<Rooms.RelicPileSnapshot>? RelicPiles = null,
     ulong? RandomState = null,
     IReadOnlyList<BotDuelTimerSnapshot>? BotDuelTimers = null,
-    RoomRandomStreamsSnapshot? RandomStreams = null);
+    RoomRandomStreamsSnapshot? RandomStreams = null,
+    Configuration.NumericalRules? Numerics = null);
 
 public sealed record CombatDamageSegment(string Kind, int Amount);
 
@@ -274,4 +294,5 @@ public sealed record CardResolutionDraft(
     IReadOnlyList<CombatDamageSegment>? DamageSegments = null,
     double ResonanceMultiplier = 1,
     int ConflictPairCount = 0,
-    double ConflictCancellation = 0);
+    double ConflictCancellation = 0,
+    int? GuardianShieldRemainderTenthsAfter = null);

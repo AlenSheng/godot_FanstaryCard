@@ -91,6 +91,8 @@ message RoomDuel {
   RoomBattleStatus opponent_status = 11;
   int64 opponent_stun_remaining_ms = 12;
   int64 opponent_draw_block_remaining_ms = 13;
+  bool separate_loot = 14;
+  repeated RoomInventoryItem searchable_loot = 15;
 }
 message RoomCurrentCell { bool has_evacuation = 1; string monster_group_id = 2; bool spring_consumed = 3; repeated string relic_pile_ids = 4; repeated RoomRelicPile relic_piles = 5; }
 message RoomPlayer {
@@ -113,6 +115,8 @@ message RoomPlayer {
   int64 draw_speed_remaining_ms = 17;
   int64 draw_block_speed_remaining_ms = 18;
   string base_draw_interval_seconds = 19;
+  RoomMonsterPool monster_pool = 20;
+  RoomNumericalState numerical_state = 21;
 }
 message RoomSnapshotEvent {
   string room_id = 1;
@@ -243,3 +247,8 @@ message DuelEndedEvent { string duel_id = 1; string reason = 2; string winner_id
 message PlayerDiedEvent { string player_id = 1; string cause = 2; string duel_id = 3; }
 
 message MapPlayerCountEvent { int32 player_count = 1; }
+
+// Numerical integration v1. Additive; no existing tag reuse.
+message MonsterCardChooseCommand { string candidate_id = 1; bool accept = 2; string replace_instance_id = 3; }
+message RoomMonsterPool { int32 capacity = 1; repeated RoomCard pending = 2; repeated RoomCard active = 3; }
+message RoomNumericalState { string fenxian_policy = 1; string guardian_policy = 2; int32 guardian_remainder_tenths = 3; }
