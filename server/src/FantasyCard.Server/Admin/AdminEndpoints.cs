@@ -83,7 +83,8 @@ public static class AdminEndpoints
     private static async Task<IResult> SendMailAsync(AdminMailRequest request, HttpContext context,
         AdminRepository repository, CancellationToken cancellationToken)
     {
-        if (!ValidText(request.Title, 160) || !ValidText(request.Body, 4000) || request.Attachments is null ||
+        if (!ValidText(request.Title, 160) || !ValidText(request.Body, 4000) ||
+            !ValidOptionalText(request.TitleEn, 160) || !ValidOptionalText(request.BodyEn, 4000) || request.Attachments is null ||
             request.Attachments.Count is < 1 or > 10 || request.Attachments.Any(item => !AdminRepository.ValidGrant(item)))
             return BadRequest("Invalid mail or attachment. Supported: balances, consumables and equipment.");
         return await WriteMailAsync(request, "grant", context, repository, cancellationToken);
@@ -92,8 +93,10 @@ public static class AdminEndpoints
     private static async Task<IResult> SendMessageAsync(AdminMessageRequest request, HttpContext context,
         AdminRepository repository, CancellationToken cancellationToken)
     {
-        if (!ValidText(request.Title, 160) || !ValidText(request.Body, 4000)) return BadRequest("Invalid message.");
-        return await WriteMailAsync(new AdminMailRequest(request.PlayerId, request.Title, request.Body, []),
+        if (!ValidText(request.Title, 160) || !ValidText(request.Body, 4000) ||
+            !ValidOptionalText(request.TitleEn, 160) || !ValidOptionalText(request.BodyEn, 4000))
+            return BadRequest("Invalid message.");
+        return await WriteMailAsync(new AdminMailRequest(request.PlayerId, request.Title, request.Body, [], request.TitleEn, request.BodyEn),
             "message", context, repository, cancellationToken);
     }
 
@@ -184,6 +187,9 @@ public static class AdminEndpoints
     private static bool ValidText(string? value, int maxLength) =>
         !string.IsNullOrWhiteSpace(value) && value.Length <= maxLength &&
         !value.Any(character => char.IsControl(character) && character is not ('\r' or '\n' or '\t'));
+    private static bool ValidOptionalText(string? value, int maxLength) =>
+        value is null || (value.Length <= maxLength &&
+        !value.Any(character => char.IsControl(character) && character is not ('\r' or '\n' or '\t')));
     private static IResult BadRequest(string detail) => Results.Problem(statusCode: 400, title: "Invalid admin request", detail: detail);
     private static IResult Conflict(AdminConflictException exception) => Results.Problem(statusCode: 409, title: "Operation conflict", detail: exception.Message);
 
@@ -198,7 +204,9 @@ public static class AdminEndpoints
         if (request.AnnouncementTitle is null || request.AnnouncementBody is null ||
             request.AnnouncementTitle.Length > 120 || request.AnnouncementBody.Length > 6000 ||
             request.AnnouncementTitle.Any(char.IsControl) ||
-            request.AnnouncementBody.Any(character => char.IsControl(character) && character is not ('\r' or '\n' or '\t')))
+            request.AnnouncementBody.Any(character => char.IsControl(character) && character is not ('\r' or '\n' or '\t')) ||
+            !ValidOptionalText(request.AnnouncementTitleEn, 120) ||
+            !ValidOptionalText(request.AnnouncementBodyEn, 6000))
             return BadRequest("Announcement title or body is invalid.");
         if (request.LocalLoginEnabled && !configuration.GetValue<bool>("Identity:AllowManagedLocalAuth"))
             return BadRequest("Managed local login is not permitted on this server.");

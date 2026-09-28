@@ -21,7 +21,9 @@ public sealed record MailItemResponse(
     bool IsRead,
     [property: JsonPropertyName("claimed")]
     bool IsClaimed,
-    IReadOnlyList<MailAttachmentResponse> Attachments);
+    IReadOnlyList<MailAttachmentResponse> Attachments,
+    string TitleEn = "",
+    string BodyEn = "");
 
 public sealed record MailListResponse(
     IReadOnlyList<MailItemResponse> Items,

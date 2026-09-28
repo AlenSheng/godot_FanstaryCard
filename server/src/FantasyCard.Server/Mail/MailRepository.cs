@@ -11,7 +11,7 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
     {
         await using var command = dataSource.CreateCommand(
             """
-            SELECT mail_id,title,body,sender,sent_at,expires_at,read_at,claimed_at,attachments_json::text
+            SELECT mail_id,title,body,sender,sent_at,expires_at,read_at,claimed_at,attachments_json::text,title_en,body_en
             FROM mail_messages
             WHERE player_id=$1 AND (expires_at IS NULL OR expires_at > $2)
             ORDER BY sent_at DESC,mail_id DESC
@@ -31,7 +31,9 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
                 reader.IsDBNull(5) ? null : reader.GetFieldValue<DateTimeOffset>(5),
                 !reader.IsDBNull(6),
                 !reader.IsDBNull(7),
-                ReadAttachments(reader.GetString(8))));
+                ReadAttachments(reader.GetString(8)),
+                reader.GetString(9),
+                reader.GetString(10)));
         }
 
         return new MailListResponse(items, items.Count(item => !item.IsRead));

@@ -11,11 +11,13 @@ public sealed record AdminPlayer(Guid UserId, string DisplayName, short? Selecte
     long WarriorSoul, long PriestSoul, long MageSoul, long GuardianSoul, long EquipmentFragments,
     int HealthPotion, int AdvancedBag, int TopBag, int EquipmentCount);
 
-public sealed record AdminMailRequest(Guid PlayerId, string Title, string Body, IReadOnlyList<AdminAttachment> Attachments);
+public sealed record AdminMailRequest(Guid PlayerId, string Title, string Body, IReadOnlyList<AdminAttachment> Attachments,
+    string? TitleEn = null, string? BodyEn = null);
 public sealed record AdminAttachment(string Kind, long Amount, string? ItemId);
 public sealed record AdminRevokeRequest(Guid PlayerId, string Kind, long Amount, string? ItemId, string Reason);
 public sealed record AdminBanRequest(Guid PlayerId, string Reason);
-public sealed record AdminMessageRequest(Guid PlayerId, string Title, string Body);
+public sealed record AdminMessageRequest(Guid PlayerId, string Title, string Body,
+    string? TitleEn = null, string? BodyEn = null);
 public sealed record AdminEquipment(Guid InstanceId, string Slot, string Quality, string? Element, int Level);
 public sealed record AdminBulkOperationRequest(Guid PlayerId);
 public sealed record AdminBulkOperationResult(string Operation, int Cards = 0, int Equipment = 0, int Weapons = 0);
@@ -108,8 +110,8 @@ public sealed class AdminRepository(NpgsqlDataSource dataSource, TimeProvider ti
         if (!await LockPlayerAsync(connection, transaction, request.PlayerId, cancellationToken)) return null;
         if (await RequestExistsAsync(connection, transaction, requestId, cancellationToken)) throw new AdminConflictException();
         var mailId = await InsertMailAsync(connection, transaction, request.PlayerId, request.Title, request.Body,
-            request.Attachments, cancellationToken);
-        await AuditAsync(connection, transaction, operation, request.PlayerId, new { mailId, request.Title, request.Body, request.Attachments },
+            request.TitleEn, request.BodyEn, request.Attachments, cancellationToken);
+        await AuditAsync(connection, transaction, operation, request.PlayerId, new { mailId, request.Title, request.Body, request.TitleEn, request.BodyEn, request.Attachments },
             requestId, cancellationToken);
         await transaction.CommitAsync(cancellationToken);
         await NotifyPlayerRefreshAsync(request.PlayerId, operation);
@@ -317,16 +319,19 @@ public sealed class AdminRepository(NpgsqlDataSource dataSource, TimeProvider ti
     }
 
     private async Task<Guid> InsertMailAsync(NpgsqlConnection connection, NpgsqlTransaction transaction, Guid playerId,
-        string title, string body, IReadOnlyList<AdminAttachment> attachments, CancellationToken cancellationToken)
+        string title, string body, string? titleEn, string? bodyEn,
+        IReadOnlyList<AdminAttachment> attachments, CancellationToken cancellationToken)
     {
         var id = Guid.CreateVersion7();
         await using var command = new NpgsqlCommand(
-            "INSERT INTO mail_messages(mail_id,player_id,title,body,sender,attachments_json,sent_at) VALUES($1,$2,$3,$4,'Game Admin',$5::jsonb,$6)",
+            "INSERT INTO mail_messages(mail_id,player_id,title,body,title_en,body_en,sender,attachments_json,sent_at) VALUES($1,$2,$3,$4,$5,$6,'Game Admin',$7::jsonb,$8)",
             connection, transaction);
         command.Parameters.AddWithValue(id);
         command.Parameters.AddWithValue(playerId);
         command.Parameters.AddWithValue(title);
         command.Parameters.AddWithValue(body);
+        command.Parameters.AddWithValue((titleEn ?? "").Trim());
+        command.Parameters.AddWithValue((bodyEn ?? "").Trim());
         command.Parameters.AddWithValue(JsonSerializer.Serialize(attachments, Json));
         command.Parameters.AddWithValue(timeProvider.GetUtcNow());
         await command.ExecuteNonQueryAsync(cancellationToken);

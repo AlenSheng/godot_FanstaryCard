@@ -90,6 +90,8 @@ public static class ClientSettingsEndpoints
             {
                 title = settings.AnnouncementTitle,
                 body = settings.AnnouncementBody,
+                titleEn = settings.AnnouncementTitleEn,
+                bodyEn = settings.AnnouncementBodyEn,
                 version = settings.Version
             }
         };
