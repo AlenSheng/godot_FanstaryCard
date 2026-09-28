@@ -1,5 +1,5 @@
 {
-  "sha256": "a50b3da25658a3d2febda736bba7f2a29d5913c1bbe6e54c11746fbd55a04cd3",
+  "sha256": "c0a020f2a393fbe27550e09e26cbea443617400c98bd953b2e295da829c96a0a",
   "messages": {
     "ClientEnvelope": {
       "1": {
@@ -181,14 +181,6 @@
       "3": {
         "name": "deadline_unix_ms",
         "type": "int64",
-        "repeated": false,
-        "optional": false
-      }
-    },
-    "MapPlayerCountEvent": {
-      "1": {
-        "name": "player_count",
-        "type": "int32",
         "repeated": false,
         "optional": false
       }
@@ -974,7 +966,7 @@
         "name": "map_player_count",
         "type": "int32",
         "repeated": false,
-        "optional": true
+        "optional": false
       }
     },
     "RoomStartedEvent": {
@@ -1192,6 +1184,24 @@
       },
       "23": {
         "name": "draw_block_speed_seconds",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "24": {
+        "name": "resonance_multiplier",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "25": {
+        "name": "conflict_pair_count",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "26": {
+        "name": "conflict_cancellation",
         "type": "string",
         "repeated": false,
         "optional": false
@@ -1822,6 +1832,14 @@
       "3": {
         "name": "duel_id",
         "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "MapPlayerCountEvent": {
+      "1": {
+        "name": "player_count",
+        "type": "int32",
         "repeated": false,
         "optional": false
       }

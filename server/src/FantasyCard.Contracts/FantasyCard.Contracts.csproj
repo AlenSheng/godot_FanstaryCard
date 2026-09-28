@@ -1,1 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk" />
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" />
+    <PackageReference Include="Grpc.Tools" PrivateAssets="All" />
+    <Protobuf Include="../../../protocol/http/v1/game.proto" GrpcServices="None" />
+    <Protobuf Include="../../../protocol/realtime/v1/realtime.proto" GrpcServices="None" />
+    <EmbeddedResource Include="../../../protocol/http/v1/endpoints.json" LogicalName="FantasyCard.HttpEndpoints.json" />
+  </ItemGroup>
+</Project>

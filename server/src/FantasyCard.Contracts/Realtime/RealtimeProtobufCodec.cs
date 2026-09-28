@@ -714,7 +714,7 @@ public static class RealtimeProtobufCodec
     private sealed class Fields
     {
         private readonly Dictionary<int, ulong> _integers = [];
-        private readonly Dictionary<int, List<long>> _repeatedIntegers = [];
+        private readonly Dictionary<int, List<object>> _orderedValues = [];
         private readonly Dictionary<int, List<byte[]>> _bytes = [];
         public uint UInt32(int field) => checked((uint)Int64(field));
         public long Int64(int field) => unchecked((long)_integers.GetValueOrDefault(field));
@@ -731,11 +731,15 @@ public static class RealtimeProtobufCodec
         public byte[][] RepeatedBytes(int field) => _bytes.TryGetValue(field, out var values) ? values.ToArray() : [];
         public long[] RepeatedInt64(int field)
         {
-            var values = new List<long>(_repeatedIntegers.GetValueOrDefault(field) ?? []);
-            foreach (var packed in RepeatedBytes(field))
+            var values = new List<long>();
+            foreach (var item in _orderedValues.GetValueOrDefault(field) ?? [])
             {
-                var offset = 0;
-                while (offset < packed.Length) values.Add(unchecked((long)ReadVarint(packed, ref offset)));
+                if (item is long integer) values.Add(integer);
+                else if (item is byte[] packed)
+                {
+                    var offset = 0;
+                    while (offset < packed.Length) values.Add(unchecked((long)ReadVarint(packed, ref offset)));
+                }
             }
             return values.ToArray();
         }
@@ -755,9 +759,9 @@ public static class RealtimeProtobufCodec
                     case 0:
                         var integer = ReadVarint(source, ref offset);
                         result._integers[field] = integer;
-                        if (!result._repeatedIntegers.TryGetValue(field, out var integers))
-                            result._repeatedIntegers[field] = integers = [];
-                        integers.Add(unchecked((long)integer));
+                        if (!result._orderedValues.TryGetValue(field, out var orderedIntegers))
+                            result._orderedValues[field] = orderedIntegers = [];
+                        orderedIntegers.Add(unchecked((long)integer));
                         break;
                     case 1: Ensure(source, offset, 8); offset += 8; break;
                     case 2:
@@ -768,7 +772,11 @@ public static class RealtimeProtobufCodec
                             values = [];
                             result._bytes[field] = values;
                         }
-                        values.Add(source.Slice(offset, length).ToArray());
+                        var bytes = source.Slice(offset, length).ToArray();
+                        values.Add(bytes);
+                        if (!result._orderedValues.TryGetValue(field, out var orderedBytes))
+                            result._orderedValues[field] = orderedBytes = [];
+                        orderedBytes.Add(bytes);
                         offset += length;
                         break;
                     case 5: Ensure(source, offset, 4); offset += 4; break;
@@ -785,6 +793,7 @@ public static class RealtimeProtobufCodec
             {
                 Ensure(source, offset, 1);
                 var current = source[offset++];
+                if (shift == 63 && current > 1) throw new InvalidDataException("Overflowing protobuf varint.");
                 value |= (ulong)(current & 0x7F) << shift;
                 if ((current & 0x80) == 0) return value;
             }
