@@ -53,7 +53,10 @@ public sealed class GuardianShieldBonusPolicyTests
 
         Assert.Equal(2, first.Shield);
         Assert.Equal(4, first.GuardianShieldRemainderTenthsAfter);
-        Assert.Equal(first, second);
+        Assert.Equal(first.Shield, second.Shield);
+        Assert.Equal(first.GuardianShieldRemainderTenthsAfter, second.GuardianShieldRemainderTenthsAfter);
+        Assert.Equal(first.Damage, second.Damage);
+        Assert.Equal(first.Heal, second.Heal);
         Assert.Equal(0, state.GuardianShieldRemainderTenths);
         Assert.Equal(0, state.Shield);
     }
@@ -132,7 +135,7 @@ public sealed class GuardianShieldBonusPolicyTests
 
         Assert.Equal(state.Shield, restored.Shield);
         Assert.Equal(4, restored.GuardianShieldRemainderTenths);
-        Assert.Equal(snapshot, restored.Capture());
+        Assert.Equivalent(snapshot, restored.Capture(), strict: true);
     }
 
     [Fact]
