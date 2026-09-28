@@ -14,8 +14,12 @@ public sealed class FenxianImmediateDrawPolicyTests
             .Select(_ => state.UpdateFenxian(CardElement.Fire, 1))
             .ToArray();
 
-        Assert.Equal(new[] { 0, 0, 1, 1, 2 }, results.Select(result => result.Draw));
-        Assert.Equal(new[] { .18, .30, .42, .50, .50 }, results.Select(result => result.Charge));
+        Assert.Equal(new[] { 0, 0, 1, 1, 2 }, results.Select(result => result.Draw).ToArray());
+        var expectedCharge = new[] { .18, .30, .42, .50, .50 };
+        for (var index = 0; index < expectedCharge.Length; index++)
+        {
+            Assert.Equal(expectedCharge[index], results[index].Charge, 6);
+        }
         Assert.Equal(5, state.FenxianCombo);
         Assert.Equal(5, state.FenxianChargeLevel);
     }
