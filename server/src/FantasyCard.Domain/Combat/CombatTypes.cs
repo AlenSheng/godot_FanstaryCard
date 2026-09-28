@@ -10,6 +10,12 @@ public enum CardElement : short
     Water = 5
 }
 
+public enum FenxianImmediateDrawPolicy : short
+{
+    CurrentRhythm = 1,
+    CoreCardsSpent = 2
+}
+
 public sealed record CombatCardEffect(
     int ElementalDamage = 0,
     CardElement Element = CardElement.None,

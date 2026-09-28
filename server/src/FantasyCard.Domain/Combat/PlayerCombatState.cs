@@ -14,8 +14,14 @@ public sealed class PlayerCombatState
         Random random,
         int weaponLevel = 0,
         CombatEquipmentProfile? equipment = null,
-        IReadOnlyList<int>? cardLevels = null)
+        IReadOnlyList<int>? cardLevels = null,
+        FenxianImmediateDrawPolicy fenxianImmediateDrawPolicy = FenxianImmediateDrawPolicy.CurrentRhythm)
     {
+        if (!Enum.IsDefined(fenxianImmediateDrawPolicy))
+        {
+            throw new DomainValidationException("Unknown Fenxian immediate draw policy.");
+        }
+
         HeroClass = heroClass;
         MaximumHp = heroClass switch
         {
@@ -26,6 +32,7 @@ public sealed class PlayerCombatState
         };
         Hp = MaximumHp;
         WeaponLevel = Math.Clamp(weaponLevel, 0, 5);
+        FenxianDrawPolicy = fenxianImmediateDrawPolicy;
         Equipment = equipment ?? CombatEquipmentProfile.Empty;
         ArgumentNullException.ThrowIfNull(random);
         _random = new CombatRandom(random.Next());
@@ -37,6 +44,7 @@ public sealed class PlayerCombatState
     public int Hp { get; private set; }
     public int Shield { get; private set; }
     public int WeaponLevel { get; }
+    public FenxianImmediateDrawPolicy FenxianDrawPolicy { get; }
     public CombatEquipmentProfile Equipment { get; private set; }
     public int EffectiveMaximumHp => Math.Min(
         (int)Math.Floor(MaximumHp * (1 + Equipment.VitalityOvercapBonus)),
@@ -183,13 +191,29 @@ public sealed class PlayerCombatState
         LastFenxianCore = core;
         var rhythm = Math.Min(5, coreCount + FenxianCombo - 1);
         FenxianChargeLevel = rhythm;
-        var (charge, draw) = rhythm switch
+        var charge = rhythm switch
         {
-            1 => (0.12, 0),
-            2 => (0.24, 0),
-            3 => (0.36, 1),
-            4 => (0.48, 1),
-            _ => (0.50, 2)
+            1 => 0.12,
+            2 => 0.24,
+            3 => 0.36,
+            4 => 0.48,
+            _ => 0.50
+        };
+        var draw = FenxianDrawPolicy switch
+        {
+            FenxianImmediateDrawPolicy.CurrentRhythm => rhythm switch
+            {
+                1 or 2 => 0,
+                3 or 4 => 1,
+                _ => 2
+            },
+            FenxianImmediateDrawPolicy.CoreCardsSpent => coreCount switch
+            {
+                <= 2 => 0,
+                3 or 4 => 1,
+                _ => 2
+            },
+            _ => throw new DomainValidationException("Unknown Fenxian immediate draw policy.")
         };
         charge = Math.Min(0.50, charge + WeaponPercentBonus());
         return (charge, draw);
