@@ -10,6 +10,20 @@ public enum CardElement : short
     Water = 5
 }
 
+public enum FenxianImmediateDrawPolicy : short
+{
+    CurrentRhythm = 1,
+    CoreCardsSpent = 2
+}
+
+public enum GuardianShieldBonusPolicy : short
+{
+    CurrentSteps = 1,
+    FractionalRemainder = 2
+}
+
+public readonly record struct GuardianShieldResolutionDraft(int Shield, int? RemainderTenthsAfter);
+
 public sealed record CombatCardEffect(
     int ElementalDamage = 0,
     CardElement Element = CardElement.None,
@@ -60,7 +74,8 @@ public sealed record PlayerCombatSnapshot(
     IReadOnlyList<TargetStunWindowSnapshot> TargetStunWindows,
     CombatEquipmentProfile? Equipment = null,
     TimeSpan DrawBlockSpeedRemaining = default,
-    int FenxianChargeLevel = 0);
+    int FenxianChargeLevel = 0,
+    int GuardianShieldRemainderTenths = 0);
 
 public enum MonsterIntentKind : short
 {
@@ -274,4 +289,5 @@ public sealed record CardResolutionDraft(
     IReadOnlyList<CombatDamageSegment>? DamageSegments = null,
     double ResonanceMultiplier = 1,
     int ConflictPairCount = 0,
-    double ConflictCancellation = 0);
+    double ConflictCancellation = 0,
+    int? GuardianShieldRemainderTenthsAfter = null);
