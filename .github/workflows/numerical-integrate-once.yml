@@ -1,0 +1,102 @@
+name: Apply numerical integration once
+on:
+  push:
+    branches: ['codex/numerical-integration-20260928']
+    paths: ['.github/workflows/numerical-integrate-once.yml']
+permissions:
+  contents: read
+jobs:
+  apply:
+    if: github.repository == 'AlenSheng/godot_FanstaryCard' && github.ref == 'refs/heads/codex/numerical-integration-20260928'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    outputs:
+      source: ${{ steps.apply.outputs.source }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: codex/numerical-integration-20260928
+      - name: Validate and apply source changes
+        id: apply
+        shell: python
+        env:
+          EXPECTED_HEAD: ${{ github.sha }}
+        run: |
+          import os, pathlib, re, shutil, subprocess
+          def git(*args):
+              return subprocess.check_output(['git', *args], text=True).strip()
+          assert git('rev-parse','HEAD') == os.environ['EXPECTED_HEAD'], 'Branch moved; do not overwrite newer work.'
+          base = pathlib.Path('.codex/integration-transport')
+          paths = [base / (name + '.patch') for name in ('domain','server','client','tests')]
+          expected = {}
+          for path in paths:
+              text = path.read_text()
+              for section in text.split('diff --git ')[1:]:
+                  lines = section.splitlines()
+                  header = re.fullmatch(r'a/(\S+) b/(\S+)', lines[0])
+                  assert header and header[1] == header[2], 'Unexpected rename/path.'
+                  name = header[1]
+                  assert name.startswith(('server/src/', 'server/tests/', 'client/', 'protocol/')) and '..' not in pathlib.PurePosixPath(name).parts
+                  match = re.search(r'^index ([0-9a-f]+)\.\.([0-9a-f]+)', section, re.M)
+                  assert match, name
+                  old, new = match.groups()
+                  current = pathlib.Path(name)
+                  if set(old) == {'0'}:
+                      assert not current.exists(), 'New file already exists: ' + name
+                  else:
+                      assert git('hash-object',name).startswith(old), 'Baseline differs: ' + name
+                  assert name not in expected, 'Duplicate patch path.'
+                  expected[name] = new
+          subprocess.run(['git','apply','--check','--recount',*[str(p) for p in paths]], check=True)
+          subprocess.run(['git','apply','--recount','--whitespace=nowarn',*[str(p) for p in paths]], check=True)
+          for name, prefix in expected.items():
+              assert git('hash-object',name).startswith(prefix), 'Applied bytes differ from reviewed source: ' + name
+          subprocess.run(['git','add','--',*expected], check=True)
+          subprocess.run(['git','rm','-r','--','.codex/integration-transport','.github/workflows/numerical-integrate-once.yml'], check=True)
+          subprocess.run(['git','config','user.name','github-actions[bot]'], check=True)
+          subprocess.run(['git','config','user.email','41898282+github-actions[bot]@users.noreply.github.com'], check=True)
+          subprocess.run(['git','commit','-m','feat: integrate bounded monster pool, bot loot, locked policies and client protocol'], check=True)
+          source = git('rev-parse','HEAD')
+          subprocess.run(['git','push','origin','HEAD:refs/heads/codex/numerical-integration-20260928'], check=True)
+          with open(os.environ['GITHUB_OUTPUT'],'a') as output:
+              output.write('source=' + source + '\n')
+          print('Committed verified source files:',len(expected),source)
+  test:
+    needs: apply
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.apply.outputs.source }}
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: server/global.json
+      - name: Domain tests
+        shell: pwsh
+        working-directory: server
+        run: |
+          dotnet test tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj -c Release --logger 'trx;LogFileName=domain.trx' --results-directory ../test-results/numerics
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Server contract tests
+        shell: pwsh
+        working-directory: server
+        run: |
+          dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --filter 'FullyQualifiedName~NumericalProtocolTests' --logger 'trx;LogFileName=numerical-protocol.trx' --results-directory ../test-results/numerics
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Legal route simulation
+        shell: pwsh
+        working-directory: server
+        run: |
+          dotnet run --project tools/FantasyCard.Numerics -c Release -- --samples 10000 --players 1 --seed-start 0
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: numerical-test-results-${{ needs.apply.outputs.source }}
+          path: test-results/numerics
+          if-no-files-found: ignore
+          retention-days: 7
