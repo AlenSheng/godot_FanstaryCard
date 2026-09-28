@@ -269,8 +269,7 @@ public sealed record CombatResolution(
     double DrawBlockSpeedSeconds = 0,
     double ResonanceMultiplier = 1,
     int ConflictPairCount = 0,
-    double ConflictCancellation = 0,
-    int? GuardianShieldRemainderTenthsAfter = null);
+    double ConflictCancellation = 0);
 
 public sealed record CombatFeedbackResolution(string SourceId, CombatResolution Resolution);
 
@@ -290,4 +289,5 @@ public sealed record CardResolutionDraft(
     IReadOnlyList<CombatDamageSegment>? DamageSegments = null,
     double ResonanceMultiplier = 1,
     int ConflictPairCount = 0,
-    double ConflictCancellation = 0);
+    double ConflictCancellation = 0,
+    int? GuardianShieldRemainderTenthsAfter = null);
