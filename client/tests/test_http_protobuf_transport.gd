@@ -1,5 +1,18 @@
 extends SceneTree
 const Gateway = preload("res://network/gateway.gd")
+class SwitchingGateway extends "res://network/gateway.gd":
+	var decoding := false
+	var switched_during_decode := false
+	func _decode_http_response(contract: Dictionary, status: int, headers: PackedStringArray, body: PackedByteArray) -> Dictionary:
+		decoding = true
+		call_deferred("_switch_while_decoding")
+		var value: Dictionary = await super._decode_http_response(contract, status, headers, body)
+		decoding = false
+		return value
+	func _switch_while_decoding() -> void:
+		switched_during_decode = decoding
+		end_session("",false)
+		accept_session("next-session", "2099-01-01T00:00:00Z", "next-player")
 var failures := []
 var checks := 0
 var late: Dictionary = {}
@@ -45,6 +58,14 @@ func run() -> void:
 	check(stats.data.counts.get("/api/v1/shop/purchases?malformed=1",0) == 1, "no retry on malformed write")
 	check(stats.data.counts.get("/api/v1/cards",0) == 1, "no fallback on proxy error")
 	check(stats.data.websocketSafe, "ticket URL without bearer")
+	var switching := SwitchingGateway.new()
+	switching.persist_session = false
+	root.add_child(switching)
+	switching.base_url = gateway.base_url
+	var abandoned: Dictionary = await switching.request("/api/v1/cards?large=1")
+	check(switching.switched_during_decode and abandoned.get("stale_session",false) and switching.token == "next-session", "background decode result cannot cross session generation")
+	switching.end_session("",false)
+	switching.queue_free()
 	_late_request(gateway)
 	await create_timer(.05).timeout
 	gateway.end_session("",false)

@@ -8,6 +8,7 @@ signal telemetry(sample: Dictionary)
 
 const Proto = preload("res://network/protobuf.gd")
 const HttpProtocol = preload("res://network/http_protocol.gd")
+const HTTP_BACKGROUND_DECODE_BYTES := 8 * 1024
 const DEFAULT_LOCAL_BASE_URL := "http://127.0.0.1:5080"
 const PRODUCTION_BASE_URL := "https://www.relicbound.cn"
 const LEGACY_CLOUD_ORIGINS := ["http://43.172.70.182", "https://43.172.70.182"]
@@ -227,6 +228,26 @@ func _pagination_error(message: String, quiet_statuses: Array) -> Dictionary:
 	if 0 not in quiet_statuses: failed.emit(message)
 	return {"ok": false, "status": 0, "error": message}
 
+func _decode_http_response(contract: Dictionary, status: int, headers: PackedStringArray, body: PackedByteArray) -> Dictionary:
+	var started := Time.get_ticks_usec()
+	var decoded: Dictionary
+	var background := body.size() > HTTP_BACKGROUND_DECODE_BYTES
+	if background:
+		# The task sees immutable protocol metadata and bytes only. It never calls
+		# SceneTree/Node/UI APIs. Read the result only after completion and join.
+		var completed: Array = []
+		var task := WorkerThreadPool.add_task(func():
+			completed.append(HttpProtocol.decode_response(contract, status, headers, body)))
+		while not WorkerThreadPool.is_task_completed(task):
+			await get_tree().process_frame
+		WorkerThreadPool.wait_for_task_completion(task)
+		decoded = completed[0] if not completed.is_empty() else {"ok": false, "data": null, "error": "服务器响应解码失败"}
+	else:
+		decoded = HttpProtocol.decode_response(contract, status, headers, body)
+	decoded["decode_ms"] = float(Time.get_ticks_usec() - started) / 1000.0
+	decoded["decode_worker"] = background
+	return decoded
+
 func _request_page(path: String, method: int = HTTPClient.METHOD_GET, data: Variant = null, quiet_statuses: Array = []) -> Dictionary:
 	if session_expired():
 		end_session("登录已过期，请重新登录")
@@ -277,13 +298,14 @@ func _request_page(path: String, method: int = HTTPClient.METHOD_GET, data: Vari
 				var parser := JSON.new()
 				var parse_status := parser.parse(response[3].get_string_from_utf8())
 				decoded = {"ok": parse_status == OK, "data": normalize_response(parser.data) if parse_status == OK else null, "error": "服务器响应无效"}
-			else: decoded = HttpProtocol.decode_response(contract, code, response[2], response[3])
+			else: decoded = await _decode_http_response(contract, code, response[2], response[3])
+			if generation != session_generation: break
 			var parsed: Variant = decoded.data
 			var success: bool = response[0] == HTTPRequest.RESULT_SUCCESS and code >= 200 and code < 300 and decoded.ok
 			var message := "服务器不可用，请检查地址与服务器状态"
 			if not decoded.ok: message = decoded.error
 			elif parsed is Dictionary: message = str(parsed.get("detail", parsed.get("title", message)))
-			result = {"ok": success, "status": code, "data": parsed, "error": message, "headers": response[2], "body_bytes": response[3].size()}
+			result = {"ok": success, "status": code, "data": parsed, "error": message, "headers": response[2], "body_bytes": response[3].size(), "decode_ms": decoded.get("decode_ms", 0.0), "decode_worker": decoded.get("decode_worker", false)}
 			if code == 401:
 				end_session("Steam 登录票据无效，请重试" if path == "/api/v1/auth/steam" else "登录已过期，请重新登录")
 			if success or code not in [0, 429, 502, 503, 504]: break

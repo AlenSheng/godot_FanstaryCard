@@ -75,6 +75,8 @@ class Handler(BaseHTTPRequestHandler):
         if path == '/api/v1/mail':
             self.send(200,'MailListResponse',{'items':[{'id':'second'}],'unread_count':3}); return
         if path == '/api/v1/cards':
+            if 'large' in q:
+                self.send(200,'CardListResponse',{'items':[{'card_id':'card-'+str(i),'current_effect':{'draw_charge':'1.25'}} for i in range(4096)]}); return
             self.send(200,raw=b'<html>bad proxy</html>',media='text/html'); return
         self.send(404,'HttpError',{'status':404})
     def do_POST(self):
