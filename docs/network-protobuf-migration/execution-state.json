@@ -192,7 +192,7 @@
       "/root/fc_realtime"
     ],
     "source_commit": "fbc22e3cc2a0c447bf3875651befe29c98a29233",
-    "status": "validated_ready_to_publish",
+    "status": "published",
     "initial_linux_tests": "464/466; 2 WebSocket close handshake failures fixed",
     "final_linux_tests": "468/468, zero failures or skips",
     "image": "sha256:d8a704452faef9a5b4fa974b74d976c439c7084c0d9ed2d7bf2b12df24a4883a",
@@ -200,6 +200,18 @@
     "vulnerabilities": "Trivy0.69.3 HIGH/CRITICAL:0",
     "evidence": "/home/ubuntu/fc-release-qa-609e13e/tools/engine-local/protected/docker-acceptance-wd2plh5l/verification.json",
     "preserved": "Original workspace generated outputs; no reset/clean/stash",
-    "completed_at": "2026-09-28T05:43:16.716807+00:00"
+    "completed_at": "2026-09-28T13:43:16.716807+08:00",
+    "deployment": {
+      "application_commit": "d99ec27ff3d6eb93cdea6b792c8fa2a4d1fbbb43",
+      "completed_at": "2026-09-28T05:47:37.106056+00:00",
+      "backup": "/opt/fantasycard-app/backups/fantasycard-20260928T054623Z-before-d99ec27ff3d6eb93cdea6b792c8fa2a4d1fbbb43.dump",
+      "backup_sha256": "b7bd51ba2af647611686d6ec3dd2c51a5e928606e69a2a11b430276e830bf8cc",
+      "schema_version": 29,
+      "exact_image_and_assemblies_verified": true,
+      "public_health": "live/ready200 Healthy; TLS valid; public admin404; anonymous bootstrap401 application/protobuf",
+      "sparse_checkout": "Added protocol to existing server-only checkout before service replacement",
+      "preserved_outputs": true,
+      "remaining": "Real Steam/Google platform login and Steam-store client distribution not executed"
+    }
   }
 }
