@@ -15,11 +15,16 @@ public sealed class PlayerCombatState
         int weaponLevel = 0,
         CombatEquipmentProfile? equipment = null,
         IReadOnlyList<int>? cardLevels = null,
-        FenxianImmediateDrawPolicy fenxianImmediateDrawPolicy = FenxianImmediateDrawPolicy.CurrentRhythm)
+        FenxianImmediateDrawPolicy fenxianImmediateDrawPolicy = FenxianImmediateDrawPolicy.CurrentRhythm,
+        GuardianShieldBonusPolicy guardianShieldBonusPolicy = GuardianShieldBonusPolicy.CurrentSteps)
     {
         if (!Enum.IsDefined(fenxianImmediateDrawPolicy))
         {
             throw new DomainValidationException("Unknown Fenxian immediate draw policy.");
+        }
+        if (!Enum.IsDefined(guardianShieldBonusPolicy))
+        {
+            throw new DomainValidationException("Unknown Guardian shield bonus policy.");
         }
 
         HeroClass = heroClass;
@@ -33,6 +38,7 @@ public sealed class PlayerCombatState
         Hp = MaximumHp;
         WeaponLevel = Math.Clamp(weaponLevel, 0, 5);
         FenxianDrawPolicy = fenxianImmediateDrawPolicy;
+        GuardianShieldPolicy = guardianShieldBonusPolicy;
         Equipment = equipment ?? CombatEquipmentProfile.Empty;
         ArgumentNullException.ThrowIfNull(random);
         _random = new CombatRandom(random.Next());
@@ -45,6 +51,8 @@ public sealed class PlayerCombatState
     public int Shield { get; private set; }
     public int WeaponLevel { get; }
     public FenxianImmediateDrawPolicy FenxianDrawPolicy { get; }
+    public GuardianShieldBonusPolicy GuardianShieldPolicy { get; }
+    public int GuardianShieldRemainderTenths { get; private set; }
     public CombatEquipmentProfile Equipment { get; private set; }
     public int EffectiveMaximumHp => Math.Min(
         (int)Math.Floor(MaximumHp * (1 + Equipment.VitalityOvercapBonus)),
@@ -70,7 +78,7 @@ public sealed class PlayerCombatState
         {
             HeroClass.Priest => new("LinYuan", 0, null, .80 * (1 - hpRatio), .40 * (1 - hpRatio), 0, WeaponPercentBonus(), 0),
             HeroClass.Mage => new("FenXian", FenxianCombo, LastFenxianCore, 0, 0, 0, WeaponPercentBonus(), 0, FenxianChargeLevel),
-            HeroClass.Guardian => new("ZaiYue", 0, null, 0, 0, .45 * hpRatio, 0, WeaponLevel >= 4 ? 3 : WeaponLevel >= 2 ? 2 : 1),
+            HeroClass.Guardian => new("ZaiYue", 0, null, 0, 0, .45 * hpRatio, 0, GuardianShieldFlatBonus()),
             _ => throw new DomainValidationException("Unknown hero class.")
         };
     }
@@ -113,7 +121,11 @@ public sealed class PlayerCombatState
     public int ResolveRecovery(int amount) =>
         (int)Math.Floor(Math.Max(0, amount) * (1 + Equipment.VitalityHealBonus));
 
-    public void ClearShield() => Shield = 0;
+    public void ClearShield()
+    {
+        Shield = 0;
+        GuardianShieldRemainderTenths = 0;
+    }
 
     public void PayHealthCost(int amount)
     {
@@ -231,9 +243,12 @@ public sealed class PlayerCombatState
         return (int)Math.Floor(value * (1 + Equipment.VitalityHealBonus));
     }
 
-    public int ResolveShield(int cardShield, int healthCost = 0)
+    public int ResolveShield(int cardShield, int healthCost = 0) =>
+        PreviewShield(cardShield, healthCost).Shield;
+
+    public GuardianShieldResolutionDraft PreviewShield(int cardShield, int healthCost = 0)
     {
-        if (cardShield <= 0) return 0;
+        if (cardShield <= 0) return new(0, null);
         var value = (double)cardShield;
         if (HeroClass == HeroClass.Guardian)
         {
@@ -241,11 +256,39 @@ public sealed class PlayerCombatState
             value *= 1 + 0.45 * hpRatio;
         }
         value = Math.Floor(value * (1 + Equipment.BulwarkShieldBonus));
-        if (HeroClass == HeroClass.Guardian)
+        if (HeroClass != HeroClass.Guardian)
         {
-            value += WeaponLevel >= 4 ? 3 : WeaponLevel >= 2 ? 2 : 1;
+            return new((int)value, null);
         }
-        return (int)value;
+
+        if (GuardianShieldPolicy == GuardianShieldBonusPolicy.CurrentSteps)
+        {
+            return new((int)value + GuardianShieldFlatBonus(), null);
+        }
+
+        var maximumShield = MaximumHp / 2;
+        if (Shield >= maximumShield)
+        {
+            return new((int)value, null);
+        }
+
+        var x = GuardianShieldBonusTenths() + GuardianShieldRemainderTenths;
+        var bonus = x / 10;
+        var nextRemainder = x % 10;
+        var resolved = (int)value + bonus;
+        var remainingCapacity = maximumShield - Shield;
+        return new(resolved, resolved > remainingCapacity ? 0 : nextRemainder);
+    }
+
+    public void CommitGuardianShieldRemainder(int? remainderTenthsAfter)
+    {
+        if (remainderTenthsAfter is null) return;
+        if (GuardianShieldPolicy != GuardianShieldBonusPolicy.FractionalRemainder ||
+            remainderTenthsAfter is < 0 or > 9)
+        {
+            throw new DomainValidationException("Guardian shield remainder commit is invalid.");
+        }
+        GuardianShieldRemainderTenths = remainderTenthsAfter.Value;
     }
 
     public int ResolveIncomingDamage(int damage) => HeroClass == HeroClass.Guardian
@@ -350,7 +393,8 @@ public sealed class PlayerCombatState
             _targetStunWindows.Values.OrderBy(value => value.TargetId, StringComparer.Ordinal).ToArray(),
             Equipment,
             DrawBlockSpeedRemaining,
-            FenxianChargeLevel);
+            FenxianChargeLevel,
+            GuardianShieldRemainderTenths);
 
     public void Restore(PlayerCombatSnapshot snapshot)
     {
@@ -368,6 +412,13 @@ public sealed class PlayerCombatState
         FenxianCombo = snapshot.FenxianCombo;
         LastFenxianCore = snapshot.LastFenxianCore;
         FenxianChargeLevel = Math.Clamp(snapshot.FenxianChargeLevel, 0, 5);
+        if (snapshot.GuardianShieldRemainderTenths is < 0 or > 9)
+        {
+            throw new DomainValidationException("Guardian shield remainder snapshot is invalid.");
+        }
+        GuardianShieldRemainderTenths = GuardianShieldPolicy == GuardianShieldBonusPolicy.FractionalRemainder
+            ? snapshot.GuardianShieldRemainderTenths
+            : 0;
         DrawSpeedRemaining = snapshot.DrawSpeedRemaining;
         DrawSpeedModifier = snapshot.DrawSpeedModifier;
         StunRemaining = snapshot.StunRemaining;
@@ -381,6 +432,23 @@ public sealed class PlayerCombatState
     }
 
     public void MarkDead() => Hp = 0;
+
+    private int GuardianShieldFlatBonus() => GuardianShieldPolicy switch
+    {
+        GuardianShieldBonusPolicy.CurrentSteps => WeaponLevel >= 4 ? 3 : WeaponLevel >= 2 ? 2 : 1,
+        GuardianShieldBonusPolicy.FractionalRemainder => (GuardianShieldBonusTenths() + GuardianShieldRemainderTenths) / 10,
+        _ => throw new DomainValidationException("Unknown Guardian shield bonus policy.")
+    };
+
+    private int GuardianShieldBonusTenths() => WeaponLevel switch
+    {
+        0 => 10,
+        1 => 14,
+        2 => 18,
+        3 => 22,
+        4 => 26,
+        _ => 30
+    };
 
     private double WeaponPercentBonus() => WeaponLevel switch
     {
