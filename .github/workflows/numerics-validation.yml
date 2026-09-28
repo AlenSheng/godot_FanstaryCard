@@ -1,0 +1,46 @@
+name: Numerical integration validation
+on:
+  pull_request:
+    branches: [release]
+    paths:
+      - 'server/**'
+      - 'client/**'
+      - 'config/**'
+      - 'protocol/**'
+      - 'tools/numerics/**'
+      - '.github/workflows/numerics-validation.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: numerics-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  server-validation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      DOTNET_NOLOGO: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: server/global.json
+      - name: Validate evidence parser
+        run: python -m unittest discover -s tools/numerics -p 'test_validation_runner.py' -v
+      - name: Build, run tests, and validate route simulations
+        run: python tools/numerics/run_validation.py --samples 10000 --output "${{ runner.temp }}/fc-numerics-${{ github.run_id }}-${{ github.run_attempt }}"
+      - name: Preserve actual test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: numerics-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/fc-numerics-${{ github.run_id }}-${{ github.run_attempt }}/
+          if-no-files-found: warn
+          retention-days: 14
