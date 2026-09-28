@@ -31,8 +31,8 @@ internal sealed class RouteAnalyzer(GameConfigCatalog config)
             seed,
             route.Count,
             cells.Count(cell => cell.Layer == ChaosMapLayer.Outer),
-            cells.Count(cell => cell.Layer == ChaosMapLayer.Middle && cell.MonsterGroupId.StartsWith("M", StringComparison.Ordinal)),
-            cells.Count(cell => cell.Layer == ChaosMapLayer.Middle && cell.MonsterGroupId.StartsWith("E", StringComparison.Ordinal)),
+            cells.Count(cell => cell.Layer == ChaosMapLayer.Middle && cell.MonsterGroupId.StartsWith('M')),
+            cells.Count(cell => cell.Layer == ChaosMapLayer.Middle && cell.MonsterGroupId.StartsWith('E')),
             cells.Count(cell => cell.Layer == ChaosMapLayer.Core && !cell.IsBoss),
             cells.Count(cell => cell.IsBoss),
             cells.Count(cell => string.Equals(cell.MonsterGroupId, "BOX", StringComparison.Ordinal)),
@@ -49,13 +49,13 @@ internal sealed class RouteAnalyzer(GameConfigCatalog config)
 
         var map = ChaosMapGenerator.Generate(0, 1);
         var corners = map.Cells
-            .Where(cell => cell.Layer == ChaosMapLayer.Middle && cell.MonsterGroupId.StartsWith("M", StringComparison.Ordinal))
+            .Where(cell => cell.Layer == ChaosMapLayer.Middle && cell.MonsterGroupId.StartsWith('M'))
             .Select(cell => cell.Position)
             .OrderBy(position => position.Row)
             .ThenBy(position => position.Column)
             .ToArray();
         var elites = map.Cells
-            .Where(cell => cell.Layer == ChaosMapLayer.Middle && cell.MonsterGroupId.StartsWith("E", StringComparison.Ordinal))
+            .Where(cell => cell.Layer == ChaosMapLayer.Middle && cell.MonsterGroupId.StartsWith('E'))
             .Select(cell => cell.Position)
             .OrderBy(position => position.Row)
             .ThenBy(position => position.Column)
