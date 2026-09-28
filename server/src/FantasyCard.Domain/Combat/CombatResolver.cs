@@ -129,6 +129,7 @@ public static class CombatResolver
         var heal = cards.Sum(card => card.Effect.Heal) * (1 + .25 * conflictPairCount);
         var shield = cards.Sum(card => card.Effect.Shield);
         var healthCost = cards.Sum(card => card.Effect.HealthCost);
+        var shieldDraft = attacker.PreviewShield(shield, healthCost);
         var stunSeconds = cards.Max(card => card.Effect.StunSeconds);
         var blockSeconds = cards.Max(card => card.Effect.DrawBlockSeconds);
         var speedSeconds = cards.Max(card => card.Effect.DrawSpeedSeconds);
@@ -136,7 +137,7 @@ public static class CombatResolver
         return new CardResolutionDraft(
             elementalDamage + directDamage + piercingDamage,
             attacker.ResolveHeal(heal) + conflictHeal,
-            attacker.ResolveShield(shield, healthCost),
+            shieldDraft.Shield,
             attacker.ResolveControl(TimeSpan.FromSeconds(stunSeconds)),
             attacker.ResolveControl(TimeSpan.FromSeconds(blockSeconds)),
             cards.Sum(card => card.Effect.DrawCharge),
@@ -148,7 +149,8 @@ public static class CombatResolver
             coreCount,
             segments.GroupBy(segment => segment.Kind, StringComparer.Ordinal)
                 .Select(group => new CombatDamageSegment(group.Key, group.Sum(segment => segment.Amount))).ToArray(),
-            resonanceMultiplier, conflictPairCount, conflictCancellation);
+            resonanceMultiplier, conflictPairCount, conflictCancellation,
+            shieldDraft.RemainderTenthsAfter);
     }
 
     public static IReadOnlyList<CombatDamageSegment> ResolveDamageSegments(

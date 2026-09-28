@@ -927,6 +927,7 @@ public sealed partial class BattleRoom
         var healthCost = healthBeforeCost - attacker.Combat.Hp;
         var heal = attacker.Combat.Heal(draft.Heal);
         var shieldGain = attacker.Combat.GainShield(draft.Shield);
+        attacker.Combat.CommitGuardianShieldRemainder(draft.GuardianShieldRemainderTenthsAfter);
         attacker.Combat.Deck.DiscardPlayed(selected);
         attacker.Combat.AddDrawCharge(draft.DrawCharge);
         attacker.Combat.DrawImmediate(draft.ImmediateDraw);
