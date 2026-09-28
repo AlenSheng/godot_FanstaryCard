@@ -1,0 +1,498 @@
+diff --git a/server/src/FantasyCard.Domain/Bots/BotLootRules.cs b/server/src/FantasyCard.Domain/Bots/BotLootRules.cs
+new file mode 100644
+index 0000000..ea2d3a6
+--- /dev/null
++++ b/server/src/FantasyCard.Domain/Bots/BotLootRules.cs
+@@ -0,0 +1,37 @@
++using System.Security.Cryptography;
++using System.Text;
++using FantasyCard.Domain.Players;
++using FantasyCard.Domain.Rooms;
++
++namespace FantasyCard.Domain.Bots;
++
++/// <summary>Explicit searchable loot, not a copy of the bot's combat loadout.</summary>
++public static class BotLootRules
++{
++    private static readonly string[] Slots = ["Head", "Hands", "Chest"];
++    private static readonly string[] Elements = ["Fire", "Wood", "Earth", "Metal", "Water"];
++
++    public static IReadOnlyList<ExplorationItem> Generate(Guid roomId, Guid playerId, int count)
++    {
++        if (count is < 0 or > 3) throw new DomainValidationException("Bot loot budget is invalid.");
++        var items = new List<ExplorationItem>(count);
++        for (var index = 0; index < count; index++)
++        {
++            var digest = SHA256.HashData(Encoding.UTF8.GetBytes($"bot-loot-v1:{roomId:D}:{playerId:D}:{index}"));
++            var id = new Guid(digest.AsSpan(0, 16));
++            var gear = new EquipmentRewardData(Slots[index], digest[16] % 2 == 0 ? "White" : "Green",
++                Elements[digest[17] % Elements.Length], null, "DrawInterval");
++            items.Add(new(id.ToString("D"), ExplorationItemKind.Equipment, Equipment: gear, IsGenerated: true));
++        }
++        return items;
++    }
++
++    public static void Validate(IReadOnlyList<ExplorationItem> items, int budget)
++    {
++        if (items.Count > budget || items.Select(item => item.ItemId).Distinct(StringComparer.Ordinal).Count() != items.Count ||
++            items.Any(item => item.Kind != ExplorationItemKind.Equipment || item.Quantity != 1 || item.IsGenerated != true ||
++                item.Equipment is not { Quality: "White" or "Green", Level: 0, EffectAffix: null } ||
++                !EquipmentRewardRules.IsValid(item.Equipment)))
++            throw new DomainValidationException("Bot loot contains an item outside its budget.");
++    }
++}
+
+diff --git a/server/src/FantasyCard.Domain/Combat/CombatDeck.cs b/server/src/FantasyCard.Domain/Combat/CombatDeck.cs
+index 67fe7ef..2e349b3 100644
+--- a/server/src/FantasyCard.Domain/Combat/CombatDeck.cs
++++ b/server/src/FantasyCard.Domain/Combat/CombatDeck.cs
+@@ -108,6 +108,29 @@ public sealed class CombatDeck
+         _discard.Add(card);
+     }
+ 
++    public void ReplaceMonsterInstance(Guid? replacedId, CombatCardInstance candidate)
++    {
++        ArgumentNullException.ThrowIfNull(candidate);
++        var current = Capture();
++        var all = current.Hand.Concat(current.Library).Concat(current.Discard).ToArray();
++        if (!ValidCard(candidate) || candidate.InstanceId == Guid.Empty ||
++            all.Any(card => card.InstanceId == candidate.InstanceId) ||
++            replacedId is not null && all.Count(card => card.InstanceId == replacedId) != 1)
++            throw new DomainValidationException("Monster replacement contains invalid or duplicate instances.");
++        Restore(new(
++            current.Hand.Where(card => card.InstanceId != replacedId).ToArray(),
++            current.Library.Where(card => card.InstanceId != replacedId).ToArray(),
++            current.Discard.Where(card => card.InstanceId != replacedId).Append(candidate).ToArray(),
++            current.DrawCharge));
++    }
++
++    public void RemoveMonsterInstance(Guid instanceId)
++    {
++        _hand.RemoveAll(card => card.InstanceId == instanceId);
++        _library.RemoveAll(card => card.InstanceId == instanceId);
++        _discard.RemoveAll(card => card.InstanceId == instanceId);
++    }
++
+     public void AddCharge(double amount, Random random)
+     {
+         if (amount <= 0)
+
+diff --git a/server/src/FantasyCard.Domain/Combat/CombatTypes.cs b/server/src/FantasyCard.Domain/Combat/CombatTypes.cs
+index c208895..2724126 100644
+--- a/server/src/FantasyCard.Domain/Combat/CombatTypes.cs
++++ b/server/src/FantasyCard.Domain/Combat/CombatTypes.cs
+@@ -158,7 +158,9 @@ public sealed record RoomPlayerSnapshot(
+     TimeSpan? BotPveRemaining = null,
+     IReadOnlyList<Rooms.RewardRefreshReceiptSnapshot>? RewardRefreshReceipts = null,
+     IReadOnlyList<Rooms.ExplorationItem>? RecycledEquipment = null,
+-    string? DisplayName = null);
++    string? DisplayName = null,
++    Rooms.MonsterCardPoolSnapshot? MonsterPool = null,
++    IReadOnlyList<Rooms.ExplorationItem>? BotLoot = null);
+ 
+ public enum DuelEndReason : short
+ {
+@@ -211,7 +213,8 @@ public sealed record BattleRoomSnapshot(
+     IReadOnlyList<Rooms.RelicPileSnapshot>? RelicPiles = null,
+     ulong? RandomState = null,
+     IReadOnlyList<BotDuelTimerSnapshot>? BotDuelTimers = null,
+-    RoomRandomStreamsSnapshot? RandomStreams = null);
++    RoomRandomStreamsSnapshot? RandomStreams = null,
++    Configuration.NumericalRules? Numerics = null);
+ 
+ public sealed record CombatDamageSegment(string Kind, int Amount);
+ 
+
+diff --git a/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs b/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs
+index 6a2e67e..a65543f 100644
+--- a/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs
++++ b/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs
+@@ -140,6 +140,7 @@ public sealed class GameConfigCatalog
+     }
+ 
+     public static GameConfigCatalog Current => Active.Value;
++    public NumericalRules Numerics { get; private init; } = NumericalRules.Legacy;
+     public string Version { get; }
+     public IReadOnlyList<CardConfigDefinition> Cards { get; }
+     public IReadOnlyList<CardLevelConfig> CardLevels { get; }
+@@ -274,7 +275,21 @@ public sealed class GameConfigCatalog
+         ValidateEconomy(economy, shopCardPrices, cards);
+         ValidateItems(items);
+         return new GameConfigCatalog(
+-            bundle.Version, cards, levels, equipment, lootLayers, refreshes, backpacks, shopCardPrices, items, economy);
++            bundle.Version, cards, levels, equipment, lootLayers, refreshes, backpacks, shopCardPrices, items, economy)
++            { Numerics = ReadNumerics(bundle) };
++    }
++
++    private static NumericalRules ReadNumerics(ConfigBundle bundle)
++    {
++        var table = bundle.Tables.SingleOrDefault(value => value.Name == "NumericalRules");
++        if (table is null) return NumericalRules.Legacy;
++        if (table.Rows.Count != 1) throw new InvalidDataException("NumericalRules must contain one active row.");
++        var row = table.Rows[0];
++        var rules = new NumericalRules(table.Bool(row, "cards_spent_draw"), table.Bool(row, "fractional_guardian"),
++            table.Bool(row, "optional_monster_pool"), table.Int(row, "monster_capacity"),
++            table.Bool(row, "budgeted_bot_loot"), table.Int(row, "bot_loot_count"), table.Bool(row, "mortal_bot_pve"));
++        rules.Validate();
++        return rules;
+     }
+ 
+     private static void ValidateItems(ItemConfigDefinition[] items)
+
+diff --git a/server/src/FantasyCard.Domain/Configuration/NumericalRules.cs b/server/src/FantasyCard.Domain/Configuration/NumericalRules.cs
+new file mode 100644
+index 0000000..03256db
+--- /dev/null
++++ b/server/src/FantasyCard.Domain/Configuration/NumericalRules.cs
+@@ -0,0 +1,27 @@
++using FantasyCard.Domain.Combat;
++using FantasyCard.Domain.Players;
++
++namespace FantasyCard.Domain.Configuration;
++
++/// <summary>Copied into each room snapshot. Published defaults never enable experiments.</summary>
++public sealed record NumericalRules(
++    bool CardsSpentDraw = false,
++    bool FractionalGuardian = false,
++    bool OptionalMonsterPool = false,
++    int MonsterCapacity = 5,
++    bool BudgetedBotLoot = false,
++    int BotLootCount = 2,
++    bool MortalBotPve = false)
++{
++    public static NumericalRules Legacy { get; } = new();
++    public FenxianImmediateDrawPolicy FenxianPolicy => CardsSpentDraw
++        ? FenxianImmediateDrawPolicy.CoreCardsSpent : FenxianImmediateDrawPolicy.CurrentRhythm;
++    public GuardianShieldBonusPolicy GuardianPolicy => FractionalGuardian
++        ? GuardianShieldBonusPolicy.FractionalRemainder : GuardianShieldBonusPolicy.CurrentSteps;
++
++    public void Validate()
++    {
++        if (MonsterCapacity is < 1 or > 8 || BotLootCount is < 0 or > 3)
++            throw new DomainValidationException("Numerical candidate limits are outside the supported range.");
++    }
++}
+
+diff --git a/server/src/FantasyCard.Domain/Rooms/BattleRoom.cs b/server/src/FantasyCard.Domain/Rooms/BattleRoom.cs
+index 37aae05..a0eecad 100644
+--- a/server/src/FantasyCard.Domain/Rooms/BattleRoom.cs
++++ b/server/src/FantasyCard.Domain/Rooms/BattleRoom.cs
+@@ -59,6 +59,8 @@ public sealed class RoomPlayerState
+     public ExplorationInventory Inventory { get; }
+     public IReadOnlyList<ExplorationItem> WornArmor { get; internal set; }
+     public string? DisplayName { get; }
++    public MonsterCardPool MonsterPool { get; } = new();
++    public IReadOnlyList<ExplorationItem> BotLoot { get; internal set; } = [];
+     internal List<ExplorationItem> RecycledEquipment { get; } = [];
+     public bool IsBot { get; }
+     public RewardChoiceState? RewardChoice { get; internal set; }
+@@ -93,7 +95,7 @@ public sealed class RoomPlayerState
+             botPveRemaining,
+             RewardRefreshReceipts.ToArray(),
+             RecycledEquipment.ToArray(),
+-            DisplayName);
++            DisplayName, MonsterPool.Capture(), BotLoot);
+ }
+ 
+ public sealed class DuelState
+@@ -265,13 +267,18 @@ public sealed partial class BattleRoom
+     private readonly Dictionary<Guid, TimeSpan> _botDuelRemaining = [];
+     private readonly List<CombatFeedbackResolution> _combatFeedback = [];
+ 
+-    public BattleRoom(Guid roomId, string configVersion, CombatCardCatalog catalog, int seed)
++    public NumericalRules Numerics { get; }
++
++    public BattleRoom(Guid roomId, string configVersion, CombatCardCatalog catalog, int seed,
++        NumericalRules? numerics = null)
+     {
+         if (roomId == Guid.Empty)
+         {
+             throw new ArgumentException("Room id cannot be empty.", nameof(roomId));
+         }
+         ArgumentException.ThrowIfNullOrWhiteSpace(configVersion);
++        Numerics = numerics ?? NumericalRules.Legacy;
++        Numerics.Validate();
+         RoomId = roomId;
+         ConfigVersion = configVersion;
+         _catalog = catalog ?? throw new ArgumentNullException(nameof(catalog));
+@@ -337,6 +344,7 @@ public sealed partial class BattleRoom
+             throw new DomainValidationException("The target cell is not a legal inward or same-layer move.");
+         var targetPve = player.ClearedCells.Contains(target) ? null : PveBattleFactory.Create(Map.GetCell(target));
+         if (player.Pve?.IsCleared == true) player.ClearedCells.Add(current);
++        if (Numerics.OptionalMonsterPool) player.MonsterPool.DiscardPending();
+         player.Position = target;
+         player.Pve = targetPve;
+         player.Phase = targetPve is null ? RoomPlayerPhase.ActionBar : RoomPlayerPhase.Pve;
+@@ -386,8 +394,10 @@ public sealed partial class BattleRoom
+             new Random(PlayerSeedRandom.Next()),
+             setup.WeaponLevel,
+             setup.Equipment,
+-            setup.CardLevels);
++            setup.CardLevels, Numerics.FenxianPolicy, Numerics.GuardianPolicy);
+         var player = new RoomPlayerState(setup.PlayerId, setup.HeroClass, combat, setup.Pve, setup.InventoryCapacity, setup.SafeSlots, setup.WornArmor, setup.IsBot, setup.SafeSlotIndexes, setup.DisplayName);
++        if (setup.IsBot && Numerics.BudgetedBotLoot)
++            player.BotLoot = BotLootRules.Generate(RoomId, player.PlayerId, Numerics.BotLootCount);
+         _players.Add(player.PlayerId, player);
+         return player;
+     }
+@@ -496,12 +506,12 @@ public sealed partial class BattleRoom
+                 _lootRandom.State,
+                 _escapeRandom.State,
+                 _botRandom.State,
+-                _duelRandom.State));
++                _duelRandom.State), Numerics);
+ 
+     public static BattleRoom Restore(BattleRoomSnapshot snapshot, CombatCardCatalog catalog, int seed)
+     {
+         ArgumentNullException.ThrowIfNull(snapshot);
+-        var room = new BattleRoom(snapshot.RoomId, snapshot.ConfigVersion, catalog, seed)
++        var room = new BattleRoom(snapshot.RoomId, snapshot.ConfigVersion, catalog, seed, snapshot.Numerics ?? NumericalRules.Legacy)
+         {
+             Revision = snapshot.Revision,
+             Elapsed = snapshot.Elapsed
+@@ -531,6 +541,11 @@ public sealed partial class BattleRoom
+                 DisplayName: playerSnapshot.DisplayName,
+                 CardLevels: cards.Select(card => card.Level).ToArray()));
+             player.Combat.Restore(playerSnapshot.Combat);
++            if (playerSnapshot.MonsterPool is { } pool)
++                player.MonsterPool.Restore(pool, player.Combat.Deck, room.Numerics.MonsterCapacity);
++            player.BotLoot = playerSnapshot.BotLoot ?? [];
++            if (room.Numerics.BudgetedBotLoot && player.IsBot)
++                BotLootRules.Validate(player.BotLoot, room.Numerics.BotLootCount);
+             player.Pve = playerSnapshot.Pve is null ? null : PveBattleState.Rehydrate(playerSnapshot.Pve);
+             player.Position = playerSnapshot.Position;
+             player.Phase = playerSnapshot.Phase;
+@@ -844,7 +859,7 @@ public sealed partial class BattleRoom
+         loser.Phase = RoomPlayerPhase.Dead;
+         _duels.Remove(duelId);
+         _botDuelRemaining.Remove(duelId);
+-        if (!loser.IsBot) CreateDeathRelicPile(loser);
++        if (!loser.IsBot || Numerics.BudgetedBotLoot) CreateDeathRelicPile(loser);
+         Revision++;
+     }
+ 
+@@ -1014,8 +1029,14 @@ public sealed partial class BattleRoom
+         };
+         var card = monsterType is null ? null : GameConfigCatalog.Current.Cards.FirstOrDefault(value => value.MonsterType == monsterType);
+         if (card is not null && _catalog.Contains(card.CardId))
+-            player.Combat.Deck.AddToDiscard(new CombatCardInstance(Guid.CreateVersion7(), card.CardId,
+-                ElementOverride: monsterType == "BoxSpirit" ? monster.Intents[0].Element : null));
++        {
++            var instance = new CombatCardInstance(Guid.CreateVersion7(), card.CardId,
++                ElementOverride: monsterType == "BoxSpirit" ? monster.Intents[0].Element : null);
++            if (Numerics.OptionalMonsterPool)
++                player.MonsterPool.Offer($"{player.Pve!.BattleId:D}:{monster.MonsterId}", instance);
++            else
++                player.Combat.Deck.AddToDiscard(instance);
++        }
+     }
+ 
+     private void OpenRewardChoice(RoomPlayerState player)
+@@ -1108,7 +1129,8 @@ public sealed partial class BattleRoom
+             var player = GetPlayer(playerId);
+             if (player.Phase == RoomPlayerPhase.ActionBar)
+             {
+-                player.Phase = RoomPlayerPhase.Extracted;
++                if (Numerics.OptionalMonsterPool) player.MonsterPool.EndRun(player.Combat.Deck);
++            player.Phase = RoomPlayerPhase.Extracted;
+                 player.Pve = null;
+             }
+         }
+@@ -1236,6 +1258,11 @@ public sealed partial class BattleRoom
+     {
+         if (player.Phase == RoomPlayerPhase.Choice && player.RewardChoice is { } choice)
+         {
++            if (Numerics.OptionalMonsterPool)
++                foreach (var candidate in player.MonsterPool.Pending.ToArray())
++                    player.MonsterPool.Decide(player.Combat.Deck, Numerics.MonsterCapacity,
++                        "bot:" + candidate.InstanceId.ToString("N"), candidate.InstanceId,
++                        player.MonsterPool.Active.Count < Numerics.MonsterCapacity, null);
+             var bagFull = player.Inventory.FreeSlots == 0;
+             var hasFragmentStack = player.Inventory.Items.Any(item =>
+                 item.Kind == ExplorationItemKind.EquipmentFragments);
+@@ -1278,6 +1305,19 @@ public sealed partial class BattleRoom
+             player.Combat.Hp,
+             player.Combat.MaximumHp,
+             BotRules.PveHpLossPercent(layer));
++        if (Numerics.MortalBotPve)
++        {
++            var loss = Math.Max(1, (int)Math.Floor(player.Combat.MaximumHp * BotRules.PveHpLossPercent(layer) / 100d));
++            targetHp = Math.Max(0, player.Combat.Hp - loss);
++            if (targetHp == 0)
++            {
++                player.Combat.MarkDead();
++                player.Pve.MarkDead();
++                player.Phase = RoomPlayerPhase.Dead;
++                CreateDeathRelicPile(player);
++                return true;
++            }
++        }
+         player.Combat.PayHealthCost(player.Combat.Hp - targetHp);
+         foreach (var monster in player.Pve.Monsters.Where(monster => !monster.IsDead))
+         {
+@@ -1432,13 +1472,16 @@ public sealed partial class BattleRoom
+     {
+         if (_relicPiles.Values.Any(pile => pile.VictimId == player.PlayerId.ToString("D"))) return;
+         if (player.Position is not { } position) return;
++        if (Numerics.OptionalMonsterPool) player.MonsterPool.EndRun(player.Combat.Deck);
+         var pile = new RelicPile(Guid.CreateVersion7(), player.PlayerId.ToString("D"), position, player.DisplayName);
+         foreach (var item in player.Inventory.Items.Where(item => !item.IsSafe).ToArray())
+         {
+-            pile.Add(item with { IsSafe = false });
++            if (!player.IsBot || !Numerics.BudgetedBotLoot)
++                pile.Add(item with { IsSafe = false });
+             player.Inventory.TryRemove(item.ItemId, out _);
+         }
+-        foreach (var armor in player.WornArmor) pile.Add(armor);
++        foreach (var armor in player.IsBot && Numerics.BudgetedBotLoot ? player.BotLoot : player.WornArmor)
++            pile.Add(armor);
+         player.WornArmor = [];
+         _relicPiles.Add(pile.PileId, pile);
+     }
+
+diff --git a/server/src/FantasyCard.Domain/Rooms/BattleRoomNumerics.cs b/server/src/FantasyCard.Domain/Rooms/BattleRoomNumerics.cs
+new file mode 100644
+index 0000000..878ab4e
+--- /dev/null
++++ b/server/src/FantasyCard.Domain/Rooms/BattleRoomNumerics.cs
+@@ -0,0 +1,29 @@
++using FantasyCard.Domain.Players;
++using FantasyCard.Domain.Combat;
++
++namespace FantasyCard.Domain.Rooms;
++
++public sealed partial class BattleRoom
++{
++    public long DecideMonsterCard(Guid playerId, Guid candidateId, bool accept, Guid? replaceId,
++        string requestId, long expectedRevision)
++    {
++        var player = GetPlayer(playerId);
++        if (!Numerics.OptionalMonsterPool)
++            throw new DomainValidationException("Optional monster cards are disabled for this room.");
++        if (player.MonsterPool.IsReplay(requestId, candidateId, accept, replaceId)) return Revision;
++        if (expectedRevision > Revision)
++            throw new DomainValidationException("The room changed; refresh the monster choices.");
++        if (player.Phase is not (RoomPlayerPhase.Choice or RoomPlayerPhase.ActionBar) ||
++            _extractions.ContainsKey(playerId) || _springDrinks.ContainsKey(playerId) ||
++            _disconnects.ContainsKey(playerId))
++            throw new DomainValidationException("Monster choices are available only after combat and outside channeling.");
++        // Candidate ownership, active replacement identity and receipts guard stale requests; ticks alone do not invalidate a choice.
++        var candidate = player.MonsterPool.Pending.SingleOrDefault(card => card.InstanceId == candidateId)
++            ?? throw new DomainValidationException("The monster candidate no longer exists.");
++        _ = _catalog.Get(candidate.CardId, candidate.Level, candidate.ElementOverride);
++        player.MonsterPool.Decide(player.Combat.Deck, Numerics.MonsterCapacity, requestId, candidateId, accept, replaceId);
++        Revision++;
++        return Revision;
++    }
++}
+
+diff --git a/server/src/FantasyCard.Domain/Rooms/MonsterCardPool.cs b/server/src/FantasyCard.Domain/Rooms/MonsterCardPool.cs
+new file mode 100644
+index 0000000..21353ec
+--- /dev/null
++++ b/server/src/FantasyCard.Domain/Rooms/MonsterCardPool.cs
+@@ -0,0 +1,104 @@
++using FantasyCard.Domain.Combat;
++using FantasyCard.Domain.Players;
++
++namespace FantasyCard.Domain.Rooms;
++
++public sealed record MonsterCardDecisionReceipt(string RequestId, Guid CandidateId, bool Accept, Guid? ReplaceId);
++public sealed record MonsterCardPoolSnapshot(
++    IReadOnlyList<CombatCardInstance> Pending,
++    IReadOnlyList<CombatCardInstance> Active,
++    IReadOnlyList<string> GrantedSources,
++    IReadOnlyList<MonsterCardDecisionReceipt> Receipts);
++
++/// <summary>Bounded, server-issued offers. Not a client-owned inventory.</summary>
++public sealed class MonsterCardPool
++{
++    private const int MaxEntries = 256;
++    private readonly List<CombatCardInstance> _pending = [];
++    private readonly List<CombatCardInstance> _active = [];
++    private readonly HashSet<string> _sources = new(StringComparer.Ordinal);
++    private readonly List<MonsterCardDecisionReceipt> _receipts = [];
++    public IReadOnlyList<CombatCardInstance> Pending => _pending;
++    public IReadOnlyList<CombatCardInstance> Active => _active;
++
++    public void Offer(string source, CombatCardInstance card)
++    {
++        ArgumentException.ThrowIfNullOrWhiteSpace(source);
++        ArgumentNullException.ThrowIfNull(card);
++        if (_sources.Contains(source)) return;
++        if (_sources.Count >= MaxEntries || _pending.Count >= MaxEntries || source.Length > 200 ||
++            card.InstanceId == Guid.Empty || card.Level != 0 ||
++            _pending.Concat(_active).Any(existing => existing.InstanceId == card.InstanceId))
++            throw new DomainValidationException("Monster offer is invalid or the room limit was exceeded.");
++        _sources.Add(source);
++        _pending.Add(card);
++    }
++
++    public bool IsReplay(string requestId, Guid candidateId, bool accept, Guid? replacement)
++    {
++        ArgumentException.ThrowIfNullOrWhiteSpace(requestId);
++        if (requestId.Length > 80) throw new DomainValidationException("Monster decision request id is too long.");
++        var receipt = _receipts.SingleOrDefault(value => value.RequestId == requestId);
++        if (receipt is null) return false;
++        if (receipt.CandidateId != candidateId || receipt.Accept != accept || receipt.ReplaceId != replacement)
++            throw new DomainValidationException("The request id belongs to a different monster decision.");
++        return true;
++    }
++
++    public void Decide(CombatDeck deck, int capacity, string requestId, Guid candidateId, bool accept, Guid? replacement)
++    {
++        if (IsReplay(requestId, candidateId, accept, replacement)) return;
++        if (capacity is < 1 or > 8 || _receipts.Count >= MaxEntries)
++            throw new DomainValidationException("Monster decision limit was exceeded.");
++        var candidate = _pending.SingleOrDefault(card => card.InstanceId == candidateId)
++            ?? throw new DomainValidationException("This monster candidate is not owned or is no longer available.");
++        if (!accept && replacement is not null)
++            throw new DomainValidationException("Skipping a candidate cannot remove another card.");
++        if (accept)
++        {
++            if (replacement is null && _active.Count >= capacity)
++                throw new DomainValidationException("Choose an active monster card to replace, or skip.");
++            if (replacement is not null && !_active.Any(card => card.InstanceId == replacement))
++                throw new DomainValidationException("Only an active monster card can be replaced.");
++            // Validates every pile before changing it. No compensating draw, no shuffle.
++            deck.ReplaceMonsterInstance(replacement, candidate);
++            if (replacement is not null) _active.RemoveAll(card => card.InstanceId == replacement);
++            _active.Add(candidate);
++        }
++        _pending.Remove(candidate);
++        _receipts.Add(new(requestId, candidateId, accept, replacement));
++    }
++
++    public void DiscardPending() => _pending.Clear();
++    public void EndRun(CombatDeck deck)
++    {
++        foreach (var card in _active) deck.RemoveMonsterInstance(card.InstanceId);
++        _active.Clear();
++        _pending.Clear();
++    }
++
++    public MonsterCardPoolSnapshot Capture() => new(_pending.ToArray(), _active.ToArray(),
++        _sources.Order(StringComparer.Ordinal).ToArray(), _receipts.ToArray());
++
++    public void Restore(MonsterCardPoolSnapshot snapshot, CombatDeck deck, int capacity)
++    {
++        ArgumentNullException.ThrowIfNull(snapshot);
++        var all = snapshot.Pending.Concat(snapshot.Active).ToArray();
++        var deckCards = deck.Hand.Concat(deck.Library).Concat(deck.Discard).ToArray();
++        if (snapshot.Pending.Count > MaxEntries || snapshot.Active.Count > capacity ||
++            snapshot.GrantedSources.Count > MaxEntries || snapshot.Receipts.Count > MaxEntries ||
++            all.Any(card => card.InstanceId == Guid.Empty || card.Level != 0) ||
++            all.Select(card => card.InstanceId).Distinct().Count() != all.Length ||
++            snapshot.Active.Any(card => deckCards.Count(value => value == card) != 1) ||
++            snapshot.Pending.Any(card => deckCards.Any(value => value.InstanceId == card.InstanceId)) ||
++            snapshot.GrantedSources.Any(string.IsNullOrWhiteSpace) ||
++            snapshot.GrantedSources.Distinct(StringComparer.Ordinal).Count() != snapshot.GrantedSources.Count ||
++            snapshot.Receipts.Any(value => string.IsNullOrWhiteSpace(value.RequestId) || value.RequestId.Length > 80) ||
++            snapshot.Receipts.Select(value => value.RequestId).Distinct(StringComparer.Ordinal).Count() != snapshot.Receipts.Count)
++            throw new DomainValidationException("Monster pool snapshot is invalid.");
++        _pending.Clear(); _pending.AddRange(snapshot.Pending);
++        _active.Clear(); _active.AddRange(snapshot.Active);
++        _sources.Clear(); _sources.UnionWith(snapshot.GrantedSources);
++        _receipts.Clear(); _receipts.AddRange(snapshot.Receipts);
++    }
++}
