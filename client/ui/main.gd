@@ -1,6 +1,7 @@
 extends Control
 
 const P = preload("res://ui/palette.gd")
+const RemoteCopy = preload("res://ui/remote_copy.gd")
 const Art = preload("res://ui/art.gd")
 const CardView = preload("res://ui/card_view.gd")
 const CardPool = preload("res://ui/card_pool.gd")
@@ -82,6 +83,8 @@ var _codex_scroll := 0
 var _codex_deck_scroll := 0
 var _deck_builder_scroll := 0
 var _equipment_scroll := 0
+var _shop_scroll := 0
+var _shop_purchase_product_id := ""
 var _codex_ready := false
 var _codex_mutating := false
 var _enhancement_quote: Dictionary = {}
@@ -373,6 +376,8 @@ func _refresh_after_admin_update() -> void:
 
 func _on_cache_changed(module: String) -> void:
 	_sync_account_session()
+	if screen == "shop" and module in ["shop", "inventory", "wallet"] and is_instance_valid(_reference) and not screen_loading:
+		if bool(_reference.call("sync_shop_state", _shop_purchase_product_id)): return
 	var affected := {
 		"shop": ["shop"], "market": ["market"],
 		"inventory": ["gear", "enhance", "prep", "shop", "market"],
@@ -433,6 +438,8 @@ func _reset_account_ui() -> void:
 	_codex_deck_scroll = 0
 	_deck_builder_scroll = 0
 	_equipment_scroll = 0
+	_shop_scroll = 0
+	_shop_purchase_product_id = ""
 	_codex_ready = false
 	_codex_mutating = false
 	_shop_inventory_ready = false
@@ -633,9 +640,9 @@ func _login() -> void:
 	about_frame.size_flags_stretch_ratio = 0.30
 	about_frame.custom_minimum_size.x = 400
 	var announcement: Dictionary = Game.server_info.get("announcement", {})
-	var title := str(announcement.get("title", "")).strip_edges()
-	var body := str(announcement.get("body", "")).strip_edges()
-	var announcement_title := _label(about, title if not title.is_empty() else "版本公告", 34, P.GOLD)
+	var title := RemoteCopy.field(announcement, "title")
+	var body := RemoteCopy.field(announcement, "body")
+	var announcement_title := _label(about, title if not title.is_empty() else P.localized("ui_announcement_title"), 34, P.GOLD)
 	announcement_title.custom_minimum_size.y = 58
 	announcement_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	announcement_title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
@@ -666,7 +673,7 @@ func _random_login_name(previous: String = "") -> String:
 
 func _about_scroll_content(scroll: ScrollContainer, body: String) -> void:
 	var text := Label.new()
-	text.text = body if not body.is_empty() else "暂无公告"
+	text.text = body if not body.is_empty() else P.localized("ui_no_announcement")
 	text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	text.add_theme_font_override("font", P.font_for_text(text.text, 24))
@@ -687,6 +694,7 @@ func _navigate(value: String) -> void:
 	var generation: int = Game.gateway.session_generation
 	if value != screen: Sound.play_cue("ui_open")
 	if value == "gear" and screen != "gear": _equipment_scroll = 0
+	if value == "shop" and screen != "shop": _shop_scroll = 0
 	screen = value
 	edit_mode = false
 	_codex_card = ""
@@ -1368,26 +1376,28 @@ func _complete_shop_purchase(item: Dictionary) -> void:
 	Game.busy = true
 	var generation: int = Game.gateway.session_generation
 	var product_id: String = str(item.get("productId", ""))
-	var scroll_position := 0
-	if is_instance_valid(_reference):
-		var shop_scroll := _reference.get_node_or_null("ShopScroll") as ScrollContainer
-		if shop_scroll != null: scroll_position = shop_scroll.scroll_horizontal
 	var result: Dictionary = await Game.gateway.request("/api/v1/shop/purchases", HTTPClient.METHOD_POST, {"productId": product_id, "quantity": 1})
 	if not _session_result_current(generation, result): return
 	if result.ok:
+		_shop_purchase_product_id = product_id
 		_apply_shop_purchase(product_id, result.data)
+		_shop_purchase_product_id = ""
 		Sound.play_cue("purchase")
 		_toast("操作成功")
 	else:
 		Sound.play_cue("error")
 	Game.busy = false
-	_render()
-	_restore_shop_scroll.call_deferred(scroll_position)
+	if screen == "shop" and is_instance_valid(_reference):
+		if not bool(_reference.call("sync_shop_state", product_id)): _render()
 
-func _restore_shop_scroll(scroll_position: int) -> void:
-	if screen != "shop" or not is_instance_valid(_reference): return
-	var shop_scroll := _reference.get_node_or_null("ShopScroll") as ScrollContainer
-	if shop_scroll != null: shop_scroll.scroll_horizontal = scroll_position
+func _restore_shop_scroll(scroll: ScrollContainer) -> void:
+	await get_tree().process_frame
+	if not is_instance_valid(scroll) or screen != "shop" or not is_instance_valid(_reference): return
+	if _reference.get_node_or_null("ShopScroll") != scroll: return
+	scroll.scroll_horizontal = _shop_scroll
+	scroll.get_h_scroll_bar().value_changed.connect(func(value: float):
+		if is_instance_valid(_reference) and _reference.get_node_or_null("ShopScroll") == scroll:
+			_shop_scroll = int(value))
 
 func _apply_shop_purchase(product_id: String, response: Dictionary) -> void:
 	var quantity: int = int(response.get("quantity", 1))

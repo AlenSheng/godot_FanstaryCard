@@ -91,7 +91,7 @@ static func _health(ui: Control, combat: Dictionary, rect: Rect2, enemy: bool = 
 	_center(ui.text("%s / %s" % [combat.get("hp", 0), maximum], Rect2(rect.position, Vector2(rect.size.x, 40)), 30))
 	if int(combat.get("shield", 0)) > 0:
 		ui.picture(Art.texture("UI/Battle/battle_shield_badge.png"), Rect2(rect.position.x, rect.position.y + 76, 36, 40))
-		ui.text("护盾 %s" % combat.shield, Rect2(rect.position.x + 46, rect.position.y + 76, rect.size.x - 46, 40), 24, Color("c4d2d4"))
+		ui.text(P.localized("exploration_shield_amount") % combat.shield, Rect2(rect.position.x + 46, rect.position.y + 76, rect.size.x - 46, 40), 24, Color("c4d2d4"))
 
 static func _status(ui: Control, name: String, rect: Rect2) -> void:
 	var label: Label = ui.text("", rect, 23, P.TEAL)
@@ -99,7 +99,7 @@ static func _status(ui: Control, name: String, rect: Rect2) -> void:
 	label.visible = false
 
 static func _passive(ui: Control, hero_class: String, rect: Rect2) -> void:
-	var names := {"Mage": "焚弦", "Priest": "临渊", "Guardian": "载岳"}
+	var names := {"Mage": P.localized("exploration_passive_mage_name"), "Priest": P.localized("exploration_passive_priest_name"), "Guardian": P.localized("exploration_passive_guardian_name")}
 	if not names.has(hero_class): return
 	var descriptions := {"Mage": "同核连放，加快抽牌", "Priest": "生命越低，治疗与控场越强", "Guardian": "生命越高，上盾越厚"}
 	var status: Dictionary = Game.room.get("player", {}).get("battle_status", {})
@@ -107,10 +107,10 @@ static func _passive(ui: Control, hero_class: String, rect: Rect2) -> void:
 	var frame: Control = ui.panel(rect)
 	frame.name = "PlayerPassive_" + hero_class
 	frame.mouse_filter = Control.MOUSE_FILTER_PASS
-	frame.tooltip_text = "本命 · %s\n%s" % [names[hero_class], BattleDetails.description(status) if not status.is_empty() else descriptions[hero_class]]
+	frame.tooltip_text = P.localized("exploration_passive_tooltip") % [names[hero_class], BattleDetails.description(status) if not status.is_empty() else P.localized_text(descriptions[hero_class])]
 	var icon: TextureRect = _picture(ui, Art.passive(hero_class), Rect2(rect.position + Vector2(12, 9), Vector2(66, rect.size.y - 18)))
 	icon.name = "PlayerPassiveIcon_" + hero_class
-	ui.text("本命 · " + names[hero_class], Rect2(rect.position + Vector2(89, 8), Vector2(rect.size.x - 100, 36)), 25, P.GOLD)
+	ui.text(P.localized("signature_prefix") + names[hero_class], Rect2(rect.position + Vector2(89, 8), Vector2(rect.size.x - 100, 36)), 25, P.GOLD)
 	ui.text(descriptions[hero_class], Rect2(rect.position + Vector2(89, 44), Vector2(rect.size.x - 103, rect.size.y - 49)), 20, P.MUTED)
 
 static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
@@ -158,9 +158,9 @@ static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 			_health(ui, monster, Rect2(x + 24 * slot_scale, 190, 315 * slot_scale, 114), true)
 			_status(ui, "MonsterStatus_%d" % index, Rect2(x + 24 * slot_scale, 308, 350 * slot_scale, 32))
 			var name: String = host._monster_name(monster.get("monster_id", ""))
-			if monster.get("monster_id", "") == "annihilation-core": name += " · %s阶段" % ("二" if boss_phase == 2 else "一")
+			if monster.get("monster_id", "") == "annihilation-core": name += P.localized("exploration_boss_phase") % boss_phase
 			if can_select_target and alive:
-				var button: Button = ui.button(name + (" · 目标" if selected else ""), Rect2(x + 10 * slot_scale, 512, 350 * slot_scale, 50), func(): Game.command("battle.select_target", {"battle_id": state.pve.battle_id, "target_id": monster.monster_id}), not Game.allowed("battle.select_target"))
+				var button: Button = ui.button(name + (P.localized("exploration_target_suffix") if selected else ""), Rect2(x + 10 * slot_scale, 512, 350 * slot_scale, 50), func(): Game.command("battle.select_target", {"battle_id": state.pve.battle_id, "target_id": monster.monster_id}), not Game.allowed("battle.select_target"))
 				button.name = "MonsterTarget_" + str(monster.get("monster_id", ""))
 				# Default button padding otherwise grows this row into the preview.
 				for style_name in ["normal", "hover", "pressed", "disabled"]:
@@ -171,7 +171,7 @@ static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 				button.size = Vector2(350 * slot_scale, 50)
 				if selected: button.add_theme_color_override("font_disabled_color", P.GOLD)
 			if alive and int(monster.get("stun_remaining_ms", 0)) <= 0 and int(monster.get("windup_remaining_ms", 0)) > 0:
-				_center(ui.text("即将行动 %.1f 秒" % (float(monster.windup_remaining_ms) / 1000), Rect2(x + 15 * slot_scale, 472 if can_select_target else 502, 340 * slot_scale, 35 if can_select_target else 45), 25, P.GOLD))
+				_center(ui.text(P.localized("exploration_action_soon") % (float(monster.windup_remaining_ms) / 1000), Rect2(x + 15 * slot_scale, 472 if can_select_target else 502, 340 * slot_scale, 35 if can_select_target else 45), 25, P.GOLD))
 	_hand(ui, host, state)
 
 static func _hand(ui: Control, host: Control, state: Dictionary) -> void:
@@ -213,7 +213,7 @@ static func _hand(ui: Control, host: Control, state: Dictionary) -> void:
 	if host.has_method("_draw_charge_value"):
 		charge_bar.value = host._draw_charge_value(float(player.get("draw_charge", "0")))
 	ui.text("%d%%" % roundi(charge_bar.value * 100.0), Rect2(402, 880, 72, 38), 24, P.TEAL).name = "DrawChargePercent"
-	ui.text("牌库 %s · 弃牌 %s" % [player.get("library_count", 0), player.get("discard_count", 0)], Rect2(79, 940, 330, 32), 21, P.MUTED)
+	ui.text(P.localized("exploration_library_discard") % [player.get("library_count", 0), player.get("discard_count", 0)], Rect2(79, 940, 330, 32), 21, P.MUTED)
 	_center(ui.text(P.localized("battle_play_hint") % Game.selected_cards.size(), Rect2(573, 1005, 765, 36), 23, P.PAPER))
 
 static func _preview(ui: Control) -> void:
@@ -227,7 +227,7 @@ static func _preview(ui: Control) -> void:
 		return
 	var x := 478.0
 	var core: String = preview.get("core_element", "")
-	var headline := "预览" + (" · %s核×%s" % [P.word(core), preview.get("core_count", 0)] if not core.is_empty() else "")
+	var headline := P.localized("exploration_preview_core") % [P.word(core), preview.get("core_count", 0)] if not core.is_empty() else P.localized("preview")
 	ui.text(headline, Rect2(x, 578, 245, 34), 22, P.GOLD)
 	x += 244
 	for segment in preview.get("damage_segments", []):
@@ -236,7 +236,7 @@ static func _preview(ui: Control) -> void:
 	var shield_damage := int(preview.get("shield_damage", 0))
 	var hp_damage := int(preview.get("hp_damage", 0))
 	var actual_damage := shield_damage + hp_damage
-	ui.text("实际 %s（盾%s/血%s）" % [actual_damage, shield_damage, hp_damage], Rect2(x, 578, 235, 34), 21, P.PAPER)
+	ui.text(P.localized("exploration_preview_actual") % [actual_damage, shield_damage, hp_damage], Rect2(x, 578, 235, 34), 21, P.PAPER)
 	x += 235
 	for entry in [["heal", "回复", P.TEAL], ["shield_gain", "盾", Color("c4d2d4")]]:
 		if int(preview.get(entry[0], 0)) > 0:
@@ -245,20 +245,20 @@ static func _preview(ui: Control) -> void:
 	var effects: Array[String] = []
 	for entry in [["stun_seconds", "眩晕", "秒"], ["draw_block_seconds", "锁抽", "秒"], ["health_cost", "自损", ""], ["immediate_draw", "抽牌", "张"]]:
 		if float(preview.get(entry[0], 0)) > 0: effects.append("%s %s%s" % [entry[1], preview[entry[0]], entry[2]])
-	if float(preview.get("draw_charge", "0")) > 0: effects.append("充能 +%s%%" % Details.percent(float(preview.draw_charge)))
+	if float(preview.get("draw_charge", "0")) > 0: effects.append(P.localized("exploration_preview_charge") % Details.percent(float(preview.draw_charge)))
 	if float(preview.get("draw_speed_seconds", "0")) > 0:
-		effects.append("抽牌间隔 %s%% / %s秒" % [Details.percent(float(preview.get("draw_speed_modifier", "0"))), preview.draw_speed_seconds])
-	if float(preview.get("draw_block_speed_seconds", "0")) > 0: effects.append("充能×2 / %s秒" % preview.draw_block_speed_seconds)
+		effects.append(P.localized("exploration_preview_draw_speed") % [Details.percent(float(preview.get("draw_speed_modifier", "0"))), preview.draw_speed_seconds])
+	if float(preview.get("draw_block_speed_seconds", "0")) > 0: effects.append(P.localized("exploration_preview_double_charge") % preview.draw_block_speed_seconds)
 	var tail: Label = ui.text(" · ".join(effects), Rect2(x, 578, maxf(1, 1824 - x), 34), 20, P.PAPER)
 	tail.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	panel.mouse_filter = Control.MOUSE_FILTER_PASS
 	var formula: Array[String] = []
 	var resonance := float(preview.get("resonance_multiplier", "1"))
-	if resonance > 1.0: formula.append("主核增幅 ×%.2f" % resonance)
+	if resonance > 1.0: formula.append(P.localized("exploration_preview_multiplier") % resonance)
 	var conflict_pairs := int(preview.get("conflict_pair_count", 0))
 	var cancellation := float(preview.get("conflict_cancellation", "0"))
-	if conflict_pairs > 0: formula.append("相克 %s组 · 抵消 %s" % [conflict_pairs, Details.percent(cancellation)])
-	panel.tooltip_text = "最终伤害 %s（扣盾 %s · 扣血 %s）\n%s\n%s\n按当前战斗状态结算，状态变化后会重新计算" % [actual_damage, shield_damage, hp_damage, " · ".join(formula), " · ".join(effects)]
+	if conflict_pairs > 0: formula.append(P.localized("exploration_preview_conflict") % [conflict_pairs, Details.percent(cancellation)])
+	panel.tooltip_text = P.localized("exploration_preview_tooltip") % [actual_damage, shield_damage, hp_damage, " · ".join(formula), " · ".join(effects)]
 
 static func _duel(ui: Control, host: Control, state: Dictionary) -> void:
 	var player: Dictionary = state.player
@@ -277,13 +277,13 @@ static func _duel(ui: Control, host: Control, state: Dictionary) -> void:
 	_health(ui, duel.get("opponent", {}), Rect2(1128, 229, 358, 120), true)
 	_status(ui, "OpponentStatus", Rect2(1128, 350, 390, 32))
 	var seconds: float = maxf(0, (float(duel.get("leave_window_ends_at_unix_ms", 0)) - Time.get_unix_time_from_system() * 1000) / 1000)
-	ui.button("已请求离开" if duel.get("self_requested_leave", false) else "双方离开", Rect2(400, 398, 350, 66), func(): Game.command("duel.leave", {"duel_id": duel.duel_id}), not Game.allowed("duel.leave"))
-	if seconds > 0: _center(ui.text("离开窗口 %.1f 秒" % seconds, Rect2(400, 480, 350, 44), 26, P.GOLD))
+	ui.button(P.localized("exploration_leave_requested") if duel.get("self_requested_leave", false) else P.localized("leave_duel"), Rect2(400, 398, 350, 66), func(): Game.command("duel.leave", {"duel_id": duel.duel_id}), not Game.allowed("duel.leave"))
+	if seconds > 0: _center(ui.text(P.localized("exploration_leave_window") % seconds, Rect2(400, 480, 350, 44), 26, P.GOLD))
 	ui.button("强制逃脱", Rect2(803, 395, 310, 70), func(): Game.command("duel.escape", {"duel_id": duel.duel_id}), not Game.allowed("duel.escape"))
 	if not str(duel.get("escape_probability", "")).is_empty():
-		ui.text("成功率 %s%%" % Details.percent(float(duel.escape_probability)), Rect2(812, 353, 308, 37), 23, P.MUTED)
+		ui.text(P.localized("exploration_escape_chance") % Details.percent(float(duel.escape_probability)), Rect2(812, 353, 308, 37), 23, P.MUTED)
 	if duel.has("escape_remaining_ms"):
-		_center(ui.text("逃脱中 %.1f 秒" % (float(duel.escape_remaining_ms) / 1000), Rect2(803, 480, 310, 44), 27, P.TEAL))
+		_center(ui.text(P.localized("exploration_escaping") % (float(duel.escape_remaining_ms) / 1000), Rect2(803, 480, 310, 44), 27, P.TEAL))
 	if not Game.allowed("battle.play_cards"):
 		ui.picture(Art.texture("UI/Encounter/encounter_lock_icon_normal.png"), Rect2(1290, 443, 47, 48))
 	ui.text(P.localized("waiting_action"), Rect2(1350, 443, 330, 48), 26, P.GOLD)
@@ -321,9 +321,9 @@ static func _map(ui: Control, host: Control, state: Dictionary) -> void:
 			var tint: Color = colors[layer]
 			button.add_theme_stylebox_override("normal", Art.style(SLOT, Color("e7bb66") if legal else tint))
 			button.add_theme_stylebox_override("disabled", Art.style(SLOT, Color("f2d392") if current else tint))
-			var layer_names := ["外", "中", "内"]
-			var tooltip := "%s层" % layer_names[layer]
-			if legal: tooltip += " · 可前往"
+			var layer_names := [P.localized("exploration_outer"), P.localized("exploration_middle"), P.localized("exploration_inner")]
+			var tooltip := P.localized("exploration_map_layer") % layer_names[layer]
+			if legal: tooltip += " · " + P.localized("exploration_map_reachable")
 			if not markers.is_empty():
 				var marker_names: Array[String] = []
 				for marker in markers: marker_names.append(str(marker.label))
@@ -344,7 +344,7 @@ static func _map(ui: Control, host: Control, state: Dictionary) -> void:
 					_picture(ui, marker.texture, Rect2(rect.position + Vector2(marker_x, 5), Vector2(icon_size, 48)))
 					_center(ui.text(marker.label, Rect2(rect.position + Vector2(marker_x - 8, 70), Vector2(icon_size + 16, 31)), 18 if markers.size() == 2 else 14, marker.tint))
 	ui.panel(Rect2(1372, 241, 430, 548))
-	_center(ui.text("图例", Rect2(1420, 274, 333, 65), 40, P.GOLD))
+	_center(ui.text(P.localized("exploration_map_legend"), Rect2(1420, 274, 333, 65), 40, P.GOLD))
 	for index in range(3):
 		var tint: Color = [Color("fa8c72"), P.TEAL, P.GOLD][index]
 		_picture(ui, [MAP_BOSS_MARKER, Art.texture("UI/Action/spring_clean.png"), MAP_SELF_MARKER][index], Rect2(1423, 377 + index * 114, 88, 83))
@@ -421,13 +421,13 @@ static func _actions(ui: Control, host: Control, state: Dictionary) -> void:
 		strip.add_child(tile)
 		var rect := Rect2(0, 0, 264, 278)
 		var relic: bool = action.begins_with("relic:")
-		var title: String = {"action.spring": "饮用生命泉水", "action.potion": P.localized("use_health_potion"), "action.extract": "撤离", "map": "走邻格"}.get(action, "")
+		var title: String = {"action.spring": P.localized("exploration_spring_action"), "action.potion": P.localized("use_health_potion"), "action.extract": P.localized("extract"), "map": P.localized("move_neighbor")}.get(action, "")
 		var callback: Callable = func(): Game.command(action)
 		if action == "map": callback = func(): host.set_meta("exploration_map_open", true); host._schedule_render()
 		if relic:
 			var pile_id := action.trim_prefix("relic:")
 			for pile in piles:
-				if pile.pile_id == pile_id: title = str(pile.get("owner_name", "旅人")) + "的遗物"; break
+				if pile.pile_id == pile_id: title = P.localized("exploration_relic_owner") % str(pile.get("owner_name", P.localized("same_cell_traveler"))); break
 			callback = func(): InventoryView.open(host, pile_id)
 		var action_name: String = "relic" if relic else action.trim_prefix("action.")
 		var action_button: Button = tile.button("", rect, callback, relic and not Game.allowed("relic.read"), SLOT)
@@ -441,7 +441,7 @@ static func _actions(ui: Control, host: Control, state: Dictionary) -> void:
 		_center(tile.text(title, Rect2(rect.position + Vector2(12, 183), Vector2(240, 75)), 26, P.PAPER))
 	for key in ["extraction_remaining_ms", "spring_remaining_ms"]:
 		if state.has(key):
-			_center(ui.text(("撤离中 " if key.begins_with("extraction") else "饮用泉水 ") + "%.1f 秒" % (float(state[key]) / 1000), Rect2(615, 453, 560, 67), 36, P.TEAL))
+			_center(ui.text(P.localized("exploration_extraction_progress" if key.begins_with("extraction") else "exploration_spring_progress") % (float(state[key]) / 1000), Rect2(615, 453, 560, 67), 36, P.TEAL))
 	ui.button("查看地图", Rect2(80, 985, 244, 56), func(): host.set_meta("exploration_map_open", true); host._schedule_render())
 
 static func _rewards(ui: Control, host: Control, reward: Dictionary) -> void:
@@ -456,7 +456,7 @@ static func _rewards(ui: Control, host: Control, reward: Dictionary) -> void:
 			continue
 		var option: Dictionary = options[index]
 		var kind: int = int(option.get("kind", 0))
-		var title: String = {1: "装备", 2: "碎片堆", 3: "即时回血"}.get(kind, "战利品")
+		var title: String = {1: P.localized("exploration_equipment_reward"), 2: P.localized("exploration_fragment_reward"), 3: P.localized("exploration_heal_reward")}.get(kind, P.localized("loot"))
 		_center(ui.text(title, Rect2(rect.position + Vector2(24, 28), Vector2(376, 62)), 42, P.PAPER))
 		var item := {"kind": "Equipment", "equipment": option.get("equipment", {})}
 		if kind == 3: _center(ui.text("+", Rect2(rect.position + Vector2(112, 103), Vector2(200, 165)), 120, P.TEAL))
@@ -465,34 +465,36 @@ static func _rewards(ui: Control, host: Control, reward: Dictionary) -> void:
 			var visual := ItemVisual.item(ui, reward_item, Vector2(165, 165), false)
 			visual.position = rect.position + Vector2(129, 103)
 			visual.size = Vector2(165, 165)
-		var description: String = "数量 ×%s" % option.get("quantity", 0)
+		var description: String = P.localized("exploration_reward_quantity") % option.get("quantity", 0)
 		if kind == 1: description = Details.description(item)
 		elif kind == 3:
 			var combat: Dictionary = Game.room.get("player", {}).get("combat", {})
 			var maximum: int = int(combat.get("maximum_hp", 0))
 			var amount: int = mini(maxi(0, int(combat.get("effective_maximum_hp", maximum)) - int(combat.get("hp", 0))), int(maximum * int(option.get("heal_percent", 0)) / 100.0))
-			description = "%s%% 最大生命 · 预计回复 %s" % [option.get("heal_percent", 0), amount]
+			description = P.localized("exploration_reward_heal") % [option.get("heal_percent", 0), amount]
 		ui.text(description, Rect2(rect.position + Vector2(25, 281), Vector2(374, 168)), 23, P.TEAL)
-		ui.button("收入背包" if kind != 3 else "立即回复", Rect2(rect.position + Vector2(25, 459), Vector2(374, 61)), func(): host._claim(option), not Game.allowed("reward.choice.claim"))
+		ui.button(P.localized("added_to_bag") if kind != 3 else P.localized("exploration_heal_now"), Rect2(rect.position + Vector2(25, 459), Vector2(374, 61)), func(): host._claim(option), not Game.allowed("reward.choice.claim"))
 		if kind == 1:
-			ui.button("对比 / 直接穿戴", Rect2(rect.position + Vector2(25, 525), Vector2(374, 58)), func(): host._show_equipment_details(item, func(): host._claim(option, true), "直接穿戴（回收旧装）"), not Game.allowed("reward.choice.claim"))
+			ui.button(P.localized("exploration_compare_equip_direct"), Rect2(rect.position + Vector2(25, 525), Vector2(374, 58)), func(): host._show_equipment_details(item, func(): host._claim(option, true), P.localized("exploration_equip_recycle")), not Game.allowed("reward.choice.claim"))
 	var count: int = clampi(int(reward.get("refresh_count", 0)), 0, 3)
-	ui.text("本局刷新 %s / 3" % count, Rect2(311, 840, 370, 66), 31, P.GOLD)
-	ui.button("刷新 %s 金币" % [60, 180, 450][mini(count, 2)] if count < 3 else "刷新已用尽", Rect2(746, 830, 425, 91), func(): Game.command("reward.choice.refresh"), count >= 3 or not Game.allowed("reward.choice.refresh"))
-	ui.text("当前%s层" % ["外", "中", "内"][clampi(int(reward.get("layer", 0)), 0, 2)], Rect2(1275, 845, 334, 64), 29, P.MUTED)
+	ui.text(P.localized("exploration_refresh_count") % count, Rect2(311, 840, 370, 66), 31, P.GOLD)
+	ui.button(P.localized("exploration_refresh_cost") % [60, 180, 450][mini(count, 2)] if count < 3 else P.localized("refresh_exhausted"), Rect2(746, 830, 425, 91), func(): Game.command("reward.choice.refresh"), count >= 3 or not Game.allowed("reward.choice.refresh"))
+	ui.text(P.localized("exploration_current_layer") % [P.localized("exploration_outer"), P.localized("exploration_middle"), P.localized("exploration_inner")][clampi(int(reward.get("layer", 0)), 0, 2)], Rect2(1275, 845, 334, 64), 29, P.MUTED)
 
 static func _settlement_pending(ui: Control, phase: String) -> void:
 	ui.picture(Art.texture(PANEL), Rect2(480, 150, 960, 766))
-	_center(ui.text("撤离完成" if phase == "Extracted" else "战斗结束", Rect2(545, 285, 830, 100), 64, P.GOLD))
-	_center(ui.text("正在结算本局收获…", Rect2(598, 455, 724, 70), 34, P.PAPER))
+	_center(ui.text(P.localized("settlement_pending_extract" if phase == "Extracted" else "settlement_pending_battle"), Rect2(545, 285, 830, 100), 64, P.GOLD))
+	_center(ui.text(P.localized("settlement_pending_message"), Rect2(598, 455, 724, 70), 34, P.PAPER))
 
 static func build_settlement(ui: Control, host: Control) -> void:
 	ui.picture(Art.texture(PANEL), Rect2(480, 150, 960, 766))
-	_center(ui.text(P.word(Game.settlement.get("result", "旅程结束")), Rect2(545, 253, 830, 100), 64, P.GOLD))
-	_center(ui.text("此行收获", Rect2(598, 380, 724, 65), 36, P.PAPER))
+	var result: String = str(Game.settlement.get("result", ""))
+	var result_title: String = P.localized("word_extracted") if result == "Extracted" else P.localized("word_pvp_death") if result == "PvpDeath" else P.localized("word_dead") if result in ["Dead", "Death", "Defeated", "PveDeath"] else P.localized("journey_end")
+	_center(ui.text(result_title, Rect2(545, 253, 830, 100), 64, P.GOLD))
+	_center(ui.text(P.localized("run_reward"), Rect2(598, 380, 724, 65), 36, P.PAPER))
 	var items: Array = _settlement_items()
 	if items.is_empty():
-		_center(ui.text("本次结算暂无可展示的道具", Rect2(598, 521, 724, 62), 28, P.MUTED))
+		_center(ui.text(P.localized("settlement_no_items"), Rect2(598, 521, 724, 62), 28, P.MUTED))
 	else:
 		var scroll: ScrollContainer = ui._scroll(Rect2(595, 460, 730, 274))
 		scroll.name = "SettlementItemsScroll"
@@ -521,7 +523,7 @@ static func build_settlement(ui: Control, host: Control) -> void:
 			visual.position = Vector2(0, 7)
 			visual.size = Vector2(68, 68)
 			var title := Details.title(item)
-			if entry.get("equipped", false): title += " · 已穿戴"
+			if entry.get("equipped", false): title += " · " + P.localized("settlement_equipped")
 			ui.text(title, Rect2(96, 16, 472, 50), 25, P.PAPER, row)
 			ui.text("×%s" % item.get("quantity", 1), Rect2(580, 16, 94, 50), 25, P.GOLD, row).horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	ui.button("返回", Rect2(716, 753, 488, 96), host._return_from_settlement, Game.busy)

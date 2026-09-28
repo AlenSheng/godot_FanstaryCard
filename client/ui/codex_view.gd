@@ -85,11 +85,17 @@ static func _fill_grid(ui: Control, host: Control, grid: GridContainer, scroll: 
 		entries.append({"id": id, "slot_name": "CardSlot_" + id, "card_name": "Card_" + id, "callback": func():
 			if scroll.can_activate(): _open_details(ui, host, id, scroll),
 			"options": {"collection": true, "copy_count": copies, "level": int(owned.get("level", 0))},
-			"tooltip_suffix": "\n持有 %s · 点击查看详情" % copies})
+			"tooltip_suffix": card_tooltip_suffix(copies)})
 	grid.configure(host, scroll, entries, 184.0)
 	count.text = P.localized("collected_count") % [collected, total]
-	if entries.size() != total: count.text += P.localized_text("    筛选结果 %s 张" % entries.size())
-	if not host._codex_ready: count.text += P.localized_text("    持有数据未就绪，请重新进入图鉴刷新")
+	if entries.size() != total: count.text += filtered_count(entries.size())
+	if not host._codex_ready: count.text += "    " + P.localized("collection_not_ready")
+
+static func filtered_count(count: int) -> String:
+	return "    " + P.localized("codex_filtered_count") % count
+
+static func card_tooltip_suffix(copies: int) -> String:
+	return P.localized("codex_owned_hint") % copies
 
 static func _scroll(ui: Control, rect: Rect2) -> ScrollContainer:
 	var scroll := DragScroll.new()
@@ -177,12 +183,12 @@ static func _details(ui: Control, host: Control) -> void:
 	preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	preview.focus_mode = Control.FOCUS_NONE
 	modal.text(CardDetails.localized_name(id, info), Rect2(796, 242, 650, 64), 39)
-	_tag(modal, P.word(info.get("quality", "White")) + "色", Rect2(798, 338, 155, 60), "tag_normal.png" if info.get("quality") == "White" else "tag_q_%s.png" % str(info.get("quality")).to_lower())
-	_tag(modal, "通用卡" if hero == null else P.word(hero) + "职业卡", Rect2(974, 338, 170, 60), "tag_normal.png" if hero == null else "tag_orange.png")
-	var category: String = P.word(info.get("category", "Support"))
-	if category == "Assist": category = "辅助"
+	_tag(modal, P.word(info.get("quality", "White")) + P.localized("color_suffix"), Rect2(798, 338, 155, 60), "tag_normal.png" if info.get("quality") == "White" else "tag_q_%s.png" % str(info.get("quality")).to_lower())
+	_tag(modal, P.localized("general_card") if hero == null else P.localized("codex_hero_class_tag") % P.localized("class_" + str(hero).to_lower()), Rect2(974, 338, 170, 60), "tag_normal.png" if hero == null else "tag_orange.png")
+	var category_code: String = str(info.get("category", "Support"))
+	var category: String = P.localized("word_support") if category_code == "Assist" else P.word(category_code)
 	var element: String = str(info.get("element")) if info.get("element") != null else "None"
-	if category == "伤害": category = P.word(element) + "系伤害" if element != "None" else "直接伤害"
+	if category_code == "Damage": category = P.word(element) + P.localized("codex_elemental_damage_suffix") if element != "None" else P.localized("ui_direct_damage")
 	_tag(modal, category, Rect2(1166, 338, 172, 60), "tag_%s.png" % element.to_lower() if element in ["Earth", "Metal", "Water", "Wood"] else "tag_normal.png")
 	modal.text(P.localized_text("等级 +%s · 已拥有 ×%s" % [entry.get("level", 0), copies]) if owned else P.localized_text("未拥有 · 合成后获得 +0 ") + CardDetails.localized_name(id, info), Rect2(798, 424, 690, 50), 27)
 	var effect_text: String = host.card_description(id, "full")
@@ -192,10 +198,10 @@ static func _details(ui: Control, host: Control) -> void:
 	var level_effects := PackedStringArray()
 	var level := int(entry.get("level", 0))
 	if entry.get("currentEffect") is Dictionary:
-		level_effects.append("当前：" + host.CardDetails.effect_text(entry.currentEffect))
+		level_effects.append(P.localized("codex_current_effect") + host.CardDetails.effect_text(entry.currentEffect))
 	elif level > 0:
-		level_effects.append("当前：" + CardDetails.effect_text(CardDetails.at_level(info, level)))
-	if entry.get("nextEffect") is Dictionary: level_effects.append("下一级：" + host.CardDetails.effect_text(entry.nextEffect))
+		level_effects.append(P.localized("codex_current_effect") + CardDetails.effect_text(CardDetails.at_level(info, level)))
+	if entry.get("nextEffect") is Dictionary: level_effects.append(P.localized("codex_next_effect") + host.CardDetails.effect_text(entry.nextEffect))
 	if not level_effects.is_empty():
 		if level > 0 and not effect_text.is_empty(): effect_text = ("Base: " if P.language() == "en" else "基础：") + effect_text
 		if not effect_text.is_empty(): effect_text += "\n"

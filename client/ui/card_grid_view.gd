@@ -120,7 +120,7 @@ func _sync_visible() -> void:
 		card.size = Vector2(218, 376)
 		card.scale = Vector2.ONE * _side / 218.0
 		if entry.has("tooltip"): card.tooltip_text = P.localized_text(str(entry.tooltip))
-		elif entry.has("tooltip_suffix"): card.tooltip_text = P.localized_text(card.tooltip_text + str(entry.tooltip_suffix))
+		elif entry.has("tooltip_suffix"): card.tooltip_text += P.localized_text(str(entry.tooltip_suffix))
 		mounted += 1
 		if card.get_meta("pool_rebuilt_on_acquire", false): rebuilt += 1
 	_waiting_for_pool = mounted < missing

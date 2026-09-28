@@ -2,6 +2,7 @@ extends Control
 
 const Art = preload("res://ui/art.gd")
 const P = preload("res://ui/palette.gd")
+const RemoteCopy = preload("res://ui/remote_copy.gd")
 const CardDetails = preload("res://ui/card_details.gd")
 const Exploration = preload("res://ui/exploration_view.gd")
 const Codex = preload("res://ui/codex_view.gd")
@@ -306,10 +307,11 @@ func _build_mail_rows(column: VBoxContainer) -> void:
 		# width here so the preview area is not collapsed by the action buttons.
 		row.custom_minimum_size = Vector2(760, 112)
 		column.add_child(row)
-		var title := str(item.get("title", P.localized_text("系统邮件")))
+		var title := RemoteCopy.field(item, "title")
+		if title.is_empty(): title = P.localized("system_mail")
 		var unread := not bool(item.get("read", item.get("isRead", false)))
 		var attachments: Array = item.get("attachments", []) if item.get("attachments", []) is Array else []
-		var preview := str(item.get("body", "")).replace("\n", " ").strip_edges()
+		var preview := RemoteCopy.field(item, "body").replace("\n", " ")
 		if preview.length() > 54: preview = preview.substr(0, 54) + "…"
 		var state_text := P.localized_text("未读") if unread else P.localized_text("已读")
 		var open_area := Control.new()
@@ -443,7 +445,8 @@ func _update_mail_row_read_state(modal: Control, id: String) -> void:
 	var title_label: Label = row.get_node_or_null("MailOpenArea/MailTitle")
 	if title_label == null: return
 	var item := _mail_item_by_id(id)
-	var title := str(item.get("title", P.localized_text("系统邮件")))
+	var title := RemoteCopy.field(item, "title")
+	if title.is_empty(): title = P.localized("system_mail")
 	title_label.text = "● %s  %s" % [P.localized_text("已读"), title]
 	title_label.add_theme_color_override("font_color", P.MUTED)
 
@@ -484,10 +487,12 @@ func _mail_detail_panel(parent: Control, item: Dictionary) -> void:
 	var column := VBoxContainer.new()
 	column.add_theme_constant_override("separation", 14)
 	content.add_child(column)
-	text(str(item.get("title", P.localized_text("系统邮件"))), Rect2(0, 0, 0, 0), 34, P.GOLD, column)
+	var title := RemoteCopy.field(item, "title")
+	text(title if not title.is_empty() else P.localized("system_mail"), Rect2(0, 0, 0, 0), 34, P.GOLD, column)
 	text("%s: %s" % [P.localized_text("发件人"), item.get("sender", "System")], Rect2(0, 0, 0, 0), 20, P.MUTED, column)
 	var body := Label.new()
-	body.text = str(item.get("body", item.get("content", "")))
+	body.text = RemoteCopy.field(item, "body")
+	if body.text.is_empty(): body.text = str(item.get("content", ""))
 	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	body.custom_minimum_size.y = 120
 	body.add_theme_font_override("font", P.font_for_text(body.text, 24))
@@ -681,7 +686,7 @@ func _loadout(rect: Rect2, editable: bool, snapshot: Dictionary = {}) -> void:
 		for state in ["normal", "hover", "pressed", "disabled"]:
 			slot.add_theme_stylebox_override(state, StyleBoxEmpty.new())
 		add_child(slot)
-		slot.tooltip_text = host.EquipmentDetails.description(item) if not item.is_empty() else P.word(slots[i]) + " · 未穿戴"
+		slot.tooltip_text = host.EquipmentDetails.description(item) if not item.is_empty() else P.word(slots[i]) + P.localized("equipment_unequipped_suffix")
 		var equipment_image := Art.equipment_texture(item) if not item.is_empty() else _item(slots[i])
 		var equipment_icon := picture(equipment_image, Rect2(point + Vector2(18, 12), Vector2(84, 84)))
 		equipment_icon.name = ("EquippedItem_" if id != null else "UnequippedItem_") + slots[i]
@@ -779,7 +784,7 @@ func _preparation() -> void:
 		slot.size = Art.COMMON_CELL_DISPLAY_SIZE
 		slot.custom_minimum_size = Art.COMMON_CELL_DISPLAY_SIZE
 		slot.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		slot.tooltip_text = "安全格 %s" % (slot_index + 1) if safe_slot_lookup.has(slot_index) else str(slot_index + 1)
+		slot.tooltip_text = P.localized("equipment_safe_slots") % (slot_index + 1) if safe_slot_lookup.has(slot_index) else str(slot_index + 1)
 		bag_content.add_child(slot)
 		if safe_slot_lookup.has(slot_index):
 			Art.add_safe_slot_frame(slot)
@@ -825,7 +830,7 @@ func _gear() -> void:
 		list.add_child(row)
 		Art.image(row, Art.equipment_texture(item) if Art.equipment_texture(item) != null else _item(item.slot), Vector2(68, 70))
 		var selected: bool = item.get("instanceId", "") in host.gear_draft
-		var entry_text: String = ("已穿戴 · " if selected else "穿戴 · ") + host._equipment_name(item)
+		var entry_text: String = P.localized("equipment_worn_prefix" if selected else "equipment_equip_prefix") + host._equipment_name(item)
 		var entry: Button = host._button(row, entry_text, func():
 			if scroll.can_activate():
 				if selected: host._equip(item)
@@ -833,7 +838,7 @@ func _gear() -> void:
 				else: host._show_equipment_details(item, func(): host._equip(item)),
 			Game.busy or item.get("location") not in ["Inventory", "Equipped"], BLUE if selected else ORANGE)
 		entry.name = "EquipmentEntry_" + str(item.get("instanceId", ""))
-		entry.tooltip_text = host.EquipmentDetails.description(item) + ("\n已穿戴草稿；再次点击卸下" if selected else "\n点击穿戴到草稿")
+		entry.tooltip_text = host.EquipmentDetails.description(item) + P.localized("equipment_draft_worn_tip" if selected else "equipment_draft_equip_tip")
 		entry.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.set_deferred("scroll_vertical", host._equipment_scroll)
 	scroll.get_v_scroll_bar().value_changed.connect(func(value): host._equipment_scroll = int(value))
@@ -1033,6 +1038,7 @@ func _shop() -> void:
 	scroll.position = Vector2(55, 210)
 	scroll.size = Vector2(1810, 700)
 	var row := HBoxContainer.new()
+	row.name = "ShopProductRow"
 	row.add_theme_constant_override("separation", 20)
 	scroll.add_child(row)
 	for item in host.shop.get("products", []):
@@ -1042,6 +1048,8 @@ func _shop() -> void:
 		var product_title := _product_title(kind, payload)
 		var item_panel := Panel.new()
 		item_panel.name = "Product_" + str(item.productId)
+		item_panel.set_meta("kind", kind)
+		item_panel.set_meta("payload", str(item.get("payload", "")))
 		item_panel.custom_minimum_size = Vector2(240, 640)
 		item_panel.add_theme_stylebox_override("panel", Art.style("UI/CardCodex/card_codex_dialog_panel_normal.png"))
 		row.add_child(item_panel)
@@ -1063,6 +1071,7 @@ func _shop() -> void:
 			image.position = Vector2(30, 127)
 			image.size = Vector2(180, 230)
 		var detail := Label.new()
+		detail.name = "ShopDetail"
 		var amount: int = int(payload.get("amount", payload.get("count", 0)))
 		var quantity_line := (P.localized("shop_quantity_line") % amount) + "\n" if amount > 0 else ""
 		detail.text = quantity_line + (P.localized("shop_purchase_count") % [item.purchased, item.limit]) + "\n" + (P.localized("shop_price") % item.priceGold)
@@ -1085,13 +1094,53 @@ func _shop() -> void:
 	if row.get_child_count() == 0: text("暂无商品，请稍后刷新", Rect2(640, 440, 790, 95), 34, P.MUTED)
 	var stock_key := "shop_stock_summary" if host._shop_inventory_ready else "shop_stock_refresh"
 	var stock_text := P.localized(stock_key) % paid_bags if host._shop_inventory_ready else P.localized(stock_key)
-	text(stock_text, Rect2(85, 908, 950, 34), 20, P.MUTED)
+	text(stock_text, Rect2(85, 908, 950, 34), 20, P.MUTED).name = "ShopStockSummary"
 	var refresh_used := int(host.shop.get("refreshesUsed", 0))
 	var refresh_limit := int(host.shop.get("refreshLimit", 0))
 	var refresh_remaining := maxi(0, refresh_limit - refresh_used)
 	text("每日刷新次数：剩余 %s / %s" % [refresh_remaining, refresh_limit], Rect2(85, 944, 950, 42), 24, P.GOLD)
 	var refresh_button := button(P.localized("refresh"), Rect2(1630, 929, 190, 54), host._refresh_shop, Game.busy or refresh_remaining <= 0, ORANGE)
 	refresh_button.name = "RefreshShopButton"
+	host._restore_shop_scroll(scroll)
+
+func sync_shop_state(changed_product_id: String = "") -> bool:
+	var row := get_node_or_null("ShopScroll/ShopProductRow") as HBoxContainer
+	if row == null: return false
+	var products: Array = host.shop.get("products", [])
+	if row.get_child_count() != products.size(): return false
+	for index in products.size():
+		var product: Dictionary = products[index]
+		var panel_node := row.get_child(index) as Panel
+		if panel_node == null or panel_node.name != "Product_" + str(product.get("productId", "")): return false
+		if panel_node.get_meta("kind", "") != product.get("kind", "") or panel_node.get_meta("payload", "") != str(product.get("payload", "")): return false
+	var consumables: Dictionary = host.inventory.get("consumables", {})
+	var paid_bags: int = int(consumables.get("advancedBagCount", 0)) + int(consumables.get("topBagCount", 0))
+	var gold: int = int(Game.lobby.get("wallet", {}).get("gold", 0))
+	for index in products.size():
+		var product: Dictionary = products[index]
+		var panel_node := row.get_child(index) as Panel
+		var detail := panel_node.get_node_or_null("ShopDetail") as Label
+		var buy := panel_node.get_node_or_null("Purchase") as Button
+		if detail == null or buy == null: return false
+		var parsed: Variant = JSON.parse_string(str(product.get("payload", "{}")))
+		var payload: Dictionary = parsed if parsed is Dictionary else {}
+		var amount: int = int(payload.get("amount", payload.get("count", 0)))
+		if changed_product_id.is_empty() or str(product.get("productId", "")) == changed_product_id:
+			var quantity_line := (P.localized("shop_quantity_line") % amount) + "\n" if amount > 0 else ""
+			detail.text = quantity_line + (P.localized("shop_purchase_count") % [product.get("purchased", 0), product.get("limit", 0)]) + "\n" + (P.localized("shop_price") % product.get("priceGold", 0))
+		var is_bag: bool = product.get("kind", "") in ["AdvancedBag", "TopBag"]
+		var stock_full: bool = is_bag and paid_bags + maxi(1, amount) > 3
+		var stock_unknown: bool = is_bag and not host._shop_inventory_ready
+		var already_owned: bool = product.get("kind", "") == "Cards" and payload.has("cardId") and bool(product.get("alreadyOwned", false))
+		buy.text = P.localized("refresh_inventory") if stock_unknown else (P.localized("inventory_full") if stock_full else (P.localized("activated") if already_owned else P.localized("buy")))
+		buy.disabled = Game.busy or stock_unknown or stock_full or already_owned or int(product.get("purchased", 0)) >= int(product.get("limit", 0)) or int(product.get("priceGold", 0)) > gold
+	var wallet_label := get_node_or_null("WalletGold") as Label
+	if wallet_label != null: wallet_label.text = "%s %s" % [P.localized_text("金币"), gold]
+	var stock_label := get_node_or_null("ShopStockSummary") as Label
+	if stock_label != null:
+		var stock_key := "shop_stock_summary" if host._shop_inventory_ready else "shop_stock_refresh"
+		stock_label.text = P.localized(stock_key) % paid_bags if host._shop_inventory_ready else P.localized(stock_key)
+	return true
 
 func _shop_card_presentation(item_panel: Panel, image: TextureRect, payload: Dictionary) -> void:
 	var card_id := str(payload.get("cardId", ""))
