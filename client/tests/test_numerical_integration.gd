@@ -1,11 +1,12 @@
-extends SceneTree
+extends Node
 
 const Details = preload("res://ui/numerical_details.gd")
 const Proto = preload("res://network/protobuf.gd")
 const PoolView = preload("res://ui/monster_pool_view.gd")
 var failures: Array[String] = []
 
-func _initialize() -> void:
+func _ready() -> void:
+	Game.set_process(false)
 	call_deferred("_run")
 
 func _check(condition: bool, message: String) -> void:
@@ -35,13 +36,11 @@ func _run() -> void:
 	encoded = proto.encode("RoomMonsterPool", pool)
 	decoded = proto.decode("RoomMonsterPool", encoded)
 	_check(proto.error.is_empty() and int(decoded.get("capacity", 0)) == 5, "Monster pool must roundtrip")
-	var game: Node = root.get_node("Game")
-	game.set_process(false)
-	game.room = {"player":{"monster_pool":pool}, "allowed_actions":["monster.choose"]}
-	_check(game._intent_valid("monster.choose", decision), "Current offer should stay valid")
-	game.room.player.monster_pool.pending = []
-	_check(not game._intent_valid("monster.choose", decision), "Stale offer after reconnect must be discarded")
+	Game.room = {"player":{"monster_pool":pool}, "allowed_actions":["monster.choose"]}
+	_check(Game._intent_valid("monster.choose", decision), "Current offer should stay valid")
+	Game.room.player.monster_pool.pending = []
+	_check(not Game._intent_valid("monster.choose", decision), "Stale offer after reconnect must be discarded")
 	for language in PoolView.TEXT.keys():
 		_check(not str(PoolView.TEXT[language].get("accept", "")).is_empty(), "Missing localized monster action: " + language)
 	print(JSON.stringify({"suite":"numerical-integration", "ok":failures.is_empty(), "failures":failures}))
-	quit(0 if failures.is_empty() else 1)
+	get_tree().quit(0 if failures.is_empty() else 1)
