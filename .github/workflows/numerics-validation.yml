@@ -19,9 +19,21 @@ jobs:
   server-validation:
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_PASSWORD: fc_ci_only
+          POSTGRES_DB: fc_numerics_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d fc_numerics_ci"
+          --health-interval 5s --health-timeout 5s --health-retries 15
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: '1'
       DOTNET_NOLOGO: '1'
+      FANTASYCARD_TEST_POSTGRES: Host=127.0.0.1;Port=5432;Database=fc_numerics_ci;Username=postgres;Password=fc_ci_only
     steps:
       - uses: actions/checkout@v4
         with:
@@ -51,3 +63,14 @@ jobs:
           path: ${{ runner.temp }}/fc-numerics-${{ github.run_id }}-${{ github.run_attempt }}/
           if-no-files-found: warn
           retention-days: 14
+      - name: Prepare offline compiler for this integration only
+        if: always() && github.event.pull_request.number == 11 && github.event.pull_request.head.repo.full_name == github.repository
+        run: python tools/numerics/package_offline_toolchain.py "${{ runner.temp }}/fc-toolchain.tar.gz"
+      - name: Preserve private offline diagnostic toolchain
+        if: always() && github.event.pull_request.number == 11 && github.event.pull_request.head.repo.full_name == github.repository
+        uses: actions/upload-artifact@v4
+        with:
+          name: numerics-toolchain-${{ github.run_id }}
+          path: ${{ runner.temp }}/fc-toolchain.tar.gz
+          if-no-files-found: error
+          retention-days: 1
