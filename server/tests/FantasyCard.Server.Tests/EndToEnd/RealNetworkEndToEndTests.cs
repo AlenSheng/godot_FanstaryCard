@@ -169,6 +169,9 @@ public sealed partial class RealNetworkEndToEndTests
         startInfo.Environment["ASPNETCORE_URLS"] = $"http://127.0.0.1:{port}";
         startInfo.Environment["ConnectionStrings__Postgres"] = connectionString;
         startInfo.Environment["Identity__EnableLocalAuth"] = "true";
+        // This suite exercises the explicitly supported legacy client rollout path.
+        startInfo.Environment["ProtobufHttp__AllowLegacyJson"] = "true";
+        startInfo.Environment["Realtime__AllowLegacyAccessTokenQuery"] = "true";
         startInfo.Environment.Remove("OTEL_EXPORTER_OTLP_ENDPOINT");
         return NetworkServerProcess.Start(startInfo);
     }

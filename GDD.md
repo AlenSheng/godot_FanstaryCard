@@ -171,7 +171,7 @@ v0.34 切片补丁仍有效。v0.35–v0.41 战斗流水与怪物表仍有效；
 
 ### 0.6.1 网络协议边界
 
-- **HTTPS REST 保持 JSON**：媒体类型为 `application/json`；错误继续使用 `application/problem+json`。REST DTO 不与 WebSocket DTO 混用。
+- **HTTPS REST 按边界编码**（2026-09-28 网络迁移授权）：第一方登录及内部玩法 API 使用具名 Protobuf 消息和 `application/protobuf`；公告、管理后台、登录前版本/维护信息保留 JSON。旧游戏 JSON 仅通过明确兼容开关启用，禁止解析失败后换格式重发写请求。HTTP DTO 不与 WebSocket DTO 混用。具体契约及验收见 `docs/network-protobuf-migration/PLAN.md`。
 - **WebSocket 只使用 Protobuf 二进制帧**：`/ws/v1/session` 的命令、事件、快照和重放消息均按 `protocol/realtime/v1/realtime.proto` 编码；禁止文本帧，禁止把 JSON 字符串或 JSON 字节塞进 Protobuf `bytes` 字段绕过约束。
 - 每条 WebSocket 消息只承载一个完整信封，当前上限 **16 KiB**，支持 WebSocket 分片；接收完成后再反序列化。
 - `protocol_version` 必填。字段号一经发布不得复用或改变语义；删除字段必须 `reserved`；新增字段保持向后兼容。破坏性变更新建 `v2` 路径与 schema，不在 `v1` 静默修改。
@@ -3242,7 +3242,7 @@ YAGNI：采用模块化单体，不预做微服务拆分。Steam 先发，但从
 | 服务端 | **ASP.NET Core / .NET 10 LTS（C#）** | 模块化单体；Linux + Docker 部署 |
 | 主数据库 | **PostgreSQL** | 账号、角色、背包、卡组、装备、订单、市场交易的权威数据源 |
 | 缓存 | **Redis（按需）** | 排行榜、匹配队列、会话、限流与短锁；不得作为永久数据源 |
-| 通信 | HTTPS REST + WebSocket | REST 使用 JSON；匹配、房间和战斗事件走 WebSocket Protobuf v1 二进制帧 |
+| 通信 | HTTPS REST + WebSocket | 第一方登录/玩法 REST 使用 Protobuf，外围保留 JSON（见 §0.6.1）；匹配、房间和战斗事件走 WebSocket Protobuf v1 二进制帧 |
 | 静态资源 | 对象存储 + CDN | 热更新资源、公告和配置版本；国内与海外可分别配置加速域名 |
 | 可观测性 | OpenTelemetry + 日志/指标平台 | 服务端必须带请求追踪、结构化日志、错误告警和关键经济流水审计 |
 

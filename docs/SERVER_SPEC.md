@@ -26,7 +26,7 @@ PVE 与 1v1 **同一套服务端结算**。客户端只发意图，不提交伤�
 
 ## 1.1 通信编码
 
-- REST 继续使用 UTF-8 JSON 与 `application/problem+json`。
+- 第一方登录及内部玩法 REST 使用 `application/protobuf` 与类型化错误；外围公告、管理和登录前信息保留 UTF-8 JSON。旧游戏 JSON 仅通过显式兼容开关提供。迁移范围与验收见 [网络迁移计划](network-protobuf-migration/PLAN.md)，保持既有 HTTP 状态码、鉴权、事务及幂等语义。
 - `/ws/v1/session` 只接受/发送 Protobuf 二进制帧，schema 为 `protocol/realtime/v1/realtime.proto`；文本帧以 `InvalidMessageType` 关闭。
 - Protobuf 信封必须带 `protocol_version=1`，每条完整消息上限 16 KiB。`payload` 只能装对应的具名 Protobuf message，禁止内嵌 JSON。
 - 字段号发布后不可复用；兼容新增字段，删除字段须保留编号；破坏性变更新建协议版本。

@@ -35,8 +35,8 @@ public sealed class LocalizedContentContractTests
         using var json = JsonDocument.Parse(JsonSerializer.Serialize(response, WebJson));
         Assert.Equal("System Mail", json.RootElement.GetProperty("titleEn").GetString());
         Assert.Equal("English body", json.RootElement.GetProperty("bodyEn").GetString());
-        Assert.True(typeof(ClientSettingsRepository).Assembly.GetManifestResourceNames().Any(
-            name => name.EndsWith(".V028__localized_admin_content.sql", StringComparison.Ordinal)));
+        Assert.Contains(typeof(ClientSettingsRepository).Assembly.GetManifestResourceNames(),
+            name => name.EndsWith(".V028__localized_admin_content.sql", StringComparison.Ordinal));
     }
 
     private sealed class TestEnvironment : IHostEnvironment

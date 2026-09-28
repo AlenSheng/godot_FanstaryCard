@@ -4,7 +4,7 @@
 | --- | --- |
 | 目标 | 从登录/档案/WebSocket 骨架发展为支持完整在线原型的权威模块化单体 |
 | 技术 | ASP.NET Core / .NET 10 LTS、.NET SDK 10.0.400、PostgreSQL、Redis 按需 |
-| 通信 | HTTPS REST 使用 JSON；WebSocket 使用 Protobuf v1 二进制帧 |
+| 通信 | 第一方登录/玩法 HTTPS REST 使用 Protobuf，外围 JSON；WebSocket 使用 Protobuf v1 二进制帧。旧游戏 JSON 由显式兼容开关控制，迁移验收见 network-protobuf-migration/PLAN.md |
 | 部署 | Linux + Docker |
 | 数据原则 | PostgreSQL 是永久资产唯一权威；Redis 不保存唯一业务数据 |
 
