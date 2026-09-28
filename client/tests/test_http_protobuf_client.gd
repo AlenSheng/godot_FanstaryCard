@@ -21,12 +21,24 @@ func run() -> void:
 		var encoded := codec.encode(vector.message, decoded)
 		check(codec.error.is_empty(), "encode vector " + vector.name)
 		check(codec.decode(vector.message, encoded) == decoded, "semantic roundtrip " + vector.name)
+		if Http.SCHEMA.data.messages.has(vector.message):
+			check(codec.decode_http(vector.message, str(vector.hex).hex_decode()) == Http.from_wire(vector.message, decoded), "direct HTTP adaptation " + vector.name)
+	for message in Http.SCHEMA.data.messages:
+		var raw := proto.decode(message, PackedByteArray())
+		check(proto.decode_http(message, PackedByteArray()) == Http.from_wire(message, raw), "empty/default HTTP adaptation " + message)
 	var packed := proto.decode("CreatePreparationRequest", "28012a0202032804".hex_decode())
 	check(proto.error.is_empty() and packed.safe_slot_indexes == [1,2,3,4], "mixed packed order")
 	var negative := proto.decode("CreatePreparationRequest", "28ffffffffffffffffff01".hex_decode())
 	check(negative.safe_slot_indexes == [-1], "negative int32")
 	var merged := proto.decode("BootstrapResponse", "1a030a01611a03120162".hex_decode())
 	check(proto.error.is_empty() and merged.player.user_id == "a" and merged.player.display_name == "b", "singular message merge")
+	var presence := proto.decode_http("BootstrapResponse", "1a0220071a021200".hex_decode())
+	check(proto.error.is_empty() and presence.player.version == 7 and presence.player.displayName == "", "message merge does not overwrite absent scalars")
+	for malformed_nested in ["1a01080a00", "1a0220801a0100"]:
+		proto.decode_http("BootstrapResponse", malformed_nested.hex_decode())
+		check(not proto.error.is_empty(), "nested occurrence end boundary " + malformed_nested)
+	proto.decode("Empty", PackedByteArray(), 25)
+	check(not proto.error.is_empty(), "explicit decode depth limit")
 	var optional := proto.decode("PurchaseShopRequest", "1000".hex_decode())
 	check(optional.quantity == 0 and not proto.decode("PurchaseShopRequest", PackedByteArray()).has("quantity"), "optional zero versus absent")
 	for hex in ["00", "0a8001", "088080808080808080808002", "2a0180", "0d0000", "0b", "ffffffffffffffffff01"]:

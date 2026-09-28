@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http.Headers;
 using FantasyCard.Contracts.Http;
@@ -18,7 +19,23 @@ public sealed partial class RealNetworkEndToEndTests
         timeout.CancelAfter(TimeSpan.FromSeconds(100));
         var ct = timeout.Token;
         var port = ReserveLoopbackPort();
-        await using var server = StartServer(database.ConnectionString, port);
+        var start = new ProcessStartInfo("dotnet")
+        {
+            WorkingDirectory = FindServerProjectDirectory(), UseShellExecute = false,
+            RedirectStandardOutput = true, RedirectStandardError = true, CreateNoWindow = true
+        };
+        start.ArgumentList.Add(typeof(FantasyCard.Server.Persistence.DatabaseMigrator).Assembly.Location);
+        start.Environment["ASPNETCORE_ENVIRONMENT"] = "Development";
+        start.Environment["ASPNETCORE_URLS"] = $"http://127.0.0.1:{port}";
+        start.Environment["ConnectionStrings__Postgres"] = database.ConnectionString;
+        start.Environment["Identity__EnableLocalAuth"] = "true";
+        start.Environment["ProtobufHttp__AllowLegacyJson"] = "false";
+        start.Environment["Realtime__AllowLegacyAccessTokenQuery"] = "false";
+        // Cancellation requires a queued ticket; Development's instant bot fill
+        // otherwise races the DELETE and tests room launch instead of cancellation.
+        start.Environment["Matchmaking__BotFillDelaySeconds"] = "30";
+        start.Environment.Remove("OTEL_EXPORTER_OTLP_ENDPOINT");
+        await using var server = NetworkServerProcess.Start(start);
         using var client = new HttpClient { BaseAddress = new Uri($"http://127.0.0.1:{port}"), Timeout = TimeSpan.FromSeconds(12) };
         await server.WaitUntilReadyAsync(client, ct);
         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(HttpProtocolRegistry.MediaType));
@@ -58,12 +75,19 @@ public sealed partial class RealNetworkEndToEndTests
         Assert.Equal(Guid.Parse(buyer.Player.UserId), await database.ScalarAsync<Guid>("SELECT owner_id FROM equipments WHERE instance_id=$1", equipment));
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", seller.AccessToken);
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", buyer.AccessToken);
-        // Use a fresh item for cancellation. Relisting a sold item is a separately reproduced pre-existing schema defect (qa-report).
-        var cancellationEquipment = Guid.NewGuid();
-        await using (var seed = database.DataSource.CreateCommand("INSERT INTO equipments(instance_id,owner_id,slot,quality,level,is_bound,location,version,created_at) VALUES($1,$2,'Chest','Blue',0,false,'Inventory',1,now())"))
-        { seed.Parameters.AddWithValue(cancellationEquipment); seed.Parameters.AddWithValue(Guid.Parse(buyer.Player.UserId)); await seed.ExecuteNonQueryAsync(ct); }
-        var relisted = Wire.MarketListingResponse.Parser.ParseFrom(await Call("POST", "/api/v1/market/listings", new Wire.CreateMarketListingRequest { EquipmentId = cancellationEquipment.ToString(), PriceGold = 101 }));
+        // The buyer must be able to resell the exact purchased equipment while the
+        // immutable original Sold listing and transaction remain available.
+        var relisted = Wire.MarketListingResponse.Parser.ParseFrom(await Call("POST", "/api/v1/market/listings",
+            new Wire.CreateMarketListingRequest { EquipmentId = equipment.ToString(), PriceGold = 101 }));
+        Assert.NotEqual(listing.ListingId, relisted.ListingId);
+        Assert.Equal(2L, await database.ScalarAsync<long>("SELECT count(*) FROM market_listings WHERE equipment_id=$1", equipment));
+        Assert.Equal(1L, await database.ScalarAsync<long>("SELECT count(*) FROM market_listings WHERE equipment_id=$1 AND status='Active'", equipment));
+        Assert.Equal("Sold", await database.ScalarAsync<string>("SELECT status FROM market_listings WHERE listing_id=$1", Guid.Parse(listing.ListingId)));
+        Assert.Equal("MarketListed", await database.ScalarAsync<string>("SELECT location FROM equipments WHERE instance_id=$1", equipment));
         await Call("DELETE", $"/api/v1/market/listings/{relisted.ListingId}");
+        Assert.Equal("Inventory", await database.ScalarAsync<string>("SELECT location FROM equipments WHERE instance_id=$1", equipment));
+        Assert.Equal(Guid.Parse(buyer.Player.UserId), await database.ScalarAsync<Guid>("SELECT owner_id FROM equipments WHERE instance_id=$1", equipment));
+        Assert.Equal(1L, await database.ScalarAsync<long>("SELECT count(*) FROM market_transactions WHERE listing_id=$1", Guid.Parse(listing.ListingId)));
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", seller.AccessToken);
         var loadout = Wire.LoadoutResponse.Parser.ParseFrom(await Call("GET", "/api/v1/loadouts/Priest"));
         var save = new Wire.UpdateLoadoutRequest { ExpectedVersion = loadout.Version }; save.EquipmentIds.Add(loadout.EquipmentIds);

@@ -87,8 +87,8 @@ static func decode_response(contract: Dictionary, status: int, headers: PackedSt
 	var proto := Proto.new(true)
 	var success := status >= 200 and status < 300
 	var message: String = contract.response if success else "HttpError"
-	var decoded: Dictionary = proto.decode(message, bytes)
+	var decoded: Dictionary = proto.decode_http(message, bytes)
 	if not proto.error.is_empty(): return {"ok": false, "data": null, "error": "服务器协议内容损坏: " + proto.error}
-	var data: Variant = from_wire(message, decoded)
+	var data: Variant = decoded
 	if success and contract.get("unwrap_items", false): data = data.items
 	return {"ok": true, "data": data, "error": ""}

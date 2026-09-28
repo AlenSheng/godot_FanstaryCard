@@ -1268,6 +1268,9 @@ public sealed class PostgresRuntimeIntegrationTests
             cancellationToken);
         var terminal = await actor.ExecuteAsync(new GetRoomSnapshotCommand(), cancellationToken);
         Assert.Equal(RoomPlayerPhase.Extracted, Assert.Single(terminal.Players).Phase);
+        // Actor command completion precedes the asynchronous persistence observer.
+        await database.WaitForScalarAsync(1L,
+            "SELECT count(*) FROM match_settlements WHERE match_id=$1", matchId);
         Assert.Equal(1L, await database.ScalarAsync<long>(
             "SELECT count(*) FROM match_settlements WHERE match_id=$1", matchId));
         Assert.Equal(3L, await database.ScalarAsync<long>(
@@ -1402,6 +1405,9 @@ public sealed class PostgresRuntimeIntegrationTests
         Assert.Contains(relic.Items, item => item.ItemId == backpackEquipmentId.ToString("D"));
         Assert.Contains(relic.Items, item => item.ItemId == wornEquipmentId.ToString("D"));
 
+        // Actor command completion precedes the asynchronous persistence observer.
+        await database.WaitForScalarAsync(1L,
+            "SELECT count(*) FROM match_settlements WHERE match_id=$1 AND result='Dead'", matchId);
         Assert.Equal(1L, await database.ScalarAsync<long>(
             "SELECT count(*) FROM match_settlements WHERE match_id=$1 AND result='Dead'", matchId));
         Assert.Equal(4L, await database.ScalarAsync<long>(
@@ -1866,6 +1872,28 @@ internal sealed class PostgresTestSchema : IAsyncDisposable
                 throw new InvalidOperationException("The test loadout is missing.");
         }
         return feetId;
+    }
+
+    public async Task WaitForScalarAsync(long expected, string sql, params object[] parameters)
+    {
+        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
+        timeout.CancelAfter(TimeSpan.FromSeconds(10));
+        long? actual = null;
+        try
+        {
+            while (true)
+            {
+                await using var command = DataSource.CreateCommand(sql);
+                foreach (var parameter in parameters) command.Parameters.AddWithValue(parameter);
+                actual = (long?)await command.ExecuteScalarAsync(timeout.Token);
+                if (actual == expected) return;
+                await Task.Delay(TimeSpan.FromMilliseconds(20), timeout.Token);
+            }
+        }
+        catch (OperationCanceledException) when (!TestContext.Current.CancellationToken.IsCancellationRequested)
+        {
+            Assert.Fail($"Persistence did not reach expected scalar {expected} within 10 seconds; last value {actual}. Query: {sql}");
+        }
     }
 
     public async Task<T> ScalarAsync<T>(string sql, params object[] parameters)

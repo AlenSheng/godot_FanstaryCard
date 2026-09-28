@@ -19,14 +19,15 @@ public static class HttpDtoMapper
     private static readonly ConcurrentDictionary<(MessageDescriptor Descriptor, Type Type), ReadBinding[]> Readers = new();
     private static readonly ConcurrentDictionary<(MessageDescriptor Descriptor, Type Type), ConstructorMetadata> Constructors = new();
 
-    private sealed record MessageMetadata(Func<IMessage> Create, FieldDescriptor[] Fields);
-    private sealed record ReadBinding(FieldDescriptor Field, PropertyInfo? Property);
+    private sealed record MessageMetadata(Func<IMessage> Create, FieldDescriptor[] Fields, FieldDescriptor[] ValidatedFields);
+    private sealed record ReadBinding(FieldDescriptor Field, Func<object, object?>? Get, Action<IMessage, object>? CopyScalar);
     private sealed record ParameterBinding(FieldDescriptor? Field, Type Type, Type? ItemType, object? DefaultValue);
-    private sealed record ConstructorMetadata(ConstructorInfo Constructor, ParameterBinding[] Parameters);
+    private sealed record ConstructorMetadata(Func<object?[], object> Create, ParameterBinding[] Parameters);
 
     private static MessageMetadata Metadata(MessageDescriptor descriptor) => Messages.GetOrAdd(descriptor, static d =>
         new(Expression.Lambda<Func<IMessage>>(Expression.Convert(Expression.New(d.ClrType), typeof(IMessage))).Compile(),
-            d.Fields.InFieldNumberOrder().ToArray()));
+            d.Fields.InFieldNumberOrder().ToArray(),
+            d.Fields.InFieldNumberOrder().Where(f => f.IsRepeated || f.FieldType is FieldType.String or FieldType.Message).ToArray()));
 
     private static Dictionary<string, PropertyInfo> PropertyMap(Type type) => Properties.GetOrAdd(type, static t =>
     {
@@ -39,6 +40,29 @@ public static class HttpDtoMapper
         }
         return result;
     });
+
+    private static ReadBinding BindReader(FieldDescriptor field, PropertyInfo? sourceProperty)
+    {
+        if (sourceProperty is null) return new(field, null, null);
+        var source = Expression.Parameter(typeof(object), "source");
+        var value = Expression.Property(Expression.Convert(source, sourceProperty.DeclaringType!), sourceProperty);
+        var get = Expression.Lambda<Func<object, object?>>(Expression.Convert(value, typeof(object)), source).Compile();
+        if (field.IsRepeated || field.FieldType == FieldType.Message) return new(field, get, null);
+        var targetProperty = PropertyMap(field.ContainingType.ClrType).GetValueOrDefault(Normalize(field.Name));
+        if (targetProperty?.SetMethod is null) return new(field, get, null);
+        var message = Expression.Parameter(typeof(IMessage), "message");
+        var target = Expression.Property(Expression.Convert(message, targetProperty.DeclaringType!), targetProperty);
+        var nullable = Nullable.GetUnderlyingType(sourceProperty.PropertyType);
+        Expression converted;
+        if (sourceProperty.PropertyType == targetProperty.PropertyType) converted = value;
+        else if (nullable == targetProperty.PropertyType) converted = Expression.Property(value, "Value");
+        else return new(field, get, null); // UUID/date/decimal/enum adapters retain their explicit conversion.
+        Expression assign = Expression.Block(Expression.Assign(target, converted), Expression.Empty());
+        if (nullable is not null) assign = Expression.IfThen(Expression.Property(value, "HasValue"), assign);
+        else if (!sourceProperty.PropertyType.IsValueType)
+            assign = Expression.IfThen(Expression.NotEqual(value, Expression.Constant(null, sourceProperty.PropertyType)), assign);
+        return new(field, get, Expression.Lambda<Action<IMessage, object>>(assign, message, source).Compile());
+    }
 
     private static string Normalize(string name) => name.Replace("_", "", StringComparison.Ordinal);
 
@@ -79,13 +103,18 @@ public static class HttpDtoMapper
         {
             var properties = PropertyMap(key.Type);
             return Metadata(key.Descriptor).Fields.Select(field =>
-                new ReadBinding(field, properties.GetValueOrDefault(Normalize(field.Name)))).ToArray();
+                BindReader(field, properties.GetValueOrDefault(Normalize(field.Name)))).ToArray();
         });
         foreach (var binding in bindings)
         {
             var field = binding.Field;
+            if (binding.CopyScalar is not null)
+            {
+                binding.CopyScalar(message, value);
+                continue;
+            }
             object? source = wrapItems && field.Name == "items" ? value
-                : value is JsonElement element ? ReadJson(element, field.Name) : binding.Property?.GetValue(value);
+                : value is JsonElement element ? ReadJson(element, field.Name) : binding.Get?.Invoke(value);
             if (source is null) continue;
             if (field.IsRepeated)
             {
@@ -113,7 +142,11 @@ public static class HttpDtoMapper
                     field?.IsRepeated == true ? parameter.ParameterType.GetGenericArguments()[0] : null,
                     parameter.HasDefaultValue ? parameter.DefaultValue : Default(parameter.ParameterType));
             }).ToArray();
-            return new ConstructorMetadata(constructor, parameters);
+            var args = Expression.Parameter(typeof(object[]), "arguments");
+            var create = Expression.Lambda<Func<object?[], object>>(
+                Expression.Convert(Expression.New(constructor, constructor.GetParameters().Select((parameter, index) =>
+                    Expression.Convert(Expression.ArrayIndex(args, Expression.Constant(index)), parameter.ParameterType))), typeof(object)), args).Compile();
+            return new ConstructorMetadata(create, parameters);
         });
         var arguments = new object?[metadata.Parameters.Length];
         for (var i = 0; i < arguments.Length; i++)
@@ -135,7 +168,7 @@ public static class HttpDtoMapper
             }
             else arguments[i] = FromWire(source, parameter.Type);
         }
-        return metadata.Constructor.Invoke(arguments);
+        return metadata.Create(arguments);
     }
 
     private static object? Default(Type type) => type.IsValueType ? Activator.CreateInstance(type) : null;
@@ -215,7 +248,7 @@ public static class HttpDtoMapper
     {
         ArgumentNullException.ThrowIfNull(message);
         if (depth > HttpProtocolRegistry.MaximumDepth) throw new InvalidDataException("HTTP protobuf nesting limit.");
-        foreach (var field in Metadata(message.Descriptor).Fields)
+        foreach (var field in Metadata(message.Descriptor).ValidatedFields)
         {
             var value = field.Accessor.GetValue(message);
             if (field.IsRepeated)

@@ -52,10 +52,9 @@ public sealed class EconomyReconciliationRepository(NpgsqlDataSource dataSource)
                 (SELECT count(*)
                  FROM market_listings AS listing
                  LEFT JOIN market_transactions AS txn ON txn.listing_id = listing.listing_id
-                 LEFT JOIN equipments AS equipment ON equipment.instance_id = listing.equipment_id
                  WHERE listing.status = 'Sold'
-                   AND (txn.transaction_id IS NULL OR equipment.instance_id IS NULL
-                        OR equipment.owner_id <> txn.buyer_id OR equipment.location <> 'Inventory')),
+                   AND (txn.transaction_id IS NULL OR txn.seller_id <> listing.seller_id
+                        OR txn.price_gold <> listing.price_gold)),
                 (SELECT count(*) FROM market_transactions
                  WHERE seller_net_gold + fee_gold <> price_gold OR buyer_id = seller_id),
                 (SELECT count(*) FROM ledger_chain

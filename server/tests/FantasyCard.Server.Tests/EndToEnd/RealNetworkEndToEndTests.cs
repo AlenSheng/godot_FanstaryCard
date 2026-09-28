@@ -210,10 +210,14 @@ public sealed partial class RealNetworkEndToEndTests
         private readonly Process _process;
         private readonly StringBuilder _output = new();
         private readonly object _outputLock = new();
+        private readonly string _logPath;
 
         private NetworkServerProcess(Process process)
         {
             _process = process;
+            var directory = Path.GetFullPath(Path.Combine(FindServerProjectDirectory(), "..", "..", ".artifacts", "protocol-remediation", "process-logs"));
+            Directory.CreateDirectory(directory);
+            _logPath = Path.Combine(directory, $"{DateTime.UtcNow:yyyyMMdd-HHmmss-fffffff}-{process.Id}-{Guid.NewGuid():N}.log");
             _process.OutputDataReceived += CaptureOutput;
             _process.ErrorDataReceived += CaptureOutput;
             _process.BeginOutputReadLine();
@@ -269,7 +273,16 @@ public sealed partial class RealNetworkEndToEndTests
         private void CaptureOutput(object sender, DataReceivedEventArgs eventArgs)
         {
             if (eventArgs.Data is null) return;
-            lock (_outputLock) _output.AppendLine(eventArgs.Data);
+            lock (_outputLock)
+            {
+                _output.AppendLine(eventArgs.Data);
+                // Preserve failed-request evidence without persisting URL credentials or bearer headers.
+                var line = System.Text.RegularExpressions.Regex.Replace(eventArgs.Data,
+                    @"(?i)((?:access_token|ticket)=)[^&\s""\\]+", "$1[REDACTED]");
+                line = System.Text.RegularExpressions.Regex.Replace(line,
+                    @"(?i)(Bearer\s+)[^\s""\\]+", "$1[REDACTED]");
+                File.AppendAllText(_logPath, line + Environment.NewLine);
+            }
         }
 
         private string GetOutput()

@@ -8,6 +8,7 @@ from urllib.request import urlopen
 p=argparse.ArgumentParser()
 for flag in ['godot','dotnet','psql','connection-file']: p.add_argument('--'+flag,required=True)
 p.add_argument('--work-dir',default='work/client-real-server')
+p.add_argument('--skip-scheduling',action='store_true',help='Run correctness only when other agents are loading the host')
 a=p.parse_args()
 repo=Path(__file__).resolve().parents[2]
 work=(repo/a.work_dir).resolve(); work.mkdir(parents=True,exist_ok=True)
@@ -76,7 +77,7 @@ try:
     (project/'project.godot').write_text('[application]\nconfig/name="Real protobuf isolated integration"\n[rendering]\nrenderer/rendering_method="gl_compatibility"\n',encoding='utf-8')
     if not run([a.godot,'--headless','--language','en','--path',str(project),'--editor','--import','--quit'],'godot-import',repo,env): raise RuntimeError('Godot import failed')
     ok=run([a.godot,'--headless','--language','en','--path',str(project),'--script','res://tests/test_migration_real_server.gd'],'godot-real-server',repo,env)
-    if ok:
+    if ok and not a.skip_scheduling:
         ok=run([a.godot,'--headless','--language','en','--max-fps','60','--path',str(project),'--script','res://tests/test_http_decode_scheduling.gd'],'godot-decode-scheduling',repo,env)
 except Exception as exc:
     # Do not include connection strings or HTTP bodies in error text.

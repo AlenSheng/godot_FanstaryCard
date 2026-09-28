@@ -2,7 +2,7 @@
   "repository": "AlenSheng/godot_FanstaryCard",
   "reviewed_commit": "80148675dfbb974a4b0bdc79a9234c67a75bba49",
   "prepared_on": "2026-09-28",
-  "status": "implemented_with_preexisting_test_failures",
+  "status": "remediation_validated_with_open_gates",
   "agents": [
     {
       "role": "fc_protocol",
@@ -80,8 +80,8 @@
       "started_at": "2026-09-28T03:23:14.3109213Z"
     }
   ],
-  "project_build": "PASS: strict solution compile and full Godot import",
-  "project_tests": "Domain207pass1fail;Server232pass2fail;0skipped;all3failures reproduce baseline;Godot103codec19transport20real-server PASS",
+  "project_build": "PASS strict Release solution build/publish/Obfuscar and full Godot import",
+  "project_tests": "Ordinary461/461; final protected461/461;0skip;Godot173codec19transport20real-server;finalTLS20/20 PASS",
   "local_worktree_verified": true,
   "execution": {
     "worktree": "F:\\GitHubFiles\\godot_FanstaryCard-protobuf",
@@ -107,11 +107,52 @@
     "sdk": "10.0.400 task-local"
   },
   "remaining": [
-    "Three original failing regression tests",
-    "Existing market resale500 reproduced on original HEAD",
-    "Full PVP/relic/extraction/restart gate not reached",
-    "Live Steam, Docker image, production TLS/CDN/ACL not verified",
-    "One earlier Bootstrap timeout unreproduced; no stable performance advantage established",
-    "HTTP compression-on latency and Godot per-operation allocations not measured"
-  ]
+    "Intermittent Bootstrap10/60/100s timeouts not root-caused; controlled hot/cold and finalTLS checks pass",
+    "Live Steam environment unavailable",
+    "Docker/Podman/WSL unavailable; production TLS/CDN/cloud ACL not verified"
+  ],
+  "remediation": {
+    "base_head": "411ce667568649dadb0cdff884fc9caf53c71025",
+    "user_request": "Fix remaining issues and optimizations; strict QA",
+    "agents": [
+      "/root/fc_server_api",
+      "/root/fc_realtime",
+      "/root/fc_protocol",
+      "/root/fc_client"
+    ],
+    "source_policy": "Existing design-authorized bug corrections, not arbitrary frozen-rule changes",
+    "started_at": "2026-09-28T04:21:52.5170994Z",
+    "combat_rule_decision": "User explicitly confirmed: preserve current 54cab7f algorithm; align GDD and old tests",
+    "qa_assignment": {
+      "requested": "/root/fc_qa",
+      "tool_result": "agent thread limit reached",
+      "actual_agent_id": "/root/fc_realtime",
+      "role": "independent integration QA after gameplay changes frozen"
+    },
+    "strict_source_tests": "461 passed, 0 failed, 0 skipped; subsequent strengthened PB resale probe 1/1 passed",
+    "protected_package": "Final server-av91ig_u:461/461 passed,0failed0skipped; exact protected assembly hashes verified",
+    "local_tls": "Final protected package20/20; prior package6coldstarts20/20 each; historical timeout unresolved",
+    "client_tests": "173 codec +19 HTTP transport +20 real Godot/.NET/PG checks passed; full Godot import exit0",
+    "qa_role_completed": true,
+    "previous_remaining": [
+      "Three original failing regression tests",
+      "Existing market resale500 reproduced on original HEAD",
+      "Full PVP/relic/extraction/restart gate not reached",
+      "Live Steam, Docker image, production TLS/CDN/ACL not verified",
+      "One earlier Bootstrap timeout unreproduced; no stable performance advantage established",
+      "HTTP compression-on latency and Godot per-operation allocations not measured"
+    ],
+    "fixed_issues": [
+      "market resale uniqueness and history audit",
+      "combat GDD/current-code drift",
+      "refund transaction fixture",
+      "PVP event replay reader",
+      "four-human ready flow and matching fixture race",
+      "asynchronous settlement persistence assertion race",
+      "Godot decode and server PB encode allocation optimization"
+    ],
+    "release_deployment_authorized": false,
+    "completed_local_validation_at": "2026-09-28T04:53:44.190065+00:00",
+    "cleanup": "All owned services/schemas stopped or dropped; shared task-local PG54329 stopped after finalTLS; original user workspace outputs preserved"
+  }
 }
