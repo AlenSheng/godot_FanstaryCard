@@ -32,7 +32,7 @@ public sealed class PlayerCombatState
         };
         Hp = MaximumHp;
         WeaponLevel = Math.Clamp(weaponLevel, 0, 5);
-        FenxianImmediateDrawPolicy = fenxianImmediateDrawPolicy;
+        FenxianDrawPolicy = fenxianImmediateDrawPolicy;
         Equipment = equipment ?? CombatEquipmentProfile.Empty;
         ArgumentNullException.ThrowIfNull(random);
         _random = new CombatRandom(random.Next());
@@ -44,7 +44,7 @@ public sealed class PlayerCombatState
     public int Hp { get; private set; }
     public int Shield { get; private set; }
     public int WeaponLevel { get; }
-    public FenxianImmediateDrawPolicy FenxianImmediateDrawPolicy { get; }
+    public FenxianImmediateDrawPolicy FenxianDrawPolicy { get; }
     public CombatEquipmentProfile Equipment { get; private set; }
     public int EffectiveMaximumHp => Math.Min(
         (int)Math.Floor(MaximumHp * (1 + Equipment.VitalityOvercapBonus)),
@@ -199,7 +199,7 @@ public sealed class PlayerCombatState
             4 => 0.48,
             _ => 0.50
         };
-        var draw = FenxianImmediateDrawPolicy switch
+        var draw = FenxianDrawPolicy switch
         {
             FenxianImmediateDrawPolicy.CurrentRhythm => rhythm switch
             {
