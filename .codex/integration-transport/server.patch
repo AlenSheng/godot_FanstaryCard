@@ -1,0 +1,261 @@
+diff --git a/server/src/FantasyCard.Contracts/Realtime/RealtimeContracts.cs b/server/src/FantasyCard.Contracts/Realtime/RealtimeContracts.cs
+index 4a759eb..c21ff19 100644
+--- a/server/src/FantasyCard.Contracts/Realtime/RealtimeContracts.cs
++++ b/server/src/FantasyCard.Contracts/Realtime/RealtimeContracts.cs
+@@ -66,7 +66,9 @@ public sealed record RoomDuelPayload(
+     string? EscapeProbability = null,
+     RoomBattleStatusPayload? OpponentStatus = null,
+     long OpponentStunRemainingMs = 0,
+-    long OpponentDrawBlockRemainingMs = 0);
++    long OpponentDrawBlockRemainingMs = 0,
++    bool SeparateLoot = false,
++    IReadOnlyList<RoomInventoryItemPayload>? SearchableLoot = null);
+ public sealed record RoomCurrentCellPayload(
+     bool HasEvacuation,
+     string MonsterGroupId,
+@@ -93,7 +95,9 @@ public sealed record RoomPlayerPayload(
+     long DrawBlockRemainingMs = 0,
+     long DrawSpeedRemainingMs = 0,
+     long DrawBlockSpeedRemainingMs = 0,
+-    string? BaseDrawIntervalSeconds = null);
++    string? BaseDrawIntervalSeconds = null,
++    RoomMonsterPoolPayload? MonsterPool = null,
++    RoomNumericalStatePayload? NumericalState = null);
+ public sealed record RoomSnapshotEventPayload(
+     Guid RoomId,
+     Guid? MatchId,
+@@ -118,6 +122,9 @@ public sealed record BattlePlayCardsCommandPayload(
+     IReadOnlyList<Guid> CardInstanceIds);
+ public sealed record BattleSelectTargetCommandPayload(Guid BattleId, string TargetId);
+ public sealed record BattleAbandonCommandPayload;
++public sealed record MonsterCardChooseCommandPayload(Guid CandidateId, bool Accept, Guid? ReplaceInstanceId = null);
++public sealed record RoomMonsterPoolPayload(int Capacity, IReadOnlyList<RoomCardPayload> Pending, IReadOnlyList<RoomCardPayload> Active);
++public sealed record RoomNumericalStatePayload(string FenxianPolicy, string GuardianPolicy, int GuardianRemainderTenths);
+ public sealed record BattleTargetSelectedEventPayload(Guid BattleId, string TargetId);
+ public sealed record BattleComboResolvedEventPayload(
+     Guid BattleId,
+diff --git a/server/src/FantasyCard.Contracts/Realtime/RealtimeProtobufCodec.cs b/server/src/FantasyCard.Contracts/Realtime/RealtimeProtobufCodec.cs
+index eabe53a..06d9cc8 100644
+--- a/server/src/FantasyCard.Contracts/Realtime/RealtimeProtobufCodec.cs
++++ b/server/src/FantasyCard.Contracts/Realtime/RealtimeProtobufCodec.cs
+@@ -41,6 +41,8 @@ public static class RealtimeProtobufCodec
+                 w.String(2, payload.TargetId);
+             }),
+             "battle.abandon" when command.Payload is BattleAbandonCommandPayload => Message(_ => { }),
++            "monster.choose" when command.Payload is MonsterCardChooseCommandPayload payload => Message(w =>
++            { w.String(1, payload.CandidateId.ToString("D")); w.Bool(2, payload.Accept); w.String(3, payload.ReplaceInstanceId?.ToString("D")); }),
+             "reward.choice.refresh" or "choice.refresh" when command.Payload is RewardChoiceRefreshCommandPayload => Message(_ => { }),
+             "reward.choice.claim" or "choice.pick" when command.Payload is RewardChoiceClaimCommandPayload payload => Message(w => { w.String(1, payload.OptionId); w.String(2, payload.ReplaceItemId); w.Bool(3, payload.Equip); }),
+             "inventory.move" when command.Payload is InventoryMoveCommandPayload payload => Message(w => { w.String(1, payload.ItemId); w.Int64(2, payload.TargetSlotIndex); }),
+@@ -77,6 +79,7 @@ public static class RealtimeProtobufCodec
+             "battle.play_cards" or "combat.preview" => DecodeBattlePlayCards(payloadBytes),
+             "battle.select_target" => DecodeBattleSelectTarget(payloadBytes),
+             "battle.abandon" => new BattleAbandonCommandPayload(),
++            "monster.choose" => DecodeMonsterChoice(payloadBytes),
+             "reward.choice.refresh" or "choice.refresh" => new RewardChoiceRefreshCommandPayload(),
+             "reward.choice.claim" or "choice.pick" => DecodeRewardClaim(payloadBytes),
+             "room.move" or "map.move" => DecodeRoomMove(payloadBytes),
+@@ -300,6 +303,13 @@ public static class RealtimeProtobufCodec
+     private static Guid? ParseOptionalGuid(string value, string type) =>
+         string.IsNullOrEmpty(value) ? null : ParseGuid(value, type);
+ 
++    private static MonsterCardChooseCommandPayload DecodeMonsterChoice(ReadOnlySpan<byte> bytes)
++    {
++        var fields = Fields.Read(bytes);
++        return new(ParseGuid(fields.String(1), "monster.choose"), fields.Bool(2),
++            string.IsNullOrEmpty(fields.String(3)) ? null : ParseGuid(fields.String(3), "monster.choose"));
++    }
++
+     private static BattlePlayCardsCommandPayload DecodeBattlePlayCards(ReadOnlySpan<byte> bytes)
+     {
+         var payload = Fields.Read(bytes);
+@@ -500,8 +510,39 @@ public static class RealtimeProtobufCodec
+         w.Int64(17, value.DrawSpeedRemainingMs);
+         w.Int64(18, value.DrawBlockSpeedRemainingMs);
+         w.String(19, value.BaseDrawIntervalSeconds);
++        if (value.MonsterPool is { } pool) w.Bytes(20, Message(m =>
++        {
++            m.Int64(1, pool.Capacity);
++            foreach (var card in pool.Pending) m.Bytes(2, EncodePoolCard(card));
++            foreach (var card in pool.Active) m.Bytes(3, EncodePoolCard(card));
++        }));
++        if (value.NumericalState is { } numerics) w.Bytes(21, Message(n =>
++        { n.String(1, numerics.FenxianPolicy); n.String(2, numerics.GuardianPolicy); n.Int64(3, numerics.GuardianRemainderTenths); }));
+     });
+ 
++    private static byte[] EncodePoolCard(RoomCardPayload card) => Message(c =>
++    { c.String(1, card.InstanceId.ToString("D")); c.String(2, card.CardId); c.Int64(3, card.Level); c.String(4, card.ElementOverride); });
++
++    private static RoomCardPayload DecodePoolCard(byte[] bytes)
++    {
++        var c = Fields.Read(bytes);
++        return new(ParseGuid(c.String(1), "monster.pool"), c.String(2), checked((int)c.Int64(3)), NullIfEmpty(c.String(4)));
++    }
++
++    private static RoomMonsterPoolPayload? DecodeMonsterPool(byte[] bytes)
++    {
++        if (bytes.Length == 0) return null;
++        var p = Fields.Read(bytes);
++        return new(checked((int)p.Int64(1)), p.RepeatedBytes(2).Select(DecodePoolCard).ToArray(), p.RepeatedBytes(3).Select(DecodePoolCard).ToArray());
++    }
++
++    private static RoomNumericalStatePayload? DecodeNumericalState(byte[] bytes)
++    {
++        if (bytes.Length == 0) return null;
++        var n = Fields.Read(bytes);
++        return new(n.String(1), n.String(2), checked((int)n.Int64(3)));
++    }
++
+     private static byte[] EncodeBattleStatus(RoomBattleStatusPayload value) => Message(w =>
+     {
+         w.String(1, value.PassiveKind); w.Int64(2, value.Combo); w.String(3, value.CoreElement);
+@@ -579,6 +620,8 @@ public static class RealtimeProtobufCodec
+         if (value.OpponentStatus is { } status) w.Bytes(11, EncodeBattleStatus(status));
+         w.Int64(12, value.OpponentStunRemainingMs);
+         w.Int64(13, value.OpponentDrawBlockRemainingMs);
++        w.Bool(14, value.SeparateLoot);
++        foreach (var item in value.SearchableLoot ?? []) w.Bytes(15, EncodeInventoryItem(item));
+     });
+ 
+     private static RoomSnapshotEventPayload DecodeRoomSnapshot(Fields payload)
+@@ -649,7 +692,8 @@ public static class RealtimeProtobufCodec
+         NullIfEmpty(value.RepeatedBytes(12).Select(DecodeInventoryItem).ToArray()),
+         checked((int)value.Int64(13)),
+         value.Bytes(14).Length > 0 ? DecodeBattleStatus(value.Bytes(14)) : null,
+-        value.Int64(15), value.Int64(16), value.Int64(17), value.Int64(18), NullIfEmpty(value.String(19)));
++        value.Int64(15), value.Int64(16), value.Int64(17), value.Int64(18), NullIfEmpty(value.String(19)),
++        DecodeMonsterPool(value.Bytes(20)), DecodeNumericalState(value.Bytes(21)));
+ 
+     private static RoomPvePayload DecodePve(Fields value) => new(
+         ParseGuid(value.String(1), "room.snapshot"),
+@@ -671,7 +715,8 @@ public static class RealtimeProtobufCodec
+         value.Int64(4), value.Int64(5), value.Bool(6), value.OptionalInt64(7),
+         NullIfEmpty(value.String(8)), NullIfEmpty(value.String(9)), NullIfEmpty(value.String(10)),
+         value.Bytes(11).Length > 0 ? DecodeBattleStatus(value.Bytes(11)) : null,
+-        value.Int64(12), value.Int64(13));
++        value.Int64(12), value.Int64(13), value.Bool(14),
++        NullIfEmpty(value.RepeatedBytes(15).Select(DecodeInventoryItem).ToArray()));
+ 
+     private static byte[] Message(Action<ProtoWriter> action)
+     {
+diff --git a/server/src/FantasyCard.Server/Matchmaking/RoomReadyCoordinator.cs b/server/src/FantasyCard.Server/Matchmaking/RoomReadyCoordinator.cs
+index b474a34..e42eaf7 100644
+--- a/server/src/FantasyCard.Server/Matchmaking/RoomReadyCoordinator.cs
++++ b/server/src/FantasyCard.Server/Matchmaking/RoomReadyCoordinator.cs
+@@ -114,7 +114,7 @@ public sealed partial class RoomReadyCoordinator(
+     private static BattleRoom CreateRoom(MatchAssignment assignment)
+     {
+         var room = new BattleRoom(assignment.RoomId, BootstrapRepository.CurrentConfigVersion,
+-            CombatCardCatalog.CreatePrototype(), assignment.Seed);
++            CombatCardCatalog.CreatePrototype(), assignment.Seed, FantasyCard.Domain.Configuration.GameConfigCatalog.Current.Numerics);
+         foreach (var player in assignment.Players)
+         {
+             var wornArmor = (player.EquipmentIds ?? []).Select(id =>
+diff --git a/server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.cs b/server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.cs
+index d6a27ff..8107099 100644
+--- a/server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.cs
++++ b/server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.cs
+@@ -164,6 +164,7 @@ public sealed partial class RealtimeCommandRouter
+             !string.Equals(command.Type, "combat.preview", StringComparison.Ordinal) &&
+             !string.Equals(command.Type, "battle.select_target", StringComparison.Ordinal) &&
+             !string.Equals(command.Type, "battle.abandon", StringComparison.Ordinal) &&
++            !string.Equals(command.Type, "monster.choose", StringComparison.Ordinal) &&
+             !string.Equals(command.Type, "room.move", StringComparison.Ordinal) &&
+             !string.Equals(command.Type, "map.move", StringComparison.Ordinal) &&
+             !string.Equals(command.Type, "duel.leave", StringComparison.Ordinal) &&
+@@ -224,6 +225,25 @@ public sealed partial class RealtimeCommandRouter
+         }
+         var expectedRevision = command.ExpectedRevision ?? 0;
+ 
++        if (command.Type == "monster.choose")
++        {
++            if (command.Payload is not MonsterCardChooseCommandPayload choice || choice.CandidateId == Guid.Empty)
++                return [Reject(player.UserId, traceId, command.RequestId, "INVALID_PAYLOAD", "A monster candidate is required.")];
++            try
++            {
++                var result = await ExecuteWithClientStateAsync(actor,
++                    new ChooseMonsterCardCommand(player.UserId, choice.CandidateId, choice.Accept,
++                        choice.ReplaceInstanceId, command.RequestId!, expectedRevision),
++                    player.UserId, expectedRevision, cancellationToken);
++                return AppendRoomSnapshot(player.UserId, traceId, command.RequestId, currentMatchId,
++                    [], result.ClientState);
++            }
++            catch (DomainValidationException exception)
++            {
++                return [Reject(player.UserId, traceId, command.RequestId, "COMMAND_REJECTED", exception.Message)];
++            }
++        }
++
+         if (command.Type == "relic.read")
+         {
+             if (command.Payload is not RelicReadCommandPayload read || read.PileId == Guid.Empty)
+diff --git a/server/src/FantasyCard.Server/Realtime/RoomSnapshotProjection.cs b/server/src/FantasyCard.Server/Realtime/RoomSnapshotProjection.cs
+index 14a6085..d2e249d 100644
+--- a/server/src/FantasyCard.Server/Realtime/RoomSnapshotProjection.cs
++++ b/server/src/FantasyCard.Server/Realtime/RoomSnapshotProjection.cs
+@@ -72,7 +72,12 @@ internal static class RoomSnapshotProjection
+                 PositiveMilliseconds(player.Combat.DrawBlockSpeedRemaining) ?? 0,
+                 Math.Clamp(4 * (1 + (player.Combat.Equipment?.DrawIntervalModifier ?? 0)),
+                     player.Combat.Equipment?.HasRapidDraw == true ? 1.5 : 1.8, 6.0)
+-                    .ToString("R", CultureInfo.InvariantCulture)),
++                    .ToString("R", CultureInfo.InvariantCulture),
++                snapshot.Numerics?.OptionalMonsterPool == true && player.MonsterPool is { } pool
++                    ? new RoomMonsterPoolPayload(snapshot.Numerics.MonsterCapacity,
++                        pool.Pending.Select(ToPoolCard).ToArray(), pool.Active.Select(ToPoolCard).ToArray()) : null,
++                new RoomNumericalStatePayload(player.Combat.FenxianPolicy.ToString(), player.Combat.GuardianPolicy.ToString(),
++                    player.Combat.GuardianShieldRemainderTenths)),
+             player.Pve is null ? null : ToPve(player.Pve),
+             duel,
+             reward,
+@@ -92,16 +97,23 @@ internal static class RoomSnapshotProjection
+         DateTimeOffset now)
+     {
+         if (extractionRemaining is not null || springRemaining is not null) return [];
+-        return player.Phase switch
++        var actions = player.Phase switch
+         {
+             RoomPlayerPhase.Pve when player.Pve?.Phase == PveBattlePhase.Active => BuildPveActions(player),
+             RoomPlayerPhase.Choice => ["choice.read", "choice.refresh", "choice.pick"],
+             RoomPlayerPhase.Pvp => BuildDuelActions(snapshot, player, now),
+             RoomPlayerPhase.ActionBar => BuildActionBarActions(player, map, relics),
+-            _ => []
++            _ => new List<string>()
+         };
++        if (snapshot.Numerics?.OptionalMonsterPool == true && player.DisconnectedRemaining is not { Ticks: > 0 } &&
++            player.Phase is RoomPlayerPhase.Choice or RoomPlayerPhase.ActionBar && player.MonsterPool?.Pending.Count > 0)
++            actions.Add("monster.choose");
++        return actions;
+     }
+ 
++    private static RoomCardPayload ToPoolCard(CombatCardInstance card) =>
++        new(card.InstanceId, card.CardId, card.Level, card.ElementOverride?.ToString());
++
+     private static List<string> BuildDuelActions(
+         BattleRoomSnapshot snapshot,
+         RoomPlayerSnapshot player,
+@@ -175,7 +187,10 @@ internal static class RoomSnapshotProjection
+             info?.EscapeProbability?.ToString("R", CultureInfo.InvariantCulture),
+             info?.Opponent is { } opponentInfo ? ToBattleStatus(opponentInfo) : null,
+             PositiveMilliseconds(opponent.Combat.StunRemaining) ?? 0,
+-            PositiveMilliseconds(opponent.Combat.DrawBlockRemaining) ?? 0);
++            PositiveMilliseconds(opponent.Combat.DrawBlockRemaining) ?? 0,
++            snapshot.Numerics?.BudgetedBotLoot == true && opponent.IsBot,
++            snapshot.Numerics?.BudgetedBotLoot == true && opponent.IsBot
++                ? (opponent.BotLoot ?? []).Select(ToInventoryItem).ToArray() : null);
+     }
+ 
+     private static RoomBattleStatusPayload ToBattleStatus(CombatantPublicInfo info)
+diff --git a/server/src/FantasyCard.Server/Rooms/RoomCommands.cs b/server/src/FantasyCard.Server/Rooms/RoomCommands.cs
+index 748d740..da43bfd 100644
+--- a/server/src/FantasyCard.Server/Rooms/RoomCommands.cs
++++ b/server/src/FantasyCard.Server/Rooms/RoomCommands.cs
+@@ -299,3 +299,9 @@ public sealed record MoveRoomPlayerCommand(Guid PlayerId, MapPosition Target, lo
+         return new(result.Position, result.StartedDuel, result.RoomRevision);
+     }
+ }
++
++public sealed record ChooseMonsterCardCommand(Guid PlayerId, Guid CandidateId, bool Accept, Guid? ReplaceId,
++    string RequestId, long ExpectedRevision) : IRoomCommand<long>
++{
++    public long Execute(BattleRoom room) => room.DecideMonsterCard(PlayerId, CandidateId, Accept, ReplaceId, RequestId, ExpectedRevision);
++}
