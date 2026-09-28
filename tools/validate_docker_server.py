@@ -126,7 +126,8 @@ def validate(image_tag, builder_tag):
 
         docker("create", "--name", server, "--network", network, "--network-alias", "server",
                "-p", "127.0.0.1::8080", "-e", "ASPNETCORE_ENVIRONMENT=Development",
-               "-e", "Identity__EnableLocalAuth=true", "-e", "ConnectionStrings__Postgres=" + runtime_connection, image["Id"])
+               "-e", "Identity__EnableLocalAuth=true", "-e", "AllowedHosts=server;localhost;127.0.0.1",
+               "-e", "ConnectionStrings__Postgres=" + runtime_connection, image["Id"])
         containers.append(server)
         docker("cp", server + ":/app", str(evidence / "image-app"))
         app = evidence / "image-app"
