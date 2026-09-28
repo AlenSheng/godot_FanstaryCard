@@ -1,0 +1,99 @@
+name: Numerical full acceptance
+on:
+  pull_request:
+    paths: ['server/**', 'config/**', 'protocol/**', 'tools/export_client_catalog.py', '.github/workflows/numerical-acceptance.yml']
+  push:
+    branches: ['codex/numerical-integration-20260928']
+    paths: ['.github/workflows/numerical-acceptance.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: numerical-acceptance-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: numerical_test
+          POSTGRES_PASSWORD: numerical_test_only
+          POSTGRES_DB: numerical_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U numerical_test -d numerical_test"
+          --health-interval 5s --health-timeout 5s --health-retries 12
+    env:
+      FANTASYCARD_TEST_POSTGRES: Host=127.0.0.1;Port=5432;Database=numerical_test;Username=numerical_test;Password=numerical_test_only;Pooling=true
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      DOTNET_NOLOGO: '1'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: server/global.json
+      - name: Build solution and record baseline
+        shell: bash
+        working-directory: server
+        run: |
+          set -euo pipefail
+          mkdir -p ../test-results/acceptance
+          git rev-parse HEAD > ../test-results/acceptance/source.txt
+          dotnet --info > ../test-results/acceptance/dotnet.txt
+          dotnet build FantasyCard.Server.slnx -c Release 2>&1 | tee ../test-results/acceptance/build.log
+      - name: Domain tests
+        shell: bash
+        working-directory: server
+        run: |
+          set -euo pipefail
+          dotnet test tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj --no-build -c Release --logger 'trx;LogFileName=domain.trx' --results-directory ../test-results/acceptance 2>&1 | tee ../test-results/acceptance/domain.log
+      - name: Server and loopback integration tests on disposable PostgreSQL
+        if: ${{ !cancelled() }}
+        shell: bash
+        working-directory: server
+        run: |
+          set -euo pipefail
+          dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --logger 'trx;LogFileName=server.trx' --results-directory ../test-results/acceptance 2>&1 | tee ../test-results/acceptance/server.log
+      - name: Route samples using actual production map and loot lookup
+        if: ${{ !cancelled() }}
+        shell: bash
+        working-directory: server
+        run: |
+          set -euo pipefail
+          for players in 1 2 4; do
+            dotnet run --project tools/FantasyCard.Numerics -c Release -- --samples 10000 --players "$players" --seed-start 0 > "../test-results/acceptance/routes-${players}.json"
+          done
+      - name: Verify published config parity and disabled candidate flags
+        if: ${{ !cancelled() }}
+        shell: python
+        run: |
+          import json,pathlib,hashlib,importlib.util
+          a=pathlib.Path('server/config/generated/fantasycard.config.bytes').read_bytes()
+          b=pathlib.Path('client/data/generated/fantasycard.config.bytes').read_bytes()
+          assert a==b,'Client/server config packages differ'
+          catalog=json.loads(pathlib.Path('client/data/catalog.json').read_text())
+          row=catalog['tables']['NumericalRules'][0]
+          for key in ('cards_spent_draw','fractional_guardian','optional_monster_pool','budgeted_bot_loot','mortal_bot_pve'):
+              assert row[key] is False,(key,row[key])
+          schema=json.loads(pathlib.Path('client/data/realtime_schema.json').read_text())
+          assert schema['sha256']==hashlib.sha256(pathlib.Path('protocol/realtime/v1/realtime.proto').read_bytes()).hexdigest()
+          spec=importlib.util.spec_from_file_location('catalog_export','tools/export_client_catalog.py')
+          module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+          assert module.typed_value(b'',4) is False
+          assert module.typed_value(b'',2)==0
+          assert module.typed_value(b'',3)==0.0
+          assert module.typed_value(b'',1)==''
+          assert module.typed_value(bytes([40,1]),4) is None
+          print('Config:',catalog['version'],'bytes:',len(a),'sha256:',hashlib.sha256(a).hexdigest())
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: numerical-acceptance-${{ github.sha }}
+          path: test-results/acceptance
+          if-no-files-found: error
+          retention-days: 7
