@@ -11,36 +11,39 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
 {
     public async Task<MailListResponse> GetAsync(Guid playerId, CancellationToken cancellationToken, int limit = 200, int offset = 0)
     {
-        await using var command = dataSource.CreateCommand(
-            """
-            SELECT mail_id,title,body,sender,sent_at,expires_at,read_at,claimed_at,attachments_json::text,title_en,body_en
-            FROM mail_messages
-            WHERE player_id=$1 AND (expires_at IS NULL OR expires_at > $2)
-            ORDER BY sent_at DESC,mail_id DESC LIMIT $3 OFFSET $4
-            """);
-        command.Parameters.AddWithValue(playerId);
-        command.Parameters.AddWithValue(timeProvider.GetUtcNow());
-        command.Parameters.AddWithValue(limit);
-        command.Parameters.AddWithValue(offset);
-        await using var reader = await command.ExecuteReaderAsync(cancellationToken);
         var items = new List<MailItemResponse>();
-        while (await reader.ReadAsync(cancellationToken))
+        // End the reader's scope before borrowing another connection. Npgsql reuses
+        // readers: an early Dispose followed by scope disposal can close a new borrower.
         {
-            items.Add(new MailItemResponse(
-                reader.GetGuid(0),
-                reader.GetString(1),
-                reader.GetString(2),
-                reader.GetString(3),
-                reader.GetFieldValue<DateTimeOffset>(4),
-                reader.IsDBNull(5) ? null : reader.GetFieldValue<DateTimeOffset>(5),
-                !reader.IsDBNull(6),
-                !reader.IsDBNull(7),
-                ReadAttachments(reader.GetString(8)),
-                reader.GetString(9),
-                reader.GetString(10)));
+            await using var command = dataSource.CreateCommand(
+                """
+                SELECT mail_id,title,body,sender,sent_at,expires_at,read_at,claimed_at,attachments_json::text,title_en,body_en
+                FROM mail_messages
+                WHERE player_id=$1 AND (expires_at IS NULL OR expires_at > $2)
+                ORDER BY sent_at DESC,mail_id DESC LIMIT $3 OFFSET $4
+                """);
+            command.Parameters.AddWithValue(playerId);
+            command.Parameters.AddWithValue(timeProvider.GetUtcNow());
+            command.Parameters.AddWithValue(limit);
+            command.Parameters.AddWithValue(offset);
+            await using var reader = await command.ExecuteReaderAsync(cancellationToken);
+            while (await reader.ReadAsync(cancellationToken))
+            {
+                items.Add(new MailItemResponse(
+                    reader.GetGuid(0),
+                    reader.GetString(1),
+                    reader.GetString(2),
+                    reader.GetString(3),
+                    reader.GetFieldValue<DateTimeOffset>(4),
+                    reader.IsDBNull(5) ? null : reader.GetFieldValue<DateTimeOffset>(5),
+                    !reader.IsDBNull(6),
+                    !reader.IsDBNull(7),
+                    ReadAttachments(reader.GetString(8)),
+                    reader.GetString(9),
+                    reader.GetString(10)));
+            }
         }
 
-        await reader.DisposeAsync();
         await using var unread = dataSource.CreateCommand("SELECT COUNT(*) FROM mail_messages WHERE player_id=$1 AND read_at IS NULL AND (expires_at IS NULL OR expires_at > $2)");
         unread.Parameters.AddWithValue(playerId);
         unread.Parameters.AddWithValue(timeProvider.GetUtcNow());

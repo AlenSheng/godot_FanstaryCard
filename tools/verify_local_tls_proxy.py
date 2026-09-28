@@ -5,6 +5,7 @@ assembly, and a newly owned PostgreSQL schema. Never contacts the production hos
 """
 import argparse
 import base64
+import concurrent.futures
 import datetime
 import hashlib
 import ipaddress
@@ -73,7 +74,11 @@ def main():
     for name in ('dotnet', 'server-dll', 'psql', 'connection-file', 'caddy'):
         parser.add_argument('--' + name, required=True)
     parser.add_argument('--work-dir', default='work/local-tls-validation')
+    parser.add_argument('--bootstrap-concurrency', type=int, default=1)
+    parser.add_argument('--bootstrap-requests', type=int, default=1)
     args = parser.parse_args()
+    if not 1 <= args.bootstrap_concurrency <= 32 or not 1 <= args.bootstrap_requests <= 1000:
+        parser.error('Use 1..32 concurrent requests and 1..1000 total requests')
     repo = Path(__file__).resolve().parents[1]
     output = (repo / args.work_dir).resolve()
     if output.exists():
@@ -185,6 +190,20 @@ def main():
         token = fields(body)[1].decode()
         secrets.append(token)
         headers['Authorization'] = 'Bearer ' + token
+        if args.bootstrap_requests > 1:
+            def bootstrap_probe(index):
+                began = time.perf_counter()
+                try:
+                    status, _, payload = request(public, '/api/v1/bootstrap', headers=headers)
+                    return {'index': index, 'seconds': time.perf_counter() - began,
+                            'status': status, 'bytes': len(payload)}
+                except Exception as error:
+                    return {'index': index, 'seconds': time.perf_counter() - began,
+                            'error': type(error).__name__}
+            with concurrent.futures.ThreadPoolExecutor(max_workers=args.bootstrap_concurrency) as pool:
+                traces = list(pool.map(bootstrap_probe, range(args.bootstrap_requests)))
+            (output / 'bootstrap-traces.json').write_text(json.dumps(traces, indent=2), encoding='utf-8')
+            check('concurrent Bootstrap responses', all(trace.get('status') == 200 for trace in traces))
         status, response_headers, body = request(public, '/api/v1/bootstrap', headers=headers)
         check('actual PB Bootstrap through TLS proxy', status == 200 and len(body) > 8192 and bool(fields(body).get(3)))
         check('private response cannot be cached or MIME-sniffed', 'no-store' in response_headers.get('Cache-Control', '') and response_headers.get('X-Content-Type-Options') == 'nosniff')

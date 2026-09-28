@@ -2,7 +2,7 @@
   "repository": "AlenSheng/godot_FanstaryCard",
   "reviewed_commit": "80148675dfbb974a4b0bdc79a9234c67a75bba49",
   "prepared_on": "2026-09-28",
-  "status": "remediation_validated_with_open_gates",
+  "status": "local_validation_complete_external_gates_remaining",
   "agents": [
     {
       "role": "fc_protocol",
@@ -81,7 +81,7 @@
     }
   ],
   "project_build": "PASS strict Release solution build/publish/Obfuscar and full Godot import",
-  "project_tests": "Ordinary461/461; final protected461/461;0skip;Godot173codec19transport20real-server;finalTLS20/20 PASS",
+  "project_tests": "Ordinary466/466 and protected466/466,0skip; actual Godot20/20; protected TLS21/21 including200/200 concurrent Bootstrap",
   "local_worktree_verified": true,
   "execution": {
     "worktree": "F:\\GitHubFiles\\godot_FanstaryCard-protobuf",
@@ -107,7 +107,6 @@
     "sdk": "10.0.400 task-local"
   },
   "remaining": [
-    "Intermittent Bootstrap10/60/100s timeouts not root-caused; controlled hot/cold and finalTLS checks pass",
     "Live Steam environment unavailable",
     "Docker/Podman/WSL unavailable; production TLS/CDN/cloud ACL not verified"
   ],
@@ -154,5 +153,34 @@
     "release_deployment_authorized": false,
     "completed_local_validation_at": "2026-09-28T04:53:44.190065+00:00",
     "cleanup": "All owned services/schemas stopped or dropped; shared task-local PG54329 stopped after finalTLS; original user workspace outputs preserved"
+  },
+  "bootstrap_timeout_followup": {
+    "agents": [
+      "/root/fc_protocol",
+      "/root/fc_realtime"
+    ],
+    "root_cause": "Mail.GetAsync manually disposes a pooled cached reader before scope exit; implicit second disposal can close another borrowers reused reader",
+    "fix": "Single lexical disposal before unread-count query",
+    "merge": "Six independent core reads -> one NpgsqlBatch on one connection; top-level13->8 tasks; Shop transaction unchanged",
+    "evidence": "bootstrap-timeout-report.md",
+    "ordinary_release_before": {
+      "total": 40,
+      "ok": 29,
+      "http500": 4,
+      "timeout": 7
+    },
+    "mail_only_after": {
+      "total": 40,
+      "ok": 40
+    },
+    "protected_after": {
+      "total": 200,
+      "ok": 200
+    },
+    "tests": "466/466 ordinary and protected;0skip",
+    "historical_limit": "Earlier60/100s events lack simultaneous traces; cannot individually attribute every historical timeout",
+    "package": "builds/server-protected/server-lgiop4qw",
+    "cleanup": "Owned services/schema cleaned; task-local PG stopped",
+    "finished_at": "2026-09-28T05:14:29.626760+00:00"
   }
 }
