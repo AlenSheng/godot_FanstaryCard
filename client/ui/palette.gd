@@ -7,6 +7,8 @@ static var _fonts_ready := false
 static var _language := "zh-CN"
 static var _locale_config: Dictionary = {}
 static var _source_aliases: Dictionary = {}
+static var _source_templates: Array[Dictionary] = []
+static var _formatted_alias_cache: Dictionary = {}
 const LANGUAGE_SETTINGS_PATH := "user://fantasycard_language.cfg"
 
 static func clear_runtime_fonts() -> void:
@@ -133,6 +135,14 @@ static func _ensure_locale() -> void:
 				strings.merge(battle_config.languages[code].get("strings", {}))
 				target["strings"] = strings
 				_locale_config.languages[code] = target
+		var ui_gaps_config: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://data/localization_ui_gaps.json"))
+		if ui_gaps_config is Dictionary:
+			for code in ui_gaps_config.get("languages", {}):
+				var target: Dictionary = _locale_config.get("languages", {}).get(code, {})
+				var strings: Dictionary = target.get("strings", {})
+				strings.merge(ui_gaps_config.languages[code].get("strings", {}))
+				target["strings"] = strings
+				_locale_config.languages[code] = target
 		_language = str(_locale_config.get("default_language", "zh-CN"))
 		var saved_language := _load_language()
 		if _locale_config.get("languages", {}).has(saved_language):
@@ -141,6 +151,8 @@ static func _ensure_locale() -> void:
 
 static func _build_source_aliases() -> void:
 	_source_aliases.clear()
+	_source_templates.clear()
+	_formatted_alias_cache.clear()
 	for language_config in _locale_config.get("languages", {}).values():
 		var strings: Dictionary = language_config.get("strings", {})
 		for key in strings:
@@ -149,6 +161,76 @@ static func _build_source_aliases() -> void:
 			# Accept display text authored in either language. This keeps legacy
 			# screens localizable while they migrate from text to stable keys.
 			if not _source_aliases.has(source): _source_aliases[source] = str(key)
+	var chinese: Dictionary = _locale_config.get("languages", {}).get("zh-CN", {}).get("strings", {})
+	var english: Dictionary = _locale_config.get("languages", {}).get("en", {}).get("strings", {})
+	for key in chinese:
+		if not english.has(key): continue
+		var source := str(chinese[key])
+		var target := str(english[key])
+		if not source.contains("%") or source == target: continue
+		var prefix := source.get_slice("%", 0)
+		if prefix.length() < 2 and source.length() < 5: continue
+		var compiled := RegEx.new()
+		var pattern := _format_pattern(source)
+		if compiled.compile(pattern) != OK: continue
+		_source_templates.append({"regex": compiled, "prefix": prefix, "key": str(key)})
+
+static func _format_pattern(source: String) -> String:
+	var pattern := "^"
+	var index := 0
+	while index < source.length():
+		var character := source.substr(index, 1)
+		if character == "%":
+			if index + 1 < source.length() and source.substr(index + 1, 1) == "%":
+				pattern += "%"
+				index += 2
+				continue
+			var end := index + 1
+			while end < source.length() and source.substr(end, 1) in "0123456789.-+": end += 1
+			if end < source.length() and source.substr(end, 1) in "sdf":
+				pattern += "(.+?)"
+				index = end + 1
+				continue
+		if character in "\\.^$|?*+()[]{}": pattern += "\\"
+		pattern += character
+		index += 1
+	return pattern + "$"
+
+static func _fill_format(template: String, matches: RegExMatch) -> String:
+	var result := ""
+	var index := 0
+	var argument := 1
+	while index < template.length():
+		var character := template.substr(index, 1)
+		if character == "%":
+			if index + 1 < template.length() and template.substr(index + 1, 1) == "%":
+				result += "%"
+				index += 2
+				continue
+			var end := index + 1
+			while end < template.length() and template.substr(end, 1) in "0123456789.-+": end += 1
+			if end < template.length() and template.substr(end, 1) in "sdf":
+				if argument >= matches.get_group_count() + 1: return ""
+				result += matches.get_string(argument)
+				argument += 1
+				index = end + 1
+				continue
+		result += character
+		index += 1
+	return result if argument == matches.get_group_count() + 1 else ""
+
+static func _localized_format_alias(value: String) -> String:
+	if _language != "en": return ""
+	if _formatted_alias_cache.has(value): return str(_formatted_alias_cache[value])
+	for entry in _source_templates:
+		if not value.begins_with(str(entry.prefix)): continue
+		var matched: RegExMatch = entry.regex.search(value)
+		if matched == null: continue
+		var translated := _fill_format(localized(str(entry.key)), matched)
+		if translated.is_empty(): continue
+		_formatted_alias_cache[value] = translated
+		return translated
+	return ""
 
 static func language() -> String:
 	_ensure_locale()
@@ -160,6 +242,7 @@ static func set_language(value: String) -> void:
 	if _language == value: return
 	_language = value
 	_fonts_ready = false
+	_formatted_alias_cache.clear()
 	_save_language()
 
 static func _save_language() -> void:
@@ -189,6 +272,8 @@ static func localized_text(value: String) -> String:
 	aliases.merge(_source_aliases)
 	aliases.merge({"幻境牌旅":"game_title", "账号":"account", "试听 · 黄铜与纸牌":"sample_sound", "搜寻遗物，组合五行，带着战利品归来。":"login_subtitle", "输入唯一账号名称":"account_placeholder", "同名登录原账号，新名称自动注册新账号。":"account_hint", "每一次深入，都是新的抉择":"login_about_title", "三种职业 · 一套属于你的二十张牌":"login_feature_1", "五行连放 · 实时抽牌与目标选择":"login_feature_2", "只向内探索 · 在战斗与撤离之间取舍":"login_feature_3", "邮件":"mail", "全部已读":"mark_all_read", "一键全领":"claim_all", "删除已读":"delete_read", "关闭":"close", "暂无邮件":"no_mail", "领取":"claim", "已领取":"claimed", "删除":"delete", "已读":"read", "未读":"unread", "附件":"attachments", "发件人":"sender", "系统邮件":"system_mail", "收件箱":"inbox", "邮件详情":"mail_details", "选择一封邮件查看详情":"select_mail", "邮件附件已领取":"mail_claimed", "邮件附件已全部领取":"mail_all_claimed", "邮件已删除":"mail_deleted", "已读邮件已清理":"mail_read_deleted"})
 	if aliases.has(value): return localized(aliases[value])
+	var formatted := _localized_format_alias(value)
+	if not formatted.is_empty(): return formatted
 	var result := value
 	var phrases: Array = aliases.keys()
 	phrases.sort_custom(func(left, right): return str(left).length() > str(right).length())
