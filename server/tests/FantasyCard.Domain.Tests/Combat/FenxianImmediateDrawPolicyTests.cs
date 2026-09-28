@@ -5,6 +5,8 @@ namespace FantasyCard.Domain.Tests.Combat;
 
 public sealed class FenxianImmediateDrawPolicyTests
 {
+    private static readonly int[] LegacyDraws = [0, 0, 1, 1, 2];
+    private static readonly int[] NoDraws = [0, 0, 0];
     [Fact]
     public void Default_policy_preserves_current_rhythm_based_draws()
     {
@@ -14,7 +16,7 @@ public sealed class FenxianImmediateDrawPolicyTests
             .Select(_ => state.UpdateFenxian(CardElement.Fire, 1))
             .ToArray();
 
-        Assert.Equal(new[] { 0, 0, 1, 1, 2 }, results.Select(result => result.Draw).ToArray());
+        Assert.Equal(LegacyDraws, results.Select(result => result.Draw).ToArray());
         var expectedCharge = new[] { .18, .30, .42, .50, .50 };
         for (var index = 0; index < expectedCharge.Length; index++)
         {
@@ -62,7 +64,7 @@ public sealed class FenxianImmediateDrawPolicyTests
         var second = state.UpdateFenxian(CardElement.Fire, 2);
         var third = state.UpdateFenxian(CardElement.Fire, 2);
 
-        Assert.Equal(new[] { 0, 0, 0 }, new[] { first.Draw, second.Draw, third.Draw });
+        Assert.Equal(NoDraws, new[] { first.Draw, second.Draw, third.Draw });
         Assert.Equal(.30, first.Charge, 6);
         Assert.Equal(.42, second.Charge, 6);
         Assert.Equal(.50, third.Charge, 6);

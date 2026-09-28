@@ -158,7 +158,9 @@ public sealed record RoomPlayerSnapshot(
     TimeSpan? BotPveRemaining = null,
     IReadOnlyList<Rooms.RewardRefreshReceiptSnapshot>? RewardRefreshReceipts = null,
     IReadOnlyList<Rooms.ExplorationItem>? RecycledEquipment = null,
-    string? DisplayName = null);
+    string? DisplayName = null,
+    Rooms.MonsterCardPoolSnapshot? MonsterPool = null,
+    IReadOnlyList<Rooms.ExplorationItem>? BotLoot = null);
 
 public enum DuelEndReason : short
 {
@@ -211,7 +213,8 @@ public sealed record BattleRoomSnapshot(
     IReadOnlyList<Rooms.RelicPileSnapshot>? RelicPiles = null,
     ulong? RandomState = null,
     IReadOnlyList<BotDuelTimerSnapshot>? BotDuelTimers = null,
-    RoomRandomStreamsSnapshot? RandomStreams = null);
+    RoomRandomStreamsSnapshot? RandomStreams = null,
+    Configuration.NumericalRules? Numerics = null);
 
 public sealed record CombatDamageSegment(string Kind, int Amount);
 

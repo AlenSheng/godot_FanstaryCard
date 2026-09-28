@@ -140,6 +140,7 @@ public sealed class GameConfigCatalog
     }
 
     public static GameConfigCatalog Current => Active.Value;
+    public NumericalRules Numerics { get; private init; } = NumericalRules.Legacy;
     public string Version { get; }
     public IReadOnlyList<CardConfigDefinition> Cards { get; }
     public IReadOnlyList<CardLevelConfig> CardLevels { get; }
@@ -274,7 +275,21 @@ public sealed class GameConfigCatalog
         ValidateEconomy(economy, shopCardPrices, cards);
         ValidateItems(items);
         return new GameConfigCatalog(
-            bundle.Version, cards, levels, equipment, lootLayers, refreshes, backpacks, shopCardPrices, items, economy);
+            bundle.Version, cards, levels, equipment, lootLayers, refreshes, backpacks, shopCardPrices, items, economy)
+            { Numerics = ReadNumerics(bundle) };
+    }
+
+    private static NumericalRules ReadNumerics(ConfigBundle bundle)
+    {
+        var table = bundle.Tables.SingleOrDefault(value => value.Name == "NumericalRules");
+        if (table is null) return NumericalRules.Legacy;
+        if (table.Rows.Count != 1) throw new InvalidDataException("NumericalRules must contain one active row.");
+        var row = table.Rows[0];
+        var rules = new NumericalRules(table.Bool(row, "cards_spent_draw"), table.Bool(row, "fractional_guardian"),
+            table.Bool(row, "optional_monster_pool"), table.Int(row, "monster_capacity"),
+            table.Bool(row, "budgeted_bot_loot"), table.Int(row, "bot_loot_count"), table.Bool(row, "mortal_bot_pve"));
+        rules.Validate();
+        return rules;
     }
 
     private static void ValidateItems(ItemConfigDefinition[] items)

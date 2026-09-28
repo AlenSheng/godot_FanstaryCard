@@ -59,6 +59,8 @@ public sealed class RoomPlayerState
     public ExplorationInventory Inventory { get; }
     public IReadOnlyList<ExplorationItem> WornArmor { get; internal set; }
     public string? DisplayName { get; }
+    public MonsterCardPool MonsterPool { get; } = new();
+    public IReadOnlyList<ExplorationItem> BotLoot { get; internal set; } = [];
     internal List<ExplorationItem> RecycledEquipment { get; } = [];
     public bool IsBot { get; }
     public RewardChoiceState? RewardChoice { get; internal set; }
@@ -93,7 +95,7 @@ public sealed class RoomPlayerState
             botPveRemaining,
             RewardRefreshReceipts.ToArray(),
             RecycledEquipment.ToArray(),
-            DisplayName);
+            DisplayName, MonsterPool.Capture(), BotLoot);
 }
 
 public sealed class DuelState
@@ -265,13 +267,18 @@ public sealed partial class BattleRoom
     private readonly Dictionary<Guid, TimeSpan> _botDuelRemaining = [];
     private readonly List<CombatFeedbackResolution> _combatFeedback = [];
 
-    public BattleRoom(Guid roomId, string configVersion, CombatCardCatalog catalog, int seed)
+    public NumericalRules Numerics { get; }
+
+    public BattleRoom(Guid roomId, string configVersion, CombatCardCatalog catalog, int seed,
+        NumericalRules? numerics = null)
     {
         if (roomId == Guid.Empty)
         {
             throw new ArgumentException("Room id cannot be empty.", nameof(roomId));
         }
         ArgumentException.ThrowIfNullOrWhiteSpace(configVersion);
+        Numerics = numerics ?? NumericalRules.Legacy;
+        Numerics.Validate();
         RoomId = roomId;
         ConfigVersion = configVersion;
         _catalog = catalog ?? throw new ArgumentNullException(nameof(catalog));
@@ -337,6 +344,7 @@ public sealed partial class BattleRoom
             throw new DomainValidationException("The target cell is not a legal inward or same-layer move.");
         var targetPve = player.ClearedCells.Contains(target) ? null : PveBattleFactory.Create(Map.GetCell(target));
         if (player.Pve?.IsCleared == true) player.ClearedCells.Add(current);
+        if (Numerics.OptionalMonsterPool) player.MonsterPool.DiscardPending();
         player.Position = target;
         player.Pve = targetPve;
         player.Phase = targetPve is null ? RoomPlayerPhase.ActionBar : RoomPlayerPhase.Pve;
@@ -386,8 +394,10 @@ public sealed partial class BattleRoom
             new Random(PlayerSeedRandom.Next()),
             setup.WeaponLevel,
             setup.Equipment,
-            setup.CardLevels);
+            setup.CardLevels, Numerics.FenxianPolicy, Numerics.GuardianPolicy);
         var player = new RoomPlayerState(setup.PlayerId, setup.HeroClass, combat, setup.Pve, setup.InventoryCapacity, setup.SafeSlots, setup.WornArmor, setup.IsBot, setup.SafeSlotIndexes, setup.DisplayName);
+        if (setup.IsBot && Numerics.BudgetedBotLoot)
+            player.BotLoot = BotLootRules.Generate(RoomId, player.PlayerId, Numerics.BotLootCount);
         _players.Add(player.PlayerId, player);
         return player;
     }
@@ -496,12 +506,12 @@ public sealed partial class BattleRoom
                 _lootRandom.State,
                 _escapeRandom.State,
                 _botRandom.State,
-                _duelRandom.State));
+                _duelRandom.State), Numerics);
 
     public static BattleRoom Restore(BattleRoomSnapshot snapshot, CombatCardCatalog catalog, int seed)
     {
         ArgumentNullException.ThrowIfNull(snapshot);
-        var room = new BattleRoom(snapshot.RoomId, snapshot.ConfigVersion, catalog, seed)
+        var room = new BattleRoom(snapshot.RoomId, snapshot.ConfigVersion, catalog, seed, snapshot.Numerics ?? NumericalRules.Legacy)
         {
             Revision = snapshot.Revision,
             Elapsed = snapshot.Elapsed
@@ -531,6 +541,11 @@ public sealed partial class BattleRoom
                 DisplayName: playerSnapshot.DisplayName,
                 CardLevels: cards.Select(card => card.Level).ToArray()));
             player.Combat.Restore(playerSnapshot.Combat);
+            if (playerSnapshot.MonsterPool is { } pool)
+                player.MonsterPool.Restore(pool, player.Combat.Deck, room.Numerics.MonsterCapacity);
+            player.BotLoot = playerSnapshot.BotLoot ?? [];
+            if (room.Numerics.BudgetedBotLoot && player.IsBot)
+                BotLootRules.Validate(player.BotLoot, room.Numerics.BotLootCount);
             player.Pve = playerSnapshot.Pve is null ? null : PveBattleState.Rehydrate(playerSnapshot.Pve);
             player.Position = playerSnapshot.Position;
             player.Phase = playerSnapshot.Phase;
@@ -844,7 +859,7 @@ public sealed partial class BattleRoom
         loser.Phase = RoomPlayerPhase.Dead;
         _duels.Remove(duelId);
         _botDuelRemaining.Remove(duelId);
-        if (!loser.IsBot) CreateDeathRelicPile(loser);
+        if (!loser.IsBot || Numerics.BudgetedBotLoot) CreateDeathRelicPile(loser);
         Revision++;
     }
 
@@ -1014,8 +1029,14 @@ public sealed partial class BattleRoom
         };
         var card = monsterType is null ? null : GameConfigCatalog.Current.Cards.FirstOrDefault(value => value.MonsterType == monsterType);
         if (card is not null && _catalog.Contains(card.CardId))
-            player.Combat.Deck.AddToDiscard(new CombatCardInstance(Guid.CreateVersion7(), card.CardId,
-                ElementOverride: monsterType == "BoxSpirit" ? monster.Intents[0].Element : null));
+        {
+            var instance = new CombatCardInstance(Guid.CreateVersion7(), card.CardId,
+                ElementOverride: monsterType == "BoxSpirit" ? monster.Intents[0].Element : null);
+            if (Numerics.OptionalMonsterPool)
+                player.MonsterPool.Offer($"{player.Pve!.BattleId:D}:{monster.MonsterId}", instance);
+            else
+                player.Combat.Deck.AddToDiscard(instance);
+        }
     }
 
     private void OpenRewardChoice(RoomPlayerState player)
@@ -1108,7 +1129,8 @@ public sealed partial class BattleRoom
             var player = GetPlayer(playerId);
             if (player.Phase == RoomPlayerPhase.ActionBar)
             {
-                player.Phase = RoomPlayerPhase.Extracted;
+                if (Numerics.OptionalMonsterPool) player.MonsterPool.EndRun(player.Combat.Deck);
+            player.Phase = RoomPlayerPhase.Extracted;
                 player.Pve = null;
             }
         }
@@ -1236,6 +1258,11 @@ public sealed partial class BattleRoom
     {
         if (player.Phase == RoomPlayerPhase.Choice && player.RewardChoice is { } choice)
         {
+            if (Numerics.OptionalMonsterPool)
+                foreach (var candidate in player.MonsterPool.Pending.ToArray())
+                    player.MonsterPool.Decide(player.Combat.Deck, Numerics.MonsterCapacity,
+                        "bot:" + candidate.InstanceId.ToString("N"), candidate.InstanceId,
+                        player.MonsterPool.Active.Count < Numerics.MonsterCapacity, null);
             var bagFull = player.Inventory.FreeSlots == 0;
             var hasFragmentStack = player.Inventory.Items.Any(item =>
                 item.Kind == ExplorationItemKind.EquipmentFragments);
@@ -1278,6 +1305,19 @@ public sealed partial class BattleRoom
             player.Combat.Hp,
             player.Combat.MaximumHp,
             BotRules.PveHpLossPercent(layer));
+        if (Numerics.MortalBotPve)
+        {
+            var loss = Math.Max(1, (int)Math.Floor(player.Combat.MaximumHp * BotRules.PveHpLossPercent(layer) / 100d));
+            targetHp = Math.Max(0, player.Combat.Hp - loss);
+            if (targetHp == 0)
+            {
+                player.Combat.MarkDead();
+                player.Pve.MarkDead();
+                player.Phase = RoomPlayerPhase.Dead;
+                CreateDeathRelicPile(player);
+                return true;
+            }
+        }
         player.Combat.PayHealthCost(player.Combat.Hp - targetHp);
         foreach (var monster in player.Pve.Monsters.Where(monster => !monster.IsDead))
         {
@@ -1432,13 +1472,16 @@ public sealed partial class BattleRoom
     {
         if (_relicPiles.Values.Any(pile => pile.VictimId == player.PlayerId.ToString("D"))) return;
         if (player.Position is not { } position) return;
+        if (Numerics.OptionalMonsterPool) player.MonsterPool.EndRun(player.Combat.Deck);
         var pile = new RelicPile(Guid.CreateVersion7(), player.PlayerId.ToString("D"), position, player.DisplayName);
         foreach (var item in player.Inventory.Items.Where(item => !item.IsSafe).ToArray())
         {
-            pile.Add(item with { IsSafe = false });
+            if (!player.IsBot || !Numerics.BudgetedBotLoot)
+                pile.Add(item with { IsSafe = false });
             player.Inventory.TryRemove(item.ItemId, out _);
         }
-        foreach (var armor in player.WornArmor) pile.Add(armor);
+        foreach (var armor in player.IsBot && Numerics.BudgetedBotLoot ? player.BotLoot : player.WornArmor)
+            pile.Add(armor);
         player.WornArmor = [];
         _relicPiles.Add(pile.PileId, pile);
     }
