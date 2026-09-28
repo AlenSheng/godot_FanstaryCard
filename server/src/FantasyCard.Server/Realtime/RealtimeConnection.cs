@@ -11,6 +11,8 @@ public sealed class RealtimeConnection(WebSocket socket) : IAsyncDisposable
     public const int MaximumOutboundBytes = 16 * 1024;
     public const int MaximumPendingSends = 32;
     private int _pendingSends;
+    private readonly CancellationTokenSource _closeDeadline = new();
+    internal CancellationToken CloseDeadline => _closeDeadline.Token;
 
     public async Task SendAsync(ServerEvent message, CancellationToken cancellationToken)
     {
@@ -61,11 +63,30 @@ public sealed class RealtimeConnection(WebSocket socket) : IAsyncDisposable
             try
             {
                 if (Socket.State is WebSocketState.Open or WebSocketState.CloseReceived)
+                {
                     await Socket.CloseOutputAsync(status, description, timeout.Token);
+                    // Keep the sole receive loop alive to consume the peer acknowledgement.
+                    // Cancelling it immediately aborts ManagedWebSocket and can reset TCP
+                    // before the peer observes the close frame (especially on Linux).
+                    _closeDeadline.CancelAfter(TimeSpan.FromSeconds(2));
+                }
             }
             finally { _sendGate.Release(); }
         }
         catch (OperationCanceledException) { Socket.Abort(); }
+    }
+
+    internal async Task CompleteCloseHandshakeAsync()
+    {
+        // Called only after the application's receive loop has stopped.
+        var buffer = new byte[MaximumOutboundBytes];
+        try
+        {
+            while (Socket.State == WebSocketState.CloseSent)
+                await Socket.ReceiveAsync(buffer.AsMemory(), CloseDeadline);
+        }
+        catch (OperationCanceledException) { Socket.Abort(); }
+        catch (WebSocketException) { Socket.Abort(); }
     }
 
     public async Task RetireAsync(ServerEvent replacement)
@@ -90,6 +111,7 @@ public sealed class RealtimeConnection(WebSocket socket) : IAsyncDisposable
     {
         // Pending producers may still release the gate after the socket is closed.
         Socket.Dispose();
+        _closeDeadline.Dispose();
         return ValueTask.CompletedTask;
     }
 }

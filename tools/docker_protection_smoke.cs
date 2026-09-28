@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
+using Google.Protobuf;
+using FantasyCard.Contracts.Http;
 using System.Net.WebSockets;
 using System.Text.Json;
 using FantasyCard.Contracts.Realtime;
@@ -18,20 +19,27 @@ void Check(bool condition, string description)
     if (!condition) throw new InvalidOperationException(description);
     checks.Add(description);
 }
-async Task<JsonElement> Read(HttpResponseMessage response)
+async Task<JsonElement> Request(HttpMethod method, string path, object? body = null, string? idempotency = null)
 {
-    using (response)
+    var contract = HttpProtocolRegistry.Find(method.Method, path)
+        ?? throw new InvalidOperationException("Missing HTTP contract: " + path);
+    using var request = new HttpRequestMessage(method, path);
+    request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(HttpProtocolRegistry.MediaType));
+    if (idempotency is not null) request.Headers.Add("Idempotency-Key", idempotency);
+    if (body is not null)
     {
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadFromJsonAsync<JsonElement>(json, ct);
+        request.Content = new ByteArrayContent(HttpDtoMapper.FromDto(contract.RequestDescriptor, body).ToByteArray());
+        request.Content.Headers.ContentType = new MediaTypeHeaderValue(HttpProtocolRegistry.MediaType);
     }
+    using var response = await client.SendAsync(request, ct);
+    response.EnsureSuccessStatusCode();
+    Check(response.Content.Headers.ContentType?.MediaType == HttpProtocolRegistry.MediaType, "HTTP protobuf " + path);
+    var message = contract.ResponseDescriptor.Parser.ParseFrom(await response.Content.ReadAsByteArrayAsync(ct));
+    return JsonSerializer.SerializeToElement(message, message.GetType(), json);
 }
 async Task<JsonElement> Purchase(string product)
 {
-    using var request = new HttpRequestMessage(HttpMethod.Post, "/api/v1/shop/purchases");
-    request.Headers.Add("Idempotency-Key", "docker-acceptance-purchase");
-    request.Content = JsonContent.Create(new { productId = product });
-    return await Read(await client.SendAsync(request, ct));
+    return await Request(HttpMethod.Post, "/api/v1/shop/purchases", new { productId = product, quantity = 1 }, "docker-acceptance-purchase");
 }
 
 Check((await client.GetAsync("/health/live", ct)).StatusCode == HttpStatusCode.OK, "liveness");
@@ -41,13 +49,13 @@ Check((await client.GetAsync("/api/v1/bootstrap", ct)).StatusCode == HttpStatusC
 State state;
 if (phase == "before")
 {
-    var signIn = await Read(await client.PostAsJsonAsync("/api/v1/auth/local",
-        new { deviceId = "docker-acceptance-" + Guid.NewGuid().ToString("N"), displayName = "Docker Acceptance" }, ct));
+    var signIn = await Request(HttpMethod.Post, "/api/v1/auth/local",
+        new { deviceId = "docker-acceptance-" + Guid.NewGuid().ToString("N"), displayName = "Docker Acceptance" });
     var token = signIn.GetProperty("accessToken").GetString()!;
     var userId = signIn.GetProperty("player").GetProperty("userId").GetGuid();
     Check(userId != Guid.Empty && token.Length > 0, "local sign-in");
     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-    var bootstrap = await Read(await client.GetAsync("/api/v1/bootstrap", ct));
+    var bootstrap = await Request(HttpMethod.Get, "/api/v1/bootstrap");
     Check(bootstrap.GetProperty("decks").GetArrayLength() == 3 &&
         bootstrap.GetProperty("classWeapons").GetArrayLength() == 3, "bootstrap decks and class weapons");
     await using var database = NpgsqlDataSource.Create(Environment.GetEnvironmentVariable("FANTASYCARD_TEST_POSTGRES")!);
@@ -56,12 +64,11 @@ if (phase == "before")
         seed.Parameters.AddWithValue(userId);
         Check(await seed.ExecuteNonQueryAsync(ct) == 1, "isolated purchase fixture");
     }
-    var shop = await Read(await client.GetAsync("/api/v1/shop/", ct));
+    var shop = await Request(HttpMethod.Get, "/api/v1/shop/");
     var product = shop.GetProperty("products").EnumerateArray().Single(p => p.GetProperty("productId").GetString() == "daily_card_1");
     var productId = product.GetProperty("productId").GetString()!;
     var gold = 1000 - product.GetProperty("priceGold").GetInt64();
-    using var payload = JsonDocument.Parse(product.GetProperty("payload").GetString()!);
-    var cardId = payload.RootElement.GetProperty("cardId").GetString()!;
+    var cardId = product.GetProperty("payload").GetProperty("cardId").GetString()!;
     await using var copies = database.CreateCommand("SELECT copy_count FROM player_cards WHERE player_id=$1 AND card_id=$2");
     copies.Parameters.AddWithValue(userId);
     copies.Parameters.AddWithValue(cardId);
@@ -78,7 +85,7 @@ else if (phase == "after")
 {
     state = JsonSerializer.Deserialize<State>(await File.ReadAllTextAsync(statePath, ct), json)!;
     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", state.Token);
-    var bootstrap = await Read(await client.GetAsync("/api/v1/bootstrap", ct));
+    var bootstrap = await Request(HttpMethod.Get, "/api/v1/bootstrap");
     Check(bootstrap.GetProperty("player").GetProperty("userId").GetGuid() == state.UserId, "session persists after container restart");
     var retry = await Purchase(state.Product);
     Check(retry.GetProperty("goldAfter").GetInt64() == state.Gold, "purchase replay after container restart");
@@ -94,7 +101,8 @@ else if (phase == "after")
 else throw new ArgumentException("Expected before or after phase.");
 
 using var socket = new ClientWebSocket();
-await socket.ConnectAsync(new Uri("ws://server:8080/ws/v1/session?access_token=" + Uri.EscapeDataString(state.Token)), ct);
+var ticket = await Request(HttpMethod.Post, "/api/v1/realtime/ticket", new { });
+await socket.ConnectAsync(new Uri("ws://server:8080/ws/v1/session?ticket=" + Uri.EscapeDataString(ticket.GetProperty("ticket").GetString()!)), ct);
 async Task<ServerEvent> Receive()
 {
     using var message = new MemoryStream();

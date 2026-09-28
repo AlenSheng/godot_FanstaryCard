@@ -50,6 +50,8 @@ public sealed partial class RealNetworkEndToEndTests
             idleTimeout.CancelAfter(TimeSpan.FromSeconds(12));
             var close = await socket.ReceiveAsync(new byte[16384], idleTimeout.Token);
             Assert.Equal(WebSocketMessageType.Close, close.MessageType);
+            Assert.Equal(WebSocketCloseStatus.PolicyViolation, close.CloseStatus);
+            await socket.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "Acknowledged", idleTimeout.Token);
             using var denied = await client.PostAsync("/api/v1/realtime/ticket", PbContent(new Wire.Empty()), ct);
             Assert.Equal(HttpStatusCode.Unauthorized, denied.StatusCode);
         }

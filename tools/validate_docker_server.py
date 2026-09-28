@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 import json
 from pathlib import Path
 import shutil
+import secrets
 import subprocess
 import tarfile
 import tempfile
@@ -36,8 +37,8 @@ def docker(*args, **kwargs):
     return command("docker", *args, **kwargs)
 
 
-def status(url, body=None, request_timeout=3):
-    request = urllib.request.Request(url, data=body, headers={"Content-Type": "application/json"})
+def status(url, body=None, request_timeout=3, media_type="application/json"):
+    request = urllib.request.Request(url, data=body, headers={"Content-Type": media_type, "Accept": media_type})
     try:
         with urllib.request.urlopen(request, timeout=request_timeout) as response:
             return response.status
@@ -85,6 +86,7 @@ def prepare_tests(evidence):
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <Reference Include="FantasyCard.Contracts"><HintPath>/evidence/image-app/FantasyCard.Contracts.dll</HintPath></Reference>
+    <Reference Include="Google.Protobuf"><HintPath>/evidence/image-app/Google.Protobuf.dll</HintPath></Reference>
     <Reference Include="Npgsql"><HintPath>/evidence/image-app/Npgsql.dll</HintPath></Reference>
   </ItemGroup>
 </Project>
@@ -218,13 +220,14 @@ def validate(image_tag, builder_tag):
         report["database_outage"] = {"ready": 503, "live": 200, "recovered": 200}
         docker("stop", server)
         docker("run", "-d", "--name", production, "--network", network, "-p", "127.0.0.1::8080",
-               "-e", "ASPNETCORE_ENVIRONMENT=Production", "-e", "Identity__EnableLocalAuth=true",
+               "-e", "ASPNETCORE_ENVIRONMENT=Production", "-e", "Identity__EnableLocalAuth=false",
+               "-e", "Admin__ApiKey=" + secrets.token_hex(32),
                "-e", "ConnectionStrings__Postgres=" + runtime_connection, image["Id"])
         containers.append(production)
         production_port = docker("port", production, "8080/tcp").stdout.strip().rsplit(":", 1)[1]
         production_base = "http://127.0.0.1:" + production_port
         wait_for(lambda: status(production_base + "/health/ready") == 200, "production-mode readiness")
-        denied = status(production_base + "/api/v1/auth/local", b'{"deviceId":"docker-production-check","displayName":"Acceptance"}')
+        denied = status(production_base + "/api/v1/auth/local", b"", media_type="application/protobuf")
         if denied != 404:
             raise ValueError("Local authentication was not disabled in production mode.")
         report["production_local_auth_status"] = denied

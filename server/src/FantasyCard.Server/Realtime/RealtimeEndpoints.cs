@@ -162,11 +162,11 @@ public static class RealtimeEndpoints
                     cancellationToken);
             }
 
-            using var connectionLifetime = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            using var connectionLifetime = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, connection.CloseDeadline);
             var monitor = MonitorSessionAsync();
             try
             {
-                while (socket.State == WebSocketState.Open && !cancellationToken.IsCancellationRequested)
+                while (socket.State is WebSocketState.Open or WebSocketState.CloseSent && !cancellationToken.IsCancellationRequested)
                 {
                     var received = await ReceiveAsync(socket, connectionLifetime.Token);
                     metrics.RealtimeMessageReceived();
@@ -180,6 +180,9 @@ public static class RealtimeEndpoints
                             CancellationToken.None);
                         return;
                     }
+
+                    // Once a close is sent, consume only the handshake; never route more commands.
+                    if (socket.State == WebSocketState.CloseSent) continue;
 
                     if (received.Status == ReceiveStatus.InvalidType)
                     {
@@ -233,6 +236,7 @@ public static class RealtimeEndpoints
             }
             finally
             {
+                await connection.CompleteCloseHandshakeAsync();
                 await connectionLifetime.CancelAsync();
                 try { await monitor; } catch (OperationCanceledException) { }
             }
@@ -250,10 +254,13 @@ public static class RealtimeEndpoints
                         if (!await SessionValidAsync())
                         {
                             await connection.CloseAsync(WebSocketCloseStatus.PolicyViolation, "Session no longer valid", CancellationToken.None);
-                            await connectionLifetime.CancelAsync();
                             return;
                         }
                     }
+                }
+                catch (OperationCanceledException) when (connectionLifetime.IsCancellationRequested)
+                {
+                    // Normal handler shutdown must not turn an orderly close into a reset.
                 }
                 catch
                 {

@@ -40,6 +40,60 @@ public sealed class ConnectionReplacementTests
         Assert.False(registry.IsConnected(playerId));
     }
 
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public async Task Server_close_preserves_receive_until_ack_or_bounded_deadline(bool acknowledge)
+    {
+        var socket = new HandshakeSocket();
+        await using var connection = new RealtimeConnection(socket);
+        await connection.CloseAsync(WebSocketCloseStatus.PolicyViolation, "Revoked", TestContext.Current.CancellationToken);
+        Assert.Equal(WebSocketState.CloseSent, socket.State);
+        Assert.False(connection.CloseDeadline.IsCancellationRequested);
+        var handshake = connection.CompleteCloseHandshakeAsync();
+        // A deterministic scheduler gate: the receive must remain pending, rather than
+        // being cancelled immediately after writing the close frame.
+        Assert.False(handshake.IsCompleted);
+        await connection.SendAsync(Event("session.connected", new SessionConnectedEventPayload(Guid.NewGuid())),
+            TestContext.Current.CancellationToken);
+        Assert.Equal(0, socket.SentMessages);
+        if (acknowledge) socket.Acknowledge();
+        await handshake.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
+        Assert.Equal(acknowledge ? WebSocketState.Closed : WebSocketState.Aborted, socket.State);
+    }
+
+    private sealed class HandshakeSocket : WebSocket
+    {
+        private readonly TaskCompletionSource _ack = new(TaskCreationOptions.RunContinuationsAsynchronously);
+        private WebSocketState _state = WebSocketState.Open;
+        public int SentMessages { get; private set; }
+        public override WebSocketCloseStatus? CloseStatus => WebSocketCloseStatus.PolicyViolation;
+        public override string? CloseStatusDescription => "Revoked";
+        public override WebSocketState State => _state;
+        public override string? SubProtocol => null;
+        public void Acknowledge() => _ack.TrySetResult();
+        public override void Abort() => _state = WebSocketState.Aborted;
+        public override void Dispose() { }
+        public override Task CloseAsync(WebSocketCloseStatus status, string? description, CancellationToken ct) =>
+            throw new NotSupportedException("Only the existing receive loop owns the handshake.");
+        public override Task CloseOutputAsync(WebSocketCloseStatus status, string? description, CancellationToken ct)
+        {
+            _state = WebSocketState.CloseSent;
+            return Task.CompletedTask;
+        }
+        public override async Task<WebSocketReceiveResult> ReceiveAsync(ArraySegment<byte> buffer, CancellationToken ct)
+        {
+            await _ack.Task.WaitAsync(ct);
+            _state = WebSocketState.Closed;
+            return new WebSocketReceiveResult(0, WebSocketMessageType.Close, true);
+        }
+        public override Task SendAsync(ArraySegment<byte> buffer, WebSocketMessageType type, bool end, CancellationToken ct)
+        {
+            SentMessages++;
+            return Task.CompletedTask;
+        }
+    }
+
     private static ServerEvent Event(string type, object payload) =>
         new(type, "replacement-test", payload, "event", 1, DateTimeOffset.UnixEpoch);
 
