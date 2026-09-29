@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Run as the ubuntu user; only Docker commands use sudo.
 repo=/opt/fantasycard-github
-branch=release
+branch=${FANTASYCARD_DEPLOY_BRANCH:-release}
 app_dir="$repo/server"
 compose="$app_dir/compose.cloud.yaml"
 env_file="$app_dir/.env"

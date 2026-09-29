@@ -80,11 +80,11 @@ jobs:
       - uses: actions/setup-dotnet@v6
         with:
           global-json-file: server/global.json
-      - name: Settlement encoding and server test build
+      - name: Full server offline regression
         shell: pwsh
         working-directory: server
         run: |
-          dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --filter 'FullyQualifiedName~SettlementEncodingTests' --logger 'trx;LogFileName=settlement.trx' --results-directory ../test-results/gameplay-load
+          dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --logger 'trx;LogFileName=server-offline.trx' --results-directory ../test-results/gameplay-load
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - uses: actions/upload-artifact@v7
         if: always()
