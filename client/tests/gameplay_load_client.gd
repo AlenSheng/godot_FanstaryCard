@@ -171,6 +171,14 @@ func _run_expedition() -> void:
 	var visited := {}
 	while Game.settlement.is_empty() and Time.get_ticks_msec() < deadline and not stop_requested:
 		if not Game.room.is_empty() and not Game.has_pending_commands():
+			# Some generated decks exhaust useful actions in a long battle. Abandon
+			# is an authoritative terminal command, so the test can still verify a
+			# real settlement rather than counting an idle room as success.
+			if Game.allowed("battle.abandon") and Time.get_ticks_msec() - last_progress_ms > 60000:
+				if Game.command("battle.abandon"):
+					_on_telemetry({"type": "lifecycle", "event_type": "battle.abandon.fallback", "match_id": active_match_id})
+				await _wait(0.4)
+				continue
 			var pve: Dictionary = Game.room.get("pve", {})
 			var current_dead: bool = pve.get("monsters", []).any(func(monster): return str(monster.get("monster_id", "")) == str(pve.get("current_target_id", "")) and int(monster.get("hp", 0)) <= 0)
 			if current_dead and Game.allowed("battle.select_target"):
