@@ -52,6 +52,7 @@ var _settlement_loading := ""
 var _settlement_ack_pending_id := ""
 var _settlement_polling := false
 var _settlement_poll_at := 0
+var _settlement_recovery_match_id := ""
 var settlement_query_failed := false
 var _extraction_sync_at := 0
 var _queued_command: Dictionary = {}
@@ -84,7 +85,7 @@ func _process(_delta: float) -> void:
 	else:
 		_extraction_sync_at = 0
 	var phase: String = str(room.get("player", {}).get("phase", ""))
-	if settlement.is_empty() and phase in ["Extracted", "Dead"] and now >= _settlement_poll_at and not _settlement_polling:
+	if settlement.is_empty() and (phase in ["Extracted", "Dead"] or not _settlement_recovery_match_id.is_empty()) and now >= _settlement_poll_at and not _settlement_polling:
 		_poll_ready_settlement()
 	var pending_changed := false
 	if not _pending_play.is_empty() and Time.get_ticks_msec() > _play_deadline:
@@ -203,6 +204,7 @@ func _clear_authenticated_state() -> void:
 	_settlement_ack_pending_id = ""
 	_settlement_polling = false
 	_settlement_poll_at = 0
+	_settlement_recovery_match_id = ""
 	settlement_query_failed = false
 	_extraction_sync_at = 0
 	busy = false
@@ -347,6 +349,7 @@ func refresh_lobby() -> void:
 		gateway.room_id = ""
 		gateway.room_revision = 0
 		settlement = lobby.unfinishedSettlement
+		_settlement_recovery_match_id = ""
 	elif lobby.get("unfinishedMatch") != null:
 		gateway.room_id = lobby.unfinishedMatch.roomId
 	elif room.is_empty() and ticket.is_empty():
@@ -1054,11 +1057,14 @@ func _retry_rejected_command(payload: Dictionary) -> bool:
 func _on_event(kind: String, payload: Dictionary) -> void:
 	if kind == "pong": return
 	if kind == "error.command_rejected" and payload.get("code", "") == "NOT_IN_ROOM":
+		_settlement_recovery_match_id = str(room.get("match_id", ""))
+		_settlement_poll_at = 0
 		room = {}
 		selected_cards.clear()
 		clear_combat_preview()
 		payload["_retry_handled"] = true
 		await refresh_lobby()
+		if not settlement.is_empty(): _settlement_recovery_match_id = ""
 		if settlement.is_empty() and lobby.get("unfinishedMatch") != null:
 			notice.emit("上次探索正在结算，请稍后点击重新连接")
 		return
@@ -1234,7 +1240,7 @@ func _load_settlement(id: String) -> void:
 
 func _poll_ready_settlement() -> void:
 	if _settlement_polling or not settlement.is_empty() or not _settlement_ack_pending_id.is_empty(): return
-	var match_id := str(room.get("match_id", ""))
+	var match_id := str(room.get("match_id", _settlement_recovery_match_id))
 	if match_id.is_empty() or gateway == null or gateway.token.is_empty(): return
 	_settlement_polling = true
 	_settlement_poll_at = Time.get_ticks_msec() + 2500
@@ -1243,7 +1249,7 @@ func _poll_ready_settlement() -> void:
 	var result: Dictionary = await gateway.request("/api/v1/bootstrap", HTTPClient.METHOD_GET, null, [0, 502, 503, 504])
 	if generation != gateway.session_generation: return
 	_settlement_polling = false
-	if room.get("match_id", "") != match_id or not settlement.is_empty(): return
+	if str(room.get("match_id", _settlement_recovery_match_id)) != match_id or not settlement.is_empty(): return
 	if not result.ok or not result.data is Dictionary:
 		settlement_query_failed = true
 		changed.emit()
@@ -1253,12 +1259,13 @@ func _poll_ready_settlement() -> void:
 	var ready: Variant = result.data.get("unfinishedSettlement")
 	if ready is Dictionary and str(ready.get("matchId", "")) == match_id:
 		settlement = ready
+		_settlement_recovery_match_id = ""
 		changed.emit()
 	elif was_failed:
 		changed.emit()
 
 func retry_settlement() -> void:
-	if str(room.get("player", {}).get("phase", "")) not in ["Extracted", "Dead"]: return
+	if str(room.get("player", {}).get("phase", "")) not in ["Extracted", "Dead"] and _settlement_recovery_match_id.is_empty(): return
 	_poll_ready_settlement()
 
 func acknowledge_settlement() -> bool:

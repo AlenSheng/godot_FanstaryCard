@@ -34,6 +34,18 @@ func run_test() -> Dictionary:
 	before = gateway.calls
 	store.retry_settlement()
 	checks["ready receipt stops polling"] = gateway.calls == before
+	store.settlement = {}
+	store.room = {}
+	store._settlement_recovery_match_id = "boss-match"
+	gateway.response.data.unfinishedSettlement = null
+	store.retry_settlement()
+	checks["lost room keeps polling original match"] = store.settlement.is_empty() and store._settlement_recovery_match_id == "boss-match"
+	gateway.response.data.unfinishedSettlement = {"settlementId": "other", "matchId": "old-match"}
+	store.retry_settlement()
+	checks["lost room rejects unrelated receipt"] = store.settlement.is_empty()
+	gateway.response.data.unfinishedSettlement = {"settlementId": "receipt", "matchId": "boss-match"}
+	store.retry_settlement()
+	checks["lost room recovers ready receipt"] = store.settlement.get("settlementId") == "receipt" and store._settlement_recovery_match_id.is_empty()
 	store.free()
 	gateway.free()
 	return {"ok": not checks.values().has(false), "checks": checks}
