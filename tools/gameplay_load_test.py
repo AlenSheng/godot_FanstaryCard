@@ -1,6 +1,6 @@
 """Prepare by default; --run starts real Godot gameplay with 50 clients/120s.
 --smoke runs one client for one completed match, with a 7 minute deadline.
-Exit codes: 0 preparation-only or verified smoke; 1 incomplete; 2 performance
+Exit codes: 0 preparation-only or verified bounded run; 1 incomplete; 2 performance
 redline; 3 invalid workload/evidence; 130 operator stop. No rate-limit changes.
 """
 from __future__ import annotations
@@ -87,6 +87,7 @@ def generator_resources(processes, previous):
     cpu_percent=None if previous is None or now<=previous[0] else round(100*cpu_delta/(now-previous[0]),2)
     result={'available':True,'measured_processes':measured,'cpu_percent_of_one_core':cpu_percent,
             'logical_cores':psutil.cpu_count(logical=True),'rss_bytes':rss_bytes,
+            'host_memory_available_bytes':psutil.virtual_memory().available,
             'threads':threads,'handles':handles if os.name=='nt' else None,'write_bytes_cumulative':write_bytes}
     return result,(now,cpu_by_pid)
 
@@ -207,6 +208,8 @@ def main():
                     value=resource.get(key)
                     if value is not None and (value<limit if less else value>limit): causes.append(key+'_redline')
                 if args.run and any(resource.get(k) is None for k in ('cpu','memory_available','disk_available')): causes.append('monitoring_unavailable')
+                if args.run and generator.get('available') and generator.get('host_memory_available_bytes',0)<2*1024**3:
+                    causes.append('generator_memory_low')
                 if window['invalid_metric_count'] or lost_events or audit_lost or audit_count_invalid or invalid_files or workload['invalid_schema_count']:
                     causes.append('invalid_telemetry'); workload_failed=True
                 if workload['workload_failure']: causes.append('workload_or_generator_failure')
@@ -228,7 +231,7 @@ def main():
                 save(run_dir/'state.json',row)
                 with (run_dir/'samples.jsonl').open('a',encoding='utf-8') as f: f.write(json.dumps(row)+'\n')
                 print('SAMPLE',json.dumps(row),flush=True)
-                evidence_failures=[cause for cause in causes if cause in ('invalid_telemetry','invalid_cycle_count','workload_or_generator_failure','monitoring_unavailable','probe_timeout')]
+                evidence_failures=[cause for cause in causes if cause in ('invalid_telemetry','invalid_cycle_count','workload_or_generator_failure','monitoring_unavailable','probe_timeout','generator_memory_low')]
                 if evidence_failures:
                     reason='invalid_evidence:'+','.join(evidence_failures)
                     break
@@ -272,9 +275,20 @@ def main():
         if forced_termination:
             workload_failed=True
             cleanup_error=(cleanup_error+'; ' if cleanup_error else '')+'forced_termination:'+','.join(map(str,forced_termination))
-        outcome=classify_stop(reason,smoke_verified=smoke_verified,workload_failed=workload_failed)
-        report_data={'schema_version':4,'started':started,'ended':time.time(),'groups':groups,'clients':len(processes),
+        final_before_cleanup = samples[-1] if samples else None
+        required_samples = max(1, math.ceil(args.max_seconds / 10 * .9))
+        load_verified = (args.run and reason == 'duration_limit' and not workload_failed and
+            groups == args.max_groups and len(processes) == args.max_groups * args.group_size and
+            len(samples) >= required_samples and all(code is None for code in before_stop.values()) and
+            final_before_cleanup is not None and final_before_cleanup['fresh_status_clients'] == len(processes) and
+            any(sample['online'] == len(processes) for sample in samples) and
+            any(sample['in_room'] == len(processes) for sample in samples) and
+            not forced_termination and not cleanup_error)
+        outcome=classify_stop(reason,smoke_verified=smoke_verified,
+            load_verified=load_verified,workload_failed=workload_failed)
+        report_data={'schema_version':5,'started':started,'ended':time.time(),'groups':groups,'clients':len(processes),
             'stop_reason':reason,'outcome':outcome,'source':source,'cleanup_error':cleanup_error,
+            'load_window_verified':load_verified,'required_samples':required_samples,
             'stop_issued_monotonic_ns':stop_issued_monotonic_ns,
             'first_trigger':next((cause for sample in samples for cause in sample['reasons']),reason),
             'all_triggers':sorted({cause for sample in samples for cause in sample['reasons']} | {reason}),

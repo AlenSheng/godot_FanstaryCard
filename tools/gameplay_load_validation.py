@@ -279,12 +279,15 @@ def new_events(statuses: list[dict], seen: dict[tuple[str, str], int]) -> tuple[
     return window, lost
 
 
-def classify_stop(reason: str, *, smoke_verified: bool = False, workload_failed: bool = False) -> dict:
+def classify_stop(reason: str, *, smoke_verified: bool = False, load_verified: bool = False,
+                  workload_failed: bool = False) -> dict:
     """An orderly stop is not synonymous with passing an acceptance test."""
-    if workload_failed or reason.startswith(("coordinator_error:", "invalid_evidence:")) or "workload_or_generator_failure" in reason or "monitoring_unavailable" in reason or "invalid_telemetry" in reason:
+    if workload_failed or reason.startswith(("coordinator_error:", "invalid_evidence:")) or "workload_or_generator_failure" in reason or "monitoring_unavailable" in reason or "invalid_telemetry" in reason or "generator_memory_low" in reason:
         classification, code = "invalid_workload_or_evidence", 3
     elif reason == "smoke_passed" and smoke_verified:
         classification, code = "smoke_passed", 0
+    elif reason == "duration_limit" and load_verified:
+        classification, code = "load_window_completed", 0
     elif reason.startswith("redline:"):
         classification, code = "performance_redline", 2
     elif reason.startswith("operator_"):

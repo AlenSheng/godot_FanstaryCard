@@ -57,6 +57,10 @@ class ValidationTests(unittest.TestCase):
     def test_smoke_requires_evidence(self):
         self.assertFalse(module.classify_stop('smoke_passed')['passed'])
         self.assertTrue(module.classify_stop('smoke_passed',smoke_verified=True)['passed'])
+        self.assertFalse(module.classify_stop('duration_limit')['passed'])
+        self.assertEqual(module.classify_stop('duration_limit',load_verified=True)['classification'], 'load_window_completed')
+        self.assertEqual(module.classify_stop('duration_limit',load_verified=True,workload_failed=True)['exit_code'],3)
+        self.assertEqual(module.classify_stop('invalid_evidence:generator_memory_low')['exit_code'],3)
     def test_empty_window_not_fake_latency(self):
         self.assertEqual(module.aggregate_window([])['http'],{'count':0})
     def test_steady_error_denominator(self):
