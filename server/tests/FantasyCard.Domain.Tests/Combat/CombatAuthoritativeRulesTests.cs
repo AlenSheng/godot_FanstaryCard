@@ -5,6 +5,122 @@ namespace FantasyCard.Domain.Tests.Combat;
 
 public sealed class CombatAuthoritativeRulesTests
 {
+    [Theory]
+    [InlineData(1, 10)]
+    [InlineData(2, 24)]
+    [InlineData(3, 42)]
+    [InlineData(4, 64)]
+    [InlineData(5, 90)]
+    public void Current_pure_core_curve_is_locked(int count, int damage)
+    {
+        var result = CombatResolver.Resolve(Enumerable.Repeat(Fire(10), count).ToArray(), State());
+        Assert.Equal(damage, result.Damage);
+        Assert.Equal(count, result.CoreCount);
+        Assert.Equal(1 + .2 * (count - 1), result.ResonanceMultiplier, 6);
+    }
+
+    [Fact]
+    public void Current_example_a_three_four_and_five_fire_are_locked()
+    {
+        var fuel = new CombatCardDefinition("fuel", new(ElementalDamage: 12,
+            Element: CardElement.Fire, SameElementBonus: 2));
+        CombatCardDefinition[] cards = [Fire(8), Fire(3), fuel, Fire(6), Fire(10)];
+        var state = State(equipment: new(new(FireDamageBonus: .14)));
+        Assert.Equal(46, CombatResolver.Resolve(cards[..3], state, _ => -.30).Damage);
+        Assert.Equal(72, CombatResolver.Resolve(cards[..4], state, _ => -.30).Damage);
+        Assert.Equal(113, CombatResolver.Resolve(cards, state, _ => -.30).Damage);
+    }
+
+    [Fact]
+    public void Selection_order_changes_core_even_when_later_element_is_more_common()
+    {
+        CombatCardDefinition[] cards = [Fire(8), Element(CardElement.Water, 7), Element(CardElement.Water, 7)];
+        var state = State(equipment: new(new(FireDamageBonus: .14)));
+        var firstFire = CombatResolver.Resolve(cards, state, _ => -.30);
+        var firstWater = CombatResolver.Resolve([cards[1], cards[0], cards[2]], state, _ => -.30);
+        Assert.Equal(CardElement.Fire, firstFire.CoreElement);
+        Assert.Equal(1, firstFire.CoreCount);
+        Assert.Equal(CardElement.Water, firstWater.CoreElement);
+        Assert.Equal(2, firstWater.CoreCount);
+    }
+
+    [Theory]
+    [InlineData(1, 0)]
+    [InlineData(2, 0)]
+    [InlineData(3, 1)]
+    [InlineData(4, 1)]
+    [InlineData(5, 2)]
+    public void Experimental_fenxian_rebate_tracks_cards_spent_not_combo(int count, int expectedDraw)
+    {
+        var state = new PlayerCombatState(HeroClass.Mage,
+            Enumerable.Repeat("common-01", 20).ToArray(), new Random(31),
+            useConsumptionBasedFenxian: true);
+        for (var index = 0; index < 8; index++)
+        {
+            var (_, draw) = state.UpdateFenxian(CardElement.Fire, count);
+            Assert.Equal(expectedDraw, draw);
+        }
+        Assert.Equal(5, state.FenxianChargeLevel);
+        Assert.True(expectedDraw + .5 < count);
+        var restored = new PlayerCombatState(HeroClass.Mage,
+            Enumerable.Repeat("common-01", 20).ToArray(), new Random(31),
+            useConsumptionBasedFenxian: true);
+        restored.Restore(state.Capture());
+        Assert.Equal(expectedDraw, restored.UpdateFenxian(CardElement.Fire, count).Draw);
+    }
+
+    [Fact]
+    public void Existing_fenxian_behavior_remains_the_default()
+    {
+        var state = State();
+        for (var index = 0; index < 4; index++) state.UpdateFenxian(CardElement.Fire, 1);
+        Assert.Equal(2, state.UpdateFenxian(CardElement.Fire, 1).Draw);
+        Assert.False(state.Capture().UseConsumptionBasedFenxian);
+    }
+
+    [Theory]
+    [InlineData(0, 5)]
+    [InlineData(1, 7)]
+    [InlineData(2, 9)]
+    [InlineData(3, 11)]
+    [InlineData(4, 13)]
+    [InlineData(5, 15)]
+    public void Experimental_guardian_weapon_accumulates_exact_five_cast_yield(int level, int expectedBonus)
+    {
+        var state = new PlayerCombatState(HeroClass.Guardian,
+            Enumerable.Repeat("common-01", 20).ToArray(), new Random(31),
+            weaponLevel: level, useFractionalGuardianWeapon: true);
+        var totalBonus = 0;
+        for (var index = 0; index < 5; index++)
+        {
+            var preview = state.ResolveShield(1);
+            Assert.Equal(preview, state.ResolveShield(1));
+            totalBonus += state.GainShield(preview) - 1;
+        }
+        Assert.Equal(expectedBonus, totalBonus);
+        Assert.Equal(0, state.GuardianWeaponRemainderTenths);
+    }
+
+    [Fact]
+    public void Guardian_remainder_is_snapshotted_and_dropped_on_shield_cap()
+    {
+        var state = new PlayerCombatState(HeroClass.Guardian,
+            Enumerable.Repeat("common-01", 20).ToArray(), new Random(31),
+            weaponLevel: 1, useFractionalGuardianWeapon: true);
+        state.GainShield(state.ResolveShield(1));
+        Assert.Equal(4, state.GuardianWeaponRemainderTenths);
+        var restored = new PlayerCombatState(HeroClass.Guardian,
+            Enumerable.Repeat("common-01", 20).ToArray(), new Random(31),
+            weaponLevel: 1, useFractionalGuardianWeapon: true);
+        restored.Restore(state.Capture());
+        Assert.Equal(state.ResolveShield(1), restored.ResolveShield(1));
+        Assert.Equal(4, restored.GuardianWeaponRemainderTenths);
+        restored.GainShield(100);
+        Assert.Equal(0, restored.GuardianWeaponRemainderTenths);
+        restored.ClearShield();
+        Assert.Equal(0, restored.Shield);
+    }
+
     [Fact]
     public void Frozen_conflict_examples_preserve_damage_and_recovery()
     {

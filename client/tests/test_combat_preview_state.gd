@@ -48,6 +48,9 @@ func run_test() -> Dictionary:
 	store.room.player.hand = [{"instance_id": "earth-card", "card_id": "C09"}, {"instance_id": "water-card", "card_id": "C06"}]
 	var core_preview: Dictionary = store._calculate_combat_preview(["earth-card", "water-card"])
 	ok = ok and core_preview.get("core_element", "") == "Earth"
+	var reversed_preview: Dictionary = store._calculate_combat_preview(["water-card", "earth-card"])
+	ok = ok and reversed_preview.get("core_element", "") == "Water"
+	ok = ok and store._preview_context(["water-card", "earth-card"]).card_instance_ids == ["water-card", "earth-card"]
 	store.clear_combat_preview()
 	ok = ok and store._preview_request.is_empty()
 	store.free()

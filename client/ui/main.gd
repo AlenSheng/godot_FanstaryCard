@@ -90,6 +90,7 @@ var _codex_mutating := false
 var _enhancement_quote: Dictionary = {}
 var _enhancement_quote_key := ""
 var _game_title: Label
+var _login_version_label: Label
 var _draw_charge_visual := 0.0
 var _draw_charge_authoritative := 0.0
 var _draw_charge_anchor_msec := 0
@@ -262,6 +263,15 @@ func _build_shell() -> void:
 	add_child(tips_overlay)
 	# Compatibility alias for existing UI checks; rendering and animation live in TipsOverlay.
 	toast_label = tips_overlay.label
+	var version_label := _label(self, P.localized("client_version") % str(Game.CATALOG.data.version), 18, P.MUTED)
+	version_label.name = "ClientVersion"
+	version_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	version_label.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
+	version_label.offset_left = 42
+	version_label.offset_top = -42
+	version_label.offset_right = 942
+	version_label.offset_bottom = -12
+	_login_version_label = version_label
 
 func _schedule_render() -> void:
 	if mail_modal_lock: return
@@ -475,6 +485,9 @@ func _render() -> void:
 	if not reuse_current: _park_or_free_reference()
 	content.add_theme_constant_override("separation", 10 if not Game.room.is_empty() else 18)
 	var show_login_video: bool = Game.lobby.is_empty() and Game.room.is_empty() and Game.settlement.is_empty()
+	if is_instance_valid(_login_version_label):
+		_login_version_label.text = P.localized_text(P.localized("client_version") % str(Game.CATALOG.data.version))
+		_login_version_label.visible = show_login_video
 	if show_login_video:
 		Sound.set_music_context("")
 	elif not Game.room.is_empty():
@@ -1560,8 +1573,10 @@ func _map(state: Dictionary) -> void:
 		_label(side, "%s ×%s%s" % [P.word(item.kind), item.quantity, " · 安全" if item.is_safe else ""], 22)
 
 func _monster_name(id: String) -> String:
-	var names := {"fire-bat": "火蝠", "thorn-mite": "棘螨", "murk-snail": "浊螅", "sand-lizard": "砂蜥", "rust-rat": "锈刃鼠", "metal-guard": "金卫", "fire-herald": "火劫使", "marsh-mother": "沼母", "stone-guard": "石甲卫", "thorn-guard": "棘林卫", "annihilation-core": "湮核", "box-spirit": "匣灵", "treasure-box-spirit": "匣灵"}
-	return names.get(id.trim_suffix("-a").trim_suffix("-b"), id)
+	var keys := {"fire-bat": "monster_fire_bat", "thorn-mite": "monster_thorn_mite", "murk-snail": "monster_murk_snail", "sand-lizard": "monster_sand_lizard", "rust-rat": "monster_rust_rat", "metal-guard": "monster_metal_guard", "fire-herald": "monster_fire_herald", "marsh-mother": "monster_marsh_mother", "stone-guard": "monster_stone_guard", "thorn-guard": "monster_thorn_guard", "annihilation-core": "monster_annihilation_core", "box-spirit": "monster_box_spirit", "treasure-box-spirit": "monster_box_spirit"}
+	var normalized_id := id.trim_suffix("-a").trim_suffix("-b")
+	var key: String = keys.get(normalized_id, "")
+	return P.localized(key) if not key.is_empty() else id
 
 func _move(row: int, column: int) -> void:
 	var layer: int = mini(mini(row, column), mini(5 - row, 5 - column))

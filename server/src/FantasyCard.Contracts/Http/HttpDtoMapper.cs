@@ -34,6 +34,9 @@ public static class HttpDtoMapper
         var result = new Dictionary<string, PropertyInfo>(StringComparer.OrdinalIgnoreCase);
         foreach (var property in t.GetProperties(BindingFlags.Public | BindingFlags.Instance))
         {
+            // JsonElement.Item is an indexer, not the persisted settlement's "item" field.
+            // Persisted fields are read by ReadJson; indexers cannot be compiled as scalar getters.
+            if (property.GetIndexParameters().Length != 0) continue;
             result.TryAdd(Normalize(property.Name), property);
             if (property.Name == "IsRead") result.TryAdd("read", property);
             if (property.Name == "IsClaimed") result.TryAdd("claimed", property);

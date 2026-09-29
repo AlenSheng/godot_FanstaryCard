@@ -52,6 +52,7 @@ var _settlement_loading := ""
 var _settlement_ack_pending_id := ""
 var _settlement_polling := false
 var _settlement_poll_at := 0
+var settlement_query_failed := false
 var _extraction_sync_at := 0
 var _queued_command: Dictionary = {}
 var _queue_deadline: int = 0
@@ -202,6 +203,7 @@ func _clear_authenticated_state() -> void:
 	_settlement_ack_pending_id = ""
 	_settlement_polling = false
 	_settlement_poll_at = 0
+	settlement_query_failed = false
 	_extraction_sync_at = 0
 	busy = false
 	_sound_ready = false
@@ -1225,6 +1227,7 @@ func _load_settlement(id: String) -> void:
 	changed.emit()
 
 func _poll_ready_settlement() -> void:
+	if _settlement_polling or not settlement.is_empty() or not _settlement_ack_pending_id.is_empty(): return
 	var match_id := str(room.get("match_id", ""))
 	if match_id.is_empty() or gateway == null or gateway.token.is_empty(): return
 	_settlement_polling = true
@@ -1235,11 +1238,22 @@ func _poll_ready_settlement() -> void:
 	if generation != gateway.session_generation: return
 	_settlement_polling = false
 	if room.get("match_id", "") != match_id or not settlement.is_empty(): return
-	if not result.ok or not result.data is Dictionary: return
+	if not result.ok or not result.data is Dictionary:
+		settlement_query_failed = true
+		changed.emit()
+		return
+	var was_failed := settlement_query_failed
+	settlement_query_failed = false
 	var ready: Variant = result.data.get("unfinishedSettlement")
 	if ready is Dictionary and str(ready.get("matchId", "")) == match_id:
 		settlement = ready
 		changed.emit()
+	elif was_failed:
+		changed.emit()
+
+func retry_settlement() -> void:
+	if str(room.get("player", {}).get("phase", "")) not in ["Extracted", "Dead"]: return
+	_poll_ready_settlement()
 
 func acknowledge_settlement() -> void:
 	if settlement.is_empty() or busy: return

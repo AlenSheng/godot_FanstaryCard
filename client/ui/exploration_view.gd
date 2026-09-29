@@ -195,6 +195,10 @@ static func _hand(ui: Control, host: Control, state: Dictionary) -> void:
 		if index < hand.size():
 			var card: Dictionary = hand[index]
 			ui.card(host, card.get("card_id", ""), rect, func(): Game.toggle_card(card.instance_id), card.get("instance_id", "") in Game.selected_cards, not Game.allowed("battle.play_cards"), {"level": int(card.get("level", 0)), "element_override": str(card.get("element_override", "")), "battle_target_element": target_element, "selected_overlay": true})
+			var play_index := Game.selected_cards.find(card.get("instance_id", ""))
+			if play_index >= 0:
+				var order_label: Label = ui.text(str(play_index + 1), Rect2(rect.position.x + 9, rect.position.y + 9, 34, 36), 28, P.GOLD)
+				order_label.name = "PlayOrder_%s" % index
 		else:
 			var empty_slot := _picture(ui, Art.texture(EMPTY_HAND_SLOT), rect)
 			empty_slot.name = "EmptyHandSlot_%s" % index
@@ -494,7 +498,8 @@ static func _rewards(ui: Control, host: Control, reward: Dictionary) -> void:
 static func _settlement_pending(ui: Control, phase: String) -> void:
 	ui.picture(Art.texture(PANEL), Rect2(480, 150, 960, 766))
 	_center(ui.text(P.localized("settlement_pending_extract" if phase == "Extracted" else "settlement_pending_battle"), Rect2(545, 285, 830, 100), 64, P.GOLD))
-	_center(ui.text(P.localized("settlement_pending_message"), Rect2(598, 455, 724, 70), 34, P.PAPER))
+	_center(ui.text(P.localized("settlement_query_failed" if Game.settlement_query_failed else "settlement_pending_message"), Rect2(598, 455, 724, 70), 34, P.PAPER))
+	ui.button(P.localized("settlement_retry"), Rect2(716, 650, 488, 96), Game.retry_settlement)
 
 static func build_settlement(ui: Control, host: Control) -> void:
 	ui.picture(Art.texture(PANEL), Rect2(480, 150, 960, 766))
