@@ -93,3 +93,40 @@ jobs:
           path: test-results/gameplay-load
           retention-days: 7
           if-no-files-found: ignore
+
+  server-postgres:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: fantasycard_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d fantasycard_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      FANTASYCARD_TEST_POSTGRES: Host=127.0.0.1;Port=5432;Username=postgres;Password=postgres;Database=fantasycard_test
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: server/global.json
+      - name: Match replay and room integration on disposable PostgreSQL
+        working-directory: server
+        run: dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --filter 'FullyQualifiedName~Four_humans_enqueue_ready_and_launch_one_persisted_room' --logger 'trx;LogFileName=postgres-match.trx' --results-directory ../test-results/gameplay-load
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: gameplay-load-postgres-${{ github.sha }}
+          path: test-results/gameplay-load
+          retention-days: 7
+          if-no-files-found: ignore
