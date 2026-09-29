@@ -8,6 +8,7 @@ signal telemetry(sample: Dictionary)
 
 const Proto = preload("res://network/protobuf.gd")
 const HttpProtocol = preload("res://network/http_protocol.gd")
+const ReusableHttpClient = preload("res://network/reusable_http_client.gd")
 const HTTP_BACKGROUND_DECODE_BYTES := 8 * 1024
 const DEFAULT_LOCAL_BASE_URL := "http://127.0.0.1:5080"
 const PRODUCTION_BASE_URL := "https://www.relicbound.cn"
@@ -68,6 +69,7 @@ var last_rtt_ms: int = -1
 var _connecting_at: int = 0
 var _ticket_generation: int = -1
 var _pending_http: Dictionary = {}
+var _reusable_http := ReusableHttpClient.new()
 var _pending_request_started: Dictionary = {}
 var _pending_ping_request_id := ""
 var _ping_sent_at: int = 0
@@ -291,20 +293,16 @@ func _request_page(path: String, method: int = HTTPClient.METHOD_GET, data: Vari
 		attempt_count = attempt + 1
 		var attempt_started_at := Time.get_ticks_msec()
 		var delay := pow(2.0, attempt)
-		var http := HTTPRequest.new()
-		http.timeout = 10.0
-		http.body_size_limit = 2 * 1024 * 1024
-		add_child(http)
-		var start := http.request_raw(base_url + path, headers, method, body)
-		if start != OK:
-			http.queue_free()
+		var response: Array = await _request_http_transport(path, method, headers, body)
+		if response[0] != HTTPRequest.RESULT_SUCCESS and int(response[1]) == 0:
 			result = {"ok": false, "status": 0, "error": "无法连接服务器"}
-			_emit_http_attempt(path, method, key, generation, attempt_count, attempt_started_at, 0, "transport_error", 0, 0.0, delay * 1000.0 if attempt < 2 else 0.0)
+			_emit_http_attempt(path, method, key, generation, attempt_count, attempt_started_at, 0,
+				"timeout" if response[0] == HTTPRequest.RESULT_TIMEOUT else "transport_error",
+				0, 0.0, delay * 1000.0 if attempt < 2 else 0.0)
+			if response[0] == HTTPRequest.RESULT_BODY_SIZE_LIMIT_EXCEEDED: break
 		else:
-			var response: Array = await http.request_completed
-			http.queue_free()
 			if generation != session_generation:
-				_emit_http_attempt(path, method, key, generation, attempt_count, attempt_started_at, int(response[1]), "cancelled", response[3].size(), 0.0, 0.0)
+				_emit_http_attempt(path, method, key, generation, attempt_count, attempt_started_at, int(response[1]), "cancelled", response[3].size(), 0.0, 0.0, response.size() > 4 and response[4])
 				break
 			var code: int = response[1]
 			var decoded: Dictionary
@@ -314,7 +312,7 @@ func _request_page(path: String, method: int = HTTPClient.METHOD_GET, data: Vari
 				decoded = {"ok": parse_status == OK, "data": normalize_response(parser.data) if parse_status == OK else null, "error": "服务器响应无效"}
 			else: decoded = await _decode_http_response(contract, code, response[2], response[3])
 			if generation != session_generation:
-				_emit_http_attempt(path, method, key, generation, attempt_count, attempt_started_at, code, "cancelled", response[3].size(), decoded.get("decode_ms", 0.0), 0.0)
+				_emit_http_attempt(path, method, key, generation, attempt_count, attempt_started_at, code, "cancelled", response[3].size(), decoded.get("decode_ms", 0.0), 0.0, response.size() > 4 and response[4])
 				break
 			var parsed: Variant = decoded.data
 			var success: bool = response[0] == HTTPRequest.RESULT_SUCCESS and code >= 200 and code < 300 and decoded.ok
@@ -332,7 +330,7 @@ func _request_page(path: String, method: int = HTTPClient.METHOD_GET, data: Vari
 				elif parsed is Dictionary and parsed.get("retryAfterSeconds") != null: delay = maxf(delay, float(parsed.retryAfterSeconds))
 				if delay > 60.0: may_retry = false
 			var attempt_result := "success" if success else ("decode_error" if not decoded.ok else ("timeout" if response[0] == HTTPRequest.RESULT_TIMEOUT else ("transport_error" if response[0] != HTTPRequest.RESULT_SUCCESS else "http_error")))
-			_emit_http_attempt(path, method, key, generation, attempt_count, attempt_started_at, code, attempt_result, response[3].size(), decoded.get("decode_ms", 0.0), delay * 1000.0 if may_retry else 0.0)
+			_emit_http_attempt(path, method, key, generation, attempt_count, attempt_started_at, code, attempt_result, response[3].size(), decoded.get("decode_ms", 0.0), delay * 1000.0 if may_retry else 0.0, response.size() > 4 and response[4])
 			if code == 401:
 				end_session("Steam 登录票据无效，请重试" if path == "/api/v1/auth/steam" else "登录已过期，请重新登录")
 			if not may_retry: break
@@ -352,16 +350,33 @@ func _request_page(path: String, method: int = HTTPClient.METHOD_GET, data: Vari
 	if not result.ok and result.status not in quiet_statuses: failed.emit(result.error)
 	return result
 
+func _request_http_transport(path: String, method: int, headers: PackedStringArray,
+		body: PackedByteArray) -> Array:
+	if not OS.has_feature("web") and not _reusable_http.busy:
+		return await _reusable_http.request(get_tree(), base_url, path, method, headers, body)
+	var http := HTTPRequest.new()
+	http.timeout = 10.0
+	http.body_size_limit = 2 * 1024 * 1024
+	add_child(http)
+	var start := http.request_raw(base_url + path, headers, method, body)
+	if start != OK:
+		http.queue_free()
+		return [HTTPRequest.RESULT_CANT_CONNECT, 0, PackedStringArray(), PackedByteArray(), false]
+	var response: Array = await http.request_completed
+	http.queue_free()
+	return response
+
 func _emit_http_attempt(path: String, method: int, request_id: String, generation: int,
 		attempt_no: int, started_at: int, status: int, outcome: String, body_bytes: int,
-		decode_ms: float, retry_backoff_ms: float) -> void:
+		decode_ms: float, retry_backoff_ms: float, connection_reused: bool = false) -> void:
 	var contract := HttpProtocol.route(path, method)
 	telemetry.emit({"type": "http_attempt", "route": str(contract.get("path", path.get_slice("?", 0))),
 		"method": method, "logical_request_id": request_id, "trace_id": request_id,
 		"attempt_no": attempt_no, "session_generation": generation,
 		"duration_ms": Time.get_ticks_msec() - started_at, "status": status,
 		"result": outcome, "ok": outcome == "success", "body_bytes": body_bytes,
-		"decode_ms": decode_ms, "retry_backoff_ms": retry_backoff_ms})
+		"decode_ms": decode_ms, "retry_backoff_ms": retry_backoff_ms,
+		"connection_reused": connection_reused})
 
 static func normalize_request(data: Variant) -> Variant:
 	if data is Dictionary:

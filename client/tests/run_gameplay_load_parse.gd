@@ -6,5 +6,10 @@ func _initialize() -> void:
 		printerr("Gameplay load client failed to parse")
 		quit(1)
 		return
+	var transport: Script = load("res://network/reusable_http_client.gd")
+	if transport == null or not transport.can_instantiate():
+		printerr("Reusable HTTP transport failed to parse")
+		quit(1)
+		return
 	print("Gameplay load client parses")
 	quit(0)
