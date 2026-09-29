@@ -1,0 +1,95 @@
+name: Gameplay load offline checks
+
+on:
+  pull_request:
+    paths:
+      - 'tools/gameplay_load*.py'
+      - 'tools/cloud_load_test.py'
+      - 'tools/tests/**'
+      - 'client/network/**'
+      - 'client/state/**'
+      - 'client/tests/gameplay_load_client.gd'
+      - 'client/tests/run_gameplay_load_parse.gd'
+      - 'client/tests/test_settlement_return.gd'
+      - 'protocol/**'
+      - 'server/**'
+      - '.github/workflows/gameplay-load.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  accounting:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - name: Install load generator metrics dependency
+        run: python -m pip install psutil==7.0.0
+      - name: Offline accounting and process tests
+        run: python -m unittest discover -s tools/tests -v
+
+  client:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Install Godot from official distribution
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/godot" test-results/gameplay-load
+          curl --fail --location --retry 2 'https://downloads.godotengine.org/?version=4.7.2&flavor=stable&slug=linux.x86_64.zip&platform=linux.64' -o "$RUNNER_TEMP/godot.zip"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          chmod +x "$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64"
+          "$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64" --version | tee test-results/gameplay-load/godot-version.txt
+          grep -q '^4\.7\.2\.' test-results/gameplay-load/godot-version.txt
+      - name: Import and run client checks with networking disabled
+        shell: bash
+        run: |
+          set -euo pipefail
+          godot="$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64"
+          sudo -E unshare -n timeout 600 "$godot" --headless --path client --editor --import --quit > test-results/gameplay-load/import.log 2>&1
+          sudo -E unshare -n timeout 90 "$godot" --headless --path client --script res://tests/run_gameplay_load_parse.gd > test-results/gameplay-load/load-parse.log 2>&1
+          sudo -E unshare -n timeout 90 "$godot" --headless --path client --script res://tests/run_play_retry.gd > test-results/gameplay-load/client.log 2>&1
+          ! grep -E 'SCRIPT ERROR|Parse Error|Failed to load script' test-results/gameplay-load/*.log
+          grep -q 'Gameplay load client parses' test-results/gameplay-load/load-parse.log
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: gameplay-load-client-${{ github.sha }}
+          path: test-results/gameplay-load
+          retention-days: 7
+          if-no-files-found: ignore
+
+  server-contract:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: server/global.json
+      - name: Settlement encoding and server test build
+        shell: pwsh
+        working-directory: server
+        run: |
+          dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --filter 'FullyQualifiedName~SettlementEncodingTests' --logger 'trx;LogFileName=settlement.trx' --results-directory ../test-results/gameplay-load
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: gameplay-load-server-${{ github.sha }}
+          path: test-results/gameplay-load
+          retention-days: 7
+          if-no-files-found: ignore

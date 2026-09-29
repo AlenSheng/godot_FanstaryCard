@@ -24,10 +24,17 @@ func run_test() -> Dictionary:
 		store.gateway = gateway
 		store.settlement = {"settlementId": "settled", "matchId": "match-1", "result": "Dead"}
 		store.room = {"room_id": "old-room", "match_id": "match-1"}
+		store.ready_prompt = {"match_id": "match-1"}
+		store.preparation = {"preparationId": "prep-1"}
+		store.ticket = {"ticketId": "ticket-1"}
+		store.selected_cards = ["card-1"]
 		store.lobby = {"unfinishedSettlement": store.settlement.duplicate(true), "unfinishedMatch": {"roomId": "old-room"}}
-		store.acknowledge_settlement()
+		var confirmed: bool = store.acknowledge_settlement()
+		checks["result reflects server acknowledgement %s" % succeeds] = confirmed == succeeds
 		checks["hall shown before %s response" % ("successful" if succeeds else "failed")] = gateway.saw_hall_before_request
 		checks["%s response handled" % ("successful" if succeeds else "failed")] = store.settlement.is_empty() if succeeds else store.settlement.get("settlementId", "") == "settled" and store.room.get("room_id", "") == "old-room"
+		checks["ready prompt follows acknowledgement %s" % succeeds] = store.ready_prompt.is_empty() if succeeds else store.ready_prompt.get("match_id", "") == "match-1"
+		checks["preparation follows acknowledgement %s" % succeeds] = store.preparation.is_empty() if succeeds else store.preparation.get("preparationId", "") == "prep-1" and store.ticket.get("ticketId", "") == "ticket-1" and store.selected_cards == ["card-1"]
 		checks["acknowledgement ends busy state"] = not store.busy
 		store.free()
 		gateway.free()

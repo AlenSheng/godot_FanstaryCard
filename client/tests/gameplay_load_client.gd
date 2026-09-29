@@ -4,8 +4,11 @@ extends Node
 ## Each process owns one isolated local-development account and exercises the
 ## same REST/WebSocket paths as the client store without rendering the UI.
 
-var base_url := "https://www.relicbound.cn"
+var base_url := "http://127.0.0.1:5000"
 var client_id := "probe"
+var run_id := ""
+var process_epoch := ""
+var event_seq := 0
 var group_id := 1
 var report_path := ""
 var stop_file := ""
@@ -17,6 +20,8 @@ var finished := false
 var checks: Array = []
 var operations: Array = []
 var telemetry: Array = []
+var audit_buffer: Array[String] = []
+var audit_lost_count := 0
 var events: Dictionary = {}
 var errors: Array = []
 var own_user_id := ""
@@ -27,13 +32,20 @@ var cycles_completed := 0
 var max_cycles := 0
 var stage := "starting"
 var last_progress_ms := 0
+var active_match_id := ""
+var ready_required := false
+var ready_accepted := false
+var ready_deadline_unix_ms := 0
+var ready_attempts := 0
 
 func _ready() -> void:
 	Game = get_node("/root/Game")
 	base_url = OS.get_environment("FANTASYCARD_SERVER_URL").strip_edges().trim_suffix("/")
-	if base_url.is_empty(): base_url = "https://www.relicbound.cn"
+	if base_url.is_empty(): base_url = "http://127.0.0.1:5000"
 	client_id = OS.get_environment("FANTASYCARD_LOAD_CLIENT_ID").strip_edges()
 	if client_id.is_empty(): client_id = "probe"
+	run_id = OS.get_environment("FANTASYCARD_LOAD_RUN_ID").strip_edges()
+	process_epoch = OS.get_environment("FANTASYCARD_LOAD_PROCESS_EPOCH").strip_edges()
 	group_id = int(OS.get_environment("FANTASYCARD_LOAD_GROUP"))
 	if group_id <= 0: group_id = 1
 	report_path = OS.get_environment("FANTASYCARD_LOAD_REPORT").strip_edges()
@@ -64,6 +76,10 @@ func _process(_delta: float) -> void:
 func _run() -> void:
 	stage = "login"
 	await _login()
+	if stop_requested:
+		await _graceful_cleanup()
+		await _finish(false, "Coordinator cancelled login", 0)
+		return
 	if not _check(not Game.lobby.is_empty() and Game.gateway.online, "login_and_bootstrap"):
 		await _finish(false, "Login or bootstrap failed")
 		return
@@ -84,7 +100,10 @@ func _run() -> void:
 		stage = "between_matches"
 		await _wait(2.0)
 	await _graceful_cleanup()
-	await _finish(true, "Coordinator stop or requested smoke cycles completed")
+	if stop_requested:
+		await _finish(false, "Coordinator cancelled current cycle", 0)
+	else:
+		await _finish(true, "Requested smoke cycles completed")
 
 func _login() -> void:
 	var account_name: String = ("L" + client_id + Game.gateway.new_id().left(4)).left(20)
@@ -96,19 +115,57 @@ func _login() -> void:
 
 func _run_expedition() -> void:
 	await Game.prepare("Free", 0)
+	if stop_requested: return
 	if not _check(not Game.preparation.is_empty(), "create_free_preparation"): return
+	_on_telemetry({"type": "lifecycle", "event_type": "preparation.created",
+		"preparation_id": Game.preparation.get("preparationId", "")})
+	active_match_id = ""
+	ready_required = false
+	ready_accepted = false
+	ready_deadline_unix_ms = 0
+	ready_attempts = 0
 	await Game.enqueue()
+	if stop_requested: return
 	if not _check(not Game.ticket.is_empty(), "enqueue_match"): return
+	_on_telemetry({"type": "lifecycle", "event_type": "match.queued",
+		"preparation_id": Game.preparation.get("preparationId", ""),
+		"ticket_id": Game.ticket.get("ticketId", "")})
 	stage = "matchmaking"
 	var deadline := Time.get_ticks_msec() + 60000
-	while Game.ready_prompt.is_empty() and Game.room.is_empty() and Time.get_ticks_msec() < deadline and not stop_requested:
+	while not ready_required and Game.room.is_empty() and Time.get_ticks_msec() < deadline and not stop_requested:
 		await _wait(0.25)
-	if not Game.ready_prompt.is_empty():
-		Game.gateway.send("room.ready")
+	if stop_requested: return
+	var next_ready_send_ms := 0
+	var next_verify_ms := 0
+	var verified_match_id := ""
 	deadline = Time.get_ticks_msec() + 30000
 	while Game.room.is_empty() and Time.get_ticks_msec() < deadline and not stop_requested:
+		var now_ms := Time.get_ticks_msec()
+		var now_unix_ms := int(Time.get_unix_time_from_system() * 1000.0)
+		if ready_required and active_match_id != verified_match_id and now_ms >= next_verify_ms:
+			var ticket_id := str(Game.ticket.get("ticketId", ""))
+			if ticket_id.is_empty():
+				_check(false, "ready_ticket_missing")
+				return
+			var ticket_result: Dictionary = await Game.gateway.request("/api/v1/matches/tickets/" + ticket_id)
+			if stop_requested: return
+			next_verify_ms = Time.get_ticks_msec() + 2000
+			if ticket_result.ok and ticket_result.data is Dictionary:
+				verified_match_id = str(ticket_result.data.get("matchId", ""))
+				if verified_match_id != active_match_id:
+					active_match_id = verified_match_id
+					ready_required = not verified_match_id.is_empty() and str(Game.ready_prompt.get("match_id", "")) == verified_match_id
+					ready_accepted = false
+					ready_deadline_unix_ms = int(Game.ready_prompt.get("deadline_unix_ms", 0)) if ready_required else 0
+		if Game.room.is_empty() and ready_required and not active_match_id.is_empty() and active_match_id == verified_match_id and not ready_accepted and ready_attempts < 3 and now_ms >= next_ready_send_ms and (ready_deadline_unix_ms == 0 or now_unix_ms < ready_deadline_unix_ms):
+			ready_attempts += 1
+			var sent: bool = Game.gateway.send("room.ready")
+			_on_telemetry({"type": "lifecycle", "event_type": "room.ready.send", "match_id": active_match_id, "attempt_no": ready_attempts, "result": "sent" if sent else "send_failed"})
+			next_ready_send_ms = now_ms + 1000
 		await _wait(0.25)
-	if not _check(not Game.room.is_empty(), "room_started"): return
+	if stop_requested: return
+	if not _check(not Game.room.is_empty() and str(Game.room.get("match_id", "")) == active_match_id,
+		"room_started" if not Game.room.is_empty() else "room_start_timeout"): return
 	stage = "playing"
 	deadline = Time.get_ticks_msec() + 240000
 	var visited := {}
@@ -150,14 +207,24 @@ func _run_expedition() -> void:
 					visited[move_key] = true
 					Game.command("room.move", move)
 		await _wait(0.4)
+	if stop_requested: return
 	if Game.settlement.is_empty() and not Game.room.is_empty() and Game.allowed("action.extract"):
 		Game.command("action.extract")
 		await _wait(8.0)
 	if not Game.settlement.is_empty():
-		await Game.acknowledge_settlement()
-		scenario_finished = _check(Game.room.is_empty() and Game.settlement.is_empty(), "settlement_acknowledged")
+		stage = "settlement"
+		var settlement_match_id := str(Game.settlement.get("matchId", ""))
+		var acknowledged: bool = await Game.acknowledge_settlement()
+		_on_telemetry({"type": "lifecycle", "event_type": "settlement.acknowledged" if acknowledged else "settlement.ack_failed",
+			"match_id": settlement_match_id})
+		scenario_finished = _check(acknowledged and settlement_match_id == active_match_id and Game.room.is_empty() and Game.settlement.is_empty(), "settlement_acknowledged")
 
 func _graceful_cleanup() -> void:
+	stage = "cleanup"
+	if stop_requested:
+		Game.gateway.reconnect_enabled = false
+		Game.gateway.socket.close()
+		return
 	if not Game.settlement.is_empty():
 		await Game.acknowledge_settlement()
 	elif not Game.room.is_empty() and Game.allowed("action.extract"):
@@ -169,20 +236,37 @@ func _graceful_cleanup() -> void:
 
 func _on_telemetry(sample: Dictionary) -> void:
 	var copy: Dictionary = sample.duplicate(true)
+	event_seq += 1
+	copy["run_id"] = run_id
+	copy["client_id"] = client_id
+	copy["process_epoch"] = process_epoch
+	copy["event_seq"] = event_seq
+	copy["event_type"] = sample.get("event_type", sample.get("type", "unknown"))
+	copy["cycle_id"] = "%s:%d" % [client_id, cycles_completed + 1]
+	copy["phase"] = _current_phase()
+	copy["monotonic_ms"] = Time.get_ticks_msec()
 	copy["at_unix_ms"] = int(Time.get_unix_time_from_system() * 1000.0)
 	if copy.get("type", "") == "http":
 		operations.append(copy)
 		if operations.size() > 300: operations.pop_front()
-	var audit := FileAccess.open(report_path + ".telemetry.jsonl", FileAccess.READ_WRITE if FileAccess.file_exists(report_path + ".telemetry.jsonl") else FileAccess.WRITE)
-	if audit != null:
-		audit.seek_end()
-		audit.store_line(JSON.stringify(copy))
-		audit.close()
+	audit_buffer.append(JSON.stringify(copy))
+	if audit_buffer.size() >= 64: _flush_audit()
 	telemetry.append(copy)
 	if telemetry.size() > 300: telemetry.pop_front()
 
 func _on_event(kind: String, _payload: Dictionary) -> void:
-	last_progress_ms = Time.get_ticks_msec()
+	var event_match_id := str(_payload.get("match_id", ""))
+	if kind in ["match.found", "room.ready_required", "room.ready_accepted", "room.started"] and not event_match_id.is_empty():
+		if active_match_id.is_empty(): active_match_id = event_match_id
+		if event_match_id == active_match_id:
+			if kind == "room.ready_required" and not ready_accepted:
+				ready_required = true
+				ready_deadline_unix_ms = int(_payload.get("deadline_unix_ms", 0))
+			elif kind == "room.ready_accepted": ready_accepted = true
+			elif kind == "room.started": ready_accepted = true
+	if kind in ["match.found", "room.ready_required", "room.ready_accepted", "room.started", "room.moved", "battle.combo_resolved", "settlement.ready", "match.settled"]:
+		last_progress_ms = Time.get_ticks_msec()
+		_on_telemetry({"type": "lifecycle", "event_type": kind, "match_id": _payload.get("match_id"), "room_id": _payload.get("room_id")})
 	events[kind] = int(events.get(kind, 0)) + 1
 	if kind == "error.command_rejected": _on_notice("command_rejected: " + JSON.stringify(_payload))
 
@@ -199,21 +283,49 @@ func _check(passed: bool, name: String) -> bool:
 func _wait(seconds: float) -> void:
 	await get_tree().create_timer(seconds).timeout
 
+func _current_phase() -> String:
+	match stage:
+		"login": return "login"
+		"starting", "expedition": return "initial"
+		"matchmaking": return "matchmaking"
+		"playing": return "playing"
+		"settlement": return "settlement"
+		_: return "cleanup"
+
+func _flush_audit() -> void:
+	if audit_buffer.is_empty(): return
+	var path := report_path + ".telemetry.jsonl"
+	var audit := FileAccess.open(path, FileAccess.READ_WRITE if FileAccess.file_exists(path) else FileAccess.WRITE)
+	if audit == null:
+		audit_lost_count += audit_buffer.size()
+		audit_buffer.clear()
+		return
+	audit.seek_end()
+	for line in audit_buffer: audit.store_line(line)
+	audit.flush()
+	if audit.get_error() != OK: audit_lost_count += audit_buffer.size()
+	audit.close()
+	audit_buffer.clear()
+
 func _write_status() -> void:
+	_flush_audit()
 	var status: Dictionary = {"client_id": client_id, "group": group_id, "pid": OS.get_process_id(), "started_at_unix_ms": int((Time.get_unix_time_from_system() - float(Time.get_ticks_msec() - started_at_ms) / 1000.0) * 1000.0), "now_unix_ms": int(Time.get_unix_time_from_system() * 1000.0), "online": Game.gateway.online, "socket_state": Game.gateway.socket.get_ready_state(), "room": not Game.room.is_empty(), "stage": stage, "last_progress_age_ms": Time.get_ticks_msec() - last_progress_ms, "cycles_completed": cycles_completed, "scenario_started": scenario_started, "scenario_finished": scenario_finished, "checks": checks, "operations": operations, "telemetry": telemetry, "events": events, "errors": errors}
+	status.merge({"run_id": run_id, "process_epoch": process_epoch, "event_seq_max": event_seq, "phase": _current_phase(), "cycle_id": "%s:%d" % [client_id, cycles_completed + 1], "audit_lost_count": audit_lost_count})
 	var file := FileAccess.open(report_path + ".status.json.tmp", FileAccess.WRITE)
 	if file != null:
 		file.store_string(JSON.stringify(status))
 		file.close()
 		DirAccess.rename_absolute(report_path + ".status.json.tmp", report_path + ".status.json")
 
-func _finish(ok: bool, message: String) -> void:
+func _finish(ok: bool, message: String, exit_code: int = -1) -> void:
 	if finished: return
 	finished = true
+	_flush_audit()
 	var report: Dictionary = {"ok": ok, "message": message, "client_id": client_id, "group": group_id, "pid": OS.get_process_id(), "user_id": own_user_id, "started_at_unix_ms": int(Time.get_unix_time_from_system() * 1000.0) - (Time.get_ticks_msec() - started_at_ms), "ended_at_unix_ms": int(Time.get_unix_time_from_system() * 1000.0), "elapsed_ms": Time.get_ticks_msec() - started_at_ms, "cycles_completed": cycles_completed, "checks": checks, "operations": operations, "telemetry": telemetry, "events": events, "errors": errors}
+	report.merge({"run_id": run_id, "process_epoch": process_epoch, "event_seq_max": event_seq, "audit_lost_count": audit_lost_count, "outcome": "completed" if ok else ("cancelled" if exit_code == 0 else "failed")})
 	var file := FileAccess.open(report_path, FileAccess.WRITE)
 	if file != null:
 		file.store_string(JSON.stringify(report, "\t"))
 		file.close()
 	_write_status()
-	get_tree().quit(0 if ok else 1)
+	get_tree().quit(exit_code if exit_code >= 0 else (0 if ok else 1))

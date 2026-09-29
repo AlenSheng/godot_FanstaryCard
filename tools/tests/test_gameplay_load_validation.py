@@ -1,6 +1,8 @@
 """Offline regression tests; no Godot/server/network dependencies."""
 import importlib.util
 import math
+import subprocess
+import sys
 from pathlib import Path
 import unittest
 
@@ -69,6 +71,24 @@ class ValidationTests(unittest.TestCase):
     def test_http_telemetry_is_not_double_counted(self):
         row={'type':'http','path':'/api/v1/players/me','status':200,'ok':True,'duration_ms':1}
         self.assertEqual(module.aggregate_window([{'operations':[row],'telemetry':[row]}])['sample_count'],1)
+    def test_attempts_have_separate_denominator_from_logical_requests(self):
+        final={'type':'http','path':'/api/v1/players/me','status':200,'ok':True,'duration_ms':14}
+        attempts=[{'type':'http_attempt','status':503,'result':'http_error','duration_ms':5},
+                  {'type':'http_attempt','status':200,'result':'success','duration_ms':4}]
+        result=module.aggregate_window([{'operations':[final],'telemetry':[final,*attempts]}])
+        self.assertEqual(result['sample_count'],1)
+        self.assertEqual(result['all_attempt_count'],2)
+        self.assertEqual(result['attempt_result_counts'],{'http_error':1,'success':1})
+    def test_client_cancellation_is_measured_without_service_redline(self):
+        result=module.aggregate_window([{'operations':[
+            {'type':'http','path':'/api/v1/client-info','status':0,'ok':False,'result':'cancelled','duration_ms':3000},
+            {'type':'http','path':'/api/v1/bootstrap','status':200,'ok':True,'result':'success','duration_ms':100}]}])
+        self.assertEqual(result['logical_request_count'],2)
+        self.assertEqual(result['cancelled_count'],1)
+        self.assertEqual(result['sample_count'],1)
+        self.assertEqual(result['error_rate'],0)
+        self.assertEqual(result['http']['p95_ms'],100)
+        self.assertEqual(result['cancelled_http']['p95_ms'],3000)
     def test_invalid_numbers_flagged(self):
         r=module.aggregate_window([{'operations':[{'duration_ms':x} for x in [None, True, -1, math.nan, math.inf]]}])
         self.assertEqual(r['invalid_metric_count'],5)
@@ -76,5 +96,65 @@ class ValidationTests(unittest.TestCase):
         self.assertEqual(module.summarize(list(range(1,101)))['p95_ms'],95)
     def test_coordinator_error_never_passes(self):
         self.assertEqual(module.classify_stop('coordinator_error:bad')['exit_code'],3)
+    def test_malformed_status_does_not_crash_sampler(self):
+        for bad in (None, [], {'client_id':'a','pid':7,'now_unix_ms':10000,
+                              'last_progress_age_ms':'stalled'}):
+            result=module.workload_snapshot([self.entry()],[bad],10000)
+            self.assertTrue(result['workload_failure'])
+            self.assertGreater(result['invalid_schema_count'],0)
+        self.assertTrue(module.workload_snapshot([None],[],10000)['workload_failure'])
+        self.assertTrue(module.workload_snapshot([self.entry()],[],"bad-time")['workload_failure'])
+        self.assertGreater(module.aggregate_window(None)['invalid_schema_count'],0)
+    def test_offline_room_is_not_active(self):
+        result=self.snapshot(status=self.status(online=False))
+        self.assertEqual(result['room_state_clients'],1)
+        self.assertEqual(result['active_in_room'],0)
+        self.assertEqual(result['in_room'],0)
+    def test_bad_http_status_and_duration_keep_attempt(self):
+        result=module.aggregate_window([{'operations':[
+            {'path':'/api/v1/players/me','status':'oops','ok':True,'duration_ms':1},
+            {'path':'/api/v1/players/me','status':500,'ok':False,'duration_ms':math.nan}]}])
+        self.assertEqual(result['sample_count'],2)
+        self.assertEqual(result['error_count'],2)
+        self.assertEqual(result['http']['count'],1)
+        self.assertGreaterEqual(result['invalid_metric_count'],2)
+    def test_settlement_bootstrap_has_phase_and_legacy_comparison(self):
+        result=module.aggregate_window([{'operations':[
+            {'path':'/api/v1/bootstrap','label':'settlement_poll','phase':'settlement',
+             'status':200,'ok':True,'duration_ms':5}]}])
+        self.assertEqual(result['steady_sample_count'],0)
+        self.assertEqual(result['phase_http']['settlement']['count'],1)
+    def test_event_sequence_handles_same_millisecond_and_detects_loss(self):
+        def event(seq):
+            return {'type':'http','run_id':'r','client_id':'a','process_epoch':'e',
+                    'event_seq':seq,'at_unix_ms':10000,'duration_ms':1,'status':200,'ok':True}
+        status={'run_id':'r','client_id':'a','process_epoch':'e','event_seq_max':3,
+                'telemetry':[event(1),event(3)],'operations':[event(1),event(3)]}
+        seen={}
+        rows,lost=module.new_events([status],seen)
+        self.assertEqual((lost,len(rows[0]['operations'])),(1,2))
+        self.assertEqual(seen[('a','e')],3)
+        rows,lost=module.new_events([status],seen)
+        self.assertEqual((lost,len(rows[0]['operations'])),(0,0))
+    def test_owned_status_rejects_other_launch_and_preserves_exit_history(self):
+        entry=self.entry(code=0)
+        entry.update(run_id='r',process_epoch='e')
+        good=self.status(run_id='r',process_epoch='e')
+        result,invalid=module.owned_statuses([entry],[good,self.status(run_id='other',process_epoch='e')])
+        self.assertEqual(result,[good])
+        self.assertEqual(invalid,1)
+        self.assertEqual(module.owned_statuses([entry],[{'client_id':[]}])[1],1)
+    def test_real_child_exit_is_not_counted_online(self):
+        child=subprocess.Popen([sys.executable,'-c','raise SystemExit(7)'])
+        try:
+            self.assertEqual(child.wait(timeout=10),7)
+            entry={'client_id':'a','process':child,'started_at_ms':1000}
+            result=module.workload_snapshot([entry],[self.status(pid=child.pid)],10000)
+            self.assertEqual(result['online'],0)
+            self.assertEqual(result['failed_processes'],['a'])
+        finally:
+            if child.poll() is None:
+                child.kill()
+                child.wait(timeout=10)
 
 if __name__ == '__main__': unittest.main()

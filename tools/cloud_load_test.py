@@ -162,23 +162,26 @@ def start_client(args: argparse.Namespace, report_dir: Path, stop_file: Path, gr
     processes.append({"process": process, "log": log, "client_id": client_id, "group": group, "report": report_path})
 
 
-def stop_all(processes: list[dict], stop_file: Path) -> None:
+def stop_all(processes: list[dict], stop_file: Path, grace_seconds: float = 35) -> list[int]:
     stop_file.write_text("stop", encoding="utf-8")
-    deadline = time.monotonic() + 35
+    deadline = time.monotonic() + max(0, grace_seconds)
     while time.monotonic() < deadline:
         alive = [entry for entry in processes if entry["process"].poll() is None]
         if not alive:
-            return
+            return []
         time.sleep(1)
+    forced: list[int] = []
     for entry in processes:
         process = entry["process"]
         if process.poll() is None:
+            forced.append(process.pid)
             if os.name == "nt":
                 subprocess.run(["taskkill", "/PID", str(process.pid), "/T", "/F"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False)
             else:
                 process.kill()
     for entry in processes:
         entry["process"].wait(timeout=10)
+    return forced
 
 
 def write_report(path: Path, report: dict) -> None:

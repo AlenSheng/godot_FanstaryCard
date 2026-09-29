@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "plan_version": "2.0",
+  "plan_version": "2.1",
   "updated_date": "2026-09-29",
   "repository": "AlenSheng/godot_FanstaryCard",
   "pull_request": 13,
-  "branch": "fix/gameplay-load-evidence-20260929",
+  "branch": "codex/pr13-implementation-20260929",
   "target_branch": "release",
   "reviewed_base_sha": "28c6c7e7d3898e4d2abd186f53361477ba380330",
   "reviewed_code_sha": "50bce18064cdc08e47c3b5aaa30defae75ae526c",
-  "execution_state": "AwaitingImplementation",
+  "execution_state": "InProgress",
   "dispatch_enabled": false,
   "max_parallel_workers": 3,
   "draft_required": true,
@@ -34,47 +34,47 @@
     {"role": "AG-06", "name": "独立QA", "runtime_agent_id": null, "state": "NotStarted", "write_domains": ["new client/tests/load_acceptance", "new tools/tests/load_acceptance", "independent acceptance tests and evidence"]}
   ],
   "tasks": [
-    {"id": "LOAD-01", "priority": "P0", "state": "PartiallyImplementedNeedsRepair", "owner": "AG-01", "accepted_by": null, "subtasks": [
-      {"id": "01.1", "title": "完整输入schema校验", "state": "Planned"},
-      {"id": "01.2", "title": "状态与遥测统一进程归属", "state": "Planned"},
-      {"id": "01.3", "title": "活跃在线与房间状态分离", "state": "Planned"},
+    {"id": "LOAD-01", "priority": "P0", "state": "InProgress", "owner": "AG-01", "accepted_by": null, "subtasks": [
+      {"id": "01.1", "title": "完整输入schema校验", "state": "InProgress"},
+      {"id": "01.2", "title": "状态与遥测统一进程归属", "state": "InProgress"},
+      {"id": "01.3", "title": "活跃在线与房间状态分离", "state": "InProgress"},
       {"id": "01.4", "title": "真实轻量进程集成回归", "state": "Planned"}
     ]},
-    {"id": "LOAD-02", "priority": "P0", "state": "PartiallyImplementedNeedsIntegration", "owner": "AG-01", "accepted_by": null, "subtasks": [
+    {"id": "LOAD-02", "priority": "P0", "state": "InProgress", "owner": "AG-01", "accepted_by": null, "subtasks": [
       {"id": "02.1", "title": "多原因结果与验收模型", "state": "Planned"},
-      {"id": "02.2", "title": "STOP前后失败取消归类", "state": "Planned"},
-      {"id": "02.3", "title": "有界清理及应急报告", "state": "Planned"},
+      {"id": "02.2", "title": "STOP前后失败取消归类", "state": "InProgress"},
+      {"id": "02.3", "title": "有界清理及应急报告", "state": "InProgress"},
       {"id": "02.4", "title": "退出码与调用者兼容", "state": "Planned"}
     ]},
-    {"id": "LOAD-03", "priority": "P0", "state": "PartiallyImplementedNeedsRepair", "owner": "AG-01", "accepted_by": null, "subtasks": [
-      {"id": "03.1", "title": "事件序号与JSONL守恒", "state": "Planned"},
-      {"id": "03.2", "title": "真实生命周期阶段统计", "state": "Planned"},
-      {"id": "03.3", "title": "错误超时取消及pending计数", "state": "Planned"},
+    {"id": "LOAD-03", "priority": "P0", "state": "InProgress", "owner": "AG-01", "accepted_by": null, "subtasks": [
+      {"id": "03.1", "title": "事件序号与JSONL守恒", "state": "InProgress"},
+      {"id": "03.2", "title": "真实生命周期阶段统计", "state": "InProgress"},
+      {"id": "03.3", "title": "错误超时取消及pending计数", "state": "InProgress"},
       {"id": "03.4", "title": "分布窗口与错误率", "state": "Planned"}
     ]},
-    {"id": "LOAD-04", "priority": "P0", "state": "Planned", "owner": "AG-02", "accepted_by": null, "subtasks": [
-      {"id": "04.1", "title": "关联当前匹配的ready状态机", "state": "Planned"},
-      {"id": "04.2", "title": "有界可靠ready确认", "state": "Planned"},
+    {"id": "LOAD-04", "priority": "P0", "state": "InProgress", "owner": "AG-02", "accepted_by": null, "subtasks": [
+      {"id": "04.1", "title": "关联当前匹配的ready状态机", "state": "InProgress"},
+      {"id": "04.2", "title": "有界可靠ready确认", "state": "InProgress"},
       {"id": "04.3", "title": "进房超时与权威恢复", "state": "Planned"},
       {"id": "04.4", "title": "ready乱序失败反例矩阵", "state": "Planned"}
     ]},
-    {"id": "LOAD-05", "priority": "P0", "state": "Planned", "owner": "AG-02", "accepted_by": null, "subtasks": [
-      {"id": "05.1", "title": "以真实ack成功判完成", "state": "Planned"},
-      {"id": "05.2", "title": "多局状态与迟到回调隔离", "state": "Planned"},
+    {"id": "LOAD-05", "priority": "P0", "state": "InProgress", "owner": "AG-02", "accepted_by": null, "subtasks": [
+      {"id": "05.1", "title": "以真实ack成功判完成", "state": "InProgress"},
+      {"id": "05.2", "title": "多局状态与迟到回调隔离", "state": "InProgress"},
       {"id": "05.3", "title": "各阶段取消与可恢复清理", "state": "Planned"},
       {"id": "05.4", "title": "结算幂等及三局回归", "state": "Planned"}
     ]},
-    {"id": "LOAD-06", "priority": "P0", "state": "Planned", "owner": "MAIN", "accepted_by": null, "subtasks": [
-      {"id": "06.1", "title": "HTTP attempt与逻辑请求遥测", "owner": "AG-03", "state": "Planned"},
-      {"id": "06.2", "title": "cycle时间轴与玩法进度", "owner": "AG-02", "state": "Planned"},
+    {"id": "LOAD-06", "priority": "P0", "state": "InProgress", "owner": "MAIN", "accepted_by": null, "subtasks": [
+      {"id": "06.1", "title": "HTTP attempt与逻辑请求遥测", "owner": "AG-03", "state": "InProgress"},
+      {"id": "06.2", "title": "cycle时间轴与玩法进度", "owner": "AG-02", "state": "InProgress"},
       {"id": "06.3", "title": "服务端分段trace", "owner": "AG-04", "state": "Planned"},
-      {"id": "06.4", "title": "时间单位缺失脱敏合同", "owner": "MAIN", "state": "Planned"}
+      {"id": "06.4", "title": "时间单位缺失脱敏合同", "owner": "MAIN", "state": "InProgress"}
     ]},
-    {"id": "LOAD-07", "priority": "P1", "state": "Planned", "owner": "AG-01", "accepted_by": null, "subtasks": [
-      {"id": "07.1", "title": "异步有界探测与单调时钟", "state": "Planned"},
-      {"id": "07.2", "title": "发压机资源与实际负载", "state": "Planned"},
-      {"id": "07.3", "title": "缓冲证据写入及启动隔离", "state": "Planned", "collaborators": ["AG-02"]},
-      {"id": "07.4", "title": "发压器故障矩阵及安全上限", "state": "Planned"}
+    {"id": "LOAD-07", "priority": "P1", "state": "InProgress", "owner": "AG-01", "accepted_by": null, "subtasks": [
+      {"id": "07.1", "title": "异步有界探测与单调时钟", "state": "InProgress"},
+      {"id": "07.2", "title": "发压机资源与实际负载", "state": "InProgress"},
+      {"id": "07.3", "title": "缓冲证据写入及启动隔离", "state": "InProgress", "collaborators": ["AG-02"]},
+      {"id": "07.4", "title": "发压器故障矩阵及安全上限", "state": "InProgress"}
     ]},
     {"id": "LOAD-08", "priority": "P1", "state": "ConditionalOnEvidence", "owner": "MAIN", "accepted_by": null, "subtasks": [
       {"id": "08.1", "title": "真实有界连接复用", "owner": "AG-03", "state": "Conditional"},
@@ -82,22 +82,22 @@
       {"id": "08.3", "title": "有界抖动重试", "owner": "AG-03", "state": "Conditional"},
       {"id": "08.4", "title": "轻量结算查询及兼容", "owner": "AG-04", "collaborators": ["AG-05", "AG-02", "AG-03"], "state": "Conditional"}
     ]},
-    {"id": "LOAD-09", "priority": "P1", "state": "PlannedEvidenceDriven", "owner": "AG-04", "accepted_by": null, "subtasks": [
-      {"id": "09.1", "title": "enqueue回放match关联复现修复", "state": "Planned"},
-      {"id": "09.2", "title": "ready及launch故障恢复", "state": "Planned"},
+    {"id": "LOAD-09", "priority": "P1", "state": "InProgress", "owner": "AG-04", "accepted_by": null, "subtasks": [
+      {"id": "09.1", "title": "enqueue回放match关联复现修复", "state": "InProgress"},
+      {"id": "09.2", "title": "ready及launch故障恢复", "state": "InProgress"},
       {"id": "09.3", "title": "慢连接队头阻塞隔离", "state": "Conditional"},
       {"id": "09.4", "title": "实例级剖析与热点最小修改", "state": "Conditional"}
     ]},
-    {"id": "LOAD-10", "priority": "P0", "state": "Planned", "owner": "AG-06", "accepted_by": null, "subtasks": [
-      {"id": "10.1", "title": "离线及协议独立验收", "state": "Planned"},
-      {"id": "10.2", "title": "真实Godot三局验收", "state": "Planned"},
+    {"id": "LOAD-10", "priority": "P0", "state": "InProgress", "owner": "AG-06", "accepted_by": null, "subtasks": [
+      {"id": "10.1", "title": "离线及协议独立验收", "state": "InProgress"},
+      {"id": "10.2", "title": "真实Godot三局验收", "state": "InProgress"},
       {"id": "10.3", "title": "全链路故障矩阵", "state": "Planned"},
       {"id": "10.4", "title": "同负载A/B与活跃在房保持", "state": "Planned"}
     ]},
     {"id": "LOAD-11", "priority": "P1", "state": "PartiallyRecordedNeedsCompletion", "owner": "MAIN", "accepted_by": null, "subtasks": [
-      {"id": "11.1", "title": "实施前代码工具链证据冻结", "state": "Planned", "wave": "W0"},
+      {"id": "11.1", "title": "实施前代码工具链证据冻结", "state": "InProgress", "wave": "W0"},
       {"id": "11.2", "title": "完整来源清单与脱敏", "state": "Planned", "collaborators": ["AG-01"]},
-      {"id": "11.3", "title": "独立CI与可重复证据", "state": "Planned", "collaborators": ["AG-06"]},
+      {"id": "11.3", "title": "独立CI与可重复证据", "state": "InProgress", "collaborators": ["AG-06"]},
       {"id": "11.4", "title": "主agent验收PR交付回滚", "state": "Planned", "wave": "W3"}
     ]}
   ],
@@ -117,9 +117,18 @@
   ],
   "evidence_gaps": [
     {"id": "E01", "description": "Full report.json and raw JSONL were not completely read/recomputed in this review", "blocks": ["historical_per_client_attribution", "historical_full_reaggregation"]},
-    {"id": "E02", "description": "Historical .NET SDK10.0.400 blocker must be rechecked; no new .NET test execution", "blocks": ["G2 server acceptance"]},
-    {"id": "E03", "description": "No Godot multi-cycle, real coordinator, production trace or new load run in this turn", "blocks": ["G2", "G3 runtime", "G4"]}
+    {"id": "E02", "description": ".NET SDK 10.0.400 is installed; Server.Tests ran 189 passed and 62 skipped, while pre-existing Domain.Tests source fails compilation against PlayerCombatState", "blocks": ["G2 full-solution acceptance"]},
+    {"id": "E03", "description": "Godot offline regression and load-script parsing ran; no real three-cycle coordinator, complete runtime trace or new isolated load comparison yet", "blocks": ["G2 real cycles", "G3 runtime", "G4"]}
   ],
+  "implementation_checks_2026_09_29": {
+    "python_unittest": "32 passed",
+    "godot_version": "4.7.2.stable.official.ed1daf0bf",
+    "godot_offline": "15 suites passed; gameplay load client script parsed",
+    "server_targeted": "Full Server.Tests: 191 passed, 62 skipped; new room lifecycle tests passed; PostgreSQL integration remains skipped",
+    "database_replay_regression": "Compiles but requires isolated PostgreSQL execution",
+    "real_three_cycle_load": "Bounded one-client cloud smoke 20260929-141906-a00d74 passed: 3 acknowledged settlements, 499 consecutive events, exit 0, no forced termination",
+    "production_load": "User explicitly authorized cloud formal-server testing; 10-client diagnostic run 20260929-143213-09f7dc stopped at 183.7s after three second-cycle room_start_timeout failures; server logs confirmed an occupied old room route. Local fix is not deployed."
+  },
   "checks_performed_this_review": {
     "python_version": "3.13.5",
     "source_blobs_matched": true,
@@ -131,5 +140,5 @@
     "runtime_code_changes": false
   },
   "handoff_required_fields": ["task_ids", "base_sha", "head_sha", "changed_files", "schema_changes", "repro_before", "test_commands", "exit_codes", "artifact_paths", "artifact_hashes", "before_after_metrics", "risks", "rollback", "remaining_blockers"],
-  "closure_rule": "Only MAIN may mark Accepted after independent checks on the integration SHA. Conditional tasks need implementation evidence or NoChangeWithEvidence. Missing environment/evidence remains Blocked, never Passed. Keep the PR draft and await the user's implementation instruction."
+  "closure_rule": "Only MAIN may mark Accepted after independent checks on the integration SHA. Conditional tasks need implementation evidence or NoChangeWithEvidence. Missing environment/evidence remains Blocked, never Passed. Keep the PR draft until all gates are met and the user decides on merge."
 }

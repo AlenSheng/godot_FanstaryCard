@@ -1215,14 +1215,20 @@ func _intent_valid(action: String, payload: Dictionary) -> bool:
 
 func _load_settlement(id: String) -> void:
 	if settlement.get("settlementId", "") == id or _settlement_loading == id or _settlement_ack_pending_id == id: return
+	var expected_match_id := str(room.get("match_id", ""))
+	if expected_match_id.is_empty(): return
 	_settlement_loading = id
 	var generation: int = gateway.session_generation
 	var result: Dictionary = await gateway.request("/api/v1/settlements/" + id)
 	if generation != gateway.session_generation: return
+	if str(room.get("match_id", "")) != expected_match_id:
+		_settlement_loading = ""
+		return
 	if _settlement_ack_pending_id == id:
 		_settlement_loading = ""
 		return
-	if result.ok: settlement = result.data
+	if result.ok and result.data is Dictionary and str(result.data.get("matchId", "")) == expected_match_id and str(result.data.get("settlementId", "")) == id:
+		settlement = result.data
 	_settlement_loading = ""
 	changed.emit()
 
@@ -1255,20 +1261,31 @@ func retry_settlement() -> void:
 	if str(room.get("player", {}).get("phase", "")) not in ["Extracted", "Dead"]: return
 	_poll_ready_settlement()
 
-func acknowledge_settlement() -> void:
-	if settlement.is_empty() or busy: return
+func acknowledge_settlement() -> bool:
+	if settlement.is_empty() or busy: return false
 	var acknowledged: Dictionary = settlement.duplicate(true)
 	var previous_room: Dictionary = room.duplicate(true)
+	var previous_ready_prompt: Dictionary = ready_prompt.duplicate(true)
+	var previous_preparation: Dictionary = preparation.duplicate(true)
+	var previous_ticket: Dictionary = ticket.duplicate(true)
+	var previous_selected_cards: Array = selected_cards.duplicate(true)
+	var previous_relic_details: Dictionary = relic_details.duplicate(true)
+	var previous_combat_preview: Dictionary = combat_preview.duplicate(true)
+	var previous_queued_command: Dictionary = _queued_command.duplicate(true)
+	var previous_pending_play: Dictionary = _pending_play.duplicate(true)
+	var previous_pending_commands: Dictionary = _pending_commands.duplicate(true)
+	var previous_latest_commands: Dictionary = _latest_commands.duplicate(true)
 	var previous_lobby_settlement: Variant = lobby.get("unfinishedSettlement")
 	var previous_lobby_match: Variant = lobby.get("unfinishedMatch")
 	var previous_gateway_room_id: String = gateway.room_id
 	var previous_gateway_revision: int = gateway.room_revision
 	var settlement_id: String = str(acknowledged.get("settlementId", ""))
-	if settlement_id.is_empty(): return
+	if settlement_id.is_empty(): return false
 	busy = true
 	_settlement_ack_pending_id = settlement_id
 	settlement = {}
 	room = {}
+	ready_prompt = {}
 	selected_cards.clear()
 	relic_details = {}
 	clear_combat_preview()
@@ -1285,18 +1302,33 @@ func acknowledge_settlement() -> void:
 	changed.emit()
 	var generation: int = gateway.session_generation
 	var result: Dictionary = await gateway.request("/api/v1/settlements/" + settlement_id + "/acknowledge", HTTPClient.METHOD_POST, {})
-	if generation != gateway.session_generation: return
+	if generation != gateway.session_generation: return false
 	if result.ok:
+		_settlement_loading = ""
+		_settlement_polling = false
+		_settlement_poll_at = 0
+		settlement_query_failed = false
 		await refresh_lobby()
 	else:
 		settlement = acknowledged
 		room = previous_room
+		ready_prompt = previous_ready_prompt
+		preparation = previous_preparation
+		ticket = previous_ticket
+		selected_cards = previous_selected_cards
+		relic_details = previous_relic_details
+		combat_preview = previous_combat_preview
+		_queued_command = previous_queued_command
+		_pending_play = previous_pending_play
+		_pending_commands = previous_pending_commands
+		_latest_commands = previous_latest_commands
 		lobby["unfinishedSettlement"] = previous_lobby_settlement
 		lobby["unfinishedMatch"] = previous_lobby_match
 		gateway.room_id = previous_gateway_room_id
 		gateway.room_revision = previous_gateway_revision
 		notice.emit("结算确认失败，请重试")
-	if generation != gateway.session_generation: return
+	if generation != gateway.session_generation: return false
 	_settlement_ack_pending_id = ""
 	busy = false
 	changed.emit()
+	return result.ok
