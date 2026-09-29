@@ -50,12 +50,14 @@ def save(path, data):
     tmp.replace(path)
 
 
-def read_owned_statuses(processes):
+def read_owned_statuses(processes, cache=None):
     statuses = []
     invalid_files = 0
     for entry in processes:
         path = Path(str(entry['report']) + '.status.json')
         if not path.exists():
+            if cache is not None and entry['client_id'] in cache:
+                statuses.append(cache[entry['client_id']])
             continue
         value = read_json(path)
         if value is None:
@@ -63,6 +65,8 @@ def read_owned_statuses(processes):
         else:
             statuses.append(value)
     owned, invalid_ownership = owned_statuses(processes, statuses)
+    if cache is not None:
+        cache.update((status['client_id'],status) for status in owned)
     return owned, invalid_files + invalid_ownership
 
 
@@ -130,7 +134,7 @@ def main():
     run_dir=args.output.resolve()/(time.strftime('%Y%m%d-%H%M%S')+'-'+uuid.uuid4().hex[:6])
     run_dir.mkdir(parents=True)
     stop_file=run_dir/'STOP'
-    processes=[]; samples=[]; group_launches=[]; streaks=collections.Counter(); seen={}
+    processes=[]; samples=[]; group_launches=[]; streaks=collections.Counter(); seen={}; status_cache={}
     run_id=uuid.uuid4().hex
     workload_failed=False; smoke_verified=False; previous_sample_ms=None; previous_generator=None
     started=time.time(); started_monotonic=time.monotonic()
@@ -175,7 +179,7 @@ def main():
             if now>=next_sample:
                 scheduled_sample_at=next_sample
                 sample_started=time.monotonic()
-                statuses, invalid_files=read_owned_statuses(processes)
+                statuses, invalid_files=read_owned_statuses(processes,status_cache)
                 sample_ms=int(time.time()*1000)
                 workload=workload_snapshot(processes,statuses,sample_ms)
                 workload_failed=workload_failed or workload['workload_failure']
@@ -296,7 +300,7 @@ def main():
             'process_exits':[{'client_id':p['client_id'],'before_stop':before_stop[p['client_id']],
                 'after_stop':p['process'].poll()} for p in processes],
             'group_size':group_size,'interval_seconds':args.group_interval,'scope':'real Godot Game store: login once, repeated preparation/match/PVE or PVP/settlement; no market trades',
-            'group_launches':group_launches,'samples':samples,'final_clients':read_owned_statuses(processes)[0]}
+            'group_launches':group_launches,'samples':samples,'final_clients':read_owned_statuses(processes,status_cache)[0]}
         try:
             save(run_dir/'report.json',report_data)
         except OSError as exc:
