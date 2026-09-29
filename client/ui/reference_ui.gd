@@ -235,6 +235,8 @@ func _hall() -> void:
 		var entry_title := text(P.localized(entries[i][2]), Rect2(rect.position + Vector2(18, 143), Vector2(206, 50)), 28, P.GOLD)
 		entry_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		entry_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	var version_label := text(P.localized("client_version") % str(Game.CATALOG.data.version), Rect2(42, 1038, 900, 30), 18, P.MUTED)
+	version_label.name = "ClientVersion"
 
 func _mail() -> void:
 	var existing := get_node_or_null("MailModal")
