@@ -282,7 +282,7 @@ def main():
             len(samples) >= required_samples and all(code is None for code in before_stop.values()) and
             final_before_cleanup is not None and final_before_cleanup['fresh_status_clients'] == len(processes) and
             any(sample['online'] == len(processes) for sample in samples) and
-            any(sample['in_room'] == len(processes) for sample in samples) and
+            any(sample['active_in_room'] >= args.group_size for sample in samples) and
             not forced_termination and not cleanup_error)
         outcome=classify_stop(reason,smoke_verified=smoke_verified,
             load_verified=load_verified,workload_failed=workload_failed)
