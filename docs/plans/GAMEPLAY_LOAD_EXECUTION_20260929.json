@@ -13,10 +13,10 @@
   "max_parallel_workers": 3,
   "draft_required": true,
   "merge_authorized": false,
-  "deploy_authorized": false,
+  "deploy_authorized": true,
   "production_load_test_authorized": true,
-  "production_load_scope": "User authorized cloud formal-server testing on 2026-09-29. Runs remain bounded by explicit client count, duration, monitoring and automatic stop rules; deployment and merge remain unauthorized.",
-  "production_rate_limit_change_authorized": false,
+  "production_load_scope": "User authorized cloud deployment and bounded formal-server testing on 2026-09-29. Temporary per-IP limit overrides for the shared test IP were restored byte-for-byte after the runs. Merge remains unauthorized; PR remains draft.",
+  "production_rate_limit_change_authorized": true,
   "is_executable_launcher": false,
   "plan_path": "docs/plans/GAMEPLAY_LOAD_REPAIR_20260929.md",
   "review_path": "docs/reports/gameplay-load-20260929/pr13-planning-review.md",
@@ -119,17 +119,17 @@
   "evidence_gaps": [
     {"id": "E01", "description": "Full report.json and raw JSONL were not completely read/recomputed in this review", "blocks": ["historical_per_client_attribution", "historical_full_reaggregation"]},
     {"id": "E02", "description": ".NET SDK 10.0.400 is installed; local Server.Tests ran 191 passed and 62 skipped. Disposable PostgreSQL CI ran the replay integration test (1 passed, 0 skipped). Pre-existing Domain.Tests source still fails compilation against PlayerCombatState; complete DB suite is not yet verified.", "blocks": ["G2 full-solution acceptance"]},
-    {"id": "E03", "description": "One cloud client completed three acknowledged cycles; a 10-client comparison stopped after second-cycle room registration failures. Local route fix requires deployed revalidation; no capacity or HTTP P95 improvement accepted.", "blocks": ["G2 concurrent cycles", "G3 complete runtime attribution", "G4"]}
+    {"id": "E03", "description": "Deployed route fix passed a ten-client 37-cycle run. Bounded 50/100-client cloud runs completed; 100 clients were concurrently online and active in rooms, with 130 acknowledged cycles. Historical raw data reconciliation, full fault matrices and sustained capacity at default limits remain open.", "blocks": ["G2 fault matrices", "G3 historical attribution", "G4 sustained capacity"]}
   ],
   "implementation_checks_2026_09_29": {
-    "python_unittest": "32 passed",
+    "python_unittest": "33 passed",
     "godot_version": "4.7.2.stable.official.ed1daf0bf",
     "godot_offline": "15 suites passed; gameplay load client script parsed",
     "server_targeted": "Full Server.Tests: 191 passed, 62 skipped; new room lifecycle tests passed; PostgreSQL integration remains skipped",
     "database_replay_regression": "Passed in GitHub disposable PostgreSQL CI run 36533402709 (1 passed, 0 skipped)",
-    "load_offline_ci": "GitHub run 36533402709: all four jobs passed (accounting, client, server-contract, server-postgres)",
+    "load_offline_ci": "GitHub run 36541793993 at f92b5de: all four jobs passed (accounting, client, server-contract, server-postgres)",
     "real_three_cycle_load": "Bounded one-client cloud smoke 20260929-141906-a00d74 passed: 3 acknowledged settlements, 499 consecutive events, exit 0, no forced termination",
-    "production_load": "User explicitly authorized cloud formal-server testing; 10-client diagnostic run 20260929-143213-09f7dc stopped at 183.7s after three second-cycle room_start_timeout failures; server logs confirmed an occupied old room route. Local fix is not deployed."
+    "production_load": "PR server cb96d16 deployed and healthy. Ten-client run completed 37 acknowledged cycles; bounded 50- and 100-client runs reached load_window_completed. The 100-client run reached 100 online/in-room and 130 acknowledged cycles in 360 seconds. Temporary per-IP limits were restored. See cloud-validation-20260929.md; sustained default-limit capacity remains unproven."
   },
   "checks_performed_this_review": {
     "python_version": "3.13.5",
