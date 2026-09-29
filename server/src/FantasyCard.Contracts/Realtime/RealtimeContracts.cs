@@ -66,7 +66,9 @@ public sealed record RoomDuelPayload(
     string? EscapeProbability = null,
     RoomBattleStatusPayload? OpponentStatus = null,
     long OpponentStunRemainingMs = 0,
-    long OpponentDrawBlockRemainingMs = 0);
+    long OpponentDrawBlockRemainingMs = 0,
+    bool SeparateLoot = false,
+    IReadOnlyList<RoomInventoryItemPayload>? SearchableLoot = null);
 public sealed record RoomCurrentCellPayload(
     bool HasEvacuation,
     string MonsterGroupId,
@@ -93,7 +95,9 @@ public sealed record RoomPlayerPayload(
     long DrawBlockRemainingMs = 0,
     long DrawSpeedRemainingMs = 0,
     long DrawBlockSpeedRemainingMs = 0,
-    string? BaseDrawIntervalSeconds = null);
+    string? BaseDrawIntervalSeconds = null,
+    RoomMonsterPoolPayload? MonsterPool = null,
+    RoomNumericalStatePayload? NumericalState = null);
 public sealed record RoomSnapshotEventPayload(
     Guid RoomId,
     Guid? MatchId,
@@ -118,6 +122,9 @@ public sealed record BattlePlayCardsCommandPayload(
     IReadOnlyList<Guid> CardInstanceIds);
 public sealed record BattleSelectTargetCommandPayload(Guid BattleId, string TargetId);
 public sealed record BattleAbandonCommandPayload;
+public sealed record MonsterCardChooseCommandPayload(Guid CandidateId, bool Accept, Guid? ReplaceInstanceId = null);
+public sealed record RoomMonsterPoolPayload(int Capacity, IReadOnlyList<RoomCardPayload> Pending, IReadOnlyList<RoomCardPayload> Active);
+public sealed record RoomNumericalStatePayload(string FenxianPolicy, string GuardianPolicy, int GuardianRemainderTenths);
 public sealed record BattleTargetSelectedEventPayload(Guid BattleId, string TargetId);
 public sealed record BattleComboResolvedEventPayload(
     Guid BattleId,

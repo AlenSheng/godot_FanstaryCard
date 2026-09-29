@@ -114,7 +114,7 @@ public sealed partial class RoomReadyCoordinator(
     private static BattleRoom CreateRoom(MatchAssignment assignment)
     {
         var room = new BattleRoom(assignment.RoomId, BootstrapRepository.CurrentConfigVersion,
-            CombatCardCatalog.CreatePrototype(), assignment.Seed);
+            CombatCardCatalog.CreatePrototype(), assignment.Seed, FantasyCard.Domain.Configuration.GameConfigCatalog.Current.Numerics);
         foreach (var player in assignment.Players)
         {
             var wornArmor = (player.EquipmentIds ?? []).Select(id =>

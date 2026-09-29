@@ -965,6 +965,8 @@ func _enhance() -> void:
 	picture(image, Rect2(720, 315, 350, 350))
 	var benefit: String = host.EquipmentDetails.enhancement_text(selected) if not selected.is_empty() else P.localized("enhance_current_next") % [host._weapon_benefit(level), host._weapon_benefit(mini(5, level + 1))]
 	text(benefit if level < 5 else P.localized("enhance_max_level"), Rect2(591, 690, 642, 252), 23, P.TEAL)
+	if not selected.is_empty():
+		button(preload("res://ui/numerical_details.gd").text("title"), Rect2(730, 940, 350, 54), func(): preload("res://ui/numerical_details.gd").show_compare(host, host._equipped_items(), selected, true))
 	text(P.localized("enhance_progress"), Rect2(1375, 175, 450, 70), 38, P.GOLD)
 	_enhance_progress(level)
 	picture(_item("EquipmentFragments"), Rect2(1430, 439, 90, 108))
