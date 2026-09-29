@@ -1,97 +1,234 @@
-# 2026-09-29 真实对局压测：诊断、修改建议与执行计划
+# 2026-09-29 压测修复与优化：多子 agent 实施、主 agent 验收计划
 
-状态：第一批压测统计/判定修复已实现并通过离线单元测试；Godot 对局闭环、HTTP 优化与同负载复测待执行。
+版本：2.0。状态：**Draft / AwaitingImplementation**。
 
-基线：`AlenSheng/godot_FanstaryCard`，`release@28c6c7e7d3898e4d2abd186f53361477ba380330`。
-修复分支：`fix/gameplay-load-evidence-20260929`。不直接修改 release，不自动合入、部署或扩大线上压测。
-报告入口：`docs/reports/gameplay-load-20260929/summary.md`。
+本轮交付是计划与复核记录，不是全部修复完成。PR #13 保留首批已有代码，但不得因离线 22 项测试通过就把 LOAD-01～03 标记为最终验收完成。本轮不新增运行时代码、不启动子 agent、不合并、不部署、不再次放宽线上限流。
 
-## 1. 已读证据与边界
+仓库：`AlenSheng/godot_FanstaryCard`。
+目标：`release`；复核基线 `28c6c7e7d3898e4d2abd186f53361477ba380330`。
+实施汇总分支：`fix/gameplay-load-evidence-20260929`；本轮代码复核点 `50bce18064cdc08e47c3b5aaa30defae75ae526c`。
+报告：`docs/reports/gameplay-load-20260929/summary.md`。
+复核证据：[PR13 复核记录](../reports/gameplay-load-20260929/pr13-planning-review.md)。
+执行状态：[状态清单](GAMEPLAY_LOAD_EXECUTION_20260929.json)。
 
-已读取上述报告摘要，以及 `tools/gameplay_load_test.py`、`tools/cloud_load_test.py` 的相关实现、`client/tests/gameplay_load_client.gd`、`client/state/game_store.gd` 和 `client/network/gateway.gd` 的相关函数。
+## 0. 决策与边界
 
-本轮 GitHub 文件接口没有返回大型 `report.json` 的完整正文，未逐客户端重算原始事件。下面的本次压测数字来自已上传的 summary，不是本轮再次运行得到的数据；没有读取云端匹配日志或完整链路追踪。不能将静态风险直接等同于 52 个客户端失败的全部根因。
+先修证据质量和多局闭环，再分段定位 HTTP 延迟，最后小步实施有收益的优化。不是先扩容、增大连接池/线程池、放宽限流或提高停止线。
 
-摘要记录：每组 50 个真实 Godot 进程、间隔 120 秒，启动两组共 100 个客户端，100 个曾成功登录；采样在房峰值 50；累计完成 29 局，包括收尾。HTTP P95 连续三个采样为 6116、3201、2255 ms，越过 1500 ms 停止线。最后采样实时指令 P95 730 ms、CPU 31.53%、可用内存 61.48%、房间排队 P95 约 4.76 ms。最后采样的 HTTP 失败率和命令拒绝率为零，不代表整场全部检查无失败。
+本计划保留 11 个父任务，拆成 **44 个子条目**。每个子条目必须交付实现或有证据的不实施决定，由主 agent 验收；未运行、阻塞、条件未满足不得写 Done。所有子 agent 的实际运行 ID 初始为空。
 
-52 个客户端报告未完成已确认结算；77 次失败检查包含停止期间未进房检查，不是 77 个独立失败账号。摘要明确临时放宽限流已恢复；本轮没有重新设置限流。
+不改变现行战斗公式、卡牌顺序、玩法数值、资产冻结/结算规则；不夹带 HTTP 全改 WebSocket、全量 gRPC 或配置表重构。保留已合入的协议迁移、结算重试/序列化修复，不覆盖其他分支或本地未提交修改。
 
-结论：这是 HTTP 延迟红线及负载闭环/证据质量问题，不能据此宣布服务器只能容纳 50 人，也不能宣布 100 人持续同时战斗通过。CPU 和房间排队末次数据不足以定位算力上限、数据库瓶颈或排除瞬时阻塞。
+生产动作单独授权。计划通过不代表允许部署、写生产数据、创建无限量测试账号或重新执行无上限压测。所有默认运行目标应改为明确的隔离环境；指向公网/生产必须显式指定、确认范围，并预设人数/时长/停止与清理条件。
 
-## 2. 原因分析与修改原则
+## 1. 已检查的事实与仍缺的证据
 
-### 2.1 已确认的统计问题
+摘要记录：每组 50 进程、120 秒间隔、累计 100 客户端曾登录、在房采样峰值 50、累计 29 局含收尾。HTTP P95 连续三个有效窗口 6116/3201/2255 ms 超过 1500 ms 停止线；末次命令 P95 730 ms、CPU 31.53%、可用内存 61.48%、actor wait P95 约 4.76 ms。52 个客户端流程未完成，77 次失败检查含停止期检查，不能互换统计口径。
 
-原协调器直接对所有 status 文件的 online/room 求和，没有校验进程存活和状态新鲜度。已退出客户端可保留旧在线标志；成功退出的旧 status 后续又可能被计入 stale。缺报宽限按分组计划时间计算，而不是实际启动时刻。
+这些不是本轮新压测结果。report.json blob `61e44c8367303341dd37ae2b8195b7ee1489aa1c` 已定位，但未完整读取/逐客户端重算；完整 JSONL、匹配日志、服务端镜像与客户端当时的确切版本仍需对账。功能修复可先从可复现缺陷推进；性能归因和容量验收不得跳过这项证据。
 
-原协调器对所有 `redline:` 和 `operator_` 停止返回 0；其中包含 workload_or_generator_failure。退出成功与验收通过没有分开。它对这一类停止仍保留原因字符串，并非完全没有错误记录，但仅看进程退出码的自动化可能误判。
+本轮扩展检查发现：已有统计 helper 仍有畸形输入异常、非所属遥测聚合风险、bootstrap 阶段分类和在房定义缺口；结算轮询会拉取全量 Bootstrap；ready 通知串行发送有慢连接阻塞风险；enqueue 回放 match_id 未按 preparation 关联；无界并行 launch 不是安全方案。详细证据等级见复核记录 F01～F15。
 
-共享聚合器的 steady_error_rate 使用全部 HTTP 错误数除以 steady 请求数，分子分母不属同一集合；无 label 的鉴权/bootstrap 请求又可能被当作稳定态。共享聚合器还按路径忽略部分 context 404。新的 gameplay 聚合器不再做隐式 404 豁免；其他 cloud runner 暂未迁移。
+重要修正：服务端先提交 Starting，再通知 match.found/ready_required，所以 match.found 后发送 ready 不必然非法。当前 RoomReadyCommand 为空，ready 事件有 match_id/room_id/deadline，无 ticket_id。计划不得臆造字段或把“发得早”写成已确定根因。
 
-### 2.2 进房和第二局：静态风险已确认，运行时因果待验证
+## 2. 子 agent 与文件写入所有权
 
-Game._on_event 将 match.found、room.ready_required、room.ready_accepted 都写入 ready_prompt；压测驱动看到非空 ready_prompt 后只发一次 room.ready，并忽略 send 的返回值。因而它没有区分“匹配已找到”“此时允许确认”“确认已接受”。匹配事件先后顺序、发送失败或重放下，有提前发送或后续不再确认的风险。
+建议 6 个子 agent，**同时最多 3 个 worker**。每个 worker 使用独立 worktree；共享文件只有一个写入者。角色名称是待分派设计，本轮没有实际启动。
 
-不能仅把等待 30 秒改为更长便宣布修复。应保存 cycle_id、ticket_id、match_id、ready 状态和时间轴，核对服务端从确认到 room.started 的事件链。同一会话不能盲目清空 WebSocket 重放序号，否则会引入新的顺序问题。
+| 角色 | 负责范围 | 独占写入范围/约束 |
+|---|---|---|
+| MAIN 主 agent | 冻结输入、拆分任务、解决依赖、集成、独立验收、最终报告 | 本计划/状态清单/验收汇总；只有 MAIN 能变更 Accepted、集成到 PR 分支或申请 Ready for review；不以子 agent 自述代替测试。 |
+| AG-01 发压器与统计 | LOAD-01～03、07，11 的生成器来源记录 | tools/gameplay_load_test.py、gameplay_load_validation.py、cloud_load_test.py 中明确允许的共用辅助函数；对应单元测试。不得修改真实玩法逻辑。 |
+| AG-02 客户端生命周期 | LOAD-04～05、06.2、08.2 | client/tests/gameplay_load_client.gd、client/state/game_store.gd；相关就绪/结算测试。gateway/proto 不得越权写入。 |
+| AG-03 HTTP 与遥测 | LOAD-06.1、08.1/08.3/08.4 的客户端部分 | client/network/gateway.gd、必要的新 transport helper/其测试；先遥测后候选优化。共享 header/telemetry schema 必须先确认。 |
+| AG-04 服务端匹配与观测 | LOAD-06.3、09、08.4 服务端部分 | Matchmaking/RoomReadyCoordinator.cs、MatchmakingRepository.cs、Bootstrap/BootstrapRepository.cs、Realtime/ConnectionRegistry.cs、RealtimeConnection.cs 及经 MAIN 锁定的指标/结算模块；不默认改部署或数据库 schema。 |
+| AG-05 协议与兼容 | LOAD-04/08/09 有协议需求时参与，负责契约验收 | protocol/http/v1 与 realtime/v1、endpoints 清单、生成器/生成物和序列化兼容测试。没有必要的协议变更则提交 NoChangeWithEvidence，不为凑任务修改 proto。 |
+| AG-06 独立 QA | LOAD-10、11.3，先设计反例再做集成复测 | 新增 client/tests/load_acceptance/、tools/tests/load_acceptance/、独立服务端验收测试和证据；既有测试需修改时向所有者交接，不与实现者抢同一文件。 |
 
-停止时，驱动等待循环退出后仍可能追加 room_started=false。应将操作取消单列，不能算成服务端失败，也不能算成完成局。
+跨文件协作：AG-03 提出 GET 单飞接口，AG-02 调整调用点；轻量结算接口先由 AG-04 提议、AG-05 定契约，再交 AG-02/03 接入。指标公共文件/Program.cs/项目文件先由 MAIN 显式授权一个所有者。协议生成物只由 AG-05 提交，不能手改生成文件。
 
-Game.acknowledge_settlement 在 HTTP 确认之前先清空部分本地状态，失败后恢复；因此回归测试必须覆盖确认失败/重试和迟到事件，不能只检查瞬时 room 为空。ready_prompt 和周期状态需要有显式生命周期约束，但是否为本次二次匹配主因仍需证据。
+## 3. 全量任务与文件级修改方案
 
-### 2.3 HTTP：先分解，再优化传输
+各父任务下四个子条目为最小追踪单元；`待实现` 包含对首批代码的补修。优先级 P0 表示阻塞可信验收或正确性；P1 为证据驱动的性能优化与持续治理，不是故障严重性的未经验证结论。
 
-Gateway._request_page 每次尝试都新建 HTTPRequest，最多三次尝试；总耗时覆盖请求、重试等待和解码，输出 telemetry 只有整体 duration/status/ok 等，未输出每次尝试耗时或现有 decode_ms。当前数据无法区分连接建立、公网传输、重试退避、服务端处理与客户端解码/调度。
+### LOAD-01｜P0｜状态与进程归属｜AG-01｜首批部分实现，待补修/集成验收
 
-连接复用、合并重复 bootstrap/缓存刷新可作为候选，但必须按相同接口、连接条件、配置和负载做 A/B。不能直接把 HTTP 改成 WebSocket，不能增大超时或提高 P95 停止线掩盖问题。扩容必须以分阶段剖析为依据。
+前置：11.1 的代码/工具链冻结；不依赖性能剖析。
 
-### 2.4 发压器和采样仍有待修项
+- **01.1 输入边界**：为状态、PID、时间戳、progress、计数和数组元素做 schema/type/有限值校验；非法数据记录 invalid_schema，不抛异常终止整轮采样。覆盖 None、list、bool-as-int、字符串、NaN、未来时间及重复 ID。
+- **01.2 归属统一**：在线、累计周期、遥测都先核对 run_id/client_id/process_epoch/PID。活跃指标仅取存活且新鲜状态；合法已退出进程的最终事件仍可纳入累计值，不能简单丢掉所有死进程历史。
+- **01.3 拆分人数**：同时记录 spawned/alive/fresh/online/room_state_clients/active_in_room/server_confirmed_in_room；offline+room 不计活跃战斗。服务器字段采不到就标 unavailable，不捏造；PID 重用以进程 epoch 隔离。
+- **01.4 进程回归**：真实轻量子进程覆盖启动慢、成功退出、异常退出、PID 不符、陈旧/缺报、重复/异源状态、时钟跳变；启动宽限按 monotonic 实际启动计。
 
-协调器串行执行健康探测和多个 Prometheus 查询，实际采样间隔不保证 10 秒；当前第一批已补充 observed_interval_seconds/sample_collection_ms，但尚未改成异步采样。
+验收：活跃计数不受历史文件虚增；各类失效可归因；原 22 测试与新负例全过。回滚仅统计 helper/runner，不改业务数据。
 
-驱动每次网络事件都刷新 last_progress_ms，因此网络仍有包不等于玩法有进展。应将 transport_progress 与 gameplay_progress 分离。滚动数组和按毫秒水位去重仍需序列号/完整 JSONL 对账，避免同毫秒或高吞吐窗口遗漏。
+### LOAD-02｜P0｜停止、退出与清理语义｜AG-01｜首批部分实现，待补修/集成验收
 
-## 3. 详细任务清单
+前置：01.1～01.2；与 AG-02 的周期终态契约一致。
 
-| ID | 优先级 / 状态 | 修改范围 | 具体交付与验收 |
-|---|---|---|---|
-| LOAD-01 | P0 / 首批实现 | gameplay_load_test.py、gameplay_load_validation.py | 在线/在房只计所属存活 PID 的新鲜状态；成功退出不算 stale；缺报宽限使用真实启动时间；死进程、缺报、陈旧、停滞分列。离线回归通过，仍待真实进程集成测试。 |
-| LOAD-02 | P0 / 首批实现 | 同上 | 明确 outcome.classification/passed/exit_code，性能红线、负载失效、人工停止不能标验收通过；保存停止前后进程退出状态、清理异常。验收：负载失败优先于容量归因。 |
-| LOAD-03 | P0 / 首批实现 | 新聚合器、tests | steady 错误分子分母同集合；兼容无 label 的鉴权/bootstrap 排除；空样本不伪造 P95；拒绝非法耗时；不重复计 HTTP telemetry。其他 cloud runner 不在本批修改范围。 |
-| LOAD-04 | P0 / 待实现 | gameplay_load_client.gd、必要的 Game 状态接口 | 事件驱动准备状态机：Queued→ReadyRequired→ReadySent→ReadyAccepted→RoomStarted；send 失败可重试但必须有上界，业务接受不得误计为进房；绑定当前 ticket/match/cycle，忽略跨局旧事件。先核实事件字段契约，不臆造协议。 |
-| LOAD-05 | P0 / 待实现 | gameplay_load_client.gd、Game.acknowledge_settlement | 结算确认成功后才完成周期；失败恢复可继续处理；停止、取消、就绪超时、进房超时、结算超时单列；核查下一局前 pending/ready/ticket 清理。每个 cycle 只能有一个终态。 |
-| LOAD-06 | P0 / 待实现 | 客户端/服务端遥测 | 以现有 X-Trace-Id 关联逻辑 HTTP、每次 attempt、状态码、重试/退避、响应字节、decode_ms；记录 enqueue→ready_required→accepted→room.started→settlement→ack 时间。不得记录令牌、SSH 密钥或请求私密正文。 |
-| LOAD-07 | P1 / 待实现 | 协调器、遥测文件 | 发压机 CPU/RSS、进程数/启动耗时、事件循环延迟；探测异步化并有超时；单调时钟驱动调度；主循环不因探测阻塞批量补发；每条遥测加序号并以 JSONL 对账。 |
-| LOAD-08 | P1 / 条件实施 | gateway.gd、bootstrap/缓存调用点 | 先测连接建立和每路由耗时；仅在证据成立后做有界连接复用或读取合并。按会话隔离，保留鉴权失效、幂等键、取消、body 上限、分页与重试语义。无收益或正确性退化即回滚。 |
-| LOAD-09 | P1 / 待定位 | 服务端匹配/实时/持久化模块 | 关联实例级 CPU、线程池、GC、数据库连接等待/慢查询、房间队列和匹配日志；只有热点证据成立才改相应代码。先定位实际文件，不凭报告臆造类名或 SQL 瓶颈。 |
-| LOAD-10 | P0 / 待验收 | Godot 自动测试与真实压测 | 单账号至少连续三局，覆盖第二次匹配；加入迟到/重复 ready、发送失败、断线、ack 失败、阶段 STOP；再按相同 50/120 秒负载复测。当前 --smoke 仍仅一局，须新增多局入口后才能覆盖循环验收。 |
-| LOAD-11 | P1 / 部分实现 | 报告与发布检查 | 首批已有客户端 Git 提交、已跟踪文件 dirty 标志、关键源码 SHA256、Python/OS；补服务器镜像 digest、引擎版本、配置 hash、实际采样区间。原报告只读保存，复测新建目录；不以本轮新统计覆盖历史结果。 |
+- **02.1 结果模型**：区分 Passed/Failed/Cancelled/InvalidEvidence/PerformanceRedline/Incomplete；保存首个触发、全部触发、证据有效性及清理结果，不用一个 stop_reason 覆盖全部原因。
+- **02.2 STOP 时间边界**：记录发出 STOP 的 monotonic 时刻，区分之前的业务失败、之后的正常取消与清理失败。正常取消不计完成也不计服务端错误；不能把异常退出统一洗成取消。
+- **02.3 有界清理**：分阶段取消排队/等待结算/关连接；只管理本轮拥有的进程。grace period 到期后强制退出必须记 forced_termination/incomplete_cleanup；finally 写报告失败保留应急摘要，不能返回通过。
+- **02.4 自动化兼容**：明确已有退出码 0/1/2/3/130；preparation-only 的 0 不是通过。新增固定时长/固定周期验收模式只有验证合同满足才返回0；更新调用者并加子进程/故障注入测试。
 
-## 4. 依赖、分工和实施顺序
+验收：人工停止、红线停止、证据失效绝不变成成功；实际清理异常和停止前失败不可丢失。父任务仅在真实协调器集成通过后 Accepted。
 
-先完成 LOAD-01～03，使结果可解释。随后流程修复（LOAD-04～05）和观测（LOAD-06～07）可并行；同一 Game/gateway 文件只允许一个实现者写入。取得剖析证据后，再进入 LOAD-08～09，最后 LOAD-10～11 汇总验收。
+### LOAD-03｜P0｜统计完整性与阶段口径｜AG-01｜首批部分实现，待补修
 
-建议角色：A 负责驱动/匹配闭环，B 负责 HTTP/发压机观测，C 独立做回归与报告。角色是任务分工建议，本轮没有启动或伪称启动 Codex 子 agent。每个任务提交 diff、运行命令、退出码、证据路径和回滚说明；未运行的测试标明未运行。
+前置：01.1～01.2；06 的事件字段冻结后完成03.1～03.2。
 
-## 5. 验收与复测
+- **03.1 事件序号**：以 run/client/process_epoch/event_seq 唯一标识，增量读取 JSONL 或带明确起止序号的缓冲；不用 now_unix_ms 当消费水位。检测重复、乱序、缺口、截断和滚动数组覆盖；记录 lost_count 与证据无效原因。
+- **03.2 阶段分类**：显式 phase=login/initial/matchmaking/playing/settlement/cleanup。对局/结算中的 bootstrap 保留在相应阶段；旧无标签数据标 unknown/legacy，不推断成明确阶段。保留旧 auth/bootstrap-excluded 口径供对照，但不再将其命名为真实稳定态。
+- **03.3 全部结果计数**：HTTP/实时的成功、拒绝、超时、取消、解码错误、开始未完成分别计；非法 duration 不能顺便消除已知请求失败，使用 all_attempt_count、valid_latency_count 和 invalid_count 分开。相同事件不能在 operations/telemetry 双算。
+- **03.4 分布与错误率**：错误分子分母同集合；输出 count、逐路由/阶段 P50/P95/P99/max、总吞吐及实际发压率。全场分位数从原样本/可合并直方图计算，不平均窗口 P95；对N<20/空窗口标 insufficient，不声称恢复正常。历史红线算法版本保留用于同口径对照。
 
-第一道门：离线统计/判定回归全部通过，不允许将人工 STOP 或 workload_failure 判作通过。
-第二道门：隔离测试环境单账号至少连续三局完成真实结算确认；注入的取消不是失败也不是完成；迟到事件不能推进下一局。仅一次 smoke 通过不够。
-第三道门：同硬件、同引擎、同配置、同公网路径、同 50/120 秒负载；保留既有 HTTP P95 1500 ms 连续三次等停止线，不因失败调高红线。临时放宽限流需要单独明确授权并具备恢复验证；本代码不设置限流。
+验收：同毫秒、跨状态快照、重复、重启和丢行反例可检测；JSONL 与汇总守恒；末窗零错误不能代表全程。其他 cloud runner 的兼容改动单列测试。
 
-必须同时报告累计登录、存活进程、当前新鲜在线、当前在房、已确认完成周期、取消周期、失败周期，并区分登录/初始读取/稳定态 HTTP。最后一个窗口的零错误率不能替代整个过程的成功率。性能门槛是项目本次停止条件，不是行业标准，也不等同于已经确定的正式 SLO。
+### LOAD-04｜P0｜准备确认与进房｜AG-02，AG-04/05 支持｜待实现
 
-退出码兼容性：未启动测试的 preparation-only 保持 0；实际测试只有已验证 smoke 使用 0；不完整/失败 1、性能红线 2、负载或证据无效 3、人工停止 130。下游自动化需要读取 outcome，而不是继续把所有受控停止视作通过。
+前置：11.1、实时 proto/服务端 ready 行为已核对；不以提升 timeout 代替修复。
 
-## 6. 本轮实际执行记录
+- **04.1 匹配状态机**：增加明确阶段 Queued→MatchFound→ReadyRequired→ReadySent→ReadyAccepted→RoomStarted，以及取消/超时终态。保存当前 cycle/preparation/ticket；事件使用真实 match_id/room_id/deadline 关联，不以 ready_prompt 非空作为唯一推进条件。
+- **04.2 可靠确认**：处理 send=false、连接恢复/冷却期、重复 required、accepted-before-local-send-observed、late required after accepted。重发有次数与deadline上界；不得在已 accepted 时因迟到消息回退、向其他 match 确认，或用无限发送冲过校验。
+- **04.3 进房与恢复**：分别测排队、ready等待、accepted→started；使用服务端 deadline 并记录时钟误差；核对 snapshot/resume 恢复路径。room_started 缺失时做有界权威状态恢复，不盲目重置 WebSocket 全局 sequence；房间快照必须属于当前 match。
+- **04.4 反例矩阵**：事件重复/乱序/丢失、match.found先到、required很晚、发送失败、accepted后无started、断连/恢复、STOP、第二局旧事件均测试；明确 ready_not_found/ready_timeout 等分类。
 
-修改/新增：
-- `tools/gameplay_load_test.py`
-- `tools/gameplay_load_validation.py`
-- `tools/tests/test_gameplay_load_validation.py`
-- 本计划文件
+验收：可独立复现并证明修复；单账号三局含第二次匹配；不改变15秒ready与bot填充等服务端规则。RoomReadyCommand 目前为空；需要新增匹配关联字段时由 AG-05 走兼容设计，不私塞字段。
 
-已执行：Python 3.13.5 下 `python -m unittest discover -s tools/tests -v`，22/22 通过；三个 Python 文件 `py_compile` 通过。测试使用虚拟进程对象验证纯统计/判定逻辑，没有联网、没有启动 Godot，也不是完整协调器或服务端性能验收。
+### LOAD-05｜P0｜结算、多局与取消闭环｜AG-02｜待实现
 
-尚未执行：Godot 编译/多局闭环、完整真实协调器运行、.NET 测试、云端同负载复测、HTTP 连接复用或服务端性能代码修改。不能据此宣称 HTTP P95 已下降、52 个客户端问题已修复或容量提高。
+前置：04.1；02 的终态合同。
 
-回滚：第一批改动只在独立分支，保持草稿 PR；直接关闭未合入 PR 即不影响 release。后续合入时可按提交回滚统计工具及 helper/tests，不需要数据迁移。没有修改生产限流、数据库、GDD 战斗公式或正式部署。
+- **05.1 完成依据**：一局只在正确 settlement_id/match_id 的服务端 acknowledge 成功后记 completed；不依据乐观清空的 room/settlement 判断。返回明确结果供驱动使用；失败、busy拒绝和stale-session必须可区分。
+- **05.2 状态生命周期**：成功结算后清理ready/ticket/preparation、pending/latest/queued命令、选牌/预览、结算poll句柄和跨局任务；不清同会话全局重放序号。用 cycle epoch/匹配ID拒绝迟到HTTP和WS回调污染新局；失败恢复保持原资源与状态。
+- **05.3 停止与清理**：所有 await 等待点检查取消；STOP 导致未进房记 cancelled，不追加 room_started=false；排队取消按权威状态执行，结算中停止保留未确认信息与可恢复证据，清理不能重复结算/领奖。
+- **05.4 幂等与循环回归**：ack失败/超时后查询确认状态再恢复、重复ack、重复settlement.ready、旧快照、不同match、重连和三局循环。校验 completed/failed/cancelled/incomplete 守恒且每cycle仅一终态。
+
+验收：无二次领奖、资源增殖、卡死或上一局覆盖下一局；加入已有结算编码与play-retry回归。涉及生产资产异常不得用删数据让测试通过。
+
+### LOAD-06｜P0｜端到端遥测契约｜AG-03/02/04，各写各自文件｜待实现
+
+前置：11.1；MAIN 先冻结遥测字段和单位，再并行写入。
+
+- **06.1 HTTP遥测（AG-03）**：记录 logical_request_id/trace_id、attempt_no、route模板、phase、session_generation、result类型、body_bytes、decode_ms、retry_backoff_ms、总耗时。未完成/超时必须有终态事件；不只记录最终成功。保留 X-Trace-Id 与同一写请求幂等键。
+- **06.2 生命周期遥测（AG-02）**：记录prepare/enqueue/required/send/accepted/started/settlement_ready/ack各阶段和cycle/匹配关联，分 transport_progress 与 gameplay_progress；pong/重复快照不能续命玩法停滞计时器。命令发送/拒绝/超时与阶段变化分开。
+- **06.3 服务端分段（AG-04）**：trace HTTP处理、数据库连接获取/执行/事务锁等待、claim→snapshot→register→running→started-send，以及命令排队/执行/发送等待。限制指标label基数；player/match/trace ID只进入受控日志/trace，不作为无限增长的Prometheus label。
+- **06.4 时间和缺失合同（MAIN+各owner）**：每个耗时以本机monotonic计；UTC用于关联，不用不同机器时钟相减制造精确网络时延。DNS/TCP/TLS/TTFB阶段无法可靠拆分时标 unavailable；外部curl探测单列，不能冒充Godot同一请求。明确采样率、窗口、trace覆盖和脱敏。
+
+验收：能把一个失败cycle关联到请求/服务端阶段；指标单位和起止一致；凭现有API不能测出的阶段不填0；关联ID不泄漏token/票据/私钥/私密正文。
+
+### LOAD-07｜P1（影响证据时按P0处理）｜发压器自身优化｜AG-01，AG-02提供客户端字段｜待实现
+
+前置：01、03与06字段合同。
+
+- **07.1 调度隔离**：健康/Prometheus探测用有界worker和deadline；固定monotonic采样节奏，记录scheduled/actual/startup lag。探测阻塞不得集中补发多组客户端，不能因后台future无限积累引入新泄漏。
+- **07.2 发压资源**：记录发压机总/每进程CPU、RSS、活跃进程数、线程/句柄可得值、磁盘吞吐、启动耗时、Godot帧/轮询延迟、实际发包率；固定引擎/启动参数。是否设置headless FPS上限须单独A/B，不能暗中改变0.4秒玩法动作节奏。
+- **07.3 遥测写入**：有界缓冲批写JSONL、小状态快照、文件轮转/退出flush；溢出/写失败计lost_count并使证据失效，不丢记录换性能。检查多个Godot进程共享user://session.cfg的启动期写入；需要隔离时在autoload前生效而非_ready后才禁用persist。
+- **07.4 压力与故障验证**：模拟慢磁盘、慢探测、时钟跳变、单进程hang、文件损坏、信号终止；同时设置非生产测试的人数/时长上限与独立安全STOP。采样器失败不能继续无监控扩大发压。
+
+验收：采样准时性/证据守恒可量化；生成器资源瓶颈不被误判为服务器容量；维护旧50/120负载对照。
+
+### LOAD-08｜P1｜HTTP与读取优化｜AG-03/02/04/05分工｜有证据后实施
+
+前置：05、06、07达到可解释基线。允许以 NoChangeWithEvidence 关闭无收益候选，但必须有剖析和MAIN裁决，不能跳过任务。
+
+- **08.1 连接复用（AG-03）**：先测新连接比例和网络耗时，再实现按origin/会话隔离的有界连接池或验证过的等效transport。确认底层TCP/TLS被复用，不把复用HTTPRequest节点当证据；单连接不做不受支持的并发。验证连接失效、服务端close、取消、TLS校验、超限响应/解压、401、分页和session generation隔离。
+- **08.2 GET单飞（AG-02调用点+AG-03接口）**：相同origin/session/path/参数/缓存版本的只读请求合并；调用方拿真实结果，不能把“正在处理”当成功。写入或版本变化后隔离旧响应。bootstrap/refresh_lobby/inventory读取分别测；不能合并写入或跨玩家缓存。
+- **08.3 重试策略（AG-03）**：有界尝试、总deadline、可取消抖动；保留同一逻辑写入的Idempotency-Key；Retry-After为最小等待。解码失败、资产写入不确定、跨会话不能任意重放；A/B保留整体用户等待及每attempt指标。
+- **08.4 结算轻量化（AG-04+AG-05契约→AG-02/03接入）**：优先已有settlement_id单项查询；无ID时评审最小只读状态接口/响应，不反复拉卡库/商店/市场/邮件。必须保留玩家鉴权、match约束、Pending asset holds不对外就绪、ack幂等。没有兼容支持时保留旧fallback；不直接删除Bootstrap字段或绕过冻结资产校验。
+
+验收：同接口/同负载/同网络路径对照，记录每局请求/字节、连接新建率、池等待、SQL数与P95/P99；至少三轮成对实验报告离散度。不得预先承诺百分比收益；无明确收益/正确性退化立即回退候选，不删除监控或提高红线。
+
+### LOAD-09｜P1；复现的正确性问题升P0｜服务端匹配与性能｜AG-04｜待定位/定向修复
+
+前置：11.1。09.1～09.2可先做；09.3～09.4的性能改动等06/07剖析。
+
+- **09.1 SQL回放关联**：复现 EnqueueAsync 相同request_id重放、玩家历史多局、不同preparation 情况；match_id须对应返回ticket/preparation，与GetTicketAsync一致。仅修复已证实的关联错误，保留幂等冲突和玩家锁；加入数据库集成负例。
+- **09.2 ready/launch恢复**：trace Starting→Launching→Running每段，注入snapshot保存/注册/MarkRunning失败和断线；验证重试不复制房间/扣两次资源、取消者获正确终态。未建立claim lease/fencing前不得增加多个launch worker；区分纯客户端超时和真正服务端卡住。
+- **09.3 慢连接隔离**：测NotifyRequiredAsync/LaunchAsync串行发送的等待；如证实队头阻塞，在同match内有界并发或经审查的有界投递，保证每玩家found→required等顺序、event sequence与重放。保留发送上限和关闭保护；不对所有事件fire-and-forget。
+- **09.4 热点最小改动**：使用实例/容器与每核CPU、线程池、GC、Npgsql连接等待、慢SQL/执行计划、快照构建/序列化/发送来决定优化。Bootstrap并行扇出、DB批次和快照合并分别A/B；不凭全机均值加连接/索引/机器，不改变房间actor单写顺序。
+
+验收：数据库状态、持有资产、room registry和客户端终态一致；故障注入可恢复；perf修改对应可定位热点和回滚点。schema变更必须独立迁移、锁/回滚审查，不直接生产DDL。
+
+### LOAD-10｜P0｜独立验收自动化与复测｜AG-06执行，MAIN重跑裁决｜待实现/验收
+
+前置：先制定测试，不等待实现者自报完成；执行门控见第6节。
+
+- **10.1 离线及契约**：补F01～F08负例、runner进程集成、统计守恒、退出码、协议未知/可选字段与旧客户端兼容；已有测试不可删除或放宽断言。比较前后生成代码和schema变化。
+- **10.2 多局真实闭环**：新增可配置cycle数的本地/隔离smoke，至少同账号三局且按确认结果计完成；覆盖三职业、PVE/PVP相应场景，失败/取消不计完成；已有单局--smoke不能代替本项。
+- **10.3 故障矩阵**：发送false、重复/迟到ready、无started、断线恢复、旧match消息、ack失败/重复、pending asset holds、慢客户端、各阶段STOP、生成器进程损坏，逐一记录预期终态和资源校验。
+- **10.4 性能复测**：先单客户端测网络基线，再10/50客户端校验，最后保持50/120秒的首两组对照；另设固定目标活跃在房保持期用于容量验证。区分诊断规模与原基线规模；记录累计/当前/在房、实际发压率、完成率、端到端及服务端延迟。未确认生产授权不得运行公网目标。
+
+验收：MAIN必须在集成SHA上亲自重跑关键用例并核对证据；QA pass不是自动发布。压力降低/客户端退出导致P95下降不算优化收益。
+
+### LOAD-11｜P1（基线缺失阻塞比较）｜来源、CI与交付｜MAIN，AG-01/06支持｜部分记录已存在
+
+本任务分前置和收尾，不让整个LOAD-11成为依赖环。
+
+- **11.1 基线冻结（最先）**：读取当前release/PR head、working tree、现有代码与原报告的版本关系；收集完整raw及log清单/hash和测得server image digest/config hash。核对实际Godot版本、.NET SDK与数据库版本。先前SDK10.0.400缺失是已记录阻塞，不通过换target framework掩盖。
+- **11.2 来源与脱敏**：加入game_store.gd、proto/生成物、工具配置/关键新增文件的hash；记录dirty含相关untracked、启动参数、功能开关、测试种子、硬件/区域与监控selector。证据不可包含token、票据、密钥；Git只放精简报告和可复现输入，完整日志存授权artifact并附清单/hash。
+- **11.3 CI与可重复性**：新增或扩展独立load-test CI覆盖Python、Godot流程/协议与.NET相关测试；报告执行命令、版本、退出码、耗时、跳过原因及artifact。CI路径需覆盖新文件；离线测试不需要生产凭据，不在fork/不可信PR执行生产操作。
+- **11.4 PR交付与回滚**：更新任务状态、证据索引、迁移/兼容影响、候选开关、回滚提交与未完成项。只MAIN签署Accepted；任一阻塞保持Draft。关闭未合并PR不影响release；合入后的回滚分别处理代码和迁移，不能声称关闭PR就撤销部署。
+
+验收：任何收益可追溯到确定版本/负载/时间区间；源数据不被新统计覆盖；无未经运行的通过记录。
+
+## 4. 调度顺序与依赖
+
+W0：MAIN执行11.1，冻结遥测/周期合同与文件所有权；AG-06准备反例矩阵。读不到全量raw不阻止纯函数修复，但标记性能/逐客户端归因阻塞。
+
+W1：最多并行 AG-01（01～03/07）、AG-02（04～05/06.2）、AG-04（09.1～09.2/06.3）。合同先冻结；必要时一个实现槽位让给AG-03完成06.1，不能偷偷超并发。同一agent按任务内部依赖串行。
+
+W2：MAIN集成并通过G1/G2后，AG-03做transport/重试候选；AG-02做GET调用点/多局补修；AG-04做服务端热点定位。需要新协议时AG-05占一个槽位先交付契约，服务端和客户端再接入；不让三方同时改生成物。
+
+W3：AG-06在固定集成SHA做独立验收，MAIN复跑、检查diff和证据、处理失败再派回对应owner。只有G0～G5的适用项通过或有证据的NoChange裁决，才结束实施；不自动合并/部署。
+
+每次交接必须包含：task_ids、base/head SHA、changed_files、schema_changes、repro_before、test_commands/exit_codes、artifact_paths/hashes、before_after_metrics、risks、rollback、remaining_blockers。缺证据不得Accepted。
+
+## 5. 共用契约与判定规则
+
+### 5.1 事件最小字段
+
+run_id、client_id、process_epoch、event_seq、cycle_id、phase、event_type、monotonic时间、UTC时间；业务ID只在实际可得时记录；HTTP加logical_request_id/attempt_no/route/result，实时加request_id/response_type。不可得字段为null+原因，不伪造ticket_id/网络分段。
+
+统计维持：started_cycles = completed + failed + cancelled + incomplete/active（按报告时点定义）；HTTP所有已开始请求最终归到success/error/timeout/cancelled/pending。latency_count另计，不能通过抛弃错误样本降低失败率。
+
+### 5.2 连接与会话
+
+一个逻辑写请求的幂等键在transport重试期间固定；不同业务操作不共用键。origin或session_generation变化时旧请求结果不更新新会话。协议/transport改造必须保留消息顺序、资产幂等、响应限制、分页与TLS验证。
+
+### 5.3 遥测窗口与性能
+
+记录window_start/end/count、client/group phase、有效样本量、采样器健康及生成器实际负载。短窗口客户端P95不能直接减5分钟actor P95来计算网络耗时；CPU要说明实例/每核/容器口径。P95只统计已完成会漏掉未完成尾延迟，必须另报timeout/pending和等待年龄。
+
+保留原停止线用于可比重放：HTTP count>=20且P95>1500ms、HTTP错误率>=10%；实时count>=10且P95>2000ms、命令拒绝率>=10%；health失败或>5000ms；CPU>85%、可用内存/磁盘<15%、actor wait>100ms，按原连续3次规则记录。以上为项目诊断停止条件，不是行业标准或正式SLO。
+
+新增安全上限/证据失效停止与旧性能规则分开版本化。样本不足是Unknown而非Pass；不得利用低流量窗口或删除失败样本规避停止。为了保护环境可更早停止，但不得把更早停止的实验伪装成原负载通过。
+
+## 6. 主 agent 验收门
+
+| 门 | 必须检查 | 通过凭证 |
+|---|---|---|
+| G0 基线/安全 | 来源、工具链、raw缺口、隔离目标、文件锁；没有生产写入授权不启线上动作 | baseline/manifest、阻塞清单、固定SHA |
+| G1 离线正确性 | 原22项+新增负例、真实轻量进程、统计守恒、退出码、schema兼容 | MAIN重跑命令/exit0、测试报告；负例先失败后通过 |
+| G2 玩法闭环 | Godot同账号至少三局；第二次匹配、ack与资产边界；相关.NET/协议测试 | cycle时间轴、服务端状态、无重复资产、回归日志 |
+| G3 可观测性 | trace关联、时间/窗口一致、生成器健康、timeout/pending、数据丢失可检测 | 抽样逐请求/逐cycle对账、脱敏审查 |
+| G4 性能/稳定性 | 同口径A/B，实际负载未下降；慢连接和长时间资源回收；原停止线不提高 | 前后报告、三轮成对实验及波动；无收益候选NoChangeWithEvidence |
+| G5 交付 | 整体diff无无关改动、候选默认/回滚、CI适用项、证据完整 | MAIN验收结论、未完清单清零或明确阻塞；仍需人工决定合入/部署 |
+
+MAIN不可仅检查文件存在或接受子agent的“测试通过”一句话。至少重跑统计/流程负例、三局闭环、协议与结算幂等关键测试；其余检查真实命令、退出码和artifact。环境不能执行时写Blocked，不能换成静态检查后称实装通过。
+
+已存在可用命令入口：`python -m unittest discover -s tools/tests -v`；Godot `client/tests/run_play_retry.gd`；`dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj --filter FullyQualifiedName~SettlementEncodingTests`。新增三局/性能脚本入口由对应任务实现后记录实际命令，不写不存在的启动参数当作已可用。
+
+## 7. 待实现时的主 agent 启动指令
+
+> 阅读本计划、复核记录和状态JSON；检查仓库当前release与PR #13 head、工作树，保留未提交修改。先执行11.1并冻结契约和文件所有权，最多3个worker，各用独立worktree按W0～W3分派。既有LOAD-01～03按部分实现处理，先加负例再修。AG-02只改生命周期，AG-03只改gateway/transport，AG-04改服务端；需要proto由AG-05先出兼容契约。每项交回diff、命令/退出码和证据hash；MAIN在集成SHA独立执行G0～G5。无性能证据不盲目扩容，无生产授权不部署/放宽限流/线上压测。完成后更新草稿PR的逐项状态和验收报告，等待用户决定合入。
+
+本段仅供后续启动。本轮不执行该指令，不填写不存在的agent ID，不把计划状态转换成Running。
+
+## 8. 本轮记录与历史保留
+
+历史首批4个文件/4次提交已存在，Python纯统计/判定22项通过，并曾做三个Python文件py_compile；没有Godot/.NET/真实协调器或云端压测验收。
+
+本轮在与GitHub blob一致的副本上用Python3.13.5重新运行现有22项，22/22通过；另复现畸形字段异常、阶段分类和offline+room口径缺口，细节见复核记录。没有修改代码消除新缺口，也没有宣称52个流程问题已解决或HTTP P95已下降。
+
+本轮新增/更新：本计划、PR13复核记录、待实施状态JSON、PR正文。所有新增实施项保持Planned/Blocked/Conditional，accepted_by为空，dispatch_enabled=false。PR继续Draft。
