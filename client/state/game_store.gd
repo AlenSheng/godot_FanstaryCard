@@ -1314,7 +1314,7 @@ func _adopt_room_context(snapshot: Dictionary) -> void:
 		_settlement_poll_at = 0
 		settlement_query_failed = false
 		if _settlement_recovery_match_id != match_id: _settlement_recovery_match_id = ""
-	if gateway is Gateway: gateway.telemetry_context["room_context_epoch"] = _room_context_epoch
+	if gateway is Gateway: gateway.room_context_epoch = _room_context_epoch
 
 func _rejection_context_current(origin: Dictionary) -> bool:
 	# Rejections carry the initiating Gateway context, rather than a new snapshot.

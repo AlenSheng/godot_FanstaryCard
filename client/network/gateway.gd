@@ -73,11 +73,15 @@ var _http_origin_contexts: Dictionary = {}
 var _http_read_epoch := 0
 var telemetry_context: Dictionary = {}
 var current_match_id := ""
+var room_context_epoch := -1
 
 func capture_context() -> Dictionary:
 	var context := telemetry_context.duplicate(true)
 	context.merge({"origin": base_url, "session_generation": session_generation,
 		"room_id": room_id, "match_id": current_match_id}, true)
+	# Instrumentation replaces telemetry_context at each load phase. Room
+	# identity belongs to the session and must survive those analytics updates.
+	if room_context_epoch >= 0: context["room_context_epoch"] = room_context_epoch
 	return context
 var _reusable_http := ReusableHttpClient.new()
 var _pending_request_started: Dictionary = {}
@@ -183,6 +187,7 @@ func clear_replay() -> void:
 func end_session(reason: String, notify: bool = true) -> void:
 	session_generation += 1
 	current_match_id = ""
+	room_context_epoch = -1
 	token = ""
 	token_expires_at = 0.0
 	reconnect_enabled = false
@@ -611,7 +616,12 @@ func _receive(packet: PackedByteArray) -> void:
 			return
 		if payload.get("code", "") == "NOT_IN_ROOM":
 			var origin: Dictionary = payload.get("_origin_context", {})
-			if (not response_request_id.is_empty() and origin.is_empty()) or (not room_id.is_empty() and not origin.is_empty() and str(origin.get("room_id", "")) != room_id): return
+			# An uncorrelated or prior-cycle rejection cannot revoke the current
+			# route. Require the context recorded when this command was sent.
+			if origin.is_empty() or str(origin.get("match_id", "")).is_empty() or str(origin.get("match_id", "")) != current_match_id: return
+			if int(origin.get("session_generation", -1)) != session_generation: return
+			if str(origin.get("room_id", "")).is_empty() or (not room_id.is_empty() and str(origin.get("room_id", "")) != room_id): return
+			if room_context_epoch >= 0 and int(origin.get("room_context_epoch", -1)) != room_context_epoch: return
 			room_id = ""
 			room_revision = 0
 			recovering = false
