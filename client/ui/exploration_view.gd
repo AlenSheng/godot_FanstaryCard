@@ -118,10 +118,12 @@ static func _passive(ui: Control, hero_class: String, rect: Rect2) -> void:
 	frame.name = "PlayerPassive_" + hero_class
 	frame.mouse_filter = Control.MOUSE_FILTER_PASS
 	frame.tooltip_text = P.localized("exploration_passive_tooltip") % [names[hero_class], BattleDetails.description(status) if not status.is_empty() else P.localized_text(descriptions[hero_class])]
-	var icon: TextureRect = _picture(ui, Art.passive(hero_class), Rect2(rect.position + Vector2(12, 9), Vector2(66, rect.size.y - 18)))
+	var icon: TextureRect = _picture(ui, Art.passive(hero_class), Rect2(rect.position + Vector2(36, 76), Vector2(54, 54)))
 	icon.name = "PlayerPassiveIcon_" + hero_class
-	ui.text(P.localized("signature_prefix") + names[hero_class], Rect2(rect.position + Vector2(89, 8), Vector2(rect.size.x - 100, 36)), 25, P.GOLD)
-	ui.text(descriptions[hero_class], Rect2(rect.position + Vector2(89, 44), Vector2(rect.size.x - 103, rect.size.y - 49)), 20, P.MUTED)
+	var prefix := P.localized("signature_prefix").strip_edges().trim_suffix("·").strip_edges()
+	ui.text(prefix, Rect2(rect.position + Vector2(104, 34), Vector2(rect.size.x - 140, 28)), 17, P.MUTED).name = "PlayerPassivePrefix"
+	ui.text(names[hero_class], Rect2(rect.position + Vector2(104, 64), Vector2(rect.size.x - 140, 40)), 25, P.GOLD).name = "PlayerPassiveTitle"
+	ui.text(descriptions[hero_class], Rect2(rect.position + Vector2(104, 108), Vector2(rect.size.x - 140, rect.size.y - 136)), 16, P.PAPER, null, false).name = "PlayerPassiveDescription"
 
 static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 	var player: Dictionary = state.get("player", {})
@@ -136,7 +138,7 @@ static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 		ui.text(P.CLASSES.get(player.get("hero_class", Game.hero_class), P.CLASSES.Mage)[0], Rect2(80, 615, 350, 48), 34, P.GOLD)
 		_health(ui, player.get("combat", {}), Rect2(80, 670, 310, 115))
 		_status(ui, "PlayerStatus", Rect2(80, 785, 375, 32))
-		_passive(ui, player.get("hero_class", ""), Rect2(621, 443, 317, 122))
+		_passive(ui, player.get("hero_class", ""), Rect2(608, 281, 350, 228))
 		var monsters: Array = state.get("pve", {}).get("monsters", [])
 		var can_select_target := BattleTargets.living(state.get("pve", {})).size() > 1
 		var target_id := str(BattleTargets.current(state.get("pve", {})).get("monster_id", ""))
@@ -237,26 +239,28 @@ static func _hand(ui: Control, host: Control, state: Dictionary) -> void:
 static func _preview(ui: Control) -> void:
 	if Game.selected_cards.is_empty(): return
 	var preview: Dictionary = Game.combat_preview
-	var area := Rect2(460, 528, 1380, 89)
-	var panel: Control = ui.panel(area)
+	var area := Rect2(460, 520, 1380, 98)
+	var panel: Control = ui.panel(area, "UI/CardCodex/card_codex_title_bar_normal.png")
 	panel.name = "CombatPreview"
 	if preview.is_empty():
-		ui.text(P.localized("calculating_preview"), Rect2(479, 578, 1000, 33), 22, P.MUTED)
+		ui.text(P.localized("calculating_preview"), Rect2(540, 552, 1000, 40), 22, P.MUTED).name = "CombatPreviewLoading"
 		return
-	var x := 478.0
+	var x := 540.0
 	var core: String = preview.get("core_element", "")
 	var headline := P.localized("exploration_preview_core") % [P.word(core), preview.get("core_count", 0)] if not core.is_empty() else P.localized("preview")
 	headline = "%s · %s" % [P.localized("battle_preview_confirmed" if preview.get("authoritative", false) else "battle_preview_estimate"), headline]
-	var heading: Label = ui.text(headline, Rect2(x, 542, 310, 34), 22, P.GOLD, null, false)
+	var heading: Label = ui.text(headline, Rect2(x, 534, 310, 33), 22, P.GOLD, null, false)
+	heading.name = "CombatPreviewHeading"
 	heading.autowrap_mode = TextServer.AUTOWRAP_OFF
 	heading.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	heading.tooltip_text = headline
-	x = 478
+	x = 540
 	var segments: Array = preview.get("damage_segments", [])
-	var segment_width := 780.0 / maxi(1, segments.size())
+	var segment_width := 690.0 / maxi(1, segments.size())
 	for segment in segments:
 		var segment_text := "%s %s" % [P.localized("battle_preview_direct") if segment.kind == "Direct" else P.word(segment.kind), segment.amount]
-		var segment_label: Label = ui.text(segment_text, Rect2(x, 578, segment_width, 34), 22, P.ELEMENT.get(segment.kind, Color.WHITE), null, false)
+		var segment_label: Label = ui.text(segment_text, Rect2(x, 570, segment_width, 33), 22, P.ELEMENT.get(segment.kind, Color.WHITE), null, false)
+		segment_label.name = "CombatPreviewSegment_" + str(segment.kind)
 		segment_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 		segment_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 		segment_label.tooltip_text = segment_text
@@ -264,14 +268,15 @@ static func _preview(ui: Control) -> void:
 	var shield_damage := int(preview.get("shield_damage", 0))
 	var hp_damage := int(preview.get("hp_damage", 0))
 	var actual_damage := shield_damage + hp_damage
-	x = 788
-	var applied: Label = ui.text(P.localized("exploration_preview_actual" if preview.get("authoritative", false) else "battle_preview_applied_estimate") % [actual_damage, shield_damage, hp_damage], Rect2(x, 542, 350, 34), 22, P.PAPER, null, false)
+	x = 850
+	var applied: Label = ui.text(P.localized("exploration_preview_actual" if preview.get("authoritative", false) else "battle_preview_applied_estimate") % [actual_damage, shield_damage, hp_damage], Rect2(x, 534, 350, 33), 22, P.PAPER, null, false)
+	applied.name = "CombatPreviewApplied"
 	applied.autowrap_mode = TextServer.AUTOWRAP_OFF
 	applied.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	x += 350
 	for entry in [["heal", "battle_preview_heal", P.TEAL], ["shield_gain", "battle_preview_shield", Color("c4d2d4")]]:
 		if int(preview.get(entry[0], 0)) > 0:
-			ui.text("%s +%s" % [P.localized(entry[1]), preview[entry[0]]], Rect2(x, 542, 130, 34), 22, entry[2], null, false)
+			ui.text("%s +%s" % [P.localized(entry[1]), preview[entry[0]]], Rect2(x, 534, 130, 33), 22, entry[2], null, false).name = "CombatPreviewBonus_" + str(entry[0])
 			x += 130
 	var effects: Array[String] = []
 	for entry in [["stun_seconds", "眩晕", "秒"], ["draw_block_seconds", "锁抽", "秒"], ["health_cost", "自损", ""], ["immediate_draw", "抽牌", "张"]]:
@@ -280,7 +285,8 @@ static func _preview(ui: Control) -> void:
 	if float(preview.get("draw_speed_seconds", "0")) > 0:
 		effects.append(P.localized("exploration_preview_draw_speed") % [Details.percent(float(preview.get("draw_speed_modifier", "0"))), preview.draw_speed_seconds])
 	if float(preview.get("draw_block_speed_seconds", "0")) > 0: effects.append(P.localized("exploration_preview_double_charge") % preview.draw_block_speed_seconds)
-	var tail: Label = ui.text(" · ".join(effects), Rect2(1270, 578, 554, 34), 22, P.PAPER, null, false)
+	var tail: Label = ui.text(" · ".join(effects), Rect2(1245, 570, 515, 33), 22, P.PAPER, null, false)
+	tail.name = "CombatPreviewEffects"
 	tail.autowrap_mode = TextServer.AUTOWRAP_OFF
 	tail.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	panel.mouse_filter = Control.MOUSE_FILTER_PASS
@@ -323,7 +329,7 @@ static func _duel(ui: Control, host: Control, state: Dictionary) -> void:
 		ui.picture(Art.texture("UI/Encounter/encounter_lock_icon_normal.png"), Rect2(1290, 443, 47, 48))
 	ui.text(P.localized("waiting_action"), Rect2(1350, 443, 330, 48), 26, P.GOLD)
 	ui.text(P.localized("own_hand"), Rect2(80, 622, 330, 54), 34, P.GOLD)
-	_passive(ui, player.get("hero_class", ""), Rect2(80, 703, 330, 117))
+	_passive(ui, player.get("hero_class", ""), Rect2(80, 590, 350, 228))
 	_hand(ui, host, state)
 
 static func _map(ui: Control, host: Control, state: Dictionary) -> void:

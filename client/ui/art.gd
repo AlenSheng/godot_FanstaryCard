@@ -5,6 +5,9 @@ const CATALOG = preload("res://data/catalog.json")
 const CatalogIndex = preload("res://data/catalog_index.gd")
 const QUALITY_LADDER := ["", "White", "Green", "Blue", "Purple", "Orange", "Red"]
 const SAFE_SLOT_FRAME_TEXTURE: Texture2D = preload("res://assets/generated/ui/safe_slot_frame_locked.png")
+const SIGNATURE_FRAME_ATLAS: Texture2D = preload("res://assets/generated/ui/signature_weapon_frames.png")
+const SIGNATURE_COLORS := {"Priest": Color("5bc6d3"), "Mage": Color("ed7449"), "Guardian": Color("b99b61")}
+static var _signature_frames: Dictionary = {}
 ## Shared item-cell art used by inventory, preparation and reward/mail grids.
 ## The source is a 144x144 square and should be rendered 1:1 as 96x96.
 const COMMON_CELL_KEY := "UI/Prep/exploration_prep_backpack_cell_empty_normal.png"
@@ -38,6 +41,18 @@ static func portrait(hero_class: String) -> Texture2D:
 
 static func passive(hero_class: String) -> Texture2D:
 	return texture(MANIFEST.data.get("passives", {}).get(hero_class, ""))
+
+## Class identity has its own generated frame; it never denotes Orange rarity.
+static func signature_frame(hero_class: String) -> Texture2D:
+	if not SIGNATURE_COLORS.has(hero_class): return null
+	if not _signature_frames.has(hero_class):
+		var frame := AtlasTexture.new()
+		frame.atlas = SIGNATURE_FRAME_ATLAS
+		var index: int = ["Priest", "Mage", "Guardian"].find(hero_class)
+		frame.region = Rect2(index * 724, 0, 724, 724)
+		frame.filter_clip = true
+		_signature_frames[hero_class] = frame
+	return _signature_frames[hero_class]
 
 static func product(kind: String) -> Texture2D:
 	return texture(MANIFEST.data.get("products", {}).get(kind, ""))

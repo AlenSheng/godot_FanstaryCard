@@ -1,0 +1,6516 @@
+{
+  "ok": true,
+  "manifest_files": 563,
+  "codex_cards": 220,
+  "monster_species": 12,
+  "literal_references": [
+    {
+      "source": "client/data/catalog_index.gd",
+      "resource": "res://data/catalog.json",
+      "exists": true
+    },
+    {
+      "source": "client/main.tscn",
+      "resource": "res://ui/main.gd",
+      "exists": true
+    },
+    {
+      "source": "client/network/gateway.gd",
+      "resource": "res://network/http_protocol.gd",
+      "exists": true
+    },
+    {
+      "source": "client/network/gateway.gd",
+      "resource": "res://network/protobuf.gd",
+      "exists": true
+    },
+    {
+      "source": "client/network/gateway.gd",
+      "resource": "res://network/reusable_http_client.gd",
+      "exists": true
+    },
+    {
+      "source": "client/network/http_protocol.gd",
+      "resource": "res://data/http_endpoints.json",
+      "exists": true
+    },
+    {
+      "source": "client/network/http_protocol.gd",
+      "resource": "res://data/http_schema.json",
+      "exists": true
+    },
+    {
+      "source": "client/network/http_protocol.gd",
+      "resource": "res://network/protobuf.gd",
+      "exists": true
+    },
+    {
+      "source": "client/network/protobuf.gd",
+      "resource": "res://data/http_schema.json",
+      "exists": true
+    },
+    {
+      "source": "client/network/protobuf.gd",
+      "resource": "res://data/realtime_schema.json",
+      "exists": true
+    },
+    {
+      "source": "client/project.godot",
+      "resource": "res://main.tscn",
+      "exists": true
+    },
+    {
+      "source": "client/state/game_store.gd",
+      "resource": "res://data/catalog.json",
+      "exists": true
+    },
+    {
+      "source": "client/state/game_store.gd",
+      "resource": "res://data/catalog_index.gd",
+      "exists": true
+    },
+    {
+      "source": "client/state/game_store.gd",
+      "resource": "res://network/gateway.gd",
+      "exists": true
+    },
+    {
+      "source": "client/state/game_store.gd",
+      "resource": "res://platform/platform_service.gd",
+      "exists": true
+    },
+    {
+      "source": "client/state/game_store.gd",
+      "resource": "res://state/battle_targets.gd",
+      "exists": true
+    },
+    {
+      "source": "client/state/game_store.gd",
+      "resource": "res://state/element_rules.gd",
+      "exists": true
+    },
+    {
+      "source": "client/state/game_store.gd",
+      "resource": "res://ui/card_details.gd",
+      "exists": true
+    },
+    {
+      "source": "client/tests/art_preview.tscn",
+      "resource": "res://main.tscn",
+      "exists": true
+    },
+    {
+      "source": "client/tests/art_preview.tscn",
+      "resource": "res://tests/art_preview.gd",
+      "exists": true
+    },
+    {
+      "source": "client/tests/audio_font_preview.tscn",
+      "resource": "res://main.tscn",
+      "exists": true
+    },
+    {
+      "source": "client/tests/audio_font_preview.tscn",
+      "resource": "res://tests/audio_font_preview.gd",
+      "exists": true
+    },
+    {
+      "source": "client/tests/cloud_load_client.tscn",
+      "resource": "res://tests/cloud_load_client.gd",
+      "exists": true
+    },
+    {
+      "source": "client/tests/codex_integration.tscn",
+      "resource": "res://main.tscn",
+      "exists": true
+    },
+    {
+      "source": "client/tests/codex_integration.tscn",
+      "resource": "res://tests/codex_integration.gd",
+      "exists": true
+    },
+    {
+      "source": "client/tests/codex_preview.tscn",
+      "resource": "res://main.tscn",
+      "exists": true
+    },
+    {
+      "source": "client/tests/codex_preview.tscn",
+      "resource": "res://tests/codex_preview.gd",
+      "exists": true
+    },
+    {
+      "source": "client/tests/deck_builder_preview.tscn",
+      "resource": "res://main.tscn",
+      "exists": true
+    },
+    {
+      "source": "client/tests/deck_builder_preview.tscn",
+      "resource": "res://tests/deck_builder_preview.gd",
+      "exists": true
+    },
+    {
+      "source": "client/tests/equipment_compare_preview.tscn",
+      "resource": "res://main.tscn",
+      "exists": true
+    },
+    {
+      "source": "client/tests/equipment_compare_preview.tscn",
+      "resource": "res://tests/equipment_compare_preview.gd",
+      "exists": true
+    },
+    {
+      "source": "client/tests/gameplay_load_client.tscn",
+      "resource": "res://tests/gameplay_load_client.gd",
+      "exists": true
+    },
+    {
+      "source": "client/tests/gameplay_ui_preview.tscn",
+      "resource": "res://main.tscn",
+      "exists": true
+    },
+    {
+      "source": "client/tests/gameplay_ui_preview.tscn",
+      "resource": "res://tests/gameplay_ui_preview.gd",
+      "exists": true
+    },
+    {
+      "source": "client/tests/integration.tscn",
+      "resource": "res://main.tscn",
+      "exists": true
+    },
+    {
+      "source": "client/tests/integration.tscn",
+      "resource": "res://tests/integration.gd",
+      "exists": true
+    },
+    {
+      "source": "client/tests/mail_preview.tscn",
+      "resource": "res://main.tscn",
+      "exists": true
+    },
+    {
+      "source": "client/tests/mail_preview.tscn",
+      "resource": "res://tests/mail_preview.gd",
+      "exists": true
+    },
+    {
+      "source": "client/tests/numerical_integration.tscn",
+      "resource": "res://tests/test_numerical_integration.gd",
+      "exists": true
+    },
+    {
+      "source": "client/tests/pr13_combat_art.tscn",
+      "resource": "res://main.tscn",
+      "exists": true
+    },
+    {
+      "source": "client/tests/pr13_combat_art.tscn",
+      "resource": "res://tests/pr13_combat_art.gd",
+      "exists": true
+    },
+    {
+      "source": "client/tests/shop_drag_preview.tscn",
+      "resource": "res://main.tscn",
+      "exists": true
+    },
+    {
+      "source": "client/tests/shop_drag_preview.tscn",
+      "resource": "res://tests/shop_drag_preview.gd",
+      "exists": true
+    },
+    {
+      "source": "client/tests/test_card_page_smoke.tscn",
+      "resource": "res://tests/test_card_page_smoke.gd",
+      "exists": true
+    },
+    {
+      "source": "client/tests/ui_style_audit.tscn",
+      "resource": "res://main.tscn",
+      "exists": true
+    },
+    {
+      "source": "client/tests/ui_style_audit.tscn",
+      "resource": "res://tests/ui_style_audit.gd",
+      "exists": true
+    },
+    {
+      "source": "client/tests/ui_style_extended.tscn",
+      "resource": "res://main.tscn",
+      "exists": true
+    },
+    {
+      "source": "client/tests/ui_style_extended.tscn",
+      "resource": "res://tests/ui_style_extended.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/art.gd",
+      "resource": "res://assets/generated/ui/safe_slot_frame_locked.png",
+      "exists": true
+    },
+    {
+      "source": "client/ui/art.gd",
+      "resource": "res://assets/generated/ui/signature_weapon_frames.png",
+      "exists": true
+    },
+    {
+      "source": "client/ui/art.gd",
+      "resource": "res://assets/imported/manifest.json",
+      "exists": true
+    },
+    {
+      "source": "client/ui/art.gd",
+      "resource": "res://data/catalog.json",
+      "exists": true
+    },
+    {
+      "source": "client/ui/art.gd",
+      "resource": "res://data/catalog_index.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/audio_settings.gd",
+      "resource": "res://ui/art.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/audio_settings.gd",
+      "resource": "res://ui/confirmation_modal.tscn",
+      "exists": true
+    },
+    {
+      "source": "client/ui/audio_settings.gd",
+      "resource": "res://ui/palette.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/battle_details.gd",
+      "resource": "res://ui/equipment_details.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/battle_details.gd",
+      "resource": "res://ui/palette.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/bounded_bar.gd",
+      "resource": "res://ui/art.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/card_details.gd",
+      "resource": "res://data/card_names.json",
+      "exists": true
+    },
+    {
+      "source": "client/ui/card_details.gd",
+      "resource": "res://data/catalog.json",
+      "exists": true
+    },
+    {
+      "source": "client/ui/card_details.gd",
+      "resource": "res://data/catalog_index.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/card_details.gd",
+      "resource": "res://ui/palette.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/card_grid_view.gd",
+      "resource": "res://ui/palette.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/card_pool.gd",
+      "resource": "res://ui/card_details.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/card_pool.gd",
+      "resource": "res://ui/card_view.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/card_view.gd",
+      "resource": "res://data/card_descriptions.json",
+      "exists": true
+    },
+    {
+      "source": "client/ui/card_view.gd",
+      "resource": "res://state/element_rules.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/card_view.gd",
+      "resource": "res://ui/art.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/card_view.gd",
+      "resource": "res://ui/card_details.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/card_view.gd",
+      "resource": "res://ui/card_view.gdshader",
+      "exists": true
+    },
+    {
+      "source": "client/ui/card_view.gd",
+      "resource": "res://ui/palette.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/codex_view.gd",
+      "resource": "res://ui/art.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/codex_view.gd",
+      "resource": "res://ui/card_details.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/codex_view.gd",
+      "resource": "res://ui/card_grid_view.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/codex_view.gd",
+      "resource": "res://ui/drag_scroll.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/codex_view.gd",
+      "resource": "res://ui/palette.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/confirmation_modal.gd",
+      "resource": "res://ui/art.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/confirmation_modal.gd",
+      "resource": "res://ui/palette.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/confirmation_modal.tscn",
+      "resource": "res://ui/confirmation_modal.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/deck_builder_view.gd",
+      "resource": "res://ui/art.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/deck_builder_view.gd",
+      "resource": "res://ui/card_details.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/deck_builder_view.gd",
+      "resource": "res://ui/card_grid_view.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/deck_builder_view.gd",
+      "resource": "res://ui/drag_scroll.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/deck_builder_view.gd",
+      "resource": "res://ui/palette.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/equipment_compare_dialog.gd",
+      "resource": "res://data/equipment_compare_text.json",
+      "exists": true
+    },
+    {
+      "source": "client/ui/equipment_compare_dialog.gd",
+      "resource": "res://ui/art.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/equipment_compare_dialog.gd",
+      "resource": "res://ui/equipment_compare_model.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/equipment_compare_dialog.gd",
+      "resource": "res://ui/equipment_details.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/equipment_compare_dialog.gd",
+      "resource": "res://ui/item_visual.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/equipment_compare_dialog.gd",
+      "resource": "res://ui/numerical_details.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/equipment_compare_dialog.gd",
+      "resource": "res://ui/palette.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/equipment_compare_model.gd",
+      "resource": "res://data/catalog_index.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/equipment_compare_model.gd",
+      "resource": "res://ui/equipment_details.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/equipment_details.gd",
+      "resource": "res://data/catalog_index.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/equipment_details.gd",
+      "resource": "res://ui/palette.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/exploration_view.gd",
+      "resource": "res://assets/generated/ui/map_boss_marker.png",
+      "exists": true
+    },
+    {
+      "source": "client/ui/exploration_view.gd",
+      "resource": "res://assets/generated/ui/map_self_marker.png",
+      "exists": true
+    },
+    {
+      "source": "client/ui/exploration_view.gd",
+      "resource": "res://state/battle_targets.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/exploration_view.gd",
+      "resource": "res://ui/art.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/exploration_view.gd",
+      "resource": "res://ui/battle_details.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/exploration_view.gd",
+      "resource": "res://ui/bounded_bar.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/exploration_view.gd",
+      "resource": "res://ui/cell_index.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/exploration_view.gd",
+      "resource": "res://ui/drag_scroll.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/exploration_view.gd",
+      "resource": "res://ui/equipment_details.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/exploration_view.gd",
+      "resource": "res://ui/inventory_view.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/exploration_view.gd",
+      "resource": "res://ui/item_visual.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/exploration_view.gd",
+      "resource": "res://ui/monster_pool_view.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/exploration_view.gd",
+      "resource": "res://ui/numerical_details.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/exploration_view.gd",
+      "resource": "res://ui/palette.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/exploration_view.gd",
+      "resource": "res://ui/temporary_bag_item.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/hall_character_view.gd",
+      "resource": "res://assets/characters/blue_gold_mage.glb",
+      "exists": true
+    },
+    {
+      "source": "client/ui/inventory_view.gd",
+      "resource": "res://ui/art.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/inventory_view.gd",
+      "resource": "res://ui/equipment_details.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/inventory_view.gd",
+      "resource": "res://ui/inventory_slot.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/inventory_view.gd",
+      "resource": "res://ui/item_visual.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/inventory_view.gd",
+      "resource": "res://ui/palette.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/item_visual.gd",
+      "resource": "res://ui/art.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/item_visual.gd",
+      "resource": "res://ui/palette.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/layered_backdrop.gd",
+      "resource": "res://assets/backgrounds/chaos_realm/hall_far.png",
+      "exists": true
+    },
+    {
+      "source": "client/ui/layered_backdrop.gd",
+      "resource": "res://assets/backgrounds/chaos_realm/hall_mid.png",
+      "exists": true
+    },
+    {
+      "source": "client/ui/layered_backdrop.gd",
+      "resource": "res://assets/imported/UI/CardCodex/card_codex_background_normal.png",
+      "exists": true
+    },
+    {
+      "source": "client/ui/main.gd",
+      "resource": "res://assets/backgrounds/relicbound_login_ambient.ogv",
+      "exists": true
+    },
+    {
+      "source": "client/ui/main.gd",
+      "resource": "res://data/card_descriptions.json",
+      "exists": true
+    },
+    {
+      "source": "client/ui/main.gd",
+      "resource": "res://data/catalog_index.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/main.gd",
+      "resource": "res://data/random_names.json",
+      "exists": true
+    },
+    {
+      "source": "client/ui/main.gd",
+      "resource": "res://data/ui_config.json",
+      "exists": true
+    },
+    {
+      "source": "client/ui/main.gd",
+      "resource": "res://ui/art.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/main.gd",
+      "resource": "res://ui/audio_settings.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/main.gd",
+      "resource": "res://ui/battle_details.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/main.gd",
+      "resource": "res://ui/bounded_bar.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/main.gd",
+      "resource": "res://ui/card_details.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/main.gd",
+      "resource": "res://ui/card_pool.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/main.gd",
+      "resource": "res://ui/card_view.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/main.gd",
+      "resource": "res://ui/cell_index.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/main.gd",
+      "resource": "res://ui/confirmation_modal.tscn",
+      "exists": true
+    },
+    {
+      "source": "client/ui/main.gd",
+      "resource": "res://ui/deck_builder_view.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/main.gd",
+      "resource": "res://ui/equipment_compare_dialog.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/main.gd",
+      "resource": "res://ui/equipment_details.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/main.gd",
+      "resource": "res://ui/inventory_view.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/main.gd",
+      "resource": "res://ui/layered_backdrop.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/main.gd",
+      "resource": "res://ui/palette.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/main.gd",
+      "resource": "res://ui/reference_ui.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/main.gd",
+      "resource": "res://ui/remote_copy.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/main.gd",
+      "resource": "res://ui/tips_overlay.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/monster_pool_view.gd",
+      "resource": "res://ui/card_details.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/monster_pool_view.gd",
+      "resource": "res://ui/palette.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/numerical_details.gd",
+      "resource": "res://ui/equipment_compare_model.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/numerical_details.gd",
+      "resource": "res://ui/palette.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/palette.gd",
+      "resource": "res://assets/fonts/SourceHanSansSC-Regular.otf",
+      "exists": true
+    },
+    {
+      "source": "client/ui/palette.gd",
+      "resource": "res://assets/fonts/SourceHanSerifSC-SemiBold.otf",
+      "exists": true
+    },
+    {
+      "source": "client/ui/palette.gd",
+      "resource": "res://data/localization_battle.json",
+      "exists": true
+    },
+    {
+      "source": "client/ui/palette.gd",
+      "resource": "res://data/localization_brand.json",
+      "exists": true
+    },
+    {
+      "source": "client/ui/palette.gd",
+      "resource": "res://data/localization_config.json",
+      "exists": true
+    },
+    {
+      "source": "client/ui/palette.gd",
+      "resource": "res://data/localization_modules.json",
+      "exists": true
+    },
+    {
+      "source": "client/ui/palette.gd",
+      "resource": "res://data/localization_templates.json",
+      "exists": true
+    },
+    {
+      "source": "client/ui/palette.gd",
+      "resource": "res://data/localization_ui_gaps.json",
+      "exists": true
+    },
+    {
+      "source": "client/ui/palette.gd",
+      "resource": "res://data/login_localization.json",
+      "exists": true
+    },
+    {
+      "source": "client/ui/palette.gd",
+      "resource": "res://ui/art.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/reference_ui.gd",
+      "resource": "res://ui/art.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/reference_ui.gd",
+      "resource": "res://ui/card_details.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/reference_ui.gd",
+      "resource": "res://ui/codex_view.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/reference_ui.gd",
+      "resource": "res://ui/deck_builder_view.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/reference_ui.gd",
+      "resource": "res://ui/drag_scroll.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/reference_ui.gd",
+      "resource": "res://ui/equipment_compare_model.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/reference_ui.gd",
+      "resource": "res://ui/exploration_view.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/reference_ui.gd",
+      "resource": "res://ui/numerical_details.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/reference_ui.gd",
+      "resource": "res://ui/palette.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/reference_ui.gd",
+      "resource": "res://ui/remote_copy.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/remote_copy.gd",
+      "resource": "res://ui/palette.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/temporary_bag_item.gd",
+      "resource": "res://ui/art.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/temporary_bag_item.gd",
+      "resource": "res://ui/equipment_details.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/temporary_bag_item.gd",
+      "resource": "res://ui/item_visual.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/temporary_bag_item.gd",
+      "resource": "res://ui/palette.gd",
+      "exists": true
+    },
+    {
+      "source": "client/ui/tips_overlay.gd",
+      "resource": "res://ui/palette.gd",
+      "exists": true
+    }
+  ],
+  "files": [
+    {
+      "key": "Cards/Art/annihilation_strike_epic.png",
+      "path": "res://assets/imported/Cards/Art/annihilation_strike_epic.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "9023007e18da4b344571b9c3646b610374f19b922c0e7a4a7f1eabb8a5583d39"
+    },
+    {
+      "key": "Cards/Art/apocalypse_eye_legendary.png",
+      "path": "res://assets/imported/Cards/Art/apocalypse_eye_legendary.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "973580c0b5b395f29a0dfb0d1305f8b2a694b00e9e609f44d6b2176986e1e9bd"
+    },
+    {
+      "key": "Cards/Art/arcane_orb_common.png",
+      "path": "res://assets/imported/Cards/Art/arcane_orb_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "45b9a2c593d2628b76724e1d7ea5caba1672c326359aef0bb5fe7a449365f520"
+    },
+    {
+      "key": "Cards/Art/bandage_common.png",
+      "path": "res://assets/imported/Cards/Art/bandage_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "f0b874ed1bbde87788a76f4128e8484330070af752d0c48e938c15b05a236b04"
+    },
+    {
+      "key": "Cards/Art/baptism_common.png",
+      "path": "res://assets/imported/Cards/Art/baptism_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "821b075bccb05c504257a7bf8497970319bee738b5f42c2d77d864ac896070af"
+    },
+    {
+      "key": "Cards/Art/bastion_wall_epic.png",
+      "path": "res://assets/imported/Cards/Art/bastion_wall_epic.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "a57b5c28e7de617d71c9255cc18d03c158bc26f4a7ded2f0685239251ae5bec3"
+    },
+    {
+      "key": "Cards/Art/bedrock_common.png",
+      "path": "res://assets/imported/Cards/Art/bedrock_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "c63a3140af1ee899e294b2e62a48e176de732dd9115a003df77a6a1f7aad7d57"
+    },
+    {
+      "key": "Cards/Art/binding_still_rare.png",
+      "path": "res://assets/imported/Cards/Art/binding_still_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "118419872fc178934af16bfee03d9c89178e95796147fd584aec8f371d083a24"
+    },
+    {
+      "key": "Cards/Art/blade_prison_rare.png",
+      "path": "res://assets/imported/Cards/Art/blade_prison_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "fa16afca1510f09f26d300ed6052f231b090cfdb4ba8b44f4395e65ffb6781a7"
+    },
+    {
+      "key": "Cards/Art/blade_rain_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/blade_rain_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "47d04ec57bb5461d006f4be20aa845bc96f44a9cf1d026365616670518025401"
+    },
+    {
+      "key": "Cards/Art/blazing_cut_common.png",
+      "path": "res://assets/imported/Cards/Art/blazing_cut_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "ee0f6ec48bef11750cdbf984ec7e5c5ad41ab7b5f5317e8cf6190bd12c719128"
+    },
+    {
+      "key": "Cards/Art/blazing_expansion_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/blazing_expansion_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "0c2ab7ed47a453015fdf6beca3086da15625cd113072f7d30214d8eab18d8102"
+    },
+    {
+      "key": "Cards/Art/blazing_wind_legendary.png",
+      "path": "res://assets/imported/Cards/Art/blazing_wind_legendary.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "a774abe9855f9fab5e8a07101f9bec124e327aaf8fd016eb47bbf722da90be3b"
+    },
+    {
+      "key": "Cards/Art/block_shield_common.png",
+      "path": "res://assets/imported/Cards/Art/block_shield_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "63cf2a171b31f1f47ab72a7e0ddfb6001ec02ea48e282d38c76c20dee78d54a1"
+    },
+    {
+      "key": "Cards/Art/blood_rage_epic.png",
+      "path": "res://assets/imported/Cards/Art/blood_rage_epic.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "8914b23141c5992ee7d617339250b8679bab2a5ec79e670b9c752cf434813346"
+    },
+    {
+      "key": "Cards/Art/blood_spring_common.png",
+      "path": "res://assets/imported/Cards/Art/blood_spring_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "e71682a01ee3a396fe7526b2bf3b4c7a44533fc876fb3a53c74c8813ed9e52d0"
+    },
+    {
+      "key": "Cards/Art/bone_break_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/bone_break_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "dce6350f0f32833b75573dc3111a6037a824e246a66662d388a82a7874e7f486"
+    },
+    {
+      "key": "Cards/Art/branch_draw_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/branch_draw_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "560e4244826c4475b80db344bff67438d8993263847d99e4f7452919b1bc4c92"
+    },
+    {
+      "key": "Cards/Art/breath_recovery_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/breath_recovery_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "c814950aa6c3fdf9ca0eb6b797ba6e813c8accf87ce23040ccffa8819a71e77e"
+    },
+    {
+      "key": "Cards/Art/breath_regain_common.png",
+      "path": "res://assets/imported/Cards/Art/breath_regain_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "eddb0d6d1c77e2aac68b43ebf2ecb5035fc4f3efc950df3d0f50a096c8cd32ab"
+    },
+    {
+      "key": "Cards/Art/breath_seal_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/breath_seal_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "085be1d5d72cb53064e2a3291b760e9ea8c65fac9d44629bfa7a55e6f543dbc6"
+    },
+    {
+      "key": "Cards/Art/bulwark_epic.png",
+      "path": "res://assets/imported/Cards/Art/bulwark_epic.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "9d5767c1b42512f683490f3a6eb66dc997cd9a0c04e74fbed1a5c2b520f4c7ca"
+    },
+    {
+      "key": "Cards/Art/burning_flow_rare.png",
+      "path": "res://assets/imported/Cards/Art/burning_flow_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "7b7df68b71831e43a89620da28a409e2c00d3b373c47a01d53e69212bacee337"
+    },
+    {
+      "key": "Cards/Art/chaos_rhythm_epic.png",
+      "path": "res://assets/imported/Cards/Art/chaos_rhythm_epic.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "f9b2a6ca15e097a0e49874feb22232d02c5cbcd726701f693aad041694346556"
+    },
+    {
+      "key": "Cards/Art/charging_punch_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/charging_punch_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "7e95e8c890c43776177d2be47ef8ae2c13609652e65101cdce37ec4224a2a237"
+    },
+    {
+      "key": "Cards/Art/city_burn_epic.png",
+      "path": "res://assets/imported/Cards/Art/city_burn_epic.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "dd4b9a9456a450fffee93d446854444c832eb9468237699dbf616493ea2ef27a"
+    },
+    {
+      "key": "Cards/Art/class_reveal_legendary.png",
+      "path": "res://assets/imported/Cards/Art/class_reveal_legendary.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "23d7a00630dba18d2020e0584f41fb36529b222554cc46483ca9fb6fa16e753b"
+    },
+    {
+      "key": "Cards/Art/cold_shot_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/cold_shot_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "554c243df5550190df6ef524126caf0eda52f02282c8a585512a3abe8a3faa4b"
+    },
+    {
+      "key": "Cards/Art/cracked_earth_common.png",
+      "path": "res://assets/imported/Cards/Art/cracked_earth_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "4304c58f2b115e7631d0228495a22b7e88aa500ece808dcdc6576b3df3836c9d"
+    },
+    {
+      "key": "Cards/Art/crushing_punch_rare.png",
+      "path": "res://assets/imported/Cards/Art/crushing_punch_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "bbdc3d0cc9b4496988e6d05740aaef4a14aecd52fc670d90a6433a0f28a133c2"
+    },
+    {
+      "key": "Cards/Art/dazzling_light_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/dazzling_light_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "48997fa1a0a38b0ae1f51e69c516ff46a2f817fb597db60c7ebf15303bacb27c"
+    },
+    {
+      "key": "Cards/Art/deep_abyss_epic.png",
+      "path": "res://assets/imported/Cards/Art/deep_abyss_epic.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "cd3c843f9c07476490dbe24e5cae2824cbcfa602dc1f1616fae83208d65d4e57"
+    },
+    {
+      "key": "Cards/Art/deep_frost_epic.png",
+      "path": "res://assets/imported/Cards/Art/deep_frost_epic.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "2385d6079d11359fe0dfe334b1a09c8cd182f32fb40f2db79cb8fb9980101090"
+    },
+    {
+      "key": "Cards/Art/drawing_branch_rare.png",
+      "path": "res://assets/imported/Cards/Art/drawing_branch_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "102c162008468f91a7686b00dd33af5a7542b08fa90e83aa0f7dc64c09056083"
+    },
+    {
+      "key": "Cards/Art/earth_cover_common.png",
+      "path": "res://assets/imported/Cards/Art/earth_cover_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "b038fde693fc5c2a34b70037832c7279f786ca4ba68e8c6e75d9f6b29a5a4eed"
+    },
+    {
+      "key": "Cards/Art/earth_gravel_common.png",
+      "path": "res://assets/imported/Cards/Art/earth_gravel_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "fb3574e377cd384cdb805d44d94fd08a49a0fee33e565d4ae0a5a1d4939ad112"
+    },
+    {
+      "key": "Cards/Art/earth_rift_rare.png",
+      "path": "res://assets/imported/Cards/Art/earth_rift_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "03663b2f142a17038c90336b5c3efbca62670d968b5cee6e65abe0e687d8eb94"
+    },
+    {
+      "key": "Cards/Art/earth_rift_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/earth_rift_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "7aab29bbcc735299acfd3f8010e69c04e7f0628d35d81190de49d815d700f16a"
+    },
+    {
+      "key": "Cards/Art/earth_shake_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/earth_shake_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "bb50edce3e932c8f96476f20741c5b380ce25734d4a31907a719b5907884a79d"
+    },
+    {
+      "key": "Cards/Art/edge_chime_common.png",
+      "path": "res://assets/imported/Cards/Art/edge_chime_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "3cd284ef481648294cbffc60dce5cf8f9fb5cec462a75589957135446a78bc95"
+    },
+    {
+      "key": "Cards/Art/elbow_strike_common.png",
+      "path": "res://assets/imported/Cards/Art/elbow_strike_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "cbf1decdad6e68fc619adfd3f5fa80623ce9998f303d88d30730b941089b2989"
+    },
+    {
+      "key": "Cards/Art/element_tuning_earth_b.png",
+      "path": "res://assets/imported/Cards/Art/element_tuning_earth_b.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "8551e6e1248bcc2257b8d1d177a661357971eaab59e00b52071ec7f64281fdce"
+    },
+    {
+      "key": "Cards/Art/element_tuning_earth_g.png",
+      "path": "res://assets/imported/Cards/Art/element_tuning_earth_g.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "9aad0b662f78b646e1b708f43d0eb53e1d3f1767308d4ec4353ea840e02d8dcd"
+    },
+    {
+      "key": "Cards/Art/element_tuning_earth_p.png",
+      "path": "res://assets/imported/Cards/Art/element_tuning_earth_p.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "7caf5ae916a955293118b63155ef58fe1b430cd5f89cc8f07cd8f8720a8ecab7"
+    },
+    {
+      "key": "Cards/Art/element_tuning_earth_w.png",
+      "path": "res://assets/imported/Cards/Art/element_tuning_earth_w.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "71a5108b7e0ea4665670b1aa89d77d7f4572205c3709a9f5aa760abb0ccb5dbc"
+    },
+    {
+      "key": "Cards/Art/element_tuning_fire_b.png",
+      "path": "res://assets/imported/Cards/Art/element_tuning_fire_b.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "94e902ef0a9a1b73920488a3c7e5308798aaf9af40469336b0664efa7aca1585"
+    },
+    {
+      "key": "Cards/Art/element_tuning_fire_g.png",
+      "path": "res://assets/imported/Cards/Art/element_tuning_fire_g.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "5400af497dde77ca7344212581ec9f3b725aecda47360ff203dadb14541e4f84"
+    },
+    {
+      "key": "Cards/Art/element_tuning_fire_p.png",
+      "path": "res://assets/imported/Cards/Art/element_tuning_fire_p.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "b27aee399772e0217703ead36ced223f304eb208e93984c247604b236ea74704"
+    },
+    {
+      "key": "Cards/Art/element_tuning_fire_w.png",
+      "path": "res://assets/imported/Cards/Art/element_tuning_fire_w.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "2a2c8918e689af7dc5326341720988ac255de1364c109b80213efd466c2feaa9"
+    },
+    {
+      "key": "Cards/Art/element_tuning_metal_b.png",
+      "path": "res://assets/imported/Cards/Art/element_tuning_metal_b.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "63784cd80ef79ca1c4eeed77b7dcd0eba548bcd3aa3ae8222f4cb02c6625e31e"
+    },
+    {
+      "key": "Cards/Art/element_tuning_metal_g.png",
+      "path": "res://assets/imported/Cards/Art/element_tuning_metal_g.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "ea71623a763a4804ae23241d9287ebf4e9a2fea03dfff80cb06d7f56168b10f7"
+    },
+    {
+      "key": "Cards/Art/element_tuning_metal_p.png",
+      "path": "res://assets/imported/Cards/Art/element_tuning_metal_p.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "63574db45a9a292a3823a4430b5d4b786036b5c51d94916991c7019d5b2a79e4"
+    },
+    {
+      "key": "Cards/Art/element_tuning_metal_w.png",
+      "path": "res://assets/imported/Cards/Art/element_tuning_metal_w.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "744b4c3dc39518b0ff6483db81a37380c0a6972420318d730de5f11e56deb3b4"
+    },
+    {
+      "key": "Cards/Art/element_tuning_water_b.png",
+      "path": "res://assets/imported/Cards/Art/element_tuning_water_b.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "85adfa7d3c0d486b95c0813b80a614fad75bf8bf8ab204e06688bb2c1fcca794"
+    },
+    {
+      "key": "Cards/Art/element_tuning_water_g.png",
+      "path": "res://assets/imported/Cards/Art/element_tuning_water_g.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "a327d2e96f08f3d97d3e5b8389a3ebbe14e879296aeae69fbeb6935a5c4d6d71"
+    },
+    {
+      "key": "Cards/Art/element_tuning_water_p.png",
+      "path": "res://assets/imported/Cards/Art/element_tuning_water_p.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "ee3f05ffdad7ba5ef0724eaa04514bc5fd331bd7c660b1adfc3a9f0b0669666d"
+    },
+    {
+      "key": "Cards/Art/element_tuning_water_w.png",
+      "path": "res://assets/imported/Cards/Art/element_tuning_water_w.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "d450af550cdf915765ce20a51a7aaa52263624d5f429114d9283b5dcd7cea5ac"
+    },
+    {
+      "key": "Cards/Art/element_tuning_wood_b.png",
+      "path": "res://assets/imported/Cards/Art/element_tuning_wood_b.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "b92f44dff49ff4d4f5b96e58834c5279f908e3588c052b81e0f4a069ee930768"
+    },
+    {
+      "key": "Cards/Art/element_tuning_wood_g.png",
+      "path": "res://assets/imported/Cards/Art/element_tuning_wood_g.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "cfcb6570beb490f94b53fb6599b88ebe6a3317106052442c22bed876a759c947"
+    },
+    {
+      "key": "Cards/Art/element_tuning_wood_p.png",
+      "path": "res://assets/imported/Cards/Art/element_tuning_wood_p.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "22d1e0e61022358fed7ecd36683ba43a5ac8be51d8dff2ee106b7bfdd86a18b6"
+    },
+    {
+      "key": "Cards/Art/element_tuning_wood_w.png",
+      "path": "res://assets/imported/Cards/Art/element_tuning_wood_w.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "eac319d6556a278f44fd131d2c7bbebe0f288683dee130cb021c9ea5634e0e8f"
+    },
+    {
+      "key": "Cards/Art/ember_breath_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/ember_breath_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "7319f419295b81204e81cf9fe110c64dac0c94fb851ec8c47cc56cd39b928c0b"
+    },
+    {
+      "key": "Cards/Art/ember_wind_common.png",
+      "path": "res://assets/imported/Cards/Art/ember_wind_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "20a161b6c3cdc27f7c91196b844ff18b0061fa595747b7b6184ce46cb44f8d34"
+    },
+    {
+      "key": "Cards/Art/falling_blow_common.png",
+      "path": "res://assets/imported/Cards/Art/falling_blow_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "c085e622b4f706800228ce6fee561ae28f05d988e198e2626565ef6ade286b67"
+    },
+    {
+      "key": "Cards/Art/falling_impact_rare.png",
+      "path": "res://assets/imported/Cards/Art/falling_impact_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "00ccebaa95dfcb378e0630fde2023d3590730d91776d70c1cd2c51ef2c598eef"
+    },
+    {
+      "key": "Cards/Art/fated_bind_epic.png",
+      "path": "res://assets/imported/Cards/Art/fated_bind_epic.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "3daaae4ebbd588400e2ea1e33ef797c979aa9234c634586755a2da5d7be9be56"
+    },
+    {
+      "key": "Cards/Art/fire_burn_common.png",
+      "path": "res://assets/imported/Cards/Art/fire_burn_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "e612eba549a1f700a1ebcb0c522d1d934dd941fa2fe06fd86dd128aed494382c"
+    },
+    {
+      "key": "Cards/Art/fire_sea_rare.png",
+      "path": "res://assets/imported/Cards/Art/fire_sea_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "277d0fa85e20a2ed75dfa99963b3394223b0081a3c7fa59f90df22bec80c23dd"
+    },
+    {
+      "key": "Cards/Art/fire_slash_common.png",
+      "path": "res://assets/imported/Cards/Art/fire_slash_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "9b0acb797a9c872d908da0e3e0bfd4219b64f137b689a53af7b763ad8fe4f780"
+    },
+    {
+      "key": "Cards/Art/fire_spark_common.png",
+      "path": "res://assets/imported/Cards/Art/fire_spark_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "a49851184ead003d2e58b11b20d15416cad129d82ddc48ba6848d09196ce587d"
+    },
+    {
+      "key": "Cards/Art/fire_star_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/fire_star_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "d152d01027c418d6b4c76f81bb3f745550bf3d90e5724648f1d07140f96f650c"
+    },
+    {
+      "key": "Cards/Art/fire_tongue_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/fire_tongue_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "54acb252e1589f13d04a1e0f9df19dd5b4820723369d397f84c42dd274a39f10"
+    },
+    {
+      "key": "Cards/Art/fireball_common.png",
+      "path": "res://assets/imported/Cards/Art/fireball_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "df2974227e9c9d0754b57e3a480494dadb8b26a16e7817c78f4be7ad0ca27ab2"
+    },
+    {
+      "key": "Cards/Art/five_elements_legendary.png",
+      "path": "res://assets/imported/Cards/Art/five_elements_legendary.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "86fc29755090441dd426756a07c962af94964d02eaee75418c8d71250c8714d3"
+    },
+    {
+      "key": "Cards/Art/flame_haste_common.png",
+      "path": "res://assets/imported/Cards/Art/flame_haste_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "7011e07ecf62a5a4a9c579e2e8fb3ec7482af463e814a4f65a79f324f9698f8d"
+    },
+    {
+      "key": "Cards/Art/flame_haste_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/flame_haste_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "3c8a81d21038913ae63a247e3ca089cbacda4f002c428c9a1d0086dc721e6953"
+    },
+    {
+      "key": "Cards/Art/flame_law_rare.png",
+      "path": "res://assets/imported/Cards/Art/flame_law_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "1083cbd90c39f56d505dd91a5f83907fc6b9d12ade093dffd921e97b6e34e525"
+    },
+    {
+      "key": "Cards/Art/flame_pillar_rare.png",
+      "path": "res://assets/imported/Cards/Art/flame_pillar_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "925bcb61c3c63bef99ff47ac765422c8ca5b10b6eb420946ab7806df76abcf6a"
+    },
+    {
+      "key": "Cards/Art/flame_spear_common.png",
+      "path": "res://assets/imported/Cards/Art/flame_spear_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "bcc06037cb4c3f19c3fd3c5d74f2964cc090e8fd0850513005a36b37f9f6ebac"
+    },
+    {
+      "key": "Cards/Art/flameburst_epic.png",
+      "path": "res://assets/imported/Cards/Art/flameburst_epic.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "a086613986c60eaed4ed5585010f2a26d53234166454f340e2bef9363a6caeb0"
+    },
+    {
+      "key": "Cards/Art/flash_dazzle_common.png",
+      "path": "res://assets/imported/Cards/Art/flash_dazzle_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "47a3f9621f40c24c6849e5b40890f7be6add53f22c404c4cd4fb98ad3e7fd8e0"
+    },
+    {
+      "key": "Cards/Art/flood_peak_epic.png",
+      "path": "res://assets/imported/Cards/Art/flood_peak_epic.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "e9a978514ced2a007179c126588a542d9c804b207ed645be154648cb1a75d43b"
+    },
+    {
+      "key": "Cards/Art/flow_seal_epic.png",
+      "path": "res://assets/imported/Cards/Art/flow_seal_epic.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "000b7865b4d59a88546f942ef8221ca4b9d58f9ce2d045c904fb69dd63e04d2d"
+    },
+    {
+      "key": "Cards/Art/forest_slaughter_rare.png",
+      "path": "res://assets/imported/Cards/Art/forest_slaughter_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "3a243c97c83e44e3c070608986544f1534386203194b8b22bb1b670ca5477820"
+    },
+    {
+      "key": "Cards/Art/frost_abyss_rare.png",
+      "path": "res://assets/imported/Cards/Art/frost_abyss_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "702a6733e5699f5f9241e228e3dce378a5a861a2db442e73a0a7441b846a1e39"
+    },
+    {
+      "key": "Cards/Art/frost_arrow_common.png",
+      "path": "res://assets/imported/Cards/Art/frost_arrow_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "d3ca6e7b717b8a05b492868e4d1d6326a0eadffd7c3e4ee323e37139ebb000da"
+    },
+    {
+      "key": "Cards/Art/frost_burst_rare.png",
+      "path": "res://assets/imported/Cards/Art/frost_burst_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "d5561147c109ad9a67e08a14d5eddb44d26bbb8367144756a5bcdd4e726faff9"
+    },
+    {
+      "key": "Cards/Art/frost_cone_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/frost_cone_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "2e39d546b85884218ea0545fea3bc88fa74ceeac4848fe6951048a6947cf633f"
+    },
+    {
+      "key": "Cards/Art/frost_point_common.png",
+      "path": "res://assets/imported/Cards/Art/frost_point_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "e9bdcd1a3309273e13f24708331be5db645065ac3645ca7d3c9a7e97884c6201"
+    },
+    {
+      "key": "Cards/Art/frost_prison_epic.png",
+      "path": "res://assets/imported/Cards/Art/frost_prison_epic.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "e55e8b3a370e6b90099648deb09435bc0d8cdbfa82eb8cc45ded6a2e0791de28"
+    },
+    {
+      "key": "Cards/Art/gold_flash_slash_rare.png",
+      "path": "res://assets/imported/Cards/Art/gold_flash_slash_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "b30c1c2782884566eac1fc4c540d3b123659ca45c278fa4dba8f8b4dd58ad904"
+    },
+    {
+      "key": "Cards/Art/gold_seal_rare.png",
+      "path": "res://assets/imported/Cards/Art/gold_seal_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "0f344bc5266b58d60f2190f1fb38fb9d3216c2042675929818b36266c3423874"
+    },
+    {
+      "key": "Cards/Art/golden_arc_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/golden_arc_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "62be7bc56d4d5206fcc78e72cc03a92a29efcf37d5f82ea5e33ebb087e2b1a07"
+    },
+    {
+      "key": "Cards/Art/golden_cut_common.png",
+      "path": "res://assets/imported/Cards/Art/golden_cut_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "0fcb680141b28c5f44550c53ad7b8e92368420ae064d271f163ca29da32f29f9"
+    },
+    {
+      "key": "Cards/Art/golden_guard_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/golden_guard_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "bc7f2d83d9ab56366339d989d4f143eec8cce53832822be20564185ee139eead"
+    },
+    {
+      "key": "Cards/Art/golden_law_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/golden_law_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "9356ea271a558196dc2fada2b542e1649f17d0578ef5025c6d7d728feb615aa0"
+    },
+    {
+      "key": "Cards/Art/golden_prison_epic.png",
+      "path": "res://assets/imported/Cards/Art/golden_prison_epic.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "9a6c54859749a6b7c902e0c6a7a6ed38aafbd94cfefc4644dcf303fa9c150f16"
+    },
+    {
+      "key": "Cards/Art/golden_resonance_common.png",
+      "path": "res://assets/imported/Cards/Art/golden_resonance_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "e0f98cbdaf34556d00640667e09a493aaffeffba652b4bfa15ddee512338331f"
+    },
+    {
+      "key": "Cards/Art/golden_split_legendary.png",
+      "path": "res://assets/imported/Cards/Art/golden_split_legendary.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "2ec1bd7f6e2e6b5ef211a1d6596df0b7398ad99365804282500dae9a506ef8c7"
+    },
+    {
+      "key": "Cards/Art/golden_wind_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/golden_wind_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "12fc80a968db27b4c2387cf969b7aac9c36aad645fad116707669fd7d9390a9c"
+    },
+    {
+      "key": "Cards/Art/gospel_light_common.png",
+      "path": "res://assets/imported/Cards/Art/gospel_light_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "d75815c113db920a2cc2ef25c16ab17fec281dde08e24fe99acee85f606f35d2"
+    },
+    {
+      "key": "Cards/Art/grand_heal_rare.png",
+      "path": "res://assets/imported/Cards/Art/grand_heal_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "eb6f0a54d6145414f4021ddd9af6221f1070dc0a711c2bdaf02b37936c872199"
+    },
+    {
+      "key": "Cards/Art/haste_spell_rare.png",
+      "path": "res://assets/imported/Cards/Art/haste_spell_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "6285ad8e3e4ef9d646c6914cd33ce2fa0c096f2e5d596295e0bffcc47b563485"
+    },
+    {
+      "key": "Cards/Art/hasten_common.png",
+      "path": "res://assets/imported/Cards/Art/hasten_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "0190c95a55abb59823af50e247e5f85d50fa30d56879833f6241000f2b2959c2"
+    },
+    {
+      "key": "Cards/Art/heart_pierce_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/heart_pierce_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "e357f1fe3ab2bdb5c0a0f97c40348397d10cf54afc81e98941f098664202e56d"
+    },
+    {
+      "key": "Cards/Art/heavy_hammer_common.png",
+      "path": "res://assets/imported/Cards/Art/heavy_hammer_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "ac7c3b503efe43d06bae5984686765b852bc7d6f4fb973a6bc1bc5769f951748"
+    },
+    {
+      "key": "Cards/Art/herb_dressing_common.png",
+      "path": "res://assets/imported/Cards/Art/herb_dressing_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "6aee520dce87da635b1aa4b347769448429906abe27373b543bf54880bf94541"
+    },
+    {
+      "key": "Cards/Art/hill_press_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/hill_press_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "1f7f16f71b4f6d4275e177e1e9e2d4f8bb1ed5650ccb67c0244131ede4e8b926"
+    },
+    {
+      "key": "Cards/Art/hill_slam_common.png",
+      "path": "res://assets/imported/Cards/Art/hill_slam_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "5eb70b1d224e46ea2ab5aa157a1cc66bda0fdc526cf589737978120dbaeef825"
+    },
+    {
+      "key": "Cards/Art/holy_domain_epic.png",
+      "path": "res://assets/imported/Cards/Art/holy_domain_epic.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "24f11b3fe567ef377cd7482acb0a86017bc205258ef231c40647e30b96d6acb3"
+    },
+    {
+      "key": "Cards/Art/holy_heal_common.png",
+      "path": "res://assets/imported/Cards/Art/holy_heal_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "cc52d80ca7d167bcf93f25cfd268ca9efc8290c4e9999b6117ec5596c342dd66"
+    },
+    {
+      "key": "Cards/Art/ice_spire_epic.png",
+      "path": "res://assets/imported/Cards/Art/ice_spire_epic.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "fc67072da4be9604e778510f6b90c6fa859398560e5b93740e53920688e46bc2"
+    },
+    {
+      "key": "Cards/Art/icefall_rare.png",
+      "path": "res://assets/imported/Cards/Art/icefall_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "2dbfe141b3819a3f1d040292fe0376179b18a612b27ba4b374557ccf8332716a"
+    },
+    {
+      "key": "Cards/Art/immortal_guard_legendary.png",
+      "path": "res://assets/imported/Cards/Art/immortal_guard_legendary.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "c3c72251e6db9e84bfca9e7b55d7d230103146b3ecd7dc109c4be1e8c76b4b26"
+    },
+    {
+      "key": "Cards/Art/inferno_pit_epic.png",
+      "path": "res://assets/imported/Cards/Art/inferno_pit_epic.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "112cb73b5ccef8ea2387bf08ad9583e69ff488b699b1bc92e383049cb178ef1c"
+    },
+    {
+      "key": "Cards/Art/iron_wall_common.png",
+      "path": "res://assets/imported/Cards/Art/iron_wall_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "cac549f62d4b12898a9bc401aeb7f488c897ec07e0fb5f3917e0114dc56dced2"
+    },
+    {
+      "key": "Cards/Art/jade_canopy_rare.png",
+      "path": "res://assets/imported/Cards/Art/jade_canopy_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "e8352c1c4d22dc71ffa60421db39cefbb14ff9797659758f71dff979888f7c92"
+    },
+    {
+      "key": "Cards/Art/jade_edge_common.png",
+      "path": "res://assets/imported/Cards/Art/jade_edge_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "0cec8a8e7a99f2071e5362b7c4dfa59a6cb864773984d78fae85f36c5fa41669"
+    },
+    {
+      "key": "Cards/Art/jade_fall_rare.png",
+      "path": "res://assets/imported/Cards/Art/jade_fall_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "85742a873a6f891fd0f8a155d756da55869f5b31da3206a61c1eff0adcad268b"
+    },
+    {
+      "key": "Cards/Art/jade_slash_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/jade_slash_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "9a3690f4e4fab714be1ed659e8aefd291c381ca9bebcb2b42c250bcd71fb50b9"
+    },
+    {
+      "key": "Cards/Art/judgment_beam_common.png",
+      "path": "res://assets/imported/Cards/Art/judgment_beam_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "416815fa4463e43e37378a309ac8d8075b116d45bb04dbd87c6b63987191f08a"
+    },
+    {
+      "key": "Cards/Art/leaf_blade_common.png",
+      "path": "res://assets/imported/Cards/Art/leaf_blade_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "f4690543bfa2237d4e81787224c3c2f307bad7c982695411a10dbfa3a9328826"
+    },
+    {
+      "key": "Cards/Art/life_breath_legendary.png",
+      "path": "res://assets/imported/Cards/Art/life_breath_legendary.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "eb7e790bfd16a5891778a0b6d17f59dca24085e083be860ea2709e59db81f9bf"
+    },
+    {
+      "key": "Cards/Art/lip_seal_common.png",
+      "path": "res://assets/imported/Cards/Art/lip_seal_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "fe4fd02f047bc50132e6268a2f0632114d1305b33ab16c2eed24a69d401f45c0"
+    },
+    {
+      "key": "Cards/Art/metal_blade_common.png",
+      "path": "res://assets/imported/Cards/Art/metal_blade_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "dcb5e18d75cb0615bf4f302047dd713f5a25669ed483d0f6d48a3bbab576e246"
+    },
+    {
+      "key": "Cards/Art/metal_glint_common.png",
+      "path": "res://assets/imported/Cards/Art/metal_glint_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "79657df80f3057dc306b7bb4da18213c4421bf724743569e943fadbda30b77e9"
+    },
+    {
+      "key": "Cards/Art/metal_rift_rare.png",
+      "path": "res://assets/imported/Cards/Art/metal_rift_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "8937bd18506743e98611cd79861e087d63515a789e6b519658f5064b40d3d6d9"
+    },
+    {
+      "key": "Cards/Art/minor_heal_common.png",
+      "path": "res://assets/imported/Cards/Art/minor_heal_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "cc54bce371fbd883f1e88d54bf3b676c2071644af499c37010ab4a3398ac1c7c"
+    },
+    {
+      "key": "Cards/Art/molten_blade_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/molten_blade_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "e8c67f409e46fdced78373c70c1e0c3f040ab39f9411492d85dde6d569a1c4c6"
+    },
+    {
+      "key": "Cards/Art/molten_burst_rare.png",
+      "path": "res://assets/imported/Cards/Art/molten_burst_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "e174d6dba6a1a9b87079e5684da09b7cfb8a24f41f3888b6da45dab7a78cb87d"
+    },
+    {
+      "key": "Cards/Art/molten_heart_epic.png",
+      "path": "res://assets/imported/Cards/Art/molten_heart_epic.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "4896f14f44ace35e87c779031fa124f0bcfa529f4814bfdb5e17850c6b7b1d2e"
+    },
+    {
+      "key": "Cards/Art/monster_card_backdrop.png",
+      "path": "res://assets/imported/Cards/Art/monster_card_backdrop.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "sha256": "2a528ffaaaef0b3abfc0209de8c9558a33b7caf392c112cf7036d2b323d5addb"
+    },
+    {
+      "key": "Cards/Art/mountain_collapse_epic.png",
+      "path": "res://assets/imported/Cards/Art/mountain_collapse_epic.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "6a9f3cbaca6d4d69f95600ca3d6e122a319ba01aaceea2035fa55d5984f929b8"
+    },
+    {
+      "key": "Cards/Art/mountain_guard_legendary.png",
+      "path": "res://assets/imported/Cards/Art/mountain_guard_legendary.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "a191ba97ef81c966fd9224089a0a3e7290217aa4e6584c58cfde4848d3e6e7a7"
+    },
+    {
+      "key": "Cards/Art/mountain_seal_epic.png",
+      "path": "res://assets/imported/Cards/Art/mountain_seal_epic.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "b9d653757ffd58b55bd9d9f069a96a0b472b689003e18a67edc6b39083890372"
+    },
+    {
+      "key": "Cards/Art/mud_armor_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/mud_armor_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "e599e255c570acce19018000846b53ee583c2d91c3ec1772d3ce3798c66d9dab"
+    },
+    {
+      "key": "Cards/Art/overgrowth_epic.png",
+      "path": "res://assets/imported/Cards/Art/overgrowth_epic.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "2c3b818c97abe6a0c7b5466930b976cb0676c615b7f9daf7c3c7d7dd82bbd7f1"
+    },
+    {
+      "key": "Cards/Art/pierce_common.png",
+      "path": "res://assets/imported/Cards/Art/pierce_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "cf691a255b5840215d990ac42036363e1bf4071a0b6f704c5ba2c8f547ee8a82"
+    },
+    {
+      "key": "Cards/Art/piercing_beam_rare.png",
+      "path": "res://assets/imported/Cards/Art/piercing_beam_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "86d400d25e7247c961cfafef6af549b450496be86c3896477e9588c6280a967f"
+    },
+    {
+      "key": "Cards/Art/piercing_thrust_common.png",
+      "path": "res://assets/imported/Cards/Art/piercing_thrust_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "db5442ad771151c9411826dd1b46f0413a3154681d677d7409d683d0fc42332d"
+    },
+    {
+      "key": "Cards/Art/precise_shot_common.png",
+      "path": "res://assets/imported/Cards/Art/precise_shot_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "bcb3f61f38cebe79c44f17830d70cc0d771dd6a99198fa4c03b4ff34dbc76916"
+    },
+    {
+      "key": "Cards/Art/punishment_bell_common.png",
+      "path": "res://assets/imported/Cards/Art/punishment_bell_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "9f6fd6aa79b2e54128d25f96efe8ada9d0130c49f571889230929a9b99640e4c"
+    },
+    {
+      "key": "Cards/Art/quick_step_common.png",
+      "path": "res://assets/imported/Cards/Art/quick_step_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "06c7f5ef7f6e9a43ef30ee6af2482dcf23428dc99797634971e60ba6357fc90a"
+    },
+    {
+      "key": "Cards/Art/raging_tide_rare.png",
+      "path": "res://assets/imported/Cards/Art/raging_tide_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "8ad775bcb54ef1110f72ae2d933a0dcfe43bdf2d896c35775a5d67d762f394c3"
+    },
+    {
+      "key": "Cards/Art/rainbow_cleave_epic.png",
+      "path": "res://assets/imported/Cards/Art/rainbow_cleave_epic.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "bda951c0885023afb7ffa884ee3d7e7fc39487dc800ad85f04873fd4abeb1899"
+    },
+    {
+      "key": "Cards/Art/rainbow_cut_legendary.png",
+      "path": "res://assets/imported/Cards/Art/rainbow_cut_legendary.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "2c565c4f3338782ac9290518f5b7f9413b700ab80b8b4b81268a7c5a30d27cd8"
+    },
+    {
+      "key": "Cards/Art/ramming_strike_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/ramming_strike_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "7baafccaf3569a80832f5daa0092fba82e927a0b9ea95f07e47dc1356dfd8c05"
+    },
+    {
+      "key": "Cards/Art/recovery_breath_common.png",
+      "path": "res://assets/imported/Cards/Art/recovery_breath_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "0c362ac3fb39ace09ee7df5c0f57d24f1dd6eb74cd92d3a4d423c7ec14970739"
+    },
+    {
+      "key": "Cards/Art/retreating_wave_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/retreating_wave_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "c15dfcf6811f14584a1f553fd90ecc711108b6bb031c6f00f4cc272b630c13c9"
+    },
+    {
+      "key": "Cards/Art/reverse_tide_legendary.png",
+      "path": "res://assets/imported/Cards/Art/reverse_tide_legendary.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "f1d446bbe96c9e6ef946d1f04d0b9da3f41845d4f9795362143a001061197d7a"
+    },
+    {
+      "key": "Cards/Art/roast_blast_common.png",
+      "path": "res://assets/imported/Cards/Art/roast_blast_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "9b454f358ef64efba5ddbc946c720769dbeb19bc1823ab0acf1f943c87daa3a0"
+    },
+    {
+      "key": "Cards/Art/rock_bullet_common.png",
+      "path": "res://assets/imported/Cards/Art/rock_bullet_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "3871819a086c02fa0b1549f5562762db4c017edec77e425217ecee508867fceb"
+    },
+    {
+      "key": "Cards/Art/sacred_surge_epic.png",
+      "path": "res://assets/imported/Cards/Art/sacred_surge_epic.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "a3dadfe86292bf42c9aa87a6f5c8f8218e92bfb1143132dd0b424401e681d164"
+    },
+    {
+      "key": "Cards/Art/sand_blade_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/sand_blade_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "5a4f9fd45bcc26b9114f2d4b7783bf93cadb66fa4f7d460576d77d981084698b"
+    },
+    {
+      "key": "Cards/Art/sand_collapse_rare.png",
+      "path": "res://assets/imported/Cards/Art/sand_collapse_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "0336e51cb324a878af33826aa707836655bf06b4f5820e4267239a37b8dd328d"
+    },
+    {
+      "key": "Cards/Art/sandfall_common.png",
+      "path": "res://assets/imported/Cards/Art/sandfall_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "3b24f7298e7da645546d675c27e430da5ba2b31169a2fb1c14ba24862a975578"
+    },
+    {
+      "key": "Cards/Art/scarlet_mark_common.png",
+      "path": "res://assets/imported/Cards/Art/scarlet_mark_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "f0c54b957edfe07c7a480b2a041eb581aef470f458de762de9799bd7556ddec8"
+    },
+    {
+      "key": "Cards/Art/scorch_mark_common.png",
+      "path": "res://assets/imported/Cards/Art/scorch_mark_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "217a2564336ee8f69c90ccf8a589d90537ed093469d093b3be40e9ca47e4612a"
+    },
+    {
+      "key": "Cards/Art/scorching_wind_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/scorching_wind_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "38646477d736231ffefb93c383ed292ec64ad900fd1d851da893c40dac45e7c0"
+    },
+    {
+      "key": "Cards/Art/seal_common.png",
+      "path": "res://assets/imported/Cards/Art/seal_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "fc4b55417b1687afede8c75003723378aa1f7791bef2b04d1c2dbd3806c5639b"
+    },
+    {
+      "key": "Cards/Art/shield_bash_common.png",
+      "path": "res://assets/imported/Cards/Art/shield_bash_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "df9830b320ea751e710b43358522b71910731724378a38cfa09307caf0b3344d"
+    },
+    {
+      "key": "Cards/Art/shield_charge_common.png",
+      "path": "res://assets/imported/Cards/Art/shield_charge_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "33e5d23b1ceca6007b7d8f178721577a00b68f29db347807e626816596752841"
+    },
+    {
+      "key": "Cards/Art/shield_load_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/shield_load_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "eba0573821dbb5d2c81ef20f2001adff908e39f1edc63acf2c22283ded6e9770"
+    },
+    {
+      "key": "Cards/Art/silent_veil_epic.png",
+      "path": "res://assets/imported/Cards/Art/silent_veil_epic.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "83889d405d1ffccac837eed67899e634353786ce1a85f7db1999e77bc63d6840"
+    },
+    {
+      "key": "Cards/Art/silver_arc_common.png",
+      "path": "res://assets/imported/Cards/Art/silver_arc_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "7d50c5c2a1b490b6cc5a5475f92b7e821e54e07b3560dbaa2576d7e52023fa84"
+    },
+    {
+      "key": "Cards/Art/sinking_fist_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/sinking_fist_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "40b32cf94c9d99a688d6241eac46df59ada486e9bb31a171253c654d7890e618"
+    },
+    {
+      "key": "Cards/Art/sky_pierce_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/sky_pierce_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "894be9582aed86394833d18bea6ab30217bb607997eecd9c0ffb724178dfb1b5"
+    },
+    {
+      "key": "Cards/Art/sky_rift_rare.png",
+      "path": "res://assets/imported/Cards/Art/sky_rift_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "6495bbc386478c35e482753cca856dae89b3b7d2916ec7eae1583bbd7a70d7b6"
+    },
+    {
+      "key": "Cards/Art/skyfire_legendary.png",
+      "path": "res://assets/imported/Cards/Art/skyfire_legendary.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "54578488ea1b71f5d0b0e5d19459955b4c7471de69166d28d159d23395a8583f"
+    },
+    {
+      "key": "Cards/Art/source_seal_rare.png",
+      "path": "res://assets/imported/Cards/Art/source_seal_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "a6feb2ca6941b5e6b669fcc3bfc7f312e744fd7c34c0cef2242762aa14828dfe"
+    },
+    {
+      "key": "Cards/Art/spirit_sea_epic.png",
+      "path": "res://assets/imported/Cards/Art/spirit_sea_epic.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "b8672f494271dc3d852a9728466b7219de3393e41e023373f590ef586666561f"
+    },
+    {
+      "key": "Cards/Art/spirit_tide_rare.png",
+      "path": "res://assets/imported/Cards/Art/spirit_tide_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "c0c01e69dba3e6964cf3a2cdcce06ae4dfdb691dda327517f9fe9a9cbf7399e4"
+    },
+    {
+      "key": "Cards/Art/spring_moisture_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/spring_moisture_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "fb166b30b96fd83c812f97770e7f31642fd134494875a9ab73fc04a7de203857"
+    },
+    {
+      "key": "Cards/Art/spring_surge_rare.png",
+      "path": "res://assets/imported/Cards/Art/spring_surge_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "2f4047e2bcd62d5125ad94c5f195439059095e7857c4d677368947126feeb906"
+    },
+    {
+      "key": "Cards/Art/sprout_spike_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/sprout_spike_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "096fdf521da7aec68ecd76595a9016498241de181e01b162dff0824f280775b6"
+    },
+    {
+      "key": "Cards/Art/sprout_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/sprout_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "78933352875f68fc7bc62695724cba92c8f2f212c1ca4269ebd0405415c1dccd"
+    },
+    {
+      "key": "Cards/Art/star_shatter_epic.png",
+      "path": "res://assets/imported/Cards/Art/star_shatter_epic.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "d81ca3ad5f636f1ef7da4f94282cdc84386a09e6338e6b94e3a6199b709c3ca4"
+    },
+    {
+      "key": "Cards/Art/steel_cleave_rare.png",
+      "path": "res://assets/imported/Cards/Art/steel_cleave_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "b82df153d537815f25a80475519df00acc7766c761f61bcc55233f8a2e4f7450"
+    },
+    {
+      "key": "Cards/Art/steel_shave_epic.png",
+      "path": "res://assets/imported/Cards/Art/steel_shave_epic.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "d429ece5b5aa9816c220d1a2021360e72f6b90611070da3964fcb6955a9fd788"
+    },
+    {
+      "key": "Cards/Art/steel_spike_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/steel_spike_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "9af88828cda5a254f65c0900f5801fc4891aa92597690c1385f0e5ba910535a1"
+    },
+    {
+      "key": "Cards/Art/stomp_guard_common.png",
+      "path": "res://assets/imported/Cards/Art/stomp_guard_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "2b1466b0d1af35083b7b70e933ff362f44dd6511b08353b604b19cd3a10cd193"
+    },
+    {
+      "key": "Cards/Art/stone_armor_rare.png",
+      "path": "res://assets/imported/Cards/Art/stone_armor_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "f0e5dd3c298e30cd75c064fc2f0b02cebe5196b58257a5e97f266d6014c91e5f"
+    },
+    {
+      "key": "Cards/Art/stone_fist_common.png",
+      "path": "res://assets/imported/Cards/Art/stone_fist_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "6d9f1e6f6261bc3c618adea26f61102c0bf39f0ad6bc835a4ca9fa4c7a93335d"
+    },
+    {
+      "key": "Cards/Art/stone_prison_rare.png",
+      "path": "res://assets/imported/Cards/Art/stone_prison_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "72a7dbf7b52e54a5ce2e455346f751be1d2138a0eac9743d8d73026f6ad8e913"
+    },
+    {
+      "key": "Cards/Art/stone_split_common.png",
+      "path": "res://assets/imported/Cards/Art/stone_split_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "6d73f33ad9fce48cd4966b83a0372d1b3692754845d11625262db4e9ad898bc1"
+    },
+    {
+      "key": "Cards/Art/stone_still_rare.png",
+      "path": "res://assets/imported/Cards/Art/stone_still_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "de9788e3799842eac16ddbb6f77e95130eea8c325b0b5a0554047de76edea245"
+    },
+    {
+      "key": "Cards/Art/straight_cleave_rare.png",
+      "path": "res://assets/imported/Cards/Art/straight_cleave_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "c9699a92605ecd8008219890de4cdd73753905e5d6483a88300340b75b0c5e23"
+    },
+    {
+      "key": "Cards/Art/strike_common.png",
+      "path": "res://assets/imported/Cards/Art/strike_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "69b2c6563c5beaa672b99c380abf6cfc4de823f3bc05d9a5dbf14f0caa3c465d"
+    },
+    {
+      "key": "Cards/Art/stun_flash_common.png",
+      "path": "res://assets/imported/Cards/Art/stun_flash_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "947e0c300aba3cb2d1975767fdb1f65bdefa756f64cd8ea0eed64a36411f1d49"
+    },
+    {
+      "key": "Cards/Art/stun_hammer_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/stun_hammer_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "9bb9f90d01fca415a099afbe014b88fcf46a4ae216c09549e33b8ace8d3feef1"
+    },
+    {
+      "key": "Cards/Art/sun_pierce_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/sun_pierce_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "a6c3190065d11f3bee3c5f089a337cd0d14c4d1ea295d9287399a59cafb90027"
+    },
+    {
+      "key": "Cards/Art/sweet_rain_rare.png",
+      "path": "res://assets/imported/Cards/Art/sweet_rain_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "81e084fbdcc6d388b3698362d1399952ef4be4ad286321b6ef04dba5785232eb"
+    },
+    {
+      "key": "Cards/Art/swift_motion_epic.png",
+      "path": "res://assets/imported/Cards/Art/swift_motion_epic.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "81e1a0390cc5aca598f5152d7d776e2a5d222ccf200414b35b9fe8aab3fec7ad"
+    },
+    {
+      "key": "Cards/Art/swift_spell_rare.png",
+      "path": "res://assets/imported/Cards/Art/swift_spell_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "9394fd8e282c78db0a328e666fad6a122c9d9df2884c7a449255cebac4f45ff8"
+    },
+    {
+      "key": "Cards/Art/swift_wind_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/swift_wind_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "4d31759b2b1404c2afa113e908c3584e13eba3afc2d8ac01cfa57f180bd6b7bb"
+    },
+    {
+      "key": "Cards/Art/thorn_crown_epic.png",
+      "path": "res://assets/imported/Cards/Art/thorn_crown_epic.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "da3bc47263b41a53945f010fd0a9675c6474d1f3ff4756e22c8e511e2fd43521"
+    },
+    {
+      "key": "Cards/Art/thorn_shot_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/thorn_shot_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "3531f78dfbc5b9df219aa6705d4540c8a8147a67f422e3fa4bf33e69181c8a39"
+    },
+    {
+      "key": "Cards/Art/thornfall_rare.png",
+      "path": "res://assets/imported/Cards/Art/thornfall_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "562a6e23ad9da6485a644ce4bc43fe85446deaf26cddf024cf5302181a317229"
+    },
+    {
+      "key": "Cards/Art/tide_blade_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/tide_blade_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "aea685295ce195ccccfd3339c0481a4edcc15d2b3b8abb47bc5f594649d89c61"
+    },
+    {
+      "key": "Cards/Art/tide_bloom_legendary.png",
+      "path": "res://assets/imported/Cards/Art/tide_bloom_legendary.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "bad03235f195737de02bcd7489a85adac6396d036b268f85d4c7af3ebcb6bbb6"
+    },
+    {
+      "key": "Cards/Art/tide_strike_common.png",
+      "path": "res://assets/imported/Cards/Art/tide_strike_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "e02ec81adbbe87877b9f0b054e7b16a444423eb5ac418f241d26c45d3354f71a"
+    },
+    {
+      "key": "Cards/Art/twin_care_common.png",
+      "path": "res://assets/imported/Cards/Art/twin_care_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "7131bde721708478dc445812c18c9d5703f06707498589e4a90d85b0bf1909a3"
+    },
+    {
+      "key": "Cards/Art/twin_contract_epic.png",
+      "path": "res://assets/imported/Cards/Art/twin_contract_epic.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "b4d52e169c6d45e665f33f0f06b914cf4e43c62e1fbd88c34770a874926dd88b"
+    },
+    {
+      "key": "Cards/Art/vein_seal_legendary.png",
+      "path": "res://assets/imported/Cards/Art/vein_seal_legendary.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "c194f169da3297e991fad3ad5b2811bf69d506fdcc448d7353e37efbd8378c02"
+    },
+    {
+      "key": "Cards/Art/vein_seal_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/vein_seal_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "409272f0d13d68029c3c9758d5c6bd87d6aa1fd86188f4f7fc2f512d5b80deb2"
+    },
+    {
+      "key": "Cards/Art/vine_bind_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/vine_bind_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "c1f52b9f752834ded1aab29eb0b3fbaa27dce99bd2a7b0dbde36cbb4c65563e7"
+    },
+    {
+      "key": "Cards/Art/vine_dragon_rare.png",
+      "path": "res://assets/imported/Cards/Art/vine_dragon_rare.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "c06a44f187c396efb7e8cf43634d43a7502416aba33a139081d65356ed94df66"
+    },
+    {
+      "key": "Cards/Art/vine_whip_common.png",
+      "path": "res://assets/imported/Cards/Art/vine_whip_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "f04eb2c9c8f1ef393afa8708de5e833c37a09732e1cbe52fff070f3a5b6326f1"
+    },
+    {
+      "key": "Cards/Art/ward_common.png",
+      "path": "res://assets/imported/Cards/Art/ward_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "70fe02e3278201125734bb2b00e00a97d95fe68231a75ef9db69186c7fca1e5f"
+    },
+    {
+      "key": "Cards/Art/water_dart_common.png",
+      "path": "res://assets/imported/Cards/Art/water_dart_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "fbcd45c3d1dfb0deea66b07a0ef3aa5bb286bc1b691c7d915d0ddd55dcc01ad4"
+    },
+    {
+      "key": "Cards/Art/water_seal_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/water_seal_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "c14ebbee6d3cec972d9e28c7032bda3093e144b3a89a1fe37150f5be371cad97"
+    },
+    {
+      "key": "Cards/Art/water_smite_common.png",
+      "path": "res://assets/imported/Cards/Art/water_smite_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "e0fe55f725e4f455371f658755d9ed3b6cb3b03ba34f87b9dae1dc9dd8118c89"
+    },
+    {
+      "key": "Cards/Art/wave_cut_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/wave_cut_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "d113b8f2ccf3bcce115abd193c0f032c15455ae90014c8379bd4a1a8ba7e3c34"
+    },
+    {
+      "key": "Cards/Art/wet_compress_common.png",
+      "path": "res://assets/imported/Cards/Art/wet_compress_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "8cf808a014e62d18d075a944861f5e7dee96b3365da3c6a13846b9e4dee91418"
+    },
+    {
+      "key": "Cards/Art/wind_cleave_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/wind_cleave_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "f8713e7130f29e6751f3ae43e151e9abd850bd45429c0b48516f42229b761994"
+    },
+    {
+      "key": "Cards/Art/wood_leaf_common.png",
+      "path": "res://assets/imported/Cards/Art/wood_leaf_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "e807d9b87c38a3788cf293ef59c6ab5054ad6916f683c3e84cd507e97c825fbf"
+    },
+    {
+      "key": "Cards/Art/wood_spike_common.png",
+      "path": "res://assets/imported/Cards/Art/wood_spike_common.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "f820cfbb0e33483d0625bc2224cb78614e1e6721507f2f728be17643a167f0f1"
+    },
+    {
+      "key": "Cards/Art/wood_sway_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/wood_sway_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "6c8214989f88df149da162713ce86fe27cc0fdea7b813c1d0307c5d15ec046a9"
+    },
+    {
+      "key": "Cards/Art/wooden_heal_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/wooden_heal_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "6a59ecf17f4f7eb4646f3e638506a0a6fdecca1e8f2f1c14c41e969ee247b854"
+    },
+    {
+      "key": "Cards/Art/world_piercer_epic.png",
+      "path": "res://assets/imported/Cards/Art/world_piercer_epic.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "ccad242aabe72a357cf40f4ef923b75b2ea1efbd3f704d1a79ee02239918563c"
+    },
+    {
+      "key": "Cards/Art/wound_cleanse_uncommon.png",
+      "path": "res://assets/imported/Cards/Art/wound_cleanse_uncommon.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "d050b8dde349ba765efc678495923b740b117a290e628c1b295783754989d9d3"
+    },
+    {
+      "key": "Equipment/Blue/chest_earth.png",
+      "path": "res://assets/imported/Equipment/Blue/chest_earth.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "a3680b96b682e2fb3a41e827bf02090a233b1c6cc7477f41a227b47d67114acf"
+    },
+    {
+      "key": "Equipment/Blue/chest_fire.png",
+      "path": "res://assets/imported/Equipment/Blue/chest_fire.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "8e88ed068e1a15f7501669c8cab741f4af267e4cabbadf2e85fd7323f265860d"
+    },
+    {
+      "key": "Equipment/Blue/chest_metal.png",
+      "path": "res://assets/imported/Equipment/Blue/chest_metal.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "4151d45f8982e07d8956e4fbb70483c0df7a6cc54d95a9172a8ef727c2595d9c"
+    },
+    {
+      "key": "Equipment/Blue/chest_water.png",
+      "path": "res://assets/imported/Equipment/Blue/chest_water.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "0f51bd032eb54ae2aadadf35802f9e836ae767a11c26ade9324d1f56cfd9e1e4"
+    },
+    {
+      "key": "Equipment/Blue/chest_wood.png",
+      "path": "res://assets/imported/Equipment/Blue/chest_wood.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "6a04e8585797711db0d6a758f5c480fb101aef778d3d95790248f81c59d01de0"
+    },
+    {
+      "key": "Equipment/Blue/feet_earth.png",
+      "path": "res://assets/imported/Equipment/Blue/feet_earth.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "7dc9211f3a05bb00856e31f4fa13eb23c5d2fc34cce8c697c342f6deb45c75e5"
+    },
+    {
+      "key": "Equipment/Blue/feet_fire.png",
+      "path": "res://assets/imported/Equipment/Blue/feet_fire.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "852b0b6c6157d5a5f1a70d2c9d7313e2126b63a0c6f1206ff1e5433e028ac356"
+    },
+    {
+      "key": "Equipment/Blue/feet_metal.png",
+      "path": "res://assets/imported/Equipment/Blue/feet_metal.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "d24703b94b065409630c169ef01f2ab53fd1e769d16371e3dae028acb80427d9"
+    },
+    {
+      "key": "Equipment/Blue/feet_water.png",
+      "path": "res://assets/imported/Equipment/Blue/feet_water.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "98c5d7dd8c6972f9d2430075a4866adecb340df2ebbdeef10c973c9089718d2c"
+    },
+    {
+      "key": "Equipment/Blue/feet_wood.png",
+      "path": "res://assets/imported/Equipment/Blue/feet_wood.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "cdeb920c0f930bc271ebb65e140d8e71ac7ddc60dd80e3e6e6314949b3560f2c"
+    },
+    {
+      "key": "Equipment/Blue/hands_earth.png",
+      "path": "res://assets/imported/Equipment/Blue/hands_earth.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "a4e658501c07e24676a04e0bd28797e53fd23f0ce9dc406d3a39a64ca1294dcb"
+    },
+    {
+      "key": "Equipment/Blue/hands_fire.png",
+      "path": "res://assets/imported/Equipment/Blue/hands_fire.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "674d4c7b611b2ae834788301320a755f8da2aa214226a912716012210ae2baa2"
+    },
+    {
+      "key": "Equipment/Blue/hands_metal.png",
+      "path": "res://assets/imported/Equipment/Blue/hands_metal.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "7f6c290f2cb5d63279f9863443d478956d4a1fcd9c2c05281a1e9f71eda5f64d"
+    },
+    {
+      "key": "Equipment/Blue/hands_water.png",
+      "path": "res://assets/imported/Equipment/Blue/hands_water.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "0e3db8e92187f4e0a08299637b11ac2c3505f11acde128204b7189b9fd97b557"
+    },
+    {
+      "key": "Equipment/Blue/hands_wood.png",
+      "path": "res://assets/imported/Equipment/Blue/hands_wood.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "3971896af1429d516ac7f798076c4b3de0f631b447e33fcf1f0f22dcf02bc61d"
+    },
+    {
+      "key": "Equipment/Blue/head_earth.png",
+      "path": "res://assets/imported/Equipment/Blue/head_earth.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "f5159dcbb6f50d3b2deb6e4323af454bd02dd62c8d5f8de8c8166613a9d2ff33"
+    },
+    {
+      "key": "Equipment/Blue/head_fire.png",
+      "path": "res://assets/imported/Equipment/Blue/head_fire.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "bc28f34f2ab082a01d600a9f37e0e876788a49dc18f39853950639234aea4ef3"
+    },
+    {
+      "key": "Equipment/Blue/head_metal.png",
+      "path": "res://assets/imported/Equipment/Blue/head_metal.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "e3ff4a529eee5d6072654d4e43cf4c9570a2a9b4e55fc9a4ebd4269acddfe236"
+    },
+    {
+      "key": "Equipment/Blue/head_water.png",
+      "path": "res://assets/imported/Equipment/Blue/head_water.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "bac80a20751cd9b7be4c3c1e505675bd7f08117738bd2124c0177aac380ba5ea"
+    },
+    {
+      "key": "Equipment/Blue/head_wood.png",
+      "path": "res://assets/imported/Equipment/Blue/head_wood.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "0caabed2751a7614ff4f08043a50ff178e8424bd4a151742669a371f56fcbfdc"
+    },
+    {
+      "key": "Equipment/Blue/legs_earth.png",
+      "path": "res://assets/imported/Equipment/Blue/legs_earth.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "a4c4a27d689a3b3c1d50d8cb3fb3e6b808f1a34267291fde69f55a3b5cbf8e92"
+    },
+    {
+      "key": "Equipment/Blue/legs_fire.png",
+      "path": "res://assets/imported/Equipment/Blue/legs_fire.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "f51693678bbb87bc282da2d5605f9d3cca2301a96eaee331b8e3b31223d3f43b"
+    },
+    {
+      "key": "Equipment/Blue/legs_metal.png",
+      "path": "res://assets/imported/Equipment/Blue/legs_metal.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "11134871e10d1396564092d3725911849184e92f6bab12026b93b16156cada15"
+    },
+    {
+      "key": "Equipment/Blue/legs_water.png",
+      "path": "res://assets/imported/Equipment/Blue/legs_water.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "d77be49197a26339da7e43e1717ca5ca4fe93daa11d741ef539da4c14c86bda8"
+    },
+    {
+      "key": "Equipment/Blue/legs_wood.png",
+      "path": "res://assets/imported/Equipment/Blue/legs_wood.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "ed565f0fdd0ab39184c8c2968a1eaed35ed4a6376ab2dfd8ee0b12b16709f23f"
+    },
+    {
+      "key": "Equipment/Green/chest_earth.png",
+      "path": "res://assets/imported/Equipment/Green/chest_earth.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "a267bc8ad221060c3d1da6598de0f1437483a5a743889ed273c21110ab3ffb21"
+    },
+    {
+      "key": "Equipment/Green/chest_fire.png",
+      "path": "res://assets/imported/Equipment/Green/chest_fire.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "56988f6ffbad5510cb35afcf8f54292a2312b1ec764c55ce45db389953c3b3be"
+    },
+    {
+      "key": "Equipment/Green/chest_metal.png",
+      "path": "res://assets/imported/Equipment/Green/chest_metal.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "c53b1e89db33d4df88edffc3f8de7de7816d8ef0543961e05f6bdd86ee99bb0e"
+    },
+    {
+      "key": "Equipment/Green/chest_water.png",
+      "path": "res://assets/imported/Equipment/Green/chest_water.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "d9a79de7766c10988a06aaed6aed673d011d907273b9b699b9bf96c31d542265"
+    },
+    {
+      "key": "Equipment/Green/chest_wood.png",
+      "path": "res://assets/imported/Equipment/Green/chest_wood.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "64196eea33816aaff03dd824d3207c80afff245d2044972d06cbb385cc9a2270"
+    },
+    {
+      "key": "Equipment/Green/feet_earth.png",
+      "path": "res://assets/imported/Equipment/Green/feet_earth.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "62d46f28a017a0d584ab58d6cc2861ba6f370a9370082d112ddb39e6795e1441"
+    },
+    {
+      "key": "Equipment/Green/feet_fire.png",
+      "path": "res://assets/imported/Equipment/Green/feet_fire.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "206b7c9b238af19a7a1f6e8e2af79dcdf6fec5759d2013787b50f4ed89866ed8"
+    },
+    {
+      "key": "Equipment/Green/feet_metal.png",
+      "path": "res://assets/imported/Equipment/Green/feet_metal.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "8d4938f8caab09e41f4e336f9417b0501bc1601a369cdbfcd0d94dca20be8d63"
+    },
+    {
+      "key": "Equipment/Green/feet_water.png",
+      "path": "res://assets/imported/Equipment/Green/feet_water.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "3ca7f8eb9f680dc532437744693ba78d9c737e5a648bb9eaaeab015d3b6b00c4"
+    },
+    {
+      "key": "Equipment/Green/feet_wood.png",
+      "path": "res://assets/imported/Equipment/Green/feet_wood.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "adee6fd38648cb06101d3fb700a89ee39f09feb98706316a0fa8349a4f987d53"
+    },
+    {
+      "key": "Equipment/Green/hands_earth.png",
+      "path": "res://assets/imported/Equipment/Green/hands_earth.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "fe7c746aef2c33d4418347662b963ed97115184dd863e020a701cb26cc176bb5"
+    },
+    {
+      "key": "Equipment/Green/hands_fire.png",
+      "path": "res://assets/imported/Equipment/Green/hands_fire.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "edf0d3ff894431b73c84e0db0644d385b0bd810f5918abe3a6fe18d13fa5dde8"
+    },
+    {
+      "key": "Equipment/Green/hands_metal.png",
+      "path": "res://assets/imported/Equipment/Green/hands_metal.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "ad04e5f94554b88a28a2af5ccb1c9b3d124e6081b80409dccf3976a936b9c55d"
+    },
+    {
+      "key": "Equipment/Green/hands_water.png",
+      "path": "res://assets/imported/Equipment/Green/hands_water.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "f646ecf418ab71979872168db169d1c95c6c0f39d96a07510f168674ce6c69dc"
+    },
+    {
+      "key": "Equipment/Green/hands_wood.png",
+      "path": "res://assets/imported/Equipment/Green/hands_wood.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "d40db31907c8e232fab2f5b86005372d05582368830ede7b36256636806b7513"
+    },
+    {
+      "key": "Equipment/Green/head_earth.png",
+      "path": "res://assets/imported/Equipment/Green/head_earth.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "d0c4e63b108aa7c381b51e44f40e84ca3e948510444008b756e3f6586cad570d"
+    },
+    {
+      "key": "Equipment/Green/head_fire.png",
+      "path": "res://assets/imported/Equipment/Green/head_fire.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "a27b0f3e367aa4c9b9ca93b112015c614e9403141ddf02830445a2dd973ce040"
+    },
+    {
+      "key": "Equipment/Green/head_metal.png",
+      "path": "res://assets/imported/Equipment/Green/head_metal.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "8d199d92e58c7dfffb54f26084f6c067ec3b5528e246d8fee55b6316867f4572"
+    },
+    {
+      "key": "Equipment/Green/head_water.png",
+      "path": "res://assets/imported/Equipment/Green/head_water.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "70653c519648ae5e36230523bd2f7259f8e505885f38999c23e8db9549a2b8e9"
+    },
+    {
+      "key": "Equipment/Green/head_wood.png",
+      "path": "res://assets/imported/Equipment/Green/head_wood.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "207ceca67e5cf1471e8cb19856027897a6e2bd8691124bc87412124e976ec997"
+    },
+    {
+      "key": "Equipment/Green/legs_earth.png",
+      "path": "res://assets/imported/Equipment/Green/legs_earth.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "4a6322a0e384ecfa7f376e0632363ede9849204ef68e54df30d31ffe48ec20c7"
+    },
+    {
+      "key": "Equipment/Green/legs_fire.png",
+      "path": "res://assets/imported/Equipment/Green/legs_fire.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "8077822345675ced98a10e11315055a6e8088629634007710be0922bc839c8f8"
+    },
+    {
+      "key": "Equipment/Green/legs_metal.png",
+      "path": "res://assets/imported/Equipment/Green/legs_metal.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "b154596ce85f09c2cbdf57aaa37130c1f90f1b9cf0c4e7f786941db1b6de79f1"
+    },
+    {
+      "key": "Equipment/Green/legs_water.png",
+      "path": "res://assets/imported/Equipment/Green/legs_water.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "f8b5b0a15222692316801e587e452111d1756a5ba7707cab3df702d21a244cf5"
+    },
+    {
+      "key": "Equipment/Green/legs_wood.png",
+      "path": "res://assets/imported/Equipment/Green/legs_wood.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "c6bb35927270960733ad49262e095b9a20e12bde331a3e584b7bcc4760dc2b83"
+    },
+    {
+      "key": "Equipment/Orange/chest_earth.png",
+      "path": "res://assets/imported/Equipment/Orange/chest_earth.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "bf7abdeb2c8090d3d8ae7beefd40184a7eec898dd28dd019b44d2729b367bb52"
+    },
+    {
+      "key": "Equipment/Orange/chest_fire.png",
+      "path": "res://assets/imported/Equipment/Orange/chest_fire.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "80b58e6a596bc9c186cbe7e6071b73af8242ffd7373c8b726a5b96dc118a1880"
+    },
+    {
+      "key": "Equipment/Orange/chest_metal.png",
+      "path": "res://assets/imported/Equipment/Orange/chest_metal.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "74a0103b9a8de6cf672cf567ff0be0031f8864abb9702b3b931a3a3a17bac0a3"
+    },
+    {
+      "key": "Equipment/Orange/chest_water.png",
+      "path": "res://assets/imported/Equipment/Orange/chest_water.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "e7f6568741cbd1cb3d45bf34b99c30ea6ccb921358ca9f7150224c1a830078c8"
+    },
+    {
+      "key": "Equipment/Orange/chest_wood.png",
+      "path": "res://assets/imported/Equipment/Orange/chest_wood.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "64a755d7831ac33a0a020821bab4f51a261bc5a8d81bb140b261f035f46393d7"
+    },
+    {
+      "key": "Equipment/Orange/feet_earth.png",
+      "path": "res://assets/imported/Equipment/Orange/feet_earth.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "79d0a40e4e4518bfc62d9364462a791beb695757758aa1e0300bd8f12cfba410"
+    },
+    {
+      "key": "Equipment/Orange/feet_fire.png",
+      "path": "res://assets/imported/Equipment/Orange/feet_fire.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "3ff705dbe932f8b7546723131f948437553138513f4d5c4567d4ba5dd6f9dd72"
+    },
+    {
+      "key": "Equipment/Orange/feet_metal.png",
+      "path": "res://assets/imported/Equipment/Orange/feet_metal.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "8889f378016bb153c7e2187bdee6e8bb0160536a4672eb324d066299f668dcbd"
+    },
+    {
+      "key": "Equipment/Orange/feet_water.png",
+      "path": "res://assets/imported/Equipment/Orange/feet_water.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "d238938e03c091f4fb5b04e600ce04a76c86ce1e74a2e8858a7508b3e0e97d6a"
+    },
+    {
+      "key": "Equipment/Orange/feet_wood.png",
+      "path": "res://assets/imported/Equipment/Orange/feet_wood.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "6dc23179f58240430ea6eabc39b0901f8ab1f95c2ed6220083441676c075b74c"
+    },
+    {
+      "key": "Equipment/Orange/hands_earth.png",
+      "path": "res://assets/imported/Equipment/Orange/hands_earth.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "3412c67ce4598124d88edbe31912b47681dac00e7b28ef9e5924d323d8dea9ab"
+    },
+    {
+      "key": "Equipment/Orange/hands_fire.png",
+      "path": "res://assets/imported/Equipment/Orange/hands_fire.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "f13e5be9ecc81fca49a704420e46e852f4cd7f15564a1ce6290b070d47ddcb2b"
+    },
+    {
+      "key": "Equipment/Orange/hands_metal.png",
+      "path": "res://assets/imported/Equipment/Orange/hands_metal.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "b282d6e8de5a85206939ea5966867883fa9cb4aea37564c5604fd7bf53677c4e"
+    },
+    {
+      "key": "Equipment/Orange/hands_water.png",
+      "path": "res://assets/imported/Equipment/Orange/hands_water.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "69d71a226ab3848d1f331764ef92bd99e35cb9e06dd178bff42efac82e3d2ff3"
+    },
+    {
+      "key": "Equipment/Orange/hands_wood.png",
+      "path": "res://assets/imported/Equipment/Orange/hands_wood.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "181dc065b4ae4b47aa5398ae970d36ac08718bdab4a244d3f0b55206a2adb338"
+    },
+    {
+      "key": "Equipment/Orange/head_earth.png",
+      "path": "res://assets/imported/Equipment/Orange/head_earth.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "5e84ff3e629f823075dc342e305b46d02d1b501cd2e907f6339c967f386f4782"
+    },
+    {
+      "key": "Equipment/Orange/head_fire.png",
+      "path": "res://assets/imported/Equipment/Orange/head_fire.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "a136c66d715784ebf9e755ac65793b10c826aa842a48a3c71af0958c79390373"
+    },
+    {
+      "key": "Equipment/Orange/head_metal.png",
+      "path": "res://assets/imported/Equipment/Orange/head_metal.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "a48a388398f5f59f1f657b841ce6b34bba08903d2ebcc9d64f747f22ddf23b41"
+    },
+    {
+      "key": "Equipment/Orange/head_water.png",
+      "path": "res://assets/imported/Equipment/Orange/head_water.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "44aa9f926ea01dd4e0e454819b5fceb8b872b3cbb00b675c70ec1f20f408b802"
+    },
+    {
+      "key": "Equipment/Orange/head_wood.png",
+      "path": "res://assets/imported/Equipment/Orange/head_wood.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "51bdf28c75e60081c2f8d359f460b05719bffae4b54118c4c6be690475e42a89"
+    },
+    {
+      "key": "Equipment/Orange/legs_earth.png",
+      "path": "res://assets/imported/Equipment/Orange/legs_earth.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "390d292eab7f5c27afe4ea8d3ffa3e38ae26373cd1c36704a590f59de95369b1"
+    },
+    {
+      "key": "Equipment/Orange/legs_fire.png",
+      "path": "res://assets/imported/Equipment/Orange/legs_fire.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "7a11ff39870f73b3a9a4c4d326b59106ef445d620a2d1535b8b208c11fe7519c"
+    },
+    {
+      "key": "Equipment/Orange/legs_metal.png",
+      "path": "res://assets/imported/Equipment/Orange/legs_metal.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "25b33536729012c403e2a3a796feedd10bbc258c67c091c7e14f6cb6c9a757cd"
+    },
+    {
+      "key": "Equipment/Orange/legs_water.png",
+      "path": "res://assets/imported/Equipment/Orange/legs_water.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "6bb667355bc1c7d78e23c3255e41973e1f34ab6c1dd72acd7262b12efdc8a835"
+    },
+    {
+      "key": "Equipment/Orange/legs_wood.png",
+      "path": "res://assets/imported/Equipment/Orange/legs_wood.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "8f9396ed32ad698f2404351532fff0fd33cb9439d5b9c5a5b0249a875bf70618"
+    },
+    {
+      "key": "Equipment/Purple/chest_earth.png",
+      "path": "res://assets/imported/Equipment/Purple/chest_earth.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "5bdee801b23eb00f2204ccf942b73bce6d633d7203c07f377e850ba99213774d"
+    },
+    {
+      "key": "Equipment/Purple/chest_fire.png",
+      "path": "res://assets/imported/Equipment/Purple/chest_fire.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "ce0548fb7a3cb27c238a73ab163717048e78e57631e011fdfabd519e24cccb32"
+    },
+    {
+      "key": "Equipment/Purple/chest_metal.png",
+      "path": "res://assets/imported/Equipment/Purple/chest_metal.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "f19e3995523efa376a89e637cd52149bd1ec6e614074ea62f06e1cce8397f217"
+    },
+    {
+      "key": "Equipment/Purple/chest_water.png",
+      "path": "res://assets/imported/Equipment/Purple/chest_water.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "62e1aadfcabc16736a6ace40f5a6bfc81e95cddaa183c20258c163791932efad"
+    },
+    {
+      "key": "Equipment/Purple/chest_wood.png",
+      "path": "res://assets/imported/Equipment/Purple/chest_wood.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "90737b2d4fa2758e6cfc91b829736b7396d3f3df6856a28074fa591eeea68718"
+    },
+    {
+      "key": "Equipment/Purple/feet_earth.png",
+      "path": "res://assets/imported/Equipment/Purple/feet_earth.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "01217a9f748e7d9ad8d40884a3e6169f501d8bd3ed475e3a4bdd06660100b31f"
+    },
+    {
+      "key": "Equipment/Purple/feet_fire.png",
+      "path": "res://assets/imported/Equipment/Purple/feet_fire.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "23d9b6788097b8a27208af5fb589a43bfda6019150784b8943b3ab915f923cc1"
+    },
+    {
+      "key": "Equipment/Purple/feet_metal.png",
+      "path": "res://assets/imported/Equipment/Purple/feet_metal.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "8bf3713cdd095d37eb96c84a6aca7b75859a7a873890c8068613900766816465"
+    },
+    {
+      "key": "Equipment/Purple/feet_water.png",
+      "path": "res://assets/imported/Equipment/Purple/feet_water.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "1a027498f01bd8373e6d08de1eafb6e84e8c1b3ebf2fded8bb1a207eeeba4edf"
+    },
+    {
+      "key": "Equipment/Purple/feet_wood.png",
+      "path": "res://assets/imported/Equipment/Purple/feet_wood.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "131b429c2260f0f0ffa36dde2ab1707d53a7d3bd4e4caf28283cbb26a454d878"
+    },
+    {
+      "key": "Equipment/Purple/hands_earth.png",
+      "path": "res://assets/imported/Equipment/Purple/hands_earth.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "ecc8949d502927c5c234a17047a226c9c9ceccf441cec552f8357bccea35e68a"
+    },
+    {
+      "key": "Equipment/Purple/hands_fire.png",
+      "path": "res://assets/imported/Equipment/Purple/hands_fire.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "104997ce602229c92a83d36a2fea999a212500874592466f1aac5508f0e835b5"
+    },
+    {
+      "key": "Equipment/Purple/hands_metal.png",
+      "path": "res://assets/imported/Equipment/Purple/hands_metal.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "aaa3d030886cfcf0231713def7a4d5ad628ce0df5ee2bb10b5a6bb02e7841a1a"
+    },
+    {
+      "key": "Equipment/Purple/hands_water.png",
+      "path": "res://assets/imported/Equipment/Purple/hands_water.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "e1d598ccfc79531982fdb874edfa082f869423ba9cc0a25a8dbc2ab0f9fb1c36"
+    },
+    {
+      "key": "Equipment/Purple/hands_wood.png",
+      "path": "res://assets/imported/Equipment/Purple/hands_wood.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "d26c1254ed26ce71bd80c88dd5faa8dac93b005c44accb751ffc66d2e6fa5430"
+    },
+    {
+      "key": "Equipment/Purple/head_earth.png",
+      "path": "res://assets/imported/Equipment/Purple/head_earth.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "f73d388e339cf7f33cb1fc7a15f4d1cb965f27f3b65ee86e5445965ec39f9586"
+    },
+    {
+      "key": "Equipment/Purple/head_fire.png",
+      "path": "res://assets/imported/Equipment/Purple/head_fire.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "38fb976cb2a9de71de5b640cddfc01ff2b5f83046b9f4105449a6f774aeec901"
+    },
+    {
+      "key": "Equipment/Purple/head_metal.png",
+      "path": "res://assets/imported/Equipment/Purple/head_metal.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "473ea07804f5e739c3c7bc9d79ca9ba2d8015d7f5f670e13765cea05111f307d"
+    },
+    {
+      "key": "Equipment/Purple/head_water.png",
+      "path": "res://assets/imported/Equipment/Purple/head_water.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "3ba2ee4585c5d00d484498a826011ed581da1d146fbe3291c67ede3d817e1f6e"
+    },
+    {
+      "key": "Equipment/Purple/head_wood.png",
+      "path": "res://assets/imported/Equipment/Purple/head_wood.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "8629878bde9d2abb9546276b553cc76d95d7e7379e63df7ca22371653e808d9d"
+    },
+    {
+      "key": "Equipment/Purple/legs_earth.png",
+      "path": "res://assets/imported/Equipment/Purple/legs_earth.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "d7d4897699782cdad7313a7e05d91504728cf487b76c98dbd7f482f8ccef4026"
+    },
+    {
+      "key": "Equipment/Purple/legs_fire.png",
+      "path": "res://assets/imported/Equipment/Purple/legs_fire.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "190825764ea615341d65a88bf6615b4376514edd37b07e79ed65ec687774bd31"
+    },
+    {
+      "key": "Equipment/Purple/legs_metal.png",
+      "path": "res://assets/imported/Equipment/Purple/legs_metal.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "7cfc932b8fa77fa67b28b11e9b8dbe66a042e2c3b2e64af21ef6ba5ee7092eaa"
+    },
+    {
+      "key": "Equipment/Purple/legs_water.png",
+      "path": "res://assets/imported/Equipment/Purple/legs_water.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "6c1e4ef44e6230b4ec57708f48b8e4dc9d7ae80c8d07f8247afb6847cb796772"
+    },
+    {
+      "key": "Equipment/Purple/legs_wood.png",
+      "path": "res://assets/imported/Equipment/Purple/legs_wood.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "abe218e2151dbbb92b56ba0420f4f9e181e68abbf1be17296ba4549e678b43f1"
+    },
+    {
+      "key": "Equipment/White/chest_earth.png",
+      "path": "res://assets/imported/Equipment/White/chest_earth.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "b5e7f392b25a7b8880727de2d200a34ba839af11640a844303fce7b181647b8e"
+    },
+    {
+      "key": "Equipment/White/chest_fire.png",
+      "path": "res://assets/imported/Equipment/White/chest_fire.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "935712f2189421a828b87709cae52c55e9528a116a19cf6deff51bd6c08cef58"
+    },
+    {
+      "key": "Equipment/White/chest_metal.png",
+      "path": "res://assets/imported/Equipment/White/chest_metal.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "d2e8e1520b721d5019e5c91b5526caef70a9caedc022b78bfc9fe03947fd71a3"
+    },
+    {
+      "key": "Equipment/White/chest_water.png",
+      "path": "res://assets/imported/Equipment/White/chest_water.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "0d1e02eb7ab0f2c11321418b885be60480c8ad0cd92bb968648d75cd6ae5425c"
+    },
+    {
+      "key": "Equipment/White/chest_wood.png",
+      "path": "res://assets/imported/Equipment/White/chest_wood.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "9645cffd316a7c23aad1866b18348be7967fc59893a16ecc0085c5af6b9e0495"
+    },
+    {
+      "key": "Equipment/White/feet_earth.png",
+      "path": "res://assets/imported/Equipment/White/feet_earth.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "23bbfeefd9509b3b4e4e575e2efa9dd317b4ca1f1019fbc13144714a60e4e3b6"
+    },
+    {
+      "key": "Equipment/White/feet_fire.png",
+      "path": "res://assets/imported/Equipment/White/feet_fire.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "7ab39f44b8d2f9c5905a2fa5aadee7d96f8ca60c5b3cb0323ae301f6aec0e105"
+    },
+    {
+      "key": "Equipment/White/feet_metal.png",
+      "path": "res://assets/imported/Equipment/White/feet_metal.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "a4eb39979c328ba0eea2c08ab22ad7dbba2c23b9f99d9be5446c299c1d805319"
+    },
+    {
+      "key": "Equipment/White/feet_water.png",
+      "path": "res://assets/imported/Equipment/White/feet_water.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "af9cc27388690418f00e4da420d1881a34f541d36071af7431cb046277c72290"
+    },
+    {
+      "key": "Equipment/White/feet_wood.png",
+      "path": "res://assets/imported/Equipment/White/feet_wood.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "bba9267c831701ae62486999b020102e26b18c79185a8d7555e4282054836ae9"
+    },
+    {
+      "key": "Equipment/White/hands_earth.png",
+      "path": "res://assets/imported/Equipment/White/hands_earth.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "3fdadd08bc0d782016077a98999b5c0f54fa99ba867a1ca67dfde6bfb8a701ec"
+    },
+    {
+      "key": "Equipment/White/hands_fire.png",
+      "path": "res://assets/imported/Equipment/White/hands_fire.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "5facdde63d230dd451405a064f715576c17d3215328570915e16fbfe7b0a683c"
+    },
+    {
+      "key": "Equipment/White/hands_metal.png",
+      "path": "res://assets/imported/Equipment/White/hands_metal.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "7cbc03981f9c4d7d5687a1f4cf91775fdfe6f4cefd1fc0913fbb6f0a4e2acf8e"
+    },
+    {
+      "key": "Equipment/White/hands_water.png",
+      "path": "res://assets/imported/Equipment/White/hands_water.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "34f1a9247e56a47f9c51b0a032042360d54cf962e6abdbce9d7896f2bf5df6b1"
+    },
+    {
+      "key": "Equipment/White/hands_wood.png",
+      "path": "res://assets/imported/Equipment/White/hands_wood.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "eb54eec30e979fe3b3203e6ceb6742cdf03a39c4edf192bc316891fdada66994"
+    },
+    {
+      "key": "Equipment/White/head_earth.png",
+      "path": "res://assets/imported/Equipment/White/head_earth.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "3968fb12cd35f864f81a3d9df7e8484116529f50b431dfcc5260d20b959b4788"
+    },
+    {
+      "key": "Equipment/White/head_fire.png",
+      "path": "res://assets/imported/Equipment/White/head_fire.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "b728a7fa06000f2d519d8d01dfce09a807706f9182b766e9b7ffbf5402702bf6"
+    },
+    {
+      "key": "Equipment/White/head_metal.png",
+      "path": "res://assets/imported/Equipment/White/head_metal.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "dd46e75e2cf8b1a8cce9daf3311f954fee1dc5586498bc28a504fac37ebcb9d4"
+    },
+    {
+      "key": "Equipment/White/head_water.png",
+      "path": "res://assets/imported/Equipment/White/head_water.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "b82f9174e9e1da5effd2e41b7b84691728276c55cb08b28a50d60a8cc6fc946c"
+    },
+    {
+      "key": "Equipment/White/head_wood.png",
+      "path": "res://assets/imported/Equipment/White/head_wood.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "d26aa111bd3da749db66f44b74a7ad82098cecbdf3d55aa6e9425e5e33d3e7c8"
+    },
+    {
+      "key": "Equipment/White/legs_earth.png",
+      "path": "res://assets/imported/Equipment/White/legs_earth.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "72a15938f61416b3066957815a2d3421a25e8f95c279bc513c7bbf8b5b3978c2"
+    },
+    {
+      "key": "Equipment/White/legs_fire.png",
+      "path": "res://assets/imported/Equipment/White/legs_fire.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "b097db87be3ac749aa1778377d478866eac675f870f28de2732617774c601c29"
+    },
+    {
+      "key": "Equipment/White/legs_metal.png",
+      "path": "res://assets/imported/Equipment/White/legs_metal.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "a9bbde421f8c3db8047397b454db91c0fda2b85fea45d14750e9917d9ebb4d94"
+    },
+    {
+      "key": "Equipment/White/legs_water.png",
+      "path": "res://assets/imported/Equipment/White/legs_water.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "6008d3b627d4495405d3f5c45332b67fb81180bb97f64bb45faeb4652256fbb2"
+    },
+    {
+      "key": "Equipment/White/legs_wood.png",
+      "path": "res://assets/imported/Equipment/White/legs_wood.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "a6ec138a39c16b887ec2d636931c319011ee309565f1bd90557f5fed445f27d4"
+    },
+    {
+      "key": "UI/Action/extract_gate_clean.png",
+      "path": "res://assets/imported/UI/Action/extract_gate_clean.png",
+      "pixels": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "ded320f0105c5342d97747fba56dc4953de740394e2669e064b0a5699ebb3f6e"
+    },
+    {
+      "key": "UI/Action/relic_pile_clean.png",
+      "path": "res://assets/imported/UI/Action/relic_pile_clean.png",
+      "pixels": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "d3024a263e0d12017deaf333a3c3167b50b8097c308600ba949689bbcd1ee18d"
+    },
+    {
+      "key": "UI/Action/spring_clean.png",
+      "path": "res://assets/imported/UI/Action/spring_clean.png",
+      "pixels": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "323ab572495fd8ef89d9c26bbcda7153c9ff971489a9b9c654cd1bf7dfc0829d"
+    },
+    {
+      "key": "UI/Battle/battle_background.png",
+      "path": "res://assets/imported/UI/Battle/battle_background.png",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "mode": "RGBA",
+      "sha256": "c73d6f92ddf046b8d103cb844286a62a7145d42e538f0734702da617409e93cf"
+    },
+    {
+      "key": "UI/Battle/battle_badge_break.png",
+      "path": "res://assets/imported/UI/Battle/battle_badge_break.png",
+      "pixels": [
+        142,
+        110
+      ],
+      "mode": "RGBA",
+      "sha256": "f439a4776ebb34066f2553feeae8b2e53d3ef2589ea76fc91fb50ad19e1c70c9"
+    },
+    {
+      "key": "UI/Battle/battle_badge_regen.png",
+      "path": "res://assets/imported/UI/Battle/battle_badge_regen.png",
+      "pixels": [
+        138,
+        110
+      ],
+      "mode": "RGBA",
+      "sha256": "61bbe92a70e5698c2801adaaf87d6d84fbfc56df170dbbfaac51b4f738a3b8fe"
+    },
+    {
+      "key": "UI/Battle/battle_badge_wall.png",
+      "path": "res://assets/imported/UI/Battle/battle_badge_wall.png",
+      "pixels": [
+        142,
+        110
+      ],
+      "mode": "RGBA",
+      "sha256": "687d4e3e8d44d3d6a8bac366727d224035a34cdc55f6376ebb500cdc99930105"
+    },
+    {
+      "key": "UI/Battle/battle_card_frame_earth.png",
+      "path": "res://assets/imported/UI/Battle/battle_card_frame_earth.png",
+      "pixels": [
+        220,
+        332
+      ],
+      "mode": "RGBA",
+      "sha256": "805b222c995904897a9ff2cc6d216e30ac27020602985154c7dbab38000afd41"
+    },
+    {
+      "key": "UI/Battle/battle_card_frame_fire.png",
+      "path": "res://assets/imported/UI/Battle/battle_card_frame_fire.png",
+      "pixels": [
+        224,
+        332
+      ],
+      "mode": "RGBA",
+      "sha256": "bc3c2e3f1e77fd1845b417eaa2e22adb9ba609ffcfabb7537df2c1ce4a9fd8e5"
+    },
+    {
+      "key": "UI/Battle/battle_card_frame_metal.png",
+      "path": "res://assets/imported/UI/Battle/battle_card_frame_metal.png",
+      "pixels": [
+        221,
+        332
+      ],
+      "mode": "RGB",
+      "sha256": "0d6677554ff4942d22aec970f4f3ab1531308485567b1a206d459bd620b11db5"
+    },
+    {
+      "key": "UI/Battle/battle_card_frame_monster.png",
+      "path": "res://assets/imported/UI/Battle/battle_card_frame_monster.png",
+      "pixels": [
+        222,
+        332
+      ],
+      "mode": "RGB",
+      "sha256": "9a8695beb29a0d2a77c719e7766c47fb909d0b087a2382de3b2866ee5fbe4087"
+    },
+    {
+      "key": "UI/Battle/battle_card_frame_water.png",
+      "path": "res://assets/imported/UI/Battle/battle_card_frame_water.png",
+      "pixels": [
+        224,
+        332
+      ],
+      "mode": "RGB",
+      "sha256": "d1596eb02b9801f120e0bbed12effcd693992198ca4d0e44205c922527fd1580"
+    },
+    {
+      "key": "UI/Battle/battle_card_frame_wood.png",
+      "path": "res://assets/imported/UI/Battle/battle_card_frame_wood.png",
+      "pixels": [
+        220,
+        332
+      ],
+      "mode": "RGB",
+      "sha256": "df1ca80966cf3daa24334d55ac3a269ab541c2a362c5bd379b81715600bb4388"
+    },
+    {
+      "key": "UI/Battle/battle_element_icon_earth.png",
+      "path": "res://assets/imported/UI/Battle/battle_element_icon_earth.png",
+      "pixels": [
+        51,
+        64
+      ],
+      "mode": "RGBA",
+      "sha256": "913089050820575821fddad74d68f0c0cbc64c9637175ee116acd9ec0d106018"
+    },
+    {
+      "key": "UI/Battle/battle_element_icon_fire.png",
+      "path": "res://assets/imported/UI/Battle/battle_element_icon_fire.png",
+      "pixels": [
+        51,
+        64
+      ],
+      "mode": "RGBA",
+      "sha256": "68f55306c0b1d95436e5343ef39d696c95e9ff91cc52886e815f74e27e587e1b"
+    },
+    {
+      "key": "UI/Battle/battle_element_icon_metal.png",
+      "path": "res://assets/imported/UI/Battle/battle_element_icon_metal.png",
+      "pixels": [
+        73,
+        56
+      ],
+      "mode": "RGBA",
+      "sha256": "5fcbfa6906d4e5967bf1b63bec36f32fbacb48827918cc3a2433c732486398e3"
+    },
+    {
+      "key": "UI/Battle/battle_element_icon_water.png",
+      "path": "res://assets/imported/UI/Battle/battle_element_icon_water.png",
+      "pixels": [
+        51,
+        64
+      ],
+      "mode": "RGBA",
+      "sha256": "adb9b495769a605341f9bd203e8fc0c39b7cefef4be6d907314b55efceb2a844"
+    },
+    {
+      "key": "UI/Battle/battle_element_icon_wood.png",
+      "path": "res://assets/imported/UI/Battle/battle_element_icon_wood.png",
+      "pixels": [
+        51,
+        64
+      ],
+      "mode": "RGBA",
+      "sha256": "89275eab810e4d5610cc4e1a20f33eb512598cdc475d4869ea9b554ce4bebfd8"
+    },
+    {
+      "key": "UI/Battle/battle_enemy_hp_fill.png",
+      "path": "res://assets/imported/UI/Battle/battle_enemy_hp_fill.png",
+      "pixels": [
+        220,
+        19
+      ],
+      "mode": "RGBA",
+      "sha256": "64ab984c23083f100c0f6aa8093c4516f73e7269ba3b8627570b7911c46da1b3"
+    },
+    {
+      "key": "UI/Battle/battle_enemy_hp_track.png",
+      "path": "res://assets/imported/UI/Battle/battle_enemy_hp_track.png",
+      "pixels": [
+        240,
+        22
+      ],
+      "mode": "RGB",
+      "sha256": "2c3a3ad3d9ca1f0e424378933555e463287245366a8b207f3563c7520848c5a6"
+    },
+    {
+      "key": "UI/Battle/battle_energy_cell_lit.png",
+      "path": "res://assets/imported/UI/Battle/battle_energy_cell_lit.png",
+      "pixels": [
+        71,
+        36
+      ],
+      "mode": "RGBA",
+      "sha256": "5243e421b6df9741eef2aa3b365f04d99b017d87ab334229e08d192cc9d203d9"
+    },
+    {
+      "key": "UI/Battle/battle_energy_cell_unlit.png",
+      "path": "res://assets/imported/UI/Battle/battle_energy_cell_unlit.png",
+      "pixels": [
+        86,
+        32
+      ],
+      "mode": "RGBA",
+      "sha256": "005199d6a8d27edd860f90dfa09dec198cb43964e1da434b43e01af904abd0d0"
+    },
+    {
+      "key": "UI/Battle/battle_energy_ring.png",
+      "path": "res://assets/imported/UI/Battle/battle_energy_ring.png",
+      "pixels": [
+        112,
+        130
+      ],
+      "mode": "RGBA",
+      "sha256": "637563af30fba8987efe95ffef45cf96f202f3e83feb3f53dad49f61ddc2b2f4"
+    },
+    {
+      "key": "UI/Battle/battle_energy_ring_clean.png",
+      "path": "res://assets/imported/UI/Battle/battle_energy_ring_clean.png",
+      "pixels": [
+        112,
+        130
+      ],
+      "mode": "RGBA",
+      "sha256": "db2bc5f55b0483bd928d7a5c29e6ef5f8ed839843ae7750dd0cc3c2262a6e2a5"
+    },
+    {
+      "key": "UI/Battle/battle_energy_track.png",
+      "path": "res://assets/imported/UI/Battle/battle_energy_track.png",
+      "pixels": [
+        250,
+        40
+      ],
+      "mode": "RGBA",
+      "sha256": "ff8edbddd9458df09a72920fdf5690c737dda324f26cbcc7970f4d1cd8ef267f"
+    },
+    {
+      "key": "UI/Battle/battle_hand_panel.png",
+      "path": "res://assets/imported/UI/Battle/battle_hand_panel.png",
+      "pixels": [
+        1165,
+        360
+      ],
+      "mode": "RGBA",
+      "sha256": "867d2e425778953a83ab6ba45f7067f2e7655f266e34ac43f8fa005833a2ef94"
+    },
+    {
+      "key": "UI/Battle/battle_heart_icon.png",
+      "path": "res://assets/imported/UI/Battle/battle_heart_icon.png",
+      "pixels": [
+        51,
+        36
+      ],
+      "mode": "RGBA",
+      "sha256": "8d3152d61a34700142fad459447771c17dc04a5a3659e953215ffb133b0ffa70"
+    },
+    {
+      "key": "UI/Battle/battle_play_button.png",
+      "path": "res://assets/imported/UI/Battle/battle_play_button.png",
+      "pixels": [
+        183,
+        143
+      ],
+      "mode": "RGBA",
+      "sha256": "8ca1968c137d86495802ec5e225430718892f973f05fa328d05e1cff0bd8c26d"
+    },
+    {
+      "key": "UI/Battle/battle_play_button_generated.png",
+      "path": "res://assets/imported/UI/Battle/battle_play_button_generated.png",
+      "pixels": [
+        220,
+        89
+      ],
+      "mode": "RGBA",
+      "sha256": "848d88af7094b4aaace804cc5c63b104cb0983537fd591959284f22103f8edc8"
+    },
+    {
+      "key": "UI/Battle/battle_player_frame.png",
+      "path": "res://assets/imported/UI/Battle/battle_player_frame.png",
+      "pixels": [
+        139,
+        148
+      ],
+      "mode": "RGBA",
+      "sha256": "93dee9641866b43fbde39d31defbfca145a1d9a7dd9ebe560a90d1fb0c984205"
+    },
+    {
+      "key": "UI/Battle/battle_player_hp_fill.png",
+      "path": "res://assets/imported/UI/Battle/battle_player_hp_fill.png",
+      "pixels": [
+        141,
+        17
+      ],
+      "mode": "RGBA",
+      "sha256": "1609e590a95c3d7050498a5ae6ef5970be30f5fbb6821255559a3f7d09ea1e19"
+    },
+    {
+      "key": "UI/Battle/battle_player_hp_track.png",
+      "path": "res://assets/imported/UI/Battle/battle_player_hp_track.png",
+      "pixels": [
+        242,
+        34
+      ],
+      "mode": "RGB",
+      "sha256": "826313525de8214d2138ccc58d4bc5d84d840e354c9dfa3de71106ef64c37327"
+    },
+    {
+      "key": "UI/Battle/battle_player_nameplate.png",
+      "path": "res://assets/imported/UI/Battle/battle_player_nameplate.png",
+      "pixels": [
+        138,
+        42
+      ],
+      "mode": "RGB",
+      "sha256": "e3f6521215fc814df34511164323a5d8995c33b2ef06c20abfad5d215ce6a11a"
+    },
+    {
+      "key": "UI/Battle/battle_preview_bar.png",
+      "path": "res://assets/imported/UI/Battle/battle_preview_bar.png",
+      "pixels": [
+        630,
+        90
+      ],
+      "mode": "RGBA",
+      "sha256": "f06ca6dff5b5fc351c4ddf4a4e74f64fbcdc557eaceb71225cc5a527ae0f0007"
+    },
+    {
+      "key": "UI/Battle/battle_shield_badge.png",
+      "path": "res://assets/imported/UI/Battle/battle_shield_badge.png",
+      "pixels": [
+        80,
+        94
+      ],
+      "mode": "RGBA",
+      "sha256": "73308af0bdb68c868ec4d239c5192882a444747cd958cbdfd72096fcfb92819c"
+    },
+    {
+      "key": "UI/Battle/battle_title_plate.png",
+      "path": "res://assets/imported/UI/Battle/battle_title_plate.png",
+      "pixels": [
+        281,
+        75
+      ],
+      "mode": "RGBA",
+      "sha256": "8101126892ad337cee79bb91ba46b1075b3f48e9bf2ad9232c39912bc50f3725"
+    },
+    {
+      "key": "UI/Battle/element_earth_clean.png",
+      "path": "res://assets/imported/UI/Battle/element_earth_clean.png",
+      "pixels": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "10fc54c67e3d536c0fad5876f17cd1c4978094c6505424bc9d290a7dc8d6d407"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_action_button_blue.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_action_button_blue.png",
+      "pixels": [
+        488,
+        96
+      ],
+      "mode": "RGBA",
+      "sha256": "ff8f0337b322ff61f9916128c72bcbcd1436777b5983246a0bf5a4a7238130d5"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_action_button_orange.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_action_button_orange.png",
+      "pixels": [
+        488,
+        96
+      ],
+      "mode": "RGBA",
+      "sha256": "28769eba5b1976475e08e9d77a0fbfb2ecc959e9e26fe6a74754e5b67d637fcf"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_back_button_normal.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_back_button_normal.png",
+      "pixels": [
+        136,
+        112
+      ],
+      "mode": "RGBA",
+      "sha256": "a4fb3a5b840076a956e89104e92c817e18fa6878c1dc40690cf891d4999dfb04"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_background_normal.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_background_normal.png",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "mode": "RGBA",
+      "sha256": "2c0273a3891bf64f403df8f3220a7efb186603c60a33e23e17815812253befd9"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_close_button_normal.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_close_button_normal.png",
+      "pixels": [
+        104,
+        88
+      ],
+      "mode": "RGBA",
+      "sha256": "b4d07adc906fe4f3e1d890a88c1b5b063efa11615935295fb2b2c4bfeba3e96b"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_deck_button_normal.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_deck_button_normal.png",
+      "pixels": [
+        192,
+        76
+      ],
+      "mode": "RGBA",
+      "sha256": "ab6172feeddd2575d45847e6338c7561fb6b6756878686302d2ddd2fa0d3210e"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_dialog_panel_normal.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_dialog_panel_normal.png",
+      "pixels": [
+        1128,
+        900
+      ],
+      "mode": "RGBA",
+      "sha256": "add2982054b5f7d82c6d4aa6e1196a357c13fb5faee6c0511ec55bde883430fc"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_filter_button_blue.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_filter_button_blue.png",
+      "pixels": [
+        112,
+        72
+      ],
+      "mode": "RGBA",
+      "sha256": "b22873acbcc9273a80174c814222e91f397d389f5b8049b1f69f899919127f39"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_filter_button_blue_selected.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_filter_button_blue_selected.png",
+      "pixels": [
+        112,
+        72
+      ],
+      "mode": "RGBA",
+      "sha256": "bd2019f0405da3e59ff55c5b8f601bc9270a8d4c0c9346c18a397575545b6781"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_filter_button_green.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_filter_button_green.png",
+      "pixels": [
+        112,
+        72
+      ],
+      "mode": "RGBA",
+      "sha256": "7b9dfb991328f0b6d7b337c987995d335a0ee3b18a2febc75d101c3ff45c871a"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_filter_button_green_selected.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_filter_button_green_selected.png",
+      "pixels": [
+        112,
+        72
+      ],
+      "mode": "RGBA",
+      "sha256": "fb7864776e8b8bceef2aa89863a05cf1dd97c1ff0bfaca90e3c58b8a723e2d05"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_filter_button_orange.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_filter_button_orange.png",
+      "pixels": [
+        112,
+        72
+      ],
+      "mode": "RGBA",
+      "sha256": "481990ed73a6ebd6e96ae24bf27d49f47790f53020ba6512df0f71bdcbcf7e73"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_filter_button_orange_selected.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_filter_button_orange_selected.png",
+      "pixels": [
+        112,
+        72
+      ],
+      "mode": "RGBA",
+      "sha256": "997b7f2862c37ee28f3c93f602ffe2fe377153dd1e2482ce75292dccfca13013"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_filter_button_purple.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_filter_button_purple.png",
+      "pixels": [
+        112,
+        72
+      ],
+      "mode": "RGBA",
+      "sha256": "db293b19e8401d05fb688b5c0c265d0e7ffec36e3656c4d3a27101a790eb6166"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_filter_button_purple_selected.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_filter_button_purple_selected.png",
+      "pixels": [
+        112,
+        72
+      ],
+      "mode": "RGBA",
+      "sha256": "52bbb4e3604e3962785dcfb8228b43e32fd81f67b8a5e844d0fa5e7d200a466f"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_filter_button_selected.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_filter_button_selected.png",
+      "pixels": [
+        112,
+        72
+      ],
+      "mode": "RGBA",
+      "sha256": "e61feadcdd5ba838458f8f40d26b10924b83024d22f62cf52848f58cda1a2a3a"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_filter_button_white.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_filter_button_white.png",
+      "pixels": [
+        112,
+        72
+      ],
+      "mode": "RGBA",
+      "sha256": "882b6639dbeb504f3c6889e435d26c4fae1758a3ef46a8cbc4da3c275e5aad61"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_filter_button_white_selected.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_filter_button_white_selected.png",
+      "pixels": [
+        112,
+        72
+      ],
+      "mode": "RGBA",
+      "sha256": "dce2b1ee642e061bb6ecaf710b0b76bf0f3154b7f53b7fb4ba8dc93630558c90"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_scroll_thumb_normal.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_scroll_thumb_normal.png",
+      "pixels": [
+        24,
+        100
+      ],
+      "mode": "RGBA",
+      "sha256": "0d6f3bf0eb185325cb681651ebf1f127cac5ddd37744c8134e451fba88bf1a30"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_scroll_track_normal.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_scroll_track_normal.png",
+      "pixels": [
+        24,
+        668
+      ],
+      "mode": "RGBA",
+      "sha256": "c1e6434c6f8bb6e174176c7296d2d285da403ff4d0fd5a3c44195b5c3763baaa"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_search_field_normal.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_search_field_normal.png",
+      "pixels": [
+        640,
+        72
+      ],
+      "mode": "RGBA",
+      "sha256": "9dde41a6982dbec6e7b9ef3ae5f62c82075696edbf9e6c464c033ed3ef00cea9"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_tag_earth.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_tag_earth.png",
+      "pixels": [
+        160,
+        64
+      ],
+      "mode": "RGBA",
+      "sha256": "13726f51758e93afae0f9de016a99e06561ff3019cd0f61af2f0933cf023a1b6"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_tag_metal.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_tag_metal.png",
+      "pixels": [
+        160,
+        64
+      ],
+      "mode": "RGBA",
+      "sha256": "edfbbf8f3de90c0c42aced0220de9506c9e5713ecbb716ddb8d23d2e74f8e839"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_tag_normal.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_tag_normal.png",
+      "pixels": [
+        160,
+        64
+      ],
+      "mode": "RGBA",
+      "sha256": "19e106f7ab617b0badeec41ff16e9bd0e6b9aa6284e6e1e53f2bbd45e629c622"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_tag_orange.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_tag_orange.png",
+      "pixels": [
+        160,
+        64
+      ],
+      "mode": "RGBA",
+      "sha256": "f223afb7bf4798dbe8d65490bf02cddf2aa9cdcc987e00741abd1c0ac11cc29c"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_tag_q_blue.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_tag_q_blue.png",
+      "pixels": [
+        160,
+        64
+      ],
+      "mode": "RGBA",
+      "sha256": "692fcb61b6f95addfc085c055cc097dd450e0543882bab9cab52e98f1b28a590"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_tag_q_green.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_tag_q_green.png",
+      "pixels": [
+        160,
+        64
+      ],
+      "mode": "RGBA",
+      "sha256": "e5a9c31f7b8bfa4f38a2ad1fc1971d3202c7a8796b943e02351f2d0b432b51dc"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_tag_q_orange.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_tag_q_orange.png",
+      "pixels": [
+        160,
+        64
+      ],
+      "mode": "RGBA",
+      "sha256": "daadee4a76f977ae33912e315c31e6ff2f1e96923ed8d66daaac77ee6d6757e4"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_tag_q_purple.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_tag_q_purple.png",
+      "pixels": [
+        160,
+        64
+      ],
+      "mode": "RGBA",
+      "sha256": "2fbfb518d372c93cb475ec6edb17286b293a87a76c62c22b929263476bed3f3e"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_tag_water.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_tag_water.png",
+      "pixels": [
+        160,
+        64
+      ],
+      "mode": "RGBA",
+      "sha256": "7d4336cae42cc17ad651a4ca13fb036140371a09f654ab80700fcb285713b031"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_tag_wood.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_tag_wood.png",
+      "pixels": [
+        160,
+        64
+      ],
+      "mode": "RGBA",
+      "sha256": "56bf1159a1b2691f1b5ec5c58d4dc64269fbfbfb019c68e75a83621017e034aa"
+    },
+    {
+      "key": "UI/CardCodex/card_codex_title_bar_normal.png",
+      "path": "res://assets/imported/UI/CardCodex/card_codex_title_bar_normal.png",
+      "pixels": [
+        1770,
+        112
+      ],
+      "mode": "RGBA",
+      "sha256": "9d40252d718569e13efefde5c75349d9bfbaa39aa41ed1cd721fc69a4c85d3bd"
+    },
+    {
+      "key": "UI/Cards/card_frame_monster_clean.png",
+      "path": "res://assets/imported/UI/Cards/card_frame_monster_clean.png",
+      "pixels": [
+        955,
+        1647
+      ],
+      "mode": "RGBA",
+      "sha256": "3b50bf66192daaa1d2be4a22ea10601d8c10d41cd31f728164ca307ba0044ce5"
+    },
+    {
+      "key": "UI/Characters/guardian_consistent.png",
+      "path": "res://assets/imported/UI/Characters/guardian_consistent.png",
+      "pixels": [
+        768,
+        1152
+      ],
+      "mode": "RGBA",
+      "sha256": "0b653d095b860195f8420b60b86a97aaa411094cf692f4d4bac854f21cdea691"
+    },
+    {
+      "key": "UI/Characters/priest_consistent.png",
+      "path": "res://assets/imported/UI/Characters/priest_consistent.png",
+      "pixels": [
+        768,
+        1152
+      ],
+      "mode": "RGBA",
+      "sha256": "12c338a431f3c92766e5c73b8c21b56ec2c9806ded96267c867340bb799612cc"
+    },
+    {
+      "key": "UI/Codex/btn_auto_build.png",
+      "path": "res://assets/imported/UI/Codex/btn_auto_build.png",
+      "pixels": [
+        391,
+        95
+      ],
+      "mode": "RGBA",
+      "sha256": "07f1e79571afb5b10134a2a38c8d495450896e43bfaab134abe8588da9d9eb9f"
+    },
+    {
+      "key": "UI/Codex/btn_done_build.png",
+      "path": "res://assets/imported/UI/Codex/btn_done_build.png",
+      "pixels": [
+        379,
+        85
+      ],
+      "mode": "RGBA",
+      "sha256": "ebd750a96e54fd60113f4238bd863f32bb4f543316aa74bde0097d855aa34df0"
+    },
+    {
+      "key": "UI/Codex/card_art_mask.png",
+      "path": "res://assets/imported/UI/Codex/card_art_mask.png",
+      "pixels": [
+        233,
+        388
+      ],
+      "mode": "RGBA",
+      "sha256": "81b2a8a3bbf0e66cf80164f9ff40dc4d270973e41ee68d246c9c8dd5166fbb9e"
+    },
+    {
+      "key": "UI/Codex/card_value_panel.png",
+      "path": "res://assets/imported/UI/Codex/card_value_panel.png",
+      "pixels": [
+        261,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "35dff173bcbd2f75b842fd39c49646296956c209de8c9f47068ee3efe22f5e20"
+    },
+    {
+      "key": "UI/Codex/class_badge.png",
+      "path": "res://assets/imported/UI/Codex/class_badge.png",
+      "pixels": [
+        100,
+        100
+      ],
+      "mode": "RGBA",
+      "sha256": "644973d6150fde9844d7036985e8b7703765755eab632799110b4541d48580c8"
+    },
+    {
+      "key": "UI/Codex/class_badge_guardian.png",
+      "path": "res://assets/imported/UI/Codex/class_badge_guardian.png",
+      "pixels": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "sha256": "e9d6eee889f235dc39eada1d13d39c36a4d1ee2ade32f001885f7f34ddb985cf"
+    },
+    {
+      "key": "UI/Codex/class_badge_mage.png",
+      "path": "res://assets/imported/UI/Codex/class_badge_mage.png",
+      "pixels": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "sha256": "e0a2a0f5c1eaf15515dbd13d0690c63379996badb027d0cee4f67b6db4b22ae1"
+    },
+    {
+      "key": "UI/Codex/class_badge_priest.png",
+      "path": "res://assets/imported/UI/Codex/class_badge_priest.png",
+      "pixels": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "sha256": "6d6c27f1f51842562d33db8d1e9d8e4397081b60a5d81ed81fa379265deee754"
+    },
+    {
+      "key": "UI/Codex/deck_row_blue.png",
+      "path": "res://assets/imported/UI/Codex/deck_row_blue.png",
+      "pixels": [
+        406,
+        56
+      ],
+      "mode": "RGBA",
+      "sha256": "9e5587351c2ea25178290b3aa8bf7f674bb587d1600646029fd490679d79a1e2"
+    },
+    {
+      "key": "UI/Codex/deck_row_green.png",
+      "path": "res://assets/imported/UI/Codex/deck_row_green.png",
+      "pixels": [
+        406,
+        55
+      ],
+      "mode": "RGBA",
+      "sha256": "588e68e5eac359c8f8f8b126feaff56d2c88d17873161a0b6b85db529c92b5a4"
+    },
+    {
+      "key": "UI/Codex/deck_row_orange.png",
+      "path": "res://assets/imported/UI/Codex/deck_row_orange.png",
+      "pixels": [
+        406,
+        57
+      ],
+      "mode": "RGBA",
+      "sha256": "92c2ae2dcd7b21e4ef5162f184b1a1e32e274130f16995101a20ff111cc6f794"
+    },
+    {
+      "key": "UI/Codex/deck_row_purple.png",
+      "path": "res://assets/imported/UI/Codex/deck_row_purple.png",
+      "pixels": [
+        406,
+        55
+      ],
+      "mode": "RGBA",
+      "sha256": "5f9c4f0640f28ba20cc8507eb77a151a74ee6c331c5178298c35fd7619fa03d8"
+    },
+    {
+      "key": "UI/Codex/deck_row_white.png",
+      "path": "res://assets/imported/UI/Codex/deck_row_white.png",
+      "pixels": [
+        406,
+        59
+      ],
+      "mode": "RGBA",
+      "sha256": "aafb1c96ad0d708ffed3f5f0c2305d973d3935b466beaf25242a161087dd3719"
+    },
+    {
+      "key": "UI/Codex/deck_title_bar.png",
+      "path": "res://assets/imported/UI/Codex/deck_title_bar.png",
+      "pixels": [
+        3213,
+        394
+      ],
+      "mode": "RGBA",
+      "sha256": "fbf674a808402c897c0b72e6e799f9959890c269e60d2bdea1e63af2d1e6c7e7"
+    },
+    {
+      "key": "UI/Codex/filter_blue.png",
+      "path": "res://assets/imported/UI/Codex/filter_blue.png",
+      "pixels": [
+        631,
+        492
+      ],
+      "mode": "RGBA",
+      "sha256": "34e5a71ba3679761303929132dbc94e38f43eb72c046a21e404ac192ce9a4729"
+    },
+    {
+      "key": "UI/Codex/filter_green.png",
+      "path": "res://assets/imported/UI/Codex/filter_green.png",
+      "pixels": [
+        644,
+        504
+      ],
+      "mode": "RGBA",
+      "sha256": "0e427d5a9cad16dc21686968aa44e6ed6b6bf23dcb43a884f1d81552128b5caf"
+    },
+    {
+      "key": "UI/Codex/filter_orange.png",
+      "path": "res://assets/imported/UI/Codex/filter_orange.png",
+      "pixels": [
+        621,
+        470
+      ],
+      "mode": "RGBA",
+      "sha256": "4aa7173c6e8236a726728285bf39454a6dde50c8180584af383cce5ca91bf6b3"
+    },
+    {
+      "key": "UI/Codex/filter_purple.png",
+      "path": "res://assets/imported/UI/Codex/filter_purple.png",
+      "pixels": [
+        636,
+        496
+      ],
+      "mode": "RGBA",
+      "sha256": "c5687a0873d164b72cf666aa77967719e2789d517569deca0f0f49928ba8b373"
+    },
+    {
+      "key": "UI/Codex/filter_white.png",
+      "path": "res://assets/imported/UI/Codex/filter_white.png",
+      "pixels": [
+        616,
+        486
+      ],
+      "mode": "RGBA",
+      "sha256": "b161d462b0bd27cb4dccf49bc05ca9be30f890a240c93e880d9ada2131b8a618"
+    },
+    {
+      "key": "UI/Codex/mana_cost_badge.png",
+      "path": "res://assets/imported/UI/Codex/mana_cost_badge.png",
+      "pixels": [
+        100,
+        100
+      ],
+      "mode": "RGBA",
+      "sha256": "f8cf78019c5970f5b1752140a6671f118d76f4ef49dfdf280b80b7d72f4c8091"
+    },
+    {
+      "key": "UI/Codex/qframe_blue.png",
+      "path": "res://assets/imported/UI/Codex/qframe_blue.png",
+      "pixels": [
+        218,
+        376
+      ],
+      "mode": "RGBA",
+      "sha256": "079f3ef5511aa5556510c9839a9fdd3c844773c11b058042e47c990698ab174e"
+    },
+    {
+      "key": "UI/Codex/qframe_common.png",
+      "path": "res://assets/imported/UI/Codex/qframe_common.png",
+      "pixels": [
+        218,
+        376
+      ],
+      "mode": "RGBA",
+      "sha256": "dc056d951114952015d8e89799e0c8704561ac7ae6697cb51dba8899e7b4201b"
+    },
+    {
+      "key": "UI/Codex/qframe_empty_gray.png",
+      "path": "res://assets/imported/UI/Codex/qframe_empty_gray.png",
+      "pixels": [
+        772,
+        1295
+      ],
+      "mode": "RGBA",
+      "sha256": "f71495247058ff3fa197a02f98c5544b5ffeea367b3c81c53f367f581ba2ddd4"
+    },
+    {
+      "key": "UI/Codex/qframe_green.png",
+      "path": "res://assets/imported/UI/Codex/qframe_green.png",
+      "pixels": [
+        218,
+        376
+      ],
+      "mode": "RGBA",
+      "sha256": "7273918b03d08a3c5fd141446aa761ee6a9f0a5f29581db00eb968f3e6350d4b"
+    },
+    {
+      "key": "UI/Codex/qframe_orange.png",
+      "path": "res://assets/imported/UI/Codex/qframe_orange.png",
+      "pixels": [
+        218,
+        376
+      ],
+      "mode": "RGBA",
+      "sha256": "9b8edf057696339d388ddbdad39f4c3320f46301cff8e871f8a12bedffacf37c"
+    },
+    {
+      "key": "UI/Codex/qframe_purple.png",
+      "path": "res://assets/imported/UI/Codex/qframe_purple.png",
+      "pixels": [
+        218,
+        376
+      ],
+      "mode": "RGBA",
+      "sha256": "b7ce5477244fba5ae35c326a70095363963eb7476dd51564845155a35fc27e2d"
+    },
+    {
+      "key": "UI/Codex/qframe_selected.png",
+      "path": "res://assets/imported/UI/Codex/qframe_selected.png",
+      "pixels": [
+        218,
+        376
+      ],
+      "mode": "RGBA",
+      "sha256": "5e093935860920833a43faaf06d7b3bdea6bb0153fd0454f07796ae6aac2332e"
+    },
+    {
+      "key": "UI/Codex/qframe_white.png",
+      "path": "res://assets/imported/UI/Codex/qframe_white.png",
+      "pixels": [
+        218,
+        376
+      ],
+      "mode": "RGBA",
+      "sha256": "db99a6a11e02ca8ae1fd49e7649d8612a9d108f370651e1b8b6d1bfd200d07b8"
+    },
+    {
+      "key": "UI/Codex/search_box.png",
+      "path": "res://assets/imported/UI/Codex/search_box.png",
+      "pixels": [
+        2656,
+        280
+      ],
+      "mode": "RGBA",
+      "sha256": "2a6ecdccebe0d319c3cad82ba58462373ff4186a05c6c2d1daf3ba58ff773056"
+    },
+    {
+      "key": "UI/Codex/tab_active.png",
+      "path": "res://assets/imported/UI/Codex/tab_active.png",
+      "pixels": [
+        2355,
+        505
+      ],
+      "mode": "RGBA",
+      "sha256": "ef0915e02d7f6675a770e191a2e8c218627f83dc574c76d0236f512e41dc8601"
+    },
+    {
+      "key": "UI/Codex/tab_inactive.png",
+      "path": "res://assets/imported/UI/Codex/tab_inactive.png",
+      "pixels": [
+        2136,
+        471
+      ],
+      "mode": "RGBA",
+      "sha256": "005530f828954655806640ef09e2fd9d990790cd0d04f672a2d57f15c5666542"
+    },
+    {
+      "key": "UI/Codex/title_plate.png",
+      "path": "res://assets/imported/UI/Codex/title_plate.png",
+      "pixels": [
+        2715,
+        679
+      ],
+      "mode": "RGBA",
+      "sha256": "be44c22d23fbd70209970ed7e56a130df59389871e281218f78a7c6fef40c590"
+    },
+    {
+      "key": "UI/Encounter/encounter_background.png",
+      "path": "res://assets/imported/UI/Encounter/encounter_background.png",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "mode": "RGBA",
+      "sha256": "8ba11bd59a038dd6fc62d2cf8e339ab2a82840bb11ce271fe7413008064b4d5c"
+    },
+    {
+      "key": "UI/Encounter/encounter_enemy_frame_normal.png",
+      "path": "res://assets/imported/UI/Encounter/encounter_enemy_frame_normal.png",
+      "pixels": [
+        288,
+        288
+      ],
+      "mode": "RGBA",
+      "sha256": "88e875fc375398f19edffec73ceeadbfb587b1a7145f991a694cd30d8dfbb11c"
+    },
+    {
+      "key": "UI/Encounter/encounter_escape_panel_normal.png",
+      "path": "res://assets/imported/UI/Encounter/encounter_escape_panel_normal.png",
+      "pixels": [
+        240,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "91090fbb82e1c287a96bcd329f7064d1f3ff2b2060f05cddc3e73eafc568055a"
+    },
+    {
+      "key": "UI/Encounter/encounter_hand_panel_blue.png",
+      "path": "res://assets/imported/UI/Encounter/encounter_hand_panel_blue.png",
+      "pixels": [
+        800,
+        320
+      ],
+      "mode": "RGBA",
+      "sha256": "920d550a6f3d0de4c693ba5ce5a18e65ffa4841ddd36b89340e494a25168cac6"
+    },
+    {
+      "key": "UI/Encounter/encounter_hand_panel_red.png",
+      "path": "res://assets/imported/UI/Encounter/encounter_hand_panel_red.png",
+      "pixels": [
+        800,
+        320
+      ],
+      "mode": "RGBA",
+      "sha256": "54c6eced1e68b927a8e2751a28c3097ab4e791b477fd214c698c87b80f314fd4"
+    },
+    {
+      "key": "UI/Encounter/encounter_hp_fill_normal.png",
+      "path": "res://assets/imported/UI/Encounter/encounter_hp_fill_normal.png",
+      "pixels": [
+        416,
+        36
+      ],
+      "mode": "RGBA",
+      "sha256": "78d2bf3a48ce69939259e9e46adb3d1405a8d0ec718c46e4043284cbd98c5acb"
+    },
+    {
+      "key": "UI/Encounter/encounter_hp_track_normal.png",
+      "path": "res://assets/imported/UI/Encounter/encounter_hp_track_normal.png",
+      "pixels": [
+        448,
+        48
+      ],
+      "mode": "RGBA",
+      "sha256": "ca3b8a0675e55bce40cac5c5b46908096055861543358bd69ff87ed54f63abf9"
+    },
+    {
+      "key": "UI/Encounter/encounter_lock_icon_normal.png",
+      "path": "res://assets/imported/UI/Encounter/encounter_lock_icon_normal.png",
+      "pixels": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "sha256": "40b0383a0e7b237ebed9a07d36e8d177e95a13bbe494f77d30c0702494c7fd17"
+    },
+    {
+      "key": "UI/Encounter/encounter_play_button_normal.png",
+      "path": "res://assets/imported/UI/Encounter/encounter_play_button_normal.png",
+      "pixels": [
+        192,
+        192
+      ],
+      "mode": "RGBA",
+      "sha256": "da670c4780b10453b44ffd7fc70b0c4c38aaf3914192d70fcdf107ef2fa03210"
+    },
+    {
+      "key": "UI/Encounter/encounter_player_frame_normal.png",
+      "path": "res://assets/imported/UI/Encounter/encounter_player_frame_normal.png",
+      "pixels": [
+        288,
+        288
+      ],
+      "mode": "RGBA",
+      "sha256": "a71aa91e640f58891eccd06eececb5ce82d899936e5ef8edde59349194a34aa3"
+    },
+    {
+      "key": "UI/Encounter/encounter_status_icon_guardian.png",
+      "path": "res://assets/imported/UI/Encounter/encounter_status_icon_guardian.png",
+      "pixels": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "sha256": "bc6a0bd9071d9d15c759e8ead401d7391608126091ad57b658d65c7afd1e399a"
+    },
+    {
+      "key": "UI/Encounter/encounter_status_icon_mage.png",
+      "path": "res://assets/imported/UI/Encounter/encounter_status_icon_mage.png",
+      "pixels": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "sha256": "de72811172fd88d75dfbd3f2f982d16e51b3cc1c65690910b7f986e3a0ba7712"
+    },
+    {
+      "key": "UI/Encounter/encounter_status_panel_normal.png",
+      "path": "res://assets/imported/UI/Encounter/encounter_status_panel_normal.png",
+      "pixels": [
+        408,
+        112
+      ],
+      "mode": "RGBA",
+      "sha256": "f1276b0ca2801f4b1985cef384ced324d974bc039757eea624e02ebdca080514"
+    },
+    {
+      "key": "UI/Encounter/encounter_timer_ring_normal.png",
+      "path": "res://assets/imported/UI/Encounter/encounter_timer_ring_normal.png",
+      "pixels": [
+        192,
+        192
+      ],
+      "mode": "RGBA",
+      "sha256": "2d5aa0e01073083bff868946537c642277570fef9684eea8da92b072e02a7aed"
+    },
+    {
+      "key": "UI/Encounter/encounter_title_plate_normal.png",
+      "path": "res://assets/imported/UI/Encounter/encounter_title_plate_normal.png",
+      "pixels": [
+        384,
+        96
+      ],
+      "mode": "RGBA",
+      "sha256": "3ddf8efd585a522b919da0640057ff8c726f285529117f6b20510a6dcec530ad"
+    },
+    {
+      "key": "UI/Encounter/encounter_vs_emblem_normal.png",
+      "path": "res://assets/imported/UI/Encounter/encounter_vs_emblem_normal.png",
+      "pixels": [
+        160,
+        160
+      ],
+      "mode": "RGBA",
+      "sha256": "6dce29b8802500521f515992e95679e7013438276970167958f93e4f7767d4da"
+    },
+    {
+      "key": "UI/Encounter/passive_guardian_clean.png",
+      "path": "res://assets/imported/UI/Encounter/passive_guardian_clean.png",
+      "pixels": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "1c6b8f64eb90cbe20c730025aeb65987bea2b679bc1330aa6f0f2fa6457ae68c"
+    },
+    {
+      "key": "UI/Encounter/passive_mage_clean.png",
+      "path": "res://assets/imported/UI/Encounter/passive_mage_clean.png",
+      "pixels": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "b4afb6793eb9605086a16215fe691277f1433a2e9f31e76597bf0b1a8c984e08"
+    },
+    {
+      "key": "UI/Encounter/passive_priest_clean.png",
+      "path": "res://assets/imported/UI/Encounter/passive_priest_clean.png",
+      "pixels": [
+        128,
+        128
+      ],
+      "mode": "RGBA",
+      "sha256": "ed3529a9910d4c50e8e3d82206d1719a73a4bb3135485014eb6a521f0f701b1d"
+    },
+    {
+      "key": "UI/Enhance/armor_chest_art.png",
+      "path": "res://assets/imported/UI/Enhance/armor_chest_art.png",
+      "pixels": [
+        965,
+        1035
+      ],
+      "mode": "RGBA",
+      "sha256": "4ccb15766a26b6af8f28d4500e6b76f021415ca99d0b7c375854f9b0325eda9e"
+    },
+    {
+      "key": "UI/Enhance/background.png",
+      "path": "res://assets/imported/UI/Enhance/background.png",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "mode": "RGBA",
+      "sha256": "a63d143df2ec5218ecc629a0d43f3e10270dfe2ee8be931e5129216805b97b32"
+    },
+    {
+      "key": "UI/Enhance/btn_enhance.png",
+      "path": "res://assets/imported/UI/Enhance/btn_enhance.png",
+      "pixels": [
+        425,
+        92
+      ],
+      "mode": "RGBA",
+      "sha256": "581cd62256b247e026404572d2c330094cd9404c5d5ad13d66968ac739378573"
+    },
+    {
+      "key": "UI/Enhance/card_normal.png",
+      "path": "res://assets/imported/UI/Enhance/card_normal.png",
+      "pixels": [
+        405,
+        159
+      ],
+      "mode": "RGBA",
+      "sha256": "7ecf781edc513067b56f64f3e90f7641130682df335f3fad49f46458b5dcefd6"
+    },
+    {
+      "key": "UI/Enhance/card_selected.png",
+      "path": "res://assets/imported/UI/Enhance/card_selected.png",
+      "pixels": [
+        419,
+        176
+      ],
+      "mode": "RGBA",
+      "sha256": "57878c1fd5e9da0ca15419ce87b7e808b83de0ab69204e2c63e5898610e59f84"
+    },
+    {
+      "key": "UI/Enhance/display_clean.png",
+      "path": "res://assets/imported/UI/Enhance/display_clean.png",
+      "pixels": [
+        573,
+        1028
+      ],
+      "mode": "RGBA",
+      "sha256": "78581caaf2f573a5e36073dbb03cbe8d13000368c7da3d7787654489b3ee4bfc"
+    },
+    {
+      "key": "UI/Enhance/icon_fragment.png",
+      "path": "res://assets/imported/UI/Enhance/icon_fragment.png",
+      "pixels": [
+        47,
+        51
+      ],
+      "mode": "RGBA",
+      "sha256": "c5b387900d6d98a9b06cb2be71fa6d72bb30cf807d0d26011b6862b821775c85"
+    },
+    {
+      "key": "UI/Enhance/icon_staff.png",
+      "path": "res://assets/imported/UI/Enhance/icon_staff.png",
+      "pixels": [
+        994,
+        1135
+      ],
+      "mode": "RGBA",
+      "sha256": "1deb37724cb13acda33c3b05930dbfeda33426debc1f228982bf9c59409faaa9"
+    },
+    {
+      "key": "UI/Enhance/node_achieved.png",
+      "path": "res://assets/imported/UI/Enhance/node_achieved.png",
+      "pixels": [
+        62,
+        71
+      ],
+      "mode": "RGBA",
+      "sha256": "35fb00d26fd82532286899399793e5dde3d1464cf2f7d1bdc323d58897ce721a"
+    },
+    {
+      "key": "UI/Enhance/node_locked.png",
+      "path": "res://assets/imported/UI/Enhance/node_locked.png",
+      "pixels": [
+        65,
+        58
+      ],
+      "mode": "RGBA",
+      "sha256": "1d2f7eaa11a3f6bdc18875af5599ca4bbc54c5b59da02f87b859c211c6fed617"
+    },
+    {
+      "key": "UI/Enhance/node_target.png",
+      "path": "res://assets/imported/UI/Enhance/node_target.png",
+      "pixels": [
+        151,
+        86
+      ],
+      "mode": "RGBA",
+      "sha256": "81bc92c1e988046f52b0fc6697657b5d6db60f4825ccafb329bbd45b86870332"
+    },
+    {
+      "key": "UI/Enhance/weapon_mage_art.png",
+      "path": "res://assets/imported/UI/Enhance/weapon_mage_art.png",
+      "pixels": [
+        1275,
+        1662
+      ],
+      "mode": "RGBA",
+      "sha256": "07a58dc78f242c22116633dab826bb89b9522b90a848bb0195475f2c4452d425"
+    },
+    {
+      "key": "UI/Hall/background.jpg",
+      "path": "res://assets/imported/UI/Hall/background.jpg",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "mode": "RGB",
+      "sha256": "664138f38e7ad9992e4da2275c58ed0fd439a57d0e342300a3466dd3410575ec"
+    },
+    {
+      "key": "UI/Hall/class_card_frame_off.png",
+      "path": "res://assets/imported/UI/Hall/class_card_frame_off.png",
+      "pixels": [
+        928,
+        432
+      ],
+      "mode": "RGBA",
+      "sha256": "6c20052ff24401bd4dfbb868c6494519adbaf2fc54057139f6c5ff71030f7cac"
+    },
+    {
+      "key": "UI/Hall/class_card_frame_on.png",
+      "path": "res://assets/imported/UI/Hall/class_card_frame_on.png",
+      "pixels": [
+        928,
+        432
+      ],
+      "mode": "RGBA",
+      "sha256": "bb6f030d7e4fab8e01e45fdba4ce8bf19dee7817d5ab66fa057ef519676a3cac"
+    },
+    {
+      "key": "UI/Hall/class_card_heart.png",
+      "path": "res://assets/imported/UI/Hall/class_card_heart.png",
+      "pixels": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "sha256": "946eafbc70c8cb0f2b817a2db515082b2d00e1ed246de32bedad123c808a4528"
+    },
+    {
+      "key": "UI/Hall/class_card_portrait_guardian.png",
+      "path": "res://assets/imported/UI/Hall/class_card_portrait_guardian.png",
+      "pixels": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "94f89652540b173eb318c9dcc9a4379d2a75ddaff969a8e8f752ce465c6486fe"
+    },
+    {
+      "key": "UI/Hall/class_card_portrait_mage.png",
+      "path": "res://assets/imported/UI/Hall/class_card_portrait_mage.png",
+      "pixels": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "d4dffc8ee522f62ccdadd5418abe6f7b0cd8cfc000673a969a62100f4f094635"
+    },
+    {
+      "key": "UI/Hall/class_card_portrait_priest.png",
+      "path": "res://assets/imported/UI/Hall/class_card_portrait_priest.png",
+      "pixels": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "d4ec3c32b423e58308e956ecae39e32dbc89e796c08bbc747e68fb2e8713c7e4"
+    },
+    {
+      "key": "UI/Hall/entry_background.png",
+      "path": "res://assets/imported/UI/Hall/entry_background.png",
+      "pixels": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "c7c92c5d60d37844516b178bf22d82d99f0d09a814bab206642c1a272fb71a29"
+    },
+    {
+      "key": "UI/Hall/entry_frame.png",
+      "path": "res://assets/imported/UI/Hall/entry_frame.png",
+      "pixels": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "1d52f5184fbd7dd88de0428e7236b328ea67364f4ddd979645e179d4798078ff"
+    },
+    {
+      "key": "UI/Hall/entry_icon_deck_build.png",
+      "path": "res://assets/imported/UI/Hall/entry_icon_deck_build.png",
+      "pixels": [
+        1426,
+        1103
+      ],
+      "mode": "RGBA",
+      "sha256": "3f5dd09c710bee89f299c9ec2e1c67e55ce567a9f496c98f32c9c880c50a06d9"
+    },
+    {
+      "key": "UI/Hall/entry_icon_market.png",
+      "path": "res://assets/imported/UI/Hall/entry_icon_market.png",
+      "pixels": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "sha256": "e72a0b09871a688d0ed4d94e3c4d5db8a6c8c46413bb4612bed586283400e502"
+    },
+    {
+      "key": "UI/Hall/logo.png",
+      "path": "res://assets/imported/UI/Hall/logo.png",
+      "pixels": [
+        902,
+        226
+      ],
+      "mode": "RGBA",
+      "sha256": "61637bcdc41748a6dc7d60f0a6b67f81211a52e2c57dda7e63ccf5e536b99997"
+    },
+    {
+      "key": "UI/Hall/mail_button.png",
+      "path": "res://assets/imported/UI/Hall/mail_button.png",
+      "pixels": [
+        351,
+        351
+      ],
+      "mode": "RGBA",
+      "sha256": "d062247ff182c448f5ec91baf0dfb578525cbc58201a5e2d44a04f130544590f"
+    },
+    {
+      "key": "UI/Hall/match_button.png",
+      "path": "res://assets/imported/UI/Hall/match_button.png",
+      "pixels": [
+        1208,
+        317
+      ],
+      "mode": "RGBA",
+      "sha256": "840b3b88551524ab0d29d6c4b346140b7cdbf4b600c2a4259102c463fc540bb7"
+    },
+    {
+      "key": "UI/Hall/portal_background_clean.png",
+      "path": "res://assets/imported/UI/Hall/portal_background_clean.png",
+      "pixels": [
+        835,
+        550
+      ],
+      "mode": "RGBA",
+      "sha256": "48b8f00c9ec66d65e5d1a250a4a7b5431015c93a755a6247bf644b38b66e5623"
+    },
+    {
+      "key": "UI/Hall/settings_button.png",
+      "path": "res://assets/imported/UI/Hall/settings_button.png",
+      "pixels": [
+        352,
+        350
+      ],
+      "mode": "RGBA",
+      "sha256": "00cda5e037873749e50d94719ee3e4bb21df92a6122931c27578efd3180a131c"
+    },
+    {
+      "key": "UI/Hall/weapon_guardian.png",
+      "path": "res://assets/imported/UI/Hall/weapon_guardian.png",
+      "pixels": [
+        1301,
+        1741
+      ],
+      "mode": "RGBA",
+      "sha256": "c84e54d4fb82d7e4210dd519956e2a79791f2f97097b1a80957d81b824bae50d"
+    },
+    {
+      "key": "UI/Hall/weapon_panel.png",
+      "path": "res://assets/imported/UI/Hall/weapon_panel.png",
+      "pixels": [
+        556,
+        897
+      ],
+      "mode": "RGBA",
+      "sha256": "d034baa696080412ade83285dae7bc0ca3d3e741001a535b5862617a44f74dff"
+    },
+    {
+      "key": "UI/Hall/weapon_panel_clean.png",
+      "path": "res://assets/imported/UI/Hall/weapon_panel_clean.png",
+      "pixels": [
+        556,
+        897
+      ],
+      "mode": "RGBA",
+      "sha256": "80710bffa102f7a3a2a347d0e27d4597cbb0154bcd4081c02671121c20e636a9"
+    },
+    {
+      "key": "UI/Hall/weapon_priest.png",
+      "path": "res://assets/imported/UI/Hall/weapon_priest.png",
+      "pixels": [
+        769,
+        2035
+      ],
+      "mode": "RGBA",
+      "sha256": "0ae761c0b4458bf00c20370d4ed4dd86945336e6f7d7b2c7dd9d8b41f51426aa"
+    },
+    {
+      "key": "UI/Item/exploration_prep_item_icon_boots.png",
+      "path": "res://assets/imported/UI/Item/exploration_prep_item_icon_boots.png",
+      "pixels": [
+        192,
+        192
+      ],
+      "mode": "RGBA",
+      "sha256": "a6cc6c6a8357e4e0363261eeb7aae81cf221c316c321498d92c4d0ead912404e"
+    },
+    {
+      "key": "UI/Item/exploration_prep_item_icon_chest.png",
+      "path": "res://assets/imported/UI/Item/exploration_prep_item_icon_chest.png",
+      "pixels": [
+        192,
+        192
+      ],
+      "mode": "RGBA",
+      "sha256": "d0727a5f607efc8901774ef014ceaccfcd64ddff3288fb9f7cb443dea8dafb43"
+    },
+    {
+      "key": "UI/Item/exploration_prep_item_icon_fragments.png",
+      "path": "res://assets/imported/UI/Item/exploration_prep_item_icon_fragments.png",
+      "pixels": [
+        192,
+        192
+      ],
+      "mode": "RGBA",
+      "sha256": "2c5b5b3d5d7a357ec97b99f8eee79d1aa9fb8daafaebfdbc37f53e854e1153bc"
+    },
+    {
+      "key": "UI/Item/exploration_prep_item_icon_gauntlet.png",
+      "path": "res://assets/imported/UI/Item/exploration_prep_item_icon_gauntlet.png",
+      "pixels": [
+        192,
+        192
+      ],
+      "mode": "RGBA",
+      "sha256": "748e651b2528e1c973bcef922fc5cf29c4c44744bf40b46adeff6c44af42cd36"
+    },
+    {
+      "key": "UI/Item/exploration_prep_item_icon_gold.png",
+      "path": "res://assets/imported/UI/Item/exploration_prep_item_icon_gold.png",
+      "pixels": [
+        192,
+        192
+      ],
+      "mode": "RGBA",
+      "sha256": "d41baf85778a53cdeac7921d7143e19e0775cb3b7003cc0c5547e46a79a41f74"
+    },
+    {
+      "key": "UI/Item/exploration_prep_item_icon_guardian_soul.png",
+      "path": "res://assets/imported/UI/Item/exploration_prep_item_icon_guardian_soul.png",
+      "pixels": [
+        192,
+        192
+      ],
+      "mode": "RGBA",
+      "sha256": "9badb3d0ed779089fc3a5ad741b96258164ef0f581476f90ade2d145feb7464b"
+    },
+    {
+      "key": "UI/Item/exploration_prep_item_icon_helmet.png",
+      "path": "res://assets/imported/UI/Item/exploration_prep_item_icon_helmet.png",
+      "pixels": [
+        192,
+        192
+      ],
+      "mode": "RGBA",
+      "sha256": "cb6a00fa2178a41663089914a782c8030dd3405fe707baff9b18da7d32e4d379"
+    },
+    {
+      "key": "UI/Item/exploration_prep_item_icon_legs.png",
+      "path": "res://assets/imported/UI/Item/exploration_prep_item_icon_legs.png",
+      "pixels": [
+        192,
+        192
+      ],
+      "mode": "RGBA",
+      "sha256": "7f56e31c52fddc1a19a60ec2ffd252cad06fa8503b44059b0a092b594b26d8bb"
+    },
+    {
+      "key": "UI/Item/exploration_prep_item_icon_mage_soul.png",
+      "path": "res://assets/imported/UI/Item/exploration_prep_item_icon_mage_soul.png",
+      "pixels": [
+        192,
+        192
+      ],
+      "mode": "RGBA",
+      "sha256": "fd2ff56ddce4cec1fc4246a5d03d409b9f62b1cfe3113d8dcfe1cfe3d1ad7b69"
+    },
+    {
+      "key": "UI/Item/exploration_prep_item_icon_potion.png",
+      "path": "res://assets/imported/UI/Item/exploration_prep_item_icon_potion.png",
+      "pixels": [
+        192,
+        192
+      ],
+      "mode": "RGBA",
+      "sha256": "27402acd1dfe638b1888eecc66b71bd705ec565fc9854f3ed6c6c6c6f6d92233"
+    },
+    {
+      "key": "UI/Item/exploration_prep_item_icon_priest_soul.png",
+      "path": "res://assets/imported/UI/Item/exploration_prep_item_icon_priest_soul.png",
+      "pixels": [
+        192,
+        192
+      ],
+      "mode": "RGBA",
+      "sha256": "22af3a040d2fba7e18071fff0b5818db294d4a3465ddae239a4603a4b7e96fef"
+    },
+    {
+      "key": "UI/Item/exploration_prep_item_icon_warrior_soul.png",
+      "path": "res://assets/imported/UI/Item/exploration_prep_item_icon_warrior_soul.png",
+      "pixels": [
+        192,
+        192
+      ],
+      "mode": "RGBA",
+      "sha256": "8b34ce9113c3737a19b5805346e69bc9e7c469c1cb4eb296e59e78038043d30d"
+    },
+    {
+      "key": "UI/Item/exploration_prep_item_icon_weapon_guardian.png",
+      "path": "res://assets/imported/UI/Item/exploration_prep_item_icon_weapon_guardian.png",
+      "pixels": [
+        192,
+        192
+      ],
+      "mode": "RGBA",
+      "sha256": "8bf1409967242b55baafccc09313ddfe4f5722516d7c032f91d30e6555bc6c97"
+    },
+    {
+      "key": "UI/Item/exploration_prep_item_icon_weapon_mage.png",
+      "path": "res://assets/imported/UI/Item/exploration_prep_item_icon_weapon_mage.png",
+      "pixels": [
+        192,
+        192
+      ],
+      "mode": "RGBA",
+      "sha256": "d2c9818de6630084309080687df2553eeae44a1aaefe553760312ca4a60d818e"
+    },
+    {
+      "key": "UI/Item/exploration_prep_item_icon_weapon_priest.png",
+      "path": "res://assets/imported/UI/Item/exploration_prep_item_icon_weapon_priest.png",
+      "pixels": [
+        192,
+        192
+      ],
+      "mode": "RGBA",
+      "sha256": "217a43058049a06d28777e2b57cc4f8910d8b38ead28d0b71901695858212982"
+    },
+    {
+      "key": "UI/Monsters/annihilation_core_phase_1.png",
+      "path": "res://assets/imported/UI/Monsters/annihilation_core_phase_1.png",
+      "pixels": [
+        1024,
+        1024
+      ],
+      "mode": "RGBA",
+      "sha256": "38ae660e479a7112030e865afa241c7c9a23c450252fe49353bac7e7c6dae624"
+    },
+    {
+      "key": "UI/Monsters/annihilation_core_phase_2.png",
+      "path": "res://assets/imported/UI/Monsters/annihilation_core_phase_2.png",
+      "pixels": [
+        1024,
+        1024
+      ],
+      "mode": "RGBA",
+      "sha256": "7f7ab9110fab1baa5e60301ac8b19df6788b86c2f20ea5eaac5fdcd6e4896f1a"
+    },
+    {
+      "key": "UI/Monsters/fire_bat.png",
+      "path": "res://assets/imported/UI/Monsters/fire_bat.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "7085dd3354f617fb0a838462038b7e2ab358924e25dfae6d0c25ad22cbcdf550"
+    },
+    {
+      "key": "UI/Monsters/fire_bat_clean.png",
+      "path": "res://assets/imported/UI/Monsters/fire_bat_clean.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "d5e50669673ac54e7e9c51a4e0b6f2e877cdc8fb5dbbf20b7fd0b06c67a02bb3"
+    },
+    {
+      "key": "UI/Monsters/fire_herald.png",
+      "path": "res://assets/imported/UI/Monsters/fire_herald.png",
+      "pixels": [
+        1024,
+        1024
+      ],
+      "mode": "RGBA",
+      "sha256": "268f9c409450e85a267715e16058cee06154325147f43518d5b2cc467f2b4375"
+    },
+    {
+      "key": "UI/Monsters/frost_wraith.png",
+      "path": "res://assets/imported/UI/Monsters/frost_wraith.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "sha256": "e6aee65f8056a46700fd4268cada1f252afaf86e95d02622e45a1e25c45238fa"
+    },
+    {
+      "key": "UI/Monsters/frost_wraith_clean.png",
+      "path": "res://assets/imported/UI/Monsters/frost_wraith_clean.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "b72aa80328f324255a2751abac8ce1fdc04d472170dabe5583322650823d5a63"
+    },
+    {
+      "key": "UI/Monsters/marsh_mother.png",
+      "path": "res://assets/imported/UI/Monsters/marsh_mother.png",
+      "pixels": [
+        1024,
+        1024
+      ],
+      "mode": "RGBA",
+      "sha256": "f0e532030e7a6ca81469ec7249503dbb20f4cd6db6c78d10fab29551ff64a582"
+    },
+    {
+      "key": "UI/Monsters/metal_guard.png",
+      "path": "res://assets/imported/UI/Monsters/metal_guard.png",
+      "pixels": [
+        1024,
+        1024
+      ],
+      "mode": "RGBA",
+      "sha256": "d9fe184079ce36e48c71e4f53e19694bb4b0458f542f0dbf92ab29ed59c61e8b"
+    },
+    {
+      "key": "UI/Monsters/murk_polyp.png",
+      "path": "res://assets/imported/UI/Monsters/murk_polyp.png",
+      "pixels": [
+        1024,
+        1024
+      ],
+      "mode": "RGBA",
+      "sha256": "736245689892c5425abb7808ed953dad6b22ac3e1591e3f44c969507fcb0da63"
+    },
+    {
+      "key": "UI/Monsters/rustblade_rat.png",
+      "path": "res://assets/imported/UI/Monsters/rustblade_rat.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "sha256": "0c689750802633168d975d9ced663b05d879436933b5de6aa46c336556bedb7e"
+    },
+    {
+      "key": "UI/Monsters/rustblade_rat_clean.png",
+      "path": "res://assets/imported/UI/Monsters/rustblade_rat_clean.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "4de0c1c1c907552eb130af3c0e122b4aae425d88f74049d5bc5393154556994d"
+    },
+    {
+      "key": "UI/Monsters/sand_lizard.png",
+      "path": "res://assets/imported/UI/Monsters/sand_lizard.png",
+      "pixels": [
+        1024,
+        1024
+      ],
+      "mode": "RGBA",
+      "sha256": "e1ad8dcc3234e8186516c6fcfd09dd2294d715cd584472e0c72d64f02549b747"
+    },
+    {
+      "key": "UI/Monsters/stone_guardian.png",
+      "path": "res://assets/imported/UI/Monsters/stone_guardian.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "sha256": "114d845a171732d066ce8b9646f94b3f86e85a38859fadb5b13b514349edaac4"
+    },
+    {
+      "key": "UI/Monsters/stone_guardian_clean.png",
+      "path": "res://assets/imported/UI/Monsters/stone_guardian_clean.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "1ed9a3d2de1e6137c5027cf5f86fe574ab2813accf4e8bf9ebc543daaff8af18"
+    },
+    {
+      "key": "UI/Monsters/thorn_guard.png",
+      "path": "res://assets/imported/UI/Monsters/thorn_guard.png",
+      "pixels": [
+        1024,
+        1024
+      ],
+      "mode": "RGBA",
+      "sha256": "3ed4421aac92aef25eace74a35452fe8cee3f0b6f117ad23e6b9016185fe9328"
+    },
+    {
+      "key": "UI/Monsters/thorn_mite.png",
+      "path": "res://assets/imported/UI/Monsters/thorn_mite.png",
+      "pixels": [
+        1024,
+        1024
+      ],
+      "mode": "RGBA",
+      "sha256": "d0a75edb9ecbc3d8b2d23445d8e54c207ea2222d2917e5a27b933e9090aaeba6"
+    },
+    {
+      "key": "UI/Monsters/treasure_box_spirit.png",
+      "path": "res://assets/imported/UI/Monsters/treasure_box_spirit.png",
+      "pixels": [
+        1024,
+        1024
+      ],
+      "mode": "RGBA",
+      "sha256": "6105ac5adb95b845e11ebd089102dee1d10852b4cf98ec88f51d9c6bc5b676c5"
+    },
+    {
+      "key": "UI/Prep/background.jpg",
+      "path": "res://assets/imported/UI/Prep/background.jpg",
+      "pixels": [
+        1920,
+        1080
+      ],
+      "mode": "RGB",
+      "sha256": "48024051476b45193099bcd57b7e8d818fd322fd5ed6c2000cb0e859307b5025"
+    },
+    {
+      "key": "UI/Prep/exploration_prep_attribute_icon_break.png",
+      "path": "res://assets/imported/UI/Prep/exploration_prep_attribute_icon_break.png",
+      "pixels": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "sha256": "47493c9db21d491c7c464e808b3e098f3070537be51f51b6eac6cbbf390d20fb"
+    },
+    {
+      "key": "UI/Prep/exploration_prep_attribute_icon_bulwark.png",
+      "path": "res://assets/imported/UI/Prep/exploration_prep_attribute_icon_bulwark.png",
+      "pixels": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "sha256": "1ea5cdc9e807c2b9b6a842188eb6f7acbde93b20391e0dab184ea72c07098fea"
+    },
+    {
+      "key": "UI/Prep/exploration_prep_attribute_icon_regen.png",
+      "path": "res://assets/imported/UI/Prep/exploration_prep_attribute_icon_regen.png",
+      "pixels": [
+        64,
+        64
+      ],
+      "mode": "RGBA",
+      "sha256": "f7cf839329427dc43d7f5e483b150b1f6bd0e717a77c1761e485240610dba64b"
+    },
+    {
+      "key": "UI/Prep/exploration_prep_back_button_normal.png",
+      "path": "res://assets/imported/UI/Prep/exploration_prep_back_button_normal.png",
+      "pixels": [
+        136,
+        103
+      ],
+      "mode": "RGBA",
+      "sha256": "9f226d1a2f2554539c20c342a7a8ba6707dd1fb890820d749556559f4340cdea"
+    },
+    {
+      "key": "UI/Prep/exploration_prep_backpack_cell_empty_normal.png",
+      "path": "res://assets/imported/UI/Prep/exploration_prep_backpack_cell_empty_normal.png",
+      "pixels": [
+        144,
+        144
+      ],
+      "mode": "RGBA",
+      "sha256": "d713c6b821c4d75a92b9336252bda35dc3c2ce1d9f4a95101c99dbd75627734c"
+    },
+    {
+      "key": "UI/Prep/exploration_prep_backpack_tab_advanced_normal.png",
+      "path": "res://assets/imported/UI/Prep/exploration_prep_backpack_tab_advanced_normal.png",
+      "pixels": [
+        256,
+        176
+      ],
+      "mode": "RGBA",
+      "sha256": "d99f6d03e31987388fcb3a2abae52fd57b753567937d6c8cc160387f041820c4"
+    },
+    {
+      "key": "UI/Prep/exploration_prep_backpack_tab_advanced_selected.png",
+      "path": "res://assets/imported/UI/Prep/exploration_prep_backpack_tab_advanced_selected.png",
+      "pixels": [
+        256,
+        176
+      ],
+      "mode": "RGBA",
+      "sha256": "48dab045f7fe254ba46e433836d0063ad846a3defc6227dea22e9bf0112dec42"
+    },
+    {
+      "key": "UI/Prep/exploration_prep_backpack_tab_free_normal.png",
+      "path": "res://assets/imported/UI/Prep/exploration_prep_backpack_tab_free_normal.png",
+      "pixels": [
+        256,
+        176
+      ],
+      "mode": "RGBA",
+      "sha256": "831328205345864cc1031e48ce612c3a4ecdaa2149a1b058fce47c32e4239670"
+    },
+    {
+      "key": "UI/Prep/exploration_prep_backpack_tab_top_normal.png",
+      "path": "res://assets/imported/UI/Prep/exploration_prep_backpack_tab_top_normal.png",
+      "pixels": [
+        256,
+        176
+      ],
+      "mode": "RGBA",
+      "sha256": "105434277f12a4d997d789d75f2ea0dea2b588339dedfde1ae0653ed1d15fafd"
+    },
+    {
+      "key": "UI/Prep/exploration_prep_equipment_slot_frame_blue.png",
+      "path": "res://assets/imported/UI/Prep/exploration_prep_equipment_slot_frame_blue.png",
+      "pixels": [
+        192,
+        192
+      ],
+      "mode": "RGBA",
+      "sha256": "5ed0098122e40a666dc23d645ee7491c47e6007ef914bbd0c3c55014e7f25af2"
+    },
+    {
+      "key": "UI/Prep/exploration_prep_equipment_slot_frame_common.png",
+      "path": "res://assets/imported/UI/Prep/exploration_prep_equipment_slot_frame_common.png",
+      "pixels": [
+        192,
+        192
+      ],
+      "mode": "RGBA",
+      "sha256": "d6040be0ab171f83478b522f6b5d651c191b84359c05c15eb4ee4eac75c3f871"
+    },
+    {
+      "key": "UI/Prep/exploration_prep_equipment_slot_frame_green.png",
+      "path": "res://assets/imported/UI/Prep/exploration_prep_equipment_slot_frame_green.png",
+      "pixels": [
+        192,
+        192
+      ],
+      "mode": "RGBA",
+      "sha256": "2d2718bbc4086d206b264962fb4b444e9897c10fe76e781dfc66ee6c7e8c2370"
+    },
+    {
+      "key": "UI/Prep/exploration_prep_equipment_slot_frame_orange.png",
+      "path": "res://assets/imported/UI/Prep/exploration_prep_equipment_slot_frame_orange.png",
+      "pixels": [
+        192,
+        192
+      ],
+      "mode": "RGBA",
+      "sha256": "21ac815dae6de7c047599d5c207295c79f17e2de54b50692b645b3fb9c849fc9"
+    },
+    {
+      "key": "UI/Prep/exploration_prep_equipment_slot_frame_purple.png",
+      "path": "res://assets/imported/UI/Prep/exploration_prep_equipment_slot_frame_purple.png",
+      "pixels": [
+        192,
+        192
+      ],
+      "mode": "RGBA",
+      "sha256": "ca4fe7633cac494a01d2aba18a94cfb427869c3c90506e377c72852cc60e13fc"
+    },
+    {
+      "key": "UI/Prep/exploration_prep_equipment_slot_frame_red.png",
+      "path": "res://assets/imported/UI/Prep/exploration_prep_equipment_slot_frame_red.png",
+      "pixels": [
+        192,
+        192
+      ],
+      "mode": "RGBA",
+      "sha256": "f94593df7b6107e5c69eeffdea99b7d8ec769e17fc3743258dc96bfe01d19a0a"
+    },
+    {
+      "key": "UI/Prep/exploration_prep_equipment_slot_frame_white.png",
+      "path": "res://assets/imported/UI/Prep/exploration_prep_equipment_slot_frame_white.png",
+      "pixels": [
+        192,
+        192
+      ],
+      "mode": "RGBA",
+      "sha256": "e3444ceda19521ff79cc94fd18a81ee2d0aeb6448c49aa8a723593c4646fda86"
+    },
+    {
+      "key": "UI/Prep/exploration_prep_hero_portrait_guardian.png",
+      "path": "res://assets/imported/UI/Prep/exploration_prep_hero_portrait_guardian.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "062ff52f655c7111fdb0bcd6090440bef89a3abc4f0408c5ac84a5977c777c78"
+    },
+    {
+      "key": "UI/Prep/exploration_prep_hero_portrait_mage.png",
+      "path": "res://assets/imported/UI/Prep/exploration_prep_hero_portrait_mage.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "5ea1502665e93833ba7803130b775b8cd9e79bb1ef77d135bc9ddb640b90afce"
+    },
+    {
+      "key": "UI/Prep/exploration_prep_hero_portrait_priest.png",
+      "path": "res://assets/imported/UI/Prep/exploration_prep_hero_portrait_priest.png",
+      "pixels": [
+        512,
+        768
+      ],
+      "mode": "RGBA",
+      "sha256": "0e3e0a9cf92cc0494ad949074622e0937656cbf1e1bc8dcbd2b029c66fb9e11a"
+    },
+    {
+      "key": "UI/Prep/exploration_prep_purchase_card_normal.png",
+      "path": "res://assets/imported/UI/Prep/exploration_prep_purchase_card_normal.png",
+      "pixels": [
+        256,
+        176
+      ],
+      "mode": "RGBA",
+      "sha256": "0229168c814df1cd7ac36630693201e838c8276ba8e45d0b307e645ef5dcfebf"
+    },
+    {
+      "key": "UI/Prep/exploration_prep_set_effect_panel_normal.png",
+      "path": "res://assets/imported/UI/Prep/exploration_prep_set_effect_panel_normal.png",
+      "pixels": [
+        800,
+        200
+      ],
+      "mode": "RGBA",
+      "sha256": "702c468f6290092d4139cbe65e2565b832e29d2eb28f898824d43c3bc53444ff"
+    },
+    {
+      "key": "UI/Prep/exploration_prep_title_bar_normal.png",
+      "path": "res://assets/imported/UI/Prep/exploration_prep_title_bar_normal.png",
+      "pixels": [
+        1776,
+        104
+      ],
+      "mode": "RGBA",
+      "sha256": "c11bebe8ca2c6751b0e6ac3a06a92eb23c7e3c3e2e694be1a3b6c2f00ce6b466"
+    },
+    {
+      "key": "UI/Prep/icon_safe.png",
+      "path": "res://assets/imported/UI/Prep/icon_safe.png",
+      "pixels": [
+        70,
+        92
+      ],
+      "mode": "RGBA",
+      "sha256": "328548e78e8188f479f5c1ce0ac2dd8f22e531ee022c48ed7316617278fada5e"
+    },
+    {
+      "key": "UI/Shop/backpack_advanced.png",
+      "path": "res://assets/imported/UI/Shop/backpack_advanced.png",
+      "pixels": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "sha256": "711211ac18fe197c50679464e9d194300ef87c686ba73277b2c68c7ba15f57f1"
+    },
+    {
+      "key": "UI/Shop/backpack_free.png",
+      "path": "res://assets/imported/UI/Shop/backpack_free.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "sha256": "3ae3b3e49b8eaa87b4456da7d10396655256947bcd8341b3e0818c9078443813"
+    },
+    {
+      "key": "UI/Shop/backpack_top.png",
+      "path": "res://assets/imported/UI/Shop/backpack_top.png",
+      "pixels": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "sha256": "7221d58dab243991dd45685266a1eb27c136625dde5fd824bf5ba057515a6c52"
+    },
+    {
+      "key": "UI/Shop/card_pack.png",
+      "path": "res://assets/imported/UI/Shop/card_pack.png",
+      "pixels": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "sha256": "a807c0023d22d79b4c25b8243525261ab770e5f68ee076fc3973ffe8bdacdfb8"
+    },
+    {
+      "key": "UI/Shop/equipment_fragment_pack.png",
+      "path": "res://assets/imported/UI/Shop/equipment_fragment_pack.png",
+      "pixels": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "sha256": "7544b57101617256648d9f384b05d94f3bf23a27ad5b1a693a22f7063ab315f1"
+    }
+  ],
+  "errors": []
+}
