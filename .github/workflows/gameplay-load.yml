@@ -7,6 +7,7 @@ on:
       - 'tools/pr13_runtime_evidence.py'
       - 'tools/pr13_local_checks.py'
       - 'tools/pr13_offline_cases.py'
+      - 'tools/pr13_callback_isolation.py'
       - 'tools/cloud_load_test.py'
       - 'tools/tests/**'
       - 'client/network/**'
@@ -87,6 +88,10 @@ jobs:
           python client/tests/run_http_boundary.py --godot "$godot" --output test-results/gameplay-load/http-boundary
           python client/tests/run_http_protobuf_client.py --godot "$godot" --work-dir test-results/gameplay-load/http-fixture
           python tools/pr13_offline_cases.py --godot "$godot" --output test-results/gameplay-load/offline-cases
+          A3GAME_GODOT_EXECUTABLE="$godot" python tools/pr13_callback_isolation.py --output test-results/gameplay-load/callback-isolation
+          FANTASYCARD_SERVER_URL=http://127.0.0.1:1 "$godot" --headless --path client --script res://tests/run_gateway_origin.gd > test-results/gameplay-load/gateway-origin.log 2>&1
+          grep -q '"ok":true' test-results/gameplay-load/gateway-origin.log
+          ! grep -E 'SCRIPT ERROR|Parse Error' test-results/gameplay-load/gateway-origin.log
       - name: Same-session callback races
         shell: bash
         run: |
@@ -155,6 +160,19 @@ jobs:
       - uses: actions/setup-dotnet@v6
         with:
           global-json-file: server/global.json
+      - name: Install pinned Godot for real client and PostgreSQL fault checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/godot-pg" test-results/gameplay-load
+          curl --fail --location --retry 2 'https://downloads.godotengine.org/?version=4.7.2&flavor=stable&slug=linux.x86_64.zip&platform=linux.64' -o "$RUNNER_TEMP/godot-pg.zip"
+          unzip -q "$RUNNER_TEMP/godot-pg.zip" -d "$RUNNER_TEMP/godot-pg"
+          executable="$RUNNER_TEMP/godot-pg/Godot_v4.7.2-stable_linux.x86_64"
+          chmod +x "$executable"
+          "$executable" --version | tee test-results/gameplay-load/godot-pg-version.txt
+          grep -q '^4\.7\.2\.' test-results/gameplay-load/godot-pg-version.txt
+          echo "A3GAME_GODOT_EXECUTABLE=$executable" >> "$GITHUB_ENV"
+          echo "FANTASYCARD_PROCESS_EVIDENCE=$GITHUB_WORKSPACE/test-results/gameplay-load/process-faults" >> "$GITHUB_ENV"
       - name: Full server and runtime integration on disposable PostgreSQL
         working-directory: server
         run: dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --logger 'trx;LogFileName=postgres-full.trx' --results-directory ../test-results/gameplay-load

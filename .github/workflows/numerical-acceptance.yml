@@ -37,6 +37,19 @@ jobs:
       - uses: actions/setup-dotnet@v6
         with:
           global-json-file: server/global.json
+      - name: Install pinned Godot for real client and PostgreSQL fault checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/godot-pg" test-results/acceptance
+          curl --fail --location --retry 2 'https://downloads.godotengine.org/?version=4.7.2&flavor=stable&slug=linux.x86_64.zip&platform=linux.64' -o "$RUNNER_TEMP/godot-pg.zip"
+          unzip -q "$RUNNER_TEMP/godot-pg.zip" -d "$RUNNER_TEMP/godot-pg"
+          executable="$RUNNER_TEMP/godot-pg/Godot_v4.7.2-stable_linux.x86_64"
+          chmod +x "$executable"
+          "$executable" --version | tee test-results/acceptance/godot-pg-version.txt
+          grep -q '^4\.7\.2\.' test-results/acceptance/godot-pg-version.txt
+          echo "A3GAME_GODOT_EXECUTABLE=$executable" >> "$GITHUB_ENV"
+          echo "FANTASYCARD_PROCESS_EVIDENCE=$GITHUB_WORKSPACE/test-results/acceptance/process-faults" >> "$GITHUB_ENV"
       - name: Build solution and record baseline
         shell: bash
         working-directory: server

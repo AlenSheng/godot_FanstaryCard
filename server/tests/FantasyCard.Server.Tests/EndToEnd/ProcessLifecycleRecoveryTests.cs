@@ -25,7 +25,7 @@ namespace FantasyCard.Server.Tests.EndToEnd;
 
 // These cases launch the actual Program host in separate OS processes. Database
 // fixtures are intentionally declared here: they are not an HTTP entry flow.
-public sealed class ProcessLifecycleRecoveryTests
+public sealed partial class ProcessLifecycleRecoveryTests
 {
     public static bool HasPrivateDatabase =>
         PostgresRuntimeIntegrationTests.HasTestDatabase &&
