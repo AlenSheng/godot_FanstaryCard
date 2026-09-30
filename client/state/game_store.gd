@@ -54,6 +54,11 @@ var _settlement_ack_pending_id := ""
 var _settlement_polling := false
 var _settlement_poll_at := 0
 var _settlement_recovery_match_id := ""
+var _room_context_epoch := 0
+var _room_context_match_id := ""
+var _room_context_room_id := ""
+var _settlement_load_epoch := 0
+var _settlement_poll_request_epoch := 0
 var settlement_query_failed := false
 var _extraction_sync_at := 0
 var _queued_command: Dictionary = {}
@@ -228,6 +233,11 @@ func _clear_authenticated_state() -> void:
 	_settlement_polling = false
 	_settlement_poll_at = 0
 	_settlement_recovery_match_id = ""
+	_room_context_epoch += 1
+	_room_context_match_id = ""
+	_room_context_room_id = ""
+	_settlement_load_epoch += 1
+	_settlement_poll_request_epoch += 1
 	settlement_query_failed = false
 	_extraction_sync_at = 0
 	busy = false
@@ -397,7 +407,8 @@ func refresh_lobby() -> void:
 
 func _lobby_scope() -> String:
 	return JSON.stringify([room.get("match_id", ""), gateway.room_id, preparation.get("preparationId", ""),
-		ticket.get("ticketId", ""), settlement.get("settlementId", ""), _settlement_ack_pending_id, _cache_versions])
+		ticket.get("ticketId", ""), settlement.get("settlementId", ""), _settlement_ack_pending_id,
+		_room_context_epoch, _settlement_recovery_match_id, _cache_versions])
 
 func _lobby_request_current(generation: int, request_epoch: int, origin_scope: String) -> bool:
 	return generation == gateway.session_generation and request_epoch == _lobby_request_epoch and origin_scope == _lobby_scope()
@@ -1283,23 +1294,59 @@ func _snapshot_confirms_command(pending: Dictionary, snapshot: Dictionary) -> bo
 	var confirmed_revision := int(pending.get("confirmed_revision", -1))
 	return revision >= confirmed_revision if confirmed_revision >= 0 else revision > int(pending.get("sent_revision", 0))
 
+func _settlement_match_id() -> String:
+	return str(room.get("match_id", _settlement_recovery_match_id))
+
+func _adopt_room_context(snapshot: Dictionary) -> void:
+	var match_id := str(snapshot.get("match_id", ""))
+	var room_id := str(snapshot.get("room_id", ""))
+	if match_id.is_empty() or room_id.is_empty(): return
+	if match_id != _room_context_match_id or room_id != _room_context_room_id:
+		# A new authoritative room ends ownership of every old recovery request.
+		# Keep an epoch so leaving and returning to the same IDs cannot revive one.
+		_room_context_epoch += 1
+		_room_context_match_id = match_id
+		_room_context_room_id = room_id
+		_settlement_load_epoch += 1
+		_settlement_poll_request_epoch += 1
+		_settlement_loading = ""
+		_settlement_polling = false
+		_settlement_poll_at = 0
+		settlement_query_failed = false
+		if _settlement_recovery_match_id != match_id: _settlement_recovery_match_id = ""
+	if gateway is Gateway: gateway.telemetry_context["room_context_epoch"] = _room_context_epoch
+
+func _rejection_context_current(origin: Dictionary) -> bool:
+	# Rejections carry the initiating Gateway context, rather than a new snapshot.
+	# An uncorrelated rejection cannot prove that the visible room has ended.
+	var match_id := str(origin.get("match_id", ""))
+	if match_id.is_empty() or match_id != _settlement_match_id(): return false
+	if int(origin.get("session_generation", -1)) != gateway.session_generation: return false
+	var room_id := str(room.get("room_id", _room_context_room_id))
+	if room_id.is_empty() or str(origin.get("room_id", "")) != room_id: return false
+	return not origin.has("room_context_epoch") or int(origin.room_context_epoch) == _room_context_epoch
+
+func _settlement_request_current(generation: int, context_epoch: int, match_id: String) -> bool:
+	return generation == gateway.session_generation and context_epoch == _room_context_epoch and match_id == _settlement_match_id()
+
 func _on_event(kind: String, payload: Dictionary) -> void:
 	if kind == "pong": return
 	if kind == "error.command_rejected" and payload.get("code", "") == "NOT_IN_ROOM":
 		var origin: Dictionary = payload.get("_origin_context", {})
-		var current_match := str(room.get("match_id", _settlement_recovery_match_id))
-		if not origin.is_empty() and str(origin.get("match_id", "")) != current_match: return
+		if not _rejection_context_current(origin): return
+		var current_match := _settlement_match_id()
 		# A second rejection can arrive after the room was cleared. Keep the
 		# original match until its durable receipt is visible or acknowledged.
 		if not current_match.is_empty(): _settlement_recovery_match_id = current_match
 		var generation: int = gateway.session_generation
+		var context_epoch := _room_context_epoch
 		_settlement_poll_at = 0
 		room = {}
 		selected_cards.clear()
 		clear_combat_preview()
 		payload["_retry_handled"] = true
 		await refresh_lobby()
-		if generation != gateway.session_generation or (not room.is_empty() and str(room.get("match_id", "")) != current_match): return
+		if generation != gateway.session_generation or context_epoch != _room_context_epoch: return
 		if not settlement.is_empty(): _settlement_recovery_match_id = ""
 		if settlement.is_empty() and lobby.get("unfinishedMatch") != null:
 			notice.emit("上次探索正在结算，请稍后点击重新连接")
@@ -1322,6 +1369,7 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 	if kind in ["room.snapshot", "room.started"]:
 		var snapshot: Dictionary = payload.get("snapshot", {}) if kind == "room.started" else payload
 		if (not gateway.token.is_empty() or snapshot.has("config_version")) and not validate_config(str(snapshot.get("config_version", "")), "房间"): return
+		_adopt_room_context(snapshot)
 	_sound_event(kind, payload)
 	if kind == "battle.target_selected" and payload.get("battle_id", "") == room.get("pve", {}).get("battle_id", ""): clear_combat_preview()
 	if kind in ["room.moved", "battle.target_selected", "duel.leave_ack", "duel.escape_started", "duel.escape_failed", "duel.escape_interrupted", "duel.started", "duel.ended", "action.potion_used", "relic.taken", "relic.replaced", "reward.choice_claimed", "action.extract_started", "action.extract_cancelled", "action.extract_completed", "action.spring_started", "action.spring_cancelled", "action.spring_completed"] and event_request_id.is_empty():
@@ -1363,7 +1411,9 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 			# The server releases them on timeout; reload their saved item details.
 			refresh_cache("inventory")
 			notice.emit("确认超时，席位已释放")
-		"settlement.ready", "match.settled": _load_settlement(payload.settlement_id)
+		"settlement.ready", "match.settled":
+			if not str(payload.get("match_id", "")).is_empty() and str(payload.match_id) == _settlement_match_id():
+				_load_settlement(payload.settlement_id)
 		"battle.combo_resolved", "combat.hit":
 			if _feedback_is_current(payload):
 				var had_preview := not combat_preview.is_empty() or not _preview_request.is_empty()
@@ -1476,13 +1526,17 @@ func _intent_valid(action: String, payload: Dictionary) -> bool:
 
 func _load_settlement(id: String) -> void:
 	if settlement.get("settlementId", "") == id or _settlement_loading == id or _settlement_ack_pending_id == id: return
-	var expected_match_id := str(room.get("match_id", ""))
+	var expected_match_id := _settlement_match_id()
 	if expected_match_id.is_empty(): return
 	_settlement_loading = id
+	_settlement_load_epoch += 1
+	var load_epoch := _settlement_load_epoch
+	var context_epoch := _room_context_epoch
 	var generation: int = gateway.session_generation
 	var result: Dictionary = await gateway.request("/api/v1/settlements/" + id)
 	if generation != gateway.session_generation: return
-	if str(room.get("match_id", "")) != expected_match_id:
+	if load_epoch != _settlement_load_epoch: return
+	if not _settlement_request_current(generation, context_epoch, expected_match_id):
 		_settlement_loading = ""
 		return
 	if _settlement_ack_pending_id == id:
@@ -1495,16 +1549,20 @@ func _load_settlement(id: String) -> void:
 
 func _poll_ready_settlement() -> void:
 	if _settlement_polling or not settlement.is_empty() or not _settlement_ack_pending_id.is_empty(): return
-	var match_id := str(room.get("match_id", _settlement_recovery_match_id))
+	var match_id := _settlement_match_id()
 	if match_id.is_empty() or gateway == null or gateway.token.is_empty(): return
 	_settlement_polling = true
+	_settlement_poll_request_epoch += 1
+	var poll_epoch := _settlement_poll_request_epoch
+	var context_epoch := _room_context_epoch
 	_settlement_poll_at = Time.get_ticks_msec() + 2500
 	var generation: int = gateway.session_generation
 	# Bootstrap exposes only settlements whose asset holds have finished committing.
 	var result: Dictionary = await gateway.request("/api/v1/bootstrap", HTTPClient.METHOD_GET, null, [0, 502, 503, 504])
 	if generation != gateway.session_generation: return
+	if poll_epoch != _settlement_poll_request_epoch: return
 	_settlement_polling = false
-	if str(room.get("match_id", _settlement_recovery_match_id)) != match_id or not settlement.is_empty(): return
+	if not _settlement_request_current(generation, context_epoch, match_id) or not settlement.is_empty(): return
 	if not result.ok or not result.data is Dictionary:
 		settlement_query_failed = true
 		changed.emit()

@@ -54,8 +54,12 @@ func run_test() -> Dictionary:
 	gateway.response = {"ok": true, "data": {"configVersion": store.CATALOG.data.version,
 		"player": {}, "wallet": {}, "materials": {}, "shop": {}, "market": [],
 		"inventory": {}, "mail": {}, "activePreparation": null, "unfinishedSettlement": null}}
-	store._on_event("error.command_rejected", {"code": "NOT_IN_ROOM"})
-	store._on_event("error.command_rejected", {"code": "NOT_IN_ROOM"})
+	# Real Gateway responses retain the initiating room, match and session.
+	# Uncorrelated errors belong to the negative cases in pr13_callback_isolation.
+	var rejection := {"code": "NOT_IN_ROOM", "_origin_context": {
+		"match_id": "match-M", "room_id": "room-M", "session_generation": gateway.session_generation}}
+	store._on_event("error.command_rejected", rejection.duplicate(true))
+	store._on_event("error.command_rejected", rejection.duplicate(true))
 	checks["duplicate real rejection preserves M"] = store.room.is_empty() and store._settlement_recovery_match_id == "match-M"
 	gateway.response.data.unfinishedSettlement = {"settlementId": "receipt-M", "matchId": "match-M"}
 	store.retry_settlement()
