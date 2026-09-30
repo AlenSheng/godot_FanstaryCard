@@ -1,17 +1,17 @@
 # PR13 云端接管逐项登记
 
-MAIN 独立 S6 已正式接受 LOAD-01.2/.3/.4（NoChangeWithEvidence），来源仅 `ee8adcf40be9aebb1330156a3524910c08225ebc`；LOAD-01.1 保持 Failed，新修复 `e06037f58738d0fbff86090e86d8bd06f8608e04` 待独立复验。
+MAIN S6仅正式接受LOAD-01.2/.3/.4（NoChangeWithEvidence），来源`ee8adcf40be9aebb1330156a3524910c08225ebc`；.1保持Failed，新修复`e06037f58738d0fbff86090e86d8bd06f8608e04`待独立复验。业务/UI仍`f812879e4518fd09bf22656451cb563d62940298`。
 
-当前132项状态：{"Partial": 44, "NotRevalidated": 72, "Failed": 1, "Accepted": 3, "ReadyForAcceptance": 9, "Blocked": 3}。G0–G5未签署；旧27显式回执不是总覆盖数量。[固定S6裁决](MAIN_S6_ee8adcf4.json)。
+132项状态：{"Partial": 42, "NotRevalidated": 72, "Failed": 1, "Accepted": 3, "ReadyForAcceptance": 11, "Blocked": 3}。19项本批封存后进入独立裁决或具体补缺队列。G0–G5未签署；旧27显式回执不是总覆盖数量。
 
 | 顺序 | 子项 | 负责人 | 当前 / 历史 | 修改 SHA | 依赖 | 剩余工作或阻塞 |
 | --- | --- | --- | --- | --- | --- | --- |
 | 1 | LOAD-11.1 基线来源冻结 | MAIN / source and evidence audit | Partial / Partial | 取证/未修改 | 无 | Source/evidence delivery audit is partial; running image/config and rollback drill not independently exercised. Historical50/100 raw gap and all unaccepted tasks remain visible. |
 | 2 | LOAD-06.4 时间/缺失/脱敏 | MAIN (pending batch) | NotRevalidated / Queued | 取证/未修改 | LOAD-11.1 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 3 | LOAD-01.1 输入schema | ROOT / frozen offline execution; MAIN / independent adjudication | Failed / ReadyForAcceptance | e06037f58738d0fb | LOAD-11.1, LOAD-06.4 | S6 independent actual replay of fixed e060 schema. Prior MAIN Failed remains until revalidation. |
-| 4 | LOAD-01.2 唯一进程归属 | ROOT / frozen offline execution; MAIN / independent adjudication | Accepted / ReadyForAcceptance | 取证/未修改 | LOAD-01.1 | MAIN独立裁决完成；仅适用于固定来源。 |
-| 5 | LOAD-01.3 拆分负载人数 | ROOT / frozen offline execution; MAIN / independent adjudication | Accepted / ReadyForAcceptance | 取证/未修改 | LOAD-01.2 | MAIN独立裁决完成；仅适用于固定来源。 |
-| 6 | LOAD-01.4 真实进程反例 | ROOT / frozen offline execution; MAIN / independent adjudication | Accepted / ReadyForAcceptance | 取证/未修改 | LOAD-01.3 | MAIN独立裁决完成；仅适用于固定来源。 |
+| 4 | LOAD-01.2 唯一进程归属 | ROOT / frozen offline execution; MAIN / independent adjudication | Accepted / ReadyForAcceptance | 取证/未修改 | LOAD-01.1 | MAIN独立裁决完成；只适用于固定来源。 |
+| 5 | LOAD-01.3 拆分负载人数 | ROOT / frozen offline execution; MAIN / independent adjudication | Accepted / ReadyForAcceptance | 取证/未修改 | LOAD-01.2 | MAIN独立裁决完成；只适用于固定来源。 |
+| 6 | LOAD-01.4 真实进程反例 | ROOT / frozen offline execution; MAIN / independent adjudication | Accepted / ReadyForAcceptance | 取证/未修改 | LOAD-01.3 | MAIN独立裁决完成；只适用于固定来源。 |
 | 7 | LOAD-02.1 多维结果模型 | MAIN / load P0 | ReadyForAcceptance / Partial | d4c3212fb32c75d4 | LOAD-01.2 | S6 independent MAIN actual critical replay and adjudication; no CI/LIVE/participant gate. |
 | 8 | LOAD-04.1 当前匹配状态机 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | LOAD-11.1, LOAD-06.4 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 9 | LOAD-06.2 生命周期/玩法进度 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | LOAD-06.4, LOAD-04.1 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
@@ -109,9 +109,9 @@ MAIN 独立 S6 已正式接受 LOAD-01.2/.3/.4（NoChangeWithEvidence），来�
 | 101 | PR13-B11.4 有渲染三局和窄屏 | MAIN (pending batch) | NotRevalidated / Deferred | 取证/未修改 | PR13-B11.3 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 102 | PR13-B12.2 独立off/on和体验矩阵 | MAIN (pending batch) | NotRevalidated / Queued | 取证/未修改 | PR13-B12.1, PR13-A07.4, PR13-B03.4, PR13-B04.4, PR13-B05.4, PR13-B06.4, PR13-B07.4, PR13-B08.4, PR13-B09.4, PR13-B10.4, PR13-B11.4 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 103 | PR13-B12.3 配置生成与版本回滚 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | PR13-B12.1, PR13-B02.4 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
-| 104 | PR13-A05.1 持久化失败恢复 | MAIN / lifecycle | Partial / Partial | b7099ef716235be6 | LOAD-05.4, LOAD-09.2 | LIVE entry/STOP/full fault combinations remain incomplete. Existing pure-cc6 real OS host PVP/extraction force-restart test passed; new committed-response-loss/checkpoint/quarantine fixes need a wider actual-process matrix. Inconsistent rooms are quarantined, not repaired; no DB restore. |
-| 105 | PR13-A05.2 队友和旧房间隔离 | MAIN / lifecycle | Partial / Partial | b7099ef716235be6 | PR13-A05.1 | LIVE entry/STOP/full fault combinations remain incomplete. Existing pure-cc6 real OS host PVP/extraction force-restart test passed; new committed-response-loss/checkpoint/quarantine fixes need a wider actual-process matrix. Inconsistent rooms are quarantined, not repaired; no DB restore. |
-| 106 | PR13-A05.3 幂等/重启资产矩阵 | MAIN / protocol and actual process recovery | Partial / Partial | d3c5fe6cfb3b4d10 | PR13-A05.2 | Actual host force-restart preserves one equipment movement/ledger credit and ACK timestamp, and cold start resolves durable Pending once. Lost-ACK-response injection, full cross-fault/asset types and independent AUDIT remain open; global mismatch1 untouched. |
+| 104 | PR13-A05.1 持久化失败恢复 | ROOT / actual owned process and client receipt; MAIN / independent adjudication | Partial / Partial | b7099ef716235be6 | LOAD-05.4, LOAD-09.2 | Confirmed recovery-M old ready poll refills stale receipt during real ACK await; coordinate minimal client guard repair and actual same-window regression with fixed UI candidate. |
+| 105 | PR13-A05.2 队友和旧房间隔离 | ROOT / actual owned process and client receipt; MAIN / independent adjudication | ReadyForAcceptance / Partial | b7099ef716235be6 | PR13-A05.1 | Independent MAIN critical actual replay and adjudication of original OFFLINE/POSTGRES/AUDIT contract. No added CI/LIVE/human gate. |
+| 106 | PR13-A05.3 幂等/重启资产矩阵 | ROOT / actual owned process and client receipt; MAIN / independent adjudication | ReadyForAcceptance / Partial | d3c5fe6cfb3b4d10 | PR13-A05.2 | Independent MAIN critical actual replay and adjudication of original OFFLINE/POSTGRES/AUDIT contract. No added CI/LIVE/human gate. |
 | 107 | PR13-A06.1 响应完整性fixture | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | LOAD-06.1, LOAD-08.1 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 108 | PR13-A06.2 连接失效/并发/会话 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | PR13-A06.1 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 109 | PR13-A06.3 请求开始context | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | PR13-A06.2 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |

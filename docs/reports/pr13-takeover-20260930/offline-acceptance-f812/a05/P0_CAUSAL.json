@@ -1,0 +1,20 @@
+{
+  "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+  "source_git_blob": "ad9aa1ba0564babe59aa8c1ec3acf9c987c9d03d",
+  "source_sha256": "d374a50c004c0f3a506b407bfd5730daaae2e4d40786cebb17db52c17eff59c4",
+  "proposal_file": "proposed-game-store-poll-ack.patch",
+  "proposal_sha256": "bf61fd6612e3490d3e0c23d6e712c4dc056b95210219fad6bb2f492aee447480",
+  "proposal_applied": false,
+  "causal_confirmed": true,
+  "scope": "actual pending holds plus OS restart supplies production recovery M; unchanged old ready Bootstrap is released during actual ACK await",
+  "monotonic_timeline_ms": {
+    "recovery_M_actual": 5576,
+    "real_get_loaded_with_poll_awaited": 8274,
+    "real_ack_optimistic_clear_pending": 8324,
+    "real_old_poll_repopulated_M": 8425,
+    "real_ack200_postbootstrap_completed_but_staleM": 8591
+  },
+  "negative_control": "causal-f812 ordinary terminal without recovery M: actual match guard rejected old poll, counterexample false; first probe observation-assumption failed, not a production failure",
+  "positive_control": "causal-pending-f812 actual recovery M: setup checks all pass, Godot exits0, correctness assertion Failed because stale receipt true",
+  "remaining": "production f812 frozen; one-line proposal is untested and unapplied; MAIN/user decides repair scope"
+}

@@ -1,0 +1,28 @@
+{
+  "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+  "tasks": {
+    "PR13-A05.1": {
+      "state": "Partial",
+      "missing_full_criterion": "Client visible settlement remains M after actual durable ACK200/bootstrap completion during confirmed recovery-M old-poll await window.",
+      "real_failure": "P0_CAUSAL.json",
+      "minimal_proposal": "proposed-game-store-poll-ack.patch",
+      "proposal_tested": false,
+      "proposal_applied": false,
+      "source_file": "client/state/game_store.gd",
+      "next_action": "Parent coordinates business/UI candidate, then validate actual positive recovery-M and ordinary-terminal negative control plus new-N isolation/assets."
+    },
+    "PR13-A05.2": {
+      "state": "ReadyForIndependentAcceptance",
+      "remaining": "Independent MAIN critical replay and decision only."
+    },
+    "PR13-A05.3": {
+      "state": "ReadyForIndependentAcceptance",
+      "remaining": "Independent MAIN critical replay and decision only."
+    }
+  },
+  "provenance_gaps": {
+    "negative_control_DLL_hash": null,
+    "exact_original_causal_shell_wrapper": null,
+    "missing_reasons": "Earlier negative assembly was rebuilt; original causal shell wrapper was not separately retained. Both gaps remain explicit."
+  }
+}

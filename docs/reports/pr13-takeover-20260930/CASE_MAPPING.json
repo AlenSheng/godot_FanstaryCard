@@ -5638,12 +5638,29 @@
         "integrated-cc6da2e/report.json",
         "ci-cc6da2e/workflows.json"
       ],
-      "supporting_evidence_is_full_case_coverage": false,
+      "supporting_evidence_is_full_case_coverage": true,
       "current_case_execution": {
-        "status": "NotExecuted",
-        "executed": false,
-        "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
-      }
+        "status": "Passed",
+        "executed": true,
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "source_copy_byte_audited": true,
+        "source_overlay": "Seven declared canonical harness files; later two causal files separate assembly.",
+        "receipt_file": "offline-acceptance-f812/a05/cases.jsonl",
+        "receipt_line": 1,
+        "setup_matches_frozen_spec": true,
+        "expected_matches_frozen_spec": true,
+        "full_applicable_profile_case_evidence": true,
+        "full_task_criterion_satisfied": false,
+        "acceptance_decision": "Primary case Passed but confirmed additional durable visibility counterexample keeps full task Partial."
+      },
+      "prior_case_executions": [
+        {
+          "status": "NotExecuted",
+          "executed": false,
+          "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
+        }
+      ],
+      "full_task_criterion_satisfied": false
     },
     {
       "case_id": "PR13-A05.1-T02",
@@ -5667,12 +5684,29 @@
         "integrated-cc6da2e/report.json",
         "ci-cc6da2e/workflows.json"
       ],
-      "supporting_evidence_is_full_case_coverage": false,
+      "supporting_evidence_is_full_case_coverage": true,
       "current_case_execution": {
-        "status": "NotExecuted",
-        "executed": false,
-        "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
-      }
+        "status": "Passed",
+        "executed": true,
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "source_copy_byte_audited": true,
+        "source_overlay": "Seven declared canonical harness files; later two causal files separate assembly.",
+        "receipt_file": "offline-acceptance-f812/a05/cases.jsonl",
+        "receipt_line": 2,
+        "setup_matches_frozen_spec": true,
+        "expected_matches_frozen_spec": true,
+        "full_applicable_profile_case_evidence": true,
+        "full_task_criterion_satisfied": false,
+        "acceptance_decision": "Primary case Passed but confirmed additional durable visibility counterexample keeps full task Partial."
+      },
+      "prior_case_executions": [
+        {
+          "status": "NotExecuted",
+          "executed": false,
+          "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
+        }
+      ],
+      "full_task_criterion_satisfied": false
     },
     {
       "case_id": "PR13-A05.1-T03",
@@ -5696,12 +5730,29 @@
         "integrated-cc6da2e/report.json",
         "ci-cc6da2e/workflows.json"
       ],
-      "supporting_evidence_is_full_case_coverage": false,
+      "supporting_evidence_is_full_case_coverage": true,
       "current_case_execution": {
-        "status": "NotExecuted",
-        "executed": false,
-        "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
-      }
+        "status": "Passed",
+        "executed": true,
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "source_copy_byte_audited": true,
+        "source_overlay": "Seven declared canonical harness files; later two causal files separate assembly.",
+        "receipt_file": "offline-acceptance-f812/a05/cases.jsonl",
+        "receipt_line": 3,
+        "setup_matches_frozen_spec": true,
+        "expected_matches_frozen_spec": true,
+        "full_applicable_profile_case_evidence": true,
+        "full_task_criterion_satisfied": false,
+        "acceptance_decision": "Primary case Passed but confirmed additional durable visibility counterexample keeps full task Partial."
+      },
+      "prior_case_executions": [
+        {
+          "status": "NotExecuted",
+          "executed": false,
+          "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
+        }
+      ],
+      "full_task_criterion_satisfied": false
     },
     {
       "case_id": "PR13-A05.2-T01",
@@ -5713,7 +5764,7 @@
       ],
       "setup_and_injection": "旧snapshot继续",
       "expected": "B正常/A的N route不删除",
-      "task_current_state": "Partial",
+      "task_current_state": "ReadyForAcceptance",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [
@@ -5725,12 +5776,29 @@
         "integrated-cc6da2e/report.json",
         "ci-cc6da2e/workflows.json"
       ],
-      "supporting_evidence_is_full_case_coverage": false,
+      "supporting_evidence_is_full_case_coverage": true,
       "current_case_execution": {
-        "status": "NotExecuted",
-        "executed": false,
-        "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
-      }
+        "status": "Passed",
+        "executed": true,
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "source_copy_byte_audited": true,
+        "source_overlay": "Seven declared canonical harness files; later two causal files separate assembly.",
+        "receipt_file": "offline-acceptance-f812/a05/cases.jsonl",
+        "receipt_line": 4,
+        "setup_matches_frozen_spec": true,
+        "expected_matches_frozen_spec": true,
+        "full_applicable_profile_case_evidence": true,
+        "full_task_criterion_satisfied": true,
+        "acceptance_decision": "S6 independent MAIN pending; NoChangeWithEvidence proposed."
+      },
+      "prior_case_executions": [
+        {
+          "status": "NotExecuted",
+          "executed": false,
+          "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
+        }
+      ],
+      "full_task_criterion_satisfied": true
     },
     {
       "case_id": "PR13-A05.2-T02",
@@ -5742,7 +5810,7 @@
       ],
       "setup_and_injection": "恢复terminal A",
       "expected": "不重新占旧route",
-      "task_current_state": "Partial",
+      "task_current_state": "ReadyForAcceptance",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [
@@ -5754,12 +5822,29 @@
         "integrated-cc6da2e/report.json",
         "ci-cc6da2e/workflows.json"
       ],
-      "supporting_evidence_is_full_case_coverage": false,
+      "supporting_evidence_is_full_case_coverage": true,
       "current_case_execution": {
-        "status": "NotExecuted",
-        "executed": false,
-        "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
-      }
+        "status": "Passed",
+        "executed": true,
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "source_copy_byte_audited": true,
+        "source_overlay": "Seven declared canonical harness files; later two causal files separate assembly.",
+        "receipt_file": "offline-acceptance-f812/a05/cases.jsonl",
+        "receipt_line": 5,
+        "setup_matches_frozen_spec": true,
+        "expected_matches_frozen_spec": true,
+        "full_applicable_profile_case_evidence": true,
+        "full_task_criterion_satisfied": true,
+        "acceptance_decision": "S6 independent MAIN pending; NoChangeWithEvidence proposed."
+      },
+      "prior_case_executions": [
+        {
+          "status": "NotExecuted",
+          "executed": false,
+          "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
+        }
+      ],
+      "full_task_criterion_satisfied": true
     },
     {
       "case_id": "PR13-A05.2-T03",
@@ -5771,7 +5856,7 @@
       ],
       "setup_and_injection": "相同玩家新route",
       "expected": "旧结算callback无权清",
-      "task_current_state": "Partial",
+      "task_current_state": "ReadyForAcceptance",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [
@@ -5783,12 +5868,29 @@
         "integrated-cc6da2e/report.json",
         "ci-cc6da2e/workflows.json"
       ],
-      "supporting_evidence_is_full_case_coverage": false,
+      "supporting_evidence_is_full_case_coverage": true,
       "current_case_execution": {
-        "status": "NotExecuted",
-        "executed": false,
-        "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
-      }
+        "status": "Passed",
+        "executed": true,
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "source_copy_byte_audited": true,
+        "source_overlay": "Seven declared canonical harness files; later two causal files separate assembly.",
+        "receipt_file": "offline-acceptance-f812/a05/cases.jsonl",
+        "receipt_line": 6,
+        "setup_matches_frozen_spec": true,
+        "expected_matches_frozen_spec": true,
+        "full_applicable_profile_case_evidence": true,
+        "full_task_criterion_satisfied": true,
+        "acceptance_decision": "S6 independent MAIN pending; NoChangeWithEvidence proposed."
+      },
+      "prior_case_executions": [
+        {
+          "status": "NotExecuted",
+          "executed": false,
+          "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
+        }
+      ],
+      "full_task_criterion_satisfied": true
     },
     {
       "case_id": "PR13-A05.3-T01",
@@ -5800,7 +5902,7 @@
       ],
       "setup_and_injection": "同ack三次",
       "expected": "一条业务结果",
-      "task_current_state": "Partial",
+      "task_current_state": "ReadyForAcceptance",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [
@@ -5816,12 +5918,29 @@
         "pb-equipment-d3c5fe6c/process-v3/receipts.jsonl",
         "process-recovery-v2/CANONICAL_SUPPORT_MAPPING.json"
       ],
-      "supporting_evidence_is_full_case_coverage": false,
+      "supporting_evidence_is_full_case_coverage": true,
       "current_case_execution": {
-        "status": "NotExecuted",
-        "executed": false,
-        "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
-      }
+        "status": "Passed",
+        "executed": true,
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "source_copy_byte_audited": true,
+        "source_overlay": "Seven declared canonical harness files; later two causal files separate assembly.",
+        "receipt_file": "offline-acceptance-f812/a05/cases.jsonl",
+        "receipt_line": 7,
+        "setup_matches_frozen_spec": true,
+        "expected_matches_frozen_spec": true,
+        "full_applicable_profile_case_evidence": true,
+        "full_task_criterion_satisfied": true,
+        "acceptance_decision": "S6 independent MAIN pending; NoChangeWithEvidence proposed."
+      },
+      "prior_case_executions": [
+        {
+          "status": "NotExecuted",
+          "executed": false,
+          "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
+        }
+      ],
+      "full_task_criterion_satisfied": true
     },
     {
       "case_id": "PR13-A05.3-T02",
@@ -5833,7 +5952,7 @@
       ],
       "setup_and_injection": "重启在holds完成前",
       "expected": "恢复同一资产转移",
-      "task_current_state": "Partial",
+      "task_current_state": "ReadyForAcceptance",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [
@@ -5849,12 +5968,29 @@
         "pb-equipment-d3c5fe6c/process-v3/receipts.jsonl",
         "process-recovery-v2/CANONICAL_SUPPORT_MAPPING.json"
       ],
-      "supporting_evidence_is_full_case_coverage": false,
+      "supporting_evidence_is_full_case_coverage": true,
       "current_case_execution": {
-        "status": "NotExecuted",
-        "executed": false,
-        "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
-      }
+        "status": "Passed",
+        "executed": true,
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "source_copy_byte_audited": true,
+        "source_overlay": "Seven declared canonical harness files; later two causal files separate assembly.",
+        "receipt_file": "offline-acceptance-f812/a05/cases.jsonl",
+        "receipt_line": 8,
+        "setup_matches_frozen_spec": true,
+        "expected_matches_frozen_spec": true,
+        "full_applicable_profile_case_evidence": true,
+        "full_task_criterion_satisfied": true,
+        "acceptance_decision": "S6 independent MAIN pending; NoChangeWithEvidence proposed."
+      },
+      "prior_case_executions": [
+        {
+          "status": "NotExecuted",
+          "executed": false,
+          "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
+        }
+      ],
+      "full_task_criterion_satisfied": true
     },
     {
       "case_id": "PR13-A05.3-T03",
@@ -5866,7 +6002,7 @@
       ],
       "setup_and_injection": "重复ready通知",
       "expected": "不重复领奖",
-      "task_current_state": "Partial",
+      "task_current_state": "ReadyForAcceptance",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [
@@ -5882,12 +6018,29 @@
         "pb-equipment-d3c5fe6c/process-v3/receipts.jsonl",
         "process-recovery-v2/CANONICAL_SUPPORT_MAPPING.json"
       ],
-      "supporting_evidence_is_full_case_coverage": false,
+      "supporting_evidence_is_full_case_coverage": true,
       "current_case_execution": {
-        "status": "NotExecuted",
-        "executed": false,
-        "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
-      }
+        "status": "Passed",
+        "executed": true,
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "source_copy_byte_audited": true,
+        "source_overlay": "Seven declared canonical harness files; later two causal files separate assembly.",
+        "receipt_file": "offline-acceptance-f812/a05/cases.jsonl",
+        "receipt_line": 9,
+        "setup_matches_frozen_spec": true,
+        "expected_matches_frozen_spec": true,
+        "full_applicable_profile_case_evidence": true,
+        "full_task_criterion_satisfied": true,
+        "acceptance_decision": "S6 independent MAIN pending; NoChangeWithEvidence proposed."
+      },
+      "prior_case_executions": [
+        {
+          "status": "NotExecuted",
+          "executed": false,
+          "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
+        }
+      ],
+      "full_task_criterion_satisfied": true
     },
     {
       "case_id": "PR13-A05.4-T01",
@@ -12009,5 +12162,14 @@
     "not_applicable_to_new_source": "e06037f58738d0fbff86090e86d8bd06f8608e04",
     "gates_accepted": false,
     "all132_accepted": false
+  },
+  "latest_A05_acceptance_proposal": {
+    "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "report": "offline-acceptance-f812/a05/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+    "ready_tasks": 2,
+    "partial_tasks": 1,
+    "primary_cases_passed": 9,
+    "causal_extra_Failed": 1,
+    "Accepted": 0
   }
 }

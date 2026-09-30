@@ -2,21 +2,22 @@
   "kind": "complete_offline_batch_receipt_pending_MAIN",
   "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
   "previous_stage_receipt": "STAGE_RECEIPT_schema_4bb6c6be.json",
-  "batch": "load03-ready-ee8adcf4/ROOT_REVIEW.json",
+  "batch": "offline-acceptance-f812/a05/ROOT_REVIEW.json",
   "ready_for_independent_acceptance": [
     "offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
     "offline-acceptance-f812/load02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
     "load03-ready-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
-    "schema-second-e06037f5/READY_FOR_INDEPENDENT_ACCEPTANCE.json"
+    "schema-second-e06037f5/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+    "offline-acceptance-f812/a05/READY_FOR_INDEPENDENT_ACCEPTANCE.json"
   ],
-  "ready_task_count": 9,
-  "ready_case_count": 27,
+  "ready_task_count": 11,
+  "ready_case_count": 33,
   "task_states_current": {
-    "Partial": 44,
+    "Partial": 42,
     "NotRevalidated": 72,
     "Failed": 1,
     "Accepted": 3,
-    "ReadyForAcceptance": 9,
+    "ReadyForAcceptance": 11,
     "Blocked": 3
   },
   "Accepted": 3,
@@ -43,7 +44,7 @@
       "after_invalid_exit3": 4
     }
   },
-  "production_source_frozen": "f812879e (business/client/UI)",
+  "production_source_frozen": "f812879e4518fd09bf22656451cb563d62940298",
   "production_changes": 0,
   "ui_changes": 0,
   "ci": "BillingBlocked; no CI retry; C-CI not required by these4 task contracts.",
@@ -99,5 +100,15 @@
   "source_scope_note": "Schema packet4bb; B02 packetf812. Never combine as a single actual profile SHA; B02 business/proto/config byte-equivalence verified.",
   "schema_corrected_packet": "schema-second-e06037f5/REPORT.json",
   "additional_contract_gaps": "load03-remaining-ee8adcf4/MISSING_FACTS.json",
-  "MAIN_S6_citation_pending": true
+  "MAIN_S6_citation_pending": true,
+  "latest_runtime_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+  "latest_A05_proposal": {
+    "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "report": "offline-acceptance-f812/a05/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+    "ready_tasks": 2,
+    "partial_tasks": 1,
+    "primary_cases_passed": 9,
+    "causal_extra_Failed": 1,
+    "Accepted": 0
+  }
 }
