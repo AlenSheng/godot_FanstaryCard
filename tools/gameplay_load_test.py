@@ -22,7 +22,7 @@ except ImportError:
     psutil = None
 from cloud_load_test import ROOT, CLIENT, stop_all, health_probe, read_json
 from gameplay_load_validation import aggregate_window, workload_snapshot, owned_statuses, new_events, classify_stop, provenance
-from pr13_runtime_evidence import coverage, reconcile_cycles, result_dimensions
+from pr13_runtime_evidence import coverage, reconcile_cycles, result_dimensions, sampling_integrity
 
 QUERIES = {
     'cpu': '100*(1-avg(rate(node_cpu_seconds_total{job="node",instance="node-exporter:9100",mode="idle"}[1m])))',
@@ -236,6 +236,7 @@ def main():
                     FANTASYCARD_LOAD_SEED=str(args.strategy_seed+len(processes)),
                     FANTASYCARD_LOAD_PROFILE=args.load_profile,
                     FANTASYCARD_LOAD_HOLD_SECONDS=str(args.hold_seconds),
+                    FANTASYCARD_LOAD_RUN_SECONDS=str(args.max_seconds),
                     FANTASYCARD_LOAD_MAX_CYCLES=str(args.smoke_cycles) if args.smoke else '0')
                 log=(run_dir/(client_id+'.log')).open('w',encoding='utf-8')
                 try:
@@ -259,6 +260,7 @@ def main():
                 sample_started=time.monotonic()
                 statuses, invalid_files=read_owned_statuses(processes,status_cache)
                 sample_ms=int(time.time()*1000)
+                sample_monotonic_ms=time.monotonic()*1000
                 workload=workload_snapshot(processes,statuses,sample_ms,now_monotonic_ms=time.monotonic()*1000)
                 workload_failed=workload_failed or workload['workload_failure']
                 fresh, lost_events=new_events(statuses,seen)
@@ -301,7 +303,8 @@ def main():
                 if any(not isinstance(n,int) or isinstance(n,bool) or n<0 for n in cycle_counts):
                     causes.append('invalid_cycle_count'); workload_failed=True
                 for key in set(streaks)|set(causes): streaks[key]=streaks[key]+1 if key in causes else 0
-                row={'schema_version':4,'at':sample_ms/1000,'run_id':run_id,'groups':groups,'clients':len(processes),**workload,
+                row={'schema_version':4,'at':sample_ms/1000,'sample_monotonic_ms':sample_monotonic_ms,
+                    'run_id':run_id,'groups':groups,'clients':len(processes),**workload,
                     'command_rate':None if previous_sample_ms is None or sample_ms<=previous_sample_ms else len(commands)/((sample_ms-previous_sample_ms)/1000),
                     'completed_cycles':sum(n for n in cycle_counts if isinstance(n,int) and not isinstance(n,bool) and n>=0),
                     'invalid_status_files':invalid_files,
@@ -367,6 +370,7 @@ def main():
         hold_start = max(started, hold_end-args.hold_seconds)
         load_coverage = coverage(samples,start=hold_start,end=max(hold_start+.001,hold_end),
             **{k:v for k,v in contract.items() if k not in ('profile','acceptance_scope','launch_interval_seconds')})
+        sampling=sampling_integrity(samples,started_monotonic*1000,stop_issued_monotonic_ns/1000000,contract['maximum_gap'])
         final_clients, final_read_errors = read_owned_statuses(processes,status_cache)
         tail, tail_lost = new_events(final_clients,seen)
         post_stop_failure = any(p['process'].poll() not in (0,None) for p in processes)
@@ -375,7 +379,7 @@ def main():
             groups == args.max_groups and len(processes) == args.max_groups * args.group_size and
             len(samples) >= required_samples and all(code is None for code in before_stop.values()) and
             final_before_cleanup is not None and final_before_cleanup['fresh_status_clients'] == len(processes) and
-            load_coverage['passed'] and
+            load_coverage['passed'] and sampling['passed'] and
             not forced_termination and not cleanup_error)
         outcome=classify_stop(reason,smoke_verified=smoke_verified,
             load_verified=load_verified,workload_failed=workload_failed)
@@ -402,7 +406,7 @@ def main():
             performance_inputs['http_latency_samples']>=20 and performance_inputs['realtime_latency_samples']>=10)
         dimensions=result_dimensions(execution=not reason.startswith('coordinator_error:'),
             evidence=not bool(final_read_errors or tail_lost or audit_errors or cutoffs['evidence_errors'] or
-                reason.startswith('invalid_evidence:') or reason.startswith('coordinator_error:')),
+                reason.startswith('invalid_evidence:') or reason.startswith('coordinator_error:') or not sampling['passed']),
             load=load_coverage['passed'] if args.run else smoke_verified,
             gameplay=smoke_verified if args.smoke else None,
             performance=False if args.run and reason.startswith('redline:') else True if args.run and performance_verified else None,
@@ -415,6 +419,7 @@ def main():
             'load_window_verified':load_verified,'required_samples':required_samples,
             'stop_issued_monotonic_ns':stop_issued_monotonic_ns,'stop_issued_ms':stop_issued_ms,
             'load_contract':contract,'load_coverage':load_coverage,'result_dimensions':dimensions,
+            'sampling_integrity':sampling,'started_monotonic_ms':started_monotonic*1000,
             'performance_inputs':performance_inputs,
             'cycle_cutoffs':cutoffs,'audit_read_errors':audit_errors,
             'final_read_errors':final_read_errors,'tail_lost_event_count':tail_lost,

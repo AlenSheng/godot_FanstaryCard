@@ -9,6 +9,23 @@ def finite(value):
     return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
 
 
+def sampling_integrity(samples, started_monotonic_ms, stop_monotonic_ms, maximum_gap_seconds=20):
+    """Check real sampler observations, including the unobserved stop tail."""
+    errors=[]
+    if (not isinstance(samples,list) or any(not isinstance(s,dict) for s in samples) or
+            not all(finite(v) for v in (started_monotonic_ms,stop_monotonic_ms,maximum_gap_seconds))):
+        return dict(passed=False,reasons=['invalid_sampling_schema'],tail_gap_seconds=None)
+    points=[s.get('sample_monotonic_ms') for s in samples if isinstance(s,dict)]
+    if not points or any(not finite(v) for v in points):
+        return dict(passed=False,reasons=['monotonic_observation_missing'],tail_gap_seconds=None)
+    gaps=[(b-a)/1000 for a,b in zip([started_monotonic_ms]+points,points+[stop_monotonic_ms])]
+    if any(g<0 or g>maximum_gap_seconds for g in gaps):errors.append('sampling_gap_over_contract')
+    origin=samples[0]
+    if any(not finite(s.get('at')) or abs((s['at']-origin['at'])-(s['sample_monotonic_ms']-origin['sample_monotonic_ms'])/1000)>2 for s in samples):
+        errors.append('wall_clock_discontinuity')
+    return dict(passed=not errors,reasons=errors,tail_gap_seconds=gaps[-1],maximum_observed_gap_seconds=max(gaps))
+
+
 def coverage(samples, *, start, end, target_online, target_active,
              minimum_command_rate=1.0, maximum_gap=20.0, minimum_window=600.0,
              minimum_continuous=120.0, minimum_coverage=.95):

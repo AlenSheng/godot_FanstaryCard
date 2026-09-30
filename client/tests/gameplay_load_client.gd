@@ -51,6 +51,7 @@ var observed_hand_ids: Array = []
 var terminal_battle_ids: Dictionary = {}
 var load_profile := "cyclic-gameplay"
 var hold_seconds := 600
+var run_seconds := 1800
 var cycle_battles_won := 0
 var last_effective_action_ms := 0
 
@@ -59,6 +60,8 @@ func _ready() -> void:
 	if load_profile not in ["cyclic-gameplay", "active-hold", "functional-cycles"]: load_profile = "cyclic-gameplay"
 	var requested_hold := OS.get_environment("FANTASYCARD_LOAD_HOLD_SECONDS")
 	if requested_hold.is_valid_int(): hold_seconds = clampi(int(requested_hold), 1, 3600)
+	var requested_run := OS.get_environment("FANTASYCARD_LOAD_RUN_SECONDS")
+	if requested_run.is_valid_int(): run_seconds = maxi(1,int(requested_run))
 	Game = get_node("/root/Game")
 	base_url = OS.get_environment("FANTASYCARD_SERVER_URL").strip_edges().trim_suffix("/")
 	if base_url.is_empty(): base_url = "http://127.0.0.1:5000"
@@ -214,7 +217,7 @@ func _run_expedition() -> void:
 	stage = "playing"
 	# Capacity hold is an explicitly different workload: it keeps playing and
 	# postpones voluntary extraction/fallback. Natural death remains terminal.
-	deadline = Time.get_ticks_msec() + (maxi(240, hold_seconds + 60) * 1000 if load_profile == "active-hold" else 240000)
+	deadline = Time.get_ticks_msec() + (maxi(240, maxi(hold_seconds + 60, run_seconds + 30)) * 1000 if load_profile == "active-hold" else 240000)
 	var visited := {}
 	while Game.settlement.is_empty() and Time.get_ticks_msec() < deadline and not stop_requested:
 		_update_context()

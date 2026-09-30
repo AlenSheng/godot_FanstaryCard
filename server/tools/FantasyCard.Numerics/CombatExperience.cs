@@ -32,12 +32,14 @@ internal static class CombatExperience
         if (samples < 3 || seedStart < 0 || (long)seedStart + samples > int.MaxValue || limit is < 60 or > 600 ||
             weaponLevel is < 0 or > 5 || groups.Length != groups.Distinct().Count() || groups.Any(group => !Groups.Contains(group)) ||
             heroes.Length != heroes.Distinct().Count() || heroes.Any(hero => !Enum.IsDefined(hero)) ||
-            candidateKind is not ("class-passives" or "outer-o6-hp085" or "outer-o6-interval110"))
+            candidateKind is not ("class-passives" or "outer-o6-hp085" or "outer-o6-hp095" or "outer-o6-hp090" or
+                "outer-o6-interval110" or "outer-o6-windup025" or "outer-o6-windup050"))
             throw new ArgumentException("At least three seeds, a valid seed interval and a 60-600 second cutoff are required.");
         Directory.CreateDirectory(output);
         var config = GameConfigCatalog.Current;
         var catalog = CombatCardCatalog.CreatePrototype();
         var sourceSha = ReadString(args, "--source-sha", "unrecorded");
+        var sourceConfigHash = Hash(JsonSerializer.Serialize(config, Json));
         var strata = new Dictionary<string, List<EncounterSample>>(StringComparer.Ordinal);
         var stopwatch = Stopwatch.StartNew();
         var rawPath = Path.Combine(output, "encounters.jsonl");
@@ -53,6 +55,9 @@ internal static class CombatExperience
                 Seeds = Enumerable.Range(seedStart, samples).Where((_, i) => i % 3 == block).ToArray() }),
             PrimarySampleFloorMet = samples >= 1_000, CutoffSeconds = limit, ActionIntervalSeconds = .4,
             WeaponLevel = weaponLevel, Candidate = candidateKind,
+            SourceConfigSha256 = sourceConfigHash,
+            CandidateWhitelist = candidateKind == "class-passives" ? groups : new[] { "O6" }, SingleFactorOnly = true,
+            FirstWindupScope = "Only the first positive intent windup of each O6 monster; subsequent windups and attack intervals unchanged; 100ms tick resolution",
             StrategyPolicy = "baseline_all_hand spends immediately; basic/build wait for three cards or two core cards above 25% HP, then score legal visible subsets",
             RunIdentity = new { SeedStart = seedStart, Samples = samples, Candidate = candidateKind, WeaponLevel = weaponLevel },
             Scope = "Synthetic encounter entry, not a legal full expedition route or network capacity proof",
@@ -78,7 +83,11 @@ internal static class CombatExperience
                 var profile = candidate ? candidateKind switch
                 {
                     "outer-o6-hp085" => group == "O6" ? "TargetedO6Hp085" : "BaselinePairedControl",
+                    "outer-o6-hp095" => group == "O6" ? "TargetedO6Hp095" : "BaselinePairedControl",
+                    "outer-o6-hp090" => group == "O6" ? "TargetedO6Hp090" : "BaselinePairedControl",
                     "outer-o6-interval110" => group == "O6" ? "TargetedO6Interval110" : "BaselinePairedControl",
+                    "outer-o6-windup025" => group == "O6" ? "TargetedO6Windup025" : "BaselinePairedControl",
+                    "outer-o6-windup050" => group == "O6" ? "TargetedO6Windup050" : "BaselinePairedControl",
                     _ => hero switch { HeroClass.Mage => "CoreCardsSpent", HeroClass.Guardian => "FractionalRemainder", _ => "BaselinePairedControl" }
                 } : "Baseline";
                 var key = $"{hero}/{deck.Key}/{group}/{strategy}/{profile}";
@@ -112,6 +121,8 @@ internal static class CombatExperience
                 .Select(pair => Compare(pair.Key, pair.Value,
                     strata.Single(other => other.Key.StartsWith(pair.Key[..^"Baseline".Length], StringComparison.Ordinal) && other.Key != pair.Key).Value)).ToArray()
         };
+        if (Hash(JsonSerializer.Serialize(config, Json)) != sourceConfigHash)
+            throw new InvalidOperationException("Isolated experiment mutated source configuration.");
         File.WriteAllText(Path.Combine(output, "summary.json"), JsonSerializer.Serialize(summary, PrettyJson));
         return summary.ErrorCount == 0 ? 0 : 1;
     }
@@ -176,8 +187,9 @@ internal static class CombatExperience
                 Cells = map.Cells.Select(c => c.Position == cell.Position ? encounter : c).ToArray(),
                 SpawnPositions = new[] { cell.Position }
             }));
-            if (profile is "TargetedO6Hp085" or "TargetedO6Interval110")
+            if (profile is "TargetedO6Hp085" or "TargetedO6Hp095" or "TargetedO6Hp090" or "TargetedO6Interval110")
             {
+                var hpScale = profile switch { "TargetedO6Hp095" => .95, "TargetedO6Hp090" => .90, _ => .85 };
                 var snapshot = room.Capture();
                 room = BattleRoom.Restore(snapshot with
                 {
@@ -185,8 +197,8 @@ internal static class CombatExperience
                     {
                         Pve = value.Pve! with
                         {
-                            Monsters = value.Pve.Monsters.Select(monster => profile == "TargetedO6Hp085"
-                                ? monster with { MaximumHp = (int)Math.Floor(monster.MaximumHp * .85), Hp = (int)Math.Floor(monster.Hp * .85) }
+                            Monsters = value.Pve.Monsters.Select(monster => profile != "TargetedO6Interval110"
+                                ? monster with { MaximumHp = (int)Math.Floor(monster.MaximumHp * hpScale), Hp = (int)Math.Floor(monster.Hp * hpScale) }
                                 : monster with { AttackInterval = TimeSpan.FromTicks((long)(monster.AttackInterval.Ticks * 1.10)) }).ToArray()
                         }
                     }).ToArray()
@@ -198,6 +210,13 @@ internal static class CombatExperience
             var damage = 0;
             var effectiveAt = -1d;
             var tick = TimeSpan.FromMilliseconds(100);
+            var firstWindupExtra = profile switch
+            {
+                "TargetedO6Windup025" => TimeSpan.FromMilliseconds(250),
+                "TargetedO6Windup050" => TimeSpan.FromMilliseconds(500),
+                _ => TimeSpan.Zero
+            };
+            var extendedMonsters = new HashSet<string>(StringComparer.Ordinal);
             for (var step = 0; step < limit * 10 && player.Phase == RoomPlayerPhase.Pve; step++)
             {
                 var time = step / 10d;
@@ -262,6 +281,16 @@ internal static class CombatExperience
                 if (time <= 60) row.Damage60 = damage;
                 var handBeforeAdvance = player.Combat.Deck.Hand.Select(card => card.InstanceId).ToHashSet();
                 room.Advance(tick, DateTimeOffset.UnixEpoch.AddSeconds(time + .1));
+                if (firstWindupExtra > TimeSpan.Zero)
+                foreach (var monster in pve.Monsters)
+                {
+                    if (!monster.IsCharging || monster.WindupRemaining <= TimeSpan.Zero || !extendedMonsters.Add(monster.MonsterId)) continue;
+                    var state = monster.Capture();
+                    monster.SetRuntimeState(state.IntentIndex, state.IntervalProgress, state.WindupRemaining + firstWindupExtra,
+                        state.IsCharging, state.EmpowerBonus, state.StunRemaining,
+                        state.StatusRemaining.ToDictionary(value => value.Key, value => value.Remaining, StringComparer.Ordinal),
+                        state.BossPhase, state.BossPhaseTransitionPending);
+                }
                 row.NaturalCardsDrawn += player.Combat.Deck.Hand.Count(card => !handBeforeAdvance.Contains(card.InstanceId));
                 row.ObservedSeconds = time + .1;
             }

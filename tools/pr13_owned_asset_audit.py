@@ -54,9 +54,7 @@ ROLLBACK;
     start=time.time();result=subprocess.run(['ssh','-i',str(args.key),'-o','BatchMode=yes','-o','ConnectTimeout=10','ubuntu@43.172.70.182','bash','-s'],
         input=script.encode('utf8'),capture_output=True,timeout=30)
     if result.returncode:raise RuntimeError('Read-only audit failed: '+result.stderr.decode('utf8','replace')[:1000])
-    lines=[line for line in result.stdout.decode('utf8').splitlines() if line.startswith('{')]
-    if len(lines)!=1:raise RuntimeError('Incomplete audit response')
-    data=json.loads(lines[0]);accounts=data['accounts']
+    data=json.loads(result.stdout.decode('utf8').strip());accounts=data['accounts']
     if len(accounts)!=len(users):raise RuntimeError('Incomplete owned-account audit')
     for row in accounts:
         row['account_hash']=hashlib.sha256(row.pop('player_id').encode('ascii')).hexdigest()

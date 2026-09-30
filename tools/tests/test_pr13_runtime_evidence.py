@@ -1,8 +1,20 @@
 import unittest
-from tools.pr13_runtime_evidence import coverage, reconcile_cycles, result_dimensions
+from tools.pr13_runtime_evidence import coverage, reconcile_cycles, result_dimensions, sampling_integrity
 
 
 class CoverageTests(unittest.TestCase):
+    def test_sampling_blackout_in_stop_tail_is_invalid(self):
+        rows=[dict(at=100+t,sample_monotonic_ms=t*1000) for t in range(10,61,10)]
+        self.assertTrue(sampling_integrity(rows,0,70000)['passed'])
+        result=sampling_integrity(rows,0,600000)
+        self.assertFalse(result['passed'])
+        self.assertIn('sampling_gap_over_contract',result['reasons'])
+        self.assertEqual(result['tail_gap_seconds'],540)
+
+    def test_wall_clock_jump_is_recorded_without_filling_time(self):
+        rows=[dict(at=110,sample_monotonic_ms=10000),dict(at=800,sample_monotonic_ms=20000)]
+        self.assertIn('wall_clock_discontinuity',sampling_integrity(rows,0,30000)['reasons'])
+
     def rows(self, count=100):
         return [dict(at=t, online=100, active_in_room=count, command_rate=2) for t in range(0, 611, 10)]
 
