@@ -1,8 +1,21 @@
 import unittest
-from tools.pr13_runtime_evidence import coverage, reconcile_cycles, result_dimensions, sampling_integrity
+from tools.pr13_runtime_evidence import coverage, finite, reconcile_cycles, result_dimensions, sampling_integrity
 
 
 class CoverageTests(unittest.TestCase):
+    def test_oversized_json_integer_invalidates_sampling_and_archive_without_crash(self):
+        huge = 10**400
+        self.assertFalse(finite(huge))
+        self.assertFalse(sampling_integrity([
+            dict(at=1,sample_monotonic_ms=huge)],0,1000)['passed'])
+        with self.assertRaises(ValueError):
+            coverage([],start=0,end=huge,target_online=1,target_active=1)
+        row=dict(run_id='r',client_id='a',process_epoch='e',event_seq=1,
+                 at_unix_ms=huge,cycle_id='a:1',match_id='M',event_type='cycle.started')
+        result=reconcile_cycles([row],1000,2000)
+        self.assertIn('missing_context',result['evidence_errors'])
+        self.assertEqual(result['final']['completed_cycles'],0)
+
     def test_sampling_blackout_in_stop_tail_is_invalid(self):
         rows=[dict(at=100+t,sample_monotonic_ms=t*1000) for t in range(10,61,10)]
         self.assertTrue(sampling_integrity(rows,0,70000)['passed'])
