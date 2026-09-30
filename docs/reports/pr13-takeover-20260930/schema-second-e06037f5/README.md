@@ -15,4 +15,4 @@ PR13_SOURCE_ROOT="$PWD" PYTHONDONTWRITEBYTECODE=1 python /tmp/run_load01.py --ou
 
 The schema probe harness exits0 to record observations; independently inspect actual result fields. NEW3 expects unhandled_exceptions0/invalid_failures2 plus finite_mean1e308,error_count2,sample_count2,latency_sample_quality insufficient. OLD5 expects unhandled0/invalid5; all children reaped. LOAD01 exits0 only for12Passed.
 
-MAIN formally accepted LOAD01.2/.3/.4 at ee8 and failed .1; the fixed independent review is `dac6fdbd43d9c925a696a18f9774d9392c06c302`, recorded in [MAIN_S6_ee8adcf4.json](../MAIN_S6_ee8adcf4.json). Only .1 is submitted for new independent actual replay. Previous receipts/raw are immutable; G0–G5 and full132 remain unsigned/incomplete.
+MAIN accepted LOAD01.1 as FixedWithEvidence at exact e060 after independent actual replay, recorded in [MAIN_S6_e06037f5.json](../MAIN_S6_e06037f5.json). LOAD01.2/.3/.4 remain Accepted/NoChangeWithEvidence at ee8 with [their separate fixed-source decision](../MAIN_S6_ee8adcf4.json). Earlier failed sources and raw remain immutable; G0–G5 and full132 remain unsigned/incomplete.

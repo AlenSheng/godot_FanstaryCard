@@ -15,9 +15,9 @@
       ],
       "setup_and_injection": "None/list状态",
       "expected": "记录无效不抛异常",
-      "task_current_state": "Failed",
-      "accepted": false,
-      "accepted_by": null,
+      "task_current_state": "Accepted",
+      "accepted": true,
+      "accepted_by": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
       "supporting_task_evidence": [
         "case-audit-cc6da2e/manifest.json",
         "case-audit-cc6da2e/receipts/report.json",
@@ -36,7 +36,7 @@
         "setup_matches_frozen_spec": true,
         "expected_matches_frozen_spec": true,
         "full_offline_case_evidence": true,
-        "acceptance_decision": "Original case Passed at e060, but prior MAIN Failed schema full criterion; new independent S6 pending.",
+        "acceptance_decision": "MAIN Accepted/FixedWithEvidence at exact e060; prior ee8 failures retained separately.",
         "command_manifest": "schema-second-e06037f5/COMMANDS.json"
       },
       "prior_case_executions": [
@@ -94,11 +94,32 @@
         }
       ],
       "independent_decision": {
-        "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
-        "review_commit": "dac6fdbd43d9c925a696a18f9774d9392c06c302",
-        "decision_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/dac6fdbd43d9c925a696a18f9774d9392c06c302/docs/reports/pr13-independent-main-20260930/ee8adcf4/PARENT_DECISION_NOTE.json",
-        "state": "Failed"
-      }
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "LOAD-01.1",
+        "state": "Accepted",
+        "resolution": "FixedWithEvidence",
+        "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+        "review_commit": "b4eba2cd6131dc6bae505af2a6ec9e7ba038a160",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/b4eba2cd6131dc6bae505af2a6ec9e7ba038a160/docs/reports/pr13-independent-main-20260930/e06037f5/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/b4eba2cd6131dc6bae505af2a6ec9e7ba038a160/docs/reports/pr13-independent-main-20260930/e06037f5/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent delegation: MAIN finally adjudicated LOAD01.1 Accepted/FixedWithEvidence at exact e060.",
+        "verified_review_manifest_files": 58,
+        "review_manifest_sha256": "0e19533da9ef3764e6f37a385ca74ecea18408504e7fd6d5873e2abea3b45e0f",
+        "independent_actual_result": "Original3 + same-class5 + old5 + canonical12 + Python122 passed0skip; all17 dedicated children reaped.",
+        "implementation_owner_did_not_sign": true,
+        "other_LOAD01_decisions_unchanged": "LOAD-01.2/.3/.4 remain Accepted/NoChangeWithEvidence at original ee8 MAIN decision.",
+        "all132_accepted": false,
+        "gates_accepted": false
+      },
+      "prior_independent_decisions": [
+        {
+          "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "review_commit": "dac6fdbd43d9c925a696a18f9774d9392c06c302",
+          "decision_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/dac6fdbd43d9c925a696a18f9774d9392c06c302/docs/reports/pr13-independent-main-20260930/ee8adcf4/PARENT_DECISION_NOTE.json",
+          "state": "Failed"
+        }
+      ]
     },
     {
       "case_id": "LOAD-01.1-T02",
@@ -108,9 +129,9 @@
       ],
       "setup_and_injection": "bool冒充PID/NaN耗时",
       "expected": "拒绝且保留已知失败分子",
-      "task_current_state": "Failed",
-      "accepted": false,
-      "accepted_by": null,
+      "task_current_state": "Accepted",
+      "accepted": true,
+      "accepted_by": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
       "supporting_task_evidence": [
         "case-audit-cc6da2e/manifest.json",
         "case-audit-cc6da2e/receipts/report.json",
@@ -129,7 +150,7 @@
         "setup_matches_frozen_spec": true,
         "expected_matches_frozen_spec": true,
         "full_offline_case_evidence": true,
-        "acceptance_decision": "Original case Passed at e060, but prior MAIN Failed schema full criterion; new independent S6 pending.",
+        "acceptance_decision": "MAIN Accepted/FixedWithEvidence at exact e060; prior ee8 failures retained separately.",
         "command_manifest": "schema-second-e06037f5/COMMANDS.json"
       },
       "prior_case_executions": [
@@ -187,11 +208,32 @@
         }
       ],
       "independent_decision": {
-        "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
-        "review_commit": "dac6fdbd43d9c925a696a18f9774d9392c06c302",
-        "decision_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/dac6fdbd43d9c925a696a18f9774d9392c06c302/docs/reports/pr13-independent-main-20260930/ee8adcf4/PARENT_DECISION_NOTE.json",
-        "state": "Failed"
-      }
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "LOAD-01.1",
+        "state": "Accepted",
+        "resolution": "FixedWithEvidence",
+        "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+        "review_commit": "b4eba2cd6131dc6bae505af2a6ec9e7ba038a160",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/b4eba2cd6131dc6bae505af2a6ec9e7ba038a160/docs/reports/pr13-independent-main-20260930/e06037f5/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/b4eba2cd6131dc6bae505af2a6ec9e7ba038a160/docs/reports/pr13-independent-main-20260930/e06037f5/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent delegation: MAIN finally adjudicated LOAD01.1 Accepted/FixedWithEvidence at exact e060.",
+        "verified_review_manifest_files": 58,
+        "review_manifest_sha256": "0e19533da9ef3764e6f37a385ca74ecea18408504e7fd6d5873e2abea3b45e0f",
+        "independent_actual_result": "Original3 + same-class5 + old5 + canonical12 + Python122 passed0skip; all17 dedicated children reaped.",
+        "implementation_owner_did_not_sign": true,
+        "other_LOAD01_decisions_unchanged": "LOAD-01.2/.3/.4 remain Accepted/NoChangeWithEvidence at original ee8 MAIN decision.",
+        "all132_accepted": false,
+        "gates_accepted": false
+      },
+      "prior_independent_decisions": [
+        {
+          "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "review_commit": "dac6fdbd43d9c925a696a18f9774d9392c06c302",
+          "decision_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/dac6fdbd43d9c925a696a18f9774d9392c06c302/docs/reports/pr13-independent-main-20260930/ee8adcf4/PARENT_DECISION_NOTE.json",
+          "state": "Failed"
+        }
+      ]
     },
     {
       "case_id": "LOAD-01.1-T03",
@@ -201,9 +243,9 @@
       ],
       "setup_and_injection": "部分合法部分坏行",
       "expected": "合法行保留并使证据无效",
-      "task_current_state": "Failed",
-      "accepted": false,
-      "accepted_by": null,
+      "task_current_state": "Accepted",
+      "accepted": true,
+      "accepted_by": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
       "supporting_task_evidence": [
         "case-audit-cc6da2e/manifest.json",
         "case-audit-cc6da2e/receipts/report.json",
@@ -222,7 +264,7 @@
         "setup_matches_frozen_spec": true,
         "expected_matches_frozen_spec": true,
         "full_offline_case_evidence": true,
-        "acceptance_decision": "Original case Passed at e060, but prior MAIN Failed schema full criterion; new independent S6 pending.",
+        "acceptance_decision": "MAIN Accepted/FixedWithEvidence at exact e060; prior ee8 failures retained separately.",
         "command_manifest": "schema-second-e06037f5/COMMANDS.json"
       },
       "prior_case_executions": [
@@ -280,11 +322,32 @@
         }
       ],
       "independent_decision": {
-        "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
-        "review_commit": "dac6fdbd43d9c925a696a18f9774d9392c06c302",
-        "decision_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/dac6fdbd43d9c925a696a18f9774d9392c06c302/docs/reports/pr13-independent-main-20260930/ee8adcf4/PARENT_DECISION_NOTE.json",
-        "state": "Failed"
-      }
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "LOAD-01.1",
+        "state": "Accepted",
+        "resolution": "FixedWithEvidence",
+        "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+        "review_commit": "b4eba2cd6131dc6bae505af2a6ec9e7ba038a160",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/b4eba2cd6131dc6bae505af2a6ec9e7ba038a160/docs/reports/pr13-independent-main-20260930/e06037f5/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/b4eba2cd6131dc6bae505af2a6ec9e7ba038a160/docs/reports/pr13-independent-main-20260930/e06037f5/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent delegation: MAIN finally adjudicated LOAD01.1 Accepted/FixedWithEvidence at exact e060.",
+        "verified_review_manifest_files": 58,
+        "review_manifest_sha256": "0e19533da9ef3764e6f37a385ca74ecea18408504e7fd6d5873e2abea3b45e0f",
+        "independent_actual_result": "Original3 + same-class5 + old5 + canonical12 + Python122 passed0skip; all17 dedicated children reaped.",
+        "implementation_owner_did_not_sign": true,
+        "other_LOAD01_decisions_unchanged": "LOAD-01.2/.3/.4 remain Accepted/NoChangeWithEvidence at original ee8 MAIN decision.",
+        "all132_accepted": false,
+        "gates_accepted": false
+      },
+      "prior_independent_decisions": [
+        {
+          "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "review_commit": "dac6fdbd43d9c925a696a18f9774d9392c06c302",
+          "decision_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/dac6fdbd43d9c925a696a18f9774d9392c06c302/docs/reports/pr13-independent-main-20260930/ee8adcf4/PARENT_DECISION_NOTE.json",
+          "state": "Failed"
+        }
+      ]
     },
     {
       "case_id": "LOAD-01.2-T01",
@@ -4983,7 +5046,7 @@
       ],
       "setup_and_injection": "重复同错误",
       "expected": "恢复ID始终M",
-      "task_current_state": "NotRevalidated",
+      "task_current_state": "Partial",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [],
@@ -5004,7 +5067,7 @@
       ],
       "setup_and_injection": "Bootstrap晚返回",
       "expected": "继续按M恢复",
-      "task_current_state": "NotRevalidated",
+      "task_current_state": "Partial",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [],
@@ -5025,7 +5088,7 @@
       ],
       "setup_and_injection": "错误无可验证match",
       "expected": "不能清有效M",
-      "task_current_state": "NotRevalidated",
+      "task_current_state": "Partial",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [],
@@ -5046,7 +5109,7 @@
       ],
       "setup_and_injection": "M错误在新N房到达",
       "expected": "N不被清",
-      "task_current_state": "NotRevalidated",
+      "task_current_state": "Partial",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [],
@@ -5067,7 +5130,7 @@
       ],
       "setup_and_injection": "M的Bootstrap在N到达",
       "expected": "不覆盖N",
-      "task_current_state": "NotRevalidated",
+      "task_current_state": "Partial",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [],
@@ -5088,7 +5151,7 @@
       ],
       "setup_and_injection": "session切换",
       "expected": "不恢复旧账号状态",
-      "task_current_state": "NotRevalidated",
+      "task_current_state": "Partial",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [],
@@ -5109,7 +5172,7 @@
       ],
       "setup_and_injection": "已提交响应丢失",
       "expected": "一次资产且一次完成",
-      "task_current_state": "NotRevalidated",
+      "task_current_state": "Partial",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [],
@@ -5155,7 +5218,7 @@
       ],
       "setup_and_injection": "未提交超时",
       "expected": "可安全重试",
-      "task_current_state": "NotRevalidated",
+      "task_current_state": "Partial",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [],
@@ -5201,7 +5264,7 @@
       ],
       "setup_and_injection": "busy/旧receipt",
       "expected": "不计完成",
-      "task_current_state": "NotRevalidated",
+      "task_current_state": "Partial",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [],
@@ -5513,7 +5576,7 @@
       ],
       "setup_and_injection": "ready阶段STOP",
       "expected": "取消或明确deadline回收",
-      "task_current_state": "NotRevalidated",
+      "task_current_state": "Partial",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [],
@@ -5559,7 +5622,7 @@
       ],
       "setup_and_injection": "reconnect收到重放",
       "expected": "序号与room正确",
-      "task_current_state": "NotRevalidated",
+      "task_current_state": "Partial",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [],
@@ -5605,7 +5668,7 @@
       ],
       "setup_and_injection": "多局迟到事件",
       "expected": "只影响原cycle",
-      "task_current_state": "NotRevalidated",
+      "task_current_state": "Partial",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [],
@@ -10331,7 +10394,7 @@
       ],
       "setup_and_injection": "重复错误",
       "expected": "保原match",
-      "task_current_state": "NotRevalidated",
+      "task_current_state": "Partial",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [],
@@ -10353,7 +10416,7 @@
       ],
       "setup_and_injection": "旧callback在新局",
       "expected": "不清新UI",
-      "task_current_state": "NotRevalidated",
+      "task_current_state": "Partial",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [],
@@ -10375,7 +10438,7 @@
       ],
       "setup_and_injection": "回大厅时ackUnknown",
       "expected": "可恢复receipt/明确状态",
-      "task_current_state": "NotRevalidated",
+      "task_current_state": "Partial",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [],
@@ -12171,5 +12234,120 @@
     "primary_cases_passed": 9,
     "causal_extra_Failed": 1,
     "Accepted": 0
+  },
+  "independent_MAIN_S6_e060": {
+    "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+    "task_id": "LOAD-01.1",
+    "state": "Accepted",
+    "resolution": "FixedWithEvidence",
+    "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+    "review_commit": "b4eba2cd6131dc6bae505af2a6ec9e7ba038a160",
+    "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/b4eba2cd6131dc6bae505af2a6ec9e7ba038a160/docs/reports/pr13-independent-main-20260930/e06037f5/REVIEW.md",
+    "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/b4eba2cd6131dc6bae505af2a6ec9e7ba038a160/docs/reports/pr13-independent-main-20260930/e06037f5/REPORT.json",
+    "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+    "authorization": "Explicit parent delegation: MAIN finally adjudicated LOAD01.1 Accepted/FixedWithEvidence at exact e060.",
+    "verified_review_manifest_files": 58,
+    "review_manifest_sha256": "0e19533da9ef3764e6f37a385ca74ecea18408504e7fd6d5873e2abea3b45e0f",
+    "independent_actual_result": "Original3 + same-class5 + old5 + canonical12 + Python122 passed0skip; all17 dedicated children reaped.",
+    "implementation_owner_did_not_sign": true,
+    "other_LOAD01_decisions_unchanged": "LOAD-01.2/.3/.4 remain Accepted/NoChangeWithEvidence at original ee8 MAIN decision.",
+    "all132_accepted": false,
+    "gates_accepted": false
+  },
+  "latest_bounded19_receipt": {
+    "report": "BOUNDED_19_RECEIPT.json",
+    "tasks": 19,
+    "cases": 57,
+    "states": {
+      "Accepted": 4,
+      "ReadyForAcceptance": 11,
+      "Partial": 4
+    },
+    "primary_case_results": {
+      "Passed": 56,
+      "Partial": 1
+    },
+    "Accepted": 4
+  },
+  "task_state_metadata_synchronization": {
+    "changes": [
+      {
+        "case_id": "PR13-A03.1-T01",
+        "prior_stale_task_state": "NotRevalidated",
+        "current_task_state": "Partial"
+      },
+      {
+        "case_id": "PR13-A03.1-T02",
+        "prior_stale_task_state": "NotRevalidated",
+        "current_task_state": "Partial"
+      },
+      {
+        "case_id": "PR13-A03.1-T03",
+        "prior_stale_task_state": "NotRevalidated",
+        "current_task_state": "Partial"
+      },
+      {
+        "case_id": "PR13-A03.2-T01",
+        "prior_stale_task_state": "NotRevalidated",
+        "current_task_state": "Partial"
+      },
+      {
+        "case_id": "PR13-A03.2-T02",
+        "prior_stale_task_state": "NotRevalidated",
+        "current_task_state": "Partial"
+      },
+      {
+        "case_id": "PR13-A03.2-T03",
+        "prior_stale_task_state": "NotRevalidated",
+        "current_task_state": "Partial"
+      },
+      {
+        "case_id": "PR13-A03.3-T01",
+        "prior_stale_task_state": "NotRevalidated",
+        "current_task_state": "Partial"
+      },
+      {
+        "case_id": "PR13-A03.3-T02",
+        "prior_stale_task_state": "NotRevalidated",
+        "current_task_state": "Partial"
+      },
+      {
+        "case_id": "PR13-A03.3-T03",
+        "prior_stale_task_state": "NotRevalidated",
+        "current_task_state": "Partial"
+      },
+      {
+        "case_id": "PR13-A04.4-T01",
+        "prior_stale_task_state": "NotRevalidated",
+        "current_task_state": "Partial"
+      },
+      {
+        "case_id": "PR13-A04.4-T02",
+        "prior_stale_task_state": "NotRevalidated",
+        "current_task_state": "Partial"
+      },
+      {
+        "case_id": "PR13-A04.4-T03",
+        "prior_stale_task_state": "NotRevalidated",
+        "current_task_state": "Partial"
+      },
+      {
+        "case_id": "PR13-B11.2-T01",
+        "prior_stale_task_state": "NotRevalidated",
+        "current_task_state": "Partial"
+      },
+      {
+        "case_id": "PR13-B11.2-T02",
+        "prior_stale_task_state": "NotRevalidated",
+        "current_task_state": "Partial"
+      },
+      {
+        "case_id": "PR13-B11.2-T03",
+        "prior_stale_task_state": "NotRevalidated",
+        "current_task_state": "Partial"
+      }
+    ],
+    "case_execution_or_evidence_changes": 0,
+    "new_acceptance_changes": 0
   }
 }

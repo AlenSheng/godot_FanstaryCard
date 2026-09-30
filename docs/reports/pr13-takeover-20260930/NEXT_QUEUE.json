@@ -1,95 +1,112 @@
 {
-  "kind": "next_critical_queue_not_completed",
-  "stable_logic_sha": "38c2caccb5f8327f52d97dffb3b9f9303360dd46",
-  "server_client_tree_equal_to_b709": false,
+  "kind": "Next_minimum_dependency_queue_after_bounded19_seal",
+  "stable_validation_code_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+  "production_behavior_baseline": "f812879e4518fd09bf22656451cb563d62940298",
   "current_counts": {
-    "Partial": 53,
-    "NotRevalidated": 76,
+    "Partial": 42,
+    "NotRevalidated": 72,
+    "Accepted": 4,
+    "ReadyForAcceptance": 11,
     "Blocked": 3
   },
+  "all_accepted": false,
+  "current_scope_sealed": "BOUNDED_19_RECEIPT.json",
   "next": [
     {
       "order": 1,
-      "owner": "parent / PR14 integration",
+      "owner": "MAIN / independent cloud reviewer",
       "task_ids": [
-        "PR13-B12.1",
-        "PR13-A09.1",
-        "LOAD-11.1"
+        "LOAD-02.1",
+        "LOAD-02.3",
+        "LOAD-02.4",
+        "LOAD-03.1",
+        "LOAD-03.2",
+        "PR13-B02.1",
+        "PR13-B02.2",
+        "PR13-B02.3",
+        "PR13-B02.4",
+        "PR13-A05.2",
+        "PR13-A05.3"
       ],
-      "action": "MAIN/UI owner update isolated reviewed UI070c7b4 + PR13 d2106eb0 (production behavior unchanged from f93e32da) + PR14 combination, resolve shared logic hunks and run applicable local cross-regression. Previous de1157 combination does not cover this batch.",
-      "evidence_input": "pb-equipment-d3c5fe6c/report.json; checkpoint-publication-de1157fd/post-commit-source.json; ci-de1157fd/workflows.json; LIVE_VALIDATION_PLAN.json",
-      "constraint": "UIbranch remains independent until its review; no merge/auto-merge or automatic server restart."
+      "action": "Replay critical original cases with exact per-group sources/report commits. Apply only explicit MAIN S6 decisions. LOAD01 four decisions already recorded by source separately.",
+      "inputs": "BOUNDED_19_RECEIPT.json; INDEPENDENT_REPLAY_19.md",
+      "added_CI_LIVE_human_gate": false
     },
     {
       "order": 2,
-      "owner": "MAIN / lifecycle-client",
+      "owner": "parent coordinates client/UI candidate; implementation awaits scope",
       "task_ids": [
-        "LOAD-04.4",
-        "LOAD-05.4",
-        "PR13-A03.1",
-        "PR13-A03.2",
-        "PR13-A03.3",
-        "PR13-A03.4",
-        "PR13-A04.4",
-        "PR13-A05.3",
-        "PR13-B11.2"
+        "PR13-A05.1"
       ],
-      "action": "Next bounded offline batch: actual client pending holds; busy/old receipt cannot count completion; STOP settlement/bootstrap/reconnect await; same-session real multicycle repeated NOT_IN_ROOM/delayed callback isolation.",
-      "missing": "Register SupportOnly+actual process committed MarkRunning loss and5real READY frame losses now verified. Production Godot3legal terminal cycles counted exactly under committed/uncommitted transport retry;3full gameplay/Boss routes, exhausted logical ACK-call retry, LIVE/RENDER and independent stage review remain."
+      "action": "Review confirmed actual recovery-M old Bootstrap refill during ACK await. Minimum guard proposal in client/state/game_store.gd remains untested/unapplied; coordinate fixed UI before production write.",
+      "tests": "Same actual positive Pending/OS restart/ACK-await window; ordinary terminal negative control; current-N isolation; repeated ACK/READY; readonly asset/route final audits.",
+      "inputs": "offline-acceptance-f812/a05/P0_CAUSAL.json; proposed-game-store-poll-ack.patch; DERIVED_CHECKS.json"
     },
     {
       "order": 3,
-      "owner": "MAIN / baseline performance",
+      "owner": "next bounded actual client/owned Program/PG batch",
       "task_ids": [
-        "PR13-A02.1",
-        "PR13-A02.2",
-        "PR13-A02.4",
-        "PR13-A10.1",
-        "PR13-A10.2",
-        "PR13-A10.3",
-        "PR13-A10.4",
-        "LOAD-10.4"
+        "LOAD-02.2"
       ],
-      "action": "Freeze original gameplay read/write mix including new readonly-preview calls, effective rate limits, 50/100targets and3paired A/B groups, then real stable/30minsoak and postcleanup.",
-      "constraint": "95%/600s/120s/20s thresholds preserved; historical58.3% fail/598.2monitoringstop Unknown unchanged."
+      "action": "Prove actual PG game timeout before STOP retains failed cycle terminal classification; started=completed+failed+cancelled+active at common cutoff; unknown ACK remains pending until authority.",
+      "missing": "Current actual Godot microtimeout plus model coordinator and separate actual PG ACKSTOP cannot jointly substitute for this whole original T01. No online gate.",
+      "inputs": "offline-acceptance-f812/load02/evidence/MISSING_FACTS.json"
     },
     {
       "order": 4,
-      "owner": "MAIN / experiments",
+      "owner": "next evidence/Gateway accounting implementation after coordination",
       "task_ids": [
-        "PR13-B03.2",
-        "PR13-B04.4",
-        "PR13-B05.3",
-        "PR13-B05.4",
-        "PR13-B12.2"
+        "LOAD-03.3"
       ],
-      "action": "Use new864000 single-factor raw to preregister primary endpoint/multiple comparison/precision; implement fair loadout/legal route/preparedBoss/PVP role swaps and remaining control/pool/policy experiments.",
-      "constraint": "No recommendation/default enablement from sample-floor/control integrity alone."
+      "action": "Persist actual logical start and exclusive outcome/pending population across windows; attempt and valid latency remain separate.",
+      "missing": "Actual gate cutoff invoked2/completed1/pending1 but production aggregation only reports completed logical1; no start/pending denominator.",
+      "inputs": "load03-remaining-ee8adcf4/MISSING_FACTS.json"
     },
     {
       "order": 5,
-      "owner": "parent / UI and user testing",
+      "owner": "next evidence statistics implementation",
       "task_ids": [
-        "PR13-B10.2",
-        "PR13-B10.4",
-        "PR13-B11.4"
+        "LOAD-03.4"
       ],
-      "action": "Review independent UIart and49px tips fix; coordinate authority overflow payload if needed; actual rendered3cycle/FPS-latency matrix and6anonymous novice/expert participants across3classes.",
-      "constraint": "PR13logic ownership remains game_store/tests; no theme/shader/resource overwrites or participant messages sent."
+      "action": "After minimum .3 inputs, derive full raw route/phase P50/P95/P99/max/throughput/error rate and running/drain/final at common cutoffs; preserve threshold/sample insufficiency.",
+      "missing": "Current diagnostic harness does not implement missing production full-route/full-run/three-cutoff outputs; final-window zero errors cannot replace full1error.",
+      "inputs": "load03-remaining-ee8adcf4/MISSING_FACTS.json"
     },
     {
       "order": 6,
-      "owner": "MAIN / historical audit",
+      "owner": "parent / preserved remaining113 tasks",
       "task_ids": [
         "PR13-A01.1",
         "PR13-A01.3",
-        "PR13-A05.4"
+        "PR13-A05.4",
+        "PR13-B12.1",
+        "LOAD-11.1"
       ],
-      "action": "Retrieve original historical50/100 per-client missing raw and bounded read-only global ledger mismatch evidence.",
-      "constraint": "Verified147/current25account clear does not recover old raw or resolve global ledger1. No balance/ledger edit or DB restore."
+      "action": "Retain historical raw missing inputs/global ledger mismatch1; existing owned audits do not close global ledger. Parent coordinates UI/PR14 final fixed-source combination and applicable later profiles. Do not broaden this sealed offline batch.",
+      "constraints": "No merge/auto-merge/DB restore/ledger mutation; no unscheduled deployment; raw uploads paused."
     }
   ],
-  "new_raw_delivery": {
+  "ci_pending": {
+    "prior_exact_sha_and_runs": {
+      "sha": "38c2caccb5f8327f52d97dffb3b9f9303360dd46",
+      "blocker": "Account payments OR spending limit, parent browser verified; no exact subcause. Await user resolution; do not retry or change billing/permissions.",
+      "previous_runs": [
+        36773912366,
+        36773912323,
+        36773912361,
+        36773912262,
+        36773912365
+      ],
+      "runs": []
+    },
+    "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+    "runs": null,
+    "missing_reasons": {
+      "runs": "No new CI retry/query initiated in this documentation-only seal; account-blocked exact runs remain indexed in prior records."
+    },
+    "blocker": "Billing annotation for run36769267481 verified by parent; failed payments OR spending limit, exact subcause unknown. Await user resolution; no account/payment/permission changes."
+  },
+  "raw4_previous_delivery": {
     "files": 4,
     "bytes_each_under_8million": true,
     "location": "/workspace/pr13-takeover/actual-factors-cc6da2e/delivery",
@@ -97,7 +114,6 @@
     "remote_upload_done": false,
     "authorization_state": "PAUSED_PARENT_USER_APPROVAL_PENDING; no alternate destination or upload attempts"
   },
-  "all_accepted": false,
   "ui_cross_regression": {
     "PR": 16,
     "final_sha": "f806960ce17b8e300536a21dadde618313a68996",
@@ -107,18 +123,5 @@
     "next": "Use isolated temporary integration branch after stable batch; review main/reference_ui/card_view/exploration_view hunks against manual target authority; never merge PR16 or release here.",
     "latest_parent_verified_UI_sha": "070c7b4",
     "source_of_status": "Parent delegation message2026-09-30 during stage finalization"
-  },
-  "ci_pending": {
-    "sha": "38c2caccb5f8327f52d97dffb3b9f9303360dd46",
-    "blocker": "Account payments OR spending limit, parent browser verified; no exact subcause. Await user resolution; do not retry or change billing/permissions.",
-    "previous_runs": [
-      36773912366,
-      36773912323,
-      36773912361,
-      36773912262,
-      36773912365
-    ],
-    "runs": []
-  },
-  "production_behavior_baseline": "f93e32dac07608e8375e709cd357c4793bdcc41a"
+  }
 }

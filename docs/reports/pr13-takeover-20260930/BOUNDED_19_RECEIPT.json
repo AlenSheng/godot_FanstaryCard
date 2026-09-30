@@ -1,0 +1,1910 @@
+{
+  "kind": "Frozen_bounded_19_task_57_case_handoff_not_full_PR_acceptance",
+  "created_at_utc": "2026-09-30T23:57:57.387129+00:00",
+  "canonical_plan_sha256": "5176ee139d4e632ba34469ae531ce7ec16478f356480e2d8e320cd51f3bcd703",
+  "stable_validation_code_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+  "stable_business_client_UI_sha": "f812879e4518fd09bf22656451cb563d62940298",
+  "business_client_UI_protocol_config_diff_from_f812": [],
+  "client_protocol_files_changed_since_de115": [
+    "client/network/gateway.gd",
+    "client/state/game_store.gd",
+    "client/tests/gameplay_load_client.gd",
+    "client/tests/pr13_ack_response_loss.gd",
+    "client/tests/pr13_ack_stop_cycles.gd",
+    "client/tests/pr13_callback_isolation.gd",
+    "client/tests/pr13_callback_isolation.gd.uid",
+    "client/tests/ready_frame_proxy.py",
+    "client/tests/run_gateway_origin.gd",
+    "client/tests/run_ready_stop_faults.gd",
+    "client/tests/run_ready_stop_faults.py",
+    "client/tests/test_session_sequence.gd",
+    "client/tests/test_settlement_polling.gd"
+  ],
+  "group_provenance_must_not_be_collapsed": true,
+  "groups": [
+    {
+      "group": "LOAD01.1",
+      "tasks": [
+        "LOAD-01.1"
+      ],
+      "source_shas": [
+        "e06037f58738d0fbff86090e86d8bd06f8608e04"
+      ],
+      "report_commit": "c68bd4aadf59676096b93ce8e5a972b12575cc08",
+      "report": "schema-second-e06037f5/REPORT.json",
+      "MAIN_decisions": [
+        "MAIN_S6_e06037f5.json"
+      ],
+      "report_bytes": 405409,
+      "report_sha256": "8e2304d5782f7da2c74996ebbb5c6eb4e310a98f1aa3b82fe4618e86738c2689",
+      "fixed_report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/c68bd4aadf59676096b93ce8e5a972b12575cc08/docs/reports/pr13-takeover-20260930/schema-second-e06037f5/REPORT.json"
+    },
+    {
+      "group": "LOAD01.2/.3/.4",
+      "tasks": [
+        "LOAD-01.2",
+        "LOAD-01.3",
+        "LOAD-01.4"
+      ],
+      "source_shas": [
+        "ee8adcf40be9aebb1330156a3524910c08225ebc"
+      ],
+      "report_commit": "dac6fdbd43d9c925a696a18f9774d9392c06c302",
+      "report": "../pr13-independent-main-20260930/ee8adcf4/REPORT.json",
+      "MAIN_decisions": [
+        "MAIN_S6_ee8adcf4.json"
+      ],
+      "report_bytes": 64195,
+      "report_sha256": "63fbe4e1e927c8505dca3bb325b213be1533418a39b93c400bda12cd66e823ab",
+      "fixed_report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/dac6fdbd43d9c925a696a18f9774d9392c06c302/docs/reports/pr13-independent-main-20260930/ee8adcf4/REPORT.json"
+    },
+    {
+      "group": "LOAD02",
+      "tasks": [
+        "LOAD-02.1",
+        "LOAD-02.2",
+        "LOAD-02.3",
+        "LOAD-02.4"
+      ],
+      "source_shas": [
+        "f812879e4518fd09bf22656451cb563d62940298"
+      ],
+      "report_commit": "a1d30eb89d74aa16bb2c094c5a78c20a5ed428b6",
+      "report": "offline-acceptance-f812/load02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "report_bytes": 1099,
+      "report_sha256": "ff0ffba44d63369301d2b94c6764275eb4330bd6f5ce606d3f379e10959f2901",
+      "fixed_report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/a1d30eb89d74aa16bb2c094c5a78c20a5ed428b6/docs/reports/pr13-takeover-20260930/offline-acceptance-f812/load02/READY_FOR_INDEPENDENT_ACCEPTANCE.json"
+    },
+    {
+      "group": "LOAD03.1/.2",
+      "tasks": [
+        "LOAD-03.1",
+        "LOAD-03.2"
+      ],
+      "source_shas": [
+        "ee8adcf40be9aebb1330156a3524910c08225ebc"
+      ],
+      "report_commit": "e5de69b491bff1b3a3638bd11670901a5f96629e",
+      "report": "load03-ready-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "report_bytes": 776,
+      "report_sha256": "3f128c8d27252141e96e301e51e02faf84226edd4daeb3ae576a9f2069e22676",
+      "fixed_report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/e5de69b491bff1b3a3638bd11670901a5f96629e/docs/reports/pr13-takeover-20260930/load03-ready-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json"
+    },
+    {
+      "group": "LOAD03.3/.4",
+      "tasks": [
+        "LOAD-03.3",
+        "LOAD-03.4"
+      ],
+      "source_shas": [
+        "ee8adcf40be9aebb1330156a3524910c08225ebc"
+      ],
+      "report_commit": "dd097cf807b3d08acf2f6beaa2d1382f3a83d2e1",
+      "report": "load03-remaining-ee8adcf4/REPORT.json",
+      "report_bytes": 190813,
+      "report_sha256": "96d2897a8163a5621d2295a9cc498b714ee1854771c85e9e1c731cfc7164b3e5",
+      "fixed_report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/dd097cf807b3d08acf2f6beaa2d1382f3a83d2e1/docs/reports/pr13-takeover-20260930/load03-remaining-ee8adcf4/REPORT.json"
+    },
+    {
+      "group": "B02",
+      "tasks": [
+        "PR13-B02.1",
+        "PR13-B02.2",
+        "PR13-B02.3",
+        "PR13-B02.4"
+      ],
+      "source_shas": [
+        "f812879e4518fd09bf22656451cb563d62940298"
+      ],
+      "report_commit": "a23aa0669f6c72c1689ba6f27037373336a98abb",
+      "report": "offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "report_bytes": 1440,
+      "report_sha256": "738c189f81567cc2045305886fa937a771b871992ead84bf74275425df58f0e9",
+      "fixed_report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/a23aa0669f6c72c1689ba6f27037373336a98abb/docs/reports/pr13-takeover-20260930/offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json"
+    },
+    {
+      "group": "A05",
+      "tasks": [
+        "PR13-A05.1",
+        "PR13-A05.2",
+        "PR13-A05.3"
+      ],
+      "source_shas": [
+        "f812879e4518fd09bf22656451cb563d62940298"
+      ],
+      "report_commit": "8068783331da07ec68354c1874eb0d65adea632f",
+      "report": "offline-acceptance-f812/a05/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "report_bytes": 972,
+      "report_sha256": "8376ee16e0685e649666d37d3f43a99495b95f0e099a1f27a8ab764c1f7877b8",
+      "fixed_report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/8068783331da07ec68354c1874eb0d65adea632f/docs/reports/pr13-takeover-20260930/offline-acceptance-f812/a05/READY_FOR_INDEPENDENT_ACCEPTANCE.json"
+    }
+  ],
+  "tasks": [
+    {
+      "task_id": "LOAD-01.1",
+      "title": "输入schema",
+      "state": "Accepted",
+      "accepted": true,
+      "accepted_by": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+      "accepted_source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+      "MAIN_decision": {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "LOAD-01.1",
+        "state": "Accepted",
+        "resolution": "FixedWithEvidence",
+        "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+        "review_commit": "b4eba2cd6131dc6bae505af2a6ec9e7ba038a160",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/b4eba2cd6131dc6bae505af2a6ec9e7ba038a160/docs/reports/pr13-independent-main-20260930/e06037f5/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/b4eba2cd6131dc6bae505af2a6ec9e7ba038a160/docs/reports/pr13-independent-main-20260930/e06037f5/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent delegation: MAIN finally adjudicated LOAD01.1 Accepted/FixedWithEvidence at exact e060.",
+        "verified_review_manifest_files": 58,
+        "review_manifest_sha256": "0e19533da9ef3764e6f37a385ca74ecea18408504e7fd6d5873e2abea3b45e0f",
+        "independent_actual_result": "Original3 + same-class5 + old5 + canonical12 + Python122 passed0skip; all17 dedicated children reaped.",
+        "implementation_owner_did_not_sign": true,
+        "other_LOAD01_decisions_unchanged": "LOAD-01.2/.3/.4 remain Accepted/NoChangeWithEvidence at original ee8 MAIN decision.",
+        "all132_accepted": false,
+        "gates_accepted": false
+      },
+      "source_shas": [
+        "e06037f58738d0fbff86090e86d8bd06f8608e04"
+      ],
+      "report_commit": "c68bd4aadf59676096b93ce8e5a972b12575cc08",
+      "report": "schema-second-e06037f5/REPORT.json",
+      "profiles": [
+        "OFFLINE"
+      ],
+      "canonical_implementation_steps": "校验容器、标量、PID、时间、计数和数组元素；坏行输出invalid_schema且继续有界处理",
+      "canonical_pass_criteria": "所有负例有分类，采样函数不异常退出，非法值不变成0延迟或成功。",
+      "minimal_dependencies": [
+        "LOAD-11.1",
+        "LOAD-06.4"
+      ],
+      "full_task_criterion_satisfied": true,
+      "ready_for_independent_acceptance": false,
+      "remaining": null,
+      "cases": [
+        {
+          "case_id": "LOAD-01.1-T01",
+          "setup_and_injection": "None/list状态",
+          "expected": "记录无效不抛异常",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+            "source_git_dirty": false,
+            "receipt_file": "schema-second-e06037f5/load01-clean-sha/cases.jsonl",
+            "receipt_line": 1,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_offline_case_evidence": true,
+            "acceptance_decision": "MAIN Accepted/FixedWithEvidence at exact e060; prior ee8 failures retained separately.",
+            "command_manifest": "schema-second-e06037f5/COMMANDS.json"
+          },
+          "independent_decision": {
+            "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+            "task_id": "LOAD-01.1",
+            "state": "Accepted",
+            "resolution": "FixedWithEvidence",
+            "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+            "review_commit": "b4eba2cd6131dc6bae505af2a6ec9e7ba038a160",
+            "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/b4eba2cd6131dc6bae505af2a6ec9e7ba038a160/docs/reports/pr13-independent-main-20260930/e06037f5/REVIEW.md",
+            "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/b4eba2cd6131dc6bae505af2a6ec9e7ba038a160/docs/reports/pr13-independent-main-20260930/e06037f5/REPORT.json",
+            "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+            "authorization": "Explicit parent delegation: MAIN finally adjudicated LOAD01.1 Accepted/FixedWithEvidence at exact e060.",
+            "verified_review_manifest_files": 58,
+            "review_manifest_sha256": "0e19533da9ef3764e6f37a385ca74ecea18408504e7fd6d5873e2abea3b45e0f",
+            "independent_actual_result": "Original3 + same-class5 + old5 + canonical12 + Python122 passed0skip; all17 dedicated children reaped.",
+            "implementation_owner_did_not_sign": true,
+            "other_LOAD01_decisions_unchanged": "LOAD-01.2/.3/.4 remain Accepted/NoChangeWithEvidence at original ee8 MAIN decision.",
+            "all132_accepted": false,
+            "gates_accepted": false
+          }
+        },
+        {
+          "case_id": "LOAD-01.1-T02",
+          "setup_and_injection": "bool冒充PID/NaN耗时",
+          "expected": "拒绝且保留已知失败分子",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+            "source_git_dirty": false,
+            "receipt_file": "schema-second-e06037f5/load01-clean-sha/cases.jsonl",
+            "receipt_line": 2,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_offline_case_evidence": true,
+            "acceptance_decision": "MAIN Accepted/FixedWithEvidence at exact e060; prior ee8 failures retained separately.",
+            "command_manifest": "schema-second-e06037f5/COMMANDS.json"
+          },
+          "independent_decision": {
+            "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+            "task_id": "LOAD-01.1",
+            "state": "Accepted",
+            "resolution": "FixedWithEvidence",
+            "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+            "review_commit": "b4eba2cd6131dc6bae505af2a6ec9e7ba038a160",
+            "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/b4eba2cd6131dc6bae505af2a6ec9e7ba038a160/docs/reports/pr13-independent-main-20260930/e06037f5/REVIEW.md",
+            "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/b4eba2cd6131dc6bae505af2a6ec9e7ba038a160/docs/reports/pr13-independent-main-20260930/e06037f5/REPORT.json",
+            "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+            "authorization": "Explicit parent delegation: MAIN finally adjudicated LOAD01.1 Accepted/FixedWithEvidence at exact e060.",
+            "verified_review_manifest_files": 58,
+            "review_manifest_sha256": "0e19533da9ef3764e6f37a385ca74ecea18408504e7fd6d5873e2abea3b45e0f",
+            "independent_actual_result": "Original3 + same-class5 + old5 + canonical12 + Python122 passed0skip; all17 dedicated children reaped.",
+            "implementation_owner_did_not_sign": true,
+            "other_LOAD01_decisions_unchanged": "LOAD-01.2/.3/.4 remain Accepted/NoChangeWithEvidence at original ee8 MAIN decision.",
+            "all132_accepted": false,
+            "gates_accepted": false
+          }
+        },
+        {
+          "case_id": "LOAD-01.1-T03",
+          "setup_and_injection": "部分合法部分坏行",
+          "expected": "合法行保留并使证据无效",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+            "source_git_dirty": false,
+            "receipt_file": "schema-second-e06037f5/load01-clean-sha/cases.jsonl",
+            "receipt_line": 3,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_offline_case_evidence": true,
+            "acceptance_decision": "MAIN Accepted/FixedWithEvidence at exact e060; prior ee8 failures retained separately.",
+            "command_manifest": "schema-second-e06037f5/COMMANDS.json"
+          },
+          "independent_decision": {
+            "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+            "task_id": "LOAD-01.1",
+            "state": "Accepted",
+            "resolution": "FixedWithEvidence",
+            "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+            "review_commit": "b4eba2cd6131dc6bae505af2a6ec9e7ba038a160",
+            "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/b4eba2cd6131dc6bae505af2a6ec9e7ba038a160/docs/reports/pr13-independent-main-20260930/e06037f5/REVIEW.md",
+            "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/b4eba2cd6131dc6bae505af2a6ec9e7ba038a160/docs/reports/pr13-independent-main-20260930/e06037f5/REPORT.json",
+            "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+            "authorization": "Explicit parent delegation: MAIN finally adjudicated LOAD01.1 Accepted/FixedWithEvidence at exact e060.",
+            "verified_review_manifest_files": 58,
+            "review_manifest_sha256": "0e19533da9ef3764e6f37a385ca74ecea18408504e7fd6d5873e2abea3b45e0f",
+            "independent_actual_result": "Original3 + same-class5 + old5 + canonical12 + Python122 passed0skip; all17 dedicated children reaped.",
+            "implementation_owner_did_not_sign": true,
+            "other_LOAD01_decisions_unchanged": "LOAD-01.2/.3/.4 remain Accepted/NoChangeWithEvidence at original ee8 MAIN decision.",
+            "all132_accepted": false,
+            "gates_accepted": false
+          }
+        }
+      ]
+    },
+    {
+      "task_id": "LOAD-01.2",
+      "title": "唯一进程归属",
+      "state": "Accepted",
+      "accepted": true,
+      "accepted_by": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+      "accepted_source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+      "MAIN_decision": {
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+        "review_commit": "dac6fdbd43d9c925a696a18f9774d9392c06c302",
+        "source_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/dac6fdbd43d9c925a696a18f9774d9392c06c302/docs/reports/pr13-independent-main-20260930/ee8adcf4/PARENT_DECISION_NOTE.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012"
+      },
+      "source_shas": [
+        "ee8adcf40be9aebb1330156a3524910c08225ebc"
+      ],
+      "report_commit": "dac6fdbd43d9c925a696a18f9774d9392c06c302",
+      "report": "../pr13-independent-main-20260930/ee8adcf4/REPORT.json",
+      "profiles": [
+        "OFFLINE"
+      ],
+      "canonical_implementation_steps": "在线、遥测和累计周期使用同一run/client/epoch/PID核验；已退出合法历史只计累计",
+      "canonical_pass_criteria": "所有聚合先验归属，同一身份最多一个活跃状态，无跨run污染。",
+      "minimal_dependencies": [
+        "LOAD-01.1"
+      ],
+      "full_task_criterion_satisfied": true,
+      "ready_for_independent_acceptance": false,
+      "remaining": null,
+      "cases": [
+        {
+          "case_id": "LOAD-01.2-T01",
+          "setup_and_injection": "本轮活进程",
+          "expected": "同时允许活跃与累计",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+            "source_git_dirty": false,
+            "receipt_file": "schema-safety-ee8adcf4/load01-clean-sha/cases.jsonl",
+            "receipt_line": 4,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_offline_case_evidence": true,
+            "acceptance_decision": "MAIN Accepted/NoChangeWithEvidence at exact ee8 source; later source acceptance not inferred.",
+            "command_manifest": "schema-safety-ee8adcf4/COMMANDS.json"
+          },
+          "independent_decision": {
+            "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+            "review_commit": "dac6fdbd43d9c925a696a18f9774d9392c06c302",
+            "decision_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/dac6fdbd43d9c925a696a18f9774d9392c06c302/docs/reports/pr13-independent-main-20260930/ee8adcf4/PARENT_DECISION_NOTE.json",
+            "state": "Accepted"
+          }
+        },
+        {
+          "case_id": "LOAD-01.2-T02",
+          "setup_and_injection": "同PID新epoch/外部run",
+          "expected": "不归属且不增加人数",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+            "source_git_dirty": false,
+            "receipt_file": "schema-safety-ee8adcf4/load01-clean-sha/cases.jsonl",
+            "receipt_line": 5,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_offline_case_evidence": true,
+            "acceptance_decision": "MAIN Accepted/NoChangeWithEvidence at exact ee8 source; later source acceptance not inferred.",
+            "command_manifest": "schema-safety-ee8adcf4/COMMANDS.json"
+          },
+          "independent_decision": {
+            "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+            "review_commit": "dac6fdbd43d9c925a696a18f9774d9392c06c302",
+            "decision_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/dac6fdbd43d9c925a696a18f9774d9392c06c302/docs/reports/pr13-independent-main-20260930/ee8adcf4/PARENT_DECISION_NOTE.json",
+            "state": "Accepted"
+          }
+        },
+        {
+          "case_id": "LOAD-01.2-T03",
+          "setup_and_injection": "本轮成功退出有尾事件",
+          "expected": "累计保留、在线归零",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+            "source_git_dirty": false,
+            "receipt_file": "schema-safety-ee8adcf4/load01-clean-sha/cases.jsonl",
+            "receipt_line": 6,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_offline_case_evidence": true,
+            "acceptance_decision": "MAIN Accepted/NoChangeWithEvidence at exact ee8 source; later source acceptance not inferred.",
+            "command_manifest": "schema-safety-ee8adcf4/COMMANDS.json"
+          },
+          "independent_decision": {
+            "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+            "review_commit": "dac6fdbd43d9c925a696a18f9774d9392c06c302",
+            "decision_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/dac6fdbd43d9c925a696a18f9774d9392c06c302/docs/reports/pr13-independent-main-20260930/ee8adcf4/PARENT_DECISION_NOTE.json",
+            "state": "Accepted"
+          }
+        }
+      ]
+    },
+    {
+      "task_id": "LOAD-01.3",
+      "title": "拆分负载人数",
+      "state": "Accepted",
+      "accepted": true,
+      "accepted_by": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+      "accepted_source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+      "MAIN_decision": {
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+        "review_commit": "dac6fdbd43d9c925a696a18f9774d9392c06c302",
+        "source_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/dac6fdbd43d9c925a696a18f9774d9392c06c302/docs/reports/pr13-independent-main-20260930/ee8adcf4/PARENT_DECISION_NOTE.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012"
+      },
+      "source_shas": [
+        "ee8adcf40be9aebb1330156a3524910c08225ebc"
+      ],
+      "report_commit": "dac6fdbd43d9c925a696a18f9774d9392c06c302",
+      "report": "../pr13-independent-main-20260930/ee8adcf4/REPORT.json",
+      "profiles": [
+        "OFFLINE"
+      ],
+      "canonical_implementation_steps": "输出spawned/alive/fresh/online/room_state/active_in_room，无法采集server_confirmed时写null及原因",
+      "canonical_pass_criteria": "人数列各有定义和截止点，客户端active明确为存活且新鲜且在线且在房。",
+      "minimal_dependencies": [
+        "LOAD-01.2"
+      ],
+      "full_task_criterion_satisfied": true,
+      "ready_for_independent_acceptance": false,
+      "remaining": null,
+      "cases": [
+        {
+          "case_id": "LOAD-01.3-T01",
+          "setup_and_injection": "离线保留room",
+          "expected": "room_state为1、active为0",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+            "source_git_dirty": false,
+            "receipt_file": "schema-safety-ee8adcf4/load01-clean-sha/cases.jsonl",
+            "receipt_line": 7,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_offline_case_evidence": true,
+            "acceptance_decision": "MAIN Accepted/NoChangeWithEvidence at exact ee8 source; later source acceptance not inferred.",
+            "command_manifest": "schema-safety-ee8adcf4/COMMANDS.json"
+          },
+          "independent_decision": {
+            "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+            "review_commit": "dac6fdbd43d9c925a696a18f9774d9392c06c302",
+            "decision_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/dac6fdbd43d9c925a696a18f9774d9392c06c302/docs/reports/pr13-independent-main-20260930/ee8adcf4/PARENT_DECISION_NOTE.json",
+            "state": "Accepted"
+          }
+        },
+        {
+          "case_id": "LOAD-01.3-T02",
+          "setup_and_injection": "成功退出仍有历史文件",
+          "expected": "online为0",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+            "source_git_dirty": false,
+            "receipt_file": "schema-safety-ee8adcf4/load01-clean-sha/cases.jsonl",
+            "receipt_line": 8,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_offline_case_evidence": true,
+            "acceptance_decision": "MAIN Accepted/NoChangeWithEvidence at exact ee8 source; later source acceptance not inferred.",
+            "command_manifest": "schema-safety-ee8adcf4/COMMANDS.json"
+          },
+          "independent_decision": {
+            "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+            "review_commit": "dac6fdbd43d9c925a696a18f9774d9392c06c302",
+            "decision_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/dac6fdbd43d9c925a696a18f9774d9392c06c302/docs/reports/pr13-independent-main-20260930/ee8adcf4/PARENT_DECISION_NOTE.json",
+            "state": "Accepted"
+          }
+        },
+        {
+          "case_id": "LOAD-01.3-T03",
+          "setup_and_injection": "缺服务端确认入口",
+          "expected": "null不可替换为客户端数",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+            "source_git_dirty": false,
+            "receipt_file": "schema-safety-ee8adcf4/load01-clean-sha/cases.jsonl",
+            "receipt_line": 9,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_offline_case_evidence": true,
+            "acceptance_decision": "MAIN Accepted/NoChangeWithEvidence at exact ee8 source; later source acceptance not inferred.",
+            "command_manifest": "schema-safety-ee8adcf4/COMMANDS.json"
+          },
+          "independent_decision": {
+            "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+            "review_commit": "dac6fdbd43d9c925a696a18f9774d9392c06c302",
+            "decision_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/dac6fdbd43d9c925a696a18f9774d9392c06c302/docs/reports/pr13-independent-main-20260930/ee8adcf4/PARENT_DECISION_NOTE.json",
+            "state": "Accepted"
+          }
+        }
+      ]
+    },
+    {
+      "task_id": "LOAD-01.4",
+      "title": "真实进程反例",
+      "state": "Accepted",
+      "accepted": true,
+      "accepted_by": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+      "accepted_source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+      "MAIN_decision": {
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+        "review_commit": "dac6fdbd43d9c925a696a18f9774d9392c06c302",
+        "source_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/dac6fdbd43d9c925a696a18f9774d9392c06c302/docs/reports/pr13-independent-main-20260930/ee8adcf4/PARENT_DECISION_NOTE.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012"
+      },
+      "source_shas": [
+        "ee8adcf40be9aebb1330156a3524910c08225ebc"
+      ],
+      "report_commit": "dac6fdbd43d9c925a696a18f9774d9392c06c302",
+      "report": "../pr13-independent-main-20260930/ee8adcf4/REPORT.json",
+      "profiles": [
+        "OFFLINE"
+      ],
+      "canonical_implementation_steps": "实际启动子进程产生状态，再注入慢启动/缺报/退出/PID重用；启动宽限按实际launch计",
+      "canonical_pass_criteria": "真实子进程全被回收，反例不靠仅构造dict替代进程行为。",
+      "minimal_dependencies": [
+        "LOAD-01.3"
+      ],
+      "full_task_criterion_satisfied": true,
+      "ready_for_independent_acceptance": false,
+      "remaining": null,
+      "cases": [
+        {
+          "case_id": "LOAD-01.4-T01",
+          "setup_and_injection": "宽限内慢启动",
+          "expected": "不误报missing",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+            "source_git_dirty": false,
+            "receipt_file": "schema-safety-ee8adcf4/load01-clean-sha/cases.jsonl",
+            "receipt_line": 10,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_offline_case_evidence": true,
+            "acceptance_decision": "MAIN Accepted/NoChangeWithEvidence at exact ee8 source; later source acceptance not inferred.",
+            "command_manifest": "schema-safety-ee8adcf4/COMMANDS.json"
+          },
+          "independent_decision": {
+            "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+            "review_commit": "dac6fdbd43d9c925a696a18f9774d9392c06c302",
+            "decision_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/dac6fdbd43d9c925a696a18f9774d9392c06c302/docs/reports/pr13-independent-main-20260930/ee8adcf4/PARENT_DECISION_NOTE.json",
+            "state": "Accepted"
+          }
+        },
+        {
+          "case_id": "LOAD-01.4-T02",
+          "setup_and_injection": "异常退出码7",
+          "expected": "failed_process可定位",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+            "source_git_dirty": false,
+            "receipt_file": "schema-safety-ee8adcf4/load01-clean-sha/cases.jsonl",
+            "receipt_line": 11,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_offline_case_evidence": true,
+            "acceptance_decision": "MAIN Accepted/NoChangeWithEvidence at exact ee8 source; later source acceptance not inferred.",
+            "command_manifest": "schema-safety-ee8adcf4/COMMANDS.json"
+          },
+          "independent_decision": {
+            "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+            "review_commit": "dac6fdbd43d9c925a696a18f9774d9392c06c302",
+            "decision_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/dac6fdbd43d9c925a696a18f9774d9392c06c302/docs/reports/pr13-independent-main-20260930/ee8adcf4/PARENT_DECISION_NOTE.json",
+            "state": "Accepted"
+          }
+        },
+        {
+          "case_id": "LOAD-01.4-T03",
+          "setup_and_injection": "墙钟跳变/陈旧状态",
+          "expected": "单调宽限不变、陈旧不计在线",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+            "source_git_dirty": false,
+            "receipt_file": "schema-safety-ee8adcf4/load01-clean-sha/cases.jsonl",
+            "receipt_line": 12,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_offline_case_evidence": true,
+            "acceptance_decision": "MAIN Accepted/NoChangeWithEvidence at exact ee8 source; later source acceptance not inferred.",
+            "command_manifest": "schema-safety-ee8adcf4/COMMANDS.json"
+          },
+          "independent_decision": {
+            "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+            "review_commit": "dac6fdbd43d9c925a696a18f9774d9392c06c302",
+            "decision_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/dac6fdbd43d9c925a696a18f9774d9392c06c302/docs/reports/pr13-independent-main-20260930/ee8adcf4/PARENT_DECISION_NOTE.json",
+            "state": "Accepted"
+          }
+        }
+      ]
+    },
+    {
+      "task_id": "LOAD-02.1",
+      "title": "多维结果模型",
+      "state": "ReadyForAcceptance",
+      "accepted": false,
+      "accepted_by": null,
+      "accepted_source_sha": null,
+      "MAIN_decision": null,
+      "source_shas": [
+        "f812879e4518fd09bf22656451cb563d62940298"
+      ],
+      "report_commit": "a1d30eb89d74aa16bb2c094c5a78c20a5ed428b6",
+      "report": "offline-acceptance-f812/load02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "canonical_implementation_steps": "独立生成六维判定，保存首个和全部触发；exit0只由适用合同全满足推出",
+      "canonical_pass_criteria": "不把一个stop_reason等同所有验收通过；允许Unknown但不能升Pass。",
+      "minimal_dependencies": [
+        "LOAD-01.2"
+      ],
+      "full_task_criterion_satisfied": true,
+      "ready_for_independent_acceptance": true,
+      "remaining": "S6 independent MAIN actual critical replay and adjudication; no CI/LIVE/participant gate.",
+      "cases": [
+        {
+          "case_id": "LOAD-02.1-T01",
+          "setup_and_injection": "时限到但负载未达",
+          "expected": "execution结束、load失败",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "receipt_file": "offline-acceptance-f812/load02/evidence/cases.jsonl",
+            "receipt_line": 1,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "acceptance_decision": "S6 independent MAIN pending; Accepted=false",
+            "command_manifest": "offline-acceptance-f812/load02/evidence/commands.json"
+          },
+          "independent_decision": null
+        },
+        {
+          "case_id": "LOAD-02.1-T02",
+          "setup_and_injection": "先业务失败后人工STOP",
+          "expected": "保留业务失败",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "receipt_file": "offline-acceptance-f812/load02/evidence/cases.jsonl",
+            "receipt_line": 2,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "acceptance_decision": "S6 independent MAIN pending; Accepted=false",
+            "command_manifest": "offline-acceptance-f812/load02/evidence/commands.json"
+          },
+          "independent_decision": null
+        },
+        {
+          "case_id": "LOAD-02.1-T03",
+          "setup_and_injection": "性能超线且证据损坏",
+          "expected": "记录两原因且证据无效优先退出码3",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "receipt_file": "offline-acceptance-f812/load02/evidence/cases.jsonl",
+            "receipt_line": 3,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "acceptance_decision": "S6 independent MAIN pending; Accepted=false",
+            "command_manifest": "offline-acceptance-f812/load02/evidence/commands.json"
+          },
+          "independent_decision": null
+        }
+      ]
+    },
+    {
+      "task_id": "LOAD-02.2",
+      "title": "STOP前后边界",
+      "state": "Partial",
+      "accepted": false,
+      "accepted_by": null,
+      "accepted_source_sha": null,
+      "MAIN_decision": null,
+      "source_shas": [
+        "f812879e4518fd09bf22656451cb563d62940298"
+      ],
+      "report_commit": "a1d30eb89d74aa16bb2c094c5a78c20a5ed428b6",
+      "report": "offline-acceptance-f812/load02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "canonical_implementation_steps": "区分停止前业务失败、正常取消、停止后真实错误和结果未知写入；迟到事件按原上下文归档",
+      "canonical_pass_criteria": "每cycle一个终态，取消不抹去先前失败，未知资产写入不猜成功/失败。",
+      "minimal_dependencies": [
+        "LOAD-02.1",
+        "LOAD-06.2"
+      ],
+      "full_task_criterion_satisfied": false,
+      "ready_for_independent_acceptance": false,
+      "remaining": "Actual Program/PG timeout beforeSTOP with one exclusive failed/cancelled/incomplete cycle terminal; see MISSING_FACTS.json.",
+      "cases": [
+        {
+          "case_id": "LOAD-02.2-T01",
+          "setup_and_injection": "STOP前超时",
+          "expected": "业务失败不变取消",
+          "current_case_execution": {
+            "status": "Partial",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "receipt_file": "offline-acceptance-f812/load02/evidence/cases.jsonl",
+            "receipt_line": 4,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": false,
+            "acceptance_decision": "S6 independent MAIN pending; Accepted=false",
+            "command_manifest": "offline-acceptance-f812/load02/evidence/commands.json"
+          },
+          "independent_decision": null
+        },
+        {
+          "case_id": "LOAD-02.2-T02",
+          "setup_and_injection": "STOP后正常等待取消",
+          "expected": "不计服务错误或完成",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "receipt_file": "offline-acceptance-f812/load02/evidence/cases.jsonl",
+            "receipt_line": 5,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "acceptance_decision": "S6 independent MAIN pending; Accepted=false",
+            "command_manifest": "offline-acceptance-f812/load02/evidence/commands.json"
+          },
+          "independent_decision": null
+        },
+        {
+          "case_id": "LOAD-02.2-T03",
+          "setup_and_injection": "ack已提交结果未知",
+          "expected": "pending直到权威核实",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "receipt_file": "offline-acceptance-f812/load02/evidence/cases.jsonl",
+            "receipt_line": 6,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "acceptance_decision": "S6 independent MAIN pending; Accepted=false",
+            "command_manifest": "offline-acceptance-f812/load02/evidence/commands.json"
+          },
+          "independent_decision": null
+        }
+      ]
+    },
+    {
+      "task_id": "LOAD-02.3",
+      "title": "有界清理和应急报告",
+      "state": "ReadyForAcceptance",
+      "accepted": false,
+      "accepted_by": null,
+      "accepted_source_sha": null,
+      "MAIN_decision": null,
+      "source_shas": [
+        "f812879e4518fd09bf22656451cb563d62940298"
+      ],
+      "report_commit": "a1d30eb89d74aa16bb2c094c5a78c20a5ed428b6",
+      "report": "offline-acceptance-f812/load02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "canonical_implementation_steps": "排队取消/结算保留/关闭连接/回收进程分步；最终报告写失败产出独立应急摘要",
+      "canonical_pass_criteria": "进程清理与业务清理分列，所有强退和报告失败可见，非本轮进程不被操作。",
+      "minimal_dependencies": [
+        "LOAD-02.2"
+      ],
+      "full_task_criterion_satisfied": true,
+      "ready_for_independent_acceptance": true,
+      "remaining": "S6 independent MAIN actual critical replay and adjudication; no CI/LIVE/participant gate.",
+      "cases": [
+        {
+          "case_id": "LOAD-02.3-T01",
+          "setup_and_injection": "正常响应STOP",
+          "expected": "grace内退出且服务后置状态可恢复",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "receipt_file": "offline-acceptance-f812/load02/evidence/cases.jsonl",
+            "receipt_line": 7,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "acceptance_decision": "S6 independent MAIN pending; Accepted=false",
+            "command_manifest": "offline-acceptance-f812/load02/evidence/commands.json"
+          },
+          "independent_decision": null
+        },
+        {
+          "case_id": "LOAD-02.3-T02",
+          "setup_and_injection": "子进程hang",
+          "expected": "仅终止本轮PID并记录forced",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "receipt_file": "offline-acceptance-f812/load02/evidence/cases.jsonl",
+            "receipt_line": 8,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "acceptance_decision": "S6 independent MAIN pending; Accepted=false",
+            "command_manifest": "offline-acceptance-f812/load02/evidence/commands.json"
+          },
+          "independent_decision": null
+        },
+        {
+          "case_id": "LOAD-02.3-T03",
+          "setup_and_injection": "最终文件写失败",
+          "expected": "应急报告存在且不可Pass",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "receipt_file": "offline-acceptance-f812/load02/evidence/cases.jsonl",
+            "receipt_line": 9,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "acceptance_decision": "S6 independent MAIN pending; Accepted=false",
+            "command_manifest": "offline-acceptance-f812/load02/evidence/commands.json"
+          },
+          "independent_decision": null
+        }
+      ]
+    },
+    {
+      "task_id": "LOAD-02.4",
+      "title": "退出码兼容",
+      "state": "ReadyForAcceptance",
+      "accepted": false,
+      "accepted_by": null,
+      "accepted_source_sha": null,
+      "MAIN_decision": null,
+      "source_shas": [
+        "f812879e4518fd09bf22656451cb563d62940298"
+      ],
+      "report_commit": "a1d30eb89d74aa16bb2c094c5a78c20a5ed428b6",
+      "report": "offline-acceptance-f812/load02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "canonical_implementation_steps": "固定0/1/2/3/130及preparation-only语义，调用者读取六维结果而非只读0",
+      "canonical_pass_criteria": "新旧调用者有子进程集成用例，任何未完成/无证据运行不能冒充Passed。",
+      "minimal_dependencies": [
+        "LOAD-02.3"
+      ],
+      "full_task_criterion_satisfied": true,
+      "ready_for_independent_acceptance": true,
+      "remaining": "S6 independent MAIN actual critical replay and adjudication; no CI/LIVE/participant gate.",
+      "cases": [
+        {
+          "case_id": "LOAD-02.4-T01",
+          "setup_and_injection": "preparation-only exit0",
+          "expected": "标仅准备不算压测成功",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "receipt_file": "offline-acceptance-f812/load02/evidence/cases.jsonl",
+            "receipt_line": 10,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "acceptance_decision": "S6 independent MAIN pending; Accepted=false",
+            "command_manifest": "offline-acceptance-f812/load02/evidence/commands.json"
+          },
+          "independent_decision": null
+        },
+        {
+          "case_id": "LOAD-02.4-T02",
+          "setup_and_injection": "redline",
+          "expected": "exit2且记录全部触发",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "receipt_file": "offline-acceptance-f812/load02/evidence/cases.jsonl",
+            "receipt_line": 11,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "acceptance_decision": "S6 independent MAIN pending; Accepted=false",
+            "command_manifest": "offline-acceptance-f812/load02/evidence/commands.json"
+          },
+          "independent_decision": null
+        },
+        {
+          "case_id": "LOAD-02.4-T03",
+          "setup_and_injection": "invalid/人工STOP",
+          "expected": "分别3/130",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "receipt_file": "offline-acceptance-f812/load02/evidence/cases.jsonl",
+            "receipt_line": 12,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "acceptance_decision": "S6 independent MAIN pending; Accepted=false",
+            "command_manifest": "offline-acceptance-f812/load02/evidence/commands.json"
+          },
+          "independent_decision": null
+        }
+      ]
+    },
+    {
+      "task_id": "LOAD-03.1",
+      "title": "事件水位",
+      "state": "ReadyForAcceptance",
+      "accepted": false,
+      "accepted_by": null,
+      "accepted_source_sha": null,
+      "MAIN_decision": null,
+      "source_shas": [
+        "ee8adcf40be9aebb1330156a3524910c08225ebc"
+      ],
+      "report_commit": "e5de69b491bff1b3a3638bd11670901a5f96629e",
+      "report": "load03-ready-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "profiles": [
+        "OFFLINE"
+      ],
+      "canonical_implementation_steps": "用run/client/epoch/event_seq增量消费；检测重复/乱序/缺口/截断/尾部未flush",
+      "canonical_pass_criteria": "JSONL原样本与汇总逐事件可对账；缺失不能因下次快照到达静默消失。",
+      "minimal_dependencies": [
+        "LOAD-01.2",
+        "LOAD-06.4"
+      ],
+      "full_task_criterion_satisfied": true,
+      "ready_for_independent_acceptance": true,
+      "remaining": "S6 independent MAIN key replay/adjudication. No CI/LIVE/PG/human extra gate.",
+      "cases": [
+        {
+          "case_id": "LOAD-03.1-T01",
+          "setup_and_injection": "同毫秒两事件",
+          "expected": "均消费且仅一次",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+            "source_copy_byte_audited": true,
+            "receipt_file": "load03-ready-ee8adcf4/evidence/cases.jsonl",
+            "receipt_line": 1,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "acceptance_decision": "S6 independent MAIN actual replay pending; Accepted=false"
+          },
+          "independent_decision": null
+        },
+        {
+          "case_id": "LOAD-03.1-T02",
+          "setup_and_injection": "seq1/3缺2",
+          "expected": "lost_count=1证据无效",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+            "source_copy_byte_audited": true,
+            "receipt_file": "load03-ready-ee8adcf4/evidence/cases.jsonl",
+            "receipt_line": 2,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "acceptance_decision": "S6 independent MAIN actual replay pending; Accepted=false"
+          },
+          "independent_decision": null
+        },
+        {
+          "case_id": "LOAD-03.1-T03",
+          "setup_and_injection": "轮转/重启换epoch",
+          "expected": "各自水位不混用",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+            "source_copy_byte_audited": true,
+            "receipt_file": "load03-ready-ee8adcf4/evidence/cases.jsonl",
+            "receipt_line": 3,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "acceptance_decision": "S6 independent MAIN actual replay pending; Accepted=false"
+          },
+          "independent_decision": null
+        }
+      ]
+    },
+    {
+      "task_id": "LOAD-03.2",
+      "title": "生命周期阶段",
+      "state": "ReadyForAcceptance",
+      "accepted": false,
+      "accepted_by": null,
+      "accepted_source_sha": null,
+      "MAIN_decision": null,
+      "source_shas": [
+        "ee8adcf40be9aebb1330156a3524910c08225ebc"
+      ],
+      "report_commit": "e5de69b491bff1b3a3638bd11670901a5f96629e",
+      "report": "load03-ready-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "profiles": [
+        "OFFLINE"
+      ],
+      "canonical_implementation_steps": "按login/initial/matchmaking/playing/settlement/cleanup显式分层；无标签历史标legacy_unknown",
+      "canonical_pass_criteria": "当前阶段与历史auth-excluded列不能互相替代；迟到回包仍用发起阶段。",
+      "minimal_dependencies": [
+        "LOAD-03.1"
+      ],
+      "full_task_criterion_satisfied": true,
+      "ready_for_independent_acceptance": true,
+      "remaining": "S6 independent MAIN key replay/adjudication. No CI/LIVE/PG/human extra gate.",
+      "cases": [
+        {
+          "case_id": "LOAD-03.2-T01",
+          "setup_and_injection": "playing中bootstrap",
+          "expected": "归playing",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+            "source_copy_byte_audited": true,
+            "receipt_file": "load03-ready-ee8adcf4/evidence/cases.jsonl",
+            "receipt_line": 4,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "acceptance_decision": "S6 independent MAIN actual replay pending; Accepted=false"
+          },
+          "independent_decision": null
+        },
+        {
+          "case_id": "LOAD-03.2-T02",
+          "setup_and_injection": "settlement轮询",
+          "expected": "归settlement",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+            "source_copy_byte_audited": true,
+            "receipt_file": "load03-ready-ee8adcf4/evidence/cases.jsonl",
+            "receipt_line": 5,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "acceptance_decision": "S6 independent MAIN actual replay pending; Accepted=false"
+          },
+          "independent_decision": null
+        },
+        {
+          "case_id": "LOAD-03.2-T03",
+          "setup_and_injection": "旧无标签bootstrap",
+          "expected": "unknown且旧口径单列",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+            "source_copy_byte_audited": true,
+            "receipt_file": "load03-ready-ee8adcf4/evidence/cases.jsonl",
+            "receipt_line": 6,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "acceptance_decision": "S6 independent MAIN actual replay pending; Accepted=false"
+          },
+          "independent_decision": null
+        }
+      ]
+    },
+    {
+      "task_id": "LOAD-03.3",
+      "title": "请求完整分母",
+      "state": "Partial",
+      "accepted": false,
+      "accepted_by": null,
+      "accepted_source_sha": null,
+      "MAIN_decision": null,
+      "source_shas": [
+        "ee8adcf40be9aebb1330156a3524910c08225ebc"
+      ],
+      "report_commit": "dd097cf807b3d08acf2f6beaa2d1382f3a83d2e1",
+      "report": "load03-remaining-ee8adcf4/REPORT.json",
+      "profiles": [
+        "OFFLINE"
+      ],
+      "canonical_implementation_steps": "分开success/rejection/timeout/cancelled/decode_error/pending，耗时缺失仅减少valid_latency而不删除请求",
+      "canonical_pass_criteria": "started=各互斥终态+pending；all_attempt与valid_latency可独立重算。",
+      "minimal_dependencies": [
+        "LOAD-03.2"
+      ],
+      "full_task_criterion_satisfied": false,
+      "ready_for_independent_acceptance": false,
+      "remaining": "Actual Gateway has2 invoked requests,1 finished and1 held in production _pending_http; production aggregate counts logical1 and exposes neither logical-start nor pending denominator. No start event exists at the pending cutoff.",
+      "cases": [
+        {
+          "case_id": "LOAD-03.3-T01",
+          "setup_and_injection": "一个请求两attempt",
+          "expected": "logical1、attempt2",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+            "receipt_file": "load03-remaining-ee8adcf4/cases.jsonl",
+            "receipt_line": 1,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_original_case_assertion": true,
+            "full_task_criterion_satisfied": false,
+            "acceptance_decision": "Partial full-task implementation; Accepted=false"
+          },
+          "independent_decision": null
+        },
+        {
+          "case_id": "LOAD-03.3-T02",
+          "setup_and_injection": "失败且duration为NaN",
+          "expected": "失败分子仍1",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+            "receipt_file": "load03-remaining-ee8adcf4/cases.jsonl",
+            "receipt_line": 2,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_original_case_assertion": true,
+            "full_task_criterion_satisfied": false,
+            "acceptance_decision": "Partial full-task implementation; Accepted=false"
+          },
+          "independent_decision": null
+        },
+        {
+          "case_id": "LOAD-03.3-T03",
+          "setup_and_injection": "operations重复telemetry",
+          "expected": "只计一次",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+            "receipt_file": "load03-remaining-ee8adcf4/cases.jsonl",
+            "receipt_line": 3,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_original_case_assertion": true,
+            "full_task_criterion_satisfied": false,
+            "acceptance_decision": "Partial full-task implementation; Accepted=false"
+          },
+          "independent_decision": null
+        }
+      ]
+    },
+    {
+      "task_id": "LOAD-03.4",
+      "title": "分布与错误率",
+      "state": "Partial",
+      "accepted": false,
+      "accepted_by": null,
+      "accepted_source_sha": null,
+      "MAIN_decision": null,
+      "source_shas": [
+        "ee8adcf40be9aebb1330156a3524910c08225ebc"
+      ],
+      "report_commit": "dd097cf807b3d08acf2f6beaa2d1382f3a83d2e1",
+      "report": "load03-remaining-ee8adcf4/REPORT.json",
+      "profiles": [
+        "OFFLINE"
+      ],
+      "canonical_implementation_steps": "分路由/phase输出P50/P95/P99/max、吞吐、样本不足；全局从样本或可合并分布计算",
+      "canonical_pass_criteria": "三截止点和全程指标可重算，末窗零错误不取代全场；算法版本明确。",
+      "minimal_dependencies": [
+        "LOAD-03.3",
+        "LOAD-06.1"
+      ],
+      "full_task_criterion_satisfied": false,
+      "ready_for_independent_acceptance": false,
+      "remaining": "Production aggregate outputs global and phase distributions but no route distribution or throughput. Coordinator retains windows/raw and cycle cutoffs, without full-run HTTP running/drain/final distribution fields. Harness can recompute synthetic fixture raw, but that does not implement missing production fields.",
+      "cases": [
+        {
+          "case_id": "LOAD-03.4-T01",
+          "setup_and_injection": "两窗数量不同",
+          "expected": "不平均P95",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+            "receipt_file": "load03-remaining-ee8adcf4/cases.jsonl",
+            "receipt_line": 4,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_original_case_assertion": true,
+            "full_task_criterion_satisfied": false,
+            "acceptance_decision": "Partial full-task implementation; Accepted=false"
+          },
+          "independent_decision": null
+        },
+        {
+          "case_id": "LOAD-03.4-T02",
+          "setup_and_injection": "N0/N19",
+          "expected": "unavailable/insufficient不写达标",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+            "receipt_file": "load03-remaining-ee8adcf4/cases.jsonl",
+            "receipt_line": 5,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_original_case_assertion": true,
+            "full_task_criterion_satisfied": false,
+            "acceptance_decision": "Partial full-task implementation; Accepted=false"
+          },
+          "independent_decision": null
+        },
+        {
+          "case_id": "LOAD-03.4-T03",
+          "setup_and_injection": "失败请求在错误集合",
+          "expected": "分子分母同口径",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+            "receipt_file": "load03-remaining-ee8adcf4/cases.jsonl",
+            "receipt_line": 6,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_original_case_assertion": true,
+            "full_task_criterion_satisfied": false,
+            "acceptance_decision": "Partial full-task implementation; Accepted=false"
+          },
+          "independent_decision": null
+        }
+      ]
+    },
+    {
+      "task_id": "PR13-B02.1",
+      "title": "过期测试API迁移",
+      "state": "ReadyForAcceptance",
+      "accepted": false,
+      "accepted_by": null,
+      "accepted_source_sha": null,
+      "MAIN_decision": null,
+      "source_shas": [
+        "f812879e4518fd09bf22656451cb563d62940298"
+      ],
+      "report_commit": "a23aa0669f6c72c1689ba6f27037373336a98abb",
+      "report": "offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "canonical_implementation_steps": "旧布尔与余量成员逐断言映射CurrentRhythm/CoreCardsSpent、CurrentSteps/FractionalRemainder；先编译复现",
+      "canonical_pass_criteria": "保留原测试意图与数量变动说明，不复活废弃生产成员、不改默认来迎合断言。",
+      "minimal_dependencies": [
+        "LOAD-11.1"
+      ],
+      "full_task_criterion_satisfied": true,
+      "ready_for_independent_acceptance": true,
+      "remaining": "S6 independent MAIN actual critical replay and adjudication. No extra CI/LIVE/participant gate.",
+      "cases": [
+        {
+          "case_id": "PR13-B02.1-T01",
+          "setup_and_injection": "旧参数构造",
+          "expected": "编译失败证据",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "source_copy_byte_audited": true,
+            "receipt_file": "offline-acceptance-f812/b02/evidence/cases.jsonl",
+            "receipt_line": 1,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "acceptance_decision": "ReadyForIndependentAcceptance; S6 actual independent MAIN replay pending; Accepted=false",
+            "command_manifest": "offline-acceptance-f812/b02/evidence/commands.json"
+          },
+          "independent_decision": null
+        },
+        {
+          "case_id": "PR13-B02.1-T02",
+          "setup_and_injection": "默认构造",
+          "expected": "仍CurrentRhythm/CurrentSteps",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "source_copy_byte_audited": true,
+            "receipt_file": "offline-acceptance-f812/b02/evidence/cases.jsonl",
+            "receipt_line": 2,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "acceptance_decision": "ReadyForIndependentAcceptance; S6 actual independent MAIN replay pending; Accepted=false",
+            "command_manifest": "offline-acceptance-f812/b02/evidence/commands.json"
+          },
+          "independent_decision": null
+        },
+        {
+          "case_id": "PR13-B02.1-T03",
+          "setup_and_injection": "候选显式枚举",
+          "expected": "候选断言独立",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "source_copy_byte_audited": true,
+            "receipt_file": "offline-acceptance-f812/b02/evidence/cases.jsonl",
+            "receipt_line": 3,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "acceptance_decision": "ReadyForIndependentAcceptance; S6 actual independent MAIN replay pending; Accepted=false",
+            "command_manifest": "offline-acceptance-f812/b02/evidence/commands.json"
+          },
+          "independent_decision": null
+        }
+      ]
+    },
+    {
+      "task_id": "PR13-B02.2",
+      "title": "真实Resolver规则向量",
+      "state": "ReadyForAcceptance",
+      "accepted": false,
+      "accepted_by": null,
+      "accepted_source_sha": null,
+      "MAIN_decision": null,
+      "source_shas": [
+        "f812879e4518fd09bf22656451cb563d62940298"
+      ],
+      "report_commit": "a23aa0669f6c72c1689ba6f27037373336a98abb",
+      "report": "offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "canonical_implementation_steps": "首核/R/P/B/逐卡floor、46/72/113限定向量、双元素/调节/两种治疗用真实Resolver",
+      "canonical_pass_criteria": "金标准向量有完整配置上下文；数值不能推广为任意三张火牌伤害。",
+      "minimal_dependencies": [
+        "PR13-B02.1"
+      ],
+      "full_task_criterion_satisfied": true,
+      "ready_for_independent_acceptance": true,
+      "remaining": "S6 independent MAIN actual critical replay and adjudication. No extra CI/LIVE/participant gate.",
+      "cases": [
+        {
+          "case_id": "PR13-B02.2-T01",
+          "setup_and_injection": "重排同牌",
+          "expected": "按首核合同可不同",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "source_copy_byte_audited": true,
+            "receipt_file": "offline-acceptance-f812/b02/evidence/cases.jsonl",
+            "receipt_line": 4,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "acceptance_decision": "ReadyForIndependentAcceptance; S6 actual independent MAIN replay pending; Accepted=false",
+            "command_manifest": "offline-acceptance-f812/b02/evidence/commands.json"
+          },
+          "independent_decision": null
+        },
+        {
+          "case_id": "PR13-B02.2-T02",
+          "setup_and_injection": "GDD三四五火指定向量",
+          "expected": "46/72/113",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "source_copy_byte_audited": true,
+            "receipt_file": "offline-acceptance-f812/b02/evidence/cases.jsonl",
+            "receipt_line": 5,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "acceptance_decision": "ReadyForIndependentAcceptance; S6 actual independent MAIN replay pending; Accepted=false",
+            "command_manifest": "offline-acceptance-f812/b02/evidence/commands.json"
+          },
+          "independent_decision": null
+        },
+        {
+          "case_id": "PR13-B02.2-T03",
+          "setup_and_injection": "普通治疗与向反E0",
+          "expected": "分别计算不共套牧师倍率",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "source_copy_byte_audited": true,
+            "receipt_file": "offline-acceptance-f812/b02/evidence/cases.jsonl",
+            "receipt_line": 6,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "acceptance_decision": "ReadyForIndependentAcceptance; S6 actual independent MAIN replay pending; Accepted=false",
+            "command_manifest": "offline-acceptance-f812/b02/evidence/commands.json"
+          },
+          "independent_decision": null
+        }
+      ]
+    },
+    {
+      "task_id": "PR13-B02.3",
+      "title": "预览/协议/权威一致",
+      "state": "ReadyForAcceptance",
+      "accepted": false,
+      "accepted_by": null,
+      "accepted_source_sha": null,
+      "MAIN_decision": null,
+      "source_shas": [
+        "f812879e4518fd09bf22656451cb563d62940298"
+      ],
+      "report_commit": "a23aa0669f6c72c1689ba6f27037373336a98abb",
+      "report": "offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "canonical_implementation_steps": "预览与提交比较有效伤害/治疗/盾/控制/余量；前后状态/RNG hash不变",
+      "canonical_pass_criteria": "确定性字段零差异；随机结果用受控种子/规则校验，不能要求未公开未来伤害精确展示。",
+      "minimal_dependencies": [
+        "PR13-B02.2"
+      ],
+      "full_task_criterion_satisfied": true,
+      "ready_for_independent_acceptance": true,
+      "remaining": "S6 independent MAIN actual critical replay and adjudication. No extra CI/LIVE/participant gate.",
+      "cases": [
+        {
+          "case_id": "PR13-B02.3-T01",
+          "setup_and_injection": "连续preview",
+          "expected": "不抽牌不进RNG不提交盾余量",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "source_copy_byte_audited": true,
+            "receipt_file": "offline-acceptance-f812/b02/evidence/cases.jsonl",
+            "receipt_line": 7,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "acceptance_decision": "ReadyForIndependentAcceptance; S6 actual independent MAIN replay pending; Accepted=false",
+            "command_manifest": "offline-acceptance-f812/b02/evidence/commands.json"
+          },
+          "independent_decision": null
+        },
+        {
+          "case_id": "PR13-B02.3-T02",
+          "setup_and_injection": "proto往返",
+          "expected": "顺序保持",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "source_copy_byte_audited": true,
+            "receipt_file": "offline-acceptance-f812/b02/evidence/cases.jsonl",
+            "receipt_line": 8,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "acceptance_decision": "ReadyForIndependentAcceptance; S6 actual independent MAIN replay pending; Accepted=false",
+            "command_manifest": "offline-acceptance-f812/b02/evidence/commands.json"
+          },
+          "independent_decision": null
+        },
+        {
+          "case_id": "PR13-B02.3-T03",
+          "setup_and_injection": "过期revision",
+          "expected": "预览弃置不覆盖当前",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "source_copy_byte_audited": true,
+            "receipt_file": "offline-acceptance-f812/b02/evidence/cases.jsonl",
+            "receipt_line": 9,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "acceptance_decision": "ReadyForIndependentAcceptance; S6 actual independent MAIN replay pending; Accepted=false",
+            "command_manifest": "offline-acceptance-f812/b02/evidence/commands.json"
+          },
+          "independent_decision": null
+        }
+      ]
+    },
+    {
+      "task_id": "PR13-B02.4",
+      "title": "房间策略和恢复",
+      "state": "ReadyForAcceptance",
+      "accepted": false,
+      "accepted_by": null,
+      "accepted_source_sha": null,
+      "MAIN_decision": null,
+      "source_shas": [
+        "f812879e4518fd09bf22656451cb563d62940298"
+      ],
+      "report_commit": "a23aa0669f6c72c1689ba6f27037373336a98abb",
+      "report": "offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "canonical_implementation_steps": "创建/PVE/PVP工作副本/持久化/恢复保策略；缺旧字段按已批准默认解释",
+      "canonical_pass_criteria": "同SHA客户端/server/proto/Domain/PG适用测试真实执行，新旧room来源可查。",
+      "minimal_dependencies": [
+        "PR13-B02.3"
+      ],
+      "full_task_criterion_satisfied": true,
+      "ready_for_independent_acceptance": true,
+      "remaining": "S6 independent MAIN actual critical replay and adjudication. No extra CI/LIVE/participant gate.",
+      "cases": [
+        {
+          "case_id": "PR13-B02.4-T01",
+          "setup_and_injection": "当前room热更源表",
+          "expected": "policy不静默换",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "source_copy_byte_audited": true,
+            "receipt_file": "offline-acceptance-f812/b02/evidence/cases.jsonl",
+            "receipt_line": 10,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "acceptance_decision": "ReadyForIndependentAcceptance; S6 actual independent MAIN replay pending; Accepted=false",
+            "command_manifest": "offline-acceptance-f812/b02/evidence/commands.json"
+          },
+          "independent_decision": null
+        },
+        {
+          "case_id": "PR13-B02.4-T02",
+          "setup_and_injection": "PVP结束",
+          "expected": "恢复PVE原state",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "source_copy_byte_audited": true,
+            "receipt_file": "offline-acceptance-f812/b02/evidence/cases.jsonl",
+            "receipt_line": 11,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "acceptance_decision": "ReadyForIndependentAcceptance; S6 actual independent MAIN replay pending; Accepted=false",
+            "command_manifest": "offline-acceptance-f812/b02/evidence/commands.json"
+          },
+          "independent_decision": null
+        },
+        {
+          "case_id": "PR13-B02.4-T03",
+          "setup_and_injection": "旧snapshot缺策略/无效枚举",
+          "expected": "兼容默认或明确拒绝不半恢复",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "source_copy_byte_audited": true,
+            "receipt_file": "offline-acceptance-f812/b02/evidence/cases.jsonl",
+            "receipt_line": 12,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "acceptance_decision": "ReadyForIndependentAcceptance; S6 actual independent MAIN replay pending; Accepted=false",
+            "command_manifest": "offline-acceptance-f812/b02/evidence/commands.json"
+          },
+          "independent_decision": null
+        }
+      ]
+    },
+    {
+      "task_id": "PR13-A05.1",
+      "title": "持久化失败恢复",
+      "state": "Partial",
+      "accepted": false,
+      "accepted_by": null,
+      "accepted_source_sha": null,
+      "MAIN_decision": null,
+      "source_shas": [
+        "f812879e4518fd09bf22656451cb563d62940298"
+      ],
+      "report_commit": "8068783331da07ec68354c1874eb0d65adea632f",
+      "report": "offline-acceptance-f812/a05/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "AUDIT"
+      ],
+      "canonical_implementation_steps": "提交前/后分别故障，按durable事实决定释放路由和结算可见，不提前成功",
+      "canonical_pass_criteria": "durable settlement、holds、route、玩家下一局权限一致。",
+      "minimal_dependencies": [
+        "LOAD-05.4",
+        "LOAD-09.2"
+      ],
+      "full_task_criterion_satisfied": false,
+      "ready_for_independent_acceptance": false,
+      "remaining": "Confirmed recovery-M old ready poll refills stale receipt during real ACK await; coordinate minimal client guard repair and actual same-window regression with fixed UI candidate.",
+      "cases": [
+        {
+          "case_id": "PR13-A05.1-T01",
+          "setup_and_injection": "提交前失败",
+          "expected": "无completed/可重试",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "source_copy_byte_audited": true,
+            "source_overlay": "Seven declared canonical harness files; later two causal files separate assembly.",
+            "receipt_file": "offline-acceptance-f812/a05/cases.jsonl",
+            "receipt_line": 1,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "full_task_criterion_satisfied": false,
+            "acceptance_decision": "Primary case Passed but confirmed additional durable visibility counterexample keeps full task Partial."
+          },
+          "independent_decision": null
+        },
+        {
+          "case_id": "PR13-A05.1-T02",
+          "setup_and_injection": "提交后响应丢",
+          "expected": "同receipt恢复不再发资产",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "source_copy_byte_audited": true,
+            "source_overlay": "Seven declared canonical harness files; later two causal files separate assembly.",
+            "receipt_file": "offline-acceptance-f812/a05/cases.jsonl",
+            "receipt_line": 2,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "full_task_criterion_satisfied": false,
+            "acceptance_decision": "Primary case Passed but confirmed additional durable visibility counterexample keeps full task Partial."
+          },
+          "independent_decision": null
+        },
+        {
+          "case_id": "PR13-A05.1-T03",
+          "setup_and_injection": "holds延迟",
+          "expected": "未ready不绕过",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "source_copy_byte_audited": true,
+            "source_overlay": "Seven declared canonical harness files; later two causal files separate assembly.",
+            "receipt_file": "offline-acceptance-f812/a05/cases.jsonl",
+            "receipt_line": 3,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "full_task_criterion_satisfied": false,
+            "acceptance_decision": "Primary case Passed but confirmed additional durable visibility counterexample keeps full task Partial."
+          },
+          "independent_decision": null
+        }
+      ]
+    },
+    {
+      "task_id": "PR13-A05.2",
+      "title": "队友和旧房间隔离",
+      "state": "ReadyForAcceptance",
+      "accepted": false,
+      "accepted_by": null,
+      "accepted_source_sha": null,
+      "MAIN_decision": null,
+      "source_shas": [
+        "f812879e4518fd09bf22656451cb563d62940298"
+      ],
+      "report_commit": "8068783331da07ec68354c1874eb0d65adea632f",
+      "report": "offline-acceptance-f812/a05/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "AUDIT"
+      ],
+      "canonical_implementation_steps": "A进入新局后旧房snapshot继续；旧route删除只在仍指旧room时发生",
+      "canonical_pass_criteria": "A可继续多局、B可完成旧局，旧新room registry与DB关联无污染。",
+      "minimal_dependencies": [
+        "PR13-A05.1"
+      ],
+      "full_task_criterion_satisfied": true,
+      "ready_for_independent_acceptance": true,
+      "remaining": "Independent MAIN critical actual replay and adjudication of original OFFLINE/POSTGRES/AUDIT contract. No added CI/LIVE/human gate.",
+      "cases": [
+        {
+          "case_id": "PR13-A05.2-T01",
+          "setup_and_injection": "旧snapshot继续",
+          "expected": "B正常/A的N route不删除",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "source_copy_byte_audited": true,
+            "source_overlay": "Seven declared canonical harness files; later two causal files separate assembly.",
+            "receipt_file": "offline-acceptance-f812/a05/cases.jsonl",
+            "receipt_line": 4,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "full_task_criterion_satisfied": true,
+            "acceptance_decision": "S6 independent MAIN pending; NoChangeWithEvidence proposed."
+          },
+          "independent_decision": null
+        },
+        {
+          "case_id": "PR13-A05.2-T02",
+          "setup_and_injection": "恢复terminal A",
+          "expected": "不重新占旧route",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "source_copy_byte_audited": true,
+            "source_overlay": "Seven declared canonical harness files; later two causal files separate assembly.",
+            "receipt_file": "offline-acceptance-f812/a05/cases.jsonl",
+            "receipt_line": 5,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "full_task_criterion_satisfied": true,
+            "acceptance_decision": "S6 independent MAIN pending; NoChangeWithEvidence proposed."
+          },
+          "independent_decision": null
+        },
+        {
+          "case_id": "PR13-A05.2-T03",
+          "setup_and_injection": "相同玩家新route",
+          "expected": "旧结算callback无权清",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "source_copy_byte_audited": true,
+            "source_overlay": "Seven declared canonical harness files; later two causal files separate assembly.",
+            "receipt_file": "offline-acceptance-f812/a05/cases.jsonl",
+            "receipt_line": 6,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "full_task_criterion_satisfied": true,
+            "acceptance_decision": "S6 independent MAIN pending; NoChangeWithEvidence proposed."
+          },
+          "independent_decision": null
+        }
+      ]
+    },
+    {
+      "task_id": "PR13-A05.3",
+      "title": "幂等/重启资产矩阵",
+      "state": "ReadyForAcceptance",
+      "accepted": false,
+      "accepted_by": null,
+      "accepted_source_sha": null,
+      "MAIN_decision": null,
+      "source_shas": [
+        "f812879e4518fd09bf22656451cb563d62940298"
+      ],
+      "report_commit": "8068783331da07ec68354c1874eb0d65adea632f",
+      "report": "offline-acceptance-f812/a05/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "AUDIT"
+      ],
+      "canonical_implementation_steps": "重复请求/ack/通知与重启覆盖持久资源，比较金额和实例集合",
+      "canonical_pass_criteria": "账户/物品实例/流水在允许交易转移后守恒，不删测试数据伪造通过。",
+      "minimal_dependencies": [
+        "PR13-A05.2"
+      ],
+      "full_task_criterion_satisfied": true,
+      "ready_for_independent_acceptance": true,
+      "remaining": "Independent MAIN critical actual replay and adjudication of original OFFLINE/POSTGRES/AUDIT contract. No added CI/LIVE/human gate.",
+      "cases": [
+        {
+          "case_id": "PR13-A05.3-T01",
+          "setup_and_injection": "同ack三次",
+          "expected": "一条业务结果",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "source_copy_byte_audited": true,
+            "source_overlay": "Seven declared canonical harness files; later two causal files separate assembly.",
+            "receipt_file": "offline-acceptance-f812/a05/cases.jsonl",
+            "receipt_line": 7,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "full_task_criterion_satisfied": true,
+            "acceptance_decision": "S6 independent MAIN pending; NoChangeWithEvidence proposed."
+          },
+          "independent_decision": null
+        },
+        {
+          "case_id": "PR13-A05.3-T02",
+          "setup_and_injection": "重启在holds完成前",
+          "expected": "恢复同一资产转移",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "source_copy_byte_audited": true,
+            "source_overlay": "Seven declared canonical harness files; later two causal files separate assembly.",
+            "receipt_file": "offline-acceptance-f812/a05/cases.jsonl",
+            "receipt_line": 8,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "full_task_criterion_satisfied": true,
+            "acceptance_decision": "S6 independent MAIN pending; NoChangeWithEvidence proposed."
+          },
+          "independent_decision": null
+        },
+        {
+          "case_id": "PR13-A05.3-T03",
+          "setup_and_injection": "重复ready通知",
+          "expected": "不重复领奖",
+          "current_case_execution": {
+            "status": "Passed",
+            "executed": true,
+            "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "source_copy_byte_audited": true,
+            "source_overlay": "Seven declared canonical harness files; later two causal files separate assembly.",
+            "receipt_file": "offline-acceptance-f812/a05/cases.jsonl",
+            "receipt_line": 9,
+            "setup_matches_frozen_spec": true,
+            "expected_matches_frozen_spec": true,
+            "full_applicable_profile_case_evidence": true,
+            "full_task_criterion_satisfied": true,
+            "acceptance_decision": "S6 independent MAIN pending; NoChangeWithEvidence proposed."
+          },
+          "independent_decision": null
+        }
+      ]
+    }
+  ],
+  "selected_task_states": {
+    "Accepted": 4,
+    "ReadyForAcceptance": 11,
+    "Partial": 4
+  },
+  "selected_primary_case_results": {
+    "Passed": 56,
+    "Partial": 1
+  },
+  "primary_case_result_not_full_task_criterion": "56Passed/1Partial excludes additional actual schema boundaries and the confirmed A05.1 causal Failed assertion; primary Passed never overrides full contract failures.",
+  "all132_task_states": {
+    "Partial": 42,
+    "NotRevalidated": 72,
+    "Accepted": 4,
+    "ReadyForAcceptance": 11,
+    "Blocked": 3
+  },
+  "gates_G0_to_G5_accepted": false,
+  "all132_accepted": false,
+  "historical_explicit_runner_receipts": {
+    "Passed": 27,
+    "NotExecuted": 369,
+    "meaning": "Historical specific runner receipts only; unchanged, not total current coverage."
+  },
+  "raw4_upload": "Paused, four local originals preserved; no upload.",
+  "CI": "Account payments OR spending limit; exact subcause unknown; no retry or account change; selected contracts add no CI gate.",
+  "independent_replay_guide": "INDEPENDENT_REPLAY_19.md",
+  "next_dependency_queue": "NEXT_QUEUE.json"
+}

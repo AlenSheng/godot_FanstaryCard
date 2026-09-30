@@ -1,14 +1,14 @@
 # PR13 云端接管逐项登记
 
-MAIN S6仅正式接受LOAD-01.2/.3/.4（NoChangeWithEvidence），来源`ee8adcf40be9aebb1330156a3524910c08225ebc`；.1保持Failed，新修复`e06037f58738d0fbff86090e86d8bd06f8608e04`待独立复验。业务/UI仍`f812879e4518fd09bf22656451cb563d62940298`。
+LOAD01四项已获MAIN S6正式Accepted：.1绑定e060/FixedWithEvidence，.2–.4保持原ee8/NoChangeWithEvidence。业务/UI仍`f812879e4518fd09bf22656451cb563d62940298`；当前工具源码`e06037f58738d0fbff86090e86d8bd06f8608e04`。
 
-132项状态：{"Partial": 42, "NotRevalidated": 72, "Failed": 1, "Accepted": 3, "ReadyForAcceptance": 11, "Blocked": 3}。19项本批封存后进入独立裁决或具体补缺队列。G0–G5未签署；旧27显式回执不是总覆盖数量。
+132项状态：{"Partial": 42, "NotRevalidated": 72, "Accepted": 4, "ReadyForAcceptance": 11, "Blocked": 3}。本批19项/57case：[完整来源与case映射](BOUNDED_19_RECEIPT.json)，4Accepted/11ReadyForAcceptance/4Partial。主要case56Passed/1Partial不包含附加反例，也不代替完整子项合同。G0–G5未签署。
 
 | 顺序 | 子项 | 负责人 | 当前 / 历史 | 修改 SHA | 依赖 | 剩余工作或阻塞 |
 | --- | --- | --- | --- | --- | --- | --- |
 | 1 | LOAD-11.1 基线来源冻结 | MAIN / source and evidence audit | Partial / Partial | 取证/未修改 | 无 | Source/evidence delivery audit is partial; running image/config and rollback drill not independently exercised. Historical50/100 raw gap and all unaccepted tasks remain visible. |
 | 2 | LOAD-06.4 时间/缺失/脱敏 | MAIN (pending batch) | NotRevalidated / Queued | 取证/未修改 | LOAD-11.1 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
-| 3 | LOAD-01.1 输入schema | ROOT / frozen offline execution; MAIN / independent adjudication | Failed / ReadyForAcceptance | e06037f58738d0fb | LOAD-11.1, LOAD-06.4 | S6 independent actual replay of fixed e060 schema. Prior MAIN Failed remains until revalidation. |
+| 3 | LOAD-01.1 输入schema | ROOT / frozen offline execution; MAIN / independent adjudication | Accepted / ReadyForAcceptance | e06037f58738d0fb | LOAD-11.1, LOAD-06.4 | MAIN独立裁决完成；只适用于固定来源。 |
 | 4 | LOAD-01.2 唯一进程归属 | ROOT / frozen offline execution; MAIN / independent adjudication | Accepted / ReadyForAcceptance | 取证/未修改 | LOAD-01.1 | MAIN独立裁决完成；只适用于固定来源。 |
 | 5 | LOAD-01.3 拆分负载人数 | ROOT / frozen offline execution; MAIN / independent adjudication | Accepted / ReadyForAcceptance | 取证/未修改 | LOAD-01.2 | MAIN独立裁决完成；只适用于固定来源。 |
 | 6 | LOAD-01.4 真实进程反例 | ROOT / frozen offline execution; MAIN / independent adjudication | Accepted / ReadyForAcceptance | 取证/未修改 | LOAD-01.3 | MAIN独立裁决完成；只适用于固定来源。 |

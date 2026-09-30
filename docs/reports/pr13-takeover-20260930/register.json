@@ -7,7 +7,7 @@
     "packages": 33,
     "tasks": 132,
     "cases": 396,
-    "accepted": 3
+    "accepted": 4
   },
   "all_accepted": false,
   "tasks": [
@@ -115,13 +115,13 @@
       "title": "输入schema",
       "dependency_order": 3,
       "owner": "ROOT / frozen offline execution; MAIN / independent adjudication",
-      "state": "Failed",
+      "state": "Accepted",
       "historical_state": "ReadyForAcceptance",
       "historical_case_counts": {
         "Passed": 3
       },
       "implementation_status": "Evidence tools only: overflow-safe mean; event_type and optional match_id checked before business-key hashing. Actual file-path red3 to zero unhandled at clean e060. Business/UI frozen f812.",
-      "current_test_status": "MAIN Failed at ee8: finite mean overflow and two archive business-key container exceptions. New e060 fix locally122/122 + original12/12 + old5 + new3; S6 independent revalidation pending.",
+      "current_test_status": "Independent MAIN S6 Accepted/FixedWithEvidence at exact e060: original3 + same-class5 + old5 + canonical12 + completePython122,0skip,17childrenreaped; full metadata/minimal dependencies verified.",
       "modification_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
       "test_commands": [
         "python3 tools/pr13_offline_cases.py --output /workspace/pr13-takeover/case-audit-cc6da2e/receipts --godot /workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
@@ -139,9 +139,10 @@
         "schema-safety-4bb6c6be/MANIFEST.json",
         "schema-safety-ee8adcf4/REPORT.json",
         "schema-second-e06037f5/REPORT.json",
-        "MAIN_S6_ee8adcf4.json"
+        "MAIN_S6_ee8adcf4.json",
+        "MAIN_S6_e06037f5.json"
       ],
-      "remaining_blocker": "S6 independent actual replay of fixed e060 schema. Prior MAIN Failed remains until revalidation.",
+      "remaining_blocker": null,
       "dependencies": [
         "LOAD-11.1",
         "LOAD-06.4"
@@ -152,9 +153,9 @@
       "gates": [
         "G1"
       ],
-      "accepted_by": null,
+      "accepted_by": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
       "next_action": "校验容器、标量、PID、时间、计数和数组元素；坏行输出invalid_schema且继续有界处理",
-      "accepted": false,
+      "accepted": true,
       "supporting_tests_are_canonical_acceptance": false,
       "tested_source_shas": [
         "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
@@ -163,21 +164,41 @@
         "ee8adcf40be9aebb1330156a3524910c08225ebc",
         "e06037f58738d0fbff86090e86d8bd06f8608e04"
       ],
-      "acceptance_proposal": "ReadyForIndependentAcceptance",
-      "remaining_blockers": [
-        "S6 independent actual replay/adjudication at e060"
-      ],
-      "latest_runtime_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+      "acceptance_proposal": null,
+      "remaining_blockers": [],
+      "latest_runtime_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
       "proposed_resolution": "FixedWithEvidence",
       "latest_MAIN_decision": {
-        "state": "Failed",
-        "resolution": "Failed",
-        "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
-        "review_commit": "dac6fdbd43d9c925a696a18f9774d9392c06c302",
-        "source_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/dac6fdbd43d9c925a696a18f9774d9392c06c302/docs/reports/pr13-independent-main-20260930/ee8adcf4/PARENT_DECISION_NOTE.json",
-        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012"
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "LOAD-01.1",
+        "state": "Accepted",
+        "resolution": "FixedWithEvidence",
+        "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+        "review_commit": "b4eba2cd6131dc6bae505af2a6ec9e7ba038a160",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/b4eba2cd6131dc6bae505af2a6ec9e7ba038a160/docs/reports/pr13-independent-main-20260930/e06037f5/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/b4eba2cd6131dc6bae505af2a6ec9e7ba038a160/docs/reports/pr13-independent-main-20260930/e06037f5/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent delegation: MAIN finally adjudicated LOAD01.1 Accepted/FixedWithEvidence at exact e060.",
+        "verified_review_manifest_files": 58,
+        "review_manifest_sha256": "0e19533da9ef3764e6f37a385ca74ecea18408504e7fd6d5873e2abea3b45e0f",
+        "independent_actual_result": "Original3 + same-class5 + old5 + canonical12 + Python122 passed0skip; all17 dedicated children reaped.",
+        "implementation_owner_did_not_sign": true,
+        "other_LOAD01_decisions_unchanged": "LOAD-01.2/.3/.4 remain Accepted/NoChangeWithEvidence at original ee8 MAIN decision.",
+        "all132_accepted": false,
+        "gates_accepted": false
       },
-      "acceptance_source_sha": null
+      "acceptance_source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+      "prior_MAIN_decisions": [
+        {
+          "state": "Failed",
+          "resolution": "Failed",
+          "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "review_commit": "dac6fdbd43d9c925a696a18f9774d9392c06c302",
+          "source_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/dac6fdbd43d9c925a696a18f9774d9392c06c302/docs/reports/pr13-independent-main-20260930/ee8adcf4/PARENT_DECISION_NOTE.json",
+          "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012"
+        }
+      ],
+      "resolution": "FixedWithEvidence"
     },
     {
       "task_id": "LOAD-01.2",
@@ -5714,7 +5735,7 @@
       ]
     }
   ],
-  "updated_at_utc": "2026-09-30T23:42:04.389244+00:00",
+  "updated_at_utc": "2026-09-30T23:46:32.235679+00:00",
   "gate_decisions": [
     {
       "gate": "G0",
@@ -5758,29 +5779,17 @@
   "state_counts": {
     "Partial": 42,
     "NotRevalidated": 72,
-    "Failed": 1,
-    "Accepted": 3,
+    "Accepted": 4,
     "ReadyForAcceptance": 11,
     "Blocked": 3
   },
   "latest_batch_state_transitions": [
     {
-      "task_id": "PR13-A05.1",
-      "from_state": "Partial",
-      "to_state": "Partial",
-      "Accepted": false
-    },
-    {
-      "task_id": "PR13-A05.2",
-      "from_state": "Partial",
-      "to_state": "ReadyForAcceptance",
-      "Accepted": false
-    },
-    {
-      "task_id": "PR13-A05.3",
-      "from_state": "Partial",
-      "to_state": "ReadyForAcceptance",
-      "Accepted": false
+      "task_id": "LOAD-01.1",
+      "from_state": "Failed",
+      "to_state": "Accepted",
+      "authority": "MAIN",
+      "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04"
     }
   ],
   "production_protocol_fix_sha": "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17",
@@ -5822,5 +5831,24 @@
     "not_applicable_to_new_source": "e06037f58738d0fbff86090e86d8bd06f8608e04",
     "gates_accepted": false,
     "all132_accepted": false
+  },
+  "latest_MAIN_S6_decision": {
+    "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+    "task_id": "LOAD-01.1",
+    "state": "Accepted",
+    "resolution": "FixedWithEvidence",
+    "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+    "review_commit": "b4eba2cd6131dc6bae505af2a6ec9e7ba038a160",
+    "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/b4eba2cd6131dc6bae505af2a6ec9e7ba038a160/docs/reports/pr13-independent-main-20260930/e06037f5/REVIEW.md",
+    "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/b4eba2cd6131dc6bae505af2a6ec9e7ba038a160/docs/reports/pr13-independent-main-20260930/e06037f5/REPORT.json",
+    "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+    "authorization": "Explicit parent delegation: MAIN finally adjudicated LOAD01.1 Accepted/FixedWithEvidence at exact e060.",
+    "verified_review_manifest_files": 58,
+    "review_manifest_sha256": "0e19533da9ef3764e6f37a385ca74ecea18408504e7fd6d5873e2abea3b45e0f",
+    "independent_actual_result": "Original3 + same-class5 + old5 + canonical12 + Python122 passed0skip; all17 dedicated children reaped.",
+    "implementation_owner_did_not_sign": true,
+    "other_LOAD01_decisions_unchanged": "LOAD-01.2/.3/.4 remain Accepted/NoChangeWithEvidence at original ee8 MAIN decision.",
+    "all132_accepted": false,
+    "gates_accepted": false
   }
 }

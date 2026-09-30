@@ -1,13 +1,12 @@
 {
-  "kind": "complete_offline_batch_receipt_pending_MAIN",
+  "kind": "Sealed_bounded19_receipt_with_recorded_MAIN_only",
   "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
   "previous_stage_receipt": "STAGE_RECEIPT_schema_4bb6c6be.json",
-  "batch": "offline-acceptance-f812/a05/ROOT_REVIEW.json",
+  "batch": "BOUNDED_19_RECEIPT.json",
   "ready_for_independent_acceptance": [
     "offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
     "offline-acceptance-f812/load02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
     "load03-ready-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
-    "schema-second-e06037f5/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
     "offline-acceptance-f812/a05/READY_FOR_INDEPENDENT_ACCEPTANCE.json"
   ],
   "ready_task_count": 11,
@@ -15,12 +14,11 @@
   "task_states_current": {
     "Partial": 42,
     "NotRevalidated": 72,
-    "Failed": 1,
-    "Accepted": 3,
+    "Accepted": 4,
     "ReadyForAcceptance": 11,
     "Blocked": 3
   },
-  "Accepted": 3,
+  "Accepted": 4,
   "canonical_total_cases": 396,
   "canonical_explicit_runner_receipts_unchanged": {
     "Passed": 27,
@@ -28,20 +26,36 @@
     "not_total_coverage": true
   },
   "local_validation": {
-    "exact": {
-      "passed": 12,
-      "failed": 0,
-      "skipped": 0
+    "schema_e060": {
+      "Python": 122,
+      "original_LOAD01": 12,
+      "old5_invalid": 5,
+      "new3_unhandled": 0,
+      "new3_invalid": 2
     },
-    "C-PY": {
-      "passed": 118,
-      "failed": 0,
-      "skipped": 0
+    "B02_f812": {
+      "original_cases": 12,
+      "Domain": 317,
+      "Server_PG": 291
     },
-    "schema_red_green": {
-      "before_unhandled": 4,
-      "after_unhandled": 0,
-      "after_invalid_exit3": 4
+    "LOAD02_f812": {
+      "original_Passed": 11,
+      "original_Partial": 1,
+      "Python_selected": 42
+    },
+    "LOAD03_ee8": {
+      "original_cases": 12,
+      "full_task_ready": 2,
+      "full_task_Partial": 2,
+      "reused_Python": 119
+    },
+    "A05_f812_plus_declared_test_overlay": {
+      "primary_original": 9,
+      "Domain": 317,
+      "Server": 295,
+      "focused_Passed": 3,
+      "focused_Failed": 1,
+      "causal_Failed": 1
     }
   },
   "production_source_frozen": "f812879e4518fd09bf22656451cb563d62940298",
@@ -51,51 +65,22 @@
   "raw4_upload": "Paused; unchanged; no upload.",
   "validation_tool_change_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
   "independent_MAIN": {
-    "kind": "Recorded_explicit_parent_MAIN_S6_decision",
-    "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
-    "review_commit": "dac6fdbd43d9c925a696a18f9774d9392c06c302",
-    "review_branch": "review/pr13-load01-main-offline-ee8adcf4-20260930",
-    "decision_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/dac6fdbd43d9c925a696a18f9774d9392c06c302/docs/reports/pr13-independent-main-20260930/ee8adcf4/PARENT_DECISION_NOTE.json",
-    "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/dac6fdbd43d9c925a696a18f9774d9392c06c302/docs/reports/pr13-independent-main-20260930/ee8adcf4/REPORT.json",
-    "verified_review_manifest_files": 40,
-    "review_manifest_sha256": "9dca39ca550f6b85072405a5aded120a9ae8ceb84fa6b424395b8f4fffb641a0",
-    "implementation_owner_did_not_sign": true,
-    "decisions": [
-      {
-        "task_id": "LOAD-01.1",
-        "parent_resolution": "Failed",
-        "reason": "Three independently reproduced schema exceptions; owner fix and new independent replay required."
-      },
-      {
-        "task_id": "LOAD-01.2",
-        "parent_resolution": "Accepted/NoChangeWithEvidence",
-        "reason": "Original canonical OFFLINE contract satisfied by independent replay and minimum dependency artifacts."
-      },
-      {
-        "task_id": "LOAD-01.3",
-        "parent_resolution": "Accepted/NoChangeWithEvidence",
-        "reason": "Original canonical OFFLINE contract satisfied by independent replay and minimum dependency artifacts."
-      },
-      {
-        "task_id": "LOAD-01.4",
-        "parent_resolution": "Accepted/NoChangeWithEvidence",
-        "reason": "Original canonical OFFLINE contract satisfied by independent replay and minimum dependency artifacts."
-      }
-    ],
-    "not_applicable_to_new_source": "e06037f58738d0fbff86090e86d8bd06f8608e04",
-    "gates_accepted": false,
-    "all132_accepted": false
+    "ee8": "MAIN_S6_ee8adcf4.json",
+    "e060": "MAIN_S6_e06037f5.json"
   },
   "latest_batch": {
-    "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
-    "ready_tasks": 3,
-    "partial_tasks": 1,
-    "case_Passed": 11,
-    "case_Partial": 1,
-    "C-PY": 42,
-    "C-SERVER_REUSED": 291,
-    "C-DOMAIN_REUSED": 317,
-    "critical_skips": 0
+    "report": "BOUNDED_19_RECEIPT.json",
+    "task_count": 19,
+    "case_count": 57,
+    "task_states": {
+      "Accepted": 4,
+      "ReadyForAcceptance": 11,
+      "Partial": 4
+    },
+    "primary_case_results": {
+      "Passed": 56,
+      "Partial": 1
+    }
   },
   "source_scope_note": "Schema packet4bb; B02 packetf812. Never combine as a single actual profile SHA; B02 business/proto/config byte-equivalence verified.",
   "schema_corrected_packet": "schema-second-e06037f5/REPORT.json",
@@ -110,5 +95,42 @@
     "primary_cases_passed": 9,
     "causal_extra_Failed": 1,
     "Accepted": 0
-  }
+  },
+  "latest_MAIN_S6": {
+    "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+    "task_id": "LOAD-01.1",
+    "state": "Accepted",
+    "resolution": "FixedWithEvidence",
+    "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+    "review_commit": "b4eba2cd6131dc6bae505af2a6ec9e7ba038a160",
+    "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/b4eba2cd6131dc6bae505af2a6ec9e7ba038a160/docs/reports/pr13-independent-main-20260930/e06037f5/REVIEW.md",
+    "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/b4eba2cd6131dc6bae505af2a6ec9e7ba038a160/docs/reports/pr13-independent-main-20260930/e06037f5/REPORT.json",
+    "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+    "authorization": "Explicit parent delegation: MAIN finally adjudicated LOAD01.1 Accepted/FixedWithEvidence at exact e060.",
+    "verified_review_manifest_files": 58,
+    "review_manifest_sha256": "0e19533da9ef3764e6f37a385ca74ecea18408504e7fd6d5873e2abea3b45e0f",
+    "independent_actual_result": "Original3 + same-class5 + old5 + canonical12 + Python122 passed0skip; all17 dedicated children reaped.",
+    "implementation_owner_did_not_sign": true,
+    "other_LOAD01_decisions_unchanged": "LOAD-01.2/.3/.4 remain Accepted/NoChangeWithEvidence at original ee8 MAIN decision.",
+    "all132_accepted": false,
+    "gates_accepted": false
+  },
+  "selected_task_states": {
+    "Accepted": 4,
+    "ReadyForAcceptance": 11,
+    "Partial": 4
+  },
+  "selected_primary_case_results": {
+    "Passed": 56,
+    "Partial": 1
+  },
+  "no_suite_counts_summed_as_canonical_cases": true,
+  "next_queue": "NEXT_QUEUE.json",
+  "historical_ready_proposals": [
+    "offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+    "offline-acceptance-f812/load02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+    "load03-ready-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+    "schema-second-e06037f5/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+    "offline-acceptance-f812/a05/READY_FOR_INDEPENDENT_ACCEPTANCE.json"
+  ]
 }
