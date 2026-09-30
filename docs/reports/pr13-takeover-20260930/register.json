@@ -114,18 +114,26 @@
       "task_id": "LOAD-01.1",
       "title": "输入schema",
       "dependency_order": 3,
-      "owner": "MAIN (pending batch)",
-      "state": "NotRevalidated",
+      "owner": "MAIN / offline canonical receipt audit",
+      "state": "Partial",
       "historical_state": "ReadyForAcceptance",
       "historical_case_counts": {
         "Passed": 3
       },
-      "implementation_status": "Pending independent review",
-      "current_test_status": "NotRevalidated",
+      "implementation_status": "Current behavior independently audited through frozen setup/expected and pure-SHA explicit receipts; no new code for this task.",
+      "current_test_status": "Three current explicit canonical receipts Passed and match frozen setup/expected; task-level completeness/independent stage decision remains open.",
       "modification_sha": null,
-      "test_commands": [],
-      "evidence": [],
-      "remaining_blocker": "This takeover batch has not independently executed this task; follow its preserved dependency order and next_action.",
+      "test_commands": [
+        "python3 tools/pr13_offline_cases.py --output /workspace/pr13-takeover/case-audit-cc6da2e/receipts --godot /workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64"
+      ],
+      "evidence": [
+        "case-audit-cc6da2e/manifest.json",
+        "case-audit-cc6da2e/receipts/report.json",
+        "case-audit-cc6da2e/receipts/cases.jsonl",
+        "CASE_MAPPING.json",
+        "integrated-cc6da2e/report.json"
+      ],
+      "remaining_blocker": "Explicit three-case receipts passed; complete pass-criteria/stage review and dependency input adjudication remain open. OFFLINE-only task does not require online deployment.",
       "dependencies": [
         "LOAD-11.1",
         "LOAD-06.4"
@@ -140,7 +148,9 @@
       "next_action": "校验容器、标量、PID、时间、计数和数组元素；坏行输出invalid_schema且继续有界处理",
       "accepted": false,
       "supporting_tests_are_canonical_acceptance": false,
-      "tested_source_shas": []
+      "tested_source_shas": [
+        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3"
+      ]
     },
     {
       "task_id": "LOAD-01.2",
@@ -192,18 +202,26 @@
       "task_id": "LOAD-01.3",
       "title": "拆分负载人数",
       "dependency_order": 5,
-      "owner": "MAIN (pending batch)",
-      "state": "NotRevalidated",
+      "owner": "MAIN / offline canonical receipt audit",
+      "state": "Partial",
       "historical_state": "ReadyForAcceptance",
       "historical_case_counts": {
         "Passed": 3
       },
-      "implementation_status": "Pending independent review",
-      "current_test_status": "NotRevalidated",
+      "implementation_status": "Current behavior independently audited through frozen setup/expected and pure-SHA explicit receipts; no new code for this task.",
+      "current_test_status": "Three current explicit canonical receipts Passed and match frozen setup/expected; task-level completeness/independent stage decision remains open.",
       "modification_sha": null,
-      "test_commands": [],
-      "evidence": [],
-      "remaining_blocker": "This takeover batch has not independently executed this task; follow its preserved dependency order and next_action.",
+      "test_commands": [
+        "python3 tools/pr13_offline_cases.py --output /workspace/pr13-takeover/case-audit-cc6da2e/receipts --godot /workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64"
+      ],
+      "evidence": [
+        "case-audit-cc6da2e/manifest.json",
+        "case-audit-cc6da2e/receipts/report.json",
+        "case-audit-cc6da2e/receipts/cases.jsonl",
+        "CASE_MAPPING.json",
+        "integrated-cc6da2e/report.json"
+      ],
+      "remaining_blocker": "Explicit three-case receipts passed; complete pass-criteria/stage review and dependency input adjudication remain open. OFFLINE-only task does not require online deployment.",
       "dependencies": [
         "LOAD-01.2"
       ],
@@ -217,24 +235,34 @@
       "next_action": "输出spawned/alive/fresh/online/room_state/active_in_room，无法采集server_confirmed时写null及原因",
       "accepted": false,
       "supporting_tests_are_canonical_acceptance": false,
-      "tested_source_shas": []
+      "tested_source_shas": [
+        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3"
+      ]
     },
     {
       "task_id": "LOAD-01.4",
       "title": "真实进程反例",
       "dependency_order": 6,
-      "owner": "MAIN (pending batch)",
-      "state": "NotRevalidated",
+      "owner": "MAIN / offline canonical receipt audit",
+      "state": "Partial",
       "historical_state": "ReadyForAcceptance",
       "historical_case_counts": {
         "Passed": 3
       },
-      "implementation_status": "Pending independent review",
-      "current_test_status": "NotRevalidated",
+      "implementation_status": "Current behavior independently audited through frozen setup/expected and pure-SHA explicit receipts; no new code for this task.",
+      "current_test_status": "Three current explicit canonical receipts Passed and match frozen setup/expected; task-level completeness/independent stage decision remains open.",
       "modification_sha": null,
-      "test_commands": [],
-      "evidence": [],
-      "remaining_blocker": "This takeover batch has not independently executed this task; follow its preserved dependency order and next_action.",
+      "test_commands": [
+        "python3 tools/pr13_offline_cases.py --output /workspace/pr13-takeover/case-audit-cc6da2e/receipts --godot /workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64"
+      ],
+      "evidence": [
+        "case-audit-cc6da2e/manifest.json",
+        "case-audit-cc6da2e/receipts/report.json",
+        "case-audit-cc6da2e/receipts/cases.jsonl",
+        "CASE_MAPPING.json",
+        "integrated-cc6da2e/report.json"
+      ],
+      "remaining_blocker": "Explicit three-case receipts passed; complete pass-criteria/stage review and dependency input adjudication remain open. OFFLINE-only task does not require online deployment.",
       "dependencies": [
         "LOAD-01.3"
       ],
@@ -248,7 +276,9 @@
       "next_action": "实际启动子进程产生状态，再注入慢启动/缺报/退出/PID重用；启动宽限按实际launch计",
       "accepted": false,
       "supporting_tests_are_canonical_acceptance": false,
-      "tested_source_shas": []
+      "tested_source_shas": [
+        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3"
+      ]
     },
     {
       "task_id": "LOAD-02.1",
@@ -565,18 +595,26 @@
       "task_id": "LOAD-03.2",
       "title": "生命周期阶段",
       "dependency_order": 14,
-      "owner": "MAIN (pending batch)",
-      "state": "NotRevalidated",
+      "owner": "MAIN / offline canonical receipt audit",
+      "state": "Partial",
       "historical_state": "ReadyForAcceptance",
       "historical_case_counts": {
         "Passed": 3
       },
-      "implementation_status": "Pending independent review",
-      "current_test_status": "NotRevalidated",
+      "implementation_status": "Current behavior independently audited through frozen setup/expected and pure-SHA explicit receipts; no new code for this task.",
+      "current_test_status": "Three current explicit canonical receipts Passed and match frozen setup/expected; task-level completeness/independent stage decision remains open.",
       "modification_sha": null,
-      "test_commands": [],
-      "evidence": [],
-      "remaining_blocker": "This takeover batch has not independently executed this task; follow its preserved dependency order and next_action.",
+      "test_commands": [
+        "python3 tools/pr13_offline_cases.py --output /workspace/pr13-takeover/case-audit-cc6da2e/receipts --godot /workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64"
+      ],
+      "evidence": [
+        "case-audit-cc6da2e/manifest.json",
+        "case-audit-cc6da2e/receipts/report.json",
+        "case-audit-cc6da2e/receipts/cases.jsonl",
+        "CASE_MAPPING.json",
+        "integrated-cc6da2e/report.json"
+      ],
+      "remaining_blocker": "Explicit three-case receipts passed; complete pass-criteria/stage review and dependency input adjudication remain open. OFFLINE-only task does not require online deployment.",
       "dependencies": [
         "LOAD-03.1"
       ],
@@ -591,7 +629,9 @@
       "next_action": "按login/initial/matchmaking/playing/settlement/cleanup显式分层；无标签历史标legacy_unknown",
       "accepted": false,
       "supporting_tests_are_canonical_acceptance": false,
-      "tested_source_shas": []
+      "tested_source_shas": [
+        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3"
+      ]
     },
     {
       "task_id": "LOAD-03.3",
@@ -676,18 +716,26 @@
       "task_id": "LOAD-03.4",
       "title": "分布与错误率",
       "dependency_order": 17,
-      "owner": "MAIN (pending batch)",
-      "state": "NotRevalidated",
+      "owner": "MAIN / offline canonical receipt audit",
+      "state": "Partial",
       "historical_state": "ReadyForAcceptance",
       "historical_case_counts": {
         "Passed": 3
       },
-      "implementation_status": "Pending independent review",
-      "current_test_status": "NotRevalidated",
+      "implementation_status": "Current behavior independently audited through frozen setup/expected and pure-SHA explicit receipts; no new code for this task.",
+      "current_test_status": "Three current explicit canonical receipts Passed and match frozen setup/expected; task-level completeness/independent stage decision remains open.",
       "modification_sha": null,
-      "test_commands": [],
-      "evidence": [],
-      "remaining_blocker": "This takeover batch has not independently executed this task; follow its preserved dependency order and next_action.",
+      "test_commands": [
+        "python3 tools/pr13_offline_cases.py --output /workspace/pr13-takeover/case-audit-cc6da2e/receipts --godot /workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64"
+      ],
+      "evidence": [
+        "case-audit-cc6da2e/manifest.json",
+        "case-audit-cc6da2e/receipts/report.json",
+        "case-audit-cc6da2e/receipts/cases.jsonl",
+        "CASE_MAPPING.json",
+        "integrated-cc6da2e/report.json"
+      ],
+      "remaining_blocker": "Explicit three-case receipts passed; complete pass-criteria/stage review and dependency input adjudication remain open. OFFLINE-only task does not require online deployment.",
       "dependencies": [
         "LOAD-03.3",
         "LOAD-06.1"
@@ -703,7 +751,9 @@
       "next_action": "分路由/phase输出P50/P95/P99/max、吞吐、样本不足；全局从样本或可合并分布计算",
       "accepted": false,
       "supporting_tests_are_canonical_acceptance": false,
-      "tested_source_shas": []
+      "tested_source_shas": [
+        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3"
+      ]
     },
     {
       "task_id": "LOAD-04.2",
@@ -1317,7 +1367,7 @@
         "integrated-cc6da2e/report.json",
         "ci-cc6da2e/workflows.json"
       ],
-      "remaining_blocker": "LIVE client entry/STOP/fault combinations and independent OS-process kill/restart not executed. Existing inconsistent room is quarantined, not repaired; no DB restoration authorized.",
+      "remaining_blocker": "LIVE entry/STOP/full fault combinations remain incomplete. Existing pure-cc6 real OS host PVP/extraction force-restart test passed; new committed-response-loss/checkpoint/quarantine fixes need a wider actual-process matrix. Inconsistent rooms are quarantined, not repaired; no DB restore.",
       "dependencies": [
         "LOAD-11.1"
       ],
@@ -1336,7 +1386,8 @@
       "supporting_tests_are_canonical_acceptance": false,
       "tested_source_shas": [
         "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3"
-      ]
+      ],
+      "existing_real_host_evidence": "CASE_MAPPING.json: supporting_existing_real_host_cases; integrated-cc6da2e/trx/server.trx"
     },
     {
       "task_id": "LOAD-09.2",
@@ -1367,7 +1418,7 @@
         "integrated-cc6da2e/report.json",
         "ci-cc6da2e/workflows.json"
       ],
-      "remaining_blocker": "LIVE client entry/STOP/fault combinations and independent OS-process kill/restart not executed. Existing inconsistent room is quarantined, not repaired; no DB restoration authorized.",
+      "remaining_blocker": "LIVE entry/STOP/full fault combinations remain incomplete. Existing pure-cc6 real OS host PVP/extraction force-restart test passed; new committed-response-loss/checkpoint/quarantine fixes need a wider actual-process matrix. Inconsistent rooms are quarantined, not repaired; no DB restore.",
       "dependencies": [
         "LOAD-09.1",
         "LOAD-04.4"
@@ -1387,7 +1438,8 @@
       "supporting_tests_are_canonical_acceptance": false,
       "tested_source_shas": [
         "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3"
-      ]
+      ],
+      "existing_real_host_evidence": "CASE_MAPPING.json: supporting_existing_real_host_cases; integrated-cc6da2e/trx/server.trx"
     },
     {
       "task_id": "LOAD-09.3",
@@ -3745,7 +3797,7 @@
         "integrated-cc6da2e/report.json",
         "ci-cc6da2e/workflows.json"
       ],
-      "remaining_blocker": "LIVE client entry/STOP/fault combinations and independent OS-process kill/restart not executed. Existing inconsistent room is quarantined, not repaired; no DB restoration authorized.",
+      "remaining_blocker": "LIVE entry/STOP/full fault combinations remain incomplete. Existing pure-cc6 real OS host PVP/extraction force-restart test passed; new committed-response-loss/checkpoint/quarantine fixes need a wider actual-process matrix. Inconsistent rooms are quarantined, not repaired; no DB restore.",
       "dependencies": [
         "PR13-A04.2"
       ],
@@ -3763,7 +3815,8 @@
       "supporting_tests_are_canonical_acceptance": false,
       "tested_source_shas": [
         "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3"
-      ]
+      ],
+      "existing_real_host_evidence": "CASE_MAPPING.json: supporting_existing_real_host_cases; integrated-cc6da2e/trx/server.trx"
     },
     {
       "task_id": "PR13-A04.4",
@@ -4060,7 +4113,7 @@
         "integrated-cc6da2e/report.json",
         "ci-cc6da2e/workflows.json"
       ],
-      "remaining_blocker": "LIVE client entry/STOP/fault combinations and independent OS-process kill/restart not executed. Existing inconsistent room is quarantined, not repaired; no DB restoration authorized.",
+      "remaining_blocker": "LIVE entry/STOP/full fault combinations remain incomplete. Existing pure-cc6 real OS host PVP/extraction force-restart test passed; new committed-response-loss/checkpoint/quarantine fixes need a wider actual-process matrix. Inconsistent rooms are quarantined, not repaired; no DB restore.",
       "dependencies": [
         "LOAD-05.4",
         "LOAD-09.2"
@@ -4080,7 +4133,8 @@
       "supporting_tests_are_canonical_acceptance": false,
       "tested_source_shas": [
         "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3"
-      ]
+      ],
+      "existing_real_host_evidence": "CASE_MAPPING.json: supporting_existing_real_host_cases; integrated-cc6da2e/trx/server.trx"
     },
     {
       "task_id": "PR13-A05.2",
@@ -4111,7 +4165,7 @@
         "integrated-cc6da2e/report.json",
         "ci-cc6da2e/workflows.json"
       ],
-      "remaining_blocker": "LIVE client entry/STOP/fault combinations and independent OS-process kill/restart not executed. Existing inconsistent room is quarantined, not repaired; no DB restoration authorized.",
+      "remaining_blocker": "LIVE entry/STOP/full fault combinations remain incomplete. Existing pure-cc6 real OS host PVP/extraction force-restart test passed; new committed-response-loss/checkpoint/quarantine fixes need a wider actual-process matrix. Inconsistent rooms are quarantined, not repaired; no DB restore.",
       "dependencies": [
         "PR13-A05.1"
       ],
@@ -4130,7 +4184,8 @@
       "supporting_tests_are_canonical_acceptance": false,
       "tested_source_shas": [
         "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3"
-      ]
+      ],
+      "existing_real_host_evidence": "CASE_MAPPING.json: supporting_existing_real_host_cases; integrated-cc6da2e/trx/server.trx"
     },
     {
       "task_id": "PR13-A05.3",
@@ -4161,7 +4216,7 @@
         "integrated-cc6da2e/report.json",
         "ci-cc6da2e/workflows.json"
       ],
-      "remaining_blocker": "LIVE client entry/STOP/fault combinations and independent OS-process kill/restart not executed. Existing inconsistent room is quarantined, not repaired; no DB restoration authorized.",
+      "remaining_blocker": "LIVE entry/STOP/full fault combinations remain incomplete. Existing pure-cc6 real OS host PVP/extraction force-restart test passed; new committed-response-loss/checkpoint/quarantine fixes need a wider actual-process matrix. Inconsistent rooms are quarantined, not repaired; no DB restore.",
       "dependencies": [
         "PR13-A05.2"
       ],
@@ -4180,7 +4235,8 @@
       "supporting_tests_are_canonical_acceptance": false,
       "tested_source_shas": [
         "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3"
-      ]
+      ],
+      "existing_real_host_evidence": "CASE_MAPPING.json: supporting_existing_real_host_cases; integrated-cc6da2e/trx/server.trx"
     },
     {
       "task_id": "PR13-A06.1",
@@ -5350,7 +5406,7 @@
       ]
     }
   ],
-  "updated_at_utc": "2026-09-30T17:04:54.955989+00:00",
+  "updated_at_utc": "2026-09-30T18:18:00Z",
   "gate_decisions": [
     {
       "gate": "G0",

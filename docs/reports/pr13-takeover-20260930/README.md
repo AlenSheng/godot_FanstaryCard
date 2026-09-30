@@ -58,8 +58,8 @@ transport24、1800权威预览/Play与Godot对比零差异。CI checkout为PR me
 保留，不能改称纯post-build tree。
 
 [register.json](register.json) 和 [TASK_CHECKLIST.md](TASK_CHECKLIST.md) 保留132项
-依赖、负责人、历史状态、修改SHA、命令、证据和阻塞。全部Accepted仍为0，G0–G5
-未签署。当前状态为40项Partial、89项NotRevalidated、3项Blocked；Blocked包含两项原始历史raw取证及一项全局ledger归因。下一关键队列见 [NEXT_QUEUE.json](NEXT_QUEUE.json)。服务器和客户端子代理在dirty工作区产生的原报告按原样保存；纯SHA/CI验证独立列示。
+依赖、负责人、历史状态、修改SHA、命令、证据和阻塞。阶段收据见 [STAGE_RECEIPT.json](STAGE_RECEIPT.json)，396案例的执行与支持证据映射见 [CASE_MAPPING.json](CASE_MAPPING.json)。全部Accepted仍为0，G0–G5
+未签署。当前状态为45项Partial、84项NotRevalidated、3项Blocked；Blocked包含两项原始历史raw取证及一项全局ledger归因。下一关键队列见 [NEXT_QUEUE.json](NEXT_QUEUE.json)。服务器和客户端子代理在dirty工作区产生的原报告按原样保存；纯SHA/CI验证独立列示。
 
 尚未闭环的主要范围：历史缺raw差异归因、全局ledger mismatch=1的只读取证，真实同账号
 三局/完整准备后Boss路线，全故障与资产矩阵，50/100容量及三组成对A/B/30分钟长稳，
@@ -72,3 +72,5 @@ server/AGENTS.md引用的mandatory `.agents/skills/server_create/SKILL.md` 缺�
 按已有明确授权继续不受影响工作，没有声称读取该技能。[固定SHA线上验证计划](LIVE_VALIDATION_PLAN.json)交父任务协调，重启已有授权；
 代码部署须沿用固定构建、工作流、互斥和证据门槛。目前没有访问/部署/重启测试服，
 未合并、未启用候选生产数值、未恢复数据库、未改余额/账本。
+
+原262项PG回归中的10项既有真实host HTTP/WS测试也已执行，其中PVP/遗物/撤离强杀及两次冷启动用例通过。新八项恢复故障用例主要采用actor/repository重建；下一批补充新修复路径的实际OS进程矩阵。二者scope分别列于case映射，不合称完整三局/故障验收。

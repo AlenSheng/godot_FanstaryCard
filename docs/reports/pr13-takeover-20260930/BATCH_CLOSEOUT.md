@@ -40,10 +40,10 @@ b709被取消的客户端及数值任务已复跑通过，原取消日志不提�
 原交接完整ZIP由父任务验证3929文件/147关键证据；本环境安全物化Library小包并独立
 校验115文件、24份固定73d4源码/报告。取证关系见 [handoff-review](handoff-review/verification.json)。
 
-132项当前为40 Partial、89 NotRevalidated、3 Blocked、0 Accepted，G0–G5未签署。
+132项当前为45 Partial、84 NotRevalidated、3 Blocked、0 Accepted，G0–G5未签署。
 [register.json](register.json)逐项保存历史状态、依赖、负责人、修改SHA、命令、证据和
 剩余条件。[TASK_CHECKLIST.md](TASK_CHECKLIST.md)由登记表生成。27显式回执之后的
-369案例仍未由该runner执行；新增支持测试与实际模拟没有自动升级396个canonical案例。
+369案例仍未由该runner执行；新增支持测试与实际模拟没有自动升级396个canonical案例。阶段收据与逐case映射见 [STAGE_RECEIPT.json](STAGE_RECEIPT.json)、[CASE_MAPPING.json](CASE_MAPPING.json)。
 Deferred/Blocked没有改成Accepted。完整文件哈希见 [TAKEOVER_MANIFEST.json](TAKEOVER_MANIFEST.json)。
 
 [NEXT_QUEUE.json](NEXT_QUEUE.json)给出下一关键依赖：更新PR14组合；实际READY/ACK、
@@ -56,3 +56,5 @@ Deferred/Blocked没有改成Accepted。完整文件哈希见 [TAKEOVER_MANIFEST.
 需要有界只读账户/时间/链证据。25自有账号清账不能关闭全局异常。
 server/AGENTS.md要求的 `.agents/skills/server_create/SKILL.md`仍缺失，按用户既有授权
 完成不受影响工作，没有声称读取缺失技能。
+
+262项PG回归同时执行10项既有完整host HTTP/WS用例，其中PVP/撤离强杀及两次冷启动资产验证已通过。八个新恢复故障案例的actor/repository重建与这些既有OS进程证据分别保存；更广的实际进程故障矩阵正在隔离副本推进。
