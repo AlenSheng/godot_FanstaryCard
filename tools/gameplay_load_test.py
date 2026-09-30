@@ -29,21 +29,24 @@ QUERIES = {
     'memory_available': '100*node_memory_MemAvailable_bytes{job="node",instance="node-exporter:9100"}/node_memory_MemTotal_bytes{job="node",instance="node-exporter:9100"}',
     'disk_available': '100*node_filesystem_avail_bytes{job="node",instance="node-exporter:9100",mountpoint="/"}/node_filesystem_size_bytes{job="node",instance="node-exporter:9100",mountpoint="/"}',
     'actor_wait': 'histogram_quantile(0.95,sum(rate(fantasycard_room_actor_command_wait_milliseconds_bucket{job="fantasycard",instance="otel-collector:9464"}[5m])) by (le))',
-    'server_humans_in_room': 'fantasycard_rooms_humans_active_players{job="fantasycard",instance="otel-collector:9464"}',
+    'server_humans_in_room': 'fantasycard_rooms_humans_active{job="fantasycard",instance="otel-collector:9464"}',
 }
 
 def metrics(base):
-    result = {}
-    for key, query in QUERIES.items():
-        try:
-            with urllib.request.urlopen(base.rstrip('/')+'/api/v1/query?'+urllib.parse.urlencode({'query':query}),timeout=3) as r:
-                rows=json.load(r)['data']['result']
-            if len(rows)!=1:
-                result[key]=None
-                continue
-            value=float(rows[0]['value'][1])
+    result = dict.fromkeys(QUERIES)
+    # One snapshot and one bounded network round trip for all independent
+    # measurements; the label exists only in this query's result vector.
+    query = ' or '.join('label_replace(('+expression+'),"pr13_metric","'+key+'","",".*")'
+                        for key,expression in QUERIES.items())
+    try:
+        with urllib.request.urlopen(base.rstrip('/')+'/api/v1/query?'+urllib.parse.urlencode({'query':query}),timeout=3) as r:
+            rows=json.load(r)['data']['result']
+        for key in result:
+            matches=[row for row in rows if row.get('metric',{}).get('pr13_metric')==key]
+            if len(matches)!=1: continue
+            value=float(matches[0]['value'][1])
             result[key]=value if math.isfinite(value) else None
-        except (OSError, ValueError, KeyError, IndexError): result[key]=None
+    except (OSError, ValueError, KeyError, IndexError, TypeError): pass
     return result
 
 def save(path, data):
@@ -110,6 +113,8 @@ def main():
     parser.add_argument('--max-seconds',type=int,default=1800)
     parser.add_argument('--group-size',type=int,default=50)
     parser.add_argument('--group-interval',type=int,default=120)
+    parser.add_argument('--launch-interval-seconds',type=float,default=0,
+                        help='Preregistered spacing between account launches; sampling continues during ramps')
     parser.add_argument('--smoke-cycles',type=int,default=3)
     parser.add_argument('--load-profile', choices=('cyclic-gameplay','active-hold','functional-cycles'), default='cyclic-gameplay')
     parser.add_argument('--target-online',type=int)
@@ -128,6 +133,8 @@ def main():
     if not Path(args.godot).is_file(): parser.error('Godot executable is missing')
     if min(args.max_groups,args.max_seconds,args.group_size,args.group_interval,args.smoke_cycles)<1:
         parser.error('Group, duration and cycle limits must be positive')
+    if not math.isfinite(args.launch_interval_seconds) or args.launch_interval_seconds < 0:
+        parser.error('Launch spacing must be finite and nonnegative')
     target=urllib.parse.urlparse(args.server_url)
     if target.scheme not in ('http','https') or not target.hostname:
         parser.error('A valid --server-url is required')
@@ -157,8 +164,9 @@ def main():
         'target_active':expected_clients if args.target_active is None else args.target_active,
         'minimum_window':args.hold_seconds,'minimum_continuous':args.minimum_continuous_seconds,
         'minimum_coverage':args.minimum_coverage,'maximum_gap':args.maximum_sample_gap,
-        'minimum_command_rate':args.minimum_command_rate}
-    coverage([],start=0,end=1,**{k:v for k,v in contract.items() if k not in ('profile','acceptance_scope')})
+        'minimum_command_rate':args.minimum_command_rate,
+        'launch_interval_seconds':args.launch_interval_seconds}
+    coverage([],start=0,end=1,**{k:v for k,v in contract.items() if k not in ('profile','acceptance_scope','launch_interval_seconds')})
     save(run_dir/'load-contract.json',contract)
     stop_file=run_dir/'STOP'
     processes=[]; samples=[]; group_launches=[]; streaks=collections.Counter(); seen={}; status_cache={}
@@ -166,6 +174,7 @@ def main():
     workload_failed=False; smoke_verified=False; previous_sample_ms=None; previous_generator=None
     started=time.time(); started_monotonic=time.monotonic()
     next_group=started_monotonic; next_sample=started_monotonic+10
+    pending_launches=collections.deque(); next_launch=started_monotonic
     groups=0; reason='running'
     group_size=1 if args.smoke else args.group_size
     probes=concurrent.futures.ThreadPoolExecutor(max_workers=2,thread_name_prefix='load-probe')
@@ -178,36 +187,43 @@ def main():
                 scheduled_group_at=next_group
                 group_started_at=time.time()
                 groups+=1
-                for index in range(group_size):
-                    client_id='g%03dc%02d%s'%(groups,index+1,uuid.uuid4().hex[:6])
-                    process_epoch=uuid.uuid4().hex
-                    report=run_dir/(client_id+'.json')
-                    env=dict(os.environ,FANTASYCARD_SERVER_URL=args.server_url,FANTASYCARD_LOAD_CLIENT_ID=client_id,
-                        FANTASYCARD_LOAD_GROUP=str(groups),FANTASYCARD_LOAD_REPORT=str(report),
-                        FANTASYCARD_LOAD_STOP_FILE=str(stop_file),FANTASYCARD_LOAD_RUN_ID=run_id,
-                        FANTASYCARD_LOAD_PROCESS_EPOCH=process_epoch,
-                        FANTASYCARD_LOAD_HERO_CLASS=('Mage','Priest','Guardian')[(len(processes))%3] if args.hero_class=='mixed' else args.hero_class,
-                        FANTASYCARD_LOAD_STRATEGY=('baseline_all_hand','basic','build')[(len(processes))%3] if args.strategy=='mixed' else args.strategy,
-                        FANTASYCARD_LOAD_SEED=str(args.strategy_seed+len(processes)),
-                        FANTASYCARD_LOAD_PROFILE=args.load_profile,
-                        FANTASYCARD_LOAD_HOLD_SECONDS=str(args.hold_seconds),
-                        FANTASYCARD_LOAD_MAX_CYCLES=str(args.smoke_cycles) if args.smoke else '0')
-                    log=(run_dir/(client_id+'.log')).open('w',encoding='utf-8')
-                    try:
-                        process=subprocess.Popen([args.godot,'--headless','--audio-driver','Dummy','--path',str(CLIENT),
-                            'res://tests/gameplay_load_client.tscn'],cwd=ROOT,env=env,stdout=log,stderr=subprocess.STDOUT,
-                            creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
-                    except Exception:
-                        log.close()
-                        raise
-                    processes.append({'process':process,'log':log,'client_id':client_id,'group':groups,
-                        'report':report,'started_at_ms':int(time.time()*1000),
-                        'run_id':run_id,'process_epoch':process_epoch})
+                pending_launches.extend((groups,index) for index in range(group_size))
                 group_launches.append({'group':groups,'scheduled_at':started+(scheduled_group_at-started_monotonic),
-                    'started_at':group_started_at,'finished_at':time.time(),
-                    'clients':group_size})
+                    'started_at':group_started_at,'finished_at':None,
+                    'clients_scheduled':group_size,'clients':0})
                 next_group=time.monotonic()+args.group_interval
-                print('GROUP',groups,'clients',len(processes),flush=True)
+                print('GROUP SCHEDULED',groups,'accounts',group_size,flush=True)
+            if pending_launches and now>=next_launch:
+                launch_group,index=pending_launches.popleft()
+                client_id='g%03dc%02d%s'%(launch_group,index+1,uuid.uuid4().hex[:6])
+                process_epoch=uuid.uuid4().hex
+                report=run_dir/(client_id+'.json')
+                env=dict(os.environ,FANTASYCARD_SERVER_URL=args.server_url,FANTASYCARD_LOAD_CLIENT_ID=client_id,
+                    FANTASYCARD_LOAD_GROUP=str(launch_group),FANTASYCARD_LOAD_REPORT=str(report),
+                    FANTASYCARD_LOAD_STOP_FILE=str(stop_file),FANTASYCARD_LOAD_RUN_ID=run_id,
+                    FANTASYCARD_LOAD_PROCESS_EPOCH=process_epoch,
+                    FANTASYCARD_LOAD_HERO_CLASS=('Mage','Priest','Guardian')[(len(processes))%3] if args.hero_class=='mixed' else args.hero_class,
+                    FANTASYCARD_LOAD_STRATEGY=('baseline_all_hand','basic','build')[(len(processes))%3] if args.strategy=='mixed' else args.strategy,
+                    FANTASYCARD_LOAD_SEED=str(args.strategy_seed+len(processes)),
+                    FANTASYCARD_LOAD_PROFILE=args.load_profile,
+                    FANTASYCARD_LOAD_HOLD_SECONDS=str(args.hold_seconds),
+                    FANTASYCARD_LOAD_MAX_CYCLES=str(args.smoke_cycles) if args.smoke else '0')
+                log=(run_dir/(client_id+'.log')).open('w',encoding='utf-8')
+                try:
+                    process=subprocess.Popen([args.godot,'--headless','--audio-driver','Dummy','--path',str(CLIENT),
+                        'res://tests/gameplay_load_client.tscn'],cwd=ROOT,env=env,stdout=log,stderr=subprocess.STDOUT,
+                        creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
+                except Exception:
+                    log.close()
+                    raise
+                processes.append({'process':process,'log':log,'client_id':client_id,'group':launch_group,
+                    'report':report,'started_at_ms':int(time.time()*1000),
+                    'run_id':run_id,'process_epoch':process_epoch})
+                group_record=group_launches[launch_group-1]
+                group_record['clients']+=1
+                if group_record['clients']==group_size: group_record['finished_at']=time.time()
+                next_launch=time.monotonic()+args.launch_interval_seconds
+                print('CLIENT LAUNCHED',len(processes),'group',launch_group,flush=True)
             if now>=next_sample:
                 scheduled_sample_at=next_sample
                 sample_started=time.monotonic()
@@ -320,7 +336,7 @@ def main():
         hold_end = stop_issued_ms/1000
         hold_start = max(started, hold_end-args.hold_seconds)
         load_coverage = coverage(samples,start=hold_start,end=max(hold_start+.001,hold_end),
-            **{k:v for k,v in contract.items() if k not in ('profile','acceptance_scope')})
+            **{k:v for k,v in contract.items() if k not in ('profile','acceptance_scope','launch_interval_seconds')})
         final_clients, final_read_errors = read_owned_statuses(processes,status_cache)
         tail, tail_lost = new_events(final_clients,seen)
         post_stop_failure = any(p['process'].poll() not in (0,None) for p in processes)
@@ -349,11 +365,16 @@ def main():
         final_distribution[0]=len(cutoffs['zero_cycle_clients'])
         cutoffs['final']['distribution']=dict(sorted(final_distribution.items()))
         business_cleanup=bool(final_clients) and len(final_clients)==len(processes) and all(client.get('cleanup',{}).get('state')=='Passed' for client in final_clients)
+        performance_inputs={'http_latency_samples':sum(sample['window']['http'].get('count',0) for sample in samples),
+            'realtime_latency_samples':sum(sample['window']['realtime'].get('count',0) for sample in samples),
+            'scope':'existing bounded diagnostic stop rules; not a formal service SLO'}
+        performance_verified=(reason=='duration_limit' and load_verified and
+            performance_inputs['http_latency_samples']>=20 and performance_inputs['realtime_latency_samples']>=10)
         dimensions=result_dimensions(execution=not reason.startswith('coordinator_error:'),
             evidence=not bool(final_read_errors or tail_lost or audit_errors or cutoffs['evidence_errors']),
             load=load_coverage['passed'] if args.run else smoke_verified,
             gameplay=smoke_verified if args.smoke else None,
-            performance=not reason.startswith('redline:') if args.run else None,
+            performance=False if args.run and reason.startswith('redline:') else True if args.run and performance_verified else None,
             cleanup=False if cleanup_error else (True if business_cleanup else None),
             applicable=contract['acceptance_scope'])
         if outcome['exit_code']==0 and not dimensions['all_applicable_passed']:
@@ -363,6 +384,7 @@ def main():
             'load_window_verified':load_verified,'required_samples':required_samples,
             'stop_issued_monotonic_ns':stop_issued_monotonic_ns,'stop_issued_ms':stop_issued_ms,
             'load_contract':contract,'load_coverage':load_coverage,'result_dimensions':dimensions,
+            'performance_inputs':performance_inputs,
             'cycle_cutoffs':cutoffs,'audit_read_errors':audit_errors,
             'final_read_errors':final_read_errors,'tail_lost_event_count':tail_lost,
             'tail_window':aggregate_window(tail),'post_stop_failure':post_stop_failure,

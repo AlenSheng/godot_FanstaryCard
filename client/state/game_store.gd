@@ -94,6 +94,17 @@ func _process(_delta: float) -> void:
 		pending_changed = true
 	for request_id in _pending_commands.keys():
 		if Time.get_ticks_msec() > int(_pending_commands[request_id].get("deadline", 0)):
+			if _pending_commands[request_id].get("confirmed", false):
+				# The write succeeded, but its new state is still missing. Restore
+				# the authoritative room through reconnect rather than resend it.
+				room = {}
+				selected_cards.clear()
+				clear_combat_preview()
+				_pending_commands.clear()
+				gateway.recovering = true
+				gateway.connect_realtime()
+				pending_changed = true
+				break
 			_pending_commands.erase(request_id)
 			pending_changed = true
 	if not _queued_command.is_empty() and Time.get_ticks_msec() > _queue_deadline:
@@ -1164,7 +1175,7 @@ func _send_queued_command(queued: Dictionary) -> bool:
 	if gateway.send(queued.action, queued.payload, request_id):
 		var deadline := Time.get_ticks_msec() + 3000
 		_play_deadline = deadline
-		_pending_commands[request_id] = {"action": queued.action, "payload": queued.payload.duplicate(true), "room_id": room.get("room_id", ""), "retry": queued.get("retry", false), "deadline": deadline}
+		_pending_commands[request_id] = {"action": queued.action, "payload": queued.payload.duplicate(true), "room_id": room.get("room_id", ""), "sent_revision": int(room.get("room_revision", 0)), "retry": queued.get("retry", false), "deadline": deadline}
 		if queued.action == "battle.play_cards":
 			_pending_play = {"request_id": request_id, "room_id": room.get("room_id", ""), "payload": queued.payload.duplicate(true), "retry": queued.get("retry", false)}
 		_sound_commands[request_id] = {"action": queued.action, "room_id": room.get("room_id", "")}
@@ -1182,7 +1193,7 @@ func _retry_rejected_command(payload: Dictionary) -> bool:
 	_pending_commands.erase(request_id)
 	if pending.action == "battle.play_cards": _pending_play = {}
 	# Retry only an explicit pre-execution rejection, never an ambiguous timeout.
-	if pending.retry or payload.get("_replayed", false) or Time.get_ticks_msec() > int(pending.get("deadline", 0)) or (pending.action == "battle.play_cards" and Time.get_ticks_msec() > _play_deadline): return false
+	if pending.get("confirmed", false) or pending.retry or payload.get("_replayed", false) or Time.get_ticks_msec() > int(pending.get("deadline", 0)) or (pending.action == "battle.play_cards" and Time.get_ticks_msec() > _play_deadline): return false
 	var is_revision_conflict: bool = payload.get("code", "") == "REVISION_CONFLICT" or (
 		payload.get("code", "") == "COMMAND_REJECTED" and
 		str(payload.get("detail", "")).begins_with("Room revision conflict."))
@@ -1197,6 +1208,12 @@ func _retry_rejected_command(payload: Dictionary) -> bool:
 	_snapshot_request_pending = true
 	_sound_commands.erase(request_id)
 	return true
+
+func _snapshot_confirms_command(pending: Dictionary, snapshot: Dictionary) -> bool:
+	if str(snapshot.get("room_id", "")) != str(pending.get("room_id", "")): return false
+	var revision := int(snapshot.get("room_revision", -1))
+	var confirmed_revision := int(pending.get("confirmed_revision", -1))
+	return revision >= confirmed_revision if confirmed_revision >= 0 else revision > int(pending.get("sent_revision", 0))
 
 func _on_event(kind: String, payload: Dictionary) -> void:
 	if kind == "pong": return
@@ -1224,7 +1241,14 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 		return
 	var event_request_id := str(payload.get("_request_id", ""))
 	if not event_request_id.is_empty() and _pending_commands.has(event_request_id) and kind != "error.command_rejected":
-		_pending_commands.erase(event_request_id)
+		var pending: Dictionary = _pending_commands[event_request_id]
+		pending["confirmed"] = true
+		pending["confirmed_revision"] = int(payload.get("_event_revision", -1))
+		pending["deadline"] = Time.get_ticks_msec() + 10000
+		if _snapshot_confirms_command(pending, room): _pending_commands.erase(event_request_id)
+		else:
+			_pending_commands[event_request_id] = pending
+			_request_snapshot()
 	if kind == "battle.combo_resolved" and payload.get("_request_id", "") == _pending_play.get("request_id", ""):
 		_pending_play = {}
 	if kind in ["room.snapshot", "room.started"]:
@@ -1236,6 +1260,9 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 	match kind:
 		"room.snapshot":
 			_snapshot_request_pending = false
+			for request_id in _pending_commands.keys():
+				var pending: Dictionary = _pending_commands[request_id]
+				if pending.get("confirmed", false) and _snapshot_confirms_command(pending, payload): _pending_commands.erase(request_id)
 			if room.get("room_id", "") != payload.get("room_id", ""): relic_details = {}
 			_sound_snapshot(payload, payload)
 			_sync_pve_target()

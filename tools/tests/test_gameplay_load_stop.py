@@ -8,10 +8,29 @@ import unittest
 from tools.cloud_load_test import stop_all
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from gameplay_load_test import read_owned_statuses
+from gameplay_load_test import metrics, QUERIES
 from gameplay_load_validation import workload_snapshot
 
 
 class StopTests(unittest.TestCase):
+    def test_monitoring_uses_one_snapshot_and_preserves_unknowns(self):
+        import io, json
+        from unittest.mock import patch
+        rows=[{'metric':{'pr13_metric':key},'value':[1,'3']} for key in QUERIES if key!='actor_wait']
+        rows.append({'metric':{'pr13_metric':'cpu'},'value':[1,'4']})
+        with patch('gameplay_load_test.urllib.request.urlopen',return_value=io.StringIO(json.dumps({'data':{'result':rows}}))) as request:
+            values=metrics('http://127.0.0.1:1')
+        self.assertEqual(request.call_count,1)
+        self.assertEqual(request.call_args.kwargs['timeout'],3)
+        self.assertIsNone(values['actor_wait'])
+        self.assertIsNone(values['cpu'])
+        self.assertEqual(values['server_humans_in_room'],3)
+
+    def test_monitoring_failure_cannot_report_zero_resources(self):
+        from unittest.mock import patch
+        with patch('gameplay_load_test.urllib.request.urlopen',side_effect=TimeoutError()):
+            self.assertEqual(metrics('http://127.0.0.1:1'),dict.fromkeys(QUERIES))
+
     def test_atomic_status_gap_uses_prior_owned_sample(self):
         class Running:
             pid = 42
