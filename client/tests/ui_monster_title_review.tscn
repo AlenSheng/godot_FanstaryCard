@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://main.tscn" id="1"]
+[ext_resource type="Script" path="res://tests/ui_monster_title_review.gd" id="2"]
+
+[node name="MonsterTitleReview" type="Node"]
+script = ExtResource("2")
+
+[node name="UI" parent="." instance=ExtResource("1")]
