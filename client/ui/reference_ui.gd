@@ -90,7 +90,8 @@ func button(value: String, rect: Rect2, action: Callable, disabled: bool = false
 	if not (parent != null and parent is Container):
 		node.position = rect.position
 		node.size = rect.size
-	P.fit_control_font(node, P.font_for_text(node.text, 24), 24, 48.0)
+	# Fit the font Button actually draws; the theme uses title rather than body.
+	P.fit_control_font(node, node.get_theme_font("font"), 24, 48.0)
 	return node
 
 func card(source: Control, id: String, rect: Rect2, action: Callable, selected: bool = false, disabled: bool = false, options: Dictionary = {}) -> Button:
@@ -256,11 +257,11 @@ func _mail() -> void:
 	var frame := panel(Rect2(280, 115, 1360, 850), "UI/CardCodex/card_codex_dialog_panel_normal.png", modal)
 	frame.mouse_filter = Control.MOUSE_FILTER_STOP
 	text(P.localized_text("邮件"), Rect2(334, 145, 360, 60), 42, P.GOLD, modal)
-	var unread_label := text(_mail_unread_summary(), Rect2(705, 159, 250, 38), 22, P.MUTED, modal)
+	var unread_label := text(_mail_unread_summary(), Rect2(705, 159, 205, 38), 22, P.MUTED, modal)
 	unread_label.name = "MailUnreadCount"
-	button(P.localized_text("一键全领"), Rect2(1050, 145, 150, 52), _mail_action.bind(Game.claim_all_mail), false, ORANGE, modal)
-	button(P.localized_text("全部已读"), Rect2(1215, 145, 150, 52), _mail_action.bind(Game.mark_all_mail_read), false, ORANGE, modal)
-	button(P.localized_text("删除已读"), Rect2(1380, 145, 150, 52), _mail_action.bind(Game.delete_read_mail), false, BLUE, modal)
+	button(P.localized_text("一键全领"), Rect2(950, 145, 180, 52), _mail_action.bind(Game.claim_all_mail), false, ORANGE, modal)
+	button(P.localized_text("全部已读"), Rect2(1145, 145, 180, 52), _mail_action.bind(Game.mark_all_mail_read), false, ORANGE, modal)
+	button(P.localized_text("删除已读"), Rect2(1340, 145, 180, 52), _mail_action.bind(Game.delete_read_mail), false, BLUE, modal)
 	button(P.localized_text("关闭"), Rect2(1490, 892, 130, 52), modal.queue_free, false, BLUE, modal)
 	var list: Array = Game.mail.get("items", [])
 	var list_panel := Control.new()
@@ -369,11 +370,11 @@ func _build_mail_rows(column: VBoxContainer) -> void:
 		if not attachments.is_empty():
 			var claim := button(P.localized_text("领取") if not bool(item.get("claimed", false)) else P.localized_text("已领取"), Rect2(0, 0, 0, 0), _mail_action.bind(Game.claim_mail.bind(id)), bool(item.get("claimed", false)), ORANGE, row)
 			claim.name = "MailClaim"
-			claim.custom_minimum_size = Vector2(112, 104)
+			claim.custom_minimum_size = Vector2(128, 104)
 		var can_delete := bool(item.get("read", false)) and (bool(item.get("claimed", false)) or attachments.is_empty())
 		var remove := button(P.localized_text("删除"), Rect2(0, 0, 0, 0), _mail_action.bind(Game.delete_mail.bind(id)), not can_delete, BLUE, row)
 		remove.name = "MailDelete"
-		remove.custom_minimum_size = Vector2(112, 104)
+		remove.custom_minimum_size = Vector2(128, 104)
 
 func _mail_select(item: Dictionary) -> void:
 	var id := str(item.get("id", item.get("mailId", "")))
