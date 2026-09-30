@@ -1,0 +1,406 @@
+{
+  "head": "b7099ef716235be68395255360cbd5cf6c67baff",
+  "ci_checkout_sha": "cddb353d321229f81c659e761c90e9688c594abc",
+  "run_ids": [
+    36739867826,
+    36739867829
+  ],
+  "jobs": [
+    {
+      "jobs": [
+        {
+          "id": 109989804771,
+          "name": "client",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 36739867826,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v7",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Install Godot from official distribution",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Import and run client checks with networking disabled",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Loopback HTTP completeness and protocol fixtures",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Same-session callback races",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Run actions/upload-artifact@v7",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7
+            },
+            {
+              "name": "Post Run actions/checkout@v7",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15
+            }
+          ]
+        },
+        {
+          "id": 109989806269,
+          "name": "accounting",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 36739867826,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v7",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/setup-python@v6",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Install load generator metrics dependency",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Offline accounting and process tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Run actions/upload-artifact@v7",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Post Run actions/setup-python@v6",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11
+            },
+            {
+              "name": "Post Run actions/checkout@v7",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13
+            }
+          ]
+        },
+        {
+          "id": 109989807427,
+          "name": "server-contract",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 36739867826,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v7",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/setup-dotnet@v6",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Full server offline regression",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Run actions/upload-artifact@v7",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Post Run actions/setup-dotnet@v6",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            },
+            {
+              "name": "Post Run actions/checkout@v7",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11
+            }
+          ]
+        },
+        {
+          "id": 109989807464,
+          "name": "server-postgres",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 36739867826,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Initialize containers",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/checkout@v7",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run actions/setup-dotnet@v6",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Full server and runtime integration on disposable PostgreSQL",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Run actions/upload-artifact@v7",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Post Run actions/setup-dotnet@v6",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10
+            },
+            {
+              "name": "Post Run actions/checkout@v7",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11
+            },
+            {
+              "name": "Stop containers",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "jobs": [
+        {
+          "id": 109989841572,
+          "name": "godot",
+          "status": "completed",
+          "conclusion": "success",
+          "run_id": 36739867829,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v7",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Run actions/setup-dotnet@v6",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Install repository Godot version from official distribution",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Import and parse scripts in a network-isolated namespace",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Numerical scene checks without production network access",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Compare local previews with authoritative room preview and play",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7
+            },
+            {
+              "name": "Run actions/upload-artifact@v7",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Post Run actions/setup-dotnet@v6",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15
+            },
+            {
+              "name": "Post Run actions/checkout@v7",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 16
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 17
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "logs": [
+    {
+      "job_id": 109989804771,
+      "length": 37169,
+      "lines": [
+        "2026-09-30T16:35:20.6815583Z ##[group]GITHUB_TOKEN Permissions",
+        "2026-09-30T16:35:20.6821231Z Secret source: Actions",
+        "2026-09-30T16:35:21.4750443Z   token: ***",
+        "2026-09-30T16:36:00.8899392Z ##[group]Checking out the ref",
+        "2026-09-30T16:36:08.4161067Z You are in 'detached HEAD' state. You can look around, make experimental",
+        "2026-09-30T16:36:18.4022897Z \u001b[36;1msudo -E unshare -n timeout 90 \"$godot\" --headless --path client --script res://tests/run_play_retry.gd > test-results/gameplay-load/client.log 2>&1\u001b[0m",
+        "2026-09-30T16:36:18.4023761Z \u001b[36;1m! grep -E 'SCRIPT ERROR|Parse Error|Failed to load script' test-results/gameplay-load/*.log\u001b[0m",
+        "2026-09-30T16:39:07.8468810Z {\"bytes\":6,\"passed\":true,\"path\":\"/length\",\"result\":0,\"reused\":false,\"status\":200}",
+        "2026-09-30T16:39:07.8469802Z {\"bytes\":6,\"passed\":true,\"path\":\"/length\",\"result\":0,\"reused\":true,\"status\":200}",
+        "2026-09-30T16:39:07.8470830Z {\"bytes\":6,\"passed\":true,\"path\":\"/close-length\",\"result\":0,\"reused\":true,\"status\":200}",
+        "2026-09-30T16:39:07.8472133Z {\"bytes\":6,\"passed\":true,\"path\":\"/close-body\",\"result\":0,\"reused\":false,\"status\":200}",
+        "2026-09-30T16:39:07.8473166Z {\"bytes\":6,\"passed\":true,\"path\":\"/chunked\",\"result\":0,\"reused\":false,\"status\":200}",
+        "2026-09-30T16:39:07.8474135Z {\"bytes\":0,\"passed\":true,\"path\":\"/empty\",\"result\":0,\"reused\":true,\"status\":204}",
+        "2026-09-30T16:39:07.8475088Z {\"bytes\":0,\"passed\":true,\"path\":\"/head\",\"result\":0,\"reused\":true,\"status\":200}",
+        "2026-09-30T16:39:07.8476074Z {\"bytes\":0,\"passed\":true,\"path\":\"/truncated\",\"result\":1,\"reused\":false,\"status\":0}",
+        "2026-09-30T16:39:07.8477312Z {\"bytes\":0,\"passed\":true,\"path\":\"/truncated-chunk\",\"result\":4,\"reused\":false,\"status\":0}",
+        "2026-09-30T16:39:07.8478343Z {\"bytes\":0,\"passed\":true,\"path\":\"/limit\",\"result\":7,\"reused\":false,\"status\":0}",
+        "2026-09-30T16:39:07.8479294Z {\"bytes\":0,\"passed\":true,\"path\":\"/slow\",\"result\":13,\"reused\":false,\"status\":0}",
+        "2026-09-30T16:39:07.8480248Z {\"bytes\":6,\"passed\":true,\"path\":\"/idle-close\",\"result\":0,\"reused\":false,\"status\":200}",
+        "2026-09-30T16:39:07.8481225Z {\"bytes\":6,\"passed\":true,\"path\":\"/length\",\"result\":0,\"reused\":false,\"status\":200}",
+        "2026-09-30T16:39:07.8482085Z {\"failures\":[],\"ok\":true,\"suite\":\"http-boundary\"}",
+        "2026-09-30T16:39:13.0110110Z {\"checks\":173,\"failures\":[]}",
+        "2026-09-30T16:39:17.7392342Z {\"checks\":24,\"failures\":[]}",
+        "2026-09-30T16:39:18.1633196Z {\"source_sha\": \"cddb353d321229f81c659e761c90e9688c594abc\", \"source\": {\"python\": \"3.12.3\", \"platform\": \"Linux-6.17.0-1022-azure-x86_64-with-glibc2.39\", \"git_commit\": \"cddb353d321229f81c659e761c90e9688c594abc\", \"git_dirty\": false, \"sha256\": {\"tools/pr13_offline_cases.py\": \"adccf0a1f9073936f99c01ef9e9970e4db44be75de409fc210382b50d040092c\", \"tools/gameplay_load_validation.py\": \"2165364954a8d2a1fc5ae660561ce9f7e3e991f65bcbed053edb3af242b84bb6\", \"tools/pr13_runtime_evidence.py\": \"358bf201a9f58a69ef6e3f4957ca6d89c4d61b87bfaa26f589d29570fc89309f\", \"tools/gameplay_load_test.py\": \"2146bff98a846d6f829ed69e57047f83bc8f017e28ab8e51b3855e3a62a0249c\"}}, \"python\": \"3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]\", \"scope\": \"explicit offline cases only\", \"plan_sha256\": \"5176ee139d4e632ba34469ae531ce7ec16478f356480e2d8e320cd51f3bcd703\", \"case_runner_sha256\": \"adccf0a1f9073936f99c01ef9e9970e4db44be75de409fc210382b50d040092c\", \"executed\": 27, \"passed\": 27, \"all_cases_accepted\": false}",
+        "2026-09-30T16:39:18.1800832Z \u001b[36;1msudo -E unshare -n timeout 60 \"$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64\" --headless --path client --script res://tests/run_lobby_race.gd > test-results/gameplay-load/lobby-race.log 2>&1\u001b[0m",
+        "2026-09-30T16:39:18.1802651Z \u001b[36;1mgrep -q '\"ok\":true' test-results/gameplay-load/lobby-race.log\u001b[0m"
+      ]
+    },
+    {
+      "job_id": 109989841572,
+      "length": 44951,
+      "lines": [
+        "2026-09-30T16:35:25.0142332Z ##[group]GITHUB_TOKEN Permissions",
+        "2026-09-30T16:35:25.0146812Z Secret source: Actions",
+        "2026-09-30T16:35:26.3327287Z   token: ***",
+        "2026-09-30T16:36:03.2161814Z ##[group]Checking out the ref",
+        "2026-09-30T16:36:15.7270674Z You are in 'detached HEAD' state. You can look around, make experimental",
+        "2026-09-30T16:36:27.0227763Z \u001b[36;1m! grep -E 'SCRIPT ERROR|Parse Error|Failed to load script' test-results/godot/import.log\u001b[0m",
+        "2026-09-30T16:38:01.9245981Z \u001b[36;1mgrep -q '\"ok\":true' test-results/godot/numerics.log\u001b[0m",
+        "2026-09-30T16:38:02.2998484Z ERROR: Connection to remote host failed!",
+        "2026-09-30T16:38:02.3001412Z {\"failures\":[],\"ok\":true,\"suite\":\"numerical-integration\"}",
+        "2026-09-30T16:38:02.3057738Z ##[group]Run python3 tools/pr13_preview_checks.py --godot \"$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64\" --output test-results/godot/preview-parity",
+        "2026-09-30T16:38:02.3058659Z \u001b[36;1mpython3 tools/pr13_preview_checks.py --godot \"$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64\" --output test-results/godot/preview-parity\u001b[0m",
+        "2026-09-30T16:38:14.2303749Z Exported 1800 authoritative preview/play vectors",
+        "2026-09-30T16:38:14.9526226Z {\"failure_count\":0,\"first_failures\":[],\"ok\":true,\"vectors\":1800}",
+        "2026-09-30T16:38:14.9526968Z ERROR: Failed to open 'user://logs/godot2026-09-30T16.38.14.log'.",
+        "2026-09-30T16:38:14.9527955Z ERROR: Failed to open log file for writing: user://logs/godot.log",
+        "2026-09-30T16:38:15.2615602Z {\"ok\": true, \"vectors\": 1800, \"failures\": 0}"
+      ]
+    }
+  ]
+}

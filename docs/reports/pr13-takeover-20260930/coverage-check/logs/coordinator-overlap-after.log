@@ -1,0 +1,72 @@
+{
+  "exit_code": 1,
+  "network": false,
+  "actual_main": true,
+  "timeline": [
+    {
+      "at": 100299.0,
+      "sample_monotonic_ms": 299000.0
+    },
+    {
+      "at": 100299.0,
+      "sample_monotonic_ms": 300000.0
+    },
+    {
+      "at": 100309.0,
+      "sample_monotonic_ms": 310000.0
+    }
+  ],
+  "outcome": {
+    "classification": "incomplete_or_failed",
+    "passed": false,
+    "exit_code": 1
+  },
+  "acceptance_passed": false,
+  "stop_reason": "duration_limit",
+  "sampling_integrity": {
+    "passed": true,
+    "reasons": [],
+    "tail_gap_seconds": 10.0,
+    "maximum_observed_gap_seconds": 19.0
+  },
+  "load_coverage": {
+    "passed": false,
+    "window_seconds": 600.0,
+    "observed_seconds": 0.0,
+    "compliant_seconds": 0.0,
+    "coverage": 0.0,
+    "longest_continuous_seconds": 0.0,
+    "intervals": [],
+    "target_online": 1,
+    "target_active": 1,
+    "minimum_command_rate": 1,
+    "maximum_gap": 20,
+    "minimum_window": 600,
+    "minimum_continuous": 120,
+    "minimum_coverage": 0.95,
+    "evidence_errors": [
+      "overlapping_or_reordered_observations"
+    ]
+  },
+  "result_dimensions": {
+    "dimensions": {
+      "execution": "Passed",
+      "evidence": "Passed",
+      "load": "Failed",
+      "gameplay": "NotApplicable",
+      "performance": "Unknown",
+      "cleanup": "Passed"
+    },
+    "applicable": [
+      "cleanup",
+      "evidence",
+      "execution",
+      "load",
+      "performance"
+    ],
+    "all_applicable_passed": false,
+    "full_acceptance_passed": false
+  },
+  "final_triggers": [],
+  "final_read_errors": 0
+}

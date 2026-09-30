@@ -1,0 +1,20 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+WARNING: Started the engine as `root`/superuser. This is a security risk, and subsystems like audio may not work correctly.
+Set the environment variable `GODOT_SILENCE_ROOT_WARNING` to 1 to silence this warning.
+     at: setup2 (main/main.cpp:3581)
+
+Gameplay load client parses
+ERROR: Connection to remote host failed!
+   at: connect_to_host (core/io/stream_peer_tcp.cpp:90)
+   GDScript backtrace (most recent call first):
+       [0] _connect_origin (res://network/reusable_http_client.gd:98)
+       [1] request (res://network/reusable_http_client.gd:27)
+       [2] _request_http_transport (res://network/gateway.gd:388)
+       [3] _request_page (res://network/gateway.gd:318)
+       [4] request (res://network/gateway.gd:207)
+       [5] _refresh_server_info (res://state/game_store.gd:328)
+ERROR: Connection to remote host failed!
+   at: connect_to_host (core/io/stream_peer_tcp.cpp:90)
+   GDScript backtrace (most recent call first):
+       [0] _process_client_info (res://state/game_store.gd:161)
+       [1] _process (res://state/game_store.gd:76)

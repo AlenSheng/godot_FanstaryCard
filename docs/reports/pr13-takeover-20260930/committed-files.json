@@ -1,0 +1,80 @@
+{
+  "initial_head": "73d4e41ca819d533c8d2ce80952c72c0fab6d6b6",
+  "stable_logic_head": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+  "commits": [
+    {
+      "sha": "1bc391025c9aa5bf25c04782818f20f2f32d991d",
+      "title": "fix(load): reject lost and foreign final acceptance evidence",
+      "files": [
+        ".github/workflows/gameplay-load.yml",
+        "docs/reports/pr13-takeover-20260930/README.md",
+        "docs/reports/pr13-takeover-20260930/TASK_CHECKLIST.md",
+        "docs/reports/pr13-takeover-20260930/baseline.json",
+        "docs/reports/pr13-takeover-20260930/register.json",
+        "tools/gameplay_load_test.py",
+        "tools/gameplay_load_validation.py",
+        "tools/tests/test_gameplay_load_finalization.py",
+        "tools/tests/test_gameplay_load_validation.py"
+      ]
+    },
+    {
+      "sha": "9275ec295b76f10fdefb57dc83a6c59c3dbcb878",
+      "title": "fix(load): bind cycle completion to owned acknowledgement evidence",
+      "files": [
+        "tools/gameplay_load_test.py",
+        "tools/pr13_runtime_evidence.py",
+        "tools/tests/test_gameplay_load_finalization.py",
+        "tools/tests/test_pr13_runtime_evidence.py"
+      ]
+    },
+    {
+      "sha": "a828eb583f2ae57678cb5e25d5bb70d4636f3bab",
+      "title": "fix(client): bind authoritative previews to confirmed target context",
+      "files": [
+        "client/state/game_store.gd",
+        "client/tests/test_confirmation_snapshot.gd",
+        "client/tests/test_target_confirmation_contract.gd"
+      ]
+    },
+    {
+      "sha": "b7099ef716235be68395255360cbd5cf6c67baff",
+      "title": "fix(server): recover committed launches and preserve terminal checkpoints",
+      "files": [
+        "server/src/FantasyCard.Server/Matchmaking/MatchmakingRepository.cs",
+        "server/src/FantasyCard.Server/Matchmaking/RoomReadyCoordinator.cs",
+        "server/src/FantasyCard.Server/Rooms/RoomActor.cs",
+        "server/src/FantasyCard.Server/Rooms/RoomRecoveryWorker.cs",
+        "server/src/FantasyCard.Server/Rooms/RoomRegistry.cs",
+        "server/src/FantasyCard.Server/Rooms/RoomSnapshotRepository.cs",
+        "server/tests/FantasyCard.Server.Tests/Persistence/PostgresLifecycleRecoveryTests.cs"
+      ]
+    },
+    {
+      "sha": "d4c3212fb32c75d4b9f9f62c08277996611b149c",
+      "title": "fix(load): preserve early operator stop and verify emergency cleanup",
+      "files": [
+        "tools/gameplay_load_test.py",
+        "tools/tests/test_gameplay_load_finalization.py"
+      ]
+    },
+    {
+      "sha": "6f3b50fb73baed78ee107f309f12f815cdc3b0a2",
+      "title": "fix(simulation): validate frozen factor matrices and censored quantiles",
+      "files": [
+        "tools/pr13_factor_matrix.py",
+        "tools/pr13_simulation_report.py",
+        "tools/tests/test_pr13_simulation_contracts.py"
+      ]
+    },
+    {
+      "sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+      "title": "fix(load): reject contradictory sampling timelines in final verdict",
+      "files": [
+        "tools/gameplay_load_test.py",
+        "tools/pr13_runtime_evidence.py",
+        "tools/tests/test_gameplay_load_sampling_contract.py"
+      ]
+    }
+  ],
+  "server_client_difference_from_b709": []
+}
