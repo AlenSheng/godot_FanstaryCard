@@ -294,6 +294,10 @@ public sealed partial class ProcessLifecycleRecoveryTests
             {
                 try
                 {
+                    // The relay writes frame headers and payloads separately.
+                    // Match Npgsql's TCP_NODELAY so that this test transport
+                    // does not add a delayed-ACK pause to every SQL message.
+                    if (_upstreamFamily != AddressFamily.Unix) server.NoDelay = true;
                     await server.ConnectAsync(_upstream, _shutdown.Token);
                     await using var frontend = new NetworkStream(client, ownsSocket: false);
                     await using var backend = new NetworkStream(server, ownsSocket: false);
