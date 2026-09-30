@@ -16,7 +16,9 @@ func _run() -> void:
 			$UI._codex_scroll = 0
 			$UI._quality = ""
 			$UI.screen = "cards"
-			$UI._render()
+			Game.changed.emit()
+			await get_tree().process_frame
+			await get_tree().process_frame
 			await _wait_grid()
 			var suffix := "%s_%s" % [locale, resolution.x]
 			await _take("codex_ready_" + suffix, false)
