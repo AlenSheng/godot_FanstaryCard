@@ -1,0 +1,414 @@
+{
+  "schema_version": 1,
+  "production_runtime": {
+    "image_source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+    "client_verified_sha": "82cb7ce807b156c1a084bcace0485fdbd7ee01db",
+    "auth_per_minute": 10,
+    "write_per_minute": 30,
+    "candidates_enabled": false
+  },
+  "evidence": [
+    {
+      "id": "offline-cases",
+      "tasks": [
+        "LOAD-01.1",
+        "LOAD-01.2",
+        "LOAD-01.3",
+        "LOAD-01.4",
+        "LOAD-02.1",
+        "LOAD-02.4",
+        "LOAD-03.1",
+        "LOAD-03.2",
+        "LOAD-03.3",
+        "LOAD-03.4"
+      ],
+      "paths": [
+        "outputs/pr13-execution-20260930/offline-case-82cb7ce/cases.jsonl",
+        "outputs/pr13-execution-20260930/offline-case-82cb7ce/report.json"
+      ],
+      "scope": "27 explicitly mapped cases at82cb7ce; actual file hashes recorded."
+    },
+    {
+      "id": "accounting-unit",
+      "tasks": [
+        "LOAD-02.2",
+        "LOAD-02.3",
+        "LOAD-07.1",
+        "LOAD-07.2",
+        "LOAD-07.4",
+        "PR13-A02.1",
+        "PR13-A02.2",
+        "PR13-A02.3",
+        "PR13-A01.2"
+      ],
+      "paths": [
+        "outputs/pr13-execution-20260930/python-atomic-read.log",
+        "tools/gameplay_load_test.py",
+        "tools/gameplay_load_validation.py",
+        "tools/pr13_runtime_evidence.py",
+        "outputs/pr13-execution-20260930/python-sampling-tail.log"
+      ],
+      "scope": "53 offline regression tests, including stop-tail blackout and wall-clock discontinuity; remaining injections stay pending."
+    },
+    {
+      "id": "client-regression",
+      "tasks": [
+        "LOAD-04.1",
+        "LOAD-04.2",
+        "LOAD-04.3",
+        "LOAD-04.4",
+        "LOAD-05.1",
+        "LOAD-05.2",
+        "LOAD-05.3",
+        "LOAD-05.4",
+        "LOAD-06.1",
+        "LOAD-08.2",
+        "LOAD-08.3",
+        "PR13-A03.1",
+        "PR13-A03.2",
+        "PR13-A03.3",
+        "PR13-A03.4",
+        "PR13-A04.1",
+        "PR13-A04.2",
+        "PR13-A04.3",
+        "PR13-A04.4",
+        "PR13-A06.3"
+      ],
+      "paths": [
+        "outputs/pr13-execution-20260930/client-natural-draw-regression/results.json",
+        "outputs/pr13-execution-20260930/client-natural-draw-regression/client-regression.log",
+        "outputs/pr13-execution-20260930/client-sampling-current/results.json",
+        "outputs/pr13-execution-20260930/client-sampling-current/client-regression.log"
+      ],
+      "scope": "17 real Godot regression scripts at 053d36b; not the complete live fault matrix."
+    },
+    {
+      "id": "loopback-boundary",
+      "tasks": [
+        "LOAD-08.1",
+        "LOAD-10.1",
+        "PR13-A06.1",
+        "PR13-A06.2",
+        "PR13-A06.4"
+      ],
+      "paths": [
+        "client/tests/run_http_boundary.py",
+        "client/tests/run_http_boundary.gd",
+        "client/tests/run_http_protobuf_client.py",
+        "outputs/pr13-execution-20260930/ci-249aefd-verified.json"
+      ],
+      "scope": "Real loopback framing/reuse tests 13, actual codec173 and transport24; CI all passed at 249aefd."
+    },
+    {
+      "id": "postgres-current",
+      "tasks": [
+        "LOAD-09.1",
+        "LOAD-09.2",
+        "LOAD-10.1",
+        "LOAD-10.3",
+        "PR13-A05.1",
+        "PR13-A05.2",
+        "PR13-A05.3",
+        "PR13-A07.2",
+        "PR13-A07.4",
+        "PR13-A09.3"
+      ],
+      "paths": [
+        "outputs/pr13-execution-20260930/tests/server-postgres-current.trx",
+        "outputs/pr13-execution-20260930/tests/server-upgrade-isolated.trx",
+        "outputs/pr13-execution-20260930/server-postgres-current.log",
+        "outputs/pr13-execution-20260930/server-upgrade-isolated.log",
+        "outputs/pr13-execution-20260930/ci-249aefd-verified.json"
+      ],
+      "scope": "Local current PG suite253 pass/1 fail; same concurrent upgrade isolated retry passed; Linux CI full254 pass0 skip. Local whole-suite failure retained."
+    },
+    {
+      "id": "preview-domain",
+      "tasks": [
+        "PR13-A07.1",
+        "PR13-B02.1",
+        "PR13-B02.2",
+        "PR13-B02.3",
+        "PR13-B02.4",
+        "PR13-B06.1",
+        "PR13-B06.2",
+        "PR13-B06.3",
+        "PR13-B07.1",
+        "PR13-B07.3",
+        "PR13-B08.1",
+        "PR13-B08.3",
+        "PR13-B09.1",
+        "PR13-B09.2",
+        "PR13-B09.3",
+        "PR13-B10.1"
+      ],
+      "paths": [
+        "outputs/pr13-execution-20260930/tests/domain-current.trx",
+        "outputs/pr13-execution-20260930/preview-parity-current/manifest.json",
+        "outputs/pr13-execution-20260930/preview-parity-current/results.json",
+        "server/tests/FantasyCard.Domain.Tests/Combat/CombatAuthoritativeRulesTests.cs",
+        "server/tests/FantasyCard.Domain.Tests/Rooms/MonsterCardPoolTests.cs"
+      ],
+      "scope": "317 Domain tests and1800 preview-versus-actual vectors; detailed candidate matrix cases not all mapped/executed."
+    },
+    {
+      "id": "combat360k",
+      "tasks": [
+        "PR13-B01.1",
+        "PR13-B01.2",
+        "PR13-B01.3",
+        "PR13-B01.4",
+        "PR13-B03.1",
+        "PR13-B03.2",
+        "PR13-B03.3",
+        "PR13-B03.4",
+        "PR13-B04.1",
+        "PR13-B04.4",
+        "PR13-B05.1",
+        "PR13-B06.4",
+        "PR13-B07.2",
+        "PR13-B07.4"
+      ],
+      "paths": [
+        "docs/reports/pr13-execution-20260930/simulations/report.json",
+        "docs/reports/pr13-execution-20260930/simulations/report.md",
+        "outputs/pr13-execution-20260930/combat-current-three-runs-reprobe/*/manifest.json",
+        "outputs/pr13-execution-20260930/combat-current-three-runs-reprobe/*/summary.json",
+        "outputs/pr13-execution-20260930/combat-current-three-runs-reprobe/preregistration.json",
+        "outputs/pr13-execution-20260930/guardian-weapon-three-runs/*/manifest.json",
+        "outputs/pr13-execution-20260930/guardian-weapon-three-runs/*/summary.json",
+        "outputs/pr13-execution-20260930/guardian-weapon-three-runs/preregistration.json",
+        "outputs/pr13-execution-20260930/combat-current-three-runs-reprobe/*/encounters.jsonl",
+        "outputs/pr13-execution-20260930/guardian-weapon-three-runs/*/encounters.jsonl"
+      ],
+      "scope": "360000 actual Domain encounters; 3 disjoint seed runs per stratum; default naked deck only; weapon+2/+4 separate; no network/prepared-Boss/human claim; candidates off."
+    },
+    {
+      "id": "render28",
+      "tasks": [
+        "PR13-B04.3",
+        "PR13-B07.4",
+        "PR13-B10.1",
+        "PR13-B10.2",
+        "PR13-B10.3",
+        "PR13-B10.4",
+        "PR13-B11.1",
+        "PR13-B11.2",
+        "PR13-B11.4"
+      ],
+      "paths": [
+        "outputs/pr13-execution-20260930/ui-approved/report.json",
+        "outputs/pr13-execution-20260930/ui-approved/render.log",
+        "outputs/pr13-execution-20260930/ui-approved/*.png"
+      ],
+      "scope": "28 real Intel Arc/OpenGL rendered fixture screenshots in Chinese/English at1920/1280; real3-cycle render/input/fps-delay fault matrix still pending."
+    },
+    {
+      "id": "ten-account-functional",
+      "tasks": [
+        "LOAD-10.2",
+        "PR13-A03.4",
+        "PR13-A09.1",
+        "PR13-A09.2",
+        "PR13-A09.4",
+        "PR13-B11.2"
+      ],
+      "paths": [
+        "outputs/pr13-execution-20260930/ten-account-paced/*/report.json",
+        "outputs/pr13-execution-20260930/ten-account-paced/*/load-contract.json",
+        "outputs/pr13-execution-20260930/ten-account-paced-asset-audit.json"
+      ],
+      "scope": "10 real Godot accounts, three functional cycles each, every cleanup confirmed. Scenario uses voluntary abandon after one victory; not natural3 full expeditions."
+    },
+    {
+      "id": "capacity-failures",
+      "tasks": [
+        "LOAD-06.2",
+        "LOAD-07.1",
+        "LOAD-07.3",
+        "LOAD-10.4",
+        "PR13-A02.1",
+        "PR13-A02.4",
+        "PR13-A10.2",
+        "PR13-A10.3",
+        "PR13-A10.4",
+        "PR13-B01.2"
+      ],
+      "paths": [
+        "outputs/pr13-execution-20260930/capacity-1-natural-draw/*/report.json",
+        "outputs/pr13-execution-20260930/capacity-10-held/*/report.json",
+        "outputs/pr13-execution-20260930/ten-account-functional/*/report.json",
+        "outputs/pr13-execution-20260930/capacity-10-atomic-read/*/report.json"
+      ],
+      "scope": "Retains monitoring-timeout/coverage90.7% failure, atomic-read disappearance failure and default write-limit429 failure; no capacity-pass claim."
+    },
+    {
+      "id": "cloud-runtime",
+      "tasks": [
+        "LOAD-11.1",
+        "LOAD-11.3",
+        "LOAD-11.4",
+        "PR13-A08.1",
+        "PR13-A08.4",
+        "PR13-B12.1",
+        "PR13-B12.3"
+      ],
+      "paths": [
+        "outputs/pr13-execution-20260930/deploy-8489fe9/runtime-verification.json",
+        "outputs/pr13-execution-20260930/deploy-8489fe9/manifest.json",
+        "outputs/pr13-execution-20260930/ci-249aefd-verified.json",
+        "outputs/pr13-execution-20260930/ci-82cb7ce.json"
+      ],
+      "scope": "Verified runtime image8489fe9 distinct from source82cb7ce; server/client five workflows green at82cb7ce; auth10/write30 defaults; no rollback drill yet."
+    },
+    {
+      "id": "o6-single-factor-instrumentation",
+      "tasks": [
+        "PR13-B05.2",
+        "PR13-B05.3",
+        "PR13-B05.4"
+      ],
+      "paths": [
+        "outputs/pr13-execution-20260930/single-factor-check/controls-report.json",
+        "outputs/pr13-execution-20260930/o6-four-factor-three-runs/preregistration.json",
+        "server/tools/FantasyCard.Numerics/CombatExperience.cs",
+        "outputs/pr13-execution-20260930/single-factor-first-intent/controls-report.json",
+        "outputs/pr13-execution-20260930/o6-first-intent-three-runs/preregistration.json"
+      ],
+      "scope": "Original IsCharging-only probe was superseded and not accepted. Corrected864 encounters pass324 unaffected controls and54 first-intent extensions. Four-factor primary matrix restarted with frozen corrected assemblies."
+    },
+    {
+      "id": "owned-assets-read-only",
+      "tasks": [
+        "PR13-A02.4",
+        "PR13-A05.4",
+        "PR13-A09.3"
+      ],
+      "paths": [
+        "outputs/pr13-execution-20260930/ten-account-paced-asset-audit.json",
+        "docs/reports/gameplay-load-20260929/implementation-progress.md"
+      ],
+      "scope": "10 bot accounts:0 unfinished matches/preparations/ACKs/holds/locked equipment/ledger mismatches. Global mismatch1; Sept29 report already noted1, raw lineage still requires diagnosis. No data mutation."
+    }
+  ],
+  "observations": [
+    {
+      "task_id": "PR13-A01.1",
+      "state": "Blocked",
+      "reason": "旧50客户端 raw86/分布至少90、100客户端 raw130/分布至少139；原始逐客户端文件缺失，不能推造关联。",
+      "next_action": "继续寻找旧原始产物；保留差异和缺证，不按汇总倒推完成次数。",
+      "stage": "S5",
+      "owner": "MAIN",
+      "missing_input_or_environment": "历史逐客户端raw/launch manifest",
+      "affected_gates": [
+        "G0",
+        "G3",
+        "G5"
+      ],
+      "unblock_condition": "取得原始逐客户端JSONL及launch manifest，按三截止点重新计算。"
+    },
+    {
+      "task_id": "PR13-A01.3",
+      "state": "Blocked",
+      "reason": "旧50客户端 raw86/分布至少90、100客户端 raw130/分布至少139；原始逐客户端文件缺失，不能推造关联。",
+      "next_action": "继续寻找旧原始产物；保留差异和缺证，不按汇总倒推完成次数。",
+      "stage": "S5",
+      "owner": "MAIN",
+      "missing_input_or_environment": "历史逐客户端raw/launch manifest",
+      "affected_gates": [
+        "G0",
+        "G3",
+        "G5"
+      ],
+      "unblock_condition": "取得原始逐客户端JSONL及launch manifest，按三截止点重新计算。"
+    },
+    {
+      "task_id": "LOAD-10.4",
+      "state": "InProgress",
+      "reason": "十账号30个功能循环和资产后置已通过；持续容量的缺采样/截止期反例已保留，新一轮十账号保持正在执行。",
+      "next_action": "完成10→50→100递增保持；只按实际目标、采样覆盖和默认停止规则裁决。",
+      "stage": "S5",
+      "owner": "MAIN"
+    },
+    {
+      "task_id": "PR13-A10.1",
+      "state": "InProgress",
+      "reason": "尚缺三组成对的同策略、同负载传输A/B。",
+      "next_action": "冻结客户端版本和命令混合，分别执行三对原传输/复用传输。",
+      "stage": "S5",
+      "owner": "MAIN"
+    },
+    {
+      "task_id": "PR13-A10.3",
+      "state": "InProgress",
+      "reason": "尚未完成30分钟长稳及资源回收曲线。",
+      "next_action": "10阶段通过后执行长期保持，检查生成器资源、连接、资产和房间后置清理。",
+      "stage": "S5",
+      "owner": "MAIN"
+    },
+    {
+      "task_id": "PR13-A05.4",
+      "state": "InProgress",
+      "reason": "十账号后置资产和账链检查清晰，全局账链仍1条；9月29日已有报告，原始链需进一步只读归因。",
+      "next_action": "读取本轮账户及全局账链上下文，寻找测试前告警来源；不自动修余额或删流水。",
+      "stage": "S5",
+      "owner": "MAIN"
+    },
+    {
+      "task_id": "PR13-A08.3",
+      "state": "InProgress",
+      "reason": "云端已备份并验证新镜像，尚缺隔离旧版本回滚演练。",
+      "next_action": "使用隔离数据库快照和旧/新运行时验证回滚与幂等恢复，保留演练日志。",
+      "stage": "S5",
+      "owner": "MAIN"
+    },
+    {
+      "task_id": "PR13-B03.2",
+      "state": "InProgress",
+      "reason": "现有合法默认牌表预算无同成本单卡主题替换；PVP镜像和其他预算层未执行。",
+      "next_action": "从实际配置构造等预算成对场景，保留不可构造的层和资格说明。",
+      "stage": "S5",
+      "owner": "MAIN"
+    },
+    {
+      "task_id": "PR13-B05.2",
+      "state": "InProgress",
+      "reason": "首次意图条件已修正；864小样本/324未改组/54首次意图检查通过；原主矩阵已停止，新矩阵正在执行。",
+      "next_action": "增加白名单隔离profile，分别执行HP和首次预告实验，证明其他组配置未变。",
+      "stage": "S5",
+      "owner": "MAIN"
+    },
+    {
+      "task_id": "PR13-B08.2",
+      "state": "InProgress",
+      "reason": "缺五系同品质单卡替换的有效抽牌/控制union/溢出分布。",
+      "next_action": "使用合法同预算对照、相同seed和实际Resolver执行边际实验。",
+      "stage": "S5",
+      "owner": "MAIN"
+    },
+    {
+      "task_id": "PR13-B09.4",
+      "state": "InProgress",
+      "reason": "pool基本幂等与弃牌合同已有测试，3/5/8完整探索连续性和选择成本尚缺。",
+      "next_action": "执行3/5/8隔离容量对照，包含满位替换、跳过和状态切换。",
+      "stage": "S5",
+      "owner": "MAIN"
+    },
+    {
+      "task_id": "PR13-B11.4",
+      "state": "InProgress",
+      "reason": "28截图为静态fixture；真实三局有渲染操作与帧率/延迟矩阵尚未执行。",
+      "next_action": "驱动真实会话并记录准备至ack三局，中英文窄屏与断线恢复另测；按用户要求使用机器人反馈。",
+      "stage": "S5",
+      "owner": "MAIN"
+    },
+    {
+      "task_id": "PR13-B12.4",
+      "state": "InProgress",
+      "reason": "132细则尚未全部验收；机器人模拟已获得用户授权，结果仍须标明模拟。",
+      "next_action": "逐项补齐实现、真实case、来源、回滚和结论；候选保持关闭。",
+      "stage": "S5",
+      "owner": "MAIN"
+    }
+  ]
+}

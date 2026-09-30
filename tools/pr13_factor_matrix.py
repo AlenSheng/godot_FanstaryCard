@@ -12,6 +12,37 @@ ROOT=Path(__file__).resolve().parents[1]
 FACTORS=('outer-o6-hp095','outer-o6-hp090','outer-o6-windup025','outer-o6-windup050')
 
 
+def validate_controls(output, results):
+    errors=[];total=controls=windups=0
+    for execution in results:
+        if execution['state']!='Completed':errors.append(dict(kind='incomplete_job',output=execution['output']));continue
+        directory=Path(execution['output']);summary=json.loads((directory/'summary.json').read_text())
+        raw=directory/'encounters.jsonl'
+        if hashlib.sha256(raw.read_bytes()).hexdigest()!=summary['RawSha256']:
+            errors.append(dict(kind='raw_hash_mismatch',output=str(directory)));continue
+        pairs={};count=0
+        with raw.open(encoding='utf8') as stream:
+            for line in stream:
+                row=json.loads(line);total+=1;count+=1
+                key=tuple(row[k] for k in ('Seed','Hero','WeaponLevel','Deck','Group','Strategy'))
+                pairs.setdefault(key,[]).append(row)
+                if row['Outcome']=='Error':errors.append(dict(kind='encounter_error',key=key,output=str(directory)))
+                if row['Group']=='O6' and row['Profile'].startswith('TargetedO6Windup'):
+                    windups+=1;expected=250 if '025' in execution['factor'] else 500
+                    if (row.get('FirstWindupExtraMilliseconds')!=expected or row.get('FirstWindupExtensions',0)<1 or
+                            any(i!=0 for i in row.get('FirstWindupIntentIndexes',[]))):
+                        errors.append(dict(kind='first_intent_not_extended',key=key,output=str(directory)))
+        if count!=summary['Total']:errors.append(dict(kind='raw_count_mismatch',output=str(directory)))
+        for key,pair in pairs.items():
+            if len(pair)!=2:errors.append(dict(kind='unpaired_seed',key=key));continue
+            if key[4]=='O6':continue
+            controls+=1;a,b=pair
+            if {k:v for k,v in a.items() if k!='Profile'}!={k:v for k,v in b.items() if k!='Profile'}:
+                errors.append(dict(kind='unaffected_control_changed',key=key,output=str(directory)))
+    return dict(total=total,unaffected_paired_controls_checked=controls,first_intent_extensions_checked=windups,
+                errors=errors,passed=not errors,candidate_activation=False)
+
+
 def write(path,value):
     temporary=path.with_suffix('.tmp');temporary.write_text(json.dumps(value,indent=2),encoding='utf8');temporary.replace(path)
 
@@ -67,9 +98,11 @@ def main():
         return record
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.workers) as pool:
         results=list(pool.map(run,jobs))
+    controls=validate_controls(output,results)
+    write(output/'controls-report.json',controls)
     write(output/'results.json',dict(jobs=results,candidate_activation=False,all_completed=all(r['state']=='Completed' for r in results)))
     print(json.dumps(dict(completed=sum(r['state']=='Completed' for r in results),total=len(results))))
-    return 0 if all(r['state']=='Completed' for r in results) else 1
+    return 0 if all(r['state']=='Completed' for r in results) and controls['passed'] else 1
 
 
 if __name__=='__main__':raise SystemExit(main())
