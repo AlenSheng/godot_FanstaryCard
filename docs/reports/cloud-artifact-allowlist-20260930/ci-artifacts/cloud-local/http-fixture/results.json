@@ -1,0 +1,45 @@
+{
+  "ok": true,
+  "runs": [
+    {
+      "command": [
+        "/tmp/fc-cloud-tools/godot/godot",
+        "--headless",
+        "--path",
+        "/tmp/fc-cloud-tools/evidence/http-fixture",
+        "--editor",
+        "--import",
+        "--quit"
+      ],
+      "exit_code": 0,
+      "engine_errors": false,
+      "log": "import.log"
+    },
+    {
+      "command": [
+        "/tmp/fc-cloud-tools/godot/godot",
+        "--headless",
+        "--path",
+        "/tmp/fc-cloud-tools/evidence/http-fixture",
+        "--script",
+        "res://tests/test_http_protobuf_client.gd"
+      ],
+      "exit_code": 0,
+      "engine_errors": false,
+      "log": "codec.log"
+    },
+    {
+      "command": [
+        "/tmp/fc-cloud-tools/godot/godot",
+        "--headless",
+        "--path",
+        "/tmp/fc-cloud-tools/evidence/http-fixture",
+        "--script",
+        "res://tests/test_http_protobuf_transport.gd"
+      ],
+      "exit_code": 0,
+      "engine_errors": false,
+      "log": "transport.log"
+    }
+  ]
+}

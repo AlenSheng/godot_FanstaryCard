@@ -57,10 +57,14 @@ jobs:
           ! grep -E 'SCRIPT ERROR|Parse Error' test-results/godot/numerics.log
       - name: Compare local previews with authoritative room preview and play
         run: python3 tools/pr13_preview_checks.py --godot "$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64" --output test-results/godot/preview-parity
-      - uses: actions/upload-artifact@v7
+      - name: Stage only named numerical reports and fixture logs
+        id: numerical_evidence
         if: always()
+        run: python3 tools/cloud/export_evidence.py --profile numerical-client --source test-results/godot --destination "$RUNNER_TEMP/numerical-client-public"
+      - uses: actions/upload-artifact@v7
+        if: always() && steps.numerical_evidence.outputs.artifact_directory != ''
         with:
           name: numerical-godot-${{ github.sha }}
-          path: test-results/godot
+          path: ${{ steps.numerical_evidence.outputs.artifact_directory }}
           retention-days: 7
           if-no-files-found: ignore

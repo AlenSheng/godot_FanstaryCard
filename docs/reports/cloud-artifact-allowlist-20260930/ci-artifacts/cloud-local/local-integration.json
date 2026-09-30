@@ -1,0 +1,29 @@
+{
+  "ok": true,
+  "uses_registry": false,
+  "uses_online_server": false,
+  "cases": [
+    {
+      "case": 1001,
+      "status": "accepted",
+      "assets_preserved": true,
+      "backup_mode": "0600",
+      "backup_list_valid": true
+    },
+    {
+      "case": 1002,
+      "status": "rolled_back",
+      "assets_preserved": true,
+      "backup_mode": "0600",
+      "backup_list_valid": true
+    },
+    {
+      "case": 1003,
+      "status": "rolled_back",
+      "assets_preserved": true,
+      "backup_mode": "0600",
+      "backup_list_valid": true
+    }
+  ],
+  "cleanup": "fixture containers, images and private test database removed"
+}

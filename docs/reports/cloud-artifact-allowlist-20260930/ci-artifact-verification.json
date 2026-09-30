@@ -1,0 +1,80 @@
+[
+  {
+    "profile": "gameplay-client",
+    "artifact_id": 11121046522,
+    "head_sha": "cc216e07cb63a1fb2d96430f09effc6452ae57fa",
+    "digest": "8020cf7de6d3181148624b09ba3d2bfb032624e24f165e0e46e15a7409fc6193",
+    "digest_matches_api": true,
+    "names": [
+      "client.log",
+      "evidence-inventory.json",
+      "godot-version.txt",
+      "http-boundary/boundary.log",
+      "http-boundary/result.json",
+      "http-fixture/codec.log",
+      "http-fixture/import.log",
+      "http-fixture/results.json",
+      "http-fixture/transport.log",
+      "import.log",
+      "load-parse.log",
+      "lobby-race.log",
+      "offline-cases/cases.jsonl",
+      "offline-cases/report.json"
+    ],
+    "all_expected_reports_present": true,
+    "runtime_or_credential_paths_present": false,
+    "inventory_hashes_verified": true
+  },
+  {
+    "profile": "numerical-client",
+    "artifact_id": 11121400911,
+    "head_sha": "cc216e07cb63a1fb2d96430f09effc6452ae57fa",
+    "digest": "508e70584aee4dd70220840f13ed4520513446bfe85ec2eafbddb8a45633bd10",
+    "digest_matches_api": true,
+    "names": [
+      "evidence-inventory.json",
+      "import.log",
+      "numerics.log",
+      "preview-parity/client.log",
+      "preview-parity/input.json",
+      "preview-parity/manifest.json",
+      "preview-parity/results.json",
+      "preview-parity/server.log",
+      "version.txt"
+    ],
+    "all_expected_reports_present": true,
+    "runtime_or_credential_paths_present": false,
+    "inventory_hashes_verified": true
+  },
+  {
+    "profile": "cloud-local",
+    "artifact_id": 11121782327,
+    "workflow_run": 36766202691,
+    "head_sha": "cc216e07cb63a1fb2d96430f09effc6452ae57fa",
+    "digest": "4c77d87306abd34d959134f00e7cba8a50acbb2fb198e04d036cf0a18b3edb45",
+    "digest_matches_api": true,
+    "names": [
+      "evidence-inventory.json",
+      "http-fixture/codec.log",
+      "http-fixture/import.log",
+      "http-fixture/results.json",
+      "http-fixture/transport.log",
+      "local-integration.json"
+    ],
+    "all_produced_reports_present": true,
+    "missing_only_unproduced_optional_reports": [
+      "source.txt",
+      "dotnet.txt",
+      "godot.txt",
+      "postgres.txt",
+      "domain.trx",
+      "postgres.trx",
+      "test-counts.json",
+      "cloud-tests.log",
+      "godot-fixture.log"
+    ],
+    "runtime_or_credential_paths_present": false,
+    "inventory_hashes_verified": true,
+    "zip_bytes": 2756
+  }
+]
