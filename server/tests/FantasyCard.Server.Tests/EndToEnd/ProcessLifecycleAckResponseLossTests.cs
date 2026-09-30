@@ -198,12 +198,14 @@ public sealed partial class ProcessLifecycleRecoveryTests
         private readonly string _mode;
         private int _ackIndex;
         private volatile bool _released;
+        private readonly string? _stopFile;
         public int Port { get; } = ReservePort();
         public ConcurrentQueue<AckAttempt> Attempts { get; } = new();
         public ConcurrentQueue<string> Errors { get; } = new();
-        public AckFaultProxy(int backendPort, string mode)
+        public AckFaultProxy(int backendPort, string mode, string? stopFile = null)
         {
             _mode = mode;
+            _stopFile = stopFile;
             _backend = new HttpClient { BaseAddress = new Uri($"http://127.0.0.1:{backendPort}"), Timeout = TimeSpan.FromSeconds(15) };
             // Kestrel Abort closes the socket without synthesizing an HTTP
             // error response (HttpListener can emit 411 while aborting a POST).
@@ -223,9 +225,15 @@ public sealed partial class ProcessLifecycleRecoveryTests
                 var bytes = body.ToArray();
                 var isAck = context.Request.Method == "POST" && path.StartsWith("/api/v1/settlements/", StringComparison.Ordinal) && path.EndsWith("/acknowledge", StringComparison.Ordinal);
                 var index = isAck ? Interlocked.Increment(ref _ackIndex) : 0;
-                var dropped = isAck && !_released && (_mode != "drop-first-committed" || index == 1);
+                var dropped = isAck && !_released && (_mode switch
+                {
+                    "cycles-middle-response-loss" or "cycles-middle-uncommitted-loss" => index == 2,
+                    "stop-before-commit" or "stop-after-commit" => false,
+                    "drop-first-committed" => index == 1,
+                    _ => true
+                });
                 var keyHash = Hash(System.Text.Encoding.UTF8.GetBytes(context.Request.Headers["Idempotency-Key"].ToString()));
-                if (dropped && _mode == "drop-all-uncommitted")
+                if (dropped && _mode is "drop-all-uncommitted" or "cycles-middle-uncommitted-loss")
                 { Attempts.Enqueue(new(index, keyHash, Hash(bytes), false, true, null, null)); context.Abort(); return; }
                 using var request = new HttpRequestMessage(new HttpMethod(context.Request.Method), path);
                 if (bytes.Length > 0 || context.Request.Method == "POST") request.Content = new ByteArrayContent(bytes);
@@ -234,8 +242,10 @@ public sealed partial class ProcessLifecycleRecoveryTests
                     if (name.Equals("Host", StringComparison.OrdinalIgnoreCase) || name.Equals("Content-Length", StringComparison.OrdinalIgnoreCase) || name.Equals("Connection", StringComparison.OrdinalIgnoreCase)) continue;
                     if (!request.Headers.TryAddWithoutValidation(name, values.ToArray())) request.Content?.Headers.TryAddWithoutValidation(name, values.ToArray());
                 }
+                if (isAck && index == 1 && _mode == "stop-before-commit") await StopDuringAckAsync();
                 using var response = await _backend.SendAsync(request, _stop.Token);
                 var responseBytes = await response.Content.ReadAsByteArrayAsync(_stop.Token);
+                if (isAck && index == 1 && _mode == "stop-after-commit") await StopDuringAckAsync();
                 if (isAck) Attempts.Enqueue(new(index, keyHash, Hash(bytes), true, dropped, (int)response.StatusCode, Hash(responseBytes)));
                 // Fault is applied only after the real backend has replied. The
                 // front connection closes without receiving that response.
@@ -249,6 +259,21 @@ public sealed partial class ProcessLifecycleRecoveryTests
             }
             catch (Exception error) when (_stop.IsCancellationRequested || error is WebSocketException or IOException) { context.Abort(); }
             catch (Exception error) { Errors.Enqueue(error.ToString()); context.Abort(); }
+        }
+        private async Task StopDuringAckAsync()
+        {
+            Assert.NotNull(_stopFile);
+            await File.WriteAllTextAsync(_stopFile, "Owned coordinator STOP while the real ACK request is pending.", _stop.Token);
+            using var deadline = CancellationTokenSource.CreateLinkedTokenSource(_stop.Token);
+            deadline.CancelAfter(TimeSpan.FromSeconds(3));
+            while (!File.Exists(_stopFile + ".observed")) await Task.Delay(20, deadline.Token);
+            using var observed = JsonDocument.Parse(await File.ReadAllTextAsync(_stopFile + ".observed", deadline.Token));
+            Assert.True(observed.RootElement.GetProperty("stop_requested").GetBoolean());
+            Assert.True(observed.RootElement.GetProperty("busy").GetBoolean());
+            Assert.NotEmpty(observed.RootElement.GetProperty("pending_ack").GetString()!);
+            Assert.Equal("settlement", observed.RootElement.GetProperty("stage").GetString());
+            Assert.Equal(0, observed.RootElement.GetProperty("cycles_completed").GetInt32());
+            Record("ACK-STOP-observed", new { mode = _mode, stage = "real GameStore ACK awaited by production load runner", observation = observed.RootElement.Clone() });
         }
         private async Task BridgeWebSocketAsync(HttpContext context)
         {
