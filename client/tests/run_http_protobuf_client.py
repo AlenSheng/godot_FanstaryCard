@@ -2,6 +2,7 @@
 import argparse, importlib.util, json, os, shutil, subprocess, threading
 from pathlib import Path
 from http.server import ThreadingHTTPServer
+from fixture_runtime import isolated_environment
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--godot', required=True)
@@ -15,7 +16,7 @@ for name in ['http_schema.json','http_endpoints.json','realtime_schema.json']: s
 shutil.copyfile(repo/'protocol/golden-vectors.json',work/'data/golden-vectors.json')
 for name in ['test_protobuf.gd','test_http_protobuf_client.gd','test_http_protobuf_transport.gd']: shutil.copyfile(repo/'client/tests'/name, work/'tests'/name)
 (work/'project.godot').write_text('[application]\nconfig/name="Protobuf isolated fixture"\n[rendering]\nrenderer/rendering_method="gl_compatibility"\n',encoding='utf-8')
-env = dict(os.environ, FANTASYCARD_SERVER_URL='http://127.0.0.1:38971')
+env = isolated_environment(work, FANTASYCARD_SERVER_URL='http://127.0.0.1:38971')
 records = []
 def run(extra, label):
     command = [args.godot,'--headless','--path',str(work)] + extra

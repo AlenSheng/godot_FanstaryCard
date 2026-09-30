@@ -38,6 +38,10 @@ jobs:
   client:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      XDG_DATA_HOME: ${{ runner.temp }}/godot-offline/data
+      XDG_CONFIG_HOME: ${{ runner.temp }}/godot-offline/config
+      XDG_CACHE_HOME: ${{ runner.temp }}/godot-offline/cache
     steps:
       - uses: actions/checkout@v7
         with:

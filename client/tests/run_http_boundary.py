@@ -9,6 +9,7 @@ import subprocess
 import threading
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from fixture_runtime import isolated_environment
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -57,7 +58,7 @@ def main():
     server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
     worker = threading.Thread(target=server.serve_forever, daemon=True)
     worker.start()
-    env = dict(os.environ, FANTASYCARD_SERVER_URL=f"http://127.0.0.1:{server.server_port}")
+    env = isolated_environment(work, FANTASYCARD_SERVER_URL=f"http://127.0.0.1:{server.server_port}")
     command = [args.godot, "--headless", "--path", str(work), "--script", "res://tests/run_http_boundary.gd"]
     try:
         run = subprocess.run(command, env=env, capture_output=True, text=True, encoding="utf8",
@@ -65,9 +66,16 @@ def main():
         output = run.stdout + run.stderr
         (work/"boundary.log").write_text(output, encoding="utf8")
         print(output)
-        passed = run.returncode == 0 and "SCRIPT ERROR" not in output and '"ok":true' in output
+        passed = run.returncode == 0 and "ERROR:" not in output and '"ok":true' in output
         (work/"result.json").write_text(json.dumps({"ok": passed, "command": command, "exit_code": run.returncode}), encoding="utf8")
         return 0 if passed else 1
+    except subprocess.TimeoutExpired as exc:
+        output = (exc.stdout or b"") + (exc.stderr or b"")
+        if isinstance(output, bytes): output = output.decode("utf8", errors="replace")
+        (work/"boundary.log").write_text(output + "\nFIXTURE TIMEOUT", encoding="utf8")
+        (work/"result.json").write_text(json.dumps({"ok": False, "command": command,
+                                                   "exit_code": None, "timeout": True}), encoding="utf8")
+        return 1
     finally:
         server.shutdown(); server.server_close(); worker.join(timeout=5)
 
