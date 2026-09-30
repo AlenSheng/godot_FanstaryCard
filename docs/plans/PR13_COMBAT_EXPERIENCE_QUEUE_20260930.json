@@ -12,7 +12,7 @@
   "parent_queue_mutated": false,
   "detailed_instructions": "docs/plans/PR13_COMBAT_EXPERIENCE_20260930.md",
   "numerical_plan": "docs/plans/NUMERICAL_IMPLEMENTATION_20260928.md",
-  "previous_handoff": "PR13-A01..A10 remains the prior conversation handoff; this extension does not claim that file was already committed.",
+  "previous_handoff": "A01-A10 responsibilities recovered from accessible thread text and re-specified as 40 subtasks in PR13_REMAINING_QUEUE_20260930.json; original sandbox attachment not retrieved, no claim of verbatim recovery.",
   "state": "Queued",
   "dispatch_enabled": false,
   "is_executable_launcher": false,
@@ -34,7 +34,11 @@
     "runtime_agent_id": null,
     "tests_run_this_update": false,
     "acceptance_authority": "MAIN",
-    "permitted_outcomes_after_review": ["Accepted", "Blocked", "NoChangeWithEvidence"],
+    "permitted_outcomes_after_review": [
+      "Accepted",
+      "Blocked",
+      "NoChangeWithEvidence"
+    ],
     "candidate_default": "retain current production behavior; isolated experiments only"
   },
   "frozen_rules": [
@@ -48,152 +52,627 @@
   ],
   "tasks": [
     {
-      "id": "PR13-B01", "title": "战斗停滞归因与体验指标", "priority": "P0", "owner": "AG-01",
-      "depends_on": ["LOAD-03", "LOAD-06"], "gates": ["G1", "G3"],
-      "write_scope": ["tools gameplay telemetry/accounting; client/server hooks by their owners"],
+      "id": "PR13-B01",
+      "title": "战斗停滞归因与体验指标",
+      "priority": "P0",
+      "owner": "AG-01",
+      "depends_on": [
+        "LOAD-03",
+        "LOAD-06"
+      ],
+      "gates": [
+        "G1",
+        "G3"
+      ],
+      "write_scope": [
+        "tools gameplay telemetry/accounting; client/server hooks by their owners"
+      ],
       "subtasks": [
-        {"id": "PR13-B01.1", "state": "Queued", "instruction": "冻结战斗关联、配置、策略和种子字段，异步保留发起上下文"},
-        {"id": "PR13-B01.2", "state": "Queued", "instruction": "区分通信存活、合法机会、有效进展及等待原因"},
-        {"id": "PR13-B01.3", "state": "Queued", "instruction": "按场景输出有效输出/操作/控制/资源/网络指标"},
-        {"id": "PR13-B01.4", "state": "Queued", "instruction": "正常终态、弃战、脚本兜底、异常和时限删失分别统计"}
+        {
+          "id": "PR13-B01.1",
+          "state": "Queued",
+          "instruction": "冻结战斗关联、配置、策略和种子字段，异步保留发起上下文",
+          "acceptance_detail_id": "PR13-B01.1",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B01.2",
+          "state": "Queued",
+          "instruction": "区分通信存活、合法机会、有效进展及等待原因",
+          "acceptance_detail_id": "PR13-B01.2",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B01.3",
+          "state": "Queued",
+          "instruction": "按场景输出有效输出/操作/控制/资源/网络指标",
+          "acceptance_detail_id": "PR13-B01.3",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B01.4",
+          "state": "Queued",
+          "instruction": "正常终态、弃战、脚本兜底、异常和时限删失分别统计",
+          "acceptance_detail_id": "PR13-B01.4",
+          "specification_state": "ReviewReady"
+        }
       ],
       "acceptance": "Long-tail cause attribution and count conservation; missing samples never become success."
     },
     {
-      "id": "PR13-B02", "title": "数值合同与CI配套修复", "priority": "P0", "owner": "AG-04",
-      "depends_on": ["LOAD-10"], "gates": ["G1", "G2", "G5"],
-      "write_scope": ["server/tests/FantasyCard.Domain.Tests/Combat/CombatAuthoritativeRulesTests.cs", "owned contract tests"],
+      "id": "PR13-B02",
+      "title": "数值合同与CI配套修复",
+      "priority": "P0",
+      "owner": "AG-04",
+      "depends_on": [
+        "LOAD-10"
+      ],
+      "gates": [
+        "G1",
+        "G2",
+        "G5"
+      ],
+      "write_scope": [
+        "server/tests/FantasyCard.Domain.Tests/Combat/CombatAuthoritativeRulesTests.cs",
+        "owned contract tests"
+      ],
       "subtasks": [
-        {"id": "PR13-B02.1", "state": "Queued", "instruction": "将旧布尔参数/属性迁移为当前枚举策略及盾余量合同，不删失败测试"},
-        {"id": "PR13-B02.2", "state": "Queued", "instruction": "真实Resolver覆盖现行GDD向量、顺序、取整、调节及治疗路径"},
-        {"id": "PR13-B02.3", "state": "Queued", "instruction": "校验预览/协议/结算同输入一致且预览无副作用"},
-        {"id": "PR13-B02.4", "state": "Queued", "instruction": "核对有效房间policy及快照/PVP/旧版本恢复兼容"}
+        {
+          "id": "PR13-B02.1",
+          "state": "Queued",
+          "instruction": "将旧布尔参数/属性迁移为当前枚举策略及盾余量合同，不删失败测试",
+          "acceptance_detail_id": "PR13-B02.1",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B02.2",
+          "state": "Queued",
+          "instruction": "真实Resolver覆盖现行GDD向量、顺序、取整、调节及治疗路径",
+          "acceptance_detail_id": "PR13-B02.2",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B02.3",
+          "state": "Queued",
+          "instruction": "校验预览/协议/结算同输入一致且预览无副作用",
+          "acceptance_detail_id": "PR13-B02.3",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B02.4",
+          "state": "Queued",
+          "instruction": "核对有效房间policy及快照/PVP/旧版本恢复兼容",
+          "acceptance_detail_id": "PR13-B02.4",
+          "specification_state": "ReviewReady"
+        }
       ],
       "acceptance": "Applicable CI actually executes on the integration SHA with current defaults unchanged."
     },
     {
-      "id": "PR13-B03", "title": "战斗体验场景与公平对照", "priority": "P0", "owner": "AG-01",
-      "depends_on": ["PR13-B01", "PR13-B02"], "gates": ["G2", "G3", "G4"],
-      "write_scope": ["tools simulation/scenario harness and owned tests"],
+      "id": "PR13-B03",
+      "title": "战斗体验场景与公平对照",
+      "priority": "P0",
+      "owner": "AG-01",
+      "depends_on": [
+        "PR13-B01",
+        "PR13-B02"
+      ],
+      "gates": [
+        "G2",
+        "G3",
+        "G4"
+      ],
+      "write_scope": [
+        "tools simulation/scenario harness and owned tests"
+      ],
       "subtasks": [
-        {"id": "PR13-B03.1", "state": "Queued", "instruction": "保留全手原策略，新增只用可见信息的确定性基本/构筑策略"},
-        {"id": "PR13-B03.2", "state": "Queued", "instruction": "固定三职业同预算构筑和分层种子，覆盖PVE/PVP与极值"},
-        {"id": "PR13-B03.3", "state": "Queued", "instruction": "计划配对样本与区间，完整记录失败/未结束分母，真人试玩独立"},
-        {"id": "PR13-B03.4", "state": "Queued", "instruction": "原容量基线与数值候选profile严格分开"}
+        {
+          "id": "PR13-B03.1",
+          "state": "Queued",
+          "instruction": "保留全手原策略，新增只用可见信息的确定性基本/构筑策略",
+          "acceptance_detail_id": "PR13-B03.1",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B03.2",
+          "state": "Queued",
+          "instruction": "固定三职业同预算构筑和分层种子，覆盖PVE/PVP与极值",
+          "acceptance_detail_id": "PR13-B03.2",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B03.3",
+          "state": "Queued",
+          "instruction": "计划配对样本与区间，完整记录失败/未结束分母，真人试玩独立",
+          "acceptance_detail_id": "PR13-B03.3",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B03.4",
+          "state": "Queued",
+          "instruction": "原容量基线与数值候选profile严格分开",
+          "acceptance_detail_id": "PR13-B03.4",
+          "specification_state": "ReviewReady"
+        }
       ],
       "acceptance": "Reproducible bounded comparisons; simulated behavior is not represented as verified human experience."
     },
     {
-      "id": "PR13-B04", "title": "默认构筑与等牌体验", "priority": "P1", "owner": "AG-04",
-      "depends_on": ["PR13-B01", "PR13-B03"], "gates": ["G2", "G4"],
-      "write_scope": ["reviewed source configuration; UI by AG-02"],
+      "id": "PR13-B04",
+      "title": "默认构筑与等牌体验",
+      "priority": "P1",
+      "owner": "AG-04",
+      "depends_on": [
+        "PR13-B01",
+        "PR13-B03"
+      ],
+      "gates": [
+        "G2",
+        "G4"
+      ],
+      "write_scope": [
+        "reviewed source configuration; UI by AG-02"
+      ],
       "subtasks": [
-        {"id": "PR13-B04.1", "state": "Queued", "instruction": "读取真实默认20张，识别脚本打空与构筑缺陷"},
-        {"id": "PR13-B04.2", "state": "Queued", "instruction": "同品质等级成本单卡替换，禁止暗增初始资源"},
-        {"id": "PR13-B04.3", "state": "Queued", "instruction": "展示抽牌进度、控制阻断、满手轮空与等待原因"},
-        {"id": "PR13-B04.4", "state": "Queued", "instruction": "用有效操作、首战结果、凑核和资源守恒共同评估"}
+        {
+          "id": "PR13-B04.1",
+          "state": "Queued",
+          "instruction": "读取真实默认20张，识别脚本打空与构筑缺陷",
+          "acceptance_detail_id": "PR13-B04.1",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B04.2",
+          "state": "Queued",
+          "instruction": "同品质等级成本单卡替换，禁止暗增初始资源",
+          "acceptance_detail_id": "PR13-B04.2",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B04.3",
+          "state": "Queued",
+          "instruction": "展示抽牌进度、控制阻断、满手轮空与等待原因",
+          "acceptance_detail_id": "PR13-B04.3",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B04.4",
+          "state": "Queued",
+          "instruction": "用有效操作、首战结果、凑核和资源守恒共同评估",
+          "acceptance_detail_id": "PR13-B04.4",
+          "specification_state": "ReviewReady"
+        }
       ],
       "acceptance": "Initial-budget experience improves without changing draw floors or removing strategic waiting."
     },
     {
-      "id": "PR13-B05", "title": "PVE长尾与怪物节奏候选", "priority": "P1", "owner": "AG-04",
-      "depends_on": ["PR13-B01", "PR13-B03", "PR13-B04"], "gates": ["G2", "G4", "G5"],
-      "write_scope": ["only evidence-approved monster source config and experiment profile"],
+      "id": "PR13-B05",
+      "title": "PVE长尾与怪物节奏候选",
+      "priority": "P1",
+      "owner": "AG-04",
+      "depends_on": [
+        "PR13-B01",
+        "PR13-B03",
+        "PR13-B04"
+      ],
+      "gates": [
+        "G2",
+        "G4",
+        "G5"
+      ],
+      "write_scope": [
+        "only evidence-approved monster source config and experiment profile"
+      ],
       "candidate_only": true,
-      "proposed_experiments_not_approved_production_values": {"whitelisted_hp_multipliers": [1.0, 0.95, 0.90], "separate_first_intent_notice_extension_seconds": [0, 0.25, 0.50]},
+      "proposed_experiments_not_approved_production_values": {
+        "whitelisted_hp_multipliers": [
+          1.0,
+          0.95,
+          0.9
+        ],
+        "separate_first_intent_notice_extension_seconds": [
+          0,
+          0.25,
+          0.5
+        ]
+      },
       "subtasks": [
-        {"id": "PR13-B05.1", "state": "Queued", "instruction": "按具体怪物ID复现并区分数值、策略、网络与目标错误"},
-        {"id": "PR13-B05.2", "state": "Queued", "instruction": "只对白名单长尾执行单因素HP或首意图预告候选"},
-        {"id": "PR13-B05.3", "state": "Queued", "instruction": "保留Boss/PVP边界，并检查每局及每分钟经济收益"},
-        {"id": "PR13-B05.4", "state": "Queued", "instruction": "实验前冻结效益/风险阈值，区间不足则继续阻塞"}
+        {
+          "id": "PR13-B05.1",
+          "state": "Queued",
+          "instruction": "按具体怪物ID复现并区分数值、策略、网络与目标错误",
+          "acceptance_detail_id": "PR13-B05.1",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B05.2",
+          "state": "Queued",
+          "instruction": "只对白名单长尾执行单因素HP或首意图预告候选",
+          "acceptance_detail_id": "PR13-B05.2",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B05.3",
+          "state": "Queued",
+          "instruction": "保留Boss/PVP边界，并检查每局及每分钟经济收益",
+          "acceptance_detail_id": "PR13-B05.3",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B05.4",
+          "state": "Queued",
+          "instruction": "实验前冻结效益/风险阈值，区间不足则继续阻塞",
+          "acceptance_detail_id": "PR13-B05.4",
+          "specification_state": "ReviewReady"
+        }
       ],
       "acceptance": "Evidence-based tails improve without hiding flow defects or introducing unexplained economy drift."
     },
     {
-      "id": "PR13-B06", "title": "法师返牌资源循环", "priority": "P1", "owner": "AG-04",
-      "depends_on": ["PR13-B02", "PR13-B03"], "gates": ["G2", "G4", "G5"],
-      "write_scope": ["server/src/FantasyCard.Domain/Combat/PlayerCombatState.cs", "owned Fenxian tests"],
-      "candidate_only": true, "reuse_policy": "FenxianImmediateDrawPolicy.CoreCardsSpent", "keep_default": "CurrentRhythm",
+      "id": "PR13-B06",
+      "title": "法师返牌资源循环",
+      "priority": "P1",
+      "owner": "AG-04",
+      "depends_on": [
+        "PR13-B02",
+        "PR13-B03"
+      ],
+      "gates": [
+        "G2",
+        "G4",
+        "G5"
+      ],
+      "write_scope": [
+        "server/src/FantasyCard.Domain/Combat/PlayerCombatState.cs",
+        "owned Fenxian tests"
+      ],
+      "candidate_only": true,
+      "reuse_policy": "FenxianImmediateDrawPolicy.CoreCardsSpent",
+      "keep_default": "CurrentRhythm",
       "subtasks": [
-        {"id": "PR13-B06.1", "state": "Queued", "instruction": "复现当前单张同核连携返牌资源路径，不预断全卡池无限循环"},
-        {"id": "PR13-B06.2", "state": "Queued", "instruction": "复用按真实R返0/0/1/1/2候选，保留既有蓄能合同"},
-        {"id": "PR13-B06.3", "state": "Queued", "instruction": "暂停自然抽牌测试被动及复合过牌长序列的资源账本"},
-        {"id": "PR13-B06.4", "state": "Queued", "instruction": "检查三/五核爽感、空等、对位和快照策略一致性"}
+        {
+          "id": "PR13-B06.1",
+          "state": "Queued",
+          "instruction": "复现当前单张同核连携返牌资源路径，不预断全卡池无限循环",
+          "acceptance_detail_id": "PR13-B06.1",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B06.2",
+          "state": "Queued",
+          "instruction": "复用按真实R返0/0/1/1/2候选，保留既有蓄能合同",
+          "acceptance_detail_id": "PR13-B06.2",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B06.3",
+          "state": "Queued",
+          "instruction": "暂停自然抽牌测试被动及复合过牌长序列的资源账本",
+          "acceptance_detail_id": "PR13-B06.3",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B06.4",
+          "state": "Queued",
+          "instruction": "检查三/五核爽感、空等、对位和快照策略一致性",
+          "acceptance_detail_id": "PR13-B06.4",
+          "specification_state": "ReviewReady"
+        }
       ],
       "acceptance": "Resource conservation, unchanged default regression and candidate experience evidence before enablement."
     },
     {
-      "id": "PR13-B07", "title": "盾职业梯度与余量显示", "priority": "P1", "owner": "AG-04",
-      "depends_on": ["PR13-B02", "PR13-B03"], "gates": ["G2", "G4", "G5"],
-      "write_scope": ["server/src/FantasyCard.Domain/Combat/PlayerCombatState.cs", "owned Guardian tests; UI by AG-02"],
-      "candidate_only": true, "reuse_policy": "GuardianShieldBonusPolicy.FractionalRemainder", "keep_default": "CurrentSteps",
+      "id": "PR13-B07",
+      "title": "盾职业梯度与余量显示",
+      "priority": "P1",
+      "owner": "AG-04",
+      "depends_on": [
+        "PR13-B02",
+        "PR13-B03"
+      ],
+      "gates": [
+        "G2",
+        "G4",
+        "G5"
+      ],
+      "write_scope": [
+        "server/src/FantasyCard.Domain/Combat/PlayerCombatState.cs",
+        "owned Guardian tests; UI by AG-02"
+      ],
+      "candidate_only": true,
+      "reuse_policy": "GuardianShieldBonusPolicy.FractionalRemainder",
+      "keep_default": "CurrentSteps",
       "subtasks": [
-        {"id": "PR13-B07.1", "state": "Queued", "instruction": "对照当前台阶与10/14/18/22/26/30十分点候选"},
-        {"id": "PR13-B07.2", "state": "Queued", "instruction": "显式评估+2与+4均值下降，不能称全等级加强"},
-        {"id": "PR13-B07.3", "state": "Queued", "instruction": "累计5/7/9/11/13/15及满盾、精确填满、预览、重连/PVP边界"},
-        {"id": "PR13-B07.4", "state": "Queued", "instruction": "显示本次整数盾/有效盾/溢出/余量，不擅改价格退款"}
+        {
+          "id": "PR13-B07.1",
+          "state": "Queued",
+          "instruction": "对照当前台阶与10/14/18/22/26/30十分点候选",
+          "acceptance_detail_id": "PR13-B07.1",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B07.2",
+          "state": "Queued",
+          "instruction": "显式评估+2与+4均值下降，不能称全等级加强",
+          "acceptance_detail_id": "PR13-B07.2",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B07.3",
+          "state": "Queued",
+          "instruction": "累计5/7/9/11/13/15及满盾、精确填满、预览、重连/PVP边界",
+          "acceptance_detail_id": "PR13-B07.3",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B07.4",
+          "state": "Queued",
+          "instruction": "显示本次整数盾/有效盾/溢出/余量，不擅改价格退款",
+          "acceptance_detail_id": "PR13-B07.4",
+          "specification_state": "ReviewReady"
+        }
       ],
       "acceptance": "No duplicate remainder benefit, no default regression, and explicit affected-level review."
     },
     {
-      "id": "PR13-B08", "title": "控制续航与调节牌边际价值", "priority": "P1", "owner": "AG-04",
-      "depends_on": ["PR13-B02", "PR13-B03"], "gates": ["G2", "G4"],
-      "write_scope": ["owned control/resolver tests; source card candidates only after evidence; UI by AG-02"],
+      "id": "PR13-B08",
+      "title": "控制续航与调节牌边际价值",
+      "priority": "P1",
+      "owner": "AG-04",
+      "depends_on": [
+        "PR13-B02",
+        "PR13-B03"
+      ],
+      "gates": [
+        "G2",
+        "G4"
+      ],
+      "write_scope": [
+        "owned control/resolver tests; source card candidates only after evidence; UI by AG-02"
+      ],
       "subtasks": [
-        {"id": "PR13-B08.1", "state": "Queued", "instruction": "验证现有8秒控制递减与实际新增控制时间，不再叠新递减"},
-        {"id": "PR13-B08.2", "state": "Queued", "instruction": "同品质单卡替换比较五系调节的真实资源/输出/控制"},
-        {"id": "PR13-B08.3", "state": "Queued", "instruction": "核对调节免P与间接K影响，分离普通治疗和向反回复"},
-        {"id": "PR13-B08.4", "state": "Queued", "instruction": "显示帽内有效值与浪费，有异常才提单卡/来源候选"}
+        {
+          "id": "PR13-B08.1",
+          "state": "Queued",
+          "instruction": "验证现有8秒控制递减与实际新增控制时间，不再叠新递减",
+          "acceptance_detail_id": "PR13-B08.1",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B08.2",
+          "state": "Queued",
+          "instruction": "同品质单卡替换比较五系调节的真实资源/输出/控制",
+          "acceptance_detail_id": "PR13-B08.2",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B08.3",
+          "state": "Queued",
+          "instruction": "核对调节免P与间接K影响，分离普通治疗和向反回复",
+          "acceptance_detail_id": "PR13-B08.3",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B08.4",
+          "state": "Queued",
+          "instruction": "显示帽内有效值与浪费，有异常才提单卡/来源候选",
+          "acceptance_detail_id": "PR13-B08.4",
+          "specification_state": "ReviewReady"
+        }
       ],
       "acceptance": "Measured marginal value and readable correct caps without unproven blanket nerfs."
     },
     {
-      "id": "PR13-B09", "title": "怪物卡池与构筑连续性", "priority": "P1", "owner": "AG-04",
-      "depends_on": ["PR13-B02", "PR13-B03"], "gates": ["G2", "G4", "G5"],
-      "write_scope": ["existing monster pool implementation/tests; client selection by AG-02"],
-      "candidate_only": true, "experimental_caps": [3, 5, 8],
+      "id": "PR13-B09",
+      "title": "怪物卡池与构筑连续性",
+      "priority": "P1",
+      "owner": "AG-04",
+      "depends_on": [
+        "PR13-B02",
+        "PR13-B03"
+      ],
+      "gates": [
+        "G2",
+        "G4",
+        "G5"
+      ],
+      "write_scope": [
+        "existing monster pool implementation/tests; client selection by AG-02"
+      ],
+      "candidate_only": true,
+      "experimental_caps": [
+        3,
+        5,
+        8
+      ],
       "subtasks": [
-        {"id": "PR13-B09.1", "state": "Queued", "instruction": "核实有效pool policy并测稀释与关键牌兑现"},
-        {"id": "PR13-B09.2", "state": "Queued", "instruction": "复用可选吸收3/5/8候选，基础20不删、新牌进弃牌"},
-        {"id": "PR13-B09.3", "state": "Queued", "instruction": "验证来源、重复、满位替换、入侵/PVP/恢复和终态清理"},
-        {"id": "PR13-B09.4", "state": "Queued", "instruction": "对比稳定性、打断成本及经济，不自动启用"}
+        {
+          "id": "PR13-B09.1",
+          "state": "Queued",
+          "instruction": "核实有效pool policy并测稀释与关键牌兑现",
+          "acceptance_detail_id": "PR13-B09.1",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B09.2",
+          "state": "Queued",
+          "instruction": "复用可选吸收3/5/8候选，基础20不删、新牌进弃牌",
+          "acceptance_detail_id": "PR13-B09.2",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B09.3",
+          "state": "Queued",
+          "instruction": "验证来源、重复、满位替换、入侵/PVP/恢复和终态清理",
+          "acceptance_detail_id": "PR13-B09.3",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B09.4",
+          "state": "Queued",
+          "instruction": "对比稳定性、打断成本及经济，不自动启用",
+          "acceptance_detail_id": "PR13-B09.4",
+          "specification_state": "ReviewReady"
+        }
       ],
       "acceptance": "Pool/instance conservation and candidate benefit with unchanged formal default."
     },
     {
-      "id": "PR13-B10", "title": "选牌顺序有效值与操作反馈", "priority": "P1", "owner": "AG-02",
-      "depends_on": ["PR13-B02"], "gates": ["G2", "G3"],
-      "write_scope": ["client/state/game_store.gd", "owned combat UI, localization and tests"],
+      "id": "PR13-B10",
+      "title": "选牌顺序有效值与操作反馈",
+      "priority": "P1",
+      "owner": "AG-02",
+      "depends_on": [
+        "PR13-B02"
+      ],
+      "gates": [
+        "G2",
+        "G3"
+      ],
+      "write_scope": [
+        "client/state/game_store.gd",
+        "owned combat UI, localization and tests"
+      ],
       "subtasks": [
-        {"id": "PR13-B10.1", "state": "Queued", "instruction": "显式顺序/主核及版本绑定预览，禁止隐式重排"},
-        {"id": "PR13-B10.2", "state": "Queued", "instruction": "展示有效伤害治疗盾/溢出并同步中英说明"},
-        {"id": "PR13-B10.3", "state": "Queued", "instruction": "本地按下反馈与权威确认分开，禁止幽灵伤害或重复命令"},
-        {"id": "PR13-B10.4", "state": "Queued", "instruction": "注入目标/手牌变化、重连、帧率和延迟，测分段响应"}
+        {
+          "id": "PR13-B10.1",
+          "state": "Queued",
+          "instruction": "显式顺序/主核及版本绑定预览，禁止隐式重排",
+          "acceptance_detail_id": "PR13-B10.1",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B10.2",
+          "state": "Queued",
+          "instruction": "展示有效伤害治疗盾/溢出并同步中英说明",
+          "acceptance_detail_id": "PR13-B10.2",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B10.3",
+          "state": "Queued",
+          "instruction": "本地按下反馈与权威确认分开，禁止幽灵伤害或重复命令",
+          "acceptance_detail_id": "PR13-B10.3",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B10.4",
+          "state": "Queued",
+          "instruction": "注入目标/手牌变化、重连、帧率和延迟，测分段响应",
+          "acceptance_detail_id": "PR13-B10.4",
+          "specification_state": "ReviewReady"
+        }
       ],
       "acceptance": "Ordered authority-consistent previews and responsive, truthful visual states."
     },
     {
-      "id": "PR13-B11", "title": "战斗过渡与多局等待", "priority": "P1", "owner": "AG-02",
-      "depends_on": ["LOAD-04", "LOAD-05", "PR13-B01"], "gates": ["G2", "G3"],
-      "write_scope": ["client/state/game_store.gd", "owned ready/settlement UI/tests; gateway by AG-03"],
+      "id": "PR13-B11",
+      "title": "战斗过渡与多局等待",
+      "priority": "P1",
+      "owner": "AG-02",
+      "depends_on": [
+        "LOAD-04",
+        "LOAD-05",
+        "PR13-B01"
+      ],
+      "gates": [
+        "G2",
+        "G3"
+      ],
+      "write_scope": [
+        "client/state/game_store.gd",
+        "owned ready/settlement UI/tests; gateway by AG-03"
+      ],
       "subtasks": [
-        {"id": "PR13-B11.1", "state": "Queued", "instruction": "分阶段可见等待，依据权威deadline，不编预计完成时间"},
-        {"id": "PR13-B11.2", "state": "Queued", "instruction": "复用重复NOT_IN_ROOM/旧局回调/ack丢响应修复，保留资产恢复"},
-        {"id": "PR13-B11.3", "state": "Queued", "instruction": "测到Bootstrap瓶颈再评估轻量查询及单飞，保留安全边界"},
-        {"id": "PR13-B11.4", "state": "Queued", "instruction": "真实三局另测有渲染交互与小屏，headless不代替体验验收"}
+        {
+          "id": "PR13-B11.1",
+          "state": "Queued",
+          "instruction": "分阶段可见等待，依据权威deadline，不编预计完成时间",
+          "acceptance_detail_id": "PR13-B11.1",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B11.2",
+          "state": "Queued",
+          "instruction": "复用重复NOT_IN_ROOM/旧局回调/ack丢响应修复，保留资产恢复",
+          "acceptance_detail_id": "PR13-B11.2",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B11.3",
+          "state": "Queued",
+          "instruction": "测到Bootstrap瓶颈再评估轻量查询及单飞，保留安全边界",
+          "acceptance_detail_id": "PR13-B11.3",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B11.4",
+          "state": "Queued",
+          "instruction": "真实三局另测有渲染交互与小屏，headless不代替体验验收",
+          "acceptance_detail_id": "PR13-B11.4",
+          "specification_state": "ReviewReady"
+        }
       ],
       "acceptance": "Readable recoverable waiting and exactly-once assets without animation-blocked legal actions."
     },
     {
-      "id": "PR13-B12", "title": "独立验收配置交付", "priority": "P0", "owner": "AG-06",
-      "depends_on": ["PR13-B01", "PR13-B02", "PR13-B03", "PR13-B04", "PR13-B05", "PR13-B06", "PR13-B07", "PR13-B08", "PR13-B09", "PR13-B10", "PR13-B11"],
-      "gates": ["G0", "G1", "G2", "G3", "G4", "G5"],
-      "write_scope": ["independent QA and evidence; acceptance records by MAIN only"],
+      "id": "PR13-B12",
+      "title": "独立验收配置交付",
+      "priority": "P0",
+      "owner": "AG-06",
+      "depends_on": [
+        "PR13-B01",
+        "PR13-B02",
+        "PR13-B03",
+        "PR13-B04",
+        "PR13-B05",
+        "PR13-B06",
+        "PR13-B07",
+        "PR13-B08",
+        "PR13-B09",
+        "PR13-B10",
+        "PR13-B11"
+      ],
+      "gates": [
+        "G0",
+        "G1",
+        "G2",
+        "G3",
+        "G4",
+        "G5"
+      ],
+      "write_scope": [
+        "independent QA and evidence; acceptance records by MAIN only"
+      ],
       "subtasks": [
-        {"id": "PR13-B12.1", "state": "Queued", "instruction": "冻结SHA/工具链/源表和生成物hash/有效策略/种子与证据"},
-        {"id": "PR13-B12.2", "state": "Queued", "instruction": "独立跑适用测试、候选off/on、数据库、故障及有渲染体验"},
-        {"id": "PR13-B12.3", "state": "Queued", "instruction": "改源配置走生成校验，不手改bytes，新旧房间版本与回滚分开"},
-        {"id": "PR13-B12.4", "state": "Queued", "instruction": "MAIN记录实现或NoChangeWithEvidence，原容量与体验结果独立，保持Draft"}
+        {
+          "id": "PR13-B12.1",
+          "state": "Queued",
+          "instruction": "冻结SHA/工具链/源表和生成物hash/有效策略/种子与证据",
+          "acceptance_detail_id": "PR13-B12.1",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B12.2",
+          "state": "Queued",
+          "instruction": "独立跑适用测试、候选off/on、数据库、故障及有渲染体验",
+          "acceptance_detail_id": "PR13-B12.2",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B12.3",
+          "state": "Queued",
+          "instruction": "改源配置走生成校验，不手改bytes，新旧房间版本与回滚分开",
+          "acceptance_detail_id": "PR13-B12.3",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "PR13-B12.4",
+          "state": "Queued",
+          "instruction": "MAIN记录实现或NoChangeWithEvidence，原容量与体验结果独立，保持Draft",
+          "acceptance_detail_id": "PR13-B12.4",
+          "specification_state": "ReviewReady"
+        }
       ],
       "acceptance": "Every applicable item has independently checked implementation evidence or approved NoChangeWithEvidence; missing evidence remains Blocked."
     }
@@ -201,10 +680,63 @@
   "task_count": 12,
   "subtask_count": 48,
   "waves": [
-    {"id": "B-W0", "tasks": ["PR13-B01", "PR13-B02", "PR13-B03"], "note": "Baseline and original A01/A02 evidence repairs first; preserve single-writer ownership."},
-    {"id": "B-W1", "tasks": ["PR13-B10", "PR13-B11", "PR13-B04"], "note": "Non-rule UX and strategy diagnosis before broad tuning."},
-    {"id": "B-W2", "tasks": ["PR13-B05", "PR13-B06", "PR13-B07", "PR13-B08", "PR13-B09"], "note": "One-factor isolated candidates, then interactions; no more than three workers or shared-file simultaneous writes."},
-    {"id": "B-W3", "tasks": ["PR13-B12"], "note": "Independent integration acceptance; only MAIN closes tasks."}
+    {
+      "id": "B-W0",
+      "tasks": [
+        "PR13-B01",
+        "PR13-B02",
+        "PR13-B03"
+      ],
+      "note": "Baseline and original A01/A02 evidence repairs first; preserve single-writer ownership."
+    },
+    {
+      "id": "B-W1",
+      "tasks": [
+        "PR13-B10",
+        "PR13-B11",
+        "PR13-B04"
+      ],
+      "note": "Non-rule UX and strategy diagnosis before broad tuning."
+    },
+    {
+      "id": "B-W2",
+      "tasks": [
+        "PR13-B05",
+        "PR13-B06",
+        "PR13-B07",
+        "PR13-B08",
+        "PR13-B09"
+      ],
+      "note": "One-factor isolated candidates, then interactions; no more than three workers or shared-file simultaneous writes."
+    },
+    {
+      "id": "B-W3",
+      "tasks": [
+        "PR13-B12"
+      ],
+      "note": "Independent integration acceptance; only MAIN closes tasks."
+    }
   ],
-  "handoff_fields": ["task_ids", "base_sha", "head_sha", "changed_files", "rule_and_config_changes", "repro_before", "test_commands", "exit_codes", "sample_definition", "artifact_paths", "artifact_hashes", "risks", "rollback", "remaining_blockers"]
+  "handoff_fields": [
+    "task_ids",
+    "base_sha",
+    "head_sha",
+    "changed_files",
+    "rule_and_config_changes",
+    "repro_before",
+    "test_commands",
+    "exit_codes",
+    "sample_definition",
+    "artifact_paths",
+    "artifact_hashes",
+    "risks",
+    "rollback",
+    "remaining_blockers"
+  ],
+  "acceptance_details": "docs/plans/PR13_ACCEPTANCE_DETAILS_20260930.json",
+  "acceptance_handbook": "docs/plans/PR13_ACCEPTANCE_DETAILS_20260930.md",
+  "specification_updated_date": "2026-09-30",
+  "specification_state": "ReviewReady_NotRuntimeAccepted",
+  "canonical_dependency_source": "docs/plans/PR13_ACCEPTANCE_DETAILS_20260930.json#requires_before_integration",
+  "dependency_note": "本细则取代父包级隐含依赖；原依赖作为历史分工保留，运行前以132子项无环依赖为准。"
 }

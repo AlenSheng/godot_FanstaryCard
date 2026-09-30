@@ -1,8 +1,10 @@
 # 2026-09-29 压测修复与优化：多子 agent 实施、主 agent 验收计划
 
-版本：2.1。状态：**Draft / InProgress**。实施起点和当前证据见 [implementation-baseline](../reports/gameplay-load-20260929/implementation-baseline.md) 与 [状态清单](GAMEPLAY_LOAD_EXECUTION_20260929.json)。
+版本：2.1（原任务历史保留；2026-09-30补全验收入口）。状态：**Draft / InProgress**。实施起点和当前证据见 [implementation-baseline](../reports/gameplay-load-20260929/implementation-baseline.md) 与 [状态清单](GAMEPLAY_LOAD_EXECUTION_20260929.json)。
 
-前一轮交付是计划与复核记录；2026-09-29 已收到实施指令并开始修改。PR #13 保留首批已有代码，但不得因离线测试通过就把 LOAD-01～03 标记为最终验收完成。实施阶段不合并、不部署、不再次放宽线上限流。
+**当前完整执行入口：** [PR13全范围分阶段细则](PR13_ACCEPTANCE_DETAILS_20260930.md)与[机器可读规格](PR13_ACCEPTANCE_DETAILS_20260930.json)，涵盖LOAD44、A40、B48共132个子项。最小依赖、S0～S6、G0～G5、用例判据/证据/回滚以新细则为准；本文保留原44项意图及历史复核，不以原父包描述代替逐项验收。A与B是补充包，合格用例证据复用，同文件单写入者。
+
+前一轮交付是计划与复核记录；2026-09-29 已收到实施指令并开始修改。PR #13 保留首批已有代码，但不得因离线测试通过就把 LOAD-01～03 标记为最终验收完成。用户随后授权在尚未对外的云端更新服务并进行有界测试；该授权保留，临时限流覆盖的恢复和历史部署证据见云端报告。2026-09-30本次仅补齐规格，未执行新部署/压测，未合并或正式启用数值候选。
 
 仓库：`AlenSheng/godot_FanstaryCard`。
 目标：`release`；复核基线 `28c6c7e7d3898e4d2abd186f53361477ba380330`。

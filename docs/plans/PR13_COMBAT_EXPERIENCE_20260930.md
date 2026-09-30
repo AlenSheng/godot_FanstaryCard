@@ -2,11 +2,13 @@
 
 日期：2026-09-30。范围：用户本轮要求将战斗体验与配套数值优化加入草稿 PR13。
 
+**后续完善后的完整入口：** [PR13全范围分阶段细则](PR13_ACCEPTANCE_DETAILS_20260930.md)与[规格JSON](PR13_ACCEPTANCE_DETAILS_20260930.json)。本文件保留B01～B12的48子项原意；新细则合并LOAD44、A40、B48共132项，逐项给出S0～S6、依赖、检查预期、通过/阻塞、证据与回滚。132项规范Ready不表示运行Accepted。本次没有修改游戏代码、数值配置或执行新运行验收。
+
 状态：**Queued / 未执行验收**。本文件新增 12 个处理包、48 个子项；仅加入队列，不代表已经实现、启动 agent 或通过测试。所有条目 `accepted_by=null`、`runtime_agent_id=null`。不合并 release、不部署、不改变正式数值、不扩大历史云端测试授权。
 
 复核源码：`9e0bd404bdeea9df250ba0ccd55bc8f4c98f786b`；PR 基线：`release / 28c6c7e7d3898e4d2abd186f53361477ba380330`。本文档提交后的新 head 只代表队列文档变更，不是重新验证后的运行构建。
 
-本队列是 [原 LOAD 执行清单](GAMEPLAY_LOAD_EXECUTION_20260929.json) 和 [压测修复计划](GAMEPLAY_LOAD_REPAIR_20260929.md) 的补充，复用 [NUM 数值计划](NUMERICAL_IMPLEMENTATION_20260928.md)。不改写原 LOAD-01～11、G0～G5 的历史状态。上一轮交接的 PR13-A01～A10 仍保留；它们来自对话交付，不在本文伪称已经作为文件提交到仓库。
+本队列是 [原 LOAD 执行清单](GAMEPLAY_LOAD_EXECUTION_20260929.json) 和 [压测修复计划](GAMEPLAY_LOAD_REPAIR_20260929.md) 的补充，复用 [NUM 数值计划](NUMERICAL_IMPLEMENTATION_20260928.md)。不改写原 LOAD-01～11、G0～G5 的历史运行状态。上一轮交接的 PR13-A01～A10 已根据可访问对话正文重新细化并入库为[A收尾队列](PR13_REMAINING_QUEUE_20260930.json)；原sandbox附件未取得，新四子项不是原40子项附件的逐字恢复。
 
 ## 1. 两条执行轨道与冻结边界
 
