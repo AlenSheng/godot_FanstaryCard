@@ -1,0 +1,150 @@
+test_alive_fresh_counts (test_gameplay_load_validation.ValidationTests.test_alive_fresh_counts) ... ok
+test_attempts_have_separate_denominator_from_logical_requests (test_gameplay_load_validation.ValidationTests.test_attempts_have_separate_denominator_from_logical_requests) ... ok
+test_bad_http_status_and_duration_keep_attempt (test_gameplay_load_validation.ValidationTests.test_bad_http_status_and_duration_keep_attempt) ... ok
+test_client_cancellation_is_measured_without_service_redline (test_gameplay_load_validation.ValidationTests.test_client_cancellation_is_measured_without_service_redline) ... ok
+test_compatibility_404_not_silently_dropped (test_gameplay_load_validation.ValidationTests.test_compatibility_404_not_silently_dropped) ... ok
+test_coordinator_error_never_passes (test_gameplay_load_validation.ValidationTests.test_coordinator_error_never_passes) ... ok
+test_dead_duplicate_and_unknown_do_not_inflate (test_gameplay_load_validation.ValidationTests.test_dead_duplicate_and_unknown_do_not_inflate) ... ok
+test_empty_window_not_fake_latency (test_gameplay_load_validation.ValidationTests.test_empty_window_not_fake_latency) ... ok
+test_event_sequence_handles_same_millisecond_and_detects_loss (test_gameplay_load_validation.ValidationTests.test_event_sequence_handles_same_millisecond_and_detects_loss) ... ok
+test_exited_failure_is_workload_failure (test_gameplay_load_validation.ValidationTests.test_exited_failure_is_workload_failure) ... ok
+test_exited_success_never_online_or_stale (test_gameplay_load_validation.ValidationTests.test_exited_success_never_online_or_stale) ... ok
+test_future_timestamp_excluded (test_gameplay_load_validation.ValidationTests.test_future_timestamp_excluded) ... ok
+test_generator_stop_is_invalid_not_capacity (test_gameplay_load_validation.ValidationTests.test_generator_stop_is_invalid_not_capacity) ... ok
+test_http_telemetry_is_not_double_counted (test_gameplay_load_validation.ValidationTests.test_http_telemetry_is_not_double_counted) ... ok
+test_invalid_numbers_flagged (test_gameplay_load_validation.ValidationTests.test_invalid_numbers_flagged) ... ok
+test_json_integer_outside_float_range_is_invalid_not_zero_latency (test_gameplay_load_validation.ValidationTests.test_json_integer_outside_float_range_is_invalid_not_zero_latency) ... ERROR
+test_malformed_status_does_not_crash_sampler (test_gameplay_load_validation.ValidationTests.test_malformed_status_does_not_crash_sampler) ... ok
+test_missing_uses_actual_launch_time (test_gameplay_load_validation.ValidationTests.test_missing_uses_actual_launch_time) ... ok
+test_monitoring_stop_invalid (test_gameplay_load_validation.ValidationTests.test_monitoring_stop_invalid) ... ok
+test_non_string_telemetry_types_are_invalid_evidence (test_gameplay_load_validation.ValidationTests.test_non_string_telemetry_types_are_invalid_evidence) ... 
+  test_non_string_telemetry_types_are_invalid_evidence (test_gameplay_load_validation.ValidationTests.test_non_string_telemetry_types_are_invalid_evidence) (kind=[]) ... ERROR
+  test_non_string_telemetry_types_are_invalid_evidence (test_gameplay_load_validation.ValidationTests.test_non_string_telemetry_types_are_invalid_evidence) (kind={}) ... ERROR
+  test_non_string_telemetry_types_are_invalid_evidence (test_gameplay_load_validation.ValidationTests.test_non_string_telemetry_types_are_invalid_evidence) (kind=None) ... FAIL
+  test_non_string_telemetry_types_are_invalid_evidence (test_gameplay_load_validation.ValidationTests.test_non_string_telemetry_types_are_invalid_evidence) (kind=True) ... FAIL
+  test_non_string_telemetry_types_are_invalid_evidence (test_gameplay_load_validation.ValidationTests.test_non_string_telemetry_types_are_invalid_evidence) (kind=1) ... FAIL
+test_offline_room_is_not_active (test_gameplay_load_validation.ValidationTests.test_offline_room_is_not_active) ... ok
+test_operation_copy_cannot_replace_the_owned_telemetry_sample (test_gameplay_load_validation.ValidationTests.test_operation_copy_cannot_replace_the_owned_telemetry_sample) ... ok
+test_operator_stop_not_pass (test_gameplay_load_validation.ValidationTests.test_operator_stop_not_pass) ... ok
+test_owned_json_file_schema_failure_reaches_explicit_invalid_decision (test_gameplay_load_validation.ValidationTests.test_owned_json_file_schema_failure_reaches_explicit_invalid_decision) ... 
+  test_owned_json_file_schema_failure_reaches_explicit_invalid_decision (test_gameplay_load_validation.ValidationTests.test_owned_json_file_schema_failure_reaches_explicit_invalid_decision) (kind=[]) ... ERROR
+  test_owned_json_file_schema_failure_reaches_explicit_invalid_decision (test_gameplay_load_validation.ValidationTests.test_owned_json_file_schema_failure_reaches_explicit_invalid_decision) (kind={}) ... ERROR
+  test_owned_json_file_schema_failure_reaches_explicit_invalid_decision (test_gameplay_load_validation.ValidationTests.test_owned_json_file_schema_failure_reaches_explicit_invalid_decision) (kind='http') ... ERROR
+test_owned_status_rejects_other_launch_and_preserves_exit_history (test_gameplay_load_validation.ValidationTests.test_owned_status_rejects_other_launch_and_preserves_exit_history) ... ok
+test_percentile_nearest_rank (test_gameplay_load_validation.ValidationTests.test_percentile_nearest_rank) ... ok
+test_performance_stop_is_not_pass (test_gameplay_load_validation.ValidationTests.test_performance_stop_is_not_pass) ... ok
+test_pid_mismatch_excluded (test_gameplay_load_validation.ValidationTests.test_pid_mismatch_excluded) ... ok
+test_real_child_exit_is_not_counted_online (test_gameplay_load_validation.ValidationTests.test_real_child_exit_is_not_counted_online) ... ok
+test_settlement_bootstrap_has_phase_and_legacy_comparison (test_gameplay_load_validation.ValidationTests.test_settlement_bootstrap_has_phase_and_legacy_comparison) ... ok
+test_smoke_requires_evidence (test_gameplay_load_validation.ValidationTests.test_smoke_requires_evidence) ... ok
+test_stale_running_excluded (test_gameplay_load_validation.ValidationTests.test_stale_running_excluded) ... ok
+test_stalled_running_is_separate (test_gameplay_load_validation.ValidationTests.test_stalled_running_is_separate) ... ok
+test_steady_error_denominator (test_gameplay_load_validation.ValidationTests.test_steady_error_denominator) ... ok
+test_workload_invalid_takes_precedence (test_gameplay_load_validation.ValidationTests.test_workload_invalid_takes_precedence) ... ok
+
+======================================================================
+ERROR: test_json_integer_outside_float_range_is_invalid_not_zero_latency (test_gameplay_load_validation.ValidationTests.test_json_integer_outside_float_range_is_invalid_not_zero_latency)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/pr13-takeover/schema-safety-review/baseline/tools/tests/test_gameplay_load_validation.py", line 116, in test_json_integer_outside_float_range_is_invalid_not_zero_latency
+    result = module.aggregate_window([{'operations':[{
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/pr13-takeover/schema-safety-review/baseline/tools/gameplay_load_validation.py", line 65, in aggregate_window
+    if not _number(duration) or duration < 0:
+           ^^^^^^^^^^^^^^^^^
+  File "/workspace/pr13-takeover/schema-safety-review/baseline/tools/gameplay_load_validation.py", line 34, in _number
+    return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+                                                                               ^^^^^^^^^^^^^^^^^^^^
+OverflowError: int too large to convert to float
+
+======================================================================
+ERROR: test_non_string_telemetry_types_are_invalid_evidence (test_gameplay_load_validation.ValidationTests.test_non_string_telemetry_types_are_invalid_evidence) (kind=[])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/pr13-takeover/schema-safety-review/baseline/tools/tests/test_gameplay_load_validation.py", line 106, in test_non_string_telemetry_types_are_invalid_evidence
+    result = module.aggregate_window([{'operations':[valid],
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/pr13-takeover/schema-safety-review/baseline/tools/gameplay_load_validation.py", line 62, in aggregate_window
+    if kind not in {"http", "http_attempt", "realtime", "rtt"} or (field == "telemetry" and kind == "http"):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: unhashable type: 'list'
+
+======================================================================
+ERROR: test_non_string_telemetry_types_are_invalid_evidence (test_gameplay_load_validation.ValidationTests.test_non_string_telemetry_types_are_invalid_evidence) (kind={})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/pr13-takeover/schema-safety-review/baseline/tools/tests/test_gameplay_load_validation.py", line 106, in test_non_string_telemetry_types_are_invalid_evidence
+    result = module.aggregate_window([{'operations':[valid],
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/pr13-takeover/schema-safety-review/baseline/tools/gameplay_load_validation.py", line 62, in aggregate_window
+    if kind not in {"http", "http_attempt", "realtime", "rtt"} or (field == "telemetry" and kind == "http"):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: unhashable type: 'dict'
+
+======================================================================
+ERROR: test_owned_json_file_schema_failure_reaches_explicit_invalid_decision (test_gameplay_load_validation.ValidationTests.test_owned_json_file_schema_failure_reaches_explicit_invalid_decision) (kind=[])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/pr13-takeover/schema-safety-review/baseline/tools/tests/test_gameplay_load_validation.py", line 150, in test_owned_json_file_schema_failure_reaches_explicit_invalid_decision
+    result=module.aggregate_window(windows)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/pr13-takeover/schema-safety-review/baseline/tools/gameplay_load_validation.py", line 62, in aggregate_window
+    if kind not in {"http", "http_attempt", "realtime", "rtt"} or (field == "telemetry" and kind == "http"):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: unhashable type: 'list'
+
+======================================================================
+ERROR: test_owned_json_file_schema_failure_reaches_explicit_invalid_decision (test_gameplay_load_validation.ValidationTests.test_owned_json_file_schema_failure_reaches_explicit_invalid_decision) (kind={})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/pr13-takeover/schema-safety-review/baseline/tools/tests/test_gameplay_load_validation.py", line 150, in test_owned_json_file_schema_failure_reaches_explicit_invalid_decision
+    result=module.aggregate_window(windows)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/pr13-takeover/schema-safety-review/baseline/tools/gameplay_load_validation.py", line 62, in aggregate_window
+    if kind not in {"http", "http_attempt", "realtime", "rtt"} or (field == "telemetry" and kind == "http"):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: unhashable type: 'dict'
+
+======================================================================
+ERROR: test_owned_json_file_schema_failure_reaches_explicit_invalid_decision (test_gameplay_load_validation.ValidationTests.test_owned_json_file_schema_failure_reaches_explicit_invalid_decision) (kind='http')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/pr13-takeover/schema-safety-review/baseline/tools/tests/test_gameplay_load_validation.py", line 150, in test_owned_json_file_schema_failure_reaches_explicit_invalid_decision
+    result=module.aggregate_window(windows)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/pr13-takeover/schema-safety-review/baseline/tools/gameplay_load_validation.py", line 65, in aggregate_window
+    if not _number(duration) or duration < 0:
+           ^^^^^^^^^^^^^^^^^
+  File "/workspace/pr13-takeover/schema-safety-review/baseline/tools/gameplay_load_validation.py", line 34, in _number
+    return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+                                                                               ^^^^^^^^^^^^^^^^^^^^
+OverflowError: int too large to convert to float
+
+======================================================================
+FAIL: test_non_string_telemetry_types_are_invalid_evidence (test_gameplay_load_validation.ValidationTests.test_non_string_telemetry_types_are_invalid_evidence) (kind=None)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/pr13-takeover/schema-safety-review/baseline/tools/tests/test_gameplay_load_validation.py", line 108, in test_non_string_telemetry_types_are_invalid_evidence
+    self.assertEqual(result['invalid_schema_count'],1)
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_non_string_telemetry_types_are_invalid_evidence (test_gameplay_load_validation.ValidationTests.test_non_string_telemetry_types_are_invalid_evidence) (kind=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/pr13-takeover/schema-safety-review/baseline/tools/tests/test_gameplay_load_validation.py", line 108, in test_non_string_telemetry_types_are_invalid_evidence
+    self.assertEqual(result['invalid_schema_count'],1)
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_non_string_telemetry_types_are_invalid_evidence (test_gameplay_load_validation.ValidationTests.test_non_string_telemetry_types_are_invalid_evidence) (kind=1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/pr13-takeover/schema-safety-review/baseline/tools/tests/test_gameplay_load_validation.py", line 108, in test_non_string_telemetry_types_are_invalid_evidence
+    self.assertEqual(result['invalid_schema_count'],1)
+AssertionError: 0 != 1
+
+----------------------------------------------------------------------
+Ran 35 tests in 0.072s
+
+FAILED (failures=3, errors=6)

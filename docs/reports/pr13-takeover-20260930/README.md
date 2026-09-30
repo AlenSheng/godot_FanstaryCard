@@ -1,3 +1,7 @@
+## Schema修订收据4bb6c6be
+
+[完整REPORT](schema-safety-4bb6c6be/REPORT.json)及[独立重放命令](schema-safety-4bb6c6be/README.md)：MAIN发现的两类schema反例已在真实子进程文件路径复现，最小校验工具修复后同一干净SHA复跑。四反例明确invalid exit3，Python118和原12case通过。LOAD01.1原NoChange提议已撤销，现为修复提议；其余三项保留技术证据、metadata补齐并复跑。全部待独立MAIN实际重放，Accepted0。业务/UI保持f812；旧报告仅历史。
+
 当前阶段：LOAD-01四项提交独立裁决。固定源码f812879e；12/12原case、Python115/115通过。完整S0–S5证据及最小依赖产物见[本批](offline-acceptance-f812/load01/README.md)。状态4ReadyForAcceptance/49Partial/76NotRevalidated/3Blocked/0Accepted；S6待MAIN。不额外要求这四项合同没有的CI/LIVE/真人。生产/UI未修改，原失败、raw与前阶段收据全部保留。
 
 以下为前批历史。

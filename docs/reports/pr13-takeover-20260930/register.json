@@ -120,23 +120,22 @@
       "historical_case_counts": {
         "Passed": 3
       },
-      "implementation_status": "Current behavior independently audited through frozen setup/expected and pure-SHA explicit receipts; no new code for this task.",
-      "current_test_status": "All3 original OFFLINE cases Passed; complete S0–S5 evidence; ReadyForIndependentAcceptance proposal; S6 pending.",
-      "modification_sha": null,
+      "implementation_status": "Minimal evidence-only schema fix: type checked before membership; oversized JSON integer classified invalid. Actual frozen source red4 -> clean fixed source explicit invalid4.",
+      "current_test_status": "Clean4bb6c6be original3/3 plus complete shared schema guard regression; independent MAIN replay pending",
+      "modification_sha": "4bb6c6be847c17b2dcd1b4ee9db5be6fa4d7d1d7",
       "test_commands": [
         "python3 tools/pr13_offline_cases.py --output /workspace/pr13-takeover/case-audit-cc6da2e/receipts --godot /workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
         "C-PY @ f812879e:115/115",
-        "LOAD01-EXACT @ f812879e:12/12 group"
+        "LOAD01-EXACT @ f812879e:12/12 group",
+        "C-PY @4bb6c6be:118/118",
+        "LOAD01-EXACT @4bb6c6be:12/12",
+        "SCHEMA file-path @4bb6c6be:4 invalid exit3,0 unhandled"
       ],
       "evidence": [
-        "case-audit-cc6da2e/manifest.json",
-        "case-audit-cc6da2e/receipts/report.json",
-        "case-audit-cc6da2e/receipts/cases.jsonl",
-        "CASE_MAPPING.json",
-        "integrated-cc6da2e/report.json",
-        "offline-acceptance-f812/load01/REPORT.json"
+        "schema-safety-4bb6c6be/REPORT.json",
+        "schema-safety-4bb6c6be/MANIFEST.json"
       ],
-      "remaining_blocker": "Independent MAIN S6 adjudication only. Canonical task has no CI/LIVE/POSTGRES/RENDER/participant requirement.",
+      "remaining_blocker": "S6 independent MAIN actual key-case replay and adjudication; corrected metadata/source4bb6c6be. No extra CI/LIVE/participant gate.",
       "dependencies": [
         "LOAD-11.1",
         "LOAD-06.4"
@@ -153,9 +152,15 @@
       "supporting_tests_are_canonical_acceptance": false,
       "tested_source_shas": [
         "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
-        "f812879e4518fd09bf22656451cb563d62940298"
+        "f812879e4518fd09bf22656451cb563d62940298",
+        "4bb6c6be847c17b2dcd1b4ee9db5be6fa4d7d1d7"
       ],
-      "acceptance_proposal": "ReadyForIndependentAcceptance"
+      "acceptance_proposal": "ReadyForIndependentAcceptance",
+      "remaining_blockers": [
+        "S6 independent MAIN actual critical replay and adjudication"
+      ],
+      "latest_runtime_sha": "4bb6c6be847c17b2dcd1b4ee9db5be6fa4d7d1d7",
+      "proposed_resolution": "FixedWithEvidence"
     },
     {
       "task_id": "LOAD-01.2",
@@ -168,23 +173,21 @@
         "Passed": 3
       },
       "implementation_status": "Final evidence, ownership, ACK conservation and STOP/emergency handling corrected and counterexample-tested.",
-      "current_test_status": "All3 original OFFLINE cases Passed; complete S0–S5 evidence; ReadyForIndependentAcceptance proposal; S6 pending.",
-      "modification_sha": "d4c3212fb32c75d4b9f9f62c08277996611b149c",
+      "current_test_status": "Clean4bb6c6be original3/3 plus complete shared schema guard regression; independent MAIN replay pending",
+      "modification_sha": null,
       "test_commands": [
         "python -m unittest discover -s tools/tests -v",
         "C-PY @ f812879e:115/115",
-        "LOAD01-EXACT @ f812879e:12/12 group"
+        "LOAD01-EXACT @ f812879e:12/12 group",
+        "C-PY @4bb6c6be:118/118",
+        "LOAD01-EXACT @4bb6c6be:12/12",
+        "SCHEMA file-path @4bb6c6be:4 invalid exit3,0 unhandled"
       ],
       "evidence": [
-        "batch-results.json",
-        "p0-9275ec2/python-tests.log",
-        "ci-9275ec2/verified-artifacts.json",
-        "ci-b7099ef/verified-artifacts.json",
-        "integrated-cc6da2e/report.json",
-        "ci-cc6da2e/workflows.json",
-        "offline-acceptance-f812/load01/REPORT.json"
+        "schema-safety-4bb6c6be/REPORT.json",
+        "schema-safety-4bb6c6be/MANIFEST.json"
       ],
-      "remaining_blocker": "Independent MAIN S6 adjudication only. Canonical task has no CI/LIVE/POSTGRES/RENDER/participant requirement.",
+      "remaining_blocker": "S6 independent MAIN actual key-case replay and adjudication; corrected metadata/source4bb6c6be. No extra CI/LIVE/participant gate.",
       "dependencies": [
         "LOAD-01.1"
       ],
@@ -204,9 +207,15 @@
       ],
       "tested_source_shas": [
         "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
-        "f812879e4518fd09bf22656451cb563d62940298"
+        "f812879e4518fd09bf22656451cb563d62940298",
+        "4bb6c6be847c17b2dcd1b4ee9db5be6fa4d7d1d7"
       ],
-      "acceptance_proposal": "ReadyForIndependentAcceptance"
+      "acceptance_proposal": "ReadyForIndependentAcceptance",
+      "remaining_blockers": [
+        "S6 independent MAIN actual critical replay and adjudication"
+      ],
+      "latest_runtime_sha": "4bb6c6be847c17b2dcd1b4ee9db5be6fa4d7d1d7",
+      "proposed_resolution": "NoChangeWithEvidence"
     },
     {
       "task_id": "LOAD-01.3",
@@ -219,22 +228,21 @@
         "Passed": 3
       },
       "implementation_status": "Current behavior independently audited through frozen setup/expected and pure-SHA explicit receipts; no new code for this task.",
-      "current_test_status": "All3 original OFFLINE cases Passed; complete S0–S5 evidence; ReadyForIndependentAcceptance proposal; S6 pending.",
+      "current_test_status": "Clean4bb6c6be original3/3 plus complete shared schema guard regression; independent MAIN replay pending",
       "modification_sha": null,
       "test_commands": [
         "python3 tools/pr13_offline_cases.py --output /workspace/pr13-takeover/case-audit-cc6da2e/receipts --godot /workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
         "C-PY @ f812879e:115/115",
-        "LOAD01-EXACT @ f812879e:12/12 group"
+        "LOAD01-EXACT @ f812879e:12/12 group",
+        "C-PY @4bb6c6be:118/118",
+        "LOAD01-EXACT @4bb6c6be:12/12",
+        "SCHEMA file-path @4bb6c6be:4 invalid exit3,0 unhandled"
       ],
       "evidence": [
-        "case-audit-cc6da2e/manifest.json",
-        "case-audit-cc6da2e/receipts/report.json",
-        "case-audit-cc6da2e/receipts/cases.jsonl",
-        "CASE_MAPPING.json",
-        "integrated-cc6da2e/report.json",
-        "offline-acceptance-f812/load01/REPORT.json"
+        "schema-safety-4bb6c6be/REPORT.json",
+        "schema-safety-4bb6c6be/MANIFEST.json"
       ],
-      "remaining_blocker": "Independent MAIN S6 adjudication only. Canonical task has no CI/LIVE/POSTGRES/RENDER/participant requirement.",
+      "remaining_blocker": "S6 independent MAIN actual key-case replay and adjudication; corrected metadata/source4bb6c6be. No extra CI/LIVE/participant gate.",
       "dependencies": [
         "LOAD-01.2"
       ],
@@ -250,9 +258,15 @@
       "supporting_tests_are_canonical_acceptance": false,
       "tested_source_shas": [
         "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
-        "f812879e4518fd09bf22656451cb563d62940298"
+        "f812879e4518fd09bf22656451cb563d62940298",
+        "4bb6c6be847c17b2dcd1b4ee9db5be6fa4d7d1d7"
       ],
-      "acceptance_proposal": "ReadyForIndependentAcceptance"
+      "acceptance_proposal": "ReadyForIndependentAcceptance",
+      "remaining_blockers": [
+        "S6 independent MAIN actual critical replay and adjudication"
+      ],
+      "latest_runtime_sha": "4bb6c6be847c17b2dcd1b4ee9db5be6fa4d7d1d7",
+      "proposed_resolution": "NoChangeWithEvidence"
     },
     {
       "task_id": "LOAD-01.4",
@@ -265,22 +279,21 @@
         "Passed": 3
       },
       "implementation_status": "Current behavior independently audited through frozen setup/expected and pure-SHA explicit receipts; no new code for this task.",
-      "current_test_status": "All3 original OFFLINE cases Passed; complete S0–S5 evidence; ReadyForIndependentAcceptance proposal; S6 pending.",
+      "current_test_status": "Clean4bb6c6be original3/3 plus complete shared schema guard regression; independent MAIN replay pending",
       "modification_sha": null,
       "test_commands": [
         "python3 tools/pr13_offline_cases.py --output /workspace/pr13-takeover/case-audit-cc6da2e/receipts --godot /workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
         "C-PY @ f812879e:115/115",
-        "LOAD01-EXACT @ f812879e:12/12 group"
+        "LOAD01-EXACT @ f812879e:12/12 group",
+        "C-PY @4bb6c6be:118/118",
+        "LOAD01-EXACT @4bb6c6be:12/12",
+        "SCHEMA file-path @4bb6c6be:4 invalid exit3,0 unhandled"
       ],
       "evidence": [
-        "case-audit-cc6da2e/manifest.json",
-        "case-audit-cc6da2e/receipts/report.json",
-        "case-audit-cc6da2e/receipts/cases.jsonl",
-        "CASE_MAPPING.json",
-        "integrated-cc6da2e/report.json",
-        "offline-acceptance-f812/load01/REPORT.json"
+        "schema-safety-4bb6c6be/REPORT.json",
+        "schema-safety-4bb6c6be/MANIFEST.json"
       ],
-      "remaining_blocker": "Independent MAIN S6 adjudication only. Canonical task has no CI/LIVE/POSTGRES/RENDER/participant requirement.",
+      "remaining_blocker": "S6 independent MAIN actual key-case replay and adjudication; corrected metadata/source4bb6c6be. No extra CI/LIVE/participant gate.",
       "dependencies": [
         "LOAD-01.3"
       ],
@@ -296,9 +309,15 @@
       "supporting_tests_are_canonical_acceptance": false,
       "tested_source_shas": [
         "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
-        "f812879e4518fd09bf22656451cb563d62940298"
+        "f812879e4518fd09bf22656451cb563d62940298",
+        "4bb6c6be847c17b2dcd1b4ee9db5be6fa4d7d1d7"
       ],
-      "acceptance_proposal": "ReadyForIndependentAcceptance"
+      "acceptance_proposal": "ReadyForIndependentAcceptance",
+      "remaining_blockers": [
+        "S6 independent MAIN actual critical replay and adjudication"
+      ],
+      "latest_runtime_sha": "4bb6c6be847c17b2dcd1b4ee9db5be6fa4d7d1d7",
+      "proposed_resolution": "NoChangeWithEvidence"
     },
     {
       "task_id": "LOAD-02.1",
@@ -5534,7 +5553,7 @@
       ]
     }
   ],
-  "updated_at_utc": "2026-09-30T22:22:05.181322+00:00",
+  "updated_at_utc": "2026-09-30T22:45:35.659513+00:00",
   "gate_decisions": [
     {
       "gate": "G0",
@@ -5574,45 +5593,19 @@
     "path": "fault-batch-f93e32da/ci-f93e32da.json",
     "all5_passed": false
   },
-  "latest_runtime_sha": "38c2caccb5f8327f52d97dffb3b9f9303360dd46",
+  "latest_runtime_sha": "4bb6c6be847c17b2dcd1b4ee9db5be6fa4d7d1d7",
   "state_counts": {
     "Partial": 49,
     "NotRevalidated": 76,
     "ReadyForAcceptance": 4,
     "Blocked": 3
   },
-  "latest_batch_state_transitions": [
-    {
-      "task_id": "LOAD-01.1",
-      "from": "Partial",
-      "to": "ReadyForAcceptance",
-      "Accepted": false,
-      "authority": "Independent MAIN pending"
-    },
-    {
-      "task_id": "LOAD-01.2",
-      "from": "Partial",
-      "to": "ReadyForAcceptance",
-      "Accepted": false,
-      "authority": "Independent MAIN pending"
-    },
-    {
-      "task_id": "LOAD-01.3",
-      "from": "Partial",
-      "to": "ReadyForAcceptance",
-      "Accepted": false,
-      "authority": "Independent MAIN pending"
-    },
-    {
-      "task_id": "LOAD-01.4",
-      "from": "Partial",
-      "to": "ReadyForAcceptance",
-      "Accepted": false,
-      "authority": "Independent MAIN pending"
-    }
-  ],
+  "latest_batch_state_transitions": {
+    "LOAD-01.1": "ReadyForAcceptance: previous NoChange proposal rejected; minimal schema fix with actual red/green evidence, independent MAIN replay pending",
+    "LOAD-01.2-.4": "ReadyForAcceptance retained: metadata corrected and clean fixed SHA original cases rerun; independent MAIN replay pending"
+  },
   "production_protocol_fix_sha": "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17",
   "checkpoint_test_fix_sha": "de1157fdf490a5bce3ba888c07519fc957c46782",
   "latest_test_candidate_sha": "f812879e4518fd09bf22656451cb563d62940298",
-  "production_behavior_baseline": "f93e32dac07608e8375e709cd357c4793bdcc41a"
+  "production_behavior_baseline": "f812879e4518fd09bf22656451cb563d62940298 (business/client/UI); validation-only fix4bb6c6be"
 }
