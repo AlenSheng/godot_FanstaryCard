@@ -1,3 +1,5 @@
+> 历史检查点：此文件描述 `1b49f4f` 的未完成状态。当前 release／owner_dispatch 实现、验证和阻塞见 [最新报告](CLOUD_TEST_DEPLOYMENT_20260930.md)。其中旧 main／required-reviewers 设计已经被用户明确授权替换。
+
 # WIP cloud environment and controlled test deployment handoff
 
 Status: **unfinished; not approved for deployment**. Local editing stops after this

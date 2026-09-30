@@ -1,4 +1,4 @@
-name: Controlled silicon valley test deployment
+name: Owner-confirmed silicon valley test deployment
 
 on:
   workflow_dispatch:
@@ -7,6 +7,24 @@ on:
         description: Same-repository open PR targeting release (freeze before dispatch)
         required: true
         type: string
+      confirm_source_sha:
+        description: Owner confirms deployment of this exact full SHA (repeat commit_sha)
+        required: true
+        type: string
+      rollback_baseline_sha:
+        description: Full running baseline SHA reviewed for application rollback compatibility
+        required: true
+        type: string
+      confirm_rollback_compatibility:
+        description: Data and snapshot contracts were reviewed as compatible with this rollback baseline
+        required: true
+        default: false
+        type: boolean
+      confirm_restart:
+        description: I authorize this test deployment and necessary application restart
+        required: true
+        default: false
+        type: boolean
       commit_sha:
         description: Reviewed full 40-character lowercase PR head SHA
         required: true
@@ -21,7 +39,7 @@ concurrency:
 
 jobs:
   validate:
-    if: github.repository == 'AlenSheng/godot_FanstaryCard' && github.ref == 'refs/heads/main'
+    if: github.repository == 'AlenSheng/godot_FanstaryCard' && github.ref == 'refs/heads/release'
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     permissions:
@@ -36,12 +54,17 @@ jobs:
         with:
           ref: ${{ github.sha }}
           persist-credentials: false
-      - name: Validate trusted controller, frozen PR and real environment protections
+      - name: Validate release controller, exact owner confirmation and live branch policy
         id: source
         env:
           GH_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ inputs.pr_number }}
           COMMIT_SHA: ${{ inputs.commit_sha }}
+          ROLLBACK_BASELINE_SHA: ${{ inputs.rollback_baseline_sha }}
+          CONFIRM_ROLLBACK_COMPATIBILITY: ${{ inputs.confirm_rollback_compatibility }}
+          CONFIRM_SOURCE_SHA: ${{ inputs.confirm_source_sha }}
+          CONFIRM_RESTART: ${{ inputs.confirm_restart }}
+          TEST_DEPLOY_APPROVAL_MODE: ${{ vars.TEST_DEPLOY_APPROVAL_MODE }}
           TEST_DEPLOY_ENABLED: ${{ vars.TEST_DEPLOY_ENABLED }}
           TEST_DEPLOY_APPROVED_WORKFLOW_SHA: ${{ vars.TEST_DEPLOY_APPROVED_WORKFLOW_SHA }}
         run: python3 tools/cloud/deployment.py preflight --output evidence/preflight.json
@@ -54,7 +77,7 @@ jobs:
   build:
     needs: validate
     runs-on: ubuntu-24.04
-    timeout-minutes: 35
+    timeout-minutes: 70
     services:
       postgres:
         image: postgres:18
@@ -98,6 +121,8 @@ jobs:
           dotnet --info > ../evidence/tests/dotnet.txt
           dotnet test server/tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj -c Release --logger 'trx;LogFileName=domain.trx' --results-directory "$GITHUB_WORKSPACE/evidence/tests"
           dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --logger 'trx;LogFileName=postgres.trx' --results-directory "$GITHUB_WORKSPACE/evidence/tests"
+      - name: Require executed PostgreSQL results with no failed or skipped cases
+        run: python3 trusted/tools/cloud/deployment.py tests --directory evidence/tests
       - name: Build the existing Dockerfile and archive the immutable tested image
         env:
           SOURCE_SHA: ${{ needs.validate.outputs.source_sha }}
@@ -105,7 +130,10 @@ jobs:
           set -euo pipefail
           mkdir -p image-artifact
           python3 trusted/tools/cloud/deployment.py health --updater trusted/server/deploy/fantasycard-update.sh --output image-artifact/health.sh
-          docker build --file source/server/src/FantasyCard.Server/Dockerfile --build-arg "FANTASYCARD_SOURCE_COMMIT=$SOURCE_SHA" --tag "fantasycard-test:$SOURCE_SHA" source 2>&1 | tee evidence/build.log
+          docker build --label "org.opencontainers.image.revision=$SOURCE_SHA" --file source/server/src/FantasyCard.Server/Dockerfile --tag "fantasycard-test:$SOURCE_SHA" source 2>&1 | tee evidence/build.log
+          git -C source diff --exit-code -- . ':!**/obj/**' ':!**/bin/**'
+          docker build --target build --file source/server/src/FantasyCard.Server/Dockerfile --tag "fantasycard-test-builder:$SOURCE_SHA" source > evidence/builder.log 2>&1
+          python3 trusted/tools/cloud/validate_image.py --source source --image "fantasycard-test:$SOURCE_SHA" --builder "fantasycard-test-builder:$SOURCE_SHA" --source-sha "$SOURCE_SHA" --output image-artifact/image-validation.json > evidence/image-validation.log 2>&1
           docker save "fantasycard-test:$SOURCE_SHA" | gzip -1 > image-artifact/image.tar.gz
           python3 trusted/tools/cloud/deployment.py manifest --preflight evidence/preflight.json --archive image-artifact/image.tar.gz --image-tag "fantasycard-test:$SOURCE_SHA" --output image-artifact/manifest.json
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
@@ -115,6 +143,7 @@ jobs:
           path: |
             image-artifact/image.tar.gz
             image-artifact/manifest.json
+            image-artifact/image-validation.json
           retention-days: 7
           if-no-files-found: error
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
@@ -126,7 +155,7 @@ jobs:
 
   deploy:
     needs: [validate, build]
-    if: github.repository == 'AlenSheng/godot_FanstaryCard' && github.ref == 'refs/heads/main'
+    if: github.repository == 'AlenSheng/godot_FanstaryCard' && github.ref == 'refs/heads/release'
     runs-on: ubuntu-24.04
     timeout-minutes: 50
     environment:
@@ -142,14 +171,24 @@ jobs:
           ref: ${{ github.sha }}
           path: trusted
           persist-credentials: false
-      - name: Revalidate source and protections after environment approval
+      - name: Revalidate source and protections before secret access
         env:
           GH_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ needs.validate.outputs.pr_number }}
           COMMIT_SHA: ${{ needs.validate.outputs.source_sha }}
+          ROLLBACK_BASELINE_SHA: ${{ inputs.rollback_baseline_sha }}
+          CONFIRM_ROLLBACK_COMPATIBILITY: ${{ inputs.confirm_rollback_compatibility }}
+          CONFIRM_SOURCE_SHA: ${{ inputs.confirm_source_sha }}
+          CONFIRM_RESTART: ${{ inputs.confirm_restart }}
+          TEST_DEPLOY_APPROVAL_MODE: ${{ vars.TEST_DEPLOY_APPROVAL_MODE }}
           TEST_DEPLOY_ENABLED: ${{ vars.TEST_DEPLOY_ENABLED }}
           TEST_DEPLOY_APPROVED_WORKFLOW_SHA: ${{ vars.TEST_DEPLOY_APPROVED_WORKFLOW_SHA }}
         run: python3 trusted/tools/cloud/deployment.py preflight --output deploy-evidence/preflight.json
+      - name: Verify artifact API identity from this run and attempt
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT_ID: ${{ needs.build.outputs.artifact_id }}
+        run: python3 trusted/tools/cloud/deployment.py artifact --id "$ARTIFACT_ID"
       - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           artifact-ids: ${{ needs.build.outputs.artifact_id }}
