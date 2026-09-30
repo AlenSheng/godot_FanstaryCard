@@ -90,7 +90,8 @@ func button(value: String, rect: Rect2, action: Callable, disabled: bool = false
 	if not (parent != null and parent is Container):
 		node.position = rect.position
 		node.size = rect.size
-	P.fit_control_font(node, P.font_for_text(node.text, 24), 24, 48.0)
+	# Fit the font Button actually draws; the theme uses title rather than body.
+	P.fit_control_font(node, node.get_theme_font("font"), 24, 48.0)
 	return node
 
 func card(source: Control, id: String, rect: Rect2, action: Callable, selected: bool = false, disabled: bool = false, options: Dictionary = {}) -> Button:
@@ -232,7 +233,7 @@ func _hall() -> void:
 		entry_icon.position = Vector2(25, 12)
 		entry_icon.size = Vector2(168, 130)
 		picture(Art.texture("UI/Hall/entry_frame.png"), rect)
-		var entry_title := text(P.localized(entries[i][2]), Rect2(rect.position + Vector2(18, 143), Vector2(206, 50)), 28, P.GOLD)
+		var entry_title := text(P.localized(entries[i][2]), Rect2(rect.position + Vector2(18, 139), Vector2(206, 72)), 28, P.GOLD)
 		entry_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		entry_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	var version_label := text(P.localized("client_version") % str(Game.CATALOG.data.version), Rect2(42, 1038, 900, 30), 18, P.MUTED)
@@ -256,11 +257,11 @@ func _mail() -> void:
 	var frame := panel(Rect2(280, 115, 1360, 850), "UI/CardCodex/card_codex_dialog_panel_normal.png", modal)
 	frame.mouse_filter = Control.MOUSE_FILTER_STOP
 	text(P.localized_text("邮件"), Rect2(334, 145, 360, 60), 42, P.GOLD, modal)
-	var unread_label := text(_mail_unread_summary(), Rect2(705, 159, 250, 38), 22, P.MUTED, modal)
+	var unread_label := text(_mail_unread_summary(), Rect2(705, 159, 205, 38), 22, P.MUTED, modal)
 	unread_label.name = "MailUnreadCount"
-	button(P.localized_text("一键全领"), Rect2(1050, 145, 150, 52), _mail_action.bind(Game.claim_all_mail), false, ORANGE, modal)
-	button(P.localized_text("全部已读"), Rect2(1215, 145, 150, 52), _mail_action.bind(Game.mark_all_mail_read), false, ORANGE, modal)
-	button(P.localized_text("删除已读"), Rect2(1380, 145, 150, 52), _mail_action.bind(Game.delete_read_mail), false, BLUE, modal)
+	button(P.localized_text("一键全领"), Rect2(950, 145, 180, 52), _mail_action.bind(Game.claim_all_mail), false, ORANGE, modal)
+	button(P.localized_text("全部已读"), Rect2(1145, 145, 180, 52), _mail_action.bind(Game.mark_all_mail_read), false, ORANGE, modal)
+	button(P.localized_text("删除已读"), Rect2(1340, 145, 180, 52), _mail_action.bind(Game.delete_read_mail), false, BLUE, modal)
 	button(P.localized_text("关闭"), Rect2(1490, 892, 130, 52), modal.queue_free, false, BLUE, modal)
 	var list: Array = Game.mail.get("items", [])
 	var list_panel := Control.new()
@@ -356,23 +357,24 @@ func _build_mail_rows(column: VBoxContainer) -> void:
 		preview_label.offset_top = -49.0
 		preview_label.offset_right = -14.0
 		preview_label.offset_bottom = -10.0
-		preview_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		preview_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 		preview_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 		preview_label.clip_text = true
 		preview_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		preview_label.add_theme_color_override("font_color", Color("a5bbb7") if unread else Color("718681"))
 		open_area.add_child(preview_label)
-		P.fit_control_font(preview_label, P.font_for_text(preview_label.text, 18), 18, 16.0)
+		preview_label.add_theme_font_override("font", P.font("body"))
+		preview_label.add_theme_font_size_override("font_size", 18)
 		if not attachments.is_empty():
 			open.tooltip_text = _mail_attachment_tooltip(attachments[0])
 		if not attachments.is_empty():
 			var claim := button(P.localized_text("领取") if not bool(item.get("claimed", false)) else P.localized_text("已领取"), Rect2(0, 0, 0, 0), _mail_action.bind(Game.claim_mail.bind(id)), bool(item.get("claimed", false)), ORANGE, row)
 			claim.name = "MailClaim"
-			claim.custom_minimum_size = Vector2(112, 104)
+			claim.custom_minimum_size = Vector2(128, 104)
 		var can_delete := bool(item.get("read", false)) and (bool(item.get("claimed", false)) or attachments.is_empty())
 		var remove := button(P.localized_text("删除"), Rect2(0, 0, 0, 0), _mail_action.bind(Game.delete_mail.bind(id)), not can_delete, BLUE, row)
 		remove.name = "MailDelete"
-		remove.custom_minimum_size = Vector2(112, 104)
+		remove.custom_minimum_size = Vector2(128, 104)
 
 func _mail_select(item: Dictionary) -> void:
 	var id := str(item.get("id", item.get("mailId", "")))
@@ -489,9 +491,18 @@ func _mail_detail_panel(parent: Control, item: Dictionary) -> void:
 	var column := VBoxContainer.new()
 	column.add_theme_constant_override("separation", 14)
 	content.add_child(column)
+	var detail_scroll := ScrollContainer.new()
+	detail_scroll.name = "MailDetailScroll"
+	detail_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	detail_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	column.add_child(detail_scroll)
+	var message := VBoxContainer.new()
+	message.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	message.add_theme_constant_override("separation", 14)
+	detail_scroll.add_child(message)
 	var title := RemoteCopy.field(item, "title")
-	text(title if not title.is_empty() else P.localized("system_mail"), Rect2(0, 0, 0, 0), 34, P.GOLD, column)
-	text("%s: %s" % [P.localized_text("发件人"), item.get("sender", "System")], Rect2(0, 0, 0, 0), 20, P.MUTED, column)
+	text(title if not title.is_empty() else P.localized("system_mail"), Rect2(0, 0, 0, 0), 34, P.GOLD, message)
+	text("%s: %s" % [P.localized_text("发件人"), item.get("sender", "System")], Rect2(0, 0, 0, 0), 20, P.MUTED, message)
 	var body := Label.new()
 	body.text = RemoteCopy.field(item, "body")
 	if body.text.is_empty(): body.text = str(item.get("content", ""))
@@ -500,14 +511,14 @@ func _mail_detail_panel(parent: Control, item: Dictionary) -> void:
 	body.add_theme_font_override("font", P.font_for_text(body.text, 24))
 	body.add_theme_font_size_override("font_size", 24)
 	body.add_theme_color_override("font_color", P.PAPER)
-	column.add_child(body)
-	text(P.localized_text("附件"), Rect2(0, 0, 0, 0), 25, P.GOLD, column)
+	message.add_child(body)
+	text(P.localized_text("附件"), Rect2(0, 0, 0, 0), 25, P.GOLD, message)
 	var grid := GridContainer.new()
 	grid.columns = 3
 	grid.add_theme_constant_override("h_separation", Art.COMMON_CELL_GAP)
 	grid.add_theme_constant_override("v_separation", Art.COMMON_CELL_GAP)
 	grid.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	column.add_child(grid)
+	message.add_child(grid)
 	var attachments: Array = item.get("attachments", []) if item.get("attachments", []) is Array else []
 	for raw_attachment in attachments:
 		var attachment: Dictionary = raw_attachment if raw_attachment is Dictionary else {}
@@ -542,16 +553,18 @@ func _mail_detail_panel(parent: Control, item: Dictionary) -> void:
 		quality_fill.offset_bottom = -mail_inset
 		quality_fill.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		cell.add_child(quality_fill)
-		var cell_column := VBoxContainer.new()
-		cell_column.alignment = BoxContainer.ALIGNMENT_CENTER
-		cell_column.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		cell_column.add_theme_constant_override("separation", 0)
-		cell.add_child(cell_column)
-		var icon := Art.image(cell_column, _mail_attachment_texture(attachment), Vector2(58, 58))
-		icon.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		var cell_content := Control.new()
+		cell_content.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		cell_content.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		cell.add_child(cell_content)
+		var icon := Art.image(cell_content, _mail_attachment_texture(attachment), Vector2.ZERO)
+		icon.position = Vector2(26, 4)
+		icon.size = Vector2(44, 44)
 		var kind := P.localized_word(_mail_attachment_kind(attachment))
-		text(kind, Rect2(0, 0, 0, 0), 18, P.PAPER, cell_column)
-		text("× %s" % _mail_attachment_amount(attachment), Rect2(0, 0, 0, 0), 22, P.GOLD, cell_column)
+		var kind_label := text(kind, Rect2(4, 48, 88, 24), 16, P.PAPER, cell_content, false)
+		kind_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+		kind_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		text("× %s" % _mail_attachment_amount(attachment), Rect2(4, 70, 88, 26), 18, P.GOLD, cell_content)
 	var actions := HBoxContainer.new()
 	actions.alignment = BoxContainer.ALIGNMENT_END
 	column.add_child(actions)
@@ -700,24 +713,20 @@ func _loadout(rect: Rect2, editable: bool, snapshot: Dictionary = {}) -> void:
 	var weapon_base := panel(Rect2(weapon_pos, Vector2(120, 120)), Art.COMMON_CELL_KEY)
 	weapon_base.name = "CommonItemFrame_Weapon"
 	weapon_base.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	weapon_base.add_theme_stylebox_override("panel", Art.style(Art.COMMON_CELL_KEY, _mail_quality_background("Orange")))
-	var weapon_frame := Art.image(self, Art.texture(_mail_quality_frame_key("Orange")), Vector2.ZERO)
-	weapon_frame.name = "QualityFrame_Weapon"
-	weapon_frame.position = weapon_pos
-	weapon_frame.size = Vector2(120, 120)
-	weapon_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	weapon_base.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
+	var signature_color: Color = Art.SIGNATURE_COLORS.get(hero_class, P.GOLD)
 	var weapon_fill := ColorRect.new()
-	weapon_fill.name = "QualityBackground_Weapon"
-	weapon_fill.color = _mail_quality_background("Orange")
-	weapon_fill.color.a = 1.0
-	var weapon_inset := 120.0 * 12.0 / 192.0
-	weapon_fill.position = weapon_pos + Vector2(weapon_inset, weapon_inset)
-	weapon_fill.size = Vector2(120.0 - weapon_inset * 2.0, 120.0 - weapon_inset * 2.0)
+	weapon_fill.name = "SignatureWeaponBackground"
+	weapon_fill.color = signature_color.darkened(0.83)
+	weapon_fill.position = weapon_pos + Vector2(17, 17)
+	weapon_fill.size = Vector2(86, 86)
 	weapon_fill.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(weapon_fill)
-	picture(Art.texture("UI/Item/exploration_prep_item_icon_weapon_%s.png" % hero_class.to_lower()), Rect2(weapon_pos + Vector2(12, 12), Vector2(96, 96)))
+	var weapon_frame := picture(Art.signature_frame(hero_class), Rect2(weapon_pos, Vector2(120, 120)))
+	weapon_frame.name = "SignatureWeaponFrame"
+	picture(Art.texture("UI/Item/exploration_prep_item_icon_weapon_%s.png" % hero_class.to_lower()), Rect2(weapon_pos + Vector2(18, 18), Vector2(84, 84)))
 	var weapon_caption_offset := Vector2(27, 127) if editable else Vector2(-8, 127)
-	var weapon_caption := text("本命 +%s · 锁定" % snapshot.classWeaponLevel if snapshot.has("classWeaponLevel") else "本命 · 锁定", Rect2(weapon_pos + weapon_caption_offset, Vector2(180, 40)), 21, P.GOLD)
+	var weapon_caption := text("本命 +%s · 锁定" % snapshot.classWeaponLevel if snapshot.has("classWeaponLevel") else "本命 · 锁定", Rect2(weapon_pos + weapon_caption_offset, Vector2(180, 40)), 21, signature_color)
 	weapon_caption.name = "SignatureWeaponCaption"
 
 func _preparation() -> void:
@@ -726,6 +735,8 @@ func _preparation() -> void:
 	panel(Rect2(28, 122, 752, 900))
 	panel(Rect2(798, 122, 1094, 900))
 	_loadout(Rect2(45, 140, 715, 720), false, snap)
+	if locked:
+		text(P.localized("locked_deck_summary") % [snap.get("cardIds", []).size(), snap.get("maximumHp", 0)], Rect2(90, 226, 645, 36), 22, P.MUTED).name = "FrozenPreparationSummary"
 	var equipped_items: Array = []
 	if snap.get("equipmentSnapshots") is Array:
 		equipped_items = snap.get("equipmentSnapshots", [])
@@ -760,13 +771,13 @@ func _preparation() -> void:
 		# paid backpack tiers are gated by their inventory counts.
 		var available_count := 0 if i == 0 else int(stock.get(key, 0))
 		var unavailable: bool = locked or (i > 0 and available_count <= 0)
-		var tab := button(title if i == 0 else "", Rect2(845 + i * 328, 219, 307, 93), func(): host.bag_tier = key; host._render(), unavailable, ORANGE if tier == key else BLUE)
+		var tab := button("", Rect2(845 + i * 328, 219, 307, 93), func(): host.bag_tier = key; host._render(), unavailable, ORANGE if tier == key else BLUE)
 		tab.name = "Backpack_" + key
 		tab.set_meta("sound_cue", "ui_tab")
-		if i > 0:
-			picture(Art.product(key + "Bag"), Rect2(860 + i * 328, 226, 68, 78)).name = "BackpackIcon_" + key
-			text(title.split("\n")[0], Rect2(937 + i * 328, 228, 202, 37), 25, P.MUTED if unavailable else P.PAPER)
-			text(title.split("\n")[1], Rect2(937 + i * 328, 267, 202, 32), 20, P.GOLD if tier == key else P.MUTED)
+		var bag_art := Art.texture("UI/Shop/backpack_free.png") if i == 0 else Art.product(key + "Bag")
+		picture(bag_art, Rect2(860 + i * 328, 226, 68, 78)).name = "BackpackIcon_" + key
+		text(title.split("\n")[0], Rect2(937 + i * 328, 228, 202, 37), 25, P.MUTED if unavailable else P.PAPER)
+		text(title.split("\n")[1], Rect2(937 + i * 328, 267, 202, 32), 20, P.GOLD if tier == key else P.MUTED)
 		tab.tooltip_text = P.localized_text("持有 %s 个" % available_count)
 	var row_count := int(ceil(float(capacity) / 6.0))
 	var bag_scroll := _scroll(Rect2(845, 342, 1000, 408))

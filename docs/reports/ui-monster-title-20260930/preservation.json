@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "pr13_sha": "de1157fdf490a5bce3ba888c07519fc957c46782",
+  "ui_input_sha": "070c7b441ffc5dbd7253aea1dcbc9793b1fef449",
+  "before_test_source_sha": "f4eba590605024d52cb89ff9c3bb2fdd885106ce",
+  "after_tested_source_sha": "652549aa7db1f99f5313aba960163cc4c0984c7f",
+  "existing_non_ui_blobs": 5803,
+  "committed_non_ui_mismatches": [],
+  "worktree_non_ui_mismatches": [],
+  "non_ui_definition": "All existing PR13 tracked blobs outside client/ui and client/assets; newly added UI fixtures/evidence are separate paths.",
+  "production_ui_and_asset_paths": [
+    "client/assets/generated/ui/signature_weapon_frames.png",
+    "client/assets/generated/ui/signature_weapon_frames.png.import",
+    "client/assets/imported/UI/Cards/card_frame_monster_clean.png",
+    "client/assets/imported/manifest.json",
+    "client/ui/art.gd",
+    "client/ui/card_view.gd",
+    "client/ui/card_view.gdshader",
+    "client/ui/equipment_compare_dialog.gd",
+    "client/ui/exploration_view.gd",
+    "client/ui/main.gd",
+    "client/ui/palette.gd",
+    "client/ui/reference_ui.gd",
+    "client/ui/tips_overlay.gd"
+  ],
+  "ui_input_exact_matches": [
+    "client/assets/generated/ui/signature_weapon_frames.png",
+    "client/assets/generated/ui/signature_weapon_frames.png.import",
+    "client/assets/imported/UI/Cards/card_frame_monster_clean.png",
+    "client/assets/imported/manifest.json",
+    "client/ui/art.gd",
+    "client/ui/card_view.gdshader",
+    "client/ui/equipment_compare_dialog.gd",
+    "client/ui/exploration_view.gd",
+    "client/ui/main.gd",
+    "client/ui/palette.gd",
+    "client/ui/reference_ui.gd",
+    "client/ui/tips_overlay.gd"
+  ],
+  "intentional_ui_input_differences": [
+    "client/ui/card_view.gd"
+  ],
+  "production_changes_since_previous_delivery": [
+    "client/ui/card_view.gd"
+  ],
+  "before_production_differs_from_previous_delivery": false,
+  "same_before_after_fixture_paths": [
+    "client/tests/ui_monster_title_review.gd",
+    "client/tests/ui_monster_title_review.gd.uid",
+    "client/tests/ui_monster_title_review.tscn"
+  ],
+  "same_fixture_sha256": {
+    "client/tests/ui_monster_title_review.gd": "84e012ce721f1f3bd42f195229b4b549f8e4ac7b0bec808838865f733ba0c249",
+    "client/tests/ui_monster_title_review.gd.uid": "57bb41ea659fd9bccf7a5aa25a0025fa001e04c6760ae12a0cd0072590f7184e",
+    "client/tests/ui_monster_title_review.tscn": "f1de65ca8cec628207b4549eb4e263f1c541a06ea3e1a196d40d4c8688b251b4"
+  },
+  "production_display_patch_sha256": "162e67e18046423a5cd204552f767c125f4d880774ba042bdbdba231e92eaaa3",
+  "display_hunk_conflicts_this_batch": []
+}

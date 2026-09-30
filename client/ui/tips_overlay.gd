@@ -99,6 +99,8 @@ func _layout_at_start() -> void:
 	var text_width := maxf(1.0, target_width - HORIZONTAL_PADDING)
 	label.autowrap_mode = TextServer.AUTOWRAP_OFF if natural_text_width <= text_width else TextServer.AUTOWRAP_WORD_SMART
 	var measured_text := font.get_multiline_string_size(label.text, HORIZONTAL_ALIGNMENT_CENTER, text_width, font_size)
+	if label.autowrap_mode == TextServer.AUTOWRAP_OFF and not label.text.contains("\n"):
+		measured_text.y = ceilf(font.get_height(font_size))
 	label.custom_minimum_size = Vector2(text_width, measured_text.y)
 	panel.size = Vector2(target_width, measured_text.y + VERTICAL_PADDING)
 	panel.custom_minimum_size = panel.size

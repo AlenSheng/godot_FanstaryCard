@@ -70,9 +70,13 @@ func configure(id: String, info: Dictionary, description: String, selected: bool
 		var level := int(options.get("level", 0))
 		# card_view.gdshader moves the frame's text panel below the portrait:
 		# its usable interior is y=303..357, not the source texture's y=256..348.
-		var title := _text(CardDetails.localized_name(id, info), Rect2(24, 304, 170, 26), 18, P.GOLD)
+		var title := _text(CardDetails.localized_name(id, info), Rect2(24, 304, 170, 26), 18, P.GOLD, false)
 		title.add_theme_font_override("font", P.font("title"))
 		title.name = "CardName"
+		title.max_lines_visible = 1
+		title.autowrap_mode = TextServer.AUTOWRAP_OFF
+		title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		_fit_card_effect_font(title, 18)
 		var effect_label := _text(effect.replace("\n", " "), Rect2(24, 331, 170, 24), 16, P.PAPER, false)
 		effect_label.name = "CardEffect"
 		effect_label.max_lines_visible = 1
@@ -179,10 +183,23 @@ func _monster_text(id: String, info: Dictionary, effect: String, selected: bool,
 	banner.size = Vector2(184, 34)
 	banner.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(banner)
-	var title_text := P.localized("monster") + " " + CardDetails.localized_name(id, info)
-	var title := _text(title_text, Rect2(19, 28, 180, 34), 21, P.PAPER)
+	var species_name := CardDetails.localized_name(id, info)
+	var title_text := P.localized("monster") + " " + species_name
+	var title := _text(title_text, Rect2(19, 28, 180, 34), 21, P.PAPER, false)
 	title.name = "MonsterName"
 	title.add_theme_font_override("font", P.font("title"))
+	title.max_lines_visible = 1
+	title.autowrap_mode = TextServer.AUTOWRAP_OFF
+	title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	# Measure the actual heading face, after its override. Keep the full title
+	# first; omit only the generic prefix before sacrificing name readability.
+	var title_font := title.get_theme_font("font")
+	var title_size := maxi(16, P.fit_font_size(title_font, 21, title.size.y, title.size.x - 8.0, title.text))
+	if title_font.get_string_size(title.text, HORIZONTAL_ALIGNMENT_LEFT, -1.0, title_size).x > title.size.x - 8.0:
+		title.text = species_name
+		title_size = maxi(16, P.fit_font_size(title_font, 21, title.size.y, title.size.x - 8.0, title.text))
+	title.add_theme_font_size_override("font_size", title_size)
+	tooltip_text = title_text + "\n\n" + tooltip_text
 	_text(effect, Rect2(21, 304, 176, 38), 17, P.PAPER)
 	if id == "M-BOXSPIRIT":
 		var element: String = info.get("element", "None")
