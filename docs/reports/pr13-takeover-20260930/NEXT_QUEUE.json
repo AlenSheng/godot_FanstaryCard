@@ -1,10 +1,10 @@
 {
   "kind": "next_critical_queue_not_completed",
-  "stable_logic_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
-  "server_client_tree_equal_to_b709": true,
+  "stable_logic_sha": "de1157fdf490a5bce3ba888c07519fc957c46782",
+  "server_client_tree_equal_to_b709": false,
   "current_counts": {
-    "Partial": 45,
-    "NotRevalidated": 84,
+    "Partial": 48,
+    "NotRevalidated": 81,
     "Blocked": 3,
     "Accepted": 0
   },
@@ -17,8 +17,8 @@
         "PR13-A09.1",
         "LOAD-11.1"
       ],
-      "action": "Refresh reviewed PR14 combination from b709 to stable PR13cc6; verify exact combined source/image/tool artifacts. Existing579 tests at old image are retained and not relabelled current.",
-      "evidence_input": "ci-cc6da2e/workflows.json; integrated-cc6da2e/report.json; fixed LIVE_VALIDATION_PLAN.json",
+      "action": "Parent / UI owner verify independent fixed combination PR13de1157 + reviewed UI070c7b4 and PR14 deploy workflow/image. Resolve conflicts and cross-test in isolated integration branch; PR13 latest code frozen at de1157, later report-only commits do not change production source. Old579 image result remains historical.",
+      "evidence_input": "pb-equipment-d3c5fe6c/report.json; checkpoint-publication-de1157fd/post-commit-source.json; ci-de1157fd/workflows.json; LIVE_VALIDATION_PLAN.json",
       "constraint": "UIbranch remains independent until its review; no merge/auto-merge or automatic server restart."
     },
     {
@@ -35,8 +35,8 @@
         "PR13-A05.3",
         "PR13-B11.2"
       ],
-      "action": "Build/review actual entry3cycle matrix with missing/late/duplicate READY and ACK, reconnect, each-await STOP, committed-response loss and durable terminal assets; extend isolated OS-process restart matrix beyond existing PVP/extraction force-restart positive control, live batch under parent mutex.",
-      "missing": "Current combined fixed build, parent server slot, approved owned account fixture; existing actual-host PVP/extraction restart and actor reconstruction do not cover the full new-fix/canonical matrix."
+      "action": "Complete missing/late/required READY, each-await STOP, host-boundary lost ACK responses and late old callbacks, full legal three-game/Boss client matrix. New5 actual OS cases and three entry/disconnect-death cycles passed; their support is preserved rather than counted as the full canonical injections.",
+      "missing": "Precise remaining frozen injections/profiles, reviewed combined runtime build, parent server slot and approved owned-account fixture."
     },
     {
       "order": 3,
@@ -95,7 +95,18 @@
     "bytes_each_under_8million": true,
     "location": "/workspace/pr13-takeover/actual-factors-cc6da2e/delivery",
     "manifest": "actual-factors-cc6da2e/raw-package-manifest.json",
-    "remote_upload_done": false
+    "remote_upload_done": false,
+    "authorization_state": "PAUSED_PARENT_USER_APPROVAL_PENDING; no alternate destination or upload attempts"
   },
-  "all_accepted": false
+  "all_accepted": false,
+  "ui_cross_regression": {
+    "PR": 16,
+    "final_sha": "f806960ce17b8e300536a21dadde618313a68996",
+    "production_source_sha": "7869260dab958c60e9b12e93f7441d0de3825e92",
+    "base": "b7099ef",
+    "status": "UI owner independently testing fixed de1157+UI070c7b4; root does not duplicate/integrate",
+    "next": "Use isolated temporary integration branch after stable batch; review main/reference_ui/card_view/exploration_view hunks against manual target authority; never merge PR16 or release here.",
+    "latest_parent_verified_UI_sha": "070c7b4",
+    "source_of_status": "Parent delegation message2026-09-30 during stage finalization"
+  }
 }

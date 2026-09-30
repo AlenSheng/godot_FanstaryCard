@@ -1,0 +1,337 @@
+{
+  "attempts": [
+    {
+      "trx": "existing/existing-host.trx",
+      "counters": {
+        "total": "2",
+        "executed": "0",
+        "passed": "0",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "sha256": "97099e27e2b71dcd9b71a73e2ef0f860a64770e82c1cdb83eb10b491540a5036",
+      "results": [
+        {
+          "test": "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_default_protobuf_preparation_ready_and_room_entry",
+          "outcome": "NotExecuted",
+          "duration": "00:00:00.0010000"
+        },
+        {
+          "test": "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_pvp_relic_replay_and_extraction_survive_forced_restart",
+          "outcome": "NotExecuted",
+          "duration": "00:00:00.0010000"
+        }
+      ]
+    },
+    {
+      "trx": "existing-db/existing-host.trx",
+      "counters": {
+        "total": "2",
+        "executed": "2",
+        "passed": "2",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "sha256": "00a6788bcc0732bcfcd368c196f15d877c39bcd5eda9f3058a0082a7b4136433",
+      "results": [
+        {
+          "test": "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_default_protobuf_preparation_ready_and_room_entry",
+          "outcome": "Passed",
+          "duration": "00:00:03.6993746"
+        },
+        {
+          "test": "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_pvp_relic_replay_and_extraction_survive_forced_restart",
+          "outcome": "Passed",
+          "duration": "00:00:08.4188246"
+        }
+      ]
+    },
+    {
+      "trx": "extraction-fixed-v2-attempt7/extraction-fixed.trx",
+      "counters": {
+        "total": "1",
+        "executed": "1",
+        "passed": "1",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "sha256": "5f4b2e9e0fb3e17b686029f7e43e69a94c45e0d7357c25fb4111358319b4134e",
+      "results": [
+        {
+          "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK",
+          "outcome": "Passed",
+          "duration": "00:00:08.5573324"
+        }
+      ]
+    },
+    {
+      "trx": "extraction-red-attempt5/extraction-red.trx",
+      "counters": {
+        "total": "1",
+        "executed": "1",
+        "passed": "0",
+        "failed": "1",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "sha256": "6195a4c5de275f902b464efc5fcd6f184d9b9179e46872d66a33e8120f355df7",
+      "results": [
+        {
+          "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK",
+          "outcome": "Failed",
+          "duration": "00:00:06.2613427"
+        }
+      ]
+    },
+    {
+      "trx": "final-matrix-v2-attempt8/process-matrix.trx",
+      "counters": {
+        "total": "5",
+        "executed": "5",
+        "passed": "5",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "sha256": "d2a45c212304a173359424752d627652bc39d6dc895de9141fbae5a4d6a95e01",
+      "results": [
+        {
+          "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_Running_room_resumes_after_abrupt_OS_process_restart",
+          "outcome": "Passed",
+          "duration": "00:00:03.3282063"
+        },
+        {
+          "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK",
+          "outcome": "Passed",
+          "duration": "00:00:08.4612228"
+        },
+        {
+          "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_cold_start_commits_durable_pending_holds_once",
+          "outcome": "Passed",
+          "duration": "00:00:03.0659249"
+        },
+        {
+          "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_three_entry_cycles_duplicate_READY_and_ACK_release_owned_locks",
+          "outcome": "Passed",
+          "duration": "00:01:19.7322073"
+        },
+        {
+          "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_quarantines_contradictory_terminal_checkpoint_but_recovers_next_room",
+          "outcome": "Passed",
+          "duration": "00:00:02.8904466"
+        }
+      ]
+    },
+    {
+      "trx": "matrix-attempt2/process-matrix.trx",
+      "counters": {
+        "total": "5",
+        "executed": "5",
+        "passed": "3",
+        "failed": "2",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "sha256": "aad2a580b3afd3a14911673b07f4bab10d5e7044f18bb514e826b8369d74338f",
+      "results": [
+        {
+          "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK",
+          "outcome": "Failed",
+          "duration": "00:00:01.8014263"
+        },
+        {
+          "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_cold_start_commits_durable_pending_holds_once",
+          "outcome": "Passed",
+          "duration": "00:00:03.1557087"
+        },
+        {
+          "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_Running_room_resumes_after_abrupt_OS_process_restart",
+          "outcome": "Passed",
+          "duration": "00:00:03.5967663"
+        },
+        {
+          "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_quarantines_contradictory_terminal_checkpoint_but_recovers_next_room",
+          "outcome": "Passed",
+          "duration": "00:00:02.3768341"
+        },
+        {
+          "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_three_entry_cycles_duplicate_READY_and_ACK_release_owned_locks",
+          "outcome": "Failed",
+          "duration": "00:00:18.8463159"
+        }
+      ]
+    },
+    {
+      "trx": "matrix-attempt3/process-matrix.trx",
+      "counters": {
+        "total": "5",
+        "executed": "5",
+        "passed": "3",
+        "failed": "2",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "sha256": "ebf992a450c59833c6ecb7be9143f292af7f33247e4741314bcfdb4d2a43baac",
+      "results": [
+        {
+          "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK",
+          "outcome": "Failed",
+          "duration": "00:00:05.6449594"
+        },
+        {
+          "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_quarantines_contradictory_terminal_checkpoint_but_recovers_next_room",
+          "outcome": "Passed",
+          "duration": "00:00:02.4330738"
+        },
+        {
+          "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_three_entry_cycles_duplicate_READY_and_ACK_release_owned_locks",
+          "outcome": "Failed",
+          "duration": "00:01:34.8297841"
+        },
+        {
+          "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_Running_room_resumes_after_abrupt_OS_process_restart",
+          "outcome": "Passed",
+          "duration": "00:00:03.9786552"
+        },
+        {
+          "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_cold_start_commits_durable_pending_holds_once",
+          "outcome": "Passed",
+          "duration": "00:00:03.0905535"
+        }
+      ]
+    },
+    {
+      "trx": "matrix-attempt4/process-matrix.trx",
+      "counters": {
+        "total": "5",
+        "executed": "5",
+        "passed": "4",
+        "failed": "1",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "sha256": "e59ebed554ce808407fe61f4a2e7289f292d1a85aac2d2ea695367d5642eebca",
+      "results": [
+        {
+          "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_three_entry_cycles_duplicate_READY_and_ACK_release_owned_locks",
+          "outcome": "Passed",
+          "duration": "00:01:20.4400651"
+        },
+        {
+          "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_cold_start_commits_durable_pending_holds_once",
+          "outcome": "Passed",
+          "duration": "00:00:03.3339667"
+        },
+        {
+          "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_quarantines_contradictory_terminal_checkpoint_but_recovers_next_room",
+          "outcome": "Passed",
+          "duration": "00:00:02.3109528"
+        },
+        {
+          "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK",
+          "outcome": "Failed",
+          "duration": "00:00:05.4074363"
+        },
+        {
+          "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_Running_room_resumes_after_abrupt_OS_process_restart",
+          "outcome": "Passed",
+          "duration": "00:00:03.1079607"
+        }
+      ]
+    }
+  ],
+  "notes": {
+    "existing": "Initial clean build omitted FANTASYCARD_TEST_POSTGRES and skipped two cases; no pass claim. Existing-db rerun: two real host controls passed.",
+    "matrix-attempt1": "Compile error: missing PlayerProvisioningService namespace, fixed in test only.",
+    "matrix-attempt2": "3 passed; 2 fixture contract errors (ExpectedRevision omitted; ACK key shorter than IdempotencyKeys permits).",
+    "matrix-attempt3": "3 passed; real default PB terminal equipment response 500; third cohort became two humans during real limiter Retry-After then 30s bot fill.",
+    "matrix-attempt4": "4 passed including all three entry cohorts; 1 fixture SQL uuid=text error before wire.",
+    "extraction-red-attempt5": "Fixed fixture UUID parameter; actual durable details and 1 credit/movement observed before repeatable default PB 500.",
+    "extraction-fixed-attempt6": "Parent patch v1 compile failure: Wire alias resolves sibling FantasyCard.Contracts.Wire; retained unmodified.",
+    "extraction-fixed-v2-attempt7": "Parent patch v2, same equipment/PB fixture: passed 1/failed 0/skipped 0; 3 actual processes, same receipt/details and assets across 2 restarts; durable duplicate ACK.",
+    "final-matrix-v2-attempt8": "Final source e912 + explicit parent v2 dirty overlay: 5 passed/0 failed/0 skipped; 97s; no-build reuses the fresh attempt7 assemblies. Not relabelled v3/latest."
+  }
+}

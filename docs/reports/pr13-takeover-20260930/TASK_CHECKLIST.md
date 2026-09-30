@@ -1,8 +1,8 @@
 # PR13 云端接管逐项登记
 
-基线73d4保留；最新已验证逻辑提交 `cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3`。当前132项：Partial 45, NotRevalidated 84, Blocked 3，Accepted 0；G0–G5未签署。
+基线73d4保留；最新运行代码/测试候选 `de1157fdf490a5bce3ba888c07519fc957c46782`。当前132项：Partial48、NotRevalidated81、Blocked3、Accepted0；G0–G5未签署。
 
-[register.json](register.json) 包含每项精确修改SHA、命令/命令manifest、支持证据和阻塞。下面按依赖排序；历史状态保持原值，Supporting tests不自动升级canonical验收。
+[register.json](register.json) 包含每项修改SHA、命令manifest、支持证据与剩余阻塞。三项由NotRevalidated转Partial，新增真实进程支持仍不等于完整canonical验收。
 
 | 顺序 | 子项 | 负责人 | 当前 / 历史 | 修改 SHA | 依赖 | 剩余工作或阻塞 |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -25,11 +25,11 @@
 | 17 | LOAD-03.4 分布与错误率 | MAIN / offline canonical receipt audit | Partial / ReadyForAcceptance | 取证/未修改 | LOAD-03.3, LOAD-06.1 | Explicit three-case receipts passed; complete pass-criteria/stage review and dependency input adjudication remain open. OFFLINE-only task does not require online deployment. |
 | 18 | LOAD-04.2 有界ready发送 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | LOAD-04.1 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 19 | LOAD-04.3 缺通知/started恢复 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | LOAD-04.2 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
-| 20 | LOAD-04.4 ready全矩阵 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | LOAD-04.3 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
+| 20 | LOAD-04.4 ready全矩阵 | MAIN / protocol and actual process recovery | Partial / Partial | d3c5fe6cfb3b | LOAD-04.3 | Duplicate READY and actual OS resume are covered. Missing/late required READY, registration fault, each-await STOP and LIVE remain unexecuted frozen injections. |
 | 21 | LOAD-05.1 服务端ack完成依据 | MAIN / load P0 | Partial / Partial | d4c3212fb32c | LOAD-04.1, LOAD-02.1 | affected POSTGRES/LIVE/CAPACITY profiles remain separate and incomplete. |
 | 22 | LOAD-05.2 跨局状态隔离 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | LOAD-05.1 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 23 | LOAD-05.3 各await取消 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | LOAD-05.2, LOAD-02.2 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
-| 24 | LOAD-05.4 幂等三局矩阵 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | LOAD-05.3, LOAD-04.4 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
+| 24 | LOAD-05.4 幂等三局矩阵 | MAIN / protocol and actual process recovery | Partial / Partial | d3c5fe6cfb3b | LOAD-05.3, LOAD-04.4 | Three actual entry/disconnect-death cycles, repeated ACK and Pending-hold cold starts are covered. ACK committed-response loss at HTTP host boundary, mixed failed retry cycle and full gameplay/LIVE remain open. |
 | 25 | LOAD-06.3 服务端分段 | MAIN (pending batch) | NotRevalidated / Queued | 取证/未修改 | LOAD-06.4 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 26 | LOAD-07.1 有界探测调度 | MAIN / sampling contract | Partial / Partial | cc6da2e7b8a2 | LOAD-01.1, LOAD-03.1, LOAD-06.4 | Pure functions and deterministic coordinator fixtures do not establish actual load-generator resource/gap limits or capacity. 95%/600s/120s/20s thresholds preserved. |
 | 27 | LOAD-07.2 实际发压与资源 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | LOAD-07.1 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
@@ -98,7 +98,7 @@
 | 90 | PR13-A03.1 真实入口反例 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | LOAD-05.2 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 91 | PR13-A03.2 旧局回调隔离 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | PR13-A03.1 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 92 | PR13-A03.3 ack丢响应恢复 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | PR13-A03.2 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
-| 93 | PR13-A03.4 三局和回归 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | PR13-A03.3 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
+| 93 | PR13-A03.4 三局和回归 | MAIN / protocol and actual process recovery | Partial / Partial | d3c5fe6cfb3b | PR13-A03.3 | Three distinct actual entry/death/ACK matches and contradictory-old-room/new-route isolation are covered. Old NOT_IN_ROOM/poll callbacks, full client three-game/Boss flow and LIVE remain open. |
 | 94 | PR13-A04.1 丢required主动恢复 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | LOAD-04.4, LOAD-09.2 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 95 | PR13-A04.2 ready乱序/send失败 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | PR13-A04.1 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 96 | PR13-A04.3 启动失败与恢复 | MAIN / lifecycle | Partial / Partial | b7099ef71623 | PR13-A04.2 | LIVE entry/STOP/full fault combinations remain incomplete. Existing pure-cc6 real OS host PVP/extraction force-restart test passed; new committed-response-loss/checkpoint/quarantine fixes need a wider actual-process matrix. Inconsistent rooms are quarantined, not repaired; no DB restore. |
@@ -111,7 +111,7 @@
 | 103 | PR13-B12.3 配置生成与版本回滚 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | PR13-B12.1, PR13-B02.4 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 104 | PR13-A05.1 持久化失败恢复 | MAIN / lifecycle | Partial / Partial | b7099ef71623 | LOAD-05.4, LOAD-09.2 | LIVE entry/STOP/full fault combinations remain incomplete. Existing pure-cc6 real OS host PVP/extraction force-restart test passed; new committed-response-loss/checkpoint/quarantine fixes need a wider actual-process matrix. Inconsistent rooms are quarantined, not repaired; no DB restore. |
 | 105 | PR13-A05.2 队友和旧房间隔离 | MAIN / lifecycle | Partial / Partial | b7099ef71623 | PR13-A05.1 | LIVE entry/STOP/full fault combinations remain incomplete. Existing pure-cc6 real OS host PVP/extraction force-restart test passed; new committed-response-loss/checkpoint/quarantine fixes need a wider actual-process matrix. Inconsistent rooms are quarantined, not repaired; no DB restore. |
-| 106 | PR13-A05.3 幂等/重启资产矩阵 | MAIN / lifecycle | Partial / Partial | b7099ef71623 | PR13-A05.2 | LIVE entry/STOP/full fault combinations remain incomplete. Existing pure-cc6 real OS host PVP/extraction force-restart test passed; new committed-response-loss/checkpoint/quarantine fixes need a wider actual-process matrix. Inconsistent rooms are quarantined, not repaired; no DB restore. |
+| 106 | PR13-A05.3 幂等/重启资产矩阵 | MAIN / protocol and actual process recovery | Partial / Partial | d3c5fe6cfb3b | PR13-A05.2 | Actual host force-restart preserves one equipment movement/ledger credit and ACK timestamp, and cold start resolves durable Pending once. Lost-ACK-response injection, full cross-fault/asset types and independent AUDIT remain open; global mismatch1 untouched. |
 | 107 | PR13-A06.1 响应完整性fixture | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | LOAD-06.1, LOAD-08.1 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 108 | PR13-A06.2 连接失效/并发/会话 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | PR13-A06.1 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 109 | PR13-A06.3 请求开始context | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | PR13-A06.2 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |

@@ -825,18 +825,25 @@
       "task_id": "LOAD-04.4",
       "title": "ready全矩阵",
       "dependency_order": 20,
-      "owner": "MAIN (pending batch)",
-      "state": "NotRevalidated",
+      "owner": "MAIN / protocol and actual process recovery",
+      "state": "Partial",
       "historical_state": "Partial",
       "historical_case_counts": {
         "NotExecuted": 3
       },
-      "implementation_status": "Pending independent review",
-      "current_test_status": "NotRevalidated",
-      "modification_sha": null,
-      "test_commands": [],
-      "evidence": [],
-      "remaining_blocker": "This takeover batch has not independently executed this task; follow its preserved dependency order and next_action.",
+      "implementation_status": "Actual-host support tests added; settlement equipment semantic-name P0 repaired with additive compatible protobuf fields.",
+      "current_test_status": "317 Domain / 281 Server-PG including5 actual-host / 177 client codec /24 HTTP fixture passed; support only.",
+      "modification_sha": "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17",
+      "test_commands": [
+        "pb-equipment-d3c5fe6c/full-commands.json"
+      ],
+      "evidence": [
+        "pb-equipment-d3c5fe6c/report.json",
+        "pb-equipment-d3c5fe6c/full-trx/server.trx",
+        "pb-equipment-d3c5fe6c/process-v3/receipts.jsonl",
+        "process-recovery-v2/CANONICAL_SUPPORT_MAPPING.json"
+      ],
+      "remaining_blocker": "Duplicate READY and actual OS resume are covered. Missing/late required READY, registration fault, each-await STOP and LIVE remain unexecuted frozen injections.",
       "dependencies": [
         "LOAD-04.3"
       ],
@@ -852,7 +859,10 @@
       "next_action": "组合重复/乱序/丢失/send失败/断连/STOP/旧局事件；记录预期终态与票据后置状态",
       "accepted": false,
       "supporting_tests_are_canonical_acceptance": false,
-      "tested_source_shas": []
+      "tested_source_shas": [
+        "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17"
+      ],
+      "tested_source_provenance": "Local tests were d277 dirty source; all8 relevant files exactly match committed d3, as post-commit-source.json verifies. CI exact SHA indexed separately."
     },
     {
       "task_id": "LOAD-05.1",
@@ -973,18 +983,25 @@
       "task_id": "LOAD-05.4",
       "title": "幂等三局矩阵",
       "dependency_order": 24,
-      "owner": "MAIN (pending batch)",
-      "state": "NotRevalidated",
+      "owner": "MAIN / protocol and actual process recovery",
+      "state": "Partial",
       "historical_state": "Partial",
       "historical_case_counts": {
         "NotExecuted": 3
       },
-      "implementation_status": "Pending independent review",
-      "current_test_status": "NotRevalidated",
-      "modification_sha": null,
-      "test_commands": [],
-      "evidence": [],
-      "remaining_blocker": "This takeover batch has not independently executed this task; follow its preserved dependency order and next_action.",
+      "implementation_status": "Actual-host support tests added; settlement equipment semantic-name P0 repaired with additive compatible protobuf fields.",
+      "current_test_status": "317 Domain / 281 Server-PG including5 actual-host / 177 client codec /24 HTTP fixture passed; support only.",
+      "modification_sha": "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17",
+      "test_commands": [
+        "pb-equipment-d3c5fe6c/full-commands.json"
+      ],
+      "evidence": [
+        "pb-equipment-d3c5fe6c/report.json",
+        "pb-equipment-d3c5fe6c/full-trx/server.trx",
+        "pb-equipment-d3c5fe6c/process-v3/receipts.jsonl",
+        "process-recovery-v2/CANONICAL_SUPPORT_MAPPING.json"
+      ],
+      "remaining_blocker": "Three actual entry/disconnect-death cycles, repeated ACK and Pending-hold cold starts are covered. ACK committed-response loss at HTTP host boundary, mixed failed retry cycle and full gameplay/LIVE remain open.",
       "dependencies": [
         "LOAD-05.3",
         "LOAD-04.4"
@@ -1001,7 +1018,10 @@
       "next_action": "测ack响应丢失/重复receipt/旧snapshot/重启/重连；对每cutoff核对cycle与资产",
       "accepted": false,
       "supporting_tests_are_canonical_acceptance": false,
-      "tested_source_shas": []
+      "tested_source_shas": [
+        "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17"
+      ],
+      "tested_source_provenance": "Local tests were d277 dirty source; all8 relevant files exactly match committed d3, as post-commit-source.json verifies. CI exact SHA indexed separately."
     },
     {
       "task_id": "LOAD-06.3",
@@ -3672,18 +3692,25 @@
       "task_id": "PR13-A03.4",
       "title": "三局和回归",
       "dependency_order": 93,
-      "owner": "MAIN (pending batch)",
-      "state": "NotRevalidated",
+      "owner": "MAIN / protocol and actual process recovery",
+      "state": "Partial",
       "historical_state": "Partial",
       "historical_case_counts": {
         "NotExecuted": 3
       },
-      "implementation_status": "Pending independent review",
-      "current_test_status": "NotRevalidated",
-      "modification_sha": null,
-      "test_commands": [],
-      "evidence": [],
-      "remaining_blocker": "This takeover batch has not independently executed this task; follow its preserved dependency order and next_action.",
+      "implementation_status": "Actual-host support tests added; settlement equipment semantic-name P0 repaired with additive compatible protobuf fields.",
+      "current_test_status": "317 Domain / 281 Server-PG including5 actual-host / 177 client codec /24 HTTP fixture passed; support only.",
+      "modification_sha": "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17",
+      "test_commands": [
+        "pb-equipment-d3c5fe6c/full-commands.json"
+      ],
+      "evidence": [
+        "pb-equipment-d3c5fe6c/report.json",
+        "pb-equipment-d3c5fe6c/full-trx/server.trx",
+        "pb-equipment-d3c5fe6c/process-v3/receipts.jsonl",
+        "process-recovery-v2/CANONICAL_SUPPORT_MAPPING.json"
+      ],
+      "remaining_blocker": "Three distinct actual entry/death/ACK matches and contradictory-old-room/new-route isolation are covered. Old NOT_IN_ROOM/poll callbacks, full client three-game/Boss flow and LIVE remain open.",
       "dependencies": [
         "PR13-A03.3"
       ],
@@ -3699,7 +3726,10 @@
       "next_action": "结合重复错误、旧回包、ack失败恢复做同账号三局，核对资产与poll清理",
       "accepted": false,
       "supporting_tests_are_canonical_acceptance": false,
-      "tested_source_shas": []
+      "tested_source_shas": [
+        "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17"
+      ],
+      "tested_source_provenance": "Local tests were d277 dirty source; all8 relevant files exactly match committed d3, as post-commit-source.json verifies. CI exact SHA indexed separately."
     },
     {
       "task_id": "PR13-A04.1",
@@ -4191,21 +4221,22 @@
       "task_id": "PR13-A05.3",
       "title": "幂等/重启资产矩阵",
       "dependency_order": 106,
-      "owner": "MAIN / lifecycle",
+      "owner": "MAIN / protocol and actual process recovery",
       "state": "Partial",
       "historical_state": "Partial",
       "historical_case_counts": {
         "NotExecuted": 3
       },
-      "implementation_status": "Committed launch response recovery, terminal snapshot ordering and stale route quarantine implemented.",
-      "current_test_status": "Current pure-SHA offline/supporting suites passed; complete canonical profiles/cases not accepted",
-      "modification_sha": "b7099ef716235be68395255360cbd5cf6c67baff",
+      "implementation_status": "Actual-host support tests added; settlement equipment semantic-name P0 repaired with additive compatible protobuf fields.",
+      "current_test_status": "317 Domain / 281 Server-PG including5 actual-host / 177 client codec /24 HTTP fixture passed; support only.",
+      "modification_sha": "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17",
       "test_commands": [
         "source /workspace/relicround-env/activate.sh; FANTASYCARD_TEST_POSTGRES='Host=/workspace/pr13-takeover/lifecycle/pg/socket;Port=55439;Database=pr13_lifecycle;Username=agent;Pooling=true;SSL Mode=Disable' dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj --filter FullyQualifiedName~PostgresLifecycleRecoveryTests --logger 'trx;LogFileName=matrix-final-verified.trx' --results-directory /workspace/pr13-takeover/lifecycle/logs",
         "source /workspace/relicround-env/activate.sh; FANTASYCARD_TEST_POSTGRES='Host=/workspace/pr13-takeover/lifecycle/pg/socket;Port=55439;Database=pr13_lifecycle;Username=agent;Pooling=true;SSL Mode=Disable' dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj --no-build --logger 'trx;LogFileName=server-final.trx' --results-directory /workspace/pr13-takeover/lifecycle/logs",
         "source /workspace/relicround-env/activate.sh; dotnet test server/tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj --logger 'trx;LogFileName=domain-final.trx' --results-directory /workspace/pr13-takeover/lifecycle/logs",
         "pg_ctl -D /workspace/pr13-takeover/lifecycle/pg/data -m fast stop",
-        "git diff --check -- server/src/FantasyCard.Server/Matchmaking server/src/FantasyCard.Server/Rooms"
+        "git diff --check -- server/src/FantasyCard.Server/Matchmaking server/src/FantasyCard.Server/Rooms",
+        "pb-equipment-d3c5fe6c/full-commands.json"
       ],
       "evidence": [
         "lifecycle/report.json",
@@ -4214,9 +4245,13 @@
         "lifecycle/logs/baseline-final.trx",
         "ci-b7099ef/verified-artifacts.json",
         "integrated-cc6da2e/report.json",
-        "ci-cc6da2e/workflows.json"
+        "ci-cc6da2e/workflows.json",
+        "pb-equipment-d3c5fe6c/report.json",
+        "pb-equipment-d3c5fe6c/full-trx/server.trx",
+        "pb-equipment-d3c5fe6c/process-v3/receipts.jsonl",
+        "process-recovery-v2/CANONICAL_SUPPORT_MAPPING.json"
       ],
-      "remaining_blocker": "LIVE entry/STOP/full fault combinations remain incomplete. Existing pure-cc6 real OS host PVP/extraction force-restart test passed; new committed-response-loss/checkpoint/quarantine fixes need a wider actual-process matrix. Inconsistent rooms are quarantined, not repaired; no DB restore.",
+      "remaining_blocker": "Actual host force-restart preserves one equipment movement/ledger credit and ACK timestamp, and cold start resolves durable Pending once. Lost-ACK-response injection, full cross-fault/asset types and independent AUDIT remain open; global mismatch1 untouched.",
       "dependencies": [
         "PR13-A05.2"
       ],
@@ -4234,9 +4269,11 @@
       "accepted": false,
       "supporting_tests_are_canonical_acceptance": false,
       "tested_source_shas": [
-        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3"
+        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+        "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17"
       ],
-      "existing_real_host_evidence": "CASE_MAPPING.json: supporting_existing_real_host_cases; integrated-cc6da2e/trx/server.trx"
+      "existing_real_host_evidence": "CASE_MAPPING.json: supporting_existing_real_host_cases; integrated-cc6da2e/trx/server.trx",
+      "tested_source_provenance": "Local tests were d277 dirty source; all8 relevant files exactly match committed d3, as post-commit-source.json verifies. CI exact SHA indexed separately."
     },
     {
       "task_id": "PR13-A06.1",
@@ -5440,5 +5477,33 @@
     }
   ],
   "test_provenance_note": "Pure cc6 checkout:115 Python,27 explicit receipts,6 Godot gates including import, fresh solution/domain317/privatePG262 passed. Original failed missing-Godot invocation26/27 retained. All396 canonical cases and six gates remain unaccepted.",
-  "current_ci_evidence": "ci-cc6da2e/workflows.json"
+  "current_ci_evidence": "ci-cc6da2e/workflows.json",
+  "latest_runtime_sha": "de1157fdf490a5bce3ba888c07519fc957c46782",
+  "state_counts": {
+    "Partial": 48,
+    "NotRevalidated": 81,
+    "Blocked": 3
+  },
+  "latest_batch_state_transitions": [
+    {
+      "task_id": "LOAD-04.4",
+      "from": "NotRevalidated",
+      "to": "Partial",
+      "reason": "Independent actual-host support only; all frozen profiles/injections remain incomplete."
+    },
+    {
+      "task_id": "LOAD-05.4",
+      "from": "NotRevalidated",
+      "to": "Partial",
+      "reason": "Independent actual-host support only; all frozen profiles/injections remain incomplete."
+    },
+    {
+      "task_id": "PR13-A03.4",
+      "from": "NotRevalidated",
+      "to": "Partial",
+      "reason": "Independent actual-host support only; all frozen profiles/injections remain incomplete."
+    }
+  ],
+  "production_protocol_fix_sha": "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17",
+  "checkpoint_test_fix_sha": "de1157fdf490a5bce3ba888c07519fc957c46782"
 }

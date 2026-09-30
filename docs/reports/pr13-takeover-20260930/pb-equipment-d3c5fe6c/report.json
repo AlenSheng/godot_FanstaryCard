@@ -1,0 +1,73 @@
+{
+  "kind": "P0_fix_and_actual_OS_host_support_not_full_acceptance",
+  "runtime_commit": "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17",
+  "created_at_utc": "2026-09-30T19:16:40.657324+00:00",
+  "trigger": "Actual default PB GET settlement/Bootstrap returned500 after legitimate Feet/White/Fire equipment settlement had committed assets.",
+  "root_cause": "Persisted EquipmentRewardData uses semantic strings; old SettlementEquipment numeric tags were fed Convert.ToInt32. Existing encoding tests used invented numeric fixture attributes.",
+  "change": "Preserve legacy int32 tags1-3; add optional semantic names at tags8-10. Server maps valid names, including catalog Red quality; paired Godot direct/reference decoders prefer the names. Unknown names reject explicitly.",
+  "source_provenance": {
+    "commit": "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17",
+    "all8_tested_source_files_equal_commit": true,
+    "source_dirty_at_test": true,
+    "dirty_test_parent": "d277283dc6ec13f3bf51b4d51ac7a863fd490203",
+    "source_clean_after_commit": true,
+    "historical_test_logs_not_relabelled": true
+  },
+  "local_dirty_at_test": true,
+  "local_build_old_bin_obj_removed_first": true,
+  "test_counts": {
+    "domain": 317,
+    "server_postgres_total": 281,
+    "server_process_cases_in_total": 5,
+    "server_equipment_cases_in_total": 16,
+    "new_server_cases_relative_to_cc6": 19,
+    "client_codec": 177,
+    "client_HTTP_fixture": 24,
+    "python_methods": 115,
+    "canonical_offline_receipts": 27
+  },
+  "local_failed": 0,
+  "local_skipped": 0,
+  "actual_host_cleanup": {
+    "start_count": 10,
+    "stop_count": 10,
+    "pid_sets_match": true,
+    "exit_codes": [
+      137
+    ],
+    "terminal_case_ids": [
+      "PROC-03",
+      "PROC-05-cycle-1",
+      "PROC-05-cycle-2",
+      "PROC-05-cycle-3",
+      "PROC-05",
+      "PROC-01",
+      "PROC-02-assets-before-wire",
+      "PROC-02-assets-before-wire",
+      "PROC-02-assets-before-wire",
+      "PROC-02",
+      "PROC-04"
+    ],
+    "all_accepted": false
+  },
+  "private_pg_cleanup": {
+    "pg_stopped": true,
+    "owned_temporary_directory_removed": true,
+    "remote_touched": false
+  },
+  "preserved_red_evidence": "../process-recovery-v2/extraction-red-attempt5/extraction-red.trx",
+  "preserved_compile_failure": "fresh-build.log",
+  "client_boundary": "http-boundary/result.json",
+  "client_contract_regression": "client-retry.log",
+  "canonical_counts_unchanged": {
+    "Passed": 27,
+    "NotExecuted": 369,
+    "Accepted": 0
+  },
+  "scope_limit": "Three real entry/disconnect-death cycles and forced OS cold starts; not three full legal preparation-to-Boss gameplay cycles, full fault matrix, actual rendered UI, capacity or LIVE acceptance.",
+  "paired_client_server_required": "Older clients ignore additive optional labels and keep legacy integers; ship reviewed compatible client/server together for correct semantic equipment display.",
+  "remote_deploy_or_restart_performed": false,
+  "production_numeric_defaults_changed": false,
+  "historical_database_assets_or_ledger_modified": false,
+  "all_accepted": false
+}

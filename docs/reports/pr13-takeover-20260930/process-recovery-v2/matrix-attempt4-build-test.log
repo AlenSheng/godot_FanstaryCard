@@ -1,0 +1,39 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  FantasyCard.ConfigExporter -> /workspace/pr13-takeover/process-recovery/server/tools/FantasyCard.ConfigExporter/bin/Release/net10.0/FantasyCard.ConfigExporter.dll
+  FantasyCard.Domain -> /workspace/pr13-takeover/process-recovery/server/src/FantasyCard.Domain/bin/Release/net10.0/FantasyCard.Domain.dll
+  FantasyCard.Contracts -> /workspace/pr13-takeover/process-recovery/server/src/FantasyCard.Contracts/bin/Release/net10.0/FantasyCard.Contracts.dll
+  FantasyCard.Server -> /workspace/pr13-takeover/process-recovery/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll
+  FantasyCard.Server.Tests -> /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll
+Test run for /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:01:32.83]     FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK [FAIL]
+  Failed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK [5 s]
+  Error Message:
+   Npgsql.PostgresException : 42883: operator does not exist: uuid = text
+
+POSITION: 55
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteScalar(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresTestSchema.ScalarAsync[T](String sql, Object[] parameters) in /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/Persistence/PostgresRuntimeIntegrationTests.cs:line 1924
+   at FantasyCard.Server.Tests.Persistence.PostgresTestSchema.ScalarAsync[T](String sql, Object[] parameters) in /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/Persistence/PostgresRuntimeIntegrationTests.cs:line 1924
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK() in /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs:line 135
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK() in /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs:line 156
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK() in /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs:line 159
+--- End of stack trace from previous location ---
+  Standard Output Messages:
+ {"caseId":"process-start","recordedAt":"2026-09-30T18:35:19.7231667+00:00","evidence":{"label":"extraction-0","Id":18709,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/pr13-takeover/process-recovery/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll","port":46879,"SearchPath":"fc_runtime_test_2c2f83c764eb4c09b5b886b4f1181739","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+ {"caseId":"process-stop","recordedAt":"2026-09-30T18:35:24.8793794+00:00","evidence":{"label":"extraction-0","ProcessId":18709,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/pr13-takeover/process-recovery/evidence/process-recovery-20260930/matrix-attempt4/extraction-0-18709.log"}}
+
+
+Results File: /workspace/pr13-takeover/process-recovery/evidence/process-recovery-20260930/matrix-attempt4/process-matrix.trx
+
+Failed!  - Failed:     1, Passed:     4, Skipped:     0, Total:     5, Duration: 1 m 34 s - FantasyCard.Server.Tests.dll (net10.0)

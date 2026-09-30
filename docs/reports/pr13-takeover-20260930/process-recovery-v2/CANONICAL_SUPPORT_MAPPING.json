@@ -1,0 +1,511 @@
+{
+  "kind": "support_only_not_canonical_execution_or_acceptance",
+  "parent_mapping_sha": "d277283d",
+  "frozen_spec_sha256": "5176ee139d4e632ba34469ae531ce7ec16478f356480e2d8e320cd51f3bcd703",
+  "canonical_counts_unchanged": {
+    "Passed": 27,
+    "NotExecuted": 369
+  },
+  "cases": [
+    {
+      "case_id": "LOAD-04.4-T01",
+      "task_id": "LOAD-04.4",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "setup_and_injection": "required丢失再重连",
+      "expected": "权威恢复",
+      "canonical_execution_status": "NotExecutedByThisBatch",
+      "support_only": [
+        "PROC-01",
+        "PROC-05"
+      ],
+      "accepted": false,
+      "full_frozen_injection_and_profile_match": false
+    },
+    {
+      "case_id": "LOAD-04.4-T02",
+      "task_id": "LOAD-04.4",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "setup_and_injection": "注册失败再恢复",
+      "expected": "至多一个room",
+      "canonical_execution_status": "NotExecutedByThisBatch",
+      "support_only": [
+        "PROC-01",
+        "PROC-05"
+      ],
+      "accepted": false,
+      "full_frozen_injection_and_profile_match": false
+    },
+    {
+      "case_id": "LOAD-04.4-T03",
+      "task_id": "LOAD-04.4",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "setup_and_injection": "STOP排队/ready",
+      "expected": "取消或明确超时回收",
+      "canonical_execution_status": "NotExecutedByThisBatch",
+      "support_only": [
+        "PROC-01",
+        "PROC-05"
+      ],
+      "accepted": false,
+      "full_frozen_injection_and_profile_match": false
+    },
+    {
+      "case_id": "LOAD-05.4-T01",
+      "task_id": "LOAD-05.4",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "setup_and_injection": "ack提交后响应丢失再重试",
+      "expected": "同一receipt/资产只一次",
+      "canonical_execution_status": "NotExecutedByThisBatch",
+      "support_only": [
+        "PROC-02",
+        "PROC-03",
+        "PROC-05"
+      ],
+      "accepted": false,
+      "full_frozen_injection_and_profile_match": false
+    },
+    {
+      "case_id": "LOAD-05.4-T02",
+      "task_id": "LOAD-05.4",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "setup_and_injection": "pending holds",
+      "expected": "不对外ready",
+      "canonical_execution_status": "NotExecutedByThisBatch",
+      "support_only": [
+        "PROC-02",
+        "PROC-03",
+        "PROC-05"
+      ],
+      "accepted": false,
+      "full_frozen_injection_and_profile_match": false
+    },
+    {
+      "case_id": "LOAD-05.4-T03",
+      "task_id": "LOAD-05.4",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "setup_and_injection": "三局夹一失败重试",
+      "expected": "仅真实成功计一次",
+      "canonical_execution_status": "NotExecutedByThisBatch",
+      "support_only": [
+        "PROC-02",
+        "PROC-03",
+        "PROC-05"
+      ],
+      "accepted": false,
+      "full_frozen_injection_and_profile_match": false
+    },
+    {
+      "case_id": "PR13-A03.1-T01",
+      "task_id": "PR13-A03.1",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "setup_and_injection": "重复同错误",
+      "expected": "恢复ID始终M",
+      "canonical_execution_status": "NotExecutedByThisBatch",
+      "support_only": [
+        "PROC-01"
+      ],
+      "accepted": false,
+      "full_frozen_injection_and_profile_match": false
+    },
+    {
+      "case_id": "PR13-A03.1-T02",
+      "task_id": "PR13-A03.1",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "setup_and_injection": "Bootstrap晚返回",
+      "expected": "继续按M恢复",
+      "canonical_execution_status": "NotExecutedByThisBatch",
+      "support_only": [
+        "PROC-01"
+      ],
+      "accepted": false,
+      "full_frozen_injection_and_profile_match": false
+    },
+    {
+      "case_id": "PR13-A03.1-T03",
+      "task_id": "PR13-A03.1",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "setup_and_injection": "错误无可验证match",
+      "expected": "不能清有效M",
+      "canonical_execution_status": "NotExecutedByThisBatch",
+      "support_only": [
+        "PROC-01"
+      ],
+      "accepted": false,
+      "full_frozen_injection_and_profile_match": false
+    },
+    {
+      "case_id": "PR13-A03.2-T01",
+      "task_id": "PR13-A03.2",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "setup_and_injection": "M错误在新N房到达",
+      "expected": "N不被清",
+      "canonical_execution_status": "NotExecutedByThisBatch",
+      "support_only": [
+        "PROC-04"
+      ],
+      "accepted": false,
+      "full_frozen_injection_and_profile_match": false
+    },
+    {
+      "case_id": "PR13-A03.2-T02",
+      "task_id": "PR13-A03.2",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "setup_and_injection": "M的Bootstrap在N到达",
+      "expected": "不覆盖N",
+      "canonical_execution_status": "NotExecutedByThisBatch",
+      "support_only": [
+        "PROC-04"
+      ],
+      "accepted": false,
+      "full_frozen_injection_and_profile_match": false
+    },
+    {
+      "case_id": "PR13-A03.2-T03",
+      "task_id": "PR13-A03.2",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "setup_and_injection": "session切换",
+      "expected": "不恢复旧账号状态",
+      "canonical_execution_status": "NotExecutedByThisBatch",
+      "support_only": [
+        "PROC-04"
+      ],
+      "accepted": false,
+      "full_frozen_injection_and_profile_match": false
+    },
+    {
+      "case_id": "PR13-A03.3-T01",
+      "task_id": "PR13-A03.3",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "setup_and_injection": "已提交响应丢失",
+      "expected": "一次资产且一次完成",
+      "canonical_execution_status": "NotExecutedByThisBatch",
+      "support_only": [
+        "PROC-02",
+        "PROC-03"
+      ],
+      "accepted": false,
+      "full_frozen_injection_and_profile_match": false
+    },
+    {
+      "case_id": "PR13-A03.3-T02",
+      "task_id": "PR13-A03.3",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "setup_and_injection": "未提交超时",
+      "expected": "可安全重试",
+      "canonical_execution_status": "NotExecutedByThisBatch",
+      "support_only": [
+        "PROC-02",
+        "PROC-03"
+      ],
+      "accepted": false,
+      "full_frozen_injection_and_profile_match": false
+    },
+    {
+      "case_id": "PR13-A03.3-T03",
+      "task_id": "PR13-A03.3",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "setup_and_injection": "busy/旧receipt",
+      "expected": "不计完成",
+      "canonical_execution_status": "NotExecutedByThisBatch",
+      "support_only": [
+        "PROC-02",
+        "PROC-03"
+      ],
+      "accepted": false,
+      "full_frozen_injection_and_profile_match": false
+    },
+    {
+      "case_id": "PR13-A03.4-T01",
+      "task_id": "PR13-A03.4",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "setup_and_injection": "先M恢复后N开局",
+      "expected": "无M poll污染",
+      "canonical_execution_status": "NotExecutedByThisBatch",
+      "support_only": [
+        "PROC-04",
+        "PROC-05"
+      ],
+      "accepted": false,
+      "full_frozen_injection_and_profile_match": false
+    },
+    {
+      "case_id": "PR13-A03.4-T02",
+      "task_id": "PR13-A03.4",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "setup_and_injection": "结算尚未holds ready",
+      "expected": "等待不失context",
+      "canonical_execution_status": "NotExecutedByThisBatch",
+      "support_only": [
+        "PROC-04",
+        "PROC-05"
+      ],
+      "accepted": false,
+      "full_frozen_injection_and_profile_match": false
+    },
+    {
+      "case_id": "PR13-A03.4-T03",
+      "task_id": "PR13-A03.4",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "setup_and_injection": "三局其中重复NOT_IN_ROOM",
+      "expected": "仍恰好三次正常ack",
+      "canonical_execution_status": "NotExecutedByThisBatch",
+      "support_only": [
+        "PROC-04",
+        "PROC-05"
+      ],
+      "accepted": false,
+      "full_frozen_injection_and_profile_match": false
+    },
+    {
+      "case_id": "PR13-A04.4-T01",
+      "task_id": "PR13-A04.4",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "setup_and_injection": "ready阶段STOP",
+      "expected": "取消或明确deadline回收",
+      "canonical_execution_status": "NotExecutedByThisBatch",
+      "support_only": [
+        "PROC-01",
+        "PROC-05"
+      ],
+      "accepted": false,
+      "full_frozen_injection_and_profile_match": false
+    },
+    {
+      "case_id": "PR13-A04.4-T02",
+      "task_id": "PR13-A04.4",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "setup_and_injection": "reconnect收到重放",
+      "expected": "序号与room正确",
+      "canonical_execution_status": "NotExecutedByThisBatch",
+      "support_only": [
+        "PROC-01",
+        "PROC-05"
+      ],
+      "accepted": false,
+      "full_frozen_injection_and_profile_match": false
+    },
+    {
+      "case_id": "PR13-A04.4-T03",
+      "task_id": "PR13-A04.4",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "setup_and_injection": "多局迟到事件",
+      "expected": "只影响原cycle",
+      "canonical_execution_status": "NotExecutedByThisBatch",
+      "support_only": [
+        "PROC-01",
+        "PROC-05"
+      ],
+      "accepted": false,
+      "full_frozen_injection_and_profile_match": false
+    },
+    {
+      "case_id": "PR13-A05.3-T01",
+      "task_id": "PR13-A05.3",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "AUDIT"
+      ],
+      "setup_and_injection": "同ack三次",
+      "expected": "一条业务结果",
+      "canonical_execution_status": "NotExecutedByThisBatch",
+      "support_only": [
+        "PROC-02",
+        "PROC-03",
+        "PROC-05"
+      ],
+      "accepted": false,
+      "full_frozen_injection_and_profile_match": false
+    },
+    {
+      "case_id": "PR13-A05.3-T02",
+      "task_id": "PR13-A05.3",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "AUDIT"
+      ],
+      "setup_and_injection": "重启在holds完成前",
+      "expected": "恢复同一资产转移",
+      "canonical_execution_status": "NotExecutedByThisBatch",
+      "support_only": [
+        "PROC-02",
+        "PROC-03",
+        "PROC-05"
+      ],
+      "accepted": false,
+      "full_frozen_injection_and_profile_match": false
+    },
+    {
+      "case_id": "PR13-A05.3-T03",
+      "task_id": "PR13-A05.3",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "AUDIT"
+      ],
+      "setup_and_injection": "重复ready通知",
+      "expected": "不重复领奖",
+      "canonical_execution_status": "NotExecutedByThisBatch",
+      "support_only": [
+        "PROC-02",
+        "PROC-03",
+        "PROC-05"
+      ],
+      "accepted": false,
+      "full_frozen_injection_and_profile_match": false
+    },
+    {
+      "case_id": "PR13-B11.2-T01",
+      "task_id": "PR13-B11.2",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE",
+        "RENDER"
+      ],
+      "setup_and_injection": "重复错误",
+      "expected": "保原match",
+      "canonical_execution_status": "NotExecutedByThisBatch",
+      "support_only": [
+        "PROC-01",
+        "PROC-04"
+      ],
+      "accepted": false,
+      "full_frozen_injection_and_profile_match": false
+    },
+    {
+      "case_id": "PR13-B11.2-T02",
+      "task_id": "PR13-B11.2",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE",
+        "RENDER"
+      ],
+      "setup_and_injection": "旧callback在新局",
+      "expected": "不清新UI",
+      "canonical_execution_status": "NotExecutedByThisBatch",
+      "support_only": [
+        "PROC-01",
+        "PROC-04"
+      ],
+      "accepted": false,
+      "full_frozen_injection_and_profile_match": false
+    },
+    {
+      "case_id": "PR13-B11.2-T03",
+      "task_id": "PR13-B11.2",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE",
+        "RENDER"
+      ],
+      "setup_and_injection": "回大厅时ackUnknown",
+      "expected": "可恢复receipt/明确状态",
+      "canonical_execution_status": "NotExecutedByThisBatch",
+      "support_only": [
+        "PROC-01",
+        "PROC-04"
+      ],
+      "accepted": false,
+      "full_frozen_injection_and_profile_match": false
+    }
+  ],
+  "missing": [
+    "required event loss",
+    "registration fault at OS boundary",
+    "each-await STOP",
+    "missing/late READY",
+    "ACK committed response loss at host boundary",
+    "delayed old callbacks and client/room sequence exact matrix",
+    "three full gameplay cycles including Boss and failure retry",
+    "LIVE owned server slot/accounts",
+    "RENDER/UI and participant evidence"
+  ]
+}

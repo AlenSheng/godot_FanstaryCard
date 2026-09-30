@@ -1,6 +1,6 @@
 {
   "kind": "canonical_receipt_and_supporting_case_mapping_not_acceptance",
-  "stable_logic_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+  "stable_logic_sha": "de1157fdf490a5bce3ba888c07519fc957c46782",
   "frozen_spec_sha256": "5176ee139d4e632ba34469ae531ce7ec16478f356480e2d8e320cd51f3bcd703",
   "canonical_case_counts": {
     "Passed": 27,
@@ -1352,10 +1352,15 @@
       ],
       "setup_and_injection": "required丢失再重连",
       "expected": "权威恢复",
-      "task_current_state": "NotRevalidated",
+      "task_current_state": "Partial",
       "accepted": false,
       "accepted_by": null,
-      "supporting_task_evidence": [],
+      "supporting_task_evidence": [
+        "pb-equipment-d3c5fe6c/report.json",
+        "pb-equipment-d3c5fe6c/full-trx/server.trx",
+        "pb-equipment-d3c5fe6c/process-v3/receipts.jsonl",
+        "process-recovery-v2/CANONICAL_SUPPORT_MAPPING.json"
+      ],
       "supporting_evidence_is_full_case_coverage": false,
       "current_case_execution": {
         "status": "NotExecuted",
@@ -1373,10 +1378,15 @@
       ],
       "setup_and_injection": "注册失败再恢复",
       "expected": "至多一个room",
-      "task_current_state": "NotRevalidated",
+      "task_current_state": "Partial",
       "accepted": false,
       "accepted_by": null,
-      "supporting_task_evidence": [],
+      "supporting_task_evidence": [
+        "pb-equipment-d3c5fe6c/report.json",
+        "pb-equipment-d3c5fe6c/full-trx/server.trx",
+        "pb-equipment-d3c5fe6c/process-v3/receipts.jsonl",
+        "process-recovery-v2/CANONICAL_SUPPORT_MAPPING.json"
+      ],
       "supporting_evidence_is_full_case_coverage": false,
       "current_case_execution": {
         "status": "NotExecuted",
@@ -1394,10 +1404,15 @@
       ],
       "setup_and_injection": "STOP排队/ready",
       "expected": "取消或明确超时回收",
-      "task_current_state": "NotRevalidated",
+      "task_current_state": "Partial",
       "accepted": false,
       "accepted_by": null,
-      "supporting_task_evidence": [],
+      "supporting_task_evidence": [
+        "pb-equipment-d3c5fe6c/report.json",
+        "pb-equipment-d3c5fe6c/full-trx/server.trx",
+        "pb-equipment-d3c5fe6c/process-v3/receipts.jsonl",
+        "process-recovery-v2/CANONICAL_SUPPORT_MAPPING.json"
+      ],
       "supporting_evidence_is_full_case_coverage": false,
       "current_case_execution": {
         "status": "NotExecuted",
@@ -1622,10 +1637,15 @@
       ],
       "setup_and_injection": "ack提交后响应丢失再重试",
       "expected": "同一receipt/资产只一次",
-      "task_current_state": "NotRevalidated",
+      "task_current_state": "Partial",
       "accepted": false,
       "accepted_by": null,
-      "supporting_task_evidence": [],
+      "supporting_task_evidence": [
+        "pb-equipment-d3c5fe6c/report.json",
+        "pb-equipment-d3c5fe6c/full-trx/server.trx",
+        "pb-equipment-d3c5fe6c/process-v3/receipts.jsonl",
+        "process-recovery-v2/CANONICAL_SUPPORT_MAPPING.json"
+      ],
       "supporting_evidence_is_full_case_coverage": false,
       "current_case_execution": {
         "status": "NotExecuted",
@@ -1643,10 +1663,15 @@
       ],
       "setup_and_injection": "pending holds",
       "expected": "不对外ready",
-      "task_current_state": "NotRevalidated",
+      "task_current_state": "Partial",
       "accepted": false,
       "accepted_by": null,
-      "supporting_task_evidence": [],
+      "supporting_task_evidence": [
+        "pb-equipment-d3c5fe6c/report.json",
+        "pb-equipment-d3c5fe6c/full-trx/server.trx",
+        "pb-equipment-d3c5fe6c/process-v3/receipts.jsonl",
+        "process-recovery-v2/CANONICAL_SUPPORT_MAPPING.json"
+      ],
       "supporting_evidence_is_full_case_coverage": false,
       "current_case_execution": {
         "status": "NotExecuted",
@@ -1664,10 +1689,15 @@
       ],
       "setup_and_injection": "三局夹一失败重试",
       "expected": "仅真实成功计一次",
-      "task_current_state": "NotRevalidated",
+      "task_current_state": "Partial",
       "accepted": false,
       "accepted_by": null,
-      "supporting_task_evidence": [],
+      "supporting_task_evidence": [
+        "pb-equipment-d3c5fe6c/report.json",
+        "pb-equipment-d3c5fe6c/full-trx/server.trx",
+        "pb-equipment-d3c5fe6c/process-v3/receipts.jsonl",
+        "process-recovery-v2/CANONICAL_SUPPORT_MAPPING.json"
+      ],
       "supporting_evidence_is_full_case_coverage": false,
       "current_case_execution": {
         "status": "NotExecuted",
@@ -4097,10 +4127,15 @@
       ],
       "setup_and_injection": "先M恢复后N开局",
       "expected": "无M poll污染",
-      "task_current_state": "NotRevalidated",
+      "task_current_state": "Partial",
       "accepted": false,
       "accepted_by": null,
-      "supporting_task_evidence": [],
+      "supporting_task_evidence": [
+        "pb-equipment-d3c5fe6c/report.json",
+        "pb-equipment-d3c5fe6c/full-trx/server.trx",
+        "pb-equipment-d3c5fe6c/process-v3/receipts.jsonl",
+        "process-recovery-v2/CANONICAL_SUPPORT_MAPPING.json"
+      ],
       "supporting_evidence_is_full_case_coverage": false,
       "current_case_execution": {
         "status": "NotExecuted",
@@ -4118,10 +4153,15 @@
       ],
       "setup_and_injection": "结算尚未holds ready",
       "expected": "等待不失context",
-      "task_current_state": "NotRevalidated",
+      "task_current_state": "Partial",
       "accepted": false,
       "accepted_by": null,
-      "supporting_task_evidence": [],
+      "supporting_task_evidence": [
+        "pb-equipment-d3c5fe6c/report.json",
+        "pb-equipment-d3c5fe6c/full-trx/server.trx",
+        "pb-equipment-d3c5fe6c/process-v3/receipts.jsonl",
+        "process-recovery-v2/CANONICAL_SUPPORT_MAPPING.json"
+      ],
       "supporting_evidence_is_full_case_coverage": false,
       "current_case_execution": {
         "status": "NotExecuted",
@@ -4139,10 +4179,15 @@
       ],
       "setup_and_injection": "三局其中重复NOT_IN_ROOM",
       "expected": "仍恰好三次正常ack",
-      "task_current_state": "NotRevalidated",
+      "task_current_state": "Partial",
       "accepted": false,
       "accepted_by": null,
-      "supporting_task_evidence": [],
+      "supporting_task_evidence": [
+        "pb-equipment-d3c5fe6c/report.json",
+        "pb-equipment-d3c5fe6c/full-trx/server.trx",
+        "pb-equipment-d3c5fe6c/process-v3/receipts.jsonl",
+        "process-recovery-v2/CANONICAL_SUPPORT_MAPPING.json"
+      ],
       "supporting_evidence_is_full_case_coverage": false,
       "current_case_execution": {
         "status": "NotExecuted",
@@ -4620,7 +4665,11 @@
         "lifecycle/logs/baseline-final.trx",
         "ci-b7099ef/verified-artifacts.json",
         "integrated-cc6da2e/report.json",
-        "ci-cc6da2e/workflows.json"
+        "ci-cc6da2e/workflows.json",
+        "pb-equipment-d3c5fe6c/report.json",
+        "pb-equipment-d3c5fe6c/full-trx/server.trx",
+        "pb-equipment-d3c5fe6c/process-v3/receipts.jsonl",
+        "process-recovery-v2/CANONICAL_SUPPORT_MAPPING.json"
       ],
       "supporting_evidence_is_full_case_coverage": false,
       "current_case_execution": {
@@ -4649,7 +4698,11 @@
         "lifecycle/logs/baseline-final.trx",
         "ci-b7099ef/verified-artifacts.json",
         "integrated-cc6da2e/report.json",
-        "ci-cc6da2e/workflows.json"
+        "ci-cc6da2e/workflows.json",
+        "pb-equipment-d3c5fe6c/report.json",
+        "pb-equipment-d3c5fe6c/full-trx/server.trx",
+        "pb-equipment-d3c5fe6c/process-v3/receipts.jsonl",
+        "process-recovery-v2/CANONICAL_SUPPORT_MAPPING.json"
       ],
       "supporting_evidence_is_full_case_coverage": false,
       "current_case_execution": {
@@ -4678,7 +4731,11 @@
         "lifecycle/logs/baseline-final.trx",
         "ci-b7099ef/verified-artifacts.json",
         "integrated-cc6da2e/report.json",
-        "ci-cc6da2e/workflows.json"
+        "ci-cc6da2e/workflows.json",
+        "pb-equipment-d3c5fe6c/report.json",
+        "pb-equipment-d3c5fe6c/full-trx/server.trx",
+        "pb-equipment-d3c5fe6c/process-v3/receipts.jsonl",
+        "process-recovery-v2/CANONICAL_SUPPORT_MAPPING.json"
       ],
       "supporting_evidence_is_full_case_coverage": false,
       "current_case_execution": {
@@ -10452,5 +10509,102 @@
       "canonical_case_id": null,
       "scope": "Existing actual OS host/HTTP/WS test, supporting evidence only; method-specific scope does not prove full canonical fault/threecycle/LIVE matrix."
     }
-  ]
+  ],
+  "supporting_actual_process_cases": [
+    {
+      "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_cold_start_commits_durable_pending_holds_once",
+      "status": "Passed",
+      "canonical_case_id": null,
+      "matched_commit_sha": "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17",
+      "tested_parent_sha": "d277283dc6ec13f3bf51b4d51ac7a863fd490203",
+      "source_dirty_at_test": true,
+      "source_equivalence": "pb-equipment-d3c5fe6c/post-commit-source.json",
+      "scope": "Three real entry/disconnect-death cycles and forced OS cold starts; not three full legal preparation-to-Boss gameplay cycles, full fault matrix, actual rendered UI, capacity or LIVE acceptance.",
+      "receipt_file": "pb-equipment-d3c5fe6c/full-trx/server.trx",
+      "task_refs": [
+        "LOAD-04.4",
+        "LOAD-05.4",
+        "PR13-A03.4",
+        "PR13-A05.3"
+      ],
+      "accepted": false
+    },
+    {
+      "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK",
+      "status": "Passed",
+      "canonical_case_id": null,
+      "matched_commit_sha": "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17",
+      "tested_parent_sha": "d277283dc6ec13f3bf51b4d51ac7a863fd490203",
+      "source_dirty_at_test": true,
+      "source_equivalence": "pb-equipment-d3c5fe6c/post-commit-source.json",
+      "scope": "Three real entry/disconnect-death cycles and forced OS cold starts; not three full legal preparation-to-Boss gameplay cycles, full fault matrix, actual rendered UI, capacity or LIVE acceptance.",
+      "receipt_file": "pb-equipment-d3c5fe6c/full-trx/server.trx",
+      "task_refs": [
+        "LOAD-04.4",
+        "LOAD-05.4",
+        "PR13-A03.4",
+        "PR13-A05.3"
+      ],
+      "accepted": false
+    },
+    {
+      "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_quarantines_contradictory_terminal_checkpoint_but_recovers_next_room",
+      "status": "Passed",
+      "canonical_case_id": null,
+      "matched_commit_sha": "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17",
+      "tested_parent_sha": "d277283dc6ec13f3bf51b4d51ac7a863fd490203",
+      "source_dirty_at_test": true,
+      "source_equivalence": "pb-equipment-d3c5fe6c/post-commit-source.json",
+      "scope": "Three real entry/disconnect-death cycles and forced OS cold starts; not three full legal preparation-to-Boss gameplay cycles, full fault matrix, actual rendered UI, capacity or LIVE acceptance.",
+      "receipt_file": "pb-equipment-d3c5fe6c/full-trx/server.trx",
+      "task_refs": [
+        "LOAD-04.4",
+        "LOAD-05.4",
+        "PR13-A03.4",
+        "PR13-A05.3"
+      ],
+      "accepted": false
+    },
+    {
+      "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_three_entry_cycles_duplicate_READY_and_ACK_release_owned_locks",
+      "status": "Passed",
+      "canonical_case_id": null,
+      "matched_commit_sha": "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17",
+      "tested_parent_sha": "d277283dc6ec13f3bf51b4d51ac7a863fd490203",
+      "source_dirty_at_test": true,
+      "source_equivalence": "pb-equipment-d3c5fe6c/post-commit-source.json",
+      "scope": "Three real entry/disconnect-death cycles and forced OS cold starts; not three full legal preparation-to-Boss gameplay cycles, full fault matrix, actual rendered UI, capacity or LIVE acceptance.",
+      "receipt_file": "pb-equipment-d3c5fe6c/full-trx/server.trx",
+      "task_refs": [
+        "LOAD-04.4",
+        "LOAD-05.4",
+        "PR13-A03.4",
+        "PR13-A05.3"
+      ],
+      "accepted": false
+    },
+    {
+      "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_Running_room_resumes_after_abrupt_OS_process_restart",
+      "status": "Passed",
+      "canonical_case_id": null,
+      "matched_commit_sha": "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17",
+      "tested_parent_sha": "d277283dc6ec13f3bf51b4d51ac7a863fd490203",
+      "source_dirty_at_test": true,
+      "source_equivalence": "pb-equipment-d3c5fe6c/post-commit-source.json",
+      "scope": "Three real entry/disconnect-death cycles and forced OS cold starts; not three full legal preparation-to-Boss gameplay cycles, full fault matrix, actual rendered UI, capacity or LIVE acceptance.",
+      "receipt_file": "pb-equipment-d3c5fe6c/full-trx/server.trx",
+      "task_refs": [
+        "LOAD-04.4",
+        "LOAD-05.4",
+        "PR13-A03.4",
+        "PR13-A05.3"
+      ],
+      "accepted": false
+    }
+  ],
+  "protocol_P0_equipment_cases": {
+    "count": 16,
+    "receipt": "pb-equipment-d3c5fe6c/full-trx/server.trx",
+    "scope": "Real persisted named equipment and legacy numeric compatibility/invalid names, support only."
+  }
 }

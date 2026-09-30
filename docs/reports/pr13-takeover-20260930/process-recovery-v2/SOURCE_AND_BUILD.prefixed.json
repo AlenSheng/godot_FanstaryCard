@@ -1,0 +1,81 @@
+{
+  "base_sha": "d266d9db6b03e23b3d73f23d03731d02429e0bb6",
+  "stable_production_logic_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+  "new_tests_commit": "0f523b865586482ffef2e0eccad5be72cef06a65",
+  "source_test_sha256": "1b2fd6a15e0b74c89353af4f607ced91f55d4085a20ec0e5af34825bb4e64bf8",
+  "production_source_files_changed": [],
+  "tracked_source_clean_before_old_artifacts_deleted": true,
+  "preclean_status_file": "preclean-status.txt",
+  "tracked_bin_obj_files_before_cleanup": 2427,
+  "old_bin_obj_directories_removed": 18,
+  "build_output_inside_source": true,
+  "git_dirty_after_build": true,
+  "dirty_status_file": "build-dirty-status.txt",
+  "historical_attempt_test_source_hashes": "Unknown except recorded attempt5 snapshot; do not infer exact test source from later commit",
+  "runtime": {
+    "dotnet_sdk": "10.0.400",
+    "postgres": "18.6"
+  },
+  "assemblies": [
+    {
+      "path": "server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Domain.dll",
+      "bytes": 520192,
+      "sha256": "4ac75aae7db74d4212c8be9830c191224fcd08c19c07cd50893634d27a631cde"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Contracts.dll",
+      "bytes": 768000,
+      "sha256": "d456e38749c334762c941e8c96af5d9f2cedc0ec6a201b06031aab20e99048c6"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll",
+      "bytes": 1222144,
+      "sha256": "b41136c3178db3da5e4f26b84f0f1c17988e5044bd4b4e0d12342c870b7a403b"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/bin/Release/net10.0/FantasyCard.Domain.dll",
+      "bytes": 520192,
+      "sha256": "4ac75aae7db74d4212c8be9830c191224fcd08c19c07cd50893634d27a631cde"
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/bin/Release/net10.0/FantasyCard.Contracts.dll",
+      "bytes": 768000,
+      "sha256": "d456e38749c334762c941e8c96af5d9f2cedc0ec6a201b06031aab20e99048c6"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Domain.dll",
+      "bytes": 520192,
+      "sha256": "4ac75aae7db74d4212c8be9830c191224fcd08c19c07cd50893634d27a631cde"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Contracts.dll",
+      "bytes": 768000,
+      "sha256": "d456e38749c334762c941e8c96af5d9f2cedc0ec6a201b06031aab20e99048c6"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.dll",
+      "bytes": 1222144,
+      "sha256": "b41136c3178db3da5e4f26b84f0f1c17988e5044bd4b4e0d12342c870b7a403b"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll",
+      "bytes": 896000,
+      "sha256": "8e4819de3e7212219ac9247bdcea421e3f4eac89937474e81148e6f706f57203"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.ConfigExporter.dll",
+      "bytes": 29696,
+      "sha256": "014542c9b4cd58297cec1b03aefb3fc30cf3e01e39449a265ec825526bf08520"
+    }
+  ],
+  "embedded_config": {
+    "path": "server/config/generated/fantasycard.config.bytes",
+    "sha256": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+    "version": "gdd-0.70-numerical-1"
+  },
+  "instructions": {
+    "server_AGENTS_read": true,
+    "GDD_SERVER_SPEC_SERVER_GUIDE_read": true,
+    "mandatory_server_create_skill": "Missing; prior explicit user exception honored; not read"
+  }
+}

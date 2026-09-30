@@ -1,10 +1,10 @@
 {
   "kind": "stage_receipt_not_full_acceptance",
-  "created_at_utc": "2026-09-30T18:11:02.598325+00:00",
-  "stable_logic_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
-  "published_report_sha": "d266d9db6b03e23b3d73f23d03731d02429e0bb6",
+  "created_at_utc": "2026-09-30T19:38:44.543966+00:00",
+  "stable_logic_sha": "de1157fdf490a5bce3ba888c07519fc957c46782",
+  "published_report_sha": null,
   "pure_source_report": "integrated-cc6da2e/report.json",
-  "logic_ci": "ci-cc6da2e/workflows.json",
+  "logic_ci": "ci-de1157fd/workflows.json",
   "report_head_ci": "ci-d266d9db/workflows.json",
   "report_head_all5_ci_passed": true,
   "case_mapping": "CASE_MAPPING.json",
@@ -18,8 +18,8 @@
     "Blocked": 3
   },
   "task_states_current": {
-    "Partial": 45,
-    "NotRevalidated": 84,
+    "Partial": 48,
+    "NotRevalidated": 81,
     "Blocked": 3,
     "Accepted": 0
   },
@@ -299,5 +299,46 @@
     "source_clean": true,
     "evidence": "case-audit-cc6da2e/manifest.json",
     "task_acceptance_changed": false
-  }
+  },
+  "previous_stable_logic_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+  "published_report_parent": "de1157fdf490a5bce3ba888c07519fc957c46782",
+  "latest_batch": "pb-equipment-d3c5fe6c/report.json",
+  "logic_ci_verified": true,
+  "previous_report_head_all5_ci": "ci-d277283d/workflows.json",
+  "cancelled_checkout_gap_closed": "ci-d277283d/retried-jobs.json",
+  "latest_batch_state_transitions": [
+    {
+      "task_id": "LOAD-04.4",
+      "from": "NotRevalidated",
+      "to": "Partial",
+      "reason": "Independent actual-host support only; all frozen profiles/injections remain incomplete."
+    },
+    {
+      "task_id": "LOAD-05.4",
+      "from": "NotRevalidated",
+      "to": "Partial",
+      "reason": "Independent actual-host support only; all frozen profiles/injections remain incomplete."
+    },
+    {
+      "task_id": "PR13-A03.4",
+      "from": "NotRevalidated",
+      "to": "Partial",
+      "reason": "Independent actual-host support only; all frozen profiles/injections remain incomplete."
+    }
+  ],
+  "current_validation": "Completed: local317Domain/281PG +177codec/24HTTP/115Python/27canonical; checkpoint10focused+281full; all5 exact-head-associated CI passed, actual merge entire tree equals head. No running local test/PG/host remains.",
+  "raw_upload_state": "Paused: parent automatic safety review rejected proposed new destination as insufficiently authorized for potentially sensitive raw. Four local ZIPs/hashes preserved; user decision pending.",
+  "production_protocol_fix_sha": "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17",
+  "checkpoint_test_fix_sha": "de1157fdf490a5bce3ba888c07519fc957c46782",
+  "d3_first_CI_failure": "ci-d3c5fe6c/first-attempt-failure.json",
+  "checkpoint_race_fix_and_full_repeat": "checkpoint-publication-de1157fd/post-commit-source.json",
+  "logic_ci_all5_passed": true,
+  "logic_ci_actual_checkout": "f49d9cbef458453b5a86c693f7a312bcab70d26b",
+  "logic_ci_entire_tree_equals_head": true,
+  "logic_ci_source_proof": "ci-de1157fd/source-association.json",
+  "logic_ci_artifact_proof": "ci-de1157fd/verified-artifact/download-verification.json",
+  "ui_integration_status": "Parent confirmed UI070c7b4 independent tail review passed; UI owner is testing isolated de1157 + UI070c7b4 combination; this task does not merge or modify UI branch.",
+  "accepted_tasks": 0,
+  "canonical_passed": 27,
+  "canonical_not_executed": 369
 }

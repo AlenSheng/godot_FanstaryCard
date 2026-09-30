@@ -1,3 +1,13 @@
+de1157fd 五CI已完成通过；实际checkout为f49d9cbe，完整tree与de1157fd一致；下载验收artifact的SHA/CRC及317Domain/281Server TRX全部独立核验。持久化读取竞态用真实revision等待修正，10次定向加281项完整回归通过，原CI失败保留。当前本地验证已结束、临时PG及所有测试host已清理。UI负责人现于独立分支回归de1157+已终审UI070c7b4，本任务不重复集成。
+
+当前运行代码/测试候选为 `de1157fdf490a5bce3ba888c07519fc957c46782`（生产协议修复 d3c5fe6c，另含持久化revision等待测试修正），新增P0修复及真实进程证据见 [当前批次](pb-equipment-d3c5fe6c/report.json)。实际结算已入账而默认Protobuf GET/Bootstrap500的问题已修复：保留旧数值标签，新增语义名称标签并配套客户端解码。完整本地317Domain/281Server-PG（含5真实host与16装备编码检查）、177客户端codec、24HTTPfixture及边界/目标确认回归通过；本地测试源码dirty事实保留，8文件逐一匹配提交的证据单列，精确SHA的CI另列。
+
+本轮LOAD-04.4、LOAD-05.4、PR13-A03.4三项由NotRevalidated转Partial，当前48Partial/81NotRevalidated/3Blocked/0Accepted。27Passed/369NotExecuted的canonical数量保持不变。三次实际入房/断线死亡/ACK并非完整准备后Boss三局；新进程矩阵不覆盖全部故障、LIVE或RENDER。
+
+四份新模拟raw ZIP留在本地并保留哈希。父任务报告自动安全审核因原始数据可能敏感且新目的地授权不足拒绝上传；用户授权决定待回，不尝试其他目的地。PR16固定源已登记，独立临时集成及跨回归待父任务终审，不直接合并。
+
+以下保留cc6阶段说明与历史证据，旧状态/失败记录不据新测试重写。
+
 # PR13 本批交付与下一队列
 
 稳定逻辑候选：`cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3`，源码树

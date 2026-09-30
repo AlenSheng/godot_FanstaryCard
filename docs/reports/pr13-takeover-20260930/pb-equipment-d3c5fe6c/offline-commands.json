@@ -1,0 +1,43 @@
+[
+  {
+    "command": [
+      "python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tools/tests",
+      "-p",
+      "test_*.py"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 3.130240192000201,
+    "log": "python-regression.log"
+  },
+  {
+    "command": [
+      "python",
+      "tools/pr13_offline_cases.py",
+      "--godot",
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--output",
+      "/workspace/pr13-takeover/pb-equipment-20260930/offline-cases"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 0.2649692779996258,
+    "log": "canonical-offline.log"
+  },
+  {
+    "command": [
+      "python",
+      "tools/pr13_plan.py",
+      "--check"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 0.06430995300070208,
+    "log": "plan-check.log"
+  }
+]
