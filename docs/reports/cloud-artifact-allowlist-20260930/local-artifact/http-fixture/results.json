@@ -1,0 +1,45 @@
+{
+  "ok": true,
+  "runs": [
+    {
+      "command": [
+        "/workspace/pr14-tools/godot/godot",
+        "--headless",
+        "--path",
+        "/workspace/pr14-artifact-evidence/java/http-fixture",
+        "--editor",
+        "--import",
+        "--quit"
+      ],
+      "exit_code": 0,
+      "engine_errors": false,
+      "log": "import.log"
+    },
+    {
+      "command": [
+        "/workspace/pr14-tools/godot/godot",
+        "--headless",
+        "--path",
+        "/workspace/pr14-artifact-evidence/java/http-fixture",
+        "--script",
+        "res://tests/test_http_protobuf_client.gd"
+      ],
+      "exit_code": 0,
+      "engine_errors": false,
+      "log": "codec.log"
+    },
+    {
+      "command": [
+        "/workspace/pr14-tools/godot/godot",
+        "--headless",
+        "--path",
+        "/workspace/pr14-artifact-evidence/java/http-fixture",
+        "--script",
+        "res://tests/test_http_protobuf_transport.gd"
+      ],
+      "exit_code": 0,
+      "engine_errors": false,
+      "log": "transport.log"
+    }
+  ]
+}

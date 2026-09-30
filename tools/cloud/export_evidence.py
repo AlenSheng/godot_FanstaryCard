@@ -28,7 +28,7 @@ PROFILES = {
 def scrub(value):
     value = re.sub(r'-----BEGIN [^\r\n]*PRIVATE KEY-----.*?-----END [^\r\n]*PRIVATE KEY-----',
                    '[redacted private key block]', value, flags=re.S)
-    value = re.sub(r'(?i)Bearer\s+[^\s"<>]+', 'Bearer [redacted]', value)
+    value = re.sub(r'(?i)\bBearer[ \t]+[A-Za-z0-9._~+/-][A-Za-z0-9._~+/=-]*', 'Bearer [redacted]', value)
     value = re.sub(r'\beyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\b', '[redacted JWT]', value)
     return re.sub(r'(?im)^.*(?:TEST_SERVER_SSH_KEY|GH_TOKEN|accessToken|access_token|api[_-]?key|password)\s*["\']?\s*[:=].*$',
                   '[redacted credential assignment]', value)

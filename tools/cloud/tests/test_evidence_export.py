@@ -105,5 +105,9 @@ class EvidenceExport(unittest.TestCase):
         self.assertIn('CS1739',result)
         for sentinel in ('FAKE_TOKEN_SENTINEL','FAKE_ASSIGNMENT_SENTINEL','FAKE_JSON_SENTINEL'):self.assertNotIn(sentinel,result)
 
+    def test_noncredential_bearer_assertion_log_is_unchanged(self):
+        value='HTTP fixture: ticket URL without bearer = true\n'
+        self.assertEqual(exporter.scrub(value),value)
+
 
 if __name__=='__main__':unittest.main()
