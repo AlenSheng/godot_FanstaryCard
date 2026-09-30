@@ -1,0 +1,6 @@
+{"action":"launch-retry","version":"8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af","fixture_schema":"fc_compat_100c25aa5178","probe_completed":false,"error_type":"InvalidOperationException","error":"launch not retried"}
+System.InvalidOperationException: launch not retried
+   at Probe.Require(Boolean condition, String message) in /workspace/pr14-cross-version/tools/cloud/compat/Program.cs:line 40
+   at Probe.LaunchRetryAsync() in /workspace/pr14-cross-version/tools/cloud/compat/Program.cs:line 218
+   at Probe.LaunchRetryAsync() in /workspace/pr14-cross-version/tools/cloud/compat/Program.cs:line 220
+   at Probe.RunAsync(String[] args) in /workspace/pr14-cross-version/tools/cloud/compat/Program.cs:line 70

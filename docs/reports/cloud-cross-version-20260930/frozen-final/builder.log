@@ -1,0 +1,59 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 2.12kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for mcr.microsoft.com/dotnet/sdk:10.0.400
+#2 DONE 0.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 343B done
+#3 DONE 0.0s
+
+#4 [build  1/12] FROM mcr.microsoft.com/dotnet/sdk:10.0.400@sha256:4beef5b8919dcaa2dc924233bd069257e883cc7a061e09088a97d152d6a48510
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 31.28kB 0.0s done
+#5 DONE 0.0s
+
+#6 [build  8/12] RUN dotnet restore src/FantasyCard.Server/FantasyCard.Server.csproj
+#6 CACHED
+
+#7 [build 11/12] RUN dotnet tool install Obfuscar.GlobalTool --version 2.2.50 --tool-path /obfuscar
+#7 CACHED
+
+#8 [build 10/12] RUN dotnet publish src/FantasyCard.Server/FantasyCard.Server.csproj -c Release -o /input --no-restore     -p:DebugType=None -p:DebugSymbols=false -p:UseAppHost=false
+#8 CACHED
+
+#9 [build  9/12] COPY server/ .
+#9 CACHED
+
+#10 [build  5/12] COPY server/src/FantasyCard.Domain/FantasyCard.Domain.csproj src/FantasyCard.Domain/
+#10 CACHED
+
+#11 [build  7/12] COPY protocol/ /protocol/
+#11 CACHED
+
+#12 [build  3/12] COPY server/Directory.Build.props server/Directory.Packages.props server/global.json ./
+#12 CACHED
+
+#13 [build  4/12] COPY server/src/FantasyCard.Contracts/FantasyCard.Contracts.csproj src/FantasyCard.Contracts/
+#13 CACHED
+
+#14 [build  6/12] COPY server/src/FantasyCard.Server/FantasyCard.Server.csproj src/FantasyCard.Server/
+#14 CACHED
+
+#15 [build  2/12] WORKDIR /src
+#15 CACHED
+
+#16 [build 12/12] RUN mkdir -p /framework /private     && cp /usr/share/dotnet/shared/Microsoft.NETCore.App/10.*/*.dll /framework/     && cp /usr/share/dotnet/shared/Microsoft.AspNetCore.App/10.*/*.dll /framework/     && /obfuscar/obfuscar.console /src/protection/obfuscar.xml     && test -s /private/mapping.xml     && for assembly in FantasyCard.Contracts FantasyCard.Domain FantasyCard.Server; do          test -s "/output/${assembly}.dll";          ! cmp -s "/input/${assembly}.dll" "/output/${assembly}.dll";        done     && cp /output/FantasyCard.Contracts.dll /output/FantasyCard.Domain.dll /output/FantasyCard.Server.dll /input/     && rm -f /input/*.pdb /input/*.xml /input/appsettings.Development.json     && ! find /input -type f ( -name '*.pdb' -o -name '*.cs' -o -name '*.key' -o -name '*.dpapi' ) -print -quit | grep -q .
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers
+#17 exporting layers 2.9s done
+#17 writing image sha256:5e019867cf0b485dd6e201ee66271b036350da8b86b2d18920afdbd61c730ed4 done
+#17 naming to docker.io/library/cloud-check-builder:94ab80ebb4585f52d2ba632ba025da0913f08876 done
+#17 DONE 2.9s

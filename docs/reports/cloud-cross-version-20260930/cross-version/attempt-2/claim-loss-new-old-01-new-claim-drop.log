@@ -1,0 +1,8 @@
+{"action":"claim-drop","version":"cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3","fixture_schema":"fc_compat_32d7470ed2c0","probe_completed":false,"error_type":"InvalidOperationException","error":"asset reservation was duplicated or missing"}
+System.InvalidOperationException: asset reservation was duplicated or missing
+   at Probe.Require(Boolean condition, String message) in /workspace/pr14-cross-version/tools/cloud/compat/Program.cs:line 40
+   at Probe.AssetsOnceAsync() in /workspace/pr14-cross-version/tools/cloud/compat/Program.cs:line 195
+   at Probe.ClaimDropAsync() in /workspace/pr14-cross-version/tools/cloud/compat/Program.cs:line 203
+   at Probe.ClaimDropAsync() in /workspace/pr14-cross-version/tools/cloud/compat/Program.cs:line 204
+   at Probe.ClaimDropAsync() in /workspace/pr14-cross-version/tools/cloud/compat/Program.cs:line 204
+   at Probe.RunAsync(String[] args) in /workspace/pr14-cross-version/tools/cloud/compat/Program.cs:line 68

@@ -1,0 +1,90 @@
+Evidence: /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/image-evidence/private-image-validation/docker-acceptance-j2nnt4ar
+Running the full Linux test suites against final-image assemblies...
+Linux tests passed: 579
+Runtime HTTP/WebSocket and forced-restart checks passed.
+{
+  "ok": true,
+  "started_at": "2026-09-30T18:23:42.304397+00:00",
+  "evidence": "/home/runner/work/godot_FanstaryCard/godot_FanstaryCard/image-evidence/private-image-validation/docker-acceptance-j2nnt4ar",
+  "image": "sha256:1eda55446df57d500c187540bb6aceaf52e4d7c508cd04e0c46d6b827ced3467",
+  "image_tag": "cloud-check-runtime:94ab80ebb4585f52d2ba632ba025da0913f08876",
+  "image_digests": [],
+  "builder": "sha256:5e019867cf0b485dd6e201ee66271b036350da8b86b2d18920afdbd61c730ed4",
+  "platform": "linux/amd64",
+  "postgres_image": "sha256:c293117fcecda7344b5480222e813b9f673d7abd69b1dd95eff239b768b04f59",
+  "postgres_version": "postgres (PostgreSQL) 18.6",
+  "assemblies": {
+    "FantasyCard.Contracts.dll": "7c4045d866e0b622f4877c3dca045fe3e633f6be314d28f313cfaf9d52d2e3d3",
+    "FantasyCard.Domain.dll": "44b8366e4f08fa9b4e337137a91ab28ae09801bbba396bb104e8deec5b2d4da2",
+    "FantasyCard.Server.dll": "babc5aaec940d590b1ab70aac7fee9dbc51925751b31b61f07f0b28ea54d87e7"
+  },
+  "package_checks": {
+    "forbidden_files": [],
+    "builder_files_absent": true,
+    "root_key_scan": "key not present locally"
+  },
+  "original_assemblies": {
+    "FantasyCard.Contracts.dll": "60a8b4ac352caf54049165a79a638bea9ca7eb8ecf128a977dbbfcb39e067da5",
+    "FantasyCard.Domain.dll": "aa763777a651bc5b6efaba110c4ca9b75ca919d80819287a2df2fc74c3acdad1",
+    "FantasyCard.Server.dll": "308db1e232c21191e25aa8ee3377860d43624c87b3bf693cd20d3b79e60dff12"
+  },
+  "tests": {
+    "total": 579,
+    "passed": 579,
+    "failed": 0,
+    "notExecuted": 0
+  },
+  "runtime_uid": "1654",
+  "smoke_before": {
+    "ok": true,
+    "phase": "before",
+    "checks": [
+      "liveness",
+      "database readiness",
+      "unauthenticated bootstrap rejected",
+      "HTTP protobuf /api/v1/auth/local",
+      "local sign-in",
+      "HTTP protobuf /api/v1/bootstrap",
+      "bootstrap decks and class weapons",
+      "isolated purchase fixture",
+      "HTTP protobuf /api/v1/shop/",
+      "HTTP protobuf /api/v1/shop/purchases",
+      "purchase charges correct gold",
+      "HTTP protobuf /api/v1/shop/purchases",
+      "purchase retry grants once",
+      "HTTP protobuf /api/v1/realtime/ticket",
+      "protobuf session connected",
+      "protobuf ping/pong sequence"
+    ]
+  },
+  "smoke_after": {
+    "ok": true,
+    "phase": "after",
+    "checks": [
+      "liveness",
+      "database readiness",
+      "unauthenticated bootstrap rejected",
+      "HTTP protobuf /api/v1/bootstrap",
+      "session persists after container restart",
+      "HTTP protobuf /api/v1/shop/purchases",
+      "purchase replay after container restart",
+      "gold persists without duplicate charge",
+      "cards persist without duplicate grant",
+      "HTTP protobuf /api/v1/realtime/ticket",
+      "protobuf session connected",
+      "protobuf ping/pong sequence"
+    ]
+  },
+  "database_outage": {
+    "ready": 503,
+    "live": 200,
+    "recovered": 200
+  },
+  "production_local_auth_status": 404,
+  "cleanup": {
+    "ok": true,
+    "remaining": [],
+    "database": "isolated tmpfs removed; existing Docker workloads untouched"
+  },
+  "completed_at": "2026-09-30T18:27:14.666804+00:00"
+}

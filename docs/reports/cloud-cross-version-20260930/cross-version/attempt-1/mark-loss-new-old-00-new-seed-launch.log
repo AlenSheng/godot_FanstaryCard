@@ -1,0 +1,10 @@
+{"action":"seed-launch","version":"cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3","fixture_schema":"fc_compat_27f118749eba","probe_completed":false,"error_type":"DomainValidationException","error":"Display name must contain 2-20 characters."}
+FantasyCard.Domain.Players.DomainValidationException: Display name must contain 2-20 characters.
+   at FantasyCard.Domain.Players.PlayerProfile.NormalizeDisplayName(String displayName) in /workspace/pr14-cross-version/server/src/FantasyCard.Domain/Players/PlayerProfile.cs:line 91
+   at FantasyCard.Server.Identity.IdentityRepository.SignInExternalAsync(String provider, String externalSubject, String displayName, Byte[] tokenHash, DateTimeOffset now, DateTimeOffset expiresAt, CancellationToken cancellationToken) in /workspace/pr14-cross-version/server/src/FantasyCard.Server/Identity/IdentityRepository.cs:line 51
+   at FantasyCard.Server.Identity.IdentityRepository.SignInExternalAsync(String provider, String externalSubject, String displayName, Byte[] tokenHash, DateTimeOffset now, DateTimeOffset expiresAt, CancellationToken cancellationToken) in /workspace/pr14-cross-version/server/src/FantasyCard.Server/Identity/IdentityRepository.cs:line 121
+   at FantasyCard.Server.Identity.IdentityRepository.SignInExternalAsync(String provider, String externalSubject, String displayName, Byte[] tokenHash, DateTimeOffset now, DateTimeOffset expiresAt, CancellationToken cancellationToken) in /workspace/pr14-cross-version/server/src/FantasyCard.Server/Identity/IdentityRepository.cs:line 121
+   at FantasyCard.Server.Identity.IdentityRepository.SignInLocalAsync(String deviceId, String displayName, Byte[] tokenHash, DateTimeOffset now, DateTimeOffset expiresAt, CancellationToken cancellationToken) in /workspace/pr14-cross-version/server/src/FantasyCard.Server/Identity/IdentityRepository.cs:line 33
+   at Probe.PlayerAsync() in /workspace/pr14-cross-version/tools/cloud/compat/Program.cs:line 122
+   at Probe.SeedLaunchAsync() in /workspace/pr14-cross-version/tools/cloud/compat/Program.cs:line 180
+   at Probe.RunAsync(String[] args) in /workspace/pr14-cross-version/tools/cloud/compat/Program.cs:line 67

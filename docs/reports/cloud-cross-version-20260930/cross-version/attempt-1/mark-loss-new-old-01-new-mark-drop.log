@@ -1,0 +1,8 @@
+{"action":"mark-drop","version":"cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3","fixture_schema":"fc_compat_27f118749eba","probe_completed":false,"error_type":"InvalidOperationException","error":"MarkRunning commit loss not injected"}
+System.InvalidOperationException: MarkRunning commit loss not injected
+   at Probe.Require(Boolean condition, String message) in /workspace/pr14-cross-version/tools/cloud/compat/Program.cs:line 40
+   at Probe.MarkDropAsync() in /workspace/pr14-cross-version/tools/cloud/compat/Program.cs:line 211
+   at Probe.MarkDropAsync() in /workspace/pr14-cross-version/tools/cloud/compat/Program.cs:line 213
+   at Probe.MarkDropAsync() in /workspace/pr14-cross-version/tools/cloud/compat/Program.cs:line 213
+   at Probe.MarkDropAsync() in /workspace/pr14-cross-version/tools/cloud/compat/Program.cs:line 213
+   at Probe.RunAsync(String[] args) in /workspace/pr14-cross-version/tools/cloud/compat/Program.cs:line 69

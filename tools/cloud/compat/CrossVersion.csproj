@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>FantasyCard.Server.Tests</AssemblyName>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <EnableDefaultItems>true</EnableDefaultItems>
+    <DefaultItemExcludes>$(DefaultItemExcludes);**/artifacts/**;**/obj/**;**/bin/**</DefaultItemExcludes>
+    <SourceRoot Condition="'$(SourceRoot)' == ''">../../..</SourceRoot>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(SourceRoot)/server/src/FantasyCard.Server/FantasyCard.Server.csproj" />
+  </ItemGroup>
+</Project>

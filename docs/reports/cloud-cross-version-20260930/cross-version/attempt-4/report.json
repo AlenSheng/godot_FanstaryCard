@@ -1,0 +1,932 @@
+{
+  "source_old_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+  "source_new_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+  "controller_sha": "262390134e98f169899d076e6fa21926d44ba1aa",
+  "actual_old_image_id": "sha256:e7defa05caeb1188afb4cfc4390d96900bfc10afb4996ced23a042fb09132697",
+  "old_image_evidence": "source rebuild surrogate; actual online image unavailable",
+  "online_server_used": false,
+  "simultaneous_versions": false,
+  "database_restore_used": false,
+  "historical_fixture_data_deleted": false,
+  "health_scope": "Actual version RoomRecoveryWorker/RoomRegistry and RoomRecoveryHealthCheck in a loopback ASP.NET health fixture; not full Program readiness",
+  "clock_scope": "Fixed clock and dormant tick timer isolate recovery/routing; not elapsed gameplay/load evidence",
+  "ddl_scope": "App columns/constraints/indexes/functions/triggers; excludes only explicit compat_fail fault-injection function/trigger",
+  "source_proof": {
+    "old": {
+      "checkout_head": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+      "expected_source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+      "server_tree": "61f0a3762559e594a21a9f0530e831ae7f67e71f",
+      "working_server_sources_exact": true
+    },
+    "new": {
+      "checkout_head": "c9e87904ec7ce516015defb3628481d007f77483",
+      "expected_source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+      "server_tree": "3f9bf76e86e60f36d9d051e7abec252ad7e5b2f8",
+      "working_server_sources_exact": true
+    }
+  },
+  "cases": [
+    {
+      "name": "checkpoint-old-new-old",
+      "schema": "fc_compat_8d33623134f0",
+      "observations": [
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "seed-checkpoint",
+          "log": "logs/checkpoint-old-new-old-00-old-seed-checkpoint.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "new",
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "action": "roundtrip",
+          "log": "logs/checkpoint-old-new-old-01-new-roundtrip.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "roundtrip",
+          "log": "logs/checkpoint-old-new-old-02-old-roundtrip.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        }
+      ],
+      "unexpected_failures": [
+        {
+          "phase": 0,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 1,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 2,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        }
+      ],
+      "unsafe_observed": false,
+      "fixture_data_retained": true,
+      "probe_expectations_passed": false,
+      "rollback_safety": "bounded observations only"
+    },
+    {
+      "name": "claim-loss-old-new",
+      "schema": "fc_compat_b924ae7bfdd9",
+      "observations": [
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "seed-launch",
+          "log": "logs/claim-loss-old-new-00-old-seed-launch.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "claim-drop",
+          "log": "logs/claim-loss-old-new-01-old-claim-drop.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "new",
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "action": "launch-retry",
+          "log": "logs/claim-loss-old-new-02-new-launch-retry.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "recover",
+          "log": "logs/claim-loss-old-new-03-old-recover.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "new",
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "action": "drain",
+          "log": "logs/claim-loss-old-new-04-new-drain.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        }
+      ],
+      "unexpected_failures": [
+        {
+          "phase": 0,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 1,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 2,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 3,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 4,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        }
+      ],
+      "unsafe_observed": false,
+      "fixture_data_retained": true,
+      "probe_expectations_passed": false,
+      "rollback_safety": "bounded observations only"
+    },
+    {
+      "name": "mark-loss-old-new",
+      "schema": "fc_compat_6d6e3b8dc3e3",
+      "observations": [
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "seed-launch",
+          "log": "logs/mark-loss-old-new-00-old-seed-launch.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "mark-drop",
+          "log": "logs/mark-loss-old-new-01-old-mark-drop.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "new",
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "action": "recover",
+          "log": "logs/mark-loss-old-new-02-new-recover.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "recover",
+          "log": "logs/mark-loss-old-new-03-old-recover.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "mark-replay",
+          "log": "logs/mark-loss-old-new-04-old-mark-replay.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        }
+      ],
+      "unexpected_failures": [
+        {
+          "phase": 0,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 1,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 2,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 3,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 4,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        }
+      ],
+      "unsafe_observed": false,
+      "fixture_data_retained": true,
+      "probe_expectations_passed": false,
+      "rollback_safety": "bounded observations only"
+    },
+    {
+      "name": "settlement-loss-old-new",
+      "schema": "fc_compat_5ed6d8cee0ee",
+      "observations": [
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "seed-settlement",
+          "log": "logs/settlement-loss-old-new-00-old-seed-settlement.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "settlement-drop",
+          "log": "logs/settlement-loss-old-new-01-old-settlement-drop.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "new",
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "action": "settlement-replay",
+          "log": "logs/settlement-loss-old-new-02-new-settlement-replay.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "settlement-replay",
+          "log": "logs/settlement-loss-old-new-03-old-settlement-replay.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        }
+      ],
+      "unexpected_failures": [
+        {
+          "phase": 0,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 1,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 2,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 3,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        }
+      ],
+      "unsafe_observed": false,
+      "fixture_data_retained": true,
+      "probe_expectations_passed": false,
+      "rollback_safety": "bounded observations only"
+    },
+    {
+      "name": "claim-loss-new-old",
+      "schema": "fc_compat_b2218d490ed7",
+      "observations": [
+        {
+          "version": "new",
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "action": "seed-launch",
+          "log": "logs/claim-loss-new-old-00-new-seed-launch.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "new",
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "action": "claim-drop",
+          "log": "logs/claim-loss-new-old-01-new-claim-drop.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "launch-retry",
+          "log": "logs/claim-loss-new-old-02-old-launch-retry.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "new",
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "action": "recover",
+          "log": "logs/claim-loss-new-old-03-new-recover.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "drain",
+          "log": "logs/claim-loss-new-old-04-old-drain.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        }
+      ],
+      "unexpected_failures": [
+        {
+          "phase": 0,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 1,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 2,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 3,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 4,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        }
+      ],
+      "unsafe_observed": false,
+      "fixture_data_retained": true,
+      "probe_expectations_passed": false,
+      "rollback_safety": "bounded observations only"
+    },
+    {
+      "name": "mark-loss-new-old",
+      "schema": "fc_compat_349e13a3c4dd",
+      "observations": [
+        {
+          "version": "new",
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "action": "seed-launch",
+          "log": "logs/mark-loss-new-old-00-new-seed-launch.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "new",
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "action": "mark-drop",
+          "log": "logs/mark-loss-new-old-01-new-mark-drop.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "recover",
+          "log": "logs/mark-loss-new-old-02-old-recover.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "new",
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "action": "recover",
+          "log": "logs/mark-loss-new-old-03-new-recover.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "new",
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "action": "mark-replay",
+          "log": "logs/mark-loss-new-old-04-new-mark-replay.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        }
+      ],
+      "unexpected_failures": [
+        {
+          "phase": 0,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 1,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 2,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 3,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 4,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        }
+      ],
+      "unsafe_observed": false,
+      "fixture_data_retained": true,
+      "probe_expectations_passed": false,
+      "rollback_safety": "bounded observations only"
+    },
+    {
+      "name": "settlement-loss-new-old",
+      "schema": "fc_compat_3535d3e869bc",
+      "observations": [
+        {
+          "version": "new",
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "action": "seed-settlement",
+          "log": "logs/settlement-loss-new-old-00-new-seed-settlement.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "new",
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "action": "settlement-drop",
+          "log": "logs/settlement-loss-new-old-01-new-settlement-drop.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "settlement-replay",
+          "log": "logs/settlement-loss-new-old-02-old-settlement-replay.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "new",
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "action": "settlement-replay",
+          "log": "logs/settlement-loss-new-old-03-new-settlement-replay.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        }
+      ],
+      "unexpected_failures": [
+        {
+          "phase": 0,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 1,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 2,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 3,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        }
+      ],
+      "unsafe_observed": false,
+      "fixture_data_retained": true,
+      "probe_expectations_passed": false,
+      "rollback_safety": "bounded observations only"
+    },
+    {
+      "name": "new-terminal-write-failure",
+      "schema": "fc_compat_5706cc74d797",
+      "observations": [
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "seed-terminal",
+          "log": "logs/new-terminal-write-failure-00-old-seed-terminal.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "new",
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "action": "terminal-fail",
+          "log": "logs/new-terminal-write-failure-01-new-terminal-fail.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "recover",
+          "log": "logs/new-terminal-write-failure-02-old-recover.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "new",
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "action": "drain",
+          "log": "logs/new-terminal-write-failure-03-new-drain.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        }
+      ],
+      "unexpected_failures": [
+        {
+          "phase": 0,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 1,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 2,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 3,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        }
+      ],
+      "unsafe_observed": false,
+      "fixture_data_retained": true,
+      "probe_expectations_passed": false,
+      "rollback_safety": "bounded observations only"
+    },
+    {
+      "name": "old-terminal-write-failure",
+      "schema": "fc_compat_ace973b93ded",
+      "observations": [
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "seed-terminal",
+          "log": "logs/old-terminal-write-failure-00-old-seed-terminal.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "terminal-fail",
+          "log": "logs/old-terminal-write-failure-01-old-terminal-fail.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "new",
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "action": "recover",
+          "log": "logs/old-terminal-write-failure-02-new-recover.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "recover",
+          "log": "logs/old-terminal-write-failure-03-old-recover.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        }
+      ],
+      "unexpected_failures": [
+        {
+          "phase": 0,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 1,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 2,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 3,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        }
+      ],
+      "unsafe_observed": false,
+      "fixture_data_retained": true,
+      "probe_expectations_passed": false,
+      "rollback_safety": "bounded observations only"
+    },
+    {
+      "name": "stale-settled-player",
+      "schema": "fc_compat_604aa30a7155",
+      "observations": [
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "seed-stale",
+          "log": "logs/stale-settled-player-00-old-seed-stale.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "new",
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "action": "recover",
+          "log": "logs/stale-settled-player-01-new-recover.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "recover",
+          "log": "logs/stale-settled-player-02-old-recover.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "new",
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "action": "drain",
+          "log": "logs/stale-settled-player-03-new-drain.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        }
+      ],
+      "unexpected_failures": [
+        {
+          "phase": 0,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 1,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 2,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 3,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        }
+      ],
+      "unsafe_observed": false,
+      "fixture_data_retained": true,
+      "probe_expectations_passed": false,
+      "rollback_safety": "bounded observations only"
+    },
+    {
+      "name": "stale-old-room-steals-next-route",
+      "schema": "fc_compat_6a75618836e2",
+      "observations": [
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "seed-stale-next",
+          "log": "logs/stale-old-room-steals-next-route-00-old-seed-stale-next.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "new",
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "action": "recover",
+          "log": "logs/stale-old-room-steals-next-route-01-new-recover.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "recover",
+          "log": "logs/stale-old-room-steals-next-route-02-old-recover.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        }
+      ],
+      "unexpected_failures": [
+        {
+          "phase": 0,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 1,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 2,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        }
+      ],
+      "unsafe_observed": false,
+      "fixture_data_retained": true,
+      "probe_expectations_passed": false,
+      "rollback_safety": "bounded observations only"
+    },
+    {
+      "name": "drain-launching",
+      "schema": "fc_compat_43e0d273115e",
+      "observations": [
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "seed-launch",
+          "log": "logs/drain-launching-00-old-seed-launch.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "claim-drop",
+          "log": "logs/drain-launching-01-old-claim-drop.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "new",
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "action": "drain",
+          "log": "logs/drain-launching-02-new-drain.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        }
+      ],
+      "unexpected_failures": [
+        {
+          "phase": 0,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 1,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 2,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        }
+      ],
+      "unsafe_observed": false,
+      "fixture_data_retained": true,
+      "probe_expectations_passed": false,
+      "rollback_safety": "bounded observations only"
+    },
+    {
+      "name": "drain-pending-hold",
+      "schema": "fc_compat_087e861a3eae",
+      "observations": [
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "seed-pending",
+          "log": "logs/drain-pending-hold-00-old-seed-pending.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "new",
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "action": "drain",
+          "log": "logs/drain-pending-hold-01-new-drain.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "drain",
+          "log": "logs/drain-pending-hold-02-old-drain.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        }
+      ],
+      "unexpected_failures": [
+        {
+          "phase": 0,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 1,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 2,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        }
+      ],
+      "unsafe_observed": false,
+      "fixture_data_retained": true,
+      "probe_expectations_passed": false,
+      "rollback_safety": "bounded observations only"
+    },
+    {
+      "name": "drain-completed-contradiction",
+      "schema": "fc_compat_30d209aff706",
+      "observations": [
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "seed-drain-stale",
+          "log": "logs/drain-completed-contradiction-00-old-seed-drain-stale.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "new",
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "action": "drain",
+          "log": "logs/drain-completed-contradiction-01-new-drain.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "drain",
+          "log": "logs/drain-completed-contradiction-02-old-drain.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        }
+      ],
+      "unexpected_failures": [
+        {
+          "phase": 0,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 1,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 2,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        }
+      ],
+      "unsafe_observed": false,
+      "fixture_data_retained": true,
+      "probe_expectations_passed": false,
+      "rollback_safety": "bounded observations only"
+    },
+    {
+      "name": "drain-empty-control",
+      "schema": "fc_compat_c06e1974ab05",
+      "observations": [
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "migrate",
+          "log": "logs/drain-empty-control-00-old-migrate.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "new",
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "action": "drain",
+          "log": "logs/drain-empty-control-01-new-drain.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "version": "old",
+          "source_sha": "8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af",
+          "action": "drain",
+          "log": "logs/drain-empty-control-02-old-drain.log",
+          "expected_observation_verified": false,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        }
+      ],
+      "unexpected_failures": [
+        {
+          "phase": 0,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 1,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        },
+        {
+          "phase": 2,
+          "error": "[Errno 2] No such file or directory: '/workspace/pr14-tools/dotnet/dotnet'"
+        }
+      ],
+      "unsafe_observed": false,
+      "fixture_data_retained": true,
+      "probe_expectations_passed": false,
+      "rollback_safety": "bounded observations only"
+    }
+  ],
+  "started_at": "2026-09-30T18:37:01Z",
+  "old_rebuilt_dlls": {
+    "FantasyCard.Server.dll": "5f06a5586c604a27b92c65caf9c31ad6d8dbcb37f2d0bd9332600aeaeb5d11c7",
+    "FantasyCard.Contracts.dll": "2fb50e4f0f0d902fa8661c46ab84e68b9e218752ae04be699d20ab529c0def72",
+    "FantasyCard.Server.Tests.dll": "4afc6d564f4ad1d11d1748bc80dc9f177685f7e823d4122c958a5870cb4c8214",
+    "FantasyCard.Domain.dll": "2554dee6f4f139d38cb21025d17c23a987fd455b91281a7b9f97bde2dca98b13"
+  },
+  "new_rebuilt_dlls": {
+    "FantasyCard.Server.dll": "e02b824b9e928413af0e66f7144d93908758b04b9b8688c51f75e0f9f99f8a75",
+    "FantasyCard.Contracts.dll": "1c08ccb9f0d36b0958fb6eeb51d571b0187a9e4d8f725cbb2450a79417f3f4d6",
+    "FantasyCard.Server.Tests.dll": "ff08956b39ac7fadd47c47c2d490b8230f4efaef02ac4b5b149f3ed7f03329f1",
+    "FantasyCard.Domain.dll": "533a4e62fcedda48fe2147c748c261bd997a8966708c215403910968319ae50b"
+  },
+  "all_probe_expectations_passed": false,
+  "unconditional_application_rollback_safe": false,
+  "proposed_path": "Review a drained window only; never override existing Rooms guards automatically",
+  "private_fixture_dump": {
+    "file": "fixture-private.dump",
+    "mode": "0o600",
+    "bytes": 4156,
+    "sha256": "067b142b64cbcd26d5073e36665eaa793a58005fea76fee6f80036e650547e08",
+    "list_verified": true,
+    "uploaded": false
+  },
+  "completed_at": "2026-09-30T18:37:02Z",
+  "private_pg_stopped": true
+}

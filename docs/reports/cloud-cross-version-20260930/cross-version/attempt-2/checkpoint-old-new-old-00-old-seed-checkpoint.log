@@ -1,0 +1,5 @@
+{"action":"seed-checkpoint","version":"8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af","fixture_schema":"fc_compat_efd1f1a730fa","probe_completed":false,"error_type":"ArgumentOutOfRangeException","error":"Use a configured exploration inventory tier. (Parameter \u0027capacity\u0027)"}
+System.ArgumentOutOfRangeException: Use a configured exploration inventory tier. (Parameter 'capacity')
+   at FantasyCard.Domain.Rooms.ExplorationInventory..ctor(Int32 capacity, Int32 safeSlots, IReadOnlyList`1 safeSlotIndexes) in /workspace/pr14-old-baseline/server/src/FantasyCard.Domain/Rooms/ExplorationInventory.cs:line 44
+   at Probe.SeedRoomAsync(Boolean complex, Boolean single) in /workspace/pr14-cross-version/tools/cloud/compat/Program.cs:line 151
+   at Probe.RunAsync(String[] args) in /workspace/pr14-cross-version/tools/cloud/compat/Program.cs:line 65

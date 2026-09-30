@@ -1,0 +1,6 @@
+{"action":"recover","version":"cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3","fixture_schema":"fc_compat_27f118749eba","probe_completed":false,"error_type":"NullReferenceException","error":"Object reference not set to an instance of an object."}
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at Probe.Id(String name) in /workspace/pr14-cross-version/tools/cloud/compat/Program.cs:line 37
+   at Probe.RecoverAsync() in /workspace/pr14-cross-version/tools/cloud/compat/Program.cs:line 232
+   at Probe.RecoverAsync() in /workspace/pr14-cross-version/tools/cloud/compat/Program.cs:line 242
+   at Probe.RunAsync(String[] args) in /workspace/pr14-cross-version/tools/cloud/compat/Program.cs:line 72
