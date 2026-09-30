@@ -1,5 +1,5 @@
 {
-  "convention": "第一批13个视觉/信息问题家族；第二批1个真实最长英文卡名切字，共14。资源元数据、旧测试问题另计。",
+  "convention": "第一批13，第二批最长卡名1，第三批实际主题字体邮件按钮切字1，合计15；历史元数据和测试问题另计。",
   "baseline_sha": "b7099ef716235be68395255360cbd5cf6c67baff",
   "source_sha": "14540e8e69fc00572bd5697f4a5e6802ee4bb992",
   "defects": [
@@ -116,6 +116,17 @@
       "status": "fixed_native_capture_confirmed",
       "batch": 2,
       "source_sha": "af14421e8489a7db67eb713950b1e8ee5ca58563"
+    },
+    {
+      "id": "UI-15",
+      "problem": "邮件英文Claim/Delete/Claimed和批量操作按body测宽、实际title绘制，发生切字",
+      "evidence": "3011c7ab原生36图；实际主题测宽和关闭省略像素回归48条失败",
+      "resolution": "通用Button按实际主题字体拟合；行按钮128宽，批量按钮180宽；英文最低18px，Claimed19px",
+      "file": "client/ui/reference_ui.gd",
+      "before_sha": "3011c7abdcedbd2bb5dfa1308e1fd2db3877a5c5",
+      "source_sha": "7869260dab958c60e9b12e93f7441d0de3825e92",
+      "status": "fixed_native_capture_confirmed",
+      "tests": "36 after截图，270检查，0错误；12像素比较均无省略差异；18/18原生回归"
     }
   ],
   "integrity": "20个已有元素调节条目缺imported_sha256，1个Priest本命徽记哈希过时，共21条历史元数据修复；新怪物框第22条更新。",

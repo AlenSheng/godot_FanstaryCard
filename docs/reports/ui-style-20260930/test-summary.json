@@ -47,8 +47,8 @@
   "primary_ui_sha": "14540e8e69fc00572bd5697f4a5e6802ee4bb992",
   "baseline_sha": "b7099ef716235be68395255360cbd5cf6c67baff",
   "primary_screenshots": 934,
-  "after_screenshots": 530,
-  "before_screenshots": 464,
+  "after_screenshots": 566,
+  "before_screenshots": 500,
   "native": {
     "ok": true,
     "tests": 18,
@@ -64,9 +64,10 @@
   "assets": {
     "ok": true,
     "manifest": 563,
-    "literal_references": 177,
+    "literal_references": 179,
     "errors": 0,
-    "primary_literal_references": 175
+    "primary_literal_references": 175,
+    "second_batch_literal_references": 177
   },
   "missing_screenshots": [],
   "production_code_after_primary": {
@@ -142,5 +143,62 @@
     "All combinations of server errors,4K,mobile unverified"
   ],
   "all_indexed_screenshots": 994,
-  "latest_production_ui_sha": "af14421e8489a7db67eb713950b1e8ee5ca58563"
+  "latest_production_ui_sha": "af14421e8489a7db67eb713950b1e8ee5ca58563",
+  "latest_ui_sha": "7869260dab958c60e9b12e93f7441d0de3825e92",
+  "total_native_screenshots": 1066,
+  "mail_labels_before": {
+    "source_sha": "3011c7abdcedbd2bb5dfa1308e1fd2db3877a5c5",
+    "screenshots": 36,
+    "ok": false,
+    "checks": 270,
+    "errors": 48,
+    "exit_code": 1,
+    "button_metrics": 114,
+    "pixel_comparisons": 12,
+    "buttons_with_pixel_difference": 42,
+    "report": "mail-labels/before-report.json"
+  },
+  "mail_labels_after": {
+    "source_sha": "7869260dab958c60e9b12e93f7441d0de3825e92",
+    "screenshots": 36,
+    "ok": true,
+    "checks": 270,
+    "errors": 0,
+    "exit_code": 0,
+    "button_metrics": 114,
+    "pixel_comparisons": 12,
+    "buttons_with_pixel_difference": 0,
+    "report": "mail-labels/after-report.json"
+  },
+  "mail_native": {
+    "ok": true,
+    "tests": 18,
+    "card_description_variants": 2640,
+    "exit_code": 0,
+    "source_sha": "7869260dab958c60e9b12e93f7441d0de3825e92",
+    "report": "mail-labels/native-checks.json"
+  },
+  "mail_resource_audit": {
+    "ok": true,
+    "manifest_files": 563,
+    "literal_references": 179,
+    "errors": 0,
+    "report": "mail-labels/assets.json"
+  },
+  "mail_manual_review": [
+    "before/mail_labels_normal_en_1280.png enlarged rows",
+    "after/mail_labels_normal_en_1280.png enlarged rows",
+    "after/mail_labels_normal_en_960.png enlarged rows",
+    "after/mail_labels_normal_en_1920.png full viewport",
+    "after/mail_labels_claimed_en_1280.png full viewport",
+    "after/mail_labels_normal_zh-CN_960.png full viewport",
+    "after/mail_labels_pressed_en_960.png full viewport"
+  ],
+  "latest_source_scope": "Primary500 after at14540e, codex30 ataf14421, mail36 at7869260d. No claim of full primary matrix rerun at latest source.",
+  "mail_import": {
+    "ok": true,
+    "exit_code": 0,
+    "source_sha": "7869260dab958c60e9b12e93f7441d0de3825e92",
+    "log": "logs/mail-label-import.log"
+  }
 }
