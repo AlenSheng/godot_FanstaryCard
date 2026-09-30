@@ -335,7 +335,12 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
     {
         await using var command = dataSource.CreateCommand("UPDATE matches SET status='Running' WHERE match_id=$1 AND status='Launching'");
         command.Parameters.AddWithValue(matchId);
-        if (await command.ExecuteNonQueryAsync(cancellationToken) != 1)
+        if (await command.ExecuteNonQueryAsync(cancellationToken) == 1) return;
+        // The UPDATE may have committed even when its response was lost.
+        // Replays accept that durable result, but never reopen a terminal match.
+        await using var status = dataSource.CreateCommand("SELECT status FROM matches WHERE match_id=$1");
+        status.Parameters.AddWithValue(matchId);
+        if (await status.ExecuteScalarAsync(cancellationToken) is not "Running")
             throw new InvalidOperationException("The launching match could not transition to Running.");
     }
 

@@ -78,6 +78,10 @@ public sealed partial class RoomRegistry(
                                 if (logger is not null)
                                     SnapshotPersistenceFailed(logger, snapshot.RoomId, snapshot.Revision, exception);
                             }
+                            // Settlement may release this player's route and
+                            // assets. Its terminal checkpoint must be durable
+                            // before that player can start a subsequent match.
+                            return;
                         }
                     }
                     if (settlementCoordinator is not null && matchId is { } id)

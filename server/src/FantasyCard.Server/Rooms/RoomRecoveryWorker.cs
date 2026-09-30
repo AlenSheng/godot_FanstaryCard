@@ -31,6 +31,17 @@ public sealed partial class RoomRecoveryWorker(
             try
             {
                 if (registry.ContainsRoom(room.Snapshot.RoomId)) continue;
+                // A stale checkpoint cannot resurrect a player whose durable
+                // settlement released their assets and next-match permission.
+                // Quarantine this room rather than reconstructing lost combat
+                // or relic state from an incomplete settlement receipt.
+                foreach (var (playerId, result) in room.SettledPlayers)
+                {
+                    var player = room.Snapshot.Players.SingleOrDefault(value => value.PlayerId == playerId);
+                    if (player is null || player.Phase is not (RoomPlayerPhase.Dead or RoomPlayerPhase.Extracted) ||
+                        ((result is "Dead" or "Extracted") && result != player.Phase.ToString()))
+                        throw new InvalidOperationException($"Room '{room.Snapshot.RoomId}' checkpoint disagrees with durable settlement for player '{playerId}'.");
+                }
                 var actor = registry.Register(
                     BattleRoom.Restore(room.Snapshot, CombatCardCatalog.CreatePrototype(), room.Seed),
                     room.MatchId);

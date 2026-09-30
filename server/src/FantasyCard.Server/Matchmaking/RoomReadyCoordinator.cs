@@ -25,6 +25,8 @@ public sealed partial class RoomReadyCoordinator(
     ILogger<RoomReadyCoordinator> logger,
     ServerMetrics? metrics = null) : BackgroundService, IRoomReadyService
 {
+    private ReadyMatchLaunch? _pendingLaunch;
+
     public Task<ReadyLobbyView?> GetAsync(Guid playerId, CancellationToken cancellationToken) =>
         repository.GetReadyLobbyAsync(playerId, cancellationToken);
 
@@ -76,9 +78,12 @@ public sealed partial class RoomReadyCoordinator(
     internal async Task<bool> ProcessNextAsync(DateTimeOffset now, CancellationToken cancellationToken)
     {
         var startedAt = Stopwatch.GetTimestamp();
-        var launch = await repository.ClaimReadyMatchAsync(now, cancellationToken);
+        // Keep the assignment until MarkRunning is confirmed. A committed
+        // Running match is absent from ClaimReadyMatch after a lost response.
+        var launch = _pendingLaunch ?? await repository.ClaimReadyMatchAsync(now, cancellationToken);
         metrics?.ObserveMatchLaunchPhase("claim", Stopwatch.GetElapsedTime(startedAt));
         if (launch is null) return false;
+        _pendingLaunch = launch;
         await LaunchAsync(launch, cancellationToken);
         return true;
     }
@@ -87,7 +92,10 @@ public sealed partial class RoomReadyCoordinator(
     {
         var assignment = launch.Assignment;
         var startedAt = Stopwatch.GetTimestamp();
-        var room = CreateRoom(assignment);
+        var persisted = await snapshots.GetAsync(assignment.RoomId, cancellationToken);
+        var room = persisted is null
+            ? CreateRoom(assignment)
+            : BattleRoom.Restore(persisted, CombatCardCatalog.CreatePrototype(), assignment.Seed);
         metrics?.ObserveMatchLaunchPhase("build", Stopwatch.GetElapsedTime(startedAt));
         startedAt = Stopwatch.GetTimestamp();
         await snapshots.SaveIfDueAsync(room.Capture(), cancellationToken);
@@ -97,12 +105,14 @@ public sealed partial class RoomReadyCoordinator(
         try
         {
             startedAt = Stopwatch.GetTimestamp();
-            actor = roomRegistry.Register(room, assignment.MatchId);
+            actor = roomRegistry.Register(room, assignment.MatchId, startTicker: false);
             metrics?.ObserveMatchLaunchPhase("register", Stopwatch.GetElapsedTime(startedAt));
             registered = true;
             startedAt = Stopwatch.GetTimestamp();
             await repository.MarkRunningAsync(assignment.MatchId, cancellationToken);
             metrics?.ObserveMatchLaunchPhase("mark_running", Stopwatch.GetElapsedTime(startedAt));
+            _pendingLaunch = null;
+            actor.StartTicker();
         }
         catch
         {
