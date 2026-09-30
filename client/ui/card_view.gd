@@ -194,10 +194,10 @@ func _monster_text(id: String, info: Dictionary, effect: String, selected: bool,
 	# Measure the actual heading face, after its override. Keep the full title
 	# first; omit only the generic prefix before sacrificing name readability.
 	var title_font := title.get_theme_font("font")
-	var title_size := maxi(14, P.fit_font_size(title_font, 21, title.size.y, title.size.x - 8.0, title.text))
+	var title_size := maxi(16, P.fit_font_size(title_font, 21, title.size.y, title.size.x - 8.0, title.text))
 	if title_font.get_string_size(title.text, HORIZONTAL_ALIGNMENT_LEFT, -1.0, title_size).x > title.size.x - 8.0:
 		title.text = species_name
-		title_size = maxi(14, P.fit_font_size(title_font, 21, title.size.y, title.size.x - 8.0, title.text))
+		title_size = maxi(16, P.fit_font_size(title_font, 21, title.size.y, title.size.x - 8.0, title.text))
 	title.add_theme_font_size_override("font_size", title_size)
 	tooltip_text = title_text + "\n\n" + tooltip_text
 	_text(effect, Rect2(21, 304, 176, 38), 17, P.PAPER)
