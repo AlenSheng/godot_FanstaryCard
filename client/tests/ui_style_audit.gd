@@ -76,6 +76,9 @@ func _reset() -> void:
 			"level": 0, "version": 1, "craftCost": 12, "dismantleRefund": 3, "canDismantle": owned,
 			"currencyKind": "WarriorSoul" if info.hero_class == null else str(info.hero_class) + "Soul"})
 	$UI.listings = []
+	$UI._enhance_item = ""
+	$UI._enhancement_quote_key = "Mage:1"
+	$UI._enhancement_quote = {}
 	Game.mail = {"items": [], "unreadCount": 0}
 	$UI._view_cell = "completion-room:3:2"
 	for key in ["pending_move", "inventory_open", "relic_pile", "inventory_selected", "relic_selected", "mail_selected_id"]:
@@ -332,6 +335,12 @@ func _take(capture_name: String, rebuild: bool = true) -> void:
 			_check_audit(login_frame != null and page.get_global_rect().encloses(login_frame.get_global_rect()), capture_name + ": " + frame_name + " fully inside page")
 	$UI.tips_overlay.clear()
 	if capture_name.begins_with("error_toast_"): $UI._toast("遗物内容已变化，请刷新后选择。")
+	if is_instance_valid($UI._reference) and OS.get_environment("FANTASYCARD_UI_ASSERT_FIXES") == "1":
+		var preview: Control = $UI._reference.get_node_or_null("CombatPreview")
+		if preview != null:
+			var safe := Rect2(preview.get_global_rect().position + Vector2(64, 14), preview.size - Vector2(128, 28))
+			for label in $UI._reference.find_children("CombatPreview*", "Label", true, false):
+				_check_audit(safe.encloses(label.get_global_rect()), capture_name + ": " + str(label.name) + " inside painted rails")
 	for bar in get_tree().get_nodes_in_group("bounded_progress"):
 		if not bar.slot_rect().encloses(bar.fill_rect()): audit_errors.append(capture_name + ": bar escapes artwork slot")
 	for node in $UI.find_children("*", "Label", true, false):
