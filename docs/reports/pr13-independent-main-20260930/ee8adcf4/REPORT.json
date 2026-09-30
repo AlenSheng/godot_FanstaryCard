@@ -1,0 +1,1497 @@
+{
+  "kind": "Independent_MAIN_OFFLINE_review_not_implementation_or_final_signature",
+  "created_at_utc": "2026-09-30T23:15:54.415531+00:00",
+  "repository": "AlenSheng/godot_FanstaryCard",
+  "pull_request": 13,
+  "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+  "receipt_commit": "d9f957cbd5ae4a1145ebc4d701baddfe8211708c",
+  "old_receipt_commit": "3c9aaa96fdef4a0a0c0fc1b5e99c4faaefcdeb84",
+  "scope": "LOAD-01.1–.4 canonical OFFLINE only; no CI/LIVE/POSTGRES/RENDER/human gate.",
+  "canonical": {
+    "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+    "executed": 12,
+    "passed": 12,
+    "failed": 0,
+    "skipped": 0,
+    "Accepted": false
+  },
+  "python_suite": {
+    "executed": 119,
+    "passed": 119,
+    "failed": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "log": "C-PY.log"
+  },
+  "schema_red_green": {
+    "before_unhandled": 5,
+    "before_invalid_decisions": 0,
+    "after_unhandled": 0,
+    "after_invalid_exit3_decisions": 5,
+    "all_reaped": true
+  },
+  "new_schema_findings": [
+    {
+      "id": "LOAD-01.1-X-FINITE-MEAN",
+      "fixture": "finite-overflow",
+      "input": "Two individually finite duration_ms=1e308 HTTP events, matching status/operations/telemetry, owned run/client/epoch/PID and event_seq1..2.",
+      "stage": "aggregate_window -> latency -> summarize -> statistics.fmean",
+      "location": "tools/gameplay_load_validation.py:18",
+      "exception": "OverflowError: intermediate overflow in fsum",
+      "expected": "Aggregate finite inputs or explicitly reject an out-of-contract metric without an exception, retaining known failed samples.",
+      "actual": "Both _number checks true, ownership_invalid=0,event_loss=0; no metric result or invalid-data decision because aggregation raises.",
+      "owner": "AG-01; coordinate shared runtime evidence owner as needed",
+      "next_action": "Owner should implement a bounded or overflow-safe numeric aggregation policy and keep the original error/sample denominators; add real-file regression and independently replay.",
+      "probe_process_exit": 1,
+      "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+      "receipt": "counterexamples/finite-overflow/receipt.json",
+      "raw_status": "counterexamples/finite-overflow/client.json.status.json",
+      "raw_archive": "counterexamples/finite-overflow/client.json.telemetry.jsonl",
+      "child_reaped": true,
+      "classification": null
+    },
+    {
+      "id": "LOAD-01.1-X-ARCHIVE-MATCH-LIST",
+      "fixture": "archive-match-list",
+      "input": "One valid owned archived cycle.started event; identity/cycle/time/sequence are legal, match_id=[].",
+      "stage": "read_audit_events -> reconcile_cycles -> derive -> seen.add",
+      "location": "tools/pr13_runtime_evidence.py:135",
+      "exception": "TypeError: unhashable type: 'list'",
+      "expected": "Classify malformed optional business context and continue bounded reconciliation without a crash.",
+      "actual": "Owned status and archive accepted; archive_errors=[],event_loss=0. Non-ACK/completed match_id reaches an unhashable business key.",
+      "owner": "AG-01 and owner of tools/pr13_runtime_evidence.py",
+      "next_action": "Owner should validate every field placed in a business key before hashing, preserving legitimate optional/null match context for cycle.started; add real archived JSONL regression and independently replay.",
+      "probe_process_exit": 1,
+      "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+      "receipt": "counterexamples/archive-match-list/receipt.json",
+      "raw_status": "counterexamples/archive-match-list/client.json.status.json",
+      "raw_archive": "counterexamples/archive-match-list/client.json.telemetry.jsonl",
+      "child_reaped": true,
+      "classification": null
+    },
+    {
+      "id": "LOAD-01.1-X-ARCHIVE-TYPE-LIST",
+      "fixture": "archive-type-list",
+      "input": "One valid owned archived lifecycle event; identity/cycle/time/sequence/match are legal, event_type=[].",
+      "stage": "read_audit_events -> reconcile_cycles -> derive -> seen.add",
+      "location": "tools/pr13_runtime_evidence.py:135",
+      "exception": "TypeError: unhashable type: 'list'",
+      "expected": "Classify invalid event_type as schema evidence failure without an exception.",
+      "actual": "Owned status/archive accepted; archive_errors=[],event_loss=0. event_type list reaches an unhashable business key.",
+      "owner": "AG-01 and owner of tools/pr13_runtime_evidence.py",
+      "next_action": "Owner should enforce event_type scalar/string schema before business-key use; add real archived JSONL regression and independently replay.",
+      "probe_process_exit": 1,
+      "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+      "receipt": "counterexamples/archive-type-list/receipt.json",
+      "raw_status": "counterexamples/archive-type-list/client.json.status.json",
+      "raw_archive": "counterexamples/archive-type-list/client.json.telemetry.jsonl",
+      "child_reaped": true,
+      "classification": null
+    }
+  ],
+  "positive_controls": [
+    {
+      "fixture": "finite-control",
+      "status": "Passed",
+      "unhandled_exception": null
+    },
+    {
+      "fixture": "archive-control",
+      "status": "Passed",
+      "unhandled_exception": null
+    }
+  ],
+  "controlled_children": {
+    "count": 19,
+    "all_reaped": true
+  },
+  "static": "STATIC_CHECK.json",
+  "source_proof": "SOURCE_PROOF.json",
+  "tasks": [
+    {
+      "task_id": "LOAD-01.1",
+      "stage": "S6",
+      "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+      "config_source_hash": null,
+      "config_bytes_hash": null,
+      "effective_room_policy": null,
+      "runtime_image_digest": null,
+      "profile_hash": "dd7a9ea825491b401ebf280f4d32d36469c374064cb9dc7fa6ed26ee61ad4ede",
+      "algorithm_version": "sha256:03c0d12abe73045a7aea42ace2d14a3343aac9057d6437d87c90002b5ee6acfd",
+      "case_ids": [
+        "LOAD-01.1-T01",
+        "LOAD-01.1-T02",
+        "LOAD-01.1-T03"
+      ],
+      "expected": [
+        {
+          "case_id": "LOAD-01.1-T01",
+          "expected": "记录无效不抛异常"
+        },
+        {
+          "case_id": "LOAD-01.1-T02",
+          "expected": "拒绝且保留已知失败分子"
+        },
+        {
+          "case_id": "LOAD-01.1-T03",
+          "expected": "合法行保留并使证据无效"
+        }
+      ],
+      "actual": [
+        {
+          "case_id": "LOAD-01.1-T01",
+          "setup": "None/list状态",
+          "expected": "记录无效不抛异常",
+          "pass_criteria": "所有负例有分类，采样函数不异常退出，非法值不变成0延迟或成功。",
+          "actual": {
+            "checks": {
+              "exact_existing_case_assertion": true,
+              "invalid_classified": true,
+              "evidence_invalid": true
+            },
+            "observations": [
+              {
+                "alive_processes": 1,
+                "fresh_status_clients": 0,
+                "online": 0,
+                "in_room": 0,
+                "room_state_clients": 0,
+                "active_in_room": 0,
+                "server_confirmed_in_room": null,
+                "invalid_schema_count": 1,
+                "failed_processes": [],
+                "stale_clients": [],
+                "stalled_clients": [],
+                "missing_clients": [],
+                "invalid_clients": [],
+                "workload_failure": true
+              },
+              {
+                "alive_processes": 1,
+                "fresh_status_clients": 0,
+                "online": 0,
+                "in_room": 0,
+                "room_state_clients": 0,
+                "active_in_room": 0,
+                "server_confirmed_in_room": null,
+                "invalid_schema_count": 1,
+                "failed_processes": [],
+                "stale_clients": [],
+                "stalled_clients": [],
+                "missing_clients": [],
+                "invalid_clients": [],
+                "workload_failure": true
+              }
+            ]
+          },
+          "status": "Passed",
+          "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "profile": "OFFLINE",
+          "elapsed_seconds": 4.1823999993084726e-05,
+          "Accepted": false
+        },
+        {
+          "case_id": "LOAD-01.1-T02",
+          "setup": "bool冒充PID/NaN耗时",
+          "expected": "拒绝且保留已知失败分子",
+          "pass_criteria": "所有负例有分类，采样函数不异常退出，非法值不变成0延迟或成功。",
+          "actual": {
+            "checks": {
+              "exact_existing_case_assertion": true,
+              "bool_pid_classified": true,
+              "nan_latency_excluded": true,
+              "nan_failure_retained": true,
+              "invalid_duration_visible": true
+            },
+            "observations": {
+              "population": {
+                "alive_processes": 1,
+                "fresh_status_clients": 0,
+                "online": 0,
+                "in_room": 0,
+                "room_state_clients": 0,
+                "active_in_room": 0,
+                "server_confirmed_in_room": null,
+                "invalid_schema_count": 0,
+                "failed_processes": [],
+                "stale_clients": [],
+                "stalled_clients": [],
+                "missing_clients": [],
+                "invalid_clients": [
+                  "a"
+                ],
+                "workload_failure": true
+              },
+              "window": {
+                "http": {
+                  "count": 0
+                },
+                "steady_http": {
+                  "count": 0
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 0
+                  }
+                },
+                "error_count": 1,
+                "sample_count": 1,
+                "logical_request_count": 1,
+                "cancelled_count": 0,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 0,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 1.0,
+                "steady_error_count": 1,
+                "steady_sample_count": 1,
+                "steady_error_rate": 1.0,
+                "invalid_metric_count": 1,
+                "invalid_duration_count": 1,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              }
+            }
+          },
+          "status": "Passed",
+          "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "profile": "OFFLINE",
+          "elapsed_seconds": 0.00011304399998834924,
+          "Accepted": false
+        },
+        {
+          "case_id": "LOAD-01.1-T03",
+          "setup": "部分合法部分坏行",
+          "expected": "合法行保留并使证据无效",
+          "pass_criteria": "所有负例有分类，采样函数不异常退出，非法值不变成0延迟或成功。",
+          "actual": {
+            "checks": {
+              "exact_existing_case_assertion": true,
+              "valid_row_retained": true,
+              "malformed_row_visible": true
+            },
+            "observations": {
+              "http": {
+                "count": 1,
+                "min_ms": 5,
+                "mean_ms": 5.0,
+                "max_ms": 5,
+                "p50_ms": 5,
+                "p95_ms": 5,
+                "p99_ms": 5
+              },
+              "steady_http": {
+                "count": 1,
+                "min_ms": 5,
+                "mean_ms": 5.0,
+                "max_ms": 5,
+                "p50_ms": 5,
+                "p95_ms": 5,
+                "p99_ms": 5
+              },
+              "cancelled_http": {
+                "count": 0
+              },
+              "realtime": {
+                "count": 0
+              },
+              "rtt": {
+                "count": 0
+              },
+              "phase_http": {
+                "unknown/legacy": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                }
+              },
+              "error_count": 0,
+              "sample_count": 1,
+              "logical_request_count": 1,
+              "cancelled_count": 0,
+              "all_attempt_count": null,
+              "attempt_coverage": "unavailable",
+              "attempt_result_counts": {},
+              "valid_attempt_latency_count": 0,
+              "valid_latency_count": 1,
+              "latency_sample_quality": {
+                "http": "insufficient",
+                "realtime": "unavailable"
+              },
+              "error_rate": 0.0,
+              "steady_error_count": 0,
+              "steady_sample_count": 1,
+              "steady_error_rate": 0.0,
+              "invalid_metric_count": 1,
+              "invalid_duration_count": 0,
+              "invalid_schema_count": 1,
+              "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+            }
+          },
+          "status": "Passed",
+          "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "profile": "OFFLINE",
+          "elapsed_seconds": 8.867800002576587e-05,
+          "Accepted": false
+        }
+      ],
+      "status": "Failed",
+      "sample_population": "Frozen canonical deterministic fixtures and actual owned local children; 119 original unittest cases; targeted finite/schema probes have no statistical population claim.",
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "Separate case-local observation ends; successful exit tail includes running/drain/final ACK reconciliation.",
+      "commands": "COMMANDS.json",
+      "tool_versions": {
+        "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+        "executable": "/workspace/relicround-env/venv/bin/python",
+        "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+        "git": "git version 2.52.0"
+      },
+      "exit_codes": {
+        "C-PY": 0,
+        "LOAD01-EXACT": 0,
+        "SCHEMA-GREEN": 0,
+        "SCHEMA-RED": 0,
+        "archive-control": 0,
+        "archive-match-list": 1,
+        "archive-type-list": 1,
+        "finite-control": 0,
+        "finite-overflow": 1
+      },
+      "skip_reasons": [],
+      "asset_and_route_postconditions": null,
+      "artifact_manifest": "MANIFEST.json",
+      "reviewer": "Independent delegated Codex reviewer; parent MAIN signs final adjudication.",
+      "rollback": {
+        "review_artifacts": "Isolated local review; no business/source/register changes to undo.",
+        "implementation_reference": "Original receipt rollback only names gameplay_load_validation.py; owner should also explicitly cover changed pr13_runtime_evidence.py and its regression tests when describing rollback."
+      },
+      "remaining_blockers": [
+        {
+          "id": "LOAD-01.1-X-FINITE-MEAN",
+          "fixture": "finite-overflow",
+          "input": "Two individually finite duration_ms=1e308 HTTP events, matching status/operations/telemetry, owned run/client/epoch/PID and event_seq1..2.",
+          "stage": "aggregate_window -> latency -> summarize -> statistics.fmean",
+          "location": "tools/gameplay_load_validation.py:18",
+          "exception": "OverflowError: intermediate overflow in fsum",
+          "expected": "Aggregate finite inputs or explicitly reject an out-of-contract metric without an exception, retaining known failed samples.",
+          "actual": "Both _number checks true, ownership_invalid=0,event_loss=0; no metric result or invalid-data decision because aggregation raises.",
+          "owner": "AG-01; coordinate shared runtime evidence owner as needed",
+          "next_action": "Owner should implement a bounded or overflow-safe numeric aggregation policy and keep the original error/sample denominators; add real-file regression and independently replay.",
+          "probe_process_exit": 1,
+          "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "receipt": "counterexamples/finite-overflow/receipt.json",
+          "raw_status": "counterexamples/finite-overflow/client.json.status.json",
+          "raw_archive": "counterexamples/finite-overflow/client.json.telemetry.jsonl",
+          "child_reaped": true,
+          "classification": null
+        },
+        {
+          "id": "LOAD-01.1-X-ARCHIVE-MATCH-LIST",
+          "fixture": "archive-match-list",
+          "input": "One valid owned archived cycle.started event; identity/cycle/time/sequence are legal, match_id=[].",
+          "stage": "read_audit_events -> reconcile_cycles -> derive -> seen.add",
+          "location": "tools/pr13_runtime_evidence.py:135",
+          "exception": "TypeError: unhashable type: 'list'",
+          "expected": "Classify malformed optional business context and continue bounded reconciliation without a crash.",
+          "actual": "Owned status and archive accepted; archive_errors=[],event_loss=0. Non-ACK/completed match_id reaches an unhashable business key.",
+          "owner": "AG-01 and owner of tools/pr13_runtime_evidence.py",
+          "next_action": "Owner should validate every field placed in a business key before hashing, preserving legitimate optional/null match context for cycle.started; add real archived JSONL regression and independently replay.",
+          "probe_process_exit": 1,
+          "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "receipt": "counterexamples/archive-match-list/receipt.json",
+          "raw_status": "counterexamples/archive-match-list/client.json.status.json",
+          "raw_archive": "counterexamples/archive-match-list/client.json.telemetry.jsonl",
+          "child_reaped": true,
+          "classification": null
+        },
+        {
+          "id": "LOAD-01.1-X-ARCHIVE-TYPE-LIST",
+          "fixture": "archive-type-list",
+          "input": "One valid owned archived lifecycle event; identity/cycle/time/sequence/match are legal, event_type=[].",
+          "stage": "read_audit_events -> reconcile_cycles -> derive -> seen.add",
+          "location": "tools/pr13_runtime_evidence.py:135",
+          "exception": "TypeError: unhashable type: 'list'",
+          "expected": "Classify invalid event_type as schema evidence failure without an exception.",
+          "actual": "Owned status/archive accepted; archive_errors=[],event_loss=0. event_type list reaches an unhashable business key.",
+          "owner": "AG-01 and owner of tools/pr13_runtime_evidence.py",
+          "next_action": "Owner should enforce event_type scalar/string schema before business-key use; add real archived JSONL regression and independently replay.",
+          "probe_process_exit": 1,
+          "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "receipt": "counterexamples/archive-type-list/receipt.json",
+          "raw_status": "counterexamples/archive-type-list/client.json.status.json",
+          "raw_archive": "counterexamples/archive-type-list/client.json.telemetry.jsonl",
+          "child_reaped": true,
+          "classification": null
+        }
+      ],
+      "missing_reasons": {
+        "config_source_hash": "OFFLINE schema/process evidence loads no configuration workbook.",
+        "config_bytes_hash": "No generated configuration is loaded.",
+        "effective_room_policy": "No room server/policy is instantiated.",
+        "runtime_image_digest": "Standalone local Python/OS execution; no runtime image.",
+        "cutoff_monotonic": "Independent cases have separate observation cutoffs; actual launch monotonic values and counterfactual seam values are retained in raw command/case receipts. No common capacity/window cutoff.",
+        "asset_and_route_postconditions": "Owned synthetic status writers and read-only accounting perform no asset or business route operations.",
+        "accepted_by": "Parent MAIN retains final authority; review did not write an Accepted signature."
+      },
+      "canonical_pass_criteria": "所有负例有分类，采样函数不异常退出，非法值不变成0延迟或成功。",
+      "independent_conclusion": "Original3/3 and prior five red/green repairs verified, but three new real-file exceptions violate complete input schema and bounded no-exception criteria. Independent finding: Failed.",
+      "eligible_for_parent_MAIN_acceptance": false,
+      "proposed_resolution": "Failed",
+      "accepted_by": null,
+      "Accepted": false,
+      "dependency_assessment": "Minimal input artifacts reviewed, not whole upstream Accepted. LOAD-11.1 source/hash provenance and LOAD-06.4 local field/time/null/redaction contract are available. Downstream ownership fields, launch table, population definition and clock seams satisfy their required contracts; LOAD-01.1 numerical/business-key schema failure remains separately Failed. No automatic cascade from upstream task status.",
+      "S5": {
+        "status": "NotApplicableWithReason",
+        "reason": "仅凭指定离线/集成产物即可判定本子项；公网压测不增加该判据可信度。"
+      },
+      "S6": {
+        "independent_replay_complete": true,
+        "parent_final_decision_pending": true
+      }
+    },
+    {
+      "task_id": "LOAD-01.2",
+      "stage": "S6",
+      "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+      "config_source_hash": null,
+      "config_bytes_hash": null,
+      "effective_room_policy": null,
+      "runtime_image_digest": null,
+      "profile_hash": "dd7a9ea825491b401ebf280f4d32d36469c374064cb9dc7fa6ed26ee61ad4ede",
+      "algorithm_version": "sha256:03c0d12abe73045a7aea42ace2d14a3343aac9057d6437d87c90002b5ee6acfd",
+      "case_ids": [
+        "LOAD-01.2-T01",
+        "LOAD-01.2-T02",
+        "LOAD-01.2-T03"
+      ],
+      "expected": [
+        {
+          "case_id": "LOAD-01.2-T01",
+          "expected": "同时允许活跃与累计"
+        },
+        {
+          "case_id": "LOAD-01.2-T02",
+          "expected": "不归属且不增加人数"
+        },
+        {
+          "case_id": "LOAD-01.2-T03",
+          "expected": "累计保留、在线归零"
+        }
+      ],
+      "actual": [
+        {
+          "case_id": "LOAD-01.2-T01",
+          "setup": "本轮活进程",
+          "expected": "同时允许活跃与累计",
+          "pass_criteria": "所有聚合先验归属，同一身份最多一个活跃状态，无跨run污染。",
+          "actual": {
+            "checks": {
+              "exact_existing_case_assertion": true
+            },
+            "observations": {
+              "owned": [
+                {
+                  "client_id": "a",
+                  "pid": 7,
+                  "now_unix_ms": 10000,
+                  "online": true,
+                  "room": true,
+                  "last_progress_age_ms": 0,
+                  "run_id": "run",
+                  "process_epoch": "epoch"
+                }
+              ],
+              "invalid": 0,
+              "population": {
+                "alive_processes": 1,
+                "fresh_status_clients": 1,
+                "online": 1,
+                "in_room": 1,
+                "room_state_clients": 1,
+                "active_in_room": 1,
+                "server_confirmed_in_room": null,
+                "invalid_schema_count": 0,
+                "failed_processes": [],
+                "stale_clients": [],
+                "stalled_clients": [],
+                "missing_clients": [],
+                "invalid_clients": [],
+                "workload_failure": false
+              },
+              "window": {
+                "http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "steady_http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 1,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  }
+                },
+                "error_count": 0,
+                "sample_count": 1,
+                "logical_request_count": 1,
+                "cancelled_count": 0,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 1,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.0,
+                "steady_error_count": 0,
+                "steady_sample_count": 1,
+                "steady_error_rate": 0.0,
+                "invalid_metric_count": 0,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              }
+            }
+          },
+          "status": "Passed",
+          "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "profile": "OFFLINE",
+          "elapsed_seconds": 5.509600001118997e-05,
+          "Accepted": false
+        },
+        {
+          "case_id": "LOAD-01.2-T02",
+          "setup": "同PID新epoch/外部run",
+          "expected": "不归属且不增加人数",
+          "pass_criteria": "所有聚合先验归属，同一身份最多一个活跃状态，无跨run污染。",
+          "actual": {
+            "checks": {
+              "exact_existing_case_assertion": true
+            },
+            "observations": {
+              "owned": [],
+              "invalid": 2,
+              "population": {
+                "alive_processes": 1,
+                "fresh_status_clients": 0,
+                "online": 0,
+                "in_room": 0,
+                "room_state_clients": 0,
+                "active_in_room": 0,
+                "server_confirmed_in_room": null,
+                "invalid_schema_count": 0,
+                "failed_processes": [],
+                "stale_clients": [],
+                "stalled_clients": [],
+                "missing_clients": [],
+                "invalid_clients": [],
+                "workload_failure": false
+              },
+              "window": {
+                "http": {
+                  "count": 0
+                },
+                "steady_http": {
+                  "count": 0
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {},
+                "error_count": 0,
+                "sample_count": 0,
+                "logical_request_count": 0,
+                "cancelled_count": 0,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 0,
+                "latency_sample_quality": {
+                  "http": "unavailable",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.0,
+                "steady_error_count": 0,
+                "steady_sample_count": 0,
+                "steady_error_rate": 0.0,
+                "invalid_metric_count": 0,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              }
+            }
+          },
+          "status": "Passed",
+          "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "profile": "OFFLINE",
+          "elapsed_seconds": 2.492899997719178e-05,
+          "Accepted": false
+        },
+        {
+          "case_id": "LOAD-01.2-T03",
+          "setup": "本轮成功退出有尾事件",
+          "expected": "累计保留、在线归零",
+          "pass_criteria": "所有聚合先验归属，同一身份最多一个活跃状态，无跨run污染。",
+          "actual": {
+            "checks": {
+              "real_successful_exit": true,
+              "no_online": true,
+              "owned_tail_preserved": true,
+              "cumulative_cycle_preserved": true,
+              "no_cycle_evidence_errors": true
+            },
+            "observations": {
+              "pid": 908,
+              "exit_code": 0,
+              "population": {
+                "alive_processes": 0,
+                "fresh_status_clients": 0,
+                "online": 0,
+                "in_room": 0,
+                "room_state_clients": 0,
+                "active_in_room": 0,
+                "server_confirmed_in_room": null,
+                "invalid_schema_count": 0,
+                "failed_processes": [],
+                "stale_clients": [],
+                "stalled_clients": [],
+                "missing_clients": [],
+                "invalid_clients": [],
+                "workload_failure": false
+              },
+              "tail": [
+                {
+                  "client_id": "owned",
+                  "pid": 908,
+                  "run_id": "frozen-run",
+                  "process_epoch": "epoch-A",
+                  "status_seq": 1,
+                  "now_unix_ms": 1790809568214,
+                  "online": true,
+                  "room": true,
+                  "last_progress_age_ms": 0,
+                  "event_seq_max": 3,
+                  "cycles_completed": 1,
+                  "telemetry": [
+                    {
+                      "run_id": "frozen-run",
+                      "client_id": "owned",
+                      "process_epoch": "epoch-A",
+                      "event_seq": 1,
+                      "type": "lifecycle",
+                      "at_unix_ms": 1790809568214,
+                      "phase": "playing",
+                      "duration_ms": 5,
+                      "status": 200,
+                      "ok": true,
+                      "event_type": "cycle.started",
+                      "cycle_id": "owned:1",
+                      "match_id": "M"
+                    },
+                    {
+                      "run_id": "frozen-run",
+                      "client_id": "owned",
+                      "process_epoch": "epoch-A",
+                      "event_seq": 2,
+                      "type": "lifecycle",
+                      "at_unix_ms": 1790809568214,
+                      "phase": "playing",
+                      "duration_ms": 5,
+                      "status": 200,
+                      "ok": true,
+                      "event_type": "settlement.acknowledged",
+                      "cycle_id": "owned:1",
+                      "match_id": "M"
+                    },
+                    {
+                      "run_id": "frozen-run",
+                      "client_id": "owned",
+                      "process_epoch": "epoch-A",
+                      "event_seq": 3,
+                      "type": "lifecycle",
+                      "at_unix_ms": 1790809568214,
+                      "phase": "playing",
+                      "duration_ms": 5,
+                      "status": 200,
+                      "ok": true,
+                      "event_type": "cycle.completed",
+                      "cycle_id": "owned:1",
+                      "match_id": "M"
+                    }
+                  ],
+                  "operations": [],
+                  "_received_at_monotonic_ms": 193196.477837
+                }
+              ],
+              "archive": [
+                {
+                  "run_id": "frozen-run",
+                  "client_id": "owned",
+                  "process_epoch": "epoch-A",
+                  "event_seq": 1,
+                  "type": "lifecycle",
+                  "at_unix_ms": 1790809568214,
+                  "phase": "playing",
+                  "duration_ms": 5,
+                  "status": 200,
+                  "ok": true,
+                  "event_type": "cycle.started",
+                  "cycle_id": "owned:1",
+                  "match_id": "M"
+                },
+                {
+                  "run_id": "frozen-run",
+                  "client_id": "owned",
+                  "process_epoch": "epoch-A",
+                  "event_seq": 2,
+                  "type": "lifecycle",
+                  "at_unix_ms": 1790809568214,
+                  "phase": "playing",
+                  "duration_ms": 5,
+                  "status": 200,
+                  "ok": true,
+                  "event_type": "settlement.acknowledged",
+                  "cycle_id": "owned:1",
+                  "match_id": "M"
+                },
+                {
+                  "run_id": "frozen-run",
+                  "client_id": "owned",
+                  "process_epoch": "epoch-A",
+                  "event_seq": 3,
+                  "type": "lifecycle",
+                  "at_unix_ms": 1790809568214,
+                  "phase": "playing",
+                  "duration_ms": 5,
+                  "status": 200,
+                  "ok": true,
+                  "event_type": "cycle.completed",
+                  "cycle_id": "owned:1",
+                  "match_id": "M"
+                }
+              ],
+              "archive_errors": [],
+              "cycle_counts": {
+                "running": {
+                  "acknowledgements": 1,
+                  "completed_cycles": 1,
+                  "cycles_by_client": {
+                    "owned": 1
+                  },
+                  "acknowledgements_by_client": {
+                    "owned": 1
+                  },
+                  "distribution": {
+                    "1": 1
+                  },
+                  "fallback_cycles": 0
+                },
+                "drain": {
+                  "acknowledgements": 0,
+                  "completed_cycles": 0,
+                  "cycles_by_client": {},
+                  "acknowledgements_by_client": {},
+                  "distribution": {},
+                  "fallback_cycles": 0
+                },
+                "final": {
+                  "acknowledgements": 1,
+                  "completed_cycles": 1,
+                  "cycles_by_client": {
+                    "owned": 1
+                  },
+                  "acknowledgements_by_client": {
+                    "owned": 1
+                  },
+                  "distribution": {
+                    "1": 1
+                  },
+                  "fallback_cycles": 0
+                },
+                "zero_cycle_clients": null,
+                "zero_cycle_reason": "requires_launch_manifest",
+                "evidence_errors": [],
+                "stop_ms": 1790809568227,
+                "final_ms": 1790809568228
+              },
+              "ownership_invalid": 0,
+              "lost": 0
+            }
+          },
+          "status": "Passed",
+          "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "profile": "OFFLINE",
+          "elapsed_seconds": 0.03240167100000235,
+          "Accepted": false
+        }
+      ],
+      "status": "ReadyForAcceptance",
+      "sample_population": "Frozen canonical deterministic fixtures and actual owned local children; 119 original unittest cases; targeted finite/schema probes have no statistical population claim.",
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "Separate case-local observation ends; successful exit tail includes running/drain/final ACK reconciliation.",
+      "commands": "COMMANDS.json",
+      "tool_versions": {
+        "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+        "executable": "/workspace/relicround-env/venv/bin/python",
+        "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+        "git": "git version 2.52.0"
+      },
+      "exit_codes": {
+        "C-PY": 0,
+        "LOAD01-EXACT": 0,
+        "SCHEMA-GREEN": 0,
+        "SCHEMA-RED": 0,
+        "archive-control": 0,
+        "archive-match-list": 1,
+        "archive-type-list": 1,
+        "finite-control": 0,
+        "finite-overflow": 1
+      },
+      "skip_reasons": [],
+      "asset_and_route_postconditions": null,
+      "artifact_manifest": "MANIFEST.json",
+      "reviewer": "Independent delegated Codex reviewer; parent MAIN signs final adjudication.",
+      "rollback": {
+        "review_artifacts": "Isolated local review; no business/source/register changes to undo.",
+        "implementation_reference": "Original receipt rollback only names gameplay_load_validation.py; owner should also explicitly cover changed pr13_runtime_evidence.py and its regression tests when describing rollback."
+      },
+      "remaining_blockers": [],
+      "missing_reasons": {
+        "config_source_hash": "OFFLINE schema/process evidence loads no configuration workbook.",
+        "config_bytes_hash": "No generated configuration is loaded.",
+        "effective_room_policy": "No room server/policy is instantiated.",
+        "runtime_image_digest": "Standalone local Python/OS execution; no runtime image.",
+        "cutoff_monotonic": "Independent cases have separate observation cutoffs; actual launch monotonic values and counterfactual seam values are retained in raw command/case receipts. No common capacity/window cutoff.",
+        "asset_and_route_postconditions": "Owned synthetic status writers and read-only accounting perform no asset or business route operations.",
+        "accepted_by": "Parent MAIN retains final authority; review did not write an Accepted signature."
+      },
+      "canonical_pass_criteria": "所有聚合先验归属，同一身份最多一个活跃状态，无跨run污染。",
+      "independent_conclusion": "3/3 exact cases pass. run/client/epoch/PID filtering precedes population/telemetry counts; foreign run/same PID new epoch excluded; successful actual exit0 preserves three archived events and one ACK/completed cycle while alive/online=0. No direct ownership violation found. Eligible for parent MAIN acceptance/NoChangeWithEvidence.",
+      "eligible_for_parent_MAIN_acceptance": true,
+      "proposed_resolution": "NoChangeWithEvidence",
+      "accepted_by": null,
+      "Accepted": false,
+      "dependency_assessment": "Minimal input artifacts reviewed, not whole upstream Accepted. LOAD-11.1 source/hash provenance and LOAD-06.4 local field/time/null/redaction contract are available. Downstream ownership fields, launch table, population definition and clock seams satisfy their required contracts; LOAD-01.1 numerical/business-key schema failure remains separately Failed. No automatic cascade from upstream task status.",
+      "S5": {
+        "status": "NotApplicableWithReason",
+        "reason": "仅凭指定离线/集成产物即可判定本子项；公网压测不增加该判据可信度。"
+      },
+      "S6": {
+        "independent_replay_complete": true,
+        "parent_final_decision_pending": true
+      }
+    },
+    {
+      "task_id": "LOAD-01.3",
+      "stage": "S6",
+      "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+      "config_source_hash": null,
+      "config_bytes_hash": null,
+      "effective_room_policy": null,
+      "runtime_image_digest": null,
+      "profile_hash": "dd7a9ea825491b401ebf280f4d32d36469c374064cb9dc7fa6ed26ee61ad4ede",
+      "algorithm_version": "sha256:03c0d12abe73045a7aea42ace2d14a3343aac9057d6437d87c90002b5ee6acfd",
+      "case_ids": [
+        "LOAD-01.3-T01",
+        "LOAD-01.3-T02",
+        "LOAD-01.3-T03"
+      ],
+      "expected": [
+        {
+          "case_id": "LOAD-01.3-T01",
+          "expected": "room_state为1、active为0"
+        },
+        {
+          "case_id": "LOAD-01.3-T02",
+          "expected": "online为0"
+        },
+        {
+          "case_id": "LOAD-01.3-T03",
+          "expected": "null不可替换为客户端数"
+        }
+      ],
+      "actual": [
+        {
+          "case_id": "LOAD-01.3-T01",
+          "setup": "离线保留room",
+          "expected": "room_state为1、active为0",
+          "pass_criteria": "人数列各有定义和截止点，客户端active明确为存活且新鲜且在线且在房。",
+          "actual": {
+            "checks": {
+              "exact_existing_case_assertion": true,
+              "fresh_alive_offline": true,
+              "retained_room_separate": true,
+              "offline_not_active": true
+            },
+            "observations": {
+              "alive_processes": 1,
+              "fresh_status_clients": 1,
+              "online": 0,
+              "in_room": 0,
+              "room_state_clients": 1,
+              "active_in_room": 0,
+              "server_confirmed_in_room": null,
+              "invalid_schema_count": 0,
+              "failed_processes": [],
+              "stale_clients": [],
+              "stalled_clients": [],
+              "missing_clients": [],
+              "invalid_clients": [],
+              "workload_failure": false
+            }
+          },
+          "status": "Passed",
+          "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "profile": "OFFLINE",
+          "elapsed_seconds": 3.000000000952241e-05,
+          "Accepted": false
+        },
+        {
+          "case_id": "LOAD-01.3-T02",
+          "setup": "成功退出仍有历史文件",
+          "expected": "online为0",
+          "pass_criteria": "人数列各有定义和截止点，客户端active明确为存活且新鲜且在线且在房。",
+          "actual": {
+            "checks": {
+              "exact_existing_case_assertion": true
+            },
+            "observations": {
+              "alive_processes": 0,
+              "fresh_status_clients": 0,
+              "online": 0,
+              "in_room": 0,
+              "room_state_clients": 0,
+              "active_in_room": 0,
+              "server_confirmed_in_room": null,
+              "invalid_schema_count": 0,
+              "failed_processes": [],
+              "stale_clients": [],
+              "stalled_clients": [],
+              "missing_clients": [],
+              "invalid_clients": [],
+              "workload_failure": false
+            }
+          },
+          "status": "Passed",
+          "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "profile": "OFFLINE",
+          "elapsed_seconds": 1.406499998779509e-05,
+          "Accepted": false
+        },
+        {
+          "case_id": "LOAD-01.3-T03",
+          "setup": "缺服务端确认入口",
+          "expected": "null不可替换为客户端数",
+          "pass_criteria": "人数列各有定义和截止点，客户端active明确为存活且新鲜且在线且在房。",
+          "actual": {
+            "checks": {
+              "exact_existing_case_assertion": true,
+              "authority_unknown": true
+            },
+            "observations": {
+              "alive_processes": 1,
+              "fresh_status_clients": 1,
+              "online": 1,
+              "in_room": 1,
+              "room_state_clients": 1,
+              "active_in_room": 1,
+              "server_confirmed_in_room": null,
+              "invalid_schema_count": 0,
+              "failed_processes": [],
+              "stale_clients": [],
+              "stalled_clients": [],
+              "missing_clients": [],
+              "invalid_clients": [],
+              "workload_failure": false,
+              "authority_unavailable_reason": "No server authority source in this local process-accounting profile; client population is a separate field."
+            }
+          },
+          "status": "Passed",
+          "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "profile": "OFFLINE",
+          "elapsed_seconds": 1.5985999993972655e-05,
+          "Accepted": false
+        }
+      ],
+      "status": "ReadyForAcceptance",
+      "sample_population": "Frozen canonical deterministic fixtures and actual owned local children; 119 original unittest cases; targeted finite/schema probes have no statistical population claim.",
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "Separate case-local observation ends; successful exit tail includes running/drain/final ACK reconciliation.",
+      "commands": "COMMANDS.json",
+      "tool_versions": {
+        "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+        "executable": "/workspace/relicround-env/venv/bin/python",
+        "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+        "git": "git version 2.52.0"
+      },
+      "exit_codes": {
+        "C-PY": 0,
+        "LOAD01-EXACT": 0,
+        "SCHEMA-GREEN": 0,
+        "SCHEMA-RED": 0,
+        "archive-control": 0,
+        "archive-match-list": 1,
+        "archive-type-list": 1,
+        "finite-control": 0,
+        "finite-overflow": 1
+      },
+      "skip_reasons": [],
+      "asset_and_route_postconditions": null,
+      "artifact_manifest": "MANIFEST.json",
+      "reviewer": "Independent delegated Codex reviewer; parent MAIN signs final adjudication.",
+      "rollback": {
+        "review_artifacts": "Isolated local review; no business/source/register changes to undo.",
+        "implementation_reference": "Original receipt rollback only names gameplay_load_validation.py; owner should also explicitly cover changed pr13_runtime_evidence.py and its regression tests when describing rollback."
+      },
+      "remaining_blockers": [],
+      "missing_reasons": {
+        "config_source_hash": "OFFLINE schema/process evidence loads no configuration workbook.",
+        "config_bytes_hash": "No generated configuration is loaded.",
+        "effective_room_policy": "No room server/policy is instantiated.",
+        "runtime_image_digest": "Standalone local Python/OS execution; no runtime image.",
+        "cutoff_monotonic": "Independent cases have separate observation cutoffs; actual launch monotonic values and counterfactual seam values are retained in raw command/case receipts. No common capacity/window cutoff.",
+        "asset_and_route_postconditions": "Owned synthetic status writers and read-only accounting perform no asset or business route operations.",
+        "accepted_by": "Parent MAIN retains final authority; review did not write an Accepted signature."
+      },
+      "canonical_pass_criteria": "人数列各有定义和截止点，客户端active明确为存活且新鲜且在线且在房。",
+      "independent_conclusion": "3/3 exact cases pass. Fresh alive offline retained room produces room_state=1 and active=online=0; exited history gives online0; absent server authority is null with reason. Spawned maps to runner clients=len(processes), alive/fresh/online/room/active have separate fields and sampling cutoff. No direct population contract violation found. Eligible for parent MAIN acceptance/NoChangeWithEvidence.",
+      "eligible_for_parent_MAIN_acceptance": true,
+      "proposed_resolution": "NoChangeWithEvidence",
+      "accepted_by": null,
+      "Accepted": false,
+      "dependency_assessment": "Minimal input artifacts reviewed, not whole upstream Accepted. LOAD-11.1 source/hash provenance and LOAD-06.4 local field/time/null/redaction contract are available. Downstream ownership fields, launch table, population definition and clock seams satisfy their required contracts; LOAD-01.1 numerical/business-key schema failure remains separately Failed. No automatic cascade from upstream task status.",
+      "S5": {
+        "status": "NotApplicableWithReason",
+        "reason": "仅凭指定离线/集成产物即可判定本子项；公网压测不增加该判据可信度。"
+      },
+      "S6": {
+        "independent_replay_complete": true,
+        "parent_final_decision_pending": true
+      }
+    },
+    {
+      "task_id": "LOAD-01.4",
+      "stage": "S6",
+      "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+      "config_source_hash": null,
+      "config_bytes_hash": null,
+      "effective_room_policy": null,
+      "runtime_image_digest": null,
+      "profile_hash": "dd7a9ea825491b401ebf280f4d32d36469c374064cb9dc7fa6ed26ee61ad4ede",
+      "algorithm_version": "sha256:03c0d12abe73045a7aea42ace2d14a3343aac9057d6437d87c90002b5ee6acfd",
+      "case_ids": [
+        "LOAD-01.4-T01",
+        "LOAD-01.4-T02",
+        "LOAD-01.4-T03"
+      ],
+      "expected": [
+        {
+          "case_id": "LOAD-01.4-T01",
+          "expected": "不误报missing"
+        },
+        {
+          "case_id": "LOAD-01.4-T02",
+          "expected": "failed_process可定位"
+        },
+        {
+          "case_id": "LOAD-01.4-T03",
+          "expected": "单调宽限不变、陈旧不计在线"
+        }
+      ],
+      "actual": [
+        {
+          "case_id": "LOAD-01.4-T01",
+          "setup": "宽限内慢启动",
+          "expected": "不误报missing",
+          "pass_criteria": "真实子进程全被回收，反例不靠仅构造dict替代进程行为。",
+          "actual": {
+            "checks": {
+              "slow_start_no_missing": true,
+              "actual_child_status_adopted": true
+            },
+            "observations": {
+              "pid": 910,
+              "actual_os_process": true,
+              "before": {
+                "alive_processes": 1,
+                "fresh_status_clients": 0,
+                "online": 0,
+                "in_room": 0,
+                "room_state_clients": 0,
+                "active_in_room": 0,
+                "server_confirmed_in_room": null,
+                "invalid_schema_count": 0,
+                "failed_processes": [],
+                "stale_clients": [],
+                "stalled_clients": [],
+                "missing_clients": [],
+                "invalid_clients": [],
+                "workload_failure": false
+              },
+              "after": {
+                "alive_processes": 1,
+                "fresh_status_clients": 1,
+                "online": 1,
+                "in_room": 1,
+                "room_state_clients": 1,
+                "active_in_room": 1,
+                "server_confirmed_in_room": null,
+                "invalid_schema_count": 0,
+                "failed_processes": [],
+                "stale_clients": [],
+                "stalled_clients": [],
+                "missing_clients": [],
+                "invalid_clients": [],
+                "workload_failure": false
+              },
+              "ownership_invalid": 0
+            }
+          },
+          "status": "Passed",
+          "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "profile": "OFFLINE",
+          "elapsed_seconds": 0.18330944400000249,
+          "Accepted": false
+        },
+        {
+          "case_id": "LOAD-01.4-T02",
+          "setup": "异常退出码7",
+          "expected": "failed_process可定位",
+          "pass_criteria": "真实子进程全被回收，反例不靠仅构造dict替代进程行为。",
+          "actual": {
+            "checks": {
+              "exit7_attributed": true,
+              "exited_not_online": true,
+              "owned_tail_preserved": true
+            },
+            "observations": {
+              "pid": 944,
+              "actual_os_process": true,
+              "exit_code": 7,
+              "population": {
+                "alive_processes": 0,
+                "fresh_status_clients": 0,
+                "online": 0,
+                "in_room": 0,
+                "room_state_clients": 0,
+                "active_in_room": 0,
+                "server_confirmed_in_room": null,
+                "invalid_schema_count": 0,
+                "failed_processes": [
+                  "owned"
+                ],
+                "stale_clients": [],
+                "stalled_clients": [],
+                "missing_clients": [],
+                "invalid_clients": [],
+                "workload_failure": true
+              },
+              "window": {
+                "http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "steady_http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "playing": {
+                    "count": 1,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  }
+                },
+                "error_count": 0,
+                "sample_count": 1,
+                "logical_request_count": 1,
+                "cancelled_count": 0,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 1,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.0,
+                "steady_error_count": 0,
+                "steady_sample_count": 1,
+                "steady_error_rate": 0.0,
+                "invalid_metric_count": 0,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "events": [
+                {
+                  "run_id": "frozen-run",
+                  "client_id": "owned",
+                  "process_epoch": "epoch-A",
+                  "event_seq": 1,
+                  "type": "http",
+                  "at_unix_ms": 1790809568428,
+                  "phase": "playing",
+                  "duration_ms": 5,
+                  "status": 200,
+                  "ok": true
+                }
+              ],
+              "archive_errors": []
+            }
+          },
+          "status": "Passed",
+          "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "profile": "OFFLINE",
+          "elapsed_seconds": 0.022375543000009657,
+          "Accepted": false
+        },
+        {
+          "case_id": "LOAD-01.4-T03",
+          "setup": "墙钟跳变/陈旧状态",
+          "expected": "单调宽限不变、陈旧不计在线",
+          "pass_criteria": "真实子进程全被回收，反例不靠仅构造dict替代进程行为。",
+          "actual": {
+            "checks": {
+              "grace_uses_monotonic": true,
+              "stale_no_online": true,
+              "wrong_epoch_excluded": true,
+              "status_read_valid": true
+            },
+            "observations": {
+              "pid": 946,
+              "actual_os_process": true,
+              "clock_seam": "Counterfactual wall jump and monotonic observation values; actual child files and actual process, no host clock mutation.",
+              "wall_values": [
+                0,
+                1791809568433
+              ],
+              "grace": [
+                {
+                  "alive_processes": 1,
+                  "fresh_status_clients": 0,
+                  "online": 0,
+                  "in_room": 0,
+                  "room_state_clients": 0,
+                  "active_in_room": 0,
+                  "server_confirmed_in_room": null,
+                  "invalid_schema_count": 0,
+                  "failed_processes": [],
+                  "stale_clients": [],
+                  "stalled_clients": [],
+                  "missing_clients": [],
+                  "invalid_clients": [],
+                  "workload_failure": false
+                },
+                {
+                  "alive_processes": 1,
+                  "fresh_status_clients": 0,
+                  "online": 0,
+                  "in_room": 0,
+                  "room_state_clients": 0,
+                  "active_in_room": 0,
+                  "server_confirmed_in_room": null,
+                  "invalid_schema_count": 0,
+                  "failed_processes": [],
+                  "stale_clients": [],
+                  "stalled_clients": [],
+                  "missing_clients": [],
+                  "invalid_clients": [],
+                  "workload_failure": false
+                }
+              ],
+              "stale": [
+                {
+                  "alive_processes": 1,
+                  "fresh_status_clients": 0,
+                  "online": 0,
+                  "in_room": 0,
+                  "room_state_clients": 0,
+                  "active_in_room": 0,
+                  "server_confirmed_in_room": null,
+                  "invalid_schema_count": 0,
+                  "failed_processes": [],
+                  "stale_clients": [
+                    "owned"
+                  ],
+                  "stalled_clients": [],
+                  "missing_clients": [],
+                  "invalid_clients": [],
+                  "workload_failure": true
+                },
+                {
+                  "alive_processes": 1,
+                  "fresh_status_clients": 0,
+                  "online": 0,
+                  "in_room": 0,
+                  "room_state_clients": 0,
+                  "active_in_room": 0,
+                  "server_confirmed_in_room": null,
+                  "invalid_schema_count": 0,
+                  "failed_processes": [],
+                  "stale_clients": [
+                    "owned"
+                  ],
+                  "stalled_clients": [],
+                  "missing_clients": [],
+                  "invalid_clients": [],
+                  "workload_failure": true
+                }
+              ],
+              "reused_epoch_rejected": 1,
+              "epoch_injection": "Same actual PID under a new owner epoch; not a claimed kernel PID recycle."
+            }
+          },
+          "status": "Passed",
+          "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "profile": "OFFLINE",
+          "elapsed_seconds": 0.020686175999998113,
+          "Accepted": false
+        }
+      ],
+      "status": "ReadyForAcceptance",
+      "sample_population": "Frozen canonical deterministic fixtures and actual owned local children; 119 original unittest cases; targeted finite/schema probes have no statistical population claim.",
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "Separate case-local observation ends; successful exit tail includes running/drain/final ACK reconciliation.",
+      "commands": "COMMANDS.json",
+      "tool_versions": {
+        "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+        "executable": "/workspace/relicround-env/venv/bin/python",
+        "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+        "git": "git version 2.52.0"
+      },
+      "exit_codes": {
+        "C-PY": 0,
+        "LOAD01-EXACT": 0,
+        "SCHEMA-GREEN": 0,
+        "SCHEMA-RED": 0,
+        "archive-control": 0,
+        "archive-match-list": 1,
+        "archive-type-list": 1,
+        "finite-control": 0,
+        "finite-overflow": 1
+      },
+      "skip_reasons": [],
+      "asset_and_route_postconditions": null,
+      "artifact_manifest": "MANIFEST.json",
+      "reviewer": "Independent delegated Codex reviewer; parent MAIN signs final adjudication.",
+      "rollback": {
+        "review_artifacts": "Isolated local review; no business/source/register changes to undo.",
+        "implementation_reference": "Original receipt rollback only names gameplay_load_validation.py; owner should also explicitly cover changed pr13_runtime_evidence.py and its regression tests when describing rollback."
+      },
+      "remaining_blockers": [],
+      "missing_reasons": {
+        "config_source_hash": "OFFLINE schema/process evidence loads no configuration workbook.",
+        "config_bytes_hash": "No generated configuration is loaded.",
+        "effective_room_policy": "No room server/policy is instantiated.",
+        "runtime_image_digest": "Standalone local Python/OS execution; no runtime image.",
+        "cutoff_monotonic": "Independent cases have separate observation cutoffs; actual launch monotonic values and counterfactual seam values are retained in raw command/case receipts. No common capacity/window cutoff.",
+        "asset_and_route_postconditions": "Owned synthetic status writers and read-only accounting perform no asset or business route operations.",
+        "accepted_by": "Parent MAIN retains final authority; review did not write an Accepted signature."
+      },
+      "canonical_pass_criteria": "真实子进程全被回收，反例不靠仅构造dict替代进程行为。",
+      "independent_conclusion": "3/3 exact cases use actual owned OS children and written status/audit files. Slow launch is inside monotonic grace; actual exit7 maps to owned failed_process; counterfactual wall jumps do not change monotonic grace and unchanged status is stale at receipt+31001ms. Same actual PID under new epoch rejected. This is not a claim of kernel PID recycling. All four canonical owned children reaped. Eligible for parent MAIN acceptance/NoChangeWithEvidence.",
+      "eligible_for_parent_MAIN_acceptance": true,
+      "proposed_resolution": "NoChangeWithEvidence",
+      "accepted_by": null,
+      "Accepted": false,
+      "dependency_assessment": "Minimal input artifacts reviewed, not whole upstream Accepted. LOAD-11.1 source/hash provenance and LOAD-06.4 local field/time/null/redaction contract are available. Downstream ownership fields, launch table, population definition and clock seams satisfy their required contracts; LOAD-01.1 numerical/business-key schema failure remains separately Failed. No automatic cascade from upstream task status.",
+      "S5": {
+        "status": "NotApplicableWithReason",
+        "reason": "仅凭指定离线/集成产物即可判定本子项；公网压测不增加该判据可信度。"
+      },
+      "S6": {
+        "independent_replay_complete": true,
+        "parent_final_decision_pending": true
+      }
+    }
+  ],
+  "final_parent_decision_pending": true,
+  "original_register_modified": false,
+  "Accepted": 0,
+  "local_delivery_only": true,
+  "reviewer_fixture_history": [
+    {
+      "action": "Initial static manifest/source verifier",
+      "error": "KeyError: 'files'",
+      "classification": "Reviewer adapter key mismatch; old SOURCE_PROOF uses source_files, new uses files. Corrected only the independent verifier; all original evidence and tested source/assertions unchanged."
+    }
+  ]
+}

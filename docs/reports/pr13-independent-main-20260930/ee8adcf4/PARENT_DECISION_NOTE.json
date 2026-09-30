@@ -1,0 +1,32 @@
+{
+  "kind": "Parent_MAIN_adjudication_statement_not_original_register_write",
+  "source": "Explicit delegation message from parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012, after independent review completion.",
+  "tested_source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+  "scope": "Only LOAD-01.1–.4 canonical OFFLINE contracts at ee8adcf; not applicable to later source revisions or unreviewed tasks.",
+  "parent_statement": "固定ee8adcf上LOAD01.2/.3/.4满足原OFFLINE合同，MAIN裁决Accepted/NoChangeWithEvidence；LOAD01.1 Failed待修，三新反例已独立实测，不扩大至未审任务。",
+  "tasks": [
+    {
+      "task_id": "LOAD-01.1",
+      "parent_resolution": "Failed",
+      "reason": "Three independently reproduced schema exceptions; owner fix and new independent replay required."
+    },
+    {
+      "task_id": "LOAD-01.2",
+      "parent_resolution": "Accepted/NoChangeWithEvidence",
+      "reason": "Original canonical OFFLINE contract satisfied by independent replay and minimum dependency artifacts."
+    },
+    {
+      "task_id": "LOAD-01.3",
+      "parent_resolution": "Accepted/NoChangeWithEvidence",
+      "reason": "Original canonical OFFLINE contract satisfied by independent replay and minimum dependency artifacts."
+    },
+    {
+      "task_id": "LOAD-01.4",
+      "parent_resolution": "Accepted/NoChangeWithEvidence",
+      "reason": "Original canonical OFFLINE contract satisfied by independent replay and minimum dependency artifacts."
+    }
+  ],
+  "original_register_updated": false,
+  "original_PR_updated": false,
+  "publication_only": true
+}

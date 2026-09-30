@@ -1,0 +1,18 @@
+{"fixture": "finite-overflow", "stage": "aggregate_window", "status": "Failed", "unhandled_exception": "OverflowError", "child_reaped": true}
+Traceback (most recent call last):
+  File "/workspace/pr13-main-review/probe_schema.py", line 51, in <module>
+    window=aggregate_window(events)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/pr13-main-review-fixed/tools/gameplay_load_validation.py", line 107, in aggregate_window
+    "http": latency(completed_http),
+            ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/pr13-main-review-fixed/tools/gameplay_load_validation.py", line 99, in latency
+    return summarize([row["duration_ms"] for row in rows if _number(row.get("duration_ms")) and row["duration_ms"] >= 0])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/pr13-main-review-fixed/tools/gameplay_load_validation.py", line 18, in summarize
+    "mean_ms": statistics.fmean(values), "max_ms": max(values)}
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/statistics.py", line 510, in fmean
+    total = fsum(data)
+            ^^^^^^^^^^
+OverflowError: intermediate overflow in fsum

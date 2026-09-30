@@ -1,0 +1,11 @@
+{"fixture": "archive-match-list", "stage": "reconcile_cycles", "status": "Failed", "unhandled_exception": "TypeError", "child_reaped": true}
+Traceback (most recent call last):
+  File "/workspace/pr13-main-review/probe_schema.py", line 60, in <module>
+    record['cycle_counts']=reconcile_cycles(audit,int(time.time()*1000),int(time.time()*1000)+1)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/pr13-main-review-fixed/tools/pr13_runtime_evidence.py", line 144, in reconcile_cycles
+    result = {name: derive(rows) for name, rows in buckets.items()}
+                    ^^^^^^^^^^^^
+  File "/workspace/pr13-main-review-fixed/tools/pr13_runtime_evidence.py", line 135, in derive
+    seen.add(business_key)
+TypeError: unhashable type: 'list'

@@ -1,0 +1,45 @@
+{
+  "fixture": "finite-overflow",
+  "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+  "child_argv": [
+    "/workspace/relicround-env/venv/bin/python",
+    "-c",
+    "import json,os,pathlib,sys,time\nbase=pathlib.Path(sys.argv[1]);fixture=sys.argv[2];now=int(time.time()*1000)\nrow=dict(client_id='independent',pid=os.getpid(),run_id='independent-run',process_epoch='independent-epoch',status_seq=1,now_unix_ms=now,online=True,room=True,last_progress_age_ms=0)\nevent=dict(run_id=row['run_id'],client_id=row['client_id'],process_epoch=row['process_epoch'],event_seq=1,at_unix_ms=now,type='http',duration_ms=1e308 if fixture=='finite-overflow' else 1e100,status=500,ok=False,path='/fixture',phase='playing')\nevents=[event,dict(event,event_seq=2)]\nif fixture.startswith('archive-'):\n event.update(type='lifecycle',event_type='cycle.started',cycle_id='independent:1',match_id='M',duration_ms=2)\n if fixture=='archive-match-list':event['match_id']=[]\n if fixture=='archive-type-list':event['event_type']=[]\n events=[event]\nrow.update(event_seq_max=len(events),telemetry=events,operations=events if not fixture.startswith('archive-') else [])\npathlib.Path(str(base)+'.telemetry.jsonl').write_text(''.join(json.dumps(e)+'\\n' for e in events))\npathlib.Path(str(base)+'.status.json').write_text(json.dumps(row))\nprint(json.dumps(dict(pid=os.getpid(),status_written=True)),flush=True)\ntime.sleep(15)\n",
+    "/workspace/pr13-main-review/counterexamples/finite-overflow/client.json",
+    "finite-overflow"
+  ],
+  "pid": 1253,
+  "started_at_ms": 1790809670191,
+  "started_at_monotonic_ms": 295161.24997600005,
+  "expected": "No unhandled exception; malformed archive fields must classify invalid, finite metrics must aggregate or explicitly invalidate.",
+  "decision": null,
+  "Accepted": false,
+  "stage": "aggregate_window",
+  "owned_statuses": 1,
+  "ownership_invalid": 0,
+  "event_loss": 0,
+  "individual_duration_guard": [
+    true,
+    true
+  ],
+  "unhandled_exception": "OverflowError",
+  "exception_message": "intermediate overflow in fsum",
+  "traceback": "Traceback (most recent call last):\n  File \"/workspace/pr13-main-review/probe_schema.py\", line 51, in <module>\n    window=aggregate_window(events)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/pr13-main-review-fixed/tools/gameplay_load_validation.py\", line 107, in aggregate_window\n    \"http\": latency(completed_http),\n            ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/pr13-main-review-fixed/tools/gameplay_load_validation.py\", line 99, in latency\n    return summarize([row[\"duration_ms\"] for row in rows if _number(row.get(\"duration_ms\")) and row[\"duration_ms\"] >= 0])\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/pr13-main-review-fixed/tools/gameplay_load_validation.py\", line 18, in summarize\n    \"mean_ms\": statistics.fmean(values), \"max_ms\": max(values)}\n               ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/statistics.py\", line 510, in fmean\n    total = fsum(data)\n            ^^^^^^^^^^\nOverflowError: intermediate overflow in fsum\n",
+  "status": "Failed",
+  "child_exit_code": -15,
+  "child_reaped": true,
+  "source_files": [
+    {
+      "path": "tools/gameplay_load_test.py",
+      "sha256": "e5cef5dbd0c63acf67579c3261262ab18346b718b6f32fbab2e265e1e671d52d"
+    },
+    {
+      "path": "tools/gameplay_load_validation.py",
+      "sha256": "83a6d45a4938b09b9bc09ed568603752a7ce3e4520f3bb4e9761e0ab9cabb0d1"
+    },
+    {
+      "path": "tools/pr13_runtime_evidence.py",
+      "sha256": "2f220e7f3bbd4d6819cf89e5da379e257f1eeca9b21ef9e70bde5db32eb8c983"
+    }
+  ]
+}

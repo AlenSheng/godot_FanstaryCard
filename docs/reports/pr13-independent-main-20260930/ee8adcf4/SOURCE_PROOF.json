@@ -1,0 +1,136 @@
+{
+  "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+  "receipt_sha": "d9f957cbd5ae4a1145ebc4d701baddfe8211708c",
+  "old_receipt_sha": "3c9aaa96fdef4a0a0c0fc1b5e99c4faaefcdeb84",
+  "files": [
+    {
+      "path": "client/data/catalog.json",
+      "bytes": 396138,
+      "sha256": "fa284e27b3afbd20b754b989e56f1e8030eb5d17befcbd114a4796d0c897eb2d",
+      "matches_exact_sha": true
+    },
+    {
+      "path": "client/network/gateway.gd",
+      "bytes": 33401,
+      "sha256": "964bd3e0eea3ff009b6c6ca493952bae14f691ce10e8c6f2f32a6e5ee8138eaf",
+      "matches_exact_sha": true
+    },
+    {
+      "path": "client/state/game_store.gd",
+      "bytes": 86911,
+      "sha256": "d374a50c004c0f3a506b407bfd5730daaae2e4d40786cebb17db52c17eff59c4",
+      "matches_exact_sha": true
+    },
+    {
+      "path": "client/tests/gameplay_load_client.gd",
+      "bytes": 32765,
+      "sha256": "3126b2edb00c376f5b98ec5b2242d27b8841df69e07a2569ab6fa5148c87f8c9",
+      "matches_exact_sha": true
+    },
+    {
+      "path": "docs/plans/PR13_ACCEPTANCE_DETAILS_20260930.json",
+      "bytes": 413878,
+      "sha256": "5176ee139d4e632ba34469ae531ce7ec16478f356480e2d8e320cd51f3bcd703",
+      "matches_exact_sha": true
+    },
+    {
+      "path": "tools/cloud_load_test.py",
+      "bytes": 17316,
+      "sha256": "871e753ad1421d09a62bbfc87e244be130c523119803a2645e6fc18385d09ded",
+      "matches_exact_sha": true
+    },
+    {
+      "path": "tools/gameplay_load_test.py",
+      "bytes": 37312,
+      "sha256": "e5cef5dbd0c63acf67579c3261262ab18346b718b6f32fbab2e265e1e671d52d",
+      "matches_exact_sha": true
+    },
+    {
+      "path": "tools/gameplay_load_validation.py",
+      "bytes": 17137,
+      "sha256": "83a6d45a4938b09b9bc09ed568603752a7ce3e4520f3bb4e9761e0ab9cabb0d1",
+      "matches_exact_sha": true
+    },
+    {
+      "path": "tools/pr13_offline_cases.py",
+      "bytes": 11439,
+      "sha256": "adccf0a1f9073936f99c01ef9e9970e4db44be75de409fc210382b50d040092c",
+      "matches_exact_sha": true
+    },
+    {
+      "path": "tools/pr13_runtime_evidence.py",
+      "bytes": 9786,
+      "sha256": "2f220e7f3bbd4d6819cf89e5da379e257f1eeca9b21ef9e70bde5db32eb8c983",
+      "matches_exact_sha": true
+    },
+    {
+      "path": "tools/tests/test_gameplay_load_finalization.py",
+      "bytes": 13214,
+      "sha256": "08bb2935a1115ed83027fb4bb74615d77b4a3d7e266df3838d7330d572fdd9d8",
+      "matches_exact_sha": true
+    },
+    {
+      "path": "tools/tests/test_gameplay_load_sampling_contract.py",
+      "bytes": 12605,
+      "sha256": "a209589560af471ebd887ef2023f1ae1baae4c58faf650307d995d8a2c2faed5",
+      "matches_exact_sha": true
+    },
+    {
+      "path": "tools/tests/test_gameplay_load_stop.py",
+      "bytes": 6502,
+      "sha256": "a68d6ca6d2f18a28240ca22bd5c0bdcea6fae8262851efdb3a1e7544b446d731",
+      "matches_exact_sha": true
+    },
+    {
+      "path": "tools/tests/test_gameplay_load_validation.py",
+      "bytes": 14589,
+      "sha256": "b45957d4fc8d0494a0fce85f8d14ca5609751d7e838792384d04673508445ccc",
+      "matches_exact_sha": true
+    },
+    {
+      "path": "tools/tests/test_pr13_runtime_evidence.py",
+      "bytes": 6305,
+      "sha256": "5739ba53ea408eb1d6350a41307a51b2dc407ac792b0e47f824fcb9a432e5cb1",
+      "matches_exact_sha": true
+    },
+    {
+      "path": "tools/tests/test_pr13_simulation_contracts.py",
+      "bytes": 19996,
+      "sha256": "f82d659a9a59039401068cbd543f73b824d1d5395c1731150d9193d8044c20b4",
+      "matches_exact_sha": true
+    }
+  ],
+  "original_checkout": {
+    "branch": "work",
+    "sha": "b39841d3f5191c11c9e51c7e6875490789aba53c",
+    "porcelain": ""
+  },
+  "fixed_checkout": {
+    "sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+    "branch": "",
+    "porcelain": ""
+  },
+  "before_checkout": {
+    "sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "branch": "",
+    "porcelain": ""
+  },
+  "runtime_changed_between_fixed_and_receipt": [],
+  "runtime_changed_from_before": [
+    "tools/gameplay_load_validation.py",
+    "tools/pr13_runtime_evidence.py",
+    "tools/tests/test_gameplay_load_validation.py",
+    "tools/tests/test_pr13_runtime_evidence.py"
+  ],
+  "rules": {
+    "AGENTS": "server/AGENTS.md was read. No root AGENTS.md or .agents/skills exists in either pinned tree; no tools-scoped AGENTS.md exists.",
+    "missing_skill": ".agents/skills/server_create/SKILL.md is absent; canonical state_contract.server_guidance preserves the existing exception. No server edits or server tests were added to this OFFLINE-only review."
+  },
+  "harnesses": {
+    "reproduce_sha256": "72159157c6297921abb5622d0246a8068aaf990ff160bc84a5f2b99cae845a11",
+    "canonical_harness_sha256": "a25a7c80d14aaad505a62c57b6f780e83cd50085f5931c9a0e41d33e948b1f48",
+    "independent_probe_sha256": "99f942300359b91ac88d200dbbad2c21e1d760cd65d1861aad63119b3a8e0848"
+  },
+  "no_library_upload": true,
+  "no_PR_or_register_write": true
+}

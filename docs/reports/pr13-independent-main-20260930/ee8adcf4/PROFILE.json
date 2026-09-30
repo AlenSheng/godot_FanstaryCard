@@ -1,0 +1,28 @@
+{
+  "kind": "Independent_OFFLINE_LOAD01_review",
+  "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+  "receipt_sha": "d9f957cbd5ae4a1145ebc4d701baddfe8211708c",
+  "canonical_plan_sha256": "5176ee139d4e632ba34469ae531ce7ec16478f356480e2d8e320cd51f3bcd703",
+  "implementation_packet_profile_hash": "605dc5011f0a4f5e4d7fc74c1ec6fadc82aa5b8b3bcf790f6e17439bfc92d8b5",
+  "canonical_cases": 12,
+  "full_python_tests": 119,
+  "old_schema_red_green_cases": 5,
+  "new_schema_negative_cases": [
+    "finite-overflow",
+    "archive-match-list",
+    "archive-type-list"
+  ],
+  "supplemental_controls": [
+    "finite-control",
+    "archive-control"
+  ],
+  "child_status_deadline_seconds": 5,
+  "child_lifetime_seconds": 15,
+  "child_cleanup_wait_seconds": 5,
+  "production_stale_ms": 30000,
+  "public_network": false,
+  "database_access": false,
+  "clock_seam": "Counterfactual values passed to production accounting seam; host clock unchanged.",
+  "all_assertions_preserved": true,
+  "source_mutations": false
+}
