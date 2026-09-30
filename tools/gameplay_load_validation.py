@@ -15,7 +15,9 @@ def summarize(values: list[float]) -> dict:
         return {"count": 0}
     ordered = sorted(values)
     result = {"count": len(values), "min_ms": min(values),
-              "mean_ms": statistics.fmean(values), "max_ms": max(values)}
+              # The mean of finite nonnegative samples is representable even
+              # when summing them as floats first would overflow.
+              "mean_ms": statistics.mean(values), "max_ms": max(values)}
     for name, fraction in (("p50_ms", .50), ("p95_ms", .95), ("p99_ms", .99)):
         result[name] = ordered[max(0, math.ceil(len(values) * fraction) - 1)]
     return {key: value if key == "count" else round(value, 2) for key, value in result.items()}

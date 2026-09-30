@@ -100,6 +100,10 @@ def reconcile_cycles(events, stop_ms, final_ms):
                 not finite(e.get("at_unix_ms")) or e["at_unix_ms"]<0 or
                 not isinstance(e.get("cycle_id"), str) or not e["cycle_id"]):
             errors.append("missing_context"); continue
+        if not isinstance(e.get('event_type'), str) or not e['event_type']:
+            errors.append('invalid_event_type'); continue
+        if e.get('match_id') is not None and not isinstance(e['match_id'], str):
+            errors.append('invalid_business_match_type'); continue
         if e.get('event_type') in ('settlement.acknowledged','cycle.completed') and (
                 not isinstance(e.get('match_id'),str) or not e['match_id']):
             errors.append('missing_business_context');continue

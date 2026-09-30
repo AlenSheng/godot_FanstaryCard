@@ -62,6 +62,25 @@ class CoverageTests(unittest.TestCase):
 
 
 class CutoffTests(unittest.TestCase):
+    def test_archive_container_match_is_classified_before_business_key_hashing(self):
+        for bad in ([],{}):
+            with self.subTest(match_id=bad):
+                row=self.event(1,99,'cycle.started');row['match_id']=bad
+                result=reconcile_cycles([row],100,120)
+                self.assertIn('invalid_business_match_type',result['evidence_errors'])
+                self.assertEqual(result['final']['completed_cycles'],0)
+
+    def test_archive_event_type_must_be_nonempty_string(self):
+        for bad in ([],{},None,True,0,''):
+            with self.subTest(event_type=bad):
+                row=self.event(1,99,bad)
+                result=reconcile_cycles([row],100,120)
+                self.assertIn('invalid_event_type',result['evidence_errors'])
+                self.assertEqual(result['final']['completed_cycles'],0)
+        for match in (None,''):
+            row=self.event(1,99,'cycle.started');row['match_id']=match
+            self.assertEqual(reconcile_cycles([row],100,120)['evidence_errors'],[])
+
     def test_malformed_sequences_are_evidence_failures_without_crashing(self):
         for sequence in (True,0,-1,'1',[],{}):
             row=self.event(sequence,99,'cycle.completed')

@@ -156,6 +156,17 @@ class ValidationTests(unittest.TestCase):
                     self.assertFalse(decision['passed'])
     def test_percentile_nearest_rank(self):
         self.assertEqual(module.summarize(list(range(1,101)))['p95_ms'],95)
+    def test_finite_large_durations_do_not_overflow_the_mean(self):
+        result=module.aggregate_window([{'operations':[
+            {'duration_ms':1e308,'status':500,'ok':False},
+            {'duration_ms':1e308,'status':500,'ok':False}]}])
+        self.assertEqual(result['http']['mean_ms'],1e308)
+        self.assertEqual(result['http']['p95_ms'],1e308)
+        self.assertEqual(result['http']['count'],2)
+        self.assertEqual(result['error_count'],2)
+        self.assertEqual(result['sample_count'],2)
+        self.assertEqual(result['invalid_metric_count'],0)
+        self.assertEqual(result['latency_sample_quality']['http'],'insufficient')
     def test_coordinator_error_never_passes(self):
         self.assertEqual(module.classify_stop('coordinator_error:bad')['exit_code'],3)
     def test_malformed_status_does_not_crash_sampler(self):
