@@ -1,18 +1,18 @@
 # PR13 云端接管逐项登记
 
-本批固定校验源码 `4bb6c6be847c17b2dcd1b4ee9db5be6fa4d7d1d7`；业务/UI仍为 `f812879e`；状态8ReadyForAcceptance/49Partial/72NotRevalidated/3Blocked/0Accepted。四项仅提交独立裁决，S6待MAIN；G0–G5未签署。
+本批固定校验源码 `ee8adcf40be9aebb1330156a3524910c08225ebc`；业务/UI仍为 `f812879e`；状态8ReadyForAcceptance/49Partial/72NotRevalidated/3Blocked/0Accepted。四项仅提交独立裁决，S6待MAIN；G0–G5未签署。
 
-LOAD-01修订收据见[REPORT.json](schema-safety-4bb6c6be/REPORT.json)，12原case与Python118通过；四个真实文件路径反例由未处理异常修为明确invalid exit3。.1原NoChange提议被MAIN拒绝，现为修复提议；.2–.4保留技术证据、补齐metadata并复跑，全部仍待独立MAIN实际重放。业务/UI无改动；历史CI与27显式case计数不替代当前任务验收。
+LOAD-01修订收据见[REPORT.json](schema-safety-ee8adcf4/REPORT.json)，12原case与Python119通过；五个真实status/audit文件路径反例由未处理异常修为明确invalid exit3。.1原NoChange提议被MAIN拒绝，现为修复提议；.2–.4保留技术证据、补齐metadata并复跑，全部仍待独立MAIN实际重放。业务/UI无改动；历史CI与27显式case计数不替代当前任务验收。
 
 | 顺序 | 子项 | 负责人 | 当前 / 历史 | 修改 SHA | 依赖 | 剩余工作或阻塞 |
 | --- | --- | --- | --- | --- | --- | --- |
 | 1 | LOAD-11.1 基线来源冻结 | MAIN / source and evidence audit | Partial / Partial | 取证/未修改 | 无 | Source/evidence delivery audit is partial; running image/config and rollback drill not independently exercised. Historical50/100 raw gap and all unaccepted tasks remain visible. |
 | 2 | LOAD-06.4 时间/缺失/脱敏 | MAIN (pending batch) | NotRevalidated / Queued | 取证/未修改 | LOAD-11.1 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
-| 3 | LOAD-01.1 输入schema | MAIN / offline canonical receipt audit | ReadyForAcceptance / ReadyForAcceptance | 4bb6c6be847c1 | LOAD-11.1, LOAD-06.4 | S6 independent MAIN adjudication only; corrected OFFLINE evidence at4bb6c6be. No extra CI/LIVE/participant gate. |
-| 4 | LOAD-01.2 唯一进程归属 | MAIN / load P0 | ReadyForAcceptance / ReadyForAcceptance | d4c3212fb32c | LOAD-01.1 | S6 independent MAIN adjudication only; corrected OFFLINE evidence at4bb6c6be. No extra CI/LIVE/participant gate. |
-| 5 | LOAD-01.3 拆分负载人数 | MAIN / offline canonical receipt audit | ReadyForAcceptance / ReadyForAcceptance | 取证/未修改 | LOAD-01.2 | S6 independent MAIN adjudication only; corrected OFFLINE evidence at4bb6c6be. No extra CI/LIVE/participant gate. |
-| 6 | LOAD-01.4 真实进程反例 | MAIN / offline canonical receipt audit | ReadyForAcceptance / ReadyForAcceptance | 取证/未修改 | LOAD-01.3 | S6 independent MAIN adjudication only; corrected OFFLINE evidence at4bb6c6be. No extra CI/LIVE/participant gate. |
-| 7 | LOAD-02.1 多维结果模型 | MAIN / load P0 | ReadyForAcceptance / ReadyForAcceptance | d4c3212fb32c | LOAD-01.2 | S6 independent MAIN adjudication only; corrected OFFLINE evidence at4bb6c6be. No extra CI/LIVE/participant gate. |
+| 3 | LOAD-01.1 输入schema | MAIN / offline canonical receipt audit | ReadyForAcceptance / ReadyForAcceptance | 4bb6c6be847c1 | LOAD-11.1, LOAD-06.4 | S6 independent MAIN adjudication only; corrected OFFLINE evidence atee8adcf4. No extra CI/LIVE/participant gate. |
+| 4 | LOAD-01.2 唯一进程归属 | MAIN / load P0 | ReadyForAcceptance / ReadyForAcceptance | d4c3212fb32c | LOAD-01.1 | S6 independent MAIN adjudication only; corrected OFFLINE evidence atee8adcf4. No extra CI/LIVE/participant gate. |
+| 5 | LOAD-01.3 拆分负载人数 | MAIN / offline canonical receipt audit | ReadyForAcceptance / ReadyForAcceptance | 取证/未修改 | LOAD-01.2 | S6 independent MAIN adjudication only; corrected OFFLINE evidence atee8adcf4. No extra CI/LIVE/participant gate. |
+| 6 | LOAD-01.4 真实进程反例 | MAIN / offline canonical receipt audit | ReadyForAcceptance / ReadyForAcceptance | 取证/未修改 | LOAD-01.3 | S6 independent MAIN adjudication only; corrected OFFLINE evidence atee8adcf4. No extra CI/LIVE/participant gate. |
+| 7 | LOAD-02.1 多维结果模型 | MAIN / load P0 | ReadyForAcceptance / ReadyForAcceptance | d4c3212fb32c | LOAD-01.2 | S6 independent MAIN adjudication only; corrected OFFLINE evidence atee8adcf4. No extra CI/LIVE/participant gate. |
 | 8 | LOAD-04.1 当前匹配状态机 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | LOAD-11.1, LOAD-06.4 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 9 | LOAD-06.2 生命周期/玩法进度 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | LOAD-06.4, LOAD-04.1 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 10 | LOAD-02.2 STOP前后边界 | MAIN / load P0 | Partial / Partial | d4c3212fb32c | LOAD-02.1, LOAD-06.2 | affected POSTGRES/LIVE/CAPACITY profiles remain separate and incomplete. |

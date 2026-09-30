@@ -1,0 +1,80 @@
+{
+  "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+  "source_git_dirty_at_execution": false,
+  "commands": [
+    {
+      "id": "SCHEMA-RED",
+      "argv": [
+        "python",
+        "reproduce.py",
+        "--source",
+        "<owned-f812-source>",
+        "--output",
+        "<new-red-dir>"
+      ],
+      "exit_code": 0,
+      "actual_output": "before-f812/REPORT.json",
+      "assertion": "5 unhandled exceptions through actual owned status/audit files: two TypeError, three OverflowError; no false classification."
+    },
+    {
+      "id": "SCHEMA-GREEN",
+      "argv": [
+        "python",
+        "reproduce.py",
+        "--source",
+        "<clean-ee8adcf4-source>",
+        "--output",
+        "<new-green-dir>"
+      ],
+      "exit_code": 0,
+      "actual_output": "after-clean-sha/REPORT.json",
+      "assertion": "0 unhandled exceptions; 5 explicit invalid-evidence decisions exit3; all children reaped"
+    },
+    {
+      "id": "C-PY",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/tests",
+        "-v"
+      ],
+      "exit_code": 0,
+      "passed": 119,
+      "failed": 0,
+      "skipped": 0,
+      "log": "python-clean-sha.log"
+    },
+    {
+      "id": "LOAD01-EXACT",
+      "argv": [
+        "python",
+        "run_load01_acceptance.py",
+        "--output",
+        "<new-owned-directory>"
+      ],
+      "environment": {
+        "PR13_SOURCE_ROOT": "<clean-ee8adcf4-checkout>",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "exit_code": 0,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "report": "load01-clean-sha/report.json"
+    }
+  ],
+  "fixture_execution_error": {
+    "command": "attempted nonexistent /workspace/relicround-env/bin/python",
+    "exit_code": 127,
+    "classification": "LauncherPathFixtureFailure",
+    "correction": "source activate.sh; use resolved python",
+    "code_failure": false
+  },
+  "tool_versions": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41"
+  }
+}

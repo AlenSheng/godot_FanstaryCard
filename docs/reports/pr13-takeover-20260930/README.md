@@ -1,3 +1,7 @@
+## 完整数值schema修订ee8adcf4
+
+[最终schema收据](schema-safety-ee8adcf4/REPORT.json)与[独立重放命令](schema-safety-ee8adcf4/README.md)覆盖采样和最终归档对账。实际5个owned status/audit反例：前5异常、后5明确invalid exit3；同干净SHA原12case及Python119通过。替代4bb包作为当前提议，旧原件保留。B02继续固定f812，业务/UI未变。所有Accepted0。
+
 ## B02完整离线收据提议
 
 [4项/12case](offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json)已完成原要求及适用profile，source=f812，Domain317/Server291真实PG零失败跳过。C#/Godot协议、实际Gateway/Game过期预览、policy/PG旧快照均有原件。ROOT仅核验112manifest/元数据，待MAIN实际关键重放，Accepted0。累计8Ready/49Partial/72NotRevalidated/3Blocked。
