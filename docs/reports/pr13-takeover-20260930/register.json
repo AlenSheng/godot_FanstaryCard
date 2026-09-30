@@ -825,25 +825,29 @@
       "task_id": "LOAD-04.4",
       "title": "ready全矩阵",
       "dependency_order": 20,
-      "owner": "MAIN / protocol and actual process recovery",
+      "owner": "MAIN / isolated client lifecycle fault batch",
       "state": "Partial",
       "historical_state": "Partial",
       "historical_case_counts": {
         "NotExecuted": 3
       },
-      "implementation_status": "Actual-host support tests added; settlement equipment semantic-name P0 repaired with additive compatible protobuf fields.",
-      "current_test_status": "317 Domain / 281 Server-PG including5 actual-host / 177 client codec /24 HTTP fixture passed; support only.",
-      "modification_sha": "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17",
+      "implementation_status": "Verified origin/cycle isolation and READY/cleanup fixes; existing ACK behavior independently exercised with real response loss.",
+      "current_test_status": "Partial profile evidence recorded per canonical case in fault-batch-f93e32da/CASE_MATRIX.json; no full acceptance inferred.",
+      "modification_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
       "test_commands": [
-        "pb-equipment-d3c5fe6c/full-commands.json"
+        "python client/tests/run_ready_stop_faults.py --work-dir <new-owned-output>",
+        "A3GAME_GODOT_EXECUTABLE=<pinned4.7.2> python tools/pr13_callback_isolation.py --output <new-owned-output>",
+        "dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --filter FullyQualifiedName~Real_Godot_ACK_response_loss"
       ],
       "evidence": [
         "pb-equipment-d3c5fe6c/report.json",
         "pb-equipment-d3c5fe6c/full-trx/server.trx",
         "pb-equipment-d3c5fe6c/process-v3/receipts.jsonl",
-        "process-recovery-v2/CANONICAL_SUPPORT_MAPPING.json"
+        "process-recovery-v2/CANONICAL_SUPPORT_MAPPING.json",
+        "fault-batch-f93e32da/CASE_MATRIX.json",
+        "fault-batch-f93e32da/REPORT.json"
       ],
-      "remaining_blocker": "Duplicate READY and actual OS resume are covered. Missing/late required READY, registration fault, each-await STOP and LIVE remain unexecuted frozen injections.",
+      "remaining_blocker": "Complete exact unexercised injections and required POSTGRES/LIVE/RENDER profiles as listed per case; real multicycle success accounting/Boss remains. GitHub runner start blocked by account billing; no retry/account changes authorized.",
       "dependencies": [
         "LOAD-04.3"
       ],
@@ -856,11 +860,12 @@
         "G2"
       ],
       "accepted_by": null,
-      "next_action": "组合重复/乱序/丢失/send失败/断连/STOP/旧局事件；记录预期终态与票据后置状态",
+      "next_action": "Complete exact unexercised injections and required POSTGRES/LIVE/RENDER profiles as listed per case; real multicycle success accounting/Boss remains. GitHub runner start blocked by account billing; no retry/account changes authorized.",
       "accepted": false,
       "supporting_tests_are_canonical_acceptance": false,
       "tested_source_shas": [
-        "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17"
+        "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17",
+        "f93e32dac07608e8375e709cd357c4793bdcc41a"
       ],
       "tested_source_provenance": "Local tests were d277 dirty source; all8 relevant files exactly match committed d3, as post-commit-source.json verifies. CI exact SHA indexed separately."
     },
@@ -983,25 +988,29 @@
       "task_id": "LOAD-05.4",
       "title": "幂等三局矩阵",
       "dependency_order": 24,
-      "owner": "MAIN / protocol and actual process recovery",
+      "owner": "MAIN / isolated client lifecycle fault batch",
       "state": "Partial",
       "historical_state": "Partial",
       "historical_case_counts": {
         "NotExecuted": 3
       },
-      "implementation_status": "Actual-host support tests added; settlement equipment semantic-name P0 repaired with additive compatible protobuf fields.",
-      "current_test_status": "317 Domain / 281 Server-PG including5 actual-host / 177 client codec /24 HTTP fixture passed; support only.",
-      "modification_sha": "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17",
+      "implementation_status": "Verified origin/cycle isolation and READY/cleanup fixes; existing ACK behavior independently exercised with real response loss.",
+      "current_test_status": "Partial profile evidence recorded per canonical case in fault-batch-f93e32da/CASE_MATRIX.json; no full acceptance inferred.",
+      "modification_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
       "test_commands": [
-        "pb-equipment-d3c5fe6c/full-commands.json"
+        "python client/tests/run_ready_stop_faults.py --work-dir <new-owned-output>",
+        "A3GAME_GODOT_EXECUTABLE=<pinned4.7.2> python tools/pr13_callback_isolation.py --output <new-owned-output>",
+        "dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --filter FullyQualifiedName~Real_Godot_ACK_response_loss"
       ],
       "evidence": [
         "pb-equipment-d3c5fe6c/report.json",
         "pb-equipment-d3c5fe6c/full-trx/server.trx",
         "pb-equipment-d3c5fe6c/process-v3/receipts.jsonl",
-        "process-recovery-v2/CANONICAL_SUPPORT_MAPPING.json"
+        "process-recovery-v2/CANONICAL_SUPPORT_MAPPING.json",
+        "fault-batch-f93e32da/CASE_MATRIX.json",
+        "fault-batch-f93e32da/REPORT.json"
       ],
-      "remaining_blocker": "Three actual entry/disconnect-death cycles, repeated ACK and Pending-hold cold starts are covered. ACK committed-response loss at HTTP host boundary, mixed failed retry cycle and full gameplay/LIVE remain open.",
+      "remaining_blocker": "Complete exact unexercised injections and required POSTGRES/LIVE/RENDER profiles as listed per case; real multicycle success accounting/Boss remains. GitHub runner start blocked by account billing; no retry/account changes authorized.",
       "dependencies": [
         "LOAD-05.3",
         "LOAD-04.4"
@@ -1015,11 +1024,12 @@
         "G2"
       ],
       "accepted_by": null,
-      "next_action": "测ack响应丢失/重复receipt/旧snapshot/重启/重连；对每cutoff核对cycle与资产",
+      "next_action": "Complete exact unexercised injections and required POSTGRES/LIVE/RENDER profiles as listed per case; real multicycle success accounting/Boss remains. GitHub runner start blocked by account billing; no retry/account changes authorized.",
       "accepted": false,
       "supporting_tests_are_canonical_acceptance": false,
       "tested_source_shas": [
-        "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17"
+        "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17",
+        "f93e32dac07608e8375e709cd357c4793bdcc41a"
       ],
       "tested_source_provenance": "Local tests were d277 dirty source; all8 relevant files exactly match committed d3, as post-commit-source.json verifies. CI exact SHA indexed separately."
     },
@@ -3593,18 +3603,25 @@
       "task_id": "PR13-A03.1",
       "title": "真实入口反例",
       "dependency_order": 90,
-      "owner": "MAIN (pending batch)",
-      "state": "NotRevalidated",
+      "owner": "MAIN / isolated client lifecycle fault batch",
+      "state": "Partial",
       "historical_state": "Partial",
       "historical_case_counts": {
         "NotExecuted": 3
       },
-      "implementation_status": "Pending independent review",
-      "current_test_status": "NotRevalidated",
-      "modification_sha": null,
-      "test_commands": [],
-      "evidence": [],
-      "remaining_blocker": "This takeover batch has not independently executed this task; follow its preserved dependency order and next_action.",
+      "implementation_status": "Verified origin/cycle isolation and READY/cleanup fixes; existing ACK behavior independently exercised with real response loss.",
+      "current_test_status": "Partial profile evidence recorded per canonical case in fault-batch-f93e32da/CASE_MATRIX.json; no full acceptance inferred.",
+      "modification_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
+      "test_commands": [
+        "python client/tests/run_ready_stop_faults.py --work-dir <new-owned-output>",
+        "A3GAME_GODOT_EXECUTABLE=<pinned4.7.2> python tools/pr13_callback_isolation.py --output <new-owned-output>",
+        "dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --filter FullyQualifiedName~Real_Godot_ACK_response_loss"
+      ],
+      "evidence": [
+        "fault-batch-f93e32da/CASE_MATRIX.json",
+        "fault-batch-f93e32da/REPORT.json"
+      ],
+      "remaining_blocker": "Complete exact unexercised injections and required POSTGRES/LIVE/RENDER profiles as listed per case; real multicycle success accounting/Boss remains. GitHub runner start blocked by account billing; no retry/account changes authorized.",
       "dependencies": [
         "LOAD-05.2"
       ],
@@ -3617,27 +3634,36 @@
         "G2"
       ],
       "accepted_by": null,
-      "next_action": "第一次NOT_IN_ROOM清room，Bootstrap无receipt，再发同错误，然后M就绪；不直接填恢复变量绕入口",
+      "next_action": "Complete exact unexercised injections and required POSTGRES/LIVE/RENDER profiles as listed per case; real multicycle success accounting/Boss remains. GitHub runner start blocked by account billing; no retry/account changes authorized.",
       "accepted": false,
       "supporting_tests_are_canonical_acceptance": false,
-      "tested_source_shas": []
+      "tested_source_shas": [
+        "f93e32dac07608e8375e709cd357c4793bdcc41a"
+      ]
     },
     {
       "task_id": "PR13-A03.2",
       "title": "旧局回调隔离",
       "dependency_order": 91,
-      "owner": "MAIN (pending batch)",
-      "state": "NotRevalidated",
+      "owner": "MAIN / isolated client lifecycle fault batch",
+      "state": "Partial",
       "historical_state": "Partial",
       "historical_case_counts": {
         "NotExecuted": 3
       },
-      "implementation_status": "Pending independent review",
-      "current_test_status": "NotRevalidated",
-      "modification_sha": null,
-      "test_commands": [],
-      "evidence": [],
-      "remaining_blocker": "This takeover batch has not independently executed this task; follow its preserved dependency order and next_action.",
+      "implementation_status": "Verified origin/cycle isolation and READY/cleanup fixes; existing ACK behavior independently exercised with real response loss.",
+      "current_test_status": "Partial profile evidence recorded per canonical case in fault-batch-f93e32da/CASE_MATRIX.json; no full acceptance inferred.",
+      "modification_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
+      "test_commands": [
+        "python client/tests/run_ready_stop_faults.py --work-dir <new-owned-output>",
+        "A3GAME_GODOT_EXECUTABLE=<pinned4.7.2> python tools/pr13_callback_isolation.py --output <new-owned-output>",
+        "dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --filter FullyQualifiedName~Real_Godot_ACK_response_loss"
+      ],
+      "evidence": [
+        "fault-batch-f93e32da/CASE_MATRIX.json",
+        "fault-batch-f93e32da/REPORT.json"
+      ],
+      "remaining_blocker": "Complete exact unexercised injections and required POSTGRES/LIVE/RENDER profiles as listed per case; real multicycle success accounting/Boss remains. GitHub runner start blocked by account billing; no retry/account changes authorized.",
       "dependencies": [
         "PR13-A03.1"
       ],
@@ -3650,27 +3676,36 @@
         "G2"
       ],
       "accepted_by": null,
-      "next_action": "HTTP/WS/恢复poll异步沿用context，回调重新核对当前局与恢复目标",
+      "next_action": "Complete exact unexercised injections and required POSTGRES/LIVE/RENDER profiles as listed per case; real multicycle success accounting/Boss remains. GitHub runner start blocked by account billing; no retry/account changes authorized.",
       "accepted": false,
       "supporting_tests_are_canonical_acceptance": false,
-      "tested_source_shas": []
+      "tested_source_shas": [
+        "f93e32dac07608e8375e709cd357c4793bdcc41a"
+      ]
     },
     {
       "task_id": "PR13-A03.3",
       "title": "ack丢响应恢复",
       "dependency_order": 92,
-      "owner": "MAIN (pending batch)",
-      "state": "NotRevalidated",
+      "owner": "MAIN / isolated client lifecycle fault batch",
+      "state": "Partial",
       "historical_state": "Partial",
       "historical_case_counts": {
         "NotExecuted": 3
       },
-      "implementation_status": "Pending independent review",
-      "current_test_status": "NotRevalidated",
-      "modification_sha": null,
-      "test_commands": [],
-      "evidence": [],
-      "remaining_blocker": "This takeover batch has not independently executed this task; follow its preserved dependency order and next_action.",
+      "implementation_status": "Verified origin/cycle isolation and READY/cleanup fixes; existing ACK behavior independently exercised with real response loss.",
+      "current_test_status": "Partial profile evidence recorded per canonical case in fault-batch-f93e32da/CASE_MATRIX.json; no full acceptance inferred.",
+      "modification_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
+      "test_commands": [
+        "python client/tests/run_ready_stop_faults.py --work-dir <new-owned-output>",
+        "A3GAME_GODOT_EXECUTABLE=<pinned4.7.2> python tools/pr13_callback_isolation.py --output <new-owned-output>",
+        "dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --filter FullyQualifiedName~Real_Godot_ACK_response_loss"
+      ],
+      "evidence": [
+        "fault-batch-f93e32da/CASE_MATRIX.json",
+        "fault-batch-f93e32da/REPORT.json"
+      ],
+      "remaining_blocker": "Complete exact unexercised injections and required POSTGRES/LIVE/RENDER profiles as listed per case; real multicycle success accounting/Boss remains. GitHub runner start blocked by account billing; no retry/account changes authorized.",
       "dependencies": [
         "PR13-A03.2"
       ],
@@ -3683,10 +3718,12 @@
         "G2"
       ],
       "accepted_by": null,
-      "next_action": "超时后查询receipt/ack事实，重试同一幂等操作；UI显示已提交待核实",
+      "next_action": "Complete exact unexercised injections and required POSTGRES/LIVE/RENDER profiles as listed per case; real multicycle success accounting/Boss remains. GitHub runner start blocked by account billing; no retry/account changes authorized.",
       "accepted": false,
       "supporting_tests_are_canonical_acceptance": false,
-      "tested_source_shas": []
+      "tested_source_shas": [
+        "f93e32dac07608e8375e709cd357c4793bdcc41a"
+      ]
     },
     {
       "task_id": "PR13-A03.4",
@@ -3852,18 +3889,25 @@
       "task_id": "PR13-A04.4",
       "title": "多局/STOP组合",
       "dependency_order": 97,
-      "owner": "MAIN (pending batch)",
-      "state": "NotRevalidated",
+      "owner": "MAIN / isolated client lifecycle fault batch",
+      "state": "Partial",
       "historical_state": "Partial",
       "historical_case_counts": {
         "NotExecuted": 3
       },
-      "implementation_status": "Pending independent review",
-      "current_test_status": "NotRevalidated",
-      "modification_sha": null,
-      "test_commands": [],
-      "evidence": [],
-      "remaining_blocker": "This takeover batch has not independently executed this task; follow its preserved dependency order and next_action.",
+      "implementation_status": "Verified origin/cycle isolation and READY/cleanup fixes; existing ACK behavior independently exercised with real response loss.",
+      "current_test_status": "Partial profile evidence recorded per canonical case in fault-batch-f93e32da/CASE_MATRIX.json; no full acceptance inferred.",
+      "modification_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
+      "test_commands": [
+        "python client/tests/run_ready_stop_faults.py --work-dir <new-owned-output>",
+        "A3GAME_GODOT_EXECUTABLE=<pinned4.7.2> python tools/pr13_callback_isolation.py --output <new-owned-output>",
+        "dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --filter FullyQualifiedName~Real_Godot_ACK_response_loss"
+      ],
+      "evidence": [
+        "fault-batch-f93e32da/CASE_MATRIX.json",
+        "fault-batch-f93e32da/REPORT.json"
+      ],
+      "remaining_blocker": "Complete exact unexercised injections and required POSTGRES/LIVE/RENDER profiles as listed per case; real multicycle success accounting/Boss remains. GitHub runner start blocked by account billing; no retry/account changes authorized.",
       "dependencies": [
         "PR13-A04.3"
       ],
@@ -3876,10 +3920,12 @@
         "G2"
       ],
       "accepted_by": null,
-      "next_action": "合并断线resume、晚通知、第二/第三局和取消，逐账号查后置状态",
+      "next_action": "Complete exact unexercised injections and required POSTGRES/LIVE/RENDER profiles as listed per case; real multicycle success accounting/Boss remains. GitHub runner start blocked by account billing; no retry/account changes authorized.",
       "accepted": false,
       "supporting_tests_are_canonical_acceptance": false,
-      "tested_source_shas": []
+      "tested_source_shas": [
+        "f93e32dac07608e8375e709cd357c4793bdcc41a"
+      ]
     },
     {
       "task_id": "PR13-B11.1",
@@ -3922,18 +3968,25 @@
       "task_id": "PR13-B11.2",
       "title": "结算UI恢复",
       "dependency_order": 99,
-      "owner": "MAIN (pending batch)",
-      "state": "NotRevalidated",
+      "owner": "MAIN / isolated client lifecycle fault batch",
+      "state": "Partial",
       "historical_state": "Partial",
       "historical_case_counts": {
         "NotExecuted": 3
       },
-      "implementation_status": "Pending independent review",
-      "current_test_status": "NotRevalidated",
-      "modification_sha": null,
-      "test_commands": [],
-      "evidence": [],
-      "remaining_blocker": "This takeover batch has not independently executed this task; follow its preserved dependency order and next_action.",
+      "implementation_status": "Verified origin/cycle isolation and READY/cleanup fixes; existing ACK behavior independently exercised with real response loss.",
+      "current_test_status": "Partial profile evidence recorded per canonical case in fault-batch-f93e32da/CASE_MATRIX.json; no full acceptance inferred.",
+      "modification_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
+      "test_commands": [
+        "python client/tests/run_ready_stop_faults.py --work-dir <new-owned-output>",
+        "A3GAME_GODOT_EXECUTABLE=<pinned4.7.2> python tools/pr13_callback_isolation.py --output <new-owned-output>",
+        "dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --filter FullyQualifiedName~Real_Godot_ACK_response_loss"
+      ],
+      "evidence": [
+        "fault-batch-f93e32da/CASE_MATRIX.json",
+        "fault-batch-f93e32da/REPORT.json"
+      ],
+      "remaining_blocker": "Complete exact unexercised injections and required POSTGRES/LIVE/RENDER profiles as listed per case; real multicycle success accounting/Boss remains. GitHub runner start blocked by account billing; no retry/account changes authorized.",
       "dependencies": [
         "PR13-B11.1"
       ],
@@ -3948,10 +4001,12 @@
         "G3"
       ],
       "accepted_by": null,
-      "next_action": "复用重复NOT_IN_ROOM/旧回调隔离，回大厅不吞未确认receipt；ack丢包有待核实入口",
+      "next_action": "Complete exact unexercised injections and required POSTGRES/LIVE/RENDER profiles as listed per case; real multicycle success accounting/Boss remains. GitHub runner start blocked by account billing; no retry/account changes authorized.",
       "accepted": false,
       "supporting_tests_are_canonical_acceptance": false,
-      "tested_source_shas": []
+      "tested_source_shas": [
+        "f93e32dac07608e8375e709cd357c4793bdcc41a"
+      ]
     },
     {
       "task_id": "PR13-B11.3",
@@ -5443,7 +5498,7 @@
       ]
     }
   ],
-  "updated_at_utc": "2026-09-30T18:18:00Z",
+  "updated_at_utc": "2026-09-30T20:55:43.795457+00:00",
   "gate_decisions": [
     {
       "gate": "G0",
@@ -5477,31 +5532,48 @@
     }
   ],
   "test_provenance_note": "Pure cc6 checkout:115 Python,27 explicit receipts,6 Godot gates including import, fresh solution/domain317/privatePG262 passed. Original failed missing-Godot invocation26/27 retained. All396 canonical cases and six gates remain unaccepted.",
-  "current_ci_evidence": "ci-cc6da2e/workflows.json",
-  "latest_runtime_sha": "de1157fdf490a5bce3ba888c07519fc957c46782",
+  "current_ci_evidence": {
+    "source_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
+    "state": "AccountBillingBlocked",
+    "path": "fault-batch-f93e32da/ci-f93e32da.json",
+    "all5_passed": false
+  },
+  "latest_runtime_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
   "state_counts": {
-    "Partial": 48,
-    "NotRevalidated": 81,
+    "Partial": 53,
+    "NotRevalidated": 76,
     "Blocked": 3
   },
   "latest_batch_state_transitions": [
     {
-      "task_id": "LOAD-04.4",
+      "task_id": "PR13-A03.1",
       "from": "NotRevalidated",
       "to": "Partial",
-      "reason": "Independent actual-host support only; all frozen profiles/injections remain incomplete."
+      "Accepted": false
     },
     {
-      "task_id": "LOAD-05.4",
+      "task_id": "PR13-A03.2",
       "from": "NotRevalidated",
       "to": "Partial",
-      "reason": "Independent actual-host support only; all frozen profiles/injections remain incomplete."
+      "Accepted": false
     },
     {
-      "task_id": "PR13-A03.4",
+      "task_id": "PR13-A03.3",
       "from": "NotRevalidated",
       "to": "Partial",
-      "reason": "Independent actual-host support only; all frozen profiles/injections remain incomplete."
+      "Accepted": false
+    },
+    {
+      "task_id": "PR13-A04.4",
+      "from": "NotRevalidated",
+      "to": "Partial",
+      "Accepted": false
+    },
+    {
+      "task_id": "PR13-B11.2",
+      "from": "NotRevalidated",
+      "to": "Partial",
+      "Accepted": false
     }
   ],
   "production_protocol_fix_sha": "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17",

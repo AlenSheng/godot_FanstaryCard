@@ -1,12 +1,11 @@
 {
   "kind": "next_critical_queue_not_completed",
-  "stable_logic_sha": "de1157fdf490a5bce3ba888c07519fc957c46782",
+  "stable_logic_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
   "server_client_tree_equal_to_b709": false,
   "current_counts": {
-    "Partial": 48,
-    "NotRevalidated": 81,
-    "Blocked": 3,
-    "Accepted": 0
+    "Partial": 53,
+    "NotRevalidated": 76,
+    "Blocked": 3
   },
   "next": [
     {
@@ -17,7 +16,7 @@
         "PR13-A09.1",
         "LOAD-11.1"
       ],
-      "action": "Parent / UI owner verify independent fixed combination PR13de1157 + reviewed UI070c7b4 and PR14 deploy workflow/image. Resolve conflicts and cross-test in isolated integration branch; PR13 latest code frozen at de1157, later report-only commits do not change production source. Old579 image result remains historical.",
+      "action": "MAIN/UI owner update isolated reviewed UI070c7b4 + PR13 f93e32da + PR14 combination, resolve shared logic hunks and run applicable local cross-regression. Previous de1157 combination does not cover this batch.",
       "evidence_input": "pb-equipment-d3c5fe6c/report.json; checkpoint-publication-de1157fd/post-commit-source.json; ci-de1157fd/workflows.json; LIVE_VALIDATION_PLAN.json",
       "constraint": "UIbranch remains independent until its review; no merge/auto-merge or automatic server restart."
     },
@@ -35,8 +34,8 @@
         "PR13-A05.3",
         "PR13-B11.2"
       ],
-      "action": "Complete missing/late/required READY, each-await STOP, host-boundary lost ACK responses and late old callbacks, full legal three-game/Boss client matrix. New5 actual OS cases and three entry/disconnect-death cycles passed; their support is preserved rather than counted as the full canonical injections.",
-      "missing": "Precise remaining frozen injections/profiles, reviewed combined runtime build, parent server slot and approved owned-account fixture."
+      "action": "Next bounded offline batch: real service registration/MarkRunning reply loss; unsubmitted vs committed READY reply loss; STOP while ACK/settlement/reconnect awaits; real multicycle delayed events and one failed retry with exact success accounting. Preserve original deadlines/late events and per-case profiles.",
+      "missing": "Current10 READY/STOP+3 actual ACK modes+6 component callback cases passed. Exact remaining5 selected injections, actual load-runner completed-cycle invariants, full legal three-game/Boss and required LIVE/RENDER still missing."
     },
     {
       "order": 3,
@@ -108,5 +107,16 @@
     "next": "Use isolated temporary integration branch after stable batch; review main/reference_ui/card_view/exploration_view hunks against manual target authority; never merge PR16 or release here.",
     "latest_parent_verified_UI_sha": "070c7b4",
     "source_of_status": "Parent delegation message2026-09-30 during stage finalization"
+  },
+  "ci_pending": {
+    "sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
+    "runs": [
+      36773912366,
+      36773912323,
+      36773912361,
+      36773912262,
+      36773912365
+    ],
+    "blocker": "Account payments OR spending limit, parent browser verified; no exact subcause. Await user resolution; do not retry or change billing/permissions."
   }
 }

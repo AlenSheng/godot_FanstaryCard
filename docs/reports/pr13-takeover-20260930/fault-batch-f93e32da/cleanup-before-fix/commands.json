@@ -1,0 +1,126 @@
+[
+  {
+    "label": "fresh-source-build",
+    "command": [
+      "/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet",
+      "build",
+      "FantasyCard.Server.slnx",
+      "-c",
+      "Release",
+      "-v",
+      "minimal"
+    ],
+    "cwd": "/workspace/pr13-takeover/ready-stop-batch/server",
+    "exit_code": 0,
+    "duration_seconds": 9.273,
+    "deadline_seconds": 180,
+    "log": "fresh-source-build.log"
+  },
+  {
+    "label": "godot-import",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "/workspace/pr13-takeover/ready-stop-cleanup-red-01/godot",
+      "--editor",
+      "--import",
+      "--quit"
+    ],
+    "cwd": "/workspace/pr13-takeover/ready-stop-batch",
+    "exit_code": 0,
+    "duration_seconds": 8.782,
+    "deadline_seconds": 120,
+    "log": "godot-import.log"
+  },
+  {
+    "label": "private-pg-init",
+    "command": [
+      "initdb",
+      "-D",
+      "/workspace/pr13-takeover/ready-stop-cleanup-red-01/private-pg",
+      "-U",
+      "ready_stop_owner",
+      "--auth=trust",
+      "--no-locale",
+      "--encoding=UTF8"
+    ],
+    "cwd": "/workspace/pr13-takeover/ready-stop-batch",
+    "exit_code": 0,
+    "duration_seconds": 0.962,
+    "deadline_seconds": 30,
+    "log": "private-pg-init.log"
+  },
+  {
+    "label": "private-pg-start",
+    "command": [
+      "pg_ctl",
+      "-D",
+      "/workspace/pr13-takeover/ready-stop-cleanup-red-01/private-pg",
+      "-l",
+      "/workspace/pr13-takeover/ready-stop-cleanup-red-01/private-pg.log",
+      "-o",
+      "-c listen_addresses='' -k /tmp/pr13-ready-stop-e_xs6tcu",
+      "-w",
+      "start"
+    ],
+    "cwd": "/workspace/pr13-takeover/ready-stop-batch",
+    "exit_code": 0,
+    "duration_seconds": 0.105,
+    "deadline_seconds": 30,
+    "log": "private-pg-start.log"
+  },
+  {
+    "label": "stop_ready_enqueue_await-godot",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--max-fps",
+      "60",
+      "--path",
+      "/workspace/pr13-takeover/ready-stop-cleanup-red-01/godot",
+      "--script",
+      "res://tests/run_ready_stop_faults.gd"
+    ],
+    "cwd": "/workspace/pr13-takeover/ready-stop-batch",
+    "exit_code": 1,
+    "duration_seconds": 49.092,
+    "deadline_seconds": 95,
+    "log": "stop_ready_enqueue_await-godot.log"
+  },
+  {
+    "label": "late_accepted_before_ticket-godot",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--max-fps",
+      "60",
+      "--path",
+      "/workspace/pr13-takeover/ready-stop-cleanup-red-01/godot",
+      "--script",
+      "res://tests/run_ready_stop_faults.gd"
+    ],
+    "cwd": "/workspace/pr13-takeover/ready-stop-batch",
+    "exit_code": 1,
+    "duration_seconds": 7.991,
+    "deadline_seconds": 95,
+    "log": "late_accepted_before_ticket-godot.log"
+  },
+  {
+    "label": "owned-pg-cleanup",
+    "command": [
+      "pg_ctl",
+      "-D",
+      "/workspace/pr13-takeover/ready-stop-cleanup-red-01/private-pg",
+      "-m",
+      "fast",
+      "-w",
+      "stop"
+    ],
+    "cwd": "/workspace/pr13-takeover/ready-stop-batch",
+    "exit_code": 0,
+    "duration_seconds": 0.604,
+    "deadline_seconds": 30,
+    "log": "owned-pg-cleanup.log"
+  }
+]

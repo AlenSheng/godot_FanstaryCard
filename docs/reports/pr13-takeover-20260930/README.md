@@ -1,3 +1,9 @@
+# 当前阶段：实际客户端故障批次
+
+最新代码/测试候选 `f93e32dac07608e8375e709cd357c4793bdcc41a`。本地Domain317、Server/PG284零失败零跳过；十项READY/STOP与三种真实ACK响应丢失验证完成。当前132项53Partial/76NotRevalidated/3Blocked/0Accepted。逐case证据见[新批报告](fault-batch-f93e32da/README.md)和[阶段收据](STAGE_RECEIPT.json)。GitHub计费阻断，最新CI未执行；de1157历史绿灯不覆盖新提交。父任务需更新独立UI/PR14组合回归。
+
+以下原阶段描述保留为历史，不代表当前验收状态。
+
 de1157fd 五CI已完成通过；实际checkout为f49d9cbe，完整tree与de1157fd一致；下载验收artifact的SHA/CRC及317Domain/281Server TRX全部独立核验。持久化读取竞态用真实revision等待修正，10次定向加281项完整回归通过，原CI失败保留。当前本地验证已结束、临时PG及所有测试host已清理。UI负责人现于独立分支回归de1157+已终审UI070c7b4，本任务不重复集成。
 
 当前运行代码/测试候选为 `de1157fdf490a5bce3ba888c07519fc957c46782`（生产协议修复 d3c5fe6c，另含持久化revision等待测试修正），新增P0修复及真实进程证据见 [当前批次](pb-equipment-d3c5fe6c/report.json)。实际结算已入账而默认Protobuf GET/Bootstrap500的问题已修复：保留旧数值标签，新增语义名称标签并配套客户端解码。完整本地317Domain/281Server-PG（含5真实host与16装备编码检查）、177客户端codec、24HTTPfixture及边界/目标确认回归通过；本地测试源码dirty事实保留，8文件逐一匹配提交的证据单列，精确SHA的CI另列。

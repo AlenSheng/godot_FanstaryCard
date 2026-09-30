@@ -1,0 +1,178 @@
+{
+	"Accepted": false,
+	"active_match_id": "01a0f3fe-7f88-7eb5-91c0-491ad8729215",
+	"case": "stop_ready_enqueue_await",
+	"checks": [
+		{
+			"at_unix_ms": 1790799906695,
+			"name": "realtime_connected",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790799906762,
+			"name": "owned_equipment_fixture_seeded",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790799906886,
+			"name": "login_and_bootstrap",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790799906979,
+			"name": "hero_class_confirmed",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790799907129,
+			"name": "create_free_preparation",
+			"passed": true
+		}
+	],
+	"cleanup": {
+		"active_preparation": null,
+		"reason": "server_state_clear",
+		"state": "Passed",
+		"unfinished_match": null,
+		"unfinished_settlement": null
+	},
+	"client_preparation": {
+		"createdAt": "2026-09-30T20:25:07.0137636+00:00",
+		"expiresAt": "2026-09-30T20:55:07.0137636+00:00",
+		"preparationId": "01a0f3fe-08f1-70b7-889c-75a8c89a9c80",
+		"snapshot": {
+			"backpackCapacity": 20,
+			"backpackTier": "Free",
+			"cardIds": [
+				"C01",
+				"C02",
+				"C03",
+				"C04",
+				"C05",
+				"C06",
+				"C07",
+				"C08",
+				"C09",
+				"C10",
+				"C11",
+				"C12",
+				"C13",
+				"MAG-01",
+				"MAG-02",
+				"MAG-03",
+				"MAG-04",
+				"MAG-05",
+				"MAG-06",
+				"MAG-07"
+			],
+			"cardLevels": [
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			"classWeaponLevel": 0,
+			"configVersion": "gdd-0.70-numerical-1",
+			"difficulty": "Standard",
+			"equipmentIds": [
+				null,
+				null,
+				null,
+				null,
+				"9660ae3e-83d3-4c51-9b7a-d8e42f71cedd"
+			],
+			"equipmentSnapshots": [
+				{
+					"effectAffix": null,
+					"element": "Fire",
+					"instanceId": "9660ae3e-83d3-4c51-9b7a-d8e42f71cedd",
+					"level": 0,
+					"quality": "White",
+					"secondaryTrait": "DrawInterval",
+					"slot": "Feet"
+				}
+			],
+			"heroClass": "Mage",
+			"maximumHp": 70,
+			"potionCount": 0,
+			"safeSlotIndexes": []
+		},
+		"status": "Active"
+	},
+	"client_ready_prompt": {
+		"_event_revision": -1,
+		"_replayed": false,
+		"_request_id": "",
+		"_sequence": 6,
+		"deadline_unix_ms": 1790799952412,
+		"match_id": "01a0f3fe-7f88-7eb5-91c0-491ad8729215",
+		"ready_players": 0,
+		"required_players": 1,
+		"room_id": "01a0f3fe-7f88-7486-b05e-766db9b1ce49"
+	},
+	"client_room": false,
+	"client_settlement": false,
+	"client_ticket": {
+		"matchId": null,
+		"preparationId": "01a0f3fe-08f1-70b7-889c-75a8c89a9c80",
+		"queuedAt": "2026-09-30T20:25:07.1749511+00:00",
+		"status": "Queued",
+		"ticketId": "01a0f3fe-0968-78a1-adcd-f578992c0710"
+	},
+	"connected_count": 1,
+	"coverage": "OFFLINE_POSTGRES_FULL_PROGRAM",
+	"errors": [
+		{
+			"at_unix_ms": 1790799937727,
+			"message": "Match ticket is not queued or does not belong to the player."
+		},
+		{
+			"at_unix_ms": 1790799937727,
+			"message": "Match ticket is not queued or does not belong to the player."
+		}
+	],
+	"local_terminal": false,
+	"message": "Coordinator cancelled current cycle",
+	"observed_match_id": "",
+	"observed_room_id": "",
+	"own_user_id": "01a0f3fe-04e6-7aff-9742-f44cb94952fa",
+	"passed": false,
+	"ready_send_after_stop": 0,
+	"ready_send_count": 0,
+	"required_delivered": 1,
+	"required_dropped": false,
+	"route_probe_clear": true,
+	"route_probe_events": [
+		"pong"
+	],
+	"stop_boundary": "ready_during_enqueue_await",
+	"ticket_reads": 0,
+	"trace": [
+		{
+			"at_ms": 32098,
+			"event": "required_transport_boundary",
+			"ticket_inflight": false
+		},
+		{
+			"at_ms": 32114,
+			"boundary": "ready_during_enqueue_await",
+			"event": "coordinator_stop"
+		}
+	]
+}

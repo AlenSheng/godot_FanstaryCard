@@ -1,0 +1,270 @@
+[
+  {
+    "label": "fresh-source-build",
+    "command": [
+      "/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet",
+      "build",
+      "FantasyCard.Server.slnx",
+      "-c",
+      "Release",
+      "-v",
+      "minimal"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard/server",
+    "exit_code": 0,
+    "duration_seconds": 9.992,
+    "deadline_seconds": 180,
+    "log": "fresh-source-build.log"
+  },
+  {
+    "label": "godot-import",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "/workspace/pr13-takeover/fault-batch-20260930/ready-stop-clean/godot",
+      "--editor",
+      "--import",
+      "--quit"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "duration_seconds": 6.781,
+    "deadline_seconds": 120,
+    "log": "godot-import.log"
+  },
+  {
+    "label": "private-pg-init",
+    "command": [
+      "initdb",
+      "-D",
+      "/workspace/pr13-takeover/fault-batch-20260930/ready-stop-clean/private-pg",
+      "-U",
+      "ready_stop_owner",
+      "--auth=trust",
+      "--no-locale",
+      "--encoding=UTF8"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "duration_seconds": 1.239,
+    "deadline_seconds": 30,
+    "log": "private-pg-init.log"
+  },
+  {
+    "label": "private-pg-start",
+    "command": [
+      "pg_ctl",
+      "-D",
+      "/workspace/pr13-takeover/fault-batch-20260930/ready-stop-clean/private-pg",
+      "-l",
+      "/workspace/pr13-takeover/fault-batch-20260930/ready-stop-clean/private-pg.log",
+      "-o",
+      "-c listen_addresses='' -k /tmp/pr13-ready-stop-mrc8ahpu",
+      "-w",
+      "start"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "duration_seconds": 0.107,
+    "deadline_seconds": 30,
+    "log": "private-pg-start.log"
+  },
+  {
+    "label": "normal_ready-godot",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--max-fps",
+      "60",
+      "--path",
+      "/workspace/pr13-takeover/fault-batch-20260930/ready-stop-clean/godot",
+      "--script",
+      "res://tests/run_ready_stop_faults.gd"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "duration_seconds": 36.442,
+    "deadline_seconds": 95,
+    "log": "normal_ready-godot.log"
+  },
+  {
+    "label": "required_lost_reconnect-godot",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--max-fps",
+      "60",
+      "--path",
+      "/workspace/pr13-takeover/fault-batch-20260930/ready-stop-clean/godot",
+      "--script",
+      "res://tests/run_ready_stop_faults.gd"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "duration_seconds": 37.129,
+    "deadline_seconds": 95,
+    "log": "required_lost_reconnect-godot.log"
+  },
+  {
+    "label": "stop_prepare_await-godot",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--max-fps",
+      "60",
+      "--path",
+      "/workspace/pr13-takeover/fault-batch-20260930/ready-stop-clean/godot",
+      "--script",
+      "res://tests/run_ready_stop_faults.gd"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "duration_seconds": 3.984,
+    "deadline_seconds": 95,
+    "log": "stop_prepare_await-godot.log"
+  },
+  {
+    "label": "stop_enqueue_await-godot",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--max-fps",
+      "60",
+      "--path",
+      "/workspace/pr13-takeover/fault-batch-20260930/ready-stop-clean/godot",
+      "--script",
+      "res://tests/run_ready_stop_faults.gd"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "duration_seconds": 3.807,
+    "deadline_seconds": 95,
+    "log": "stop_enqueue_await-godot.log"
+  },
+  {
+    "label": "stop_ticket_await-godot",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--max-fps",
+      "60",
+      "--path",
+      "/workspace/pr13-takeover/fault-batch-20260930/ready-stop-clean/godot",
+      "--script",
+      "res://tests/run_ready_stop_faults.gd"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "duration_seconds": 3.936,
+    "deadline_seconds": 95,
+    "log": "stop_ticket_await-godot.log"
+  },
+  {
+    "label": "stop_queue_wait-godot",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--max-fps",
+      "60",
+      "--path",
+      "/workspace/pr13-takeover/fault-batch-20260930/ready-stop-clean/godot",
+      "--script",
+      "res://tests/run_ready_stop_faults.gd"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "duration_seconds": 3.802,
+    "deadline_seconds": 95,
+    "log": "stop_queue_wait-godot.log"
+  },
+  {
+    "label": "stop_ready_enqueue_await-godot",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--max-fps",
+      "60",
+      "--path",
+      "/workspace/pr13-takeover/fault-batch-20260930/ready-stop-clean/godot",
+      "--script",
+      "res://tests/run_ready_stop_faults.gd"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "duration_seconds": 49.558,
+    "deadline_seconds": 95,
+    "log": "stop_ready_enqueue_await-godot.log"
+  },
+  {
+    "label": "stop_ready_before_send-godot",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--max-fps",
+      "60",
+      "--path",
+      "/workspace/pr13-takeover/fault-batch-20260930/ready-stop-clean/godot",
+      "--script",
+      "res://tests/run_ready_stop_faults.gd"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "duration_seconds": 48.713,
+    "deadline_seconds": 95,
+    "log": "stop_ready_before_send-godot.log"
+  },
+  {
+    "label": "late_required_duplicate-godot",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--max-fps",
+      "60",
+      "--path",
+      "/workspace/pr13-takeover/fault-batch-20260930/ready-stop-clean/godot",
+      "--script",
+      "res://tests/run_ready_stop_faults.gd"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "duration_seconds": 63.273,
+    "deadline_seconds": 95,
+    "log": "late_required_duplicate-godot.log"
+  },
+  {
+    "label": "late_accepted_before_ticket-godot",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--max-fps",
+      "60",
+      "--path",
+      "/workspace/pr13-takeover/fault-batch-20260930/ready-stop-clean/godot",
+      "--script",
+      "res://tests/run_ready_stop_faults.gd"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "duration_seconds": 7.329,
+    "deadline_seconds": 95,
+    "log": "late_accepted_before_ticket-godot.log"
+  },
+  {
+    "label": "owned-pg-cleanup",
+    "command": [
+      "pg_ctl",
+      "-D",
+      "/workspace/pr13-takeover/fault-batch-20260930/ready-stop-clean/private-pg",
+      "-m",
+      "fast",
+      "-w",
+      "stop"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "duration_seconds": 2.028,
+    "deadline_seconds": 30,
+    "log": "owned-pg-cleanup.log"
+  }
+]
