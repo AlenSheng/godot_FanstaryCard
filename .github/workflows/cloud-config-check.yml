@@ -1,0 +1,102 @@
+name: Cloud configuration checks
+on:
+  pull_request:
+    paths: ['tools/cloud/**', '.github/workflows/cloud-config-check.yml', '.github/workflows/test-server-deploy.yml', 'docs/CLOUD_TEST_DEPLOYMENT*']
+  push:
+    branches: ['codex/cloud-test-deployment-20260930']
+    paths: ['tools/cloud/**', '.github/workflows/cloud-config-check.yml', '.github/workflows/test-server-deploy.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: cloud-config-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  static-and-mock:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      - name: Compile and exercise authorization, transactions and failure handling
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tools/cloud/*.py
+          python3 -m unittest discover -s tools/cloud/tests -v
+          for script in tools/cloud/*.sh; do bash -n "$script"; done
+          git diff --check
+      - name: Install digest-pinned actionlint and validate the two cloud workflows
+        run: |
+          set -euo pipefail
+          curl --disable --fail --location --retry 2 https://github.com/rhysd/actionlint/releases/download/v1.7.7/actionlint_1.7.7_linux_amd64.tar.gz -o "$RUNNER_TEMP/actionlint.tar.gz"
+          printf '023070a287cd8cccd71515fedc843f1985bf96c436b7effaecce67290e7e0757  %s\n' "$RUNNER_TEMP/actionlint.tar.gz" | sha256sum -c -
+          tar -xzf "$RUNNER_TEMP/actionlint.tar.gz" -C "$RUNNER_TEMP" actionlint
+          "$RUNNER_TEMP/actionlint" -shellcheck= .github/workflows/cloud-config-check.yml .github/workflows/test-server-deploy.yml
+  install-and-local-transactions:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      FANTASYCARD_CLOUD_TOOLS: /tmp/fc-cloud-tools
+      DOCKER_CONFIG: /tmp/fc-docker-config
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      - name: Install verified tools; exercise cached restart and private database
+        run: |
+          set -euo pipefail
+          bash tools/cloud/setup.sh
+          python3 tools/cloud/install_tools.py
+          timeout 90 bash tools/cloud/start.sh
+          bash tools/cloud/stop.sh
+          timeout 90 bash tools/cloud/start.sh
+      - name: Real scratch-image activation and PostgreSQL backup/rollback drill
+        run: python3 tools/cloud/local_integration.py --output /tmp/fc-cloud-tools/evidence/local-integration.json
+      - name: Isolated Godot codecs and loopback transport
+        run: |
+          set -euo pipefail
+          source tools/cloud/env.sh
+          python3 client/tests/run_http_protobuf_client.py --godot "$FANTASYCARD_CLOUD_TOOLS/godot/godot" --work-dir "$FANTASYCARD_CLOUD_TOOLS/evidence/http-fixture"
+      - name: Stop private test database
+        if: always()
+        run: bash tools/cloud/stop.sh
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: cloud-local-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/fc-cloud-tools/evidence
+          retention-days: 14
+          if-no-files-found: warn
+  final-runtime-image:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 70
+    env:
+      SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Build matching protected runtime and private build stage
+        run: |
+          set -euo pipefail
+          mkdir -p image-evidence
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          docker build --label "org.opencontainers.image.revision=$SOURCE_SHA" -f server/src/FantasyCard.Server/Dockerfile -t "cloud-check-runtime:$SOURCE_SHA" . > image-evidence/build.log 2>&1
+          docker build --target build -f server/src/FantasyCard.Server/Dockerfile -t "cloud-check-builder:$SOURCE_SHA" . > image-evidence/builder.log 2>&1
+      - name: Verify final DLLs, regressions, restart, Production and database outage
+        run: |
+          set -euo pipefail
+          python3 tools/cloud/validate_image.py --source . --image "cloud-check-runtime:$SOURCE_SHA" --builder "cloud-check-builder:$SOURCE_SHA" --source-sha "$SOURCE_SHA" --output image-evidence/image-validation.json > image-evidence/validation.log 2>&1
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: cloud-final-image-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            image-evidence/*.log
+            image-evidence/image-validation.json
+            image-evidence/diagnostics/**
+          retention-days: 14
+          if-no-files-found: warn

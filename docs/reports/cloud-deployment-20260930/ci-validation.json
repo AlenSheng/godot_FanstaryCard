@@ -1,0 +1,48 @@
+{
+  "configuration_source_sha": "260fba4b1a4d1073c1d96f9b3d123caf621a9823",
+  "ci_run_id": 36745748831,
+  "ci_url": "https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/36745748831",
+  "jobs": {
+    "static-and-mock": "success",
+    "install-and-local-transactions": "success",
+    "final-runtime-image": "failure"
+  },
+  "install_verified": true,
+  "repeat_start_verified": true,
+  "private_pg_verified": true,
+  "real_local_transactions": [
+    "accepted",
+    "external_rejected_rolled_back",
+    "failed_health_rolled_back"
+  ],
+  "godot_fixture": "passed",
+  "cleanup": "passed",
+  "final_image_build": "passed",
+  "matching_builder_build": "passed",
+  "final_dll_hashes_and_obfuscation": "passed",
+  "final_image_tests": {
+    "status": "compile_failed",
+    "total": 0,
+    "trx_generated": false
+  },
+  "final_image_restart": "not_executed",
+  "production": "not_executed",
+  "database_outage": "not_executed",
+  "root_cause": {
+    "file": "server/tests/FantasyCard.Domain.Tests/Combat/CombatAuthoritativeRulesTests.cs",
+    "errors": [
+      "CS1739",
+      "CS1061"
+    ],
+    "missing_interfaces": [
+      "useConsumptionBasedFenxian",
+      "UseConsumptionBasedFenxian",
+      "useFractionalGuardianWeapon",
+      "GuardianWeaponRemainderTenths"
+    ]
+  },
+  "diagnostic_artifact_id": 11112133738,
+  "diagnostic_file": "diagnostics/tests.log",
+  "no_server_mutations": true,
+  "deployable": false
+}
