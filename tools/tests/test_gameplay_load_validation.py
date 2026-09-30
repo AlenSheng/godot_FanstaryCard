@@ -148,6 +148,16 @@ class ValidationTests(unittest.TestCase):
         self.assertEqual(result,[good])
         self.assertEqual(invalid,1)
         self.assertEqual(module.owned_statuses([entry],[{'client_id':[]}])[1],1)
+
+    def test_operation_copy_cannot_replace_the_owned_telemetry_sample(self):
+        event = dict(type='http', run_id='r', client_id='a', process_epoch='e',
+                     event_seq=1, at_unix_ms=10000, duration_ms=1, status=500, ok=False)
+        forged = dict(event, run_id='external', status=200, ok=True)
+        status = dict(run_id='r', client_id='a', process_epoch='e', event_seq_max=1,
+                      telemetry=[event], operations=[forged])
+        windows, lost = module.new_events([status], {})
+        self.assertGreater(lost, 0)
+        self.assertEqual(windows[0]['operations'], [])
     def test_real_child_exit_is_not_counted_online(self):
         child=subprocess.Popen([sys.executable,'-c','raise SystemExit(7)'])
         try:

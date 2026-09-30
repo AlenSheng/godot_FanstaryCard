@@ -277,14 +277,25 @@ def new_events(statuses: list[dict], seen: dict[tuple[str, str], int]) -> tuple[
             seen[key] = accepted[-1]["event_seq"]
         copy = dict(status)
         copy["telemetry"] = accepted
-        operation_sequences = {row["event_seq"] for row in accepted if row.get("type") == "http"}
+        http_events = {row["event_seq"]: row for row in accepted if row.get("type") == "http"}
         operations = status.get("operations", [])
         if not isinstance(operations, list):
             operations = []
             lost += 1
-        copy["operations"] = [row for row in operations if isinstance(row, dict) and row.get("event_seq") in operation_sequences]
-        if len(copy["operations"]) != len(operation_sequences):
-            lost += abs(len(operation_sequences) - len(copy["operations"]))
+        confirmed_operations = {}
+        for row in operations:
+            seq = row.get('event_seq') if isinstance(row, dict) else None
+            if not isinstance(seq, int) or isinstance(seq, bool):
+                lost += 1
+                continue
+            if seq not in http_events:
+                continue  # The bounded operation ring also retains older rows.
+            if row != http_events[seq] or seq in confirmed_operations:
+                lost += 1
+                continue
+            confirmed_operations[seq] = row
+        lost += len(set(http_events) - set(confirmed_operations))
+        copy["operations"] = list(confirmed_operations.values())
         window.append(copy)
     return window, lost
 

@@ -62,7 +62,7 @@ def completed_smoke(processes, expected_clients, cycles):
                isinstance(report.get('cycles_completed'),int) and not isinstance(report.get('cycles_completed'),bool) and
                report['cycles_completed']>=cycles for entry,report in zip(processes,reports))
 
-def read_owned_statuses(processes, cache=None, now_monotonic_ms=None):
+def read_owned_statuses(processes, cache=None, now_monotonic_ms=None, *, require_files=False):
     statuses = []
     invalid_files = 0
     for entry in processes:
@@ -70,7 +70,9 @@ def read_owned_statuses(processes, cache=None, now_monotonic_ms=None):
         try:
             value=json.loads(path.read_text(encoding='utf8'))
         except FileNotFoundError:
-            if cache is not None and entry['client_id'] in cache:
+            if require_files:
+                invalid_files += 1
+            elif cache is not None and entry['client_id'] in cache:
                 statuses.append(cache[entry['client_id']])
             continue
         except (OSError,UnicodeError,ValueError):
@@ -94,12 +96,58 @@ def read_owned_statuses(processes, cache=None, now_monotonic_ms=None):
         if previous and sequence<=prior_sequence:
             owned[index]=dict(previous)
             if sequence<prior_sequence: invalid_ownership+=1
+            elif status != {key: value for key, value in previous.items() if key != '_received_at_monotonic_ms'}:
+                invalid_ownership+=1
         else: status['_received_at_monotonic_ms']=receipt_ms
     owned=[status for status in owned if status.get('status_seq') is None or
            (isinstance(status['status_seq'],int) and not isinstance(status['status_seq'],bool) and status['status_seq']>0)]
     if cache is not None:
         cache.update((status['client_id'],status) for status in owned)
     return owned, invalid_files + invalid_ownership
+
+
+def read_audit_events(processes, final_clients):
+    """Read each launch's immutable audit, checking ownership and final watermark.
+
+    A valid status ring cannot repair a gap in the full JSONL archive. Foreign
+    rows are diagnosed and excluded from business counts, never relabelled.
+    """
+    events, errors = [], []
+    final_by_id = {row['client_id']: row for row in final_clients}
+    for entry in processes:
+        cid = entry['client_id']
+        expected = 1
+        try:
+            with Path(str(entry['report']) + '.telemetry.jsonl').open(encoding='utf8') as archive:
+                for line_number, line in enumerate(archive, 1):
+                    try:
+                        row = json.loads(line)
+                    except ValueError:
+                        errors.append(dict(client_id=cid, line=line_number, error='invalid_json'))
+                        continue
+                    if not isinstance(row, dict) or any(row.get(k) != entry.get(k)
+                            for k in ('run_id', 'client_id', 'process_epoch')):
+                        errors.append(dict(client_id=cid, line=line_number, error='foreign_event_context'))
+                        continue
+                    seq = row.get('event_seq')
+                    if not isinstance(seq, int) or isinstance(seq, bool) or seq < 1:
+                        errors.append(dict(client_id=cid, line=line_number, error='invalid_event_sequence'))
+                        continue
+                    if seq != expected:
+                        errors.append(dict(client_id=cid, line=line_number, error='event_sequence_gap_or_reorder',
+                                           expected=expected, actual=seq))
+                    if seq < expected:
+                        continue
+                    expected = seq + 1
+                    events.append(row)
+        except (OSError, UnicodeError) as exc:
+            errors.append(dict(client_id=cid, error=type(exc).__name__))
+        maximum = final_by_id.get(cid, {}).get('event_seq_max')
+        if (not isinstance(maximum, int) or isinstance(maximum, bool) or maximum < 0
+                or maximum != expected - 1):
+            errors.append(dict(client_id=cid, error='final_audit_watermark_mismatch',
+                               final_event_seq_max=maximum, audit_event_seq_max=expected - 1))
+    return events, errors
 
 
 def generator_resources(processes, previous):
@@ -177,7 +225,7 @@ def main():
     if args.run:
         baseline=metrics(args.prometheus)
         if any(baseline[k] is None for k in ('cpu','memory_available','disk_available')):
-            parser.error('Host monitoring is unavailable; open the SSH Prometheus tunnel before --run')
+            parser.error('Host monitoring is unavailable; provide an authorized Prometheus endpoint before --run')
     source=provenance(ROOT, ('tools/gameplay_load_test.py','tools/cloud_load_test.py',
         'tools/gameplay_load_validation.py','client/tests/gameplay_load_client.gd','client/state/game_store.gd',
         'client/network/gateway.gd','client/network/reusable_http_client.gd',
@@ -371,10 +419,26 @@ def main():
         load_coverage = coverage(samples,start=hold_start,end=max(hold_start+.001,hold_end),
             **{k:v for k,v in contract.items() if k not in ('profile','acceptance_scope','launch_interval_seconds')})
         sampling=sampling_integrity(samples,started_monotonic*1000,stop_issued_monotonic_ns/1000000,contract['maximum_gap'])
-        final_clients, final_read_errors = read_owned_statuses(processes,status_cache)
+        final_clients, final_read_errors = read_owned_statuses(processes,status_cache,require_files=True)
         tail, tail_lost = new_events(final_clients,seen)
+        tail_window = aggregate_window(tail)
+        final_audit_lost = sum(s.get('audit_lost_count', 0) for s in final_clients
+            if isinstance(s.get('audit_lost_count'), int) and not isinstance(s['audit_lost_count'], bool)
+            and s['audit_lost_count'] >= 0)
+        final_audit_invalid = any(not isinstance(s.get('audit_lost_count'), int)
+            or isinstance(s.get('audit_lost_count'), bool) or s['audit_lost_count'] < 0 for s in final_clients)
+        final_cycle_invalid = any(not isinstance(s.get('cycles_completed'), int)
+            or isinstance(s.get('cycles_completed'), bool) or s['cycles_completed'] < 0 for s in final_clients)
+        final_errors_invalid = any(not isinstance(s.get('errors'), list) for s in final_clients)
+        final_business_failed = any(bool(s.get('errors')) for s in final_clients)
         post_stop_failure = any(p['process'].poll() not in (0,None) for p in processes)
-        workload_failed = workload_failed or bool(final_read_errors or tail_lost or post_stop_failure)
+        audit_events, audit_errors = read_audit_events(processes, final_clients)
+        cutoffs=reconcile_cycles(audit_events,stop_issued_ms,int(time.time()*1000))
+        final_evidence_failed = bool(final_read_errors or tail_lost or tail_window['invalid_metric_count']
+            or final_audit_lost or final_audit_invalid or final_cycle_invalid or final_errors_invalid
+            or audit_errors or cutoffs['evidence_errors']
+            or not sampling['passed'])
+        workload_failed = workload_failed or final_evidence_failed or post_stop_failure
         load_verified = (args.run and reason == 'duration_limit' and not workload_failed and
             groups == args.max_groups and len(processes) == args.max_groups * args.group_size and
             len(samples) >= required_samples and all(code is None for code in before_stop.values()) and
@@ -383,14 +447,6 @@ def main():
             not forced_termination and not cleanup_error)
         outcome=classify_stop(reason,smoke_verified=smoke_verified,
             load_verified=load_verified,workload_failed=workload_failed)
-        audit_events=[]; audit_errors=[]
-        for entry in processes:
-            try:
-                for line in Path(str(entry['report'])+'.telemetry.jsonl').read_text(encoding='utf-8').splitlines():
-                    audit_events.append(json.loads(line))
-            except (OSError,ValueError) as exc:
-                audit_errors.append({'client_id':entry['client_id'],'error':type(exc).__name__})
-        cutoffs=reconcile_cycles(audit_events,stop_issued_ms,int(time.time()*1000))
         launched_clients={entry['client_id'] for entry in processes}
         completed_clients=set(cutoffs['final']['cycles_by_client'])
         cutoffs['zero_cycle_clients']=sorted(launched_clients-completed_clients)
@@ -398,22 +454,35 @@ def main():
         final_distribution=collections.Counter(cutoffs['final']['cycles_by_client'].values())
         final_distribution[0]=len(cutoffs['zero_cycle_clients'])
         cutoffs['final']['distribution']=dict(sorted(final_distribution.items()))
-        business_cleanup=bool(final_clients) and len(final_clients)==len(processes) and all(client.get('cleanup',{}).get('state')=='Passed' for client in final_clients)
+        process_cleanup_complete = not cleanup_error and all(p['process'].poll() == 0 for p in processes)
+        business_cleanup=bool(final_clients) and len(final_clients)==len(processes) and all(
+            isinstance(client.get('cleanup'), dict) and client['cleanup'].get('state')=='Passed' for client in final_clients)
         performance_inputs={'http_latency_samples':sum(sample['window']['http'].get('count',0) for sample in samples),
             'realtime_latency_samples':sum(sample['window']['realtime'].get('count',0) for sample in samples),
             'scope':'existing bounded diagnostic stop rules; not a formal service SLO'}
         performance_verified=(reason=='duration_limit' and load_verified and
             performance_inputs['http_latency_samples']>=20 and performance_inputs['realtime_latency_samples']>=10)
-        dimensions=result_dimensions(execution=not reason.startswith('coordinator_error:'),
-            evidence=not bool(final_read_errors or tail_lost or audit_errors or cutoffs['evidence_errors'] or
-                reason.startswith('invalid_evidence:') or reason.startswith('coordinator_error:') or not sampling['passed']),
+        business_cleanup_failed = any(isinstance(client.get('cleanup'), dict)
+            and client['cleanup'].get('state') == 'Failed' for client in final_clients)
+        dimensions=result_dimensions(execution=not reason.startswith('coordinator_error:') and process_cleanup_complete
+                and not final_business_failed,
+            evidence=not bool(final_evidence_failed or reason.startswith('invalid_evidence:') or reason.startswith('coordinator_error:')),
             load=load_coverage['passed'] if args.run else smoke_verified,
-            gameplay=smoke_verified if args.smoke else None,
+            gameplay=smoke_verified and not final_business_failed if args.smoke else None,
             performance=False if args.run and reason.startswith('redline:') else True if args.run and performance_verified else None,
-            cleanup=False if cleanup_error else (True if business_cleanup else None),
+            cleanup=False if not process_cleanup_complete or business_cleanup_failed else (True if business_cleanup else None),
             applicable=contract['acceptance_scope'])
         if outcome['exit_code']==0 and not dimensions['all_applicable_passed']:
             outcome={'classification':'incomplete_acceptance','passed':False,'exit_code':1}
+        final_triggers = []
+        for failed, trigger in ((final_read_errors, 'final_status_read_failed'),
+                (tail_lost, 'tail_event_loss'), (tail_window['invalid_metric_count'], 'tail_invalid_metric'),
+                (final_audit_lost, 'final_audit_loss'), (final_audit_invalid, 'final_audit_count_invalid'),
+                (final_cycle_invalid, 'final_cycle_count_invalid'), (final_errors_invalid, 'final_errors_schema_invalid'),
+                (audit_errors, 'audit_archive_invalid'), (cutoffs['evidence_errors'], 'cycle_evidence_invalid'),
+                (post_stop_failure, 'post_stop_process_failure'), (final_business_failed, 'final_business_failure'),
+                (business_cleanup_failed, 'business_cleanup_failed'), (not sampling['passed'], 'sampling_integrity_failed')):
+            if failed: final_triggers.append(trigger)
         report_data={'schema_version':5,'started':started,'ended':time.time(),'groups':groups,'clients':len(processes),
             'stop_reason':reason,'outcome':outcome,'source':source,'cleanup_error':cleanup_error,
             'load_window_verified':load_verified,'required_samples':required_samples,
@@ -423,11 +492,13 @@ def main():
             'performance_inputs':performance_inputs,
             'cycle_cutoffs':cutoffs,'audit_read_errors':audit_errors,
             'final_read_errors':final_read_errors,'tail_lost_event_count':tail_lost,
-            'tail_window':aggregate_window(tail),'post_stop_failure':post_stop_failure,
+            'tail_window':tail_window,'post_stop_failure':post_stop_failure,
+            'final_audit_lost_count':final_audit_lost,'final_audit_count_invalid':final_audit_invalid,
+            'final_triggers':final_triggers,
             'first_trigger':next((cause for sample in samples for cause in sample['reasons']),reason),
-            'all_triggers':sorted({cause for sample in samples for cause in sample['reasons']} | {reason}),
-            'forced_termination_pids':forced_termination,'process_cleanup_complete':not cleanup_error,
-            'business_cleanup_verified':business_cleanup,'cleanup_complete':business_cleanup and not cleanup_error,
+            'all_triggers':sorted({cause for sample in samples for cause in sample['reasons']} | {reason} | set(final_triggers)),
+            'forced_termination_pids':forced_termination,'process_cleanup_complete':process_cleanup_complete,
+            'business_cleanup_verified':business_cleanup,'cleanup_complete':business_cleanup and process_cleanup_complete,
             'process_exits':[{'client_id':p['client_id'],'before_stop':before_stop[p['client_id']],
                 'after_stop':p['process'].poll()} for p in processes],
             'group_size':group_size,'interval_seconds':args.group_interval,'scope':'real Godot Game store: login once, repeated preparation/match/PVE or PVP/settlement; no market trades',
