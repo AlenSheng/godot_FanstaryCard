@@ -1,0 +1,348 @@
+{
+  "kind": "complete_offline_case_evidence_pending_independent_adjudication",
+  "created_at_utc": "2026-09-30T22:22:05.168522+00:00",
+  "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+  "source_git_dirty": false,
+  "tasks": [
+    {
+      "task_id": "LOAD-01.1",
+      "canonical_profiles": [
+        "OFFLINE"
+      ],
+      "case_ids": [
+        "LOAD-01.1-T01",
+        "LOAD-01.1-T02",
+        "LOAD-01.1-T03"
+      ],
+      "all_original_cases_passed": true,
+      "pass_criteria": "所有负例有分类，采样函数不异常退出，非法值不变成0延迟或成功。",
+      "proposal_state": "ReadyForIndependentAcceptance",
+      "canonical_register_state": "ReadyForAcceptance",
+      "proposed_resolution": "NoChangeWithEvidence",
+      "stages": {
+        "S0": {
+          "status": "EvidenceComplete",
+          "evidence": [
+            "SOURCE_PROOF.json",
+            "MINIMAL_DEPENDENCY_INPUTS.json",
+            "COMMANDS.json"
+          ],
+          "scope": "Frozen canonical setup/expected/pass criteria; owner ROOT executes, MAIN decides. No public network. Child status deadline5s, child lifetime15s; production30s stale rule unchanged."
+        },
+        "S1": {
+          "status": "EvidenceComplete",
+          "evidence": [
+            "LOAD-01.1-T01",
+            "LOAD-01.1-T02",
+            "LOAD-01.1-T03"
+          ],
+          "decision": "Current-correctness goldens and negative injections; no invented prior production failure."
+        },
+        "S2": {
+          "status": "NoChangeWithEvidenceProposed",
+          "evidence": [
+            "SOURCE_PROOF.json",
+            "run_load01_acceptance.py"
+          ],
+          "decision": "Existing production behavior meets this local task contract; no production/config/UI modification. Only isolated receipt harness added."
+        },
+        "S3": {
+          "status": "EvidenceComplete",
+          "evidence": [
+            "run-04-complete-tail/cases.jsonl",
+            "run-04-complete-tail/report.json",
+            "python-regression.log",
+            "COMMANDS.json"
+          ],
+          "passed_cases": [
+            "LOAD-01.1-T01",
+            "LOAD-01.1-T02",
+            "LOAD-01.1-T03"
+          ],
+          "critical_skips": 0
+        },
+        "S4": {
+          "status": "EvidenceComplete",
+          "evidence": [
+            "MINIMAL_DEPENDENCY_INPUTS.json",
+            "SOURCE_PROOF.json",
+            "run-04-complete-tail/cleanup.json"
+          ],
+          "decision": "Owned reader -> ownership filter -> current population/event aggregation and raw archive reconciliation reviewed; successful exited child keeps completed cycle+ACK while online0; actual child process cases are executed. Minimal dependency artifacts are present; no requirement for whole upstream Accepted."
+        },
+        "S5": {
+          "status": "NotApplicableWithReason",
+          "reason": "仅凭指定离线/集成产物即可判定本子项；公网压测不增加该判据可信度。",
+          "source": "Frozen canonical contract; OFFLINE only. No extra deployment, CI, PG or human experience gate added."
+        },
+        "S6": {
+          "status": "PendingIndependentMAIN",
+          "accepted_by": null,
+          "decision": "Proposal only; MAIN reruns key cases and adjudicates Accepted/NoChangeWithEvidence/etc."
+        }
+      },
+      "remaining": "S6 independent MAIN adjudication only; no external CI/LIVE/participant prerequisite for this task.",
+      "Accepted": false,
+      "accepted_by": null
+    },
+    {
+      "task_id": "LOAD-01.2",
+      "canonical_profiles": [
+        "OFFLINE"
+      ],
+      "case_ids": [
+        "LOAD-01.2-T01",
+        "LOAD-01.2-T02",
+        "LOAD-01.2-T03"
+      ],
+      "all_original_cases_passed": true,
+      "pass_criteria": "所有聚合先验归属，同一身份最多一个活跃状态，无跨run污染。",
+      "proposal_state": "ReadyForIndependentAcceptance",
+      "canonical_register_state": "ReadyForAcceptance",
+      "proposed_resolution": "NoChangeWithEvidence",
+      "stages": {
+        "S0": {
+          "status": "EvidenceComplete",
+          "evidence": [
+            "SOURCE_PROOF.json",
+            "MINIMAL_DEPENDENCY_INPUTS.json",
+            "COMMANDS.json"
+          ],
+          "scope": "Frozen canonical setup/expected/pass criteria; owner ROOT executes, MAIN decides. No public network. Child status deadline5s, child lifetime15s; production30s stale rule unchanged."
+        },
+        "S1": {
+          "status": "EvidenceComplete",
+          "evidence": [
+            "LOAD-01.2-T01",
+            "LOAD-01.2-T02",
+            "LOAD-01.2-T03"
+          ],
+          "decision": "Current-correctness goldens and negative injections; no invented prior production failure."
+        },
+        "S2": {
+          "status": "NoChangeWithEvidenceProposed",
+          "evidence": [
+            "SOURCE_PROOF.json",
+            "run_load01_acceptance.py"
+          ],
+          "decision": "Existing production behavior meets this local task contract; no production/config/UI modification. Only isolated receipt harness added."
+        },
+        "S3": {
+          "status": "EvidenceComplete",
+          "evidence": [
+            "run-04-complete-tail/cases.jsonl",
+            "run-04-complete-tail/report.json",
+            "python-regression.log",
+            "COMMANDS.json"
+          ],
+          "passed_cases": [
+            "LOAD-01.2-T01",
+            "LOAD-01.2-T02",
+            "LOAD-01.2-T03"
+          ],
+          "critical_skips": 0
+        },
+        "S4": {
+          "status": "EvidenceComplete",
+          "evidence": [
+            "MINIMAL_DEPENDENCY_INPUTS.json",
+            "SOURCE_PROOF.json",
+            "run-04-complete-tail/cleanup.json"
+          ],
+          "decision": "Owned reader -> ownership filter -> current population/event aggregation and raw archive reconciliation reviewed; successful exited child keeps completed cycle+ACK while online0; actual child process cases are executed. Minimal dependency artifacts are present; no requirement for whole upstream Accepted."
+        },
+        "S5": {
+          "status": "NotApplicableWithReason",
+          "reason": "仅凭指定离线/集成产物即可判定本子项；公网压测不增加该判据可信度。",
+          "source": "Frozen canonical contract; OFFLINE only. No extra deployment, CI, PG or human experience gate added."
+        },
+        "S6": {
+          "status": "PendingIndependentMAIN",
+          "accepted_by": null,
+          "decision": "Proposal only; MAIN reruns key cases and adjudicates Accepted/NoChangeWithEvidence/etc."
+        }
+      },
+      "remaining": "S6 independent MAIN adjudication only; no external CI/LIVE/participant prerequisite for this task.",
+      "Accepted": false,
+      "accepted_by": null
+    },
+    {
+      "task_id": "LOAD-01.3",
+      "canonical_profiles": [
+        "OFFLINE"
+      ],
+      "case_ids": [
+        "LOAD-01.3-T01",
+        "LOAD-01.3-T02",
+        "LOAD-01.3-T03"
+      ],
+      "all_original_cases_passed": true,
+      "pass_criteria": "人数列各有定义和截止点，客户端active明确为存活且新鲜且在线且在房。",
+      "proposal_state": "ReadyForIndependentAcceptance",
+      "canonical_register_state": "ReadyForAcceptance",
+      "proposed_resolution": "NoChangeWithEvidence",
+      "stages": {
+        "S0": {
+          "status": "EvidenceComplete",
+          "evidence": [
+            "SOURCE_PROOF.json",
+            "MINIMAL_DEPENDENCY_INPUTS.json",
+            "COMMANDS.json"
+          ],
+          "scope": "Frozen canonical setup/expected/pass criteria; owner ROOT executes, MAIN decides. No public network. Child status deadline5s, child lifetime15s; production30s stale rule unchanged."
+        },
+        "S1": {
+          "status": "EvidenceComplete",
+          "evidence": [
+            "LOAD-01.3-T01",
+            "LOAD-01.3-T02",
+            "LOAD-01.3-T03"
+          ],
+          "decision": "Current-correctness goldens and negative injections; no invented prior production failure."
+        },
+        "S2": {
+          "status": "NoChangeWithEvidenceProposed",
+          "evidence": [
+            "SOURCE_PROOF.json",
+            "run_load01_acceptance.py"
+          ],
+          "decision": "Existing production behavior meets this local task contract; no production/config/UI modification. Only isolated receipt harness added."
+        },
+        "S3": {
+          "status": "EvidenceComplete",
+          "evidence": [
+            "run-04-complete-tail/cases.jsonl",
+            "run-04-complete-tail/report.json",
+            "python-regression.log",
+            "COMMANDS.json"
+          ],
+          "passed_cases": [
+            "LOAD-01.3-T01",
+            "LOAD-01.3-T02",
+            "LOAD-01.3-T03"
+          ],
+          "critical_skips": 0
+        },
+        "S4": {
+          "status": "EvidenceComplete",
+          "evidence": [
+            "MINIMAL_DEPENDENCY_INPUTS.json",
+            "SOURCE_PROOF.json",
+            "run-04-complete-tail/cleanup.json"
+          ],
+          "decision": "Owned reader -> ownership filter -> current population/event aggregation and raw archive reconciliation reviewed; successful exited child keeps completed cycle+ACK while online0; actual child process cases are executed. Minimal dependency artifacts are present; no requirement for whole upstream Accepted."
+        },
+        "S5": {
+          "status": "NotApplicableWithReason",
+          "reason": "仅凭指定离线/集成产物即可判定本子项；公网压测不增加该判据可信度。",
+          "source": "Frozen canonical contract; OFFLINE only. No extra deployment, CI, PG or human experience gate added."
+        },
+        "S6": {
+          "status": "PendingIndependentMAIN",
+          "accepted_by": null,
+          "decision": "Proposal only; MAIN reruns key cases and adjudicates Accepted/NoChangeWithEvidence/etc."
+        }
+      },
+      "remaining": "S6 independent MAIN adjudication only; no external CI/LIVE/participant prerequisite for this task.",
+      "Accepted": false,
+      "accepted_by": null
+    },
+    {
+      "task_id": "LOAD-01.4",
+      "canonical_profiles": [
+        "OFFLINE"
+      ],
+      "case_ids": [
+        "LOAD-01.4-T01",
+        "LOAD-01.4-T02",
+        "LOAD-01.4-T03"
+      ],
+      "all_original_cases_passed": true,
+      "pass_criteria": "真实子进程全被回收，反例不靠仅构造dict替代进程行为。",
+      "proposal_state": "ReadyForIndependentAcceptance",
+      "canonical_register_state": "ReadyForAcceptance",
+      "proposed_resolution": "NoChangeWithEvidence",
+      "stages": {
+        "S0": {
+          "status": "EvidenceComplete",
+          "evidence": [
+            "SOURCE_PROOF.json",
+            "MINIMAL_DEPENDENCY_INPUTS.json",
+            "COMMANDS.json"
+          ],
+          "scope": "Frozen canonical setup/expected/pass criteria; owner ROOT executes, MAIN decides. No public network. Child status deadline5s, child lifetime15s; production30s stale rule unchanged."
+        },
+        "S1": {
+          "status": "EvidenceComplete",
+          "evidence": [
+            "LOAD-01.4-T01",
+            "LOAD-01.4-T02",
+            "LOAD-01.4-T03"
+          ],
+          "decision": "Current-correctness goldens and negative injections; no invented prior production failure."
+        },
+        "S2": {
+          "status": "NoChangeWithEvidenceProposed",
+          "evidence": [
+            "SOURCE_PROOF.json",
+            "run_load01_acceptance.py"
+          ],
+          "decision": "Existing production behavior meets this local task contract; no production/config/UI modification. Only isolated receipt harness added."
+        },
+        "S3": {
+          "status": "EvidenceComplete",
+          "evidence": [
+            "run-04-complete-tail/cases.jsonl",
+            "run-04-complete-tail/report.json",
+            "python-regression.log",
+            "COMMANDS.json"
+          ],
+          "passed_cases": [
+            "LOAD-01.4-T01",
+            "LOAD-01.4-T02",
+            "LOAD-01.4-T03"
+          ],
+          "critical_skips": 0
+        },
+        "S4": {
+          "status": "EvidenceComplete",
+          "evidence": [
+            "MINIMAL_DEPENDENCY_INPUTS.json",
+            "SOURCE_PROOF.json",
+            "run-04-complete-tail/cleanup.json"
+          ],
+          "decision": "Owned reader -> ownership filter -> current population/event aggregation and raw archive reconciliation reviewed; successful exited child keeps completed cycle+ACK while online0; actual child process cases are executed. Minimal dependency artifacts are present; no requirement for whole upstream Accepted."
+        },
+        "S5": {
+          "status": "NotApplicableWithReason",
+          "reason": "仅凭指定离线/集成产物即可判定本子项；公网压测不增加该判据可信度。",
+          "source": "Frozen canonical contract; OFFLINE only. No extra deployment, CI, PG or human experience gate added."
+        },
+        "S6": {
+          "status": "PendingIndependentMAIN",
+          "accepted_by": null,
+          "decision": "Proposal only; MAIN reruns key cases and adjudicates Accepted/NoChangeWithEvidence/etc."
+        }
+      },
+      "remaining": "S6 independent MAIN adjudication only; no external CI/LIVE/participant prerequisite for this task.",
+      "Accepted": false,
+      "accepted_by": null
+    }
+  ],
+  "executed_exact_cases": 12,
+  "passed_exact_cases": 12,
+  "failed_exact_cases": 0,
+  "critical_skips": 0,
+  "ready_for_independent_acceptance_task_count": 4,
+  "Accepted": 0,
+  "production_changes": 0,
+  "ui_changes": 0,
+  "original_raw_unchanged": true,
+  "fixture_failure_history": {
+    "run-01": "9Passed/3FixtureFailure: child launcher Python newline escaping caused SyntaxError; actual frozen production did not fail. Original child argv/status/logs retained.",
+    "run-02": "12Passed after fixture-only raw-string correction.",
+    "run-03-sealed": "12Passed after portable source-root option; superseded for complete cumulative lifecycle tail proof.",
+    "run-04-complete-tail": "Final12Passed; successful actual exit0 preserves prior matching ACK+cycle completion through actual archive reader."
+  },
+  "replay": "Clean checkout f812879e. PR13_SOURCE_ROOT=<checkout> PYTHONDONTWRITEBYTECODE=1 python run_load01_acceptance.py --output <new-owned-evidence-dir>; python -m unittest discover -s tools/tests -v."
+}

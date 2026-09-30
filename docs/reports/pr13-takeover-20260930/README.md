@@ -1,3 +1,7 @@
+当前阶段：LOAD-01四项提交独立裁决。固定源码f812879e；12/12原case、Python115/115通过。完整S0–S5证据及最小依赖产物见[本批](offline-acceptance-f812/load01/README.md)。状态4ReadyForAcceptance/49Partial/76NotRevalidated/3Blocked/0Accepted；S6待MAIN。不额外要求这四项合同没有的CI/LIVE/真人。生产/UI未修改，原失败、raw与前阶段收据全部保留。
+
+以下为前批历史。
+
 # 当前阶段：有界生命周期独立验证
 
 稳定代码/测试候选 `38c2caccb5f8327f52d97dffb3b9f9303360dd46`，生产逻辑仍等于f93e32da。本批源码内部freshbuild针对13/13、非PG206/206，真实READY新增5/5纯提交通过；注册组件SupportOnly与实际Program分列。ACK等待STOP完成计数0，真实三次入场/合法终态的第二ACK提交前/后丢失均只计3次完成。完整玩法/Boss、LIVE/RENDER仍未验收。132项维持53Partial/76NotRevalidated/3Blocked/0Accepted，阶段收据和case映射见[本批报告](lifecycle-batch-d2106eb0/README.md)。CI不重试；4raw保留待授权。

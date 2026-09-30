@@ -1,18 +1,18 @@
 # PR13 云端接管逐项登记
 
-最新代码/测试候选 `38c2caccb5f8327f52d97dffb3b9f9303360dd46`，生产行为基线f93e32da。132项53Partial/76NotRevalidated/3Blocked/0Accepted；G0–G5未签署。
+本批固定源码 `f812879e4518fd09bf22656451cb563d62940298`；状态4ReadyForAcceptance/49Partial/76NotRevalidated/3Blocked/0Accepted。四项仅提交独立裁决，S6待MAIN；G0–G5未签署。
 
-新增阶段证据见[CASE_MATRIX.json](lifecycle-batch-d2106eb0/CASE_MATRIX.json)。本批状态转移0；原任务表保持已记录的修改SHA/缺口，register追加来源与局部证据。新针对13/13、非PG206/206、真实READY5/5通过；CI计费阻断不记代码失败。
+LOAD-01完整收据见[REPORT.json](offline-acceptance-f812/load01/REPORT.json)，12原case与Python115通过。生产/UI无改动；历史CI与27显式case计数不替代当前任务验收。
 
 | 顺序 | 子项 | 负责人 | 当前 / 历史 | 修改 SHA | 依赖 | 剩余工作或阻塞 |
 | --- | --- | --- | --- | --- | --- | --- |
 | 1 | LOAD-11.1 基线来源冻结 | MAIN / source and evidence audit | Partial / Partial | 取证/未修改 | 无 | Source/evidence delivery audit is partial; running image/config and rollback drill not independently exercised. Historical50/100 raw gap and all unaccepted tasks remain visible. |
 | 2 | LOAD-06.4 时间/缺失/脱敏 | MAIN (pending batch) | NotRevalidated / Queued | 取证/未修改 | LOAD-11.1 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
-| 3 | LOAD-01.1 输入schema | MAIN / offline canonical receipt audit | Partial / ReadyForAcceptance | 取证/未修改 | LOAD-11.1, LOAD-06.4 | Explicit three-case receipts passed; complete pass-criteria/stage review and dependency input adjudication remain open. OFFLINE-only task does not require online deployment. |
-| 4 | LOAD-01.2 唯一进程归属 | MAIN / load P0 | Partial / ReadyForAcceptance | d4c3212fb32c | LOAD-01.1 | affected POSTGRES/LIVE/CAPACITY profiles remain separate and incomplete. |
-| 5 | LOAD-01.3 拆分负载人数 | MAIN / offline canonical receipt audit | Partial / ReadyForAcceptance | 取证/未修改 | LOAD-01.2 | Explicit three-case receipts passed; complete pass-criteria/stage review and dependency input adjudication remain open. OFFLINE-only task does not require online deployment. |
-| 6 | LOAD-01.4 真实进程反例 | MAIN / offline canonical receipt audit | Partial / ReadyForAcceptance | 取证/未修改 | LOAD-01.3 | Explicit three-case receipts passed; complete pass-criteria/stage review and dependency input adjudication remain open. OFFLINE-only task does not require online deployment. |
-| 7 | LOAD-02.1 多维结果模型 | MAIN / load P0 | Partial / Partial | d4c3212fb32c | LOAD-01.2 | affected POSTGRES/LIVE/CAPACITY profiles remain separate and incomplete. |
+| 3 | LOAD-01.1 输入schema | MAIN / offline canonical receipt audit | ReadyForAcceptance / ReadyForAcceptance | 取证/未修改 | LOAD-11.1, LOAD-06.4 | S6 independent MAIN adjudication only; complete OFFLINE evidence at f812. No extra CI/LIVE/participant gate. |
+| 4 | LOAD-01.2 唯一进程归属 | MAIN / load P0 | ReadyForAcceptance / ReadyForAcceptance | d4c3212fb32c | LOAD-01.1 | S6 independent MAIN adjudication only; complete OFFLINE evidence at f812. No extra CI/LIVE/participant gate. |
+| 5 | LOAD-01.3 拆分负载人数 | MAIN / offline canonical receipt audit | ReadyForAcceptance / ReadyForAcceptance | 取证/未修改 | LOAD-01.2 | S6 independent MAIN adjudication only; complete OFFLINE evidence at f812. No extra CI/LIVE/participant gate. |
+| 6 | LOAD-01.4 真实进程反例 | MAIN / offline canonical receipt audit | ReadyForAcceptance / ReadyForAcceptance | 取证/未修改 | LOAD-01.3 | S6 independent MAIN adjudication only; complete OFFLINE evidence at f812. No extra CI/LIVE/participant gate. |
+| 7 | LOAD-02.1 多维结果模型 | MAIN / load P0 | ReadyForAcceptance / ReadyForAcceptance | d4c3212fb32c | LOAD-01.2 | S6 independent MAIN adjudication only; complete OFFLINE evidence at f812. No extra CI/LIVE/participant gate. |
 | 8 | LOAD-04.1 当前匹配状态机 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | LOAD-11.1, LOAD-06.4 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 9 | LOAD-06.2 生命周期/玩法进度 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | LOAD-06.4, LOAD-04.1 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 10 | LOAD-02.2 STOP前后边界 | MAIN / load P0 | Partial / Partial | d4c3212fb32c | LOAD-02.1, LOAD-06.2 | affected POSTGRES/LIVE/CAPACITY profiles remain separate and incomplete. |

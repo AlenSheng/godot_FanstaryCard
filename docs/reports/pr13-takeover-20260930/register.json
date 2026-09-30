@@ -114,26 +114,29 @@
       "task_id": "LOAD-01.1",
       "title": "输入schema",
       "dependency_order": 3,
-      "owner": "MAIN / offline canonical receipt audit",
-      "state": "Partial",
+      "owner": "ROOT / frozen offline execution; MAIN / independent adjudication",
+      "state": "ReadyForAcceptance",
       "historical_state": "ReadyForAcceptance",
       "historical_case_counts": {
         "Passed": 3
       },
       "implementation_status": "Current behavior independently audited through frozen setup/expected and pure-SHA explicit receipts; no new code for this task.",
-      "current_test_status": "Three current explicit canonical receipts Passed and match frozen setup/expected; task-level completeness/independent stage decision remains open.",
+      "current_test_status": "All3 original OFFLINE cases Passed; complete S0–S5 evidence; ReadyForIndependentAcceptance proposal; S6 pending.",
       "modification_sha": null,
       "test_commands": [
-        "python3 tools/pr13_offline_cases.py --output /workspace/pr13-takeover/case-audit-cc6da2e/receipts --godot /workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64"
+        "python3 tools/pr13_offline_cases.py --output /workspace/pr13-takeover/case-audit-cc6da2e/receipts --godot /workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "C-PY @ f812879e:115/115",
+        "LOAD01-EXACT @ f812879e:12/12 group"
       ],
       "evidence": [
         "case-audit-cc6da2e/manifest.json",
         "case-audit-cc6da2e/receipts/report.json",
         "case-audit-cc6da2e/receipts/cases.jsonl",
         "CASE_MAPPING.json",
-        "integrated-cc6da2e/report.json"
+        "integrated-cc6da2e/report.json",
+        "offline-acceptance-f812/load01/REPORT.json"
       ],
-      "remaining_blocker": "Explicit three-case receipts passed; complete pass-criteria/stage review and dependency input adjudication remain open. OFFLINE-only task does not require online deployment.",
+      "remaining_blocker": "Independent MAIN S6 adjudication only. Canonical task has no CI/LIVE/POSTGRES/RENDER/participant requirement.",
       "dependencies": [
         "LOAD-11.1",
         "LOAD-06.4"
@@ -149,24 +152,28 @@
       "accepted": false,
       "supporting_tests_are_canonical_acceptance": false,
       "tested_source_shas": [
-        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3"
-      ]
+        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+        "f812879e4518fd09bf22656451cb563d62940298"
+      ],
+      "acceptance_proposal": "ReadyForIndependentAcceptance"
     },
     {
       "task_id": "LOAD-01.2",
       "title": "唯一进程归属",
       "dependency_order": 4,
-      "owner": "MAIN / load P0",
-      "state": "Partial",
+      "owner": "ROOT / frozen offline execution; MAIN / independent adjudication",
+      "state": "ReadyForAcceptance",
       "historical_state": "ReadyForAcceptance",
       "historical_case_counts": {
         "Passed": 3
       },
       "implementation_status": "Final evidence, ownership, ACK conservation and STOP/emergency handling corrected and counterexample-tested.",
-      "current_test_status": "Current pure-SHA offline/supporting suites passed; complete canonical profiles/cases not accepted",
+      "current_test_status": "All3 original OFFLINE cases Passed; complete S0–S5 evidence; ReadyForIndependentAcceptance proposal; S6 pending.",
       "modification_sha": "d4c3212fb32c75d4b9f9f62c08277996611b149c",
       "test_commands": [
-        "python -m unittest discover -s tools/tests -v"
+        "python -m unittest discover -s tools/tests -v",
+        "C-PY @ f812879e:115/115",
+        "LOAD01-EXACT @ f812879e:12/12 group"
       ],
       "evidence": [
         "batch-results.json",
@@ -174,9 +181,10 @@
         "ci-9275ec2/verified-artifacts.json",
         "ci-b7099ef/verified-artifacts.json",
         "integrated-cc6da2e/report.json",
-        "ci-cc6da2e/workflows.json"
+        "ci-cc6da2e/workflows.json",
+        "offline-acceptance-f812/load01/REPORT.json"
       ],
-      "remaining_blocker": "affected POSTGRES/LIVE/CAPACITY profiles remain separate and incomplete.",
+      "remaining_blocker": "Independent MAIN S6 adjudication only. Canonical task has no CI/LIVE/POSTGRES/RENDER/participant requirement.",
       "dependencies": [
         "LOAD-01.1"
       ],
@@ -195,33 +203,38 @@
         "ci-b7099ef/verified-artifacts.json"
       ],
       "tested_source_shas": [
-        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3"
-      ]
+        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+        "f812879e4518fd09bf22656451cb563d62940298"
+      ],
+      "acceptance_proposal": "ReadyForIndependentAcceptance"
     },
     {
       "task_id": "LOAD-01.3",
       "title": "拆分负载人数",
       "dependency_order": 5,
-      "owner": "MAIN / offline canonical receipt audit",
-      "state": "Partial",
+      "owner": "ROOT / frozen offline execution; MAIN / independent adjudication",
+      "state": "ReadyForAcceptance",
       "historical_state": "ReadyForAcceptance",
       "historical_case_counts": {
         "Passed": 3
       },
       "implementation_status": "Current behavior independently audited through frozen setup/expected and pure-SHA explicit receipts; no new code for this task.",
-      "current_test_status": "Three current explicit canonical receipts Passed and match frozen setup/expected; task-level completeness/independent stage decision remains open.",
+      "current_test_status": "All3 original OFFLINE cases Passed; complete S0–S5 evidence; ReadyForIndependentAcceptance proposal; S6 pending.",
       "modification_sha": null,
       "test_commands": [
-        "python3 tools/pr13_offline_cases.py --output /workspace/pr13-takeover/case-audit-cc6da2e/receipts --godot /workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64"
+        "python3 tools/pr13_offline_cases.py --output /workspace/pr13-takeover/case-audit-cc6da2e/receipts --godot /workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "C-PY @ f812879e:115/115",
+        "LOAD01-EXACT @ f812879e:12/12 group"
       ],
       "evidence": [
         "case-audit-cc6da2e/manifest.json",
         "case-audit-cc6da2e/receipts/report.json",
         "case-audit-cc6da2e/receipts/cases.jsonl",
         "CASE_MAPPING.json",
-        "integrated-cc6da2e/report.json"
+        "integrated-cc6da2e/report.json",
+        "offline-acceptance-f812/load01/REPORT.json"
       ],
-      "remaining_blocker": "Explicit three-case receipts passed; complete pass-criteria/stage review and dependency input adjudication remain open. OFFLINE-only task does not require online deployment.",
+      "remaining_blocker": "Independent MAIN S6 adjudication only. Canonical task has no CI/LIVE/POSTGRES/RENDER/participant requirement.",
       "dependencies": [
         "LOAD-01.2"
       ],
@@ -236,33 +249,38 @@
       "accepted": false,
       "supporting_tests_are_canonical_acceptance": false,
       "tested_source_shas": [
-        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3"
-      ]
+        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+        "f812879e4518fd09bf22656451cb563d62940298"
+      ],
+      "acceptance_proposal": "ReadyForIndependentAcceptance"
     },
     {
       "task_id": "LOAD-01.4",
       "title": "真实进程反例",
       "dependency_order": 6,
-      "owner": "MAIN / offline canonical receipt audit",
-      "state": "Partial",
+      "owner": "ROOT / frozen offline execution; MAIN / independent adjudication",
+      "state": "ReadyForAcceptance",
       "historical_state": "ReadyForAcceptance",
       "historical_case_counts": {
         "Passed": 3
       },
       "implementation_status": "Current behavior independently audited through frozen setup/expected and pure-SHA explicit receipts; no new code for this task.",
-      "current_test_status": "Three current explicit canonical receipts Passed and match frozen setup/expected; task-level completeness/independent stage decision remains open.",
+      "current_test_status": "All3 original OFFLINE cases Passed; complete S0–S5 evidence; ReadyForIndependentAcceptance proposal; S6 pending.",
       "modification_sha": null,
       "test_commands": [
-        "python3 tools/pr13_offline_cases.py --output /workspace/pr13-takeover/case-audit-cc6da2e/receipts --godot /workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64"
+        "python3 tools/pr13_offline_cases.py --output /workspace/pr13-takeover/case-audit-cc6da2e/receipts --godot /workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "C-PY @ f812879e:115/115",
+        "LOAD01-EXACT @ f812879e:12/12 group"
       ],
       "evidence": [
         "case-audit-cc6da2e/manifest.json",
         "case-audit-cc6da2e/receipts/report.json",
         "case-audit-cc6da2e/receipts/cases.jsonl",
         "CASE_MAPPING.json",
-        "integrated-cc6da2e/report.json"
+        "integrated-cc6da2e/report.json",
+        "offline-acceptance-f812/load01/REPORT.json"
       ],
-      "remaining_blocker": "Explicit three-case receipts passed; complete pass-criteria/stage review and dependency input adjudication remain open. OFFLINE-only task does not require online deployment.",
+      "remaining_blocker": "Independent MAIN S6 adjudication only. Canonical task has no CI/LIVE/POSTGRES/RENDER/participant requirement.",
       "dependencies": [
         "LOAD-01.3"
       ],
@@ -277,8 +295,10 @@
       "accepted": false,
       "supporting_tests_are_canonical_acceptance": false,
       "tested_source_shas": [
-        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3"
-      ]
+        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+        "f812879e4518fd09bf22656451cb563d62940298"
+      ],
+      "acceptance_proposal": "ReadyForIndependentAcceptance"
     },
     {
       "task_id": "LOAD-02.1",
@@ -5514,7 +5534,7 @@
       ]
     }
   ],
-  "updated_at_utc": "2026-09-30T21:36:35.543462+00:00",
+  "updated_at_utc": "2026-09-30T22:22:05.181322+00:00",
   "gate_decisions": [
     {
       "gate": "G0",
@@ -5556,13 +5576,43 @@
   },
   "latest_runtime_sha": "38c2caccb5f8327f52d97dffb3b9f9303360dd46",
   "state_counts": {
-    "Partial": 53,
+    "Partial": 49,
     "NotRevalidated": 76,
+    "ReadyForAcceptance": 4,
     "Blocked": 3
   },
-  "latest_batch_state_transitions": [],
+  "latest_batch_state_transitions": [
+    {
+      "task_id": "LOAD-01.1",
+      "from": "Partial",
+      "to": "ReadyForAcceptance",
+      "Accepted": false,
+      "authority": "Independent MAIN pending"
+    },
+    {
+      "task_id": "LOAD-01.2",
+      "from": "Partial",
+      "to": "ReadyForAcceptance",
+      "Accepted": false,
+      "authority": "Independent MAIN pending"
+    },
+    {
+      "task_id": "LOAD-01.3",
+      "from": "Partial",
+      "to": "ReadyForAcceptance",
+      "Accepted": false,
+      "authority": "Independent MAIN pending"
+    },
+    {
+      "task_id": "LOAD-01.4",
+      "from": "Partial",
+      "to": "ReadyForAcceptance",
+      "Accepted": false,
+      "authority": "Independent MAIN pending"
+    }
+  ],
   "production_protocol_fix_sha": "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17",
   "checkpoint_test_fix_sha": "de1157fdf490a5bce3ba888c07519fc957c46782",
-  "latest_test_candidate_sha": "38c2caccb5f8327f52d97dffb3b9f9303360dd46",
+  "latest_test_candidate_sha": "f812879e4518fd09bf22656451cb563d62940298",
   "production_behavior_baseline": "f93e32dac07608e8375e709cd357c4793bdcc41a"
 }
