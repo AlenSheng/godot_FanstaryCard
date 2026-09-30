@@ -112,6 +112,7 @@ public sealed partial class ProcessLifecycleRecoveryTests
                 Assert.Equal("Matched", ticket.Status);
             }
             var attempts = proxy.Attempts.ToArray();
+            Record("LOAD-04.4-T02-MarkRunning-observed-operations", new { host.ProcessId, matchId, roomId, attempts });
             Assert.Equal(2, attempts.Length);
             Assert.Equal("UPDATE 0", attempts[1].CommandTag);
             Assert.False(attempts[1].Dropped);
@@ -324,8 +325,15 @@ public sealed partial class ProcessLifecycleRecoveryTests
                             var current = Volatile.Read(ref selected);
                             if (!inspectRequest && current is not null)
                             {
-                                if (header[0] == 'C') current.CommandTag = Encoding.UTF8.GetString(payload).TrimEnd('\0');
-                                if (header[0] == 'Z')
+                                if (header[0] == 'C')
+                                {
+                                    var tag = Encoding.UTF8.GetString(payload).TrimEnd('\0');
+                                    if (tag.StartsWith("UPDATE ", StringComparison.Ordinal)) current.CommandTag = tag;
+                                }
+                                // Npgsql can prepend a pool reset to the next
+                                // command. Its DISCARD ALL/SET CommandComplete
+                                // and idle ReadyForQuery precede our UPDATE.
+                                if (header[0] == 'Z' && current.CommandTag is not null)
                                 {
                                     Attempts.Enqueue(new(current.Index, current.StatementSha256, current.CommandTag,
                                         Encoding.ASCII.GetString(payload), current.Dropped, DateTimeOffset.UtcNow));
