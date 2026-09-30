@@ -12,9 +12,9 @@ func run_test() -> Dictionary:
 		ok = ok and decoded.get("element_override", "") == element
 		var instance: Dictionary = details.with_element(card, decoded.element_override)
 		if element == "Fire":
-			ok = ok and instance.elemental_damage == 7 and instance.direct_damage == 0 and details.effect_text(instance) == "火伤 7"
+			ok = ok and instance.elemental_damage == 7 and instance.direct_damage == 0 and details.effect_text(instance) == "造成火系伤害7点"
 		else:
-			ok = ok and instance.elemental_damage == 0 and instance.direct_damage == 7 and details.effect_text(instance) == "直伤 7"
+			ok = ok and instance.elemental_damage == 0 and instance.direct_damage == 7 and details.effect_text(instance) == "造成直接伤害7点"
 	var ordinary := {"id": "C01", "element": "Fire", "elemental_damage": 4}
 	ok = ok and details.with_element(ordinary, "None") == ordinary
 	ok = ok and details.with_element(card, "") == original and card == original

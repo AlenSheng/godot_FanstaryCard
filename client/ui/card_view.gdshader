@@ -23,14 +23,14 @@ void fragment() {
 		}
 		uv.y = y / 376.0;
 	} else if (monster_reframe) {
-		// The monster texture has a short portrait and extra transparent space
-		// above its frame. Match the regular card's 4..363 visible bounds and
-		// put its divider beneath the shared 285-pixel portrait.
+		// Preserve the generated frame's complete upper rail and ornament.
+		// Only stretch its portrait section; keep the divider below the shared
+		// 285px portrait and the footer within the card's visible bounds.
 		float y = min(uv.y * 376.0, 363.0);
-		if (y < 4.0) {
-			y = y * 16.5 / 4.0;
+		if (y < 26.0) {
+			y = y;
 		} else if (y < 296.0) {
-			y = mix(16.5, 236.0, (y - 4.0) / 292.0);
+			y = mix(26.0, 236.0, (y - 26.0) / 270.0);
 		} else {
 			y = mix(236.0, 376.0, (y - 296.0) / 67.0);
 		}

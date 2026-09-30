@@ -5,15 +5,19 @@ var layout_errors: Array = []
 var screenshot_count := 0
 
 func _ready() -> void:
+	preload("res://ui/palette.gd").set_language(OS.get_environment("FANTASYCARD_ART_LANGUAGE") if not OS.get_environment("FANTASYCARD_ART_LANGUAGE").is_empty() else "en")
 	var evidence_directory := OS.get_environment("FANTASYCARD_ART_EVIDENCE")
 	if not evidence_directory.is_empty(): output = evidence_directory
 	Game.gateway.set_process(false)
+	Game.set_process(false)
+	Game.gateway.reconnect_enabled = false
 	Game.gateway.persist_session = false
 	Game.gateway.online = true
 	Game.connection = "美术预览 · 测试数据"
 	Game.lobby = {"player": {"userId": "preview-player"}, "wallet": {"gold": 1200}, "decks": [{"heroClass": "Mage", "cardIds": ["MAG-01", "MAG-04", "GP01", "MAG-10", "C01"]}], "materials": {"equipmentFragments": 32}, "equippedLoadouts": [], "classWeapons": [{"heroClass": "Mage", "level": 2, "version": 1}]}
 	$UI.inventory = {"equipments": [], "consumables": {"healthPotionCount": 2, "advancedBagCount": 1, "topBagCount": 1}}
 	$UI._shop_inventory_ready = true
+	$UI._codex_ready = true
 	$UI.gear_draft = [null, null, null, null, null]
 	_run.call_deferred()
 
@@ -126,9 +130,9 @@ func _run() -> void:
 		Game.settlement = {}
 	await _regressions()
 	var report := FileAccess.open(output + "/report.json", FileAccess.WRITE)
-	report.store_string(JSON.stringify({"ok": layout_errors.is_empty(), "fixture_only": true, "screenshots": screenshot_count, "layout_errors": layout_errors}))
+	report.store_string(JSON.stringify({"ok": layout_errors.is_empty(), "fixture_only": true, "source_sha": OS.get_environment("FANTASYCARD_SOURCE_SHA"), "language": preload("res://ui/palette.gd").language(), "screenshots": screenshot_count, "layout_errors": layout_errors}))
 	report.close()
-	get_tree().quit()
+	get_tree().quit(0 if layout_errors.is_empty() else 1)
 
 func _portrait_previews(suffix: String) -> void:
 	var Art = preload("res://ui/art.gd")
@@ -145,10 +149,10 @@ func _portrait_previews(suffix: String) -> void:
 func _shop_fixture() -> Dictionary:
 	var products: Array = []
 	for kind in ["Cards", "EquipmentFragments", "AdvancedBag", "TopBag", "WarriorSoul", "HealthPotion"]:
-		products.append({"kind": kind, "productId": "fixture-" + kind, "priceGold": 120, "purchased": 0, "limit": 3, "payload": JSON.stringify({"count": 3} if kind == "Cards" else {"amount": 1})})
+		products.append({"kind": kind, "productId": "fixture-" + kind, "priceGold": 120, "purchased": 0, "limit": 3, "payload": {"count": 3} if kind == "Cards" else {"amount": 1}})
 	for hero_class in ["Priest", "Mage", "Guardian"]:
-		products.append({"kind": "ClassSoul", "productId": "fixture-" + hero_class, "priceGold": 400, "purchased": 0, "limit": 1, "payload": JSON.stringify({"heroClass": hero_class, "amount": 12})})
-	products.append({"kind": "Cards", "productId": "fixture-daily", "priceGold": 150, "purchased": 0, "limit": 1, "alreadyOwned": true, "payload": JSON.stringify({"cardId": "C01", "count": 1})})
+		products.append({"kind": "ClassSoul", "productId": "fixture-" + hero_class, "priceGold": 400, "purchased": 0, "limit": 1, "payload": {"heroClass": hero_class, "amount": 12}})
+	products.append({"kind": "Cards", "productId": "fixture-daily", "priceGold": 150, "purchased": 0, "limit": 1, "alreadyOwned": true, "payload": {"cardId": "C01", "count": 1}})
 	return {"products": products}
 
 func _check_shop() -> void:
@@ -160,7 +164,7 @@ func _check_shop() -> void:
 			layout_errors.append("Missing server product row: " + product.productId)
 			continue
 		var image: TextureRect = node.get_node("ProductArt")
-		var payload: Dictionary = JSON.parse_string(product.payload)
+		var payload: Dictionary = product.payload
 		if image.texture == null: layout_errors.append("Empty server product image: " + product.productId)
 		if product.kind in ["Cards", "EquipmentFragments", "AdvancedBag", "TopBag"] and not payload.has("cardId") and image.texture != Art.product(product.kind):
 			layout_errors.append("New shop artwork not applied: " + product.kind)
@@ -276,9 +280,10 @@ func _regressions() -> void:
 	$UI.screen = "prep"
 	$UI._render()
 	var labels := ""
-	for node in $UI._reference.get_children():
+	for node in $UI._reference.find_children("*", "Label", true, false):
 		if node is Label: labels += node.text + "\n"
-	if not ("已锁定编组 20 / 20" in labels and "生命上限 99" in labels and "本命 +4" in labels):
+	var P = preload("res://ui/palette.gd")
+	if not (P.localized("locked_deck_summary") % [20, 99] in labels and P.localized("equipment_signature_level_locked") % 4 in labels and "%s 99" % P.localized("hp") in labels):
 		layout_errors.append("Locked preparation must render frozen deck, HP and weapon level")
 	if $UI._reference.get_node("HeroPortrait").texture != Art.portrait("Guardian"):
 		layout_errors.append("Locked preparation portrait must use the frozen class")
@@ -304,7 +309,7 @@ func _regressions() -> void:
 	var confirmation := $UI.get_node_or_null("ConfirmationModal")
 	if confirmation != null:
 		var description := confirmation.get_node("DialogPanel/Description") as Label
-		confirmation_found = str($UI.cards.C01.name) in description.text and "150" in description.text
+		confirmation_found = preload("res://ui/card_details.gd").localized_name("C01", $UI.cards.C01) in description.text and "150" in description.text
 		confirmation.get_node("DialogPanel/CancelButton").pressed.emit()
 	if not confirmation_found: layout_errors.append("Daily card purchase confirmation lost card name or price")
 	$UI.screen = "market"
@@ -312,13 +317,13 @@ func _regressions() -> void:
 	$UI._render()
 	if not $UI._market_item.is_empty(): layout_errors.append("Invalid market item survived inventory refresh")
 	for node in $UI._reference.get_children():
-		if node is Button and node.text == "上架物品" and not node.disabled:
+		if node is Button and node.text == P.localized_text("上架物品") and not node.disabled:
 			layout_errors.append("Market submission enabled without available inventory item")
 	$UI.inventory.equipments = [{"instanceId": "locked-item", "slot": "Chest", "quality": "Blue", "element": "Fire", "level": 3, "location": "PreparationLocked"}]
 	$UI._enhance_item = "locked-item"
 	$UI.screen = "enhance"
 	$UI._render()
 	for node in $UI._reference.get_children():
-		if node is Button and node.text == "强化到 +4" and not node.disabled:
+		if node is Button and node.text == P.localized_text("强化到 +4") and not node.disabled:
 			layout_errors.append("Locked equipment enhancement must be disabled")
 	await get_tree().process_frame
