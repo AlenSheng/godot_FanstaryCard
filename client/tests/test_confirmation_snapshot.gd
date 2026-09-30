@@ -65,4 +65,7 @@ func run_test() -> Dictionary:
 	checks["no_per_frame_snapshot_loop"] = live_gateway.sent.size() == 2
 	live_store.free()
 	live_gateway.free()
+	var target_contract: Dictionary = load("res://tests/test_target_confirmation_contract.gd").new().run_test()
+	for name in target_contract.get("checks", {}):
+		checks["preview_" + str(name)] = target_contract.checks[name]
 	return {"ok": checks.values().all(func(value): return value == true), "checks": checks}

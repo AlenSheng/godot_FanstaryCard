@@ -76,6 +76,7 @@ func _process(_delta: float) -> void:
 	_process_client_info()
 	_check_shop_rotation()
 	_flush_latest_commands()
+	_flush_combat_preview()
 	var now := Time.get_ticks_msec()
 	if room.has("extraction_remaining_ms"):
 		if _extraction_sync_at == 0:
@@ -237,6 +238,7 @@ func _clear_authenticated_state() -> void:
 
 func _on_connection_changed(value: String) -> void:
 	connection = value
+	clear_combat_preview()
 	_pending_play = {}
 	_pending_commands.clear()
 	_latest_commands.clear()
@@ -689,6 +691,7 @@ func cancel_preparation() -> void:
 
 func allowed(action: String) -> bool:
 	var aliases := {"reward.choice.refresh": "choice.refresh", "reward.choice.claim": "choice.pick"}
+	if action == "battle.play_cards" and _target_selection_pending(): return false
 	if action not in LATEST_WINS_ACTIONS and _has_pending_action(action): return false
 	return configuration_error.is_empty() and gateway.online and not gateway.recovering and (action in room.get("allowed_actions", []) or aliases.get(action, "") in room.get("allowed_actions", []))
 
@@ -723,6 +726,7 @@ func command(action: String, payload: Dictionary = {}) -> bool:
 	if not allowed(action): return false
 	if action in LATEST_WINS_ACTIONS:
 		_latest_commands[action] = {"payload": payload.duplicate(true), "due": Time.get_ticks_msec() + LATEST_WINS_DEBOUNCE_MS}
+		if action == "battle.select_target" and _target_selection_pending(): clear_combat_preview()
 		changed.emit()
 		return true
 	if not _queued_command.is_empty() or _has_pending_action(action): return false
@@ -739,13 +743,49 @@ func toggle_card(instance_id: String) -> void:
 	if instance_id in selected_cards: selected_cards.erase(instance_id)
 	else: selected_cards.append(instance_id)
 	sound_requested.emit("card_select")
-	combat_preview = _calculate_combat_preview(selected_cards)
+	_refresh_combat_preview()
 	changed.emit()
 
 func clear_combat_preview() -> void:
 	combat_preview = {}
 	_preview_request = {}
 	_preview_deadline = 0
+
+func _target_selection_pending() -> bool:
+	# Synchronizing the GDD death fallback keeps the current effective target.
+	# A manual switch to another target must reach the snapshot before playing.
+	var target_id := combat_target_id()
+	var queued: Dictionary = _latest_commands.get("battle.select_target", {})
+	if not queued.is_empty() and _intent_valid("battle.select_target", queued.get("payload", {})) and str(queued.get("payload", {}).get("target_id", "")) != target_id: return true
+	for pending in _pending_commands.values():
+		if pending.get("action", "") == "battle.select_target" and _intent_valid("battle.select_target", pending.get("payload", {})) and str(pending.get("payload", {}).get("target_id", "")) != target_id: return true
+	return false
+
+func _refresh_combat_preview() -> void:
+	clear_combat_preview()
+	combat_preview = _calculate_combat_preview(selected_cards)
+	if combat_preview.is_empty() or not target_alive(combat_target_id()): return
+	_preview_request = {"request_id": "", "context": _preview_context(selected_cards), "revision": int(room.get("room_revision", 0)), "due": Time.get_ticks_msec() + LATEST_WINS_DEBOUNCE_MS}
+
+func _flush_combat_preview() -> void:
+	# A preview is a bounded read; it never enters the business-command queue
+	# or locks a legal play while the local estimate is visible.
+	if _preview_request.is_empty(): return
+	if _preview_request.get("context", {}) != _preview_context(selected_cards) or not allowed("battle.play_cards"):
+		clear_combat_preview()
+		return
+	var now := Time.get_ticks_msec()
+	if not str(_preview_request.get("request_id", "")).is_empty():
+		if now >= _preview_deadline: _preview_request = {}
+		return
+	if now < int(_preview_request.get("due", 0)): return
+	var context: Dictionary = _preview_request.context
+	var request_id: String = gateway.new_id()
+	var payload := {"battle_id": context.battle_id, "target_id": context.target_id, "card_instance_ids": context.card_instance_ids.duplicate()}
+	if gateway.send("combat.preview", payload, request_id):
+		_preview_request["request_id"] = request_id
+		_preview_deadline = now + 3000
+	else: _preview_request = {}
 
 func _request_snapshot() -> void:
 	if room.is_empty() or not gateway.online or gateway.recovering or _snapshot_request_pending: return
@@ -777,21 +817,39 @@ func _flush_latest_commands() -> void:
 		_latest_commands.erase(action)
 		_send_queued_command({"action": action, "payload": queued.get("payload", {}).duplicate(true)})
 
-# Kept as a compatibility boundary for older offline tests and replay tools;
-# live selection no longer calls the network preview command.
 func _preview_context(ids: Array) -> Dictionary:
 	var battle: Dictionary = room.get("duel", room.get("pve", {}))
-	return {"room_id": room.get("room_id", ""), "battle_id": battle.get("duel_id", battle.get("battle_id", "")), "target_id": combat_target_id(), "card_instance_ids": ids.duplicate()}
+	var player: Dictionary = room.get("player", {})
+	var player_context := {}
+	for key in ["player_id", "phase", "hero_class", "weapon_level", "combat", "battle_status", "numerical_state", "stun_remaining_ms", "draw_block_remaining_ms", "draw_speed_remaining_ms", "draw_block_speed_remaining_ms", "base_draw_interval_seconds"]:
+		if player.has(key): player_context[key] = player[key]
+	var selected_hand: Array = []
+	for id in ids:
+		for card in player.get("hand", []):
+			if card.get("instance_id", "") == id: selected_hand.append(card.duplicate(true))
+	return {"room_id": room.get("room_id", ""), "room_revision": int(room.get("room_revision", 0)), "config_version": room.get("config_version", ""),
+		"battle_id": battle.get("duel_id", battle.get("battle_id", "")), "target_id": combat_target_id(), "card_instance_ids": ids.duplicate(), "selected_hand": selected_hand,
+		"player": player_context.duplicate(true),
+		"target": battle.get("opponent", {}).duplicate(true) if room.has("duel") else _monster_by_id(battle).duplicate(true),
+		"opponent_status": battle.get("opponent_status", {}).duplicate(true), "opponent_class": battle.get("opponent_class", "")}
 
 func _accept_combat_preview(payload: Dictionary) -> void:
+	if payload.get("_replayed", false): return
+	if not allowed("battle.play_cards") or not target_alive(combat_target_id()): return
 	if _preview_request.is_empty() or payload.get("_request_id", "") != _preview_request.get("request_id", ""): return
 	if Time.get_ticks_msec() >= _preview_deadline or _preview_request.get("context", {}) != _preview_context(selected_cards): return
 	var revision := int(payload.get("_room_revision", -1))
-	if revision < int(_preview_request.get("revision", -1)) or revision < int(room.get("room_revision", 0)): return
+	if revision != int(_preview_request.get("revision", -1)) or revision != int(room.get("room_revision", 0)): return
+	var context: Dictionary = _preview_request.context
+	if payload.has("battle_id") and payload.battle_id != context.battle_id: return
+	if payload.has("target_id") and payload.target_id != context.target_id: return
+	if payload.has("card_instance_ids") and payload.card_instance_ids != context.card_instance_ids: return
 	combat_preview = payload.duplicate(true)
 	combat_preview["source_revision"] = revision
 	combat_preview["authoritative"] = true
 	combat_preview["control_estimated"] = false
+	_preview_request = {}
+	_preview_deadline = 0
 
 func _status_bonuses(status: Dictionary) -> Dictionary:
 	var result := {}
@@ -1265,6 +1323,7 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 		var snapshot: Dictionary = payload.get("snapshot", {}) if kind == "room.started" else payload
 		if (not gateway.token.is_empty() or snapshot.has("config_version")) and not validate_config(str(snapshot.get("config_version", "")), "房间"): return
 	_sound_event(kind, payload)
+	if kind == "battle.target_selected" and payload.get("battle_id", "") == room.get("pve", {}).get("battle_id", ""): clear_combat_preview()
 	if kind in ["room.moved", "battle.target_selected", "duel.leave_ack", "duel.escape_started", "duel.escape_failed", "duel.escape_interrupted", "duel.started", "duel.ended", "action.potion_used", "relic.taken", "relic.replaced", "reward.choice_claimed", "action.extract_started", "action.extract_cancelled", "action.extract_completed", "action.spring_started", "action.spring_cancelled", "action.spring_completed"] and event_request_id.is_empty():
 		_request_snapshot()
 	match kind:
@@ -1278,7 +1337,7 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 			_sync_pve_target()
 			var hand: Array = room.get("player", {}).get("hand", []).map(func(card): return card.instance_id)
 			selected_cards = selected_cards.filter(func(id): return id in hand)
-			combat_preview = _calculate_combat_preview(selected_cards)
+			_refresh_combat_preview()
 			ready_prompt = {}
 			if not _queued_command.is_empty() and (not _queued_command.has("snapshot_id") or payload.get("_request_id", "") == _queued_command.snapshot_id):
 				var queued: Dictionary = _queued_command
@@ -1307,12 +1366,19 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 		"settlement.ready", "match.settled": _load_settlement(payload.settlement_id)
 		"battle.combo_resolved", "combat.hit":
 			if _feedback_is_current(payload):
+				var had_preview := not combat_preview.is_empty() or not _preview_request.is_empty()
+				clear_combat_preview()
 				combat_feedback.emit(payload)
 				_sound_combat(kind, payload)
 				# Server presentation events use a nonempty synthetic request ID.
 				_request_snapshot()
+				if had_preview: changed.emit()
 			return
-		"combat.previewed", "combat.preview_rejected": pass
+		"combat.previewed": _accept_combat_preview(payload)
+		"combat.preview_rejected":
+			if payload.get("_request_id", "") == _preview_request.get("request_id", ""):
+				_preview_request = {}
+				_preview_deadline = 0
 		"inventory.changed":
 			if str(payload.get("action", "")) == "shop.refresh":
 				refresh_cache("shop")
