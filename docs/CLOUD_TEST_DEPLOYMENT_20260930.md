@@ -209,3 +209,20 @@ outage 尚未执行。因此仍 **不可部署**，不能用静态检查通过�
 Bearer、JWT 和显式凭据赋值会脱敏；新的测试验证诊断完整性和脱敏。
 新的 CI 仍须严格重跑最终镜像；若根因属于交接基线的 Domain 测试／实现
 不一致，报告该固定 SHA 的源码阻塞，不能改 PR13、跳过用例或伪造通过。
+
+
+重跑已核验（`260fba4b1a4d1073c1d96f9b3d123caf621a9823`，run
+[36745748831](https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/36745748831)）：
+static-and-mock 和 install-and-local-transactions **通过**，包含真实安装／缓存
+恢复／重复启动、三条 scratch+PG 事务演练、Godot fixture 和清理。
+final-runtime-image 的 runtime/build stage、最终 DLL/hash 与混淆差异检查
+通过，但全套测试在编译阶段遇到交接基线缺失接口（CS1739／CS1061）。
+新的 [artifact 11112133738](https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/36745748831/artifacts/11112133738)
+实际包含 `diagnostics/tests.log`；0 tests 和无 TRX 的原因已定位，而不是日志
+丢失。由于编译先失败，restart／Production／DB outage 仍未执行。此配置保持
+失败门槛，需兼容的固定源码版本完成最终镜像验收后才能部署。
+
+runner 还增加独立 `shipping.json`：只有外部接受、控制器正常退出和严格远端
+终态检查都成功才写 accepted。断连／取消时保持 unknown + recovery_required；
+即使此前远端写下 accepted，仍不能凭该文件推断已越过事务提交点。对应真实
+传输模拟反例已加入测试。完整云控制测试现为 32 个方法；没有扩大线上授权。

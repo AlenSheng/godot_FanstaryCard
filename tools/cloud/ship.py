@@ -169,6 +169,9 @@ def main():
         def interrupted(signum, frame):
             raise RuntimeError('Runner interrupted')
         handlers = {sig: signal.signal(sig, interrupted) for sig in (signal.SIGTERM, signal.SIGHUP, signal.SIGINT)}
+        # Remote accepted evidence can precede commit. A successful controller
+        # exit plus external acceptance is required before the runner claims it.
+        (evidence / 'shipping.json').write_text('{"status":"unknown","recovery_required":true}\n')
         runner_status = 'unknown'
         try:
             external = supervise([*ssh, command])
@@ -192,10 +195,11 @@ def main():
                 (evidence / 'retrieval.json').write_text('{"status":"unknown","sanitized_evidence_available":false,"recovery_required":true}\n')
             (evidence / 'runner.json').write_text(json.dumps({'runner_status':runner_status,
                 'remote_status':result['status'] if 'result' in locals() else 'unknown',
-                'recovery_required': 'result' not in locals() or result['status'] not in ('accepted','rolled_back')}) + '\n')
+                'recovery_required': runner_status != 'accepted' or 'result' not in locals() or result['status'] != 'accepted'}) + '\n')
         result = json.loads((evidence / 'result.json').read_text())
         if result['status'] != 'accepted':
             raise ValueError('Remote transaction did not commit acceptance')
+        (evidence / 'shipping.json').write_text('{"status":"accepted","controller_exit_succeeded":true,"external_accepted":true,"recovery_required":false}\n')
 
 
 if __name__ == '__main__':
