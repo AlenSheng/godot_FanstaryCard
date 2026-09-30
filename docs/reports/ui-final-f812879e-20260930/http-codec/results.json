@@ -1,0 +1,45 @@
+{
+  "ok": true,
+  "runs": [
+    {
+      "command": [
+        "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/http-codec",
+        "--editor",
+        "--import",
+        "--quit"
+      ],
+      "exit_code": 0,
+      "engine_errors": false,
+      "log": "import.log"
+    },
+    {
+      "command": [
+        "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/http-codec",
+        "--script",
+        "res://tests/test_http_protobuf_client.gd"
+      ],
+      "exit_code": 0,
+      "engine_errors": false,
+      "log": "codec.log"
+    },
+    {
+      "command": [
+        "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/http-codec",
+        "--script",
+        "res://tests/test_http_protobuf_transport.gd"
+      ],
+      "exit_code": 0,
+      "engine_errors": false,
+      "log": "transport.log"
+    }
+  ]
+}

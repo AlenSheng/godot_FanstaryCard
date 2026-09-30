@@ -1,0 +1,174 @@
+{
+  "fixed_pr13_sha": "de1157fdf490a5bce3ba888c07519fc957c46782",
+  "fixed_ui_sha": "070c7b441ffc5dbd7253aea1dcbc9793b1fef449",
+  "tested_integration_source_sha": "ea94d97fe30d3622777f9190d7696c640f70b02a",
+  "production_source_changes_after_tested_sha": [],
+  "existing_pr13_non_ui_blobs_preserved": 5803,
+  "display_hunk_conflicts": [],
+  "accepted_checks": [
+    {
+      "name": "Godot import fixed source",
+      "exit_code": 0,
+      "log": "logs/import-fixed-source.log",
+      "result": "import-result.json"
+    },
+    {
+      "name": "Native UI + PR13 target modules",
+      "exit_code": 0,
+      "count": 19,
+      "result": "native.json",
+      "log": "logs/native.log"
+    },
+    {
+      "name": "Official C# protobuf",
+      "exit_code": 0,
+      "count": 25,
+      "golden_vectors": 8,
+      "log": "logs/protocol-csharp.log"
+    },
+    {
+      "name": "Generated protocol check",
+      "exit_code": 0,
+      "log": "logs/schema-check.log"
+    },
+    {
+      "name": "HTTP codec + transport",
+      "exit_code": 0,
+      "codec_checks": 177,
+      "transport_checks": 24,
+      "result": "http-fixture-result.json",
+      "log": "logs/http-fixture.log.gz"
+    },
+    {
+      "name": "HTTP boundary",
+      "exit_code": 0,
+      "result": "http-boundary-result.json",
+      "log": "logs/http-boundary.log.gz"
+    },
+    {
+      "name": "Authoritative server/client preview parity",
+      "exit_code": 0,
+      "vectors": 1800,
+      "failures": 0,
+      "result": "preview-parity-result.json",
+      "log": "logs/preview-parity.log"
+    },
+    {
+      "name": "Original PR13 play retry in isolated default language",
+      "exit_code": 0,
+      "modules": 17,
+      "log": "logs/run_play_retry-isolated.log"
+    },
+    {
+      "name": "Original PR13 lobby race",
+      "exit_code": 0,
+      "log": "logs/run_lobby_race-isolated.log"
+    },
+    {
+      "name": "Original PR13 gameplay load parse",
+      "exit_code": 0,
+      "log": "logs/run_gameplay_load_parse-isolated.log"
+    },
+    {
+      "name": "Fresh native render",
+      "exit_code": 0,
+      "screenshots": 150,
+      "assertions": 480,
+      "result": "render-report.json",
+      "log": "logs/render.log"
+    },
+    {
+      "name": "Fresh native mail",
+      "exit_code": 0,
+      "screenshots": 36,
+      "assertions": 270,
+      "result": "mail-report.json",
+      "log": "logs/mail.log"
+    },
+    {
+      "name": "Fresh native codex",
+      "exit_code": 0,
+      "screenshots": 30,
+      "assertions": 48,
+      "result": "codex-report.json",
+      "log": "logs/codex.log"
+    },
+    {
+      "name": "Fresh native art",
+      "exit_code": 0,
+      "screenshots": 66,
+      "assertions": 0,
+      "result": "art-report.json",
+      "log": "logs/art.log"
+    },
+    {
+      "name": "Fresh native settings",
+      "exit_code": 0,
+      "screenshots": 12,
+      "assertions": 60,
+      "result": "settings-report.json",
+      "log": "logs/settings-scroll.log"
+    }
+  ],
+  "accepted_fresh_screenshots": 294,
+  "selected_persistent_pngs": 45,
+  "old_ui_screenshots_counted": 0,
+  "mail_no_ellipsis_native_pixel_comparisons": 12,
+  "mail_buttons_with_pixel_differences": 0,
+  "assets_decoded": 563,
+  "literal_references_found": 181,
+  "external_fixtures": [
+    {
+      "purpose": "art scene selects additive UI art script without overwriting PR13 original",
+      "path": "harness/art-harness.tscn",
+      "sha256": "69fccc37baebc7373decaa3e5534a13a59fd31801209a516c9c54a281e6d9a6d"
+    },
+    {
+      "purpose": "Focused settings scroll/reopen uses external supplemental fixture against fixed production source",
+      "path": "harness/settings-harness.gd",
+      "sha256": "2b89ea280dfe438332f47a8f11bc77f6bce2f1f85c51465bdf26176eec3cb9d0"
+    },
+    {
+      "purpose": "Settings scene",
+      "path": "harness/settings-harness.tscn",
+      "sha256": "d22e3ddb5ee4df2b6b70a81ad46fac5ac982330c72554da7f021dd1d3c24c0f9"
+    }
+  ],
+  "retained_exploratory_failures": [
+    {
+      "name": "Original retry runner with shared persisted English language",
+      "exit_code": 1,
+      "log": "logs/run_play_retry.log",
+      "cause": "Shared ui language=en verified from language cfg; original equipment-name test asserts Chinese. All 17 modules pass under isolated default language without source modification."
+    },
+    {
+      "name": "Settings geometry compared to physical pixels",
+      "exit_code": 1,
+      "log": "exploratory-settings-units/run.log",
+      "cause": "External assertion compared logical embedded-popup coordinates to physical window pixels. Corrected external fixture compares logical viewport; all 60 assertions and 12 captures pass. No production change."
+    }
+  ],
+  "preexisting_original_fixture_failure": {
+    "name": "Original test_boxspirit_instances",
+    "original_pr13_baseline_exit": 1,
+    "integration_exit": 1,
+    "logs": [
+      "logs/legacy-boxspirit-baseline.log",
+      "logs/legacy-boxspirit-integration.log"
+    ],
+    "reason": "Old Chinese substring assertions (Fire 7 / Direct 7) differ from full current runtime sentence. Corrected additive ui_integration_boxspirit_instances passes; original PR13 test preserved byte-for-byte."
+  },
+  "source_metadata_notes": [
+    "Codex fixture retains its historical hardcoded primary_matrix_ui_sha=14540e8e69fc00572bd5697f4a5e6802ee4bb992. Its source_sha=ea94d97f and native PNG hashes govern this fresh run; historical field is not the current production source. Raw report is preserved unedited.",
+    "Preview manifest records source_tree_dirty=true: dotnet modifies tracked bin/obj build outputs and Godot creates untracked UIDs/evidence. Existing non-UI production/source blobs were checked before composition and after restoring only our generated tracked build outputs; both guards pass."
+  ],
+  "scope_limits": [
+    "Native fixture rendering on Xorg/Mesa llvmpipe; Dummy audio.",
+    "UI target flow uses actual button and store/event handlers with a recording gateway, not a live external game server.",
+    "HTTP checks use local boundary/codec fixture servers; preview parity executes real authoritative numerics.",
+    "No new online multi-user pressure/whole-server recovery test or next ACK/READY/STOP batch; PR13 baseline remains fixed de1157f.",
+    "Reopen asserts visible state, closure and reachable content; it is not a memory-leak or long-run stress proof.",
+    "Native render/mail/art/settings logs retain ObjectDB/resource shutdown warnings; no new parse/script errors. Cleanup warnings were not diagnosed in this compatibility batch.",
+    "All 294 accepted raw PNGs remain in cloud artifacts; selected PNGs, full hashes, contact sheets and reports are committed. Unselected raw bytes are not persisted to GitHub/Library."
+  ]
+}

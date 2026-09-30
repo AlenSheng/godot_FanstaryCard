@@ -1,0 +1,139 @@
+{
+  "convention": "第一批13，第二批最长卡名1，第三批实际主题字体邮件按钮切字1，合计15；历史元数据和测试问题另计。",
+  "baseline_sha": "b7099ef716235be68395255360cbd5cf6c67baff",
+  "source_sha": "14540e8e69fc00572bd5697f4a5e6802ee4bb992",
+  "defects": [
+    {
+      "id": "UI-01",
+      "problem": "怪物暗红卡框顶边缺失及纹理映射截顶",
+      "evidence": "实际原图与monster_card.png原生截图",
+      "resolution": "内置imageGen补齐原图顶边；shader保留顶角与透明窗",
+      "file": "art/generated/ui-style-20260930/monster_card_frame_complete.png",
+      "status": "fixed_native_capture_confirmed"
+    },
+    {
+      "id": "UI-02",
+      "problem": "本命武器复用橙品质框",
+      "evidence": "三职业准备/穿戴页原生截图",
+      "resolution": "内置imageGen生成三职业独立框atlas；运行时职业色与Signature标签",
+      "file": "client/assets/generated/ui/signature_weapon_frames.png",
+      "status": "fixed_native_capture_confirmed"
+    },
+    {
+      "id": "UI-03",
+      "problem": "登录标题/正文预布局缩至1px",
+      "evidence": "基线login_long/ busy / error双语截图及0可见行断言",
+      "resolution": "流式Container Label保持字体原始大小及最小行高",
+      "file": "client/ui/palette.gd",
+      "status": "fixed_native_capture_confirmed"
+    },
+    {
+      "id": "UI-04",
+      "problem": "恢复字体后登录长文面板/状态挤压",
+      "evidence": "长公告/认证消息原生截图及面板边界断言",
+      "resolution": "公告/提示独立滚动；操作按钮保留；设置入口留90px",
+      "file": "client/ui/main.gd",
+      "status": "fixed_native_capture_confirmed"
+    },
+    {
+      "id": "UI-05",
+      "problem": "装备对比高内容溢出屏幕",
+      "evidence": "基线comparison截图及bounds失败",
+      "resolution": "内容滚动；标题、操作、页脚保持在屏内",
+      "file": "client/ui/equipment_compare_dialog.gd",
+      "status": "fixed_native_capture_confirmed"
+    },
+    {
+      "id": "UI-06",
+      "problem": "原生控件默认皮肤漂移",
+      "evidence": "设置、下拉、输入、滚动与按钮四态原生截图",
+      "resolution": "深青黄铜/手绘纹理一致主题；禁用文字仍可读",
+      "file": "client/ui/palette.gd",
+      "status": "fixed_native_capture_confirmed"
+    },
+    {
+      "id": "UI-07",
+      "problem": "免费包已有素材未接入",
+      "evidence": "基线prep_free纯文字；manifest1254方形现图",
+      "resolution": "接入现有backpack_free.png，与两档付费包一致",
+      "file": "client/ui/reference_ui.gd",
+      "status": "fixed_native_capture_confirmed"
+    },
+    {
+      "id": "UI-08",
+      "problem": "英文大厅两行强化入口裁底",
+      "evidence": "基线hall英文及字体行高/line_spacing测量",
+      "resolution": "计入换行与3px行距并加高标签",
+      "file": "client/ui/reference_ui.gd",
+      "status": "fixed_native_capture_confirmed"
+    },
+    {
+      "id": "UI-09",
+      "problem": "长邮件挤出附件和操作；预览/附件数量不见",
+      "evidence": "基线mail_long/bottom和零可见行断言",
+      "resolution": "正文及附件滚动，操作固定；96方格内留数量标签",
+      "file": "client/ui/reference_ui.gd",
+      "status": "fixed_native_capture_confirmed"
+    },
+    {
+      "id": "UI-10",
+      "problem": "本命标题/完整正文与框内饰贴合",
+      "evidence": "三职业passive_kind真实最长说明及六段预览截图",
+      "resolution": "本命面板移开预览；标题/54图标/16正文留安全内边距",
+      "file": "client/ui/exploration_view.gd",
+      "status": "fixed_native_capture_confirmed"
+    },
+    {
+      "id": "UI-11",
+      "problem": "选牌预览两行与加载说明压上下金边",
+      "evidence": "完整6段/heal/shield/loading原生截图",
+      "resolution": "复用已有无字薄标题底；64/14px安全边，加载行居中",
+      "file": "client/ui/exploration_view.gd",
+      "status": "fixed_native_capture_confirmed"
+    },
+    {
+      "id": "UI-12",
+      "problem": "切英文后Relicbound按旧中文宽度拆行",
+      "evidence": "人工放大login_error_en_960真实像素",
+      "resolution": "品牌Label单行；新增实际行数断言",
+      "file": "client/ui/main.gd",
+      "status": "fixed_native_capture_confirmed"
+    },
+    {
+      "id": "UI-13",
+      "problem": "锁定准备页缺冻结编组摘要",
+      "evidence": "原art_preview冻结摘要断言失败，prep_locked截图确无摘要",
+      "resolution": "现有locked_deck_summary显示冻结20张/HP99；测试按真实双语模板校验",
+      "file": "client/ui/reference_ui.gd",
+      "status": "fixed_native_capture_confirmed"
+    },
+    {
+      "id": "UI-14",
+      "problem": "最长英文卡名先按正文字体拟合后改标题字体，卡面切字",
+      "evidence": "codex-final实际最长卡按钮打开与text_observations，21条重复状态观察",
+      "resolution": "以实际标题字体拟合，卡名限一行、至少12px、明确省略号；详情标题及Tooltip保留全名",
+      "file": "client/ui/card_view.gd",
+      "status": "fixed_native_capture_confirmed",
+      "batch": 2,
+      "source_sha": "af14421e8489a7db67eb713950b1e8ee5ca58563"
+    },
+    {
+      "id": "UI-15",
+      "problem": "邮件英文Claim/Delete/Claimed和批量操作按body测宽、实际title绘制，发生切字",
+      "evidence": "3011c7ab原生36图；实际主题测宽和关闭省略像素回归48条失败",
+      "resolution": "通用Button按实际主题字体拟合；行按钮128宽，批量按钮180宽；英文最低18px，Claimed19px",
+      "file": "client/ui/reference_ui.gd",
+      "before_sha": "3011c7abdcedbd2bb5dfa1308e1fd2db3877a5c5",
+      "source_sha": "7869260dab958c60e9b12e93f7441d0de3825e92",
+      "status": "fixed_native_capture_confirmed",
+      "tests": "36 after截图，270检查，0错误；12像素比较均无省略差异；18/18原生回归"
+    }
+  ],
+  "integrity": "20个已有元素调节条目缺imported_sha256，1个Priest本命徽记哈希过时，共21条历史元数据修复；新怪物框第22条更新。",
+  "withdrawn_findings": [
+    "Mountain Bearer · Dun是完整名，未按旧误报修改角色名",
+    "旧pr13_combat_art fixture缺passive_kind导致正文空白，不证明线上功能缺失",
+    "125当前防具、免费包和20元素调节插画已存在，不按旧418/200文档重复生成"
+  ],
+  "latest_source_sha": "af14421e8489a7db67eb713950b1e8ee5ca58563"
+}

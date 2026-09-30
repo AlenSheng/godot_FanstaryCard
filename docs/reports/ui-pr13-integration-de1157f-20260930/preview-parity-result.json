@@ -1,0 +1,44 @@
+{
+  "ok": true,
+  "source_commit": "ea94d97fe30d3622777f9190d7696c640f70b02a",
+  "source_tree_dirty": true,
+  "gates": [
+    {
+      "name": "server",
+      "command": [
+        "dotnet",
+        "run",
+        "--project",
+        "/workspace/relicround-integration-de1157f/server/tools/FantasyCard.Numerics",
+        "-c",
+        "Release",
+        "--",
+        "--preview-vectors",
+        "--output",
+        "/workspace/relicround-integration-de1157f/artifacts/ui-pr13-integration-de1157f/preview-parity/input.json"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "elapsed": 5.799909591674805
+    },
+    {
+      "name": "client",
+      "command": [
+        "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/relicround-integration-de1157f/client",
+        "--script",
+        "res://tests/run_preview_vectors.gd"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "elapsed": 1.0957930088043213
+    }
+  ],
+  "vector_count": 1800,
+  "failure_count": 0,
+  "input_sha256": "c6bb4008cdc46879fb3419f5010dbbec97d20aff64a0292ebbf80ed16b5ffe34",
+  "domain_assembly_sha256": "58c7c3a1d6c58a5772d4dc67852917dbc60a430a9316ff1655b15943716623ec",
+  "simulator_assembly_sha256": "2b020499adba4364e4251fb9b6a68862ce6b74e44bddff877316ca42a2c25ebb"
+}

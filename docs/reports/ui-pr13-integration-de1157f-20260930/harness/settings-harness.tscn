@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://main.tscn" id="1"]
+[ext_resource type="Script" path="/workspace/relicround-integration-de1157f/artifacts/ui-pr13-integration-de1157f/settings/harness.gd" id="2"]
+
+[node name="SettingsScrollIntegration" type="Node"]
+script = ExtResource("2")
+
+[node name="UI" parent="." instance=ExtResource("1")]

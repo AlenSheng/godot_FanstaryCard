@@ -1,0 +1,240 @@
+[
+  {
+    "label": "fresh-source-build",
+    "command": [
+      "/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet",
+      "build",
+      "FantasyCard.Server.slnx",
+      "-c",
+      "Release",
+      "-v",
+      "minimal"
+    ],
+    "cwd": "/workspace/relicround-integration-f812879e/server",
+    "exit_code": 0,
+    "duration_seconds": 11.018,
+    "deadline_seconds": 180,
+    "log": "fresh-source-build.log"
+  },
+  {
+    "label": "godot-import",
+    "command": [
+      "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/godot_ui_compat.py",
+      "--headless",
+      "--path",
+      "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/ready-stop-compat/godot",
+      "--editor",
+      "--import",
+      "--quit"
+    ],
+    "cwd": "/workspace/relicround-integration-f812879e",
+    "exit_code": 0,
+    "duration_seconds": 5.276,
+    "deadline_seconds": 120,
+    "log": "godot-import.log"
+  },
+  {
+    "label": "private-pg-init",
+    "command": [
+      "initdb",
+      "-D",
+      "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/ready-stop-compat/private-pg",
+      "-U",
+      "ready_stop_owner",
+      "--auth=trust",
+      "--no-locale",
+      "--encoding=UTF8"
+    ],
+    "cwd": "/workspace/relicround-integration-f812879e",
+    "exit_code": 0,
+    "duration_seconds": 0.746,
+    "deadline_seconds": 30,
+    "log": "private-pg-init.log"
+  },
+  {
+    "label": "private-pg-start",
+    "command": [
+      "pg_ctl",
+      "-D",
+      "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/ready-stop-compat/private-pg",
+      "-l",
+      "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/ready-stop-compat/private-pg.log",
+      "-o",
+      "-c listen_addresses='' -k /tmp/pr13-ready-stop-jtl9xf68",
+      "-w",
+      "start"
+    ],
+    "cwd": "/workspace/relicround-integration-f812879e",
+    "exit_code": 0,
+    "duration_seconds": 0.104,
+    "deadline_seconds": 30,
+    "log": "private-pg-start.log"
+  },
+  {
+    "label": "normal_ready-godot",
+    "command": [
+      "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/godot_ui_compat.py",
+      "--headless",
+      "--max-fps",
+      "60",
+      "--path",
+      "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/ready-stop-compat/godot",
+      "--script",
+      "res://tests/run_ready_stop_faults.gd"
+    ],
+    "cwd": "/workspace/relicround-integration-f812879e",
+    "exit_code": 0,
+    "duration_seconds": 35.0,
+    "deadline_seconds": 95,
+    "log": "normal_ready-godot.log"
+  },
+  {
+    "label": "required_lost_reconnect-godot",
+    "command": [
+      "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/godot_ui_compat.py",
+      "--headless",
+      "--max-fps",
+      "60",
+      "--path",
+      "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/ready-stop-compat/godot",
+      "--script",
+      "res://tests/run_ready_stop_faults.gd"
+    ],
+    "cwd": "/workspace/relicround-integration-f812879e",
+    "exit_code": 0,
+    "duration_seconds": 36.095,
+    "deadline_seconds": 95,
+    "log": "required_lost_reconnect-godot.log"
+  },
+  {
+    "label": "ready_replies_lost_reconnect-frame-proxy-start",
+    "command": [
+      "/workspace/relicround-env/venv/bin/python3",
+      "/workspace/relicround-integration-f812879e/client/tests/ready_frame_proxy.py",
+      "--upstream-port",
+      "40113",
+      "--case",
+      "ready_replies_lost_reconnect",
+      "--evidence",
+      "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/ready-stop-compat/ready_replies_lost_reconnect/transport",
+      "--database",
+      "ready_stop_f1cc528a70974b5ca9b374a75a3f2deb"
+    ],
+    "cwd": "/workspace/relicround-integration-f812879e",
+    "exit_code": 0,
+    "status": "stopped",
+    "pid": 19369,
+    "deadline_seconds": 10
+  },
+  {
+    "label": "ready_replies_lost_reconnect-godot",
+    "command": [
+      "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/godot_ui_compat.py",
+      "--headless",
+      "--max-fps",
+      "60",
+      "--path",
+      "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/ready-stop-compat/godot",
+      "--script",
+      "res://tests/run_ready_stop_faults.gd"
+    ],
+    "cwd": "/workspace/relicround-integration-f812879e",
+    "exit_code": 0,
+    "duration_seconds": 36.045,
+    "deadline_seconds": 95,
+    "log": "ready_replies_lost_reconnect-godot.log"
+  },
+  {
+    "label": "owned-frame-proxy-cleanup",
+    "command": [
+      "SIGTERM",
+      "19369"
+    ],
+    "exit_code": 0,
+    "duration_seconds": 0.015,
+    "deadline_seconds": 10
+  },
+  {
+    "label": "ready_send_all_lost_stop-frame-proxy-start",
+    "command": [
+      "/workspace/relicround-env/venv/bin/python3",
+      "/workspace/relicround-integration-f812879e/client/tests/ready_frame_proxy.py",
+      "--upstream-port",
+      "36499",
+      "--case",
+      "ready_send_all_lost_stop",
+      "--evidence",
+      "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/ready-stop-compat/ready_send_all_lost_stop/transport",
+      "--database",
+      "ready_stop_fc3c5083917b44689b3f2360569f6638"
+    ],
+    "cwd": "/workspace/relicround-integration-f812879e",
+    "exit_code": 0,
+    "status": "stopped",
+    "pid": 19440,
+    "deadline_seconds": 10
+  },
+  {
+    "label": "ready_send_all_lost_stop-godot",
+    "command": [
+      "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/godot_ui_compat.py",
+      "--headless",
+      "--max-fps",
+      "60",
+      "--path",
+      "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/ready-stop-compat/godot",
+      "--script",
+      "res://tests/run_ready_stop_faults.gd"
+    ],
+    "cwd": "/workspace/relicround-integration-f812879e",
+    "exit_code": 0,
+    "duration_seconds": 48.746,
+    "deadline_seconds": 95,
+    "log": "ready_send_all_lost_stop-godot.log"
+  },
+  {
+    "label": "owned-frame-proxy-cleanup",
+    "command": [
+      "SIGTERM",
+      "19440"
+    ],
+    "exit_code": 0,
+    "duration_seconds": 0.015,
+    "deadline_seconds": 10
+  },
+  {
+    "label": "stop_ready_before_send-godot",
+    "command": [
+      "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/godot_ui_compat.py",
+      "--headless",
+      "--max-fps",
+      "60",
+      "--path",
+      "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/ready-stop-compat/godot",
+      "--script",
+      "res://tests/run_ready_stop_faults.gd"
+    ],
+    "cwd": "/workspace/relicround-integration-f812879e",
+    "exit_code": 0,
+    "duration_seconds": 48.498,
+    "deadline_seconds": 95,
+    "log": "stop_ready_before_send-godot.log"
+  },
+  {
+    "label": "owned-pg-cleanup",
+    "command": [
+      "pg_ctl",
+      "-D",
+      "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/ready-stop-compat/private-pg",
+      "-m",
+      "fast",
+      "-w",
+      "stop"
+    ],
+    "cwd": "/workspace/relicround-integration-f812879e",
+    "exit_code": 0,
+    "duration_seconds": 2.006,
+    "deadline_seconds": 30,
+    "log": "owned-pg-cleanup.log"
+  }
+]

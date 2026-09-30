@@ -1,0 +1,109 @@
+[
+  {
+    "command": [
+      "dotnet",
+      "build",
+      "FantasyCard.Server.slnx",
+      "-c",
+      "Release",
+      "-v",
+      "minimal"
+    ],
+    "label": "fresh-build",
+    "cwd": "/workspace/relicround-integration-f812879e/server",
+    "exit_code": 0,
+    "deadline_seconds": 240,
+    "duration_seconds": 6.608
+  },
+  {
+    "command": [
+      "initdb",
+      "-D",
+      "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/pgdata",
+      "-U",
+      "ack_cycle_owner",
+      "--auth=trust",
+      "--no-locale",
+      "--encoding=UTF8"
+    ],
+    "label": "pg-init",
+    "cwd": "/workspace/relicround-integration-f812879e",
+    "exit_code": 0,
+    "deadline_seconds": 30,
+    "duration_seconds": 0.767
+  },
+  {
+    "command": [
+      "pg_ctl",
+      "-D",
+      "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/pgdata",
+      "-l",
+      "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/pg.log",
+      "-o",
+      "-k /tmp/pr13-ack-cycles-l_zqvjvy -h '' -p 5432",
+      "-w",
+      "start"
+    ],
+    "label": "pg-start",
+    "cwd": "/workspace/relicround-integration-f812879e",
+    "exit_code": 0,
+    "deadline_seconds": 30,
+    "duration_seconds": 0.114
+  },
+  {
+    "command": [
+      "createdb",
+      "-h",
+      "/tmp/pr13-ack-cycles-l_zqvjvy",
+      "-p",
+      "5432",
+      "-U",
+      "ack_cycle_owner",
+      "pr13_ack_cycles"
+    ],
+    "label": "pg-createdb",
+    "cwd": "/workspace/relicround-integration-f812879e",
+    "exit_code": 0,
+    "deadline_seconds": 30,
+    "duration_seconds": 0.064
+  },
+  {
+    "command": [
+      "dotnet",
+      "test",
+      "tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "-c",
+      "Release",
+      "--no-build",
+      "--filter",
+      "FullyQualifiedName~Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth|FullyQualifiedName~Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes",
+      "--logger",
+      "trx;LogFileName=targeted.trx",
+      "--results-directory",
+      "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/results",
+      "-v",
+      "normal"
+    ],
+    "label": "targeted-tests",
+    "cwd": "/workspace/relicround-integration-f812879e/server",
+    "exit_code": 1,
+    "deadline_seconds": 1500,
+    "duration_seconds": 23.204
+  },
+  {
+    "command": [
+      "pg_ctl",
+      "-D",
+      "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/pgdata",
+      "-m",
+      "fast",
+      "-w",
+      "stop"
+    ],
+    "label": "pg-stop",
+    "cwd": "/workspace/relicround-integration-f812879e",
+    "exit_code": 0,
+    "deadline_seconds": 30,
+    "duration_seconds": 0.315
+  }
+]

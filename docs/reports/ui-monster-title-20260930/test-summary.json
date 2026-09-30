@@ -1,0 +1,164 @@
+{
+  "fixed_inputs": {
+    "pr13": "de1157fdf490a5bce3ba888c07519fc957c46782",
+    "ui": "070c7b441ffc5dbd7253aea1dcbc9793b1fef449"
+  },
+  "previous_integration_source": "ea94d97fe30d3622777f9190d7696c640f70b02a",
+  "previous_delivery": "a9a30d8535c427d4a4b45bcd546c00f75f36173d",
+  "latest_tested_production_sha": "652549aa7db1f99f5313aba960163cc4c0984c7f",
+  "targeted_native": {
+    "before": {
+      "source_sha": "f4eba590605024d52cb89ff9c3bb2fdd885106ce",
+      "ok": false,
+      "process_exit_code": 1,
+      "full_viewport_pngs": 36,
+      "native_title_crops": 72,
+      "reference_crops": 72,
+      "title_samples": 72,
+      "safe_area_overflows": 36,
+      "native_pixel_differences": 27,
+      "assertion_errors": 165,
+      "minimum_observed_font_size": 13,
+      "thorn_mite_en_1280": {
+        "available_width": 172.0,
+        "complete_title": "Monster Thorn Mite",
+        "fits": false,
+        "font_is_themed_title": true,
+        "font_resource": "res://assets/fonts/SourceHanSerifSC-SemiBold.otf",
+        "font_size": 19,
+        "full_species": true,
+        "key": "M-THORNMITE_en_1280",
+        "lines": 2,
+        "measured_width": 192.0,
+        "rect": "[P: (709.0, 650.0), S: (180.0, 34.0)]",
+        "single_line": false,
+        "single_line_ellipsis_policy": false,
+        "species_name": "Thorn Mite",
+        "text": "Monster Thorn Mite",
+        "visible_lines": 1
+      }
+    },
+    "after": {
+      "source_sha": "652549aa7db1f99f5313aba960163cc4c0984c7f",
+      "ok": true,
+      "process_exit_code": 0,
+      "full_viewport_pngs": 36,
+      "native_title_crops": 72,
+      "reference_crops": 72,
+      "title_samples": 72,
+      "safe_area_overflows": 0,
+      "native_pixel_differences": 0,
+      "assertion_errors": 0,
+      "minimum_observed_font_size": 16,
+      "thorn_mite_en_1280": {
+        "available_width": 172.0,
+        "complete_title": "Monster Thorn Mite",
+        "fits": true,
+        "font_is_themed_title": true,
+        "font_resource": "res://assets/fonts/SourceHanSerifSC-SemiBold.otf",
+        "font_size": 17,
+        "full_species": true,
+        "key": "M-THORNMITE_en_1280",
+        "lines": 1,
+        "measured_width": 172.0,
+        "rect": "[P: (709.0, 650.0), S: (180.0, 34.0)]",
+        "single_line": true,
+        "single_line_ellipsis_policy": true,
+        "species_name": "Thorn Mite",
+        "text": "Monster Thorn Mite",
+        "visible_lines": 1
+      }
+    }
+  },
+  "related_godot_modules": {
+    "source_sha": "652549aa7db1f99f5313aba960163cc4c0984c7f",
+    "ok": true,
+    "process_exit_code": 0,
+    "passed": 19,
+    "execution": "Godot --headless module runner; separate from the native rendered screenshot matrix"
+  },
+  "localized_overflow_supplement": {
+    "source_sha": "652549aa7db1f99f5313aba960163cc4c0984c7f",
+    "ok": true,
+    "process_exit_code": 0,
+    "cases": 4,
+    "execution": "Headless synthetic-string guards, not a rendered catalog-name proof"
+  },
+  "import": {
+    "source_sha": "652549aa7db1f99f5313aba960163cc4c0984c7f",
+    "process_exit_code": 0
+  },
+  "production_readable_minimum_font_size": 16,
+  "native_pixel_method": "Full species/tooltip, actual themed-font width and line checks AND byte equality of native title crops against independent unwrapped Godot Labels. Pixel equality alone does not prove text beyond a crop.",
+  "warning_scope": {
+    "before": "VSync warning plus 6 ObjectDB instances / 3 resources at exit",
+    "final_after": "Only driver VSync warning in retained log; no ObjectDB/resource/parse/script error printed",
+    "related_module_runner": "No warning/error printed in final log",
+    "initial_import": "Six pre-existing missing test UIDs recreated by Godot; not staged in this batch"
+  },
+  "historical_tests_not_rerun_here": [
+    "Previous 294-view integration matrix",
+    "C# 25 checks / 8 official vectors",
+    "HTTP codec 177 / transport24 / boundary",
+    "1800 server-client parity vectors",
+    "Full UI style/art matrix"
+  ],
+  "ci": {
+    "status": "blocked historically, new commits intentionally skipped",
+    "no_rerun": true,
+    "parent_authenticated_billing_annotation_run": 36769267481,
+    "previous_pr19_runs": [
+      36773897757,
+      36773896151
+    ],
+    "category": "Account billing; payment failure vs spending-limit alternative unresolved",
+    "new_ci_required_on_billing_resolution": true
+  },
+  "limits": [
+    "Native screenshots render production widgets with isolated local fixture state, not live game-server traffic.",
+    "This batch verifies only monster title display and related module regressions; no claim of new acceptance for mail/codex/targets/three-class passive/panel reopen or online load.",
+    "New ACK/READY/STOP changes are outside frozen de1157f input.",
+    "Before has 165 assertions, including style contracts; this is not 165 distinct visual defects.",
+    "Intermediate floor14 run passed width/pixel checks but was superseded for readability; excluded from final accepted counts."
+  ],
+  "manual_visual_review": {
+    "reviewed": true,
+    "title_sheets": 6,
+    "viewport_contact_sheets": 2,
+    "final_native_representatives": [
+      "after/monsters_1_en_1280.png",
+      "after/monsters_4_en_960.png",
+      "after/monsters_6_zh-CN_960.png"
+    ],
+    "source_sha": "652549aa7db1f99f5313aba960163cc4c0984c7f"
+  },
+  "persisted_new_evidence": {
+    "full_viewport_pngs": 72,
+    "actual_and_reference_native_crops": 288,
+    "raw_png_bytes": 122245469,
+    "raw_cloud_only_gap": 0
+  },
+  "library_preview": {
+    "operation": "create_library_file",
+    "status": "succeeded",
+    "path": "/monster_title_fixed_652549aa_en_1280.png",
+    "file_id": "file_000000009964823093317fffc0a908ab",
+    "library_file_id": "libfile_6f138602cd84819184a07c1c16e47db6",
+    "file_name": "monster_title_fixed_652549aa_en_1280.png",
+    "current_version_number": 0,
+    "restored_from_version_number": null,
+    "directory_id": "libdir_650561cfd464819199bc4e5fc3614d0b",
+    "mime_type": "image/png",
+    "library_artifact_type": "image",
+    "file_size_bytes": 1411531,
+    "external_connectors_accessed": false,
+    "local_path": "/workspace/relicround-integration-de1157f/docs/reports/ui-monster-title-20260930/review/monster_title_fixed_652549aa_en_1280.png",
+    "tested_production_sha": "652549aa7db1f99f5313aba960163cc4c0984c7f",
+    "sha256": "291ae860cb5090e57626a957dd481bb84ace6954cb35a9b645dece1b9b3a7da8",
+    "dimensions": [
+      1280,
+      720
+    ],
+    "local_bytes": 1411531
+  }
+}
