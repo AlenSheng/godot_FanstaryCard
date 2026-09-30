@@ -1,0 +1,55 @@
+name: Frozen PR13 and PR14 final image validation
+
+on:
+  push:
+    branches: ['codex/cloud-compatible-validation-20260930']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: frozen-cloud-image-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  final-runtime-image:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 70
+    env:
+      SOURCE_SHA: ${{ github.sha }}
+      DOCKER_CONFIG: /tmp/fc-integration-docker
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Prove frozen inputs and exercise unchanged deployment controls
+        run: |
+          set -euo pipefail
+          mkdir -p image-evidence
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          python3 tools/cloud/verify_integration.py --output image-evidence/composition.json > image-evidence/composition.log 2>&1
+          python3 -m py_compile tools/cloud/*.py
+          python3 -m unittest discover -s tools/cloud/tests -v > image-evidence/control-tests.log 2>&1
+          for script in tools/cloud/*.sh; do bash -n "$script"; done
+          git diff --check
+      - name: Build matching protected runtime and private build stage
+        run: |
+          set -euo pipefail
+          docker build --build-arg "FANTASYCARD_SOURCE_COMMIT=$SOURCE_SHA" --label "org.opencontainers.image.revision=$SOURCE_SHA" -f server/src/FantasyCard.Server/Dockerfile -t "cloud-frozen-runtime:$SOURCE_SHA" . > image-evidence/build.log 2>&1
+          docker build --target build -f server/src/FantasyCard.Server/Dockerfile -t "cloud-frozen-builder:$SOURCE_SHA" . > image-evidence/builder.log 2>&1
+      - name: Verify final DLLs, all tests, restart, Production and database outage
+        run: |
+          set -euo pipefail
+          python3 tools/cloud/validate_image.py --source . --image "cloud-frozen-runtime:$SOURCE_SHA" --builder "cloud-frozen-builder:$SOURCE_SHA" --source-sha "$SOURCE_SHA" --output image-evidence/image-validation.json > image-evidence/validation.log 2>&1
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: frozen-cloud-image-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            image-evidence/*.log
+            image-evidence/*.json
+            image-evidence/diagnostics/**
+          retention-days: 30
+          if-no-files-found: error

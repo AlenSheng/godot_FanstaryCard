@@ -1,0 +1,91 @@
+{
+  "source_pr13_sha": "b7099ef716235be68395255360cbd5cf6c67baff",
+  "controller_pr14_sha": "262390134e98f169899d076e6fa21926d44ba1aa",
+  "common_base_sha": "28c6c7e7d3898e4d2abd186f53361477ba380330",
+  "release_proposal_base_sha": "28c6c7e7d3898e4d2abd186f53361477ba380330",
+  "main_registration_base_sha": "b39841d3f5191c11c9e51c7e6875490789aba53c",
+  "composition": "PR13 source plus exact non-overlapping 25-file PR14 addition; verification and review documents only added separately",
+  "branch": "codex/cloud-compatible-validation-20260930",
+  "online_deploy_authorized": false,
+  "proposals_applied_to_remote": false,
+  "proposals": [
+    {
+      "patch": "release-controller.patch",
+      "base_sha": "28c6c7e7d3898e4d2abd186f53361477ba380330",
+      "apply_check_passed": true,
+      "result_tree": "02604e6dda6f8470506901f3203d41d3af54426c",
+      "sha256": "10030e05d4ae5d8b5448ce47720189ba958fdc48708c4b5f2eb01b21a00372d9",
+      "files": [
+        ".github/workflows/cloud-config-check.yml",
+        ".github/workflows/test-server-deploy.yml",
+        "docs/CLOUD_TEST_DEPLOYMENT_20260930.md",
+        "docs/CLOUD_TEST_DEPLOYMENT_HANDOFF_20260930.md",
+        "docs/reports/cloud-deployment-20260930/ci-validation.json",
+        "docs/reports/cloud-deployment-20260930/local-integration.json",
+        "docs/reports/cloud-deployment-20260930/verification.json",
+        "tools/cloud/.gitignore",
+        "tools/cloud/check.sh",
+        "tools/cloud/deployment.py",
+        "tools/cloud/env.sh",
+        "tools/cloud/install_tools.py",
+        "tools/cloud/local_integration.py",
+        "tools/cloud/remote_deploy.py",
+        "tools/cloud/setup.sh",
+        "tools/cloud/ship.py",
+        "tools/cloud/start.sh",
+        "tools/cloud/stop.sh",
+        "tools/cloud/tests/test_bootstrap.py",
+        "tools/cloud/tests/test_controls.py",
+        "tools/cloud/tests/test_diagnostics.py",
+        "tools/cloud/tests/test_remote.py",
+        "tools/cloud/tests/test_shipping_outcome.py",
+        "tools/cloud/toolchain.json",
+        "tools/cloud/validate_image.py"
+      ]
+    },
+    {
+      "patch": "main-registration.patch",
+      "base_sha": "b39841d3f5191c11c9e51c7e6875490789aba53c",
+      "apply_check_passed": true,
+      "result_tree": "e0e1d47405b243336908efa9ddbe930ba53674c0",
+      "sha256": "0c13d2cf8b6f0712094e18f9fe02817417d5c792f1b558cc890611ac041fff5e",
+      "files": [
+        ".github/workflows/test-server-deploy.yml"
+      ]
+    },
+    {
+      "patch": "controller-on-source.patch",
+      "base_sha": "b7099ef716235be68395255360cbd5cf6c67baff",
+      "apply_check_passed": true,
+      "result_tree": "84521461d867f0dea83208ed9bc1fa0f7751b924",
+      "sha256": "10030e05d4ae5d8b5448ce47720189ba958fdc48708c4b5f2eb01b21a00372d9",
+      "files": [
+        ".github/workflows/cloud-config-check.yml",
+        ".github/workflows/test-server-deploy.yml",
+        "docs/CLOUD_TEST_DEPLOYMENT_20260930.md",
+        "docs/CLOUD_TEST_DEPLOYMENT_HANDOFF_20260930.md",
+        "docs/reports/cloud-deployment-20260930/ci-validation.json",
+        "docs/reports/cloud-deployment-20260930/local-integration.json",
+        "docs/reports/cloud-deployment-20260930/verification.json",
+        "tools/cloud/.gitignore",
+        "tools/cloud/check.sh",
+        "tools/cloud/deployment.py",
+        "tools/cloud/env.sh",
+        "tools/cloud/install_tools.py",
+        "tools/cloud/local_integration.py",
+        "tools/cloud/remote_deploy.py",
+        "tools/cloud/setup.sh",
+        "tools/cloud/ship.py",
+        "tools/cloud/start.sh",
+        "tools/cloud/stop.sh",
+        "tools/cloud/tests/test_bootstrap.py",
+        "tools/cloud/tests/test_controls.py",
+        "tools/cloud/tests/test_diagnostics.py",
+        "tools/cloud/tests/test_remote.py",
+        "tools/cloud/tests/test_shipping_outcome.py",
+        "tools/cloud/toolchain.json",
+        "tools/cloud/validate_image.py"
+      ]
+    }
+  ]
+}

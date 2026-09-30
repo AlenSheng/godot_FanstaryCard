@@ -1,0 +1,145 @@
+Test run for /workspace/pr14-compatible-local-evidence/artifacts/bin/FantasyCard.Server.Tests/release/FantasyCard.Server.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+Test run for /workspace/pr14-compatible-local-evidence/artifacts/bin/FantasyCard.Domain.Tests/release/FantasyCard.Domain.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:01.17]     FantasyCard.Domain.Tests.Configuration.GameConfigCatalogTests.EmbeddedCatalogVersionMatchesPublishedClientPackage [FAIL]
+  Failed FantasyCard.Domain.Tests.Configuration.GameConfigCatalogTests.EmbeddedCatalogVersionMatchesPublishedClientPackage [4 ms]
+  Error Message:
+   System.IO.DirectoryNotFoundException : Could not locate the published server config version file.
+  Stack Trace:
+     at FantasyCard.Domain.Tests.Configuration.GameConfigCatalogTests.FindPublishedConfigRoots() in /workspace/pr14-compatible/server/tests/FantasyCard.Domain.Tests/Configuration/GameConfigCatalogTests.cs:line 101
+   at FantasyCard.Domain.Tests.Configuration.GameConfigCatalogTests.AssertPublishedConfigMatchesCatalog(String embeddedVersion) in /workspace/pr14-compatible/server/tests/FantasyCard.Domain.Tests/Configuration/GameConfigCatalogTests.cs:line 65
+   at FantasyCard.Domain.Tests.Configuration.GameConfigCatalogTests.EmbeddedCatalogVersionMatchesPublishedClientPackage() in /workspace/pr14-compatible/server/tests/FantasyCard.Domain.Tests/Configuration/GameConfigCatalogTests.cs:line 60
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+Results File: /workspace/pr14-compatible-local-evidence/results/all.trx
+
+Failed!  - Failed:     1, Passed:   316, Skipped:     0, Total:   317, Duration: 858 ms - FantasyCard.Domain.Tests.dll (net10.0)
+[xUnit.net 00:00:07.39]     FantasyCard.Server.Tests.Deploy.CaddyfileTests.Cloud_health_check_must_verify_the_public_domain_certificate [FAIL]
+[xUnit.net 00:00:07.39]     FantasyCard.Server.Tests.Deploy.CaddyfileTests.Domain_sites_must_not_share_the_ip_self_signed_certificate [FAIL]
+  Failed FantasyCard.Server.Tests.Deploy.CaddyfileTests.Cloud_health_check_must_verify_the_public_domain_certificate [< 1 ms]
+  Error Message:
+   System.IO.DirectoryNotFoundException : Could not locate server/deploy/fantasycard-update.sh.
+  Stack Trace:
+     at FantasyCard.Server.Tests.Deploy.CaddyfileTests.FindServerFile(String relativePath) in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/Deploy/CaddyfileTests.cs:line 76
+   at FantasyCard.Server.Tests.Deploy.CaddyfileTests.Cloud_health_check_must_verify_the_public_domain_certificate() in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/Deploy/CaddyfileTests.cs:line 51
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed FantasyCard.Server.Tests.Deploy.CaddyfileTests.Domain_sites_must_not_share_the_ip_self_signed_certificate [< 1 ms]
+  Error Message:
+   System.IO.DirectoryNotFoundException : Could not locate server/Caddyfile.
+  Stack Trace:
+     at FantasyCard.Server.Tests.Deploy.CaddyfileTests.FindServerFile(String relativePath) in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/Deploy/CaddyfileTests.cs:line 76
+   at FantasyCard.Server.Tests.Deploy.CaddyfileTests.Domain_sites_must_not_share_the_ip_self_signed_certificate() in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/Deploy/CaddyfileTests.cs:line 8
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:07.39]     FantasyCard.Server.Tests.Deploy.CaddyfileTests.Cloud_compose_must_fail_closed_in_production [FAIL]
+  Failed FantasyCard.Server.Tests.Deploy.CaddyfileTests.Cloud_compose_must_fail_closed_in_production [< 1 ms]
+  Error Message:
+   System.IO.DirectoryNotFoundException : Could not locate server/compose.cloud.yaml.
+  Stack Trace:
+     at FantasyCard.Server.Tests.Deploy.CaddyfileTests.FindServerFile(String relativePath) in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/Deploy/CaddyfileTests.cs:line 76
+   at FantasyCard.Server.Tests.Deploy.CaddyfileTests.Cloud_compose_must_fail_closed_in_production() in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/Deploy/CaddyfileTests.cs:line 36
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:17.24]     FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_default_binary_routes_ticket_security_and_real_sample_benchmark [FAIL]
+[xUnit.net 00:00:17.26]     FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(scenario: "ticket-expiry") [FAIL]
+[xUnit.net 00:00:17.27]     FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(scenario: "ban-idle") [FAIL]
+[xUnit.net 00:00:17.56]     FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_pvp_relic_replay_and_extraction_survive_forced_restart [FAIL]
+  Failed FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_default_binary_routes_ticket_security_and_real_sample_benchmark [18 ms]
+  Error Message:
+   System.IO.DirectoryNotFoundException : Could not locate the FantasyCard.Server project directory.
+  Stack Trace:
+     at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.FindServerProjectDirectory() in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkEndToEndTests.cs:line 189
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_default_binary_routes_ticket_security_and_real_sample_benchmark() in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/ProtobufHttp/MigrationIndependentTests.cs:line 26
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_default_binary_routes_ticket_security_and_real_sample_benchmark() in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/ProtobufHttp/MigrationIndependentTests.cs:line 149
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(scenario: "ticket-expiry") [15 ms]
+  Error Message:
+   System.IO.DirectoryNotFoundException : Could not locate the FantasyCard.Server project directory.
+  Stack Trace:
+     at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.FindServerProjectDirectory() in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkEndToEndTests.cs:line 189
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.StartServer(String connectionString, Int32 port) in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkEndToEndTests.cs:line 152
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(String scenario) in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/ProtobufHttp/MigrationTicketLifecycleTests.cs:line 24
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(String scenario) in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/ProtobufHttp/MigrationTicketLifecycleTests.cs:line 57
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(scenario: "ban-idle") [11 ms]
+  Error Message:
+   System.IO.DirectoryNotFoundException : Could not locate the FantasyCard.Server project directory.
+  Stack Trace:
+     at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.FindServerProjectDirectory() in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkEndToEndTests.cs:line 189
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.StartServer(String connectionString, Int32 port) in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkEndToEndTests.cs:line 152
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(String scenario) in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/ProtobufHttp/MigrationTicketLifecycleTests.cs:line 24
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(String scenario) in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/ProtobufHttp/MigrationTicketLifecycleTests.cs:line 57
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_pvp_relic_replay_and_extraction_survive_forced_restart [286 ms]
+  Error Message:
+   System.IO.DirectoryNotFoundException : Could not locate the FantasyCard.Server project directory.
+  Stack Trace:
+     at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.FindServerProjectDirectory() in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkEndToEndTests.cs:line 189
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.StartServer(String connectionString, Int32 port) in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkEndToEndTests.cs:line 152
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_pvp_relic_replay_and_extraction_survive_forced_restart() in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkGameplayTests.cs:line 81
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_pvp_relic_replay_and_extraction_survive_forced_restart() in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkGameplayTests.cs:line 160
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:17.59]     FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_default_protobuf_preparation_ready_and_room_entry [FAIL]
+[xUnit.net 00:00:17.77]     FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_concurrent_card_upgrade_retries_spend_once [FAIL]
+[xUnit.net 00:00:17.79]     FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_binary_business_equipment_cards_market_mail_matchmaking [FAIL]
+[xUnit.net 00:00:17.81]     FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_supports_login_bootstrap_and_websocket_ping [FAIL]
+[xUnit.net 00:00:17.99]     FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_switching_names_registers_distinct_uids_and_relogin_restores_the_original_account [FAIL]
+[xUnit.net 00:00:18.01]     FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Protobuf_real_database_login_bootstrap_profile_deck_and_cross_format_purchase [FAIL]
+  Failed FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_default_protobuf_preparation_ready_and_room_entry [26 ms]
+  Error Message:
+   System.IO.DirectoryNotFoundException : Could not locate the FantasyCard.Server project directory.
+  Stack Trace:
+     at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.FindServerProjectDirectory() in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkEndToEndTests.cs:line 189
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_default_protobuf_preparation_ready_and_room_entry() in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkGameplayTests.cs:line 208
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_default_protobuf_preparation_ready_and_room_entry() in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkGameplayTests.cs:line 283
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_concurrent_card_upgrade_retries_spend_once [180 ms]
+  Error Message:
+   System.IO.DirectoryNotFoundException : Could not locate the FantasyCard.Server project directory.
+  Stack Trace:
+     at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.FindServerProjectDirectory() in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkEndToEndTests.cs:line 189
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.StartServer(String connectionString, Int32 port) in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkEndToEndTests.cs:line 152
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_concurrent_card_upgrade_retries_spend_once() in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkGameplayTests.cs:line 176
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_concurrent_card_upgrade_retries_spend_once() in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkGameplayTests.cs:line 195
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_binary_business_equipment_cards_market_mail_matchmaking [21 ms]
+  Error Message:
+   System.IO.DirectoryNotFoundException : Could not locate the FantasyCard.Server project directory.
+  Stack Trace:
+     at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.FindServerProjectDirectory() in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkEndToEndTests.cs:line 189
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_binary_business_equipment_cards_market_mail_matchmaking() in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/ProtobufHttp/MigrationBusinessTests.cs:line 22
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_binary_business_equipment_cards_market_mail_matchmaking() in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/ProtobufHttp/MigrationBusinessTests.cs:line 136
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_supports_login_bootstrap_and_websocket_ping [14 ms]
+  Error Message:
+   System.IO.DirectoryNotFoundException : Could not locate the FantasyCard.Server project directory.
+  Stack Trace:
+     at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.FindServerProjectDirectory() in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkEndToEndTests.cs:line 189
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.StartServer(String connectionString, Int32 port) in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkEndToEndTests.cs:line 152
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_supports_login_bootstrap_and_websocket_ping() in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkEndToEndTests.cs:line 40
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_supports_login_bootstrap_and_websocket_ping() in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkEndToEndTests.cs:line 130
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_switching_names_registers_distinct_uids_and_relogin_restores_the_original_account [179 ms]
+  Error Message:
+   System.IO.DirectoryNotFoundException : Could not locate the FantasyCard.Server project directory.
+  Stack Trace:
+     at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.FindServerProjectDirectory() in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkEndToEndTests.cs:line 189
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.StartServer(String connectionString, Int32 port) in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkEndToEndTests.cs:line 152
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_switching_names_registers_distinct_uids_and_relogin_restores_the_original_account() in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkNameIdentityTests.cs:line 28
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_switching_names_registers_distinct_uids_and_relogin_restores_the_original_account() in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkNameIdentityTests.cs:line 66
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Protobuf_real_database_login_bootstrap_profile_deck_and_cross_format_purchase [22 ms]
+  Error Message:
+   System.IO.DirectoryNotFoundException : Could not locate the FantasyCard.Server project directory.
+  Stack Trace:
+     at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.FindServerProjectDirectory() in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkEndToEndTests.cs:line 189
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.StartServer(String connectionString, Int32 port) in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkEndToEndTests.cs:line 152
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Protobuf_real_database_login_bootstrap_profile_deck_and_cross_format_purchase() in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/ProtobufHttp/ServerApiDatabaseTests.cs:line 22
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Protobuf_real_database_login_bootstrap_profile_deck_and_cross_format_purchase() in /workspace/pr14-compatible/server/tests/FantasyCard.Server.Tests/ProtobufHttp/ServerApiDatabaseTests.cs:line 114
+--- End of stack trace from previous location ---
+WARNING: Overwriting results file: /workspace/pr14-compatible-local-evidence/results/all.trx
+Results File: /workspace/pr14-compatible-local-evidence/results/all.trx
+
+Failed!  - Failed:    13, Passed:   249, Skipped:     0, Total:   262, Duration: 33 s - FantasyCard.Server.Tests.dll (net10.0)

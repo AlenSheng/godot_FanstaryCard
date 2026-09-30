@@ -1,0 +1,101 @@
+{
+  "session_state": "ClosedByUser",
+  "all_accepted": false,
+  "candidate_activation": false,
+  "source_test_anchor": "eb9149bb110f301ec614033c22023e60c859e13f",
+  "ci_workflows": 5,
+  "ci_conclusion": "success",
+  "completed_primary_simulations": {
+    "simulations": {
+      "rows": 360000,
+      "errors": 0,
+      "source_shas": [
+        "0abe4a5ff96fd0cb2e8b4408fced58d8c16e37e7",
+        "bf7beea144ae1bee8ffe92af9be061cbaf2eb323"
+      ]
+    },
+    "o6-hp095": {
+      "rows": 216000,
+      "errors": 0,
+      "source_shas": [
+        "6eeff4ae2cd4923f7e429e30accb3c1627f09320"
+      ]
+    },
+    "o6-hp090": {
+      "rows": 216000,
+      "errors": 0,
+      "source_shas": [
+        "6eeff4ae2cd4923f7e429e30accb3c1627f09320"
+      ]
+    }
+  },
+  "completed_simulation_rows_total": 792000,
+  "capacity-10-awake": {
+    "clients": 10,
+    "stop_reason": "duration_limit",
+    "coverage": 0.5833100001017253,
+    "observed_window_seconds": 600.0,
+    "required_window_seconds": 600,
+    "longest_continuous_seconds": 320.1630001068115,
+    "dimensions": {
+      "execution": "Passed",
+      "evidence": "Passed",
+      "load": "Failed",
+      "gameplay": "NotApplicable",
+      "performance": "Unknown",
+      "cleanup": "Passed"
+    },
+    "forced_termination_pids": [],
+    "cleanup_complete": true,
+    "source_sha": "82cb7ce807b156c1a084bcace0485fdbd7ee01db"
+  },
+  "soak-15-target-10": {
+    "clients": 15,
+    "stop_reason": "invalid_evidence:monitoring_unavailable",
+    "coverage": 0.5016006227648794,
+    "observed_window_seconds": 598.1850626468658,
+    "required_window_seconds": 1800,
+    "longest_continuous_seconds": 300.0499999523163,
+    "dimensions": {
+      "execution": "Passed",
+      "evidence": "Failed",
+      "load": "Failed",
+      "gameplay": "NotApplicable",
+      "performance": "Unknown",
+      "cleanup": "Passed"
+    },
+    "forced_termination_pids": [],
+    "cleanup_complete": true,
+    "source_sha": "eb9149bb110f301ec614033c22023e60c859e13f"
+  },
+  "o6_job_states": {
+    "Completed": 6,
+    "Cancelled": 3,
+    "NotExecuted": 3
+  },
+  "resources": {
+    "requested_at": 1790776622.8837454,
+    "tunnel": {
+      "pid": 28492,
+      "stopped": true
+    },
+    "postgres": {
+      "data_directory": "F:\\GitHubFiles\\godot_FanstaryCard\\outputs\\pr13-execution-20260930\\postgres",
+      "status_before": 0,
+      "stop_exit_code": 0,
+      "log": "waiting for server to shut down....... done\nserver stopped\n",
+      "stopped": true
+    },
+    "awake": {
+      "pid": 67044,
+      "started_at": 1790773480.3111224,
+      "maximum_seconds": 7200,
+      "scope": "System execution request while this process is alive; display remains managed by Windows",
+      "finished": true,
+      "ended_at": 1790776508.9334834
+    }
+  },
+  "last_cohort_asset_accounts": 25,
+  "owned_assets_clear": true,
+  "global_ledger_chain_mismatches": 1
+}

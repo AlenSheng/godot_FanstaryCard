@@ -16,12 +16,17 @@ class SwitchingGateway extends "res://network/gateway.gd":
 var failures := []
 var checks := 0
 var late: Dictionary = {}
+var flights: Dictionary = {}
+var origin_samples: Array = []
 func check(condition: bool, label: String) -> void:
+	print("HTTP fixture: ", label, " = ", condition)
 	checks += 1
 	if not condition: failures.append(label)
 func _initialize() -> void: call_deferred("run")
 func _late_request(gateway: Node) -> void:
 	late = await gateway.request("/api/v1/players/me?late=1", HTTPClient.METHOD_GET, null, [401])
+func _flight_request(gateway: Node, path: String, name: String) -> void:
+	flights[name] = await gateway.request(path)
 func run() -> void:
 	var gateway := Gateway.new()
 	gateway.persist_session = false
@@ -46,6 +51,20 @@ func run() -> void:
 	check(purchase.ok and purchase.data.goldAfter == 9223372036854775807, "429 retry")
 	var empty: Dictionary = await gateway.request("/api/v1/mail/read-all", HTTPClient.METHOD_POST, {})
 	check(empty.ok and empty.data == null, "204 response")
+	gateway.telemetry.connect(func(sample): origin_samples.append(sample.duplicate(true)))
+	gateway.telemetry_context = {"cycle_id": "first-cycle", "phase": "playing"}
+	_flight_request(gateway, "/api/v1/players/me?flight=join", "joined-a")
+	_flight_request(gateway, "/api/v1/players/me?flight=join", "joined-b")
+	await create_timer(.6).timeout
+	check(flights.get("joined-a", {}).get("ok", false) and flights.get("joined-b", {}).get("ok", false) and flights["joined-a"].data == flights["joined-b"].data, "GET join returns the actual result to both callers")
+	_flight_request(gateway, "/api/v1/players/me?flight=epoch", "old-read")
+	await create_timer(.03).timeout
+	await gateway.request("/api/v1/mail/read-all", HTTPClient.METHOD_POST, {})
+	gateway.telemetry_context = {"cycle_id": "next-cycle", "phase": "settlement"}
+	_flight_request(gateway, "/api/v1/players/me?flight=epoch", "new-read")
+	await create_timer(.7).timeout
+	check(flights.get("old-read", {}).get("ok", false) and flights.get("new-read", {}).get("ok", false) and flights["old-read"].data.version == 1 and flights["new-read"].data.version == 2, "post-write GET cannot join a pre-write flight")
+	check(origin_samples.any(func(sample): return sample.get("type") == "http" and sample.get("path") == "/api/v1/players/me?flight=epoch" and sample.get("cycle_id") == "first-cycle"), "late HTTP completion retains the initiating cycle")
 	var malformed: Dictionary = await gateway.request("/api/v1/shop/purchases?malformed=1", HTTPClient.METHOD_POST, {"productId":"p"}, [200])
 	check(not malformed.ok, "malformed write fails")
 	var proxy: Dictionary = await gateway.request("/api/v1/cards", HTTPClient.METHOD_GET, null, [200])
@@ -58,6 +77,8 @@ func run() -> void:
 	check(stats.data.counts.get("/api/v1/shop/purchases?malformed=1",0) == 1, "no retry on malformed write")
 	check(stats.data.counts.get("/api/v1/cards",0) == 1, "no fallback on proxy error")
 	check(stats.data.websocketSafe, "ticket URL without bearer")
+	check(stats.data.counts.get("/api/v1/players/me?flight=join", 0) == 1, "GET join sends one transport request")
+	check(stats.data.counts.get("/api/v1/players/me?flight=epoch", 0) == 2, "write invalidation creates a new transport request")
 	var switching := SwitchingGateway.new()
 	switching.persist_session = false
 	root.add_child(switching)

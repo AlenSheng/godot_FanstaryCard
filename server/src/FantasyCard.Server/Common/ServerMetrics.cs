@@ -29,8 +29,11 @@ public sealed class ServerMetrics : IDisposable
     private readonly Counter<long> _identityTokenRejections;
     private readonly Counter<long> _identityExpiredTokens;
     private readonly Histogram<double> _matchmakingQueueDuration;
+    private readonly Histogram<double> _matchLaunchPhaseDuration;
+    private readonly Counter<long> _matchLaunchFailures;
     private readonly UpDownCounter<long> _activeRooms;
     private readonly Histogram<long> _roomPlayerCount;
+    private readonly UpDownCounter<long> _activeHumanRoomPlayers;
     private readonly Histogram<long> _roomActorQueueLength;
     private readonly Histogram<double> _roomActorCommandWait;
     private readonly Histogram<double> _roomActorTickDelay;
@@ -96,10 +99,16 @@ public sealed class ServerMetrics : IDisposable
             "fantasycard.identity.tokens.expired", unit: "{token}");
         _matchmakingQueueDuration = _meter.CreateHistogram<double>(
             "fantasycard.matchmaking.queue.duration", unit: "s");
+        _matchLaunchPhaseDuration = _meter.CreateHistogram<double>(
+            "fantasycard.match_launch.phase.duration", unit: "ms");
+        _matchLaunchFailures = _meter.CreateCounter<long>(
+            "fantasycard.match_launch.failures", unit: "{failure}");
         _activeRooms = _meter.CreateUpDownCounter<long>(
             "fantasycard.rooms.active", unit: "{room}");
         _roomPlayerCount = _meter.CreateHistogram<long>(
             "fantasycard.rooms.players", unit: "{player}");
+        _activeHumanRoomPlayers = _meter.CreateUpDownCounter<long>(
+            "fantasycard.rooms.humans.active", unit: "{player}");
         _roomActorQueueLength = _meter.CreateHistogram<long>(
             "fantasycard.room_actor.queue.length", unit: "{command}");
         _roomActorCommandWait = _meter.CreateHistogram<double>(
@@ -159,12 +168,18 @@ public sealed class ServerMetrics : IDisposable
     public void IdentityTokenExpired() => _identityExpiredTokens.Add(1);
     public void ObserveMatchmakingQueueDuration(TimeSpan duration) =>
         _matchmakingQueueDuration.Record(Math.Max(0, duration.TotalSeconds));
+    public void ObserveMatchLaunchPhase(string phase, TimeSpan duration) =>
+        _matchLaunchPhaseDuration.Record(Math.Max(0, duration.TotalMilliseconds),
+            new KeyValuePair<string, object?>("phase", phase));
+    public void MatchLaunchFailed(string phase) =>
+        _matchLaunchFailures.Add(1, new KeyValuePair<string, object?>("phase", phase));
     public void RoomOpened(long playerCount)
     {
         _activeRooms.Add(1);
         _roomPlayerCount.Record(playerCount);
     }
     public void RoomClosed() => _activeRooms.Add(-1);
+    public void RoomHumanPlayersChanged(long delta) => _activeHumanRoomPlayers.Add(delta);
     public void ObserveRoomActorQueueLength(long count) => _roomActorQueueLength.Record(Math.Max(0, count));
     public void ObserveRoomActorCommandWait(string command, TimeSpan wait) =>
         _roomActorCommandWait.Record(

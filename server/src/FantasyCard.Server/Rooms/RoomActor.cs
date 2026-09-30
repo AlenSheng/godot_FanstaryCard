@@ -13,7 +13,9 @@ public sealed class RoomActor : IAsyncDisposable
     private readonly Channel<ICommandWorkItem> _commands;
     private readonly CancellationTokenSource _shutdown = new();
     private readonly Task _reader;
-    private readonly Task? _ticker;
+    private Task? _ticker;
+    private readonly TimeProvider _timeProvider;
+    private readonly object _tickerGate = new();
     private readonly ServerMetrics? _metrics;
     private readonly Func<BattleRoomSnapshot, Task>? _snapshotObserver;
     private readonly Func<BattleRoomSnapshot, IReadOnlyList<CombatFeedbackResolution>, Task>? _combatObserver;
@@ -33,6 +35,7 @@ public sealed class RoomActor : IAsyncDisposable
     {
         RoomId = room?.RoomId ?? throw new ArgumentNullException(nameof(room));
         ArgumentNullException.ThrowIfNull(timeProvider);
+        _timeProvider = timeProvider;
         _metrics = metrics;
         _snapshotObserver = snapshotObserver;
         _combatObserver = combatObserver;
@@ -46,11 +49,20 @@ public sealed class RoomActor : IAsyncDisposable
         _reader = RunReaderAsync(room, snapshotObserver, combatObserver);
         if (startTicker)
         {
-            _ticker = RunTickerAsync(timeProvider, _shutdown.Token);
+            StartTicker();
         }
     }
 
     public Guid RoomId { get; }
+
+    internal void StartTicker()
+    {
+        lock (_tickerGate)
+        {
+            ObjectDisposedException.ThrowIf(_shutdown.IsCancellationRequested, this);
+            _ticker ??= RunTickerAsync(_timeProvider, _shutdown.Token);
+        }
+    }
 
     public ValueTask<TResult> ExecuteAsync<TResult>(
         IRoomCommand<TResult> command, long expectedRevision, CancellationToken cancellationToken = default)

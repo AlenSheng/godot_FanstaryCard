@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "kind": "independent_cloud_takeover",
+  "source_sha": "73d4e41ca819d533c8d2ce80952c72c0fab6d6b6",
+  "source_worktree_dirty_at_checkout": false,
+  "repository": "AlenSheng/godot_FanstaryCard",
+  "pr": 13,
+  "head_branch": "fix/gameplay-load-evidence-20260929",
+  "base_branch": "release",
+  "base_sha": "28c6c7e7d3898e4d2abd186f53361477ba380330",
+  "merge_authorized": false,
+  "all_accepted": false,
+  "plan_sha256": "5176ee139d4e632ba34469ae531ce7ec16478f356480e2d8e320cd51f3bcd703",
+  "historical_register": "docs/reports/pr13-execution-20260930/register.json",
+  "historical_register_source_sha": "eb9149bb110f301ec614033c22023e60c859e13f",
+  "historical_counts": {
+    "packages": 33,
+    "tasks": 132,
+    "cases": 396,
+    "task_states": {
+      "ReadyForAcceptance": 8,
+      "Partial": 98,
+      "Queued": 13,
+      "Deferred": 11,
+      "Blocked": 2
+    },
+    "case_states": {
+      "Passed": 27,
+      "NotExecuted": 369
+    }
+  },
+  "package": {
+    "release_id": 400137322,
+    "asset_id": 601133497,
+    "filename": "pr13-closeout-20260930-73d4e41.zip",
+    "bytes_expected": 1990894902,
+    "sha256_expected": "242da4d0bdccb8437a16c310be3b61b131b60f28eae9cbc61ab5df66e05db967",
+    "download_url": "https://github.com/AlenSheng/godot_FanstaryCard/releases/download/untagged-dd4ee21b9afb6b807c66/pr13-closeout-20260930-73d4e41.zip",
+    "status": "Blocked",
+    "bytes_downloaded": 0,
+    "zip_hash_verified": false,
+    "package_manifest_verified": false,
+    "repository_manifest_file_count": 147,
+    "repository_manifest_files_verified": false,
+    "access_observations": [
+      "gh api release metadata: Forbidden",
+      "unauthenticated exact browser download URL HEAD: 404"
+    ],
+    "required_input": "Authorized private draft-release binary download or safe transfer of the existing ZIP; metadata alone does not materialize bytes."
+  },
+  "workspace_instruction_gap": {
+    "path": ".agents/skills/server_create/SKILL.md",
+    "required_by": "server/AGENTS.md",
+    "found": false,
+    "disposition": "Reported; continue unaffected work as explicitly authorized; do not claim skill read."
+  },
+  "baseline_independent_tests": {
+    "python": {
+      "passed": 53,
+      "failed": 0,
+      "log": "baseline/python-tests.log"
+    },
+    "offline_cases": {
+      "passed": 27,
+      "executed": 27,
+      "remaining_not_executed": 369,
+      "source_dirty": false,
+      "report": "baseline/offline-cases/report.json"
+    },
+    "godot_gates": {
+      "passed": 6,
+      "failed": 0,
+      "includes_import": true,
+      "results": "baseline/godot/results.json"
+    },
+    "specification": "33 packages / 132 subtasks / 396 cases; acyclic"
+  },
+  "baseline_ci": {
+    "sha": "73d4e41ca819d533c8d2ce80952c72c0fab6d6b6",
+    "latest_successful_run_ids": [
+      36727517190,
+      36727517128,
+      36727517375,
+      36727517118,
+      36727517031
+    ],
+    "cancelled_runs_retained": true
+  },
+  "historical_limits": [
+    "792000 rows are three distinct cohorts: 360000 + 216000 + 216000; not a single baseline.",
+    "900s 10-client run: 58.3% coverage fails the 95% target.",
+    "1800s planned run stopped at about 598.2s on monitoring_unavailable; performance Unknown.",
+    "25 owned accounts pass does not resolve global ledger mismatch=1.",
+    "Historical missing raw must not be replaced by new tests.",
+    "No new live deployment or restart performed."
+  ]
+}

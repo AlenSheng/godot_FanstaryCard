@@ -47,6 +47,7 @@ static func localized_name(id: String, card: Dictionary = {}) -> String:
 static func at_level(card: Dictionary, level: int) -> Dictionary:
 	# Catalog rows are flat scalars, so a shallow copy keeps the source row intact.
 	var effect := card.duplicate()
+	effect["is_element_tuning"] = str(card.get("category", "")) == "ElementTune"
 	var growth := CatalogIndex.card_level(str(card.get("id", "")), level)
 	if growth.is_empty(): return effect
 	for key in ["elemental_damage", "secondary_elemental_damage", "direct_damage", "heal", "shield"]:

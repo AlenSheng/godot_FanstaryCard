@@ -35,6 +35,7 @@ var lobby: Dictionary = {}
 var _cache_syncing: Dictionary = {}
 var _cache_sync_again: Dictionary = {}
 var _cache_versions: Dictionary = {}
+var _lobby_request_epoch := 0
 var _shop_rotation_check_at := 0
 var room: Dictionary = {}
 var preparation: Dictionary = {}
@@ -52,6 +53,7 @@ var _settlement_loading := ""
 var _settlement_ack_pending_id := ""
 var _settlement_polling := false
 var _settlement_poll_at := 0
+var _settlement_recovery_match_id := ""
 var settlement_query_failed := false
 var _extraction_sync_at := 0
 var _queued_command: Dictionary = {}
@@ -59,6 +61,7 @@ var _queue_deadline: int = 0
 var _pending_play: Dictionary = {}
 var _play_deadline: int = 0
 var _pending_commands: Dictionary = {}
+var _combat_sync_at := 0
 var _latest_commands: Dictionary = {}
 var _snapshot_request_at: int = 0
 var _snapshot_request_pending := false
@@ -73,6 +76,7 @@ func _process(_delta: float) -> void:
 	_process_client_info()
 	_check_shop_rotation()
 	_flush_latest_commands()
+	_flush_combat_preview()
 	var now := Time.get_ticks_msec()
 	if room.has("extraction_remaining_ms"):
 		if _extraction_sync_at == 0:
@@ -84,7 +88,16 @@ func _process(_delta: float) -> void:
 	else:
 		_extraction_sync_at = 0
 	var phase: String = str(room.get("player", {}).get("phase", ""))
-	if settlement.is_empty() and phase in ["Extracted", "Dead"] and now >= _settlement_poll_at and not _settlement_polling:
+	if phase in ["Pve", "Pvp"]:
+		if _combat_sync_at == 0: _combat_sync_at = now + 4000
+		elif now >= _combat_sync_at:
+			_combat_sync_at = now + 4000
+			# Natural draws and utility intents may have no presentation event.
+			# Keep the visible hand and legal opportunities authoritative.
+			if _snapshot_request_pending and now - _snapshot_request_at > 3000: _snapshot_request_pending = false
+			_request_snapshot()
+	else: _combat_sync_at = 0
+	if settlement.is_empty() and (phase in ["Extracted", "Dead"] or not _settlement_recovery_match_id.is_empty()) and now >= _settlement_poll_at and not _settlement_polling:
 		_poll_ready_settlement()
 	var pending_changed := false
 	if not _pending_play.is_empty() and Time.get_ticks_msec() > _play_deadline:
@@ -92,6 +105,17 @@ func _process(_delta: float) -> void:
 		pending_changed = true
 	for request_id in _pending_commands.keys():
 		if Time.get_ticks_msec() > int(_pending_commands[request_id].get("deadline", 0)):
+			if _pending_commands[request_id].get("confirmed", false):
+				# The write succeeded, but its new state is still missing. Restore
+				# the authoritative room through reconnect rather than resend it.
+				room = {}
+				selected_cards.clear()
+				clear_combat_preview()
+				_pending_commands.clear()
+				gateway.recovering = true
+				gateway.connect_realtime()
+				pending_changed = true
+				break
 			_pending_commands.erase(request_id)
 			pending_changed = true
 	if not _queued_command.is_empty() and Time.get_ticks_msec() > _queue_deadline:
@@ -203,6 +227,7 @@ func _clear_authenticated_state() -> void:
 	_settlement_ack_pending_id = ""
 	_settlement_polling = false
 	_settlement_poll_at = 0
+	_settlement_recovery_match_id = ""
 	settlement_query_failed = false
 	_extraction_sync_at = 0
 	busy = false
@@ -213,6 +238,7 @@ func _clear_authenticated_state() -> void:
 
 func _on_connection_changed(value: String) -> void:
 	connection = value
+	clear_combat_preview()
 	_pending_play = {}
 	_pending_commands.clear()
 	_latest_commands.clear()
@@ -313,7 +339,11 @@ func validate_config(version: String, source: String) -> bool:
 
 func refresh_lobby() -> void:
 	var generation: int = gateway.session_generation
+	_lobby_request_epoch += 1
+	var request_epoch := _lobby_request_epoch
+	var origin_scope := _lobby_scope()
 	var result: Dictionary = await gateway.request("/api/v1/bootstrap")
+	if not _lobby_request_current(generation, request_epoch, origin_scope): return
 	if not result.ok: return
 	if not result.data is Dictionary or not validate_config(str(result.data.get("configVersion", "")), "大厅"): return
 	for required in ["player", "wallet", "materials"]:
@@ -321,32 +351,41 @@ func refresh_lobby() -> void:
 			notice.emit("服务器大厅数据不完整，请重试")
 			return
 	if generation != gateway.session_generation: return
-	lobby = result.data
+	var next_lobby: Dictionary = result.data.duplicate(true)
 	if _settlement_ack_pending_id != "":
-		lobby["unfinishedSettlement"] = null
-		lobby["unfinishedMatch"] = null
-	for module in ["shop", "market", "inventory", "cards", "decks", "wallet", "mail"]:
-		_cache_versions[module] = int(_cache_versions.get(module, 0)) + 1
-	if lobby.get("mail") is Dictionary:
-		mail = lobby.mail
-	else:
-		await refresh_mail()
-		lobby["mail"] = mail
-	if generation != gateway.session_generation: return
+		next_lobby["unfinishedSettlement"] = null
+		next_lobby["unfinishedMatch"] = null
+	if not next_lobby.get("mail") is Dictionary:
+		var mail_result: Dictionary = await gateway.request("/api/v1/mail", HTTPClient.METHOD_GET, null, [404])
+		if not _lobby_request_current(generation, request_epoch, origin_scope): return
+		next_lobby["mail"] = mail_result.data if mail_result.ok and mail_result.data is Dictionary else {"items": [], "unreadCount": 0}
 	# Older servers omit the optional account snapshot fields. Fetch those only
 	# once during login/recovery, never when a module is opened.
-	if not lobby.get("shop") is Dictionary or not lobby.get("market") is Array or not lobby.get("inventory") is Dictionary:
+	if not next_lobby.get("shop") is Dictionary or not next_lobby.get("market") is Array or not next_lobby.get("inventory") is Dictionary:
 		var economy: Dictionary = await gateway.request("/api/v1/economy/context")
-		if generation != gateway.session_generation: return
+		if not _lobby_request_current(generation, request_epoch, origin_scope): return
 		if economy.ok and economy.data is Dictionary:
-			lobby["shop"] = economy.data.get("shop", {})
-			lobby["market"] = economy.data.get("market", [])
-			lobby["inventory"] = economy.data.get("inventory", {})
+			next_lobby["shop"] = economy.data.get("shop", {})
+			next_lobby["market"] = economy.data.get("market", [])
+			next_lobby["inventory"] = economy.data.get("inventory", {})
+	if next_lobby.get("unfinishedSettlement") == null and next_lobby.get("unfinishedMatch") == null and room.is_empty() and ticket.is_empty() and not next_lobby.has("activePreparation"):
+		var active: Dictionary = await gateway.request("/api/v1/preparations", HTTPClient.METHOD_GET, null, [404])
+		if not _lobby_request_current(generation, request_epoch, origin_scope): return
+		if active.ok:
+			if not _preparation_config_valid(active.data): return
+			next_lobby["activePreparation"] = active.data
+		elif active.status == 404: next_lobby["activePreparation"] = null
+	if not _lobby_request_current(generation, request_epoch, origin_scope): return
+	lobby = next_lobby
+	mail = lobby.get("mail", {"items": [], "unreadCount": 0})
+	for module in ["shop", "market", "inventory", "cards", "decks", "wallet", "mail"]:
+		_cache_versions[module] = int(_cache_versions.get(module, 0)) + 1
 	if lobby.player.get("selectedClass") != null: hero_class = lobby.player.selectedClass
 	if lobby.get("unfinishedSettlement") != null:
 		gateway.room_id = ""
 		gateway.room_revision = 0
 		settlement = lobby.unfinishedSettlement
+		_settlement_recovery_match_id = ""
 	elif lobby.get("unfinishedMatch") != null:
 		gateway.room_id = lobby.unfinishedMatch.roomId
 	elif room.is_empty() and ticket.is_empty():
@@ -354,14 +393,14 @@ func refresh_lobby() -> void:
 		gateway.room_revision = 0
 		if lobby.has("activePreparation"):
 			preparation = lobby.activePreparation if lobby.activePreparation is Dictionary else {}
-		else:
-			var active: Dictionary = await gateway.request("/api/v1/preparations", HTTPClient.METHOD_GET, null, [404])
-			if generation != gateway.session_generation: return
-			if active.ok:
-				if not _preparation_config_valid(active.data): return
-				preparation = active.data
-			elif active.status == 404: preparation = {}
 	changed.emit()
+
+func _lobby_scope() -> String:
+	return JSON.stringify([room.get("match_id", ""), gateway.room_id, preparation.get("preparationId", ""),
+		ticket.get("ticketId", ""), settlement.get("settlementId", ""), _settlement_ack_pending_id, _cache_versions])
+
+func _lobby_request_current(generation: int, request_epoch: int, origin_scope: String) -> bool:
+	return generation == gateway.session_generation and request_epoch == _lobby_request_epoch and origin_scope == _lobby_scope()
 
 func update_cache(module: String, value: Variant) -> void:
 	if lobby.is_empty(): return
@@ -541,7 +580,7 @@ func delete_read_mail() -> void:
 func select_class(value: String) -> void:
 	if busy or not room.is_empty() or not preparation.is_empty() or not ticket.is_empty(): return
 	if value not in ["Priest", "Mage", "Guardian"]: return
-	if value == hero_class and (_pending_class.is_empty() or _pending_class == value): return
+	if value == hero_class and (_pending_class.is_empty() or _pending_class == value) and str(lobby.get("player", {}).get("selectedClass", "")) == value: return
 	# Update the hall immediately. Persistence happens in the background so network
 	# latency never blocks portrait/card feedback.
 	hero_class = value
@@ -652,16 +691,42 @@ func cancel_preparation() -> void:
 
 func allowed(action: String) -> bool:
 	var aliases := {"reward.choice.refresh": "choice.refresh", "reward.choice.claim": "choice.pick"}
+	if action == "battle.play_cards" and _target_selection_pending(): return false
 	if action not in LATEST_WINS_ACTIONS and _has_pending_action(action): return false
 	return configuration_error.is_empty() and gateway.online and not gateway.recovering and (action in room.get("allowed_actions", []) or aliases.get(action, "") in room.get("allowed_actions", []))
 
 func has_pending_commands() -> bool:
 	return not _pending_commands.is_empty() or not _latest_commands.is_empty() or not _queued_command.is_empty()
 
+func combat_wait_state() -> Dictionary:
+	var player: Dictionary = room.get("player", {})
+	var hand: Array = player.get("hand", [])
+	var reason := "available"
+	var remaining_ms := 0
+	if not gateway.online or gateway.recovering:
+		reason = "recovering"
+	elif has_pending_commands():
+		reason = "confirming"
+	elif int(player.get("stun_remaining_ms", 0)) > 0:
+		reason = "stunned"
+		remaining_ms = int(player.stun_remaining_ms)
+	elif combat_target_id().is_empty():
+		reason = "target"
+	elif hand.is_empty() and int(player.get("draw_block_remaining_ms", 0)) > 0:
+		reason = "draw_blocked"
+		remaining_ms = int(player.draw_block_remaining_ms)
+	elif hand.is_empty():
+		reason = "drawing"
+	elif hand.size() >= 5:
+		reason = "full_hand"
+	return {"reason": reason, "remaining_ms": remaining_ms, "hand_count": hand.size(),
+		"legal_opportunity": reason in ["available", "full_hand"] and allowed("battle.play_cards")}
+
 func command(action: String, payload: Dictionary = {}) -> bool:
 	if not allowed(action): return false
 	if action in LATEST_WINS_ACTIONS:
 		_latest_commands[action] = {"payload": payload.duplicate(true), "due": Time.get_ticks_msec() + LATEST_WINS_DEBOUNCE_MS}
+		if action == "battle.select_target" and _target_selection_pending(): clear_combat_preview()
 		changed.emit()
 		return true
 	if not _queued_command.is_empty() or _has_pending_action(action): return false
@@ -678,13 +743,49 @@ func toggle_card(instance_id: String) -> void:
 	if instance_id in selected_cards: selected_cards.erase(instance_id)
 	else: selected_cards.append(instance_id)
 	sound_requested.emit("card_select")
-	combat_preview = _calculate_combat_preview(selected_cards)
+	_refresh_combat_preview()
 	changed.emit()
 
 func clear_combat_preview() -> void:
 	combat_preview = {}
 	_preview_request = {}
 	_preview_deadline = 0
+
+func _target_selection_pending() -> bool:
+	# Synchronizing the GDD death fallback keeps the current effective target.
+	# A manual switch to another target must reach the snapshot before playing.
+	var target_id := combat_target_id()
+	var queued: Dictionary = _latest_commands.get("battle.select_target", {})
+	if not queued.is_empty() and _intent_valid("battle.select_target", queued.get("payload", {})) and str(queued.get("payload", {}).get("target_id", "")) != target_id: return true
+	for pending in _pending_commands.values():
+		if pending.get("action", "") == "battle.select_target" and _intent_valid("battle.select_target", pending.get("payload", {})) and str(pending.get("payload", {}).get("target_id", "")) != target_id: return true
+	return false
+
+func _refresh_combat_preview() -> void:
+	clear_combat_preview()
+	combat_preview = _calculate_combat_preview(selected_cards)
+	if combat_preview.is_empty() or not target_alive(combat_target_id()): return
+	_preview_request = {"request_id": "", "context": _preview_context(selected_cards), "revision": int(room.get("room_revision", 0)), "due": Time.get_ticks_msec() + LATEST_WINS_DEBOUNCE_MS}
+
+func _flush_combat_preview() -> void:
+	# A preview is a bounded read; it never enters the business-command queue
+	# or locks a legal play while the local estimate is visible.
+	if _preview_request.is_empty(): return
+	if _preview_request.get("context", {}) != _preview_context(selected_cards) or not allowed("battle.play_cards"):
+		clear_combat_preview()
+		return
+	var now := Time.get_ticks_msec()
+	if not str(_preview_request.get("request_id", "")).is_empty():
+		if now >= _preview_deadline: _preview_request = {}
+		return
+	if now < int(_preview_request.get("due", 0)): return
+	var context: Dictionary = _preview_request.context
+	var request_id: String = gateway.new_id()
+	var payload := {"battle_id": context.battle_id, "target_id": context.target_id, "card_instance_ids": context.card_instance_ids.duplicate()}
+	if gateway.send("combat.preview", payload, request_id):
+		_preview_request["request_id"] = request_id
+		_preview_deadline = now + 3000
+	else: _preview_request = {}
 
 func _request_snapshot() -> void:
 	if room.is_empty() or not gateway.online or gateway.recovering or _snapshot_request_pending: return
@@ -716,19 +817,39 @@ func _flush_latest_commands() -> void:
 		_latest_commands.erase(action)
 		_send_queued_command({"action": action, "payload": queued.get("payload", {}).duplicate(true)})
 
-# Kept as a compatibility boundary for older offline tests and replay tools;
-# live selection no longer calls the network preview command.
 func _preview_context(ids: Array) -> Dictionary:
 	var battle: Dictionary = room.get("duel", room.get("pve", {}))
-	return {"room_id": room.get("room_id", ""), "battle_id": battle.get("duel_id", battle.get("battle_id", "")), "target_id": combat_target_id(), "card_instance_ids": ids.duplicate()}
+	var player: Dictionary = room.get("player", {})
+	var player_context := {}
+	for key in ["player_id", "phase", "hero_class", "weapon_level", "combat", "battle_status", "numerical_state", "stun_remaining_ms", "draw_block_remaining_ms", "draw_speed_remaining_ms", "draw_block_speed_remaining_ms", "base_draw_interval_seconds"]:
+		if player.has(key): player_context[key] = player[key]
+	var selected_hand: Array = []
+	for id in ids:
+		for card in player.get("hand", []):
+			if card.get("instance_id", "") == id: selected_hand.append(card.duplicate(true))
+	return {"room_id": room.get("room_id", ""), "room_revision": int(room.get("room_revision", 0)), "config_version": room.get("config_version", ""),
+		"battle_id": battle.get("duel_id", battle.get("battle_id", "")), "target_id": combat_target_id(), "card_instance_ids": ids.duplicate(), "selected_hand": selected_hand,
+		"player": player_context.duplicate(true),
+		"target": battle.get("opponent", {}).duplicate(true) if room.has("duel") else _monster_by_id(battle).duplicate(true),
+		"opponent_status": battle.get("opponent_status", {}).duplicate(true), "opponent_class": battle.get("opponent_class", "")}
 
 func _accept_combat_preview(payload: Dictionary) -> void:
+	if payload.get("_replayed", false): return
+	if not allowed("battle.play_cards") or not target_alive(combat_target_id()): return
 	if _preview_request.is_empty() or payload.get("_request_id", "") != _preview_request.get("request_id", ""): return
 	if Time.get_ticks_msec() >= _preview_deadline or _preview_request.get("context", {}) != _preview_context(selected_cards): return
 	var revision := int(payload.get("_room_revision", -1))
-	if revision < int(_preview_request.get("revision", -1)) or revision < int(room.get("room_revision", 0)): return
+	if revision != int(_preview_request.get("revision", -1)) or revision != int(room.get("room_revision", 0)): return
+	var context: Dictionary = _preview_request.context
+	if payload.has("battle_id") and payload.battle_id != context.battle_id: return
+	if payload.has("target_id") and payload.target_id != context.target_id: return
+	if payload.has("card_instance_ids") and payload.card_instance_ids != context.card_instance_ids: return
 	combat_preview = payload.duplicate(true)
 	combat_preview["source_revision"] = revision
+	combat_preview["authoritative"] = true
+	combat_preview["control_estimated"] = false
+	_preview_request = {}
+	_preview_deadline = 0
 
 func _status_bonuses(status: Dictionary) -> Dictionary:
 	var result := {}
@@ -771,8 +892,6 @@ func _sync_pve_target() -> void:
 func _target_resistance(element: String, battle: Dictionary, monster: Dictionary = {}) -> float:
 	if battle.has("opponent_status"): return _status_bonuses(battle.opponent_status).get("resistance_" + element, 0.0)
 	if monster.is_empty(): monster = _monster_by_id(battle)
-	var main := str(monster.get("intent_element", "None"))
-	if main == "None": return 0.0
 	var id := str(monster.get("monster_id", ""))
 	if id == "annihilation-core":
 		var boss_main := "Fire" if int(monster.get("boss_phase", 1)) == 1 else "Metal"
@@ -782,6 +901,12 @@ func _target_resistance(element: String, battle: Dictionary, monster: Dictionary
 		if _counter(element, boss_main): return -0.30
 		if _counter(boss_main, element): return 0.30
 		return 0.0
+	# Shield/charge intents have no attack element. Species resistance remains
+	# fixed through those intents; BoxSpirit keeps its publicly rolled element.
+	var species_elements := {"fire-bat": "Fire", "fire-bat-a": "Fire", "fire-bat-b": "Fire", "rust-rat": "Metal", "thorn-mite": "Wood", "murk-snail": "Water", "sand-lizard": "Earth", "metal-guard": "Metal", "fire-herald": "Fire", "marsh-mother": "Water", "stone-guard": "Earth", "thorn-guard": "Wood"}
+	var species_id := id.trim_suffix("-a").trim_suffix("-b")
+	var main := str(species_elements.get(species_id, monster.get("intent_element", "None")))
+	if main == "None": return 0.0
 	var elite := id in ["metal-guard", "fire-herald", "marsh-mother", "stone-guard", "thorn-guard"]
 	if element == main: return 0.25 if elite else 0.15
 	if elite and element == _generated(main): return 0.15
@@ -827,6 +952,7 @@ func _calculate_combat_preview(ids: Array) -> Dictionary:
 	var resonance := 1.0
 	var conflict_pairs := 0
 	var cancellation := 0.0
+	var conflict_heal := 0
 	if not core.is_empty():
 		for card in elemental:
 			if str(card.get("element", "None")) != core and not card.get("is_element_tuning", false) and _conflict_pair(core, str(card.get("element", "None"))): conflict_pairs += 1
@@ -838,6 +964,13 @@ func _calculate_combat_preview(ids: Array) -> Dictionary:
 		var cancel_bonus := float(cards.map(func(card): return float(card.get("conflict_cancel_bonus", 0))).max())
 		cancellation = minf(0.80, 0.20 * conflict_pairs + cancel_bonus) if conflict_pairs > 0 else 0.0
 		var shared_multiplier: float = (1.0 + float(status.get("damage_" + core, 0.0))) * (1.0 - _target_resistance(core, battle, target_monster))
+		if conflict_pairs > 0:
+			var core_base := 0
+			for index in cards.size():
+				if str(cards[index].get("element", "None")) == core and int(cards[index].get("secondary_elemental_damage", 0)) == 0 and not cards[index].get("is_element_tuning", false): core_base += int(bases[index])
+			var coefficient := maxf(.5, float(cards.map(func(card): return float(card.get("conflict_heal_coefficient", 0))).max()))
+			var base_heal := int(floor(core_base * shared_multiplier * resonance * cancellation * coefficient)) + 2 * conflict_pairs
+			conflict_heal = int(floor(base_heal * (1.0 + float(status.get("vitality_heal", 0.0)))))
 		for i in cards.size():
 			var card: Dictionary = cards[i]
 			if int(card.get("elemental_damage", 0)) <= 0 or str(card.get("element", "None")) == "None" or int(card.get("secondary_elemental_damage", 0)) > 0: continue
@@ -859,20 +992,113 @@ func _calculate_combat_preview(ids: Array) -> Dictionary:
 		# Printed direct damage is already a direct segment.  Piercing is an
 		# additional per-card contribution and must not replace the base value.
 		direct += int(card.get("direct_damage", 0))
-		direct += int(floor((bases[i] + int(card.get("secondary_elemental_damage", 0)) + int(card.get("direct_damage", 0))) * float(status.get("piercing", 0.0))))
+		var piercing_secondary := int(card.get("secondary_elemental_damage", 0))
+		if reveal and card.get("secondary_element", "None") == reveal_element: piercing_secondary = int(floor(piercing_secondary * 1.3))
+		direct += int(floor((bases[i] + piercing_secondary + int(card.get("direct_damage", 0))) * float(status.get("piercing", 0.0))))
 	if direct > 0: segments["Direct"] = direct; total += direct
 	var target: Dictionary = battle.get("opponent", {}) if battle.has("opponent") else target_monster
 	var target_shield := int(target.get("shield", 0))
+	var incoming_multiplier := 1.0
+	if str(battle.get("opponent_class", "")) == "Guardian":
+		var target_status := _status_bonuses(battle.get("opponent_status", {}))
+		incoming_multiplier = 1.0 - float(target_status.get("bulwark_reduction", 0.0))
+		total = int(floor(total * incoming_multiplier))
 	var actual := mini(total, target_shield + int(target.get("hp", 0)))
-	var visible_segments: Array = []
-	var remaining := actual
+	var visible_segments := _visible_damage_segments(segments, actual, incoming_multiplier)
+	var recovery := _preview_recovery(cards, status, conflict_pairs, conflict_heal)
+	var draw_charge := float(cards.map(func(card): return float(card.get("draw_charge", 0))).reduce(func(a, b): return a + b, 0))
+	var immediate_draw := int(cards.map(func(card): return int(card.get("immediate_draw", 0))).reduce(func(a, b): return a + b, 0))
+	var player: Dictionary = room.get("player", {})
+	if str(player.get("hero_class", "")) == "Mage" and core_count > 0:
+		var passive: Dictionary = player.get("battle_status", {})
+		var combo := int(passive.get("combo", 0)) + 1 if str(passive.get("core_element", "")) == core else 1
+		var rhythm := mini(5, core_count + combo - 1)
+		draw_charge += minf(.50, float([0.0, .12, .24, .36, .48, .50][rhythm]) + recovery.weapon_bonus)
+		var draw_basis := core_count if str(player.get("numerical_state", {}).get("fenxian_policy", "CurrentRhythm")) == "CoreCardsSpent" else rhythm
+		immediate_draw += 0 if draw_basis <= 2 else (1 if draw_basis <= 4 else 2)
+	var stun := float(cards.map(func(card): return float(card.get("stun_seconds", 0))).max())
+	var block := float(cards.map(func(card): return float(card.get("draw_block_seconds", 0))).max())
+	return {"authoritative": false, "control_estimated": true, "core_element": core, "core_count": core_count, "damage": total, "damage_segments": visible_segments,
+		"shield_damage": mini(actual, target_shield), "hp_damage": maxi(0, actual - target_shield), "heal": recovery.heal, "shield_gain": recovery.shield_gain,
+		"heal_overflow": recovery.heal_overflow, "shield_overflow": recovery.shield_overflow, "health_cost": recovery.health_cost,
+		"stun_seconds": str(_preview_control(stun, recovery)), "draw_block_seconds": str(_preview_control(block, recovery) if room.has("duel") else 0.0),
+		"draw_block_speed_seconds": str(_preview_control(block / 2.0, recovery) if not room.has("duel") else 0.0),
+		"draw_charge": str(draw_charge), "immediate_draw": immediate_draw,
+		"draw_speed_seconds": str(cards.map(func(card): return float(card.get("draw_speed_seconds", 0))).max()), "draw_speed_modifier": str(cards.map(func(card): return float(card.get("draw_speed_modifier", 0))).min()),
+		"resonance_multiplier": str(resonance), "conflict_pair_count": conflict_pairs, "conflict_cancellation": str(cancellation)}
+
+func _visible_damage_segments(segments: Dictionary, actual: int, multiplier: float) -> Array:
+	if actual <= 0: return []
+	var segment_total := int(segments.values().reduce(func(a, b): return a + b, 0))
+	if segment_total <= 0: return [{"kind": "Direct", "amount": actual}]
+	var largest_kind := ""
+	var largest_value := -1
+	var allocated := 0
+	var reduced: Dictionary = {}
 	for kind in segments:
-		var amount := mini(int(segments[kind]), remaining)
-		if amount > 0: visible_segments.append({"kind": kind, "amount": amount})
-		remaining -= amount
-	var heals := int(cards.map(func(card): return int(card.get("heal", 0))).reduce(func(a, b): return a + b, 0))
-	var shields := int(cards.map(func(card): return int(card.get("shield", 0))).reduce(func(a, b): return a + b, 0))
-	return {"core_element": core, "core_count": core_count, "damage": total, "damage_segments": visible_segments, "shield_damage": mini(actual, target_shield), "hp_damage": maxi(0, actual - target_shield), "heal": heals, "shield_gain": shields, "health_cost": int(cards.map(func(card): return int(card.get("health_cost", 0))).reduce(func(a, b): return a + b, 0)), "stun_seconds": str(cards.map(func(card): return float(card.get("stun_seconds", 0))).max()), "draw_block_seconds": str(cards.map(func(card): return float(card.get("draw_block_seconds", 0))).max()), "draw_charge": str(cards.map(func(card): return float(card.get("draw_charge", 0))).reduce(func(a, b): return a + b, 0)), "immediate_draw": int(cards.map(func(card): return int(card.get("immediate_draw", 0))).reduce(func(a, b): return a + b, 0)), "draw_speed_seconds": str(cards.map(func(card): return float(card.get("draw_speed_seconds", 0))).max()), "draw_speed_modifier": str(cards.map(func(card): return float(card.get("draw_speed_modifier", 0))).min()), "resonance_multiplier": str(resonance), "conflict_pair_count": conflict_pairs, "conflict_cancellation": str(cancellation)}
+		if int(segments[kind]) > largest_value:
+			largest_kind = kind
+			largest_value = int(segments[kind])
+		var amount := int(floor(float(segments[kind]) * multiplier))
+		reduced[kind] = amount
+		allocated += amount
+	var expected := int(floor(segment_total * multiplier))
+	reduced[largest_kind] += expected - allocated
+	if expected != actual:
+		allocated = 0
+		var scale := float(actual) / maxf(1.0, expected)
+		for kind in reduced:
+			reduced[kind] = int(floor(float(reduced[kind]) * scale))
+			allocated += int(reduced[kind])
+		reduced[largest_kind] += actual - allocated
+	var result: Array = []
+	for kind in reduced:
+		if int(reduced[kind]) > 0: result.append({"kind": kind, "amount": int(reduced[kind])})
+	return result
+
+func _preview_recovery(cards: Array, status: Dictionary, conflict_pairs: int, conflict_heal: int) -> Dictionary:
+	var player: Dictionary = room.get("player", {})
+	var hero := str(player.get("hero_class", hero_class))
+	var combat: Dictionary = player.get("combat", {})
+	var maximum_hp := int(combat.get("maximum_hp", {"Mage": 70, "Priest": 80, "Guardian": 100}.get(hero, 70)))
+	var hp := int(combat.get("hp", maximum_hp))
+	var shield := int(combat.get("shield", 0))
+	var weapon := clampi(int(player.get("weapon_level", 0)), 0, 5)
+	var weapon_bonus := float([.06, .08, .10, .11, .13, .14][weapon])
+	var requested_cost := int(cards.map(func(card): return int(card.get("health_cost", 0))).reduce(func(a, b): return a + b, 0))
+	var after_cost := maxi(1, hp - maxi(0, requested_cost))
+	var missing_ratio := clampf(1.0 - float(hp) / maxf(1.0, maximum_hp), 0.0, 1.0)
+	var raw_heal: float = float(cards.map(func(card): return int(card.get("heal", 0))).reduce(func(a, b): return a + b, 0)) * (1.0 + .25 * conflict_pairs)
+	if hero == "Priest":
+		raw_heal = floor(raw_heal * (1.0 + .80 * missing_ratio))
+		raw_heal = floor(raw_heal * (1.0 + weapon_bonus))
+	raw_heal = floor(raw_heal * (1.0 + float(status.get("vitality_heal", 0.0)))) + conflict_heal
+	var effective_max_hp := int(floor(maximum_hp * (1.0 + minf(.40, float(status.get("vitality_overcap", 0.0))))))
+	var effective_heal := mini(int(raw_heal), maxi(0, effective_max_hp - after_cost))
+	var printed_shield := int(cards.map(func(card): return int(card.get("shield", 0))).reduce(func(a, b): return a + b, 0))
+	var raw_shield: float = printed_shield
+	if hero == "Guardian": raw_shield *= 1.0 + .45 * clampf(float(after_cost) / maxf(1.0, maximum_hp), 0.0, 1.0)
+	raw_shield = floor(raw_shield * (1.0 + float(status.get("bulwark_shield", 0.0))))
+	if hero == "Guardian" and printed_shield > 0:
+		var numerical: Dictionary = player.get("numerical_state", {})
+		if str(numerical.get("guardian_policy", "CurrentSteps")) == "FractionalRemainder":
+			if shield < maximum_hp / 2: raw_shield += floor(float([10, 14, 18, 22, 26, 30][weapon] + int(numerical.get("guardian_remainder_tenths", 0))) / 10.0)
+		else: raw_shield += 3 if weapon >= 4 else (2 if weapon >= 2 else 1)
+	var effective_shield := mini(int(raw_shield), maxi(0, int(maximum_hp / 2) - shield))
+	return {"heal": effective_heal, "shield_gain": effective_shield, "heal_overflow": maxi(0, int(raw_heal) - effective_heal), "shield_overflow": maxi(0, int(raw_shield) - effective_shield),
+		"health_cost": maxi(0, hp - after_cost), "weapon_bonus": weapon_bonus, "missing_ratio": missing_ratio, "hero": hero,
+		"hp": hp, "maximum_hp": maximum_hp, "weapon_level": weapon}
+
+func _preview_control(seconds: float, recovery: Dictionary) -> float:
+	if recovery.hero != "Priest" or seconds <= 0: return seconds
+	# Authoritative control uses decimal floors. Published durations have whole
+	# microseconds; integer numerators avoid binary rounding below a millisecond.
+	var maximum := maxi(1, int(recovery.maximum_hp))
+	var bounded_hp := clampi(int(recovery.hp), 0, maximum)
+	var numerator := roundi(seconds * 1000000.0) * (140 * maximum - 40 * bounded_hp)
+	var milliseconds := floori(float(numerator) / float(100000 * maximum))
+	var weapon_percent := int([6, 8, 10, 11, 13, 14][int(recovery.weapon_level)])
+	return floor(float(milliseconds * (100 + weapon_percent)) / 100.0) / 1000.0
 
 func play_cards() -> void:
 	if selected_cards.is_empty(): return
@@ -1017,7 +1243,7 @@ func _send_queued_command(queued: Dictionary) -> bool:
 	if gateway.send(queued.action, queued.payload, request_id):
 		var deadline := Time.get_ticks_msec() + 3000
 		_play_deadline = deadline
-		_pending_commands[request_id] = {"action": queued.action, "payload": queued.payload.duplicate(true), "room_id": room.get("room_id", ""), "retry": queued.get("retry", false), "deadline": deadline}
+		_pending_commands[request_id] = {"action": queued.action, "payload": queued.payload.duplicate(true), "room_id": room.get("room_id", ""), "sent_revision": int(room.get("room_revision", 0)), "retry": queued.get("retry", false), "deadline": deadline}
 		if queued.action == "battle.play_cards":
 			_pending_play = {"request_id": request_id, "room_id": room.get("room_id", ""), "payload": queued.payload.duplicate(true), "retry": queued.get("retry", false)}
 		_sound_commands[request_id] = {"action": queued.action, "room_id": room.get("room_id", "")}
@@ -1035,7 +1261,7 @@ func _retry_rejected_command(payload: Dictionary) -> bool:
 	_pending_commands.erase(request_id)
 	if pending.action == "battle.play_cards": _pending_play = {}
 	# Retry only an explicit pre-execution rejection, never an ambiguous timeout.
-	if pending.retry or payload.get("_replayed", false) or Time.get_ticks_msec() > int(pending.get("deadline", 0)) or (pending.action == "battle.play_cards" and Time.get_ticks_msec() > _play_deadline): return false
+	if pending.get("confirmed", false) or pending.retry or payload.get("_replayed", false) or Time.get_ticks_msec() > int(pending.get("deadline", 0)) or (pending.action == "battle.play_cards" and Time.get_ticks_msec() > _play_deadline): return false
 	var is_revision_conflict: bool = payload.get("code", "") == "REVISION_CONFLICT" or (
 		payload.get("code", "") == "COMMAND_REJECTED" and
 		str(payload.get("detail", "")).begins_with("Room revision conflict."))
@@ -1051,14 +1277,30 @@ func _retry_rejected_command(payload: Dictionary) -> bool:
 	_sound_commands.erase(request_id)
 	return true
 
+func _snapshot_confirms_command(pending: Dictionary, snapshot: Dictionary) -> bool:
+	if str(snapshot.get("room_id", "")) != str(pending.get("room_id", "")): return false
+	var revision := int(snapshot.get("room_revision", -1))
+	var confirmed_revision := int(pending.get("confirmed_revision", -1))
+	return revision >= confirmed_revision if confirmed_revision >= 0 else revision > int(pending.get("sent_revision", 0))
+
 func _on_event(kind: String, payload: Dictionary) -> void:
 	if kind == "pong": return
 	if kind == "error.command_rejected" and payload.get("code", "") == "NOT_IN_ROOM":
+		var origin: Dictionary = payload.get("_origin_context", {})
+		var current_match := str(room.get("match_id", _settlement_recovery_match_id))
+		if not origin.is_empty() and str(origin.get("match_id", "")) != current_match: return
+		# A second rejection can arrive after the room was cleared. Keep the
+		# original match until its durable receipt is visible or acknowledged.
+		if not current_match.is_empty(): _settlement_recovery_match_id = current_match
+		var generation: int = gateway.session_generation
+		_settlement_poll_at = 0
 		room = {}
 		selected_cards.clear()
 		clear_combat_preview()
 		payload["_retry_handled"] = true
 		await refresh_lobby()
+		if generation != gateway.session_generation or (not room.is_empty() and str(room.get("match_id", "")) != current_match): return
+		if not settlement.is_empty(): _settlement_recovery_match_id = ""
 		if settlement.is_empty() and lobby.get("unfinishedMatch") != null:
 			notice.emit("上次探索正在结算，请稍后点击重新连接")
 		return
@@ -1067,24 +1309,35 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 		return
 	var event_request_id := str(payload.get("_request_id", ""))
 	if not event_request_id.is_empty() and _pending_commands.has(event_request_id) and kind != "error.command_rejected":
-		_pending_commands.erase(event_request_id)
+		var pending: Dictionary = _pending_commands[event_request_id]
+		pending["confirmed"] = true
+		pending["confirmed_revision"] = int(payload.get("_event_revision", -1))
+		pending["deadline"] = Time.get_ticks_msec() + 10000
+		if _snapshot_confirms_command(pending, room): _pending_commands.erase(event_request_id)
+		else:
+			_pending_commands[event_request_id] = pending
+			_request_snapshot()
 	if kind == "battle.combo_resolved" and payload.get("_request_id", "") == _pending_play.get("request_id", ""):
 		_pending_play = {}
 	if kind in ["room.snapshot", "room.started"]:
 		var snapshot: Dictionary = payload.get("snapshot", {}) if kind == "room.started" else payload
 		if (not gateway.token.is_empty() or snapshot.has("config_version")) and not validate_config(str(snapshot.get("config_version", "")), "房间"): return
 	_sound_event(kind, payload)
+	if kind == "battle.target_selected" and payload.get("battle_id", "") == room.get("pve", {}).get("battle_id", ""): clear_combat_preview()
 	if kind in ["room.moved", "battle.target_selected", "duel.leave_ack", "duel.escape_started", "duel.escape_failed", "duel.escape_interrupted", "duel.started", "duel.ended", "action.potion_used", "relic.taken", "relic.replaced", "reward.choice_claimed", "action.extract_started", "action.extract_cancelled", "action.extract_completed", "action.spring_started", "action.spring_cancelled", "action.spring_completed"] and event_request_id.is_empty():
 		_request_snapshot()
 	match kind:
 		"room.snapshot":
 			_snapshot_request_pending = false
+			for request_id in _pending_commands.keys():
+				var pending: Dictionary = _pending_commands[request_id]
+				if pending.get("confirmed", false) and _snapshot_confirms_command(pending, payload): _pending_commands.erase(request_id)
 			if room.get("room_id", "") != payload.get("room_id", ""): relic_details = {}
 			_sound_snapshot(payload, payload)
 			_sync_pve_target()
 			var hand: Array = room.get("player", {}).get("hand", []).map(func(card): return card.instance_id)
 			selected_cards = selected_cards.filter(func(id): return id in hand)
-			combat_preview = _calculate_combat_preview(selected_cards)
+			_refresh_combat_preview()
 			ready_prompt = {}
 			if not _queued_command.is_empty() and (not _queued_command.has("snapshot_id") or payload.get("_request_id", "") == _queued_command.snapshot_id):
 				var queued: Dictionary = _queued_command
@@ -1113,11 +1366,19 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 		"settlement.ready", "match.settled": _load_settlement(payload.settlement_id)
 		"battle.combo_resolved", "combat.hit":
 			if _feedback_is_current(payload):
+				var had_preview := not combat_preview.is_empty() or not _preview_request.is_empty()
+				clear_combat_preview()
 				combat_feedback.emit(payload)
 				_sound_combat(kind, payload)
-				if event_request_id.is_empty(): _request_snapshot()
+				# Server presentation events use a nonempty synthetic request ID.
+				_request_snapshot()
+				if had_preview: changed.emit()
 			return
-		"combat.previewed", "combat.preview_rejected": pass
+		"combat.previewed": _accept_combat_preview(payload)
+		"combat.preview_rejected":
+			if payload.get("_request_id", "") == _preview_request.get("request_id", ""):
+				_preview_request = {}
+				_preview_deadline = 0
 		"inventory.changed":
 			if str(payload.get("action", "")) == "shop.refresh":
 				refresh_cache("shop")
@@ -1215,20 +1476,26 @@ func _intent_valid(action: String, payload: Dictionary) -> bool:
 
 func _load_settlement(id: String) -> void:
 	if settlement.get("settlementId", "") == id or _settlement_loading == id or _settlement_ack_pending_id == id: return
+	var expected_match_id := str(room.get("match_id", ""))
+	if expected_match_id.is_empty(): return
 	_settlement_loading = id
 	var generation: int = gateway.session_generation
 	var result: Dictionary = await gateway.request("/api/v1/settlements/" + id)
 	if generation != gateway.session_generation: return
+	if str(room.get("match_id", "")) != expected_match_id:
+		_settlement_loading = ""
+		return
 	if _settlement_ack_pending_id == id:
 		_settlement_loading = ""
 		return
-	if result.ok: settlement = result.data
+	if result.ok and result.data is Dictionary and str(result.data.get("matchId", "")) == expected_match_id and str(result.data.get("settlementId", "")) == id:
+		settlement = result.data
 	_settlement_loading = ""
 	changed.emit()
 
 func _poll_ready_settlement() -> void:
 	if _settlement_polling or not settlement.is_empty() or not _settlement_ack_pending_id.is_empty(): return
-	var match_id := str(room.get("match_id", ""))
+	var match_id := str(room.get("match_id", _settlement_recovery_match_id))
 	if match_id.is_empty() or gateway == null or gateway.token.is_empty(): return
 	_settlement_polling = true
 	_settlement_poll_at = Time.get_ticks_msec() + 2500
@@ -1237,7 +1504,7 @@ func _poll_ready_settlement() -> void:
 	var result: Dictionary = await gateway.request("/api/v1/bootstrap", HTTPClient.METHOD_GET, null, [0, 502, 503, 504])
 	if generation != gateway.session_generation: return
 	_settlement_polling = false
-	if room.get("match_id", "") != match_id or not settlement.is_empty(): return
+	if str(room.get("match_id", _settlement_recovery_match_id)) != match_id or not settlement.is_empty(): return
 	if not result.ok or not result.data is Dictionary:
 		settlement_query_failed = true
 		changed.emit()
@@ -1247,28 +1514,40 @@ func _poll_ready_settlement() -> void:
 	var ready: Variant = result.data.get("unfinishedSettlement")
 	if ready is Dictionary and str(ready.get("matchId", "")) == match_id:
 		settlement = ready
+		_settlement_recovery_match_id = ""
 		changed.emit()
 	elif was_failed:
 		changed.emit()
 
 func retry_settlement() -> void:
-	if str(room.get("player", {}).get("phase", "")) not in ["Extracted", "Dead"]: return
+	if str(room.get("player", {}).get("phase", "")) not in ["Extracted", "Dead"] and _settlement_recovery_match_id.is_empty(): return
 	_poll_ready_settlement()
 
-func acknowledge_settlement() -> void:
-	if settlement.is_empty() or busy: return
+func acknowledge_settlement() -> bool:
+	if settlement.is_empty() or busy: return false
 	var acknowledged: Dictionary = settlement.duplicate(true)
 	var previous_room: Dictionary = room.duplicate(true)
+	var previous_ready_prompt: Dictionary = ready_prompt.duplicate(true)
+	var previous_preparation: Dictionary = preparation.duplicate(true)
+	var previous_ticket: Dictionary = ticket.duplicate(true)
+	var previous_selected_cards: Array = selected_cards.duplicate(true)
+	var previous_relic_details: Dictionary = relic_details.duplicate(true)
+	var previous_combat_preview: Dictionary = combat_preview.duplicate(true)
+	var previous_queued_command: Dictionary = _queued_command.duplicate(true)
+	var previous_pending_play: Dictionary = _pending_play.duplicate(true)
+	var previous_pending_commands: Dictionary = _pending_commands.duplicate(true)
+	var previous_latest_commands: Dictionary = _latest_commands.duplicate(true)
 	var previous_lobby_settlement: Variant = lobby.get("unfinishedSettlement")
 	var previous_lobby_match: Variant = lobby.get("unfinishedMatch")
 	var previous_gateway_room_id: String = gateway.room_id
 	var previous_gateway_revision: int = gateway.room_revision
 	var settlement_id: String = str(acknowledged.get("settlementId", ""))
-	if settlement_id.is_empty(): return
+	if settlement_id.is_empty(): return false
 	busy = true
 	_settlement_ack_pending_id = settlement_id
 	settlement = {}
 	room = {}
+	ready_prompt = {}
 	selected_cards.clear()
 	relic_details = {}
 	clear_combat_preview()
@@ -1285,18 +1564,43 @@ func acknowledge_settlement() -> void:
 	changed.emit()
 	var generation: int = gateway.session_generation
 	var result: Dictionary = await gateway.request("/api/v1/settlements/" + settlement_id + "/acknowledge", HTTPClient.METHOD_POST, {})
-	if generation != gateway.session_generation: return
+	if generation != gateway.session_generation: return false
+	if not result.ok and int(result.get("status", 0)) in [0, 200, 502, 503, 504]:
+		# A lost write response can follow a committed acknowledgement. Verify the
+		# account's authoritative unfinished state before restoring an old receipt.
+		var verified: Dictionary = await gateway.request("/api/v1/bootstrap", HTTPClient.METHOD_GET, null, [0, 401, 503])
+		if generation != gateway.session_generation: return false
+		if verified.ok and verified.data is Dictionary and str(verified.data.get("configVersion", "")) == str(CATALOG.data.version) and verified.data.has("unfinishedSettlement") and verified.data.has("unfinishedMatch") and verified.data.has("activePreparation"):
+			if verified.data.unfinishedSettlement == null and verified.data.unfinishedMatch == null and verified.data.activePreparation == null:
+				result = {"ok": true, "status": 200, "acknowledgement_verified_by_bootstrap": true}
+	if generation != gateway.session_generation: return false
 	if result.ok:
+		_settlement_recovery_match_id = ""
+		_settlement_loading = ""
+		_settlement_polling = false
+		_settlement_poll_at = 0
+		settlement_query_failed = false
 		await refresh_lobby()
 	else:
 		settlement = acknowledged
 		room = previous_room
+		ready_prompt = previous_ready_prompt
+		preparation = previous_preparation
+		ticket = previous_ticket
+		selected_cards = previous_selected_cards
+		relic_details = previous_relic_details
+		combat_preview = previous_combat_preview
+		_queued_command = previous_queued_command
+		_pending_play = previous_pending_play
+		_pending_commands = previous_pending_commands
+		_latest_commands = previous_latest_commands
 		lobby["unfinishedSettlement"] = previous_lobby_settlement
 		lobby["unfinishedMatch"] = previous_lobby_match
 		gateway.room_id = previous_gateway_room_id
 		gateway.room_revision = previous_gateway_revision
 		notice.emit("结算确认失败，请重试")
-	if generation != gateway.session_generation: return
+	if generation != gateway.session_generation: return false
 	_settlement_ack_pending_id = ""
 	busy = false
 	changed.emit()
+	return result.ok

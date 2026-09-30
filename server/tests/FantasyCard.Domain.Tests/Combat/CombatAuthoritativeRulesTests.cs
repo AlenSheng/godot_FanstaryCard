@@ -54,7 +54,7 @@ public sealed class CombatAuthoritativeRulesTests
     {
         var state = new PlayerCombatState(HeroClass.Mage,
             Enumerable.Repeat("common-01", 20).ToArray(), new Random(31),
-            useConsumptionBasedFenxian: true);
+            fenxianImmediateDrawPolicy: FenxianImmediateDrawPolicy.CoreCardsSpent);
         for (var index = 0; index < 8; index++)
         {
             var (_, draw) = state.UpdateFenxian(CardElement.Fire, count);
@@ -64,7 +64,7 @@ public sealed class CombatAuthoritativeRulesTests
         Assert.True(expectedDraw + .5 < count);
         var restored = new PlayerCombatState(HeroClass.Mage,
             Enumerable.Repeat("common-01", 20).ToArray(), new Random(31),
-            useConsumptionBasedFenxian: true);
+            fenxianImmediateDrawPolicy: FenxianImmediateDrawPolicy.CoreCardsSpent);
         restored.Restore(state.Capture());
         Assert.Equal(expectedDraw, restored.UpdateFenxian(CardElement.Fire, count).Draw);
     }
@@ -75,7 +75,7 @@ public sealed class CombatAuthoritativeRulesTests
         var state = State();
         for (var index = 0; index < 4; index++) state.UpdateFenxian(CardElement.Fire, 1);
         Assert.Equal(2, state.UpdateFenxian(CardElement.Fire, 1).Draw);
-        Assert.False(state.Capture().UseConsumptionBasedFenxian);
+        Assert.Equal(FenxianImmediateDrawPolicy.CurrentRhythm, state.Capture().FenxianPolicy);
     }
 
     [Theory]
@@ -89,16 +89,17 @@ public sealed class CombatAuthoritativeRulesTests
     {
         var state = new PlayerCombatState(HeroClass.Guardian,
             Enumerable.Repeat("common-01", 20).ToArray(), new Random(31),
-            weaponLevel: level, useFractionalGuardianWeapon: true);
+            weaponLevel: level, guardianShieldBonusPolicy: GuardianShieldBonusPolicy.FractionalRemainder);
         var totalBonus = 0;
         for (var index = 0; index < 5; index++)
         {
-            var preview = state.ResolveShield(1);
-            Assert.Equal(preview, state.ResolveShield(1));
-            totalBonus += state.GainShield(preview) - 1;
+            var preview = state.PreviewShield(1);
+            Assert.Equal(preview, state.PreviewShield(1));
+            totalBonus += state.GainShield(preview.Shield) - 1;
+            state.CommitGuardianShieldRemainder(preview.RemainderTenthsAfter);
         }
         Assert.Equal(expectedBonus, totalBonus);
-        Assert.Equal(0, state.GuardianWeaponRemainderTenths);
+        Assert.Equal(0, state.GuardianShieldRemainderTenths);
     }
 
     [Fact]
@@ -106,17 +107,21 @@ public sealed class CombatAuthoritativeRulesTests
     {
         var state = new PlayerCombatState(HeroClass.Guardian,
             Enumerable.Repeat("common-01", 20).ToArray(), new Random(31),
-            weaponLevel: 1, useFractionalGuardianWeapon: true);
-        state.GainShield(state.ResolveShield(1));
-        Assert.Equal(4, state.GuardianWeaponRemainderTenths);
+            weaponLevel: 1, guardianShieldBonusPolicy: GuardianShieldBonusPolicy.FractionalRemainder);
+        var first = state.PreviewShield(1);
+        state.GainShield(first.Shield);
+        state.CommitGuardianShieldRemainder(first.RemainderTenthsAfter);
+        Assert.Equal(4, state.GuardianShieldRemainderTenths);
         var restored = new PlayerCombatState(HeroClass.Guardian,
             Enumerable.Repeat("common-01", 20).ToArray(), new Random(31),
-            weaponLevel: 1, useFractionalGuardianWeapon: true);
+            weaponLevel: 1, guardianShieldBonusPolicy: GuardianShieldBonusPolicy.FractionalRemainder);
         restored.Restore(state.Capture());
         Assert.Equal(state.ResolveShield(1), restored.ResolveShield(1));
-        Assert.Equal(4, restored.GuardianWeaponRemainderTenths);
-        restored.GainShield(100);
-        Assert.Equal(0, restored.GuardianWeaponRemainderTenths);
+        Assert.Equal(4, restored.GuardianShieldRemainderTenths);
+        var capped = restored.PreviewShield(100);
+        restored.GainShield(capped.Shield);
+        restored.CommitGuardianShieldRemainder(capped.RemainderTenthsAfter);
+        Assert.Equal(0, restored.GuardianShieldRemainderTenths);
         restored.ClearShield();
         Assert.Equal(0, restored.Shield);
     }

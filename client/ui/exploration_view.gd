@@ -228,12 +228,16 @@ static func _hand(ui: Control, host: Control, state: Dictionary) -> void:
 		charge_bar.value = host._draw_charge_value(float(player.get("draw_charge", "0")))
 	ui.text("%d%%" % roundi(charge_bar.value * 100.0), Rect2(402, 880, 72, 38), 24, P.TEAL).name = "DrawChargePercent"
 	ui.text(P.localized("exploration_library_discard") % [player.get("library_count", 0), player.get("discard_count", 0)], Rect2(79, 940, 330, 32), 21, P.MUTED)
+	var waiting: Dictionary = Game.combat_wait_state()
+	if waiting.reason != "available":
+		var waiting_label: Label = ui.text(P.localized("battle_wait_" + str(waiting.reason)), Rect2(1390, 1005, 460, 38), 22, P.MUTED)
+		waiting_label.name = "CombatWaitReason"
 	_center(ui.text(P.localized("battle_play_hint") % Game.selected_cards.size(), Rect2(573, 1005, 765, 36), 23, P.PAPER))
 
 static func _preview(ui: Control) -> void:
 	if Game.selected_cards.is_empty(): return
 	var preview: Dictionary = Game.combat_preview
-	var area := Rect2(460, 572, 1380, 47)
+	var area := Rect2(460, 528, 1380, 89)
 	var panel: Control = ui.panel(area)
 	panel.name = "CombatPreview"
 	if preview.is_empty():
@@ -242,20 +246,33 @@ static func _preview(ui: Control) -> void:
 	var x := 478.0
 	var core: String = preview.get("core_element", "")
 	var headline := P.localized("exploration_preview_core") % [P.word(core), preview.get("core_count", 0)] if not core.is_empty() else P.localized("preview")
-	ui.text(headline, Rect2(x, 578, 245, 34), 22, P.GOLD)
-	x += 244
-	for segment in preview.get("damage_segments", []):
-		ui.text("%s %s" % ["直伤" if segment.kind == "Direct" else P.word(segment.kind), segment.amount], Rect2(x, 578, 140, 34), 25, P.ELEMENT.get(segment.kind, Color.WHITE))
-		x += 140
+	headline = "%s · %s" % [P.localized("battle_preview_confirmed" if preview.get("authoritative", false) else "battle_preview_estimate"), headline]
+	var heading: Label = ui.text(headline, Rect2(x, 542, 310, 34), 22, P.GOLD, null, false)
+	heading.autowrap_mode = TextServer.AUTOWRAP_OFF
+	heading.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	heading.tooltip_text = headline
+	x = 478
+	var segments: Array = preview.get("damage_segments", [])
+	var segment_width := 780.0 / maxi(1, segments.size())
+	for segment in segments:
+		var segment_text := "%s %s" % [P.localized("battle_preview_direct") if segment.kind == "Direct" else P.word(segment.kind), segment.amount]
+		var segment_label: Label = ui.text(segment_text, Rect2(x, 578, segment_width, 34), 22, P.ELEMENT.get(segment.kind, Color.WHITE), null, false)
+		segment_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+		segment_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		segment_label.tooltip_text = segment_text
+		x += segment_width
 	var shield_damage := int(preview.get("shield_damage", 0))
 	var hp_damage := int(preview.get("hp_damage", 0))
 	var actual_damage := shield_damage + hp_damage
-	ui.text(P.localized("exploration_preview_actual") % [actual_damage, shield_damage, hp_damage], Rect2(x, 578, 235, 34), 21, P.PAPER)
-	x += 235
-	for entry in [["heal", "回复", P.TEAL], ["shield_gain", "盾", Color("c4d2d4")]]:
+	x = 788
+	var applied: Label = ui.text(P.localized("exploration_preview_actual" if preview.get("authoritative", false) else "battle_preview_applied_estimate") % [actual_damage, shield_damage, hp_damage], Rect2(x, 542, 350, 34), 22, P.PAPER, null, false)
+	applied.autowrap_mode = TextServer.AUTOWRAP_OFF
+	applied.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	x += 350
+	for entry in [["heal", "battle_preview_heal", P.TEAL], ["shield_gain", "battle_preview_shield", Color("c4d2d4")]]:
 		if int(preview.get(entry[0], 0)) > 0:
-			ui.text("%s +%s" % [entry[1], preview[entry[0]]], Rect2(x, 578, 149, 34), 24, entry[2])
-			x += 150
+			ui.text("%s +%s" % [P.localized(entry[1]), preview[entry[0]]], Rect2(x, 542, 130, 34), 22, entry[2], null, false)
+			x += 130
 	var effects: Array[String] = []
 	for entry in [["stun_seconds", "眩晕", "秒"], ["draw_block_seconds", "锁抽", "秒"], ["health_cost", "自损", ""], ["immediate_draw", "抽牌", "张"]]:
 		if float(preview.get(entry[0], 0)) > 0: effects.append("%s %s%s" % [entry[1], preview[entry[0]], entry[2]])
@@ -263,7 +280,8 @@ static func _preview(ui: Control) -> void:
 	if float(preview.get("draw_speed_seconds", "0")) > 0:
 		effects.append(P.localized("exploration_preview_draw_speed") % [Details.percent(float(preview.get("draw_speed_modifier", "0"))), preview.draw_speed_seconds])
 	if float(preview.get("draw_block_speed_seconds", "0")) > 0: effects.append(P.localized("exploration_preview_double_charge") % preview.draw_block_speed_seconds)
-	var tail: Label = ui.text(" · ".join(effects), Rect2(x, 578, maxf(1, 1824 - x), 34), 20, P.PAPER)
+	var tail: Label = ui.text(" · ".join(effects), Rect2(1270, 578, 554, 34), 22, P.PAPER, null, false)
+	tail.autowrap_mode = TextServer.AUTOWRAP_OFF
 	tail.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	panel.mouse_filter = Control.MOUSE_FILTER_PASS
 	var formula: Array[String] = []
@@ -273,6 +291,9 @@ static func _preview(ui: Control) -> void:
 	var cancellation := float(preview.get("conflict_cancellation", "0"))
 	if conflict_pairs > 0: formula.append(P.localized("exploration_preview_conflict") % [conflict_pairs, Details.percent(cancellation)])
 	panel.tooltip_text = P.localized("exploration_preview_tooltip") % [actual_damage, shield_damage, hp_damage, " · ".join(formula), " · ".join(effects)]
+	if preview.get("control_estimated", false): panel.tooltip_text += "\n" + P.localized("battle_preview_control_estimate")
+	if int(preview.get("heal_overflow", 0)) + int(preview.get("shield_overflow", 0)) > 0:
+		panel.tooltip_text += "\n" + P.localized("battle_preview_overflow") % [int(preview.get("heal_overflow", 0)), int(preview.get("shield_overflow", 0))]
 
 static func _duel(ui: Control, host: Control, state: Dictionary) -> void:
 	var player: Dictionary = state.player
