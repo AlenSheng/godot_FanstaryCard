@@ -619,13 +619,13 @@
       "title": "事件水位",
       "dependency_order": 13,
       "owner": "MAIN / load P0",
-      "state": "Partial",
+      "state": "ReadyForAcceptance",
       "historical_state": "ReadyForAcceptance",
       "historical_case_counts": {
         "Passed": 3
       },
       "implementation_status": "Final evidence, ownership, ACK conservation and STOP/emergency handling corrected and counterexample-tested.",
-      "current_test_status": "Current pure-SHA offline/supporting suites passed; complete canonical profiles/cases not accepted",
+      "current_test_status": "Original3/3 and applicable OFFLINE sequence/phase criteria proven at ee8; independent MAIN actual key replay pending.",
       "modification_sha": "d4c3212fb32c75d4b9f9f62c08277996611b149c",
       "test_commands": [
         "python -m unittest discover -s tools/tests -v"
@@ -636,9 +636,10 @@
         "ci-9275ec2/verified-artifacts.json",
         "ci-b7099ef/verified-artifacts.json",
         "integrated-cc6da2e/report.json",
-        "ci-cc6da2e/workflows.json"
+        "ci-cc6da2e/workflows.json",
+        "load03-ready-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json"
       ],
-      "remaining_blocker": "affected POSTGRES/LIVE/CAPACITY profiles remain separate and incomplete.",
+      "remaining_blocker": "S6 independent MAIN key replay/adjudication. No CI/LIVE/PG/human extra gate.",
       "dependencies": [
         "LOAD-01.2",
         "LOAD-06.4"
@@ -659,21 +660,24 @@
         "ci-b7099ef/verified-artifacts.json"
       ],
       "tested_source_shas": [
-        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3"
-      ]
+        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+        "ee8adcf40be9aebb1330156a3524910c08225ebc"
+      ],
+      "acceptance_proposal": "ReadyForIndependentAcceptance",
+      "proposed_resolution": "NoChangeWithEvidence"
     },
     {
       "task_id": "LOAD-03.2",
       "title": "生命周期阶段",
       "dependency_order": 14,
       "owner": "MAIN / offline canonical receipt audit",
-      "state": "Partial",
+      "state": "ReadyForAcceptance",
       "historical_state": "ReadyForAcceptance",
       "historical_case_counts": {
         "Passed": 3
       },
       "implementation_status": "Current behavior independently audited through frozen setup/expected and pure-SHA explicit receipts; no new code for this task.",
-      "current_test_status": "Three current explicit canonical receipts Passed and match frozen setup/expected; task-level completeness/independent stage decision remains open.",
+      "current_test_status": "Original3/3 and applicable OFFLINE sequence/phase criteria proven at ee8; independent MAIN actual key replay pending.",
       "modification_sha": null,
       "test_commands": [
         "python3 tools/pr13_offline_cases.py --output /workspace/pr13-takeover/case-audit-cc6da2e/receipts --godot /workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64"
@@ -683,9 +687,10 @@
         "case-audit-cc6da2e/receipts/report.json",
         "case-audit-cc6da2e/receipts/cases.jsonl",
         "CASE_MAPPING.json",
-        "integrated-cc6da2e/report.json"
+        "integrated-cc6da2e/report.json",
+        "load03-ready-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json"
       ],
-      "remaining_blocker": "Explicit three-case receipts passed; complete pass-criteria/stage review and dependency input adjudication remain open. OFFLINE-only task does not require online deployment.",
+      "remaining_blocker": "S6 independent MAIN key replay/adjudication. No CI/LIVE/PG/human extra gate.",
       "dependencies": [
         "LOAD-03.1"
       ],
@@ -701,8 +706,11 @@
       "accepted": false,
       "supporting_tests_are_canonical_acceptance": false,
       "tested_source_shas": [
-        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3"
-      ]
+        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+        "ee8adcf40be9aebb1330156a3524910c08225ebc"
+      ],
+      "acceptance_proposal": "ReadyForIndependentAcceptance",
+      "proposed_resolution": "NoChangeWithEvidence"
     },
     {
       "task_id": "LOAD-03.3",
@@ -5671,32 +5679,20 @@
   },
   "latest_runtime_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
   "state_counts": {
-    "Partial": 46,
+    "Partial": 44,
     "NotRevalidated": 72,
-    "ReadyForAcceptance": 11,
+    "ReadyForAcceptance": 13,
     "Blocked": 3
   },
   "latest_batch_state_transitions": [
     {
-      "task_id": "LOAD-02.1",
+      "task_id": "LOAD-03.1",
       "from_state": "Partial",
       "to_state": "ReadyForAcceptance",
       "Accepted": false
     },
     {
-      "task_id": "LOAD-02.2",
-      "from_state": "Partial",
-      "to_state": "Partial",
-      "Accepted": false
-    },
-    {
-      "task_id": "LOAD-02.3",
-      "from_state": "Partial",
-      "to_state": "ReadyForAcceptance",
-      "Accepted": false
-    },
-    {
-      "task_id": "LOAD-02.4",
+      "task_id": "LOAD-03.2",
       "from_state": "Partial",
       "to_state": "ReadyForAcceptance",
       "Accepted": false

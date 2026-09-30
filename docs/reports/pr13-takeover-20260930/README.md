@@ -1,3 +1,7 @@
+## LOAD03.1/.2完整离线提议
+
+[2项/6case](load03-ready-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json)：真实owned文件链/序号/缺失sticky与实际Gateway阶段PB回包完整满足本子项合同，sourceee8，业务runtimef812逐字相同。ROOT另核164文件及64tools+11来源条目；全部待MAIN独立实际重放。累计13Ready/44Partial/72NotRevalidated/3Blocked，Accepted0。
+
 ## LOAD03完整合同缺口已实证
 
 [六原case及完整判据](load03-remaining-ee8adcf4/REPORT.json)：.3/.4原断言均通过，但各自完整子任务保持Partial。真实Gateway等待请求缺started/pending分母；实际文件夹具可独立重算全场错误与P95，当前生产输出仍缺route/throughput及HTTP三截止点全程字段。仅诊断派生件不冒充实现。业务/UI不改，最小改动范围交父任务协调。

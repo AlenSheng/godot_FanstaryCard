@@ -1,0 +1,139 @@
+[
+  {
+    "id": "LOAD-03.1",
+    "title": "事件水位",
+    "source_instruction": "事件序号与JSONL守恒",
+    "specification_state": "ReviewReady",
+    "execution_state": "NotRevalidated",
+    "accepted_by": null,
+    "requires_before_integration": [
+      "LOAD-01.2",
+      "LOAD-06.4"
+    ],
+    "inputs": "JSONL与状态snapshot的序号合同",
+    "implementation_steps": "用run/client/epoch/event_seq增量消费；检测重复/乱序/缺口/截断/尾部未flush",
+    "test_cases": [
+      {
+        "id": "LOAD-03.1-T01",
+        "setup_and_injection": "同毫秒两事件",
+        "expected": "均消费且仅一次",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "LOAD-03.1-T02",
+        "setup_and_injection": "seq1/3缺2",
+        "expected": "lost_count=1证据无效",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "LOAD-03.1-T03",
+        "setup_and_injection": "轮转/重启换epoch",
+        "expected": "各自水位不混用",
+        "executed": false,
+        "evidence": null
+      }
+    ],
+    "pass_criteria": "JSONL原样本与汇总逐事件可对账；缺失不能因下次快照到达静默消失。",
+    "failure_rule": "任一必测用例与预期不符为Failed；缺输入/环境/证据为Blocked；仅完成部分层次为Partial，不升级Accepted。",
+    "profiles": [
+      "OFFLINE"
+    ],
+    "command_refs": [
+      "C-PY"
+    ],
+    "stage_refs": [
+      "S0",
+      "S1",
+      "S2",
+      "S3",
+      "S4",
+      "S5",
+      "S6"
+    ],
+    "runtime_stage": "NotApplicableWithReason",
+    "runtime_stage_reason": "仅凭指定离线/集成产物即可判定本子项；公网压测不增加该判据可信度。",
+    "evidence_root": "outputs/pr13-acceptance/<integration_sha>/LOAD-03.1/",
+    "deliverables": [
+      "report.json（逐条预期/实际/判定）",
+      "cases.jsonl（用例与业务关联）",
+      "commands.json（命令/工具版本/退出码/跳过）",
+      "manifest.json（相对路径/大小/SHA256）"
+    ],
+    "rollback": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。",
+    "gate_refs": [
+      "G1",
+      "G3"
+    ],
+    "historical_execution_state": "InProgress"
+  },
+  {
+    "id": "LOAD-03.2",
+    "title": "生命周期阶段",
+    "source_instruction": "真实生命周期阶段统计",
+    "specification_state": "ReviewReady",
+    "execution_state": "NotRevalidated",
+    "accepted_by": null,
+    "requires_before_integration": [
+      "LOAD-03.1"
+    ],
+    "inputs": "请求发起时的phase/cycle合同",
+    "implementation_steps": "按login/initial/matchmaking/playing/settlement/cleanup显式分层；无标签历史标legacy_unknown",
+    "test_cases": [
+      {
+        "id": "LOAD-03.2-T01",
+        "setup_and_injection": "playing中bootstrap",
+        "expected": "归playing",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "LOAD-03.2-T02",
+        "setup_and_injection": "settlement轮询",
+        "expected": "归settlement",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "LOAD-03.2-T03",
+        "setup_and_injection": "旧无标签bootstrap",
+        "expected": "unknown且旧口径单列",
+        "executed": false,
+        "evidence": null
+      }
+    ],
+    "pass_criteria": "当前阶段与历史auth-excluded列不能互相替代；迟到回包仍用发起阶段。",
+    "failure_rule": "任一必测用例与预期不符为Failed；缺输入/环境/证据为Blocked；仅完成部分层次为Partial，不升级Accepted。",
+    "profiles": [
+      "OFFLINE"
+    ],
+    "command_refs": [
+      "C-PY"
+    ],
+    "stage_refs": [
+      "S0",
+      "S1",
+      "S2",
+      "S3",
+      "S4",
+      "S5",
+      "S6"
+    ],
+    "runtime_stage": "NotApplicableWithReason",
+    "runtime_stage_reason": "仅凭指定离线/集成产物即可判定本子项；公网压测不增加该判据可信度。",
+    "evidence_root": "outputs/pr13-acceptance/<integration_sha>/LOAD-03.2/",
+    "deliverables": [
+      "report.json（逐条预期/实际/判定）",
+      "cases.jsonl（用例与业务关联）",
+      "commands.json（命令/工具版本/退出码/跳过）",
+      "manifest.json（相对路径/大小/SHA256）"
+    ],
+    "rollback": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。",
+    "gate_refs": [
+      "G1",
+      "G3"
+    ],
+    "historical_execution_state": "InProgress"
+  }
+]

@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/workspace/pr13-takeover/load03-ready-ee8adcf4-f812/harness/sequence_files.py", line 24, in <module>
+    ok=first['lost_count']==0 and len(first['fresh'][0]['telemetry'])==2 and first['fresh'][0]['telemetry']==first['audit'] and second['fresh'][0]['telemetry']==[] and first['aggregate']['logical_request_count']==2 and second['aggregate']['logical_request_count']==0
+                                      ~~~~~~~~~~~~~~^^^
+IndexError: list index out of range

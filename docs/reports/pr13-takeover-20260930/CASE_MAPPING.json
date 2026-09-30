@@ -1422,7 +1422,7 @@
       ],
       "setup_and_injection": "同毫秒两事件",
       "expected": "均消费且仅一次",
-      "task_current_state": "Partial",
+      "task_current_state": "ReadyForAcceptance",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [
@@ -1433,20 +1433,34 @@
         "integrated-cc6da2e/report.json",
         "ci-cc6da2e/workflows.json"
       ],
-      "supporting_evidence_is_full_case_coverage": false,
+      "supporting_evidence_is_full_case_coverage": true,
       "current_case_execution": {
         "status": "Passed",
         "executed": true,
-        "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
-        "source_git_dirty": false,
-        "receipt_file": "case-audit-cc6da2e/receipts/cases.jsonl",
-        "receipt_line": 10,
+        "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+        "source_copy_byte_audited": true,
+        "receipt_file": "load03-ready-ee8adcf4/evidence/cases.jsonl",
+        "receipt_line": 1,
         "setup_matches_frozen_spec": true,
         "expected_matches_frozen_spec": true,
-        "acceptance_decision": "NotAccepted: per-task stages, dependencies and applicable profile decisions remain independent.",
-        "prior_matching_receipt_file": "integrated-cc6da2e/offline-cases-with-godot/cases.jsonl",
-        "command_manifest": "case-audit-cc6da2e/manifest.json"
-      }
+        "full_applicable_profile_case_evidence": true,
+        "acceptance_decision": "S6 independent MAIN actual replay pending; Accepted=false"
+      },
+      "prior_case_executions": [
+        {
+          "status": "Passed",
+          "executed": true,
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "source_git_dirty": false,
+          "receipt_file": "case-audit-cc6da2e/receipts/cases.jsonl",
+          "receipt_line": 10,
+          "setup_matches_frozen_spec": true,
+          "expected_matches_frozen_spec": true,
+          "acceptance_decision": "NotAccepted: per-task stages, dependencies and applicable profile decisions remain independent.",
+          "prior_matching_receipt_file": "integrated-cc6da2e/offline-cases-with-godot/cases.jsonl",
+          "command_manifest": "case-audit-cc6da2e/manifest.json"
+        }
+      ]
     },
     {
       "case_id": "LOAD-03.1-T02",
@@ -1456,7 +1470,7 @@
       ],
       "setup_and_injection": "seq1/3缺2",
       "expected": "lost_count=1证据无效",
-      "task_current_state": "Partial",
+      "task_current_state": "ReadyForAcceptance",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [
@@ -1467,20 +1481,34 @@
         "integrated-cc6da2e/report.json",
         "ci-cc6da2e/workflows.json"
       ],
-      "supporting_evidence_is_full_case_coverage": false,
+      "supporting_evidence_is_full_case_coverage": true,
       "current_case_execution": {
         "status": "Passed",
         "executed": true,
-        "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
-        "source_git_dirty": false,
-        "receipt_file": "case-audit-cc6da2e/receipts/cases.jsonl",
-        "receipt_line": 11,
+        "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+        "source_copy_byte_audited": true,
+        "receipt_file": "load03-ready-ee8adcf4/evidence/cases.jsonl",
+        "receipt_line": 2,
         "setup_matches_frozen_spec": true,
         "expected_matches_frozen_spec": true,
-        "acceptance_decision": "NotAccepted: per-task stages, dependencies and applicable profile decisions remain independent.",
-        "prior_matching_receipt_file": "integrated-cc6da2e/offline-cases-with-godot/cases.jsonl",
-        "command_manifest": "case-audit-cc6da2e/manifest.json"
-      }
+        "full_applicable_profile_case_evidence": true,
+        "acceptance_decision": "S6 independent MAIN actual replay pending; Accepted=false"
+      },
+      "prior_case_executions": [
+        {
+          "status": "Passed",
+          "executed": true,
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "source_git_dirty": false,
+          "receipt_file": "case-audit-cc6da2e/receipts/cases.jsonl",
+          "receipt_line": 11,
+          "setup_matches_frozen_spec": true,
+          "expected_matches_frozen_spec": true,
+          "acceptance_decision": "NotAccepted: per-task stages, dependencies and applicable profile decisions remain independent.",
+          "prior_matching_receipt_file": "integrated-cc6da2e/offline-cases-with-godot/cases.jsonl",
+          "command_manifest": "case-audit-cc6da2e/manifest.json"
+        }
+      ]
     },
     {
       "case_id": "LOAD-03.1-T03",
@@ -1490,7 +1518,7 @@
       ],
       "setup_and_injection": "轮转/重启换epoch",
       "expected": "各自水位不混用",
-      "task_current_state": "Partial",
+      "task_current_state": "ReadyForAcceptance",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [
@@ -1501,20 +1529,34 @@
         "integrated-cc6da2e/report.json",
         "ci-cc6da2e/workflows.json"
       ],
-      "supporting_evidence_is_full_case_coverage": false,
+      "supporting_evidence_is_full_case_coverage": true,
       "current_case_execution": {
         "status": "Passed",
         "executed": true,
-        "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
-        "source_git_dirty": false,
-        "receipt_file": "case-audit-cc6da2e/receipts/cases.jsonl",
-        "receipt_line": 12,
+        "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+        "source_copy_byte_audited": true,
+        "receipt_file": "load03-ready-ee8adcf4/evidence/cases.jsonl",
+        "receipt_line": 3,
         "setup_matches_frozen_spec": true,
         "expected_matches_frozen_spec": true,
-        "acceptance_decision": "NotAccepted: per-task stages, dependencies and applicable profile decisions remain independent.",
-        "prior_matching_receipt_file": "integrated-cc6da2e/offline-cases-with-godot/cases.jsonl",
-        "command_manifest": "case-audit-cc6da2e/manifest.json"
-      }
+        "full_applicable_profile_case_evidence": true,
+        "acceptance_decision": "S6 independent MAIN actual replay pending; Accepted=false"
+      },
+      "prior_case_executions": [
+        {
+          "status": "Passed",
+          "executed": true,
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "source_git_dirty": false,
+          "receipt_file": "case-audit-cc6da2e/receipts/cases.jsonl",
+          "receipt_line": 12,
+          "setup_matches_frozen_spec": true,
+          "expected_matches_frozen_spec": true,
+          "acceptance_decision": "NotAccepted: per-task stages, dependencies and applicable profile decisions remain independent.",
+          "prior_matching_receipt_file": "integrated-cc6da2e/offline-cases-with-godot/cases.jsonl",
+          "command_manifest": "case-audit-cc6da2e/manifest.json"
+        }
+      ]
     },
     {
       "case_id": "LOAD-03.2-T01",
@@ -1524,7 +1566,7 @@
       ],
       "setup_and_injection": "playing中bootstrap",
       "expected": "归playing",
-      "task_current_state": "Partial",
+      "task_current_state": "ReadyForAcceptance",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [
@@ -1534,20 +1576,34 @@
         "CASE_MAPPING.json",
         "integrated-cc6da2e/report.json"
       ],
-      "supporting_evidence_is_full_case_coverage": false,
+      "supporting_evidence_is_full_case_coverage": true,
       "current_case_execution": {
         "status": "Passed",
         "executed": true,
-        "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
-        "source_git_dirty": false,
-        "receipt_file": "case-audit-cc6da2e/receipts/cases.jsonl",
-        "receipt_line": 13,
+        "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+        "source_copy_byte_audited": true,
+        "receipt_file": "load03-ready-ee8adcf4/evidence/cases.jsonl",
+        "receipt_line": 4,
         "setup_matches_frozen_spec": true,
         "expected_matches_frozen_spec": true,
-        "acceptance_decision": "NotAccepted: per-task stages, dependencies and applicable profile decisions remain independent.",
-        "prior_matching_receipt_file": "integrated-cc6da2e/offline-cases-with-godot/cases.jsonl",
-        "command_manifest": "case-audit-cc6da2e/manifest.json"
-      }
+        "full_applicable_profile_case_evidence": true,
+        "acceptance_decision": "S6 independent MAIN actual replay pending; Accepted=false"
+      },
+      "prior_case_executions": [
+        {
+          "status": "Passed",
+          "executed": true,
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "source_git_dirty": false,
+          "receipt_file": "case-audit-cc6da2e/receipts/cases.jsonl",
+          "receipt_line": 13,
+          "setup_matches_frozen_spec": true,
+          "expected_matches_frozen_spec": true,
+          "acceptance_decision": "NotAccepted: per-task stages, dependencies and applicable profile decisions remain independent.",
+          "prior_matching_receipt_file": "integrated-cc6da2e/offline-cases-with-godot/cases.jsonl",
+          "command_manifest": "case-audit-cc6da2e/manifest.json"
+        }
+      ]
     },
     {
       "case_id": "LOAD-03.2-T02",
@@ -1557,7 +1613,7 @@
       ],
       "setup_and_injection": "settlement轮询",
       "expected": "归settlement",
-      "task_current_state": "Partial",
+      "task_current_state": "ReadyForAcceptance",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [
@@ -1567,20 +1623,34 @@
         "CASE_MAPPING.json",
         "integrated-cc6da2e/report.json"
       ],
-      "supporting_evidence_is_full_case_coverage": false,
+      "supporting_evidence_is_full_case_coverage": true,
       "current_case_execution": {
         "status": "Passed",
         "executed": true,
-        "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
-        "source_git_dirty": false,
-        "receipt_file": "case-audit-cc6da2e/receipts/cases.jsonl",
-        "receipt_line": 14,
+        "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+        "source_copy_byte_audited": true,
+        "receipt_file": "load03-ready-ee8adcf4/evidence/cases.jsonl",
+        "receipt_line": 5,
         "setup_matches_frozen_spec": true,
         "expected_matches_frozen_spec": true,
-        "acceptance_decision": "NotAccepted: per-task stages, dependencies and applicable profile decisions remain independent.",
-        "prior_matching_receipt_file": "integrated-cc6da2e/offline-cases-with-godot/cases.jsonl",
-        "command_manifest": "case-audit-cc6da2e/manifest.json"
-      }
+        "full_applicable_profile_case_evidence": true,
+        "acceptance_decision": "S6 independent MAIN actual replay pending; Accepted=false"
+      },
+      "prior_case_executions": [
+        {
+          "status": "Passed",
+          "executed": true,
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "source_git_dirty": false,
+          "receipt_file": "case-audit-cc6da2e/receipts/cases.jsonl",
+          "receipt_line": 14,
+          "setup_matches_frozen_spec": true,
+          "expected_matches_frozen_spec": true,
+          "acceptance_decision": "NotAccepted: per-task stages, dependencies and applicable profile decisions remain independent.",
+          "prior_matching_receipt_file": "integrated-cc6da2e/offline-cases-with-godot/cases.jsonl",
+          "command_manifest": "case-audit-cc6da2e/manifest.json"
+        }
+      ]
     },
     {
       "case_id": "LOAD-03.2-T03",
@@ -1590,7 +1660,7 @@
       ],
       "setup_and_injection": "旧无标签bootstrap",
       "expected": "unknown且旧口径单列",
-      "task_current_state": "Partial",
+      "task_current_state": "ReadyForAcceptance",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [
@@ -1600,20 +1670,34 @@
         "CASE_MAPPING.json",
         "integrated-cc6da2e/report.json"
       ],
-      "supporting_evidence_is_full_case_coverage": false,
+      "supporting_evidence_is_full_case_coverage": true,
       "current_case_execution": {
         "status": "Passed",
         "executed": true,
-        "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
-        "source_git_dirty": false,
-        "receipt_file": "case-audit-cc6da2e/receipts/cases.jsonl",
-        "receipt_line": 15,
+        "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+        "source_copy_byte_audited": true,
+        "receipt_file": "load03-ready-ee8adcf4/evidence/cases.jsonl",
+        "receipt_line": 6,
         "setup_matches_frozen_spec": true,
         "expected_matches_frozen_spec": true,
-        "acceptance_decision": "NotAccepted: per-task stages, dependencies and applicable profile decisions remain independent.",
-        "prior_matching_receipt_file": "integrated-cc6da2e/offline-cases-with-godot/cases.jsonl",
-        "command_manifest": "case-audit-cc6da2e/manifest.json"
-      }
+        "full_applicable_profile_case_evidence": true,
+        "acceptance_decision": "S6 independent MAIN actual replay pending; Accepted=false"
+      },
+      "prior_case_executions": [
+        {
+          "status": "Passed",
+          "executed": true,
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "source_git_dirty": false,
+          "receipt_file": "case-audit-cc6da2e/receipts/cases.jsonl",
+          "receipt_line": 15,
+          "setup_matches_frozen_spec": true,
+          "expected_matches_frozen_spec": true,
+          "acceptance_decision": "NotAccepted: per-task stages, dependencies and applicable profile decisions remain independent.",
+          "prior_matching_receipt_file": "integrated-cc6da2e/offline-cases-with-godot/cases.jsonl",
+          "command_manifest": "case-audit-cc6da2e/manifest.json"
+        }
+      ]
     },
     {
       "case_id": "LOAD-03.3-T01",
@@ -11770,6 +11854,13 @@
     "partial_tasks": 1,
     "passed_cases": 11,
     "partial_cases": 1,
+    "Accepted": 0
+  },
+  "latest_LOAD03_1_2_acceptance_proposal": {
+    "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+    "report": "load03-ready-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+    "ready_tasks": 2,
+    "passed_cases": 6,
     "Accepted": 0
   }
 }
