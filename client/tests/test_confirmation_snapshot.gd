@@ -48,4 +48,21 @@ func run_test() -> Dictionary:
 			checks[scenario] = held and not store.has_pending_commands() and gateway.sent.filter(func(row): return row.kind == "reward.choice.claim").size() == 1
 		store.free()
 		gateway.free()
+	var live_store = load("res://state/game_store.gd").new()
+	var live_gateway := TestGateway.new()
+	live_gateway.persist_session = false
+	live_gateway.online = true
+	live_store.gateway = live_gateway
+	live_store.room = {"room_id": "room", "player": {"player_id": "player", "phase": "Pve", "hand": []},
+		"pve": {"battle_id": "battle", "current_target_id": "monster", "monsters": [{"monster_id": "monster", "hp": 46}]}}
+	live_store._on_event("combat.hit", {"_request_id": "room-combat", "battle_id": "battle", "target_id": "player"})
+	checks["synthetic_hit_refreshes_hand"] = live_gateway.sent.size() == 1 and live_gateway.sent[0].kind == "room.snapshot.read"
+	live_store._combat_sync_at = Time.get_ticks_msec() - 1
+	live_store._snapshot_request_at = Time.get_ticks_msec() - 4001
+	live_store._process(0)
+	checks["silent_draw_refresh_is_bounded"] = live_gateway.sent.size() == 2 and live_store._combat_sync_at > Time.get_ticks_msec()
+	live_store._process(0)
+	checks["no_per_frame_snapshot_loop"] = live_gateway.sent.size() == 2
+	live_store.free()
+	live_gateway.free()
 	return {"ok": checks.values().all(func(value): return value == true), "checks": checks}

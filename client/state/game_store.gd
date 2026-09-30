@@ -61,6 +61,7 @@ var _queue_deadline: int = 0
 var _pending_play: Dictionary = {}
 var _play_deadline: int = 0
 var _pending_commands: Dictionary = {}
+var _combat_sync_at := 0
 var _latest_commands: Dictionary = {}
 var _snapshot_request_at: int = 0
 var _snapshot_request_pending := false
@@ -86,6 +87,15 @@ func _process(_delta: float) -> void:
 	else:
 		_extraction_sync_at = 0
 	var phase: String = str(room.get("player", {}).get("phase", ""))
+	if phase in ["Pve", "Pvp"]:
+		if _combat_sync_at == 0: _combat_sync_at = now + 4000
+		elif now >= _combat_sync_at:
+			_combat_sync_at = now + 4000
+			# Natural draws and utility intents may have no presentation event.
+			# Keep the visible hand and legal opportunities authoritative.
+			if _snapshot_request_pending and now - _snapshot_request_at > 3000: _snapshot_request_pending = false
+			_request_snapshot()
+	else: _combat_sync_at = 0
 	if settlement.is_empty() and (phase in ["Extracted", "Dead"] or not _settlement_recovery_match_id.is_empty()) and now >= _settlement_poll_at and not _settlement_polling:
 		_poll_ready_settlement()
 	var pending_changed := false
@@ -1299,7 +1309,8 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 			if _feedback_is_current(payload):
 				combat_feedback.emit(payload)
 				_sound_combat(kind, payload)
-				if event_request_id.is_empty(): _request_snapshot()
+				# Server presentation events use a nonempty synthetic request ID.
+				_request_snapshot()
 			return
 		"combat.previewed", "combat.preview_rejected": pass
 		"inventory.changed":
