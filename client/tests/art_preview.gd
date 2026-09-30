@@ -8,12 +8,15 @@ func _ready() -> void:
 	var evidence_directory := OS.get_environment("FANTASYCARD_ART_EVIDENCE")
 	if not evidence_directory.is_empty(): output = evidence_directory
 	Game.gateway.set_process(false)
+	Game.set_process(false)
+	Game.gateway.reconnect_enabled = false
 	Game.gateway.persist_session = false
 	Game.gateway.online = true
 	Game.connection = "美术预览 · 测试数据"
 	Game.lobby = {"player": {"userId": "preview-player"}, "wallet": {"gold": 1200}, "decks": [{"heroClass": "Mage", "cardIds": ["MAG-01", "MAG-04", "GP01", "MAG-10", "C01"]}], "materials": {"equipmentFragments": 32}, "equippedLoadouts": [], "classWeapons": [{"heroClass": "Mage", "level": 2, "version": 1}]}
 	$UI.inventory = {"equipments": [], "consumables": {"healthPotionCount": 2, "advancedBagCount": 1, "topBagCount": 1}}
 	$UI._shop_inventory_ready = true
+	$UI._codex_ready = true
 	$UI.gear_draft = [null, null, null, null, null]
 	_run.call_deferred()
 
@@ -145,10 +148,10 @@ func _portrait_previews(suffix: String) -> void:
 func _shop_fixture() -> Dictionary:
 	var products: Array = []
 	for kind in ["Cards", "EquipmentFragments", "AdvancedBag", "TopBag", "WarriorSoul", "HealthPotion"]:
-		products.append({"kind": kind, "productId": "fixture-" + kind, "priceGold": 120, "purchased": 0, "limit": 3, "payload": JSON.stringify({"count": 3} if kind == "Cards" else {"amount": 1})})
+		products.append({"kind": kind, "productId": "fixture-" + kind, "priceGold": 120, "purchased": 0, "limit": 3, "payload": {"count": 3} if kind == "Cards" else {"amount": 1}})
 	for hero_class in ["Priest", "Mage", "Guardian"]:
-		products.append({"kind": "ClassSoul", "productId": "fixture-" + hero_class, "priceGold": 400, "purchased": 0, "limit": 1, "payload": JSON.stringify({"heroClass": hero_class, "amount": 12})})
-	products.append({"kind": "Cards", "productId": "fixture-daily", "priceGold": 150, "purchased": 0, "limit": 1, "alreadyOwned": true, "payload": JSON.stringify({"cardId": "C01", "count": 1})})
+		products.append({"kind": "ClassSoul", "productId": "fixture-" + hero_class, "priceGold": 400, "purchased": 0, "limit": 1, "payload": {"heroClass": hero_class, "amount": 12}})
+	products.append({"kind": "Cards", "productId": "fixture-daily", "priceGold": 150, "purchased": 0, "limit": 1, "alreadyOwned": true, "payload": {"cardId": "C01", "count": 1}})
 	return {"products": products}
 
 func _check_shop() -> void:
@@ -160,7 +163,7 @@ func _check_shop() -> void:
 			layout_errors.append("Missing server product row: " + product.productId)
 			continue
 		var image: TextureRect = node.get_node("ProductArt")
-		var payload: Dictionary = JSON.parse_string(product.payload)
+		var payload: Dictionary = product.payload
 		if image.texture == null: layout_errors.append("Empty server product image: " + product.productId)
 		if product.kind in ["Cards", "EquipmentFragments", "AdvancedBag", "TopBag"] and not payload.has("cardId") and image.texture != Art.product(product.kind):
 			layout_errors.append("New shop artwork not applied: " + product.kind)
@@ -276,7 +279,7 @@ func _regressions() -> void:
 	$UI.screen = "prep"
 	$UI._render()
 	var labels := ""
-	for node in $UI._reference.get_children():
+	for node in $UI._reference.find_children("*", "Label", true, false):
 		if node is Label: labels += node.text + "\n"
 	if not ("已锁定编组 20 / 20" in labels and "生命上限 99" in labels and "本命 +4" in labels):
 		layout_errors.append("Locked preparation must render frozen deck, HP and weapon level")

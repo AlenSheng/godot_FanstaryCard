@@ -251,6 +251,10 @@ func _build_shell() -> void:
 	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	top.add_child(spacer)
 	status_label = _label(top, "", 20, P.MUTED)
+	status_label.custom_minimum_size.x = 640
+	status_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	status_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	status_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	var scroll := ScrollContainer.new()
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -468,6 +472,8 @@ func _reset_account_ui() -> void:
 
 func _render() -> void:
 	_render_pending = false
+	if is_instance_valid(_game_title):
+		_game_title.text = P.localized("game_title")
 	_sync_draw_charge_visual()
 	var room_cell := "%s:%s:%s" % [Game.room.get("room_id", ""), Game.room.get("self", {}).get("row", -1), Game.room.get("self", {}).get("column", -1)]
 	if room_cell != _view_cell or Game.room.get("player", {}).get("phase", "") != "ActionBar":

@@ -700,24 +700,20 @@ func _loadout(rect: Rect2, editable: bool, snapshot: Dictionary = {}) -> void:
 	var weapon_base := panel(Rect2(weapon_pos, Vector2(120, 120)), Art.COMMON_CELL_KEY)
 	weapon_base.name = "CommonItemFrame_Weapon"
 	weapon_base.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	weapon_base.add_theme_stylebox_override("panel", Art.style(Art.COMMON_CELL_KEY, _mail_quality_background("Orange")))
-	var weapon_frame := Art.image(self, Art.texture(_mail_quality_frame_key("Orange")), Vector2.ZERO)
-	weapon_frame.name = "QualityFrame_Weapon"
-	weapon_frame.position = weapon_pos
-	weapon_frame.size = Vector2(120, 120)
-	weapon_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	weapon_base.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
+	var signature_color: Color = Art.SIGNATURE_COLORS.get(hero_class, P.GOLD)
 	var weapon_fill := ColorRect.new()
-	weapon_fill.name = "QualityBackground_Weapon"
-	weapon_fill.color = _mail_quality_background("Orange")
-	weapon_fill.color.a = 1.0
-	var weapon_inset := 120.0 * 12.0 / 192.0
-	weapon_fill.position = weapon_pos + Vector2(weapon_inset, weapon_inset)
-	weapon_fill.size = Vector2(120.0 - weapon_inset * 2.0, 120.0 - weapon_inset * 2.0)
+	weapon_fill.name = "SignatureWeaponBackground"
+	weapon_fill.color = signature_color.darkened(0.83)
+	weapon_fill.position = weapon_pos + Vector2(17, 17)
+	weapon_fill.size = Vector2(86, 86)
 	weapon_fill.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(weapon_fill)
-	picture(Art.texture("UI/Item/exploration_prep_item_icon_weapon_%s.png" % hero_class.to_lower()), Rect2(weapon_pos + Vector2(12, 12), Vector2(96, 96)))
+	var weapon_frame := picture(Art.signature_frame(hero_class), Rect2(weapon_pos, Vector2(120, 120)))
+	weapon_frame.name = "SignatureWeaponFrame"
+	picture(Art.texture("UI/Item/exploration_prep_item_icon_weapon_%s.png" % hero_class.to_lower()), Rect2(weapon_pos + Vector2(18, 18), Vector2(84, 84)))
 	var weapon_caption_offset := Vector2(27, 127) if editable else Vector2(-8, 127)
-	var weapon_caption := text("本命 +%s · 锁定" % snapshot.classWeaponLevel if snapshot.has("classWeaponLevel") else "本命 · 锁定", Rect2(weapon_pos + weapon_caption_offset, Vector2(180, 40)), 21, P.GOLD)
+	var weapon_caption := text("本命 +%s · 锁定" % snapshot.classWeaponLevel if snapshot.has("classWeaponLevel") else "本命 · 锁定", Rect2(weapon_pos + weapon_caption_offset, Vector2(180, 40)), 21, signature_color)
 	weapon_caption.name = "SignatureWeaponCaption"
 
 func _preparation() -> void:
@@ -760,13 +756,13 @@ func _preparation() -> void:
 		# paid backpack tiers are gated by their inventory counts.
 		var available_count := 0 if i == 0 else int(stock.get(key, 0))
 		var unavailable: bool = locked or (i > 0 and available_count <= 0)
-		var tab := button(title if i == 0 else "", Rect2(845 + i * 328, 219, 307, 93), func(): host.bag_tier = key; host._render(), unavailable, ORANGE if tier == key else BLUE)
+		var tab := button("", Rect2(845 + i * 328, 219, 307, 93), func(): host.bag_tier = key; host._render(), unavailable, ORANGE if tier == key else BLUE)
 		tab.name = "Backpack_" + key
 		tab.set_meta("sound_cue", "ui_tab")
-		if i > 0:
-			picture(Art.product(key + "Bag"), Rect2(860 + i * 328, 226, 68, 78)).name = "BackpackIcon_" + key
-			text(title.split("\n")[0], Rect2(937 + i * 328, 228, 202, 37), 25, P.MUTED if unavailable else P.PAPER)
-			text(title.split("\n")[1], Rect2(937 + i * 328, 267, 202, 32), 20, P.GOLD if tier == key else P.MUTED)
+		var bag_art := Art.texture("UI/Shop/backpack_free.png") if i == 0 else Art.product(key + "Bag")
+		picture(bag_art, Rect2(860 + i * 328, 226, 68, 78)).name = "BackpackIcon_" + key
+		text(title.split("\n")[0], Rect2(937 + i * 328, 228, 202, 37), 25, P.MUTED if unavailable else P.PAPER)
+		text(title.split("\n")[1], Rect2(937 + i * 328, 267, 202, 32), 20, P.GOLD if tier == key else P.MUTED)
 		tab.tooltip_text = P.localized_text("持有 %s 个" % available_count)
 	var row_count := int(ceil(float(capacity) / 6.0))
 	var bag_scroll := _scroll(Rect2(845, 342, 1000, 408))

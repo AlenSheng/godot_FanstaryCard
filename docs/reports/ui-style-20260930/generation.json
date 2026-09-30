@@ -1,0 +1,115 @@
+{
+  "generator": "OpenAI built-in imageGen (image_gen.imagegen)",
+  "date": "2026-09-30",
+  "processing": "Original generated PNG bytes copied into the repository. No procedural drawing, repainting, resizing, transparency removal, or placeholder substitution. Weapon atlas regions are selected at runtime using AtlasTexture.",
+  "assets": [
+    {
+      "id": "monster-card-frame-complete",
+      "reference": "art/generated/ui-style-20260930/reference-monster-frame-before.png",
+      "reference_sha256": "40239ba59f9c1430668b3c10708e645ac95adef6f55df38039d1e693250a9691",
+      "prompt": "Edit the referenced actual game asset, preserving its existing dark burgundy textured caption panel, fine antique brass inner rails, black carved gothic scrollwork at the lower corners, and transparent picture aperture. This is an ORIGINAL 2D fantasy game UI card frame, NOT an illustration or full UI screenshot. REPAIR the missing upper edge: create a complete uninterrupted ornate antique brass and near-black outer border along the TOP and upper left and right corners, matching the intact lower half's line weight, brushwork and scale. At the top center add only a small pointed dark ruby/brass diamond ornament. The top frame must be clearly visible at a 218x376 in-game size. Keep a large EMPTY truly transparent portrait window, bounded approximately x=28..408 and y=30..470 in a 436x752 target asset. Keep the burgundy opaque text plate approximately y=480..730 and its ornament. Keep silhouette inside a small transparent outer gutter; do not cut off any edges. Keep the same 436:752 aspect ratio, output portrait PNG RGBA intended as 436x752. Do not draw a character, letters, numbers, icons, quality badges, watermark, checkerboard, or background. Real alpha transparency inside the portrait window and around the card. Preserve this frame's distinct burgundy monster card identity; no orange equipment quality border. Repair only the damaged border, respecting the reference asset.",
+      "requested_pixels": [
+        436,
+        752
+      ],
+      "actual_pixels": [
+        955,
+        1647
+      ],
+      "mode": "RGBA",
+      "transparent_background": true,
+      "alpha_window_center": 0,
+      "original_generation_file": "/workspace/generated_images/exec-4d1917b8-f117-4437-9b21-7a2a291b4425.png",
+      "source": "art/generated/ui-style-20260930/monster_card_frame_complete.png",
+      "runtime_file": "client/assets/imported/UI/Cards/card_frame_monster_clean.png",
+      "runtime_key": "UI/Cards/card_frame_monster_clean.png",
+      "display_pixels": [
+        218,
+        376
+      ],
+      "reference_code": [
+        "client/ui/card_view.gd",
+        "client/ui/card_view.gdshader"
+      ],
+      "import": {
+        "compress/mode": 0,
+        "mipmaps/generate": false,
+        "process/fix_alpha_border": true,
+        "process/premult_alpha": false,
+        "process/size_limit": 0
+      },
+      "note": "ImageGen returned a larger image at the requested aspect ratio. Raw pixels are preserved and the existing card shader maps the portrait section; upper ornament is no longer cropped. Runtime text stays separate.",
+      "sha256": "3b50bf66192daaa1d2be4a22ea10601d8c10d41cd31f728164ca307ba0044ce5",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "id": "three-class-signature-weapon-frames",
+      "references": [
+        "client/assets/imported/UI/Prep/exploration_prep_equipment_slot_frame_orange.png",
+        "artifacts/ui-audit-20260930/source-reference.png"
+      ],
+      "prompt": "Create one transparent PNG SPRITE ATLAS for an existing 2D fantasy game, using the reference asset's antique brass, dark carved metal, crisp hand-painted bevels, restrained angular corner ornaments and weight. THREE separate SQUARE empty signature-weapon socket frames in one horizontal row, exactly equally sized and exactly equally spaced in THREE equal-width cells. Wide 3:1 canvas intended 1536x512. The left cell contains Priest frame with restrained luminous cyan inset rails and a small cyan diamond ornament at TOP CENTER; middle cell contains Mage frame with ember red-orange inset rails and a small ember diamond at TOP CENTER; right cell contains Guardian frame with warm sandstone/brown-gold inset rails and a small brown-gold diamond at TOP CENTER. Each is a distinct class SIGNATURE equipment frame, NOT item rarity. Shared brushed antique brass outer bevel, near-charcoal inner contour, restrained ritual angular accents. Keep the thick brass edges crisp at 120px display size. Every square frame is centered in its own equal-width cell, spanning about 88% of that cell's width and height, with minimum 6% transparent gutter on all four sides. All three have EXACTLY the same size, same structure, straight near-square sides, and same 82% by 82% empty transparent window, with fully closed top/left/right/bottom borders. Transparent PNG RGBA, real alpha 0 both inside each aperture and in the space outside the frames. NO opaque base plate. No weapons, characters, names, digits, lettering, logos, watermarks, background, checkerboard, disconnected glow, drop shadow, huge elaborate extensions, or extra frames. Match the provided reference's game UI craft without copying the orange rarity tint. Three separate frames visible in full, never overlapping, arranged in one clean straight horizontal row. This is a reusable unlettered UI sprite atlas, not a UI mockup.",
+      "requested_pixels": [
+        1536,
+        512
+      ],
+      "actual_pixels": [
+        2172,
+        724
+      ],
+      "mode": "RGBA",
+      "transparent_background": true,
+      "alpha_window_centers": [
+        0,
+        0,
+        0
+      ],
+      "original_generation_file": "/workspace/generated_images/exec-c68e1ba2-c9a0-42e5-a776-539352ad6b4e.png",
+      "runtime_file": "client/assets/generated/ui/signature_weapon_frames.png",
+      "regions": {
+        "Priest": [
+          0,
+          0,
+          724,
+          724
+        ],
+        "Mage": [
+          724,
+          0,
+          724,
+          724
+        ],
+        "Guardian": [
+          1448,
+          0,
+          724,
+          724
+        ]
+      },
+      "display_pixels": [
+        120,
+        120
+      ],
+      "reference_code": [
+        "client/ui/art.gd:signature_frame",
+        "client/ui/reference_ui.gd:_loadout"
+      ],
+      "import": {
+        "compress/mode": 0,
+        "mipmaps/generate": false,
+        "process/fix_alpha_border": true,
+        "process/premult_alpha": false,
+        "process/size_limit": 0
+      },
+      "note": "Raw atlas is kept at its generated resolution. There are minor differences in the transparent gutter between cells; each full square region renders at the same 120x120 size without stretched corners.",
+      "sha256": "63f9232afdbdd116841f17ebd2cfde2d2d73828783cae81e8534594e54862c30",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    }
+  ]
+}

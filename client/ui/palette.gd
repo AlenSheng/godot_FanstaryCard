@@ -1,5 +1,6 @@
 extends RefCounted
 
+const Art = preload("res://ui/art.gd")
 static var _body_font: FontFile = preload("res://assets/fonts/SourceHanSansSC-Regular.otf")
 static var _title_font: FontFile = preload("res://assets/fonts/SourceHanSerifSC-SemiBold.otf")
 static var _number_font: FontVariation
@@ -332,8 +333,20 @@ static func fit_font_size(typeface: Font, requested: int, height: float, width: 
 
 static func fit_control_font(control: Control, typeface: Font, requested: int, horizontal_padding: float = 0.0) -> void:
 	if not is_instance_valid(control): return
+	# Containers derive their minimum height from the font. Fitting against
+	# their pre-layout zero size feeds a 1px font back into that same layout.
+	var flowing_label: bool = control is Label and control.get_parent() is Container and control.autowrap_mode != TextServer.AUTOWRAP_OFF
+	if flowing_label:
+		control.custom_minimum_size.y = maxf(control.custom_minimum_size.y, ceilf(typeface.get_height(requested)))
+		control.clip_text = false
+		if control.get_parent() is HBoxContainer and not (control.size_flags_horizontal & Control.SIZE_EXPAND):
+			control.custom_minimum_size.x = minf(640.0, typeface.get_string_size(control.text, HORIZONTAL_ALIGNMENT_LEFT, -1.0, requested).x)
 	var update := func() -> void:
 		if not is_instance_valid(control): return
+		if flowing_label:
+			control.add_theme_font_size_override("font_size", requested)
+			return
+		if control.size.x <= horizontal_padding or control.size.y <= 0.0: return
 		var value := str(control.get("text"))
 		var width := maxf(1.0, control.size.x - horizontal_padding)
 		var height := control.size.y
@@ -366,13 +379,51 @@ static func theme() -> Theme:
 	result.set_color("font_color", "Label", PAPER)
 	result.set_color("font_color", "Button", PAPER)
 	result.set_color("font_hover_color", "Button", Color.WHITE)
-	result.set_color("font_disabled_color", "Button", Color("73837f"))
-	result.set_stylebox("normal", "Button", box())
-	result.set_stylebox("hover", "Button", box(Color("254650"), GOLD))
-	result.set_stylebox("pressed", "Button", box(Color("38615f"), TEAL, 3))
+	result.set_color("font_disabled_color", "Button", Color("a5aaa0"))
+	var button_key := "UI/CardCodex/card_codex_action_button_blue.png"
+	for entry in [["normal", Color.WHITE], ["hover", Color(1.2, 1.15, 1.05)], ["pressed", Color(0.8, 0.85, 0.9)], ["disabled", Color(0.55, 0.55, 0.55)]]:
+		result.set_stylebox(entry[0], "Button", Art.style(button_key, entry[1]))
 	result.set_stylebox("focus", "Button", box(Color(0, 0, 0, 0), GOLD, 3))
-	result.set_stylebox("disabled", "Button", box(Color("1e3034"), Color("33464b")))
-	result.set_stylebox("normal", "LineEdit", box(Color("10272e")))
+	result.set_stylebox("normal", "LineEdit", box(Color("10272e"), Color("8a7145"), 1))
+	result.set_stylebox("focus", "LineEdit", box(Color.TRANSPARENT, GOLD, 2))
+	result.set_stylebox("read_only", "LineEdit", box(Color("13262c"), Color("495957"), 1))
+	result.set_color("font_color", "LineEdit", PAPER)
+	result.set_color("font_placeholder_color", "LineEdit", MUTED)
+	result.set_color("font_uneditable_color", "LineEdit", MUTED)
+	result.set_color("caret_color", "LineEdit", GOLD)
+	result.set_color("selection_color", "LineEdit", Color("38615f"))
+	# Native dropdowns and scrollbars share the surrounding painted UI.
+	for type_name in ["OptionButton", "CheckButton", "CheckBox"]:
+		for state in ["normal", "hover", "pressed", "disabled", "focus"]:
+			result.set_stylebox(state, type_name, result.get_stylebox(state, "Button"))
+	for type_name in ["OptionButton", "CheckButton", "CheckBox"]:
+		result.set_color("font_color", type_name, PAPER)
+		result.set_color("font_hover_color", type_name, Color.WHITE)
+		result.set_color("font_disabled_color", type_name, MUTED)
+	result.set_stylebox("panel", "PopupMenu", box(Color("101b21"), GOLD, 1))
+	result.set_stylebox("hover", "PopupMenu", box(Color("254650"), TEAL, 1))
+	result.set_font("font", "PopupMenu", font("body"))
+	result.set_color("font_color", "PopupMenu", PAPER)
+	for type_name in ["HScrollBar", "VScrollBar"]:
+		for state in ["scroll", "grabber", "grabber_highlight", "grabber_pressed"]:
+			var style := Art.style("UI/CardCodex/card_codex_scroll_%s_normal.png" % ("track" if state == "scroll" else "thumb"))
+			style.set_content_margin_all(0)
+			style.set_texture_margin_all(4)
+			if type_name == "VScrollBar":
+				style.set_content_margin(SIDE_LEFT, 6)
+				style.set_content_margin(SIDE_RIGHT, 6)
+			else:
+				style.set_content_margin(SIDE_TOP, 6)
+				style.set_content_margin(SIDE_BOTTOM, 6)
+			result.set_stylebox(state, type_name, style)
+	for type_name in ["HSlider", "VSlider"]:
+		var rail := box(Color("10272e"), Color("8a7145"), 1)
+		rail.set_content_margin_all(3)
+		result.set_stylebox("slider", type_name, rail)
+		var fill := box(TEAL.darkened(0.3), GOLD.darkened(0.15), 1)
+		fill.set_content_margin_all(3)
+		result.set_stylebox("grabber_area", type_name, fill)
+		result.set_stylebox("grabber_area_highlight", type_name, fill)
 	result.set_stylebox("panel", "PanelContainer", box())
 	var tooltip_panel := StyleBoxFlat.new()
 	tooltip_panel.bg_color = Color("101b21")
