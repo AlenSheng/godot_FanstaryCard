@@ -34,6 +34,7 @@ var max_cycles := 0
 var stage := "starting"
 var last_progress_ms := 0
 var active_match_id := ""
+var verified_ready_match_id := ""
 var ready_required := false
 var ready_accepted := false
 var ready_deadline_unix_ms := 0
@@ -161,6 +162,7 @@ func _run_expedition() -> void:
 	_on_telemetry({"type": "lifecycle", "event_type": "preparation.created",
 		"preparation_id": Game.preparation.get("preparationId", "")})
 	active_match_id = ""
+	verified_ready_match_id = ""
 	ready_required = false
 	ready_accepted = false
 	ready_deadline_unix_ms = 0
@@ -194,6 +196,7 @@ func _run_expedition() -> void:
 			if ticket_result.ok and ticket_result.data is Dictionary:
 				verified_match_id = str(ticket_result.data.get("matchId", ""))
 				if not verified_match_id.is_empty() and str(ticket_result.data.get("status", "")) == "Matched":
+					verified_ready_match_id = verified_match_id
 					if active_match_id != verified_match_id:
 						ready_attempts = 0
 						ready_accepted = false
@@ -302,6 +305,10 @@ func _run_expedition() -> void:
 
 func _graceful_cleanup() -> void:
 	stage = "cleanup"
+	var cleanup_generation: int = Game.gateway.session_generation
+	var cleanup_cycle_match_id := active_match_id
+	var cleanup_preparation_id := str(Game.preparation.get("preparationId", ""))
+	var cleanup_ticket_id := str(Game.ticket.get("ticketId", ""))
 	_update_context()
 	_close_battle_metrics("Stopped" if stop_requested else "Terminal")
 	# A deliberate drain uses the same legal exit as a player. Its abandon/ACK
@@ -334,6 +341,12 @@ func _graceful_cleanup() -> void:
 	while Time.get_ticks_msec() < cleanup_deadline:
 		var verification: Dictionary = await Game.gateway.request("/api/v1/bootstrap", HTTPClient.METHOD_GET, null, [0, 401, 503])
 		if not verification.ok or not verification.data is Dictionary: break
+		if Game.gateway.session_generation != cleanup_generation or active_match_id != cleanup_cycle_match_id or str(Game.preparation.get("preparationId", "")) not in ["", cleanup_preparation_id] or str(Game.ticket.get("ticketId", "")) not in ["", cleanup_ticket_id]:
+			cleanup_result = {"state": "Unknown", "reason": "cleanup_context_changed"}
+			break
+		if str(verification.data.get("configVersion", "")) != str(Game.CATALOG.data.version) or not verification.data.has_all(["activePreparation", "unfinishedMatch", "unfinishedSettlement"]):
+			cleanup_result = {"state": "Unknown", "reason": "invalid_bootstrap_contract"}
+			break
 		var unfinished: Variant = verification.data.get("unfinishedSettlement")
 		if unfinished is Dictionary and str(unfinished.get("matchId", "")) == active_match_id:
 			if cleanup_ack_attempts >= 3:
@@ -348,7 +361,22 @@ func _graceful_cleanup() -> void:
 		var pending: bool = verification.data.get("activePreparation") is Dictionary or verification.data.get("unfinishedMatch") is Dictionary or unfinished is Dictionary
 		cleanup_result = {"state": "Unknown" if pending else "Passed", "reason": "server_state_pending" if pending else "server_state_clear",
 			"active_preparation": verification.data.get("activePreparation"), "unfinished_match": verification.data.get("unfinishedMatch"), "unfinished_settlement": unfinished}
-		if not pending: break
+		if not pending:
+			if not Game.room.is_empty() or not Game.settlement.is_empty():
+				cleanup_result = {"state": "Unknown", "reason": "client_terminal_pending"}
+				break
+			# A matched ticket cannot be DELETE-cancelled. After its actual ready
+			# deadline the socket may already be closed, so ready_removed cannot
+			# clear this local context. Clear only after the same session/cycle's
+			# complete authoritative bootstrap confirms no unfinished business.
+			Game.ticket = {}
+			Game.preparation = {}
+			Game.ready_prompt = {}
+			Game.lobby["activePreparation"] = null
+			if verification.data.get("inventory") is Dictionary:
+				Game.update_cache("inventory", verification.data.inventory)
+			Game.changed.emit()
+			break
 		await _wait(1.0)
 	_on_telemetry({"type": "lifecycle", "event_type": "cleanup.verified", "cleanup": cleanup_result})
 
@@ -470,12 +498,15 @@ func _on_telemetry(sample: Dictionary) -> void:
 func _on_event(kind: String, _payload: Dictionary) -> void:
 	var event_match_id := str(_payload.get("match_id", ""))
 	if kind in ["match.found", "room.ready_required", "room.ready_accepted", "room.started"] and not event_match_id.is_empty():
-		if active_match_id.is_empty(): active_match_id = event_match_id
+		# Acceptance can arrive from a previous cycle while enqueue awaits its
+		# response. Only the current ticket read may authorize that latch; an
+		# unverified accepted hint must not suppress authoritative recovery.
+		if active_match_id.is_empty() and kind != "room.ready_accepted": active_match_id = event_match_id
 		if event_match_id == active_match_id:
 			if kind == "room.ready_required" and not ready_accepted:
 				ready_required = true
 				ready_deadline_unix_ms = int(_payload.get("deadline_unix_ms", 0))
-			elif kind == "room.ready_accepted": ready_accepted = true
+			elif kind == "room.ready_accepted" and event_match_id == verified_ready_match_id: ready_accepted = true
 			elif kind == "room.started": ready_accepted = true
 	if kind == "battle.combo_resolved" and str(_payload.get("attacker_id", "")) == own_user_id:
 		if not battle_metrics.is_empty() and str(_payload.get("battle_id", "")) == current_battle_id:
