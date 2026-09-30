@@ -715,7 +715,7 @@
         "Passed": 3
       },
       "implementation_status": "Final evidence, ownership, ACK conservation and STOP/emergency handling corrected and counterexample-tested.",
-      "current_test_status": "Current pure-SHA offline/supporting suites passed; complete canonical profiles/cases not accepted",
+      "current_test_status": "Original3/3 pass; full implementation/pass criterion not met. Diagnostic real-file/transport probe archived.",
       "modification_sha": "d4c3212fb32c75d4b9f9f62c08277996611b149c",
       "test_commands": [
         "python -m unittest discover -s tools/tests -v"
@@ -725,9 +725,10 @@
         "ci-9275ec2/verified-artifacts.json",
         "ci-b7099ef/verified-artifacts.json",
         "integrated-cc6da2e/report.json",
-        "ci-cc6da2e/workflows.json"
+        "ci-cc6da2e/workflows.json",
+        "load03-remaining-ee8adcf4/REPORT.json"
       ],
-      "remaining_blocker": "affected POSTGRES/LIVE/CAPACITY profiles remain separate and incomplete.",
+      "remaining_blocker": "Actual Gateway has2 invoked requests,1 finished and1 held in production _pending_http; production aggregate counts logical1 and exposes neither logical-start nor pending denominator. No start event exists at the pending cutoff.",
       "dependencies": [
         "LOAD-03.2"
       ],
@@ -747,7 +748,8 @@
         "ci-b7099ef/verified-artifacts.json"
       ],
       "tested_source_shas": [
-        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3"
+        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+        "ee8adcf40be9aebb1330156a3524910c08225ebc"
       ]
     },
     {
@@ -794,7 +796,7 @@
         "Passed": 3
       },
       "implementation_status": "Current behavior independently audited through frozen setup/expected and pure-SHA explicit receipts; no new code for this task.",
-      "current_test_status": "Three current explicit canonical receipts Passed and match frozen setup/expected; task-level completeness/independent stage decision remains open.",
+      "current_test_status": "Original3/3 pass; full implementation/pass criterion not met. Diagnostic real-file/transport probe archived.",
       "modification_sha": null,
       "test_commands": [
         "python3 tools/pr13_offline_cases.py --output /workspace/pr13-takeover/case-audit-cc6da2e/receipts --godot /workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64"
@@ -804,9 +806,10 @@
         "case-audit-cc6da2e/receipts/report.json",
         "case-audit-cc6da2e/receipts/cases.jsonl",
         "CASE_MAPPING.json",
-        "integrated-cc6da2e/report.json"
+        "integrated-cc6da2e/report.json",
+        "load03-remaining-ee8adcf4/REPORT.json"
       ],
-      "remaining_blocker": "Explicit three-case receipts passed; complete pass-criteria/stage review and dependency input adjudication remain open. OFFLINE-only task does not require online deployment.",
+      "remaining_blocker": "Production aggregate outputs global and phase distributions but no route distribution or throughput. Coordinator retains windows/raw and cycle cutoffs, without full-run HTTP running/drain/final distribution fields. Harness can recompute synthetic fixture raw, but that does not implement missing production fields.",
       "dependencies": [
         "LOAD-03.3",
         "LOAD-06.1"
@@ -823,7 +826,8 @@
       "accepted": false,
       "supporting_tests_are_canonical_acceptance": false,
       "tested_source_shas": [
-        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3"
+        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+        "ee8adcf40be9aebb1330156a3524910c08225ebc"
       ]
     },
     {

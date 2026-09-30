@@ -1,3 +1,7 @@
+## LOAD03完整合同缺口已实证
+
+[六原case及完整判据](load03-remaining-ee8adcf4/REPORT.json)：.3/.4原断言均通过，但各自完整子任务保持Partial。真实Gateway等待请求缺started/pending分母；实际文件夹具可独立重算全场错误与P95，当前生产输出仍缺route/throughput及HTTP三截止点全程字段。仅诊断派生件不冒充实现。业务/UI不改，最小改动范围交父任务协调。
+
 ## LOAD02三项完整提议
 
 [LOAD02.1/.3/.4](offline-acceptance-f812/load02/READY_FOR_INDEPENDENT_ACCEPTANCE.json)各3case完整收据，固定f812；原35s STOP grace、exit7、hang仅回收owned PID、emergency及0/1/2/3/130真实caller有证据。时钟/metrics模型只判工具合同，不称容量。LOAD02.2-T01实际PG超时+STOP及cycle终态仍缺，保持Partial。累计11Ready/46Partial/72NotRevalidated/3Blocked，全部待MAIN，Accepted0。
