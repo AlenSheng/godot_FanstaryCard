@@ -10,9 +10,19 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from gameplay_load_test import read_owned_statuses
 from gameplay_load_test import metrics, QUERIES, completed_smoke
 from gameplay_load_validation import workload_snapshot
+from tools.cloud_load_test import health_probe
 
 
 class StopTests(unittest.TestCase):
+    def test_health_timeout_is_one_failed_observation_without_fallback(self):
+        from unittest.mock import patch
+        with patch('tools.cloud_load_test.subprocess.run',side_effect=subprocess.TimeoutExpired('curl',5.5)) as call, patch('tools.cloud_load_test.urllib.request.urlopen') as fallback:
+            result=health_probe('https://example.invalid',5)
+        self.assertFalse(result['ok'])
+        self.assertEqual(result['error'],'TimeoutExpired')
+        self.assertEqual(call.call_args.kwargs['timeout'],5.5)
+        fallback.assert_not_called()
+
     def test_multi_account_smoke_waits_for_every_account(self):
         import json
         class Child:

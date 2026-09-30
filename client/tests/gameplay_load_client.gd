@@ -300,16 +300,25 @@ func _graceful_cleanup() -> void:
 	stage = "cleanup"
 	_update_context()
 	_close_battle_metrics("Stopped" if stop_requested else "Terminal")
+	# A deliberate drain uses the same legal exit as a player. Its abandon/ACK
+	# is recorded separately and cannot increase completed gameplay cycles.
+	if Game.settlement.is_empty() and not Game.room.is_empty():
+		var exit_deadline := Time.get_ticks_msec() + 6000
+		while Time.get_ticks_msec() < exit_deadline and Game.settlement.is_empty():
+			var exit_action := "battle.abandon" if Game.allowed("battle.abandon") else "action.extract" if Game.allowed("action.extract") else ""
+			if not exit_action.is_empty() and Game.command(exit_action):
+				_on_telemetry({"type": "lifecycle", "event_type": "cleanup.exit_requested", "match_id": active_match_id, "action": exit_action})
+				break
+			await _wait(0.2)
+		var settlement_deadline := Time.get_ticks_msec() + 6000
+		while Game.settlement.is_empty() and not Game.room.is_empty() and Time.get_ticks_msec() < settlement_deadline:
+			await _wait(0.2)
 	if Game.room.is_empty() and Game.settlement.is_empty() and (not Game.ticket.is_empty() or not Game.preparation.is_empty()):
 		await Game.cancel_preparation()
 	if not Game.settlement.is_empty():
 		var cleanup_match_id := str(Game.settlement.get("matchId", ""))
 		if await Game.acknowledge_settlement():
 			_on_telemetry({"type": "lifecycle", "event_type": "settlement.acknowledged", "match_id": cleanup_match_id, "completion_stage": "drain_ack_only"})
-	elif not stop_requested and not Game.room.is_empty() and Game.allowed("action.extract"):
-		Game.command("action.extract")
-		await _wait(5.0)
-		if not Game.settlement.is_empty(): await Game.acknowledge_settlement()
 	Game.gateway.reconnect_enabled = false
 	Game.gateway.socket.close()
 	# A disconnected live room needs the server's grace/settlement workers.

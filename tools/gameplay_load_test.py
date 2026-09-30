@@ -212,7 +212,7 @@ def main():
                     FANTASYCARD_LOAD_STOP_FILE=str(stop_file),FANTASYCARD_LOAD_RUN_ID=run_id,
                     FANTASYCARD_LOAD_PROCESS_EPOCH=process_epoch,
                     FANTASYCARD_LOAD_HERO_CLASS=('Mage','Priest','Guardian')[(len(processes))%3] if args.hero_class=='mixed' else args.hero_class,
-                    FANTASYCARD_LOAD_STRATEGY=('baseline_all_hand','basic','build')[(len(processes))%3] if args.strategy=='mixed' else args.strategy,
+                    FANTASYCARD_LOAD_STRATEGY=('baseline_all_hand','basic','build')[(len(processes)//3)%3] if args.strategy=='mixed' else args.strategy,
                     FANTASYCARD_LOAD_SEED=str(args.strategy_seed+len(processes)),
                     FANTASYCARD_LOAD_PROFILE=args.load_profile,
                     FANTASYCARD_LOAD_HOLD_SECONDS=str(args.hold_seconds),
@@ -250,7 +250,7 @@ def main():
                 rejected=[t for t in commands if t.get('response_type')=='error.command_rejected']
                 window['command_rejections']=len(rejected)
                 window['command_error_rate']=len(rejected)/len(commands) if commands else 0
-                health_task=probes.submit(health_probe,args.server_url)
+                health_task=probes.submit(health_probe,args.server_url,5)
                 metrics_task=probes.submit(metrics,args.prometheus) if args.run else None
                 probe_tasks=[health_task]+([metrics_task] if metrics_task is not None else [])
                 _,pending_probes=concurrent.futures.wait(probe_tasks,timeout=6)
@@ -380,7 +380,8 @@ def main():
         performance_verified=(reason=='duration_limit' and load_verified and
             performance_inputs['http_latency_samples']>=20 and performance_inputs['realtime_latency_samples']>=10)
         dimensions=result_dimensions(execution=not reason.startswith('coordinator_error:'),
-            evidence=not bool(final_read_errors or tail_lost or audit_errors or cutoffs['evidence_errors']),
+            evidence=not bool(final_read_errors or tail_lost or audit_errors or cutoffs['evidence_errors'] or
+                reason.startswith('invalid_evidence:') or reason.startswith('coordinator_error:')),
             load=load_coverage['passed'] if args.run else smoke_verified,
             gameplay=smoke_verified if args.smoke else None,
             performance=False if args.run and reason.startswith('redline:') else True if args.run and performance_verified else None,
