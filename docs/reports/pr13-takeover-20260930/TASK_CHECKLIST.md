@@ -1,8 +1,8 @@
 # PR13 云端接管逐项登记
 
-基线73d4保留；最新代码/测试候选 `f93e32dac07608e8375e709cd357c4793bdcc41a`。当前132项：Partial53、NotRevalidated76、Blocked3、Accepted0；G0–G5未签署。
+最新代码/测试候选 `38c2caccb5f8327f52d97dffb3b9f9303360dd46`，生产行为基线f93e32da。132项53Partial/76NotRevalidated/3Blocked/0Accepted；G0–G5未签署。
 
-[register.json](register.json) 包含所有132项。新批次逐 case 范围见 [CASE_MATRIX.json](fault-batch-f93e32da/CASE_MATRIX.json)。五项转为Partial，已有两项证据加强；CI计费阻断不记为代码测试失败。
+新增阶段证据见[CASE_MATRIX.json](lifecycle-batch-d2106eb0/CASE_MATRIX.json)。本批状态转移0；原任务表保持已记录的修改SHA/缺口，register追加来源与局部证据。新针对13/13、非PG206/206、真实READY5/5通过；CI计费阻断不记代码失败。
 
 | 顺序 | 子项 | 负责人 | 当前 / 历史 | 修改 SHA | 依赖 | 剩余工作或阻塞 |
 | --- | --- | --- | --- | --- | --- | --- |

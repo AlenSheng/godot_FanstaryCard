@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="e07ba631-4f8c-48cd-b5be-54a4e9056b03" name="@c2d7a4ca306e 2026-09-30 21:39:36" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-30T21:39:36.2305788+00:00" queuing="2026-09-30T21:39:36.2305788+00:00" start="2026-09-30T21:39:32.7092147+00:00" finish="2026-09-30T21:39:51.8999911+00:00" />
+  <TestSettings name="default" id="77e4fe60-6f2b-4ea2-9dbe-3cb570c7d43d">
+    <Deployment runDeploymentRoot="_c2d7a4ca306e_2026-09-30_21_39_36" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="90577ef9-3d22-4175-9a85-5eaaa236dbd9" testId="8b704ef3-7e7e-f9af-eb1b-b8f9b4e6740f" testName="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.SupportOnly_actual_Register_conflict_retries_same_launch_without_partial_room_or_second_reservation(conflict: &quot;room-id&quot;)" computerName="c2d7a4ca306e" duration="00:00:01.5162272" startTime="2026-09-30T21:39:34.5645634+00:00" endTime="2026-09-30T21:39:36.1067105+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="90577ef9-3d22-4175-9a85-5eaaa236dbd9">
+      <Output>
+        <StdOut>{"caseId":"LOAD-04.4-T02-Register-failure-room-id","recordedAt":"2026-09-30T21:39:35.8936398+00:00","evidence":{"attempt":1,"MatchId":"01a0f442-37e2-70fa-92da-75c410aaf6cb","RoomId":"01a0f442-37e2-7d0f-8a65-f2f771fc1874","conflictingId":"01a0f442-37e2-7d0f-8a65-f2f771fc1874","registeredRooms":["01a0f442-37e2-7d0f-8a65-f2f771fc1874"],"error":"Room \u002701a0f442-37e2-7d0f-8a65-f2f771fc1874\u0027 is already registered.","scope":"SupportOnly: actual component \u002B PG; no full Program process"}}
+{"caseId":"LOAD-04.4-T02-Register-failure-room-id","recordedAt":"2026-09-30T21:39:35.9603109+00:00","evidence":{"attempt":2,"MatchId":"01a0f442-37e2-70fa-92da-75c410aaf6cb","RoomId":"01a0f442-37e2-7d0f-8a65-f2f771fc1874","conflictingId":"01a0f442-37e2-7d0f-8a65-f2f771fc1874","registeredRooms":["01a0f442-37e2-7d0f-8a65-f2f771fc1874"],"error":"Room \u002701a0f442-37e2-7d0f-8a65-f2f771fc1874\u0027 is already registered.","scope":"SupportOnly: actual component \u002B PG; no full Program process"}}
+{"caseId":"LOAD-04.4-T02-Register-recovered-room-id","recordedAt":"2026-09-30T21:39:36.0498576+00:00","evidence":{"MatchId":"01a0f442-37e2-70fa-92da-75c410aaf6cb","RoomId":"01a0f442-37e2-7d0f-8a65-f2f771fc1874","registeredRooms":["01a0f442-37e2-7d0f-8a65-f2f771fc1874"],"expected":"one room/route after repeated real Register failures; one asset reservation","actual":"matched","scope":"SupportOnly OFFLINE\u002BPOSTGRES"}}</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="a9bef3e6-91d2-4313-a7db-c5196bf25caa" testId="2e9dd442-522b-37cf-3ce6-3514ee583caa" testName="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes" computerName="c2d7a4ca306e" duration="00:00:15.1761751" startTime="2026-09-30T21:39:36.6162634+00:00" endTime="2026-09-30T21:39:51.8037051+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a9bef3e6-91d2-4313-a7db-c5196bf25caa">
+      <Output>
+        <StdOut>{"caseId":"process-start","recordedAt":"2026-09-30T21:39:36.6507364+00:00","evidence":{"label":"register-committed-loss","Id":66044,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/godot_FanstaryCard/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll","port":39773,"SearchPath":"fc_runtime_test_1610365a10514cb3ba7a6ddf36f5b283","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+{"caseId":"process-stop","recordedAt":"2026-09-30T21:39:51.7474308+00:00","evidence":{"label":"register-committed-loss","ProcessId":66044,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/pr13-takeover/cycle-ack-batch-20260930/loopback-tcp-candidate/raw/register-committed-loss-66044.log"}}</StdOut>
+        <ErrorInfo>
+          <Message>System.Threading.Tasks.TaskCanceledException : The request was canceled due to the configured HttpClient.Timeout of 10 seconds elapsing.
+---- System.TimeoutException : The operation was canceled.
+-------- System.Threading.Tasks.TaskCanceledException : The operation was canceled.
+------------ System.IO.IOException : Unable to read data from the transport connection: Operation canceled.
+---------------- System.Net.Sockets.SocketException : Operation canceled</Message>
+          <StackTrace>   at System.Net.Http.HttpClient.HandleFailure(Exception e, Boolean telemetryStarted, HttpResponseMessage response, CancellationTokenSource cts, CancellationToken cancellationToken, CancellationTokenSource pendingRequestsCts)
+   at System.Net.Http.HttpClient.&lt;SendAsync&gt;g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.CallAsync(HttpClient client, HttpMethod method, String path, IMessage body, CancellationToken ct, String requestId) in /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs:line 450
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes() in /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs:line 55
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes() in /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs:line 130
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes() in /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs:line 147
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes() in /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs:line 147
+--- End of stack trace from previous location ---
+----- Inner Stack Trace -----
+
+----- Inner Stack Trace -----
+   at System.Net.Http.HttpConnection.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.&lt;SendAsync&gt;g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+----- Inner Stack Trace -----
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource&lt;System.Int32&gt;.GetResult(Int16 token)
+   at System.Net.Http.HttpConnection.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+----- Inner Stack Trace -----
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="429405e6-fc18-4872-a02e-4eff777aff2a" testId="246fb451-676d-65fe-378b-07d97620ed50" testName="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.SupportOnly_actual_Register_conflict_retries_same_launch_without_partial_room_or_second_reservation(conflict: &quot;player-route&quot;)" computerName="c2d7a4ca306e" duration="00:00:00.4915340" startTime="2026-09-30T21:39:36.1156792+00:00" endTime="2026-09-30T21:39:36.6076169+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="429405e6-fc18-4872-a02e-4eff777aff2a">
+      <Output>
+        <StdOut>{"caseId":"LOAD-04.4-T02-Register-failure-player-route","recordedAt":"2026-09-30T21:39:36.5108846+00:00","evidence":{"attempt":1,"MatchId":"01a0f442-3b8e-749d-b555-def18924d4c6","RoomId":"01a0f442-3b8e-741c-933f-cd7552925bb3","conflictingId":"30dd5135-5f1a-4d94-a71d-6df6ad2e4ead","registeredRooms":["30dd5135-5f1a-4d94-a71d-6df6ad2e4ead"],"error":"Player \u002701a0f442-3af0-701a-a8c9-2c276258da85\u0027 is already assigned to a room.","scope":"SupportOnly: actual component \u002B PG; no full Program process"}}
+{"caseId":"LOAD-04.4-T02-Register-failure-player-route","recordedAt":"2026-09-30T21:39:36.5208916+00:00","evidence":{"attempt":2,"MatchId":"01a0f442-3b8e-749d-b555-def18924d4c6","RoomId":"01a0f442-3b8e-741c-933f-cd7552925bb3","conflictingId":"30dd5135-5f1a-4d94-a71d-6df6ad2e4ead","registeredRooms":["30dd5135-5f1a-4d94-a71d-6df6ad2e4ead"],"error":"Player \u002701a0f442-3af0-701a-a8c9-2c276258da85\u0027 is already assigned to a room.","scope":"SupportOnly: actual component \u002B PG; no full Program process"}}
+{"caseId":"LOAD-04.4-T02-Register-recovered-player-route","recordedAt":"2026-09-30T21:39:36.5632481+00:00","evidence":{"MatchId":"01a0f442-3b8e-749d-b555-def18924d4c6","RoomId":"01a0f442-3b8e-741c-933f-cd7552925bb3","registeredRooms":["01a0f442-3b8e-741c-933f-cd7552925bb3"],"expected":"one room/route after repeated real Register failures; one asset reservation","actual":"matched","scope":"SupportOnly OFFLINE\u002BPOSTGRES"}}</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.SupportOnly_actual_Register_conflict_retries_same_launch_without_partial_room_or_second_reservation(conflict: &quot;room-id&quot;)" storage="/workspace/godot_fanstarycard/server/tests/fantasycard.server.tests/bin/release/net10.0/fantasycard.server.tests.dll" id="8b704ef3-7e7e-f9af-eb1b-b8f9b4e6740f">
+      <Execution id="90577ef9-3d22-4175-9a85-5eaaa236dbd9" />
+      <TestMethod codeBase="/workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests" name="SupportOnly_actual_Register_conflict_retries_same_launch_without_partial_room_or_second_reservation" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.SupportOnly_actual_Register_conflict_retries_same_launch_without_partial_room_or_second_reservation(conflict: &quot;player-route&quot;)" storage="/workspace/godot_fanstarycard/server/tests/fantasycard.server.tests/bin/release/net10.0/fantasycard.server.tests.dll" id="246fb451-676d-65fe-378b-07d97620ed50">
+      <Execution id="429405e6-fc18-4872-a02e-4eff777aff2a" />
+      <TestMethod codeBase="/workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests" name="SupportOnly_actual_Register_conflict_retries_same_launch_without_partial_room_or_second_reservation" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes" storage="/workspace/godot_fanstarycard/server/tests/fantasycard.server.tests/bin/release/net10.0/fantasycard.server.tests.dll" id="2e9dd442-522b-37cf-3ce6-3514ee583caa">
+      <Execution id="a9bef3e6-91d2-4313-a7db-c5196bf25caa" />
+      <TestMethod codeBase="/workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests" name="Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="8b704ef3-7e7e-f9af-eb1b-b8f9b4e6740f" executionId="90577ef9-3d22-4175-9a85-5eaaa236dbd9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2e9dd442-522b-37cf-3ce6-3514ee583caa" executionId="a9bef3e6-91d2-4313-a7db-c5196bf25caa" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="246fb451-676d-65fe-378b-07d97620ed50" executionId="429405e6-fc18-4872-a02e-4eff777aff2a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="3" executed="3" passed="2" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.0+00ab0a9ec4 (64-bit .NET 10.0.11)
+[xUnit.net 00:00:00.29]   Discovering: FantasyCard.Server.Tests
+[xUnit.net 00:00:00.89]   Discovered:  FantasyCard.Server.Tests
+[xUnit.net 00:00:01.21]   Starting:    FantasyCard.Server.Tests
+[xUnit.net 00:00:18.56]       System.Threading.Tasks.TaskCanceledException : The request was canceled due to the configured HttpClient.Timeout of 10 seconds elapsing.
+[xUnit.net 00:00:18.56]       ---- System.TimeoutException : The operation was canceled.
+[xUnit.net 00:00:18.56]       -------- System.Threading.Tasks.TaskCanceledException : The operation was canceled.
+[xUnit.net 00:00:18.56]       ------------ System.IO.IOException : Unable to read data from the transport connection: Operation canceled.
+[xUnit.net 00:00:18.56]       ---------------- System.Net.Sockets.SocketException : Operation canceled
+[xUnit.net 00:00:18.56]       Stack Trace:
+[xUnit.net 00:00:18.56]            at System.Net.Http.HttpClient.HandleFailure(Exception e, Boolean telemetryStarted, HttpResponseMessage response, CancellationTokenSource cts, CancellationToken cancellationToken, CancellationTokenSource pendingRequestsCts)
+[xUnit.net 00:00:18.56]            at System.Net.Http.HttpClient.&lt;SendAsync&gt;g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+[xUnit.net 00:00:18.56]         /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs(450,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.CallAsync(HttpClient client, HttpMethod method, String path, IMessage body, CancellationToken ct, String requestId)
+[xUnit.net 00:00:18.56]         /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs(55,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes()
+[xUnit.net 00:00:18.56]         /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs(130,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes()
+[xUnit.net 00:00:18.56]         /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs(147,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes()
+[xUnit.net 00:00:18.57]         /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs(147,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes()
+[xUnit.net 00:00:18.57]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:18.57]         ----- Inner Stack Trace -----
+[xUnit.net 00:00:18.57]         
+[xUnit.net 00:00:18.57]         ----- Inner Stack Trace -----
+[xUnit.net 00:00:18.57]            at System.Net.Http.HttpConnection.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+[xUnit.net 00:00:18.57]            at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+[xUnit.net 00:00:18.57]            at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+[xUnit.net 00:00:18.57]            at System.Net.Http.HttpClient.&lt;SendAsync&gt;g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+[xUnit.net 00:00:18.57]         ----- Inner Stack Trace -----
+[xUnit.net 00:00:18.57]            at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+[xUnit.net 00:00:18.57]            at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource&lt;System.Int32&gt;.GetResult(Int16 token)
+[xUnit.net 00:00:18.57]            at System.Net.Http.HttpConnection.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+[xUnit.net 00:00:18.57]         ----- Inner Stack Trace -----
+[xUnit.net 00:00:18.57]         
+[xUnit.net 00:00:18.57]       Output:
+[xUnit.net 00:00:18.57]         {"caseId":"process-start","recordedAt":"2026-09-30T21:39:36.6507364+00:00","evidence":{"label":"register-committed-loss","Id":66044,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/godot_FanstaryCard/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll","port":39773,"SearchPath":"fc_runtime_test_1610365a10514cb3ba7a6ddf36f5b283","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+[xUnit.net 00:00:18.57]         {"caseId":"process-stop","recordedAt":"2026-09-30T21:39:51.7474308+00:00","evidence":{"label":"register-committed-loss","ProcessId":66044,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/pr13-takeover/cycle-ack-batch-20260930/loopback-tcp-candidate/raw/register-committed-loss-66044.log"}}
+[xUnit.net 00:00:18.57]   Finished:    FantasyCard.Server.Tests
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="c2d7a4ca306e" outcome="Error" timestamp="2026-09-30T21:39:51.8134229+00:00">
+        <Text>[xUnit.net 00:00:18.56]     FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

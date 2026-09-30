@@ -845,7 +845,8 @@
         "pb-equipment-d3c5fe6c/process-v3/receipts.jsonl",
         "process-recovery-v2/CANONICAL_SUPPORT_MAPPING.json",
         "fault-batch-f93e32da/CASE_MATRIX.json",
-        "fault-batch-f93e32da/REPORT.json"
+        "fault-batch-f93e32da/REPORT.json",
+        "lifecycle-batch-d2106eb0/REPORT.json"
       ],
       "remaining_blocker": "Complete exact unexercised injections and required POSTGRES/LIVE/RENDER profiles as listed per case; real multicycle success accounting/Boss remains. GitHub runner start blocked by account billing; no retry/account changes authorized.",
       "dependencies": [
@@ -865,9 +866,12 @@
       "supporting_tests_are_canonical_acceptance": false,
       "tested_source_shas": [
         "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17",
-        "f93e32dac07608e8375e709cd357c4793bdcc41a"
+        "f93e32dac07608e8375e709cd357c4793bdcc41a",
+        "0cabf2695b26881b8958eb1ec6989ec57104414d",
+        "54e7452f971148db0fad313108c6fbdb6c1811ab"
       ],
-      "tested_source_provenance": "Local tests were d277 dirty source; all8 relevant files exactly match committed d3, as post-commit-source.json verifies. CI exact SHA indexed separately."
+      "tested_source_provenance": "Local tests were d277 dirty source; all8 relevant files exactly match committed d3, as post-commit-source.json verifies. CI exact SHA indexed separately.",
+      "latest_partial_profile_batch": "lifecycle-batch-d2106eb0/CASE_MATRIX.json"
     },
     {
       "task_id": "LOAD-05.1",
@@ -1008,7 +1012,8 @@
         "pb-equipment-d3c5fe6c/process-v3/receipts.jsonl",
         "process-recovery-v2/CANONICAL_SUPPORT_MAPPING.json",
         "fault-batch-f93e32da/CASE_MATRIX.json",
-        "fault-batch-f93e32da/REPORT.json"
+        "fault-batch-f93e32da/REPORT.json",
+        "lifecycle-batch-d2106eb0/REPORT.json"
       ],
       "remaining_blocker": "Complete exact unexercised injections and required POSTGRES/LIVE/RENDER profiles as listed per case; real multicycle success accounting/Boss remains. GitHub runner start blocked by account billing; no retry/account changes authorized.",
       "dependencies": [
@@ -1029,9 +1034,12 @@
       "supporting_tests_are_canonical_acceptance": false,
       "tested_source_shas": [
         "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17",
-        "f93e32dac07608e8375e709cd357c4793bdcc41a"
+        "f93e32dac07608e8375e709cd357c4793bdcc41a",
+        "0cabf2695b26881b8958eb1ec6989ec57104414d",
+        "54e7452f971148db0fad313108c6fbdb6c1811ab"
       ],
-      "tested_source_provenance": "Local tests were d277 dirty source; all8 relevant files exactly match committed d3, as post-commit-source.json verifies. CI exact SHA indexed separately."
+      "tested_source_provenance": "Local tests were d277 dirty source; all8 relevant files exactly match committed d3, as post-commit-source.json verifies. CI exact SHA indexed separately.",
+      "latest_partial_profile_batch": "lifecycle-batch-d2106eb0/CASE_MATRIX.json"
     },
     {
       "task_id": "LOAD-06.3",
@@ -3703,7 +3711,8 @@
       ],
       "evidence": [
         "fault-batch-f93e32da/CASE_MATRIX.json",
-        "fault-batch-f93e32da/REPORT.json"
+        "fault-batch-f93e32da/REPORT.json",
+        "lifecycle-batch-d2106eb0/REPORT.json"
       ],
       "remaining_blocker": "Complete exact unexercised injections and required POSTGRES/LIVE/RENDER profiles as listed per case; real multicycle success accounting/Boss remains. GitHub runner start blocked by account billing; no retry/account changes authorized.",
       "dependencies": [
@@ -3722,8 +3731,11 @@
       "accepted": false,
       "supporting_tests_are_canonical_acceptance": false,
       "tested_source_shas": [
-        "f93e32dac07608e8375e709cd357c4793bdcc41a"
-      ]
+        "f93e32dac07608e8375e709cd357c4793bdcc41a",
+        "0cabf2695b26881b8958eb1ec6989ec57104414d",
+        "54e7452f971148db0fad313108c6fbdb6c1811ab"
+      ],
+      "latest_partial_profile_batch": "lifecycle-batch-d2106eb0/CASE_MATRIX.json"
     },
     {
       "task_id": "PR13-A03.4",
@@ -3905,7 +3917,8 @@
       ],
       "evidence": [
         "fault-batch-f93e32da/CASE_MATRIX.json",
-        "fault-batch-f93e32da/REPORT.json"
+        "fault-batch-f93e32da/REPORT.json",
+        "lifecycle-batch-d2106eb0/REPORT.json"
       ],
       "remaining_blocker": "Complete exact unexercised injections and required POSTGRES/LIVE/RENDER profiles as listed per case; real multicycle success accounting/Boss remains. GitHub runner start blocked by account billing; no retry/account changes authorized.",
       "dependencies": [
@@ -3924,8 +3937,11 @@
       "accepted": false,
       "supporting_tests_are_canonical_acceptance": false,
       "tested_source_shas": [
-        "f93e32dac07608e8375e709cd357c4793bdcc41a"
-      ]
+        "f93e32dac07608e8375e709cd357c4793bdcc41a",
+        "0cabf2695b26881b8958eb1ec6989ec57104414d",
+        "54e7452f971148db0fad313108c6fbdb6c1811ab"
+      ],
+      "latest_partial_profile_batch": "lifecycle-batch-d2106eb0/CASE_MATRIX.json"
     },
     {
       "task_id": "PR13-B11.1",
@@ -5498,7 +5514,7 @@
       ]
     }
   ],
-  "updated_at_utc": "2026-09-30T20:55:43.795457+00:00",
+  "updated_at_utc": "2026-09-30T21:36:35.543462+00:00",
   "gate_decisions": [
     {
       "gate": "G0",
@@ -5538,44 +5554,15 @@
     "path": "fault-batch-f93e32da/ci-f93e32da.json",
     "all5_passed": false
   },
-  "latest_runtime_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
+  "latest_runtime_sha": "38c2caccb5f8327f52d97dffb3b9f9303360dd46",
   "state_counts": {
     "Partial": 53,
     "NotRevalidated": 76,
     "Blocked": 3
   },
-  "latest_batch_state_transitions": [
-    {
-      "task_id": "PR13-A03.1",
-      "from": "NotRevalidated",
-      "to": "Partial",
-      "Accepted": false
-    },
-    {
-      "task_id": "PR13-A03.2",
-      "from": "NotRevalidated",
-      "to": "Partial",
-      "Accepted": false
-    },
-    {
-      "task_id": "PR13-A03.3",
-      "from": "NotRevalidated",
-      "to": "Partial",
-      "Accepted": false
-    },
-    {
-      "task_id": "PR13-A04.4",
-      "from": "NotRevalidated",
-      "to": "Partial",
-      "Accepted": false
-    },
-    {
-      "task_id": "PR13-B11.2",
-      "from": "NotRevalidated",
-      "to": "Partial",
-      "Accepted": false
-    }
-  ],
+  "latest_batch_state_transitions": [],
   "production_protocol_fix_sha": "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17",
-  "checkpoint_test_fix_sha": "de1157fdf490a5bce3ba888c07519fc957c46782"
+  "checkpoint_test_fix_sha": "de1157fdf490a5bce3ba888c07519fc957c46782",
+  "latest_test_candidate_sha": "38c2caccb5f8327f52d97dffb3b9f9303360dd46",
+  "production_behavior_baseline": "f93e32dac07608e8375e709cd357c4793bdcc41a"
 }

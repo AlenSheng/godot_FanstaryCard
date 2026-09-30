@@ -1,6 +1,6 @@
 {
   "kind": "next_critical_queue_not_completed",
-  "stable_logic_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
+  "stable_logic_sha": "38c2caccb5f8327f52d97dffb3b9f9303360dd46",
   "server_client_tree_equal_to_b709": false,
   "current_counts": {
     "Partial": 53,
@@ -16,7 +16,7 @@
         "PR13-A09.1",
         "LOAD-11.1"
       ],
-      "action": "MAIN/UI owner update isolated reviewed UI070c7b4 + PR13 f93e32da + PR14 combination, resolve shared logic hunks and run applicable local cross-regression. Previous de1157 combination does not cover this batch.",
+      "action": "MAIN/UI owner update isolated reviewed UI070c7b4 + PR13 d2106eb0 (production behavior unchanged from f93e32da) + PR14 combination, resolve shared logic hunks and run applicable local cross-regression. Previous de1157 combination does not cover this batch.",
       "evidence_input": "pb-equipment-d3c5fe6c/report.json; checkpoint-publication-de1157fd/post-commit-source.json; ci-de1157fd/workflows.json; LIVE_VALIDATION_PLAN.json",
       "constraint": "UIbranch remains independent until its review; no merge/auto-merge or automatic server restart."
     },
@@ -34,8 +34,8 @@
         "PR13-A05.3",
         "PR13-B11.2"
       ],
-      "action": "Next bounded offline batch: real service registration/MarkRunning reply loss; unsubmitted vs committed READY reply loss; STOP while ACK/settlement/reconnect awaits; real multicycle delayed events and one failed retry with exact success accounting. Preserve original deadlines/late events and per-case profiles.",
-      "missing": "Current10 READY/STOP+3 actual ACK modes+6 component callback cases passed. Exact remaining5 selected injections, actual load-runner completed-cycle invariants, full legal three-game/Boss and required LIVE/RENDER still missing."
+      "action": "Next bounded offline batch: actual client pending holds; busy/old receipt cannot count completion; STOP settlement/bootstrap/reconnect await; same-session real multicycle repeated NOT_IN_ROOM/delayed callback isolation.",
+      "missing": "Register SupportOnly+actual process committed MarkRunning loss and5real READY frame losses now verified. Production Godot3legal terminal cycles counted exactly under committed/uncommitted transport retry;3full gameplay/Boss routes, exhausted logical ACK-call retry, LIVE/RENDER and independent stage review remain."
     },
     {
       "order": 3,
@@ -109,14 +109,16 @@
     "source_of_status": "Parent delegation message2026-09-30 during stage finalization"
   },
   "ci_pending": {
-    "sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
-    "runs": [
+    "sha": "38c2caccb5f8327f52d97dffb3b9f9303360dd46",
+    "blocker": "Account payments OR spending limit, parent browser verified; no exact subcause. Await user resolution; do not retry or change billing/permissions.",
+    "previous_runs": [
       36773912366,
       36773912323,
       36773912361,
       36773912262,
       36773912365
     ],
-    "blocker": "Account payments OR spending limit, parent browser verified; no exact subcause. Await user resolution; do not retry or change billing/permissions."
-  }
+    "runs": []
+  },
+  "production_behavior_baseline": "f93e32dac07608e8375e709cd357c4793bdcc41a"
 }

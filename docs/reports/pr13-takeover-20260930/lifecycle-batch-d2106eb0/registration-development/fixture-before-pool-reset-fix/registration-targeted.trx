@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="d5d6ceb0-822b-4366-9ba4-aefa6e8cb375" name="@c2d7a4ca306e 2026-09-30 21:18:13" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-30T21:18:13.5162394+00:00" queuing="2026-09-30T21:18:13.5162394+00:00" start="2026-09-30T21:18:09.9042761+00:00" finish="2026-09-30T21:18:19.5110582+00:00" />
+  <TestSettings name="default" id="12698cfc-fbed-4d55-9c58-bb98fed35747">
+    <Deployment runDeploymentRoot="_c2d7a4ca306e_2026-09-30_21_18_13" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="b060a193-ee6d-44b9-83b3-ac71ea530c01" testId="c5512ee8-71b1-62c8-09b2-1275b361d03d" testName="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.SupportOnly_actual_Register_conflict_retries_same_launch_without_partial_room_or_second_reservation(conflict: &quot;player-route&quot;)" computerName="c2d7a4ca306e" duration="00:00:01.4952944" startTime="2026-09-30T21:18:11.9380828+00:00" endTime="2026-09-30T21:18:13.4536031+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b060a193-ee6d-44b9-83b3-ac71ea530c01">
+      <Output>
+        <StdOut>{"caseId":"LOAD-04.4-T02-Register-failure-player-route","recordedAt":"2026-09-30T21:18:13.2673674+00:00","evidence":{"attempt":1,"MatchId":"01a0f42e-a57e-735f-b6a4-9309d715947d","RoomId":"01a0f42e-a57e-75b0-a1ea-fa09cd7f7c51","conflictingId":"87822363-317a-4f98-aec9-00229f2ccce1","registeredRooms":["87822363-317a-4f98-aec9-00229f2ccce1"],"error":"Player \u002701a0f42e-a3d1-7b2a-a034-ce03030b576d\u0027 is already assigned to a room.","scope":"SupportOnly: actual component \u002B PG; no full Program process"}}
+{"caseId":"LOAD-04.4-T02-Register-failure-player-route","recordedAt":"2026-09-30T21:18:13.3352367+00:00","evidence":{"attempt":2,"MatchId":"01a0f42e-a57e-735f-b6a4-9309d715947d","RoomId":"01a0f42e-a57e-75b0-a1ea-fa09cd7f7c51","conflictingId":"87822363-317a-4f98-aec9-00229f2ccce1","registeredRooms":["87822363-317a-4f98-aec9-00229f2ccce1"],"error":"Player \u002701a0f42e-a3d1-7b2a-a034-ce03030b576d\u0027 is already assigned to a room.","scope":"SupportOnly: actual component \u002B PG; no full Program process"}}
+{"caseId":"LOAD-04.4-T02-Register-recovered-player-route","recordedAt":"2026-09-30T21:18:13.3869739+00:00","evidence":{"MatchId":"01a0f42e-a57e-735f-b6a4-9309d715947d","RoomId":"01a0f42e-a57e-75b0-a1ea-fa09cd7f7c51","registeredRooms":["01a0f42e-a57e-75b0-a1ea-fa09cd7f7c51"],"expected":"one room/route after repeated real Register failures; one asset reservation","actual":"matched","scope":"SupportOnly OFFLINE\u002BPOSTGRES"}}</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="db4ae612-3e2c-4d71-b6b3-e560c64bc58c" testId="9f6182db-3d87-5eb8-25ec-861c6c627f29" testName="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes" computerName="c2d7a4ca306e" duration="00:00:05.5286869" startTime="2026-09-30T21:18:13.8482897+00:00" endTime="2026-09-30T21:18:19.3873213+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="db4ae612-3e2c-4d71-b6b3-e560c64bc58c">
+      <Output>
+        <StdOut>{"caseId":"process-start","recordedAt":"2026-09-30T21:18:13.8940505+00:00","evidence":{"label":"register-committed-loss","Id":49752,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/pr13-takeover/register-evidence-20260930/fresh-build/bin/FantasyCard.Server/debug/FantasyCard.Server.dll","port":38931,"SearchPath":"fc_runtime_test_9566e3677df44293a9d5e962d3fdc20e","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+{"caseId":"LOAD-04.4-T02-MarkRunning-committed-response-lost","recordedAt":"2026-09-30T21:18:17.9750835+00:00","evidence":{"ProcessId":49752,"matchId":"01a0f42e-b775-75bc-9ad0-d694649422d4","roomId":"01a0f42e-b775-788e-bfb4-37c6d3da6b36","dropped":{"Index":1,"StatementSha256":"bb00bc4b9ebfa9691a6f2c378c2bdac71b0cc79935f64ce76565e11e7b642877","CommandTag":"UPDATE 1","ReadyState":"I","Dropped":true,"CommittedAt":"2026-09-30T21:18:17.9169893+00:00"},"durableStatus":"Running","responseDelivered":false}}
+{"caseId":"process-stop","recordedAt":"2026-09-30T21:18:19.307364+00:00","evidence":{"label":"register-committed-loss","ProcessId":49752,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/pr13-takeover/register-evidence-20260930/targeted/register-committed-loss-49752.log"}}</StdOut>
+        <ErrorInfo>
+          <Message>Assert.Equal() Failure: Strings differ
+           ↓ (pos 0)
+Expected: "UPDATE 0"
+Actual:   "DISCARD ALL"
+           ↑ (pos 0)</Message>
+          <StackTrace>   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes() in /workspace/pr13-takeover/register-response-batch/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs:line 116
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes() in /workspace/pr13-takeover/register-response-batch/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs:line 130
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes() in /workspace/pr13-takeover/register-response-batch/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs:line 146
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes() in /workspace/pr13-takeover/register-response-batch/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs:line 146
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="e19d1ac9-b3ea-482f-b310-4250ed8ae4b8" testId="fb076299-126c-7bec-365a-530ff14e0184" testName="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.SupportOnly_actual_Register_conflict_retries_same_launch_without_partial_room_or_second_reservation(conflict: &quot;room-id&quot;)" computerName="c2d7a4ca306e" duration="00:00:00.3768429" startTime="2026-09-30T21:18:13.4641716+00:00" endTime="2026-09-30T21:18:13.8415884+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e19d1ac9-b3ea-482f-b310-4250ed8ae4b8">
+      <Output>
+        <StdOut>{"caseId":"LOAD-04.4-T02-Register-failure-room-id","recordedAt":"2026-09-30T21:18:13.7796424+00:00","evidence":{"attempt":1,"MatchId":"01a0f42e-a8fa-71f5-a8d7-6463d6f8d20e","RoomId":"01a0f42e-a8fa-7b6d-80d5-b84fd3f8c984","conflictingId":"01a0f42e-a8fa-7b6d-80d5-b84fd3f8c984","registeredRooms":["01a0f42e-a8fa-7b6d-80d5-b84fd3f8c984"],"error":"Room \u002701a0f42e-a8fa-7b6d-80d5-b84fd3f8c984\u0027 is already registered.","scope":"SupportOnly: actual component \u002B PG; no full Program process"}}
+{"caseId":"LOAD-04.4-T02-Register-failure-room-id","recordedAt":"2026-09-30T21:18:13.7823643+00:00","evidence":{"attempt":2,"MatchId":"01a0f42e-a8fa-71f5-a8d7-6463d6f8d20e","RoomId":"01a0f42e-a8fa-7b6d-80d5-b84fd3f8c984","conflictingId":"01a0f42e-a8fa-7b6d-80d5-b84fd3f8c984","registeredRooms":["01a0f42e-a8fa-7b6d-80d5-b84fd3f8c984"],"error":"Room \u002701a0f42e-a8fa-7b6d-80d5-b84fd3f8c984\u0027 is already registered.","scope":"SupportOnly: actual component \u002B PG; no full Program process"}}
+{"caseId":"LOAD-04.4-T02-Register-recovered-room-id","recordedAt":"2026-09-30T21:18:13.7958095+00:00","evidence":{"MatchId":"01a0f42e-a8fa-71f5-a8d7-6463d6f8d20e","RoomId":"01a0f42e-a8fa-7b6d-80d5-b84fd3f8c984","registeredRooms":["01a0f42e-a8fa-7b6d-80d5-b84fd3f8c984"],"expected":"one room/route after repeated real Register failures; one asset reservation","actual":"matched","scope":"SupportOnly OFFLINE\u002BPOSTGRES"}}</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.SupportOnly_actual_Register_conflict_retries_same_launch_without_partial_room_or_second_reservation(conflict: &quot;room-id&quot;)" storage="/workspace/pr13-takeover/register-evidence-20260930/fresh-build/bin/fantasycard.server.tests/debug/fantasycard.server.tests.dll" id="fb076299-126c-7bec-365a-530ff14e0184">
+      <Execution id="e19d1ac9-b3ea-482f-b310-4250ed8ae4b8" />
+      <TestMethod codeBase="/workspace/pr13-takeover/register-evidence-20260930/fresh-build/bin/FantasyCard.Server.Tests/debug/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests" name="SupportOnly_actual_Register_conflict_retries_same_launch_without_partial_room_or_second_reservation" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes" storage="/workspace/pr13-takeover/register-evidence-20260930/fresh-build/bin/fantasycard.server.tests/debug/fantasycard.server.tests.dll" id="9f6182db-3d87-5eb8-25ec-861c6c627f29">
+      <Execution id="db4ae612-3e2c-4d71-b6b3-e560c64bc58c" />
+      <TestMethod codeBase="/workspace/pr13-takeover/register-evidence-20260930/fresh-build/bin/FantasyCard.Server.Tests/debug/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests" name="Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.SupportOnly_actual_Register_conflict_retries_same_launch_without_partial_room_or_second_reservation(conflict: &quot;player-route&quot;)" storage="/workspace/pr13-takeover/register-evidence-20260930/fresh-build/bin/fantasycard.server.tests/debug/fantasycard.server.tests.dll" id="c5512ee8-71b1-62c8-09b2-1275b361d03d">
+      <Execution id="b060a193-ee6d-44b9-83b3-ac71ea530c01" />
+      <TestMethod codeBase="/workspace/pr13-takeover/register-evidence-20260930/fresh-build/bin/FantasyCard.Server.Tests/debug/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests" name="SupportOnly_actual_Register_conflict_retries_same_launch_without_partial_room_or_second_reservation" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="c5512ee8-71b1-62c8-09b2-1275b361d03d" executionId="b060a193-ee6d-44b9-83b3-ac71ea530c01" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9f6182db-3d87-5eb8-25ec-861c6c627f29" executionId="db4ae612-3e2c-4d71-b6b3-e560c64bc58c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fb076299-126c-7bec-365a-530ff14e0184" executionId="e19d1ac9-b3ea-482f-b310-4250ed8ae4b8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="3" executed="3" passed="2" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.0+00ab0a9ec4 (64-bit .NET 10.0.11)
+[xUnit.net 00:00:00.30]   Discovering: FantasyCard.Server.Tests
+[xUnit.net 00:00:01.02]   Discovered:  FantasyCard.Server.Tests
+[xUnit.net 00:00:01.28]   Starting:    FantasyCard.Server.Tests
+[xUnit.net 00:00:08.83]       Assert.Equal() Failure: Strings differ
+[xUnit.net 00:00:08.83]                  ↓ (pos 0)
+[xUnit.net 00:00:08.83]       Expected: "UPDATE 0"
+[xUnit.net 00:00:08.84]       Actual:   "DISCARD ALL"
+[xUnit.net 00:00:08.84]                  ↑ (pos 0)
+[xUnit.net 00:00:08.84]       Stack Trace:
+[xUnit.net 00:00:08.84]         /workspace/pr13-takeover/register-response-batch/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs(116,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes()
+[xUnit.net 00:00:08.84]         /workspace/pr13-takeover/register-response-batch/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs(130,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes()
+[xUnit.net 00:00:08.84]         /workspace/pr13-takeover/register-response-batch/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs(146,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes()
+[xUnit.net 00:00:08.84]         /workspace/pr13-takeover/register-response-batch/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs(146,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes()
+[xUnit.net 00:00:08.84]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:08.84]       Output:
+[xUnit.net 00:00:08.84]         {"caseId":"process-start","recordedAt":"2026-09-30T21:18:13.8940505+00:00","evidence":{"label":"register-committed-loss","Id":49752,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/pr13-takeover/register-evidence-20260930/fresh-build/bin/FantasyCard.Server/debug/FantasyCard.Server.dll","port":38931,"SearchPath":"fc_runtime_test_9566e3677df44293a9d5e962d3fdc20e","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+[xUnit.net 00:00:08.84]         {"caseId":"LOAD-04.4-T02-MarkRunning-committed-response-lost","recordedAt":"2026-09-30T21:18:17.9750835+00:00","evidence":{"ProcessId":49752,"matchId":"01a0f42e-b775-75bc-9ad0-d694649422d4","roomId":"01a0f42e-b775-788e-bfb4-37c6d3da6b36","dropped":{"Index":1,"StatementSha256":"bb00bc4b9ebfa9691a6f2c378c2bdac71b0cc79935f64ce76565e11e7b642877","CommandTag":"UPDATE 1","ReadyState":"I","Dropped":true,"CommittedAt":"2026-09-30T21:18:17.9169893+00:00"},"durableStatus":"Running","responseDelivered":false}}
+[xUnit.net 00:00:08.84]         {"caseId":"process-stop","recordedAt":"2026-09-30T21:18:19.307364+00:00","evidence":{"label":"register-committed-loss","ProcessId":49752,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/pr13-takeover/register-evidence-20260930/targeted/register-committed-loss-49752.log"}}
+[xUnit.net 00:00:08.85]   Finished:    FantasyCard.Server.Tests
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="c2d7a4ca306e" outcome="Error" timestamp="2026-09-30T21:18:19.3986474+00:00">
+        <Text>[xUnit.net 00:00:08.83]     FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

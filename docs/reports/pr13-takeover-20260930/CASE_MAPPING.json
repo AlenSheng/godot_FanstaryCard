@@ -1,6 +1,6 @@
 {
   "kind": "canonical_receipt_and_supporting_case_mapping_not_acceptance",
-  "stable_logic_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
+  "stable_logic_sha": "38c2caccb5f8327f52d97dffb3b9f9303360dd46",
   "frozen_spec_sha256": "5176ee139d4e632ba34469ae531ce7ec16478f356480e2d8e320cd51f3bcd703",
   "canonical_case_counts": {
     "Passed": 27,
@@ -1366,6 +1366,31 @@
         "status": "NotExecuted",
         "executed": false,
         "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
+      },
+      "next_lifecycle_partial_evidence": {
+        "case_id": "LOAD-04.4-T01",
+        "task_id": "LOAD-04.4",
+        "canonical_setup": "required丢失再重连",
+        "canonical_expected": "权威恢复",
+        "required_profiles": [
+          "OFFLINE",
+          "POSTGRES",
+          "LIVE"
+        ],
+        "case_state": "PartialEvidence",
+        "Accepted": false,
+        "accepted_by": null,
+        "full_canonical_acceptance_satisfied": false,
+        "SupportOnly_subcase_present": false,
+        "evidence_profiles": [
+          "OFFLINE",
+          "POSTGRES"
+        ],
+        "evidence": [
+          "ready-clean/cases.jsonl",
+          "ready-clean/report.json"
+        ],
+        "remaining": "LIVE and independent MAIN stage/dependency adjudication remain."
       }
     },
     {
@@ -1392,6 +1417,34 @@
         "status": "NotExecuted",
         "executed": false,
         "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
+      },
+      "next_lifecycle_partial_evidence": {
+        "case_id": "LOAD-04.4-T02",
+        "task_id": "LOAD-04.4",
+        "canonical_setup": "注册失败再恢复",
+        "canonical_expected": "至多一个room",
+        "required_profiles": [
+          "OFFLINE",
+          "POSTGRES",
+          "LIVE"
+        ],
+        "case_state": "PartialEvidence",
+        "Accepted": false,
+        "accepted_by": null,
+        "full_canonical_acceptance_satisfied": false,
+        "SupportOnly_subcase_present": true,
+        "evidence_profiles": [
+          "OFFLINE",
+          "POSTGRES"
+        ],
+        "evidence": [
+          "source-candidate/results/targeted.trx",
+          "source-candidate/raw/receipts.jsonl",
+          "loopback-tcp-nodelay-candidate/results/targeted.trx",
+          "loopback-tcp-nodelay-candidate/raw/receipts.jsonl",
+          "unix-final-relay-candidate/results/targeted.trx"
+        ],
+        "remaining": "LIVE and independent MAIN stage/dependency adjudication remain. Actual Register failure injection is component SupportOnly; full Program MarkRunning reply loss uses real C# PB/ticket WS, not Godot; full Program Register fault with Godot and same-account three games remain."
       }
     },
     {
@@ -1651,6 +1704,31 @@
         "status": "NotExecuted",
         "executed": false,
         "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
+      },
+      "next_lifecycle_partial_evidence": {
+        "case_id": "LOAD-05.4-T01",
+        "task_id": "LOAD-05.4",
+        "canonical_setup": "ack提交后响应丢失再重试",
+        "canonical_expected": "同一receipt/资产只一次",
+        "required_profiles": [
+          "OFFLINE",
+          "POSTGRES",
+          "LIVE"
+        ],
+        "case_state": "PartialEvidence",
+        "Accepted": false,
+        "accepted_by": null,
+        "full_canonical_acceptance_satisfied": false,
+        "SupportOnly_subcase_present": false,
+        "evidence_profiles": [
+          "OFFLINE",
+          "POSTGRES"
+        ],
+        "evidence": [
+          "source-candidate/results/targeted.trx",
+          "source-candidate/raw/receipts.jsonl"
+        ],
+        "remaining": "LIVE and independent MAIN stage/dependency adjudication remain."
       }
     },
     {
@@ -1703,6 +1781,31 @@
         "status": "NotExecuted",
         "executed": false,
         "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
+      },
+      "next_lifecycle_partial_evidence": {
+        "case_id": "LOAD-05.4-T03",
+        "task_id": "LOAD-05.4",
+        "canonical_setup": "三局夹一失败重试",
+        "canonical_expected": "仅真实成功计一次",
+        "required_profiles": [
+          "OFFLINE",
+          "POSTGRES",
+          "LIVE"
+        ],
+        "case_state": "PartialEvidence",
+        "Accepted": false,
+        "accepted_by": null,
+        "full_canonical_acceptance_satisfied": false,
+        "SupportOnly_subcase_present": false,
+        "evidence_profiles": [
+          "OFFLINE",
+          "POSTGRES"
+        ],
+        "evidence": [
+          "source-candidate/results/targeted.trx",
+          "source-candidate/raw/receipts.jsonl"
+        ],
+        "remaining": "LIVE and independent MAIN stage/dependency adjudication remain. Three real entry/legal extract-or-abandon/ACK cycles exercise production counter, not three full gameplay/Boss routes; no extra logical ACK-call retry after exhausted transport attempts."
       }
     },
     {
@@ -4073,6 +4176,31 @@
         "status": "NotExecuted",
         "executed": false,
         "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
+      },
+      "next_lifecycle_partial_evidence": {
+        "case_id": "PR13-A03.3-T01",
+        "task_id": "PR13-A03.3",
+        "canonical_setup": "已提交响应丢失",
+        "canonical_expected": "一次资产且一次完成",
+        "required_profiles": [
+          "OFFLINE",
+          "POSTGRES",
+          "LIVE"
+        ],
+        "case_state": "PartialEvidence",
+        "Accepted": false,
+        "accepted_by": null,
+        "full_canonical_acceptance_satisfied": false,
+        "SupportOnly_subcase_present": false,
+        "evidence_profiles": [
+          "OFFLINE",
+          "POSTGRES"
+        ],
+        "evidence": [
+          "source-candidate/results/targeted.trx",
+          "source-candidate/raw/receipts.jsonl"
+        ],
+        "remaining": "LIVE and independent MAIN stage/dependency adjudication remain."
       }
     },
     {
@@ -4094,6 +4222,31 @@
         "status": "NotExecuted",
         "executed": false,
         "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
+      },
+      "next_lifecycle_partial_evidence": {
+        "case_id": "PR13-A03.3-T02",
+        "task_id": "PR13-A03.3",
+        "canonical_setup": "未提交超时",
+        "canonical_expected": "可安全重试",
+        "required_profiles": [
+          "OFFLINE",
+          "POSTGRES",
+          "LIVE"
+        ],
+        "case_state": "PartialEvidence",
+        "Accepted": false,
+        "accepted_by": null,
+        "full_canonical_acceptance_satisfied": false,
+        "SupportOnly_subcase_present": false,
+        "evidence_profiles": [
+          "OFFLINE",
+          "POSTGRES"
+        ],
+        "evidence": [
+          "source-candidate/results/targeted.trx",
+          "source-candidate/raw/receipts.jsonl"
+        ],
+        "remaining": "LIVE and independent MAIN stage/dependency adjudication remain."
       }
     },
     {
@@ -4427,6 +4580,31 @@
         "status": "NotExecuted",
         "executed": false,
         "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
+      },
+      "next_lifecycle_partial_evidence": {
+        "case_id": "PR13-A04.4-T01",
+        "task_id": "PR13-A04.4",
+        "canonical_setup": "ready阶段STOP",
+        "canonical_expected": "取消或明确deadline回收",
+        "required_profiles": [
+          "OFFLINE",
+          "POSTGRES",
+          "LIVE"
+        ],
+        "case_state": "PartialEvidence",
+        "Accepted": false,
+        "accepted_by": null,
+        "full_canonical_acceptance_satisfied": false,
+        "SupportOnly_subcase_present": false,
+        "evidence_profiles": [
+          "OFFLINE",
+          "POSTGRES"
+        ],
+        "evidence": [
+          "ready-clean/cases.jsonl",
+          "ready-clean/report.json"
+        ],
+        "remaining": "LIVE and independent MAIN stage/dependency adjudication remain."
       }
     },
     {
@@ -4448,6 +4626,31 @@
         "status": "NotExecuted",
         "executed": false,
         "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
+      },
+      "next_lifecycle_partial_evidence": {
+        "case_id": "PR13-A04.4-T02",
+        "task_id": "PR13-A04.4",
+        "canonical_setup": "reconnect收到重放",
+        "canonical_expected": "序号与room正确",
+        "required_profiles": [
+          "OFFLINE",
+          "POSTGRES",
+          "LIVE"
+        ],
+        "case_state": "PartialEvidence",
+        "Accepted": false,
+        "accepted_by": null,
+        "full_canonical_acceptance_satisfied": false,
+        "SupportOnly_subcase_present": false,
+        "evidence_profiles": [
+          "OFFLINE",
+          "POSTGRES"
+        ],
+        "evidence": [
+          "ready-clean/cases.jsonl",
+          "ready-clean/report.json"
+        ],
+        "remaining": "LIVE and independent MAIN stage/dependency adjudication remain."
       }
     },
     {
@@ -10613,5 +10816,10 @@
     "unexercised_selected_cases": 5,
     "Accepted": 0
   },
-  "canonical_case_counts_note": "Original explicit offline runner partition; not all current component/host evidence coverage."
+  "canonical_case_counts_note": "27Passed/369NotExecuted are preserved explicit-runner receipts only. New partial-profile case evidence is separate and not full396 coverage.",
+  "next_lifecycle_batch": {
+    "report": "lifecycle-batch-d2106eb0/REPORT.json",
+    "case_matrix": "lifecycle-batch-d2106eb0/CASE_MATRIX.json",
+    "accepted": 0
+  }
 }

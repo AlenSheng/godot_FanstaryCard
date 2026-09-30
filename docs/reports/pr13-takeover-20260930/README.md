@@ -1,3 +1,9 @@
+# 当前阶段：有界生命周期独立验证
+
+稳定代码/测试候选 `38c2caccb5f8327f52d97dffb3b9f9303360dd46`，生产逻辑仍等于f93e32da。本批源码内部freshbuild针对13/13、非PG206/206，真实READY新增5/5纯提交通过；注册组件SupportOnly与实际Program分列。ACK等待STOP完成计数0，真实三次入场/合法终态的第二ACK提交前/后丢失均只计3次完成。完整玩法/Boss、LIVE/RENDER仍未验收。132项维持53Partial/76NotRevalidated/3Blocked/0Accepted，阶段收据和case映射见[本批报告](lifecycle-batch-d2106eb0/README.md)。CI不重试；4raw保留待授权。
+
+以下f93及更早报告保留为历史；最新结果以STAGE_RECEIPT.json为准。
+
 # 当前阶段：实际客户端故障批次
 
 最新代码/测试候选 `f93e32dac07608e8375e709cd357c4793bdcc41a`。本地Domain317、Server/PG284零失败零跳过；十项READY/STOP与三种真实ACK响应丢失验证完成。当前132项53Partial/76NotRevalidated/3Blocked/0Accepted。逐case证据见[新批报告](fault-batch-f93e32da/README.md)和[阶段收据](STAGE_RECEIPT.json)。GitHub计费阻断，最新CI未执行；de1157历史绿灯不覆盖新提交。父任务需更新独立UI/PR14组合回归。

@@ -1,0 +1,92 @@
+Build started 09/30/2026 21:39:31.
+Test run for /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.0+00ab0a9ec4 (64-bit .NET 10.0.11)
+[xUnit.net 00:00:00.29]   Discovering: FantasyCard.Server.Tests
+[xUnit.net 00:00:00.89]   Discovered:  FantasyCard.Server.Tests
+[xUnit.net 00:00:01.21]   Starting:    FantasyCard.Server.Tests
+  Passed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.SupportOnly_actual_Register_conflict_retries_same_launch_without_partial_room_or_second_reservation(conflict: "room-id") [1 s]
+  Passed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.SupportOnly_actual_Register_conflict_retries_same_launch_without_partial_room_or_second_reservation(conflict: "player-route") [491 ms]
+[xUnit.net 00:00:18.56]     FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes [FAIL]
+[xUnit.net 00:00:18.56]       System.Threading.Tasks.TaskCanceledException : The request was canceled due to the configured HttpClient.Timeout of 10 seconds elapsing.
+[xUnit.net 00:00:18.56]       ---- System.TimeoutException : The operation was canceled.
+[xUnit.net 00:00:18.56]       -------- System.Threading.Tasks.TaskCanceledException : The operation was canceled.
+[xUnit.net 00:00:18.56]       ------------ System.IO.IOException : Unable to read data from the transport connection: Operation canceled.
+[xUnit.net 00:00:18.56]       ---------------- System.Net.Sockets.SocketException : Operation canceled
+[xUnit.net 00:00:18.56]       Stack Trace:
+[xUnit.net 00:00:18.56]            at System.Net.Http.HttpClient.HandleFailure(Exception e, Boolean telemetryStarted, HttpResponseMessage response, CancellationTokenSource cts, CancellationToken cancellationToken, CancellationTokenSource pendingRequestsCts)
+[xUnit.net 00:00:18.56]            at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+[xUnit.net 00:00:18.56]         /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs(450,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.CallAsync(HttpClient client, HttpMethod method, String path, IMessage body, CancellationToken ct, String requestId)
+[xUnit.net 00:00:18.56]         /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs(55,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes()
+[xUnit.net 00:00:18.56]         /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs(130,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes()
+[xUnit.net 00:00:18.56]         /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs(147,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes()
+[xUnit.net 00:00:18.57]         /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs(147,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes()
+[xUnit.net 00:00:18.57]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:18.57]         ----- Inner Stack Trace -----
+[xUnit.net 00:00:18.57]         
+[xUnit.net 00:00:18.57]         ----- Inner Stack Trace -----
+[xUnit.net 00:00:18.57]            at System.Net.Http.HttpConnection.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+[xUnit.net 00:00:18.57]            at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+[xUnit.net 00:00:18.57]            at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+[xUnit.net 00:00:18.57]            at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+[xUnit.net 00:00:18.57]         ----- Inner Stack Trace -----
+[xUnit.net 00:00:18.57]            at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+[xUnit.net 00:00:18.57]            at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+[xUnit.net 00:00:18.57]            at System.Net.Http.HttpConnection.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+[xUnit.net 00:00:18.57]         ----- Inner Stack Trace -----
+[xUnit.net 00:00:18.57]         
+[xUnit.net 00:00:18.57]       Output:
+[xUnit.net 00:00:18.57]         {"caseId":"process-start","recordedAt":"2026-09-30T21:39:36.6507364+00:00","evidence":{"label":"register-committed-loss","Id":66044,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/godot_FanstaryCard/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll","port":39773,"SearchPath":"fc_runtime_test_1610365a10514cb3ba7a6ddf36f5b283","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+[xUnit.net 00:00:18.57]         {"caseId":"process-stop","recordedAt":"2026-09-30T21:39:51.7474308+00:00","evidence":{"label":"register-committed-loss","ProcessId":66044,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/pr13-takeover/cycle-ack-batch-20260930/loopback-tcp-candidate/raw/register-committed-loss-66044.log"}}
+[xUnit.net 00:00:18.57]   Finished:    FantasyCard.Server.Tests
+  Failed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes [15 s]
+  Error Message:
+   System.Threading.Tasks.TaskCanceledException : The request was canceled due to the configured HttpClient.Timeout of 10 seconds elapsing.
+---- System.TimeoutException : The operation was canceled.
+-------- System.Threading.Tasks.TaskCanceledException : The operation was canceled.
+------------ System.IO.IOException : Unable to read data from the transport connection: Operation canceled.
+---------------- System.Net.Sockets.SocketException : Operation canceled
+  Stack Trace:
+     at System.Net.Http.HttpClient.HandleFailure(Exception e, Boolean telemetryStarted, HttpResponseMessage response, CancellationTokenSource cts, CancellationToken cancellationToken, CancellationTokenSource pendingRequestsCts)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.CallAsync(HttpClient client, HttpMethod method, String path, IMessage body, CancellationToken ct, String requestId) in /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs:line 450
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes() in /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs:line 55
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes() in /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs:line 130
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes() in /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs:line 147
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes() in /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs:line 147
+--- End of stack trace from previous location ---
+----- Inner Stack Trace -----
+
+----- Inner Stack Trace -----
+   at System.Net.Http.HttpConnection.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+----- Inner Stack Trace -----
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Http.HttpConnection.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+----- Inner Stack Trace -----
+
+  Standard Output Messages:
+ {"caseId":"process-start","recordedAt":"2026-09-30T21:39:36.6507364+00:00","evidence":{"label":"register-committed-loss","Id":66044,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/godot_FanstaryCard/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll","port":39773,"SearchPath":"fc_runtime_test_1610365a10514cb3ba7a6ddf36f5b283","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+ {"caseId":"process-stop","recordedAt":"2026-09-30T21:39:51.7474308+00:00","evidence":{"label":"register-committed-loss","ProcessId":66044,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/pr13-takeover/cycle-ack-batch-20260930/loopback-tcp-candidate/raw/register-committed-loss-66044.log"}}
+
+
+Results File: /workspace/pr13-takeover/cycle-ack-batch-20260930/loopback-tcp-candidate/results/targeted.trx
+
+Test Run Failed.
+Total tests: 3
+     Passed: 2
+     Failed: 1
+ Total time: 19.1656 Seconds
+     1>Project "/workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj" on node 1 (VSTest target(s)).
+     1>_VSTestConsole:
+         MSB4181: The "VSTestTask" task returned false but did not log an error.
+     1>Done Building Project "/workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj" (VSTest target(s)) -- FAILED.
+
+Build FAILED.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:20.03
