@@ -438,9 +438,10 @@ def main():
         cutoffs=reconcile_cycles(audit_events,stop_issued_ms,int(time.time()*1000))
         final_cycle_disagreement = any(s.get('cycles_completed') !=
             cutoffs['final']['cycles_by_client'].get(s['client_id'], 0) for s in final_clients)
+        coverage_evidence_failed = bool(load_coverage.get('evidence_errors'))
         final_evidence_failed = bool(final_read_errors or tail_lost or tail_window['invalid_metric_count']
             or final_audit_lost or final_audit_invalid or final_cycle_invalid or final_cycle_disagreement or final_errors_invalid
-            or audit_errors or cutoffs['evidence_errors'])
+            or audit_errors or cutoffs['evidence_errors'] or coverage_evidence_failed)
         # An operator may intentionally end a run before its first sample.
         # That leaves acceptance incomplete, while preserving exit 130. Real
         # malformed/lost evidence or abnormal child exits still take priority.
@@ -489,6 +490,7 @@ def main():
                 (final_cycle_invalid, 'final_cycle_count_invalid'), (final_errors_invalid, 'final_errors_schema_invalid'),
                 (final_cycle_disagreement, 'final_cycle_count_disagreement'),
                 (audit_errors, 'audit_archive_invalid'), (cutoffs['evidence_errors'], 'cycle_evidence_invalid'),
+                (coverage_evidence_failed, 'load_coverage_evidence_invalid'),
                 (post_stop_failure, 'post_stop_process_failure'), (final_business_failed, 'final_business_failure'),
                 (business_cleanup_failed, 'business_cleanup_failed'), (not sampling['passed'], 'sampling_integrity_failed')):
             if failed: final_triggers.append(trigger)
