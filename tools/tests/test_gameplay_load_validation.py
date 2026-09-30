@@ -1,8 +1,10 @@
 """Offline regression tests; no Godot/server/network dependencies."""
 import importlib.util
+import json
 import math
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 import unittest
 
@@ -96,6 +98,62 @@ class ValidationTests(unittest.TestCase):
     def test_invalid_numbers_flagged(self):
         r=module.aggregate_window([{'operations':[{'duration_ms':x} for x in [None, True, -1, math.nan, math.inf]]}])
         self.assertEqual(r['invalid_metric_count'],5)
+    def test_non_string_telemetry_types_are_invalid_evidence(self):
+        valid = {'type':'http','path':'/api/v1/players/me','status':500,
+                 'ok':False,'duration_ms':5}
+        for kind in ([], {}, None, True, 1):
+            with self.subTest(kind=kind):
+                result = module.aggregate_window([{'operations':[valid],
+                    'telemetry':[{'type':kind,'duration_ms':1}]}])
+                self.assertEqual(result['invalid_schema_count'],1)
+                self.assertEqual(result['sample_count'],1)
+                self.assertEqual(result['error_count'],1)
+                self.assertEqual(result['http']['min_ms'],5)
+                self.assertEqual(module.classify_stop(
+                    'invalid_evidence:invalid_telemetry')['exit_code'],3)
+    def test_json_integer_outside_float_range_is_invalid_not_zero_latency(self):
+        huge = json.loads('1' + '0' * 400)
+        result = module.aggregate_window([{'operations':[{
+            'duration_ms':huge,'status':500,'ok':False}]}])
+        self.assertEqual(result['invalid_duration_count'],1)
+        self.assertEqual(result['sample_count'],1)
+        self.assertEqual(result['error_count'],1)
+        self.assertEqual(result['http'],{'count':0})
+        for status in (self.status(now_unix_ms=huge),
+                       self.status(last_progress_age_ms=huge)):
+            with self.subTest(status=status):
+                result = self.snapshot(status=status)
+                self.assertTrue(result['workload_failure'])
+                self.assertGreater(result['invalid_schema_count'],0)
+        self.assertTrue(module.workload_snapshot(
+            [self.entry()],[],huge)['workload_failure'])
+    def test_owned_json_file_schema_failure_reaches_explicit_invalid_decision(self):
+        tools = str(PATH.parent)
+        sys.path.insert(0,tools)
+        try:
+            from gameplay_load_test import read_owned_statuses
+        finally:
+            sys.path.remove(tools)
+        with tempfile.TemporaryDirectory() as directory:
+            entry=self.entry()
+            entry.update(report=Path(directory)/'client.json',run_id='r',process_epoch='e')
+            for kind,duration in (([],1),({},1),('http',10**400)):
+                with self.subTest(kind=kind):
+                    event=dict(type=kind,duration_ms=duration,status=500,ok=False,
+                               run_id='r',client_id='a',process_epoch='e',event_seq=1)
+                    status=self.status(run_id='r',process_epoch='e',status_seq=1,
+                        event_seq_max=1,telemetry=[event],
+                        operations=[event] if kind=='http' else [])
+                    Path(str(entry['report'])+'.status.json').write_text(json.dumps(status))
+                    rows,invalid=read_owned_statuses([entry],{},require_files=True)
+                    windows,lost=module.new_events(rows,{})
+                    result=module.aggregate_window(windows)
+                    self.assertEqual((invalid,lost),(0,0))
+                    self.assertEqual(result['invalid_metric_count'],1)
+                    decision=module.classify_stop('invalid_evidence:invalid_telemetry')
+                    self.assertEqual(decision['classification'],'invalid_workload_or_evidence')
+                    self.assertEqual(decision['exit_code'],3)
+                    self.assertFalse(decision['passed'])
     def test_percentile_nearest_rank(self):
         self.assertEqual(module.summarize(list(range(1,101)))['p95_ms'],95)
     def test_coordinator_error_never_passes(self):

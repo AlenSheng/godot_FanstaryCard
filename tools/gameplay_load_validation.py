@@ -31,7 +31,14 @@ def _steady(operation: dict) -> bool:
 
 
 def _number(value: object) -> bool:
-    return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+    if not isinstance(value, (int, float)) or isinstance(value, bool):
+        return False
+    try:
+        return math.isfinite(value)
+    except OverflowError:
+        # JSON integers are arbitrary precision; a metric outside the finite
+        # float range is invalid evidence, not an exception in the sampler.
+        return False
 
 
 def aggregate_window(statuses: list[dict]) -> dict:
@@ -59,6 +66,9 @@ def aggregate_window(statuses: list[dict]) -> dict:
                     invalid_schema += 1
                     continue
                 kind = "http" if field == "operations" else row.get("type")
+                if not isinstance(kind, str):
+                    invalid_schema += 1
+                    continue
                 if kind not in {"http", "http_attempt", "realtime", "rtt"} or (field == "telemetry" and kind == "http"):
                     continue
                 duration = row.get("duration_ms")
