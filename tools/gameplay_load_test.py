@@ -440,9 +440,12 @@ def main():
             cutoffs['final']['cycles_by_client'].get(s['client_id'], 0) for s in final_clients)
         final_evidence_failed = bool(final_read_errors or tail_lost or tail_window['invalid_metric_count']
             or final_audit_lost or final_audit_invalid or final_cycle_invalid or final_cycle_disagreement or final_errors_invalid
-            or audit_errors or cutoffs['evidence_errors']
-            or not sampling['passed'])
-        workload_failed = workload_failed or final_evidence_failed or post_stop_failure
+            or audit_errors or cutoffs['evidence_errors'])
+        # An operator may intentionally end a run before its first sample.
+        # That leaves acceptance incomplete, while preserving exit 130. Real
+        # malformed/lost evidence or abnormal child exits still take priority.
+        sampling_invalid_stop = not sampling['passed'] and not reason.startswith('operator_')
+        workload_failed = workload_failed or final_evidence_failed or post_stop_failure or sampling_invalid_stop
         load_verified = (args.run and reason == 'duration_limit' and not workload_failed and
             groups == args.max_groups and len(processes) == args.max_groups * args.group_size and
             len(samples) >= required_samples and all(code is None for code in before_stop.values()) and
@@ -470,7 +473,8 @@ def main():
             and client['cleanup'].get('state') == 'Failed' for client in final_clients)
         dimensions=result_dimensions(execution=not reason.startswith('coordinator_error:') and process_cleanup_complete
                 and not final_business_failed,
-            evidence=not bool(final_evidence_failed or reason.startswith('invalid_evidence:') or reason.startswith('coordinator_error:')),
+            evidence=not bool(final_evidence_failed or not sampling['passed'] or
+                reason.startswith('invalid_evidence:') or reason.startswith('coordinator_error:')),
             load=load_coverage['passed'] if args.run else smoke_verified,
             gameplay=smoke_verified and not final_business_failed if args.smoke else None,
             performance=False if args.run and reason.startswith('redline:') else True if args.run and performance_verified else None,

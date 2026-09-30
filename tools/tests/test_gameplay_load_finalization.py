@@ -20,7 +20,8 @@ import gameplay_load_test as coordinator
 
 
 class FinalizationTests(unittest.TestCase):
-    def run_fixture(self, anomaly=None):
+    def run_fixture(self, anomaly=None, *, real_child_after_stop=False, report_write_fails=False,
+                    operator_stop=False):
         elapsed = [0.0]
         child = SimpleNamespace(pid=4242, returncode=0)
         child.poll = lambda: child.returncode
@@ -32,6 +33,12 @@ class FinalizationTests(unittest.TestCase):
             strftime=time.strftime)
 
         def launch(*args, env, **kwargs):
+            nonlocal child
+            if real_child_after_stop:
+                child = subprocess.Popen([sys.executable, '-c',
+                    'import pathlib,sys,time\n'
+                    'while not pathlib.Path(sys.argv[1]).exists(): time.sleep(.005)\n'
+                    'raise SystemExit(7)\n', env['FANTASYCARD_LOAD_STOP_FILE']])
             report = Path(env['FANTASYCARD_LOAD_REPORT'])
             events = [dict(run_id=env['FANTASYCARD_LOAD_RUN_ID'],
                            client_id=env['FANTASYCARD_LOAD_CLIENT_ID'],
@@ -53,15 +60,25 @@ class FinalizationTests(unittest.TestCase):
             Path(str(report) + '.status.json').write_text(json.dumps(status), encoding='utf8')
             Path(str(report) + '.telemetry.jsonl').write_text(
                 ''.join(json.dumps(e) + '\n' for e in events), encoding='utf8')
+            if operator_stop:
+                Path(env['FANTASYCARD_LOAD_STOP_FILE']).touch()
             return child
 
         def stop(processes, stop_file):
+            if real_child_after_stop:
+                return coordinator_stop_all(processes, stop_file, grace_seconds=5)
             stop_file.touch()
             if anomaly:
                 anomaly(processes[0], child)
             return []
 
         with tempfile.TemporaryDirectory() as directory:
+            coordinator_stop_all = coordinator.stop_all
+            coordinator_save = coordinator.save
+            def save(path, data):
+                if report_write_fails and path.name == 'report.json':
+                    raise OSError('injected final report disk failure')
+                return coordinator_save(path, data)
             argv = ['gameplay_load_test.py', '--smoke', '--godot', sys.executable,
                     '--max-seconds', '20', '--output', directory]
             with patch.object(sys, 'argv', argv), patch.object(coordinator, 'time', clock), \
@@ -73,9 +90,15 @@ class FinalizationTests(unittest.TestCase):
                         'ok': True, 'duration_ms': 1, 'status': 200}), \
                     patch.object(coordinator, 'generator_resources', return_value=({}, None)), \
                     patch.object(coordinator, 'stop_all', side_effect=stop), \
+                    patch.object(coordinator, 'save', side_effect=save), \
                     contextlib.redirect_stdout(io.StringIO()):
                 code = coordinator.main()
             reports = list(Path(directory).glob('*/report.json'))
+            if report_write_fails:
+                self.assertEqual(reports, [])
+                emergency = list(Path(directory).glob('*/report.emergency.txt'))
+                self.assertEqual(len(emergency), 1)
+                return code, {'emergency': emergency[0].read_text(encoding='utf8')}
             self.assertEqual(len(reports), 1)
             return code, json.loads(reports[0].read_text(encoding='utf8'))
 
@@ -101,6 +124,13 @@ class FinalizationTests(unittest.TestCase):
         self.assertTrue(report['acceptance_passed'])
         self.assertFalse(report['full_acceptance_passed'])
         self.assertEqual(report['cycle_cutoffs']['final']['completed_cycles'], 3)
+
+    def test_operator_stop_before_first_sample_keeps_exit_130_without_acceptance(self):
+        code, report = self.run_fixture(operator_stop=True)
+        self.assertEqual(code, 130)
+        self.assertFalse(report['acceptance_passed'])
+        self.assertEqual(report['stop_reason'], 'operator_stop_file')
+        self.assertEqual(report['result_dimensions']['dimensions']['evidence'], 'Failed')
 
     def test_audit_loss_only_in_final_status_invalidates_verdict(self):
         self.assert_invalid(lambda e, c: self.change_status(e, lambda s: s.update(audit_lost_count=1)))
@@ -145,6 +175,15 @@ class FinalizationTests(unittest.TestCase):
             rows = path.read_text().splitlines()
             path.write_text('\n'.join(rows[:-1]) + '\n', encoding='utf8')
         self.assert_invalid(anomaly)
+
+    def test_audit_file_missing_cannot_be_recreated_from_status_ring(self):
+        self.assert_invalid(lambda e, c: Path(str(e['report']) + '.telemetry.jsonl').unlink())
+
+    def test_final_report_write_failure_emits_emergency_and_exit_three(self):
+        code, report = self.run_fixture(report_write_fails=True)
+        self.assertEqual(code, 3)
+        self.assertIn('injected final report disk failure', report['emergency'])
+        self.assertIn("'exit_code': 3", report['emergency'])
 
     def test_final_status_missing_cannot_use_cached_cleanup_as_final_evidence(self):
         self.assert_invalid(lambda e, c: Path(str(e['report']) + '.status.json').unlink())
@@ -201,6 +240,15 @@ class FinalizationTests(unittest.TestCase):
         self.assertFalse(report['acceptance_passed'])
         self.assertEqual(report['result_dimensions']['dimensions']['cleanup'], 'Failed')
         self.assertFalse(report['process_cleanup_complete'])
+
+    def test_real_child_exits_seven_only_after_stop_and_is_reaped(self):
+        code, report = self.run_fixture(real_child_after_stop=True)
+        self.assertEqual(code, 3)
+        self.assertEqual(report['process_exits'][0]['before_stop'], None)
+        self.assertEqual(report['process_exits'][0]['after_stop'], 7)
+        self.assertFalse(report['process_cleanup_complete'])
+        self.assertFalse(report['acceptance_passed'])
+        self.assertEqual(report['result_dimensions']['dimensions']['cleanup'], 'Failed')
 
 
 if __name__ == '__main__':
