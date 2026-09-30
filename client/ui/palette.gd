@@ -314,11 +314,12 @@ static func font_for_text(value: String, size: int = 24) -> Font:
 	if numeric: return font("number")
 	return font("title") if size >= 32 and value.length() <= 26 and not value.contains("\n") else font("body")
 
-static func fit_font_size(typeface: Font, requested: int, height: float, width: float = -1.0, value: String = "") -> int:
+static func fit_font_size(typeface: Font, requested: int, height: float, width: float = -1.0, value: String = "", line_spacing: int = 3) -> int:
 	var fitted := requested
+	var explicit_lines := maxi(1, value.count("\n") + 1)
 	# Keep the authored rectangles stable; reduce only the text size when a translation is wider.
 	while fitted > 1:
-		if height > 0.0 and ceilf(typeface.get_height(fitted)) > height:
+		if height > 0.0 and ceilf(typeface.get_height(fitted)) * explicit_lines + (explicit_lines - 1) * line_spacing > height:
 			fitted -= 1
 			continue
 		if width > 0.0 and not value.is_empty():

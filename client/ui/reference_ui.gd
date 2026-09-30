@@ -232,7 +232,7 @@ func _hall() -> void:
 		entry_icon.position = Vector2(25, 12)
 		entry_icon.size = Vector2(168, 130)
 		picture(Art.texture("UI/Hall/entry_frame.png"), rect)
-		var entry_title := text(P.localized(entries[i][2]), Rect2(rect.position + Vector2(18, 143), Vector2(206, 50)), 28, P.GOLD)
+		var entry_title := text(P.localized(entries[i][2]), Rect2(rect.position + Vector2(18, 139), Vector2(206, 72)), 28, P.GOLD)
 		entry_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		entry_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	var version_label := text(P.localized("client_version") % str(Game.CATALOG.data.version), Rect2(42, 1038, 900, 30), 18, P.MUTED)
@@ -356,13 +356,14 @@ func _build_mail_rows(column: VBoxContainer) -> void:
 		preview_label.offset_top = -49.0
 		preview_label.offset_right = -14.0
 		preview_label.offset_bottom = -10.0
-		preview_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		preview_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 		preview_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 		preview_label.clip_text = true
 		preview_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		preview_label.add_theme_color_override("font_color", Color("a5bbb7") if unread else Color("718681"))
 		open_area.add_child(preview_label)
-		P.fit_control_font(preview_label, P.font_for_text(preview_label.text, 18), 18, 16.0)
+		preview_label.add_theme_font_override("font", P.font("body"))
+		preview_label.add_theme_font_size_override("font_size", 18)
 		if not attachments.is_empty():
 			open.tooltip_text = _mail_attachment_tooltip(attachments[0])
 		if not attachments.is_empty():
@@ -489,9 +490,18 @@ func _mail_detail_panel(parent: Control, item: Dictionary) -> void:
 	var column := VBoxContainer.new()
 	column.add_theme_constant_override("separation", 14)
 	content.add_child(column)
+	var detail_scroll := ScrollContainer.new()
+	detail_scroll.name = "MailDetailScroll"
+	detail_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	detail_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	column.add_child(detail_scroll)
+	var message := VBoxContainer.new()
+	message.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	message.add_theme_constant_override("separation", 14)
+	detail_scroll.add_child(message)
 	var title := RemoteCopy.field(item, "title")
-	text(title if not title.is_empty() else P.localized("system_mail"), Rect2(0, 0, 0, 0), 34, P.GOLD, column)
-	text("%s: %s" % [P.localized_text("发件人"), item.get("sender", "System")], Rect2(0, 0, 0, 0), 20, P.MUTED, column)
+	text(title if not title.is_empty() else P.localized("system_mail"), Rect2(0, 0, 0, 0), 34, P.GOLD, message)
+	text("%s: %s" % [P.localized_text("发件人"), item.get("sender", "System")], Rect2(0, 0, 0, 0), 20, P.MUTED, message)
 	var body := Label.new()
 	body.text = RemoteCopy.field(item, "body")
 	if body.text.is_empty(): body.text = str(item.get("content", ""))
@@ -500,14 +510,14 @@ func _mail_detail_panel(parent: Control, item: Dictionary) -> void:
 	body.add_theme_font_override("font", P.font_for_text(body.text, 24))
 	body.add_theme_font_size_override("font_size", 24)
 	body.add_theme_color_override("font_color", P.PAPER)
-	column.add_child(body)
-	text(P.localized_text("附件"), Rect2(0, 0, 0, 0), 25, P.GOLD, column)
+	message.add_child(body)
+	text(P.localized_text("附件"), Rect2(0, 0, 0, 0), 25, P.GOLD, message)
 	var grid := GridContainer.new()
 	grid.columns = 3
 	grid.add_theme_constant_override("h_separation", Art.COMMON_CELL_GAP)
 	grid.add_theme_constant_override("v_separation", Art.COMMON_CELL_GAP)
 	grid.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	column.add_child(grid)
+	message.add_child(grid)
 	var attachments: Array = item.get("attachments", []) if item.get("attachments", []) is Array else []
 	for raw_attachment in attachments:
 		var attachment: Dictionary = raw_attachment if raw_attachment is Dictionary else {}
@@ -542,16 +552,18 @@ func _mail_detail_panel(parent: Control, item: Dictionary) -> void:
 		quality_fill.offset_bottom = -mail_inset
 		quality_fill.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		cell.add_child(quality_fill)
-		var cell_column := VBoxContainer.new()
-		cell_column.alignment = BoxContainer.ALIGNMENT_CENTER
-		cell_column.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		cell_column.add_theme_constant_override("separation", 0)
-		cell.add_child(cell_column)
-		var icon := Art.image(cell_column, _mail_attachment_texture(attachment), Vector2(58, 58))
-		icon.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		var cell_content := Control.new()
+		cell_content.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		cell_content.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		cell.add_child(cell_content)
+		var icon := Art.image(cell_content, _mail_attachment_texture(attachment), Vector2.ZERO)
+		icon.position = Vector2(26, 4)
+		icon.size = Vector2(44, 44)
 		var kind := P.localized_word(_mail_attachment_kind(attachment))
-		text(kind, Rect2(0, 0, 0, 0), 18, P.PAPER, cell_column)
-		text("× %s" % _mail_attachment_amount(attachment), Rect2(0, 0, 0, 0), 22, P.GOLD, cell_column)
+		var kind_label := text(kind, Rect2(4, 48, 88, 24), 16, P.PAPER, cell_content, false)
+		kind_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+		kind_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		text("× %s" % _mail_attachment_amount(attachment), Rect2(4, 70, 88, 26), 18, P.GOLD, cell_content)
 	var actions := HBoxContainer.new()
 	actions.alignment = BoxContainer.ALIGNMENT_END
 	column.add_child(actions)

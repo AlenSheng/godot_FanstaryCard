@@ -255,12 +255,17 @@ func _build_shell() -> void:
 	status_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	status_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	status_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	var settings_clearance := Control.new()
+	settings_clearance.custom_minimum_size.x = 90
+	top.add_child(settings_clearance)
 	var scroll := ScrollContainer.new()
+	scroll.name = "LoginPageScroll"
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	root_column.add_child(scroll)
 	content = VBoxContainer.new()
 	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	content.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.add_child(content)
 	tips_overlay = TipsOverlay.new()
 	tips_overlay.name = "TipsOverlay"
@@ -623,8 +628,11 @@ func _login() -> void:
 	_label(content, "混沌领域", 76, P.GOLD)
 	_label(content, "搜寻遗物，组合五行，带着战利品归来。", 30)
 	var row := _row(content)
+	row.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	var panel := _panel(row)
+	panel.add_theme_constant_override("separation", 10)
 	var panel_frame: Control = panel.get_parent()
+	panel_frame.name = "LoginAuthFrame"
 	panel_frame.size_flags_stretch_ratio = 0.25
 	panel_frame.custom_minimum_size.x = 340
 	_label(panel, "启程", 40)
@@ -641,21 +649,32 @@ func _login() -> void:
 	, Game.busy, "UI/CardCodex/card_codex_action_button_orange.png")
 	if OS.is_debug_build():
 		_button(panel, P.localized("local_dev_login"), func(): Game.login(LOCAL_SERVER_URL, _login_name), Game.busy, "UI/CardCodex/card_codex_action_button_blue.png")
-	_label(panel, P.localized("nickname_hint"), 20, P.MUTED)
-	_label(panel, P.localized("random_name_hint"), 18, P.MUTED)
-	_label(panel, "本地服仅用于开发联调；原有入口连接腾讯云外网服务器。", 18, P.MUTED)
 	_button(panel, P.localized("cloud_login"), func(): Game.login(CLOUD_SERVER_URL, _login_name), Game.busy, "UI/CardCodex/card_codex_action_button_orange.png")
 	var steam_reason: String = Game.platform.login_unavailable_reason()
 	_button(panel, "Steam 登录", func(): Game.login_steam(CLOUD_SERVER_URL, _login_name), Game.busy or not steam_reason.is_empty())
-	if not steam_reason.is_empty(): _label(panel, steam_reason, 20, P.MUTED)
-	if not Game.authentication_reason.is_empty(): _label(panel, Game.authentication_reason, 22, P.GOLD)
-	if not Game.configuration_error.is_empty(): _label(panel, Game.configuration_error, 22, P.GOLD)
+	var hints_scroll := ScrollContainer.new()
+	hints_scroll.name = "LoginHintsScroll"
+	hints_scroll.custom_minimum_size.y = 100
+	hints_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	hints_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	panel.add_child(hints_scroll)
+	var hints := VBoxContainer.new()
+	hints.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hints.add_theme_constant_override("separation", 10)
+	hints_scroll.add_child(hints)
+	if not Game.authentication_reason.is_empty(): _label(hints, Game.authentication_reason, 22, P.GOLD)
+	if not Game.configuration_error.is_empty(): _label(hints, Game.configuration_error, 22, P.GOLD)
+	if not steam_reason.is_empty(): _label(hints, steam_reason, 20, P.MUTED)
+	_label(hints, P.localized("nickname_hint"), 20, P.MUTED)
+	_label(hints, P.localized("random_name_hint"), 18, P.MUTED)
+	_label(hints, "本地服仅用于开发联调；原有入口连接腾讯云外网服务器。", 18, P.MUTED)
 	var center_space := Control.new()
 	center_space.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	center_space.size_flags_stretch_ratio = 0.45
 	row.add_child(center_space)
 	var about := _panel(row)
 	var about_frame: Control = about.get_parent()
+	about_frame.name = "LoginAnnouncementFrame"
 	about_frame.size_flags_stretch_ratio = 0.30
 	about_frame.custom_minimum_size.x = 400
 	var announcement: Dictionary = Game.server_info.get("announcement", {})

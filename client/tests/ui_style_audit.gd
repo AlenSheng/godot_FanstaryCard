@@ -78,7 +78,7 @@ func _reset() -> void:
 	$UI.listings = []
 	Game.mail = {"items": [], "unreadCount": 0}
 	$UI._view_cell = "completion-room:3:2"
-	for key in ["pending_move", "inventory_open", "relic_pile", "inventory_selected", "relic_selected"]:
+	for key in ["pending_move", "inventory_open", "relic_pile", "inventory_selected", "relic_selected", "mail_selected_id"]:
 		if $UI.has_meta(key): $UI.remove_meta(key)
 	$UI.tips_overlay.clear()
 
@@ -325,6 +325,11 @@ func _take(capture_name: String, rebuild: bool = true) -> void:
 	await get_tree().process_frame
 	await get_tree().process_frame
 	await get_tree().create_timer(0.15).timeout
+	if capture_name.begins_with("login_") and OS.get_environment("FANTASYCARD_UI_ASSERT_FIXES") == "1":
+		var page: ScrollContainer = $UI.find_child("LoginPageScroll", true, false)
+		for frame_name in ["LoginAuthFrame", "LoginAnnouncementFrame"]:
+			var login_frame: Control = $UI.find_child(frame_name, true, false)
+			_check_audit(login_frame != null and page.get_global_rect().encloses(login_frame.get_global_rect()), capture_name + ": " + frame_name + " fully inside page")
 	$UI.tips_overlay.clear()
 	if capture_name.begins_with("error_toast_"): $UI._toast("遗物内容已变化，请刷新后选择。")
 	for bar in get_tree().get_nodes_in_group("bounded_progress"):
@@ -333,7 +338,8 @@ func _take(capture_name: String, rebuild: bool = true) -> void:
 		if not node.is_visible_in_tree() or node.text.is_empty(): continue
 		if node.get_visible_line_count() == 0: audit_errors.append(capture_name + ": invisible text " + str(node.name))
 		if node.get_line_count() > node.get_visible_line_count() and node.clip_text and node.text_overrun_behavior == TextServer.OVERRUN_NO_TRIMMING:
-			text_observations.append({"capture": capture_name, "node": str(node.name), "text": node.text.left(100), "lines": node.get_line_count(), "visible": node.get_visible_line_count()})
+			text_observations.append({"capture": capture_name, "node": str(node.name), "text": node.text.left(100), "lines": node.get_line_count(), "visible": node.get_visible_line_count(), "rect": str(node.get_rect()), "font_size": node.get_theme_font_size("font_size"), "font_height": node.get_theme_font("font").get_height(node.get_theme_font_size("font_size"))})
+			if OS.get_environment("FANTASYCARD_UI_ASSERT_FIXES") == "1": audit_errors.append(capture_name + ": clipped text " + node.text.left(40))
 	RenderingServer.force_draw(false)
 	var frame := get_viewport().get_texture().get_image()
 	var path := output + "/" + capture_name + ".png"
