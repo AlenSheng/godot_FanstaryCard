@@ -5,6 +5,7 @@ var layout_errors: Array = []
 var screenshot_count := 0
 
 func _ready() -> void:
+	preload("res://ui/palette.gd").set_language(OS.get_environment("FANTASYCARD_ART_LANGUAGE") if not OS.get_environment("FANTASYCARD_ART_LANGUAGE").is_empty() else "en")
 	var evidence_directory := OS.get_environment("FANTASYCARD_ART_EVIDENCE")
 	if not evidence_directory.is_empty(): output = evidence_directory
 	Game.gateway.set_process(false)
@@ -129,9 +130,9 @@ func _run() -> void:
 		Game.settlement = {}
 	await _regressions()
 	var report := FileAccess.open(output + "/report.json", FileAccess.WRITE)
-	report.store_string(JSON.stringify({"ok": layout_errors.is_empty(), "fixture_only": true, "screenshots": screenshot_count, "layout_errors": layout_errors}))
+	report.store_string(JSON.stringify({"ok": layout_errors.is_empty(), "fixture_only": true, "source_sha": OS.get_environment("FANTASYCARD_SOURCE_SHA"), "language": preload("res://ui/palette.gd").language(), "screenshots": screenshot_count, "layout_errors": layout_errors}))
 	report.close()
-	get_tree().quit()
+	get_tree().quit(0 if layout_errors.is_empty() else 1)
 
 func _portrait_previews(suffix: String) -> void:
 	var Art = preload("res://ui/art.gd")
@@ -281,7 +282,8 @@ func _regressions() -> void:
 	var labels := ""
 	for node in $UI._reference.find_children("*", "Label", true, false):
 		if node is Label: labels += node.text + "\n"
-	if not ("已锁定编组 20 / 20" in labels and "生命上限 99" in labels and "本命 +4" in labels):
+	var P = preload("res://ui/palette.gd")
+	if not (P.localized_text("已锁定编组 20 / 20") in labels and P.localized_text("生命上限 99") in labels and P.localized_text("本命 +4") in labels):
 		layout_errors.append("Locked preparation must render frozen deck, HP and weapon level")
 	if $UI._reference.get_node("HeroPortrait").texture != Art.portrait("Guardian"):
 		layout_errors.append("Locked preparation portrait must use the frozen class")
@@ -315,13 +317,13 @@ func _regressions() -> void:
 	$UI._render()
 	if not $UI._market_item.is_empty(): layout_errors.append("Invalid market item survived inventory refresh")
 	for node in $UI._reference.get_children():
-		if node is Button and node.text == "上架物品" and not node.disabled:
+		if node is Button and node.text == P.localized_text("上架物品") and not node.disabled:
 			layout_errors.append("Market submission enabled without available inventory item")
 	$UI.inventory.equipments = [{"instanceId": "locked-item", "slot": "Chest", "quality": "Blue", "element": "Fire", "level": 3, "location": "PreparationLocked"}]
 	$UI._enhance_item = "locked-item"
 	$UI.screen = "enhance"
 	$UI._render()
 	for node in $UI._reference.get_children():
-		if node is Button and node.text == "强化到 +4" and not node.disabled:
+		if node is Button and node.text == P.localized_text("强化到 +4") and not node.disabled:
 			layout_errors.append("Locked equipment enhancement must be disabled")
 	await get_tree().process_frame
