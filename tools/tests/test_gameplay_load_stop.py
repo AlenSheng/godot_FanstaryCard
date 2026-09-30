@@ -14,6 +14,28 @@ from tools.cloud_load_test import health_probe
 
 
 class StopTests(unittest.TestCase):
+    def test_receipt_clock_preserves_cache_age_across_wall_clock_jump(self):
+        import json
+        class Running:
+            pid=42
+            def poll(self):return None
+        with tempfile.TemporaryDirectory() as directory:
+            report=Path(directory)/'client.json';path=Path(str(report)+'.status.json')
+            row=dict(client_id='client',pid=42,run_id='run',process_epoch='epoch',status_seq=1,
+                     now_unix_ms=10000,online=True,room=True,last_progress_age_ms=0)
+            entry=dict(client_id='client',process=Running(),report=report,run_id='run',process_epoch='epoch',
+                       started_at_ms=9900,started_at_monotonic_ms=9000)
+            cache={};path.write_text(json.dumps(row),encoding='utf8')
+            first,_=read_owned_statuses([entry],cache,10000)
+            again,_=read_owned_statuses([entry],cache,41001)
+            self.assertEqual(again[0]['_received_at_monotonic_ms'],10000)
+            result=workload_snapshot([entry],again,0,now_monotonic_ms=41001)
+            self.assertEqual(result['stale_clients'],['client'])
+            self.assertEqual(result['online'],0)
+            path.unlink()
+            cached,_=read_owned_statuses([entry],cache,42000)
+            self.assertEqual(cached[0]['_received_at_monotonic_ms'],10000)
+
     def test_health_timeout_is_one_failed_observation_without_fallback(self):
         from unittest.mock import patch
         with patch('tools.cloud_load_test.subprocess.run',side_effect=subprocess.TimeoutExpired('curl',5.5)) as call, patch('tools.cloud_load_test.urllib.request.urlopen') as fallback:

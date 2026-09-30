@@ -37,6 +37,19 @@ class CoverageTests(unittest.TestCase):
 
 
 class CutoffTests(unittest.TestCase):
+    def test_malformed_sequences_are_evidence_failures_without_crashing(self):
+        for sequence in (True,0,-1,'1',[],{}):
+            row=self.event(sequence,99,'cycle.completed')
+            result=reconcile_cycles([row],100,120)
+            self.assertEqual(result['final']['completed_cycles'],0)
+            self.assertIn('missing_context',result['evidence_errors'])
+
+    def test_completion_requires_nonempty_business_match(self):
+        row=self.event(1,99,'cycle.completed');row['match_id']=''
+        result=reconcile_cycles([row],100,120)
+        self.assertEqual(result['final']['completed_cycles'],0)
+        self.assertIn('missing_business_context',result['evidence_errors'])
+
     def event(self, seq, at, kind, cycle="c:1"):
         return dict(run_id="run", client_id="c", process_epoch="epoch", event_seq=seq,
                     at_unix_ms=at, event_type=kind, cycle_id=cycle, match_id="m")

@@ -22,6 +22,7 @@ var operations: Array = []
 var telemetry: Array = []
 var audit_buffer: Array[String] = []
 var audit_lost_count := 0
+var status_seq := 0
 var events: Dictionary = {}
 var errors: Array = []
 var own_user_id := ""
@@ -537,9 +538,10 @@ func _flush_audit() -> void:
 	audit_buffer.clear()
 
 func _write_status() -> void:
+	status_seq += 1
 	_flush_audit()
 	var status: Dictionary = {"client_id": client_id, "group": group_id, "pid": OS.get_process_id(), "started_at_unix_ms": int((Time.get_unix_time_from_system() - float(Time.get_ticks_msec() - started_at_ms) / 1000.0) * 1000.0), "now_unix_ms": int(Time.get_unix_time_from_system() * 1000.0), "online": Game.gateway.online, "socket_state": Game.gateway.socket.get_ready_state(), "room": not Game.room.is_empty(), "stage": stage, "last_progress_age_ms": Time.get_ticks_msec() - last_progress_ms, "cycles_completed": cycles_completed, "scenario_started": scenario_started, "scenario_finished": scenario_finished, "checks": checks, "operations": operations, "telemetry": telemetry, "events": events, "errors": errors}
-	status.merge({"run_id": run_id, "process_epoch": process_epoch, "event_seq_max": event_seq, "phase": _current_phase(), "cycle_id": "%s:%d" % [client_id, cycles_completed + 1], "audit_lost_count": audit_lost_count,
+	status.merge({"status_seq": status_seq, "run_id": run_id, "process_epoch": process_epoch, "event_seq_max": event_seq, "phase": _current_phase(), "cycle_id": "%s:%d" % [client_id, cycles_completed + 1], "audit_lost_count": audit_lost_count,
 		"cleanup": cleanup_result, "hero_class": hero_profile, "strategy": strategy, "strategy_seed": strategy_seed, "load_profile": load_profile})
 	var file := FileAccess.open(report_path + ".status.json.tmp", FileAccess.WRITE)
 	if file != null:

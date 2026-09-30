@@ -61,9 +61,14 @@ def reconcile_cycles(events, stop_ms, final_ms):
         if not isinstance(e, dict):
             errors.append("invalid_event"); continue
         identity = tuple(e.get(k) for k in ("run_id", "client_id", "process_epoch", "event_seq"))
-        if (any(v is None for v in identity) or not finite(e.get("at_unix_ms")) or
-                not isinstance(e.get("cycle_id"), str)):
+        if (any(not isinstance(v,str) or not v for v in identity[:3]) or
+                not isinstance(identity[3],int) or isinstance(identity[3],bool) or identity[3]<1 or
+                not finite(e.get("at_unix_ms")) or e["at_unix_ms"]<0 or
+                not isinstance(e.get("cycle_id"), str) or not e["cycle_id"]):
             errors.append("missing_context"); continue
+        if e.get('event_type') in ('settlement.acknowledged','cycle.completed') and (
+                not isinstance(e.get('match_id'),str) or not e['match_id']):
+            errors.append('missing_business_context');continue
         if identity in unique and unique[identity] != e:
             errors.append("conflicting_duplicate")
         unique.setdefault(identity, e)

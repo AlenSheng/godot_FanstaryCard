@@ -6,11 +6,13 @@ import math
 from pathlib import Path
 import subprocess
 import sys
+import tempfile
 import time
 
 from gameplay_load_validation import aggregate_window, owned_statuses, workload_snapshot, new_events, classify_stop
 from gameplay_load_validation import provenance
 from pr13_runtime_evidence import result_dimensions
+from gameplay_load_test import read_owned_statuses
 
 ROOT = Path(__file__).resolve().parents[1]
 ENGINE = ROOT.parent/'Godot_v4.7.2-stable_win64.exe'/'Godot_v4.7.2-stable_win64.exe'
@@ -82,6 +84,27 @@ def real_process_case(which):
         if child.poll() is None: child.terminate(); child.wait(timeout=5)
 
 
+def real_clock_case():
+    with tempfile.TemporaryDirectory() as directory:
+        report=Path(directory)/'owned.json'
+        code="import json,os,pathlib,sys,time; row=dict(client_id='clock',pid=os.getpid(),run_id='run',process_epoch='epoch',status_seq=1,now_unix_ms=10000,online=True,room=True,last_progress_age_ms=0); pathlib.Path(sys.argv[1]+'.status.json').write_text(json.dumps(row)); time.sleep(10)"
+        child=subprocess.Popen([sys.executable,'-c',code,str(report)])
+        try:
+            process=dict(client_id='clock',process=child,report=report,run_id='run',process_epoch='epoch',
+                         started_at_ms=10000,started_at_monotonic_ms=9000)
+            before=[workload_snapshot([process],[],wall,now_monotonic_ms=10000) for wall in (0,1000000)]
+            deadline=time.monotonic()+5
+            while not Path(str(report)+'.status.json').exists() and time.monotonic()<deadline:time.sleep(.01)
+            cache={};first,_=read_owned_statuses([process],cache,10000)
+            later,_=read_owned_statuses([process],cache,41001)
+            after=[workload_snapshot([process],later,wall,now_monotonic_ms=41001) for wall in (0,1000000)]
+            actual=dict(child_pid=child.pid,before=before,after=after)
+            return actual,bool(first) and all(not r['missing_clients'] for r in before) and all(r['stale_clients']==['clock'] and r['online']==0 for r in after)
+        finally:
+            if child.poll() is None:child.terminate()
+            child.wait(timeout=5)
+
+
 def sequence_case(which):
     seen={}
     rows=[event(1),event(3 if which==2 else 2)]
@@ -148,6 +171,7 @@ def main():
                           ('LOAD-03.1',sequence_case),('LOAD-03.2',phase_case),('LOAD-03.3',request_case),('LOAD-03.4',statistics_case)]:
         for index in range(1,4): actions[f'{task}-T0{index}']=lambda fn=function,n=index:fn(n)
     for index in [1,2]: actions[f'LOAD-01.4-T0{index}']=lambda n=index:real_process_case(n)
+    actions['LOAD-01.4-T03']=real_clock_case
     actions['LOAD-02.4-T01']=preparation_case
     actions['LOAD-02.4-T03']=lambda:({'invalid':classify_stop('invalid_evidence:bad'),'operator':classify_stop('operator_stop_file')},
         classify_stop('invalid_evidence:bad')['exit_code']==3 and classify_stop('operator_stop_file')['exit_code']==130)

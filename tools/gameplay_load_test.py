@@ -62,7 +62,7 @@ def completed_smoke(processes, expected_clients, cycles):
                isinstance(report.get('cycles_completed'),int) and not isinstance(report.get('cycles_completed'),bool) and
                report['cycles_completed']>=cycles for entry,report in zip(processes,reports))
 
-def read_owned_statuses(processes, cache=None):
+def read_owned_statuses(processes, cache=None, now_monotonic_ms=None):
     statuses = []
     invalid_files = 0
     for entry in processes:
@@ -77,6 +77,25 @@ def read_owned_statuses(processes, cache=None):
         else:
             statuses.append(value)
     owned, invalid_ownership = owned_statuses(processes, statuses)
+    receipt_ms=time.monotonic()*1000 if now_monotonic_ms is None else now_monotonic_ms
+    for index,status in enumerate(owned):
+        # Local receipt time advances only with the client's heartbeat sequence.
+        # An unchanged cached file cannot remain online when the wall clock moves.
+        status=dict(status)
+        owned[index]=status
+        status.pop('_received_at_monotonic_ms',None)
+        sequence=status.get('status_seq')
+        if sequence is None: continue  # Historical evidence keeps its old clock contract.
+        if not isinstance(sequence,int) or isinstance(sequence,bool) or sequence<1:
+            invalid_ownership+=1;continue
+        previous=cache.get(status['client_id']) if cache is not None else None
+        prior_sequence=previous.get('status_seq',0) if previous else 0
+        if previous and sequence<=prior_sequence:
+            owned[index]=dict(previous)
+            if sequence<prior_sequence: invalid_ownership+=1
+        else: status['_received_at_monotonic_ms']=receipt_ms
+    owned=[status for status in owned if status.get('status_seq') is None or
+           (isinstance(status['status_seq'],int) and not isinstance(status['status_seq'],bool) and status['status_seq']>0)]
     if cache is not None:
         cache.update((status['client_id'],status) for status in owned)
     return owned, invalid_files + invalid_ownership
@@ -227,6 +246,7 @@ def main():
                     raise
                 processes.append({'process':process,'log':log,'client_id':client_id,'group':launch_group,
                     'report':report,'started_at_ms':int(time.time()*1000),
+                    'started_at_monotonic_ms':time.monotonic()*1000,
                     'run_id':run_id,'process_epoch':process_epoch})
                 group_record=group_launches[launch_group-1]
                 group_record['clients']+=1
@@ -238,7 +258,7 @@ def main():
                 sample_started=time.monotonic()
                 statuses, invalid_files=read_owned_statuses(processes,status_cache)
                 sample_ms=int(time.time()*1000)
-                workload=workload_snapshot(processes,statuses,sample_ms)
+                workload=workload_snapshot(processes,statuses,sample_ms,now_monotonic_ms=time.monotonic()*1000)
                 workload_failed=workload_failed or workload['workload_failure']
                 fresh, lost_events=new_events(statuses,seen)
                 window=aggregate_window(fresh)

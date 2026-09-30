@@ -122,7 +122,8 @@ def aggregate_window(statuses: list[dict]) -> dict:
 
 
 def workload_snapshot(processes: list[dict], statuses: list[dict], now_ms: int,
-                      stale_ms: int = 30000, stalled_ms: int = 90000) -> dict:
+                      stale_ms: int = 30000, stalled_ms: int = 90000,
+                      now_monotonic_ms: float | None = None) -> dict:
     """Only fresh reports from an owned, running PID count as current activity."""
     if not isinstance(processes, list):
         processes = [None]
@@ -163,12 +164,17 @@ def workload_snapshot(processes: list[dict], statuses: list[dict], now_ms: int,
         live.append(cid)
         status = by_id.get(cid)
         if status is None:
-            if now_ms - entry["started_at_ms"] > stale_ms:
+            elapsed = (now_monotonic_ms-entry["started_at_monotonic_ms"]
+                       if _number(now_monotonic_ms) and _number(entry.get("started_at_monotonic_ms"))
+                       else now_ms-entry["started_at_ms"])
+            if elapsed > stale_ms:
                 missing.append(cid)
             continue
         timestamp = status.get("now_unix_ms", 0)
+        monotonic_age = (now_monotonic_ms-status["_received_at_monotonic_ms"]
+                         if _number(now_monotonic_ms) and _number(status.get("_received_at_monotonic_ms")) else None)
         if (not isinstance(status.get("pid"), int) or isinstance(status.get("pid"), bool)
-                or status.get("pid") != process.pid or timestamp > now_ms
+                or status.get("pid") != process.pid or (timestamp > now_ms if monotonic_age is None else monotonic_age < 0)
                 or any(status.get(key) != entry.get(key) for key in ("run_id", "process_epoch") if entry.get(key) is not None)):
             invalid.append(cid)
             continue
@@ -179,7 +185,7 @@ def workload_snapshot(processes: list[dict], statuses: list[dict], now_ms: int,
             invalid_schema += 1
             invalid.append(cid)
             continue
-        if now_ms - timestamp > stale_ms:
+        if (now_ms-timestamp if monotonic_age is None else monotonic_age) > stale_ms:
             stale.append(cid)
             continue
         if age > stalled_ms:
