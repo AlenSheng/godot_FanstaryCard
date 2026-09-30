@@ -1170,6 +1170,10 @@ public sealed class PostgresRuntimeIntegrationTests
         Assert.True(recovered.Elapsed >= beforeRestart.Elapsed + TimeSpan.FromSeconds(16));
         Assert.Equal(beforeRestart.RandomStreams, recovered.RandomStreams);
 
+        // Actor commands complete before the asynchronous snapshot observer.
+        // Read the durable checkpoint only after this recovered revision is published.
+        await database.WaitForScalarAsync(1L,
+            "SELECT count(*) FROM room_snapshots WHERE room_id=$1 AND revision >= $2", roomId, recovered.Revision);
         var persisted = Assert.IsType<BattleRoomSnapshot>(await snapshots.GetAsync(roomId, cancellationToken));
         Assert.Equal(RoomPlayerPhase.Dead, Assert.Single(persisted.Players).Phase);
         Assert.True(persisted.Elapsed >= beforeRestart.Elapsed + TimeSpan.FromSeconds(16));
