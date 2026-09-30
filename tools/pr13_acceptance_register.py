@@ -63,7 +63,7 @@ def main():
             statuses=[r['status'] for r in task_cases]
             state=('Failed' if 'Failed' in statuses else 'ReadyForAcceptance' if all(s=='Passed' for s in statuses)
                    else 'Partial' if any(s=='Passed' for s in statuses) or supporting.get(task['id']) else 'Queued')
-            if observation.get('state') in ('Blocked','InProgress','Failed'):state=observation['state']
+            if observation.get('state') in ('Blocked','InProgress','Failed','Deferred'):state=observation['state']
             tasks.append(dict(task_id=task['id'],title=task['title'],package_id=package['id'],state=state,
                 accepted_by=None,owner='MAIN',case_counts=dict(Counter(statuses)),
                 profiles=task['profiles'],gates=task['gate_refs'],dependencies=task['requires_before_integration'],
@@ -83,7 +83,7 @@ def main():
     register=dict(schema_version=1,kind='runtime_execution_register',generated_at=time.time(),integration_source_sha=head,
         plan_sha256=digest(PLAN),release_base=plan['release_base'],counts=counts,all_accepted=False,
         user_experience_override='用户要求用多组机器人模拟替代真人体验；模拟不改写为真人反馈。',
-        production_runtime=support.get('production_runtime'),tasks=tasks,gates=gates)
+        production_runtime=support.get('production_runtime'),session_closeout=support.get('session_closeout'),tasks=tasks,gates=gates)
     (output/'register.json').write_text(json.dumps(register,ensure_ascii=False,indent=2),encoding='utf8')
     (output/'cases.jsonl').write_text(''.join(json.dumps(c,ensure_ascii=False,allow_nan=False)+'\n' for c in cases),encoding='utf8')
     (output/'manifest.json').write_text(json.dumps(dict(source_sha=head,files=manifest),indent=2),encoding='utf8')
@@ -92,6 +92,8 @@ def main():
            '已通过的独立测试和模拟作为支持材料列出；未逐用例执行的细则仍保留待执行。ReadyForAcceptance 尚需 MAIN 检查完整判据、依赖和适用 CI。','',
            '用户已授权更新云端测试，并要求以多组机器人替代真人试玩。候选数值开关仍为关闭；未合并 release。','',
            '| 子项 | 状态 | 已通过用例 | 后续动作 |','| --- | --- | ---: | --- |']
+    if support.get('session_closeout'):
+        lines[2:2]=['本轮已按用户要求结束。未完成项保留，不再自动执行。详见 [收尾报告](CLOSEOUT.md) 与 [完整任务清单](TASK_CHECKLIST.md)。','']
     for t in tasks:lines.append(f"| {t['task_id']} {t['title']} | {t['state']} | {t['case_counts'].get('Passed',0)}/3 | {t['next_action'].replace('|','/')} |")
     lines+=['','## 未达验收门槛','']
     for observation in support.get('observations',[]):

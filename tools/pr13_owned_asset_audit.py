@@ -15,7 +15,10 @@ def main():
     parser.add_argument('--key',type=Path,default=Path(r'C:\Users\79498\.ssh\relicbound-gpt.pem'))
     args=parser.parse_args();users=set();reports=[];missing=[]
     for run in args.runs:
-        for file in sorted(run.glob('g*.json')):
+        if not run.is_dir():raise ValueError('Run directory missing: '+str(run))
+        owned_files=[file for file in sorted(run.glob('g*.json')) if not file.name.endswith('.status.json')]
+        if not owned_files:raise ValueError('No owned final reports: '+str(run))
+        for file in owned_files:
             if file.name.endswith('.status.json'):continue
             report=json.loads(file.read_text(encoding='utf8'))
             if not all(isinstance(report.get(k),str) and report[k] for k in ('run_id','process_epoch','client_id')):
