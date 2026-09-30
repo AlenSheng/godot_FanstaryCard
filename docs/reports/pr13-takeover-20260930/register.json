@@ -121,8 +121,8 @@
         "Passed": 3
       },
       "implementation_status": "Minimal evidence-only schema fix: type checked before membership; oversized JSON integer classified invalid. Actual frozen source red4 -> clean fixed source explicit invalid4.",
-      "current_test_status": "Original3/3 at clean ee8adcf4; shared schema5 invalid exit3,0 unhandled; fullPython119/0/0. Independent MAIN replay pending.",
-      "modification_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+      "current_test_status": "New three real file-path counterexamples fixed; clean e060 Python122 + original3/3 + priorfive invalid regressions; independent MAIN actual replay pending.",
+      "modification_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
       "test_commands": [
         "python3 tools/pr13_offline_cases.py --output /workspace/pr13-takeover/case-audit-cc6da2e/receipts --godot /workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
         "C-PY @ f812879e:115/115",
@@ -137,9 +137,10 @@
       "evidence": [
         "schema-safety-4bb6c6be/REPORT.json",
         "schema-safety-4bb6c6be/MANIFEST.json",
-        "schema-safety-ee8adcf4/REPORT.json"
+        "schema-safety-ee8adcf4/REPORT.json",
+        "schema-second-e06037f5/REPORT.json"
       ],
-      "remaining_blocker": "S6 independent MAIN actual critical replay and adjudication; complete schema sourceee8adcf4. No CI/LIVE gate.",
+      "remaining_blocker": "Independent MAIN actual revalidation of new e060 schema fix and persisted review citation.",
       "dependencies": [
         "LOAD-11.1",
         "LOAD-06.4"
@@ -158,14 +159,21 @@
         "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
         "f812879e4518fd09bf22656451cb563d62940298",
         "4bb6c6be847c17b2dcd1b4ee9db5be6fa4d7d1d7",
-        "ee8adcf40be9aebb1330156a3524910c08225ebc"
+        "ee8adcf40be9aebb1330156a3524910c08225ebc",
+        "e06037f58738d0fbff86090e86d8bd06f8608e04"
       ],
       "acceptance_proposal": "ReadyForIndependentAcceptance",
       "remaining_blockers": [
         "S6 independent MAIN actual critical replay and adjudication"
       ],
       "latest_runtime_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
-      "proposed_resolution": "FixedWithEvidence"
+      "proposed_resolution": "FixedWithEvidence",
+      "latest_MAIN_decision": {
+        "state": "Failed",
+        "source_sha": "ee8adcf4",
+        "source_url": null,
+        "missing_reason": "Exact MAIN private independent-review branch URL pending"
+      }
     },
     {
       "task_id": "LOAD-01.2",
@@ -5677,7 +5685,7 @@
     "path": "fault-batch-f93e32da/ci-f93e32da.json",
     "all5_passed": false
   },
-  "latest_runtime_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+  "latest_runtime_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
   "state_counts": {
     "Partial": 44,
     "NotRevalidated": 72,
@@ -5701,5 +5709,24 @@
   "production_protocol_fix_sha": "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17",
   "checkpoint_test_fix_sha": "de1157fdf490a5bce3ba888c07519fc957c46782",
   "latest_test_candidate_sha": "f812879e4518fd09bf22656451cb563d62940298",
-  "production_behavior_baseline": "f812879e business/client/UI; evidence-validation-only guards ee8adcf4"
+  "production_behavior_baseline": "f812879e business/client/UI; evidence-validation-only guards ee8adcf4",
+  "MAIN_S6_decisions_received_pending_citation": {
+    "LOAD_01_1": {
+      "decision": "Failed",
+      "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+      "reason": "finite mean overflow and unhashable archive match/event type",
+      "persisted_source_url": null
+    },
+    "LOAD_01_2_3_4": {
+      "decision": "Accepted/NoChangeWithEvidence",
+      "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+      "authority": "MAIN(parent task)",
+      "persisted_source_url": null
+    },
+    "missing_reasons": {
+      "persisted_source_url": "MAIN is persisting private independent-review branch; wait exact URL before applying formal S6 citation."
+    },
+    "no_gate_promotion": true,
+    "no_132_completion_claim": true
+  }
 }

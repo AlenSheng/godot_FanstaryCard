@@ -1,13 +1,13 @@
 {
   "kind": "complete_offline_batch_receipt_pending_MAIN",
-  "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+  "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
   "previous_stage_receipt": "STAGE_RECEIPT_schema_4bb6c6be.json",
   "batch": "load03-ready-ee8adcf4/ROOT_REVIEW.json",
   "ready_for_independent_acceptance": [
-    "schema-safety-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
     "offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
     "offline-acceptance-f812/load02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
-    "load03-ready-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json"
+    "load03-ready-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+    "schema-second-e06037f5/READY_FOR_INDEPENDENT_ACCEPTANCE.json"
   ],
   "ready_task_count": 13,
   "ready_case_count": 39,
@@ -46,7 +46,7 @@
   "ui_changes": 0,
   "ci": "BillingBlocked; no CI retry; C-CI not required by these4 task contracts.",
   "raw4_upload": "Paused; unchanged; no upload.",
-  "validation_tool_change_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+  "validation_tool_change_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
   "independent_MAIN": "Previous LOAD01.1 NoChange rejected; .2-.4 raw technically verified; all await metadata-complete independent actual replay.",
   "latest_batch": {
     "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
@@ -60,6 +60,7 @@
     "critical_skips": 0
   },
   "source_scope_note": "Schema packet4bb; B02 packetf812. Never combine as a single actual profile SHA; B02 business/proto/config byte-equivalence verified.",
-  "schema_corrected_packet": "schema-safety-ee8adcf4/REPORT.json",
-  "additional_contract_gaps": "load03-remaining-ee8adcf4/MISSING_FACTS.json"
+  "schema_corrected_packet": "schema-second-e06037f5/REPORT.json",
+  "additional_contract_gaps": "load03-remaining-ee8adcf4/MISSING_FACTS.json",
+  "MAIN_S6_citation_pending": true
 }

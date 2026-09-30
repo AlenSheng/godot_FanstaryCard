@@ -1,3 +1,7 @@
+## MAIN三schema反例修订e06037f5
+
+[新固定SHA重放包](schema-second-e06037f5/README.md)：同SHA原12/12、Python122/122、旧五invalid回归，以及新三实际文件入口反例修复；有限大值均值正确、不丢失败分母，非法归档字段判invalid3。MAIN已正式裁决LOAD01.2/.3/.4满足原合同，精确持久化审查链接待到后登记；.1旧ee8判Failed，新e060修复提交独立重验。G0–G5未升级。
+
 ## LOAD03.1/.2完整离线提议
 
 [2项/6case](load03-ready-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json)：真实owned文件链/序号/缺失sticky与实际Gateway阶段PB回包完整满足本子项合同，sourceee8，业务runtimef812逐字相同。ROOT另核164文件及64tools+11来源条目；全部待MAIN独立实际重放。累计13Ready/44Partial/72NotRevalidated/3Blocked，Accepted0。
