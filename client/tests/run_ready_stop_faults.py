@@ -11,6 +11,7 @@ from pathlib import Path
 import shutil
 import socket
 import subprocess
+import sys
 import tempfile
 import time
 import uuid
@@ -29,7 +30,13 @@ CASES = {
     "stop_ready_before_send": ("PR13-A04.4-T01", "STOP at actual READY event before send; cancellation or actual deadline removes player and releases holds."),
     "late_required_duplicate": ("LOAD-04.4-T01", "Deliver the real delayed required packet twice after READY dispatch; decoder sequence filtering and room context remain correct."),
     "late_accepted_before_ticket": ("LOAD-04.4-T01", "SupportOnly synthetic stale accepted packet through real decoder must not suppress authoritative current ticket reads."),
+    "ready_accepted_lost_resume": ("LOAD-04.4-T01", "Discard the actual committed ready_accepted frame; sequence-gap session.resume restores the same authority and room."),
+    "ready_started_lost_reconnect": ("PR13-A04.4-T02", "Discard the actual started frame after accepted READY, disconnect, then recover the same room by real reconnect snapshot/replay."),
+    "ready_replies_lost_reconnect": ("PR13-A04.4-T02", "Discard real committed ready_accepted and started frames, disconnect, then recover the same room from authority."),
+    "ready_send_lost_reconnect": ("PR13-A04.4-T02", "Discard the first actual serialized room.ready before forwarding; PostgreSQL remains Assigned, reconnect retries and enters exactly the same room."),
+    "ready_send_all_lost_stop": ("PR13-A04.4-T01", "Discard all three actual serialized room.ready frames, STOP, and let the unchanged actual 15s deadline remove the Assigned player and release assets."),
 }
+TRANSPORT_CASES = {case for case in CASES if case.startswith("ready_")}
 
 
 def sha(path):
@@ -58,6 +65,8 @@ def main():
     pg_socket = Path(tempfile.mkdtemp(prefix="pr13-ready-stop-", dir="/tmp"))
     server = None
     server_log = None
+    proxy = None
+    proxy_log = None
     pg_env = dict(os.environ, PGHOST=str(pg_socket), PGUSER="ready_stop_owner", PGPORT="5432")
     for key in ("PGOPTIONS", "PGPASSWORD", "PGSERVICE", "PGSERVICEFILE"):
         pg_env.pop(key, None)
@@ -114,11 +123,35 @@ def main():
             server_log.close()
             server_log = None
 
+    def stop_proxy():
+        nonlocal proxy, proxy_log
+        if proxy is not None:
+            started = time.monotonic()
+            proxy.terminate()
+            try:
+                proxy.wait(timeout=10)
+            except subprocess.TimeoutExpired:
+                proxy.kill()
+                proxy.wait(timeout=5)
+            commands.append({"label": "owned-frame-proxy-cleanup", "command": ["SIGTERM", str(proxy.pid)],
+                             "exit_code": proxy.returncode, "duration_seconds": round(time.monotonic() - started, 3),
+                             "deadline_seconds": 10})
+            for command in commands:
+                if command.get("pid") == proxy.pid:
+                    command["exit_code"] = proxy.returncode
+                    command["status"] = "stopped"
+            proxy = None
+        if proxy_log is not None:
+            proxy_log.close()
+            proxy_log = None
+
     source_sha = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repo).decode().strip()
     dirty = subprocess.check_output(["git", "status", "--porcelain"], cwd=repo).decode().splitlines()
     plan = repo / "docs/plans/PR13_ACCEPTANCE_DETAILS_20260930.json"
     source_paths = [repo / "client/tests/gameplay_load_client.gd", repo / "client/state/game_store.gd",
-                    repo / "client/network/gateway.gd", Path(__file__), Path(__file__).with_suffix(".gd")]
+                    repo / "client/network/gateway.gd", Path(__file__), Path(__file__).with_suffix(".gd"),
+                    repo / "client/tests/ready_frame_proxy.py", repo / "client/tests/fixture_runtime.py",
+                    repo / "protocol/realtime/v1/realtime.proto"]
     inputs = {str(path.relative_to(repo)): sha(path) for path in source_paths}
     profile = {"profiles": ["OFFLINE", "POSTGRES"], "case_deadline_seconds": 95,
                "server_ready_deadline_seconds": 30, "server_shutdown_grace_seconds": 10,
@@ -132,6 +165,31 @@ def main():
     (work / "profile.json").write_text(json.dumps(profile, indent=2) + "\n")
     (work / "inputs.json").write_text(json.dumps({"source_sha": source_sha, "source_dirty": dirty,
         "input_hashes": inputs, "plan_sha256": sha(plan), "profile_sha256": sha(work / "profile.json")}, indent=2) + "\n")
+    fixture_sources = work / "fixture-sources"
+    for path in source_paths + [plan]:
+        target = fixture_sources / path.relative_to(repo)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(path, target)
+    canonical = json.loads(plan.read_text())
+    canonical_rows = []
+    def collect_rows(value):
+        if isinstance(value, dict):
+            if value.get("id") in ("LOAD-04.4", "PR13-A04.4", "PR13-A03.4"):
+                canonical_rows.append(value)
+            for nested in value.values():
+                collect_rows(nested)
+        elif isinstance(value, list):
+            for nested in value:
+                collect_rows(nested)
+    collect_rows(canonical)
+    (work / "canonical-cases.raw.json").write_text(json.dumps(canonical_rows, ensure_ascii=False, indent=2) + "\n")
+    profile["real_frame_proxy"] = "Selected ready_* cases only; transparent loopback relay, actual binary envelope capture/drop, no synthetic command/event encoding. Boundary PostgreSQL reads only."
+    profile["canonical_limitations"] = ["LIVE not run", "same-account three cycles not run", "old-cycle events not covered", "manual independent adjudication pending"]
+    profile["canonical_mapping_scope"] = "New loss/send matrix subcases; original canonical rows copied verbatim, their complete execution state is unchanged."
+    (work / "profile.json").write_text(json.dumps(profile, indent=2) + "\n")
+    input_record = json.loads((work / "inputs.json").read_text())
+    input_record["profile_sha256"] = sha(work / "profile.json")
+    (work / "inputs.json").write_text(json.dumps(input_record, indent=2) + "\n")
     ok = False
     error = None
     try:
@@ -177,6 +235,16 @@ def main():
         if code or "SCRIPT ERROR" in output:
             raise RuntimeError("Godot fixture import failed")
         (project / "project.godot").write_text(project_config + '[autoload]\nGame="*res://state/game_store.gd"\n')
+        copied_inputs = []
+        for path in sorted(project.rglob("*")):
+            if path.is_file() and ".godot" not in path.relative_to(project).parts:
+                source = repo / "client" / path.relative_to(project)
+                copied_inputs.append({"fixture_path": str(path.relative_to(work)), "sha256": sha(path),
+                                      "source_path": str(source.relative_to(repo)) if source.exists() else None,
+                                      "source_sha256": sha(source) if source.exists() else None,
+                                      "copied_unchanged": source.exists() and sha(source) == sha(path),
+                                      "kind": "generated_import_metadata" if path.suffix == ".uid" else "generated_project_config" if path.name == "project.godot" else "copied_source_input"})
+        (work / "fixture-inputs.json").write_text(json.dumps(copied_inputs, indent=2) + "\n")
         code, _ = run(["initdb", "-D", str(pgdata), "-U", "ready_stop_owner", "--auth=trust", "--no-locale", "--encoding=UTF8"], "private-pg-init", timeout=30)
         if code:
             raise RuntimeError("Owned PostgreSQL initialization failed")
@@ -228,6 +296,24 @@ def main():
                 time.sleep(.2)
             if not ready:
                 raise RuntimeError("Owned full Program failed startup")
+            if case in TRANSPORT_CASES:
+                proxy_command = [sys.executable, str(repo / "client/tests/ready_frame_proxy.py"), "--upstream-port", str(port),
+                                 "--case", case, "--evidence", str(directory / "transport"), "--database", database]
+                proxy_log = (directory / "proxy.log").open("wb")
+                proxy_env = dict(env, **{key: pg_env[key] for key in ("PGHOST", "PGUSER", "PGPORT")})
+                for key in ("PGOPTIONS", "PGPASSWORD", "PGSERVICE", "PGSERVICEFILE"):
+                    proxy_env.pop(key, None)
+                proxy = subprocess.Popen(proxy_command, cwd=repo, env=proxy_env,
+                                         stdout=proxy_log, stderr=subprocess.STDOUT)
+                proxy_deadline = time.monotonic() + 10
+                while proxy.poll() is None and not (directory / "transport/ready.json").exists() and time.monotonic() < proxy_deadline:
+                    time.sleep(.05)
+                if proxy.poll() is not None or not (directory / "transport/ready.json").exists():
+                    raise RuntimeError("Owned actual frame proxy startup failed")
+                proxy_port = json.loads((directory / "transport/ready.json").read_text())["port"]
+                env["FANTASYCARD_SERVER_URL"] = "http://127.0.0.1:" + str(proxy_port)
+                commands.append({"label": case + "-frame-proxy-start", "command": proxy_command, "cwd": str(repo),
+                                 "exit_code": None, "status": "started", "pid": proxy.pid, "deadline_seconds": 10})
             fixture_seeded = False
             def seed_owned_fixture():
                 nonlocal fixture_seeded
@@ -242,6 +328,30 @@ def main():
             code, output = run([args.godot, "--headless", "--max-fps", "60", "--path", str(project), "--script", "res://tests/run_ready_stop_faults.gd"],
                                case + "-godot", env=env, timeout=95, during_run=seed_owned_fixture)
             client = json.loads((directory / "client.json").read_text()) if (directory / "client.json").exists() else {}
+            stop_proxy()
+            transport = [json.loads(line) for line in (directory / "transport/trace.jsonl").read_text().splitlines()] if case in TRANSPORT_CASES else []
+            dropped = [item for item in transport if item["event"] == "frame_dropped"]
+            forwarded = [item for item in transport if item["event"] == "frame_forwarded"]
+            transport_ok = not any(item["event"] == "proxy_error" for item in transport)
+            if case in TRANSPORT_CASES:
+                transport_ok = transport_ok and bool(dropped) and any(item["event"] == "proxy_stopped" and item["remaining_connections"] == 0 for item in transport)
+                if case.startswith("ready_send_"):
+                    transport_ok = transport_ok and all(item["kind"] == "room.ready" and len(item["postgres_at_drop"]) == 1 and item["postgres_at_drop"][0]["player_state"] == "Assigned" and item["postgres_at_drop"][0]["status"] == "Starting" for item in dropped)
+                    if case == "ready_send_all_lost_stop":
+                        transport_ok = transport_ok and len(dropped) == 3 and not any(item["kind"] == "room.ready" for item in forwarded)
+                    else:
+                        transport_ok = transport_ok and len(dropped) == 1 and any(item["kind"] == "room.ready" for item in forwarded)
+                else:
+                    expected_drops = {"room.ready_accepted"} if case == "ready_accepted_lost_resume" else {"room.started"} if case == "ready_started_lost_reconnect" else {"room.ready_accepted", "room.started"}
+                    transport_ok = transport_ok and {item["kind"] for item in dropped} == expected_drops and all(len(item["postgres_at_drop"]) == 1 and item["postgres_at_drop"][0]["player_state"] in ("Ready", "Active") for item in dropped)
+                    transport_ok = transport_ok and any(item["kind"] == "session.resume" for item in forwarded)
+                    # The exact stored event must be replayed, not a replacement
+                    # event invented by the fixture or merely a matching kind.
+                    transport_ok = transport_ok and all(any(item["kind"] == lost["kind"] and item["sequence"] == lost["sequence"] and item["sha256"] == lost["sha256"] and item["ordinal"] > lost["ordinal"] for item in forwarded) for lost in dropped)
+                if case.endswith("reconnect"):
+                    transport_ok = transport_ok and any(item["event"] == "fault_disconnect" for item in transport) and len([item for item in forwarded if item["kind"] == "session.connected"]) >= 2
+                if case != "ready_send_all_lost_stop":
+                    transport_ok = transport_ok and all(item["postgres_at_drop"][0]["match_id"] == client.get("observed_match_id") and item["postgres_at_drop"][0]["room_id"] == client.get("observed_room_id") for item in dropped)
             # Read-only postconditions. Do not repair fixture balances/ledger/history.
             snapshot = json.loads(sql("SELECT json_build_object('preparations',(SELECT coalesce(json_agg(json_build_object('status',status)), '[]'::json) FROM preparations),"
                 "'tickets',(SELECT coalesce(json_agg(json_build_object('status',status)), '[]'::json) FROM match_tickets),"
@@ -253,14 +363,25 @@ def main():
                 "'pending_settlement_holds',(SELECT count(*) FROM settlement_asset_holds WHERE state='Pending'),"
                 "'settlements',(SELECT count(*) FROM match_settlements),"
                 "'rooms',(SELECT count(*) FROM room_snapshots),"
+                "'matches',(SELECT count(*) FROM matches),"
+                "'match_rows',(SELECT coalesce(json_agg(json_build_object('match_id',match_id,'room_id',room_id,'status',status,'created_at_unix_ms',extract(epoch from created_at)*1000,'ready_deadline_unix_ms',extract(epoch from ready_deadline)*1000,'observed_at_unix_ms',extract(epoch from CURRENT_TIMESTAMP)*1000)), '[]'::json) FROM matches),"
                 "'ready_deadline_seconds',(SELECT coalesce(json_agg(extract(epoch from ready_deadline-created_at)), '[]'::json) FROM matches))", database))
             (directory / "postgres-postconditions.json").write_text(json.dumps(snapshot, indent=2) + "\n")
             db_ok = fixture_seeded and snapshot["equipment_locks"] == 1 and snapshot["pending_settlement_holds"] == 0 and all(item["status"] in ("Cancelled", "Expired", "Settled") for item in snapshot["preparations"]) and snapshot["locked_equipment"] == 0 and all(item["state"] in ("Settled", "Removed") for item in snapshot["human_match_states"])
-            passed = code == 0 and client.get("passed", False) and db_ok and "SCRIPT ERROR" not in output and "ERROR:" not in output
+            if case in TRANSPORT_CASES:
+                # Even an all-removed human lobby launches an owned bot room.
+                # Human membership, route and asset release are the terminal
+                # conditions; deleting that bot room would change production.
+                db_ok = db_ok and snapshot["matches"] == 1 and snapshot["rooms"] == 1 and snapshot["ready_deadline_seconds"] == [15]
+                if case == "ready_send_all_lost_stop":
+                    db_ok = db_ok and snapshot["human_match_states"] == [{"state": "Removed"}] and snapshot["equipment_releases"] == 1 and snapshot["settlements"] == 0 and snapshot["match_rows"][0]["observed_at_unix_ms"] >= snapshot["match_rows"][0]["ready_deadline_unix_ms"]
+            passed = code == 0 and client.get("passed", False) and db_ok and transport_ok and "SCRIPT ERROR" not in output and "ERROR:" not in output
+            (directory / "case.raw.json").write_text(json.dumps({"client": client, "postgres": snapshot, "transport": transport, "command_exit_code": code}, indent=2) + "\n")
             cases.append({"case": case, "canonical_case_id": CASES[case][0], "expected": CASES[case][1], "actual": client,
                           "postgres": snapshot, "postgres_passed": db_ok, "passed": passed, "Accepted": False,
                           "source_sha": source_sha, "source_dirty": dirty, "input_hashes": inputs,
                           "remaining_profiles": profile["remaining_profiles"], "exit_code": code,
+                          "transport_passed": transport_ok, "coverage": client.get("coverage", "Unknown"),
                           "evidence": [case + "/client.json", case + "/postgres-postconditions.json", case + "-godot.log", case + "/server.log"]})
             print(case + ": " + ("PASS" if passed else "FAIL"), flush=True)
             (work / "cases.jsonl").write_text("".join(json.dumps(case_record, ensure_ascii=False) + "\n" for case_record in cases))
@@ -270,6 +391,7 @@ def main():
         error = str(exc)
         print(type(exc).__name__ + ": " + error, flush=True)
     finally:
+        stop_proxy()
         stop_server()
         if pg_started:
             run(["pg_ctl", "-D", str(pgdata), "-m", "fast", "-w", "stop"], "owned-pg-cleanup", timeout=30)

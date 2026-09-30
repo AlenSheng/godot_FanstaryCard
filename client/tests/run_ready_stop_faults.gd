@@ -19,6 +19,9 @@ class FaultGateway extends ProductionGateway:
 	var ready_send_after_stop := 0
 	var duplicate_deliveries := 0
 	var synthetic_sequence := 0
+	var expected_room_id := ""
+	var expected_match_id := ""
+	var resume_send_count := 0
 	const STALE_MATCH_ID := "aaaaaaaa-aaaa-4aaa-aaaa-aaaaaaaaaaaa"
 
 	func record(kind: String, extra: Dictionary = {}) -> void:
@@ -63,6 +66,9 @@ class FaultGateway extends ProductionGateway:
 		return result
 
 	func send(kind: String, payload: Dictionary = {}, request_id: String = "") -> bool:
+		if kind == "session.resume":
+			resume_send_count += 1
+			record("session.resume.attempt", payload)
 		if kind == "room.ready":
 			ready_send_count += 1
 			if probe.stop_requested: ready_send_after_stop += 1
@@ -86,6 +92,14 @@ class FaultGateway extends ProductionGateway:
 		var codec := Proto.new()
 		var envelope: Dictionary = codec.decode("ServerEnvelope", packet)
 		var kind := str(envelope.get("type", ""))
+		if kind in ["room.ready_required", "room.ready_accepted", "room.started", "room.snapshot"]:
+			var schema: String = EVENTS.get(kind, "")
+			var actual: Dictionary = codec.decode(schema, envelope.get("payload", PackedByteArray()))
+			record("actual_server_envelope", {"kind": kind, "sequence": envelope.get("sequence", 0),
+				"match_id": actual.get("match_id", ""), "room_id": actual.get("room_id", ""), "sequence_before": last_sequence})
+			if kind == "room.ready_required" and expected_match_id.is_empty():
+				expected_match_id = str(actual.get("match_id", ""))
+				expected_room_id = str(actual.get("room_id", ""))
 		if kind == "session.connected": connected_count += 1
 		if kind == "room.ready_required":
 			required_seen = true
@@ -151,6 +165,10 @@ class LoadProbe extends ProductionLoad:
 		if not Game.room.is_empty() and stage == "playing":
 			observed_room_checks = checks.any(func(item): return item.name == "room_started" and item.passed)
 			if case_name in ["normal_ready", "required_lost_reconnect", "late_required_duplicate"]: request_stop("room_started_then_stop")
+			if case_name in ["ready_accepted_lost_resume", "ready_started_lost_reconnect", "ready_replies_lost_reconnect", "ready_send_lost_reconnect"]:
+				request_stop("authority_recovered_room_started_then_stop")
+		if case_name == "ready_send_all_lost_stop" and FileAccess.file_exists(report_path.get_base_dir().path_join("transport/request-stop.json")):
+			request_stop("three_actual_ready_frames_dropped")
 		if case_name == "late_accepted_before_ticket" and not Game.ticket.is_empty():
 			if late_guard_started == 0: late_guard_started = Time.get_ticks_msec()
 			if Time.get_ticks_msec() - late_guard_started >= 3500:
@@ -187,6 +205,11 @@ class LoadProbe extends ProductionLoad:
 			recovery_ok = recovery_ok and probe_gateway.required_dropped and probe_gateway.connected_count >= 2 and probe_gateway.required_delivered > 0
 		if case_name == "late_required_duplicate": recovery_ok = recovery_ok and probe_gateway.duplicate_deliveries >= 2
 		if case_name == "late_accepted_before_ticket": recovery_ok = probe_gateway.ticket_reads >= 2 and active_match_id != FaultGateway.STALE_MATCH_ID
+		if case_name in ["ready_accepted_lost_resume", "ready_started_lost_reconnect", "ready_replies_lost_reconnect", "ready_send_lost_reconnect"]:
+			recovery_ok = observed_room_checks and not observed_room_id.is_empty() and observed_match_id == active_match_id and observed_match_id == probe_gateway.expected_match_id and observed_room_id == probe_gateway.expected_room_id
+			if case_name.ends_with("reconnect"): recovery_ok = recovery_ok and probe_gateway.connected_count >= 2
+			if case_name == "ready_accepted_lost_resume": recovery_ok = recovery_ok and probe_gateway.resume_send_count >= 1
+		if case_name == "ready_send_all_lost_stop": recovery_ok = probe_gateway.ready_send_count == 3 and observed_room_id.is_empty()
 		var local_terminal: bool = Game.preparation.is_empty() and Game.ticket.is_empty() and Game.ready_prompt.is_empty() and Game.room.is_empty() and Game.settlement.is_empty()
 		case_passed = recovery_ok and route_clear and local_terminal and cleanup_result.state == "Passed" and probe_gateway.ready_send_after_stop == 0 and not stop_boundary.is_empty()
 		var result := {"case": case_name, "passed": case_passed, "Accepted": false,
@@ -197,6 +220,8 @@ class LoadProbe extends ProductionLoad:
 			"local_terminal": local_terminal, "client_ready_prompt": Game.ready_prompt,
 			"client_room": not Game.room.is_empty(), "client_settlement": not Game.settlement.is_empty(),
 			"connected_count": probe_gateway.connected_count, "required_dropped": probe_gateway.required_dropped,
+			"expected_match_id": probe_gateway.expected_match_id, "expected_room_id": probe_gateway.expected_room_id,
+			"resume_send_count": probe_gateway.resume_send_count,
 			"route_probe_clear": route_clear, "route_probe_events": route_events,
 			"required_delivered": probe_gateway.required_delivered, "ticket_reads": probe_gateway.ticket_reads,
 			"ready_send_count": probe_gateway.ready_send_count, "ready_send_after_stop": probe_gateway.ready_send_after_stop,
