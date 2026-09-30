@@ -284,17 +284,20 @@ internal static class CombatExperience
                 if (firstWindupExtra > TimeSpan.Zero)
                 foreach (var monster in pve.Monsters)
                 {
-                    if (!monster.IsCharging || monster.WindupRemaining <= TimeSpan.Zero || !extendedMonsters.Add(monster.MonsterId)) continue;
+                    if (monster.WindupRemaining <= TimeSpan.Zero || !extendedMonsters.Add(monster.MonsterId)) continue;
                     var state = monster.Capture();
                     monster.SetRuntimeState(state.IntentIndex, state.IntervalProgress, state.WindupRemaining + firstWindupExtra,
                         state.IsCharging, state.EmpowerBonus, state.StunRemaining,
                         state.StatusRemaining.ToDictionary(value => value.Key, value => value.Remaining, StringComparer.Ordinal),
                         state.BossPhase, state.BossPhaseTransitionPending);
+                    row.FirstWindupExtensions++;
+                    row.FirstWindupIntentIndexes.Add(state.IntentIndex);
                 }
                 row.NaturalCardsDrawn += player.Combat.Deck.Hand.Count(card => !handBeforeAdvance.Contains(card.InstanceId));
                 row.ObservedSeconds = time + .1;
             }
             row.TotalEffectiveDamage = damage;
+            row.FirstWindupExtraMilliseconds = firstWindupExtra.TotalMilliseconds;
             row.RemainingMonsterHp = pve.Monsters.Sum(monster => monster.Hp);
             row.MonsterHpProgressRatio = (openingHp - row.RemainingMonsterHp) / (double)openingHp;
             row.RemainingPlayerHp = player.Combat.Hp;
@@ -458,4 +461,7 @@ internal sealed class EncounterSample(int seed, int seedBlock, string hero, stri
     public int RemainingPlayerHp { get; set; }
     public int FinalPoolSize { get; set; }
     public int PreviewParityChecks { get; set; }
+    public int FirstWindupExtensions { get; set; }
+    public double FirstWindupExtraMilliseconds { get; set; }
+    public List<int> FirstWindupIntentIndexes { get; } = [];
 }
