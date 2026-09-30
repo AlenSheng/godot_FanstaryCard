@@ -194,6 +194,10 @@ func _decode_range(message: String, bytes: PackedByteArray, end: int, depth: int
 			values.append(item)
 			if values.size() > max_elements: error = "Protobuf collection limit"
 		else: output[key] = item
+	if presentation and message == "SettlementEquipment":
+		for key in ["slot", "quality", "element"]:
+			var label: Variant = output.get(key + "Name")
+			if label is String: output[key] = label
 	return output
 
 func _scalar_code(kind: int, value: int) -> Variant:

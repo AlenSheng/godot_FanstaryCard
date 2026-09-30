@@ -71,6 +71,10 @@ static func from_wire(message: String, data: Dictionary) -> Dictionary:
 		elif is_message: output[key] = from_wire(field.type, value)
 		elif message == "CardEffectResponse" and field.name in EFFECT_DECIMALS: output[key] = float(value)
 		else: output[key] = value
+	if message == "SettlementEquipment":
+		for key in ["slot", "quality", "element"]:
+			var label: Variant = output.get(key + "Name")
+			if label is String: output[key] = label
 	return output
 
 static func header(headers: PackedStringArray, name: String) -> String:
