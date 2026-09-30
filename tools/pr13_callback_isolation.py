@@ -226,7 +226,7 @@ def main():
         manifest = [{"path": p, "bytes": (ROOT / p).stat().st_size, "sha256": sha(ROOT / p)} for p in sources]
         if args.gateway_overlay:
             gateway = next(row for row in manifest if row["path"] == "client/network/gateway.gd")
-            gateway.update(bytes=args.gateway_overlay.stat().st_size, sha256=sha(args.gateway_overlay),
+            gateway.update(bytes=(project / "network/gateway.gd").stat().st_size, sha256=sha(project / "network/gateway.gd"),
                            SourceOverlay=str(args.gateway_overlay.resolve()), base_sha256=sha(ROOT / "client/network/gateway.gd"))
         (output / "source_manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
         (output / "commands.json").write_text(json.dumps({"command": command, "cwd": str(ROOT), "exit_code": run.returncode,
