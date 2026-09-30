@@ -94,6 +94,17 @@ def reconcile_cycles(events, stop_ms, final_ms):
         if e["at_unix_ms"] > final_ms: continue
         buckets["final"].append(e)
         buckets["running" if e["at_unix_ms"] <= stop_ms else "drain"].append(e)
+    acknowledgements = {}
+    business_fields = ('run_id', 'client_id', 'process_epoch', 'cycle_id', 'match_id')
+    for e in buckets['final']:
+        if e.get('event_type') == 'settlement.acknowledged':
+            key = tuple(e[k] for k in business_fields)
+            acknowledgements[key] = min(acknowledgements.get(key, e['event_seq']), e['event_seq'])
+    for e in buckets['final']:
+        if e.get('event_type') == 'cycle.completed':
+            key = tuple(e[k] for k in business_fields)
+            if key not in acknowledgements or acknowledgements[key] >= e['event_seq']:
+                errors.append('completion_without_prior_matching_acknowledgement')
     def derive(rows):
         ack = Counter()
         complete = Counter()

@@ -165,6 +165,22 @@ class FinalizationTests(unittest.TestCase):
             with self.subTest(change=change):
                 self.assert_invalid(lambda e, c: self.change_status(e, lambda s: s.update(change)))
 
+    def test_final_counter_must_equal_archived_completions(self):
+        self.assert_invalid(lambda e, c: self.change_status(e, lambda s: s.update(cycles_completed=4)))
+
+    def test_foreign_final_report_cannot_prove_smoke_success(self):
+        original = coordinator.completed_smoke
+        def foreign(processes, expected_clients, cycles):
+            path = processes[0]['report']
+            report = json.loads(path.read_text())
+            report['run_id'] = 'another-run'
+            path.write_text(json.dumps(report), encoding='utf8')
+            return original(processes, expected_clients, cycles)
+        with patch.object(coordinator, 'completed_smoke', side_effect=foreign):
+            code, report = self.run_fixture()
+        self.assertNotEqual(code, 0)
+        self.assertFalse(report['acceptance_passed'])
+
     def test_business_error_only_after_stop_prevents_smoke_acceptance(self):
         code, report = self.run_fixture(lambda e, c: self.change_status(
             e, lambda s: s.update(errors=[{'message': 'late unexpected write failure'}])))

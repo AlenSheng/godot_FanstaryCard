@@ -80,6 +80,15 @@ class CutoffTests(unittest.TestCase):
         rows = [self.event(1, 99, "cycle.completed"), self.event(2, 101, "cycle.completed")]
         self.assertIn("duplicate_business_completion", reconcile_cycles(rows, 100, 120)["evidence_errors"])
 
+    def test_completion_requires_prior_acknowledgement_for_same_match(self):
+        for ack in (None, self.event(1, 98, 'settlement.acknowledged', cycle='other'),
+                    self.event(3, 101, 'settlement.acknowledged')):
+            with self.subTest(ack=ack):
+                rows = [self.event(2, 99, 'cycle.completed')]
+                if ack is not None: rows.append(ack)
+                errors = reconcile_cycles(rows, 100, 120)['evidence_errors']
+                self.assertIn('completion_without_prior_matching_acknowledgement', errors)
+
     def test_fallback_is_not_normal_completion(self):
         r = reconcile_cycles([self.event(1, 99, "battle.abandon.fallback")], 100, 120)
         self.assertEqual(r["final"]["fallback_cycles"], 1)

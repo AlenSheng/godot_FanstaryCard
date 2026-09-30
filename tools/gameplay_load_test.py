@@ -59,6 +59,8 @@ def completed_smoke(processes, expected_clients, cycles):
         return None
     reports=[read_json(entry['report']) or {} for entry in processes]
     return all(entry['process'].returncode==0 and report.get('ok') is True and
+               all(report.get(key) == entry[key] for key in ('client_id', 'run_id', 'process_epoch') if key in entry) and
+               ('run_id' not in entry or report.get('pid') == entry['process'].pid) and
                isinstance(report.get('cycles_completed'),int) and not isinstance(report.get('cycles_completed'),bool) and
                report['cycles_completed']>=cycles for entry,report in zip(processes,reports))
 
@@ -434,8 +436,10 @@ def main():
         post_stop_failure = any(p['process'].poll() not in (0,None) for p in processes)
         audit_events, audit_errors = read_audit_events(processes, final_clients)
         cutoffs=reconcile_cycles(audit_events,stop_issued_ms,int(time.time()*1000))
+        final_cycle_disagreement = any(s.get('cycles_completed') !=
+            cutoffs['final']['cycles_by_client'].get(s['client_id'], 0) for s in final_clients)
         final_evidence_failed = bool(final_read_errors or tail_lost or tail_window['invalid_metric_count']
-            or final_audit_lost or final_audit_invalid or final_cycle_invalid or final_errors_invalid
+            or final_audit_lost or final_audit_invalid or final_cycle_invalid or final_cycle_disagreement or final_errors_invalid
             or audit_errors or cutoffs['evidence_errors']
             or not sampling['passed'])
         workload_failed = workload_failed or final_evidence_failed or post_stop_failure
@@ -479,6 +483,7 @@ def main():
                 (tail_lost, 'tail_event_loss'), (tail_window['invalid_metric_count'], 'tail_invalid_metric'),
                 (final_audit_lost, 'final_audit_loss'), (final_audit_invalid, 'final_audit_count_invalid'),
                 (final_cycle_invalid, 'final_cycle_count_invalid'), (final_errors_invalid, 'final_errors_schema_invalid'),
+                (final_cycle_disagreement, 'final_cycle_count_disagreement'),
                 (audit_errors, 'audit_archive_invalid'), (cutoffs['evidence_errors'], 'cycle_evidence_invalid'),
                 (post_stop_failure, 'post_stop_process_failure'), (final_business_failed, 'final_business_failure'),
                 (business_cleanup_failed, 'business_cleanup_failed'), (not sampling['passed'], 'sampling_integrity_failed')):
