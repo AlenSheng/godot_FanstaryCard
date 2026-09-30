@@ -1,5 +1,5 @@
 """Prepare by default; --run starts real Godot gameplay with 50 clients/120s.
---smoke runs one client for one completed match, with a 7 minute deadline.
+--smoke runs one account for three completed matches by default.
 Exit codes: 0 preparation-only or verified bounded run; 1 incomplete; 2 performance
 redline; 3 invalid workload/evidence; 130 operator stop. No rate-limit changes.
 """
@@ -22,12 +22,14 @@ except ImportError:
     psutil = None
 from cloud_load_test import ROOT, CLIENT, stop_all, health_probe, read_json
 from gameplay_load_validation import aggregate_window, workload_snapshot, owned_statuses, new_events, classify_stop, provenance
+from pr13_runtime_evidence import coverage, reconcile_cycles, result_dimensions
 
 QUERIES = {
     'cpu': '100*(1-avg(rate(node_cpu_seconds_total{job="node",instance="node-exporter:9100",mode="idle"}[1m])))',
     'memory_available': '100*node_memory_MemAvailable_bytes{job="node",instance="node-exporter:9100"}/node_memory_MemTotal_bytes{job="node",instance="node-exporter:9100"}',
     'disk_available': '100*node_filesystem_avail_bytes{job="node",instance="node-exporter:9100",mountpoint="/"}/node_filesystem_size_bytes{job="node",instance="node-exporter:9100",mountpoint="/"}',
     'actor_wait': 'histogram_quantile(0.95,sum(rate(fantasycard_room_actor_command_wait_milliseconds_bucket{job="fantasycard",instance="otel-collector:9464"}[5m])) by (le))',
+    'server_humans_in_room': 'fantasycard_rooms_humans_active_players{job="fantasycard",instance="otel-collector:9464"}',
 }
 
 def metrics(base):
@@ -109,6 +111,17 @@ def main():
     parser.add_argument('--group-size',type=int,default=50)
     parser.add_argument('--group-interval',type=int,default=120)
     parser.add_argument('--smoke-cycles',type=int,default=3)
+    parser.add_argument('--load-profile', choices=('cyclic-gameplay','active-hold','functional-cycles'), default='cyclic-gameplay')
+    parser.add_argument('--target-online',type=int)
+    parser.add_argument('--target-active',type=int)
+    parser.add_argument('--hold-seconds',type=int,default=600)
+    parser.add_argument('--minimum-continuous-seconds',type=int,default=120)
+    parser.add_argument('--minimum-coverage',type=float,default=.95)
+    parser.add_argument('--maximum-sample-gap',type=float,default=20)
+    parser.add_argument('--minimum-command-rate',type=float,default=1)
+    parser.add_argument('--hero-class',choices=('Mage','Priest','Guardian','mixed'),default='Mage')
+    parser.add_argument('--strategy',choices=('baseline_all_hand','basic','build','mixed'),default='baseline_all_hand')
+    parser.add_argument('--strategy-seed',type=int,default=20260930)
     parser.add_argument('--prometheus',default='http://127.0.0.1:19090')
     parser.add_argument('--output',type=Path,default=ROOT/'outputs'/'gameplay-load')
     args=parser.parse_args()
@@ -124,15 +137,29 @@ def main():
         print('Prepared: bounded local run; --smoke validates three cycles by default. --run requires monitoring.')
         return 0
     if args.run and args.smoke: parser.error('Choose --smoke or --run')
+    if args.run and args.load_profile == 'functional-cycles': parser.error('Functional cycles are smoke scenarios and cannot prove capacity')
     if args.run:
         baseline=metrics(args.prometheus)
         if any(baseline[k] is None for k in ('cpu','memory_available','disk_available')):
             parser.error('Host monitoring is unavailable; open the SSH Prometheus tunnel before --run')
     source=provenance(ROOT, ('tools/gameplay_load_test.py','tools/cloud_load_test.py',
         'tools/gameplay_load_validation.py','client/tests/gameplay_load_client.gd','client/state/game_store.gd',
-        'client/network/gateway.gd','protocol/realtime/v1/realtime.proto'))
+        'client/network/gateway.gd','client/network/reusable_http_client.gd',
+        'tools/pr13_runtime_evidence.py','client/data/catalog.json',
+        'client/ui/card_details.gd','client/state/element_rules.gd',
+        'protocol/realtime/v1/realtime.proto'))
     run_dir=args.output.resolve()/(time.strftime('%Y%m%d-%H%M%S')+'-'+uuid.uuid4().hex[:6])
     run_dir.mkdir(parents=True)
+    expected_clients = 1 if args.smoke else args.max_groups * args.group_size
+    contract = {'profile':args.load_profile,
+        'acceptance_scope':['execution','evidence','load','gameplay','cleanup'] if args.smoke else ['execution','evidence','load','performance','cleanup'],
+        'target_online':expected_clients if args.target_online is None else args.target_online,
+        'target_active':expected_clients if args.target_active is None else args.target_active,
+        'minimum_window':args.hold_seconds,'minimum_continuous':args.minimum_continuous_seconds,
+        'minimum_coverage':args.minimum_coverage,'maximum_gap':args.maximum_sample_gap,
+        'minimum_command_rate':args.minimum_command_rate}
+    coverage([],start=0,end=1,**{k:v for k,v in contract.items() if k not in ('profile','acceptance_scope')})
+    save(run_dir/'load-contract.json',contract)
     stop_file=run_dir/'STOP'
     processes=[]; samples=[]; group_launches=[]; streaks=collections.Counter(); seen={}; status_cache={}
     run_id=uuid.uuid4().hex
@@ -159,6 +186,11 @@ def main():
                         FANTASYCARD_LOAD_GROUP=str(groups),FANTASYCARD_LOAD_REPORT=str(report),
                         FANTASYCARD_LOAD_STOP_FILE=str(stop_file),FANTASYCARD_LOAD_RUN_ID=run_id,
                         FANTASYCARD_LOAD_PROCESS_EPOCH=process_epoch,
+                        FANTASYCARD_LOAD_HERO_CLASS=('Mage','Priest','Guardian')[(len(processes))%3] if args.hero_class=='mixed' else args.hero_class,
+                        FANTASYCARD_LOAD_STRATEGY=('baseline_all_hand','basic','build')[(len(processes))%3] if args.strategy=='mixed' else args.strategy,
+                        FANTASYCARD_LOAD_SEED=str(args.strategy_seed+len(processes)),
+                        FANTASYCARD_LOAD_PROFILE=args.load_profile,
+                        FANTASYCARD_LOAD_HOLD_SECONDS=str(args.hold_seconds),
                         FANTASYCARD_LOAD_MAX_CYCLES=str(args.smoke_cycles) if args.smoke else '0')
                     log=(run_dir/(client_id+'.log')).open('w',encoding='utf-8')
                     try:
@@ -200,6 +232,8 @@ def main():
                 probe_timeout=bool(pending_probes)
                 health=health_task.result() if health_task.done() else {'ok':False,'duration_ms':None,'status':0,'error':'probe_timeout'}
                 resource=metrics_task.result() if metrics_task is not None and metrics_task.done() else {}
+                workload['server_confirmed_in_room']=resource.get('server_humans_in_room')
+                workload['server_count_scope']='all registered non-bot active player routes on this server; no per-run labels'
                 generator,previous_generator=generator_resources(processes,previous_generator)
                 causes=[]
                 if probe_timeout: causes.append('probe_timeout')
@@ -222,6 +256,7 @@ def main():
                     causes.append('invalid_cycle_count'); workload_failed=True
                 for key in set(streaks)|set(causes): streaks[key]=streaks[key]+1 if key in causes else 0
                 row={'schema_version':4,'at':sample_ms/1000,'run_id':run_id,'groups':groups,'clients':len(processes),**workload,
+                    'command_rate':None if previous_sample_ms is None or sample_ms<=previous_sample_ms else len(commands)/((sample_ms-previous_sample_ms)/1000),
                     'completed_cycles':sum(n for n in cycle_counts if isinstance(n,int) and not isinstance(n,bool) and n>=0),
                     'invalid_status_files':invalid_files,
                     'generator':generator,
@@ -260,6 +295,7 @@ def main():
         cleanup_error=None
         forced_termination=[]
         stop_issued_monotonic_ns=time.monotonic_ns()
+        stop_issued_ms=int(time.time()*1000)
         try:
             forced_termination=stop_all(processes,stop_file)
         except Exception as exc:
@@ -281,26 +317,65 @@ def main():
             cleanup_error=(cleanup_error+'; ' if cleanup_error else '')+'forced_termination:'+','.join(map(str,forced_termination))
         final_before_cleanup = samples[-1] if samples else None
         required_samples = max(1, math.ceil(args.max_seconds / 10 * .9))
+        hold_end = stop_issued_ms/1000
+        hold_start = max(started, hold_end-args.hold_seconds)
+        load_coverage = coverage(samples,start=hold_start,end=max(hold_start+.001,hold_end),
+            **{k:v for k,v in contract.items() if k not in ('profile','acceptance_scope')})
+        final_clients, final_read_errors = read_owned_statuses(processes,status_cache)
+        tail, tail_lost = new_events(final_clients,seen)
+        post_stop_failure = any(p['process'].poll() not in (0,None) for p in processes)
+        workload_failed = workload_failed or bool(final_read_errors or tail_lost or post_stop_failure)
         load_verified = (args.run and reason == 'duration_limit' and not workload_failed and
             groups == args.max_groups and len(processes) == args.max_groups * args.group_size and
             len(samples) >= required_samples and all(code is None for code in before_stop.values()) and
             final_before_cleanup is not None and final_before_cleanup['fresh_status_clients'] == len(processes) and
-            any(sample['online'] == len(processes) for sample in samples) and
-            any(sample['active_in_room'] >= args.group_size for sample in samples) and
+            load_coverage['passed'] and
             not forced_termination and not cleanup_error)
         outcome=classify_stop(reason,smoke_verified=smoke_verified,
             load_verified=load_verified,workload_failed=workload_failed)
+        audit_events=[]; audit_errors=[]
+        for entry in processes:
+            try:
+                for line in Path(str(entry['report'])+'.telemetry.jsonl').read_text(encoding='utf-8').splitlines():
+                    audit_events.append(json.loads(line))
+            except (OSError,ValueError) as exc:
+                audit_errors.append({'client_id':entry['client_id'],'error':type(exc).__name__})
+        cutoffs=reconcile_cycles(audit_events,stop_issued_ms,int(time.time()*1000))
+        launched_clients={entry['client_id'] for entry in processes}
+        completed_clients=set(cutoffs['final']['cycles_by_client'])
+        cutoffs['zero_cycle_clients']=sorted(launched_clients-completed_clients)
+        cutoffs['zero_cycle_reason']=None
+        final_distribution=collections.Counter(cutoffs['final']['cycles_by_client'].values())
+        final_distribution[0]=len(cutoffs['zero_cycle_clients'])
+        cutoffs['final']['distribution']=dict(sorted(final_distribution.items()))
+        business_cleanup=bool(final_clients) and len(final_clients)==len(processes) and all(client.get('cleanup',{}).get('state')=='Passed' for client in final_clients)
+        dimensions=result_dimensions(execution=not reason.startswith('coordinator_error:'),
+            evidence=not bool(final_read_errors or tail_lost or audit_errors or cutoffs['evidence_errors']),
+            load=load_coverage['passed'] if args.run else smoke_verified,
+            gameplay=smoke_verified if args.smoke else None,
+            performance=not reason.startswith('redline:') if args.run else None,
+            cleanup=False if cleanup_error else (True if business_cleanup else None),
+            applicable=contract['acceptance_scope'])
+        if outcome['exit_code']==0 and not dimensions['all_applicable_passed']:
+            outcome={'classification':'incomplete_acceptance','passed':False,'exit_code':1}
         report_data={'schema_version':5,'started':started,'ended':time.time(),'groups':groups,'clients':len(processes),
             'stop_reason':reason,'outcome':outcome,'source':source,'cleanup_error':cleanup_error,
             'load_window_verified':load_verified,'required_samples':required_samples,
-            'stop_issued_monotonic_ns':stop_issued_monotonic_ns,
+            'stop_issued_monotonic_ns':stop_issued_monotonic_ns,'stop_issued_ms':stop_issued_ms,
+            'load_contract':contract,'load_coverage':load_coverage,'result_dimensions':dimensions,
+            'cycle_cutoffs':cutoffs,'audit_read_errors':audit_errors,
+            'final_read_errors':final_read_errors,'tail_lost_event_count':tail_lost,
+            'tail_window':aggregate_window(tail),'post_stop_failure':post_stop_failure,
             'first_trigger':next((cause for sample in samples for cause in sample['reasons']),reason),
             'all_triggers':sorted({cause for sample in samples for cause in sample['reasons']} | {reason}),
-            'forced_termination_pids':forced_termination,'cleanup_complete':not cleanup_error,
+            'forced_termination_pids':forced_termination,'process_cleanup_complete':not cleanup_error,
+            'business_cleanup_verified':business_cleanup,'cleanup_complete':business_cleanup and not cleanup_error,
             'process_exits':[{'client_id':p['client_id'],'before_stop':before_stop[p['client_id']],
                 'after_stop':p['process'].poll()} for p in processes],
             'group_size':group_size,'interval_seconds':args.group_interval,'scope':'real Godot Game store: login once, repeated preparation/match/PVE or PVP/settlement; no market trades',
-            'group_launches':group_launches,'samples':samples,'final_clients':read_owned_statuses(processes,status_cache)[0]}
+            'group_launches':group_launches,'samples':samples,'final_clients':final_clients,
+            'acceptance_passed':dimensions['all_applicable_passed'],
+            'full_acceptance_passed':dimensions['full_acceptance_passed']}
         try:
             save(run_dir/'report.json',report_data)
         except OSError as exc:

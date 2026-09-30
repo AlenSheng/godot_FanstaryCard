@@ -35,6 +35,7 @@ var lobby: Dictionary = {}
 var _cache_syncing: Dictionary = {}
 var _cache_sync_again: Dictionary = {}
 var _cache_versions: Dictionary = {}
+var _lobby_request_epoch := 0
 var _shop_rotation_check_at := 0
 var room: Dictionary = {}
 var preparation: Dictionary = {}
@@ -315,7 +316,11 @@ func validate_config(version: String, source: String) -> bool:
 
 func refresh_lobby() -> void:
 	var generation: int = gateway.session_generation
+	_lobby_request_epoch += 1
+	var request_epoch := _lobby_request_epoch
+	var origin_scope := _lobby_scope()
 	var result: Dictionary = await gateway.request("/api/v1/bootstrap")
+	if not _lobby_request_current(generation, request_epoch, origin_scope): return
 	if not result.ok: return
 	if not result.data is Dictionary or not validate_config(str(result.data.get("configVersion", "")), "大厅"): return
 	for required in ["player", "wallet", "materials"]:
@@ -323,27 +328,35 @@ func refresh_lobby() -> void:
 			notice.emit("服务器大厅数据不完整，请重试")
 			return
 	if generation != gateway.session_generation: return
-	lobby = result.data
+	var next_lobby: Dictionary = result.data.duplicate(true)
 	if _settlement_ack_pending_id != "":
-		lobby["unfinishedSettlement"] = null
-		lobby["unfinishedMatch"] = null
-	for module in ["shop", "market", "inventory", "cards", "decks", "wallet", "mail"]:
-		_cache_versions[module] = int(_cache_versions.get(module, 0)) + 1
-	if lobby.get("mail") is Dictionary:
-		mail = lobby.mail
-	else:
-		await refresh_mail()
-		lobby["mail"] = mail
-	if generation != gateway.session_generation: return
+		next_lobby["unfinishedSettlement"] = null
+		next_lobby["unfinishedMatch"] = null
+	if not next_lobby.get("mail") is Dictionary:
+		var mail_result: Dictionary = await gateway.request("/api/v1/mail", HTTPClient.METHOD_GET, null, [404])
+		if not _lobby_request_current(generation, request_epoch, origin_scope): return
+		next_lobby["mail"] = mail_result.data if mail_result.ok and mail_result.data is Dictionary else {"items": [], "unreadCount": 0}
 	# Older servers omit the optional account snapshot fields. Fetch those only
 	# once during login/recovery, never when a module is opened.
-	if not lobby.get("shop") is Dictionary or not lobby.get("market") is Array or not lobby.get("inventory") is Dictionary:
+	if not next_lobby.get("shop") is Dictionary or not next_lobby.get("market") is Array or not next_lobby.get("inventory") is Dictionary:
 		var economy: Dictionary = await gateway.request("/api/v1/economy/context")
-		if generation != gateway.session_generation: return
+		if not _lobby_request_current(generation, request_epoch, origin_scope): return
 		if economy.ok and economy.data is Dictionary:
-			lobby["shop"] = economy.data.get("shop", {})
-			lobby["market"] = economy.data.get("market", [])
-			lobby["inventory"] = economy.data.get("inventory", {})
+			next_lobby["shop"] = economy.data.get("shop", {})
+			next_lobby["market"] = economy.data.get("market", [])
+			next_lobby["inventory"] = economy.data.get("inventory", {})
+	if next_lobby.get("unfinishedSettlement") == null and next_lobby.get("unfinishedMatch") == null and room.is_empty() and ticket.is_empty() and not next_lobby.has("activePreparation"):
+		var active: Dictionary = await gateway.request("/api/v1/preparations", HTTPClient.METHOD_GET, null, [404])
+		if not _lobby_request_current(generation, request_epoch, origin_scope): return
+		if active.ok:
+			if not _preparation_config_valid(active.data): return
+			next_lobby["activePreparation"] = active.data
+		elif active.status == 404: next_lobby["activePreparation"] = null
+	if not _lobby_request_current(generation, request_epoch, origin_scope): return
+	lobby = next_lobby
+	mail = lobby.get("mail", {"items": [], "unreadCount": 0})
+	for module in ["shop", "market", "inventory", "cards", "decks", "wallet", "mail"]:
+		_cache_versions[module] = int(_cache_versions.get(module, 0)) + 1
 	if lobby.player.get("selectedClass") != null: hero_class = lobby.player.selectedClass
 	if lobby.get("unfinishedSettlement") != null:
 		gateway.room_id = ""
@@ -357,14 +370,14 @@ func refresh_lobby() -> void:
 		gateway.room_revision = 0
 		if lobby.has("activePreparation"):
 			preparation = lobby.activePreparation if lobby.activePreparation is Dictionary else {}
-		else:
-			var active: Dictionary = await gateway.request("/api/v1/preparations", HTTPClient.METHOD_GET, null, [404])
-			if generation != gateway.session_generation: return
-			if active.ok:
-				if not _preparation_config_valid(active.data): return
-				preparation = active.data
-			elif active.status == 404: preparation = {}
 	changed.emit()
+
+func _lobby_scope() -> String:
+	return JSON.stringify([room.get("match_id", ""), gateway.room_id, preparation.get("preparationId", ""),
+		ticket.get("ticketId", ""), settlement.get("settlementId", ""), _settlement_ack_pending_id, _cache_versions])
+
+func _lobby_request_current(generation: int, request_epoch: int, origin_scope: String) -> bool:
+	return generation == gateway.session_generation and request_epoch == _lobby_request_epoch and origin_scope == _lobby_scope()
 
 func update_cache(module: String, value: Variant) -> void:
 	if lobby.is_empty(): return
@@ -544,7 +557,7 @@ func delete_read_mail() -> void:
 func select_class(value: String) -> void:
 	if busy or not room.is_empty() or not preparation.is_empty() or not ticket.is_empty(): return
 	if value not in ["Priest", "Mage", "Guardian"]: return
-	if value == hero_class and (_pending_class.is_empty() or _pending_class == value): return
+	if value == hero_class and (_pending_class.is_empty() or _pending_class == value) and str(lobby.get("player", {}).get("selectedClass", "")) == value: return
 	# Update the hall immediately. Persistence happens in the background so network
 	# latency never blocks portrait/card feedback.
 	hero_class = value
@@ -661,6 +674,30 @@ func allowed(action: String) -> bool:
 func has_pending_commands() -> bool:
 	return not _pending_commands.is_empty() or not _latest_commands.is_empty() or not _queued_command.is_empty()
 
+func combat_wait_state() -> Dictionary:
+	var player: Dictionary = room.get("player", {})
+	var hand: Array = player.get("hand", [])
+	var reason := "available"
+	var remaining_ms := 0
+	if not gateway.online or gateway.recovering:
+		reason = "recovering"
+	elif has_pending_commands():
+		reason = "confirming"
+	elif int(player.get("stun_remaining_ms", 0)) > 0:
+		reason = "stunned"
+		remaining_ms = int(player.stun_remaining_ms)
+	elif combat_target_id().is_empty():
+		reason = "target"
+	elif hand.is_empty() and int(player.get("draw_block_remaining_ms", 0)) > 0:
+		reason = "draw_blocked"
+		remaining_ms = int(player.draw_block_remaining_ms)
+	elif hand.is_empty():
+		reason = "drawing"
+	elif hand.size() >= 5:
+		reason = "full_hand"
+	return {"reason": reason, "remaining_ms": remaining_ms, "hand_count": hand.size(),
+		"legal_opportunity": reason in ["available", "full_hand"] and allowed("battle.play_cards")}
+
 func command(action: String, payload: Dictionary = {}) -> bool:
 	if not allowed(action): return false
 	if action in LATEST_WINS_ACTIONS:
@@ -732,6 +769,8 @@ func _accept_combat_preview(payload: Dictionary) -> void:
 	if revision < int(_preview_request.get("revision", -1)) or revision < int(room.get("room_revision", 0)): return
 	combat_preview = payload.duplicate(true)
 	combat_preview["source_revision"] = revision
+	combat_preview["authoritative"] = true
+	combat_preview["control_estimated"] = false
 
 func _status_bonuses(status: Dictionary) -> Dictionary:
 	var result := {}
@@ -774,8 +813,6 @@ func _sync_pve_target() -> void:
 func _target_resistance(element: String, battle: Dictionary, monster: Dictionary = {}) -> float:
 	if battle.has("opponent_status"): return _status_bonuses(battle.opponent_status).get("resistance_" + element, 0.0)
 	if monster.is_empty(): monster = _monster_by_id(battle)
-	var main := str(monster.get("intent_element", "None"))
-	if main == "None": return 0.0
 	var id := str(monster.get("monster_id", ""))
 	if id == "annihilation-core":
 		var boss_main := "Fire" if int(monster.get("boss_phase", 1)) == 1 else "Metal"
@@ -785,6 +822,12 @@ func _target_resistance(element: String, battle: Dictionary, monster: Dictionary
 		if _counter(element, boss_main): return -0.30
 		if _counter(boss_main, element): return 0.30
 		return 0.0
+	# Shield/charge intents have no attack element. Species resistance remains
+	# fixed through those intents; BoxSpirit keeps its publicly rolled element.
+	var species_elements := {"fire-bat": "Fire", "fire-bat-a": "Fire", "fire-bat-b": "Fire", "rust-rat": "Metal", "thorn-mite": "Wood", "murk-snail": "Water", "sand-lizard": "Earth", "metal-guard": "Metal", "fire-herald": "Fire", "marsh-mother": "Water", "stone-guard": "Earth", "thorn-guard": "Wood"}
+	var species_id := id.trim_suffix("-a").trim_suffix("-b")
+	var main := str(species_elements.get(species_id, monster.get("intent_element", "None")))
+	if main == "None": return 0.0
 	var elite := id in ["metal-guard", "fire-herald", "marsh-mother", "stone-guard", "thorn-guard"]
 	if element == main: return 0.25 if elite else 0.15
 	if elite and element == _generated(main): return 0.15
@@ -830,6 +873,7 @@ func _calculate_combat_preview(ids: Array) -> Dictionary:
 	var resonance := 1.0
 	var conflict_pairs := 0
 	var cancellation := 0.0
+	var conflict_heal := 0
 	if not core.is_empty():
 		for card in elemental:
 			if str(card.get("element", "None")) != core and not card.get("is_element_tuning", false) and _conflict_pair(core, str(card.get("element", "None"))): conflict_pairs += 1
@@ -841,6 +885,13 @@ func _calculate_combat_preview(ids: Array) -> Dictionary:
 		var cancel_bonus := float(cards.map(func(card): return float(card.get("conflict_cancel_bonus", 0))).max())
 		cancellation = minf(0.80, 0.20 * conflict_pairs + cancel_bonus) if conflict_pairs > 0 else 0.0
 		var shared_multiplier: float = (1.0 + float(status.get("damage_" + core, 0.0))) * (1.0 - _target_resistance(core, battle, target_monster))
+		if conflict_pairs > 0:
+			var core_base := 0
+			for index in cards.size():
+				if str(cards[index].get("element", "None")) == core and int(cards[index].get("secondary_elemental_damage", 0)) == 0 and not cards[index].get("is_element_tuning", false): core_base += int(bases[index])
+			var coefficient := maxf(.5, float(cards.map(func(card): return float(card.get("conflict_heal_coefficient", 0))).max()))
+			var base_heal := int(floor(core_base * shared_multiplier * resonance * cancellation * coefficient)) + 2 * conflict_pairs
+			conflict_heal = int(floor(base_heal * (1.0 + float(status.get("vitality_heal", 0.0)))))
 		for i in cards.size():
 			var card: Dictionary = cards[i]
 			if int(card.get("elemental_damage", 0)) <= 0 or str(card.get("element", "None")) == "None" or int(card.get("secondary_elemental_damage", 0)) > 0: continue
@@ -862,20 +913,113 @@ func _calculate_combat_preview(ids: Array) -> Dictionary:
 		# Printed direct damage is already a direct segment.  Piercing is an
 		# additional per-card contribution and must not replace the base value.
 		direct += int(card.get("direct_damage", 0))
-		direct += int(floor((bases[i] + int(card.get("secondary_elemental_damage", 0)) + int(card.get("direct_damage", 0))) * float(status.get("piercing", 0.0))))
+		var piercing_secondary := int(card.get("secondary_elemental_damage", 0))
+		if reveal and card.get("secondary_element", "None") == reveal_element: piercing_secondary = int(floor(piercing_secondary * 1.3))
+		direct += int(floor((bases[i] + piercing_secondary + int(card.get("direct_damage", 0))) * float(status.get("piercing", 0.0))))
 	if direct > 0: segments["Direct"] = direct; total += direct
 	var target: Dictionary = battle.get("opponent", {}) if battle.has("opponent") else target_monster
 	var target_shield := int(target.get("shield", 0))
+	var incoming_multiplier := 1.0
+	if str(battle.get("opponent_class", "")) == "Guardian":
+		var target_status := _status_bonuses(battle.get("opponent_status", {}))
+		incoming_multiplier = 1.0 - float(target_status.get("bulwark_reduction", 0.0))
+		total = int(floor(total * incoming_multiplier))
 	var actual := mini(total, target_shield + int(target.get("hp", 0)))
-	var visible_segments: Array = []
-	var remaining := actual
+	var visible_segments := _visible_damage_segments(segments, actual, incoming_multiplier)
+	var recovery := _preview_recovery(cards, status, conflict_pairs, conflict_heal)
+	var draw_charge := float(cards.map(func(card): return float(card.get("draw_charge", 0))).reduce(func(a, b): return a + b, 0))
+	var immediate_draw := int(cards.map(func(card): return int(card.get("immediate_draw", 0))).reduce(func(a, b): return a + b, 0))
+	var player: Dictionary = room.get("player", {})
+	if str(player.get("hero_class", "")) == "Mage" and core_count > 0:
+		var passive: Dictionary = player.get("battle_status", {})
+		var combo := int(passive.get("combo", 0)) + 1 if str(passive.get("core_element", "")) == core else 1
+		var rhythm := mini(5, core_count + combo - 1)
+		draw_charge += minf(.50, float([0.0, .12, .24, .36, .48, .50][rhythm]) + recovery.weapon_bonus)
+		var draw_basis := core_count if str(player.get("numerical_state", {}).get("fenxian_policy", "CurrentRhythm")) == "CoreCardsSpent" else rhythm
+		immediate_draw += 0 if draw_basis <= 2 else (1 if draw_basis <= 4 else 2)
+	var stun := float(cards.map(func(card): return float(card.get("stun_seconds", 0))).max())
+	var block := float(cards.map(func(card): return float(card.get("draw_block_seconds", 0))).max())
+	return {"authoritative": false, "control_estimated": true, "core_element": core, "core_count": core_count, "damage": total, "damage_segments": visible_segments,
+		"shield_damage": mini(actual, target_shield), "hp_damage": maxi(0, actual - target_shield), "heal": recovery.heal, "shield_gain": recovery.shield_gain,
+		"heal_overflow": recovery.heal_overflow, "shield_overflow": recovery.shield_overflow, "health_cost": recovery.health_cost,
+		"stun_seconds": str(_preview_control(stun, recovery)), "draw_block_seconds": str(_preview_control(block, recovery) if room.has("duel") else 0.0),
+		"draw_block_speed_seconds": str(_preview_control(block / 2.0, recovery) if not room.has("duel") else 0.0),
+		"draw_charge": str(draw_charge), "immediate_draw": immediate_draw,
+		"draw_speed_seconds": str(cards.map(func(card): return float(card.get("draw_speed_seconds", 0))).max()), "draw_speed_modifier": str(cards.map(func(card): return float(card.get("draw_speed_modifier", 0))).min()),
+		"resonance_multiplier": str(resonance), "conflict_pair_count": conflict_pairs, "conflict_cancellation": str(cancellation)}
+
+func _visible_damage_segments(segments: Dictionary, actual: int, multiplier: float) -> Array:
+	if actual <= 0: return []
+	var segment_total := int(segments.values().reduce(func(a, b): return a + b, 0))
+	if segment_total <= 0: return [{"kind": "Direct", "amount": actual}]
+	var largest_kind := ""
+	var largest_value := -1
+	var allocated := 0
+	var reduced: Dictionary = {}
 	for kind in segments:
-		var amount := mini(int(segments[kind]), remaining)
-		if amount > 0: visible_segments.append({"kind": kind, "amount": amount})
-		remaining -= amount
-	var heals := int(cards.map(func(card): return int(card.get("heal", 0))).reduce(func(a, b): return a + b, 0))
-	var shields := int(cards.map(func(card): return int(card.get("shield", 0))).reduce(func(a, b): return a + b, 0))
-	return {"core_element": core, "core_count": core_count, "damage": total, "damage_segments": visible_segments, "shield_damage": mini(actual, target_shield), "hp_damage": maxi(0, actual - target_shield), "heal": heals, "shield_gain": shields, "health_cost": int(cards.map(func(card): return int(card.get("health_cost", 0))).reduce(func(a, b): return a + b, 0)), "stun_seconds": str(cards.map(func(card): return float(card.get("stun_seconds", 0))).max()), "draw_block_seconds": str(cards.map(func(card): return float(card.get("draw_block_seconds", 0))).max()), "draw_charge": str(cards.map(func(card): return float(card.get("draw_charge", 0))).reduce(func(a, b): return a + b, 0)), "immediate_draw": int(cards.map(func(card): return int(card.get("immediate_draw", 0))).reduce(func(a, b): return a + b, 0)), "draw_speed_seconds": str(cards.map(func(card): return float(card.get("draw_speed_seconds", 0))).max()), "draw_speed_modifier": str(cards.map(func(card): return float(card.get("draw_speed_modifier", 0))).min()), "resonance_multiplier": str(resonance), "conflict_pair_count": conflict_pairs, "conflict_cancellation": str(cancellation)}
+		if int(segments[kind]) > largest_value:
+			largest_kind = kind
+			largest_value = int(segments[kind])
+		var amount := int(floor(float(segments[kind]) * multiplier))
+		reduced[kind] = amount
+		allocated += amount
+	var expected := int(floor(segment_total * multiplier))
+	reduced[largest_kind] += expected - allocated
+	if expected != actual:
+		allocated = 0
+		var scale := float(actual) / maxf(1.0, expected)
+		for kind in reduced:
+			reduced[kind] = int(floor(float(reduced[kind]) * scale))
+			allocated += int(reduced[kind])
+		reduced[largest_kind] += actual - allocated
+	var result: Array = []
+	for kind in reduced:
+		if int(reduced[kind]) > 0: result.append({"kind": kind, "amount": int(reduced[kind])})
+	return result
+
+func _preview_recovery(cards: Array, status: Dictionary, conflict_pairs: int, conflict_heal: int) -> Dictionary:
+	var player: Dictionary = room.get("player", {})
+	var hero := str(player.get("hero_class", hero_class))
+	var combat: Dictionary = player.get("combat", {})
+	var maximum_hp := int(combat.get("maximum_hp", {"Mage": 70, "Priest": 80, "Guardian": 100}.get(hero, 70)))
+	var hp := int(combat.get("hp", maximum_hp))
+	var shield := int(combat.get("shield", 0))
+	var weapon := clampi(int(player.get("weapon_level", 0)), 0, 5)
+	var weapon_bonus := float([.06, .08, .10, .11, .13, .14][weapon])
+	var requested_cost := int(cards.map(func(card): return int(card.get("health_cost", 0))).reduce(func(a, b): return a + b, 0))
+	var after_cost := maxi(1, hp - maxi(0, requested_cost))
+	var missing_ratio := clampf(1.0 - float(hp) / maxf(1.0, maximum_hp), 0.0, 1.0)
+	var raw_heal: float = float(cards.map(func(card): return int(card.get("heal", 0))).reduce(func(a, b): return a + b, 0)) * (1.0 + .25 * conflict_pairs)
+	if hero == "Priest":
+		raw_heal = floor(raw_heal * (1.0 + .80 * missing_ratio))
+		raw_heal = floor(raw_heal * (1.0 + weapon_bonus))
+	raw_heal = floor(raw_heal * (1.0 + float(status.get("vitality_heal", 0.0)))) + conflict_heal
+	var effective_max_hp := int(floor(maximum_hp * (1.0 + minf(.40, float(status.get("vitality_overcap", 0.0))))))
+	var effective_heal := mini(int(raw_heal), maxi(0, effective_max_hp - after_cost))
+	var printed_shield := int(cards.map(func(card): return int(card.get("shield", 0))).reduce(func(a, b): return a + b, 0))
+	var raw_shield: float = printed_shield
+	if hero == "Guardian": raw_shield *= 1.0 + .45 * clampf(float(after_cost) / maxf(1.0, maximum_hp), 0.0, 1.0)
+	raw_shield = floor(raw_shield * (1.0 + float(status.get("bulwark_shield", 0.0))))
+	if hero == "Guardian" and printed_shield > 0:
+		var numerical: Dictionary = player.get("numerical_state", {})
+		if str(numerical.get("guardian_policy", "CurrentSteps")) == "FractionalRemainder":
+			if shield < maximum_hp / 2: raw_shield += floor(float([10, 14, 18, 22, 26, 30][weapon] + int(numerical.get("guardian_remainder_tenths", 0))) / 10.0)
+		else: raw_shield += 3 if weapon >= 4 else (2 if weapon >= 2 else 1)
+	var effective_shield := mini(int(raw_shield), maxi(0, int(maximum_hp / 2) - shield))
+	return {"heal": effective_heal, "shield_gain": effective_shield, "heal_overflow": maxi(0, int(raw_heal) - effective_heal), "shield_overflow": maxi(0, int(raw_shield) - effective_shield),
+		"health_cost": maxi(0, hp - after_cost), "weapon_bonus": weapon_bonus, "missing_ratio": missing_ratio, "hero": hero,
+		"hp": hp, "maximum_hp": maximum_hp, "weapon_level": weapon}
+
+func _preview_control(seconds: float, recovery: Dictionary) -> float:
+	if recovery.hero != "Priest" or seconds <= 0: return seconds
+	# Authoritative control uses decimal floors. Published durations have whole
+	# microseconds; integer numerators avoid binary rounding below a millisecond.
+	var maximum := maxi(1, int(recovery.maximum_hp))
+	var bounded_hp := clampi(int(recovery.hp), 0, maximum)
+	var numerator := roundi(seconds * 1000000.0) * (140 * maximum - 40 * bounded_hp)
+	var milliseconds := floori(float(numerator) / float(100000 * maximum))
+	var weapon_percent := int([6, 8, 10, 11, 13, 14][int(recovery.weapon_level)])
+	return floor(float(milliseconds * (100 + weapon_percent)) / 100.0) / 1000.0
 
 func play_cards() -> void:
 	if selected_cards.is_empty(): return
@@ -1057,13 +1201,20 @@ func _retry_rejected_command(payload: Dictionary) -> bool:
 func _on_event(kind: String, payload: Dictionary) -> void:
 	if kind == "pong": return
 	if kind == "error.command_rejected" and payload.get("code", "") == "NOT_IN_ROOM":
-		_settlement_recovery_match_id = str(room.get("match_id", ""))
+		var origin: Dictionary = payload.get("_origin_context", {})
+		var current_match := str(room.get("match_id", _settlement_recovery_match_id))
+		if not origin.is_empty() and str(origin.get("match_id", "")) != current_match: return
+		# A second rejection can arrive after the room was cleared. Keep the
+		# original match until its durable receipt is visible or acknowledged.
+		if not current_match.is_empty(): _settlement_recovery_match_id = current_match
+		var generation: int = gateway.session_generation
 		_settlement_poll_at = 0
 		room = {}
 		selected_cards.clear()
 		clear_combat_preview()
 		payload["_retry_handled"] = true
 		await refresh_lobby()
+		if generation != gateway.session_generation or (not room.is_empty() and str(room.get("match_id", "")) != current_match): return
 		if not settlement.is_empty(): _settlement_recovery_match_id = ""
 		if settlement.is_empty() and lobby.get("unfinishedMatch") != null:
 			notice.emit("上次探索正在结算，请稍后点击重新连接")
@@ -1310,7 +1461,17 @@ func acknowledge_settlement() -> bool:
 	var generation: int = gateway.session_generation
 	var result: Dictionary = await gateway.request("/api/v1/settlements/" + settlement_id + "/acknowledge", HTTPClient.METHOD_POST, {})
 	if generation != gateway.session_generation: return false
+	if not result.ok and int(result.get("status", 0)) in [0, 200, 502, 503, 504]:
+		# A lost write response can follow a committed acknowledgement. Verify the
+		# account's authoritative unfinished state before restoring an old receipt.
+		var verified: Dictionary = await gateway.request("/api/v1/bootstrap", HTTPClient.METHOD_GET, null, [0, 401, 503])
+		if generation != gateway.session_generation: return false
+		if verified.ok and verified.data is Dictionary and str(verified.data.get("configVersion", "")) == str(CATALOG.data.version) and verified.data.has("unfinishedSettlement") and verified.data.has("unfinishedMatch") and verified.data.has("activePreparation"):
+			if verified.data.unfinishedSettlement == null and verified.data.unfinishedMatch == null and verified.data.activePreparation == null:
+				result = {"ok": true, "status": 200, "acknowledgement_verified_by_bootstrap": true}
+	if generation != gateway.session_generation: return false
 	if result.ok:
+		_settlement_recovery_match_id = ""
 		_settlement_loading = ""
 		_settlement_polling = false
 		_settlement_poll_at = 0

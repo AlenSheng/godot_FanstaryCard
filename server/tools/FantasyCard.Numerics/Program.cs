@@ -3,6 +3,16 @@ using System.Text.Json;
 using FantasyCard.Domain.Configuration;
 using FantasyCard.Domain.Rooms;
 
+if (args.Contains("--preview-vectors", StringComparer.Ordinal))
+{
+    return PreviewVectors.Run(args);
+}
+
+if (args.Contains("--combat-experience", StringComparer.Ordinal))
+{
+    return CombatExperience.Run(args);
+}
+
 var options = SimulationOptions.Parse(args);
 var analyzer = new RouteAnalyzer(GameConfigCatalog.Current);
 var samples = Enumerable.Range(options.SeedStart, options.Samples)
@@ -11,6 +21,7 @@ var samples = Enumerable.Range(options.SeedStart, options.Samples)
 var summary = SimulationSummary.Create(GameConfigCatalog.Current.Version, options, samples,
     RouteAnalyzer.MinimumEliteClearsToVisitMiddleCorners(3));
 Console.WriteLine(JsonSerializer.Serialize(summary, new JsonSerializerOptions { WriteIndented = true }));
+return 0;
 
 internal sealed class RouteAnalyzer(GameConfigCatalog config)
 {

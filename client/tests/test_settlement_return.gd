@@ -5,6 +5,8 @@ class AcknowledgeGateway extends Node:
 	var room_id := "old-room"
 	var room_revision := 7
 	var acknowledge_ok := false
+	var response_lost := false
+	var bootstrap: Dictionary = {}
 	var acknowledge_calls := 0
 	var saw_hall_before_request := false
 	var store: Node
@@ -13,7 +15,8 @@ class AcknowledgeGateway extends Node:
 		if path.ends_with("/acknowledge"):
 			acknowledge_calls += 1
 			saw_hall_before_request = store.settlement.is_empty() and store.room.is_empty() and store.lobby.get("unfinishedSettlement") == null and room_id.is_empty()
-			return {"ok": acknowledge_ok}
+			return {"ok": acknowledge_ok, "status": 0 if response_lost else 409}
+		if path == "/api/v1/bootstrap" and not bootstrap.is_empty(): return {"ok": true, "data": bootstrap}
 		return {"ok": false}
 
 func run_test() -> Dictionary:
@@ -42,6 +45,20 @@ func run_test() -> Dictionary:
 			gateway.acknowledge_ok = true
 			checks["failed acknowledgement can be retried"] = store.acknowledge_settlement() and gateway.acknowledge_calls == 2 and store.settlement.is_empty()
 			checks["completed receipt cannot be acknowledged twice"] = not store.acknowledge_settlement() and gateway.acknowledge_calls == 2
+		store.free()
+		gateway.free()
+	for committed in [false, true]:
+		var store = load("res://state/game_store.gd").new()
+		var gateway := AcknowledgeGateway.new()
+		gateway.store = store
+		gateway.response_lost = true
+		store.gateway = gateway
+		store.settlement = {"settlementId": "receipt", "matchId": "match-1"}
+		gateway.bootstrap = {"configVersion": store.CATALOG.data.version, "player": {}, "wallet": {}, "materials": {},
+			"shop": {}, "market": [], "inventory": {}, "mail": {}, "unfinishedMatch": null,
+			"activePreparation": null, "unfinishedSettlement": null if committed else store.settlement.duplicate(true)}
+		checks["lost ack response resolved by authoritative state %s" % committed] = store.acknowledge_settlement() == committed and store.settlement.is_empty() == committed
+		checks["ack verification does not repeat the mutation %s" % committed] = gateway.acknowledge_calls == 1
 		store.free()
 		gateway.free()
 	return {"ok": not checks.values().has(false), "message": "Settlement return is optimistic and restores the receipt on failure", "checks": checks}

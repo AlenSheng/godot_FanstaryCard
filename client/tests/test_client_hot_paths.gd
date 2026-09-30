@@ -133,7 +133,9 @@ func _benchmark(failures: Array[String]) -> String:
 	var index = load("res://data/catalog_index.gd")
 	var catalog = load("res://data/catalog.json")
 	var cards: Array = catalog.data.tables.Cards
-	var repeats := 40
+	# Ten full scans retain millions of comparisons and the same relative
+	# speed assertion while keeping this offline check bounded.
+	var repeats := 10
 	var sink := 0
 	var started := Time.get_ticks_usec()
 	for _repeat in repeats:

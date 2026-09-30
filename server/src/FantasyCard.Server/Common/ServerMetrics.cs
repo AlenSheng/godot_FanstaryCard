@@ -33,6 +33,7 @@ public sealed class ServerMetrics : IDisposable
     private readonly Counter<long> _matchLaunchFailures;
     private readonly UpDownCounter<long> _activeRooms;
     private readonly Histogram<long> _roomPlayerCount;
+    private readonly UpDownCounter<long> _activeHumanRoomPlayers;
     private readonly Histogram<long> _roomActorQueueLength;
     private readonly Histogram<double> _roomActorCommandWait;
     private readonly Histogram<double> _roomActorTickDelay;
@@ -106,6 +107,8 @@ public sealed class ServerMetrics : IDisposable
             "fantasycard.rooms.active", unit: "{room}");
         _roomPlayerCount = _meter.CreateHistogram<long>(
             "fantasycard.rooms.players", unit: "{player}");
+        _activeHumanRoomPlayers = _meter.CreateUpDownCounter<long>(
+            "fantasycard.rooms.humans.active", unit: "{player}");
         _roomActorQueueLength = _meter.CreateHistogram<long>(
             "fantasycard.room_actor.queue.length", unit: "{command}");
         _roomActorCommandWait = _meter.CreateHistogram<double>(
@@ -176,6 +179,7 @@ public sealed class ServerMetrics : IDisposable
         _roomPlayerCount.Record(playerCount);
     }
     public void RoomClosed() => _activeRooms.Add(-1);
+    public void RoomHumanPlayersChanged(long delta) => _activeHumanRoomPlayers.Add(delta);
     public void ObserveRoomActorQueueLength(long count) => _roomActorQueueLength.Record(Math.Max(0, count));
     public void ObserveRoomActorCommandWait(string command, TimeSpan wait) =>
         _roomActorCommandWait.Record(

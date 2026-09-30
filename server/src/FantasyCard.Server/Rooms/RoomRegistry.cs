@@ -19,6 +19,7 @@ public sealed partial class RoomRegistry(
     private readonly object _gate = new();
     private readonly Dictionary<Guid, RoomActor> _rooms = [];
     private readonly Dictionary<Guid, Guid> _playerRooms = [];
+    private readonly HashSet<Guid> _humanPlayerRoutes = [];
     private readonly Dictionary<Guid, Guid?> _roomMatches = [];
     private readonly Dictionary<Guid, RoomLifecycleMetricsTracker> _lifecycleTrackers = [];
 
@@ -108,7 +109,9 @@ public sealed partial class RoomRegistry(
             foreach (var player in activePlayers)
             {
                 _playerRooms.Add(player.PlayerId, room.RoomId);
+                if (!player.IsBot) _humanPlayerRoutes.Add(player.PlayerId);
             }
+            metrics?.RoomHumanPlayersChanged(activePlayers.Count(player => !player.IsBot));
             metrics?.RoomOpened(players.Count);
             return actor;
         }
@@ -121,7 +124,10 @@ public sealed partial class RoomRegistry(
             foreach (var player in snapshot.Players.Where(player => IsTerminal(player.Phase)))
             {
                 if (_playerRooms.TryGetValue(player.PlayerId, out var roomId) && roomId == snapshot.RoomId)
+                {
                     _playerRooms.Remove(player.PlayerId);
+                    if (_humanPlayerRoutes.Remove(player.PlayerId)) metrics?.RoomHumanPlayersChanged(-1);
+                }
             }
         }
     }
@@ -199,6 +205,7 @@ public sealed partial class RoomRegistry(
                 .ToArray())
             {
                 _playerRooms.Remove(playerId);
+                if (_humanPlayerRoutes.Remove(playerId)) metrics?.RoomHumanPlayersChanged(-1);
             }
         }
 

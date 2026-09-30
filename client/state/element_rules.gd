@@ -3,7 +3,7 @@ extends RefCounted
 const COUNTER_TARGET := {"Water": "Fire", "Fire": "Metal", "Metal": "Wood", "Wood": "Earth", "Earth": "Water"}
 const GENERATED_ELEMENT := {"Wood": "Fire", "Fire": "Earth", "Earth": "Metal", "Metal": "Water", "Water": "Wood"}
 const CONFLICT_WITH := {
-	"Wood": {"Earth": true},
+	"Wood": {"Earth": true, "Metal": true},
 	"Earth": {"Wood": true, "Water": true},
 	"Water": {"Earth": true, "Fire": true},
 	"Fire": {"Water": true, "Metal": true},

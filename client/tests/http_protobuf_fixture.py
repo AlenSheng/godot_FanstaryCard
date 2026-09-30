@@ -61,6 +61,10 @@ class Handler(BaseHTTPRequestHandler):
             self.close_connection = True
             return
         if path == '/api/v1/players/me':
+            if 'flight' in q:
+                version = counts[self.path]
+                time.sleep(.3)
+                self.send(200,'PlayerProfileResponse',{'user_id':'fixture-user','display_name':'fixture','version':version}); return
             if 'late' in q:
                 time.sleep(.4); self.send(401,'HttpError',{'status':401,'detail':'expired'}); return
             self.send(200,'PlayerProfileResponse',{'user_id':'fixture-user','display_name':'fixture','version':9223372036854775807}); return

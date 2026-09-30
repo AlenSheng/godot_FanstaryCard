@@ -4,13 +4,13 @@ on:
   pull_request:
     paths:
       - 'tools/gameplay_load*.py'
+      - 'tools/pr13_runtime_evidence.py'
+      - 'tools/pr13_local_checks.py'
       - 'tools/cloud_load_test.py'
       - 'tools/tests/**'
       - 'client/network/**'
       - 'client/state/**'
-      - 'client/tests/gameplay_load_client.gd'
-      - 'client/tests/run_gameplay_load_parse.gd'
-      - 'client/tests/test_settlement_return.gd'
+      - 'client/tests/**'
       - 'protocol/**'
       - 'server/**'
       - '.github/workflows/gameplay-load.yml'
@@ -62,6 +62,20 @@ jobs:
           sudo -E unshare -n timeout 90 "$godot" --headless --path client --script res://tests/run_play_retry.gd > test-results/gameplay-load/client.log 2>&1
           ! grep -E 'SCRIPT ERROR|Parse Error|Failed to load script' test-results/gameplay-load/*.log
           grep -q 'Gameplay load client parses' test-results/gameplay-load/load-parse.log
+      - name: Loopback HTTP completeness and protocol fixtures
+        shell: bash
+        run: |
+          set -euo pipefail
+          godot="$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64"
+          python client/tests/run_http_boundary.py --godot "$godot" --output test-results/gameplay-load/http-boundary
+          python client/tests/run_http_protobuf_client.py --godot "$godot" --work-dir test-results/gameplay-load/http-fixture
+      - name: Same-session callback races
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo -E unshare -n timeout 60 "$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64" --headless --path client --script res://tests/run_lobby_race.gd > test-results/gameplay-load/lobby-race.log 2>&1
+          grep -q '"ok":true' test-results/gameplay-load/lobby-race.log
+          ! grep -E 'SCRIPT ERROR|Parse Error' test-results/gameplay-load/lobby-race.log
       - uses: actions/upload-artifact@v7
         if: always()
         with:
@@ -99,7 +113,7 @@ jobs:
     timeout-minutes: 20
     services:
       postgres:
-        image: postgres:16
+        image: postgres:18
         env:
           POSTGRES_DB: fantasycard_test
           POSTGRES_USER: postgres
@@ -120,9 +134,9 @@ jobs:
       - uses: actions/setup-dotnet@v6
         with:
           global-json-file: server/global.json
-      - name: Match replay and room integration on disposable PostgreSQL
+      - name: Full server and runtime integration on disposable PostgreSQL
         working-directory: server
-        run: dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --filter 'FullyQualifiedName~Four_humans_enqueue_ready_and_launch_one_persisted_room' --logger 'trx;LogFileName=postgres-match.trx' --results-directory ../test-results/gameplay-load
+        run: dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --logger 'trx;LogFileName=postgres-full.trx' --results-directory ../test-results/gameplay-load
       - uses: actions/upload-artifact@v7
         if: always()
         with:

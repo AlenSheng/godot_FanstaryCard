@@ -10,7 +10,7 @@ args = parser.parse_args()
 repo = Path(__file__).resolve().parents[2]
 work = (repo / args.work_dir).resolve()
 for folder in ['network','data','tests']: (work / folder).mkdir(parents=True, exist_ok=True)
-for name in ['protobuf.gd','http_protocol.gd','gateway.gd']: shutil.copyfile(repo/'client/network'/name, work/'network'/name)
+for name in ['protobuf.gd','http_protocol.gd','gateway.gd','reusable_http_client.gd']: shutil.copyfile(repo/'client/network'/name, work/'network'/name)
 for name in ['http_schema.json','http_endpoints.json','realtime_schema.json']: shutil.copyfile(repo/'client/data'/name, work/'data'/name)
 shutil.copyfile(repo/'protocol/golden-vectors.json',work/'data/golden-vectors.json')
 for name in ['test_protobuf.gd','test_http_protobuf_client.gd','test_http_protobuf_transport.gd']: shutil.copyfile(repo/'client/tests'/name, work/'tests'/name)
@@ -19,7 +19,15 @@ env = dict(os.environ, FANTASYCARD_SERVER_URL='http://127.0.0.1:38971')
 records = []
 def run(extra, label):
     command = [args.godot,'--headless','--path',str(work)] + extra
-    result = subprocess.run(command,env=env,capture_output=True,text=True,encoding='utf-8',errors='replace',timeout=90,creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
+    try:
+        result = subprocess.run(command,env=env,capture_output=True,text=True,encoding='utf-8',errors='replace',timeout=90,creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
+    except subprocess.TimeoutExpired as exc:
+        output = (exc.stdout or b'') + (exc.stderr or b'')
+        if isinstance(output, bytes): output = output.decode('utf-8', errors='replace')
+        (work/(label+'.log')).write_text(output+'\nFIXTURE TIMEOUT',encoding='utf-8')
+        records.append({'command':command,'exit_code':None,'timeout':True,'log':label+'.log'})
+        print(output,flush=True)
+        return False
     output = result.stdout + result.stderr
     (work/(label+'.log')).write_text(output,encoding='utf-8')
     record = {'command':command, 'exit_code':result.returncode,'engine_errors':'ERROR:' in output,'log':label+'.log'}
