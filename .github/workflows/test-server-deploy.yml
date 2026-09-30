@@ -1,0 +1,174 @@
+name: Controlled silicon valley test deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: Same-repository open PR targeting release (freeze before dispatch)
+        required: true
+        type: string
+      commit_sha:
+        description: Reviewed full 40-character lowercase PR head SHA
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: silicon-valley-test-deploy
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    if: github.repository == 'AlenSheng/godot_FanstaryCard' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: read
+      actions: read
+    outputs:
+      source_sha: ${{ steps.source.outputs.source_sha }}
+      pr_number: ${{ steps.source.outputs.pr_number }}
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Validate trusted controller, frozen PR and real environment protections
+        id: source
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+          COMMIT_SHA: ${{ inputs.commit_sha }}
+          TEST_DEPLOY_ENABLED: ${{ vars.TEST_DEPLOY_ENABLED }}
+          TEST_DEPLOY_APPROVED_WORKFLOW_SHA: ${{ vars.TEST_DEPLOY_APPROVED_WORKFLOW_SHA }}
+        run: python3 tools/cloud/deployment.py preflight --output evidence/preflight.json
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: deploy-preflight-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/preflight.json
+          retention-days: 14
+
+  build:
+    needs: validate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_DB: fantasycard_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres -d fantasycard_test"
+          --health-interval 5s --health-timeout 5s --health-retries 12
+    outputs:
+      artifact_id: ${{ steps.image.outputs.artifact-id }}
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          ref: ${{ github.sha }}
+          path: trusted
+          persist-credentials: false
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          ref: ${{ needs.validate.outputs.source_sha }}
+          path: source
+          persist-credentials: false
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        with:
+          name: deploy-preflight-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: source/server/global.json
+      - name: Test exact source with the existing Domain and PostgreSQL regressions
+        working-directory: source
+        env:
+          EXPECTED_SHA: ${{ needs.validate.outputs.source_sha }}
+          FANTASYCARD_TEST_POSTGRES: Host=127.0.0.1;Port=5432;Username=postgres;Password=postgres;Database=fantasycard_test
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          mkdir -p ../evidence/tests
+          dotnet --info > ../evidence/tests/dotnet.txt
+          dotnet test server/tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj -c Release --logger 'trx;LogFileName=domain.trx' --results-directory "$GITHUB_WORKSPACE/evidence/tests"
+          dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --logger 'trx;LogFileName=postgres.trx' --results-directory "$GITHUB_WORKSPACE/evidence/tests"
+      - name: Build the existing Dockerfile and archive the immutable tested image
+        env:
+          SOURCE_SHA: ${{ needs.validate.outputs.source_sha }}
+        run: |
+          set -euo pipefail
+          mkdir -p image-artifact
+          python3 trusted/tools/cloud/deployment.py health --updater trusted/server/deploy/fantasycard-update.sh --output image-artifact/health.sh
+          docker build --file source/server/src/FantasyCard.Server/Dockerfile --build-arg "FANTASYCARD_SOURCE_COMMIT=$SOURCE_SHA" --tag "fantasycard-test:$SOURCE_SHA" source 2>&1 | tee evidence/build.log
+          docker save "fantasycard-test:$SOURCE_SHA" | gzip -1 > image-artifact/image.tar.gz
+          python3 trusted/tools/cloud/deployment.py manifest --preflight evidence/preflight.json --archive image-artifact/image.tar.gz --image-tag "fantasycard-test:$SOURCE_SHA" --output image-artifact/manifest.json
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        id: image
+        with:
+          name: tested-image-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            image-artifact/image.tar.gz
+            image-artifact/manifest.json
+          retention-days: 7
+          if-no-files-found: error
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: deploy-build-tests-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence
+          retention-days: 14
+
+  deploy:
+    needs: [validate, build]
+    if: github.repository == 'AlenSheng/godot_FanstaryCard' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    environment:
+      name: silicon-valley-test
+      url: https://www.relicbound.cn/health/ready
+    permissions:
+      contents: read
+      pull-requests: read
+      actions: read
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          ref: ${{ github.sha }}
+          path: trusted
+          persist-credentials: false
+      - name: Revalidate source and protections after environment approval
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ needs.validate.outputs.pr_number }}
+          COMMIT_SHA: ${{ needs.validate.outputs.source_sha }}
+          TEST_DEPLOY_ENABLED: ${{ vars.TEST_DEPLOY_ENABLED }}
+          TEST_DEPLOY_APPROVED_WORKFLOW_SHA: ${{ vars.TEST_DEPLOY_APPROVED_WORKFLOW_SHA }}
+        run: python3 trusted/tools/cloud/deployment.py preflight --output deploy-evidence/preflight.json
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        with:
+          artifact-ids: ${{ needs.build.outputs.artifact_id }}
+          path: image-artifact
+          merge-multiple: true
+      - name: Transfer, deploy and verify tested image using strict SSH host verification
+        env:
+          COMMIT_SHA: ${{ needs.validate.outputs.source_sha }}
+          TEST_SERVER_SSH_KEY: ${{ secrets.TEST_SERVER_SSH_KEY }}
+          TEST_SERVER_KNOWN_HOSTS: ${{ secrets.TEST_SERVER_KNOWN_HOSTS }}
+        run: python3 trusted/tools/cloud/ship.py
+      - name: Write acceptance evidence location
+        if: always()
+        run: |
+          printf 'Controlled test deployment evidence: deploy-acceptance-%s-%s\n\nPR13 full acceptance remains governed by its independent register.\n' "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always()
+        with:
+          name: deploy-acceptance-${{ github.run_id }}-${{ github.run_attempt }}
+          path: deploy-evidence
+          retention-days: 30
+          if-no-files-found: warn
