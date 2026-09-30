@@ -133,7 +133,7 @@ jobs:
           docker build --label "org.opencontainers.image.revision=$SOURCE_SHA" --file source/server/src/FantasyCard.Server/Dockerfile --tag "fantasycard-test:$SOURCE_SHA" source 2>&1 | tee evidence/build.log
           git -C source diff --exit-code -- . ':!**/obj/**' ':!**/bin/**'
           docker build --target build --file source/server/src/FantasyCard.Server/Dockerfile --tag "fantasycard-test-builder:$SOURCE_SHA" source > evidence/builder.log 2>&1
-          python3 trusted/tools/cloud/validate_image.py --source source --image "fantasycard-test:$SOURCE_SHA" --builder "fantasycard-test-builder:$SOURCE_SHA" --source-sha "$SOURCE_SHA" --output image-artifact/image-validation.json > evidence/image-validation.log 2>&1
+          python3 trusted/tools/cloud/validate_image.py --source source --image "fantasycard-test:$SOURCE_SHA" --builder "fantasycard-test-builder:$SOURCE_SHA" --source-sha "$SOURCE_SHA" --output image-artifact/image-validation.json --diagnostics evidence/image-diagnostics > evidence/image-validation.log 2>&1
           docker save "fantasycard-test:$SOURCE_SHA" | gzip -1 > image-artifact/image.tar.gz
           python3 trusted/tools/cloud/deployment.py manifest --preflight evidence/preflight.json --archive image-artifact/image.tar.gz --image-tag "fantasycard-test:$SOURCE_SHA" --output image-artifact/manifest.json
       - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0

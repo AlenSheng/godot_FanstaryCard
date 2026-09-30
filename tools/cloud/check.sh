@@ -15,7 +15,7 @@ trap cleanup EXIT
 git rev-parse HEAD > "$evidence/source.txt"
 dotnet --info > "$evidence/dotnet.txt"
 godot --version > "$evidence/godot.txt"
-rg -q '^4\.7\.2\.' "$evidence/godot.txt"
+[[ $(cat "$evidence/godot.txt") =~ ^4\.7\.2\. ]]
 "$FANTASYCARD_CLOUD_TOOLS/postgres/bin/psql" -h "$FANTASYCARD_CLOUD_TOOLS/postgres-test/socket" -p 55432 -U postgres -d postgres -Atc 'SELECT version()' > "$evidence/postgres.txt"
 dotnet test server/tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj -c Release --no-restore --logger 'trx;LogFileName=domain.trx' --results-directory "$evidence"
 dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --no-restore --logger 'trx;LogFileName=postgres.trx' --results-directory "$evidence"

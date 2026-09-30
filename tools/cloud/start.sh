@@ -19,9 +19,12 @@ if ! "$pg_bin/pg_ctl" -D "$pg_root/data" status >/dev/null 2>&1; then
 fi
 [[ $("$pg_bin/psql" -h "$pg_root/socket" -p 55432 -U postgres -d postgres -Atc 'SHOW listen_addresses') == '' ]]
 "$pg_bin/pg_isready" -h "$pg_root/socket" -p 55432 -U postgres
-if ! "$pg_bin/psql" -h "$pg_root/socket" -p 55432 -U postgres -d postgres -Atc "SELECT 1 FROM pg_database WHERE datname='fantasycard_test'" | rg -qx 1; then
-  "$pg_bin/createdb" -h "$pg_root/socket" -p 55432 -U postgres fantasycard_test
-fi
+database_exists=$("$pg_bin/psql" -h "$pg_root/socket" -p 55432 -U postgres -d postgres -v ON_ERROR_STOP=1 -Atc "SELECT 1 FROM pg_database WHERE datname='fantasycard_test'")
+case "$database_exists" in
+  1) ;;
+  '') "$pg_bin/createdb" -h "$pg_root/socket" -p 55432 -U postgres fantasycard_test ;;
+  *) echo 'Unexpected database existence result; stopped before creation' >&2; exit 1 ;;
+esac
 # No failed-source fallback masks missing packages; force the already cached set.
 flock -u 8
 exec 8>&-

@@ -188,3 +188,24 @@ Environment、Secrets、checkout 或服务器操作。真正执行时在 UI／AP
 与当前 baseline SHA，确认数据兼容性和线上独占窗口，检查启用变量、实际 API、
 最终镜像证明、Strict SSH、备份及回退点，再记录已有任务授权下的必要重启范围。
 若任一门槛失败，明确不可部署；CI 绿也不能等同 PR13 全量验收。
+
+## 0fddd35 的 CI 诊断与后续修复
+
+实际 PR CI run `36740272222`：static-and-mock 通过；install-and-local-transactions
+与 final-runtime-image 失败。最终 runtime/build stage 均已构建成功；最终 DLL
+摘要和混淆差异检查完成，但全套测试得到 0 个结果，restart／Production／DB
+outage 尚未执行。因此仍 **不可部署**，不能用静态检查通过替代最终镜像验收。
+初次 artifact `11109133902` 仅包含构建日志、清洁摘要和验证器日志，遗漏了
+内层 tests.log／TRX，尚不足以定位内层失败。其后端报告 `cleanup.ok=true`。
+
+已修正 Start 的数据库存在性判断：直接捕获带 ON_ERROR_STOP 的 SQL 输出，
+精确判断 1／空值，查询失败直接传播；不依赖 runner 未安装的 rg，也不将失败
+查询当成不存在后重复 createdb。新增真实 Bash fixture 反例，验证重复启动
+只创建一次数据库，以及 SQL 错误不会触发创建。
+
+最终镜像包装器现在无论成功或失败均导出严格限定的测试日志／TRX／依赖
+摘要清单到 diagnostics，workflow 在失败时也上传。只含可丢弃隔离测试的
+文本证据；不会上传映射、DLL、dump、容器日志、runtime state 或真实凭据。
+Bearer、JWT 和显式凭据赋值会脱敏；新的测试验证诊断完整性和脱敏。
+新的 CI 仍须严格重跑最终镜像；若根因属于交接基线的 Domain 测试／实现
+不一致，报告该固定 SHA 的源码阻塞，不能改 PR13、跳过用例或伪造通过。
