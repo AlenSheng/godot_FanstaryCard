@@ -1,0 +1,16 @@
+{
+  "LOAD-01.2": {
+    "input": "Owned PID/run/client/epoch status model; provenance + source-byte-audit; actual frozen owned_statuses used",
+    "status": "MinimalInputAvailable_NoUpstreamAcceptanceClaim"
+  },
+  "LOAD-06.2": {
+    "input": "Actual Gateway timeout/STOP monotonic ordering, model coordinator monotonic samples, real cleanup monotonic grace; no wall/monotonic subtraction",
+    "artifacts": [
+      "real-timeout/client.json.boundary.json",
+      "*/cleanup-real-time.json"
+    ],
+    "status": "MinimalInputAvailable_NoUpstreamAcceptanceClaim"
+  },
+  "internal_chain": "LOAD02.2 remains Partial because per-cycle failure/cancel terminal accounting lacks actual PG timeout observation; other task readiness is candidate and MAIN decides dependency effect.",
+  "full_upstream_Accepted_required": false
+}

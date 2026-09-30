@@ -1,0 +1,23 @@
+{
+  "production_argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "--headless",
+    "--audio-driver",
+    "Dummy",
+    "--path",
+    "/workspace/pr13-takeover/load02-acceptance-f812/source/client",
+    "res://tests/gameplay_load_client.tscn"
+  ],
+  "fixture_child_command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-c",
+    "import pathlib,sys,time,os,json\nstop=pathlib.Path(sys.argv[1]); mode=sys.argv[2]\nprint(json.dumps({\"pid\":os.getpid(),\"mode\":mode,\"actual_child\":True}),flush=True)\nif mode==\"immediate\": raise SystemExit(0)\nwhile mode==\"hang\" or not stop.exists(): time.sleep(.005)\nprint(\"STOP observed\",flush=True)\nraise SystemExit(7 if mode==\"exit7\" else 0)\n",
+    "/workspace/pr13-takeover/load02-acceptance-f812/evidence/cleanup_unknown/runs/20260930-224131-8849ae/STOP",
+    "cleanup_unknown"
+  ],
+  "owned_pid": 89328,
+  "model_telemetry": true,
+  "model_clock": true,
+  "model_metrics": true,
+  "capacity_claim": false
+}

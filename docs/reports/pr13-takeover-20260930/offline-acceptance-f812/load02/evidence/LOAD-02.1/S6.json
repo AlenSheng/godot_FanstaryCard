@@ -1,0 +1,559 @@
+{
+  "task_id": "LOAD-02.1",
+  "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+  "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+  "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+  "effective_room_policy": null,
+  "runtime_image_digest": null,
+  "profile_hash": "4b0339400f4e581b7e8bc44b3d92d4fa866dc442a361af3d95f665e65f25bd71",
+  "algorithm_version": "f812-coordinator-schema5/runtime-evidence-62d05cb4270174aa/receipt-harness-37303db722961352",
+  "case_ids": [
+    "LOAD-02.1-T01",
+    "LOAD-02.1-T02",
+    "LOAD-02.1-T03"
+  ],
+  "expected": [
+    {
+      "LOAD-02.1-T01": "execution结束、load失败"
+    },
+    {
+      "LOAD-02.1-T02": "保留业务失败"
+    },
+    {
+      "LOAD-02.1-T03": "记录两原因且证据无效优先退出码3"
+    }
+  ],
+  "actual": [
+    {
+      "case_id": "LOAD-02.1-T01",
+      "task_id": "LOAD-02.1",
+      "original_setup_and_injection": "时限到但负载未达",
+      "original_expected": "execution结束、load失败",
+      "actual": [
+        {
+          "command": [
+            "python3",
+            "/workspace/pr13-takeover/load02-acceptance-f812/harness/coordinator_case.py",
+            "time_limit",
+            "/workspace/pr13-takeover/load02-acceptance-f812/evidence/time_limit"
+          ],
+          "caller_exit": 1,
+          "stop_reason": "duration_limit",
+          "outcome": {
+            "classification": "incomplete_or_failed",
+            "passed": false,
+            "exit_code": 1
+          },
+          "six_dimensions": {
+            "dimensions": {
+              "execution": "Passed",
+              "evidence": "Passed",
+              "load": "Failed",
+              "gameplay": "NotApplicable",
+              "performance": "Unknown",
+              "cleanup": "Passed"
+            },
+            "applicable": [
+              "cleanup",
+              "evidence",
+              "execution",
+              "load",
+              "performance"
+            ],
+            "all_applicable_passed": false,
+            "full_acceptance_passed": false
+          },
+          "first_trigger": "duration_limit",
+          "all_triggers": [
+            "duration_limit"
+          ],
+          "process_exits": [
+            {
+              "client_id": "g001c015ae92b",
+              "before_stop": null,
+              "after_stop": 0
+            }
+          ],
+          "forced_pids": [],
+          "process_cleanup_complete": true,
+          "business_cleanup_verified": true,
+          "acceptance_passed": false,
+          "full_acceptance_passed": false,
+          "cutoffs": {
+            "running": {
+              "acknowledgements": 3,
+              "completed_cycles": 3,
+              "cycles_by_client": {
+                "g001c015ae92b": 3
+              },
+              "acknowledgements_by_client": {
+                "g001c015ae92b": 3
+              },
+              "distribution": {
+                "3": 1
+              },
+              "fallback_cycles": 0
+            },
+            "drain": {
+              "acknowledgements": 0,
+              "completed_cycles": 0,
+              "cycles_by_client": {},
+              "acknowledgements_by_client": {},
+              "distribution": {},
+              "fallback_cycles": 0
+            },
+            "final": {
+              "acknowledgements": 3,
+              "completed_cycles": 3,
+              "cycles_by_client": {
+                "g001c015ae92b": 3
+              },
+              "acknowledgements_by_client": {
+                "g001c015ae92b": 3
+              },
+              "distribution": {
+                "0": 0,
+                "3": 1
+              },
+              "fallback_cycles": 0
+            },
+            "zero_cycle_clients": [],
+            "zero_cycle_reason": null,
+            "evidence_errors": [],
+            "stop_ms": 100020000,
+            "final_ms": 100020000
+          },
+          "clock_scope": "model clock; real subprocess cleanup monotonic",
+          "capacity_claim": false
+        }
+      ],
+      "assertion_passed": true,
+      "status": "Passed",
+      "evidence": [
+        "evidence/time_limit/stdout.log",
+        "evidence/time_limit/cleanup-real-time.json",
+        "evidence/time_limit/command.json",
+        "evidence/time_limit/owned-launch.json",
+        "evidence/time_limit/stderr.log",
+        "evidence/time_limit/runs/20260930-224119-0cb6e1/load-contract.json",
+        "evidence/time_limit/runs/20260930-224119-0cb6e1/samples.jsonl",
+        "evidence/time_limit/runs/20260930-224119-0cb6e1/g001c015ae92b.json",
+        "evidence/time_limit/runs/20260930-224119-0cb6e1/STOP",
+        "evidence/time_limit/runs/20260930-224119-0cb6e1/g001c015ae92b.json.status.json",
+        "evidence/time_limit/runs/20260930-224119-0cb6e1/g001c015ae92b.log",
+        "evidence/time_limit/runs/20260930-224119-0cb6e1/state.json",
+        "evidence/time_limit/runs/20260930-224119-0cb6e1/report.json",
+        "evidence/time_limit/runs/20260930-224119-0cb6e1/g001c015ae92b.json.telemetry.jsonl"
+      ],
+      "remaining_blockers": [],
+      "supplemental": null,
+      "source_sha": "f812879e4518fd09bf22656451cb563d62940298"
+    },
+    {
+      "case_id": "LOAD-02.1-T02",
+      "task_id": "LOAD-02.1",
+      "original_setup_and_injection": "先业务失败后人工STOP",
+      "original_expected": "保留业务失败",
+      "actual": [
+        {
+          "command": [
+            "python3",
+            "/workspace/pr13-takeover/load02-acceptance-f812/harness/coordinator_case.py",
+            "timeout_before",
+            "/workspace/pr13-takeover/load02-acceptance-f812/evidence/timeout_before"
+          ],
+          "caller_exit": 130,
+          "stop_reason": "operator_stop_file",
+          "outcome": {
+            "classification": "operator_stopped",
+            "passed": false,
+            "exit_code": 130
+          },
+          "six_dimensions": {
+            "dimensions": {
+              "execution": "Failed",
+              "evidence": "Passed",
+              "load": "Failed",
+              "gameplay": "Failed",
+              "performance": "NotApplicable",
+              "cleanup": "Passed"
+            },
+            "applicable": [
+              "cleanup",
+              "evidence",
+              "execution",
+              "gameplay",
+              "load"
+            ],
+            "all_applicable_passed": false,
+            "full_acceptance_passed": false
+          },
+          "first_trigger": "operator_stop_file",
+          "all_triggers": [
+            "final_business_failure",
+            "operator_stop_file"
+          ],
+          "process_exits": [
+            {
+              "client_id": "g001c0187fca6",
+              "before_stop": null,
+              "after_stop": 0
+            }
+          ],
+          "forced_pids": [],
+          "process_cleanup_complete": true,
+          "business_cleanup_verified": true,
+          "acceptance_passed": false,
+          "full_acceptance_passed": false,
+          "cutoffs": {
+            "running": {
+              "acknowledgements": 0,
+              "completed_cycles": 0,
+              "cycles_by_client": {},
+              "acknowledgements_by_client": {},
+              "distribution": {},
+              "fallback_cycles": 0
+            },
+            "drain": {
+              "acknowledgements": 0,
+              "completed_cycles": 0,
+              "cycles_by_client": {},
+              "acknowledgements_by_client": {},
+              "distribution": {},
+              "fallback_cycles": 0
+            },
+            "final": {
+              "acknowledgements": 0,
+              "completed_cycles": 0,
+              "cycles_by_client": {},
+              "acknowledgements_by_client": {},
+              "distribution": {
+                "0": 1
+              },
+              "fallback_cycles": 0
+            },
+            "zero_cycle_clients": [
+              "g001c0187fca6"
+            ],
+            "zero_cycle_reason": null,
+            "evidence_errors": [],
+            "stop_ms": 100011000,
+            "final_ms": 100011000
+          },
+          "clock_scope": "model clock; real subprocess cleanup monotonic",
+          "capacity_claim": false
+        }
+      ],
+      "assertion_passed": true,
+      "status": "Passed",
+      "evidence": [
+        "evidence/timeout_before/stdout.log",
+        "evidence/timeout_before/cleanup-real-time.json",
+        "evidence/timeout_before/command.json",
+        "evidence/timeout_before/owned-launch.json",
+        "evidence/timeout_before/stderr.log",
+        "evidence/timeout_before/runs/20260930-224121-f37ab3/load-contract.json",
+        "evidence/timeout_before/runs/20260930-224121-f37ab3/samples.jsonl",
+        "evidence/timeout_before/runs/20260930-224121-f37ab3/STOP",
+        "evidence/timeout_before/runs/20260930-224121-f37ab3/g001c0187fca6.json.status.json",
+        "evidence/timeout_before/runs/20260930-224121-f37ab3/state.json",
+        "evidence/timeout_before/runs/20260930-224121-f37ab3/g001c0187fca6.log",
+        "evidence/timeout_before/runs/20260930-224121-f37ab3/report.json",
+        "evidence/timeout_before/runs/20260930-224121-f37ab3/g001c0187fca6.json",
+        "evidence/timeout_before/runs/20260930-224121-f37ab3/g001c0187fca6.json.telemetry.jsonl"
+      ],
+      "remaining_blockers": [],
+      "supplemental": {
+        "actual_transport_pre_stop_failure": {
+          "boundary": {
+            "business_scope": "no PG account in transport fixture",
+            "production_attempt_timeout_ms": 10000,
+            "production_logical_deadline_ms": 30000,
+            "real_transport": true,
+            "request_result": {
+              "error": "无法连接服务器",
+              "ok": false,
+              "status": 0
+            },
+            "stop_monotonic_ms": 30724,
+            "timeout_finished_monotonic_ms": 30681,
+            "timeout_finished_wall_ms": 1790808440130
+          },
+          "errors": [
+            {
+              "at_unix_ms": 1790808440130,
+              "message": "无法连接服务器"
+            }
+          ],
+          "raw": "evidence/real-timeout/client.json",
+          "limitation": "Real transport failure plus independently executed coordinator verdict fixture; no assertion of a real PG gameplay timeout."
+        }
+      },
+      "source_sha": "f812879e4518fd09bf22656451cb563d62940298"
+    },
+    {
+      "case_id": "LOAD-02.1-T03",
+      "task_id": "LOAD-02.1",
+      "original_setup_and_injection": "性能超线且证据损坏",
+      "original_expected": "记录两原因且证据无效优先退出码3",
+      "actual": [
+        {
+          "command": [
+            "python3",
+            "/workspace/pr13-takeover/load02-acceptance-f812/harness/coordinator_case.py",
+            "redline_corrupt",
+            "/workspace/pr13-takeover/load02-acceptance-f812/evidence/redline_corrupt"
+          ],
+          "caller_exit": 3,
+          "stop_reason": "redline:actor_wait_redline,disk_available_redline,memory_available_redline,cpu_redline",
+          "outcome": {
+            "classification": "invalid_workload_or_evidence",
+            "passed": false,
+            "exit_code": 3
+          },
+          "six_dimensions": {
+            "dimensions": {
+              "execution": "Passed",
+              "evidence": "Failed",
+              "load": "Failed",
+              "gameplay": "NotApplicable",
+              "performance": "Failed",
+              "cleanup": "Passed"
+            },
+            "applicable": [
+              "cleanup",
+              "evidence",
+              "execution",
+              "load",
+              "performance"
+            ],
+            "all_applicable_passed": false,
+            "full_acceptance_passed": false
+          },
+          "first_trigger": "cpu_redline",
+          "all_triggers": [
+            "actor_wait_redline",
+            "cpu_redline",
+            "disk_available_redline",
+            "final_audit_loss",
+            "memory_available_redline",
+            "redline:actor_wait_redline,disk_available_redline,memory_available_redline,cpu_redline"
+          ],
+          "process_exits": [
+            {
+              "client_id": "g001c0138d8a5",
+              "before_stop": null,
+              "after_stop": 0
+            }
+          ],
+          "forced_pids": [],
+          "process_cleanup_complete": true,
+          "business_cleanup_verified": true,
+          "acceptance_passed": false,
+          "full_acceptance_passed": false,
+          "cutoffs": {
+            "running": {
+              "acknowledgements": 3,
+              "completed_cycles": 3,
+              "cycles_by_client": {
+                "g001c0138d8a5": 3
+              },
+              "acknowledgements_by_client": {
+                "g001c0138d8a5": 3
+              },
+              "distribution": {
+                "3": 1
+              },
+              "fallback_cycles": 0
+            },
+            "drain": {
+              "acknowledgements": 0,
+              "completed_cycles": 0,
+              "cycles_by_client": {},
+              "acknowledgements_by_client": {},
+              "distribution": {},
+              "fallback_cycles": 0
+            },
+            "final": {
+              "acknowledgements": 3,
+              "completed_cycles": 3,
+              "cycles_by_client": {
+                "g001c0138d8a5": 3
+              },
+              "acknowledgements_by_client": {
+                "g001c0138d8a5": 3
+              },
+              "distribution": {
+                "0": 0,
+                "3": 1
+              },
+              "fallback_cycles": 0
+            },
+            "zero_cycle_clients": [],
+            "zero_cycle_reason": null,
+            "evidence_errors": [],
+            "stop_ms": 100030000,
+            "final_ms": 100030000
+          },
+          "clock_scope": "model clock; real subprocess cleanup monotonic",
+          "capacity_claim": false
+        }
+      ],
+      "assertion_passed": true,
+      "status": "Passed",
+      "evidence": [
+        "evidence/redline_corrupt/stdout.log",
+        "evidence/redline_corrupt/cleanup-real-time.json",
+        "evidence/redline_corrupt/command.json",
+        "evidence/redline_corrupt/owned-launch.json",
+        "evidence/redline_corrupt/stderr.log",
+        "evidence/redline_corrupt/runs/20260930-224125-989116/load-contract.json",
+        "evidence/redline_corrupt/runs/20260930-224125-989116/g001c0138d8a5.log",
+        "evidence/redline_corrupt/runs/20260930-224125-989116/samples.jsonl",
+        "evidence/redline_corrupt/runs/20260930-224125-989116/g001c0138d8a5.json",
+        "evidence/redline_corrupt/runs/20260930-224125-989116/STOP",
+        "evidence/redline_corrupt/runs/20260930-224125-989116/g001c0138d8a5.json.telemetry.jsonl",
+        "evidence/redline_corrupt/runs/20260930-224125-989116/state.json",
+        "evidence/redline_corrupt/runs/20260930-224125-989116/report.json",
+        "evidence/redline_corrupt/runs/20260930-224125-989116/g001c0138d8a5.json.status.json"
+      ],
+      "remaining_blockers": [],
+      "supplemental": null,
+      "source_sha": "f812879e4518fd09bf22656451cb563d62940298"
+    }
+  ],
+  "sample_population": {
+    "canonical_cases": 3,
+    "coordinator_negative_inputs": "synthetic clock/telemetry/metrics; real owned process",
+    "PG_support": "actual Program/Godot STOP before/after ACK commit, actual SQL postconditions; reused frozen receipts",
+    "human_or_capacity_population": null
+  },
+  "cutoff_monotonic": {
+    "coordinator": [
+      {
+        "mode": "time_limit",
+        "stop_issued_monotonic_ns": 20000000000,
+        "clock_scope": "synthetic model clock",
+        "actual_process_cleanup_elapsed_seconds": 1.0006982939994487
+      },
+      {
+        "mode": "timeout_before",
+        "stop_issued_monotonic_ns": 11000000000,
+        "clock_scope": "synthetic model clock",
+        "actual_process_cleanup_elapsed_seconds": 1.000983763999102
+      },
+      {
+        "mode": "operator_wait",
+        "stop_issued_monotonic_ns": 11000000000,
+        "clock_scope": "synthetic model clock",
+        "actual_process_cleanup_elapsed_seconds": 1.0049036359996535
+      },
+      {
+        "mode": "redline",
+        "stop_issued_monotonic_ns": 30000000000,
+        "clock_scope": "synthetic model clock",
+        "actual_process_cleanup_elapsed_seconds": 1.0006305899987638
+      },
+      {
+        "mode": "redline_corrupt",
+        "stop_issued_monotonic_ns": 30000000000,
+        "clock_scope": "synthetic model clock",
+        "actual_process_cleanup_elapsed_seconds": 1.0010135369993804
+      },
+      {
+        "mode": "operator",
+        "stop_issued_monotonic_ns": 11000000000,
+        "clock_scope": "synthetic model clock",
+        "actual_process_cleanup_elapsed_seconds": 1.0006932150026842
+      },
+      {
+        "mode": "invalid",
+        "stop_issued_monotonic_ns": 10000000000,
+        "clock_scope": "synthetic model clock",
+        "actual_process_cleanup_elapsed_seconds": 1.0004425309998624
+      },
+      {
+        "mode": "exit7",
+        "stop_issued_monotonic_ns": 20000000000,
+        "clock_scope": "synthetic model clock",
+        "actual_process_cleanup_elapsed_seconds": 1.0066138319998572
+      },
+      {
+        "mode": "hang",
+        "stop_issued_monotonic_ns": 20000000000,
+        "clock_scope": "synthetic model clock",
+        "actual_process_cleanup_elapsed_seconds": 35.01608089299771
+      }
+    ],
+    "real_gateway_timeout_finished_ms": 30681,
+    "real_gateway_stop_ms": 30724,
+    "real_gateway_clock_scope": "actual Godot engine monotonic ticks"
+  },
+  "window_or_drain_or_final": [
+    "running",
+    "drain",
+    "final"
+  ],
+  "commands": "../commands.json",
+  "tool_versions": {
+    "python": "3.12.14",
+    "dotnet": "10.0.400",
+    "postgres": "18.6",
+    "Godot": "4.7.2.stable.official.ed1daf0bf"
+  },
+  "exit_codes": [
+    1,
+    130,
+    130,
+    2,
+    3,
+    130,
+    3,
+    3,
+    0,
+    3,
+    1,
+    1,
+    3,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "skip_reasons": [],
+  "asset_and_route_postconditions": {
+    "evidence": "../pg-support/ProcessLifecycleAckStopAndCycleTests.cs + Passed exact-test-results + receipts.jsonl",
+    "actual_observations_reused": true,
+    "active_preparations": 0,
+    "pending_holds": 0,
+    "locked_equipped_assets": 0,
+    "unique_ack_match_count": true,
+    "authoritative_bootstrap_unfinished_business_clear": true,
+    "room_actor_route_count_claimed": false
+  },
+  "artifact_manifest": "../manifest.json",
+  "reviewer": null,
+  "rollback": "No production change; isolated harness can be discarded; retain raw and algorithm hashes. No DB restoration, ledger deletion, upload or push.",
+  "remaining_blockers": [],
+  "missing_reasons": {
+    "effective_room_policy": "No separate effective policy snapshot in these verdict/STOP case receipts; f812 default config/runtime identified, B02 room-policy cases are independent.",
+    "runtime_image_digest": "Source-built local process; no container image used.",
+    "reviewer": "MAIN S6 independent adjudication pending.",
+    "sample_population.human_or_capacity_population": "No capacity/human population is asserted.",
+    "accepted_by": "Reserved for MAIN independent adjudication; this agent cannot sign Accepted."
+  },
+  "original_pass_criteria": "不把一个stop_reason等同所有验收通过；允许Unknown但不能升Pass。",
+  "pass_criteria_evidence": {
+    "six_independent_dimensions": true,
+    "first_and_all_triggers_preserved": true,
+    "Unknown_not_Pass": true
+  },
+  "disposition": "ReadyForIndependentAcceptance",
+  "implementation_disposition": "NoChangeWithEvidence",
+  "accepted_by": null,
+  "stage": "S6",
+  "status": "Pending",
+  "reason": "Reserved for MAIN; this agent does not sign Accepted."
+}

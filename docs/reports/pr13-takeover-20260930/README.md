@@ -1,3 +1,7 @@
+## LOAD02三项完整提议
+
+[LOAD02.1/.3/.4](offline-acceptance-f812/load02/READY_FOR_INDEPENDENT_ACCEPTANCE.json)各3case完整收据，固定f812；原35s STOP grace、exit7、hang仅回收owned PID、emergency及0/1/2/3/130真实caller有证据。时钟/metrics模型只判工具合同，不称容量。LOAD02.2-T01实际PG超时+STOP及cycle终态仍缺，保持Partial。累计11Ready/46Partial/72NotRevalidated/3Blocked，全部待MAIN，Accepted0。
+
 ## 完整数值schema修订ee8adcf4
 
 [最终schema收据](schema-safety-ee8adcf4/REPORT.json)与[独立重放命令](schema-safety-ee8adcf4/README.md)覆盖采样和最终归档对账。实际5个owned status/audit反例：前5异常、后5明确invalid exit3；同干净SHA原12case及Python119通过。替代4bb包作为当前提议，旧原件保留。B02继续固定f812，业务/UI未变。所有Accepted0。

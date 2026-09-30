@@ -344,14 +344,14 @@
       "title": "多维结果模型",
       "dependency_order": 7,
       "owner": "MAIN / load P0",
-      "state": "Partial",
+      "state": "ReadyForAcceptance",
       "historical_state": "Partial",
       "historical_case_counts": {
         "Passed": 1,
         "NotExecuted": 2
       },
       "implementation_status": "Final evidence, ownership, ACK conservation and STOP/emergency handling corrected and counterexample-tested.",
-      "current_test_status": "Current pure-SHA offline/supporting suites passed; complete canonical profiles/cases not accepted",
+      "current_test_status": "Original3/3; complete applicable OFFLINE/owned PG artifact proposal; independent MAIN critical replay pending.",
       "modification_sha": "d4c3212fb32c75d4b9f9f62c08277996611b149c",
       "test_commands": [
         "python -m unittest discover -s tools/tests -v"
@@ -362,9 +362,10 @@
         "ci-9275ec2/verified-artifacts.json",
         "ci-b7099ef/verified-artifacts.json",
         "integrated-cc6da2e/report.json",
-        "ci-cc6da2e/workflows.json"
+        "ci-cc6da2e/workflows.json",
+        "offline-acceptance-f812/load02/evidence/LOAD-02.1/ROOT_REPORT.json"
       ],
-      "remaining_blocker": "affected POSTGRES/LIVE/CAPACITY profiles remain separate and incomplete.",
+      "remaining_blocker": "S6 independent MAIN actual critical replay and adjudication; no CI/LIVE/participant gate.",
       "dependencies": [
         "LOAD-01.2"
       ],
@@ -385,8 +386,10 @@
         "ci-b7099ef/verified-artifacts.json"
       ],
       "tested_source_shas": [
-        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3"
-      ]
+        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+        "f812879e4518fd09bf22656451cb563d62940298"
+      ],
+      "acceptance_proposal": "ReadyForIndependentAcceptance"
     },
     {
       "task_id": "LOAD-04.1",
@@ -467,7 +470,7 @@
         "NotExecuted": 3
       },
       "implementation_status": "Final evidence, ownership, ACK conservation and STOP/emergency handling corrected and counterexample-tested.",
-      "current_test_status": "Current pure-SHA offline/supporting suites passed; complete canonical profiles/cases not accepted",
+      "current_test_status": "Original2Passed/1Partial; actual transport timeout and modeled verdicts retained; actual PG timeout/cycle partition missing.",
       "modification_sha": "d4c3212fb32c75d4b9f9f62c08277996611b149c",
       "test_commands": [
         "python -m unittest discover -s tools/tests -v"
@@ -478,9 +481,10 @@
         "ci-9275ec2/verified-artifacts.json",
         "ci-b7099ef/verified-artifacts.json",
         "integrated-cc6da2e/report.json",
-        "ci-cc6da2e/workflows.json"
+        "ci-cc6da2e/workflows.json",
+        "offline-acceptance-f812/load02/evidence/LOAD-02.2/ROOT_REPORT.json"
       ],
-      "remaining_blocker": "affected POSTGRES/LIVE/CAPACITY profiles remain separate and incomplete.",
+      "remaining_blocker": "Actual Program/PG timeout beforeSTOP with one exclusive failed/cancelled/incomplete cycle terminal; see MISSING_FACTS.json.",
       "dependencies": [
         "LOAD-02.1",
         "LOAD-06.2"
@@ -502,21 +506,23 @@
         "ci-b7099ef/verified-artifacts.json"
       ],
       "tested_source_shas": [
-        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3"
-      ]
+        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+        "f812879e4518fd09bf22656451cb563d62940298"
+      ],
+      "acceptance_proposal": "Partial"
     },
     {
       "task_id": "LOAD-02.3",
       "title": "有界清理和应急报告",
       "dependency_order": 11,
       "owner": "MAIN / load P0",
-      "state": "Partial",
+      "state": "ReadyForAcceptance",
       "historical_state": "Partial",
       "historical_case_counts": {
         "NotExecuted": 3
       },
       "implementation_status": "Final evidence, ownership, ACK conservation and STOP/emergency handling corrected and counterexample-tested.",
-      "current_test_status": "Current pure-SHA offline/supporting suites passed; complete canonical profiles/cases not accepted",
+      "current_test_status": "Original3/3; complete applicable OFFLINE/owned PG artifact proposal; independent MAIN critical replay pending.",
       "modification_sha": "d4c3212fb32c75d4b9f9f62c08277996611b149c",
       "test_commands": [
         "python -m unittest discover -s tools/tests -v"
@@ -527,9 +533,10 @@
         "ci-9275ec2/verified-artifacts.json",
         "ci-b7099ef/verified-artifacts.json",
         "integrated-cc6da2e/report.json",
-        "ci-cc6da2e/workflows.json"
+        "ci-cc6da2e/workflows.json",
+        "offline-acceptance-f812/load02/evidence/LOAD-02.3/ROOT_REPORT.json"
       ],
-      "remaining_blocker": "affected POSTGRES/LIVE/CAPACITY profiles remain separate and incomplete.",
+      "remaining_blocker": "S6 independent MAIN actual critical replay and adjudication; no CI/LIVE/participant gate.",
       "dependencies": [
         "LOAD-02.2"
       ],
@@ -550,22 +557,24 @@
         "ci-b7099ef/verified-artifacts.json"
       ],
       "tested_source_shas": [
-        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3"
-      ]
+        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+        "f812879e4518fd09bf22656451cb563d62940298"
+      ],
+      "acceptance_proposal": "ReadyForIndependentAcceptance"
     },
     {
       "task_id": "LOAD-02.4",
       "title": "退出码兼容",
       "dependency_order": 12,
       "owner": "MAIN / load P0",
-      "state": "Partial",
+      "state": "ReadyForAcceptance",
       "historical_state": "Partial",
       "historical_case_counts": {
         "Passed": 2,
         "NotExecuted": 1
       },
       "implementation_status": "Final evidence, ownership, ACK conservation and STOP/emergency handling corrected and counterexample-tested.",
-      "current_test_status": "Current pure-SHA offline/supporting suites passed; complete canonical profiles/cases not accepted",
+      "current_test_status": "Original3/3; complete applicable OFFLINE/owned PG artifact proposal; independent MAIN critical replay pending.",
       "modification_sha": "d4c3212fb32c75d4b9f9f62c08277996611b149c",
       "test_commands": [
         "python -m unittest discover -s tools/tests -v"
@@ -576,9 +585,10 @@
         "ci-9275ec2/verified-artifacts.json",
         "ci-b7099ef/verified-artifacts.json",
         "integrated-cc6da2e/report.json",
-        "ci-cc6da2e/workflows.json"
+        "ci-cc6da2e/workflows.json",
+        "offline-acceptance-f812/load02/evidence/LOAD-02.4/ROOT_REPORT.json"
       ],
-      "remaining_blocker": "affected POSTGRES/LIVE/CAPACITY profiles remain separate and incomplete.",
+      "remaining_blocker": "S6 independent MAIN actual critical replay and adjudication; no CI/LIVE/participant gate.",
       "dependencies": [
         "LOAD-02.3"
       ],
@@ -599,8 +609,10 @@
         "ci-b7099ef/verified-artifacts.json"
       ],
       "tested_source_shas": [
-        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3"
-      ]
+        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+        "f812879e4518fd09bf22656451cb563d62940298"
+      ],
+      "acceptance_proposal": "ReadyForIndependentAcceptance"
     },
     {
       "task_id": "LOAD-03.1",
@@ -5613,7 +5625,7 @@
       ]
     }
   ],
-  "updated_at_utc": "2026-09-30T22:49:45.510706+00:00",
+  "updated_at_utc": "2026-09-30T23:00:41.967986+00:00",
   "gate_decisions": [
     {
       "gate": "G0",
@@ -5655,33 +5667,33 @@
   },
   "latest_runtime_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
   "state_counts": {
-    "Partial": 49,
+    "Partial": 46,
     "NotRevalidated": 72,
-    "ReadyForAcceptance": 8,
+    "ReadyForAcceptance": 11,
     "Blocked": 3
   },
   "latest_batch_state_transitions": [
     {
-      "task_id": "PR13-B02.1",
-      "from_state": "NotRevalidated",
+      "task_id": "LOAD-02.1",
+      "from_state": "Partial",
       "to_state": "ReadyForAcceptance",
       "Accepted": false
     },
     {
-      "task_id": "PR13-B02.2",
-      "from_state": "NotRevalidated",
+      "task_id": "LOAD-02.2",
+      "from_state": "Partial",
+      "to_state": "Partial",
+      "Accepted": false
+    },
+    {
+      "task_id": "LOAD-02.3",
+      "from_state": "Partial",
       "to_state": "ReadyForAcceptance",
       "Accepted": false
     },
     {
-      "task_id": "PR13-B02.3",
-      "from_state": "NotRevalidated",
-      "to_state": "ReadyForAcceptance",
-      "Accepted": false
-    },
-    {
-      "task_id": "PR13-B02.4",
-      "from_state": "NotRevalidated",
+      "task_id": "LOAD-02.4",
+      "from_state": "Partial",
       "to_state": "ReadyForAcceptance",
       "Accepted": false
     }

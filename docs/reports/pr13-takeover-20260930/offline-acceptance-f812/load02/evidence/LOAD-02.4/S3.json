@@ -1,0 +1,569 @@
+{
+  "task_id": "LOAD-02.4",
+  "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+  "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+  "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+  "effective_room_policy": null,
+  "runtime_image_digest": null,
+  "profile_hash": "4b0339400f4e581b7e8bc44b3d92d4fa866dc442a361af3d95f665e65f25bd71",
+  "algorithm_version": "f812-coordinator-schema5/runtime-evidence-62d05cb4270174aa/receipt-harness-37303db722961352",
+  "case_ids": [
+    "LOAD-02.4-T01",
+    "LOAD-02.4-T02",
+    "LOAD-02.4-T03"
+  ],
+  "expected": [
+    {
+      "LOAD-02.4-T01": "标仅准备不算压测成功"
+    },
+    {
+      "LOAD-02.4-T02": "exit2且记录全部触发"
+    },
+    {
+      "LOAD-02.4-T03": "分别3/130"
+    }
+  ],
+  "actual": [
+    {
+      "case_id": "LOAD-02.4-T01",
+      "task_id": "LOAD-02.4",
+      "original_setup_and_injection": "preparation-only exit0",
+      "original_expected": "标仅准备不算压测成功",
+      "actual": {
+        "case_id": "PR13-LOAD-02.4-T01",
+        "original_requirement": "prepare-only 返回 0；报告不得声称负载 Passed",
+        "command": [
+          "python3",
+          "/workspace/pr13-takeover/load02-acceptance-f812/source/tools/gameplay_load_test.py",
+          "--godot",
+          "/usr/bin/python3"
+        ],
+        "started_at_unix": 1790807923.9645681,
+        "ended_at_unix": 1790807924.0797706,
+        "exit_code": 0,
+        "actual_stdout": "Prepared: bounded local run; --smoke validates three cycles by default. --run requires monitoring.\n",
+        "expected_exit": 0,
+        "preparation_only": true,
+        "load_passed_claim": false,
+        "passed": true,
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "input_sha256": "e5cef5dbd0c63acf67579c3261262ab18346b718b6f32fbab2e265e1e671d52d",
+        "report_applicability": "No report: production prepare-only exits before run directory; caller records scope explicitly.",
+        "input_manifest_sha256": "f24a0cf2330d43dfaaa5b3195a8ccf92ee8a6e28bd54dab3bddd14685a6ec0ce",
+        "profile_hash": "4b0339400f4e581b7e8bc44b3d92d4fa866dc442a361af3d95f665e65f25bd71",
+        "algorithm_version": "f812-coordinator-schema5/runtime-evidence-62d05cb4270174aa/receipt-harness-37303db722961352",
+        "skip_reasons": []
+      },
+      "assertion_passed": true,
+      "status": "Passed",
+      "evidence": [
+        "evidence/preparation/receipt.json",
+        "evidence/preparation/stdout.log",
+        "evidence/preparation/stderr.log"
+      ],
+      "remaining_blockers": [],
+      "source_sha": "f812879e4518fd09bf22656451cb563d62940298"
+    },
+    {
+      "case_id": "LOAD-02.4-T02",
+      "task_id": "LOAD-02.4",
+      "original_setup_and_injection": "redline",
+      "original_expected": "exit2且记录全部触发",
+      "actual": [
+        {
+          "command": [
+            "python3",
+            "/workspace/pr13-takeover/load02-acceptance-f812/harness/coordinator_case.py",
+            "redline",
+            "/workspace/pr13-takeover/load02-acceptance-f812/evidence/redline"
+          ],
+          "caller_exit": 2,
+          "stop_reason": "redline:cpu_redline,memory_available_redline,disk_available_redline,actor_wait_redline",
+          "outcome": {
+            "classification": "performance_redline",
+            "passed": false,
+            "exit_code": 2
+          },
+          "six_dimensions": {
+            "dimensions": {
+              "execution": "Passed",
+              "evidence": "Passed",
+              "load": "Failed",
+              "gameplay": "NotApplicable",
+              "performance": "Failed",
+              "cleanup": "Passed"
+            },
+            "applicable": [
+              "cleanup",
+              "evidence",
+              "execution",
+              "load",
+              "performance"
+            ],
+            "all_applicable_passed": false,
+            "full_acceptance_passed": false
+          },
+          "first_trigger": "cpu_redline",
+          "all_triggers": [
+            "actor_wait_redline",
+            "cpu_redline",
+            "disk_available_redline",
+            "memory_available_redline",
+            "redline:cpu_redline,memory_available_redline,disk_available_redline,actor_wait_redline"
+          ],
+          "process_exits": [
+            {
+              "client_id": "g001c0132db02",
+              "before_stop": null,
+              "after_stop": 0
+            }
+          ],
+          "forced_pids": [],
+          "process_cleanup_complete": true,
+          "business_cleanup_verified": true,
+          "acceptance_passed": false,
+          "full_acceptance_passed": false,
+          "cutoffs": {
+            "running": {
+              "acknowledgements": 3,
+              "completed_cycles": 3,
+              "cycles_by_client": {
+                "g001c0132db02": 3
+              },
+              "acknowledgements_by_client": {
+                "g001c0132db02": 3
+              },
+              "distribution": {
+                "3": 1
+              },
+              "fallback_cycles": 0
+            },
+            "drain": {
+              "acknowledgements": 0,
+              "completed_cycles": 0,
+              "cycles_by_client": {},
+              "acknowledgements_by_client": {},
+              "distribution": {},
+              "fallback_cycles": 0
+            },
+            "final": {
+              "acknowledgements": 3,
+              "completed_cycles": 3,
+              "cycles_by_client": {
+                "g001c0132db02": 3
+              },
+              "acknowledgements_by_client": {
+                "g001c0132db02": 3
+              },
+              "distribution": {
+                "0": 0,
+                "3": 1
+              },
+              "fallback_cycles": 0
+            },
+            "zero_cycle_clients": [],
+            "zero_cycle_reason": null,
+            "evidence_errors": [],
+            "stop_ms": 100030000,
+            "final_ms": 100030000
+          },
+          "clock_scope": "model clock; real subprocess cleanup monotonic",
+          "capacity_claim": false
+        }
+      ],
+      "assertion_passed": true,
+      "status": "Passed",
+      "evidence": [
+        "evidence/redline/stdout.log",
+        "evidence/redline/cleanup-real-time.json",
+        "evidence/redline/command.json",
+        "evidence/redline/owned-launch.json",
+        "evidence/redline/stderr.log",
+        "evidence/redline/runs/20260930-224124-8fa7eb/load-contract.json",
+        "evidence/redline/runs/20260930-224124-8fa7eb/samples.jsonl",
+        "evidence/redline/runs/20260930-224124-8fa7eb/g001c0132db02.json.status.json",
+        "evidence/redline/runs/20260930-224124-8fa7eb/STOP",
+        "evidence/redline/runs/20260930-224124-8fa7eb/g001c0132db02.log",
+        "evidence/redline/runs/20260930-224124-8fa7eb/state.json",
+        "evidence/redline/runs/20260930-224124-8fa7eb/report.json",
+        "evidence/redline/runs/20260930-224124-8fa7eb/g001c0132db02.json.telemetry.jsonl",
+        "evidence/redline/runs/20260930-224124-8fa7eb/g001c0132db02.json"
+      ],
+      "remaining_blockers": [],
+      "supplemental": null,
+      "source_sha": "f812879e4518fd09bf22656451cb563d62940298"
+    },
+    {
+      "case_id": "LOAD-02.4-T03",
+      "task_id": "LOAD-02.4",
+      "original_setup_and_injection": "invalid/人工STOP",
+      "original_expected": "分别3/130",
+      "actual": [
+        {
+          "command": [
+            "python3",
+            "/workspace/pr13-takeover/load02-acceptance-f812/harness/coordinator_case.py",
+            "invalid",
+            "/workspace/pr13-takeover/load02-acceptance-f812/evidence/invalid"
+          ],
+          "caller_exit": 3,
+          "stop_reason": "invalid_evidence:invalid_telemetry",
+          "outcome": {
+            "classification": "invalid_workload_or_evidence",
+            "passed": false,
+            "exit_code": 3
+          },
+          "six_dimensions": {
+            "dimensions": {
+              "execution": "Passed",
+              "evidence": "Failed",
+              "load": "Failed",
+              "gameplay": "Failed",
+              "performance": "NotApplicable",
+              "cleanup": "Passed"
+            },
+            "applicable": [
+              "cleanup",
+              "evidence",
+              "execution",
+              "gameplay",
+              "load"
+            ],
+            "all_applicable_passed": false,
+            "full_acceptance_passed": false
+          },
+          "first_trigger": "invalid_telemetry",
+          "all_triggers": [
+            "final_audit_loss",
+            "invalid_evidence:invalid_telemetry",
+            "invalid_telemetry"
+          ],
+          "process_exits": [
+            {
+              "client_id": "g001c01c35ffa",
+              "before_stop": null,
+              "after_stop": 0
+            }
+          ],
+          "forced_pids": [],
+          "process_cleanup_complete": true,
+          "business_cleanup_verified": true,
+          "acceptance_passed": false,
+          "full_acceptance_passed": false,
+          "cutoffs": {
+            "running": {
+              "acknowledgements": 3,
+              "completed_cycles": 3,
+              "cycles_by_client": {
+                "g001c01c35ffa": 3
+              },
+              "acknowledgements_by_client": {
+                "g001c01c35ffa": 3
+              },
+              "distribution": {
+                "3": 1
+              },
+              "fallback_cycles": 0
+            },
+            "drain": {
+              "acknowledgements": 0,
+              "completed_cycles": 0,
+              "cycles_by_client": {},
+              "acknowledgements_by_client": {},
+              "distribution": {},
+              "fallback_cycles": 0
+            },
+            "final": {
+              "acknowledgements": 3,
+              "completed_cycles": 3,
+              "cycles_by_client": {
+                "g001c01c35ffa": 3
+              },
+              "acknowledgements_by_client": {
+                "g001c01c35ffa": 3
+              },
+              "distribution": {
+                "0": 0,
+                "3": 1
+              },
+              "fallback_cycles": 0
+            },
+            "zero_cycle_clients": [],
+            "zero_cycle_reason": null,
+            "evidence_errors": [],
+            "stop_ms": 100010000,
+            "final_ms": 100010000
+          },
+          "clock_scope": "model clock; real subprocess cleanup monotonic",
+          "capacity_claim": false
+        },
+        {
+          "command": [
+            "python3",
+            "/workspace/pr13-takeover/load02-acceptance-f812/harness/coordinator_case.py",
+            "operator",
+            "/workspace/pr13-takeover/load02-acceptance-f812/evidence/operator"
+          ],
+          "caller_exit": 130,
+          "stop_reason": "operator_stop_file",
+          "outcome": {
+            "classification": "operator_stopped",
+            "passed": false,
+            "exit_code": 130
+          },
+          "six_dimensions": {
+            "dimensions": {
+              "execution": "Passed",
+              "evidence": "Passed",
+              "load": "Failed",
+              "gameplay": "Failed",
+              "performance": "NotApplicable",
+              "cleanup": "Passed"
+            },
+            "applicable": [
+              "cleanup",
+              "evidence",
+              "execution",
+              "gameplay",
+              "load"
+            ],
+            "all_applicable_passed": false,
+            "full_acceptance_passed": false
+          },
+          "first_trigger": "operator_stop_file",
+          "all_triggers": [
+            "operator_stop_file"
+          ],
+          "process_exits": [
+            {
+              "client_id": "g001c01918a01",
+              "before_stop": null,
+              "after_stop": 0
+            }
+          ],
+          "forced_pids": [],
+          "process_cleanup_complete": true,
+          "business_cleanup_verified": true,
+          "acceptance_passed": false,
+          "full_acceptance_passed": false,
+          "cutoffs": {
+            "running": {
+              "acknowledgements": 3,
+              "completed_cycles": 3,
+              "cycles_by_client": {
+                "g001c01918a01": 3
+              },
+              "acknowledgements_by_client": {
+                "g001c01918a01": 3
+              },
+              "distribution": {
+                "3": 1
+              },
+              "fallback_cycles": 0
+            },
+            "drain": {
+              "acknowledgements": 0,
+              "completed_cycles": 0,
+              "cycles_by_client": {},
+              "acknowledgements_by_client": {},
+              "distribution": {},
+              "fallback_cycles": 0
+            },
+            "final": {
+              "acknowledgements": 3,
+              "completed_cycles": 3,
+              "cycles_by_client": {
+                "g001c01918a01": 3
+              },
+              "acknowledgements_by_client": {
+                "g001c01918a01": 3
+              },
+              "distribution": {
+                "0": 0,
+                "3": 1
+              },
+              "fallback_cycles": 0
+            },
+            "zero_cycle_clients": [],
+            "zero_cycle_reason": null,
+            "evidence_errors": [],
+            "stop_ms": 100011000,
+            "final_ms": 100011000
+          },
+          "clock_scope": "model clock; real subprocess cleanup monotonic",
+          "capacity_claim": false
+        }
+      ],
+      "assertion_passed": true,
+      "status": "Passed",
+      "evidence": [
+        "evidence/invalid/stdout.log",
+        "evidence/invalid/cleanup-real-time.json",
+        "evidence/invalid/command.json",
+        "evidence/invalid/owned-launch.json",
+        "evidence/invalid/stderr.log",
+        "evidence/invalid/runs/20260930-224128-649fda/g001c01c35ffa.json",
+        "evidence/invalid/runs/20260930-224128-649fda/load-contract.json",
+        "evidence/invalid/runs/20260930-224128-649fda/samples.jsonl",
+        "evidence/invalid/runs/20260930-224128-649fda/g001c01c35ffa.log",
+        "evidence/invalid/runs/20260930-224128-649fda/STOP",
+        "evidence/invalid/runs/20260930-224128-649fda/state.json",
+        "evidence/invalid/runs/20260930-224128-649fda/report.json",
+        "evidence/invalid/runs/20260930-224128-649fda/g001c01c35ffa.json.telemetry.jsonl",
+        "evidence/invalid/runs/20260930-224128-649fda/g001c01c35ffa.json.status.json",
+        "evidence/operator/stdout.log",
+        "evidence/operator/cleanup-real-time.json",
+        "evidence/operator/command.json",
+        "evidence/operator/owned-launch.json",
+        "evidence/operator/stderr.log",
+        "evidence/operator/runs/20260930-224127-32dedf/load-contract.json",
+        "evidence/operator/runs/20260930-224127-32dedf/samples.jsonl",
+        "evidence/operator/runs/20260930-224127-32dedf/STOP",
+        "evidence/operator/runs/20260930-224127-32dedf/g001c01918a01.json",
+        "evidence/operator/runs/20260930-224127-32dedf/g001c01918a01.json.telemetry.jsonl",
+        "evidence/operator/runs/20260930-224127-32dedf/state.json",
+        "evidence/operator/runs/20260930-224127-32dedf/report.json",
+        "evidence/operator/runs/20260930-224127-32dedf/g001c01918a01.json.status.json",
+        "evidence/operator/runs/20260930-224127-32dedf/g001c01918a01.log"
+      ],
+      "remaining_blockers": [],
+      "supplemental": null,
+      "source_sha": "f812879e4518fd09bf22656451cb563d62940298"
+    }
+  ],
+  "sample_population": {
+    "canonical_cases": 3,
+    "coordinator_negative_inputs": "synthetic clock/telemetry/metrics; real owned process",
+    "PG_support": "actual Program/Godot STOP before/after ACK commit, actual SQL postconditions; reused frozen receipts",
+    "human_or_capacity_population": null
+  },
+  "cutoff_monotonic": {
+    "coordinator": [
+      {
+        "mode": "time_limit",
+        "stop_issued_monotonic_ns": 20000000000,
+        "clock_scope": "synthetic model clock",
+        "actual_process_cleanup_elapsed_seconds": 1.0006982939994487
+      },
+      {
+        "mode": "timeout_before",
+        "stop_issued_monotonic_ns": 11000000000,
+        "clock_scope": "synthetic model clock",
+        "actual_process_cleanup_elapsed_seconds": 1.000983763999102
+      },
+      {
+        "mode": "operator_wait",
+        "stop_issued_monotonic_ns": 11000000000,
+        "clock_scope": "synthetic model clock",
+        "actual_process_cleanup_elapsed_seconds": 1.0049036359996535
+      },
+      {
+        "mode": "redline",
+        "stop_issued_monotonic_ns": 30000000000,
+        "clock_scope": "synthetic model clock",
+        "actual_process_cleanup_elapsed_seconds": 1.0006305899987638
+      },
+      {
+        "mode": "redline_corrupt",
+        "stop_issued_monotonic_ns": 30000000000,
+        "clock_scope": "synthetic model clock",
+        "actual_process_cleanup_elapsed_seconds": 1.0010135369993804
+      },
+      {
+        "mode": "operator",
+        "stop_issued_monotonic_ns": 11000000000,
+        "clock_scope": "synthetic model clock",
+        "actual_process_cleanup_elapsed_seconds": 1.0006932150026842
+      },
+      {
+        "mode": "invalid",
+        "stop_issued_monotonic_ns": 10000000000,
+        "clock_scope": "synthetic model clock",
+        "actual_process_cleanup_elapsed_seconds": 1.0004425309998624
+      },
+      {
+        "mode": "exit7",
+        "stop_issued_monotonic_ns": 20000000000,
+        "clock_scope": "synthetic model clock",
+        "actual_process_cleanup_elapsed_seconds": 1.0066138319998572
+      },
+      {
+        "mode": "hang",
+        "stop_issued_monotonic_ns": 20000000000,
+        "clock_scope": "synthetic model clock",
+        "actual_process_cleanup_elapsed_seconds": 35.01608089299771
+      }
+    ],
+    "real_gateway_timeout_finished_ms": 30681,
+    "real_gateway_stop_ms": 30724,
+    "real_gateway_clock_scope": "actual Godot engine monotonic ticks"
+  },
+  "window_or_drain_or_final": [
+    "running",
+    "drain",
+    "final"
+  ],
+  "commands": "../commands.json",
+  "tool_versions": {
+    "python": "3.12.14",
+    "dotnet": "10.0.400",
+    "postgres": "18.6",
+    "Godot": "4.7.2.stable.official.ed1daf0bf"
+  },
+  "exit_codes": [
+    1,
+    130,
+    130,
+    2,
+    3,
+    130,
+    3,
+    3,
+    0,
+    3,
+    1,
+    1,
+    3,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "skip_reasons": [],
+  "asset_and_route_postconditions": {
+    "evidence": "../pg-support/ProcessLifecycleAckStopAndCycleTests.cs + Passed exact-test-results + receipts.jsonl",
+    "actual_observations_reused": true,
+    "active_preparations": 0,
+    "pending_holds": 0,
+    "locked_equipped_assets": 0,
+    "unique_ack_match_count": true,
+    "authoritative_bootstrap_unfinished_business_clear": true,
+    "room_actor_route_count_claimed": false
+  },
+  "artifact_manifest": "../manifest.json",
+  "reviewer": null,
+  "rollback": "No production change; isolated harness can be discarded; retain raw and algorithm hashes. No DB restoration, ledger deletion, upload or push.",
+  "remaining_blockers": [],
+  "missing_reasons": {
+    "effective_room_policy": "No separate effective policy snapshot in these verdict/STOP case receipts; f812 default config/runtime identified, B02 room-policy cases are independent.",
+    "runtime_image_digest": "Source-built local process; no container image used.",
+    "reviewer": "MAIN S6 independent adjudication pending.",
+    "sample_population.human_or_capacity_population": "No capacity/human population is asserted.",
+    "accepted_by": "Reserved for MAIN independent adjudication; this agent cannot sign Accepted."
+  },
+  "original_pass_criteria": "新旧调用者有子进程集成用例，任何未完成/无证据运行不能冒充Passed。",
+  "pass_criteria_evidence": {
+    "actual_subprocess_exit_codes_0_1_2_3_130": true,
+    "preparation_scope_explicit": true,
+    "schema5_outcome_legacy_and_six_dimensions_additive_compatible": true,
+    "unverified_noPass": true,
+    "zero_model_smoke_never_full_capacity_acceptance": true
+  },
+  "disposition": "ReadyForIndependentAcceptance",
+  "implementation_disposition": "NoChangeWithEvidence",
+  "accepted_by": null,
+  "stage": "S3",
+  "status": "Passed"
+}

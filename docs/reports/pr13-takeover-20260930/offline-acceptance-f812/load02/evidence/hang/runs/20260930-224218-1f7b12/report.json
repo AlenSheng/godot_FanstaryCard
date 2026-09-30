@@ -1,0 +1,403 @@
+{
+  "schema_version": 5,
+  "started": 100000.0,
+  "ended": 100020.0,
+  "groups": 1,
+  "clients": 1,
+  "stop_reason": "duration_limit",
+  "outcome": {
+    "classification": "invalid_workload_or_evidence",
+    "passed": false,
+    "exit_code": 3
+  },
+  "source": {
+    "python": "3.12.14",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "git_commit": null,
+    "git_dirty": null,
+    "sha256": {
+      "tools/gameplay_load_test.py": "e5cef5dbd0c63acf67579c3261262ab18346b718b6f32fbab2e265e1e671d52d",
+      "tools/cloud_load_test.py": "871e753ad1421d09a62bbfc87e244be130c523119803a2645e6fc18385d09ded",
+      "tools/gameplay_load_validation.py": "2165364954a8d2a1fc5ae660561ce9f7e3e991f65bcbed053edb3af242b84bb6",
+      "client/tests/gameplay_load_client.gd": "3126b2edb00c376f5b98ec5b2242d27b8841df69e07a2569ab6fa5148c87f8c9",
+      "client/state/game_store.gd": "d374a50c004c0f3a506b407bfd5730daaae2e4d40786cebb17db52c17eff59c4",
+      "client/network/gateway.gd": "964bd3e0eea3ff009b6c6ca493952bae14f691ce10e8c6f2f32a6e5ee8138eaf",
+      "client/network/reusable_http_client.gd": "c2ff3d069e9f4815059297dc570983857ffb4ee415548bbcf5409f03c9873424",
+      "tools/pr13_runtime_evidence.py": "62d05cb4270174aabbcdf217416530967caeca340b20a84d8223a35c2521eaa3",
+      "client/data/catalog.json": "fa284e27b3afbd20b754b989e56f1e8030eb5d17befcbd114a4796d0c897eb2d",
+      "client/ui/card_details.gd": "4cd2187bcccbe63b7a29f85a1b0f26e93078eec898e38d9a775d397e8d548327",
+      "client/state/element_rules.gd": "fe47bb4dc00b4473f4ce0e1a8c768d6d50b6d97caec0e846b945d38c85abc7a9",
+      "protocol/realtime/v1/realtime.proto": null
+    }
+  },
+  "cleanup_error": "forced_termination:89904",
+  "load_window_verified": false,
+  "required_samples": 2,
+  "stop_issued_monotonic_ns": 20000000000,
+  "stop_issued_ms": 100020000,
+  "load_contract": {
+    "profile": "cyclic-gameplay",
+    "acceptance_scope": [
+      "execution",
+      "evidence",
+      "load",
+      "gameplay",
+      "cleanup"
+    ],
+    "target_online": 1,
+    "target_active": 1,
+    "minimum_window": 600,
+    "minimum_continuous": 120,
+    "minimum_coverage": 0.95,
+    "maximum_gap": 20,
+    "minimum_command_rate": 1,
+    "launch_interval_seconds": 0
+  },
+  "load_coverage": {
+    "passed": false,
+    "window_seconds": 20.0,
+    "observed_seconds": 0.0,
+    "compliant_seconds": 0.0,
+    "coverage": 0.0,
+    "longest_continuous_seconds": 0.0,
+    "intervals": [],
+    "target_online": 1,
+    "target_active": 1,
+    "minimum_command_rate": 1,
+    "maximum_gap": 20,
+    "minimum_window": 600,
+    "minimum_continuous": 120,
+    "minimum_coverage": 0.95,
+    "evidence_errors": []
+  },
+  "result_dimensions": {
+    "dimensions": {
+      "execution": "Failed",
+      "evidence": "Passed",
+      "load": "Failed",
+      "gameplay": "Failed",
+      "performance": "NotApplicable",
+      "cleanup": "Failed"
+    },
+    "applicable": [
+      "cleanup",
+      "evidence",
+      "execution",
+      "gameplay",
+      "load"
+    ],
+    "all_applicable_passed": false,
+    "full_acceptance_passed": false
+  },
+  "sampling_integrity": {
+    "passed": true,
+    "reasons": [],
+    "tail_gap_seconds": 10.0,
+    "maximum_observed_gap_seconds": 10.0
+  },
+  "started_monotonic_ms": 0.0,
+  "performance_inputs": {
+    "http_latency_samples": 0,
+    "realtime_latency_samples": 0,
+    "scope": "existing bounded diagnostic stop rules; not a formal service SLO"
+  },
+  "cycle_cutoffs": {
+    "running": {
+      "acknowledgements": 3,
+      "completed_cycles": 3,
+      "cycles_by_client": {
+        "g001c013471f6": 3
+      },
+      "acknowledgements_by_client": {
+        "g001c013471f6": 3
+      },
+      "distribution": {
+        "3": 1
+      },
+      "fallback_cycles": 0
+    },
+    "drain": {
+      "acknowledgements": 0,
+      "completed_cycles": 0,
+      "cycles_by_client": {},
+      "acknowledgements_by_client": {},
+      "distribution": {},
+      "fallback_cycles": 0
+    },
+    "final": {
+      "acknowledgements": 3,
+      "completed_cycles": 3,
+      "cycles_by_client": {
+        "g001c013471f6": 3
+      },
+      "acknowledgements_by_client": {
+        "g001c013471f6": 3
+      },
+      "distribution": {
+        "0": 0,
+        "3": 1
+      },
+      "fallback_cycles": 0
+    },
+    "zero_cycle_clients": [],
+    "zero_cycle_reason": null,
+    "evidence_errors": [],
+    "stop_ms": 100020000,
+    "final_ms": 100020000
+  },
+  "audit_read_errors": [],
+  "final_read_errors": 0,
+  "tail_lost_event_count": 0,
+  "tail_window": {
+    "http": {
+      "count": 0
+    },
+    "steady_http": {
+      "count": 0
+    },
+    "cancelled_http": {
+      "count": 0
+    },
+    "realtime": {
+      "count": 0
+    },
+    "rtt": {
+      "count": 0
+    },
+    "phase_http": {},
+    "error_count": 0,
+    "sample_count": 0,
+    "logical_request_count": 0,
+    "cancelled_count": 0,
+    "all_attempt_count": null,
+    "attempt_coverage": "unavailable",
+    "attempt_result_counts": {},
+    "valid_attempt_latency_count": 0,
+    "valid_latency_count": 0,
+    "latency_sample_quality": {
+      "http": "unavailable",
+      "realtime": "unavailable"
+    },
+    "error_rate": 0.0,
+    "steady_error_count": 0,
+    "steady_sample_count": 0,
+    "steady_error_rate": 0.0,
+    "invalid_metric_count": 0,
+    "invalid_duration_count": 0,
+    "invalid_schema_count": 0,
+    "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+  },
+  "post_stop_failure": true,
+  "final_audit_lost_count": 0,
+  "final_audit_count_invalid": false,
+  "final_triggers": [
+    "post_stop_process_failure"
+  ],
+  "first_trigger": "duration_limit",
+  "all_triggers": [
+    "duration_limit",
+    "post_stop_process_failure"
+  ],
+  "forced_termination_pids": [
+    89904
+  ],
+  "process_cleanup_complete": false,
+  "business_cleanup_verified": true,
+  "cleanup_complete": false,
+  "process_exits": [
+    {
+      "client_id": "g001c013471f6",
+      "before_stop": null,
+      "after_stop": -9
+    }
+  ],
+  "group_size": 1,
+  "interval_seconds": 120,
+  "scope": "real Godot Game store: login once, repeated preparation/match/PVE or PVP/settlement; no market trades",
+  "group_launches": [
+    {
+      "group": 1,
+      "scheduled_at": 100000.0,
+      "started_at": 100000.0,
+      "finished_at": 100000.0,
+      "clients_scheduled": 1,
+      "clients": 1
+    }
+  ],
+  "samples": [
+    {
+      "schema_version": 4,
+      "at": 100010.0,
+      "sample_monotonic_ms": 10000.0,
+      "run_id": "1e79a1be90fa4c459f7466d07e0e5d81",
+      "groups": 1,
+      "clients": 1,
+      "alive_processes": 1,
+      "fresh_status_clients": 1,
+      "online": 0,
+      "in_room": 0,
+      "room_state_clients": 0,
+      "active_in_room": 0,
+      "server_confirmed_in_room": null,
+      "invalid_schema_count": 0,
+      "failed_processes": [],
+      "stale_clients": [],
+      "stalled_clients": [],
+      "missing_clients": [],
+      "invalid_clients": [],
+      "workload_failure": false,
+      "server_count_scope": "all registered non-bot active player routes on this server; no per-run labels",
+      "command_rate": null,
+      "completed_cycles": 3,
+      "invalid_status_files": 0,
+      "generator": {},
+      "observed_interval_seconds": null,
+      "scheduled_at": 100010.0,
+      "sample_schedule_lag_ms": 0.0,
+      "sample_collection_ms": 0.0,
+      "window": {
+        "http": {
+          "count": 0
+        },
+        "steady_http": {
+          "count": 0
+        },
+        "cancelled_http": {
+          "count": 0
+        },
+        "realtime": {
+          "count": 0
+        },
+        "rtt": {
+          "count": 0
+        },
+        "phase_http": {},
+        "error_count": 0,
+        "sample_count": 0,
+        "logical_request_count": 0,
+        "cancelled_count": 0,
+        "all_attempt_count": null,
+        "attempt_coverage": "unavailable",
+        "attempt_result_counts": {},
+        "valid_attempt_latency_count": 0,
+        "valid_latency_count": 0,
+        "latency_sample_quality": {
+          "http": "unavailable",
+          "realtime": "unavailable"
+        },
+        "error_rate": 0.0,
+        "steady_error_count": 0,
+        "steady_sample_count": 0,
+        "steady_error_rate": 0.0,
+        "invalid_metric_count": 0,
+        "invalid_duration_count": 0,
+        "invalid_schema_count": 0,
+        "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels",
+        "lost_event_count": 0,
+        "audit_lost_count": 0,
+        "command_rejections": 0,
+        "command_error_rate": 0
+      },
+      "health": {
+        "ok": true,
+        "duration_ms": 1,
+        "status": 200
+      },
+      "resources": {},
+      "reasons": [],
+      "streaks": {}
+    }
+  ],
+  "final_clients": [
+    {
+      "run_id": "1e79a1be90fa4c459f7466d07e0e5d81",
+      "client_id": "g001c013471f6",
+      "process_epoch": "83c3a7e6006b41029b35762539ae561a",
+      "pid": 89904,
+      "status_seq": 1,
+      "now_unix_ms": 100000000,
+      "online": false,
+      "room": false,
+      "last_progress_age_ms": 0,
+      "cycles_completed": 3,
+      "event_seq_max": 6,
+      "telemetry": [
+        {
+          "run_id": "1e79a1be90fa4c459f7466d07e0e5d81",
+          "client_id": "g001c013471f6",
+          "process_epoch": "83c3a7e6006b41029b35762539ae561a",
+          "event_seq": 1,
+          "at_unix_ms": 100000001,
+          "type": "lifecycle",
+          "cycle_id": "cycle:1",
+          "match_id": "match:1",
+          "event_type": "settlement.acknowledged"
+        },
+        {
+          "run_id": "1e79a1be90fa4c459f7466d07e0e5d81",
+          "client_id": "g001c013471f6",
+          "process_epoch": "83c3a7e6006b41029b35762539ae561a",
+          "event_seq": 2,
+          "at_unix_ms": 100000002,
+          "type": "lifecycle",
+          "cycle_id": "cycle:1",
+          "match_id": "match:1",
+          "event_type": "cycle.completed"
+        },
+        {
+          "run_id": "1e79a1be90fa4c459f7466d07e0e5d81",
+          "client_id": "g001c013471f6",
+          "process_epoch": "83c3a7e6006b41029b35762539ae561a",
+          "event_seq": 3,
+          "at_unix_ms": 100000003,
+          "type": "lifecycle",
+          "cycle_id": "cycle:2",
+          "match_id": "match:2",
+          "event_type": "settlement.acknowledged"
+        },
+        {
+          "run_id": "1e79a1be90fa4c459f7466d07e0e5d81",
+          "client_id": "g001c013471f6",
+          "process_epoch": "83c3a7e6006b41029b35762539ae561a",
+          "event_seq": 4,
+          "at_unix_ms": 100000004,
+          "type": "lifecycle",
+          "cycle_id": "cycle:2",
+          "match_id": "match:2",
+          "event_type": "cycle.completed"
+        },
+        {
+          "run_id": "1e79a1be90fa4c459f7466d07e0e5d81",
+          "client_id": "g001c013471f6",
+          "process_epoch": "83c3a7e6006b41029b35762539ae561a",
+          "event_seq": 5,
+          "at_unix_ms": 100000005,
+          "type": "lifecycle",
+          "cycle_id": "cycle:3",
+          "match_id": "match:3",
+          "event_type": "settlement.acknowledged"
+        },
+        {
+          "run_id": "1e79a1be90fa4c459f7466d07e0e5d81",
+          "client_id": "g001c013471f6",
+          "process_epoch": "83c3a7e6006b41029b35762539ae561a",
+          "event_seq": 6,
+          "at_unix_ms": 100000006,
+          "type": "lifecycle",
+          "cycle_id": "cycle:3",
+          "match_id": "match:3",
+          "event_type": "cycle.completed"
+        }
+      ],
+      "operations": [],
+      "audit_lost_count": 0,
+      "errors": [],
+      "cleanup": {
+        "state": "Passed"
+      },
+      "_received_at_monotonic_ms": 10000.0
+    }
+  ],
+  "acceptance_passed": false,
+  "full_acceptance_passed": false
+}

@@ -907,7 +907,7 @@
       ],
       "setup_and_injection": "时限到但负载未达",
       "expected": "execution结束、load失败",
-      "task_current_state": "Partial",
+      "task_current_state": "ReadyForAcceptance",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [
@@ -918,20 +918,34 @@
         "integrated-cc6da2e/report.json",
         "ci-cc6da2e/workflows.json"
       ],
-      "supporting_evidence_is_full_case_coverage": false,
+      "supporting_evidence_is_full_case_coverage": true,
       "current_case_execution": {
         "status": "Passed",
         "executed": true,
-        "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
-        "source_git_dirty": false,
-        "receipt_file": "case-audit-cc6da2e/receipts/cases.jsonl",
-        "receipt_line": 27,
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "receipt_file": "offline-acceptance-f812/load02/evidence/cases.jsonl",
+        "receipt_line": 1,
         "setup_matches_frozen_spec": true,
         "expected_matches_frozen_spec": true,
-        "acceptance_decision": "NotAccepted: per-task stages, dependencies and applicable profile decisions remain independent.",
-        "prior_matching_receipt_file": "integrated-cc6da2e/offline-cases-with-godot/cases.jsonl",
-        "command_manifest": "case-audit-cc6da2e/manifest.json"
-      }
+        "full_applicable_profile_case_evidence": true,
+        "acceptance_decision": "S6 independent MAIN pending; Accepted=false",
+        "command_manifest": "offline-acceptance-f812/load02/evidence/commands.json"
+      },
+      "prior_case_executions": [
+        {
+          "status": "Passed",
+          "executed": true,
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "source_git_dirty": false,
+          "receipt_file": "case-audit-cc6da2e/receipts/cases.jsonl",
+          "receipt_line": 27,
+          "setup_matches_frozen_spec": true,
+          "expected_matches_frozen_spec": true,
+          "acceptance_decision": "NotAccepted: per-task stages, dependencies and applicable profile decisions remain independent.",
+          "prior_matching_receipt_file": "integrated-cc6da2e/offline-cases-with-godot/cases.jsonl",
+          "command_manifest": "case-audit-cc6da2e/manifest.json"
+        }
+      ]
     },
     {
       "case_id": "LOAD-02.1-T02",
@@ -942,7 +956,7 @@
       ],
       "setup_and_injection": "先业务失败后人工STOP",
       "expected": "保留业务失败",
-      "task_current_state": "Partial",
+      "task_current_state": "ReadyForAcceptance",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [
@@ -953,12 +967,26 @@
         "integrated-cc6da2e/report.json",
         "ci-cc6da2e/workflows.json"
       ],
-      "supporting_evidence_is_full_case_coverage": false,
+      "supporting_evidence_is_full_case_coverage": true,
       "current_case_execution": {
-        "status": "NotExecuted",
-        "executed": false,
-        "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
-      }
+        "status": "Passed",
+        "executed": true,
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "receipt_file": "offline-acceptance-f812/load02/evidence/cases.jsonl",
+        "receipt_line": 2,
+        "setup_matches_frozen_spec": true,
+        "expected_matches_frozen_spec": true,
+        "full_applicable_profile_case_evidence": true,
+        "acceptance_decision": "S6 independent MAIN pending; Accepted=false",
+        "command_manifest": "offline-acceptance-f812/load02/evidence/commands.json"
+      },
+      "prior_case_executions": [
+        {
+          "status": "NotExecuted",
+          "executed": false,
+          "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
+        }
+      ]
     },
     {
       "case_id": "LOAD-02.1-T03",
@@ -969,7 +997,7 @@
       ],
       "setup_and_injection": "性能超线且证据损坏",
       "expected": "记录两原因且证据无效优先退出码3",
-      "task_current_state": "Partial",
+      "task_current_state": "ReadyForAcceptance",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [
@@ -980,12 +1008,26 @@
         "integrated-cc6da2e/report.json",
         "ci-cc6da2e/workflows.json"
       ],
-      "supporting_evidence_is_full_case_coverage": false,
+      "supporting_evidence_is_full_case_coverage": true,
       "current_case_execution": {
-        "status": "NotExecuted",
-        "executed": false,
-        "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
-      }
+        "status": "Passed",
+        "executed": true,
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "receipt_file": "offline-acceptance-f812/load02/evidence/cases.jsonl",
+        "receipt_line": 3,
+        "setup_matches_frozen_spec": true,
+        "expected_matches_frozen_spec": true,
+        "full_applicable_profile_case_evidence": true,
+        "acceptance_decision": "S6 independent MAIN pending; Accepted=false",
+        "command_manifest": "offline-acceptance-f812/load02/evidence/commands.json"
+      },
+      "prior_case_executions": [
+        {
+          "status": "NotExecuted",
+          "executed": false,
+          "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
+        }
+      ]
     },
     {
       "case_id": "LOAD-02.2-T01",
@@ -1009,10 +1051,24 @@
       ],
       "supporting_evidence_is_full_case_coverage": false,
       "current_case_execution": {
-        "status": "NotExecuted",
-        "executed": false,
-        "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
-      }
+        "status": "Partial",
+        "executed": true,
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "receipt_file": "offline-acceptance-f812/load02/evidence/cases.jsonl",
+        "receipt_line": 4,
+        "setup_matches_frozen_spec": true,
+        "expected_matches_frozen_spec": true,
+        "full_applicable_profile_case_evidence": false,
+        "acceptance_decision": "S6 independent MAIN pending; Accepted=false",
+        "command_manifest": "offline-acceptance-f812/load02/evidence/commands.json"
+      },
+      "prior_case_executions": [
+        {
+          "status": "NotExecuted",
+          "executed": false,
+          "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
+        }
+      ]
     },
     {
       "case_id": "LOAD-02.2-T02",
@@ -1034,12 +1090,26 @@
         "integrated-cc6da2e/report.json",
         "ci-cc6da2e/workflows.json"
       ],
-      "supporting_evidence_is_full_case_coverage": false,
+      "supporting_evidence_is_full_case_coverage": true,
       "current_case_execution": {
-        "status": "NotExecuted",
-        "executed": false,
-        "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
-      }
+        "status": "Passed",
+        "executed": true,
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "receipt_file": "offline-acceptance-f812/load02/evidence/cases.jsonl",
+        "receipt_line": 5,
+        "setup_matches_frozen_spec": true,
+        "expected_matches_frozen_spec": true,
+        "full_applicable_profile_case_evidence": true,
+        "acceptance_decision": "S6 independent MAIN pending; Accepted=false",
+        "command_manifest": "offline-acceptance-f812/load02/evidence/commands.json"
+      },
+      "prior_case_executions": [
+        {
+          "status": "NotExecuted",
+          "executed": false,
+          "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
+        }
+      ]
     },
     {
       "case_id": "LOAD-02.2-T03",
@@ -1061,12 +1131,26 @@
         "integrated-cc6da2e/report.json",
         "ci-cc6da2e/workflows.json"
       ],
-      "supporting_evidence_is_full_case_coverage": false,
+      "supporting_evidence_is_full_case_coverage": true,
       "current_case_execution": {
-        "status": "NotExecuted",
-        "executed": false,
-        "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
-      }
+        "status": "Passed",
+        "executed": true,
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "receipt_file": "offline-acceptance-f812/load02/evidence/cases.jsonl",
+        "receipt_line": 6,
+        "setup_matches_frozen_spec": true,
+        "expected_matches_frozen_spec": true,
+        "full_applicable_profile_case_evidence": true,
+        "acceptance_decision": "S6 independent MAIN pending; Accepted=false",
+        "command_manifest": "offline-acceptance-f812/load02/evidence/commands.json"
+      },
+      "prior_case_executions": [
+        {
+          "status": "NotExecuted",
+          "executed": false,
+          "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
+        }
+      ]
     },
     {
       "case_id": "LOAD-02.3-T01",
@@ -1077,7 +1161,7 @@
       ],
       "setup_and_injection": "正常响应STOP",
       "expected": "grace内退出且服务后置状态可恢复",
-      "task_current_state": "Partial",
+      "task_current_state": "ReadyForAcceptance",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [
@@ -1088,12 +1172,26 @@
         "integrated-cc6da2e/report.json",
         "ci-cc6da2e/workflows.json"
       ],
-      "supporting_evidence_is_full_case_coverage": false,
+      "supporting_evidence_is_full_case_coverage": true,
       "current_case_execution": {
-        "status": "NotExecuted",
-        "executed": false,
-        "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
-      }
+        "status": "Passed",
+        "executed": true,
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "receipt_file": "offline-acceptance-f812/load02/evidence/cases.jsonl",
+        "receipt_line": 7,
+        "setup_matches_frozen_spec": true,
+        "expected_matches_frozen_spec": true,
+        "full_applicable_profile_case_evidence": true,
+        "acceptance_decision": "S6 independent MAIN pending; Accepted=false",
+        "command_manifest": "offline-acceptance-f812/load02/evidence/commands.json"
+      },
+      "prior_case_executions": [
+        {
+          "status": "NotExecuted",
+          "executed": false,
+          "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
+        }
+      ]
     },
     {
       "case_id": "LOAD-02.3-T02",
@@ -1104,7 +1202,7 @@
       ],
       "setup_and_injection": "子进程hang",
       "expected": "仅终止本轮PID并记录forced",
-      "task_current_state": "Partial",
+      "task_current_state": "ReadyForAcceptance",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [
@@ -1115,12 +1213,26 @@
         "integrated-cc6da2e/report.json",
         "ci-cc6da2e/workflows.json"
       ],
-      "supporting_evidence_is_full_case_coverage": false,
+      "supporting_evidence_is_full_case_coverage": true,
       "current_case_execution": {
-        "status": "NotExecuted",
-        "executed": false,
-        "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
-      }
+        "status": "Passed",
+        "executed": true,
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "receipt_file": "offline-acceptance-f812/load02/evidence/cases.jsonl",
+        "receipt_line": 8,
+        "setup_matches_frozen_spec": true,
+        "expected_matches_frozen_spec": true,
+        "full_applicable_profile_case_evidence": true,
+        "acceptance_decision": "S6 independent MAIN pending; Accepted=false",
+        "command_manifest": "offline-acceptance-f812/load02/evidence/commands.json"
+      },
+      "prior_case_executions": [
+        {
+          "status": "NotExecuted",
+          "executed": false,
+          "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
+        }
+      ]
     },
     {
       "case_id": "LOAD-02.3-T03",
@@ -1131,7 +1243,7 @@
       ],
       "setup_and_injection": "最终文件写失败",
       "expected": "应急报告存在且不可Pass",
-      "task_current_state": "Partial",
+      "task_current_state": "ReadyForAcceptance",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [
@@ -1142,12 +1254,26 @@
         "integrated-cc6da2e/report.json",
         "ci-cc6da2e/workflows.json"
       ],
-      "supporting_evidence_is_full_case_coverage": false,
+      "supporting_evidence_is_full_case_coverage": true,
       "current_case_execution": {
-        "status": "NotExecuted",
-        "executed": false,
-        "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
-      }
+        "status": "Passed",
+        "executed": true,
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "receipt_file": "offline-acceptance-f812/load02/evidence/cases.jsonl",
+        "receipt_line": 9,
+        "setup_matches_frozen_spec": true,
+        "expected_matches_frozen_spec": true,
+        "full_applicable_profile_case_evidence": true,
+        "acceptance_decision": "S6 independent MAIN pending; Accepted=false",
+        "command_manifest": "offline-acceptance-f812/load02/evidence/commands.json"
+      },
+      "prior_case_executions": [
+        {
+          "status": "NotExecuted",
+          "executed": false,
+          "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
+        }
+      ]
     },
     {
       "case_id": "LOAD-02.4-T01",
@@ -1158,7 +1284,7 @@
       ],
       "setup_and_injection": "preparation-only exit0",
       "expected": "标仅准备不算压测成功",
-      "task_current_state": "Partial",
+      "task_current_state": "ReadyForAcceptance",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [
@@ -1169,20 +1295,34 @@
         "integrated-cc6da2e/report.json",
         "ci-cc6da2e/workflows.json"
       ],
-      "supporting_evidence_is_full_case_coverage": false,
+      "supporting_evidence_is_full_case_coverage": true,
       "current_case_execution": {
         "status": "Passed",
         "executed": true,
-        "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
-        "source_git_dirty": false,
-        "receipt_file": "case-audit-cc6da2e/receipts/cases.jsonl",
-        "receipt_line": 25,
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "receipt_file": "offline-acceptance-f812/load02/evidence/cases.jsonl",
+        "receipt_line": 10,
         "setup_matches_frozen_spec": true,
         "expected_matches_frozen_spec": true,
-        "acceptance_decision": "NotAccepted: per-task stages, dependencies and applicable profile decisions remain independent.",
-        "prior_matching_receipt_file": "integrated-cc6da2e/offline-cases-with-godot/cases.jsonl",
-        "command_manifest": "case-audit-cc6da2e/manifest.json"
-      }
+        "full_applicable_profile_case_evidence": true,
+        "acceptance_decision": "S6 independent MAIN pending; Accepted=false",
+        "command_manifest": "offline-acceptance-f812/load02/evidence/commands.json"
+      },
+      "prior_case_executions": [
+        {
+          "status": "Passed",
+          "executed": true,
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "source_git_dirty": false,
+          "receipt_file": "case-audit-cc6da2e/receipts/cases.jsonl",
+          "receipt_line": 25,
+          "setup_matches_frozen_spec": true,
+          "expected_matches_frozen_spec": true,
+          "acceptance_decision": "NotAccepted: per-task stages, dependencies and applicable profile decisions remain independent.",
+          "prior_matching_receipt_file": "integrated-cc6da2e/offline-cases-with-godot/cases.jsonl",
+          "command_manifest": "case-audit-cc6da2e/manifest.json"
+        }
+      ]
     },
     {
       "case_id": "LOAD-02.4-T02",
@@ -1193,7 +1333,7 @@
       ],
       "setup_and_injection": "redline",
       "expected": "exit2且记录全部触发",
-      "task_current_state": "Partial",
+      "task_current_state": "ReadyForAcceptance",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [
@@ -1204,12 +1344,26 @@
         "integrated-cc6da2e/report.json",
         "ci-cc6da2e/workflows.json"
       ],
-      "supporting_evidence_is_full_case_coverage": false,
+      "supporting_evidence_is_full_case_coverage": true,
       "current_case_execution": {
-        "status": "NotExecuted",
-        "executed": false,
-        "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
-      }
+        "status": "Passed",
+        "executed": true,
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "receipt_file": "offline-acceptance-f812/load02/evidence/cases.jsonl",
+        "receipt_line": 11,
+        "setup_matches_frozen_spec": true,
+        "expected_matches_frozen_spec": true,
+        "full_applicable_profile_case_evidence": true,
+        "acceptance_decision": "S6 independent MAIN pending; Accepted=false",
+        "command_manifest": "offline-acceptance-f812/load02/evidence/commands.json"
+      },
+      "prior_case_executions": [
+        {
+          "status": "NotExecuted",
+          "executed": false,
+          "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
+        }
+      ]
     },
     {
       "case_id": "LOAD-02.4-T03",
@@ -1220,7 +1374,7 @@
       ],
       "setup_and_injection": "invalid/人工STOP",
       "expected": "分别3/130",
-      "task_current_state": "Partial",
+      "task_current_state": "ReadyForAcceptance",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [
@@ -1231,20 +1385,34 @@
         "integrated-cc6da2e/report.json",
         "ci-cc6da2e/workflows.json"
       ],
-      "supporting_evidence_is_full_case_coverage": false,
+      "supporting_evidence_is_full_case_coverage": true,
       "current_case_execution": {
         "status": "Passed",
         "executed": true,
-        "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
-        "source_git_dirty": false,
-        "receipt_file": "case-audit-cc6da2e/receipts/cases.jsonl",
-        "receipt_line": 26,
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "receipt_file": "offline-acceptance-f812/load02/evidence/cases.jsonl",
+        "receipt_line": 12,
         "setup_matches_frozen_spec": true,
         "expected_matches_frozen_spec": true,
-        "acceptance_decision": "NotAccepted: per-task stages, dependencies and applicable profile decisions remain independent.",
-        "prior_matching_receipt_file": "integrated-cc6da2e/offline-cases-with-godot/cases.jsonl",
-        "command_manifest": "case-audit-cc6da2e/manifest.json"
-      }
+        "full_applicable_profile_case_evidence": true,
+        "acceptance_decision": "S6 independent MAIN pending; Accepted=false",
+        "command_manifest": "offline-acceptance-f812/load02/evidence/commands.json"
+      },
+      "prior_case_executions": [
+        {
+          "status": "Passed",
+          "executed": true,
+          "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+          "source_git_dirty": false,
+          "receipt_file": "case-audit-cc6da2e/receipts/cases.jsonl",
+          "receipt_line": 26,
+          "setup_matches_frozen_spec": true,
+          "expected_matches_frozen_spec": true,
+          "acceptance_decision": "NotAccepted: per-task stages, dependencies and applicable profile decisions remain independent.",
+          "prior_matching_receipt_file": "integrated-cc6da2e/offline-cases-with-godot/cases.jsonl",
+          "command_manifest": "case-audit-cc6da2e/manifest.json"
+        }
+      ]
     },
     {
       "case_id": "LOAD-03.1-T01",
@@ -11509,6 +11677,15 @@
     "report": "offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
     "tasks": 4,
     "cases": 12,
+    "Accepted": 0
+  },
+  "latest_LOAD02_acceptance_proposal": {
+    "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "report": "offline-acceptance-f812/load02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+    "ready_tasks": 3,
+    "partial_tasks": 1,
+    "passed_cases": 11,
+    "partial_cases": 1,
     "Accepted": 0
   }
 }
