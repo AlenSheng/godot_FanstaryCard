@@ -1,0 +1,553 @@
+﻿2026-09-30T18:32:46.6625559Z Current runner version: '2.337.0'
+2026-09-30T18:32:46.6662072Z ##[group]Runner Image Provisioner
+2026-09-30T18:32:46.6663527Z Hosted Compute Agent
+2026-09-30T18:32:46.6664615Z Version: 20260828.587
+2026-09-30T18:32:46.6665698Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+2026-09-30T18:32:46.6667048Z Build Date: 2026-08-28T16:44:25Z
+2026-09-30T18:32:46.6668700Z Worker ID: {501c09a1-15cc-4080-a116-58e953bcb5e5}
+2026-09-30T18:32:46.6670011Z Azure Region: eastus
+2026-09-30T18:32:46.6671069Z ##[endgroup]
+2026-09-30T18:32:46.6673537Z ##[group]Operating System
+2026-09-30T18:32:46.6674634Z Ubuntu
+2026-09-30T18:32:46.6675595Z 24.04.5
+2026-09-30T18:32:46.6676529Z LTS
+2026-09-30T18:32:46.6677517Z ##[endgroup]
+2026-09-30T18:32:46.6678744Z ##[group]Runner Image
+2026-09-30T18:32:46.6679829Z Image: ubuntu-24.04
+2026-09-30T18:32:46.6680957Z Version: 20260920.314.1
+2026-09-30T18:32:46.6683248Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260920.314/images/ubuntu/Ubuntu2404-Readme.md
+2026-09-30T18:32:46.6686091Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260920.314
+2026-09-30T18:32:46.6688241Z ##[endgroup]
+2026-09-30T18:32:46.6690175Z ##[group]GITHUB_TOKEN Permissions
+2026-09-30T18:32:46.6693031Z Contents: read
+2026-09-30T18:32:46.6694024Z Metadata: read
+2026-09-30T18:32:46.6695047Z ##[endgroup]
+2026-09-30T18:32:46.6698437Z Secret source: Actions
+2026-09-30T18:32:46.6700105Z Cache mode: write
+2026-09-30T18:32:46.6701252Z Prepare workflow directory
+2026-09-30T18:32:46.7342416Z Prepare all required actions
+2026-09-30T18:32:46.7415050Z Getting action download info
+2026-09-30T18:32:46.9961252Z Download action repository 'actions/checkout@v7' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-09-30T18:32:47.3884982Z Download action repository 'actions/setup-dotnet@v6' (SHA:a98b56852c35b8e3190ac28c8c2271da59106c68)
+2026-09-30T18:32:47.5833863Z Download action repository 'actions/upload-artifact@v7' (SHA:043fb46d1a93c77aae656e7c1c64a875d1fc6a0a)
+2026-09-30T18:32:47.8361288Z Complete job name: server-postgres
+2026-09-30T18:32:47.8888195Z ##[group]Checking docker version
+2026-09-30T18:32:47.8901953Z ##[command]/usr/bin/docker version --format '{{.Server.APIVersion}}'
+2026-09-30T18:32:48.9354449Z '1.48'
+2026-09-30T18:32:48.9381096Z Docker daemon API version: '1.48'
+2026-09-30T18:32:48.9382914Z ##[command]/usr/bin/docker version --format '{{.Client.APIVersion}}'
+2026-09-30T18:32:48.9744584Z '1.48'
+2026-09-30T18:32:48.9782716Z Docker client API version: '1.48'
+2026-09-30T18:32:48.9790523Z ##[endgroup]
+2026-09-30T18:32:48.9796329Z ##[group]Clean up resources from previous jobs
+2026-09-30T18:32:48.9804942Z ##[command]/usr/bin/docker ps --all --quiet --no-trunc --filter "label=25fd25"
+2026-09-30T18:32:49.0066201Z ##[command]/usr/bin/docker network prune --force --filter "label=25fd25"
+2026-09-30T18:32:49.0258763Z ##[endgroup]
+2026-09-30T18:32:49.0259770Z ##[group]Create local container network
+2026-09-30T18:32:49.0270806Z ##[command]/usr/bin/docker network create --label 25fd25 github_network_1fd6d9022bd84620baa160eed413d3cc
+2026-09-30T18:32:49.1072616Z 12b82038aa71e947ad9078fa131f13319ad6bac9edad7b0e6f8259bffc2a6644
+2026-09-30T18:32:49.1093724Z ##[endgroup]
+2026-09-30T18:32:49.1122344Z ##[group]Starting postgres service container
+2026-09-30T18:32:49.1144525Z ##[command]/usr/bin/docker pull postgres:18
+2026-09-30T18:32:49.3988106Z 18: Pulling from library/postgres
+2026-09-30T18:32:49.4743822Z 6b37362b3da7: Pulling fs layer
+2026-09-30T18:32:49.4746958Z 646f8088ba62: Pulling fs layer
+2026-09-30T18:32:49.4748628Z 61c7e2f79e69: Pulling fs layer
+2026-09-30T18:32:49.4750129Z 4640014a8e88: Pulling fs layer
+2026-09-30T18:32:49.4751907Z 21e9cf2c46c2: Pulling fs layer
+2026-09-30T18:32:49.4753280Z 7ee6b8b2d259: Pulling fs layer
+2026-09-30T18:32:49.4754728Z 580a6c126420: Pulling fs layer
+2026-09-30T18:32:49.4755880Z 41837be3e54d: Pulling fs layer
+2026-09-30T18:32:49.4756938Z bba753ffc208: Pulling fs layer
+2026-09-30T18:32:49.4757971Z 0e422c951642: Pulling fs layer
+2026-09-30T18:32:49.4759989Z dc5a76842a4c: Pulling fs layer
+2026-09-30T18:32:49.4760978Z 5696a7190adf: Pulling fs layer
+2026-09-30T18:32:49.4761954Z 3b0757c8de7f: Pulling fs layer
+2026-09-30T18:32:49.4762711Z 4640014a8e88: Waiting
+2026-09-30T18:32:49.4763315Z 21e9cf2c46c2: Waiting
+2026-09-30T18:32:49.4763924Z 7ee6b8b2d259: Waiting
+2026-09-30T18:32:49.4764535Z 580a6c126420: Waiting
+2026-09-30T18:32:49.4765128Z 41837be3e54d: Waiting
+2026-09-30T18:32:49.4765714Z bba753ffc208: Waiting
+2026-09-30T18:32:49.4766300Z dc5a76842a4c: Waiting
+2026-09-30T18:32:49.4766952Z 0e422c951642: Waiting
+2026-09-30T18:32:49.4767952Z 3b0757c8de7f: Waiting
+2026-09-30T18:32:49.4769063Z 5696a7190adf: Waiting
+2026-09-30T18:32:49.5272384Z 646f8088ba62: Verifying Checksum
+2026-09-30T18:32:49.5289099Z 646f8088ba62: Download complete
+2026-09-30T18:32:49.5540854Z 61c7e2f79e69: Verifying Checksum
+2026-09-30T18:32:49.5542308Z 61c7e2f79e69: Download complete
+2026-09-30T18:32:49.5895553Z 4640014a8e88: Verifying Checksum
+2026-09-30T18:32:49.5897193Z 4640014a8e88: Download complete
+2026-09-30T18:32:49.6538605Z 21e9cf2c46c2: Verifying Checksum
+2026-09-30T18:32:49.6558521Z 21e9cf2c46c2: Download complete
+2026-09-30T18:32:49.6629162Z 6b37362b3da7: Verifying Checksum
+2026-09-30T18:32:49.6636327Z 6b37362b3da7: Download complete
+2026-09-30T18:32:49.6673628Z 7ee6b8b2d259: Verifying Checksum
+2026-09-30T18:32:49.6680279Z 7ee6b8b2d259: Download complete
+2026-09-30T18:32:49.6840542Z 580a6c126420: Verifying Checksum
+2026-09-30T18:32:49.6848522Z 580a6c126420: Download complete
+2026-09-30T18:32:49.6992851Z 41837be3e54d: Verifying Checksum
+2026-09-30T18:32:49.7000397Z 41837be3e54d: Download complete
+2026-09-30T18:32:49.7106012Z 0e422c951642: Verifying Checksum
+2026-09-30T18:32:49.7129333Z 0e422c951642: Download complete
+2026-09-30T18:32:49.7585924Z 5696a7190adf: Verifying Checksum
+2026-09-30T18:32:49.7589361Z 5696a7190adf: Download complete
+2026-09-30T18:32:49.7593558Z dc5a76842a4c: Verifying Checksum
+2026-09-30T18:32:49.7595730Z dc5a76842a4c: Download complete
+2026-09-30T18:32:49.7968907Z 3b0757c8de7f: Verifying Checksum
+2026-09-30T18:32:49.7977324Z 3b0757c8de7f: Download complete
+2026-09-30T18:32:50.2987436Z bba753ffc208: Verifying Checksum
+2026-09-30T18:32:50.2993676Z bba753ffc208: Download complete
+2026-09-30T18:32:51.1558122Z 6b37362b3da7: Pull complete
+2026-09-30T18:32:51.9898689Z 646f8088ba62: Pull complete
+2026-09-30T18:32:52.1964601Z 61c7e2f79e69: Pull complete
+2026-09-30T18:32:52.2482959Z 4640014a8e88: Pull complete
+2026-09-30T18:32:52.5988965Z 21e9cf2c46c2: Pull complete
+2026-09-30T18:32:52.6855746Z 7ee6b8b2d259: Pull complete
+2026-09-30T18:32:52.6936761Z 580a6c126420: Pull complete
+2026-09-30T18:32:52.7064503Z 41837be3e54d: Pull complete
+2026-09-30T18:32:57.0913093Z bba753ffc208: Pull complete
+2026-09-30T18:32:57.1096135Z 0e422c951642: Pull complete
+2026-09-30T18:32:57.1231382Z dc5a76842a4c: Pull complete
+2026-09-30T18:32:57.1364519Z 5696a7190adf: Pull complete
+2026-09-30T18:32:57.1483692Z 3b0757c8de7f: Pull complete
+2026-09-30T18:32:57.1529049Z Digest: sha256:5a5a84b19854a9ffaa54082c166ff4ec27473a361e496e5ea167f298f2da9722
+2026-09-30T18:32:57.1538700Z Status: Downloaded newer image for postgres:18
+2026-09-30T18:32:57.1549686Z docker.io/library/postgres:18
+[redacted credential assignment]
+2026-09-30T18:32:57.1933480Z cbbab79fdc263f1e9268fee0f4d3b28354ae108eee5c120ea773164c199bc11a
+2026-09-30T18:32:57.1955880Z ##[command]/usr/bin/docker start cbbab79fdc263f1e9268fee0f4d3b28354ae108eee5c120ea773164c199bc11a
+2026-09-30T18:32:57.9034628Z cbbab79fdc263f1e9268fee0f4d3b28354ae108eee5c120ea773164c199bc11a
+2026-09-30T18:32:57.9063286Z ##[command]/usr/bin/docker ps --all --filter id=cbbab79fdc263f1e9268fee0f4d3b28354ae108eee5c120ea773164c199bc11a --filter status=running --no-trunc --format "{{.ID}} {{.Status}}"
+2026-09-30T18:32:57.9285779Z cbbab79fdc263f1e9268fee0f4d3b28354ae108eee5c120ea773164c199bc11a Up Less than a second (health: starting)
+2026-09-30T18:32:57.9316453Z ##[command]/usr/bin/docker port cbbab79fdc263f1e9268fee0f4d3b28354ae108eee5c120ea773164c199bc11a
+2026-09-30T18:32:57.9527475Z 5432/tcp -> 0.0.0.0:5432
+2026-09-30T18:32:57.9539023Z 5432/tcp -> [::]:5432
+2026-09-30T18:32:57.9602850Z ##[endgroup]
+2026-09-30T18:32:57.9615894Z ##[group]Waiting for all services to be ready
+2026-09-30T18:32:57.9634868Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" cbbab79fdc263f1e9268fee0f4d3b28354ae108eee5c120ea773164c199bc11a
+2026-09-30T18:32:57.9858658Z starting
+2026-09-30T18:32:57.9880315Z postgres service is starting, waiting 2 seconds before checking again.
+2026-09-30T18:32:59.9878073Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" cbbab79fdc263f1e9268fee0f4d3b28354ae108eee5c120ea773164c199bc11a
+2026-09-30T18:33:00.0019688Z starting
+2026-09-30T18:33:00.0036900Z postgres service is starting, waiting 4 seconds before checking again.
+2026-09-30T18:33:04.3508593Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" cbbab79fdc263f1e9268fee0f4d3b28354ae108eee5c120ea773164c199bc11a
+2026-09-30T18:33:04.3682252Z starting
+2026-09-30T18:33:04.3697081Z postgres service is starting, waiting 8 seconds before checking again.
+2026-09-30T18:33:12.6616817Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" cbbab79fdc263f1e9268fee0f4d3b28354ae108eee5c120ea773164c199bc11a
+2026-09-30T18:33:12.6765407Z healthy
+2026-09-30T18:33:12.6783486Z postgres service is healthy.
+2026-09-30T18:33:12.6784252Z ##[endgroup]
+2026-09-30T18:33:12.7161962Z ##[group]Run actions/checkout@v7
+2026-09-30T18:33:12.7162538Z with:
+2026-09-30T18:33:12.7162765Z   persist-credentials: false
+2026-09-30T18:33:12.7163057Z   repository: AlenSheng/godot_FanstaryCard
+2026-09-30T18:33:12.7165729Z   token: ***
+2026-09-30T18:33:12.7165948Z   ssh-strict: true
+2026-09-30T18:33:12.7166168Z   ssh-user: git
+2026-09-30T18:33:12.7166367Z   clean: true
+2026-09-30T18:33:12.7166586Z   sparse-checkout-cone-mode: true
+2026-09-30T18:33:12.7166846Z   fetch-depth: 1
+2026-09-30T18:33:12.7167049Z   fetch-tags: false
+2026-09-30T18:33:12.7167261Z   show-progress: true
+2026-09-30T18:33:12.7167474Z   lfs: false
+2026-09-30T18:33:12.7167876Z   submodules: false
+2026-09-30T18:33:12.7168092Z   set-safe-directory: true
+2026-09-30T18:33:12.7168340Z   allow-unsafe-pr-checkout: false
+2026-09-30T18:33:12.7168833Z env:
+2026-09-30T18:33:12.7169331Z   FANTASYCARD_TEST_POSTGRES: Host=127.0.0.1;Port=5432;Username=postgres;***;Database=fantasycard_test
+2026-09-30T18:33:12.7169847Z ##[endgroup]
+2026-09-30T18:33:12.8339982Z Syncing repository: AlenSheng/godot_FanstaryCard
+2026-09-30T18:33:12.8342847Z ##[group]Getting Git version info
+2026-09-30T18:33:12.8343587Z Working directory is '/home/runner/work/godot_FanstaryCard/godot_FanstaryCard'
+2026-09-30T18:33:12.8344840Z [command]/usr/bin/git version
+2026-09-30T18:33:12.9489304Z git version 2.55.0
+2026-09-30T18:33:12.9513856Z ##[endgroup]
+2026-09-30T18:33:12.9526430Z Temporarily overriding HOME='/home/runner/work/_temp/44c77162-7ad8-4674-9028-29c2a12569fb' before making global git config changes
+2026-09-30T18:33:12.9530459Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-30T18:33:12.9534722Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/godot_FanstaryCard/godot_FanstaryCard
+2026-09-30T18:33:12.9759110Z Deleting the contents of '/home/runner/work/godot_FanstaryCard/godot_FanstaryCard'
+2026-09-30T18:33:12.9762899Z ##[group]Determining repository object format
+2026-09-30T18:33:12.9764925Z ##[endgroup]
+2026-09-30T18:33:12.9766334Z ##[group]Initializing the repository
+2026-09-30T18:33:12.9771081Z [command]/usr/bin/git init /home/runner/work/godot_FanstaryCard/godot_FanstaryCard
+2026-09-30T18:33:13.0234801Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-09-30T18:33:13.0235901Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-09-30T18:33:13.0236867Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-09-30T18:33:13.0237846Z hint: call:
+2026-09-30T18:33:13.0238213Z hint:
+2026-09-30T18:33:13.0238675Z hint: 	git config --global init.defaultBranch <name>
+2026-09-30T18:33:13.0239212Z hint:
+2026-09-30T18:33:13.0239714Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-09-30T18:33:13.0240547Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-09-30T18:33:13.0240958Z hint:
+2026-09-30T18:33:13.0241172Z hint: 	git branch -m <name>
+2026-09-30T18:33:13.0241430Z hint:
+2026-09-30T18:33:13.0241764Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-09-30T18:33:13.0252850Z Initialized empty Git repository in /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/.git/
+2026-09-30T18:33:13.0256872Z [command]/usr/bin/git remote add origin https://github.com/AlenSheng/godot_FanstaryCard
+2026-09-30T18:33:13.0494491Z ##[endgroup]
+2026-09-30T18:33:13.0495644Z ##[group]Disabling automatic garbage collection
+2026-09-30T18:33:13.0498878Z [command]/usr/bin/git config --local gc.auto 0
+2026-09-30T18:33:13.0539242Z ##[endgroup]
+2026-09-30T18:33:13.0540335Z ##[group]Setting up auth
+2026-09-30T18:33:13.0541179Z Removing SSH command configuration
+2026-09-30T18:33:13.0547393Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-30T18:33:13.0587442Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-30T18:33:13.2430779Z Removing HTTP extra header
+2026-09-30T18:33:13.2434291Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-30T18:33:13.2473421Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-30T18:33:13.2715901Z Removing includeIf entries pointing to credentials config files
+2026-09-30T18:33:13.2721004Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-30T18:33:13.2760898Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-30T18:33:13.3271975Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-09ed914f-220e-405d-a7bd-55eed76972d4.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-09-30T18:33:13.3278355Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/godot_FanstaryCard/godot_FanstaryCard/.git.path /home/runner/work/_temp/git-credentials-09ed914f-220e-405d-a7bd-55eed76972d4.config
+2026-09-30T18:33:13.3316743Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/godot_FanstaryCard/godot_FanstaryCard/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-09ed914f-220e-405d-a7bd-55eed76972d4.config
+2026-09-30T18:33:13.3338711Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-09ed914f-220e-405d-a7bd-55eed76972d4.config
+2026-09-30T18:33:13.3380622Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-09ed914f-220e-405d-a7bd-55eed76972d4.config
+2026-09-30T18:33:13.3425352Z ##[endgroup]
+2026-09-30T18:33:13.3426354Z ##[group]Fetching the repository
+2026-09-30T18:33:13.3428520Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +57ee1b89e90825c1c5705ef26997b93b3bdf4254:refs/remotes/pull/17/merge
+2026-09-30T18:39:20.4299692Z From https://github.com/AlenSheng/godot_FanstaryCard
+2026-09-30T18:39:20.4318323Z  * [new ref]         57ee1b89e90825c1c5705ef26997b93b3bdf4254 -> pull/17/merge
+2026-09-30T18:39:20.4347528Z ##[endgroup]
+2026-09-30T18:39:20.4348608Z ##[group]Determining the checkout info
+2026-09-30T18:39:20.4349415Z ##[endgroup]
+2026-09-30T18:39:20.4349872Z [command]/usr/bin/git sparse-checkout disable
+2026-09-30T18:39:20.4494962Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-09-30T18:39:20.4531500Z ##[group]Checking out the ref
+2026-09-30T18:39:20.4536344Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/17/merge
+2026-09-30T18:39:21.5138924Z Updating files:   3% (247/6947)
+2026-09-30T18:39:21.5456308Z Updating files:   4% (278/6947)
+2026-09-30T18:39:21.5870529Z Updating files:   5% (348/6947)
+2026-09-30T18:39:21.6133662Z Updating files:   6% (417/6947)
+2026-09-30T18:39:21.6406705Z Updating files:   7% (487/6947)
+2026-09-30T18:39:21.6665137Z Updating files:   8% (556/6947)
+2026-09-30T18:39:21.6951809Z Updating files:   9% (626/6947)
+2026-09-30T18:39:21.8778675Z Updating files:  10% (695/6947)
+2026-09-30T18:39:22.0319282Z Updating files:  11% (765/6947)
+2026-09-30T18:39:22.1846154Z Updating files:  12% (834/6947)
+2026-09-30T18:39:22.2872852Z Updating files:  13% (904/6947)
+2026-09-30T18:39:22.2925360Z Updating files:  14% (973/6947)
+2026-09-30T18:39:22.3010454Z Updating files:  15% (1043/6947)
+2026-09-30T18:39:22.5234326Z Updating files:  16% (1112/6947)
+2026-09-30T18:39:22.5365611Z Updating files:  16% (1148/6947)
+2026-09-30T18:39:22.5612035Z Updating files:  17% (1181/6947)
+2026-09-30T18:39:22.5979920Z Updating files:  18% (1251/6947)
+2026-09-30T18:39:22.6206868Z Updating files:  19% (1320/6947)
+2026-09-30T18:39:22.7099722Z Updating files:  20% (1390/6947)
+2026-09-30T18:39:22.8550334Z Updating files:  21% (1459/6947)
+2026-09-30T18:39:23.0063982Z Updating files:  22% (1529/6947)
+2026-09-30T18:39:23.1408069Z Updating files:  23% (1598/6947)
+2026-09-30T18:39:23.4925165Z Updating files:  24% (1668/6947)
+2026-09-30T18:39:23.6287331Z Updating files:  24% (1721/6947)
+2026-09-30T18:39:24.0449065Z Updating files:  25% (1737/6947)
+2026-09-30T18:39:24.5058869Z Updating files:  26% (1807/6947)
+2026-09-30T18:39:24.6598747Z Updating files:  26% (1862/6947)
+2026-09-30T18:39:25.1909019Z Updating files:  27% (1876/6947)
+2026-09-30T18:39:25.1938004Z Updating files:  28% (1946/6947)
+2026-09-30T18:39:25.1971278Z Updating files:  29% (2015/6947)
+2026-09-30T18:39:25.2008199Z Updating files:  30% (2085/6947)
+2026-09-30T18:39:25.2618088Z Updating files:  31% (2154/6947)
+2026-09-30T18:39:25.3465913Z Updating files:  32% (2224/6947)
+2026-09-30T18:39:25.4952506Z Updating files:  33% (2293/6947)
+2026-09-30T18:39:25.5385172Z Updating files:  33% (2314/6947)
+2026-09-30T18:39:25.9158634Z Updating files:  34% (2362/6947)
+2026-09-30T18:39:25.9839315Z Updating files:  35% (2432/6947)
+2026-09-30T18:39:26.1498823Z Updating files:  36% (2501/6947)
+2026-09-30T18:39:26.1598337Z Updating files:  37% (2571/6947)
+2026-09-30T18:39:26.1718251Z Updating files:  38% (2640/6947)
+2026-09-30T18:39:26.1848422Z Updating files:  39% (2710/6947)
+2026-09-30T18:39:26.1948659Z Updating files:  40% (2779/6947)
+2026-09-30T18:39:26.2074178Z Updating files:  41% (2849/6947)
+2026-09-30T18:39:26.2259916Z Updating files:  42% (2918/6947)
+2026-09-30T18:39:26.2403052Z Updating files:  43% (2988/6947)
+2026-09-30T18:39:26.2475406Z Updating files:  44% (3057/6947)
+2026-09-30T18:39:26.2685322Z Updating files:  45% (3127/6947)
+2026-09-30T18:39:26.3209203Z Updating files:  46% (3196/6947)
+2026-09-30T18:39:26.3390816Z Updating files:  47% (3266/6947)
+2026-09-30T18:39:26.3847041Z Updating files:  48% (3335/6947)
+2026-09-30T18:39:26.4097296Z Updating files:  49% (3405/6947)
+2026-09-30T18:39:26.4218651Z Updating files:  50% (3474/6947)
+2026-09-30T18:39:26.5038682Z Updating files:  51% (3543/6947)
+2026-09-30T18:39:26.5758742Z Updating files:  51% (3582/6947)
+2026-09-30T18:39:26.6119242Z Updating files:  52% (3613/6947)
+2026-09-30T18:39:26.6338559Z Updating files:  53% (3682/6947)
+2026-09-30T18:39:26.6767262Z Updating files:  54% (3752/6947)
+2026-09-30T18:39:26.7000667Z Updating files:  55% (3821/6947)
+2026-09-30T18:39:26.7532499Z Updating files:  56% (3891/6947)
+2026-09-30T18:39:26.7626860Z Updating files:  57% (3960/6947)
+2026-09-30T18:39:26.7935871Z Updating files:  58% (4030/6947)
+2026-09-30T18:39:26.8202169Z Updating files:  59% (4099/6947)
+2026-09-30T18:39:26.8356225Z Updating files:  60% (4169/6947)
+2026-09-30T18:39:26.8395444Z Updating files:  61% (4238/6947)
+2026-09-30T18:39:26.8840155Z Updating files:  62% (4308/6947)
+2026-09-30T18:39:26.9509699Z Updating files:  63% (4377/6947)
+2026-09-30T18:39:26.9881485Z Updating files:  64% (4447/6947)
+2026-09-30T18:39:27.0068719Z Updating files:  65% (4516/6947)
+2026-09-30T18:39:27.0218630Z Updating files:  66% (4586/6947)
+2026-09-30T18:39:27.0536815Z Updating files:  67% (4655/6947)
+2026-09-30T18:39:27.0859137Z Updating files:  68% (4724/6947)
+2026-09-30T18:39:27.1090763Z Updating files:  69% (4794/6947)
+2026-09-30T18:39:27.1491551Z Updating files:  70% (4863/6947)
+2026-09-30T18:39:27.1605846Z Updating files:  71% (4933/6947)
+2026-09-30T18:39:27.2053123Z Updating files:  72% (5002/6947)
+2026-09-30T18:39:27.2240822Z Updating files:  73% (5072/6947)
+2026-09-30T18:39:27.2579960Z Updating files:  74% (5141/6947)
+2026-09-30T18:39:27.2971855Z Updating files:  75% (5211/6947)
+2026-09-30T18:39:27.3070587Z Updating files:  76% (5280/6947)
+2026-09-30T18:39:27.3368575Z Updating files:  77% (5350/6947)
+2026-09-30T18:39:27.3481112Z Updating files:  78% (5419/6947)
+2026-09-30T18:39:27.3526522Z Updating files:  79% (5489/6947)
+2026-09-30T18:39:27.3934243Z Updating files:  80% (5558/6947)
+2026-09-30T18:39:27.4104074Z Updating files:  81% (5628/6947)
+2026-09-30T18:39:27.4706542Z Updating files:  82% (5697/6947)
+2026-09-30T18:39:27.4761706Z Updating files:  83% (5767/6947)
+2026-09-30T18:39:27.4930392Z Updating files:  84% (5836/6947)
+2026-09-30T18:39:27.5407080Z Updating files:  84% (5844/6947)
+2026-09-30T18:39:27.5548338Z Updating files:  85% (5905/6947)
+2026-09-30T18:39:27.6109317Z Updating files:  86% (5975/6947)
+2026-09-30T18:39:27.6219119Z Updating files:  87% (6044/6947)
+2026-09-30T18:39:27.6805794Z Updating files:  88% (6114/6947)
+2026-09-30T18:39:27.6861521Z Updating files:  89% (6183/6947)
+2026-09-30T18:39:27.7479021Z Updating files:  90% (6253/6947)
+2026-09-30T18:39:27.7543149Z Updating files:  91% (6322/6947)
+2026-09-30T18:39:27.8036172Z Updating files:  92% (6392/6947)
+2026-09-30T18:39:27.8253830Z Updating files:  93% (6461/6947)
+2026-09-30T18:39:27.8507228Z Updating files:  94% (6531/6947)
+2026-09-30T18:39:27.8722014Z Updating files:  95% (6600/6947)
+2026-09-30T18:39:27.8874913Z Updating files:  96% (6670/6947)
+2026-09-30T18:39:27.8984443Z Updating files:  97% (6739/6947)
+2026-09-30T18:39:27.9076223Z Updating files:  98% (6809/6947)
+2026-09-30T18:39:27.9125322Z Updating files:  99% (6878/6947)
+2026-09-30T18:39:27.9126890Z Updating files: 100% (6947/6947)
+2026-09-30T18:39:27.9127916Z Updating files: 100% (6947/6947), done.
+2026-09-30T18:39:28.3752411Z Note: switching to 'refs/remotes/pull/17/merge'.
+2026-09-30T18:39:28.3754502Z 
+2026-09-30T18:39:28.3755490Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-09-30T18:39:28.3765952Z changes and commit them, and you can discard any commits you make in this
+2026-09-30T18:39:28.3767243Z state without impacting any branches by switching back to a branch.
+2026-09-30T18:39:28.3768128Z 
+2026-09-30T18:39:28.3768593Z If you want to create a new branch to retain commits you create, you may
+2026-09-30T18:39:28.3769380Z do so (now or later) by using -c with the switch command. Example:
+2026-09-30T18:39:28.3769859Z 
+2026-09-30T18:39:28.3770040Z   git switch -c <new-branch-name>
+2026-09-30T18:39:28.3770339Z 
+2026-09-30T18:39:28.3770547Z Or undo this operation with:
+2026-09-30T18:39:28.3771140Z 
+2026-09-30T18:39:28.3771291Z   git switch -
+2026-09-30T18:39:28.3771492Z 
+2026-09-30T18:39:28.3771859Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-09-30T18:39:28.3772304Z 
+2026-09-30T18:39:28.3772658Z HEAD is now at 57ee1b8 Merge 94ab80ebb4585f52d2ba632ba025da0913f08876 into 262390134e98f169899d076e6fa21926d44ba1aa
+2026-09-30T18:39:28.4123045Z ##[endgroup]
+2026-09-30T18:39:28.4198484Z [command]/usr/bin/git log -1 --format=%H
+2026-09-30T18:39:28.4219086Z 57ee1b89e90825c1c5705ef26997b93b3bdf4254
+2026-09-30T18:39:28.4232696Z ##[group]Removing auth
+2026-09-30T18:39:28.4233516Z Removing SSH command configuration
+2026-09-30T18:39:28.4234653Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-30T18:39:28.4274134Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-30T18:39:28.4554408Z Removing HTTP extra header
+2026-09-30T18:39:28.4574858Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-30T18:39:28.4586877Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-30T18:39:28.4898552Z Removing includeIf entries pointing to credentials config files
+2026-09-30T18:39:28.4918621Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-30T18:39:28.4938574Z includeif.gitdir:/home/runner/work/godot_FanstaryCard/godot_FanstaryCard/.git.path
+2026-09-30T18:39:28.4940273Z includeif.gitdir:/home/runner/work/godot_FanstaryCard/godot_FanstaryCard/.git/worktrees/*.path
+2026-09-30T18:39:28.4943952Z includeif.gitdir:/github/workspace/.git.path
+2026-09-30T18:39:28.4968858Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-30T18:39:28.5008878Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/godot_FanstaryCard/godot_FanstaryCard/.git.path
+2026-09-30T18:39:28.5010577Z /home/runner/work/_temp/git-credentials-09ed914f-220e-405d-a7bd-55eed76972d4.config
+2026-09-30T18:39:28.5059941Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/godot_FanstaryCard/godot_FanstaryCard/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-09ed914f\-220e\-405d\-a7bd\-55eed76972d4\.config
+2026-09-30T18:39:28.9315743Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/godot_FanstaryCard/godot_FanstaryCard/.git/worktrees/*.path
+2026-09-30T18:39:28.9345883Z /home/runner/work/_temp/git-credentials-09ed914f-220e-405d-a7bd-55eed76972d4.config
+2026-09-30T18:39:28.9356176Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/godot_FanstaryCard/godot_FanstaryCard/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-09ed914f\-220e\-405d\-a7bd\-55eed76972d4\.config
+2026-09-30T18:39:30.0898715Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-09-30T18:39:30.0924049Z /github/runner_temp/git-credentials-09ed914f-220e-405d-a7bd-55eed76972d4.config
+2026-09-30T18:39:30.0928626Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-09ed914f\-220e\-405d\-a7bd\-55eed76972d4\.config
+2026-09-30T18:39:30.2886131Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-30T18:39:30.2919720Z /github/runner_temp/git-credentials-09ed914f-220e-405d-a7bd-55eed76972d4.config
+2026-09-30T18:39:30.2942730Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-09ed914f\-220e\-405d\-a7bd\-55eed76972d4\.config
+2026-09-30T18:39:30.3375108Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-30T18:39:30.3633936Z Removing credentials config '/home/runner/work/_temp/git-credentials-09ed914f-220e-405d-a7bd-55eed76972d4.config'
+2026-09-30T18:39:30.3649260Z ##[endgroup]
+2026-09-30T18:39:30.4349593Z ##[group]Run actions/setup-dotnet@v6
+2026-09-30T18:39:30.4349923Z with:
+2026-09-30T18:39:30.4350152Z   global-json-file: server/global.json
+2026-09-30T18:39:30.4350432Z   cache: false
+2026-09-30T18:39:30.4350627Z env:
+2026-09-30T18:39:30.4351235Z   FANTASYCARD_TEST_POSTGRES: Host=127.0.0.1;Port=5432;Username=postgres;***;Database=fantasycard_test
+2026-09-30T18:39:30.4351709Z ##[endgroup]
+2026-09-30T18:39:30.8009332Z [command]/home/runner/work/_actions/actions/setup-dotnet/v6/externals/install-dotnet.sh --skip-non-versioned-files --runtime dotnet --channel LTS
+2026-09-30T18:39:31.0098771Z dotnet-install: .NET Core Runtime with version '10.0.12' is already installed.
+2026-09-30T18:39:31.0115879Z [command]/home/runner/work/_actions/actions/setup-dotnet/v6/externals/install-dotnet.sh --skip-non-versioned-files --channel 10.0
+2026-09-30T18:39:31.3028903Z dotnet-install: .NET Core SDK with version '10.0.401' is already installed.
+2026-09-30T18:39:31.3214740Z ##[group]Run dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --logger 'trx;LogFileName=postgres-full.trx' --results-directory ../test-results/gameplay-load
+2026-09-30T18:39:31.3216259Z [36;1mdotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --logger 'trx;LogFileName=postgres-full.trx' --results-directory ../test-results/gameplay-load[0m
+2026-09-30T18:39:31.4568725Z shell: /usr/bin/bash -e {0}
+2026-09-30T18:39:31.4569103Z env:
+2026-09-30T18:39:31.4569864Z   FANTASYCARD_TEST_POSTGRES: Host=127.0.0.1;Port=5432;Username=postgres;***;Database=fantasycard_test
+2026-09-30T18:39:31.4570542Z   DOTNET_ROOT: /usr/share/dotnet
+2026-09-30T18:39:31.4570886Z ##[endgroup]
+2026-09-30T18:39:36.1019777Z   Determining projects to restore...
+2026-09-30T18:39:39.0785281Z   Restored /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/server/tools/FantasyCard.ConfigExporter/FantasyCard.ConfigExporter.csproj (in 221 ms).
+2026-09-30T18:39:40.0589836Z   Restored /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/server/src/FantasyCard.Server/FantasyCard.Server.csproj (in 1.25 sec).
+2026-09-30T18:39:40.0678621Z   Restored /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/server/src/FantasyCard.Domain/FantasyCard.Domain.csproj (in 2 ms).
+2026-09-30T18:39:40.1002106Z   Restored /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj (in 966 ms).
+2026-09-30T18:39:40.6403852Z   Restored /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/server/src/FantasyCard.Contracts/FantasyCard.Contracts.csproj (in 564 ms).
+2026-09-30T18:39:54.1050314Z   FantasyCard.ConfigExporter -> /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/server/tools/FantasyCard.ConfigExporter/bin/Release/net10.0/FantasyCard.ConfigExporter.dll
+2026-09-30T18:40:01.6115484Z   FantasyCard.Domain -> /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/server/src/FantasyCard.Domain/bin/Release/net10.0/FantasyCard.Domain.dll
+2026-09-30T18:40:04.4580911Z   FantasyCard.Contracts -> /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/server/src/FantasyCard.Contracts/bin/Release/net10.0/FantasyCard.Contracts.dll
+2026-09-30T18:40:14.7500796Z   FantasyCard.Server -> /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll
+2026-09-30T18:40:22.5691004Z   FantasyCard.Server.Tests -> /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll
+2026-09-30T18:40:22.5892529Z Test run for /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll (.NETCoreApp,Version=v10.0)
+2026-09-30T18:40:23.2574938Z A total of 1 test files matched the specified pattern.
+2026-09-30T18:42:23.1334195Z Results File: /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/test-results/gameplay-load/postgres-full.trx
+2026-09-30T18:42:23.1337714Z 
+2026-09-30T18:42:23.1381501Z Passed!  - Failed:     0, Passed:   262, Skipped:     0, Total:   262, Duration: 1 m 56 s - FantasyCard.Server.Tests.dll (net10.0)
+2026-09-30T18:42:23.2006145Z ##[group]Run actions/upload-artifact@v7
+2026-09-30T18:42:23.2006466Z with:
+2026-09-30T18:42:23.2006795Z   name: gameplay-load-postgres-57ee1b89e90825c1c5705ef26997b93b3bdf4254
+2026-09-30T18:42:23.2007219Z   path: test-results/gameplay-load
+2026-09-30T18:42:23.2007492Z   retention-days: 7
+2026-09-30T18:42:23.2008097Z   if-no-files-found: ignore
+2026-09-30T18:42:23.2008349Z   compression-level: 6
+2026-09-30T18:42:23.2008570Z   overwrite: false
+2026-09-30T18:42:23.2008788Z   include-hidden-files: false
+2026-09-30T18:42:23.2009028Z   archive: true
+2026-09-30T18:42:23.2009224Z env:
+2026-09-30T18:42:23.2009788Z   FANTASYCARD_TEST_POSTGRES: Host=127.0.0.1;Port=5432;Username=postgres;***;Database=fantasycard_test
+2026-09-30T18:42:23.2010289Z   DOTNET_ROOT: /usr/share/dotnet
+2026-09-30T18:42:23.2010549Z ##[endgroup]
+2026-09-30T18:42:23.3628575Z With the provided path, there will be 1 file uploaded
+2026-09-30T18:42:23.3648924Z Artifact name is valid!
+2026-09-30T18:42:23.3668487Z Root directory input is valid!
+2026-09-30T18:42:23.5963270Z Uploading artifact: gameplay-load-postgres-57ee1b89e90825c1c5705ef26997b93b3bdf4254.zip
+2026-09-30T18:42:23.6019845Z Beginning upload of artifact content to blob storage
+2026-09-30T18:42:23.6809862Z Uploaded bytes 68740
+2026-09-30T18:42:23.6951681Z Finished uploading artifact content to blob storage!
+2026-09-30T18:42:23.6954732Z SHA256 digest of uploaded artifact is f7a162bfc1e9b29e0b436e5275f45400d556be44eead421bf611033181a83e9c
+2026-09-30T18:42:23.6956202Z Finalizing artifact upload
+2026-09-30T18:42:23.9551968Z Artifact gameplay-load-postgres-57ee1b89e90825c1c5705ef26997b93b3bdf4254 successfully finalized. Artifact ID 11117534331
+2026-09-30T18:42:23.9554405Z Artifact gameplay-load-postgres-57ee1b89e90825c1c5705ef26997b93b3bdf4254 has been successfully uploaded! Final size is 68740 bytes. Artifact ID is 11117534331
+2026-09-30T18:42:23.9556583Z Artifact download URL: https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/36755423117/artifacts/11117534331
+2026-09-30T18:42:23.9725429Z Post job cleanup.
+2026-09-30T18:42:24.1264088Z Post job cleanup.
+2026-09-30T18:42:24.2341444Z [command]/usr/bin/git version
+2026-09-30T18:42:24.2438361Z git version 2.55.0
+2026-09-30T18:42:24.2526781Z Temporarily overriding HOME='/home/runner/work/_temp/0c6e9b48-7242-479b-ae91-2f384fef2d87' before making global git config changes
+2026-09-30T18:42:24.2549141Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-30T18:42:24.2550705Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/godot_FanstaryCard/godot_FanstaryCard
+2026-09-30T18:42:24.2552800Z Removing SSH command configuration
+2026-09-30T18:42:24.2553753Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-30T18:42:24.2604988Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-30T18:42:24.3249318Z Removing HTTP extra header
+2026-09-30T18:42:24.3250533Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-30T18:42:24.3372159Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-30T18:42:24.4007920Z Removing includeIf entries pointing to credentials config files
+2026-09-30T18:42:24.4009317Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-30T18:42:24.4139003Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-30T18:42:24.4854926Z Print service container logs: 600e7a4d15db432e959937574eba0107_postgres18_c48c20
+2026-09-30T18:42:24.4862315Z ##[command]/usr/bin/docker logs --details cbbab79fdc263f1e9268fee0f4d3b28354ae108eee5c120ea773164c199bc11a
+2026-09-30T18:42:24.5029057Z  initdb: warning: enabling "trust" authentication for local connections
+2026-09-30T18:42:24.5030303Z  The files belonging to this database system will be owned by user "postgres".
+2026-09-30T18:42:24.5031798Z  initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or --auth-local and --auth-host, the next time you run initdb.
+2026-09-30T18:42:24.5032975Z  This user must also own the server process.
+2026-09-30T18:42:24.5033439Z  
+2026-09-30T18:42:24.5033924Z  The database cluster will be initialized with locale "en_US.utf8".
+2026-09-30T18:42:24.5034767Z  The default database encoding has accordingly been set to "UTF8".
+2026-09-30T18:42:24.5035473Z  The default text search configuration will be set to "english".
+2026-09-30T18:42:24.5035866Z  
+2026-09-30T18:42:24.5036091Z  Data page checksums are enabled.
+2026-09-30T18:42:24.5036352Z  
+2026-09-30T18:42:24.5036689Z  fixing permissions on existing directory /var/lib/postgresql/18/docker ... ok
+2026-09-30T18:42:24.5037412Z  creating subdirectories ... ok
+2026-09-30T18:42:24.5037923Z  selecting dynamic shared memory implementation ... posix
+2026-09-30T18:42:24.5038752Z  selecting default "max_connections" ... 100
+2026-09-30T18:42:24.5039316Z  selecting default "shared_buffers" ... 128MB
+2026-09-30T18:42:24.5039855Z  selecting default time zone ... Etc/UTC
+2026-09-30T18:42:24.5040360Z  creating configuration files ... ok
+2026-09-30T18:42:24.5040864Z  running bootstrap script ... ok
+2026-09-30T18:42:24.5041385Z  performing post-bootstrap initialization ... ok
+2026-09-30T18:42:24.5041932Z  syncing data to disk ... ok
+2026-09-30T18:42:24.5042375Z  
+2026-09-30T18:42:24.5042676Z  
+2026-09-30T18:42:24.5043076Z  Success. You can now start the database server using:
+2026-09-30T18:42:24.5043606Z  
+2026-09-30T18:42:24.5044034Z      pg_ctl -D /var/lib/postgresql/18/docker -l logfile start
+2026-09-30T18:42:24.5044660Z  
+2026-09-30T18:42:24.5045792Z  waiting for server to start....2026-09-30 18:32:58.680 UTC [53] LOG:  starting PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+2026-09-30T18:42:24.5047412Z  2026-09-30 18:32:58.680 UTC [53] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-09-30T18:42:24.5050086Z  2026-09-30 18:32:58.684 UTC [59] LOG:  database system was shut down at 2026-09-30 18:32:58 UTC
+2026-09-30T18:42:24.5051481Z  2026-09-30 18:32:58.687 UTC [53] LOG:  database system is ready to accept connections
+2026-09-30T18:42:24.5052197Z   done
+2026-09-30T18:42:24.5052540Z  server started
+2026-09-30T18:42:24.5052893Z  CREATE DATABASE
+2026-09-30T18:42:24.5053257Z  
+2026-09-30T18:42:24.5053554Z  
+2026-09-30T18:42:24.5054111Z  /usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+2026-09-30T18:42:24.5054808Z  
+2026-09-30T18:42:24.5055442Z  waiting for server to shut down...2026-09-30 18:32:58.891 UTC [53] LOG:  received fast shutdown request
+2026-09-30T18:42:24.5056376Z  .2026-09-30 18:32:58.891 UTC [53] LOG:  aborting any active transactions
+2026-09-30T18:42:24.5057395Z  2026-09-30 18:32:58.894 UTC [53] LOG:  background worker "logical replication launcher" (PID 62) exited with exit code 1
+2026-09-30T18:42:24.5058577Z  2026-09-30 18:32:58.895 UTC [57] LOG:  shutting down
+2026-09-30T18:42:24.5059109Z  2026-09-30 18:32:58.896 UTC [57] LOG:  checkpoint starting: shutdown immediate
+2026-09-30T18:42:24.5060343Z  2026-09-30 18:32:58.911 UTC [57] LOG:  checkpoint complete: wrote 943 buffers (5.8%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.014 s, sync=0.002 s, total=0.017 s; sync files=303, longest=0.001 s, average=0.001 s; distance=4352 kB, estimate=4352 kB; lsn=0/1BA1BF0, redo lsn=0/1BA1BF0
+2026-09-30T18:42:24.5061931Z  2026-09-30 18:32:58.924 UTC [53] LOG:  database system is shut down
+2026-09-30T18:42:24.5062280Z   done
+2026-09-30T18:42:24.5062477Z  server stopped
+2026-09-30T18:42:24.5062686Z  
+2026-09-30T18:42:24.5062947Z  PostgreSQL init process complete; ready for start up.
+2026-09-30T18:42:24.5063312Z  
+2026-09-30T18:42:24.5063882Z  2026-09-30 18:32:59.015 UTC [1] LOG:  starting PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+2026-09-30T18:42:24.5064607Z  2026-09-30 18:32:59.016 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+2026-09-30T18:42:24.5065092Z  2026-09-30 18:32:59.016 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+2026-09-30T18:42:24.5065626Z  2026-09-30 18:32:59.017 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-09-30T18:42:24.5066197Z  2026-09-30 18:32:59.022 UTC [75] LOG:  database system was shut down at 2026-09-30 18:32:58 UTC
+2026-09-30T18:42:24.5066756Z  2026-09-30 18:32:59.025 UTC [1] LOG:  database system is ready to accept connections
+2026-09-30T18:42:24.5067221Z  2026-09-30 18:37:59.112 UTC [73] LOG:  checkpoint starting: time
+2026-09-30T18:42:24.5069601Z  2026-09-30 18:38:03.423 UTC [73] LOG:  checkpoint complete: wrote 43 buffers (0.3%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=4.309 s, sync=0.001 s, total=4.312 s; sync files=12, longest=0.001 s, average=0.001 s; distance=326 kB, estimate=326 kB; lsn=0/1BF3780, redo lsn=0/1BF3728
+2026-09-30T18:42:24.5071709Z  2026-09-30 18:41:04.554 UTC [627] ERROR:  canceling statement due to user request
+2026-09-30T18:42:24.5072613Z  2026-09-30 18:41:04.554 UTC [627] STATEMENT:  SELECT gold, diamond FROM player_wallets WHERE player_id = $1
+2026-09-30T18:42:24.5073202Z  2026-09-30 18:41:07.644 UTC [659] ERROR:  injected launch checkpoint failure
+2026-09-30T18:42:24.5073767Z  2026-09-30 18:41:07.644 UTC [659] CONTEXT:  PL/pgSQL function fail_launch_checkpoint() line 2 at RAISE
+2026-09-30T18:42:24.5075316Z  2026-09-30 18:41:07.644 UTC [659] STATEMENT:  INSERT INTO room_snapshots(room_id,revision,snapshot_json,rng_state_json,updated_at) VALUES($1,$2,$3,$4,$5) ON CONFLICT(room_id) DO UPDATE SET revision=EXCLUDED.revision,snapshot_json=EXCLUDED.snapshot_json,rng_state_json=EXCLUDED.rng_state_json,updated_at=EXCLUDED.updated_at WHERE room_snapshots.revision < EXCLUDED.revision
+2026-09-30T18:42:24.5076814Z  2026-09-30 18:41:07.942 UTC [661] ERROR:  injected terminal checkpoint failure
+2026-09-30T18:42:24.5077370Z  2026-09-30 18:41:07.942 UTC [661] CONTEXT:  PL/pgSQL function fail_terminal_checkpoint() line 2 at RAISE
+2026-09-30T18:42:24.5079200Z  2026-09-30 18:41:07.942 UTC [661] STATEMENT:  INSERT INTO room_snapshots(room_id,revision,snapshot_json,rng_state_json,updated_at) VALUES($1,$2,$3,$4,$5) ON CONFLICT(room_id) DO UPDATE SET revision=EXCLUDED.revision,snapshot_json=EXCLUDED.snapshot_json,rng_state_json=EXCLUDED.rng_state_json,updated_at=EXCLUDED.updated_at WHERE room_snapshots.revision < EXCLUDED.revision
+2026-09-30T18:42:24.5080649Z  2026-09-30 18:41:07.943 UTC [661] ERROR:  injected terminal checkpoint failure
+2026-09-30T18:42:24.5081194Z  2026-09-30 18:41:07.943 UTC [661] CONTEXT:  PL/pgSQL function fail_terminal_checkpoint() line 2 at RAISE
+2026-09-30T18:42:24.5082706Z  2026-09-30 18:41:07.943 UTC [661] STATEMENT:  INSERT INTO room_snapshots(room_id,revision,snapshot_json,rng_state_json,updated_at) VALUES($1,$2,$3,$4,$5) ON CONFLICT(room_id) DO UPDATE SET revision=EXCLUDED.revision,snapshot_json=EXCLUDED.snapshot_json,rng_state_json=EXCLUDED.rng_state_json,updated_at=EXCLUDED.updated_at WHERE room_snapshots.revision < EXCLUDED.revision
+2026-09-30T18:42:24.5084296Z  2026-09-30 18:41:12.758 UTC [688] ERROR:  duplicate key value violates unique constraint "ux_market_listings_active_equipment"
+2026-09-30T18:42:24.5085059Z  2026-09-30 18:41:12.758 UTC [688] DETAIL:  Key (equipment_id)=(d968d7a2-eae1-4f69-96f3-e9e4eb74afee) already exists.
+2026-09-30T18:42:24.5086633Z  2026-09-30 18:41:12.758 UTC [688] STATEMENT:  INSERT INTO market_listings(listing_id,seller_id,equipment_id,price_gold,status,version,created_at,expires_at) SELECT gen_random_uuid(),seller_id,equipment_id,price_gold,'Active',1,created_at,expires_at FROM market_listings WHERE listing_id=$1
+2026-09-30T18:42:24.5088276Z  2026-09-30 18:41:13.182 UTC [691] ERROR:  duplicate key value violates unique constraint "ux_players_display_name_key"
+2026-09-30T18:42:24.5088926Z  2026-09-30 18:41:13.182 UTC [691] DETAIL:  Key (display_name_key)=(alice) already exists.
+2026-09-30T18:42:24.5089392Z  2026-09-30 18:41:13.182 UTC [691] STATEMENT:  UPDATE players
+2026-09-30T18:42:24.5089838Z  	SET display_name = $1, selected_class = $2, version = $3, updated_at = $4
+2026-09-30T18:42:24.5090247Z  	WHERE user_id = $5 AND version = $6
+2026-09-30T18:42:24.5090753Z  2026-09-30 18:41:13.197 UTC [691] ERROR:  duplicate key value violates unique constraint "ux_players_display_name_key"
+2026-09-30T18:42:24.5091397Z  2026-09-30 18:41:13.197 UTC [691] DETAIL:  Key (display_name_key)=(alice) already exists.
+2026-09-30T18:42:24.5091974Z  2026-09-30 18:41:13.197 UTC [691] STATEMENT:  UPDATE players SET display_name='alice' WHERE user_id=$1
+2026-09-30T18:42:24.5092680Z  2026-09-30 18:41:14.262 UTC [697] ERROR:  duplicate key value violates unique constraint "ux_players_display_name_key"
+2026-09-30T18:42:24.5093352Z  2026-09-30 18:41:14.262 UTC [697] DETAIL:  Key (display_name_key)=(steam player) already exists.
+2026-09-30T18:42:24.5094069Z  2026-09-30 18:41:14.262 UTC [697] STATEMENT:  INSERT INTO players(user_id, display_name, selected_class, version, created_at, updated_at)
+2026-09-30T18:42:24.5094648Z  	VALUES ($1, $2, NULL, $3, $4, $5)
+2026-09-30T18:42:24.5095137Z  2026-09-30 18:41:14.264 UTC [697] ERROR:  duplicate key value violates unique constraint "ux_players_display_name_key"
+2026-09-30T18:42:24.5095783Z  2026-09-30 18:41:14.264 UTC [697] DETAIL:  Key (display_name_key)=(steam player) already exists.
+2026-09-30T18:42:24.5096502Z  2026-09-30 18:41:14.264 UTC [697] STATEMENT:  INSERT INTO players(user_id, display_name, selected_class, version, created_at, updated_at)
+2026-09-30T18:42:24.5097075Z  	VALUES ($1, $2, NULL, $3, $4, $5)
+2026-09-30T18:42:24.5097551Z  2026-09-30 18:42:12.539 UTC [828] ERROR:  duplicate key value violates unique constraint "ux_players_display_name_key"
+2026-09-30T18:42:24.5098456Z  2026-09-30 18:42:12.539 UTC [828] DETAIL:  Key (display_name_key)=(reserved) already exists.
+2026-09-30T18:42:24.5099159Z  2026-09-30 18:42:12.539 UTC [828] STATEMENT:  INSERT INTO players(user_id, display_name, selected_class, version, created_at, updated_at)
+2026-09-30T18:42:24.5099724Z  	VALUES ($1, $2, NULL, $3, $4, $5)
+2026-09-30T18:42:24.5105004Z Stop and remove container: 600e7a4d15db432e959937574eba0107_postgres18_c48c20
+2026-09-30T18:42:24.5110338Z ##[command]/usr/bin/docker rm --force cbbab79fdc263f1e9268fee0f4d3b28354ae108eee5c120ea773164c199bc11a
+2026-09-30T18:42:24.6754397Z cbbab79fdc263f1e9268fee0f4d3b28354ae108eee5c120ea773164c199bc11a
+2026-09-30T18:42:24.6832752Z Remove container network: github_network_1fd6d9022bd84620baa160eed413d3cc
+2026-09-30T18:42:24.6854044Z ##[command]/usr/bin/docker network rm github_network_1fd6d9022bd84620baa160eed413d3cc
+2026-09-30T18:42:24.7705699Z github_network_1fd6d9022bd84620baa160eed413d3cc
+2026-09-30T18:42:24.7783474Z Cleaning up orphan processes
+2026-09-30T18:42:24.8061971Z Terminate orphan process: pid (3747) (VBCSCompiler)
+

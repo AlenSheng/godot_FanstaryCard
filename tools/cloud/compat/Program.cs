@@ -77,7 +77,7 @@ static class Probe
                 case "seed-settlement": await SeedRoomAsync(single: true); break;
                 case "settlement-drop": await SettlementDropAsync(); break;
                 case "settlement-replay": await SettlementReplayAsync(); break;
-                case "seed-pending": await SeedRoomAsync(single: true); await SettlePrimaryAsync(gold: true); break;
+                case "seed-pending": await SeedPendingAsync(); break;
                 case "seed-drain-stale": await SeedRoomAsync(single: true); await SettlePrimaryAsync(); break;
                 case "drain": await DrainAsync(); break;
                 default: throw new ArgumentException("Unknown action");
@@ -294,6 +294,16 @@ static class Probe
     {
         using var details=JsonDocument.Parse("{}");var receipt=await Settlements().SettleAsync(Id("match"),Id("player"),"Extracted",details.RootElement,gold ? [new("Gold","gold",false,23)] : [],Ct);
         Put("receipt",receipt.SettlementId);Evidence["receipt"]=receipt.SettlementId;
+    }
+    static async Task SeedPendingAsync()
+    {
+        await SeedRoomAsync(single: true); await SettlePrimaryAsync(gold: true);
+        // Construct a consistent completed extraction checkpoint before the
+        // read-only drain probe. Pending gold is the only remaining blocker.
+        var snapshot = await Snapshots().GetAsync(Id("room"),Ct) ?? throw new InvalidOperationException("fixture checkpoint missing");
+        snapshot = snapshot with { Revision = snapshot.Revision + 10,
+            Players = snapshot.Players.Select(p=>p with { Phase = RoomPlayerPhase.Extracted }).ToArray() };
+        await Snapshots().SaveIfDueAsync(snapshot,Ct);
     }
     static async Task SeedNextAsync()
     {

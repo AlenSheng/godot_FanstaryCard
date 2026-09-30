@@ -1,0 +1,477 @@
+﻿2026-09-30T18:00:15.0948234Z Current runner version: '2.337.0'
+2026-09-30T18:00:15.0989625Z ##[group]Runner Image Provisioner
+2026-09-30T18:00:15.0991304Z Hosted Compute Agent
+2026-09-30T18:00:15.0992936Z Version: 20260901.588
+2026-09-30T18:00:15.0994040Z Commit: f88ec8081b781fac6c440065ac7ff9e710ce3d0b
+2026-09-30T18:00:15.0995332Z Build Date: 2026-09-01T19:56:44Z
+2026-09-30T18:00:15.0996830Z Worker ID: {57d509b2-2eaa-4ac7-905c-707cab49c348}
+2026-09-30T18:00:15.0998070Z Azure Region: eastus
+2026-09-30T18:00:15.0999240Z ##[endgroup]
+2026-09-30T18:00:15.1001618Z ##[group]Operating System
+2026-09-30T18:00:15.1002774Z Microsoft Windows Server 2025
+2026-09-30T18:00:15.1003877Z 10.0.26100
+2026-09-30T18:00:15.1004784Z Datacenter
+2026-09-30T18:00:15.1005695Z ##[endgroup]
+2026-09-30T18:00:15.1006649Z ##[group]Runner Image
+2026-09-30T18:00:15.1007751Z Image: windows-2025-vs2026
+2026-09-30T18:00:15.1008913Z Version: 20260925.250.1
+2026-09-30T18:00:15.1012279Z Included Software: https://github.com/actions/runner-images/blob/win25-vs2026/20260925.250/images/windows/Windows2025-VS2026-Readme.md
+2026-09-30T18:00:15.1015559Z Image Release: https://github.com/actions/runner-images/releases/tag/win25-vs2026%2F20260925.250
+2026-09-30T18:00:15.1017360Z ##[endgroup]
+2026-09-30T18:00:15.1020074Z ##[group]GITHUB_TOKEN Permissions
+2026-09-30T18:00:15.1023097Z Contents: read
+2026-09-30T18:00:15.1024135Z Metadata: read
+2026-09-30T18:00:15.1025083Z ##[endgroup]
+2026-09-30T18:00:15.1028915Z Secret source: Actions
+2026-09-30T18:00:15.1030357Z Cache mode: write
+2026-09-30T18:00:15.1031569Z Prepare workflow directory
+2026-09-30T18:00:15.1546849Z Prepare all required actions
+2026-09-30T18:00:15.1622057Z Getting action download info
+2026-09-30T18:00:15.3728432Z Download action repository 'actions/checkout@v7' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-09-30T18:00:15.5595402Z Download action repository 'actions/setup-dotnet@v6' (SHA:a98b56852c35b8e3190ac28c8c2271da59106c68)
+2026-09-30T18:00:15.8414522Z Download action repository 'actions/upload-artifact@v7' (SHA:043fb46d1a93c77aae656e7c1c64a875d1fc6a0a)
+2026-09-30T18:00:16.1241215Z Complete job name: server-contract
+2026-09-30T18:00:16.3218464Z ##[group]Run actions/checkout@v7
+2026-09-30T18:00:16.3219891Z with:
+2026-09-30T18:00:16.3220532Z   persist-credentials: false
+2026-09-30T18:00:16.3221631Z   repository: AlenSheng/godot_FanstaryCard
+2026-09-30T18:00:16.3227141Z   token: ***
+2026-09-30T18:00:16.3227607Z   ssh-strict: true
+2026-09-30T18:00:16.3228064Z   ssh-user: git
+2026-09-30T18:00:16.3228513Z   clean: true
+2026-09-30T18:00:16.3228989Z   sparse-checkout-cone-mode: true
+2026-09-30T18:00:16.3229551Z   fetch-depth: 1
+2026-09-30T18:00:16.3230008Z   fetch-tags: false
+2026-09-30T18:00:16.3230482Z   show-progress: true
+2026-09-30T18:00:16.3230977Z   lfs: false
+2026-09-30T18:00:16.3231412Z   submodules: false
+2026-09-30T18:00:16.3231895Z   set-safe-directory: true
+2026-09-30T18:00:16.3232443Z   allow-unsafe-pr-checkout: false
+2026-09-30T18:00:16.3233340Z ##[endgroup]
+2026-09-30T18:00:17.2409954Z Syncing repository: AlenSheng/godot_FanstaryCard
+2026-09-30T18:00:17.2414906Z ##[group]Getting Git version info
+2026-09-30T18:00:17.2417113Z Working directory is 'D:\a\godot_FanstaryCard\godot_FanstaryCard'
+2026-09-30T18:00:17.2420700Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-09-30T18:00:17.2422798Z git version 2.55.0.windows.5
+2026-09-30T18:00:17.2428204Z ##[endgroup]
+2026-09-30T18:00:17.2437580Z Temporarily overriding HOME='D:\a\_temp\c51d600c-c5ce-4e58-9326-66f44cd9d091' before making global git config changes
+2026-09-30T18:00:17.2442219Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-30T18:00:17.2446785Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\godot_FanstaryCard\godot_FanstaryCard
+2026-09-30T18:00:17.3170249Z Deleting the contents of 'D:\a\godot_FanstaryCard\godot_FanstaryCard'
+2026-09-30T18:00:17.3175015Z ##[group]Determining repository object format
+2026-09-30T18:00:17.3186770Z ##[endgroup]
+2026-09-30T18:00:17.3193453Z ##[group]Initializing the repository
+2026-09-30T18:00:17.3197019Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\godot_FanstaryCard\godot_FanstaryCard
+2026-09-30T18:00:17.4027192Z Initialized empty Git repository in D:/a/godot_FanstaryCard/godot_FanstaryCard/.git/
+2026-09-30T18:00:17.4077123Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/AlenSheng/godot_FanstaryCard
+2026-09-30T18:00:17.4814287Z ##[endgroup]
+2026-09-30T18:00:17.4817832Z ##[group]Disabling automatic garbage collection
+2026-09-30T18:00:17.4826256Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+2026-09-30T18:00:17.5190054Z ##[endgroup]
+2026-09-30T18:00:17.5193537Z ##[group]Setting up auth
+2026-09-30T18:00:17.5195929Z Removing SSH command configuration
+2026-09-30T18:00:17.5203127Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-09-30T18:00:17.5683788Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-09-30T18:00:19.2350692Z Removing HTTP extra header
+2026-09-30T18:00:19.2355027Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-30T18:00:19.2740891Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-09-30T18:00:19.9671435Z Removing includeIf entries pointing to credentials config files
+2026-09-30T18:00:19.9689429Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-30T18:00:20.0033289Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-09-30T18:00:20.7202863Z [command]"C:\Program Files\Git\bin\git.exe" config --file D:\a\_temp\git-credentials-a5b1e3a2-dbae-451a-8916-f7b64a604399.config http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+2026-09-30T18:00:20.7579998Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:D:/a/godot_FanstaryCard/godot_FanstaryCard/.git.path D:\a\_temp\git-credentials-a5b1e3a2-dbae-451a-8916-f7b64a604399.config
+2026-09-30T18:00:20.7969656Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:D:/a/godot_FanstaryCard/godot_FanstaryCard/.git/worktrees/*.path D:\a\_temp\git-credentials-a5b1e3a2-dbae-451a-8916-f7b64a604399.config
+2026-09-30T18:00:20.8383824Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-a5b1e3a2-dbae-451a-8916-f7b64a604399.config
+2026-09-30T18:00:20.8750591Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-a5b1e3a2-dbae-451a-8916-f7b64a604399.config
+2026-09-30T18:00:20.9105353Z ##[endgroup]
+2026-09-30T18:00:20.9106466Z ##[group]Fetching the repository
+2026-09-30T18:00:20.9123066Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +57ee1b89e90825c1c5705ef26997b93b3bdf4254:refs/remotes/pull/17/merge
+2026-09-30T18:00:48.9640294Z From https://github.com/AlenSheng/godot_FanstaryCard
+2026-09-30T18:00:48.9643151Z  * [new ref]         57ee1b89e90825c1c5705ef26997b93b3bdf4254 -> pull/17/merge
+2026-09-30T18:00:48.9767821Z ##[endgroup]
+2026-09-30T18:00:48.9979908Z ##[group]Determining the checkout info
+2026-09-30T18:00:49.0020781Z ##[endgroup]
+2026-09-30T18:00:49.0242592Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+2026-09-30T18:00:49.0453392Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+2026-09-30T18:00:49.0779469Z ##[group]Checking out the ref
+2026-09-30T18:00:49.0790245Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force refs/remotes/pull/17/merge
+2026-09-30T18:00:50.3512232Z Updating files:   0% (54/6947)
+2026-09-30T18:00:50.5290872Z Updating files:   1% (70/6947)
+2026-09-30T18:00:50.7331603Z Updating files:   2% (139/6947)
+2026-09-30T18:00:51.1996779Z Updating files:   3% (209/6947)
+2026-09-30T18:00:51.2520011Z Updating files:   3% (247/6947)
+2026-09-30T18:00:51.4165540Z Updating files:   4% (278/6947)
+2026-09-30T18:00:51.6072153Z Updating files:   5% (348/6947)
+2026-09-30T18:00:51.7232006Z Updating files:   6% (417/6947)
+2026-09-30T18:00:51.8548044Z Updating files:   7% (487/6947)
+2026-09-30T18:00:51.9669297Z Updating files:   8% (556/6947)
+2026-09-30T18:00:52.0941709Z Updating files:   9% (626/6947)
+2026-09-30T18:00:52.1571594Z Updating files:  10% (695/6947)
+2026-09-30T18:00:52.4330038Z Updating files:  10% (709/6947)
+2026-09-30T18:00:52.7553204Z Updating files:  11% (765/6947)
+2026-09-30T18:00:53.1173106Z Updating files:  12% (834/6947)
+2026-09-30T18:00:53.1587092Z Updating files:  13% (904/6947)
+2026-09-30T18:00:53.3395488Z Updating files:  13% (911/6947)
+2026-09-30T18:00:53.3728733Z Updating files:  14% (973/6947)
+2026-09-30T18:00:53.4476263Z Updating files:  15% (1043/6947)
+2026-09-30T18:00:53.4849885Z Updating files:  16% (1112/6947)
+2026-09-30T18:00:53.5681498Z Updating files:  17% (1181/6947)
+2026-09-30T18:00:53.7029216Z Updating files:  18% (1251/6947)
+2026-09-30T18:00:53.7753481Z Updating files:  19% (1320/6947)
+2026-09-30T18:00:54.1395089Z Updating files:  20% (1390/6947)
+2026-09-30T18:00:54.1528301Z Updating files:  21% (1459/6947)
+2026-09-30T18:00:54.6390426Z Updating files:  21% (1461/6947)
+2026-09-30T18:00:55.1601576Z Updating files:  22% (1529/6947)
+2026-09-30T18:00:55.1784898Z Updating files:  23% (1598/6947)
+2026-09-30T18:00:55.7242938Z Updating files:  23% (1600/6947)
+2026-09-30T18:00:56.1827854Z Updating files:  24% (1668/6947)
+2026-09-30T18:00:56.3038009Z Updating files:  24% (1722/6947)
+2026-09-30T18:00:56.9068994Z Updating files:  25% (1737/6947)
+2026-09-30T18:00:57.1800636Z Updating files:  26% (1807/6947)
+2026-09-30T18:00:57.4586435Z Updating files:  26% (1844/6947)
+2026-09-30T18:00:58.1272087Z Updating files:  27% (1876/6947)
+2026-09-30T18:00:58.1446333Z Updating files:  28% (1946/6947)
+2026-09-30T18:00:58.1606883Z Updating files:  29% (2015/6947)
+2026-09-30T18:00:58.1769320Z Updating files:  30% (2085/6947)
+2026-09-30T18:00:58.1893347Z Updating files:  31% (2154/6947)
+2026-09-30T18:00:58.2413028Z Updating files:  31% (2170/6947)
+2026-09-30T18:00:58.3546399Z Updating files:  32% (2224/6947)
+2026-09-30T18:00:58.5426229Z Updating files:  33% (2293/6947)
+2026-09-30T18:00:58.8653906Z Updating files:  34% (2362/6947)
+2026-09-30T18:00:58.9665048Z Updating files:  35% (2432/6947)
+2026-09-30T18:00:59.1867522Z Updating files:  36% (2501/6947)
+2026-09-30T18:00:59.4766061Z Updating files:  36% (2556/6947)
+2026-09-30T18:00:59.5091710Z Updating files:  37% (2571/6947)
+2026-09-30T18:00:59.5442365Z Updating files:  38% (2640/6947)
+2026-09-30T18:00:59.5738123Z Updating files:  39% (2710/6947)
+2026-09-30T18:00:59.6124118Z Updating files:  40% (2779/6947)
+2026-09-30T18:00:59.6471211Z Updating files:  41% (2849/6947)
+2026-09-30T18:00:59.6848567Z Updating files:  42% (2918/6947)
+2026-09-30T18:00:59.7236639Z Updating files:  43% (2988/6947)
+2026-09-30T18:00:59.7531091Z Updating files:  44% (3057/6947)
+2026-09-30T18:00:59.8073105Z Updating files:  45% (3127/6947)
+2026-09-30T18:00:59.8872513Z Updating files:  46% (3196/6947)
+2026-09-30T18:00:59.9180148Z Updating files:  47% (3266/6947)
+2026-09-30T18:01:00.0473244Z Updating files:  48% (3335/6947)
+2026-09-30T18:01:00.1129505Z Updating files:  49% (3405/6947)
+2026-09-30T18:01:00.1358025Z Updating files:  50% (3474/6947)
+2026-09-30T18:01:00.2204437Z Updating files:  51% (3543/6947)
+2026-09-30T18:01:00.3192459Z Updating files:  51% (3582/6947)
+2026-09-30T18:01:00.3783291Z Updating files:  52% (3613/6947)
+2026-09-30T18:01:00.4194905Z Updating files:  53% (3682/6947)
+2026-09-30T18:01:00.8090618Z Updating files:  54% (3752/6947)
+2026-09-30T18:01:00.8529481Z Updating files:  55% (3821/6947)
+2026-09-30T18:01:00.9237340Z Updating files:  56% (3891/6947)
+2026-09-30T18:01:00.9558920Z Updating files:  57% (3960/6947)
+2026-09-30T18:01:01.0208450Z Updating files:  58% (4030/6947)
+2026-09-30T18:01:01.0534596Z Updating files:  59% (4099/6947)
+2026-09-30T18:01:01.0988017Z Updating files:  60% (4169/6947)
+2026-09-30T18:01:01.1153744Z Updating files:  61% (4238/6947)
+2026-09-30T18:01:01.1970077Z Updating files:  62% (4308/6947)
+2026-09-30T18:01:01.1985814Z Updating files:  62% (4375/6947)
+2026-09-30T18:01:01.2970939Z Updating files:  63% (4377/6947)
+2026-09-30T18:01:01.3517006Z Updating files:  64% (4447/6947)
+2026-09-30T18:01:01.3819827Z Updating files:  65% (4516/6947)
+2026-09-30T18:01:01.4218390Z Updating files:  66% (4586/6947)
+2026-09-30T18:01:01.4682547Z Updating files:  67% (4655/6947)
+2026-09-30T18:01:01.5203687Z Updating files:  68% (4724/6947)
+2026-09-30T18:01:01.5630007Z Updating files:  69% (4794/6947)
+2026-09-30T18:01:01.6417758Z Updating files:  70% (4863/6947)
+2026-09-30T18:01:01.6708699Z Updating files:  71% (4933/6947)
+2026-09-30T18:01:01.7413650Z Updating files:  72% (5002/6947)
+2026-09-30T18:01:01.7911337Z Updating files:  73% (5072/6947)
+2026-09-30T18:01:01.8372501Z Updating files:  74% (5141/6947)
+2026-09-30T18:01:02.2331832Z Updating files:  75% (5211/6947)
+2026-09-30T18:01:02.2425534Z Updating files:  76% (5280/6947)
+2026-09-30T18:01:02.2617867Z Updating files:  76% (5284/6947)
+2026-09-30T18:01:02.3123898Z Updating files:  77% (5350/6947)
+2026-09-30T18:01:02.3335309Z Updating files:  78% (5419/6947)
+2026-09-30T18:01:02.3548355Z Updating files:  79% (5489/6947)
+2026-09-30T18:01:02.4228335Z Updating files:  80% (5558/6947)
+2026-09-30T18:01:02.4547758Z Updating files:  81% (5628/6947)
+2026-09-30T18:01:02.5466382Z Updating files:  82% (5697/6947)
+2026-09-30T18:01:02.5709678Z Updating files:  83% (5767/6947)
+2026-09-30T18:01:02.6654787Z Updating files:  84% (5836/6947)
+2026-09-30T18:01:02.6893980Z Updating files:  85% (5905/6947)
+2026-09-30T18:01:02.7888379Z Updating files:  86% (5975/6947)
+2026-09-30T18:01:02.8129159Z Updating files:  87% (6044/6947)
+2026-09-30T18:01:02.9086160Z Updating files:  88% (6114/6947)
+2026-09-30T18:01:02.9329267Z Updating files:  89% (6183/6947)
+2026-09-30T18:01:03.0181291Z Updating files:  90% (6253/6947)
+2026-09-30T18:01:03.0447733Z Updating files:  91% (6322/6947)
+2026-09-30T18:01:03.1150040Z Updating files:  92% (6392/6947)
+2026-09-30T18:01:03.1565179Z Updating files:  93% (6461/6947)
+2026-09-30T18:01:03.2081419Z Updating files:  94% (6531/6947)
+2026-09-30T18:01:03.6638340Z Updating files:  95% (6600/6947)
+2026-09-30T18:01:03.6838216Z Updating files:  95% (6622/6947)
+2026-09-30T18:01:03.7116501Z Updating files:  96% (6670/6947)
+2026-09-30T18:01:03.7342151Z Updating files:  97% (6739/6947)
+2026-09-30T18:01:03.7617818Z Updating files:  98% (6809/6947)
+2026-09-30T18:01:03.7808454Z Updating files:  99% (6878/6947)
+2026-09-30T18:01:03.7810492Z Updating files: 100% (6947/6947)
+2026-09-30T18:01:03.7810934Z Updating files: 100% (6947/6947), done.
+2026-09-30T18:01:03.8030035Z Note: switching to 'refs/remotes/pull/17/merge'.
+2026-09-30T18:01:03.8030750Z 
+2026-09-30T18:01:03.8031538Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-09-30T18:01:03.8032666Z changes and commit them, and you can discard any commits you make in this
+2026-09-30T18:01:03.8033760Z state without impacting any branches by switching back to a branch.
+2026-09-30T18:01:03.8034487Z 
+2026-09-30T18:01:03.8035018Z If you want to create a new branch to retain commits you create, you may
+2026-09-30T18:01:03.8036054Z do so (now or later) by using -c with the switch command. Example:
+2026-09-30T18:01:03.8036755Z 
+2026-09-30T18:01:03.8037539Z   git switch -c <new-branch-name>
+2026-09-30T18:01:03.8038068Z 
+2026-09-30T18:01:03.8038417Z Or undo this operation with:
+2026-09-30T18:01:03.8038871Z 
+2026-09-30T18:01:03.8039200Z   git switch -
+2026-09-30T18:01:03.8039589Z 
+2026-09-30T18:01:03.8040141Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-09-30T18:01:03.8040905Z 
+2026-09-30T18:01:03.8041772Z HEAD is now at 57ee1b8 Merge 94ab80ebb4585f52d2ba632ba025da0913f08876 into 262390134e98f169899d076e6fa21926d44ba1aa
+2026-09-30T18:01:03.9663510Z ##[endgroup]
+2026-09-30T18:01:04.0080981Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+2026-09-30T18:01:04.0385029Z 57ee1b89e90825c1c5705ef26997b93b3bdf4254
+2026-09-30T18:01:04.0431724Z ##[group]Removing auth
+2026-09-30T18:01:04.0432472Z Removing SSH command configuration
+2026-09-30T18:01:04.0443407Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-09-30T18:01:04.0805647Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-09-30T18:01:04.7094987Z Removing HTTP extra header
+2026-09-30T18:01:04.7105264Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-30T18:01:04.7481901Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-09-30T18:01:05.4097851Z Removing includeIf entries pointing to credentials config files
+2026-09-30T18:01:05.4112263Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-30T18:01:05.4484224Z includeif.gitdir:D:/a/godot_FanstaryCard/godot_FanstaryCard/.git.path
+2026-09-30T18:01:05.4492611Z includeif.gitdir:D:/a/godot_FanstaryCard/godot_FanstaryCard/.git/worktrees/*.path
+2026-09-30T18:01:05.4494083Z includeif.gitdir:/github/workspace/.git.path
+2026-09-30T18:01:05.4494747Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-30T18:01:05.4546180Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:D:/a/godot_FanstaryCard/godot_FanstaryCard/.git.path
+2026-09-30T18:01:05.4849077Z D:\a\_temp\git-credentials-a5b1e3a2-dbae-451a-8916-f7b64a604399.config
+2026-09-30T18:01:05.4900855Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:D:/a/godot_FanstaryCard/godot_FanstaryCard/.git.path D\:\\a\\_temp\\git\-credentials\-a5b1e3a2\-dbae\-451a\-8916\-f7b64a604399\.config
+2026-09-30T18:01:05.5415767Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:D:/a/godot_FanstaryCard/godot_FanstaryCard/.git/worktrees/*.path
+2026-09-30T18:01:05.5679085Z D:\a\_temp\git-credentials-a5b1e3a2-dbae-451a-8916-f7b64a604399.config
+2026-09-30T18:01:05.5728661Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:D:/a/godot_FanstaryCard/godot_FanstaryCard/.git/worktrees/*.path D\:\\a\\_temp\\git\-credentials\-a5b1e3a2\-dbae\-451a\-8916\-f7b64a604399\.config
+2026-09-30T18:01:05.6092676Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-09-30T18:01:05.6406000Z /github/runner_temp/git-credentials-a5b1e3a2-dbae-451a-8916-f7b64a604399.config
+2026-09-30T18:01:05.6461391Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-a5b1e3a2\-dbae\-451a\-8916\-f7b64a604399\.config
+2026-09-30T18:01:05.6805853Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-30T18:01:05.7111699Z /github/runner_temp/git-credentials-a5b1e3a2-dbae-451a-8916-f7b64a604399.config
+2026-09-30T18:01:05.7158909Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-a5b1e3a2\-dbae\-451a\-8916\-f7b64a604399\.config
+2026-09-30T18:01:05.7495092Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-09-30T18:01:06.3927136Z Removing credentials config 'D:\a\_temp\git-credentials-a5b1e3a2-dbae-451a-8916-f7b64a604399.config'
+2026-09-30T18:01:06.3943380Z ##[endgroup]
+2026-09-30T18:01:06.4447391Z ##[group]Run actions/setup-dotnet@v6
+2026-09-30T18:01:06.4447739Z with:
+2026-09-30T18:01:06.4447960Z   global-json-file: server/global.json
+2026-09-30T18:01:06.4448229Z   cache: false
+2026-09-30T18:01:06.4448410Z ##[endgroup]
+2026-09-30T18:01:06.8686717Z [command]"C:\Program Files\PowerShell\7\pwsh.exe" -NoLogo -Sta -NoProfile -NonInteractive -ExecutionPolicy Unrestricted -Command & 'D:\a\_actions\actions\setup-dotnet\v6\externals\install-dotnet.ps1' -SkipNonVersionedFiles -Runtime dotnet -Channel LTS
+2026-09-30T18:01:08.5608692Z dotnet-install: .NET Core Runtime with version '10.0.12' is already installed.
+2026-09-30T18:01:08.7591873Z [command]"C:\Program Files\PowerShell\7\pwsh.exe" -NoLogo -Sta -NoProfile -NonInteractive -ExecutionPolicy Unrestricted -Command & 'D:\a\_actions\actions\setup-dotnet\v6\externals\install-dotnet.ps1' -SkipNonVersionedFiles -Channel 10.0
+2026-09-30T18:01:09.7997559Z dotnet-install: .NET Core SDK with version '10.0.401' is already installed.
+2026-09-30T18:01:09.9118771Z ##[group]Run dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --logger 'trx;LogFileName=server-offline.trx' --results-directory ../test-results/gameplay-load
+2026-09-30T18:01:09.9120339Z [36;1mdotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --logger 'trx;LogFileName=server-offline.trx' --results-directory ../test-results/gameplay-load[0m
+2026-09-30T18:01:09.9121239Z [36;1mif ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }[0m
+2026-09-30T18:01:09.9712399Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-09-30T18:01:09.9712786Z env:
+2026-09-30T18:01:09.9713006Z   DOTNET_ROOT: C:\Program Files\dotnet
+2026-09-30T18:01:09.9713257Z ##[endgroup]
+2026-09-30T18:01:18.8777976Z   Determining projects to restore...
+2026-09-30T18:01:26.2080970Z   Restored D:\a\godot_FanstaryCard\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\FantasyCard.ConfigExporter.csproj (in 259 ms).
+2026-09-30T18:01:26.2082987Z   Restored D:\a\godot_FanstaryCard\godot_FanstaryCard\server\src\FantasyCard.Server\FantasyCard.Server.csproj (in 1.49 sec).
+2026-09-30T18:01:26.2084748Z   Restored D:\a\godot_FanstaryCard\godot_FanstaryCard\server\src\FantasyCard.Domain\FantasyCard.Domain.csproj (in 3 ms).
+2026-09-30T18:01:26.2086577Z   Restored D:\a\godot_FanstaryCard\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.csproj (in 1.08 sec).
+2026-09-30T18:01:26.2088783Z   Restored D:\a\godot_FanstaryCard\godot_FanstaryCard\server\src\FantasyCard.Contracts\FantasyCard.Contracts.csproj (in 835 ms).
+2026-09-30T18:01:39.1792953Z   FantasyCard.ConfigExporter -> D:\a\godot_FanstaryCard\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\bin\Release\net10.0\FantasyCard.ConfigExporter.dll
+2026-09-30T18:01:46.2250174Z   FantasyCard.Contracts -> D:\a\godot_FanstaryCard\godot_FanstaryCard\server\src\FantasyCard.Contracts\bin\Release\net10.0\FantasyCard.Contracts.dll
+2026-09-30T18:01:49.9460946Z   FantasyCard.Domain -> D:\a\godot_FanstaryCard\godot_FanstaryCard\server\src\FantasyCard.Domain\bin\Release\net10.0\FantasyCard.Domain.dll
+2026-09-30T18:02:02.0209951Z   FantasyCard.Server -> D:\a\godot_FanstaryCard\godot_FanstaryCard\server\src\FantasyCard.Server\bin\Release\net10.0\FantasyCard.Server.dll
+2026-09-30T18:02:11.5396875Z   FantasyCard.Server.Tests -> D:\a\godot_FanstaryCard\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\bin\Release\net10.0\FantasyCard.Server.Tests.dll
+2026-09-30T18:02:11.5700891Z Test run for D:\a\godot_FanstaryCard\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\bin\Release\net10.0\FantasyCard.Server.Tests.dll (.NETCoreApp,Version=v10.0)
+2026-09-30T18:02:12.4060174Z A total of 1 test files matched the specified pattern.
+2026-09-30T18:02:16.1543842Z [xUnit.net 00:00:02.55]     FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Preparation_freezes_trained_level_despite_later_upgrades [SKIP]
+2026-09-30T18:02:16.1547692Z [xUnit.net 00:00:02.58]     FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Fourth_and_fifth_levels_consume_souls_without_card_copies [SKIP]
+2026-09-30T18:02:16.1551977Z [xUnit.net 00:00:02.58]     FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Insufficient_souls_roll_back_and_concurrent_upgrade_replays_spend_once [SKIP]
+2026-09-30T18:02:16.1563569Z [xUnit.net 00:00:02.58]     FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Each_upgrade_uses_its_own_soul_pool_and_replays_without_changing_quality [SKIP]
+2026-09-30T18:02:17.3898097Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Preparation_freezes_trained_level_despite_later_upgrades [1 ms]
+2026-09-30T18:02:17.3903724Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Fourth_and_fifth_levels_consume_souls_without_card_copies [1 ms]
+2026-09-30T18:02:17.3909662Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Insufficient_souls_roll_back_and_concurrent_upgrade_replays_spend_once [1 ms]
+2026-09-30T18:02:17.3912419Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Each_upgrade_uses_its_own_soul_pool_and_replays_without_changing_quality [1 ms]
+2026-09-30T18:02:18.5461883Z [xUnit.net 00:00:05.32]     FantasyCard.Server.Tests.Persistence.PostgresRoomEquipmentTests.Looter_cannot_create_the_victims_pending_reward_and_can_equip_it_after_custody_commits [SKIP]
+2026-09-30T18:02:18.5465298Z [xUnit.net 00:00:05.32]     FantasyCard.Server.Tests.Persistence.PostgresRoomEquipmentTests.Extraction_applies_worn_reward_unequipped_armor_and_recycling_in_one_replay_safe_transaction [SKIP]
+2026-09-30T18:02:18.5468552Z [xUnit.net 00:00:05.32]     FantasyCard.Server.Tests.Persistence.PostgresRoomEquipmentTests.Invalid_final_loadout_rolls_back_generated_equipment_gold_and_all_holds [SKIP]
+2026-09-30T18:02:18.6068102Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresRoomEquipmentTests.Looter_cannot_create_the_victims_pending_reward_and_can_equip_it_after_custody_commits [1 ms]
+2026-09-30T18:02:18.6589111Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresRoomEquipmentTests.Extraction_applies_worn_reward_unequipped_armor_and_recycling_in_one_replay_safe_transaction [1 ms]
+2026-09-30T18:02:19.4511946Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresRoomEquipmentTests.Invalid_final_loadout_rolls_back_generated_equipment_gold_and_all_holds [1 ms]
+2026-09-30T18:02:19.4790103Z [xUnit.net 00:00:05.85]     FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it [SKIP]
+2026-09-30T18:02:19.4890813Z [xUnit.net 00:00:05.86]     FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Settlement_commit_response_loss_recovers_same_receipt_and_credits_assets_once [SKIP]
+2026-09-30T18:02:19.4947561Z [xUnit.net 00:00:05.86]     FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Launch_failure_retries_without_duplicate_room_or_asset_reservation(fault: "snapshot") [SKIP]
+2026-09-30T18:02:19.5090786Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it [1 ms]
+2026-09-30T18:02:19.5186017Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Settlement_commit_response_loss_recovers_same_receipt_and_credits_assets_once [1 ms]
+2026-09-30T18:02:19.5220445Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Launch_failure_retries_without_duplicate_room_or_asset_reservation(fault: "snapshot") [1 ms]
+2026-09-30T18:02:19.5228150Z [xUnit.net 00:00:05.86]     FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Launch_failure_retries_without_duplicate_room_or_asset_reservation(fault: "registry") [SKIP]
+2026-09-30T18:02:19.5329823Z [xUnit.net 00:00:05.86]     FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_retry_accepts_the_committed_result_without_reopening_terminal_matches [SKIP]
+2026-09-30T18:02:19.5369971Z [xUnit.net 00:00:05.86]     FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Snapshot_write_failure_withholds_settlement_until_terminal_checkpoint_retry [SKIP]
+2026-09-30T18:02:19.5463544Z [xUnit.net 00:00:05.86]     FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Recovery_validates_durable_terminal_checkpoint_and_preserves_next_route(staleCheckpoint: False) [SKIP]
+2026-09-30T18:02:19.5528024Z [xUnit.net 00:00:05.86]     FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Recovery_validates_durable_terminal_checkpoint_and_preserves_next_route(staleCheckpoint: True) [SKIP]
+2026-09-30T18:02:19.5536739Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Launch_failure_retries_without_duplicate_room_or_asset_reservation(fault: "registry") [1 ms]
+2026-09-30T18:02:19.5560392Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_retry_accepts_the_committed_result_without_reopening_terminal_matches [1 ms]
+2026-09-30T18:02:19.5589160Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Snapshot_write_failure_withholds_settlement_until_terminal_checkpoint_retry [1 ms]
+2026-09-30T18:02:19.5699102Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Recovery_validates_durable_terminal_checkpoint_and_preserves_next_route(staleCheckpoint: False) [1 ms]
+2026-09-30T18:02:19.5735200Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Recovery_validates_durable_terminal_checkpoint_and_preserves_next_route(staleCheckpoint: True) [1 ms]
+2026-09-30T18:02:19.5807110Z [xUnit.net 00:00:06.10]     FantasyCard.Server.Tests.Persistence.PostgresMigrationTests.Concurrent_migration_restart_and_checksum_rejection [SKIP]
+2026-09-30T18:02:19.5865564Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresMigrationTests.Concurrent_migration_restart_and_checksum_rejection [1 ms]
+2026-09-30T18:02:19.5980179Z [xUnit.net 00:00:06.16]     FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Protobuf_real_database_login_bootstrap_profile_deck_and_cross_format_purchase [SKIP]
+2026-09-30T18:02:19.6049617Z [xUnit.net 00:00:06.16]     FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_binary_business_equipment_cards_market_mail_matchmaking [SKIP]
+2026-09-30T18:02:19.6137041Z [xUnit.net 00:00:06.16]     FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(scenario: "ban-idle") [SKIP]
+2026-09-30T18:02:19.6190857Z   Skipped FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Protobuf_real_database_login_bootstrap_profile_deck_and_cross_format_purchase [1 ms]
+2026-09-30T18:02:20.4168519Z   Skipped FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_binary_business_equipment_cards_market_mail_matchmaking [1 ms]
+2026-09-30T18:02:20.4442910Z   Skipped FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(scenario: "ban-idle") [1 ms]
+2026-09-30T18:02:20.4458171Z [xUnit.net 00:00:06.16]     FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(scenario: "ticket-expiry") [SKIP]
+2026-09-30T18:02:20.4471904Z [xUnit.net 00:00:06.16]     FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_default_protobuf_preparation_ready_and_room_entry [SKIP]
+2026-09-30T18:02:20.4477275Z [xUnit.net 00:00:06.16]     FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_pvp_relic_replay_and_extraction_survive_forced_restart [SKIP]
+2026-09-30T18:02:20.4480060Z [xUnit.net 00:00:06.16]     FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_default_binary_routes_ticket_security_and_real_sample_benchmark [SKIP]
+2026-09-30T18:02:20.4482724Z [xUnit.net 00:00:06.17]     FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_concurrent_card_upgrade_retries_spend_once [SKIP]
+2026-09-30T18:02:20.4485522Z [xUnit.net 00:00:06.17]     FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_switching_names_registers_distinct_uids_and_relogin_restores_the_original_account [SKIP]
+2026-09-30T18:02:20.4488356Z [xUnit.net 00:00:06.18]     FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_supports_login_bootstrap_and_websocket_ping [SKIP]
+2026-09-30T18:02:20.9101729Z   Skipped FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(scenario: "ticket-expiry") [1 ms]
+2026-09-30T18:02:20.9104140Z   Skipped FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_default_protobuf_preparation_ready_and_room_entry [1 ms]
+2026-09-30T18:02:20.9106393Z   Skipped FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_pvp_relic_replay_and_extraction_survive_forced_restart [1 ms]
+2026-09-30T18:02:20.9109667Z   Skipped FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_default_binary_routes_ticket_security_and_real_sample_benchmark [1 ms]
+2026-09-30T18:02:20.9111983Z   Skipped FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_concurrent_card_upgrade_retries_spend_once [1 ms]
+2026-09-30T18:02:20.9114314Z   Skipped FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_switching_names_registers_distinct_uids_and_relogin_restores_the_original_account [1 ms]
+2026-09-30T18:02:20.9116753Z   Skipped FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_supports_login_bootstrap_and_websocket_ping [1 ms]
+2026-09-30T18:02:22.7919666Z [xUnit.net 00:00:09.50]     FantasyCard.Server.Tests.Persistence.PostgresMarketRelistingTests.Forward_migration_preserves_sold_history_and_resale_replays_without_double_transfer [SKIP]
+2026-09-30T18:02:22.7923019Z [xUnit.net 00:00:09.50]     FantasyCard.Server.Tests.Persistence.PostgresMarketRelistingTests.Cancelled_or_expired_history_does_not_block_new_listing(expire: False) [SKIP]
+2026-09-30T18:02:22.7926108Z [xUnit.net 00:00:09.50]     FantasyCard.Server.Tests.Persistence.PostgresMarketRelistingTests.Cancelled_or_expired_history_does_not_block_new_listing(expire: True) [SKIP]
+2026-09-30T18:02:22.7929254Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresMarketRelistingTests.Forward_migration_preserves_sold_history_and_resale_replays_without_double_transfer [1 ms]
+2026-09-30T18:02:22.7932377Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresMarketRelistingTests.Cancelled_or_expired_history_does_not_block_new_listing(expire: False) [1 ms]
+2026-09-30T18:02:22.7935334Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresMarketRelistingTests.Cancelled_or_expired_history_does_not_block_new_listing(expire: True) [1 ms]
+2026-09-30T18:02:22.7938366Z [xUnit.net 00:00:09.51]     FantasyCard.Server.Tests.Persistence.PostgresMarketRelistingTests.Concurrent_same_item_listing_has_one_active_owner_and_same_key_replays [SKIP]
+2026-09-30T18:02:22.7968418Z [xUnit.net 00:00:09.51]     FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Four_humans_enqueue_ready_and_launch_one_persisted_room [SKIP]
+2026-09-30T18:02:22.7971396Z [xUnit.net 00:00:09.51]     FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Class_weapon_enhancement_rolls_back_and_replays_without_material_consumption [SKIP]
+2026-09-30T18:02:22.7974412Z [xUnit.net 00:00:09.51]     FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.V013_upgrades_legacy_card_ids_and_allows_orange_rarity [SKIP]
+2026-09-30T18:02:22.7978672Z [xUnit.net 00:00:09.51]     FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Concurrent_deck_writes_allow_one_version_winner_and_replay_its_response [SKIP]
+2026-09-30T18:02:22.7982111Z [xUnit.net 00:00:09.51]     FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.RoomActor_death_preserves_safe_assets_and_moves_losses_to_relic [SKIP]
+2026-09-30T18:02:22.7985226Z [xUnit.net 00:00:09.51]     FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Concurrent_first_sign_in_provisions_one_complete_player_aggregate [SKIP]
+2026-09-30T18:02:22.8008062Z [xUnit.net 00:00:09.51]     FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Red_equipment_enhancement_rejects_orange_and_consumes_red_material [SKIP]
+2026-09-30T18:02:22.8011348Z [xUnit.net 00:00:09.52]     FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Legacy_identity_tables_upgrade_and_existing_player_is_provisioned_idempotently [SKIP]
+2026-09-30T18:02:22.8014270Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresMarketRelistingTests.Concurrent_same_item_listing_has_one_active_owner_and_same_key_replays [1 ms]
+2026-09-30T18:02:22.8017423Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Four_humans_enqueue_ready_and_launch_one_persisted_room [1 ms]
+2026-09-30T18:02:22.8020604Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Class_weapon_enhancement_rolls_back_and_replays_without_material_consumption [1 ms]
+2026-09-30T18:02:22.8023398Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.V013_upgrades_legacy_card_ids_and_allows_orange_rarity [1 ms]
+2026-09-30T18:02:22.8062793Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Concurrent_deck_writes_allow_one_version_winner_and_replay_its_response [1 ms]
+2026-09-30T18:02:22.8065511Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.RoomActor_death_preserves_safe_assets_and_moves_losses_to_relic [1 ms]
+2026-09-30T18:02:22.8206490Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Concurrent_first_sign_in_provisions_one_complete_player_aggregate [1 ms]
+2026-09-30T18:02:22.8275490Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Red_equipment_enhancement_rejects_orange_and_consumes_red_material [1 ms]
+2026-09-30T18:02:22.8279006Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Legacy_identity_tables_upgrade_and_existing_player_is_provisioned_idempotently [1 ms]
+2026-09-30T18:02:22.8282372Z [xUnit.net 00:00:09.52]     FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Shop_daily_cards_are_deterministic_and_purchase_grants_exact_card_once [SKIP]
+2026-09-30T18:02:22.8285594Z [xUnit.net 00:00:09.52]     FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Shop_failures_and_replays_do_not_partially_debit_or_grant_assets [SKIP]
+2026-09-30T18:02:22.8288749Z [xUnit.net 00:00:09.52]     FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Settlement_worker_restart_recovers_pending_holds_exactly_once [SKIP]
+2026-09-30T18:02:22.8291997Z [xUnit.net 00:00:09.52]     FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.RoomActor_extraction_commits_settlement_and_removes_terminal_room [SKIP]
+2026-09-30T18:02:22.8295340Z [xUnit.net 00:00:09.52]     FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Preparation_create_replay_conflict_and_cancel_release_are_atomic [SKIP]
+2026-09-30T18:02:22.8299199Z [xUnit.net 00:00:09.52]     FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Death_settlement_moves_worn_equipment_to_relic_and_clears_loadout [SKIP]
+2026-09-30T18:02:22.8302320Z [xUnit.net 00:00:09.52]     FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Inventory_and_class_loadout_reads_return_complete_lobby_assets [SKIP]
+2026-09-30T18:02:22.8324336Z [xUnit.net 00:00:09.52]     FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Extraction_settlement_commits_all_assets_once_and_releases_notification [SKIP]
+2026-09-30T18:02:22.8327549Z [xUnit.net 00:00:09.52]     FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Settlement_asset_commit_rolls_back_the_whole_batch_and_withholds_notification [SKIP]
+2026-09-30T18:02:22.8331028Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Shop_daily_cards_are_deterministic_and_purchase_grants_exact_card_once [1 ms]
+2026-09-30T18:02:22.8333939Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Shop_failures_and_replays_do_not_partially_debit_or_grant_assets [1 ms]
+2026-09-30T18:02:22.8337143Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Settlement_worker_restart_recovers_pending_holds_exactly_once [1 ms]
+2026-09-30T18:02:22.8339940Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.RoomActor_extraction_commits_settlement_and_removes_terminal_room [1 ms]
+2026-09-30T18:02:22.8450377Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Preparation_create_replay_conflict_and_cancel_release_are_atomic [1 ms]
+2026-09-30T18:02:23.0521871Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Death_settlement_moves_worn_equipment_to_relic_and_clears_loadout [1 ms]
+2026-09-30T18:02:23.0768032Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Inventory_and_class_loadout_reads_return_complete_lobby_assets [1 ms]
+2026-09-30T18:02:23.0998300Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Extraction_settlement_commits_all_assets_once_and_releases_notification [1 ms]
+2026-09-30T18:02:23.8421476Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Settlement_asset_commit_rolls_back_the_whole_batch_and_withholds_notification [1 ms]
+2026-09-30T18:02:23.8547650Z [xUnit.net 00:00:09.53]     FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Concurrent_market_purchase_transfers_equipment_and_gold_exactly_once [SKIP]
+2026-09-30T18:02:23.8903020Z [xUnit.net 00:00:09.53]     FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Running_room_restart_restores_actor_and_compensates_snapshot_downtime [SKIP]
+2026-09-30T18:02:23.8907360Z [xUnit.net 00:00:09.53]     FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Equipment_enhancement_rolls_back_failure_and_consumes_bound_material_once [SKIP]
+2026-09-30T18:02:23.8910687Z [xUnit.net 00:00:09.53]     FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Match_timeout_removes_unready_human_and_fills_room_with_bots [SKIP]
+2026-09-30T18:02:23.8913627Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Concurrent_market_purchase_transfers_equipment_and_gold_exactly_once [1 ms]
+2026-09-30T18:02:23.8916538Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Running_room_restart_restores_actor_and_compensates_snapshot_downtime [1 ms]
+2026-09-30T18:02:23.8919363Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Equipment_enhancement_rolls_back_failure_and_consumes_bound_material_once [1 ms]
+2026-09-30T18:02:23.8922143Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Match_timeout_removes_unready_human_and_fills_room_with_bots [1 ms]
+2026-09-30T18:02:23.8938959Z [xUnit.net 00:00:09.69]     FantasyCard.Server.Tests.Persistence.PostgresBootstrapBatchTests.All_result_sets_map_distinct_values_and_preserve_nullable_equipment_slots [SKIP]
+2026-09-30T18:02:23.8955730Z [xUnit.net 00:00:09.69]     FantasyCard.Server.Tests.Persistence.PostgresBootstrapBatchTests.Cancelling_a_blocked_batch_releases_reader_and_small_pool_for_next_bootstrap [SKIP]
+2026-09-30T18:02:23.8959369Z [xUnit.net 00:00:09.69]     FantasyCard.Server.Tests.Persistence.PostgresBootstrapBatchTests.Optional_tail_result_sets_advance_correctly_and_filter_pending_acknowledged_and_other_players [SKIP]
+2026-09-30T18:02:23.8962372Z [xUnit.net 00:00:09.70]     FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Full_codex_craft_and_dismantle_use_each_soul_pool_and_replay_once [SKIP]
+2026-09-30T18:02:23.8965207Z [xUnit.net 00:00:09.70]     FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Cumulative_upgrade_spend_is_refunded_once_and_last_copy_resets_level [SKIP]
+2026-09-30T18:02:23.8968587Z [xUnit.net 00:00:09.70]     FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Insufficient_souls_and_concurrent_requests_cannot_duplicate_or_partially_apply [SKIP]
+2026-09-30T18:02:23.8971521Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresBootstrapBatchTests.All_result_sets_map_distinct_values_and_preserve_nullable_equipment_slots [1 ms]
+2026-09-30T18:02:23.8974332Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresBootstrapBatchTests.Cancelling_a_blocked_batch_releases_reader_and_small_pool_for_next_bootstrap [1 ms]
+2026-09-30T18:02:23.8977354Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresBootstrapBatchTests.Optional_tail_result_sets_advance_correctly_and_filter_pending_acknowledged_and_other_players [1 ms]
+2026-09-30T18:02:23.8980279Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Full_codex_craft_and_dismantle_use_each_soul_pool_and_replay_once [1 ms]
+2026-09-30T18:02:23.8983189Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Cumulative_upgrade_spend_is_refunded_once_and_last_copy_resets_level [1 ms]
+2026-09-30T18:02:23.8985881Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Insufficient_souls_and_concurrent_requests_cannot_duplicate_or_partially_apply [1 ms]
+2026-09-30T18:02:23.8988912Z [xUnit.net 00:00:09.70]     FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Saved_decks_are_protected_and_owned_cards_cannot_be_acquired_again [SKIP]
+2026-09-30T18:02:23.8991449Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Saved_decks_are_protected_and_owned_cards_cannot_be_acquired_again [1 ms]
+2026-09-30T18:02:23.8997838Z [xUnit.net 00:00:10.43]     FantasyCard.Server.Tests.Persistence.PostgresNameIdentityTests.Names_owned_by_platform_accounts_cannot_be_claimed_by_local_login_or_another_platform_identity [SKIP]
+2026-09-30T18:02:23.9026025Z [xUnit.net 00:00:10.43]     FantasyCard.Server.Tests.Persistence.PostgresNameIdentityTests.Same_device_different_names_create_separate_accounts_and_returning_names_restore_assets [SKIP]
+2026-09-30T18:02:23.9118315Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresNameIdentityTests.Names_owned_by_platform_accounts_cannot_be_claimed_by_local_login_or_another_platform_identity [1 ms]
+2026-09-30T18:02:23.9665012Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresNameIdentityTests.Same_device_different_names_create_separate_accounts_and_returning_names_restore_assets [1 ms]
+2026-09-30T18:02:23.9668358Z [xUnit.net 00:00:10.43]     FantasyCard.Server.Tests.Persistence.PostgresNameIdentityTests.Returning_login_repairs_missing_cards_and_preserves_complete_account [SKIP]
+2026-09-30T18:02:23.9671372Z [xUnit.net 00:00:10.43]     FantasyCard.Server.Tests.Persistence.PostgresNameIdentityTests.Unique_index_rejects_duplicate_names_and_local_profile_updates_cannot_change_account_identity [SKIP]
+2026-09-30T18:02:23.9674393Z [xUnit.net 00:00:10.43]     FantasyCard.Server.Tests.Persistence.PostgresMailReaderLifetimeTests.Disposed_reader_alias_can_close_a_subsequent_pool_borrowers_reader [SKIP]
+2026-09-30T18:02:23.9677253Z [xUnit.net 00:00:10.43]     FantasyCard.Server.Tests.Persistence.PostgresMailReaderLifetimeTests.Concurrent_mail_reads_complete_with_a_single_pooled_connection [SKIP]
+2026-09-30T18:02:23.9680160Z [xUnit.net 00:00:10.44]     FantasyCard.Server.Tests.Persistence.PostgresRedEquipmentQuotaTests.Concurrent_red_drops_allow_only_one_claim_per_server_week [SKIP]
+2026-09-30T18:02:23.9683381Z [xUnit.net 00:00:10.44]     FantasyCard.Server.Tests.Persistence.PostgresRedEquipmentQuotaTests.New_server_week_can_claim_again_and_exposes_audit_snapshot [SKIP]
+2026-09-30T18:02:23.9686778Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresNameIdentityTests.Returning_login_repairs_missing_cards_and_preserves_complete_account [1 ms]
+2026-09-30T18:02:23.9689800Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresNameIdentityTests.Unique_index_rejects_duplicate_names_and_local_profile_updates_cannot_change_account_identity [1 ms]
+2026-09-30T18:02:23.9932057Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresMailReaderLifetimeTests.Disposed_reader_alias_can_close_a_subsequent_pool_borrowers_reader [1 ms]
+2026-09-30T18:02:24.0087867Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresMailReaderLifetimeTests.Concurrent_mail_reads_complete_with_a_single_pooled_connection [1 ms]
+2026-09-30T18:02:24.0100303Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresRedEquipmentQuotaTests.Concurrent_red_drops_allow_only_one_claim_per_server_week [1 ms]
+2026-09-30T18:02:24.0102859Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresRedEquipmentQuotaTests.New_server_week_can_claim_again_and_exposes_audit_snapshot [1 ms]
+2026-09-30T18:02:24.0105872Z [xUnit.net 00:00:10.51]     FantasyCard.Server.Tests.Persistence.PostgresEnhancementQuoteTests.Low_level_or_locked_equipment_cannot_consume_an_unrequested_material [SKIP]
+2026-09-30T18:02:24.0108812Z [xUnit.net 00:00:10.51]     FantasyCard.Server.Tests.Persistence.PostgresEnhancementQuoteTests.Market_list_projects_the_actual_equipment_attributes [SKIP]
+2026-09-30T18:02:24.0111478Z [xUnit.net 00:00:10.53]     FantasyCard.Server.Tests.Persistence.PostgresEnhancementQuoteTests.Class_weapon_quotes_never_require_a_material_and_cap_at_five [SKIP]
+2026-09-30T18:02:24.0114308Z [xUnit.net 00:00:10.53]     FantasyCard.Server.Tests.Persistence.PostgresEnhancementQuoteTests.Armor_quote_matches_actual_cost_and_counts_only_available_same_quality_materials [SKIP]
+2026-09-30T18:02:24.0117230Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresEnhancementQuoteTests.Low_level_or_locked_equipment_cannot_consume_an_unrequested_material [1 ms]
+2026-09-30T18:02:24.0119756Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresEnhancementQuoteTests.Market_list_projects_the_actual_equipment_attributes [1 ms]
+2026-09-30T18:02:24.0122206Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresEnhancementQuoteTests.Class_weapon_quotes_never_require_a_material_and_cap_at_five [1 ms]
+2026-09-30T18:02:24.0125303Z   Skipped FantasyCard.Server.Tests.Persistence.PostgresEnhancementQuoteTests.Armor_quote_matches_actual_cost_and_counts_only_available_same_quality_materials [1 ms]
+2026-09-30T18:02:24.0127717Z Results File: D:\a\godot_FanstaryCard\godot_FanstaryCard\test-results\gameplay-load\server-offline.trx
+2026-09-30T18:02:24.0128707Z 
+2026-09-30T18:02:24.0436852Z Passed!  - Failed:     0, Passed:   192, Skipped:    70, Total:   262, Duration: 8 s - FantasyCard.Server.Tests.dll (net10.0)
+2026-09-30T18:02:24.9288833Z ##[group]Run actions/upload-artifact@v7
+2026-09-30T18:02:24.9289369Z with:
+2026-09-30T18:02:24.9289882Z   name: gameplay-load-server-57ee1b89e90825c1c5705ef26997b93b3bdf4254
+2026-09-30T18:02:24.9290642Z   path: test-results/gameplay-load
+2026-09-30T18:02:24.9291062Z   retention-days: 7
+2026-09-30T18:02:24.9291398Z   if-no-files-found: ignore
+2026-09-30T18:02:24.9291770Z   compression-level: 6
+2026-09-30T18:02:24.9292111Z   overwrite: false
+2026-09-30T18:02:24.9292447Z   include-hidden-files: false
+2026-09-30T18:02:24.9292821Z   archive: true
+2026-09-30T18:02:24.9293100Z env:
+2026-09-30T18:02:24.9293402Z   DOTNET_ROOT: C:\Program Files\dotnet
+2026-09-30T18:02:24.9293821Z ##[endgroup]
+2026-09-30T18:02:25.4216309Z With the provided path, there will be 1 file uploaded
+2026-09-30T18:02:25.4218224Z Artifact name is valid!
+2026-09-30T18:02:25.4219371Z Root directory input is valid!
+2026-09-30T18:02:25.7913283Z Uploading artifact: gameplay-load-server-57ee1b89e90825c1c5705ef26997b93b3bdf4254.zip
+2026-09-30T18:02:25.8007406Z Beginning upload of artifact content to blob storage
+2026-09-30T18:02:25.8998511Z Uploaded bytes 71203
+2026-09-30T18:02:25.9556189Z Finished uploading artifact content to blob storage!
+2026-09-30T18:02:25.9563744Z SHA256 digest of uploaded artifact is 66c5b0ae76797d92c4ec5cbcd7c0e8e0726452e5f3b4e7675abc5849cdc76cf9
+2026-09-30T18:02:25.9566534Z Finalizing artifact upload
+2026-09-30T18:02:26.2056343Z Artifact gameplay-load-server-57ee1b89e90825c1c5705ef26997b93b3bdf4254 successfully finalized. Artifact ID 11116313252
+2026-09-30T18:02:26.2188288Z Artifact gameplay-load-server-57ee1b89e90825c1c5705ef26997b93b3bdf4254 has been successfully uploaded! Final size is 71203 bytes. Artifact ID is 11116313252
+2026-09-30T18:02:26.2231966Z Artifact download URL: https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/36755423117/artifacts/11116313252
+2026-09-30T18:02:26.2591584Z Post job cleanup.
+2026-09-30T18:02:26.6167232Z Post job cleanup.
+2026-09-30T18:02:27.1776396Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-09-30T18:02:27.2378802Z git version 2.55.0.windows.5
+2026-09-30T18:02:27.2964857Z Temporarily overriding HOME='D:\a\_temp\8d932b2f-0fd0-4346-9911-f12cfe611682' before making global git config changes
+2026-09-30T18:02:27.3013857Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-30T18:02:27.3094572Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\godot_FanstaryCard\godot_FanstaryCard
+2026-09-30T18:02:27.3814990Z Removing SSH command configuration
+2026-09-30T18:02:27.3870103Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-09-30T18:02:27.4716858Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-09-30T18:02:28.6080237Z Removing HTTP extra header
+2026-09-30T18:02:28.6121874Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-30T18:02:28.7223016Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-09-30T18:02:29.6787291Z Removing includeIf entries pointing to credentials config files
+2026-09-30T18:02:29.6801144Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-30T18:02:29.7133379Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-09-30T18:02:30.6823385Z Cleaning up orphan processes
+2026-09-30T18:02:30.7467313Z Terminate orphan process: pid (8028) (VBCSCompiler)
+
