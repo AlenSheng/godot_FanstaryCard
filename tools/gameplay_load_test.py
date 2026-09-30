@@ -67,15 +67,16 @@ def read_owned_statuses(processes, cache=None, now_monotonic_ms=None):
     invalid_files = 0
     for entry in processes:
         path = Path(str(entry['report']) + '.status.json')
-        if not path.exists():
+        try:
+            value=json.loads(path.read_text(encoding='utf8'))
+        except FileNotFoundError:
             if cache is not None and entry['client_id'] in cache:
                 statuses.append(cache[entry['client_id']])
             continue
-        value = read_json(path)
-        if value is None:
+        except (OSError,UnicodeError,ValueError):
             invalid_files += 1
-        else:
-            statuses.append(value)
+            continue
+        statuses.append(value)
     owned, invalid_ownership = owned_statuses(processes, statuses)
     receipt_ms=time.monotonic()*1000 if now_monotonic_ms is None else now_monotonic_ms
     for index,status in enumerate(owned):

@@ -97,6 +97,11 @@ class StopTests(unittest.TestCase):
                      'run_id':'run','process_epoch':'epoch','started_at_ms':1000}
             cache = {}
             self.assertEqual(read_owned_statuses([entry],cache),([status],0))
+            # Windows replacement can remove the destination between an exists
+            # check and opening it. Preserve the prior owned observation only.
+            from unittest.mock import patch
+            with patch('gameplay_load_test.Path.read_text',side_effect=FileNotFoundError()):
+                self.assertEqual(read_owned_statuses([entry],cache),([status],0))
             status_path.unlink()
             self.assertEqual(read_owned_statuses([entry],cache),([status],0))
             self.assertEqual(workload_snapshot([entry],[status],41001)['stale_clients'],['client'])
