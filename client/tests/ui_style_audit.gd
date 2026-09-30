@@ -329,6 +329,8 @@ func _take(capture_name: String, rebuild: bool = true) -> void:
 	await get_tree().process_frame
 	await get_tree().create_timer(0.15).timeout
 	if capture_name.begins_with("login_") and OS.get_environment("FANTASYCARD_UI_ASSERT_FIXES") == "1":
+		var brand: Label = $UI.find_child("GameTitle", true, false)
+		_check_audit(brand != null and brand.get_line_count() == 1 and brand.get_visible_line_count() == 1, capture_name + ": localized brand stays on one visible line")
 		var page: ScrollContainer = $UI.find_child("LoginPageScroll", true, false)
 		for frame_name in ["LoginAuthFrame", "LoginAnnouncementFrame"]:
 			var login_frame: Control = $UI.find_child(frame_name, true, false)

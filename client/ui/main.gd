@@ -246,6 +246,7 @@ func _build_shell() -> void:
 	root_column.add_child(top)
 	var game_title := _label(top, P.localized("game_title"), 38, P.GOLD)
 	game_title.name = "GameTitle"
+	game_title.autowrap_mode = TextServer.AUTOWRAP_OFF
 	_game_title = game_title
 	var spacer := Control.new()
 	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
