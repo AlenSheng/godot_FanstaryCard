@@ -79,6 +79,13 @@ static class Probe
                 case "settlement-replay": await SettlementReplayAsync(); break;
                 case "seed-pending": await SeedPendingAsync(); break;
                 case "seed-drain-stale": await SeedRoomAsync(single: true); await SettlePrimaryAsync(); break;
+                case "seed-drain-missing": await SeedRoomAsync(single: true, persistCheckpoint: false); await SettlePrimaryAsync(); break;
+                case "seed-drain-receipt-state": await SeedReceiptMismatchAsync(false); break;
+                case "seed-drain-receipt-pointer": await SeedReceiptMismatchAsync(true); break;
+                case "seed-drain-consistent": await SeedConsistentSettlementAsync(); break;
+                case "seed-drain-orphan-receipt": await SeedOrphanReceiptAsync(); break;
+                case "seed-drain-orphan-member": await SeedOrphanMemberAsync(); break;
+                case "seed-drain-wrong-hold-owner": await SeedWrongHoldOwnerAsync(); break;
                 case "drain": await DrainAsync(); break;
                 default: throw new ArgumentException("Unknown action");
             }
@@ -137,7 +144,7 @@ static class Probe
         foreach (var player in players)
             await ExecuteAsync("INSERT INTO match_players(match_id,player_id,is_bot,state) VALUES($1,$2,false,'Active')", match, player);
     }
-    static async Task SeedRoomAsync(bool complex = false, bool single = false)
+    static async Task SeedRoomAsync(bool complex = false, bool single = false, bool persistCheckpoint = true)
     {
         Put("player", await PlayerAsync()); Put("teammate", await PlayerAsync()); Put("room", Guid.NewGuid()); Put("match", Guid.NewGuid());
         var players = single ? new[] { Id("player") } : new[] { Id("player"), Id("teammate") };
@@ -166,7 +173,7 @@ static class Probe
             Fixture["revision"] = snapshot.Revision;
         }
         await MatchAsync(Id("match"),Id("room"),players);
-        await Snapshots().SaveIfDueAsync(snapshot,Ct);
+        if (persistCheckpoint) await Snapshots().SaveIfDueAsync(snapshot,Ct);
         if (complex)
         {
             await new SettlementCoordinator(Settlements(),Clock).ObserveAsync(Id("match"),snapshot);
@@ -305,6 +312,41 @@ static class Probe
             Players = snapshot.Players.Select(p=>p with { Phase = RoomPlayerPhase.Extracted }).ToArray() };
         await Snapshots().SaveIfDueAsync(snapshot,Ct);
     }
+    static async Task SeedReceiptMismatchAsync(bool retainSettledState)
+    {
+        await SeedRoomAsync(single: true); await SettlePrimaryAsync();
+        var snapshot = await Snapshots().GetAsync(Id("room"),Ct) ?? throw new InvalidOperationException("fixture checkpoint missing");
+        await Snapshots().SaveIfDueAsync(snapshot with { Revision=snapshot.Revision+10,
+            Players=snapshot.Players.Select(p=>p with {Phase=RoomPlayerPhase.Extracted}).ToArray() },Ct);
+        // Explicit corruption injection only in a new owned fixture. Preserve
+        // the real receipt and every history row; never delete/restore data.
+        await ExecuteAsync("UPDATE match_players SET state=$1,settlement_id=NULL WHERE match_id=$2 AND player_id=$3",
+            retainSettledState ? "Settled" : "Active",Id("match"),Id("player"));
+        Evidence["receipt_preserved"]=await ScalarAsync<long>("SELECT count(*) FROM match_settlements WHERE match_id=$1 AND player_id=$2",Id("match"),Id("player"))==1;
+    }
+    static async Task SeedConsistentSettlementAsync()
+    {
+        await SeedPendingAsync();
+        Require(await Settlements().CommitHoldsAsync(Id("receipt"),Ct)==1,"consistent fixture hold must commit once");
+    }
+    static async Task SeedOrphanReceiptAsync()
+    {
+        await SeedConsistentSettlementAsync();
+        await ExecuteAsync("INSERT INTO match_settlements(settlement_id,match_id,player_id,result,details_json,created_at) VALUES($1,$2,$3,'Extracted','{}'::jsonb,$4)",
+            Guid.NewGuid(),Id("match"),Id("teammate"),Clock.GetUtcNow());
+    }
+    static async Task SeedOrphanMemberAsync()
+    {
+        await SeedConsistentSettlementAsync();
+        var snapshot=await Snapshots().GetAsync(Id("room"),Ct) ?? throw new InvalidOperationException("fixture checkpoint missing");
+        var orphan=Room(Id("room"),Id("teammate")).Capture().Players.Single();
+        await Snapshots().SaveIfDueAsync(snapshot with {Revision=snapshot.Revision+10,Players=[..snapshot.Players,orphan]},Ct);
+    }
+    static async Task SeedWrongHoldOwnerAsync()
+    {
+        await SeedConsistentSettlementAsync();
+        await ExecuteAsync("UPDATE settlement_asset_holds SET player_id=$1 WHERE settlement_id=$2",Id("teammate"),Id("receipt"));
+    }
     static async Task SeedNextAsync()
     {
         Put("next_room",Guid.NewGuid());Put("next_match",Guid.NewGuid());Clock.Advance(TimeSpan.FromSeconds(1));
@@ -334,9 +376,45 @@ static class Probe
     static async Task DrainAsync()
     {
         var active=await ScalarAsync<long>("SELECT count(*) FROM matches WHERE status IN ('Starting','Launching','Running')");
-        var holds=await ScalarAsync<long>("SELECT count(*) FROM settlement_asset_holds WHERE state='Pending'");
-        var inconsistent=await ScalarAsync<long>("SELECT count(*) FROM matches m JOIN room_snapshots s ON s.room_id=m.room_id CROSS JOIN LATERAL jsonb_array_elements(s.snapshot_json->'players') j JOIN match_players p ON p.match_id=m.match_id AND p.player_id=(j->>'playerId')::uuid LEFT JOIN match_settlements r ON r.settlement_id=p.settlement_id WHERE (p.state='Settled' OR r.settlement_id IS NOT NULL) AND ((j->>'phase') NOT IN ('Dead','Extracted') OR (r.result IN ('Dead','Extracted') AND r.result<>j->>'phase'))");
+        var holds=await ScalarAsync<long>("SELECT count(*) FROM settlement_asset_holds WHERE state IN ('Pending','Held')");
+        var legacy=await ScalarAsync<long>("SELECT count(*) FROM matches m JOIN room_snapshots s ON s.room_id=m.room_id CROSS JOIN LATERAL jsonb_array_elements(s.snapshot_json->'players') j JOIN match_players p ON p.match_id=m.match_id AND p.player_id=(j->>'playerId')::uuid LEFT JOIN match_settlements r ON r.settlement_id=p.settlement_id WHERE (p.state='Settled' OR r.settlement_id IS NOT NULL) AND ((j->>'phase') NOT IN ('Dead','Extracted') OR (r.result IN ('Dead','Extracted') AND r.result<>j->>'phase'))");
+        var associations=await ScalarAsync<long>("""
+            SELECT count(*) FROM match_players p
+            FULL OUTER JOIN match_settlements r ON r.match_id=p.match_id AND r.player_id=p.player_id
+            LEFT JOIN matches m ON m.match_id=coalesce(p.match_id,r.match_id)
+            LEFT JOIN room_snapshots s ON s.room_id=m.room_id
+            LEFT JOIN LATERAL (
+                SELECT count(*) AS members,min(j->>'phase') AS phase
+                FROM jsonb_array_elements(s.snapshot_json->'players') j
+                WHERE j->>'playerId'=coalesce(p.player_id,r.player_id)::text
+            ) snapshot ON true
+            WHERE p.player_id IS NULL
+              OR (p.settlement_id IS NOT NULL AND p.settlement_id IS DISTINCT FROM r.settlement_id)
+              OR (r.settlement_id IS NOT NULL AND (p.state<>'Settled' OR p.settlement_id IS DISTINCT FROM r.settlement_id))
+              OR (p.state='Settled' AND (
+                    (NOT p.is_bot AND r.settlement_id IS NULL)
+                    OR s.room_id IS NULL OR snapshot.members<>1
+                    OR snapshot.phase IS NULL OR snapshot.phase NOT IN ('Dead','Extracted')
+                    OR (r.settlement_id IS NOT NULL AND r.result IS DISTINCT FROM snapshot.phase)))
+              OR (m.status='Completed' AND p.state NOT IN ('Settled','Removed'))
+            """);
+        var orphanMembers=await ScalarAsync<long>("""
+            SELECT count(*) FROM room_snapshots s JOIN matches m ON m.room_id=s.room_id
+            CROSS JOIN LATERAL jsonb_array_elements(s.snapshot_json->'players') j
+            LEFT JOIN match_players p ON p.match_id=m.match_id AND p.player_id::text=j->>'playerId'
+            WHERE p.player_id IS NULL
+            """);
+        var wrongHoldOwners=await ScalarAsync<long>("""
+            SELECT count(*) FROM settlement_asset_holds h
+            LEFT JOIN match_settlements r ON r.settlement_id=h.settlement_id
+            WHERE r.settlement_id IS NULL OR h.player_id IS DISTINCT FROM r.player_id
+            """);
+        var inconsistent=associations+orphanMembers+wrongHoldOwners;
         Evidence["active_match_count"]=active;Evidence["pending_hold_count"]=holds;Evidence["contradictory_snapshot_count"]=inconsistent;
+        Evidence["settlement_association_error_count"]=associations;
+        Evidence["orphan_snapshot_member_count"]=orphanMembers;Evidence["wrong_hold_owner_count"]=wrongHoldOwners;
+        Evidence["legacy_contradictory_snapshot_count"]=legacy;Evidence["legacy_drain_allowed"]=active==0 && holds==0 && legacy==0;
+        Evidence["drain_guard_completeness_proven"]=false;
         Evidence["drain_allowed"]=active==0 && holds==0 && inconsistent==0;
     }
     static async Task<string> DdlHashAsync()

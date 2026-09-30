@@ -2,6 +2,8 @@
 
 本批次只在独立云环境构建测试，未连接测试服、读取服务器 `.env` 或 Environment secret、修改应用业务或部署 guard、合并 PR、推送 release/main。四个 Rooms 路径的现有兼容性阻断继续生效。预期风险成功复现不等于回滚安全。
 
+后续独立审核确认原排空 SQL 会漏掉缺失 snapshot 和不一致 receipt 关联。已补至 **22 场景 / 79 次顺序运行**，见 [追加数据关联报告](drain-association-addendum.md) 和 [attempt-8 原始记录](cross-version/attempt-8/report.json)。原 15 场景记录继续保留；它不能证明排空 guard 完备。追加报告也显式保持 `drain_guard_completeness_proven=false`，没有修改或豁免线上 guard。
+
 ## 固定输入与证据边界
 
 | 用途 | 完整标识 |
@@ -18,7 +20,7 @@
 
 恢复 HTTP 200/503 来自真实版本的 RoomRecoveryWorker、RoomRegistry、RoomRecoveryHealthCheck 加一个 loopback ASP.NET 健康探测 fixture；**不是完整服务器 Program readiness**。冻结时钟和休眠 ticker 隔离恢复/路由行为，不证明长时间运行或负载。DDL 指纹涵盖列、约束、索引、函数和触发器，只排除明确注入的 compat_fail 故障函数/触发器。终态反例通过真实 PostgreSQL BEFORE UPDATE 触发器拒绝 snapshot 写入。
 
-## 最终跨版本结果
+## 原 15 场景跨版本结果（历史批次保留）
 
 [最终 attempt-6 原始报告](cross-version/attempt-6/report.json)：15 场景 / 58 次顺序运行，全部预期观察得到验证；每一阶段迁移 checksum 和 DDL 均相等。`unconditional_application_rollback_safe=false`。所有阶段原始日志在同一目录保留。
 

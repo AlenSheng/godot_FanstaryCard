@@ -143,9 +143,15 @@ def run(args):
         case('drain-launching',[('old','seed-launch'),('old','claim-drop'),('new','drain')],[{}, {'match_status':'Launching'}, {'drain_allowed':False,'active_match_count':1}])
         case('drain-pending-hold',[('old','seed-pending'),('new','drain'),('old','drain')],[{}, {'drain_allowed':False,'active_match_count':0,'pending_hold_count':1,'contradictory_snapshot_count':0},{'drain_allowed':False,'active_match_count':0,'pending_hold_count':1,'contradictory_snapshot_count':0}])
         case('drain-completed-contradiction',[('old','seed-drain-stale'),('new','drain'),('old','drain')],[{}, {'drain_allowed':False,'active_match_count':0,'pending_hold_count':0,'contradictory_snapshot_count':1},{'drain_allowed':False,'contradictory_snapshot_count':1}])
+        for name,action in [('settled-missing-snapshot','seed-drain-missing'),('receipt-player-state-mismatch','seed-drain-receipt-state'),('receipt-pointer-mismatch','seed-drain-receipt-pointer')]:
+            case('drain-'+name,[('old',action),('new','drain'),('old','drain')],[{}, {'drain_allowed':False,'active_match_count':0,'pending_hold_count':0,'contradictory_snapshot_count':1,'legacy_drain_allowed':True},{'drain_allowed':False,'contradictory_snapshot_count':1,'legacy_drain_allowed':True}])
+        for name,action,field in [('orphan-receipt','seed-drain-orphan-receipt','settlement_association_error_count'),('orphan-snapshot-member','seed-drain-orphan-member','orphan_snapshot_member_count'),('wrong-hold-owner','seed-drain-wrong-hold-owner','wrong_hold_owner_count')]:
+            case('drain-'+name,[('old',action),('new','drain'),('old','drain')],[{}, {'drain_allowed':False,'active_match_count':0,'pending_hold_count':0,'contradictory_snapshot_count':1,'legacy_drain_allowed':True,field:1},{'drain_allowed':False,'contradictory_snapshot_count':1,'legacy_drain_allowed':True,field:1}])
+        case('drain-consistent-terminal-control',[('old','seed-drain-consistent'),('new','drain'),('old','drain')],[{}, {'drain_allowed':True,'active_match_count':0,'pending_hold_count':0,'contradictory_snapshot_count':0},{'drain_allowed':True,'contradictory_snapshot_count':0}])
         case('drain-empty-control',[('old','migrate'),('new','drain'),('old','drain')],[{}, {'drain_allowed':True,'active_match_count':0,'pending_hold_count':0,'contradictory_snapshot_count':0},{'drain_allowed':True}])
         result['all_probe_expectations_passed']=all(c['probe_expectations_passed'] for c in result['cases'])
         result['unconditional_application_rollback_safe']=False
+        result['drain_guard_completeness_proven']=False
         result['proposed_path']='Review a drained window only; never override existing Rooms guards automatically'
         dump=root/'fixture-private.dump'
         descriptor=os.open(dump,os.O_CREAT|os.O_EXCL|os.O_WRONLY,0o600);os.close(descriptor)

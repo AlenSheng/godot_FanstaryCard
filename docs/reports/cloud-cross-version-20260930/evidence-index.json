@@ -5,20 +5,22 @@
     "six_attempts_private_pg_stopped": true,
     "harness_source_hashes_match": true,
     "six_latest_applicable_ci_success": true,
-    "no_private_material_in_export": true
+    "no_private_material_in_export": true,
+    "eight_attempts_private_pg_stopped": true,
+    "drain_guard_completeness_proven": false
   },
   "files": {
     "README.md": {
-      "bytes": 12723,
-      "sha256": "c7b7549240f120c1534d5eab2cabdcf91247186f20156512060ad298f1f33eb9"
+      "bytes": 13203,
+      "sha256": "fce2956e56a214d2365933279cfd43a36c91b013426148cecf510b330cf83cc6"
     },
     "build-new.log": {
       "bytes": 635,
-      "sha256": "1350bc0ec22ac3064cad69584eefe3f31a0cfe740a14470e4eb2ce696775cf82"
+      "sha256": "9e72490c7715065e026db1dce4f2b1f84c1f8a7af64ccfde34290edf562dfb37"
     },
     "build-old.log": {
       "bytes": 635,
-      "sha256": "33dc39706b8359ab2e7207dc4e6e673f32b175356764b8f0e3b52fe31b68f73b"
+      "sha256": "1e335cfdae551756a48069ac40744de543797f20e169cd7b5f51ede779f3177f"
     },
     "ci-runs.json": {
       "bytes": 3076,
@@ -1244,6 +1246,634 @@
       "bytes": 56,
       "sha256": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d"
     },
+    "cross-version/attempt-7/checkpoint-old-new-old-00-old-seed-checkpoint.log": {
+      "bytes": 3435,
+      "sha256": "e68a96788ba0acd212e4f0660e24495e69abedadb9dee408f9937613c0a895c7"
+    },
+    "cross-version/attempt-7/checkpoint-old-new-old-01-new-roundtrip.log": {
+      "bytes": 3881,
+      "sha256": "fe17a12e93cbfd0262cf054c73036f3745e6b280bb323431953ae1fcbdc19d34"
+    },
+    "cross-version/attempt-7/checkpoint-old-new-old-02-old-roundtrip.log": {
+      "bytes": 3881,
+      "sha256": "82b141b8f850a4d5eee824f377e08bbae46e591bd79a5991af9f5e0fe5077fe6"
+    },
+    "cross-version/attempt-7/claim-loss-new-old-00-new-seed-launch.log": {
+      "bytes": 3443,
+      "sha256": "78f49040681429fc70208fd38e0931859e40dd13854a0eebc6f32df979588b65"
+    },
+    "cross-version/attempt-7/claim-loss-new-old-01-new-claim-drop.log": {
+      "bytes": 3527,
+      "sha256": "991d812d8b37572fe2dddd00ae983ad716a1ff297606e3be921b532776fd9fe3"
+    },
+    "cross-version/attempt-7/claim-loss-new-old-02-old-launch-retry.log": {
+      "bytes": 3493,
+      "sha256": "b30df261b8a053c6a13ff382926cf505c29e53487380f0d4420c75d84d55d5cf"
+    },
+    "cross-version/attempt-7/claim-loss-new-old-03-new-recover.log": {
+      "bytes": 3780,
+      "sha256": "b7cefcc0aa270fa04af58374f1b131fb5bb66af0a746bcc4fa02d8c0cf4ab9b2"
+    },
+    "cross-version/attempt-7/claim-loss-new-old-04-old-drain.log": {
+      "bytes": 3720,
+      "sha256": "f0ff6e236bffd783feabe38e5a8a9e458285e0de5bdef8773caa388d07909fc2"
+    },
+    "cross-version/attempt-7/claim-loss-old-new-00-old-seed-launch.log": {
+      "bytes": 3443,
+      "sha256": "585ef24918fbf5f5d776895a4162b4a1c98a9aba7e81856ae5d6bdfd1c1a0afc"
+    },
+    "cross-version/attempt-7/claim-loss-old-new-01-old-claim-drop.log": {
+      "bytes": 3527,
+      "sha256": "c04b4a859cc33b67798002da8920bc9f331354d95688c23957dfc08ec4901faa"
+    },
+    "cross-version/attempt-7/claim-loss-old-new-02-new-launch-retry.log": {
+      "bytes": 3493,
+      "sha256": "c60a8df928cc084fadb0c57a4e279eb214ff961465d8f151384d9912be1d052a"
+    },
+    "cross-version/attempt-7/claim-loss-old-new-03-old-recover.log": {
+      "bytes": 3780,
+      "sha256": "493bb6a808621b0c87f5e703702f5231e58679a9dcf6988cbd09904f57689441"
+    },
+    "cross-version/attempt-7/claim-loss-old-new-04-new-drain.log": {
+      "bytes": 3720,
+      "sha256": "80a3e6f0a302a19381fdb46e2ba993c74c015beec81e581bea4b737159b69b01"
+    },
+    "cross-version/attempt-7/drain-completed-contradiction-00-old-seed-drain-stale.log": {
+      "bytes": 3485,
+      "sha256": "a4e826fa6ff6f4661457ec2739672424bda487e619cb4133596e729d8ba674d4"
+    },
+    "cross-version/attempt-7/drain-completed-contradiction-01-new-drain.log": {
+      "bytes": 3720,
+      "sha256": "6a5e7a4df82667e3eb75b7fc0d36ed49f29636aaf6de7c4af4087cb96dea7523"
+    },
+    "cross-version/attempt-7/drain-completed-contradiction-02-old-drain.log": {
+      "bytes": 3720,
+      "sha256": "cdd70df59d01e5d9e03635263988ad1e78420fdbc519f9250d4ee474f1becc88"
+    },
+    "cross-version/attempt-7/drain-empty-control-00-old-migrate.log": {
+      "bytes": 3413,
+      "sha256": "d4c524fb980a00949d30224230107a0a990acf767bf007a80ac98218af8544b2"
+    },
+    "cross-version/attempt-7/drain-empty-control-01-new-drain.log": {
+      "bytes": 3718,
+      "sha256": "f0416a428e2609a29fa8e88cee057ef80249f20e0d90ea585ae8c48bd702b104"
+    },
+    "cross-version/attempt-7/drain-empty-control-02-old-drain.log": {
+      "bytes": 3718,
+      "sha256": "9f165603863154abdf6264490ec85632c8e196c2712a3c2c7ee5b2aa4405e3c4"
+    },
+    "cross-version/attempt-7/drain-launching-00-old-seed-launch.log": {
+      "bytes": 3443,
+      "sha256": "994a87d2dc9f926ab79a41da156353031cf831a43182fdee125d9ff39f361b98"
+    },
+    "cross-version/attempt-7/drain-launching-01-old-claim-drop.log": {
+      "bytes": 3527,
+      "sha256": "20856fdfdc71cc6e999c9a8ca33862351cf954d1062ca31ad7f26d7c7a5e1405"
+    },
+    "cross-version/attempt-7/drain-launching-02-new-drain.log": {
+      "bytes": 3720,
+      "sha256": "06c65b3a6f16b971f2cdf5e90a1b3f65b3fb95d010717e114caabe2de7a2e963"
+    },
+    "cross-version/attempt-7/drain-pending-hold-00-old-seed-pending.log": {
+      "bytes": 3481,
+      "sha256": "38f3b24468b6e10debfdd3c2740cc75f306773b46c74dd8f4c0648b927389019"
+    },
+    "cross-version/attempt-7/drain-pending-hold-01-new-drain.log": {
+      "bytes": 3720,
+      "sha256": "143b2199a2fc9534af90f36a7ac6c29e98da2ffb8ed43eaa7bc0dd70b0a9a964"
+    },
+    "cross-version/attempt-7/drain-pending-hold-02-old-drain.log": {
+      "bytes": 3720,
+      "sha256": "eded76afd11e6fd22ad17c118893272c5d9545ef4bb5d742d84678cc80bfdf60"
+    },
+    "cross-version/attempt-7/drain-receipt-player-state-mismatch-00-old-seed-drain-receipt-state.log": {
+      "bytes": 3518,
+      "sha256": "3df8c6390bc2857c7bbbb424969f884b4c0bdaa50149bdc8fc94c57a00fa0fe2"
+    },
+    "cross-version/attempt-7/drain-receipt-player-state-mismatch-01-new-drain.log": {
+      "bytes": 3719,
+      "sha256": "050d9403996328cd520d1e4f54297014cc88b615b34ea7d29f8292babaf86a50"
+    },
+    "cross-version/attempt-7/drain-receipt-player-state-mismatch-02-old-drain.log": {
+      "bytes": 3719,
+      "sha256": "15426f442c006ec847595ac83877afadc06421778e501f952fafb56221eedb84"
+    },
+    "cross-version/attempt-7/drain-receipt-pointer-mismatch-00-old-seed-drain-receipt-pointer.log": {
+      "bytes": 3520,
+      "sha256": "1a6172f70c0287316481710970e9540658b43b17d878503515b9ab45556f44d0"
+    },
+    "cross-version/attempt-7/drain-receipt-pointer-mismatch-01-new-drain.log": {
+      "bytes": 3719,
+      "sha256": "5b8420c3f2f41f9143b79bf39b9576e05a9ccc383e59420d9af4a60b0f0475a5"
+    },
+    "cross-version/attempt-7/drain-receipt-pointer-mismatch-02-old-drain.log": {
+      "bytes": 3719,
+      "sha256": "b9f2b32acc9f37b44bc3c95a7238d13587ca4b195df4e2e1a0ed8a5407c915a5"
+    },
+    "cross-version/attempt-7/drain-settled-missing-snapshot-00-old-seed-drain-missing.log": {
+      "bytes": 3487,
+      "sha256": "7aafb429679855d4fb6382451a345e4685a9e391d5078c2532c53bd503b1896c"
+    },
+    "cross-version/attempt-7/drain-settled-missing-snapshot-01-new-drain.log": {
+      "bytes": 3719,
+      "sha256": "dbd0d77c3cf1a8d5f2d412cacb0cc7b99d5ae23f0ba8fa84eb8b712145028b89"
+    },
+    "cross-version/attempt-7/drain-settled-missing-snapshot-02-old-drain.log": {
+      "bytes": 3719,
+      "sha256": "35205c62e2687841a56b14f7f5fd752b3416036a1e3f1c6ff6d511c71f119009"
+    },
+    "cross-version/attempt-7/dump.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "cross-version/attempt-7/initdb.log": {
+      "bytes": 879,
+      "sha256": "ff8202596843e85e30d00c47f0da9ca417011994994c6c22963ddacf70e2915d"
+    },
+    "cross-version/attempt-7/mark-loss-new-old-00-new-seed-launch.log": {
+      "bytes": 3443,
+      "sha256": "f3a31ce4468f9fdb6ebe3d7219a4894e44c7b417293cae0acb0cd9f024929678"
+    },
+    "cross-version/attempt-7/mark-loss-new-old-01-new-mark-drop.log": {
+      "bytes": 3524,
+      "sha256": "672ab4cbf2fefc7966f15c8d12c56622b0e64c91c6664367b589e139b04d4aea"
+    },
+    "cross-version/attempt-7/mark-loss-new-old-02-old-recover.log": {
+      "bytes": 3780,
+      "sha256": "255d583150ce5c4c31c57889974e5549e55d56a9046b9a82d28df116c41a2714"
+    },
+    "cross-version/attempt-7/mark-loss-new-old-03-new-recover.log": {
+      "bytes": 3780,
+      "sha256": "36ca312ffcff923c4ba5164181a66fdcc3d38a1b39121afe552cdc5b2b60abd2"
+    },
+    "cross-version/attempt-7/mark-loss-new-old-04-new-mark-replay.log": {
+      "bytes": 3533,
+      "sha256": "ffd91c60345e4a223c30fd9481221ce559358e6a5a685cd3d10a4349b1c4a97f"
+    },
+    "cross-version/attempt-7/mark-loss-old-new-00-old-seed-launch.log": {
+      "bytes": 3443,
+      "sha256": "7ad9ab5e6a6ba29549e9ded5bfb0e7c3258bccf78db8faa62f7556db3774af94"
+    },
+    "cross-version/attempt-7/mark-loss-old-new-01-old-mark-drop.log": {
+      "bytes": 3524,
+      "sha256": "0dbb03e0779263fd5e8622458a8ef2bf5b5016f3607bd17e6bbebaf311727fae"
+    },
+    "cross-version/attempt-7/mark-loss-old-new-02-new-recover.log": {
+      "bytes": 3780,
+      "sha256": "0ee0fccc8d67621886097996c606082e153cd405952776b0b832d9018cb40aad"
+    },
+    "cross-version/attempt-7/mark-loss-old-new-03-old-recover.log": {
+      "bytes": 3780,
+      "sha256": "1af4d31f9bdd01706ec83cd01ab7a8faf9482124d3030c4fe8c6ddd7d0ed5468"
+    },
+    "cross-version/attempt-7/mark-loss-old-new-04-old-mark-replay.log": {
+      "bytes": 3534,
+      "sha256": "de87dda843ef564b1e5a505b16511a06b3c3549c612a9fdc44b8985625d8207c"
+    },
+    "cross-version/attempt-7/new-terminal-write-failure-00-old-seed-terminal.log": {
+      "bytes": 3433,
+      "sha256": "d5320421262b2c9fe045db1eaab02cde796b83ffe355bf38c38110eb32205725"
+    },
+    "cross-version/attempt-7/new-terminal-write-failure-01-new-terminal-fail.log": {
+      "bytes": 3559,
+      "sha256": "90022b1ff26fa94d5c6eeb03a913128a0ebc91bced3ee13d555df626e9909d5a"
+    },
+    "cross-version/attempt-7/new-terminal-write-failure-02-old-recover.log": {
+      "bytes": 3736,
+      "sha256": "13293ac6a5e75977357dee6e27769fb1299ac2710f29d9e1cc04dcd61f6f83e0"
+    },
+    "cross-version/attempt-7/new-terminal-write-failure-03-new-drain.log": {
+      "bytes": 3720,
+      "sha256": "a2a91ffb47a15dfd1598e8c3a224f42ba9229b39f75720affd60fadad693426e"
+    },
+    "cross-version/attempt-7/old-terminal-write-failure-00-old-seed-terminal.log": {
+      "bytes": 3433,
+      "sha256": "bd074aa3e5607dfbfb956f9e2220509ef4fa0de7602a411ace86c3643814694e"
+    },
+    "cross-version/attempt-7/old-terminal-write-failure-01-old-terminal-fail.log": {
+      "bytes": 3560,
+      "sha256": "ac1d9ae4f9ab7d2792e4aee605132eb0f826f319e178095127aa49fe0a13b4e1"
+    },
+    "cross-version/attempt-7/old-terminal-write-failure-02-new-recover.log": {
+      "bytes": 3632,
+      "sha256": "ddb7174b3a4083bb159ed7c2a55e85f59a4b363609f7bb7628abccf0379c1193"
+    },
+    "cross-version/attempt-7/old-terminal-write-failure-03-old-recover.log": {
+      "bytes": 3737,
+      "sha256": "5890ccc4025b21acd1e07cbae9734923c90a7c3e7ffdebf5e2c77917ed66307f"
+    },
+    "cross-version/attempt-7/report.json": {
+      "bytes": 436840,
+      "sha256": "d8f3fe3d234f3998b607907d22a4217d2dbef7cf5d49e5b893285f265afc0eac"
+    },
+    "cross-version/attempt-7/settlement-loss-new-old-00-new-seed-settlement.log": {
+      "bytes": 3435,
+      "sha256": "5fa24247d28e526499dadd7365d8f43cf8691d7fecccc0f522abd70139be8b39"
+    },
+    "cross-version/attempt-7/settlement-loss-new-old-01-new-settlement-drop.log": {
+      "bytes": 3504,
+      "sha256": "1abb153957b4acbb605045b42eb18a7678f493b711d00fe744d6c43457eb09cd"
+    },
+    "cross-version/attempt-7/settlement-loss-new-old-02-old-settlement-replay.log": {
+      "bytes": 3572,
+      "sha256": "4e45e44a0ba4b820bbb7b7068297e614107dbb0bc09c4793945991b4efd7c867"
+    },
+    "cross-version/attempt-7/settlement-loss-new-old-03-new-settlement-replay.log": {
+      "bytes": 3572,
+      "sha256": "1c4006f9964f84f5b5a0ce731d30a903c7eea0df36c32f265c276f956ba98ed8"
+    },
+    "cross-version/attempt-7/settlement-loss-old-new-00-old-seed-settlement.log": {
+      "bytes": 3435,
+      "sha256": "fc34f457991b836338cc0b1734975cbff780942e4251d507c69db8ec8c21e08a"
+    },
+    "cross-version/attempt-7/settlement-loss-old-new-01-old-settlement-drop.log": {
+      "bytes": 3504,
+      "sha256": "de75cd0df81ded485f6d625c461423a50de341c4281dc19305a96355f9ac7be2"
+    },
+    "cross-version/attempt-7/settlement-loss-old-new-02-new-settlement-replay.log": {
+      "bytes": 3572,
+      "sha256": "639a1068141ce33c0a77b152d3300b3e178a3afffdc50107647136d8af8869af"
+    },
+    "cross-version/attempt-7/settlement-loss-old-new-03-old-settlement-replay.log": {
+      "bytes": 3572,
+      "sha256": "101226104d68a3e67ec74f8ad9e4bdfcbf06ccbe84e28e35c72454d8f6f2538d"
+    },
+    "cross-version/attempt-7/stale-old-room-steals-next-route-00-old-seed-stale-next.log": {
+      "bytes": 3484,
+      "sha256": "6352757693cbc27085bf0904fe6aa404ddc56b0cf2e07792827f2e91f187290f"
+    },
+    "cross-version/attempt-7/stale-old-room-steals-next-route-01-new-recover.log": {
+      "bytes": 3836,
+      "sha256": "900daa55a7b2c6c9604425a34c4ed3742bb745301080dd773977f27c9d48cea5"
+    },
+    "cross-version/attempt-7/stale-old-room-steals-next-route-02-old-recover.log": {
+      "bytes": 3836,
+      "sha256": "af40a6171156a9fe6c2dae459b302e3b951173f9bcc36cd01c446201b4cdb388"
+    },
+    "cross-version/attempt-7/stale-settled-player-00-old-seed-stale.log": {
+      "bytes": 3479,
+      "sha256": "7f2ab553721681c9e23b2baf987834f34825075314d34e0465a40cd89f67052d"
+    },
+    "cross-version/attempt-7/stale-settled-player-01-new-recover.log": {
+      "bytes": 3632,
+      "sha256": "9853af169f373ba2a0f079878f5b61a8957be572ddf75f2fde92c668212eded6"
+    },
+    "cross-version/attempt-7/stale-settled-player-02-old-recover.log": {
+      "bytes": 3737,
+      "sha256": "b3bbb37806732f8fe63858231fc987704b248dc47e59283c1d2ec307be8e1730"
+    },
+    "cross-version/attempt-7/stale-settled-player-03-new-drain.log": {
+      "bytes": 3720,
+      "sha256": "4f98907fc0a8bf6b4f74c5cdedb8b505f1b7568c155ce1683509d9636db57ab2"
+    },
+    "cross-version/attempt-7/start.log": {
+      "bytes": 52,
+      "sha256": "66afd0411ccc09366e99fdd99b85f21899c8d2d064f5835126859618802153ad"
+    },
+    "cross-version/attempt-7/stop.log": {
+      "bytes": 57,
+      "sha256": "e7b24f63c690806243625ca8cb53f81f1a71a030c6c34a3820e76021c6810564"
+    },
+    "cross-version/attempt-8/checkpoint-old-new-old-00-old-seed-checkpoint.log": {
+      "bytes": 3435,
+      "sha256": "8edea8871ace179612c06bb125219b6847ee075c647180a412f01850413e1c40"
+    },
+    "cross-version/attempt-8/checkpoint-old-new-old-01-new-roundtrip.log": {
+      "bytes": 3881,
+      "sha256": "beef42b43c8639e8efa7e2e0cae6e7b72d202d5a8c240545248829cde0d3f782"
+    },
+    "cross-version/attempt-8/checkpoint-old-new-old-02-old-roundtrip.log": {
+      "bytes": 3881,
+      "sha256": "525325747e3d67b3e1f73d93cdaabbf1d6b6ca789ea2a9cfa6836410017d0fab"
+    },
+    "cross-version/attempt-8/claim-loss-new-old-00-new-seed-launch.log": {
+      "bytes": 3443,
+      "sha256": "a7b6cd198a7af5da030a25cad4642853717832ea9822a137eb8fb10d38cf687d"
+    },
+    "cross-version/attempt-8/claim-loss-new-old-01-new-claim-drop.log": {
+      "bytes": 3527,
+      "sha256": "15e5655c44a17abaa1874f209faa3fcf9ce6fede7dadec11e48e57fc87cd7ac9"
+    },
+    "cross-version/attempt-8/claim-loss-new-old-02-old-launch-retry.log": {
+      "bytes": 3493,
+      "sha256": "a30e4560b309015239e4952980053ba3c14899bb3801fa2e368d10f346bf4e6b"
+    },
+    "cross-version/attempt-8/claim-loss-new-old-03-new-recover.log": {
+      "bytes": 3780,
+      "sha256": "bdb7c498080d0d6330961e80b2d5821b14ce110b514e0b820744eec39db7a8c0"
+    },
+    "cross-version/attempt-8/claim-loss-new-old-04-old-drain.log": {
+      "bytes": 3720,
+      "sha256": "9f3af7782968f2661a205c9635bcab13fd13838f00861db38178219904479ea2"
+    },
+    "cross-version/attempt-8/claim-loss-old-new-00-old-seed-launch.log": {
+      "bytes": 3443,
+      "sha256": "fc991c1147b57ab24aeaf08bc7298f535109c9987aedc7a515b68c9507756c24"
+    },
+    "cross-version/attempt-8/claim-loss-old-new-01-old-claim-drop.log": {
+      "bytes": 3527,
+      "sha256": "d2b65385706c05564ccc2fc3ebf7370411da65768e73c3d3d0483010d0b35a5d"
+    },
+    "cross-version/attempt-8/claim-loss-old-new-02-new-launch-retry.log": {
+      "bytes": 3493,
+      "sha256": "58de398f3f279b792d02b776c51b47e04c87ea8b4cd6d039a7340c41e1d13987"
+    },
+    "cross-version/attempt-8/claim-loss-old-new-03-old-recover.log": {
+      "bytes": 3780,
+      "sha256": "b1558af605f844a7de2faef9bd2d5919a6f808d2b82c88f103af23b06d701558"
+    },
+    "cross-version/attempt-8/claim-loss-old-new-04-new-drain.log": {
+      "bytes": 3720,
+      "sha256": "8683d4cbe681d4d78c7c52dfe9e58156c494cd48e76892f59185ca6561bee202"
+    },
+    "cross-version/attempt-8/drain-completed-contradiction-00-old-seed-drain-stale.log": {
+      "bytes": 3485,
+      "sha256": "6e894ef1e9db3501504ccdc4205acb36c896928fe1417c1a62095ad87a3b8572"
+    },
+    "cross-version/attempt-8/drain-completed-contradiction-01-new-drain.log": {
+      "bytes": 3720,
+      "sha256": "b34c331ebf4c48691f56789fd6f2cb70c02c7d8e6f3a9eafcae9b2b9a6a9fd93"
+    },
+    "cross-version/attempt-8/drain-completed-contradiction-02-old-drain.log": {
+      "bytes": 3720,
+      "sha256": "e376ff7d9b17d037343bd584eb870530add6fab35a099e3eb39eb267ee86f836"
+    },
+    "cross-version/attempt-8/drain-consistent-terminal-control-00-old-seed-drain-consistent.log": {
+      "bytes": 3490,
+      "sha256": "cd1197e287c868bee71d206b138e4337d1babd5b11d6ba8de362faab88a7629b"
+    },
+    "cross-version/attempt-8/drain-consistent-terminal-control-01-new-drain.log": {
+      "bytes": 3718,
+      "sha256": "3133e231efbd35bab2ef1a8fead8619e44988387a77539c1a5c61d90e5c45e04"
+    },
+    "cross-version/attempt-8/drain-consistent-terminal-control-02-old-drain.log": {
+      "bytes": 3718,
+      "sha256": "5b0f8f2a9bbf89cf6fe79dabffc7fc28c86ef74ac45ae3e646116bf61510fc96"
+    },
+    "cross-version/attempt-8/drain-empty-control-00-old-migrate.log": {
+      "bytes": 3413,
+      "sha256": "f3c4355b66712851f41ef5567e21386031a6afdccbc02ec3f9118d1014f859e1"
+    },
+    "cross-version/attempt-8/drain-empty-control-01-new-drain.log": {
+      "bytes": 3718,
+      "sha256": "b8703ad74632559fc0cb8be4f8201f9cc1786221ee746ee1402a81d7240bc61b"
+    },
+    "cross-version/attempt-8/drain-empty-control-02-old-drain.log": {
+      "bytes": 3718,
+      "sha256": "86c8edfadf86be2cb31e975cd80d95d8652509e91630b900c17c41437cda8b53"
+    },
+    "cross-version/attempt-8/drain-launching-00-old-seed-launch.log": {
+      "bytes": 3443,
+      "sha256": "99a005c3adc98f66d70dce054e5725e10998501c1e06c0bec7b68082a6237888"
+    },
+    "cross-version/attempt-8/drain-launching-01-old-claim-drop.log": {
+      "bytes": 3527,
+      "sha256": "74b3a4bee26ff426ccea8bb40994b1906aa8cffc90ac3a8702afd613e4c05776"
+    },
+    "cross-version/attempt-8/drain-launching-02-new-drain.log": {
+      "bytes": 3720,
+      "sha256": "686b3ec2c3166f3b9b5babd846403dee14a200a878b09085522909f40e96760e"
+    },
+    "cross-version/attempt-8/drain-orphan-receipt-00-old-seed-drain-orphan-receipt.log": {
+      "bytes": 3494,
+      "sha256": "b2a166a499948ed0a56fcd6384ccb899c4725e74a2262cfd0eab614bfd5f1208"
+    },
+    "cross-version/attempt-8/drain-orphan-receipt-01-new-drain.log": {
+      "bytes": 3719,
+      "sha256": "e3abc48385767b1ec20e560288be540cece31acb71bb85166bb8ee409870b628"
+    },
+    "cross-version/attempt-8/drain-orphan-receipt-02-old-drain.log": {
+      "bytes": 3719,
+      "sha256": "6e6e7c24812a0eadcd9f10df25dfe17c058148ea3b7de3491f371750ef8848ec"
+    },
+    "cross-version/attempt-8/drain-orphan-snapshot-member-00-old-seed-drain-orphan-member.log": {
+      "bytes": 3493,
+      "sha256": "c135e6b99ac8ae0d55e8f7b18a1acf6632e2b6d9ac47827bba9f1254f771e468"
+    },
+    "cross-version/attempt-8/drain-orphan-snapshot-member-01-new-drain.log": {
+      "bytes": 3719,
+      "sha256": "e56b9c3b8f71d928064bb018610e0e59d73135c530c75bbfdfa0ae2f047d03e5"
+    },
+    "cross-version/attempt-8/drain-orphan-snapshot-member-02-old-drain.log": {
+      "bytes": 3719,
+      "sha256": "8084285b84a1986978978bbf5a5a6147f5d80d1cb51f3e5705b5c5f2f766c14f"
+    },
+    "cross-version/attempt-8/drain-pending-hold-00-old-seed-pending.log": {
+      "bytes": 3481,
+      "sha256": "c547acf16edee43415c14badb4d48051a313ffb2b7b7cc357505bae878d4c28a"
+    },
+    "cross-version/attempt-8/drain-pending-hold-01-new-drain.log": {
+      "bytes": 3720,
+      "sha256": "08832d4d942c395be34622d70dcd36d7dbd05d2ec3895ff2230858b520fb1893"
+    },
+    "cross-version/attempt-8/drain-pending-hold-02-old-drain.log": {
+      "bytes": 3720,
+      "sha256": "d857177f822303b1b2e12b651c6934b2493f793b05040557ff175cc31891c0eb"
+    },
+    "cross-version/attempt-8/drain-receipt-player-state-mismatch-00-old-seed-drain-receipt-state.log": {
+      "bytes": 3518,
+      "sha256": "ce44fdd8b53bfa9db1df354186371403df4df315064f82908de52ae42eb02836"
+    },
+    "cross-version/attempt-8/drain-receipt-player-state-mismatch-01-new-drain.log": {
+      "bytes": 3719,
+      "sha256": "1c3d9470601358ae842a75f2cfeedd0d36ae21f168709720e10a1b1b67fdc3ff"
+    },
+    "cross-version/attempt-8/drain-receipt-player-state-mismatch-02-old-drain.log": {
+      "bytes": 3719,
+      "sha256": "4f9c9ca38f04ec3d067adaa19a1b9a3297acb34806f05da5aeea31b9f9d99256"
+    },
+    "cross-version/attempt-8/drain-receipt-pointer-mismatch-00-old-seed-drain-receipt-pointer.log": {
+      "bytes": 3520,
+      "sha256": "d2acb8a2a2940e1d83470e1e0c56a2253ef7d92d103421296f97ace6532a8c27"
+    },
+    "cross-version/attempt-8/drain-receipt-pointer-mismatch-01-new-drain.log": {
+      "bytes": 3719,
+      "sha256": "100573ff7090e5f480b83969f0bfa35afac3ce4c26cf1b6ed568c7599343de28"
+    },
+    "cross-version/attempt-8/drain-receipt-pointer-mismatch-02-old-drain.log": {
+      "bytes": 3719,
+      "sha256": "d9170143c9f336bb4d219b7f465a9e5c205e64431345bb243b7c761de3132394"
+    },
+    "cross-version/attempt-8/drain-settled-missing-snapshot-00-old-seed-drain-missing.log": {
+      "bytes": 3487,
+      "sha256": "7c68a5a42048f111fc714b6b15d5cfdad0f9e667b326a7bf73d03ccdb4acd3e4"
+    },
+    "cross-version/attempt-8/drain-settled-missing-snapshot-01-new-drain.log": {
+      "bytes": 3719,
+      "sha256": "c27b40d5b0973340faf5999ac76b13891503a5a084055b7e0a862a0964e6e5bb"
+    },
+    "cross-version/attempt-8/drain-settled-missing-snapshot-02-old-drain.log": {
+      "bytes": 3719,
+      "sha256": "00f98644f8c6fe040ea2cbf3530187445e31ae21f5b3aa7f9740cfdb32d6b8cb"
+    },
+    "cross-version/attempt-8/drain-wrong-hold-owner-00-old-seed-drain-wrong-hold-owner.log": {
+      "bytes": 3496,
+      "sha256": "223d2392f6ab602720f23a543da5751241484474c8864e241bc5043851ce361a"
+    },
+    "cross-version/attempt-8/drain-wrong-hold-owner-01-new-drain.log": {
+      "bytes": 3719,
+      "sha256": "499643d78775d9a6e6aa1e51d352b6818f1fcbf13a2d66b613fb7516b4a0727d"
+    },
+    "cross-version/attempt-8/drain-wrong-hold-owner-02-old-drain.log": {
+      "bytes": 3719,
+      "sha256": "aeeaf5e91bc1ad5cb266f7dccf0d1183215cc785115ec9e3a11440778e429a1a"
+    },
+    "cross-version/attempt-8/dump.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "cross-version/attempt-8/initdb.log": {
+      "bytes": 879,
+      "sha256": "d35dde2c5469f74f8e8697c3b9a89a4307c00571faf5e432584ba9443edd7925"
+    },
+    "cross-version/attempt-8/mark-loss-new-old-00-new-seed-launch.log": {
+      "bytes": 3443,
+      "sha256": "d682b346dd02579e649cc08a0a1ecb1a56c27fbd7bcc66950c8084f0c0bf20a2"
+    },
+    "cross-version/attempt-8/mark-loss-new-old-01-new-mark-drop.log": {
+      "bytes": 3524,
+      "sha256": "707e0481669ae359c9a96201dca82f29c8ac28f934e97c6297a04de478ef67c3"
+    },
+    "cross-version/attempt-8/mark-loss-new-old-02-old-recover.log": {
+      "bytes": 3780,
+      "sha256": "6634a72e77a4ad7ae6f6b8ab84e9218c8f7dc15e4d16a3825fdbde682d0b8c78"
+    },
+    "cross-version/attempt-8/mark-loss-new-old-03-new-recover.log": {
+      "bytes": 3780,
+      "sha256": "345868d24e878ae5d0d3a38f693a4858ddd89c870ebaf627dd241980ada53abf"
+    },
+    "cross-version/attempt-8/mark-loss-new-old-04-new-mark-replay.log": {
+      "bytes": 3533,
+      "sha256": "7efcbef17500a3b9426aa2ab4ae4db1ae702ec95f54bd56e69f3e90951df9b22"
+    },
+    "cross-version/attempt-8/mark-loss-old-new-00-old-seed-launch.log": {
+      "bytes": 3443,
+      "sha256": "0750f32b0f2822e68be09565f3174d5dd0c3c78f2d820c67d517566e2a569223"
+    },
+    "cross-version/attempt-8/mark-loss-old-new-01-old-mark-drop.log": {
+      "bytes": 3524,
+      "sha256": "74f6fe65f03bc75ad067c409dd0ec6432c184c0ed5c1621c38689e821e00d29a"
+    },
+    "cross-version/attempt-8/mark-loss-old-new-02-new-recover.log": {
+      "bytes": 3780,
+      "sha256": "eda8062585c2c4568a595698942c6568d9446742e67fb02f4005d6972074b827"
+    },
+    "cross-version/attempt-8/mark-loss-old-new-03-old-recover.log": {
+      "bytes": 3780,
+      "sha256": "9050d8135f23e232ba03a327b4bf1bc41cd117a8eac0e70301603ea3bf2e7122"
+    },
+    "cross-version/attempt-8/mark-loss-old-new-04-old-mark-replay.log": {
+      "bytes": 3534,
+      "sha256": "df07f5fdd584cbf6941def3e2ee0d9b77ff57d4d06f72e1bba973955875d6132"
+    },
+    "cross-version/attempt-8/new-terminal-write-failure-00-old-seed-terminal.log": {
+      "bytes": 3433,
+      "sha256": "ab68568290b7075a6917dcbf6058c933f1e428e61d268a466a7aa0fdd3dcb87d"
+    },
+    "cross-version/attempt-8/new-terminal-write-failure-01-new-terminal-fail.log": {
+      "bytes": 3559,
+      "sha256": "4d9d38406a25a9ad2fd46f09d76f365410119c847a36e9a5b1e68b40ad9b79bd"
+    },
+    "cross-version/attempt-8/new-terminal-write-failure-02-old-recover.log": {
+      "bytes": 3736,
+      "sha256": "dfb762127a9042d1fc8dd34f1d6c9ac46418c328a602a32bc189fa1a2077a111"
+    },
+    "cross-version/attempt-8/new-terminal-write-failure-03-new-drain.log": {
+      "bytes": 3720,
+      "sha256": "d3042ea2b4682e11bcc0c61447befcf4cec2d2ba32848fee7cfe588ee0274ee7"
+    },
+    "cross-version/attempt-8/old-terminal-write-failure-00-old-seed-terminal.log": {
+      "bytes": 3433,
+      "sha256": "1b3e7afccdd3a38eb6ca4b702f3503b62d880ad40f97a4c6db0fd3a0367ae3f2"
+    },
+    "cross-version/attempt-8/old-terminal-write-failure-01-old-terminal-fail.log": {
+      "bytes": 3560,
+      "sha256": "68ecc033d2a16e4d8ff0f3bb6c5aa6acb63359243094ec109f2e0e6bc6fdf710"
+    },
+    "cross-version/attempt-8/old-terminal-write-failure-02-new-recover.log": {
+      "bytes": 3632,
+      "sha256": "19ad68a281a791a6b0bf1683f17485136f872d817eb8093ae3abfac43334e4b9"
+    },
+    "cross-version/attempt-8/old-terminal-write-failure-03-old-recover.log": {
+      "bytes": 3737,
+      "sha256": "99eedadd9146c2933e371f9758a528dea804b3dba43bbb4d585e39d2fe23fcbe"
+    },
+    "cross-version/attempt-8/report.json": {
+      "bytes": 515389,
+      "sha256": "e3ff4153e506cbf6b554556bab1f9d4401cb28ddb19f1c21c481b08077a2e48e"
+    },
+    "cross-version/attempt-8/settlement-loss-new-old-00-new-seed-settlement.log": {
+      "bytes": 3435,
+      "sha256": "f163a156df0c36a9afb85023634a2a0e1c69488cfb83bd179d05c66bb3b7ac94"
+    },
+    "cross-version/attempt-8/settlement-loss-new-old-01-new-settlement-drop.log": {
+      "bytes": 3504,
+      "sha256": "d8dd57550c2b01f5d04633e6ece5bce08f56785d6ec788d7727758601f159db5"
+    },
+    "cross-version/attempt-8/settlement-loss-new-old-02-old-settlement-replay.log": {
+      "bytes": 3572,
+      "sha256": "68ada61540d314a8b40a788cce1b7b6f8787c024c41b458e15373ce2472d10cf"
+    },
+    "cross-version/attempt-8/settlement-loss-new-old-03-new-settlement-replay.log": {
+      "bytes": 3572,
+      "sha256": "01600d856dd17216a7f92e966122f2dc4faf2474c5e74e7653f1d1bdd8fb7e48"
+    },
+    "cross-version/attempt-8/settlement-loss-old-new-00-old-seed-settlement.log": {
+      "bytes": 3435,
+      "sha256": "98cf598a25021f98047a6cdcf6f58530b290c473e841530a6ebea6cb43e727bf"
+    },
+    "cross-version/attempt-8/settlement-loss-old-new-01-old-settlement-drop.log": {
+      "bytes": 3504,
+      "sha256": "dd3aa4cab56c764e15a9beac8f515f7c597e77b9ac43d2f8aa7be4d80da34aed"
+    },
+    "cross-version/attempt-8/settlement-loss-old-new-02-new-settlement-replay.log": {
+      "bytes": 3572,
+      "sha256": "a5fa65bff8f5a2cc110ff4f7ce1a6d60c8464ff1d9d493b27b3114037d7466c9"
+    },
+    "cross-version/attempt-8/settlement-loss-old-new-03-old-settlement-replay.log": {
+      "bytes": 3572,
+      "sha256": "ec9cbf5c4739349da530eb85e0a136cc3169469873b63b5712092a5911829ebe"
+    },
+    "cross-version/attempt-8/stale-old-room-steals-next-route-00-old-seed-stale-next.log": {
+      "bytes": 3484,
+      "sha256": "2dec016b48db7e621b34262805dd8a718b21ff416bdb74727bf60a3e1747b7cf"
+    },
+    "cross-version/attempt-8/stale-old-room-steals-next-route-01-new-recover.log": {
+      "bytes": 3836,
+      "sha256": "42f22170ca4b72614af4d8c53d75de4b85c666802f5e81df13578e44174a742f"
+    },
+    "cross-version/attempt-8/stale-old-room-steals-next-route-02-old-recover.log": {
+      "bytes": 3836,
+      "sha256": "a0cbecaca8ea8a3e15d260073d7170f64b66ca398916bfaedaa302f0715f2e73"
+    },
+    "cross-version/attempt-8/stale-settled-player-00-old-seed-stale.log": {
+      "bytes": 3479,
+      "sha256": "7d9e41d11552ea8ca5bc2f4ef16031def1b1c7ab8507c19c66d1b27570d7b360"
+    },
+    "cross-version/attempt-8/stale-settled-player-01-new-recover.log": {
+      "bytes": 3632,
+      "sha256": "73806efe8ab0490e1b3a94e18a1be6be72cbc3b23d655ab1e3fc1c92a0dcc187"
+    },
+    "cross-version/attempt-8/stale-settled-player-02-old-recover.log": {
+      "bytes": 3737,
+      "sha256": "78b88f5ba78539eeb6d1960ffb559a48006e3de5081010bc1354cfeb8e4e328e"
+    },
+    "cross-version/attempt-8/stale-settled-player-03-new-drain.log": {
+      "bytes": 3720,
+      "sha256": "d22b83882f1219f012e3aca3dfd1efe8bd9fc717550501693be717bf4a4e7aec"
+    },
+    "cross-version/attempt-8/start.log": {
+      "bytes": 52,
+      "sha256": "66afd0411ccc09366e99fdd99b85f21899c8d2d064f5835126859618802153ad"
+    },
+    "cross-version/attempt-8/stop.log": {
+      "bytes": 57,
+      "sha256": "e7b24f63c690806243625ca8cb53f81f1a71a030c6c34a3820e76021c6810564"
+    },
+    "drain-association-addendum.md": {
+      "bytes": 3664,
+      "sha256": "8012fe4a8731d8d19d310b5f2ff967575ac5ae86f401ea566ae87bc5616f04a3"
+    },
     "frozen-final/build.log": {
       "bytes": 11583,
       "sha256": "129b82a97a283b728d40931fd16738741fb45b7184c54e95749112e418c72fd6"
@@ -1326,7 +1956,7 @@
     },
     "harness-source-hashes.json": {
       "bytes": 439,
-      "sha256": "dee75811dd8d0defc2c860a36e7890ff3f6bf4bddc8037777b045e645397653b"
+      "sha256": "7d7c5624505b6edda3236a4ee1562059d5c0a5831afa415b374a15572fc8f679"
     },
     "old-image-availability.log": {
       "bytes": 116,
