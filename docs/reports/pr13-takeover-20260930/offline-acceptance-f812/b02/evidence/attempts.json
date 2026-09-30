@@ -1,0 +1,33 @@
+{
+  "kind": "resolved_harness_setup_attempts_not_production_defects",
+  "attempts": [
+    {
+      "raw": "exact-build.log",
+      "exit_code": 1,
+      "reason": "Isolated harness used ClientCommand.RoomRevision; corrected to real ExpectedRevision before positive run."
+    },
+    {
+      "raw": "exact-run-first-missing-pg-env.log",
+      "exit_code": 134,
+      "reason": "Launcher omitted owned PG environment; production was not entered at Database stage."
+    },
+    {
+      "raw": "exact-run-second-python-dependency.log",
+      "exit_code": 134,
+      "reason": "Activated Python lacked openpyxl; harness XLSX mutation rewritten with standard library ZIP/XML."
+    },
+    {
+      "raw": "B02-exact-godot-first-offline-state.log",
+      "exit_code": 1,
+      "reason": "Fixture gateway.online=false made allowed() reject valid current preview; online fixture state corrected while process loop stays disabled."
+    },
+    {
+      "raw": "B02-exact-godot-mixed-prior-wire.log",
+      "exit_code": 1,
+      "reason": "Two successful C# cohorts remained in wire directory; prior wires archived, final cohort kept separate."
+    }
+  ],
+  "verified_production_P0": false,
+  "runtime_changes": 0,
+  "all_resolved": true
+}

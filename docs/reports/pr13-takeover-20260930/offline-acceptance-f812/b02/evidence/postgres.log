@@ -1,0 +1,53 @@
+2026-09-30 22:09:46.995 UTC [68909] LOG:  starting PostgreSQL 18.6 on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+2026-09-30 22:09:46.997 UTC [68909] LOG:  listening on Unix socket "/workspace/pr13-takeover/b02-acceptance-f812/pgsocket/.s.PGSQL.55482"
+2026-09-30 22:09:47.002 UTC [68915] LOG:  database system was shut down at 2026-09-30 22:09:46 UTC
+2026-09-30 22:09:47.006 UTC [68909] LOG:  database system is ready to accept connections
+2026-09-30 22:10:23.667 UTC [69431] ERROR:  canceling statement due to user request
+2026-09-30 22:10:23.667 UTC [69431] STATEMENT:  SELECT gold, diamond FROM player_wallets WHERE player_id = $1
+2026-09-30 22:10:46.803 UTC [69845] ERROR:  injected terminal checkpoint failure
+2026-09-30 22:10:46.803 UTC [69845] CONTEXT:  PL/pgSQL function fail_terminal_checkpoint() line 2 at RAISE
+2026-09-30 22:10:46.803 UTC [69845] STATEMENT:  INSERT INTO room_snapshots(room_id,revision,snapshot_json,rng_state_json,updated_at) VALUES($1,$2,$3,$4,$5) ON CONFLICT(room_id) DO UPDATE SET revision=EXCLUDED.revision,snapshot_json=EXCLUDED.snapshot_json,rng_state_json=EXCLUDED.rng_state_json,updated_at=EXCLUDED.updated_at WHERE room_snapshots.revision < EXCLUDED.revision
+2026-09-30 22:10:46.810 UTC [69846] ERROR:  injected terminal checkpoint failure
+2026-09-30 22:10:46.810 UTC [69846] CONTEXT:  PL/pgSQL function fail_terminal_checkpoint() line 2 at RAISE
+2026-09-30 22:10:46.810 UTC [69846] STATEMENT:  INSERT INTO room_snapshots(room_id,revision,snapshot_json,rng_state_json,updated_at) VALUES($1,$2,$3,$4,$5) ON CONFLICT(room_id) DO UPDATE SET revision=EXCLUDED.revision,snapshot_json=EXCLUDED.snapshot_json,rng_state_json=EXCLUDED.rng_state_json,updated_at=EXCLUDED.updated_at WHERE room_snapshots.revision < EXCLUDED.revision
+2026-09-30 22:10:48.668 UTC [69946] ERROR:  injected launch checkpoint failure
+2026-09-30 22:10:48.668 UTC [69946] CONTEXT:  PL/pgSQL function fail_launch_checkpoint() line 2 at RAISE
+2026-09-30 22:10:48.668 UTC [69946] STATEMENT:  INSERT INTO room_snapshots(room_id,revision,snapshot_json,rng_state_json,updated_at) VALUES($1,$2,$3,$4,$5) ON CONFLICT(room_id) DO UPDATE SET revision=EXCLUDED.revision,snapshot_json=EXCLUDED.snapshot_json,rng_state_json=EXCLUDED.rng_state_json,updated_at=EXCLUDED.updated_at WHERE room_snapshots.revision < EXCLUDED.revision
+2026-09-30 22:10:50.197 UTC [70056] ERROR:  duplicate key value violates unique constraint "ux_market_listings_active_equipment"
+2026-09-30 22:10:50.197 UTC [70056] DETAIL:  Key (equipment_id)=(de0a6eb4-9a31-4fc1-9946-e42b774af278) already exists.
+2026-09-30 22:10:50.197 UTC [70056] STATEMENT:  INSERT INTO market_listings(listing_id,seller_id,equipment_id,price_gold,status,version,created_at,expires_at) SELECT gen_random_uuid(),seller_id,equipment_id,price_gold,'Active',1,created_at,expires_at FROM market_listings WHERE listing_id=$1
+2026-09-30 22:10:51.392 UTC [70119] ERROR:  duplicate key value violates unique constraint "ux_players_display_name_key"
+2026-09-30 22:10:51.392 UTC [70119] DETAIL:  Key (display_name_key)=(steam player) already exists.
+2026-09-30 22:10:51.392 UTC [70119] STATEMENT:  INSERT INTO players(user_id, display_name, selected_class, version, created_at, updated_at)
+	VALUES ($1, $2, NULL, $3, $4, $5)
+2026-09-30 22:10:51.399 UTC [70120] ERROR:  duplicate key value violates unique constraint "ux_players_display_name_key"
+2026-09-30 22:10:51.399 UTC [70120] DETAIL:  Key (display_name_key)=(steam player) already exists.
+2026-09-30 22:10:51.399 UTC [70120] STATEMENT:  INSERT INTO players(user_id, display_name, selected_class, version, created_at, updated_at)
+	VALUES ($1, $2, NULL, $3, $4, $5)
+2026-09-30 22:10:52.009 UTC [70140] ERROR:  duplicate key value violates unique constraint "ux_players_display_name_key"
+2026-09-30 22:10:52.009 UTC [70140] DETAIL:  Key (display_name_key)=(alice) already exists.
+2026-09-30 22:10:52.009 UTC [70140] STATEMENT:  UPDATE players
+	SET display_name = $1, selected_class = $2, version = $3, updated_at = $4
+	WHERE user_id = $5 AND version = $6
+2026-09-30 22:10:52.046 UTC [70146] ERROR:  duplicate key value violates unique constraint "ux_players_display_name_key"
+2026-09-30 22:10:52.046 UTC [70146] DETAIL:  Key (display_name_key)=(alice) already exists.
+2026-09-30 22:10:52.046 UTC [70146] STATEMENT:  UPDATE players SET display_name='alice' WHERE user_id=$1
+2026-09-30 22:14:47.632 UTC [68913] LOG:  checkpoint starting: time
+2026-09-30 22:18:39.414 UTC [81258] ERROR:  duplicate key value violates unique constraint "ux_players_display_name_key"
+2026-09-30 22:18:39.414 UTC [81258] DETAIL:  Key (display_name_key)=(reserved) already exists.
+2026-09-30 22:18:39.414 UTC [81258] STATEMENT:  INSERT INTO players(user_id, display_name, selected_class, version, created_at, updated_at)
+	VALUES ($1, $2, NULL, $3, $4, $5)
+2026-09-30 22:18:39.509 UTC [81262] LOG:  could not receive data from client: Connection reset by peer
+2026-09-30 22:18:57.137 UTC [81997] LOG:  could not receive data from client: Connection reset by peer
+2026-09-30 22:18:57.137 UTC [81997] LOG:  unexpected EOF on client connection with an open transaction
+2026-09-30 22:19:09.323 UTC [68913] LOG:  checkpoint complete: wrote 2463 buffers (15.0%), wrote 4 SLRU buffers; 0 WAL file(s) added, 0 removed, 5 recycled; write=260.556 s, sync=1.071 s, total=261.692 s; sync files=9517, longest=0.009 s, average=0.001 s; distance=79542 kB, estimate=79542 kB; lsn=0/86B9DB8, redo lsn=0/64B35A0
+2026-09-30 22:19:37.231 UTC [82969] LOG:  could not receive data from client: Connection reset by peer
+2026-09-30 22:19:47.367 UTC [68913] LOG:  checkpoint starting: time
+2026-09-30 22:20:47.530 UTC [68909] LOG:  received fast shutdown request
+2026-09-30 22:20:47.531 UTC [68909] LOG:  aborting any active transactions
+2026-09-30 22:20:47.532 UTC [68909] LOG:  background worker "logical replication launcher" (PID 68918) exited with exit code 1
+2026-09-30 22:20:47.906 UTC [68913] LOG:  checkpoint complete: wrote 968 buffers (5.9%), wrote 2 SLRU buffers; 0 WAL file(s) added, 0 removed, 3 recycled; write=60.170 s, sync=0.339 s, total=60.540 s; sync files=3896, longest=0.002 s, average=0.001 s; distance=48494 kB, estimate=76437 kB; lsn=0/B1B5398, redo lsn=0/940F008
+2026-09-30 22:20:47.906 UTC [68913] LOG:  shutting down
+2026-09-30 22:20:47.907 UTC [68913] LOG:  checkpoint starting: shutdown immediate
+2026-09-30 22:20:47.948 UTC [68913] LOG:  checkpoint complete: wrote 553 buffers (3.4%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 2 recycled; write=0.008 s, sync=0.018 s, total=0.043 s; sync files=57, longest=0.004 s, average=0.001 s; distance=30361 kB, estimate=71829 kB; lsn=0/B1B5410, redo lsn=0/B1B5410
+2026-09-30 22:20:47.958 UTC [68909] LOG:  database system is shut down

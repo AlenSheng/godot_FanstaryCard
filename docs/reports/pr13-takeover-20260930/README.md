@@ -1,3 +1,7 @@
+## B02完整离线收据提议
+
+[4项/12case](offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json)已完成原要求及适用profile，source=f812，Domain317/Server291真实PG零失败跳过。C#/Godot协议、实际Gateway/Game过期预览、policy/PG旧快照均有原件。ROOT仅核验112manifest/元数据，待MAIN实际关键重放，Accepted0。累计8Ready/49Partial/72NotRevalidated/3Blocked。
+
 ## Schema修订收据4bb6c6be
 
 [完整REPORT](schema-safety-4bb6c6be/REPORT.json)及[独立重放命令](schema-safety-4bb6c6be/README.md)：MAIN发现的两类schema反例已在真实子进程文件路径复现，最小校验工具修复后同一干净SHA复跑。四反例明确invalid exit3，Python118和原12case通过。LOAD01.1原NoChange提议已撤销，现为修复提议；其余三项保留技术证据、metadata补齐并复跑。全部待独立MAIN实际重放，Accepted0。业务/UI保持f812；旧报告仅历史。

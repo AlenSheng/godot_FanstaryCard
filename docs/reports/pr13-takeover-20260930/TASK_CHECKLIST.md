@@ -1,6 +1,6 @@
 # PR13 云端接管逐项登记
 
-本批固定校验源码 `4bb6c6be847c17b2dcd1b4ee9db5be6fa4d7d1d7`；业务/UI仍为 `f812879e`；状态4ReadyForAcceptance/49Partial/76NotRevalidated/3Blocked/0Accepted。四项仅提交独立裁决，S6待MAIN；G0–G5未签署。
+本批固定校验源码 `4bb6c6be847c17b2dcd1b4ee9db5be6fa4d7d1d7`；业务/UI仍为 `f812879e`；状态8ReadyForAcceptance/49Partial/72NotRevalidated/3Blocked/0Accepted。四项仅提交独立裁决，S6待MAIN；G0–G5未签署。
 
 LOAD-01修订收据见[REPORT.json](schema-safety-4bb6c6be/REPORT.json)，12原case与Python118通过；四个真实文件路径反例由未处理异常修为明确invalid exit3。.1原NoChange提议被MAIN拒绝，现为修复提议；.2–.4保留技术证据、补齐metadata并复跑，全部仍待独立MAIN实际重放。业务/UI无改动；历史CI与27显式case计数不替代当前任务验收。
 
@@ -54,10 +54,10 @@ LOAD-01修订收据见[REPORT.json](schema-safety-4bb6c6be/REPORT.json)，12原c
 | 46 | PR13-A07.1 旧数值合同定位 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | LOAD-10.1 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 47 | PR13-A07.2 全PG关键矩阵 | MAIN / integration review | Partial / Partial | b7099ef71623 | PR13-A07.1 | broad canonical profile coverage is not inferred from green CI. |
 | 48 | PR13-A07.3 CI触发和证据 | MAIN / load P0 | Partial / Queued | d4c3212fb32c | PR13-A07.2 | affected POSTGRES/LIVE/CAPACITY profiles remain separate and incomplete. |
-| 49 | PR13-B02.1 过期测试API迁移 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | LOAD-11.1 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
-| 50 | PR13-B02.2 真实Resolver规则向量 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | PR13-B02.1 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
-| 51 | PR13-B02.3 预览/协议/权威一致 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | PR13-B02.2 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
-| 52 | PR13-B02.4 房间策略和恢复 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | PR13-B02.3 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
+| 49 | PR13-B02.1 过期测试API迁移 | MAIN (pending batch) | ReadyForAcceptance / NotRevalidated | 取证/未修改 | LOAD-11.1 | S6 independent MAIN actual critical replay and adjudication; f812 original3/3 and applicable complete profile receipts. |
+| 50 | PR13-B02.2 真实Resolver规则向量 | MAIN (pending batch) | ReadyForAcceptance / NotRevalidated | 取证/未修改 | PR13-B02.1 | S6 independent MAIN actual critical replay and adjudication; f812 original3/3 and applicable complete profile receipts. |
+| 51 | PR13-B02.3 预览/协议/权威一致 | MAIN (pending batch) | ReadyForAcceptance / NotRevalidated | 取证/未修改 | PR13-B02.2 | S6 independent MAIN actual critical replay and adjudication; f812 original3/3 and applicable complete profile receipts. |
+| 52 | PR13-B02.4 房间策略和恢复 | MAIN (pending batch) | ReadyForAcceptance / NotRevalidated | 取证/未修改 | PR13-B02.3 | S6 independent MAIN actual critical replay and adjudication; f812 original3/3 and applicable complete profile receipts. |
 | 53 | PR13-A07.4 MAIN复跑适用套件 | MAIN / integration review | Partial / Partial | b7099ef71623 | PR13-A07.3, PR13-B02.4 | broad canonical profile coverage is not inferred from green CI. |
 | 54 | PR13-B01.1 战斗关联合同 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | LOAD-06.4, LOAD-03.3 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 55 | PR13-B01.2 通信、机会和有效进展 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | PR13-B01.1 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
@@ -91,7 +91,7 @@ LOAD-01修订收据见[REPORT.json](schema-safety-4bb6c6be/REPORT.json)，12原c
 | 83 | PR13-B09.2 3/5/8位候选 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | PR13-B09.1 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 84 | PR13-B09.3 来源、幂等和状态切换 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | PR13-B09.2 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 85 | PR13-B09.4 连续性与选择成本 | MAIN (pending batch) | NotRevalidated / Deferred | 取证/未修改 | PR13-B09.3 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
-| 86 | PR13-B10.1 顺序/主核可见 | MAIN / client contract | Partial / Partial | a828eb583f2a | PR13-B02.3 | No live read-preview traffic/capacity, full rendered3cycles, FPS/latency strata or human UX. UI theme/art belongs to independent parent-coordinated task. |
+| 86 | PR13-B10.1 顺序/主核可见 | MAIN / client contract | ReadyForAcceptance / NotRevalidated | a828eb583f2a | PR13-B02.3 | S6 independent MAIN actual critical replay and adjudication; f812 original3/3 and applicable complete profile receipts. |
 | 87 | PR13-B10.2 有效值与多语言说明 | MAIN / client protocol and UI | Partial / Partial | a828eb583f2a | PR13-B10.1 | Current authority payload lacks heal_overflow/shield_overflow. Full effective/overflow/localized disclosure remains unimplemented and unaccepted. |
 | 88 | PR13-B10.3 本地按下与权威成功 | MAIN / client contract | Partial / Partial | a828eb583f2a | PR13-B10.2 | No live read-preview traffic/capacity, full rendered3cycles, FPS/latency strata or human UX. UI theme/art belongs to independent parent-coordinated task. |
 | 89 | PR13-B10.4 帧率/延迟/失效目标 | MAIN / client contract | Partial / Partial | a828eb583f2a | PR13-B10.3 | No live read-preview traffic/capacity, full rendered3cycles, FPS/latency strata or human UX. UI theme/art belongs to independent parent-coordinated task. |

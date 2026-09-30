@@ -1,0 +1,265 @@
+{
+  "task_id": "PR13-B02.1",
+  "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+  "execution_state": "ReadyForIndependentAcceptance",
+  "candidate_decision": "NoChangeWithEvidence",
+  "accepted_by": null,
+  "production_changes": 0,
+  "ui_changes": 0,
+  "new_business_changes": 0,
+  "stages": [
+    {
+      "stage": "S0",
+      "status": "CompleteForReview",
+      "evidence": [
+        "canonical-B02.json",
+        "input_manifest.json",
+        "profile.json",
+        "dependencies.json",
+        "guidance-read.json"
+      ],
+      "note": "Fixed f812 source, twelve canonical cases, ownership and bounded offline/PG commands."
+    },
+    {
+      "stage": "S1",
+      "status": "Passed",
+      "evidence": [
+        "cases.jsonl",
+        "negative-case.json",
+        "B02-exact-csharp-final.log",
+        "B02-exact-godot.log"
+      ],
+      "note": "Current behavior measured; no fabricated before failure. Old API failure is the required compile-negative contract."
+    },
+    {
+      "stage": "S2",
+      "status": "NoChangeWithEvidenceCandidate",
+      "evidence": [
+        "runtime-byte-audit.json",
+        "historical-test-api-migration.patch",
+        "test-intention-count-audit.json"
+      ],
+      "note": "All 2213 tracked runtime/config/proto/exporter files byte-identical to f812; old/current CombatAuthoritativeRules method counts20/20, no removed intentions. Only isolated harness and evidence were added."
+    },
+    {
+      "stage": "S3",
+      "status": "Passed",
+      "evidence": [
+        "commands.json",
+        "cases.jsonl",
+        "suite-results.json",
+        "trx/domain.trx",
+        "trx/server.trx"
+      ],
+      "note": "12/12 exact cases; Domain317 and Server291 whole suites, zero skipped; negative probes exit1 are expected."
+    },
+    {
+      "stage": "S4",
+      "status": "PassedForIndependentReview",
+      "evidence": [
+        "dependencies.json",
+        "exact/locked-room.json",
+        "exact/duel-recovery.json",
+        "exact/old-invalid.json",
+        "exact-godot.json",
+        "config-manifest.json"
+      ],
+      "note": "Owned real PG repository persistence/restore; raw old missing fields and invalid enum read through production repository; production C# and Godot codecs and Gateway/Game protocol entry. Source-table hot update uses isolated XLSX exporter and production ReadNumerics seam, no deployment/reload API claim."
+    },
+    {
+      "stage": "S5",
+      "status": "NotApplicableWithReason",
+      "evidence": [
+        "canonical-B02.json"
+      ],
+      "note": "Canonical B02.1–.4 explicitly require only OFFLINE/POSTGRES and state public load adds no confidence. MAIN approval of this applicability remains S6; no LIVE/CI/human experience gate added."
+    },
+    {
+      "stage": "S6",
+      "status": "Pending",
+      "owner": "MAIN",
+      "note": "Independent artifact check and critical rerun; no Accepted signature."
+    }
+  ],
+  "canonical_subtask": {
+    "id": "PR13-B02.1",
+    "title": "过期测试API迁移",
+    "source_instruction": "将旧布尔参数/属性迁移为当前枚举策略及盾余量合同，不删失败测试",
+    "specification_state": "ReviewReady",
+    "execution_state": "NotRevalidated",
+    "accepted_by": null,
+    "requires_before_integration": [
+      "LOAD-11.1"
+    ],
+    "inputs": "CombatAuthoritativeRulesTests及当前枚举/快照",
+    "implementation_steps": "旧布尔与余量成员逐断言映射CurrentRhythm/CoreCardsSpent、CurrentSteps/FractionalRemainder；先编译复现",
+    "test_cases": [
+      {
+        "id": "PR13-B02.1-T01",
+        "setup_and_injection": "旧参数构造",
+        "expected": "编译失败证据",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "PR13-B02.1-T02",
+        "setup_and_injection": "默认构造",
+        "expected": "仍CurrentRhythm/CurrentSteps",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "PR13-B02.1-T03",
+        "setup_and_injection": "候选显式枚举",
+        "expected": "候选断言独立",
+        "executed": false,
+        "evidence": null
+      }
+    ],
+    "pass_criteria": "保留原测试意图与数量变动说明，不复活废弃生产成员、不改默认来迎合断言。",
+    "failure_rule": "任一必测用例与预期不符为Failed；缺输入/环境/证据为Blocked；仅完成部分层次为Partial，不升级Accepted。",
+    "profiles": [
+      "OFFLINE",
+      "POSTGRES"
+    ],
+    "command_refs": [
+      "C-BUILD",
+      "C-DOMAIN",
+      "C-SERVER",
+      "C-GODOT-NUM",
+      "C-PROTO"
+    ],
+    "stage_refs": [
+      "S0",
+      "S1",
+      "S2",
+      "S3",
+      "S4",
+      "S5",
+      "S6"
+    ],
+    "runtime_stage": "NotApplicableWithReason",
+    "runtime_stage_reason": "仅凭指定离线/集成产物即可判定本子项；公网压测不增加该判据可信度。",
+    "evidence_root": "outputs/pr13-acceptance/<integration_sha>/PR13-B02.1/",
+    "deliverables": [
+      "report.json（逐条预期/实际/判定）",
+      "cases.jsonl（用例与业务关联）",
+      "commands.json（命令/工具版本/退出码/跳过）",
+      "manifest.json（相对路径/大小/SHA256）"
+    ],
+    "rollback": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。",
+    "gate_refs": [
+      "G1",
+      "G2",
+      "G5"
+    ],
+    "historical_execution_state": "Queued"
+  },
+  "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+  "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+  "effective_room_policy": "CurrentRhythm/CurrentSteps default; CoreCardsSpent/FractionalRemainder only explicitly selected isolated fixtures; stored policies stay locked",
+  "runtime_image_digest": null,
+  "runtime_image_digest_missing_reason": "Local processes, no container image; executable/build SHA256 supplied in tools-and-build-manifest.json",
+  "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
+  "algorithm_version": "combat-current-b7a6154",
+  "case_ids": [
+    "PR13-B02.1-T01",
+    "PR13-B02.1-T02",
+    "PR13-B02.1-T03"
+  ],
+  "expected": [
+    "编译失败证据",
+    "仍CurrentRhythm/CurrentSteps",
+    "候选断言独立"
+  ],
+  "actual": [
+    [
+      {
+        "probe": "old-fenxian",
+        "diagnostic": "CS1739",
+        "exit_code": 1,
+        "matched": true
+      },
+      {
+        "probe": "old-guardian",
+        "diagnostic": "CS1739",
+        "exit_code": 1,
+        "matched": true
+      },
+      {
+        "probe": "old-remainder",
+        "diagnostic": "CS1061",
+        "exit_code": 1,
+        "matched": true
+      }
+    ],
+    {
+      "fenxian": "CurrentRhythm",
+      "guardian": "CurrentSteps",
+      "single_core_five_cast_draws": [
+        0,
+        0,
+        1,
+        1,
+        2
+      ]
+    },
+    {
+      "fenxian": "CoreCardsSpent",
+      "guardian": "FractionalRemainder",
+      "single_core_five_cast_draws": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "guardian_bonus_five_casts": 7,
+      "remainder_tenths": [
+        4,
+        8,
+        2,
+        6,
+        0
+      ],
+      "independent_from_defaults": true
+    }
+  ],
+  "status": "ReadyForIndependentAcceptance",
+  "sample_population": {
+    "canonical_cases": 3,
+    "case_execution_count": 3,
+    "supporting_suites": {
+      "Domain": 317,
+      "Server": 291
+    },
+    "suite_counts_are_not_exact_case_counts": true
+  },
+  "cutoff_monotonic": "Command durations in commands.json; no performance-window claim",
+  "window_or_drain_or_final": "final_local_evidence",
+  "commands": "commands.json",
+  "tool_versions": {
+    "dotnet_sdk": "10.0.400",
+    "postgres": "18.6",
+    "godot": "4.7.2.stable.official.ed1daf0bf",
+    "tool_raw": [
+      "tool-dotnet.log",
+      "tool-postgres.log",
+      "tool-godot.log"
+    ]
+  },
+  "exit_codes": "commands.json; negative API compile exit1 is expected",
+  "skip_reasons": [],
+  "critical_skips": 0,
+  "asset_and_route_postconditions": "Only synthetic local rooms and owned databases; frozen production source has no changes. PVP/restore and preview state postconditions are hashed in case rows. No production asset/route mutation.",
+  "artifact_manifest": "../manifest.json",
+  "reviewer": "MAIN Pending",
+  "rollback": "No runtime change to rollback; stop only owned PG (completed). Keep source and raw receipts.",
+  "remaining_blockers": [
+    "MAIN S6 independent decision pending"
+  ],
+  "missing_reasons": {
+    "CI": "Not part of canonical command refs for B02; not required or invoked",
+    "LIVE_RENDER_HUMAN": "Canonical runtime stage NotApplicableWithReason; no additional gate"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "kind": "minimal_dependency_inputs_not_upstream_task_acceptance",
+  "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+  "LOAD-11.1": {
+    "contract": "Source/runtime/config/protocol identity and clean main working tree",
+    "artifacts": [
+      "input_manifest.json",
+      "runtime-byte-audit.json",
+      "config-manifest.json",
+      "tools-and-build-manifest.json"
+    ],
+    "state": "InputFrozenForIndependentReview",
+    "CI": "Not run or fetched; not a required command_ref for these B02 contracts."
+  },
+  "LOAD-06.4": {
+    "contract": "Clock/context/redaction input contract for this local evidence",
+    "monotonic": "Python time.monotonic command durations; current_utc field is wall-clock provenance, never mixed for duration",
+    "context": [
+      "case_id",
+      "source_sha",
+      "profile_hash",
+      "room_id",
+      "battle_id",
+      "revision",
+      "request_id",
+      "protocol_sequence"
+    ],
+    "identities": "Synthetic fixture GUIDs only; no real account credentials; owned local trust-only database connection contains no secret",
+    "raw_preservation": "Failed harness setup attempts remain archived and classified; successful case rows reference only final cohort",
+    "state": "InputFrozenForIndependentReview"
+  },
+  "B02_internal_chain": {
+    "PR13-B02.2": [
+      "PR13-B02.1 three case receipts"
+    ],
+    "PR13-B02.3": [
+      "PR13-B02.2 three case receipts"
+    ],
+    "PR13-B02.4": [
+      "PR13-B02.3 three case receipts and real wire/Godot supplements"
+    ]
+  },
+  "whole_upstream_Accepted_required": false
+}
