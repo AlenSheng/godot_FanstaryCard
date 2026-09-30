@@ -1,0 +1,123 @@
+{
+  "fixture": "event-type-dict",
+  "child_argv": [
+    "/workspace/relicround-env/venv/bin/python",
+    "-c",
+    "import json,os,pathlib,sys,time\nbase=pathlib.Path(sys.argv[1]);fixture=sys.argv[2];now=int(time.time()*1000)\nrow=dict(client_id='boundary',pid=os.getpid(),run_id='boundary-run',process_epoch='boundary-epoch',status_seq=1,now_unix_ms=now,online=True,room=True,last_progress_age_ms=0)\nevent=dict(run_id=row['run_id'],client_id=row['client_id'],process_epoch=row['process_epoch'],event_seq=1,at_unix_ms=now,type='http',duration_ms=sys.float_info.max,status=500,ok=False,path='/fixture',phase='playing')\nevents=[event,dict(event,event_seq=2)]\nif fixture!='finite-max-pair':\n event.update(type='lifecycle',duration_ms=2,event_type='cycle.started',cycle_id='boundary:1',match_id='M')\n if fixture=='match-dict':event['match_id']={}\n if fixture=='event-type-dict':event['event_type']={}\n if fixture=='optional-match-none':event['match_id']=None\n if fixture=='optional-match-empty':event['match_id']=''\n events=[event]\nrow.update(event_seq_max=len(events),telemetry=events,operations=events if fixture=='finite-max-pair' else [])\npathlib.Path(str(base)+'.telemetry.jsonl').write_text(''.join(json.dumps(e)+'\\n' for e in events))\npathlib.Path(str(base)+'.status.json').write_text(json.dumps(row))\nprint(json.dumps(dict(pid=os.getpid(),written=True)),flush=True);time.sleep(15)\n",
+    "/workspace/pr13-main-review-e060/boundaries/event-type-dict/client.json",
+    "event-type-dict"
+  ],
+  "pid": 2622,
+  "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+  "started_at_ms": 1790811126929,
+  "started_at_monotonic_ms": 1751899.280612,
+  "decision": {
+    "classification": "invalid_workload_or_evidence",
+    "passed": false,
+    "exit_code": 3
+  },
+  "stage": "completed",
+  "ownership_invalid": 0,
+  "event_loss": 0,
+  "window": {
+    "http": {
+      "count": 0
+    },
+    "steady_http": {
+      "count": 0
+    },
+    "cancelled_http": {
+      "count": 0
+    },
+    "realtime": {
+      "count": 0
+    },
+    "rtt": {
+      "count": 0
+    },
+    "phase_http": {},
+    "error_count": 0,
+    "sample_count": 0,
+    "logical_request_count": 0,
+    "cancelled_count": 0,
+    "all_attempt_count": null,
+    "attempt_coverage": "unavailable",
+    "attempt_result_counts": {},
+    "valid_attempt_latency_count": 0,
+    "valid_latency_count": 0,
+    "latency_sample_quality": {
+      "http": "unavailable",
+      "realtime": "unavailable"
+    },
+    "error_rate": 0.0,
+    "steady_error_count": 0,
+    "steady_sample_count": 0,
+    "steady_error_rate": 0.0,
+    "invalid_metric_count": 0,
+    "invalid_duration_count": 0,
+    "invalid_schema_count": 0,
+    "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+  },
+  "population": {
+    "alive_processes": 1,
+    "fresh_status_clients": 1,
+    "online": 1,
+    "in_room": 1,
+    "room_state_clients": 1,
+    "active_in_room": 1,
+    "server_confirmed_in_room": null,
+    "invalid_schema_count": 0,
+    "failed_processes": [],
+    "stale_clients": [],
+    "stalled_clients": [],
+    "missing_clients": [],
+    "invalid_clients": [],
+    "workload_failure": false
+  },
+  "archive_errors": [],
+  "cycle_counts": {
+    "running": {
+      "acknowledgements": 0,
+      "completed_cycles": 0,
+      "cycles_by_client": {},
+      "acknowledgements_by_client": {},
+      "distribution": {},
+      "fallback_cycles": 0
+    },
+    "drain": {
+      "acknowledgements": 0,
+      "completed_cycles": 0,
+      "cycles_by_client": {},
+      "acknowledgements_by_client": {},
+      "distribution": {},
+      "fallback_cycles": 0
+    },
+    "final": {
+      "acknowledgements": 0,
+      "completed_cycles": 0,
+      "cycles_by_client": {},
+      "acknowledgements_by_client": {},
+      "distribution": {},
+      "fallback_cycles": 0
+    },
+    "zero_cycle_clients": null,
+    "zero_cycle_reason": "requires_launch_manifest",
+    "evidence_errors": [
+      "invalid_event_type"
+    ],
+    "stop_ms": 1790811126952,
+    "final_ms": 1790811126953
+  },
+  "checks": {
+    "owned": true,
+    "sequence_intact": true,
+    "archive_owned": true,
+    "classified": true,
+    "invalid_exit3": true,
+    "no_false_completion": true
+  },
+  "unhandled_exception": null,
+  "status": "Passed",
+  "child_exit_code": -15,
+  "child_reaped": true
+}

@@ -1,0 +1,132 @@
+{
+  "fixture": "archive-match-list",
+  "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+  "child_argv": [
+    "/workspace/relicround-env/venv/bin/python",
+    "-c",
+    "import json,os,pathlib,sys,time\nbase=pathlib.Path(sys.argv[1]);fixture=sys.argv[2];now=int(time.time()*1000)\nrow=dict(client_id='independent',pid=os.getpid(),run_id='independent-run',process_epoch='independent-epoch',status_seq=1,now_unix_ms=now,online=True,room=True,last_progress_age_ms=0)\nevent=dict(run_id=row['run_id'],client_id=row['client_id'],process_epoch=row['process_epoch'],event_seq=1,at_unix_ms=now,type='http',duration_ms=1e308 if fixture=='finite-overflow' else 1e100,status=500,ok=False,path='/fixture',phase='playing')\nevents=[event,dict(event,event_seq=2)]\nif fixture.startswith('archive-'):\n event.update(type='lifecycle',event_type='cycle.started',cycle_id='independent:1',match_id='M',duration_ms=2)\n if fixture=='archive-match-list':event['match_id']=[]\n if fixture=='archive-type-list':event['event_type']=[]\n events=[event]\nrow.update(event_seq_max=len(events),telemetry=events,operations=events if not fixture.startswith('archive-') else [])\npathlib.Path(str(base)+'.telemetry.jsonl').write_text(''.join(json.dumps(e)+'\\n' for e in events))\npathlib.Path(str(base)+'.status.json').write_text(json.dumps(row))\nprint(json.dumps(dict(pid=os.getpid(),status_written=True)),flush=True)\ntime.sleep(15)\n",
+    "/workspace/pr13-main-review-e060/original-three/archive-match-list/client.json",
+    "archive-match-list"
+  ],
+  "pid": 2341,
+  "started_at_ms": 1790811031614,
+  "started_at_monotonic_ms": 1656583.852884,
+  "expected": "No unhandled exception; malformed archive fields must classify invalid, finite metrics must aggregate or explicitly invalidate.",
+  "decision": null,
+  "Accepted": false,
+  "stage": "completed",
+  "owned_statuses": 1,
+  "ownership_invalid": 0,
+  "event_loss": 0,
+  "individual_duration_guard": [
+    true
+  ],
+  "window": {
+    "http": {
+      "count": 0
+    },
+    "steady_http": {
+      "count": 0
+    },
+    "cancelled_http": {
+      "count": 0
+    },
+    "realtime": {
+      "count": 0
+    },
+    "rtt": {
+      "count": 0
+    },
+    "phase_http": {},
+    "error_count": 0,
+    "sample_count": 0,
+    "logical_request_count": 0,
+    "cancelled_count": 0,
+    "all_attempt_count": null,
+    "attempt_coverage": "unavailable",
+    "attempt_result_counts": {},
+    "valid_attempt_latency_count": 0,
+    "valid_latency_count": 0,
+    "latency_sample_quality": {
+      "http": "unavailable",
+      "realtime": "unavailable"
+    },
+    "error_rate": 0.0,
+    "steady_error_count": 0,
+    "steady_sample_count": 0,
+    "steady_error_rate": 0.0,
+    "invalid_metric_count": 0,
+    "invalid_duration_count": 0,
+    "invalid_schema_count": 0,
+    "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+  },
+  "population": {
+    "alive_processes": 1,
+    "fresh_status_clients": 1,
+    "online": 1,
+    "in_room": 1,
+    "room_state_clients": 1,
+    "active_in_room": 1,
+    "server_confirmed_in_room": null,
+    "invalid_schema_count": 0,
+    "failed_processes": [],
+    "stale_clients": [],
+    "stalled_clients": [],
+    "missing_clients": [],
+    "invalid_clients": [],
+    "workload_failure": false
+  },
+  "archive_event_count": 1,
+  "archive_errors": [],
+  "cycle_counts": {
+    "running": {
+      "acknowledgements": 0,
+      "completed_cycles": 0,
+      "cycles_by_client": {},
+      "acknowledgements_by_client": {},
+      "distribution": {},
+      "fallback_cycles": 0
+    },
+    "drain": {
+      "acknowledgements": 0,
+      "completed_cycles": 0,
+      "cycles_by_client": {},
+      "acknowledgements_by_client": {},
+      "distribution": {},
+      "fallback_cycles": 0
+    },
+    "final": {
+      "acknowledgements": 0,
+      "completed_cycles": 0,
+      "cycles_by_client": {},
+      "acknowledgements_by_client": {},
+      "distribution": {},
+      "fallback_cycles": 0
+    },
+    "zero_cycle_clients": null,
+    "zero_cycle_reason": "requires_launch_manifest",
+    "evidence_errors": [
+      "invalid_business_match_type"
+    ],
+    "stop_ms": 1790811031651,
+    "final_ms": 1790811031652
+  },
+  "unhandled_exception": null,
+  "status": "Passed",
+  "child_exit_code": -15,
+  "child_reaped": true,
+  "source_files": [
+    {
+      "path": "tools/gameplay_load_test.py",
+      "sha256": "e5cef5dbd0c63acf67579c3261262ab18346b718b6f32fbab2e265e1e671d52d"
+    },
+    {
+      "path": "tools/gameplay_load_validation.py",
+      "sha256": "d3e912dc9d4353f8204b35e6d907da0e746a67a44669e4ef1f159bee123cbaff"
+    },
+    {
+      "path": "tools/pr13_runtime_evidence.py",
+      "sha256": "971dedc310e2a8311b938a544a9895935e39c63a62acd8658c9da97d15d14a09"
+    }
+  ]
+}

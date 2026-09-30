@@ -1,0 +1,729 @@
+{
+  "kind": "Independent_MAIN_LOAD01_1_schema_revalidation",
+  "created_at_utc": "2026-09-30T23:37:31.372569+00:00",
+  "only_adjudicated_task": "LOAD-01.1",
+  "integration_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+  "implementation_receipt_commit": "c68bd4aadf59676096b93ce8e5a972b12575cc08",
+  "previous_independent_review_commit": "dac6fdbd43d9c925a696a18f9774d9392c06c302",
+  "scope": "Only original OFFLINE LOAD-01.1 contract. .2–.4 remain the prior parent decisions; their same-SHA rerun is regression evidence only.",
+  "independent_conclusion": "LOAD-01.1 satisfies the complete original OFFLINE contract at e06037f5 and is eligible for MAIN acceptance as FixedWithEvidence.",
+  "tasks": [
+    {
+      "task_id": "LOAD-01.1",
+      "stage": "S6",
+      "integration_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+      "config_source_hash": null,
+      "config_bytes_hash": null,
+      "effective_room_policy": null,
+      "runtime_image_digest": null,
+      "profile_hash": "3a8ff81b53bd7c8c35d3f82e770a7e7735e8d3359711db3c23985ede8a5afbc0",
+      "algorithm_version": "sha256:8a44f0828f6aa8436812892de2bb75012fbc12e2a07aecc95f3bf71e44bf53fd",
+      "case_ids": [
+        "LOAD-01.1-T01",
+        "LOAD-01.1-T02",
+        "LOAD-01.1-T03"
+      ],
+      "expected": [
+        {
+          "case_id": "LOAD-01.1-T01",
+          "expected": "记录无效不抛异常"
+        },
+        {
+          "case_id": "LOAD-01.1-T02",
+          "expected": "拒绝且保留已知失败分子"
+        },
+        {
+          "case_id": "LOAD-01.1-T03",
+          "expected": "合法行保留并使证据无效"
+        }
+      ],
+      "actual": {
+        "canonical": [
+          {
+            "case_id": "LOAD-01.1-T01",
+            "setup": "None/list状态",
+            "expected": "记录无效不抛异常",
+            "pass_criteria": "所有负例有分类，采样函数不异常退出，非法值不变成0延迟或成功。",
+            "actual": {
+              "checks": {
+                "exact_existing_case_assertion": true,
+                "invalid_classified": true,
+                "evidence_invalid": true
+              },
+              "observations": [
+                {
+                  "alive_processes": 1,
+                  "fresh_status_clients": 0,
+                  "online": 0,
+                  "in_room": 0,
+                  "room_state_clients": 0,
+                  "active_in_room": 0,
+                  "server_confirmed_in_room": null,
+                  "invalid_schema_count": 1,
+                  "failed_processes": [],
+                  "stale_clients": [],
+                  "stalled_clients": [],
+                  "missing_clients": [],
+                  "invalid_clients": [],
+                  "workload_failure": true
+                },
+                {
+                  "alive_processes": 1,
+                  "fresh_status_clients": 0,
+                  "online": 0,
+                  "in_room": 0,
+                  "room_state_clients": 0,
+                  "active_in_room": 0,
+                  "server_confirmed_in_room": null,
+                  "invalid_schema_count": 1,
+                  "failed_processes": [],
+                  "stale_clients": [],
+                  "stalled_clients": [],
+                  "missing_clients": [],
+                  "invalid_clients": [],
+                  "workload_failure": true
+                }
+              ]
+            },
+            "status": "Passed",
+            "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+            "profile": "OFFLINE",
+            "elapsed_seconds": 4.014099999949394e-05,
+            "Accepted": false
+          },
+          {
+            "case_id": "LOAD-01.1-T02",
+            "setup": "bool冒充PID/NaN耗时",
+            "expected": "拒绝且保留已知失败分子",
+            "pass_criteria": "所有负例有分类，采样函数不异常退出，非法值不变成0延迟或成功。",
+            "actual": {
+              "checks": {
+                "exact_existing_case_assertion": true,
+                "bool_pid_classified": true,
+                "nan_latency_excluded": true,
+                "nan_failure_retained": true,
+                "invalid_duration_visible": true
+              },
+              "observations": {
+                "population": {
+                  "alive_processes": 1,
+                  "fresh_status_clients": 0,
+                  "online": 0,
+                  "in_room": 0,
+                  "room_state_clients": 0,
+                  "active_in_room": 0,
+                  "server_confirmed_in_room": null,
+                  "invalid_schema_count": 0,
+                  "failed_processes": [],
+                  "stale_clients": [],
+                  "stalled_clients": [],
+                  "missing_clients": [],
+                  "invalid_clients": [
+                    "a"
+                  ],
+                  "workload_failure": true
+                },
+                "window": {
+                  "http": {
+                    "count": 0
+                  },
+                  "steady_http": {
+                    "count": 0
+                  },
+                  "cancelled_http": {
+                    "count": 0
+                  },
+                  "realtime": {
+                    "count": 0
+                  },
+                  "rtt": {
+                    "count": 0
+                  },
+                  "phase_http": {
+                    "unknown/legacy": {
+                      "count": 0
+                    }
+                  },
+                  "error_count": 1,
+                  "sample_count": 1,
+                  "logical_request_count": 1,
+                  "cancelled_count": 0,
+                  "all_attempt_count": null,
+                  "attempt_coverage": "unavailable",
+                  "attempt_result_counts": {},
+                  "valid_attempt_latency_count": 0,
+                  "valid_latency_count": 0,
+                  "latency_sample_quality": {
+                    "http": "insufficient",
+                    "realtime": "unavailable"
+                  },
+                  "error_rate": 1.0,
+                  "steady_error_count": 1,
+                  "steady_sample_count": 1,
+                  "steady_error_rate": 1.0,
+                  "invalid_metric_count": 1,
+                  "invalid_duration_count": 1,
+                  "invalid_schema_count": 0,
+                  "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+                }
+              }
+            },
+            "status": "Passed",
+            "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+            "profile": "OFFLINE",
+            "elapsed_seconds": 6.807599993408076e-05,
+            "Accepted": false
+          },
+          {
+            "case_id": "LOAD-01.1-T03",
+            "setup": "部分合法部分坏行",
+            "expected": "合法行保留并使证据无效",
+            "pass_criteria": "所有负例有分类，采样函数不异常退出，非法值不变成0延迟或成功。",
+            "actual": {
+              "checks": {
+                "exact_existing_case_assertion": true,
+                "valid_row_retained": true,
+                "malformed_row_visible": true
+              },
+              "observations": {
+                "http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "steady_http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 1,
+                    "min_ms": 5,
+                    "mean_ms": 5,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  }
+                },
+                "error_count": 0,
+                "sample_count": 1,
+                "logical_request_count": 1,
+                "cancelled_count": 0,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 1,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.0,
+                "steady_error_count": 0,
+                "steady_sample_count": 1,
+                "steady_error_rate": 0.0,
+                "invalid_metric_count": 1,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 1,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              }
+            },
+            "status": "Passed",
+            "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+            "profile": "OFFLINE",
+            "elapsed_seconds": 0.0001253119999091723,
+            "Accepted": false
+          }
+        ],
+        "original_three": [
+          {
+            "fixture": "finite-overflow",
+            "checks": {
+              "no_exception": true,
+              "owned_and_sequence_intact": true,
+              "child_reaped": true,
+              "finite_mean_exact": true,
+              "all_samples_retained": true,
+              "no_fabricated_zero_latency": true,
+              "quality_not_promoted": true,
+              "no_false_invalid": true,
+              "no_load_pass": true
+            },
+            "decision": {
+              "classification": "incomplete_or_failed",
+              "passed": false,
+              "exit_code": 1
+            },
+            "receipt": "original-three/finite-overflow/receipt.json",
+            "sample_count": 2,
+            "error_count": 2,
+            "http": {
+              "count": 2,
+              "min_ms": 1e+308,
+              "mean_ms": 1e+308,
+              "max_ms": 1e+308,
+              "p50_ms": 1e+308,
+              "p95_ms": 1e+308,
+              "p99_ms": 1e+308
+            },
+            "sample_quality": "insufficient",
+            "cycle_errors": null
+          },
+          {
+            "fixture": "archive-match-list",
+            "checks": {
+              "no_exception": true,
+              "owned_and_sequence_intact": true,
+              "child_reaped": true,
+              "archive_read_clean": true,
+              "invalid_reason": true,
+              "explicit_invalid_exit3": true,
+              "no_false_completions": true
+            },
+            "decision": {
+              "classification": "invalid_workload_or_evidence",
+              "passed": false,
+              "exit_code": 3
+            },
+            "receipt": "original-three/archive-match-list/receipt.json",
+            "sample_count": 0,
+            "error_count": 0,
+            "http": {
+              "count": 0
+            },
+            "sample_quality": "unavailable",
+            "cycle_errors": [
+              "invalid_business_match_type"
+            ]
+          },
+          {
+            "fixture": "archive-type-list",
+            "checks": {
+              "no_exception": true,
+              "owned_and_sequence_intact": true,
+              "child_reaped": true,
+              "archive_read_clean": true,
+              "invalid_reason": true,
+              "explicit_invalid_exit3": true,
+              "no_false_completions": true
+            },
+            "decision": {
+              "classification": "invalid_workload_or_evidence",
+              "passed": false,
+              "exit_code": 3
+            },
+            "receipt": "original-three/archive-type-list/receipt.json",
+            "sample_count": 0,
+            "error_count": 0,
+            "http": {
+              "count": 0
+            },
+            "sample_quality": "unavailable",
+            "cycle_errors": [
+              "invalid_event_type"
+            ]
+          }
+        ],
+        "old_five_invalid_exit3": 5,
+        "same_family_boundaries": [
+          {
+            "fixture": "finite-max-pair",
+            "checks": {
+              "owned": true,
+              "sequence_intact": true,
+              "archive_owned": true,
+              "mean_finite": true,
+              "counts_preserved": true,
+              "quality_insufficient": true,
+              "not_invalid": true,
+              "not_load_pass": true
+            },
+            "decision": {
+              "classification": "incomplete_or_failed",
+              "passed": false,
+              "exit_code": 1
+            }
+          },
+          {
+            "fixture": "match-dict",
+            "checks": {
+              "owned": true,
+              "sequence_intact": true,
+              "archive_owned": true,
+              "classified": true,
+              "invalid_exit3": true,
+              "no_false_completion": true
+            },
+            "decision": {
+              "classification": "invalid_workload_or_evidence",
+              "passed": false,
+              "exit_code": 3
+            }
+          },
+          {
+            "fixture": "event-type-dict",
+            "checks": {
+              "owned": true,
+              "sequence_intact": true,
+              "archive_owned": true,
+              "classified": true,
+              "invalid_exit3": true,
+              "no_false_completion": true
+            },
+            "decision": {
+              "classification": "invalid_workload_or_evidence",
+              "passed": false,
+              "exit_code": 3
+            }
+          },
+          {
+            "fixture": "optional-match-none",
+            "checks": {
+              "owned": true,
+              "sequence_intact": true,
+              "archive_owned": true,
+              "optional_compatible": true,
+              "no_false_completion": true,
+              "not_load_pass": true
+            },
+            "decision": {
+              "classification": "incomplete_or_failed",
+              "passed": false,
+              "exit_code": 1
+            }
+          },
+          {
+            "fixture": "optional-match-empty",
+            "checks": {
+              "owned": true,
+              "sequence_intact": true,
+              "archive_owned": true,
+              "optional_compatible": true,
+              "no_false_completion": true,
+              "not_load_pass": true
+            },
+            "decision": {
+              "classification": "incomplete_or_failed",
+              "passed": false,
+              "exit_code": 1
+            }
+          }
+        ]
+      },
+      "status": "ReadyForAcceptance",
+      "sample_population": "Three exact schema cases, three prior real-entry counterexamples, five prior malformed inputs, five bounded same-family checks; full unfiltered 122-case regression. No statistical or capacity claim.",
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "Case-local observations; whole 12-case harness is regression only, not new decisions of .2–.4.",
+      "commands": "COMMANDS.json",
+      "tool_versions": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]; Linux-6.18.44-x86_64-with-glibc2.41; git version 2.52.0",
+      "exit_codes": {
+        "ASSERT-REPLAY": 0,
+        "BOUNDARIES": 0,
+        "C-PY": 0,
+        "LOAD01-EXACT": 0,
+        "OLD5": 0,
+        "STATIC": 0,
+        "archive-match-list": 0,
+        "archive-type-list": 0,
+        "finite-overflow": 0
+      },
+      "skip_reasons": [],
+      "asset_and_route_postconditions": null,
+      "artifact_manifest": "MANIFEST.json",
+      "reviewer": "Independent delegated Codex S6 reviewer for LOAD-01.1 only.",
+      "rollback": {
+        "runtime": "Revert the isolated e06037f5 code commit to its parent: both gameplay_load_validation.py and pr13_runtime_evidence.py and their two regression test files are restored together. Parent runtime bytes match the previous ee8 review.",
+        "evidence": "Preserve previous ee8 red evidence and all new raw/version hashes. No database rollback or business/asset operations.",
+        "executed": false
+      },
+      "remaining_blockers": [],
+      "missing_reasons": {
+        "config_source_hash": "OFFLINE schema/accounting review loads no numerical configuration source.",
+        "config_bytes_hash": "No generated configuration or match server is loaded.",
+        "effective_room_policy": "No room policy is instantiated.",
+        "runtime_image_digest": "Standalone local Python 3.12/OS children; no runtime image.",
+        "cutoff_monotonic": "Independent case-local observations; actual launch and receipt monotonic values are in minimal receipts. No shared capacity/window/drain cutoff applies.",
+        "asset_and_route_postconditions": "Synthetic local status/audit writers and read-only reducers perform no asset or route operations.",
+        "accepted_by": "Final parent MAIN signature/registration is outside this delegated review; no original Accepted register write."
+      },
+      "canonical_pass_criteria": "所有负例有分类，采样函数不异常退出，非法值不变成0延迟或成功。",
+      "proposed_resolution": "FixedWithEvidence",
+      "eligible_for_parent_MAIN_acceptance": true,
+      "accepted_by": null,
+      "Accepted": false,
+      "minimum_dependency_assessment": "LOAD-11.1 minimal source/hash provenance and LOAD-06.4 local identity/time/null/redaction contract present; no whole upstream Accepted prerequisite.",
+      "stage_assessment": [
+        {
+          "stage": "S0",
+          "status": "EvidenceComplete",
+          "proof": "STATIC_CHECK.json + SOURCE_PROOF.json + PROFILE.json",
+          "reason": "Exact source, unchanged plan, deterministic fixture inputs and budgets; minimum provenance/local field-time contracts present."
+        },
+        {
+          "stage": "S1",
+          "status": "EvidenceComplete",
+          "proof": "Prior independent commit dac6fdbd43d9c925a696a18f9774d9392c06c302 and its three actual ee8 tracebacks.",
+          "reason": "Previous three real-entry failures are immutable; no second fabricated before failure or new task adjudication."
+        },
+        {
+          "stage": "S2",
+          "status": "EvidenceComplete",
+          "proof": "SOURCE_PROOF.json; e060 runtime diff",
+          "reason": "statistics.mean avoids intermediate finite overflow; scalar event_type and optional scalar match context checked before hashing. Only four accounting/test files changed; original assertions retained and both runtime files have an explicit rollback."
+        },
+        {
+          "stage": "S3",
+          "status": "EvidenceComplete",
+          "proof": "REPLAY_CHECKS.json + C-PY.log + load01/cases.jsonl",
+          "reason": "Three original .1 cases, three previous counterexamples, old five and five bounded checks meet expectations. 12 canonical and 122 regression all passed, zero skip."
+        },
+        {
+          "stage": "S4",
+          "status": "EvidenceComplete",
+          "proof": "original-three receipts, boundaries receipts and old-five summary",
+          "reason": "Actual owned OS children write status/audit and pass production ownership/sequence readers. All 17 dedicated children reaped. Minimum dependencies sufficient without full upstream Accepted."
+        },
+        {
+          "stage": "S5",
+          "status": "NotApplicableWithReason",
+          "reason": "仅凭指定离线/集成产物即可判定本子项；公网压测不增加该判据可信度。"
+        },
+        {
+          "stage": "S6",
+          "status": "IndependentReplayCompletePendingParentSignature",
+          "proof": "REVIEW.md + REPORT.json + MANIFEST.json",
+          "reason": "Complete original OFFLINE schema contract satisfied for .1; FixedWithEvidence can be accepted by MAIN. No original register modification."
+        }
+      ]
+    }
+  ],
+  "replay_summary": {
+    "integration_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+    "original_three": [
+      {
+        "fixture": "finite-overflow",
+        "checks": {
+          "no_exception": true,
+          "owned_and_sequence_intact": true,
+          "child_reaped": true,
+          "finite_mean_exact": true,
+          "all_samples_retained": true,
+          "no_fabricated_zero_latency": true,
+          "quality_not_promoted": true,
+          "no_false_invalid": true,
+          "no_load_pass": true
+        },
+        "decision": {
+          "classification": "incomplete_or_failed",
+          "passed": false,
+          "exit_code": 1
+        },
+        "receipt": "original-three/finite-overflow/receipt.json",
+        "sample_count": 2,
+        "error_count": 2,
+        "http": {
+          "count": 2,
+          "min_ms": 1e+308,
+          "mean_ms": 1e+308,
+          "max_ms": 1e+308,
+          "p50_ms": 1e+308,
+          "p95_ms": 1e+308,
+          "p99_ms": 1e+308
+        },
+        "sample_quality": "insufficient",
+        "cycle_errors": null
+      },
+      {
+        "fixture": "archive-match-list",
+        "checks": {
+          "no_exception": true,
+          "owned_and_sequence_intact": true,
+          "child_reaped": true,
+          "archive_read_clean": true,
+          "invalid_reason": true,
+          "explicit_invalid_exit3": true,
+          "no_false_completions": true
+        },
+        "decision": {
+          "classification": "invalid_workload_or_evidence",
+          "passed": false,
+          "exit_code": 3
+        },
+        "receipt": "original-three/archive-match-list/receipt.json",
+        "sample_count": 0,
+        "error_count": 0,
+        "http": {
+          "count": 0
+        },
+        "sample_quality": "unavailable",
+        "cycle_errors": [
+          "invalid_business_match_type"
+        ]
+      },
+      {
+        "fixture": "archive-type-list",
+        "checks": {
+          "no_exception": true,
+          "owned_and_sequence_intact": true,
+          "child_reaped": true,
+          "archive_read_clean": true,
+          "invalid_reason": true,
+          "explicit_invalid_exit3": true,
+          "no_false_completions": true
+        },
+        "decision": {
+          "classification": "invalid_workload_or_evidence",
+          "passed": false,
+          "exit_code": 3
+        },
+        "receipt": "original-three/archive-type-list/receipt.json",
+        "sample_count": 0,
+        "error_count": 0,
+        "http": {
+          "count": 0
+        },
+        "sample_quality": "unavailable",
+        "cycle_errors": [
+          "invalid_event_type"
+        ]
+      }
+    ],
+    "old_five_invalid_exit3": 5,
+    "canonical": {
+      "executed": 12,
+      "passed": 12,
+      "skipped": 0,
+      "not_new_adjudications_of_accepted_tasks": true
+    },
+    "regression": {
+      "executed": 122,
+      "passed": 122,
+      "skipped": 0
+    },
+    "boundaries": [
+      {
+        "fixture": "finite-max-pair",
+        "checks": {
+          "owned": true,
+          "sequence_intact": true,
+          "archive_owned": true,
+          "mean_finite": true,
+          "counts_preserved": true,
+          "quality_insufficient": true,
+          "not_invalid": true,
+          "not_load_pass": true
+        },
+        "decision": {
+          "classification": "incomplete_or_failed",
+          "passed": false,
+          "exit_code": 1
+        }
+      },
+      {
+        "fixture": "match-dict",
+        "checks": {
+          "owned": true,
+          "sequence_intact": true,
+          "archive_owned": true,
+          "classified": true,
+          "invalid_exit3": true,
+          "no_false_completion": true
+        },
+        "decision": {
+          "classification": "invalid_workload_or_evidence",
+          "passed": false,
+          "exit_code": 3
+        }
+      },
+      {
+        "fixture": "event-type-dict",
+        "checks": {
+          "owned": true,
+          "sequence_intact": true,
+          "archive_owned": true,
+          "classified": true,
+          "invalid_exit3": true,
+          "no_false_completion": true
+        },
+        "decision": {
+          "classification": "invalid_workload_or_evidence",
+          "passed": false,
+          "exit_code": 3
+        }
+      },
+      {
+        "fixture": "optional-match-none",
+        "checks": {
+          "owned": true,
+          "sequence_intact": true,
+          "archive_owned": true,
+          "optional_compatible": true,
+          "no_false_completion": true,
+          "not_load_pass": true
+        },
+        "decision": {
+          "classification": "incomplete_or_failed",
+          "passed": false,
+          "exit_code": 1
+        }
+      },
+      {
+        "fixture": "optional-match-empty",
+        "checks": {
+          "owned": true,
+          "sequence_intact": true,
+          "archive_owned": true,
+          "optional_compatible": true,
+          "no_false_completion": true,
+          "not_load_pass": true
+        },
+        "decision": {
+          "classification": "incomplete_or_failed",
+          "passed": false,
+          "exit_code": 1
+        }
+      }
+    ],
+    "dedicated_children_reaped": 17,
+    "passed": true,
+    "exit_code_semantics": "Probe/verification process exit0 checks replay; production classify_stop returns invalid3 for bad archive or incomplete1 for valid small diagnostic. Full network CLI was not run.",
+    "Accepted": false
+  },
+  "packet_verification": {
+    "manifest_entries": 78,
+    "source_files": 10,
+    "test_files": 6,
+    "metadata_rows": 8,
+    "all_verified": true,
+    "implementation_profile_hash": "36874896b02ea70ae04151ae641809af32799e51bf4a144a7087e013bd114d95",
+    "algorithm_version": "sha256:8a44f0828f6aa8436812892de2bb75012fbc12e2a07aecc95f3bf71e44bf53fd"
+  },
+  "documentation_notes": [
+    "Implementation S1 prose still mentions f812 although referenced before-ee8 evidence reproduces the three ee8 defects. Actual before/after SHA and traces are separately pinned in the prior independent review.",
+    "Implementation rollback text names only gameplay_load_validation.py; independent rollback is git revert e06037f5, restoring both changed runtime files and their tests.",
+    "Implementation MAIN source URL was null with a reason; independent S6 now cites dac6fdbd43d9c925a696a18f9774d9392c06c302. These historical documentation leftovers do not create new runtime gates."
+  ],
+  "original_PR_or_Accepted_register_modified": false,
+  "new_CI_or_LIVE_or_Library_upload": false,
+  "Accepted": 0,
+  "final_parent_signature_pending": true
+}

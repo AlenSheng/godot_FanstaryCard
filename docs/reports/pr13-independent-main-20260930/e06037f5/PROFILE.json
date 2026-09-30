@@ -1,0 +1,30 @@
+{
+  "kind": "Independent_OFFLINE_LOAD01_1_second_schema_review",
+  "integration_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+  "receipt_sha": "c68bd4aadf59676096b93ce8e5a972b12575cc08",
+  "only_adjudicated_task": "LOAD-01.1",
+  "prior_independent_commit": "dac6fdbd43d9c925a696a18f9774d9392c06c302",
+  "canonical_cases_reexecuted": 12,
+  "full_python_tests": 122,
+  "original_three": [
+    "finite-overflow",
+    "archive-match-list",
+    "archive-type-list"
+  ],
+  "old_schema_fixtures": 5,
+  "bounded_same_family_cases": [
+    "finite-max-pair",
+    "match-dict",
+    "event-type-dict",
+    "optional-match-none",
+    "optional-match-empty"
+  ],
+  "child_status_deadline_seconds": 5,
+  "child_lifetime_seconds": 15,
+  "child_reap_wait_seconds": 5,
+  "production_stale_ms": 30000,
+  "public_network": false,
+  "database_access": false,
+  "registration_basis": "All input cases, assertions and budgets are explicit in the unmodified prior probe or new bounded script before execution; no fuzz or sample selection.",
+  "no_redecision_of_LOAD01_2_3_4": true
+}

@@ -1,0 +1,125 @@
+{
+  "integration_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+  "receipt_commit": "c68bd4aadf59676096b93ce8e5a972b12575cc08",
+  "prior_independent_commit": "dac6fdbd43d9c925a696a18f9774d9392c06c302",
+  "source_files": [
+    {
+      "path": "tools/pr13_offline_cases.py",
+      "bytes": 11439,
+      "sha256": "adccf0a1f9073936f99c01ef9e9970e4db44be75de409fc210382b50d040092c",
+      "matches": true
+    },
+    {
+      "path": "tools/gameplay_load_validation.py",
+      "bytes": 17279,
+      "sha256": "d3e912dc9d4353f8204b35e6d907da0e746a67a44669e4ef1f159bee123cbaff",
+      "matches": true
+    },
+    {
+      "path": "tools/gameplay_load_test.py",
+      "bytes": 37312,
+      "sha256": "e5cef5dbd0c63acf67579c3261262ab18346b718b6f32fbab2e265e1e671d52d",
+      "matches": true
+    },
+    {
+      "path": "tools/cloud_load_test.py",
+      "bytes": 17316,
+      "sha256": "871e753ad1421d09a62bbfc87e244be130c523119803a2645e6fc18385d09ded",
+      "matches": true
+    },
+    {
+      "path": "tools/pr13_runtime_evidence.py",
+      "bytes": 10068,
+      "sha256": "971dedc310e2a8311b938a544a9895935e39c63a62acd8658c9da97d15d14a09",
+      "matches": true
+    },
+    {
+      "path": "client/tests/gameplay_load_client.gd",
+      "bytes": 32765,
+      "sha256": "3126b2edb00c376f5b98ec5b2242d27b8841df69e07a2569ab6fa5148c87f8c9",
+      "matches": true
+    },
+    {
+      "path": "client/network/gateway.gd",
+      "bytes": 33401,
+      "sha256": "964bd3e0eea3ff009b6c6ca493952bae14f691ce10e8c6f2f32a6e5ee8138eaf",
+      "matches": true
+    },
+    {
+      "path": "client/state/game_store.gd",
+      "bytes": 86911,
+      "sha256": "d374a50c004c0f3a506b407bfd5730daaae2e4d40786cebb17db52c17eff59c4",
+      "matches": true
+    },
+    {
+      "path": "client/data/catalog.json",
+      "bytes": 396138,
+      "sha256": "fa284e27b3afbd20b754b989e56f1e8030eb5d17befcbd114a4796d0c897eb2d",
+      "matches": true
+    },
+    {
+      "path": "docs/plans/PR13_ACCEPTANCE_DETAILS_20260930.json",
+      "bytes": 413878,
+      "sha256": "5176ee139d4e632ba34469ae531ce7ec16478f356480e2d8e320cd51f3bcd703",
+      "matches": true
+    }
+  ],
+  "test_files": [
+    {
+      "path": "tools/tests/test_gameplay_load_finalization.py",
+      "bytes": 13214,
+      "sha256": "08bb2935a1115ed83027fb4bb74615d77b4a3d7e266df3838d7330d572fdd9d8",
+      "matches_exact_sha": true
+    },
+    {
+      "path": "tools/tests/test_gameplay_load_sampling_contract.py",
+      "bytes": 12605,
+      "sha256": "a209589560af471ebd887ef2023f1ae1baae4c58faf650307d995d8a2c2faed5",
+      "matches_exact_sha": true
+    },
+    {
+      "path": "tools/tests/test_gameplay_load_stop.py",
+      "bytes": 6502,
+      "sha256": "a68d6ca6d2f18a28240ca22bd5c0bdcea6fae8262851efdb3a1e7544b446d731",
+      "matches_exact_sha": true
+    },
+    {
+      "path": "tools/tests/test_gameplay_load_validation.py",
+      "bytes": 15243,
+      "sha256": "3a0e21c0d0923a848b35adc54cb3d35d71dbc235b516b6115264c7fda7b5b540",
+      "matches_exact_sha": true
+    },
+    {
+      "path": "tools/tests/test_pr13_runtime_evidence.py",
+      "bytes": 7339,
+      "sha256": "be85754ec080dd6ffc75248b8cfb0ebf4470ecb76ee52714a45cb0f599d76979",
+      "matches_exact_sha": true
+    },
+    {
+      "path": "tools/tests/test_pr13_simulation_contracts.py",
+      "bytes": 19996,
+      "sha256": "f82d659a9a59039401068cbd543f73b824d1d5395c1731150d9193d8044c20b4",
+      "matches_exact_sha": true
+    }
+  ],
+  "original_probe_byte_identical": true,
+  "original_probe_sha256": "99f942300359b91ac88d200dbbad2c21e1d760cd65d1861aad63119b3a8e0848",
+  "canonical_harness_sha256": "53e074fc4cebc8409e98de2d94e654337a6de4e30dbb98728d586f71b74d772c",
+  "canonical_harness_only_fixed_SHA_changed": true,
+  "script_sha256": {
+    "probe_schema.py": "99f942300359b91ac88d200dbbad2c21e1d760cd65d1861aad63119b3a8e0848",
+    "probe_boundaries.py": "1bc3a10885d45e222a1b1f26c5c73821810c2cc3617b9a320e28ff99a2d91f3a",
+    "run_command.py": "6751baa10c7ac6a471ee92aebef9951a9f42a1ccff14916c1d1c879504134cd5",
+    "verify_replay.py": "4b78ad0d5ddd4e82f3d617634792985d97581673cf9ad2e098fb9dc9226216f7",
+    "verify_receipt.py": "c7aa6b36136dc563e21b53fe7100d10bd355c8f5cb2b259283dfb2f92b27f7e5"
+  },
+  "canonical_plan_hash": "5176ee139d4e632ba34469ae531ce7ec16478f356480e2d8e320cd51f3bcd703",
+  "source_tree_dirty": false,
+  "runtime_delta_from_ee8": [
+    "tools/gameplay_load_validation.py",
+    "tools/pr13_runtime_evidence.py",
+    "tools/tests/test_gameplay_load_validation.py",
+    "tools/tests/test_pr13_runtime_evidence.py"
+  ],
+  "runtime_delta_fixed_to_receipt": []
+}

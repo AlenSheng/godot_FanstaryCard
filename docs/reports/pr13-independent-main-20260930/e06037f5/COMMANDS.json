@@ -1,0 +1,238 @@
+{
+  "activation": "source /workspace/relicround-env/activate.sh",
+  "commands": [
+    {
+      "id": "ASSERT-REPLAY",
+      "argv": [
+        "python",
+        "/workspace/pr13-main-review-e060/verify_replay.py",
+        "--source",
+        "/workspace/pr13-main-review-e060-source",
+        "--evidence",
+        "/workspace/pr13-main-review-e060"
+      ],
+      "cwd": "/workspace/pr13-main-review-e060-source",
+      "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PR13_SOURCE_ROOT": "/workspace/pr13-main-review-e060-source"
+      },
+      "started_at_utc": "2026-09-30T23:34:21.822350+00:00",
+      "elapsed_seconds": 0.06656676499983405,
+      "exit_code": 0,
+      "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+      "executable": "/workspace/relicround-env/venv/bin/python",
+      "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+      "log": "ASSERT-REPLAY.log",
+      "log_sha256": "1345a8b3d4b844348926f0d6bf115f28efb0ab9fbe328817bbc620f8797c4901"
+    },
+    {
+      "id": "BOUNDARIES",
+      "argv": [
+        "python",
+        "/workspace/pr13-main-review-e060/probe_boundaries.py",
+        "--source",
+        "/workspace/pr13-main-review-e060-source",
+        "--output",
+        "/workspace/pr13-main-review-e060/boundaries"
+      ],
+      "cwd": "/workspace/pr13-main-review-e060-source",
+      "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PR13_SOURCE_ROOT": "/workspace/pr13-main-review-e060-source"
+      },
+      "started_at_utc": "2026-09-30T23:32:06.748215+00:00",
+      "elapsed_seconds": 0.26708283600009963,
+      "exit_code": 0,
+      "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+      "executable": "/workspace/relicround-env/venv/bin/python",
+      "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+      "log": "BOUNDARIES.log",
+      "log_sha256": "eaed269f558841d926e53b4c1b9a53c2b64e90196fb4023de03f9cd325e7ab78"
+    },
+    {
+      "id": "C-PY",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/tests",
+        "-v"
+      ],
+      "cwd": "/workspace/pr13-main-review-e060-source",
+      "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PR13_SOURCE_ROOT": "/workspace/pr13-main-review-e060-source"
+      },
+      "started_at_utc": "2026-09-30T23:30:31.366214+00:00",
+      "elapsed_seconds": 2.948410436999893,
+      "exit_code": 0,
+      "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+      "executable": "/workspace/relicround-env/venv/bin/python",
+      "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+      "log": "C-PY.log",
+      "log_sha256": "0902cebe1d483193b4a913a882040dbe9c41b6828145131918cd6eb4971a17ef"
+    },
+    {
+      "id": "LOAD01-EXACT",
+      "argv": [
+        "python",
+        "/workspace/pr13-main-review-e060/receipt/docs/reports/pr13-takeover-20260930/schema-second-e06037f5/run_load01.py",
+        "--output",
+        "/workspace/pr13-main-review-e060/load01"
+      ],
+      "cwd": "/workspace/pr13-main-review-e060-source",
+      "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PR13_SOURCE_ROOT": "/workspace/pr13-main-review-e060-source"
+      },
+      "started_at_utc": "2026-09-30T23:30:31.438594+00:00",
+      "elapsed_seconds": 0.6048144829999273,
+      "exit_code": 0,
+      "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+      "executable": "/workspace/relicround-env/venv/bin/python",
+      "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+      "log": "LOAD01-EXACT.log",
+      "log_sha256": "9fcd42f1115a4b5b6a5c63bae3261ba15037a924733d71974d921a8ec3b5d23f"
+    },
+    {
+      "id": "OLD5",
+      "argv": [
+        "python",
+        "/workspace/pr13-main-review-e060/receipt/docs/reports/pr13-takeover-20260930/schema-second-e06037f5/reproduce_old_five.py",
+        "--source",
+        "/workspace/pr13-main-review-e060-source",
+        "--output",
+        "/workspace/pr13-main-review-e060/old-five"
+      ],
+      "cwd": "/workspace/pr13-main-review-e060-source",
+      "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PR13_SOURCE_ROOT": "/workspace/pr13-main-review-e060-source"
+      },
+      "started_at_utc": "2026-09-30T23:30:31.332289+00:00",
+      "elapsed_seconds": 0.5231588300000567,
+      "exit_code": 0,
+      "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+      "executable": "/workspace/relicround-env/venv/bin/python",
+      "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+      "log": "OLD5.log",
+      "log_sha256": "e1c515d11a54f3f38c9758cbd73ea6606d3267baff2b7668e3a74a50d269f745"
+    },
+    {
+      "id": "STATIC",
+      "argv": [
+        "python",
+        "/workspace/pr13-main-review-e060/verify_receipt.py",
+        "--source",
+        "/workspace/pr13-main-review-e060-source",
+        "--packet",
+        "/workspace/pr13-main-review-e060/receipt/docs/reports/pr13-takeover-20260930/schema-second-e06037f5",
+        "--output",
+        "/workspace/pr13-main-review-e060/STATIC_CHECK.json"
+      ],
+      "cwd": "/workspace/pr13-main-review-e060-source",
+      "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PR13_SOURCE_ROOT": "/workspace/pr13-main-review-e060-source"
+      },
+      "started_at_utc": "2026-09-30T23:34:21.827103+00:00",
+      "elapsed_seconds": 0.16676530100016862,
+      "exit_code": 0,
+      "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+      "executable": "/workspace/relicround-env/venv/bin/python",
+      "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+      "log": "STATIC.log",
+      "log_sha256": "d32471c278bcf4797ff0a6eec1cd52651b2014871a46176511983ac2c03819cb"
+    },
+    {
+      "id": "archive-match-list",
+      "argv": [
+        "python",
+        "/workspace/pr13-main-review-e060/probe_schema.py",
+        "--source",
+        "/workspace/pr13-main-review-e060-source",
+        "--fixture",
+        "archive-match-list",
+        "--output",
+        "/workspace/pr13-main-review-e060/original-three/archive-match-list"
+      ],
+      "cwd": "/workspace/pr13-main-review-e060-source",
+      "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PR13_SOURCE_ROOT": "/workspace/pr13-main-review-e060-source"
+      },
+      "started_at_utc": "2026-09-30T23:30:31.354087+00:00",
+      "elapsed_seconds": 0.3389303049998489,
+      "exit_code": 0,
+      "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+      "executable": "/workspace/relicround-env/venv/bin/python",
+      "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+      "log": "archive-match-list.log",
+      "log_sha256": "3a4fd3e1070bff6a4cb6a04685e8f1cd680cbe14307378356abddd5059d56a75"
+    },
+    {
+      "id": "archive-type-list",
+      "argv": [
+        "python",
+        "/workspace/pr13-main-review-e060/probe_schema.py",
+        "--source",
+        "/workspace/pr13-main-review-e060-source",
+        "--fixture",
+        "archive-type-list",
+        "--output",
+        "/workspace/pr13-main-review-e060/original-three/archive-type-list"
+      ],
+      "cwd": "/workspace/pr13-main-review-e060-source",
+      "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PR13_SOURCE_ROOT": "/workspace/pr13-main-review-e060-source"
+      },
+      "started_at_utc": "2026-09-30T23:30:31.412687+00:00",
+      "elapsed_seconds": 0.33035435800002233,
+      "exit_code": 0,
+      "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+      "executable": "/workspace/relicround-env/venv/bin/python",
+      "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+      "log": "archive-type-list.log",
+      "log_sha256": "453cdd2571c7c0e472e26f853b14df07aa1174506f2fe794657f47279055459f"
+    },
+    {
+      "id": "finite-overflow",
+      "argv": [
+        "python",
+        "/workspace/pr13-main-review-e060/probe_schema.py",
+        "--source",
+        "/workspace/pr13-main-review-e060-source",
+        "--fixture",
+        "finite-overflow",
+        "--output",
+        "/workspace/pr13-main-review-e060/original-three/finite-overflow"
+      ],
+      "cwd": "/workspace/pr13-main-review-e060-source",
+      "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PR13_SOURCE_ROOT": "/workspace/pr13-main-review-e060-source"
+      },
+      "started_at_utc": "2026-09-30T23:30:31.376505+00:00",
+      "elapsed_seconds": 0.3804393450000134,
+      "exit_code": 0,
+      "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+      "executable": "/workspace/relicround-env/venv/bin/python",
+      "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+      "log": "finite-overflow.log",
+      "log_sha256": "1ea18e7d178ef500aadcd9aeaf1d8cea84e2d988be25514f3fd8713d4c93c445"
+    }
+  ],
+  "exit_code_semantics": "Probe/verification process exit0 checks replay; production classify_stop returns invalid3 for bad archive or incomplete1 for valid small diagnostic. Full network CLI was not run."
+}

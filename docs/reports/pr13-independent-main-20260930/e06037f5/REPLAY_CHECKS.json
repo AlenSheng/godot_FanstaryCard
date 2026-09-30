@@ -1,0 +1,192 @@
+{
+  "integration_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+  "original_three": [
+    {
+      "fixture": "finite-overflow",
+      "checks": {
+        "no_exception": true,
+        "owned_and_sequence_intact": true,
+        "child_reaped": true,
+        "finite_mean_exact": true,
+        "all_samples_retained": true,
+        "no_fabricated_zero_latency": true,
+        "quality_not_promoted": true,
+        "no_false_invalid": true,
+        "no_load_pass": true
+      },
+      "decision": {
+        "classification": "incomplete_or_failed",
+        "passed": false,
+        "exit_code": 1
+      },
+      "receipt": "original-three/finite-overflow/receipt.json",
+      "sample_count": 2,
+      "error_count": 2,
+      "http": {
+        "count": 2,
+        "min_ms": 1e+308,
+        "mean_ms": 1e+308,
+        "max_ms": 1e+308,
+        "p50_ms": 1e+308,
+        "p95_ms": 1e+308,
+        "p99_ms": 1e+308
+      },
+      "sample_quality": "insufficient",
+      "cycle_errors": null
+    },
+    {
+      "fixture": "archive-match-list",
+      "checks": {
+        "no_exception": true,
+        "owned_and_sequence_intact": true,
+        "child_reaped": true,
+        "archive_read_clean": true,
+        "invalid_reason": true,
+        "explicit_invalid_exit3": true,
+        "no_false_completions": true
+      },
+      "decision": {
+        "classification": "invalid_workload_or_evidence",
+        "passed": false,
+        "exit_code": 3
+      },
+      "receipt": "original-three/archive-match-list/receipt.json",
+      "sample_count": 0,
+      "error_count": 0,
+      "http": {
+        "count": 0
+      },
+      "sample_quality": "unavailable",
+      "cycle_errors": [
+        "invalid_business_match_type"
+      ]
+    },
+    {
+      "fixture": "archive-type-list",
+      "checks": {
+        "no_exception": true,
+        "owned_and_sequence_intact": true,
+        "child_reaped": true,
+        "archive_read_clean": true,
+        "invalid_reason": true,
+        "explicit_invalid_exit3": true,
+        "no_false_completions": true
+      },
+      "decision": {
+        "classification": "invalid_workload_or_evidence",
+        "passed": false,
+        "exit_code": 3
+      },
+      "receipt": "original-three/archive-type-list/receipt.json",
+      "sample_count": 0,
+      "error_count": 0,
+      "http": {
+        "count": 0
+      },
+      "sample_quality": "unavailable",
+      "cycle_errors": [
+        "invalid_event_type"
+      ]
+    }
+  ],
+  "old_five_invalid_exit3": 5,
+  "canonical": {
+    "executed": 12,
+    "passed": 12,
+    "skipped": 0,
+    "not_new_adjudications_of_accepted_tasks": true
+  },
+  "regression": {
+    "executed": 122,
+    "passed": 122,
+    "skipped": 0
+  },
+  "boundaries": [
+    {
+      "fixture": "finite-max-pair",
+      "checks": {
+        "owned": true,
+        "sequence_intact": true,
+        "archive_owned": true,
+        "mean_finite": true,
+        "counts_preserved": true,
+        "quality_insufficient": true,
+        "not_invalid": true,
+        "not_load_pass": true
+      },
+      "decision": {
+        "classification": "incomplete_or_failed",
+        "passed": false,
+        "exit_code": 1
+      }
+    },
+    {
+      "fixture": "match-dict",
+      "checks": {
+        "owned": true,
+        "sequence_intact": true,
+        "archive_owned": true,
+        "classified": true,
+        "invalid_exit3": true,
+        "no_false_completion": true
+      },
+      "decision": {
+        "classification": "invalid_workload_or_evidence",
+        "passed": false,
+        "exit_code": 3
+      }
+    },
+    {
+      "fixture": "event-type-dict",
+      "checks": {
+        "owned": true,
+        "sequence_intact": true,
+        "archive_owned": true,
+        "classified": true,
+        "invalid_exit3": true,
+        "no_false_completion": true
+      },
+      "decision": {
+        "classification": "invalid_workload_or_evidence",
+        "passed": false,
+        "exit_code": 3
+      }
+    },
+    {
+      "fixture": "optional-match-none",
+      "checks": {
+        "owned": true,
+        "sequence_intact": true,
+        "archive_owned": true,
+        "optional_compatible": true,
+        "no_false_completion": true,
+        "not_load_pass": true
+      },
+      "decision": {
+        "classification": "incomplete_or_failed",
+        "passed": false,
+        "exit_code": 1
+      }
+    },
+    {
+      "fixture": "optional-match-empty",
+      "checks": {
+        "owned": true,
+        "sequence_intact": true,
+        "archive_owned": true,
+        "optional_compatible": true,
+        "no_false_completion": true,
+        "not_load_pass": true
+      },
+      "decision": {
+        "classification": "incomplete_or_failed",
+        "passed": false,
+        "exit_code": 1
+      }
+    }
+  ],
+  "dedicated_children_reaped": 17,
+  "passed": true,
+  "exit_code_semantics": "Probe/verification process exit0 checks replay; production classify_stop returns invalid3 for bad archive or incomplete1 for valid small diagnostic. Full network CLI was not run.",
+  "Accepted": false
+}
