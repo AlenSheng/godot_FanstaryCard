@@ -26,7 +26,7 @@ namespace FantasyCard.Server.Tests.EndToEnd;
 
 public sealed partial class ProcessLifecycleRecoveryTests
 {
-    [Fact(Skip = "Requires an owned local PostgreSQL Unix socket.", SkipUnless = nameof(HasUnixDatabase))]
+    [Fact(Skip = "Requires an owned local PostgreSQL database.", SkipUnless = nameof(HasPrivateDatabase))]
     [Trait("Category", "PostgresIntegration")]
     public async Task Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes()
     {
@@ -148,9 +148,6 @@ public sealed partial class ProcessLifecycleRecoveryTests
         { previousPid = host.ProcessId, restarted.ProcessId, matchId, roomId, expected = "same four authoritative routes and once-only reservation after actual OS restart", actual = "matched" });
     }
 
-    public static bool HasUnixDatabase => HasPrivateDatabase &&
-        new NpgsqlConnectionStringBuilder(Environment.GetEnvironmentVariable("FANTASYCARD_TEST_POSTGRES")).Host?.StartsWith('/') == true;
-
     private static async Task AssertRegistrationDatabaseAsync(PostgresTestSchema database, Guid matchId, Guid roomId, Guid playerId, Guid equipmentId)
     {
         Assert.Equal(1L, await database.ScalarAsync<long>("SELECT count(*) FROM matches"));
@@ -250,18 +247,31 @@ public sealed partial class ProcessLifecycleRecoveryTests
         private readonly CancellationTokenSource _shutdown = new();
         private readonly Task _acceptor;
         private readonly List<Task> _connections = [];
-        private readonly UnixDomainSocketEndPoint _upstream;
+        private readonly EndPoint _upstream;
+        private readonly AddressFamily _upstreamFamily;
         private int _attemptIndex;
         public string SocketDirectory { get; }
         public ConcurrentQueue<RegistrationCommitAttempt> Attempts { get; } = new();
         public ConcurrentQueue<string> Errors { get; } = new();
 
-        public RegistrationCommitProxy(string upstreamDirectory, int port)
+        public RegistrationCommitProxy(string upstreamHost, int port)
         {
-            Assert.StartsWith("/", upstreamDirectory);
+            Assert.True(IsLocalDatabase(upstreamHost), "Fault relay accepts only an owned Unix socket or loopback PostgreSQL service.");
             SocketDirectory = Path.Combine(Path.GetTempPath(), "fc-register-" + Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(SocketDirectory);
-            _upstream = new UnixDomainSocketEndPoint(Path.Combine(upstreamDirectory, $".s.PGSQL.{port}"));
+            if (upstreamHost.StartsWith('/'))
+            {
+                _upstream = new UnixDomainSocketEndPoint(Path.Combine(upstreamHost, $".s.PGSQL.{port}"));
+                _upstreamFamily = AddressFamily.Unix;
+            }
+            else
+            {
+                var address = string.Equals(upstreamHost, "localhost", StringComparison.OrdinalIgnoreCase)
+                    ? IPAddress.Loopback : IPAddress.Parse(upstreamHost);
+                Assert.True(IPAddress.IsLoopback(address));
+                _upstream = new IPEndPoint(address, port);
+                _upstreamFamily = address.AddressFamily;
+            }
             _listener.Bind(new UnixDomainSocketEndPoint(Path.Combine(SocketDirectory, $".s.PGSQL.{port}")));
             _listener.Listen(40);
             _acceptor = AcceptAsync();
@@ -280,7 +290,7 @@ public sealed partial class ProcessLifecycleRecoveryTests
         private async Task RelayAsync(Socket client)
         {
             using (client)
-            using (var server = new Socket(AddressFamily.Unix, SocketType.Stream, ProtocolType.Unspecified))
+            using (var server = new Socket(_upstreamFamily, SocketType.Stream, ProtocolType.Unspecified))
             {
                 try
                 {
