@@ -24,6 +24,10 @@ func run() -> void:
 	game.gateway.device_id = OS.get_environment("PR13_ACK_DEVICE_ID")
 	await game.login(address, "AckFault")
 	check(not game.lobby.is_empty() and not game.gateway.token.is_empty(), "actual PB login/bootstrap")
+	var connected_deadline := Time.get_ticks_msec() + 5000
+	while not game.gateway.online and Time.get_ticks_msec() < connected_deadline:
+		await process_frame
+	check(game.gateway.online, "actual ticket WebSocket connected")
 	var receipt: Dictionary = game.settlement.duplicate(true)
 	check(str(receipt.get("settlementId", "")) == OS.get_environment("PR13_ACK_RECEIPT_ID"), "actual durable receipt loaded")
 	check(str(receipt.get("matchId", "")) == OS.get_environment("PR13_ACK_MATCH_ID"), "receipt match ownership")
