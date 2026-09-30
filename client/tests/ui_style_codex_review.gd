@@ -63,7 +63,7 @@ func _run() -> void:
 				_check_audit($UI._codex_card.is_empty() and $UI._reference.get_node_or_null("CardDetails") == null, "detail closed %s %s" % [iteration, suffix])
 			await _take("codex_closed_" + suffix, false)
 	Palette.set_language(prior_language)
-	var report := {"ok": audit_errors.is_empty(), "fixture_only": true, "source_sha": OS.get_environment("FANTASYCARD_SOURCE_SHA"), "production_ui_sha": "14540e8e69fc00572bd5697f4a5e6802ee4bb992", "captures": captures, "screenshots": captures.size(), "checks": checks, "errors": audit_errors, "text_observations": text_observations, "limitations": "Supplement corrects an invalid GW08/cache-only detail fixture; actual production card button and close signals, no craft/upgrade transaction."}
+	var report := {"ok": audit_errors.is_empty(), "fixture_only": true, "source_sha": OS.get_environment("FANTASYCARD_SOURCE_SHA"), "primary_matrix_ui_sha": "14540e8e69fc00572bd5697f4a5e6802ee4bb992", "captures": captures, "screenshots": captures.size(), "checks": checks, "errors": audit_errors, "text_observations": text_observations, "limitations": "Supplement corrects an invalid GW08/cache-only detail fixture; actual production card button and close signals, no craft/upgrade transaction."}
 	FileAccess.open(output + "/report.json", FileAccess.WRITE).store_string(JSON.stringify(report, "  "))
 	print(JSON.stringify({"ok": report.ok, "screenshots": captures.size(), "errors": audit_errors}))
 	get_tree().quit(0 if report.ok else 1)

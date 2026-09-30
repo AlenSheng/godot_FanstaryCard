@@ -1,15 +1,15 @@
 {
   "schema_version": 2,
-  "audit_date": "2026-09-18",
+  "audit_date": "2026-09-30",
   "full_ui_checklist": "docs/UI_ASSET_MASTER_CHECKLIST.md",
-  "scope_boundary": "本文件保留原27项补图批次统计；remaining_new_illustration_requests=0不代表全项目装备与UI美术齐全。完整需求、125个当前防具外观组合与25个红装预留组合见full_ui_checklist。本轮新增并导出大厅职业卡与玩法入口精灵拆分资源；玩法入口没有待补 UI，待 Godot 视觉验收。",
-  "scope": "当前导入目录共418张位图（217 UI + 200图鉴插画 + 1怪物卡背景），原27项/28 PNG已供齐。2026-09-18 审核发现元素调节20卡虽均可加载却复用了旧攻击插画，已新增20张专属卡图待办；交付前不得将其计作专属插画齐全。战斗表现与历史协议缺口已补齐；源文件归档与最终视觉验收见supporting_work。",
+  "scope_boundary": "原27项补图批次历史保留；本轮固定SHA整体UI核验覆盖563项manifest位图、220图鉴卡、125当前防具及实际原生界面。细节与限制见docs/reports/ui-style-20260930/README.md。",
+  "scope": "当前manifest登记563项位图：217 UI、220图鉴插画、1怪物卡背景、125防具；另有本轮imageGen生成的三职业本命框atlas。旧418/200统计已过时，免费包原图已接入，不重复生成。",
   "counts": {
     "mockup_png": 0,
     "mockup_psd": 0,
     "existing_ui_bitmaps": 217,
-    "existing_card_illustrations": 200,
-    "existing_card_manifest_bindings": 212,
+    "existing_card_illustrations": 220,
+    "existing_card_manifest_bindings": 232,
     "existing_monster_species_bound": 12,
     "missing_monster_species": 0,
     "delivered_priority_one_requests": 11,
@@ -24,19 +24,20 @@
     "supplied_request_files": 28,
     "fully_delivered_requests": 27,
     "existing_card_backgrounds": 1,
-    "existing_bitmap_files": 418,
-    "existing_png_files": 416,
+    "existing_bitmap_files": 563,
+    "existing_png_files": 561,
     "existing_jpg_files": 2,
-    "registered_files": 418,
+    "registered_files": 563,
     "boss_phase_variant_images": 2,
-    "supporting_work_items": 7,
+    "supporting_work_items": 9,
     "completed_ui_split_requests": 2,
     "bundled_font_files": 2,
-    "bundled_audio_files": 37
+    "bundled_audio_files": 37,
+    "existing_current_armor_appearances": 125
   },
   "global_rules": [
     "本清单按独立组件审核，整屏效果图只作为布局与风格参考，不作为可交互UI背景。",
-    "200张图鉴插画已齐全；212条cards绑定包括12张怪物图复用，并非212张图鉴插画。",
+    "220张图鉴插画已有；232条cards绑定包含12张怪物图复用。",
     "怪物卡与战场同一物种使用相同造型，暗红框与红装品质框是两种概念。",
     "角色、商品、装备、价格、容量、日限、生命、伤害、费用、冷却和玩家名均由真实数据驱动。",
     "纯面板、按钮、空槽、血条、线段、字徽和状态变化优先复用9切或Godot绘制，不要求额外imageGen。",
@@ -2841,11 +2842,11 @@
         "gameplay_checks_passed": 78,
         "gameplay_screenshots": 34,
         "gameplay_report": "client/evidence/audio-fonts/gameplay-final/report.json",
-      "art_screenshots": 66,
-      "art_report": "client/evidence/audio-fonts/full-art-final/report.json",
-      "codex_screenshots": 7,
-      "codex_report": "client/evidence/audio-fonts/codex-final/report.json",
-      "invisible_text_line_checks": true
+        "art_screenshots": 66,
+        "art_report": "client/evidence/audio-fonts/full-art-final/report.json",
+        "codex_screenshots": 7,
+        "codex_report": "client/evidence/audio-fonts/codex-final/report.json",
+        "invisible_text_line_checks": true
       },
       "http_session_checks_passed": 9
     }
@@ -2982,7 +2983,7 @@
       "newly_supplied_pngs": 16
     }
   ],
-  "count_convention": "existing_card_illustrations仅计200张图鉴插画，Cards/Art另有1张怪物卡背景；418位图不含导入目录之外的场景/门户。requests交付数量与remaining_*统计仅针对原27项补图，配套待办另列supporting_work。",
+  "count_convention": "现状existing_*统计按当前manifest；原27项交付计数及previous_audits保留历史口径。125防具覆盖白至橙五品质、五部位、五元素；红装25组合预留。",
   "supporting_work": [
     {
       "id": "FONT-CJK",
@@ -3110,17 +3111,19 @@
       "name": "怪物卡框与专属武器框",
       "priority": "P2",
       "category": "ui_correction",
-      "status": "correction_and_visual_review_pending",
-      "image_generation_required": false,
+      "status": "generated_integrated_native_visual_review_complete",
+      "image_generation_required": true,
       "related_request": "UI-MONSTER-CARD-FRAME",
       "evidence": [
-        "client/ui/card_view.gd",
-        "client/ui/reference_ui.gd"
+        "docs/reports/ui-style-20260930/README.md",
+        "docs/reports/ui-style-20260930/generation.json",
+        "client/assets/generated/ui/signature_weapon_frames.png",
+        "client/assets/imported/UI/Cards/card_frame_monster_clean.png"
       ],
-      "current_state": "旧原生补边结论与当前StyleBoxEmpty实现不一致；专武槽仍复用橙装备框。",
+      "current_state": "本轮内置imageGen真实生成完整暗红顶框及三职业本命框atlas并保存接入；提示词、原图、alpha、尺寸、SHA与导入见generation.json。",
       "work": [
-        "复核暗红框顶部，按实机结果局部修边或代码补边",
-        "专武槽改为对应职业本命色"
+        "已修复暗红怪物框缺失顶边并保留顶部饰物",
+        "已接入牧师青、法师赤橙、盾卫褐金职业框，与装备品质框分开"
       ],
       "acceptance": [
         "卡框轮廓完整，暗红怪物框不与红装混淆",
@@ -3176,9 +3179,33 @@
       "status": "generated_and_rebound",
       "image_generation_required": true,
       "current_state": "20张均已生成、缩放为512×768并重绑：ET-FIRE-W/G/B/P、ET-WOOD-W/G/B/P、ET-EARTH-W/G/B/P、ET-METAL-W/G/B/P、ET-WATER-W/G/B/P。",
-      "delivered_card_ids": ["ET-FIRE-W", "ET-FIRE-G", "ET-FIRE-B", "ET-FIRE-P", "ET-WOOD-W", "ET-WOOD-G", "ET-WOOD-B", "ET-WOOD-P", "ET-EARTH-W", "ET-EARTH-G", "ET-EARTH-B", "ET-EARTH-P", "ET-METAL-W", "ET-METAL-G", "ET-METAL-B", "ET-METAL-P", "ET-WATER-W", "ET-WATER-G", "ET-WATER-B", "ET-WATER-P"],
+      "delivered_card_ids": [
+        "ET-FIRE-W",
+        "ET-FIRE-G",
+        "ET-FIRE-B",
+        "ET-FIRE-P",
+        "ET-WOOD-W",
+        "ET-WOOD-G",
+        "ET-WOOD-B",
+        "ET-WOOD-P",
+        "ET-EARTH-W",
+        "ET-EARTH-G",
+        "ET-EARTH-B",
+        "ET-EARTH-P",
+        "ET-METAL-W",
+        "ET-METAL-G",
+        "ET-METAL-B",
+        "ET-METAL-P",
+        "ET-WATER-W",
+        "ET-WATER-G",
+        "ET-WATER-B",
+        "ET-WATER-P"
+      ],
       "shared_spec": {
-        "size_px": [512, 768],
+        "size_px": [
+          512,
+          768
+        ],
         "format": "PNG RGB or RGBA",
         "aspect_ratio": "2:3 portrait",
         "output_directory": "Cards/Art",
@@ -3189,26 +3216,126 @@
       },
       "mechanic_visual_rule": "每张表现调节、稳定、同调或共振仪式；火以速度节拍、木以蓄能生长、土以护盾岩构、金以眩晕声波、水以抽牌与回流表现。不得画成普通元素攻击，且不可复用任何既有Cards/Art图。",
       "cards": [
-        {"card_id":"ET-FIRE-W","name":"调焰","filename":"Cards/Art/element_tuning_fire_w.png","brief":"火种被两道黄铜调音环校准，稳定暖焰。"},
-        {"card_id":"ET-FIRE-G","name":"引焰","filename":"Cards/Art/element_tuning_fire_g.png","brief":"火焰沿符文风道流转，轻快加速轨迹。"},
-        {"card_id":"ET-FIRE-B","name":"炽律","filename":"Cards/Art/element_tuning_fire_b.png","brief":"三层火焰节拍环同步脉动，炽红火星有序排列。"},
-        {"card_id":"ET-FIRE-P","name":"炎脉合奏","filename":"Cards/Art/element_tuning_fire_p.png","brief":"熔火脉络汇入大型共振阵，庄严火焰和声。"},
-        {"card_id":"ET-WOOD-W","name":"理枝","filename":"Cards/Art/element_tuning_wood_w.png","brief":"嫩枝被黄铜环与细线梳理为平衡螺旋。"},
-        {"card_id":"ET-WOOD-G","name":"引芽","filename":"Cards/Art/element_tuning_wood_g.png","brief":"发光新芽牵引能量种子回流，表现蓄能。"},
-        {"card_id":"ET-WOOD-B","name":"森息","filename":"Cards/Art/element_tuning_wood_b.png","brief":"林冠呼吸般扩张收束，青绿孢光汇聚。"},
-        {"card_id":"ET-WOOD-P","name":"万木同频","filename":"Cards/Art/element_tuning_wood_p.png","brief":"多株古树根脉接入同一翠绿共鸣核心。"},
-        {"card_id":"ET-EARTH-W","name":"定土","filename":"Cards/Art/element_tuning_earth_w.png","brief":"悬浮土石在刻度环中归位、震尘平息。"},
-        {"card_id":"ET-EARTH-G","name":"护脉","filename":"Cards/Art/element_tuning_earth_g.png","brief":"岩脉共振凝成小型土石护盾。"},
-        {"card_id":"ET-EARTH-B","name":"地垒","filename":"Cards/Art/element_tuning_earth_b.png","brief":"多层岩片按同心节律升起为稳固壁垒。"},
-        {"card_id":"ET-EARTH-P","name":"山岳同调","filename":"Cards/Art/element_tuning_earth_p.png","brief":"山峰剖面与巨型黄铜共鸣环对齐，形成厚重护壁。"},
-        {"card_id":"ET-METAL-W","name":"鸣金","filename":"Cards/Art/element_tuning_metal_w.png","brief":"小铜铃与金属片发出可见金色声波。"},
-        {"card_id":"ET-METAL-G","name":"锐音","filename":"Cards/Art/element_tuning_metal_g.png","brief":"精准音叉激起细锐金光，带短暂定身感。"},
-        {"card_id":"ET-METAL-B","name":"金律","filename":"Cards/Art/element_tuning_metal_b.png","brief":"金属律动环与悬空刃片同步，声波凝为控制符纹。"},
-        {"card_id":"ET-METAL-P","name":"天钟共鸣","filename":"Cards/Art/element_tuning_metal_p.png","brief":"云间巨钟落下金色共振波，庄严而不含文字。"},
-        {"card_id":"ET-WATER-W","name":"听潮","filename":"Cards/Art/element_tuning_water_w.png","brief":"水滴与潮纹在倾听石盘上形成平静同心圆。"},
-        {"card_id":"ET-WATER-G","name":"引流","filename":"Cards/Art/element_tuning_water_g.png","brief":"清澈水流经导槽绕过共鸣核心，并牵引抽象空白卡片。"},
-        {"card_id":"ET-WATER-B","name":"澄波","filename":"Cards/Art/element_tuning_water_b.png","brief":"澄澈波面托起抽象空白卡片，回流光点表现蓄能。"},
-        {"card_id":"ET-WATER-P","name":"沧海同调","filename":"Cards/Art/element_tuning_water_p.png","brief":"深海潮柱围绕大型水晶共鸣环，空白卡片由涌流托起。"}
+        {
+          "card_id": "ET-FIRE-W",
+          "name": "调焰",
+          "filename": "Cards/Art/element_tuning_fire_w.png",
+          "brief": "火种被两道黄铜调音环校准，稳定暖焰。"
+        },
+        {
+          "card_id": "ET-FIRE-G",
+          "name": "引焰",
+          "filename": "Cards/Art/element_tuning_fire_g.png",
+          "brief": "火焰沿符文风道流转，轻快加速轨迹。"
+        },
+        {
+          "card_id": "ET-FIRE-B",
+          "name": "炽律",
+          "filename": "Cards/Art/element_tuning_fire_b.png",
+          "brief": "三层火焰节拍环同步脉动，炽红火星有序排列。"
+        },
+        {
+          "card_id": "ET-FIRE-P",
+          "name": "炎脉合奏",
+          "filename": "Cards/Art/element_tuning_fire_p.png",
+          "brief": "熔火脉络汇入大型共振阵，庄严火焰和声。"
+        },
+        {
+          "card_id": "ET-WOOD-W",
+          "name": "理枝",
+          "filename": "Cards/Art/element_tuning_wood_w.png",
+          "brief": "嫩枝被黄铜环与细线梳理为平衡螺旋。"
+        },
+        {
+          "card_id": "ET-WOOD-G",
+          "name": "引芽",
+          "filename": "Cards/Art/element_tuning_wood_g.png",
+          "brief": "发光新芽牵引能量种子回流，表现蓄能。"
+        },
+        {
+          "card_id": "ET-WOOD-B",
+          "name": "森息",
+          "filename": "Cards/Art/element_tuning_wood_b.png",
+          "brief": "林冠呼吸般扩张收束，青绿孢光汇聚。"
+        },
+        {
+          "card_id": "ET-WOOD-P",
+          "name": "万木同频",
+          "filename": "Cards/Art/element_tuning_wood_p.png",
+          "brief": "多株古树根脉接入同一翠绿共鸣核心。"
+        },
+        {
+          "card_id": "ET-EARTH-W",
+          "name": "定土",
+          "filename": "Cards/Art/element_tuning_earth_w.png",
+          "brief": "悬浮土石在刻度环中归位、震尘平息。"
+        },
+        {
+          "card_id": "ET-EARTH-G",
+          "name": "护脉",
+          "filename": "Cards/Art/element_tuning_earth_g.png",
+          "brief": "岩脉共振凝成小型土石护盾。"
+        },
+        {
+          "card_id": "ET-EARTH-B",
+          "name": "地垒",
+          "filename": "Cards/Art/element_tuning_earth_b.png",
+          "brief": "多层岩片按同心节律升起为稳固壁垒。"
+        },
+        {
+          "card_id": "ET-EARTH-P",
+          "name": "山岳同调",
+          "filename": "Cards/Art/element_tuning_earth_p.png",
+          "brief": "山峰剖面与巨型黄铜共鸣环对齐，形成厚重护壁。"
+        },
+        {
+          "card_id": "ET-METAL-W",
+          "name": "鸣金",
+          "filename": "Cards/Art/element_tuning_metal_w.png",
+          "brief": "小铜铃与金属片发出可见金色声波。"
+        },
+        {
+          "card_id": "ET-METAL-G",
+          "name": "锐音",
+          "filename": "Cards/Art/element_tuning_metal_g.png",
+          "brief": "精准音叉激起细锐金光，带短暂定身感。"
+        },
+        {
+          "card_id": "ET-METAL-B",
+          "name": "金律",
+          "filename": "Cards/Art/element_tuning_metal_b.png",
+          "brief": "金属律动环与悬空刃片同步，声波凝为控制符纹。"
+        },
+        {
+          "card_id": "ET-METAL-P",
+          "name": "天钟共鸣",
+          "filename": "Cards/Art/element_tuning_metal_p.png",
+          "brief": "云间巨钟落下金色共振波，庄严而不含文字。"
+        },
+        {
+          "card_id": "ET-WATER-W",
+          "name": "听潮",
+          "filename": "Cards/Art/element_tuning_water_w.png",
+          "brief": "水滴与潮纹在倾听石盘上形成平静同心圆。"
+        },
+        {
+          "card_id": "ET-WATER-G",
+          "name": "引流",
+          "filename": "Cards/Art/element_tuning_water_g.png",
+          "brief": "清澈水流经导槽绕过共鸣核心，并牵引抽象空白卡片。"
+        },
+        {
+          "card_id": "ET-WATER-B",
+          "name": "澄波",
+          "filename": "Cards/Art/element_tuning_water_b.png",
+          "brief": "澄澈波面托起抽象空白卡片，回流光点表现蓄能。"
+        },
+        {
+          "card_id": "ET-WATER-P",
+          "name": "沧海同调",
+          "filename": "Cards/Art/element_tuning_water_p.png",
+          "brief": "深海潮柱围绕大型水晶共鸣环，空白卡片由涌流托起。"
+        }
       ],
       "acceptance": [
         "20个card_id一对一重绑20个新文件，所有图均为512×768。",
@@ -3222,20 +3349,31 @@
       "name": "全套视觉与发布包验收",
       "priority": "P2",
       "category": "visual_acceptance",
-      "status": "final_review_pending",
+      "status": "cloud_native_fixture_review_complete_device_and_release_review_pending",
       "image_generation_required": false,
       "evidence": [
-        "client/evidence/art/report.json",
-        "client/evidence/ui-bounds/report.json",
-        "client/evidence/codex/report.json",
-        "client/evidence/gameplay-completion/report.json"
+        "docs/reports/ui-style-20260930/README.md",
+        "docs/reports/ui-style-20260930/test-summary.json",
+        "docs/reports/ui-style-20260930/core/capture-index.json",
+        "docs/reports/ui-style-20260930/extended/capture-index.json"
       ],
-      "current_state": "本轮新增34张双分辨率功能预览，78项断言通过；抽查升级、强化、背包、匣灵和战斗反馈。历史整套美术记录继续保留，最终风格一致性和发布环境验收未完成。",
+      "current_state": "本轮云环境实际Godot UI长文本/双语/缩放/状态/重复操作验收已执行，固定SHA报告见本轮目录；不代表在线交易、发布Windows包、硬件性能或实际音频验收。",
       "acceptance": [
         "1920×1080和1280×720检查三职业、12物种、卡面、透明边缘、面板材质、文字和本命色",
         "图鉴另检查960×540",
         "结合真实操作复核，不以离线截图总量代替最终验收"
       ]
     }
-  ]
+  ],
+  "ui_style_audit_20260930": {
+    "report": "docs/reports/ui-style-20260930/README.md",
+    "baseline_sha": "b7099ef716235be68395255360cbd5cf6c67baff",
+    "imagegen_record": "docs/reports/ui-style-20260930/generation.json",
+    "status": "cloud_native_review_complete_device_release_pending",
+    "primary_source_sha": "14540e8e69fc00572bd5697f4a5e6802ee4bb992",
+    "latest_production_ui_sha": "af14421e8489a7db67eb713950b1e8ee5ca58563",
+    "primary_screenshots": 934,
+    "supplemental_screenshots": 60,
+    "total_screenshots": 994
+  }
 }
