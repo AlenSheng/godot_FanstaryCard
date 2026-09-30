@@ -10,6 +10,8 @@ func _run() -> void:
 			get_window().size = resolution
 			await get_tree().process_frame
 			_reset()
+			# Use the production lobby bootstrap, which starts the virtual card pool.
+			Game.lobby["cards"] = $UI.owned
 			$UI._clear_card_page_cache()
 			$UI._codex_scroll = 0
 			$UI._quality = ""
