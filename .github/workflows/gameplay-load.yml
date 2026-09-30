@@ -97,11 +97,15 @@ jobs:
           sudo -E unshare -n timeout 60 "$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64" --headless --path client --script res://tests/run_lobby_race.gd > test-results/gameplay-load/lobby-race.log 2>&1
           grep -q '"ok":true' test-results/gameplay-load/lobby-race.log
           ! grep -E 'SCRIPT ERROR|Parse Error' test-results/gameplay-load/lobby-race.log
-      - uses: actions/upload-artifact@v7
+      - name: Stage only named client reports and fixture logs
+        id: client_evidence
         if: always()
+        run: python3 tools/cloud/export_evidence.py --profile gameplay-client --source test-results/gameplay-load --destination "$RUNNER_TEMP/gameplay-client-public"
+      - uses: actions/upload-artifact@v7
+        if: always() && steps.client_evidence.outputs.artifact_directory != ''
         with:
           name: gameplay-load-client-${{ github.sha }}
-          path: test-results/gameplay-load
+          path: ${{ steps.client_evidence.outputs.artifact_directory }}
           retention-days: 7
           if-no-files-found: ignore
 

@@ -61,11 +61,15 @@ jobs:
       - name: Stop private test database
         if: always()
         run: bash tools/cloud/stop.sh
-      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+      - name: Stage only named local reports and fixture logs
+        id: local_evidence
         if: always()
+        run: python3 tools/cloud/export_evidence.py --profile cloud-local --source /tmp/fc-cloud-tools/evidence --destination "$RUNNER_TEMP/cloud-local-public"
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: always() && steps.local_evidence.outputs.artifact_directory != ''
         with:
           name: cloud-local-${{ github.run_id }}-${{ github.run_attempt }}
-          path: /tmp/fc-cloud-tools/evidence
+          path: ${{ steps.local_evidence.outputs.artifact_directory }}
           retention-days: 14
           if-no-files-found: warn
   final-runtime-image:
