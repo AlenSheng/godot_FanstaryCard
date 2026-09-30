@@ -1,0 +1,275 @@
+Build started 09/30/2026 22:10:10.
+Test run for /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.0+00ab0a9ec4 (64-bit .NET 10.0.11)
+[xUnit.net 00:00:00.17]   Discovering: FantasyCard.Server.Tests
+[xUnit.net 00:00:00.50]   Discovered:  FantasyCard.Server.Tests
+[xUnit.net 00:00:00.69]   Starting:    FantasyCard.Server.Tests
+[xUnit.net 00:00:02.36]     FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: "cycles-middle-response-loss") [FAIL]
+[xUnit.net 00:00:02.36]       Assert.Equal() Failure: Values differ
+[xUnit.net 00:00:02.36]       Expected: 0
+[xUnit.net 00:00:02.36]       Actual:   1
+[xUnit.net 00:00:02.36]       Stack Trace:
+[xUnit.net 00:00:02.36]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs(121,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.RunCycleGodotAsync(String fixture, Int32 proxyPort, String deviceId, String mode, CancellationToken ct)
+[xUnit.net 00:00:02.36]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs(46,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode)
+[xUnit.net 00:00:02.36]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs(83,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode)
+[xUnit.net 00:00:02.36]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs(83,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode)
+[xUnit.net 00:00:02.36]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs(83,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode)
+[xUnit.net 00:00:02.36]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:02.36]       Output:
+[xUnit.net 00:00:02.36]         {"caseId":"process-start","recordedAt":"2026-09-30T22:10:12.500065+00:00","evidence":{"label":"ack-cycle-cycles-middle-response-loss","Id":19826,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/relicround-integration-f812879e/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll","port":45101,"SearchPath":"fc_runtime_test_48d3a7a12e86437e85b56de8d19404ec","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+[xUnit.net 00:00:02.36]         {"caseId":"ack-runner-process-stop","recordedAt":"2026-09-30T22:10:13.5661043+00:00","evidence":{"mode":"cycles-middle-response-loss","import":true,"Id":19868,"ExitCode":1,"fixture":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-client-runner-cycles-middle-response-loss-6c446473484945e89d0efd730336409a"}}
+[xUnit.net 00:00:02.36]         {"caseId":"ACK-CYCLE-attempts-cycles-middle-response-loss","recordedAt":"2026-09-30T22:10:13.5745619+00:00","evidence":{"mode":"cycles-middle-response-loss","attempts":[],"errors":[],"fixture":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-client-runner-cycles-middle-response-loss-6c446473484945e89d0efd730336409a"}}
+[xUnit.net 00:00:02.36]         {"caseId":"process-stop","recordedAt":"2026-09-30T22:10:13.6355979+00:00","evidence":{"label":"ack-cycle-cycles-middle-response-loss","ProcessId":19826,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-cycle-cycles-middle-response-loss-19826.log"}}
+  Failed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: "cycles-middle-response-loss") [1 s]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: 0
+Actual:   1
+  Stack Trace:
+     at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.RunCycleGodotAsync(String fixture, Int32 proxyPort, String deviceId, String mode, CancellationToken ct) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs:line 121
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs:line 46
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs:line 83
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs:line 83
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs:line 83
+--- End of stack trace from previous location ---
+  Standard Output Messages:
+ {"caseId":"process-start","recordedAt":"2026-09-30T22:10:12.500065+00:00","evidence":{"label":"ack-cycle-cycles-middle-response-loss","Id":19826,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/relicround-integration-f812879e/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll","port":45101,"SearchPath":"fc_runtime_test_48d3a7a12e86437e85b56de8d19404ec","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+ {"caseId":"ack-runner-process-stop","recordedAt":"2026-09-30T22:10:13.5661043+00:00","evidence":{"mode":"cycles-middle-response-loss","import":true,"Id":19868,"ExitCode":1,"fixture":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-client-runner-cycles-middle-response-loss-6c446473484945e89d0efd730336409a"}}
+ {"caseId":"ACK-CYCLE-attempts-cycles-middle-response-loss","recordedAt":"2026-09-30T22:10:13.5745619+00:00","evidence":{"mode":"cycles-middle-response-loss","attempts":[],"errors":[],"fixture":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-client-runner-cycles-middle-response-loss-6c446473484945e89d0efd730336409a"}}
+ {"caseId":"process-stop","recordedAt":"2026-09-30T22:10:13.6355979+00:00","evidence":{"label":"ack-cycle-cycles-middle-response-loss","ProcessId":19826,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-cycle-cycles-middle-response-loss-19826.log"}}
+
+
+[xUnit.net 00:00:03.63]     FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: "cycles-middle-uncommitted-loss") [FAIL]
+[xUnit.net 00:00:03.63]       Assert.Equal() Failure: Values differ
+[xUnit.net 00:00:03.63]       Expected: 0
+[xUnit.net 00:00:03.63]       Actual:   1
+[xUnit.net 00:00:03.63]       Stack Trace:
+[xUnit.net 00:00:03.63]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs(121,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.RunCycleGodotAsync(String fixture, Int32 proxyPort, String deviceId, String mode, CancellationToken ct)
+[xUnit.net 00:00:03.63]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs(46,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode)
+[xUnit.net 00:00:03.63]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs(83,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode)
+[xUnit.net 00:00:03.63]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs(83,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode)
+[xUnit.net 00:00:03.63]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs(83,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode)
+[xUnit.net 00:00:03.63]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:03.63]       Output:
+[xUnit.net 00:00:03.63]         {"caseId":"process-start","recordedAt":"2026-09-30T22:10:13.8663412+00:00","evidence":{"label":"ack-cycle-cycles-middle-uncommitted-loss","Id":19877,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/relicround-integration-f812879e/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll","port":33801,"SearchPath":"fc_runtime_test_e56af7012b1c4c30918ad9d731312a3d","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+[xUnit.net 00:00:03.63]         {"caseId":"ack-runner-process-stop","recordedAt":"2026-09-30T22:10:14.8843693+00:00","evidence":{"mode":"cycles-middle-uncommitted-loss","import":true,"Id":19917,"ExitCode":1,"fixture":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-client-runner-cycles-middle-uncommitted-loss-c19388ebb4c44771afd82d956b7a8c69"}}
+[xUnit.net 00:00:03.63]         {"caseId":"ACK-CYCLE-attempts-cycles-middle-uncommitted-loss","recordedAt":"2026-09-30T22:10:14.8848006+00:00","evidence":{"mode":"cycles-middle-uncommitted-loss","attempts":[],"errors":[],"fixture":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-client-runner-cycles-middle-uncommitted-loss-c19388ebb4c44771afd82d956b7a8c69"}}
+[xUnit.net 00:00:03.63]         {"caseId":"process-stop","recordedAt":"2026-09-30T22:10:14.9349735+00:00","evidence":{"label":"ack-cycle-cycles-middle-uncommitted-loss","ProcessId":19877,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-cycle-cycles-middle-uncommitted-loss-19877.log"}}
+  Failed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: "cycles-middle-uncommitted-loss") [1 s]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: 0
+Actual:   1
+  Stack Trace:
+     at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.RunCycleGodotAsync(String fixture, Int32 proxyPort, String deviceId, String mode, CancellationToken ct) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs:line 121
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs:line 46
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs:line 83
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs:line 83
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs:line 83
+--- End of stack trace from previous location ---
+  Standard Output Messages:
+ {"caseId":"process-start","recordedAt":"2026-09-30T22:10:13.8663412+00:00","evidence":{"label":"ack-cycle-cycles-middle-uncommitted-loss","Id":19877,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/relicround-integration-f812879e/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll","port":33801,"SearchPath":"fc_runtime_test_e56af7012b1c4c30918ad9d731312a3d","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+ {"caseId":"ack-runner-process-stop","recordedAt":"2026-09-30T22:10:14.8843693+00:00","evidence":{"mode":"cycles-middle-uncommitted-loss","import":true,"Id":19917,"ExitCode":1,"fixture":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-client-runner-cycles-middle-uncommitted-loss-c19388ebb4c44771afd82d956b7a8c69"}}
+ {"caseId":"ACK-CYCLE-attempts-cycles-middle-uncommitted-loss","recordedAt":"2026-09-30T22:10:14.8848006+00:00","evidence":{"mode":"cycles-middle-uncommitted-loss","attempts":[],"errors":[],"fixture":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-client-runner-cycles-middle-uncommitted-loss-c19388ebb4c44771afd82d956b7a8c69"}}
+ {"caseId":"process-stop","recordedAt":"2026-09-30T22:10:14.9349735+00:00","evidence":{"label":"ack-cycle-cycles-middle-uncommitted-loss","ProcessId":19877,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-cycle-cycles-middle-uncommitted-loss-19877.log"}}
+
+
+[xUnit.net 00:00:04.87]     FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: "stop-after-commit") [FAIL]
+[xUnit.net 00:00:04.87]       Assert.Equal() Failure: Values differ
+[xUnit.net 00:00:04.87]       Expected: 0
+[xUnit.net 00:00:04.87]       Actual:   1
+[xUnit.net 00:00:04.87]       Stack Trace:
+[xUnit.net 00:00:04.87]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs(121,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.RunCycleGodotAsync(String fixture, Int32 proxyPort, String deviceId, String mode, CancellationToken ct)
+[xUnit.net 00:00:04.87]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs(46,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode)
+[xUnit.net 00:00:04.87]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs(83,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode)
+[xUnit.net 00:00:04.87]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs(83,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode)
+[xUnit.net 00:00:04.87]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs(83,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode)
+[xUnit.net 00:00:04.87]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:04.87]       Output:
+[xUnit.net 00:00:04.87]         {"caseId":"process-start","recordedAt":"2026-09-30T22:10:15.1785909+00:00","evidence":{"label":"ack-cycle-stop-after-commit","Id":19925,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/relicround-integration-f812879e/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll","port":33541,"SearchPath":"fc_runtime_test_a1b778d9f9f7461fa50b4b3fb10cc8aa","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+[xUnit.net 00:00:04.87]         {"caseId":"ack-runner-process-stop","recordedAt":"2026-09-30T22:10:16.1201739+00:00","evidence":{"mode":"stop-after-commit","import":true,"Id":19964,"ExitCode":1,"fixture":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-client-runner-stop-after-commit-ee0d937933184d1dafaffed01d90b6b5"}}
+[xUnit.net 00:00:04.87]         {"caseId":"ACK-CYCLE-attempts-stop-after-commit","recordedAt":"2026-09-30T22:10:16.1205042+00:00","evidence":{"mode":"stop-after-commit","attempts":[],"errors":[],"fixture":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-client-runner-stop-after-commit-ee0d937933184d1dafaffed01d90b6b5"}}
+[xUnit.net 00:00:04.87]         {"caseId":"process-stop","recordedAt":"2026-09-30T22:10:16.1749378+00:00","evidence":{"label":"ack-cycle-stop-after-commit","ProcessId":19925,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-cycle-stop-after-commit-19925.log"}}
+  Failed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: "stop-after-commit") [1 s]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: 0
+Actual:   1
+  Stack Trace:
+     at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.RunCycleGodotAsync(String fixture, Int32 proxyPort, String deviceId, String mode, CancellationToken ct) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs:line 121
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs:line 46
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs:line 83
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs:line 83
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs:line 83
+--- End of stack trace from previous location ---
+  Standard Output Messages:
+ {"caseId":"process-start","recordedAt":"2026-09-30T22:10:15.1785909+00:00","evidence":{"label":"ack-cycle-stop-after-commit","Id":19925,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/relicround-integration-f812879e/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll","port":33541,"SearchPath":"fc_runtime_test_a1b778d9f9f7461fa50b4b3fb10cc8aa","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+ {"caseId":"ack-runner-process-stop","recordedAt":"2026-09-30T22:10:16.1201739+00:00","evidence":{"mode":"stop-after-commit","import":true,"Id":19964,"ExitCode":1,"fixture":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-client-runner-stop-after-commit-ee0d937933184d1dafaffed01d90b6b5"}}
+ {"caseId":"ACK-CYCLE-attempts-stop-after-commit","recordedAt":"2026-09-30T22:10:16.1205042+00:00","evidence":{"mode":"stop-after-commit","attempts":[],"errors":[],"fixture":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-client-runner-stop-after-commit-ee0d937933184d1dafaffed01d90b6b5"}}
+ {"caseId":"process-stop","recordedAt":"2026-09-30T22:10:16.1749378+00:00","evidence":{"label":"ack-cycle-stop-after-commit","ProcessId":19925,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-cycle-stop-after-commit-19925.log"}}
+
+
+[xUnit.net 00:00:06.03]     FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: "stop-before-commit") [FAIL]
+[xUnit.net 00:00:06.03]       Assert.Equal() Failure: Values differ
+[xUnit.net 00:00:06.03]       Expected: 0
+[xUnit.net 00:00:06.03]       Actual:   1
+[xUnit.net 00:00:06.03]       Stack Trace:
+[xUnit.net 00:00:06.03]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs(121,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.RunCycleGodotAsync(String fixture, Int32 proxyPort, String deviceId, String mode, CancellationToken ct)
+[xUnit.net 00:00:06.03]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs(46,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode)
+[xUnit.net 00:00:06.03]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs(83,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode)
+[xUnit.net 00:00:06.03]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs(83,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode)
+[xUnit.net 00:00:06.03]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs(83,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode)
+[xUnit.net 00:00:06.03]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:06.03]       Output:
+[xUnit.net 00:00:06.03]         {"caseId":"process-start","recordedAt":"2026-09-30T22:10:16.3748857+00:00","evidence":{"label":"ack-cycle-stop-before-commit","Id":19973,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/relicround-integration-f812879e/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll","port":34875,"SearchPath":"fc_runtime_test_29e03437a86745f380a20fdb2edc7177","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+[xUnit.net 00:00:06.03]         {"caseId":"ack-runner-process-stop","recordedAt":"2026-09-30T22:10:17.3091953+00:00","evidence":{"mode":"stop-before-commit","import":true,"Id":20012,"ExitCode":1,"fixture":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-client-runner-stop-before-commit-25fb318a19c7466682817024496b16f9"}}
+[xUnit.net 00:00:06.03]         {"caseId":"ACK-CYCLE-attempts-stop-before-commit","recordedAt":"2026-09-30T22:10:17.3094851+00:00","evidence":{"mode":"stop-before-commit","attempts":[],"errors":[],"fixture":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-client-runner-stop-before-commit-25fb318a19c7466682817024496b16f9"}}
+[xUnit.net 00:00:06.03]         {"caseId":"process-stop","recordedAt":"2026-09-30T22:10:17.3419124+00:00","evidence":{"label":"ack-cycle-stop-before-commit","ProcessId":19973,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-cycle-stop-before-commit-19973.log"}}
+  Failed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: "stop-before-commit") [1 s]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: 0
+Actual:   1
+  Stack Trace:
+     at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.RunCycleGodotAsync(String fixture, Int32 proxyPort, String deviceId, String mode, CancellationToken ct) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs:line 121
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs:line 46
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs:line 83
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs:line 83
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(String mode) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs:line 83
+--- End of stack trace from previous location ---
+  Standard Output Messages:
+ {"caseId":"process-start","recordedAt":"2026-09-30T22:10:16.3748857+00:00","evidence":{"label":"ack-cycle-stop-before-commit","Id":19973,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/relicround-integration-f812879e/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll","port":34875,"SearchPath":"fc_runtime_test_29e03437a86745f380a20fdb2edc7177","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+ {"caseId":"ack-runner-process-stop","recordedAt":"2026-09-30T22:10:17.3091953+00:00","evidence":{"mode":"stop-before-commit","import":true,"Id":20012,"ExitCode":1,"fixture":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-client-runner-stop-before-commit-25fb318a19c7466682817024496b16f9"}}
+ {"caseId":"ACK-CYCLE-attempts-stop-before-commit","recordedAt":"2026-09-30T22:10:17.3094851+00:00","evidence":{"mode":"stop-before-commit","attempts":[],"errors":[],"fixture":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-client-runner-stop-before-commit-25fb318a19c7466682817024496b16f9"}}
+ {"caseId":"process-stop","recordedAt":"2026-09-30T22:10:17.3419124+00:00","evidence":{"label":"ack-cycle-stop-before-commit","ProcessId":19973,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-cycle-stop-before-commit-19973.log"}}
+
+
+[xUnit.net 00:00:11.54]     FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: "drop-first-committed") [FAIL]
+[xUnit.net 00:00:11.54]       Assert.Equal() Failure: Values differ
+[xUnit.net 00:00:11.54]       Expected: 0
+[xUnit.net 00:00:11.54]       Actual:   1
+[xUnit.net 00:00:11.54]       Stack Trace:
+[xUnit.net 00:00:11.54]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs(180,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.RunAckGodotAsync(String fixture, Int32 proxyPort, String deviceId, String receiptId, Guid matchId, String mode, CancellationToken ct)
+[xUnit.net 00:00:11.54]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs(61,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode)
+[xUnit.net 00:00:11.54]            at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode)
+[xUnit.net 00:00:11.54]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs(102,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode)
+[xUnit.net 00:00:11.54]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs(102,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode)
+[xUnit.net 00:00:11.54]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs(102,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode)
+[xUnit.net 00:00:11.54]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:11.54]       Output:
+[xUnit.net 00:00:11.54]         {"caseId":"process-start","recordedAt":"2026-09-30T22:10:17.7693016+00:00","evidence":{"label":"ack-drop-first-committed","Id":20025,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/relicround-integration-f812879e/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll","port":39813,"SearchPath":"fc_runtime_test_89c5cf57433e49d78fdf074342afa3f9","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+[xUnit.net 00:00:11.54]         {"caseId":"ack-client-process-stop","recordedAt":"2026-09-30T22:10:22.8055007+00:00","evidence":{"mode":"drop-first-committed","import":true,"Id":20175,"ExitCode":1,"fixture":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-client-drop-first-committed-85d5f12304b148328fc0f11927ddd697"}}
+[xUnit.net 00:00:11.54]         {"caseId":"ACK-FAULT-attempts-drop-first-committed","recordedAt":"2026-09-30T22:10:22.8103637+00:00","evidence":{"mode":"drop-first-committed","attempts":[],"errors":[],"acknowledgedRows":0}}
+[xUnit.net 00:00:11.54]         {"caseId":"process-stop","recordedAt":"2026-09-30T22:10:22.8466797+00:00","evidence":{"label":"ack-drop-first-committed","ProcessId":20025,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-drop-first-committed-20025.log"}}
+  Failed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: "drop-first-committed") [5 s]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: 0
+Actual:   1
+  Stack Trace:
+     at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.RunAckGodotAsync(String fixture, Int32 proxyPort, String deviceId, String receiptId, Guid matchId, String mode, CancellationToken ct) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs:line 180
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs:line 61
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode)
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs:line 102
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs:line 102
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs:line 102
+--- End of stack trace from previous location ---
+  Standard Output Messages:
+ {"caseId":"process-start","recordedAt":"2026-09-30T22:10:17.7693016+00:00","evidence":{"label":"ack-drop-first-committed","Id":20025,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/relicround-integration-f812879e/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll","port":39813,"SearchPath":"fc_runtime_test_89c5cf57433e49d78fdf074342afa3f9","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+ {"caseId":"ack-client-process-stop","recordedAt":"2026-09-30T22:10:22.8055007+00:00","evidence":{"mode":"drop-first-committed","import":true,"Id":20175,"ExitCode":1,"fixture":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-client-drop-first-committed-85d5f12304b148328fc0f11927ddd697"}}
+ {"caseId":"ACK-FAULT-attempts-drop-first-committed","recordedAt":"2026-09-30T22:10:22.8103637+00:00","evidence":{"mode":"drop-first-committed","attempts":[],"errors":[],"acknowledgedRows":0}}
+ {"caseId":"process-stop","recordedAt":"2026-09-30T22:10:22.8466797+00:00","evidence":{"label":"ack-drop-first-committed","ProcessId":20025,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-drop-first-committed-20025.log"}}
+
+
+[xUnit.net 00:00:16.73]     FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: "drop-all-uncommitted") [FAIL]
+[xUnit.net 00:00:16.73]       Assert.Equal() Failure: Values differ
+[xUnit.net 00:00:16.73]       Expected: 0
+[xUnit.net 00:00:16.73]       Actual:   1
+[xUnit.net 00:00:16.73]       Stack Trace:
+[xUnit.net 00:00:16.73]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs(180,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.RunAckGodotAsync(String fixture, Int32 proxyPort, String deviceId, String receiptId, Guid matchId, String mode, CancellationToken ct)
+[xUnit.net 00:00:16.73]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs(61,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode)
+[xUnit.net 00:00:16.73]            at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode)
+[xUnit.net 00:00:16.73]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs(102,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode)
+[xUnit.net 00:00:16.73]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs(102,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode)
+[xUnit.net 00:00:16.73]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs(102,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode)
+[xUnit.net 00:00:16.73]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:16.73]       Output:
+[xUnit.net 00:00:16.73]         {"caseId":"process-start","recordedAt":"2026-09-30T22:10:23.0581875+00:00","evidence":{"label":"ack-drop-all-uncommitted","Id":20190,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/relicround-integration-f812879e/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll","port":42283,"SearchPath":"fc_runtime_test_55f49f7756e44dda92158012a6e2e46f","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+[xUnit.net 00:00:16.73]         {"caseId":"ack-client-process-stop","recordedAt":"2026-09-30T22:10:27.9965136+00:00","evidence":{"mode":"drop-all-uncommitted","import":true,"Id":20340,"ExitCode":1,"fixture":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-client-drop-all-uncommitted-b830572888e34eefacee18d42aecbc5d"}}
+[xUnit.net 00:00:16.73]         {"caseId":"ACK-FAULT-attempts-drop-all-uncommitted","recordedAt":"2026-09-30T22:10:28.0005106+00:00","evidence":{"mode":"drop-all-uncommitted","attempts":[],"errors":[],"acknowledgedRows":0}}
+[xUnit.net 00:00:16.73]         {"caseId":"process-stop","recordedAt":"2026-09-30T22:10:28.0437936+00:00","evidence":{"label":"ack-drop-all-uncommitted","ProcessId":20190,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-drop-all-uncommitted-20190.log"}}
+  Failed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: "drop-all-uncommitted") [5 s]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: 0
+Actual:   1
+  Stack Trace:
+     at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.RunAckGodotAsync(String fixture, Int32 proxyPort, String deviceId, String receiptId, Guid matchId, String mode, CancellationToken ct) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs:line 180
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs:line 61
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode)
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs:line 102
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs:line 102
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs:line 102
+--- End of stack trace from previous location ---
+  Standard Output Messages:
+ {"caseId":"process-start","recordedAt":"2026-09-30T22:10:23.0581875+00:00","evidence":{"label":"ack-drop-all-uncommitted","Id":20190,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/relicround-integration-f812879e/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll","port":42283,"SearchPath":"fc_runtime_test_55f49f7756e44dda92158012a6e2e46f","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+ {"caseId":"ack-client-process-stop","recordedAt":"2026-09-30T22:10:27.9965136+00:00","evidence":{"mode":"drop-all-uncommitted","import":true,"Id":20340,"ExitCode":1,"fixture":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-client-drop-all-uncommitted-b830572888e34eefacee18d42aecbc5d"}}
+ {"caseId":"ACK-FAULT-attempts-drop-all-uncommitted","recordedAt":"2026-09-30T22:10:28.0005106+00:00","evidence":{"mode":"drop-all-uncommitted","attempts":[],"errors":[],"acknowledgedRows":0}}
+ {"caseId":"process-stop","recordedAt":"2026-09-30T22:10:28.0437936+00:00","evidence":{"label":"ack-drop-all-uncommitted","ProcessId":20190,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-drop-all-uncommitted-20190.log"}}
+
+
+[xUnit.net 00:00:21.91]     FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: "drop-all-committed") [FAIL]
+[xUnit.net 00:00:21.91]       Assert.Equal() Failure: Values differ
+[xUnit.net 00:00:21.91]       Expected: 0
+[xUnit.net 00:00:21.91]       Actual:   1
+[xUnit.net 00:00:21.91]       Stack Trace:
+[xUnit.net 00:00:21.91]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs(180,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.RunAckGodotAsync(String fixture, Int32 proxyPort, String deviceId, String receiptId, Guid matchId, String mode, CancellationToken ct)
+[xUnit.net 00:00:21.91]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs(61,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode)
+[xUnit.net 00:00:21.91]            at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode)
+[xUnit.net 00:00:21.91]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs(102,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode)
+[xUnit.net 00:00:21.91]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs(102,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode)
+[xUnit.net 00:00:21.91]         /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs(102,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode)
+[xUnit.net 00:00:21.91]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:21.91]       Output:
+[xUnit.net 00:00:21.91]         {"caseId":"process-start","recordedAt":"2026-09-30T22:10:28.2467871+00:00","evidence":{"label":"ack-drop-all-committed","Id":20356,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/relicround-integration-f812879e/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll","port":41799,"SearchPath":"fc_runtime_test_0bcd3a1475d8488eaafc058dfb9f9887","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+[xUnit.net 00:00:21.91]         {"caseId":"ack-client-process-stop","recordedAt":"2026-09-30T22:10:33.1837133+00:00","evidence":{"mode":"drop-all-committed","import":true,"Id":20506,"ExitCode":1,"fixture":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-client-drop-all-committed-1115d3134c694775b3092da3585a4771"}}
+[xUnit.net 00:00:21.91]         {"caseId":"ACK-FAULT-attempts-drop-all-committed","recordedAt":"2026-09-30T22:10:33.188034+00:00","evidence":{"mode":"drop-all-committed","attempts":[],"errors":[],"acknowledgedRows":0}}
+[xUnit.net 00:00:21.91]         {"caseId":"process-stop","recordedAt":"2026-09-30T22:10:33.2257653+00:00","evidence":{"label":"ack-drop-all-committed","ProcessId":20356,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-drop-all-committed-20356.log"}}
+[xUnit.net 00:00:21.93]   Finished:    FantasyCard.Server.Tests
+  Failed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: "drop-all-committed") [5 s]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: 0
+Actual:   1
+  Stack Trace:
+     at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.RunAckGodotAsync(String fixture, Int32 proxyPort, String deviceId, String receiptId, Guid matchId, String mode, CancellationToken ct) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs:line 180
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs:line 61
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode)
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs:line 102
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs:line 102
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode) in /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs:line 102
+--- End of stack trace from previous location ---
+  Standard Output Messages:
+ {"caseId":"process-start","recordedAt":"2026-09-30T22:10:28.2467871+00:00","evidence":{"label":"ack-drop-all-committed","Id":20356,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/relicround-integration-f812879e/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll","port":41799,"SearchPath":"fc_runtime_test_0bcd3a1475d8488eaafc058dfb9f9887","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+ {"caseId":"ack-client-process-stop","recordedAt":"2026-09-30T22:10:33.1837133+00:00","evidence":{"mode":"drop-all-committed","import":true,"Id":20506,"ExitCode":1,"fixture":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-client-drop-all-committed-1115d3134c694775b3092da3585a4771"}}
+ {"caseId":"ACK-FAULT-attempts-drop-all-committed","recordedAt":"2026-09-30T22:10:33.188034+00:00","evidence":{"mode":"drop-all-committed","attempts":[],"errors":[],"acknowledgedRows":0}}
+ {"caseId":"process-stop","recordedAt":"2026-09-30T22:10:33.2257653+00:00","evidence":{"label":"ack-drop-all-committed","ProcessId":20356,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/raw/ack-drop-all-committed-20356.log"}}
+
+
+Results File: /workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-01/results/targeted.trx
+
+Test Run Failed.
+Total tests: 7
+     Failed: 7
+ Total time: 22.3645 Seconds
+     1>Project "/workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj" on node 1 (VSTest target(s)).
+     1>_VSTestConsole:
+         MSB4181: The "VSTestTask" task returned false but did not log an error.
+     1>Done Building Project "/workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj" (VSTest target(s)) -- FAILED.
+
+Build FAILED.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:22.94

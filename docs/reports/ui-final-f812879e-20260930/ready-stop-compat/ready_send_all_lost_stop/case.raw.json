@@ -1,0 +1,395 @@
+{
+  "client": {
+    "Accepted": false,
+    "active_match_id": "01a0f45b-dd03-78c4-87b6-83ff4ef8dbb6",
+    "case": "ready_send_all_lost_stop",
+    "checks": [
+      {
+        "at_unix_ms": 1790806025441,
+        "name": "realtime_connected",
+        "passed": true
+      },
+      {
+        "at_unix_ms": 1790806025490,
+        "name": "owned_equipment_fixture_seeded",
+        "passed": true
+      },
+      {
+        "at_unix_ms": 1790806025594,
+        "name": "login_and_bootstrap",
+        "passed": true
+      },
+      {
+        "at_unix_ms": 1790806025690,
+        "name": "hero_class_confirmed",
+        "passed": true
+      },
+      {
+        "at_unix_ms": 1790806025807,
+        "name": "create_free_preparation",
+        "passed": true
+      },
+      {
+        "at_unix_ms": 1790806025874,
+        "name": "enqueue_match",
+        "passed": true
+      }
+    ],
+    "cleanup": {
+      "active_preparation": null,
+      "reason": "server_state_clear",
+      "state": "Passed",
+      "unfinished_match": null,
+      "unfinished_settlement": null
+    },
+    "client_preparation": {},
+    "client_ready_prompt": {},
+    "client_room": false,
+    "client_settlement": false,
+    "client_ticket": {},
+    "connected_count": 1,
+    "coverage": "OFFLINE_POSTGRES_FULL_PROGRAM",
+    "errors": [
+      {
+        "at_unix_ms": 1790806058724,
+        "message": "Match ticket is not queued or does not belong to the player."
+      },
+      {
+        "at_unix_ms": 1790806058724,
+        "message": "Match ticket is not queued or does not belong to the player."
+      }
+    ],
+    "expected_match_id": "01a0f45b-dd03-78c4-87b6-83ff4ef8dbb6",
+    "expected_room_id": "01a0f45b-dd03-7fd0-9297-04abc4870d30",
+    "local_terminal": true,
+    "message": "Coordinator cancelled current cycle",
+    "observed_match_id": "",
+    "observed_room_id": "",
+    "own_user_id": "01a0f45b-62c2-73f7-b151-01cf539e96bb",
+    "passed": true,
+    "ready_send_after_stop": 0,
+    "ready_send_count": 3,
+    "required_delivered": 1,
+    "required_dropped": false,
+    "resume_send_count": 0,
+    "route_probe_clear": true,
+    "route_probe_events": [
+      "pong"
+    ],
+    "stop_boundary": "three_actual_ready_frames_dropped",
+    "ticket_reads": 16,
+    "trace": [
+      {
+        "at_ms": 1651,
+        "event": "ticket_response",
+        "read_no": 1,
+        "status": "Queued"
+      },
+      {
+        "at_ms": 3818,
+        "event": "ticket_response",
+        "read_no": 2,
+        "status": "Queued"
+      },
+      {
+        "at_ms": 5984,
+        "event": "ticket_response",
+        "read_no": 3,
+        "status": "Queued"
+      },
+      {
+        "at_ms": 8151,
+        "event": "ticket_response",
+        "read_no": 4,
+        "status": "Queued"
+      },
+      {
+        "at_ms": 10317,
+        "event": "ticket_response",
+        "read_no": 5,
+        "status": "Queued"
+      },
+      {
+        "at_ms": 12484,
+        "event": "ticket_response",
+        "read_no": 6,
+        "status": "Queued"
+      },
+      {
+        "at_ms": 14651,
+        "event": "ticket_response",
+        "read_no": 7,
+        "status": "Queued"
+      },
+      {
+        "at_ms": 16818,
+        "event": "ticket_response",
+        "read_no": 8,
+        "status": "Queued"
+      },
+      {
+        "at_ms": 18984,
+        "event": "ticket_response",
+        "read_no": 9,
+        "status": "Queued"
+      },
+      {
+        "at_ms": 21151,
+        "event": "ticket_response",
+        "read_no": 10,
+        "status": "Queued"
+      },
+      {
+        "at_ms": 23317,
+        "event": "ticket_response",
+        "read_no": 11,
+        "status": "Queued"
+      },
+      {
+        "at_ms": 25484,
+        "event": "ticket_response",
+        "read_no": 12,
+        "status": "Queued"
+      },
+      {
+        "at_ms": 27650,
+        "event": "ticket_response",
+        "read_no": 13,
+        "status": "Queued"
+      },
+      {
+        "at_ms": 29817,
+        "event": "ticket_response",
+        "read_no": 14,
+        "status": "Queued"
+      },
+      {
+        "at_ms": 31934,
+        "event": "actual_server_envelope",
+        "kind": "room.ready_required",
+        "match_id": "01a0f45b-dd03-78c4-87b6-83ff4ef8dbb6",
+        "room_id": "01a0f45b-dd03-7fd0-9297-04abc4870d30",
+        "sequence": 6,
+        "sequence_before": 5
+      },
+      {
+        "at_ms": 31934,
+        "event": "required_transport_boundary",
+        "ticket_inflight": false
+      },
+      {
+        "at_ms": 31983,
+        "event": "ticket_response",
+        "read_no": 15,
+        "status": "Matched"
+      },
+      {
+        "after_stop": false,
+        "at_ms": 31983,
+        "event": "room.ready.attempt",
+        "online": true
+      },
+      {
+        "after_stop": false,
+        "at_ms": 33033,
+        "event": "room.ready.attempt",
+        "online": true
+      },
+      {
+        "at_ms": 34150,
+        "event": "ticket_response",
+        "read_no": 16,
+        "status": "Matched"
+      },
+      {
+        "after_stop": false,
+        "at_ms": 34150,
+        "event": "room.ready.attempt",
+        "online": true
+      },
+      {
+        "at_ms": 34166,
+        "boundary": "three_actual_ready_frames_dropped",
+        "event": "coordinator_stop"
+      }
+    ]
+  },
+  "postgres": {
+    "preparations": [
+      {
+        "status": "Cancelled"
+      }
+    ],
+    "tickets": [
+      {
+        "status": "Matched"
+      }
+    ],
+    "human_match_states": [
+      {
+        "state": "Removed"
+      }
+    ],
+    "locked_equipment": 0,
+    "preparation_asset_rows": 1,
+    "equipment_locks": 1,
+    "equipment_releases": 1,
+    "pending_settlement_holds": 0,
+    "settlements": 0,
+    "rooms": 1,
+    "matches": 1,
+    "match_rows": [
+      {
+        "match_id": "01a0f45b-dd03-78c4-87b6-83ff4ef8dbb6",
+        "room_id": "01a0f45b-dd03-7fd0-9297-04abc4870d30",
+        "status": "Running",
+        "created_at_unix_ms": 1790806056194.363,
+        "ready_deadline_unix_ms": 1790806071194.363,
+        "observed_at_unix_ms": 1790806072723.785
+      }
+    ],
+    "ready_deadline_seconds": [
+      15.0
+    ]
+  },
+  "transport": [
+    {
+      "event": "proxy_ready",
+      "at_monotonic_ms": 24390399,
+      "listen_host": "127.0.0.1",
+      "port": 43651,
+      "upstream_host": "127.0.0.1",
+      "upstream_port": 36499
+    },
+    {
+      "event": "websocket_connected",
+      "at_monotonic_ms": 24391143,
+      "connection": 1
+    },
+    {
+      "event": "websocket_connected",
+      "at_monotonic_ms": 24391695,
+      "connection": 2
+    },
+    {
+      "event": "frame_forwarded",
+      "at_monotonic_ms": 24391701,
+      "kind": "session.connected",
+      "direction": "server_to_client",
+      "connection": 2,
+      "ordinal": 1,
+      "bytes": 138,
+      "sha256": "742b239608960410f974dbdba65805d102f90c84b1155ab5390563b8cb9905c3",
+      "file": "0001-server_to_client-session.connected.pb",
+      "sequence": 1,
+      "request_id": ""
+    },
+    {
+      "event": "frame_forwarded",
+      "at_monotonic_ms": 24422644,
+      "kind": "room.ready_required",
+      "direction": "server_to_client",
+      "connection": 2,
+      "ordinal": 2,
+      "bytes": 167,
+      "sha256": "9fd6435d5d5b8bed28a7a7506d7c32d00a3a2028d2d7ddab70fccc427bace6a1",
+      "file": "0002-server_to_client-room.ready_required.pb",
+      "sequence": 6,
+      "request_id": ""
+    },
+    {
+      "event": "frame_dropped",
+      "at_monotonic_ms": 24422706,
+      "kind": "room.ready",
+      "direction": "client_to_server",
+      "connection": 2,
+      "ordinal": 3,
+      "bytes": 50,
+      "sha256": "a0dc2a86042966e499df1236a172051fce0cffc0ae45ffe8e213c6ba8bbe4dba",
+      "file": "0003-client_to_server-room.ready.pb",
+      "sequence": null,
+      "request_id": "803e1d443a98027b178439d4065aa66f",
+      "postgres_at_drop": [
+        {
+          "match_id": "01a0f45b-dd03-78c4-87b6-83ff4ef8dbb6",
+          "room_id": "01a0f45b-dd03-7fd0-9297-04abc4870d30",
+          "status": "Starting",
+          "player_state": "Assigned",
+          "ready_deadline_seconds": 15.0
+        }
+      ],
+      "drop_no": 1
+    },
+    {
+      "event": "frame_dropped",
+      "at_monotonic_ms": 24423755,
+      "kind": "room.ready",
+      "direction": "client_to_server",
+      "connection": 2,
+      "ordinal": 4,
+      "bytes": 50,
+      "sha256": "1c5a6cc01f194b55405eb5a8a7bda9fd964b30dd909c41e092122fbf6393072b",
+      "file": "0004-client_to_server-room.ready.pb",
+      "sequence": null,
+      "request_id": "9e6656da500c5f6fdc0d0b0593522ecc",
+      "postgres_at_drop": [
+        {
+          "match_id": "01a0f45b-dd03-78c4-87b6-83ff4ef8dbb6",
+          "room_id": "01a0f45b-dd03-7fd0-9297-04abc4870d30",
+          "status": "Starting",
+          "player_state": "Assigned",
+          "ready_deadline_seconds": 15.0
+        }
+      ],
+      "drop_no": 2
+    },
+    {
+      "event": "frame_dropped",
+      "at_monotonic_ms": 24424872,
+      "kind": "room.ready",
+      "direction": "client_to_server",
+      "connection": 2,
+      "ordinal": 5,
+      "bytes": 50,
+      "sha256": "6e4e6f39fd2077084d0f618d52a01c90cd31384f7046540915b6f43ac5ab18dc",
+      "file": "0005-client_to_server-room.ready.pb",
+      "sequence": null,
+      "request_id": "4e7c041674ee948b41d9c9db5236ec9a",
+      "postgres_at_drop": [
+        {
+          "match_id": "01a0f45b-dd03-78c4-87b6-83ff4ef8dbb6",
+          "room_id": "01a0f45b-dd03-7fd0-9297-04abc4870d30",
+          "status": "Starting",
+          "player_state": "Assigned",
+          "ready_deadline_seconds": 15.0
+        }
+      ],
+      "drop_no": 3
+    },
+    {
+      "event": "websocket_connected",
+      "at_monotonic_ms": 24438203,
+      "connection": 3
+    },
+    {
+      "event": "frame_forwarded",
+      "at_monotonic_ms": 24438203,
+      "kind": "session.connected",
+      "direction": "server_to_client",
+      "connection": 3,
+      "ordinal": 6,
+      "bytes": 138,
+      "sha256": "0a6e8b5e43d94f66401ef66d3aadb717de8f7791ab94cb5dacb0d324467f130e",
+      "file": "0006-server_to_client-session.connected.pb",
+      "sequence": 8,
+      "request_id": ""
+    },
+    {
+      "event": "proxy_stopped",
+      "at_monotonic_ms": 24439147,
+      "remaining_connections": 0,
+      "synthetic_envelopes": 0
+    }
+  ],
+  "command_exit_code": 0
+}

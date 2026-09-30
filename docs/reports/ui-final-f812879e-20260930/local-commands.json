@@ -1,0 +1,102 @@
+[
+  {
+    "label": "callback",
+    "command": [
+      "python3",
+      "tools/pr13_callback_isolation.py",
+      "--output",
+      "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/callback"
+    ],
+    "cwd": "/workspace/relicround-integration-f812879e",
+    "source_sha": "4f174ac04accafbb1ec34cbda85d962fecbd523e",
+    "exit_code": 0,
+    "duration_seconds": 6.282,
+    "deadline_seconds": 75,
+    "log": "logs/callback.log"
+  },
+  {
+    "label": "http-codec",
+    "command": [
+      "python3",
+      "client/tests/run_http_protobuf_client.py",
+      "--godot",
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--work-dir",
+      "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/http-codec"
+    ],
+    "cwd": "/workspace/relicround-integration-f812879e",
+    "source_sha": "4f174ac04accafbb1ec34cbda85d962fecbd523e",
+    "exit_code": 0,
+    "duration_seconds": 8.147,
+    "deadline_seconds": 200,
+    "log": "logs/http-codec.log"
+  },
+  {
+    "label": "http-boundary",
+    "command": [
+      "python3",
+      "client/tests/run_http_boundary.py",
+      "--godot",
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--output",
+      "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/http-boundary"
+    ],
+    "cwd": "/workspace/relicround-integration-f812879e",
+    "source_sha": "4f174ac04accafbb1ec34cbda85d962fecbd523e",
+    "exit_code": 0,
+    "duration_seconds": 1.682,
+    "deadline_seconds": 90,
+    "log": "logs/http-boundary.log"
+  },
+  {
+    "label": "ui-modules",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "client",
+      "--script",
+      "res://tests/run_ui_style_checks.gd"
+    ],
+    "cwd": "/workspace/relicround-integration-f812879e",
+    "source_sha": "4f174ac04accafbb1ec34cbda85d962fecbd523e",
+    "exit_code": 0,
+    "duration_seconds": 37.437,
+    "deadline_seconds": 90,
+    "log": "logs/ui-modules.log"
+  },
+  {
+    "label": "new-session-modules",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "client",
+      "--script",
+      "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/new_session_modules.gd"
+    ],
+    "cwd": "/workspace/relicround-integration-f812879e",
+    "source_sha": "4f174ac04accafbb1ec34cbda85d962fecbd523e",
+    "exit_code": 0,
+    "duration_seconds": 0.565,
+    "deadline_seconds": 90,
+    "log": "logs/new-session-modules.log"
+  },
+  {
+    "label": "load-parse",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "client",
+      "--script",
+      "res://tests/run_gameplay_load_parse.gd"
+    ],
+    "cwd": "/workspace/relicround-integration-f812879e",
+    "source_sha": "4f174ac04accafbb1ec34cbda85d962fecbd523e",
+    "exit_code": 0,
+    "duration_seconds": 0.566,
+    "deadline_seconds": 45,
+    "log": "logs/load-parse.log"
+  }
+]

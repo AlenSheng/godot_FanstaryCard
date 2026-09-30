@@ -1,0 +1,27 @@
+Build started 09/30/2026 22:12:35.
+Test run for /workspace/relicround-integration-f812879e/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.0+00ab0a9ec4 (64-bit .NET 10.0.11)
+[xUnit.net 00:00:00.16]   Discovering: FantasyCard.Server.Tests
+[xUnit.net 00:00:00.49]   Discovered:  FantasyCard.Server.Tests
+[xUnit.net 00:00:00.68]   Starting:    FantasyCard.Server.Tests
+  Passed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: "cycles-middle-response-loss") [1 m 47 s]
+  Passed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: "cycles-middle-uncommitted-loss") [1 m 46 s]
+  Passed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: "stop-after-commit") [39 s]
+  Passed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: "stop-before-commit") [38 s]
+  Passed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: "drop-first-committed") [11 s]
+  Passed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: "drop-all-uncommitted") [13 s]
+[xUnit.net 00:05:31.64]   Finished:    FantasyCard.Server.Tests
+  Passed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: "drop-all-committed") [13 s]
+Results File: /workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ack-process-02/results/targeted.trx
+
+Test Run Successful.
+Total tests: 7
+     Passed: 7
+ Total time: 5.5341 Minutes
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:05:32.60

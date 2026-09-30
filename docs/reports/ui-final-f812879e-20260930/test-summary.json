@@ -1,0 +1,367 @@
+{
+  "pr13_input_sha": "f812879e4518fd09bf22656451cb563d62940298",
+  "parent_pr13_tested_sha": "38c2caccb5f8327f52d97dffb3b9f9303360dd46",
+  "reviewed_ui_input_sha": "d76d7165c915c94732ca7087af4e22876afc76e5",
+  "tested_composed_source_sha": "4f174ac04accafbb1ec34cbda85d962fecbd523e",
+  "latest_production_source_sha": "4f174ac04accafbb1ec34cbda85d962fecbd523e",
+  "production_changed_after_testing": false,
+  "source_mapping": {
+    "PR13_existing_non_UI": "f812879e4518fd09bf22656451cb563d62940298",
+    "reviewed_production_UI_and_art": "d76d7165c915c94732ca7087af4e22876afc76e5",
+    "fresh_execution_source": "4f174ac04accafbb1ec34cbda85d962fecbd523e",
+    "subsequent_delivery_commit_scope": "Only docs/reports/ui-final-f812879e-20260930; no production or original test changes"
+  },
+  "preservation": {
+    "pr13_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "ui_sha": "d76d7165c915c94732ca7087af4e22876afc76e5",
+    "tested_source_sha": "4f174ac04accafbb1ec34cbda85d962fecbd523e",
+    "existing_non_ui_paths": 7550,
+    "source_commit_mismatches": [],
+    "final_worktree_mismatches": [],
+    "production_ui_paths": 13,
+    "ui_mismatches": [],
+    "conflicts": [],
+    "tracked_build_outputs_restored": true,
+    "new_production_changes_during_verification": []
+  },
+  "local_commands": [
+    {
+      "label": "callback",
+      "command": [
+        "python3",
+        "tools/pr13_callback_isolation.py",
+        "--output",
+        "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/callback"
+      ],
+      "cwd": "/workspace/relicround-integration-f812879e",
+      "source_sha": "4f174ac04accafbb1ec34cbda85d962fecbd523e",
+      "exit_code": 0,
+      "duration_seconds": 6.282,
+      "deadline_seconds": 75,
+      "log": "logs/callback.log"
+    },
+    {
+      "label": "http-codec",
+      "command": [
+        "python3",
+        "client/tests/run_http_protobuf_client.py",
+        "--godot",
+        "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--work-dir",
+        "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/http-codec"
+      ],
+      "cwd": "/workspace/relicround-integration-f812879e",
+      "source_sha": "4f174ac04accafbb1ec34cbda85d962fecbd523e",
+      "exit_code": 0,
+      "duration_seconds": 8.147,
+      "deadline_seconds": 200,
+      "log": "logs/http-codec.log"
+    },
+    {
+      "label": "http-boundary",
+      "command": [
+        "python3",
+        "client/tests/run_http_boundary.py",
+        "--godot",
+        "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--output",
+        "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/http-boundary"
+      ],
+      "cwd": "/workspace/relicround-integration-f812879e",
+      "source_sha": "4f174ac04accafbb1ec34cbda85d962fecbd523e",
+      "exit_code": 0,
+      "duration_seconds": 1.682,
+      "deadline_seconds": 90,
+      "log": "logs/http-boundary.log"
+    },
+    {
+      "label": "ui-modules",
+      "command": [
+        "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "client",
+        "--script",
+        "res://tests/run_ui_style_checks.gd"
+      ],
+      "cwd": "/workspace/relicround-integration-f812879e",
+      "source_sha": "4f174ac04accafbb1ec34cbda85d962fecbd523e",
+      "exit_code": 0,
+      "duration_seconds": 37.437,
+      "deadline_seconds": 90,
+      "log": "logs/ui-modules.log"
+    },
+    {
+      "label": "new-session-modules",
+      "command": [
+        "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "client",
+        "--script",
+        "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/new_session_modules.gd"
+      ],
+      "cwd": "/workspace/relicround-integration-f812879e",
+      "source_sha": "4f174ac04accafbb1ec34cbda85d962fecbd523e",
+      "exit_code": 0,
+      "duration_seconds": 0.565,
+      "deadline_seconds": 90,
+      "log": "logs/new-session-modules.log"
+    },
+    {
+      "label": "load-parse",
+      "command": [
+        "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "client",
+        "--script",
+        "res://tests/run_gameplay_load_parse.gd"
+      ],
+      "cwd": "/workspace/relicround-integration-f812879e",
+      "source_sha": "4f174ac04accafbb1ec34cbda85d962fecbd523e",
+      "exit_code": 0,
+      "duration_seconds": 0.566,
+      "deadline_seconds": 45,
+      "log": "logs/load-parse.log"
+    }
+  ],
+  "native_commands": [
+    {
+      "label": "monster-titles",
+      "command": [
+        "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--path",
+        "client",
+        "--rendering-method",
+        "gl_compatibility",
+        "--audio-driver",
+        "Dummy",
+        "res://tests/ui_monster_title_review.tscn"
+      ],
+      "source_sha": "4f174ac04accafbb1ec34cbda85d962fecbd523e",
+      "cwd": "/workspace/relicround-integration-f812879e",
+      "exit_code": 0,
+      "report_ok": true,
+      "screenshots": 36,
+      "duration_seconds": 46.746,
+      "deadline_seconds": 180,
+      "log": "logs/monster-titles.log"
+    },
+    {
+      "label": "representatives",
+      "command": [
+        "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--path",
+        "client",
+        "--rendering-method",
+        "gl_compatibility",
+        "--audio-driver",
+        "Dummy",
+        "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ui_representatives.tscn"
+      ],
+      "source_sha": "4f174ac04accafbb1ec34cbda85d962fecbd523e",
+      "cwd": "/workspace/relicround-integration-f812879e",
+      "exit_code": 0,
+      "report_ok": true,
+      "screenshots": 48,
+      "duration_seconds": 44.45,
+      "deadline_seconds": 180,
+      "log": "logs/representatives.log"
+    },
+    {
+      "label": "mail",
+      "command": [
+        "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--path",
+        "client",
+        "--rendering-method",
+        "gl_compatibility",
+        "--audio-driver",
+        "Dummy",
+        "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ui_style_mail_labels.tscn"
+      ],
+      "source_sha": "4f174ac04accafbb1ec34cbda85d962fecbd523e",
+      "cwd": "/workspace/relicround-integration-f812879e",
+      "exit_code": 0,
+      "report_ok": true,
+      "screenshots": 24,
+      "duration_seconds": 25.704,
+      "deadline_seconds": 180,
+      "log": "logs/mail.log"
+    },
+    {
+      "label": "codex",
+      "command": [
+        "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--path",
+        "client",
+        "--rendering-method",
+        "gl_compatibility",
+        "--audio-driver",
+        "Dummy",
+        "/workspace/relicround-integration-f812879e/artifacts/ui-final-f812879e-20260930/harness/ui_style_codex_review.tscn"
+      ],
+      "source_sha": "4f174ac04accafbb1ec34cbda85d962fecbd523e",
+      "cwd": "/workspace/relicround-integration-f812879e",
+      "exit_code": 0,
+      "report_ok": true,
+      "screenshots": 20,
+      "duration_seconds": 21.418,
+      "deadline_seconds": 180,
+      "log": "logs/codex.log"
+    }
+  ],
+  "fresh_tests": {
+    "root_import": {
+      "exit_code": 0
+    },
+    "callback": {
+      "passed": 6,
+      "ok": true,
+      "qualification": "Real Godot GameStore _on_event/request entries, a real Gateway.send command/WS rejection, and protobuf loopback HTTP; other events are controlled component injections, with no database or live server."
+    },
+    "http_codec": {
+      "codec_checks": 177,
+      "transport_checks": 24,
+      "ok": true
+    },
+    "http_boundary": {
+      "ok": true,
+      "exit_code": 0
+    },
+    "ui_modules": {
+      "passed": 19,
+      "ok": true
+    },
+    "new_session_modules": {
+      "ok": true,
+      "source_sha": "4f174ac04accafbb1ec34cbda85d962fecbd523e",
+      "tests": {
+        "test_session_sequence": {
+          "message": "Duplicate event ignored; sequence gap locks commands until authoritative snapshot",
+          "ok": true
+        },
+        "test_settlement_polling": {
+          "checks": {
+            "M becomes ready after duplicate error": true,
+            "another match is ignored": true,
+            "boss receipt replaces pending screen": true,
+            "duplicate real rejection preserves M": true,
+            "failed query is visible and retryable": true,
+            "in-flight query is not duplicated": true,
+            "lost room keeps polling original match": true,
+            "lost room recovers ready receipt": true,
+            "lost room rejects unrelated receipt": true,
+            "old rejection cannot clear new match": true,
+            "pending assets are not treated as received": true,
+            "ready receipt stops polling": true
+          },
+          "ok": true
+        }
+      }
+    },
+    "ready_stop": {
+      "source_sha": "4f174ac04accafbb1ec34cbda85d962fecbd523e",
+      "passed": 5,
+      "exit_code": 0,
+      "report": "ready-stop-compat/report.json",
+      "adapter": "harness/godot_ui_compat-v1-env.py",
+      "live": false
+    },
+    "ack_cycles_stop": {
+      "source_sha": "4f174ac04accafbb1ec34cbda85d962fecbd523e",
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "trx": "ack/ack-process-02/results/targeted.trx",
+      "adapter": "harness/godot_ui_compat.py",
+      "csharp_test_sources_unmodified": true,
+      "live": false
+    },
+    "native_ui": {
+      "representatives": {
+        "source_sha": "4f174ac04accafbb1ec34cbda85d962fecbd523e",
+        "screenshots": 48,
+        "ok": true,
+        "errors": [],
+        "checks": 272,
+        "pixel_checks": 0
+      },
+      "mail": {
+        "source_sha": "4f174ac04accafbb1ec34cbda85d962fecbd523e",
+        "screenshots": 24,
+        "ok": true,
+        "errors": [],
+        "checks": 180,
+        "pixel_checks": 8
+      },
+      "codex": {
+        "source_sha": "4f174ac04accafbb1ec34cbda85d962fecbd523e",
+        "screenshots": 20,
+        "ok": true,
+        "errors": [],
+        "checks": 32,
+        "pixel_checks": 0
+      },
+      "monster-titles": {
+        "source_sha": "4f174ac04accafbb1ec34cbda85d962fecbd523e",
+        "screenshots": 36,
+        "ok": true,
+        "errors": [],
+        "checks": 0,
+        "pixel_checks": 72
+      }
+    }
+  },
+  "failed_attempts_retained": {
+    "ready_stop_without_art_dependencies": {
+      "failed": 5,
+      "exit_code": 1,
+      "evidence": "ready-stop/report.json",
+      "reason": "Missing transitive UI art.gd dependencies in the original compact fixture; business/DB checks do not make engine errors a pass."
+    },
+    "ack_wrapper_env_v1": {
+      "failed": 7,
+      "passed": 0,
+      "exit_code": 1,
+      "evidence": "ack/ack-process-01/results/targeted.trx",
+      "reason": "Original C# fixture clears environment; v1 adapter fails before starting real Godot. No ACK business acceptance."
+    }
+  },
+  "new_native_full_pngs": 128,
+  "new_native_title_crop_pngs": 144,
+  "new_native_title_pixel_comparisons": 72,
+  "new_native_index_rows": 272,
+  "new_native_png_bytes": 146593901,
+  "library_preview": {
+    "operation": "create_library_file",
+    "status": "succeeded",
+    "path": "/final_candidate_4f174ac0_monsters_en_1280.png",
+    "file_id": "file_000000007bc481fda6157fba1c847c80",
+    "library_file_id": "libfile_8ef134184abc81918594ddd749f1feb1",
+    "file_name": "final_candidate_4f174ac0_monsters_en_1280.png",
+    "current_version_number": 0,
+    "restored_from_version_number": null,
+    "directory_id": "libdir_650561cfd464819199bc4e5fc3614d0b",
+    "mime_type": "image/png",
+    "library_artifact_type": "image",
+    "file_size_bytes": 1411535,
+    "external_connectors_accessed": false,
+    "local_path": "/workspace/relicround-integration-f812879e/docs/reports/ui-final-f812879e-20260930/review/final_candidate_4f174ac0_monsters_en_1280.png",
+    "tested_source_sha": "4f174ac04accafbb1ec34cbda85d962fecbd523e",
+    "sha256": "2a28f1910d556b01d5023377eb2a5d138e978c21cbede2f7f4484d8f70cf6e55",
+    "dimensions": [
+      1280,
+      720
+    ],
+    "local_bytes": 1411535
+  },
+  "remaining": [
+    "CI blocked by account billing; no retry or account modification",
+    "LIVE, full historical image matrix, 1800 numeric parity, full DB suite, pressure and natural complete three-game routes not executed this batch"
+  ],
+  "Accepted": false,
+  "conflicts": []
+}

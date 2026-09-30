@@ -1,0 +1,124 @@
+{
+  "ack-process-01": {
+    "counters": {
+      "total": "7",
+      "executed": "7",
+      "passed": "0",
+      "failed": "7",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "tests": [
+      {
+        "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"stop-before-commit\")",
+        "outcome": "Failed",
+        "duration": "00:00:01.1645114"
+      },
+      {
+        "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"cycles-middle-uncommitted-loss\")",
+        "outcome": "Failed",
+        "duration": "00:00:01.2617645"
+      },
+      {
+        "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: \"drop-all-uncommitted\")",
+        "outcome": "Failed",
+        "duration": "00:00:05.1942323"
+      },
+      {
+        "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: \"drop-all-committed\")",
+        "outcome": "Failed",
+        "duration": "00:00:05.1756333"
+      },
+      {
+        "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: \"drop-first-committed\")",
+        "outcome": "Failed",
+        "duration": "00:00:05.4976769"
+      },
+      {
+        "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"cycles-middle-response-loss\")",
+        "outcome": "Failed",
+        "duration": "00:00:01.5751413"
+      },
+      {
+        "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"stop-after-commit\")",
+        "outcome": "Failed",
+        "duration": "00:00:01.2337290"
+      }
+    ],
+    "schema_cleanup": {
+      "exit_code": 0,
+      "remaining_owned_schemas": "0"
+    }
+  },
+  "ack-process-02": {
+    "counters": {
+      "total": "7",
+      "executed": "7",
+      "passed": "7",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "tests": [
+      {
+        "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"cycles-middle-response-loss\")",
+        "outcome": "Passed",
+        "duration": "00:01:47.7055920"
+      },
+      {
+        "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: \"drop-first-committed\")",
+        "outcome": "Passed",
+        "duration": "00:00:11.4427661"
+      },
+      {
+        "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"stop-before-commit\")",
+        "outcome": "Passed",
+        "duration": "00:00:38.7298506"
+      },
+      {
+        "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: \"drop-all-committed\")",
+        "outcome": "Passed",
+        "duration": "00:00:13.2615096"
+      },
+      {
+        "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: \"drop-all-uncommitted\")",
+        "outcome": "Passed",
+        "duration": "00:00:13.2848555"
+      },
+      {
+        "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"cycles-middle-uncommitted-loss\")",
+        "outcome": "Passed",
+        "duration": "00:01:46.6118171"
+      },
+      {
+        "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"stop-after-commit\")",
+        "outcome": "Passed",
+        "duration": "00:00:39.7813630"
+      }
+    ],
+    "schema_cleanup": {
+      "exit_code": 0,
+      "remaining_owned_schemas": "0"
+    }
+  }
+}
