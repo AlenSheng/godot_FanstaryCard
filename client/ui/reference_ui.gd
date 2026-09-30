@@ -734,6 +734,8 @@ func _preparation() -> void:
 	panel(Rect2(28, 122, 752, 900))
 	panel(Rect2(798, 122, 1094, 900))
 	_loadout(Rect2(45, 140, 715, 720), false, snap)
+	if locked:
+		text(P.localized("locked_deck_summary") % [snap.get("cardIds", []).size(), snap.get("maximumHp", 0)], Rect2(90, 226, 645, 36), 22, P.MUTED).name = "FrozenPreparationSummary"
 	var equipped_items: Array = []
 	if snap.get("equipmentSnapshots") is Array:
 		equipped_items = snap.get("equipmentSnapshots", [])

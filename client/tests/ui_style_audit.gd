@@ -117,6 +117,9 @@ func _matrix(suffix: String) -> void:
 	frozen_cards.fill("GUA-01")
 	Game.preparation = {"snapshot": {"heroClass": "Guardian", "maximumHp": 99, "cardIds": frozen_cards, "equipmentIds": [], "equipmentSnapshots": [], "classWeaponLevel": 4, "backpackTier": "Top", "backpackCapacity": 36, "safeSlotIndexes": [33, 34, 35], "potionCount": 2}}
 	await _take("prep_locked_" + suffix)
+	if OS.get_environment("FANTASYCARD_UI_ASSERT_FIXES") == "1":
+		var frozen_summary: Label = $UI._reference.get_node_or_null("FrozenPreparationSummary")
+		_check_audit(frozen_summary != null and frozen_summary.text == Palette.localized("locked_deck_summary") % [20, 99] and frozen_summary.get_visible_line_count() == 1, "frozen preparation deck and HP visible " + suffix)
 	Game.ticket = {"ticketId": "fixture-ticket"}
 	await _take("matching_" + suffix)
 	Game.ticket = {}

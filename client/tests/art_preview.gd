@@ -283,7 +283,7 @@ func _regressions() -> void:
 	for node in $UI._reference.find_children("*", "Label", true, false):
 		if node is Label: labels += node.text + "\n"
 	var P = preload("res://ui/palette.gd")
-	if not (P.localized_text("已锁定编组 20 / 20") in labels and P.localized_text("生命上限 99") in labels and P.localized_text("本命 +4") in labels):
+	if not (P.localized("locked_deck_summary") % [20, 99] in labels and P.localized("equipment_signature_level_locked") % 4 in labels and "%s 99" % P.localized("hp") in labels):
 		layout_errors.append("Locked preparation must render frozen deck, HP and weapon level")
 	if $UI._reference.get_node("HeroPortrait").texture != Art.portrait("Guardian"):
 		layout_errors.append("Locked preparation portrait must use the frozen class")
@@ -309,7 +309,7 @@ func _regressions() -> void:
 	var confirmation := $UI.get_node_or_null("ConfirmationModal")
 	if confirmation != null:
 		var description := confirmation.get_node("DialogPanel/Description") as Label
-		confirmation_found = str($UI.cards.C01.name) in description.text and "150" in description.text
+		confirmation_found = preload("res://ui/card_details.gd").localized_name("C01", $UI.cards.C01) in description.text and "150" in description.text
 		confirmation.get_node("DialogPanel/CancelButton").pressed.emit()
 	if not confirmation_found: layout_errors.append("Daily card purchase confirmation lost card name or price")
 	$UI.screen = "market"
