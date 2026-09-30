@@ -72,9 +72,12 @@
   "missing_screenshots": [],
   "production_code_after_primary": {
     "changed": [
-      "client/ui/card_view.gd"
+      "client/ui/card_view.gd",
+      "client/ui/reference_ui.gd"
     ],
-    "purpose": "Fit actual title font for long card names; no other production file changed after14540e"
+    "purpose": "Second batch fits actual card-title font in card_view.gd;third batch fits actual Button theme font and adjusts mail action widths in reference_ui.gd. No other production UI/resource file differs between primary14540e and latest7869260d.",
+    "latest_production_ui_sha": "7869260dab958c60e9b12e93f7441d0de3825e92",
+    "scope": "No claim that the primary500-capture matrix was rerun on later production sources."
   },
   "fixture_shutdown": {
     "core_final": "no resource retention lines in accepted final core log",
@@ -143,7 +146,7 @@
     "All combinations of server errors,4K,mobile unverified"
   ],
   "all_indexed_screenshots": 994,
-  "latest_production_ui_sha": "af14421e8489a7db67eb713950b1e8ee5ca58563",
+  "latest_production_ui_sha": "7869260dab958c60e9b12e93f7441d0de3825e92",
   "latest_ui_sha": "7869260dab958c60e9b12e93f7441d0de3825e92",
   "total_native_screenshots": 1066,
   "mail_labels_before": {
@@ -200,5 +203,57 @@
     "exit_code": 0,
     "source_sha": "7869260dab958c60e9b12e93f7441d0de3825e92",
     "log": "logs/mail-label-import.log"
-  }
+  },
+  "production_source_map": [
+    {
+      "batch": 1,
+      "name": "primary_ui_style",
+      "source_sha": "14540e8e69fc00572bd5697f4a5e6802ee4bb992",
+      "before_capture_sha": "b7099ef716235be68395255360cbd5cf6c67baff",
+      "after_captures": 500,
+      "before_captures": 434,
+      "validation": "core294+extended140+art66 after;18 native checks;primary resource import",
+      "reports": [
+        "core/after-report.json",
+        "extended/after-report.json",
+        "art/after-report.json",
+        "native-checks.json"
+      ]
+    },
+    {
+      "batch": 2,
+      "name": "card_title_font",
+      "source_sha": "af14421e8489a7db67eb713950b1e8ee5ca58563",
+      "previous_production_sha": "14540e8e69fc00572bd5697f4a5e6802ee4bb992",
+      "before_capture_sha": "b114305999ef6a410ae40d24a258eadd88262f94",
+      "changed_production_files": [
+        "client/ui/card_view.gd"
+      ],
+      "after_captures": 30,
+      "before_captures": 30,
+      "validation": "longest actual catalog card entry/detail;48 checks;18 native checks",
+      "reports": [
+        "codex/after-report.json",
+        "card-title-native-checks.json"
+      ]
+    },
+    {
+      "batch": 3,
+      "name": "mail_button_theme_font",
+      "source_sha": "7869260dab958c60e9b12e93f7441d0de3825e92",
+      "previous_production_sha": "af14421e8489a7db67eb713950b1e8ee5ca58563",
+      "before_capture_sha": "3011c7abdcedbd2bb5dfa1308e1fd2db3877a5c5",
+      "changed_production_files": [
+        "client/ui/reference_ui.gd"
+      ],
+      "after_captures": 36,
+      "before_captures": 36,
+      "validation": "270 checks;12 native button-region pixel comparisons;18 native checks;resource import",
+      "reports": [
+        "mail-labels/after-report.json",
+        "mail-labels/native-checks.json",
+        "logs/mail-label-import.log"
+      ]
+    }
+  ]
 }

@@ -11,6 +11,7 @@
 - 第二批生产 UI 源：`af14421e8489a7db67eb713950b1e8ee5ca58563`，只比第一批多改 `client/ui/card_view.gd` 的标题字体拟合。专项30张、48项检查和18项相关回归通过。原专项报告的 `production_ui_sha` 字段是第一批锚点，实际执行以 `source_sha` 为准；后续夹具将该说明字段命名为 `primary_matrix_ui_sha`。证据提交 `942e0c83` 没有再改生产代码。第三批见下一项；`changed-files.json` 给出三个批次精确文件。
 - 第三批生产 UI 源：`7869260dab958c60e9b12e93f7441d0de3825e92`，只改 `reference_ui.gd` 的按钮字体拟合及邮件按钮宽度。修复前 SHA `3011c7abdcedbd2bb5dfa1308e1fd2db3877a5c5`（生产 UI 与 `942e0c83` 一致）；同一专项修复前36张/48错误/退出1，修复后36张/270检查/0错误/退出0。18项原生回归再次通过。最新证据提交与此源的 `client/ui`/`client/assets` 应无差异。
 - [18 张已保存 Library 的原始前后截图 ID](library-previews.json)，不是缩略图或重绘图；[仓库内原始像素证明](proof/index.json) 与 [缺陷逐项记录](defects.json)。
+- 怪物 imageGen 原始 PNG 已另存用户 Library：`libfile_02794d971ed0819187e0ab7a3269d610`，955×1647 RGBA、1,131,008 bytes，原字节哈希不变。总交付为18张原生截图 + 1张生成原件；详见 `generation.json` 中的 `library_delivery`。
 
 ## 风格基准与核验事实
 
@@ -59,7 +60,7 @@
 
 ## 实际执行与覆盖
 
-[机器汇总](test-summary.json)、[18 项原生结果](native-checks.json)、[原始日志](logs/) 是结果依据。Godot 4.7.2，Linux Xorg `:93`，OpenGL Compatibility / Mesa llvmpipe，音频 Dummy。图片均由实际 viewport 保存，未用静态分析冒充运行画面。
+[机器汇总及准确三批 production_source_map](test-summary.json)、[18 项原生结果](native-checks.json)、[原始日志](logs/) 是结果依据。Godot 4.7.2，Linux Xorg `:93`，OpenGL Compatibility / Mesa llvmpipe，音频 Dummy。图片均由实际 viewport 保存，未用静态分析冒充运行画面。
 
 | 套件 | 实际截图 | 结果/边界 |
 | --- | ---: | --- |
