@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter
+import base64
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import hashlib
 import json
@@ -10,18 +11,57 @@ import os
 from pathlib import Path
 import subprocess
 import sys
+import shutil
 import threading
 import time
+from urllib.parse import parse_qs, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "client/tests"))
 from fixture_runtime import isolated_environment
-from http_protobuf_fixture import encode
+from http_protobuf_fixture import encode, varint
 
 VERSION = json.loads((ROOT / "client/data/catalog.json").read_text())["version"]
+REALTIME = json.loads((ROOT / "client/data/realtime_schema.json").read_text())["messages"]
 REQUEST_GATE_SECONDS = 5
 CASE_SECONDS = 6
 RUN_SECONDS = 55
+
+
+def realtime_encode(message, data):
+    body = b""
+    for tag, field in REALTIME[message].items():
+        if field["name"] not in data:
+            continue
+        value = data[field["name"]]
+        if field["type"] in {"int32", "int64", "uint32", "bool"}:
+            body += varint(int(tag) << 3) + varint(value)
+        else:
+            value = value.encode() if isinstance(value, str) else value
+            body += varint((int(tag) << 3) | 2) + varint(len(value)) + value
+    return body
+
+
+def envelope_strings(body):
+    def number(offset):
+        result, shift = 0, 0
+        while True:
+            value = body[offset]
+            offset += 1
+            result |= (value & 127) << shift
+            if value < 128:
+                return result, offset
+            shift += 7
+    offset, fields = 0, {}
+    while offset < len(body):
+        tag, offset = number(offset)
+        if tag & 7 == 0:
+            _, offset = number(offset)
+        else:
+            size, offset = number(offset)
+            fields[tag >> 3] = body[offset:offset + size]
+            offset += size
+    return fields
 
 
 def bootstrap(receipt=None, account="callback-A"):
@@ -67,6 +107,44 @@ class Handler(BaseHTTPRequestHandler):
         self.respond(200, json.dumps(result).encode(), "application/json")
 
     def do_GET(self):
+        uri = urlsplit(self.path)
+        if uri.path == "/ws/v1/callback":
+            key = self.headers["Sec-WebSocket-Key"] + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"
+            self.send_response(101)
+            self.send_header("Upgrade", "websocket")
+            self.send_header("Connection", "Upgrade")
+            self.send_header("Sec-WebSocket-Accept", base64.b64encode(hashlib.sha1(key.encode()).digest()).decode())
+            self.end_headers()
+            self.connection.settimeout(REQUEST_GATE_SECONDS)
+            header = self.rfile.read(2)
+            size = header[1] & 127
+            if size == 126:
+                size = int.from_bytes(self.rfile.read(2), "big")
+            elif size == 127:
+                size = int.from_bytes(self.rfile.read(8), "big")
+            mask = self.rfile.read(4) if header[1] & 128 else b""
+            packet = self.rfile.read(size)
+            if mask:
+                packet = bytes(value ^ mask[index % 4] for index, value in enumerate(packet))
+            fields = envelope_strings(packet)
+            request_id = fields[3].decode()
+            rejected = realtime_encode("CommandRejectedEvent", {"code": "NOT_IN_ROOM", "detail": "Controlled callback rejection"})
+            response = realtime_encode("ServerEnvelope", {"protocol_version": 1, "type": "error.command_rejected",
+                "request_id": request_id, "sequence": int(parse_qs(uri.query)["sequence"][0]), "room_revision": 8, "payload": rejected})
+            self.wfile.write(b"\x82" + (bytes([len(response)]) if len(response) < 126 else b"\x7e" + len(response).to_bytes(2, "big")) + response)
+            self.wfile.flush()
+            with self.server.lock:
+                self.server.records.append({"case_id": self.server.case_id, "path": uri.path, "type": "websocket",
+                    "action": fields[2].decode(), "request_id": request_id, "request_media": "application/protobuf", "paused": False,
+                    "status": 101, "gate_released": True, "completed_ns": time.monotonic_ns()})
+            # Keep the upgraded connection open until Godot consumes the frame
+            # and closes it; a bare TCP close can discard a queued WS packet.
+            try:
+                self.rfile.read(2)
+            except TimeoutError:
+                pass
+            self.close_connection = True
+            return
         if self.path == "/api/v1/client-info":
             self.respond(200, json.dumps({"configVersion": VERSION}).encode(), "application/json")
             return
@@ -100,6 +178,7 @@ def sha(path):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--gateway-overlay", type=Path, help="Root-owned Gateway candidate copied only into a disposable runtime fixture")
     args = parser.parse_args()
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
@@ -112,7 +191,21 @@ def main():
     thread.start()
     env = isolated_environment(output, FANTASYCARD_SERVER_URL=f"http://127.0.0.1:{server.server_port}",
                                FANTASYCARD_LOAD_RUN_ID="pr13-callback-offline", PR13_CALLBACK_CASE_SECONDS=str(CASE_SECONDS))
-    command = [executable, "--headless", "--path", str(ROOT / "client"), "--script", "res://tests/pr13_callback_isolation.gd"]
+    project = ROOT / "client"
+    if args.gateway_overlay:
+        project = output / "runtime" / "client"
+        project.mkdir()
+        for entry in (ROOT / "client").iterdir():
+            if entry.name == "network":
+                (project / "network").mkdir()
+                for source in entry.iterdir():
+                    if source.name == "gateway.gd":
+                        shutil.copyfile(args.gateway_overlay, project / "network/gateway.gd")
+                    else:
+                        (project / "network" / source.name).symlink_to(source, target_is_directory=source.is_dir())
+            else:
+                (project / entry.name).symlink_to(entry, target_is_directory=entry.is_dir())
+    command = [executable, "--headless", "--path", str(project), "--script", "res://tests/pr13_callback_isolation.gd"]
     started = time.monotonic()
     try:
         run = subprocess.run(command, env=env, capture_output=True, text=True, timeout=RUN_SECONDS)
@@ -131,6 +224,10 @@ def main():
                                 "client/tests/http_protobuf_fixture.py", "client/tests/fixture_runtime.py",
                                 "docs/plans/PR13_ACCEPTANCE_DETAILS_20260930.json"]))
         manifest = [{"path": p, "bytes": (ROOT / p).stat().st_size, "sha256": sha(ROOT / p)} for p in sources]
+        if args.gateway_overlay:
+            gateway = next(row for row in manifest if row["path"] == "client/network/gateway.gd")
+            gateway.update(bytes=args.gateway_overlay.stat().st_size, sha256=sha(args.gateway_overlay),
+                           SourceOverlay=str(args.gateway_overlay.resolve()), base_sha256=sha(ROOT / "client/network/gateway.gd"))
         (output / "source_manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
         (output / "commands.json").write_text(json.dumps({"command": command, "cwd": str(ROOT), "exit_code": run.returncode,
             "elapsed_seconds": time.monotonic() - started, "deadlines": {"request_gate_seconds": REQUEST_GATE_SECONDS, "case_seconds": CASE_SECONDS, "run_seconds": RUN_SECONDS},
@@ -143,7 +240,7 @@ def main():
                   "canonical_cases": lines, "service_requests": len(server.records), "controlled_delayed_requests": sum(row["paused"] for row in server.records),
                   "remaining_profiles": ["POSTGRES", "LIVE"], "support_only": ["PR13-B11.2-T01", "PR13-B11.2-T02"],
                   "support_remaining_profiles": ["POSTGRES", "LIVE", "RENDER"],
-                  "qualification": "Real Godot GameStore _on_event/request entries and protobuf loopback HTTP; events are controlled component injections, with no database or live server."}
+                  "qualification": "Real Godot GameStore _on_event/request entries, a real Gateway.send command/WS rejection, and protobuf loopback HTTP; other events are controlled component injections, with no database or live server."}
         (output / "report.json").write_text(json.dumps(report, indent=2) + "\n")
         evidence_manifest = [{"path": p.name, "bytes": p.stat().st_size, "sha256": sha(p)}
                              for p in sorted(output.iterdir()) if p.is_file() and p.name != "manifest.json"]

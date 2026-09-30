@@ -66,6 +66,31 @@ func _origin() -> Dictionary: return game.gateway.capture_context()
 func _error(origin: Dictionary) -> void:
 	game._on_event("error.command_rejected", {"code": "NOT_IN_ROOM", "_origin_context": origin.duplicate(true)})
 
+func _wire_correlated_error() -> void:
+	var socket := WebSocketPeer.new()
+	game.gateway.socket = socket
+	socket.connect_to_url(game.gateway.base_url.replace("http://", "ws://") + "/ws/v1/callback?sequence=" + str(sequence + 1))
+	while socket.get_ready_state() != WebSocketPeer.STATE_OPEN and Time.get_ticks_msec() < case_deadline:
+		socket.poll()
+		await process_frame
+	checks.real_websocket_command_sent = game.gateway.send("room.snapshot.read", {}, "callback-actual-command")
+	while socket.get_available_packet_count() == 0 and Time.get_ticks_msec() < case_deadline:
+		socket.poll()
+		await process_frame
+	if socket.get_available_packet_count() > 0:
+		checks.real_websocket_response_received = true
+		sequence += 1
+		game.gateway._receive(socket.get_packet())
+	else:
+		checks.real_websocket_response_received = false
+	socket.close()
+
+func _wire_unrelated_error() -> void:
+	sequence += 1
+	var proto := Proto.new()
+	game.gateway._receive(proto.encode("ServerEnvelope", {"protocol_version": 1, "type": "error.command_rejected",
+		"sequence": sequence, "room_revision": 8, "payload": proto.encode("CommandRejectedEvent", {"code": "NOT_IN_ROOM"})}))
+
 func _state(label: String) -> void:
 	samples.append({"label": label, "session_generation": game.gateway.session_generation,
 		"account": game.gateway.authenticated_user_id, "match_id": game.room.get("match_id", ""),
@@ -90,7 +115,7 @@ func _run() -> void:
 	_snapshot(M)
 	var origin := _origin()
 	await _plan()
-	_error(origin)
+	await _wire_correlated_error()
 	await _drain()
 	_state("first_NOT_IN_ROOM_no_receipt")
 	await _plan()
@@ -132,6 +157,9 @@ func _run() -> void:
 	await _drain()
 	_state("missing_origin_error")
 	checks.no_context_cannot_clear_valid_M = game.room.get("match_id", "") == M
+	_wire_unrelated_error()
+	_state("uncorrelated_protobuf_Gateway_receive")
+	checks.uncorrelated_wire_error_preserves_M = game.room.get("match_id", "") == M and game.gateway.room_id == "room-" + M
 	_snapshot(M)
 	origin = _origin()
 	origin.match_id = ""
