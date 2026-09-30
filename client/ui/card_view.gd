@@ -70,9 +70,13 @@ func configure(id: String, info: Dictionary, description: String, selected: bool
 		var level := int(options.get("level", 0))
 		# card_view.gdshader moves the frame's text panel below the portrait:
 		# its usable interior is y=303..357, not the source texture's y=256..348.
-		var title := _text(CardDetails.localized_name(id, info), Rect2(24, 304, 170, 26), 18, P.GOLD)
+		var title := _text(CardDetails.localized_name(id, info), Rect2(24, 304, 170, 26), 18, P.GOLD, false)
 		title.add_theme_font_override("font", P.font("title"))
 		title.name = "CardName"
+		title.max_lines_visible = 1
+		title.autowrap_mode = TextServer.AUTOWRAP_OFF
+		title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		_fit_card_effect_font(title, 18)
 		var effect_label := _text(effect.replace("\n", " "), Rect2(24, 331, 170, 24), 16, P.PAPER, false)
 		effect_label.name = "CardEffect"
 		effect_label.max_lines_visible = 1
