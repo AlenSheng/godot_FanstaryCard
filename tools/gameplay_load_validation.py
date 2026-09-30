@@ -109,6 +109,9 @@ def aggregate_window(statuses: list[dict]) -> dict:
         "attempt_result_counts": dict(Counter(str(row.get("result", "unknown")) for row in attempts)),
         "valid_attempt_latency_count": latency(attempts)["count"],
         "valid_latency_count": latency(completed_http)["count"],
+        "latency_sample_quality": {
+            "http": "unavailable" if not completed_http else "insufficient" if latency(completed_http)["count"]<20 else "sufficient_for_diagnostic_rule",
+            "realtime": "unavailable" if not realtime else "insufficient" if latency(realtime)["count"]<10 else "sufficient_for_diagnostic_rule"},
         "error_rate": errors / len(completed_http) if completed_http else 0.0,
         "steady_error_count": steady_errors, "steady_sample_count": len(completed_steady),
         "steady_error_rate": steady_errors / len(completed_steady) if completed_steady else 0.0,
@@ -210,7 +213,8 @@ def owned_statuses(processes: list[dict], statuses: list[dict]) -> tuple[list[di
             invalid += 1
             continue
         entry = entries.get(cid)
-        if (entry is None or status.get("pid") != entry["process"].pid
+        if (entry is None or not isinstance(status.get("pid"),int) or isinstance(status.get("pid"),bool)
+                or status.get("pid",0)<1 or status.get("pid") != entry["process"].pid
                 or status.get("run_id") != entry.get("run_id")
                 or status.get("process_epoch") != entry.get("process_epoch")):
             invalid += 1

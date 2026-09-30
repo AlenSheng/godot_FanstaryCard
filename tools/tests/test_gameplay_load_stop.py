@@ -8,11 +8,30 @@ import unittest
 from tools.cloud_load_test import stop_all
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from gameplay_load_test import read_owned_statuses
-from gameplay_load_test import metrics, QUERIES
+from gameplay_load_test import metrics, QUERIES, completed_smoke
 from gameplay_load_validation import workload_snapshot
 
 
 class StopTests(unittest.TestCase):
+    def test_multi_account_smoke_waits_for_every_account(self):
+        import json
+        class Child:
+            def __init__(self, code): self.returncode=code
+            def poll(self): return self.returncode
+        with tempfile.TemporaryDirectory() as directory:
+            entries=[]
+            for index in range(10):
+                report=Path(directory)/str(index)
+                report.write_text(json.dumps({'ok':True,'cycles_completed':3}),encoding='utf8')
+                entries.append({'process':Child(0),'report':report})
+            self.assertIsNone(completed_smoke(entries[:1],10,3))
+            entries[-1]['process'].returncode=None
+            self.assertIsNone(completed_smoke(entries,10,3))
+            entries[-1]['process'].returncode=0
+            self.assertTrue(completed_smoke(entries,10,3))
+            entries[-1]['report'].write_text(json.dumps({'ok':True,'cycles_completed':2}),encoding='utf8')
+            self.assertFalse(completed_smoke(entries,10,3))
+
     def test_monitoring_uses_one_snapshot_and_preserves_unknowns(self):
         import io, json
         from unittest.mock import patch

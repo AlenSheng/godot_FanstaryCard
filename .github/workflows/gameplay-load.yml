@@ -6,6 +6,7 @@ on:
       - 'tools/gameplay_load*.py'
       - 'tools/pr13_runtime_evidence.py'
       - 'tools/pr13_local_checks.py'
+      - 'tools/pr13_offline_cases.py'
       - 'tools/cloud_load_test.py'
       - 'tools/tests/**'
       - 'client/network/**'
@@ -72,6 +73,7 @@ jobs:
           godot="$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64"
           python client/tests/run_http_boundary.py --godot "$godot" --output test-results/gameplay-load/http-boundary
           python client/tests/run_http_protobuf_client.py --godot "$godot" --work-dir test-results/gameplay-load/http-fixture
+          python tools/pr13_offline_cases.py --godot "$godot" --output test-results/gameplay-load/offline-cases
       - name: Same-session callback races
         shell: bash
         run: |

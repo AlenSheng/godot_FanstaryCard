@@ -54,6 +54,13 @@ def save(path, data):
     tmp.write_text(json.dumps(data, ensure_ascii=False, indent=2),encoding='utf-8')
     tmp.replace(path)
 
+def completed_smoke(processes, expected_clients, cycles):
+    if len(processes)!=expected_clients or any(entry['process'].poll() is None for entry in processes):
+        return None
+    reports=[read_json(entry['report']) or {} for entry in processes]
+    return all(entry['process'].returncode==0 and report.get('ok') is True and
+               isinstance(report.get('cycles_completed'),int) and not isinstance(report.get('cycles_completed'),bool) and
+               report['cycles_completed']>=cycles for entry,report in zip(processes,reports))
 
 def read_owned_statuses(processes, cache=None):
     statuses = []
@@ -116,6 +123,7 @@ def main():
     parser.add_argument('--launch-interval-seconds',type=float,default=0,
                         help='Preregistered spacing between account launches; sampling continues during ramps')
     parser.add_argument('--smoke-cycles',type=int,default=3)
+    parser.add_argument('--smoke-clients',type=int,default=1)
     parser.add_argument('--load-profile', choices=('cyclic-gameplay','active-hold','functional-cycles'), default='cyclic-gameplay')
     parser.add_argument('--target-online',type=int)
     parser.add_argument('--target-active',type=int)
@@ -131,7 +139,7 @@ def main():
     parser.add_argument('--output',type=Path,default=ROOT/'outputs'/'gameplay-load')
     args=parser.parse_args()
     if not Path(args.godot).is_file(): parser.error('Godot executable is missing')
-    if min(args.max_groups,args.max_seconds,args.group_size,args.group_interval,args.smoke_cycles)<1:
+    if min(args.max_groups,args.max_seconds,args.group_size,args.group_interval,args.smoke_cycles,args.smoke_clients)<1:
         parser.error('Group, duration and cycle limits must be positive')
     if not math.isfinite(args.launch_interval_seconds) or args.launch_interval_seconds < 0:
         parser.error('Launch spacing must be finite and nonnegative')
@@ -144,6 +152,7 @@ def main():
         print('Prepared: bounded local run; --smoke validates three cycles by default. --run requires monitoring.')
         return 0
     if args.run and args.smoke: parser.error('Choose --smoke or --run')
+    if args.run and args.smoke_clients!=1: parser.error('--smoke-clients belongs to the smoke profile')
     if args.run and args.load_profile == 'functional-cycles': parser.error('Functional cycles are smoke scenarios and cannot prove capacity')
     if args.run:
         baseline=metrics(args.prometheus)
@@ -157,7 +166,7 @@ def main():
         'protocol/realtime/v1/realtime.proto'))
     run_dir=args.output.resolve()/(time.strftime('%Y%m%d-%H%M%S')+'-'+uuid.uuid4().hex[:6])
     run_dir.mkdir(parents=True)
-    expected_clients = 1 if args.smoke else args.max_groups * args.group_size
+    expected_clients = args.smoke_clients if args.smoke else args.max_groups * args.group_size
     contract = {'profile':args.load_profile,
         'acceptance_scope':['execution','evidence','load','gameplay','cleanup'] if args.smoke else ['execution','evidence','load','performance','cleanup'],
         'target_online':expected_clients if args.target_online is None else args.target_online,
@@ -176,7 +185,7 @@ def main():
     next_group=started_monotonic; next_sample=started_monotonic+10
     pending_launches=collections.deque(); next_launch=started_monotonic
     groups=0; reason='running'
-    group_size=1 if args.smoke else args.group_size
+    group_size=args.smoke_clients if args.smoke else args.group_size
     probes=concurrent.futures.ThreadPoolExecutor(max_workers=2,thread_name_prefix='load-probe')
     try:
         while True:
@@ -292,9 +301,9 @@ def main():
                     break
                 breached=[k for k,v in streaks.items() if v>=3]
                 if breached: reason='redline:'+','.join(breached); break
-                if args.smoke and len(processes)==1 and processes[0]['process'].poll() is not None:
-                    data=read_json(processes[0]['report']) or {}
-                    smoke_verified=processes[0]['process'].returncode==0 and data.get('ok') is True and data.get('cycles_completed',0)>=args.smoke_cycles
+                smoke_result=completed_smoke(processes,expected_clients,args.smoke_cycles) if args.smoke else None
+                if smoke_result is not None:
+                    smoke_verified=smoke_result
                     reason='smoke_passed' if smoke_verified else 'smoke_failed'
                     break
                 while next_sample<=time.monotonic(): next_sample+=10
