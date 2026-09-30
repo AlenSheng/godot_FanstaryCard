@@ -66,7 +66,7 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
         var now = timeProvider.GetUtcNow();
         await PreparationRepository.ExpireStaleAsync(
             connection, transaction, playerId, now, cancellationToken);
-        await using (var replay = new NpgsqlCommand("SELECT ticket_id,preparation_id,status,queued_at,(SELECT match_id FROM match_players WHERE player_id=$1 LIMIT 1) FROM match_tickets WHERE player_id=$1 AND request_id=$2", connection, transaction))
+        await using (var replay = new NpgsqlCommand("SELECT t.ticket_id,t.preparation_id,t.status,t.queued_at,mp.match_id FROM match_tickets t LEFT JOIN match_players mp ON mp.player_id=t.player_id AND mp.preparation_id=t.preparation_id WHERE t.player_id=$1 AND t.request_id=$2", connection, transaction))
         {
             replay.Parameters.AddWithValue(playerId); replay.Parameters.AddWithValue(requestId);
             await using var reader = await replay.ExecuteReaderAsync(cancellationToken);
@@ -335,7 +335,12 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
     {
         await using var command = dataSource.CreateCommand("UPDATE matches SET status='Running' WHERE match_id=$1 AND status='Launching'");
         command.Parameters.AddWithValue(matchId);
-        if (await command.ExecuteNonQueryAsync(cancellationToken) != 1)
+        if (await command.ExecuteNonQueryAsync(cancellationToken) == 1) return;
+        // The UPDATE may have committed even when its response was lost.
+        // Replays accept that durable result, but never reopen a terminal match.
+        await using var status = dataSource.CreateCommand("SELECT status FROM matches WHERE match_id=$1");
+        status.Parameters.AddWithValue(matchId);
+        if (await status.ExecuteScalarAsync(cancellationToken) is not "Running")
             throw new InvalidOperationException("The launching match could not transition to Running.");
     }
 

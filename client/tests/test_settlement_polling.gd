@@ -4,6 +4,8 @@ class SettlementGateway extends Node:
 	var token := "test-session"
 	var session_generation := 1
 	var calls := 0
+	var room_id := ""
+	var room_revision := 0
 	var response := {"ok": false, "status": 503}
 
 	func request(_path: String, _method: int = HTTPClient.METHOD_GET, _body: Variant = null, _quiet: Array = []) -> Dictionary:
@@ -34,6 +36,34 @@ func run_test() -> Dictionary:
 	before = gateway.calls
 	store.retry_settlement()
 	checks["ready receipt stops polling"] = gateway.calls == before
+	store.settlement = {}
+	store.room = {}
+	store._settlement_recovery_match_id = "boss-match"
+	gateway.response.data.unfinishedSettlement = null
+	store.retry_settlement()
+	checks["lost room keeps polling original match"] = store.settlement.is_empty() and store._settlement_recovery_match_id == "boss-match"
+	gateway.response.data.unfinishedSettlement = {"settlementId": "other", "matchId": "old-match"}
+	store.retry_settlement()
+	checks["lost room rejects unrelated receipt"] = store.settlement.is_empty()
+	gateway.response.data.unfinishedSettlement = {"settlementId": "receipt", "matchId": "boss-match"}
+	store.retry_settlement()
+	checks["lost room recovers ready receipt"] = store.settlement.get("settlementId") == "receipt" and store._settlement_recovery_match_id.is_empty()
+	# Reproduce through the public error callback, without seeding recovery state.
+	store.settlement = {}
+	store.room = {"match_id": "match-M", "room_id": "room-M"}
+	gateway.response = {"ok": true, "data": {"configVersion": store.CATALOG.data.version,
+		"player": {}, "wallet": {}, "materials": {}, "shop": {}, "market": [],
+		"inventory": {}, "mail": {}, "activePreparation": null, "unfinishedSettlement": null}}
+	store._on_event("error.command_rejected", {"code": "NOT_IN_ROOM"})
+	store._on_event("error.command_rejected", {"code": "NOT_IN_ROOM"})
+	checks["duplicate real rejection preserves M"] = store.room.is_empty() and store._settlement_recovery_match_id == "match-M"
+	gateway.response.data.unfinishedSettlement = {"settlementId": "receipt-M", "matchId": "match-M"}
+	store.retry_settlement()
+	checks["M becomes ready after duplicate error"] = store.settlement.get("settlementId", "") == "receipt-M"
+	store.settlement = {}
+	store.room = {"match_id": "new-match", "room_id": "new-room"}
+	store._on_event("error.command_rejected", {"code": "NOT_IN_ROOM", "_origin_context": {"match_id": "match-M"}})
+	checks["old rejection cannot clear new match"] = store.room.get("match_id") == "new-match"
 	store.free()
 	gateway.free()
 	return {"ok": not checks.values().has(false), "checks": checks}

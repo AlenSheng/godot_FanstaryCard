@@ -8,6 +8,7 @@ signal telemetry(sample: Dictionary)
 
 const Proto = preload("res://network/protobuf.gd")
 const HttpProtocol = preload("res://network/http_protocol.gd")
+const ReusableHttpClient = preload("res://network/reusable_http_client.gd")
 const HTTP_BACKGROUND_DECODE_BYTES := 8 * 1024
 const DEFAULT_LOCAL_BASE_URL := "http://127.0.0.1:5080"
 const PRODUCTION_BASE_URL := "https://www.relicbound.cn"
@@ -68,6 +69,17 @@ var last_rtt_ms: int = -1
 var _connecting_at: int = 0
 var _ticket_generation: int = -1
 var _pending_http: Dictionary = {}
+var _http_origin_contexts: Dictionary = {}
+var _http_read_epoch := 0
+var telemetry_context: Dictionary = {}
+var current_match_id := ""
+
+func capture_context() -> Dictionary:
+	var context := telemetry_context.duplicate(true)
+	context.merge({"origin": base_url, "session_generation": session_generation,
+		"room_id": room_id, "match_id": current_match_id}, true)
+	return context
+var _reusable_http := ReusableHttpClient.new()
 var _pending_request_started: Dictionary = {}
 var _pending_ping_request_id := ""
 var _ping_sent_at: int = 0
@@ -83,6 +95,13 @@ func _ready() -> void:
 	launch_base_url_override = OS.get_environment("FANTASYCARD_SERVER_URL").strip_edges().trim_suffix("/")
 	if not launch_base_url_override.is_empty():
 		base_url = launch_base_url_override
+	# Autoloads initialize before the load scene. Opt out before reading or writing
+	# the shared user:// file, which otherwise lets workers inherit each other's
+	# replay cursor and room identity.
+	if not OS.get_environment("FANTASYCARD_LOAD_RUN_ID").is_empty():
+		persist_session = false
+		device_id = "load-" + new_id()
+		return
 	var config := ConfigFile.new()
 	if config.load("user://session.cfg") == OK:
 		device_id = config.get_value("session", "device_id", "")
@@ -163,6 +182,7 @@ func clear_replay() -> void:
 
 func end_session(reason: String, notify: bool = true) -> void:
 	session_generation += 1
+	current_match_id = ""
 	token = ""
 	token_expires_at = 0.0
 	reconnect_enabled = false
@@ -265,33 +285,47 @@ func _request_page(path: String, method: int = HTTPClient.METHOD_GET, data: Vari
 		body = proto.encode(contract.request, HttpProtocol.to_wire(contract.request, data if data is Dictionary else {}))
 		if not proto.error.is_empty(): return {"ok": false, "status": 0, "error": "请求编码失败: " + proto.error}
 	# Binary identity preserves all 64 integer bits and is never logged.
-	var fingerprint := str(generation) + ":" + str(method) + path + ("" if body.is_empty() else Marshalls.raw_to_base64(body))
+	if method != HTTPClient.METHOD_GET: _http_read_epoch += 1
+	var fingerprint := str(generation) + ":" + base_url + ":" + (str(_http_read_epoch) if method == HTTPClient.METHOD_GET else "write") + ":" + str(method) + path + ("" if body.is_empty() else Marshalls.raw_to_base64(body))
 	if _pending_http.has(fingerprint):
-		return {"ok": false, "status": 0, "error": "请求正在处理"}
-	_pending_http[fingerprint] = true
+		if method != HTTPClient.METHOD_GET:
+			return {"ok": false, "status": 0, "error": "请求正在处理"}
+		var existing: Dictionary = _pending_http[fingerprint]
+		while not existing.done and generation == session_generation:
+			await get_tree().process_frame
+		if generation != session_generation: return {"ok": false, "status": 401, "stale_session": true, "error": "登录状态已改变"}
+		return existing.result.duplicate(true)
+	var flight := {"done": false, "result": {}}
+	_pending_http[fingerprint] = flight
 	var request_started_at := Time.get_ticks_msec()
+	var request_deadline := request_started_at + 30000
 	var key := "godot-" + new_id()
+	var origin_context := capture_context()
+	_http_origin_contexts[key] = origin_context
 	var media := "application/json" if perimeter else "application/protobuf"
 	var headers := PackedStringArray(["Content-Type: " + media, "Accept: " + media, "X-Trace-Id: " + key])
 	if not perimeter and not token.is_empty(): headers.append("Authorization: Bearer " + token)
 	if method != HTTPClient.METHOD_GET: headers.append("Idempotency-Key: " + key)
 	var result: Dictionary = {"ok": false, "status": 0, "error": "无法连接服务器"}
 	# One logical request retains exactly one key across transport and throttling retries.
+	var attempt_count := 0
+	var retry_backoff_ms := 0.0
 	for attempt in range(3):
-		if generation != session_generation: break
+		if generation != session_generation or Time.get_ticks_msec() >= request_deadline: break
+		attempt_count = attempt + 1
+		var attempt_started_at := Time.get_ticks_msec()
 		var delay := pow(2.0, attempt)
-		var http := HTTPRequest.new()
-		http.timeout = 10.0
-		http.body_size_limit = 2 * 1024 * 1024
-		add_child(http)
-		var start := http.request_raw(base_url + path, headers, method, body)
-		if start != OK:
-			http.queue_free()
+		var response: Array = await _request_http_transport(path, method, headers, body, mini(10000, maxi(1, request_deadline - Time.get_ticks_msec())))
+		if response[0] != HTTPRequest.RESULT_SUCCESS and int(response[1]) == 0:
 			result = {"ok": false, "status": 0, "error": "无法连接服务器"}
+			_emit_http_attempt(path, method, key, generation, attempt_count, attempt_started_at, 0,
+				"timeout" if response[0] == HTTPRequest.RESULT_TIMEOUT else "transport_error",
+				0, 0.0, delay * 1000.0 if attempt < 2 else 0.0)
+			if response[0] == HTTPRequest.RESULT_BODY_SIZE_LIMIT_EXCEEDED: break
 		else:
-			var response: Array = await http.request_completed
-			http.queue_free()
-			if generation != session_generation: break
+			if generation != session_generation:
+				_emit_http_attempt(path, method, key, generation, attempt_count, attempt_started_at, int(response[1]), "cancelled", response[3].size(), 0.0, 0.0, response.size() > 4 and response[4])
+				break
 			var code: int = response[1]
 			var decoded: Dictionary
 			if perimeter:
@@ -299,30 +333,84 @@ func _request_page(path: String, method: int = HTTPClient.METHOD_GET, data: Vari
 				var parse_status := parser.parse(response[3].get_string_from_utf8())
 				decoded = {"ok": parse_status == OK, "data": normalize_response(parser.data) if parse_status == OK else null, "error": "服务器响应无效"}
 			else: decoded = await _decode_http_response(contract, code, response[2], response[3])
-			if generation != session_generation: break
+			if generation != session_generation:
+				_emit_http_attempt(path, method, key, generation, attempt_count, attempt_started_at, code, "cancelled", response[3].size(), decoded.get("decode_ms", 0.0), 0.0, response.size() > 4 and response[4])
+				break
 			var parsed: Variant = decoded.data
 			var success: bool = response[0] == HTTPRequest.RESULT_SUCCESS and code >= 200 and code < 300 and decoded.ok
 			var message := "服务器不可用，请检查地址与服务器状态"
 			if not decoded.ok: message = decoded.error
 			elif parsed is Dictionary: message = str(parsed.get("detail", parsed.get("title", message)))
 			result = {"ok": success, "status": code, "data": parsed, "error": message, "headers": response[2], "body_bytes": response[3].size(), "decode_ms": decoded.get("decode_ms", 0.0), "decode_worker": decoded.get("decode_worker", false)}
+			var may_retry: bool = not success and code in [0, 429, 502, 503, 504] and attempt < 2
+			# A received invalid protobuf/JSON body is a terminal decode failure.
+			if code != 0 and not decoded.ok: may_retry = false
+			if response[0] in [HTTPRequest.RESULT_BODY_SIZE_LIMIT_EXCEEDED, HTTPRequest.RESULT_BODY_DECOMPRESS_FAILED]: may_retry = false
+			if may_retry:
+				var retry_after := HttpProtocol.header(response[2], "Retry-After")
+				if retry_after.is_valid_int(): delay = maxf(delay, float(retry_after))
+				elif parsed is Dictionary and parsed.get("retryAfterSeconds") != null: delay = maxf(delay, float(parsed.retryAfterSeconds))
+				if delay > 60.0: may_retry = false
+			var attempt_result := "success" if success else ("decode_error" if not decoded.ok else ("timeout" if response[0] == HTTPRequest.RESULT_TIMEOUT else ("transport_error" if response[0] != HTTPRequest.RESULT_SUCCESS else "http_error")))
+			_emit_http_attempt(path, method, key, generation, attempt_count, attempt_started_at, code, attempt_result, response[3].size(), decoded.get("decode_ms", 0.0), delay * 1000.0 if may_retry else 0.0, response.size() > 4 and response[4])
 			if code == 401:
 				end_session("Steam 登录票据无效，请重试" if path == "/api/v1/auth/steam" else "登录已过期，请重新登录")
-			if success or code not in [0, 429, 502, 503, 504]: break
-			# Invalid received responses never trigger a retry or a format fallback.
-			if code != 0 and not decoded.ok: break
-			if response[0] in [HTTPRequest.RESULT_BODY_SIZE_LIMIT_EXCEEDED, HTTPRequest.RESULT_BODY_DECOMPRESS_FAILED]: break
-			var retry_after := HttpProtocol.header(response[2], "Retry-After")
-			if retry_after.is_valid_int(): delay = maxf(delay, float(retry_after))
-			elif parsed is Dictionary and parsed.get("retryAfterSeconds") != null: delay = maxf(delay, float(parsed.retryAfterSeconds))
-			if delay > 60.0: break
-		if attempt < 2: await get_tree().create_timer(delay).timeout
+			if not may_retry: break
+		if attempt < 2:
+			retry_backoff_ms += delay * 1000.0
+			# Jitter only adds to the server's minimum wait. The total logical
+			# deadline and session cancellation also bound Retry-After.
+			var wake_at := Time.get_ticks_msec() + int(delay * 1000.0) + randi_range(0, 200)
+			while Time.get_ticks_msec() < mini(wake_at, request_deadline) and generation == session_generation:
+				await get_tree().process_frame
 	_pending_http.erase(fingerprint)
-	telemetry.emit({"type": "http", "path": path, "method": method, "duration_ms": Time.get_ticks_msec() - request_started_at, "status": result.get("status", 0), "ok": result.get("ok", false)})
+	var terminal := {"type": "http", "path": path, "route": str(contract.get("path", path.get_slice("?", 0))),
+		"method": method, "logical_request_id": key, "trace_id": key, "attempt_no": attempt_count,
+		"session_generation": generation, "duration_ms": Time.get_ticks_msec() - request_started_at,
+		"status": result.get("status", 0), "ok": result.get("ok", false),
+		"result": "cancelled" if generation != session_generation else ("success" if result.get("ok", false) else "error"),
+		"body_bytes": result.get("body_bytes", 0), "decode_ms": result.get("decode_ms", 0.0),
+		"retry_backoff_ms": retry_backoff_ms}
+	terminal.merge(origin_context, false)
+	telemetry.emit(terminal)
+	_http_origin_contexts.erase(key)
 	if generation != session_generation:
-		return {"ok": false, "status": 401, "error": "登录状态已改变，请重新登录", "stale_session": true}
+		result = {"ok": false, "status": 401, "error": "登录状态已改变，请重新登录", "stale_session": true}
+	flight.result = result.duplicate(true)
+	flight.done = true
+	if generation != session_generation: return result
 	if not result.ok and result.status not in quiet_statuses: failed.emit(result.error)
 	return result
+
+func _request_http_transport(path: String, method: int, headers: PackedStringArray,
+		body: PackedByteArray, timeout_ms: int = 10000) -> Array:
+	if not OS.has_feature("web") and not _reusable_http.busy:
+		return await _reusable_http.request(get_tree(), base_url, path, method, headers, body, timeout_ms)
+	var http := HTTPRequest.new()
+	http.timeout = float(timeout_ms) / 1000.0
+	http.body_size_limit = 2 * 1024 * 1024
+	add_child(http)
+	var start := http.request_raw(base_url + path, headers, method, body)
+	if start != OK:
+		http.queue_free()
+		return [HTTPRequest.RESULT_CANT_CONNECT, 0, PackedStringArray(), PackedByteArray(), false]
+	var response: Array = await http.request_completed
+	http.queue_free()
+	return response
+
+func _emit_http_attempt(path: String, method: int, request_id: String, generation: int,
+		attempt_no: int, started_at: int, status: int, outcome: String, body_bytes: int,
+		decode_ms: float, retry_backoff_ms: float, connection_reused: bool = false) -> void:
+	var contract := HttpProtocol.route(path, method)
+	var sample := {"type": "http_attempt", "route": str(contract.get("path", path.get_slice("?", 0))),
+		"method": method, "logical_request_id": request_id, "trace_id": request_id,
+		"attempt_no": attempt_no, "session_generation": generation,
+		"duration_ms": Time.get_ticks_msec() - started_at, "status": status,
+		"result": outcome, "ok": outcome == "success", "body_bytes": body_bytes,
+		"decode_ms": decode_ms, "retry_backoff_ms": retry_backoff_ms,
+		"connection_reused": connection_reused}
+	sample.merge(_http_origin_contexts.get(request_id, {}), false)
+	telemetry.emit(sample)
 
 static func normalize_request(data: Variant) -> Variant:
 	if data is Dictionary:
@@ -423,7 +511,7 @@ func send(kind: String, payload: Dictionary = {}, request_id: String = "") -> bo
 		_preview_request_ids[envelope.request_id] = true
 		if _preview_request_ids.size() > 32: _preview_request_ids.erase(_preview_request_ids.keys()[0])
 	if sent:
-		_pending_request_started[effective_request_id] = {"action": kind, "started_at": Time.get_ticks_msec()}
+		_pending_request_started[effective_request_id] = {"action": kind, "started_at": Time.get_ticks_msec(), "context": capture_context()}
 		if _pending_request_started.size() > 128: _pending_request_started.erase(_pending_request_started.keys()[0])
 		if kind == "ping":
 			_pending_ping_request_id = effective_request_id
@@ -455,9 +543,12 @@ func _receive(packet: PackedByteArray) -> void:
 	var response_request_id := str(envelope.get("request_id", ""))
 	if _pending_request_started.has(response_request_id):
 		var started: Dictionary = _pending_request_started[response_request_id]
+		payload["_origin_context"] = started.get("context", {}).duplicate(true)
 		_pending_request_started.erase(response_request_id)
 		var duration_ms := Time.get_ticks_msec() - int(started.get("started_at", Time.get_ticks_msec()))
-		telemetry.emit({"type": "realtime", "action": started.get("action", kind), "response_type": kind, "duration_ms": duration_ms, "request_id": response_request_id, "replayed": recovering})
+		var sample := {"type": "realtime", "action": started.get("action", kind), "response_type": kind, "duration_ms": duration_ms, "request_id": response_request_id, "replayed": recovering}
+		sample.merge(started.get("context", {}), false)
+		telemetry.emit(sample)
 	if kind == "pong" and response_request_id == _pending_ping_request_id:
 		last_rtt_ms = Time.get_ticks_msec() - _ping_sent_at
 		_pending_ping_request_id = ""
@@ -495,8 +586,11 @@ func _receive(packet: PackedByteArray) -> void:
 		return
 	if kind == "room.snapshot":
 		room_id = payload.get("room_id", room_id)
+		current_match_id = str(payload.get("match_id", current_match_id))
 		room_revision = int(payload.get("room_revision", room_revision))
 		recovering = false
+	elif kind == "room.started":
+		current_match_id = str(payload.get("match_id", payload.get("snapshot", {}).get("match_id", current_match_id)))
 	elif envelope.has("room_revision"):
 		room_revision = maxi(room_revision, int(envelope.room_revision))
 	if kind == "session.snapshot":
@@ -516,6 +610,8 @@ func _receive(packet: PackedByteArray) -> void:
 			event_received.emit("combat.preview_rejected", payload)
 			return
 		if payload.get("code", "") == "NOT_IN_ROOM":
+			var origin: Dictionary = payload.get("_origin_context", {})
+			if (not response_request_id.is_empty() and origin.is_empty()) or (not room_id.is_empty() and not origin.is_empty() and str(origin.get("room_id", "")) != room_id): return
 			room_id = ""
 			room_revision = 0
 			recovering = false

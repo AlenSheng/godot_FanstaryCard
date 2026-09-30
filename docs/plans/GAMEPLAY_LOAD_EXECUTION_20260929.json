@@ -1,0 +1,694 @@
+{
+  "schema_version": 1,
+  "plan_version": "2.1",
+  "updated_date": "2026-09-29",
+  "repository": "AlenSheng/godot_FanstaryCard",
+  "pull_request": 13,
+  "branch": "codex/pr13-implementation-20260929",
+  "target_branch": "release",
+  "reviewed_base_sha": "28c6c7e7d3898e4d2abd186f53361477ba380330",
+  "reviewed_code_sha": "50bce18064cdc08e47c3b5aaa30defae75ae526c",
+  "execution_state": "InProgress",
+  "dispatch_enabled": false,
+  "max_parallel_workers": 3,
+  "draft_required": true,
+  "merge_authorized": false,
+  "deploy_authorized": true,
+  "production_load_test_authorized": true,
+  "production_load_scope": "User authorized cloud deployment and bounded formal-server testing on 2026-09-29. Temporary per-IP limit overrides for the shared test IP were restored byte-for-byte after the runs. Merge remains unauthorized; PR remains draft.",
+  "production_rate_limit_change_authorized": true,
+  "is_executable_launcher": false,
+  "plan_path": "docs/plans/GAMEPLAY_LOAD_REPAIR_20260929.md",
+  "review_path": "docs/reports/gameplay-load-20260929/pr13-planning-review.md",
+  "main_agent": {
+    "role": "MAIN",
+    "runtime_agent_id": null,
+    "responsibilities": [
+      "baseline",
+      "contracts",
+      "file_ownership",
+      "integration",
+      "independent_acceptance",
+      "pr_report"
+    ],
+    "only_acceptance_authority": true
+  },
+  "agents": [
+    {
+      "role": "AG-01",
+      "name": "发压器与统计",
+      "runtime_agent_id": null,
+      "state": "NotStarted",
+      "write_domains": [
+        "tools/gameplay_load_test.py",
+        "tools/gameplay_load_validation.py",
+        "approved cloud_load_test helpers",
+        "owned unit tests"
+      ]
+    },
+    {
+      "role": "AG-02",
+      "name": "客户端生命周期",
+      "runtime_agent_id": null,
+      "state": "NotStarted",
+      "write_domains": [
+        "client/tests/gameplay_load_client.gd",
+        "client/state/game_store.gd",
+        "owned lifecycle tests"
+      ]
+    },
+    {
+      "role": "AG-03",
+      "name": "HTTP与遥测",
+      "runtime_agent_id": null,
+      "state": "NotStarted",
+      "write_domains": [
+        "client/network/gateway.gd",
+        "new transport helpers",
+        "owned transport tests"
+      ]
+    },
+    {
+      "role": "AG-04",
+      "name": "服务端匹配与观测",
+      "runtime_agent_id": null,
+      "state": "NotStarted",
+      "write_domains": [
+        "server Matchmaking",
+        "server Bootstrap",
+        "approved Realtime and metrics files",
+        "owned server tests"
+      ]
+    },
+    {
+      "role": "AG-05",
+      "name": "协议与兼容",
+      "runtime_agent_id": null,
+      "state": "NotStarted",
+      "write_domains": [
+        "protocol/http/v1",
+        "protocol/realtime/v1",
+        "protocol generators and generated files",
+        "protocol compatibility tests"
+      ],
+      "activation": "OnlyWhenContractChangeIsNecessary"
+    },
+    {
+      "role": "AG-06",
+      "name": "独立QA",
+      "runtime_agent_id": null,
+      "state": "NotStarted",
+      "write_domains": [
+        "new client/tests/load_acceptance",
+        "new tools/tests/load_acceptance",
+        "independent acceptance tests and evidence"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "LOAD-01",
+      "priority": "P0",
+      "state": "InProgress",
+      "owner": "AG-01",
+      "accepted_by": null,
+      "subtasks": [
+        {
+          "id": "01.1",
+          "title": "完整输入schema校验",
+          "state": "InProgress",
+          "acceptance_detail_id": "LOAD-01.1",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "01.2",
+          "title": "状态与遥测统一进程归属",
+          "state": "InProgress",
+          "acceptance_detail_id": "LOAD-01.2",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "01.3",
+          "title": "活跃在线与房间状态分离",
+          "state": "InProgress",
+          "acceptance_detail_id": "LOAD-01.3",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "01.4",
+          "title": "真实轻量进程集成回归",
+          "state": "Planned",
+          "acceptance_detail_id": "LOAD-01.4",
+          "specification_state": "ReviewReady"
+        }
+      ]
+    },
+    {
+      "id": "LOAD-02",
+      "priority": "P0",
+      "state": "InProgress",
+      "owner": "AG-01",
+      "accepted_by": null,
+      "subtasks": [
+        {
+          "id": "02.1",
+          "title": "多原因结果与验收模型",
+          "state": "Planned",
+          "acceptance_detail_id": "LOAD-02.1",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "02.2",
+          "title": "STOP前后失败取消归类",
+          "state": "InProgress",
+          "acceptance_detail_id": "LOAD-02.2",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "02.3",
+          "title": "有界清理及应急报告",
+          "state": "InProgress",
+          "acceptance_detail_id": "LOAD-02.3",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "02.4",
+          "title": "退出码与调用者兼容",
+          "state": "Planned",
+          "acceptance_detail_id": "LOAD-02.4",
+          "specification_state": "ReviewReady"
+        }
+      ]
+    },
+    {
+      "id": "LOAD-03",
+      "priority": "P0",
+      "state": "InProgress",
+      "owner": "AG-01",
+      "accepted_by": null,
+      "subtasks": [
+        {
+          "id": "03.1",
+          "title": "事件序号与JSONL守恒",
+          "state": "InProgress",
+          "acceptance_detail_id": "LOAD-03.1",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "03.2",
+          "title": "真实生命周期阶段统计",
+          "state": "InProgress",
+          "acceptance_detail_id": "LOAD-03.2",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "03.3",
+          "title": "错误超时取消及pending计数",
+          "state": "InProgress",
+          "acceptance_detail_id": "LOAD-03.3",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "03.4",
+          "title": "分布窗口与错误率",
+          "state": "Planned",
+          "acceptance_detail_id": "LOAD-03.4",
+          "specification_state": "ReviewReady"
+        }
+      ]
+    },
+    {
+      "id": "LOAD-04",
+      "priority": "P0",
+      "state": "InProgress",
+      "owner": "AG-02",
+      "accepted_by": null,
+      "subtasks": [
+        {
+          "id": "04.1",
+          "title": "关联当前匹配的ready状态机",
+          "state": "InProgress",
+          "acceptance_detail_id": "LOAD-04.1",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "04.2",
+          "title": "有界可靠ready确认",
+          "state": "InProgress",
+          "acceptance_detail_id": "LOAD-04.2",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "04.3",
+          "title": "进房超时与权威恢复",
+          "state": "Planned",
+          "acceptance_detail_id": "LOAD-04.3",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "04.4",
+          "title": "ready乱序失败反例矩阵",
+          "state": "Planned",
+          "acceptance_detail_id": "LOAD-04.4",
+          "specification_state": "ReviewReady"
+        }
+      ]
+    },
+    {
+      "id": "LOAD-05",
+      "priority": "P0",
+      "state": "InProgress",
+      "owner": "AG-02",
+      "accepted_by": null,
+      "subtasks": [
+        {
+          "id": "05.1",
+          "title": "以真实ack成功判完成",
+          "state": "InProgress",
+          "acceptance_detail_id": "LOAD-05.1",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "05.2",
+          "title": "多局状态与迟到回调隔离",
+          "state": "InProgress",
+          "acceptance_detail_id": "LOAD-05.2",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "05.3",
+          "title": "各阶段取消与可恢复清理",
+          "state": "Planned",
+          "acceptance_detail_id": "LOAD-05.3",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "05.4",
+          "title": "结算幂等及三局回归",
+          "state": "Planned",
+          "acceptance_detail_id": "LOAD-05.4",
+          "specification_state": "ReviewReady"
+        }
+      ]
+    },
+    {
+      "id": "LOAD-06",
+      "priority": "P0",
+      "state": "InProgress",
+      "owner": "MAIN",
+      "accepted_by": null,
+      "subtasks": [
+        {
+          "id": "06.1",
+          "title": "HTTP attempt与逻辑请求遥测",
+          "owner": "AG-03",
+          "state": "InProgress",
+          "acceptance_detail_id": "LOAD-06.1",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "06.2",
+          "title": "cycle时间轴与玩法进度",
+          "owner": "AG-02",
+          "state": "InProgress",
+          "acceptance_detail_id": "LOAD-06.2",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "06.3",
+          "title": "服务端分段trace",
+          "owner": "AG-04",
+          "state": "InProgress",
+          "acceptance_detail_id": "LOAD-06.3",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "06.4",
+          "title": "时间单位缺失脱敏合同",
+          "owner": "MAIN",
+          "state": "InProgress",
+          "acceptance_detail_id": "LOAD-06.4",
+          "specification_state": "ReviewReady"
+        }
+      ]
+    },
+    {
+      "id": "LOAD-07",
+      "priority": "P1",
+      "state": "InProgress",
+      "owner": "AG-01",
+      "accepted_by": null,
+      "subtasks": [
+        {
+          "id": "07.1",
+          "title": "异步有界探测与单调时钟",
+          "state": "InProgress",
+          "acceptance_detail_id": "LOAD-07.1",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "07.2",
+          "title": "发压机资源与实际负载",
+          "state": "InProgress",
+          "acceptance_detail_id": "LOAD-07.2",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "07.3",
+          "title": "缓冲证据写入及启动隔离",
+          "state": "InProgress",
+          "collaborators": [
+            "AG-02"
+          ],
+          "acceptance_detail_id": "LOAD-07.3",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "07.4",
+          "title": "发压器故障矩阵及安全上限",
+          "state": "InProgress",
+          "acceptance_detail_id": "LOAD-07.4",
+          "specification_state": "ReviewReady"
+        }
+      ]
+    },
+    {
+      "id": "LOAD-08",
+      "priority": "P1",
+      "state": "ConditionalOnEvidence",
+      "owner": "MAIN",
+      "accepted_by": null,
+      "subtasks": [
+        {
+          "id": "08.1",
+          "title": "真实有界连接复用",
+          "owner": "AG-03",
+          "state": "Conditional",
+          "acceptance_detail_id": "LOAD-08.1",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "08.2",
+          "title": "GET单飞和缓存一致性",
+          "owner": "AG-02",
+          "collaborators": [
+            "AG-03"
+          ],
+          "state": "Conditional",
+          "acceptance_detail_id": "LOAD-08.2",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "08.3",
+          "title": "有界抖动重试",
+          "owner": "AG-03",
+          "state": "Conditional",
+          "acceptance_detail_id": "LOAD-08.3",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "08.4",
+          "title": "轻量结算查询及兼容",
+          "owner": "AG-04",
+          "collaborators": [
+            "AG-05",
+            "AG-02",
+            "AG-03"
+          ],
+          "state": "Conditional",
+          "acceptance_detail_id": "LOAD-08.4",
+          "specification_state": "ReviewReady"
+        }
+      ]
+    },
+    {
+      "id": "LOAD-09",
+      "priority": "P1",
+      "state": "InProgress",
+      "owner": "AG-04",
+      "accepted_by": null,
+      "subtasks": [
+        {
+          "id": "09.1",
+          "title": "enqueue回放match关联复现修复",
+          "state": "InProgress",
+          "acceptance_detail_id": "LOAD-09.1",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "09.2",
+          "title": "ready及launch故障恢复",
+          "state": "InProgress",
+          "acceptance_detail_id": "LOAD-09.2",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "09.3",
+          "title": "慢连接队头阻塞隔离",
+          "state": "Conditional",
+          "acceptance_detail_id": "LOAD-09.3",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "09.4",
+          "title": "实例级剖析与热点最小修改",
+          "state": "Conditional",
+          "acceptance_detail_id": "LOAD-09.4",
+          "specification_state": "ReviewReady"
+        }
+      ]
+    },
+    {
+      "id": "LOAD-10",
+      "priority": "P0",
+      "state": "InProgress",
+      "owner": "AG-06",
+      "accepted_by": null,
+      "subtasks": [
+        {
+          "id": "10.1",
+          "title": "离线及协议独立验收",
+          "state": "InProgress",
+          "acceptance_detail_id": "LOAD-10.1",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "10.2",
+          "title": "真实Godot三局验收",
+          "state": "InProgress",
+          "acceptance_detail_id": "LOAD-10.2",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "10.3",
+          "title": "全链路故障矩阵",
+          "state": "Planned",
+          "acceptance_detail_id": "LOAD-10.3",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "10.4",
+          "title": "同负载A/B与活跃在房保持",
+          "state": "Planned",
+          "acceptance_detail_id": "LOAD-10.4",
+          "specification_state": "ReviewReady"
+        }
+      ]
+    },
+    {
+      "id": "LOAD-11",
+      "priority": "P1",
+      "state": "PartiallyRecordedNeedsCompletion",
+      "owner": "MAIN",
+      "accepted_by": null,
+      "subtasks": [
+        {
+          "id": "11.1",
+          "title": "实施前代码工具链证据冻结",
+          "state": "InProgress",
+          "wave": "W0",
+          "acceptance_detail_id": "LOAD-11.1",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "11.2",
+          "title": "完整来源清单与脱敏",
+          "state": "Planned",
+          "collaborators": [
+            "AG-01"
+          ],
+          "acceptance_detail_id": "LOAD-11.2",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "11.3",
+          "title": "独立CI与可重复证据",
+          "state": "InProgress",
+          "collaborators": [
+            "AG-06"
+          ],
+          "acceptance_detail_id": "LOAD-11.3",
+          "specification_state": "ReviewReady"
+        },
+        {
+          "id": "11.4",
+          "title": "主agent验收PR交付回滚",
+          "state": "Planned",
+          "wave": "W3",
+          "acceptance_detail_id": "LOAD-11.4",
+          "specification_state": "ReviewReady"
+        }
+      ]
+    }
+  ],
+  "waves": [
+    {
+      "id": "W0",
+      "purpose": "Freeze11.1ContractsAndOwnership",
+      "unlocks": [
+        "OfflineRepairs",
+        "LifecycleRepairs",
+        "ServerCorrectnessReproduction"
+      ],
+      "notes": "Raw evidence gaps block historical attribution and performance acceptance, not all offline work."
+    },
+    {
+      "id": "W1",
+      "purpose": "EvidenceLifecycleInstrumentation",
+      "preferred_workers": [
+        "AG-01",
+        "AG-02",
+        "AG-04"
+      ],
+      "notes": "AG-03 takes an available slot for 06.1; never exceed max_parallel_workers."
+    },
+    {
+      "id": "W2",
+      "purpose": "ProfileThenOptimize",
+      "requires": [
+        "G1",
+        "G2",
+        "UsableTelemetry"
+      ],
+      "notes": "AG-05 completes necessary contracts in a slot before parallel client/server implementation."
+    },
+    {
+      "id": "W3",
+      "purpose": "IndependentQAAndMainAcceptance",
+      "requires": [
+        "IntegratedImplementationSHA"
+      ],
+      "notes": "Do not accept performance tasks without paired evidence or MAIN-approved NoChangeWithEvidence."
+    }
+  ],
+  "acceptance_gates": [
+    {
+      "id": "G0",
+      "name": "基线与安全",
+      "state": "Pending",
+      "accepted_by": null
+    },
+    {
+      "id": "G1",
+      "name": "离线与进程正确性",
+      "state": "Pending",
+      "accepted_by": null
+    },
+    {
+      "id": "G2",
+      "name": "玩法多局与幂等",
+      "state": "Pending",
+      "accepted_by": null
+    },
+    {
+      "id": "G3",
+      "name": "可观测性与对账",
+      "state": "Pending",
+      "accepted_by": null
+    },
+    {
+      "id": "G4",
+      "name": "同负载性能稳定性",
+      "state": "Pending",
+      "accepted_by": null
+    },
+    {
+      "id": "G5",
+      "name": "完整交付与回滚",
+      "state": "Pending",
+      "accepted_by": null
+    }
+  ],
+  "evidence_gaps": [
+    {
+      "id": "E01",
+      "description": "Full report.json and raw JSONL were not completely read/recomputed in this review",
+      "blocks": [
+        "historical_per_client_attribution",
+        "historical_full_reaggregation"
+      ]
+    },
+    {
+      "id": "E02",
+      "description": ".NET SDK 10.0.400 is installed; local Server.Tests ran 191 passed and 62 skipped. Disposable PostgreSQL CI ran the replay integration test (1 passed, 0 skipped). Pre-existing Domain.Tests source still fails compilation against PlayerCombatState; complete DB suite is not yet verified.",
+      "blocks": [
+        "G2 full-solution acceptance"
+      ]
+    },
+    {
+      "id": "E03",
+      "description": "Deployed route fix passed a ten-client 37-cycle run. Bounded 50/100-client cloud runs completed; 100 clients were concurrently online and active in rooms, with 130 acknowledged cycles. Historical raw data reconciliation, full fault matrices and sustained capacity at default limits remain open.",
+      "blocks": [
+        "G2 fault matrices",
+        "G3 historical attribution",
+        "G4 sustained capacity"
+      ]
+    }
+  ],
+  "implementation_checks_2026_09_29": {
+    "python_unittest": "33 passed",
+    "godot_version": "4.7.2.stable.official.ed1daf0bf",
+    "godot_offline": "15 suites passed; gameplay load client script parsed",
+    "server_targeted": "Full Server.Tests: 191 passed, 62 skipped; new room lifecycle tests passed; PostgreSQL integration remains skipped",
+    "database_replay_regression": "Passed in GitHub disposable PostgreSQL CI run 36533402709 (1 passed, 0 skipped)",
+    "load_offline_ci": "GitHub run 36541793993 at f92b5de: all four jobs passed (accounting, client, server-contract, server-postgres)",
+    "real_three_cycle_load": "Bounded one-client cloud smoke 20260929-141906-a00d74 passed: 3 acknowledged settlements, 499 consecutive events, exit 0, no forced termination",
+    "production_load": "PR server cb96d16 deployed and healthy. Ten-client run completed 37 acknowledged cycles; bounded 50- and 100-client runs reached load_window_completed. The 100-client run reached 100 online/in-room and 130 acknowledged cycles in 360 seconds. Temporary per-IP limits were restored. See cloud-validation-20260929.md; sustained default-limit capacity remains unproven."
+  },
+  "checks_performed_this_review": {
+    "python_version": "3.13.5",
+    "source_blobs_matched": true,
+    "existing_offline_tests": {
+      "passed": 22,
+      "total": 22
+    },
+    "additional_negative_probes": "Malformed schema exceptions and phase/room accounting gaps reproduced; code remains unchanged",
+    "godot_run": false,
+    "dotnet_run": false,
+    "load_test_run": false,
+    "runtime_code_changes": false
+  },
+  "handoff_required_fields": [
+    "task_ids",
+    "base_sha",
+    "head_sha",
+    "changed_files",
+    "schema_changes",
+    "repro_before",
+    "test_commands",
+    "exit_codes",
+    "artifact_paths",
+    "artifact_hashes",
+    "before_after_metrics",
+    "risks",
+    "rollback",
+    "remaining_blockers"
+  ],
+  "closure_rule": "Only MAIN may mark Accepted after independent checks on the integration SHA. Conditional tasks need implementation evidence or NoChangeWithEvidence. Missing environment/evidence remains Blocked, never Passed. Keep the PR draft until all gates are met and the user decides on merge.",
+  "acceptance_details": "docs/plans/PR13_ACCEPTANCE_DETAILS_20260930.json",
+  "acceptance_handbook": "docs/plans/PR13_ACCEPTANCE_DETAILS_20260930.md",
+  "specification_updated_date": "2026-09-30",
+  "specification_state": "ReviewReady_NotRuntimeAccepted",
+  "canonical_dependency_source": "docs/plans/PR13_ACCEPTANCE_DETAILS_20260930.json#requires_before_integration",
+  "dependency_note": "本细则取代父包级隐含依赖；原依赖作为历史分工保留，运行前以132子项无环依赖为准。"
+}

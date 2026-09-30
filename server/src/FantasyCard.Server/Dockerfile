@@ -24,6 +24,8 @@ RUN mkdir -p /framework /private \
     && ! find /input -type f \( -name '*.pdb' -o -name '*.cs' -o -name '*.key' -o -name '*.dpapi' \) -print -quit | grep -q .
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
+ARG FANTASYCARD_SOURCE_COMMIT=unrecorded
+LABEL org.opencontainers.image.revision=$FANTASYCARD_SOURCE_COMMIT
 WORKDIR /app
 COPY --from=build /input .
 # The publish output preserves restrictive source modes.  The runtime is

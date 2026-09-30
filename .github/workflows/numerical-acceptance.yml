@@ -1,7 +1,7 @@
 name: Numerical full acceptance
 on:
   pull_request:
-    paths: ['server/**', 'config/**', 'protocol/**', 'tools/export_client_catalog.py', '.github/workflows/numerical-acceptance.yml']
+    paths: ['server/**', 'config/**', 'protocol/**', 'tools/export_client_catalog.py', 'tools/pr13_factor_matrix.py', '.github/workflows/numerical-acceptance.yml']
   push:
     branches: ['codex/numerical-integration-20260928']
     paths: ['.github/workflows/numerical-acceptance.yml']
@@ -68,6 +68,9 @@ jobs:
           for players in 1 2 4; do
             dotnet run --project tools/FantasyCard.Numerics -c Release -- --samples 10000 --players "$players" --seed-start 0 > "../test-results/acceptance/routes-${players}.json"
           done
+      - name: Verify isolated single-factor instrumentation and unchanged controls
+        if: ${{ !cancelled() }}
+        run: python tools/pr13_factor_matrix.py --samples 3 --workers 1 --output test-results/acceptance/o6-factors
       - name: Verify published config parity and disabled candidate flags
         if: ${{ !cancelled() }}
         shell: python

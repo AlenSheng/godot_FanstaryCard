@@ -5,6 +5,11 @@
     <NoWarn>$(NoWarn);CA1707</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <!-- Keep independent schema fixtures bounded. Each concurrency test still
+         starts its own parallel operations; production deadlines are unchanged. -->
+    <None Update="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\src\FantasyCard.Server\FantasyCard.Server.csproj" />
     <ProjectReference Include="..\..\tools\FantasyCard.ConfigExporter\FantasyCard.ConfigExporter.csproj" />
   </ItemGroup>
