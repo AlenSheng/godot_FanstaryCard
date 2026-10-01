@@ -1,13 +1,13 @@
 # PR13 云端接管当前收据
 
-MAIN 已正式接受 15 子任务：LOAD01 四项，以及 LOAD02.1/.3/.4、LOAD03.1/.2、B02.1–.4、A05.2/.3。每项保持原来源 SHA、profile 和独立裁决，不把旧源改写为新候选通过。新增 11 项 S6 见 [MAIN 独立收据](MAIN_S6_bounded11_20261001.json)；LOAD01 仍分别引用 [ee8 三项](MAIN_S6_ee8adcf4.json) 和 [e060 schema 修复](MAIN_S6_e06037f5.json)。ROOT 没有代签。
+MAIN已正式接受15项：LOAD01四项，以及LOAD02.1/.3/.4、LOAD03.1/.2、B02.1–.4、A05.2/.3。每项保持原来源/profile/S6，不把旧源改写为新候选。[新11项裁决](MAIN_S6_bounded11_20261001.json)与[ee8三项](MAIN_S6_ee8adcf4.json)、[e060修复](MAIN_S6_e06037f5.json)分别记录。ROOT没有代签。
 
-已封存 19 项原批次业务固定 `f812879e4518fd09bf22656451cb563d62940298`，工具固定 `e06037f58738d0fbff86090e86d8bd06f8608e04`。原 [19 项收据](BOUNDED_19_RECEIPT.json)、[重放指令](INDEPENDENT_REPLAY_19.md) 保持历史内容；其当时的 Ready 提议已由上述 MAIN S6 接续。当前所选 19 项为 15 Accepted、4 Partial：A05.1、LOAD02.2、LOAD03.3/.4。
+A05.1新固定源 `62772be2a1bc28affffc3d057f259c8c5ded8e37` 已封存：完整Server299Passed/0Failed/0Skip、原canonical3及全部ACK/旧poll/普通终态/newN/资产窗口通过；2173私有文件52,314,867字节逐项SHA匹配。只在GameStore增加一行pending-ACK guard，生产提交 `7231c7499b7220b85c27be48ebbd127d7c0b7038`。33host已收回，ownedPG停止且data/socket删除；退出zombie实际状态保留。原2dda反例和76d完整296/3夹具204错误没有覆盖。[完整去敏报告](a05-guard-62772be2/report.json)、[独立重放](a05-guard-62772be2/REPLAY.md)、[原始索引](a05-guard-62772be2/PRIVATE_ARTIFACT_MANIFEST.json)交MAIN S6，A05.1仅Ready，未Accepted。
 
-当前批准实施 A05.1，随后 LOAD02.2；没有开始 LOAD03 telemetry 批次。A05 最小生产修改只在 `client/state/game_store.gd` 的 poll await 返回处增加 pending-ACK guard，提交 `7231c7499b7220b85c27be48ebbd127d7c0b7038`。原真实恢复 M 的旧 poll 在 ACK 等待期间重填结算反例已经重新复现；guard 后原断言通过。候选测试源 `76d7113d3888133a8d08fbd6338db838aa4cb01f` 的完整 Server 为 296 Passed / 3 Failed / 0 Skip，三个新增窗口仅在真实下一局准备取消后清空失败。原 raw 明确记录 relay 对 HTTP 204 写空 body 的 Kestrel 异常，导致三次取消请求响应中断。仅夹具修复提交 `62772be2a1bc28affffc3d057f259c8c5ded8e37`，取消、ACK 和资产断言均保留，尚待同源 focused3 与完整 Server。见 [中途失败与修复检查点](A05_GUARD_CHECKPOINT_20261001.json)。本候选未 Accepted，未线上操作、未修改 UI，尚未推送。
+选定19项当前15Accepted/1Ready/3Partial。132项为15Accepted/1Ready/41Partial/72NotRevalidated/3Blocked；G0–G5未签署，历史27显式runner回执不作总覆盖。三项剩余Partial为LOAD02.2和LOAD03.3/.4；当前只实施LOAD02.2真实PG timeout→STOP，新harness源码 `dfb3f88a73efd85cc4ed12b8d49038bebbb1f953` 已冻结，业务未新改。10s/30s预算和cleanup22s、BotFill30s保持。没有开始LOAD03 telemetry，未修改主题美术或UI组件。
 
-132 项当前为 15 Accepted / 42 Partial / 72 NotRevalidated / 3 Blocked；G0–G5 未签署。旧 27 显式 runner 回执仍是冻结历史字段，不能作为总覆盖。历史源 dirty、多 cohort、容量未达标、缺原始输入及全局 ledger mismatch=1 保留。局部 owned schema 审计不会关闭全局异常。[逐项登记](TASK_CHECKLIST.md)、[机器登记](register.json)、[case 映射](CASE_MAPPING.json) 和 [下一队列](NEXT_QUEUE.json) 给出原来源及未闭环项。
+历史19项[封存收据](BOUNDED_19_RECEIPT.json)保持当时内容，原业务f812、工具e060及组来源分别保留；[逐项登记](TASK_CHECKLIST.md)、[机器登记](register.json)、[case映射](CASE_MAPPING.json)、[下一队列](NEXT_QUEUE.json)记录接续。历史dirty/多cohort/容量失败、50/100原raw缺口和全局ledger mismatch=1保持，owned局部审计不关闭全局异常。
 
-原 2GB 交接包由父任务验完整 SHA、3929 manifest 和 147 关键输入；不重复下载。原 A05 1678 文件证据只读保留。四份 raw ZIP 共 31,096,278 字节已获用户明确授权保存到其私有 ChatGPT Library；唯一新尝试在 tools/list 阶段报 network，未返回任何 ID，四份大小和 SHA 均未改变，没有替代目的地。见 [原始日志保存收据](RAW4_LIBRARY_RECEIPT_20261001.json)。
+四份raw ZIP31,096,278字节已获用户授权保存私有Library，两次批准尝试均在保存返回前报同一network错误，无ID，原大小/SHA不变；父已明确暂停继续重试。[第二次失败收据](RAW4_LIBRARY_RETRY1_20261001.json)。没有换目的地。新的A05 raw也只留授权本地，Git提供去敏摘要、fixture及文件SHA索引。
 
-父任务已核实免费月额度恢复，PR18 Numerical run36769267487 attempt2 实际成功。额外 budget $0、StopYes 保持；两批本地稳定后只补必要最终候选 CI，不重跑旧中间 SHA。CI 不替代离线 S6。本批没有追加 LIVE/真人要求；缺失 server_create 技能按 canonical 已授权例外记录，未虚构已读。
+免费月额度恢复由MAIN实际run36769267487 attempt2证实，额外budget$0/StopYes保持；两批本地稳定后仅必要最终候选CI一次，中间文档推送skipCI。后续组合记录release新基线 `65361bcc27c51c28651c86c5dbba4f083a9b39e0`，main `1517f9fae8d865b8d663fa27d9fd38e95cb03d28`；这里只fetch核验，没有合入、合并或部署。缺失server_create技能按canonical已授权例外记录，未虚构已读。

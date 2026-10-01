@@ -3,9 +3,10 @@
   "stable_validation_code_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
   "production_behavior_baseline": "f812879e4518fd09bf22656451cb563d62940298",
   "current_counts": {
-    "Partial": 42,
+    "Partial": 41,
     "NotRevalidated": 72,
     "Accepted": 15,
+    "ReadyForAcceptance": 1,
     "Blocked": 3
   },
   "all_accepted": false,
@@ -38,10 +39,10 @@
       "task_ids": [
         "PR13-A05.1"
       ],
-      "action": "Minimal post-await pending-ACK guard committed7231; fixed actual relay source62772. Original P0 passes with guard; full-suite296/3 failure correctly retained and relay204 cause proven. Finish focused3/full Server, canonical receipt, then submit MAIN S6.",
+      "action": "62772 fixed full299/0/0 and canonical3 pass, ownedPG closed. MAIN independently replays complete A05 contract; ROOT has not signed.",
       "tests": "Same actual positive Pending/OS restart/ACK-await window; ordinary terminal negative control; current-N isolation; repeated ACK/READY; readonly asset/route final audits.",
-      "inputs": "offline-acceptance-f812/a05/P0_CAUSAL.json; proposed-game-store-poll-ack.patch; DERIVED_CHECKS.json",
-      "state": "AllocatedInProgress"
+      "inputs": "a05-guard-62772be2/report.json; minimal-replay.json; PRIVATE_ARTIFACT_MANIFEST.json",
+      "state": "ReadyForIndependentAcceptance"
     },
     {
       "order": 3,
@@ -52,7 +53,7 @@
       "action": "Prove actual PG game timeout before STOP retains failed cycle terminal classification; started=completed+failed+cancelled+active at common cutoff; unknown ACK remains pending until authority.",
       "missing": "Current actual Godot microtimeout plus model coordinator and separate actual PG ACKSTOP cannot jointly substitute for this whole original T01. No online gate.",
       "inputs": "offline-acceptance-f812/load02/evidence/MISSING_FACTS.json",
-      "state": "AllocatedWaitingForA05Seal",
+      "state": "AllocatedInProgress",
       "budgets_ms": {
         "attempt": 10000,
         "logical": 30000

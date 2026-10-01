@@ -1,0 +1,1037 @@
+{
+  "red": {
+    "host_start_count": 2,
+    "host_stop_count": 2,
+    "host_pid_sets_equal": true,
+    "host_duplicate_starts": false,
+    "host_stops": [
+      {
+        "label": "a05-causal-after",
+        "ProcessId": 102683,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/red/a05-causal-after-102683.log"
+      },
+      {
+        "label": "a05-causal-before",
+        "ProcessId": 102599,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/red/a05-causal-before-102599.log"
+      }
+    ],
+    "client_stops": [
+      {
+        "import": true,
+        "Id": 102630,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300",
+        "script": "pr13_a05_ack_poll_causal.gd"
+      },
+      {
+        "import": false,
+        "Id": 102650,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300",
+        "script": "pr13_a05_ack_poll_causal.gd"
+      }
+    ],
+    "host_pids_alive": [],
+    "client_pids_alive": []
+  },
+  "green": {
+    "host_start_count": 33,
+    "host_stop_count": 33,
+    "host_pid_sets_equal": true,
+    "host_duplicate_starts": false,
+    "host_stops": [
+      {
+        "label": "ack-drop-first-committed",
+        "ProcessId": 104474,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-drop-first-committed-104474.log"
+      },
+      {
+        "label": "ack-drop-all-committed",
+        "ProcessId": 104537,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-drop-all-committed-104537.log"
+      },
+      {
+        "label": "ack-drop-all-uncommitted",
+        "ProcessId": 104604,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-drop-all-uncommitted-104604.log"
+      },
+      {
+        "label": "a05-healthy-before",
+        "ProcessId": 104669,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/a05-healthy-before-104669.log"
+      },
+      {
+        "label": "a05-healthy-after",
+        "ProcessId": 104746,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/a05-healthy-after-104746.log"
+      },
+      {
+        "label": "ack-cycle-cycles-middle-uncommitted-loss",
+        "ProcessId": 104873,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-cycle-cycles-middle-uncommitted-loss-104873.log"
+      },
+      {
+        "label": "ack-cycle-stop-before-commit",
+        "ProcessId": 105021,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-cycle-stop-before-commit-105021.log"
+      },
+      {
+        "label": "ack-cycle-stop-after-commit",
+        "ProcessId": 105107,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-cycle-stop-after-commit-105107.log"
+      },
+      {
+        "label": "ack-cycle-cycles-middle-response-loss",
+        "ProcessId": 105213,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-cycle-cycles-middle-response-loss-105213.log"
+      },
+      {
+        "label": "a05-pending-before",
+        "ProcessId": 105312,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/a05-pending-before-105312.log"
+      },
+      {
+        "label": "a05-pending-after",
+        "ProcessId": 105378,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/a05-pending-after-105378.log"
+      },
+      {
+        "label": "quarantine",
+        "ProcessId": 105421,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/quarantine-105421.log"
+      },
+      {
+        "label": "guard-recovered-uncommitted-loss-after",
+        "ProcessId": 105516,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/guard-recovered-uncommitted-loss-after-105516.log"
+      },
+      {
+        "label": "guard-recovered-uncommitted-loss-before",
+        "ProcessId": 105452,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/guard-recovered-uncommitted-loss-before-105452.log"
+      },
+      {
+        "label": "guard-ordinary-success-before",
+        "ProcessId": 105552,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/guard-ordinary-success-before-105552.log"
+      },
+      {
+        "label": "guard-recovered-committed-loss-after",
+        "ProcessId": 105712,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/guard-recovered-committed-loss-after-105712.log"
+      },
+      {
+        "label": "guard-recovered-committed-loss-before",
+        "ProcessId": 105620,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/guard-recovered-committed-loss-before-105620.log"
+      },
+      {
+        "label": "a05-db-committed-response-loss",
+        "ProcessId": 105749,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/a05-db-committed-response-loss-105749.log"
+      },
+      {
+        "label": "a05-db-committed-restart",
+        "ProcessId": 105814,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/a05-db-committed-restart-105814.log"
+      },
+      {
+        "label": "a05-db-precommit",
+        "ProcessId": 105848,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/a05-db-precommit-105848.log"
+      },
+      {
+        "label": "extraction-0",
+        "ProcessId": 105941,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/extraction-0-105941.log"
+      },
+      {
+        "label": "extraction-1",
+        "ProcessId": 105970,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/extraction-1-105970.log"
+      },
+      {
+        "label": "extraction-2",
+        "ProcessId": 106002,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/extraction-2-106002.log"
+      },
+      {
+        "label": "entry-three",
+        "ProcessId": 106039,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/entry-three-106039.log"
+      },
+      {
+        "label": "entry-three-restart",
+        "ProcessId": 106105,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/entry-three-restart-106105.log"
+      },
+      {
+        "label": "register-committed-loss",
+        "ProcessId": 106138,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/register-committed-loss-106138.log"
+      },
+      {
+        "label": "register-committed-loss-restart",
+        "ProcessId": 106176,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/register-committed-loss-restart-106176.log"
+      },
+      {
+        "label": "running-1",
+        "ProcessId": 106207,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/running-1-106207.log"
+      },
+      {
+        "label": "running-2",
+        "ProcessId": 106236,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/running-2-106236.log"
+      },
+      {
+        "label": "pending-0",
+        "ProcessId": 106268,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/pending-0-106268.log"
+      },
+      {
+        "label": "pending-1",
+        "ProcessId": 106296,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/pending-1-106296.log"
+      },
+      {
+        "label": "a05-causal-after",
+        "ProcessId": 106390,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/a05-causal-after-106390.log"
+      },
+      {
+        "label": "a05-causal-before",
+        "ProcessId": 106327,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/a05-causal-before-106327.log"
+      }
+    ],
+    "client_stops": [
+      {
+        "mode": "drop-first-committed",
+        "import": true,
+        "Id": 104504,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-drop-first-committed-b8019d370f9b462d921ff8369cb649ab"
+      },
+      {
+        "mode": "drop-first-committed",
+        "import": false,
+        "Id": 104524,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-drop-first-committed-b8019d370f9b462d921ff8369cb649ab"
+      },
+      {
+        "mode": "drop-all-committed",
+        "import": true,
+        "Id": 104568,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-drop-all-committed-19b8074e0a8d4593b7c466df18c3bcd9"
+      },
+      {
+        "mode": "drop-all-committed",
+        "import": false,
+        "Id": 104588,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-drop-all-committed-19b8074e0a8d4593b7c466df18c3bcd9"
+      },
+      {
+        "mode": "drop-all-uncommitted",
+        "import": true,
+        "Id": 104634,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-drop-all-uncommitted-e9538dde72954ee9bf8540c2513ec744"
+      },
+      {
+        "mode": "drop-all-uncommitted",
+        "import": false,
+        "Id": 104653,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-drop-all-uncommitted-e9538dde72954ee9bf8540c2513ec744"
+      },
+      {
+        "import": true,
+        "Id": 104702,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-a05-healthy-78df11e4c78043f9819056feb6d51c7d",
+        "script": "pr13_a05_healthy_old_room.gd"
+      },
+      {
+        "import": false,
+        "Id": 104733,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-a05-healthy-78df11e4c78043f9819056feb6d51c7d",
+        "script": "pr13_a05_healthy_old_room.gd"
+      },
+      {
+        "mode": "cycles-middle-uncommitted-loss",
+        "import": true,
+        "Id": 104904,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-runner-cycles-middle-uncommitted-loss-4f339c4c33234c90a4c4f467d8305cfc"
+      },
+      {
+        "mode": "cycles-middle-uncommitted-loss",
+        "import": false,
+        "Id": 104932,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-runner-cycles-middle-uncommitted-loss-4f339c4c33234c90a4c4f467d8305cfc"
+      },
+      {
+        "mode": "stop-before-commit",
+        "import": true,
+        "Id": 105059,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-runner-stop-before-commit-9e36b539851c4f21a7c3c7af95eebe4e"
+      },
+      {
+        "mode": "stop-before-commit",
+        "import": false,
+        "Id": 105078,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-runner-stop-before-commit-9e36b539851c4f21a7c3c7af95eebe4e"
+      },
+      {
+        "mode": "stop-after-commit",
+        "import": true,
+        "Id": 105137,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-runner-stop-after-commit-86535a7fc9ff4dea8310cba0f4275166"
+      },
+      {
+        "mode": "stop-after-commit",
+        "import": false,
+        "Id": 105158,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-runner-stop-after-commit-86535a7fc9ff4dea8310cba0f4275166"
+      },
+      {
+        "mode": "cycles-middle-response-loss",
+        "import": true,
+        "Id": 105243,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-runner-cycles-middle-response-loss-d4ecda11ea8f4b7e800a805b8f6975aa"
+      },
+      {
+        "mode": "cycles-middle-response-loss",
+        "import": false,
+        "Id": 105263,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-runner-cycles-middle-response-loss-d4ecda11ea8f4b7e800a805b8f6975aa"
+      },
+      {
+        "import": true,
+        "Id": 105342,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-a05-pending-02833287e98247fe8188e737685635e5",
+        "script": "pr13_a05_pending_runtime.gd"
+      },
+      {
+        "import": false,
+        "Id": 105361,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-a05-pending-02833287e98247fe8188e737685635e5",
+        "script": "pr13_a05_pending_runtime.gd"
+      },
+      {
+        "import": true,
+        "Id": 105482,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-guard-recovered-uncommitted-loss-322e45aa1aa14d0191bef1cefd02d39f",
+        "script": "pr13_a05_guard_windows.gd"
+      },
+      {
+        "import": false,
+        "Id": 105500,
+        "ExitCode": 1,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-guard-recovered-uncommitted-loss-322e45aa1aa14d0191bef1cefd02d39f",
+        "script": "pr13_a05_guard_windows.gd"
+      },
+      {
+        "import": true,
+        "Id": 105582,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-guard-ordinary-success-2f6af3e305ad439aae5991661107e620",
+        "script": "pr13_a05_guard_windows.gd"
+      },
+      {
+        "import": false,
+        "Id": 105601,
+        "ExitCode": 1,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-guard-ordinary-success-2f6af3e305ad439aae5991661107e620",
+        "script": "pr13_a05_guard_windows.gd"
+      },
+      {
+        "import": true,
+        "Id": 105648,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-guard-recovered-committed-loss-7f395bfe3abd48c68296133afee87abd",
+        "script": "pr13_a05_guard_windows.gd"
+      },
+      {
+        "import": false,
+        "Id": 105677,
+        "ExitCode": 1,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-guard-recovered-committed-loss-7f395bfe3abd48c68296133afee87abd",
+        "script": "pr13_a05_guard_windows.gd"
+      },
+      {
+        "import": true,
+        "Id": 105778,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-a05-db-committed-response-loss-cbc04774ede14069ab6f6b90bfeba84e",
+        "script": "pr13_a05_persistence_fault.gd"
+      },
+      {
+        "import": false,
+        "Id": 105796,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-a05-db-committed-response-loss-cbc04774ede14069ab6f6b90bfeba84e",
+        "script": "pr13_a05_persistence_fault.gd"
+      },
+      {
+        "import": true,
+        "Id": 105877,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-a05-db-precommit-364b6b09bc25477fb75f842e442237ec",
+        "script": "pr13_a05_persistence_fault.gd"
+      },
+      {
+        "import": false,
+        "Id": 105899,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-a05-db-precommit-364b6b09bc25477fb75f842e442237ec",
+        "script": "pr13_a05_persistence_fault.gd"
+      },
+      {
+        "import": true,
+        "Id": 106357,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-a05-causal-d4f3bdd5c8fd4cc1a21cb24d4b3db759",
+        "script": "pr13_a05_ack_poll_causal.gd"
+      },
+      {
+        "import": false,
+        "Id": 106376,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-a05-causal-d4f3bdd5c8fd4cc1a21cb24d4b3db759",
+        "script": "pr13_a05_ack_poll_causal.gd"
+      }
+    ],
+    "host_pids_alive": [],
+    "client_pids_alive": []
+  },
+  "green2-focused": {
+    "host_start_count": 5,
+    "host_stop_count": 5,
+    "host_pid_sets_equal": true,
+    "host_duplicate_starts": false,
+    "host_stops": [
+      {
+        "label": "guard-recovered-uncommitted-loss-after",
+        "ProcessId": 107735,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2-focused/guard-recovered-uncommitted-loss-after-107735.log"
+      },
+      {
+        "label": "guard-recovered-uncommitted-loss-before",
+        "ProcessId": 107669,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2-focused/guard-recovered-uncommitted-loss-before-107669.log"
+      },
+      {
+        "label": "guard-ordinary-success-before",
+        "ProcessId": 107781,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2-focused/guard-ordinary-success-before-107781.log"
+      },
+      {
+        "label": "guard-recovered-committed-loss-after",
+        "ProcessId": 107949,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2-focused/guard-recovered-committed-loss-after-107949.log"
+      },
+      {
+        "label": "guard-recovered-committed-loss-before",
+        "ProcessId": 107866,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2-focused/guard-recovered-committed-loss-before-107866.log"
+      }
+    ],
+    "client_stops": [
+      {
+        "import": true,
+        "Id": 107700,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2-focused/ack-client-guard-recovered-uncommitted-loss-4ae40c554ab64bd38ddaf7af157548a9",
+        "script": "pr13_a05_guard_windows.gd"
+      },
+      {
+        "import": false,
+        "Id": 107719,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2-focused/ack-client-guard-recovered-uncommitted-loss-4ae40c554ab64bd38ddaf7af157548a9",
+        "script": "pr13_a05_guard_windows.gd"
+      },
+      {
+        "import": true,
+        "Id": 107813,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2-focused/ack-client-guard-ordinary-success-e874998fe9324bc3a793edcde445e7a0",
+        "script": "pr13_a05_guard_windows.gd"
+      },
+      {
+        "import": false,
+        "Id": 107834,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2-focused/ack-client-guard-ordinary-success-e874998fe9324bc3a793edcde445e7a0",
+        "script": "pr13_a05_guard_windows.gd"
+      },
+      {
+        "import": true,
+        "Id": 107896,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2-focused/ack-client-guard-recovered-committed-loss-a333de6bbc6c4d6aae12f4a0fdb02362",
+        "script": "pr13_a05_guard_windows.gd"
+      },
+      {
+        "import": false,
+        "Id": 107915,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2-focused/ack-client-guard-recovered-committed-loss-a333de6bbc6c4d6aae12f4a0fdb02362",
+        "script": "pr13_a05_guard_windows.gd"
+      }
+    ],
+    "host_pids_alive": [],
+    "client_pids_alive": []
+  },
+  "green2": {
+    "host_start_count": 33,
+    "host_stop_count": 33,
+    "host_pid_sets_equal": true,
+    "host_duplicate_starts": false,
+    "host_stops": [
+      {
+        "label": "ack-drop-first-committed",
+        "ProcessId": 108707,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-drop-first-committed-108707.log"
+      },
+      {
+        "label": "ack-drop-all-committed",
+        "ProcessId": 108790,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-drop-all-committed-108790.log"
+      },
+      {
+        "label": "ack-drop-all-uncommitted",
+        "ProcessId": 108868,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-drop-all-uncommitted-108868.log"
+      },
+      {
+        "label": "a05-healthy-before",
+        "ProcessId": 108945,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/a05-healthy-before-108945.log"
+      },
+      {
+        "label": "a05-healthy-after",
+        "ProcessId": 109049,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/a05-healthy-after-109049.log"
+      },
+      {
+        "label": "ack-cycle-cycles-middle-uncommitted-loss",
+        "ProcessId": 109254,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-cycle-cycles-middle-uncommitted-loss-109254.log"
+      },
+      {
+        "label": "ack-cycle-stop-before-commit",
+        "ProcessId": 109427,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-cycle-stop-before-commit-109427.log"
+      },
+      {
+        "label": "ack-cycle-stop-after-commit",
+        "ProcessId": 109543,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-cycle-stop-after-commit-109543.log"
+      },
+      {
+        "label": "ack-cycle-cycles-middle-response-loss",
+        "ProcessId": 109628,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-cycle-cycles-middle-response-loss-109628.log"
+      },
+      {
+        "label": "a05-pending-before",
+        "ProcessId": 109862,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/a05-pending-before-109862.log"
+      },
+      {
+        "label": "a05-pending-after",
+        "ProcessId": 109949,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/a05-pending-after-109949.log"
+      },
+      {
+        "label": "quarantine",
+        "ProcessId": 110000,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/quarantine-110000.log"
+      },
+      {
+        "label": "guard-recovered-uncommitted-loss-after",
+        "ProcessId": 110095,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/guard-recovered-uncommitted-loss-after-110095.log"
+      },
+      {
+        "label": "guard-recovered-uncommitted-loss-before",
+        "ProcessId": 110030,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/guard-recovered-uncommitted-loss-before-110030.log"
+      },
+      {
+        "label": "guard-ordinary-success-before",
+        "ProcessId": 110133,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/guard-ordinary-success-before-110133.log"
+      },
+      {
+        "label": "guard-recovered-committed-loss-after",
+        "ProcessId": 110283,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/guard-recovered-committed-loss-after-110283.log"
+      },
+      {
+        "label": "guard-recovered-committed-loss-before",
+        "ProcessId": 110211,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/guard-recovered-committed-loss-before-110211.log"
+      },
+      {
+        "label": "a05-db-committed-response-loss",
+        "ProcessId": 110327,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/a05-db-committed-response-loss-110327.log"
+      },
+      {
+        "label": "a05-db-committed-restart",
+        "ProcessId": 110400,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/a05-db-committed-restart-110400.log"
+      },
+      {
+        "label": "a05-db-precommit",
+        "ProcessId": 110433,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/a05-db-precommit-110433.log"
+      },
+      {
+        "label": "extraction-0",
+        "ProcessId": 110516,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/extraction-0-110516.log"
+      },
+      {
+        "label": "extraction-1",
+        "ProcessId": 110545,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/extraction-1-110545.log"
+      },
+      {
+        "label": "extraction-2",
+        "ProcessId": 110576,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/extraction-2-110576.log"
+      },
+      {
+        "label": "entry-three",
+        "ProcessId": 110606,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/entry-three-110606.log"
+      },
+      {
+        "label": "entry-three-restart",
+        "ProcessId": 110716,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/entry-three-restart-110716.log"
+      },
+      {
+        "label": "register-committed-loss",
+        "ProcessId": 110747,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/register-committed-loss-110747.log"
+      },
+      {
+        "label": "register-committed-loss-restart",
+        "ProcessId": 110782,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/register-committed-loss-restart-110782.log"
+      },
+      {
+        "label": "running-1",
+        "ProcessId": 110815,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/running-1-110815.log"
+      },
+      {
+        "label": "running-2",
+        "ProcessId": 110845,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/running-2-110845.log"
+      },
+      {
+        "label": "pending-0",
+        "ProcessId": 110892,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/pending-0-110892.log"
+      },
+      {
+        "label": "pending-1",
+        "ProcessId": 110924,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/pending-1-110924.log"
+      },
+      {
+        "label": "a05-causal-after",
+        "ProcessId": 111021,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/a05-causal-after-111021.log"
+      },
+      {
+        "label": "a05-causal-before",
+        "ProcessId": 110956,
+        "ExitCode": 137,
+        "termination": "Process.Kill(entireProcessTree:true)",
+        "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/a05-causal-before-110956.log"
+      }
+    ],
+    "client_stops": [
+      {
+        "mode": "drop-first-committed",
+        "import": true,
+        "Id": 108737,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-drop-first-committed-fe135c49d41543018eeeeb2103253bb9"
+      },
+      {
+        "mode": "drop-first-committed",
+        "import": false,
+        "Id": 108775,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-drop-first-committed-fe135c49d41543018eeeeb2103253bb9"
+      },
+      {
+        "mode": "drop-all-committed",
+        "import": true,
+        "Id": 108832,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-drop-all-committed-e8646db54db34232b1480a3df5da8633"
+      },
+      {
+        "mode": "drop-all-committed",
+        "import": false,
+        "Id": 108852,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-drop-all-committed-e8646db54db34232b1480a3df5da8633"
+      },
+      {
+        "mode": "drop-all-uncommitted",
+        "import": true,
+        "Id": 108900,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-drop-all-uncommitted-6c3c215e7080484dacbc7365073ffe7c"
+      },
+      {
+        "mode": "drop-all-uncommitted",
+        "import": false,
+        "Id": 108927,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-drop-all-uncommitted-6c3c215e7080484dacbc7365073ffe7c"
+      },
+      {
+        "import": true,
+        "Id": 108976,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-a05-healthy-b34bb1cc11f64de5ad37cea63bd11a78",
+        "script": "pr13_a05_healthy_old_room.gd"
+      },
+      {
+        "import": false,
+        "Id": 109018,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-a05-healthy-b34bb1cc11f64de5ad37cea63bd11a78",
+        "script": "pr13_a05_healthy_old_room.gd"
+      },
+      {
+        "mode": "cycles-middle-uncommitted-loss",
+        "import": true,
+        "Id": 109285,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-runner-cycles-middle-uncommitted-loss-4d70ef1212944758ab5d1c7f73a142b4"
+      },
+      {
+        "mode": "cycles-middle-uncommitted-loss",
+        "import": false,
+        "Id": 109304,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-runner-cycles-middle-uncommitted-loss-4d70ef1212944758ab5d1c7f73a142b4"
+      },
+      {
+        "mode": "stop-before-commit",
+        "import": true,
+        "Id": 109458,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-runner-stop-before-commit-7af2d1a0298a483c99df5f7bc03f1b5c"
+      },
+      {
+        "mode": "stop-before-commit",
+        "import": false,
+        "Id": 109478,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-runner-stop-before-commit-7af2d1a0298a483c99df5f7bc03f1b5c"
+      },
+      {
+        "mode": "stop-after-commit",
+        "import": true,
+        "Id": 109574,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-runner-stop-after-commit-f4661b1ecebf463f898fb291b6893346"
+      },
+      {
+        "mode": "stop-after-commit",
+        "import": false,
+        "Id": 109606,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-runner-stop-after-commit-f4661b1ecebf463f898fb291b6893346"
+      },
+      {
+        "mode": "cycles-middle-response-loss",
+        "import": true,
+        "Id": 109659,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-runner-cycles-middle-response-loss-955036fdd5254071a65eae2a4080a3e2"
+      },
+      {
+        "mode": "cycles-middle-response-loss",
+        "import": false,
+        "Id": 109679,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-runner-cycles-middle-response-loss-955036fdd5254071a65eae2a4080a3e2"
+      },
+      {
+        "import": true,
+        "Id": 109898,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-a05-pending-49043610ab534e569e5e506924adae0e",
+        "script": "pr13_a05_pending_runtime.gd"
+      },
+      {
+        "import": false,
+        "Id": 109919,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-a05-pending-49043610ab534e569e5e506924adae0e",
+        "script": "pr13_a05_pending_runtime.gd"
+      },
+      {
+        "import": true,
+        "Id": 110061,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-guard-recovered-uncommitted-loss-e0d6e57ae1d748b48fc37f48f2d4dfd8",
+        "script": "pr13_a05_guard_windows.gd"
+      },
+      {
+        "import": false,
+        "Id": 110079,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-guard-recovered-uncommitted-loss-e0d6e57ae1d748b48fc37f48f2d4dfd8",
+        "script": "pr13_a05_guard_windows.gd"
+      },
+      {
+        "import": true,
+        "Id": 110172,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-guard-ordinary-success-da965a71ba5841859cc7e1d7e567af10",
+        "script": "pr13_a05_guard_windows.gd"
+      },
+      {
+        "import": false,
+        "Id": 110194,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-guard-ordinary-success-da965a71ba5841859cc7e1d7e567af10",
+        "script": "pr13_a05_guard_windows.gd"
+      },
+      {
+        "import": true,
+        "Id": 110241,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-guard-recovered-committed-loss-6148f34d720f4b54b6da63f57cbf8e7b",
+        "script": "pr13_a05_guard_windows.gd"
+      },
+      {
+        "import": false,
+        "Id": 110259,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-guard-recovered-committed-loss-6148f34d720f4b54b6da63f57cbf8e7b",
+        "script": "pr13_a05_guard_windows.gd"
+      },
+      {
+        "import": true,
+        "Id": 110355,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-a05-db-committed-response-loss-7e90a3da66e44819a89ce0c4d6e0cab6",
+        "script": "pr13_a05_persistence_fault.gd"
+      },
+      {
+        "import": false,
+        "Id": 110375,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-a05-db-committed-response-loss-7e90a3da66e44819a89ce0c4d6e0cab6",
+        "script": "pr13_a05_persistence_fault.gd"
+      },
+      {
+        "import": true,
+        "Id": 110461,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-a05-db-precommit-c344f6a818614c7aa4ce528bc2ddbbe7",
+        "script": "pr13_a05_persistence_fault.gd"
+      },
+      {
+        "import": false,
+        "Id": 110479,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-a05-db-precommit-c344f6a818614c7aa4ce528bc2ddbbe7",
+        "script": "pr13_a05_persistence_fault.gd"
+      },
+      {
+        "import": true,
+        "Id": 110987,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-a05-causal-dd1fd5a12121493cb00084db0d4b4084",
+        "script": "pr13_a05_ack_poll_causal.gd"
+      },
+      {
+        "import": false,
+        "Id": 111006,
+        "ExitCode": 0,
+        "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-a05-causal-dd1fd5a12121493cb00084db0d4b4084",
+        "script": "pr13_a05_ack_poll_causal.gd"
+      }
+    ],
+    "host_pids_alive": [],
+    "client_pids_alive": []
+  }
+}

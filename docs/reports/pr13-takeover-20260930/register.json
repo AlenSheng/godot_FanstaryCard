@@ -4624,22 +4624,23 @@
       "task_id": "PR13-A05.1",
       "title": "持久化失败恢复",
       "dependency_order": 104,
-      "owner": "ROOT / actual owned process and client receipt; MAIN / independent adjudication",
-      "state": "Partial",
+      "owner": "ROOT implementation / MAIN independent acceptance",
+      "state": "ReadyForAcceptance",
       "historical_state": "Partial",
       "historical_case_counts": {
         "NotExecuted": 3
       },
-      "implementation_status": "Frozen f812 business/UI; actual production Game/Gateway/Program/PG fault and old-callback windows proven. Harness-only overlay declared. Unapplied await-guard proposal for A05.1.",
-      "current_test_status": "Original3/3 primary expectations Passed; full295 Server and317 Domain zero skip. Separate focused3/1 and causal1Failed retained; A05.1 durable visibility consistency fails, while .2 new-N isolation and .3 asset conservation have distinct complete evidence.",
-      "modification_sha": "b7099ef716235be68395255360cbd5cf6c67baff",
+      "implementation_status": "One post-await pending-ACK guard7231; existing context/generation/match checks retained. Harness committed in fixed integration62772; no UI/theme/protocol change.",
+      "current_test_status": "Fixed62772 full Server299Passed/0Failed/0Skipped; original canonical3 and original causal plus ordinary/ACK-loss/newN/asset matrix pass. Old2dda RED and76d296/3 fixture failure remain immutable.",
+      "modification_sha": "7231c7499b7220b85c27be48ebbd127d7c0b7038",
       "test_commands": [
         "source /workspace/relicround-env/activate.sh; FANTASYCARD_TEST_POSTGRES='Host=/workspace/pr13-takeover/lifecycle/pg/socket;Port=55439;Database=pr13_lifecycle;Username=agent;Pooling=true;SSL Mode=Disable' dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj --filter FullyQualifiedName~PostgresLifecycleRecoveryTests --logger 'trx;LogFileName=matrix-final-verified.trx' --results-directory /workspace/pr13-takeover/lifecycle/logs",
         "source /workspace/relicround-env/activate.sh; FANTASYCARD_TEST_POSTGRES='Host=/workspace/pr13-takeover/lifecycle/pg/socket;Port=55439;Database=pr13_lifecycle;Username=agent;Pooling=true;SSL Mode=Disable' dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj --no-build --logger 'trx;LogFileName=server-final.trx' --results-directory /workspace/pr13-takeover/lifecycle/logs",
         "source /workspace/relicround-env/activate.sh; dotnet test server/tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj --logger 'trx;LogFileName=domain-final.trx' --results-directory /workspace/pr13-takeover/lifecycle/logs",
         "pg_ctl -D /workspace/pr13-takeover/lifecycle/pg/data -m fast stop",
         "git diff --check -- server/src/FantasyCard.Server/Matchmaking server/src/FantasyCard.Server/Rooms",
-        "offline-acceptance-f812/a05/commands.json"
+        "offline-acceptance-f812/a05/commands.json",
+        "a05-guard-62772be2/minimal-replay.json: C-SERVER unfiltered plus runtime-owned C-AUDIT"
       ],
       "evidence": [
         "lifecycle/report.json",
@@ -4651,9 +4652,12 @@
         "ci-cc6da2e/workflows.json",
         "offline-acceptance-f812/a05/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
         "offline-acceptance-f812/a05/tasks/PR13-A05.1/ROOT_REPORT.json",
-        "offline-acceptance-f812/a05/DERIVED_CHECKS.json"
+        "offline-acceptance-f812/a05/DERIVED_CHECKS.json",
+        "a05-guard-62772be2/report.json",
+        "a05-guard-62772be2/PRIVATE_ARTIFACT_MANIFEST.json",
+        "a05-guard-62772be2/ROOT_A05_SEAL_CHECKS.json"
       ],
-      "remaining_blocker": "Confirmed recovery-M old ready poll refills stale receipt during real ACK await; coordinate minimal client guard repair and actual same-window regression with fixed UI candidate.",
+      "remaining_blocker": "MAIN independent replay and S6 decision; no additional LIVE/CI/human gate in this contract.",
       "dependencies": [
         "LOAD-05.4",
         "LOAD-09.2"
@@ -4673,17 +4677,85 @@
       "supporting_tests_are_canonical_acceptance": false,
       "tested_source_shas": [
         "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
-        "f812879e4518fd09bf22656451cb563d62940298"
+        "f812879e4518fd09bf22656451cb563d62940298",
+        "62772be2a1bc28affffc3d057f259c8c5ded8e37"
       ],
       "existing_real_host_evidence": "CASE_MAPPING.json: supporting_existing_real_host_cases; integrated-cc6da2e/trx/server.trx",
-      "acceptance_proposal": "Partial",
-      "proposed_resolution": null,
-      "latest_runtime_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "acceptance_proposal": "ReadyForIndependentAcceptance",
+      "proposed_resolution": "FixedWithEvidence",
+      "latest_runtime_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
       "remaining_blockers": [
-        "Real client durable/visible terminal mismatch; minimum one-line proposal remains unapplied/untested."
+        "S6 independent MAIN review pending"
       ],
-      "tested_source_provenance": "Actual f812 tracked non-bin/obj bytes all6445 unchanged; seven canonical test files overlay. Later two causal files separate assembly. Generated build artifacts/overlay declared; not pure-SHA CI.",
-      "full_original_case_evidence": false
+      "tested_source_provenance": "Source964 exact62772 tracked Git blob bytes; fresh actual source-internal Release79 artifacts with hashes, no untracked code overlay/old bin or obj reuse. Tracked historical validation-bin not executed.",
+      "full_original_case_evidence": true,
+      "prior_task_records": [
+        {
+          "task_id": "PR13-A05.1",
+          "title": "持久化失败恢复",
+          "dependency_order": 104,
+          "owner": "ROOT / actual owned process and client receipt; MAIN / independent adjudication",
+          "state": "Partial",
+          "historical_state": "Partial",
+          "historical_case_counts": {
+            "NotExecuted": 3
+          },
+          "implementation_status": "Frozen f812 business/UI; actual production Game/Gateway/Program/PG fault and old-callback windows proven. Harness-only overlay declared. Unapplied await-guard proposal for A05.1.",
+          "current_test_status": "Original3/3 primary expectations Passed; full295 Server and317 Domain zero skip. Separate focused3/1 and causal1Failed retained; A05.1 durable visibility consistency fails, while .2 new-N isolation and .3 asset conservation have distinct complete evidence.",
+          "modification_sha": "b7099ef716235be68395255360cbd5cf6c67baff",
+          "test_commands": [
+            "source /workspace/relicround-env/activate.sh; FANTASYCARD_TEST_POSTGRES='Host=/workspace/pr13-takeover/lifecycle/pg/socket;Port=55439;Database=pr13_lifecycle;Username=agent;Pooling=true;SSL Mode=Disable' dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj --filter FullyQualifiedName~PostgresLifecycleRecoveryTests --logger 'trx;LogFileName=matrix-final-verified.trx' --results-directory /workspace/pr13-takeover/lifecycle/logs",
+            "source /workspace/relicround-env/activate.sh; FANTASYCARD_TEST_POSTGRES='Host=/workspace/pr13-takeover/lifecycle/pg/socket;Port=55439;Database=pr13_lifecycle;Username=agent;Pooling=true;SSL Mode=Disable' dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj --no-build --logger 'trx;LogFileName=server-final.trx' --results-directory /workspace/pr13-takeover/lifecycle/logs",
+            "source /workspace/relicround-env/activate.sh; dotnet test server/tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj --logger 'trx;LogFileName=domain-final.trx' --results-directory /workspace/pr13-takeover/lifecycle/logs",
+            "pg_ctl -D /workspace/pr13-takeover/lifecycle/pg/data -m fast stop",
+            "git diff --check -- server/src/FantasyCard.Server/Matchmaking server/src/FantasyCard.Server/Rooms",
+            "offline-acceptance-f812/a05/commands.json"
+          ],
+          "evidence": [
+            "lifecycle/report.json",
+            "lifecycle/commands.json",
+            "lifecycle/logs/matrix-final-verified.trx",
+            "lifecycle/logs/baseline-final.trx",
+            "ci-b7099ef/verified-artifacts.json",
+            "integrated-cc6da2e/report.json",
+            "ci-cc6da2e/workflows.json",
+            "offline-acceptance-f812/a05/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+            "offline-acceptance-f812/a05/tasks/PR13-A05.1/ROOT_REPORT.json",
+            "offline-acceptance-f812/a05/DERIVED_CHECKS.json"
+          ],
+          "remaining_blocker": "Confirmed recovery-M old ready poll refills stale receipt during real ACK await; coordinate minimal client guard repair and actual same-window regression with fixed UI candidate.",
+          "dependencies": [
+            "LOAD-05.4",
+            "LOAD-09.2"
+          ],
+          "profiles": [
+            "OFFLINE",
+            "POSTGRES",
+            "AUDIT"
+          ],
+          "gates": [
+            "G2",
+            "G5"
+          ],
+          "accepted_by": null,
+          "next_action": "提交前/后分别故障，按durable事实决定释放路由和结算可见，不提前成功",
+          "accepted": false,
+          "supporting_tests_are_canonical_acceptance": false,
+          "tested_source_shas": [
+            "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+            "f812879e4518fd09bf22656451cb563d62940298"
+          ],
+          "existing_real_host_evidence": "CASE_MAPPING.json: supporting_existing_real_host_cases; integrated-cc6da2e/trx/server.trx",
+          "acceptance_proposal": "Partial",
+          "proposed_resolution": null,
+          "latest_runtime_sha": "f812879e4518fd09bf22656451cb563d62940298",
+          "remaining_blockers": [
+            "Real client durable/visible terminal mismatch; minimum one-line proposal remains unapplied/untested."
+          ],
+          "tested_source_provenance": "Actual f812 tracked non-bin/obj bytes all6445 unchanged; seven canonical test files overlay. Later two causal files separate assembly. Generated build artifacts/overlay declared; not pure-SHA CI.",
+          "full_original_case_evidence": false
+        }
+      ]
     },
     {
       "task_id": "PR13-A05.2",
@@ -6113,9 +6185,10 @@
   },
   "latest_runtime_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
   "state_counts": {
-    "Partial": 42,
+    "Partial": 41,
     "NotRevalidated": 72,
     "Accepted": 15,
+    "ReadyForAcceptance": 1,
     "Blocked": 3
   },
   "latest_batch_state_transitions": [
@@ -6860,5 +6933,13 @@
     "path": "fault-batch-f93e32da/ci-f93e32da.json",
     "all5_passed": false
   },
-  "current_guard_checkpoint": "A05_GUARD_CHECKPOINT_20261001.json"
+  "current_guard_checkpoint": "A05_GUARD_CHECKPOINT_20261001.json",
+  "latest_A05_guard_proposal": {
+    "task_id": "PR13-A05.1",
+    "source_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+    "report": "a05-guard-62772be2/report.json",
+    "state": "ReadyForIndependentAcceptance",
+    "resolution": "FixedWithEvidence",
+    "Accepted": false
+  }
 }

@@ -1,8 +1,8 @@
 # PR13 云端接管逐项登记
 
-MAIN已签15项：LOAD01四项和bounded11新裁决均保留原source；[S6来源](MAIN_S6_bounded11_20261001.json)。业务基线f812，新guard7231/测试候选76d正在实际回归，未独立签署。
+MAIN已签15项，原来源S6均保留；A05 guard62772完整299/0/0和canonical3已封存，仅Ready待独立MAIN。LOAD02 .2新增真实窗口harness冻结dfb3，正在执行准备。
 
-132项当前状态：{"Partial": 42, "NotRevalidated": 72, "Accepted": 15, "Blocked": 3}。选定19项为15Accepted/4Partial；G0–G5未签署。[2dda历史封存](BOUNDED_19_RECEIPT.json)保留当时4Accepted/11Ready/4Partial，不能当作当前状态。
+132项当前状态：15Accepted / 1ReadyForAcceptance / 41Partial / 72NotRevalidated / 3Blocked。选定19项为15Accepted/1Ready/3Partial；G0–G5未签署。历史2dda收据保留当时状态。
 
 | 顺序 | 子项 | 负责人 | 当前 / 历史 | 修改 SHA | 依赖 | 剩余工作或阻塞 |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -109,8 +109,8 @@ MAIN已签15项：LOAD01四项和bounded11新裁决均保留原source；[S6来�
 | 101 | PR13-B11.4 有渲染三局和窄屏 | MAIN (pending batch) | NotRevalidated / Deferred | 取证/未修改 | PR13-B11.3 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 102 | PR13-B12.2 独立off/on和体验矩阵 | MAIN (pending batch) | NotRevalidated / Queued | 取证/未修改 | PR13-B12.1, PR13-A07.4, PR13-B03.4, PR13-B04.4, PR13-B05.4, PR13-B06.4, PR13-B07.4, PR13-B08.4, PR13-B09.4, PR13-B10.4, PR13-B11.4 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 103 | PR13-B12.3 配置生成与版本回滚 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | PR13-B12.1, PR13-B02.4 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
-| 104 | PR13-A05.1 持久化失败恢复 | ROOT / actual owned process and client receipt; MAIN / independent adjudication | Partial / Partial | b7099ef716235be6 | LOAD-05.4, LOAD-09.2 | Confirmed recovery-M old ready poll refills stale receipt during real ACK await; coordinate minimal client guard repair and actual same-window regression with fixed UI candidate. |
-| 105 | PR13-A05.2 队友和旧房间隔离 | ROOT / actual owned process and client receipt; MAIN / independent adjudication | Accepted / Partial | b7099ef716235be6 | PR13-A05.1 | MAIN独立裁决完成；只适用于固定来源。 |
+| 104 | PR13-A05.1 持久化失败恢复 | ROOT实现 / MAIN独立裁决 | ReadyForAcceptance / Partial | 7231c7499b7220b85 | LOAD-05.4, LOAD-09.2 | 固定62772：Server299/0/0、canonical3/3、64审计零，原失败保留；S6独立重放待MAIN。 |
+| 104 | PR13-A05.1 持久化失败恢复 | ROOT实现 / MAIN独立裁决 | ReadyForAcceptance / Partial | 7231c7499b7220b85 | LOAD-05.4, LOAD-09.2 | 固定62772：Server299/0/0、canonical3/3、64审计零，原失败保留；S6独立重放待MAIN。 |
 | 106 | PR13-A05.3 幂等/重启资产矩阵 | ROOT / actual owned process and client receipt; MAIN / independent adjudication | Accepted / Partial | d3c5fe6cfb3b4d10 | PR13-A05.2 | MAIN独立裁决完成；只适用于固定来源。 |
 | 107 | PR13-A06.1 响应完整性fixture | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | LOAD-06.1, LOAD-08.1 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 108 | PR13-A06.2 连接失效/并发/会话 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | PR13-A06.1 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
@@ -138,3 +138,5 @@ MAIN已签15项：LOAD01四项和bounded11新裁决均保留原source；[S6来�
 | 130 | PR13-A08.3 隔离回滚演练 | MAIN (pending batch) | NotRevalidated / Deferred | 取证/未修改 | PR13-A08.2 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 131 | PR13-A08.4 交付来源与未完清单 | MAIN / source and evidence audit | Partial / Partial | 取证/未修改 | PR13-A08.3, PR13-B12.4 | Source/evidence delivery audit is partial; running image/config and rollback drill not independently exercised. Historical50/100 raw gap and all unaccepted tasks remain visible. |
 | 132 | LOAD-11.4 MAIN交付与回滚 | MAIN / source and evidence audit | Partial / Partial | 取证/未修改 | PR13-B12.4, PR13-A08.4, PR13-A09.4, PR13-A10.4 | Source/evidence delivery audit is partial; running image/config and rollback drill not independently exercised. Historical50/100 raw gap and all unaccepted tasks remain visible. |
+
+A05 guard62772: full Server299/0/0, canonical3/3, owned audit64 counters zero, S6 MAIN pending; 132 states15Accepted/1Ready/41Partial/72NotRevalidated/3Blocked. Oldf812/2dda/76d failures remain in prior records. LOAD02.2 new actual timeoutSTOP batch is in progress, not accepted.
