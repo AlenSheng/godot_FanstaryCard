@@ -1,5 +1,6 @@
 using System.Buffers.Binary;
 using System.Collections.Concurrent;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
@@ -7,12 +8,12 @@ namespace FantasyCard.Server.Tests.EndToEnd;
 
 public sealed partial class ProcessLifecycleRecoveryTests
 {
-    // An owned Unix PostgreSQL relay selects only an actual settlement INSERT
+    // An owned PostgreSQL relay selects only an actual settlement INSERT
     // transaction. All business SQL/payloads originate in the frozen host.
     private sealed class A05DatabaseRelay : IAsyncDisposable
     {
         private readonly Socket _listener = new(AddressFamily.Unix, SocketType.Stream, ProtocolType.Unspecified);
-        private readonly UnixDomainSocketEndPoint _upstream;
+        private readonly EndPoint _upstream;
         private readonly CancellationTokenSource _stop = new();
         private readonly ConcurrentBag<Task> _connections = [];
         private readonly Task _acceptor;
@@ -22,15 +23,18 @@ public sealed partial class ProcessLifecycleRecoveryTests
         public string DirectoryPath { get; }
         public int Dropped => Volatile.Read(ref _dropped);
 
-        public A05DatabaseRelay(string upstreamDirectory, int port, string mode)
+        public A05DatabaseRelay(string upstreamHost, int port, string mode)
         {
-            Assert.StartsWith("/", upstreamDirectory);
+            Assert.True(IsLocalDatabase(upstreamHost), "The relay requires an owned local PostgreSQL database.");
             _mode = mode;
             DirectoryPath = Path.Combine(Path.GetTempPath(), "fc-a05-relay-" + Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(DirectoryPath);
-            _upstream = new(Path.Combine(upstreamDirectory, $".s.PGSQL.{port}"));
+            _upstream = upstreamHost.StartsWith('/')
+                ? new UnixDomainSocketEndPoint(Path.Combine(upstreamHost, $".s.PGSQL.{port}"))
+                : new DnsEndPoint(upstreamHost, port);
             _listener.Bind(new UnixDomainSocketEndPoint(Path.Combine(DirectoryPath, $".s.PGSQL.{port}")));
             _listener.Listen(16); _acceptor = AcceptAsync();
+            Record("A05-db-relay-upstream", new { transport = _upstream is UnixDomainSocketEndPoint ? "Unix" : "Tcp" });
         }
         public void Release() => _released = true;
         private async Task AcceptAsync()
@@ -41,7 +45,9 @@ public sealed partial class ProcessLifecycleRecoveryTests
         private async Task RelayAsync(Socket client)
         {
             using (client)
-            using (var server = new Socket(AddressFamily.Unix, SocketType.Stream, ProtocolType.Unspecified))
+            using (var server = _upstream is UnixDomainSocketEndPoint
+                ? new Socket(AddressFamily.Unix, SocketType.Stream, ProtocolType.Unspecified)
+                : new Socket(SocketType.Stream, ProtocolType.Tcp))
             {
                 try
                 {
