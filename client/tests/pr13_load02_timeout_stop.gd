@@ -37,9 +37,31 @@ class Load02Probe:
 				"pending": pending, "incomplete": started - cycles_completed - failed - cancelled - pending}}
 
 	func _write_observation(suffix: String, cutoff: String, outcome: String = "") -> void:
-		var file := FileAccess.open(report_path + suffix, FileAccess.WRITE)
-		file.store_string(JSON.stringify(_snapshot(cutoff, outcome), "\t"))
+		_publish_observation(report_path + suffix, _snapshot(cutoff, outcome))
+
+	func _publish_observation(path: String, observation: Dictionary) -> void:
+		var temporary := path + ".tmp"
+		var file := _open_observation(temporary)
+		if file == null:
+			_observation_error("open", FileAccess.get_open_error())
+			return
+		file.store_string(JSON.stringify(observation, "\t"))
+		file.flush()
+		var error := file.get_error()
 		file.close()
+		if error != OK:
+			_observation_error("write", error)
+			return
+		error = DirAccess.rename_absolute(temporary, path)
+		if error != OK:
+			_observation_error("publish", error)
+
+	func _observation_error(operation: String, error: Error) -> void:
+		push_error("LOAD02 observation %s failed: %s" % [operation, error_string(error)])
+		get_tree().quit(1)
+
+	func _open_observation(path: String) -> FileAccess:
+		return FileAccess.open(path, FileAccess.WRITE)
 
 	func _process(delta: float) -> void:
 		super._process(delta)
@@ -78,7 +100,7 @@ class Load02Probe:
 			"underlying_outcome": outcome, "first_failure": first_failure, "entered_matches": entered_matches,
 			"legal_terminal_actions": legal_terminal_actions, "algorithm_version": "load02-observer-v1",
 			"limitations": ["legal extraction/abandon driver; not full Boss or three gameplay routes", "partition derived from original scenario/checks/finish; no new production telemetry"]})
-		FileAccess.open(report_path + ".accounting.json", FileAccess.WRITE).store_string(JSON.stringify(accounting, "\t"))
+		_publish_observation(report_path + ".accounting.json", accounting)
 		await super._finish(ok, message, exit_code)
 
 func _initialize() -> void:

@@ -584,6 +584,7 @@ public sealed partial class ProcessLifecycleRecoveryTests
             start.ArgumentList.Add(dll);
             // Child host receives only the explicit local fixture configuration.
             start.Environment.Clear();
+            ConfigureWindowsChild(start);
             if (dotnetRoot is not null) start.Environment["DOTNET_ROOT"] = dotnetRoot;
             start.Environment["ASPNETCORE_ENVIRONMENT"] = "Development";
             start.Environment["ASPNETCORE_URLS"] = $"http://127.0.0.1:{port}";
@@ -641,6 +642,21 @@ public sealed partial class ProcessLifecycleRecoveryTests
             await File.WriteAllTextAsync(logPath, ReadLog());
             Record("process-stop", new { label = _label, ProcessId, _process.ExitCode, termination = "Process.Kill(entireProcessTree:true)", logPath });
             _process.Dispose();
+        }
+    }
+
+    // Windows Winsock requires SystemRoot even for loopback. Keep the explicit
+    // environment boundary; do not inherit account, cloud or credential settings.
+    private static void ConfigureWindowsChild(ProcessStartInfo start, string? fixture = null)
+    {
+        if (!OperatingSystem.IsWindows()) return;
+        start.Environment["SystemRoot"] = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
+        if (fixture is null) return;
+        foreach (var name in new[] { "APPDATA", "LOCALAPPDATA", "TEMP", "TMP" })
+        {
+            var directory = Path.Combine(fixture, "user-" + name.ToLowerInvariant());
+            Directory.CreateDirectory(directory);
+            start.Environment[name] = directory;
         }
     }
 }
