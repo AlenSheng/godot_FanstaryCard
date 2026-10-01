@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/workspace/cloud-controller-review-20261001/probe_preflight.py", line 16, in <module>
+    with patch.dict(os.environ,context,clear=True),patch.object(d,'api',side_effect=fake_api):d.preflight(a.directory/'preflight.json')
+                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/cloud-controller-review-20261001/release/tools/cloud/deployment.py", line 98, in preflight
+    baseline = sha(os.environ.get('ROLLBACK_BASELINE_SHA'))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/cloud-controller-review-20261001/release/tools/cloud/deployment.py", line 21, in sha
+    raise ValueError("Expected a full lowercase commit SHA")
+ValueError: Expected a full lowercase commit SHA

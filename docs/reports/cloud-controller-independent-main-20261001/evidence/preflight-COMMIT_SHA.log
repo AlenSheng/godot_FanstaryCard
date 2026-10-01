@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/workspace/cloud-controller-review-20261001/probe_preflight.py", line 16, in <module>
+    with patch.dict(os.environ,context,clear=True),patch.object(d,'api',side_effect=fake_api):d.preflight(a.directory/'preflight.json')
+                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/cloud-controller-review-20261001/release/tools/cloud/deployment.py", line 87, in preflight
+    commit = sha(os.environ["COMMIT_SHA"])
+                 ~~~~~~~~~~^^^^^^^^^^^^^^
+  File "<frozen os>", line 714, in __getitem__
+KeyError: 'COMMIT_SHA'

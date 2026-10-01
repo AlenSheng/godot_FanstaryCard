@@ -1,0 +1,216 @@
+{
+  "status": "Passed",
+  "source_sha": "65361bcc27c51c28651c86c5dbba4f083a9b39e0",
+  "numerical_export": {
+    "name": "numerical-export",
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "/workspace/cloud-controller-review-20261001/release/tools/cloud/export_evidence.py",
+      "--profile",
+      "numerical-client",
+      "--source",
+      "/workspace/cloud-controller-review-20261001/evidence/numerical-source",
+      "--destination",
+      "/workspace/cloud-controller-review-20261001/evidence/numerical-public"
+    ],
+    "cwd": "/workspace/cloud-controller-review-20261001/release",
+    "exit_code": 0,
+    "log": "evidence/numerical-export.log",
+    "log_sha256": "d87ef3a79f9ad9e55c43982985abbc247eb4d72620de41189907d7f61def03f2"
+  },
+  "GITHUB_OUTPUT": {
+    "path": "evidence/numerical-github-output",
+    "value": "artifact_directory=/workspace/cloud-controller-review-20261001/evidence/numerical-public",
+    "sha256": "678237ae6a5dd10d52bcbd9a9cb0499fd18c548cebd266d925c1539673412f37"
+  },
+  "ZIP": {
+    "path": "evidence/numerical-whitelist-fixture.zip",
+    "bytes": 870,
+    "sha256": "67ae6bf6e262a6927cfdc71366e0a401b2c2d1ca42b26792bd973e8f3846478a",
+    "members": [
+      {
+        "name": "evidence-inventory.json",
+        "bytes": 692,
+        "sha256": "c8cdb784608dfb641b311ea9c03f338db00ab3f1aaf0895cc2208b9b88c6671c"
+      },
+      {
+        "name": "import.log",
+        "bytes": 48,
+        "sha256": "1477e35ae344b4232c553ae5c67b9dc34d5bf6a4c0921fdfc7c2e75fed5597fd"
+      },
+      {
+        "name": "numerics.log",
+        "bytes": 32,
+        "sha256": "592d66038ec7b1c9e70e038904fbc672ffc77f6170be5ec2b6d8de1cb13f46a8"
+      },
+      {
+        "name": "version.txt",
+        "bytes": 19,
+        "sha256": "924eaff0987c2035dc0e8c3eb6910b0ec4a181d11f5e8cfd2f6e32bf5c8474f9"
+      }
+    ],
+    "debug_keystore_or_runtime_member": false
+  },
+  "three_reports_byte_identical": true,
+  "optional_missing": [
+    "preview-parity/input.json",
+    "preview-parity/results.json",
+    "preview-parity/manifest.json",
+    "preview-parity/server.log",
+    "preview-parity/client.log"
+  ],
+  "rejected": [],
+  "export_cli_missing_required": [
+    {
+      "name": "missing-profile",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/cloud-controller-review-20261001/release/tools/cloud/export_evidence.py",
+        "--source",
+        "/workspace/cloud-controller-review-20261001/evidence/numerical-source",
+        "--destination",
+        "/workspace/cloud-controller-review-20261001/evidence/numerical-public"
+      ],
+      "cwd": "/workspace/cloud-controller-review-20261001/release",
+      "exit_code": 2,
+      "log": "evidence/missing-profile.log",
+      "log_sha256": "b95e399750b9b74fd503e32cbdef10619741e83eac47f1b8774468e1688cfa62"
+    },
+    {
+      "name": "missing-source",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/cloud-controller-review-20261001/release/tools/cloud/export_evidence.py",
+        "--profile",
+        "numerical-client",
+        "--destination",
+        "/workspace/cloud-controller-review-20261001/evidence/numerical-public"
+      ],
+      "cwd": "/workspace/cloud-controller-review-20261001/release",
+      "exit_code": 2,
+      "log": "evidence/missing-source.log",
+      "log_sha256": "11e24b9f6983829ee41aebf3c5f857dac2abfb139011255dfabdf7f7f839bc65"
+    },
+    {
+      "name": "missing-destination",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/cloud-controller-review-20261001/release/tools/cloud/export_evidence.py",
+        "--profile",
+        "numerical-client",
+        "--source",
+        "/workspace/cloud-controller-review-20261001/evidence/numerical-source"
+      ],
+      "cwd": "/workspace/cloud-controller-review-20261001/release",
+      "exit_code": 2,
+      "log": "evidence/missing-destination.log",
+      "log_sha256": "b6a62855eaaa7d5db75ed6d5eecc4f3c330b034c1698d1a1de4edb1e20fef435"
+    }
+  ],
+  "controller_dispatch_missing_required": [
+    {
+      "name": "preflight-valid",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/cloud-controller-review-20261001/probe_preflight.py",
+        "--directory",
+        "/workspace/cloud-controller-review-20261001/evidence/preflight-valid"
+      ],
+      "cwd": "/workspace/cloud-controller-review-20261001/release",
+      "exit_code": 0,
+      "log": "evidence/preflight-valid.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "preflight-PR_NUMBER",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/cloud-controller-review-20261001/probe_preflight.py",
+        "--directory",
+        "/workspace/cloud-controller-review-20261001/evidence/preflight-PR_NUMBER",
+        "--omit",
+        "PR_NUMBER"
+      ],
+      "cwd": "/workspace/cloud-controller-review-20261001/release",
+      "exit_code": 1,
+      "log": "evidence/preflight-PR_NUMBER.log",
+      "log_sha256": "8eb0e101aabc373a67731545e1e889ea70e67bcbe53201c3031e31775738c643"
+    },
+    {
+      "name": "preflight-COMMIT_SHA",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/cloud-controller-review-20261001/probe_preflight.py",
+        "--directory",
+        "/workspace/cloud-controller-review-20261001/evidence/preflight-COMMIT_SHA",
+        "--omit",
+        "COMMIT_SHA"
+      ],
+      "cwd": "/workspace/cloud-controller-review-20261001/release",
+      "exit_code": 1,
+      "log": "evidence/preflight-COMMIT_SHA.log",
+      "log_sha256": "160b70dddf9118c7a6bf0ab580cc6dca8af02fafef7c0e3b4be4abd562b90029"
+    },
+    {
+      "name": "preflight-CONFIRM_SOURCE_SHA",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/cloud-controller-review-20261001/probe_preflight.py",
+        "--directory",
+        "/workspace/cloud-controller-review-20261001/evidence/preflight-CONFIRM_SOURCE_SHA",
+        "--omit",
+        "CONFIRM_SOURCE_SHA"
+      ],
+      "cwd": "/workspace/cloud-controller-review-20261001/release",
+      "exit_code": 1,
+      "log": "evidence/preflight-CONFIRM_SOURCE_SHA.log",
+      "log_sha256": "563845ea65f7ec9d5220f6ba64b6c74e57ec151efec97858d5b668f9bf817d03"
+    },
+    {
+      "name": "preflight-CONFIRM_RESTART",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/cloud-controller-review-20261001/probe_preflight.py",
+        "--directory",
+        "/workspace/cloud-controller-review-20261001/evidence/preflight-CONFIRM_RESTART",
+        "--omit",
+        "CONFIRM_RESTART"
+      ],
+      "cwd": "/workspace/cloud-controller-review-20261001/release",
+      "exit_code": 1,
+      "log": "evidence/preflight-CONFIRM_RESTART.log",
+      "log_sha256": "563845ea65f7ec9d5220f6ba64b6c74e57ec151efec97858d5b668f9bf817d03"
+    },
+    {
+      "name": "preflight-ROLLBACK_BASELINE_SHA",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/cloud-controller-review-20261001/probe_preflight.py",
+        "--directory",
+        "/workspace/cloud-controller-review-20261001/evidence/preflight-ROLLBACK_BASELINE_SHA",
+        "--omit",
+        "ROLLBACK_BASELINE_SHA"
+      ],
+      "cwd": "/workspace/cloud-controller-review-20261001/release",
+      "exit_code": 1,
+      "log": "evidence/preflight-ROLLBACK_BASELINE_SHA.log",
+      "log_sha256": "605a641ff01cca4babe78bbbf7ea6d3e418e455d2aa0525e01b8ba2208b6599f"
+    },
+    {
+      "name": "preflight-CONFIRM_ROLLBACK_COMPATIBILITY",
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/cloud-controller-review-20261001/probe_preflight.py",
+        "--directory",
+        "/workspace/cloud-controller-review-20261001/evidence/preflight-CONFIRM_ROLLBACK_COMPATIBILITY",
+        "--omit",
+        "CONFIRM_ROLLBACK_COMPATIBILITY"
+      ],
+      "cwd": "/workspace/cloud-controller-review-20261001/release",
+      "exit_code": 1,
+      "log": "evidence/preflight-CONFIRM_ROLLBACK_COMPATIBILITY.log",
+      "log_sha256": "5b586118bf644613ac34a65fad6b00289c6e4f004776202eeb7690848ac3c5de"
+    }
+  ],
+  "scope": "Production exporter CLI executed. Six production preflight missing-input probes run in real child processes with fake API patched; no live API/SSH or deployment. Reports are synthetic fixtures, not Godot run evidence."
+}
