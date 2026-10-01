@@ -50,6 +50,9 @@ def validate_controls(output, results):
         directory=Path(execution['output']);factor=execution['factor']
         try:
             manifest,summary,rows=load_run(directory)
+            strategy_version=manifest.get('StrategyVersion')
+            if not isinstance(strategy_version,str) or not strategy_version:
+                raise ValueError('A declared strategy version is required')
             if (factor not in FACTORS or manifest['Candidate']!=factor or
                     manifest['SeedStart']!=execution['seed_start'] or
                     manifest['SamplesPerStratum']!=registered['samples_per_stratum_per_run'] or
@@ -63,16 +66,22 @@ def validate_controls(output, results):
                 raise ValueError('Factor or frozen runtime contract differs from preregistration')
             # A factor label may differ, but all jobs must use the same actual config and observation policy.
             signature={k:manifest.get(k) for k in ('SourceConfigSha256','ConfigVersion','CutoffSeconds',
-                       'ActionIntervalSeconds','StrategyPolicy','ProductionDefaults','WeaponLevel','Decks')}
+                       'ActionIntervalSeconds','StrategyPolicy','StrategyVersion','ProductionDefaults','WeaponLevel','Decks')}
             if config_hash is not None and config_hash!=signature:raise ValueError('Mixed frozen config or observation policy')
             config_hash=signature
         except (OSError,ValueError,KeyError,TypeError) as error:
             errors.append(dict(kind='invalid_run_contract',output=str(directory),reason=str(error)));continue
         blocks[factor].append((manifest['SeedStart'],manifest['SamplesPerStratum']))
-        pairs={};total+=len(rows)
+        pairs={};invalid_strategy_keys=set();total+=len(rows)
         for row in rows:
             key=tuple(row[k] for k in ('Seed','Hero','WeaponLevel','Deck','Group','Strategy'))
             pairs.setdefault(key,[]).append(row)
+            expected_strategy_profile=f"{strategy_version}/{row['Strategy']}/{row['Profile']}"
+            if (row.get('StrategyVersion')!=strategy_version or
+                    row.get('StrategyProfile')!=expected_strategy_profile):
+                errors.append(dict(kind='invalid_strategy_identity',key=key,output=str(directory),
+                                   expected_version=strategy_version,expected_profile=expected_strategy_profile))
+                invalid_strategy_keys.add(key)
             if row['Outcome']=='Error':errors.append(dict(kind='encounter_error',key=key,output=str(directory)))
             if row['Group']=='O6' and row['Profile']!='Baseline' and 'windup' in factor:
                 windups+=1;extra=250 if '025' in factor else 500
@@ -88,9 +97,14 @@ def validate_controls(output, results):
             expected_profiles={'Baseline',candidate_profile(factor,key[1],key[4])}
             if len(pair)!=2 or {row['Profile'] for row in pair}!=expected_profiles:
                 errors.append(dict(kind='unpaired_seed',key=key));continue
+            if key in invalid_strategy_keys:continue
             if key[4]=='O6':continue
             controls+=1;a,b=pair
-            if {k:v for k,v in a.items() if k!='Profile'}!={k:v for k,v in b.items() if k!='Profile'}:
+            # Both label fields were validated against the declared policy and
+            # numerical profile above. Every remaining field, including the
+            # strategy version and actual outcomes, must remain identical.
+            label_fields={'Profile','StrategyProfile'}
+            if {k:v for k,v in a.items() if k not in label_fields}!={k:v for k,v in b.items() if k not in label_fields}:
                 errors.append(dict(kind='unaffected_control_changed',key=key,output=str(directory)))
     floor=set(blocks)==set(FACTORS)
     for factor in FACTORS:
