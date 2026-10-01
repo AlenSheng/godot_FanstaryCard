@@ -5,8 +5,7 @@
   "current_counts": {
     "Partial": 42,
     "NotRevalidated": 72,
-    "Accepted": 4,
-    "ReadyForAcceptance": 11,
+    "Accepted": 15,
     "Blocked": 3
   },
   "all_accepted": false,
@@ -28,19 +27,21 @@
         "PR13-A05.2",
         "PR13-A05.3"
       ],
-      "action": "Replay critical original cases with exact per-group sources/report commits. Apply only explicit MAIN S6 decisions. LOAD01 four decisions already recorded by source separately.",
+      "action": "Completed independent MAIN S6. Preserve original per-group sources and failed historical controls; exact independent review commit baf92b3e3f12b4359a911eaa06e68ba27cbc4fab.",
       "inputs": "BOUNDED_19_RECEIPT.json; INDEPENDENT_REPLAY_19.md",
-      "added_CI_LIVE_human_gate": false
+      "added_CI_LIVE_human_gate": false,
+      "state": "AcceptedAtOriginalSourcesByMAIN"
     },
     {
       "order": 2,
-      "owner": "parent coordinates client/UI candidate; implementation awaits scope",
+      "owner": "ROOT production GameStore + owned isolated process harness",
       "task_ids": [
         "PR13-A05.1"
       ],
-      "action": "Review confirmed actual recovery-M old Bootstrap refill during ACK await. Minimum guard proposal in client/state/game_store.gd remains untested/unapplied; coordinate fixed UI before production write.",
+      "action": "Minimal post-await pending-ACK guard committed7231; fixed actual relay source62772. Original P0 passes with guard; full-suite296/3 failure correctly retained and relay204 cause proven. Finish focused3/full Server, canonical receipt, then submit MAIN S6.",
       "tests": "Same actual positive Pending/OS restart/ACK-await window; ordinary terminal negative control; current-N isolation; repeated ACK/READY; readonly asset/route final audits.",
-      "inputs": "offline-acceptance-f812/a05/P0_CAUSAL.json; proposed-game-store-poll-ack.patch; DERIVED_CHECKS.json"
+      "inputs": "offline-acceptance-f812/a05/P0_CAUSAL.json; proposed-game-store-poll-ack.patch; DERIVED_CHECKS.json",
+      "state": "AllocatedInProgress"
     },
     {
       "order": 3,
@@ -50,7 +51,12 @@
       ],
       "action": "Prove actual PG game timeout before STOP retains failed cycle terminal classification; started=completed+failed+cancelled+active at common cutoff; unknown ACK remains pending until authority.",
       "missing": "Current actual Godot microtimeout plus model coordinator and separate actual PG ACKSTOP cannot jointly substitute for this whole original T01. No online gate.",
-      "inputs": "offline-acceptance-f812/load02/evidence/MISSING_FACTS.json"
+      "inputs": "offline-acceptance-f812/load02/evidence/MISSING_FACTS.json",
+      "state": "AllocatedWaitingForA05Seal",
+      "budgets_ms": {
+        "attempt": 10000,
+        "logical": 30000
+      }
     },
     {
       "order": 4,
@@ -60,7 +66,8 @@
       ],
       "action": "Persist actual logical start and exclusive outcome/pending population across windows; attempt and valid latency remain separate.",
       "missing": "Actual gate cutoff invoked2/completed1/pending1 but production aggregation only reports completed logical1; no start/pending denominator.",
-      "inputs": "load03-remaining-ee8adcf4/MISSING_FACTS.json"
+      "inputs": "load03-remaining-ee8adcf4/MISSING_FACTS.json",
+      "state": "NotAllocatedDoNotStart"
     },
     {
       "order": 5,
@@ -70,7 +77,8 @@
       ],
       "action": "After minimum .3 inputs, derive full raw route/phase P50/P95/P99/max/throughput/error rate and running/drain/final at common cutoffs; preserve threshold/sample insufficiency.",
       "missing": "Current diagnostic harness does not implement missing production full-route/full-run/three-cutoff outputs; final-window zero errors cannot replace full1error.",
-      "inputs": "load03-remaining-ee8adcf4/MISSING_FACTS.json"
+      "inputs": "load03-remaining-ee8adcf4/MISSING_FACTS.json",
+      "state": "NotAllocatedDoNotStart"
     },
     {
       "order": 6,
@@ -83,7 +91,7 @@
         "LOAD-11.1"
       ],
       "action": "Retain historical raw missing inputs/global ledger mismatch1; existing owned audits do not close global ledger. Parent coordinates UI/PR14 final fixed-source combination and applicable later profiles. Do not broaden this sealed offline batch.",
-      "constraints": "No merge/auto-merge/DB restore/ledger mutation; no unscheduled deployment; raw uploads paused."
+      "constraints": "No merge/auto-merge/DB restore/ledger mutation or online operation in these batches. Four exact raw Library save authorized; one network failure, no alternate destination."
     }
   ],
   "ci_pending": {
@@ -104,7 +112,9 @@
     "missing_reasons": {
       "runs": "No new CI retry/query initiated in this documentation-only seal; account-blocked exact runs remain indexed in prior records."
     },
-    "blocker": "Billing annotation for run36769267481 verified by parent; failed payments OR spending limit, exact subcause unknown. Await user resolution; no account/payment/permission changes."
+    "blocker": "Billing annotation for run36769267481 verified by parent; failed payments OR spending limit, exact subcause unknown. Await user resolution; no account/payment/permission changes.",
+    "historical_blocker_resolved_by_MAIN": "Actual run36769267487 attempt2 executed success2026-10-01T00:34UTC; no account changes authorized/performed.",
+    "current_candidate": "Await final A05+LOAD02 locally passing source; necessary CI once, no intermediate or old-SHA bulk retry."
   },
   "raw4_previous_delivery": {
     "files": 4,
@@ -112,14 +122,18 @@
     "location": "/workspace/pr13-takeover/actual-factors-cc6da2e/delivery",
     "manifest": "actual-factors-cc6da2e/raw-package-manifest.json",
     "remote_upload_done": false,
-    "authorization_state": "PAUSED_PARENT_USER_APPROVAL_PENDING; no alternate destination or upload attempts"
+    "authorization_state": "AuthorizedOwnPrivateLibraryOnly20261001T0029UTC",
+    "save_attempts": 1,
+    "save_error": "hosted apps tools/list request failed: network",
+    "receipt": "RAW4_LIBRARY_RECEIPT_20261001.json",
+    "library_ids": null
   },
   "ui_cross_regression": {
     "PR": 16,
     "final_sha": "f806960ce17b8e300536a21dadde618313a68996",
     "production_source_sha": "7869260dab958c60e9b12e93f7441d0de3825e92",
     "base": "b7099ef",
-    "status": "UI owner independently testing fixed de1157+UI070c7b4; root does not duplicate/integrate",
+    "status": "Parent reported PR20 fixed integration independently verified; ROOT will provide new guard exact source for parent coordinated next combination, without rewriting PR20 or editing UI.",
     "next": "Use isolated temporary integration branch after stable batch; review main/reference_ui/card_view/exploration_view hunks against manual target authority; never merge PR16 or release here.",
     "latest_parent_verified_UI_sha": "070c7b4",
     "source_of_status": "Parent delegation message2026-09-30 during stage finalization"

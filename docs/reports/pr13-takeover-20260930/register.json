@@ -7,7 +7,7 @@
     "packages": 33,
     "tasks": 132,
     "cases": 396,
-    "accepted": 4
+    "accepted": 15
   },
   "all_accepted": false,
   "tasks": [
@@ -404,14 +404,14 @@
       "title": "多维结果模型",
       "dependency_order": 7,
       "owner": "MAIN / load P0",
-      "state": "ReadyForAcceptance",
+      "state": "Accepted",
       "historical_state": "Partial",
       "historical_case_counts": {
         "Passed": 1,
         "NotExecuted": 2
       },
       "implementation_status": "Final evidence, ownership, ACK conservation and STOP/emergency handling corrected and counterexample-tested.",
-      "current_test_status": "Original3/3; complete applicable OFFLINE/owned PG artifact proposal; independent MAIN critical replay pending.",
+      "current_test_status": "Independent MAIN S6 Accepted/NoChangeWithEvidence at exact f812879e4518fd09bf22656451cb563d62940298; three original canonical cases and all required applicable layers/minimum dependencies confirmed. New guard76d source is separately pending.",
       "modification_sha": "d4c3212fb32c75d4b9f9f62c08277996611b149c",
       "test_commands": [
         "python -m unittest discover -s tools/tests -v"
@@ -423,9 +423,10 @@
         "ci-b7099ef/verified-artifacts.json",
         "integrated-cc6da2e/report.json",
         "ci-cc6da2e/workflows.json",
-        "offline-acceptance-f812/load02/evidence/LOAD-02.1/ROOT_REPORT.json"
+        "offline-acceptance-f812/load02/evidence/LOAD-02.1/ROOT_REPORT.json",
+        "MAIN_S6_bounded11_20261001.json"
       ],
-      "remaining_blocker": "S6 independent MAIN actual critical replay and adjudication; no CI/LIVE/participant gate.",
+      "remaining_blocker": null,
       "dependencies": [
         "LOAD-01.2"
       ],
@@ -437,9 +438,9 @@
         "G1",
         "G2"
       ],
-      "accepted_by": null,
+      "accepted_by": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
       "next_action": "独立生成六维判定，保存首个和全部触发；exit0只由适用合同全满足推出",
-      "accepted": false,
+      "accepted": true,
       "supporting_tests_are_canonical_acceptance": false,
       "test_command_manifests": [
         "ci-9275ec2/verified-artifacts.json",
@@ -449,7 +450,36 @@
         "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
         "f812879e4518fd09bf22656451cb563d62940298"
       ],
-      "acceptance_proposal": "ReadyForIndependentAcceptance"
+      "acceptance_proposal": null,
+      "resolution": "NoChangeWithEvidence",
+      "proposed_resolution": "NoChangeWithEvidence",
+      "acceptance_source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "latest_MAIN_decision": {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "LOAD-02.1",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "original_report_commit": "a1d30eb89d74aa16bb2c094c5a78c20a5ed428b6",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/load02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "4b0339400f4e581b7e8bc44b3d92d4fa866dc442a361af3d95f665e65f25bd71",
+        "algorithm_version": "f812-coordinator-schema5/runtime-evidence-62d05cb4270174aa/receipt-harness-37303db722961352",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "LOAD-02.1-T01",
+          "LOAD-02.1-T02",
+          "LOAD-02.1-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      },
+      "remaining_blockers": [],
+      "full_original_case_evidence": true
     },
     {
       "task_id": "LOAD-04.1",
@@ -576,13 +606,13 @@
       "title": "有界清理和应急报告",
       "dependency_order": 11,
       "owner": "MAIN / load P0",
-      "state": "ReadyForAcceptance",
+      "state": "Accepted",
       "historical_state": "Partial",
       "historical_case_counts": {
         "NotExecuted": 3
       },
       "implementation_status": "Final evidence, ownership, ACK conservation and STOP/emergency handling corrected and counterexample-tested.",
-      "current_test_status": "Original3/3; complete applicable OFFLINE/owned PG artifact proposal; independent MAIN critical replay pending.",
+      "current_test_status": "Independent MAIN S6 Accepted/NoChangeWithEvidence at exact f812879e4518fd09bf22656451cb563d62940298; three original canonical cases and all required applicable layers/minimum dependencies confirmed. New guard76d source is separately pending.",
       "modification_sha": "d4c3212fb32c75d4b9f9f62c08277996611b149c",
       "test_commands": [
         "python -m unittest discover -s tools/tests -v"
@@ -594,9 +624,10 @@
         "ci-b7099ef/verified-artifacts.json",
         "integrated-cc6da2e/report.json",
         "ci-cc6da2e/workflows.json",
-        "offline-acceptance-f812/load02/evidence/LOAD-02.3/ROOT_REPORT.json"
+        "offline-acceptance-f812/load02/evidence/LOAD-02.3/ROOT_REPORT.json",
+        "MAIN_S6_bounded11_20261001.json"
       ],
-      "remaining_blocker": "S6 independent MAIN actual critical replay and adjudication; no CI/LIVE/participant gate.",
+      "remaining_blocker": null,
       "dependencies": [
         "LOAD-02.2"
       ],
@@ -608,9 +639,9 @@
         "G1",
         "G2"
       ],
-      "accepted_by": null,
+      "accepted_by": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
       "next_action": "排队取消/结算保留/关闭连接/回收进程分步；最终报告写失败产出独立应急摘要",
-      "accepted": false,
+      "accepted": true,
       "supporting_tests_are_canonical_acceptance": false,
       "test_command_manifests": [
         "ci-9275ec2/verified-artifacts.json",
@@ -620,21 +651,50 @@
         "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
         "f812879e4518fd09bf22656451cb563d62940298"
       ],
-      "acceptance_proposal": "ReadyForIndependentAcceptance"
+      "acceptance_proposal": null,
+      "resolution": "NoChangeWithEvidence",
+      "proposed_resolution": "NoChangeWithEvidence",
+      "acceptance_source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "latest_MAIN_decision": {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "LOAD-02.3",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "original_report_commit": "a1d30eb89d74aa16bb2c094c5a78c20a5ed428b6",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/load02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "4b0339400f4e581b7e8bc44b3d92d4fa866dc442a361af3d95f665e65f25bd71",
+        "algorithm_version": "f812-coordinator-schema5/runtime-evidence-62d05cb4270174aa/receipt-harness-37303db722961352",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "LOAD-02.3-T01",
+          "LOAD-02.3-T02",
+          "LOAD-02.3-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      },
+      "remaining_blockers": [],
+      "full_original_case_evidence": true
     },
     {
       "task_id": "LOAD-02.4",
       "title": "退出码兼容",
       "dependency_order": 12,
       "owner": "MAIN / load P0",
-      "state": "ReadyForAcceptance",
+      "state": "Accepted",
       "historical_state": "Partial",
       "historical_case_counts": {
         "Passed": 2,
         "NotExecuted": 1
       },
       "implementation_status": "Final evidence, ownership, ACK conservation and STOP/emergency handling corrected and counterexample-tested.",
-      "current_test_status": "Original3/3; complete applicable OFFLINE/owned PG artifact proposal; independent MAIN critical replay pending.",
+      "current_test_status": "Independent MAIN S6 Accepted/NoChangeWithEvidence at exact f812879e4518fd09bf22656451cb563d62940298; three original canonical cases and all required applicable layers/minimum dependencies confirmed. New guard76d source is separately pending.",
       "modification_sha": "d4c3212fb32c75d4b9f9f62c08277996611b149c",
       "test_commands": [
         "python -m unittest discover -s tools/tests -v"
@@ -646,9 +706,10 @@
         "ci-b7099ef/verified-artifacts.json",
         "integrated-cc6da2e/report.json",
         "ci-cc6da2e/workflows.json",
-        "offline-acceptance-f812/load02/evidence/LOAD-02.4/ROOT_REPORT.json"
+        "offline-acceptance-f812/load02/evidence/LOAD-02.4/ROOT_REPORT.json",
+        "MAIN_S6_bounded11_20261001.json"
       ],
-      "remaining_blocker": "S6 independent MAIN actual critical replay and adjudication; no CI/LIVE/participant gate.",
+      "remaining_blocker": null,
       "dependencies": [
         "LOAD-02.3"
       ],
@@ -660,9 +721,9 @@
         "G1",
         "G2"
       ],
-      "accepted_by": null,
+      "accepted_by": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
       "next_action": "固定0/1/2/3/130及preparation-only语义，调用者读取六维结果而非只读0",
-      "accepted": false,
+      "accepted": true,
       "supporting_tests_are_canonical_acceptance": false,
       "test_command_manifests": [
         "ci-9275ec2/verified-artifacts.json",
@@ -672,20 +733,49 @@
         "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
         "f812879e4518fd09bf22656451cb563d62940298"
       ],
-      "acceptance_proposal": "ReadyForIndependentAcceptance"
+      "acceptance_proposal": null,
+      "resolution": "NoChangeWithEvidence",
+      "proposed_resolution": "NoChangeWithEvidence",
+      "acceptance_source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "latest_MAIN_decision": {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "LOAD-02.4",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "original_report_commit": "a1d30eb89d74aa16bb2c094c5a78c20a5ed428b6",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/load02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "4b0339400f4e581b7e8bc44b3d92d4fa866dc442a361af3d95f665e65f25bd71",
+        "algorithm_version": "f812-coordinator-schema5/runtime-evidence-62d05cb4270174aa/receipt-harness-37303db722961352",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "LOAD-02.4-T01",
+          "LOAD-02.4-T02",
+          "LOAD-02.4-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      },
+      "remaining_blockers": [],
+      "full_original_case_evidence": true
     },
     {
       "task_id": "LOAD-03.1",
       "title": "事件水位",
       "dependency_order": 13,
       "owner": "MAIN / load P0",
-      "state": "ReadyForAcceptance",
+      "state": "Accepted",
       "historical_state": "ReadyForAcceptance",
       "historical_case_counts": {
         "Passed": 3
       },
       "implementation_status": "Final evidence, ownership, ACK conservation and STOP/emergency handling corrected and counterexample-tested.",
-      "current_test_status": "Original3/3 and applicable OFFLINE sequence/phase criteria proven at ee8; independent MAIN actual key replay pending.",
+      "current_test_status": "Independent MAIN S6 Accepted/NoChangeWithEvidence at exact ee8adcf40be9aebb1330156a3524910c08225ebc; three original canonical cases and all required applicable layers/minimum dependencies confirmed. New guard76d source is separately pending.",
       "modification_sha": "d4c3212fb32c75d4b9f9f62c08277996611b149c",
       "test_commands": [
         "python -m unittest discover -s tools/tests -v"
@@ -697,9 +787,10 @@
         "ci-b7099ef/verified-artifacts.json",
         "integrated-cc6da2e/report.json",
         "ci-cc6da2e/workflows.json",
-        "load03-ready-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json"
+        "load03-ready-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "MAIN_S6_bounded11_20261001.json"
       ],
-      "remaining_blocker": "S6 independent MAIN key replay/adjudication. No CI/LIVE/PG/human extra gate.",
+      "remaining_blocker": null,
       "dependencies": [
         "LOAD-01.2",
         "LOAD-06.4"
@@ -711,9 +802,9 @@
         "G1",
         "G3"
       ],
-      "accepted_by": null,
+      "accepted_by": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
       "next_action": "用run/client/epoch/event_seq增量消费；检测重复/乱序/缺口/截断/尾部未flush",
-      "accepted": false,
+      "accepted": true,
       "supporting_tests_are_canonical_acceptance": false,
       "test_command_manifests": [
         "ci-9275ec2/verified-artifacts.json",
@@ -723,21 +814,49 @@
         "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
         "ee8adcf40be9aebb1330156a3524910c08225ebc"
       ],
-      "acceptance_proposal": "ReadyForIndependentAcceptance",
-      "proposed_resolution": "NoChangeWithEvidence"
+      "acceptance_proposal": null,
+      "proposed_resolution": "NoChangeWithEvidence",
+      "resolution": "NoChangeWithEvidence",
+      "acceptance_source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+      "latest_MAIN_decision": {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "LOAD-03.1",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+        "original_report_commit": "e5de69b491bff1b3a3638bd11670901a5f96629e",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/load03-ready-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "82635905ccdd05e8a06666471a98564ee8177c04e67096e22f27d57d2292fa7b",
+        "algorithm_version": "ee8-validator-83a6d45a4938b09b/f812-Gateway-964bd3e0eea3ff00/receipt-harness-ea77e98f35da5e43",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "LOAD-03.1-T01",
+          "LOAD-03.1-T02",
+          "LOAD-03.1-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      },
+      "remaining_blockers": [],
+      "full_original_case_evidence": true
     },
     {
       "task_id": "LOAD-03.2",
       "title": "生命周期阶段",
       "dependency_order": 14,
       "owner": "MAIN / offline canonical receipt audit",
-      "state": "ReadyForAcceptance",
+      "state": "Accepted",
       "historical_state": "ReadyForAcceptance",
       "historical_case_counts": {
         "Passed": 3
       },
       "implementation_status": "Current behavior independently audited through frozen setup/expected and pure-SHA explicit receipts; no new code for this task.",
-      "current_test_status": "Original3/3 and applicable OFFLINE sequence/phase criteria proven at ee8; independent MAIN actual key replay pending.",
+      "current_test_status": "Independent MAIN S6 Accepted/NoChangeWithEvidence at exact ee8adcf40be9aebb1330156a3524910c08225ebc; three original canonical cases and all required applicable layers/minimum dependencies confirmed. New guard76d source is separately pending.",
       "modification_sha": null,
       "test_commands": [
         "python3 tools/pr13_offline_cases.py --output /workspace/pr13-takeover/case-audit-cc6da2e/receipts --godot /workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64"
@@ -748,9 +867,10 @@
         "case-audit-cc6da2e/receipts/cases.jsonl",
         "CASE_MAPPING.json",
         "integrated-cc6da2e/report.json",
-        "load03-ready-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json"
+        "load03-ready-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "MAIN_S6_bounded11_20261001.json"
       ],
-      "remaining_blocker": "S6 independent MAIN key replay/adjudication. No CI/LIVE/PG/human extra gate.",
+      "remaining_blocker": null,
       "dependencies": [
         "LOAD-03.1"
       ],
@@ -761,16 +881,44 @@
         "G1",
         "G3"
       ],
-      "accepted_by": null,
+      "accepted_by": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
       "next_action": "按login/initial/matchmaking/playing/settlement/cleanup显式分层；无标签历史标legacy_unknown",
-      "accepted": false,
+      "accepted": true,
       "supporting_tests_are_canonical_acceptance": false,
       "tested_source_shas": [
         "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
         "ee8adcf40be9aebb1330156a3524910c08225ebc"
       ],
-      "acceptance_proposal": "ReadyForIndependentAcceptance",
-      "proposed_resolution": "NoChangeWithEvidence"
+      "acceptance_proposal": null,
+      "proposed_resolution": "NoChangeWithEvidence",
+      "resolution": "NoChangeWithEvidence",
+      "acceptance_source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+      "latest_MAIN_decision": {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "LOAD-03.2",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+        "original_report_commit": "e5de69b491bff1b3a3638bd11670901a5f96629e",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/load03-ready-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "82635905ccdd05e8a06666471a98564ee8177c04e67096e22f27d57d2292fa7b",
+        "algorithm_version": "ee8-validator-83a6d45a4938b09b/f812-Gateway-964bd3e0eea3ff00/receipt-harness-ea77e98f35da5e43",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "LOAD-03.2-T01",
+          "LOAD-03.2-T02",
+          "LOAD-03.2-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      },
+      "remaining_blockers": [],
+      "full_original_case_evidence": true
     },
     {
       "task_id": "LOAD-03.3",
@@ -2237,20 +2385,21 @@
       "title": "过期测试API迁移",
       "dependency_order": 49,
       "owner": "MAIN (pending batch)",
-      "state": "ReadyForAcceptance",
+      "state": "Accepted",
       "historical_state": "Partial",
       "historical_case_counts": {
         "NotExecuted": 3
       },
       "implementation_status": "Pending independent review",
-      "current_test_status": "Original3/3; applicable full317 Domain/291 Server PG suites and actual protocol/client cases; S6 independent MAIN pending.",
+      "current_test_status": "Independent MAIN S6 Accepted/NoChangeWithEvidence at exact f812879e4518fd09bf22656451cb563d62940298; three original canonical cases and all required applicable layers/minimum dependencies confirmed. New guard76d source is separately pending.",
       "modification_sha": null,
       "test_commands": [],
       "evidence": [
         "offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
-        "offline-acceptance-f812/b02/evidence/PR13-B02.1/ROOT_REPORT.json"
+        "offline-acceptance-f812/b02/evidence/PR13-B02.1/ROOT_REPORT.json",
+        "MAIN_S6_bounded11_20261001.json"
       ],
-      "remaining_blocker": "S6 independent MAIN actual critical replay and adjudication. No extra CI/LIVE/participant gate.",
+      "remaining_blocker": null,
       "dependencies": [
         "LOAD-11.1"
       ],
@@ -2263,38 +2412,64 @@
         "G2",
         "G5"
       ],
-      "accepted_by": null,
+      "accepted_by": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
       "next_action": "旧布尔与余量成员逐断言映射CurrentRhythm/CoreCardsSpent、CurrentSteps/FractionalRemainder；先编译复现",
-      "accepted": false,
+      "accepted": true,
       "supporting_tests_are_canonical_acceptance": false,
       "tested_source_shas": [
         "f812879e4518fd09bf22656451cb563d62940298"
       ],
-      "acceptance_proposal": "ReadyForIndependentAcceptance",
+      "acceptance_proposal": null,
       "proposed_resolution": "NoChangeWithEvidence",
-      "remaining_blockers": [
-        "S6 independent MAIN actual critical replay and adjudication"
-      ]
+      "remaining_blockers": [],
+      "resolution": "NoChangeWithEvidence",
+      "acceptance_source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "latest_MAIN_decision": {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "PR13-B02.1",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "original_report_commit": "a23aa0669f6c72c1689ba6f27037373336a98abb",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
+        "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "PR13-B02.1-T01",
+          "PR13-B02.1-T02",
+          "PR13-B02.1-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      },
+      "full_original_case_evidence": true
     },
     {
       "task_id": "PR13-B02.2",
       "title": "真实Resolver规则向量",
       "dependency_order": 50,
       "owner": "MAIN (pending batch)",
-      "state": "ReadyForAcceptance",
+      "state": "Accepted",
       "historical_state": "Partial",
       "historical_case_counts": {
         "NotExecuted": 3
       },
       "implementation_status": "Pending independent review",
-      "current_test_status": "Original3/3; applicable full317 Domain/291 Server PG suites and actual protocol/client cases; S6 independent MAIN pending.",
+      "current_test_status": "Independent MAIN S6 Accepted/NoChangeWithEvidence at exact f812879e4518fd09bf22656451cb563d62940298; three original canonical cases and all required applicable layers/minimum dependencies confirmed. New guard76d source is separately pending.",
       "modification_sha": null,
       "test_commands": [],
       "evidence": [
         "offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
-        "offline-acceptance-f812/b02/evidence/PR13-B02.2/ROOT_REPORT.json"
+        "offline-acceptance-f812/b02/evidence/PR13-B02.2/ROOT_REPORT.json",
+        "MAIN_S6_bounded11_20261001.json"
       ],
-      "remaining_blocker": "S6 independent MAIN actual critical replay and adjudication. No extra CI/LIVE/participant gate.",
+      "remaining_blocker": null,
       "dependencies": [
         "PR13-B02.1"
       ],
@@ -2307,38 +2482,64 @@
         "G2",
         "G5"
       ],
-      "accepted_by": null,
+      "accepted_by": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
       "next_action": "首核/R/P/B/逐卡floor、46/72/113限定向量、双元素/调节/两种治疗用真实Resolver",
-      "accepted": false,
+      "accepted": true,
       "supporting_tests_are_canonical_acceptance": false,
       "tested_source_shas": [
         "f812879e4518fd09bf22656451cb563d62940298"
       ],
-      "acceptance_proposal": "ReadyForIndependentAcceptance",
+      "acceptance_proposal": null,
       "proposed_resolution": "NoChangeWithEvidence",
-      "remaining_blockers": [
-        "S6 independent MAIN actual critical replay and adjudication"
-      ]
+      "remaining_blockers": [],
+      "resolution": "NoChangeWithEvidence",
+      "acceptance_source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "latest_MAIN_decision": {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "PR13-B02.2",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "original_report_commit": "a23aa0669f6c72c1689ba6f27037373336a98abb",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
+        "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "PR13-B02.2-T01",
+          "PR13-B02.2-T02",
+          "PR13-B02.2-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      },
+      "full_original_case_evidence": true
     },
     {
       "task_id": "PR13-B02.3",
       "title": "预览/协议/权威一致",
       "dependency_order": 51,
       "owner": "MAIN (pending batch)",
-      "state": "ReadyForAcceptance",
+      "state": "Accepted",
       "historical_state": "Partial",
       "historical_case_counts": {
         "NotExecuted": 3
       },
       "implementation_status": "Pending independent review",
-      "current_test_status": "Original3/3; applicable full317 Domain/291 Server PG suites and actual protocol/client cases; S6 independent MAIN pending.",
+      "current_test_status": "Independent MAIN S6 Accepted/NoChangeWithEvidence at exact f812879e4518fd09bf22656451cb563d62940298; three original canonical cases and all required applicable layers/minimum dependencies confirmed. New guard76d source is separately pending.",
       "modification_sha": null,
       "test_commands": [],
       "evidence": [
         "offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
-        "offline-acceptance-f812/b02/evidence/PR13-B02.3/ROOT_REPORT.json"
+        "offline-acceptance-f812/b02/evidence/PR13-B02.3/ROOT_REPORT.json",
+        "MAIN_S6_bounded11_20261001.json"
       ],
-      "remaining_blocker": "S6 independent MAIN actual critical replay and adjudication. No extra CI/LIVE/participant gate.",
+      "remaining_blocker": null,
       "dependencies": [
         "PR13-B02.2"
       ],
@@ -2351,38 +2552,64 @@
         "G2",
         "G5"
       ],
-      "accepted_by": null,
+      "accepted_by": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
       "next_action": "预览与提交比较有效伤害/治疗/盾/控制/余量；前后状态/RNG hash不变",
-      "accepted": false,
+      "accepted": true,
       "supporting_tests_are_canonical_acceptance": false,
       "tested_source_shas": [
         "f812879e4518fd09bf22656451cb563d62940298"
       ],
-      "acceptance_proposal": "ReadyForIndependentAcceptance",
+      "acceptance_proposal": null,
       "proposed_resolution": "NoChangeWithEvidence",
-      "remaining_blockers": [
-        "S6 independent MAIN actual critical replay and adjudication"
-      ]
+      "remaining_blockers": [],
+      "resolution": "NoChangeWithEvidence",
+      "acceptance_source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "latest_MAIN_decision": {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "PR13-B02.3",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "original_report_commit": "a23aa0669f6c72c1689ba6f27037373336a98abb",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
+        "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "PR13-B02.3-T01",
+          "PR13-B02.3-T02",
+          "PR13-B02.3-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      },
+      "full_original_case_evidence": true
     },
     {
       "task_id": "PR13-B02.4",
       "title": "房间策略和恢复",
       "dependency_order": 52,
       "owner": "MAIN (pending batch)",
-      "state": "ReadyForAcceptance",
+      "state": "Accepted",
       "historical_state": "Partial",
       "historical_case_counts": {
         "NotExecuted": 3
       },
       "implementation_status": "Pending independent review",
-      "current_test_status": "Original3/3; applicable full317 Domain/291 Server PG suites and actual protocol/client cases; S6 independent MAIN pending.",
+      "current_test_status": "Independent MAIN S6 Accepted/NoChangeWithEvidence at exact f812879e4518fd09bf22656451cb563d62940298; three original canonical cases and all required applicable layers/minimum dependencies confirmed. New guard76d source is separately pending.",
       "modification_sha": null,
       "test_commands": [],
       "evidence": [
         "offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
-        "offline-acceptance-f812/b02/evidence/PR13-B02.4/ROOT_REPORT.json"
+        "offline-acceptance-f812/b02/evidence/PR13-B02.4/ROOT_REPORT.json",
+        "MAIN_S6_bounded11_20261001.json"
       ],
-      "remaining_blocker": "S6 independent MAIN actual critical replay and adjudication. No extra CI/LIVE/participant gate.",
+      "remaining_blocker": null,
       "dependencies": [
         "PR13-B02.3"
       ],
@@ -2395,18 +2622,43 @@
         "G2",
         "G5"
       ],
-      "accepted_by": null,
+      "accepted_by": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
       "next_action": "创建/PVE/PVP工作副本/持久化/恢复保策略；缺旧字段按已批准默认解释",
-      "accepted": false,
+      "accepted": true,
       "supporting_tests_are_canonical_acceptance": false,
       "tested_source_shas": [
         "f812879e4518fd09bf22656451cb563d62940298"
       ],
-      "acceptance_proposal": "ReadyForIndependentAcceptance",
+      "acceptance_proposal": null,
       "proposed_resolution": "NoChangeWithEvidence",
-      "remaining_blockers": [
-        "S6 independent MAIN actual critical replay and adjudication"
-      ]
+      "remaining_blockers": [],
+      "resolution": "NoChangeWithEvidence",
+      "acceptance_source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "latest_MAIN_decision": {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "PR13-B02.4",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "original_report_commit": "a23aa0669f6c72c1689ba6f27037373336a98abb",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
+        "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "PR13-B02.4-T01",
+          "PR13-B02.4-T02",
+          "PR13-B02.4-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      },
+      "full_original_case_evidence": true
     },
     {
       "task_id": "PR13-A07.4",
@@ -4438,13 +4690,13 @@
       "title": "队友和旧房间隔离",
       "dependency_order": 105,
       "owner": "ROOT / actual owned process and client receipt; MAIN / independent adjudication",
-      "state": "ReadyForAcceptance",
+      "state": "Accepted",
       "historical_state": "Partial",
       "historical_case_counts": {
         "NotExecuted": 3
       },
       "implementation_status": "Frozen f812 business/UI; actual production Game/Gateway/Program/PG fault and old-callback windows proven. Harness-only overlay declared. Unapplied await-guard proposal for A05.1.",
-      "current_test_status": "Original3/3 primary expectations Passed; full295 Server and317 Domain zero skip. Separate focused3/1 and causal1Failed retained; A05.1 durable visibility consistency fails, while .2 new-N isolation and .3 asset conservation have distinct complete evidence.",
+      "current_test_status": "Independent MAIN S6 Accepted/NoChangeWithEvidence at exact f812879e4518fd09bf22656451cb563d62940298; three original canonical cases and all required applicable layers/minimum dependencies confirmed. New guard76d source is separately pending.",
       "modification_sha": "b7099ef716235be68395255360cbd5cf6c67baff",
       "test_commands": [
         "source /workspace/relicround-env/activate.sh; FANTASYCARD_TEST_POSTGRES='Host=/workspace/pr13-takeover/lifecycle/pg/socket;Port=55439;Database=pr13_lifecycle;Username=agent;Pooling=true;SSL Mode=Disable' dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj --filter FullyQualifiedName~PostgresLifecycleRecoveryTests --logger 'trx;LogFileName=matrix-final-verified.trx' --results-directory /workspace/pr13-takeover/lifecycle/logs",
@@ -4464,9 +4716,10 @@
         "ci-cc6da2e/workflows.json",
         "offline-acceptance-f812/a05/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
         "offline-acceptance-f812/a05/tasks/PR13-A05.2/ROOT_REPORT.json",
-        "offline-acceptance-f812/a05/DERIVED_CHECKS.json"
+        "offline-acceptance-f812/a05/DERIVED_CHECKS.json",
+        "MAIN_S6_bounded11_20261001.json"
       ],
-      "remaining_blocker": "Independent MAIN critical actual replay and adjudication of original OFFLINE/POSTGRES/AUDIT contract. No added CI/LIVE/human gate.",
+      "remaining_blocker": null,
       "dependencies": [
         "PR13-A05.1"
       ],
@@ -4479,36 +4732,60 @@
         "G2",
         "G5"
       ],
-      "accepted_by": null,
+      "accepted_by": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
       "next_action": "A进入新局后旧房snapshot继续；旧route删除只在仍指旧room时发生",
-      "accepted": false,
+      "accepted": true,
       "supporting_tests_are_canonical_acceptance": false,
       "tested_source_shas": [
         "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
         "f812879e4518fd09bf22656451cb563d62940298"
       ],
       "existing_real_host_evidence": "CASE_MAPPING.json: supporting_existing_real_host_cases; integrated-cc6da2e/trx/server.trx",
-      "acceptance_proposal": "ReadyForIndependentAcceptance",
+      "acceptance_proposal": null,
       "proposed_resolution": "NoChangeWithEvidence",
       "latest_runtime_sha": "f812879e4518fd09bf22656451cb563d62940298",
-      "remaining_blockers": [
-        "S6 independent MAIN critical replay and adjudication"
-      ],
+      "remaining_blockers": [],
       "tested_source_provenance": "Actual f812 tracked non-bin/obj bytes all6445 unchanged; seven canonical test files overlay. Later two causal files separate assembly. Generated build artifacts/overlay declared; not pure-SHA CI.",
-      "full_original_case_evidence": true
+      "full_original_case_evidence": true,
+      "resolution": "NoChangeWithEvidence",
+      "acceptance_source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "latest_MAIN_decision": {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "PR13-A05.2",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "original_report_commit": "8068783331da07ec68354c1874eb0d65adea632f",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/a05/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+        "algorithm_version": "A05ProcessAcceptance/1",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "PR13-A05.2-T01",
+          "PR13-A05.2-T02",
+          "PR13-A05.2-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      }
     },
     {
       "task_id": "PR13-A05.3",
       "title": "幂等/重启资产矩阵",
       "dependency_order": 106,
       "owner": "ROOT / actual owned process and client receipt; MAIN / independent adjudication",
-      "state": "ReadyForAcceptance",
+      "state": "Accepted",
       "historical_state": "Partial",
       "historical_case_counts": {
         "NotExecuted": 3
       },
       "implementation_status": "Frozen f812 business/UI; actual production Game/Gateway/Program/PG fault and old-callback windows proven. Harness-only overlay declared. Unapplied await-guard proposal for A05.1.",
-      "current_test_status": "Original3/3 primary expectations Passed; full295 Server and317 Domain zero skip. Separate focused3/1 and causal1Failed retained; A05.1 durable visibility consistency fails, while .2 new-N isolation and .3 asset conservation have distinct complete evidence.",
+      "current_test_status": "Independent MAIN S6 Accepted/NoChangeWithEvidence at exact f812879e4518fd09bf22656451cb563d62940298; three original canonical cases and all required applicable layers/minimum dependencies confirmed. New guard76d source is separately pending.",
       "modification_sha": "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17",
       "test_commands": [
         "source /workspace/relicround-env/activate.sh; FANTASYCARD_TEST_POSTGRES='Host=/workspace/pr13-takeover/lifecycle/pg/socket;Port=55439;Database=pr13_lifecycle;Username=agent;Pooling=true;SSL Mode=Disable' dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj --filter FullyQualifiedName~PostgresLifecycleRecoveryTests --logger 'trx;LogFileName=matrix-final-verified.trx' --results-directory /workspace/pr13-takeover/lifecycle/logs",
@@ -4533,9 +4810,10 @@
         "process-recovery-v2/CANONICAL_SUPPORT_MAPPING.json",
         "offline-acceptance-f812/a05/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
         "offline-acceptance-f812/a05/tasks/PR13-A05.3/ROOT_REPORT.json",
-        "offline-acceptance-f812/a05/DERIVED_CHECKS.json"
+        "offline-acceptance-f812/a05/DERIVED_CHECKS.json",
+        "MAIN_S6_bounded11_20261001.json"
       ],
-      "remaining_blocker": "Independent MAIN critical actual replay and adjudication of original OFFLINE/POSTGRES/AUDIT contract. No added CI/LIVE/human gate.",
+      "remaining_blocker": null,
       "dependencies": [
         "PR13-A05.2"
       ],
@@ -4548,9 +4826,9 @@
         "G2",
         "G5"
       ],
-      "accepted_by": null,
+      "accepted_by": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
       "next_action": "重复请求/ack/通知与重启覆盖持久资源，比较金额和实例集合",
-      "accepted": false,
+      "accepted": true,
       "supporting_tests_are_canonical_acceptance": false,
       "tested_source_shas": [
         "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
@@ -4559,13 +4837,37 @@
       ],
       "existing_real_host_evidence": "CASE_MAPPING.json: supporting_existing_real_host_cases; integrated-cc6da2e/trx/server.trx",
       "tested_source_provenance": "Actual f812 tracked non-bin/obj bytes all6445 unchanged; seven canonical test files overlay. Later two causal files separate assembly. Generated build artifacts/overlay declared; not pure-SHA CI.",
-      "acceptance_proposal": "ReadyForIndependentAcceptance",
+      "acceptance_proposal": null,
       "proposed_resolution": "NoChangeWithEvidence",
       "latest_runtime_sha": "f812879e4518fd09bf22656451cb563d62940298",
-      "remaining_blockers": [
-        "S6 independent MAIN critical replay and adjudication"
-      ],
-      "full_original_case_evidence": true
+      "remaining_blockers": [],
+      "full_original_case_evidence": true,
+      "resolution": "NoChangeWithEvidence",
+      "acceptance_source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "latest_MAIN_decision": {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "PR13-A05.3",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "original_report_commit": "8068783331da07ec68354c1874eb0d65adea632f",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/a05/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+        "algorithm_version": "A05ProcessAcceptance/1",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "PR13-A05.3-T01",
+          "PR13-A05.3-T02",
+          "PR13-A05.3-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      }
     },
     {
       "task_id": "PR13-A06.1",
@@ -5658,6 +5960,14 @@
       "gate_id": "G1",
       "state": "NotAccepted",
       "unfinished": [
+        "LOAD-03.4",
+        "LOAD-07.4",
+        "LOAD-10.1",
+        "PR13-A02.3",
+        "PR13-A06.4",
+        "PR13-A07.4"
+      ],
+      "prior_unfinished_snapshot": [
         "LOAD-01.4",
         "LOAD-02.4",
         "LOAD-03.4",
@@ -5673,6 +5983,22 @@
       "gate_id": "G2",
       "state": "NotAccepted",
       "unfinished": [
+        "LOAD-04.4",
+        "LOAD-05.4",
+        "LOAD-09.2",
+        "LOAD-10.2",
+        "LOAD-10.3",
+        "PR13-A03.4",
+        "PR13-A04.4",
+        "PR13-A09.4",
+        "PR13-B06.3",
+        "PR13-B07.3",
+        "PR13-B08.3",
+        "PR13-B09.3",
+        "PR13-B10.4",
+        "PR13-B11.4"
+      ],
+      "prior_unfinished_snapshot": [
         "LOAD-04.4",
         "LOAD-05.4",
         "LOAD-09.2",
@@ -5735,7 +6061,7 @@
       ]
     }
   ],
-  "updated_at_utc": "2026-09-30T23:46:32.235679+00:00",
+  "updated_at_utc": "2026-10-01T00:49:41.617334+00:00",
   "gate_decisions": [
     {
       "gate": "G0",
@@ -5770,31 +6096,121 @@
   ],
   "test_provenance_note": "Pure cc6 checkout:115 Python,27 explicit receipts,6 Godot gates including import, fresh solution/domain317/privatePG262 passed. Original failed missing-Godot invocation26/27 retained. All396 canonical cases and six gates remain unaccepted.",
   "current_ci_evidence": {
-    "source_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
-    "state": "AccountBillingBlocked",
-    "path": "fault-batch-f93e32da/ci-f93e32da.json",
-    "all5_passed": false
+    "state": "MonthlyQuotaRestoredAwaitNecessaryFinalCandidate",
+    "runs": null,
+    "missing_reasons": {
+      "runs": "Final A05 plus LOAD02 candidate not sealed; no intermediate retry requested."
+    },
+    "MAIN_observed_restoration": {
+      "PR": 18,
+      "run": 36769267487,
+      "attempt": 2,
+      "conclusion": "success",
+      "at_utc": "2026-10-01T00:34:00Z"
+    },
+    "additional_budget_usd": 0,
+    "StopYes_unchanged": true
   },
-  "latest_runtime_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+  "latest_runtime_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
   "state_counts": {
     "Partial": 42,
     "NotRevalidated": 72,
-    "Accepted": 4,
-    "ReadyForAcceptance": 11,
+    "Accepted": 15,
     "Blocked": 3
   },
   "latest_batch_state_transitions": [
     {
-      "task_id": "LOAD-01.1",
-      "from_state": "Failed",
+      "task_id": "LOAD-02.1",
+      "from_state": "ReadyForAcceptance",
       "to_state": "Accepted",
       "authority": "MAIN",
-      "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04"
+      "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab"
+    },
+    {
+      "task_id": "LOAD-02.3",
+      "from_state": "ReadyForAcceptance",
+      "to_state": "Accepted",
+      "authority": "MAIN",
+      "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab"
+    },
+    {
+      "task_id": "LOAD-02.4",
+      "from_state": "ReadyForAcceptance",
+      "to_state": "Accepted",
+      "authority": "MAIN",
+      "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab"
+    },
+    {
+      "task_id": "LOAD-03.1",
+      "from_state": "ReadyForAcceptance",
+      "to_state": "Accepted",
+      "authority": "MAIN",
+      "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+      "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab"
+    },
+    {
+      "task_id": "LOAD-03.2",
+      "from_state": "ReadyForAcceptance",
+      "to_state": "Accepted",
+      "authority": "MAIN",
+      "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+      "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab"
+    },
+    {
+      "task_id": "PR13-B02.1",
+      "from_state": "ReadyForAcceptance",
+      "to_state": "Accepted",
+      "authority": "MAIN",
+      "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab"
+    },
+    {
+      "task_id": "PR13-B02.2",
+      "from_state": "ReadyForAcceptance",
+      "to_state": "Accepted",
+      "authority": "MAIN",
+      "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab"
+    },
+    {
+      "task_id": "PR13-B02.3",
+      "from_state": "ReadyForAcceptance",
+      "to_state": "Accepted",
+      "authority": "MAIN",
+      "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab"
+    },
+    {
+      "task_id": "PR13-B02.4",
+      "from_state": "ReadyForAcceptance",
+      "to_state": "Accepted",
+      "authority": "MAIN",
+      "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab"
+    },
+    {
+      "task_id": "PR13-A05.2",
+      "from_state": "ReadyForAcceptance",
+      "to_state": "Accepted",
+      "authority": "MAIN",
+      "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab"
+    },
+    {
+      "task_id": "PR13-A05.3",
+      "from_state": "ReadyForAcceptance",
+      "to_state": "Accepted",
+      "authority": "MAIN",
+      "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab"
     }
   ],
   "production_protocol_fix_sha": "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17",
   "checkpoint_test_fix_sha": "de1157fdf490a5bce3ba888c07519fc957c46782",
-  "latest_test_candidate_sha": "f812879e4518fd09bf22656451cb563d62940298",
+  "latest_test_candidate_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
   "production_behavior_baseline": "f812879e4518fd09bf22656451cb563d62940298",
   "MAIN_S6_decisions": {
     "kind": "Recorded_explicit_parent_MAIN_S6_decision",
@@ -5833,22 +6249,616 @@
     "all132_accepted": false
   },
   "latest_MAIN_S6_decision": {
-    "kind": "Recorded_explicit_parent_MAIN_S6_decision",
-    "task_id": "LOAD-01.1",
-    "state": "Accepted",
-    "resolution": "FixedWithEvidence",
-    "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
-    "review_commit": "b4eba2cd6131dc6bae505af2a6ec9e7ba038a160",
-    "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/b4eba2cd6131dc6bae505af2a6ec9e7ba038a160/docs/reports/pr13-independent-main-20260930/e06037f5/REVIEW.md",
-    "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/b4eba2cd6131dc6bae505af2a6ec9e7ba038a160/docs/reports/pr13-independent-main-20260930/e06037f5/REPORT.json",
-    "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
-    "authorization": "Explicit parent delegation: MAIN finally adjudicated LOAD01.1 Accepted/FixedWithEvidence at exact e060.",
-    "verified_review_manifest_files": 58,
-    "review_manifest_sha256": "0e19533da9ef3764e6f37a385ca74ecea18408504e7fd6d5873e2abea3b45e0f",
-    "independent_actual_result": "Original3 + same-class5 + old5 + canonical12 + Python122 passed0skip; all17 dedicated children reaped.",
-    "implementation_owner_did_not_sign": true,
-    "other_LOAD01_decisions_unchanged": "LOAD-01.2/.3/.4 remain Accepted/NoChangeWithEvidence at original ee8 MAIN decision.",
+    "kind": "Recorded_explicit_parent_MAIN_S6_decisions_bounded11",
+    "recorded_at_utc": "2026-10-01T00:49:41.617334+00:00",
+    "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+    "canonical_plan_sha256": "5176ee139d4e632ba34469ae531ce7ec16478f356480e2d8e320cd51f3bcd703",
+    "review_manifest_sha256": "b82addeeb8cd1e59aa429be4db3513f39f39ca1f84af7d41883b16c0bb962e4f",
+    "verified_review_manifest_files": 32,
+    "parent_independent_actual_execution_summary": "33 canonical cases; Python42/119, Domain317, original configServer291 and A05full295 with zero skip. Parent review verified710 receipt records,86 metadata rows and11 profile hashes.",
+    "decisions": [
+      {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "LOAD-02.3",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "original_report_commit": "a1d30eb89d74aa16bb2c094c5a78c20a5ed428b6",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/load02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "4b0339400f4e581b7e8bc44b3d92d4fa866dc442a361af3d95f665e65f25bd71",
+        "algorithm_version": "f812-coordinator-schema5/runtime-evidence-62d05cb4270174aa/receipt-harness-37303db722961352",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "LOAD-02.3-T01",
+          "LOAD-02.3-T02",
+          "LOAD-02.3-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      },
+      {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "LOAD-02.1",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "original_report_commit": "a1d30eb89d74aa16bb2c094c5a78c20a5ed428b6",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/load02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "4b0339400f4e581b7e8bc44b3d92d4fa866dc442a361af3d95f665e65f25bd71",
+        "algorithm_version": "f812-coordinator-schema5/runtime-evidence-62d05cb4270174aa/receipt-harness-37303db722961352",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "LOAD-02.1-T01",
+          "LOAD-02.1-T02",
+          "LOAD-02.1-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      },
+      {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "LOAD-02.4",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "original_report_commit": "a1d30eb89d74aa16bb2c094c5a78c20a5ed428b6",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/load02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "4b0339400f4e581b7e8bc44b3d92d4fa866dc442a361af3d95f665e65f25bd71",
+        "algorithm_version": "f812-coordinator-schema5/runtime-evidence-62d05cb4270174aa/receipt-harness-37303db722961352",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "LOAD-02.4-T01",
+          "LOAD-02.4-T02",
+          "LOAD-02.4-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      },
+      {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "LOAD-03.1",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+        "original_report_commit": "e5de69b491bff1b3a3638bd11670901a5f96629e",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/load03-ready-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "82635905ccdd05e8a06666471a98564ee8177c04e67096e22f27d57d2292fa7b",
+        "algorithm_version": "ee8-validator-83a6d45a4938b09b/f812-Gateway-964bd3e0eea3ff00/receipt-harness-ea77e98f35da5e43",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "LOAD-03.1-T01",
+          "LOAD-03.1-T02",
+          "LOAD-03.1-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      },
+      {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "LOAD-03.2",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+        "original_report_commit": "e5de69b491bff1b3a3638bd11670901a5f96629e",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/load03-ready-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "82635905ccdd05e8a06666471a98564ee8177c04e67096e22f27d57d2292fa7b",
+        "algorithm_version": "ee8-validator-83a6d45a4938b09b/f812-Gateway-964bd3e0eea3ff00/receipt-harness-ea77e98f35da5e43",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "LOAD-03.2-T01",
+          "LOAD-03.2-T02",
+          "LOAD-03.2-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      },
+      {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "PR13-B02.4",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "original_report_commit": "a23aa0669f6c72c1689ba6f27037373336a98abb",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
+        "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "PR13-B02.4-T01",
+          "PR13-B02.4-T02",
+          "PR13-B02.4-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      },
+      {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "PR13-B02.1",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "original_report_commit": "a23aa0669f6c72c1689ba6f27037373336a98abb",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
+        "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "PR13-B02.1-T01",
+          "PR13-B02.1-T02",
+          "PR13-B02.1-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      },
+      {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "PR13-B02.2",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "original_report_commit": "a23aa0669f6c72c1689ba6f27037373336a98abb",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
+        "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "PR13-B02.2-T01",
+          "PR13-B02.2-T02",
+          "PR13-B02.2-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      },
+      {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "PR13-B02.3",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "original_report_commit": "a23aa0669f6c72c1689ba6f27037373336a98abb",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
+        "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "PR13-B02.3-T01",
+          "PR13-B02.3-T02",
+          "PR13-B02.3-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      },
+      {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "PR13-A05.3",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "original_report_commit": "8068783331da07ec68354c1874eb0d65adea632f",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/a05/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+        "algorithm_version": "A05ProcessAcceptance/1",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "PR13-A05.3-T01",
+          "PR13-A05.3-T02",
+          "PR13-A05.3-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      },
+      {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "PR13-A05.2",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "original_report_commit": "8068783331da07ec68354c1874eb0d65adea632f",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/a05/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+        "algorithm_version": "A05ProcessAcceptance/1",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "PR13-A05.2-T01",
+          "PR13-A05.2-T02",
+          "PR13-A05.2-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      }
+    ],
+    "retained_failures": [
+      {
+        "scope": "A05.1 outside decision",
+        "historical_focused": "3Passed/1Failed retained at80687833",
+        "current_focused": "4Passed/0Failed/0Skipped; cannot erase historical red",
+        "current_causal": "1Failed/0Passed/0Skipped, exit1; stale_during_ack and stale_after_ack true; after-audit clear",
+        "conclusion": "Original A05.1 remains Partial; no UI fix applied."
+      },
+      {
+        "scope": "Initial non-original B02 full-suite connection profile",
+        "actual": "290Passed/1Failed/0Skipped: MarkRunning commit-response-loss expected Running, observed Launching",
+        "profile": "Review initial Pooling=true/MaxPool8 differs from original B02 Pooling=false; original-profile whole291 subsequently Passed. Both focused Pooling=false and true passed; no causal attribution established.",
+        "conclusion": "Failure preserved; not silently reclassified Passed or used to sign unrelated tasks. B02/LOAD02 decisions rely on exact original-profile whole291 plus actual target cases; no extra pooling gate introduced."
+      }
+    ],
+    "excluded": {
+      "LOAD01": "Four accepted decisions unchanged; Python regression execution creates no new decision.",
+      "Partial": [
+        "LOAD-02.2",
+        "LOAD-03.3",
+        "LOAD-03.4",
+        "PR13-A05.1"
+      ]
+    },
+    "Accepted_after_recording": 15,
     "all132_accepted": false,
-    "gates_accepted": false
-  }
+    "gates_G0_G5_signed": false,
+    "scope_note": "These decisions stay bound to each original source. New guard/testing76d7113d remains pending its own independent S6."
+  },
+  "latest_MAIN_S6_bounded11": {
+    "kind": "Recorded_explicit_parent_MAIN_S6_decisions_bounded11",
+    "recorded_at_utc": "2026-10-01T00:49:41.617334+00:00",
+    "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+    "canonical_plan_sha256": "5176ee139d4e632ba34469ae531ce7ec16478f356480e2d8e320cd51f3bcd703",
+    "review_manifest_sha256": "b82addeeb8cd1e59aa429be4db3513f39f39ca1f84af7d41883b16c0bb962e4f",
+    "verified_review_manifest_files": 32,
+    "parent_independent_actual_execution_summary": "33 canonical cases; Python42/119, Domain317, original configServer291 and A05full295 with zero skip. Parent review verified710 receipt records,86 metadata rows and11 profile hashes.",
+    "decisions": [
+      {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "LOAD-02.3",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "original_report_commit": "a1d30eb89d74aa16bb2c094c5a78c20a5ed428b6",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/load02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "4b0339400f4e581b7e8bc44b3d92d4fa866dc442a361af3d95f665e65f25bd71",
+        "algorithm_version": "f812-coordinator-schema5/runtime-evidence-62d05cb4270174aa/receipt-harness-37303db722961352",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "LOAD-02.3-T01",
+          "LOAD-02.3-T02",
+          "LOAD-02.3-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      },
+      {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "LOAD-02.1",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "original_report_commit": "a1d30eb89d74aa16bb2c094c5a78c20a5ed428b6",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/load02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "4b0339400f4e581b7e8bc44b3d92d4fa866dc442a361af3d95f665e65f25bd71",
+        "algorithm_version": "f812-coordinator-schema5/runtime-evidence-62d05cb4270174aa/receipt-harness-37303db722961352",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "LOAD-02.1-T01",
+          "LOAD-02.1-T02",
+          "LOAD-02.1-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      },
+      {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "LOAD-02.4",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "original_report_commit": "a1d30eb89d74aa16bb2c094c5a78c20a5ed428b6",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/load02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "4b0339400f4e581b7e8bc44b3d92d4fa866dc442a361af3d95f665e65f25bd71",
+        "algorithm_version": "f812-coordinator-schema5/runtime-evidence-62d05cb4270174aa/receipt-harness-37303db722961352",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "LOAD-02.4-T01",
+          "LOAD-02.4-T02",
+          "LOAD-02.4-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      },
+      {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "LOAD-03.1",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+        "original_report_commit": "e5de69b491bff1b3a3638bd11670901a5f96629e",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/load03-ready-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "82635905ccdd05e8a06666471a98564ee8177c04e67096e22f27d57d2292fa7b",
+        "algorithm_version": "ee8-validator-83a6d45a4938b09b/f812-Gateway-964bd3e0eea3ff00/receipt-harness-ea77e98f35da5e43",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "LOAD-03.1-T01",
+          "LOAD-03.1-T02",
+          "LOAD-03.1-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      },
+      {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "LOAD-03.2",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+        "original_report_commit": "e5de69b491bff1b3a3638bd11670901a5f96629e",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/load03-ready-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "82635905ccdd05e8a06666471a98564ee8177c04e67096e22f27d57d2292fa7b",
+        "algorithm_version": "ee8-validator-83a6d45a4938b09b/f812-Gateway-964bd3e0eea3ff00/receipt-harness-ea77e98f35da5e43",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "LOAD-03.2-T01",
+          "LOAD-03.2-T02",
+          "LOAD-03.2-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      },
+      {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "PR13-B02.4",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "original_report_commit": "a23aa0669f6c72c1689ba6f27037373336a98abb",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
+        "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "PR13-B02.4-T01",
+          "PR13-B02.4-T02",
+          "PR13-B02.4-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      },
+      {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "PR13-B02.1",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "original_report_commit": "a23aa0669f6c72c1689ba6f27037373336a98abb",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
+        "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "PR13-B02.1-T01",
+          "PR13-B02.1-T02",
+          "PR13-B02.1-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      },
+      {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "PR13-B02.2",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "original_report_commit": "a23aa0669f6c72c1689ba6f27037373336a98abb",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
+        "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "PR13-B02.2-T01",
+          "PR13-B02.2-T02",
+          "PR13-B02.2-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      },
+      {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "PR13-B02.3",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "original_report_commit": "a23aa0669f6c72c1689ba6f27037373336a98abb",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
+        "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "PR13-B02.3-T01",
+          "PR13-B02.3-T02",
+          "PR13-B02.3-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      },
+      {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "PR13-A05.3",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "original_report_commit": "8068783331da07ec68354c1874eb0d65adea632f",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/a05/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+        "algorithm_version": "A05ProcessAcceptance/1",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "PR13-A05.3-T01",
+          "PR13-A05.3-T02",
+          "PR13-A05.3-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      },
+      {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "PR13-A05.2",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "original_report_commit": "8068783331da07ec68354c1874eb0d65adea632f",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/a05/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+        "algorithm_version": "A05ProcessAcceptance/1",
+        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
+        "case_ids": [
+          "PR13-A05.2-T01",
+          "PR13-A05.2-T02",
+          "PR13-A05.2-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_guard_source": false,
+        "gates_accepted": false
+      }
+    ],
+    "retained_failures": [
+      {
+        "scope": "A05.1 outside decision",
+        "historical_focused": "3Passed/1Failed retained at80687833",
+        "current_focused": "4Passed/0Failed/0Skipped; cannot erase historical red",
+        "current_causal": "1Failed/0Passed/0Skipped, exit1; stale_during_ack and stale_after_ack true; after-audit clear",
+        "conclusion": "Original A05.1 remains Partial; no UI fix applied."
+      },
+      {
+        "scope": "Initial non-original B02 full-suite connection profile",
+        "actual": "290Passed/1Failed/0Skipped: MarkRunning commit-response-loss expected Running, observed Launching",
+        "profile": "Review initial Pooling=true/MaxPool8 differs from original B02 Pooling=false; original-profile whole291 subsequently Passed. Both focused Pooling=false and true passed; no causal attribution established.",
+        "conclusion": "Failure preserved; not silently reclassified Passed or used to sign unrelated tasks. B02/LOAD02 decisions rely on exact original-profile whole291 plus actual target cases; no extra pooling gate introduced."
+      }
+    ],
+    "excluded": {
+      "LOAD01": "Four accepted decisions unchanged; Python regression execution creates no new decision.",
+      "Partial": [
+        "LOAD-02.2",
+        "LOAD-03.3",
+        "LOAD-03.4",
+        "PR13-A05.1"
+      ]
+    },
+    "Accepted_after_recording": 15,
+    "all132_accepted": false,
+    "gates_G0_G5_signed": false,
+    "scope_note": "These decisions stay bound to each original source. New guard/testing76d7113d remains pending its own independent S6."
+  },
+  "historical_account_blocked_ci_evidence": {
+    "source_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
+    "state": "AccountBillingBlocked",
+    "path": "fault-batch-f93e32da/ci-f93e32da.json",
+    "all5_passed": false
+  },
+  "current_guard_checkpoint": "A05_GUARD_CHECKPOINT_20261001.json"
 }
