@@ -1,0 +1,526 @@
+{
+  "raw_uploaded": false,
+  "historical_private_raw_rehashed": false,
+  "fresh_actual_raw_local_files": 2204,
+  "fresh_actual_raw_local_bytes": 41938513,
+  "full_local_manifest": {
+    "path": "LOCAL_RAW_MANIFEST.json",
+    "bytes": 522937,
+    "sha256": "4788744f8a66df102f7d8b85874c1a73b0d119d8c8914f60e131bb3f0e86fd48"
+  },
+  "selected_reproducible_raw": [
+    {
+      "path": "evidence/A05-MARKRUNNING-DIAGNOSTIC/tests.trx",
+      "bytes": 3140,
+      "sha256": "917f82738d47ff004da42ac63de1a9ae1940ccbb704d5d7520fe5eb7761e49a9"
+    },
+    {
+      "path": "evidence/A05-RED/a05-audit-causal-after.json",
+      "bytes": 6920,
+      "sha256": "82323677d2f331e213afad8b1e2b4bd47f96878a1fc22d3b1af27f991dbc1610"
+    },
+    {
+      "path": "evidence/A05-RED/a05-audit-causal-before.json",
+      "bytes": 1663,
+      "sha256": "ddd1884e273f96165727c34ecd4834b757671dedbcf167ad115fe978b7dab19c"
+    },
+    {
+      "path": "evidence/A05-RED/ack-client-a05-causal-sha256-id:ad128a187da60aaf6ac5eb903255aff211cb8b0c696af7c58881bccc7ff61c5d/control/result.json",
+      "bytes": 18558,
+      "sha256": "8a4d03b328634b866b7a7b1e8f4a7541f84143a315d09903227313b10f46ba3d"
+    },
+    {
+      "path": "evidence/A05-RED/receipts.jsonl",
+      "bytes": 24349,
+      "sha256": "ec00e6e70a62cec058617da87a5b806f3b9990292093213cc89deeeefdebb073"
+    },
+    {
+      "path": "evidence/A05-RED/tests.trx",
+      "bytes": 48737,
+      "sha256": "b9af5a77465058b4cc539f709efeaff983a212906fbdc7f77f2e37576136af39"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-causal-after.json",
+      "bytes": 6923,
+      "sha256": "04fcee3dd1b41b34d66b048238525958543168653cb1844770e0ba03150eaff2"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-causal-before.json",
+      "bytes": 1661,
+      "sha256": "a0e354ea882a98b96c784216b7f7b10cdaa880a6071f6befcd98875b39d7eb40"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-db-committed-response-loss-after.json",
+      "bytes": 5142,
+      "sha256": "6af1cfde1e155e7457ec170cc5968fe13c575ad99a06188431070f254ec146bd"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-db-committed-response-loss-before.json",
+      "bytes": 1684,
+      "sha256": "aed479766700e053cfdf549d27e13d0b19d89ee99af10331254c98c852ee6820"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-db-precommit-after.json",
+      "bytes": 5128,
+      "sha256": "f1831382a04ed81c076856be651cff2742c1e92da3baf9f0cfacddb9b17aa5f6"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-db-precommit-before.json",
+      "bytes": 1669,
+      "sha256": "d09deaecb2418b7e341164ed6ed2a0062ccf118c12fcbe55b1c6a4343461d2d5"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-guard-ordinary-success-after.json",
+      "bytes": 6943,
+      "sha256": "390d0c66f1f5e3d70d11ad2fe6d2a6e7f6fc12f05fe043527c9b96e6a3256f50"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-guard-ordinary-success-before.json",
+      "bytes": 1680,
+      "sha256": "c9e9fd88c95c6ecb8ee3c3cee8c7e62edff94f30471f8dd66b40b1e07da73848"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-guard-recovered-committed-loss-after.json",
+      "bytes": 6950,
+      "sha256": "42dd0e02eb530086078f0a812ed0b27c968621e5664ef7b35f666b6a7bfe1332"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-guard-recovered-committed-loss-before.json",
+      "bytes": 1688,
+      "sha256": "c7cfef5feb26cc0bb34a0768119e177c29df4f67023466c70ea655d883c7520f"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-guard-recovered-uncommitted-loss-after.json",
+      "bytes": 6953,
+      "sha256": "dc73f267d1c2fa94b9700e96c2041a9adf38c6506646a04fbb7390521bab0bee"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-guard-recovered-uncommitted-loss-before.json",
+      "bytes": 1690,
+      "sha256": "6591e21b32505db97e6d63d9d3d1766b91508a8e97ad415e09e894439f9237d8"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-healthy-after.json",
+      "bytes": 17216,
+      "sha256": "fa18e6e42f030a340c142c2cc27c2dac74a70642307d30e43bde470d3b483e78"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-healthy-before.json",
+      "bytes": 2077,
+      "sha256": "8f79f3942a8f0349dda7770acc01e8efb26e13a0698f318d5974a34413667894"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-pending-after.json",
+      "bytes": 6928,
+      "sha256": "81278dbf08253c69292259efe83e4f2c0c1405222e5317fbb5c75db8635421ea"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-pending-before.json",
+      "bytes": 1665,
+      "sha256": "8cbc9dec6d7c17e521c8f9412eb5834e799f0a0bfe74f16a7465fa0ecaff242f"
+    },
+    {
+      "path": "evidence/A05-SERVER299/ack-client-a05-causal-sha256-id:9e5a1a2c6b7ae1707684b8ca56a5ab630ef57862ecf3e9662207b5178748f6e0/control/result.json",
+      "bytes": 18557,
+      "sha256": "b67ca965e7966eda9ccf9d900e69efc34394ca77e49d917e9c9147a7a7dcd40e"
+    },
+    {
+      "path": "evidence/A05-SERVER299/ack-client-a05-db-committed-response-loss-sha256-id:32c7247a22862422938080e8410ab4e40159fa92b7047c599799232133ccb923/control/result.json",
+      "bytes": 11272,
+      "sha256": "68d145506ebf21f33d9c7d36bd42902f5db4655cde3fa2c3092f87e1abe0663b"
+    },
+    {
+      "path": "evidence/A05-SERVER299/ack-client-a05-db-precommit-sha256-id:68f179427f7253ce972cd4e0c42664246f8c41802595123a6e4ce22e42a5d5a4/control/result.json",
+      "bytes": 10371,
+      "sha256": "2851353793f4240f3e381790427dc80aa9533e69458e7d8b9d28ab41e7ee1a92"
+    },
+    {
+      "path": "evidence/A05-SERVER299/ack-client-a05-healthy-sha256-id:1db4b13d2153afd2efa9e54c62c811fe55c2e7a5a82920a838bd1d492b2c722f/control/result.json",
+      "bytes": 16604,
+      "sha256": "0c34729b7899ff2f1dce51fa46c86366d33149b878b018a6f726edb7df80295a"
+    },
+    {
+      "path": "evidence/A05-SERVER299/ack-client-a05-pending-sha256-id:59717e82ac0a531cadabbd6f9c2d5d9c888b375e2e820e3df617e1b32c3e8070/control/result.json",
+      "bytes": 27999,
+      "sha256": "7bae237a55c72f8bcf6a985c745efdcac52bb4ae22c193dc52364a3d95947c7c"
+    },
+    {
+      "path": "evidence/A05-SERVER299/ack-client-guard-ordinary-success-sha256-id:e421e6b77cfd99221325a4dac43755e3608b651ea5cee57ab11d776723e77fdc/control/result.json",
+      "bytes": 2681,
+      "sha256": "887ddac50af45dd68fc9fbff2cfd5c5f412ecee3ef6eea97dadc391dab979c7c"
+    },
+    {
+      "path": "evidence/A05-SERVER299/ack-client-guard-recovered-committed-loss-sha256-id:0de0d5eb79878c6596780c9e8f3671f504cc80d2a1d38f24c12fca5edc622ee0/control/result.json",
+      "bytes": 2692,
+      "sha256": "7a7ad78f2453ba6b91c7114d77fa819ee6d4b0e50869172f0af19c3999b9cb58"
+    },
+    {
+      "path": "evidence/A05-SERVER299/ack-client-guard-recovered-uncommitted-loss-sha256-id:3e6ecfd3b794e69b887b26b380bfe5dbe19dd8288f6d94e644f13951cca773db/control/result.json",
+      "bytes": 3005,
+      "sha256": "541f6818001dc7717cf6a7cce08be12f769098a7935bfef4ea4f3571109eeb09"
+    },
+    {
+      "path": "evidence/A05-SERVER299/ack-client-runner-cycles-middle-response-loss-sha256-id:d3fcfa985a9a3b8974774b36929b6f3af575fed692d9f093aa4f5c07c81a5e3d/load-result.json",
+      "bytes": 282982,
+      "sha256": "f522e13c441fcc641cc25db4b737447cc3c03a1c45868a818177ad835991f212"
+    },
+    {
+      "path": "evidence/A05-SERVER299/ack-client-runner-cycles-middle-response-loss-sha256-id:d3fcfa985a9a3b8974774b36929b6f3af575fed692d9f093aa4f5c07c81a5e3d/load-result.json.accounting.json",
+      "bytes": 1198,
+      "sha256": "214900228de619e9274e6e42febf49c8fab365674f84c1881d177dc3ee7a6b34"
+    },
+    {
+      "path": "evidence/A05-SERVER299/ack-client-runner-cycles-middle-uncommitted-loss-sha256-id:d1b1ec89e2773ee901b62727f9178c250b5d4c3771557a9d6aae2a9fab1f462e/load-result.json",
+      "bytes": 284744,
+      "sha256": "f10d9d28cf0c254ae1a6a467ffcf43f56507fa4e9cc35538953a72f8e1cbdc7b"
+    },
+    {
+      "path": "evidence/A05-SERVER299/ack-client-runner-cycles-middle-uncommitted-loss-sha256-id:d1b1ec89e2773ee901b62727f9178c250b5d4c3771557a9d6aae2a9fab1f462e/load-result.json.accounting.json",
+      "bytes": 1210,
+      "sha256": "2998da4ce92fe3440fbec4e3b9cd737605e2237d8f23f72a11dcb4ddb3894eaa"
+    },
+    {
+      "path": "evidence/A05-SERVER299/ack-client-runner-stop-after-commit-sha256-id:d0abf0398dc772037db03cbb67567d75c8ad17933e4c0a72da4fd6e0d735f362/load-result.json",
+      "bytes": 105362,
+      "sha256": "239f5c7be2f4b59c7a45be10292cf21d29a3bc64e33b011269b4282573b30d29"
+    },
+    {
+      "path": "evidence/A05-SERVER299/ack-client-runner-stop-after-commit-sha256-id:d0abf0398dc772037db03cbb67567d75c8ad17933e4c0a72da4fd6e0d735f362/load-result.json.accounting.json",
+      "bytes": 773,
+      "sha256": "6e6c1134e0f581bb8ee45a148bbe126fbf8c57d49e2ab91e262f801a7bd54469"
+    },
+    {
+      "path": "evidence/A05-SERVER299/ack-client-runner-stop-before-commit-sha256-id:c0a5dfd8f72c582b2d381fcb5cc2236e8ed8a1d74d6985a3896c06ca8714d7e9/load-result.json",
+      "bytes": 105574,
+      "sha256": "b792959775ecc697b553b6857147adccedf7d92b525aca92657079de8403a6cd"
+    },
+    {
+      "path": "evidence/A05-SERVER299/ack-client-runner-stop-before-commit-sha256-id:c0a5dfd8f72c582b2d381fcb5cc2236e8ed8a1d74d6985a3896c06ca8714d7e9/load-result.json.accounting.json",
+      "bytes": 774,
+      "sha256": "d161282f95cd804304ae34a6af815a288aefe000df2c96afcb6a7fa2d9ed0ffb"
+    },
+    {
+      "path": "evidence/A05-SERVER299/receipts.jsonl",
+      "bytes": 171480,
+      "sha256": "694f985a791ff6b14bb381f3050662892dd87586909f936e0343777502fd1c65"
+    },
+    {
+      "path": "evidence/A05-SERVER299/tests.trx",
+      "bytes": 636125,
+      "sha256": "657d36c477c1a00a18b163b96cd1b020c7bda14b2e0314a6ac3c2eaf43733cf8"
+    },
+    {
+      "path": "evidence/LOAD02-FOCUSED/ack-client-load02-committed-unknown-stop-sha256-id:ded8c6289a05676f71c80079b48e3bde9623a8a4ba06aafa2529db6ca4ba7d26/load-result.json",
+      "bytes": 122915,
+      "sha256": "114ccf6d3c39c6c16e789c0a36f87a3173d93ce426ebe903e47dd12472f0c00e"
+    },
+    {
+      "path": "evidence/LOAD02-FOCUSED/ack-client-load02-committed-unknown-stop-sha256-id:ded8c6289a05676f71c80079b48e3bde9623a8a4ba06aafa2529db6ca4ba7d26/load-result.json.accounting.json",
+      "bytes": 3240,
+      "sha256": "3d342d81e17fa809e6a323e15b7026daa530de8cb9d018183fe88941dcd3136a"
+    },
+    {
+      "path": "evidence/LOAD02-FOCUSED/ack-client-load02-committed-unknown-stop-sha256-id:ded8c6289a05676f71c80079b48e3bde9623a8a4ba06aafa2529db6ca4ba7d26/load-result.json.stop-observed.json",
+      "bytes": 2416,
+      "sha256": "6f13a10f1aa445ff972a0a01dc7a8f229baaaf7f267f2da85f3f2fe9defd80a6"
+    },
+    {
+      "path": "evidence/LOAD02-FOCUSED/ack-client-load02-normal-wait-stop-sha256-id:479569a822df3316e5b252c85224ee51c2591709c57793256297e4ad48e2b26e/load-result.json",
+      "bytes": 111923,
+      "sha256": "5488ef877766a46ed7e820223d421b5e2a25a2090e82e3aaed731340575a67cc"
+    },
+    {
+      "path": "evidence/LOAD02-FOCUSED/ack-client-load02-normal-wait-stop-sha256-id:479569a822df3316e5b252c85224ee51c2591709c57793256297e4ad48e2b26e/load-result.json.accounting.json",
+      "bytes": 3039,
+      "sha256": "d05e68c2ad7e4fc31671d71c0afda3146004eec18f80a9b91aad668e5cdb802a"
+    },
+    {
+      "path": "evidence/LOAD02-FOCUSED/ack-client-load02-normal-wait-stop-sha256-id:479569a822df3316e5b252c85224ee51c2591709c57793256297e4ad48e2b26e/load-result.json.stop-observed.json",
+      "bytes": 2221,
+      "sha256": "7226259f0f05080ae8d11d3fec4c55dbea5454c924b87386af71cd0a1ad4aa05"
+    },
+    {
+      "path": "evidence/LOAD02-FOCUSED/ack-client-load02-timeout-before-stop-sha256-id:63a933f9e60d7199f848de348f5617554fc941fd806ad49a1e68b21e79e8a0eb/load-result.json",
+      "bytes": 31326,
+      "sha256": "42787283b38a60a016facab091b110019032de57818f1bfc447935d052c029e1"
+    },
+    {
+      "path": "evidence/LOAD02-FOCUSED/ack-client-load02-timeout-before-stop-sha256-id:63a933f9e60d7199f848de348f5617554fc941fd806ad49a1e68b21e79e8a0eb/load-result.json.accounting.json",
+      "bytes": 2577,
+      "sha256": "023d7b5a1744255ded4148a0ae008617513bb542fc3bb0a47aa12601fd334a44"
+    },
+    {
+      "path": "evidence/LOAD02-FOCUSED/ack-client-load02-timeout-before-stop-sha256-id:63a933f9e60d7199f848de348f5617554fc941fd806ad49a1e68b21e79e8a0eb/load-result.json.first-failure.json",
+      "bytes": 1875,
+      "sha256": "543352e9bd8142370c6d6aaf5df29b85ce2872c22031665731ff2bb15b07f8ed"
+    },
+    {
+      "path": "evidence/LOAD02-FOCUSED/ack-client-load02-timeout-before-stop-sha256-id:63a933f9e60d7199f848de348f5617554fc941fd806ad49a1e68b21e79e8a0eb/load-result.json.stop-observed.json",
+      "bytes": 1878,
+      "sha256": "fee5db262eb7ec3eb391f82a919937a4800b219f0495e0f4421f83884e2abef4"
+    },
+    {
+      "path": "evidence/LOAD02-FOCUSED/receipts.jsonl",
+      "bytes": 349935,
+      "sha256": "1f24b070faf69852adc3add349e8207d13fb97ab602b2af974908a28f73d725b"
+    },
+    {
+      "path": "evidence/LOAD02-FOCUSED/tests.trx",
+      "bytes": 356759,
+      "sha256": "c4374eac5d362719790b01713c7849fc77dfa7526a7bae9736d11ad20859140c"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/a05-audit-causal-after.json",
+      "bytes": 6925,
+      "sha256": "6d99207ed49ec0ce9ea0c33583207a0ae63fa944c9f382cea931332f09ad2fff"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/a05-audit-causal-before.json",
+      "bytes": 1662,
+      "sha256": "d79dac0b7b84021da6040107dfc2d3d635ed216285879310408147b58d9f9c19"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/a05-audit-db-committed-response-loss-after.json",
+      "bytes": 5143,
+      "sha256": "a927c09306bf75e56fb40d17d87027fbc74db6a1f319a40a074cf309e9e3490e"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/a05-audit-db-committed-response-loss-before.json",
+      "bytes": 1684,
+      "sha256": "66db7eaaefc782dee798d3a76a27561ce0539c1eba48f7a8e0932da24fdcd7e0"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/a05-audit-db-precommit-after.json",
+      "bytes": 5129,
+      "sha256": "fd48606f28d7f1fc7c4a7254509d815602c52eed30e3b1ba942e3df876d10872"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/a05-audit-db-precommit-before.json",
+      "bytes": 1670,
+      "sha256": "b7df5667fe433989ac175db1b7f5a79aaa52a547cda1dd8a5ae1acc1052f4c30"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/a05-audit-guard-ordinary-success-after.json",
+      "bytes": 6935,
+      "sha256": "be31ef209a81c82b2f0057c921b6a92275d8bb4e3fe5e70a85cf9180529bcd02"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/a05-audit-guard-ordinary-success-before.json",
+      "bytes": 1679,
+      "sha256": "ccfafe240f3bc7a578630a93ea88d48f6681af808324bed5e72c3befddce9c18"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/a05-audit-guard-recovered-committed-loss-after.json",
+      "bytes": 6951,
+      "sha256": "d922590917ae7e7b399277855a6a15114626812eae6523a0562cb2d8a8e0d90c"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/a05-audit-guard-recovered-committed-loss-before.json",
+      "bytes": 1688,
+      "sha256": "fb799d1577098359141f6b8589c6ef6be6ae577becdea50f1ddb6f51b765bcee"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/a05-audit-guard-recovered-uncommitted-loss-after.json",
+      "bytes": 6952,
+      "sha256": "99b2975e086c0f32fc7e1b727bc80636c5daff33d6c71d162e3cff7cf9ce3d44"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/a05-audit-guard-recovered-uncommitted-loss-before.json",
+      "bytes": 1690,
+      "sha256": "67dd5d1d3c494ca157a20596d6bdf49552535e601787a2a83192acbb9a0650c1"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/a05-audit-healthy-after.json",
+      "bytes": 17220,
+      "sha256": "fe74c49b22862623272026f55f108aa8dcda87581cba944cab927823e37d1baf"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/a05-audit-healthy-before.json",
+      "bytes": 2077,
+      "sha256": "8e343e153c70295903b9bed32618d118bd8a6256f7ea47a8cc813796dc83298d"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/a05-audit-pending-after.json",
+      "bytes": 6927,
+      "sha256": "fb700d8a4e67df946c479854d3a860dad26e38f5413d8bc53ab5e2a7c5fc561a"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/a05-audit-pending-before.json",
+      "bytes": 1663,
+      "sha256": "42274673bfb05f34ba0a58ea3d3380dc2bf9f747b93949b58a0627e72ca3de5f"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/ack-client-a05-causal-sha256-id:d23de686aa290da8c6323210ba07697f6f45e3da7a3f51b6745f4fd853b9edc1/control/result.json",
+      "bytes": 17929,
+      "sha256": "de7b7e0860e80940c72be0be4f94f72af63c21c3f364c69df2dfcee71a08771b"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/ack-client-a05-db-committed-response-loss-sha256-id:057a53e040d5043b2a2fc0dcd688743246112fd760678989e982c32c9e6001c2/control/result.json",
+      "bytes": 11270,
+      "sha256": "eeeeb4d6f4d50426f899c6ec2737c21d2d7bb6d86712b56041ac1be6e12a481a"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/ack-client-a05-db-precommit-sha256-id:bc5d36cada45a3b63f466d7eeb7f1e2a95840e61dd251b4a67c4559d17cd1b66/control/result.json",
+      "bytes": 10375,
+      "sha256": "0d8a18a973b516c629c711d95db6f012f707e0dfe7607cb05359e1c4b74089d4"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/ack-client-a05-healthy-sha256-id:cfa022ea2696e508321deb9b0c8b49f0b4c7816766d19c2d31594ef3f80eb986/control/result.json",
+      "bytes": 16604,
+      "sha256": "791214990f9d54e259016eff287b62b885a4465cc9ff2d4d1b5d3cde067f0749"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/ack-client-a05-pending-sha256-id:2732f3c09d04da8b24001431e720aad793cea5e18bf7a5ebf11711ce3f229018/control/result.json",
+      "bytes": 26773,
+      "sha256": "bfd83461ac536046f27ec4ad9233ef91d79cbbf58f9f19c9e2137bf9affa2831"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/ack-client-guard-ordinary-success-sha256-id:76d5eff818884223c8d73a09ddcb859c4091929edf926be46f50386746895a3c/control/result.json",
+      "bytes": 2681,
+      "sha256": "44383a81fc4b96819e5fdaa16e77c4f10a867f74c8fe672cbd0e8b7bc4cf6f8f"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/ack-client-guard-recovered-committed-loss-sha256-id:0c9b121e75b47c4e0d76cf5c562f060e84ef73293dd203531e36e34776049080/control/result.json",
+      "bytes": 2692,
+      "sha256": "03dc353cce1df75543f152a14dbfd1a4512cba0832d7c540c39bad45eb517079"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/ack-client-guard-recovered-uncommitted-loss-sha256-id:7e1abf18ea48cfb27171127d94cd006adc2719b22ca50730f11a33224f2edc4d/control/result.json",
+      "bytes": 3005,
+      "sha256": "012fce6a7cc09c66f4a0600af4b93a7d6062f813280df7dc3cf72650bf3ce182"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/ack-client-load02-committed-unknown-stop-sha256-id:76cc16a2d8c7734767144871f9bbf655ee4fab15d86e32a48c54c0200c05f2b8/load-result.json",
+      "bytes": 119898,
+      "sha256": "ba5eb20ba54cc5d35f2850885b4c427387d16ae87292dedca7c4f620aa947b4e"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/ack-client-load02-committed-unknown-stop-sha256-id:76cc16a2d8c7734767144871f9bbf655ee4fab15d86e32a48c54c0200c05f2b8/load-result.json.accounting.json",
+      "bytes": 3240,
+      "sha256": "afd038ae5b742bf4ce8f66eebf24238c216d2e7f06558bcb42879dee951dcaff"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/ack-client-load02-committed-unknown-stop-sha256-id:76cc16a2d8c7734767144871f9bbf655ee4fab15d86e32a48c54c0200c05f2b8/load-result.json.stop-observed.json",
+      "bytes": 2416,
+      "sha256": "1507237f50ae3f29be3d6a29a71d3d0590b976cbfb68c4664bbfb5ea6a892487"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/ack-client-load02-normal-wait-stop-sha256-id:380c864063cb473b6f6a055c44e3cc199e4fb71e1aaeb910856df5d0919abdf1/load-result.json",
+      "bytes": 111933,
+      "sha256": "39594e3336095dbbd68ef89520db73bbba52cd3e062b4a33c0fda2131d4892b6"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/ack-client-load02-normal-wait-stop-sha256-id:380c864063cb473b6f6a055c44e3cc199e4fb71e1aaeb910856df5d0919abdf1/load-result.json.accounting.json",
+      "bytes": 3039,
+      "sha256": "af336a5de7fa737f1913d44bb4d8c79417828910e05e50e41a2964b516d87526"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/ack-client-load02-normal-wait-stop-sha256-id:380c864063cb473b6f6a055c44e3cc199e4fb71e1aaeb910856df5d0919abdf1/load-result.json.stop-observed.json",
+      "bytes": 2221,
+      "sha256": "94755e3c3a644a2340a7191e013b187a4d40343bace27cc8fe8fca9900ea876a"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/ack-client-load02-timeout-before-stop-sha256-id:0a10b245d604be84f763be115953d67c5be68849f90722d1f10ef3299493f050/load-result.json",
+      "bytes": 31329,
+      "sha256": "bc3e5f4d276e033c04be301396dd312836a8f474ec3a448cf4a9fcdd59405f3d"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/ack-client-load02-timeout-before-stop-sha256-id:0a10b245d604be84f763be115953d67c5be68849f90722d1f10ef3299493f050/load-result.json.accounting.json",
+      "bytes": 2577,
+      "sha256": "c30ffe53ae1fde8ba4e0a519cdceb1837eba62bb005fdb48a6741e2861496e32"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/ack-client-load02-timeout-before-stop-sha256-id:0a10b245d604be84f763be115953d67c5be68849f90722d1f10ef3299493f050/load-result.json.first-failure.json",
+      "bytes": 1875,
+      "sha256": "24422b038cb0738b59e3d5bf5f18c56012baeaac43b8d5caf729c031589da21b"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/ack-client-load02-timeout-before-stop-sha256-id:0a10b245d604be84f763be115953d67c5be68849f90722d1f10ef3299493f050/load-result.json.stop-observed.json",
+      "bytes": 1878,
+      "sha256": "dd8da479b3bfb330e9de376ed2b2340e2e33843c78ecb100240be9bd02220ecb"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/ack-client-runner-cycles-middle-response-loss-sha256-id:1b2f6525153e3cb801446b90232249d85df7caa6dcbc615155278aa0785a3927/load-result.json",
+      "bytes": 284307,
+      "sha256": "89b2f47e6c90c99bcd365fe59f0907e96b319ff2a5778f5b73c59a38b6e30ecd"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/ack-client-runner-cycles-middle-response-loss-sha256-id:1b2f6525153e3cb801446b90232249d85df7caa6dcbc615155278aa0785a3927/load-result.json.accounting.json",
+      "bytes": 1198,
+      "sha256": "0328b38bf0186a7cd7608d90edc6efbe89a60d3a3a894c515a9b940477e122dd"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/ack-client-runner-cycles-middle-uncommitted-loss-sha256-id:c1bf4da562650bf9d13d16cdb144c7429cbb02494b77ffca60221a89257b7fa8/load-result.json",
+      "bytes": 289081,
+      "sha256": "09a3bfff51103bd02f4e2e6abf9639bfeda30d3ae4ac702b7441076daef13ed5"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/ack-client-runner-cycles-middle-uncommitted-loss-sha256-id:c1bf4da562650bf9d13d16cdb144c7429cbb02494b77ffca60221a89257b7fa8/load-result.json.accounting.json",
+      "bytes": 1210,
+      "sha256": "69ec7954fe95bfe1eb06a4401c12ca953414df630039c8dd1b2eaed0b1f03c85"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/ack-client-runner-stop-after-commit-sha256-id:e82de67c8be244473960a1043fd17df7906de97a5c644e2d4374da54754d6d06/load-result.json",
+      "bytes": 105341,
+      "sha256": "b5c06d3b7e65d57cca66219cf4bef0687dc3ea32d1dfae36d334a55a5c797659"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/ack-client-runner-stop-after-commit-sha256-id:e82de67c8be244473960a1043fd17df7906de97a5c644e2d4374da54754d6d06/load-result.json.accounting.json",
+      "bytes": 773,
+      "sha256": "69afc745615fde1df89b68d6fd770173b7a8ef2a8b11f96ecd34db7c28df7c37"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/ack-client-runner-stop-before-commit-sha256-id:f47b6ef5fe2903854dad7d34de012564c7633c1a4b7dd5c8f23b9e7428e2299f/load-result.json",
+      "bytes": 105600,
+      "sha256": "f249444de6f5be06d462f3471b871858bb314dbbc872d2ded5b7948876ce80fb"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/ack-client-runner-stop-before-commit-sha256-id:f47b6ef5fe2903854dad7d34de012564c7633c1a4b7dd5c8f23b9e7428e2299f/load-result.json.accounting.json",
+      "bytes": 774,
+      "sha256": "e17975e384d92008fb4e2d24d97569a4d874c5541879c196f21e1a223dd7b92a"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/receipts.jsonl",
+      "bytes": 517981,
+      "sha256": "aacf969655e722a90eb22555b56f8bdf54544fc0c3f99604b5f246d60078262c"
+    },
+    {
+      "path": "evidence/LOAD02-SERVER302/tests.trx",
+      "bytes": 985510,
+      "sha256": "f0afed162eb1db1b8ae55130be124053ec748cd21db97812bcbb7c8f0d88b1d4"
+    },
+    {
+      "path": "evidence/a05-PG-STOP.json",
+      "bytes": 314,
+      "sha256": "360dcd5594bbf58b722b98a080cef28fe4ac35c5a8184d1e322f4d7d56740588"
+    },
+    {
+      "path": "evidence/a05-diagnostic-PG-STOP.json",
+      "bytes": 395,
+      "sha256": "d757a956ed3e1196c05ff652c9eabcb6a767d43a2b99a7dcd1a61944001d9a9c"
+    },
+    {
+      "path": "evidence/a05-diagnostic-final-readonly.log",
+      "bytes": 124,
+      "sha256": "739d74607fa7eea7baadd4cd4798fdf6f747cf63f2628aeaa44673a68f55711c"
+    },
+    {
+      "path": "evidence/a05-final-readonly.log",
+      "bytes": 124,
+      "sha256": "739d74607fa7eea7baadd4cd4798fdf6f747cf63f2628aeaa44673a68f55711c"
+    },
+    {
+      "path": "evidence/load02-PG-STOP.json",
+      "bytes": 320,
+      "sha256": "6b4fc0c8c2bf96536c8fbeb1e66b7cc4f51b1beee062b47c125c1d83c98be1f1"
+    },
+    {
+      "path": "evidence/load02-final-readonly.log",
+      "bytes": 124,
+      "sha256": "739d74607fa7eea7baadd4cd4798fdf6f747cf63f2628aeaa44673a68f55711c"
+    }
+  ],
+  "missing_reasons": {
+    "historical_private_raw_rehashed": "Historical private raw not available here; original indices/seals checked separately and new actual raw generated independently."
+  }
+}

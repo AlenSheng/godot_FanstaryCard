@@ -1,0 +1,381 @@
+{
+  "status": "Passed",
+  "canonical_cases": 3,
+  "actual_case_executions": 6,
+  "source_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+  "cases": [
+    {
+      "run": "LOAD02-FOCUSED",
+      "case_id": "LOAD-02.2-T01",
+      "mode": "timeout-before-stop",
+      "status": "Passed",
+      "STOP_monotonic_ms": 31271,
+      "final_monotonic_ms": 31423,
+      "STOP_partition": {
+        "cancelled": 0,
+        "completed": 0,
+        "failed": 1,
+        "incomplete": 0,
+        "pending": 0,
+        "started": 1
+      },
+      "final_partition": {
+        "cancelled": 0,
+        "completed": 0,
+        "failed": 1,
+        "incomplete": 0,
+        "pending": 0,
+        "started": 1
+      },
+      "initiating_identity_stable": [
+        "run_id",
+        "client_id",
+        "process_epoch",
+        "cycle_id",
+        "session_generation",
+        "room_context_epoch"
+      ],
+      "no_cycle_completed": true,
+      "original_outcome": "failed",
+      "actual_client_exit": 1,
+      "next_real_prepare_cancel_204": true,
+      "details": {
+        "original_failure_before_STOP_ms": 31221,
+        "logical_duration_ms": 30016,
+        "attempt_timeout_ms": [
+          10016,
+          10016,
+          6783
+        ],
+        "original_errors_count": 2,
+        "assets_exactly_unchanged": true
+      },
+      "original_report": {
+        "path": "evidence/LOAD02-FOCUSED/ack-client-load02-timeout-before-stop-sha256-id:63a933f9e60d7199f848de348f5617554fc941fd806ad49a1e68b21e79e8a0eb/load-result.json",
+        "bytes": 31326,
+        "sha256": "42787283b38a60a016facab091b110019032de57818f1bfc447935d052c029e1"
+      },
+      "STOP_snapshot": {
+        "path": "evidence/LOAD02-FOCUSED/ack-client-load02-timeout-before-stop-sha256-id:63a933f9e60d7199f848de348f5617554fc941fd806ad49a1e68b21e79e8a0eb/load-result.json.stop-observed.json",
+        "bytes": 1878,
+        "sha256": "fee5db262eb7ec3eb391f82a919937a4800b219f0495e0f4421f83884e2abef4"
+      },
+      "final_accounting": {
+        "path": "evidence/LOAD02-FOCUSED/ack-client-load02-timeout-before-stop-sha256-id:63a933f9e60d7199f848de348f5617554fc941fd806ad49a1e68b21e79e8a0eb/load-result.json.accounting.json",
+        "bytes": 2577,
+        "sha256": "023d7b5a1744255ded4148a0ae008617513bb542fc3bb0a47aa12601fd334a44"
+      }
+    },
+    {
+      "run": "LOAD02-FOCUSED",
+      "case_id": "LOAD-02.2-T02",
+      "mode": "normal-wait-stop",
+      "status": "Passed",
+      "STOP_monotonic_ms": 32720,
+      "final_monotonic_ms": 33022,
+      "STOP_partition": {
+        "cancelled": 0,
+        "completed": 0,
+        "failed": 0,
+        "incomplete": 0,
+        "pending": 1,
+        "started": 1
+      },
+      "final_partition": {
+        "cancelled": 1,
+        "completed": 0,
+        "failed": 0,
+        "incomplete": 0,
+        "pending": 0,
+        "started": 1
+      },
+      "initiating_identity_stable": [
+        "run_id",
+        "client_id",
+        "process_epoch",
+        "cycle_id",
+        "session_generation",
+        "room_context_epoch"
+      ],
+      "no_cycle_completed": true,
+      "original_outcome": "cancelled",
+      "actual_client_exit": 0,
+      "next_real_prepare_cancel_204": true,
+      "details": {
+        "ACK_backend_200_attempts": 1,
+        "same_key_and_body": true,
+        "durable_acknowledged_receipts": 1,
+        "asset_settlement_credit_per_currency_once": true,
+        "original_equipment_movement_once": true,
+        "original_errors_count": 0
+      },
+      "original_report": {
+        "path": "evidence/LOAD02-FOCUSED/ack-client-load02-normal-wait-stop-sha256-id:479569a822df3316e5b252c85224ee51c2591709c57793256297e4ad48e2b26e/load-result.json",
+        "bytes": 111923,
+        "sha256": "5488ef877766a46ed7e820223d421b5e2a25a2090e82e3aaed731340575a67cc"
+      },
+      "STOP_snapshot": {
+        "path": "evidence/LOAD02-FOCUSED/ack-client-load02-normal-wait-stop-sha256-id:479569a822df3316e5b252c85224ee51c2591709c57793256297e4ad48e2b26e/load-result.json.stop-observed.json",
+        "bytes": 2221,
+        "sha256": "7226259f0f05080ae8d11d3fec4c55dbea5454c924b87386af71cd0a1ad4aa05"
+      },
+      "final_accounting": {
+        "path": "evidence/LOAD02-FOCUSED/ack-client-load02-normal-wait-stop-sha256-id:479569a822df3316e5b252c85224ee51c2591709c57793256297e4ad48e2b26e/load-result.json.accounting.json",
+        "bytes": 3039,
+        "sha256": "d05e68c2ad7e4fc31671d71c0afda3146004eec18f80a9b91aad668e5cdb802a"
+      }
+    },
+    {
+      "run": "LOAD02-FOCUSED",
+      "case_id": "LOAD-02.2-T03",
+      "mode": "committed-unknown-stop",
+      "status": "Passed",
+      "STOP_monotonic_ms": 39501,
+      "final_monotonic_ms": 39836,
+      "STOP_partition": {
+        "cancelled": 0,
+        "completed": 0,
+        "failed": 0,
+        "incomplete": 0,
+        "pending": 1,
+        "started": 1
+      },
+      "final_partition": {
+        "cancelled": 1,
+        "completed": 0,
+        "failed": 0,
+        "incomplete": 0,
+        "pending": 0,
+        "started": 1
+      },
+      "initiating_identity_stable": [
+        "run_id",
+        "client_id",
+        "process_epoch",
+        "cycle_id",
+        "session_generation",
+        "room_context_epoch"
+      ],
+      "no_cycle_completed": true,
+      "original_outcome": "cancelled",
+      "actual_client_exit": 0,
+      "next_real_prepare_cancel_204": true,
+      "details": {
+        "ACK_backend_200_attempts": 3,
+        "same_key_and_body": true,
+        "durable_acknowledged_receipts": 1,
+        "asset_settlement_credit_per_currency_once": true,
+        "original_equipment_movement_once": true,
+        "original_errors_count": 2,
+        "PG_committed_before_STOP_while_client_pending": true,
+        "complete_authority_triple_null_before_release": true,
+        "same_backend_reply": true
+      },
+      "original_report": {
+        "path": "evidence/LOAD02-FOCUSED/ack-client-load02-committed-unknown-stop-sha256-id:ded8c6289a05676f71c80079b48e3bde9623a8a4ba06aafa2529db6ca4ba7d26/load-result.json",
+        "bytes": 122915,
+        "sha256": "114ccf6d3c39c6c16e789c0a36f87a3173d93ce426ebe903e47dd12472f0c00e"
+      },
+      "STOP_snapshot": {
+        "path": "evidence/LOAD02-FOCUSED/ack-client-load02-committed-unknown-stop-sha256-id:ded8c6289a05676f71c80079b48e3bde9623a8a4ba06aafa2529db6ca4ba7d26/load-result.json.stop-observed.json",
+        "bytes": 2416,
+        "sha256": "6f13a10f1aa445ff972a0a01dc7a8f229baaaf7f267f2da85f3f2fe9defd80a6"
+      },
+      "final_accounting": {
+        "path": "evidence/LOAD02-FOCUSED/ack-client-load02-committed-unknown-stop-sha256-id:ded8c6289a05676f71c80079b48e3bde9623a8a4ba06aafa2529db6ca4ba7d26/load-result.json.accounting.json",
+        "bytes": 3240,
+        "sha256": "3d342d81e17fa809e6a323e15b7026daa530de8cb9d018183fe88941dcd3136a"
+      }
+    },
+    {
+      "run": "LOAD02-SERVER302",
+      "case_id": "LOAD-02.2-T01",
+      "mode": "timeout-before-stop",
+      "status": "Passed",
+      "STOP_monotonic_ms": 31286,
+      "final_monotonic_ms": 31439,
+      "STOP_partition": {
+        "cancelled": 0,
+        "completed": 0,
+        "failed": 1,
+        "incomplete": 0,
+        "pending": 0,
+        "started": 1
+      },
+      "final_partition": {
+        "cancelled": 0,
+        "completed": 0,
+        "failed": 1,
+        "incomplete": 0,
+        "pending": 0,
+        "started": 1
+      },
+      "initiating_identity_stable": [
+        "run_id",
+        "client_id",
+        "process_epoch",
+        "cycle_id",
+        "session_generation",
+        "room_context_epoch"
+      ],
+      "no_cycle_completed": true,
+      "original_outcome": "failed",
+      "actual_client_exit": 1,
+      "next_real_prepare_cancel_204": true,
+      "details": {
+        "original_failure_before_STOP_ms": 31237,
+        "logical_duration_ms": 30015,
+        "attempt_timeout_ms": [
+          10016,
+          10016,
+          6650
+        ],
+        "original_errors_count": 2,
+        "assets_exactly_unchanged": true
+      },
+      "original_report": {
+        "path": "evidence/LOAD02-SERVER302/ack-client-load02-timeout-before-stop-sha256-id:0a10b245d604be84f763be115953d67c5be68849f90722d1f10ef3299493f050/load-result.json",
+        "bytes": 31329,
+        "sha256": "bc3e5f4d276e033c04be301396dd312836a8f474ec3a448cf4a9fcdd59405f3d"
+      },
+      "STOP_snapshot": {
+        "path": "evidence/LOAD02-SERVER302/ack-client-load02-timeout-before-stop-sha256-id:0a10b245d604be84f763be115953d67c5be68849f90722d1f10ef3299493f050/load-result.json.stop-observed.json",
+        "bytes": 1878,
+        "sha256": "dd8da479b3bfb330e9de376ed2b2340e2e33843c78ecb100240be9bd02220ecb"
+      },
+      "final_accounting": {
+        "path": "evidence/LOAD02-SERVER302/ack-client-load02-timeout-before-stop-sha256-id:0a10b245d604be84f763be115953d67c5be68849f90722d1f10ef3299493f050/load-result.json.accounting.json",
+        "bytes": 2577,
+        "sha256": "c30ffe53ae1fde8ba4e0a519cdceb1837eba62bb005fdb48a6741e2861496e32"
+      }
+    },
+    {
+      "run": "LOAD02-SERVER302",
+      "case_id": "LOAD-02.2-T02",
+      "mode": "normal-wait-stop",
+      "status": "Passed",
+      "STOP_monotonic_ms": 32711,
+      "final_monotonic_ms": 32997,
+      "STOP_partition": {
+        "cancelled": 0,
+        "completed": 0,
+        "failed": 0,
+        "incomplete": 0,
+        "pending": 1,
+        "started": 1
+      },
+      "final_partition": {
+        "cancelled": 1,
+        "completed": 0,
+        "failed": 0,
+        "incomplete": 0,
+        "pending": 0,
+        "started": 1
+      },
+      "initiating_identity_stable": [
+        "run_id",
+        "client_id",
+        "process_epoch",
+        "cycle_id",
+        "session_generation",
+        "room_context_epoch"
+      ],
+      "no_cycle_completed": true,
+      "original_outcome": "cancelled",
+      "actual_client_exit": 0,
+      "next_real_prepare_cancel_204": true,
+      "details": {
+        "ACK_backend_200_attempts": 1,
+        "same_key_and_body": true,
+        "durable_acknowledged_receipts": 1,
+        "asset_settlement_credit_per_currency_once": true,
+        "original_equipment_movement_once": true,
+        "original_errors_count": 0
+      },
+      "original_report": {
+        "path": "evidence/LOAD02-SERVER302/ack-client-load02-normal-wait-stop-sha256-id:380c864063cb473b6f6a055c44e3cc199e4fb71e1aaeb910856df5d0919abdf1/load-result.json",
+        "bytes": 111933,
+        "sha256": "39594e3336095dbbd68ef89520db73bbba52cd3e062b4a33c0fda2131d4892b6"
+      },
+      "STOP_snapshot": {
+        "path": "evidence/LOAD02-SERVER302/ack-client-load02-normal-wait-stop-sha256-id:380c864063cb473b6f6a055c44e3cc199e4fb71e1aaeb910856df5d0919abdf1/load-result.json.stop-observed.json",
+        "bytes": 2221,
+        "sha256": "94755e3c3a644a2340a7191e013b187a4d40343bace27cc8fe8fca9900ea876a"
+      },
+      "final_accounting": {
+        "path": "evidence/LOAD02-SERVER302/ack-client-load02-normal-wait-stop-sha256-id:380c864063cb473b6f6a055c44e3cc199e4fb71e1aaeb910856df5d0919abdf1/load-result.json.accounting.json",
+        "bytes": 3039,
+        "sha256": "af336a5de7fa737f1913d44bb4d8c79417828910e05e50e41a2964b516d87526"
+      }
+    },
+    {
+      "run": "LOAD02-SERVER302",
+      "case_id": "LOAD-02.2-T03",
+      "mode": "committed-unknown-stop",
+      "status": "Passed",
+      "STOP_monotonic_ms": 36043,
+      "final_monotonic_ms": 36345,
+      "STOP_partition": {
+        "cancelled": 0,
+        "completed": 0,
+        "failed": 0,
+        "incomplete": 0,
+        "pending": 1,
+        "started": 1
+      },
+      "final_partition": {
+        "cancelled": 1,
+        "completed": 0,
+        "failed": 0,
+        "incomplete": 0,
+        "pending": 0,
+        "started": 1
+      },
+      "initiating_identity_stable": [
+        "run_id",
+        "client_id",
+        "process_epoch",
+        "cycle_id",
+        "session_generation",
+        "room_context_epoch"
+      ],
+      "no_cycle_completed": true,
+      "original_outcome": "cancelled",
+      "actual_client_exit": 0,
+      "next_real_prepare_cancel_204": true,
+      "details": {
+        "ACK_backend_200_attempts": 3,
+        "same_key_and_body": true,
+        "durable_acknowledged_receipts": 1,
+        "asset_settlement_credit_per_currency_once": true,
+        "original_equipment_movement_once": true,
+        "original_errors_count": 2,
+        "PG_committed_before_STOP_while_client_pending": true,
+        "complete_authority_triple_null_before_release": true,
+        "same_backend_reply": true
+      },
+      "original_report": {
+        "path": "evidence/LOAD02-SERVER302/ack-client-load02-committed-unknown-stop-sha256-id:76cc16a2d8c7734767144871f9bbf655ee4fab15d86e32a48c54c0200c05f2b8/load-result.json",
+        "bytes": 119898,
+        "sha256": "ba5eb20ba54cc5d35f2850885b4c427387d16ae87292dedca7c4f620aa947b4e"
+      },
+      "STOP_snapshot": {
+        "path": "evidence/LOAD02-SERVER302/ack-client-load02-committed-unknown-stop-sha256-id:76cc16a2d8c7734767144871f9bbf655ee4fab15d86e32a48c54c0200c05f2b8/load-result.json.stop-observed.json",
+        "bytes": 2416,
+        "sha256": "1507237f50ae3f29be3d6a29a71d3d0590b976cbfb68c4664bbfb5ea6a892487"
+      },
+      "final_accounting": {
+        "path": "evidence/LOAD02-SERVER302/ack-client-load02-committed-unknown-stop-sha256-id:76cc16a2d8c7734767144871f9bbf655ee4fab15d86e32a48c54c0200c05f2b8/load-result.json.accounting.json",
+        "bytes": 3240,
+        "sha256": "afd038ae5b742bf4ce8f66eebf24238c216d2e7f06558bcb42879dee951dcaff"
+      }
+    }
+  ],
+  "budgets_unchanged_ms": {
+    "attempt": 10000,
+    "logical": 30000,
+    "bot_fill": 30000
+  },
+  "minimum_dependencies": "LOAD02.1 classification/actual original failed check and LOAD06.2 logical-request/context/idempotency products are present and consumed; no need for all upstream whole-parent Accepted.",
+  "scope": "Production report is primary outcome; small observer partitions one actual original scenario/check/finish at two cutoffs. No LOAD03 all routes/full-run/three-cutoff claim, capacity or global ledger exoneration."
+}

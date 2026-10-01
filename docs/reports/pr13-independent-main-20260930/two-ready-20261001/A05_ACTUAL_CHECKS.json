@@ -1,0 +1,662 @@
+{
+  "status": "Passed",
+  "canonical_cases": 3,
+  "canonical_ACK_idempotency": [
+    {
+      "mode": "precommit",
+      "same_receipt_key_body_reply_assets": true,
+      "requests": 3
+    },
+    {
+      "mode": "committed-response-loss",
+      "same_receipt_key_body_reply_assets": true,
+      "requests": 3
+    }
+  ],
+  "Pending_hold_restart": {
+    "Pending_before": 4,
+    "Committed_after": 4,
+    "actual_host_PIDs": 2,
+    "gold_delta": 23,
+    "potion_delta": 2,
+    "same_owner_equipment_once": true
+  },
+  "M_N_isolation": {
+    "actual_host_PIDs": 2,
+    "different_M_N": true,
+    "healthy_B_revision_increases": true,
+    "B_extract_gold": 23,
+    "duplicate_READY": 3,
+    "A_N_old_callback_OS_restart_safe": true,
+    "normal_N_cleanup_same_instance_RelicPile": true,
+    "not_readjudicating_A05_2_3": true
+  },
+  "guard_windows": [
+    {
+      "context": "recovered",
+      "outcome": "uncommitted-loss",
+      "ACK_attempts": 4,
+      "same_body": true,
+      "authority_versus_failure_separate": true,
+      "assets_once": true
+    },
+    {
+      "context": "recovered",
+      "outcome": "committed-loss",
+      "ACK_attempts": 3,
+      "same_body": true,
+      "authority_versus_failure_separate": true,
+      "assets_once": true
+    },
+    {
+      "context": "ordinary",
+      "outcome": "success",
+      "ACK_attempts": 1,
+      "same_body": true,
+      "authority_versus_failure_separate": true,
+      "assets_once": true
+    }
+  ],
+  "clients": [
+    {
+      "path": "evidence/A05-SERVER299/ack-client-a05-causal-sha256-id:9e5a1a2c6b7ae1707684b8ca56a5ab630ef57862ecf3e9662207b5178748f6e0/control/result.json",
+      "bytes": 18557,
+      "sha256": "b67ca965e7966eda9ccf9d900e69efc34394ca77e49d917e9c9147a7a7dcd40e",
+      "ok": true,
+      "checks": 16,
+      "stale_during_ack": false,
+      "stale_after_ack": false,
+      "context": null,
+      "outcome": null,
+      "first_ack_result": null
+    },
+    {
+      "path": "evidence/A05-SERVER299/ack-client-a05-db-committed-response-loss-sha256-id:32c7247a22862422938080e8410ab4e40159fa92b7047c599799232133ccb923/control/result.json",
+      "bytes": 11272,
+      "sha256": "68d145506ebf21f33d9c7d36bd42902f5db4655cde3fa2c3092f87e1abe0663b",
+      "ok": true,
+      "checks": 11,
+      "stale_during_ack": null,
+      "stale_after_ack": null,
+      "context": null,
+      "outcome": null,
+      "first_ack_result": null
+    },
+    {
+      "path": "evidence/A05-SERVER299/ack-client-a05-db-precommit-sha256-id:68f179427f7253ce972cd4e0c42664246f8c41802595123a6e4ce22e42a5d5a4/control/result.json",
+      "bytes": 10371,
+      "sha256": "2851353793f4240f3e381790427dc80aa9533e69458e7d8b9d28ab41e7ee1a92",
+      "ok": true,
+      "checks": 14,
+      "stale_during_ack": null,
+      "stale_after_ack": null,
+      "context": null,
+      "outcome": null,
+      "first_ack_result": null
+    },
+    {
+      "path": "evidence/A05-SERVER299/ack-client-a05-healthy-sha256-id:1db4b13d2153afd2efa9e54c62c811fe55c2e7a5a82920a838bd1d492b2c722f/control/result.json",
+      "bytes": 16604,
+      "sha256": "0c34729b7899ff2f1dce51fa46c86366d33149b878b018a6f726edb7df80295a",
+      "ok": true,
+      "checks": 19,
+      "stale_during_ack": null,
+      "stale_after_ack": null,
+      "context": null,
+      "outcome": null,
+      "first_ack_result": null
+    },
+    {
+      "path": "evidence/A05-SERVER299/ack-client-a05-pending-sha256-id:59717e82ac0a531cadabbd6f9c2d5d9c888b375e2e820e3df617e1b32c3e8070/control/result.json",
+      "bytes": 27999,
+      "sha256": "7bae237a55c72f8bcf6a985c745efdcac52bb4ae22c193dc52364a3d95947c7c",
+      "ok": true,
+      "checks": 23,
+      "stale_during_ack": null,
+      "stale_after_ack": null,
+      "context": null,
+      "outcome": null,
+      "first_ack_result": null
+    },
+    {
+      "path": "evidence/A05-SERVER299/ack-client-guard-ordinary-success-sha256-id:e421e6b77cfd99221325a4dac43755e3608b651ea5cee57ab11d776723e77fdc/control/result.json",
+      "bytes": 2681,
+      "sha256": "887ddac50af45dd68fc9fbff2cfd5c5f412ecee3ef6eea97dadc391dab979c7c",
+      "ok": true,
+      "checks": 25,
+      "stale_during_ack": null,
+      "stale_after_ack": null,
+      "context": "ordinary",
+      "outcome": "success",
+      "first_ack_result": true
+    },
+    {
+      "path": "evidence/A05-SERVER299/ack-client-guard-recovered-committed-loss-sha256-id:0de0d5eb79878c6596780c9e8f3671f504cc80d2a1d38f24c12fca5edc622ee0/control/result.json",
+      "bytes": 2692,
+      "sha256": "7a7ad78f2453ba6b91c7114d77fa819ee6d4b0e50869172f0af19c3999b9cb58",
+      "ok": true,
+      "checks": 25,
+      "stale_during_ack": null,
+      "stale_after_ack": null,
+      "context": "recovered",
+      "outcome": "committed-loss",
+      "first_ack_result": true
+    },
+    {
+      "path": "evidence/A05-SERVER299/ack-client-guard-recovered-uncommitted-loss-sha256-id:3e6ecfd3b794e69b887b26b380bfe5dbe19dd8288f6d94e644f13951cca773db/control/result.json",
+      "bytes": 3005,
+      "sha256": "541f6818001dc7717cf6a7cce08be12f769098a7935bfef4ea4f3571109eeb09",
+      "ok": true,
+      "checks": 28,
+      "stale_during_ack": null,
+      "stale_after_ack": null,
+      "context": "recovered",
+      "outcome": "uncommitted-loss",
+      "first_ack_result": false
+    }
+  ],
+  "red": {
+    "path": "evidence/A05-RED/ack-client-a05-causal-sha256-id:ad128a187da60aaf6ac5eb903255aff211cb8b0c696af7c58881bccc7ff61c5d/control/result.json",
+    "bytes": 18558,
+    "sha256": "8a4d03b328634b866b7a7b1e8f4a7541f84143a315d09903227313b10f46ba3d",
+    "correctness_exit": 1,
+    "stale_during_ack": true,
+    "stale_after_ack": true,
+    "observations": [
+      {
+        "check": "actual Running M entry",
+        "monotonic_ms": 1083,
+        "passed": true
+      },
+      {
+        "check": "owned control extract",
+        "monotonic_ms": 1117,
+        "passed": true
+      },
+      {
+        "check": "actual legal extraction",
+        "monotonic_ms": 1118,
+        "passed": true
+      },
+      {
+        "check": "owned control restarted",
+        "monotonic_ms": 5081,
+        "passed": true
+      },
+      {
+        "check": "actual Pending OS restart/NOT_IN_ROOM retains recovery M",
+        "monotonic_ms": 5483,
+        "passed": true
+      },
+      {
+        "check": "owned control get-released",
+        "monotonic_ms": 5631,
+        "passed": true
+      },
+      {
+        "check": "actual GET loaded M with recovery M while production poll remains awaited",
+        "monotonic_ms": 5665,
+        "passed": true
+      },
+      {
+        "check": "owned control ack-held",
+        "monotonic_ms": 5715,
+        "passed": true
+      },
+      {
+        "check": "real ACK await performs optimistic clear",
+        "monotonic_ms": 5715,
+        "passed": true
+      },
+      {
+        "check": "owned control poll-released",
+        "monotonic_ms": 5731,
+        "passed": true
+      },
+      {
+        "monotonic_ms": 5798,
+        "stale_during_ack": true
+      },
+      {
+        "check": "owned control ack-released",
+        "monotonic_ms": 5815,
+        "passed": true
+      },
+      {
+        "check": "actual production ACK returns success",
+        "monotonic_ms": 5948,
+        "passed": true
+      },
+      {
+        "check": "actual post-ACK Bootstrap confirms completion",
+        "monotonic_ms": 5948,
+        "passed": true
+      },
+      {
+        "monotonic_ms": 5948,
+        "stale_after_ack": true
+      },
+      {
+        "check": "actual next preparation allowed while stale receipt remains",
+        "monotonic_ms": 6082,
+        "passed": true
+      }
+    ],
+    "actual_source_sha": "2dda41b32ba89f06d5ea722ae8b9469004940c22",
+    "legacy_raw_business_label": "f812; actual integration2dda recorded separately; do not overwrite raw"
+  },
+  "green_causal": {
+    "path": "evidence/A05-SERVER299/ack-client-a05-causal-sha256-id:9e5a1a2c6b7ae1707684b8ca56a5ab630ef57862ecf3e9662207b5178748f6e0/control/result.json",
+    "bytes": 18557,
+    "sha256": "b67ca965e7966eda9ccf9d900e69efc34394ca77e49d917e9c9147a7a7dcd40e",
+    "stale_during_ack": false,
+    "stale_after_ack": false,
+    "observations": [
+      {
+        "check": "actual Running M entry",
+        "monotonic_ms": 876,
+        "passed": true
+      },
+      {
+        "check": "owned control extract",
+        "monotonic_ms": 892,
+        "passed": true
+      },
+      {
+        "check": "actual legal extraction",
+        "monotonic_ms": 893,
+        "passed": true
+      },
+      {
+        "check": "owned control restarted",
+        "monotonic_ms": 4726,
+        "passed": true
+      },
+      {
+        "check": "actual Pending OS restart/NOT_IN_ROOM retains recovery M",
+        "monotonic_ms": 5209,
+        "passed": true
+      },
+      {
+        "check": "owned control get-released",
+        "monotonic_ms": 7825,
+        "passed": true
+      },
+      {
+        "check": "actual GET loaded M with recovery M while production poll remains awaited",
+        "monotonic_ms": 7875,
+        "passed": true
+      },
+      {
+        "check": "owned control ack-held",
+        "monotonic_ms": 7892,
+        "passed": true
+      },
+      {
+        "check": "real ACK await performs optimistic clear",
+        "monotonic_ms": 7892,
+        "passed": true
+      },
+      {
+        "check": "owned control poll-released",
+        "monotonic_ms": 7909,
+        "passed": true
+      },
+      {
+        "monotonic_ms": 7959,
+        "stale_during_ack": false
+      },
+      {
+        "check": "owned control ack-released",
+        "monotonic_ms": 7975,
+        "passed": true
+      },
+      {
+        "check": "actual production ACK returns success",
+        "monotonic_ms": 8118,
+        "passed": true
+      },
+      {
+        "check": "actual post-ACK Bootstrap confirms completion",
+        "monotonic_ms": 8118,
+        "passed": true
+      },
+      {
+        "monotonic_ms": 8118,
+        "stale_after_ack": false
+      },
+      {
+        "check": "actual next preparation allowed while stale receipt remains",
+        "monotonic_ms": 8226,
+        "passed": true
+      }
+    ]
+  },
+  "readonly_audits": [
+    {
+      "path": "evidence/A05-RED/a05-audit-causal-after.json",
+      "bytes": 6920,
+      "sha256": "82323677d2f331e213afad8b1e2b4bd47f96878a1fc22d3b1af27f991dbc1610",
+      "require_clear": true,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation"
+    },
+    {
+      "path": "evidence/A05-RED/a05-audit-causal-before.json",
+      "bytes": 1663,
+      "sha256": "ddd1884e273f96165727c34ecd4834b757671dedbcf167ad115fe978b7dab19c",
+      "require_clear": false,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-causal-after.json",
+      "bytes": 6923,
+      "sha256": "04fcee3dd1b41b34d66b048238525958543168653cb1844770e0ba03150eaff2",
+      "require_clear": true,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-causal-before.json",
+      "bytes": 1661,
+      "sha256": "a0e354ea882a98b96c784216b7f7b10cdaa880a6071f6befcd98875b39d7eb40",
+      "require_clear": false,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-db-committed-response-loss-after.json",
+      "bytes": 5142,
+      "sha256": "6af1cfde1e155e7457ec170cc5968fe13c575ad99a06188431070f254ec146bd",
+      "require_clear": true,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-db-committed-response-loss-before.json",
+      "bytes": 1684,
+      "sha256": "aed479766700e053cfdf549d27e13d0b19d89ee99af10331254c98c852ee6820",
+      "require_clear": false,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-db-precommit-after.json",
+      "bytes": 5128,
+      "sha256": "f1831382a04ed81c076856be651cff2742c1e92da3baf9f0cfacddb9b17aa5f6",
+      "require_clear": true,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-db-precommit-before.json",
+      "bytes": 1669,
+      "sha256": "d09deaecb2418b7e341164ed6ed2a0062ccf118c12fcbe55b1c6a4343461d2d5",
+      "require_clear": false,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-guard-ordinary-success-after.json",
+      "bytes": 6943,
+      "sha256": "390d0c66f1f5e3d70d11ad2fe6d2a6e7f6fc12f05fe043527c9b96e6a3256f50",
+      "require_clear": true,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-guard-ordinary-success-before.json",
+      "bytes": 1680,
+      "sha256": "c9e9fd88c95c6ecb8ee3c3cee8c7e62edff94f30471f8dd66b40b1e07da73848",
+      "require_clear": false,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-guard-recovered-committed-loss-after.json",
+      "bytes": 6950,
+      "sha256": "42dd0e02eb530086078f0a812ed0b27c968621e5664ef7b35f666b6a7bfe1332",
+      "require_clear": true,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-guard-recovered-committed-loss-before.json",
+      "bytes": 1688,
+      "sha256": "c7cfef5feb26cc0bb34a0768119e177c29df4f67023466c70ea655d883c7520f",
+      "require_clear": false,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-guard-recovered-uncommitted-loss-after.json",
+      "bytes": 6953,
+      "sha256": "dc73f267d1c2fa94b9700e96c2041a9adf38c6506646a04fbb7390521bab0bee",
+      "require_clear": true,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-guard-recovered-uncommitted-loss-before.json",
+      "bytes": 1690,
+      "sha256": "6591e21b32505db97e6d63d9d3d1766b91508a8e97ad415e09e894439f9237d8",
+      "require_clear": false,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-healthy-after.json",
+      "bytes": 17216,
+      "sha256": "fa18e6e42f030a340c142c2cc27c2dac74a70642307d30e43bde470d3b483e78",
+      "require_clear": true,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-healthy-before.json",
+      "bytes": 2077,
+      "sha256": "8f79f3942a8f0349dda7770acc01e8efb26e13a0698f318d5974a34413667894",
+      "require_clear": false,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-pending-after.json",
+      "bytes": 6928,
+      "sha256": "81278dbf08253c69292259efe83e4f2c0c1405222e5317fbb5c75db8635421ea",
+      "require_clear": true,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation"
+    },
+    {
+      "path": "evidence/A05-SERVER299/a05-audit-pending-before.json",
+      "bytes": 1665,
+      "sha256": "8cbc9dec6d7c17e521c8f9412eb5834e799f0a0bfe74f16a7465fa0ecaff242f",
+      "require_clear": false,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation"
+    }
+  ],
+  "minimal_dependencies": "Actual durable recovery/hold commit checkpoints and nonduplicated asset/ledger writes are supplied under the declared Program+PG+Game matrix; do not require whole LOAD05.4/LOAD09.2 Accepted."
+}

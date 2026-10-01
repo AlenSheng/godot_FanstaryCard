@@ -1,0 +1,478 @@
+{
+  "kind": "Independent bounded MAIN review of two Ready tasks only",
+  "created_at_utc": "2026-10-01T03:05:28.230618+00:00",
+  "fixed_sources": {
+    "A05": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+    "LOAD02": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953"
+  },
+  "fixed_report_commits": {
+    "A05": "1a7f533666164467ecd7de1604bde62db6d9106b",
+    "LOAD02": "b5a746a621a116f7d6e99857f8f8e0c063d2c159"
+  },
+  "records": [
+    {
+      "task_id": "PR13-A05.1",
+      "integration_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+      "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+      "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+      "effective_room_policy": {
+        "config_version": "gdd-0.70-numerical-1",
+        "embedded_server_config": "FantasyCard.Config.fantasycard.config.bytes sourcebytes same clientbytes",
+        "client_config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+        "numerical_default_catalog": [
+          {
+            "id": "current",
+            "cards_spent_draw": false,
+            "fractional_guardian": false,
+            "optional_monster_pool": false,
+            "monster_capacity": 5,
+            "budgeted_bot_loot": false,
+            "bot_loot_count": 2,
+            "mortal_bot_pve": false
+          }
+        ],
+        "owned_seed_room_input": {
+          "seed": 73,
+          "mode": "ChaosRealm",
+          "difficulty": "Standard",
+          "hero": "Mage",
+          "equipment": "owned White/Fire Feet DrawInterval level0",
+          "gold": 23,
+          "health_potions": 2,
+          "initial_saved_status": "Running",
+          "initial_saved_phase": "ActionBar at generated evacuation"
+        },
+        "input_boundary": "Owned saved Running fixture; actual subsequent runtime extraction/callbacks and actualOSrestart. No complete Boss/LIVE/capacity claim.",
+        "host_protocol": "PB HTTP AllowLegacyJson=false, ticket WS AllowLegacyAccessTokenQuery=false",
+        "bot_fill_delay_seconds": 30,
+        "gateway_transport_seconds": 10,
+        "gateway_logical_seconds": 30,
+        "request_limits": "Production defaults unchanged; pacing/waits rather than lower limits",
+        "provenance": "Fixed source+config bytes and actual FullHost explicit local env; context/runtime PB/DB observations in raw."
+      },
+      "profile_hash": "b10abfa313551b12d3c88c0f02ea01a6e6d5cf309d2c4cfc2f27c398ea1e09d1",
+      "algorithm_version": "A05GuardProcess/1",
+      "case_ids": [
+        "PR13-A05.1-T01",
+        "PR13-A05.1-T02",
+        "PR13-A05.1-T03"
+      ],
+      "expected": {
+        "PR13-A05.1-T01": "Before commit failure: no completed state; retryable.",
+        "PR13-A05.1-T02": "Committed response loss: same durable receipt restored; assets delivered once.",
+        "PR13-A05.1-T03": "Delayed holds: Pending survives OS restart; no ready/ACK/next-preparation bypass."
+      },
+      "rollback": "Revert ROOT one-line guard commit and rerun original RED/GREEN and old/new room restore matrix; preserve durable ledger/idempotency history. No DB recovery/ledger repair authorized or done. Owned throwaway schema cleanup follows completed audit.",
+      "stage": "S6 independent MAIN replay/recommendation; final registration reserved to parent",
+      "runtime_image_digest": null,
+      "actual": {
+        "canonical_cases": 3,
+        "canonical_status": "Passed",
+        "own_actual_checks": "A05_ACTUAL_CHECKS.json",
+        "full_suite": {
+          "run": "A05-SERVER299",
+          "source_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+          "counters": {
+            "total": 299,
+            "executed": 299,
+            "passed": 298,
+            "failed": 1,
+            "error": 0,
+            "timeout": 0,
+            "aborted": 0,
+            "inconclusive": 0,
+            "passedButRunAborted": 0,
+            "notRunnable": 0,
+            "notExecuted": 0,
+            "disconnected": 0,
+            "warning": 0,
+            "completed": 0,
+            "inProgress": 0,
+            "pending": 0
+          },
+          "exit_code": 1,
+          "selected_actual_results": [
+            {
+              "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Frozen_f812_actual_poll_return_during_ACK_must_not_restore_completed_receipt",
+              "outcome": "Passed"
+            },
+            {
+              "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_healthy_teammate_old_room_and_new_room_survive_real_callbacks_and_OS_restart",
+              "outcome": "Passed"
+            },
+            {
+              "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_guard_preserves_ordinary_context_and_authoritative_ACK_recovery(context: \"ordinary\", outcome: \"success\")",
+              "outcome": "Passed"
+            },
+            {
+              "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_guard_preserves_ordinary_context_and_authoritative_ACK_recovery(context: \"recovered\", outcome: \"committed-loss\")",
+              "outcome": "Passed"
+            },
+            {
+              "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_guard_preserves_ordinary_context_and_authoritative_ACK_recovery(context: \"recovered\", outcome: \"uncommitted-loss\")",
+              "outcome": "Passed"
+            },
+            {
+              "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_settlement_transaction_fault_recovers_without_duplicate_assets(mode: \"committed-response-loss\")",
+              "outcome": "Passed"
+            },
+            {
+              "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_settlement_transaction_fault_recovers_without_duplicate_assets(mode: \"precommit\")",
+              "outcome": "Passed"
+            },
+            {
+              "name": "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it",
+              "outcome": "Failed"
+            },
+            {
+              "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_runtime_pending_holds_survive_OS_restart_without_early_completion",
+              "outcome": "Passed"
+            }
+          ],
+          "failures": [
+            {
+              "name": "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it",
+              "outcome": "Failed",
+              "message": "Assert.Equal() Failure: Strings differ\n           ↓ (pos 0)\nExpected: \"Running\"\nActual:   \"Launching\"\n           ↑ (pos 0)",
+              "stack": "   at FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it() in /workspace/pr13-main-two-ready-20261001/a05-source/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLifecycleRecoveryTests.cs:line 75\n   at FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it() in /workspace/pr13-main-two-ready-20261001/a05-source/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLifecycleRecoveryTests.cs:line 84\n   at FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it() in /workspace/pr13-main-two-ready-20261001/a05-source/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLifecycleRecoveryTests.cs:line 97\n   at FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it() in /workspace/pr13-main-two-ready-20261001/a05-source/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLifecycleRecoveryTests.cs:line 97\n   at FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it() in /workspace/pr13-main-two-ready-20261001/a05-source/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLifecycleRecoveryTests.cs:line 97\n--- End of stack trace from previous location ---"
+            }
+          ],
+          "raw_TRX": {
+            "path": "evidence/A05-SERVER299/tests.trx",
+            "bytes": 636125,
+            "sha256": "657d36c477c1a00a18b163b96cd1b020c7bda14b2e0314a6ac3c2eaf43733cf8"
+          },
+          "raw_command": {
+            "path": "A05-SERVER299.command.json",
+            "bytes": 1545,
+            "sha256": "d7e2fe2b6bb16cff78ef9cbff201f4bc0bbca47ca84d8758463d1bbe028ee766"
+          }
+        },
+        "Python": null,
+        "old_RED_and_causal_guard": {
+          "red_exit": 1,
+          "red_stale": [
+            true,
+            true
+          ],
+          "fixed_stale": [
+            false,
+            false
+          ]
+        }
+      },
+      "status": "Partial",
+      "sample_population": {
+        "canonical_cases": 3,
+        "canonical_executions": 3,
+        "guard_and_causal_entries": 4,
+        "unfiltered_suite_total": 299
+      },
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "actual final command exits, durable asset/route checks and owned read-only audit; no capacity/window claim",
+      "commands": "COMMANDS.json",
+      "tool_versions": {
+        "Python": "3.12.14",
+        "dotnet_SDK": "10.0.400",
+        "dotnet_Runtime": "10.0.11",
+        "PostgreSQL": "18.6",
+        "Godot": "4.7.2.stable.official.ed1daf0bf"
+      },
+      "exit_codes": {
+        "A05-BUILD": 0,
+        "A05-MARKRUNNING-DIAGNOSTIC": 0,
+        "A05-RED": 1,
+        "A05-RESTORE": 0,
+        "A05-SERVER299": 1
+      },
+      "skip_reasons": [],
+      "asset_and_route_postconditions": {
+        "actual_checks": "A05_ACTUAL_CHECKS.json",
+        "asset_delivery_and_equipment_movement_once": true,
+        "next_real_prepare_cancel_verified": true,
+        "global_ledger_exoneration": null
+      },
+      "artifact_manifest": "MANIFEST.json; RAW_HASHES.json retains fresh local raw hashes without upload",
+      "reviewer": {
+        "independent": "Independent reviewer delegated by parent source_thread01a0f0d2",
+        "parent_MAIN_registration": null,
+        "recommendation": "FixedWithEvidence after mandatory C-SERVER discrepancy resolved"
+      },
+      "remaining_blockers": [
+        {
+          "reason": "Unfiltered mandatory C-SERVER at62772 exited1:298Passed/1Failed/0Skipped; MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it expected Running but actual Launching. Same-source/same-PG isolated diagnostic1Passed/0Failed/0Skipped cannot replace the unfiltered suite or establish root cause.",
+          "owner": "Implementation owner",
+          "next_action": "Locate ordering/transport/commit truth for the original fault proxy and actual MarkRunning; preserve the failing assertion/raw. Submit bounded same-contract evidence or a separately reviewed fix. No reviewer source/assertion edits or forced-green retries.",
+          "production_root_cause_confirmed": false,
+          "single_case_diagnostic_exit": 0,
+          "failed_source_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+          "canonical_A05_target_cases_failed": false,
+          "related_shared_case_at_dfb_full_suite": "Same unchanged MarkRunning case Passed in actual dfb3 full302; this is different integrationSHA, not a62772 whole-suite replay or causal diagnosis."
+        }
+      ],
+      "missing_reasons": {
+        "runtime_image_digest": "Native isolated local Program+Godot+PostgreSQL; no image used or LIVE/CI required.",
+        "asset_and_route_postconditions.global_ledger_exoneration": "Only declared per-fixture owned accounts/assets/routes audited; not all server history or global capacity.",
+        "reviewer.parent_MAIN_registration": "Parent performs final MAIN decision; original Accepted registry untouched.",
+        "historical_private_raw_rehashed": "Original index seal verified but historical private raw not available here; independent actual raw provides current execution.",
+        "cutoff_monotonic": "No statistical window/drain cutoff applies; actual client monotonic causal observations and raw C#timestamps are kept separately.",
+        "actual.Python": "C-PY is not a canonical command for A05.1; actual mandatory C-SERVER/C-AUDIT executed."
+      },
+      "minimum_dependencies": {
+        "products": "durable recovery/hold readiness checkpoint and exactly-once settlement ledger/asset products actually supplied/consumed",
+        "task_ids": [
+          "LOAD-05.4",
+          "LOAD-09.2"
+        ],
+        "whole_upstream_parent_Accepted_required": false
+      },
+      "eligible_for_unqualified_acceptance": false,
+      "accepted_registration_written": false
+    },
+    {
+      "task_id": "LOAD-02.2",
+      "integration_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+      "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+      "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+      "effective_room_policy": {
+        "config_version": "gdd-0.70-numerical-1",
+        "actual_client_server_bytes_equal": true,
+        "PB_HTTP_legacy_JSON": false,
+        "ticket_WS_legacy_token_query": false,
+        "attempt_timeout_ms": 10000,
+        "logical_timeout_ms": 30000,
+        "cleanup_timeout_ms": 22000,
+        "bot_fill_ms": 30000,
+        "match_seed": null,
+        "room_origin": "actual production prepare/enqueue/ticket WS/READY; no seeded room replacement",
+        "legal_terminal_driver": "original legal extraction or abandon only; not full Boss or three gameplay routes"
+      },
+      "profile_hash": "47d985a7d8106f8b9b7469dee979012058c4ce355ac11e5d943ad8a7ed1cc4c8",
+      "algorithm_version": "load02-observer-v1",
+      "case_ids": [
+        "LOAD-02.2-T01",
+        "LOAD-02.2-T02",
+        "LOAD-02.2-T03"
+      ],
+      "expected": {
+        "LOAD-02.2-T01": "STOP前超时：业务失败不变取消",
+        "LOAD-02.2-T02": "STOP后正常等待取消：不计服务错误或完成",
+        "LOAD-02.2-T03": "ACK已提交结果未知：pending直到权威核实"
+      },
+      "rollback": {
+        "harness_commit": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+        "method": "revert only the three added LOAD02 harness files; keep all raw/command receipts/history; no production/database rollback from this group"
+      },
+      "stage": "S6 independent MAIN replay/recommendation; final registration reserved to parent",
+      "runtime_image_digest": null,
+      "actual": {
+        "canonical_cases": 3,
+        "canonical_status": "Passed",
+        "own_actual_checks": "LOAD02_ACTUAL_CHECKS.json",
+        "full_suite": {
+          "run": "LOAD02-SERVER302",
+          "source_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+          "counters": {
+            "total": 302,
+            "executed": 302,
+            "passed": 302,
+            "failed": 0,
+            "error": 0,
+            "timeout": 0,
+            "aborted": 0,
+            "inconclusive": 0,
+            "passedButRunAborted": 0,
+            "notRunnable": 0,
+            "notExecuted": 0,
+            "disconnected": 0,
+            "warning": 0,
+            "completed": 0,
+            "inProgress": 0,
+            "pending": 0
+          },
+          "exit_code": 0,
+          "selected_actual_results": [
+            {
+              "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_guard_preserves_ordinary_context_and_authoritative_ACK_recovery(context: \"recovered\", outcome: \"uncommitted-loss\")",
+              "outcome": "Passed"
+            },
+            {
+              "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_guard_preserves_ordinary_context_and_authoritative_ACK_recovery(context: \"recovered\", outcome: \"committed-loss\")",
+              "outcome": "Passed"
+            },
+            {
+              "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_guard_preserves_ordinary_context_and_authoritative_ACK_recovery(context: \"ordinary\", outcome: \"success\")",
+              "outcome": "Passed"
+            },
+            {
+              "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_LOAD02_timeout_STOP_preserves_original_business_truth(mode: \"normal-wait-stop\", caseId: \"LOAD-02.2-T02\")",
+              "outcome": "Passed"
+            },
+            {
+              "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_LOAD02_timeout_STOP_preserves_original_business_truth(mode: \"committed-unknown-stop\", caseId: \"LOAD-02.2-T03\")",
+              "outcome": "Passed"
+            },
+            {
+              "name": "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it",
+              "outcome": "Passed"
+            },
+            {
+              "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_healthy_teammate_old_room_and_new_room_survive_real_callbacks_and_OS_restart",
+              "outcome": "Passed"
+            },
+            {
+              "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_LOAD02_timeout_STOP_preserves_original_business_truth(mode: \"timeout-before-stop\", caseId: \"LOAD-02.2-T01\")",
+              "outcome": "Passed"
+            },
+            {
+              "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_settlement_transaction_fault_recovers_without_duplicate_assets(mode: \"precommit\")",
+              "outcome": "Passed"
+            },
+            {
+              "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_runtime_pending_holds_survive_OS_restart_without_early_completion",
+              "outcome": "Passed"
+            },
+            {
+              "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Frozen_f812_actual_poll_return_during_ACK_must_not_restore_completed_receipt",
+              "outcome": "Passed"
+            },
+            {
+              "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_settlement_transaction_fault_recovers_without_duplicate_assets(mode: \"committed-response-loss\")",
+              "outcome": "Passed"
+            }
+          ],
+          "failures": [],
+          "raw_TRX": {
+            "path": "evidence/LOAD02-SERVER302/tests.trx",
+            "bytes": 985510,
+            "sha256": "f0afed162eb1db1b8ae55130be124053ec748cd21db97812bcbb7c8f0d88b1d4"
+          },
+          "raw_command": {
+            "path": "LOAD02-SERVER302.command.json",
+            "bytes": 1566,
+            "sha256": "2d9ba1461ec9cb26c3cd2dd4d38d9eff64dca944609044a322e68bfa646f23a1"
+          }
+        },
+        "Python": {
+          "run": "LOAD02-PY122",
+          "source_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+          "total": 122,
+          "exit_code": 0,
+          "summary": "OK",
+          "skip_lines": [],
+          "raw_log": {
+            "path": "LOAD02-PY122.log",
+            "bytes": 19865,
+            "sha256": "a93ab36cd16e3f40033f1b86308d5e407f886a3b877b6b341a754e2ff656e9ce"
+          }
+        },
+        "old_RED_and_causal_guard": null
+      },
+      "status": "ReadyForAcceptance",
+      "sample_population": {
+        "canonical_cases": 3,
+        "canonical_executions": 6,
+        "guard_and_causal_entries": null,
+        "unfiltered_suite_total": 302
+      },
+      "cutoff_monotonic": {
+        "source": "LOAD02_ACTUAL_CHECKS.json per process .stop-observed/.accounting actual monotonic_ms; C#STOP tick separate clock domain",
+        "cases": [
+          {
+            "run": "LOAD02-FOCUSED",
+            "case_id": "LOAD-02.2-T01",
+            "STOP_ms": 31271,
+            "final_ms": 31423
+          },
+          {
+            "run": "LOAD02-FOCUSED",
+            "case_id": "LOAD-02.2-T02",
+            "STOP_ms": 32720,
+            "final_ms": 33022
+          },
+          {
+            "run": "LOAD02-FOCUSED",
+            "case_id": "LOAD-02.2-T03",
+            "STOP_ms": 39501,
+            "final_ms": 39836
+          },
+          {
+            "run": "LOAD02-SERVER302",
+            "case_id": "LOAD-02.2-T01",
+            "STOP_ms": 31286,
+            "final_ms": 31439
+          },
+          {
+            "run": "LOAD02-SERVER302",
+            "case_id": "LOAD-02.2-T02",
+            "STOP_ms": 32711,
+            "final_ms": 32997
+          },
+          {
+            "run": "LOAD02-SERVER302",
+            "case_id": "LOAD-02.2-T03",
+            "STOP_ms": 36043,
+            "final_ms": 36345
+          }
+        ]
+      },
+      "window_or_drain_or_final": "actual final command exits, durable asset/route checks and owned read-only audit; no capacity/window claim",
+      "commands": "COMMANDS.json",
+      "tool_versions": {
+        "Python": "3.12.14",
+        "dotnet_SDK": "10.0.400",
+        "dotnet_Runtime": "10.0.11",
+        "PostgreSQL": "18.6",
+        "Godot": "4.7.2.stable.official.ed1daf0bf"
+      },
+      "exit_codes": {
+        "LOAD02-BUILD": 0,
+        "LOAD02-FOCUSED": 0,
+        "LOAD02-PY122": 0,
+        "LOAD02-RESTORE": 0,
+        "LOAD02-SERVER302": 0
+      },
+      "skip_reasons": [],
+      "asset_and_route_postconditions": {
+        "actual_checks": "LOAD02_ACTUAL_CHECKS.json",
+        "asset_delivery_and_equipment_movement_once": true,
+        "next_real_prepare_cancel_verified": true,
+        "global_ledger_exoneration": null
+      },
+      "artifact_manifest": "MANIFEST.json; RAW_HASHES.json retains fresh local raw hashes without upload",
+      "reviewer": {
+        "independent": "Independent reviewer delegated by parent source_thread01a0f0d2",
+        "parent_MAIN_registration": null,
+        "recommendation": "NoChangeWithEvidence; additive harness proves existing original business behavior"
+      },
+      "remaining_blockers": [],
+      "missing_reasons": {
+        "runtime_image_digest": "Native isolated local Program+Godot+PostgreSQL; no image used or LIVE/CI required.",
+        "asset_and_route_postconditions.global_ledger_exoneration": "Only declared per-fixture owned accounts/assets/routes audited; not all server history or global capacity.",
+        "reviewer.parent_MAIN_registration": "Parent performs final MAIN decision; original Accepted registry untouched.",
+        "historical_private_raw_rehashed": "Original index seal verified but historical private raw not available here; independent actual raw provides current execution.",
+        "effective_room_policy.match_seed": "Original real prepare/enqueue runtime assigns seed; no seeded replacement or stable seed claim.",
+        "actual.old_RED_and_causal_guard": "No production change from this three-file additive LOAD02 harness; do not fabricate before-fix failure for existing correct business behavior.",
+        "sample_population.guard_and_causal_entries": "A05 guard/causal belongs to separately evaluated A05.1; not a required added LOAD02.2 case population."
+      },
+      "minimum_dependencies": {
+        "products": "original business failure classification and initiating logical request/context/idempotency products actually supplied/consumed",
+        "task_ids": [
+          "LOAD-02.1",
+          "LOAD-06.2"
+        ],
+        "whole_upstream_parent_Accepted_required": false
+      },
+      "eligible_for_unqualified_acceptance": true,
+      "accepted_registration_written": false
+    }
+  ],
+  "scope": "Only A05.1 and LOAD02.2; existing15Accepted not re-adjudicated, no global G0-G5/132tasks or fullBoss/LIVE/CI/render/capacity assertion.",
+  "review_source_or_assertion_changes": false,
+  "original_registry_writes": false,
+  "online_server_or_CI_runs": false,
+  "Library_upload": false,
+  "raw_upload": false,
+  "source_provenance": "Exact declared partial source materialized from Git objects; all source/config/report bytes verified. RED exact2dda runtime plus original nine declared test-only overlay files from80687833. No production/assertion adaptation.",
+  "mandatory_suite_failure_handling": "First A05 unfiltered failure and single bounded diagnostic retained. Diagnostic passes do not erase original exit1 or prove production cause."
+}

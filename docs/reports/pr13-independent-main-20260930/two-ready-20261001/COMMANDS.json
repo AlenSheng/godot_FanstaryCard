@@ -1,0 +1,361 @@
+[
+  {
+    "id": "A05-BUILD",
+    "argv": [
+      "dotnet",
+      "build",
+      "FantasyCard.Server.slnx",
+      "-c",
+      "Release",
+      "--no-restore"
+    ],
+    "cwd": "/workspace/pr13-main-two-ready-20261001/a05-source/server",
+    "source_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64"
+    },
+    "started_at_utc": "2026-10-01T02:31:32.278560+00:00",
+    "elapsed_seconds": 16.917054618999828,
+    "exit_code": 0,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "A05-BUILD.log",
+    "log_sha256": "81e7d751f9a2462bc8df530c8aa0eee2d4be21834f593d437f8c93b95cfbf154"
+  },
+  {
+    "id": "A05-MARKRUNNING-DIAGNOSTIC",
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "-c",
+      "Release",
+      "--no-build",
+      "--logger",
+      "trx;LogFileName=tests.trx",
+      "--results-directory",
+      "/workspace/pr13-main-two-ready-20261001/evidence/A05-MARKRUNNING-DIAGNOSTIC",
+      "--filter",
+      "FullyQualifiedName~MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it"
+    ],
+    "cwd": "/workspace/pr13-main-two-ready-20261001/a05-source/server",
+    "source_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "FANTASYCARD_TEST_POSTGRES": "Host=/workspace/pr13-main-two-ready-20261001/a05-socket;Port=55531;Username=agent;Database=postgres;Pooling=true;Maximum Pool Size=8",
+      "FANTASYCARD_PROCESS_SERVER_DLL": "/workspace/pr13-main-two-ready-20261001/a05-source/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll",
+      "FANTASYCARD_PROCESS_EVIDENCE": "/workspace/pr13-main-two-ready-20261001/evidence/A05-MARKRUNNING-DIAGNOSTIC",
+      "FANTASYCARD_PROCESS_SOURCE_SHA": "62772be2a1bc28affffc3d057f259c8c5ded8e37"
+    },
+    "started_at_utc": "2026-10-01T02:50:00.980957+00:00",
+    "elapsed_seconds": 2.77955013799874,
+    "exit_code": 0,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "A05-MARKRUNNING-DIAGNOSTIC.log",
+    "log_sha256": "22f2feaa761061191354b6ada830da879adcdb866aa9ac9812e9832f75b74f52"
+  },
+  {
+    "id": "A05-RED",
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "-c",
+      "Release",
+      "--no-build",
+      "--logger",
+      "trx;LogFileName=tests.trx",
+      "--results-directory",
+      "/workspace/pr13-main-two-ready-20261001/evidence/A05-RED",
+      "--filter",
+      "FullyQualifiedName~Frozen_f812_actual_poll_return_during_ACK_must_not_restore_completed_receipt"
+    ],
+    "cwd": "/workspace/pr13-main-two-ready-20261001/red-source/server",
+    "source_sha": "2dda41b32ba89f06d5ea722ae8b9469004940c22",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "FANTASYCARD_TEST_POSTGRES": "Host=/workspace/pr13-main-two-ready-20261001/a05-socket;Port=55531;Username=agent;Database=postgres;Pooling=true;Maximum Pool Size=8",
+      "FANTASYCARD_PROCESS_SERVER_DLL": "/workspace/pr13-main-two-ready-20261001/red-source/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll",
+      "FANTASYCARD_PROCESS_EVIDENCE": "/workspace/pr13-main-two-ready-20261001/evidence/A05-RED",
+      "FANTASYCARD_PROCESS_SOURCE_SHA": "2dda41b32ba89f06d5ea722ae8b9469004940c22"
+    },
+    "started_at_utc": "2026-10-01T02:31:50.282261+00:00",
+    "elapsed_seconds": 16.310361830999682,
+    "exit_code": 1,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "A05-RED.log",
+    "log_sha256": "5d5d671be97f6aca1bfeb6e64c343a0d49a0e1fa54e332d56b8187ed091e5878"
+  },
+  {
+    "id": "A05-RESTORE",
+    "argv": [
+      "dotnet",
+      "restore",
+      "FantasyCard.Server.slnx",
+      "-p:NuGetAudit=false",
+      "--source",
+      "/workspace/relicround-env/nuget"
+    ],
+    "cwd": "/workspace/pr13-main-two-ready-20261001/a05-source/server",
+    "source_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64"
+    },
+    "started_at_utc": "2026-10-01T02:31:30.796711+00:00",
+    "elapsed_seconds": 1.44338226400032,
+    "exit_code": 0,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "A05-RESTORE.log",
+    "log_sha256": "737e0df7885ea313cb06a9505df8976e4624cb0b696a8d6f65a5fb556c67c6ba"
+  },
+  {
+    "id": "A05-SERVER299",
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "-c",
+      "Release",
+      "--no-build",
+      "--logger",
+      "trx;LogFileName=tests.trx",
+      "--results-directory",
+      "/workspace/pr13-main-two-ready-20261001/evidence/A05-SERVER299"
+    ],
+    "cwd": "/workspace/pr13-main-two-ready-20261001/a05-source/server",
+    "source_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "FANTASYCARD_TEST_POSTGRES": "Host=/workspace/pr13-main-two-ready-20261001/a05-socket;Port=55531;Username=agent;Database=postgres;Pooling=true;Maximum Pool Size=8",
+      "FANTASYCARD_PROCESS_SERVER_DLL": "/workspace/pr13-main-two-ready-20261001/a05-source/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll",
+      "FANTASYCARD_PROCESS_EVIDENCE": "/workspace/pr13-main-two-ready-20261001/evidence/A05-SERVER299",
+      "FANTASYCARD_PROCESS_SOURCE_SHA": "62772be2a1bc28affffc3d057f259c8c5ded8e37"
+    },
+    "started_at_utc": "2026-10-01T02:32:06.628973+00:00",
+    "elapsed_seconds": 749.3544024290004,
+    "exit_code": 1,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "A05-SERVER299.log",
+    "log_sha256": "4c8b74c3a89d818872a350df446c8970c8d8fc1e01ef8530107994663abb52b9"
+  },
+  {
+    "id": "LOAD02-BUILD",
+    "argv": [
+      "dotnet",
+      "build",
+      "FantasyCard.Server.slnx",
+      "-c",
+      "Release",
+      "--no-restore"
+    ],
+    "cwd": "/workspace/pr13-main-two-ready-20261001/load02-source/server",
+    "source_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "FANTASYCARD_TEST_POSTGRES": "Host=/workspace/pr13-main-two-ready-20261001/a05-socket;Port=55531;Username=agent;Database=postgres;Pooling=true;Maximum Pool Size=8",
+      "FANTASYCARD_PROCESS_SERVER_DLL": "/workspace/pr13-main-two-ready-20261001/a05-source/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll",
+      "FANTASYCARD_PROCESS_EVIDENCE": "/workspace/pr13-main-two-ready-20261001/evidence/A05-SERVER299",
+      "FANTASYCARD_PROCESS_SOURCE_SHA": "62772be2a1bc28affffc3d057f259c8c5ded8e37"
+    },
+    "started_at_utc": "2026-10-01T02:44:38.340088+00:00",
+    "elapsed_seconds": 17.917749579000883,
+    "exit_code": 0,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "LOAD02-BUILD.log",
+    "log_sha256": "949c8116c5d114fb50c619ee3309714278fd203799e4f399cac04ecc2eaee29b"
+  },
+  {
+    "id": "LOAD02-FOCUSED",
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "-c",
+      "Release",
+      "--no-build",
+      "--logger",
+      "trx;LogFileName=tests.trx",
+      "--results-directory",
+      "/workspace/pr13-main-two-ready-20261001/evidence/LOAD02-FOCUSED",
+      "--filter",
+      "FullyQualifiedName~Real_LOAD02_timeout_STOP_preserves_original_business_truth"
+    ],
+    "cwd": "/workspace/pr13-main-two-ready-20261001/load02-source/server",
+    "source_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "FANTASYCARD_TEST_POSTGRES": "Host=/workspace/pr13-main-two-ready-20261001/load02-socket;Port=55532;Username=agent;Database=postgres;Pooling=true;Maximum Pool Size=8",
+      "FANTASYCARD_PROCESS_SERVER_DLL": "/workspace/pr13-main-two-ready-20261001/load02-source/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll",
+      "FANTASYCARD_PROCESS_EVIDENCE": "/workspace/pr13-main-two-ready-20261001/evidence/LOAD02-FOCUSED",
+      "FANTASYCARD_PROCESS_SOURCE_SHA": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953"
+    },
+    "started_at_utc": "2026-10-01T02:44:57.311709+00:00",
+    "elapsed_seconds": 125.6314410549985,
+    "exit_code": 0,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "LOAD02-FOCUSED.log",
+    "log_sha256": "ac422482664c15a56c81bf0d88d381112aa29bcea9a756cd9e73cf3cb7637f36"
+  },
+  {
+    "id": "LOAD02-PY122",
+    "argv": [
+      "python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tools/tests",
+      "-v"
+    ],
+    "cwd": "/workspace/pr13-main-two-ready-20261001/load02-source",
+    "source_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "FANTASYCARD_TEST_POSTGRES": "Host=/workspace/pr13-main-two-ready-20261001/load02-socket;Port=55532;Username=agent;Database=postgres;Pooling=true;Maximum Pool Size=8",
+      "FANTASYCARD_PROCESS_SERVER_DLL": "/workspace/pr13-main-two-ready-20261001/load02-source/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll",
+      "FANTASYCARD_PROCESS_EVIDENCE": "/workspace/pr13-main-two-ready-20261001/evidence/LOAD02-SERVER302",
+      "FANTASYCARD_PROCESS_SOURCE_SHA": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953"
+    },
+    "started_at_utc": "2026-10-01T03:01:33.255547+00:00",
+    "elapsed_seconds": 3.5292068510007084,
+    "exit_code": 0,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "LOAD02-PY122.log",
+    "log_sha256": "a93ab36cd16e3f40033f1b86308d5e407f886a3b877b6b341a754e2ff656e9ce"
+  },
+  {
+    "id": "LOAD02-RESTORE",
+    "argv": [
+      "dotnet",
+      "restore",
+      "FantasyCard.Server.slnx",
+      "-p:NuGetAudit=false",
+      "--source",
+      "/workspace/relicround-env/nuget"
+    ],
+    "cwd": "/workspace/pr13-main-two-ready-20261001/load02-source/server",
+    "source_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "FANTASYCARD_TEST_POSTGRES": "Host=/workspace/pr13-main-two-ready-20261001/a05-socket;Port=55531;Username=agent;Database=postgres;Pooling=true;Maximum Pool Size=8",
+      "FANTASYCARD_PROCESS_SERVER_DLL": "/workspace/pr13-main-two-ready-20261001/a05-source/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll",
+      "FANTASYCARD_PROCESS_EVIDENCE": "/workspace/pr13-main-two-ready-20261001/evidence/A05-SERVER299",
+      "FANTASYCARD_PROCESS_SOURCE_SHA": "62772be2a1bc28affffc3d057f259c8c5ded8e37"
+    },
+    "started_at_utc": "2026-10-01T02:44:37.134075+00:00",
+    "elapsed_seconds": 1.169165825998789,
+    "exit_code": 0,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "LOAD02-RESTORE.log",
+    "log_sha256": "d5997b4ca336505225a7562136b923031b7d343eb0ebaa8764bb3b8dcbefa65a"
+  },
+  {
+    "id": "LOAD02-SERVER302",
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "-c",
+      "Release",
+      "--no-build",
+      "--logger",
+      "trx;LogFileName=tests.trx",
+      "--results-directory",
+      "/workspace/pr13-main-two-ready-20261001/evidence/LOAD02-SERVER302"
+    ],
+    "cwd": "/workspace/pr13-main-two-ready-20261001/load02-source/server",
+    "source_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "FANTASYCARD_TEST_POSTGRES": "Host=/workspace/pr13-main-two-ready-20261001/load02-socket;Port=55532;Username=agent;Database=postgres;Pooling=true;Maximum Pool Size=8",
+      "FANTASYCARD_PROCESS_SERVER_DLL": "/workspace/pr13-main-two-ready-20261001/load02-source/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll",
+      "FANTASYCARD_PROCESS_EVIDENCE": "/workspace/pr13-main-two-ready-20261001/evidence/LOAD02-SERVER302",
+      "FANTASYCARD_PROCESS_SOURCE_SHA": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953"
+    },
+    "started_at_utc": "2026-10-01T02:47:02.981487+00:00",
+    "elapsed_seconds": 870.2352266360012,
+    "exit_code": 0,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "LOAD02-SERVER302.log",
+    "log_sha256": "48d5809f6f4ff89152fe831b4513505620f82c19f5a9aa50f75f979cbdaf8790"
+  },
+  {
+    "id": "RED-BUILD",
+    "argv": [
+      "dotnet",
+      "build",
+      "FantasyCard.Server.slnx",
+      "-c",
+      "Release",
+      "--no-restore"
+    ],
+    "cwd": "/workspace/pr13-main-two-ready-20261001/red-source/server",
+    "source_sha": "2dda41b32ba89f06d5ea722ae8b9469004940c22",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64"
+    },
+    "started_at_utc": "2026-10-01T02:31:08.145215+00:00",
+    "elapsed_seconds": 22.608181957999477,
+    "exit_code": 0,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "RED-BUILD.log",
+    "log_sha256": "c972a738ad9b1744f75ee1d63db2a009ec8d1b1e7ffe7050b3f5c4049a78d6dd"
+  },
+  {
+    "id": "RED-RESTORE",
+    "argv": [
+      "dotnet",
+      "restore",
+      "FantasyCard.Server.slnx",
+      "-p:NuGetAudit=false",
+      "--source",
+      "/workspace/relicround-env/nuget"
+    ],
+    "cwd": "/workspace/pr13-main-two-ready-20261001/red-source/server",
+    "source_sha": "2dda41b32ba89f06d5ea722ae8b9469004940c22",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64"
+    },
+    "started_at_utc": "2026-10-01T02:31:06.119867+00:00",
+    "elapsed_seconds": 1.9769235599997046,
+    "exit_code": 0,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "RED-RESTORE.log",
+    "log_sha256": "7a30d21b9206d24417165efcb61a4bae035b7cda7c54c2eec2e5b36721c2ba68"
+  }
+]

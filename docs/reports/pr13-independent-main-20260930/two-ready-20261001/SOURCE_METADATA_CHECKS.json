@@ -1,0 +1,140 @@
+{
+  "plan_sha256": "5176ee139d4e632ba34469ae531ce7ec16478f356480e2d8e320cd51f3bcd703",
+  "sources": [
+    {
+      "directory": "a05-source",
+      "source_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+      "verified_declared_paths": 964,
+      "declared_bytes": 87011853,
+      "source_byte_mismatches": 0,
+      "actual_fixed_Git_tree_blob_mismatches": 0,
+      "native_Git_HEAD": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+      "source_checkout_dirty": null,
+      "missing_reasons": {
+        "source_checkout_dirty": "Exact declared partial source, not full checkout; historical tracked files outside replay manifest absent. Do not claim clean full worktree."
+      },
+      "fresh_internal_build_artifacts": [
+        {
+          "path": "a05-source/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll",
+          "bytes": 1222144,
+          "sha256": "02610ddc2ca0fb235fbb0d5244e83bdd5f56495e7810adc20a70a2dfa0d69203"
+        },
+        {
+          "path": "a05-source/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll",
+          "bytes": 1229312,
+          "sha256": "9c3e0f01c0825f7eb6c098723314bc092d706c90ca6518ab81ce667af415cd95"
+        }
+      ],
+      "assertions_or_implementation_modified": false
+    },
+    {
+      "directory": "load02-source",
+      "source_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+      "verified_declared_paths": 967,
+      "declared_bytes": 87046987,
+      "source_byte_mismatches": 0,
+      "actual_fixed_Git_tree_blob_mismatches": 0,
+      "native_Git_HEAD": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+      "source_checkout_dirty": null,
+      "missing_reasons": {
+        "source_checkout_dirty": "Exact declared partial source, not full checkout; historical tracked files outside replay manifest absent. Do not claim clean full worktree."
+      },
+      "fresh_internal_build_artifacts": [
+        {
+          "path": "load02-source/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll",
+          "bytes": 1222144,
+          "sha256": "2c83f6c600db3f3f45c8929a6f607f85d7e217e604ad0c01a2b4ba682d2e220b"
+        },
+        {
+          "path": "load02-source/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll",
+          "bytes": 1285120,
+          "sha256": "d12e5ac3f39ecaaacc91f069fa1087be231c960a25258f80ca53e1c1ad224c2b"
+        }
+      ],
+      "assertions_or_implementation_modified": false
+    },
+    {
+      "directory": "red-source",
+      "source_sha": "2dda41b32ba89f06d5ea722ae8b9469004940c22",
+      "verified_declared_paths": 961,
+      "declared_bytes": 86986346,
+      "source_byte_mismatches": 0,
+      "actual_fixed_Git_tree_blob_mismatches": 0,
+      "native_Git_HEAD": null,
+      "source_checkout_dirty": null,
+      "missing_reasons": {
+        "source_checkout_dirty": "Exact declared partial source, not full checkout; historical tracked files outside replay manifest absent. Do not claim clean full worktree.",
+        "native_Git_HEAD": "Original RED has no Git metadata; source paths from exact Git objects and nine original declared overlay hashes are verified."
+      },
+      "fresh_internal_build_artifacts": [
+        {
+          "path": "red-source/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll",
+          "bytes": 1222144,
+          "sha256": "9e66fae8b9937bc9c175f2799ddf38293ce6a6ef66314e5e393f5c55166812fd"
+        },
+        {
+          "path": "red-source/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll",
+          "bytes": 1182720,
+          "sha256": "230e66edda530e3119bb7937db8eb8aecea9b5ab3b7b2afa01464da9ace7413c"
+        }
+      ],
+      "assertions_or_implementation_modified": false
+    }
+  ],
+  "metadata": [
+    {
+      "group": "a05",
+      "integration_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+      "required_fields": 26,
+      "missing_fields": [],
+      "null_fields": [
+        "runtime_image_digest",
+        "cutoff_monotonic"
+      ],
+      "missing_reasons": {
+        "runtime_image_digest": "Native local dotnet/Godot execution, no container image used; executable SHA/version recorded.",
+        "cutoff_monotonic": "This is a serial bounded functional recovery matrix, not sharedcutoff load experiment. Actual per-case sameGodot monotonic observations are retained; no artificial globalcutoff.",
+        "reviewer.independent_acceptance": "No MAIN decision available in this packet."
+      },
+      "profile_hash": "b10abfa313551b12d3c88c0f02ea01a6e6d5cf309d2c4cfc2f27c398ea1e09d1",
+      "algorithm_version": "A05GuardProcess/1",
+      "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+      "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+      "all_config_byte_copy_hashes": [
+        "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87"
+      ],
+      "exact_required_config_found": true,
+      "report_sha256": "45288c1f929eaed9b07b46775f95ca83cedbd5b90ee357cbbb61528e4547a84b"
+    },
+    {
+      "group": "load02",
+      "integration_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+      "required_fields": 26,
+      "missing_fields": [],
+      "null_fields": [
+        "runtime_image_digest"
+      ],
+      "missing_reasons": {
+        "runtime_image_digest": "actual isolated .NET Program/Godot OS processes, no container image was used",
+        "effective_room_policy.match_seed": "production matchmaker-generated seed not captured by this scoped fixture; not replaced by synthetic seed",
+        "asset_and_route_postconditions.global_ledger_exoneration": "owned isolated PG fixture postconditions do not clear unrelated global ledger anomalies",
+        "reviewer.independent_acceptance": "MAIN S6 independent acceptance is pending; implementation does not sign Accepted."
+      },
+      "profile_hash": "47d985a7d8106f8b9b7469dee979012058c4ce355ac11e5d943ad8a7ed1cc4c8",
+      "algorithm_version": "load02-observer-v1",
+      "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+      "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+      "all_config_byte_copy_hashes": [
+        "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87"
+      ],
+      "exact_required_config_found": true,
+      "report_sha256": "38763d3450dea27ca33f2d8d6b89de3f72443d3a7ae09b502e3812b1e12fd623"
+    }
+  ],
+  "original_checkout": {
+    "HEAD": "b39841d3f5191c11c9e51c7e6875490789aba53c",
+    "branch": "work",
+    "status": "",
+    "modified_by_review": false
+  }
+}
