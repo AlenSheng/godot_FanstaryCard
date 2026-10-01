@@ -1,0 +1,518 @@
+{
+  "source_sha": "0d4ec7f23df806da7a86f9d954033a718349de7e",
+  "events": [
+    {
+      "event": "start",
+      "id": "pg-init",
+      "cwd": "/workspace/pr13-takeover/a05-relay-transport-419961a8",
+      "argv": [
+        "initdb",
+        "-D",
+        "pg-data",
+        "-U",
+        "agent",
+        "--auth-local=trust",
+        "--auth-host=trust",
+        "--no-locale",
+        "--encoding=UTF8"
+      ],
+      "timestamp_utc": "2026-10-01T03:17:57.847138+00:00",
+      "monotonic_ns": 44017348648455,
+      "environment": {
+        "DOTNET_ROOT": "/workspace/relicround-env/dotnet/usr/share/dotnet",
+        "NUGET_PACKAGES": "/workspace/relicround-env/nuget",
+        "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "FANTASYCARD_TEST_POSTGRES": null,
+        "FANTASYCARD_PROCESS_SERVER_DLL": null,
+        "FANTASYCARD_PROCESS_EVIDENCE": null,
+        "FANTASYCARD_PROCESS_SOURCE_SHA": null
+      }
+    },
+    {
+      "event": "pid",
+      "id": "pg-init",
+      "pid": 131728
+    },
+    {
+      "event": "exit",
+      "id": "pg-init",
+      "exit_code": 0,
+      "elapsed_seconds": 0.9307119619988953,
+      "timestamp_utc": "2026-10-01T03:17:58.778178+00:00",
+      "monotonic_ns": 44018279924859,
+      "log": "/workspace/pr13-takeover/a05-relay-transport-419961a8/evidence/pg-init.log"
+    },
+    {
+      "event": "start",
+      "id": "pg-start",
+      "cwd": "/workspace/pr13-takeover/a05-relay-transport-419961a8",
+      "argv": [
+        "pg_ctl",
+        "-D",
+        "pg-data",
+        "-l",
+        "/workspace/pr13-takeover/a05-relay-transport-419961a8/evidence/pg.log",
+        "-w",
+        "start"
+      ],
+      "timestamp_utc": "2026-10-01T03:19:13.431977+00:00",
+      "monotonic_ns": 44092933493661,
+      "environment": {
+        "DOTNET_ROOT": "/workspace/relicround-env/dotnet/usr/share/dotnet",
+        "NUGET_PACKAGES": "/workspace/relicround-env/nuget",
+        "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "FANTASYCARD_TEST_POSTGRES": null,
+        "FANTASYCARD_PROCESS_SERVER_DLL": null,
+        "FANTASYCARD_PROCESS_EVIDENCE": null,
+        "FANTASYCARD_PROCESS_SOURCE_SHA": null
+      }
+    },
+    {
+      "event": "pid",
+      "id": "pg-start",
+      "pid": 131767
+    },
+    {
+      "event": "exit",
+      "id": "pg-start",
+      "exit_code": 0,
+      "elapsed_seconds": 0.11938901700341376,
+      "timestamp_utc": "2026-10-01T03:19:13.551525+00:00",
+      "monotonic_ns": 44093053046796,
+      "log": "/workspace/pr13-takeover/a05-relay-transport-419961a8/evidence/pg-start.log"
+    },
+    {
+      "event": "start",
+      "id": "pg-createdb",
+      "cwd": "/workspace/pr13-takeover/a05-relay-transport-419961a8",
+      "argv": [
+        "createdb",
+        "-h",
+        "/workspace/pr13-takeover/a05-relay-transport-419961a8/pg-socket",
+        "-p",
+        "55453",
+        "-U",
+        "agent",
+        "a05_transport_owned"
+      ],
+      "timestamp_utc": "2026-10-01T03:19:13.604865+00:00",
+      "monotonic_ns": 44093106377175,
+      "environment": {
+        "DOTNET_ROOT": "/workspace/relicround-env/dotnet/usr/share/dotnet",
+        "NUGET_PACKAGES": "/workspace/relicround-env/nuget",
+        "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "FANTASYCARD_TEST_POSTGRES": null,
+        "FANTASYCARD_PROCESS_SERVER_DLL": null,
+        "FANTASYCARD_PROCESS_EVIDENCE": null,
+        "FANTASYCARD_PROCESS_SOURCE_SHA": null
+      }
+    },
+    {
+      "event": "pid",
+      "id": "pg-createdb",
+      "pid": 131781
+    },
+    {
+      "event": "exit",
+      "id": "pg-createdb",
+      "exit_code": 0,
+      "elapsed_seconds": 0.08832796099886764,
+      "timestamp_utc": "2026-10-01T03:19:13.693317+00:00",
+      "monotonic_ns": 44093194838287,
+      "log": "/workspace/pr13-takeover/a05-relay-transport-419961a8/evidence/pg-createdb.log"
+    },
+    {
+      "event": "start",
+      "id": "fresh-green-build",
+      "cwd": "/workspace/pr13-takeover/a05-relay-transport-419961a8/source-green-0d4ec7f2/server",
+      "argv": [
+        "dotnet",
+        "build",
+        "FantasyCard.Server.slnx",
+        "-c",
+        "Release",
+        "--nologo"
+      ],
+      "timestamp_utc": "2026-10-01T03:19:13.738780+00:00",
+      "monotonic_ns": 44093240296139,
+      "environment": {
+        "DOTNET_ROOT": "/workspace/relicround-env/dotnet/usr/share/dotnet",
+        "NUGET_PACKAGES": "/workspace/relicround-env/nuget",
+        "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "FANTASYCARD_TEST_POSTGRES": null,
+        "FANTASYCARD_PROCESS_SERVER_DLL": null,
+        "FANTASYCARD_PROCESS_EVIDENCE": null,
+        "FANTASYCARD_PROCESS_SOURCE_SHA": null
+      }
+    },
+    {
+      "event": "pid",
+      "id": "fresh-green-build",
+      "pid": 131783
+    },
+    {
+      "event": "exit",
+      "id": "fresh-green-build",
+      "exit_code": 0,
+      "elapsed_seconds": 23.18830911599798,
+      "timestamp_utc": "2026-10-01T03:19:36.927382+00:00",
+      "monotonic_ns": 44116428898748,
+      "log": "/workspace/pr13-takeover/a05-relay-transport-419961a8/evidence/fresh-green-build.log"
+    },
+    {
+      "event": "start",
+      "id": "pg-policy-unix",
+      "cwd": "/workspace/pr13-takeover/a05-relay-transport-419961a8",
+      "argv": [
+        "psql",
+        "-h",
+        "/workspace/pr13-takeover/a05-relay-transport-419961a8/pg-socket",
+        "-p",
+        "55453",
+        "-U",
+        "agent",
+        "-d",
+        "a05_transport_owned",
+        "-Atc",
+        "SELECT current_user,current_database(),version(); SHOW listen_addresses; SHOW port; SHOW unix_socket_directories; SHOW max_connections; SHOW shared_buffers;"
+      ],
+      "timestamp_utc": "2026-10-01T03:19:54.491383+00:00",
+      "monotonic_ns": 44133992897075,
+      "environment": {
+        "DOTNET_ROOT": "/workspace/relicround-env/dotnet/usr/share/dotnet",
+        "NUGET_PACKAGES": "/workspace/relicround-env/nuget",
+        "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "FANTASYCARD_TEST_POSTGRES": null,
+        "FANTASYCARD_PROCESS_SERVER_DLL": null,
+        "FANTASYCARD_PROCESS_EVIDENCE": null,
+        "FANTASYCARD_PROCESS_SOURCE_SHA": null
+      }
+    },
+    {
+      "event": "pid",
+      "id": "pg-policy-unix",
+      "pid": 132070
+    },
+    {
+      "event": "exit",
+      "id": "pg-policy-unix",
+      "exit_code": 0,
+      "elapsed_seconds": 0.020330687002569903,
+      "timestamp_utc": "2026-10-01T03:19:54.512057+00:00",
+      "monotonic_ns": 44134013576639,
+      "log": "/workspace/pr13-takeover/a05-relay-transport-419961a8/evidence/pg-policy-unix.log"
+    },
+    {
+      "event": "start",
+      "id": "pg-policy-tcp",
+      "cwd": "/workspace/pr13-takeover/a05-relay-transport-419961a8",
+      "argv": [
+        "psql",
+        "-h",
+        "127.0.0.1",
+        "-p",
+        "55453",
+        "-U",
+        "agent",
+        "-d",
+        "a05_transport_owned",
+        "-Atc",
+        "SELECT current_user,current_database(),inet_server_addr(),inet_server_port();"
+      ],
+      "timestamp_utc": "2026-10-01T03:19:54.565195+00:00",
+      "monotonic_ns": 44134066706984,
+      "environment": {
+        "DOTNET_ROOT": "/workspace/relicround-env/dotnet/usr/share/dotnet",
+        "NUGET_PACKAGES": "/workspace/relicround-env/nuget",
+        "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "FANTASYCARD_TEST_POSTGRES": null,
+        "FANTASYCARD_PROCESS_SERVER_DLL": null,
+        "FANTASYCARD_PROCESS_EVIDENCE": null,
+        "FANTASYCARD_PROCESS_SOURCE_SHA": null
+      }
+    },
+    {
+      "event": "pid",
+      "id": "pg-policy-tcp",
+      "pid": 132072
+    },
+    {
+      "event": "exit",
+      "id": "pg-policy-tcp",
+      "exit_code": 0,
+      "elapsed_seconds": 0.0074526740063447505,
+      "timestamp_utc": "2026-10-01T03:19:54.572768+00:00",
+      "monotonic_ns": 44134074278919,
+      "log": "/workspace/pr13-takeover/a05-relay-transport-419961a8/evidence/pg-policy-tcp.log"
+    },
+    {
+      "event": "start",
+      "id": "green-unix-focused2",
+      "cwd": "/workspace/pr13-takeover/a05-relay-transport-419961a8/source-green-0d4ec7f2/server",
+      "argv": [
+        "dotnet",
+        "test",
+        "tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+        "-c",
+        "Release",
+        "--no-build",
+        "--filter",
+        "FullyQualifiedName~A05_actual_settlement_transaction_fault_recovers_without_duplicate_assets",
+        "--logger",
+        "trx;LogFileName=unix.trx",
+        "--results-directory",
+        "../../evidence/green-unix"
+      ],
+      "timestamp_utc": "2026-10-01T03:20:51.587178+00:00",
+      "monotonic_ns": 44191088690209,
+      "environment": {
+        "DOTNET_ROOT": "/workspace/relicround-env/dotnet/usr/share/dotnet",
+        "NUGET_PACKAGES": "/workspace/relicround-env/nuget",
+        "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "FANTASYCARD_TEST_POSTGRES": "Host=/workspace/pr13-takeover/a05-relay-transport-419961a8/pg-socket;Port=55453;Username=agent;Database=a05_transport_owned;Pooling=true;Maximum Pool Size=8",
+        "FANTASYCARD_PROCESS_SERVER_DLL": "/workspace/pr13-takeover/a05-relay-transport-419961a8/source-green-0d4ec7f2/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll",
+        "FANTASYCARD_PROCESS_EVIDENCE": "/workspace/pr13-takeover/a05-relay-transport-419961a8/evidence/green-unix",
+        "FANTASYCARD_PROCESS_SOURCE_SHA": "0d4ec7f23df806da7a86f9d954033a718349de7e"
+      }
+    },
+    {
+      "event": "pid",
+      "id": "green-unix-focused2",
+      "pid": 132097
+    },
+    {
+      "event": "exit",
+      "id": "green-unix-focused2",
+      "exit_code": 0,
+      "elapsed_seconds": 29.95193220499641,
+      "timestamp_utc": "2026-10-01T03:21:21.540376+00:00",
+      "monotonic_ns": 44221042162566,
+      "log": "/workspace/pr13-takeover/a05-relay-transport-419961a8/evidence/green-unix-focused2.log"
+    },
+    {
+      "event": "start",
+      "id": "green-tcp-focused2",
+      "cwd": "/workspace/pr13-takeover/a05-relay-transport-419961a8/source-green-0d4ec7f2/server",
+      "argv": [
+        "dotnet",
+        "test",
+        "tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+        "-c",
+        "Release",
+        "--no-build",
+        "--filter",
+        "FullyQualifiedName~A05_actual_settlement_transaction_fault_recovers_without_duplicate_assets",
+        "--logger",
+        "trx;LogFileName=tcp.trx",
+        "--results-directory",
+        "../../evidence/green-tcp"
+      ],
+      "timestamp_utc": "2026-10-01T03:22:06.688172+00:00",
+      "monotonic_ns": 44266189683456,
+      "environment": {
+        "DOTNET_ROOT": "/workspace/relicround-env/dotnet/usr/share/dotnet",
+        "NUGET_PACKAGES": "/workspace/relicround-env/nuget",
+        "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "FANTASYCARD_TEST_POSTGRES": "Host=127.0.0.1;Port=55453;Username=agent;Database=a05_transport_owned;Pooling=true;Maximum Pool Size=8",
+        "FANTASYCARD_PROCESS_SERVER_DLL": "/workspace/pr13-takeover/a05-relay-transport-419961a8/source-green-0d4ec7f2/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll",
+        "FANTASYCARD_PROCESS_EVIDENCE": "/workspace/pr13-takeover/a05-relay-transport-419961a8/evidence/green-tcp",
+        "FANTASYCARD_PROCESS_SOURCE_SHA": "0d4ec7f23df806da7a86f9d954033a718349de7e"
+      }
+    },
+    {
+      "event": "pid",
+      "id": "green-tcp-focused2",
+      "pid": 132402
+    },
+    {
+      "event": "exit",
+      "id": "green-tcp-focused2",
+      "exit_code": 0,
+      "elapsed_seconds": 37.38189477499691,
+      "timestamp_utc": "2026-10-01T03:22:44.071256+00:00",
+      "monotonic_ns": 44303572941976,
+      "log": "/workspace/pr13-takeover/a05-relay-transport-419961a8/evidence/green-tcp-focused2.log"
+    },
+    {
+      "event": "start",
+      "id": "pg-final-readonly",
+      "cwd": "/workspace/pr13-takeover/a05-relay-transport-419961a8",
+      "argv": [
+        "psql",
+        "-h",
+        "127.0.0.1",
+        "-p",
+        "55453",
+        "-U",
+        "agent",
+        "-d",
+        "a05_transport_owned",
+        "-Atc",
+        "SELECT json_build_object('at_utc',clock_timestamp(),'database',current_database(),'user',current_user,'server_addr',inet_server_addr(),'listen_addresses',current_setting('listen_addresses'),'port',current_setting('port'),'remaining_fixture_schemas',(SELECT count(*) FROM pg_namespace WHERE nspname LIKE 'fc_runtime_test_%'),'other_owned_database_backends',(SELECT count(*) FROM pg_stat_activity WHERE datname=current_database() AND pid<>pg_backend_pid()));"
+      ],
+      "timestamp_utc": "2026-10-01T03:24:28.620603+00:00",
+      "monotonic_ns": 44408122114501,
+      "environment": {
+        "DOTNET_ROOT": "/workspace/relicround-env/dotnet/usr/share/dotnet",
+        "NUGET_PACKAGES": "/workspace/relicround-env/nuget",
+        "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "FANTASYCARD_TEST_POSTGRES": null,
+        "FANTASYCARD_PROCESS_SERVER_DLL": null,
+        "FANTASYCARD_PROCESS_EVIDENCE": null,
+        "FANTASYCARD_PROCESS_SOURCE_SHA": null
+      }
+    },
+    {
+      "event": "pid",
+      "id": "pg-final-readonly",
+      "pid": 132827
+    },
+    {
+      "event": "exit",
+      "id": "pg-final-readonly",
+      "exit_code": 0,
+      "elapsed_seconds": 0.01898410200374201,
+      "timestamp_utc": "2026-10-01T03:24:28.639796+00:00",
+      "monotonic_ns": 44408141312285,
+      "log": "/workspace/pr13-takeover/a05-relay-transport-419961a8/evidence/pg-final-readonly.log"
+    },
+    {
+      "event": "start",
+      "id": "pg-stop",
+      "cwd": "/workspace/pr13-takeover/a05-relay-transport-419961a8",
+      "argv": [
+        "pg_ctl",
+        "-D",
+        "pg-data",
+        "-m",
+        "fast",
+        "-w",
+        "stop"
+      ],
+      "timestamp_utc": "2026-10-01T03:24:28.682722+00:00",
+      "monotonic_ns": 44408184235256,
+      "environment": {
+        "DOTNET_ROOT": "/workspace/relicround-env/dotnet/usr/share/dotnet",
+        "NUGET_PACKAGES": "/workspace/relicround-env/nuget",
+        "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "FANTASYCARD_TEST_POSTGRES": null,
+        "FANTASYCARD_PROCESS_SERVER_DLL": null,
+        "FANTASYCARD_PROCESS_EVIDENCE": null,
+        "FANTASYCARD_PROCESS_SOURCE_SHA": null
+      }
+    },
+    {
+      "event": "pid",
+      "id": "pg-stop",
+      "pid": 132829
+    },
+    {
+      "event": "exit",
+      "id": "pg-stop",
+      "exit_code": 0,
+      "elapsed_seconds": 0.20297228299750714,
+      "timestamp_utc": "2026-10-01T03:24:28.885814+00:00",
+      "monotonic_ns": 44408387333410,
+      "log": "/workspace/pr13-takeover/a05-relay-transport-419961a8/evidence/pg-stop.log"
+    },
+    {
+      "event": "start",
+      "id": "pg-status-after-stop",
+      "cwd": "/workspace/pr13-takeover/a05-relay-transport-419961a8",
+      "argv": [
+        "pg_ctl",
+        "-D",
+        "pg-data",
+        "status"
+      ],
+      "timestamp_utc": "2026-10-01T03:25:34.013204+00:00",
+      "monotonic_ns": 44473514719340,
+      "environment": {
+        "DOTNET_ROOT": "/workspace/relicround-env/dotnet/usr/share/dotnet",
+        "NUGET_PACKAGES": "/workspace/relicround-env/nuget",
+        "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "FANTASYCARD_TEST_POSTGRES": null,
+        "FANTASYCARD_PROCESS_SERVER_DLL": null,
+        "FANTASYCARD_PROCESS_EVIDENCE": null,
+        "FANTASYCARD_PROCESS_SOURCE_SHA": null
+      }
+    },
+    {
+      "event": "pid",
+      "id": "pg-status-after-stop",
+      "pid": 132867
+    },
+    {
+      "event": "exit",
+      "id": "pg-status-after-stop",
+      "exit_code": 3,
+      "elapsed_seconds": 0.002417095995042473,
+      "timestamp_utc": "2026-10-01T03:25:34.016031+00:00",
+      "monotonic_ns": 44473517536690,
+      "log": "/workspace/pr13-takeover/a05-relay-transport-419961a8/evidence/pg-status-after-stop.log"
+    }
+  ],
+  "toolchain": {
+    "tools": [
+      {
+        "path": "/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet",
+        "real_path": "/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet",
+        "bytes": 71808,
+        "sha256": "0a5ec28e49da2c0be91ff3fc8fff53c250c9bbd92b25d3b9bfc5721adba96a0c"
+      },
+      {
+        "path": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "real_path": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "bytes": 146414384,
+        "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+      },
+      {
+        "path": "/workspace/relicround-env/postgres/bin/postgres",
+        "real_path": "/workspace/relicround-env/postgres/bin/postgres",
+        "bytes": 11341880,
+        "sha256": "b1ff36b5145f92cdda1cbd07e71dd6e8ffef300fd54317d2db59a715f5dabad8"
+      },
+      {
+        "path": "/workspace/relicround-env/venv/bin/python3",
+        "real_path": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+        "bytes": 30894944,
+        "sha256": "fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7"
+      }
+    ],
+    "versions": {
+      "python": "Python 3.12.14",
+      "dotnet_sdk": "10.0.400",
+      "godot": "4.7.2.stable.official.ed1daf0bf",
+      "postgres": "postgres (PostgreSQL) 18.6",
+      "dotnet_runtimes": "Microsoft.AspNetCore.App 10.0.11 [/workspace/relicround-env/dotnet/usr/share/dotnet/shared/Microsoft.AspNetCore.App]\nMicrosoft.NETCore.App 10.0.11 [/workspace/relicround-env/dotnet/usr/share/dotnet/shared/Microsoft.NETCore.App]"
+    },
+    "postgres_policy_file_hashes": {
+      "pg-data/postgresql.conf": "dc53891bce9d63c0be91b7e97fa90ecb66d665084f2a20223baacf53e14c2772",
+      "pg-data/pg_hba.conf": "e6305f548fd8096217d02a8f93b5c50716d58df1d2441b12346dfe57db7027fd"
+    }
+  },
+  "profile_results": [
+    {
+      "profile": "green-unix",
+      "transport": "Unix",
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "elapsed_seconds": 29.95193220499641,
+      "trx": "green-unix/unix.trx"
+    },
+    {
+      "profile": "green-tcp",
+      "transport": "Tcp",
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "elapsed_seconds": 37.38189477499691,
+      "trx": "green-tcp/tcp.trx"
+    }
+  ],
+  "red_ci": "red-ci-provenance.json",
+  "scope": "only original focused transaction cases, two per transport; no full-suite rerun needed for one relay fix"
+}

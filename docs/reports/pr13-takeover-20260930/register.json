@@ -7,7 +7,7 @@
     "packages": 33,
     "tasks": 132,
     "cases": 396,
-    "accepted": 15
+    "accepted": 16
   },
   "all_accepted": false,
   "tasks": [
@@ -554,13 +554,13 @@
       "title": "STOP前后边界",
       "dependency_order": 10,
       "owner": "ROOT actual client/owned Program+PG receipt; MAIN independent adjudication",
-      "state": "ReadyForAcceptance",
+      "state": "Accepted",
       "historical_state": "Partial",
       "historical_case_counts": {
         "NotExecuted": 3
       },
       "implementation_status": "Additive actual Process/Godot/PG LOAD02 STOP harness only at dfb3. No production/UI/timeout change. Original business runner/checks/cleanup/finish retained.",
-      "current_test_status": "Fixed dfb3 focused3/0/0, complete unfiltered Server302/0/0 and C-PY122/0/0; three canonical cases at actual PG and original client windows all Passed. Initial C-PY10 errors from missing Git metadata preserved; unchanged fixed source after metadata repair passes.",
+      "current_test_status": "MAIN independently accepted original dfb3 source: focused3 twice, original10s/30s budgets, unfiltered Server302/0/0 and Python122. New relay0d4e and CI are separate; original source/profile/first failures preserved.",
       "modification_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
       "test_commands": [
         "python -m unittest discover -s tools/tests -v",
@@ -578,9 +578,10 @@
         "load02-timeout-dfb3f88a/cases.jsonl",
         "load02-timeout-dfb3f88a/PRIVATE_ARTIFACT_MANIFEST.json",
         "load02-timeout-dfb3f88a/ROOT_LOAD02_SEAL_CHECKS.json",
-        "load02-timeout-dfb3f88a/cleanup.json"
+        "load02-timeout-dfb3f88a/cleanup.json",
+        "MAIN_S6_two_ready_20261001.json"
       ],
-      "remaining_blocker": "MAIN independent S6 replay/adjudication; this OFFLINE+POSTGRES contract does not add CI/LIVE/human gates.",
+      "remaining_blocker": null,
       "dependencies": [
         "LOAD-02.1",
         "LOAD-06.2"
@@ -593,9 +594,9 @@
         "G1",
         "G2"
       ],
-      "accepted_by": null,
+      "accepted_by": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
       "next_action": "区分停止前业务失败、正常取消、停止后真实错误和结果未知写入；迟到事件按原上下文归档",
-      "accepted": false,
+      "accepted": true,
       "supporting_tests_are_canonical_acceptance": false,
       "test_command_manifests": [
         "ci-9275ec2/verified-artifacts.json",
@@ -606,7 +607,7 @@
         "f812879e4518fd09bf22656451cb563d62940298",
         "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953"
       ],
-      "acceptance_proposal": "ReadyForIndependentAcceptance",
+      "acceptance_proposal": null,
       "prior_task_records": [
         {
           "task_id": "LOAD-02.2",
@@ -660,15 +661,160 @@
           ],
           "acceptance_proposal": "Partial",
           "prior_task_records": []
+        },
+        {
+          "task_id": "LOAD-02.2",
+          "title": "STOP前后边界",
+          "dependency_order": 10,
+          "owner": "ROOT actual client/owned Program+PG receipt; MAIN independent adjudication",
+          "state": "ReadyForAcceptance",
+          "historical_state": "Partial",
+          "historical_case_counts": {
+            "NotExecuted": 3
+          },
+          "implementation_status": "Additive actual Process/Godot/PG LOAD02 STOP harness only at dfb3. No production/UI/timeout change. Original business runner/checks/cleanup/finish retained.",
+          "current_test_status": "Fixed dfb3 focused3/0/0, complete unfiltered Server302/0/0 and C-PY122/0/0; three canonical cases at actual PG and original client windows all Passed. Initial C-PY10 errors from missing Git metadata preserved; unchanged fixed source after metadata repair passes.",
+          "modification_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+          "test_commands": [
+            "python -m unittest discover -s tools/tests -v",
+            "load02-timeout-dfb3f88a/minimal-replay.json: actual C-PY complete and C-SERVER unfiltered"
+          ],
+          "evidence": [
+            "batch-results.json",
+            "p0-9275ec2/python-tests.log",
+            "ci-9275ec2/verified-artifacts.json",
+            "ci-b7099ef/verified-artifacts.json",
+            "integrated-cc6da2e/report.json",
+            "ci-cc6da2e/workflows.json",
+            "offline-acceptance-f812/load02/evidence/LOAD-02.2/ROOT_REPORT.json",
+            "load02-timeout-dfb3f88a/report.json",
+            "load02-timeout-dfb3f88a/cases.jsonl",
+            "load02-timeout-dfb3f88a/PRIVATE_ARTIFACT_MANIFEST.json",
+            "load02-timeout-dfb3f88a/ROOT_LOAD02_SEAL_CHECKS.json",
+            "load02-timeout-dfb3f88a/cleanup.json"
+          ],
+          "remaining_blocker": "MAIN independent S6 replay/adjudication; this OFFLINE+POSTGRES contract does not add CI/LIVE/human gates.",
+          "dependencies": [
+            "LOAD-02.1",
+            "LOAD-06.2"
+          ],
+          "profiles": [
+            "OFFLINE",
+            "POSTGRES"
+          ],
+          "gates": [
+            "G1",
+            "G2"
+          ],
+          "accepted_by": null,
+          "next_action": "区分停止前业务失败、正常取消、停止后真实错误和结果未知写入；迟到事件按原上下文归档",
+          "accepted": false,
+          "supporting_tests_are_canonical_acceptance": false,
+          "test_command_manifests": [
+            "ci-9275ec2/verified-artifacts.json",
+            "ci-b7099ef/verified-artifacts.json"
+          ],
+          "tested_source_shas": [
+            "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+            "f812879e4518fd09bf22656451cb563d62940298",
+            "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953"
+          ],
+          "acceptance_proposal": "ReadyForIndependentAcceptance",
+          "prior_task_records": [
+            {
+              "task_id": "LOAD-02.2",
+              "title": "STOP前后边界",
+              "dependency_order": 10,
+              "owner": "MAIN / load P0",
+              "state": "Partial",
+              "historical_state": "Partial",
+              "historical_case_counts": {
+                "NotExecuted": 3
+              },
+              "implementation_status": "Final evidence, ownership, ACK conservation and STOP/emergency handling corrected and counterexample-tested.",
+              "current_test_status": "Original2Passed/1Partial; actual transport timeout and modeled verdicts retained; actual PG timeout/cycle partition missing.",
+              "modification_sha": "d4c3212fb32c75d4b9f9f62c08277996611b149c",
+              "test_commands": [
+                "python -m unittest discover -s tools/tests -v"
+              ],
+              "evidence": [
+                "batch-results.json",
+                "p0-9275ec2/python-tests.log",
+                "ci-9275ec2/verified-artifacts.json",
+                "ci-b7099ef/verified-artifacts.json",
+                "integrated-cc6da2e/report.json",
+                "ci-cc6da2e/workflows.json",
+                "offline-acceptance-f812/load02/evidence/LOAD-02.2/ROOT_REPORT.json"
+              ],
+              "remaining_blocker": "Actual Program/PG timeout beforeSTOP with one exclusive failed/cancelled/incomplete cycle terminal; see MISSING_FACTS.json.",
+              "dependencies": [
+                "LOAD-02.1",
+                "LOAD-06.2"
+              ],
+              "profiles": [
+                "OFFLINE",
+                "POSTGRES"
+              ],
+              "gates": [
+                "G1",
+                "G2"
+              ],
+              "accepted_by": null,
+              "next_action": "区分停止前业务失败、正常取消、停止后真实错误和结果未知写入；迟到事件按原上下文归档",
+              "accepted": false,
+              "supporting_tests_are_canonical_acceptance": false,
+              "test_command_manifests": [
+                "ci-9275ec2/verified-artifacts.json",
+                "ci-b7099ef/verified-artifacts.json"
+              ],
+              "tested_source_shas": [
+                "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+                "f812879e4518fd09bf22656451cb563d62940298"
+              ],
+              "acceptance_proposal": "Partial",
+              "prior_task_records": []
+            }
+          ],
+          "remaining_blockers": [
+            "S6 independent MAIN pending"
+          ],
+          "proposed_resolution": "NoChangeWithEvidence",
+          "full_original_case_evidence": true,
+          "latest_runtime_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+          "tested_source_provenance": "967 selected fixed tracked Git blob bytes exact; fresh source-internal Release167 artifacts preserved/verified. Minimal Git objects metadata for original provenance tools, explicitly partial checkout, not clean CI. Observer derives original one-cycle fate and does not replace LOAD03 missing telemetry."
         }
       ],
-      "remaining_blockers": [
-        "S6 independent MAIN pending"
-      ],
+      "remaining_blockers": [],
       "proposed_resolution": "NoChangeWithEvidence",
       "full_original_case_evidence": true,
       "latest_runtime_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
-      "tested_source_provenance": "967 selected fixed tracked Git blob bytes exact; fresh source-internal Release167 artifacts preserved/verified. Minimal Git objects metadata for original provenance tools, explicitly partial checkout, not clean CI. Observer derives original one-cycle fate and does not replace LOAD03 missing telemetry."
+      "tested_source_provenance": "967 selected fixed tracked Git blob bytes exact; fresh source-internal Release167 artifacts preserved/verified. Minimal Git objects metadata for original provenance tools, explicitly partial checkout, not clean CI. Observer derives original one-cycle fate and does not replace LOAD03 missing telemetry.",
+      "resolution": "NoChangeWithEvidence",
+      "acceptance_source_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+      "latest_MAIN_decision": {
+        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+        "task_id": "LOAD-02.2",
+        "state": "Accepted",
+        "resolution": "NoChangeWithEvidence",
+        "source_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+        "original_report_commit": "b5a746a621a116f7d6e99857f8f8e0c063d2c159",
+        "original_report_path": "docs/reports/pr13-takeover-20260930/load02-timeout-dfb3f88a/report.json",
+        "profile_hash": "47d985a7d8106f8b9b7469dee979012058c4ce355ac11e5d943ad8a7ed1cc4c8",
+        "algorithm_version": "load02-observer-v1",
+        "review_commit": "bcc3c1c7b6764149fccd64d52ade47a1afee374a",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/bcc3c1c7b6764149fccd64d52ade47a1afee374a/docs/reports/pr13-independent-main-20260930/two-ready-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/bcc3c1c7b6764149fccd64d52ade47a1afee374a/docs/reports/pr13-independent-main-20260930/two-ready-20261001/REPORT.json",
+        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+        "authorization": "Explicit parent MAIN delegation accepted LOAD02.2 after actual independent focused3 twice, unfiltered Server302/0/0 and Python122. ROOT records this decision and does not sign acceptance.",
+        "case_ids": [
+          "LOAD-02.2-T01",
+          "LOAD-02.2-T02",
+          "LOAD-02.2-T03"
+        ],
+        "implementation_owner_did_not_sign": true,
+        "accepted_new_relay_source": false,
+        "gates_accepted": false
+      }
     },
     {
       "task_id": "LOAD-02.3",
@@ -4694,13 +4840,13 @@
       "title": "持久化失败恢复",
       "dependency_order": 104,
       "owner": "ROOT implementation / MAIN independent acceptance",
-      "state": "ReadyForAcceptance",
+      "state": "Partial",
       "historical_state": "Partial",
       "historical_case_counts": {
         "NotExecuted": 3
       },
       "implementation_status": "One post-await pending-ACK guard7231; existing context/generation/match checks retained. Harness committed in fixed integration62772; no UI/theme/protocol change.",
-      "current_test_status": "Fixed62772 full Server299Passed/0Failed/0Skipped; original canonical3 and original causal plus ordinary/ACK-loss/newN/asset matrix pass. Old2dda RED and76d296/3 fixture failure remain immutable.",
+      "current_test_status": "Original ROOT627 full299/0/0 and canonical3 Passed remain historical. Independent MAIN627 canonical3/guard/MN/ACK/assets Passed, but unfiltered298/1/0 failed MarkRunning line75 Running vs Launching; same-source focused1 Passed does not replace failure. Relay0d4e Unix/TCP four cases pass separately; no Accepted.",
       "modification_sha": "7231c7499b7220b85c27be48ebbd127d7c0b7038",
       "test_commands": [
         "source /workspace/relicround-env/activate.sh; FANTASYCARD_TEST_POSTGRES='Host=/workspace/pr13-takeover/lifecycle/pg/socket;Port=55439;Database=pr13_lifecycle;Username=agent;Pooling=true;SSL Mode=Disable' dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj --filter FullyQualifiedName~PostgresLifecycleRecoveryTests --logger 'trx;LogFileName=matrix-final-verified.trx' --results-directory /workspace/pr13-takeover/lifecycle/logs",
@@ -4724,9 +4870,12 @@
         "offline-acceptance-f812/a05/DERIVED_CHECKS.json",
         "a05-guard-62772be2/report.json",
         "a05-guard-62772be2/PRIVATE_ARTIFACT_MANIFEST.json",
-        "a05-guard-62772be2/ROOT_A05_SEAL_CHECKS.json"
+        "a05-guard-62772be2/ROOT_A05_SEAL_CHECKS.json",
+        "MAIN_S6_two_ready_20261001.json",
+        "a05-relay-0d4ec7f2/MARKRUNNING_READONLY.json",
+        "a05-relay-0d4ec7f2/report.json"
       ],
-      "remaining_blocker": "MAIN independent replay and S6 decision; no additional LIVE/CI/human gate in this contract.",
+      "remaining_blocker": "Independent full-suite MarkRunning Running/Launching failure requires actual causal reproduction/evidence and MAIN adjudication. ROOT readonly plan only; no production fix allocated.",
       "dependencies": [
         "LOAD-05.4",
         "LOAD-09.2"
@@ -4750,11 +4899,11 @@
         "62772be2a1bc28affffc3d057f259c8c5ded8e37"
       ],
       "existing_real_host_evidence": "CASE_MAPPING.json: supporting_existing_real_host_cases; integrated-cc6da2e/trx/server.trx",
-      "acceptance_proposal": "ReadyForIndependentAcceptance",
+      "acceptance_proposal": "Partial",
       "proposed_resolution": "FixedWithEvidence",
       "latest_runtime_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
       "remaining_blockers": [
-        "S6 independent MAIN review pending"
+        "Independent full-suite MarkRunning Running/Launching failure requires actual causal reproduction/evidence and MAIN adjudication. ROOT readonly plan only; no production fix allocated."
       ],
       "tested_source_provenance": "Source964 exact62772 tracked Git blob bytes; fresh actual source-internal Release79 artifacts with hashes, no untracked code overlay/old bin or obj reuse. Tracked historical validation-bin not executed.",
       "full_original_case_evidence": true,
@@ -4823,8 +4972,178 @@
           ],
           "tested_source_provenance": "Actual f812 tracked non-bin/obj bytes all6445 unchanged; seven canonical test files overlay. Later two causal files separate assembly. Generated build artifacts/overlay declared; not pure-SHA CI.",
           "full_original_case_evidence": false
+        },
+        {
+          "task_id": "PR13-A05.1",
+          "title": "持久化失败恢复",
+          "dependency_order": 104,
+          "owner": "ROOT implementation / MAIN independent acceptance",
+          "state": "ReadyForAcceptance",
+          "historical_state": "Partial",
+          "historical_case_counts": {
+            "NotExecuted": 3
+          },
+          "implementation_status": "One post-await pending-ACK guard7231; existing context/generation/match checks retained. Harness committed in fixed integration62772; no UI/theme/protocol change.",
+          "current_test_status": "Fixed62772 full Server299Passed/0Failed/0Skipped; original canonical3 and original causal plus ordinary/ACK-loss/newN/asset matrix pass. Old2dda RED and76d296/3 fixture failure remain immutable.",
+          "modification_sha": "7231c7499b7220b85c27be48ebbd127d7c0b7038",
+          "test_commands": [
+            "source /workspace/relicround-env/activate.sh; FANTASYCARD_TEST_POSTGRES='Host=/workspace/pr13-takeover/lifecycle/pg/socket;Port=55439;Database=pr13_lifecycle;Username=agent;Pooling=true;SSL Mode=Disable' dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj --filter FullyQualifiedName~PostgresLifecycleRecoveryTests --logger 'trx;LogFileName=matrix-final-verified.trx' --results-directory /workspace/pr13-takeover/lifecycle/logs",
+            "source /workspace/relicround-env/activate.sh; FANTASYCARD_TEST_POSTGRES='Host=/workspace/pr13-takeover/lifecycle/pg/socket;Port=55439;Database=pr13_lifecycle;Username=agent;Pooling=true;SSL Mode=Disable' dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj --no-build --logger 'trx;LogFileName=server-final.trx' --results-directory /workspace/pr13-takeover/lifecycle/logs",
+            "source /workspace/relicround-env/activate.sh; dotnet test server/tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj --logger 'trx;LogFileName=domain-final.trx' --results-directory /workspace/pr13-takeover/lifecycle/logs",
+            "pg_ctl -D /workspace/pr13-takeover/lifecycle/pg/data -m fast stop",
+            "git diff --check -- server/src/FantasyCard.Server/Matchmaking server/src/FantasyCard.Server/Rooms",
+            "offline-acceptance-f812/a05/commands.json",
+            "a05-guard-62772be2/minimal-replay.json: C-SERVER unfiltered plus runtime-owned C-AUDIT"
+          ],
+          "evidence": [
+            "lifecycle/report.json",
+            "lifecycle/commands.json",
+            "lifecycle/logs/matrix-final-verified.trx",
+            "lifecycle/logs/baseline-final.trx",
+            "ci-b7099ef/verified-artifacts.json",
+            "integrated-cc6da2e/report.json",
+            "ci-cc6da2e/workflows.json",
+            "offline-acceptance-f812/a05/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+            "offline-acceptance-f812/a05/tasks/PR13-A05.1/ROOT_REPORT.json",
+            "offline-acceptance-f812/a05/DERIVED_CHECKS.json",
+            "a05-guard-62772be2/report.json",
+            "a05-guard-62772be2/PRIVATE_ARTIFACT_MANIFEST.json",
+            "a05-guard-62772be2/ROOT_A05_SEAL_CHECKS.json"
+          ],
+          "remaining_blocker": "MAIN independent replay and S6 decision; no additional LIVE/CI/human gate in this contract.",
+          "dependencies": [
+            "LOAD-05.4",
+            "LOAD-09.2"
+          ],
+          "profiles": [
+            "OFFLINE",
+            "POSTGRES",
+            "AUDIT"
+          ],
+          "gates": [
+            "G2",
+            "G5"
+          ],
+          "accepted_by": null,
+          "next_action": "提交前/后分别故障，按durable事实决定释放路由和结算可见，不提前成功",
+          "accepted": false,
+          "supporting_tests_are_canonical_acceptance": false,
+          "tested_source_shas": [
+            "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+            "f812879e4518fd09bf22656451cb563d62940298",
+            "62772be2a1bc28affffc3d057f259c8c5ded8e37"
+          ],
+          "existing_real_host_evidence": "CASE_MAPPING.json: supporting_existing_real_host_cases; integrated-cc6da2e/trx/server.trx",
+          "acceptance_proposal": "ReadyForIndependentAcceptance",
+          "proposed_resolution": "FixedWithEvidence",
+          "latest_runtime_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+          "remaining_blockers": [
+            "S6 independent MAIN review pending"
+          ],
+          "tested_source_provenance": "Source964 exact62772 tracked Git blob bytes; fresh actual source-internal Release79 artifacts with hashes, no untracked code overlay/old bin or obj reuse. Tracked historical validation-bin not executed.",
+          "full_original_case_evidence": true,
+          "prior_task_records": [
+            {
+              "task_id": "PR13-A05.1",
+              "title": "持久化失败恢复",
+              "dependency_order": 104,
+              "owner": "ROOT / actual owned process and client receipt; MAIN / independent adjudication",
+              "state": "Partial",
+              "historical_state": "Partial",
+              "historical_case_counts": {
+                "NotExecuted": 3
+              },
+              "implementation_status": "Frozen f812 business/UI; actual production Game/Gateway/Program/PG fault and old-callback windows proven. Harness-only overlay declared. Unapplied await-guard proposal for A05.1.",
+              "current_test_status": "Original3/3 primary expectations Passed; full295 Server and317 Domain zero skip. Separate focused3/1 and causal1Failed retained; A05.1 durable visibility consistency fails, while .2 new-N isolation and .3 asset conservation have distinct complete evidence.",
+              "modification_sha": "b7099ef716235be68395255360cbd5cf6c67baff",
+              "test_commands": [
+                "source /workspace/relicround-env/activate.sh; FANTASYCARD_TEST_POSTGRES='Host=/workspace/pr13-takeover/lifecycle/pg/socket;Port=55439;Database=pr13_lifecycle;Username=agent;Pooling=true;SSL Mode=Disable' dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj --filter FullyQualifiedName~PostgresLifecycleRecoveryTests --logger 'trx;LogFileName=matrix-final-verified.trx' --results-directory /workspace/pr13-takeover/lifecycle/logs",
+                "source /workspace/relicround-env/activate.sh; FANTASYCARD_TEST_POSTGRES='Host=/workspace/pr13-takeover/lifecycle/pg/socket;Port=55439;Database=pr13_lifecycle;Username=agent;Pooling=true;SSL Mode=Disable' dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj --no-build --logger 'trx;LogFileName=server-final.trx' --results-directory /workspace/pr13-takeover/lifecycle/logs",
+                "source /workspace/relicround-env/activate.sh; dotnet test server/tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj --logger 'trx;LogFileName=domain-final.trx' --results-directory /workspace/pr13-takeover/lifecycle/logs",
+                "pg_ctl -D /workspace/pr13-takeover/lifecycle/pg/data -m fast stop",
+                "git diff --check -- server/src/FantasyCard.Server/Matchmaking server/src/FantasyCard.Server/Rooms",
+                "offline-acceptance-f812/a05/commands.json"
+              ],
+              "evidence": [
+                "lifecycle/report.json",
+                "lifecycle/commands.json",
+                "lifecycle/logs/matrix-final-verified.trx",
+                "lifecycle/logs/baseline-final.trx",
+                "ci-b7099ef/verified-artifacts.json",
+                "integrated-cc6da2e/report.json",
+                "ci-cc6da2e/workflows.json",
+                "offline-acceptance-f812/a05/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+                "offline-acceptance-f812/a05/tasks/PR13-A05.1/ROOT_REPORT.json",
+                "offline-acceptance-f812/a05/DERIVED_CHECKS.json"
+              ],
+              "remaining_blocker": "Confirmed recovery-M old ready poll refills stale receipt during real ACK await; coordinate minimal client guard repair and actual same-window regression with fixed UI candidate.",
+              "dependencies": [
+                "LOAD-05.4",
+                "LOAD-09.2"
+              ],
+              "profiles": [
+                "OFFLINE",
+                "POSTGRES",
+                "AUDIT"
+              ],
+              "gates": [
+                "G2",
+                "G5"
+              ],
+              "accepted_by": null,
+              "next_action": "提交前/后分别故障，按durable事实决定释放路由和结算可见，不提前成功",
+              "accepted": false,
+              "supporting_tests_are_canonical_acceptance": false,
+              "tested_source_shas": [
+                "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+                "f812879e4518fd09bf22656451cb563d62940298"
+              ],
+              "existing_real_host_evidence": "CASE_MAPPING.json: supporting_existing_real_host_cases; integrated-cc6da2e/trx/server.trx",
+              "acceptance_proposal": "Partial",
+              "proposed_resolution": null,
+              "latest_runtime_sha": "f812879e4518fd09bf22656451cb563d62940298",
+              "remaining_blockers": [
+                "Real client durable/visible terminal mismatch; minimum one-line proposal remains unapplied/untested."
+              ],
+              "tested_source_provenance": "Actual f812 tracked non-bin/obj bytes all6445 unchanged; seven canonical test files overlay. Later two causal files separate assembly. Generated build artifacts/overlay declared; not pure-SHA CI.",
+              "full_original_case_evidence": false
+            }
+          ]
         }
-      ]
+      ],
+      "latest_independent_review": {
+        "kind": "Recorded_independent_MAIN_unfiltered_suite_failure_not_closed",
+        "task_id": "PR13-A05.1",
+        "source_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+        "review_commit": "bcc3c1c7b6764149fccd64d52ade47a1afee374a",
+        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/bcc3c1c7b6764149fccd64d52ade47a1afee374a/docs/reports/pr13-independent-main-20260930/two-ready-20261001/REVIEW.md",
+        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/bcc3c1c7b6764149fccd64d52ade47a1afee374a/docs/reports/pr13-independent-main-20260930/two-ready-20261001/REPORT.json",
+        "state": "Partial",
+        "Accepted": false,
+        "original_target_case_results": {
+          "Passed": 3,
+          "Failed": 0
+        },
+        "unfiltered_Server": {
+          "Passed": 298,
+          "Failed": 1,
+          "Skipped": 0,
+          "exit_code": 1
+        },
+        "failed_test": "MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it",
+        "assertion_line": 75,
+        "expected": "Running",
+        "actual": "Launching",
+        "trx_sha256": "657d36c477c1a00a18b163b96cd1b020c7bda14b2e0314a6ac3c2eaf43733cf8",
+        "same_source_single_case": {
+          "Passed": 1,
+          "Failed": 0,
+          "Skipped": 0,
+          "replaces_first_failure": false
+        },
+        "root_action": "Readonly cause/repro plan only; no production or fault-proxy fix applied. Await parent allocation.",
+        "later_TCP_fixture_pass_closes_this_failure": false
+      }
     },
     {
       "task_id": "PR13-A05.2",
@@ -6202,7 +6521,7 @@
       ]
     }
   ],
-  "updated_at_utc": "2026-10-01T02:20:31.988445+00:00",
+  "updated_at_utc": "2026-10-01T03:44:59.905331+00:00",
   "gate_decisions": [
     {
       "gate": "G0",
@@ -6237,27 +6556,49 @@
   ],
   "test_provenance_note": "Pure cc6 checkout:115 Python,27 explicit receipts,6 Godot gates including import, fresh solution/domain317/privatePG262 passed. Original failed missing-Godot invocation26/27 retained. All396 canonical cases and six gates remain unaccepted.",
   "current_ci_evidence": {
-    "source_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
-    "runs": null,
-    "status": "NotStartedFinalReleaseMergeConflict",
-    "release_sha": "65361bcc27c51c28651c86c5dbba4f083a9b39e0",
-    "head_at_conflict_check": "1a7f533666164467ecd7de1604bde62db6d9106b",
-    "conflict_paths": [
-      ".github/workflows/numerical-client.yml"
-    ],
-    "evidence": "load02-timeout-dfb3f88a/NEW_RELEASE_CI_CONFLICT.json",
-    "account_blocker": "Historical billing no-step failure resolved by MAIN actual run36769267487 attempt2; no billing/settings change performed here.",
-    "missing_reasons": {
-      "runs": "Final PR head must be combined with updated release workflow by its parent-coordinated owner; no intermediate or duplicate Actions triggered. Actual minutes for an unstarted run do not exist."
+    "source_sha": "0d4ec7f23df806da7a86f9d954033a718349de7e",
+    "checkout_merge_sha": "36f0a7b7a17e22968f36d6be49fe9d110f8098d5",
+    "release_base_sha": "65361bcc27c51c28651c86c5dbba4f083a9b39e0",
+    "receipt": "a05-relay-0d4ec7f2/CI_TERMINAL.json",
+    "workflow_results": {
+      "success": 4,
+      "failure": 1,
+      "cancelled": 0
     },
-    "canonical_OFFLINE_gate": false
+    "all_attempts": 1,
+    "no_reruns": true,
+    "new_LOAD02_harness_failure": {
+      "test": "Real_LOAD02_timeout_STOP_preserves_original_business_truth(timeout-before-stop, LOAD-02.2-T01)",
+      "file": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleLoad02TimeoutStopTests.cs",
+      "line": 60,
+      "error": "JsonReaderException: input contains no JSON tokens.",
+      "first_failed_read": "report.stop-observed.json",
+      "later_retained_file": {
+        "bytes": 1877,
+        "sha256": "1b2ed8848a9291b9bbdee51601fb897603bc613aa1f702d8707bdc5034a7a0ae",
+        "valid_json": true,
+        "partition": {
+          "started": 1,
+          "failed": 1,
+          "completed": 0,
+          "cancelled": 0,
+          "pending": 0,
+          "incomplete": 0
+        },
+        "stop_requested": true
+      },
+      "static_path": "GDScript _write_observation opens final path then writes/closes; C# waits only File.Exists before parsing. Actual initial empty read and final complete JSON establish a receipt publication/read window.",
+      "classification": "Harness receipt read/publication failure at new CI source; preserve failed unfiltered matrix. Does not change earlier MAIN original-source acceptance.",
+      "fix_applied": false,
+      "minimum_next_design": "Publish isolated harness observation to same-directory temporary path; close, then atomic rename to final path. Preserve current deadlines, assertions and first-failure/late evidence; separately reproduce and run real three PG/client windows."
+    },
+    "does_not_rewrite_prior_MAIN_acceptance": true
   },
   "latest_runtime_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
   "state_counts": {
-    "Partial": 40,
+    "Partial": 41,
     "NotRevalidated": 72,
-    "Accepted": 15,
-    "ReadyForAcceptance": 2,
+    "Accepted": 16,
     "Blocked": 3
   },
   "latest_batch_state_transitions": [
@@ -6352,7 +6693,7 @@
   ],
   "production_protocol_fix_sha": "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17",
   "checkpoint_test_fix_sha": "de1157fdf490a5bce3ba888c07519fc957c46782",
-  "latest_test_candidate_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+  "latest_test_candidate_sha": "0d4ec7f23df806da7a86f9d954033a718349de7e",
   "production_behavior_baseline": "f812879e4518fd09bf22656451cb563d62940298",
   "MAIN_S6_decisions": {
     "kind": "Recorded_explicit_parent_MAIN_S6_decision",
@@ -6391,307 +6732,28 @@
     "all132_accepted": false
   },
   "latest_MAIN_S6_decision": {
-    "kind": "Recorded_explicit_parent_MAIN_S6_decisions_bounded11",
-    "recorded_at_utc": "2026-10-01T00:49:41.617334+00:00",
-    "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
-    "canonical_plan_sha256": "5176ee139d4e632ba34469ae531ce7ec16478f356480e2d8e320cd51f3bcd703",
-    "review_manifest_sha256": "b82addeeb8cd1e59aa429be4db3513f39f39ca1f84af7d41883b16c0bb962e4f",
-    "verified_review_manifest_files": 32,
-    "parent_independent_actual_execution_summary": "33 canonical cases; Python42/119, Domain317, original configServer291 and A05full295 with zero skip. Parent review verified710 receipt records,86 metadata rows and11 profile hashes.",
-    "decisions": [
-      {
-        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
-        "task_id": "LOAD-02.3",
-        "state": "Accepted",
-        "resolution": "NoChangeWithEvidence",
-        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
-        "original_report_commit": "a1d30eb89d74aa16bb2c094c5a78c20a5ed428b6",
-        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/load02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
-        "profile_hash": "4b0339400f4e581b7e8bc44b3d92d4fa866dc442a361af3d95f665e65f25bd71",
-        "algorithm_version": "f812-coordinator-schema5/runtime-evidence-62d05cb4270174aa/receipt-harness-37303db722961352",
-        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
-        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
-        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
-        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
-        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
-        "case_ids": [
-          "LOAD-02.3-T01",
-          "LOAD-02.3-T02",
-          "LOAD-02.3-T03"
-        ],
-        "implementation_owner_did_not_sign": true,
-        "accepted_new_guard_source": false,
-        "gates_accepted": false
-      },
-      {
-        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
-        "task_id": "LOAD-02.1",
-        "state": "Accepted",
-        "resolution": "NoChangeWithEvidence",
-        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
-        "original_report_commit": "a1d30eb89d74aa16bb2c094c5a78c20a5ed428b6",
-        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/load02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
-        "profile_hash": "4b0339400f4e581b7e8bc44b3d92d4fa866dc442a361af3d95f665e65f25bd71",
-        "algorithm_version": "f812-coordinator-schema5/runtime-evidence-62d05cb4270174aa/receipt-harness-37303db722961352",
-        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
-        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
-        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
-        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
-        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
-        "case_ids": [
-          "LOAD-02.1-T01",
-          "LOAD-02.1-T02",
-          "LOAD-02.1-T03"
-        ],
-        "implementation_owner_did_not_sign": true,
-        "accepted_new_guard_source": false,
-        "gates_accepted": false
-      },
-      {
-        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
-        "task_id": "LOAD-02.4",
-        "state": "Accepted",
-        "resolution": "NoChangeWithEvidence",
-        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
-        "original_report_commit": "a1d30eb89d74aa16bb2c094c5a78c20a5ed428b6",
-        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/load02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
-        "profile_hash": "4b0339400f4e581b7e8bc44b3d92d4fa866dc442a361af3d95f665e65f25bd71",
-        "algorithm_version": "f812-coordinator-schema5/runtime-evidence-62d05cb4270174aa/receipt-harness-37303db722961352",
-        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
-        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
-        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
-        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
-        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
-        "case_ids": [
-          "LOAD-02.4-T01",
-          "LOAD-02.4-T02",
-          "LOAD-02.4-T03"
-        ],
-        "implementation_owner_did_not_sign": true,
-        "accepted_new_guard_source": false,
-        "gates_accepted": false
-      },
-      {
-        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
-        "task_id": "LOAD-03.1",
-        "state": "Accepted",
-        "resolution": "NoChangeWithEvidence",
-        "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
-        "original_report_commit": "e5de69b491bff1b3a3638bd11670901a5f96629e",
-        "original_report_path": "docs/reports/pr13-takeover-20260930/load03-ready-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
-        "profile_hash": "82635905ccdd05e8a06666471a98564ee8177c04e67096e22f27d57d2292fa7b",
-        "algorithm_version": "ee8-validator-83a6d45a4938b09b/f812-Gateway-964bd3e0eea3ff00/receipt-harness-ea77e98f35da5e43",
-        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
-        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
-        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
-        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
-        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
-        "case_ids": [
-          "LOAD-03.1-T01",
-          "LOAD-03.1-T02",
-          "LOAD-03.1-T03"
-        ],
-        "implementation_owner_did_not_sign": true,
-        "accepted_new_guard_source": false,
-        "gates_accepted": false
-      },
-      {
-        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
-        "task_id": "LOAD-03.2",
-        "state": "Accepted",
-        "resolution": "NoChangeWithEvidence",
-        "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
-        "original_report_commit": "e5de69b491bff1b3a3638bd11670901a5f96629e",
-        "original_report_path": "docs/reports/pr13-takeover-20260930/load03-ready-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
-        "profile_hash": "82635905ccdd05e8a06666471a98564ee8177c04e67096e22f27d57d2292fa7b",
-        "algorithm_version": "ee8-validator-83a6d45a4938b09b/f812-Gateway-964bd3e0eea3ff00/receipt-harness-ea77e98f35da5e43",
-        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
-        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
-        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
-        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
-        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
-        "case_ids": [
-          "LOAD-03.2-T01",
-          "LOAD-03.2-T02",
-          "LOAD-03.2-T03"
-        ],
-        "implementation_owner_did_not_sign": true,
-        "accepted_new_guard_source": false,
-        "gates_accepted": false
-      },
-      {
-        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
-        "task_id": "PR13-B02.4",
-        "state": "Accepted",
-        "resolution": "NoChangeWithEvidence",
-        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
-        "original_report_commit": "a23aa0669f6c72c1689ba6f27037373336a98abb",
-        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
-        "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
-        "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
-        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
-        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
-        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
-        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
-        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
-        "case_ids": [
-          "PR13-B02.4-T01",
-          "PR13-B02.4-T02",
-          "PR13-B02.4-T03"
-        ],
-        "implementation_owner_did_not_sign": true,
-        "accepted_new_guard_source": false,
-        "gates_accepted": false
-      },
-      {
-        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
-        "task_id": "PR13-B02.1",
-        "state": "Accepted",
-        "resolution": "NoChangeWithEvidence",
-        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
-        "original_report_commit": "a23aa0669f6c72c1689ba6f27037373336a98abb",
-        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
-        "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
-        "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
-        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
-        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
-        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
-        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
-        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
-        "case_ids": [
-          "PR13-B02.1-T01",
-          "PR13-B02.1-T02",
-          "PR13-B02.1-T03"
-        ],
-        "implementation_owner_did_not_sign": true,
-        "accepted_new_guard_source": false,
-        "gates_accepted": false
-      },
-      {
-        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
-        "task_id": "PR13-B02.2",
-        "state": "Accepted",
-        "resolution": "NoChangeWithEvidence",
-        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
-        "original_report_commit": "a23aa0669f6c72c1689ba6f27037373336a98abb",
-        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
-        "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
-        "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
-        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
-        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
-        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
-        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
-        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
-        "case_ids": [
-          "PR13-B02.2-T01",
-          "PR13-B02.2-T02",
-          "PR13-B02.2-T03"
-        ],
-        "implementation_owner_did_not_sign": true,
-        "accepted_new_guard_source": false,
-        "gates_accepted": false
-      },
-      {
-        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
-        "task_id": "PR13-B02.3",
-        "state": "Accepted",
-        "resolution": "NoChangeWithEvidence",
-        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
-        "original_report_commit": "a23aa0669f6c72c1689ba6f27037373336a98abb",
-        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
-        "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
-        "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
-        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
-        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
-        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
-        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
-        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
-        "case_ids": [
-          "PR13-B02.3-T01",
-          "PR13-B02.3-T02",
-          "PR13-B02.3-T03"
-        ],
-        "implementation_owner_did_not_sign": true,
-        "accepted_new_guard_source": false,
-        "gates_accepted": false
-      },
-      {
-        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
-        "task_id": "PR13-A05.3",
-        "state": "Accepted",
-        "resolution": "NoChangeWithEvidence",
-        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
-        "original_report_commit": "8068783331da07ec68354c1874eb0d65adea632f",
-        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/a05/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
-        "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
-        "algorithm_version": "A05ProcessAcceptance/1",
-        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
-        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
-        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
-        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
-        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
-        "case_ids": [
-          "PR13-A05.3-T01",
-          "PR13-A05.3-T02",
-          "PR13-A05.3-T03"
-        ],
-        "implementation_owner_did_not_sign": true,
-        "accepted_new_guard_source": false,
-        "gates_accepted": false
-      },
-      {
-        "kind": "Recorded_explicit_parent_MAIN_S6_decision",
-        "task_id": "PR13-A05.2",
-        "state": "Accepted",
-        "resolution": "NoChangeWithEvidence",
-        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
-        "original_report_commit": "8068783331da07ec68354c1874eb0d65adea632f",
-        "original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/a05/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
-        "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
-        "algorithm_version": "A05ProcessAcceptance/1",
-        "review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
-        "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REVIEW.md",
-        "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/baf92b3e3f12b4359a911eaa06e68ba27cbc4fab/docs/reports/pr13-independent-main-20260930/bounded11-20261001/REPORT.json",
-        "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
-        "authorization": "Explicit parent MAIN delegation adjudicated these11 Accepted/NoChangeWithEvidence; independent report eligibility is supporting evidence, not implementation-owner signature.",
-        "case_ids": [
-          "PR13-A05.2-T01",
-          "PR13-A05.2-T02",
-          "PR13-A05.2-T03"
-        ],
-        "implementation_owner_did_not_sign": true,
-        "accepted_new_guard_source": false,
-        "gates_accepted": false
-      }
+    "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+    "task_id": "LOAD-02.2",
+    "state": "Accepted",
+    "resolution": "NoChangeWithEvidence",
+    "source_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+    "original_report_commit": "b5a746a621a116f7d6e99857f8f8e0c063d2c159",
+    "original_report_path": "docs/reports/pr13-takeover-20260930/load02-timeout-dfb3f88a/report.json",
+    "profile_hash": "47d985a7d8106f8b9b7469dee979012058c4ce355ac11e5d943ad8a7ed1cc4c8",
+    "algorithm_version": "load02-observer-v1",
+    "review_commit": "bcc3c1c7b6764149fccd64d52ade47a1afee374a",
+    "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/bcc3c1c7b6764149fccd64d52ade47a1afee374a/docs/reports/pr13-independent-main-20260930/two-ready-20261001/REVIEW.md",
+    "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/bcc3c1c7b6764149fccd64d52ade47a1afee374a/docs/reports/pr13-independent-main-20260930/two-ready-20261001/REPORT.json",
+    "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+    "authorization": "Explicit parent MAIN delegation accepted LOAD02.2 after actual independent focused3 twice, unfiltered Server302/0/0 and Python122. ROOT records this decision and does not sign acceptance.",
+    "case_ids": [
+      "LOAD-02.2-T01",
+      "LOAD-02.2-T02",
+      "LOAD-02.2-T03"
     ],
-    "retained_failures": [
-      {
-        "scope": "A05.1 outside decision",
-        "historical_focused": "3Passed/1Failed retained at80687833",
-        "current_focused": "4Passed/0Failed/0Skipped; cannot erase historical red",
-        "current_causal": "1Failed/0Passed/0Skipped, exit1; stale_during_ack and stale_after_ack true; after-audit clear",
-        "conclusion": "Original A05.1 remains Partial; no UI fix applied."
-      },
-      {
-        "scope": "Initial non-original B02 full-suite connection profile",
-        "actual": "290Passed/1Failed/0Skipped: MarkRunning commit-response-loss expected Running, observed Launching",
-        "profile": "Review initial Pooling=true/MaxPool8 differs from original B02 Pooling=false; original-profile whole291 subsequently Passed. Both focused Pooling=false and true passed; no causal attribution established.",
-        "conclusion": "Failure preserved; not silently reclassified Passed or used to sign unrelated tasks. B02/LOAD02 decisions rely on exact original-profile whole291 plus actual target cases; no extra pooling gate introduced."
-      }
-    ],
-    "excluded": {
-      "LOAD01": "Four accepted decisions unchanged; Python regression execution creates no new decision.",
-      "Partial": [
-        "LOAD-02.2",
-        "LOAD-03.3",
-        "LOAD-03.4",
-        "PR13-A05.1"
-      ]
-    },
-    "Accepted_after_recording": 15,
-    "all132_accepted": false,
-    "gates_G0_G5_signed": false,
-    "scope_note": "These decisions stay bound to each original source. New guard/testing76d7113d remains pending its own independent S6."
+    "implementation_owner_did_not_sign": true,
+    "accepted_new_relay_source": false,
+    "gates_accepted": false
   },
   "latest_MAIN_S6_bounded11": {
     "kind": "Recorded_explicit_parent_MAIN_S6_decisions_bounded11",
@@ -7031,10 +7093,19 @@
   "latest_additive_batch_state_transitions": [
     {
       "task_id": "LOAD-02.2",
-      "from_state": "Partial",
-      "to_state": "ReadyForAcceptance",
+      "from": "ReadyForAcceptance",
+      "to": "Accepted",
       "source_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
-      "authority": "ROOT proposal only; S6 MAIN pending"
+      "review_commit": "bcc3c1c7b6764149fccd64d52ade47a1afee374a",
+      "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012"
+    },
+    {
+      "task_id": "PR13-A05.1",
+      "from": "ReadyForAcceptance",
+      "to": "Partial",
+      "source_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+      "review_commit": "bcc3c1c7b6764149fccd64d52ade47a1afee374a",
+      "reason": "Independent unfiltered suite failure retained; canonical target cases still Passed."
     }
   ],
   "prior_current_ci_evidence": [
@@ -7053,6 +7124,56 @@
       },
       "additional_budget_usd": 0,
       "StopYes_unchanged": true
+    },
+    {
+      "source_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+      "runs": null,
+      "status": "NotStartedFinalReleaseMergeConflict",
+      "release_sha": "65361bcc27c51c28651c86c5dbba4f083a9b39e0",
+      "head_at_conflict_check": "1a7f533666164467ecd7de1604bde62db6d9106b",
+      "conflict_paths": [
+        ".github/workflows/numerical-client.yml"
+      ],
+      "evidence": "load02-timeout-dfb3f88a/NEW_RELEASE_CI_CONFLICT.json",
+      "account_blocker": "Historical billing no-step failure resolved by MAIN actual run36769267487 attempt2; no billing/settings change performed here.",
+      "missing_reasons": {
+        "runs": "Final PR head must be combined with updated release workflow by its parent-coordinated owner; no intermediate or duplicate Actions triggered. Actual minutes for an unstarted run do not exist."
+      },
+      "canonical_OFFLINE_gate": false
     }
-  ]
+  ],
+  "latest_MAIN_S6_two_ready": "MAIN_S6_two_ready_20261001.json",
+  "latest_independent_A05_pending_failure": {
+    "kind": "Recorded_independent_MAIN_unfiltered_suite_failure_not_closed",
+    "task_id": "PR13-A05.1",
+    "source_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+    "review_commit": "bcc3c1c7b6764149fccd64d52ade47a1afee374a",
+    "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/bcc3c1c7b6764149fccd64d52ade47a1afee374a/docs/reports/pr13-independent-main-20260930/two-ready-20261001/REVIEW.md",
+    "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/bcc3c1c7b6764149fccd64d52ade47a1afee374a/docs/reports/pr13-independent-main-20260930/two-ready-20261001/REPORT.json",
+    "state": "Partial",
+    "Accepted": false,
+    "original_target_case_results": {
+      "Passed": 3,
+      "Failed": 0
+    },
+    "unfiltered_Server": {
+      "Passed": 298,
+      "Failed": 1,
+      "Skipped": 0,
+      "exit_code": 1
+    },
+    "failed_test": "MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it",
+    "assertion_line": 75,
+    "expected": "Running",
+    "actual": "Launching",
+    "trx_sha256": "657d36c477c1a00a18b163b96cd1b020c7bda14b2e0314a6ac3c2eaf43733cf8",
+    "same_source_single_case": {
+      "Passed": 1,
+      "Failed": 0,
+      "Skipped": 0,
+      "replaces_first_failure": false
+    },
+    "root_action": "Readonly cause/repro plan only; no production or fault-proxy fix applied. Await parent allocation.",
+    "later_TCP_fixture_pass_closes_this_failure": false
+  }
 }

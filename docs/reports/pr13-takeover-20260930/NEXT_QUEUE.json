@@ -3,10 +3,9 @@
   "stable_validation_code_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
   "production_behavior_baseline": "f812879e4518fd09bf22656451cb563d62940298",
   "current_counts": {
-    "Partial": 40,
+    "Partial": 41,
     "NotRevalidated": 72,
-    "Accepted": 15,
-    "ReadyForAcceptance": 2,
+    "Accepted": 16,
     "Blocked": 3
   },
   "all_accepted": false,
@@ -39,10 +38,10 @@
       "task_ids": [
         "PR13-A05.1"
       ],
-      "action": "62772 fixed full299/0/0 and canonical3 pass, ownedPG closed. MAIN independently replays complete A05 contract; ROOT has not signed.",
+      "action": "Canonical guard/MN/ACK/assets Passed, but independent unfiltered Server298/1/0 failed MarkRunning Running/Launching. Readonly causal plan is preserved; minimal real reproduction must be separately allocated. Current TCP relay fix and green CI do not close it.",
       "tests": "Same actual positive Pending/OS restart/ACK-await window; ordinary terminal negative control; current-N isolation; repeated ACK/READY; readonly asset/route final audits.",
-      "inputs": "a05-guard-62772be2/report.json; minimal-replay.json; PRIVATE_ARTIFACT_MANIFEST.json",
-      "state": "ReadyForIndependentAcceptance"
+      "inputs": "MAIN_S6_two_ready_20261001.json; a05-relay-0d4ec7f2/MARKRUNNING_READONLY.json",
+      "state": "PartialAwaitParentRaceAllocation"
     },
     {
       "order": 3,
@@ -50,14 +49,15 @@
       "task_ids": [
         "LOAD-02.2"
       ],
-      "action": "Replay actual three windows with original budgets and complete C-PY/C-SERVER; judge S6 independently. All S0–S5 source967/build167/full302/python122 and owned cleanup sealed.",
-      "missing": "S6 independent replay/adjudication only; no LIVE/CI/human gate. Observer is original one-cycle accounting, not LOAD03 production telemetry.",
+      "action": "Completed MAIN S6 Accepted/NoChangeWithEvidence at dfb3; preserve original10s/30s and historical failures.",
+      "missing": null,
       "inputs": "load02-timeout-dfb3f88a/report.json; load02-timeout-dfb3f88a/REPLAY.md; load02-timeout-dfb3f88a/PRIVATE_ARTIFACT_MANIFEST.json",
-      "state": "ReadyForIndependentAcceptance",
+      "state": "AcceptedAtOriginalSourceByMAIN",
       "budgets_ms": {
         "attempt": 10000,
         "logical": 30000
-      }
+      },
+      "review_commit": "bcc3c1c7b6764149fccd64d52ade47a1afee374a"
     },
     {
       "order": 4,
@@ -96,6 +96,82 @@
     }
   ],
   "ci_pending": {
+    "source_sha": "0d4ec7f23df806da7a86f9d954033a718349de7e",
+    "checkout_merge_sha": "36f0a7b7a17e22968f36d6be49fe9d110f8098d5",
+    "release_base_sha": "65361bcc27c51c28651c86c5dbba4f083a9b39e0",
+    "receipt": "a05-relay-0d4ec7f2/CI_TERMINAL.json",
+    "workflow_results": {
+      "success": 4,
+      "failure": 1,
+      "cancelled": 0
+    },
+    "all_attempts": 1,
+    "no_reruns": true,
+    "new_LOAD02_harness_failure": {
+      "test": "Real_LOAD02_timeout_STOP_preserves_original_business_truth(timeout-before-stop, LOAD-02.2-T01)",
+      "file": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleLoad02TimeoutStopTests.cs",
+      "line": 60,
+      "error": "JsonReaderException: input contains no JSON tokens.",
+      "first_failed_read": "report.stop-observed.json",
+      "later_retained_file": {
+        "bytes": 1877,
+        "sha256": "1b2ed8848a9291b9bbdee51601fb897603bc613aa1f702d8707bdc5034a7a0ae",
+        "valid_json": true,
+        "partition": {
+          "started": 1,
+          "failed": 1,
+          "completed": 0,
+          "cancelled": 0,
+          "pending": 0,
+          "incomplete": 0
+        },
+        "stop_requested": true
+      },
+      "static_path": "GDScript _write_observation opens final path then writes/closes; C# waits only File.Exists before parsing. Actual initial empty read and final complete JSON establish a receipt publication/read window.",
+      "classification": "Harness receipt read/publication failure at new CI source; preserve failed unfiltered matrix. Does not change earlier MAIN original-source acceptance.",
+      "fix_applied": false,
+      "minimum_next_design": "Publish isolated harness observation to same-directory temporary path; close, then atomic rename to final path. Preserve current deadlines, assertions and first-failure/late evidence; separately reproduce and run real three PG/client windows."
+    },
+    "does_not_rewrite_prior_MAIN_acceptance": true,
+    "next": "No blind rerun. Coordinate atomic observation publication, preserve failure, run real windows at next fixed source before necessary candidate CI."
+  },
+  "raw4_previous_delivery": {
+    "files": 4,
+    "bytes_each_under_8million": true,
+    "location": "/workspace/pr13-takeover/actual-factors-cc6da2e/delivery",
+    "manifest": "actual-factors-cc6da2e/raw-package-manifest.json",
+    "remote_upload_done": false,
+    "authorization_state": "AuthorizedOwnPrivateLibraryOnly20261001T0029UTC",
+    "save_attempts": 3,
+    "save_error": "library upload failed: hosted apps tools/list request failed: network",
+    "receipt": "RAW4_LIBRARY_RECEIPT_20261001.json",
+    "library_ids": null,
+    "latest_receipt": "RAW4_LIBRARY_RETRY2_20261001.json"
+  },
+  "ui_cross_regression": {
+    "PR": 16,
+    "final_sha": "f806960ce17b8e300536a21dadde618313a68996",
+    "production_source_sha": "7869260dab958c60e9b12e93f7441d0de3825e92",
+    "base": "b7099ef",
+    "status": "Parent reported PR20 fixed integration independently verified; ROOT will provide new guard exact source for parent coordinated next combination, without rewriting PR20 or editing UI.",
+    "next": "Use isolated temporary integration branch after stable batch; review main/reference_ui/card_view/exploration_view hunks against manual target authority; never merge PR16 or release here.",
+    "latest_parent_verified_UI_sha": "070c7b4",
+    "source_of_status": "Parent delegation message2026-09-30 during stage finalization"
+  },
+  "release_baseline_current": {
+    "sha": "65361bcc27c51c28651c86c5dbba4f083a9b39e0",
+    "main_sha": "1517f9fae8d865b8d663fa27d9fd38e95cb03d28",
+    "source": "MAIN delegation independently confirmed by authenticated git ls-remote",
+    "current_PR13_runtime_source_unchanged": "0d4ec7f23df806da7a86f9d954033a718349de7e",
+    "not_merged_or_deployed_here": true,
+    "normal_merge_already_performed_by_controller": "419961a86b2bbcaacf96eaafa5e21ded3b722a79"
+  },
+  "latest_additive_scope_sealed": {
+    "A05_guard": "a05-guard-62772be2/report.json",
+    "LOAD02_timeout": "load02-timeout-dfb3f88a/report.json",
+    "S6": "Both Ready; MAIN pending; original MAIN15 unchanged"
+  },
+  "prior_ci_pending": {
     "prior_exact_sha_and_runs": {
       "sha": "38c2caccb5f8327f52d97dffb3b9f9303360dd46",
       "blocker": "Account payments OR spending limit, parent browser verified; no exact subcause. Await user resolution; do not retry or change billing/permissions.",
@@ -117,40 +193,5 @@
     "historical_blocker_resolved_by_MAIN": "Actual run36769267487 attempt2 success2026-10-01T00:34UTC; no account settings changes.",
     "current_candidate": "Locally stable dfb3 source; no new Actions run started while PR/release conflicts; after coordinated exact final combination necessary CI once.",
     "conflict_receipt": "load02-timeout-dfb3f88a/NEW_RELEASE_CI_CONFLICT.json"
-  },
-  "raw4_previous_delivery": {
-    "files": 4,
-    "bytes_each_under_8million": true,
-    "location": "/workspace/pr13-takeover/actual-factors-cc6da2e/delivery",
-    "manifest": "actual-factors-cc6da2e/raw-package-manifest.json",
-    "remote_upload_done": false,
-    "authorization_state": "AuthorizedOwnPrivateLibraryOnly20261001T0029UTC",
-    "save_attempts": 2,
-    "save_error": "library upload failed: hosted apps tools/list request failed: network",
-    "receipt": "RAW4_LIBRARY_RECEIPT_20261001.json",
-    "library_ids": null,
-    "latest_receipt": "RAW4_LIBRARY_RETRY1_20261001.json"
-  },
-  "ui_cross_regression": {
-    "PR": 16,
-    "final_sha": "f806960ce17b8e300536a21dadde618313a68996",
-    "production_source_sha": "7869260dab958c60e9b12e93f7441d0de3825e92",
-    "base": "b7099ef",
-    "status": "Parent reported PR20 fixed integration independently verified; ROOT will provide new guard exact source for parent coordinated next combination, without rewriting PR20 or editing UI.",
-    "next": "Use isolated temporary integration branch after stable batch; review main/reference_ui/card_view/exploration_view hunks against manual target authority; never merge PR16 or release here.",
-    "latest_parent_verified_UI_sha": "070c7b4",
-    "source_of_status": "Parent delegation message2026-09-30 during stage finalization"
-  },
-  "release_baseline_current": {
-    "sha": "65361bcc27c51c28651c86c5dbba4f083a9b39e0",
-    "main_sha": "1517f9fae8d865b8d663fa27d9fd38e95cb03d28",
-    "source": "MAIN delegation independently confirmed by authenticated git ls-remote",
-    "current_PR13_runtime_source_unchanged": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
-    "not_merged_or_deployed_here": true
-  },
-  "latest_additive_scope_sealed": {
-    "A05_guard": "a05-guard-62772be2/report.json",
-    "LOAD02_timeout": "load02-timeout-dfb3f88a/report.json",
-    "S6": "Both Ready; MAIN pending; original MAIN15 unchanged"
   }
 }

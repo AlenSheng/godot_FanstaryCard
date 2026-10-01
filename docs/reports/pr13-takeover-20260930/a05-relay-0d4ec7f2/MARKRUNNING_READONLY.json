@@ -1,0 +1,99 @@
+{
+  "kind": "ReadOnly_MarkRunning_independent_failure_cause_and_minimal_repro_plan",
+  "source_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+  "independent_review_commit": "bcc3c1c7b6764149fccd64d52ade47a1afee374a",
+  "review_root": "docs/reports/pr13-independent-main-20260930/two-ready-20261001",
+  "source_bindings": [
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresLifecycleRecoveryTests.cs",
+      "source_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+      "sha256": "b696a8b8f40cd53e30429be655b67a2ef24734c8de9087ee23da18809aadcc73",
+      "bytes": 28272,
+      "unchanged_through_frozen_b5": true
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Matchmaking/RoomReadyCoordinator.cs",
+      "source_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+      "sha256": "a8669b3525d8693794b5da9e1fe28fa19fda7d081b157c6a35744c9b3d1920f3",
+      "bytes": 8836,
+      "unchanged_through_frozen_b5": true
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Matchmaking/MatchmakingRepository.cs",
+      "source_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+      "sha256": "4c489f8fc933ba5cc3597e9a5b678ebc2f8581a1d8f61ebe57a1cafc3fabcec3",
+      "bytes": 33623,
+      "unchanged_through_frozen_b5": true
+    }
+  ],
+  "confirmed_observations": {
+    "unfiltered_server": {
+      "passed": 298,
+      "failed": 1,
+      "skipped": 0,
+      "exit": 1
+    },
+    "assertion_line": 75,
+    "expected": "Running",
+    "actual": "Launching",
+    "previous_assert_DroppedCommittedResponse": "Passed because execution reached line75",
+    "same_source_focused": "1 passed, zero skip; does not replace first failure",
+    "TRX_sha256": "657d36c477c1a00a18b163b96cd1b020c7bda14b2e0314a6ac3c2eaf43733cf8"
+  },
+  "static_defect_candidate": {
+    "proxy_lines": [
+      444,
+      448,
+      451,
+      454,
+      458
+    ],
+    "arm": "sets shared dropResponse after recognizing frontend Parse/Query payload, before forwarding it",
+    "drop": "ignores CommandComplete/ErrorResponse and considers next arbitrary idle ReadyForQuery a committed target response",
+    "lack": "No command completion/tag or Sync sequence correlation. Idle means no current transaction, not target statement success."
+  },
+  "primary_source": {
+    "title": "Npgsql Pooled Connection Reset",
+    "url": "https://www.npgsql.org/doc/performance.html#pooled-connection-reset",
+    "supported_behavior": "Reset statements are buffered until next pooled use and sent with first user statement, without separate roundtrip."
+  },
+  "causal_hypotheses": [
+    {
+      "name": "pooled-reset idle reply crosses target-Parse arm",
+      "path": "target P parsed -> shared flag set -> prior reset Z(I) read -> dropped=true -> sockets closed before target UPDATE completion -> match remains Launching",
+      "status": "Not dynamically confirmed; full failed wire sequence unavailable"
+    },
+    {
+      "name": "backend target ErrorResponse discarded before idle Z",
+      "path": "target P arm -> ErrorResponse discarded -> Z(I) sets dropped even though update did not commit",
+      "status": "Alternative not excluded; no failed backend tags/error trace in published review."
+    }
+  ],
+  "minimal_isolated_plan": [
+    {
+      "case": "RACE-01 actual pooled reset false-commit marker",
+      "input": "Frozen627 test/repository, private PG Unix socket, original pooling/reset flags",
+      "injection": "Read-only trace proxy wrapper holds recognized target Parse after existing arm and before forwarding; lets real queued reset backend reply proceed",
+      "assert": "Original dropped marker true while target UPDATE never forwarded and actual direct PG status Launching; trace actual C tags/Z tx status/connection/sequence",
+      "budget": "One invocation, owned5-second barrier,120-second full diagnostic deadline; no original timeout/assertion changes"
+    },
+    {
+      "case": "RACE-02 genuine completed update loss control",
+      "injection": "Observe actual target CommandComplete UPDATE1 and associated ReadyForQuery(I), then lose only matching user response",
+      "assert": "Direct PG Running, same coordinator assignment survives retry, one room, restart restore, potions/inventory_movements exactly once; original mandatory assertion unchanged"
+    },
+    {
+      "case": "RACE-03 backend error negative control",
+      "injection": "Private test-only failed UPDATE with actual ErrorResponse and idle Z",
+      "assert": "Marker must not claim committed; direct status unchanged; no forged receipt or silent retry."
+    }
+  ],
+  "next_mutation_scope": "Not executed or implemented: parent requested read-only cause/plan only. Proposed test proxy/harness correlation change first, no production path change without reproduced cause. Full unfiltered regression after any approved fixture fix; preserve first298/1 failure.",
+  "remaining_missing": [
+    "Failed run full protocol frame/tag ordering",
+    "Independent original PostgreSQL error/reset trace if available"
+  ],
+  "A05_acceptance": "Still pending MAIN; canonical guard pass does not close mandatory whole-suite failure.",
+  "LOAD02_decision": "Accepted MAIN at originaldfb; separate source/S6, not retargeted",
+  "production_or_ui_or_controller_modified": false
+}

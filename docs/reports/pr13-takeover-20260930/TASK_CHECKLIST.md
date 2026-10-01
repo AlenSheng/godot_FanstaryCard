@@ -1,8 +1,8 @@
 # PR13 云端接管逐项登记
 
-MAIN已签15项，原来源S6均保留；A05 guard62772完整299/0/0和canonical3已封存，仅Ready待独立MAIN。LOAD02 .2固定dfb3已完成真实三个窗口、Server302/0/0与Python122/0/0，新增一项Ready待MAIN S6。
+MAIN已签16项：LOAD02.2新增原源dfb3 NoChangeWithEvidence，S6 bcc3；原15来源保持。A05.1目标case通过，但独立完整Server298/1/0失败仍保留为Partial。当前0d4e CI4成功/1失败，LOAD02 T01收据读取窗口另记，不代替原裁决。
 
-132项当前状态：15Accepted / 2ReadyForAcceptance / 40Partial / 72NotRevalidated / 3Blocked。选定19项为15Accepted/2Ready/2Partial；G0–G5未签署。历史2dda收据保留当时状态。
+132项当前状态：16Accepted / 41Partial / 72NotRevalidated / 3Blocked。选定19项16Accepted/3Partial；48 case已由MAIN原源裁决，G0–G5未签署。历史收据不改写。
 
 | 顺序 | 子项 | 负责人 | 当前 / 历史 | 修改 SHA | 依赖 | 剩余工作或阻塞 |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -15,8 +15,8 @@ MAIN已签15项，原来源S6均保留；A05 guard62772完整299/0/0和canonical
 | 7 | LOAD-02.1 多维结果模型 | MAIN / load P0 | Accepted / Partial | d4c3212fb32c75d4 | LOAD-01.2 | MAIN独立裁决完成；只适用于固定来源。 |
 | 8 | LOAD-04.1 当前匹配状态机 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | LOAD-11.1, LOAD-06.4 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 9 | LOAD-06.2 生命周期/玩法进度 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | LOAD-06.4, LOAD-04.1 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
-| 10 | LOAD-02.2 STOP前后边界 | ROOT真实客户端/owned Program+PG；MAIN独立裁决 | ReadyForAcceptance / Partial | dfb3f88a73efd85c | LOAD-02.1, LOAD-06.2 | S0–S5原三case/Server302/Python122及清理齐备；只待MAIN S6，非CI/LIVE门槛。 |
-| 11 | LOAD-02.3 有界清理和应急报告 | MAIN / load P0 | Accepted / Partial | d4c3212fb32c75d4 | LOAD-02.2 | MAIN独立裁决完成；只适用于固定来源。 |
+| 10 | LOAD-02.2 STOP前后边界 | ROOT真实客户端/owned Program+PG；MAIN独立裁决 | Accepted / Partial | dfb3f88a73efd85c | LOAD-02.1, LOAD-06.2 | MAIN独立S6 bcc3确认原dfb3 NoChangeWithEvidence；原10s/30s与302/122保留，新0d4e CI读取失败另记。 |
+| 11 | LOAD-02.3 有界清理和应急报告 | MAIN / load P0 | Accepted / Partial | d4c3212fb32c75d4 | LOAD-02.2 | MAIN独立S6 bcc3确认原dfb3 NoChangeWithEvidence；原10s/30s与302/122保留，新0d4e CI读取失败另记。 |
 | 12 | LOAD-02.4 退出码兼容 | MAIN / load P0 | Accepted / Partial | d4c3212fb32c75d4 | LOAD-02.3 | MAIN独立裁决完成；只适用于固定来源。 |
 | 13 | LOAD-03.1 事件水位 | MAIN / load P0 | Accepted / ReadyForAcceptance | d4c3212fb32c75d4 | LOAD-01.2, LOAD-06.4 | MAIN独立裁决完成；只适用于固定来源。 |
 | 14 | LOAD-03.2 生命周期阶段 | MAIN / offline canonical receipt audit | Accepted / ReadyForAcceptance | 取证/未修改 | LOAD-03.1 | MAIN独立裁决完成；只适用于固定来源。 |
@@ -109,8 +109,8 @@ MAIN已签15项，原来源S6均保留；A05 guard62772完整299/0/0和canonical
 | 101 | PR13-B11.4 有渲染三局和窄屏 | MAIN (pending batch) | NotRevalidated / Deferred | 取证/未修改 | PR13-B11.3 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 102 | PR13-B12.2 独立off/on和体验矩阵 | MAIN (pending batch) | NotRevalidated / Queued | 取证/未修改 | PR13-B12.1, PR13-A07.4, PR13-B03.4, PR13-B04.4, PR13-B05.4, PR13-B06.4, PR13-B07.4, PR13-B08.4, PR13-B09.4, PR13-B10.4, PR13-B11.4 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 103 | PR13-B12.3 配置生成与版本回滚 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | PR13-B12.1, PR13-B02.4 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
-| 104 | PR13-A05.1 持久化失败恢复 | ROOT实现 / MAIN独立裁决 | ReadyForAcceptance / Partial | 7231c7499b7220b85 | LOAD-05.4, LOAD-09.2 | 固定62772：Server299/0/0、canonical3/3、64审计零，原失败保留；S6独立重放待MAIN。 |
-| 104 | PR13-A05.1 持久化失败恢复 | ROOT实现 / MAIN独立裁决 | ReadyForAcceptance / Partial | 7231c7499b7220b85 | LOAD-05.4, LOAD-09.2 | 固定62772：Server299/0/0、canonical3/3、64审计零，原失败保留；S6独立重放待MAIN。 |
+| 104 | PR13-A05.1 持久化失败恢复 | ROOT实现 / MAIN独立裁决 | Partial / Partial | 7231c7499b7220b85 | LOAD-05.4, LOAD-09.2 | MAIN原627 canonical3/guard/MN/ACK/assets通过，完整298/1/0 MarkRunning Running/Launching未关闭；另0d4e relay Unix/TCP四例过。 |
+| 104 | PR13-A05.1 持久化失败恢复 | ROOT实现 / MAIN独立裁决 | Partial / Partial | 7231c7499b7220b85 | LOAD-05.4, LOAD-09.2 | MAIN原627 canonical3/guard/MN/ACK/assets通过，完整298/1/0 MarkRunning Running/Launching未关闭；另0d4e relay Unix/TCP四例过。 |
 | 106 | PR13-A05.3 幂等/重启资产矩阵 | ROOT / actual owned process and client receipt; MAIN / independent adjudication | Accepted / Partial | d3c5fe6cfb3b4d10 | PR13-A05.2 | MAIN独立裁决完成；只适用于固定来源。 |
 | 107 | PR13-A06.1 响应完整性fixture | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | LOAD-06.1, LOAD-08.1 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 108 | PR13-A06.2 连接失效/并发/会话 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | PR13-A06.1 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |

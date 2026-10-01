@@ -1,0 +1,71 @@
+{
+  "kind": "Record_PARENT_MAIN_LOAD02_acceptance_and_A05_pending_failure",
+  "recorded_at_utc": "2026-10-01T03:44:59.905331+00:00",
+  "review_commit": "bcc3c1c7b6764149fccd64d52ade47a1afee374a",
+  "review_manifest_sha256": "4ef74262702fe35d9f18af9e9c4372d5f641ab2c44a98107b96ec53d97aee8a0",
+  "verified_review_manifest_entries": 21,
+  "manifest_verified_against_exact_git_blobs": true,
+  "decisions": [
+    {
+      "kind": "Recorded_explicit_parent_MAIN_S6_decision",
+      "task_id": "LOAD-02.2",
+      "state": "Accepted",
+      "resolution": "NoChangeWithEvidence",
+      "source_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+      "original_report_commit": "b5a746a621a116f7d6e99857f8f8e0c063d2c159",
+      "original_report_path": "docs/reports/pr13-takeover-20260930/load02-timeout-dfb3f88a/report.json",
+      "profile_hash": "47d985a7d8106f8b9b7469dee979012058c4ce355ac11e5d943ad8a7ed1cc4c8",
+      "algorithm_version": "load02-observer-v1",
+      "review_commit": "bcc3c1c7b6764149fccd64d52ade47a1afee374a",
+      "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/bcc3c1c7b6764149fccd64d52ade47a1afee374a/docs/reports/pr13-independent-main-20260930/two-ready-20261001/REVIEW.md",
+      "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/bcc3c1c7b6764149fccd64d52ade47a1afee374a/docs/reports/pr13-independent-main-20260930/two-ready-20261001/REPORT.json",
+      "authority": "MAIN / parent thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+      "authorization": "Explicit parent MAIN delegation accepted LOAD02.2 after actual independent focused3 twice, unfiltered Server302/0/0 and Python122. ROOT records this decision and does not sign acceptance.",
+      "case_ids": [
+        "LOAD-02.2-T01",
+        "LOAD-02.2-T02",
+        "LOAD-02.2-T03"
+      ],
+      "implementation_owner_did_not_sign": true,
+      "accepted_new_relay_source": false,
+      "gates_accepted": false
+    }
+  ],
+  "A05_pending_independent_failure": {
+    "kind": "Recorded_independent_MAIN_unfiltered_suite_failure_not_closed",
+    "task_id": "PR13-A05.1",
+    "source_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+    "review_commit": "bcc3c1c7b6764149fccd64d52ade47a1afee374a",
+    "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/bcc3c1c7b6764149fccd64d52ade47a1afee374a/docs/reports/pr13-independent-main-20260930/two-ready-20261001/REVIEW.md",
+    "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/bcc3c1c7b6764149fccd64d52ade47a1afee374a/docs/reports/pr13-independent-main-20260930/two-ready-20261001/REPORT.json",
+    "state": "Partial",
+    "Accepted": false,
+    "original_target_case_results": {
+      "Passed": 3,
+      "Failed": 0
+    },
+    "unfiltered_Server": {
+      "Passed": 298,
+      "Failed": 1,
+      "Skipped": 0,
+      "exit_code": 1
+    },
+    "failed_test": "MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it",
+    "assertion_line": 75,
+    "expected": "Running",
+    "actual": "Launching",
+    "trx_sha256": "657d36c477c1a00a18b163b96cd1b020c7bda14b2e0314a6ac3c2eaf43733cf8",
+    "same_source_single_case": {
+      "Passed": 1,
+      "Failed": 0,
+      "Skipped": 0,
+      "replaces_first_failure": false
+    },
+    "root_action": "Readonly cause/repro plan only; no production or fault-proxy fix applied. Await parent allocation.",
+    "later_TCP_fixture_pass_closes_this_failure": false
+  },
+  "Accepted_tasks_total": 16,
+  "Accepted_case_count": 48,
+  "all132_accepted": false,
+  "gates_accepted": false
+}

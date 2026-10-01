@@ -1,15 +1,17 @@
 # PR13 云端接管当前收据
 
-MAIN已正式接受15项：LOAD01四项，以及LOAD02.1/.3/.4、LOAD03.1/.2、B02.1–.4、A05.2/.3。每项保持原来源/profile/S6，不把旧源改写为新候选。[新11项裁决](MAIN_S6_bounded11_20261001.json)与[ee8三项](MAIN_S6_ee8adcf4.json)、[e060修复](MAIN_S6_e06037f5.json)分别记录。ROOT没有代签。
+MAIN 已签 16 项，新增 LOAD-02.2 `Accepted/NoChangeWithEvidence` 绑定原源 `dfb3f88a73efd85cc4ed12b8d49038bebbb1f953`，独立审查 `bcc3c1c7b6764149fccd64d52ade47a1afee374a`。此前 15 项的来源、profile 和 S6 未改写。[新增裁决登记](MAIN_S6_two_ready_20261001.json)同时保留 A05 的独立失败；ROOT 没有代签。
 
-A05.1新固定源 `62772be2a1bc28affffc3d057f259c8c5ded8e37` 已封存：完整Server299Passed/0Failed/0Skip、原canonical3及全部ACK/旧poll/普通终态/newN/资产窗口通过；2173私有文件52,314,867字节逐项SHA匹配。只在GameStore增加一行pending-ACK guard，生产提交 `7231c7499b7220b85c27be48ebbd127d7c0b7038`。33host已收回，ownedPG停止且data/socket删除；退出zombie实际状态保留。原2dda反例和76d完整296/3夹具204错误没有覆盖。[完整去敏报告](a05-guard-62772be2/report.json)、[独立重放](a05-guard-62772be2/REPLAY.md)、[原始索引](a05-guard-62772be2/PRIVATE_ARTIFACT_MANIFEST.json)交MAIN S6，A05.1仅Ready，未Accepted。
+当前代码候选是 `0d4ec7f23df806da7a86f9d954033a718349de7e`，基于 controller 正常集成 `419961a8` 和 release `65361bcc27c51c28651c86c5dbba4f083a9b39e0`。这一提交只改测试 relay 的 Unix/TCP 上游连接：既有本地目标限制、事务丢回复规则、断言、10s/30s 和 180s 窗口均保持。没有新增业务、UI 或 workflow 修改。
 
-选定19项当前15Accepted/2Ready/2Partial。132项为15Accepted/2Ready/40Partial/72NotRevalidated/3Blocked；G0–G5未签署，历史27显式runner回执不作总覆盖。剩余两项Partial为LOAD03.3/.4；LOAD02.2真实PG timeout→STOP完整补证，新harness源码 `dfb3f88a73efd85cc4ed12b8d49038bebbb1f953` 已封存，业务未新改。10s/30s预算和cleanup22s、BotFill30s保持。LOAD02原三case在focused与完整矩阵各通过：Server302/0/0、Python122/0/0；原10个Git元数据环境错误保留，源码未修改才补足元数据后通过。39host收回、ownedPG停止清理、1486私有文件48,520,987字节逐SHA匹配。[LOAD02完整报告](load02-timeout-dfb3f88a/report.json)、[最小重放](load02-timeout-dfb3f88a/REPLAY.md)仅Ready待MAIN独立S6。没有开始LOAD03 telemetry，未修改主题美术或UI组件。
+真实隔离 Program/Godot/PG 的 Unix 两例、TCP 两例分别 `2Passed/0Failed/0Skipped`。两种连接均实际覆盖提交前失败和提交后丢回复；同 ACK 重复三次、23gold/2potions、原装备 owner/Equipped、单次 ledger/movement 及四个最终只读审计通过。442 私有文件 26,632,169 字节逐 SHA 匹配，967 固定源码和 167 新编译产物核对；六对 host 启停、四 relay 目录和本 task PG 已清理。[去敏报告](a05-relay-0d4ec7f2/report.json)、[重放](a05-relay-0d4ec7f2/REPLAY.md)、[只读原始索引](a05-relay-0d4ec7f2/PRIVATE_ARTIFACT_MANIFEST.json)。原 raw/构建仅本地保留。
 
-历史19项[封存收据](BOUNDED_19_RECEIPT.json)保持当时内容，原业务f812、工具e060及组来源分别保留；[逐项登记](TASK_CHECKLIST.md)、[机器登记](register.json)、[case映射](CASE_MAPPING.json)、[下一队列](NEXT_QUEUE.json)记录接续。历史dirty/多cohort/容量失败、50/100原raw缺口和全局ledger mismatch=1保持，owned局部审计不关闭全局异常。
+同候选一次自动 CI 已终态：4 workflow 成功、Gameplay 失败，无 rerun。CI 实际 checkout 合成提交 `36f0a7b7a17e22968f36d6be49fe9d110f8098d5`，父提交为 release653 和候选0d4e；client/server/tools/workflow 字节与0d4e相同。完整 acceptance 为 Domain317/0/0、Server302/0/0；Gameplay PG 为301/1/0，Windows offline 为206/0/96，Python122通过。两 Linux 全套里的 A05 事务故障两例都通过。[CI终态及真实时长](a05-relay-0d4ec7f2/CI_TERMINAL.json)保留不同分母，未相加作 canonical 覆盖。8 jobs 实际时间总和51.15分钟，计费分钟未知；额外 budget$0/StopYes 未改。
 
-四份raw ZIP31,096,278字节已获用户授权保存私有Library，两次批准尝试均在保存返回前报同一network错误，无ID，原大小/SHA不变；父已明确暂停继续重试。[第二次失败收据](RAW4_LIBRARY_RETRY1_20261001.json)。没有换目的地。新的A05 raw也只留授权本地，Git提供去敏摘要、fixture及文件SHA索引。
+Gameplay 的新失败是 LOAD02 T01 在 `ProcessLifecycleLoad02TimeoutStopTests.cs:60` 读到空的 `.stop-observed.json`。原 Godot observer 先创建最终文件再写/关闭，C# 只等待 File.Exists；保留产物最终为1877字节合法 JSON，partition 为 started1/failed1，其余0。另一完整 acceptance 同源该例通过，不能替代 Gameplay 失败。这是新候选的收据发布/读取窗口，未修改原 MAIN 的 dfb3 裁决。最小后续方案为同目录临时文件关闭后原子发布，并在真实三窗口重验；当前仅定位和提出方案，没有应用或无效重跑 CI。
 
-免费月额度恢复由MAIN实际run36769267487 attempt2证实，额外budget$0/StopYes保持；两批本地稳定后仅必要最终候选CI一次，中间文档推送skipCI。后续组合记录release新基线 `65361bcc27c51c28651c86c5dbba4f083a9b39e0`，main `1517f9fae8d865b8d663fa27d9fd38e95cb03d28`；这里只fetch核验，没有合入、合并或部署。缺失server_create技能按canonical已授权例外记录，未虚构已读。
+A05.1 当前为 Partial。原 ROOT62772 全套299/0/0、MAIN独立三个 canonical/guard/MN/ACK/资产通过均保留，但 MAIN 完整298/1/0在 MarkRunning line75期望Running、实际Launching；同源单项通过及新CI该例通过均不关闭首次失败。[只读因果与最小实测计划](a05-relay-0d4ec7f2/MARKRUNNING_READONLY.json)明确假设尚未动态确认，等待父任务分配，未改生产或该代理。LOAD03.3/.4 telemetry 未启动；B06/B03 的另一个冻结离线报告仍在独立本地分支，没有混入本修复。
 
-最终候选CI当前另有[新release工作流冲突](load02-timeout-dfb3f88a/NEW_RELEASE_CI_CONFLICT.json)：PR13与65361的numerical-client.yml需要父/controller负责人组合Godot4.7.2/preview与named-export；这里未修改其文件、合入release或触发无效/中间CI。该阻塞不加入A05/LOAD02原离线合同门槛。
+132 项当前 16Accepted/41Partial/72NotRevalidated/3Blocked；选定19项16Accepted/3Partial，无 Ready；48 case 由 MAIN 原源裁决，G0–G5未签署。[登记](register.json)、[逐项清单](TASK_CHECKLIST.md)、[case映射](CASE_MAPPING.json)、[下一队列](NEXT_QUEUE.json)一致。历史27 runner回执、dirty/多cohort/容量失败、50/100历史raw缺口和全局ledger mismatch=1保持，owned审计不关闭全局异常。历史收据与日志未覆盖。
+
+四份原始模拟 ZIP 已获保存到本人私有 Library 的明确授权。本轮按批准流程再作一次有界尝试，仍在返回 ID 前报 network；累计三次均没有 ID，原31,096,278字节及四 SHA未变。[最新失败收据](RAW4_LIBRARY_RETRY2_20261001.json)。没有另换目的地或自动连续重试。server_create mandatory技能实际缺失按已授权例外记录；没有测试服操作、部署、release/main写入、PR合并或数据库恢复。

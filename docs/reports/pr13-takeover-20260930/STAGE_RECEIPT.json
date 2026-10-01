@@ -3,19 +3,16 @@
   "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
   "previous_stage_receipt": "STAGE_RECEIPT_schema_4bb6c6be.json",
   "batch": "BOUNDED_19_RECEIPT.json",
-  "ready_for_independent_acceptance": [
-    "PR13-A05.1"
-  ],
-  "ready_task_count": 1,
-  "ready_case_count": 3,
+  "ready_for_independent_acceptance": [],
+  "ready_task_count": 0,
+  "ready_case_count": 0,
   "task_states_current": {
     "Partial": 41,
     "NotRevalidated": 72,
-    "Accepted": 15,
-    "ReadyForAcceptance": 1,
+    "Accepted": 16,
     "Blocked": 3
   },
-  "Accepted": 15,
+  "Accepted": 16,
   "canonical_total_cases": 396,
   "canonical_explicit_runner_receipts_unchanged": {
     "Passed": 27,
@@ -58,13 +55,52 @@
   "production_source_frozen": "f812879e4518fd09bf22656451cb563d62940298",
   "production_changes": 0,
   "ui_changes": 0,
-  "ci": "Free monthly quota restored per MAIN verified actual PR18 Numerical run36769267487 attempt2; keep $0 additional budget/StopYes. Necessary final combined candidate CI once after both local batches; no intermediate retries.",
-  "raw4_upload": "Same four private Library retry authorized by MAIN; second bounded attempt failed same tools/list network before any result; zero IDs and unchanged bytes. RAW4_LIBRARY_RETRY1_20261001.json",
+  "ci": {
+    "source_sha": "0d4ec7f23df806da7a86f9d954033a718349de7e",
+    "checkout_merge_sha": "36f0a7b7a17e22968f36d6be49fe9d110f8098d5",
+    "release_base_sha": "65361bcc27c51c28651c86c5dbba4f083a9b39e0",
+    "receipt": "a05-relay-0d4ec7f2/CI_TERMINAL.json",
+    "workflow_results": {
+      "success": 4,
+      "failure": 1,
+      "cancelled": 0
+    },
+    "all_attempts": 1,
+    "no_reruns": true,
+    "new_LOAD02_harness_failure": {
+      "test": "Real_LOAD02_timeout_STOP_preserves_original_business_truth(timeout-before-stop, LOAD-02.2-T01)",
+      "file": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleLoad02TimeoutStopTests.cs",
+      "line": 60,
+      "error": "JsonReaderException: input contains no JSON tokens.",
+      "first_failed_read": "report.stop-observed.json",
+      "later_retained_file": {
+        "bytes": 1877,
+        "sha256": "1b2ed8848a9291b9bbdee51601fb897603bc613aa1f702d8707bdc5034a7a0ae",
+        "valid_json": true,
+        "partition": {
+          "started": 1,
+          "failed": 1,
+          "completed": 0,
+          "cancelled": 0,
+          "pending": 0,
+          "incomplete": 0
+        },
+        "stop_requested": true
+      },
+      "static_path": "GDScript _write_observation opens final path then writes/closes; C# waits only File.Exists before parsing. Actual initial empty read and final complete JSON establish a receipt publication/read window.",
+      "classification": "Harness receipt read/publication failure at new CI source; preserve failed unfiltered matrix. Does not change earlier MAIN original-source acceptance.",
+      "fix_applied": false,
+      "minimum_next_design": "Publish isolated harness observation to same-directory temporary path; close, then atomic rename to final path. Preserve current deadlines, assertions and first-failure/late evidence; separately reproduce and run real three PG/client windows."
+    },
+    "does_not_rewrite_prior_MAIN_acceptance": true
+  },
+  "raw4_upload": "Three authorized same-file/same-private-Library bounded attempts failed tools/list network before file IDs; zero IDs, original four ZIP SHA/size unchanged. Latest RAW4_LIBRARY_RETRY2_20261001.json; no further retry without channel-restored instruction.",
   "validation_tool_change_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
   "independent_MAIN": {
     "ee8": "MAIN_S6_ee8adcf4.json",
     "e060": "MAIN_S6_e06037f5.json",
-    "bounded11": "MAIN_S6_bounded11_20261001.json"
+    "bounded11": "MAIN_S6_bounded11_20261001.json",
+    "two_ready": "MAIN_S6_two_ready_20261001.json"
   },
   "latest_batch": {
     "report": "BOUNDED_19_RECEIPT.json",
@@ -94,10 +130,9 @@
     "causal_extra_Failed": 1,
     "Accepted": 0
   },
-  "latest_MAIN_S6": "MAIN_S6_bounded11_20261001.json",
+  "latest_MAIN_S6": "MAIN_S6_two_ready_20261001.json",
   "selected_task_states": {
-    "Accepted": 15,
-    "ReadyForAcceptance": 1,
+    "Accepted": 16,
     "Partial": 3
   },
   "selected_primary_case_results": {
@@ -125,22 +160,50 @@
     }
   ],
   "current_inflight_candidate": {
-    "source_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
-    "task_id": "PR13-A05.1",
-    "state": "ReadyForIndependentAcceptance",
-    "report": "a05-guard-62772be2/report.json",
-    "full_Server": {
-      "Passed": 299,
-      "Failed": 0,
-      "Skipped": 0
-    },
-    "S6": "Pending MAIN"
+    "source_sha": "0d4ec7f23df806da7a86f9d954033a718349de7e",
+    "task_id": "A05-relay-transport",
+    "state": "FixtureFixVerified; independent A05 task remains Partial",
+    "report": "a05-relay-0d4ec7f2/report.json"
   },
   "release_baseline_current": {
     "sha": "65361bcc27c51c28651c86c5dbba4f083a9b39e0",
     "main_sha": "1517f9fae8d865b8d663fa27d9fd38e95cb03d28",
     "source": "MAIN delegation independently confirmed by authenticated git ls-remote",
-    "current_PR13_runtime_source_unchanged": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
-    "not_merged_or_deployed_here": true
+    "current_PR13_runtime_source_unchanged": "0d4ec7f23df806da7a86f9d954033a718349de7e",
+    "not_merged_or_deployed_here": true,
+    "normal_merge_already_performed_by_controller": "419961a86b2bbcaacf96eaafa5e21ded3b722a79"
+  },
+  "latest_independent_A05_pending_failure": {
+    "kind": "Recorded_independent_MAIN_unfiltered_suite_failure_not_closed",
+    "task_id": "PR13-A05.1",
+    "source_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+    "review_commit": "bcc3c1c7b6764149fccd64d52ade47a1afee374a",
+    "review_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/bcc3c1c7b6764149fccd64d52ade47a1afee374a/docs/reports/pr13-independent-main-20260930/two-ready-20261001/REVIEW.md",
+    "report_url": "https://github.com/AlenSheng/godot_FanstaryCard/blob/bcc3c1c7b6764149fccd64d52ade47a1afee374a/docs/reports/pr13-independent-main-20260930/two-ready-20261001/REPORT.json",
+    "state": "Partial",
+    "Accepted": false,
+    "original_target_case_results": {
+      "Passed": 3,
+      "Failed": 0
+    },
+    "unfiltered_Server": {
+      "Passed": 298,
+      "Failed": 1,
+      "Skipped": 0,
+      "exit_code": 1
+    },
+    "failed_test": "MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it",
+    "assertion_line": 75,
+    "expected": "Running",
+    "actual": "Launching",
+    "trx_sha256": "657d36c477c1a00a18b163b96cd1b020c7bda14b2e0314a6ac3c2eaf43733cf8",
+    "same_source_single_case": {
+      "Passed": 1,
+      "Failed": 0,
+      "Skipped": 0,
+      "replaces_first_failure": false
+    },
+    "root_action": "Readonly cause/repro plan only; no production or fault-proxy fix applied. Await parent allocation.",
+    "later_TCP_fixture_pass_closes_this_failure": false
   }
 }
