@@ -7,9 +7,13 @@
 > 默认 main 的 40 行 stub 与 release 完整 workflow 均已通过 GitHub 文件 API 读取；
 > main 权限为空、job 恒 false，release 仅 workflow_dispatch 且执行来源严格为 release。
 > 两个新 head 和全仓 workflow_dispatch 的运行查询均为 0，未触发部署或服务器操作。
-> workflow 注册/可发现性的 metadata API 被连接器 URL 限制挡住，现有 CLI 返回 Forbidden；
-> **尚未核验实际 Actions UI 可发现性**，由父任务已登录浏览器只读核对列表与 release
-> 分支选择，不能按下 dispatch。完整已生效记录及待部署门槛见 [apply-record.json](apply-record.json)。
+> 2026-10-01 01:16 UTC 父任务已在已登录 GitHub 云浏览器只读确认 Actions 列表显示
+> Owner-confirmed silicon valley test deployment；[工作流页面](https://github.com/AlenSheng/godot_FanstaryCard/actions/workflows/test-server-deploy.yml)
+> 显示 workflow_dispatch、Run workflow 按钮、0 workflow runs，未点击执行、未发生
+> 服务器动作。此收据来自父任务界面核验，非本任务 metadata API；原连接器 URL 限制
+> 与 CLI Forbidden 记录保留，不再阻塞可发现性确认。**批准的最小集成阶段已完成**；
+> 没有测试 release 分支选择或 dispatch，实际部署仍 application_deployable=false。
+> 完整已生效记录、界面收据及待部署门槛见 [apply-record.json](apply-record.json)。
 >
 > 以下正文与 candidate-review.json 保留的是集成前准备/核验记录，其“未应用”描述为
 > 当时状态；新 apply-record.json 是集成后的当前结果。应用与热回滚仍严格阻断。

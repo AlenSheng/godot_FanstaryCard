@@ -1,5 +1,5 @@
 {
-  "phase": "Approved minimal integration applied; deployment still blocked",
+  "phase": "Approved minimal integration and UI registration verified; deployment still blocked",
   "started_at_utc": "2026-10-01 01:09:46 UTC",
   "verified_at_utc": "2026-10-01 01:13:21 UTC",
   "authorization": "Explicit user minimal integration approval and parent independent review confirmation; controller components Passed only.",
@@ -51,8 +51,20 @@
     "github_workflows_api_accessible": false,
     "connector_error": "INVALID_ARGUMENT/HTTP400 unsupported URL",
     "existing_cli_error": "Forbidden",
-    "actual_ui_registration_verified": false,
-    "pending": "Parent authenticated GitHub browser read-only Actions list and release branch selector; do not dispatch."
+    "actual_ui_registration_verified": true,
+    "pending": null,
+    "ui_receipt": {
+      "source": "Parent-reported authenticated GitHub cloud browser read-only inspection; not child API evidence",
+      "observed_at_utc": "2026-10-01 01:16 UTC (minute precision reported by parent)",
+      "url": "https://github.com/AlenSheng/godot_FanstaryCard/actions/workflows/test-server-deploy.yml",
+      "actions_list_name": "Owner-confirmed silicon valley test deployment",
+      "workflow_dispatch_displayed": true,
+      "run_workflow_button_visible": true,
+      "workflow_runs_displayed": 0,
+      "run_clicked": false,
+      "server_action_performed": false,
+      "release_branch_selection_or_dispatch_tested": false
+    }
   },
   "server_action_evidence": {
     "workflow_dispatch_runs_total": 0,
