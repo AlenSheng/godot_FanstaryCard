@@ -1,0 +1,2926 @@
+diff --git a/.github/workflows/cloud-config-check.yml b/.github/workflows/cloud-config-check.yml
+new file mode 100644
+index 00000000..cccf193b
+--- /dev/null
++++ b/.github/workflows/cloud-config-check.yml
+@@ -0,0 +1,106 @@
++name: Cloud configuration checks
++on:
++  pull_request:
++    paths: ['tools/cloud/**', '.github/workflows/cloud-config-check.yml', '.github/workflows/test-server-deploy.yml', 'docs/CLOUD_TEST_DEPLOYMENT*']
++  push:
++    branches: ['codex/cloud-test-deployment-20260930']
++    paths: ['tools/cloud/**', '.github/workflows/cloud-config-check.yml', '.github/workflows/test-server-deploy.yml']
++  workflow_dispatch:
++permissions:
++  contents: read
++concurrency:
++  group: cloud-config-${{ github.event.pull_request.number || github.ref }}
++  cancel-in-progress: true
++jobs:
++  static-and-mock:
++    runs-on: ubuntu-24.04
++    timeout-minutes: 10
++    steps:
++      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
++        with:
++          persist-credentials: false
++      - name: Compile and exercise authorization, transactions and failure handling
++        run: |
++          set -euo pipefail
++          python3 -m py_compile tools/cloud/*.py
++          python3 -m unittest discover -s tools/cloud/tests -v
++          for script in tools/cloud/*.sh; do bash -n "$script"; done
++          git diff --check
++      - name: Install digest-pinned actionlint and validate the two cloud workflows
++        run: |
++          set -euo pipefail
++          curl --disable --fail --location --retry 2 https://github.com/rhysd/actionlint/releases/download/v1.7.7/actionlint_1.7.7_linux_amd64.tar.gz -o "$RUNNER_TEMP/actionlint.tar.gz"
++          printf '023070a287cd8cccd71515fedc843f1985bf96c436b7effaecce67290e7e0757  %s\n' "$RUNNER_TEMP/actionlint.tar.gz" | sha256sum -c -
++          tar -xzf "$RUNNER_TEMP/actionlint.tar.gz" -C "$RUNNER_TEMP" actionlint
++          "$RUNNER_TEMP/actionlint" -shellcheck= .github/workflows/cloud-config-check.yml .github/workflows/test-server-deploy.yml
++  install-and-local-transactions:
++    runs-on: ubuntu-24.04
++    timeout-minutes: 35
++    env:
++      FANTASYCARD_CLOUD_TOOLS: /tmp/fc-cloud-tools
++      DOCKER_CONFIG: /tmp/fc-docker-config
++    steps:
++      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
++        with:
++          persist-credentials: false
++      - name: Install verified tools; exercise cached restart and private database
++        run: |
++          set -euo pipefail
++          bash tools/cloud/setup.sh
++          python3 tools/cloud/install_tools.py
++          timeout 90 bash tools/cloud/start.sh
++          bash tools/cloud/stop.sh
++          timeout 90 bash tools/cloud/start.sh
++      - name: Real scratch-image activation and PostgreSQL backup/rollback drill
++        run: python3 tools/cloud/local_integration.py --output /tmp/fc-cloud-tools/evidence/local-integration.json
++      - name: Isolated Godot codecs and loopback transport
++        run: |
++          set -euo pipefail
++          source tools/cloud/env.sh
++          python3 client/tests/run_http_protobuf_client.py --godot "$FANTASYCARD_CLOUD_TOOLS/godot/godot" --work-dir "$FANTASYCARD_CLOUD_TOOLS/evidence/http-fixture"
++      - name: Stop private test database
++        if: always()
++        run: bash tools/cloud/stop.sh
++      - name: Stage only named local reports and fixture logs
++        id: local_evidence
++        if: always()
++        run: python3 tools/cloud/export_evidence.py --profile cloud-local --source /tmp/fc-cloud-tools/evidence --destination "$RUNNER_TEMP/cloud-local-public"
++      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
++        if: always() && steps.local_evidence.outputs.artifact_directory != ''
++        with:
++          name: cloud-local-${{ github.run_id }}-${{ github.run_attempt }}
++          path: ${{ steps.local_evidence.outputs.artifact_directory }}
++          retention-days: 14
++          if-no-files-found: warn
++  final-runtime-image:
++    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
++    runs-on: ubuntu-24.04
++    timeout-minutes: 70
++    env:
++      SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
++    steps:
++      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
++        with:
++          ref: ${{ github.event.pull_request.head.sha || github.sha }}
++          persist-credentials: false
++      - name: Build matching protected runtime and private build stage
++        run: |
++          set -euo pipefail
++          mkdir -p image-evidence
++          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
++          docker build --label "org.opencontainers.image.revision=$SOURCE_SHA" -f server/src/FantasyCard.Server/Dockerfile -t "cloud-check-runtime:$SOURCE_SHA" . > image-evidence/build.log 2>&1
++          docker build --target build -f server/src/FantasyCard.Server/Dockerfile -t "cloud-check-builder:$SOURCE_SHA" . > image-evidence/builder.log 2>&1
++      - name: Verify final DLLs, regressions, restart, Production and database outage
++        run: |
++          set -euo pipefail
++          python3 tools/cloud/validate_image.py --source . --image "cloud-check-runtime:$SOURCE_SHA" --builder "cloud-check-builder:$SOURCE_SHA" --source-sha "$SOURCE_SHA" --output image-evidence/image-validation.json > image-evidence/validation.log 2>&1
++      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
++        if: always()
++        with:
++          name: cloud-final-image-${{ github.run_id }}-${{ github.run_attempt }}
++          path: |
++            image-evidence/*.log
++            image-evidence/image-validation.json
++            image-evidence/diagnostics/**
++          retention-days: 14
++          if-no-files-found: warn
+diff --git a/.github/workflows/numerical-client.yml b/.github/workflows/numerical-client.yml
+index 7c74138a..f701dffb 100644
+--- a/.github/workflows/numerical-client.yml
++++ b/.github/workflows/numerical-client.yml
+@@ -52,10 +52,14 @@ jobs:
+           test "$code" -eq 0
+           grep -q '"ok":true' test-results/godot/numerics.log
+           ! grep -E 'SCRIPT ERROR|Parse Error' test-results/godot/numerics.log
+-      - uses: actions/upload-artifact@v7
++      - name: Stage only named numerical reports and fixture logs
++        id: numerical_evidence
+         if: always()
++        run: python3 tools/cloud/export_evidence.py --profile numerical-client --source test-results/godot --destination "$RUNNER_TEMP/numerical-client-public"
++      - uses: actions/upload-artifact@v7
++        if: always() && steps.numerical_evidence.outputs.artifact_directory != ''
+         with:
+           name: numerical-godot-${{ github.sha }}
+-          path: test-results/godot
++          path: ${{ steps.numerical_evidence.outputs.artifact_directory }}
+           retention-days: 7
+           if-no-files-found: ignore
+diff --git a/.github/workflows/test-server-deploy.yml b/.github/workflows/test-server-deploy.yml
+new file mode 100644
+index 00000000..46432e8b
+--- /dev/null
++++ b/.github/workflows/test-server-deploy.yml
+@@ -0,0 +1,213 @@
++name: Owner-confirmed silicon valley test deployment
++
++on:
++  workflow_dispatch:
++    inputs:
++      pr_number:
++        description: Same-repository open PR targeting release (freeze before dispatch)
++        required: true
++        type: string
++      confirm_source_sha:
++        description: Owner confirms deployment of this exact full SHA (repeat commit_sha)
++        required: true
++        type: string
++      rollback_baseline_sha:
++        description: Full running baseline SHA reviewed for application rollback compatibility
++        required: true
++        type: string
++      confirm_rollback_compatibility:
++        description: Data and snapshot contracts were reviewed as compatible with this rollback baseline
++        required: true
++        default: false
++        type: boolean
++      confirm_restart:
++        description: I authorize this test deployment and necessary application restart
++        required: true
++        default: false
++        type: boolean
++      commit_sha:
++        description: Reviewed full 40-character lowercase PR head SHA
++        required: true
++        type: string
++
++permissions:
++  contents: read
++
++concurrency:
++  group: silicon-valley-test-deploy
++  cancel-in-progress: false
++
++jobs:
++  validate:
++    if: github.repository == 'AlenSheng/godot_FanstaryCard' && github.ref == 'refs/heads/release'
++    runs-on: ubuntu-24.04
++    timeout-minutes: 5
++    permissions:
++      contents: read
++      pull-requests: read
++      actions: read
++    outputs:
++      source_sha: ${{ steps.source.outputs.source_sha }}
++      pr_number: ${{ steps.source.outputs.pr_number }}
++    steps:
++      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
++        with:
++          ref: ${{ github.sha }}
++          persist-credentials: false
++      - name: Validate release controller, exact owner confirmation and live branch policy
++        id: source
++        env:
++          GH_TOKEN: ${{ github.token }}
++          PR_NUMBER: ${{ inputs.pr_number }}
++          COMMIT_SHA: ${{ inputs.commit_sha }}
++          ROLLBACK_BASELINE_SHA: ${{ inputs.rollback_baseline_sha }}
++          CONFIRM_ROLLBACK_COMPATIBILITY: ${{ inputs.confirm_rollback_compatibility }}
++          CONFIRM_SOURCE_SHA: ${{ inputs.confirm_source_sha }}
++          CONFIRM_RESTART: ${{ inputs.confirm_restart }}
++          TEST_DEPLOY_APPROVAL_MODE: ${{ vars.TEST_DEPLOY_APPROVAL_MODE }}
++          TEST_DEPLOY_ENABLED: ${{ vars.TEST_DEPLOY_ENABLED }}
++          TEST_DEPLOY_APPROVED_WORKFLOW_SHA: ${{ vars.TEST_DEPLOY_APPROVED_WORKFLOW_SHA }}
++        run: python3 tools/cloud/deployment.py preflight --output evidence/preflight.json
++      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
++        with:
++          name: deploy-preflight-${{ github.run_id }}-${{ github.run_attempt }}
++          path: evidence/preflight.json
++          retention-days: 14
++
++  build:
++    needs: validate
++    runs-on: ubuntu-24.04
++    timeout-minutes: 70
++    services:
++      postgres:
++        image: postgres:18
++        env:
++          POSTGRES_DB: fantasycard_test
++          POSTGRES_USER: postgres
++          POSTGRES_PASSWORD: postgres
++        ports: ['5432:5432']
++        options: >-
++          --health-cmd "pg_isready -U postgres -d fantasycard_test"
++          --health-interval 5s --health-timeout 5s --health-retries 12
++    outputs:
++      artifact_id: ${{ steps.image.outputs.artifact-id }}
++    steps:
++      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
++        with:
++          ref: ${{ github.sha }}
++          path: trusted
++          persist-credentials: false
++      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
++        with:
++          ref: ${{ needs.validate.outputs.source_sha }}
++          path: source
++          persist-credentials: false
++      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
++        with:
++          name: deploy-preflight-${{ github.run_id }}-${{ github.run_attempt }}
++          path: evidence
++      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
++        with:
++          global-json-file: source/server/global.json
++      - name: Test exact source with the existing Domain and PostgreSQL regressions
++        working-directory: source
++        env:
++          EXPECTED_SHA: ${{ needs.validate.outputs.source_sha }}
++          FANTASYCARD_TEST_POSTGRES: Host=127.0.0.1;Port=5432;Username=postgres;Password=postgres;Database=fantasycard_test
++        run: |
++          set -euo pipefail
++          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
++          mkdir -p ../evidence/tests
++          dotnet --info > ../evidence/tests/dotnet.txt
++          dotnet test server/tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj -c Release --logger 'trx;LogFileName=domain.trx' --results-directory "$GITHUB_WORKSPACE/evidence/tests"
++          dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --logger 'trx;LogFileName=postgres.trx' --results-directory "$GITHUB_WORKSPACE/evidence/tests"
++      - name: Require executed PostgreSQL results with no failed or skipped cases
++        run: python3 trusted/tools/cloud/deployment.py tests --directory evidence/tests
++      - name: Build the existing Dockerfile and archive the immutable tested image
++        env:
++          SOURCE_SHA: ${{ needs.validate.outputs.source_sha }}
++        run: |
++          set -euo pipefail
++          mkdir -p image-artifact
++          python3 trusted/tools/cloud/deployment.py health --updater trusted/server/deploy/fantasycard-update.sh --output image-artifact/health.sh
++          docker build --label "org.opencontainers.image.revision=$SOURCE_SHA" --file source/server/src/FantasyCard.Server/Dockerfile --tag "fantasycard-test:$SOURCE_SHA" source 2>&1 | tee evidence/build.log
++          git -C source diff --exit-code -- . ':!**/obj/**' ':!**/bin/**'
++          docker build --target build --file source/server/src/FantasyCard.Server/Dockerfile --tag "fantasycard-test-builder:$SOURCE_SHA" source > evidence/builder.log 2>&1
++          python3 trusted/tools/cloud/validate_image.py --source source --image "fantasycard-test:$SOURCE_SHA" --builder "fantasycard-test-builder:$SOURCE_SHA" --source-sha "$SOURCE_SHA" --output image-artifact/image-validation.json --diagnostics evidence/image-diagnostics > evidence/image-validation.log 2>&1
++          docker save "fantasycard-test:$SOURCE_SHA" | gzip -1 > image-artifact/image.tar.gz
++          python3 trusted/tools/cloud/deployment.py manifest --preflight evidence/preflight.json --archive image-artifact/image.tar.gz --image-tag "fantasycard-test:$SOURCE_SHA" --output image-artifact/manifest.json
++      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
++        id: image
++        with:
++          name: tested-image-${{ github.run_id }}-${{ github.run_attempt }}
++          path: |
++            image-artifact/image.tar.gz
++            image-artifact/manifest.json
++            image-artifact/image-validation.json
++          retention-days: 7
++          if-no-files-found: error
++      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
++        if: always()
++        with:
++          name: deploy-build-tests-${{ github.run_id }}-${{ github.run_attempt }}
++          path: evidence
++          retention-days: 14
++
++  deploy:
++    needs: [validate, build]
++    if: github.repository == 'AlenSheng/godot_FanstaryCard' && github.ref == 'refs/heads/release'
++    runs-on: ubuntu-24.04
++    timeout-minutes: 50
++    environment:
++      name: silicon-valley-test
++      url: https://www.relicbound.cn/health/ready
++    permissions:
++      contents: read
++      pull-requests: read
++      actions: read
++    steps:
++      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
++        with:
++          ref: ${{ github.sha }}
++          path: trusted
++          persist-credentials: false
++      - name: Revalidate source and protections before secret access
++        env:
++          GH_TOKEN: ${{ github.token }}
++          PR_NUMBER: ${{ needs.validate.outputs.pr_number }}
++          COMMIT_SHA: ${{ needs.validate.outputs.source_sha }}
++          ROLLBACK_BASELINE_SHA: ${{ inputs.rollback_baseline_sha }}
++          CONFIRM_ROLLBACK_COMPATIBILITY: ${{ inputs.confirm_rollback_compatibility }}
++          CONFIRM_SOURCE_SHA: ${{ inputs.confirm_source_sha }}
++          CONFIRM_RESTART: ${{ inputs.confirm_restart }}
++          TEST_DEPLOY_APPROVAL_MODE: ${{ vars.TEST_DEPLOY_APPROVAL_MODE }}
++          TEST_DEPLOY_ENABLED: ${{ vars.TEST_DEPLOY_ENABLED }}
++          TEST_DEPLOY_APPROVED_WORKFLOW_SHA: ${{ vars.TEST_DEPLOY_APPROVED_WORKFLOW_SHA }}
++        run: python3 trusted/tools/cloud/deployment.py preflight --output deploy-evidence/preflight.json
++      - name: Verify artifact API identity from this run and attempt
++        env:
++          GH_TOKEN: ${{ github.token }}
++          ARTIFACT_ID: ${{ needs.build.outputs.artifact_id }}
++        run: python3 trusted/tools/cloud/deployment.py artifact --id "$ARTIFACT_ID"
++      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
++        with:
++          artifact-ids: ${{ needs.build.outputs.artifact_id }}
++          path: image-artifact
++          merge-multiple: true
++      - name: Transfer, deploy and verify tested image using strict SSH host verification
++        env:
++          COMMIT_SHA: ${{ needs.validate.outputs.source_sha }}
++          TEST_SERVER_SSH_KEY: ${{ secrets.TEST_SERVER_SSH_KEY }}
++          TEST_SERVER_KNOWN_HOSTS: ${{ secrets.TEST_SERVER_KNOWN_HOSTS }}
++        run: python3 trusted/tools/cloud/ship.py
++      - name: Write acceptance evidence location
++        if: always()
++        run: |
++          printf 'Controlled test deployment evidence: deploy-acceptance-%s-%s\n\nPR13 full acceptance remains governed by its independent register.\n' "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" >> "$GITHUB_STEP_SUMMARY"
++      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
++        if: always()
++        with:
++          name: deploy-acceptance-${{ github.run_id }}-${{ github.run_attempt }}
++          path: deploy-evidence
++          retention-days: 30
++          if-no-files-found: warn
+diff --git a/docs/CLOUD_TEST_DEPLOYMENT_20260930.md b/docs/CLOUD_TEST_DEPLOYMENT_20260930.md
+new file mode 100644
+index 00000000..f63d568e
+--- /dev/null
++++ b/docs/CLOUD_TEST_DEPLOYMENT_20260930.md
+@@ -0,0 +1,252 @@
++# Codex Cloud 与受控测试服流水线（2026-09-30）
++
++> 2026-10-01 最小集成候选说明：仅提取 PR14 `262390134e98f169899d076e6fa21926d44ba1aa`
++> 的控制器、工具和本说明，加上 PR18 测试代码 `cc216e07cb63a1fb2d96430f09effc6452ae57fa`
++> 的 Cloud artifact 白名单、导出器及测试，并将同一暂存/上传修正应用到 release
++> 已有的旧版 Numerical 工作流。未合并 PR15/17/18 验证分支，未引入 PR13
++> 业务/UI、兼容 harness 或验证专用工作流。候选准备基线为 release
++> `28c6c7e7d3898e4d2abd186f53361477ba380330`；server/client/config/protocol 内容不变。
++> 此旧应用基线的已知接口编译不一致与 Rooms 兼容性阻断仍有效，不能部署或热回滚。
++> 本地控制器检查不代替最终应用镜像、真实 Environment API、SSH 或线上验收。
++>
++> release 基线没有 Gameplay 工作流，故该项修正保留在
++> [Draft PR18](https://github.com/AlenSheng/godot_FanstaryCard/pull/18)，等相应工作流进入
++> 发布基线时另行提取。Numerical 仅增加白名单暂存/上传，没有携带其 PR13 新版本的
++> .NET 安装、Godot 版本/命令调整、preview 对照脚本或触发路径变化。
++> 用户已批准审核和测试后的最小集成，实际
++> release/main 写入须待父任务独立审核此固定候选；准备阶段没有写入两分支、设置
++> 启用变量、手动触发部署或读取 secret 值。默认 main 的单文件注册入口恒不执行，
++> 真正运行仍须明确选择 release，并通过全部原有门禁。
++>
++> 2026-10-01 单次免费 CI 恢复验证仅重跑 [Numerical36769267487](https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/36769267487)：
++> final PR18 `2f1071763fca5f73a7464471f80168ea0854c3ad`、attempt2 实际执行并成功。
++> 没有修改预算/付款/权限，也没有重试另外两项；不声称 PR18 final head 全 CI 通过。
++
++当前结论：**配置已实现并完成下列离线／本地隔离验证；尚不可部署。**
++PR14 集成基线为 `release`，开发分支为 `codex/cloud-test-deployment-20260930`。
++PR13 的实现及 132 项验收独立进行；本报告不能替代它。
++
++## 授权与实际配置
++
++- 用户指定 `release` 为开发、发布和受信任控制器来源。默认分支目前仍为
++  `main`；此次没有修改默认分支，也没有合并或启用自动合并。
++- 用户已批准明确的 **`owner_dispatch` 人工触发模式**。它不使用当前不可用的
++  GitHub Required reviewers，也不声称配置了 GitHub 人工审批保护。
++- 父任务通过用户界面核验 `silicon-valley-test` 为仅 `release` 的一条 Branch
++  规则、0 tags；两个 Secret **名称**已存在。私钥由用户亲自录入，工具没有
++  读取、导出或复制其值。公开主机公钥来自此前成功严格登录所匹配的记录，
++  不是未验证扫描。**CI 登录仍未验证。**
++- 用户 15:10 UTC 已授权任务推进所需的测试服重启。该授权不触发每次 push、
++  PR 或 CI 自动重启，也不免除固定部署版本、构建、兼容性、互斥和证据门槛。
++  本任务没有进行任何线上部署、重启或数据库恢复。线上操作先交父任务协调。
++- `ubuntu@43.172.70.182:22` 的 sudo Docker 权限可控制整台测试服。它只进入
++  Environment 部署作业的单个传输步骤，不进入 PR／构建／静态检查作业。
++  未创建服务器凭据、注册 runner、安装持久权限或改变服务器安全设置。
++
++GitHub 官方说明：私有仓库的 Environment 分支／Secret 能力和 Required
++reviewers 能力不是同一功能；Free／Pro／Team 的 Required reviewers 限公开
++仓库。不能从 Environment 已存在推断其审批功能可用。
++[官方 Environment 文档](https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/manage-environments)。
++当前 Cloud `gh api` 读取 Environment 返回 Forbidden；没有绕过网络限制。
++运行时必须重新读取真实 API 配置，无法读取即失败，不凭 UI 报告放行。
++
++## 每次运行的信任边界
++
++`test-server-deploy.yml` 只有 `workflow_dispatch`，无 push、PR、定时或完成事件。
++只允许 canonical repository 的 `refs/heads/release`。控制器完整 SHA 必须等于
++`TEST_DEPLOY_APPROVED_WORKFLOW_SHA`。用户需先审查这一控制器版本；变量不能
++代替代码审查。Environment API 必须证明只允许准确的 `release` Branch，
++禁止 main、通配符、额外分支、tags、缺失类型或分页未完整核验的结果。
++
++触发者和再次触发者必须是固定 owner `AlenSheng` / ID `20944685`；仓库 owner
++ID 也必须一致。重跑 attempt > 1 被拒绝，需新建一次有记录的 dispatch。
++每次输入 PR 号、完整目标 SHA、重复的目标 SHA、必要应用重启确认、已审查
++回退基线完整 SHA，以及数据／快照兼容性确认。PR 必须仍开放、同仓库、
++指向 release 且 head 未移动。输入经验证后才进入命令参数；没有表达式直接
++插入 shell 输入。以上确认记录随运行 ID、attempt、控制器 SHA 进入 manifest。
++必要重启可根据已有任务授权由父任务协调确认；不需要再次询问睡着的用户。
++
++部署启用前的 repository variables：
++
++| 名称 | 值／条件 |
++| --- | --- |
++| `TEST_DEPLOY_ENABLED` | 仅父任务确认全部门槛后设为 `true`；当前任务没有设置 |
++| `TEST_DEPLOY_APPROVAL_MODE` | 明确设为 `owner_dispatch`，不接受隐式降级 |
++| `TEST_DEPLOY_APPROVED_WORKFLOW_SHA` | release 上经过审查的完整控制器 SHA |
++
++构建使用固定目标 SHA、无服务器密钥，执行 Domain／Server 测试并拒绝失败、
++跳过或缺少实际 PostgreSQL 用例的 TRX。现有 Dockerfile 没有提交 ARG／LABEL，
++因此由受信任的 `docker build --label org.opencontainers.image.revision=...`
++设置 OCI revision。随后构建匹配的私有 build stage，复用现有
++`tools/validate_docker_server.py` 验证最终混淆 DLL/hash、Linux 全套测试、
++HTTP/WebSocket、强制重启、Production 本地认证禁用、DB outage/recovery 和清理。
++仅通过后才能生成部署 manifest。验证工具拒绝存在真实 release key 的 checkout；
++测试用 admin 值只存在于可丢弃隔离容器。私有编译产物、映射、DB dump、应用日志
++和 `.env` 不上传到部署证据；部署 artifact 只有镜像、manifest 和清洁验证摘要。
++
++部署 runner 重新核验 API、固定 PR 和控制器。Artifact ID 来自本次 build 输出，
++API 必须证明正确名称／run／attempt／控制器 SHA、非过期、摘要和合理大小。
++manifest 严格限定字段，核验 archive／健康脚本／两个控制模块／最终镜像证明的
++SHA256。可执行控制器和健康脚本由新的可信 checkout 重新产生。
++SSH 不读默认配置、不开 agent forwarding、不用密码／全局 known_hosts；强制
++准确已有主机条目和 `StrictHostKeyChecking=yes`，不扫描、不隧道、不直接由 Cloud
++连接线上服务器。Secrets 在取出写入 runner 临时 `0600` 文件后从子进程环境移除，
++临时目录退出即删除。错误日志只输出异常类别／已知状态。
++
++## 事务、备份、回退与未知状态
++
++同一个 SSH 会话从 preflight 到外部接受／回滚持有
++`/tmp/fantasycard-update.lock`，与旧 updater 共享。GitHub concurrency 不取消
++已执行的部署。旧 updater 不应与此控制器同时操作，也不能在 active override
++存在时忽略它继续按分支构建。
++
++服务器 checkout、deployed-git marker、deployed-runtime marker 和运行 OCI
++revision 在锁内重新核验。此前只读旧基线为
++`8489fe97c7da71e1a5bfe1a860faf86fd4e0a4af`，镜像为
++`sha256:e7defa05caeb1188afb4cfc4390d96900bfc10afb4996ced23a042fb09132697`；
++这是旧版本，不能当作当前 PR13。现在代码不假定它仍在运行。
++
++回退门槛同时要求明确的版本兼容性审查和保守的差异阻断：Persistence、
++Server Rooms／Realtime、Domain、Contracts、csproj 迁移资源、启动入口、
++配置／Compose／部署文件等变化均阻断。路径检查本身不能证明 app-only 回退
++安全；人工兼容性确认也不能覆盖被阻断路径。需另行设计迁移兼容方案的目标
++不能偷偷跳过检查。程序／经济语义仍可能影响旧版对新数据的读取，审查必须
++覆盖这些语义，不能只看 SQL。
++
++服务器 `.env` 仅作为现有 Compose 的参数路径传入，从不读、打印或复制。
++备份用 `O_EXCL` 与 mode `0600` 安全创建，文件名含 run ID + attempt + source；
++要求非空、`pg_restore --list` 成功，记录清洁的文件名／长度／摘要。**不自动恢复
++数据库。** 新容器写入的数据仍留在数据库，回退只恢复应用镜像／override／marker。
++若不兼容或不可逆，保持阻塞，备份存在不等于安全自动回退。
++
++加载并验证不可变 image ID 与 OCI revision 后，持久化 `pending.json` 再激活。
++候选通过本地 readiness、TLS 和 admin 暴露检查后，状态为 `awaiting_external`。
++runner 从外部以真实 TLS 验证 readiness 和两个公共 admin 路径 404，再在同一
++会话中发 accept。EOF、坏输入、外部失败、取消和正常操作总期限触发补偿。
++只有本地＋外部通过、marker／accepted evidence 持久化成功后才移除 pending。
++日志写入失败不能阻止补偿；补偿失败或终态不能可靠保存时保留 pending 阻断后续。
++
++正常操作总预算 1500 秒，runner 为补偿预留 450 秒（控制会话 1950 秒），
++SSH 传输另有限时。inspect／identity 查询各 15 秒、compose up 180 秒、健康重试
++180 秒（单次 35 秒）。重复取消信号不打断补偿。SIGKILL／机器丢失／磁盘失效
++仍可能阻止补偿：本地进程退出绝不等于远端完成回退。拿不到合格远端证据时
++runner 写 `unknown` + `recovery_required`，CI 失败。不能自动重跑或清掉 pending。
++
++父任务协调后可使用**同一固定 bundle**进行显式恢复；不包含新版本激活：
++
++```text
++python3 /opt/fantasycard-app/test-deploy/incoming/<run>-<attempt>/remote_deploy.py \
++  --bundle /opt/fantasycard-app/test-deploy/incoming/<run>-<attempt> \
++  --source-sha <原固定SHA> --run-id <原run> --run-attempt <原attempt> \
++  --controller-sha <原控制器SHA> --recover
++```
++
++该命令即使恢复成功也返回失败部署语义；必须核对 `rolled_back`、旧镜像／marker、
++本地和外部健康，以及资产／持久数据证据。不要把 CLI 非零解释为回滚一定失败，
++也不要把无结果解释为成功。恢复期间仍用同一个共享锁。此任务未运行该线上命令。
++
++## Cloud 初始化和 Start
++
++仅支持无 root 的 Linux x64。默认工具目录 `/workspace/fantasycard-cloud-tools`。
++Debian 13 用官方发行包的固定 SHA256；其他发行版用锁定的官方 SDK tar。
++Godot 和 PostgreSQL 源码／便携构建工具均在下载后核验摘要，再安全解包。
++构建先在临时目录完成，验证版本后才替换工具目录；缓存不能跳过摘要。
++云镜像需已有 cc／make／Perl／Python venv／dpkg-deb 和运行库；缺失会明确失败，
++不会申请 sudo、注册 runner 或更改宿主权限。Install 需要既定包管理器和 NuGet
++域名访问。可用公开缓存 `FANTASYCARD_CLOUD_DOWNLOAD_CACHE`，以及独立 NuGet
++缓存 `FANTASYCARD_CLOUD_NUGET_CACHE`；不拷贝任何凭据。
++
++Install script：`bash tools/cloud/setup.sh`。
++Start：`source tools/cloud/env.sh`，然后 `bash tools/cloud/start.sh`。
++每个 shell 都必须 source；环境 UI 需使用可获得这些脚本的审查分支／固定版本。
++此次只完成仓库配置，没有声称已修改父任务环境 UI。
++
++PostgreSQL 只监听 mode `0700` 私有 Unix socket，host auth 为 reject，无 TCP。
++Start 有锁且不会让后台 postgres／MSBuild 继承锁；恢复只使用 NuGet 缓存。
++`bash tools/cloud/stop.sh` 可重复停止。
++`bash tools/cloud/check.sh` 运行基线回归、云模块测试及最小 Godot loopback fixtures，
++退出时清理该独立测试数据库并停止 PG。它不启动完整游戏的联网 autoload。
++
++## 默认分支工作流发现依赖
++
++GitHub 的 workflow_dispatch 入口要求该工作流文件存在于默认分支。
++[官方触发说明](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflow_dispatch)。
++默认 main 仍无本工作流；PR14 仍 Draft 且未集成 release。因此目前不能从 GitHub
++UI 运行受信任 release 控制器。
++
++最小后续方案：另行审查并授权在 **main** 增加同路径的纯注册工作流，只有相同
++workflow_dispatch inputs、`permissions: {}` 和 `if: false` 的占位 job，不带
++Environment、Secrets、checkout 或服务器操作。真正执行时在 UI／API 选
++`ref=release`，加载 release 上审查过的完整实现。main 只提供发现入口，不是
++发布基准或部署来源。也可另外授权将相同门禁工作流同步 main，其 jobs 仍严格
++只运行 release；改动范围更大。此次没有写 main，没有合并 PR14，也没有改默认分支。
++
++## 已执行证据与剩余阻塞
++
++以下验证都在独立 Cloud，未依赖个人电脑：
++
++| 项目 | 实际结果 |
++| --- | --- |
++| 精确接手提交／分支／初始工作区 | `1b49f4f22f83521fa055d73afc92107006b1f046`，干净 |
++| Digest-locked 新安装＋重复安装＋停止恢复 | 通过；独立 `/workspace/pr14-tools`，.NET 10.0.400／Godot 4.7.2／PG 18.6 |
++| 真实私有 PG 服务端回归 | 251 passed，0 failed，0 skipped |
++| Godot 最小项目／codec／loopback transport | 通过；173 + 19 checks，0 failures |
++| 云授权、artifact、事务、失败／信号测试 | 29 unittest 方法通过（含参数反例） |
++| 真实 Docker scratch + PG controller drill | 接受／外部拒绝回退／坏健康回退均通过；资产行 12345 不变，0600 dump 可列举；清理通过 |
++| actionlint v1.7.7（摘要核验）、Python 编译、全部 Bash 语法 | 通过；覆盖两个新增／改动工作流 |
++| PR14 交接基线 Domain 回归 | **失败**：CombatAuthoritativeRulesTests 引用源码缺少的 useConsumptionBasedFenxian／useFractionalGuardianWeapon／快照成员；未改 PR13 来修补 |
++| 最终游戏 Docker 本地构建／验证器 | **阻塞**：mcr.microsoft.com manifest 请求 Forbidden；没有扩大到全网或绕过限制 |
++| GitHub 静态／安装／最终镜像 CI | 推送后核验；最终结果记录在 PR14 和完成报告 |
++| 真实 Environment API／严格 SSH／线上 rollout | **未验证／未执行**；Secret 名称存在不代表登录成功 |
++
++初次真实恢复测试暴露后台进程继承 Start 锁的问题，已修正并验证停止／恢复。
++初次 scratch 容器因新 fixture 文件模式导致执行失败，已对新 fixture 的 COPY
++显式设置可执行模式后完成三条真实演练。没有修改既有服务器权限。
++服务端构建产生的 tracked bin/obj 已恢复，新增生成文件清理，不进入 PR14。
++完整本地日志保留在 `/workspace/pr14-*.log`，结构化结果在
++`/workspace/pr14-tools/evidence`；历史清洁摘要留在
++[固定 PR14 报告目录](https://github.com/AlenSheng/godot_FanstaryCard/tree/262390134e98f169899d076e6fa21926d44ba1aa/docs/reports/cloud-deployment-20260930)，
++不复制到最小集成候选。
++
++部署前父任务需要一次集中确认：审查并集成控制器／注册入口，固定完整目标 SHA
++与当前 baseline SHA，确认数据兼容性和线上独占窗口，检查启用变量、实际 API、
++最终镜像证明、Strict SSH、备份及回退点，再记录已有任务授权下的必要重启范围。
++若任一门槛失败，明确不可部署；CI 绿也不能等同 PR13 全量验收。
++
++## 0fddd35 的 CI 诊断与后续修复
++
++实际 PR CI run `36740272222`：static-and-mock 通过；install-and-local-transactions
++与 final-runtime-image 失败。最终 runtime/build stage 均已构建成功；最终 DLL
++摘要和混淆差异检查完成，但全套测试得到 0 个结果，restart／Production／DB
++outage 尚未执行。因此仍 **不可部署**，不能用静态检查通过替代最终镜像验收。
++初次 artifact `11109133902` 仅包含构建日志、清洁摘要和验证器日志，遗漏了
++内层 tests.log／TRX，尚不足以定位内层失败。其后端报告 `cleanup.ok=true`。
++
++已修正 Start 的数据库存在性判断：直接捕获带 ON_ERROR_STOP 的 SQL 输出，
++精确判断 1／空值，查询失败直接传播；不依赖 runner 未安装的 rg，也不将失败
++查询当成不存在后重复 createdb。新增真实 Bash fixture 反例，验证重复启动
++只创建一次数据库，以及 SQL 错误不会触发创建。
++
++最终镜像包装器现在无论成功或失败均导出严格限定的测试日志／TRX／依赖
++摘要清单到 diagnostics，workflow 在失败时也上传。只含可丢弃隔离测试的
++文本证据；不会上传映射、DLL、dump、容器日志、runtime state 或真实凭据。
++Bearer、JWT 和显式凭据赋值会脱敏；新的测试验证诊断完整性和脱敏。
++新的 CI 仍须严格重跑最终镜像；若根因属于交接基线的 Domain 测试／实现
++不一致，报告该固定 SHA 的源码阻塞，不能改 PR13、跳过用例或伪造通过。
++
++
++重跑已核验（`260fba4b1a4d1073c1d96f9b3d123caf621a9823`，run
++[36745748831](https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/36745748831)）：
++static-and-mock 和 install-and-local-transactions **通过**，包含真实安装／缓存
++恢复／重复启动、三条 scratch+PG 事务演练、Godot fixture 和清理。
++final-runtime-image 的 runtime/build stage、最终 DLL/hash 与混淆差异检查
++通过，但全套测试在编译阶段遇到交接基线缺失接口（CS1739／CS1061）。
++新的 [artifact 11112133738](https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/36745748831/artifacts/11112133738)
++实际包含 `diagnostics/tests.log`；0 tests 和无 TRX 的原因已定位，而不是日志
++丢失。由于编译先失败，restart／Production／DB outage 仍未执行。此配置保持
++失败门槛，需兼容的固定源码版本完成最终镜像验收后才能部署。
++
++runner 还增加独立 `shipping.json`：只有外部接受、控制器正常退出和严格远端
++终态检查都成功才写 accepted。断连／取消时保持 unknown + recovery_required；
++即使此前远端写下 accepted，仍不能凭该文件推断已越过事务提交点。对应真实
++传输模拟反例已加入测试。完整云控制测试现为 32 个方法；没有扩大线上授权。
+diff --git a/tools/cloud/.gitignore b/tools/cloud/.gitignore
+new file mode 100644
+index 00000000..fc124a15
+--- /dev/null
++++ b/tools/cloud/.gitignore
+@@ -0,0 +1,2 @@
++.local/
++__pycache__/
+diff --git a/tools/cloud/check.sh b/tools/cloud/check.sh
+new file mode 100644
+index 00000000..f0ad74d0
+--- /dev/null
++++ b/tools/cloud/check.sh
+@@ -0,0 +1,27 @@
++#!/usr/bin/env bash
++set -euo pipefail
++cd "$(dirname "${BASH_SOURCE[0]}")/../.."
++source tools/cloud/env.sh
++bash tools/cloud/start.sh
++evidence="$FANTASYCARD_CLOUD_TOOLS/evidence"
++mkdir -p "$evidence"
++cleanup() {
++  result=$?
++  "$FANTASYCARD_CLOUD_TOOLS/postgres/bin/dropdb" -h "$FANTASYCARD_CLOUD_TOOLS/postgres-test/socket" -p 55432 -U postgres --if-exists fantasycard_test || result=1
++  bash tools/cloud/stop.sh || result=1
++  exit "$result"
++}
++trap cleanup EXIT
++git rev-parse HEAD > "$evidence/source.txt"
++dotnet --info > "$evidence/dotnet.txt"
++godot --version > "$evidence/godot.txt"
++[[ $(cat "$evidence/godot.txt") =~ ^4\.7\.2\. ]]
++"$FANTASYCARD_CLOUD_TOOLS/postgres/bin/psql" -h "$FANTASYCARD_CLOUD_TOOLS/postgres-test/socket" -p 55432 -U postgres -d postgres -Atc 'SELECT version()' > "$evidence/postgres.txt"
++dotnet test server/tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj -c Release --no-restore --logger 'trx;LogFileName=domain.trx' --results-directory "$evidence"
++dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --no-restore --logger 'trx;LogFileName=postgres.trx' --results-directory "$evidence"
++python3 tools/cloud/deployment.py tests --directory "$evidence" > "$evidence/test-counts.json"
++python3 -m unittest discover -s tools/cloud/tests -v > "$evidence/cloud-tests.log" 2>&1
++# The existing helper builds a minimal project with only codec/network fixtures;
++# it has no game autoloads and contacts only its disposable loopback HTTP server.
++python3 client/tests/run_http_protobuf_client.py --godot "$FANTASYCARD_CLOUD_TOOLS/godot/godot" --work-dir "$evidence/http-fixture" > "$evidence/godot-fixture.log" 2>&1
++printf 'Cloud regression complete; PR13 acceptance remains separate.\n'
+diff --git a/tools/cloud/deployment.py b/tools/cloud/deployment.py
+new file mode 100644
+index 00000000..fb5497bd
+--- /dev/null
++++ b/tools/cloud/deployment.py
+@@ -0,0 +1,264 @@
++"""Trusted-runner validation and build provenance. Never prints authentication values."""
++import argparse
++import hashlib
++import json
++import os
++import pathlib
++import re
++import subprocess
++import urllib.request
++import xml.etree.ElementTree as ET
++
++REPOSITORY = "AlenSheng/godot_FanstaryCard"
++ENVIRONMENT = "silicon-valley-test"
++TRUSTED_BRANCH = "release"
++APPROVAL_MODE = 'owner_dispatch'
++OWNER_ID = 20944685
++
++
++def sha(value):
++    if not isinstance(value, str) or not re.fullmatch(r"[0-9a-f]{40}", value):
++        raise ValueError("Expected a full lowercase commit SHA")
++    return value
++
++
++def positive_integer(value):
++    if isinstance(value, bool) or not re.fullmatch(r"[1-9][0-9]{0,17}", str(value)):
++        raise ValueError("Expected a positive integer")
++    return int(value)
++
++
++def validate_pr(pr, number, commit):
++    sha(commit)
++    positive_integer(number)
++    if pr.get("number") != int(number) or pr.get("state") != "open":
++        raise ValueError("Deployment requires the selected open PR")
++    for side in ("head", "base"):
++        if (pr.get(side, {}).get("repo") or {}).get("full_name") != REPOSITORY:
++            raise ValueError("Forks and other repositories cannot be deployed")
++    if pr["base"]["ref"] != "release" or pr["head"]["sha"] != commit:
++        raise ValueError("PR source moved or has an unexpected target branch; freeze and retrigger")
++
++
++def api(path):
++    # Only a fixed GitHub API origin; user inputs cannot set an API URL.
++    request = urllib.request.Request(
++        "https://api.github.com/repos/" + REPOSITORY + path,
++        headers={"Authorization": "Bearer " + os.environ["GH_TOKEN"],
++                 "Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"},
++    )
++    # No redirects with an Authorization header, including API error redirects.
++    class NoRedirect(urllib.request.HTTPRedirectHandler):
++        def redirect_request(self, req, fp, code, msg, headers, newurl):
++            return None
++    with urllib.request.build_opener(NoRedirect).open(request, timeout=30) as response:
++        return json.load(response)
++
++
++def verify_environment(environment, branches, mode=APPROVAL_MODE):
++    if environment.get("name") != ENVIRONMENT:
++        raise ValueError("Test deployment environment is missing")
++    if mode != APPROVAL_MODE:
++        raise ValueError('Unapproved deployment authorization mode')
++    # This explicitly authorized mode has no GitHub required-reviewer gate.
++    # Live branch policy is still mandatory, never inferred from vars or UI notes.
++    policy = environment.get("deployment_branch_policy") or {}
++    allowed = branches.get("branch_policies", [])
++    if policy.get("custom_branch_policies") is not True or policy.get("protected_branches") is not False or len(allowed) != 1 or branches.get("total_count") != 1:
++        raise ValueError("Allow exactly the release branch in this test environment")
++    if allowed[0].get("name") != TRUSTED_BRANCH or allowed[0].get("type") != "branch":
++        raise ValueError("Environment must restrict deployment to release, without tags")
++
++
++def preflight(output):
++    if os.environ["GITHUB_REPOSITORY"] != REPOSITORY or os.environ["GITHUB_EVENT_NAME"] != "workflow_dispatch":
++        raise ValueError("Only manual dispatch from the canonical repository is allowed")
++    if os.environ["GITHUB_REF"] != "refs/heads/" + TRUSTED_BRANCH:
++        raise ValueError("Deployment controller must run from reviewed release")
++    repository = api("")
++    if repository.get("full_name") != REPOSITORY or not repository.get("default_branch"):
++        raise ValueError("Cannot verify canonical repository metadata")
++    if os.environ.get("TEST_DEPLOY_ENABLED") != "true":
++        raise ValueError("Test deployment has not been enabled by the environment owner")
++    controller = sha(os.environ["GITHUB_SHA"])
++    if os.environ.get("TEST_DEPLOY_APPROVED_WORKFLOW_SHA") != controller:
++        raise ValueError("Pin TEST_DEPLOY_APPROVED_WORKFLOW_SHA to the reviewed controller commit")
++    number = positive_integer(os.environ["PR_NUMBER"])
++    commit = sha(os.environ["COMMIT_SHA"])
++    if os.environ.get('TEST_DEPLOY_APPROVAL_MODE') != APPROVAL_MODE:
++        raise ValueError('Owner dispatch mode must be explicitly enabled')
++    if os.environ.get('GITHUB_ACTOR_ID') != str(OWNER_ID) or os.environ.get('GITHUB_ACTOR') != 'AlenSheng' or os.environ.get('GITHUB_TRIGGERING_ACTOR') != 'AlenSheng':
++        raise ValueError('Only the repository owner may confirm a test deployment')
++    if repository.get('owner', {}).get('id') != OWNER_ID:
++        raise ValueError('Repository ownership changed; review authorization policy')
++    if positive_integer(os.environ['GITHUB_RUN_ATTEMPT']) != 1:
++        raise ValueError('Reruns require a new owner dispatch and confirmation')
++    if os.environ.get('CONFIRM_SOURCE_SHA') != commit or os.environ.get('CONFIRM_RESTART') != 'true':
++        raise ValueError('Confirm this exact SHA and necessary application restart')
++    baseline = sha(os.environ.get('ROLLBACK_BASELINE_SHA'))
++    if os.environ.get('CONFIRM_ROLLBACK_COMPATIBILITY') != 'true':
++        raise ValueError('Reviewed data/rollback compatibility is required')
++    pr = api(f"/pulls/{number}")
++    validate_pr(pr, number, commit)
++    environment = api("/environments/" + ENVIRONMENT)
++    branches = api("/environments/" + ENVIRONMENT + "/deployment-branch-policies")
++    verify_environment(environment, branches)
++    result = {"repository": REPOSITORY, "source_sha": commit, "pr_number": number,
++              "controller_sha": controller, "run_id": positive_integer(os.environ["GITHUB_RUN_ID"]),
++              "run_attempt": positive_integer(os.environ["GITHUB_RUN_ATTEMPT"]),
++              "environment": ENVIRONMENT, 'approval_mode': APPROVAL_MODE,
++              'approved_actor_id': OWNER_ID, 'confirmed_source_sha': commit,
++              'restart_confirmed': True, 'rollback_baseline_sha': baseline,
++              'rollback_compatibility_confirmed': True}
++    output.parent.mkdir(parents=True, exist_ok=True)
++    output.write_text(json.dumps(result, indent=2) + "\n")
++    with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as stream:
++        stream.write(f"source_sha={commit}\npr_number={number}\n")
++
++
++def file_hash(path):
++    digest = hashlib.sha256()
++    with pathlib.Path(path).open("rb") as stream:
++        while block := stream.read(1024 * 1024):
++            digest.update(block)
++    return digest.hexdigest()
++
++
++MANIFEST_FIELDS = frozenset(('format', 'repository', 'source_sha', 'pr_number', 'controller_sha',
++    'run_id', 'run_attempt', 'environment', 'image_id', 'archive_sha256', 'health_sha256',
++    'remote_sha256', 'deployment_sha256', 'approval_mode', 'approved_actor_id',
++    'confirmed_source_sha', 'restart_confirmed', 'rollback_baseline_sha',
++    'rollback_compatibility_confirmed', 'image_validation_sha256'))
++
++
++def validate_manifest(data, source_sha, run_id, run_attempt, controller_sha):
++    sha(source_sha)
++    sha(controller_sha)
++    if not isinstance(data, dict) or set(data) != MANIFEST_FIELDS:
++        raise ValueError("Unexpected manifest fields")
++    if type(data['format']) is not int or data['format'] != 2 or data['repository'] != REPOSITORY or data['environment'] != ENVIRONMENT:
++        raise ValueError("Unexpected manifest identity")
++    if data['source_sha'] != source_sha or data['controller_sha'] != controller_sha:
++        raise ValueError("Artifact source/controller differs from approval")
++    if data['approval_mode'] != APPROVAL_MODE or type(data['approved_actor_id']) is not int or data['approved_actor_id'] != OWNER_ID or data['confirmed_source_sha'] != source_sha or data['restart_confirmed'] is not True:
++        raise ValueError('Artifact has no exact owner deployment confirmation')
++    sha(data['rollback_baseline_sha'])
++    if data['rollback_compatibility_confirmed'] is not True:
++        raise ValueError('Missing reviewed application rollback compatibility')
++    for field, expected in (('run_id', run_id), ('run_attempt', run_attempt)):
++        if type(data[field]) is not int or data[field] != positive_integer(expected):
++            raise ValueError("Artifact belongs to another run/attempt")
++    if type(data['pr_number']) is not int:
++        raise ValueError("Invalid PR identity")
++    positive_integer(data['pr_number'])
++    for field in ('archive_sha256', 'health_sha256', 'remote_sha256', 'deployment_sha256', 'image_validation_sha256'):
++        if not isinstance(data[field], str) or not re.fullmatch(r'[0-9a-f]{64}', data[field]):
++            raise ValueError("Malformed checksum")
++    if not isinstance(data['image_id'], str) or not re.fullmatch(r'sha256:[0-9a-f]{64}', data['image_id']):
++        raise ValueError("Malformed immutable image ID")
++
++
++def verify_artifact(artifact, artifact_id, run_id, run_attempt, controller_sha):
++    positive_integer(artifact_id)
++    workflow = artifact.get('workflow_run') or {}
++    if artifact.get('id') != artifact_id or artifact.get('expired') is not False:
++        raise ValueError('Artifact is unavailable')
++    if artifact.get('name') != f'tested-image-{run_id}-{run_attempt}' or workflow.get('id') != run_id or workflow.get('head_sha') != controller_sha:
++        raise ValueError('Artifact API provenance differs from this controller run')
++    if not isinstance(artifact.get('digest'), str) or not re.fullmatch(r'sha256:[0-9a-f]{64}', artifact['digest']):
++        raise ValueError('Artifact has no verifiable Actions digest')
++    if not 0 < artifact.get('size_in_bytes', 0) <= 4 * 1024 ** 3:
++        raise ValueError('Unexpected artifact size')
++
++
++def verify_tests(directory):
++    """Require real Domain + Server results, including executed PostgreSQL cases."""
++    summary = {}
++    for label in ('domain', 'postgres'):
++        root = ET.parse(pathlib.Path(directory) / (label + '.trx')).getroot()
++        results = root.findall('.//{*}UnitTestResult')
++        if not results or any(row.get('outcome') != 'Passed' for row in results):
++            raise ValueError('Failed, skipped or missing regression result')
++        if label == 'postgres' and not any('PostgresRuntimeIntegrationTests.' in row.get('testName', '') for row in results):
++            raise ValueError('PostgreSQL integration tests did not execute')
++        summary[label] = len(results)
++    return summary
++
++
++def validate_image_proof(proof, image_id, source_sha):
++    fields = {'ok', 'source_sha', 'image_id', 'assemblies', 'tests', 'runtime_uid',
++              'restart_test_passed', 'database_outage', 'production_local_auth_status', 'cleanup_ok'}
++    if not isinstance(proof, dict) or set(proof) != fields or proof['ok'] is not True or proof['image_id'] != image_id or proof['source_sha'] != source_sha:
++        raise ValueError('Invalid final-image validation identity')
++    if proof['restart_test_passed'] is not True or proof['cleanup_ok'] is not True or proof['production_local_auth_status'] != 404 or proof['database_outage'] != {'ready':503,'live':200,'recovered':200}:
++        raise ValueError('Incomplete runtime/restart/Production/DB-outage evidence')
++    if not isinstance(proof['runtime_uid'], str) or not proof['runtime_uid'].isdecimal() or int(proof['runtime_uid']) == 0:
++        raise ValueError('Runtime must use a non-root UID')
++    counts = proof['tests']
++    if not isinstance(counts, dict) or set(counts) != {'total','passed','failed','notExecuted'} or any(type(value) is not int for value in counts.values()) or counts['total'] <= 0 or counts['total'] != counts['passed'] or counts['failed'] or counts['notExecuted']:
++        raise ValueError('Final-image tests failed, skipped or absent')
++    assemblies = proof['assemblies']
++    if not isinstance(assemblies, dict) or set(assemblies) != {'FantasyCard.Contracts.dll','FantasyCard.Domain.dll','FantasyCard.Server.dll'} or any(not isinstance(value, str) or not re.fullmatch(r'[0-9a-f]{64}',value) for value in assemblies.values()):
++        raise ValueError('Missing final DLL hashes')
++
++
++def extract_health(updater, output):
++    # Reuse the existing deployment checks without executing its branch-following updater.
++    content = pathlib.Path(updater).read_text(encoding="utf-8")
++    start = content.index("domain_certificate_ok() {\n")
++    end = content.index("normalize_monitoring_permissions() {\n", start)
++    functions = content[start:end]
++    if "health_check() {\n" not in functions:
++        raise ValueError("Existing deployment health-check interface changed")
++    pathlib.Path(output).write_text("#!/usr/bin/env bash\nset -euo pipefail\n" + functions + "\nhealth_check\n", encoding="utf-8")
++
++
++def manifest(preflight_file, archive, image_tag, output):
++    source = json.loads(pathlib.Path(preflight_file).read_text())
++    sha(source["source_sha"])
++    image_id = subprocess.check_output(["docker", "image", "inspect", "--format", "{{.Id}}", image_tag], text=True).strip()
++    revision = subprocess.check_output(["docker", "image", "inspect", "--format", '{{index .Config.Labels "org.opencontainers.image.revision"}}', image_tag], text=True).strip()
++    if revision != source["source_sha"] or not re.fullmatch(r"sha256:[0-9a-f]{64}", image_id):
++        raise ValueError("Built image provenance did not match the frozen source")
++    proof_path = pathlib.Path(output).parent / 'image-validation.json'
++    proof = json.loads(proof_path.read_text())
++    validate_image_proof(proof, image_id, source['source_sha'])
++    source.update({"format": 2, "image_id": image_id, "archive_sha256": file_hash(archive),
++                   "health_sha256": file_hash(pathlib.Path(output).parent / "health.sh"),
++                   "remote_sha256": file_hash(pathlib.Path(__file__).with_name('remote_deploy.py')),
++                   "deployment_sha256": file_hash(__file__),
++                   'image_validation_sha256': file_hash(proof_path)})
++    validate_manifest(source, source['source_sha'], source['run_id'], source['run_attempt'], source['controller_sha'])
++    pathlib.Path(output).write_text(json.dumps(source, indent=2) + "\n")
++
++
++if __name__ == "__main__":
++    parser = argparse.ArgumentParser()
++    commands = parser.add_subparsers(dest="command", required=True)
++    p = commands.add_parser("preflight")
++    p.add_argument("--output", type=pathlib.Path, required=True)
++    p = commands.add_parser("health")
++    p.add_argument("--updater", required=True)
++    p.add_argument("--output", required=True)
++    p = commands.add_parser('tests')
++    p.add_argument('--directory', required=True)
++    p = commands.add_parser('artifact')
++    p.add_argument('--id', type=int, required=True)
++    p = commands.add_parser("manifest")
++    p.add_argument("--preflight", required=True)
++    p.add_argument("--archive", required=True)
++    p.add_argument("--image-tag", required=True)
++    p.add_argument("--output", required=True)
++    args = parser.parse_args()
++    if args.command == "preflight":
++        preflight(args.output)
++    elif args.command == "health":
++        extract_health(args.updater, args.output)
++    elif args.command == 'manifest':
++        manifest(args.preflight, args.archive, args.image_tag, args.output)
++    elif args.command == 'tests':
++        print(json.dumps(verify_tests(args.directory)))
++    else:
++        verify_artifact(api(f'/actions/artifacts/{positive_integer(args.id)}'), args.id,
++                        positive_integer(os.environ['GITHUB_RUN_ID']),
++                        positive_integer(os.environ['GITHUB_RUN_ATTEMPT']), sha(os.environ['GITHUB_SHA']))
+diff --git a/tools/cloud/env.sh b/tools/cloud/env.sh
+new file mode 100644
+index 00000000..98d306c3
+--- /dev/null
++++ b/tools/cloud/env.sh
+@@ -0,0 +1,16 @@
++#!/usr/bin/env bash
++# Source for each shell; install-script exports are not persistent.
++export FANTASYCARD_CLOUD_TOOLS="${FANTASYCARD_CLOUD_TOOLS:-/workspace/fantasycard-cloud-tools}"
++if [[ -x "$FANTASYCARD_CLOUD_TOOLS/dotnet/usr/share/dotnet/dotnet" ]]; then
++  export DOTNET_ROOT="$FANTASYCARD_CLOUD_TOOLS/dotnet/usr/share/dotnet"
++else
++  export DOTNET_ROOT="$FANTASYCARD_CLOUD_TOOLS/dotnet"
++fi
++export PATH="$FANTASYCARD_CLOUD_TOOLS/venv/bin:$DOTNET_ROOT:$FANTASYCARD_CLOUD_TOOLS/godot:$FANTASYCARD_CLOUD_TOOLS/postgres/bin:$PATH"
++export DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=1
++export DOTNET_CLI_HOME="$FANTASYCARD_CLOUD_TOOLS/dotnet-home"
++export NUGET_PACKAGES="${FANTASYCARD_CLOUD_NUGET_CACHE:-$FANTASYCARD_CLOUD_TOOLS/nuget}"
++export FANTASYCARD_TEST_POSTGRES="Host=$FANTASYCARD_CLOUD_TOOLS/postgres-test/socket;Port=55432;Username=postgres;Database=fantasycard_test"
++export XDG_CACHE_HOME="$FANTASYCARD_CLOUD_TOOLS/client/cache"
++export XDG_CONFIG_HOME="$FANTASYCARD_CLOUD_TOOLS/client/config"
++export XDG_DATA_HOME="$FANTASYCARD_CLOUD_TOOLS/client/data"
+diff --git a/tools/cloud/export_evidence.py b/tools/cloud/export_evidence.py
+new file mode 100644
+index 00000000..23463d57
+--- /dev/null
++++ b/tools/cloud/export_evidence.py
+@@ -0,0 +1,118 @@
++"""Stage only named Godot CI reports; never walk runtime or credential trees."""
++import argparse
++import hashlib
++import json
++import os
++from pathlib import Path
++import re
++import stat
++
++
++HTTP_FIXTURE = tuple('http-fixture/' + name for name in
++                     ('results.json', 'import.log', 'codec.log', 'transport.log'))
++PROFILES = {
++    'cloud-local': ('source.txt', 'dotnet.txt', 'godot.txt', 'postgres.txt',
++                    'domain.trx', 'postgres.trx', 'test-counts.json',
++                    'cloud-tests.log', 'godot-fixture.log', 'local-integration.json') + HTTP_FIXTURE,
++    'gameplay-client': ('godot-version.txt', 'import.log', 'load-parse.log',
++                        'client.log', 'lobby-race.log', 'http-boundary/boundary.log',
++                        'http-boundary/result.json', 'offline-cases/cases.jsonl',
++                        'offline-cases/report.json') + HTTP_FIXTURE,
++    'numerical-client': ('version.txt', 'import.log', 'numerics.log',
++                         'preview-parity/input.json', 'preview-parity/results.json',
++                         'preview-parity/manifest.json', 'preview-parity/server.log',
++                         'preview-parity/client.log'),
++}
++
++
++def scrub(value):
++    value = re.sub(r'-----BEGIN [^\r\n]*PRIVATE KEY-----.*?-----END [^\r\n]*PRIVATE KEY-----',
++                   '[redacted private key block]', value, flags=re.S)
++    value = re.sub(r'(?i)\bBearer[ \t]+[A-Za-z0-9._~+/-][A-Za-z0-9._~+/=-]*', 'Bearer [redacted]', value)
++    value = re.sub(r'\beyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\b', '[redacted JWT]', value)
++    return re.sub(r'(?im)^.*(?:TEST_SERVER_SSH_KEY|GH_TOKEN|accessToken|access_token|api[_-]?key|password)\s*["\']?\s*[:=].*$',
++                  '[redacted credential assignment]', value)
++
++
++def read_report(root_fd, relative):
++    """Open relative to pinned directory descriptors; reject links and devices."""
++    parts = Path(relative).parts
++    directory = os.dup(root_fd)
++    try:
++        for part in parts[:-1]:
++            child = os.open(part, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW,
++                            dir_fd=directory)
++            os.close(directory)
++            directory = child
++        descriptor = os.open(parts[-1], os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK,
++                             dir_fd=directory)
++        with os.fdopen(descriptor, 'rb') as stream:
++            info = os.fstat(stream.fileno())
++            if not stat.S_ISREG(info.st_mode) or info.st_nlink != 1:
++                raise ValueError('Report must be a regular file with one link')
++            return stream.read().decode('utf-8', errors='replace')
++    finally:
++        os.close(directory)
++
++
++def export(source, destination, profile):
++    source, destination = source.absolute(), destination.absolute()
++    if any(c in str(path) for path in (source, destination) for c in ('\r', '\n')):
++        raise ValueError('Evidence paths cannot contain line breaks')
++    if source.resolve() != source or destination.parent.resolve() != destination.parent:
++        raise ValueError('Evidence roots cannot have symlinked ancestors')
++    if source == destination or source in destination.parents or destination in source.parents:
++        raise ValueError('Evidence staging must be separate from its source')
++    # All three callers are Linux CI jobs. Fail closed on platforms lacking
++    # descriptor-relative, no-follow file access instead of following symlinks.
++    if not all(hasattr(os, flag) for flag in ('O_NOFOLLOW', 'O_DIRECTORY')):
++        raise ValueError('Evidence export requires no-follow directory access')
++    destination.mkdir(parents=True, exist_ok=False, mode=0o700)
++    inventory = {'profile': profile, 'files': [], 'missing': [], 'rejected': []}
++    root_fd = None
++    try:
++        try:
++            root_fd = os.open(source, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
++        except FileNotFoundError:
++            inventory['missing'] = list(PROFILES[profile])
++        except OSError as error:
++            inventory['rejected'].append({'name': '.', 'error': type(error).__name__})
++        if root_fd is not None:
++            for relative in PROFILES[profile]:
++                try:
++                    value = scrub(read_report(root_fd, relative)).encode('utf-8')
++                    target = destination / relative
++                    target.parent.mkdir(parents=True, exist_ok=True)
++                    with target.open('xb') as stream:
++                        stream.write(value)
++                    inventory['files'].append({'name': relative, 'bytes': len(value),
++                                               'sha256': hashlib.sha256(value).hexdigest()})
++                except FileNotFoundError:
++                    inventory['missing'].append(relative)
++                except (OSError, ValueError) as error:
++                    # Report only the fixed relative name and error class; do
++                    # not disclose a link target or accidentally printed data.
++                    inventory['rejected'].append({'name': relative, 'error': type(error).__name__})
++    finally:
++        if root_fd is not None:
++            os.close(root_fd)
++        (destination / 'evidence-inventory.json').write_text(json.dumps(inventory, indent=2) + '\n')
++    return inventory
++
++
++if __name__ == '__main__':
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--profile', choices=PROFILES, required=True)
++    parser.add_argument('--source', type=Path, required=True)
++    parser.add_argument('--destination', type=Path, required=True)
++    args = parser.parse_args()
++    result = export(args.source, args.destination, args.profile)
++    # Emit an upload location only after this process created a fresh staging
++    # directory. A pre-existing destination must never be uploaded on failure.
++    output = os.environ.get('GITHUB_OUTPUT')
++    if output:
++        with open(output, 'a', encoding='utf-8') as stream:
++            stream.write('artifact_directory=' + str(args.destination.absolute()) + '\n')
++    print(json.dumps({'profile': args.profile, 'exported': len(result['files']),
++                      'missing': len(result['missing']), 'rejected': len(result['rejected'])}))
++    raise SystemExit(1 if result['rejected'] else 0)
+diff --git a/tools/cloud/install_tools.py b/tools/cloud/install_tools.py
+new file mode 100644
+index 00000000..723dfe8a
+--- /dev/null
++++ b/tools/cloud/install_tools.py
+@@ -0,0 +1,136 @@
++"""Install digest-locked Linux x64 tools without root or persistent permissions."""
++import hashlib
++import json
++import os
++import pathlib
++import platform
++import shutil
++import subprocess
++import tarfile
++import tempfile
++import urllib.request
++import zipfile
++
++ROOT = pathlib.Path(__file__).resolve().parents[2]
++LOCK = json.loads(pathlib.Path(__file__).with_name('toolchain.json').read_text())
++
++
++def checksum(path, algorithm):
++    value = hashlib.new(algorithm)
++    with path.open('rb') as stream:
++        while block := stream.read(1024 * 1024):
++            value.update(block)
++    return value.hexdigest()
++
++
++def download(row, destination):
++    """Local caches are untrusted until checked; partial downloads are never used."""
++    if destination.is_file() and checksum(destination, row['algorithm']) == row['digest']:
++        return
++    temporary = destination.with_name(destination.name + '.download')
++    cache = os.environ.get('FANTASYCARD_CLOUD_DOWNLOAD_CACHE')
++    cached = pathlib.Path(cache) / destination.name if cache else None
++    try:
++        if cached and cached.is_file() and checksum(cached, row['algorithm']) == row['digest']:
++            shutil.copyfile(cached, temporary)
++        else:
++            request = urllib.request.Request(row['url'], headers={'User-Agent': 'fantasycard-cloud-setup'})
++            with urllib.request.urlopen(request, timeout=60) as response, temporary.open('wb') as stream:
++                shutil.copyfileobj(response, stream, 1024 * 1024)
++        if checksum(temporary, row['algorithm']) != row['digest']:
++            raise ValueError('Tool archive digest mismatch')
++        temporary.replace(destination)
++    finally:
++        temporary.unlink(missing_ok=True)
++
++
++def extract_zip(archive, destination):
++    expected = 'Godot_v4.7.2-stable_linux.x86_64'
++    with zipfile.ZipFile(archive) as source:
++        if source.namelist() != [expected]:
++            raise ValueError('Unexpected Godot archive layout')
++        source.extract(expected, destination)
++    (destination / expected).chmod(0o755)
++    (destination / 'godot').symlink_to(expected)
++
++
++def version(binary):
++    return subprocess.check_output([str(binary), '--version'], text=True, timeout=30).strip()
++
++
++def install(base, name, rows, build, binary, expected):
++    destination = base / name
++    stamp_value = '\n'.join(row['digest'] for row in rows) + '\n'
++    stamp = destination / '.verified-digest'
++    if destination.is_symlink():
++        raise ValueError('Tool destination cannot be a symlink')
++    if stamp.is_file() and stamp.read_text() == stamp_value and (destination / binary).is_file():
++        if expected in version(destination / binary):
++            return
++    archives = []
++    for row in rows:
++        archive = base / 'downloads' / row['url'].rsplit('/', 1)[-1]
++        download(row, archive)
++        archives.append(archive)
++    with tempfile.TemporaryDirectory(prefix=name + '-install-', dir=base) as directory:
++        stage = pathlib.Path(directory) / 'output'
++        stage.mkdir()
++        build(archives, stage, pathlib.Path(directory))
++        if expected not in version(stage / binary):
++            raise ValueError('Installed tool version differs from lock')
++        (stage / '.verified-digest').write_text(stamp_value)
++        # Only task-owned tool directories are replaced, after staging succeeds.
++        if destination.exists():
++            shutil.rmtree(destination)
++        stage.replace(destination)
++
++
++def main():
++    if platform.system() != 'Linux' or platform.machine() not in ('x86_64', 'AMD64') or os.geteuid() == 0:
++        raise SystemExit('Run cloud setup as an unprivileged Linux x64 user')
++    sdk = json.loads((ROOT / 'server/global.json').read_text())['sdk']['version']
++    if sdk != LOCK['dotnet']['version']:
++        raise ValueError('Repository SDK changed; review the toolchain lock')
++    base = pathlib.Path(os.environ.get('FANTASYCARD_CLOUD_TOOLS', '/workspace/fantasycard-cloud-tools'))
++    if not base.is_absolute() or base == pathlib.Path('/') or base.is_symlink():
++        raise ValueError('Expected a task-owned absolute tool directory')
++    base.mkdir(parents=True, exist_ok=True, mode=0o700)
++    (base / 'downloads').mkdir(exist_ok=True)
++    # Debian 13 uses the same signed-distribution package hashes as the published
++    # environment. Other distributions use the reviewed official SDK tar archive.
++    debian = pathlib.Path('/etc/os-release').read_text()
++    use_deb = 'ID=debian' in debian and 'VERSION_ID="13"' in debian
++    rows = LOCK['dotnet_debian13'] if use_deb else [LOCK['dotnet']]
++    def dotnet_build(archives, stage, work):
++        for archive in archives:
++            if use_deb:
++                subprocess.run(['dpkg-deb', '-x', str(archive), str(stage)], check=True)
++            else:
++                with tarfile.open(archive) as source:
++                    source.extractall(stage, filter='data')
++    install(base, 'dotnet', rows, dotnet_build,
++            'usr/share/dotnet/dotnet' if use_deb else 'dotnet', sdk)
++    install(base, 'godot', [LOCK['godot']], lambda files, stage, work: extract_zip(files[0], stage),
++            'godot', LOCK['godot']['version'] + '.')
++    def pg_build(archives, stage, work):
++        tools = work / 'build-tools'
++        for archive in archives[1:]:
++            subprocess.run(['dpkg-deb', '-x', str(archive), str(tools)], check=True)
++        with tarfile.open(archives[0]) as source:
++            source.extractall(work, filter='data')
++        source_dir = work / ('postgresql-' + LOCK['postgres']['version'])
++        env = dict(os.environ, PATH=str(tools / 'usr/bin') + ':' + os.environ['PATH'],
++                   BISON_PKGDATADIR=str(tools / 'usr/share/bison'), M4=str(tools / 'usr/bin/m4'))
++        log = base / 'postgres-build.log'
++        with log.open('w') as output:
++            for arguments in ([str(source_dir / 'configure'), '--prefix=' + str(stage), '--without-readline', '--without-icu'],
++                              ['make', '-j2'], ['make', 'install']):
++                subprocess.run(arguments, cwd=source_dir, env=env, stdout=output,
++                               stderr=subprocess.STDOUT, check=True, timeout=1200)
++    install(base, 'postgres', [LOCK['postgres'], *LOCK['build_tools']], pg_build,
++            'bin/postgres', LOCK['postgres']['version'])
++    print('Verified cloud toolchain installed in ' + str(base))
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/tools/cloud/local_integration.py b/tools/cloud/local_integration.py
+new file mode 100644
+index 00000000..de8a7fc0
+--- /dev/null
++++ b/tools/cloud/local_integration.py
+@@ -0,0 +1,164 @@
++"""Real Docker + private PostgreSQL transaction drill; no registry or server access.
++
++Compile a tiny static HTTP fixture into scratch images. This exercises the actual
++compose/image/backup controller, not the game's final protected runtime validator.
++"""
++import argparse
++import contextlib
++import io
++import json
++import os
++from pathlib import Path
++import shutil
++import subprocess
++import tempfile
++import time
++import types
++import urllib.error
++import urllib.request
++import uuid
++from unittest.mock import patch
++import deployment as d
++import remote_deploy as r
++
++C_SOURCE = r'''
++#include <sys/socket.h>
++#include <netinet/in.h>
++#include <unistd.h>
++#include <string.h>
++int main(int argc,char**argv){int s=socket(AF_INET,SOCK_STREAM,0),yes=1;
++setsockopt(s,SOL_SOCKET,SO_REUSEADDR,&yes,sizeof(yes));
++struct sockaddr_in a={.sin_family=AF_INET,.sin_port=htons(8080),.sin_addr.s_addr=0};
++if(bind(s,(void*)&a,sizeof(a))||listen(s,16))return 1;
++char b[4096];const char*ok="HTTP/1.1 200 OK\r\nContent-Length: 7\r\nConnection: close\r\n\r\nHealthy";
++const char*bad="HTTP/1.1 503 Unavailable\r\nContent-Length: 9\r\nConnection: close\r\n\r\nUnhealthy";
++for(;;){int c=accept(s,0,0);if(c<0)continue;read(c,b,sizeof(b));const char*v=argc>1?bad:ok;write(c,v,strlen(v));close(c);}}
++'''
++
++
++def main(output):
++    tools=Path(os.environ['FANTASYCARD_CLOUD_TOOLS'])
++    pg=tools/'postgres/bin';socket=tools/'postgres-test/socket'
++    token='pr14-local-'+uuid.uuid4().hex[:10]
++    database=token.replace('-','_')
++    images=[]
++    report={'ok':False,'uses_registry':False,'uses_online_server':False,'cases':[]}
++    with tempfile.TemporaryDirectory(prefix=token,dir='/tmp') as folder:
++        root=Path(folder);repo=root/'repo';repo.mkdir();app=root/'app';app.mkdir()
++        project=token
++        def command(*args,**kwargs):
++            kwargs.setdefault('stdout',subprocess.DEVNULL);kwargs.setdefault('stderr',subprocess.PIPE)
++            return subprocess.run(list(map(str,args)),check=True,timeout=kwargs.pop('timeout',120),**kwargs)
++        def capture(*args):return command(*args,stdout=subprocess.PIPE,text=True).stdout.strip()
++        def docker(*args,**kwargs):return command('docker','--config',root/'docker',*args,**kwargs)
++        def db(*args,**kwargs):return command(pg/args[0],'-h',socket,'-p','55432','-U','postgres',*args[1:],**kwargs)
++        def sql(statement):return db('psql','-d',database,'-v','ON_ERROR_STOP=1','-Atc',statement,stdout=subprocess.PIPE,text=True).stdout.strip()
++        baseline=source=broken=None
++        try:
++            command('git','init','-q',repo)
++            command('git','-C',repo,'config','user.name','Local fixture');command('git','-C',repo,'config','user.email','fixture@example.invalid')
++            (repo/'server').mkdir();compose=repo/'server/compose.cloud.yaml'
++            compose.write_text(f'name: {project}\nservices:\n  server:\n    image: placeholder\n    ports: ["127.0.0.1::8080"]\n')
++            (repo/'server/.env').write_text('FIXTURE_ONLY=1\n')
++            command('git','-C',repo,'add','.');command('git','-C',repo,'commit','-qm','baseline');baseline=capture('git','-C',repo,'rev-parse','HEAD')
++            (repo/'app.txt').write_text('candidate');command('git','-C',repo,'add','.');command('git','-C',repo,'commit','-qm','candidate');source=capture('git','-C',repo,'rev-parse','HEAD')
++            (repo/'app.txt').write_text('broken');command('git','-C',repo,'add','.');command('git','-C',repo,'commit','-qm','broken');broken=capture('git','-C',repo,'rev-parse','HEAD')
++            mirror=root/'mirror.git';command('git','clone','-q','--bare',repo,mirror)
++            command('git','-C',repo,'checkout','-q',baseline);command('git','-C',repo,'remote','add','origin','https://github.com/'+d.REPOSITORY+'.git')
++            (root/'fixture.c').write_text(C_SOURCE);command('cc','-static','-O2',root/'fixture.c','-o',root/'fixture')
++            for revision,fail in ((baseline,False),(source,False),(broken,True)):
++                context=root/revision;context.mkdir();shutil.copyfile(root/'fixture',context/'fixture')
++                (context/'Dockerfile').write_text('FROM scratch\nCOPY --chmod=0555 fixture /fixture\nUSER 1000\nENTRYPOINT ["/fixture"]\n'+('CMD ["broken"]\n' if fail else ''))
++                tag=f'{token}:{revision}';docker('build','--network','none','--label','org.opencontainers.image.revision='+revision,'-t',tag,context,timeout=180)
++                images.append(tag)
++            state=app/'test-deploy';state.mkdir();override=state/'active-image.yaml'
++            old_id=capture('docker','--config',root/'docker','image','inspect','--format','{{.Id}}',images[0])
++            override.write_text(f'services:\n  server:\n    image: {old_id}\n')
++            base=['docker','--config',str(root/'docker'),'compose','-f',str(compose),'--env-file',str(repo/'server/.env'),'-f',str(override)]
++            command(*base,'up','-d','--no-build','--pull','never')
++            (app/'deployed-runtime-commit').write_text(baseline+'\n');(app/'deployed-git-commit').write_text(baseline+'\n')
++            db('createdb',database);sql('CREATE TABLE assets(id integer PRIMARY KEY,gold integer NOT NULL); INSERT INTO assets VALUES(1,12345)')
++            controller=d.file_hash(Path(__file__))[:40]
++            for run_id,target,expected,decision in ((1001,source,'accepted',True),(1002,baseline,'rolled_back',False),(1003,broken,'rolled_back',True)):
++                current_revision=(app/'deployed-runtime-commit').read_text().strip()
++                bundle=state/f'incoming/{run_id}-1';bundle.mkdir(parents=True)
++                for name in ('remote_deploy.py','deployment.py'):shutil.copyfile(Path(__file__).with_name(name),bundle/name)
++                (bundle/'health.sh').write_text('#!/usr/bin/env bash\ntrue\n')
++                (bundle/'image-validation.json').write_text('{"fixture_only":true}\n')
++                tag=images[(baseline,source,broken).index(target)]
++                image_id=capture('docker','--config',root/'docker','image','inspect','--format','{{.Id}}',tag)
++                docker('save','-o',bundle/'image.tar.gz',image_id) # docker load detects uncompressed tar; suffix is transport convention.
++                row=dict(format=2,repository=d.REPOSITORY,environment=d.ENVIRONMENT,source_sha=target,
++                    controller_sha=controller,pr_number=14,run_id=run_id,run_attempt=1,image_id=image_id,
++                    approval_mode=d.APPROVAL_MODE,approved_actor_id=d.OWNER_ID,confirmed_source_sha=target,
++                    restart_confirmed=True,rollback_baseline_sha=current_revision,rollback_compatibility_confirmed=True)
++                for name,field in [('image.tar.gz','archive_sha256'),('health.sh','health_sha256'),('remote_deploy.py','remote_sha256'),('deployment.py','deployment_sha256'),('image-validation.json','image_validation_sha256')]:row[field]=d.file_hash(bundle/name)
++                (bundle/'manifest.json').write_text(json.dumps(row))
++                real_subprocess=subprocess.run
++                def translate(*args,**kwargs):
++                    args=list(map(str,args))
++                    if args[0]=='git' and 'fetch' in args:args[args.index('origin')]=str(mirror)
++                    if args[:3]==['sudo','-n','docker']:
++                        args=['docker','--config',str(root/'docker'),*args[3:]]
++                        if 'exec' in args and 'postgres' in args:
++                            index=args.index('postgres');pg_args=args[index+1:]
++                            pg_args=[database if value=='fantasycard' and pg_args[i-1]=='-d' else 'postgres' if value=='fantasycard' else value for i,value in enumerate(pg_args)]
++                            args=[str(pg/pg_args[0]),'-h',str(socket),'-p','55432',*pg_args[1:]]
++                    return command(*args,**kwargs)
++                def health_child(args,**kwargs):
++                    if args[0]=='bash' and str(args[1]).endswith('health.sh'):
++                        try:
++                            port=capture(*base,'port','server','8080').rsplit(':',1)[1]
++                            with urllib.request.urlopen('http://127.0.0.1:'+port+'/health/ready',timeout=2) as response:
++                                ok=response.status==200 and response.read(32)==b'Healthy'
++                        except (urllib.error.URLError,TimeoutError,subprocess.CalledProcessError):ok=False
++                        return subprocess.CompletedProcess(args,0 if ok else 1)
++                    return real_subprocess(args,**kwargs)
++                original_monotonic=time.monotonic
++                # Speed only the health retry budget; all Docker/PG operations are real.
++                health_tick=iter(range(0,10000,200))
++                with contextlib.ExitStack() as stack:
++                    for name,value in [('APP',app),('REPO',repo),('COMPOSE',compose),('ENV_FILE',repo/'server/.env'),('LOCK',root/'shared.lock')]:stack.enter_context(patch.object(r,name,value))
++                    stack.enter_context(patch('pwd.getpwuid',return_value=types.SimpleNamespace(pw_name='ubuntu')))
++                    stack.enter_context(patch.object(r,'run',side_effect=translate))
++                    stack.enter_context(patch.object(r,'external_decision',return_value=decision))
++                    # Patching subprocess.run also affects command; use the captured implementation.
++                    def command_unpatched(*args,**kwargs):
++                        kwargs.setdefault('stdout',subprocess.DEVNULL);kwargs.setdefault('stderr',subprocess.PIPE)
++                        return real_subprocess(list(map(str,args)),check=True,timeout=kwargs.pop('timeout',120),**kwargs)
++                    command=command_unpatched
++                    stack.enter_context(patch.object(r.subprocess,'run',side_effect=health_child))
++                    stack.enter_context(patch.object(r,'HEALTH_TIMEOUT',0))
++                    stack.enter_context(patch('sys.stdout',new=io.StringIO()))
++                    if expected=='accepted':
++                        with r.deployment_lock():r.deploy(bundle,target,run_id,1,controller)
++                    else:
++                        try:
++                            with r.deployment_lock():r.deploy(bundle,target,run_id,1,controller)
++                        except RuntimeError:pass
++                        else:raise AssertionError('Failed rollout returned success')
++                result=json.loads((bundle/'result.json').read_text())
++                assert result['status']==expected,result['status']
++                assert not (state/'pending.json').exists()
++                assert sql('SELECT gold FROM assets WHERE id=1')=='12345'
++                backup=app/'backups'/result['backup']['name'];assert backup.stat().st_mode & 0o777 == 0o600
++                db('pg_restore','--list',stdin=backup.open('rb'))
++                report['cases'].append({'case':run_id,'status':expected,'assets_preserved':True,'backup_mode':'0600','backup_list_valid':True})
++            report['ok']=True
++        finally:
++            if (repo/'server/compose.cloud.yaml').exists():
++                command('docker','--config',root/'docker','compose','-f',repo/'server/compose.cloud.yaml','down','--volumes')
++            db('dropdb','--if-exists',database)
++            for tag in images:docker('image','rm',tag)
++            report['cleanup']='fixture containers, images and private test database removed'
++            output.parent.mkdir(parents=True,exist_ok=True);output.write_text(json.dumps(report,indent=2)+'\n')
++    if not report['ok']:raise RuntimeError('Local integration incomplete')
++
++
++if __name__=='__main__':
++    parser=argparse.ArgumentParser();parser.add_argument('--output',type=Path,required=True)
++    try:
++        main(parser.parse_args().output)
++    except subprocess.CalledProcessError as error:
++        print((error.stderr or b'').decode(errors='replace'), file=__import__('sys').stderr)
++        raise
+diff --git a/tools/cloud/remote_deploy.py b/tools/cloud/remote_deploy.py
+new file mode 100644
+index 00000000..bfb73b9e
+--- /dev/null
++++ b/tools/cloud/remote_deploy.py
+@@ -0,0 +1,335 @@
++"""One test-server transaction holds the legacy lock through external acceptance.
++
++Only status words are printed. No database contents, env values or command output
++leave the server. EOF/timeout/cancellation rolls back the application, never data.
++"""
++import argparse
++import contextlib
++import json
++import os
++import pathlib
++import re
++import select
++import signal
++import subprocess
++import sys
++import threading
++import time
++from deployment import file_hash, positive_integer, sha, validate_manifest
++
++REPO = pathlib.Path('/opt/fantasycard-github')
++APP = pathlib.Path('/opt/fantasycard-app')
++COMPOSE = REPO / 'server/compose.cloud.yaml'
++ENV_FILE = REPO / 'server/.env'
++LOCK = pathlib.Path('/tmp/fantasycard-update.lock')
++HEALTH_TIMEOUT = 180
++BLOCKED_PATHS = (
++    'server/src/FantasyCard.Server/Persistence', 'server/compose.cloud.yaml',
++    'server/Caddyfile', 'server/site', 'server/monitoring', 'server/deploy',
++    'server/src/FantasyCard.Server/appsettings*', 'server/Directory.Build.props',
++    'server/Directory.Packages.props', 'server/global.json', 'server/NuGet.Config',
++    'server/src/FantasyCard.Server/FantasyCard.Server.csproj',
++    'server/src/FantasyCard.Server/Rooms', 'server/src/FantasyCard.Server/Realtime',
++    'server/src/FantasyCard.Domain', 'server/src/FantasyCard.Contracts',
++    'server/src/FantasyCard.Server/Program.cs', 'server/src/FantasyCard.Server/Dockerfile',
++)
++
++
++def fsync_directory(path):
++    fd = os.open(path, os.O_RDONLY | os.O_DIRECTORY)
++    try:
++        os.fsync(fd)
++    finally:
++        os.close(fd)
++
++
++def atomic_write(path, content):
++    temporary = path.with_name(path.name + '.tmp')
++    fd = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_TRUNC | os.O_NOFOLLOW, 0o600)
++    with os.fdopen(fd, 'w', encoding='utf-8') as stream:
++        stream.write(content)
++        stream.flush()
++        os.fsync(stream.fileno())
++    temporary.replace(path)
++    fsync_directory(path.parent)
++
++
++def remove(path):
++    path.unlink(missing_ok=True)
++    fsync_directory(path.parent)
++
++
++def run(*arguments, **kwargs):
++    kwargs.setdefault('stdout', subprocess.DEVNULL)
++    kwargs.setdefault('stderr', subprocess.DEVNULL)
++    return subprocess.run(list(map(str, arguments)), check=True,
++                          timeout=kwargs.pop('timeout', 120), **kwargs)
++
++
++def capture(*arguments):
++    return run(*arguments, stdout=subprocess.PIPE, text=True, timeout=15).stdout.strip()
++
++
++@contextlib.contextmanager
++def deployment_lock():
++    import fcntl
++    fd = os.open(LOCK, os.O_RDWR | os.O_CREAT | os.O_NOFOLLOW, 0o600)
++    with os.fdopen(fd, 'a') as stream:
++        fcntl.flock(stream, fcntl.LOCK_EX | fcntl.LOCK_NB)
++        yield
++
++
++def external_decision(stream=sys.stdin, timeout=180):
++    ready, _, _ = select.select([stream], [], [], timeout)
++    return bool(ready) and os.read(stream.fileno(), 32) == b'accept\n'
++
++
++def rollout(new_image, old_image, apply, healthy, record, finalize,
++            external, commit, rollback_state, finish_rollback):
++    """Compensate even when evidence writing fails; never let it skip rollback."""
++    try:
++        record('activating')
++        apply(new_image)
++        if not healthy():
++            raise RuntimeError('Candidate health failed')
++        record('awaiting_external')
++        if not external():
++            raise RuntimeError('External acceptance failed')
++        finalize(new_image)
++        record('accepted')
++        commit()
++    except BaseException:
++        handlers = {}
++        if threading.current_thread() is threading.main_thread():
++            for sig in (signal.SIGTERM, signal.SIGHUP, signal.SIGINT, signal.SIGALRM):
++                handlers[sig] = signal.signal(sig, signal.SIG_IGN)
++        try:
++            try:
++                record('rolling_back')
++            except BaseException:
++                pass
++            restored = False
++            try:
++                apply(old_image)
++                if not healthy():
++                    raise RuntimeError('Baseline health failed')
++                finalize(old_image)
++                rollback_state()
++                restored = True
++            except BaseException:
++                pass
++            try:
++                record('rolled_back' if restored else 'rollback_failed')
++                if restored:
++                    finish_rollback()
++            except BaseException:
++                pass  # Keep durable pending state to block the next deployment.
++        finally:
++            for sig, handler in handlers.items():
++                signal.signal(sig, handler)
++        raise
++
++
++def deploy(bundle, source_sha, run_id, run_attempt, controller_sha, recover=False):
++    import pwd
++    if pwd.getpwuid(os.geteuid()).pw_name != 'ubuntu':
++        raise ValueError('Run as ubuntu without elevating the controller')
++    sha(source_sha)
++    sha(controller_sha)
++    positive_integer(run_id)
++    positive_integer(run_attempt)
++    expected = APP / f'test-deploy/incoming/{run_id}-{run_attempt}'
++    if bundle != expected or bundle.resolve(strict=True) != expected:
++        raise ValueError('Expected exact run directory without symlinks')
++    for name in ('manifest.json', 'image.tar.gz', 'image-validation.json', 'health.sh', 'remote_deploy.py', 'deployment.py'):
++        path = bundle / name
++        if path.is_symlink() or not path.is_file():
++            raise ValueError('Invalid bundle file')
++    manifest = json.loads((bundle / 'manifest.json').read_text())
++    validate_manifest(manifest, source_sha, run_id, run_attempt, controller_sha)
++    for name, field in (('image.tar.gz', 'archive_sha256'), ('health.sh', 'health_sha256'),
++                        ('remote_deploy.py', 'remote_sha256'), ('deployment.py', 'deployment_sha256')):
++        if file_hash(bundle / name) != manifest[field]:
++            raise ValueError('Bundle bytes differ from tested build')
++    if file_hash(bundle / 'image-validation.json') != manifest['image_validation_sha256']:
++        raise ValueError('Runtime-image validation evidence differs from build')
++    if not COMPOSE.is_file() or not ENV_FILE.is_file():
++        raise ValueError('Existing server is not provisioned')
++    state = APP / 'test-deploy'
++    override, pending, accepted = (state / name for name in ('active-image.yaml', 'pending.json', 'last-accepted.json'))
++    marker, result = APP / 'deployed-runtime-commit', bundle / 'result.json'
++    command = ['sudo', '-n', 'docker', 'compose', '-f', str(COMPOSE), '--env-file', str(ENV_FILE)]
++
++    def compose(*arguments, **kwargs):
++        files = ['-f', str(override)] if override.exists() else []
++        return run(*command, *files, *arguments, **kwargs)
++
++    def identity():
++        container = compose('ps', '-q', 'server', stdout=subprocess.PIPE, text=True, timeout=15).stdout.strip()
++        if not re.fullmatch(r'[0-9a-f]{12,64}', container):
++            raise ValueError('Expected one application container')
++        image = capture('sudo', '-n', 'docker', 'inspect', '--format', '{{.Image}}', container)
++        revision = capture('sudo', '-n', 'docker', 'inspect', '--format',
++                           '{{index .Config.Labels "org.opencontainers.image.revision"}}', container)
++        if not re.fullmatch(r'sha256:[0-9a-f]{64}', image):
++            raise ValueError('Invalid baseline image identity')
++        sha(revision)
++        return image, revision
++
++    def health():
++        deadline = time.monotonic() + HEALTH_TIMEOUT
++        while True:
++            try:
++                if subprocess.run(['bash', str(bundle / 'health.sh')], stdout=subprocess.DEVNULL,
++                                  stderr=subprocess.DEVNULL, timeout=35).returncode == 0:
++                    return True
++            except subprocess.TimeoutExpired:
++                pass
++            if time.monotonic() >= deadline:
++                return False
++            time.sleep(5)
++
++    if pending.exists():
++        if not recover:
++            raise ValueError('Unfinished transaction requires explicit recovery')
++        evidence = json.loads(pending.read_text())
++        if any(evidence.get(key) != value for key, value in manifest.items()):
++            raise ValueError('Recovery bundle differs from pending transaction')
++        old_image, old_revision = evidence['baseline_image_id'], sha(evidence['baseline_revision'])
++        if not re.fullmatch(r'sha256:[0-9a-f]{64}', old_image):
++            raise ValueError('Invalid recovery baseline')
++    else:
++        if recover:
++            raise ValueError('No transaction to recover')
++        remote = capture('git', '-C', REPO, 'remote', 'get-url', 'origin')
++        if remote not in ('https://github.com/AlenSheng/godot_FanstaryCard.git',
++                          'git@github.com:AlenSheng/godot_FanstaryCard.git'):
++            raise ValueError('Unexpected server repository')
++        run('git', '-C', REPO, 'diff', '--quiet')
++        run('git', '-C', REPO, 'diff', '--cached', '--quiet')
++        run('git', '-C', REPO, 'fetch', '--no-tags', '--filter=blob:none', 'origin', source_sha, timeout=300)
++        if capture('git', '-C', REPO, 'rev-parse', 'FETCH_HEAD') != source_sha:
++            raise ValueError('Fetched source differs from approved commit')
++        old_image, old_revision = identity()
++        if old_revision != manifest['rollback_baseline_sha']:
++            raise ValueError('Baseline moved since rollback review')
++        checkout = sha(capture('git', '-C', REPO, 'rev-parse', 'HEAD'))
++        if marker.read_text().strip() != old_revision:
++            raise ValueError('Runtime marker differs from running image')
++        if (APP / 'deployed-git-commit').read_text().strip() != checkout:
++            raise ValueError('Checkout marker differs from checkout')
++        run('git', '-C', REPO, 'diff', '--quiet', old_revision, source_sha, '--', *BLOCKED_PATHS)
++        run('git', '-C', REPO, 'diff', '--quiet', 'HEAD', old_revision, '--', *BLOCKED_PATHS)
++        previous_override = override.read_text() if override.exists() else None
++        if previous_override is not None and previous_override != f'services:\n  server:\n    image: {old_image}\n':
++            raise ValueError('Unexpected active override')
++        previous_accepted = accepted.read_text() if accepted.exists() else None
++        evidence = {**manifest, 'baseline_revision': old_revision, 'baseline_image_id': old_image,
++                    'checkout_sha': checkout, 'previous_override': previous_override,
++                    'previous_accepted': previous_accepted, 'events': [], 'status': 'preflight'}
++
++    def record(status):
++        evidence['status'] = status
++        evidence['events'].append({'status': status, 'utc_epoch': int(time.time())})
++        if status in ('rolling_back', 'rollback_failed'):
++            atomic_write(pending, json.dumps(evidence, indent=2) + '\n')
++        public = {key: value for key, value in evidence.items()
++                  if key not in ('previous_override', 'previous_accepted')}
++        atomic_write(result, json.dumps(public, indent=2) + '\n')
++        print('deployment_status=' + status, flush=True)
++
++    new_image = manifest['image_id']
++    def apply(image):
++        atomic_write(override, f'services:\n  server:\n    image: {image}\n')
++        compose('up', '-d', '--no-deps', '--no-build', '--pull', 'never', 'server', timeout=180)
++        wanted_revision = source_sha if image == new_image else old_revision
++        if identity() != (image, wanted_revision):
++            raise ValueError('Running image/source differs from selected identity')
++
++    def finalize(image):
++        atomic_write(marker, (source_sha if image == new_image else old_revision) + '\n')
++
++    def rollback_state():
++        for path, value in ((override, evidence['previous_override']), (accepted, evidence['previous_accepted'])):
++            if value is None:
++                remove(path)
++            else:
++                atomic_write(path, value)
++
++    def commit():
++        atomic_write(accepted, result.read_text())
++        try:
++            remove(pending)  # Commit point, after all application/marker/evidence writes.
++        except BaseException:
++            atomic_write(pending, json.dumps(evidence, indent=2) + '\n')
++            raise
++
++    if recover:
++        # Recovery never activates the candidate. Successful recovery is still a
++        # failed deployment; operators must inspect rolled_back and retry explicitly.
++        def reject(image):
++            if image == old_image:
++                apply(image)
++            else:
++                raise RuntimeError('Explicit recovery')
++        rollout(new_image, old_image, reject, health, record, finalize,
++                lambda: False, commit, rollback_state, lambda: remove(pending))
++        return
++
++    record('preflight')
++    if not health():
++        raise ValueError('Baseline unhealthy; stopped before application mutation')
++    backup_dir = APP / 'backups'
++    backup_dir.mkdir(exist_ok=True, mode=0o700)
++    backup = backup_dir / f'actions-{run_id}-{run_attempt}-before-{source_sha}.dump'
++    fd = os.open(backup, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
++    with os.fdopen(fd, 'wb') as output:
++        compose('exec', '-T', 'postgres', 'pg_dump', '-U', 'fantasycard', '-d', 'fantasycard',
++                '--format=custom', '--no-owner', '--no-privileges', stdout=output, timeout=300)
++        output.flush()
++        os.fsync(output.fileno())
++    if not backup.stat().st_size:
++        raise ValueError('Empty database backup')
++    with backup.open('rb') as stream:
++        compose('exec', '-T', 'postgres', 'pg_restore', '--list', stdin=stream)
++    evidence['backup'] = {'name': backup.name, 'sha256': file_hash(backup), 'bytes': backup.stat().st_size}
++    run('sudo', '-n', 'docker', 'image', 'load', '-i', bundle / 'image.tar.gz', timeout=300)
++    if capture('sudo', '-n', 'docker', 'image', 'inspect', '--format', '{{.Id}}', new_image) != new_image:
++        raise ValueError('Loaded image differs from tested image')
++    if capture('sudo', '-n', 'docker', 'image', 'inspect', '--format',
++               '{{index .Config.Labels "org.opencontainers.image.revision"}}', new_image) != source_sha:
++        raise ValueError('Loaded source label differs from approved source')
++    atomic_write(pending, json.dumps(evidence, indent=2) + '\n')
++    rollout(new_image, old_image, apply, health, record, finalize, external_decision,
++            commit, rollback_state, lambda: remove(pending))
++
++
++def main():
++    parser = argparse.ArgumentParser()
++    parser.add_argument('--bundle', type=pathlib.Path, required=True)
++    parser.add_argument('--source-sha', required=True)
++    parser.add_argument('--run-id', type=int, required=True)
++    parser.add_argument('--run-attempt', type=int, required=True)
++    parser.add_argument('--controller-sha', required=True)
++    parser.add_argument('--recover', action='store_true')
++    args = parser.parse_args()
++    def interrupted(signum, frame):
++        raise RuntimeError('Controller interrupted')
++    for sig in (signal.SIGTERM, signal.SIGHUP, signal.SIGINT, signal.SIGALRM):
++        signal.signal(sig, interrupted)
++    # Global normal-operation budget. Compensation ignores this alarm and has a
++    # separate <=450s reserve in the runner's 1950s controller deadline.
++    signal.alarm(1500)
++    try:
++        with deployment_lock():
++            deploy(args.bundle, args.source_sha, args.run_id, args.run_attempt, args.controller_sha, args.recover)
++    except BaseException as error:
++        print('Deployment stopped: ' + type(error).__name__, flush=True)
++        return 1
++    finally:
++        signal.alarm(0)
++    return 0
++
++
++if __name__ == '__main__':
++    raise SystemExit(main())
+diff --git a/tools/cloud/setup.sh b/tools/cloud/setup.sh
+new file mode 100644
+index 00000000..e3710a04
+--- /dev/null
++++ b/tools/cloud/setup.sh
+@@ -0,0 +1,17 @@
++#!/usr/bin/env bash
++set -euo pipefail
++cd "$(dirname "${BASH_SOURCE[0]}")/../.."
++[[ $(uname -s) == Linux && $(uname -m) == x86_64 && $(id -u) != 0 ]] || { echo 'Unprivileged Linux x64 required' >&2; exit 1; }
++# The cloud image must already provide compiler, make, Perl, dpkg-deb, Python venv,
++# and runtime libraries (ICU, SSL, X11/GL). No host apt/sudo/runner registration.
++for prerequisite in cc make perl dpkg-deb python3; do command -v "$prerequisite" >/dev/null; done
++source tools/cloud/env.sh
++mkdir -p "$XDG_CACHE_HOME" "$XDG_CONFIG_HOME" "$XDG_DATA_HOME"
++python3 tools/cloud/install_tools.py
++source tools/cloud/env.sh
++python3 -m venv "$FANTASYCARD_CLOUD_TOOLS/venv"
++"$FANTASYCARD_CLOUD_TOOLS/venv/bin/python" -m pip install --disable-pip-version-check psutil==7.0.0
++# This phase needs approved NuGet/package network access; Start uses the cache.
++dotnet restore server/FantasyCard.Server.slnx
++bash tools/cloud/start.sh
++printf 'Setup complete. Source tools/cloud/env.sh in each shell.\n'
+diff --git a/tools/cloud/ship.py b/tools/cloud/ship.py
+new file mode 100644
+index 00000000..7d5e7ea3
+--- /dev/null
++++ b/tools/cloud/ship.py
+@@ -0,0 +1,211 @@
++"""Strict SSH transport and external acceptance, using only trusted runner code."""
++import json
++import os
++import pathlib
++import re
++import selectors
++import shlex
++import signal
++import subprocess
++import tempfile
++import time
++from deployment import extract_health, file_hash, positive_integer, sha, validate_manifest, validate_image_proof
++
++HOST = 'ubuntu@43.172.70.182'
++PUBLIC_ORIGIN = 'https://www.relicbound.cn'
++STATUSES = frozenset(('preflight', 'activating', 'awaiting_external', 'accepted',
++                      'rolling_back', 'rolled_back', 'rollback_failed'))
++
++
++def external_health():
++    """Bound responses; report booleans/status only, never remote response text."""
++    results = []
++    for path, expected in (('/health/ready', 200), ('/admin', 404), ('/api/admin/client-settings', 404)):
++        response = subprocess.run(['curl', '--disable', '--silent', '--show-error',
++            '--proto', '=https', '--max-time', '20', '--max-filesize', '256',
++            '--write-out', '\n%{http_code}', PUBLIC_ORIGIN + path],
++            stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, timeout=25)
++        body, _, code = response.stdout.rpartition(b'\n')
++        passed = response.returncode == 0 and code == str(expected).encode()
++        if path == '/health/ready':
++            passed = passed and body.strip() == b'Healthy'
++        results.append({'path': path, 'expected_status': expected, 'passed': passed})
++    return all(row['passed'] for row in results), results
++
++
++def supervise(command, probe=external_health, deadline_seconds=1950):
++    """One remote session retains the shared flock until accept/rollback completes."""
++    external = None
++    deadline = time.monotonic() + deadline_seconds
++    with subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
++                          stderr=subprocess.DEVNULL, bufsize=0) as process:
++        selector = selectors.DefaultSelector()
++        selector.register(process.stdout, selectors.EVENT_READ)
++        buffered = b''
++        try:
++            while process.poll() is None:
++                if time.monotonic() >= deadline:
++                    raise TimeoutError('Remote controller deadline')
++                if not selector.select(timeout=min(1, max(0, deadline-time.monotonic()))):
++                    continue
++                chunk = os.read(process.stdout.fileno(), 4096)
++                if not chunk:
++                    break
++                buffered += chunk
++                if len(buffered) > 8192:
++                    raise ValueError('Unexpected remote output size')
++                while b'\n' in buffered:
++                    line, buffered = buffered.split(b'\n', 1)
++                    text = line.decode('ascii', errors='strict')
++                    if text.startswith('Deployment stopped: '):
++                        continue
++                    status = text.removeprefix('deployment_status=')
++                    if status not in STATUSES or text != 'deployment_status=' + status:
++                        raise ValueError('Unexpected remote protocol')
++                    print(text, flush=True)
++                    if status == 'awaiting_external':
++                        if external is not None:
++                            raise ValueError('Repeated acceptance request')
++                        external = probe()
++                        process.stdin.write(b'accept\n' if external[0] else b'rollback\n')
++                        process.stdin.flush()
++            code = process.wait(timeout=max(1, deadline-time.monotonic()))
++        except BaseException:
++            # EOF requests rollback without killing the server-side compensation.
++            process.stdin.close()
++            try:
++                process.wait(timeout=480)
++            except subprocess.TimeoutExpired:
++                process.terminate()
++                try:
++                    process.wait(timeout=15)
++                except subprocess.TimeoutExpired:
++                    process.kill()
++            raise
++        finally:
++            selector.close()
++        if code or external is None or not external[0]:
++            raise RuntimeError('Remote or external acceptance failed')
++    return external[1]
++
++
++def safe_result(data, manifest):
++    """Only a strict, typed evidence schema is allowed into uploaded artifacts."""
++    extra = {'baseline_revision', 'baseline_image_id', 'checkout_sha', 'events', 'status', 'backup'}
++    if not isinstance(data, dict) or set(data) != set(manifest) | extra:
++        raise ValueError('Unexpected evidence fields')
++    if any(data[key] != value for key, value in manifest.items()):
++        raise ValueError('Remote evidence differs from tested build')
++    for field in ('baseline_revision', 'checkout_sha'):
++        sha(data[field])
++    if not re.fullmatch(r'sha256:[0-9a-f]{64}', data['baseline_image_id']):
++        raise ValueError('Invalid baseline evidence')
++    if data['status'] not in STATUSES or not isinstance(data['events'], list) or not 1 <= len(data['events']) <= 20:
++        raise ValueError('Invalid transaction evidence')
++    for event in data['events']:
++        if set(event) != {'status', 'utc_epoch'} or event['status'] not in STATUSES or type(event['utc_epoch']) is not int or event['utc_epoch'] <= 0:
++            raise ValueError('Invalid status event')
++    if data['events'][-1]['status'] != data['status']:
++        raise ValueError('Inconsistent final status')
++    backup = data['backup']
++    expected_name = f"actions-{manifest['run_id']}-{manifest['run_attempt']}-before-{manifest['source_sha']}.dump"
++    if set(backup) != {'name', 'sha256', 'bytes'} or backup['name'] != expected_name or not re.fullmatch(r'[0-9a-f]{64}', backup['sha256']) or type(backup['bytes']) is not int or backup['bytes'] <= 0:
++        raise ValueError('Invalid backup evidence')
++    return data
++
++
++def ssh_options(private, hosts):
++    return ['-F', '/dev/null', '-i', str(private), '-o', 'BatchMode=yes',
++        '-o', 'IdentitiesOnly=yes', '-o', 'PasswordAuthentication=no', '-o', 'ForwardAgent=no',
++        '-o', 'ClearAllForwardings=yes', '-o', 'StrictHostKeyChecking=yes',
++        '-o', 'GlobalKnownHostsFile=/dev/null', '-o', 'UserKnownHostsFile=' + str(hosts),
++        '-o', 'ConnectTimeout=15', '-o', 'ServerAliveInterval=15', '-o', 'ServerAliveCountMax=4']
++
++
++def main():
++    number, attempt = (positive_integer(os.environ[name]) for name in ('GITHUB_RUN_ID', 'GITHUB_RUN_ATTEMPT'))
++    source, controller = sha(os.environ['COMMIT_SHA']), sha(os.environ['GITHUB_SHA'])
++    artifact, evidence = pathlib.Path('image-artifact'), pathlib.Path('deploy-evidence')
++    evidence.mkdir(exist_ok=True)
++    if set(path.name for path in artifact.iterdir()) != {'manifest.json', 'image.tar.gz', 'image-validation.json'}:
++        raise ValueError('Artifact contains unexpected files')
++    for path in artifact.iterdir():
++        if path.is_symlink() or not path.is_file():
++            raise ValueError('Invalid artifact path')
++    manifest = json.loads((artifact / 'manifest.json').read_text())
++    validate_manifest(manifest, source, number, attempt, controller)
++    if file_hash(artifact / 'image.tar.gz') != manifest['archive_sha256']:
++        raise ValueError('Image archive checksum mismatch')
++    if file_hash(artifact / 'image-validation.json') != manifest['image_validation_sha256']:
++        raise ValueError('Final-image validation checksum mismatch')
++    validate_image_proof(json.loads((artifact / 'image-validation.json').read_text()), manifest['image_id'], source)
++    extract_health('trusted/server/deploy/fantasycard-update.sh', artifact / 'health.sh')
++    for path, field in ((artifact / 'health.sh', 'health_sha256'),
++                       (pathlib.Path('trusted/tools/cloud/remote_deploy.py'), 'remote_sha256'),
++                       (pathlib.Path('trusted/tools/cloud/deployment.py'), 'deployment_sha256')):
++        if file_hash(path) != manifest[field]:
++            raise ValueError('Artifact tried to change the trusted controller')
++    remote = f'/opt/fantasycard-app/test-deploy/incoming/{number}-{attempt}'
++    key, known = os.environ.pop('TEST_SERVER_SSH_KEY', ''), os.environ.pop('TEST_SERVER_KNOWN_HOSTS', '')
++    if not key or not known or not re.search(r'(?:^|\n)43\.172\.70\.182\s+(?:ssh-|ecdsa-)', known):
++        raise ValueError('Missing private key or exact verified host entry')
++    with tempfile.TemporaryDirectory(prefix='fantasycard-ssh-') as directory:
++        private, hosts = (pathlib.Path(directory) / name for name in ('key', 'known_hosts'))
++        private.write_text(key.rstrip() + '\n')
++        hosts.write_text(known.rstrip() + '\n')
++        private.chmod(0o600)
++        hosts.chmod(0o600)
++        del key, known
++        options = ssh_options(private, hosts)
++        ssh, scp = ['ssh', *options, '-p', '22', HOST], ['scp', *options, '-P', '22']
++        def transfer(arguments, timeout):
++            return subprocess.run(arguments, check=True, stdout=subprocess.DEVNULL,
++                                  stderr=subprocess.DEVNULL, timeout=timeout)
++        transfer([*ssh, 'umask 077 && mkdir -p /opt/fantasycard-app/test-deploy/incoming && mkdir ' + shlex.quote(remote)], 45)
++        transfer([*scp, str(artifact / 'image.tar.gz'), str(artifact / 'manifest.json'), str(artifact / 'image-validation.json'), str(artifact / 'health.sh'),
++                  'trusted/tools/cloud/remote_deploy.py', 'trusted/tools/cloud/deployment.py', HOST + ':' + remote + '/'], 600)
++        command = shlex.join(['python3', remote + '/remote_deploy.py', '--bundle', remote,
++            '--source-sha', source, '--run-id', str(number), '--run-attempt', str(attempt), '--controller-sha', controller])
++        def interrupted(signum, frame):
++            raise RuntimeError('Runner interrupted')
++        handlers = {sig: signal.signal(sig, interrupted) for sig in (signal.SIGTERM, signal.SIGHUP, signal.SIGINT)}
++        # Remote accepted evidence can precede commit. A successful controller
++        # exit plus external acceptance is required before the runner claims it.
++        (evidence / 'shipping.json').write_text('{"status":"unknown","recovery_required":true}\n')
++        runner_status = 'unknown'
++        try:
++            external = supervise([*ssh, command])
++            (evidence / 'external.json').write_text(json.dumps(external, indent=2) + '\n')
++            runner_status = 'accepted'
++        except BaseException:
++            runner_status = 'failed'
++            raise
++        finally:
++            for sig, handler in handlers.items():
++                signal.signal(sig, handler)
++            # Retrieve into a private temp directory; reject arbitrary fields/text.
++            raw = pathlib.Path(directory) / 'result.json'
++            try:
++                transfer([*scp, HOST + ':' + remote + '/result.json', str(raw)], 45)
++                if raw.stat().st_size > 65536:
++                    raise ValueError('Evidence too large')
++                result = safe_result(json.loads(raw.read_text()), manifest)
++                (evidence / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
++            except Exception:
++                (evidence / 'retrieval.json').write_text('{"status":"unknown","sanitized_evidence_available":false,"recovery_required":true}\n')
++            (evidence / 'runner.json').write_text(json.dumps({'runner_status':runner_status,
++                'remote_status':result['status'] if 'result' in locals() else 'unknown',
++                'recovery_required': runner_status != 'accepted' or 'result' not in locals() or result['status'] != 'accepted'}) + '\n')
++        result = json.loads((evidence / 'result.json').read_text())
++        if result['status'] != 'accepted':
++            raise ValueError('Remote transaction did not commit acceptance')
++        (evidence / 'shipping.json').write_text('{"status":"accepted","controller_exit_succeeded":true,"external_accepted":true,"recovery_required":false}\n')
++
++
++if __name__ == '__main__':
++    try:
++        main()
++    except BaseException as error:
++        # Exception values/commands/HTTP bodies may contain secret material.
++        print('Shipping stopped: ' + type(error).__name__, flush=True)
++        raise SystemExit(1) from None
+diff --git a/tools/cloud/start.sh b/tools/cloud/start.sh
+new file mode 100644
+index 00000000..6da59d78
+--- /dev/null
++++ b/tools/cloud/start.sh
+@@ -0,0 +1,31 @@
++#!/usr/bin/env bash
++set -euo pipefail
++cd "$(dirname "${BASH_SOURCE[0]}")/../.."
++source tools/cloud/env.sh
++[[ $(id -u) != 0 ]] || { echo 'Private test database requires an unprivileged user' >&2; exit 1; }
++pg_bin="$FANTASYCARD_CLOUD_TOOLS/postgres/bin"
++pg_root="$FANTASYCARD_CLOUD_TOOLS/postgres-test"
++[[ $FANTASYCARD_CLOUD_TOOLS = /* && $FANTASYCARD_CLOUD_TOOLS != *[[:space:]]* && ${#pg_root} -le 75 ]] || { echo 'Use a short absolute tools path without whitespace' >&2; exit 1; }
++mkdir -p "$pg_root/socket"
++chmod 700 "$pg_root" "$pg_root/socket"
++exec 8>"$pg_root/start.lock"
++flock -x 8
++if [[ ! -f "$pg_root/data/PG_VERSION" ]]; then
++  "$pg_bin/initdb" -D "$pg_root/data" -U postgres --auth-local=trust --auth-host=reject --no-locale --encoding=UTF8 >/dev/null
++fi
++[[ $(cat "$pg_root/data/PG_VERSION") == 18 ]]
++if ! "$pg_bin/pg_ctl" -D "$pg_root/data" status >/dev/null 2>&1; then
++  "$pg_bin/pg_ctl" -D "$pg_root/data" -l "$pg_root/postgres.log" -o "-h '' -p 55432 -k $pg_root/socket -c unix_socket_permissions=0700" -w start >/dev/null 8>&-
++fi
++[[ $("$pg_bin/psql" -h "$pg_root/socket" -p 55432 -U postgres -d postgres -Atc 'SHOW listen_addresses') == '' ]]
++"$pg_bin/pg_isready" -h "$pg_root/socket" -p 55432 -U postgres
++database_exists=$("$pg_bin/psql" -h "$pg_root/socket" -p 55432 -U postgres -d postgres -v ON_ERROR_STOP=1 -Atc "SELECT 1 FROM pg_database WHERE datname='fantasycard_test'")
++case "$database_exists" in
++  1) ;;
++  '') "$pg_bin/createdb" -h "$pg_root/socket" -p 55432 -U postgres fantasycard_test ;;
++  *) echo 'Unexpected database existence result; stopped before creation' >&2; exit 1 ;;
++esac
++# No failed-source fallback masks missing packages; force the already cached set.
++flock -u 8
++exec 8>&-
++dotnet restore server/FantasyCard.Server.slnx --source "$NUGET_PACKAGES" --ignore-failed-sources -p:MSBuildEnableWorkloadResolver=false -nodeReuse:false
+diff --git a/tools/cloud/stop.sh b/tools/cloud/stop.sh
+new file mode 100644
+index 00000000..409122ff
+--- /dev/null
++++ b/tools/cloud/stop.sh
+@@ -0,0 +1,11 @@
++#!/usr/bin/env bash
++set -euo pipefail
++cd "$(dirname "${BASH_SOURCE[0]}")/../.."
++source tools/cloud/env.sh
++pg_root="$FANTASYCARD_CLOUD_TOOLS/postgres-test"
++[[ -f "$pg_root/data/PG_VERSION" ]] || exit 0
++exec 8>"$pg_root/start.lock"
++flock -x 8
++if "$FANTASYCARD_CLOUD_TOOLS/postgres/bin/pg_ctl" -D "$pg_root/data" status >/dev/null 2>&1; then
++  "$FANTASYCARD_CLOUD_TOOLS/postgres/bin/pg_ctl" -D "$pg_root/data" -m fast -w stop >/dev/null
++fi
+diff --git a/tools/cloud/tests/test_bootstrap.py b/tools/cloud/tests/test_bootstrap.py
+new file mode 100644
+index 00000000..4d9f9566
+--- /dev/null
++++ b/tools/cloud/tests/test_bootstrap.py
+@@ -0,0 +1,45 @@
++"""Run the real Start shell with tiny tool fixtures, including failed SQL."""
++import os
++from pathlib import Path
++import subprocess
++import tempfile
++import unittest
++
++
++class Bootstrap(unittest.TestCase):
++    def test_repeat_start_without_rg_and_sql_failure_propagation(self):
++        script=Path(__file__).resolve().parents[1]/'start.sh'
++        with tempfile.TemporaryDirectory(prefix='fc-start-',dir='/tmp') as directory:
++            root=Path(directory);pg=root/'postgres/bin';pg.mkdir(parents=True)
++            (root/'postgres-test/data').mkdir(parents=True)
++            (root/'postgres-test/data/PG_VERSION').write_text('18\n')
++            dotnet=root/'dotnet/dotnet';dotnet.parent.mkdir()
++            dotnet.write_text('#!/bin/sh\nexit 0\n');dotnet.chmod(0o755)
++            for name in ('pg_ctl','pg_isready'):
++                (pg/name).write_text('#!/bin/sh\nexit 0\n');(pg/name).chmod(0o755)
++            (pg/'psql').write_text('''#!/bin/sh
++case "$*" in
++*listen_addresses*) exit 0 ;;
++*) [ -z "${FAIL_SQL:-}" ] || exit 2
++   [ ! -f "$FANTASYCARD_CLOUD_TOOLS/database.exists" ] || printf '1\\n' ;;
++esac
++''');(pg/'psql').chmod(0o755)
++            (pg/'createdb').write_text('''#!/bin/sh
++[ ! -f "$FANTASYCARD_CLOUD_TOOLS/database.exists" ] || exit 1
++printf 'created\\n' >> "$FANTASYCARD_CLOUD_TOOLS/create.calls"
++touch "$FANTASYCARD_CLOUD_TOOLS/database.exists"
++''');(pg/'createdb').chmod(0o755)
++            context=dict(os.environ,FANTASYCARD_CLOUD_TOOLS=str(root))
++            for _ in range(2):
++                result=subprocess.run(['bash',str(script)],env=context,capture_output=True,text=True,timeout=15)
++                self.assertEqual(result.returncode,0,result.stderr)
++            self.assertEqual((root/'create.calls').read_text(),'created\n')
++            (root/'database.exists').unlink()
++            result=subprocess.run(['bash',str(script)],env=dict(context,FAIL_SQL='true'),capture_output=True,text=True,timeout=15)
++            self.assertNotEqual(result.returncode,0)
++            self.assertFalse((root/'database.exists').exists())
++            self.assertEqual((root/'create.calls').read_text(),'created\n')
++            self.assertNotIn('rg ',script.read_text())
++
++
++if __name__=='__main__':unittest.main()
+diff --git a/tools/cloud/tests/test_controls.py b/tools/cloud/tests/test_controls.py
+new file mode 100644
+index 00000000..e4e5f34e
+--- /dev/null
++++ b/tools/cloud/tests/test_controls.py
+@@ -0,0 +1,310 @@
++import copy
++import importlib.util
++import io
++import json
++import os
++from pathlib import Path
++import signal
++import subprocess
++import sys
++import tempfile
++import unittest
++from unittest.mock import patch
++
++sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
++import deployment as d
++import remote_deploy as r
++import ship
++import install_tools as installer
++
++SOURCE, CONTROL, BASELINE = 'a' * 40, 'b' * 40, 'c' * 40
++NEW, OLD = 'sha256:' + '1' * 64, 'sha256:' + '2' * 64
++
++
++def manifest():
++    return dict(format=2, repository=d.REPOSITORY, source_sha=SOURCE, pr_number=13,
++        controller_sha=CONTROL, run_id=21, run_attempt=1, environment=d.ENVIRONMENT,
++        image_id=NEW, archive_sha256='d'*64, health_sha256='e'*64,
++        remote_sha256='f'*64, deployment_sha256='0'*64, image_validation_sha256='9'*64,
++        approval_mode=d.APPROVAL_MODE, approved_actor_id=d.OWNER_ID,
++        confirmed_source_sha=SOURCE, restart_confirmed=True,
++        rollback_baseline_sha=BASELINE, rollback_compatibility_confirmed=True)
++
++
++def pr():
++    return {'number':13, 'state':'open', 'head':{'repo':{'full_name':d.REPOSITORY}, 'sha':SOURCE},
++            'base':{'repo':{'full_name':d.REPOSITORY}, 'ref':'release'}}
++
++
++def env_config():
++    return {'name':d.ENVIRONMENT, 'protection_rules':[],
++            'deployment_branch_policy':{'custom_branch_policies':True, 'protected_branches':False}}
++
++
++def branches():
++    return {'total_count':1, 'branch_policies':[{'name':'release','type':'branch'}]}
++
++
++class Inputs(unittest.TestCase):
++    def test_full_shas_and_integer_types(self):
++        for value in ('a'*39, 'A'*40, SOURCE+'\n', None, 1, '$(id)', SOURCE+';true'):
++            with self.subTest(value=value), self.assertRaises(ValueError): d.sha(value)
++        for value in (True, False, 0, -1, '01', '1\n', '1.0', '1;id', None):
++            with self.subTest(value=value), self.assertRaises(ValueError): d.positive_integer(value)
++        self.assertEqual(d.positive_integer('19'),19)
++
++    def test_moving_closed_fork_or_wrong_base(self):
++        d.validate_pr(pr(),13,SOURCE)
++        for change in ('fork','moved','closed','base','missing'):
++            row=pr()
++            if change=='fork':row['head']['repo']['full_name']='fork/repo'
++            if change=='moved':row['head']['sha']=CONTROL
++            if change=='closed':row['state']='closed'
++            if change=='base':row['base']['ref']='main'
++            if change=='missing':row['head']['repo']=None
++            with self.subTest(change=change), self.assertRaises(ValueError):d.validate_pr(row,13,SOURCE)
++
++    def test_live_release_policy_no_reviewers_in_authorized_mode(self):
++        d.verify_environment(env_config(),branches())
++        for kind in ('main','tag','wildcard','extra','pagination','unrestricted','protected'):
++            e,b=env_config(),branches()
++            if kind in ('main','wildcard'):b['branch_policies'][0]['name']='main' if kind=='main' else '*'
++            if kind=='tag':b['branch_policies'][0]['type']='tag'
++            if kind=='extra':b['branch_policies'].append({'name':'other','type':'branch'})
++            if kind=='pagination':b['total_count']=2
++            if kind=='unrestricted':e['deployment_branch_policy']=None
++            if kind=='protected':e['deployment_branch_policy']['protected_branches']=True
++            with self.subTest(kind=kind), self.assertRaises(ValueError):d.verify_environment(e,b)
++        with self.assertRaises(ValueError):d.verify_environment(env_config(),branches(),'implicit_fallback')
++
++    def test_preflight_owner_new_dispatch_exact_confirmation(self):
++        with tempfile.TemporaryDirectory() as folder:
++            root=Path(folder)
++            context=dict(GITHUB_REPOSITORY=d.REPOSITORY,GITHUB_EVENT_NAME='workflow_dispatch',
++                GITHUB_REF='refs/heads/release',GITHUB_SHA=CONTROL,GITHUB_ACTOR='AlenSheng',
++                GITHUB_TRIGGERING_ACTOR='AlenSheng',GITHUB_ACTOR_ID=str(d.OWNER_ID),
++                GITHUB_RUN_ID='21',GITHUB_RUN_ATTEMPT='1',GITHUB_OUTPUT=str(root/'output'),
++                TEST_DEPLOY_ENABLED='true',TEST_DEPLOY_APPROVAL_MODE=d.APPROVAL_MODE,
++                TEST_DEPLOY_APPROVED_WORKFLOW_SHA=CONTROL,PR_NUMBER='13',COMMIT_SHA=SOURCE,
++                CONFIRM_SOURCE_SHA=SOURCE,CONFIRM_RESTART='true',ROLLBACK_BASELINE_SHA=BASELINE,
++                CONFIRM_ROLLBACK_COMPATIBILITY='true')
++            def api(path):
++                if not path:return {'full_name':d.REPOSITORY,'default_branch':'main','owner':{'id':d.OWNER_ID}}
++                if path=='/pulls/13':return pr()
++                if path.endswith('deployment-branch-policies'):return branches()
++                return env_config()
++            with patch.dict(os.environ,context,clear=True),patch.object(d,'api',side_effect=api):
++                d.preflight(root/'evidence.json')
++                evidence=json.loads((root/'evidence.json').read_text())
++                self.assertEqual(evidence['approval_mode'],'owner_dispatch')
++                for key,bad in [('GITHUB_REF','refs/heads/main'),('GITHUB_ACTOR_ID','1'),
++                    ('GITHUB_TRIGGERING_ACTOR','collaborator'),('GITHUB_EVENT_NAME','push'),
++                    ('GITHUB_RUN_ATTEMPT','2'),('CONFIRM_RESTART','false'),
++                    ('CONFIRM_SOURCE_SHA',CONTROL),('TEST_DEPLOY_ENABLED','false'),
++                    ('TEST_DEPLOY_APPROVED_WORKFLOW_SHA',SOURCE),('CONFIRM_ROLLBACK_COMPATIBILITY','false')]:
++                    with self.subTest(key=key),patch.dict(os.environ,{key:bad}),self.assertRaises(ValueError):d.preflight(root/'invalid.json')
++                with patch.object(d,'api',side_effect=PermissionError('API inaccessible')),self.assertRaises(PermissionError):d.preflight(root/'invalid.json')
++            self.assertNotIn('GH_TOKEN',evidence)
++
++    def test_manifest_tampering_and_attempt_identity(self):
++        row=manifest();d.validate_manifest(row,SOURCE,21,1,CONTROL)
++        for key,value in [('source_sha',CONTROL),('run_id',True),('run_attempt',2),
++            ('controller_sha',SOURCE),('archive_sha256','bad'),('image_id','mutable:tag'),
++            ('repository','fork/repo'),('approval_mode','reviewers'),('restart_confirmed',False),
++            ('rollback_compatibility_confirmed',False),('unexpected','LEAK_SENTINEL')]:
++            bad=copy.deepcopy(row);bad[key]=value
++            with self.subTest(key=key),self.assertRaises(ValueError):d.validate_manifest(bad,SOURCE,21,1,CONTROL)
++
++    def test_api_artifact_provenance(self):
++        row=dict(id=5,expired=False,name='tested-image-21-1',size_in_bytes=123,
++                 digest='sha256:'+'a'*64,workflow_run={'id':21,'head_sha':CONTROL})
++        d.verify_artifact(row,5,21,1,CONTROL)
++        for key,value in [('name','tested-image-21-2'),('expired',True),('digest',None),('size_in_bytes',0)]:
++            bad=copy.deepcopy(row);bad[key]=value
++            with self.subTest(key=key),self.assertRaises(ValueError):d.verify_artifact(bad,5,21,1,CONTROL)
++        row['workflow_run']['head_sha']=SOURCE
++        with self.assertRaises(ValueError):d.verify_artifact(row,5,21,1,CONTROL)
++
++    def test_final_image_proof_required_before_manifest(self):
++        with tempfile.TemporaryDirectory() as folder:
++            root=Path(folder);pre=root/'preflight.json';archive=root/'image.tar.gz'
++            source={k:v for k,v in manifest().items() if k not in ('format','image_id','archive_sha256','health_sha256','remote_sha256','deployment_sha256','image_validation_sha256')}
++            pre.write_text(json.dumps(source));archive.write_bytes(b'archive');(root/'health.sh').write_text('health')
++            with patch.object(d.subprocess,'check_output',side_effect=[NEW,SOURCE]),self.assertRaises(FileNotFoundError):d.manifest(pre,archive,'test:image',root/'manifest.json')
++            (root/'image-validation.json').write_text(json.dumps({'ok':False,'image_id':NEW,'source_sha':SOURCE}))
++            with patch.object(d.subprocess,'check_output',side_effect=[NEW,SOURCE]),self.assertRaises(ValueError):d.manifest(pre,archive,'test:image',root/'manifest.json')
++
++    def test_skip_or_missing_pg_tests_rejected(self):
++        with tempfile.TemporaryDirectory() as folder:
++            root=Path(folder)
++            (root/'domain.trx').write_text('<TestRun><UnitTestResult outcome="Passed" testName="Domain"/></TestRun>')
++            pg=root/'postgres.trx';pg.write_text('<TestRun><UnitTestResult outcome="Passed" testName="PostgresRuntimeIntegrationTests.Real"/></TestRun>')
++            self.assertEqual(d.verify_tests(root),{'domain':1,'postgres':1})
++            for content in ('<TestRun/>','<TestRun><UnitTestResult outcome="NotExecuted"/></TestRun>', '<TestRun><UnitTestResult outcome="Passed" testName="Other"/></TestRun>'):
++                pg.write_text(content)
++                with self.assertRaises(ValueError):d.verify_tests(root)
++
++
++class Rollback(unittest.TestCase):
++    def exercise(self,fail=None,external=True):
++        images=[];statuses=[];markers=[];commit=[];state=[];finished=[]
++        def apply(image):
++            images.append(image)
++            if fail=='partial' and image==NEW:raise RuntimeError('partial')
++            if fail=='rollback' and image==OLD:raise RuntimeError('failed restore')
++        def healthy():return not (fail=='health' and images[-1]==NEW)
++        def record(status):
++            statuses.append(status)
++            if fail=='evidence' and status in ('accepted','rolling_back'):raise OSError('disk')
++        def finalize(image):
++            markers.append(image)
++            if fail=='marker' and image==NEW:raise OSError('marker')
++        def committed():
++            commit.append(True)
++            if fail=='commit':raise OSError('last accepted')
++        def decision():
++            if fail=='interrupt':raise RuntimeError('interrupted')
++            return external and fail!='rollback'
++        call=lambda:r.rollout(NEW,OLD,apply,healthy,record,finalize,decision,committed,
++                              lambda:state.append(True),lambda:finished.append(True))
++        if fail or not external:
++            with self.assertRaises((RuntimeError,OSError)):call()
++        else:call()
++        return images,statuses,markers,commit,state,finished
++
++    def test_acceptance_includes_external_boundary(self):
++        result=self.exercise();self.assertEqual(result[0],[NEW]);self.assertEqual(result[1][-1],'accepted');self.assertEqual(result[3],[True])
++
++    def test_every_failure_compensates_including_persistence(self):
++        for fail in ('partial','health','marker','evidence','commit','interrupt'):
++            with self.subTest(fail=fail):
++                images,statuses,markers,commit,state,finished=self.exercise(fail)
++                self.assertEqual(images,[NEW,OLD]);self.assertEqual(statuses[-1],'rolled_back');self.assertEqual(markers[-1],OLD);self.assertEqual(finished,[True])
++        self.assertEqual(self.exercise(external=False)[0],[NEW,OLD])
++
++    def test_failed_rollback_retains_pending(self):
++        images,statuses,markers,commit,state,finished=self.exercise('rollback')
++        self.assertEqual(statuses[-1],'rollback_failed');self.assertFalse(finished)
++
++    def test_external_eof_timeout_and_partial_input_reject(self):
++        for value in (b'',b'accept',b'rollback\n',b'bad\n'):
++            read,write=os.pipe()
++            with os.fdopen(read,'r') as stream:
++                if value:os.write(write,value)
++                os.close(write)
++                self.assertFalse(r.external_decision(stream,0.1))
++        read,write=os.pipe()
++        with os.fdopen(read,'r') as stream:
++            self.assertFalse(r.external_decision(stream,0.01));os.write(write,b'accept\n');self.assertTrue(r.external_decision(stream,0.1));os.close(write)
++
++    def test_shared_lock_rejects_concurrent_controller(self):
++        with tempfile.TemporaryDirectory() as folder,patch.object(r,'LOCK',Path(folder)/'update.lock'):
++            with r.deployment_lock():
++                code='import sys;sys.path.insert(0,sys.argv[1]);import remote_deploy as r;from pathlib import Path;r.LOCK=Path(sys.argv[2]);\nwith r.deployment_lock():pass'
++                result=subprocess.run([sys.executable,'-c',code,str(Path(r.__file__).parent),str(r.LOCK)],capture_output=True)
++                self.assertNotEqual(result.returncode,0)
++            with r.deployment_lock():pass
++
++    def test_atomic_private_files_and_symlink_attack(self):
++        with tempfile.TemporaryDirectory() as folder:
++            path=Path(folder)/'marker';r.atomic_write(path,'new')
++            self.assertEqual(path.stat().st_mode & 0o777,0o600)
++            path.with_name('marker.tmp').symlink_to(path)
++            with self.assertRaises(OSError):r.atomic_write(path,'bad')
++            self.assertEqual(path.read_text(),'new')
++
++    def test_final_evidence_strictly_rejects_secret_fields(self):
++        row={**manifest(),'baseline_revision':BASELINE,'baseline_image_id':OLD,'checkout_sha':BASELINE,
++             'events':[{'status':'rolled_back','utc_epoch':1}],'status':'rolled_back',
++             'backup':{'name':f'actions-21-1-before-{SOURCE}.dump','sha256':'d'*64,'bytes':10}}
++        ship.safe_result(row,manifest())
++        row['env']='LEAK_SENTINEL'
++        with self.assertRaises(ValueError):ship.safe_result(row,manifest())
++
++    def test_real_transport_handshake_and_eof_compensation(self):
++        for passed in (True,False):
++            code='import sys;print("deployment_status=awaiting_external",flush=True);decision=sys.stdin.readline();print("deployment_status="+("accepted" if decision=="accept\\n" else "rolled_back"),flush=True);sys.exit(0 if decision=="accept\\n" else 1)'
++            command=[sys.executable,'-c',code]
++            with patch('sys.stdout',new=io.StringIO()):
++                if passed:self.assertEqual(ship.supervise(command,lambda:(True,[{'passed':True}]),3),[{'passed':True}])
++                else:
++                    with self.assertRaises(RuntimeError):ship.supervise(command,lambda:(False,[]),3)
++        with tempfile.TemporaryDirectory() as folder:
++            marker=Path(folder)/'compensated'
++            code='import sys;from pathlib import Path;print("deployment_status=awaiting_external",flush=True);sys.stdin.readline();Path(sys.argv[1]).write_text("rolled_back")'
++            with patch('sys.stdout',new=io.StringIO()),self.assertRaises(RuntimeError):
++                ship.supervise([sys.executable,'-c',code,str(marker)],lambda:(_ for _ in ()).throw(RuntimeError('cancel')),3)
++            self.assertEqual(marker.read_text(),'rolled_back')
++
++    def test_ssh_never_relaxes_host_validation_or_forwards_agent(self):
++        options=ship.ssh_options(Path('/fake/key'),Path('/fake/known'))
++        for required in ('StrictHostKeyChecking=yes','IdentitiesOnly=yes','ForwardAgent=no','GlobalKnownHostsFile=/dev/null','PasswordAuthentication=no'):
++            self.assertIn(required,options)
++
++
++class Installer(unittest.TestCase):
++    def test_corrupt_download_never_installs(self):
++        with tempfile.TemporaryDirectory() as folder:
++            root=Path(folder);cached=root/'cache';cached.mkdir();(cached/'file').write_bytes(b'bad')
++            response=io.BytesIO(b'wrong')
++            with patch.dict(os.environ,{'FANTASYCARD_CLOUD_DOWNLOAD_CACHE':str(cached)}),patch.object(installer.urllib.request,'urlopen',return_value=response),self.assertRaises(ValueError):
++                installer.download({'url':'https://example.invalid/file','algorithm':'sha256','digest':'0'*64},root/'file')
++            self.assertFalse((root/'file').exists());self.assertFalse((root/'file.download').exists())
++
++    def test_zip_traversal_or_unexpected_layout_rejected(self):
++        import zipfile
++        with tempfile.TemporaryDirectory() as folder:
++            root=Path(folder);archive=root/'bad.zip'
++            with zipfile.ZipFile(archive,'w') as z:z.writestr('../outside','bad')
++            with self.assertRaises(ValueError):installer.extract_zip(archive,root/'out')
++            self.assertFalse((root/'outside').exists())
++
++    def test_failed_staged_install_keeps_previous_tool(self):
++        with tempfile.TemporaryDirectory() as folder:
++            base=Path(folder);(base/'downloads').mkdir();(base/'dotnet').mkdir();(base/'dotnet'/'original').write_text('keep')
++            def failed(*args):raise RuntimeError('extract interrupted')
++            with patch.object(installer,'download'),self.assertRaises(RuntimeError):
++                installer.install(base,'dotnet',[{'url':'https://example.invalid/file','digest':'d'*64}],failed,'binary','1.0')
++            self.assertEqual((base/'dotnet'/'original').read_text(),'keep')
++
++
++
++class ImageProofAndCancellation(unittest.TestCase):
++    def test_incomplete_final_runtime_proof_rejected(self):
++        proof=dict(ok=True,source_sha=SOURCE,image_id=NEW,
++          assemblies={name:'a'*64 for name in ('FantasyCard.Contracts.dll','FantasyCard.Domain.dll','FantasyCard.Server.dll')},
++          tests=dict(total=20,passed=20,failed=0,notExecuted=0),runtime_uid='1000',
++          restart_test_passed=True,database_outage=dict(ready=503,live=200,recovered=200),
++          production_local_auth_status=404,cleanup_ok=True)
++        d.validate_image_proof(proof,NEW,SOURCE)
++        for field,bad in [('runtime_uid','0'),('restart_test_passed',False),('database_outage',{}),
++                          ('production_local_auth_status',200),('cleanup_ok',False),('assemblies',{})]:
++            row=copy.deepcopy(proof);row[field]=bad
++            with self.subTest(field=field),self.assertRaises(ValueError):d.validate_image_proof(row,NEW,SOURCE)
++        proof['tests']['notExecuted']=1
++        with self.assertRaises(ValueError):d.validate_image_proof(proof,NEW,SOURCE)
++
++    def test_sigterm_rolls_back_and_repeated_signal_does_not_interrupt_restore(self):
++        images=[];status=[]
++        def interrupted(sig,frame):raise RuntimeError('SIGTERM')
++        previous=signal.signal(signal.SIGTERM,interrupted)
++        def apply(image):
++            images.append(image)
++            if image==OLD:os.kill(os.getpid(),signal.SIGTERM)
++        try:
++            with self.assertRaises(RuntimeError):
++                r.rollout(NEW,OLD,apply,lambda:True,status.append,lambda image:None,
++                    lambda:os.kill(os.getpid(),signal.SIGTERM),lambda:None,lambda:None,lambda:None)
++            self.assertEqual(images,[NEW,OLD]);self.assertEqual(status[-1],'rolled_back')
++            self.assertIs(signal.getsignal(signal.SIGTERM),interrupted)
++        finally:signal.signal(signal.SIGTERM,previous)
++
++    def test_runner_deadline_requests_eof_and_waits_for_compensation(self):
++        with tempfile.TemporaryDirectory() as folder:
++            marker=Path(folder)/'rollback'
++            code='import sys;from pathlib import Path;print("deployment_status=preflight",flush=True);sys.stdin.readline();Path(sys.argv[1]).write_text("rolled_back")'
++            with patch('sys.stdout',new=io.StringIO()),self.assertRaises(TimeoutError):
++                ship.supervise([sys.executable,'-c',code,str(marker)],lambda:(True,[]),0.05)
++            self.assertEqual(marker.read_text(),'rolled_back')
++
++if __name__=='__main__':unittest.main()
+diff --git a/tools/cloud/tests/test_diagnostics.py b/tools/cloud/tests/test_diagnostics.py
+new file mode 100644
+index 00000000..0d8ff9a4
+--- /dev/null
++++ b/tools/cloud/tests/test_diagnostics.py
+@@ -0,0 +1,25 @@
++import json
++from pathlib import Path
++import sys
++import tempfile
++import unittest
++sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
++from validate_image import export_diagnostics
++
++
++class Diagnostics(unittest.TestCase):
++    def test_failure_logs_and_trx_are_exported_without_private_files(self):
++        with tempfile.TemporaryDirectory() as folder:
++            root=Path(folder);source=root/'private';source.mkdir();destination=root/'diagnostics'
++            (source/'results').mkdir()
++            (source/'tests.log').write_text('CS1739: missing constructor parameter\nBearer TEST_TOKEN_SENTINEL\nGH_TOKEN=ASSIGNMENT_SENTINEL\n')
++            (source/'results'/'domain.trx').write_text('<TestRun outcome="Failed"/>')
++            for name in ('mapping.xml','state.json','secret.dump','test.dll','container.log'):(source/name).write_text('PRIVATE_SENTINEL')
++            export_diagnostics(source,destination)
++            exported=''.join(p.read_text() for p in destination.rglob('*') if p.is_file())
++            self.assertIn('CS1739',exported);self.assertNotIn('TEST_TOKEN_SENTINEL',exported)
++            self.assertNotIn('ASSIGNMENT_SENTINEL',exported);self.assertNotIn('PRIVATE_SENTINEL',exported)
++            self.assertEqual({x['name'] for x in json.loads((destination/'inventory.json').read_text())},{'tests.log','results/domain.trx'})
++
++
++if __name__=='__main__':unittest.main()
+diff --git a/tools/cloud/tests/test_evidence_export.py b/tools/cloud/tests/test_evidence_export.py
+new file mode 100644
+index 00000000..cb95b300
+--- /dev/null
++++ b/tools/cloud/tests/test_evidence_export.py
+@@ -0,0 +1,113 @@
++import json
++import os
++from pathlib import Path
++import subprocess
++import sys
++import tempfile
++import unittest
++from unittest.mock import patch
++
++sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
++import export_evidence as exporter
++
++
++class EvidenceExport(unittest.TestCase):
++    def test_all_profiles_keep_complete_named_reports_and_never_open_private_paths(self):
++        for profile, allowed in exporter.PROFILES.items():
++            with self.subTest(profile=profile), tempfile.TemporaryDirectory() as folder:
++                root = Path(folder); source = root/'source'; source.mkdir()
++                for relative in allowed:
++                    file = source/relative; file.parent.mkdir(parents=True, exist_ok=True)
++                    file.write_text('ERROR: fixture failure retained\n完整诊断\n')
++                private = ('runtime/data/godot/keystores/debug.keystore',
++                           'runtime/config/godot/editor_settings.tres', '.env',
++                           'production.pem', 'release.jks', 'signing.p12',
++                           'credentials.json', 'token.log', '.aws/credentials',
++                           '.ssh/id_rsa', 'http-fixture/runtime/credentials.json')
++                for relative in private:
++                    file = source/relative; file.parent.mkdir(parents=True, exist_ok=True)
++                    file.write_text('PRIVATE_PATH_SENTINEL')
++                original_open = os.open
++                def guarded_open(path, *args, **kwargs):
++                    self.assertNotIn(str(path), ('runtime', '.env', 'production.pem',
++                        'release.jks', 'signing.p12', 'credentials.json', 'token.log', '.aws', '.ssh'))
++                    return original_open(path, *args, **kwargs)
++                with patch.object(exporter.os, 'open', side_effect=guarded_open):
++                    result = exporter.export(source, root/'public', profile)
++                self.assertFalse(result['missing']); self.assertFalse(result['rejected'])
++                names = {str(p.relative_to(root/'public')) for p in (root/'public').rglob('*') if p.is_file()}
++                self.assertEqual(names, set(allowed)|{'evidence-inventory.json'})
++                for relative in allowed:
++                    self.assertEqual((source/relative).read_bytes(), (root/'public'/relative).read_bytes())
++
++    def test_partial_failed_fixture_keeps_diagnostics_without_runtime(self):
++        with tempfile.TemporaryDirectory() as folder:
++            root = Path(folder); source = root/'source'; source.mkdir()
++            (source/'http-fixture').mkdir()
++            (source/'http-fixture/import.log').write_text('Parse Error: deliberate failure\n')
++            result = exporter.export(source, root/'public', 'cloud-local')
++            self.assertEqual([x['name'] for x in result['files']], ['http-fixture/import.log'])
++            self.assertTrue(result['missing'])
++            self.assertIn('deliberate failure', (root/'public/http-fixture/import.log').read_text())
++
++    def test_links_and_non_regular_allowed_names_are_rejected_without_reading(self):
++        for attack in ('leaf-symlink', 'directory-symlink', 'hardlink', 'fifo'):
++            with self.subTest(attack=attack), tempfile.TemporaryDirectory() as folder:
++                root=Path(folder);source=root/'source';source.mkdir(); private=root/'private';private.mkdir()
++                secret=private/'import.log';secret.write_text('DO_NOT_READ_SENTINEL')
++                if attack=='directory-symlink': (source/'http-fixture').symlink_to(private, target_is_directory=True)
++                else:
++                    (source/'http-fixture').mkdir();target=source/'http-fixture/import.log'
++                    if attack=='leaf-symlink': target.symlink_to(secret)
++                    elif attack=='hardlink': os.link(secret,target)
++                    else: os.mkfifo(target)
++                result=exporter.export(source,root/'public','cloud-local')
++                self.assertTrue(result['rejected'])
++                self.assertFalse((root/'public/http-fixture/import.log').exists())
++                self.assertNotIn('DO_NOT_READ_SENTINEL',(root/'public/evidence-inventory.json').read_text())
++
++    def test_missing_source_still_records_that_no_reports_ran(self):
++        with tempfile.TemporaryDirectory() as folder:
++            root=Path(folder);result=exporter.export(root/'absent',root/'public','cloud-local')
++            self.assertFalse(result['files']);self.assertEqual(set(result['missing']),set(exporter.PROFILES['cloud-local']))
++
++    def test_symlinked_source_ancestor_is_not_followed(self):
++        with tempfile.TemporaryDirectory() as folder:
++            root=Path(folder);private=root/'private';private.mkdir();(private/'source').mkdir()
++            (root/'alias').symlink_to(private,target_is_directory=True)
++            with self.assertRaises(ValueError):exporter.export(root/'alias/source',root/'public','cloud-local')
++            self.assertFalse((root/'public').exists())
++
++    def test_stale_destination_never_emits_upload_path_or_deletes_existing_files(self):
++        with tempfile.TemporaryDirectory() as folder:
++            root=Path(folder);source=root/'source';source.mkdir();destination=root/'public';destination.mkdir()
++            existing=destination/'private.pem';existing.write_text('EXISTING_FILE_SENTINEL')
++            output=root/'github-output'
++            run=subprocess.run([sys.executable,exporter.__file__,'--profile','cloud-local','--source',str(source),'--destination',str(destination)],
++                env=dict(os.environ,GITHUB_OUTPUT=str(output)),capture_output=True,text=True)
++            self.assertNotEqual(run.returncode,0);self.assertFalse(output.exists())
++            self.assertEqual(existing.read_text(),'EXISTING_FILE_SENTINEL')
++
++    def test_rejected_path_cli_fails_but_emits_only_safe_partial_diagnostics(self):
++        with tempfile.TemporaryDirectory() as folder:
++            root=Path(folder);source=root/'source';source.mkdir();(source/'http-fixture').mkdir()
++            (source/'http-fixture/import.log').symlink_to(root/'never-read.pem')
++            output=root/'github-output';destination=root/'public'
++            run=subprocess.run([sys.executable,exporter.__file__,'--profile','cloud-local','--source',str(source),'--destination',str(destination)],
++                env=dict(os.environ,GITHUB_OUTPUT=str(output)),capture_output=True,text=True)
++            self.assertNotEqual(run.returncode,0)
++            self.assertEqual(output.read_text(),'artifact_directory='+str(destination)+'\n')
++            self.assertTrue(json.loads((destination/'evidence-inventory.json').read_text())['rejected'])
++
++    def test_credential_text_is_redacted_without_losing_failure_diagnosis(self):
++        value='CS1739: required argument missing\nBearer FAKE_TOKEN_SENTINEL\nGH_TOKEN=FAKE_ASSIGNMENT_SENTINEL\n"accessToken": "FAKE_JSON_SENTINEL"\n'
++        result=exporter.scrub(value)
++        self.assertIn('CS1739',result)
++        for sentinel in ('FAKE_TOKEN_SENTINEL','FAKE_ASSIGNMENT_SENTINEL','FAKE_JSON_SENTINEL'):self.assertNotIn(sentinel,result)
++
++    def test_noncredential_bearer_assertion_log_is_unchanged(self):
++        value='HTTP fixture: ticket URL without bearer = true\n'
++        self.assertEqual(exporter.scrub(value),value)
++
++
++if __name__=='__main__':unittest.main()
+diff --git a/tools/cloud/tests/test_remote.py b/tools/cloud/tests/test_remote.py
+new file mode 100644
+index 00000000..1d036be1
+--- /dev/null
++++ b/tools/cloud/tests/test_remote.py
+@@ -0,0 +1,137 @@
++"""Server transaction fault injection with real files and simulated child commands."""
++import contextlib
++import io
++import json
++import os
++from pathlib import Path
++import shutil
++import subprocess
++import sys
++import tempfile
++import types
++import unittest
++from unittest.mock import patch
++sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
++import deployment as d
++import remote_deploy as r
++from test_controls import manifest, SOURCE, CONTROL, BASELINE, OLD, NEW
++
++
++class RemoteTransaction(unittest.TestCase):
++    def run_case(self, fault=None, decision=True, recover_after=False):
++        with tempfile.TemporaryDirectory() as folder:
++            root=Path(folder);app=root/'app';repo=root/'repo';state=app/'test-deploy';bundle=state/'incoming/21-1'
++            bundle.mkdir(parents=True);(repo/'server').mkdir(parents=True)
++            compose=repo/'server/compose.cloud.yaml';compose.write_text('fixture compose')
++            env=repo/'server/.env';env.write_text('NEVER_READ_ENV_SENTINEL')
++            (app/'deployed-git-commit').write_text(BASELINE+'\n');marker=app/'deployed-runtime-commit';marker.write_text(BASELINE+'\n')
++            for name,content in [('image.tar.gz',b'image'),('health.sh',b'health'),('remote_deploy.py',b'remote'),('deployment.py',b'controller'),('image-validation.json',b'proof')]:
++                (bundle/name).write_bytes(content)
++            row=manifest()
++            for name,field in [('image.tar.gz','archive_sha256'),('health.sh','health_sha256'),('remote_deploy.py','remote_sha256'),('deployment.py','deployment_sha256'),('image-validation.json','image_validation_sha256')]:
++                row[field]=d.file_hash(bundle/name)
++            if fault=='archive':(bundle/'image.tar.gz').write_bytes(b'tampered')
++            if fault=='baseline':row['rollback_baseline_sha']='d'*40
++            (bundle/'manifest.json').write_text(json.dumps(row))
++            current=[OLD];mutations=[];backups=[];restores=[];records=[]
++            if fault=='pending':(state/'pending.json').write_text('{}')
++            original_atomic=r.atomic_write
++            def atomic(path,value):
++                records.append(path.name)
++                if fault=='marker' and path==marker and value.strip()==SOURCE:raise OSError('marker failure')
++                if fault=='accepted' and path.name=='last-accepted.json':raise OSError('evidence failure')
++                return original_atomic(path,value)
++            def capture(*args):
++                args=list(map(str,args))
++                if args[0]=='git':
++                    if args[-3:]==['remote','get-url','origin']:return 'https://github.com/'+d.REPOSITORY+'.git'
++                    if args[-1]=='FETCH_HEAD':return SOURCE
++                    if args[-1]=='HEAD':return BASELINE
++                if args[-1] in ('9'*64,OLD,NEW):
++                    if args[-2]=='{{.Id}}':return args[-1]
++                    if args[-2]=='{{.Image}}':return current[0]
++                    if 'revision' in args[-2]:return SOURCE if (args[-1]==NEW or args[-1]=='9'*64 and current[0]==NEW) else BASELINE
++                raise AssertionError(args)
++            def run(*args,**kwargs):
++                args=list(map(str,args))
++                if args[0]=='git':
++                    if fault=='compatibility' and 'diff' in args and BASELINE in args:raise subprocess.CalledProcessError(1,args)
++                    return subprocess.CompletedProcess(args,0)
++                if 'ps' in args:return subprocess.CompletedProcess(args,0,stdout='9'*64+'\n')
++                if 'pg_dump' in args:
++                    if fault=='backup':raise subprocess.CalledProcessError(1,args)
++                    if fault!='empty_backup':kwargs['stdout'].write(b'PGDMP_fixture')
++                    backups.append(kwargs['stdout'].name);return subprocess.CompletedProcess(args,0)
++                if 'pg_restore' in args:
++                    restores.append(args)
++                    if fault=='backup_list':raise subprocess.CalledProcessError(1,args)
++                    return subprocess.CompletedProcess(args,0)
++                if 'up' in args:
++                    chosen=(state/'active-image.yaml').read_text().split('image: ')[1].strip()
++                    current[0]=chosen;mutations.append(chosen)
++                    if fault=='partial' and chosen==NEW:raise subprocess.CalledProcessError(1,args)
++                    if fault=='rollback' and chosen==OLD:raise subprocess.CalledProcessError(1,args)
++                return subprocess.CompletedProcess(args,0)
++            def child(*args,**kwargs):
++                if fault=='health' and current[0]==NEW:return subprocess.CompletedProcess(args,1)
++                return subprocess.CompletedProcess(args,0)
++            clock=iter(range(0,10000,200))
++            def guarded_read(path,*args,**kwargs):
++                if path==env:raise AssertionError('Server .env must never be read')
++                return original_read(path,*args,**kwargs)
++            original_read=Path.read_text
++            with contextlib.ExitStack() as stack:
++                for name,value in [('APP',app),('REPO',repo),('COMPOSE',compose),('ENV_FILE',env),('LOCK',root/'lock')]:stack.enter_context(patch.object(r,name,value))
++                stack.enter_context(patch('pwd.getpwuid',return_value=types.SimpleNamespace(pw_name='ubuntu')))
++                stack.enter_context(patch.object(r,'capture',side_effect=capture));stack.enter_context(patch.object(r,'run',side_effect=run))
++                stack.enter_context(patch.object(r,'atomic_write',side_effect=atomic));stack.enter_context(patch.object(r,'external_decision',return_value=decision))
++                stack.enter_context(patch.object(r.subprocess,'run',side_effect=child));stack.enter_context(patch.object(r.time,'sleep'))
++                stack.enter_context(patch.object(r.time,'monotonic',side_effect=lambda:next(clock)))
++                stack.enter_context(patch.object(Path,'read_text',guarded_read));stack.enter_context(patch('sys.stdout',new=io.StringIO()))
++                if fault or not decision:
++                    with self.assertRaises((ValueError,RuntimeError,OSError,subprocess.CalledProcessError)):
++                        with r.deployment_lock():r.deploy(bundle,SOURCE,21,1,CONTROL)
++                else:
++                    with r.deployment_lock():r.deploy(bundle,SOURCE,21,1,CONTROL)
++                evidence=json.loads((bundle/'result.json').read_text()) if (bundle/'result.json').exists() else None
++                pending=(state/'pending.json').exists()
++                if recover_after and pending:
++                    # Clear injected failure, but reuse the same pinned bundle.
++                    fault=None
++                    with self.assertRaises(RuntimeError):
++                        with r.deployment_lock():r.deploy(bundle,SOURCE,21,1,CONTROL,recover=True)
++                    self.assertFalse((state/'pending.json').exists());self.assertEqual(current[0],OLD)
++                for backup in (app/'backups').glob('*.dump'):
++                    self.assertEqual(backup.stat().st_mode & 0o777,0o600)
++                    self.assertIn('21-1-before-',backup.name)
++                self.assertTrue(all('--list' in row for row in restores),'Database restore is forbidden')
++                if evidence:self.assertNotIn('NEVER_READ_ENV_SENTINEL',json.dumps(evidence))
++                return current[0],mutations,marker.read_text().strip(),evidence,pending
++
++    def test_complete_acceptance(self):
++        current,mutations,marker,evidence,pending=self.run_case()
++        self.assertEqual(current,NEW);self.assertEqual(marker,SOURCE);self.assertEqual(evidence['status'],'accepted');self.assertFalse(pending)
++
++    def test_preflight_failures_never_activate_application(self):
++        for fault in ('archive','baseline','pending','compatibility','backup','empty_backup','backup_list'):
++            with self.subTest(fault=fault):self.assertEqual(self.run_case(fault)[1],[])
++
++    def test_failed_health_partial_activation_and_marker_revert(self):
++        for fault in ('health','partial','marker','accepted'):
++            with self.subTest(fault=fault):
++                current,mutations,marker,evidence,pending=self.run_case(fault)
++                self.assertEqual(current,OLD);self.assertEqual(marker,BASELINE);self.assertEqual(evidence['status'],'rolled_back');self.assertFalse(pending)
++
++    def test_external_rejection_reverts_before_acceptance(self):
++        self.assertEqual(self.run_case(decision=False)[3]['status'],'rolled_back')
++
++    def test_failed_rollback_blocks_next_deploy_and_can_recover(self):
++        self.assertTrue(self.run_case('rollback',decision=False,recover_after=True)[4])
++
++    def test_known_persistence_paths_are_blocked(self):
++        for path in ('server/src/FantasyCard.Server/Rooms','server/src/FantasyCard.Domain',
++                     'server/src/FantasyCard.Contracts','server/src/FantasyCard.Server/FantasyCard.Server.csproj'):
++            self.assertIn(path,r.BLOCKED_PATHS)
++
++
++if __name__=='__main__':unittest.main()
+diff --git a/tools/cloud/tests/test_shipping_outcome.py b/tools/cloud/tests/test_shipping_outcome.py
+new file mode 100644
+index 00000000..6215456f
+--- /dev/null
++++ b/tools/cloud/tests/test_shipping_outcome.py
+@@ -0,0 +1,61 @@
++"""A saved remote accepted status cannot turn a lost SSH session into success."""
++import io
++import json
++import os
++from pathlib import Path
++import subprocess
++import sys
++import tempfile
++import unittest
++from unittest.mock import patch
++sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
++import deployment as d
++import ship
++from test_controls import manifest,SOURCE,CONTROL,BASELINE,OLD
++
++
++class ShippingOutcome(unittest.TestCase):
++    def test_failed_transport_keeps_unknown_even_with_remote_accepted_file(self):
++        previous=Path.cwd()
++        with tempfile.TemporaryDirectory() as folder:
++            root=Path(folder)
++            try:
++                os.chdir(root)
++                artifact=root/'image-artifact';artifact.mkdir()
++                trusted=root/'trusted/tools/cloud';trusted.mkdir(parents=True)
++                (trusted/'remote_deploy.py').write_text('mock controller')
++                (trusted/'deployment.py').write_text('mock validation')
++                (artifact/'image.tar.gz').write_bytes(b'mock archive')
++                (artifact/'image-validation.json').write_text('{}')
++                row=manifest()
++                for path,field in ((artifact/'image.tar.gz','archive_sha256'),
++                    (artifact/'image-validation.json','image_validation_sha256'),
++                    (trusted/'remote_deploy.py','remote_sha256'),(trusted/'deployment.py','deployment_sha256')):
++                    row[field]=d.file_hash(path)
++                import hashlib
++                row['health_sha256']=hashlib.sha256(b'mock health').hexdigest()
++                (artifact/'manifest.json').write_text(json.dumps(row))
++                remote={**row,'baseline_revision':BASELINE,'baseline_image_id':OLD,'checkout_sha':BASELINE,
++                    'events':[{'status':'accepted','utc_epoch':1}],'status':'accepted',
++                    'backup':{'name':f'actions-21-1-before-{SOURCE}.dump','sha256':'d'*64,'bytes':12}}
++                def transfer(args,**kwargs):
++                    if args[0]=='scp' and any('/result.json' in str(value) for value in args):
++                        Path(args[-1]).write_text(json.dumps(remote))
++                    return subprocess.CompletedProcess(args,0)
++                def health(updater,path):Path(path).write_text('mock health')
++                context={'GITHUB_RUN_ID':'21','GITHUB_RUN_ATTEMPT':'1','COMMIT_SHA':SOURCE,'GITHUB_SHA':CONTROL,
++                    # Deliberately invalid fixture data; no real key is created/read.
++                    'TEST_SERVER_SSH_KEY':'MOCK_ONLY_NOT_A_KEY',
++                    'TEST_SERVER_KNOWN_HOSTS':'43.172.70.182 ssh-ed25519 MOCK_PUBLIC_DATA'}
++                with patch.dict(os.environ,context,clear=True),patch.object(ship,'extract_health',side_effect=health), \
++                     patch.object(ship,'validate_image_proof'),patch.object(ship.subprocess,'run',side_effect=transfer), \
++                     patch.object(ship,'supervise',side_effect=RuntimeError('connection lost')), \
++                     patch('sys.stdout',new=io.StringIO()),self.assertRaises(RuntimeError):ship.main()
++                evidence=root/'deploy-evidence'
++                self.assertEqual(json.loads((evidence/'result.json').read_text())['status'],'accepted')
++                self.assertEqual(json.loads((evidence/'shipping.json').read_text()),{'status':'unknown','recovery_required':True})
++                self.assertTrue(json.loads((evidence/'runner.json').read_text())['recovery_required'])
++            finally:os.chdir(previous)
++
++
++if __name__=='__main__':unittest.main()
+diff --git a/tools/cloud/toolchain.json b/tools/cloud/toolchain.json
+new file mode 100644
+index 00000000..4f131779
+--- /dev/null
++++ b/tools/cloud/toolchain.json
+@@ -0,0 +1,90 @@
++{
++  "verified_on": "2026-09-30",
++  "dotnet": {
++    "version": "10.0.400",
++    "url": "https://builds.dotnet.microsoft.com/dotnet/Sdk/10.0.400/dotnet-sdk-10.0.400-linux-x64.tar.gz",
++    "algorithm": "sha512",
++    "digest": "1033977dd837150e0814cf0c5d5b17ceb63925fda7ba2158b47258a4bd7c048cf82eac3bc1166f3146f53124a3f5fba09db1de1260d2ce96399860303b404b48",
++    "metadata": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/10.0/releases.json"
++  },
++  "godot": {
++    "version": "4.7.2",
++    "url": "https://github.com/godotengine/godot/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip",
++    "algorithm": "sha256",
++    "digest": "cadd3204e728a35d3f13adb7fd0d7902636b79f6b95c40c265eb73b6c35329e4",
++    "metadata": "https://github.com/godotengine/godot/releases/tag/4.7.2-stable"
++  },
++  "postgres_major": 18,
++  "psutil": "7.0.0",
++  "dotnet_debian13": [
++    {
++      "url": "https://packages.microsoft.com/debian/13/prod/pool/main/d/dotnet-sdk-10.0/dotnet-sdk-10.0_10.0.400-1_amd64.deb",
++      "digest": "6d45ea3d0b80b929dd65e006bd4794b18d28caf885a6aebe20950813d9e68701",
++      "algorithm": "sha256"
++    },
++    {
++      "url": "https://packages.microsoft.com/debian/13/prod/pool/main/d/dotnet-host/dotnet-host_10.0.11-1_amd64.deb",
++      "digest": "3d5d2a10a3f08c6d0737770b6c33aade5fd3ebeac72fd007f1f929d1f5390ad4",
++      "algorithm": "sha256"
++    },
++    {
++      "url": "https://packages.microsoft.com/debian/13/prod/pool/main/d/dotnet-hostfxr-10.0/dotnet-hostfxr-10.0_10.0.11-1_amd64.deb",
++      "digest": "3172e4843b65331f4711fc06a75948778ad98a070d30c507b01f8b94756cad8f",
++      "algorithm": "sha256"
++    },
++    {
++      "url": "https://packages.microsoft.com/debian/13/prod/pool/main/d/dotnet-runtime-10.0/dotnet-runtime-10.0_10.0.11-1_amd64.deb",
++      "digest": "b4640a08cac0a49f08ecb6aa423a39a6b2155fdfa42a8c8024576560e9c0eeb2",
++      "algorithm": "sha256"
++    },
++    {
++      "url": "https://packages.microsoft.com/debian/13/prod/pool/main/d/dotnet-runtime-deps-10.0/dotnet-runtime-deps-10.0_10.0.11-1_amd64.deb",
++      "digest": "a95048409aa3fffe268fb868ab38d36e1a6cc2ec1aa118de9d2733161f74d439",
++      "algorithm": "sha256"
++    },
++    {
++      "url": "https://packages.microsoft.com/debian/13/prod/pool/main/d/dotnet-targeting-pack-10.0/dotnet-targeting-pack-10.0_10.0.11-1_amd64.deb",
++      "digest": "6f6d592bfcc7ead52de53b4842098b29fb7f2ae653e8dcb0d61c2b4d9710fa68",
++      "algorithm": "sha256"
++    },
++    {
++      "url": "https://packages.microsoft.com/debian/13/prod/pool/main/d/dotnet-apphost-pack-10.0/dotnet-apphost-pack-10.0_10.0.11-1_amd64.deb",
++      "digest": "bb35c6fc9b47dbb3675c0d5243dbcc6a2623abdeeb7fc2cd0d1f6d91c0f26c14",
++      "algorithm": "sha256"
++    },
++    {
++      "url": "https://packages.microsoft.com/debian/13/prod/pool/main/a/aspnetcore-runtime-10.0/aspnetcore-runtime-10.0_10.0.11-1_amd64.deb",
++      "digest": "669b9e7803d85bf3094b5bb2b5701378d3cb0e028a14b61cb39026642e093e25",
++      "algorithm": "sha256"
++    },
++    {
++      "url": "https://packages.microsoft.com/debian/13/prod/pool/main/a/aspnetcore-targeting-pack-10.0/aspnetcore-targeting-pack-10.0_10.0.11-1_amd64.deb",
++      "digest": "65aaf604e14dce51b3f423c10580060e6355b00ce0d908e9394a7e24f6cd8a6f",
++      "algorithm": "sha256"
++    }
++  ],
++  "build_tools": [
++    {
++      "url": "https://deb.debian.org/debian/pool/main/b/bison/bison_3.8.2+dfsg-1+b2_amd64.deb",
++      "digest": "ce6eb1f7aad18850e32d223a68f54bcbe756d74f138c8ec5460ad9d220f4d335",
++      "algorithm": "sha256"
++    },
++    {
++      "url": "https://deb.debian.org/debian/pool/main/f/flex/flex_2.6.4-8.2+b4_amd64.deb",
++      "digest": "75f963765232c356d0a2fb70e780dfa9de2425aca036ec60eefb7fc98a2c905b",
++      "algorithm": "sha256"
++    },
++    {
++      "url": "https://deb.debian.org/debian/pool/main/m/m4/m4_1.4.19-8_amd64.deb",
++      "digest": "221b3e224708c1da2a1a88b6824380593579b2254ae7d914afa14cbd5d343334",
++      "algorithm": "sha256"
++    }
++  ],
++  "postgres": {
++    "version": "18.6",
++    "url": "https://deb.debian.org/debian/pool/main/p/postgresql-18/postgresql-18_18.6.orig.tar.bz2",
++    "digest": "555610c24d53e4316da5b7d3fc25c279d96856d5e0e23ee308c328c5fa881d9f",
++    "algorithm": "sha256",
++    "metadata": "https://deb.debian.org/debian/pool/main/p/postgresql-18/postgresql-18_18.6-3.dsc"
++  }
++}
+diff --git a/tools/cloud/validate_image.py b/tools/cloud/validate_image.py
+new file mode 100644
+index 00000000..b856cf52
+--- /dev/null
++++ b/tools/cloud/validate_image.py
+@@ -0,0 +1,83 @@
++"""Run the existing validator against final image DLLs, with private evidence local."""
++import argparse
++import importlib.util
++import json
++import pathlib
++import re
++import sys
++from deployment import sha, validate_image_proof
++
++
++def export_diagnostics(evidence, destination):
++    """Publish only disposable test logs/results, never DLLs, mappings or dumps."""
++    destination.mkdir(parents=True, exist_ok=True)
++    paths = [evidence / name for name in ('tests.log', 'smoke-build.log',
++             'smoke-before.log', 'smoke-after.log', 'test-dependency-hashes.txt')]
++    paths += sorted((evidence / 'results').glob('*.trx'))
++    inventory = []
++    for path in paths:
++        if not path.is_file() or path.is_symlink():
++            continue
++        # These files come from a credential-free, disposable test stack. Still
++        # scrub bearer/JWT text and explicit credential assignments if a failing
++        # test prints them. No container logs or runtime state files are exported.
++        value = path.read_text(encoding='utf-8', errors='replace')
++        value = re.sub(r'(?i)Bearer\s+[^\s"<>]+', 'Bearer [redacted]', value)
++        value = re.sub(r'\beyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\b', '[redacted JWT]', value)
++        value = re.sub(r'(?im)^.*(?:TEST_SERVER_SSH_KEY|GH_TOKEN|accessToken|access_token|api[_-]?key|password)\s*[:=].*$', '[redacted credential assignment]', value)
++        target = destination / ('results' if path.suffix == '.trx' else '') / path.name
++        target.parent.mkdir(parents=True, exist_ok=True)
++        target.write_text(value, encoding='utf-8')
++        inventory.append({'name': str(target.relative_to(destination)), 'bytes': target.stat().st_size})
++    (destination / 'inventory.json').write_text(json.dumps(inventory, indent=2) + '\n')
++
++
++def validate(source, image, builder, source_sha, output, diagnostics=None):
++    source = pathlib.Path(source).resolve(strict=True)
++    sha(source_sha)
++    # Never inspect a real release key. Check existence only and stop safely.
++    if (source / 'release-encryption.key').exists():
++        raise ValueError('Image validation requires a credential-free source checkout')
++    trusted_tools = pathlib.Path(__file__).resolve().parents[1]
++    sys.path.insert(0, str(trusted_tools))
++    spec = importlib.util.spec_from_file_location('trusted_image_validator', trusted_tools / 'validate_docker_server.py')
++    validator = importlib.util.module_from_spec(spec)
++    spec.loader.exec_module(validator)
++    validator.ROOT = source
++    validator.PRIVATE = output.parent / 'private-image-validation'
++    # Disposable fixture value, never a server credential or uploaded secret.
++    validator.secrets.token_hex = lambda count: '0' * (count * 2)
++    validator.PRIVATE.mkdir(parents=True, exist_ok=True)
++    before = set(validator.PRIVATE.iterdir())
++    try:
++        ok = validator.validate(image, builder)
++    finally:
++        created = set(validator.PRIVATE.iterdir()) - before
++        if len(created) == 1:
++            export_diagnostics(next(iter(created)), diagnostics or output.parent / 'diagnostics')
++    if len(created) != 1:
++        raise ValueError('Ambiguous final-image evidence')
++    report = json.loads((created.pop() / 'verification.json').read_text())
++    proof = {'ok': ok, 'source_sha': source_sha, 'image_id': report.get('image'),
++             'assemblies': report.get('assemblies'), 'tests': report.get('tests'),
++             'runtime_uid': report.get('runtime_uid'),
++             'restart_test_passed': report.get('smoke_before', {}).get('ok') is True and report.get('smoke_after', {}).get('ok') is True,
++             'database_outage': report.get('database_outage'),
++             'production_local_auth_status': report.get('production_local_auth_status'),
++             'cleanup_ok': report.get('cleanup', {}).get('ok') is True}
++    output.write_text(json.dumps(proof, indent=2) + '\n')
++    if not ok:
++        raise ValueError('Final-image validation failed; private local evidence retained')
++    validate_image_proof(proof, proof['image_id'], source_sha)
++
++
++if __name__ == '__main__':
++    parser = argparse.ArgumentParser()
++    parser.add_argument('--source', required=True)
++    parser.add_argument('--image', required=True)
++    parser.add_argument('--builder', required=True)
++    parser.add_argument('--source-sha', required=True)
++    parser.add_argument('--output', type=pathlib.Path, required=True)
++    parser.add_argument('--diagnostics', type=pathlib.Path)
++    args = parser.parse_args()
++    validate(args.source, args.image, args.builder, args.source_sha, args.output, args.diagnostics)

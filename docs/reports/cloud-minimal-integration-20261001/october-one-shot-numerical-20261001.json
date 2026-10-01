@@ -1,0 +1,148 @@
+{
+  "scope": "Single authorized retry of Numerical client run 36769267487 only; no other reruns.",
+  "exact_sha": "2f1071763fca5f73a7464471f80168ea0854c3ad",
+  "run_id": 36769267487,
+  "run_attempt": 2,
+  "requested_at_utc": "2026-10-01 00:29:11 UTC",
+  "status": "completed",
+  "conclusion": "success",
+  "billing_reset_provenance": "Parent authenticated GitHub billing browser: October0/2000 included minutes, extra budget0 and Stop usage Yes; no paid change authorized or made.",
+  "rerun_response": {
+    "success": true
+  },
+  "runner_allocated": true,
+  "jobs": [
+    {
+      "id": 110160775969,
+      "run_attempt": 2,
+      "status": "completed",
+      "conclusion": "success",
+      "runner_id": 1000000562,
+      "started_at": "2026-10-01T00:29:16Z",
+      "completed_at": "2026-10-01T00:33:59Z",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-01T00:29:17Z",
+          "completed_at": "2026-10-01T00:29:19Z"
+        },
+        {
+          "name": "Run actions/checkout@v7",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-01T00:29:19Z",
+          "completed_at": "2026-10-01T00:30:30Z"
+        },
+        {
+          "name": "Run actions/setup-dotnet@v6",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-01T00:30:30Z",
+          "completed_at": "2026-10-01T00:30:31Z"
+        },
+        {
+          "name": "Install repository Godot version from official distribution",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-01T00:30:31Z",
+          "completed_at": "2026-10-01T00:30:39Z"
+        },
+        {
+          "name": "Import and parse scripts in a network-isolated namespace",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-01T00:30:39Z",
+          "completed_at": "2026-10-01T00:33:21Z"
+        },
+        {
+          "name": "Numerical scene checks without production network access",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-01T00:33:21Z",
+          "completed_at": "2026-10-01T00:33:22Z"
+        },
+        {
+          "name": "Compare local previews with authoritative room preview and play",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-01T00:33:22Z",
+          "completed_at": "2026-10-01T00:33:54Z"
+        },
+        {
+          "name": "Stage only named numerical reports and fixture logs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-01T00:33:54Z",
+          "completed_at": "2026-10-01T00:33:54Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-01T00:33:54Z",
+          "completed_at": "2026-10-01T00:33:56Z"
+        },
+        {
+          "name": "Post Run actions/setup-dotnet@v6",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-10-01T00:33:56Z",
+          "completed_at": "2026-10-01T00:33:56Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v7",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-10-01T00:33:56Z",
+          "completed_at": "2026-10-01T00:33:57Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-10-01T00:33:57Z",
+          "completed_at": "2026-10-01T00:33:57Z"
+        }
+      ]
+    }
+  ],
+  "budget_or_permission_changed": false,
+  "other_runs_retried": false,
+  "completed_at": "2026-10-01T00:34:00Z",
+  "artifacts": [
+    {
+      "id": 11133698689,
+      "name": "numerical-godot-8fcc33a1917ed3fcefc2c97f3de61bf7c901e92f",
+      "size_in_bytes": 361100,
+      "url": "https://api.github.com/repos/AlenSheng/godot_FanstaryCard/actions/artifacts/11133698689",
+      "archive_download_url": "https://api.github.com/repos/AlenSheng/godot_FanstaryCard/actions/artifacts/11133698689/zip",
+      "expired": false,
+      "created_at": "2026-10-01T00:33:56Z",
+      "expires_at": "2026-10-08T00:33:54Z",
+      "updated_at": "2026-10-01T00:33:56Z",
+      "digest": "sha256:a3cbd14a4614b8bf06f6f871611d5f490f98c9a8992be5b8e6770f31e048e35a",
+      "workflow_run": {
+        "id": 36769267487,
+        "repository_id": 1362500320,
+        "head_repository_id": 1362500320,
+        "head_branch": "codex/cloud-artifact-allowlist-20260930",
+        "head_sha": "2f1071763fca5f73a7464471f80168ea0854c3ad"
+      }
+    }
+  ],
+  "actual_steps_all_passed": true
+}

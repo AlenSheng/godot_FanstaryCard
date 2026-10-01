@@ -1,0 +1,46 @@
+diff --git a/.github/workflows/test-server-deploy.yml b/.github/workflows/test-server-deploy.yml
+new file mode 100644
+index 00000000..70f928e4
+--- /dev/null
++++ b/.github/workflows/test-server-deploy.yml
+@@ -0,0 +1,40 @@
++name: Owner-confirmed silicon valley test deployment
++
++on:
++  workflow_dispatch:
++    inputs:
++      pr_number:
++        description: Same-repository open PR targeting release (freeze before dispatch)
++        required: true
++        type: string
++      confirm_source_sha:
++        description: Owner confirms deployment of this exact full SHA (repeat commit_sha)
++        required: true
++        type: string
++      rollback_baseline_sha:
++        description: Full running baseline SHA reviewed for application rollback compatibility
++        required: true
++        type: string
++      confirm_rollback_compatibility:
++        description: Data and snapshot contracts were reviewed as compatible with this rollback baseline
++        required: true
++        default: false
++        type: boolean
++      confirm_restart:
++        description: I authorize this test deployment and necessary application restart
++        required: true
++        default: false
++        type: boolean
++      commit_sha:
++        description: Reviewed full 40-character lowercase PR head SHA
++        required: true
++        type: string
++
++permissions: {}
++
++jobs:
++  registration-only:
++    if: ${{ false }}
++    runs-on: ubuntu-24.04
++    steps:
++      - run: "true"
