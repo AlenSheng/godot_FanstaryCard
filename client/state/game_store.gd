@@ -1562,7 +1562,7 @@ func _poll_ready_settlement() -> void:
 	if generation != gateway.session_generation: return
 	if poll_epoch != _settlement_poll_request_epoch: return
 	_settlement_polling = false
-	if not _settlement_request_current(generation, context_epoch, match_id) or not settlement.is_empty(): return
+	if not _settlement_ack_pending_id.is_empty() or not _settlement_request_current(generation, context_epoch, match_id) or not settlement.is_empty(): return
 	if not result.ok or not result.data is Dictionary:
 		settlement_query_failed = true
 		changed.emit()
