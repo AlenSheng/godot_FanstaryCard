@@ -40,6 +40,8 @@ StrategyVersion 和所有行为字段继续比较；冻结签名包括版本。�
 钱包锁保持 Pending 资产，不保持房间路由；终态持久结算被观察后路由释放，延迟快照请求可以合法返回 NOT_IN_ROOM 并建立 recovery。
 修复只在本测试的 `fc_runtime_test_*` 隔离 schema 安装终态 checkpoint advisory gate：真实完成事件已发布、路由尚未释放时读取真实 terminal snapshot，随后释放 checkpoint，再继续原 Pending、GET、poll、ACK 流程。
 不修改生产代码、PB、快照、资产或收据。保留全部原断言，并加强普通分支必须实际读取 Extracted snapshot 的检查；90/10/30 秒预算未增加。
+普通分支另有第二个 `pending-established` / `pending-verified` 客户端 barrier：C#先确认4个真实Pending，客户端在钱包提交前检查无完成收据、原match及ordinary上下文；C#再确认4个Pending和原资产未变后才提交钱包锁。
+终态checkpoint释放前的holds=0断言仍保留；两个阶段分开记录，不能把holds0阶段当作实际Pending资产证明。
 
 ## 已完成的真实验证
 
@@ -55,6 +57,8 @@ StrategyVersion 和所有行为字段继续比较；冻结签名包括版本。�
 | 12 个新实际 factor 子进程，7cdd6eb | 12 个 exit0 | `evidence/factor-matrix-7cdd6eb/`；2592 raw，972 controls，162 intent checks，0 errors |
 | A05 普通终态快照可控反例，旧夹具 | 2 / 1 / 0 | `evidence/tests/a05-ordinary-controlled-red/` |
 | A05 checkpoint 修复前提交，真实 Godot + TCP + PG | 3 / 0 / 0 | `evidence/tests/a05-checkpoint-green-tcp/` |
+| Linux Unix 全 solution，728aa96 Domain / Server | 349 / 0 / 0；302 / 0 / 0 | `evidence/tests/final-728aa96-linux-unix/`，总exit0 |
+| A05真实4 Pending客户端barrier前提交，Godot + TCP + PG | 3 / 0 / 0 | `evidence/tests/a05-pending-barrier-green-tcp/`；钱包提交前二次客户端检查 |
 
 模拟每层仅 3 samples、每因素 3 独立运行，是有界回归；`main_sample_floor_met=false`、`acceptance_eligible=false`，不得用作主验收规模。
 

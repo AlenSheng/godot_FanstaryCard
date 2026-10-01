@@ -79,6 +79,16 @@ public sealed partial class ProcessLifecycleRecoveryTests
             }
             if (context == "recovered") await A05WaitFileAsync(control, "context-ready", godot, ct);
             Assert.Equal(4L, await database.ScalarAsync<long>("SELECT count(*) FROM settlement_asset_holds WHERE state='Pending'"));
+            if (context == "ordinary")
+            {
+                await A05ControlAsync(control, "pending-established", new { actual_pending_holds = 4, wallet_committed = false }, ct);
+                await A05WaitFileAsync(control, "pending-verified", godot, ct);
+                Assert.Equal(4L, await database.ScalarAsync<long>("SELECT count(*) FROM settlement_asset_holds WHERE state='Pending'"));
+                Assert.Equal(before, await A05AssetsAsync(database, playerId, equipmentId, ct));
+                var path = Path.Combine(control, "pending-verified.json");
+                Record("A05-ordinary-four-pending-client-barrier", new { context, outcome, matchId,
+                    actualPendingHolds = 4, walletCommitted = false, path, phaseSha256 = A05Sha(await File.ReadAllBytesAsync(path, ct)) });
+            }
             await transaction.CommitAsync(ct);
             await Task.WhenAll(relay.SettlementGetHeld.Task, relay.PollHeld.Task).WaitAsync(ct);
             relay.ReleaseSettlementGet();

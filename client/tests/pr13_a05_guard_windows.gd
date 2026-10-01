@@ -66,8 +66,16 @@ func run() -> void:
 		while (str(game.room.get("player", {}).get("phase", "")) != "Extracted" or game._snapshot_request_pending) and Time.get_ticks_msec() < end: await process_frame
 		check(game.gateway.online and str(game.room.get("player", {}).get("phase", "")) == "Extracted" and not game._snapshot_request_pending and game._settlement_recovery_match_id.is_empty() and game._settlement_match_id() == match_id,
 			"ordinary terminal M has no recovery M")
-	check(game.settlement.is_empty(), "Pending holds expose no completed receipt")
+	check(game.settlement.is_empty(), "checkpoint or recovered context exposes no completed receipt")
 	phase("context-ready", game)
+	if context == "ordinary":
+		var pending := await wait_control("pending-established")
+		check(int(pending.get("actual_pending_holds", -1)) == 4 and not bool(pending.get("wallet_committed", true)), "owned ordinary barrier confirms four Pending before wallet commit")
+		check(game.settlement.is_empty(), "Pending holds expose no completed receipt")
+		check(game.gateway.online and str(game.room.get("player", {}).get("phase", "")) == "Extracted" and game._settlement_recovery_match_id.is_empty() and game._settlement_match_id() == match_id, "ordinary context retained during four actual Pending holds")
+		phase("pending-verified", game)
+	else:
+		check(game.settlement.is_empty(), "Pending holds expose no completed receipt")
 	await wait_control("get-released")
 	end = Time.get_ticks_msec() + 10000
 	while game.settlement.is_empty() and Time.get_ticks_msec() < end: await process_frame
