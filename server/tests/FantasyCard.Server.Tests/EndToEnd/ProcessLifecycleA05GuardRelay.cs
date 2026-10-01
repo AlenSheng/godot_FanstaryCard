@@ -100,6 +100,13 @@ public sealed partial class ProcessLifecycleRecoveryTests
                     { PollHeld.TrySetResult(); await _releasePoll.Task.WaitAsync(_stop.Token); }
                 }
                 context.Response.StatusCode = (int)response.StatusCode;
+                if ((int)response.StatusCode == StatusCodes.Status204NoContent)
+                {
+                    context.Response.ContentType = null;
+                    context.Response.ContentLength = null;
+                    Record("A05-guard-no-content-forwarded", new { label = _label, path, method = context.Request.Method, status = 204, backendBytes = payload.Length });
+                    return;
+                }
                 context.Response.ContentType = response.Content.Headers.ContentType?.ToString();
                 context.Response.ContentLength = payload.Length; await context.Response.Body.WriteAsync(payload, _stop.Token);
             }
