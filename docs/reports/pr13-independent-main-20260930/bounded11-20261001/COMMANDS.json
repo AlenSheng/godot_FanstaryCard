@@ -1,0 +1,749 @@
+[
+  {
+    "id": "A05-BUILD",
+    "argv": [
+      "dotnet",
+      "build",
+      "FantasyCard.Server.slnx",
+      "-c",
+      "Release"
+    ],
+    "cwd": "/workspace/pr13-main-bounded-20261001/a05/source/server",
+    "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PR13_SOURCE_ROOT": "/workspace/pr13-main-bounded-20261001/a05/source/server",
+      "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "FANTASYCARD_TEST_POSTGRES": "Host=/workspace/pr13-main-bounded-20261001/a05/owned-socket;Port=55517;Database=postgres;Username=agent;Pooling=true;Maximum Pool Size=8",
+      "FANTASYCARD_PROCESS_SERVER_DLL": "/workspace/pr13-main-bounded-20261001/a05/source/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll",
+      "FANTASYCARD_PROCESS_EVIDENCE": "/workspace/pr13-main-bounded-20261001/a05/evidence/A05-BUILD"
+    },
+    "started_at_utc": "2026-10-01T00:20:02.707151+00:00",
+    "elapsed_seconds": 8.213425484000254,
+    "exit_code": 0,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "A05-BUILD.log",
+    "log_sha256": "e40ffc910c40e8f2841f218ae674582389cbb82e134077201f9521f0853e61f5"
+  },
+  {
+    "id": "A05-CAUSAL-BUILD",
+    "argv": [
+      "dotnet",
+      "build",
+      "FantasyCard.Server.slnx",
+      "-c",
+      "Release"
+    ],
+    "cwd": "/workspace/pr13-main-bounded-20261001/a05/source-causal/server",
+    "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PR13_SOURCE_ROOT": "/workspace/pr13-main-bounded-20261001/a05/source-causal/server",
+      "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "FANTASYCARD_TEST_POSTGRES": "Host=/workspace/pr13-main-bounded-20261001/a05/owned-socket;Port=55517;Database=postgres;Username=agent;Pooling=true;Maximum Pool Size=8",
+      "FANTASYCARD_PROCESS_SERVER_DLL": "/workspace/pr13-main-bounded-20261001/a05/source-causal/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll",
+      "FANTASYCARD_PROCESS_EVIDENCE": "/workspace/pr13-main-bounded-20261001/a05/evidence/A05-CAUSAL-BUILD"
+    },
+    "started_at_utc": "2026-10-01T00:23:20.097841+00:00",
+    "elapsed_seconds": 6.911679625999568,
+    "exit_code": 0,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "A05-CAUSAL-BUILD.log",
+    "log_sha256": "f8ecc58fb9677c0bf0d5a592f4d5e9ad3aa4f8a1c4c10f66347b898a269466ef"
+  },
+  {
+    "id": "A05-CAUSAL",
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "-c",
+      "Release",
+      "--no-build",
+      "--filter",
+      "FullyQualifiedName~Frozen_f812_actual_poll_return_during_ACK_must_not_restore_completed_receipt",
+      "--logger",
+      "trx;LogFileName=causal.trx",
+      "--results-directory",
+      "/workspace/pr13-main-bounded-20261001/a05/evidence/A05-CAUSAL"
+    ],
+    "cwd": "/workspace/pr13-main-bounded-20261001/a05/source-causal/server",
+    "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PR13_SOURCE_ROOT": "/workspace/pr13-main-bounded-20261001/a05/source-causal/server",
+      "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "FANTASYCARD_TEST_POSTGRES": "Host=/workspace/pr13-main-bounded-20261001/a05/owned-socket;Port=55517;Database=postgres;Username=agent;Pooling=true;Maximum Pool Size=8",
+      "FANTASYCARD_PROCESS_SERVER_DLL": "/workspace/pr13-main-bounded-20261001/a05/source-causal/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll",
+      "FANTASYCARD_PROCESS_EVIDENCE": "/workspace/pr13-main-bounded-20261001/a05/evidence/A05-CAUSAL"
+    },
+    "started_at_utc": "2026-10-01T00:23:27.067227+00:00",
+    "elapsed_seconds": 14.081552857999668,
+    "exit_code": 1,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "A05-CAUSAL.log",
+    "log_sha256": "d08fdb9f486f61c4aecaf36ff66ca5aa9fa796cd6073a37291e06c92cef8d872"
+  },
+  {
+    "id": "A05-CHECKS",
+    "argv": [
+      "python",
+      "/workspace/pr13-main-bounded-20261001/verify_a05.py"
+    ],
+    "cwd": "/workspace/pr13-main-bounded-seal",
+    "source_sha": "2dda41b32ba89f06d5ea722ae8b9469004940c22",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PR13_SOURCE_ROOT": "/workspace/pr13-main-bounded-seal",
+      "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64"
+    },
+    "started_at_utc": "2026-10-01T00:27:22.982083+00:00",
+    "elapsed_seconds": 0.03227744800005894,
+    "exit_code": 0,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "A05-CHECKS.log",
+    "log_sha256": "f69202f2547f2b992cb5ee0bebe36210894b2cc11b3e6411a05fe22d0e66ced6"
+  },
+  {
+    "id": "A05-FOCUSED",
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "-c",
+      "Release",
+      "--no-build",
+      "--filter",
+      "FullyQualifiedName~ProcessLifecycleRecoveryTests.A05_",
+      "--logger",
+      "trx;LogFileName=a05.trx",
+      "--results-directory",
+      "/workspace/pr13-main-bounded-20261001/a05/evidence/A05-FOCUSED"
+    ],
+    "cwd": "/workspace/pr13-main-bounded-20261001/a05/source/server",
+    "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PR13_SOURCE_ROOT": "/workspace/pr13-main-bounded-20261001/a05/source/server",
+      "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "FANTASYCARD_TEST_POSTGRES": "Host=/workspace/pr13-main-bounded-20261001/a05/owned-socket;Port=55517;Database=postgres;Username=agent;Pooling=true;Maximum Pool Size=8",
+      "FANTASYCARD_PROCESS_SERVER_DLL": "/workspace/pr13-main-bounded-20261001/a05/source/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll",
+      "FANTASYCARD_PROCESS_EVIDENCE": "/workspace/pr13-main-bounded-20261001/a05/evidence/A05-FOCUSED"
+    },
+    "started_at_utc": "2026-10-01T00:20:10.962817+00:00",
+    "elapsed_seconds": 189.09504296399973,
+    "exit_code": 0,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "A05-FOCUSED.log",
+    "log_sha256": "6ce3f73073bcc142ba8ea40255515f92681082a880eed1e176812eba35c1207e"
+  },
+  {
+    "id": "A05-SERVER295",
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "-c",
+      "Release",
+      "--no-build",
+      "--logger",
+      "trx;LogFileName=server295.trx",
+      "--results-directory",
+      "/workspace/pr13-main-bounded-20261001/a05/evidence/A05-SERVER295"
+    ],
+    "cwd": "/workspace/pr13-main-bounded-20261001/a05/source/server",
+    "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PR13_SOURCE_ROOT": "/workspace/pr13-main-bounded-20261001/a05/source/server",
+      "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "FANTASYCARD_TEST_POSTGRES": "Host=/workspace/pr13-main-bounded-20261001/a05/owned-socket;Port=55517;Database=postgres;Username=agent;Pooling=true;Maximum Pool Size=8",
+      "FANTASYCARD_PROCESS_SERVER_DLL": "/workspace/pr13-main-bounded-20261001/a05/source/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll",
+      "FANTASYCARD_PROCESS_EVIDENCE": "/workspace/pr13-main-bounded-20261001/a05/evidence/A05-SERVER295"
+    },
+    "started_at_utc": "2026-10-01T00:23:41.186467+00:00",
+    "elapsed_seconds": 736.1849224159996,
+    "exit_code": 0,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "A05-SERVER295.log",
+    "log_sha256": "72120e9b81e6a37fa0c3f516c26bf68419f5d872d304bbaca886bd0e40d29af4"
+  },
+  {
+    "id": "B02-BUILD",
+    "argv": [
+      "dotnet",
+      "build",
+      "FantasyCard.Server.slnx",
+      "-c",
+      "Release"
+    ],
+    "cwd": "/workspace/pr13-main-bounded-20261001/b02/source/server",
+    "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PR13_SOURCE_ROOT": "/workspace/pr13-main-bounded-20261001/b02/source/server"
+    },
+    "started_at_utc": "2026-10-01T00:10:01.910627+00:00",
+    "elapsed_seconds": 10.136196988999927,
+    "exit_code": 0,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "B02-BUILD.log",
+    "log_sha256": "fcedb4b9ecb530a2f620e297db8dd0f4372f2ebd38b13cb66885ce3a677398cf"
+  },
+  {
+    "id": "B02-DOMAIN",
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj",
+      "-c",
+      "Release",
+      "--no-build",
+      "--logger",
+      "trx;LogFileName=domain.trx",
+      "--results-directory",
+      "/workspace/pr13-main-bounded-20261001/b02/evidence/trx"
+    ],
+    "cwd": "/workspace/pr13-main-bounded-20261001/b02/source/server",
+    "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PR13_SOURCE_ROOT": "/workspace/pr13-main-bounded-20261001/b02/source/server"
+    },
+    "started_at_utc": "2026-10-01T00:10:12.084339+00:00",
+    "elapsed_seconds": 3.5744905940000535,
+    "exit_code": 0,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "B02-DOMAIN.log",
+    "log_sha256": "582c31a16c69445ae1da41ca3a5192f60c25743b41df1e37832435ac4fbc2f4b"
+  },
+  {
+    "id": "B02-EXACT",
+    "argv": [
+      "python",
+      "harness/run_exact.py"
+    ],
+    "cwd": "/workspace/pr13-main-bounded-20261001/b02",
+    "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PR13_SOURCE_ROOT": "/workspace/pr13-main-bounded-20261001/b02"
+    },
+    "started_at_utc": "2026-10-01T00:08:09.615466+00:00",
+    "elapsed_seconds": 20.713462182999592,
+    "exit_code": 1,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "B02-EXACT.log",
+    "log_sha256": "2dade2cd939ed850c0be5733e8241e93be8236ee558e708ec9eb4acf676f32b7"
+  },
+  {
+    "id": "B02-GODOT-IMPORTED",
+    "argv": [
+      "python",
+      "harness/run_exact.py",
+      "--godot-only"
+    ],
+    "cwd": "/workspace/pr13-main-bounded-20261001/b02",
+    "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PR13_SOURCE_ROOT": "/workspace/pr13-main-bounded-20261001/b02"
+    },
+    "started_at_utc": "2026-10-01T00:09:59.112763+00:00",
+    "elapsed_seconds": 14.747245323000243,
+    "exit_code": 0,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "B02-GODOT-IMPORTED.log",
+    "log_sha256": "c632baaa1a06d2108ec6e70f3862733d16e31375273c822b355e3768fafc7665"
+  },
+  {
+    "id": "B02-IMPORT",
+    "argv": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "/workspace/pr13-main-bounded-20261001/b02/source/client",
+      "--editor",
+      "--import",
+      "--quit"
+    ],
+    "cwd": "/workspace/pr13-main-bounded-20261001/b02/source",
+    "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PR13_SOURCE_ROOT": "/workspace/pr13-main-bounded-20261001/b02/source"
+    },
+    "started_at_utc": "2026-10-01T00:09:08.217182+00:00",
+    "elapsed_seconds": 50.85745674200007,
+    "exit_code": 0,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "B02-IMPORT.log",
+    "log_sha256": "51db97af65e69738b68689d8f2b50e6c1bbff103149fdbd6a3ae69743b8c3a50"
+  },
+  {
+    "id": "B02-NEGATIVE",
+    "argv": [
+      "python",
+      "harness/negative-probes.py"
+    ],
+    "cwd": "/workspace/pr13-main-bounded-20261001/b02",
+    "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PR13_SOURCE_ROOT": "/workspace/pr13-main-bounded-20261001/b02"
+    },
+    "started_at_utc": "2026-10-01T00:08:01.563764+00:00",
+    "elapsed_seconds": 8.001390703000197,
+    "exit_code": 0,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "B02-NEGATIVE.log",
+    "log_sha256": "68e71e870e9632afe7d385892a1f2cd2219a6f2065f3b6600f4a6440237f6833"
+  },
+  {
+    "id": "B02-ORIGINAL-POOLING-FOCUSED",
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "-c",
+      "Release",
+      "--no-build",
+      "--filter",
+      "FullyQualifiedName~MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it",
+      "--logger",
+      "trx;LogFileName=pooling-false.trx",
+      "--results-directory",
+      "/workspace/pr13-main-bounded-20261001/b02/evidence/diagnostic"
+    ],
+    "cwd": "/workspace/pr13-main-bounded-20261001/b02/source/server",
+    "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PR13_SOURCE_ROOT": "/workspace/pr13-main-bounded-20261001/b02/source/server"
+    },
+    "started_at_utc": "2026-10-01T00:12:58.671572+00:00",
+    "elapsed_seconds": 2.9295528200000263,
+    "exit_code": 0,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "B02-ORIGINAL-POOLING-FOCUSED.log",
+    "log_sha256": "9e88ba069d09b48a5a23514ff121d8024acd02c17eac9f8135909a4fb17389f5"
+  },
+  {
+    "id": "B02-POOLING-TRUE-FOCUSED",
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "-c",
+      "Release",
+      "--no-build",
+      "--filter",
+      "FullyQualifiedName~MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it",
+      "--logger",
+      "trx;LogFileName=pooling-true.trx",
+      "--results-directory",
+      "/workspace/pr13-main-bounded-20261001/b02/evidence/diagnostic"
+    ],
+    "cwd": "/workspace/pr13-main-bounded-20261001/b02/source/server",
+    "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PR13_SOURCE_ROOT": "/workspace/pr13-main-bounded-20261001/b02/source/server",
+      "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "FANTASYCARD_TEST_POSTGRES": "Host=/workspace/pr13-main-bounded-20261001/b02/pgsocket;Port=55482;Database=postgres;Username=agent;Pooling=true;Maximum Pool Size=8"
+    },
+    "started_at_utc": "2026-10-01T00:18:17.124957+00:00",
+    "elapsed_seconds": 2.877642995000315,
+    "exit_code": 0,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "B02-POOLING-TRUE-FOCUSED.log",
+    "log_sha256": "957849cf81e6026af4c5a08acfe8f3437b2523448006f3f0a65ef0948b7f9dbb"
+  },
+  {
+    "id": "B02-PROTO",
+    "argv": [
+      "python",
+      "tools/generate_network_protocol.py",
+      "--check"
+    ],
+    "cwd": "/workspace/pr13-main-bounded-20261001/b02/source",
+    "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PR13_SOURCE_ROOT": "/workspace/pr13-main-bounded-20261001/b02/source",
+      "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64"
+    },
+    "started_at_utc": "2026-10-01T00:15:28.532485+00:00",
+    "elapsed_seconds": 0.06415274299979501,
+    "exit_code": 0,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "B02-PROTO.log",
+    "log_sha256": "92fd058279de5102a85636bd63dd0181100f2971ed5c40420faf1e8118a6022e"
+  },
+  {
+    "id": "B02-SERVER-ORIGINAL",
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "-c",
+      "Release",
+      "--no-build",
+      "--logger",
+      "trx;LogFileName=server-original.trx",
+      "--results-directory",
+      "/workspace/pr13-main-bounded-20261001/b02/evidence/trx-original"
+    ],
+    "cwd": "/workspace/pr13-main-bounded-20261001/b02/source/server",
+    "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PR13_SOURCE_ROOT": "/workspace/pr13-main-bounded-20261001/b02/source/server",
+      "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "FANTASYCARD_TEST_POSTGRES": "Host=/workspace/pr13-main-bounded-20261001/b02/original-profile-socket;Port=55483;Database=b02_acceptance;Username=agent;Pooling=false",
+      "FANTASYCARD_PROCESS_SERVER_DLL": "/workspace/pr13-main-bounded-20261001/b02/source/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll",
+      "FANTASYCARD_PROCESS_EVIDENCE": "/workspace/pr13-main-bounded-20261001/b02/evidence/process-original"
+    },
+    "started_at_utc": "2026-10-01T00:19:11.727443+00:00",
+    "elapsed_seconds": 543.0316169429998,
+    "exit_code": 0,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "B02-SERVER-ORIGINAL.log",
+    "log_sha256": "13145f1df749ad04a9e66416b4eb1c308e25d9915da20c2112191c7879f3bebe"
+  },
+  {
+    "id": "B02-SERVER",
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "-c",
+      "Release",
+      "--no-build",
+      "--logger",
+      "trx;LogFileName=server.trx",
+      "--results-directory",
+      "/workspace/pr13-main-bounded-20261001/b02/evidence/trx"
+    ],
+    "cwd": "/workspace/pr13-main-bounded-20261001/b02/source/server",
+    "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PR13_SOURCE_ROOT": "/workspace/pr13-main-bounded-20261001/b02/source/server"
+    },
+    "started_at_utc": "2026-10-01T00:10:15.699729+00:00",
+    "elapsed_seconds": 532.2572039580004,
+    "exit_code": 1,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "B02-SERVER.log",
+    "log_sha256": "7dffa0ca88ad66034878e2dbd30bdfb19234c3eb63a03917b8ba89b81a3dd39a"
+  },
+  {
+    "id": "LOAD02-ALL",
+    "argv": [
+      "python",
+      "-c",
+      "import subprocess,sys,pathlib,json; b=pathlib.Path.cwd(); rows=[]; modes={\"smoke_complete\":0,\"time_limit\":1,\"redline\":2,\"redline_corrupt\":3,\"emergency\":3,\"exit7\":3,\"hang\":3,\"operator\":130,\"invalid\":3,\"cleanup_unknown\":1,\"late_business_error\":1}; [(rows.append(dict(mode=m,expected=e,exit_code=subprocess.run([sys.executable,str(b/\"harness/coordinator_case.py\"),m,str(b/\"evidence\"/m)]).returncode))) for m,e in modes.items()]; (b/\"evidence/independent_modes.json\").write_text(json.dumps(rows,indent=2)); assert all(r[\"expected\"]==r[\"exit_code\"] for r in rows); subprocess.run([sys.executable,str(b/\"harness/caller_checks.py\")],check=True); print(json.dumps(rows))"
+    ],
+    "cwd": "/workspace/pr13-main-bounded-20261001/load02",
+    "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PR13_SOURCE_ROOT": "/workspace/pr13-main-bounded-20261001/load02"
+    },
+    "started_at_utc": "2026-10-01T00:07:26.224872+00:00",
+    "elapsed_seconds": 56.918573681,
+    "exit_code": 0,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "LOAD02-ALL.log",
+    "log_sha256": "442be3c4d50e6b0eb70b2d5357aae6cc911d6427ef73c7c2d0673e10e48bcbb2"
+  },
+  {
+    "id": "LOAD02-BEFORE-STOP",
+    "argv": [
+      "python",
+      "harness/coordinator_case.py",
+      "timeout_before",
+      "evidence/timeout_before"
+    ],
+    "cwd": "/workspace/pr13-main-bounded-20261001/load02",
+    "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PR13_SOURCE_ROOT": "/workspace/pr13-main-bounded-20261001/load02"
+    },
+    "started_at_utc": "2026-10-01T00:09:25.468475+00:00",
+    "elapsed_seconds": 1.7391465109999444,
+    "exit_code": 130,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "LOAD02-BEFORE-STOP.log",
+    "log_sha256": "d3eac1f724d1eb7821a5ae28ded3eca0fb662728ecfd309a6ffde59c7ed75075"
+  },
+  {
+    "id": "LOAD02-OWNERSHIP",
+    "argv": [
+      "python",
+      "/workspace/pr13-main-bounded-20261001/probe_cleanup_ownership.py"
+    ],
+    "cwd": "/workspace/pr13-main-bounded-20261001/load02",
+    "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PR13_SOURCE_ROOT": "/workspace/pr13-main-bounded-20261001/load02",
+      "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64"
+    },
+    "started_at_utc": "2026-10-01T00:16:07.171250+00:00",
+    "elapsed_seconds": 35.545201801000076,
+    "exit_code": 0,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "LOAD02-OWNERSHIP.log",
+    "log_sha256": "b715db677b506f6a423e9d6c92621e1cb08d8b7a95769a278b8c7097997b0bb6"
+  },
+  {
+    "id": "LOAD02-PY42",
+    "argv": [
+      "python",
+      "-m",
+      "unittest",
+      "tools.tests.test_gameplay_load_finalization",
+      "tools.tests.test_gameplay_load_sampling_contract",
+      "tools.tests.test_gameplay_load_stop",
+      "-v"
+    ],
+    "cwd": "/workspace/pr13-main-bounded-20261001/load02/source",
+    "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PR13_SOURCE_ROOT": "/workspace/pr13-main-bounded-20261001/load02/source"
+    },
+    "started_at_utc": "2026-10-01T00:08:00.407345+00:00",
+    "elapsed_seconds": 1.8211594009999317,
+    "exit_code": 0,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "LOAD02-PY42.log",
+    "log_sha256": "b32f8ac12095c988974bc1ab05e2da7de5ce74450cdb82f305ee8c7bbf0b4047"
+  },
+  {
+    "id": "LOAD03-ALL",
+    "argv": [
+      "python",
+      "-c",
+      "import subprocess,sys,os,pathlib; b=pathlib.Path.cwd(); cmds=[[sys.executable,str(b/\"harness/prepare_fixture.py\")],[os.environ[\"A3GAME_GODOT_EXECUTABLE\"],\"--headless\",\"--path\",str(b/\"fixture\"),\"--editor\",\"--import\",\"--quit\"],[sys.executable,str(b/\"harness/sequence_files.py\")],[sys.executable,str(b/\"harness/run_sticky.py\")],[sys.executable,str(b/\"harness/phase_http.py\")]]; [subprocess.run(c,check=True) for c in cmds]"
+    ],
+    "cwd": "/workspace/pr13-main-bounded-20261001/load03",
+    "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PR13_SOURCE_ROOT": "/workspace/pr13-main-bounded-20261001/load03"
+    },
+    "started_at_utc": "2026-10-01T00:08:00.469255+00:00",
+    "elapsed_seconds": 0.06438106499990681,
+    "exit_code": 1,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "LOAD03-ALL.log",
+    "log_sha256": "d297879a0a09d6863bb6167dbff6c78a243b7af27d5936389bced11d123c8ba5"
+  },
+  {
+    "id": "LOAD03-PY119-WORKTREE",
+    "argv": [
+      "python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tools/tests",
+      "-v"
+    ],
+    "cwd": "/workspace/pr13-main-review-fixed",
+    "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PR13_SOURCE_ROOT": "/workspace/pr13-main-review-fixed"
+    },
+    "started_at_utc": "2026-10-01T00:14:21.487792+00:00",
+    "elapsed_seconds": 3.2747370480001337,
+    "exit_code": 0,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "LOAD03-PY119-WORKTREE.log",
+    "log_sha256": "05c24520ea16303a4daf75e388eeff5645ea642da3ac2d1ceab02a686cb6696f"
+  },
+  {
+    "id": "LOAD03-PY119",
+    "argv": [
+      "python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tools/tests",
+      "-v"
+    ],
+    "cwd": "/workspace/pr13-main-bounded-20261001/load03/source",
+    "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PR13_SOURCE_ROOT": "/workspace/pr13-main-bounded-20261001/load03/source"
+    },
+    "started_at_utc": "2026-10-01T00:13:21.055906+00:00",
+    "elapsed_seconds": 2.6240837049999755,
+    "exit_code": 1,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "LOAD03-PY119.log",
+    "log_sha256": "643569994c2bc546e80fcf2385ea65b9a14012d5526e2811481d11dc7bcea07d"
+  },
+  {
+    "id": "LOAD03-REPLAY",
+    "argv": [
+      "python",
+      "-c",
+      "import subprocess,sys,os,pathlib; b=pathlib.Path.cwd(); cmds=[[sys.executable,str(b/\"harness/prepare_fixture.py\")],[os.environ[\"A3GAME_GODOT_EXECUTABLE\"],\"--headless\",\"--path\",str(b/\"fixture\"),\"--editor\",\"--import\",\"--quit\"],[sys.executable,str(b/\"harness/sequence_files.py\")],[sys.executable,str(b/\"harness/run_sticky.py\")],[sys.executable,str(b/\"harness/phase_http.py\")]]; [subprocess.run(c,check=True) for c in cmds]"
+    ],
+    "cwd": "/workspace/pr13-main-bounded-20261001/load03",
+    "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PR13_SOURCE_ROOT": "/workspace/pr13-main-bounded-20261001/load03"
+    },
+    "started_at_utc": "2026-10-01T00:08:25.715519+00:00",
+    "elapsed_seconds": 14.520414734000042,
+    "exit_code": 0,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "LOAD03-REPLAY.log",
+    "log_sha256": "df1b7ae9d4159f28df5a36943420feaff12e88b339a01006d679617b65c9a72f"
+  },
+  {
+    "id": "SHORT-CHECKS",
+    "argv": [
+      "python",
+      "/workspace/pr13-main-bounded-20261001/verify_short_replays.py"
+    ],
+    "cwd": "/workspace/pr13-main-bounded-seal",
+    "source_sha": "2dda41b32ba89f06d5ea722ae8b9469004940c22",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PR13_SOURCE_ROOT": "/workspace/pr13-main-bounded-seal",
+      "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64"
+    },
+    "started_at_utc": "2026-10-01T00:17:47.132360+00:00",
+    "elapsed_seconds": 0.03187319400058186,
+    "exit_code": 0,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "SHORT-CHECKS.log",
+    "log_sha256": "3b55ab1c4290ae4e1944d9b96cc3e4a151c4d814aa680e7c24acb8af2a1a6f74"
+  },
+  {
+    "id": "STATIC-RECEIPTS",
+    "argv": [
+      "python",
+      "/workspace/pr13-main-bounded-20261001/verify_receipts.py"
+    ],
+    "cwd": "/workspace/pr13-main-bounded-seal",
+    "source_sha": "2dda41b32ba89f06d5ea722ae8b9469004940c22",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PR13_SOURCE_ROOT": "/workspace/pr13-main-bounded-seal"
+    },
+    "started_at_utc": "2026-10-01T00:11:44.313243+00:00",
+    "elapsed_seconds": 0.16445454799941217,
+    "exit_code": 1,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "STATIC-RECEIPTS.log",
+    "log_sha256": "4ee12b821b5d5884245510524bb94419909b882f22269aff068a5caa72243a15"
+  },
+  {
+    "id": "STATIC-VERIFIED",
+    "argv": [
+      "python",
+      "/workspace/pr13-main-bounded-20261001/verify_receipts.py"
+    ],
+    "cwd": "/workspace/pr13-main-bounded-seal",
+    "source_sha": "2dda41b32ba89f06d5ea722ae8b9469004940c22",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PR13_SOURCE_ROOT": "/workspace/pr13-main-bounded-seal"
+    },
+    "started_at_utc": "2026-10-01T00:12:07.336036+00:00",
+    "elapsed_seconds": 0.16422192200025165,
+    "exit_code": 0,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "STATIC-VERIFIED.log",
+    "log_sha256": "0b48a43b9ae4ee95d34ee024196c23e1607cec37a2cc9e3426514015e40e9eae"
+  },
+  {
+    "id": "STATIC",
+    "argv": [
+      "python",
+      "/workspace/pr13-main-bounded-20261001/verify_receipts.py"
+    ],
+    "cwd": "/workspace/pr13-main-bounded-seal",
+    "source_sha": "2dda41b32ba89f06d5ea722ae8b9469004940c22",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PR13_SOURCE_ROOT": "/workspace/pr13-main-bounded-seal"
+    },
+    "started_at_utc": "2026-10-01T00:11:29.270943+00:00",
+    "elapsed_seconds": 0.1643901609995737,
+    "exit_code": 1,
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/workspace/relicround-env/venv/bin/python",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "log": "STATIC.log",
+    "log_sha256": "eb078999f5c46f71a1dbbafe6169f4aab6ee2f2d99a2ef28e67683c2550bfa32"
+  }
+]

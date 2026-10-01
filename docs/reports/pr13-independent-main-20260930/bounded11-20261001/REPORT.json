@@ -1,0 +1,1082 @@
+{
+  "kind": "Independent_MAIN_S6_review_of_11_Ready_only_not_whole_PR",
+  "created_at_utc": "2026-10-01T00:41:17.757017+00:00",
+  "sealed_handoff_commit": "2dda41b32ba89f06d5ea722ae8b9469004940c22",
+  "canonical_plan_sha256": "5176ee139d4e632ba34469ae531ce7ec16478f356480e2d8e320cd51f3bcd703",
+  "verdict": "11 tasks eligible for parent MAIN Accepted/NoChangeWithEvidence; original registration unchanged",
+  "task_reviews": [
+    {
+      "task_id": "LOAD-02.3",
+      "stage": "S6",
+      "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+      "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+      "effective_room_policy": null,
+      "runtime_image_digest": null,
+      "profile_hash": "4b0339400f4e581b7e8bc44b3d92d4fa866dc442a361af3d95f665e65f25bd71",
+      "algorithm_version": "f812-coordinator-schema5/runtime-evidence-62d05cb4270174aa/receipt-harness-37303db722961352",
+      "case_ids": [
+        "LOAD-02.3-T01",
+        "LOAD-02.3-T02",
+        "LOAD-02.3-T03"
+      ],
+      "expected": "进程清理与业务清理分列，所有强退和报告失败可见，非本轮进程不被操作。",
+      "actual": [
+        {
+          "case_id": "LOAD-02.3-T01",
+          "setup_and_injection": "正常响应STOP",
+          "expected": "grace内退出且服务后置状态可恢复",
+          "actual": "normal STOP child exits0 within unchanged35s grace; actual PG stop contexts/asset postconditions recover",
+          "status": "Passed",
+          "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+          "executed": true
+        },
+        {
+          "case_id": "LOAD-02.3-T02",
+          "setup_and_injection": "子进程hang",
+          "expected": "仅终止本轮PID并记录forced",
+          "actual": "hang runs35s then only owned PID forced/reaped; independent sentinel survives; forced PID visible",
+          "status": "Passed",
+          "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+          "executed": true
+        },
+        {
+          "case_id": "LOAD-02.3-T03",
+          "setup_and_injection": "最终文件写失败",
+          "expected": "应急报告存在且不可Pass",
+          "actual": "final report write failure produces report.emergency.txt and exit3; cannot Pass",
+          "status": "Passed",
+          "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+          "executed": true
+        }
+      ],
+      "status": "EligibleForMAINAcceptance",
+      "sample_population": {
+        "canonical_cases": 3,
+        "minimum_executed_repetitions_per_case": 1,
+        "capacity_or_human_claim": false,
+        "full_and_focused_regression_counts": "SUITES.json"
+      },
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "Fixed bounded local cases; actual run/window/drain/final context retained in referenced raw; no common load cutoff",
+      "commands": "COMMANDS.json",
+      "tool_versions": {
+        "python": "Python 3.12.14",
+        "dotnet": "10.0.400",
+        "postgres": "postgres (PostgreSQL) 18.6",
+        "godot": "4.7.2.stable.official.ed1daf0bf",
+        "git": "git version 2.52.0"
+      },
+      "exit_codes": "COMMANDS.json; expected negative codes preserved; A05.1 causal exit1 remains Failed",
+      "skip_reasons": [],
+      "asset_and_route_postconditions": "PG_STOP_CHECKS.json and SHORT_REPLAY_CHECKS.json",
+      "artifact_manifest": "MANIFEST.json",
+      "reviewer": "Independent Codex delegate for parent MAIN thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+      "rollback": "No production/UI/register mutation. Remove only independent review documents to roll back this delivery; preserve raw and failed receipts.",
+      "remaining_blockers": [],
+      "missing_reasons": {
+        "runtime_image_digest": "Native local source builds; executable and build hashes supplied; no container.",
+        "cutoff_monotonic": "Independent fixed cases have separate clocks/owned process timings; no shared global load cutoff.",
+        "effective_room_policy": "No separate effective policy snapshot in these verdict/STOP case receipts; f812 default config/runtime identified, B02 room-policy cases are independent.",
+        "accepted_by": "Parent MAIN final registration/signature reserved; original register not written, as requested."
+      },
+      "candidate_resolution": "NoChangeWithEvidence",
+      "eligible_for_acceptance": true,
+      "accepted_by": null,
+      "accepted_registration_written": false,
+      "report_commit": "a1d30eb89d74aa16bb2c094c5a78c20a5ed428b6",
+      "fixed_original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/load02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "minimum_dependencies": [
+        "LOAD-02.2"
+      ],
+      "minimum_dependency_assessment": "LOAD02.2 minimum STOP context, pending until authority and normal cancellation available from actual PG ACKSTOP. Excluded PG-timeout exclusive-partition gap is not required to prove cleanup ownership/grace/emergency.",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "runtime_stage": "NotApplicableWithReason",
+      "original_complete_stage_metadata_rows": 8
+    },
+    {
+      "task_id": "LOAD-02.1",
+      "stage": "S6",
+      "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+      "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+      "effective_room_policy": null,
+      "runtime_image_digest": null,
+      "profile_hash": "4b0339400f4e581b7e8bc44b3d92d4fa866dc442a361af3d95f665e65f25bd71",
+      "algorithm_version": "f812-coordinator-schema5/runtime-evidence-62d05cb4270174aa/receipt-harness-37303db722961352",
+      "case_ids": [
+        "LOAD-02.1-T01",
+        "LOAD-02.1-T02",
+        "LOAD-02.1-T03"
+      ],
+      "expected": "不把一个stop_reason等同所有验收通过；允许Unknown但不能升Pass。",
+      "actual": [
+        {
+          "case_id": "LOAD-02.1-T01",
+          "setup_and_injection": "时限到但负载未达",
+          "expected": "execution结束、load失败",
+          "actual": "time_limit exit1: execution Passed/load Failed/performance Unknown; no acceptance",
+          "status": "Passed",
+          "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+          "executed": true
+        },
+        {
+          "case_id": "LOAD-02.1-T02",
+          "setup_and_injection": "先业务失败后人工STOP",
+          "expected": "保留业务失败",
+          "actual": "timeout_before exit130 retains prior error and final_business_failure; gameplay Failed",
+          "status": "Passed",
+          "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+          "executed": true
+        },
+        {
+          "case_id": "LOAD-02.1-T03",
+          "setup_and_injection": "性能超线且证据损坏",
+          "expected": "记录两原因且证据无效优先退出码3",
+          "actual": "redline_corrupt exit3: performance Failed and evidence Failed; all triggers retained",
+          "status": "Passed",
+          "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+          "executed": true
+        }
+      ],
+      "status": "EligibleForMAINAcceptance",
+      "sample_population": {
+        "canonical_cases": 3,
+        "minimum_executed_repetitions_per_case": 1,
+        "capacity_or_human_claim": false,
+        "full_and_focused_regression_counts": "SUITES.json"
+      },
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "Fixed bounded local cases; actual run/window/drain/final context retained in referenced raw; no common load cutoff",
+      "commands": "COMMANDS.json",
+      "tool_versions": {
+        "python": "Python 3.12.14",
+        "dotnet": "10.0.400",
+        "postgres": "postgres (PostgreSQL) 18.6",
+        "godot": "4.7.2.stable.official.ed1daf0bf",
+        "git": "git version 2.52.0"
+      },
+      "exit_codes": "COMMANDS.json; expected negative codes preserved; A05.1 causal exit1 remains Failed",
+      "skip_reasons": [],
+      "asset_and_route_postconditions": "PG_STOP_CHECKS.json and SHORT_REPLAY_CHECKS.json",
+      "artifact_manifest": "MANIFEST.json",
+      "reviewer": "Independent Codex delegate for parent MAIN thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+      "rollback": "No production/UI/register mutation. Remove only independent review documents to roll back this delivery; preserve raw and failed receipts.",
+      "remaining_blockers": [],
+      "missing_reasons": {
+        "runtime_image_digest": "Native local source builds; executable and build hashes supplied; no container.",
+        "cutoff_monotonic": "Independent fixed cases have separate clocks/owned process timings; no shared global load cutoff.",
+        "effective_room_policy": "No separate effective policy snapshot in these verdict/STOP case receipts; f812 default config/runtime identified, B02 room-policy cases are independent.",
+        "accepted_by": "Parent MAIN final registration/signature reserved; original register not written, as requested."
+      },
+      "candidate_resolution": "NoChangeWithEvidence",
+      "eligible_for_acceptance": true,
+      "accepted_by": null,
+      "accepted_registration_written": false,
+      "report_commit": "a1d30eb89d74aa16bb2c094c5a78c20a5ed428b6",
+      "fixed_original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/load02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "minimum_dependencies": [
+        "LOAD-01.2"
+      ],
+      "minimum_dependency_assessment": "LOAD01.2 ownership tuple/PID/cache input available and actually consumed; original accepted source label unchanged.",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "runtime_stage": "NotApplicableWithReason",
+      "original_complete_stage_metadata_rows": 8
+    },
+    {
+      "task_id": "LOAD-02.4",
+      "stage": "S6",
+      "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+      "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+      "effective_room_policy": null,
+      "runtime_image_digest": null,
+      "profile_hash": "4b0339400f4e581b7e8bc44b3d92d4fa866dc442a361af3d95f665e65f25bd71",
+      "algorithm_version": "f812-coordinator-schema5/runtime-evidence-62d05cb4270174aa/receipt-harness-37303db722961352",
+      "case_ids": [
+        "LOAD-02.4-T01",
+        "LOAD-02.4-T02",
+        "LOAD-02.4-T03"
+      ],
+      "expected": "新旧调用者有子进程集成用例，任何未完成/无证据运行不能冒充Passed。",
+      "actual": [
+        {
+          "case_id": "LOAD-02.4-T01",
+          "setup_and_injection": "preparation-only exit0",
+          "expected": "标仅准备不算压测成功",
+          "actual": "actual preparation-only exit0/Prepared; no load launched or accepted",
+          "status": "Passed",
+          "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+          "executed": true
+        },
+        {
+          "case_id": "LOAD-02.4-T02",
+          "setup_and_injection": "redline",
+          "expected": "exit2且记录全部触发",
+          "actual": "redline exit2 and all trigger reasons present",
+          "status": "Passed",
+          "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+          "executed": true
+        },
+        {
+          "case_id": "LOAD-02.4-T03",
+          "setup_and_injection": "invalid/人工STOP",
+          "expected": "分别3/130",
+          "actual": "invalid exit3/operator exit130; actual legacy/additive six-dimension callers agree",
+          "status": "Passed",
+          "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+          "executed": true
+        }
+      ],
+      "status": "EligibleForMAINAcceptance",
+      "sample_population": {
+        "canonical_cases": 3,
+        "minimum_executed_repetitions_per_case": 1,
+        "capacity_or_human_claim": false,
+        "full_and_focused_regression_counts": "SUITES.json"
+      },
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "Fixed bounded local cases; actual run/window/drain/final context retained in referenced raw; no common load cutoff",
+      "commands": "COMMANDS.json",
+      "tool_versions": {
+        "python": "Python 3.12.14",
+        "dotnet": "10.0.400",
+        "postgres": "postgres (PostgreSQL) 18.6",
+        "godot": "4.7.2.stable.official.ed1daf0bf",
+        "git": "git version 2.52.0"
+      },
+      "exit_codes": "COMMANDS.json; expected negative codes preserved; A05.1 causal exit1 remains Failed",
+      "skip_reasons": [],
+      "asset_and_route_postconditions": "PG_STOP_CHECKS.json and SHORT_REPLAY_CHECKS.json",
+      "artifact_manifest": "MANIFEST.json",
+      "reviewer": "Independent Codex delegate for parent MAIN thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+      "rollback": "No production/UI/register mutation. Remove only independent review documents to roll back this delivery; preserve raw and failed receipts.",
+      "remaining_blockers": [],
+      "missing_reasons": {
+        "runtime_image_digest": "Native local source builds; executable and build hashes supplied; no container.",
+        "cutoff_monotonic": "Independent fixed cases have separate clocks/owned process timings; no shared global load cutoff.",
+        "effective_room_policy": "No separate effective policy snapshot in these verdict/STOP case receipts; f812 default config/runtime identified, B02 room-policy cases are independent.",
+        "accepted_by": "Parent MAIN final registration/signature reserved; original register not written, as requested."
+      },
+      "candidate_resolution": "NoChangeWithEvidence",
+      "eligible_for_acceptance": true,
+      "accepted_by": null,
+      "accepted_registration_written": false,
+      "report_commit": "a1d30eb89d74aa16bb2c094c5a78c20a5ed428b6",
+      "fixed_original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/load02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "minimum_dependencies": [
+        "LOAD-02.3"
+      ],
+      "minimum_dependency_assessment": "LOAD02.3 actual cleanup/emergency and distinct process/business fields available.",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "runtime_stage": "NotApplicableWithReason",
+      "original_complete_stage_metadata_rows": 8
+    },
+    {
+      "task_id": "LOAD-03.1",
+      "stage": "S6",
+      "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+      "config_source_hash": null,
+      "config_bytes_hash": null,
+      "effective_room_policy": null,
+      "runtime_image_digest": null,
+      "profile_hash": "82635905ccdd05e8a06666471a98564ee8177c04e67096e22f27d57d2292fa7b",
+      "algorithm_version": "ee8-validator-83a6d45a4938b09b/f812-Gateway-964bd3e0eea3ff00/receipt-harness-ea77e98f35da5e43",
+      "case_ids": [
+        "LOAD-03.1-T01",
+        "LOAD-03.1-T02",
+        "LOAD-03.1-T03"
+      ],
+      "expected": "JSONL原样本与汇总逐事件可对账；缺失不能因下次快照到达静默消失。",
+      "actual": [
+        {
+          "case_id": "LOAD-03.1-T01",
+          "setup_and_injection": "同毫秒两事件",
+          "expected": "均消费且仅一次",
+          "actual": "same-ms seq1/2 consumed once; exact JSONL/window reconciliation",
+          "status": "Passed",
+          "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "executed": true
+        },
+        {
+          "case_id": "LOAD-03.1-T02",
+          "setup_and_injection": "seq1/3缺2",
+          "expected": "lost_count=1证据无效",
+          "actual": "gap seq1/3 lost1; repaired final1/2/3/4 does not clear archived gap; actual coordinator exit3",
+          "status": "Passed",
+          "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "executed": true
+        },
+        {
+          "case_id": "LOAD-03.1-T03",
+          "setup_and_injection": "轮转/重启换epoch",
+          "expected": "各自水位不混用",
+          "actual": "old/new owned PIDs and epochs each consume seq1/2 using independent watermarks",
+          "status": "Passed",
+          "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "executed": true
+        }
+      ],
+      "status": "EligibleForMAINAcceptance",
+      "sample_population": {
+        "canonical_cases": 3,
+        "minimum_executed_repetitions_per_case": 1,
+        "capacity_or_human_claim": false,
+        "full_and_focused_regression_counts": "SUITES.json"
+      },
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "Fixed bounded local cases; actual run/window/drain/final context retained in referenced raw; no common load cutoff",
+      "commands": "COMMANDS.json",
+      "tool_versions": {
+        "python": "Python 3.12.14",
+        "dotnet": "10.0.400",
+        "postgres": "postgres (PostgreSQL) 18.6",
+        "godot": "4.7.2.stable.official.ed1daf0bf",
+        "git": "git version 2.52.0"
+      },
+      "exit_codes": "COMMANDS.json; expected negative codes preserved; A05.1 causal exit1 remains Failed",
+      "skip_reasons": [],
+      "asset_and_route_postconditions": null,
+      "artifact_manifest": "MANIFEST.json",
+      "reviewer": "Independent Codex delegate for parent MAIN thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+      "rollback": "No production/UI/register mutation. Remove only independent review documents to roll back this delivery; preserve raw and failed receipts.",
+      "remaining_blockers": [],
+      "missing_reasons": {
+        "runtime_image_digest": "Native local source builds; executable and build hashes supplied; no container.",
+        "cutoff_monotonic": "Independent fixed cases have separate clocks/owned process timings; no shared global load cutoff.",
+        "config_source_hash": "OFFLINE sequence and transport fixtures do not load the business config workbook.",
+        "config_bytes_hash": "Business config bytes not consumed; actual HTTP_SCHEMA hash provided separately.",
+        "effective_room_policy": "No room policy or battle room is instantiated in these OFFLINE contracts.",
+        "asset_and_route_postconditions": "No accounts/assets/PG writes or room routes created. These canonical profiles are OFFLINE only.",
+        "accepted_by": "Parent MAIN final registration/signature reserved; original register not written, as requested."
+      },
+      "candidate_resolution": "NoChangeWithEvidence",
+      "eligible_for_acceptance": true,
+      "accepted_by": null,
+      "accepted_registration_written": false,
+      "report_commit": "e5de69b491bff1b3a3638bd11670901a5f96629e",
+      "fixed_original_report_path": "docs/reports/pr13-takeover-20260930/load03-ready-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "minimum_dependencies": [
+        "LOAD-01.2",
+        "LOAD-06.4"
+      ],
+      "minimum_dependency_assessment": "LOAD01.2/LOAD06.4 owned run/client/epoch/event_seq and monotonic receipt context available; actually consumed from real owned files.",
+      "profiles": [
+        "OFFLINE"
+      ],
+      "runtime_stage": "NotApplicableWithReason",
+      "original_complete_stage_metadata_rows": 8
+    },
+    {
+      "task_id": "LOAD-03.2",
+      "stage": "S6",
+      "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+      "config_source_hash": null,
+      "config_bytes_hash": null,
+      "effective_room_policy": null,
+      "runtime_image_digest": null,
+      "profile_hash": "82635905ccdd05e8a06666471a98564ee8177c04e67096e22f27d57d2292fa7b",
+      "algorithm_version": "ee8-validator-83a6d45a4938b09b/f812-Gateway-964bd3e0eea3ff00/receipt-harness-ea77e98f35da5e43",
+      "case_ids": [
+        "LOAD-03.2-T01",
+        "LOAD-03.2-T02",
+        "LOAD-03.2-T03"
+      ],
+      "expected": "当前阶段与历史auth-excluded列不能互相替代；迟到回包仍用发起阶段。",
+      "actual": [
+        {
+          "case_id": "LOAD-03.2-T01",
+          "setup_and_injection": "playing中bootstrap",
+          "expected": "归playing",
+          "actual": "actual Gateway/PB delayed bootstrap remains playing/M after current N changes",
+          "status": "Passed",
+          "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "executed": true
+        },
+        {
+          "case_id": "LOAD-03.2-T02",
+          "setup_and_injection": "settlement轮询",
+          "expected": "归settlement",
+          "actual": "actual settlement poll remains settlement/M; old auth-excluded column separate",
+          "status": "Passed",
+          "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "executed": true
+        },
+        {
+          "case_id": "LOAD-03.2-T03",
+          "setup_and_injection": "旧无标签bootstrap",
+          "expected": "unknown且旧口径单列",
+          "actual": "unlabelled history remains unknown/legacy; explicit other four phase strata also passed",
+          "status": "Passed",
+          "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "executed": true
+        }
+      ],
+      "status": "EligibleForMAINAcceptance",
+      "sample_population": {
+        "canonical_cases": 3,
+        "minimum_executed_repetitions_per_case": 1,
+        "capacity_or_human_claim": false,
+        "full_and_focused_regression_counts": "SUITES.json"
+      },
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "Fixed bounded local cases; actual run/window/drain/final context retained in referenced raw; no common load cutoff",
+      "commands": "COMMANDS.json",
+      "tool_versions": {
+        "python": "Python 3.12.14",
+        "dotnet": "10.0.400",
+        "postgres": "postgres (PostgreSQL) 18.6",
+        "godot": "4.7.2.stable.official.ed1daf0bf",
+        "git": "git version 2.52.0"
+      },
+      "exit_codes": "COMMANDS.json; expected negative codes preserved; A05.1 causal exit1 remains Failed",
+      "skip_reasons": [],
+      "asset_and_route_postconditions": null,
+      "artifact_manifest": "MANIFEST.json",
+      "reviewer": "Independent Codex delegate for parent MAIN thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+      "rollback": "No production/UI/register mutation. Remove only independent review documents to roll back this delivery; preserve raw and failed receipts.",
+      "remaining_blockers": [],
+      "missing_reasons": {
+        "runtime_image_digest": "Native local source builds; executable and build hashes supplied; no container.",
+        "cutoff_monotonic": "Independent fixed cases have separate clocks/owned process timings; no shared global load cutoff.",
+        "config_source_hash": "OFFLINE sequence and transport fixtures do not load the business config workbook.",
+        "config_bytes_hash": "Business config bytes not consumed; actual HTTP_SCHEMA hash provided separately.",
+        "effective_room_policy": "No room policy or battle room is instantiated in these OFFLINE contracts.",
+        "asset_and_route_postconditions": "No accounts/assets/PG writes or room routes created. These canonical profiles are OFFLINE only.",
+        "accepted_by": "Parent MAIN final registration/signature reserved; original register not written, as requested."
+      },
+      "candidate_resolution": "NoChangeWithEvidence",
+      "eligible_for_acceptance": true,
+      "accepted_by": null,
+      "accepted_registration_written": false,
+      "report_commit": "e5de69b491bff1b3a3638bd11670901a5f96629e",
+      "fixed_original_report_path": "docs/reports/pr13-takeover-20260930/load03-ready-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "minimum_dependencies": [
+        "LOAD-03.1"
+      ],
+      "minimum_dependency_assessment": "LOAD03.1 sequence/watermark input available; exact HTTP_SCHEMA and production Gateway launch phase/cycle captured.",
+      "profiles": [
+        "OFFLINE"
+      ],
+      "runtime_stage": "NotApplicableWithReason",
+      "original_complete_stage_metadata_rows": 8
+    },
+    {
+      "task_id": "PR13-B02.4",
+      "stage": "S6",
+      "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+      "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+      "effective_room_policy": "CurrentRhythm/CurrentSteps default; CoreCardsSpent/FractionalRemainder only explicitly selected isolated fixtures; stored policies stay locked",
+      "runtime_image_digest": null,
+      "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
+      "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
+      "case_ids": [
+        "PR13-B02.4-T01",
+        "PR13-B02.4-T02",
+        "PR13-B02.4-T03"
+      ],
+      "expected": "同SHA客户端/server/proto/Domain/PG适用测试真实执行，新旧room来源可查。",
+      "actual": [
+        {
+          "case_id": "PR13-B02.4-T01",
+          "setup_and_injection": "当前room热更源表",
+          "expected": "policy不静默换",
+          "actual": "isolated source XLSX exporter/production ReadNumerics hot update affects fresh room only; current room PG restore locks original policy",
+          "status": "Passed",
+          "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+          "executed": true
+        },
+        {
+          "case_id": "PR13-B02.4-T02",
+          "setup_and_injection": "PVP结束",
+          "expected": "恢复PVE原state",
+          "actual": "true PG-persisted PVP snapshot returns exact PVE combat/monster hashes and remainder/policy",
+          "status": "Passed",
+          "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+          "executed": true
+        },
+        {
+          "case_id": "PR13-B02.4-T03",
+          "setup_and_injection": "旧snapshot缺策略/无效枚举",
+          "expected": "兼容默认或明确拒绝不半恢复",
+          "actual": "missing legacy fields load default through repository; invalid enum/remainder rejects before mutation; no partial restore",
+          "status": "Passed",
+          "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+          "executed": true
+        }
+      ],
+      "status": "EligibleForMAINAcceptance",
+      "sample_population": {
+        "canonical_cases": 3,
+        "minimum_executed_repetitions_per_case": 1,
+        "capacity_or_human_claim": false,
+        "full_and_focused_regression_counts": "SUITES.json"
+      },
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "Fixed bounded local cases; actual run/window/drain/final context retained in referenced raw; no common load cutoff",
+      "commands": "COMMANDS.json",
+      "tool_versions": {
+        "python": "Python 3.12.14",
+        "dotnet": "10.0.400",
+        "postgres": "postgres (PostgreSQL) 18.6",
+        "godot": "4.7.2.stable.official.ed1daf0bf",
+        "git": "git version 2.52.0"
+      },
+      "exit_codes": "COMMANDS.json; expected negative codes preserved; A05.1 causal exit1 remains Failed",
+      "skip_reasons": [],
+      "asset_and_route_postconditions": "SHORT_REPLAY_CHECKS.json",
+      "artifact_manifest": "MANIFEST.json",
+      "reviewer": "Independent Codex delegate for parent MAIN thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+      "rollback": "No production/UI/register mutation. Remove only independent review documents to roll back this delivery; preserve raw and failed receipts.",
+      "remaining_blockers": [],
+      "missing_reasons": {
+        "runtime_image_digest": "Native local source builds; executable and build hashes supplied; no container.",
+        "cutoff_monotonic": "Independent fixed cases have separate clocks/owned process timings; no shared global load cutoff.",
+        "accepted_by": "Parent MAIN final registration/signature reserved; original register not written, as requested."
+      },
+      "candidate_resolution": "NoChangeWithEvidence",
+      "eligible_for_acceptance": true,
+      "accepted_by": null,
+      "accepted_registration_written": false,
+      "report_commit": "a23aa0669f6c72c1689ba6f27037373336a98abb",
+      "fixed_original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "minimum_dependencies": [
+        "PR13-B02.3"
+      ],
+      "minimum_dependency_assessment": "B02.3 pure preview and true PB/late-callback products available.",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "runtime_stage": "NotApplicableWithReason",
+      "original_complete_stage_metadata_rows": 8
+    },
+    {
+      "task_id": "PR13-B02.1",
+      "stage": "S6",
+      "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+      "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+      "effective_room_policy": "CurrentRhythm/CurrentSteps default; CoreCardsSpent/FractionalRemainder only explicitly selected isolated fixtures; stored policies stay locked",
+      "runtime_image_digest": null,
+      "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
+      "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
+      "case_ids": [
+        "PR13-B02.1-T01",
+        "PR13-B02.1-T02",
+        "PR13-B02.1-T03"
+      ],
+      "expected": "保留原测试意图与数量变动说明，不复活废弃生产成员、不改默认来迎合断言。",
+      "actual": [
+        {
+          "case_id": "PR13-B02.1-T01",
+          "setup_and_injection": "旧参数构造",
+          "expected": "编译失败证据",
+          "actual": "three old API probes compile-fail exit1 with CS1739/CS1061; wrapper0; historical/current20 methods and intentions preserved",
+          "status": "Passed",
+          "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+          "executed": true
+        },
+        {
+          "case_id": "PR13-B02.1-T02",
+          "setup_and_injection": "默认构造",
+          "expected": "仍CurrentRhythm/CurrentSteps",
+          "actual": "real defaults CurrentRhythm/CurrentSteps; five-cast draws0/0/1/1/2",
+          "status": "Passed",
+          "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+          "executed": true
+        },
+        {
+          "case_id": "PR13-B02.1-T03",
+          "setup_and_injection": "候选显式枚举",
+          "expected": "候选断言独立",
+          "actual": "explicit CoreCardsSpent/FractionalRemainder independently checked; remainder4/8/2/6/0",
+          "status": "Passed",
+          "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+          "executed": true
+        }
+      ],
+      "status": "EligibleForMAINAcceptance",
+      "sample_population": {
+        "canonical_cases": 3,
+        "minimum_executed_repetitions_per_case": 1,
+        "capacity_or_human_claim": false,
+        "full_and_focused_regression_counts": "SUITES.json"
+      },
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "Fixed bounded local cases; actual run/window/drain/final context retained in referenced raw; no common load cutoff",
+      "commands": "COMMANDS.json",
+      "tool_versions": {
+        "python": "Python 3.12.14",
+        "dotnet": "10.0.400",
+        "postgres": "postgres (PostgreSQL) 18.6",
+        "godot": "4.7.2.stable.official.ed1daf0bf",
+        "git": "git version 2.52.0"
+      },
+      "exit_codes": "COMMANDS.json; expected negative codes preserved; A05.1 causal exit1 remains Failed",
+      "skip_reasons": [],
+      "asset_and_route_postconditions": "SHORT_REPLAY_CHECKS.json",
+      "artifact_manifest": "MANIFEST.json",
+      "reviewer": "Independent Codex delegate for parent MAIN thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+      "rollback": "No production/UI/register mutation. Remove only independent review documents to roll back this delivery; preserve raw and failed receipts.",
+      "remaining_blockers": [],
+      "missing_reasons": {
+        "runtime_image_digest": "Native local source builds; executable and build hashes supplied; no container.",
+        "cutoff_monotonic": "Independent fixed cases have separate clocks/owned process timings; no shared global load cutoff.",
+        "accepted_by": "Parent MAIN final registration/signature reserved; original register not written, as requested."
+      },
+      "candidate_resolution": "NoChangeWithEvidence",
+      "eligible_for_acceptance": true,
+      "accepted_by": null,
+      "accepted_registration_written": false,
+      "report_commit": "a23aa0669f6c72c1689ba6f27037373336a98abb",
+      "fixed_original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "minimum_dependencies": [
+        "LOAD-11.1"
+      ],
+      "minimum_dependency_assessment": "LOAD11.1 fixed source/config/protocol/build identity products verified; no upstream acceptance or new CI requirement.",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "runtime_stage": "NotApplicableWithReason",
+      "original_complete_stage_metadata_rows": 8
+    },
+    {
+      "task_id": "PR13-B02.2",
+      "stage": "S6",
+      "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+      "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+      "effective_room_policy": "CurrentRhythm/CurrentSteps default; CoreCardsSpent/FractionalRemainder only explicitly selected isolated fixtures; stored policies stay locked",
+      "runtime_image_digest": null,
+      "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
+      "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
+      "case_ids": [
+        "PR13-B02.2-T01",
+        "PR13-B02.2-T02",
+        "PR13-B02.2-T03"
+      ],
+      "expected": "金标准向量有完整配置上下文；数值不能推广为任意三张火牌伤害。",
+      "actual": [
+        {
+          "case_id": "PR13-B02.2-T01",
+          "setup_and_injection": "重排同牌",
+          "expected": "按首核合同可不同",
+          "actual": "real Resolver reordered same cards changes first core and damage19/6; minority-first core retained",
+          "status": "Passed",
+          "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+          "executed": true
+        },
+        {
+          "case_id": "PR13-B02.2-T02",
+          "setup_and_injection": "GDD三四五火指定向量",
+          "expected": "46/72/113",
+          "actual": "contextual GDD vectors46/72/113; per-card floor12 and dual/tuning branches checked",
+          "status": "Passed",
+          "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+          "executed": true
+        },
+        {
+          "case_id": "PR13-B02.2-T03",
+          "setup_and_injection": "普通治疗与向反E0",
+          "expected": "分别计算不共套牧师倍率",
+          "actual": "ordinary Priest heal and conflict E0/vitality paths checked separately",
+          "status": "Passed",
+          "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+          "executed": true
+        }
+      ],
+      "status": "EligibleForMAINAcceptance",
+      "sample_population": {
+        "canonical_cases": 3,
+        "minimum_executed_repetitions_per_case": 1,
+        "capacity_or_human_claim": false,
+        "full_and_focused_regression_counts": "SUITES.json"
+      },
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "Fixed bounded local cases; actual run/window/drain/final context retained in referenced raw; no common load cutoff",
+      "commands": "COMMANDS.json",
+      "tool_versions": {
+        "python": "Python 3.12.14",
+        "dotnet": "10.0.400",
+        "postgres": "postgres (PostgreSQL) 18.6",
+        "godot": "4.7.2.stable.official.ed1daf0bf",
+        "git": "git version 2.52.0"
+      },
+      "exit_codes": "COMMANDS.json; expected negative codes preserved; A05.1 causal exit1 remains Failed",
+      "skip_reasons": [],
+      "asset_and_route_postconditions": "SHORT_REPLAY_CHECKS.json",
+      "artifact_manifest": "MANIFEST.json",
+      "reviewer": "Independent Codex delegate for parent MAIN thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+      "rollback": "No production/UI/register mutation. Remove only independent review documents to roll back this delivery; preserve raw and failed receipts.",
+      "remaining_blockers": [],
+      "missing_reasons": {
+        "runtime_image_digest": "Native local source builds; executable and build hashes supplied; no container.",
+        "cutoff_monotonic": "Independent fixed cases have separate clocks/owned process timings; no shared global load cutoff.",
+        "accepted_by": "Parent MAIN final registration/signature reserved; original register not written, as requested."
+      },
+      "candidate_resolution": "NoChangeWithEvidence",
+      "eligible_for_acceptance": true,
+      "accepted_by": null,
+      "accepted_registration_written": false,
+      "report_commit": "a23aa0669f6c72c1689ba6f27037373336a98abb",
+      "fixed_original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "minimum_dependencies": [
+        "PR13-B02.1"
+      ],
+      "minimum_dependency_assessment": "B02.1 default/explicit-enum compatible fixture and compile-negative proof available.",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "runtime_stage": "NotApplicableWithReason",
+      "original_complete_stage_metadata_rows": 8
+    },
+    {
+      "task_id": "PR13-B02.3",
+      "stage": "S6",
+      "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+      "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+      "effective_room_policy": "CurrentRhythm/CurrentSteps default; CoreCardsSpent/FractionalRemainder only explicitly selected isolated fixtures; stored policies stay locked",
+      "runtime_image_digest": null,
+      "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
+      "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
+      "case_ids": [
+        "PR13-B02.3-T01",
+        "PR13-B02.3-T02",
+        "PR13-B02.3-T03"
+      ],
+      "expected": "确定性字段零差异；随机结果用受控种子/规则校验，不能要求未公开未来伤害精确展示。",
+      "actual": [
+        {
+          "case_id": "PR13-B02.3-T01",
+          "setup_and_injection": "连续preview",
+          "expected": "不抽牌不进RNG不提交盾余量",
+          "actual": "real repeated preview leaves state/player+room RNG/deck/remainder hashes unchanged; committed deterministic output matches",
+          "status": "Passed",
+          "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+          "executed": true
+        },
+        {
+          "case_id": "PR13-B02.3-T02",
+          "setup_and_injection": "proto往返",
+          "expected": "顺序保持",
+          "actual": "actual C# -> Godot PB command order/reversed order round trips for four wire rows",
+          "status": "Passed",
+          "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+          "executed": true
+        },
+        {
+          "case_id": "PR13-B02.3-T03",
+          "setup_and_injection": "过期revision",
+          "expected": "预览弃置不覆盖当前",
+          "actual": "actual Gateway._receive -> Game._on_event rejects stale revision8 and stale request; current revision9 preview/room retained",
+          "status": "Passed",
+          "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+          "executed": true
+        }
+      ],
+      "status": "EligibleForMAINAcceptance",
+      "sample_population": {
+        "canonical_cases": 3,
+        "minimum_executed_repetitions_per_case": 1,
+        "capacity_or_human_claim": false,
+        "full_and_focused_regression_counts": "SUITES.json"
+      },
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "Fixed bounded local cases; actual run/window/drain/final context retained in referenced raw; no common load cutoff",
+      "commands": "COMMANDS.json",
+      "tool_versions": {
+        "python": "Python 3.12.14",
+        "dotnet": "10.0.400",
+        "postgres": "postgres (PostgreSQL) 18.6",
+        "godot": "4.7.2.stable.official.ed1daf0bf",
+        "git": "git version 2.52.0"
+      },
+      "exit_codes": "COMMANDS.json; expected negative codes preserved; A05.1 causal exit1 remains Failed",
+      "skip_reasons": [],
+      "asset_and_route_postconditions": "SHORT_REPLAY_CHECKS.json",
+      "artifact_manifest": "MANIFEST.json",
+      "reviewer": "Independent Codex delegate for parent MAIN thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+      "rollback": "No production/UI/register mutation. Remove only independent review documents to roll back this delivery; preserve raw and failed receipts.",
+      "remaining_blockers": [],
+      "missing_reasons": {
+        "runtime_image_digest": "Native local source builds; executable and build hashes supplied; no container.",
+        "cutoff_monotonic": "Independent fixed cases have separate clocks/owned process timings; no shared global load cutoff.",
+        "accepted_by": "Parent MAIN final registration/signature reserved; original register not written, as requested."
+      },
+      "candidate_resolution": "NoChangeWithEvidence",
+      "eligible_for_acceptance": true,
+      "accepted_by": null,
+      "accepted_registration_written": false,
+      "report_commit": "a23aa0669f6c72c1689ba6f27037373336a98abb",
+      "fixed_original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "minimum_dependencies": [
+        "PR13-B02.2"
+      ],
+      "minimum_dependency_assessment": "B02.2 real Resolver/contextual rule vectors available and used.",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "runtime_stage": "NotApplicableWithReason",
+      "original_complete_stage_metadata_rows": 8
+    },
+    {
+      "task_id": "PR13-A05.3",
+      "stage": "S6",
+      "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+      "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+      "effective_room_policy": "f812 default legacy numerics; production Gateway logical30s/transport10s; BotFill30s; request limits unchanged",
+      "runtime_image_digest": null,
+      "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+      "algorithm_version": "A05ProcessAcceptance/1",
+      "case_ids": [
+        "PR13-A05.3-T01",
+        "PR13-A05.3-T02",
+        "PR13-A05.3-T03"
+      ],
+      "expected": "账户/物品实例/流水在允许交易转移后守恒，不删测试数据伪造通过。",
+      "actual": [
+        {
+          "case_id": "PR13-A05.3-T01",
+          "setup_and_injection": "同ack三次",
+          "expected": "一条业务结果",
+          "actual": "same receipt/key/body ACK3 times gives identical response and assets; one23 gold ledger and one movement",
+          "status": "Passed",
+          "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+          "executed": true
+        },
+        {
+          "case_id": "PR13-A05.3-T02",
+          "setup_and_injection": "重启在holds完成前",
+          "expected": "恢复同一资产转移",
+          "actual": "4 durable Pending holds survive actual SIGKILL with wallet gate; same owned instance transfers once after restart;4 Committed,0 Pending",
+          "status": "Passed",
+          "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+          "executed": true
+        },
+        {
+          "case_id": "PR13-A05.3-T03",
+          "setup_and_injection": "重复ready通知",
+          "expected": "不重复领奖",
+          "actual": "3 original READY notifications while A in N do not duplicate M credit; allowed N death cleanup moves original item to RelicPile; audits conserved",
+          "status": "Passed",
+          "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+          "executed": true
+        }
+      ],
+      "status": "EligibleForMAINAcceptance",
+      "sample_population": {
+        "canonical_cases": 3,
+        "minimum_executed_repetitions_per_case": 1,
+        "capacity_or_human_claim": false,
+        "full_and_focused_regression_counts": "SUITES.json"
+      },
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "Fixed bounded local cases; actual run/window/drain/final context retained in referenced raw; no common load cutoff",
+      "commands": "COMMANDS.json",
+      "tool_versions": {
+        "python": "Python 3.12.14",
+        "dotnet": "10.0.400",
+        "postgres": "postgres (PostgreSQL) 18.6",
+        "godot": "4.7.2.stable.official.ed1daf0bf",
+        "git": "git version 2.52.0"
+      },
+      "exit_codes": "COMMANDS.json; expected negative codes preserved; A05.1 causal exit1 remains Failed",
+      "skip_reasons": [],
+      "asset_and_route_postconditions": "A05_CHECKS.json and readonly before/after raw hashes",
+      "artifact_manifest": "MANIFEST.json",
+      "reviewer": "Independent Codex delegate for parent MAIN thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+      "rollback": "No production/UI/register mutation. Remove only independent review documents to roll back this delivery; preserve raw and failed receipts.",
+      "remaining_blockers": [],
+      "missing_reasons": {
+        "runtime_image_digest": "Native local source builds; executable and build hashes supplied; no container.",
+        "cutoff_monotonic": "Independent fixed cases have separate clocks/owned process timings; no shared global load cutoff.",
+        "accepted_by": "Parent MAIN final registration/signature reserved; original register not written, as requested."
+      },
+      "candidate_resolution": "NoChangeWithEvidence",
+      "eligible_for_acceptance": true,
+      "accepted_by": null,
+      "accepted_registration_written": false,
+      "report_commit": "8068783331da07ec68354c1874eb0d65adea632f",
+      "fixed_original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/a05/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "minimum_dependencies": [
+        "PR13-A05.2"
+      ],
+      "minimum_dependency_assessment": "A05.2 M/N identity/route/restart products available. New controlled A05.1 red assertion runs after a clear readonly causal-after audit, independently separating display inconsistency from duplicate asset credit.",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "AUDIT"
+      ],
+      "runtime_stage": "Required",
+      "original_complete_stage_metadata_rows": 7
+    },
+    {
+      "task_id": "PR13-A05.2",
+      "stage": "S6",
+      "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+      "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+      "effective_room_policy": "f812 default legacy numerics; production Gateway logical30s/transport10s; BotFill30s; request limits unchanged",
+      "runtime_image_digest": null,
+      "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+      "algorithm_version": "A05ProcessAcceptance/1",
+      "case_ids": [
+        "PR13-A05.2-T01",
+        "PR13-A05.2-T02",
+        "PR13-A05.2-T03"
+      ],
+      "expected": "A可继续多局、B可完成旧局，旧新room registry与DB关联无污染。",
+      "actual": [
+        {
+          "case_id": "PR13-A05.2-T01",
+          "setup_and_injection": "旧snapshot继续",
+          "expected": "B正常/A的N route不删除",
+          "actual": "real A in N/B continues healthy M with increased revision; B later extracts M and receives23",
+          "status": "Passed",
+          "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+          "executed": true
+        },
+        {
+          "case_id": "PR13-A05.2-T02",
+          "setup_and_injection": "恢复terminal A",
+          "expected": "不重新占旧route",
+          "actual": "actual OS host replacement restores A to N/B to M; terminal A never reclaims M route",
+          "status": "Passed",
+          "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+          "executed": true
+        },
+        {
+          "case_id": "PR13-A05.2-T03",
+          "setup_and_injection": "相同玩家新route",
+          "expected": "旧结算callback无权清",
+          "actual": "original held M settlement response and3 repeated READY callbacks leave actual A N context intact; final audits clear",
+          "status": "Passed",
+          "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+          "executed": true
+        }
+      ],
+      "status": "EligibleForMAINAcceptance",
+      "sample_population": {
+        "canonical_cases": 3,
+        "minimum_executed_repetitions_per_case": 1,
+        "capacity_or_human_claim": false,
+        "full_and_focused_regression_counts": "SUITES.json"
+      },
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "Fixed bounded local cases; actual run/window/drain/final context retained in referenced raw; no common load cutoff",
+      "commands": "COMMANDS.json",
+      "tool_versions": {
+        "python": "Python 3.12.14",
+        "dotnet": "10.0.400",
+        "postgres": "postgres (PostgreSQL) 18.6",
+        "godot": "4.7.2.stable.official.ed1daf0bf",
+        "git": "git version 2.52.0"
+      },
+      "exit_codes": "COMMANDS.json; expected negative codes preserved; A05.1 causal exit1 remains Failed",
+      "skip_reasons": [],
+      "asset_and_route_postconditions": "A05_CHECKS.json and readonly before/after raw hashes",
+      "artifact_manifest": "MANIFEST.json",
+      "reviewer": "Independent Codex delegate for parent MAIN thread 01a0f0d2-cf23-73cf-a875-9d1375f85012",
+      "rollback": "No production/UI/register mutation. Remove only independent review documents to roll back this delivery; preserve raw and failed receipts.",
+      "remaining_blockers": [],
+      "missing_reasons": {
+        "runtime_image_digest": "Native local source builds; executable and build hashes supplied; no container.",
+        "cutoff_monotonic": "Independent fixed cases have separate clocks/owned process timings; no shared global load cutoff.",
+        "accepted_by": "Parent MAIN final registration/signature reserved; original register not written, as requested."
+      },
+      "candidate_resolution": "NoChangeWithEvidence",
+      "eligible_for_acceptance": true,
+      "accepted_by": null,
+      "accepted_registration_written": false,
+      "report_commit": "8068783331da07ec68354c1874eb0d65adea632f",
+      "fixed_original_report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/a05/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "minimum_dependencies": [
+        "PR13-A05.1"
+      ],
+      "minimum_dependency_assessment": "A05.1 minimum durable terminal A, committed holds/ACK and released M route is actually available. Its retained ACK-await visible receipt failure does not negate durable terminal input or block healthy M/N route isolation.",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "AUDIT"
+      ],
+      "runtime_stage": "Required",
+      "original_complete_stage_metadata_rows": 7
+    }
+  ],
+  "selected_canonical_cases": {
+    "Passed": 33,
+    "Failed": 0,
+    "Skipped": 0
+  },
+  "accepted_registration_written": false,
+  "excluded": {
+    "LOAD01": "Four accepted decisions unchanged; Python regression execution creates no new decision.",
+    "Partial": [
+      "LOAD-02.2",
+      "LOAD-03.3",
+      "LOAD-03.4",
+      "PR13-A05.1"
+    ]
+  },
+  "retained_failures": [
+    {
+      "scope": "A05.1 outside decision",
+      "historical_focused": "3Passed/1Failed retained at80687833",
+      "current_focused": "4Passed/0Failed/0Skipped; cannot erase historical red",
+      "current_causal": "1Failed/0Passed/0Skipped, exit1; stale_during_ack and stale_after_ack true; after-audit clear",
+      "conclusion": "Original A05.1 remains Partial; no UI fix applied."
+    },
+    {
+      "scope": "Initial non-original B02 full-suite connection profile",
+      "actual": "290Passed/1Failed/0Skipped: MarkRunning commit-response-loss expected Running, observed Launching",
+      "profile": "Review initial Pooling=true/MaxPool8 differs from original B02 Pooling=false; original-profile whole291 subsequently Passed. Both focused Pooling=false and true passed; no causal attribution established.",
+      "conclusion": "Failure preserved; not silently reclassified Passed or used to sign unrelated tasks. B02/LOAD02 decisions rely on exact original-profile whole291 plus actual target cases; no extra pooling gate introduced."
+    }
+  ],
+  "known_run_preparation_errors": [
+    "LOAD03 early report missing prepare_fixture helper; exact sealing-commit helper/wrappers copied with separate source hashes; assertions unchanged.",
+    "First B02 Godot support run had absent import cache; original-standard import then support returned0. Initial failure hash retained.",
+    "Python119 archive run had10 provenance errors requiring .git; same exact ee8 clean worktree119 returned0; no assertion/implementation adaptation."
+  ],
+  "original_receipt_verification": {
+    "manifest_files": 710,
+    "stage_metadata_rows": 86,
+    "profile_hashes": 11,
+    "historical_A05_1678_raw_rehash": null,
+    "missing_reasons": {
+      "historical_A05_1678_raw_rehash": "Historical raw files were intentionally absent from Git packet; not accessible in this environment. Independent fresh focused/causal/full-suite PG evidence and readonly audits replace reliance on unseen raw; historical manifest and red summary remain referenced."
+    }
+  },
+  "source_identity": "SOURCE_CHECK.json, KEY_SOURCE_PROOF.json, HARNESS_PROOF.json; all production/UI and assertions byte matched declared source/harness; generated caches/import metadata excluded honestly.",
+  "minimum_dependency_rule": "Required products, not whole upstream Accepted; applied per task. No task/gate outside11 is adjudicated.",
+  "artifacts": {
+    "commands": "COMMANDS.json",
+    "short_replays": "SHORT_REPLAY_CHECKS.json",
+    "PG_STOP": "PG_STOP_CHECKS.json",
+    "A05": "A05_CHECKS.json",
+    "suites": "SUITES.json",
+    "metadata": "STATIC_CHECK.json",
+    "cleanup": "CLEANUP.json",
+    "manifest": "MANIFEST.json"
+  },
+  "publication": "Small nonsensitive report/commands/hash summaries only; fresh and historical full raw remain local; no Library upload, CI retries, PR comments, source/register modification, merge or deployment.",
+  "remaining_blockers_for_selected_11": [],
+  "gates_G0_G5_signed": false,
+  "all132_accepted": false
+}

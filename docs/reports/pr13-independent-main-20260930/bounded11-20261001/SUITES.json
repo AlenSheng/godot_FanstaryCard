@@ -1,0 +1,231 @@
+[
+  {
+    "path": "b02/evidence/trx/domain.trx",
+    "bytes": 486641,
+    "sha256": "30afdaf02452b5866573be66a3f9a6e102be9d1c30bd8355294d99d8b639bcb1",
+    "counters": {
+      "total": "317",
+      "executed": "317",
+      "passed": "317",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "entry_outcomes": {
+      "Passed": 317
+    },
+    "failed_tests": []
+  },
+  {
+    "path": "b02/evidence/trx/server.trx",
+    "bytes": 518050,
+    "sha256": "572cb41e2b6a7dba3cb1bb5d61ab50cf60e9d9f55d7e405dd1f72ca27592a052",
+    "counters": {
+      "total": "291",
+      "executed": "291",
+      "passed": "290",
+      "failed": "1",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "entry_outcomes": {
+      "Passed": 290,
+      "Failed": 1
+    },
+    "failed_tests": [
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it",
+        "message": "Assert.Equal() Failure: Strings differ\n           \u2193 (pos 0)\nExpected: \"Running\"\nActual:   \"Launching\"\n           \u2191 (pos 0)",
+        "stack": "   at FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it() in /workspace/pr13-main-bounded-20261001/b02/source/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLifecycleRecoveryTests.cs:line 75\n   at FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it() in /workspace/pr13-main-bounded-20261001/b02/source/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLifecycleRecoveryTests.cs:line 84\n   at FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it() in /workspace/pr13-main-bounded-20261001/b02/source/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLifecycleRecoveryTests.cs:line 97\n   at FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it() in /workspace/pr13-main-bounded-20261001/b02/source/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLifecycleRecoveryTests.cs:line 97\n   at FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it() in /workspace/pr13-main-bounded-20261001/b02/source/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLifecycleRecoveryTests.cs:line 97\n--- End of stack trace from previous location ---"
+      }
+    ]
+  },
+  {
+    "path": "b02/evidence/trx-original/server-original.trx",
+    "bytes": 514363,
+    "sha256": "3bd1a1c8be607452a59be90d4aa9438da3a7115b0a151320216e8922e4fcd4b5",
+    "counters": {
+      "total": "291",
+      "executed": "291",
+      "passed": "291",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "entry_outcomes": {
+      "Passed": 291
+    },
+    "failed_tests": []
+  },
+  {
+    "path": "b02/evidence/diagnostic/pooling-false.trx",
+    "bytes": 3136,
+    "sha256": "ccc992d4bf6bde63e68c51c0a48a965243118727c9f81371f4fb9fd6be3344cc",
+    "counters": {
+      "total": "1",
+      "executed": "1",
+      "passed": "1",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "entry_outcomes": {
+      "Passed": 1
+    },
+    "failed_tests": []
+  },
+  {
+    "path": "b02/evidence/diagnostic/pooling-true.trx",
+    "bytes": 3136,
+    "sha256": "13e0216cf5e7bce4409499e2c8a7e49bd013e6752f6f888cf6ac8576701614a2",
+    "counters": {
+      "total": "1",
+      "executed": "1",
+      "passed": "1",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "entry_outcomes": {
+      "Passed": 1
+    },
+    "failed_tests": []
+  },
+  {
+    "path": "a05/evidence/A05-FOCUSED/a05.trx",
+    "bytes": 71694,
+    "sha256": "1d67a9f9048a8f8595c796e0ef959bcbb9f6b46e3a9af1616166247ad5a11ccc",
+    "counters": {
+      "total": "4",
+      "executed": "4",
+      "passed": "4",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "entry_outcomes": {
+      "Passed": 4
+    },
+    "failed_tests": []
+  },
+  {
+    "path": "a05/evidence/A05-CAUSAL/causal.trx",
+    "bytes": 45943,
+    "sha256": "7460f261c147feabcffa8fa431d70e421d4425d286870b4e6e510cf23bd4b86c",
+    "counters": {
+      "total": "1",
+      "executed": "1",
+      "passed": "0",
+      "failed": "1",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "entry_outcomes": {
+      "Failed": 1
+    },
+    "failed_tests": [
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Frozen_f812_actual_poll_return_during_ACK_must_not_restore_completed_receipt",
+        "message": "Frozen f812 restored the real M receipt while the production ACK was pending.",
+        "stack": "   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Frozen_f812_actual_poll_return_during_ACK_must_not_restore_completed_receipt() in /workspace/pr13-main-bounded-20261001/a05/source-causal/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05AckPollCausalTests.cs:line 82\n   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Frozen_f812_actual_poll_return_during_ACK_must_not_restore_completed_receipt() in /workspace/pr13-main-bounded-20261001/a05/source-causal/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05AckPollCausalTests.cs:line 83\n   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Frozen_f812_actual_poll_return_during_ACK_must_not_restore_completed_receipt() in /workspace/pr13-main-bounded-20261001/a05/source-causal/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05AckPollCausalTests.cs:line 83\n   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Frozen_f812_actual_poll_return_during_ACK_must_not_restore_completed_receipt() in /workspace/pr13-main-bounded-20261001/a05/source-causal/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05AckPollCausalTests.cs:line 90\n   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Frozen_f812_actual_poll_return_during_ACK_must_not_restore_completed_receipt() in /workspace/pr13-main-bounded-20261001/a05/source-causal/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05AckPollCausalTests.cs:line 90\n   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Frozen_f812_actual_poll_return_during_ACK_must_not_restore_completed_receipt() in /workspace/pr13-main-bounded-20261001/a05/source-causal/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05AckPollCausalTests.cs:line 90\n   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Frozen_f812_actual_poll_return_during_ACK_must_not_restore_completed_receipt() in /workspace/pr13-main-bounded-20261001/a05/source-causal/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05AckPollCausalTests.cs:line 90\n--- End of stack trace from previous location ---"
+      }
+    ]
+  },
+  {
+    "path": "a05/evidence/A05-SERVER295/server295.trx",
+    "bytes": 584438,
+    "sha256": "f381d1a7638386c463bf0c77c550ecc50352bd4bb678e38a6507b2101db6bc2c",
+    "counters": {
+      "total": "295",
+      "executed": "295",
+      "passed": "295",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "entry_outcomes": {
+      "Passed": 295
+    },
+    "failed_tests": []
+  }
+]

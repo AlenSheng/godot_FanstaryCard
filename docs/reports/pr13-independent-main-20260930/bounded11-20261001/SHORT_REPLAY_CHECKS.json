@@ -1,0 +1,4011 @@
+{
+  "status": "Passed",
+  "LOAD02": {
+    "canonical_case_count": 9,
+    "model_modes": [
+      {
+        "mode": "smoke_complete",
+        "exit_code": 0,
+        "dimensions": {
+          "dimensions": {
+            "execution": "Passed",
+            "evidence": "Passed",
+            "load": "Passed",
+            "gameplay": "Passed",
+            "performance": "NotApplicable",
+            "cleanup": "Passed"
+          },
+          "applicable": [
+            "cleanup",
+            "evidence",
+            "execution",
+            "gameplay",
+            "load"
+          ],
+          "all_applicable_passed": true,
+          "full_acceptance_passed": false
+        },
+        "first_trigger": "smoke_passed",
+        "all_triggers": [
+          "smoke_passed"
+        ],
+        "process_cleanup_complete": true,
+        "business_cleanup_verified": true,
+        "process_exits": [
+          {
+            "client_id": "g001c01862f9a",
+            "before_stop": 0,
+            "after_stop": 0
+          }
+        ],
+        "forced_termination_pids": [],
+        "children_reaped": true
+      },
+      {
+        "mode": "time_limit",
+        "exit_code": 1,
+        "dimensions": {
+          "dimensions": {
+            "execution": "Passed",
+            "evidence": "Passed",
+            "load": "Failed",
+            "gameplay": "NotApplicable",
+            "performance": "Unknown",
+            "cleanup": "Passed"
+          },
+          "applicable": [
+            "cleanup",
+            "evidence",
+            "execution",
+            "load",
+            "performance"
+          ],
+          "all_applicable_passed": false,
+          "full_acceptance_passed": false
+        },
+        "first_trigger": "duration_limit",
+        "all_triggers": [
+          "duration_limit"
+        ],
+        "process_cleanup_complete": true,
+        "business_cleanup_verified": true,
+        "process_exits": [
+          {
+            "client_id": "g001c0160abda",
+            "before_stop": null,
+            "after_stop": 0
+          }
+        ],
+        "forced_termination_pids": [],
+        "children_reaped": true
+      },
+      {
+        "mode": "redline",
+        "exit_code": 2,
+        "dimensions": {
+          "dimensions": {
+            "execution": "Passed",
+            "evidence": "Passed",
+            "load": "Failed",
+            "gameplay": "NotApplicable",
+            "performance": "Failed",
+            "cleanup": "Passed"
+          },
+          "applicable": [
+            "cleanup",
+            "evidence",
+            "execution",
+            "load",
+            "performance"
+          ],
+          "all_applicable_passed": false,
+          "full_acceptance_passed": false
+        },
+        "first_trigger": "cpu_redline",
+        "all_triggers": [
+          "actor_wait_redline",
+          "cpu_redline",
+          "disk_available_redline",
+          "memory_available_redline",
+          "redline:actor_wait_redline,memory_available_redline,cpu_redline,disk_available_redline"
+        ],
+        "process_cleanup_complete": true,
+        "business_cleanup_verified": true,
+        "process_exits": [
+          {
+            "client_id": "g001c01ccbbe6",
+            "before_stop": null,
+            "after_stop": 0
+          }
+        ],
+        "forced_termination_pids": [],
+        "children_reaped": true
+      },
+      {
+        "mode": "redline_corrupt",
+        "exit_code": 3,
+        "dimensions": {
+          "dimensions": {
+            "execution": "Passed",
+            "evidence": "Failed",
+            "load": "Failed",
+            "gameplay": "NotApplicable",
+            "performance": "Failed",
+            "cleanup": "Passed"
+          },
+          "applicable": [
+            "cleanup",
+            "evidence",
+            "execution",
+            "load",
+            "performance"
+          ],
+          "all_applicable_passed": false,
+          "full_acceptance_passed": false
+        },
+        "first_trigger": "cpu_redline",
+        "all_triggers": [
+          "actor_wait_redline",
+          "cpu_redline",
+          "disk_available_redline",
+          "final_audit_loss",
+          "memory_available_redline",
+          "redline:cpu_redline,disk_available_redline,actor_wait_redline,memory_available_redline"
+        ],
+        "process_cleanup_complete": true,
+        "business_cleanup_verified": true,
+        "process_exits": [
+          {
+            "client_id": "g001c01769d88",
+            "before_stop": null,
+            "after_stop": 0
+          }
+        ],
+        "forced_termination_pids": [],
+        "children_reaped": true
+      },
+      {
+        "mode": "emergency",
+        "exit_code": 3,
+        "emergency_present": true,
+        "emergency_text": "Report write failed: OSError('isolated injected final report write failure')\nstop=smoke_passed\noutcome={'classification': 'invalid_workload_or_evidence', 'passed': False, 'exit_code': 3}"
+      },
+      {
+        "mode": "exit7",
+        "exit_code": 3,
+        "dimensions": {
+          "dimensions": {
+            "execution": "Failed",
+            "evidence": "Passed",
+            "load": "Failed",
+            "gameplay": "Failed",
+            "performance": "NotApplicable",
+            "cleanup": "Failed"
+          },
+          "applicable": [
+            "cleanup",
+            "evidence",
+            "execution",
+            "gameplay",
+            "load"
+          ],
+          "all_applicable_passed": false,
+          "full_acceptance_passed": false
+        },
+        "first_trigger": "duration_limit",
+        "all_triggers": [
+          "duration_limit",
+          "post_stop_process_failure"
+        ],
+        "process_cleanup_complete": false,
+        "business_cleanup_verified": true,
+        "process_exits": [
+          {
+            "client_id": "g001c0114dee3",
+            "before_stop": null,
+            "after_stop": 7
+          }
+        ],
+        "forced_termination_pids": [],
+        "children_reaped": true
+      },
+      {
+        "mode": "hang",
+        "exit_code": 3,
+        "dimensions": {
+          "dimensions": {
+            "execution": "Failed",
+            "evidence": "Passed",
+            "load": "Failed",
+            "gameplay": "Failed",
+            "performance": "NotApplicable",
+            "cleanup": "Failed"
+          },
+          "applicable": [
+            "cleanup",
+            "evidence",
+            "execution",
+            "gameplay",
+            "load"
+          ],
+          "all_applicable_passed": false,
+          "full_acceptance_passed": false
+        },
+        "first_trigger": "duration_limit",
+        "all_triggers": [
+          "duration_limit",
+          "post_stop_process_failure"
+        ],
+        "process_cleanup_complete": false,
+        "business_cleanup_verified": true,
+        "process_exits": [
+          {
+            "client_id": "g001c012e54ef",
+            "before_stop": null,
+            "after_stop": -9
+          }
+        ],
+        "forced_termination_pids": [
+          3274
+        ],
+        "children_reaped": true
+      },
+      {
+        "mode": "operator",
+        "exit_code": 130,
+        "dimensions": {
+          "dimensions": {
+            "execution": "Passed",
+            "evidence": "Passed",
+            "load": "Failed",
+            "gameplay": "Failed",
+            "performance": "NotApplicable",
+            "cleanup": "Passed"
+          },
+          "applicable": [
+            "cleanup",
+            "evidence",
+            "execution",
+            "gameplay",
+            "load"
+          ],
+          "all_applicable_passed": false,
+          "full_acceptance_passed": false
+        },
+        "first_trigger": "operator_stop_file",
+        "all_triggers": [
+          "operator_stop_file"
+        ],
+        "process_cleanup_complete": true,
+        "business_cleanup_verified": true,
+        "process_exits": [
+          {
+            "client_id": "g001c016bdf79",
+            "before_stop": null,
+            "after_stop": 0
+          }
+        ],
+        "forced_termination_pids": [],
+        "children_reaped": true
+      },
+      {
+        "mode": "invalid",
+        "exit_code": 3,
+        "dimensions": {
+          "dimensions": {
+            "execution": "Passed",
+            "evidence": "Failed",
+            "load": "Failed",
+            "gameplay": "Failed",
+            "performance": "NotApplicable",
+            "cleanup": "Passed"
+          },
+          "applicable": [
+            "cleanup",
+            "evidence",
+            "execution",
+            "gameplay",
+            "load"
+          ],
+          "all_applicable_passed": false,
+          "full_acceptance_passed": false
+        },
+        "first_trigger": "invalid_telemetry",
+        "all_triggers": [
+          "final_audit_loss",
+          "invalid_evidence:invalid_telemetry",
+          "invalid_telemetry"
+        ],
+        "process_cleanup_complete": true,
+        "business_cleanup_verified": true,
+        "process_exits": [
+          {
+            "client_id": "g001c019155e8",
+            "before_stop": null,
+            "after_stop": 0
+          }
+        ],
+        "forced_termination_pids": [],
+        "children_reaped": true
+      },
+      {
+        "mode": "cleanup_unknown",
+        "exit_code": 1,
+        "dimensions": {
+          "dimensions": {
+            "execution": "Passed",
+            "evidence": "Passed",
+            "load": "Failed",
+            "gameplay": "Failed",
+            "performance": "NotApplicable",
+            "cleanup": "Unknown"
+          },
+          "applicable": [
+            "cleanup",
+            "evidence",
+            "execution",
+            "gameplay",
+            "load"
+          ],
+          "all_applicable_passed": false,
+          "full_acceptance_passed": false
+        },
+        "first_trigger": "duration_limit",
+        "all_triggers": [
+          "duration_limit"
+        ],
+        "process_cleanup_complete": true,
+        "business_cleanup_verified": false,
+        "process_exits": [
+          {
+            "client_id": "g001c014b703e",
+            "before_stop": null,
+            "after_stop": 0
+          }
+        ],
+        "forced_termination_pids": [],
+        "children_reaped": true
+      },
+      {
+        "mode": "late_business_error",
+        "exit_code": 1,
+        "dimensions": {
+          "dimensions": {
+            "execution": "Failed",
+            "evidence": "Passed",
+            "load": "Failed",
+            "gameplay": "Failed",
+            "performance": "NotApplicable",
+            "cleanup": "Passed"
+          },
+          "applicable": [
+            "cleanup",
+            "evidence",
+            "execution",
+            "gameplay",
+            "load"
+          ],
+          "all_applicable_passed": false,
+          "full_acceptance_passed": false
+        },
+        "first_trigger": "duration_limit",
+        "all_triggers": [
+          "duration_limit",
+          "final_business_failure"
+        ],
+        "process_cleanup_complete": true,
+        "business_cleanup_verified": true,
+        "process_exits": [
+          {
+            "client_id": "g001c0192ab14",
+            "before_stop": null,
+            "after_stop": 0
+          }
+        ],
+        "forced_termination_pids": [],
+        "children_reaped": true
+      }
+    ],
+    "before_STOP_business_error_retained": true,
+    "unrelated_coordinator_sentinel_survives": true
+  },
+  "LOAD03": {
+    "canonical_case_count": 6,
+    "sequence_canonical": [
+      {
+        "case_id": "LOAD-03.1-T01",
+        "passed": true,
+        "actual_write_ack": {
+          "pid": 3975,
+          "status_path": "/workspace/pr13-main-bounded-20261001/load03/evidence/sequence/same-ms/status.json",
+          "status_seq": 1
+        },
+        "first": {
+          "owned": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "same",
+              "process_epoch": "e1",
+              "status_seq": 1,
+              "now_unix_ms": 1790813312543,
+              "online": false,
+              "room": false,
+              "last_progress_age_ms": 0,
+              "cycles_completed": 0,
+              "event_seq_max": 2,
+              "telemetry": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "same",
+                  "process_epoch": "e1",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790813312543,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "same",
+                  "process_epoch": "e1",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790813312543,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "operations": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "same",
+                  "process_epoch": "e1",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790813312543,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "same",
+                  "process_epoch": "e1",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790813312543,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "audit_lost_count": 0,
+              "errors": [],
+              "cleanup": {
+                "state": "Passed"
+              },
+              "pid": 3975,
+              "_received_at_monotonic_ms": 3937543.5885380004
+            }
+          ],
+          "invalid_files": 0,
+          "fresh": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "same",
+              "process_epoch": "e1",
+              "status_seq": 1,
+              "now_unix_ms": 1790813312543,
+              "online": false,
+              "room": false,
+              "last_progress_age_ms": 0,
+              "cycles_completed": 0,
+              "event_seq_max": 2,
+              "telemetry": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "same",
+                  "process_epoch": "e1",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790813312543,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "same",
+                  "process_epoch": "e1",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790813312543,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "operations": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "same",
+                  "process_epoch": "e1",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790813312543,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "same",
+                  "process_epoch": "e1",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790813312543,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "audit_lost_count": 0,
+              "errors": [],
+              "cleanup": {
+                "state": "Passed"
+              },
+              "pid": 3975,
+              "_received_at_monotonic_ms": 3937543.5885380004
+            }
+          ],
+          "lost_count": 0,
+          "aggregate": {
+            "http": {
+              "count": 2,
+              "min_ms": 1,
+              "mean_ms": 1.0,
+              "max_ms": 1,
+              "p50_ms": 1,
+              "p95_ms": 1,
+              "p99_ms": 1
+            },
+            "steady_http": {
+              "count": 2,
+              "min_ms": 1,
+              "mean_ms": 1.0,
+              "max_ms": 1,
+              "p50_ms": 1,
+              "p95_ms": 1,
+              "p99_ms": 1
+            },
+            "cancelled_http": {
+              "count": 0
+            },
+            "realtime": {
+              "count": 0
+            },
+            "rtt": {
+              "count": 0
+            },
+            "phase_http": {
+              "playing": {
+                "count": 2,
+                "min_ms": 1,
+                "mean_ms": 1.0,
+                "max_ms": 1,
+                "p50_ms": 1,
+                "p95_ms": 1,
+                "p99_ms": 1
+              }
+            },
+            "error_count": 0,
+            "sample_count": 2,
+            "logical_request_count": 2,
+            "cancelled_count": 0,
+            "all_attempt_count": null,
+            "attempt_coverage": "unavailable",
+            "attempt_result_counts": {},
+            "valid_attempt_latency_count": 0,
+            "valid_latency_count": 2,
+            "latency_sample_quality": {
+              "http": "insufficient",
+              "realtime": "unavailable"
+            },
+            "error_rate": 0.0,
+            "steady_error_count": 0,
+            "steady_sample_count": 2,
+            "steady_error_rate": 0.0,
+            "invalid_metric_count": 0,
+            "invalid_duration_count": 0,
+            "invalid_schema_count": 0,
+            "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+          },
+          "audit": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "same",
+              "process_epoch": "e1",
+              "event_seq": 1,
+              "at_unix_ms": 1790813312543,
+              "type": "http",
+              "event_type": "http",
+              "phase": "playing",
+              "path": "/fixture/file",
+              "route": "/fixture/file",
+              "cycle_id": "cycle:e1",
+              "match_id": "",
+              "logical_request_id": "e1:1",
+              "ok": true,
+              "status": 200,
+              "result": "success",
+              "duration_ms": 1
+            },
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "same",
+              "process_epoch": "e1",
+              "event_seq": 2,
+              "at_unix_ms": 1790813312543,
+              "type": "http",
+              "event_type": "http",
+              "phase": "playing",
+              "path": "/fixture/file",
+              "route": "/fixture/file",
+              "cycle_id": "cycle:e1",
+              "match_id": "",
+              "logical_request_id": "e1:2",
+              "ok": true,
+              "status": 200,
+              "result": "success",
+              "duration_ms": 1
+            }
+          ],
+          "audit_errors": [],
+          "watermarks": [
+            [
+              [
+                "same",
+                "e1"
+              ],
+              2
+            ]
+          ]
+        },
+        "second": {
+          "owned": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "same",
+              "process_epoch": "e1",
+              "status_seq": 1,
+              "now_unix_ms": 1790813312543,
+              "online": false,
+              "room": false,
+              "last_progress_age_ms": 0,
+              "cycles_completed": 0,
+              "event_seq_max": 2,
+              "telemetry": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "same",
+                  "process_epoch": "e1",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790813312543,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "same",
+                  "process_epoch": "e1",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790813312543,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "operations": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "same",
+                  "process_epoch": "e1",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790813312543,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "same",
+                  "process_epoch": "e1",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790813312543,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "audit_lost_count": 0,
+              "errors": [],
+              "cleanup": {
+                "state": "Passed"
+              },
+              "pid": 3975,
+              "_received_at_monotonic_ms": 3937543.800614
+            }
+          ],
+          "invalid_files": 0,
+          "fresh": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "same",
+              "process_epoch": "e1",
+              "status_seq": 1,
+              "now_unix_ms": 1790813312543,
+              "online": false,
+              "room": false,
+              "last_progress_age_ms": 0,
+              "cycles_completed": 0,
+              "event_seq_max": 2,
+              "telemetry": [],
+              "operations": [],
+              "audit_lost_count": 0,
+              "errors": [],
+              "cleanup": {
+                "state": "Passed"
+              },
+              "pid": 3975,
+              "_received_at_monotonic_ms": 3937543.800614
+            }
+          ],
+          "lost_count": 0,
+          "aggregate": {
+            "http": {
+              "count": 0
+            },
+            "steady_http": {
+              "count": 0
+            },
+            "cancelled_http": {
+              "count": 0
+            },
+            "realtime": {
+              "count": 0
+            },
+            "rtt": {
+              "count": 0
+            },
+            "phase_http": {},
+            "error_count": 0,
+            "sample_count": 0,
+            "logical_request_count": 0,
+            "cancelled_count": 0,
+            "all_attempt_count": null,
+            "attempt_coverage": "unavailable",
+            "attempt_result_counts": {},
+            "valid_attempt_latency_count": 0,
+            "valid_latency_count": 0,
+            "latency_sample_quality": {
+              "http": "unavailable",
+              "realtime": "unavailable"
+            },
+            "error_rate": 0.0,
+            "steady_error_count": 0,
+            "steady_sample_count": 0,
+            "steady_error_rate": 0.0,
+            "invalid_metric_count": 0,
+            "invalid_duration_count": 0,
+            "invalid_schema_count": 0,
+            "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+          },
+          "audit": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "same",
+              "process_epoch": "e1",
+              "event_seq": 1,
+              "at_unix_ms": 1790813312543,
+              "type": "http",
+              "event_type": "http",
+              "phase": "playing",
+              "path": "/fixture/file",
+              "route": "/fixture/file",
+              "cycle_id": "cycle:e1",
+              "match_id": "",
+              "logical_request_id": "e1:1",
+              "ok": true,
+              "status": 200,
+              "result": "success",
+              "duration_ms": 1
+            },
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "same",
+              "process_epoch": "e1",
+              "event_seq": 2,
+              "at_unix_ms": 1790813312543,
+              "type": "http",
+              "event_type": "http",
+              "phase": "playing",
+              "path": "/fixture/file",
+              "route": "/fixture/file",
+              "cycle_id": "cycle:e1",
+              "match_id": "",
+              "logical_request_id": "e1:2",
+              "ok": true,
+              "status": 200,
+              "result": "success",
+              "duration_ms": 1
+            }
+          ],
+          "audit_errors": [],
+          "watermarks": [
+            [
+              [
+                "same",
+                "e1"
+              ],
+              2
+            ]
+          ]
+        }
+      },
+      {
+        "case_id": "LOAD-03.1-T02",
+        "passed": true,
+        "first": {
+          "owned": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "gap",
+              "process_epoch": "e1",
+              "status_seq": 1,
+              "now_unix_ms": 1790813312574,
+              "online": false,
+              "room": false,
+              "last_progress_age_ms": 0,
+              "cycles_completed": 0,
+              "event_seq_max": 3,
+              "telemetry": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790813312574,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 3,
+                  "at_unix_ms": 1790813312574,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:3",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "operations": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790813312574,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 3,
+                  "at_unix_ms": 1790813312574,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:3",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "audit_lost_count": 0,
+              "errors": [],
+              "cleanup": {
+                "state": "Passed"
+              },
+              "pid": 3976,
+              "_received_at_monotonic_ms": 3937564.3811210003
+            }
+          ],
+          "invalid_files": 0,
+          "fresh": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "gap",
+              "process_epoch": "e1",
+              "status_seq": 1,
+              "now_unix_ms": 1790813312574,
+              "online": false,
+              "room": false,
+              "last_progress_age_ms": 0,
+              "cycles_completed": 0,
+              "event_seq_max": 3,
+              "telemetry": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790813312574,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 3,
+                  "at_unix_ms": 1790813312574,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:3",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "operations": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790813312574,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 3,
+                  "at_unix_ms": 1790813312574,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:3",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "audit_lost_count": 0,
+              "errors": [],
+              "cleanup": {
+                "state": "Passed"
+              },
+              "pid": 3976,
+              "_received_at_monotonic_ms": 3937564.3811210003
+            }
+          ],
+          "lost_count": 1,
+          "aggregate": {
+            "http": {
+              "count": 2,
+              "min_ms": 1,
+              "mean_ms": 1.0,
+              "max_ms": 1,
+              "p50_ms": 1,
+              "p95_ms": 1,
+              "p99_ms": 1
+            },
+            "steady_http": {
+              "count": 2,
+              "min_ms": 1,
+              "mean_ms": 1.0,
+              "max_ms": 1,
+              "p50_ms": 1,
+              "p95_ms": 1,
+              "p99_ms": 1
+            },
+            "cancelled_http": {
+              "count": 0
+            },
+            "realtime": {
+              "count": 0
+            },
+            "rtt": {
+              "count": 0
+            },
+            "phase_http": {
+              "playing": {
+                "count": 2,
+                "min_ms": 1,
+                "mean_ms": 1.0,
+                "max_ms": 1,
+                "p50_ms": 1,
+                "p95_ms": 1,
+                "p99_ms": 1
+              }
+            },
+            "error_count": 0,
+            "sample_count": 2,
+            "logical_request_count": 2,
+            "cancelled_count": 0,
+            "all_attempt_count": null,
+            "attempt_coverage": "unavailable",
+            "attempt_result_counts": {},
+            "valid_attempt_latency_count": 0,
+            "valid_latency_count": 2,
+            "latency_sample_quality": {
+              "http": "insufficient",
+              "realtime": "unavailable"
+            },
+            "error_rate": 0.0,
+            "steady_error_count": 0,
+            "steady_sample_count": 2,
+            "steady_error_rate": 0.0,
+            "invalid_metric_count": 0,
+            "invalid_duration_count": 0,
+            "invalid_schema_count": 0,
+            "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+          },
+          "audit": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "gap",
+              "process_epoch": "e1",
+              "event_seq": 1,
+              "at_unix_ms": 1790813312574,
+              "type": "http",
+              "event_type": "http",
+              "phase": "playing",
+              "path": "/fixture/file",
+              "route": "/fixture/file",
+              "cycle_id": "cycle:e1",
+              "match_id": "",
+              "logical_request_id": "e1:1",
+              "ok": true,
+              "status": 200,
+              "result": "success",
+              "duration_ms": 1
+            },
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "gap",
+              "process_epoch": "e1",
+              "event_seq": 3,
+              "at_unix_ms": 1790813312574,
+              "type": "http",
+              "event_type": "http",
+              "phase": "playing",
+              "path": "/fixture/file",
+              "route": "/fixture/file",
+              "cycle_id": "cycle:e1",
+              "match_id": "",
+              "logical_request_id": "e1:3",
+              "ok": true,
+              "status": 200,
+              "result": "success",
+              "duration_ms": 1
+            }
+          ],
+          "audit_errors": [
+            {
+              "client_id": "gap",
+              "line": 2,
+              "error": "event_sequence_gap_or_reorder",
+              "expected": 2,
+              "actual": 3
+            }
+          ],
+          "watermarks": [
+            [
+              [
+                "gap",
+                "e1"
+              ],
+              3
+            ]
+          ]
+        },
+        "next_snapshot": {
+          "owned": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "gap",
+              "process_epoch": "e1",
+              "status_seq": 2,
+              "now_unix_ms": 1790813312595,
+              "online": false,
+              "room": false,
+              "last_progress_age_ms": 0,
+              "cycles_completed": 0,
+              "event_seq_max": 4,
+              "telemetry": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790813312594,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790813312594,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 3,
+                  "at_unix_ms": 1790813312594,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:3",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 4,
+                  "at_unix_ms": 1790813312594,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:4",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "operations": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790813312594,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790813312594,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 3,
+                  "at_unix_ms": 1790813312594,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:3",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 4,
+                  "at_unix_ms": 1790813312594,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:4",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "audit_lost_count": 0,
+              "errors": [],
+              "cleanup": {
+                "state": "Passed"
+              },
+              "pid": 3976,
+              "_received_at_monotonic_ms": 3937565.250043
+            }
+          ],
+          "invalid_files": 0,
+          "fresh": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "gap",
+              "process_epoch": "e1",
+              "status_seq": 2,
+              "now_unix_ms": 1790813312595,
+              "online": false,
+              "room": false,
+              "last_progress_age_ms": 0,
+              "cycles_completed": 0,
+              "event_seq_max": 4,
+              "telemetry": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 4,
+                  "at_unix_ms": 1790813312594,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:4",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "operations": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 4,
+                  "at_unix_ms": 1790813312594,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:4",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "audit_lost_count": 0,
+              "errors": [],
+              "cleanup": {
+                "state": "Passed"
+              },
+              "pid": 3976,
+              "_received_at_monotonic_ms": 3937565.250043
+            }
+          ],
+          "lost_count": 0,
+          "aggregate": {
+            "http": {
+              "count": 1,
+              "min_ms": 1,
+              "mean_ms": 1.0,
+              "max_ms": 1,
+              "p50_ms": 1,
+              "p95_ms": 1,
+              "p99_ms": 1
+            },
+            "steady_http": {
+              "count": 1,
+              "min_ms": 1,
+              "mean_ms": 1.0,
+              "max_ms": 1,
+              "p50_ms": 1,
+              "p95_ms": 1,
+              "p99_ms": 1
+            },
+            "cancelled_http": {
+              "count": 0
+            },
+            "realtime": {
+              "count": 0
+            },
+            "rtt": {
+              "count": 0
+            },
+            "phase_http": {
+              "playing": {
+                "count": 1,
+                "min_ms": 1,
+                "mean_ms": 1.0,
+                "max_ms": 1,
+                "p50_ms": 1,
+                "p95_ms": 1,
+                "p99_ms": 1
+              }
+            },
+            "error_count": 0,
+            "sample_count": 1,
+            "logical_request_count": 1,
+            "cancelled_count": 0,
+            "all_attempt_count": null,
+            "attempt_coverage": "unavailable",
+            "attempt_result_counts": {},
+            "valid_attempt_latency_count": 0,
+            "valid_latency_count": 1,
+            "latency_sample_quality": {
+              "http": "insufficient",
+              "realtime": "unavailable"
+            },
+            "error_rate": 0.0,
+            "steady_error_count": 0,
+            "steady_sample_count": 1,
+            "steady_error_rate": 0.0,
+            "invalid_metric_count": 0,
+            "invalid_duration_count": 0,
+            "invalid_schema_count": 0,
+            "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+          },
+          "audit": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "gap",
+              "process_epoch": "e1",
+              "event_seq": 1,
+              "at_unix_ms": 1790813312574,
+              "type": "http",
+              "event_type": "http",
+              "phase": "playing",
+              "path": "/fixture/file",
+              "route": "/fixture/file",
+              "cycle_id": "cycle:e1",
+              "match_id": "",
+              "logical_request_id": "e1:1",
+              "ok": true,
+              "status": 200,
+              "result": "success",
+              "duration_ms": 1
+            },
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "gap",
+              "process_epoch": "e1",
+              "event_seq": 3,
+              "at_unix_ms": 1790813312574,
+              "type": "http",
+              "event_type": "http",
+              "phase": "playing",
+              "path": "/fixture/file",
+              "route": "/fixture/file",
+              "cycle_id": "cycle:e1",
+              "match_id": "",
+              "logical_request_id": "e1:3",
+              "ok": true,
+              "status": 200,
+              "result": "success",
+              "duration_ms": 1
+            },
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "gap",
+              "process_epoch": "e1",
+              "event_seq": 4,
+              "at_unix_ms": 1790813312594,
+              "type": "http",
+              "event_type": "http",
+              "phase": "playing",
+              "path": "/fixture/file",
+              "route": "/fixture/file",
+              "cycle_id": "cycle:e1",
+              "match_id": "",
+              "logical_request_id": "e1:4",
+              "ok": true,
+              "status": 200,
+              "result": "success",
+              "duration_ms": 1
+            }
+          ],
+          "audit_errors": [
+            {
+              "client_id": "gap",
+              "line": 2,
+              "error": "event_sequence_gap_or_reorder",
+              "expected": 2,
+              "actual": 3
+            }
+          ],
+          "watermarks": [
+            [
+              [
+                "gap",
+                "e1"
+              ],
+              4
+            ]
+          ]
+        },
+        "meaning": "Incremental lost_count is per-window; archived first loss plus audit gap persist. Coordinator sticky verdict executed separately."
+      },
+      {
+        "case_id": "LOAD-03.1-T03",
+        "passed": true,
+        "old_pid": 3977,
+        "new_pid": 3978,
+        "old": {
+          "owned": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "restart",
+              "process_epoch": "old-epoch",
+              "status_seq": 1,
+              "now_unix_ms": 1790813312596,
+              "online": false,
+              "room": false,
+              "last_progress_age_ms": 0,
+              "cycles_completed": 0,
+              "event_seq_max": 2,
+              "telemetry": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "old-epoch",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790813312596,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:old-epoch",
+                  "match_id": "",
+                  "logical_request_id": "old-epoch:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "old-epoch",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790813312596,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:old-epoch",
+                  "match_id": "",
+                  "logical_request_id": "old-epoch:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "operations": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "old-epoch",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790813312596,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:old-epoch",
+                  "match_id": "",
+                  "logical_request_id": "old-epoch:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "old-epoch",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790813312596,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:old-epoch",
+                  "match_id": "",
+                  "logical_request_id": "old-epoch:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "audit_lost_count": 0,
+              "errors": [],
+              "cleanup": {
+                "state": "Passed"
+              },
+              "pid": 3977,
+              "_received_at_monotonic_ms": 3937585.9539369997
+            }
+          ],
+          "invalid_files": 0,
+          "fresh": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "restart",
+              "process_epoch": "old-epoch",
+              "status_seq": 1,
+              "now_unix_ms": 1790813312596,
+              "online": false,
+              "room": false,
+              "last_progress_age_ms": 0,
+              "cycles_completed": 0,
+              "event_seq_max": 2,
+              "telemetry": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "old-epoch",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790813312596,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:old-epoch",
+                  "match_id": "",
+                  "logical_request_id": "old-epoch:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "old-epoch",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790813312596,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:old-epoch",
+                  "match_id": "",
+                  "logical_request_id": "old-epoch:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "operations": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "old-epoch",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790813312596,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:old-epoch",
+                  "match_id": "",
+                  "logical_request_id": "old-epoch:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "old-epoch",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790813312596,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:old-epoch",
+                  "match_id": "",
+                  "logical_request_id": "old-epoch:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "audit_lost_count": 0,
+              "errors": [],
+              "cleanup": {
+                "state": "Passed"
+              },
+              "pid": 3977,
+              "_received_at_monotonic_ms": 3937585.9539369997
+            }
+          ],
+          "lost_count": 0,
+          "aggregate": {
+            "http": {
+              "count": 2,
+              "min_ms": 1,
+              "mean_ms": 1.0,
+              "max_ms": 1,
+              "p50_ms": 1,
+              "p95_ms": 1,
+              "p99_ms": 1
+            },
+            "steady_http": {
+              "count": 2,
+              "min_ms": 1,
+              "mean_ms": 1.0,
+              "max_ms": 1,
+              "p50_ms": 1,
+              "p95_ms": 1,
+              "p99_ms": 1
+            },
+            "cancelled_http": {
+              "count": 0
+            },
+            "realtime": {
+              "count": 0
+            },
+            "rtt": {
+              "count": 0
+            },
+            "phase_http": {
+              "playing": {
+                "count": 2,
+                "min_ms": 1,
+                "mean_ms": 1.0,
+                "max_ms": 1,
+                "p50_ms": 1,
+                "p95_ms": 1,
+                "p99_ms": 1
+              }
+            },
+            "error_count": 0,
+            "sample_count": 2,
+            "logical_request_count": 2,
+            "cancelled_count": 0,
+            "all_attempt_count": null,
+            "attempt_coverage": "unavailable",
+            "attempt_result_counts": {},
+            "valid_attempt_latency_count": 0,
+            "valid_latency_count": 2,
+            "latency_sample_quality": {
+              "http": "insufficient",
+              "realtime": "unavailable"
+            },
+            "error_rate": 0.0,
+            "steady_error_count": 0,
+            "steady_sample_count": 2,
+            "steady_error_rate": 0.0,
+            "invalid_metric_count": 0,
+            "invalid_duration_count": 0,
+            "invalid_schema_count": 0,
+            "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+          },
+          "audit": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "restart",
+              "process_epoch": "old-epoch",
+              "event_seq": 1,
+              "at_unix_ms": 1790813312596,
+              "type": "http",
+              "event_type": "http",
+              "phase": "playing",
+              "path": "/fixture/file",
+              "route": "/fixture/file",
+              "cycle_id": "cycle:old-epoch",
+              "match_id": "",
+              "logical_request_id": "old-epoch:1",
+              "ok": true,
+              "status": 200,
+              "result": "success",
+              "duration_ms": 1
+            },
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "restart",
+              "process_epoch": "old-epoch",
+              "event_seq": 2,
+              "at_unix_ms": 1790813312596,
+              "type": "http",
+              "event_type": "http",
+              "phase": "playing",
+              "path": "/fixture/file",
+              "route": "/fixture/file",
+              "cycle_id": "cycle:old-epoch",
+              "match_id": "",
+              "logical_request_id": "old-epoch:2",
+              "ok": true,
+              "status": 200,
+              "result": "success",
+              "duration_ms": 1
+            }
+          ],
+          "audit_errors": [],
+          "watermarks": [
+            [
+              [
+                "restart",
+                "old-epoch"
+              ],
+              2
+            ]
+          ]
+        },
+        "new": {
+          "owned": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "restart",
+              "process_epoch": "new-epoch",
+              "status_seq": 1,
+              "now_unix_ms": 1790813312624,
+              "online": false,
+              "room": false,
+              "last_progress_age_ms": 0,
+              "cycles_completed": 0,
+              "event_seq_max": 2,
+              "telemetry": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "new-epoch",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790813312624,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:new-epoch",
+                  "match_id": "",
+                  "logical_request_id": "new-epoch:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "new-epoch",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790813312624,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:new-epoch",
+                  "match_id": "",
+                  "logical_request_id": "new-epoch:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "operations": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "new-epoch",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790813312624,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:new-epoch",
+                  "match_id": "",
+                  "logical_request_id": "new-epoch:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "new-epoch",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790813312624,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:new-epoch",
+                  "match_id": "",
+                  "logical_request_id": "new-epoch:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "audit_lost_count": 0,
+              "errors": [],
+              "cleanup": {
+                "state": "Passed"
+              },
+              "pid": 3978,
+              "_received_at_monotonic_ms": 3937612.755562
+            }
+          ],
+          "invalid_files": 0,
+          "fresh": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "restart",
+              "process_epoch": "new-epoch",
+              "status_seq": 1,
+              "now_unix_ms": 1790813312624,
+              "online": false,
+              "room": false,
+              "last_progress_age_ms": 0,
+              "cycles_completed": 0,
+              "event_seq_max": 2,
+              "telemetry": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "new-epoch",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790813312624,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:new-epoch",
+                  "match_id": "",
+                  "logical_request_id": "new-epoch:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "new-epoch",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790813312624,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:new-epoch",
+                  "match_id": "",
+                  "logical_request_id": "new-epoch:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "operations": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "new-epoch",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790813312624,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:new-epoch",
+                  "match_id": "",
+                  "logical_request_id": "new-epoch:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "new-epoch",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790813312624,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:new-epoch",
+                  "match_id": "",
+                  "logical_request_id": "new-epoch:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "audit_lost_count": 0,
+              "errors": [],
+              "cleanup": {
+                "state": "Passed"
+              },
+              "pid": 3978,
+              "_received_at_monotonic_ms": 3937612.755562
+            }
+          ],
+          "lost_count": 0,
+          "aggregate": {
+            "http": {
+              "count": 2,
+              "min_ms": 1,
+              "mean_ms": 1.0,
+              "max_ms": 1,
+              "p50_ms": 1,
+              "p95_ms": 1,
+              "p99_ms": 1
+            },
+            "steady_http": {
+              "count": 2,
+              "min_ms": 1,
+              "mean_ms": 1.0,
+              "max_ms": 1,
+              "p50_ms": 1,
+              "p95_ms": 1,
+              "p99_ms": 1
+            },
+            "cancelled_http": {
+              "count": 0
+            },
+            "realtime": {
+              "count": 0
+            },
+            "rtt": {
+              "count": 0
+            },
+            "phase_http": {
+              "playing": {
+                "count": 2,
+                "min_ms": 1,
+                "mean_ms": 1.0,
+                "max_ms": 1,
+                "p50_ms": 1,
+                "p95_ms": 1,
+                "p99_ms": 1
+              }
+            },
+            "error_count": 0,
+            "sample_count": 2,
+            "logical_request_count": 2,
+            "cancelled_count": 0,
+            "all_attempt_count": null,
+            "attempt_coverage": "unavailable",
+            "attempt_result_counts": {},
+            "valid_attempt_latency_count": 0,
+            "valid_latency_count": 2,
+            "latency_sample_quality": {
+              "http": "insufficient",
+              "realtime": "unavailable"
+            },
+            "error_rate": 0.0,
+            "steady_error_count": 0,
+            "steady_sample_count": 2,
+            "steady_error_rate": 0.0,
+            "invalid_metric_count": 0,
+            "invalid_duration_count": 0,
+            "invalid_schema_count": 0,
+            "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+          },
+          "audit": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "restart",
+              "process_epoch": "new-epoch",
+              "event_seq": 1,
+              "at_unix_ms": 1790813312624,
+              "type": "http",
+              "event_type": "http",
+              "phase": "playing",
+              "path": "/fixture/file",
+              "route": "/fixture/file",
+              "cycle_id": "cycle:new-epoch",
+              "match_id": "",
+              "logical_request_id": "new-epoch:1",
+              "ok": true,
+              "status": 200,
+              "result": "success",
+              "duration_ms": 1
+            },
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "restart",
+              "process_epoch": "new-epoch",
+              "event_seq": 2,
+              "at_unix_ms": 1790813312624,
+              "type": "http",
+              "event_type": "http",
+              "phase": "playing",
+              "path": "/fixture/file",
+              "route": "/fixture/file",
+              "cycle_id": "cycle:new-epoch",
+              "match_id": "",
+              "logical_request_id": "new-epoch:2",
+              "ok": true,
+              "status": 200,
+              "result": "success",
+              "duration_ms": 1
+            }
+          ],
+          "audit_errors": [],
+          "watermarks": [
+            [
+              [
+                "restart",
+                "old-epoch"
+              ],
+              2
+            ],
+            [
+              [
+                "restart",
+                "new-epoch"
+              ],
+              2
+            ]
+          ]
+        },
+        "launch_cache_policy": "New launch starts a new status receipt cache; shared event-watermark map retains both epochs."
+      }
+    ],
+    "sequence_extra_count": 4,
+    "phase_canonical_count": 3,
+    "phase_extra_count": 4,
+    "sticky": {
+      "command": [
+        "/workspace/relicround-env/venv/bin/python",
+        "/workspace/pr13-main-bounded-20261001/load03/harness/coordinator_gap.py",
+        "gap_sticky",
+        "/workspace/pr13-main-bounded-20261001/load03/evidence/coordinator-sticky-verified"
+      ],
+      "caller_exit": 3,
+      "expected_exit": 3,
+      "elapsed_real_seconds": 1.4076916689996324,
+      "first_window_lost": 1,
+      "final_snapshot_sequences": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "tail_lost": 0,
+      "evidence_dimension": "Failed",
+      "audit_errors": [
+        {
+          "client_id": "g001c017603b0",
+          "line": 2,
+          "error": "event_sequence_gap_or_reorder",
+          "expected": 2,
+          "actual": 3
+        }
+      ],
+      "model_inputs": [
+        "clock",
+        "metrics",
+        "telemetry"
+      ],
+      "real_paths": [
+        "coordinator.main/report/exit",
+        "owned child",
+        "STOP grace35"
+      ],
+      "capacity_claim": false
+    }
+  },
+  "B02": {
+    "canonical_case_count": 12,
+    "negative": {
+      "case_id": "PR13-B02.1-T01",
+      "status": "Passed",
+      "historical_source_sha": "28c6c7e7",
+      "historical_test_sha256": "fa531348e76cf56a807132981cd9b8a7679b52c0597864502d7a95916e8233bd",
+      "actual": [
+        {
+          "probe": "old-fenxian",
+          "diagnostic": "CS1739",
+          "exit_code": 1,
+          "matched": true
+        },
+        {
+          "probe": "old-guardian",
+          "diagnostic": "CS1739",
+          "exit_code": 1,
+          "matched": true
+        },
+        {
+          "probe": "old-remainder",
+          "diagnostic": "CS1061",
+          "exit_code": 1,
+          "matched": true
+        }
+      ],
+      "runtime_modified": false
+    },
+    "exact_cases": [
+      {
+        "case_id": "PR13-B02.1-T02",
+        "status": "Passed",
+        "actual": {
+          "fenxian": "CurrentRhythm",
+          "guardian": "CurrentSteps",
+          "single_core_five_cast_draws": [
+            0,
+            0,
+            1,
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "case_id": "PR13-B02.1-T03",
+        "status": "Passed",
+        "actual": {
+          "fenxian": "CoreCardsSpent",
+          "guardian": "FractionalRemainder",
+          "single_core_five_cast_draws": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "guardian_bonus_five_casts": 7,
+          "remainder_tenths": [
+            4,
+            8,
+            2,
+            6,
+            0
+          ],
+          "independent_from_defaults": true
+        }
+      },
+      {
+        "case_id": "PR13-B02.2-T01",
+        "status": "Passed",
+        "actual": {
+          "fire_first": {
+            "Damage": 19,
+            "Heal": 3,
+            "Shield": 0,
+            "Stun": "00:00:00",
+            "DrawBlock": "00:00:00",
+            "DrawCharge": 0,
+            "ImmediateDraw": 0,
+            "DrawSpeedDuration": "00:00:00",
+            "DrawSpeedModifier": 0,
+            "HealthCost": 0,
+            "CoreElement": 1,
+            "CoreCount": 1,
+            "DamageSegments": [
+              {
+                "Kind": "Fire",
+                "Amount": 11
+              },
+              {
+                "Kind": "Water",
+                "Amount": 8
+              }
+            ],
+            "ResonanceMultiplier": 1,
+            "ConflictPairCount": 1,
+            "ConflictCancellation": 0.2,
+            "GuardianShieldRemainderTenthsAfter": null
+          },
+          "water_first": {
+            "Damage": 6,
+            "Heal": 2,
+            "Shield": 0,
+            "Stun": "00:00:00",
+            "DrawBlock": "00:00:00",
+            "DrawCharge": 0,
+            "ImmediateDraw": 0,
+            "DrawSpeedDuration": "00:00:00",
+            "DrawSpeedModifier": 0,
+            "HealthCost": 0,
+            "CoreElement": 5,
+            "CoreCount": 1,
+            "DamageSegments": [
+              {
+                "Kind": "Water",
+                "Amount": 3
+              },
+              {
+                "Kind": "Fire",
+                "Amount": 3
+              }
+            ],
+            "ResonanceMultiplier": 1,
+            "ConflictPairCount": 1,
+            "ConflictCancellation": 0.2,
+            "GuardianShieldRemainderTenthsAfter": null
+          },
+          "minority_first_core": {
+            "Damage": 23,
+            "Heal": 6,
+            "Shield": 0,
+            "Stun": "00:00:00",
+            "DrawBlock": "00:00:00",
+            "DrawCharge": 0,
+            "ImmediateDraw": 0,
+            "DrawSpeedDuration": "00:00:00",
+            "DrawSpeedModifier": 0,
+            "HealthCost": 0,
+            "CoreElement": 1,
+            "CoreCount": 1,
+            "DamageSegments": [
+              {
+                "Kind": "Fire",
+                "Amount": 11
+              },
+              {
+                "Kind": "Water",
+                "Amount": 12
+              }
+            ],
+            "ResonanceMultiplier": 1,
+            "ConflictPairCount": 2,
+            "ConflictCancellation": 0.4,
+            "GuardianShieldRemainderTenthsAfter": null
+          },
+          "input": {
+            "fire": 8,
+            "water": 7,
+            "fire_bonus": 0.14,
+            "fire_resistance": -0.3,
+            "water_resistance": 0.5
+          }
+        }
+      },
+      {
+        "case_id": "PR13-B02.2-T02",
+        "status": "Passed",
+        "actual": {
+          "inputs": {
+            "vectors": [
+              [
+                8,
+                3,
+                12
+              ],
+              [
+                8,
+                3,
+                6,
+                12
+              ],
+              [
+                8,
+                3,
+                6,
+                10,
+                12
+              ]
+            ],
+            "fire_bonus": 0.14,
+            "target_fire_resistance": -0.3,
+            "fuel_base": 12,
+            "same_element_bonus": 2,
+            "level": 0,
+            "weapon": 0,
+            "no_reveal": true,
+            "no_piercing": true
+          },
+          "vector3": {
+            "Damage": 46,
+            "Heal": 0,
+            "Shield": 0,
+            "Stun": "00:00:00",
+            "DrawBlock": "00:00:00",
+            "DrawCharge": 0,
+            "ImmediateDraw": 0,
+            "DrawSpeedDuration": "00:00:00",
+            "DrawSpeedModifier": 0,
+            "HealthCost": 0,
+            "CoreElement": 1,
+            "CoreCount": 3,
+            "DamageSegments": [
+              {
+                "Kind": "Fire",
+                "Amount": 46
+              }
+            ],
+            "ResonanceMultiplier": 1.4,
+            "ConflictPairCount": 0,
+            "ConflictCancellation": 0,
+            "GuardianShieldRemainderTenthsAfter": null
+          },
+          "vector4": {
+            "Damage": 72,
+            "Heal": 0,
+            "Shield": 0,
+            "Stun": "00:00:00",
+            "DrawBlock": "00:00:00",
+            "DrawCharge": 0,
+            "ImmediateDraw": 0,
+            "DrawSpeedDuration": "00:00:00",
+            "DrawSpeedModifier": 0,
+            "HealthCost": 0,
+            "CoreElement": 1,
+            "CoreCount": 4,
+            "DamageSegments": [
+              {
+                "Kind": "Fire",
+                "Amount": 72
+              }
+            ],
+            "ResonanceMultiplier": 1.6,
+            "ConflictPairCount": 0,
+            "ConflictCancellation": 0,
+            "GuardianShieldRemainderTenthsAfter": null
+          },
+          "vector5": {
+            "Damage": 113,
+            "Heal": 0,
+            "Shield": 0,
+            "Stun": "00:00:00",
+            "DrawBlock": "00:00:00",
+            "DrawCharge": 0,
+            "ImmediateDraw": 0,
+            "DrawSpeedDuration": "00:00:00",
+            "DrawSpeedModifier": 0,
+            "HealthCost": 0,
+            "CoreElement": 1,
+            "CoreCount": 5,
+            "DamageSegments": [
+              {
+                "Kind": "Fire",
+                "Amount": 113
+              }
+            ],
+            "ResonanceMultiplier": 1.8,
+            "ConflictPairCount": 0,
+            "ConflictCancellation": 0,
+            "GuardianShieldRemainderTenthsAfter": null
+          },
+          "per_card_floor": {
+            "Damage": 12,
+            "Heal": 0,
+            "Shield": 0,
+            "Stun": "00:00:00",
+            "DrawBlock": "00:00:00",
+            "DrawCharge": 0,
+            "ImmediateDraw": 0,
+            "DrawSpeedDuration": "00:00:00",
+            "DrawSpeedModifier": 0,
+            "HealthCost": 0,
+            "CoreElement": 1,
+            "CoreCount": 3,
+            "DamageSegments": [
+              {
+                "Kind": "Fire",
+                "Amount": 12
+              }
+            ],
+            "ResonanceMultiplier": 1.4,
+            "ConflictPairCount": 0,
+            "ConflictCancellation": 0,
+            "GuardianShieldRemainderTenthsAfter": null
+          },
+          "tuning": {
+            "Damage": 17,
+            "Heal": 2,
+            "Shield": 0,
+            "Stun": "00:00:00",
+            "DrawBlock": "00:00:00",
+            "DrawCharge": 0,
+            "ImmediateDraw": 0,
+            "DrawSpeedDuration": "00:00:00",
+            "DrawSpeedModifier": 0,
+            "HealthCost": 0,
+            "CoreElement": 1,
+            "CoreCount": 2,
+            "DamageSegments": [
+              {
+                "Kind": "Fire",
+                "Amount": 12
+              },
+              {
+                "Kind": "Water",
+                "Amount": 5
+              }
+            ],
+            "ResonanceMultiplier": 1,
+            "ConflictPairCount": 1,
+            "ConflictCancellation": 0.2,
+            "GuardianShieldRemainderTenthsAfter": null
+          },
+          "dual": {
+            "Damage": 14,
+            "Heal": 0,
+            "Shield": 0,
+            "Stun": "00:00:00",
+            "DrawBlock": "00:00:00",
+            "DrawCharge": 0,
+            "ImmediateDraw": 0,
+            "DrawSpeedDuration": "00:00:00",
+            "DrawSpeedModifier": 0,
+            "HealthCost": 0,
+            "CoreElement": null,
+            "CoreCount": 0,
+            "DamageSegments": [
+              {
+                "Kind": "Fire",
+                "Amount": 11
+              },
+              {
+                "Kind": "Metal",
+                "Amount": 3
+              }
+            ],
+            "ResonanceMultiplier": 1,
+            "ConflictPairCount": 0,
+            "ConflictCancellation": 0,
+            "GuardianShieldRemainderTenthsAfter": null
+          }
+        }
+      },
+      {
+        "case_id": "PR13-B02.2-T03",
+        "status": "Passed",
+        "actual": {
+          "priest_hp": 40,
+          "maximum_hp": 80,
+          "weapon_level": 0,
+          "vitality": 0.2,
+          "ordinary_card_base": 8,
+          "conflict_pairs": 1,
+          "ordinary_heal_after_priest_weapon_vitality": 16,
+          "conflict_E0_recovery_after_vitality": 2,
+          "healing": {
+            "Damage": 13,
+            "Heal": 18,
+            "Shield": 0,
+            "Stun": "00:00:00",
+            "DrawBlock": "00:00:00",
+            "DrawCharge": 0,
+            "ImmediateDraw": 0,
+            "DrawSpeedDuration": "00:00:00",
+            "DrawSpeedModifier": 0,
+            "HealthCost": 0,
+            "CoreElement": 1,
+            "CoreCount": 1,
+            "DamageSegments": [
+              {
+                "Kind": "Fire",
+                "Amount": 8
+              },
+              {
+                "Kind": "Water",
+                "Amount": 5
+              }
+            ],
+            "ResonanceMultiplier": 1,
+            "ConflictPairCount": 1,
+            "ConflictCancellation": 0.2,
+            "GuardianShieldRemainderTenthsAfter": null
+          },
+          "conflictOnly": {
+            "Damage": 13,
+            "Heal": 2,
+            "Shield": 0,
+            "Stun": "00:00:00",
+            "DrawBlock": "00:00:00",
+            "DrawCharge": 0,
+            "ImmediateDraw": 0,
+            "DrawSpeedDuration": "00:00:00",
+            "DrawSpeedModifier": 0,
+            "HealthCost": 0,
+            "CoreElement": 1,
+            "CoreCount": 1,
+            "DamageSegments": [
+              {
+                "Kind": "Fire",
+                "Amount": 8
+              },
+              {
+                "Kind": "Water",
+                "Amount": 5
+              }
+            ],
+            "ResonanceMultiplier": 1,
+            "ConflictPairCount": 1,
+            "ConflictCancellation": 0.2,
+            "GuardianShieldRemainderTenthsAfter": null
+          },
+          "plain": {
+            "Damage": 13,
+            "Heal": 12,
+            "Shield": 0,
+            "Stun": "00:00:00",
+            "DrawBlock": "00:00:00",
+            "DrawCharge": 0,
+            "ImmediateDraw": 0,
+            "DrawSpeedDuration": "00:00:00",
+            "DrawSpeedModifier": 0,
+            "HealthCost": 0,
+            "CoreElement": 1,
+            "CoreCount": 1,
+            "DamageSegments": [
+              {
+                "Kind": "Fire",
+                "Amount": 8
+              },
+              {
+                "Kind": "Water",
+                "Amount": 5
+              }
+            ],
+            "ResonanceMultiplier": 1,
+            "ConflictPairCount": 1,
+            "ConflictCancellation": 0.2,
+            "GuardianShieldRemainderTenthsAfter": null
+          }
+        }
+      },
+      {
+        "case_id": "PR13-B02.3-T01",
+        "status": "Passed",
+        "actual": {
+          "seed": 77,
+          "rows": [
+            {
+              "hero": "Mage",
+              "before_state_hash": "29806019b9dea8c1ee67b4837bad5dfc4aeb5923cfc159be603792f1ea34a2af",
+              "after_state_hash": "29806019b9dea8c1ee67b4837bad5dfc4aeb5923cfc159be603792f1ea34a2af",
+              "before_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "after_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "before_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "after_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "before_deck_hash": "bd1a61c08f662ee9d64febb63c5f3bc5832cbbf7e94fc7fde17a517018917fe7",
+              "after_deck_hash": "bd1a61c08f662ee9d64febb63c5f3bc5832cbbf7e94fc7fde17a517018917fe7",
+              "before_remainder": 0,
+              "after_remainder": 0,
+              "preview": {
+                "BattleId": "00000003-0000-0000-0000-000000000000",
+                "AttackerId": "00000002-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 23,
+                "ShieldDamage": 7,
+                "HpDamage": 16,
+                "Heal": 6,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 23
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 3,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.44,
+                "ImmediateDraw": 2,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1.4,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              },
+              "actual": {
+                "BattleId": "00000003-0000-0000-0000-000000000000",
+                "AttackerId": "00000002-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 23,
+                "ShieldDamage": 7,
+                "HpDamage": 16,
+                "Heal": 6,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 1,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 23
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 3,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.44,
+                "ImmediateDraw": 2,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1.4,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              }
+            },
+            {
+              "hero": "Guardian",
+              "before_state_hash": "27c2c0cc1384f83ad9c37509d97a10f922ae48f198ec823b70c26c2dee69df30",
+              "after_state_hash": "27c2c0cc1384f83ad9c37509d97a10f922ae48f198ec823b70c26c2dee69df30",
+              "before_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "after_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "before_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "after_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "before_deck_hash": "13c544e88877a20c206d59689dc4ae1c2692e31b3c8ff23c18dc15fc5e2fe6e4",
+              "after_deck_hash": "13c544e88877a20c206d59689dc4ae1c2692e31b3c8ff23c18dc15fc5e2fe6e4",
+              "before_remainder": 8,
+              "after_remainder": 8,
+              "preview": {
+                "BattleId": "0000001f-0000-0000-0000-000000000000",
+                "AttackerId": "0000001e-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 8,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              },
+              "actual": {
+                "BattleId": "0000001f-0000-0000-0000-000000000000",
+                "AttackerId": "0000001e-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 8,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 1,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              }
+            },
+            {
+              "hero": "Priest",
+              "before_state_hash": "860a2deb5a321ef5c10567681ce233170719eec6d45fcf0275fff1344a011a3a",
+              "after_state_hash": "860a2deb5a321ef5c10567681ce233170719eec6d45fcf0275fff1344a011a3a",
+              "before_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "after_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "before_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "after_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "before_deck_hash": "4d95a518d12c6db8c33b2d8422ae55ab05c88a0ba5cc175d8a5a8da03d11d055",
+              "after_deck_hash": "4d95a518d12c6db8c33b2d8422ae55ab05c88a0ba5cc175d8a5a8da03d11d055",
+              "before_remainder": 0,
+              "after_remainder": 0,
+              "preview": {
+                "BattleId": "00000037-0000-0000-0000-000000000000",
+                "AttackerId": "00000036-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 7,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0.993,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 1.863,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              },
+              "actual": {
+                "BattleId": "00000037-0000-0000-0000-000000000000",
+                "AttackerId": "00000036-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 7,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 1,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0.993,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 1.863,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              }
+            }
+          ]
+        }
+      },
+      {
+        "case_id": "PR13-B02.3-T02",
+        "status": "Passed",
+        "actual": {
+          "codec": "production RealtimeProtobufCodec",
+          "rows": [
+            {
+              "kind": "battle.play_cards",
+              "selected": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "2c84d6dad82f0f58a150fa4b0abdd52ca44179dc3be67bb5fb649078ea70d2c5",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 7,
+                "ShieldDamage": 7,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 3
+                  },
+                  {
+                    "Kind": "Water",
+                    "Amount": 4
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            },
+            {
+              "kind": "battle.play_cards",
+              "selected": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "c5a3525e123c45473defa164f93f25476e2879ab9edb6915686a0b34739f2f6d",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 8,
+                "ShieldDamage": 7,
+                "HpDamage": 1,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Water",
+                    "Amount": 6
+                  },
+                  {
+                    "Kind": "Fire",
+                    "Amount": 2
+                  }
+                ],
+                "CoreElement": 5,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            },
+            {
+              "kind": "combat.preview",
+              "selected": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "11ad8228d93b0be6c8c8eb2a26b42b2249fa03de8909c37f10cae849d140b5c9",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 7,
+                "ShieldDamage": 7,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 3
+                  },
+                  {
+                    "Kind": "Water",
+                    "Amount": 4
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            },
+            {
+              "kind": "combat.preview",
+              "selected": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "386cafd68f6e179266741875204c44a4650cda552ee3d43e12544832934c1a5f",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 8,
+                "ShieldDamage": 7,
+                "HpDamage": 1,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Water",
+                    "Amount": 6
+                  },
+                  {
+                    "Kind": "Fire",
+                    "Amount": 2
+                  }
+                ],
+                "CoreElement": 5,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            }
+          ]
+        }
+      },
+      {
+        "case_id": "PR13-B02.3-T03",
+        "status": "Passed",
+        "actual": {
+          "layer": "Domain; client receipt separately",
+          "current_revision": 0,
+          "requested_revision": -1,
+          "rejected": true,
+          "before_hash": "04f297b99ffebe1d94e41a880a6335c689845d7aebbff002363a355dbe5ac511",
+          "after_hash": "04f297b99ffebe1d94e41a880a6335c689845d7aebbff002363a355dbe5ac511"
+        }
+      },
+      {
+        "case_id": "PR13-B02.4-T01",
+        "status": "Passed",
+        "actual": {
+          "source_before_sha256": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+          "source_after_sha256": "f7d94e737c6f044bd8a267d1463f6781517edf9e48d5a3656cabffaf4b5bf00f",
+          "compiled_content_sha256": "44ff5598669dad202f95c8d13c9cd239016c15ecc6960c0a904d1f3b7c868924",
+          "oldRules": {
+            "CardsSpentDraw": false,
+            "FractionalGuardian": false,
+            "OptionalMonsterPool": false,
+            "MonsterCapacity": 5,
+            "BudgetedBotLoot": false,
+            "BotLootCount": 2,
+            "MortalBotPve": false,
+            "FenxianPolicy": 1,
+            "GuardianPolicy": 1
+          },
+          "changedRules": {
+            "CardsSpentDraw": true,
+            "FractionalGuardian": true,
+            "OptionalMonsterPool": false,
+            "MonsterCapacity": 5,
+            "BudgetedBotLoot": false,
+            "BotLootCount": 2,
+            "MortalBotPve": false,
+            "FenxianPolicy": 2,
+            "GuardianPolicy": 2
+          },
+          "room_hash_before": "76e7d6fc1d310a5a8ef616abaac4512ba032ffc9de58f87c28fa733f88ee02ce",
+          "room_hash_after": "76e7d6fc1d310a5a8ef616abaac4512ba032ffc9de58f87c28fa733f88ee02ce",
+          "pg_restored_hash": "76e7d6fc1d310a5a8ef616abaac4512ba032ffc9de58f87c28fa733f88ee02ce",
+          "old_room_guardian_policy": "CurrentSteps",
+          "new_room_guardian_policy": "FractionalRemainder",
+          "hot_update_scope": "isolated workbook/export; no runtime reload API is present"
+        }
+      },
+      {
+        "case_id": "PR13-B02.4-T02",
+        "status": "Passed",
+        "actual": {
+          "combat_before_hash": "6c66632d0464768ccad995b96817320f4edf2f9f66dd0381932449dc8cc6b0ee",
+          "combat_after_hash": "6c66632d0464768ccad995b96817320f4edf2f9f66dd0381932449dc8cc6b0ee",
+          "pve_before_hash": "97b222c85c3175abf8c1443be0b4ad532d6b532add891b79cf4b031a9947596b",
+          "pve_after_hash": "97b222c85c3175abf8c1443be0b4ad532d6b532add891b79cf4b031a9947596b",
+          "restored_remainder": 4,
+          "restored_policy": "FractionalRemainder",
+          "pg_persisted_duel": true,
+          "end_reason": "MutualLeave"
+        }
+      },
+      {
+        "case_id": "PR13-B02.4-T03",
+        "status": "Passed",
+        "actual": {
+          "legacy_missing_fields": [
+            "numerics",
+            "fenxianPolicy",
+            "guardianPolicy",
+            "guardianShieldRemainderTenths"
+          ],
+          "legacy_policy": {
+            "CardsSpentDraw": false,
+            "FractionalGuardian": false,
+            "OptionalMonsterPool": false,
+            "MonsterCapacity": 5,
+            "BudgetedBotLoot": false,
+            "BotLootCount": 2,
+            "MortalBotPve": false,
+            "FenxianPolicy": 1,
+            "GuardianPolicy": 1
+          },
+          "legacy_fenxian": "CurrentRhythm",
+          "legacy_guardian": "CurrentSteps",
+          "invalidRows": [
+            {
+              "rejected": true,
+              "before_hash": "2c124699aadfc9c8d878ab747dd45e892188266c7af11e35cf1baa537ee27a9b",
+              "after_hash": "2c124699aadfc9c8d878ab747dd45e892188266c7af11e35cf1baa537ee27a9b",
+              "invalid": {
+                "MaximumHp": 100,
+                "Hp": 1,
+                "Shield": 0,
+                "WeaponLevel": 1,
+                "RandomState": 18435828473538321132,
+                "Deck": {
+                  "Hand": [
+                    {
+                      "InstanceId": "01a0f4ca-7f31-7578-8111-2555c48f05e1",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-78d1-805f-a752e69d88f0",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-7c56-81f9-6021cab07892",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    }
+                  ],
+                  "Library": [
+                    {
+                      "InstanceId": "01a0f4ca-7f31-75ac-91ff-283284541efe",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-784e-a289-8bf6e4e823ff",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-7bf5-93e4-8b9a658ee403",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-735c-9456-63f0f3f728f3",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-73bc-b784-7765f20486c8",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-7272-82b9-e33d2d6ebef8",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-7c4e-81a9-d457bb74b447",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-747e-960f-683709ad2701",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-72e0-b4c0-e04eb6fe5675",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-72b5-8a71-cea2d04237ad",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-7ffc-b6be-da656d8b6e77",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-711f-892f-b07165251924",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-7107-aaa1-66a2a3162ee2",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-78d3-99ad-7caec0bcc433",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-7e60-84a9-916e47a7197a",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-782e-8fea-71c6b973ea1d",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-73e2-9b3d-dffafa65e661",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    }
+                  ],
+                  "Discard": [],
+                  "DrawCharge": 0
+                },
+                "FenxianCombo": 0,
+                "LastFenxianCore": null,
+                "DrawSpeedRemaining": "00:00:00",
+                "DrawSpeedModifier": 0,
+                "StunRemaining": "00:00:00",
+                "DrawBlockRemaining": "00:00:00",
+                "TargetStunWindows": [],
+                "Equipment": {
+                  "Elements": {
+                    "FireDamageBonus": 0,
+                    "WoodDamageBonus": 0,
+                    "EarthDamageBonus": 0,
+                    "MetalDamageBonus": 0,
+                    "WaterDamageBonus": 0,
+                    "FireResistance": 0,
+                    "WoodResistance": 0,
+                    "EarthResistance": 0,
+                    "MetalResistance": 0,
+                    "WaterResistance": 0
+                  },
+                  "PiercingBonus": 0,
+                  "BulwarkDamageReduction": 0,
+                  "BulwarkShieldBonus": 0,
+                  "VitalityHealBonus": 0,
+                  "VitalityOvercapBonus": 0,
+                  "DrawIntervalModifier": 0,
+                  "ForcedEscapeBonus": 0,
+                  "HasRapidDraw": false
+                },
+                "DrawBlockSpeedRemaining": "00:00:00",
+                "FenxianChargeLevel": 0,
+                "GuardianShieldRemainderTenths": 0,
+                "FenxianPolicy": 999,
+                "GuardianPolicy": 1
+              }
+            },
+            {
+              "rejected": true,
+              "before_hash": "2c124699aadfc9c8d878ab747dd45e892188266c7af11e35cf1baa537ee27a9b",
+              "after_hash": "2c124699aadfc9c8d878ab747dd45e892188266c7af11e35cf1baa537ee27a9b",
+              "invalid": {
+                "MaximumHp": 100,
+                "Hp": 1,
+                "Shield": 0,
+                "WeaponLevel": 1,
+                "RandomState": 18435828473538321132,
+                "Deck": {
+                  "Hand": [
+                    {
+                      "InstanceId": "01a0f4ca-7f31-7578-8111-2555c48f05e1",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-78d1-805f-a752e69d88f0",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-7c56-81f9-6021cab07892",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    }
+                  ],
+                  "Library": [
+                    {
+                      "InstanceId": "01a0f4ca-7f31-75ac-91ff-283284541efe",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-784e-a289-8bf6e4e823ff",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-7bf5-93e4-8b9a658ee403",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-735c-9456-63f0f3f728f3",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-73bc-b784-7765f20486c8",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-7272-82b9-e33d2d6ebef8",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-7c4e-81a9-d457bb74b447",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-747e-960f-683709ad2701",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-72e0-b4c0-e04eb6fe5675",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-72b5-8a71-cea2d04237ad",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-7ffc-b6be-da656d8b6e77",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-711f-892f-b07165251924",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-7107-aaa1-66a2a3162ee2",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-78d3-99ad-7caec0bcc433",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-7e60-84a9-916e47a7197a",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-782e-8fea-71c6b973ea1d",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-73e2-9b3d-dffafa65e661",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    }
+                  ],
+                  "Discard": [],
+                  "DrawCharge": 0
+                },
+                "FenxianCombo": 0,
+                "LastFenxianCore": null,
+                "DrawSpeedRemaining": "00:00:00",
+                "DrawSpeedModifier": 0,
+                "StunRemaining": "00:00:00",
+                "DrawBlockRemaining": "00:00:00",
+                "TargetStunWindows": [],
+                "Equipment": {
+                  "Elements": {
+                    "FireDamageBonus": 0,
+                    "WoodDamageBonus": 0,
+                    "EarthDamageBonus": 0,
+                    "MetalDamageBonus": 0,
+                    "WaterDamageBonus": 0,
+                    "FireResistance": 0,
+                    "WoodResistance": 0,
+                    "EarthResistance": 0,
+                    "MetalResistance": 0,
+                    "WaterResistance": 0
+                  },
+                  "PiercingBonus": 0,
+                  "BulwarkDamageReduction": 0,
+                  "BulwarkShieldBonus": 0,
+                  "VitalityHealBonus": 0,
+                  "VitalityOvercapBonus": 0,
+                  "DrawIntervalModifier": 0,
+                  "ForcedEscapeBonus": 0,
+                  "HasRapidDraw": false
+                },
+                "DrawBlockSpeedRemaining": "00:00:00",
+                "FenxianChargeLevel": 0,
+                "GuardianShieldRemainderTenths": 0,
+                "FenxianPolicy": 1,
+                "GuardianPolicy": 999
+              }
+            },
+            {
+              "rejected": true,
+              "before_hash": "2c124699aadfc9c8d878ab747dd45e892188266c7af11e35cf1baa537ee27a9b",
+              "after_hash": "2c124699aadfc9c8d878ab747dd45e892188266c7af11e35cf1baa537ee27a9b",
+              "invalid": {
+                "MaximumHp": 100,
+                "Hp": 1,
+                "Shield": 0,
+                "WeaponLevel": 1,
+                "RandomState": 18435828473538321132,
+                "Deck": {
+                  "Hand": [
+                    {
+                      "InstanceId": "01a0f4ca-7f31-7578-8111-2555c48f05e1",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-78d1-805f-a752e69d88f0",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-7c56-81f9-6021cab07892",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    }
+                  ],
+                  "Library": [
+                    {
+                      "InstanceId": "01a0f4ca-7f31-75ac-91ff-283284541efe",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-784e-a289-8bf6e4e823ff",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-7bf5-93e4-8b9a658ee403",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-735c-9456-63f0f3f728f3",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-73bc-b784-7765f20486c8",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-7272-82b9-e33d2d6ebef8",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-7c4e-81a9-d457bb74b447",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-747e-960f-683709ad2701",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-72e0-b4c0-e04eb6fe5675",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-72b5-8a71-cea2d04237ad",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-7ffc-b6be-da656d8b6e77",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-711f-892f-b07165251924",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-7107-aaa1-66a2a3162ee2",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-78d3-99ad-7caec0bcc433",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-7e60-84a9-916e47a7197a",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-782e-8fea-71c6b973ea1d",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    },
+                    {
+                      "InstanceId": "01a0f4ca-7f31-73e2-9b3d-dffafa65e661",
+                      "CardId": "common-01",
+                      "Level": 0,
+                      "ElementOverride": null
+                    }
+                  ],
+                  "Discard": [],
+                  "DrawCharge": 0
+                },
+                "FenxianCombo": 0,
+                "LastFenxianCore": null,
+                "DrawSpeedRemaining": "00:00:00",
+                "DrawSpeedModifier": 0,
+                "StunRemaining": "00:00:00",
+                "DrawBlockRemaining": "00:00:00",
+                "TargetStunWindows": [],
+                "Equipment": {
+                  "Elements": {
+                    "FireDamageBonus": 0,
+                    "WoodDamageBonus": 0,
+                    "EarthDamageBonus": 0,
+                    "MetalDamageBonus": 0,
+                    "WaterDamageBonus": 0,
+                    "FireResistance": 0,
+                    "WoodResistance": 0,
+                    "EarthResistance": 0,
+                    "MetalResistance": 0,
+                    "WaterResistance": 0
+                  },
+                  "PiercingBonus": 0,
+                  "BulwarkDamageReduction": 0,
+                  "BulwarkShieldBonus": 0,
+                  "VitalityHealBonus": 0,
+                  "VitalityOvercapBonus": 0,
+                  "DrawIntervalModifier": 0,
+                  "ForcedEscapeBonus": 0,
+                  "HasRapidDraw": false
+                },
+                "DrawBlockSpeedRemaining": "00:00:00",
+                "FenxianChargeLevel": 0,
+                "GuardianShieldRemainderTenths": 10,
+                "FenxianPolicy": 1,
+                "GuardianPolicy": 1
+              }
+            }
+          ],
+          "invalid_room_rejected": true,
+          "live_room_hash": "76e7d6fc1d310a5a8ef616abaac4512ba032ffc9de58f87c28fa733f88ee02ce",
+          "pg_legacy_roundtrip": true,
+          "pg_input_has_missing_fields": true,
+          "pg_invalid_loaded_via_production_repository": true
+        }
+      }
+    ],
+    "godot": {
+      "failures": [],
+      "ok": true,
+      "rows": [
+        {
+          "actual": {
+            "csharp_wire_rows": [
+              {
+                "card_instance_ids": [
+                  "00000052-0000-0000-0000-000000000000",
+                  "00000053-0000-0000-0000-000000000000"
+                ],
+                "file": "wire-battle-play_cards-00000052-0000-0000-0000-000000000000.bin",
+                "roundtrip_ids": [
+                  "00000052-0000-0000-0000-000000000000",
+                  "00000053-0000-0000-0000-000000000000"
+                ]
+              },
+              {
+                "card_instance_ids": [
+                  "00000053-0000-0000-0000-000000000000",
+                  "00000052-0000-0000-0000-000000000000"
+                ],
+                "file": "wire-battle-play_cards-00000053-0000-0000-0000-000000000000.bin",
+                "roundtrip_ids": [
+                  "00000053-0000-0000-0000-000000000000",
+                  "00000052-0000-0000-0000-000000000000"
+                ]
+              },
+              {
+                "card_instance_ids": [
+                  "00000052-0000-0000-0000-000000000000",
+                  "00000053-0000-0000-0000-000000000000"
+                ],
+                "file": "wire-combat-preview-00000052-0000-0000-0000-000000000000.bin",
+                "roundtrip_ids": [
+                  "00000052-0000-0000-0000-000000000000",
+                  "00000053-0000-0000-0000-000000000000"
+                ]
+              },
+              {
+                "card_instance_ids": [
+                  "00000053-0000-0000-0000-000000000000",
+                  "00000052-0000-0000-0000-000000000000"
+                ],
+                "file": "wire-combat-preview-00000053-0000-0000-0000-000000000000.bin",
+                "roundtrip_ids": [
+                  "00000053-0000-0000-0000-000000000000",
+                  "00000052-0000-0000-0000-000000000000"
+                ]
+              }
+            ],
+            "godot_order": [
+              "00000000-0000-0000-0000-000000000001",
+              "00000000-0000-0000-0000-000000000002"
+            ],
+            "godot_reversed": [
+              "00000000-0000-0000-0000-000000000002",
+              "00000000-0000-0000-0000-000000000001"
+            ]
+          },
+          "case_id": "PR13-B02.3-T02"
+        },
+        {
+          "actual": {
+            "after_late_preview": {
+              "_event_revision": 9,
+              "_replayed": false,
+              "_request_id": "current-request",
+              "_room_revision": 9,
+              "_sequence": 1,
+              "attacker_id": "",
+              "authoritative": true,
+              "battle_ended": false,
+              "battle_id": "00000000-0000-0000-0000-000000000020",
+              "card_instance_ids": [
+                "00000000-0000-0000-0000-000000000001",
+                "00000000-0000-0000-0000-000000000002"
+              ],
+              "conflict_cancellation": "",
+              "conflict_pair_count": 0,
+              "control_estimated": false,
+              "core_count": 0,
+              "core_element": "",
+              "damage": 19,
+              "damage_segments": [],
+              "draw_block_seconds": "",
+              "draw_block_speed_seconds": "",
+              "draw_charge": "",
+              "draw_speed_modifier": "",
+              "draw_speed_seconds": "",
+              "heal": 0,
+              "health_cost": 0,
+              "hp_damage": 0,
+              "immediate_draw": 0,
+              "resonance_multiplier": "",
+              "shield_damage": 0,
+              "shield_gain": 0,
+              "source_id": "",
+              "source_revision": 9,
+              "stun_seconds": "",
+              "target_defeated": false,
+              "target_id": "monster-a"
+            },
+            "current_preview": {
+              "_event_revision": 9,
+              "_replayed": false,
+              "_request_id": "current-request",
+              "_room_revision": 9,
+              "_sequence": 1,
+              "attacker_id": "",
+              "authoritative": true,
+              "battle_ended": false,
+              "battle_id": "00000000-0000-0000-0000-000000000020",
+              "card_instance_ids": [
+                "00000000-0000-0000-0000-000000000001",
+                "00000000-0000-0000-0000-000000000002"
+              ],
+              "conflict_cancellation": "",
+              "conflict_pair_count": 0,
+              "control_estimated": false,
+              "core_count": 0,
+              "core_element": "",
+              "damage": 19,
+              "damage_segments": [],
+              "draw_block_seconds": "",
+              "draw_block_speed_seconds": "",
+              "draw_charge": "",
+              "draw_speed_modifier": "",
+              "draw_speed_seconds": "",
+              "heal": 0,
+              "health_cost": 0,
+              "hp_damage": 0,
+              "immediate_draw": 0,
+              "resonance_multiplier": "",
+              "shield_damage": 0,
+              "shield_gain": 0,
+              "source_id": "",
+              "source_revision": 9,
+              "stun_seconds": "",
+              "target_defeated": false,
+              "target_id": "monster-a"
+            },
+            "current_revision": 9,
+            "entry": "production Gateway._receive -> Game._on_event -> _accept_combat_preview",
+            "protocol_sequence": 3,
+            "room_unchanged": true,
+            "stale_revision": 8
+          },
+          "case_id": "PR13-B02.3-T03"
+        }
+      ],
+      "server_override": "http://127.0.0.1:1",
+      "suite": "b02-exact-godot"
+    }
+  },
+  "PG_full_suites": "pending; not asserted by this short replay validator"
+}

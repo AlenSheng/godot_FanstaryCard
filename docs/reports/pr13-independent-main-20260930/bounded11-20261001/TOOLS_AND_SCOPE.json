@@ -1,0 +1,64 @@
+{
+  "versions": {
+    "python": "Python 3.12.14",
+    "dotnet": "10.0.400",
+    "postgres": "postgres (PostgreSQL) 18.6",
+    "godot": "4.7.2.stable.official.ed1daf0bf",
+    "git": "git version 2.52.0"
+  },
+  "executables": {
+    "/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet": {
+      "bytes": 71808,
+      "sha256": "0a5ec28e49da2c0be91ff3fc8fff53c250c9bbd92b25d3b9bfc5721adba96a0c"
+    },
+    "/workspace/relicround-env/postgres/bin/postgres": {
+      "bytes": 11341880,
+      "sha256": "b1ff36b5145f92cdda1cbd07e71dd6e8ffef300fd54317d2db59a715f5dabad8"
+    },
+    "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64": {
+      "bytes": 146414384,
+      "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+    }
+  },
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "source_groups": [
+    {
+      "group": "LOAD02",
+      "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "report_commit": "a1d30eb89d74aa16bb2c094c5a78c20a5ed428b6",
+      "report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/load02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "report_sha256": "ff0ffba44d63369301d2b94c6764275eb4330bd6f5ce606d3f379e10959f2901",
+      "packet": "/workspace/pr13-main-bounded-20261001/load02"
+    },
+    {
+      "group": "LOAD03.1/.2",
+      "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+      "report_commit": "e5de69b491bff1b3a3638bd11670901a5f96629e",
+      "report_path": "docs/reports/pr13-takeover-20260930/load03-ready-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "report_sha256": "3f128c8d27252141e96e301e51e02faf84226edd4daeb3ae576a9f2069e22676",
+      "packet": "/workspace/pr13-main-bounded-20261001/load03"
+    },
+    {
+      "group": "B02",
+      "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "report_commit": "a23aa0669f6c72c1689ba6f27037373336a98abb",
+      "report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "report_sha256": "738c189f81567cc2045305886fa937a771b871992ead84bf74275425df58f0e9",
+      "packet": "/workspace/pr13-main-bounded-20261001/b02"
+    },
+    {
+      "group": "A05",
+      "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "report_commit": "8068783331da07ec68354c1874eb0d65adea632f",
+      "report_path": "docs/reports/pr13-takeover-20260930/offline-acceptance-f812/a05/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+      "report_sha256": "8376ee16e0685e649666d37d3f43a99495b95f0e099a1f27a8ab764c1f7877b8",
+      "packet": "/workspace/pr13-main-bounded-20261001/a05"
+    }
+  ],
+  "network_scope": "Owned loopback HTTP/WS and Unix-only disposable PG; no external test server",
+  "rule_exception": "canonical state_contract.server_guidance permits missing server_create fallback; scoped server/AGENTS.md, GDD and SERVER docs reviewed",
+  "original_branch": {
+    "sha": "b39841d3f5191c11c9e51c7e6875490789aba53c",
+    "status": ""
+  }
+}

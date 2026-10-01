@@ -1,0 +1,349 @@
+{
+  "status": "PassedForA05_2_3_contracts",
+  "canonical_target_cases": 6,
+  "healthy": {
+    "different_M_N": true,
+    "B_continues_M": true,
+    "B_revision_increases": true,
+    "original_READY_duplicates": 3,
+    "OS_host_pids": 2,
+    "B_completes_extraction": true,
+    "A_N_survives_old_callbacks_and_OS_restart": true,
+    "total_acknowledged": 6,
+    "A_gold": 23,
+    "A_potions": 2,
+    "A_gold_ledger": 1,
+    "A_item_movements": 1,
+    "original_equipment_instance_preserved": true,
+    "allowed_location_transfer": "InMatchEquipped -> Equipped after M -> RelicPile after normal N disconnect-death cleanup; no duplicate credit"
+  },
+  "pending": {
+    "OS_host_pids": 2,
+    "pending_before": 4,
+    "committed_after": 4,
+    "same_owner": true,
+    "gold_delta": 23,
+    "potion_delta": 2,
+    "gold_ledger": 1,
+    "item_movements": 1,
+    "location_after": "Equipped"
+  },
+  "ACK_idempotency": [
+    {
+      "mode": "precommit",
+      "requests": 3,
+      "same_receipt_key_body_response": true,
+      "assets_identical": true
+    },
+    {
+      "mode": "committed-response-loss",
+      "requests": 3,
+      "same_receipt_key_body_response": true,
+      "assets_identical": true
+    }
+  ],
+  "client_results": [
+    {
+      "path": "a05/evidence/A05-FOCUSED/ack-client-a05-pending-11a06a36740a471f9b26c07a8957cba9/control/result.json",
+      "sha256": "6a7ab16e59740aaecbc9748b001d45914c76227bb7f7c41ef259168df18c817b",
+      "ok": true,
+      "checks": 23,
+      "failures": []
+    },
+    {
+      "path": "a05/evidence/A05-FOCUSED/ack-client-a05-db-precommit-653947c9e971430bbb0dcc5064cc348c/control/result.json",
+      "sha256": "cfbae81305ebd15b1fb3a3beee5624da3fa9cd0b0fd503fed890725f89d6cc76",
+      "ok": true,
+      "checks": 14,
+      "failures": []
+    },
+    {
+      "path": "a05/evidence/A05-FOCUSED/ack-client-a05-healthy-b5f8e73f15674be892320760b06567d3/control/result.json",
+      "sha256": "83b777afbc1914d1c8dae3f338a44edcda7f0e22e4061daa9788f1b200e41e8d",
+      "ok": true,
+      "checks": 19,
+      "failures": []
+    },
+    {
+      "path": "a05/evidence/A05-FOCUSED/ack-client-a05-db-committed-response-loss-37c6ee389e8e4c36b36b5dff12e21f52/control/result.json",
+      "sha256": "64764fd1c5126bb15d3aaec9031ee95456366b097d39ab267ce6c6463a80d07d",
+      "ok": true,
+      "checks": 11,
+      "failures": []
+    }
+  ],
+  "readonly_audits": [
+    {
+      "path": "a05/evidence/A05-FOCUSED/a05-audit-db-committed-response-loss-after.json",
+      "bytes": 5136,
+      "sha256": "daedec8526d55ad307059b591681cf63c45442c3aa2a2e2a8b467513bd245ffc",
+      "require_clear": true,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation"
+    },
+    {
+      "path": "a05/evidence/A05-FOCUSED/a05-audit-db-committed-response-loss-before.json",
+      "bytes": 1684,
+      "sha256": "87ef1ac1188b23e2c16025071bdf059f357a95969229120d7e680e1d0e75afe2",
+      "require_clear": false,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation"
+    },
+    {
+      "path": "a05/evidence/A05-FOCUSED/a05-audit-db-precommit-after.json",
+      "bytes": 5128,
+      "sha256": "d51d6e78c6f31c2487f32fc4661b35f7ac4ff7cc5d4a39c996deb127f0f48db5",
+      "require_clear": true,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation"
+    },
+    {
+      "path": "a05/evidence/A05-FOCUSED/a05-audit-db-precommit-before.json",
+      "bytes": 1669,
+      "sha256": "6e65dee513dec9b47659ab6fc6d23e093558f4ea11fb6c4ee20459dc5441fd95",
+      "require_clear": false,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation"
+    },
+    {
+      "path": "a05/evidence/A05-FOCUSED/a05-audit-healthy-after.json",
+      "bytes": 17218,
+      "sha256": "5161ea18f1ee2e41b3dfa88cef2c5b0c94d88c2f0e5f9c262831809b1aaf4fe2",
+      "require_clear": true,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation"
+    },
+    {
+      "path": "a05/evidence/A05-FOCUSED/a05-audit-healthy-before.json",
+      "bytes": 2077,
+      "sha256": "9ca34df07aa550222ad343dbe2a04d7a72fcf0211a597f7761a8785884649502",
+      "require_clear": false,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation"
+    },
+    {
+      "path": "a05/evidence/A05-FOCUSED/a05-audit-pending-after.json",
+      "bytes": 6929,
+      "sha256": "78eb1ad6f5fd6a83deec18995eb47c3b0a98b1889a9ba2b55b1323a684279fa8",
+      "require_clear": true,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation"
+    },
+    {
+      "path": "a05/evidence/A05-FOCUSED/a05-audit-pending-before.json",
+      "bytes": 1665,
+      "sha256": "e42bbd69223c802e7db955aff96d45e0bb6f328f9125888e73caacb8490eebb3",
+      "require_clear": false,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation"
+    },
+    {
+      "path": "a05/evidence/A05-CAUSAL/a05-audit-causal-after.json",
+      "bytes": 6926,
+      "sha256": "424933dbdbf3d2da8745b7456475883235a38ff5ba54cd034ec0cf2679c08ee5",
+      "require_clear": true,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation"
+    },
+    {
+      "path": "a05/evidence/A05-CAUSAL/a05-audit-causal-before.json",
+      "bytes": 1663,
+      "sha256": "3d8650dcf17f320b950b6d66d220d531b9d35d9c11adb6398ce5121a33af059c",
+      "require_clear": false,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation"
+    }
+  ],
+  "retained_A05_1_counterexample": {
+    "actual_exit_code": 1,
+    "correctness_assertion_status": "Failed",
+    "counterexample_confirmed": true,
+    "stale_during_ack": true,
+    "stale_after_ack": true,
+    "after_asset_audit_clear": true,
+    "raw_result_path": "a05/evidence/A05-CAUSAL/ack-client-a05-causal-a32a8d51825e4c90bc7f75dc4f9ba1c2/control/result.json",
+    "raw_result_sha256": "7769e055904aa2a73f3ab8afa94791163f9b232ffc8771ec7a66de4be03f524b",
+    "observations": [
+      {
+        "check": "actual Running M entry",
+        "monotonic_ms": 906,
+        "passed": true
+      },
+      {
+        "check": "owned control extract",
+        "monotonic_ms": 924,
+        "passed": true
+      },
+      {
+        "check": "actual legal extraction",
+        "monotonic_ms": 924,
+        "passed": true
+      },
+      {
+        "check": "owned control restarted",
+        "monotonic_ms": 4789,
+        "passed": true
+      },
+      {
+        "check": "actual Pending OS restart/NOT_IN_ROOM retains recovery M",
+        "monotonic_ms": 5222,
+        "passed": true
+      },
+      {
+        "check": "owned control get-released",
+        "monotonic_ms": 5389,
+        "passed": true
+      },
+      {
+        "check": "actual GET loaded M with recovery M while production poll remains awaited",
+        "monotonic_ms": 5422,
+        "passed": true
+      },
+      {
+        "check": "owned control ack-held",
+        "monotonic_ms": 5472,
+        "passed": true
+      },
+      {
+        "check": "real ACK await performs optimistic clear",
+        "monotonic_ms": 5473,
+        "passed": true
+      },
+      {
+        "check": "owned control poll-released",
+        "monotonic_ms": 5489,
+        "passed": true
+      },
+      {
+        "monotonic_ms": 5556,
+        "stale_during_ack": true
+      },
+      {
+        "check": "owned control ack-released",
+        "monotonic_ms": 5572,
+        "passed": true
+      },
+      {
+        "check": "actual production ACK returns success",
+        "monotonic_ms": 5706,
+        "passed": true
+      },
+      {
+        "check": "actual post-ACK Bootstrap confirms completion",
+        "monotonic_ms": 5706,
+        "passed": true
+      },
+      {
+        "monotonic_ms": 5706,
+        "stale_after_ack": true
+      },
+      {
+        "check": "actual next preparation allowed while stale receipt remains",
+        "monotonic_ms": 5823,
+        "passed": true
+      }
+    ],
+    "scope": "A05.1 outside adjudication; preserve Partial; does not prove an A05.2 route or A05.3 asset violation"
+  },
+  "historical_focused": "3Passed/1Failed preserved in fixed 80687833 packet; current focused4Passed does not erase it"
+}

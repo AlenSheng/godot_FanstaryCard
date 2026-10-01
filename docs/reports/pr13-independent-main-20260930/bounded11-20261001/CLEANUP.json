@@ -1,0 +1,119 @@
+{
+  "checked_at_utc": "2026-10-01T00:38:20.525601+00:00",
+  "process_receipts": [
+    {
+      "path": "b02/evidence/process/receipts.jsonl",
+      "bytes": 53548,
+      "sha256": "2381dd59af4414c761e88f4916fcf244c4a32aab42295b7a4ff026de66ba2916",
+      "started": 19,
+      "stop_receipts": 33,
+      "owned_pid_count": 33,
+      "owned_pids_still_present": [],
+      "observed_exit_codes": {
+        "0": 14,
+        "137": 19
+      }
+    },
+    {
+      "path": "b02/evidence/process-original/receipts.jsonl",
+      "bytes": 54009,
+      "sha256": "85911ac290b5ca5b299ec5f49cd444d0ca64231371a18b2623534380132170f3",
+      "started": 19,
+      "stop_receipts": 33,
+      "owned_pid_count": 33,
+      "owned_pids_still_present": [],
+      "observed_exit_codes": {
+        "0": 14,
+        "137": 19
+      }
+    },
+    {
+      "path": "a05/evidence/A05-CAUSAL/receipts.jsonl",
+      "bytes": 22675,
+      "sha256": "6e1006398b6488f36a417c8dd0188e0093cc7aac0608fd181230f5faf19ce458",
+      "started": 4,
+      "stop_receipts": 4,
+      "owned_pid_count": 4,
+      "owned_pids_still_present": [],
+      "observed_exit_codes": {
+        "0": 2,
+        "137": 2
+      }
+    },
+    {
+      "path": "a05/evidence/A05-FOCUSED/receipts.jsonl",
+      "bytes": 64347,
+      "sha256": "9146b151866d116efe9be1abdcdc3a8420eb75e08d51b02fb135a90ce575076f",
+      "started": 15,
+      "stop_receipts": 15,
+      "owned_pid_count": 15,
+      "owned_pids_still_present": [],
+      "observed_exit_codes": {
+        "0": 8,
+        "137": 7
+      }
+    },
+    {
+      "path": "a05/evidence/A05-SERVER295/receipts.jsonl",
+      "bytes": 118298,
+      "sha256": "e304bfde51033936bb8ae369a1eaf39e1eaa68233754b9ecc74746dc12b592ba",
+      "started": 34,
+      "stop_receipts": 48,
+      "owned_pid_count": 48,
+      "owned_pids_still_present": [],
+      "observed_exit_codes": {
+        "0": 22,
+        "137": 26
+      }
+    }
+  ],
+  "owned_PG": [
+    {
+      "data_directory": "b02/owned-pg",
+      "argv": [
+        "pg_ctl",
+        "-D",
+        "/workspace/pr13-main-bounded-20261001/b02/owned-pg",
+        "status"
+      ],
+      "exit_code": 3,
+      "output": "pg_ctl: no server running",
+      "postmaster_pid_exists": false
+    },
+    {
+      "data_directory": "b02/original-profile-pg",
+      "argv": [
+        "pg_ctl",
+        "-D",
+        "/workspace/pr13-main-bounded-20261001/b02/original-profile-pg",
+        "status"
+      ],
+      "exit_code": 3,
+      "output": "pg_ctl: no server running",
+      "postmaster_pid_exists": false
+    },
+    {
+      "data_directory": "a05/owned-pg",
+      "argv": [
+        "pg_ctl",
+        "-D",
+        "/workspace/pr13-main-bounded-20261001/a05/owned-pg",
+        "status"
+      ],
+      "exit_code": 3,
+      "output": "pg_ctl: no server running",
+      "postmaster_pid_exists": false
+    }
+  ],
+  "original_checkout": {
+    "sha": "b39841d3f5191c11c9e51c7e6875490789aba53c",
+    "status": ""
+  },
+  "A05_pre_stop_query": {
+    "owned_test_schemas": 0,
+    "other_client_connections": 0,
+    "log": "A05-DRIVER.log",
+    "log_sha256": "f675192e16f73fbf5231134517a62ff23d49151363bb39f87ce3a388b68e6dab"
+  },
+  "scope": "No global process-name kill. Only precisely owned processes; PG was stopped by owning driver finally. Other workspace processes untouched."
+}

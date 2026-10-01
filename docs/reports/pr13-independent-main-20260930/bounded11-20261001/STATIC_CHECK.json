@@ -1,0 +1,549 @@
+{
+  "canonical_plan_sha256": "5176ee139d4e632ba34469ae531ce7ec16478f356480e2d8e320cd51f3bcd703",
+  "groups": [
+    {
+      "group": "LOAD02",
+      "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "report_commit": "a1d30eb89d74aa16bb2c094c5a78c20a5ed428b6",
+      "manifest_path": "MANIFEST.json",
+      "manifest_sha256": "dfebc801643e99ac454a1e801c514b67bb9666c612c9dc49402a7f079dc8ce9f",
+      "manifest_files_verified": 373,
+      "tasks": [
+        {
+          "task_id": "LOAD-02.3",
+          "report": "evidence-original/evidence/LOAD-02.3/ROOT_REPORT.json",
+          "rows_checked": 8,
+          "profile_hash": "4b0339400f4e581b7e8bc44b3d92d4fa866dc442a361af3d95f665e65f25bd71",
+          "algorithm_version": "f812-coordinator-schema5/runtime-evidence-62d05cb4270174aa/receipt-harness-37303db722961352",
+          "minimum_dependencies": [
+            "LOAD-02.2"
+          ],
+          "canonical_cases": [
+            {
+              "id": "LOAD-02.3-T01",
+              "setup_and_injection": "正常响应STOP",
+              "expected": "grace内退出且服务后置状态可恢复",
+              "executed": false,
+              "evidence": null
+            },
+            {
+              "id": "LOAD-02.3-T02",
+              "setup_and_injection": "子进程hang",
+              "expected": "仅终止本轮PID并记录forced",
+              "executed": false,
+              "evidence": null
+            },
+            {
+              "id": "LOAD-02.3-T03",
+              "setup_and_injection": "最终文件写失败",
+              "expected": "应急报告存在且不可Pass",
+              "executed": false,
+              "evidence": null
+            }
+          ],
+          "profiles": [
+            "OFFLINE",
+            "POSTGRES"
+          ],
+          "runtime_stage": "NotApplicableWithReason",
+          "missing_reasons": {
+            "effective_room_policy": "No separate effective policy snapshot in these verdict/STOP case receipts; f812 default config/runtime identified, B02 room-policy cases are independent.",
+            "runtime_image_digest": "Source-built local process; no container image used.",
+            "reviewer": "MAIN S6 independent adjudication pending.",
+            "sample_population.human_or_capacity_population": "No capacity/human population is asserted.",
+            "accepted_by": "Reserved for MAIN independent adjudication; this agent cannot sign Accepted."
+          }
+        },
+        {
+          "task_id": "LOAD-02.1",
+          "report": "evidence-original/evidence/LOAD-02.1/ROOT_REPORT.json",
+          "rows_checked": 8,
+          "profile_hash": "4b0339400f4e581b7e8bc44b3d92d4fa866dc442a361af3d95f665e65f25bd71",
+          "algorithm_version": "f812-coordinator-schema5/runtime-evidence-62d05cb4270174aa/receipt-harness-37303db722961352",
+          "minimum_dependencies": [
+            "LOAD-01.2"
+          ],
+          "canonical_cases": [
+            {
+              "id": "LOAD-02.1-T01",
+              "setup_and_injection": "时限到但负载未达",
+              "expected": "execution结束、load失败",
+              "executed": false,
+              "evidence": null
+            },
+            {
+              "id": "LOAD-02.1-T02",
+              "setup_and_injection": "先业务失败后人工STOP",
+              "expected": "保留业务失败",
+              "executed": false,
+              "evidence": null
+            },
+            {
+              "id": "LOAD-02.1-T03",
+              "setup_and_injection": "性能超线且证据损坏",
+              "expected": "记录两原因且证据无效优先退出码3",
+              "executed": false,
+              "evidence": null
+            }
+          ],
+          "profiles": [
+            "OFFLINE",
+            "POSTGRES"
+          ],
+          "runtime_stage": "NotApplicableWithReason",
+          "missing_reasons": {
+            "effective_room_policy": "No separate effective policy snapshot in these verdict/STOP case receipts; f812 default config/runtime identified, B02 room-policy cases are independent.",
+            "runtime_image_digest": "Source-built local process; no container image used.",
+            "reviewer": "MAIN S6 independent adjudication pending.",
+            "sample_population.human_or_capacity_population": "No capacity/human population is asserted.",
+            "accepted_by": "Reserved for MAIN independent adjudication; this agent cannot sign Accepted."
+          }
+        },
+        {
+          "task_id": "LOAD-02.4",
+          "report": "evidence-original/evidence/LOAD-02.4/ROOT_REPORT.json",
+          "rows_checked": 8,
+          "profile_hash": "4b0339400f4e581b7e8bc44b3d92d4fa866dc442a361af3d95f665e65f25bd71",
+          "algorithm_version": "f812-coordinator-schema5/runtime-evidence-62d05cb4270174aa/receipt-harness-37303db722961352",
+          "minimum_dependencies": [
+            "LOAD-02.3"
+          ],
+          "canonical_cases": [
+            {
+              "id": "LOAD-02.4-T01",
+              "setup_and_injection": "preparation-only exit0",
+              "expected": "标仅准备不算压测成功",
+              "executed": false,
+              "evidence": null
+            },
+            {
+              "id": "LOAD-02.4-T02",
+              "setup_and_injection": "redline",
+              "expected": "exit2且记录全部触发",
+              "executed": false,
+              "evidence": null
+            },
+            {
+              "id": "LOAD-02.4-T03",
+              "setup_and_injection": "invalid/人工STOP",
+              "expected": "分别3/130",
+              "executed": false,
+              "evidence": null
+            }
+          ],
+          "profiles": [
+            "OFFLINE",
+            "POSTGRES"
+          ],
+          "runtime_stage": "NotApplicableWithReason",
+          "missing_reasons": {
+            "effective_room_policy": "No separate effective policy snapshot in these verdict/STOP case receipts; f812 default config/runtime identified, B02 room-policy cases are independent.",
+            "runtime_image_digest": "Source-built local process; no container image used.",
+            "reviewer": "MAIN S6 independent adjudication pending.",
+            "sample_population.human_or_capacity_population": "No capacity/human population is asserted.",
+            "accepted_by": "Reserved for MAIN independent adjudication; this agent cannot sign Accepted."
+          }
+        }
+      ]
+    },
+    {
+      "group": "LOAD03.1/.2",
+      "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+      "report_commit": "e5de69b491bff1b3a3638bd11670901a5f96629e",
+      "manifest_path": "MANIFEST.json",
+      "manifest_sha256": "7f7118fc996172af4564ce060e5a9d4c1bacfe2257fa95ae168893931bea2247",
+      "manifest_files_verified": 177,
+      "tasks": [
+        {
+          "task_id": "LOAD-03.1",
+          "report": "evidence-original/evidence/LOAD-03.1/ROOT_REPORT.json",
+          "rows_checked": 8,
+          "profile_hash": "82635905ccdd05e8a06666471a98564ee8177c04e67096e22f27d57d2292fa7b",
+          "algorithm_version": "ee8-validator-83a6d45a4938b09b/f812-Gateway-964bd3e0eea3ff00/receipt-harness-ea77e98f35da5e43",
+          "minimum_dependencies": [
+            "LOAD-01.2",
+            "LOAD-06.4"
+          ],
+          "canonical_cases": [
+            {
+              "id": "LOAD-03.1-T01",
+              "setup_and_injection": "同毫秒两事件",
+              "expected": "均消费且仅一次",
+              "executed": false,
+              "evidence": null
+            },
+            {
+              "id": "LOAD-03.1-T02",
+              "setup_and_injection": "seq1/3缺2",
+              "expected": "lost_count=1证据无效",
+              "executed": false,
+              "evidence": null
+            },
+            {
+              "id": "LOAD-03.1-T03",
+              "setup_and_injection": "轮转/重启换epoch",
+              "expected": "各自水位不混用",
+              "executed": false,
+              "evidence": null
+            }
+          ],
+          "profiles": [
+            "OFFLINE"
+          ],
+          "runtime_stage": "NotApplicableWithReason",
+          "missing_reasons": {
+            "config_source_hash": "OFFLINE sequence and transport fixtures do not load the business config workbook.",
+            "config_bytes_hash": "Business config bytes not consumed; actual HTTP_SCHEMA hash provided separately.",
+            "effective_room_policy": "No room policy or battle room is instantiated in these OFFLINE contracts.",
+            "runtime_image_digest": "Local source files and installed Godot executable; no container image used.",
+            "asset_and_route_postconditions": "No accounts/assets/PG writes or room routes created. These canonical profiles are OFFLINE only.",
+            "reviewer": "Reserved for MAIN S6 independent adjudication.",
+            "sample_population.human_capacity_population": "No human/service-capacity population claim.",
+            "accepted_by": "MAIN adjudication pending; agent does not sign Accepted.",
+            "sample_population.actual_Gateway_requests": "Gateway only exercised by separate LOAD-03.2",
+            "exit_codes.all_Godot": "No Godot subprocess required for sequence file cases.",
+            "source_git_dirty": "No .git in archive; 64 tool files byte-matched ee8 and seven runtime/schema files byte-matched f812 and ee8."
+          }
+        },
+        {
+          "task_id": "LOAD-03.2",
+          "report": "evidence-original/evidence/LOAD-03.2/ROOT_REPORT.json",
+          "rows_checked": 8,
+          "profile_hash": "82635905ccdd05e8a06666471a98564ee8177c04e67096e22f27d57d2292fa7b",
+          "algorithm_version": "ee8-validator-83a6d45a4938b09b/f812-Gateway-964bd3e0eea3ff00/receipt-harness-ea77e98f35da5e43",
+          "minimum_dependencies": [
+            "LOAD-03.1"
+          ],
+          "canonical_cases": [
+            {
+              "id": "LOAD-03.2-T01",
+              "setup_and_injection": "playing中bootstrap",
+              "expected": "归playing",
+              "executed": false,
+              "evidence": null
+            },
+            {
+              "id": "LOAD-03.2-T02",
+              "setup_and_injection": "settlement轮询",
+              "expected": "归settlement",
+              "executed": false,
+              "evidence": null
+            },
+            {
+              "id": "LOAD-03.2-T03",
+              "setup_and_injection": "旧无标签bootstrap",
+              "expected": "unknown且旧口径单列",
+              "executed": false,
+              "evidence": null
+            }
+          ],
+          "profiles": [
+            "OFFLINE"
+          ],
+          "runtime_stage": "NotApplicableWithReason",
+          "missing_reasons": {
+            "config_source_hash": "OFFLINE sequence and transport fixtures do not load the business config workbook.",
+            "config_bytes_hash": "Business config bytes not consumed; actual HTTP_SCHEMA hash provided separately.",
+            "effective_room_policy": "No room policy or battle room is instantiated in these OFFLINE contracts.",
+            "runtime_image_digest": "Local source files and installed Godot executable; no container image used.",
+            "asset_and_route_postconditions": "No accounts/assets/PG writes or room routes created. These canonical profiles are OFFLINE only.",
+            "reviewer": "Reserved for MAIN S6 independent adjudication.",
+            "sample_population.human_capacity_population": "No human/service-capacity population claim.",
+            "accepted_by": "MAIN adjudication pending; agent does not sign Accepted.",
+            "sample_population.actual_owned_writers": "Sequence file writers only exercised by separate LOAD-03.1",
+            "exit_codes.expected_sticky_coordinator": "Sticky coordinator verdict belongs to separate LOAD-03.1.",
+            "source_git_dirty": "No .git in archive; 64 tool files byte-matched ee8 and seven runtime/schema files byte-matched f812 and ee8."
+          }
+        }
+      ]
+    },
+    {
+      "group": "B02",
+      "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "report_commit": "a23aa0669f6c72c1689ba6f27037373336a98abb",
+      "manifest_path": "MANIFEST.json",
+      "manifest_sha256": "723471c331663a95bd32293a1c3e8f0193103b87f7a392348aaf71e47eecbbf1",
+      "manifest_files_verified": 122,
+      "tasks": [
+        {
+          "task_id": "PR13-B02.4",
+          "report": "evidence-original/evidence/PR13-B02.4/ROOT_REPORT.json",
+          "rows_checked": 8,
+          "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
+          "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
+          "minimum_dependencies": [
+            "PR13-B02.3"
+          ],
+          "canonical_cases": [
+            {
+              "id": "PR13-B02.4-T01",
+              "setup_and_injection": "当前room热更源表",
+              "expected": "policy不静默换",
+              "executed": false,
+              "evidence": null
+            },
+            {
+              "id": "PR13-B02.4-T02",
+              "setup_and_injection": "PVP结束",
+              "expected": "恢复PVE原state",
+              "executed": false,
+              "evidence": null
+            },
+            {
+              "id": "PR13-B02.4-T03",
+              "setup_and_injection": "旧snapshot缺策略/无效枚举",
+              "expected": "兼容默认或明确拒绝不半恢复",
+              "executed": false,
+              "evidence": null
+            }
+          ],
+          "profiles": [
+            "OFFLINE",
+            "POSTGRES"
+          ],
+          "runtime_stage": "NotApplicableWithReason",
+          "missing_reasons": {
+            "CI": "Not part of canonical command refs for B02; not required or invoked",
+            "LIVE_RENDER_HUMAN": "Canonical runtime stage NotApplicableWithReason; no additional gate",
+            "cutoff_monotonic": "Fixed deterministic local cases, no common load/window cutoff. Actual per-command monotonic duration is retained in commands.json.",
+            "runtime_image_digest": "Local processes, no container image; executable/build SHA256 supplied in tools-and-build-manifest.json"
+          }
+        },
+        {
+          "task_id": "PR13-B02.1",
+          "report": "evidence-original/evidence/PR13-B02.1/ROOT_REPORT.json",
+          "rows_checked": 8,
+          "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
+          "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
+          "minimum_dependencies": [
+            "LOAD-11.1"
+          ],
+          "canonical_cases": [
+            {
+              "id": "PR13-B02.1-T01",
+              "setup_and_injection": "旧参数构造",
+              "expected": "编译失败证据",
+              "executed": false,
+              "evidence": null
+            },
+            {
+              "id": "PR13-B02.1-T02",
+              "setup_and_injection": "默认构造",
+              "expected": "仍CurrentRhythm/CurrentSteps",
+              "executed": false,
+              "evidence": null
+            },
+            {
+              "id": "PR13-B02.1-T03",
+              "setup_and_injection": "候选显式枚举",
+              "expected": "候选断言独立",
+              "executed": false,
+              "evidence": null
+            }
+          ],
+          "profiles": [
+            "OFFLINE",
+            "POSTGRES"
+          ],
+          "runtime_stage": "NotApplicableWithReason",
+          "missing_reasons": {
+            "CI": "Not part of canonical command refs for B02; not required or invoked",
+            "LIVE_RENDER_HUMAN": "Canonical runtime stage NotApplicableWithReason; no additional gate",
+            "cutoff_monotonic": "Fixed deterministic local cases, no common load/window cutoff. Actual per-command monotonic duration is retained in commands.json.",
+            "runtime_image_digest": "Local processes, no container image; executable/build SHA256 supplied in tools-and-build-manifest.json"
+          }
+        },
+        {
+          "task_id": "PR13-B02.2",
+          "report": "evidence-original/evidence/PR13-B02.2/ROOT_REPORT.json",
+          "rows_checked": 8,
+          "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
+          "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
+          "minimum_dependencies": [
+            "PR13-B02.1"
+          ],
+          "canonical_cases": [
+            {
+              "id": "PR13-B02.2-T01",
+              "setup_and_injection": "重排同牌",
+              "expected": "按首核合同可不同",
+              "executed": false,
+              "evidence": null
+            },
+            {
+              "id": "PR13-B02.2-T02",
+              "setup_and_injection": "GDD三四五火指定向量",
+              "expected": "46/72/113",
+              "executed": false,
+              "evidence": null
+            },
+            {
+              "id": "PR13-B02.2-T03",
+              "setup_and_injection": "普通治疗与向反E0",
+              "expected": "分别计算不共套牧师倍率",
+              "executed": false,
+              "evidence": null
+            }
+          ],
+          "profiles": [
+            "OFFLINE",
+            "POSTGRES"
+          ],
+          "runtime_stage": "NotApplicableWithReason",
+          "missing_reasons": {
+            "CI": "Not part of canonical command refs for B02; not required or invoked",
+            "LIVE_RENDER_HUMAN": "Canonical runtime stage NotApplicableWithReason; no additional gate",
+            "cutoff_monotonic": "Fixed deterministic local cases, no common load/window cutoff. Actual per-command monotonic duration is retained in commands.json.",
+            "runtime_image_digest": "Local processes, no container image; executable/build SHA256 supplied in tools-and-build-manifest.json"
+          }
+        },
+        {
+          "task_id": "PR13-B02.3",
+          "report": "evidence-original/evidence/PR13-B02.3/ROOT_REPORT.json",
+          "rows_checked": 8,
+          "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
+          "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
+          "minimum_dependencies": [
+            "PR13-B02.2"
+          ],
+          "canonical_cases": [
+            {
+              "id": "PR13-B02.3-T01",
+              "setup_and_injection": "连续preview",
+              "expected": "不抽牌不进RNG不提交盾余量",
+              "executed": false,
+              "evidence": null
+            },
+            {
+              "id": "PR13-B02.3-T02",
+              "setup_and_injection": "proto往返",
+              "expected": "顺序保持",
+              "executed": false,
+              "evidence": null
+            },
+            {
+              "id": "PR13-B02.3-T03",
+              "setup_and_injection": "过期revision",
+              "expected": "预览弃置不覆盖当前",
+              "executed": false,
+              "evidence": null
+            }
+          ],
+          "profiles": [
+            "OFFLINE",
+            "POSTGRES"
+          ],
+          "runtime_stage": "NotApplicableWithReason",
+          "missing_reasons": {
+            "CI": "Not part of canonical command refs for B02; not required or invoked",
+            "LIVE_RENDER_HUMAN": "Canonical runtime stage NotApplicableWithReason; no additional gate",
+            "cutoff_monotonic": "Fixed deterministic local cases, no common load/window cutoff. Actual per-command monotonic duration is retained in commands.json.",
+            "runtime_image_digest": "Local processes, no container image; executable/build SHA256 supplied in tools-and-build-manifest.json"
+          }
+        }
+      ]
+    },
+    {
+      "group": "A05",
+      "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "report_commit": "8068783331da07ec68354c1874eb0d65adea632f",
+      "manifest_path": "MANIFEST.json",
+      "manifest_sha256": "d8600978c5751b9dfc517ecdf486a6f99fb9b6e2a6fddf5ee42fb3a5fbc859c9",
+      "manifest_files_verified": 38,
+      "tasks": [
+        {
+          "task_id": "PR13-A05.3",
+          "report": "tasks/PR13-A05.3/ROOT_REPORT.json",
+          "rows_checked": 7,
+          "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+          "algorithm_version": "A05ProcessAcceptance/1",
+          "minimum_dependencies": [
+            "PR13-A05.2"
+          ],
+          "canonical_cases": [
+            {
+              "id": "PR13-A05.3-T01",
+              "setup_and_injection": "同ack三次",
+              "expected": "一条业务结果",
+              "executed": false,
+              "evidence": null
+            },
+            {
+              "id": "PR13-A05.3-T02",
+              "setup_and_injection": "重启在holds完成前",
+              "expected": "恢复同一资产转移",
+              "executed": false,
+              "evidence": null
+            },
+            {
+              "id": "PR13-A05.3-T03",
+              "setup_and_injection": "重复ready通知",
+              "expected": "不重复领奖",
+              "executed": false,
+              "evidence": null
+            }
+          ],
+          "profiles": [
+            "OFFLINE",
+            "POSTGRES",
+            "AUDIT"
+          ],
+          "runtime_stage": "Required",
+          "missing_reasons": {
+            "runtime_image_digest": "Native dotnet OS child processes; no container image was used.",
+            "cutoff_monotonic": "Original functional matrix did not record a common monotonic cutoff and makes no rate/capacity/window accounting claims. The separate causal probe has actual same-client monotonic phase values in P0_CAUSAL.json.",
+            "reviewer": "S6 independent MAIN decision is pending; worker cannot sign Accepted.",
+            "accepted_by": "S6 decision belongs to independent MAIN."
+          }
+        },
+        {
+          "task_id": "PR13-A05.2",
+          "report": "tasks/PR13-A05.2/ROOT_REPORT.json",
+          "rows_checked": 7,
+          "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+          "algorithm_version": "A05ProcessAcceptance/1",
+          "minimum_dependencies": [
+            "PR13-A05.1"
+          ],
+          "canonical_cases": [
+            {
+              "id": "PR13-A05.2-T01",
+              "setup_and_injection": "旧snapshot继续",
+              "expected": "B正常/A的N route不删除",
+              "executed": false,
+              "evidence": null
+            },
+            {
+              "id": "PR13-A05.2-T02",
+              "setup_and_injection": "恢复terminal A",
+              "expected": "不重新占旧route",
+              "executed": false,
+              "evidence": null
+            },
+            {
+              "id": "PR13-A05.2-T03",
+              "setup_and_injection": "相同玩家新route",
+              "expected": "旧结算callback无权清",
+              "executed": false,
+              "evidence": null
+            }
+          ],
+          "profiles": [
+            "OFFLINE",
+            "POSTGRES",
+            "AUDIT"
+          ],
+          "runtime_stage": "Required",
+          "missing_reasons": {
+            "runtime_image_digest": "Native dotnet OS child processes; no container image was used.",
+            "cutoff_monotonic": "Original functional matrix did not record a common monotonic cutoff and makes no rate/capacity/window accounting claims. The separate causal probe has actual same-client monotonic phase values in P0_CAUSAL.json.",
+            "reviewer": "S6 independent MAIN decision is pending; worker cannot sign Accepted.",
+            "accepted_by": "S6 decision belongs to independent MAIN."
+          }
+        }
+      ]
+    }
+  ],
+  "status": "Passed",
+  "scope": "11 Ready only; LOAD01 and four Partial tasks excluded"
+}

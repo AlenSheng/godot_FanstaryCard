@@ -1,0 +1,73 @@
+{
+  "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+  "profile": "Original B02/LOAD02 shared C-SERVER Pooling=false",
+  "case_summaries": [
+    {
+      "case": "ACK-CYCLE-cycles-middle-response-loss",
+      "expected_games": 3,
+      "expected_completions": 3,
+      "partition": {
+        "cancelled": 0,
+        "completed": 3,
+        "failed": 0,
+        "incomplete": 0,
+        "started": 3
+      },
+      "entered_matches_distinct": true,
+      "entered_matches_equal_durable_ACK_set": true,
+      "equipment_location": "RelicPile",
+      "PG_asset_postconditions_asserted": true
+    },
+    {
+      "case": "ACK-CYCLE-cycles-middle-uncommitted-loss",
+      "expected_games": 3,
+      "expected_completions": 3,
+      "partition": {
+        "cancelled": 0,
+        "completed": 3,
+        "failed": 0,
+        "incomplete": 0,
+        "started": 3
+      },
+      "entered_matches_distinct": true,
+      "entered_matches_equal_durable_ACK_set": true,
+      "equipment_location": "RelicPile",
+      "PG_asset_postconditions_asserted": true
+    },
+    {
+      "case": "ACK-CYCLE-stop-after-commit",
+      "expected_games": 1,
+      "expected_completions": 0,
+      "partition": {
+        "cancelled": 1,
+        "completed": 0,
+        "failed": 0,
+        "incomplete": 0,
+        "started": 1
+      },
+      "entered_matches_distinct": true,
+      "entered_matches_equal_durable_ACK_set": true,
+      "equipment_location": "RelicPile",
+      "PG_asset_postconditions_asserted": true
+    },
+    {
+      "case": "ACK-CYCLE-stop-before-commit",
+      "expected_games": 1,
+      "expected_completions": 0,
+      "partition": {
+        "cancelled": 1,
+        "completed": 0,
+        "failed": 0,
+        "incomplete": 0,
+        "started": 1
+      },
+      "entered_matches_distinct": true,
+      "entered_matches_equal_durable_ACK_set": true,
+      "equipment_location": "RelicPile",
+      "PG_asset_postconditions_asserted": true
+    }
+  ],
+  "raw_receipts_path": "b02/evidence/process-original/receipts.jsonl",
+  "raw_receipts_sha256": "85911ac290b5ca5b299ec5f49cd444d0ca64231371a18b2623534380132170f3",
+  "scope": "Supports LOAD02 stop/pending/cleanup minimum inputs; does not close excluded LOAD02.2 PG-timeout partition gap"
+}
