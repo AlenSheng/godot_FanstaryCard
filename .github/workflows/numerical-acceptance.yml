@@ -34,6 +34,21 @@ jobs:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
+          # Keep all runtime sources/assets. Historical evidence and checked-in
+          # build/package caches consumed most of the unchanged 25-minute job.
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/art/
+            !/artifacts/
+            !/design/
+            !/output/
+            !/outputs/
+            !/client/evidence/
+            !/docs/reports/
+            !/server/.packages/
+            !**/bin/
+            !**/obj/
       - uses: actions/setup-dotnet@v6
         with:
           global-json-file: server/global.json

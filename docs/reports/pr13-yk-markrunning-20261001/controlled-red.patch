@@ -1,0 +1,119 @@
+diff --git a/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLifecycleRecoveryTests.cs b/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLifecycleRecoveryTests.cs
+index 28c6624..4829680 100644
+--- a/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLifecycleRecoveryTests.cs
++++ b/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLifecycleRecoveryTests.cs
+@@ -1,4 +1,5 @@
+ using System.Buffers.Binary;
++using System.Collections.Concurrent;
+ using System.Net;
+ using System.Net.Sockets;
+ using System.Security.Cryptography;
+@@ -21,7 +22,7 @@ using Npgsql;
+ 
+ namespace FantasyCard.Server.Tests.Persistence;
+ 
+-public sealed class PostgresLifecycleRecoveryTests
++public sealed class PostgresLifecycleRecoveryTests(ITestOutputHelper output)
+ {
+     public static bool HasTestDatabase => PostgresRuntimeIntegrationTests.HasTestDatabase;
+ 
+@@ -47,17 +48,19 @@ public sealed class PostgresLifecycleRecoveryTests
+             "SELECT status FROM matches WHERE match_id=$1", matchId));
+     }
+ 
+-    [Fact(Skip = "Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.",
++    [Theory(Skip = "Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.",
+         SkipUnless = nameof(HasTestDatabase))]
++    [InlineData(false)]
++    [InlineData(true)]
+     [Trait("Category", "PostgresIntegration")]
+-    public async Task MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it()
++    public async Task MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it(bool forcePriorIdle)
+     {
+         await using var database = await PostgresTestSchema.CreateAsync(migrate: true);
+         var cancellationToken = TestContext.Current.CancellationToken;
+         var time = new FixedTimeProvider(DateTimeOffset.UtcNow);
+         using var metrics = new ServerMetrics();
+         var settings = new NpgsqlConnectionStringBuilder(database.ConnectionString);
+-        await using var proxy = new CommitResponseDropProxy(settings.Host!, settings.Port);
++        await using var proxy = new CommitResponseDropProxy(settings.Host!, settings.Port, forcePriorIdle: forcePriorIdle);
+         settings.Host = proxy.SocketDirectory;
+         settings.SslMode = SslMode.Disable;
+         await using var intercepted = NpgsqlDataSource.Create(settings.ConnectionString);
+@@ -71,6 +74,7 @@ public sealed class PostgresLifecycleRecoveryTests
+                 new RealtimeEventStore(time), new ConnectionRegistry(), time,
+                 NullLogger<RoomReadyCoordinator>.Instance);
+             await Assert.ThrowsAnyAsync<NpgsqlException>(() => coordinator.ProcessNextAsync(time.GetUtcNow(), cancellationToken));
++            output.WriteLine(JsonSerializer.Serialize(proxy.ProtocolTrace));
+             Assert.True(proxy.DroppedCommittedResponse);
+             Assert.Equal("Running", await database.ScalarAsync<string>(
+                 "SELECT status FROM matches WHERE match_id=$1", pending.MatchId));
+@@ -375,10 +379,12 @@ public sealed class PostgresLifecycleRecoveryTests
+         private readonly List<Task> _connections = [];
+         private readonly EndPoint _upstream;
+         private readonly string _statement;
++        private readonly bool _forcePriorIdle;
++        private readonly ConcurrentQueue<string> _trace = new();
+         private int _armed = 1;
+         private int _dropped;
+ 
+-        public CommitResponseDropProxy(string upstreamDirectory, int port, string statement = "UPDATE matches SET status='Running'")
++        public CommitResponseDropProxy(string upstreamDirectory, int port, string statement = "UPDATE matches SET status='Running'", bool forcePriorIdle = false)
+         {
+             SocketDirectory = Path.Combine(Path.GetTempPath(), "fc-launch-" + Guid.NewGuid().ToString("N"));
+             Directory.CreateDirectory(SocketDirectory);
+@@ -386,6 +392,7 @@ public sealed class PostgresLifecycleRecoveryTests
+                 ? new UnixDomainSocketEndPoint(Path.Combine(upstreamDirectory, $".s.PGSQL.{port}"))
+                 : new DnsEndPoint(upstreamDirectory, port);
+             _statement = statement;
++            _forcePriorIdle = forcePriorIdle;
+             _listener.Bind(new UnixDomainSocketEndPoint(Path.Combine(SocketDirectory, $".s.PGSQL.{port}")));
+             _listener.Listen(8);
+             _acceptor = AcceptAsync();
+@@ -393,6 +400,7 @@ public sealed class PostgresLifecycleRecoveryTests
+ 
+         public string SocketDirectory { get; }
+         public bool DroppedCommittedResponse => Volatile.Read(ref _dropped) == 1;
++        public string[] ProtocolTrace => _trace.ToArray();
+ 
+         private async Task AcceptAsync()
+         {
+@@ -426,6 +434,7 @@ public sealed class PostgresLifecycleRecoveryTests
+                     await backend.WriteAsync(startupLength, _shutdown.Token);
+                     await backend.WriteAsync(startup, _shutdown.Token);
+                     var dropResponse = 0;
++                    var priorIdle = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+                     var request = ForwardAsync(frontend, backend, inspectRequest: true);
+                     var response = ForwardAsync(backend, frontend, inspectRequest: false);
+                     await Task.WhenAny(request, response);
+@@ -445,12 +454,30 @@ public sealed class PostgresLifecycleRecoveryTests
+                                 Encoding.UTF8.GetString(payload).Split('\0').Any(part =>
+                                     part.TrimStart().StartsWith(_statement, StringComparison.Ordinal)) &&
+                                 Interlocked.Exchange(ref _armed, 0) == 1)
++                            {
++                                _trace.Enqueue("target-seen-not-forwarded");
+                                 Volatile.Write(ref dropResponse, 1);
++                                if (_forcePriorIdle)
++                                {
++                                    var probe = Encoding.UTF8.GetBytes("SELECT 1\0");
++                                    var probeHeader = new byte[5];
++                                    probeHeader[0] = (byte)'Q';
++                                    BinaryPrimitives.WriteInt32BigEndian(probeHeader.AsSpan(1), probe.Length + 4);
++                                    _trace.Enqueue("prior-idle-probe-Q-forwarded");
++                                    await destination.WriteAsync(probeHeader, _shutdown.Token);
++                                    await destination.WriteAsync(probe, _shutdown.Token);
++                                    if (!await priorIdle.Task.WaitAsync(_shutdown.Token)) return;
++                                }
++                                _trace.Enqueue("target-forwarded");
++                            }
+                             if (!inspectRequest && Volatile.Read(ref dropResponse) == 1)
+                             {
++                                if (header[0] == 'C') _trace.Enqueue("C:" + Encoding.UTF8.GetString(payload).TrimEnd('\0'));
+                                 if (header[0] == 'Z')
+                                 {
++                                    _trace.Enqueue("first-Z:" + (char)payload[0]);
+                                     if (payload[0] == 'I') Interlocked.Exchange(ref _dropped, 1);
++                                    priorIdle.TrySetResult(false);
+                                     return;
+                                 }
+                                 continue;

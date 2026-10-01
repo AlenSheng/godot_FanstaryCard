@@ -13,6 +13,7 @@ using FantasyCard.Domain.Rooms;
 // Strategies may read only hand cards, their own public state and living targets.
 internal static class CombatExperience
 {
+    internal const string StrategyVersion = "public-target-v2";
     private static readonly JsonSerializerOptions Json = new() { WriteIndented = false };
     private static readonly JsonSerializerOptions PrettyJson = new() { WriteIndented = true };
     private static readonly string[] Groups = ["O1", "O6", "E1", "BOSS"];
@@ -46,7 +47,7 @@ internal static class CombatExperience
         var decks = heroes.ToDictionary(hero => hero, hero => CreateDecks(config, hero));
         var manifest = new
         {
-            SchemaVersion = 1, Kind = "actual_domain_encounter_simulation", SourceSha = sourceSha,
+            SchemaVersion = 1, Kind = "actual_domain_encounter_simulation", SourceSha = sourceSha, StrategyVersion,
             ConfigVersion = config.Version, SamplesPerStratum = samples, SeedStart = seedStart,
             DomainAssemblySha256 = HashFile(typeof(BattleRoom).Assembly.Location),
             SimulatorAssemblySha256 = HashFile(typeof(CombatExperience).Assembly.Location),
@@ -58,8 +59,8 @@ internal static class CombatExperience
             SourceConfigSha256 = sourceConfigHash,
             CandidateWhitelist = candidateKind == "class-passives" ? groups : new[] { "O6" }, SingleFactorOnly = true,
             FirstWindupScope = "Only the first positive intent windup of each O6 monster; subsequent windups and attack intervals unchanged; 100ms tick resolution",
-            StrategyPolicy = "baseline_all_hand spends immediately; basic/build wait for three cards or two core cards above 25% HP, then score legal visible subsets",
-            RunIdentity = new { SeedStart = seedStart, Samples = samples, Candidate = candidateKind, WeaponLevel = weaponLevel },
+            StrategyPolicy = "baseline_all_hand spends immediately; basic/build wait for three cards or two core cards above 25% HP, then score visible subsets assuming zero undisclosed target resistance; actual authority remains unchanged",
+            RunIdentity = new { SeedStart = seedStart, Samples = samples, Candidate = candidateKind, WeaponLevel = weaponLevel, StrategyVersion },
             Scope = "Synthetic encounter entry, not a legal full expedition route or network capacity proof",
             Outcomes = new[] { "Victory", "Death", "Censored", "Error" },
             ProductionDefaults = config.Numerics, CandidateActivation = false,
@@ -90,7 +91,7 @@ internal static class CombatExperience
                     "outer-o6-windup050" => group == "O6" ? "TargetedO6Windup050" : "BaselinePairedControl",
                     _ => hero switch { HeroClass.Mage => "CoreCardsSpent", HeroClass.Guardian => "FractionalRemainder", _ => "BaselinePairedControl" }
                 } : "Baseline";
-                var key = $"{hero}/{deck.Key}/{group}/{strategy}/{profile}";
+                var key = $"{StrategyVersion}/{hero}/{deck.Key}/{group}/{strategy}/{profile}";
                 var rows = new List<EncounterSample>(samples);
                 strata.Add(key, rows);
                 for (var index = 0; index < samples; index++)
@@ -112,7 +113,7 @@ internal static class CombatExperience
         }
         var summary = new
         {
-            SchemaVersion = 1, config.Version, SourceSha = sourceSha, ElapsedSeconds = stopwatch.Elapsed.TotalSeconds,
+            SchemaVersion = 1, config.Version, SourceSha = sourceSha, StrategyVersion, ElapsedSeconds = stopwatch.Elapsed.TotalSeconds,
             RawSha256 = HashFile(rawPath), Total = strata.Values.Sum(rows => rows.Count),
             ErrorCount = strata.Values.Sum(rows => rows.Count(row => row.Outcome == "Error")),
             CandidateActivation = false, HumanExperienceVerified = false,
@@ -230,49 +231,61 @@ internal static class CombatExperience
                 if (player.Combat.StunRemaining == TimeSpan.Zero && player.Combat.Deck.Hand.Count > 0)
                 {
                     row.LegalOpportunitySeconds += .1;
-                    if (step % 4 == 0 && !ShouldHold(catalog, player.Combat, strategy))
+                    if (step % 4 == 0)
                     {
-                        var target = pve.Monsters.First(monster => !monster.IsDead);
-                        var selected = Select(catalog, player.Combat, target, strategy);
-                        var ids = selected.Select(card => card.InstanceId).ToArray();
-                        var definitions = selected.Select(card => catalog.Get(card.CardId, card.Level, card.ElementOverride)).ToArray();
-                        var draft = CombatResolver.Resolve(definitions, player.Combat, target.ElementalResistance);
-                        // Scalar preview parity is verified against the real play. The
-                        // preview must leave even persisted RNG and remainder unchanged.
-                        var now = DateTimeOffset.UnixEpoch.AddSeconds(time);
-                        CombatResolution? preview = null;
-                        if (row.PreviewParityChecks < 3)
+                        var action = ChooseAction(catalog, room, player, strategy);
+                        var waitReason = Revalidate(room, player, action);
+                        if (waitReason is not null)
+                            row.WaitReasons[waitReason] = row.WaitReasons.GetValueOrDefault(waitReason) + 1;
+                        else
                         {
-                            var before = JsonSerializer.Serialize(room.Capture(), Json);
-                            preview = room.PreviewCards(player.PlayerId, pve.BattleId, target.MonsterId, ids, room.Revision, now);
-                            if (before != JsonSerializer.Serialize(room.Capture(), Json)) throw new InvalidOperationException("Preview mutated the room.");
+                            var target = pve.Monsters.Single(monster => monster.MonsterId == action.TargetId);
+                            var ids = action.CardIds;
+                            var selected = player.Combat.Deck.SelectFromHand(ids);
+                            var definitions = selected.Select(card => catalog.Get(card.CardId, card.Level, card.ElementOverride)).ToArray();
+                            var draft = CombatResolver.Resolve(definitions, player.Combat, target.ElementalResistance);
+                            // Scalar preview parity is verified against the real play. The
+                            // preview must leave even persisted RNG and remainder unchanged.
+                            var now = DateTimeOffset.UnixEpoch.AddSeconds(time);
+                            CombatResolution? preview = null;
+                            if (row.PreviewParityChecks < 3)
+                            {
+                                var before = JsonSerializer.Serialize(room.Capture(), Json);
+                                preview = room.PreviewCards(player.PlayerId, pve.BattleId, target.MonsterId, ids, room.Revision, now);
+                                if (before != JsonSerializer.Serialize(room.Capture(), Json)) throw new InvalidOperationException("Preview mutated the room.");
+                            }
+                            var result = Execute(room, player, action, now, out waitReason);
+                            if (result is null)
+                                row.WaitReasons[waitReason!] = row.WaitReasons.GetValueOrDefault(waitReason!) + 1;
+                            else
+                            {
+                                if (preview is not null && (preview.Damage != result.Damage || preview.HpDamage != result.HpDamage ||
+                                    preview.ShieldDamage != result.ShieldDamage || preview.Heal != result.Heal ||
+                                    preview.ShieldGain != result.ShieldGain || preview.CoreElement != result.CoreElement ||
+                                    preview.ImmediateDraw != result.ImmediateDraw || preview.StunSeconds != result.StunSeconds))
+                                    throw new InvalidOperationException("Preview and actual resolution differ.");
+                                if (preview is not null) row.PreviewParityChecks++;
+                                row.Actions++;
+                                row.CardsSpent += ids.Length;
+                                var remainingOldHand = beforeHand.Except(ids).ToHashSet();
+                                var drawn = player.Combat.Deck.Hand.Count(card => !remainingOldHand.Contains(card.InstanceId));
+                                row.ImmediateCardsDrawn += drawn;
+                                row.EffectiveHeal += result.Heal;
+                                row.EffectiveShield += result.ShieldGain;
+                                row.HealOverflow += Math.Max(0, draft.Heal - result.Heal);
+                                row.ShieldOverflow += Math.Max(0, draft.Shield - result.ShieldGain);
+                                damage += result.HpDamage + result.ShieldDamage;
+                                var effective = result.HpDamage + result.ShieldDamage + result.Heal + result.ShieldGain + drawn > 0;
+                                if (effective)
+                                {
+                                    row.EffectiveActions++;
+                                    if (row.FirstEffectiveSeconds is null) row.FirstEffectiveSeconds = time;
+                                    if (effectiveAt >= 0) row.LongestEffectiveGapSeconds = Math.Max(row.LongestEffectiveGapSeconds, time - effectiveAt);
+                                    effectiveAt = time;
+                                }
+                                else row.ZeroEffectiveActions++;
+                            }
                         }
-                        var result = room.PlayCards(player.PlayerId, pve.BattleId, target.MonsterId, ids, room.Revision, now);
-                        if (preview is not null && (preview.Damage != result.Damage || preview.HpDamage != result.HpDamage ||
-                            preview.ShieldDamage != result.ShieldDamage || preview.Heal != result.Heal ||
-                            preview.ShieldGain != result.ShieldGain || preview.CoreElement != result.CoreElement ||
-                            preview.ImmediateDraw != result.ImmediateDraw || preview.StunSeconds != result.StunSeconds))
-                            throw new InvalidOperationException("Preview and actual resolution differ.");
-                        if (preview is not null) row.PreviewParityChecks++;
-                        row.Actions++;
-                        row.CardsSpent += ids.Length;
-                        var remainingOldHand = beforeHand.Except(ids).ToHashSet();
-                        var drawn = player.Combat.Deck.Hand.Count(card => !remainingOldHand.Contains(card.InstanceId));
-                        row.ImmediateCardsDrawn += drawn;
-                        row.EffectiveHeal += result.Heal;
-                        row.EffectiveShield += result.ShieldGain;
-                        row.HealOverflow += Math.Max(0, draft.Heal - result.Heal);
-                        row.ShieldOverflow += Math.Max(0, draft.Shield - result.ShieldGain);
-                        damage += result.HpDamage + result.ShieldDamage;
-                        var effective = result.HpDamage + result.ShieldDamage + result.Heal + result.ShieldGain + drawn > 0;
-                        if (effective)
-                        {
-                            row.EffectiveActions++;
-                            if (row.FirstEffectiveSeconds is null) row.FirstEffectiveSeconds = time;
-                            if (effectiveAt >= 0) row.LongestEffectiveGapSeconds = Math.Max(row.LongestEffectiveGapSeconds, time - effectiveAt);
-                            effectiveAt = time;
-                        }
-                        else row.ZeroEffectiveActions++;
                     }
                 }
                 if (ShouldHold(catalog, player.Combat, strategy)) row.StrategyHoldSeconds += .1;
@@ -316,8 +329,57 @@ internal static class CombatExperience
         return row;
     }
 
+    internal sealed record EncounterAction(Guid BattleId, string? TargetId, long Revision, Guid[] CardIds, string? WaitReason);
+
+    internal static EncounterAction ChooseAction(CombatCardCatalog catalog, BattleRoom room, RoomPlayerState player, string strategy)
+    {
+        EncounterAction Wait(string reason) => new(player.Pve?.BattleId ?? Guid.Empty, null, room.Revision, [], reason);
+        if (player.Phase != RoomPlayerPhase.Pve || player.Pve?.Phase != PveBattlePhase.Active) return Wait("battle_not_active");
+        if (player.Combat.IsDead) return Wait("player_dead");
+        if (player.Combat.StunRemaining > TimeSpan.Zero) return Wait("player_stunned");
+        if (player.Combat.Deck.Hand.Count == 0) return Wait("empty_hand");
+        var target = player.Pve.Monsters.FirstOrDefault(monster => !monster.IsDead);
+        if (target is null) return Wait("no_living_target");
+        if (ShouldHold(catalog, player.Combat, strategy)) return Wait("strategy_hold");
+        return new(player.Pve.BattleId, target.MonsterId, room.Revision,
+            Select(catalog, player.Combat, target, strategy).Select(card => card.InstanceId).ToArray(), null);
+    }
+
+    internal static string? Revalidate(BattleRoom room, RoomPlayerState player, EncounterAction action)
+    {
+        if (action.WaitReason is not null) return action.WaitReason;
+        if (player.Phase != RoomPlayerPhase.Pve || player.Pve?.Phase != PveBattlePhase.Active) return "battle_not_active";
+        if (player.Combat.IsDead) return "player_dead";
+        if (player.Combat.StunRemaining > TimeSpan.Zero) return "player_stunned";
+        if (player.Pve.BattleId != action.BattleId) return "battle_changed";
+        if (room.Revision != action.Revision) return "revision_changed";
+        if (!player.Pve.Monsters.Any(monster => monster.MonsterId == action.TargetId && !monster.IsDead)) return "target_no_longer_alive";
+        if (action.CardIds.Length is < 1 or > CombatDeck.HandLimit || action.CardIds.Distinct().Count() != action.CardIds.Length ||
+            action.CardIds.Any(id => !player.Combat.Deck.Hand.Any(card => card.InstanceId == id))) return "hand_changed";
+        return null;
+    }
+
+    internal static CombatResolution? Execute(BattleRoom room, RoomPlayerState player, EncounterAction action,
+        DateTimeOffset now, out string? waitReason)
+    {
+        waitReason = Revalidate(room, player, action);
+        if (waitReason is not null) return null;
+        // Unexpected Domain errors remain errors; only explicit stale-state
+        // conditions above become Wait. Authority performs its usual validation.
+        return room.PlayCards(player.PlayerId, action.BattleId, action.TargetId!, action.CardIds, action.Revision, now);
+    }
+
     private static CombatCardInstance[] Select(CombatCardCatalog catalog, PlayerCombatState player,
         MonsterCombatState target, string strategy)
+        => SelectVisible(catalog, player, new VisibleTarget(target.Hp, target.Shield), strategy);
+
+    // The scorer cannot access monster intent sequences, RNG or authoritative
+    // resistance. The public projection does not disclose resistance, so zero
+    // is a declared estimate, never an override of the real combat resolver.
+    private sealed record VisibleTarget(int Hp, int Shield);
+
+    private static CombatCardInstance[] SelectVisible(CombatCardCatalog catalog, PlayerCombatState player,
+        VisibleTarget target, string strategy)
     {
         var hand = player.Deck.Hand;
         if (strategy == "baseline_all_hand") return hand.ToArray();
@@ -329,12 +391,12 @@ internal static class CombatExperience
             var subset = hand.Where((_, i) => (mask & 1 << i) != 0).ToArray();
             candidates.Add(subset);
             if (strategy == "build")
-            foreach (var element in subset.Select(card => catalog.Get(card.CardId, card.Level, card.ElementOverride).Effect.Element).Distinct())
-                candidates.Add(subset.OrderByDescending(card => catalog.Get(card.CardId, card.Level, card.ElementOverride).Effect.Element == element).ToArray());
+                foreach (var element in subset.Select(card => catalog.Get(card.CardId, card.Level, card.ElementOverride).Effect.Element).Distinct())
+                    candidates.Add(subset.OrderByDescending(card => catalog.Get(card.CardId, card.Level, card.ElementOverride).Effect.Element == element).ToArray());
         }
         return candidates.Select(cards =>
         {
-            var draft = CombatResolver.Resolve(cards.Select(card => catalog.Get(card.CardId, card.Level, card.ElementOverride)).ToArray(), player, target.ElementalResistance);
+            var draft = CombatResolver.Resolve(cards.Select(card => catalog.Get(card.CardId, card.Level, card.ElementOverride)).ToArray(), player);
             var appliedDamage = Math.Min(target.Hp + target.Shield, draft.Damage);
             var score = appliedDamage + Math.Min(player.EffectiveMaximumHp - player.Hp, draft.Heal) * .8 +
                 Math.Min(player.MaximumHp / 2 - player.Shield, draft.Shield) * .5 +
@@ -429,6 +491,8 @@ internal sealed class EncounterSample(int seed, int seedBlock, string hero, stri
     public string Group { get; } = group;
     public string Strategy { get; } = strategy;
     public string Profile { get; } = profile;
+    public string StrategyVersion { get; } = CombatExperience.StrategyVersion;
+    public string StrategyProfile => $"{StrategyVersion}/{Strategy}/{Profile}";
     public int WeaponLevel { get; set; }
     public string Outcome { get; set; } = "Censored";
     public string? Error { get; set; }
@@ -464,4 +528,5 @@ internal sealed class EncounterSample(int seed, int seedBlock, string hero, stri
     public int FirstWindupExtensions { get; set; }
     public double FirstWindupExtraMilliseconds { get; set; }
     public List<int> FirstWindupIntentIndexes { get; } = [];
+    public Dictionary<string, int> WaitReasons { get; } = new(StringComparer.Ordinal);
 }

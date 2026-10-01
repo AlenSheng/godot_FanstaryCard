@@ -47,11 +47,26 @@ public sealed partial class ProcessLifecycleRecoveryTests
         try
         {
             await A05WaitFileAsync(control, "running", godot, ct);
+            await using var terminalCheckpoint = context == "ordinary"
+                ? await A05TerminalCheckpointGate.CreateAsync(database, playerId, label, ct)
+                : null;
             await using var gate = await database.DataSource.OpenConnectionAsync(ct);
             await using var transaction = await gate.BeginTransactionAsync(ct);
             await using (var command = new NpgsqlCommand("SELECT gold FROM player_wallets WHERE player_id=$1 FOR UPDATE", gate, transaction))
             { command.Parameters.AddWithValue(playerId); await command.ExecuteScalarAsync(ct); }
             await A05ControlAsync(control, "extract", new { context, outcome }, ct);
+            if (terminalCheckpoint is not null)
+            {
+                // A Pending wallet hold does not keep the room route registered.
+                // Hold only the terminal checkpoint after the real completion
+                // event, so the ordinary branch reads a genuine terminal snapshot
+                // before settlement observation can release its route.
+                await terminalCheckpoint.WaitUntilBlockedAsync(ct);
+                Assert.Equal(0L, await database.ScalarAsync<long>("SELECT count(*) FROM settlement_asset_holds"));
+                await A05ControlAsync(control, "ordinary-pending", new { actual = "terminal checkpoint gated; genuine room route still registered" }, ct);
+                await A05WaitFileAsync(control, "context-ready", godot, ct);
+                await terminalCheckpoint.ReleaseAsync();
+            }
             await WaitAsync(async () => await database.ScalarAsync<long>("SELECT count(*) FROM settlement_asset_holds WHERE state='Pending'") == 4, ct);
             Assert.Equal(before, await A05AssetsAsync(database, playerId, equipmentId, ct));
             if (context == "recovered")
@@ -62,9 +77,18 @@ public sealed partial class ProcessLifecycleRecoveryTests
                 relay.EndRestart();
                 await A05ControlAsync(control, "restarted", new { host.ProcessId }, ct);
             }
-            else await A05ControlAsync(control, "ordinary-pending", new { actual = "no OS restart and no recovery M" }, ct);
-            await A05WaitFileAsync(control, "context-ready", godot, ct);
+            if (context == "recovered") await A05WaitFileAsync(control, "context-ready", godot, ct);
             Assert.Equal(4L, await database.ScalarAsync<long>("SELECT count(*) FROM settlement_asset_holds WHERE state='Pending'"));
+            if (context == "ordinary")
+            {
+                await A05ControlAsync(control, "pending-established", new { actual_pending_holds = 4, wallet_committed = false }, ct);
+                await A05WaitFileAsync(control, "pending-verified", godot, ct);
+                Assert.Equal(4L, await database.ScalarAsync<long>("SELECT count(*) FROM settlement_asset_holds WHERE state='Pending'"));
+                Assert.Equal(before, await A05AssetsAsync(database, playerId, equipmentId, ct));
+                var path = Path.Combine(control, "pending-verified.json");
+                Record("A05-ordinary-four-pending-client-barrier", new { context, outcome, matchId,
+                    actualPendingHolds = 4, walletCommitted = false, path, phaseSha256 = A05Sha(await File.ReadAllBytesAsync(path, ct)) });
+            }
             await transaction.CommitAsync(ct);
             await Task.WhenAll(relay.SettlementGetHeld.Task, relay.PollHeld.Task).WaitAsync(ct);
             relay.ReleaseSettlementGet();

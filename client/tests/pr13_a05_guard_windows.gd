@@ -18,6 +18,7 @@ func phase(name: String, game) -> void:
 	var file := FileAccess.open(path + ".tmp", FileAccess.WRITE)
 	file.store_string(JSON.stringify({"monotonic_ms": Time.get_ticks_msec(), "match_id": game._settlement_match_id(),
 		"recovery_match_id": game._settlement_recovery_match_id, "settlement": game.settlement.duplicate(true),
+		"player_phase": game.room.get("player", {}).get("phase", ""), "snapshot_pending": game._snapshot_request_pending,
 		"busy": game.busy, "pending_ack": game._settlement_ack_pending_id, "polling": game._settlement_polling,
 		"context_epoch": game._room_context_epoch, "generation": game.gateway.session_generation,
 		"lobby_unfinished_settlement": game.lobby.get("unfinishedSettlement")}, "\t"))
@@ -58,11 +59,23 @@ func run() -> void:
 	else:
 		await wait_control("ordinary-pending")
 		end = Time.get_ticks_msec() + 10000
-		while str(game.room.get("player", {}).get("phase", "")) != "Extracted" and Time.get_ticks_msec() < end: await process_frame
-		check(game.gateway.online and game._settlement_recovery_match_id.is_empty() and game._settlement_match_id() == match_id,
+		# Read the genuine terminal snapshot while the owned checkpoint gate keeps
+		# the route registered. A wallet hold alone does not retain that route.
+		while not game._snapshot_request_pending and Time.get_ticks_msec() - game._snapshot_request_at < 80 and Time.get_ticks_msec() < end: await process_frame
+		game.refresh_room_snapshot()
+		while (str(game.room.get("player", {}).get("phase", "")) != "Extracted" or game._snapshot_request_pending) and Time.get_ticks_msec() < end: await process_frame
+		check(game.gateway.online and str(game.room.get("player", {}).get("phase", "")) == "Extracted" and not game._snapshot_request_pending and game._settlement_recovery_match_id.is_empty() and game._settlement_match_id() == match_id,
 			"ordinary terminal M has no recovery M")
-	check(game.settlement.is_empty(), "Pending holds expose no completed receipt")
+	check(game.settlement.is_empty(), "checkpoint or recovered context exposes no completed receipt")
 	phase("context-ready", game)
+	if context == "ordinary":
+		var pending := await wait_control("pending-established")
+		check(int(pending.get("actual_pending_holds", -1)) == 4 and not bool(pending.get("wallet_committed", true)), "owned ordinary barrier confirms four Pending before wallet commit")
+		check(game.settlement.is_empty(), "Pending holds expose no completed receipt")
+		check(game.gateway.online and str(game.room.get("player", {}).get("phase", "")) == "Extracted" and game._settlement_recovery_match_id.is_empty() and game._settlement_match_id() == match_id, "ordinary context retained during four actual Pending holds")
+		phase("pending-verified", game)
+	else:
+		check(game.settlement.is_empty(), "Pending holds expose no completed receipt")
 	await wait_control("get-released")
 	end = Time.get_ticks_msec() + 10000
 	while game.settlement.is_empty() and Time.get_ticks_msec() < end: await process_frame

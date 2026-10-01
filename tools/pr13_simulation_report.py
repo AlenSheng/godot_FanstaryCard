@@ -29,7 +29,7 @@ def frozen_signature(manifest):
     fields=('Kind','SourceSha','DomainAssemblySha256','SimulatorAssemblySha256','SourceConfigSha256',
             'ConfigVersion','Candidate','CutoffSeconds','ActionIntervalSeconds','WeaponLevel')
     return {**{k:manifest[k] for k in fields},
-            **{k:manifest.get(k) for k in ('StrategyPolicy','ProductionDefaults','PreviewAudit',
+            **{k:manifest.get(k) for k in ('StrategyPolicy','StrategyVersion','ProductionDefaults','PreviewAudit',
                                           'Decks','Groups','Strategies','CandidateWhitelist','SingleFactorOnly',
                                           'SourceGitDirty')}}
 

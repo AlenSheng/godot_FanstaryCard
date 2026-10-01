@@ -1,4 +1,5 @@
 using System.Buffers.Binary;
+using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography;
@@ -21,7 +22,7 @@ using Npgsql;
 
 namespace FantasyCard.Server.Tests.Persistence;
 
-public sealed class PostgresLifecycleRecoveryTests
+public sealed class PostgresLifecycleRecoveryTests(ITestOutputHelper output)
 {
     public static bool HasTestDatabase => PostgresRuntimeIntegrationTests.HasTestDatabase;
 
@@ -47,17 +48,19 @@ public sealed class PostgresLifecycleRecoveryTests
             "SELECT status FROM matches WHERE match_id=$1", matchId));
     }
 
-    [Fact(Skip = "Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.",
+    [Theory(Skip = "Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.",
         SkipUnless = nameof(HasTestDatabase))]
+    [InlineData(false)]
+    [InlineData(true)]
     [Trait("Category", "PostgresIntegration")]
-    public async Task MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it()
+    public async Task MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it(bool forcePriorIdle)
     {
         await using var database = await PostgresTestSchema.CreateAsync(migrate: true);
         var cancellationToken = TestContext.Current.CancellationToken;
         var time = new FixedTimeProvider(DateTimeOffset.UtcNow);
         using var metrics = new ServerMetrics();
         var settings = new NpgsqlConnectionStringBuilder(database.ConnectionString);
-        await using var proxy = new CommitResponseDropProxy(settings.Host!, settings.Port);
+        await using var proxy = new CommitResponseDropProxy(settings.Host!, settings.Port, forcePriorIdle: forcePriorIdle);
         settings.Host = proxy.SocketDirectory;
         settings.SslMode = SslMode.Disable;
         await using var intercepted = NpgsqlDataSource.Create(settings.ConnectionString);
@@ -71,7 +74,10 @@ public sealed class PostgresLifecycleRecoveryTests
                 new RealtimeEventStore(time), new ConnectionRegistry(), time,
                 NullLogger<RoomReadyCoordinator>.Instance);
             await Assert.ThrowsAnyAsync<NpgsqlException>(() => coordinator.ProcessNextAsync(time.GetUtcNow(), cancellationToken));
+            output.WriteLine(JsonSerializer.Serialize(proxy.ProtocolTrace));
             Assert.True(proxy.DroppedCommittedResponse);
+            Assert.Equal("UPDATE 1", proxy.DroppedCommandTag);
+            if (forcePriorIdle) Assert.True(proxy.PriorIdleCompleted);
             Assert.Equal("Running", await database.ScalarAsync<string>(
                 "SELECT status FROM matches WHERE match_id=$1", pending.MatchId));
             Assert.False(rooms.ContainsRoom(pending.RoomId));
@@ -96,6 +102,11 @@ public sealed class PostgresLifecycleRecoveryTests
             "SELECT health_potion_count FROM player_consumables WHERE player_id=$1", playerId));
         Assert.Equal(1L, await database.ScalarAsync<long>(
             "SELECT count(*) FROM inventory_movements WHERE request_id=$1 AND reason='match.start'", pending.MatchId.ToString("D")));
+        output.WriteLine(JsonSerializer.Serialize(new
+        {
+            completed = "same-room-retry-and-restart", forcePriorIdle, pending.MatchId, pending.RoomId,
+            uniqueRoomAndInventoryMovementVerified = true
+        }));
     }
 
     [Theory(Skip = "Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.",
@@ -223,6 +234,8 @@ public sealed class PostgresLifecycleRecoveryTests
         await Assert.ThrowsAnyAsync<NpgsqlException>(() => failedRepository.SettleAsync(
             matchId, playerId, "Extracted", details.RootElement, assets, cancellationToken));
         Assert.True(proxy.DroppedCommittedResponse);
+        Assert.Equal("COMMIT", proxy.DroppedCommandTag);
+        output.WriteLine(JsonSerializer.Serialize(proxy.ProtocolTrace));
         Assert.Equal("Settled", await database.ScalarAsync<string>(
             "SELECT state FROM match_players WHERE match_id=$1 AND player_id=$2", matchId, playerId));
 
@@ -365,8 +378,10 @@ public sealed class PostgresLifecycleRecoveryTests
         public void Advance(TimeSpan elapsed) => _now += elapsed;
     }
 
-    // Read PostgreSQL frames, wait for ReadyForQuery after commit, and then
-    // drop only the selected response. The database transaction is real.
+    // Query/Sync responses are ordered cycles. A pooled DISCARD ALL can precede
+    // the target Parse in the same write; its idle ReadyForQuery is not proof
+    // that the target committed. Drop only the target cycle after its own
+    // CommandComplete and idle ReadyForQuery. The database transaction is real.
     private sealed class CommitResponseDropProxy : IAsyncDisposable
     {
         private readonly Socket _listener = new(AddressFamily.Unix, SocketType.Stream, ProtocolType.Unspecified);
@@ -375,10 +390,16 @@ public sealed class PostgresLifecycleRecoveryTests
         private readonly List<Task> _connections = [];
         private readonly EndPoint _upstream;
         private readonly string _statement;
+        private readonly string _expectedTag;
+        private readonly bool _forcePriorIdle;
+        private readonly ConcurrentQueue<string> _trace = new();
         private int _armed = 1;
         private int _dropped;
+        private int _connectionId;
+        private int _priorIdleCompleted;
+        private string? _droppedCommandTag;
 
-        public CommitResponseDropProxy(string upstreamDirectory, int port, string statement = "UPDATE matches SET status='Running'")
+        public CommitResponseDropProxy(string upstreamDirectory, int port, string statement = "UPDATE matches SET status='Running'", bool forcePriorIdle = false)
         {
             SocketDirectory = Path.Combine(Path.GetTempPath(), "fc-launch-" + Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(SocketDirectory);
@@ -386,6 +407,8 @@ public sealed class PostgresLifecycleRecoveryTests
                 ? new UnixDomainSocketEndPoint(Path.Combine(upstreamDirectory, $".s.PGSQL.{port}"))
                 : new DnsEndPoint(upstreamDirectory, port);
             _statement = statement;
+            _expectedTag = statement == "COMMIT" ? "COMMIT" : "UPDATE 1";
+            _forcePriorIdle = forcePriorIdle;
             _listener.Bind(new UnixDomainSocketEndPoint(Path.Combine(SocketDirectory, $".s.PGSQL.{port}")));
             _listener.Listen(8);
             _acceptor = AcceptAsync();
@@ -393,6 +416,20 @@ public sealed class PostgresLifecycleRecoveryTests
 
         public string SocketDirectory { get; }
         public bool DroppedCommittedResponse => Volatile.Read(ref _dropped) == 1;
+        public string[] ProtocolTrace => _trace.ToArray();
+        public string? DroppedCommandTag => _droppedCommandTag;
+        public bool PriorIdleCompleted => Volatile.Read(ref _priorIdleCompleted) == 1;
+
+        private sealed class ResponseCycle(int id, bool probe = false)
+        {
+            public int Id { get; } = id;
+            public bool Probe { get; } = probe;
+            public bool Target { get; set; }
+            public bool Failed { get; set; }
+            public List<string> CommandTags { get; } = [];
+            public List<(byte[] Header, byte[] Payload)> Buffered { get; } = [];
+            public TaskCompletionSource Completion { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
+        }
 
         private async Task AcceptAsync()
         {
@@ -414,51 +451,144 @@ public sealed class PostgresLifecycleRecoveryTests
                 ? new Socket(AddressFamily.Unix, SocketType.Stream, ProtocolType.Unspecified)
                 : new Socket(SocketType.Stream, ProtocolType.Tcp))
             {
+                using var connectionShutdown = CancellationTokenSource.CreateLinkedTokenSource(_shutdown.Token);
+                var cancellationToken = connectionShutdown.Token;
                 try
                 {
-                    await server.ConnectAsync(_upstream, _shutdown.Token);
+                    await server.ConnectAsync(_upstream, cancellationToken);
                     await using var frontend = new NetworkStream(client, ownsSocket: false);
                     await using var backend = new NetworkStream(server, ownsSocket: false);
                     var startupLength = new byte[4];
-                    await frontend.ReadExactlyAsync(startupLength, _shutdown.Token);
+                    await frontend.ReadExactlyAsync(startupLength, cancellationToken);
                     var startup = new byte[BinaryPrimitives.ReadInt32BigEndian(startupLength) - 4];
-                    await frontend.ReadExactlyAsync(startup, _shutdown.Token);
-                    await backend.WriteAsync(startupLength, _shutdown.Token);
-                    await backend.WriteAsync(startup, _shutdown.Token);
-                    var dropResponse = 0;
-                    var request = ForwardAsync(frontend, backend, inspectRequest: true);
-                    var response = ForwardAsync(backend, frontend, inspectRequest: false);
+                    await frontend.ReadExactlyAsync(startup, cancellationToken);
+                    var connection = Interlocked.Increment(ref _connectionId);
+                    var cycles = new ConcurrentQueue<ResponseCycle>();
+                    cycles.Enqueue(new ResponseCycle(0));
+                    await backend.WriteAsync(startupLength, cancellationToken);
+                    await backend.WriteAsync(startup, cancellationToken);
+                    var nextCycle = 0;
+                    ResponseCycle? extendedCycle = null;
+                    var request = ForwardRequestsAsync();
+                    var response = ForwardResponsesAsync();
                     await Task.WhenAny(request, response);
+                    await connectionShutdown.CancelAsync();
                     client.Close();
                     server.Close();
                     await Task.WhenAll(request, response);
 
-                    async Task ForwardAsync(Stream source, Stream destination, bool inspectRequest)
+                    async Task ForwardRequestsAsync()
                     {
                         var header = new byte[5];
                         while (true)
                         {
-                            await source.ReadExactlyAsync(header, _shutdown.Token);
+                            await frontend.ReadExactlyAsync(header, cancellationToken);
                             var payload = new byte[BinaryPrimitives.ReadInt32BigEndian(header.AsSpan(1)) - 4];
-                            await source.ReadExactlyAsync(payload, _shutdown.Token);
-                            if (inspectRequest && (header[0] == 'P' || header[0] == 'Q') &&
+                            await frontend.ReadExactlyAsync(payload, cancellationToken);
+                            var target = (header[0] == 'P' || header[0] == 'Q') &&
                                 Encoding.UTF8.GetString(payload).Split('\0').Any(part =>
                                     part.TrimStart().StartsWith(_statement, StringComparison.Ordinal)) &&
-                                Interlocked.Exchange(ref _armed, 0) == 1)
-                                Volatile.Write(ref dropResponse, 1);
-                            if (!inspectRequest && Volatile.Read(ref dropResponse) == 1)
+                                Interlocked.Exchange(ref _armed, 0) == 1;
+                            if (target && _forcePriorIdle)
                             {
-                                if (header[0] == 'Z')
-                                {
-                                    if (payload[0] == 'I') Interlocked.Exchange(ref _dropped, 1);
-                                    return;
-                                }
-                                continue;
+                                if (extendedCycle is not null)
+                                    throw new InvalidOperationException("Prior-idle probe must precede the target extended cycle.");
+                                var priorIdle = new ResponseCycle(++nextCycle, probe: true);
+                                cycles.Enqueue(priorIdle);
+                                var probe = Encoding.UTF8.GetBytes("SELECT 1\0");
+                                var probeHeader = new byte[5];
+                                probeHeader[0] = (byte)'Q';
+                                BinaryPrimitives.WriteInt32BigEndian(probeHeader.AsSpan(1), probe.Length + 4);
+                                Trace(priorIdle, "request-Q:prior-idle-probe-before-target");
+                                await backend.WriteAsync(probeHeader, cancellationToken);
+                                await backend.WriteAsync(probe, cancellationToken);
+                                await priorIdle.Completion.Task.WaitAsync(cancellationToken);
                             }
-                            await destination.WriteAsync(header, _shutdown.Token);
-                            await destination.WriteAsync(payload, _shutdown.Token);
+
+                            ResponseCycle? cycle = null;
+                            if (header[0] == 'Q')
+                            {
+                                cycle = new ResponseCycle(++nextCycle);
+                                cycles.Enqueue(cycle);
+                            }
+                            else if (header[0] is (byte)'P' or (byte)'B' or (byte)'D' or (byte)'E' or (byte)'C' or (byte)'H' or (byte)'S')
+                            {
+                                if (extendedCycle is null)
+                                {
+                                    extendedCycle = new ResponseCycle(++nextCycle);
+                                    cycles.Enqueue(extendedCycle);
+                                }
+                                cycle = extendedCycle;
+                                if (header[0] == 'S') extendedCycle = null;
+                            }
+                            if (cycle is not null)
+                            {
+                                if (target) cycle.Target = true;
+                                Trace(cycle, "request-" + (char)header[0] + (target ? ":target-forwarded" : ""));
+                            }
+                            await backend.WriteAsync(header, cancellationToken);
+                            await backend.WriteAsync(payload, cancellationToken);
                         }
                     }
+
+                    async Task ForwardResponsesAsync()
+                    {
+                        var header = new byte[5];
+                        while (true)
+                        {
+                            await backend.ReadExactlyAsync(header, cancellationToken);
+                            var payload = new byte[BinaryPrimitives.ReadInt32BigEndian(header.AsSpan(1)) - 4];
+                            await backend.ReadExactlyAsync(payload, cancellationToken);
+                            if (!cycles.TryPeek(out var cycle))
+                                throw new InvalidOperationException("Backend response has no matching request cycle.");
+                            if (header[0] == 'C')
+                            {
+                                var tag = Encoding.UTF8.GetString(payload).TrimEnd('\0');
+                                cycle.CommandTags.Add(tag);
+                                Trace(cycle, "response-C:" + tag);
+                            }
+                            if (header[0] == 'E') cycle.Failed = true;
+                            if (cycle.Target) cycle.Buffered.Add((header.ToArray(), payload));
+                            if (header[0] == 'Z')
+                            {
+                                Trace(cycle, "response-Z:" + (char)payload[0]);
+                                if (!cycles.TryDequeue(out var completed) || !ReferenceEquals(completed, cycle))
+                                    throw new InvalidOperationException("PostgreSQL response cycle order changed.");
+                                if (cycle.Probe)
+                                {
+                                    if (cycle.Failed || payload[0] != 'I' || !cycle.CommandTags.SequenceEqual(["SELECT 1"]))
+                                        throw new InvalidOperationException("Prior-idle probe did not complete normally.");
+                                    Interlocked.Exchange(ref _priorIdleCompleted, 1);
+                                    cycle.Completion.TrySetResult();
+                                }
+                                else if (cycle.Target)
+                                {
+                                    if (!cycle.Failed && payload[0] == 'I' && cycle.CommandTags.SequenceEqual([_expectedTag]))
+                                    {
+                                        _droppedCommandTag = _expectedTag;
+                                        Trace(cycle, "drop-confirmed-target-committed");
+                                        Interlocked.Exchange(ref _dropped, 1);
+                                        return;
+                                    }
+                                    // Preserve an unexpected database result; do not claim
+                                    // that a failed or still-open transaction committed.
+                                    foreach (var frame in cycle.Buffered)
+                                    {
+                                        await frontend.WriteAsync(frame.Header, cancellationToken);
+                                        await frontend.WriteAsync(frame.Payload, cancellationToken);
+                                    }
+                                }
+                            }
+                            if (!cycle.Target && !cycle.Probe)
+                            {
+                                await frontend.WriteAsync(header, cancellationToken);
+                                await frontend.WriteAsync(payload, cancellationToken);
+                            }
+                        }
+                    }
+
+                    void Trace(ResponseCycle cycle, string message) =>
+                        _trace.Enqueue($"connection={connection},cycle={cycle.Id},target={cycle.Target},probe={cycle.Probe},{message}");
                 }
                 catch (Exception exception) when (exception is IOException or SocketException or OperationCanceledException or ObjectDisposedException) { }
             }

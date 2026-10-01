@@ -370,6 +370,7 @@ public sealed partial class ProcessLifecycleRecoveryTests
             if (import) { start.ArgumentList.Add("--editor"); start.ArgumentList.Add("--import"); start.ArgumentList.Add("--quit"); }
             else { start.ArgumentList.Add("--script"); start.ArgumentList.Add("res://tests/" + script); }
             start.Environment.Clear();
+            ConfigureWindowsChild(start, fixture);
             foreach (var name in new[] { "XDG_DATA_HOME", "XDG_CONFIG_HOME", "XDG_CACHE_HOME" })
             { var directory = Path.Combine(fixture, "user-" + name.ToLowerInvariant()); Directory.CreateDirectory(directory); start.Environment[name] = directory; }
             start.Environment["FANTASYCARD_SERVER_URL"] = $"http://127.0.0.1:{port}";

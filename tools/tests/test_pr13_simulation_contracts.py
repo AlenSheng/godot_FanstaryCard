@@ -15,12 +15,14 @@ from tools import pr13_simulation_report as reports
 
 PROFILES = dict(zip(factors.FACTORS, ('TargetedO6Hp095', 'TargetedO6Hp090',
                                      'TargetedO6Windup025', 'TargetedO6Windup050')))
+STRATEGY_VERSION = 'fixture-public-v2'
 
 
 def row(seed, profile='Baseline', group='O6', hero='Mage', strategy='basic'):
     windup = 250 if profile == 'TargetedO6Windup025' else 500 if profile == 'TargetedO6Windup050' else 0
     return dict(Seed=seed, SeedBlock=seed % 3, Hero=hero, WeaponLevel=0, Deck='default',
                 Group=group, Strategy=strategy, Profile=profile, Outcome='Victory',
+                StrategyVersion=STRATEGY_VERSION, StrategyProfile=f'{STRATEGY_VERSION}/{strategy}/{profile}',
                 ObservedSeconds=10, LongestEffectiveGapSeconds=1, Damage60=10,
                 EffectiveShield=0, HealOverflow=0, ShieldOverflow=0, PreviewParityChecks=1,
                 FirstWindupExtraMilliseconds=windup, FirstWindupExtensions=1 if windup else 0,
@@ -31,7 +33,7 @@ def fixture(directory, rows, seed_start=0, samples=3, factor='outer-o6-hp095', *
     directory.mkdir(parents=True, exist_ok=True)
     manifest = dict(Kind='statistical_fixture', SourceSha='fixture-source',
                     DomainAssemblySha256='fixture-domain', SimulatorAssemblySha256='fixture-simulator',
-                    SourceConfigSha256='fixture-config', ConfigVersion='fixture-v1',
+                    SourceConfigSha256='fixture-config', ConfigVersion='fixture-v1', StrategyVersion=STRATEGY_VERSION,
                     SeedStart=seed_start, SamplesPerStratum=samples, Candidate=factor,
                     CutoffSeconds=60, ActionIntervalSeconds=.4, Groups=['O6'], Strategies=['basic'],
                     Decks=[dict(Hero='Mage', Key='default')], WeaponLevel=0,
@@ -160,7 +162,7 @@ class SimulationReportTests(unittest.TestCase):
 
     def test_mixed_frozen_inputs_are_rejected(self):
         for field in ('SourceSha', 'DomainAssemblySha256', 'SimulatorAssemblySha256',
-                      'SourceConfigSha256', 'CutoffSeconds', 'Candidate', 'Decks'):
+                      'SourceConfigSha256', 'CutoffSeconds', 'Candidate', 'Decks', 'StrategyVersion'):
             with self.subTest(field=field):
                 first = fixture(self.root / 'a', self.paired())
                 changed = 120 if field == 'CutoffSeconds' else ([dict(Hero='Mage', Key='default', Sha256='different-deck')]
@@ -250,6 +252,47 @@ class FactorControlsTests(unittest.TestCase):
         self.assertFalse(result['main_sample_floor_met'])
         self.assertFalse(result['acceptance_eligible'])
         self.assertEqual(result['execution_states'], {'Completed': 12})
+
+    def test_valid_derived_labels_allow_only_the_declared_profile_difference(self):
+        directory=Path(self.jobs[0]['output'])
+        rows=[json.loads(line) for line in (directory/'encounters.jsonl').read_text().splitlines()]
+        a,b=[value for value in rows if value['Seed']==0 and value['Hero']=='Mage' and
+             value['Group']=='O1' and value['Strategy']=='basic']
+        self.assertEqual({key for key in a if a[key]!=b[key]}, {'Profile','StrategyProfile'})
+        self.assertEqual(a['StrategyVersion'], b['StrategyVersion'])
+        result=self.validate()
+        self.assertTrue(result['passed'],result['errors'])
+        self.assertEqual(result['unaffected_paired_controls_checked'],972)
+
+    def test_forged_or_missing_strategy_version_and_derived_label_are_rejected(self):
+        directory=Path(self.jobs[0]['output'])
+        original=[json.loads(line) for line in (directory/'encounters.jsonl').read_text().splitlines()]
+        manifest=json.loads((directory/'manifest.json').read_text())
+        for field,value in (('StrategyVersion','forged-version'),('StrategyProfile','forged-label'),
+                            ('StrategyVersion',None),('StrategyProfile',None)):
+            with self.subTest(field=field,value=value):
+                fixture(directory,[dict(row) for row in original],**manifest)
+                self.change_rows(lambda rows: next(row for row in rows if row['Profile']=='BaselinePairedControl').update({field:value}))
+                result=self.validate()
+                self.assertFalse(result['passed'])
+                self.assertIn('invalid_strategy_identity',[error['kind'] for error in result['errors']])
+
+    def test_manifest_strategy_version_must_be_declared_and_match_other_jobs(self):
+        path=Path(self.jobs[0]['output'])/'manifest.json'
+        original=json.loads(path.read_text())
+        for version in (None,'','different-version'):
+            with self.subTest(version=version):
+                path.write_text(json.dumps(dict(original,StrategyVersion=version)))
+                result=self.validate()
+                self.assertFalse(result['passed'])
+                self.assertIn('invalid_run_contract',[error['kind'] for error in result['errors']])
+
+    def test_valid_derived_labels_do_not_exempt_a_real_behavior_change(self):
+        self.change_rows(lambda rows: next(row for row in rows if row['Profile']=='BaselinePairedControl').update(Damage60=999))
+        result=self.validate()
+        self.assertFalse(result['passed'])
+        self.assertIn('unaffected_control_changed',[error['kind'] for error in result['errors']])
+        self.assertNotIn('invalid_strategy_identity',[error['kind'] for error in result['errors']])
 
     def test_duplicate_baseline_or_wrong_candidate_is_not_a_pair(self):
         for replacement in ('Baseline', 'TargetedO6Hp090'):
