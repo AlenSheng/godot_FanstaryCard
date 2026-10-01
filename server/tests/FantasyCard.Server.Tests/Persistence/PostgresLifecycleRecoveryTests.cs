@@ -102,6 +102,11 @@ public sealed class PostgresLifecycleRecoveryTests(ITestOutputHelper output)
             "SELECT health_potion_count FROM player_consumables WHERE player_id=$1", playerId));
         Assert.Equal(1L, await database.ScalarAsync<long>(
             "SELECT count(*) FROM inventory_movements WHERE request_id=$1 AND reason='match.start'", pending.MatchId.ToString("D")));
+        output.WriteLine(JsonSerializer.Serialize(new
+        {
+            completed = "same-room-retry-and-restart", forcePriorIdle, pending.MatchId, pending.RoomId,
+            uniqueRoomAndInventoryMovementVerified = true
+        }));
     }
 
     [Theory(Skip = "Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.",

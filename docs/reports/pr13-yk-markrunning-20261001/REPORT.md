@@ -32,6 +32,14 @@ The verified sparse copy retains **2,397 files / 622,501,625 baseline physical b
 
 The **25-minute workflow timeout and all 10/30-second business budgets remain unchanged**. No test is excluded, no assertion is weakened, and first-failure artifacts remain available. Final fixed-SHA full local/CI outcomes are recorded separately after this change; the targeted green results alone are not a complete regression signoff.
 
+## Follow-up at source 636306c
+
+The clean fixed-SHA local solution passed **Domain 349/0/0 + Server 303/0/0**; fixed-SHA TCP recovery passed **9/0/0**, Windows real LOAD02 passed **3/0/0**, and ordinary-client raw receipts again prove the second barrier while four real Pending holds exist before wallet commit. All 8,004 predecessor evidence files remain unchanged.
+
+At `636306c86381e95316a0172cc7519a5eb6254364`, Numerical full acceptance [36888428025](https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/36888428025) and two other workflows succeeded. Numerical checkout took 94 seconds. Gameplay [36888427975](https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/36888427975) was cancelled: its PostgreSQL job's unchanged 20-minute limit was exceeded, after 9m46s of full checkout. The cancelled Gameplay suite is incomplete and is not counted as passed; the Numerical success does not cover it. The original cancellation annotation and available raw archive remain preserved.
+
+The follow-up applies the same already verified runtime sparse checkout to Gameplay's PostgreSQL job, retains its 20-minute limit, and adds a diagnostic marker only after every original same-room/restart/inventory assertion finishes. A new source commit triggers all four normal PR checks. Final outcomes are recorded separately; no failed or cancelled attempt is rerun or erased.
+
 ## Acceptance and delivery boundary
 
 No independent acceptance is changed: **16 Accepted / 41 Partial / 72 NotRevalidated / 3 Blocked**, 132 unique tasks. The previous LOAD02, public-input combat strategy, real deck ledger changes and second four-Pending ordinary-client barrier remain intact. B03/B06 unmet prerequisites and broader ledger gaps stay open. Four old-cloud simulation raw ZIPs (31,096,278 bytes) remain unavailable; no Library ID is invented.

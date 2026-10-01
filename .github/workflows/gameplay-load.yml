@@ -173,6 +173,21 @@ jobs:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
+          # Match the verified Numerical runtime checkout: historical evidence
+          # and tracked build/package caches must not consume this 20m job.
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/art/
+            !/artifacts/
+            !/design/
+            !/output/
+            !/outputs/
+            !/client/evidence/
+            !/docs/reports/
+            !/server/.packages/
+            !**/bin/
+            !**/obj/
       - uses: actions/setup-dotnet@v6
         with:
           global-json-file: server/global.json
