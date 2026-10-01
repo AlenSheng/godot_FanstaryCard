@@ -26,7 +26,7 @@ server/client/config/protocol/GDD 对各自基线均无差异。main 与 release
 - 最终 release 候选 `65361bcc` 的 [41 项控制器测试](cloud-tests-final.log) 全通过；首次固定候选测试也保留在 [cloud-tests.log](cloud-tests.log)。覆盖授权、artifact、输入、事务/回滚、断连 unknown 和白名单诊断。
 - actionlint 对 Cloud、旧版 Numerical、release 部署 workflow、main 注册 stub 全通过；[日志](actionlint.log) 无诊断。13 个 Python 文件解析、5 个 Bash 脚本语法通过。
 - 只读 scope/来源/输入 schema、原有 guard 字节一致性、旧 Numerical 仅暂存/上传修改、三报告完整保留、独立 index patch/tree 检查全部通过。
-- **应用基线仍编译失败**：[Domain build 完整日志](domain-build.log) 为 10 个 CS1739/CS1061、0 warnings，缺少 useConsumptionBasedFenxian/useFractionalGuardianWeapon/快照成员，测试未执行。编译在 `507334dd` 上使用工作区外 artifacts 与本地 NuGet cache 完成；最终 `65361bcc` 的 server/client/config/protocol 完全相同。没有为此修改 PR13、跳过用例或降低镜像门槛。
+- **完整回归在测试项目编译阶段阻断**：[Domain build 完整日志](domain-build.log) 明确记录 Domain.dll 已成功构建；10 个 CS1739/CS1061、0 warnings 均来自 Domain.Tests 的 CombatAuthoritativeRulesTests（useConsumptionBasedFenxian/useFractionalGuardianWeapon/快照成员不匹配），测试未执行。这阻断完整回归及最终镜像测试验收，不能称应用本体编译失败。编译在 `507334dd` 上使用工作区外 artifacts 与本地 NuGet cache 完成；最终 `65361bcc` 的 server/client/config/protocol 完全相同。没有为此修改 PR13、跳过用例或降低镜像门槛。
 - 本候选没有执行新的最终镜像/restart/Production/DB-outage 或线上验证，不能套用 PR17/18 的不同应用源码镜像证据。**完整部署测试未满足，application_deployable=false，Rooms guard 继续阻断；热回滚 unsafe 与排空 guard 完备性未证明仍有效。**
 - 候选/证据分支不匹配仓库现有 push branch 触发规则；候选推送后的 GitHub API head 查询均为 0 workflow runs。未开 PR 或启动批量 CI，避免旧基线的已知编译失败消耗免费分钟。下一有效候选 CI 由父任务统一安排。
 
