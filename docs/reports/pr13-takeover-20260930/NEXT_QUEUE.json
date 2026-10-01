@@ -123,10 +123,11 @@
     "manifest": "actual-factors-cc6da2e/raw-package-manifest.json",
     "remote_upload_done": false,
     "authorization_state": "AuthorizedOwnPrivateLibraryOnly20261001T0029UTC",
-    "save_attempts": 1,
-    "save_error": "hosted apps tools/list request failed: network",
+    "save_attempts": 2,
+    "save_error": "library upload failed: hosted apps tools/list request failed: network",
     "receipt": "RAW4_LIBRARY_RECEIPT_20261001.json",
-    "library_ids": null
+    "library_ids": null,
+    "latest_receipt": "RAW4_LIBRARY_RETRY1_20261001.json"
   },
   "ui_cross_regression": {
     "PR": 16,
@@ -137,5 +138,12 @@
     "next": "Use isolated temporary integration branch after stable batch; review main/reference_ui/card_view/exploration_view hunks against manual target authority; never merge PR16 or release here.",
     "latest_parent_verified_UI_sha": "070c7b4",
     "source_of_status": "Parent delegation message2026-09-30 during stage finalization"
+  },
+  "release_baseline_current": {
+    "sha": "65361bcc27c51c28651c86c5dbba4f083a9b39e0",
+    "main_sha": "1517f9fae8d865b8d663fa27d9fd38e95cb03d28",
+    "source": "MAIN delegation independently confirmed by authenticated git ls-remote",
+    "current_PR13_runtime_source_unchanged": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+    "not_merged_or_deployed_here": true
   }
 }
