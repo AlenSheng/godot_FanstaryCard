@@ -1,0 +1,76 @@
+{
+  "phase": "Approved minimal integration applied; deployment still blocked",
+  "started_at_utc": "2026-10-01 01:09:46 UTC",
+  "verified_at_utc": "2026-10-01 01:13:21 UTC",
+  "authorization": "Explicit user minimal integration approval and parent independent review confirmation; controller components Passed only.",
+  "method": "Normal git push --atomic with two exact SHA refs; no force and no PR merge.",
+  "push_exit_code": 0,
+  "push_output": "To https://github.com/AlenSheng/godot_FanstaryCard.git\n   b39841d3..1517f9fa  1517f9fae8d865b8d663fa27d9fd38e95cb03d28 -> main\n   28c6c7e7..65361bcc  65361bcc27c51c28651c86c5dbba4f083a9b39e0 -> release\n",
+  "before": {
+    "release": {
+      "sha": "28c6c7e7d3898e4d2abd186f53361477ba380330",
+      "protected": false
+    },
+    "main": {
+      "sha": "b39841d3f5191c11c9e51c7e6875490789aba53c",
+      "protected": false
+    }
+  },
+  "after": {
+    "release": {
+      "sha": "65361bcc27c51c28651c86c5dbba4f083a9b39e0",
+      "tree": "090050d70a07ea9d6049495130b10e19fd106fb0",
+      "files_changed": 24
+    },
+    "main": {
+      "sha": "1517f9fae8d865b8d663fa27d9fd38e95cb03d28",
+      "tree": "e0e1d47405b243336908efa9ddbe930ba53674c0",
+      "files_changed": 1,
+      "lines_added": 40
+    },
+    "default_branch": "main"
+  },
+  "default_main_stub": {
+    "file_read_via_default_ref": true,
+    "blob_sha": "70f928e479746bc3aabe67e72e4512b7dc0b73df",
+    "permissions_empty": true,
+    "job_always_false": true,
+    "contains_no_environment_secret_checkout": true
+  },
+  "release_controller": {
+    "blob_sha": "46432e8bac56a988a65c35c29f36e857af30dabc",
+    "events": [
+      "workflow_dispatch"
+    ],
+    "source_ref": "refs/heads/release",
+    "repository": "AlenSheng/godot_FanstaryCard",
+    "original_guard_unchanged": true
+  },
+  "workflow_discovery": {
+    "default_branch_file_present": true,
+    "github_workflows_api_accessible": false,
+    "connector_error": "INVALID_ARGUMENT/HTTP400 unsupported URL",
+    "existing_cli_error": "Forbidden",
+    "actual_ui_registration_verified": false,
+    "pending": "Parent authenticated GitHub browser read-only Actions list and release branch selector; do not dispatch."
+  },
+  "server_action_evidence": {
+    "workflow_dispatch_runs_total": 0,
+    "release_head_runs_total": 0,
+    "main_head_runs_total": 0,
+    "workflow_dispatched": false,
+    "ssh_or_server_commands_used": false
+  },
+  "business_ui_reports_changed_in_integrated_diff": false,
+  "validation_branches_merged": false,
+  "protection_budget_permissions_changed": false,
+  "secrets_read": false,
+  "application_deployable": false,
+  "remaining_gates": [
+    "Domain.dll built successfully; full regression blocked by ten Domain.Tests CombatAuthoritativeRulesTests interface errors.",
+    "Known Rooms compatibility/hot-rollback unsafe remains blocked; no exception.",
+    "New fixed application source/image regression, final DLL/hash/restart/Production/DB-outage proofs are required.",
+    "Runtime Environment protection API, approved controller/source variables and strict SSH still require actual verification; no values changed.",
+    "First deployment needs separately coordinated fixed target/current baseline and server state; none authorized or attempted in this integration."
+  ]
+}

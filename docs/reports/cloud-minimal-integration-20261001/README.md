@@ -1,4 +1,18 @@
-# 最小控制器与默认分支注册候选：待父任务独立审核
+# 最小控制器与默认分支注册：已批准集成，尚不可部署
+
+> 最新状态：父任务独立审核条件满足后，按用户明确批准范围以普通、原子 fast-forward
+> 推送完成两分支更新。release 实际为 `65361bcc27c51c28651c86c5dbba4f083a9b39e0`，main
+> 实际为 `1517f9fae8d865b8d663fa27d9fd38e95cb03d28`；远端 SHA/tree 与下表候选完全一致。
+> 默认分支仍为 main，未改保护、额度或权限，未合并验证分支，未带入报告/业务/UI。
+> 默认 main 的 40 行 stub 与 release 完整 workflow 均已通过 GitHub 文件 API 读取；
+> main 权限为空、job 恒 false，release 仅 workflow_dispatch 且执行来源严格为 release。
+> 两个新 head 和全仓 workflow_dispatch 的运行查询均为 0，未触发部署或服务器操作。
+> workflow 注册/可发现性的 metadata API 被连接器 URL 限制挡住，现有 CLI 返回 Forbidden；
+> **尚未核验实际 Actions UI 可发现性**，由父任务已登录浏览器只读核对列表与 release
+> 分支选择，不能按下 dispatch。完整已生效记录及待部署门槛见 [apply-record.json](apply-record.json)。
+>
+> 以下正文与 candidate-review.json 保留的是集成前准备/核验记录，其“未应用”描述为
+> 当时状态；新 apply-record.json 是集成后的当前结果。应用与热回滚仍严格阻断。
 
 用户于 2026-10-01 00:31 UTC 明确批准审核和测试后的最小 release/main 集成。本批次只准备固定候选、差异和证据；**未修改远端 release/main，未触发部署，未读取 secret，未修改预算、支付或权限**。父任务独立审核确认前不应用。
 
