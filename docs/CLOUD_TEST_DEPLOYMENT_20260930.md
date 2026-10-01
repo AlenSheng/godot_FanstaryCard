@@ -2,15 +2,18 @@
 
 > 2026-10-01 最小集成候选说明：仅提取 PR14 `262390134e98f169899d076e6fa21926d44ba1aa`
 > 的控制器、工具和本说明，加上 PR18 测试代码 `cc216e07cb63a1fb2d96430f09effc6452ae57fa`
-> 的 Cloud artifact 白名单、导出器及测试。未合并 PR15/17/18 验证分支，未引入 PR13
+> 的 Cloud artifact 白名单、导出器及测试，并将同一暂存/上传修正应用到 release
+> 已有的旧版 Numerical 工作流。未合并 PR15/17/18 验证分支，未引入 PR13
 > 业务/UI、兼容 harness 或验证专用工作流。候选准备基线为 release
 > `28c6c7e7d3898e4d2abd186f53361477ba380330`；server/client/config/protocol 内容不变。
 > 此旧应用基线的已知接口编译不一致与 Rooms 兼容性阻断仍有效，不能部署或热回滚。
 > 本地控制器检查不代替最终应用镜像、真实 Environment API、SSH 或线上验收。
 >
-> release 基线没有 Gameplay/Numerical 工作流，因此本次只应用 Cloud 白名单；另外
-> 两项修正保留在 [Draft PR18](https://github.com/AlenSheng/godot_FanstaryCard/pull/18)，
-> 等相应工作流进入发布基线时另行提取。用户已批准审核和测试后的最小集成，实际
+> release 基线没有 Gameplay 工作流，故该项修正保留在
+> [Draft PR18](https://github.com/AlenSheng/godot_FanstaryCard/pull/18)，等相应工作流进入
+> 发布基线时另行提取。Numerical 仅增加白名单暂存/上传，没有携带其 PR13 新版本的
+> .NET 安装、Godot 版本/命令调整、preview 对照脚本或触发路径变化。
+> 用户已批准审核和测试后的最小集成，实际
 > release/main 写入须待父任务独立审核此固定候选；准备阶段没有写入两分支、设置
 > 启用变量、手动触发部署或读取 secret 值。默认 main 的单文件注册入口恒不执行，
 > 真正运行仍须明确选择 release，并通过全部原有门禁。
