@@ -6,6 +6,7 @@ class Load02Probe:
 	extends "res://tests/gameplay_load_client.gd"
 	var stop_observed := false
 	var started_observed := false
+	var observation_failed := false
 	var first_failure: Dictionary = {}
 	var completed_events: Array = []
 	var entered_matches: Array = []
@@ -36,27 +37,30 @@ class Load02Probe:
 			"partition": {"started": started, "completed": cycles_completed, "failed": failed, "cancelled": cancelled,
 				"pending": pending, "incomplete": started - cycles_completed - failed - cancelled - pending}}
 
-	func _write_observation(suffix: String, cutoff: String, outcome: String = "") -> void:
-		_publish_observation(report_path + suffix, _snapshot(cutoff, outcome))
+	func _write_observation(suffix: String, cutoff: String, outcome: String = "") -> bool:
+		return _publish_observation(report_path + suffix, _snapshot(cutoff, outcome))
 
-	func _publish_observation(path: String, observation: Dictionary) -> void:
+	func _publish_observation(path: String, observation: Dictionary) -> bool:
 		var temporary := path + ".tmp"
 		var file := _open_observation(temporary)
 		if file == null:
 			_observation_error("open", FileAccess.get_open_error())
-			return
+			return false
 		file.store_string(JSON.stringify(observation, "\t"))
 		file.flush()
 		var error := file.get_error()
 		file.close()
 		if error != OK:
 			_observation_error("write", error)
-			return
+			return false
 		error = DirAccess.rename_absolute(temporary, path)
 		if error != OK:
 			_observation_error("publish", error)
+			return false
+		return true
 
 	func _observation_error(operation: String, error: Error) -> void:
+		observation_failed = true
 		push_error("LOAD02 observation %s failed: %s" % [operation, error_string(error)])
 		get_tree().quit(1)
 
@@ -64,13 +68,14 @@ class Load02Probe:
 		return FileAccess.open(path, FileAccess.WRITE)
 
 	func _process(delta: float) -> void:
+		if observation_failed: return
 		super._process(delta)
 		if scenario_started and not started_observed:
 			started_observed = true
-			_write_observation(".started.json", "original_scenario_started")
+			if not _write_observation(".started.json", "original_scenario_started"): return
 		if stop_requested and not stop_observed:
 			stop_observed = true
-			_write_observation(".stop-observed.json", "original_process_observed_STOP")
+			if not _write_observation(".stop-observed.json", "original_process_observed_STOP"): return
 		if not stop_requested and stage == "playing" and not Game.has_pending_commands():
 			var action := "action.extract" if Game.allowed("action.extract") else "battle.abandon" if Game.allowed("battle.abandon") else ""
 			if not action.is_empty() and Game.command(action):
@@ -94,13 +99,16 @@ class Load02Probe:
 		if sample.get("event_type") == "cycle.completed": completed_events.append(sample.duplicate(true))
 
 	func _finish(ok: bool, message: String, exit_code: int = -1) -> void:
+		if observation_failed:
+			get_tree().quit(1)
+			return
 		var outcome := "completed" if ok else ("cancelled" if exit_code == 0 else "failed")
 		var accounting := _snapshot("same_final_cutoff_before_original_finish", outcome)
 		accounting.merge({"mode": mode, "underlying_ok": ok, "underlying_message": message, "underlying_exit_argument": exit_code,
 			"underlying_outcome": outcome, "first_failure": first_failure, "entered_matches": entered_matches,
 			"legal_terminal_actions": legal_terminal_actions, "algorithm_version": "load02-observer-v1",
 			"limitations": ["legal extraction/abandon driver; not full Boss or three gameplay routes", "partition derived from original scenario/checks/finish; no new production telemetry"]})
-		_publish_observation(report_path + ".accounting.json", accounting)
+		if not _publish_observation(report_path + ".accounting.json", accounting): return
 		await super._finish(ok, message, exit_code)
 
 func _initialize() -> void:

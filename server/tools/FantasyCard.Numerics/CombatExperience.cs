@@ -13,6 +13,7 @@ using FantasyCard.Domain.Rooms;
 // Strategies may read only hand cards, their own public state and living targets.
 internal static class CombatExperience
 {
+    internal const string StrategyVersion = "public-target-v2";
     private static readonly JsonSerializerOptions Json = new() { WriteIndented = false };
     private static readonly JsonSerializerOptions PrettyJson = new() { WriteIndented = true };
     private static readonly string[] Groups = ["O1", "O6", "E1", "BOSS"];
@@ -46,7 +47,7 @@ internal static class CombatExperience
         var decks = heroes.ToDictionary(hero => hero, hero => CreateDecks(config, hero));
         var manifest = new
         {
-            SchemaVersion = 1, Kind = "actual_domain_encounter_simulation", SourceSha = sourceSha,
+            SchemaVersion = 1, Kind = "actual_domain_encounter_simulation", SourceSha = sourceSha, StrategyVersion,
             ConfigVersion = config.Version, SamplesPerStratum = samples, SeedStart = seedStart,
             DomainAssemblySha256 = HashFile(typeof(BattleRoom).Assembly.Location),
             SimulatorAssemblySha256 = HashFile(typeof(CombatExperience).Assembly.Location),
@@ -59,7 +60,7 @@ internal static class CombatExperience
             CandidateWhitelist = candidateKind == "class-passives" ? groups : new[] { "O6" }, SingleFactorOnly = true,
             FirstWindupScope = "Only the first positive intent windup of each O6 monster; subsequent windups and attack intervals unchanged; 100ms tick resolution",
             StrategyPolicy = "baseline_all_hand spends immediately; basic/build wait for three cards or two core cards above 25% HP, then score visible subsets assuming zero undisclosed target resistance; actual authority remains unchanged",
-            RunIdentity = new { SeedStart = seedStart, Samples = samples, Candidate = candidateKind, WeaponLevel = weaponLevel },
+            RunIdentity = new { SeedStart = seedStart, Samples = samples, Candidate = candidateKind, WeaponLevel = weaponLevel, StrategyVersion },
             Scope = "Synthetic encounter entry, not a legal full expedition route or network capacity proof",
             Outcomes = new[] { "Victory", "Death", "Censored", "Error" },
             ProductionDefaults = config.Numerics, CandidateActivation = false,
@@ -90,7 +91,7 @@ internal static class CombatExperience
                     "outer-o6-windup050" => group == "O6" ? "TargetedO6Windup050" : "BaselinePairedControl",
                     _ => hero switch { HeroClass.Mage => "CoreCardsSpent", HeroClass.Guardian => "FractionalRemainder", _ => "BaselinePairedControl" }
                 } : "Baseline";
-                var key = $"{hero}/{deck.Key}/{group}/{strategy}/{profile}";
+                var key = $"{StrategyVersion}/{hero}/{deck.Key}/{group}/{strategy}/{profile}";
                 var rows = new List<EncounterSample>(samples);
                 strata.Add(key, rows);
                 for (var index = 0; index < samples; index++)
@@ -112,7 +113,7 @@ internal static class CombatExperience
         }
         var summary = new
         {
-            SchemaVersion = 1, config.Version, SourceSha = sourceSha, ElapsedSeconds = stopwatch.Elapsed.TotalSeconds,
+            SchemaVersion = 1, config.Version, SourceSha = sourceSha, StrategyVersion, ElapsedSeconds = stopwatch.Elapsed.TotalSeconds,
             RawSha256 = HashFile(rawPath), Total = strata.Values.Sum(rows => rows.Count),
             ErrorCount = strata.Values.Sum(rows => rows.Count(row => row.Outcome == "Error")),
             CandidateActivation = false, HumanExperienceVerified = false,
@@ -490,6 +491,8 @@ internal sealed class EncounterSample(int seed, int seedBlock, string hero, stri
     public string Group { get; } = group;
     public string Strategy { get; } = strategy;
     public string Profile { get; } = profile;
+    public string StrategyVersion { get; } = CombatExperience.StrategyVersion;
+    public string StrategyProfile => $"{StrategyVersion}/{Strategy}/{Profile}";
     public int WeaponLevel { get; set; }
     public string Outcome { get; set; } = "Censored";
     public string? Error { get; set; }

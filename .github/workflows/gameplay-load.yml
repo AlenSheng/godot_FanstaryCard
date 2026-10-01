@@ -82,6 +82,20 @@ jobs:
           sudo -E unshare -n timeout 90 "$godot" --headless --path client --script res://tests/run_play_retry.gd > test-results/gameplay-load/client.log 2>&1
           ! grep -E 'SCRIPT ERROR|Parse Error|Failed to load script' test-results/gameplay-load/*.log
           grep -q 'Gameplay load client parses' test-results/gameplay-load/load-parse.log
+          for failure_stage in open publish prior; do
+            for outcome in completed cancelled; do
+              log="test-results/gameplay-load/observation-failure-$failure_stage-$outcome.log"
+              set +e
+              PR13_OBSERVATION_FAILURE="$failure_stage" PR13_OBSERVATION_FINISH="$outcome" sudo -E unshare -n timeout 90 "$godot" --headless --path client --script res://tests/run_observation_publish_failure.gd > "$log" 2>&1
+              status=$?
+              set -e
+              test "$status" -eq 1
+              grep -q '"controlled_publication_failure":true' "$log"
+              grep -q '"original_finish_reached":false' "$log"
+              grep -q 'ERROR: LOAD02 observation' "$log"
+              ! grep -E 'SCRIPT ERROR|Parse Error|Failed to load script' "$log"
+            done
+          done
       - name: Loopback HTTP completeness and protocol fixtures
         shell: bash
         run: |
