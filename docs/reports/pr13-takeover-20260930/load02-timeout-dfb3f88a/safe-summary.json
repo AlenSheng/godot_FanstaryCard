@@ -1,0 +1,257 @@
+{
+  "task_id": "LOAD-02.2",
+  "integration_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+  "status": "ReadyForAcceptance proposal; S6 pending",
+  "profile_hash": "47d985a7d8106f8b9b7469dee979012058c4ce355ac11e5d943ad8a7ed1cc4c8",
+  "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+  "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+  "algorithm_version": "load02-observer-v1",
+  "test_counts": {
+    "focused": {
+      "total": "3",
+      "executed": "3",
+      "passed": "3",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "full_server": {
+      "total": "302",
+      "executed": "302",
+      "passed": "302",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "full_python": {
+      "total": 122,
+      "passed": 122,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "C_PY_environment_failure_preserved": {
+    "initial_exit_code": 1,
+    "initial_errors": 10,
+    "raw_name": "full-python.log",
+    "remedy": "private minimal Git object metadata with fixed dfb HEAD, no source changes"
+  },
+  "cases": [
+    {
+      "case_id": "LOAD-02.2-T01",
+      "run": "focused",
+      "status": "Passed",
+      "outcome": "failed",
+      "STOP_partition": {
+        "cancelled": 0,
+        "completed": 0,
+        "failed": 1,
+        "incomplete": 0,
+        "pending": 0,
+        "started": 1
+      },
+      "final_partition": {
+        "cancelled": 0,
+        "completed": 0,
+        "failed": 1,
+        "incomplete": 0,
+        "pending": 0,
+        "started": 1
+      },
+      "prepare_attempt_count": 3,
+      "ack_backend200_attempt_count": 0,
+      "timeout_attempt_duration_ms": [
+        10004,
+        10003,
+        6850
+      ],
+      "failed_checks": [
+        "create_free_preparation"
+      ],
+      "error_count": 2,
+      "next_prepare_cancel_verified": true,
+      "relay_error_count": 0
+    },
+    {
+      "case_id": "LOAD-02.2-T02",
+      "run": "focused",
+      "status": "Passed",
+      "outcome": "cancelled",
+      "STOP_partition": {
+        "cancelled": 0,
+        "completed": 0,
+        "failed": 0,
+        "incomplete": 0,
+        "pending": 1,
+        "started": 1
+      },
+      "final_partition": {
+        "cancelled": 1,
+        "completed": 0,
+        "failed": 0,
+        "incomplete": 0,
+        "pending": 0,
+        "started": 1
+      },
+      "prepare_attempt_count": 1,
+      "ack_backend200_attempt_count": 1,
+      "timeout_attempt_duration_ms": [],
+      "failed_checks": [],
+      "error_count": 0,
+      "next_prepare_cancel_verified": true,
+      "relay_error_count": 0
+    },
+    {
+      "case_id": "LOAD-02.2-T03",
+      "run": "focused",
+      "status": "Passed",
+      "outcome": "cancelled",
+      "STOP_partition": {
+        "cancelled": 0,
+        "completed": 0,
+        "failed": 0,
+        "incomplete": 0,
+        "pending": 1,
+        "started": 1
+      },
+      "final_partition": {
+        "cancelled": 1,
+        "completed": 0,
+        "failed": 0,
+        "incomplete": 0,
+        "pending": 0,
+        "started": 1
+      },
+      "prepare_attempt_count": 1,
+      "ack_backend200_attempt_count": 3,
+      "timeout_attempt_duration_ms": [],
+      "failed_checks": [],
+      "error_count": 2,
+      "next_prepare_cancel_verified": true,
+      "relay_error_count": 0
+    },
+    {
+      "case_id": "LOAD-02.2-T01",
+      "run": "full-server",
+      "status": "Passed",
+      "outcome": "failed",
+      "STOP_partition": {
+        "cancelled": 0,
+        "completed": 0,
+        "failed": 1,
+        "incomplete": 0,
+        "pending": 0,
+        "started": 1
+      },
+      "final_partition": {
+        "cancelled": 0,
+        "completed": 0,
+        "failed": 1,
+        "incomplete": 0,
+        "pending": 0,
+        "started": 1
+      },
+      "prepare_attempt_count": 3,
+      "ack_backend200_attempt_count": 0,
+      "timeout_attempt_duration_ms": [
+        10007,
+        10006,
+        6873
+      ],
+      "failed_checks": [
+        "create_free_preparation"
+      ],
+      "error_count": 2,
+      "next_prepare_cancel_verified": true,
+      "relay_error_count": 0
+    },
+    {
+      "case_id": "LOAD-02.2-T02",
+      "run": "full-server",
+      "status": "Passed",
+      "outcome": "cancelled",
+      "STOP_partition": {
+        "cancelled": 0,
+        "completed": 0,
+        "failed": 0,
+        "incomplete": 0,
+        "pending": 1,
+        "started": 1
+      },
+      "final_partition": {
+        "cancelled": 1,
+        "completed": 0,
+        "failed": 0,
+        "incomplete": 0,
+        "pending": 0,
+        "started": 1
+      },
+      "prepare_attempt_count": 1,
+      "ack_backend200_attempt_count": 1,
+      "timeout_attempt_duration_ms": [],
+      "failed_checks": [],
+      "error_count": 0,
+      "next_prepare_cancel_verified": true,
+      "relay_error_count": 0
+    },
+    {
+      "case_id": "LOAD-02.2-T03",
+      "run": "full-server",
+      "status": "Passed",
+      "outcome": "cancelled",
+      "STOP_partition": {
+        "cancelled": 0,
+        "completed": 0,
+        "failed": 0,
+        "incomplete": 0,
+        "pending": 1,
+        "started": 1
+      },
+      "final_partition": {
+        "cancelled": 1,
+        "completed": 0,
+        "failed": 0,
+        "incomplete": 0,
+        "pending": 0,
+        "started": 1
+      },
+      "prepare_attempt_count": 1,
+      "ack_backend200_attempt_count": 3,
+      "timeout_attempt_duration_ms": [],
+      "failed_checks": [],
+      "error_count": 2,
+      "next_prepare_cancel_verified": true,
+      "relay_error_count": 0
+    }
+  ],
+  "limits_ms": {
+    "attempt": 10000,
+    "bot_fill": 30000,
+    "cleanup": 22000,
+    "gate": 8000,
+    "logical": 30000,
+    "outer_fixture": 180000
+  },
+  "raw_policy": "all raw/account context only retained locally; Git receives this summary, additive fixtures and names/size/SHA index",
+  "S6": "Pending MAIN; not Accepted"
+}

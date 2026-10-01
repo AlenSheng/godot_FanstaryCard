@@ -553,17 +553,18 @@
       "task_id": "LOAD-02.2",
       "title": "STOP前后边界",
       "dependency_order": 10,
-      "owner": "MAIN / load P0",
-      "state": "Partial",
+      "owner": "ROOT actual client/owned Program+PG receipt; MAIN independent adjudication",
+      "state": "ReadyForAcceptance",
       "historical_state": "Partial",
       "historical_case_counts": {
         "NotExecuted": 3
       },
-      "implementation_status": "Final evidence, ownership, ACK conservation and STOP/emergency handling corrected and counterexample-tested.",
-      "current_test_status": "Original2Passed/1Partial; actual transport timeout and modeled verdicts retained; actual PG timeout/cycle partition missing.",
-      "modification_sha": "d4c3212fb32c75d4b9f9f62c08277996611b149c",
+      "implementation_status": "Additive actual Process/Godot/PG LOAD02 STOP harness only at dfb3. No production/UI/timeout change. Original business runner/checks/cleanup/finish retained.",
+      "current_test_status": "Fixed dfb3 focused3/0/0, complete unfiltered Server302/0/0 and C-PY122/0/0; three canonical cases at actual PG and original client windows all Passed. Initial C-PY10 errors from missing Git metadata preserved; unchanged fixed source after metadata repair passes.",
+      "modification_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
       "test_commands": [
-        "python -m unittest discover -s tools/tests -v"
+        "python -m unittest discover -s tools/tests -v",
+        "load02-timeout-dfb3f88a/minimal-replay.json: actual C-PY complete and C-SERVER unfiltered"
       ],
       "evidence": [
         "batch-results.json",
@@ -572,9 +573,14 @@
         "ci-b7099ef/verified-artifacts.json",
         "integrated-cc6da2e/report.json",
         "ci-cc6da2e/workflows.json",
-        "offline-acceptance-f812/load02/evidence/LOAD-02.2/ROOT_REPORT.json"
+        "offline-acceptance-f812/load02/evidence/LOAD-02.2/ROOT_REPORT.json",
+        "load02-timeout-dfb3f88a/report.json",
+        "load02-timeout-dfb3f88a/cases.jsonl",
+        "load02-timeout-dfb3f88a/PRIVATE_ARTIFACT_MANIFEST.json",
+        "load02-timeout-dfb3f88a/ROOT_LOAD02_SEAL_CHECKS.json",
+        "load02-timeout-dfb3f88a/cleanup.json"
       ],
-      "remaining_blocker": "Actual Program/PG timeout beforeSTOP with one exclusive failed/cancelled/incomplete cycle terminal; see MISSING_FACTS.json.",
+      "remaining_blocker": "MAIN independent S6 replay/adjudication; this OFFLINE+POSTGRES contract does not add CI/LIVE/human gates.",
       "dependencies": [
         "LOAD-02.1",
         "LOAD-06.2"
@@ -597,9 +603,72 @@
       ],
       "tested_source_shas": [
         "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
-        "f812879e4518fd09bf22656451cb563d62940298"
+        "f812879e4518fd09bf22656451cb563d62940298",
+        "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953"
       ],
-      "acceptance_proposal": "Partial"
+      "acceptance_proposal": "ReadyForIndependentAcceptance",
+      "prior_task_records": [
+        {
+          "task_id": "LOAD-02.2",
+          "title": "STOP前后边界",
+          "dependency_order": 10,
+          "owner": "MAIN / load P0",
+          "state": "Partial",
+          "historical_state": "Partial",
+          "historical_case_counts": {
+            "NotExecuted": 3
+          },
+          "implementation_status": "Final evidence, ownership, ACK conservation and STOP/emergency handling corrected and counterexample-tested.",
+          "current_test_status": "Original2Passed/1Partial; actual transport timeout and modeled verdicts retained; actual PG timeout/cycle partition missing.",
+          "modification_sha": "d4c3212fb32c75d4b9f9f62c08277996611b149c",
+          "test_commands": [
+            "python -m unittest discover -s tools/tests -v"
+          ],
+          "evidence": [
+            "batch-results.json",
+            "p0-9275ec2/python-tests.log",
+            "ci-9275ec2/verified-artifacts.json",
+            "ci-b7099ef/verified-artifacts.json",
+            "integrated-cc6da2e/report.json",
+            "ci-cc6da2e/workflows.json",
+            "offline-acceptance-f812/load02/evidence/LOAD-02.2/ROOT_REPORT.json"
+          ],
+          "remaining_blocker": "Actual Program/PG timeout beforeSTOP with one exclusive failed/cancelled/incomplete cycle terminal; see MISSING_FACTS.json.",
+          "dependencies": [
+            "LOAD-02.1",
+            "LOAD-06.2"
+          ],
+          "profiles": [
+            "OFFLINE",
+            "POSTGRES"
+          ],
+          "gates": [
+            "G1",
+            "G2"
+          ],
+          "accepted_by": null,
+          "next_action": "区分停止前业务失败、正常取消、停止后真实错误和结果未知写入；迟到事件按原上下文归档",
+          "accepted": false,
+          "supporting_tests_are_canonical_acceptance": false,
+          "test_command_manifests": [
+            "ci-9275ec2/verified-artifacts.json",
+            "ci-b7099ef/verified-artifacts.json"
+          ],
+          "tested_source_shas": [
+            "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+            "f812879e4518fd09bf22656451cb563d62940298"
+          ],
+          "acceptance_proposal": "Partial",
+          "prior_task_records": []
+        }
+      ],
+      "remaining_blockers": [
+        "S6 independent MAIN pending"
+      ],
+      "proposed_resolution": "NoChangeWithEvidence",
+      "full_original_case_evidence": true,
+      "latest_runtime_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+      "tested_source_provenance": "967 selected fixed tracked Git blob bytes exact; fresh source-internal Release167 artifacts preserved/verified. Minimal Git objects metadata for original provenance tools, explicitly partial checkout, not clean CI. Observer derives original one-cycle fate and does not replace LOAD03 missing telemetry."
     },
     {
       "task_id": "LOAD-02.3",
@@ -6133,7 +6202,7 @@
       ]
     }
   ],
-  "updated_at_utc": "2026-10-01T00:49:41.617334+00:00",
+  "updated_at_utc": "2026-10-01T02:20:31.988445+00:00",
   "gate_decisions": [
     {
       "gate": "G0",
@@ -6168,27 +6237,27 @@
   ],
   "test_provenance_note": "Pure cc6 checkout:115 Python,27 explicit receipts,6 Godot gates including import, fresh solution/domain317/privatePG262 passed. Original failed missing-Godot invocation26/27 retained. All396 canonical cases and six gates remain unaccepted.",
   "current_ci_evidence": {
-    "state": "MonthlyQuotaRestoredAwaitNecessaryFinalCandidate",
+    "source_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
     "runs": null,
+    "status": "NotStartedFinalReleaseMergeConflict",
+    "release_sha": "65361bcc27c51c28651c86c5dbba4f083a9b39e0",
+    "head_at_conflict_check": "1a7f533666164467ecd7de1604bde62db6d9106b",
+    "conflict_paths": [
+      ".github/workflows/numerical-client.yml"
+    ],
+    "evidence": "load02-timeout-dfb3f88a/NEW_RELEASE_CI_CONFLICT.json",
+    "account_blocker": "Historical billing no-step failure resolved by MAIN actual run36769267487 attempt2; no billing/settings change performed here.",
     "missing_reasons": {
-      "runs": "Final A05 plus LOAD02 candidate not sealed; no intermediate retry requested."
+      "runs": "Final PR head must be combined with updated release workflow by its parent-coordinated owner; no intermediate or duplicate Actions triggered. Actual minutes for an unstarted run do not exist."
     },
-    "MAIN_observed_restoration": {
-      "PR": 18,
-      "run": 36769267487,
-      "attempt": 2,
-      "conclusion": "success",
-      "at_utc": "2026-10-01T00:34:00Z"
-    },
-    "additional_budget_usd": 0,
-    "StopYes_unchanged": true
+    "canonical_OFFLINE_gate": false
   },
-  "latest_runtime_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+  "latest_runtime_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
   "state_counts": {
-    "Partial": 41,
+    "Partial": 40,
     "NotRevalidated": 72,
     "Accepted": 15,
-    "ReadyForAcceptance": 1,
+    "ReadyForAcceptance": 2,
     "Blocked": 3
   },
   "latest_batch_state_transitions": [
@@ -6283,7 +6352,7 @@
   ],
   "production_protocol_fix_sha": "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17",
   "checkpoint_test_fix_sha": "de1157fdf490a5bce3ba888c07519fc957c46782",
-  "latest_test_candidate_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+  "latest_test_candidate_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
   "production_behavior_baseline": "f812879e4518fd09bf22656451cb563d62940298",
   "MAIN_S6_decisions": {
     "kind": "Recorded_explicit_parent_MAIN_S6_decision",
@@ -6941,5 +7010,49 @@
     "state": "ReadyForIndependentAcceptance",
     "resolution": "FixedWithEvidence",
     "Accepted": false
-  }
+  },
+  "latest_LOAD02_timeout_proposal": {
+    "task_id": "LOAD-02.2",
+    "source_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+    "report": "load02-timeout-dfb3f88a/report.json",
+    "proposal": "ReadyForIndependentAcceptance",
+    "resolution": "NoChangeWithEvidence",
+    "S6": "Pending MAIN",
+    "full_primary_cases": 3,
+    "counts": {
+      "C_SERVER_passed": 302,
+      "C_SERVER_failed": 0,
+      "C_SERVER_skipped": 0,
+      "C_PY_passed": 122,
+      "C_PY_failed": 0,
+      "C_PY_skipped": 0
+    }
+  },
+  "latest_additive_batch_state_transitions": [
+    {
+      "task_id": "LOAD-02.2",
+      "from_state": "Partial",
+      "to_state": "ReadyForAcceptance",
+      "source_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+      "authority": "ROOT proposal only; S6 MAIN pending"
+    }
+  ],
+  "prior_current_ci_evidence": [
+    {
+      "state": "MonthlyQuotaRestoredAwaitNecessaryFinalCandidate",
+      "runs": null,
+      "missing_reasons": {
+        "runs": "Final A05 plus LOAD02 candidate not sealed; no intermediate retry requested."
+      },
+      "MAIN_observed_restoration": {
+        "PR": 18,
+        "run": 36769267487,
+        "attempt": 2,
+        "conclusion": "success",
+        "at_utc": "2026-10-01T00:34:00Z"
+      },
+      "additional_budget_usd": 0,
+      "StopYes_unchanged": true
+    }
+  ]
 }

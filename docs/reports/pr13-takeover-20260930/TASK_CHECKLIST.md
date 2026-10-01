@@ -1,8 +1,8 @@
 # PR13 云端接管逐项登记
 
-MAIN已签15项，原来源S6均保留；A05 guard62772完整299/0/0和canonical3已封存，仅Ready待独立MAIN。LOAD02 .2新增真实窗口harness冻结dfb3，正在执行准备。
+MAIN已签15项，原来源S6均保留；A05 guard62772完整299/0/0和canonical3已封存，仅Ready待独立MAIN。LOAD02 .2固定dfb3已完成真实三个窗口、Server302/0/0与Python122/0/0，新增一项Ready待MAIN S6。
 
-132项当前状态：15Accepted / 1ReadyForAcceptance / 41Partial / 72NotRevalidated / 3Blocked。选定19项为15Accepted/1Ready/3Partial；G0–G5未签署。历史2dda收据保留当时状态。
+132项当前状态：15Accepted / 2ReadyForAcceptance / 40Partial / 72NotRevalidated / 3Blocked。选定19项为15Accepted/2Ready/2Partial；G0–G5未签署。历史2dda收据保留当时状态。
 
 | 顺序 | 子项 | 负责人 | 当前 / 历史 | 修改 SHA | 依赖 | 剩余工作或阻塞 |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -15,7 +15,7 @@ MAIN已签15项，原来源S6均保留；A05 guard62772完整299/0/0和canonical
 | 7 | LOAD-02.1 多维结果模型 | MAIN / load P0 | Accepted / Partial | d4c3212fb32c75d4 | LOAD-01.2 | MAIN独立裁决完成；只适用于固定来源。 |
 | 8 | LOAD-04.1 当前匹配状态机 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | LOAD-11.1, LOAD-06.4 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
 | 9 | LOAD-06.2 生命周期/玩法进度 | MAIN (pending batch) | NotRevalidated / Partial | 取证/未修改 | LOAD-06.4, LOAD-04.1 | This takeover batch has not independently executed this task; follow its preserved dependency order and next_action. |
-| 10 | LOAD-02.2 STOP前后边界 | MAIN / load P0 | Partial / Partial | d4c3212fb32c75d4 | LOAD-02.1, LOAD-06.2 | Actual Program/PG timeout beforeSTOP with one exclusive failed/cancelled/incomplete cycle terminal; see MISSING_FACTS.json. |
+| 10 | LOAD-02.2 STOP前后边界 | ROOT真实客户端/owned Program+PG；MAIN独立裁决 | ReadyForAcceptance / Partial | dfb3f88a73efd85c | LOAD-02.1, LOAD-06.2 | S0–S5原三case/Server302/Python122及清理齐备；只待MAIN S6，非CI/LIVE门槛。 |
 | 11 | LOAD-02.3 有界清理和应急报告 | MAIN / load P0 | Accepted / Partial | d4c3212fb32c75d4 | LOAD-02.2 | MAIN独立裁决完成；只适用于固定来源。 |
 | 12 | LOAD-02.4 退出码兼容 | MAIN / load P0 | Accepted / Partial | d4c3212fb32c75d4 | LOAD-02.3 | MAIN独立裁决完成；只适用于固定来源。 |
 | 13 | LOAD-03.1 事件水位 | MAIN / load P0 | Accepted / ReadyForAcceptance | d4c3212fb32c75d4 | LOAD-01.2, LOAD-06.4 | MAIN独立裁决完成；只适用于固定来源。 |

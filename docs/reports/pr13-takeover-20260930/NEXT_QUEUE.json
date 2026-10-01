@@ -3,10 +3,10 @@
   "stable_validation_code_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
   "production_behavior_baseline": "f812879e4518fd09bf22656451cb563d62940298",
   "current_counts": {
-    "Partial": 41,
+    "Partial": 40,
     "NotRevalidated": 72,
     "Accepted": 15,
-    "ReadyForAcceptance": 1,
+    "ReadyForAcceptance": 2,
     "Blocked": 3
   },
   "all_accepted": false,
@@ -46,14 +46,14 @@
     },
     {
       "order": 3,
-      "owner": "next bounded actual client/owned Program/PG batch",
+      "owner": "MAIN / independent cloud reviewer",
       "task_ids": [
         "LOAD-02.2"
       ],
-      "action": "Prove actual PG game timeout before STOP retains failed cycle terminal classification; started=completed+failed+cancelled+active at common cutoff; unknown ACK remains pending until authority.",
-      "missing": "Current actual Godot microtimeout plus model coordinator and separate actual PG ACKSTOP cannot jointly substitute for this whole original T01. No online gate.",
-      "inputs": "offline-acceptance-f812/load02/evidence/MISSING_FACTS.json",
-      "state": "AllocatedInProgress",
+      "action": "Replay actual three windows with original budgets and complete C-PY/C-SERVER; judge S6 independently. All S0–S5 source967/build167/full302/python122 and owned cleanup sealed.",
+      "missing": "S6 independent replay/adjudication only; no LIVE/CI/human gate. Observer is original one-cycle accounting, not LOAD03 production telemetry.",
+      "inputs": "load02-timeout-dfb3f88a/report.json; load02-timeout-dfb3f88a/REPLAY.md; load02-timeout-dfb3f88a/PRIVATE_ARTIFACT_MANIFEST.json",
+      "state": "ReadyForIndependentAcceptance",
       "budgets_ms": {
         "attempt": 10000,
         "logical": 30000
@@ -92,7 +92,7 @@
         "LOAD-11.1"
       ],
       "action": "Retain historical raw missing inputs/global ledger mismatch1; existing owned audits do not close global ledger. Parent coordinates UI/PR14 final fixed-source combination and applicable later profiles. Do not broaden this sealed offline batch.",
-      "constraints": "No merge/auto-merge/DB restore/ledger mutation or online operation in these batches. Four exact raw Library save authorized; one network failure, no alternate destination."
+      "constraints": "No merge/auto-merge/DB restore/ledger mutation/online operation. Four exact raw private Library saves authorized; two network failures, no IDs; original bytes preserved, no alternative destination."
     }
   ],
   "ci_pending": {
@@ -108,14 +108,15 @@
       ],
       "runs": []
     },
-    "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+    "source_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
     "runs": null,
     "missing_reasons": {
-      "runs": "No new CI retry/query initiated in this documentation-only seal; account-blocked exact runs remain indexed in prior records."
+      "runs": "Final Actions not triggered: release workflow ownership/conflict coordination pending; old no-step billing failures remain historical only."
     },
-    "blocker": "Billing annotation for run36769267481 verified by parent; failed payments OR spending limit, exact subcause unknown. Await user resolution; no account/payment/permission changes.",
-    "historical_blocker_resolved_by_MAIN": "Actual run36769267487 attempt2 executed success2026-10-01T00:34UTC; no account changes authorized/performed.",
-    "current_candidate": "Await final A05+LOAD02 locally passing source; necessary CI once, no intermediate or old-SHA bulk retry."
+    "blocker": "New release65361 numerical-client workflow merge conflict requires MAIN/controller owner coordination; current fixed local evidence unaffected.",
+    "historical_blocker_resolved_by_MAIN": "Actual run36769267487 attempt2 success2026-10-01T00:34UTC; no account settings changes.",
+    "current_candidate": "Locally stable dfb3 source; no new Actions run started while PR/release conflicts; after coordinated exact final combination necessary CI once.",
+    "conflict_receipt": "load02-timeout-dfb3f88a/NEW_RELEASE_CI_CONFLICT.json"
   },
   "raw4_previous_delivery": {
     "files": 4,
@@ -146,5 +147,10 @@
     "source": "MAIN delegation independently confirmed by authenticated git ls-remote",
     "current_PR13_runtime_source_unchanged": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
     "not_merged_or_deployed_here": true
+  },
+  "latest_additive_scope_sealed": {
+    "A05_guard": "a05-guard-62772be2/report.json",
+    "LOAD02_timeout": "load02-timeout-dfb3f88a/report.json",
+    "S6": "Both Ready; MAIN pending; original MAIN15 unchanged"
   }
 }

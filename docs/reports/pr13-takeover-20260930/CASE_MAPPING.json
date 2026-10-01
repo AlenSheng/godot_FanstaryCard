@@ -1284,7 +1284,7 @@
       ],
       "setup_and_injection": "STOP前超时",
       "expected": "业务失败不变取消",
-      "task_current_state": "Partial",
+      "task_current_state": "ReadyForAcceptance",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [
@@ -1297,22 +1297,37 @@
       ],
       "supporting_evidence_is_full_case_coverage": false,
       "current_case_execution": {
-        "status": "Partial",
+        "status": "Passed",
         "executed": true,
-        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
-        "receipt_file": "offline-acceptance-f812/load02/evidence/cases.jsonl",
+        "source_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+        "receipt_file": "load02-timeout-dfb3f88a/cases.jsonl",
         "receipt_line": 4,
+        "run": "full-server",
         "setup_matches_frozen_spec": true,
         "expected_matches_frozen_spec": true,
-        "full_applicable_profile_case_evidence": false,
-        "acceptance_decision": "S6 independent MAIN pending; Accepted=false",
-        "command_manifest": "offline-acceptance-f812/load02/evidence/commands.json"
+        "full_applicable_profile_case_evidence": true,
+        "acceptance_decision": "ReadyForIndependentAcceptance; S6 MAIN pending; Accepted=false",
+        "command_manifest": "load02-timeout-dfb3f88a/commands.json",
+        "algorithm_version": "load02-observer-v1",
+        "profile_hash": "47d985a7d8106f8b9b7469dee979012058c4ce355ac11e5d943ad8a7ed1cc4c8"
       },
       "prior_case_executions": [
         {
           "status": "NotExecuted",
           "executed": false,
           "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
+        },
+        {
+          "status": "Partial",
+          "executed": true,
+          "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+          "receipt_file": "offline-acceptance-f812/load02/evidence/cases.jsonl",
+          "receipt_line": 4,
+          "setup_matches_frozen_spec": true,
+          "expected_matches_frozen_spec": true,
+          "full_applicable_profile_case_evidence": false,
+          "acceptance_decision": "S6 independent MAIN pending; Accepted=false",
+          "command_manifest": "offline-acceptance-f812/load02/evidence/commands.json"
         }
       ]
     },
@@ -1325,7 +1340,7 @@
       ],
       "setup_and_injection": "STOP后正常等待取消",
       "expected": "不计服务错误或完成",
-      "task_current_state": "Partial",
+      "task_current_state": "ReadyForAcceptance",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [
@@ -1340,20 +1355,35 @@
       "current_case_execution": {
         "status": "Passed",
         "executed": true,
-        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
-        "receipt_file": "offline-acceptance-f812/load02/evidence/cases.jsonl",
+        "source_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+        "receipt_file": "load02-timeout-dfb3f88a/cases.jsonl",
         "receipt_line": 5,
+        "run": "full-server",
         "setup_matches_frozen_spec": true,
         "expected_matches_frozen_spec": true,
         "full_applicable_profile_case_evidence": true,
-        "acceptance_decision": "S6 independent MAIN pending; Accepted=false",
-        "command_manifest": "offline-acceptance-f812/load02/evidence/commands.json"
+        "acceptance_decision": "ReadyForIndependentAcceptance; S6 MAIN pending; Accepted=false",
+        "command_manifest": "load02-timeout-dfb3f88a/commands.json",
+        "algorithm_version": "load02-observer-v1",
+        "profile_hash": "47d985a7d8106f8b9b7469dee979012058c4ce355ac11e5d943ad8a7ed1cc4c8"
       },
       "prior_case_executions": [
         {
           "status": "NotExecuted",
           "executed": false,
           "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
+        },
+        {
+          "status": "Passed",
+          "executed": true,
+          "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+          "receipt_file": "offline-acceptance-f812/load02/evidence/cases.jsonl",
+          "receipt_line": 5,
+          "setup_matches_frozen_spec": true,
+          "expected_matches_frozen_spec": true,
+          "full_applicable_profile_case_evidence": true,
+          "acceptance_decision": "S6 independent MAIN pending; Accepted=false",
+          "command_manifest": "offline-acceptance-f812/load02/evidence/commands.json"
         }
       ]
     },
@@ -1366,7 +1396,7 @@
       ],
       "setup_and_injection": "ack已提交结果未知",
       "expected": "pending直到权威核实",
-      "task_current_state": "Partial",
+      "task_current_state": "ReadyForAcceptance",
       "accepted": false,
       "accepted_by": null,
       "supporting_task_evidence": [
@@ -1381,20 +1411,35 @@
       "current_case_execution": {
         "status": "Passed",
         "executed": true,
-        "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
-        "receipt_file": "offline-acceptance-f812/load02/evidence/cases.jsonl",
+        "source_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+        "receipt_file": "load02-timeout-dfb3f88a/cases.jsonl",
         "receipt_line": 6,
+        "run": "full-server",
         "setup_matches_frozen_spec": true,
         "expected_matches_frozen_spec": true,
         "full_applicable_profile_case_evidence": true,
-        "acceptance_decision": "S6 independent MAIN pending; Accepted=false",
-        "command_manifest": "offline-acceptance-f812/load02/evidence/commands.json"
+        "acceptance_decision": "ReadyForIndependentAcceptance; S6 MAIN pending; Accepted=false",
+        "command_manifest": "load02-timeout-dfb3f88a/commands.json",
+        "algorithm_version": "load02-observer-v1",
+        "profile_hash": "47d985a7d8106f8b9b7469dee979012058c4ce355ac11e5d943ad8a7ed1cc4c8"
       },
       "prior_case_executions": [
         {
           "status": "NotExecuted",
           "executed": false,
           "reason": "No explicit current canonical-case receipt in this runner; supporting suites do not imply this case execution."
+        },
+        {
+          "status": "Passed",
+          "executed": true,
+          "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+          "receipt_file": "offline-acceptance-f812/load02/evidence/cases.jsonl",
+          "receipt_line": 6,
+          "setup_matches_frozen_spec": true,
+          "expected_matches_frozen_spec": true,
+          "full_applicable_profile_case_evidence": true,
+          "acceptance_decision": "S6 independent MAIN pending; Accepted=false",
+          "command_manifest": "offline-acceptance-f812/load02/evidence/commands.json"
         }
       ]
     },
@@ -13124,5 +13169,22 @@
     "state": "ReadyForIndependentAcceptance",
     "resolution": "FixedWithEvidence",
     "Accepted": false
+  },
+  "latest_LOAD02_timeout_acceptance_proposal": {
+    "task_id": "LOAD-02.2",
+    "source_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+    "report": "load02-timeout-dfb3f88a/report.json",
+    "proposal": "ReadyForIndependentAcceptance",
+    "resolution": "NoChangeWithEvidence",
+    "S6": "Pending MAIN",
+    "full_primary_cases": 3,
+    "counts": {
+      "C_SERVER_passed": 302,
+      "C_SERVER_failed": 0,
+      "C_SERVER_skipped": 0,
+      "C_PY_passed": 122,
+      "C_PY_failed": 0,
+      "C_PY_skipped": 0
+    }
   }
 }
