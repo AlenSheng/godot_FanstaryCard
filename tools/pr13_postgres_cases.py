@@ -79,6 +79,13 @@ def main():
                 collected[case_id].append({'native_receipt':row['caseId'],'mode':e.get('mode'),'source_receipt_sha256':hashlib.sha256(line.encode()).hexdigest(),'before_assets':public_assets(e.get('before')),'after_assets':public_assets(e.get('after',e.get('finalAssets'))),'acknowledged':e.get('acknowledged'),'next_prepare_cancel_verified':e.get('nextPrepareCancelVerified'),'scope':e.get('scope',e.get('limitations'))})
     if set(collected)!=A05_EXPECTED|LOAD02_EXPECTED:raise ValueError('Missing mandatory canonical runtime receipts')
     for case_id,actual in sorted(collected.items()):record(case_id,{'actual_native_receipts':actual,'trx_unskipped_passed':True},['OFFLINE','POSTGRES','AUDIT'] if case_id in A05_EXPECTED else ['OFFLINE','POSTGRES'])
+    # These exact aliases retain the underlying canonical transaction/runtime
+    # receipts; no new cycle or independent matrix is inferred from an exit code.
+    for cid,parent in [('LOAD-05.3-T03','PR13-A05.1-T01'),('LOAD-05.4-T02','PR13-A05.1-T01'),
+                       ('LOAD-10.3-T02','PR13-A05.3-T03'),('PR13-A09.3-T01','PR13-A05.3-T03'),
+                       ('PR13-A03.4-T01','PR13-A05.2-T03')]:
+        record(cid,{'actual_native_receipts':collected[parent],'exact_parent_case':parent,'trx_unskipped_passed':True,
+                    'scope':'Exact real pending-hold/OS-restart/old-callback/ACK fault contract; natural full-route cycles separate.'},['OFFLINE','POSTGRES','AUDIT'])
     output.mkdir(parents=True,exist_ok=False)
     (output/'cases.jsonl').write_bytes(''.join(json.dumps(r,ensure_ascii=False,allow_nan=False)+'\n' for r in records).encode())
     files=[ready/'report.json',ready/'manifest.json',ready/'toolchain.json',ready/'inputs.json',lifecycle/'report.json',lifecycle/'lifecycle.trx',lifecycle/'process-evidence/receipts.jsonl']
