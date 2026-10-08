@@ -13,6 +13,9 @@ on:
       - 'tools/pr13_boundary_cases.py'
       - 'tools/pr13_postgres_cases.py'
       - 'tools/pr13_ui_cases.py'
+      - 'tools/pr13_state_cases.py'
+      - 'tools/pr13_http_cases.py'
+      - 'tools/pr13_domain_cases.py'
       - 'tools/pr13_ledger_attribution.py'
       - 'tools/pr13_ledger_cases.py'
       - 'tools/pr13_ledger_postgres_cases.py'
@@ -46,6 +49,9 @@ on:
       - 'tools/pr13_boundary_cases.py'
       - 'tools/pr13_postgres_cases.py'
       - 'tools/pr13_ui_cases.py'
+      - 'tools/pr13_state_cases.py'
+      - 'tools/pr13_http_cases.py'
+      - 'tools/pr13_domain_cases.py'
       - 'tools/pr13_ledger_attribution.py'
       - 'tools/pr13_ledger_cases.py'
       - 'tools/pr13_ledger_postgres_cases.py'
@@ -135,13 +141,16 @@ jobs:
         run: |
           set -euo pipefail
           godot="$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64"
-          python client/tests/run_http_boundary.py --godot "$godot" --output test-results/gameplay-load/http-boundary
+          python client/tests/run_http_boundary.py --godot "$godot" --output test-results/gameplay-load/http-boundary --tls-fault
           python client/tests/run_http_protobuf_client.py --godot "$godot" --work-dir test-results/gameplay-load/http-fixture
           python tools/pr13_offline_cases.py --godot "$godot" --output test-results/gameplay-load/offline-cases
           python tools/pr13_fault_cases.py --godot "$godot" --output test-results/gameplay-load/fault-cases
           python tools/pr13_audit_cases.py --output test-results/gameplay-load/audit-cases
           python tools/pr13_boundary_cases.py --godot "$godot" --output test-results/gameplay-load/boundary-cases
           python tools/pr13_ui_cases.py --godot "$godot" --output test-results/gameplay-load/ui-contract-cases
+          python tools/pr13_state_cases.py --godot "$godot" --output test-results/gameplay-load/state-contract-cases
+          python tools/pr13_http_cases.py --godot "$godot" --output test-results/gameplay-load/http-context-cases
+          python tools/pr13_http_cases.py --godot "$godot" --output test-results/gameplay-load/http-context-per-request --transport per-request
           python tools/pr13_ledger_cases.py --output test-results/gameplay-load/ledger-contract-cases
           A3GAME_GODOT_EXECUTABLE="$godot" python tools/pr13_callback_isolation.py --output test-results/gameplay-load/callback-isolation
           FANTASYCARD_SERVER_URL=http://127.0.0.1:1 "$godot" --headless --path client --script res://tests/run_gateway_origin.gd > test-results/gameplay-load/gateway-origin.log 2>&1
