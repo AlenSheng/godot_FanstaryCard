@@ -227,7 +227,7 @@ def main():
     parser.add_argument('--prometheus',default='http://127.0.0.1:19090')
     parser.add_argument('--local-resource-sampling',action='store_true',
                         help='Owned loopback diagnostic only; shared-host CPU/memory/disk, missing server metrics remain unknown')
-    parser.add_argument('--http-transport',choices=('reusable','legacy'),default='reusable')
+    parser.add_argument('--http-transport',choices=('reusable','per-request'),default='reusable')
     parser.add_argument('--distinct-local-client-ips',action='store_true',
                         help='Owned loopback byte relays use real 127.0.0.x client source IPs, preserving default per-IP limits')
     parser.add_argument('--output',type=Path,default=ROOT/'outputs'/'gameplay-load')

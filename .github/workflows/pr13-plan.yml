@@ -31,6 +31,8 @@ jobs:
         run: python -m unittest tools.tests.test_pr13_stages -v
       - name: Verify frozen stage delivery integrity
         run: |
-          if [ -f docs/reports/pr13-stages-20261008/S0/summary.json ]; then
-            python tools/pr13_stages.py check --input docs/reports/pr13-stages-20261008/S0 --historical
-          fi
+          for summary in docs/reports/pr13-stages-20261008/S0*/summary.json; do
+            if [ -f "$summary" ]; then
+              python tools/pr13_stages.py check --input "${summary%/summary.json}" --historical
+            fi
+          done

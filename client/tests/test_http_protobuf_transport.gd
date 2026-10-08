@@ -29,6 +29,7 @@ func _flight_request(gateway: Node, path: String, name: String) -> void:
 	flights[name] = await gateway.request(path)
 func run() -> void:
 	var gateway := Gateway.new()
+	gateway.use_reusable_http = OS.get_environment("FANTASYCARD_LOAD_HTTP_TRANSPORT") != "per-request"
 	gateway.persist_session = false
 	root.add_child(gateway)
 	gateway.base_url = "http://127.0.0.1:38971"
@@ -80,6 +81,7 @@ func run() -> void:
 	check(stats.data.counts.get("/api/v1/players/me?flight=join", 0) == 1, "GET join sends one transport request")
 	check(stats.data.counts.get("/api/v1/players/me?flight=epoch", 0) == 2, "write invalidation creates a new transport request")
 	var switching := SwitchingGateway.new()
+	switching.use_reusable_http = gateway.use_reusable_http
 	switching.persist_session = false
 	root.add_child(switching)
 	switching.base_url = gateway.base_url

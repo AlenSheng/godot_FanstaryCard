@@ -73,7 +73,9 @@ public sealed partial class RealNetworkEndToEndTests
         shopResponse.EnsureSuccessStatusCode();
         var shop = Assert.IsType<ShopResponse>(
             await shopResponse.Content.ReadFromJsonAsync<ShopResponse>(WebJson, timeout.Token));
-        var dailyCard = Assert.Single(shop.Products, product => product.ProductId == "daily_card_1");
+        var dailyCards = shop.Products.Where(product => product.ProductId.StartsWith("daily_card_", StringComparison.Ordinal)).ToArray();
+        Assert.NotEmpty(dailyCards);
+        var dailyCard = dailyCards.FirstOrDefault(product => !product.AlreadyOwned) ?? dailyCards[0];
         // The daily rotation can select a card priced above 1000. Freeze this
         // disposable fixture's starting budget from the actual offer, preserving prices.
         var initialGold = checked(dailyCard.PriceGold + 1000);
@@ -87,7 +89,7 @@ public sealed partial class RealNetworkEndToEndTests
         using var dailyPayload = JsonDocument.Parse(dailyCard.Payload);
         var dailyCardId = dailyPayload.RootElement.GetProperty("cardId").GetString()!;
         var copiesBefore = await database.ScalarAsync<int>(
-            "SELECT copy_count FROM player_cards WHERE player_id=$1 AND card_id=$2",
+            "SELECT COALESCE((SELECT copy_count FROM player_cards WHERE player_id=$1 AND card_id=$2),0)",
             signIn.Player.UserId,
             dailyCardId);
 
@@ -96,15 +98,25 @@ public sealed partial class RealNetworkEndToEndTests
         purchaseRequest.Headers.Add("Idempotency-Key", "network-daily-card");
         purchaseRequest.Content = JsonContent.Create(new PurchaseShopRequest(dailyCard.ProductId), options: WebJson);
         using var purchaseResponse = await client.SendAsync(purchaseRequest, timeout.Token);
-        purchaseResponse.EnsureSuccessStatusCode();
-        var purchase = Assert.IsType<ShopPurchaseResponse>(
-            await purchaseResponse.Content.ReadFromJsonAsync<ShopPurchaseResponse>(WebJson, timeout.Token));
-        Assert.Equal(dailyCard.ProductId, purchase.ProductId);
-        Assert.Equal(initialGold - dailyCard.PriceGold, purchase.GoldAfter);
-        Assert.Equal(copiesBefore + 1, await database.ScalarAsync<int>(
-            "SELECT copy_count FROM player_cards WHERE player_id=$1 AND card_id=$2",
-            signIn.Player.UserId,
-            dailyCardId));
+        if (dailyCard.AlreadyOwned)
+        {
+            Assert.Equal(HttpStatusCode.Conflict, purchaseResponse.StatusCode);
+            Assert.Equal(initialGold, await database.ScalarAsync<long>(
+                "SELECT gold FROM player_wallets WHERE player_id=$1", signIn.Player.UserId));
+            Assert.Equal(copiesBefore, await database.ScalarAsync<int>(
+                "SELECT copy_count FROM player_cards WHERE player_id=$1 AND card_id=$2", signIn.Player.UserId, dailyCardId));
+        }
+        else
+        {
+            Assert.True(purchaseResponse.IsSuccessStatusCode,
+                $"Purchase returned {(int)purchaseResponse.StatusCode}: {await purchaseResponse.Content.ReadAsStringAsync(timeout.Token)}");
+            var purchase = Assert.IsType<ShopPurchaseResponse>(
+                await purchaseResponse.Content.ReadFromJsonAsync<ShopPurchaseResponse>(WebJson, timeout.Token));
+            Assert.Equal(dailyCard.ProductId, purchase.ProductId);
+            Assert.Equal(initialGold - dailyCard.PriceGold, purchase.GoldAfter);
+            Assert.Equal(1, await database.ScalarAsync<int>(
+                "SELECT copy_count FROM player_cards WHERE player_id=$1 AND card_id=$2", signIn.Player.UserId, dailyCardId));
+        }
 
         using var socket = new ClientWebSocket();
         var socketUri = new Uri(

@@ -86,7 +86,7 @@ func _ready() -> void:
 	strategy_rng.seed = strategy_seed
 	DirAccess.make_dir_recursive_absolute(report_path.get_base_dir())
 	Game.gateway.persist_session = false
-	Game.gateway.use_reusable_http = OS.get_environment("FANTASYCARD_LOAD_HTTP_TRANSPORT") != "legacy"
+	Game.gateway.use_reusable_http = OS.get_environment("FANTASYCARD_LOAD_HTTP_TRANSPORT") != "per-request"
 	Game.gateway.device_id = "load-%s-%s" % [client_id, Game.gateway.new_id()]
 	Game.gateway.last_sequence = 0
 	Game.gateway.room_id = ""
