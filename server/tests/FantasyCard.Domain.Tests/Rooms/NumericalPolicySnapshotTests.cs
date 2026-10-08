@@ -127,6 +127,54 @@ public sealed class NumericalPolicySnapshotTests
         Assert.Equal(0, draft.RemainderTenthsAfter);
     }
 
+    [Fact]
+    public void Repeated_preview_invalid_play_and_already_spent_cards_cannot_commit_remainder()
+    {
+        var room = CreateRoom(HeroClass.Guardian);
+        var player = room.GetPlayer(room.Capture().Players[0].PlayerId);
+        player.Combat.Restore(player.Combat.Capture() with
+        {
+            GuardianPolicy = GuardianShieldBonusPolicy.FractionalRemainder,
+            GuardianShieldRemainderTenths = 8
+        });
+        SetHand(player, "common-17");
+        var selected = new[] { player.Combat.Deck.Hand[0].InstanceId };
+        var before = room.Capture();
+        for (var index = 0; index < 10; index++)
+            room.PreviewCards(player.PlayerId, player.Pve!.BattleId, "test-monster", selected, room.Revision, Now);
+        Assert.Equivalent(before, room.Capture(), strict: true);
+        Assert.Throws<DomainValidationException>(() => room.PlayCards(player.PlayerId, player.Pve!.BattleId,
+            "missing-target", selected, room.Revision, Now));
+        Assert.Throws<DomainValidationException>(() => room.PlayCards(player.PlayerId, player.Pve!.BattleId,
+            "test-monster", selected, room.Revision + 1, Now));
+        Assert.Equivalent(before, room.Capture(), strict: true);
+        room.PlayCards(player.PlayerId, player.Pve!.BattleId, "test-monster", selected, room.Revision, Now);
+        var committed = room.Capture();
+        Assert.Equal(2, player.Combat.GuardianShieldRemainderTenths);
+        Assert.Throws<DomainValidationException>(() => room.PlayCards(player.PlayerId, player.Pve!.BattleId,
+            "test-monster", selected, room.Revision, Now));
+        Assert.Equivalent(committed, room.Capture(), strict: true);
+    }
+
+    [Fact]
+    public void Zero_printed_shield_preserves_existing_remainder_without_free_shield()
+    {
+        var state = new PlayerCombatState(HeroClass.Guardian, Enumerable.Repeat("common-01", 20).ToArray(), new Random(3),
+            weaponLevel: 1, guardianShieldBonusPolicy: GuardianShieldBonusPolicy.FractionalRemainder);
+        state.Restore(state.Capture() with { GuardianShieldRemainderTenths = 8 });
+        foreach (var full in new[] { false, true })
+        {
+            if (full) state.GainShield(50);
+            var before = state.Capture();
+            var preview = state.PreviewShield(0);
+            Assert.Equal(0, preview.Shield);
+            Assert.Null(preview.RemainderTenthsAfter);
+            state.GainShield(preview.Shield);
+            state.CommitGuardianShieldRemainder(preview.RemainderTenthsAfter);
+            Assert.Equivalent(before, state.Capture(), strict: true);
+        }
+    }
+
     private static BattleRoom CreateRoom(HeroClass heroClass)
     {
         var room = new BattleRoom(Guid.NewGuid(), "test", Catalog, 77);
