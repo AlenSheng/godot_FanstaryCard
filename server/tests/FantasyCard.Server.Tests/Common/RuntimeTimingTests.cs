@@ -92,11 +92,14 @@ public sealed class RuntimeTimingTests(ITestOutputHelper output)
         using var capture = new Capture(metrics);
         foreach (var phase in Enum.GetValues<RuntimePhase>())
             for (var i = 0; i < 1000; i++)
-                using (RuntimeTiming.Measure(metrics, phase, room: Guid.NewGuid().ToString("D"), player: Guid.NewGuid().ToString("D"), request: Guid.NewGuid().ToString("D"))) { }
+                using (RuntimeTiming.Measure(metrics, phase, room: Guid.NewGuid().ToString("D"), player: Guid.NewGuid().ToString("D"),
+                    request: Guid.NewGuid().ToString("D"), match: Guid.NewGuid().ToString("D"))) { }
         Assert.Equal(6000, capture.MetricTags.Count);
         Assert.All(capture.MetricTags, tags => Assert.Equal("phase", Assert.Single(tags).Key));
         Assert.Equal(6, capture.MetricTags.Select(tags => tags[0].Value!.ToString()).Distinct().Count());
-        output.WriteLine("PR13_RUNTIME " + JsonSerializer.Serialize(new { measurements = 6000, differentRoomIdentities = 6000, labelNames = "phase", labelValues = 6, businessIdsOnlyInTrace = true }));
+        Assert.Contains(capture.Spans, activity => activity.GetTagItem("match.id") is not null);
+        output.WriteLine("PR13_RUNTIME " + JsonSerializer.Serialize(new { measurements = 6000, differentRoomIdentities = 6000,
+            differentMatchIdentities = 6000, labelNames = "phase", labelValues = 6, businessIdsOnlyInTrace = true }));
     }
 
     private sealed class Capture : IDisposable

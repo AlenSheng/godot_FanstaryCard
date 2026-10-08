@@ -44,11 +44,12 @@ def owned_database_info(container):
 
 
 class LocalRuntime(AbstractContextManager):
-    def __init__(self, output, container):
+    def __init__(self, output, container, *, diagnostics=False):
         self.output, self.container = output, container
         self.database = "pr13_local_" + uuid.uuid4().hex[:12]
         self.process, self.log = None, None
         self.output_created = self.database_created = False
+        self.diagnostics = diagnostics
         self.info = owned_database_info(container)
         self.record = {key: value for key, value in self.info.items() if key not in {"password", "user"}}
         self.record.update(database_owned=True, database=self.database, cleanup=False)
@@ -105,6 +106,9 @@ class LocalRuntime(AbstractContextManager):
                    ConnectionStrings__Postgres=connection, Identity__EnableLocalAuth="true",
                    ProtobufHttp__AllowLegacyJson="false", Realtime__AllowLegacyAccessTokenQuery="false",
                    Matchmaking__BotFillDelaySeconds="30")
+        if self.diagnostics:
+            env['Diagnostics__LocalMetricsFile'] = str(self.output / 'server-metrics.private.jsonl')
+            self.record['diagnostic_scope'] = 'Owned loopback process native RSS/GC/room and phase windows; shared generator-host resources separate'
         self.process = subprocess.Popen(["dotnet", str(dll)], cwd=dll.parent, env=env,
                                         stdout=self.log, stderr=subprocess.STDOUT,
                                         creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
@@ -158,6 +162,7 @@ def main():
     parser.add_argument("--database-container", default="pr13-stages-20261008-s1-pg")
     parser.add_argument("--scenario", choices=("single", "ten", "50", "100", "soak"), required=True)
     parser.add_argument('--functional-cleared-route',action='store_true',help='Separate LIVE functional control: clear then legally extract; never original capacity evidence')
+    parser.add_argument('--diagnostics', action='store_true', help='Retain actual owned server RSS/GC/actor/phase windows')
     args = parser.parse_args()
     if args.functional_cleared_route and args.scenario not in ('single','ten'):parser.error('Cleared route control is only a functional single/ten smoke profile')
     profiles = json.loads((ROOT / "docs/plans/PR13_LOCAL_PROFILES_20261008.json").read_text(encoding="utf8"))
@@ -166,7 +171,7 @@ def main():
     maximum = spec["single_account_limit_seconds"] if args.scenario == "single" else spec["ten_account_limit_seconds"] if args.scenario == "ten" else 2100 if args.scenario == "soak" else spec["deadline_seconds"]
     output = args.output.resolve()
     profile_hash = hashlib.sha256(json.dumps(spec, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
-    with LocalRuntime(output, args.database_container) as runtime:
+    with LocalRuntime(output, args.database_container, diagnostics=args.diagnostics) as runtime:
         command = [args.python, str(ROOT / "tools/gameplay_load_test.py"), "--godot", args.godot,
                    "--server-url", runtime.url, "--output", str(output / "load"), "--max-seconds", str(maximum),
                    "--distinct-local-client-ips", "--hero-class", "mixed", "--strategy", "baseline_all_hand"]
@@ -177,6 +182,10 @@ def main():
             command += ["--run", "--max-groups", "1", "--group-size", str(count), "--target-online", str(count),
                         "--target-active", str(count), "--hold-seconds", str(spec["soak_seconds"] if args.scenario == "soak" else spec["hold_seconds"]),
                         "--local-resource-sampling", "--launch-interval-seconds", "1", "--load-profile", "cyclic-gameplay"]
+        if args.diagnostics:
+            if '--local-resource-sampling' not in command: command.append('--local-resource-sampling')
+            command += ['--local-server-metrics', str(output / 'server-metrics.private.jsonl'),
+                        '--local-server-pid', str(runtime.process.pid)]
         record = {"scenario": args.scenario, "command": command, "profile_hash": profile_hash,
                   "source_sha": runtime.record["source_sha"], "maximum_seconds": maximum, "started_at": time.time(),
                   "cycle_limit_seconds": 600 if args.scenario in {"single", "ten"} else 240,

@@ -15,7 +15,7 @@ public sealed class RuntimeTiming : IDisposable
     private readonly Activity? _activity;
 
     private RuntimeTiming(ServerMetrics? metrics, RuntimePhase phase, ActivityContext? parent,
-        string? room, string? player, string? request)
+        string? room, string? player, string? request, string? match)
     {
         _metrics = metrics;
         _phase = phase;
@@ -25,11 +25,12 @@ public sealed class RuntimeTiming : IDisposable
         if (room is not null) _activity?.SetTag("room.id", room);
         if (player is not null) _activity?.SetTag("player.id", player);
         if (request is not null) _activity?.SetTag("request.id", request);
+        if (match is not null) _activity?.SetTag("match.id", match);
     }
 
     public static RuntimeTiming Measure(ServerMetrics? metrics, RuntimePhase phase,
-        ActivityContext? parent = null, string? room = null, string? player = null, string? request = null) =>
-        new(metrics, phase, parent, room, player, request);
+        ActivityContext? parent = null, string? room = null, string? player = null, string? request = null, string? match = null) =>
+        new(metrics, phase, parent, room, player, request, match);
 
     public static async Task<NpgsqlConnection> OpenConnectionAsync(NpgsqlDataSource source,
         ServerMetrics metrics, Guid player, string request, CancellationToken ct)

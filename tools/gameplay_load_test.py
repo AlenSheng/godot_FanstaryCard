@@ -24,6 +24,7 @@ from cloud_load_test import ROOT, CLIENT, stop_all, health_probe, read_json
 from gameplay_load_validation import aggregate_window, request_cutoffs, workload_snapshot, owned_statuses, new_events, classify_stop, provenance
 from pr13_runtime_evidence import coverage, reconcile_cycles, result_dimensions, sampling_integrity
 from pr13_local_network import LocalOrigins
+from pr13_server_diagnostics import current_window
 
 QUERIES = {
     'cpu': '100*(1-avg(rate(node_cpu_seconds_total{job="node",instance="node-exporter:9100",mode="idle"}[1m])))',
@@ -53,7 +54,7 @@ def metrics(base):
     return result
 
 
-def local_host_metrics():
+def local_host_metrics(server_metrics_file=None, server_pid=None):
     """Measured shared Windows/local-host diagnostics; absent actor metrics stay null."""
     result = dict.fromkeys(QUERIES)
     if psutil is None:
@@ -66,6 +67,8 @@ def local_host_metrics():
                       disk_available=100 * disk.free / disk.total)
     except (OSError, ValueError, psutil.Error):
         pass
+    if server_metrics_file is not None:
+        result.update(current_window(server_metrics_file, server_pid))
     return result
 
 def save(path, data):
@@ -229,6 +232,8 @@ def main():
     parser.add_argument('--prometheus',default='http://127.0.0.1:19090')
     parser.add_argument('--local-resource-sampling',action='store_true',
                         help='Owned loopback diagnostic only; shared-host CPU/memory/disk, missing server metrics remain unknown')
+    parser.add_argument('--local-server-metrics', type=Path, help='Actual owned native server diagnostic JSONL')
+    parser.add_argument('--local-server-pid', type=int, help='Exact owned server OS process identity')
     parser.add_argument('--http-transport',choices=('reusable','per-request'),default='reusable')
     parser.add_argument('--client-max-fps', type=int,
                         help='Optional 1-240 FPS candidate; creates a distinct workload profile')
@@ -252,6 +257,10 @@ def main():
         parser.error('Public targets require --allow-public-target and an explicit --server-url')
     if args.local_resource_sampling and target.hostname not in ('127.0.0.1','localhost','::1'):
         parser.error('Local resource sampling requires an owned loopback server')
+    if (args.local_server_metrics is None) != (args.local_server_pid is None):
+        parser.error('Native diagnostic file and exact owned server PID must be provided together')
+    if args.local_server_metrics is not None and (not args.local_resource_sampling or args.local_server_pid < 1):
+        parser.error('Native diagnostics require the explicit owned loopback diagnostic profile and a positive PID')
     if args.distinct_local_client_ips and (target.scheme!='http' or target.hostname!='127.0.0.1'):
         parser.error('Distinct local client IPs require an owned HTTP 127.0.0.1 server')
     if not args.run and not args.smoke:
@@ -261,7 +270,7 @@ def main():
     if args.run and args.smoke_clients!=1: parser.error('--smoke-clients belongs to the smoke profile')
     if args.run and args.load_profile in ('functional-cycles','cleared-extraction'): parser.error('Functional/cleared extraction cycles are smoke scenarios and cannot prove original capacity')
     if args.run:
-        baseline=local_host_metrics() if args.local_resource_sampling else metrics(args.prometheus)
+        baseline=local_host_metrics(args.local_server_metrics, args.local_server_pid) if args.local_resource_sampling else metrics(args.prometheus)
         if any(baseline[k] is None for k in ('cpu','memory_available','disk_available')):
             parser.error('Host monitoring is unavailable; provide an authorized Prometheus endpoint before --run')
     source=provenance(ROOT, ('tools/gameplay_load_test.py','tools/cloud_load_test.py',
@@ -286,8 +295,8 @@ def main():
         'http_transport':args.http_transport,
         'client_max_fps':args.client_max_fps,
         'fps_scope':'explicit candidate override' if args.client_max_fps is not None else 'unchanged engine/project default',
-        'resource_source':'shared_local_host_diagnostic' if args.local_resource_sampling else 'preregistered_prometheus',
-        'server_metrics_missing_reason':'No server actor-wait or authoritative room collector configured' if args.local_resource_sampling else None}
+        'resource_source':('shared_local_host_and_owned_native_server_diagnostic' if args.local_server_metrics is not None else 'shared_local_host_diagnostic') if args.local_resource_sampling else 'preregistered_prometheus',
+        'server_metrics_missing_reason':'No server actor-wait or authoritative room collector configured' if args.local_resource_sampling and args.local_server_metrics is None else None}
     contract.update(distinct_local_client_ips=args.distinct_local_client_ips,client_memory_start_budget_mib=256,
                     hero_class=args.hero_class,strategy=args.strategy,strategy_seed=args.strategy_seed,
                     cycle_limit_seconds=args.cycle_limit_seconds)
@@ -396,7 +405,7 @@ def main():
                 window['command_rejections']=len(rejected)
                 window['command_error_rate']=len(rejected)/len(commands) if commands else 0
                 health_task=probes.submit(health_probe,args.server_url,5)
-                metrics_task=(probes.submit(local_host_metrics) if args.local_resource_sampling else probes.submit(metrics,args.prometheus)) if args.run else None
+                metrics_task=(probes.submit(local_host_metrics, args.local_server_metrics, args.local_server_pid) if args.local_resource_sampling else probes.submit(metrics,args.prometheus)) if args.run else None
                 probe_tasks=[health_task]+([metrics_task] if metrics_task is not None else [])
                 _,pending_probes=concurrent.futures.wait(probe_tasks,timeout=6)
                 probe_timeout=bool(pending_probes)

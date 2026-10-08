@@ -17,6 +17,16 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
+var localMetricsFile = builder.Configuration["Diagnostics:LocalMetricsFile"];
+if (!string.IsNullOrWhiteSpace(localMetricsFile))
+{
+    var addresses = (builder.Configuration["urls"] ?? "").Split(';', StringSplitOptions.RemoveEmptyEntries);
+    if (!builder.Environment.IsDevelopment() || !Path.IsPathFullyQualified(localMetricsFile) || addresses.Length == 0 ||
+        addresses.Any(address => !Uri.TryCreate(address, UriKind.Absolute, out var uri) || !uri.IsLoopback))
+        throw new InvalidOperationException("Owned local diagnostics require Development, an absolute file and loopback-only bindings.");
+    builder.Services.AddHostedService(services => new LocalRuntimeDiagnostics(
+        services.GetRequiredService<ServerMetrics>(), localMetricsFile, services.GetRequiredService<ILogger<LocalRuntimeDiagnostics>>()));
+}
 // Console logging works in containers and on Windows without Event Log permissions.
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
