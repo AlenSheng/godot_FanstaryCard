@@ -251,7 +251,9 @@ func run_cases() -> void:
                 await store._on_event("error.command_rejected",{"code":"NOT_IN_ROOM","_origin_context":origin})
                 repeated_not_in_room+=1
         store.settlement=receipt
-        gateway.response={"ok":true,"status":200,"data":{}}
+        gateway.response={"ok":true,"status":200,"data":{"configVersion":store.CATALOG.data.version,
+            "player":{"userId":"self","selectedClass":"Mage"},"wallet":{},"materials":{},"mail":{},"shop":{},"market":[],"inventory":{},
+            "activePreparation":null,"unfinishedMatch":null,"unfinishedSettlement":null}}
         if await store.acknowledge_settlement(): confirmed_acks+=1
         old_events_safe=old_events_safe and store.settlement.is_empty() and not await store.acknowledge_settlement()
     record("PR13-A03.4-T03",confirmed_acks==3 and repeated_not_in_room==2,{"actual_store_successful_acks":confirmed_acks,"second_cycle_repeated_rejections":repeated_not_in_room,"duplicate_ack_suppressed":true,"natural_cycle_completions_claimed":0,"setup":"Controlled authoritative HTTP responses, actual production store entries"})
