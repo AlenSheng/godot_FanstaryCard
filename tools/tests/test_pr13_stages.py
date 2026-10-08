@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from tools import pr13_stages as stages
 
@@ -67,6 +68,17 @@ class ConfigHashTests(unittest.TestCase):
 
 
 class StageTests(unittest.TestCase):
+    def test_shallow_checkout_records_missing_refs_without_substituting_old_head(self):
+        with tempfile.TemporaryDirectory() as directory, patch.object(stages, "resolve_reference", return_value=None):
+            output = Path(directory) / "S0"
+            summary = stages.freeze(output)
+            self.assertIsNone(summary["release_base"])
+            self.assertIsNone(summary["pr13_head"])
+            self.assertFalse(summary["all_s0_ready"])
+            self.assertEqual(set(summary["reference_missing_reasons"]), {"release_base", "pr13_head"})
+            self.assertEqual(stages.read(output / "LOAD-11.1/report.json")["status"], "Blocked")
+            stages.check(output, verify_current=False)
+
     def test_historical_plan_digest_allows_line_endings_but_never_content_edits(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "plan.json"

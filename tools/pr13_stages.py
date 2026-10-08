@@ -52,6 +52,12 @@ def git(*args):
                                    encoding="utf-8").strip()
 
 
+def resolve_reference(ref):
+    result = subprocess.run(["git", "rev-parse", "--verify", ref + "^{commit}"], cwd=ROOT,
+                            capture_output=True, text=True, encoding="utf-8", timeout=5)
+    return result.stdout.strip() if result.returncode == 0 else None
+
+
 def file_record(path, root=ROOT):
     path = Path(path).resolve()
     relative = path.relative_to(root.resolve()).as_posix()
@@ -209,6 +215,19 @@ def freeze(output, handbook=None, config_export=None):
             raise ValueError("User handbook differs from canonical plan; resolve scope before freezing")
         user_handbook = {"sha256": digest(handbook), "canonical_content_matches": True}
     blockers = historical_blockers(plan, profiles)
+    references = {"release_base": resolve_reference("origin/release"),
+                  "pr13_head": resolve_reference("origin/fix/gameplay-load-evidence-20260929")}
+    missing_references = {name: "Remote reference is absent from this checkout; no historical SHA is substituted."
+                          for name, value in references.items() if value is None}
+    if missing_references:
+        for task_id in ("LOAD-11.1", "PR13-A08.1"):
+            blockers[task_id] = {
+                "task_id": task_id, "stage": "S0", "owner": "MAIN", "historical_only": False,
+                "reason": "Source references required for the baseline freeze are unavailable",
+                "missing_input_or_environment": missing_references, "affected_gates": ["G0", "G5"],
+                "unblock_condition": "Fetch the actual approved release/PR13 refs and freeze a new artifact",
+                "next_action": "Retain unavailable values as null; source HEAD and file hashes are still recorded",
+            }
     if not config["source_export_revalidated"]:
         blockers["PR13-B12.1"] = {
             "task_id": "PR13-B12.1", "stage": "S0", "owner": "MAIN", "historical_only": False,
@@ -265,8 +284,7 @@ def freeze(output, handbook=None, config_export=None):
     write(output / "input-manifest.json", {"files": inputs, "user_handbook": user_handbook, "config": config})
     summary = {"schema_version": 1, "stage": "S0", "kind": "stage_input_freeze_not_runtime_acceptance",
                "date": "2026-10-08", "created_utc": datetime.now(timezone.utc).isoformat(),
-               "integration_sha": source_sha, "release_base": git("rev-parse", "origin/release"),
-               "pr13_head": git("rev-parse", "origin/fix/gameplay-load-evidence-20260929"),
+               "integration_sha": source_sha, **references, "reference_missing_reasons": missing_references,
                "plan_hash": digest(ROOT / PLAN), "plan_logical_hash": canonical_hash(plan),
                "profile_hash": canonical_hash(profiles),
                "config": config, "execution_boundary": profiles["execution_boundary"],
