@@ -148,6 +148,7 @@ internal static class CombatExperience
                 .OrderBy(card => card.CardId, StringComparer.Ordinal).FirstOrDefault();
             if (replacement is null) continue;
             var themed = current.Select(id => id == old ? replacement.CardId : id).ToArray();
+            PairedDeckBudget.Validate(config,hero,current,themed);
             ValidateDeck(config, hero, themed);
             if (Budget(config, current) != Budget(config, themed)) throw new InvalidOperationException("Deck budgets differ.");
             result.Add("theme_single_swap", themed);

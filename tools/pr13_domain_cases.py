@@ -9,6 +9,7 @@ import xml.etree.ElementTree as ET
 ROOT = Path(__file__).resolve().parents[1]
 # Each entry names every required test method. All theory rows must pass.
 MAPPING = {
+    'PR13-B04.2-T02': ['Rooms.PairedBuildBudgetTests.Higher_rarity_or_level_replacement_is_rejected_before_experiment_entry'],
     'PR13-B03.2-T01': ['Rooms.PairedBuildBudgetTests.Single_published_white_card_swap_preserves_cost_rarity_level_and_twenty_instances'],
     'PR13-B03.2-T02': ['Rooms.PairedBuildBudgetTests.PVP_side_swap_keeps_mirrored_starting_resources_and_restores_each_own_pool'],
     'PR13-B04.2-T01': ['Rooms.PairedBuildBudgetTests.Single_published_white_card_swap_preserves_cost_rarity_level_and_twenty_instances'],

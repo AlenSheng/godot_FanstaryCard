@@ -1,4 +1,5 @@
 using FantasyCard.Domain.Combat;
+using FantasyCard.Domain.Cards;
 using FantasyCard.Domain.Configuration;
 using FantasyCard.Domain.Players;
 using FantasyCard.Domain.Rooms;
@@ -13,6 +14,7 @@ public sealed class PairedBuildBudgetTests
         var source=GameConfigCatalog.Current;
         var before=Enumerable.Range(1,13).Select(i=>$"C{i:D2}").Concat(Enumerable.Range(1,7).Select(i=>$"MAG-{i:D2}")).ToArray();
         var after=before.Select(id=>id=="C01"?"C17":id).ToArray();
+        PairedDeckBudget.Validate(source,HeroClass.Mage,before,after);
         var old=source.Cards.Single(c=>c.CardId=="C01");var replacement=source.Cards.Single(c=>c.CardId=="C17");
         Assert.Equal(old.Rarity,replacement.Rarity);Assert.Equal(old.UnlockCost,replacement.UnlockCost);
         Assert.Equal(20,before.Length);Assert.Equal(20,after.Length);Assert.Equal(20,after.Distinct().Count());
@@ -41,5 +43,15 @@ public sealed class PairedBuildBudgetTests
         Assert.Equal(a.Deck.Hand.Concat(a.Deck.Library).Select(c=>c.CardId).Order(),b.Deck.Hand.Concat(b.Deck.Library).Select(c=>c.CardId).Order());
         room.EndDuelSurvived(duel.DuelId,DuelEndReason.MutualLeave);
         Assert.Equivalent(beforeA,room.GetPlayer(first).Combat.Capture(),strict:true);Assert.Equivalent(beforeB,room.GetPlayer(second).Combat.Capture(),strict:true);
+    }
+
+    [Fact]
+    public void Higher_rarity_or_level_replacement_is_rejected_before_experiment_entry()
+    {
+        var config=GameConfigCatalog.Current;
+        var before=Enumerable.Range(1,13).Select(i=>$"C{i:D2}").Concat(Enumerable.Range(1,7).Select(i=>$"MAG-{i:D2}")).ToArray();
+        Assert.Throws<DomainValidationException>(()=>PairedDeckBudget.Validate(config,HeroClass.Mage,before,before.Select(id=>id=="C01"?"GP21":id).ToArray()));
+        var after=before.Select(id=>id=="C01"?"C17":id).ToArray();var levels=new int[20];levels[0]=1;
+        Assert.Throws<DomainValidationException>(()=>PairedDeckBudget.Validate(config,HeroClass.Mage,before,after,candidateLevels:levels));
     }
 }
