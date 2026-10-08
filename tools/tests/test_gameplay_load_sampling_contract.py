@@ -1,5 +1,6 @@
 """Adversarial offline capacity evidence; fixtures do not claim live capacity."""
 import contextlib
+import concurrent.futures
 import io
 import json
 import math
@@ -7,6 +8,7 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 from types import SimpleNamespace
 import unittest
@@ -150,7 +152,7 @@ class RequestAccountingContractTests(unittest.TestCase):
 class CoordinatorSamplingContractTests(unittest.TestCase):
     def run_fixture(self, *, overlap=False, local_resources=False, missing_actor=False, cycle_limit=240,
                     resource_changes=None, final_status_change=None, wall_jump=False, max_groups=1,
-                    client_max_fps=None, generator_observation=None):
+                    client_max_fps=None, generator_observation=None, probe_delay_seconds=0, delay_all_probes=False):
         """Run the real final verdict with fake child/clock/network observations."""
         elapsed = [0.0]
         children = []
@@ -162,6 +164,24 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
             strftime=time.strftime)
         client_events = {}
         heartbeat = [0]
+        probe_events=[]
+        wait_original=concurrent.futures.wait
+        probe_finished=[]
+        def probe_delay(label):
+            if probe_delay_seconds and threading.current_thread().name.startswith('load-probe') and (label=='health' or delay_all_probes):
+                started=time.monotonic();time.sleep(probe_delay_seconds)
+                probe_events.append({'probe':label,'elapsed_seconds':time.monotonic()-started})
+                probe_finished.append(label)
+        def health_observation(*_args):
+            probe_delay('health')
+            return {'ok':True,'duration_ms':1,'status':200}
+        def resource_observation(*_args):
+            probe_delay('metrics')
+            return {'cpu':1,'memory_available':90,'disk_available':90,'actor_wait':None if missing_actor else 1,**(resource_changes or {})}
+        def measured_wait(*args,**kwargs):
+            started=time.monotonic();result=wait_original(*args,**kwargs)
+            if probe_delay_seconds:elapsed[0]+=time.monotonic()-started
+            return result
 
         def launch(*args, env, **kwargs):
             self.assertEqual(env['FANTASYCARD_LOAD_CYCLE_LIMIT_SECONDS'], str(cycle_limit))
@@ -219,11 +239,9 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
                         Popen=launch, STDOUT=subprocess.STDOUT,
                         SubprocessError=subprocess.SubprocessError)), \
                     patch.object(coordinator, 'provenance', return_value={'offline_fixture': True}), \
-                    patch.object(coordinator, 'health_probe', return_value={
-                        'ok': True, 'duration_ms': 1, 'status': 200}), \
-                    patch.object(coordinator, 'metrics', return_value={
-                        'cpu': 1, 'memory_available': 90, 'disk_available': 90, 'actor_wait': None if missing_actor else 1,
-                        **(resource_changes or {})}), \
+                    patch.object(coordinator, 'health_probe', side_effect=health_observation), \
+                    patch.object(coordinator, 'metrics', side_effect=resource_observation), \
+                    patch.object(coordinator.concurrent.futures,'wait',side_effect=measured_wait), \
                     patch.object(coordinator, 'local_host_metrics', return_value={
                         'cpu': 1, 'memory_available': 90, 'disk_available': 90, 'actor_wait': None, 'server_humans_in_room': None}), \
                     patch.object(coordinator, 'generator_resources', return_value=(generator_observation or {}, None)), \
@@ -233,7 +251,16 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
                 code = coordinator.main()
             reports = list(Path(directory).glob('*/report.json'))
             self.assertEqual(len(reports), 1)
-            return code, json.loads(reports[0].read_text())
+            result=json.loads(reports[0].read_text())
+            if probe_delay_seconds:
+                # The coordinator has returned at its six-second budget. Join
+                # the explicitly delayed fixture operations before discarding
+                # their temp directory; no orphaned worker survives this case.
+                deadline=time.monotonic()+probe_delay_seconds+2
+                while len(probe_finished)<(2 if delay_all_probes else 1) and time.monotonic()<deadline:time.sleep(.01)
+                self.assertEqual(len(probe_finished),2 if delay_all_probes else 1)
+                result['actual_delayed_fixture_workers']=probe_events
+            return code, result
 
     def test_wall_jump_keeps_group_interval_and_monotonic_command_rate(self):
         code, report = self.run_fixture(wall_jump=True, max_groups=2)
