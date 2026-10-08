@@ -1,0 +1,7 @@
+S3 本次增量
+
+新增123个独立细则用例，全部通过。权威Domain 322项、工具187项测试通过；状态合同31项、HTTP上下文12项在复用/逐请求两种连接方式均通过；HTTP边界19项含正式2 MiB和不可信TLS，协议177项+传输24项每种方式均通过；6项真实回调隔离通过。
+
+修复：旧局started/旧snapshot回调不得替换当前路由；消费session游标但不放开当前恢复锁。复用HTTP拒绝非法gzip，合法gzip/deflate解码，并限制展开响应大小。
+
+保留此前失败复现、原始日志和字节hash。这里只证明OFFLINE层，PG/LIVE/CAPACITY/EXPERIMENT/RENDER/AUDIT等仍逐项判定。真人体验仍待补。按用户授权本地总结后直接上传release，不更新草稿。
