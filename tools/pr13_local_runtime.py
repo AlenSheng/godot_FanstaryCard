@@ -163,6 +163,7 @@ def main():
     parser.add_argument("--scenario", choices=("single", "ten", "50", "100", "soak"), required=True)
     parser.add_argument('--functional-cleared-route',action='store_true',help='Separate LIVE functional control: clear then legally extract; never original capacity evidence')
     parser.add_argument('--diagnostics', action='store_true', help='Retain actual owned server RSS/GC/actor/phase windows')
+    parser.add_argument('--client-project', type=Path, help='Actual immutable copied client project')
     args = parser.parse_args()
     if args.functional_cleared_route and args.scenario not in ('single','ten'):parser.error('Cleared route control is only a functional single/ten smoke profile')
     profiles = json.loads((ROOT / "docs/plans/PR13_LOCAL_PROFILES_20261008.json").read_text(encoding="utf8"))
@@ -186,6 +187,7 @@ def main():
             if '--local-resource-sampling' not in command: command.append('--local-resource-sampling')
             command += ['--local-server-metrics', str(output / 'server-metrics.private.jsonl'),
                         '--local-server-pid', str(runtime.process.pid)]
+        if args.client_project is not None: command += ['--client-project', str(args.client_project.resolve())]
         record = {"scenario": args.scenario, "command": command, "profile_hash": profile_hash,
                   "source_sha": runtime.record["source_sha"], "maximum_seconds": maximum, "started_at": time.time(),
                   "cycle_limit_seconds": 600 if args.scenario in {"single", "ten"} else 240,

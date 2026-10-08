@@ -234,6 +234,7 @@ def main():
                         help='Owned loopback diagnostic only; shared-host CPU/memory/disk, missing server metrics remain unknown')
     parser.add_argument('--local-server-metrics', type=Path, help='Actual owned native server diagnostic JSONL')
     parser.add_argument('--local-server-pid', type=int, help='Exact owned server OS process identity')
+    parser.add_argument('--client-project', type=Path, help='Immutable copied real client project; defaults to repository client')
     parser.add_argument('--http-transport',choices=('reusable','per-request'),default='reusable')
     parser.add_argument('--client-max-fps', type=int,
                         help='Optional 1-240 FPS candidate; creates a distinct workload profile')
@@ -244,6 +245,9 @@ def main():
     if args.client_max_fps is not None and not 1 <= args.client_max_fps <= 240:
         parser.error('Explicit FPS candidate must be between 1 and 240')
     if not Path(args.godot).is_file(): parser.error('Godot executable is missing')
+    active_client = CLIENT if args.client_project is None else args.client_project.resolve()
+    if not (active_client/'project.godot').is_file() or not (active_client/'tests/gameplay_load_client.tscn').is_file():
+        parser.error('The actual client project and gameplay scene are required')
     if min(args.max_groups,args.max_seconds,args.group_size,args.group_interval,args.smoke_cycles,args.smoke_clients)<1:
         parser.error('Group, duration and cycle limits must be positive')
     if not math.isfinite(args.launch_interval_seconds) or args.launch_interval_seconds < 0:
@@ -280,6 +284,18 @@ def main():
         'tools/pr13_local_network.py',
         'client/ui/card_details.gd','client/state/element_rules.gd',
         'protocol/realtime/v1/realtime.proto'))
+    if args.client_project is not None:
+        # Preserve the actual executed bytes independently of later checkout
+        # edits. No claim that an arbitrary replacement project is equivalent.
+        import hashlib
+        names = subprocess.check_output(['git','ls-files','client'],cwd=ROOT,text=True).splitlines()
+        actual_inputs = {}
+        for name in names:
+            file = active_client / Path(name).relative_to('client')
+            if not file.is_file(): parser.error('Copied client is missing a tracked source dependency')
+            actual_inputs[name] = hashlib.sha256(file.read_bytes()).hexdigest()
+        source['active_client_project'] = dict(path=str(active_client), input_hashes=actual_inputs,
+            scope='actual immutable copied project; per-file hashes are authoritative, not current checkout bytes')
     run_dir=args.output.resolve()/(time.strftime('%Y%m%d-%H%M%S')+'-'+uuid.uuid4().hex[:6])
     run_dir.mkdir(parents=True)
     expected_clients = args.smoke_clients if args.smoke else args.max_groups * args.group_size
@@ -354,7 +370,7 @@ def main():
                     FANTASYCARD_LOAD_MAX_CYCLES=str(args.smoke_cycles) if args.smoke else '0')
                 log=(run_dir/(client_id+'.log')).open('w',encoding='utf-8')
                 try:
-                    command=[args.godot,'--headless','--audio-driver','Dummy','--path',str(CLIENT)]
+                    command=[args.godot,'--headless','--audio-driver','Dummy','--path',str(active_client)]
                     if args.client_max_fps is not None: command+=['--max-fps',str(args.client_max_fps)]
                     command+=['res://tests/gameplay_load_client.tscn']
                     process=subprocess.Popen(command,cwd=ROOT,env=env,stdout=log,stderr=subprocess.STDOUT,
