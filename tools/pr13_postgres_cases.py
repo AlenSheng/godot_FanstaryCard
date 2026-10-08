@@ -81,8 +81,7 @@ def main():
     for case_id,actual in sorted(collected.items()):record(case_id,{'actual_native_receipts':actual,'trx_unskipped_passed':True},['OFFLINE','POSTGRES','AUDIT'] if case_id in A05_EXPECTED else ['OFFLINE','POSTGRES'])
     # These exact aliases retain the underlying canonical transaction/runtime
     # receipts; no new cycle or independent matrix is inferred from an exit code.
-    for cid,parent in [('LOAD-05.3-T03','PR13-A05.1-T01'),('LOAD-05.4-T02','PR13-A05.1-T01'),
-                       ('LOAD-10.3-T02','PR13-A05.3-T03'),('PR13-A09.3-T01','PR13-A05.3-T03'),
+    for cid,parent in [('LOAD-05.3-T03','PR13-A05.1-T03'),('LOAD-05.4-T02','PR13-A05.1-T03'),
                        ('PR13-A03.4-T01','PR13-A05.2-T03')]:
         record(cid,{'actual_native_receipts':collected[parent],'exact_parent_case':parent,'trx_unskipped_passed':True,
                     'scope':'Exact real pending-hold/OS-restart/old-callback/ACK fault contract; natural full-route cycles separate.'},['OFFLINE','POSTGRES','AUDIT'])
