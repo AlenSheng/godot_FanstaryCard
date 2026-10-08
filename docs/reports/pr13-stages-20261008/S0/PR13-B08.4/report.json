@@ -1,0 +1,200 @@
+{
+  "task_id": "PR13-B08.4",
+  "stage": "S0",
+  "integration_sha": "04e874d65762c1df6bcf9b170fad702069c73b4a",
+  "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+  "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+  "effective_room_policy": null,
+  "runtime_image_digest": null,
+  "profile_hash": "fd54ae421b3042d0f845e16fe3efcb564b09a3f57484e2c7106590b6a268d345",
+  "algorithm_version": "pr13-local-stage-contract-v1",
+  "case_ids": [
+    "PR13-B08.4-T01",
+    "PR13-B08.4-T02",
+    "PR13-B08.4-T03"
+  ],
+  "expected": {
+    "runtime_cases": [
+      {
+        "id": "PR13-B08.4-T01",
+        "setup_and_injection": "抗性超60%",
+        "expected": "实际增量0且提示",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "PR13-B08.4-T02",
+        "setup_and_injection": "装备floor与PVE阻断转加速",
+        "expected": "不同阶段解释",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "PR13-B08.4-T03",
+        "setup_and_injection": "无边际异常",
+        "expected": "NoChange不全面加速/削牌",
+        "executed": false,
+        "evidence": null
+      }
+    ],
+    "pass_criteria": "cap计算与现行规则一致，有候选只隔离且一因素；显示不把不适用职业误称超帽。"
+  },
+  "actual": {
+    "scope_frozen": true,
+    "runtime_executed": false,
+    "profile_budgets": {
+      "OFFLINE": {
+        "deadline_seconds": 600,
+        "case_deadline_seconds": 30,
+        "godot_case_deadline_seconds": 90,
+        "child_grace_seconds": 10,
+        "cleanup_seconds": 30,
+        "network": "Loopback fixtures only; no default public server",
+        "pass_criteria": "Every mandatory normal/boundary/fault expectation matches; no unclassified failure or mandatory skip",
+        "stop_conditions": [
+          "deadline",
+          "unowned child",
+          "unexpected public network target"
+        ]
+      },
+      "EXPERIMENT": {
+        "deadline_seconds": 1800,
+        "cleanup_seconds": 60,
+        "seed_blocks": [
+          {
+            "start": 100001,
+            "count": 1000
+          },
+          {
+            "start": 101001,
+            "count": 1000
+          },
+          {
+            "start": 102001,
+            "count": 1000
+          }
+        ],
+        "pair_unit": "seed x class x preregistered legal scenario; default-off and candidate-on share inputs and observation budget",
+        "classes": [
+          "Mage",
+          "Priest",
+          "Guardian"
+        ],
+        "max_actions_per_game": 2000,
+        "observation_seconds": 600,
+        "confidence_level": 0.95,
+        "resampling_unit": "seed/game cluster",
+        "multiplicity": "Holm correction across declared primary candidate comparisons; exploratory metrics labelled exploratory",
+        "primary_metrics": "B05=PVE duration/tail; B06=draw resource and idle time; B07=overflow recovery and capped resources; B08=control and action denial; B09=deck cycle dilution; exact per-task observable contract remains mandatory",
+        "candidate_decision": "Benefit requires paired 95% interval strictly on the beneficial side of zero, no correctness/rule regression and non-worsening risk interval; insufficient precision or censoring is Inconclusive",
+        "pass_criteria": "Resolver/CombatDeck/room-policy traces deterministic for fixed manifest; legal actions, equal information and budgets; all censoring and full denominators retained",
+        "stop_conditions": [
+          "deadline",
+          "rule/config/profile identity changed",
+          "simulation error",
+          "missing paired seed"
+        ]
+      },
+      "RENDER": {
+        "deadline_seconds": 3600,
+        "session_deadline_seconds": 600,
+        "cleanup_seconds": 60,
+        "resolutions": [
+          [
+            1280,
+            720
+          ],
+          [
+            1920,
+            1080
+          ],
+          [
+            960,
+            540
+          ]
+        ],
+        "fps": [
+          30,
+          60,
+          144
+        ],
+        "added_latency_ms": [
+          0,
+          100,
+          300
+        ],
+        "languages": [
+          "zh",
+          "en"
+        ],
+        "classes": [
+          "Mage",
+          "Priest",
+          "Guardian"
+        ],
+        "cycles_per_account": 3,
+        "human_participants": 6,
+        "human_strata": "Each class x novice/experienced; three games per anonymous participant",
+        "pass_criteria": "Actual visible interactions and screenshots plus logs show no blocked core action, stale overlay or clipped critical text; missing humans remains Partial",
+        "stop_conditions": [
+          "deadline",
+          "render unavailable",
+          "critical UI obstruction",
+          "unowned process"
+        ]
+      }
+    },
+    "inputs": "元素抗性/抽牌地板/盾cap及真实来源",
+    "dependencies": [
+      "PR13-B08.3"
+    ],
+    "dependency_phase": "S4/S5 integration only",
+    "writer": "MAIN",
+    "write_scope": [
+      "server/src/FantasyCard.Domain/Combat",
+      "server/src/FantasyCard.Domain/Rooms",
+      "server/tests/FantasyCard.Domain.Tests",
+      "client/state/game_store.gd",
+      "client/ui",
+      "client/data/localization_battle.json",
+      "client/tests"
+    ],
+    "task_contract_hash": "7d30e84e2f810cc471c73cc9ee3361a7099a8608bb95cc28a91d5e100548089c"
+  },
+  "status": "ReadyForAcceptance",
+  "sample_population": null,
+  "cutoff_monotonic": null,
+  "window_or_drain_or_final": null,
+  "commands": [
+    "python tools/pr13_plan.py --check",
+    "python tools/pr13_stages.py check --input <S0 directory>"
+  ],
+  "tool_versions": {
+    "python": "3.10.11",
+    "dotnet_required": "10.0.400"
+  },
+  "exit_codes": [],
+  "skip_reasons": [],
+  "asset_and_route_postconditions": null,
+  "artifact_manifest": "manifest.json",
+  "reviewer": "MAIN",
+  "rollback": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。",
+  "remaining_blockers": [],
+  "missing_reasons": {
+    "effective_room_policy": "No runtime started at S0; default policy source is pinned in source manifest.",
+    "runtime_image_digest": "Local process profile; container image is not selected. Assemblies are hashed after build.",
+    "sample_population": "S0 registers budgets; no runtime sample has been observed.",
+    "cutoff_monotonic": "No runtime cutoff exists before execution.",
+    "window_or_drain_or_final": "No runtime window exists before execution.",
+    "asset_and_route_postconditions": "Measured at S4/S5, never inferred from source."
+  },
+  "accepted_by": null,
+  "stage_states": {
+    "S1": "Queued",
+    "S2": "Queued",
+    "S3": "Queued",
+    "S4": "Queued",
+    "S5": "Queued",
+    "S6": "Queued"
+  }
+}
