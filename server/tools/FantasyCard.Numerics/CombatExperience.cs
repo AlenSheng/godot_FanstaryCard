@@ -26,12 +26,14 @@ internal static class CombatExperience
         var weaponLevel = ReadInt(args, "--weapon-level", 0);
         var candidateKind = ReadString(args, "--candidate", "class-passives");
         var groups = ReadString(args, "--groups", string.Join(',', Groups)).Split(',');
+        var strategies = ReadString(args, "--strategies", string.Join(',', Strategies)).Split(',');
         var heroes = ReadString(args, "--heroes", string.Join(',', Enum.GetValues<HeroClass>())).Split(',')
             .Select(value => Enum.Parse<HeroClass>(value)).ToArray();
         var output = ReadString(args, "--output", "combat-experience");
         if (samples < 3 || seedStart < 0 || (long)seedStart + samples > int.MaxValue || limit is < 60 or > 600 ||
             weaponLevel is < 0 or > 5 || groups.Length != groups.Distinct().Count() || groups.Any(group => !Groups.Contains(group)) ||
             heroes.Length != heroes.Distinct().Count() || heroes.Any(hero => !Enum.IsDefined(hero)) ||
+            strategies.Length != strategies.Distinct().Count() || strategies.Any(strategy => !Strategies.Contains(strategy)) ||
             candidateKind is not ("class-passives" or "outer-o6-hp085" or "outer-o6-hp095" or "outer-o6-hp090" or
                 "outer-o6-interval110" or "outer-o6-windup025" or "outer-o6-windup050"))
             throw new ArgumentException("At least three seeds, a valid seed interval and a 60-600 second cutoff are required.");
@@ -63,7 +65,7 @@ internal static class CombatExperience
             Scope = "Synthetic encounter entry, not a legal full expedition route or network capacity proof",
             Outcomes = new[] { "Victory", "Death", "Censored", "Error" },
             ProductionDefaults = config.Numerics, CandidateActivation = false,
-            Strategies, Groups = groups, Decks = decks.SelectMany(pair => pair.Value.Select(deck => new
+            Strategies = strategies, Groups = groups, Decks = decks.SelectMany(pair => pair.Value.Select(deck => new
             {
                 Hero = pair.Key.ToString(), deck.Key, CardIds = deck.Value,
                 Level = 0, Ownership = "one enabled codex copy per selected card",
@@ -77,7 +79,7 @@ internal static class CombatExperience
             foreach (var hero in heroes)
             foreach (var deck in decks[hero])
             foreach (var group in groups)
-            foreach (var strategy in Strategies)
+            foreach (var strategy in strategies)
             foreach (var candidate in new[] { false, true })
             {
                 var profile = candidate ? candidateKind switch

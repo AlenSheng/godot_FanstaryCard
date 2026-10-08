@@ -587,12 +587,12 @@ public sealed partial class ProcessLifecycleRecoveryTests
             _stderr = CaptureAsync(process.StandardError);
         }
 
-        public static FullHost Start(string connectionString, int port, string label)
+        public static FullHost Start(string connectionString, int port, string label, string? serverDll = null)
         {
             var settings = new NpgsqlConnectionStringBuilder(connectionString);
             Assert.True(IsLocalDatabase(settings.Host) && settings.SearchPath?.StartsWith("fc_runtime_test_", StringComparison.Ordinal) == true,
                 "Process tests require an owned local database and the owned randomized schema.");
-            var dll = Environment.GetEnvironmentVariable("FANTASYCARD_PROCESS_SERVER_DLL") ??
+            var dll = serverDll ?? Environment.GetEnvironmentVariable("FANTASYCARD_PROCESS_SERVER_DLL") ??
                 typeof(FantasyCard.Server.Persistence.DatabaseMigrator).Assembly.Location;
             Assert.True(File.Exists(dll));
             var dotnetRoot = Environment.GetEnvironmentVariable("DOTNET_ROOT");
