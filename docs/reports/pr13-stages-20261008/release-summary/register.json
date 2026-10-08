@@ -11,9 +11,10 @@
     "cases": 396,
     "task_states": {
       "ReadyForAcceptance": 11,
-      "Partial": 35,
-      "Queued": 85,
-      "Failed": 1
+      "Partial": 37,
+      "Queued": 82,
+      "Failed": 1,
+      "Blocked": 1
     },
     "case_states": {
       "Passed": 37,
@@ -1762,7 +1763,7 @@
       "task_id": "PR13-A01.1",
       "title": "历史raw取证",
       "package_id": "PR13-A01",
-      "state": "Queued",
+      "state": "Partial",
       "accepted_by": null,
       "owner": "MAIN",
       "case_counts": {
@@ -1792,7 +1793,14 @@
       ],
       "pass_criteria": "2,084项及早期清单全部有存在/匹配/缺失分类，原始文件不改写。",
       "next_action": "逐文件核对路径/大小/hash，建立run至代码/镜像/配置关系；缺失原样标注",
-      "observation": {}
+      "observation": {
+        "task_id": "PR13-A01.1",
+        "state": "Partial",
+        "stage": "S1",
+        "reason": "Original files were deleted. Current original-profile 50/100 attempts and owned launch manifests are retained, but capacity targets were not met and old count differences cannot be reconstructed.",
+        "evidence": "docs/reports/pr13-stages-20261008/S1-capacity-retests/summary.json",
+        "next_action": "Use sufficient authorized local generator resources and actual server/actor collectors without weakening safety lines, limits or gameplay; resolve the failed mixed-class baseline and rerun fixed-profile acceptance."
+      }
     },
     {
       "task_id": "PR13-A01.2",
@@ -1833,7 +1841,7 @@
       "task_id": "PR13-A01.3",
       "title": "差异逐事件解释",
       "package_id": "PR13-A01",
-      "state": "Queued",
+      "state": "Partial",
       "accepted_by": null,
       "owner": "MAIN",
       "case_counts": {
@@ -1862,7 +1870,14 @@
       ],
       "pass_criteria": "两处总数差异和旧失败表均有可审查映射；未能解释则G3仍Blocked。",
       "next_action": "输出每client/cycle/event的截止点/定义差异，解释报告差额而不直接改成较大值",
-      "observation": {}
+      "observation": {
+        "task_id": "PR13-A01.3",
+        "state": "Partial",
+        "stage": "S1",
+        "reason": "Original files were deleted. Current original-profile 50/100 attempts and owned launch manifests are retained, but capacity targets were not met and old count differences cannot be reconstructed.",
+        "evidence": "docs/reports/pr13-stages-20261008/S1-capacity-retests/summary.json",
+        "next_action": "Use sufficient authorized local generator resources and actual server/actor collectors without weakening safety lines, limits or gameplay; resolve the failed mixed-class baseline and rerun fixed-profile acceptance."
+      }
     },
     {
       "task_id": "PR13-A01.4",
@@ -3331,7 +3346,7 @@
       "task_id": "PR13-A10.4",
       "title": "性能收益和容量裁决",
       "package_id": "PR13-A10",
-      "state": "Queued",
+      "state": "Blocked",
       "accepted_by": null,
       "owner": "MAIN",
       "case_counts": {
@@ -3360,7 +3375,21 @@
       ],
       "pass_criteria": "G4分别给传输收益/原profile容量/候选玩法结果，不用单个exit0代替所有结论。",
       "next_action": "原性能红线与正式预登记SLO独立；timeout/pending和失败率一起评估，给benefit/nochange/blocked结论",
-      "observation": {}
+      "observation": {
+        "task_id": "PR13-A10.4",
+        "state": "Blocked",
+        "stage": "S5",
+        "owner": "MAIN",
+        "reason": "Local generator safety redline stops the original 50/100 target; shared-host diagnostics lack actual server/actor metrics and the mixed-class correctness prerequisite remains failed.",
+        "missing_input_or_environment": "Sufficient controlled generator resources, actual server metrics and prerequisite gameplay correctness.",
+        "affected_gates": [
+          "G4",
+          "G5"
+        ],
+        "unblock_condition": "Use sufficient authorized local generator resources and actual server/actor collectors without weakening safety lines, limits or gameplay; resolve the failed mixed-class baseline and rerun fixed-profile acceptance.",
+        "evidence": "docs/reports/pr13-stages-20261008/S1-capacity-retests/summary.json",
+        "next_action": "Use sufficient authorized local generator resources and actual server/actor collectors without weakening safety lines, limits or gameplay; resolve the failed mixed-class baseline and rerun fixed-profile acceptance."
+      }
     },
     {
       "task_id": "PR13-B01.1",
@@ -5415,5 +5444,5 @@
       ]
     }
   ],
-  "state_update": "MAIN review of completed S4-ten-bounded; prior raw and register sources retained."
+  "state_update": "MAIN review of S4-ten-bounded plus S1-capacity-retests; actual source/evidence identities retained."
 }

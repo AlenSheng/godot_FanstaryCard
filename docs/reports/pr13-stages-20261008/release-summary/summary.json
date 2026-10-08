@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "direct_release_local_summary",
   "status": "Partial",
-  "source_anchor_sha": "8fd34873a964f2def801a619090d2da33ade6bd4",
+  "source_anchor_sha": "0b5d9b401f3923b64605d79f8771da71d7542f02",
   "previous_release_sha": "7a17e9b790ac540f659954c6756f34472bfcf3be",
   "pr13_integrated_head": "d2fe95d78c093cc4443c048bb2779352d9d83956",
   "destination": "origin/release",
@@ -18,7 +18,7 @@
   },
   "checks": {
     "python": {
-      "passed": 154,
+      "passed": 155,
       "failed": 0
     },
     "domain": {
@@ -158,7 +158,8 @@
     },
     "protocol_generation": "73 realtime messages, 61 HTTP messages, 46 routes; check passed",
     "workflow_lint": "Three release-triggered validation workflows pass actionlint 1.7.7",
-    "line_ending_portability": "Actual S0/S0-retest artifact check passes against the tracked LF plan and the local CRLF plan; byte manifests stay exact"
+    "line_ending_portability": "Actual S0/S0-retest artifact check passes against the tracked LF plan and the local CRLF plan; byte manifests stay exact",
+    "python_after_launch_receipt_change": "155 full tool tests passed; actual child write-fault cleanup verified."
   },
   "canonical_coverage": {
     "packages": 33,
@@ -166,9 +167,10 @@
     "cases": 396,
     "task_states": {
       "ReadyForAcceptance": 11,
-      "Partial": 35,
-      "Queued": 85,
-      "Failed": 1
+      "Partial": 37,
+      "Queued": 82,
+      "Failed": 1,
+      "Blocked": 1
     },
     "case_states": {
       "Passed": 37,
@@ -179,14 +181,16 @@
   "candidate_defaults_enabled": false,
   "human_acceptance": "Pending; 机器人模拟补充体验，真人验收仍待补",
   "history": "Deleted 50/100 raw cannot explain or recover old 86/90 and 130/139; new tests establish a current baseline only.",
-  "ongoing": "The 600-second observation rerun completed and failed; actual per-client counts and zero residual database state are archived in S4-ten-bounded.",
+  "ongoing": "All owned live/capacity diagnostic processes have ended. Original PR13 implementation and acceptance remain incomplete as listed in register.json.",
   "remaining": [
     "359 canonical cases have not been explicitly executed in this delivery register. Supporting regression counts do not replace their exact expectations.",
     "Mixed-class ten-account three-natural-cycle contract remains incomplete; retain deadline-censored and drain ACK outcomes separately.",
-    "50/100 original capacity targets, three transport A/B pairs and long soak remain unaccepted. Shared-host diagnostics cannot prove server performance without actor/resource collectors.",
+    "Actual current 50/100 attempts retained; shared-host memory redline prevented targets and hold. Formal capacity, three transport A/B pairs and long soak remain unaccepted.",
     "Visible/rendered interaction matrix and six humans x three games remain pending.",
     "Candidate benefit/precision/Holm risk adjudication, source/rollback and remaining functional case mappings remain required before final S6 acceptance."
   ],
   "rollback": "Revert the individual code/tool commits and keep immutable evidence. No production schema, assets, refunds or runtime configuration were changed by these local runs.",
-  "latest_live_evidence": "docs/reports/pr13-stages-20261008/S4-ten-bounded/summary.json"
+  "latest_live_evidence": "docs/reports/pr13-stages-20261008/S4-ten-bounded/summary.json",
+  "capacity_retest_evidence": "docs/reports/pr13-stages-20261008/S1-capacity-retests/summary.json",
+  "remote_ci": "Classic status API returns no statuses; Actions API unavailable. No remote CI pass is inferred."
 }
