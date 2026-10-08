@@ -197,8 +197,11 @@ public sealed partial class RealNetworkEndToEndTests
         var directory = new DirectoryInfo(AppContext.BaseDirectory);
         while (directory is not null)
         {
-            var candidate = Path.Combine(directory.FullName, "src", "FantasyCard.Server");
-            if (File.Exists(Path.Combine(candidate, "FantasyCard.Server.csproj"))) return candidate;
+            foreach (var relative in new[] { "src", Path.Combine("server", "src") })
+            {
+                var candidate = Path.Combine(directory.FullName, relative, "FantasyCard.Server");
+                if (File.Exists(Path.Combine(candidate, "FantasyCard.Server.csproj"))) return candidate;
+            }
             directory = directory.Parent;
         }
 
