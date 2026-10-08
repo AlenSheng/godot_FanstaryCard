@@ -1605,8 +1605,12 @@ public sealed class PostgresRuntimeIntegrationTests
         }
 
         var pending = Assert.IsType<PendingMatch>(await matchmaking.TryCreateMatchAsync(cancellationToken));
-        Assert.Equal(pending.MatchId, (await matchmaking.EnqueueAsync(
-            players[0].PlayerId, "match-enqueue-0", new(players[0].PreparationId), cancellationToken)).MatchId);
+        var replayedTicket = await matchmaking.EnqueueAsync(
+            players[0].PlayerId, "match-enqueue-0", new(players[0].PreparationId), cancellationToken);
+        Assert.Equal(pending.MatchId, replayedTicket.MatchId);
+        Assert.Equal(replayedTicket, await matchmaking.GetTicketAsync(
+            players[0].PlayerId, players[0].Ticket.TicketId, cancellationToken));
+        Assert.Equal(4L, await database.ScalarAsync<long>("SELECT count(*) FROM match_tickets"));
         Assert.Equal(4, pending.PlayerIds.Count);
         foreach (var player in players)
         {
@@ -1683,6 +1687,46 @@ public sealed class PostgresRuntimeIntegrationTests
             Assert.Equal(CreatePreparationStatus.Created, preparation.Status);
             return (profile.UserId, preparation.Preparation!.PreparationId);
         }
+    }
+
+    [Fact(Skip = "Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.",
+        SkipUnless = nameof(HasTestDatabase))]
+    [Trait("Category", "PostgresIntegration")]
+    public async Task Queued_STOP_cancellation_releases_assets_once_and_allows_next_preparation()
+    {
+        await using var database = await PostgresTestSchema.CreateAsync(migrate: true);
+        var ct = TestContext.Current.CancellationToken;
+        var time = new MutableTimeProvider(DateTimeOffset.UtcNow);
+        using var metrics = new ServerMetrics();
+        var profile = await CreateIdentityRepository(database.DataSource).SignInLocalAsync(
+            $"stop-device-{Guid.NewGuid():N}", "Queued STOP", TokenHash($"stop-{Guid.NewGuid():N}"),
+            time.GetUtcNow(), time.GetUtcNow().AddHours(1), ct);
+        var progression = new ProgressionRepository(database.DataSource);
+        var deck = Assert.Single(await progression.GetDecksAsync(profile.UserId, ct), d => d.HeroClass == HeroClassDto.Mage);
+        var equipment = await database.InsertWornFeetAsync(profile.UserId, HeroClass.Mage, ct);
+        var loadout = (await progression.GetLoadoutAsync(profile.UserId, HeroClass.Mage, ct))!;
+        var preparations = new PreparationRepository(database.DataSource, time);
+        var input = new CreatePreparationRequest(HeroClassDto.Mage, deck.Version, loadout.EquipmentIds, BackpackTierDto.Free, [], 0, "Standard");
+        var first = await preparations.CreateAsync(profile.UserId, "stop-preparation", input, ct);
+        Assert.Equal(CreatePreparationStatus.Created, first.Status);
+        var matchmaking = new MatchmakingRepository(database.DataSource, time, metrics);
+        var ticket = await matchmaking.EnqueueAsync(profile.UserId, "stop-enqueue", new(first.Preparation!.PreparationId), ct);
+        Assert.Equal("Queued", ticket.Status);
+        await matchmaking.CancelAsync(profile.UserId, ticket.TicketId, "stop-cancel", ct);
+        await matchmaking.CancelAsync(profile.UserId, ticket.TicketId, "stop-cancel", ct);
+        Assert.Equal("Cancelled", (await matchmaking.GetTicketAsync(profile.UserId, ticket.TicketId, ct)).Status);
+        Assert.Equal("Cancelled", await database.ScalarAsync<string>("SELECT status FROM preparations WHERE preparation_id=$1", first.Preparation.PreparationId));
+        Assert.Equal("Equipped", await database.ScalarAsync<string>("SELECT location FROM equipments WHERE instance_id=$1", equipment));
+        Assert.Equal(1L, await database.ScalarAsync<long>("SELECT count(*) FROM inventory_movements WHERE item_id=$1 AND reason='preparation.release'", equipment));
+        Assert.Equal(0L, await database.ScalarAsync<long>("SELECT count(*) FROM matches"));
+        var bootstrap = await CreateBootstrapRepository(database.DataSource, progression, time).GetAsync(profile, ct);
+        Assert.Null(bootstrap.UnfinishedMatch);
+        Assert.Null(bootstrap.ActivePreparation);
+        Assert.Null(bootstrap.UnfinishedSettlement);
+        var next = await preparations.CreateAsync(profile.UserId, "stop-next-preparation", input, ct);
+        Assert.Equal(CreatePreparationStatus.Created, next.Status);
+        Assert.Equal(CancelPreparationStatus.Cancelled, await preparations.CancelAsync(profile.UserId, next.Preparation!.PreparationId, "stop-next-cancel", ct));
+        Assert.Equal("Equipped", await database.ScalarAsync<string>("SELECT location FROM equipments WHERE instance_id=$1", equipment));
     }
 
     [Fact(Skip = "Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.",
