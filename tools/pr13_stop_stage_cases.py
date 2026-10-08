@@ -42,7 +42,7 @@ def main():
             forced=stop_all([entry],entry['stop'],grace_seconds=3)
             final=json.loads(entry['report'].read_text(encoding='utf8'));owned,invalid=owned_statuses([entry],[final])
             tail=Path(str(entry['report'])+'.telemetry.jsonl');events=[json.loads(line) for line in tail.read_text(encoding='utf8').splitlines()]
-            classification=classify_stop('operator_stop_file',False,False)
+            classification=classify_stop('operator_stop_file',smoke_verified=False,load_verified=False)
             ok=not forced and entry['process'].returncode==0 and invalid==0 and len(owned)==1 and final['cycles_completed']==0 and final['cleanup']['state']=='Passed' and len(events)==1 and events[0]['event_seq']==final['event_seq_max']
             if not ok:raise ValueError('STOP/drain/identity/final-tail invariant failed')
             actual.append(dict(stage=final['stage'],pid=entry['pid'],child_exit=0,forced_processes=forced,completed_cycles=0,

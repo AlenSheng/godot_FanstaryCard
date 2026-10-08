@@ -99,3 +99,14 @@ def hotspot_target_review(measured_phases, target):
                 observed_largest_phase=largest,measured_phase_ms=measured_phases,
                 reason='candidate_targets_observed_path' if localized else 'candidate_targets_unlocalized_path',
                 production_activation=False,service_tail_improvement_proven=False,retain_default=True)
+
+
+def resource_gap_review(baseline, candidate):
+    keys=('resource_per_card','no_cards_seconds')
+    if any(not number(r.get(k)) or r[k]<0 for r in (baseline,candidate) for k in keys):
+        raise ValueError('Finite resource and empty-hand observations required')
+    change={k:candidate[k]-baseline[k] for k in keys}
+    return dict(baseline=baseline,candidate=candidate,deltas=change,
+                side_effects=['empty_hand_wait_increased'] if change['no_cards_seconds']>0 else [],
+                single_card_resource_decreased=change['resource_per_card']<0,
+                production_activation=False,retain_default=True)

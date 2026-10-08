@@ -4,7 +4,7 @@ import hashlib
 import json
 from pathlib import Path
 import subprocess
-from pr13_candidate_review import paired_clusters,holm_adjust,gameplay_review,performance_review,tail_evidence,retain_default_decision
+from pr13_candidate_review import paired_clusters,holm_adjust,gameplay_review,performance_review,tail_evidence,retain_default_decision,resource_gap_review
 
 ROOT=Path(__file__).resolve().parents[1]
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -62,6 +62,8 @@ def main():
     for cid in ['LOAD-09.4-T03','PR13-A10.4-T03']:
         record(cid,{'controlled_rounds':controlled_rounds,'decisions':no_change_rounds,
             'measured_service_benefit_claim':False},all(r['state']=='NoChangeWithEvidence' and not r['production_activation'] for r in no_change_rounds))
+    gap=resource_gap_review(dict(resource_per_card=1,no_cards_seconds=2),dict(resource_per_card=.5,no_cards_seconds=20))
+    record('PR13-B06.4-T02',dict(gap,controlled_inputs=True,measured_gameplay_improvement_claim=False),gap['single_card_resource_decreased'] and 'empty_hand_wait_increased' in gap['side_effects'] and gap['production_activation'] is False)
     # The adjusted family is monotone in sorted p-values. A raw .04 primary
     # does not become significant when the other registered tests are retained.
     adjusted=holm_adjust({'tail':.04,'gap':.02,'secondary':.4})
