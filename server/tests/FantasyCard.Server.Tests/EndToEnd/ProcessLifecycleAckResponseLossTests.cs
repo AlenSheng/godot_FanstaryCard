@@ -25,6 +25,7 @@ public sealed partial class ProcessLifecycleRecoveryTests
 
     [Theory(Skip = "Requires an owned local PostgreSQL database and A3GAME_GODOT_EXECUTABLE.", SkipUnless = nameof(HasRealClientDatabase))]
     [InlineData("drop-first-committed")]
+    [InlineData("drop-first-committed-restart")]
     [InlineData("drop-all-committed")]
     [InlineData("drop-all-uncommitted")]
     [Trait("Category", "PostgresIntegration")]
@@ -56,11 +57,27 @@ public sealed partial class ProcessLifecycleRecoveryTests
         var receipt = Wire.SettlementResponse.Parser.ParseFrom(await CallAsync(client, HttpMethod.Get,
             $"/api/v1/matches/{matchId:D}/settlement", null, ct));
         Assert.Equal(0L, await database.ScalarAsync<long>("SELECT count(*) FROM match_settlements WHERE match_id=$1 AND acknowledged_at IS NOT NULL", matchId));
-        await using var proxy = new AckFaultProxy(port, mode);
+        FullHost? restarted = null;
+        async Task RestartAfterDroppedCommitAsync()
+        {
+            // The response has already come from the real committed ACK. Kill
+            // that OS process before exposing the lost response to the client.
+            await host.KillAsync();
+            restarted = FullHost.Start(database.ConnectionString, port, "ack-after-lost-response-restart");
+            await restarted.WaitForHealthAsync(client, "/health/ready", HttpStatusCode.OK, ct);
+            Assert.NotEqual(host.ProcessId, restarted.ProcessId);
+            Record("ACK-FAULT-combined-restart", new { mode, oldProcessId = host.ProcessId,
+                newProcessId = restarted.ProcessId, restartAfterCommittedResponse = true,
+                acknowledgedRows = await database.ScalarAsync<long>(
+                    "SELECT count(*) FROM match_settlements WHERE match_id=$1 AND acknowledged_at IS NOT NULL", matchId) });
+        }
+        await using var proxy = new AckFaultProxy(port, mode,
+            restartAfterDroppedCommit: mode == "drop-first-committed-restart" ? RestartAfterDroppedCommitAsync : null);
         var fixture = CreateAckClientFixture(mode);
         try { await RunAckGodotAsync(fixture, proxy.Port, deviceId, receipt.SettlementId, matchId, mode, ct); }
         finally
         {
+            if (restarted is not null) await restarted.DisposeAsync();
             Record("ACK-FAULT-attempts-" + mode, new { mode, attempts = proxy.Attempts.ToArray(), errors = proxy.Errors.ToArray(),
                 acknowledgedRows = await database.ScalarAsync<long>("SELECT count(*) FROM match_settlements WHERE match_id=$1 AND acknowledged_at IS NOT NULL", matchId) });
             // Retain logs, results, exact copied source and its manifest. Original
@@ -82,9 +99,10 @@ public sealed partial class ProcessLifecycleRecoveryTests
         Assert.Equal(1L, await database.ScalarAsync<long>("SELECT count(*) FROM inventory_movements WHERE item_id=$1 AND reason='settlement.extract'", equipmentId));
         var attempts = proxy.Attempts.ToArray();
         Assert.Empty(proxy.Errors);
-        Assert.Equal(mode == "drop-first-committed" ? 2 : mode == "drop-all-committed" ? 3 : 4, attempts.Length);
+        var onlyFirstLost = mode is "drop-first-committed" or "drop-first-committed-restart";
+        Assert.Equal(onlyFirstLost ? 2 : mode == "drop-all-committed" ? 3 : 4, attempts.Length);
         Assert.All(attempts, attempt => Assert.Equal(attempts[0].BodySha256, attempt.BodySha256));
-        var initialAttempts = attempts.Take(mode == "drop-first-committed" ? 2 : 3).ToArray();
+        var initialAttempts = attempts.Take(onlyFirstLost ? 2 : 3).ToArray();
         Assert.All(attempts, attempt => Assert.NotEqual(Convert.ToHexStringLower(SHA256.HashData([])), attempt.KeySha256));
         Assert.Single(initialAttempts.Select(attempt => attempt.KeySha256).Distinct());
         if (mode == "drop-all-uncommitted")
@@ -199,13 +217,16 @@ public sealed partial class ProcessLifecycleRecoveryTests
         private int _ackIndex;
         private volatile bool _released;
         private readonly string? _stopFile;
+        private readonly Func<Task>? _restartAfterDroppedCommit;
         public int Port { get; } = ReservePort();
         public ConcurrentQueue<AckAttempt> Attempts { get; } = new();
         public ConcurrentQueue<string> Errors { get; } = new();
-        public AckFaultProxy(int backendPort, string mode, string? stopFile = null)
+        public AckFaultProxy(int backendPort, string mode, string? stopFile = null,
+            Func<Task>? restartAfterDroppedCommit = null)
         {
             _mode = mode;
             _stopFile = stopFile;
+            _restartAfterDroppedCommit = restartAfterDroppedCommit;
             _backend = new HttpClient { BaseAddress = new Uri($"http://127.0.0.1:{backendPort}"), Timeout = TimeSpan.FromSeconds(15) };
             // Kestrel Abort closes the socket without synthesizing an HTTP
             // error response (HttpListener can emit 411 while aborting a POST).
@@ -229,7 +250,7 @@ public sealed partial class ProcessLifecycleRecoveryTests
                 {
                     "cycles-middle-response-loss" or "cycles-middle-uncommitted-loss" => index == 2,
                     "stop-before-commit" or "stop-after-commit" => false,
-                    "drop-first-committed" => index == 1,
+                    "drop-first-committed" or "drop-first-committed-restart" => index == 1,
                     _ => true
                 });
                 var keyHash = Hash(System.Text.Encoding.UTF8.GetBytes(context.Request.Headers["Idempotency-Key"].ToString()));
@@ -247,6 +268,8 @@ public sealed partial class ProcessLifecycleRecoveryTests
                 var responseBytes = await response.Content.ReadAsByteArrayAsync(_stop.Token);
                 if (isAck && index == 1 && _mode == "stop-after-commit") await StopDuringAckAsync();
                 if (isAck) Attempts.Enqueue(new(index, keyHash, Hash(bytes), true, dropped, (int)response.StatusCode, Hash(responseBytes)));
+                if (dropped && _restartAfterDroppedCommit is not null)
+                    await _restartAfterDroppedCommit();
                 // Fault is applied only after the real backend has replied. The
                 // front connection closes without receiving that response.
                 if (dropped) { context.Abort(); return; }

@@ -943,6 +943,24 @@ public sealed class PostgresRuntimeIntegrationTests
         Assert.True(created.Created);
         Assert.False(replay.Created);
         Assert.Equal(created.SettlementId, replay.SettlementId);
+        // Durable receipt reads are owner-scoped, but a Pending asset hold
+        // must not permit ACK, notification, or a false client completion.
+        Assert.Equal(created.SettlementId,
+            (await repository.GetAsync(player.UserId, created.SettlementId, cancellationToken)).SettlementId);
+        await Assert.ThrowsAsync<SettlementNotReadyException>(() => repository.AcknowledgeAsync(
+            player.UserId, created.SettlementId, "before-assets-ready", cancellationToken));
+        Assert.Empty(await repository.GetReadyNotificationsAsync(player.UserId, cancellationToken));
+        Assert.Equal(0L, await database.ScalarAsync<long>(
+            "SELECT gold FROM player_wallets WHERE player_id=$1", player.UserId));
+        var otherPlayer = Guid.NewGuid();
+        await Assert.ThrowsAsync<InvalidOperationException>(() => repository.GetAsync(
+            otherPlayer, created.SettlementId, cancellationToken));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => repository.GetForMatchAsync(
+            otherPlayer, matchId, cancellationToken));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => repository.GetForMatchAsync(
+            player.UserId, Guid.NewGuid(), cancellationToken));
+        Assert.Equal(assets.Length, await database.ScalarAsync<long>(
+            "SELECT count(*) FROM settlement_asset_holds WHERE settlement_id=$1 AND state='Pending'", created.SettlementId));
         Assert.Equal(assets.Length, await repository.CommitHoldsAsync(created.SettlementId, cancellationToken));
         Assert.Equal(0, await repository.CommitHoldsAsync(created.SettlementId, cancellationToken));
         Assert.Equal(17L, await database.ScalarAsync<long>(
@@ -980,6 +998,12 @@ public sealed class PostgresRuntimeIntegrationTests
         Assert.Empty(await repository.GetReadyNotificationsAsync(player.UserId, cancellationToken));
         Assert.Equal(created.SettlementId,
             (await repository.GetForMatchAsync(player.UserId, matchId, cancellationToken)).SettlementId);
+        Assert.Equal(created.SettlementId,
+            (await repository.GetAsync(player.UserId, created.SettlementId, cancellationToken)).SettlementId);
+        await Assert.ThrowsAsync<SettlementNotFoundException>(() => repository.AcknowledgeAsync(
+            otherPlayer, created.SettlementId, "foreign-player-ack", cancellationToken));
+        Assert.Equal(17L, await database.ScalarAsync<long>(
+            "SELECT gold FROM player_wallets WHERE player_id=$1", player.UserId));
     }
 
     [Fact(Skip = "Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.",
