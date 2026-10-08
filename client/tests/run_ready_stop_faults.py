@@ -212,11 +212,13 @@ def main():
     error = None
     try:
         # Recompile actual source without deleting shared/possibly tracked outputs.
-        code, _ = run([args.dotnet, "build", "src/FantasyCard.Server/FantasyCard.Server.csproj", "--no-incremental", "-c", "Release", "-v", "minimal"],
+        build_support = work / 'build-support'
+        code, _ = run([args.dotnet, "build", "src/FantasyCard.Server/FantasyCard.Server.csproj", "--no-incremental", "-c", "Release", "-v", "minimal",
+                       "--artifacts-path", str(build_support), "-p:UseSharedCompilation=false"],
                       "fresh-source-build", cwd=repo / "server", timeout=180)
         if code:
             raise RuntimeError("Fresh actual source build failed")
-        dll = repo / "server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll"
+        dll = build_support / "bin/FantasyCard.Server/release/FantasyCard.Server.dll"
         frozen = work / 'server-frozen'
         shutil.copytree(dll.parent, frozen, ignore=shutil.ignore_patterns('*.pdb', 'artifacts'))
         dll = frozen / dll.name
