@@ -22,6 +22,7 @@ from owned_postgres import OwnedPostgres
 
 CASES = {
     "ready_required_all_lost_ticket": ("LOAD-04.3-T01", "Discard every real required frame, including replay; only authoritative matched ticket and room recovery authorize READY."),
+    "ready_started_all_lost_snapshot": ("LOAD-04.3-T02", "Discard every actual started frame without disconnecting; accepted READY and verified ticket must recover a real authoritative room snapshot."),
     "normal_ready": ("LOAD-04.4-T01", "Real normal READY followed by coordinator drain; one room, clear route/assets."),
     "required_lost_reconnect": ("LOAD-04.4-T01", "Drop first real required frame, disconnect, restore authoritative same room on reconnect."),
     "stop_prepare_await": ("LOAD-04.4-T03", "STOP while real preparation response awaits delivery; cancel preparation."),
@@ -367,6 +368,11 @@ def main():
                     transport_ok = transport_ok and not any(item['kind'] == 'room.ready_required' for item in forwarded)
                     transport_ok = transport_ok and any(item['kind'] == 'room.ready' for item in forwarded)
                     transport_ok = transport_ok and client.get('required_delivered') == 0 and client.get('ticket_reads',0) >= 1
+                    transport_ok = transport_ok and all(len(item['postgres_at_drop']) == 1 for item in dropped)
+                elif case == "ready_started_all_lost_snapshot":
+                    transport_ok = transport_ok and {item['kind'] for item in dropped} == {'room.started'}
+                    transport_ok = transport_ok and not any(item['kind'] == 'room.started' for item in forwarded)
+                    transport_ok = transport_ok and any(item['kind'] == 'room.snapshot' for item in forwarded)
                     transport_ok = transport_ok and all(len(item['postgres_at_drop']) == 1 for item in dropped)
                 else:
                     expected_drops = {"room.ready_accepted"} if case == "ready_accepted_lost_resume" else {"room.started"} if case == "ready_started_lost_reconnect" else {"room.ready_accepted", "room.started"}
