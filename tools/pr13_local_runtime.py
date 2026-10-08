@@ -157,7 +157,9 @@ def main():
     parser.add_argument("--python", default=sys.executable)
     parser.add_argument("--database-container", default="pr13-stages-20261008-s1-pg")
     parser.add_argument("--scenario", choices=("single", "ten", "50", "100", "soak"), required=True)
+    parser.add_argument('--functional-cleared-route',action='store_true',help='Separate LIVE functional control: clear then legally extract; never original capacity evidence')
     args = parser.parse_args()
+    if args.functional_cleared_route and args.scenario not in ('single','ten'):parser.error('Cleared route control is only a functional single/ten smoke profile')
     profiles = json.loads((ROOT / "docs/plans/PR13_LOCAL_PROFILES_20261008.json").read_text(encoding="utf8"))
     spec = profiles["profiles"]["LIVE" if args.scenario in {"single", "ten"} else "CAPACITY"]
     count = 1 if args.scenario == "single" else 10 if args.scenario == "ten" else 50 if args.scenario == "soak" else int(args.scenario)
@@ -169,7 +171,7 @@ def main():
                    "--server-url", runtime.url, "--output", str(output / "load"), "--max-seconds", str(maximum),
                    "--distinct-local-client-ips", "--hero-class", "mixed", "--strategy", "baseline_all_hand"]
         if args.scenario in {"single", "ten"}:
-            command += ["--smoke", "--smoke-clients", str(count), "--smoke-cycles", "3", "--load-profile", "cyclic-gameplay",
+            command += ["--smoke", "--smoke-clients", str(count), "--smoke-cycles", "3", "--load-profile", "cleared-extraction" if args.functional_cleared_route else "cyclic-gameplay",
                         "--cycle-limit-seconds", "600"]
         else:
             command += ["--run", "--max-groups", "1", "--group-size", str(count), "--target-online", str(count),
@@ -179,6 +181,11 @@ def main():
                   "source_sha": runtime.record["source_sha"], "maximum_seconds": maximum, "started_at": time.time(),
                   "cycle_limit_seconds": 600 if args.scenario in {"single", "ten"} else 240,
                   "class_scope": "Three classes round-robin; actual distribution comes from client reports", "accepted": False}
+        record['functional_route_variant']='clear-then-extract-visible-outer-ring-v1' if args.functional_cleared_route else None
+        record['original_capacity_evidence_eligible']=not args.functional_cleared_route
+        if args.functional_cleared_route:
+            record['frozen_live_budget_hash']=profile_hash
+            record['profile_hash']=hashlib.sha256(json.dumps({'frozen_live_budget_hash':profile_hash,'variant':record['functional_route_variant'],'load_profile':'cleared-extraction','requested_cycles':3},sort_keys=True).encode()).hexdigest()
         write(output / "command.json", record)
         with (output / "load.private.log").open("w", encoding="utf8") as log:
             child = subprocess.Popen(command, cwd=ROOT, stdout=log, stderr=subprocess.STDOUT,

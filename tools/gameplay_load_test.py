@@ -215,7 +215,7 @@ def main():
     parser.add_argument('--smoke-clients',type=int,default=1)
     parser.add_argument('--cycle-limit-seconds',type=int,default=240,
                         help='Preregistered per-expedition observation limit, 60-600 seconds; overall deadline still applies')
-    parser.add_argument('--load-profile', choices=('cyclic-gameplay','active-hold','functional-cycles'), default='cyclic-gameplay')
+    parser.add_argument('--load-profile', choices=('cyclic-gameplay','active-hold','functional-cycles','cleared-extraction'), default='cyclic-gameplay')
     parser.add_argument('--target-online',type=int)
     parser.add_argument('--target-active',type=int)
     parser.add_argument('--hold-seconds',type=int,default=600)
@@ -259,7 +259,7 @@ def main():
         return 0
     if args.run and args.smoke: parser.error('Choose --smoke or --run')
     if args.run and args.smoke_clients!=1: parser.error('--smoke-clients belongs to the smoke profile')
-    if args.run and args.load_profile == 'functional-cycles': parser.error('Functional cycles are smoke scenarios and cannot prove capacity')
+    if args.run and args.load_profile in ('functional-cycles','cleared-extraction'): parser.error('Functional/cleared extraction cycles are smoke scenarios and cannot prove original capacity')
     if args.run:
         baseline=local_host_metrics() if args.local_resource_sampling else metrics(args.prometheus)
         if any(baseline[k] is None for k in ('cpu','memory_available','disk_available')):

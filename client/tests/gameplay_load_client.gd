@@ -59,7 +59,7 @@ var last_effective_action_ms := 0
 
 func _ready() -> void:
 	load_profile = OS.get_environment("FANTASYCARD_LOAD_PROFILE")
-	if load_profile not in ["cyclic-gameplay", "active-hold", "functional-cycles"]: load_profile = "cyclic-gameplay"
+	if load_profile not in ["cyclic-gameplay", "active-hold", "functional-cycles", "cleared-extraction"]: load_profile = "cyclic-gameplay"
 	var requested_hold := OS.get_environment("FANTASYCARD_LOAD_HOLD_SECONDS")
 	if requested_hold.is_valid_int(): hold_seconds = clampi(int(requested_hold), 1, 3600)
 	var requested_run := OS.get_environment("FANTASYCARD_LOAD_RUN_SECONDS")
@@ -280,24 +280,14 @@ func _run_expedition() -> void:
 			elif Game.allowed("monster.choose"):
 				var pending: Array = Game.room.get("player", {}).get("monster_pool", {}).get("pending", [])
 				if not pending.is_empty(): Game.command("monster.choose", {"candidate_id": pending[0].get("instance_id", ""), "accept": false})
-			elif load_profile == "cyclic-gameplay" and Game.allowed("action.extract") and not visited.is_empty():
+			elif _should_extract(visited):
 				Game.command("action.extract")
 			elif Game.allowed("action.spring"):
 				Game.command("action.spring")
 			elif Game.allowed("room.move"):
 				var moves: Array = Game.room.get("legal_moves", []).duplicate()
 				if not moves.is_empty():
-					# Seeded Fisher-Yates; no global RNG or hidden map information.
-					for index in range(moves.size() - 1, 0, -1):
-						var other := strategy_rng.randi_range(0, index)
-						var temporary: Variant = moves[index]
-						moves[index] = moves[other]
-						moves[other] = temporary
-					var move: Dictionary = moves[0]
-					for candidate in moves:
-						if not visited.has(str(candidate.get("row", 0)) + ":" + str(candidate.get("column", 0))):
-							move = candidate
-							break
+					var move: Dictionary = _choose_move(moves, visited)
 					var move_key: String = str(move.get("row", 0)) + ":" + str(move.get("column", 0))
 					visited[move_key] = true
 					Game.command("room.move", move)
@@ -314,6 +304,35 @@ func _run_expedition() -> void:
 		_on_telemetry({"type": "lifecycle", "event_type": "settlement.acknowledged" if acknowledged else "settlement.ack_failed",
 			"match_id": settlement_match_id})
 		scenario_finished = _check(acknowledged and settlement_match_id == active_match_id and Game.room.is_empty() and Game.settlement.is_empty(), "settlement_acknowledged")
+
+func _should_extract(visited: Dictionary) -> bool:
+	if not Game.allowed("action.extract"): return false
+	if load_profile == "cleared-extraction": return cycle_battles_won > 0
+	return load_profile == "cyclic-gameplay" and not visited.is_empty()
+
+func _choose_move(moves: Array, visited: Dictionary) -> Dictionary:
+	if moves.is_empty(): return {}
+	# Preserve the original seeded move selection for its original profiles.
+	var shuffled: Array = moves.duplicate(true)
+	for index in range(shuffled.size()-1,0,-1):
+		var other := strategy_rng.randi_range(0,index)
+		var temporary: Variant = shuffled[index]
+		shuffled[index] = shuffled[other]
+		shuffled[other] = temporary
+	var unvisited: Array = shuffled.filter(func(candidate): return not visited.has(str(candidate.get("row",0))+":"+str(candidate.get("column",0))))
+	if load_profile != "cleared-extraction": return shuffled[0] if unvisited.is_empty() else unvisited[0]
+	# This separate functional profile searches the outer legal ring before
+	# voluntarily going inward. Evacuation/monster/path secrets are absent from
+	# this decision: only supplied legal positions and our visited set are read.
+	var options: Array = shuffled if unvisited.is_empty() else unvisited
+	var best: Dictionary = options[0]
+	var best_layer := mini(mini(int(best.row),int(best.column)),mini(5-int(best.row),5-int(best.column)))
+	for candidate in options:
+		var layer := mini(mini(int(candidate.row),int(candidate.column)),mini(5-int(candidate.row),5-int(candidate.column)))
+		if layer<best_layer:
+			best=candidate
+			best_layer=layer
+	return best
 
 func _graceful_cleanup() -> void:
 	stage = "cleanup"
