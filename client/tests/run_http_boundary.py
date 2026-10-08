@@ -1,10 +1,13 @@
 """Real loopback HTTP framing faults; no production network or credentials."""
 import argparse
 import json
+import gzip
+import zlib
 import os
 from pathlib import Path
 import shutil
 import socket
+import ssl
 import subprocess
 import threading
 import time
@@ -18,21 +21,27 @@ class Handler(BaseHTTPRequestHandler):
     def do_HEAD(self): self.respond()
     def do_GET(self): self.respond()
     def respond(self):
+        encoded = (gzip.compress(b'abcdef') if self.path == '/gzip' else
+                   zlib.compress(b'abcdef') if self.path == '/deflate' else
+                   gzip.compress(b'x' * (2 * 1024 * 1024 + 1)) if self.path == '/gzip-limit' else None)
         self.send_response(204 if self.path == "/empty" else 200)
         if self.path in ("/chunked", "/truncated-chunk"):
             self.send_header("Transfer-Encoding", "chunked")
         elif self.path != "/close-body":
-            size = 6000 if self.path == "/limit" else 9 if self.path == "/truncated" else 0 if self.path == "/empty" else 6
+            size = len(encoded) if encoded else 2 * 1024 * 1024 + 1 if self.path == "/production-limit" else 6000 if self.path == "/limit" else 9 if self.path == "/truncated" else 0 if self.path == "/empty" else 6
             self.send_header("Content-Length", str(size))
+        if self.path == "/bad-gzip": self.send_header("Content-Encoding", "gzip")
+        if encoded: self.send_header('Content-Encoding', 'deflate' if self.path == '/deflate' else 'gzip')
         if self.path in ("/close-body", "/close-length", "/truncated", "/truncated-chunk"):
             self.send_header("Connection", "close")
             self.close_connection = True
         self.end_headers()
         if self.command == "HEAD" or self.path == "/empty": return
         if self.path == "/slow": time.sleep(.6)
-        body = (b"3\r\nabc\r\n3\r\ndef\r\n0\r\nX-Trace: fixture\r\n\r\n" if self.path == "/chunked" else
+        body = (encoded if encoded else b"3\r\nabc\r\n3\r\ndef\r\n0\r\nX-Trace: fixture\r\n\r\n" if self.path == "/chunked" else
                 b"3\r\nabc\r\n" if self.path == "/truncated-chunk" else
                 b"abc" if self.path == "/truncated" else
+                b"x" * (2 * 1024 * 1024 + 1) if self.path == "/production-limit" else
                 b"x" * 6000 if self.path == "/limit" else b"abcdef")
         try:
             self.wfile.write(body)
@@ -47,6 +56,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--godot", required=True)
     parser.add_argument("--output", type=Path, default=Path("outputs/pr13-http-boundary"))
+    parser.add_argument("--tls-fault", action="store_true", help="Generate an owned untrusted loopback TLS certificate with openssl")
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[2]
     work = args.output.resolve()
@@ -59,6 +69,28 @@ def main():
     worker = threading.Thread(target=server.serve_forever, daemon=True)
     worker.start()
     env = isolated_environment(work, FANTASYCARD_SERVER_URL=f"http://127.0.0.1:{server.server_port}")
+    tls_server = None
+    tls_worker = None
+    if args.tls_fault:
+        cert = work/'untrusted-fixture-cert.pem'
+        key = work/'untrusted-fixture-key.pem'
+        config = work/'openssl-fixture.cnf'
+        config.write_bytes(b'[req]\ndistinguished_name=dn\n[dn]\n')
+        try:
+            generated = subprocess.run(['openssl','req','-config',str(config),'-x509','-newkey','rsa:2048','-nodes','-keyout',str(key),'-out',str(cert),'-days','1','-subj','/CN=localhost'],
+                                       capture_output=True, timeout=30, creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
+            (work/'certificate-generation.log').write_bytes(generated.stderr)
+            generated.check_returncode()
+        except BaseException:
+            server.shutdown(); server.server_close(); worker.join(timeout=5)
+            raise
+        tls_server = ThreadingHTTPServer(('127.0.0.1',0), Handler)
+        context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+        context.load_cert_chain(cert,key)
+        tls_server.socket = context.wrap_socket(tls_server.socket,server_side=True)
+        tls_worker = threading.Thread(target=tls_server.serve_forever,daemon=True)
+        tls_worker.start()
+        env['PR13_INVALID_TLS_ORIGIN'] = f'https://localhost:{tls_server.server_port}'
     command = [args.godot, "--headless", "--path", str(work), "--script", "res://tests/run_http_boundary.gd"]
     try:
         run = subprocess.run(command, env=env, capture_output=True, text=True, encoding="utf8",
@@ -78,6 +110,8 @@ def main():
         return 1
     finally:
         server.shutdown(); server.server_close(); worker.join(timeout=5)
+        if tls_server:
+            tls_server.shutdown(); tls_server.server_close(); tls_worker.join(timeout=5)
 
 
 if __name__ == "__main__": raise SystemExit(main())

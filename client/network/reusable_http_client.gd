@@ -64,6 +64,23 @@ func request(tree: SceneTree, origin: String, path: String, method: int,
 		final_status == HTTPClient.STATUS_CONNECTED if chunked else
 		final_status in [HTTPClient.STATUS_CONNECTED, HTTPClient.STATUS_DISCONNECTED])
 	if not complete: return _failure(HTTPRequest.RESULT_CHUNKED_BODY_SIZE_MISMATCH)
+	# Framing proves the compressed wire body is complete. Decode only after
+	# that check, with the same limit on the expanded body as HTTPRequest.
+	var encoding := ""
+	for header in response_headers:
+		if header.get_slice(":", 0).strip_edges().to_lower() == "content-encoding":
+			encoding = header.substr(header.find(":") + 1).strip_edges().to_lower()
+	if encoding not in ["", "identity"]:
+		if encoding not in ["gzip", "deflate"]:
+			return _failure(HTTPRequest.RESULT_BODY_DECOMPRESS_FAILED)
+		if encoding == "gzip":
+			if response_body.size() < 18 or response_body[0] != 0x1f or response_body[1] != 0x8b or response_body[2] != 8:
+				return _failure(HTTPRequest.RESULT_BODY_DECOMPRESS_FAILED)
+			if response_body.decode_u32(response_body.size() - 4) > body_limit:
+				return _failure(HTTPRequest.RESULT_BODY_SIZE_LIMIT_EXCEEDED)
+		var expanded := response_body.decompress_dynamic(body_limit, FileAccess.COMPRESSION_GZIP if encoding == "gzip" else FileAccess.COMPRESSION_DEFLATE)
+		if expanded.is_empty(): return _failure(HTTPRequest.RESULT_BODY_DECOMPRESS_FAILED)
+		response_body = expanded
 	if _client.get_status() != HTTPClient.STATUS_CONNECTED:
 		close()
 	busy = false
