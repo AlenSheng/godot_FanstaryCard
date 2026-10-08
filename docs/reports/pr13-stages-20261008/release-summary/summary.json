@@ -12,7 +12,7 @@
     "S1": "Partial: actual baselines/failures retained",
     "S2": "Partial: statistics, local runtime controls and Windows fixture fixes implemented",
     "S3": "Partial: regression passed; exact mandatory case coverage 37/396",
-    "S4": "Partial: actual PostgreSQL and single natural cycles passed; mixed-class ten-client contract not met",
+    "S4": "Partial overall; ten mixed-class natural-cycle contract failed after both observation limits.",
     "S5": "Partial: supplemental 864000-row experiment completed; original capacity, benefit and human gates remain",
     "S6": "NotAccepted: required cases/layers remain"
   },
@@ -166,9 +166,9 @@
     "cases": 396,
     "task_states": {
       "ReadyForAcceptance": 11,
-      "Partial": 34,
-      "Queued": 86,
-      "InProgress": 1
+      "Partial": 35,
+      "Queued": 85,
+      "Failed": 1
     },
     "case_states": {
       "Passed": 37,
@@ -179,7 +179,7 @@
   "candidate_defaults_enabled": false,
   "human_acceptance": "Pending; 机器人模拟补充体验，真人验收仍待补",
   "history": "Deleted 50/100 raw cannot explain or recover old 86/90 and 130/139; new tests establish a current baseline only.",
-  "ongoing": "The registered ten-client 600-second observation rerun will be recorded in a new summary after completion.",
+  "ongoing": "The 600-second observation rerun completed and failed; actual per-client counts and zero residual database state are archived in S4-ten-bounded.",
   "remaining": [
     "359 canonical cases have not been explicitly executed in this delivery register. Supporting regression counts do not replace their exact expectations.",
     "Mixed-class ten-account three-natural-cycle contract remains incomplete; retain deadline-censored and drain ACK outcomes separately.",
@@ -187,5 +187,6 @@
     "Visible/rendered interaction matrix and six humans x three games remain pending.",
     "Candidate benefit/precision/Holm risk adjudication, source/rollback and remaining functional case mappings remain required before final S6 acceptance."
   ],
-  "rollback": "Revert the individual code/tool commits and keep immutable evidence. No production schema, assets, refunds or runtime configuration were changed by these local runs."
+  "rollback": "Revert the individual code/tool commits and keep immutable evidence. No production schema, assets, refunds or runtime configuration were changed by these local runs.",
+  "latest_live_evidence": "docs/reports/pr13-stages-20261008/S4-ten-bounded/summary.json"
 }

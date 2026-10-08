@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "runtime_execution_register",
   "generated_at": 1791451762.5079782,
-  "integration_source_sha": "72e74d9e41fe792e603811594b3262f74b2c4ec8",
+  "integration_source_sha": "8fd34873a964f2def801a619090d2da33ade6bd4",
   "plan_sha256": "24988217f35979fb3c028c2a535a931fe692045ed38bb04d4321e7a91d02332b",
   "release_base": "28c6c7e7d3898e4d2abd186f53361477ba380330",
   "counts": {
@@ -11,9 +11,9 @@
     "cases": 396,
     "task_states": {
       "ReadyForAcceptance": 11,
-      "Partial": 34,
-      "Queued": 86,
-      "InProgress": 1
+      "Partial": 35,
+      "Queued": 85,
+      "Failed": 1
     },
     "case_states": {
       "Passed": 37,
@@ -3099,7 +3099,7 @@
       "task_id": "PR13-A09.2",
       "title": "多账号正常三局",
       "package_id": "PR13-A09",
-      "state": "Queued",
+      "state": "Failed",
       "accepted_by": null,
       "owner": "MAIN",
       "case_counts": {
@@ -3131,7 +3131,13 @@
       ],
       "pass_criteria": "同match ack/DB实例/终态可关联，玩法可恢复且统计守恒。",
       "next_action": "headless流程和rendered操作分别跑，正常完成/撤离/死亡/兜底/drain分列",
-      "observation": {}
+      "observation": {
+        "task_id": "PR13-A09.2",
+        "state": "Failed",
+        "reason": "Only four of ten mixed-class accounts completed three natural games within the preregistered observation budget.",
+        "evidence": "docs/reports/pr13-stages-20261008/S4-ten-bounded/summary.json",
+        "next_action": "Resolve class/script/build limitations with controlled comparisons; keep rendered verification separate."
+      }
     },
     {
       "task_id": "PR13-A09.3",
@@ -3175,7 +3181,7 @@
       "task_id": "PR13-A09.4",
       "title": "独立裁决反馈",
       "package_id": "PR13-A09",
-      "state": "InProgress",
+      "state": "Partial",
       "accepted_by": null,
       "owner": "MAIN",
       "case_counts": {
@@ -3209,9 +3215,9 @@
       "next_action": "Require every actual client to finish three natural cycles; retain old failed raw and new cutoff records.",
       "observation": {
         "task_id": "PR13-A09.4",
-        "state": "InProgress",
-        "reason": "Initial mixed ten-account run failed the undeclared 240-second per-cycle bound; current 600-second observation rerun is running within unchanged 1800-second overall budget.",
-        "next_action": "Require every actual client to finish three natural cycles; retain old failed raw and new cutoff records."
+        "state": "Partial",
+        "reason": "Rerun on the new observed source completed and still failed the ten-account natural-cycle contract.",
+        "next_action": "Continue baseline-script/build diagnosis before larger acceptance runs."
       }
     },
     {
@@ -5408,5 +5414,6 @@
         "PR13-B12.4"
       ]
     }
-  ]
+  ],
+  "state_update": "MAIN review of completed S4-ten-bounded; prior raw and register sources retained."
 }
