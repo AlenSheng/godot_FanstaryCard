@@ -20,11 +20,33 @@ def missing_case_profiles(task, records):
             for r in records if r['status']=='Passed' and set(task['profiles'])-set(r.get('profiles_executed',[]))}
 
 
+def apply_main_decisions(tasks, decisions, head, root=ROOT):
+    if decisions.get('authority')!='MAIN' or decisions.get('stage')!='S6' or decisions.get('integration_source_sha')!=head:
+        raise ValueError('Current explicit MAIN S6 decision record required')
+    known={t['task_id']:t for t in tasks};seen=set()
+    for decision in decisions.get('task_decisions',[]):
+        task_id=decision['task_id']
+        if task_id not in known or task_id in seen:raise ValueError('Unknown/duplicate MAIN task')
+        seen.add(task_id);task=known[task_id]
+        if decision.get('state')!='Accepted' or task['state']!='ReadyForAcceptance' or task['missing_cases'] or task['missing_case_profiles']:
+            raise ValueError('MAIN acceptance requires every mandatory case and profile: '+task_id)
+        for key in ('reason','evidence','rollback','runtime_review_sha'):
+            if not decision.get(key):raise ValueError('Incomplete MAIN decision: '+key)
+        if set(task.get('case_source_shas',{}).values())!={decision['runtime_review_sha']}:
+            raise ValueError('MAIN runtime review differs from executed case sources')
+        for item in decision['evidence']:
+            path=(root/item['path']).resolve()
+            if not path.is_relative_to(root.resolve()) or path.stat().st_size!=item['bytes'] or digest(path)!=item['sha256']:
+                raise ValueError('MAIN evidence changed or escaped the workspace')
+        task.update(state='Accepted',accepted_by='MAIN',main_decision=decision,next_action='本子项适用层已裁决；全范围门槛另行汇总。')
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--case-reports',nargs='+',type=Path,required=True)
     parser.add_argument('--support',type=Path,required=True)
     parser.add_argument('--output',type=Path,required=True)
+    parser.add_argument('--main-decisions',type=Path)
     args=parser.parse_args();output=args.output.resolve();output.mkdir(parents=True,exist_ok=True)
     plan=json.loads(PLAN.read_text(encoding='utf8'));support=json.loads(args.support.read_text(encoding='utf8'))
     expected={c['id']:c for p in plan['packages'] for s in p['subtasks'] for c in s['test_cases']}
@@ -81,15 +103,19 @@ def main():
                 evidence=supporting.get(task['id'],[]),case_ids=[c['id'] for c in task['test_cases']],
                 missing_cases=[r['case_id'] for r in task_cases if r['status']!='Passed'],
                 missing_case_profiles=missing_profiles,
+                case_source_shas={r['case_id']:r.get('source_sha') for r in task_cases if r['status']=='Passed'},
                 pass_criteria=task['pass_criteria'],next_action=observation.get('next_action',
                     '复核逐用例证据、依赖与当前CI后由MAIN裁决。' if state=='ReadyForAcceptance' else task['implementation_steps']),
                 observation=observation))
+    head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+    if args.main_decisions:
+        files.add(args.main_decisions.resolve())
+        apply_main_decisions(tasks,json.loads(args.main_decisions.read_text(encoding='utf8')),head)
     gates=[dict(gate_id=g['id'],name=g['name'],state='NotAccepted',pass_criteria=g['pass'],
                 unfinished=[t['task_id'] for t in tasks if t['task_id'] in g['tasks'] and t['state'] not in ('Accepted','NoChangeWithEvidence')]) for g in plan['gates']]
     manifest=[]
     for file in sorted(files):
         manifest.append(dict(path=str(file.relative_to(ROOT)).replace('\\','/'),bytes=file.stat().st_size,sha256=digest(file)))
-    head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     counts=dict(packages=len(plan['packages']),tasks=len(tasks),cases=len(cases),
                 task_states=dict(Counter(t['state'] for t in tasks)),case_states=dict(Counter(c['status'] for c in cases)))
     register=dict(schema_version=1,kind='runtime_execution_register',generated_at=time.time(),integration_source_sha=head,
