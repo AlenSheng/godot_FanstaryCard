@@ -1,0 +1,28 @@
+{
+  "source_sha": "e8599cf838dce0973aea11b79db60e6c6c3859c5",
+  "source": {
+    "python": "3.10.11",
+    "platform": "Windows-10-10.0.19045-SP0",
+    "git_commit": "e8599cf838dce0973aea11b79db60e6c6c3859c5",
+    "git_dirty": false,
+    "sha256": {
+      "tools/pr13_fault_cases.py": "41b87024d5cd568b57ec98eb6f10fecd93a196900cdf8b644a6cad4243978aeb",
+      "tools/tests/test_gameplay_load_finalization.py": "e0bc0d0984893440694265ee26871d3c5ac17c1930c9233a592b1251e79e0eca",
+      "tools/tests/test_gameplay_load_sampling_contract.py": "763070bd7ad26be6c521a13cc10c02f17e742ed0933c0c4ced5129fc7bce7ed3",
+      "tools/gameplay_load_test.py": "338ec00454e8210655beae38b84be73401d2d971110edf4d0784312e81c8a7e4",
+      "tools/cloud_load_test.py": "70c6b1667b5c3b35aae6761eaf029a00dde120c811aa29718f0d37fad153d4ab",
+      "tools/pr13_runtime_evidence.py": "6a0a7683fadd2d0927e21d9e77f55895fd35042b3bf42c32421493784a69c60d",
+      "client/tests/pr13_load_faults.gd": "22744308fceb650846de593e439725eba1b2b41d658069c6461cf3a09e715e26",
+      "client/tests/gameplay_load_client.gd": "031d9f3d910f1c190091f84985305d309576b9f3fcdd79c736c3d2e50eac212a",
+      "client/network/gateway.gd": "ed8d09e0074129e18dc098a2773250fbdce8ff15ec2e7884f15ac34a9faaf9c6",
+      "client/project.godot": "3b6b98a106322f71bee784ae418aa1eac40be97fbfafc48aef2206e966dfc2cb"
+    }
+  },
+  "plan_sha256": "24988217f35979fb3c028c2a535a931fe692045ed38bb04d4321e7a91d02332b",
+  "kind": "explicit_offline_fault_cases",
+  "scope": "Explicit PR13 OFFLINE faults through the actual coordinator and owned processes.\n\nClock/network observations in coordinator fixtures are controlled inputs, not\nlive-server or capacity evidence. Native child and Godot cases use real processes.\n",
+  "executed": 16,
+  "passed": 16,
+  "all_cases_accepted": false,
+  "missing_layers": "POSTGRES/LIVE requirements remain separate; controlled clock/network fixtures do not claim live gameplay or capacity."
+}

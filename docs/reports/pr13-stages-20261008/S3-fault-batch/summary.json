@@ -1,0 +1,31 @@
+{
+  "stage": "S3",
+  "status": "Partial",
+  "source_sha": "e8599cf838dce0973aea11b79db60e6c6c3859c5",
+  "explicit_new_cases": 16,
+  "all_passed": true,
+  "total_explicit_passed": 53,
+  "required_cases": 396,
+  "tool_tests_passed": 157,
+  "counts": {
+    "packages": 33,
+    "tasks": 132,
+    "cases": 396,
+    "task_states": {
+      "ReadyForAcceptance": 17,
+      "Partial": 30,
+      "Queued": 83,
+      "Failed": 1,
+      "Blocked": 1
+    },
+    "case_states": {
+      "Passed": 53,
+      "NotExecuted": 343
+    }
+  },
+  "scope": "Actual coordinator fault paths with controlled clock/network inputs, real subprocess exits/forced cleanup and two real Godot autoload/audit-write fixtures.",
+  "source_review": "Existing early autoload session opt-out proved correct; no runtime rule/config or production change. New helper/fixtures are covered by PR and direct-release CI paths.",
+  "missing_layers": "Required POSTGRES/LIVE/render/capacity layers remain separately tracked; no headless-to-human inference.",
+  "runtime_accepted": 0,
+  "rollback": "Revert this test/helper batch independently; preserve all prior raw/report snapshots."
+}
