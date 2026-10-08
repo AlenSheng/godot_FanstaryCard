@@ -4,7 +4,7 @@ import hashlib
 import json
 from pathlib import Path
 import subprocess
-from pr13_candidate_review import paired_clusters,holm_adjust,gameplay_review,performance_review,tail_evidence
+from pr13_candidate_review import paired_clusters,holm_adjust,gameplay_review,performance_review,tail_evidence,retain_default_decision
 
 ROOT=Path(__file__).resolve().parents[1]
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -46,6 +46,17 @@ def main():
     record('PR13-B04.4-T02',broken,broken['state']=='Failed')
     record('PR13-B05.1-T01',dict(broken,source_values_changed=False),broken['state']=='Failed' and broken['production_defaults_retained'])
     record('PR13-B03.4-T01',{'gameplay':gameplay_review(**dict(args,improvement=.2)),'capacity':performance_review(base,dict(base,gameplay_profile='shorter-candidate'))},performance_review(base,dict(base,gameplay_profile='shorter-candidate'))['state']=='DiagnosticOnly')
+    no_benefit=gameplay_review(**dict(args,improvement=0,interval=[-.03,.02]))
+    unchanged=retain_default_decision(no_benefit,evidence_complete=True)
+    for cid in ['PR13-B04.4-T03','PR13-B09.4-T03']:
+        record(cid,unchanged,unchanged['state']=='NoChangeWithEvidence' and unchanged['equivalence_claim'] is False and not unchanged['production_activation'])
+    no_problem=retain_default_decision(no_benefit,observed_problem=False,evidence_complete=True)
+    for cid in ['PR13-B04.2-T03','PR13-B05.4-T03','PR13-B08.4-T03','PR13-B11.3-T02']:
+        record(cid,no_problem,no_problem['state']=='NoChangeWithEvidence' and no_problem['production_defaults_retained'])
+    insufficient=retain_default_decision(gameplay_review(**dict(args,budget_met=False)),evidence_complete=False)
+    record('PR13-B05.1-T03',insufficient,insufficient['state']=='Blocked' and not insufficient['production_activation'])
+    pvp_fault=retain_default_decision(gameplay_review(**dict(args,correctness=False)))
+    record('PR13-B05.3-T02',dict(pvp_fault,injected_fault='indirect_PVP_value_change'),pvp_fault['state']=='Failed')
     # The adjusted family is monotone in sorted p-values. A raw .04 primary
     # does not become significant when the other registered tests are retained.
     adjusted=holm_adjust({'tail':.04,'gap':.02,'secondary':.4})

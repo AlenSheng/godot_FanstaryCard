@@ -75,3 +75,15 @@ def performance_review(baseline,candidate):
         return {'state':'Inconclusive','reason':'lower_work_or_higher_failures','performance_acceptance':False}
     return {'state':'EligibleForMainReview' if candidate['p95_ms']<baseline['p95_ms'] else 'NoBenefitForMainReview',
         'performance_acceptance':False,'retain_default':True,'p95_delta_ms':candidate['p95_ms']-baseline['p95_ms']}
+
+
+def retain_default_decision(review, *, observed_problem=True, evidence_complete=True):
+    """A no-change implementation decision is never a statistical equivalence claim."""
+    if not evidence_complete or review.get('reason')=='preregistered_budget_not_met':
+        return {'state':'Blocked','reason':'required_evidence_incomplete','production_defaults_retained':True,'production_activation':False}
+    if review.get('state') in ('Failed','Blocked'):
+        return dict(review,production_defaults_retained=True,production_activation=False)
+    if not observed_problem or review.get('state') in ('Inconclusive','NoBenefitForMainReview'):
+        return {'state':'NoChangeWithEvidence','reason':'no_supported_change_to_default','underlying_review':review,
+                'uncertainty_retained':True,'equivalence_claim':False,'production_defaults_retained':True,'production_activation':False}
+    return dict(review,production_activation=False)
