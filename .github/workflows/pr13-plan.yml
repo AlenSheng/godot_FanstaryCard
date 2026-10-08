@@ -5,6 +5,9 @@ on:
     paths:
       - 'docs/plans/**'
       - 'tools/pr13_plan.py'
+      - 'tools/pr13_stages.py'
+      - 'tools/tests/test_pr13_stages.py'
+      - 'docs/reports/pr13-stages-20261008/**'
       - '.github/workflows/pr13-plan.yml'
   workflow_dispatch:
 
@@ -24,3 +27,10 @@ jobs:
           python-version: '3.13'
       - name: Validate complete coverage, references, dependency graph and handbook
         run: python tools/pr13_plan.py --check
+      - name: Check fail-closed stage profiles and evidence
+        run: python -m unittest tools.tests.test_pr13_stages -v
+      - name: Verify frozen stage delivery integrity
+        run: |
+          if [ -f docs/reports/pr13-stages-20261008/S0/summary.json ]; then
+            python tools/pr13_stages.py check --input docs/reports/pr13-stages-20261008/S0 --historical
+          fi
