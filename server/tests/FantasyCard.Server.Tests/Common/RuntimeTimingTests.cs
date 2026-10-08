@@ -10,6 +10,7 @@ using FantasyCard.Domain.Rooms;
 using FantasyCard.Server.Common;
 using FantasyCard.Server.Identity;
 using FantasyCard.Server.Matchmaking;
+using FantasyCard.Server.Progression;
 using FantasyCard.Server.Realtime;
 using FantasyCard.Server.Rooms;
 using FantasyCard.Server.Tests.Persistence;
@@ -67,7 +68,7 @@ public sealed class RuntimeTimingTests(ITestOutputHelper output)
         await socket.Entered.Task.WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken);
         try
         {
-            await actor.ExecuteAsync(new GetRoomSnapshotCommand()).AsTask().WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken);
+            await actor.ExecuteAsync(new GetRoomSnapshotCommand(), TestContext.Current.CancellationToken).AsTask().WaitAsync(TimeSpan.FromSeconds(2), TestContext.Current.CancellationToken);
             Assert.False(send.IsCompleted);
             Assert.Contains(capture.Spans, a => a.TraceId == root.TraceId && a.GetTagItem("runtime.phase")?.ToString() == nameof(RuntimePhase.ActorExecute));
             Assert.DoesNotContain(capture.Spans, a => a.TraceId == root.TraceId && a.GetTagItem("runtime.phase")?.ToString() == nameof(RuntimePhase.SocketSend));
@@ -93,7 +94,7 @@ public sealed class RuntimeTimingTests(ITestOutputHelper output)
         Assert.Equal(6000, capture.MetricTags.Count);
         Assert.All(capture.MetricTags, tags => Assert.Equal("phase", Assert.Single(tags).Key));
         Assert.Equal(6, capture.MetricTags.Select(tags => tags[0].Value!.ToString()).Distinct().Count());
-        output.WriteLine("PR13_RUNTIME " + JsonSerializer.Serialize(new { measurements = 6000, differentRoomIdentities = 6000, labelNames = new[] { "phase" }, labelValues = 6, businessIdsOnlyInTrace = true }));
+        output.WriteLine("PR13_RUNTIME " + JsonSerializer.Serialize(new { measurements = 6000, differentRoomIdentities = 6000, labelNames = "phase", labelValues = 6, businessIdsOnlyInTrace = true }));
     }
 
     private sealed class Capture : IDisposable
