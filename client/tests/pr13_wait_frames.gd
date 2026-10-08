@@ -9,10 +9,11 @@ func battle() -> Dictionary:
 		"allowed_actions":["battle.play_cards", "battle.select_target"],
 		"player":{"player_id":"preview-player", "hero_class":"Guardian", "phase":"Pve",
 			"combat":{"hp":60, "maximum_hp":100, "shield":49},
-			"hand":[{"instance_id":"shield-card", "card_id":"C05", "level":0}]},
+			"hand":[{"instance_id":"shield-card", "card_id":"C17", "level":0}]},
 		"pve":{"battle_id":"wait-battle", "current_target_id":"fire-bat", "monsters":[{"monster_id":"fire-bat", "hp":40, "maximum_hp":44, "shield":0, "intent_kind":"Attack", "intent_element":"Fire", "intent_value":2}]}}
 
 func reset() -> void:
+	for number in $UI.find_children("CombatNumber*","Label",true,false): number.free()
 	Game.room = {}
 	Game.ready_prompt = {}
 	Game.settlement = {}
@@ -103,7 +104,19 @@ func _run() -> void:
 			for number in $UI.find_children("CombatNumber*","Label",true,false):
 				if number.is_visible_in_tree() and number.text=="+1": integer_feedback = true
 			verdicts["PR13-B07.4-T02"] = verdicts["PR13-B07.4-T02"] and integer_feedback
-			observations.back().actual["effective_shield_feedback"] = integer_feedback
+			var shield_observation := observations.size()-2
+			observations[shield_observation].actual["effective_shield_feedback"] = integer_feedback
+			observations[shield_observation].passed = observations[shield_observation].passed and integer_feedback
+			# Apply the declared authority snapshot after the confirmed gain. The
+			# client must display its remainder rather than commit a local preview.
+			Game.room.player.combat.shield = 50
+			Game.room.player.numerical_state.guardian_remainder_tenths = 0
+			await present()
+			remainder = $UI._reference.get_node_or_null("GuardianRemainder")
+			var committed_display := remainder!=null and remainder.text=="0 / 10"
+			verdicts["PR13-B07.4-T02"] = verdicts["PR13-B07.4-T02"] and committed_display
+			observations[shield_observation].actual["authoritative_snapshot_remainder_displayed"] = committed_display
+			observations[shield_observation].passed = observations[shield_observation].passed and committed_display
 			reset()
 			Game.settlement = {"settlementId":"retry-receipt","matchId":"wait-match","result":"Extracted","details":{}}
 			await present()
@@ -114,7 +127,7 @@ func _run() -> void:
 			reset()
 			Game.room = battle()
 			await present()
-			record("PR13-B11.2-T02",bool(polling.checks.get("old rejection cannot clear new match",false)) and $UI._reference.get_node_or_null("Card_C05")!=null,{"actual_old_callback_guard":polling.checks.get("old rejection cannot clear new match"),"new_room_card_visible":$UI._reference.get_node_or_null("Card_C05")!=null})
+			record("PR13-B11.2-T02",bool(polling.checks.get("old rejection cannot clear new match",false)) and $UI._reference.get_node_or_null("Card_C17")!=null,{"actual_old_callback_guard":polling.checks.get("old rejection cannot clear new match"),"new_room_card_visible":$UI._reference.get_node_or_null("Card_C17")!=null})
 			Game.gateway._schedule_reconnect()
 			Game.gateway.reconnect_enabled = false
 			await present()
