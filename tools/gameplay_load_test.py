@@ -21,7 +21,7 @@ try:
 except ImportError:
     psutil = None
 from cloud_load_test import ROOT, CLIENT, stop_all, health_probe, read_json
-from gameplay_load_validation import aggregate_window, workload_snapshot, owned_statuses, new_events, classify_stop, provenance
+from gameplay_load_validation import aggregate_window, request_cutoffs, workload_snapshot, owned_statuses, new_events, classify_stop, provenance
 from pr13_runtime_evidence import coverage, reconcile_cycles, result_dimensions, sampling_integrity
 
 QUERIES = {
@@ -314,7 +314,8 @@ def main():
                 workload=workload_snapshot(processes,statuses,sample_ms,now_monotonic_ms=time.monotonic()*1000)
                 workload_failed=workload_failed or workload['workload_failure']
                 fresh, lost_events=new_events(statuses,seen)
-                window=aggregate_window(fresh)
+                observed_ms = sample_monotonic_ms - (previous_sample_ms if previous_sample_ms is not None else started_monotonic * 1000)
+                window=aggregate_window(fresh, observed_seconds=observed_ms / 1000 if observed_ms > 0 else None)
                 window['lost_event_count']=lost_events
                 audit_lost=sum(s.get('audit_lost_count',0) for s in statuses if isinstance(s.get('audit_lost_count',0),int) and not isinstance(s.get('audit_lost_count',0),bool) and s.get('audit_lost_count',0)>=0)
                 window['audit_lost_count']=audit_lost
@@ -435,13 +436,15 @@ def main():
         final_business_failed = any(bool(s.get('errors')) for s in final_clients)
         post_stop_failure = any(p['process'].poll() not in (0,None) for p in processes)
         audit_events, audit_errors = read_audit_events(processes, final_clients)
-        cutoffs=reconcile_cycles(audit_events,stop_issued_ms,int(time.time()*1000))
+        final_cutoff_ms=int(time.time()*1000)
+        cutoffs=reconcile_cycles(audit_events,stop_issued_ms,final_cutoff_ms)
+        request_distributions=request_cutoffs(audit_events,stop_issued_ms,final_cutoff_ms,started_ms=started*1000)
         final_cycle_disagreement = any(s.get('cycles_completed') !=
             cutoffs['final']['cycles_by_client'].get(s['client_id'], 0) for s in final_clients)
         coverage_evidence_failed = bool(load_coverage.get('evidence_errors'))
         final_evidence_failed = bool(final_read_errors or tail_lost or tail_window['invalid_metric_count']
             or final_audit_lost or final_audit_invalid or final_cycle_invalid or final_cycle_disagreement or final_errors_invalid
-            or audit_errors or cutoffs['evidence_errors'] or coverage_evidence_failed)
+            or audit_errors or cutoffs['evidence_errors'] or request_distributions['evidence_errors'] or coverage_evidence_failed)
         # An operator may intentionally end a run before its first sample.
         # That leaves acceptance incomplete, while preserving exit 130. Real
         # malformed/lost evidence or abnormal child exits still take priority.
@@ -490,6 +493,7 @@ def main():
                 (final_cycle_invalid, 'final_cycle_count_invalid'), (final_errors_invalid, 'final_errors_schema_invalid'),
                 (final_cycle_disagreement, 'final_cycle_count_disagreement'),
                 (audit_errors, 'audit_archive_invalid'), (cutoffs['evidence_errors'], 'cycle_evidence_invalid'),
+                (request_distributions['evidence_errors'], 'request_cutoff_evidence_invalid'),
                 (coverage_evidence_failed, 'load_coverage_evidence_invalid'),
                 (post_stop_failure, 'post_stop_process_failure'), (final_business_failed, 'final_business_failure'),
                 (business_cleanup_failed, 'business_cleanup_failed'), (not sampling['passed'], 'sampling_integrity_failed')):
@@ -501,7 +505,7 @@ def main():
             'load_contract':contract,'load_coverage':load_coverage,'result_dimensions':dimensions,
             'sampling_integrity':sampling,'started_monotonic_ms':started_monotonic*1000,
             'performance_inputs':performance_inputs,
-            'cycle_cutoffs':cutoffs,'audit_read_errors':audit_errors,
+            'cycle_cutoffs':cutoffs,'request_distributions':request_distributions,'audit_read_errors':audit_errors,
             'final_read_errors':final_read_errors,'tail_lost_event_count':tail_lost,
             'tail_window':tail_window,'post_stop_failure':post_stop_failure,
             'final_audit_lost_count':final_audit_lost,'final_audit_count_invalid':final_audit_invalid,

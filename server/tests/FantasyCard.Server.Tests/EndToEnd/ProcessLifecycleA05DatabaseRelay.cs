@@ -12,7 +12,7 @@ public sealed partial class ProcessLifecycleRecoveryTests
     // transaction. All business SQL/payloads originate in the frozen host.
     private sealed class A05DatabaseRelay : IAsyncDisposable
     {
-        private readonly Socket _listener = new(AddressFamily.Unix, SocketType.Stream, ProtocolType.Unspecified);
+        private readonly Socket _listener;
         private readonly EndPoint _upstream;
         private readonly CancellationTokenSource _stop = new();
         private readonly ConcurrentBag<Task> _connections = [];
@@ -21,6 +21,8 @@ public sealed partial class ProcessLifecycleRecoveryTests
         private volatile bool _released;
         private int _dropped;
         public string DirectoryPath { get; }
+        public string ClientHost { get; }
+        public int ClientPort { get; }
         public int Dropped => Volatile.Read(ref _dropped);
 
         public A05DatabaseRelay(string upstreamHost, int port, string mode)
@@ -32,9 +34,23 @@ public sealed partial class ProcessLifecycleRecoveryTests
             _upstream = upstreamHost.StartsWith('/')
                 ? new UnixDomainSocketEndPoint(Path.Combine(upstreamHost, $".s.PGSQL.{port}"))
                 : new DnsEndPoint(upstreamHost, port);
-            _listener.Bind(new UnixDomainSocketEndPoint(Path.Combine(DirectoryPath, $".s.PGSQL.{port}")));
+            if (OperatingSystem.IsWindows())
+            {
+                _listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                _listener.Bind(new IPEndPoint(IPAddress.Loopback, 0));
+                ClientHost = "127.0.0.1";
+                ClientPort = ((IPEndPoint)_listener.LocalEndPoint!).Port;
+            }
+            else
+            {
+                _listener = new Socket(AddressFamily.Unix, SocketType.Stream, ProtocolType.Unspecified);
+                _listener.Bind(new UnixDomainSocketEndPoint(Path.Combine(DirectoryPath, $".s.PGSQL.{port}")));
+                ClientHost = DirectoryPath;
+                ClientPort = port;
+            }
             _listener.Listen(16); _acceptor = AcceptAsync();
-            Record("A05-db-relay-upstream", new { transport = _upstream is UnixDomainSocketEndPoint ? "Unix" : "Tcp" });
+            Record("A05-db-relay-upstream", new { transport = _upstream is UnixDomainSocketEndPoint ? "Unix" : "Tcp",
+                listener = OperatingSystem.IsWindows() ? "LoopbackTcp" : "Unix", ClientPort });
         }
         public void Release() => _released = true;
         private async Task AcceptAsync()

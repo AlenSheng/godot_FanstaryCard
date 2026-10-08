@@ -43,16 +43,19 @@ def _number(value: object) -> bool:
         return False
 
 
-def aggregate_window(statuses: list[dict]) -> dict:
+def aggregate_window(statuses: list[dict], *, observed_seconds: float | None = None) -> dict:
     """Aggregate already-deduplicated samples, retaining errors in each denominator.
 
     No implicit compatibility-404 exclusions. A received 404 remains an error.
     'steady' excludes auth/bootstrap/explicit initial labels, not all cold traffic.
     """
+    if observed_seconds is not None and (not _number(observed_seconds) or observed_seconds <= 0):
+        raise ValueError("Observed request window must be positive and finite")
     if not isinstance(statuses, list):
         statuses = [None]
     http, steady, realtime, rtt, attempts = [], [], [], [], []
     phase_rows: dict[str, list[dict]] = {}
+    route_rows: dict[str, list[dict]] = {}
     invalid = invalid_schema = 0
     for status in statuses:
         if not isinstance(status, dict):
@@ -88,6 +91,9 @@ def aggregate_window(statuses: list[dict]) -> dict:
                     if not isinstance(phase, str) or phase not in {"login", "initial", "matchmaking", "playing", "settlement", "cleanup"}:
                         phase = "unknown/legacy"
                     phase_rows.setdefault(phase, []).append(row)
+                    path = row.get("path")
+                    route = (path.split("?", 1)[0].rstrip("/") or "/") if isinstance(path, str) and path else "unknown/legacy"
+                    route_rows.setdefault(route, []).append(row)
                 elif kind == "http_attempt":
                     attempts.append(row)
                 elif kind == "realtime":
@@ -113,6 +119,17 @@ def aggregate_window(statuses: list[dict]) -> dict:
         "rtt": latency(rtt),
         "phase_http": {phase: latency([row for row in rows if row.get("result") != "cancelled"])
                        for phase, rows in phase_rows.items()},
+        "route_http": {route: dict(latency([row for row in rows if row.get("result") != "cancelled"]),
+                                   logical_request_count=len(rows),
+                                   error_count=sum(failed(row) for row in rows if row.get("result") != "cancelled"),
+                                   cancelled_count=sum(row.get("result") == "cancelled" for row in rows),
+                                   latency_sample_quality="unavailable" if latency([row for row in rows if row.get("result") != "cancelled"])["count"] == 0 else "insufficient" if latency([row for row in rows if row.get("result") != "cancelled"])["count"] < 20 else "sufficient_for_diagnostic_rule")
+                       for route, rows in route_rows.items()},
+        "observed_window_seconds": observed_seconds,
+        "logical_requests_per_second": len(http) / observed_seconds if observed_seconds is not None else None,
+        "completed_requests_per_second": len(completed_http) / observed_seconds if observed_seconds is not None else None,
+        "throughput_missing_reason": None if observed_seconds is not None else "No measured observation interval supplied",
+        "logical_result_counts": dict(Counter(str(row.get("result", "unknown/legacy")) for row in http)),
         "error_count": errors, "sample_count": len(completed_http),
         "logical_request_count": len(http),
         "cancelled_count": len(http) - len(completed_http),
@@ -131,6 +148,56 @@ def aggregate_window(statuses: list[dict]) -> dict:
         "invalid_duration_count": invalid, "invalid_schema_count": invalid_schema,
         "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels",
     }
+
+
+def request_cutoffs(events: list[dict], stop_ms: float, final_ms: float,
+                    *, started_ms: float | None = None) -> dict:
+    """Recompute request distributions from the owned immutable audit, not window P95s.
+
+    Completion timestamps partition running and STOP drain. Origin context is
+    retained in each raw record even when completion occurs in a later cycle.
+    Caller ownership/sequence audit errors must also invalidate runtime evidence.
+    """
+    if not isinstance(events, list) or not _number(stop_ms) or not _number(final_ms) or final_ms < stop_ms:
+        raise ValueError("Invalid request cutoff interval")
+    if started_ms is not None and (not _number(started_ms) or started_ms > stop_ms):
+        raise ValueError("Invalid request start cutoff")
+    before, drain, seen, errors = [], [], set(), []
+    for row in events:
+        if not isinstance(row, dict):
+            errors.append("invalid_event_container")
+            continue
+        kind = row.get("type", row.get("event_type"))
+        if kind not in {"http", "http_attempt", "realtime", "rtt"}:
+            continue
+        context = tuple(row.get(key) for key in ("run_id", "client_id", "process_epoch"))
+        seq, timestamp = row.get("event_seq"), row.get("at_unix_ms")
+        if (not all(isinstance(value, str) and value for value in context) or type(seq) is not int or seq < 1
+                or not _number(timestamp) or timestamp < 0):
+            errors.append("missing_request_context")
+            continue
+        identity = (*context, seq)
+        if identity in seen:
+            errors.append("duplicate_request_event")
+            continue
+        seen.add(identity)
+        if timestamp > final_ms or (started_ms is not None and timestamp < started_ms):
+            errors.append("request_outside_run_cutoffs")
+            continue
+        (before if timestamp <= stop_ms else drain).append(row)
+
+    def aggregate(rows, elapsed):
+        return aggregate_window([{"operations": [row for row in rows if row.get("type", row.get("event_type")) == "http"],
+                                  "telemetry": [row for row in rows if row.get("type", row.get("event_type")) != "http"]}],
+                                observed_seconds=elapsed if elapsed is not None and elapsed > 0 else None)
+
+    return {"algorithm_version": "owned-request-cutoffs-v1",
+            "running": aggregate(before, None if started_ms is None else (stop_ms - started_ms) / 1000),
+            "drain": aggregate(drain, (final_ms - stop_ms) / 1000),
+            "final": aggregate(before + drain, None if started_ms is None else (final_ms - started_ms) / 1000),
+            "evidence_errors": errors,
+            "cutoffs_unix_ms": {"start": started_ms, "stop": stop_ms, "final": final_ms},
+            "classification": "By observed completion time; request-origin cycle/match/phase unchanged"}
 
 
 def workload_snapshot(processes: list[dict], statuses: list[dict], now_ms: int,

@@ -61,7 +61,7 @@ class SimulationReportTests(unittest.TestCase):
         argv = ['report', '--inputs', *map(str, inputs), '--output', str(target)]
         with patch.object(sys, 'argv', argv), contextlib.redirect_stdout(io.StringIO()):
             exit_code = reports.main()
-        return json.loads((target / 'report.json').read_text()), (target / 'report.md').read_text(), exit_code
+        return json.loads((target / 'report.json').read_text(encoding="utf-8")), (target / 'report.md').read_text(encoding="utf-8"), exit_code
 
     def test_small_single_run_has_no_three_block_claim(self):
         directory = fixture(self.root / 'input', self.paired())
@@ -232,13 +232,13 @@ class FactorControlsTests(unittest.TestCase):
         (self.root / 'preregistration.json').write_text(json.dumps(dict(
             source_sha='fixture-source', samples_per_stratum_per_run=3, independent_runs_per_factor=3,
             assembly_hashes={'FantasyCard.Domain.dll': 'fixture-domain',
-                             'FantasyCard.Numerics.dll': 'fixture-simulator'}, jobs=self.jobs)))
+                             'FantasyCard.Numerics.dll': 'fixture-simulator'}, jobs=self.jobs)), encoding="utf-8")
 
     def change_rows(self, mutate, job_index=0):
         directory = Path(self.jobs[job_index]['output'])
-        rows = [json.loads(line) for line in (directory / 'encounters.jsonl').read_text().splitlines()]
+        rows = [json.loads(line) for line in (directory / 'encounters.jsonl').read_text(encoding="utf-8").splitlines()]
         mutate(rows)
-        manifest = json.loads((directory / 'manifest.json').read_text())
+        manifest = json.loads((directory / 'manifest.json').read_text(encoding="utf-8"))
         fixture(directory, rows, **manifest)
 
     def validate(self, jobs=None):
@@ -276,23 +276,23 @@ class FactorControlsTests(unittest.TestCase):
 
     def test_frozen_assembly_or_wrong_factor_manifest_is_rejected(self):
         directory = Path(self.jobs[0]['output'])
-        manifest = json.loads((directory / 'manifest.json').read_text())
+        manifest = json.loads((directory / 'manifest.json').read_text(encoding="utf-8"))
         manifest['DomainAssemblySha256'] = 'different-domain'
         manifest['Candidate'] = 'outer-o6-windup050'
-        (directory / 'manifest.json').write_text(json.dumps(manifest))
+        (directory / 'manifest.json').write_text(json.dumps(manifest), encoding="utf-8")
         self.assertFalse(self.validate()['passed'])
 
     def test_incomplete_preregistration_cannot_hide_unrun_factors_or_blocks(self):
         path=self.root/'preregistration.json'
-        original=json.loads(path.read_text())
+        original=json.loads(path.read_text(encoding="utf-8"))
         for selected in (self.jobs[:3],self.jobs[:-1],self.jobs+[self.jobs[0]]):
             with self.subTest(jobs=len(selected)):
-                path.write_text(json.dumps(dict(original,jobs=selected)))
+                path.write_text(json.dumps(dict(original,jobs=selected)), encoding="utf-8")
                 result=self.validate(selected)
                 self.assertFalse(result['passed'])
                 self.assertEqual(result['errors'][0]['kind'],'invalid_preregistration')
                 self.assertFalse(result['main_sample_floor_met'])
-        path.write_text(json.dumps(dict(original,independent_runs_per_factor=2)))
+        path.write_text(json.dumps(dict(original,independent_runs_per_factor=2)), encoding="utf-8")
         self.assertFalse(self.validate()['passed'])
 
     def test_cancelled_notexecuted_and_missing_jobs_stay_incomplete(self):
@@ -325,7 +325,7 @@ class FactorControlsTests(unittest.TestCase):
         self.assertEqual(result['state'], 'Failed')
         self.assertEqual(result['reason'], 'launch_failed')
         self.assertIsNone(result['exit_code'])
-        self.assertEqual(json.loads((Path(job['output']) / 'execution.json').read_text()), result)
+        self.assertEqual(json.loads((Path(job['output']) / 'execution.json').read_text(encoding="utf-8")), result)
 
     def test_running_stop_and_deadline_kill_owned_child_and_preserve_state(self):
         for cancelled in (True, False):

@@ -578,12 +578,20 @@ public sealed partial class ProcessLifecycleRecoveryTests
                 typeof(FantasyCard.Server.Persistence.DatabaseMigrator).Assembly.Location;
             Assert.True(File.Exists(dll));
             var dotnetRoot = Environment.GetEnvironmentVariable("DOTNET_ROOT");
-            var executable = dotnetRoot is null ? "dotnet" : Path.Combine(dotnetRoot, "dotnet");
+            var executable = dotnetRoot is null ? "dotnet" : Path.Combine(dotnetRoot, OperatingSystem.IsWindows() ? "dotnet.exe" : "dotnet");
             var start = new ProcessStartInfo(executable)
             { WorkingDirectory = Path.GetDirectoryName(dll)!, UseShellExecute = false, RedirectStandardOutput = true, RedirectStandardError = true };
             start.ArgumentList.Add(dll);
             // Child host receives only the explicit local fixture configuration.
             start.Environment.Clear();
+            // Windows needs its system directory to initialize Winsock providers.
+            // Keep only this OS input; inherited server credentials remain excluded.
+            if (OperatingSystem.IsWindows())
+            {
+                var systemRoot = Environment.GetEnvironmentVariable("SystemRoot");
+                Assert.False(string.IsNullOrWhiteSpace(systemRoot));
+                start.Environment["SystemRoot"] = systemRoot;
+            }
             if (dotnetRoot is not null) start.Environment["DOTNET_ROOT"] = dotnetRoot;
             start.Environment["ASPNETCORE_ENVIRONMENT"] = "Development";
             start.Environment["ASPNETCORE_URLS"] = $"http://127.0.0.1:{port}";

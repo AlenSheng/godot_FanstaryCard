@@ -184,7 +184,7 @@ public sealed partial class ProcessLifecycleRecoveryTests
         await A05AuditAsync(database, "db-" + mode + "-before", false, ct);
         var settings = new NpgsqlConnectionStringBuilder(database.ConnectionString);
         await using var relay = new A05DatabaseRelay(settings.Host!, settings.Port, mode);
-        settings.Host = relay.DirectoryPath; settings.SslMode = SslMode.Disable;
+        settings.Host = relay.ClientHost; settings.Port = relay.ClientPort; settings.SslMode = SslMode.Disable;
         var port = ReservePort(); using var client = Client(port, token);
         var fixture = CreateAckClientFixture("a05-db-" + mode);
         CopyFixtureFile(Path.Combine(RepositoryRoot(), "client"), fixture, Path.Combine(RepositoryRoot(), "client/tests/pr13_a05_persistence_fault.gd"));

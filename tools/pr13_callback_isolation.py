@@ -21,8 +21,8 @@ sys.path.insert(0, str(ROOT / "client/tests"))
 from fixture_runtime import isolated_environment
 from http_protobuf_fixture import encode, varint
 
-VERSION = json.loads((ROOT / "client/data/catalog.json").read_text())["version"]
-REALTIME = json.loads((ROOT / "client/data/realtime_schema.json").read_text())["messages"]
+VERSION = json.loads((ROOT / "client/data/catalog.json").read_text(encoding="utf-8"))["version"]
+REALTIME = json.loads((ROOT / "client/data/realtime_schema.json").read_text(encoding="utf-8"))["messages"]
 REQUEST_GATE_SECONDS = 5
 CASE_SECONDS = 6
 RUN_SECONDS = 55
@@ -208,16 +208,16 @@ def main():
     command = [executable, "--headless", "--path", str(project), "--script", "res://tests/pr13_callback_isolation.gd"]
     started = time.monotonic()
     try:
-        run = subprocess.run(command, env=env, capture_output=True, text=True, timeout=RUN_SECONDS)
-        (output / "godot.stdout.log").write_text(run.stdout)
-        (output / "godot.stderr.log").write_text(run.stderr)
+        run = subprocess.run(command, env=env, capture_output=True, text=True, timeout=RUN_SECONDS, encoding="utf-8")
+        (output / "godot.stdout.log").write_text(run.stdout, encoding="utf-8")
+        (output / "godot.stderr.log").write_text(run.stderr, encoding="utf-8")
         lines = [json.loads(line) for line in run.stdout.splitlines() if line.startswith("{") and '"callback_case":' in line]
-        (output / "cases.jsonl").write_text("".join(json.dumps(row, ensure_ascii=False) + "\n" for row in lines))
-        (output / "service_requests.jsonl").write_text("".join(json.dumps(row) + "\n" for row in server.records))
+        (output / "cases.jsonl").write_text("".join(json.dumps(row, ensure_ascii=False) + "\n" for row in lines), encoding="utf-8")
+        (output / "service_requests.jsonl").write_text("".join(json.dumps(row) + "\n" for row in server.records), encoding="utf-8")
         cases_ok = len(lines) == 6 and all(row["status"] == "Passed" for row in lines)
         requests_ok = all(row.get("request_media") == "application/protobuf" and row.get("gate_released", True) for row in server.records)
         ok = run.returncode == 0 and cases_ok and requests_ok and "SCRIPT ERROR" not in run.stderr
-        tracked = subprocess.check_output(["git", "ls-files", "client"], cwd=ROOT, text=True).splitlines()
+        tracked = subprocess.check_output(["git", "ls-files", "client"], cwd=ROOT, text=True, encoding="utf-8").splitlines()
         sources = sorted(set([p for p in tracked if not p.startswith("client/evidence/")
                               and Path(p).suffix in {".gd", ".tscn", ".tres", ".godot", ".json"}]
                              + ["client/tests/pr13_callback_isolation.gd", "tools/pr13_callback_isolation.py",
@@ -228,23 +228,23 @@ def main():
             gateway = next(row for row in manifest if row["path"] == "client/network/gateway.gd")
             gateway.update(bytes=(project / "network/gateway.gd").stat().st_size, sha256=sha(project / "network/gateway.gd"),
                            SourceOverlay=str(args.gateway_overlay.resolve()), base_sha256=sha(ROOT / "client/network/gateway.gd"))
-        (output / "source_manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
+        (output / "source_manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
         (output / "commands.json").write_text(json.dumps({"command": command, "cwd": str(ROOT), "exit_code": run.returncode,
             "elapsed_seconds": time.monotonic() - started, "deadlines": {"request_gate_seconds": REQUEST_GATE_SECONDS, "case_seconds": CASE_SECONDS, "run_seconds": RUN_SECONDS},
-            "godot": subprocess.check_output([executable, "--version"], text=True).strip(), "python": sys.version,
-            "source_head": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
-            "working_tree_status": subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT, text=True).splitlines(),
+            "godot": subprocess.check_output([executable, "--version"], text=True, encoding="utf-8").strip(), "python": sys.version,
+            "source_head": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True, encoding="utf-8").strip(),
+            "working_tree_status": subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT, text=True, encoding="utf-8").splitlines(),
             "tracked_diff_sha256": hashlib.sha256(subprocess.check_output(["git", "diff", "--binary"], cwd=ROOT)).hexdigest(),
-            "skipped": [], "profile": "OFFLINE"}, indent=2) + "\n")
+            "skipped": [], "profile": "OFFLINE"}, indent=2) + "\n", encoding="utf-8")
         report = {"ok": ok, "Accepted": False, "status": "Partial" if ok else "Failed", "profile": "OFFLINE",
                   "canonical_cases": lines, "service_requests": len(server.records), "controlled_delayed_requests": sum(row["paused"] for row in server.records),
                   "remaining_profiles": ["POSTGRES", "LIVE"], "support_only": ["PR13-B11.2-T01", "PR13-B11.2-T02"],
                   "support_remaining_profiles": ["POSTGRES", "LIVE", "RENDER"],
                   "qualification": "Real Godot GameStore _on_event/request entries, a real Gateway.send command/WS rejection, and protobuf loopback HTTP; other events are controlled component injections, with no database or live server."}
-        (output / "report.json").write_text(json.dumps(report, indent=2) + "\n")
+        (output / "report.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
         evidence_manifest = [{"path": p.name, "bytes": p.stat().st_size, "sha256": sha(p)}
                              for p in sorted(output.iterdir()) if p.is_file() and p.name != "manifest.json"]
-        (output / "manifest.json").write_text(json.dumps(evidence_manifest, indent=2) + "\n")
+        (output / "manifest.json").write_text(json.dumps(evidence_manifest, indent=2) + "\n", encoding="utf-8")
         print(json.dumps({"ok": ok, "exit_code": run.returncode, "cases": len(lines), "failed": [r["callback_case"] for r in lines if r["status"] != "Passed"], "output": str(output)}))
         return 0 if ok else 1
     finally:
