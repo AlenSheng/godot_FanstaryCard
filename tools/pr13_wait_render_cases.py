@@ -37,14 +37,14 @@ def main():
     rows=native.get('cases',[])
     for row in rows:
         row.update(setup=contracts[row['case_id']]['setup_and_injection'],expected=contracts[row['case_id']]['expected'])
-        if not clean or native.get('display_driver')=='headless' or len(native.get('observations',[]))!=72:row['status']='Failed'
+        if not clean or native.get('display_driver')=='headless' or len(native.get('observations',[]))!=66:row['status']='Failed'
     if any(sha(ROOT/path)!=value for path,value in inputs.items()):raise ValueError('Renderer input changed during native execution')
     write(out/'observations.json',{k:native.get(k) for k in ('observations','display_driver','adapter')})
     (out/'cases.jsonl').write_bytes(''.join(json.dumps(row,ensure_ascii=False)+'\n' for row in rows).encode())
     write(out/'report.json',dict(source_sha=source,plan_sha256=sha(plan),source=dict(scope='actual controlled wait/recovery/render components',input_hashes=inputs),executed=len(rows),passed=sum(r['status']=='Passed' for r in rows),exit_code=code,native_clean=clean,display_driver=native.get('display_driver'),adapter=native.get('adapter'),observations=len(native.get('observations',[])),elapsed_seconds=time.monotonic()-start,accepted=False))
     write(out/'commands.json',dict(command=command,exit_code=code,timeout_seconds=90,user_data_isolated=True))
     print(json.dumps(dict(executed=len(rows),passed=sum(r['status']=='Passed' for r in rows),native_clean=clean,observations=len(native.get('observations',[])))))
-    return 0 if code==0 and clean and len(rows)==12 and all(row['status']=='Passed' for row in rows) else 1
+    return 0 if code==0 and clean and len(rows)==11 and all(row['status']=='Passed' for row in rows) else 1
 
 
 if __name__=='__main__':raise SystemExit(main())

@@ -78,7 +78,7 @@ func _run() -> void:
 			record("PR13-B11.1-T02",text_visible(P.localized("settlement_pending_message")) and button_visible(P.localized("settlement_retry")) and Game.settlement.is_empty(),{"visible_processing":text_visible(P.localized("settlement_pending_message")),"receipt_not_received":Game.settlement.is_empty(),"retry_available":button_visible(P.localized("settlement_retry"))})
 			reset()
 			Game.room = battle()
-			Game._pending_commands = {"submitted-command":{"action":"battle.play_cards","payload":{}}}
+			Game._pending_commands = {"submitted-command":{"action":"battle.play_cards","payload":{},"deadline":Time.get_ticks_msec()+3000}}
 			await present()
 			var wait_label: Label = $UI._reference.get_node_or_null("CombatWaitReason")
 			record("PR13-B11.1-T03",wait_label!=null and wait_label.text==P.localized("battle_wait_confirming") and not Game.combat_wait_state().legal_opportunity,{"waiting":Game.combat_wait_state(),"visible_submitted":wait_label!=null and wait_label.text==P.localized("battle_wait_confirming")})
@@ -96,6 +96,14 @@ func _run() -> void:
 			var parts := P.localized("battle_preview_shield_parts") % [7,1,6]
 			record("PR13-B07.4-T02",remainder!=null and remainder.text=="8 / 10" and preview!=null and preview.tooltip_text.contains(parts) and int(Game.room.player.combat.shield)==49,{"integer_shield":7,"effective_shield":1,"overflow":6,"authoritative_remainder":8,"preview_no_state_mutation":int(Game.room.player.combat.shield)==49,"parts_exposed":preview!=null and preview.tooltip_text.contains(parts)})
 			record("PR13-B07.4-T03",remainder!=null and remainder.text=="8 / 10" and remainder.get_theme_font("font").get_string_size(remainder.text,HORIZONTAL_ALIGNMENT_LEFT,-1,remainder.get_theme_font_size("font_size")).x < remainder.size.x,{"label":remainder.text if remainder!=null else "missing","key_value_fits":remainder!=null and remainder.text=="8 / 10"})
+			Game._on_event("combat.hit",{"battle_id":"wait-battle","target_id":"fire-bat","source_id":"preview-player","shield_gain":1,"damage_segments":[]})
+			await get_tree().process_frame
+			await RenderingServer.frame_post_draw
+			var integer_feedback := false
+			for number in $UI.find_children("CombatNumber*","Label",true,false):
+				if number.is_visible_in_tree() and number.text=="+1": integer_feedback = true
+			verdicts["PR13-B07.4-T02"] = verdicts["PR13-B07.4-T02"] and integer_feedback
+			observations.back().actual["effective_shield_feedback"] = integer_feedback
 			reset()
 			Game.settlement = {"settlementId":"retry-receipt","matchId":"wait-match","result":"Extracted","details":{}}
 			await present()
