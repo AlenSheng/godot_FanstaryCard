@@ -14,6 +14,17 @@ on:
       - 'tools/pr13_postgres_cases.py'
       - 'tools/pr13_ui_cases.py'
       - 'tools/pr13_state_cases.py'
+      - 'tools/pr13_render_cases.py'
+      - 'tools/pr13_wait_render_cases.py'
+      - 'tools/pr13_source_lifecycle_cases.py'
+      - 'tools/pr13_experience_metric_cases.py'
+      - 'tools/pr13_experience_metrics.py'
+      - 'tools/pr13_guardian_levels.py'
+      - 'tools/pr13_server_phase_cases.py'
+      - 'tools/pr13_ready_recovery_cases.py'
+      - 'tools/pr13_ready_edge_cases.py'
+      - 'tools/pr13_review_cases.py'
+      - 'tools/pr13_review_policy.py'
       - 'tools/pr13_http_cases.py'
       - 'tools/pr13_domain_cases.py'
       - 'tools/pr13_control_cases.py'
@@ -41,6 +52,8 @@ on:
       - 'tools/tests/**'
       - 'client/network/**'
       - 'client/state/**'
+      - 'client/data/**'
+      - 'client/ui/**'
       - 'client/tests/**'
       - 'protocol/**'
       - 'server/**'
@@ -59,6 +72,17 @@ on:
       - 'tools/pr13_postgres_cases.py'
       - 'tools/pr13_ui_cases.py'
       - 'tools/pr13_state_cases.py'
+      - 'tools/pr13_render_cases.py'
+      - 'tools/pr13_wait_render_cases.py'
+      - 'tools/pr13_source_lifecycle_cases.py'
+      - 'tools/pr13_experience_metric_cases.py'
+      - 'tools/pr13_experience_metrics.py'
+      - 'tools/pr13_guardian_levels.py'
+      - 'tools/pr13_server_phase_cases.py'
+      - 'tools/pr13_ready_recovery_cases.py'
+      - 'tools/pr13_ready_edge_cases.py'
+      - 'tools/pr13_review_cases.py'
+      - 'tools/pr13_review_policy.py'
       - 'tools/pr13_http_cases.py'
       - 'tools/pr13_domain_cases.py'
       - 'tools/pr13_control_cases.py'
@@ -86,6 +110,8 @@ on:
       - 'tools/tests/**'
       - 'client/network/**'
       - 'client/state/**'
+      - 'client/data/**'
+      - 'client/ui/**'
       - 'client/tests/**'
       - 'protocol/**'
       - 'server/**'
@@ -122,6 +148,8 @@ jobs:
           python -m unittest discover -s tools/tests -v 2>&1 | tee test-results/gameplay-accounting/unittest.log
           python tools/pr13_control_cases.py --output test-results/gameplay-accounting/control-contract-cases
           python tools/pr13_candidate_cases.py --output test-results/gameplay-accounting/candidate-contract-cases
+          python tools/pr13_review_cases.py --output test-results/gameplay-accounting/review-policy-cases
+          python tools/pr13_experience_metric_cases.py --output test-results/gameplay-accounting/experience-metric-cases
           python tools/pr13_probe_cases.py --output test-results/gameplay-accounting/probe-contract-cases
           dotnet run --project server/tools/FantasyCard.ConfigExporter -c Release --artifacts-path "$RUNNER_TEMP/pr13-config-build" -- --input "$PWD/config/FantasyCard_Config.xlsx" --version gdd-0.70-numerical-1 --server-output "$PWD/test-results/gameplay-accounting/config-export/server" --client-output "$PWD/test-results/gameplay-accounting/config-export/client"
           python tools/pr13_source_cases.py --config-export test-results/gameplay-accounting/config-export --output test-results/gameplay-accounting/source-contract-cases
@@ -176,6 +204,8 @@ jobs:
           python tools/pr13_boundary_cases.py --godot "$godot" --output test-results/gameplay-load/boundary-cases
           python tools/pr13_ui_cases.py --godot "$godot" --output test-results/gameplay-load/ui-contract-cases
           python tools/pr13_state_cases.py --godot "$godot" --output test-results/gameplay-load/state-contract-cases
+          python tools/pr13_ready_edge_cases.py --godot "$godot" --output test-results/gameplay-load/ready-edge-cases
+          python tools/pr13_ready_edge_cases.py --script prelaunch --godot "$godot" --output test-results/gameplay-load/prelaunch-boundary-cases
           python tools/pr13_http_cases.py --godot "$godot" --output test-results/gameplay-load/http-context-cases
           python tools/pr13_http_cases.py --godot "$godot" --output test-results/gameplay-load/http-context-per-request --transport per-request
           python tools/pr13_ledger_cases.py --output test-results/gameplay-load/ledger-contract-cases
