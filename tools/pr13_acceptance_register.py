@@ -63,7 +63,7 @@ def main():
             statuses=[r['status'] for r in task_cases]
             state=('Failed' if 'Failed' in statuses else 'ReadyForAcceptance' if all(s=='Passed' for s in statuses)
                    else 'Partial' if any(s=='Passed' for s in statuses) or supporting.get(task['id']) else 'Queued')
-            if observation.get('state') in ('Blocked','InProgress','Failed','Deferred'):state=observation['state']
+            if observation.get('state') in ('Blocked','InProgress','Failed','Deferred','Partial'):state=observation['state']
             tasks.append(dict(task_id=task['id'],title=task['title'],package_id=package['id'],state=state,
                 accepted_by=None,owner='MAIN',case_counts=dict(Counter(statuses)),
                 profiles=task['profiles'],gates=task['gate_refs'],dependencies=task['requires_before_integration'],

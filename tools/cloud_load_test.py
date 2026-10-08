@@ -103,8 +103,10 @@ def load_client_status(report_dir: Path) -> list[dict]:
     return statuses
 
 
-def aggregate_recent(statuses: list[dict], window_ms: int) -> dict:
-    cutoff = int(time.time() * 1000) - window_ms
+def aggregate_recent(statuses: list[dict], window_ms: int, *, now_ms: int | None = None) -> dict:
+    # Optional frozen observation time enables exact historical replay while
+    # preserving the default legacy filters and error denominator.
+    cutoff = (int(time.time() * 1000) if now_ms is None else now_ms) - window_ms
     http: list[dict] = []
     steady_http: list[dict] = []
     realtime: list[dict] = []
