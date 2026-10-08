@@ -195,10 +195,10 @@ func run_cases() -> void:
     var loadout: Array = []
     for slot in ["Head","Chest","Hands","Legs","Feet"]:
         loadout.append({"instanceId":slot,"slot":slot,"quality":"Purple","element":"Fire","level":5,"effectAffix":"Bulwark","secondaryTrait":"DrawInterval"})
-    var gains: Dictionary = preload("res://ui/numerical_details.gd").inspect(loadout,"Guardian")
+    var gains: Dictionary = load("res://ui/numerical_details.gd").inspect(loadout,"Guardian")
     var overflow_loadout: Array = loadout.duplicate(true)
     overflow_loadout[0].quality="Orange"
-    var overflow_gains: Dictionary = preload("res://ui/numerical_details.gd").inspect(overflow_loadout,"Guardian")
+    var overflow_gains: Dictionary = load("res://ui/numerical_details.gd").inspect(overflow_loadout,"Guardian")
     record("PR13-B08.4-T01",is_equal_approx(float(gains.resistance_Fire.effective),.6) and float(gains.resistance_Fire.excess)>0 and is_equal_approx(float(overflow_gains.resistance_Fire.effective)-float(gains.resistance_Fire.effective),0),{"current":gains.resistance_Fire,"added_raw_above_cap":overflow_gains.resistance_Fire,"effective_delta":float(overflow_gains.resistance_Fire.effective)-float(gains.resistance_Fire.effective)})
     record("PR13-B08.4-T02",is_equal_approx(float(gains.interval_seconds.effective),1.8) and float(gains.interval_seconds.raw)<1.8,{"equipment_stage":gains.interval_seconds,"combat_draw_block_speed_stage":"tested separately by authoritative PVE rules; not merged into equipment-only preview"})
 
