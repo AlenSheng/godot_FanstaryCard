@@ -79,12 +79,16 @@ class LocalRuntime(AbstractContextManager):
             port = listener.getsockname()[1]
         self.url = f"http://127.0.0.1:{port}"
         source_sha = run(["git", "rev-parse", "HEAD"], cwd=ROOT).stdout.strip()
-        build_command = ["dotnet", "build", "src/FantasyCard.Server/FantasyCard.Server.csproj", "-c", "Release", "--nologo"]
+        # Private outputs avoid shared compiler/reference locks on Windows and
+        # cannot accidentally reuse checked-in binaries from another checkout.
+        build_workspace = self.output / "build-support"
+        build_command = ["dotnet", "build", "src/FantasyCard.Server/FantasyCard.Server.csproj", "-c", "Release", "--nologo",
+                         "--artifacts-path", str(build_workspace), "-p:UseSharedCompilation=false"]
         built = run(build_command, cwd=ROOT / "server")
         (self.output / "build.private.log").write_text(built.stdout + built.stderr, encoding="utf8")
         write(self.output / "build.json", {"command": build_command, "source_sha": source_sha, "exit_code": built.returncode})
         built.check_returncode()
-        build = ROOT / "server/src/FantasyCard.Server/bin/Release/net10.0"
+        build = build_workspace / "bin/FantasyCard.Server/release"
         frozen = self.output / "server-frozen"
         shutil.copytree(build, frozen, ignore=shutil.ignore_patterns("*.pdb", "artifacts", "process-recovery-evidence"))
         dll = frozen / "FantasyCard.Server.dll"
