@@ -1,10 +1,18 @@
 """Keep specification readiness, runtime coverage and human evidence distinct."""
+from pathlib import Path
+try:
+    from .pr13_public_evidence import validated_files
+except ImportError:
+    from pr13_public_evidence import validated_files
 
 HUMAN_TASKS={'PR13-B11.4','PR13-B12.2','PR13-B12.4'}
 
 
 def human_complete(evidence):
     if not isinstance(evidence,dict) or evidence.get('authority')!='MAIN' or not evidence.get('verified_source_files'):return False
+    try:
+        validated_files(Path(__file__).resolve().parents[1],evidence['verified_source_files'])
+    except (ValueError,TypeError,KeyError,OSError):return False
     people=evidence.get('participants',[])
     if len(people)<6 or len({p.get('participant_id') for p in people})!=len(people):return False
     if not {'Mage','Priest','Guardian'}.issubset({p.get('hero_class') for p in people}):return False
