@@ -20,6 +20,26 @@ on:
       - 'protocol/**'
       - 'server/**'
       - '.github/workflows/gameplay-load.yml'
+  push:
+    branches: ['release']
+    paths:
+      - 'tools/gameplay_load*.py'
+      - 'tools/pr13_runtime_evidence.py'
+      - 'tools/pr13_local_checks.py'
+      - 'tools/pr13_offline_cases.py'
+      - 'tools/pr13_callback_isolation.py'
+      - 'tools/pr13_local_network.py'
+      - 'tools/pr13_local_runtime.py'
+      - 'tools/pr13_factor_matrix.py'
+      - 'tools/pr13_simulation_report.py'
+      - 'tools/cloud_load_test.py'
+      - 'tools/tests/**'
+      - 'client/network/**'
+      - 'client/state/**'
+      - 'client/tests/**'
+      - 'protocol/**'
+      - 'server/**'
+      - '.github/workflows/gameplay-load.yml'
   workflow_dispatch:
 
 permissions:

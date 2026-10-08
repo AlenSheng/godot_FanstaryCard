@@ -8,6 +8,14 @@ on:
       - 'protocol/**'
       - 'tools/numerics/**'
       - '.github/workflows/numerical-regression.yml'
+  push:
+    branches: ['release']
+    paths:
+      - 'server/**'
+      - 'config/**'
+      - 'protocol/**'
+      - 'tools/numerics/**'
+      - '.github/workflows/numerical-regression.yml'
   workflow_dispatch:
 
 permissions:

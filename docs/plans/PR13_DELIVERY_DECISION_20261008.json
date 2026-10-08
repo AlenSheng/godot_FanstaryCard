@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "decision_date": "2026-10-08",
+  "authority": "Direct human instruction in this session",
+  "user_instruction": "不需要写入草稿，把要写草稿的都在本地做一次总结直接合入传到远端release",
+  "destination": "origin/release",
+  "merge_release": true,
+  "draft_pr_updates": false,
+  "local_summary_required": true,
+  "supersedes": [
+    "The delivery-only merge_release=false field in the immutable S0 preregistration",
+    "Draft retention and publication decisions in the historical PR13 handbook"
+  ],
+  "acceptance_rule": "Merge authorization does not imply runtime acceptance. Retain concrete current results, failures, missing cases, capacity gaps and pending human acceptance.",
+  "execution_profiles": "PR13_LOCAL_PROFILES_20261008.json remains the immutable source of budgets, targets, stop conditions and default-off candidate policy.",
+  "human_experience_decision": "机器人模拟补充体验，真人验收仍待补",
+  "deleted_history_decision": "已删除，如果文件缺失则重新测试",
+  "production_deployment": false,
+  "remaining_work": "Continue the original S0-S6 implementation and staged verification; publish local summaries directly to release without inventing acceptance."
+}

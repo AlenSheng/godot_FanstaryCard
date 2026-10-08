@@ -9,6 +9,15 @@ on:
       - 'tools/tests/test_pr13_stages.py'
       - 'docs/reports/pr13-stages-20261008/**'
       - '.github/workflows/pr13-plan.yml'
+  push:
+    branches: ['release']
+    paths:
+      - 'docs/plans/**'
+      - 'tools/pr13_plan.py'
+      - 'tools/pr13_stages.py'
+      - 'tools/tests/test_pr13_stages.py'
+      - 'docs/reports/pr13-stages-20261008/**'
+      - '.github/workflows/pr13-plan.yml'
   workflow_dispatch:
 
 permissions:

@@ -11,7 +11,7 @@ import time
 
 from gameplay_load_validation import aggregate_window, owned_statuses, workload_snapshot, new_events, classify_stop
 from gameplay_load_validation import provenance
-from pr13_runtime_evidence import result_dimensions
+from pr13_runtime_evidence import coverage, result_dimensions
 from gameplay_load_test import read_owned_statuses
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -147,6 +147,77 @@ def statistics_case(which):
     return result,result['error_count']==1 and result['sample_count']==2 and result['error_rate']==.5 and result['cancelled_count']==1
 
 
+def capacity_contract():
+    profile=json.loads((ROOT/'docs/plans/PR13_LOCAL_PROFILES_20261008.json').read_text(encoding='utf8'))['profiles']['CAPACITY']
+    return dict(start=0,end=profile['hold_seconds'],target_online=profile['online_targets'][-1],
+                target_active=profile['active_targets'][-1],maximum_gap=profile['max_sample_gap_seconds'],
+                minimum_window=profile['hold_seconds'],minimum_continuous=profile['continuous_seconds'],
+                minimum_coverage=profile['coverage_fraction'])
+
+
+def capacity_rows():
+    return [dict(at=t,online=100,active_in_room=100,command_rate=2)
+            for t in range(0,601,10)]
+
+
+def capacity_model_case(which):
+    contract=capacity_contract();rows=capacity_rows()
+    if which==1:
+        for row in rows:row['active_in_room']=50
+    elif which==2:
+        for row in rows:
+            if row['at'] in (100,200,300,400,500):row['active_in_room']=0
+    else:
+        rows=[row for row in rows if row['at']<=50 or row['at']>=550]
+    result=coverage(rows,**contract)
+    actual=dict(registered_contract=contract,actual=result,cumulative_logins=100 if which==1 else None)
+    if which==1:
+        passed=not result['passed'] and result['coverage']==0 and result['target_active']==100
+    elif which==2:
+        passed=(not result['passed'] and result['target_online']==100 and result['target_active']==100
+                and result['minimum_coverage']==contract['minimum_coverage']
+                and result['compliant_seconds']==500 and result['longest_continuous_seconds']==90)
+    else:
+        passed=not result['passed'] and result['observed_seconds']==100 and result['coverage']==1/6
+    return actual,passed
+
+
+def capacity_coverage_case(which):
+    rows=capacity_rows()
+    if which==1:
+        for row in rows:
+            row['online']=100 if row['at']<300 else 50
+            row['active_in_room']=50 if row['at']<300 else 100
+    elif which==2:
+        for row in rows:
+            if row['at']>=300:row['active_in_room']=50
+    else:
+        rows=[row for row in rows if row['at']<=120 or row['at']>=480]
+    result=coverage(rows,**capacity_contract())
+    passed=not result['passed'] and (result['compliant_seconds']==0 if which==1 else
+        result['compliant_seconds']==290 if which==2 else
+        result['observed_seconds']==240 and result['longest_continuous_seconds']==120)
+    return result,passed
+
+
+def temporary_status_gap_case():
+    with tempfile.TemporaryDirectory() as directory:
+        process=entry();process['report']=Path(directory)/'owned.json'
+        process['started_at_monotonic_ms']=9000
+        path=Path(str(process['report'])+'.status.json')
+        path.write_text(json.dumps(status(status_seq=1)),encoding='utf8')
+        cache={};first,first_invalid=read_owned_statuses([process],cache,10000)
+        path.unlink()
+        cached,cached_invalid=read_owned_statuses([process],cache,15000)
+        within=workload_snapshot([process],cached,15000,now_monotonic_ms=15000)
+        stale,stale_invalid=read_owned_statuses([process],cache,40001)
+        expired=workload_snapshot([process],stale,40001,now_monotonic_ms=40001)
+        actual=dict(first_status=first,cached_status=cached,within_gap=within,after_stale_limit=expired,
+                    invalid_counts=[first_invalid,cached_invalid,stale_invalid])
+        return actual,(first==cached==stale and within['online']==1 and expired['online']==0
+                       and expired['stale_clients']==['a'] and not any(actual['invalid_counts']))
+
+
 def preparation_case():
     engine=ENGINE
     if not engine.is_file(): raise RuntimeError('This case needs the explicitly installed local Godot executable')
@@ -168,10 +239,12 @@ def main():
     cases={c['id']:c for p in plan['packages'] for s in p['subtasks'] for c in s['test_cases']}
     actions={}
     for task,function in [('LOAD-01.1',schema_cases),('LOAD-01.2',ownership_cases),('LOAD-01.3',population_cases),
-                          ('LOAD-03.1',sequence_case),('LOAD-03.2',phase_case),('LOAD-03.3',request_case),('LOAD-03.4',statistics_case)]:
+                          ('LOAD-03.1',sequence_case),('LOAD-03.2',phase_case),('LOAD-03.3',request_case),('LOAD-03.4',statistics_case),
+                          ('PR13-A02.1',capacity_model_case),('PR13-A02.2',capacity_coverage_case)]:
         for index in range(1,4): actions[f'{task}-T0{index}']=lambda fn=function,n=index:fn(n)
     for index in [1,2]: actions[f'LOAD-01.4-T0{index}']=lambda n=index:real_process_case(n)
     actions['LOAD-01.4-T03']=real_clock_case
+    actions['LOAD-07.3-T01']=temporary_status_gap_case
     actions['LOAD-02.4-T01']=preparation_case
     actions['LOAD-02.4-T03']=lambda:({'invalid':classify_stop('invalid_evidence:bad'),'operator':classify_stop('operator_stop_file')},
         classify_stop('invalid_evidence:bad')['exit_code']==3 and classify_stop('operator_stop_file')['exit_code']==130)
@@ -186,7 +259,7 @@ def main():
         record['elapsed_seconds']=time.time()-record['started_at'];records.append(record)
     (output/'cases.jsonl').write_text(''.join(json.dumps(r,ensure_ascii=False,allow_nan=False)+'\n' for r in records),encoding='utf8')
     sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
-    report=dict(source_sha=sha,source=provenance(ROOT,('tools/pr13_offline_cases.py','tools/gameplay_load_validation.py','tools/pr13_runtime_evidence.py','tools/gameplay_load_test.py')),
+    report=dict(source_sha=sha,source=provenance(ROOT,('tools/pr13_offline_cases.py','tools/gameplay_load_validation.py','tools/pr13_runtime_evidence.py','tools/gameplay_load_test.py','docs/plans/PR13_LOCAL_PROFILES_20261008.json')),
         python=sys.version,scope='explicit offline cases only',plan_sha256=hashlib.sha256(plan_path.read_bytes()).hexdigest(),
         case_runner_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),executed=len(records),passed=sum(r['status']=='Passed' for r in records),
         unexecuted_case_ids=sorted(set(cases)-set(actions)),all_cases_accepted=False)
