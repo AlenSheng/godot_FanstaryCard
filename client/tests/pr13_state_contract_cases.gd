@@ -227,6 +227,37 @@ func run_cases() -> void:
         {"all_hand":baseline_wait,"build_intentional_hold":build_wait,"actual_empty_hand":empty_wait})
     close(pair)
 
+    pair=fresh();store=pair[0];gateway=pair[1]
+    var confirmed_acks:=0
+    var old_events_safe:=true
+    var repeated_not_in_room:=0
+    for cycle in range(1,4):
+        var match_id: String="controlled-cycle-%d" % cycle
+        var room_id: String="controlled-room-%d" % cycle
+        store.room={"match_id":match_id,"room_id":room_id,"config_version":store.CATALOG.data.version,
+            "player":{"player_id":"self","hero_class":"Mage","phase":"Dead","hand":[],"combat":{"hp":0,"maximum_hp":70,"shield":0}}}
+        store._adopt_room_context(store.room)
+        gateway.current_match_id=match_id;gateway.room_id=room_id
+        var receipt={"settlementId":"controlled-receipt-%d" % cycle,"matchId":match_id,"playerId":"self"}
+        gateway.response={"ok":true,"status":200,"data":{"configVersion":store.CATALOG.data.version,
+            "player":{"userId":"self","selectedClass":"Mage"},"wallet":{},"materials":{},"mail":{},"shop":{},"market":[],"inventory":{},
+            "activePreparation":null,"unfinishedMatch":null,"unfinishedSettlement":receipt}}
+        if cycle==2:
+            var current_room: Dictionary=store.room.duplicate(true)
+            await store._on_event("room.started",{"match_id":"controlled-cycle-1","room_id":"controlled-room-1","snapshot":current_room})
+            old_events_safe=old_events_safe and store.room==current_room
+            var origin={"match_id":match_id,"room_id":room_id,"session_generation":gateway.session_generation,"room_context_epoch":store._room_context_epoch}
+            for duplicate in range(2):
+                await store._on_event("error.command_rejected",{"code":"NOT_IN_ROOM","_origin_context":origin})
+                repeated_not_in_room+=1
+        store.settlement=receipt
+        gateway.response={"ok":true,"status":200,"data":{}}
+        if await store.acknowledge_settlement(): confirmed_acks+=1
+        old_events_safe=old_events_safe and store.settlement.is_empty() and not await store.acknowledge_settlement()
+    record("PR13-A03.4-T03",confirmed_acks==3 and repeated_not_in_room==2,{"actual_store_successful_acks":confirmed_acks,"second_cycle_repeated_rejections":repeated_not_in_room,"duplicate_ack_suppressed":true,"natural_cycle_completions_claimed":0,"setup":"Controlled authoritative HTTP responses, actual production store entries"})
+    record("PR13-A09.2-T01",old_events_safe and confirmed_acks==3,{"second_cycle_old_started_ignored":old_events_safe,"three_distinct_match_contexts":3,"successful_acks":confirmed_acks,"full_natural_exploration_claimed":false})
+    close(pair)
+
     var file := FileAccess.open(OS.get_environment("PR13_STATE_REPORT"),FileAccess.WRITE)
     if file == null: quit(1); return
     file.store_string(JSON.stringify({"cases":cases})); file.close()

@@ -87,3 +87,15 @@ def retain_default_decision(review, *, observed_problem=True, evidence_complete=
         return {'state':'NoChangeWithEvidence','reason':'no_supported_change_to_default','underlying_review':review,
                 'uncertainty_retained':True,'equivalence_claim':False,'production_defaults_retained':True,'production_activation':False}
     return dict(review,production_activation=False)
+
+
+def hotspot_target_review(measured_phases, target):
+    allowed={'DatabaseAcquire','SqlExecution','PlayerLockRoundTrip','ActorExecute','SocketGateWait','SocketSend'}
+    if not measured_phases or set(measured_phases)-allowed or any(not number(v) or v<0 for v in measured_phases.values()):
+        raise ValueError('Named measured phase durations required')
+    largest=max(measured_phases,key=measured_phases.get)
+    localized=target in measured_phases and target==largest
+    return dict(state='EligibleForDiagnostics' if localized else 'Blocked',target_phase=target,
+                observed_largest_phase=largest,measured_phase_ms=measured_phases,
+                reason='candidate_targets_observed_path' if localized else 'candidate_targets_unlocalized_path',
+                production_activation=False,service_tail_improvement_proven=False,retain_default=True)
