@@ -1,4 +1,4 @@
-"""Bounded actual Godot -> full Program -> owned Unix PostgreSQL fault proofs.
+"""Bounded actual Godot -> full Program -> owned PostgreSQL fault proofs.
 
 No remote server, accounts, uploads, gameplay shortcuts or revised deadlines.
 Run directories are immutable: an existing output path is always rejected.
@@ -18,6 +18,7 @@ import uuid
 from urllib.request import urlopen
 
 from fixture_runtime import isolated_environment
+from owned_postgres import OwnedPostgres
 
 CASES = {
     "normal_ready": ("LOAD-04.4-T01", "Real normal READY followed by coordinator drain; one room, clear route/assets."),
@@ -49,9 +50,13 @@ def main():
     parser.add_argument("--case", action="append", choices=CASES, help="Default: every frozen case")
     parser.add_argument("--godot", default=os.environ.get("A3GAME_GODOT_EXECUTABLE"))
     parser.add_argument("--dotnet", default=shutil.which("dotnet"))
+    parser.add_argument("--database-container", help="Explicit task-owned loopback Docker PostgreSQL; required on Windows")
     args = parser.parse_args()
     if not args.godot or not args.dotnet:
         parser.error("Source relicround-env/activate.sh or provide --godot/--dotnet")
+    if os.name == 'nt' and not args.database_container:
+        parser.error('Windows fixture requires an explicitly owned --database-container')
+    bridge = OwnedPostgres(args.database_container) if args.database_container else None
     repo = Path(__file__).resolve().parents[2]
     work = Path(args.work_dir).resolve()
     if work.exists():
@@ -62,12 +67,14 @@ def main():
     cases = []
     pg_started = False
     pgdata = work / "private-pg"
-    pg_socket = Path(tempfile.mkdtemp(prefix="pr13-ready-stop-", dir="/tmp"))
+    pg_socket = Path(tempfile.mkdtemp(prefix="pr13-ready-stop-")) if bridge is None else None
     server = None
     server_log = None
     proxy = None
     proxy_log = None
-    pg_env = dict(os.environ, PGHOST=str(pg_socket), PGUSER="ready_stop_owner", PGPORT="5432")
+    pg_env = dict(os.environ, PGHOST=str(pg_socket) if bridge is None else '127.0.0.1',
+                  PGUSER="ready_stop_owner" if bridge is None else bridge.info['user'],
+                  PGPORT="5432" if bridge is None else str(bridge.info['port']))
     for key in ("PGOPTIONS", "PGPASSWORD", "PGSERVICE", "PGSERVICEFILE"):
         pg_env.pop(key, None)
 
@@ -75,11 +82,16 @@ def main():
         started = time.monotonic()
         try:
             if during_run is None:
-                result = subprocess.run(command, cwd=cwd, env=env, capture_output=True, timeout=timeout)
+                result = subprocess.run(command, cwd=cwd, env=env, capture_output=True, timeout=timeout,
+                    creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
                 raw = result.stdout + result.stderr
                 code = result.returncode
             else:
-                with subprocess.Popen(command, cwd=cwd, env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT) as process:
+                # Drain diagnostics directly to disk while the seed coordinator
+                # observes the child. A full Windows pipe must never block it.
+                with (work / (label + ".log")).open('wb') as live_log, subprocess.Popen(
+                        command, cwd=cwd, env=env, stdout=live_log, stderr=subprocess.STDOUT,
+                        creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0)) as process:
                     try:
                         while process.poll() is None:
                             during_run()
@@ -87,7 +99,9 @@ def main():
                                 process.kill()
                                 break
                             time.sleep(.05)
-                        raw, _ = process.communicate(timeout=5)
+                        process.wait(timeout=5)
+                        live_log.flush()
+                        raw = (work / (label + ".log")).read_bytes()
                         code = process.returncode if time.monotonic() - started < timeout else 124
                     finally:
                         if process.poll() is None:
@@ -103,6 +117,7 @@ def main():
         return code, raw.decode(errors="replace")
 
     def sql(query, database="postgres"):
+        if bridge is not None: return bridge.sql(query, database)
         result = subprocess.run(["psql", "-X", "-A", "-t", "-v", "ON_ERROR_STOP=1", "-d", database, "-c", query],
                                 env=pg_env, capture_output=True, timeout=15)
         if result.returncode:
@@ -127,13 +142,13 @@ def main():
         nonlocal proxy, proxy_log
         if proxy is not None:
             started = time.monotonic()
-            proxy.terminate()
+            (Path(proxy.args[proxy.args.index('--evidence')+1]) / 'STOP').touch()
             try:
                 proxy.wait(timeout=10)
             except subprocess.TimeoutExpired:
-                proxy.kill()
+                proxy.terminate()
                 proxy.wait(timeout=5)
-            commands.append({"label": "owned-frame-proxy-cleanup", "command": ["SIGTERM", str(proxy.pid)],
+            commands.append({"label": "owned-frame-proxy-cleanup", "command": ["owned-stop-file", str(proxy.pid)],
                              "exit_code": proxy.returncode, "duration_seconds": round(time.monotonic() - started, 3),
                              "deadline_seconds": 10})
             for command in commands:
@@ -151,6 +166,7 @@ def main():
     source_paths = [repo / "client/tests/gameplay_load_client.gd", repo / "client/state/game_store.gd",
                     repo / "client/network/gateway.gd", Path(__file__), Path(__file__).with_suffix(".gd"),
                     repo / "client/tests/ready_frame_proxy.py", repo / "client/tests/fixture_runtime.py",
+                    repo / "client/tests/owned_postgres.py",
                     repo / "protocol/realtime/v1/realtime.proto"]
     inputs = {str(path.relative_to(repo)): sha(path) for path in source_paths}
     profile = {"profiles": ["OFFLINE", "POSTGRES"], "case_deadline_seconds": 95,
@@ -162,15 +178,15 @@ def main():
                "server_create_skill": "Missing; prior user exception applies; actual server/AGENTS.md and canonical docs read",
                "synthetic_fixture": "late_accepted_before_ticket only; SupportOnly, actual decoder/event entry; no internal state prefills"}
     profile["owned_asset_fixture"] = "After actual login, seed one new White Fire Feet armor and initial Mage loadout; real bootstrap loads it before preparation. No history, balances or ledger repairs."
-    (work / "profile.json").write_text(json.dumps(profile, indent=2) + "\n")
+    (work / "profile.json").write_text(json.dumps(profile, indent=2) + "\n", encoding="utf8")
     (work / "inputs.json").write_text(json.dumps({"source_sha": source_sha, "source_dirty": dirty,
-        "input_hashes": inputs, "plan_sha256": sha(plan), "profile_sha256": sha(work / "profile.json")}, indent=2) + "\n")
+        "input_hashes": inputs, "plan_sha256": sha(plan), "profile_sha256": sha(work / "profile.json")}, indent=2) + "\n", encoding="utf8")
     fixture_sources = work / "fixture-sources"
     for path in source_paths + [plan]:
         target = fixture_sources / path.relative_to(repo)
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(path, target)
-    canonical = json.loads(plan.read_text())
+    canonical = json.loads(plan.read_text(encoding="utf8"))
     canonical_rows = []
     def collect_rows(value):
         if isinstance(value, dict):
@@ -182,30 +198,26 @@ def main():
             for nested in value:
                 collect_rows(nested)
     collect_rows(canonical)
-    (work / "canonical-cases.raw.json").write_text(json.dumps(canonical_rows, ensure_ascii=False, indent=2) + "\n")
+    (work / "canonical-cases.raw.json").write_text(json.dumps(canonical_rows, ensure_ascii=False, indent=2) + "\n", encoding="utf8")
     profile["real_frame_proxy"] = "Selected ready_* cases only; transparent loopback relay, actual binary envelope capture/drop, no synthetic command/event encoding. Boundary PostgreSQL reads only."
     profile["canonical_limitations"] = ["LIVE not run", "same-account three cycles not run", "old-cycle events not covered", "manual independent adjudication pending"]
     profile["canonical_mapping_scope"] = "New loss/send matrix subcases; original canonical rows copied verbatim, their complete execution state is unchanged."
-    (work / "profile.json").write_text(json.dumps(profile, indent=2) + "\n")
-    input_record = json.loads((work / "inputs.json").read_text())
+    (work / "profile.json").write_text(json.dumps(profile, indent=2) + "\n", encoding="utf8")
+    input_record = json.loads((work / "inputs.json").read_text(encoding="utf8"))
     input_record["profile_sha256"] = sha(work / "profile.json")
-    (work / "inputs.json").write_text(json.dumps(input_record, indent=2) + "\n")
+    (work / "inputs.json").write_text(json.dumps(input_record, indent=2) + "\n", encoding="utf8")
     ok = False
     error = None
     try:
-        # All stale compiler outputs are removed in the actual source tree.
-        removed = []
-        for path in sorted((path for path in (repo / "server").rglob("*") if path.is_dir() and path.name in ("bin", "obj")),
-                           key=lambda path: len(path.parts), reverse=True):
-            if path.exists():
-                removed.append(str(path.relative_to(repo)))
-                shutil.rmtree(path)
-        (work / "removed-build-outputs.json").write_text(json.dumps(removed, indent=2) + "\n")
-        code, _ = run([args.dotnet, "build", "FantasyCard.Server.slnx", "-c", "Release", "-v", "minimal"],
+        # Recompile actual source without deleting shared/possibly tracked outputs.
+        code, _ = run([args.dotnet, "build", "src/FantasyCard.Server/FantasyCard.Server.csproj", "--no-incremental", "-c", "Release", "-v", "minimal"],
                       "fresh-source-build", cwd=repo / "server", timeout=180)
         if code:
             raise RuntimeError("Fresh actual source build failed")
         dll = repo / "server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll"
+        frozen = work / 'server-frozen'
+        shutil.copytree(dll.parent, frozen, ignore=shutil.ignore_patterns('*.pdb', 'artifacts'))
+        dll = frozen / dll.name
         # A compact project copies production dependencies verbatim; no UI/art
         # assets or theme changes. Fonts are dependencies of production Game.
         project = work / "godot"
@@ -229,12 +241,16 @@ def main():
         project_config = 'config_version=5\n[application]\nconfig/name="PR13 READY STOP offline"\n[platform]\ndevelopment/local_auth=true\n[rendering]\nrenderer/rendering_method="gl_compatibility"\n'
         # Import font dependencies before registering the real autoload. A fresh
         # editor otherwise parses Game before it has created fontdata resources.
-        (project / "project.godot").write_text(project_config)
+        (project / "project.godot").write_text(project_config, encoding="utf8")
         import_env = isolated_environment(work, FANTASYCARD_SERVER_URL="http://127.0.0.1:1", FANTASYCARD_LOAD_RUN_ID="ready-stop-import")
         code, output = run([args.godot, "--headless", "--path", str(project), "--editor", "--import", "--quit"], "godot-import", env=import_env)
         if code or "SCRIPT ERROR" in output:
             raise RuntimeError("Godot fixture import failed")
-        (project / "project.godot").write_text(project_config + '[autoload]\nGame="*res://state/game_store.gd"\n')
+        (project / "project.godot").write_text(project_config + '[autoload]\nGame="*res://state/game_store.gd"\n', encoding="utf8")
+        code, output = run([args.godot, "--headless", "--path", str(project), "--editor", "--import", "--quit"],
+                           "godot-autoload-import", env=import_env, timeout=30)
+        if code or "SCRIPT ERROR" in output:
+            raise RuntimeError("Complete Godot autoload import failed")
         copied_inputs = []
         for path in sorted(project.rglob("*")):
             if path.is_file() and ".godot" not in path.relative_to(project).parts:
@@ -244,19 +260,20 @@ def main():
                                       "source_sha256": sha(source) if source.exists() else None,
                                       "copied_unchanged": source.exists() and sha(source) == sha(path),
                                       "kind": "generated_import_metadata" if path.suffix == ".uid" else "generated_project_config" if path.name == "project.godot" else "copied_source_input"})
-        (work / "fixture-inputs.json").write_text(json.dumps(copied_inputs, indent=2) + "\n")
-        code, _ = run(["initdb", "-D", str(pgdata), "-U", "ready_stop_owner", "--auth=trust", "--no-locale", "--encoding=UTF8"], "private-pg-init", timeout=30)
+        (work / "fixture-inputs.json").write_text(json.dumps(copied_inputs, indent=2) + "\n", encoding="utf8")
+        code, _ = (0, '') if bridge is not None else run(["initdb", "-D", str(pgdata), "-U", "ready_stop_owner", "--auth=trust", "--no-locale", "--encoding=UTF8"], "private-pg-init", timeout=30)
         if code:
             raise RuntimeError("Owned PostgreSQL initialization failed")
-        code, _ = run(["pg_ctl", "-D", str(pgdata), "-l", str(work / "private-pg.log"), "-o",
+        code, _ = (0, '') if bridge is not None else run(["pg_ctl", "-D", str(pgdata), "-l", str(work / "private-pg.log"), "-o",
                        "-c listen_addresses='' -k " + str(pg_socket), "-w", "start"], "private-pg-start", timeout=30)
         if code:
             raise RuntimeError("Owned Unix PostgreSQL start failed")
-        pg_started = True
+        pg_started = bridge is None
         (work / "toolchain.json").write_text(json.dumps({"dotnet": subprocess.check_output([args.dotnet, "--version"]).decode().strip(),
             "godot": subprocess.check_output([args.godot, "--version"]).decode().strip(),
-            "postgres": subprocess.check_output(["postgres", "--version"]).decode().strip(),
-            "server_dll_sha256": sha(dll), "transport": "PostgreSQL owned Unix socket; Program/Godot loopback HTTP binary Protobuf"}, indent=2) + "\n")
+            "postgres": subprocess.check_output(["postgres", "--version"]).decode().strip() if bridge is None else bridge.sql('SELECT version()'),
+            "server_dll_sha256": sha(dll), "transport": "PostgreSQL owned Unix socket" if bridge is None else 'Task-owned loopback Docker PostgreSQL',
+            "database_image_id": None if bridge is None else bridge.info['database_image_id']}, indent=2) + "\n", encoding="utf8")
         for index, case in enumerate(selected):
             directory = work / case
             directory.mkdir()
@@ -267,7 +284,7 @@ def main():
                 port = socket_probe.getsockname()[1]
             address = "http://127.0.0.1:" + str(port)
             env = isolated_environment(directory, ASPNETCORE_ENVIRONMENT="Development", ASPNETCORE_URLS=address,
-                ConnectionStrings__Postgres="Host=" + str(pg_socket) + ";Database=" + database + ";Username=ready_stop_owner",
+                ConnectionStrings__Postgres=("Host=" + str(pg_socket) + ";Database=" + database + ";Username=ready_stop_owner") if bridge is None else bridge.connection(database),
                 Identity__EnableLocalAuth="true", ProtobufHttp__AllowLegacyJson="false", Realtime__AllowLegacyAccessTokenQuery="false",
                 FANTASYCARD_SERVER_URL=address, FANTASYCARD_LOAD_RUN_ID="ready-stop-offline",
                 FANTASYCARD_LOAD_CLIENT_ID=case, FANTASYCARD_LOAD_PROCESS_EPOCH=str(index),
@@ -281,8 +298,9 @@ def main():
             # zero-second botfill would shortcut the queued/READY fault window.
             env["Matchmaking__BotFillDelaySeconds"] = "30"
             server_log = (directory / "server.log").open("wb")
-            server = subprocess.Popen([args.dotnet, str(dll)], cwd=repo / "server/src/FantasyCard.Server", env=env,
-                                      stdout=server_log, stderr=subprocess.STDOUT)
+            server = subprocess.Popen([args.dotnet, str(dll)], cwd=dll.parent, env=env,
+                                      stdout=server_log, stderr=subprocess.STDOUT,
+                                      creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
             ready = False
             deadline = time.monotonic() + 30
             while time.monotonic() < deadline and server.poll() is None:
@@ -299,18 +317,20 @@ def main():
             if case in TRANSPORT_CASES:
                 proxy_command = [sys.executable, str(repo / "client/tests/ready_frame_proxy.py"), "--upstream-port", str(port),
                                  "--case", case, "--evidence", str(directory / "transport"), "--database", database]
+                if bridge is not None: proxy_command += ['--database-container', args.database_container]
                 proxy_log = (directory / "proxy.log").open("wb")
                 proxy_env = dict(env, **{key: pg_env[key] for key in ("PGHOST", "PGUSER", "PGPORT")})
                 for key in ("PGOPTIONS", "PGPASSWORD", "PGSERVICE", "PGSERVICEFILE"):
                     proxy_env.pop(key, None)
                 proxy = subprocess.Popen(proxy_command, cwd=repo, env=proxy_env,
-                                         stdout=proxy_log, stderr=subprocess.STDOUT)
+                                         stdout=proxy_log, stderr=subprocess.STDOUT,
+                                         creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
                 proxy_deadline = time.monotonic() + 10
                 while proxy.poll() is None and not (directory / "transport/ready.json").exists() and time.monotonic() < proxy_deadline:
                     time.sleep(.05)
                 if proxy.poll() is not None or not (directory / "transport/ready.json").exists():
                     raise RuntimeError("Owned actual frame proxy startup failed")
-                proxy_port = json.loads((directory / "transport/ready.json").read_text())["port"]
+                proxy_port = json.loads((directory / "transport/ready.json").read_text(encoding="utf8"))["port"]
                 env["FANTASYCARD_SERVER_URL"] = "http://127.0.0.1:" + str(proxy_port)
                 commands.append({"label": case + "-frame-proxy-start", "command": proxy_command, "cwd": str(repo),
                                  "exit_code": None, "status": "started", "pid": proxy.pid, "deadline_seconds": 10})
@@ -320,16 +340,16 @@ def main():
                 login_path = directory / "fixture-login.json"
                 if fixture_seeded or not login_path.exists():
                     return
-                player = str(uuid.UUID(json.loads(login_path.read_text())["player_id"]))
+                player = str(uuid.UUID(json.loads(login_path.read_text(encoding="utf8"))["player_id"]))
                 equipment = str(uuid.uuid4())
                 sql("BEGIN; INSERT INTO equipments(instance_id,owner_id,slot,quality,level,is_bound,location,created_at,element,secondary_trait) VALUES ('" + equipment + "','" + player + "','Feet','White',0,true,'Equipped',CURRENT_TIMESTAMP,'Fire','DrawInterval'); UPDATE player_loadouts SET feet_id='" + equipment + "',version=version+1 WHERE player_id='" + player + "' AND hero_class=2; COMMIT", database)
-                (directory / "fixture-seeded.json").write_text(json.dumps({"player_id": player, "equipment_id": equipment, "synthetic_initial_asset": True, "history_repair": False}) + "\n")
+                (directory / "fixture-seeded.json").write_text(json.dumps({"player_id": player, "equipment_id": equipment, "synthetic_initial_asset": True, "history_repair": False}) + "\n", encoding="utf8")
                 fixture_seeded = True
             code, output = run([args.godot, "--headless", "--max-fps", "60", "--path", str(project), "--script", "res://tests/run_ready_stop_faults.gd"],
                                case + "-godot", env=env, timeout=95, during_run=seed_owned_fixture)
-            client = json.loads((directory / "client.json").read_text()) if (directory / "client.json").exists() else {}
+            client = json.loads((directory / "client.json").read_text(encoding="utf8")) if (directory / "client.json").exists() else {}
             stop_proxy()
-            transport = [json.loads(line) for line in (directory / "transport/trace.jsonl").read_text().splitlines()] if case in TRANSPORT_CASES else []
+            transport = [json.loads(line) for line in (directory / "transport/trace.jsonl").read_text(encoding="utf8").splitlines()] if case in TRANSPORT_CASES else []
             dropped = [item for item in transport if item["event"] == "frame_dropped"]
             forwarded = [item for item in transport if item["event"] == "frame_forwarded"]
             transport_ok = not any(item["event"] == "proxy_error" for item in transport)
@@ -366,7 +386,7 @@ def main():
                 "'matches',(SELECT count(*) FROM matches),"
                 "'match_rows',(SELECT coalesce(json_agg(json_build_object('match_id',match_id,'room_id',room_id,'status',status,'created_at_unix_ms',extract(epoch from created_at)*1000,'ready_deadline_unix_ms',extract(epoch from ready_deadline)*1000,'observed_at_unix_ms',extract(epoch from CURRENT_TIMESTAMP)*1000)), '[]'::json) FROM matches),"
                 "'ready_deadline_seconds',(SELECT coalesce(json_agg(extract(epoch from ready_deadline-created_at)), '[]'::json) FROM matches))", database))
-            (directory / "postgres-postconditions.json").write_text(json.dumps(snapshot, indent=2) + "\n")
+            (directory / "postgres-postconditions.json").write_text(json.dumps(snapshot, indent=2) + "\n", encoding="utf8")
             db_ok = fixture_seeded and snapshot["equipment_locks"] == 1 and snapshot["pending_settlement_holds"] == 0 and all(item["status"] in ("Cancelled", "Expired", "Settled") for item in snapshot["preparations"]) and snapshot["locked_equipment"] == 0 and all(item["state"] in ("Settled", "Removed") for item in snapshot["human_match_states"])
             if case in TRANSPORT_CASES:
                 # Even an all-removed human lobby launches an owned bot room.
@@ -376,7 +396,7 @@ def main():
                 if case == "ready_send_all_lost_stop":
                     db_ok = db_ok and snapshot["human_match_states"] == [{"state": "Removed"}] and snapshot["equipment_releases"] == 1 and snapshot["settlements"] == 0 and snapshot["match_rows"][0]["observed_at_unix_ms"] >= snapshot["match_rows"][0]["ready_deadline_unix_ms"]
             passed = code == 0 and client.get("passed", False) and db_ok and transport_ok and "SCRIPT ERROR" not in output and "ERROR:" not in output
-            (directory / "case.raw.json").write_text(json.dumps({"client": client, "postgres": snapshot, "transport": transport, "command_exit_code": code}, indent=2) + "\n")
+            (directory / "case.raw.json").write_text(json.dumps({"client": client, "postgres": snapshot, "transport": transport, "command_exit_code": code}, indent=2) + "\n", encoding="utf8")
             cases.append({"case": case, "canonical_case_id": CASES[case][0], "expected": CASES[case][1], "actual": client,
                           "postgres": snapshot, "postgres_passed": db_ok, "passed": passed, "Accepted": False,
                           "source_sha": source_sha, "source_dirty": dirty, "input_hashes": inputs,
@@ -384,7 +404,7 @@ def main():
                           "transport_passed": transport_ok, "coverage": client.get("coverage", "Unknown"),
                           "evidence": [case + "/client.json", case + "/postgres-postconditions.json", case + "-godot.log", case + "/server.log"]})
             print(case + ": " + ("PASS" if passed else "FAIL"), flush=True)
-            (work / "cases.jsonl").write_text("".join(json.dumps(case_record, ensure_ascii=False) + "\n" for case_record in cases))
+            (work / "cases.jsonl").write_text("".join(json.dumps(case_record, ensure_ascii=False) + "\n" for case_record in cases), encoding="utf8")
             stop_server()
         ok = len(cases) == len(selected) and all(case["passed"] for case in cases)
     except Exception as exc:
@@ -395,17 +415,26 @@ def main():
         stop_server()
         if pg_started:
             run(["pg_ctl", "-D", str(pgdata), "-m", "fast", "-w", "stop"], "owned-pg-cleanup", timeout=30)
-        shutil.rmtree(pg_socket)
-        (work / "commands.json").write_text(json.dumps(commands, indent=2) + "\n")
+        if bridge is not None:
+            try:
+                bridge.close()
+            except Exception as exc:
+                ok = False
+                error = (error + '; ' if error else '') + 'Owned database cleanup failed: ' + type(exc).__name__
+        if pg_socket is not None: shutil.rmtree(pg_socket)
+        (work / "commands.json").write_text(json.dumps(commands, indent=2) + "\n", encoding="utf8")
         (work / "report.json").write_text(json.dumps({"ok": ok, "Accepted": False, "error": error,
             "source_sha": source_sha, "source_dirty": dirty, "case_count": len(cases), "planned_case_count": len(selected),
             "passed_case_count": sum(case["passed"] for case in cases), "cases": cases,
             "remaining_profiles": profile["remaining_profiles"], "original_raw_preserved": True,
-            "uploads": [], "owned_server_stopped": server is None, "owned_postgres_stopped": not (pgdata / "postmaster.pid").exists()}, indent=2) + "\n")
+            "uploads": [], "owned_server_stopped": server is None,
+            "owned_fixture_databases_removed": not bridge.created if bridge is not None else None,
+            "owned_postgres_stopped": None if bridge is not None else not (pgdata / "postmaster.pid").exists(),
+            "postgres_lifecycle": "shared task-owned container retained" if bridge is not None else "private process stopped"}, indent=2) + "\n", encoding="utf8")
         # Compiler/project caches and PG cluster bytes are support workspace, not
         # the exported evidence. Logs/results/source manifests remain immutable.
-        evidence = [path for path in work.rglob("*") if path.is_file() and not any(part in ("godot", "runtime", "private-pg") for part in path.relative_to(work).parts)]
-        (work / "manifest.json").write_text(json.dumps([{ "path": str(path.relative_to(work)), "bytes": path.stat().st_size, "sha256": sha(path)} for path in sorted(evidence)], indent=2) + "\n")
+        evidence = [path for path in work.rglob("*") if path.is_file() and not any(part in ("godot", "runtime", "private-pg", "server-frozen") for part in path.relative_to(work).parts)]
+        (work / "manifest.json").write_text(json.dumps([{ "path": str(path.relative_to(work)), "bytes": path.stat().st_size, "sha256": sha(path)} for path in sorted(evidence)], indent=2) + "\n", encoding="utf8")
     return 0 if ok else 1
 
 

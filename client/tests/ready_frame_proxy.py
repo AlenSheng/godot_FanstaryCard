@@ -11,6 +11,7 @@ from pathlib import Path
 import signal
 import subprocess
 import time
+from owned_postgres import OwnedPostgres
 
 
 def fields(packet):
@@ -75,6 +76,7 @@ class Relay:
         self.writers = set()
         self.tasks = set()
         self.fault_complete = False
+        self.database_bridge = OwnedPostgres(args.database_container) if args.database_container else None
 
     def record(self, event, **data):
         entry = {"event": event, "at_monotonic_ms": int(time.monotonic() * 1000), **data}
@@ -84,6 +86,8 @@ class Relay:
 
     def snapshot(self):
         query = "SELECT coalesce(json_agg(json_build_object('match_id',m.match_id,'room_id',m.room_id,'status',m.status,'player_state',p.state,'ready_deadline_seconds',extract(epoch from m.ready_deadline-m.created_at))), '[]'::json) FROM matches m JOIN match_players p ON p.match_id=m.match_id WHERE NOT p.is_bot"
+        if self.database_bridge is not None:
+            return json.loads(self.database_bridge.sql(query, self.args.database))
         result = subprocess.run(["psql", "-X", "-A", "-t", "-v", "ON_ERROR_STOP=1", "-d", self.args.database, "-c", query], capture_output=True, timeout=15)
         if result.returncode:
             raise RuntimeError("Owned proxy boundary SQL failed")
@@ -128,7 +132,7 @@ class Relay:
                     data["drop_no"] = self.dropped[kind]
                 self.record("frame_dropped" if drop else "frame_forwarded", **data)
                 if case == "ready_send_all_lost_stop" and self.dropped.get("room.ready", 0) == 3:
-                    (self.directory / "request-stop.json").write_text(json.dumps({"boundary": "three_actual_ready_frames_dropped"}) + "\n")
+                    (self.directory / "request-stop.json").write_text(json.dumps({"boundary": "three_actual_ready_frames_dropped"}) + "\n", encoding="utf8")
             if disconnect:
                 self.fault_complete = True
                 self.record("fault_disconnect", connection=connection, kind=kind)
@@ -188,12 +192,20 @@ class Relay:
         shutdown = asyncio.Event()
         loop = asyncio.get_running_loop()
         for name in (signal.SIGTERM, signal.SIGINT):
-            loop.add_signal_handler(name, shutdown.set)
+            try: loop.add_signal_handler(name, shutdown.set)
+            except NotImplementedError: pass
+        async def watch_stop():
+            while not shutdown.is_set():
+                if (self.directory / 'STOP').exists(): shutdown.set(); return
+                await asyncio.sleep(.1)
+        stop_task = asyncio.create_task(watch_stop())
         server = await asyncio.start_server(self.accept, "127.0.0.1", 0)
         port = server.sockets[0].getsockname()[1]
         self.record("proxy_ready", listen_host="127.0.0.1", port=port, upstream_host="127.0.0.1", upstream_port=self.args.upstream_port)
-        (self.directory / "ready.json").write_text(json.dumps({"port": port}) + "\n")
+        (self.directory / "ready.json").write_text(json.dumps({"port": port}) + "\n", encoding="utf8")
         await shutdown.wait()
+        stop_task.cancel()
+        await asyncio.gather(stop_task, return_exceptions=True)
         server.close()
         await server.wait_closed()
         for peer in tuple(self.writers):
@@ -210,6 +222,7 @@ def main():
     parser.add_argument("--case", required=True)
     parser.add_argument("--evidence", required=True)
     parser.add_argument("--database", required=True)
+    parser.add_argument("--database-container")
     asyncio.run(Relay(parser.parse_args()).run())
 
 

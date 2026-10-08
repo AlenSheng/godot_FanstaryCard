@@ -130,6 +130,7 @@ class LoadProbe extends ProductionLoad:
 
 	func _ready() -> void:
 		case_name = OS.get_environment("FANTASYCARD_READY_STOP_CASE")
+		print("READY_PROBE ready " + case_name)
 		super._ready()
 
 	func _login() -> void:
@@ -233,14 +234,17 @@ class LoadProbe extends ProductionLoad:
 		print(JSON.stringify({"case": case_name, "passed": case_passed, "Accepted": false, "cleanup": cleanup_result.state}))
 		get_tree().quit(0 if case_passed else 1)
 
-func _initialize() -> void: call_deferred("run")
+func _initialize() -> void:
+	print("READY_PROBE initialize")
+	call_deferred("_run_fixture")
 
-func run() -> void:
-	var store := root.get_node("Game")
+func _run_fixture() -> void:
+	print("READY_PROBE fixture_start")
+	var store: Node = root.get_node("Game")
 	var old_gateway: Node = store.gateway
 	old_gateway.reconnect_enabled = false
 	old_gateway.queue_free()
-	var gateway := FaultGateway.new()
+	var gateway: Node = FaultGateway.new()
 	store.gateway = gateway
 	store.add_child(gateway)
 	gateway.failed.connect(func(message): store.notice.emit(message))
@@ -248,7 +252,8 @@ func run() -> void:
 	gateway.telemetry.connect(store._on_gateway_telemetry)
 	gateway.connection_changed.connect(store._on_connection_changed)
 	gateway.authentication_required.connect(store._on_authentication_required)
-	var probe := LoadProbe.new()
+	var probe: Node = LoadProbe.new()
 	gateway.probe = probe
 	probe.probe_gateway = gateway
 	root.add_child(probe)
+	print("READY_PROBE fixture_attached")
