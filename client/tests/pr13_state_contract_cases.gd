@@ -191,6 +191,18 @@ func run_cases() -> void:
     record("PR13-B03.1-T01",policies.all(func(row): return row.repeat),policies)
     record("PR13-B03.1-T02",policies.all(func(row): return row.hidden_independent),policies)
 
+    pair = fresh(); store = pair[0]; gateway = pair[1]; probe = pair[2]
+    store.room.player.numerical_state = {"fenxian_policy":"CurrentRhythm","guardian_policy":"CurrentSteps","guardian_remainder_tenths":0}
+    probe._update_context()
+    var context: Dictionary = gateway.telemetry_context.duplicate(true)
+    probe._on_telemetry({"type":"battle_observation","event_type":"unknown_seed"})
+    record("PR13-B01.1-T02",context.battle_seed==null and context.battle_seed_unavailable_reason=="not_published_by_authoritative_protocol" and context.strategy_seed==20260930 and probe.telemetry.back().battle_seed==null,{"initiating_context":context,"event_battle_seed":probe.telemetry.back().battle_seed})
+    record("PR13-B12.1-T03",context.effective_room_policy.fenxian_policy=="CurrentRhythm" and context.effective_room_policy.guardian_policy=="CurrentSteps",{"controlled_experiment_label":"candidate-on","actual_recorded_room_policy":context.effective_room_policy,"label_does_not_override_authority":true})
+    probe._observe_battle()
+    probe._on_event("battle.combo_resolved",{"battle_id":"battle-current","attacker_id":"self","heal":0,"shield_gain":0,"hp_damage":0,"shield_damage":0,"card_instance_ids":["healing-card"]})
+    record("PR13-B01.2-T02",probe.battle_metrics.heal==0 and probe.battle_metrics.cards_spent==1 and probe.battle_metrics.effective_actions==0 and probe.battle_metrics.zero_effective_actions==1 and probe.battle_metrics.heal_overflow==null,{"full_hp":store.room.player.combat,"metrics":probe.battle_metrics.duplicate(true),"requested_heal_unpublished":true})
+    close(pair)
+
     var file := FileAccess.open(OS.get_environment("PR13_STATE_REPORT"),FileAccess.WRITE)
     if file == null: quit(1); return
     file.store_string(JSON.stringify({"cases":cases})); file.close()

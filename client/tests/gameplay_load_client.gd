@@ -57,6 +57,19 @@ var run_seconds := 1800
 var cycle_limit_seconds := 240
 var cycle_battles_won := 0
 var last_effective_action_ms := 0
+var _config_package_digest: Variant = null
+var _config_package_checked := false
+
+func _config_package_hash() -> Variant:
+	if not _config_package_checked:
+		_config_package_checked = true
+		var path := "res://data/generated/fantasycard.config.bytes"
+		if FileAccess.file_exists(path):
+			var hash := HashingContext.new()
+			hash.start(HashingContext.HASH_SHA256)
+			hash.update(FileAccess.get_file_as_bytes(path))
+			_config_package_digest = hash.finish().hex_encode()
+	return _config_package_digest
 
 func _ready() -> void:
 	load_profile = OS.get_environment("FANTASYCARD_LOAD_PROFILE")
@@ -426,6 +439,10 @@ func _update_context() -> void:
 		"phase": _current_phase(), "hero_class": hero_profile, "strategy": strategy,
 		"load_profile": load_profile,
 		"strategy_seed": strategy_seed, "config_version": Game.lobby.get("configVersion", ""),
+		"config_package_sha256": _config_package_hash(),
+		"config_package_unavailable_reason": "package_not_present" if _config_package_hash()==null else null,
+		"battle_seed": null, "battle_seed_unavailable_reason": "not_published_by_authoritative_protocol",
+		"effective_room_policy": Game.room.get("player", {}).get("numerical_state", {}).duplicate(true),
 		"battle_id": current_battle_id}
 
 func _select_cards(hand: Array) -> Array:
@@ -480,6 +497,7 @@ func _observe_battle() -> void:
 		observed_hand_ids = Game.room.get("player", {}).get("hand", []).map(func(card): return str(card.get("instance_id", "")))
 		battle_metrics = {"battle_id": battle_id, "actions": 0, "effective_actions": 0, "zero_effective_actions": 0,
 			"hp_damage": 0, "shield_damage": 0, "heal": 0, "shield_gain": 0, "observed_cards_drawn": 0,
+			"cards_spent":0, "heal_overflow":null, "heal_overflow_unavailable_reason":"not_published_by_authoritative_event",
 			"first_effective_ms": null, "longest_effective_gap_ms": 0}
 	if battle_id.is_empty(): return
 	var hand_ids: Array = Game.room.get("player", {}).get("hand", []).map(func(card): return str(card.get("instance_id", "")))
@@ -527,6 +545,9 @@ func _on_telemetry(sample: Dictionary) -> void:
 	copy["phase"] = copy.get("phase", _current_phase())
 	copy["monotonic_ms"] = Time.get_ticks_msec()
 	copy["at_unix_ms"] = int(Time.get_unix_time_from_system() * 1000.0)
+	if not copy.has("battle_seed"):
+		copy["battle_seed"] = null
+		copy["battle_seed_unavailable_reason"] = "not_published_by_authoritative_protocol"
 	if copy.get("type", "") == "http":
 		operations.append(copy)
 		if operations.size() > 300: operations.pop_front()
@@ -551,6 +572,7 @@ func _on_event(kind: String, _payload: Dictionary) -> void:
 	if kind == "battle.combo_resolved" and str(_payload.get("attacker_id", "")) == own_user_id:
 		if not battle_metrics.is_empty() and str(_payload.get("battle_id", "")) == current_battle_id:
 			battle_metrics.actions += 1
+			battle_metrics.cards_spent += _payload.get("card_instance_ids",[]).size()
 			var effective := 0
 			for field in ["hp_damage", "shield_damage", "heal", "shield_gain"]:
 				var value := int(_payload.get(field, 0))

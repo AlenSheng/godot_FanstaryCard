@@ -12,8 +12,10 @@ import subprocess
 ROOT=Path(__file__).resolve().parents[1]
 if __package__:
     from .pr13_candidate_review import paired_clusters
+    from .pr13_experience_metrics import recovery_totals
 else:
     from pr13_candidate_review import paired_clusters
+    from pr13_experience_metrics import recovery_totals
 STRATUM_FIELDS=('Hero','WeaponLevel','Deck','Group','Strategy','Profile')
 OUTCOMES={'Victory','Death','Censored','Error'}
 TARGET_PROFILES={
@@ -168,6 +170,7 @@ def main():
     for key,values in sorted(rows.items()):
         outcomes=Counter(row['Outcome'] for row in values);victories=[r for r in values if r['Outcome']=='Victory']
         strata.append(dict(stratum=key,n=len(values),independent_seed_runs=sorted(runs[key]),outcomes=dict(outcomes),
+            recovery_accounting=recovery_totals(values),
             sample_budget=sample_budget(runs[key]),censored_rate=outcomes['Censored']/len(values),
             victory_ttk_p95_all_started=victory_ttk_p95(values),
             victory_rate=outcomes['Victory']/len(values),victory_rate_wilson95=wilson(outcomes['Victory'],len(values)),
