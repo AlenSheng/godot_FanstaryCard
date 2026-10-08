@@ -148,7 +148,7 @@ class RequestAccountingContractTests(unittest.TestCase):
 
 
 class CoordinatorSamplingContractTests(unittest.TestCase):
-    def run_fixture(self, *, overlap, local_resources=False, missing_actor=False):
+    def run_fixture(self, *, overlap=False, local_resources=False, missing_actor=False, cycle_limit=240):
         """Run the real final verdict with fake child/clock/network observations."""
         elapsed = [0.0]
         child = SimpleNamespace(pid=4242, returncode=None)
@@ -163,6 +163,7 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
         heartbeat = [0]
 
         def launch(*args, env, **kwargs):
+            self.assertEqual(env['FANTASYCARD_LOAD_CYCLE_LIMIT_SECONDS'], str(cycle_limit))
             return child
 
         def read_status(processes, cache=None, now_monotonic_ms=None, *, require_files=False):
@@ -199,7 +200,7 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             argv = ['gameplay_load_test.py', '--run', '--godot', sys.executable,
                 '--max-groups', '1', '--group-size', '1', '--max-seconds', '630',
-                '--hold-seconds', '600', '--output', directory]
+                '--hold-seconds', '600', '--cycle-limit-seconds', str(cycle_limit), '--output', directory]
             if local_resources: argv.append('--local-resource-sampling')
             with patch.object(sys, 'argv', argv), patch.object(coordinator, 'time', clock), \
                     patch.object(coordinator, 'subprocess', SimpleNamespace(
@@ -260,6 +261,24 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
         code, report = self.run_fixture(overlap=False, missing_actor=True)
         self.assertEqual(code, 1)
         self.assertEqual(report['result_dimensions']['dimensions']['performance'], 'Unknown')
+
+    def test_cycle_observation_budget_is_pinned_without_changing_capacity_targets(self):
+        code, report = self.run_fixture(cycle_limit=600)
+        self.assertEqual(code, 0)
+        self.assertEqual(report['load_contract']['cycle_limit_seconds'], 600)
+        self.assertEqual(report['load_coverage']['target_active'], 1)
+        self.assertEqual(report['load_coverage']['minimum_window'], 600)
+
+    def test_invalid_cycle_budget_is_rejected_before_launch_or_output(self):
+        with tempfile.TemporaryDirectory() as directory:
+            for value in (0, 59, 601, -1):
+                argv = ['gameplay_load_test.py', '--godot', sys.executable,
+                        '--cycle-limit-seconds', str(value), '--output', directory]
+                with patch.object(sys, 'argv', argv), contextlib.redirect_stderr(io.StringIO()):
+                    with self.assertRaises(SystemExit) as error:
+                        coordinator.main()
+                    self.assertEqual(error.exception.code, 2)
+            self.assertEqual(list(Path(directory).iterdir()), [])
 
 
 if __name__ == '__main__':

@@ -165,13 +165,15 @@ def main():
                    "--server-url", runtime.url, "--output", str(output / "load"), "--max-seconds", str(maximum),
                    "--distinct-local-client-ips", "--hero-class", "mixed", "--strategy", "baseline_all_hand"]
         if args.scenario in {"single", "ten"}:
-            command += ["--smoke", "--smoke-clients", str(count), "--smoke-cycles", "3", "--load-profile", "cyclic-gameplay"]
+            command += ["--smoke", "--smoke-clients", str(count), "--smoke-cycles", "3", "--load-profile", "cyclic-gameplay",
+                        "--cycle-limit-seconds", "600"]
         else:
             command += ["--run", "--max-groups", "1", "--group-size", str(count), "--target-online", str(count),
                         "--target-active", str(count), "--hold-seconds", str(spec["soak_seconds"] if args.scenario == "soak" else spec["hold_seconds"]),
                         "--local-resource-sampling", "--launch-interval-seconds", "1", "--load-profile", "cyclic-gameplay"]
         record = {"scenario": args.scenario, "command": command, "profile_hash": profile_hash,
                   "source_sha": runtime.record["source_sha"], "maximum_seconds": maximum, "started_at": time.time(),
+                  "cycle_limit_seconds": 600 if args.scenario in {"single", "ten"} else 240,
                   "class_scope": "Three classes round-robin; actual distribution comes from client reports", "accepted": False}
         write(output / "command.json", record)
         with (output / "load.private.log").open("w", encoding="utf8") as log:

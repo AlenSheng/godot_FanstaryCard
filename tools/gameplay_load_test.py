@@ -33,7 +33,7 @@ QUERIES = {
     'server_humans_in_room': 'fantasycard_rooms_humans_active{job="fantasycard",instance="otel-collector:9464"}',
 }
 COVERAGE_METADATA = {'profile','acceptance_scope','launch_interval_seconds','http_transport','resource_source','server_metrics_missing_reason',
-                     'distinct_local_client_ips','client_memory_start_budget_mib','hero_class','strategy','strategy_seed'}
+                     'distinct_local_client_ips','client_memory_start_budget_mib','hero_class','strategy','strategy_seed','cycle_limit_seconds'}
 
 def metrics(base):
     result = dict.fromkeys(QUERIES)
@@ -213,6 +213,8 @@ def main():
                         help='Preregistered spacing between account launches; sampling continues during ramps')
     parser.add_argument('--smoke-cycles',type=int,default=3)
     parser.add_argument('--smoke-clients',type=int,default=1)
+    parser.add_argument('--cycle-limit-seconds',type=int,default=240,
+                        help='Preregistered per-expedition observation limit, 60-600 seconds; overall deadline still applies')
     parser.add_argument('--load-profile', choices=('cyclic-gameplay','active-hold','functional-cycles'), default='cyclic-gameplay')
     parser.add_argument('--target-online',type=int)
     parser.add_argument('--target-active',type=int)
@@ -237,6 +239,8 @@ def main():
         parser.error('Group, duration and cycle limits must be positive')
     if not math.isfinite(args.launch_interval_seconds) or args.launch_interval_seconds < 0:
         parser.error('Launch spacing must be finite and nonnegative')
+    if not 60<=args.cycle_limit_seconds<=600:
+        parser.error('Per-expedition observation limit must be between 60 and 600 seconds')
     target=urllib.parse.urlparse(args.server_url)
     if target.scheme not in ('http','https') or not target.hostname:
         parser.error('A valid --server-url is required')
@@ -279,7 +283,8 @@ def main():
         'resource_source':'shared_local_host_diagnostic' if args.local_resource_sampling else 'preregistered_prometheus',
         'server_metrics_missing_reason':'No server actor-wait or authoritative room collector configured' if args.local_resource_sampling else None}
     contract.update(distinct_local_client_ips=args.distinct_local_client_ips,client_memory_start_budget_mib=256,
-                    hero_class=args.hero_class,strategy=args.strategy,strategy_seed=args.strategy_seed)
+                    hero_class=args.hero_class,strategy=args.strategy,strategy_seed=args.strategy_seed,
+                    cycle_limit_seconds=args.cycle_limit_seconds)
     coverage([],start=0,end=1,**{k:v for k,v in contract.items() if k not in COVERAGE_METADATA})
     save(run_dir/'load-contract.json',contract)
     stop_file=run_dir/'STOP'
@@ -328,6 +333,7 @@ def main():
                     FANTASYCARD_LOAD_PROFILE=args.load_profile,
                     FANTASYCARD_LOAD_HOLD_SECONDS=str(args.hold_seconds),
                     FANTASYCARD_LOAD_RUN_SECONDS=str(args.max_seconds),
+                    FANTASYCARD_LOAD_CYCLE_LIMIT_SECONDS=str(args.cycle_limit_seconds),
                     FANTASYCARD_LOAD_MAX_CYCLES=str(args.smoke_cycles) if args.smoke else '0')
                 log=(run_dir/(client_id+'.log')).open('w',encoding='utf-8')
                 try:

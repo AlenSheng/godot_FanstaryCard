@@ -53,6 +53,7 @@ var terminal_battle_ids: Dictionary = {}
 var load_profile := "cyclic-gameplay"
 var hold_seconds := 600
 var run_seconds := 1800
+var cycle_limit_seconds := 240
 var cycle_battles_won := 0
 var last_effective_action_ms := 0
 
@@ -63,6 +64,7 @@ func _ready() -> void:
 	if requested_hold.is_valid_int(): hold_seconds = clampi(int(requested_hold), 1, 3600)
 	var requested_run := OS.get_environment("FANTASYCARD_LOAD_RUN_SECONDS")
 	if requested_run.is_valid_int(): run_seconds = maxi(1,int(requested_run))
+	cycle_limit_seconds = _cycle_limit(OS.get_environment("FANTASYCARD_LOAD_CYCLE_LIMIT_SECONDS"))
 	Game = get_node("/root/Game")
 	base_url = OS.get_environment("FANTASYCARD_SERVER_URL").strip_edges().trim_suffix("/")
 	if base_url.is_empty(): base_url = "http://127.0.0.1:5000"
@@ -95,7 +97,16 @@ func _ready() -> void:
 	Game.gateway.failed.connect(_on_notice)
 	Game.gateway.event_received.connect(_on_event)
 	Game.network_telemetry.connect(_on_telemetry)
+	if cycle_limit_seconds == 0:
+		_finish(false, "Invalid expedition observation limit")
+		return
 	call_deferred("_run")
+
+func _cycle_limit(value: String) -> int:
+	if value.is_empty(): return 240
+	if not value.is_valid_int(): return 0
+	var seconds := int(value)
+	return seconds if seconds >= 60 and seconds <= 600 else 0
 
 func _process(_delta: float) -> void:
 	_update_context()
@@ -221,7 +232,7 @@ func _run_expedition() -> void:
 	stage = "playing"
 	# Capacity hold is an explicitly different workload: it keeps playing and
 	# postpones voluntary extraction/fallback. Natural death remains terminal.
-	deadline = Time.get_ticks_msec() + (maxi(240, maxi(hold_seconds + 60, run_seconds + 30)) * 1000 if load_profile == "active-hold" else 240000)
+	deadline = Time.get_ticks_msec() + (maxi(cycle_limit_seconds, maxi(hold_seconds + 60, run_seconds + 30)) * 1000 if load_profile == "active-hold" else cycle_limit_seconds * 1000)
 	var visited := {}
 	while Game.settlement.is_empty() and Time.get_ticks_msec() < deadline and not stop_requested:
 		_update_context()
@@ -578,6 +589,7 @@ func _write_status() -> void:
 	var status: Dictionary = {"client_id": client_id, "group": group_id, "pid": OS.get_process_id(), "started_at_unix_ms": int((Time.get_unix_time_from_system() - float(Time.get_ticks_msec() - started_at_ms) / 1000.0) * 1000.0), "now_unix_ms": int(Time.get_unix_time_from_system() * 1000.0), "online": Game.gateway.online, "socket_state": Game.gateway.socket.get_ready_state(), "room": not Game.room.is_empty(), "stage": stage, "last_progress_age_ms": Time.get_ticks_msec() - last_progress_ms, "cycles_completed": cycles_completed, "scenario_started": scenario_started, "scenario_finished": scenario_finished, "checks": checks, "operations": operations, "telemetry": telemetry, "events": events, "errors": errors}
 	status.merge({"status_seq": status_seq, "run_id": run_id, "process_epoch": process_epoch, "event_seq_max": event_seq, "phase": _current_phase(), "cycle_id": "%s:%d" % [client_id, cycles_completed + 1], "audit_lost_count": audit_lost_count,
 		"cleanup": cleanup_result, "hero_class": hero_profile, "strategy": strategy, "strategy_seed": strategy_seed, "load_profile": load_profile})
+	status["cycle_limit_seconds"] = cycle_limit_seconds
 	var file := FileAccess.open(report_path + ".status.json.tmp", FileAccess.WRITE)
 	if file != null:
 		file.store_string(JSON.stringify(status))
@@ -590,6 +602,7 @@ func _finish(ok: bool, message: String, exit_code: int = -1) -> void:
 	_flush_audit()
 	var report: Dictionary = {"ok": ok, "message": message, "client_id": client_id, "group": group_id, "pid": OS.get_process_id(), "user_id": own_user_id, "started_at_unix_ms": int(Time.get_unix_time_from_system() * 1000.0) - (Time.get_ticks_msec() - started_at_ms), "ended_at_unix_ms": int(Time.get_unix_time_from_system() * 1000.0), "elapsed_ms": Time.get_ticks_msec() - started_at_ms, "cycles_completed": cycles_completed, "checks": checks, "operations": operations, "telemetry": telemetry, "events": events, "errors": errors}
 	report.merge({"run_id": run_id, "process_epoch": process_epoch, "event_seq_max": event_seq, "audit_lost_count": audit_lost_count, "cleanup": cleanup_result, "hero_class": hero_profile, "strategy": strategy, "strategy_seed": strategy_seed, "load_profile": load_profile, "outcome": "completed" if ok else ("cancelled" if exit_code == 0 else "failed")})
+	report["cycle_limit_seconds"] = cycle_limit_seconds
 	var file := FileAccess.open(report_path, FileAccess.WRITE)
 	if file != null:
 		file.store_string(JSON.stringify(report, "\t"))
