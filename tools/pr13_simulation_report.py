@@ -10,6 +10,10 @@ import statistics
 import subprocess
 
 ROOT=Path(__file__).resolve().parents[1]
+if __package__:
+    from .pr13_candidate_review import paired_clusters
+else:
+    from pr13_candidate_review import paired_clusters
 STRATUM_FIELDS=('Hero','WeaponLevel','Deck','Group','Strategy','Profile')
 OUTCOMES={'Victory','Death','Censored','Error'}
 TARGET_PROFILES={
@@ -182,12 +186,14 @@ def main():
         if runs[key]!=runs[other]:raise ValueError('Unpaired seed blocks: '+key)
         pairs=[(baseline[s],candidate[s]) for s in sorted(baseline)]
         deltas={field:[b[field]-a[field] for a,b in pairs] for field in ('Damage60','EffectiveShield','ObservedSeconds')}
-        rng=random.Random(20260930)
-        # A paired seed bootstrap, separately per stratum; no per-run P95 averaging.
-        damage=deltas['Damage60'];bootstrap=sorted(statistics.fmean(rng.choices(damage,k=len(damage))) for _ in range(1000))
+        cluster_summary=paired_clusters(
+            [dict(seed=s,battle='encounter',value=baseline[s]['Damage60']) for s in sorted(baseline)],
+            [dict(seed=s,battle='encounter',value=candidate[s]['Damage60']) for s in sorted(candidate)])
+        damage=deltas['Damage60']
         comparisons.append(dict(baseline=key,candidate=other,n=len(pairs),
             sample_budget=sample_budget(runs[key]),
-            mean_damage60_delta=statistics.fmean(damage),paired_seed_bootstrap_damage60_95=[bootstrap[24],bootstrap[974]],
+            mean_damage60_delta=statistics.fmean(damage),paired_seed_bootstrap_damage60_95=cluster_summary['paired_seed_cluster_bootstrap95'],
+            paired_seed_cluster_summary=cluster_summary,
             mean_effective_shield_delta=statistics.fmean(deltas['EffectiveShield']),
             observed_seconds_delta_all_outcomes=distribution(deltas['ObservedSeconds']),
             baseline_wins=sum(a['Outcome']=='Victory' for a,b in pairs),candidate_wins=sum(b['Outcome']=='Victory' for a,b in pairs),

@@ -17,6 +17,8 @@ on:
       - 'tools/pr13_http_cases.py'
       - 'tools/pr13_domain_cases.py'
       - 'tools/pr13_control_cases.py'
+      - 'tools/pr13_candidate_review.py'
+      - 'tools/pr13_candidate_cases.py'
       - 'tools/pr13_ledger_attribution.py'
       - 'tools/pr13_ledger_cases.py'
       - 'tools/pr13_ledger_postgres_cases.py'
@@ -54,6 +56,8 @@ on:
       - 'tools/pr13_http_cases.py'
       - 'tools/pr13_domain_cases.py'
       - 'tools/pr13_control_cases.py'
+      - 'tools/pr13_candidate_review.py'
+      - 'tools/pr13_candidate_cases.py'
       - 'tools/pr13_ledger_attribution.py'
       - 'tools/pr13_ledger_cases.py'
       - 'tools/pr13_ledger_postgres_cases.py'
@@ -101,6 +105,7 @@ jobs:
           python --version > test-results/gameplay-accounting/python-version.txt
           python -m unittest discover -s tools/tests -v 2>&1 | tee test-results/gameplay-accounting/unittest.log
           python tools/pr13_control_cases.py --output test-results/gameplay-accounting/control-contract-cases
+          python tools/pr13_candidate_cases.py --output test-results/gameplay-accounting/candidate-contract-cases
       - uses: actions/upload-artifact@v7
         if: always()
         with:
