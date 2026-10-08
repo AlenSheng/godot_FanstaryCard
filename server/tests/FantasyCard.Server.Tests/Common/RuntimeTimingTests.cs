@@ -72,6 +72,7 @@ public sealed class RuntimeTimingTests(ITestOutputHelper output)
             Assert.False(send.IsCompleted);
             Assert.Contains(capture.Spans, a => a.TraceId == root.TraceId && a.GetTagItem("runtime.phase")?.ToString() == nameof(RuntimePhase.ActorExecute));
             Assert.DoesNotContain(capture.Spans, a => a.TraceId == root.TraceId && a.GetTagItem("runtime.phase")?.ToString() == nameof(RuntimePhase.SocketSend));
+            await Task.Delay(150, TestContext.Current.CancellationToken);
         }
         finally { socket.Release.TrySetResult(); }
         await send;
@@ -79,6 +80,7 @@ public sealed class RuntimeTimingTests(ITestOutputHelper output)
         var sendSpan = Assert.Single(capture.Spans, a => a.TraceId == root.TraceId && a.GetTagItem("runtime.phase")?.ToString() == nameof(RuntimePhase.SocketSend));
         Assert.Equal(room.RoomId.ToString("D"), actorSpan.GetTagItem("room.id"));
         Assert.Equal("timing-request", sendSpan.GetTagItem("request.id"));
+        Assert.True(sendSpan.Duration.TotalMilliseconds >= 100);
         output.WriteLine("PR13_RUNTIME " + JsonSerializer.Serialize(new { actorExecutionMs = actorSpan.Duration.TotalMilliseconds, socketSendMs = sendSpan.Duration.TotalMilliseconds,
             actorCompletedWhileSendBlocked = true, sharedInitiatingTrace = true }));
     }
