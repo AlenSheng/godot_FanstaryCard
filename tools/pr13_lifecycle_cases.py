@@ -7,6 +7,9 @@ import xml.etree.ElementTree as ET
 
 ROOT=Path(__file__).resolve().parents[1]
 MAPPING={
+ 'LOAD-10.2-T02':['Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth','Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes'],
+ 'LOAD-09.2-T02':['Recovery_validates_durable_terminal_checkpoint_and_preserves_next_route'],
+ 'PR13-A09.3-T02':['Recovery_validates_durable_terminal_checkpoint_and_preserves_next_route'],
  'LOAD-04.4-T02':['Launch_failure_retries_without_duplicate_room_or_asset_reservation'],
  'LOAD-09.2-T01':['Launch_failure_retries_without_duplicate_room_or_asset_reservation'],
  'LOAD-09.2-T03':['Recovery_validates_durable_terminal_checkpoint_and_preserves_next_route'],
