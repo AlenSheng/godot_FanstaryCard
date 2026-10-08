@@ -70,7 +70,9 @@ def export(trx, output, source_sha):
     results = []
     for n in tree.findall('.//{*}UnitTestResult'):
         method = definitions[n.attrib['testId']]
-        results.append({'method':method['className'].split(',')[0]+'.'+method['name'], 'name':n.attrib['testName'], 'outcome':n.attrib['outcome']})
+        stdout=n.findtext('.//{*}StdOut') or ''
+        results.append({'method':method['className'].split(',')[0]+'.'+method['name'], 'name':n.attrib['testName'], 'outcome':n.attrib['outcome'],
+                        'resource_ledger':[json.loads(line.split('PR13_DRAW_LEDGER ',1)[1]) for line in stdout.splitlines() if line.startswith('PR13_DRAW_LEDGER ')]})
     counters = tree.find('.//{*}Counters').attrib
     if int(counters['executed'])!=int(counters['total']) or int(counters.get('notExecuted',0)) or not int(counters['total']):raise ValueError('Skipped/missing native assertions cannot export Passed')
     plan_path = ROOT/'docs/plans/PR13_ACCEPTANCE_DETAILS_20260930.json'
@@ -86,7 +88,8 @@ def export(trx, output, source_sha):
         records.append({'case_id':case_id, 'executed':True, 'status':'Passed' if passed else 'Failed',
             'setup':contracts[case_id]['setup_and_injection'], 'expected':contracts[case_id]['expected'],
             'actual':{'assertion_results':found,'trx_sha256':sha(trx)}, 'profiles_executed':['OFFLINE'],
-            'scope':'Actual authoritative Domain/room tests. PostgreSQL, sampled experiments, renderer and live layers remain separate.'})
+            'scope':'Actual authoritative Domain/room tests. PostgreSQL, sampled experiments, renderer and live layers remain separate.'
+                    + (' Paused draw uses declared local repeated-card controls; its capped loop is unfinished and is not a legal published-deck or whole-pool balance proof.' if case_id.startswith('PR13-B06.3-T0') and case_id[-1] in '12' else '')})
     output.mkdir(parents=True, exist_ok=False)
     (output/'cases.jsonl').write_bytes(''.join(json.dumps(r,ensure_ascii=False)+'\n' for r in records).encode())
     write(output/'report.json', {'source_sha':source_sha, 'plan_sha256':sha(plan_path), 'source':{'scope':'exact reviewed native authoritative assertions','input_hashes':{p:sha(ROOT/p) for p in paths}},
