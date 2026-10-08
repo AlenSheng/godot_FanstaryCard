@@ -10,6 +10,8 @@ const Proto = preload("res://network/protobuf.gd")
 const HttpProtocol = preload("res://network/http_protocol.gd")
 const ReusableHttpClient = preload("res://network/reusable_http_client.gd")
 const HTTP_BACKGROUND_DECODE_BYTES := 8 * 1024
+const PING_INTERVAL_MS := 10000
+const PONG_TIMEOUT_MS := 20000
 const DEFAULT_LOCAL_BASE_URL := "http://127.0.0.1:5080"
 const PRODUCTION_BASE_URL := "https://www.relicbound.cn"
 const LEGACY_CLOUD_ORIGINS := ["http://43.172.70.182", "https://43.172.70.182"]
@@ -503,6 +505,12 @@ func connect_realtime() -> void:
 
 func _schedule_reconnect() -> void:
 	online = false
+	if not _pending_ping_request_id.is_empty(): _pending_request_started.erase(_pending_ping_request_id)
+	_pending_ping_request_id = ""
+	# A half-open close handshake may never finish. Retire this peer before
+	# scheduling the next authenticated connection, keeping logical context.
+	socket.close()
+	socket = WebSocketPeer.new()
 	_retry_at = Time.get_ticks_msec() + int(_backoff * 1000)
 	_backoff = minf(_backoff * 2.0, 30.0)
 	connection_changed.emit("连接中断，正在重连")
@@ -520,7 +528,14 @@ func _process(_delta: float) -> void:
 				continue
 			_receive(packet)
 			if not reconnect_enabled: return
-		if online and Time.get_ticks_msec() - _last_ping > 10000:
+		if online and not _pending_ping_request_id.is_empty() and Time.get_ticks_msec() - _ping_sent_at >= PONG_TIMEOUT_MS:
+			var timeout_sample: Dictionary = {"type":"realtime_timeout","action":"ping","request_id":_pending_ping_request_id,
+				"duration_ms":Time.get_ticks_msec()-_ping_sent_at,"reason":"pong_deadline"}
+			timeout_sample.merge(capture_context(),false)
+			telemetry.emit(timeout_sample)
+			_schedule_reconnect()
+			return
+		if online and _pending_ping_request_id.is_empty() and Time.get_ticks_msec() - _last_ping > PING_INTERVAL_MS:
 			var ping_request_id := new_id()
 			if send("ping", {}, ping_request_id): _last_ping = Time.get_ticks_msec()
 		if online and _prelaunch_ready_accepted: _read_prelaunch_snapshot()
@@ -607,6 +622,7 @@ func _receive(packet: PackedByteArray) -> void:
 		online = true
 		_backoff = 1.0
 		_retry_at = 0
+		_last_ping = Time.get_ticks_msec()
 		recovering = last_sequence > 0 and last_sequence < sequence - 1
 		connection_changed.emit("已连接")
 		if recovering:

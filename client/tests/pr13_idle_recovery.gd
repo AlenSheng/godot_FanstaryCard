@@ -35,8 +35,10 @@ func run() -> void:
 	var sent_connected: Dictionary={}
 	var pings:=0
 	var old_remained_open:=false
+	var healthy_pong:=false
+	var healthy_at:=0
 	var started:=Time.get_ticks_msec()
-	while Time.get_ticks_msec()-started<40000:
+	while Time.get_ticks_msec()-started<55000:
 		if server.is_connection_available():
 			var peer:=WebSocketPeer.new()
 			peer.accept_stream(server.take_connection())
@@ -57,12 +59,17 @@ func run() -> void:
 					pings+=1
 					old_remained_open=index==0 and peer.get_ready_state()==WebSocketPeer.STATE_OPEN
 				# Intentionally withhold pong on the first open connection.
-		if peers.size()>=2 and gateway.online: break
+					if index>0:
+						peer.put_packet(codec.encode("ServerEnvelope",{"protocol_version":1,"type":"pong","sequence":3,
+							"request_id":command.get("request_id"),"payload":codec.encode("PongEvent",{})}))
+						healthy_at=Time.get_ticks_msec()
+						healthy_pong=true
+		if healthy_pong and gateway._pending_ping_request_id.is_empty() and Time.get_ticks_msec()-healthy_at>1000: break
 		await process_frame
-	var passed:=listening==OK and old_remained_open and pings>=1 and gateway.attempts==2 and peers.size()==2 and gateway.online and gateway.session_generation==7 and gateway.telemetry_context==before
+	var passed:=listening==OK and old_remained_open and pings>=2 and healthy_pong and gateway._pending_ping_request_id.is_empty() and gateway.attempts==2 and peers.size()==2 and gateway.online and gateway.session_generation==7 and gateway.telemetry_context==before
 	var row={"case_id":"PR13-A06.2-T01","executed":true,"status":"Passed" if passed else "Failed","profiles_executed":["OFFLINE"],
 		"actual":{"actual_elapsed_ms":Time.get_ticks_msec()-started,"native_open_connections":peers.size(),"reconnect_attempts":gateway.attempts,"binary_pings_observed":pings,
-			"unanswered_peer_was_open":old_remained_open,"session_generation":gateway.session_generation,"logical_context_preserved":gateway.telemetry_context==before,"completed_cycles":0},
+			"unanswered_peer_was_open":old_remained_open,"healthy_binary_pong_confirmed":healthy_pong and gateway._pending_ping_request_id.is_empty(),"session_generation":gateway.session_generation,"logical_context_preserved":gateway.telemetry_context==before,"completed_cycles":0},
 		"scope":"Actual loopback TCP/WebSocket and production ping/decoder/retry timer, actual wall duration; declared ticket/auth fixture; no Program/PG/LIVE or new cycle completion claim"}
 	gateway.reconnect_enabled=false;gateway.socket.close()
 	for peer in peers: peer.close()
