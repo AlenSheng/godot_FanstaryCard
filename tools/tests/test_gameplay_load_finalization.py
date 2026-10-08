@@ -21,7 +21,7 @@ import gameplay_load_test as coordinator
 
 class FinalizationTests(unittest.TestCase):
     def run_fixture(self, anomaly=None, *, real_child_after_stop=False, report_write_fails=False,
-                    operator_stop=False):
+                    operator_stop=False, receipt_write_fails=False):
         elapsed = [0.0]
         child = SimpleNamespace(pid=4242, returncode=0)
         child.poll = lambda: child.returncode
@@ -76,6 +76,8 @@ class FinalizationTests(unittest.TestCase):
             coordinator_stop_all = coordinator.stop_all
             coordinator_save = coordinator.save
             def save(path, data):
+                if receipt_write_fails and path.name == 'launch-manifest.json' and data['launches']:
+                    raise OSError('injected launch receipt disk failure after child start')
                 if report_write_fails and path.name == 'report.json':
                     raise OSError('injected final report disk failure')
                 return coordinator_save(path, data)
@@ -124,6 +126,16 @@ class FinalizationTests(unittest.TestCase):
         self.assertTrue(report['acceptance_passed'])
         self.assertFalse(report['full_acceptance_passed'])
         self.assertEqual(report['cycle_cutoffs']['final']['completed_cycles'], 3)
+
+    def test_launch_receipt_write_fault_still_reaps_the_real_owned_child(self):
+        code, report = self.run_fixture(real_child_after_stop=True, receipt_write_fails=True)
+        self.assertEqual(code, 3)
+        self.assertFalse(report['acceptance_passed'])
+        self.assertTrue(report['stop_reason'].startswith('coordinator_error:'))
+        self.assertEqual(len(report['process_exits']), 1)
+        self.assertEqual(report['process_exits'][0]['after_stop'], 7)
+        self.assertEqual(len(report['launch_receipts']), 1)
+        self.assertEqual(report['launch_receipts'][0]['client_id'], report['process_exits'][0]['client_id'])
 
     def test_operator_stop_before_first_sample_keeps_exit_130_without_acceptance(self):
         code, report = self.run_fixture(operator_stop=True)
