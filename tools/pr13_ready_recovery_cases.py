@@ -11,7 +11,7 @@ def main():
     if report['ok'] is not True or report['case_count']!=3 or report['passed_case_count']!=3 or report['owned_fixture_databases_removed'] is not True or report['owned_server_stopped'] is not True:raise ValueError('Complete owned three-scenario actual network/PG matrix required')
     cases={r['case']:r for r in report['cases']}
     plan=ROOT/'docs/plans/PR13_ACCEPTANCE_DETAILS_20260930.json';contracts={c['id']:c for pkg in json.loads(plan.read_text(encoding='utf8'))['packages'] for t in pkg['subtasks'] for c in t['test_cases']};rows=[]
-    for cid,name in [('LOAD-04.3-T01','ready_required_all_lost_ticket'),('PR13-A04.1-T01','ready_required_all_lost_ticket'),('LOAD-04.3-T02','ready_started_all_lost_snapshot')]:
+    for cid,name in [('LOAD-04.3-T01','ready_required_all_lost_ticket'),('PR13-A04.1-T01','ready_required_all_lost_ticket'),('LOAD-04.3-T02','ready_started_all_lost_snapshot'),('LOAD-10.3-T01','ready_started_all_lost_snapshot')]:
         r=cases[name];client=r['actual'];transport=[json.loads(line) for line in (native/name/'transport/trace.jsonl').read_text(encoding='utf8').splitlines()];dropped=[e for e in transport if e['event']=='frame_dropped'];forwarded=[e for e in transport if e['event']=='frame_forwarded']
         lost='room.ready_required' if name=='ready_required_all_lost_ticket' else 'room.started'
         if not r['postgres_passed'] or not r['transport_passed'] or not client['passed'] or not dropped or any(e['kind']!=lost for e in dropped) or any(e['kind']==lost for e in forwarded):raise ValueError('Permanent loss predicate absent')

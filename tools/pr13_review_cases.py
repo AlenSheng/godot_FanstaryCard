@@ -32,6 +32,14 @@ def main():
     record('PR13-B12.2-T03',dict(all_machine_layers_controlled_passed=True,human_evidence_kind='bot_only',execution_state=bot,human_accepted=False),bot=='Partial')
     alerts=asset_gate([dict(id='controlled-asset-accounting-warning',explained=False)])
     record('PR13-B12.4-T03',alerts,alerts['state']=='Blocked' and not alerts['asset_acceptance'])
+    machine_and_bad_visual=[dict(executed=True,status='Passed',profiles_executed=['OFFLINE']),
+        dict(executed=True,status='Failed',profiles_executed=['RENDER'],controlled_fault='card_button_disabled')]
+    visual=execution_state(machine_and_bad_visual,['OFFLINE','RENDER'])
+    record('PR13-A09.4-T01',dict(script_passed=True,controlled_render_button_enabled=False,execution_state=visual),visual=='Failed')
+    batch=[dict(executed=True,status='Passed' if i!=16 else 'Unknown',profiles_executed=['OFFLINE'],
+        client_id='controlled-'+str(i//3),cycle=i%3+1) for i in range(30)]
+    unknown=execution_state(batch,['OFFLINE'])
+    record('PR13-A09.2-T02',dict(controlled_clients=10,expected_cycles=30,passed_cycles=29,unknown_cycles=1,execution_state=unknown),unknown=='Partial')
     delivery=json.loads((ROOT/'docs/plans/PR13_DELIVERY_DECISION_20261008.json').read_text(encoding='utf8'))
     register=json.loads((ROOT/'docs/reports/pr13-stages-20261008/S6-current-288/register.json').read_text(encoding='utf8'))
     unfinished=[t['task_id'] for t in register['tasks'] if t['state']!='Accepted']

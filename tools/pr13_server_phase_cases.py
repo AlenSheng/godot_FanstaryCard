@@ -7,6 +7,7 @@ import xml.etree.ElementTree as ET
 from pr13_render_cases import ROOT,sha,write
 
 MAPPING={
+ 'PR13-B04.1-T01':('Persistence.PostgresRuntimeIntegrationTests.Actual_starter_deck_matches_published_twenty_white_level_zero_cards',['OFFLINE','POSTGRES']),
  'LOAD-09.1-T01':('Persistence.PostgresRuntimeIntegrationTests.Four_humans_enqueue_ready_and_launch_one_persisted_room',['OFFLINE','POSTGRES']),
  'LOAD-09.1-T02':('Persistence.PostgresRuntimeIntegrationTests.Four_humans_enqueue_ready_and_launch_one_persisted_room',['OFFLINE','POSTGRES']),
  'LOAD-09.1-T03':('Persistence.PostgresRuntimeIntegrationTests.Four_humans_enqueue_ready_and_launch_one_persisted_room',['OFFLINE','POSTGRES']),
@@ -17,6 +18,7 @@ MAPPING={
  'LOAD-09.4-T02':('Rooms.RoomActorTests.Concurrent_commands_are_serialized_by_single_reader',['OFFLINE']),
 }
 PHASES={
+ 'PR13-B01.1-T03':('Thousands_of_business_ids_never_create_metric_identity_labels',['OFFLINE']),
  'LOAD-06.3-T01':('Actual_pool_acquisition_wait_is_separate_from_replay_SQL_execution',['OFFLINE','POSTGRES']),
  'LOAD-06.3-T02':('Blocked_socket_send_keeps_actor_execution_separate_in_the_same_request_trace',['OFFLINE']),
  'LOAD-06.3-T03':('Thousands_of_business_ids_never_create_metric_identity_labels',['OFFLINE']),
@@ -40,7 +42,8 @@ def main():
         dst=out/label;dst.mkdir();records=[]
         for cid,(method,profiles) in mapping.items():
             selected=[r for r in native_rows if r['method']=='FantasyCard.Server.Tests.'+method]
-            if len(selected)!=1 or selected[0]['outcome']!='Passed':raise ValueError('Exact assertion absent: '+method)
+            expected_count=3 if method.endswith('Actual_starter_deck_matches_published_twenty_white_level_zero_cards') else 1
+            if len(selected)!=expected_count or any(r['outcome']!='Passed' for r in selected):raise ValueError('Exact assertion absent: '+method)
             records.append(dict(case_id=cid,executed=True,status='Passed',setup=contracts[cid]['setup_and_injection'],expected=contracts[cid]['expected'],profiles_executed=profiles,actual=dict(native_assertions=selected),scope='Actual named native production components; PostgreSQL where declared, controlled stalled sockets and in-process actual trace/meter listeners. Full LIVE/capacity/performance review and human evidence separate.'))
         (dst/'cases.jsonl').write_bytes(''.join(json.dumps(r,ensure_ascii=False)+'\n' for r in records).encode());write(dst/'report.json',dict(source_sha=source,plan_sha256=sha(plan),source=dict(scope=label,input_hashes={p.relative_to(ROOT).as_posix():sha(p) for p in parents}),executed=len(records),passed=len(records),accepted=False))
         return len(records)

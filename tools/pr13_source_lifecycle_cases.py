@@ -25,6 +25,17 @@ def main():
     event=dict(client_id='controlled-client',process_epoch='controlled-epoch',event_seq=1,cycle_id='controlled-client:1',match_id='controlled-match',at_unix_ms=1,event_type='cycle.completed',agent_id='must-not-become-run-id')
     result=reconcile_cycles([event],10,20)
     record('PR13-A09.1-T03',dict(derivation=result,input_run_id=event.get('run_id'),agent_id_not_used=True),'missing_context' in result['evidence_errors'] and result['final']['completed_cycles']==0 and 'run_id' not in event)
+    old_path=ROOT/'docs/reports/pr13-stages-20261008/S3-S5-prelaunch-experience-current/state/report.json'
+    new_path=ROOT/'outputs/pr13-local-20261008/S3/state-strategy-wait-current/report.json'
+    old=json.loads(old_path.read_text(encoding='utf8'));new=json.loads(new_path.read_text(encoding='utf8'))
+    key='client/tests/gameplay_load_client.gd'
+    current_hash=sha(ROOT/key)
+    record('PR13-A09.4-T03',dict(old_runtime_source_sha=old['source_sha'],new_runtime_source_sha=new['source_sha'],
+        old_implementation_sha256=old['source']['input_hashes'][key],new_implementation_sha256=new['source']['input_hashes'][key],
+        actual_native_retest_passed=new['native_execution_clean'] and new['passed']==new['executed'],
+        old_report_identity={'path':old_path.relative_to(ROOT).as_posix(),'sha256':sha(old_path)},
+        new_report_identity={'path':new_path.relative_to(ROOT).as_posix(),'sha256':sha(new_path)}),
+        old['source']['input_hashes'][key]!=current_hash and new['source']['input_hashes'][key]==current_hash and new['native_execution_clean'] and new['passed']==new['executed'])
     (out/'cases.jsonl').write_bytes(''.join(json.dumps(row,ensure_ascii=False)+'\n' for row in rows).encode());write(out/'report.json',dict(source_sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),plan_sha256=sha(plan),source=dict(scope='actual source attribution and controlled input provenance faults',input_hashes={p:sha(ROOT/p) for p in ['tools/pr13_source_lifecycle_cases.py','tools/pr13_stages.py','tools/pr13_public_evidence.py','tools/pr13_runtime_evidence.py']}),executed=len(rows),passed=sum(r['status']=='Passed' for r in rows),accepted=False));print(json.dumps(dict(executed=len(rows),passed=sum(r['status']=='Passed' for r in rows))))
     return 0 if all(r['status']=='Passed' for r in rows) else 1
 

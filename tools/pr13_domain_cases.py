@@ -9,6 +9,13 @@ import xml.etree.ElementTree as ET
 ROOT = Path(__file__).resolve().parents[1]
 # Each entry names every required test method. All theory rows must pass.
 MAPPING = {
+    'PR13-B08.2-T01': ['Combat.ElementMarginalAccountingTests.Same_quality_water_request_is_not_an_applied_draw_when_hand_is_full'],
+    'PR13-B08.2-T02': ['Combat.ElementMarginalAccountingTests.Same_quality_metal_control_reports_union_instead_of_sum_of_printed_windows'],
+    'PR13-B08.2-T03': ['Combat.ElementMarginalAccountingTests.Full_health_and_shield_split_real_effective_recovery_from_overflow'],
+    'PR13-B09.1-T03': ['Rooms.MonsterPoolDilutionTests.Actual_pool_growth_separates_printed_power_from_key_card_shuffle_latency'],
+    'PR13-B09.4-T01': ['Rooms.MonsterPoolDilutionTests.Capacity_five_keeps_key_draws_faster_than_ten_automatic_cards_but_requires_choices'],
+    'PR13-B04.1-T03': ['Combat.Pr13BoundaryContractTests.Exhausted_library_shuffles_discard_without_losing_or_duplicating_instances'],
+    'PR13-A08.3-T02': ['Rooms.NumericalPolicySnapshotTests.Rolling_source_back_changes_new_rooms_and_preserves_existing_candidate_room_instances'],
     'PR13-B04.2-T02': ['Rooms.PairedBuildBudgetTests.Higher_rarity_or_level_replacement_is_rejected_before_experiment_entry'],
     'PR13-B03.2-T01': ['Rooms.PairedBuildBudgetTests.Single_published_white_card_swap_preserves_cost_rarity_level_and_twenty_instances'],
     'PR13-B03.2-T02': ['Rooms.PairedBuildBudgetTests.PVP_side_swap_keeps_mirrored_starting_resources_and_restores_each_own_pool'],
@@ -76,7 +83,9 @@ def export(trx, output, source_sha):
         method = definitions[n.attrib['testId']]
         stdout=n.findtext('.//{*}StdOut') or ''
         results.append({'method':method['className'].split(',')[0]+'.'+method['name'], 'name':n.attrib['testName'], 'outcome':n.attrib['outcome'],
-                        'resource_ledger':[json.loads(line.split('PR13_DRAW_LEDGER ',1)[1]) for line in stdout.splitlines() if line.startswith('PR13_DRAW_LEDGER ')]})
+                        'resource_ledger':[json.loads(line.split('PR13_DRAW_LEDGER ',1)[1]) for line in stdout.splitlines() if line.startswith('PR13_DRAW_LEDGER ')],
+                        'marginal_observations':[line.split('PR13_MARGINAL ',1)[1] for line in stdout.splitlines() if line.startswith('PR13_MARGINAL ')],
+                        'pool_observations':[json.loads(line.split('PR13_POOL ',1)[1]) for line in stdout.splitlines() if line.startswith('PR13_POOL ')]})
     counters = tree.find('.//{*}Counters').attrib
     if int(counters['executed'])!=int(counters['total']) or int(counters.get('notExecuted',0)) or not int(counters['total']):raise ValueError('Skipped/missing native assertions cannot export Passed')
     plan_path = ROOT/'docs/plans/PR13_ACCEPTANCE_DETAILS_20260930.json'

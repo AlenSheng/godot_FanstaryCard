@@ -57,6 +57,11 @@ def main():
     record('PR13-B05.1-T03',insufficient,insufficient['state']=='Blocked' and not insufficient['production_activation'])
     pvp_fault=retain_default_decision(gameplay_review(**dict(args,correctness=False)))
     record('PR13-B05.3-T02',dict(pvp_fault,injected_fault='indirect_PVP_value_change'),pvp_fault['state']=='Failed')
+    controlled_rounds=[performance_review(base,dict(base,p95_ms=1000+delta)) for delta in (2,1,3)]
+    no_change_rounds=[retain_default_decision(review,evidence_complete=True) for review in controlled_rounds]
+    for cid in ['LOAD-09.4-T03','PR13-A10.4-T03']:
+        record(cid,{'controlled_rounds':controlled_rounds,'decisions':no_change_rounds,
+            'measured_service_benefit_claim':False},all(r['state']=='NoChangeWithEvidence' and not r['production_activation'] for r in no_change_rounds))
     # The adjusted family is monotone in sorted p-values. A raw .04 primary
     # does not become significant when the other registered tests are retained.
     adjusted=holm_adjust({'tail':.04,'gap':.02,'secondary':.4})

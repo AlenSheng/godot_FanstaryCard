@@ -12,6 +12,8 @@ except ModuleNotFoundError:
     from tools.pr13_audit_replay import check_files
 ROOT=Path(__file__).resolve().parents[1]
 READY_GROUPS={
+ 'LOAD-02.3-T01':['stop_prepare_await','stop_enqueue_await','stop_ticket_await','stop_queue_wait'],
+ 'LOAD-05.3-T01':['stop_prepare_await','stop_queue_wait'],
  'LOAD-04.4-T01':['required_lost_reconnect'],
  'LOAD-04.4-T03':['stop_prepare_await','stop_enqueue_await','stop_ticket_await','stop_queue_wait','stop_ready_enqueue_await','stop_ready_before_send','ready_send_all_lost_stop'],
  'PR13-A04.4-T01':['stop_ready_enqueue_await','stop_ready_before_send','ready_send_all_lost_stop'],
@@ -47,7 +49,7 @@ def main():
     ready=args.ready.resolve();lifecycle=args.lifecycle.resolve();rr=read(ready/'report.json');lr=read(lifecycle/'report.json')
     validated=check_files(ready,{'files':read(ready/'manifest.json')})
     if any(r['state']!='Matching' for r in validated):raise ValueError('Immutable READY evidence changed')
-    if not rr.get('ok') or rr.get('case_count')!=15 or rr.get('passed_case_count')!=15 or rr.get('owned_fixture_databases_removed') is not True or rr.get('owned_server_stopped') is not True:
+    if not rr.get('ok') or rr.get('case_count') not in (15,17) or rr.get('passed_case_count')!=rr.get('case_count') or rr.get('owned_fixture_databases_removed') is not True or rr.get('owned_server_stopped') is not True:
         raise ValueError('Full READY matrix and owned cleanup required')
     counters=require_unskipped(lr,lifecycle/'lifecycle.trx')
     if rr['source_sha']!=lr['source_sha']:raise ValueError('Mixed runtime source SHA')
@@ -61,7 +63,8 @@ def main():
         for name in names:
             r=native[name];client=r['actual']
             if not r['passed'] or not r['postgres_passed'] or not r['transport_passed'] or not client['local_terminal'] or not client['route_probe_clear']:raise ValueError('READY subcase lacks postconditions')
-            results.append({'case':name,'passed':True,'cleanup':client['cleanup']['state'],'route_clear':client['route_probe_clear'],'local_terminal':client['local_terminal'],'ready_send_count':client['ready_send_count'],'ready_send_after_stop':client['ready_send_after_stop'],'matches':r['postgres']['matches'],'pending_holds':r['postgres']['pending_settlement_holds'],'locked_equipment':r['postgres']['locked_equipment'],'source_case_sha256':sha(ready/name/'case.raw.json')})
+            if case_id=='LOAD-05.3-T01' and client.get('message')!='Coordinator cancelled current cycle':raise ValueError('Expected actual pre-room cancellation, no fake failure')
+            results.append({'case':name,'passed':True,'cleanup':client['cleanup']['state'],'route_clear':client['route_probe_clear'],'local_terminal':client['local_terminal'],'ready_send_count':client['ready_send_count'],'ready_send_after_stop':client['ready_send_after_stop'],'terminal_message':client.get('message'),'matches':r['postgres']['matches'],'pending_holds':r['postgres']['pending_settlement_holds'],'locked_equipment':r['postgres']['locked_equipment'],'source_case_sha256':sha(ready/name/'case.raw.json')})
         record(case_id,{'native_subcases':results,'synthetic_old_packet_excluded':True},['OFFLINE','POSTGRES'])
     collected=defaultdict(list)
     with (lifecycle/'process-evidence/receipts.jsonl').open(encoding='utf8') as stream:
@@ -88,7 +91,7 @@ def main():
     output.mkdir(parents=True,exist_ok=False)
     (output/'cases.jsonl').write_bytes(''.join(json.dumps(r,ensure_ascii=False,allow_nan=False)+'\n' for r in records).encode())
     files=[ready/'report.json',ready/'manifest.json',ready/'toolchain.json',ready/'inputs.json',lifecycle/'report.json',lifecycle/'lifecycle.trx',lifecycle/'process-evidence/receipts.jsonl']
-    report={'source_sha':rr['source_sha'],'exporter_sha':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),'plan_sha256':sha(plan_path),'source':{'scope':'Actual owned full Program, production Godot and native PG tests; byte-drop/restart/transaction/route/assets evidence; no LIVE capacity/human claim','input_hashes':rr['input_hashes'] if 'input_hashes' in rr else read(ready/'inputs.json')['input_hashes']},'executed':len(records),'passed':len(records),'accepted':False,'native_ready_subcases':15,'native_pg_counters':counters,'remaining':'Other explicit cases/layers and MAIN task verdicts remain separate.'}
+    report={'source_sha':rr['source_sha'],'exporter_sha':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),'plan_sha256':sha(plan_path),'source':{'scope':'Actual owned full Program, production Godot and native PG tests; byte-drop/restart/transaction/route/assets evidence; no LIVE capacity/human claim','input_hashes':rr['input_hashes'] if 'input_hashes' in rr else read(ready/'inputs.json')['input_hashes']},'executed':len(records),'passed':len(records),'accepted':False,'native_ready_subcases':rr['case_count'],'native_pg_counters':counters,'remaining':'Other explicit cases/layers and MAIN task verdicts remain separate.'}
     write(output/'report.json',report);write(output/'artifact-index.json',{'files':[{'path':p.relative_to(ROOT).as_posix(),'bytes':p.stat().st_size,'sha256':sha(p)} for p in files]})
     write(output/'manifest.json',{'files':[{'path':p.name,'bytes':p.stat().st_size,'sha256':sha(p)} for p in sorted(output.glob('*')) if p.is_file()]})
     print(json.dumps({'executed':len(records),'passed':len(records),'source_sha':rr['source_sha']}));return 0
