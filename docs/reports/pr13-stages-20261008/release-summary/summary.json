@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "kind": "direct_release_local_summary",
+  "status": "Partial",
+  "source_anchor_sha": "8fd34873a964f2def801a619090d2da33ade6bd4",
+  "previous_release_sha": "7a17e9b790ac540f659954c6756f34472bfcf3be",
+  "pr13_integrated_head": "d2fe95d78c093cc4443c048bb2779352d9d83956",
+  "destination": "origin/release",
+  "delivery_decision": "docs/plans/PR13_DELIVERY_DECISION_20261008.json",
+  "stage_status": {
+    "S0": "Frozen: 132 input contracts; runtime acceptance remains separate",
+    "S1": "Partial: actual baselines/failures retained",
+    "S2": "Partial: statistics, local runtime controls and Windows fixture fixes implemented",
+    "S3": "Partial: regression passed; exact mandatory case coverage 37/396",
+    "S4": "Partial: actual PostgreSQL and single natural cycles passed; mixed-class ten-client contract not met",
+    "S5": "Partial: supplemental 864000-row experiment completed; original capacity, benefit and human gates remain",
+    "S6": "NotAccepted: required cases/layers remain"
+  },
+  "checks": {
+    "python": {
+      "passed": 154,
+      "failed": 0
+    },
+    "domain": {
+      "total": 317,
+      "executed": 317,
+      "passed": 317,
+      "failed": 0,
+      "error": 0,
+      "timeout": 0,
+      "aborted": 0,
+      "inconclusive": 0,
+      "passedButRunAborted": 0,
+      "notRunnable": 0,
+      "notExecuted": 0,
+      "disconnected": 0,
+      "warning": 0,
+      "completed": 0,
+      "inProgress": 0,
+      "pending": 0
+    },
+    "postgres_unfiltered": {
+      "total": 302,
+      "executed": 302,
+      "passed": 302,
+      "failed": 0,
+      "error": 0,
+      "timeout": 0,
+      "aborted": 0,
+      "inconclusive": 0,
+      "passedButRunAborted": 0,
+      "notRunnable": 0,
+      "notExecuted": 0,
+      "disconnected": 0,
+      "warning": 0,
+      "completed": 0,
+      "inProgress": 0,
+      "pending": 0
+    },
+    "postgres_unfiltered_source_sha": "4732f0fca2498b0e1402b3fffddcab679c387e3f",
+    "post_full_suite_changes": "Client load observation controls and Python/CI/report changes; server/domain runtime sources unchanged. Five actual Godot groups and focused STOP integration checked after the client change.",
+    "postgres_current_stop_entry": {
+      "total": 3,
+      "executed": 3,
+      "passed": 3,
+      "failed": 0,
+      "error": 0,
+      "timeout": 0,
+      "aborted": 0,
+      "inconclusive": 0,
+      "passedButRunAborted": 0,
+      "notRunnable": 0,
+      "notExecuted": 0,
+      "disconnected": 0,
+      "warning": 0,
+      "completed": 0,
+      "inProgress": 0,
+      "pending": 0
+    },
+    "godot_groups": {
+      "ok": true,
+      "gates": [
+        {
+          "name": "load-parse",
+          "command": [
+            "G:\\Program Files\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64.exe",
+            "--headless",
+            "--path",
+            "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\client",
+            "--script",
+            "res://tests/run_gameplay_load_parse.gd"
+          ],
+          "started": 1791451434.7357473,
+          "elapsed": 0.5522410869598389,
+          "exit_code": 0,
+          "ok": true
+        },
+        {
+          "name": "client-regression",
+          "command": [
+            "G:\\Program Files\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64.exe",
+            "--headless",
+            "--path",
+            "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\client",
+            "--script",
+            "res://tests/run_play_retry.gd"
+          ],
+          "started": 1791451435.2879884,
+          "elapsed": 7.949545860290527,
+          "exit_code": 0,
+          "ok": true
+        },
+        {
+          "name": "lobby-race",
+          "command": [
+            "G:\\Program Files\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64.exe",
+            "--headless",
+            "--path",
+            "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\client",
+            "--script",
+            "res://tests/run_lobby_race.gd"
+          ],
+          "started": 1791451443.2375343,
+          "elapsed": 0.6580405235290527,
+          "exit_code": 0,
+          "ok": true
+        },
+        {
+          "name": "numerical",
+          "command": [
+            "G:\\Program Files\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64.exe",
+            "--headless",
+            "--path",
+            "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\client",
+            "res://tests/numerical_integration.tscn"
+          ],
+          "started": 1791451443.8955748,
+          "elapsed": 0.6596837043762207,
+          "exit_code": 0,
+          "ok": true
+        },
+        {
+          "name": "localization",
+          "command": [
+            "G:\\Program Files\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64.exe",
+            "--headless",
+            "--path",
+            "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\client",
+            "--script",
+            "res://tests/run_localization.gd"
+          ],
+          "started": 1791451444.5552585,
+          "elapsed": 1.1997289657592773,
+          "exit_code": 0,
+          "ok": true
+        }
+      ]
+    },
+    "protocol_generation": "73 realtime messages, 61 HTTP messages, 46 routes; check passed",
+    "workflow_lint": "Three release-triggered validation workflows pass actionlint 1.7.7",
+    "line_ending_portability": "Actual S0/S0-retest artifact check passes against the tracked LF plan and the local CRLF plan; byte manifests stay exact"
+  },
+  "canonical_coverage": {
+    "packages": 33,
+    "tasks": 132,
+    "cases": 396,
+    "task_states": {
+      "ReadyForAcceptance": 11,
+      "Partial": 34,
+      "Queued": 86,
+      "InProgress": 1
+    },
+    "case_states": {
+      "Passed": 37,
+      "NotExecuted": 359
+    }
+  },
+  "runtime_accepted": 0,
+  "candidate_defaults_enabled": false,
+  "human_acceptance": "Pending; 机器人模拟补充体验，真人验收仍待补",
+  "history": "Deleted 50/100 raw cannot explain or recover old 86/90 and 130/139; new tests establish a current baseline only.",
+  "ongoing": "The registered ten-client 600-second observation rerun will be recorded in a new summary after completion.",
+  "remaining": [
+    "359 canonical cases have not been explicitly executed in this delivery register. Supporting regression counts do not replace their exact expectations.",
+    "Mixed-class ten-account three-natural-cycle contract remains incomplete; retain deadline-censored and drain ACK outcomes separately.",
+    "50/100 original capacity targets, three transport A/B pairs and long soak remain unaccepted. Shared-host diagnostics cannot prove server performance without actor/resource collectors.",
+    "Visible/rendered interaction matrix and six humans x three games remain pending.",
+    "Candidate benefit/precision/Holm risk adjudication, source/rollback and remaining functional case mappings remain required before final S6 acceptance."
+  ],
+  "rollback": "Revert the individual code/tool commits and keep immutable evidence. No production schema, assets, refunds or runtime configuration were changed by these local runs."
+}
