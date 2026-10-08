@@ -2,6 +2,7 @@ using System.Text.Json;
 using FantasyCard.Domain.Combat;
 using FantasyCard.Domain.Players;
 using FantasyCard.Domain.Rooms;
+using FantasyCard.Domain.Configuration;
 
 namespace FantasyCard.Domain.Tests.Rooms;
 
@@ -9,6 +10,36 @@ public sealed class NumericalPolicySnapshotTests
 {
     private static readonly CombatCardCatalog Catalog = CombatCardCatalog.CreatePrototype();
     private static readonly DateTimeOffset Now = DateTimeOffset.UnixEpoch.AddSeconds(10);
+
+    [Fact]
+    public void New_source_policy_does_not_change_a_live_default_room_or_its_saved_instances()
+    {
+        var source = NumericalRules.Legacy;
+        var room = new BattleRoom(Guid.NewGuid(), "frozen-default", Catalog, 21, source);
+        room.AddPlayer(new(Guid.NewGuid(), HeroClass.Guardian, Enumerable.Repeat("common-17",20).ToArray(), null));
+        var before = room.Capture();
+        source = new NumericalRules(CardsSpentDraw:true,FractionalGuardian:true,OptionalMonsterPool:true);
+        var next = new BattleRoom(Guid.NewGuid(), "isolated-candidate", Catalog, 22, source);
+        Assert.True(next.Numerics.FractionalGuardian);
+        Assert.False(room.Numerics.FractionalGuardian);
+        Assert.Equivalent(before, room.Capture(), strict:true);
+        Assert.Equivalent(before, BattleRoom.Restore(before,Catalog,99).Capture(), strict:true);
+    }
+
+    [Fact]
+    public void Rolling_source_back_changes_new_rooms_and_preserves_existing_candidate_room_instances()
+    {
+        var source = new NumericalRules(CardsSpentDraw:true,FractionalGuardian:true,OptionalMonsterPool:true);
+        var room = new BattleRoom(Guid.NewGuid(), "isolated-candidate", Catalog, 21, source);
+        room.AddPlayer(new(Guid.NewGuid(), HeroClass.Guardian, Enumerable.Repeat("common-17",20).ToArray(), null));
+        var before = room.Capture();
+        source = NumericalRules.Legacy;
+        var next = new BattleRoom(Guid.NewGuid(), "rollback-default", Catalog, 22, source);
+        Assert.False(next.Numerics.FractionalGuardian);
+        Assert.True(room.Numerics.FractionalGuardian);
+        Assert.Equivalent(before,room.Capture(),strict:true);
+        Assert.Equivalent(before,BattleRoom.Restore(before,Catalog,99).Capture(),strict:true);
+    }
 
     [Fact]
     public void Room_restore_keeps_both_saved_policies_instead_of_constructor_defaults()

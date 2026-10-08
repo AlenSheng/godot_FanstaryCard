@@ -9,6 +9,9 @@ import xml.etree.ElementTree as ET
 ROOT = Path(__file__).resolve().parents[1]
 # Each entry names every required test method. All theory rows must pass.
 MAPPING = {
+    'PR13-B02.4-T01': ['Rooms.NumericalPolicySnapshotTests.New_source_policy_does_not_change_a_live_default_room_or_its_saved_instances'],
+    'PR13-B12.3-T02': ['Rooms.NumericalPolicySnapshotTests.Rolling_source_back_changes_new_rooms_and_preserves_existing_candidate_room_instances'],
+    'LOAD-11.4-T03': ['Rooms.NumericalPolicySnapshotTests.Rolling_source_back_changes_new_rooms_and_preserves_existing_candidate_room_instances'],
     'PR13-A07.1-T01': ['Combat.Pr13BoundaryContractTests.Published_policy_contract_has_no_retired_bool_or_remainder_property'],
     'PR13-A07.1-T02': ['Combat.Pr13BoundaryContractTests.Published_policy_contract_has_no_retired_bool_or_remainder_property'],
     'PR13-A07.1-T03': ['Combat.FenxianImmediateDrawPolicyTests.Default_policy_preserves_current_rhythm_based_draws', 'Combat.GuardianShieldBonusPolicyTests.Default_policy_preserves_current_integer_steps'],
