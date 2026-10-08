@@ -590,6 +590,20 @@ func _receive(packet: PackedByteArray) -> void:
 			recovering = true
 			send("session.resume", {"last_sequence": last_sequence, "room_id": room_id, "room_revision": room_revision})
 		return
+	var prior_room_callback := false
+	if kind == "room.started" and not room_id.is_empty() and not current_match_id.is_empty():
+		prior_room_callback = str(payload.get("match_id", "")) != current_match_id
+	elif kind == "room.snapshot" and payload.has("_origin_context"):
+		var origin: Dictionary = payload._origin_context
+		prior_room_callback = (int(origin.get("session_generation", -1)) != session_generation
+			or str(origin.get("match_id", "")) != current_match_id
+			or (room_context_epoch >= 0 and int(origin.get("room_context_epoch", -1)) != room_context_epoch))
+	if prior_room_callback:
+		# Consume the session cursor, but an old room callback cannot replace
+		# the current route/revision or release its snapshot recovery lock.
+		last_sequence = sequence
+		_save_session()
+		return
 	if kind == "room.snapshot":
 		room_id = payload.get("room_id", room_id)
 		current_match_id = str(payload.get("match_id", current_match_id))

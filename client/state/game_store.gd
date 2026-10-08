@@ -1331,6 +1331,7 @@ func _settlement_request_current(generation: int, context_epoch: int, match_id: 
 
 func _on_event(kind: String, payload: Dictionary) -> void:
 	if kind == "pong": return
+	if kind == "room.started" and not room.is_empty() and not str(room.get("match_id", "")).is_empty() and str(payload.get("match_id", "")) != str(room.match_id): return
 	if kind == "error.command_rejected" and payload.get("code", "") == "NOT_IN_ROOM":
 		var origin: Dictionary = payload.get("_origin_context", {})
 		if not _rejection_context_current(origin): return
