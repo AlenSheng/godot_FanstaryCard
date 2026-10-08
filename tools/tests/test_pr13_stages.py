@@ -67,6 +67,16 @@ class ConfigHashTests(unittest.TestCase):
 
 
 class StageTests(unittest.TestCase):
+    def test_historical_plan_digest_allows_line_endings_but_never_content_edits(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "plan.json"
+            original = b'{"case": "original"}\r\n'
+            expected = hashlib.sha256(original).hexdigest()
+            path.write_bytes(original.replace(b"\r\n", b"\n"))
+            self.assertTrue(stages.matches_text_digest(path, expected))
+            path.write_bytes(b'{"case": "changed"}\n')
+            self.assertFalse(stages.matches_text_digest(path, expected))
+
     def test_full_coverage_no_runtime_acceptance_and_integrity(self):
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / "S0"

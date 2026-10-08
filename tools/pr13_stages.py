@@ -30,6 +30,18 @@ def digest(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def matches_text_digest(path, expected):
+    """Preserve a historical byte hash across Git's LF/CRLF checkout conversion.
+
+    Only line endings vary; content changes cannot be normalized into a match.
+    Artifact manifests continue to require their exact original bytes.
+    """
+    raw = Path(path).read_bytes()
+    lf = raw.replace(b"\r\n", b"\n")
+    return expected in {hashlib.sha256(data).hexdigest()
+                        for data in (raw, lf, lf.replace(b"\n", b"\r\n"))}
+
+
 def canonical_hash(value):
     return hashlib.sha256(json.dumps(value, sort_keys=True, ensure_ascii=False,
                                    allow_nan=False, separators=(",", ":")).encode()).hexdigest()
@@ -255,7 +267,8 @@ def freeze(output, handbook=None, config_export=None):
                "date": "2026-10-08", "created_utc": datetime.now(timezone.utc).isoformat(),
                "integration_sha": source_sha, "release_base": git("rev-parse", "origin/release"),
                "pr13_head": git("rev-parse", "origin/fix/gameplay-load-evidence-20260929"),
-               "plan_hash": digest(ROOT / PLAN), "profile_hash": canonical_hash(profiles),
+               "plan_hash": digest(ROOT / PLAN), "plan_logical_hash": canonical_hash(plan),
+               "profile_hash": canonical_hash(profiles),
                "config": config, "execution_boundary": profiles["execution_boundary"],
                "counts": {"packages": 33, "tasks": len(reports), "cases": sum(len(x["case_ids"]) for x in reports),
                           "states": dict(Counter(x["status"] for x in reports)), "runtime_accepted": 0},
@@ -290,8 +303,10 @@ def check(output, verify_current=True):
     if canonical_hash(profiles) != summary["profile_hash"]:
         errors.append("Profile hash mismatch")
     plan = read(ROOT / PLAN)
-    if digest(ROOT / PLAN) != summary["plan_hash"]:
+    if not matches_text_digest(ROOT / PLAN, summary["plan_hash"]):
         errors.append("Plan has changed since S0")
+    if "plan_logical_hash" in summary and canonical_hash(plan) != summary["plan_logical_hash"]:
+        errors.append("Logical plan has changed since S0")
     if verify_current:
         for record in read(output / "source-manifest.json")["files"] + read(output / "input-manifest.json")["files"]:
             path = ROOT / record["path"]
