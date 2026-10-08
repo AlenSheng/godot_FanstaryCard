@@ -74,11 +74,35 @@ var _http_read_epoch := 0
 var telemetry_context: Dictionary = {}
 var current_match_id := ""
 var room_context_epoch := -1
+var _prelaunch_ticket: Dictionary = {}
+var _prelaunch_snapshot_attempts := 0
+var _prelaunch_snapshot_at := 0
+
+func bind_prelaunch_ticket(match_id: String, known_room_id: String, deadline_unix_ms: int, epoch: int) -> void:
+	# The caller has just read this account's Matched ticket. Match/room/deadline
+	# come from its authenticated found notification; this never adopts a route.
+	if not room_id.is_empty() or match_id.is_empty() or known_room_id.is_empty() or deadline_unix_ms <= int(Time.get_unix_time_from_system()*1000.0): return
+	if room_context_epoch >= 0 and room_context_epoch != epoch: return
+	room_context_epoch = epoch
+	var identity := {"match_id":match_id,"room_id":known_room_id,"deadline_unix_ms":deadline_unix_ms,"session_generation":session_generation,"room_context_epoch":epoch}
+	if identity != _prelaunch_ticket:
+		_prelaunch_snapshot_attempts = 0
+		_prelaunch_snapshot_at = 0
+	_prelaunch_ticket = identity
+
+func _prelaunch_valid() -> bool:
+	return room_id.is_empty() and not _prelaunch_ticket.is_empty() and int(_prelaunch_ticket.session_generation)==session_generation and int(_prelaunch_ticket.room_context_epoch)==room_context_epoch and int(_prelaunch_ticket.deadline_unix_ms)>int(Time.get_unix_time_from_system()*1000.0)
+
+func _expected_match_context() -> String:
+	return str(_prelaunch_ticket.match_id) if _prelaunch_valid() else current_match_id
 
 func capture_context() -> Dictionary:
 	var context := telemetry_context.duplicate(true)
 	context.merge({"origin": base_url, "session_generation": session_generation,
 		"room_id": room_id, "match_id": current_match_id}, true)
+	if _prelaunch_valid():
+		context["room_id"] = _prelaunch_ticket.room_id
+		context["match_id"] = _prelaunch_ticket.match_id
 	# Instrumentation replaces telemetry_context at each load phase. Room
 	# identity belongs to the session and must survive those analytics updates.
 	if room_context_epoch >= 0: context["room_context_epoch"] = room_context_epoch
@@ -189,6 +213,8 @@ func end_session(reason: String, notify: bool = true) -> void:
 	session_generation += 1
 	current_match_id = ""
 	room_context_epoch = -1
+	_prelaunch_ticket = {}
+	_prelaunch_snapshot_attempts = 0
 	token = ""
 	token_expires_at = 0.0
 	reconnect_enabled = false
@@ -501,7 +527,8 @@ func send(kind: String, payload: Dictionary = {}, request_id: String = "") -> bo
 		return false
 	if not COMMANDS.has(kind) or socket.get_ready_state() != WebSocketPeer.STATE_OPEN: return false
 	if Time.get_ticks_msec() < _command_cooldown: return false
-	if recovering and kind not in ["ping", "session.resume", "room.snapshot.read"]: return false
+	if recovering and kind not in ["ping", "session.resume", "room.snapshot.read"]:
+		if kind != "room.ready" or not _prelaunch_valid(): return false
 	var proto := Proto.new()
 	var effective_request_id := new_id() if request_id.is_empty() else request_id
 	var envelope := {"protocol_version": 1, "type": kind, "request_id": effective_request_id}
@@ -589,14 +616,23 @@ func _receive(packet: PackedByteArray) -> void:
 		if not recovering:
 			recovering = true
 			send("session.resume", {"last_sequence": last_sequence, "room_id": room_id, "room_revision": room_revision})
+		# If an earlier required frame can never be delivered, a real future
+		# started packet is only a hint to read authority. Its payload/cursor
+		# is not applied. The independently verified ticket must match it.
+		if kind == "room.started" and _prelaunch_valid() and str(payload.get("match_id", "")) == str(_prelaunch_ticket.match_id) and str(payload.get("room_id", "")) == str(_prelaunch_ticket.room_id) and _prelaunch_snapshot_attempts < 3 and Time.get_ticks_msec() >= _prelaunch_snapshot_at:
+			_prelaunch_snapshot_attempts += 1
+			_prelaunch_snapshot_at = Time.get_ticks_msec() + 1000
+			send("room.snapshot.read", {"room_id":_prelaunch_ticket.room_id})
 		return
 	var prior_room_callback := false
 	if kind == "room.started" and not room_id.is_empty() and not current_match_id.is_empty():
 		prior_room_callback = str(payload.get("match_id", "")) != current_match_id
+	elif kind == "room.started" and _prelaunch_valid():
+		prior_room_callback = str(payload.get("match_id", "")) != str(_prelaunch_ticket.match_id)
 	elif kind == "room.snapshot" and payload.has("_origin_context"):
 		var origin: Dictionary = payload._origin_context
 		prior_room_callback = (int(origin.get("session_generation", -1)) != session_generation
-			or str(origin.get("match_id", "")) != current_match_id
+			or str(origin.get("match_id", "")) != _expected_match_context()
 			or (room_context_epoch >= 0 and int(origin.get("room_context_epoch", -1)) != room_context_epoch))
 	if prior_room_callback:
 		# Consume the session cursor, but an old room callback cannot replace
@@ -605,10 +641,12 @@ func _receive(packet: PackedByteArray) -> void:
 		_save_session()
 		return
 	if kind == "room.snapshot":
+		if _prelaunch_valid() and str(payload.get("match_id", "")) != str(_prelaunch_ticket.match_id): return
 		room_id = payload.get("room_id", room_id)
 		current_match_id = str(payload.get("match_id", current_match_id))
 		room_revision = int(payload.get("room_revision", room_revision))
 		recovering = false
+		_prelaunch_ticket = {}
 	elif kind == "room.started":
 		current_match_id = str(payload.get("match_id", payload.get("snapshot", {}).get("match_id", current_match_id)))
 		# A sequence-gap resume can finish before the room route is registered.

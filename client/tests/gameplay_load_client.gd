@@ -218,6 +218,8 @@ func _run_expedition() -> void:
 					active_match_id = verified_match_id
 					ready_required = true
 					ready_deadline_unix_ms = int(Game.ready_prompt.get("deadline_unix_ms", 0)) if str(Game.ready_prompt.get("match_id", "")) == verified_match_id else 0
+					if Game.gateway.has_method("bind_prelaunch_ticket") and str(Game.ready_prompt.get("match_id", "")) == verified_match_id:
+						Game.gateway.bind_prelaunch_ticket(verified_match_id, str(Game.ready_prompt.get("room_id", "")), ready_deadline_unix_ms, int(Game.get("_room_context_epoch")))
 				elif str(ticket_result.data.get("status", "")) in ["Cancelled", "Expired"]:
 					_check(false, "ready_ticket_terminal")
 					return
