@@ -39,6 +39,22 @@ class RequestCutoffTests(unittest.TestCase):
         self.assertEqual(report["valid_latency_count"], 0)
         self.assertEqual(report["logical_result_counts"]["decode_error"], 1)
 
+    def test_protocol_template_pools_different_ticket_ids_and_keeps_errors(self):
+        route = "/api/v1/matches/tickets/{ticketId:guid}"
+        rows = [event(1, 100, 10, path="/api/v1/matches/tickets/first?cursor=private", route=route),
+                event(2, 110, 100, path="/api/v1/matches/tickets/second", route=route,
+                      status=503, ok=False, result="http_error")]
+        result = request_cutoffs(rows, 1000, 2000)["running"]["route_http"]
+        self.assertEqual(set(result), {route})
+        self.assertEqual(result[route]["logical_request_count"], 2)
+        self.assertEqual(result[route]["error_count"], 1)
+        self.assertEqual(result[route]["p95_ms"], 100)
+
+    def test_malformed_route_uses_legacy_path_without_query_values(self):
+        rows = [event(1, 100, 10, route=[], path="/api/v1/bootstrap?token=private")]
+        result = request_cutoffs(rows, 1000, 2000)["running"]["route_http"]
+        self.assertEqual(set(result), {"/api/v1/bootstrap"})
+
     def test_cancelled_attempt_is_not_service_error_or_second_logical_request(self):
         rows = [event(1, 100, 10, type="http_attempt", result="transport_error", status=0, ok=False),
                 event(2, 200, 10, type="http_attempt"),

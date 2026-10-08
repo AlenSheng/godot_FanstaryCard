@@ -91,8 +91,13 @@ def aggregate_window(statuses: list[dict], *, observed_seconds: float | None = N
                     if not isinstance(phase, str) or phase not in {"login", "initial", "matchmaking", "playing", "settlement", "cleanup"}:
                         phase = "unknown/legacy"
                     phase_rows.setdefault(phase, []).append(row)
-                    path = row.get("path")
-                    route = (path.split("?", 1)[0].rstrip("/") or "/") if isinstance(path, str) and path else "unknown/legacy"
+                    # Current clients supply the protocol route template. Group
+                    # all ticket/settlement IDs together instead of splitting a
+                    # route's latency population into per-ID buckets.
+                    path = row.get("route")
+                    if not isinstance(path, str) or not path:
+                        path = row.get("path")
+                    route = (path.split("?", 1)[0].rstrip("/") or "/") if isinstance(path, str) and path.startswith("/") else "unknown/legacy"
                     route_rows.setdefault(route, []).append(row)
                 elif kind == "http_attempt":
                     attempts.append(row)
