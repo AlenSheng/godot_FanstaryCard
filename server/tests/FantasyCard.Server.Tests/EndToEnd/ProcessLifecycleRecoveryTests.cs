@@ -534,6 +534,24 @@ public sealed partial class ProcessLifecycleRecoveryTests
     }
 
     private static readonly object EvidenceGate = new();
+    private static void ConfigureOwnedProcessEnvironment(ProcessStartInfo start, string? fixture = null)
+    {
+        start.Environment.Clear();
+        if (OperatingSystem.IsWindows())
+        {
+            var systemRoot = Environment.GetEnvironmentVariable("SystemRoot");
+            Assert.False(string.IsNullOrWhiteSpace(systemRoot));
+            start.Environment["SystemRoot"] = systemRoot;
+        }
+        if (fixture is null) return;
+        foreach (var name in new[] { "XDG_DATA_HOME", "XDG_CONFIG_HOME", "XDG_CACHE_HOME", "APPDATA", "LOCALAPPDATA", "TEMP", "TMP" })
+        {
+            if (!OperatingSystem.IsWindows() && (name is "APPDATA" or "LOCALAPPDATA" or "TEMP" or "TMP")) continue;
+            var directory = Path.Combine(fixture, "user-" + name.ToLowerInvariant());
+            Directory.CreateDirectory(directory);
+            start.Environment[name] = directory;
+        }
+    }
     private static string EvidenceDirectory => Environment.GetEnvironmentVariable("FANTASYCARD_PROCESS_EVIDENCE") ??
         Path.Combine(AppContext.BaseDirectory, "process-recovery-evidence");
 
@@ -583,15 +601,7 @@ public sealed partial class ProcessLifecycleRecoveryTests
             { WorkingDirectory = Path.GetDirectoryName(dll)!, UseShellExecute = false, RedirectStandardOutput = true, RedirectStandardError = true };
             start.ArgumentList.Add(dll);
             // Child host receives only the explicit local fixture configuration.
-            start.Environment.Clear();
-            // Windows needs its system directory to initialize Winsock providers.
-            // Keep only this OS input; inherited server credentials remain excluded.
-            if (OperatingSystem.IsWindows())
-            {
-                var systemRoot = Environment.GetEnvironmentVariable("SystemRoot");
-                Assert.False(string.IsNullOrWhiteSpace(systemRoot));
-                start.Environment["SystemRoot"] = systemRoot;
-            }
+            ConfigureOwnedProcessEnvironment(start);
             if (dotnetRoot is not null) start.Environment["DOTNET_ROOT"] = dotnetRoot;
             start.Environment["ASPNETCORE_ENVIRONMENT"] = "Development";
             start.Environment["ASPNETCORE_URLS"] = $"http://127.0.0.1:{port}";

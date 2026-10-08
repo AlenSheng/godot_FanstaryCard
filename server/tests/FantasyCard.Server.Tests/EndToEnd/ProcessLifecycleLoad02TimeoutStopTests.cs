@@ -205,7 +205,7 @@ public sealed partial class ProcessLifecycleRecoveryTests
         foreach (var argument in new[] { "--headless", "--max-fps", "60", "--path", fixture }) start.ArgumentList.Add(argument);
         if (import) foreach (var argument in new[] { "--editor", "--import", "--quit" }) start.ArgumentList.Add(argument);
         else { start.ArgumentList.Add("--script"); start.ArgumentList.Add("res://tests/pr13_load02_timeout_stop.gd"); }
-        start.Environment.Clear();
+        ConfigureOwnedProcessEnvironment(start, fixture);
         foreach (var name in new[] { "XDG_DATA_HOME", "XDG_CONFIG_HOME", "XDG_CACHE_HOME" })
         { var directory = Path.Combine(fixture, "user-" + name.ToLowerInvariant()); Directory.CreateDirectory(directory); start.Environment[name] = directory; }
         start.Environment["FANTASYCARD_SERVER_URL"] = $"http://127.0.0.1:{port}";

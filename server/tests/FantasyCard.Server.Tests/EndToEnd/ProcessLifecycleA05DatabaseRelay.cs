@@ -67,6 +67,8 @@ public sealed partial class ProcessLifecycleRecoveryTests
             {
                 try
                 {
+                    if (client.AddressFamily != AddressFamily.Unix) client.NoDelay = true;
+                    if (_upstream is not UnixDomainSocketEndPoint) server.NoDelay = true;
                     await server.ConnectAsync(_upstream, _stop.Token);
                     await using var front = new NetworkStream(client, false); await using var back = new NetworkStream(server, false);
                     var length = new byte[4]; await front.ReadExactlyAsync(length, _stop.Token);
