@@ -35,6 +35,14 @@ class ProfileTests(unittest.TestCase):
         self.profiles["execution_boundary"] = "production"
         self.assertTrue(stages.validate_profiles(self.profiles))
 
+    def test_retesting_deleted_history_does_not_claim_historical_recovery(self):
+        plan = stages.read(stages.ROOT / stages.PLAN)
+        self.assertEqual(stages.historical_blockers(plan, self.profiles), {})
+        self.assertFalse(self.profiles["history_resolution"]["runtime_acceptance"])
+        self.profiles["history_resolution"]["runtime_acceptance"] = True
+        with self.assertRaisesRegex(ValueError, "preserve non-acceptance"):
+            stages.historical_blockers(plan, self.profiles)
+
 
 class ConfigHashTests(unittest.TestCase):
     def test_equal_declared_hashes_do_not_hide_wrong_content(self):

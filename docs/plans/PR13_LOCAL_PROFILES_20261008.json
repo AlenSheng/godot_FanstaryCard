@@ -9,6 +9,21 @@
   "merge_release": false,
   "candidate_defaults": "Preserve the existing default policy; candidate variants are isolated experiments",
   "rule_source": "GDD.md v0.70 and PR13_ACCEPTANCE_DETAILS_20260930.json",
+  "history_resolution": {
+    "decision_date": "2026-10-08",
+    "user_instruction": "已删除，如果文件缺失则重新测试",
+    "replacement_tasks": ["PR13-A01.1", "PR13-A01.3"],
+    "original_evidence_state": "DeletedAndUnrecoverable",
+    "replacement_scope": "Fresh 50/100 original-gameplay runs at the current frozen source/config/profile; retain new per-client JSONL, launch ownership and three cutoffs",
+    "interpretation": "New tests establish a current baseline and cannot explain or reconstruct the old 86/90 and 130/139 discrepancies",
+    "required_profiles": ["CAPACITY", "AUDIT"],
+    "runtime_acceptance": false
+  },
+  "human_experience_decision": {
+    "user_instruction": "机器人模拟补充体验，真人验收仍待补",
+    "simulation_is_supplemental": true,
+    "human_acceptance": "Pending"
+  },
   "missing_server_skill": "server_create is absent from the checkout. The requested local implementation follows server/AGENTS.md's existing GDD/SERVER_SPEC/SERVER_0_TO_1_GUIDE references; no rule change is authorized.",
   "profiles": {
     "OFFLINE": {

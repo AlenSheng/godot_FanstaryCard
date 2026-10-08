@@ -139,12 +139,20 @@ def source_files():
             and not file.startswith("tools/engine-local/")]
 
 
-def historical_blockers(plan):
+def historical_blockers(plan, profiles):
     history = read(ROOT / HISTORY)
     known = {task["id"] for package in plan["packages"] for task in package["subtasks"]}
     result = {}
+    replacement = profiles.get("history_resolution", {})
+    replacement_tasks = set(replacement.get("replacement_tasks", []))
+    if replacement_tasks and (replacement.get("original_evidence_state") != "DeletedAndUnrecoverable"
+                              or replacement.get("runtime_acceptance") is not False
+                              or not replacement.get("user_instruction") or not replacement.get("interpretation")):
+        raise ValueError("Historical replacement must carry explicit user instruction and preserve non-acceptance")
     for task in history["tasks"]:
         if task.get("state") != "Blocked" or task["task_id"] not in known:
+            continue
+        if task["task_id"] in replacement_tasks:
             continue
         item = dict(task["observation"])
         item.update(stage="S0", recorded_runtime_stage=task["observation"].get("stage"),
@@ -188,7 +196,7 @@ def freeze(output, handbook=None, config_export=None):
         if supplied != canonical:
             raise ValueError("User handbook differs from canonical plan; resolve scope before freezing")
         user_handbook = {"sha256": digest(handbook), "canonical_content_matches": True}
-    blockers = historical_blockers(plan)
+    blockers = historical_blockers(plan, profiles)
     if not config["source_export_revalidated"]:
         blockers["PR13-B12.1"] = {
             "task_id": "PR13-B12.1", "stage": "S0", "owner": "MAIN", "historical_only": False,
@@ -253,6 +261,8 @@ def freeze(output, handbook=None, config_export=None):
                           "states": dict(Counter(x["status"] for x in reports)), "runtime_accepted": 0},
                "all_s0_ready": not blockers, "runtime_acceptance": False,
                "blocking_inputs": list(blockers.values()),
+               "scope_decisions": {"history_resolution": profiles.get("history_resolution"),
+                                   "human_experience_decision": profiles.get("human_experience_decision")},
                "gate_coverage": {gate["id"]: [task["id"] for package in plan["packages"]
                                              for task in package["subtasks"] if gate["id"] in task["gate_refs"]]
                                  for gate in plan["gates"]},
