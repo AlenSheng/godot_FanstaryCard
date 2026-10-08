@@ -18,8 +18,13 @@ func _run() -> void:
                 get_window().size = resolution
                 for hero in ["Mage","Priest","Guardian"]:
                     for delay_ms in [0,100,300]:
+                        # Remove presentation owned by the preceding fixture so
+                        # an old floating label cannot satisfy this row's check.
+                        for number in $UI.find_children("CombatNumber*","Label",true,false): number.free()
+                        if is_instance_valid($UI.toast_label): $UI.toast_label.text = ""
                         Game.gateway.online = true
                         Game.gateway.recovering = false
+                        Game._on_connection_changed("已连接")
                         Game._pending_commands = {}
                         Game._latest_commands = {}
                         Game._pending_play = {}
@@ -42,7 +47,8 @@ func _run() -> void:
                         if language=="en" and resolution.x==960 and hero=="Guardian" and delay_ms==300:
                             var error := get_viewport().get_texture().get_image().save_png(output+"/feedback_"+str(fps)+".png")
                             if error!=OK: layout_errors.append({"screenshot_error":error})
-                        var numbers: Array = $UI.find_children("CombatNumber*","Label",true,false).filter(func(node): return node.is_visible_in_tree() and node.text.contains("9"))
+                        var viewport_bounds := Rect2(Vector2.ZERO,get_viewport().get_visible_rect().size)
+                        var numbers: Array = $UI.find_children("CombatNumber*","Label",true,false).filter(func(node): return node.is_visible_in_tree() and node.text.contains("9") and viewport_bounds.intersects(node.get_global_rect()))
                         var card: Button = $UI._reference.get_node_or_null("Card_C01")
                         var usable: bool = card!=null and not card.disabled and Game.allowed("battle.play_cards")
                         if card!=null: card.pressed.emit()
@@ -66,7 +72,7 @@ func _run() -> void:
                         Game.room.pve.monsters[0].hp = 0
                         Game.play_cards()
                         var dead_rejected: bool = Game._pending_commands.is_empty() and Game._pending_play.is_empty()
-                        var ok: bool = not numbers.is_empty() and frame_delta<=1 and frame_delta>=0 and usable and no_prediction and stale_ignored and bounded_reconnect and dead_rejected
+                        var ok: bool = numbers.size()==1 and frame_delta<=1 and frame_delta>=0 and usable and no_prediction and stale_ignored and bounded_reconnect and dead_rejected
                         observations.append({"language":language,"fps":fps,"resolution":[resolution.x,resolution.y],"hero":hero,"controlled_delivery_delay_ms":delay_ms,
                             "presented_frame_delta":frame_delta,"local_delivery_to_presentation_usec":presented_at-delivered_at,"visible_number_count":numbers.size(),"legal_card_usable":usable,
                             "authority_hp_unchanged":no_prediction,"old_feedback_ignored":stale_ignored,"reconnect_bounded":bounded_reconnect,"dead_target_rejected":dead_rejected,"passed":ok})
