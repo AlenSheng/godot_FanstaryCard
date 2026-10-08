@@ -6,6 +6,7 @@ import tempfile
 import unittest
 from tools.pr13_public_evidence import inspect_public,validated_files,derived_identity
 from tools.pr13_ci_evidence import classify_runs
+from tools.pr13_acceptance_register import missing_case_profiles
 from tools.gameplay_load_validation import aggregate_window
 
 class PublicEvidenceTests(unittest.TestCase):
@@ -39,6 +40,12 @@ class PublicEvidenceTests(unittest.TestCase):
         self.assertEqual(result['historical_workflow_count'],1)
         self.assertFalse(result['all_returned_workflows_passed'])
         self.assertFalse(result['runtime_acceptance'])
+
+    def test_offline_pass_cannot_discharge_mandatory_live_or_database(self):
+        cases=[{'case_id':'case','status':'Passed','profiles_executed':['OFFLINE']}]
+        missing=missing_case_profiles({'profiles':['OFFLINE','POSTGRES','LIVE']},cases)
+        self.assertEqual(missing,{'case':['LIVE','POSTGRES']})
+        self.assertEqual(missing_case_profiles({'profiles':['OFFLINE']},cases),{})
 
     def test_transport_phase_without_attributable_hook_stays_null(self):
         result=aggregate_window([{'operations':[],'telemetry':[{'type':'http_attempt','duration_ms':12,'status':200,'tls_handshake_ms':0}]}])

@@ -14,6 +14,12 @@ PLAN=ROOT/'docs/plans/PR13_ACCEPTANCE_DETAILS_20260930.json'
 def digest(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def missing_case_profiles(task, records):
+    """A passed OFFLINE case does not discharge its real database/live layers."""
+    return {r['case_id']:sorted(set(task['profiles'])-set(r.get('profiles_executed',[])))
+            for r in records if r['status']=='Passed' and set(task['profiles'])-set(r.get('profiles_executed',[]))}
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--case-reports',nargs='+',type=Path,required=True)
@@ -33,7 +39,11 @@ def main():
             if case_id not in expected or case_id in executed:raise ValueError('Unknown/duplicate case: '+case_id)
             if record.get('status') not in ('Passed','Failed') or record.get('executed') is not True:
                 raise ValueError('Invalid case result: '+case_id)
-            executed[case_id]=dict(record,evidence=str(file.resolve().relative_to(ROOT)),
+            profiles=record.get('profiles_executed',metadata.get('profiles_executed',
+                ['OFFLINE'] if metadata.get('scope')=='explicit offline cases only' else []))
+            if not isinstance(profiles,list) or any(p not in ('OFFLINE','POSTGRES','LIVE','CAPACITY','EXPERIMENT','RENDER','AUDIT') for p in profiles):
+                raise ValueError('Invalid explicit execution profiles: '+case_id)
+            executed[case_id]=dict(record,profiles_executed=profiles,evidence=str(file.resolve().relative_to(ROOT)),
                                  source_sha=metadata.get('source_sha'),source=metadata.get('source'))
     supporting={};observations={}
     for item in support['evidence']:
@@ -61,7 +71,8 @@ def main():
                 task_cases.append(record);cases.append(record)
             observation=observations.get(task['id'],{})
             statuses=[r['status'] for r in task_cases]
-            state=('Failed' if 'Failed' in statuses else 'ReadyForAcceptance' if all(s=='Passed' for s in statuses)
+            missing_profiles=missing_case_profiles(task,task_cases)
+            state=('Failed' if 'Failed' in statuses else 'ReadyForAcceptance' if all(s=='Passed' for s in statuses) and not missing_profiles
                    else 'Partial' if any(s=='Passed' for s in statuses) or supporting.get(task['id']) else 'Queued')
             if observation.get('state') in ('Blocked','InProgress','Failed','Deferred','Partial'):state=observation['state']
             tasks.append(dict(task_id=task['id'],title=task['title'],package_id=package['id'],state=state,
@@ -69,6 +80,7 @@ def main():
                 profiles=task['profiles'],gates=task['gate_refs'],dependencies=task['requires_before_integration'],
                 evidence=supporting.get(task['id'],[]),case_ids=[c['id'] for c in task['test_cases']],
                 missing_cases=[r['case_id'] for r in task_cases if r['status']!='Passed'],
+                missing_case_profiles=missing_profiles,
                 pass_criteria=task['pass_criteria'],next_action=observation.get('next_action',
                     '复核逐用例证据、依赖与当前CI后由MAIN裁决。' if state=='ReadyForAcceptance' else task['implementation_steps']),
                 observation=observation))
