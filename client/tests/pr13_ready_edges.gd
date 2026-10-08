@@ -38,7 +38,7 @@ class ReadyGateway extends Node:
 		return sent
 
 class ReadyProbe extends ProductionLoad:
-	func _ready() -> void: pass
+	func _ready() -> void: set_process(false)
 	func _wait(seconds: float) -> void:
 		# Preserve the production's one-second retry/two-second query clocks;
 		# only polling sleep is shorter in this declared component fixture.
