@@ -417,7 +417,11 @@ func _graceful_cleanup() -> void:
 		if not pending:
 			if not Game.room.is_empty() or not Game.settlement.is_empty():
 				cleanup_result = {"state": "Unknown", "reason": "client_terminal_pending"}
-				break
+				# Bootstrap can temporarily omit a terminal receipt while its
+				# asset holds are committing. Keep the local route and wait for
+				# authoritative readiness within the existing cleanup deadline.
+				await _wait(1.0)
+				continue
 			# A matched ticket cannot be DELETE-cancelled. After its actual ready
 			# deadline the socket may already be closed, so ready_removed cannot
 			# clear this local context. Clear only after the same session/cycle's

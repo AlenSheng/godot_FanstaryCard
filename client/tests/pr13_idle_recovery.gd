@@ -57,7 +57,7 @@ func run() -> void:
 				var command: Dictionary=codec.decode("ClientEnvelope",peer.get_packet())
 				if command.get("type")=="ping":
 					pings+=1
-					old_remained_open=index==0 and peer.get_ready_state()==WebSocketPeer.STATE_OPEN
+					old_remained_open=old_remained_open or (index==0 and peer.get_ready_state()==WebSocketPeer.STATE_OPEN)
 				# Intentionally withhold pong on the first open connection.
 					if index>0:
 						peer.put_packet(codec.encode("ServerEnvelope",{"protocol_version":1,"type":"pong","sequence":3,
