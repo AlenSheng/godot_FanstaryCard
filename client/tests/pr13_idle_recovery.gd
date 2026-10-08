@@ -9,6 +9,8 @@ class TicketFixture extends "res://network/gateway.gd":
 		# Authentication/ticket issuance is a declared fixture here. Socket,
 		# decoder, actual elapsed time, ping and retry scheduling are native.
 		attempts += 1
+		reconnect_enabled = true
+		online = false
 		socket = WebSocketPeer.new()
 		socket.connect_to_url(fixture_url)
 		_connecting_at = Time.get_ticks_msec()
