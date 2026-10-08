@@ -38,8 +38,8 @@ public sealed partial class ProcessLifecycleRecoveryTests
 
         await using var db = await PostgresTestSchema.CreateAsync(migrate: true);
         var settings = new NpgsqlConnectionStringBuilder(db.ConnectionString);
-        Assert.True(settings.Database!.StartsWith("ready_stop_", StringComparison.Ordinal));
-        Assert.True(settings.SearchPath!.StartsWith("fc_runtime_test_", StringComparison.Ordinal));
+        Assert.StartsWith("ready_stop_", settings.Database, StringComparison.Ordinal);
+        Assert.StartsWith("fc_runtime_test_", settings.SearchPath, StringComparison.Ordinal);
         var player = await SeedPlayerAsync(db, "RollbackProof", ct);
         var equipment = await db.InsertWornFeetAsync(player.Id, HeroClass.Mage, ct);
         await SqlAsync(db, "UPDATE equipments SET location='InMatchEquipped' WHERE instance_id=$1", ct, equipment);
