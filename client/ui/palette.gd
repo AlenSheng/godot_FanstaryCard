@@ -1,7 +1,7 @@
 extends RefCounted
 
-static var _body_font: FontFile = preload("res://assets/fonts/SourceHanSansSC-Regular.otf")
-static var _title_font: FontFile = preload("res://assets/fonts/SourceHanSerifSC-SemiBold.otf")
+static var _body_font: FontFile
+static var _title_font: FontFile
 static var _number_font: FontVariation
 static var _fonts_ready := false
 static var _language := "zh-CN"
