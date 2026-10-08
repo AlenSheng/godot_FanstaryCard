@@ -41,6 +41,10 @@ func _run() -> void:
                         var before_frame := Engine.get_frames_drawn()
                         var delivered_at := Time.get_ticks_usec()
                         Game._on_event("combat.hit",feedback)
+                        # The injection resumes from a post-draw callback. Wait
+                        # for the next scene iteration before its draw signal,
+                        # so the same callback cannot stand in for a new frame.
+                        await get_tree().process_frame
                         await RenderingServer.frame_post_draw
                         var presented_at := Time.get_ticks_usec()
                         var frame_delta := Engine.get_frames_drawn()-before_frame
