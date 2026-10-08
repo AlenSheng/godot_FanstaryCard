@@ -1,0 +1,146 @@
+{
+  "kind": "Sealed_bounded19_receipt_with_recorded_MAIN_only",
+  "source_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+  "previous_stage_receipt": "STAGE_RECEIPT_schema_4bb6c6be.json",
+  "batch": "BOUNDED_19_RECEIPT.json",
+  "ready_for_independent_acceptance": [
+    "PR13-A05.1"
+  ],
+  "ready_task_count": 1,
+  "ready_case_count": 3,
+  "task_states_current": {
+    "Partial": 41,
+    "NotRevalidated": 72,
+    "Accepted": 15,
+    "ReadyForAcceptance": 1,
+    "Blocked": 3
+  },
+  "Accepted": 15,
+  "canonical_total_cases": 396,
+  "canonical_explicit_runner_receipts_unchanged": {
+    "Passed": 27,
+    "NotExecuted": 369,
+    "not_total_coverage": true
+  },
+  "local_validation": {
+    "schema_e060": {
+      "Python": 122,
+      "original_LOAD01": 12,
+      "old5_invalid": 5,
+      "new3_unhandled": 0,
+      "new3_invalid": 2
+    },
+    "B02_f812": {
+      "original_cases": 12,
+      "Domain": 317,
+      "Server_PG": 291
+    },
+    "LOAD02_f812": {
+      "original_Passed": 11,
+      "original_Partial": 1,
+      "Python_selected": 42
+    },
+    "LOAD03_ee8": {
+      "original_cases": 12,
+      "full_task_ready": 2,
+      "full_task_Partial": 2,
+      "reused_Python": 119
+    },
+    "A05_f812_plus_declared_test_overlay": {
+      "primary_original": 9,
+      "Domain": 317,
+      "Server": 295,
+      "focused_Passed": 3,
+      "focused_Failed": 1,
+      "causal_Failed": 1
+    }
+  },
+  "production_source_frozen": "f812879e4518fd09bf22656451cb563d62940298",
+  "production_changes": 0,
+  "ui_changes": 0,
+  "ci": "Free monthly quota restored per MAIN verified actual PR18 Numerical run36769267487 attempt2; keep $0 additional budget/StopYes. Necessary final combined candidate CI once after both local batches; no intermediate retries.",
+  "raw4_upload": "Same four private Library retry authorized by MAIN; second bounded attempt failed same tools/list network before any result; zero IDs and unchanged bytes. RAW4_LIBRARY_RETRY1_20261001.json",
+  "validation_tool_change_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+  "independent_MAIN": {
+    "ee8": "MAIN_S6_ee8adcf4.json",
+    "e060": "MAIN_S6_e06037f5.json",
+    "bounded11": "MAIN_S6_bounded11_20261001.json"
+  },
+  "latest_batch": {
+    "report": "BOUNDED_19_RECEIPT.json",
+    "task_count": 19,
+    "case_count": 57,
+    "task_states": {
+      "Accepted": 4,
+      "ReadyForAcceptance": 11,
+      "Partial": 4
+    },
+    "primary_case_results": {
+      "Passed": 56,
+      "Partial": 1
+    }
+  },
+  "source_scope_note": "Schema packet4bb; B02 packetf812. Never combine as a single actual profile SHA; B02 business/proto/config byte-equivalence verified.",
+  "schema_corrected_packet": "schema-second-e06037f5/REPORT.json",
+  "additional_contract_gaps": "load03-remaining-ee8adcf4/MISSING_FACTS.json",
+  "MAIN_S6_citation_pending": false,
+  "latest_runtime_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+  "latest_A05_proposal": {
+    "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "report": "offline-acceptance-f812/a05/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+    "ready_tasks": 2,
+    "partial_tasks": 1,
+    "primary_cases_passed": 9,
+    "causal_extra_Failed": 1,
+    "Accepted": 0
+  },
+  "latest_MAIN_S6": "MAIN_S6_bounded11_20261001.json",
+  "selected_task_states": {
+    "Accepted": 15,
+    "ReadyForAcceptance": 1,
+    "Partial": 3
+  },
+  "selected_primary_case_results": {
+    "Passed": 56,
+    "Partial": 1
+  },
+  "no_suite_counts_summed_as_canonical_cases": true,
+  "next_queue": "NEXT_QUEUE.json",
+  "historical_ready_proposals": [
+    "offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+    "offline-acceptance-f812/load02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+    "load03-ready-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+    "schema-second-e06037f5/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+    "offline-acceptance-f812/a05/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+    {
+      "paths": [
+        "offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "offline-acceptance-f812/load02/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "load03-ready-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+        "offline-acceptance-f812/a05/READY_FOR_INDEPENDENT_ACCEPTANCE.json"
+      ],
+      "count": 11,
+      "closed_by_review_commit": "baf92b3e3f12b4359a911eaa06e68ba27cbc4fab",
+      "state": "MAINAcceptedAtOriginalSources"
+    }
+  ],
+  "current_inflight_candidate": {
+    "source_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+    "task_id": "PR13-A05.1",
+    "state": "ReadyForIndependentAcceptance",
+    "report": "a05-guard-62772be2/report.json",
+    "full_Server": {
+      "Passed": 299,
+      "Failed": 0,
+      "Skipped": 0
+    },
+    "S6": "Pending MAIN"
+  },
+  "release_baseline_current": {
+    "sha": "65361bcc27c51c28651c86c5dbba4f083a9b39e0",
+    "main_sha": "1517f9fae8d865b8d663fa27d9fd38e95cb03d28",
+    "source": "MAIN delegation independently confirmed by authenticated git ls-remote",
+    "current_PR13_runtime_source_unchanged": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+    "not_merged_or_deployed_here": true
+  }
+}

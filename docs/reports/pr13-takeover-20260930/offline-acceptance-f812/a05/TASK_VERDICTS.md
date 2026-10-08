@@ -1,0 +1,13 @@
+Frozen production: f812879e4518fd09bf22656451cb563d62940298. Profiles: OFFLINE / POSTGRES / AUDIT. No production or UI patch was applied. Accepted remains null; S6 belongs to MAIN.
+
+| Task | Original cases | Independent submission | Reason |
+| --- | --- | --- | --- |
+| PR13-A05.1 | T01/T02/T03 primary expectations Passed | Partial | A causal actual Pending-hold + OS-restart window lets a genuine old ready Bootstrap refill the receipt during the production ACK await. ACK200 and a newer Bootstrap confirm completion while the client still displays M. This conflicts with the task's durable settlement/holds/route/next-permission consistency criterion. |
+| PR13-A05.2 | T01/T02/T03 Passed | ReadyForIndependentAcceptance | A enters actual new N while healthy B continues old M; unchanged old settlement GET and repeated original READY callbacks cannot clear A's N. After an actual host restart, A restores N and B completes M normally. Registry/DB association and asset audit remain sound. A's next-N cleanup is a normal disconnect terminal, not full Boss gameplay. |
+| PR13-A05.3 | T01/T02/T03 Passed | ReadyForIndependentAcceptance | Same-key/body ACK three times, actual restart before four holds commit, and the unchanged READY frame delivered three times preserve the same receipt and allowed owned asset transfers. Read-only before/after SQL confirms wallet/instance/ledger conservation and no pending holds, preparation, queue, unfinished match, unACKed receipt, or equipment lock. |
+
+Full fresh Release C-SERVER: 295 Passed / 0 Failed / 0 Skipped; C-DOMAIN: 317 / 0 / 0. The one focused canonical matrix subsequently recorded 3 Passed / 1 Failed / 0 Skipped because an additional client-clearing assertion exposed the late old receipt. Its controlled causal probe records 1 Failed with valid Godot setup, actual authoritative response bytes, and preserved red logs. Full-suite green does not negate that counterexample. It does not demonstrate a reward/ledger/route failure in A05.2 or A05.3.
+
+P0 index: P0_CAUSAL.json; causal-pending-f812/causal.trx, receipts.jsonl, causal-old-ready-bootstrap.pb, causal-settlement-get.pb, and the client control phase JSONs. Ordinary terminal without production recovery M is the retained negative control in causal-f812. The one-line private proposal proposed-game-store-poll-ack.patch is untested and unapplied.
+
+Cleanup: 50 historical host starts and 50 matched stops, each exit137; no owned host remains. Owned Unix PG55447 had zero test schemas and zero other connections before stop; PG data/socket were removed. Raw remains local and uploads remain zero.

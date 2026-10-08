@@ -1,0 +1,27 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+HTTP fixture: binary login = true
+HTTP fixture: accept session = true
+HTTP fixture: binary bootstrap int64 = true
+HTTP fixture: embedded market/mail pagination = true
+HTTP fixture: bootstrap absence = true
+HTTP fixture: root market pagination = true
+HTTP fixture: invalid pagination cursor rejects partial data = true
+HTTP fixture: aggregate limit rejects partial data = true
+HTTP fixture: profile int64 = true
+HTTP fixture: 429 retry = true
+HTTP fixture: 204 response = true
+HTTP fixture: GET join returns the actual result to both callers = true
+HTTP fixture: post-write GET cannot join a pre-write flight = true
+HTTP fixture: late HTTP completion retains the initiating cycle = true
+HTTP fixture: malformed write fails = true
+HTTP fixture: proxy HTML fails = true
+HTTP fixture: stable request bytes/key across retry = true
+HTTP fixture: no retry on malformed write = true
+HTTP fixture: no fallback on proxy error = true
+HTTP fixture: ticket URL without bearer = true
+HTTP fixture: GET join sends one transport request = true
+HTTP fixture: write invalidation creates a new transport request = true
+HTTP fixture: background decode result cannot cross session generation = true
+HTTP fixture: old 401 callback suppressed = true
+{"checks":24,"failures":[]}

@@ -1,0 +1,28 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  FantasyCard.ConfigExporter -> /workspace/pr13-takeover/process-recovery/server/tools/FantasyCard.ConfigExporter/bin/Release/net10.0/FantasyCard.ConfigExporter.dll
+  FantasyCard.Domain -> /workspace/pr13-takeover/process-recovery/server/src/FantasyCard.Domain/bin/Release/net10.0/FantasyCard.Domain.dll
+  FantasyCard.Contracts -> /workspace/pr13-takeover/process-recovery/server/src/FantasyCard.Contracts/bin/Release/net10.0/FantasyCard.Contracts.dll
+  FantasyCard.Server -> /workspace/pr13-takeover/process-recovery/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll
+  FantasyCard.Server.Tests -> /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll
+Test run for /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:07.54]     FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK [FAIL]
+  Failed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK [6 s]
+  Error Message:
+   GET /api/v1/matches/9e8e6fb3-9f80-4cfd-83c3-07ee1be817b4/settlement: 500
+  Stack Trace:
+     at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.CallAsync(HttpClient client, HttpMethod method, String path, IMessage body, CancellationToken ct, String requestId) in /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs:line 454
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK() in /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs:line 139
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK() in /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs:line 157
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK() in /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs:line 160
+--- End of stack trace from previous location ---
+  Standard Output Messages:
+ {"caseId":"process-start","recordedAt":"2026-09-30T18:37:34.1003723+00:00","evidence":{"label":"extraction-0","Id":19145,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/pr13-takeover/process-recovery/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll","port":40827,"SearchPath":"fc_runtime_test_5d8a556741d146d78a69fdf399d46bea","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+ {"caseId":"PROC-02-assets-before-wire","recordedAt":"2026-09-30T18:37:39.258814+00:00","evidence":{"restart":0,"matchId":"9e8e6fb3-9f80-4cfd-83c3-07ee1be817b4","equipmentId":"01a0f39b-9091-76a2-b628-c88619997fb3","ProcessId":19145,"goldCredit":23,"returnedPotions":2,"ownedArmor":"Equipped","pendingHolds":0,"committedHolds":4,"settlements":1,"ledgerRows":1,"movementRows":1,"persistedDetailsJson":"{\u0022items\u0022: [{\u0022item\u0022: {\u0022kind\u0022: \u0022Gold\u0022, \u0022isSafe\u0022: false, \u0022itemId\u0022: \u0022fixture-gold\u0022, \u0022quantity\u0022: 23, \u0022equipment\u0022: null}, \u0022equipped\u0022: false}, {\u0022item\u0022: {\u0022kind\u0022: \u0022HealthPotion\u0022, \u0022isSafe\u0022: false, \u0022itemId\u0022: \u0022health_potion:1\u0022, \u0022quantity\u0022: 1, \u0022equipment\u0022: null}, \u0022equipped\u0022: false}, {\u0022item\u0022: {\u0022kind\u0022: \u0022HealthPotion\u0022, \u0022isSafe\u0022: false, \u0022itemId\u0022: \u0022health_potion:2\u0022, \u0022quantity\u0022: 1, \u0022equipment\u0022: null}, \u0022equipped\u0022: false}, {\u0022item\u0022: {\u0022kind\u0022: \u0022Equipment\u0022, \u0022isSafe\u0022: false, \u0022itemId\u0022: \u002201a0f39b-9091-76a2-b628-c88619997fb3\u0022, \u0022quantity\u0022: 1, \u0022equipment\u0022: {\u0022slot\u0022: \u0022Feet\u0022, \u0022level\u0022: 0, \u0022element\u0022: \u0022Fire\u0022, \u0022isBound\u0022: false, \u0022quality\u0022: \u0022White\u0022, \u0022effectAffix\u0022: null, \u0022secondaryTrait\u0022: \u0022DrawInterval\u0022}}, \u0022equipped\u0022: true}], \u0022phase\u0022: 5, \u0022roomId\u0022: \u00229e9df0d2-0628-42fc-b57a-41ad57946849\u0022, \u0022position\u0022: {\u0022row\u0022: 4, \u0022column\u0022: 4}, \u0022revision\u0022: 49, \u0022heroClass\u0022: \u0022Mage\u0022, \u0022assetCount\u0022: 4}"}}
+ {"caseId":"process-stop","recordedAt":"2026-09-30T18:37:39.3431272+00:00","evidence":{"label":"extraction-0","ProcessId":19145,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/pr13-takeover/process-recovery/evidence/process-recovery-20260930/extraction-red-attempt5/extraction-0-19145.log"}}
+
+
+Results File: /workspace/pr13-takeover/process-recovery/evidence/process-recovery-20260930/extraction-red-attempt5/extraction-red.trx
+
+Failed!  - Failed:     1, Passed:     0, Skipped:     0, Total:     1, Duration: 6 s - FantasyCard.Server.Tests.dll (net10.0)

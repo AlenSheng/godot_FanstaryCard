@@ -1,0 +1,531 @@
+{
+  "frozen_runtime_sha": "de1157fdf490a5bce3ba888c07519fc957c46782",
+  "starting_pr_head": "0bceca3dd6d302e923716a8e44e8a380fe44ac7f",
+  "canonical_path": "docs/plans/PR13_ACCEPTANCE_DETAILS_20260930.json",
+  "canonical_sha256": "5176ee139d4e632ba34469ae531ce7ec16478f356480e2d8e320cd51f3bcd703",
+  "selected_subtasks": [
+    {
+      "id": "LOAD-04.4",
+      "title": "ready全矩阵",
+      "source_instruction": "ready乱序失败反例矩阵",
+      "specification_state": "ReviewReady",
+      "execution_state": "NotRevalidated",
+      "accepted_by": null,
+      "requires_before_integration": [
+        "LOAD-04.3"
+      ],
+      "inputs": "可暂停事件/请求的真实入口测试接缝",
+      "implementation_steps": "组合重复/乱序/丢失/send失败/断连/STOP/旧局事件；记录预期终态与票据后置状态",
+      "test_cases": [
+        {
+          "id": "LOAD-04.4-T01",
+          "setup_and_injection": "required丢失再重连",
+          "expected": "权威恢复",
+          "executed": false,
+          "evidence": null
+        },
+        {
+          "id": "LOAD-04.4-T02",
+          "setup_and_injection": "注册失败再恢复",
+          "expected": "至多一个room",
+          "executed": false,
+          "evidence": null
+        },
+        {
+          "id": "LOAD-04.4-T03",
+          "setup_and_injection": "STOP排队/ready",
+          "expected": "取消或明确超时回收",
+          "executed": false,
+          "evidence": null
+        }
+      ],
+      "pass_criteria": "每种反例先复现或证明当前正确，再在集成SHA运行；同账号三局第二次匹配不污染。",
+      "failure_rule": "任一必测用例与预期不符为Failed；缺输入/环境/证据为Blocked；仅完成部分层次为Partial，不升级Accepted。",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "command_refs": [
+        "C-GODOT",
+        "C-SERVER",
+        "C-LIVE"
+      ],
+      "stage_refs": [
+        "S0",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6"
+      ],
+      "runtime_stage": "Required",
+      "runtime_stage_reason": "按所列profile取得真实执行证据；历史结果不能冒充当前集成SHA。",
+      "evidence_root": "outputs/pr13-acceptance/<integration_sha>/LOAD-04.4/",
+      "deliverables": [
+        "report.json（逐条预期/实际/判定）",
+        "cases.jsonl（用例与业务关联）",
+        "commands.json（命令/工具版本/退出码/跳过）",
+        "manifest.json（相对路径/大小/SHA256）"
+      ],
+      "rollback": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。",
+      "gate_refs": [
+        "G2"
+      ],
+      "historical_execution_state": "Planned"
+    },
+    {
+      "id": "LOAD-05.4",
+      "title": "幂等三局矩阵",
+      "source_instruction": "结算幂等及三局回归",
+      "specification_state": "ReviewReady",
+      "execution_state": "NotRevalidated",
+      "accepted_by": null,
+      "requires_before_integration": [
+        "LOAD-05.3",
+        "LOAD-04.4"
+      ],
+      "inputs": "一次性数据库与真实Godot会话",
+      "implementation_steps": "测ack响应丢失/重复receipt/旧snapshot/重启/重连；对每cutoff核对cycle与资产",
+      "test_cases": [
+        {
+          "id": "LOAD-05.4-T01",
+          "setup_and_injection": "ack提交后响应丢失再重试",
+          "expected": "同一receipt/资产只一次",
+          "executed": false,
+          "evidence": null
+        },
+        {
+          "id": "LOAD-05.4-T02",
+          "setup_and_injection": "pending holds",
+          "expected": "不对外ready",
+          "executed": false,
+          "evidence": null
+        },
+        {
+          "id": "LOAD-05.4-T03",
+          "setup_and_injection": "三局夹一失败重试",
+          "expected": "仅真实成功计一次",
+          "executed": false,
+          "evidence": null
+        }
+      ],
+      "pass_criteria": "started=completed+failed+cancelled+incomplete，同cycle互斥；资产账本与持久状态一致。",
+      "failure_rule": "任一必测用例与预期不符为Failed；缺输入/环境/证据为Blocked；仅完成部分层次为Partial，不升级Accepted。",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "command_refs": [
+        "C-GODOT",
+        "C-SERVER",
+        "C-LIVE"
+      ],
+      "stage_refs": [
+        "S0",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6"
+      ],
+      "runtime_stage": "Required",
+      "runtime_stage_reason": "按所列profile取得真实执行证据；历史结果不能冒充当前集成SHA。",
+      "evidence_root": "outputs/pr13-acceptance/<integration_sha>/LOAD-05.4/",
+      "deliverables": [
+        "report.json（逐条预期/实际/判定）",
+        "cases.jsonl（用例与业务关联）",
+        "commands.json（命令/工具版本/退出码/跳过）",
+        "manifest.json（相对路径/大小/SHA256）"
+      ],
+      "rollback": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。",
+      "gate_refs": [
+        "G2"
+      ],
+      "historical_execution_state": "Planned"
+    },
+    {
+      "id": "PR13-A03.1",
+      "title": "真实入口反例",
+      "source_instruction": "依据可访问A处理包正文重新明确的细项，非原附件逐字恢复。",
+      "specification_state": "ReviewReady",
+      "execution_state": "NotRevalidated",
+      "accepted_by": null,
+      "requires_before_integration": [
+        "LOAD-05.2"
+      ],
+      "inputs": "_on_event入口、可暂停Bootstrap和match M",
+      "implementation_steps": "第一次NOT_IN_ROOM清room，Bootstrap无receipt，再发同错误，然后M就绪；不直接填恢复变量绕入口",
+      "test_cases": [
+        {
+          "id": "PR13-A03.1-T01",
+          "setup_and_injection": "重复同错误",
+          "expected": "恢复ID始终M",
+          "executed": false,
+          "evidence": null
+        },
+        {
+          "id": "PR13-A03.1-T02",
+          "setup_and_injection": "Bootstrap晚返回",
+          "expected": "继续按M恢复",
+          "executed": false,
+          "evidence": null
+        },
+        {
+          "id": "PR13-A03.1-T03",
+          "setup_and_injection": "错误无可验证match",
+          "expected": "不能清有效M",
+          "executed": false,
+          "evidence": null
+        }
+      ],
+      "pass_criteria": "反例先测当前行为并留证；修复只由关联的非空match更新恢复上下文。",
+      "failure_rule": "任一必测用例与预期不符为Failed；缺输入/环境/证据为Blocked；仅完成部分层次为Partial，不升级Accepted。",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "command_refs": [
+        "C-GODOT",
+        "C-SERVER",
+        "C-LIVE"
+      ],
+      "stage_refs": [
+        "S0",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6"
+      ],
+      "runtime_stage": "Required",
+      "runtime_stage_reason": "按所列profile取得真实执行证据；历史结果不能冒充当前集成SHA。",
+      "evidence_root": "outputs/pr13-acceptance/<integration_sha>/PR13-A03.1/",
+      "deliverables": [
+        "report.json（逐条预期/实际/判定）",
+        "cases.jsonl（用例与业务关联）",
+        "commands.json（命令/工具版本/退出码/跳过）",
+        "manifest.json（相对路径/大小/SHA256）"
+      ],
+      "rollback": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。",
+      "gate_refs": [
+        "G2"
+      ],
+      "historical_execution_state": "Queued"
+    },
+    {
+      "id": "PR13-A03.2",
+      "title": "旧局回调隔离",
+      "source_instruction": "依据可访问A处理包正文重新明确的细项，非原附件逐字恢复。",
+      "specification_state": "ReviewReady",
+      "execution_state": "NotRevalidated",
+      "accepted_by": null,
+      "requires_before_integration": [
+        "PR13-A03.1"
+      ],
+      "inputs": "session/cycle/match/revision发起上下文",
+      "implementation_steps": "HTTP/WS/恢复poll异步沿用context，回调重新核对当前局与恢复目标",
+      "test_cases": [
+        {
+          "id": "PR13-A03.2-T01",
+          "setup_and_injection": "M错误在新N房到达",
+          "expected": "N不被清",
+          "executed": false,
+          "evidence": null
+        },
+        {
+          "id": "PR13-A03.2-T02",
+          "setup_and_injection": "M的Bootstrap在N到达",
+          "expected": "不覆盖N",
+          "executed": false,
+          "evidence": null
+        },
+        {
+          "id": "PR13-A03.2-T03",
+          "setup_and_injection": "session切换",
+          "expected": "不恢复旧账号状态",
+          "executed": false,
+          "evidence": null
+        }
+      ],
+      "pass_criteria": "相同session不同cycle也隔离，不能只依赖session_generation。",
+      "failure_rule": "任一必测用例与预期不符为Failed；缺输入/环境/证据为Blocked；仅完成部分层次为Partial，不升级Accepted。",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "command_refs": [
+        "C-GODOT",
+        "C-SERVER",
+        "C-LIVE"
+      ],
+      "stage_refs": [
+        "S0",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6"
+      ],
+      "runtime_stage": "Required",
+      "runtime_stage_reason": "按所列profile取得真实执行证据；历史结果不能冒充当前集成SHA。",
+      "evidence_root": "outputs/pr13-acceptance/<integration_sha>/PR13-A03.2/",
+      "deliverables": [
+        "report.json（逐条预期/实际/判定）",
+        "cases.jsonl（用例与业务关联）",
+        "commands.json（命令/工具版本/退出码/跳过）",
+        "manifest.json（相对路径/大小/SHA256）"
+      ],
+      "rollback": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。",
+      "gate_refs": [
+        "G2"
+      ],
+      "historical_execution_state": "Queued"
+    },
+    {
+      "id": "PR13-A03.3",
+      "title": "ack丢响应恢复",
+      "source_instruction": "依据可访问A处理包正文重新明确的细项，非原附件逐字恢复。",
+      "specification_state": "ReviewReady",
+      "execution_state": "NotRevalidated",
+      "accepted_by": null,
+      "requires_before_integration": [
+        "PR13-A03.2"
+      ],
+      "inputs": "ack权威持久化与可控响应丢失",
+      "implementation_steps": "超时后查询receipt/ack事实，重试同一幂等操作；UI显示已提交待核实",
+      "test_cases": [
+        {
+          "id": "PR13-A03.3-T01",
+          "setup_and_injection": "已提交响应丢失",
+          "expected": "一次资产且一次完成",
+          "executed": false,
+          "evidence": null
+        },
+        {
+          "id": "PR13-A03.3-T02",
+          "setup_and_injection": "未提交超时",
+          "expected": "可安全重试",
+          "executed": false,
+          "evidence": null
+        },
+        {
+          "id": "PR13-A03.3-T03",
+          "setup_and_injection": "busy/旧receipt",
+          "expected": "不计完成",
+          "executed": false,
+          "evidence": null
+        }
+      ],
+      "pass_criteria": "unknown不猜成功，恢复后一个cycle只有一个明确终态。",
+      "failure_rule": "任一必测用例与预期不符为Failed；缺输入/环境/证据为Blocked；仅完成部分层次为Partial，不升级Accepted。",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "command_refs": [
+        "C-GODOT",
+        "C-SERVER",
+        "C-LIVE"
+      ],
+      "stage_refs": [
+        "S0",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6"
+      ],
+      "runtime_stage": "Required",
+      "runtime_stage_reason": "按所列profile取得真实执行证据；历史结果不能冒充当前集成SHA。",
+      "evidence_root": "outputs/pr13-acceptance/<integration_sha>/PR13-A03.3/",
+      "deliverables": [
+        "report.json（逐条预期/实际/判定）",
+        "cases.jsonl（用例与业务关联）",
+        "commands.json（命令/工具版本/退出码/跳过）",
+        "manifest.json（相对路径/大小/SHA256）"
+      ],
+      "rollback": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。",
+      "gate_refs": [
+        "G2"
+      ],
+      "historical_execution_state": "Queued"
+    },
+    {
+      "id": "PR13-A04.4",
+      "title": "多局/STOP组合",
+      "source_instruction": "依据可访问A处理包正文重新明确的细项，非原附件逐字恢复。",
+      "specification_state": "ReviewReady",
+      "execution_state": "NotRevalidated",
+      "accepted_by": null,
+      "requires_before_integration": [
+        "PR13-A04.3"
+      ],
+      "inputs": "真实入口、多客户端与ready阶段STOP",
+      "implementation_steps": "合并断线resume、晚通知、第二/第三局和取消，逐账号查后置状态",
+      "test_cases": [
+        {
+          "id": "PR13-A04.4-T01",
+          "setup_and_injection": "ready阶段STOP",
+          "expected": "取消或明确deadline回收",
+          "executed": false,
+          "evidence": null
+        },
+        {
+          "id": "PR13-A04.4-T02",
+          "setup_and_injection": "reconnect收到重放",
+          "expected": "序号与room正确",
+          "executed": false,
+          "evidence": null
+        },
+        {
+          "id": "PR13-A04.4-T03",
+          "setup_and_injection": "多局迟到事件",
+          "expected": "只影响原cycle",
+          "executed": false,
+          "evidence": null
+        }
+      ],
+      "pass_criteria": "每例有客户端终态和服务端DB/route证据，测试不能绕过实际事件入口。",
+      "failure_rule": "任一必测用例与预期不符为Failed；缺输入/环境/证据为Blocked；仅完成部分层次为Partial，不升级Accepted。",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "command_refs": [
+        "C-GODOT",
+        "C-SERVER",
+        "C-LIVE"
+      ],
+      "stage_refs": [
+        "S0",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6"
+      ],
+      "runtime_stage": "Required",
+      "runtime_stage_reason": "按所列profile取得真实执行证据；历史结果不能冒充当前集成SHA。",
+      "evidence_root": "outputs/pr13-acceptance/<integration_sha>/PR13-A04.4/",
+      "deliverables": [
+        "report.json（逐条预期/实际/判定）",
+        "cases.jsonl（用例与业务关联）",
+        "commands.json（命令/工具版本/退出码/跳过）",
+        "manifest.json（相对路径/大小/SHA256）"
+      ],
+      "rollback": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。",
+      "gate_refs": [
+        "G2"
+      ],
+      "historical_execution_state": "Queued"
+    },
+    {
+      "id": "PR13-B11.2",
+      "title": "结算UI恢复",
+      "source_instruction": "复用重复NOT_IN_ROOM/旧局回调/ack丢响应修复，保留资产恢复",
+      "specification_state": "ReviewReady",
+      "execution_state": "NotRevalidated",
+      "accepted_by": null,
+      "requires_before_integration": [
+        "PR13-B11.1"
+      ],
+      "inputs": "A03真实入口与ack持久事实",
+      "implementation_steps": "复用重复NOT_IN_ROOM/旧回调隔离，回大厅不吞未确认receipt；ack丢包有待核实入口",
+      "test_cases": [
+        {
+          "id": "PR13-B11.2-T01",
+          "setup_and_injection": "重复错误",
+          "expected": "保原match",
+          "executed": false,
+          "evidence": null
+        },
+        {
+          "id": "PR13-B11.2-T02",
+          "setup_and_injection": "旧callback在新局",
+          "expected": "不清新UI",
+          "executed": false,
+          "evidence": null
+        },
+        {
+          "id": "PR13-B11.2-T03",
+          "setup_and_injection": "回大厅时ackUnknown",
+          "expected": "可恢复receipt/明确状态",
+          "executed": false,
+          "evidence": null
+        }
+      ],
+      "pass_criteria": "资产一次且恢复入口可见，动画不阻塞合法新局动作。",
+      "failure_rule": "任一必测用例与预期不符为Failed；缺输入/环境/证据为Blocked；仅完成部分层次为Partial，不升级Accepted。",
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE",
+        "RENDER"
+      ],
+      "command_refs": [
+        "C-GODOT",
+        "C-SERVER",
+        "C-LIVE",
+        "C-RENDER"
+      ],
+      "stage_refs": [
+        "S0",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6"
+      ],
+      "runtime_stage": "Required",
+      "runtime_stage_reason": "按所列profile取得真实执行证据；历史结果不能冒充当前集成SHA。",
+      "evidence_root": "outputs/pr13-acceptance/<integration_sha>/PR13-B11.2/",
+      "deliverables": [
+        "report.json（逐条预期/实际/判定）",
+        "cases.jsonl（用例与业务关联）",
+        "commands.json（命令/工具版本/退出码/跳过）",
+        "manifest.json（相对路径/大小/SHA256）"
+      ],
+      "rollback": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。",
+      "gate_refs": [
+        "G2",
+        "G3"
+      ],
+      "historical_execution_state": "Queued"
+    }
+  ],
+  "owners": {
+    "root": [
+      "client/network/gateway.gd",
+      "client/tests/pr13_ack_response_loss.gd",
+      "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs",
+      ".github/workflows/gameplay-load.yml",
+      ".github/workflows/numerical-acceptance.yml"
+    ],
+    "callback": [
+      "client/state/game_store.gd",
+      "client/tests/test_settlement_polling.gd",
+      "tools/pr13_callback_isolation.py",
+      "client/tests/pr13_callback_isolation.gd"
+    ],
+    "ready_stop": [
+      "client/tests/gameplay_load_client.gd",
+      "client/tests/run_ready_stop_faults.gd",
+      "client/tests/run_ready_stop_faults.py"
+    ]
+  },
+  "acceptance_rule": "Evidence is OFFLINE/POSTGRES or controlled SupportOnly unless all canonical inputs/profiles and independent adjudication are proven; never infer Accepted from CI.",
+  "raw_zip_policy": "four historical raw ZIP retained locally; upload paused pending user explicit destination approval; no remote server access"
+}

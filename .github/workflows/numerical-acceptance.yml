@@ -1,7 +1,7 @@
 name: Numerical full acceptance
 on:
   pull_request:
-    paths: ['server/**', 'config/**', 'protocol/**', 'tools/export_client_catalog.py', '.github/workflows/numerical-acceptance.yml']
+    paths: ['server/**', 'config/**', 'protocol/**', 'tools/export_client_catalog.py', 'tools/pr13_factor_matrix.py', '.github/workflows/numerical-acceptance.yml']
   push:
     branches: ['codex/numerical-integration-20260928']
     paths: ['.github/workflows/numerical-acceptance.yml']
@@ -37,6 +37,19 @@ jobs:
       - uses: actions/setup-dotnet@v6
         with:
           global-json-file: server/global.json
+      - name: Install pinned Godot for real client and PostgreSQL fault checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/godot-pg" test-results/acceptance
+          curl --fail --location --retry 2 'https://downloads.godotengine.org/?version=4.7.2&flavor=stable&slug=linux.x86_64.zip&platform=linux.64' -o "$RUNNER_TEMP/godot-pg.zip"
+          unzip -q "$RUNNER_TEMP/godot-pg.zip" -d "$RUNNER_TEMP/godot-pg"
+          executable="$RUNNER_TEMP/godot-pg/Godot_v4.7.2-stable_linux.x86_64"
+          chmod +x "$executable"
+          "$executable" --version | tee test-results/acceptance/godot-pg-version.txt
+          grep -q '^4\.7\.2\.' test-results/acceptance/godot-pg-version.txt
+          echo "A3GAME_GODOT_EXECUTABLE=$executable" >> "$GITHUB_ENV"
+          echo "FANTASYCARD_PROCESS_EVIDENCE=$GITHUB_WORKSPACE/test-results/acceptance/process-faults" >> "$GITHUB_ENV"
       - name: Build solution and record baseline
         shell: bash
         working-directory: server
@@ -68,6 +81,9 @@ jobs:
           for players in 1 2 4; do
             dotnet run --project tools/FantasyCard.Numerics -c Release -- --samples 10000 --players "$players" --seed-start 0 > "../test-results/acceptance/routes-${players}.json"
           done
+      - name: Verify isolated single-factor instrumentation and unchanged controls
+        if: ${{ !cancelled() }}
+        run: python tools/pr13_factor_matrix.py --samples 3 --workers 1 --output test-results/acceptance/o6-factors
       - name: Verify published config parity and disabled candidate flags
         if: ${{ !cancelled() }}
         shell: python

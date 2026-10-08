@@ -1,0 +1,108 @@
+[
+  {
+    "label": "fresh-source-build",
+    "command": [
+      "/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet",
+      "build",
+      "FantasyCard.Server.slnx",
+      "-c",
+      "Release",
+      "-v",
+      "minimal"
+    ],
+    "cwd": "/workspace/pr13-takeover/fault-batch-20260930/ready-baseline-overlay-source/server",
+    "exit_code": 0,
+    "duration_seconds": 19.524,
+    "deadline_seconds": 180,
+    "log": "fresh-source-build.log"
+  },
+  {
+    "label": "godot-import",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "/workspace/pr13-takeover/fault-batch-20260930/ready-baseline-validguid-red/godot",
+      "--editor",
+      "--import",
+      "--quit"
+    ],
+    "cwd": "/workspace/pr13-takeover/fault-batch-20260930/ready-baseline-overlay-source",
+    "exit_code": 0,
+    "duration_seconds": 5.564,
+    "deadline_seconds": 120,
+    "log": "godot-import.log"
+  },
+  {
+    "label": "private-pg-init",
+    "command": [
+      "initdb",
+      "-D",
+      "/workspace/pr13-takeover/fault-batch-20260930/ready-baseline-validguid-red/private-pg",
+      "-U",
+      "ready_stop_owner",
+      "--auth=trust",
+      "--no-locale",
+      "--encoding=UTF8"
+    ],
+    "cwd": "/workspace/pr13-takeover/fault-batch-20260930/ready-baseline-overlay-source",
+    "exit_code": 0,
+    "duration_seconds": 1.265,
+    "deadline_seconds": 30,
+    "log": "private-pg-init.log"
+  },
+  {
+    "label": "private-pg-start",
+    "command": [
+      "pg_ctl",
+      "-D",
+      "/workspace/pr13-takeover/fault-batch-20260930/ready-baseline-validguid-red/private-pg",
+      "-l",
+      "/workspace/pr13-takeover/fault-batch-20260930/ready-baseline-validguid-red/private-pg.log",
+      "-o",
+      "-c listen_addresses='' -k /tmp/pr13-ready-stop-kpz7ciq7",
+      "-w",
+      "start"
+    ],
+    "cwd": "/workspace/pr13-takeover/fault-batch-20260930/ready-baseline-overlay-source",
+    "exit_code": 0,
+    "duration_seconds": 0.109,
+    "deadline_seconds": 30,
+    "log": "private-pg-start.log"
+  },
+  {
+    "label": "late_accepted_before_ticket-godot",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--max-fps",
+      "60",
+      "--path",
+      "/workspace/pr13-takeover/fault-batch-20260930/ready-baseline-validguid-red/godot",
+      "--script",
+      "res://tests/run_ready_stop_faults.gd"
+    ],
+    "cwd": "/workspace/pr13-takeover/fault-batch-20260930/ready-baseline-overlay-source",
+    "exit_code": 1,
+    "duration_seconds": 7.4,
+    "deadline_seconds": 95,
+    "log": "late_accepted_before_ticket-godot.log"
+  },
+  {
+    "label": "owned-pg-cleanup",
+    "command": [
+      "pg_ctl",
+      "-D",
+      "/workspace/pr13-takeover/fault-batch-20260930/ready-baseline-validguid-red/private-pg",
+      "-m",
+      "fast",
+      "-w",
+      "stop"
+    ],
+    "cwd": "/workspace/pr13-takeover/fault-batch-20260930/ready-baseline-overlay-source",
+    "exit_code": 0,
+    "duration_seconds": 0.405,
+    "deadline_seconds": 30,
+    "log": "owned-pg-cleanup.log"
+  }
+]

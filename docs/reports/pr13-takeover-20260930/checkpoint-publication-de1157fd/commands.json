@@ -1,0 +1,310 @@
+[
+  {
+    "command": [
+      "dotnet",
+      "build",
+      "server/FantasyCard.Server.slnx",
+      "-c",
+      "Release"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 26.85590088800018,
+    "log": "fresh-build.log",
+    "sha256": "a1ca242761efc0ea89d6012c30187e41693ef5f3dd5259e9193dd766da78dc30"
+  },
+  {
+    "command": [
+      "initdb",
+      "-D",
+      "/tmp/pr13-publish-pg-1lwqz8nw/data",
+      "-A",
+      "trust",
+      "--no-locale",
+      "--encoding=UTF8"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 0.46764099600113695,
+    "log": "pg-init.log",
+    "sha256": "ca10c5306f0db589ba73b5e531b4c8e3fb896b5dc5ec34e76133ee324bcf802d"
+  },
+  {
+    "command": [
+      "pg_ctl",
+      "-D",
+      "/tmp/pr13-publish-pg-1lwqz8nw/data",
+      "-l",
+      "/workspace/pr13-takeover/pb-equipment-20260930/checkpoint-publication/pg-server.log",
+      "-o",
+      "-k /tmp/pr13-publish-pg-1lwqz8nw/socket -p 55443 -c listen_addresses=''",
+      "-w",
+      "start"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 0.11503395399995497,
+    "log": "pg-start.log",
+    "sha256": "66afd0411ccc09366e99fdd99b85f21899c8d2d064f5835126859618802153ad"
+  },
+  {
+    "command": [
+      "createdb",
+      "-h",
+      "/tmp/pr13-publish-pg-1lwqz8nw/socket",
+      "-p",
+      "55443",
+      "pr13_publication"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 0.06515850000141654,
+    "log": "pg-create.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "command": [
+      "dotnet",
+      "test",
+      "server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "-c",
+      "Release",
+      "--no-build",
+      "--filter",
+      "FullyQualifiedName~Running_room_restart_restores_actor_and_compensates_snapshot_downtime",
+      "--logger",
+      "trx;LogFileName=focused-01.trx",
+      "--results-directory",
+      "/workspace/pr13-takeover/pb-equipment-20260930/checkpoint-publication/trx"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 3.9913455429996247,
+    "log": "focused-01.log",
+    "sha256": "fce656624763c5b1a13e487e5db52409f9336ae490604d4293f42cf2d4d8db9e"
+  },
+  {
+    "command": [
+      "dotnet",
+      "test",
+      "server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "-c",
+      "Release",
+      "--no-build",
+      "--filter",
+      "FullyQualifiedName~Running_room_restart_restores_actor_and_compensates_snapshot_downtime",
+      "--logger",
+      "trx;LogFileName=focused-02.trx",
+      "--results-directory",
+      "/workspace/pr13-takeover/pb-equipment-20260930/checkpoint-publication/trx"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 3.8454987200002506,
+    "log": "focused-02.log",
+    "sha256": "fa4a5cd0177e69f302862196f6881b59877a2be72c5c7e35c7557cd8d52c16ac"
+  },
+  {
+    "command": [
+      "dotnet",
+      "test",
+      "server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "-c",
+      "Release",
+      "--no-build",
+      "--filter",
+      "FullyQualifiedName~Running_room_restart_restores_actor_and_compensates_snapshot_downtime",
+      "--logger",
+      "trx;LogFileName=focused-03.trx",
+      "--results-directory",
+      "/workspace/pr13-takeover/pb-equipment-20260930/checkpoint-publication/trx"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 4.054619622998871,
+    "log": "focused-03.log",
+    "sha256": "62c979f69f4dfc490cf2295d79280026277b3ace5cffb5f47591f8a92b659384"
+  },
+  {
+    "command": [
+      "dotnet",
+      "test",
+      "server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "-c",
+      "Release",
+      "--no-build",
+      "--filter",
+      "FullyQualifiedName~Running_room_restart_restores_actor_and_compensates_snapshot_downtime",
+      "--logger",
+      "trx;LogFileName=focused-04.trx",
+      "--results-directory",
+      "/workspace/pr13-takeover/pb-equipment-20260930/checkpoint-publication/trx"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 3.956912182000451,
+    "log": "focused-04.log",
+    "sha256": "0ffa7a06791782307b2b28332a4aba3285f2a598880bc495f20de7540334ab51"
+  },
+  {
+    "command": [
+      "dotnet",
+      "test",
+      "server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "-c",
+      "Release",
+      "--no-build",
+      "--filter",
+      "FullyQualifiedName~Running_room_restart_restores_actor_and_compensates_snapshot_downtime",
+      "--logger",
+      "trx;LogFileName=focused-05.trx",
+      "--results-directory",
+      "/workspace/pr13-takeover/pb-equipment-20260930/checkpoint-publication/trx"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 3.8056735019999905,
+    "log": "focused-05.log",
+    "sha256": "0997838f80811ad04d73105907ffd621e5ac107d863399e58b2b87751a5f7801"
+  },
+  {
+    "command": [
+      "dotnet",
+      "test",
+      "server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "-c",
+      "Release",
+      "--no-build",
+      "--filter",
+      "FullyQualifiedName~Running_room_restart_restores_actor_and_compensates_snapshot_downtime",
+      "--logger",
+      "trx;LogFileName=focused-06.trx",
+      "--results-directory",
+      "/workspace/pr13-takeover/pb-equipment-20260930/checkpoint-publication/trx"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 3.1946365389994753,
+    "log": "focused-06.log",
+    "sha256": "781e5af878b2ffb2c920e362ab38bbf9a9fea9510a787c20e7ac72e3900c195b"
+  },
+  {
+    "command": [
+      "dotnet",
+      "test",
+      "server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "-c",
+      "Release",
+      "--no-build",
+      "--filter",
+      "FullyQualifiedName~Running_room_restart_restores_actor_and_compensates_snapshot_downtime",
+      "--logger",
+      "trx;LogFileName=focused-07.trx",
+      "--results-directory",
+      "/workspace/pr13-takeover/pb-equipment-20260930/checkpoint-publication/trx"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 3.3903425309999875,
+    "log": "focused-07.log",
+    "sha256": "e4c59932a5ff3f52d2b8dd737881bd6cad96fe6d2de93d9760291e38b6c1b731"
+  },
+  {
+    "command": [
+      "dotnet",
+      "test",
+      "server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "-c",
+      "Release",
+      "--no-build",
+      "--filter",
+      "FullyQualifiedName~Running_room_restart_restores_actor_and_compensates_snapshot_downtime",
+      "--logger",
+      "trx;LogFileName=focused-08.trx",
+      "--results-directory",
+      "/workspace/pr13-takeover/pb-equipment-20260930/checkpoint-publication/trx"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 3.3865287240005273,
+    "log": "focused-08.log",
+    "sha256": "8dbf4040017e9c823997ffd4a9e4e3f815098044e972919a429f7f49db25a0c6"
+  },
+  {
+    "command": [
+      "dotnet",
+      "test",
+      "server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "-c",
+      "Release",
+      "--no-build",
+      "--filter",
+      "FullyQualifiedName~Running_room_restart_restores_actor_and_compensates_snapshot_downtime",
+      "--logger",
+      "trx;LogFileName=focused-09.trx",
+      "--results-directory",
+      "/workspace/pr13-takeover/pb-equipment-20260930/checkpoint-publication/trx"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 3.7506130519996077,
+    "log": "focused-09.log",
+    "sha256": "62b2067af2c33f6f49aa20590533b79c707915d9bfb074d548c615f2c1f42a3e"
+  },
+  {
+    "command": [
+      "dotnet",
+      "test",
+      "server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "-c",
+      "Release",
+      "--no-build",
+      "--filter",
+      "FullyQualifiedName~Running_room_restart_restores_actor_and_compensates_snapshot_downtime",
+      "--logger",
+      "trx;LogFileName=focused-10.trx",
+      "--results-directory",
+      "/workspace/pr13-takeover/pb-equipment-20260930/checkpoint-publication/trx"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 4.0672894030012685,
+    "log": "focused-10.log",
+    "sha256": "3be233b804b6f8e343fa584d4b870fada7abce4756b2ccd9bef2dea47405f586"
+  },
+  {
+    "command": [
+      "dotnet",
+      "test",
+      "server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "-c",
+      "Release",
+      "--no-build",
+      "--logger",
+      "trx;LogFileName=server.trx",
+      "--results-directory",
+      "/workspace/pr13-takeover/pb-equipment-20260930/checkpoint-publication/trx"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 203.02517885999987,
+    "log": "server-pg.log",
+    "sha256": "66e45ccbf30fded4630a0c860195937f1d274e0521c6aa5a44a0d503af8b4b53"
+  },
+  {
+    "command": [
+      "pg_ctl",
+      "-D",
+      "/tmp/pr13-publish-pg-1lwqz8nw/data",
+      "-m",
+      "fast",
+      "-w",
+      "stop"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 0.2160813030004647,
+    "log": "pg-stop.log",
+    "sha256": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d"
+  }
+]

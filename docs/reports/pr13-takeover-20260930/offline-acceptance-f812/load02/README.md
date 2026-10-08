@@ -1,0 +1,9 @@
+# LOAD02 complete local verdict/cleanup proposals
+
+Fixed production source f812. LOAD02.1/.3/.4 are proposed ReadyForIndependentAcceptance (nine original cases). LOAD02.2 remains Partial: two original cases have adequate evidence, T01 still needs an actual PG game timeout before STOP and a per-cycle exclusive terminal partition. No Accepted signature.
+
+Coordinator fixtures use model clock, metrics and telemetry to test the actual main/report/caller branches; owned child STOP, exit7, original35s hang grace and emergency fallback are real. They do not establish server capacity or full game experience. Real Godot transport timeout precedes STOP with original30s budget. Same f812 actual Program+PG ACKSTOP receipts establish pending/busy/cleanup and assets, without substituting for the missing timeout game.
+
+Original360-file manifest/raw remain byte-preserved. Reproducible harness sources and normalized ROOT_REPORT stage rows are included. Actual42 Python tests and same-source317 Domain/291 Server PG receipts are supporting checks, separate from original-case counts. Independent MAIN key actual replay and adjudication remain.
+
+Minimal coordinator replay: copy `harness/` into a new temporary packet directory and materialize `source/` there using `git archive f812879e4518fd09bf22656451cb563d62940298 | tar -x -C <packet>/source`. Run `python <packet>/harness/coordinator_case.py <mode> <new-output-dir>`; modes and expected actual caller exits are in evidence/commands.json. The hang mode takes the unchanged35s grace. Normal model-duration mode exits1, redline2, corrupt3, operator130. These are expected negative classifications, not load failures attributed to a real server. Preparation can be independently replayed directly as `python tools/gameplay_load_test.py --godot <existing-local-executable>` from f812; it returns0 with Prepared and launches no load.

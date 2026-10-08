@@ -1,0 +1,35 @@
+[
+  {
+    "command": [
+      "dotnet",
+      "build",
+      "server/FantasyCard.Server.slnx",
+      "-c",
+      "Release"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 10.365761597999153,
+    "log": "fresh-build-attempt2.log"
+  },
+  {
+    "command": [
+      "dotnet",
+      "test",
+      "server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "-c",
+      "Release",
+      "--no-build",
+      "--filter",
+      "FullyQualifiedName~SettlementEncodingTests",
+      "--logger",
+      "trx;LogFileName=settlement-unit.trx",
+      "--results-directory",
+      "/workspace/pr13-takeover/pb-equipment-20260930/unit"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 2.9066846140012785,
+    "log": "settlement-unit-attempt2.log"
+  }
+]

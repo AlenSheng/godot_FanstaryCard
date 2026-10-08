@@ -1,0 +1,23 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  FantasyCard.ConfigExporter -> /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/server/tools/FantasyCard.ConfigExporter/bin/Release/net10.0/FantasyCard.ConfigExporter.dll
+  FantasyCard.Contracts -> /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/server/src/FantasyCard.Contracts/bin/Release/net10.0/FantasyCard.Contracts.dll
+  FantasyCard.Domain -> /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/server/src/FantasyCard.Domain/bin/Release/net10.0/FantasyCard.Domain.dll
+  FantasyCard.Server -> /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll
+  FantasyCard.Server.Tests -> /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll
+Test run for /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:16.05]     FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Running_room_restart_restores_actor_and_compensates_snapshot_downtime [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Running_room_restart_restores_actor_and_compensates_snapshot_downtime [319 ms]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: Dead
+Actual:   ActionBar
+  Stack Trace:
+     at FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Running_room_restart_restores_actor_and_compensates_snapshot_downtime() in /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/Persistence/PostgresRuntimeIntegrationTests.cs:line 1174
+   at FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Running_room_restart_restores_actor_and_compensates_snapshot_downtime() in /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/Persistence/PostgresRuntimeIntegrationTests.cs:line 1175
+   at FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Running_room_restart_restores_actor_and_compensates_snapshot_downtime() in /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/Persistence/PostgresRuntimeIntegrationTests.cs:line 1175
+--- End of stack trace from previous location ---
+Results File: /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/test-results/acceptance/server.trx
+
+Failed!  - Failed:     1, Passed:   280, Skipped:     0, Total:   281, Duration: 3 m 9 s - FantasyCard.Server.Tests.dll (net10.0)

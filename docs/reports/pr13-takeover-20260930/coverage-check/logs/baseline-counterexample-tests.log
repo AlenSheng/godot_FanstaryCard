@@ -1,0 +1,95 @@
+test_duplicate_event_sequences_are_evidence_loss_and_never_two_requests (tools.tests.test_gameplay_load_sampling_contract.RequestAccountingContractTests.test_duplicate_event_sequences_are_evidence_loss_and_never_two_requests) ... ok
+test_retry_cancel_and_invalid_latency_preserve_separate_denominators (tools.tests.test_gameplay_load_sampling_contract.RequestAccountingContractTests.test_retry_cancel_and_invalid_latency_preserve_separate_denominators) ... ok
+test_conflicting_overlap_cannot_hide_a_load_drop (tools.tests.test_gameplay_load_sampling_contract.SamplingContractTests.test_conflicting_overlap_cannot_hide_a_load_drop) ... FAIL
+test_distinct_observations_at_maximum_gap_remain_usable (tools.tests.test_gameplay_load_sampling_contract.SamplingContractTests.test_distinct_observations_at_maximum_gap_remain_usable) ... ok
+test_identical_replayed_sample_does_not_count_as_a_new_observation (tools.tests.test_gameplay_load_sampling_contract.SamplingContractTests.test_identical_replayed_sample_does_not_count_as_a_new_observation) ... FAIL
+test_missing_tick_breaks_continuous_hold_at_same_coverage (tools.tests.test_gameplay_load_sampling_contract.SamplingContractTests.test_missing_tick_breaks_continuous_hold_at_same_coverage) ... ok
+test_monitoring_unknown_is_not_capacity_success_even_with_full_load (tools.tests.test_gameplay_load_sampling_contract.SamplingContractTests.test_monitoring_unknown_is_not_capacity_success_even_with_full_load) ... ok
+test_negative_elapsed_clock_cannot_prove_capacity (tools.tests.test_gameplay_load_sampling_contract.SamplingContractTests.test_negative_elapsed_clock_cannot_prove_capacity) ... FAIL
+test_online_and_active_in_separate_windows_do_not_meet_joint_target (tools.tests.test_gameplay_load_sampling_contract.SamplingContractTests.test_online_and_active_in_separate_windows_do_not_meet_joint_target) ... ok
+test_reordered_rows_are_not_sorted_into_success (tools.tests.test_gameplay_load_sampling_contract.SamplingContractTests.test_reordered_rows_are_not_sorted_into_success) ... FAIL
+test_stop_tail_and_first_observation_blackouts_are_rejected (tools.tests.test_gameplay_load_sampling_contract.SamplingContractTests.test_stop_tail_and_first_observation_blackouts_are_rejected) ... ok
+test_unknown_time_is_not_removed_to_bridge_adjacent_observations (tools.tests.test_gameplay_load_sampling_contract.SamplingContractTests.test_unknown_time_is_not_removed_to_bridge_adjacent_observations) ... 
+  test_unknown_time_is_not_removed_to_bridge_adjacent_observations (tools.tests.test_gameplay_load_sampling_contract.SamplingContractTests.test_unknown_time_is_not_removed_to_bridge_adjacent_observations) (bad=None) ... FAIL
+  test_unknown_time_is_not_removed_to_bridge_adjacent_observations (tools.tests.test_gameplay_load_sampling_contract.SamplingContractTests.test_unknown_time_is_not_removed_to_bridge_adjacent_observations) (bad=True) ... FAIL
+  test_unknown_time_is_not_removed_to_bridge_adjacent_observations (tools.tests.test_gameplay_load_sampling_contract.SamplingContractTests.test_unknown_time_is_not_removed_to_bridge_adjacent_observations) (bad=-1) ... FAIL
+  test_unknown_time_is_not_removed_to_bridge_adjacent_observations (tools.tests.test_gameplay_load_sampling_contract.SamplingContractTests.test_unknown_time_is_not_removed_to_bridge_adjacent_observations) (bad=nan) ... FAIL
+  test_unknown_time_is_not_removed_to_bridge_adjacent_observations (tools.tests.test_gameplay_load_sampling_contract.SamplingContractTests.test_unknown_time_is_not_removed_to_bridge_adjacent_observations) (bad=inf) ... FAIL
+test_unobserved_stop_tail_stays_in_coverage_denominator (tools.tests.test_gameplay_load_sampling_contract.SamplingContractTests.test_unobserved_stop_tail_stays_in_coverage_denominator) ... ok
+
+======================================================================
+FAIL: test_conflicting_overlap_cannot_hide_a_load_drop (tools.tests.test_gameplay_load_sampling_contract.SamplingContractTests.test_conflicting_overlap_cannot_hide_a_load_drop)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/godot_FanstaryCard/tools/tests/test_gameplay_load_sampling_contract.py", line 37, in test_conflicting_overlap_cannot_hide_a_load_drop
+    self.assertFalse(measured['passed'])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_identical_replayed_sample_does_not_count_as_a_new_observation (tools.tests.test_gameplay_load_sampling_contract.SamplingContractTests.test_identical_replayed_sample_does_not_count_as_a_new_observation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/godot_FanstaryCard/tools/tests/test_gameplay_load_sampling_contract.py", line 44, in test_identical_replayed_sample_does_not_count_as_a_new_observation
+    self.assertFalse(self.measure(rows)['passed'])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_negative_elapsed_clock_cannot_prove_capacity (tools.tests.test_gameplay_load_sampling_contract.SamplingContractTests.test_negative_elapsed_clock_cannot_prove_capacity)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/godot_FanstaryCard/tools/tests/test_gameplay_load_sampling_contract.py", line 67, in test_negative_elapsed_clock_cannot_prove_capacity
+    self.assertFalse(sampling_integrity(rows, -600000, 0)['passed'])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_reordered_rows_are_not_sorted_into_success (tools.tests.test_gameplay_load_sampling_contract.SamplingContractTests.test_reordered_rows_are_not_sorted_into_success)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/godot_FanstaryCard/tools/tests/test_gameplay_load_sampling_contract.py", line 50, in test_reordered_rows_are_not_sorted_into_success
+    self.assertFalse(self.measure(rows)['passed'])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_unknown_time_is_not_removed_to_bridge_adjacent_observations (tools.tests.test_gameplay_load_sampling_contract.SamplingContractTests.test_unknown_time_is_not_removed_to_bridge_adjacent_observations) (bad=None)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/godot_FanstaryCard/tools/tests/test_gameplay_load_sampling_contract.py", line 59, in test_unknown_time_is_not_removed_to_bridge_adjacent_observations
+    self.assertFalse(result['passed'])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_unknown_time_is_not_removed_to_bridge_adjacent_observations (tools.tests.test_gameplay_load_sampling_contract.SamplingContractTests.test_unknown_time_is_not_removed_to_bridge_adjacent_observations) (bad=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/godot_FanstaryCard/tools/tests/test_gameplay_load_sampling_contract.py", line 59, in test_unknown_time_is_not_removed_to_bridge_adjacent_observations
+    self.assertFalse(result['passed'])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_unknown_time_is_not_removed_to_bridge_adjacent_observations (tools.tests.test_gameplay_load_sampling_contract.SamplingContractTests.test_unknown_time_is_not_removed_to_bridge_adjacent_observations) (bad=-1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/godot_FanstaryCard/tools/tests/test_gameplay_load_sampling_contract.py", line 59, in test_unknown_time_is_not_removed_to_bridge_adjacent_observations
+    self.assertFalse(result['passed'])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_unknown_time_is_not_removed_to_bridge_adjacent_observations (tools.tests.test_gameplay_load_sampling_contract.SamplingContractTests.test_unknown_time_is_not_removed_to_bridge_adjacent_observations) (bad=nan)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/godot_FanstaryCard/tools/tests/test_gameplay_load_sampling_contract.py", line 59, in test_unknown_time_is_not_removed_to_bridge_adjacent_observations
+    self.assertFalse(result['passed'])
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_unknown_time_is_not_removed_to_bridge_adjacent_observations (tools.tests.test_gameplay_load_sampling_contract.SamplingContractTests.test_unknown_time_is_not_removed_to_bridge_adjacent_observations) (bad=inf)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/godot_FanstaryCard/tools/tests/test_gameplay_load_sampling_contract.py", line 59, in test_unknown_time_is_not_removed_to_bridge_adjacent_observations
+    self.assertFalse(result['passed'])
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.005s
+
+FAILED (failures=9)

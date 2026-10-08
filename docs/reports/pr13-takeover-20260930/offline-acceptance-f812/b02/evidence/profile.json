@@ -1,0 +1,27 @@
+{
+  "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+  "profiles": [
+    "OFFLINE",
+    "POSTGRES"
+  ],
+  "canonical_cases": 12,
+  "timeout_seconds": {
+    "full_build_and_each_dotnet_suite": 600,
+    "isolated_command": 180,
+    "negative_probe": 120
+  },
+  "seeds": {
+    "Resolver": 31,
+    "BattleRoom": 77,
+    "restored_seed": [
+      999,
+      333,
+      91
+    ]
+  },
+  "sample_policy": "Deterministic fixed inputs, no stochastic population claim",
+  "database": "Owned PG18.6; Unix socket only, listen_addresses empty; dedicated b02_acceptance and b02_exact_final databases; no production ledger",
+  "network": "Authoritative final Godot commands set FANTASYCARD_SERVER_URL=http://127.0.0.1:1 and FANTASYCARD_LOAD_RUN_ID=b02-isolated",
+  "runtime_stage": "NotApplicableWithReason per canonical B02.1–.4; subject to MAIN approval",
+  "registration_basis": "Fixed SHA and deadlines were in run scripts before corresponding commands; this profile summary is compiled during packaging."
+}

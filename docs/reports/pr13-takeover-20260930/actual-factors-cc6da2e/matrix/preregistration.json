@@ -1,0 +1,274 @@
+{
+  "schema_version": 1,
+  "registered_at": 1790788471.0696235,
+  "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+  "source_file_sha256": "53cee00fc9f1c68dbc8bb3ab0623d100394eaa6526341bf0301fcc4956c8276a",
+  "source_git_dirty": true,
+  "assembly_hashes": {
+    "FantasyCard.Numerics.dll": "8eabcd01ee2d7667492da717ca83f828a82d29ff50b1d6d028903fe17a097960",
+    "FantasyCard.Numerics.deps.json": "3f2ef034feee6d02a18bce64a2a55c898c76b29bee8748fc912ca781f8e6dc92",
+    "FantasyCard.Numerics.runtimeconfig.json": "6eaff27a497447817e02c096da9afb530324590c005c1c011cd87bf2669f9dfd",
+    "FantasyCard.Domain.dll": "ddb23b18cff024daa3171cb17275a59b05bd2841a2e38ac474aaefc7e7d6e1c2"
+  },
+  "samples_per_stratum_per_run": 1000,
+  "independent_runs_per_factor": 3,
+  "max_workers": 3,
+  "source_config": "Same embedded actual config in each frozen Domain assembly; global config mutation is checked by simulator",
+  "scopes": "O6 whitelist only; separate HP95/90 and first-windup250/500ms; O1/E1/BOSS paired unchanged controls",
+  "candidate_activation": false,
+  "main_sample_floor_met": true,
+  "jobs": [
+    {
+      "factor": "outer-o6-hp095",
+      "seed_start": 0,
+      "output": "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/outer-o6-hp095/0",
+      "command": [
+        "dotnet",
+        "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/runtime/FantasyCard.Numerics.dll",
+        "--combat-experience",
+        "--candidate",
+        "outer-o6-hp095",
+        "--samples",
+        "1000",
+        "--seed-start",
+        "0",
+        "--source-sha",
+        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+        "--output",
+        "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/outer-o6-hp095/0"
+      ],
+      "state": "Queued"
+    },
+    {
+      "factor": "outer-o6-hp095",
+      "seed_start": 1000,
+      "output": "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/outer-o6-hp095/1000",
+      "command": [
+        "dotnet",
+        "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/runtime/FantasyCard.Numerics.dll",
+        "--combat-experience",
+        "--candidate",
+        "outer-o6-hp095",
+        "--samples",
+        "1000",
+        "--seed-start",
+        "1000",
+        "--source-sha",
+        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+        "--output",
+        "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/outer-o6-hp095/1000"
+      ],
+      "state": "Queued"
+    },
+    {
+      "factor": "outer-o6-hp095",
+      "seed_start": 2000,
+      "output": "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/outer-o6-hp095/2000",
+      "command": [
+        "dotnet",
+        "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/runtime/FantasyCard.Numerics.dll",
+        "--combat-experience",
+        "--candidate",
+        "outer-o6-hp095",
+        "--samples",
+        "1000",
+        "--seed-start",
+        "2000",
+        "--source-sha",
+        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+        "--output",
+        "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/outer-o6-hp095/2000"
+      ],
+      "state": "Queued"
+    },
+    {
+      "factor": "outer-o6-hp090",
+      "seed_start": 0,
+      "output": "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/outer-o6-hp090/0",
+      "command": [
+        "dotnet",
+        "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/runtime/FantasyCard.Numerics.dll",
+        "--combat-experience",
+        "--candidate",
+        "outer-o6-hp090",
+        "--samples",
+        "1000",
+        "--seed-start",
+        "0",
+        "--source-sha",
+        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+        "--output",
+        "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/outer-o6-hp090/0"
+      ],
+      "state": "Queued"
+    },
+    {
+      "factor": "outer-o6-hp090",
+      "seed_start": 1000,
+      "output": "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/outer-o6-hp090/1000",
+      "command": [
+        "dotnet",
+        "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/runtime/FantasyCard.Numerics.dll",
+        "--combat-experience",
+        "--candidate",
+        "outer-o6-hp090",
+        "--samples",
+        "1000",
+        "--seed-start",
+        "1000",
+        "--source-sha",
+        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+        "--output",
+        "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/outer-o6-hp090/1000"
+      ],
+      "state": "Queued"
+    },
+    {
+      "factor": "outer-o6-hp090",
+      "seed_start": 2000,
+      "output": "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/outer-o6-hp090/2000",
+      "command": [
+        "dotnet",
+        "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/runtime/FantasyCard.Numerics.dll",
+        "--combat-experience",
+        "--candidate",
+        "outer-o6-hp090",
+        "--samples",
+        "1000",
+        "--seed-start",
+        "2000",
+        "--source-sha",
+        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+        "--output",
+        "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/outer-o6-hp090/2000"
+      ],
+      "state": "Queued"
+    },
+    {
+      "factor": "outer-o6-windup025",
+      "seed_start": 0,
+      "output": "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/outer-o6-windup025/0",
+      "command": [
+        "dotnet",
+        "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/runtime/FantasyCard.Numerics.dll",
+        "--combat-experience",
+        "--candidate",
+        "outer-o6-windup025",
+        "--samples",
+        "1000",
+        "--seed-start",
+        "0",
+        "--source-sha",
+        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+        "--output",
+        "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/outer-o6-windup025/0"
+      ],
+      "state": "Queued"
+    },
+    {
+      "factor": "outer-o6-windup025",
+      "seed_start": 1000,
+      "output": "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/outer-o6-windup025/1000",
+      "command": [
+        "dotnet",
+        "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/runtime/FantasyCard.Numerics.dll",
+        "--combat-experience",
+        "--candidate",
+        "outer-o6-windup025",
+        "--samples",
+        "1000",
+        "--seed-start",
+        "1000",
+        "--source-sha",
+        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+        "--output",
+        "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/outer-o6-windup025/1000"
+      ],
+      "state": "Queued"
+    },
+    {
+      "factor": "outer-o6-windup025",
+      "seed_start": 2000,
+      "output": "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/outer-o6-windup025/2000",
+      "command": [
+        "dotnet",
+        "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/runtime/FantasyCard.Numerics.dll",
+        "--combat-experience",
+        "--candidate",
+        "outer-o6-windup025",
+        "--samples",
+        "1000",
+        "--seed-start",
+        "2000",
+        "--source-sha",
+        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+        "--output",
+        "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/outer-o6-windup025/2000"
+      ],
+      "state": "Queued"
+    },
+    {
+      "factor": "outer-o6-windup050",
+      "seed_start": 0,
+      "output": "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/outer-o6-windup050/0",
+      "command": [
+        "dotnet",
+        "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/runtime/FantasyCard.Numerics.dll",
+        "--combat-experience",
+        "--candidate",
+        "outer-o6-windup050",
+        "--samples",
+        "1000",
+        "--seed-start",
+        "0",
+        "--source-sha",
+        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+        "--output",
+        "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/outer-o6-windup050/0"
+      ],
+      "state": "Queued"
+    },
+    {
+      "factor": "outer-o6-windup050",
+      "seed_start": 1000,
+      "output": "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/outer-o6-windup050/1000",
+      "command": [
+        "dotnet",
+        "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/runtime/FantasyCard.Numerics.dll",
+        "--combat-experience",
+        "--candidate",
+        "outer-o6-windup050",
+        "--samples",
+        "1000",
+        "--seed-start",
+        "1000",
+        "--source-sha",
+        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+        "--output",
+        "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/outer-o6-windup050/1000"
+      ],
+      "state": "Queued"
+    },
+    {
+      "factor": "outer-o6-windup050",
+      "seed_start": 2000,
+      "output": "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/outer-o6-windup050/2000",
+      "command": [
+        "dotnet",
+        "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/runtime/FantasyCard.Numerics.dll",
+        "--combat-experience",
+        "--candidate",
+        "outer-o6-windup050",
+        "--samples",
+        "1000",
+        "--seed-start",
+        "2000",
+        "--source-sha",
+        "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+        "--output",
+        "/workspace/pr13-takeover/actual-factors-cc6da2e/matrix/outer-o6-windup050/2000"
+      ],
+      "state": "Queued"
+    }
+  ]
+}

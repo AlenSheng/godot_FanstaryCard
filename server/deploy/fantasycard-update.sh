@@ -3,12 +3,13 @@ set -euo pipefail
 
 # Run as the ubuntu user; only Docker commands use sudo.
 repo=/opt/fantasycard-github
-branch=release
+branch=${FANTASYCARD_DEPLOY_BRANCH:-release}
 app_dir="$repo/server"
 compose="$app_dir/compose.cloud.yaml"
 env_file="$app_dir/.env"
 backup_dir=/opt/fantasycard-app/backups
 deployed_marker=/opt/fantasycard-app/deployed-git-commit
+runtime_marker=/opt/fantasycard-app/deployed-runtime-commit
 manifest_dir=/opt/fantasycard-app/version-manifests
 manifest="$manifest_dir/release.md5"
 manifest_version="$manifest_dir/release.version"
@@ -186,7 +187,8 @@ if [[ "$runtime_changed" == true ]]; then
   sudo docker compose -f "$compose" --env-file "$env_file" exec -T postgres \
     pg_restore --list < "$backup" >/dev/null
   echo "正在构建服务端版本：$target"
-  sudo docker compose -f "$compose" --env-file "$env_file" build server
+  sudo docker compose -f "$compose" --env-file "$env_file" build \
+    --build-arg "FANTASYCARD_SOURCE_COMMIT=$target" server
   sudo docker compose -f "$compose" --env-file "$env_file" up -d --no-deps server
   sudo docker compose -f "$compose" --env-file "$env_file" up -d --no-deps \
     otel-collector node-exporter prometheus grafana
@@ -200,6 +202,17 @@ fi
 
 for attempt in {1..24}; do
   if health_check >/dev/null 2>&1; then
+    # A checkout/manifest can advance after client-only changes. The running
+    # image revision is separate evidence and must never be inferred from it.
+    container_id=$(sudo docker compose -f "$compose" --env-file "$env_file" ps -q server)
+    image_revision=$(sudo docker inspect --format '{{index .Config.Labels "org.opencontainers.image.revision"}}' "$container_id")
+    if [[ "$runtime_changed" == true && "$image_revision" != "$target" ]]; then
+      echo '运行镜像的源码标记与构建目标不一致，保留旧部署标记。' >&2
+      exit 1
+    fi
+    if [[ "$image_revision" =~ ^[0-9a-f]{40}$ ]]; then
+      printf '%s\n' "$image_revision" > "$runtime_marker"
+    fi
     mv "$manifest.new" "$manifest"
     printf '%s\n' "$target" > "$manifest_version"
     printf '%s\n' "$target" > "$deployed_marker"

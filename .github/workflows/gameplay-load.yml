@@ -1,0 +1,185 @@
+name: Gameplay load offline checks
+
+on:
+  pull_request:
+    paths:
+      - 'tools/gameplay_load*.py'
+      - 'tools/pr13_runtime_evidence.py'
+      - 'tools/pr13_local_checks.py'
+      - 'tools/pr13_offline_cases.py'
+      - 'tools/pr13_callback_isolation.py'
+      - 'tools/cloud_load_test.py'
+      - 'tools/tests/**'
+      - 'client/network/**'
+      - 'client/state/**'
+      - 'client/tests/**'
+      - 'protocol/**'
+      - 'server/**'
+      - '.github/workflows/gameplay-load.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  accounting:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - name: Install load generator metrics dependency
+        run: python -m pip install psutil==7.0.0
+      - name: Offline accounting and process tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p test-results/gameplay-accounting
+          git rev-parse HEAD > test-results/gameplay-accounting/source-sha.txt
+          python --version > test-results/gameplay-accounting/python-version.txt
+          python -m unittest discover -s tools/tests -v 2>&1 | tee test-results/gameplay-accounting/unittest.log
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: gameplay-load-accounting-${{ github.sha }}
+          path: test-results/gameplay-accounting
+          retention-days: 7
+          if-no-files-found: error
+
+  client:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Install Godot from official distribution
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/godot" test-results/gameplay-load
+          curl --fail --location --retry 2 'https://downloads.godotengine.org/?version=4.7.2&flavor=stable&slug=linux.x86_64.zip&platform=linux.64' -o "$RUNNER_TEMP/godot.zip"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          chmod +x "$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64"
+          "$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64" --version | tee test-results/gameplay-load/godot-version.txt
+          grep -q '^4\.7\.2\.' test-results/gameplay-load/godot-version.txt
+      - name: Import and run client checks with networking disabled
+        shell: bash
+        run: |
+          set -euo pipefail
+          export XDG_DATA_HOME="$RUNNER_TEMP/godot-offline/data"
+          export XDG_CONFIG_HOME="$RUNNER_TEMP/godot-offline/config"
+          export XDG_CACHE_HOME="$RUNNER_TEMP/godot-offline/cache"
+          godot="$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64"
+          sudo -E unshare -n timeout 600 "$godot" --headless --path client --editor --import --quit > test-results/gameplay-load/import.log 2>&1
+          sudo -E unshare -n timeout 90 "$godot" --headless --path client --script res://tests/run_gameplay_load_parse.gd > test-results/gameplay-load/load-parse.log 2>&1
+          sudo -E unshare -n timeout 90 "$godot" --headless --path client --script res://tests/run_play_retry.gd > test-results/gameplay-load/client.log 2>&1
+          ! grep -E 'SCRIPT ERROR|Parse Error|Failed to load script' test-results/gameplay-load/*.log
+          grep -q 'Gameplay load client parses' test-results/gameplay-load/load-parse.log
+      - name: Loopback HTTP completeness and protocol fixtures
+        shell: bash
+        run: |
+          set -euo pipefail
+          godot="$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64"
+          python client/tests/run_http_boundary.py --godot "$godot" --output test-results/gameplay-load/http-boundary
+          python client/tests/run_http_protobuf_client.py --godot "$godot" --work-dir test-results/gameplay-load/http-fixture
+          python tools/pr13_offline_cases.py --godot "$godot" --output test-results/gameplay-load/offline-cases
+          A3GAME_GODOT_EXECUTABLE="$godot" python tools/pr13_callback_isolation.py --output test-results/gameplay-load/callback-isolation
+          FANTASYCARD_SERVER_URL=http://127.0.0.1:1 "$godot" --headless --path client --script res://tests/run_gateway_origin.gd > test-results/gameplay-load/gateway-origin.log 2>&1
+          grep -q '"ok":true' test-results/gameplay-load/gateway-origin.log
+          ! grep -E 'SCRIPT ERROR|Parse Error' test-results/gameplay-load/gateway-origin.log
+      - name: Same-session callback races
+        shell: bash
+        run: |
+          set -euo pipefail
+          export XDG_DATA_HOME="$RUNNER_TEMP/godot-offline/data"
+          export XDG_CONFIG_HOME="$RUNNER_TEMP/godot-offline/config"
+          export XDG_CACHE_HOME="$RUNNER_TEMP/godot-offline/cache"
+          sudo -E unshare -n timeout 60 "$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64" --headless --path client --script res://tests/run_lobby_race.gd > test-results/gameplay-load/lobby-race.log 2>&1
+          grep -q '"ok":true' test-results/gameplay-load/lobby-race.log
+          ! grep -E 'SCRIPT ERROR|Parse Error' test-results/gameplay-load/lobby-race.log
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: gameplay-load-client-${{ github.sha }}
+          path: test-results/gameplay-load
+          retention-days: 7
+          if-no-files-found: ignore
+
+  server-contract:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: server/global.json
+      - name: Full server offline regression
+        shell: pwsh
+        working-directory: server
+        run: |
+          dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --logger 'trx;LogFileName=server-offline.trx' --results-directory ../test-results/gameplay-load
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: gameplay-load-server-${{ github.sha }}
+          path: test-results/gameplay-load
+          retention-days: 7
+          if-no-files-found: ignore
+
+  server-postgres:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_DB: fantasycard_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d fantasycard_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      FANTASYCARD_TEST_POSTGRES: Host=127.0.0.1;Port=5432;Username=postgres;Password=postgres;Database=fantasycard_test
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: server/global.json
+      - name: Install pinned Godot for real client and PostgreSQL fault checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/godot-pg" test-results/gameplay-load
+          curl --fail --location --retry 2 'https://downloads.godotengine.org/?version=4.7.2&flavor=stable&slug=linux.x86_64.zip&platform=linux.64' -o "$RUNNER_TEMP/godot-pg.zip"
+          unzip -q "$RUNNER_TEMP/godot-pg.zip" -d "$RUNNER_TEMP/godot-pg"
+          executable="$RUNNER_TEMP/godot-pg/Godot_v4.7.2-stable_linux.x86_64"
+          chmod +x "$executable"
+          "$executable" --version | tee test-results/gameplay-load/godot-pg-version.txt
+          grep -q '^4\.7\.2\.' test-results/gameplay-load/godot-pg-version.txt
+          echo "A3GAME_GODOT_EXECUTABLE=$executable" >> "$GITHUB_ENV"
+          echo "FANTASYCARD_PROCESS_EVIDENCE=$GITHUB_WORKSPACE/test-results/gameplay-load/process-faults" >> "$GITHUB_ENV"
+      - name: Full server and runtime integration on disposable PostgreSQL
+        working-directory: server
+        run: dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --logger 'trx;LogFileName=postgres-full.trx' --results-directory ../test-results/gameplay-load
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: gameplay-load-postgres-${{ github.sha }}
+          path: test-results/gameplay-load
+          retention-days: 7
+          if-no-files-found: ignore

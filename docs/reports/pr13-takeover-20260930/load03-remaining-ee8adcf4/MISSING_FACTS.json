@@ -1,0 +1,23 @@
+{
+  "LOAD-03.3": {
+    "canonical_requirement": "started=各互斥终态+pending；all_attempt与valid_latency可独立重算。",
+    "actual": "Actual Gateway has2 invoked requests,1 finished and1 held in production _pending_http; production aggregate counts logical1 and exposes neither logical-start nor pending denominator. No start event exists at the pending cutoff.",
+    "evidence": "pending-probe-ee8/REPORT.json",
+    "minimum_files": [
+      "client/network/gateway.gd (request-start/terminal outcome telemetry)",
+      "tools/gameplay_load_validation.py (stateful logical outcome reducer)",
+      "tools/gameplay_load_test.py (cross-window reducer state/final cutoffs)"
+    ],
+    "minimum_next": "Propose reviewed minimal telemetry/reducer implementation under fixed candidate coordination; actual two-request pending/late response counterexample then restart/cancel/timeout/decode outcome matrix, no lowered timeouts."
+  },
+  "LOAD-03.4": {
+    "canonical_requirement": "分路由/phase输出P50/P95/P99/max、吞吐、样本不足；全局从样本或可合并分布计算; 三截止点和全程指标可重算，末窗零错误不取代全场；算法版本明确。",
+    "actual": "Production aggregate outputs global and phase distributions but no route distribution or throughput. Coordinator retains windows/raw and cycle cutoffs, without full-run HTTP running/drain/final distribution fields. Harness can recompute synthetic fixture raw, but that does not implement missing production fields.",
+    "evidence": "distribution-probe/REPORT.json",
+    "minimum_files": [
+      "tools/gameplay_load_validation.py (route/phase distributions and observed-duration throughput)",
+      "tools/gameplay_load_test.py (raw/mergeable full-run HTTP summaries at actual cutoffs)"
+    ],
+    "minimum_next": "Review full raw immutable aggregation and three-cutoff production output after LOAD03.3 minimal state input exists. Keep sample thresholds and failed requests in denominators. Independent finite-duration edge-case worker remains separate."
+  }
+}

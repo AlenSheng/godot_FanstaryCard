@@ -1,0 +1,778 @@
+diff --git a/tools/pr13_factor_matrix.py b/tools/pr13_factor_matrix.py
+index 22b6a503..e9c8336e 100644
+--- a/tools/pr13_factor_matrix.py
++++ b/tools/pr13_factor_matrix.py
+@@ -1,5 +1,6 @@
+ """Preregister and run isolated O6 single-factor experiments on frozen assemblies."""
+ import argparse
++from collections import Counter,defaultdict
+ import concurrent.futures
+ import hashlib
+ import json
+@@ -8,45 +9,140 @@ import shutil
+ import subprocess
+ import time
+ 
++try:
++    from .pr13_simulation_report import candidate_profile,load_run
++except ImportError:  # Direct script invocation.
++    from pr13_simulation_report import candidate_profile,load_run
++
+ ROOT=Path(__file__).resolve().parents[1]
+ FACTORS=('outer-o6-hp095','outer-o6-hp090','outer-o6-windup025','outer-o6-windup050')
+ 
+ 
+ def validate_controls(output, results):
+-    errors=[];total=controls=windups=0
++    errors=[];total=controls=windups=0;states=Counter(r['state'] for r in results)
++    try:
++        registered=json.loads((output/'preregistration.json').read_text(encoding='utf8'))
++    except (OSError,ValueError):
++        return dict(total=0,errors=[dict(kind='missing_preregistration')],passed=False,
++                    execution_states=dict(states),main_sample_floor_met=False,acceptance_eligible=False,
++                    candidate_activation=False)
++    identity=lambda job:(job['factor'],job['seed_start'],str(Path(job['output']).resolve()))
++    try:
++        samples=registered['samples_per_stratum_per_run']
++        if type(samples) is not int or samples<3 or registered['independent_runs_per_factor']!=3:
++            raise ValueError('Invalid declared sample or independent run budget')
++        declared=Counter((job['factor'],job['seed_start']) for job in registered['jobs'])
++        required=Counter((factor,start) for factor in FACTORS for start in (0,samples,samples*2))
++        if declared!=required:raise ValueError('Preregistered jobs must cover every factor and all three seed blocks exactly once')
++        expected=Counter(identity(job) for job in registered['jobs']);actual=Counter(identity(job) for job in results)
++    except (KeyError,TypeError,ValueError) as error:
++        return dict(total=0,errors=[dict(kind='invalid_preregistration',reason=str(error))],passed=False,
++                    execution_states=dict(states),main_sample_floor_met=False,acceptance_eligible=False,
++                    candidate_activation=False)
++    blocks=defaultdict(list);config_hash=None
++    for execution in results:
++        if execution['state']!='Completed':
++            errors.append(dict(kind='incomplete_job',output=execution['output'],state=execution['state'],reason=execution.get('reason')))
++    if not expected or expected!=actual or any(count!=1 for count in actual.values()):
++        errors.append(dict(kind='job_matrix_mismatch',expected_jobs=sum(expected.values()),actual_jobs=len(results)))
+     for execution in results:
+-        if execution['state']!='Completed':errors.append(dict(kind='incomplete_job',output=execution['output']));continue
+-        directory=Path(execution['output']);summary=json.loads((directory/'summary.json').read_text())
+-        raw=directory/'encounters.jsonl'
+-        if hashlib.sha256(raw.read_bytes()).hexdigest()!=summary['RawSha256']:
+-            errors.append(dict(kind='raw_hash_mismatch',output=str(directory)));continue
+-        pairs={};count=0
+-        with raw.open(encoding='utf8') as stream:
+-            for line in stream:
+-                row=json.loads(line);total+=1;count+=1
+-                key=tuple(row[k] for k in ('Seed','Hero','WeaponLevel','Deck','Group','Strategy'))
+-                pairs.setdefault(key,[]).append(row)
+-                if row['Outcome']=='Error':errors.append(dict(kind='encounter_error',key=key,output=str(directory)))
+-                if row['Group']=='O6' and row['Profile'].startswith('TargetedO6Windup'):
+-                    windups+=1;expected=250 if '025' in execution['factor'] else 500
+-                    if (row.get('FirstWindupExtraMilliseconds')!=expected or row.get('FirstWindupExtensions',0)<1 or
+-                            any(i!=0 for i in row.get('FirstWindupIntentIndexes',[]))):
+-                        errors.append(dict(kind='first_intent_not_extended',key=key,output=str(directory)))
+-        if count!=summary['Total']:errors.append(dict(kind='raw_count_mismatch',output=str(directory)))
++        if execution['state']!='Completed':continue
++        directory=Path(execution['output']);factor=execution['factor']
++        try:
++            manifest,summary,rows=load_run(directory)
++            if (factor not in FACTORS or manifest['Candidate']!=factor or
++                    manifest['SeedStart']!=execution['seed_start'] or
++                    manifest['SamplesPerStratum']!=registered['samples_per_stratum_per_run'] or
++                    manifest['SourceSha']!=registered['source_sha'] or
++                    manifest['DomainAssemblySha256']!=registered['assembly_hashes']['FantasyCard.Domain.dll'] or
++                    manifest['SimulatorAssemblySha256']!=registered['assembly_hashes']['FantasyCard.Numerics.dll'] or
++                    manifest.get('SingleFactorOnly') is not True or manifest.get('CandidateWhitelist')!=['O6'] or
++                    set(manifest['Groups'])!={'O1','O6','E1','BOSS'} or
++                    set(manifest['Strategies'])!={'baseline_all_hand','basic','build'} or
++                    {deck['Hero'] for deck in manifest['Decks']}!={'Mage','Priest','Guardian'}):
++                raise ValueError('Factor or frozen runtime contract differs from preregistration')
++            # A factor label may differ, but all jobs must use the same actual config and observation policy.
++            signature={k:manifest.get(k) for k in ('SourceConfigSha256','ConfigVersion','CutoffSeconds',
++                       'ActionIntervalSeconds','StrategyPolicy','ProductionDefaults','WeaponLevel','Decks')}
++            if config_hash is not None and config_hash!=signature:raise ValueError('Mixed frozen config or observation policy')
++            config_hash=signature
++        except (OSError,ValueError,KeyError,TypeError) as error:
++            errors.append(dict(kind='invalid_run_contract',output=str(directory),reason=str(error)));continue
++        blocks[factor].append((manifest['SeedStart'],manifest['SamplesPerStratum']))
++        pairs={};total+=len(rows)
++        for row in rows:
++            key=tuple(row[k] for k in ('Seed','Hero','WeaponLevel','Deck','Group','Strategy'))
++            pairs.setdefault(key,[]).append(row)
++            if row['Outcome']=='Error':errors.append(dict(kind='encounter_error',key=key,output=str(directory)))
++            if row['Group']=='O6' and row['Profile']!='Baseline' and 'windup' in factor:
++                windups+=1;extra=250 if '025' in factor else 500
++                indexes=row.get('FirstWindupIntentIndexes');extensions=row.get('FirstWindupExtensions')
++                if (row.get('FirstWindupExtraMilliseconds')!=extra or type(extensions) is not int or extensions<1 or
++                        not isinstance(indexes,list) or len(indexes)!=extensions or
++                        any(type(i) is not int or i!=0 for i in indexes)):
++                    errors.append(dict(kind='first_intent_not_extended',key=key,output=str(directory)))
++            elif (row.get('FirstWindupExtraMilliseconds')!=0 or row.get('FirstWindupExtensions')!=0 or
++                  row.get('FirstWindupIntentIndexes')!=[]):
++                errors.append(dict(kind='unexpected_windup_change',key=key,output=str(directory)))
+         for key,pair in pairs.items():
+-            if len(pair)!=2:errors.append(dict(kind='unpaired_seed',key=key));continue
++            expected_profiles={'Baseline',candidate_profile(factor,key[1],key[4])}
++            if len(pair)!=2 or {row['Profile'] for row in pair}!=expected_profiles:
++                errors.append(dict(kind='unpaired_seed',key=key));continue
+             if key[4]=='O6':continue
+             controls+=1;a,b=pair
+             if {k:v for k,v in a.items() if k!='Profile'}!={k:v for k,v in b.items() if k!='Profile'}:
+                 errors.append(dict(kind='unaffected_control_changed',key=key,output=str(directory)))
++    floor=set(blocks)==set(FACTORS)
++    for factor in FACTORS:
++        intervals=sorted(blocks[factor])
++        if len(intervals)!=3 or any(n<1000 for start,n in intervals):floor=False
++        if any(left[0]+left[1]>right[0] for left,right in zip(intervals,intervals[1:])):
++            errors.append(dict(kind='overlapping_seed_blocks',factor=factor));floor=False
+     return dict(total=total,unaffected_paired_controls_checked=controls,first_intent_extensions_checked=windups,
+-                errors=errors,passed=not errors,candidate_activation=False)
++                validator_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
++                raw_contract_sha256=hashlib.sha256((Path(__file__).parent/'pr13_simulation_report.py').read_bytes()).hexdigest(),
++                errors=errors,passed=not errors,execution_states=dict(states),main_sample_floor_met=floor,
++                sample_budget_status='BudgetMet' if floor else 'Inconclusive',
++                acceptance_eligible=False,candidate_recommendation='NotEvaluated',
++                limitations=['Controls and sample budgets do not establish candidate benefit, precision, economic or human experience acceptance.'],
++                candidate_activation=False)
+ 
+ 
+ def write(path,value):
+     temporary=path.with_suffix('.tmp');temporary.write_text(json.dumps(value,indent=2),encoding='utf8');temporary.replace(path)
+ 
+ 
++def run_job(job,stop):
++    record=dict(job);target=Path(job['output'])
++    if stop.exists():
++        record.update(state='NotExecuted',reason='operator_stop_before_launch',started_at=None,finished_at=time.time())
++        write(target/'execution.json',record);return record
++    record.update(state='Running',started_at=time.time())
++    write(target/'execution.json',record)
++    with (target/'execution.log').open('w',encoding='utf8') as log:
++        try:
++            child=subprocess.Popen(job['command'],stdout=log,stderr=subprocess.STDOUT,
++                creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
++        except OSError as error:
++            record.update(state='Failed',reason='launch_failed',error=str(error),exit_code=None,finished_at=time.time())
++            write(target/'execution.json',record);return record
++        record['pid']=child.pid;write(target/'execution.json',record);deadline=time.monotonic()+2400
++        try:
++            while child.poll() is None and time.monotonic()<deadline and not stop.exists():time.sleep(.5)
++            if child.poll() is None:
++                cancelled=stop.exists()
++                record.update(state='Cancelled' if cancelled else 'TimedOut',
++                              reason='operator_stop_during_run' if cancelled else 'job_deadline_exceeded')
++                child.kill()
++            child.wait(timeout=10)
++            record.update(exit_code=child.returncode,finished_at=time.time())
++            if record['state']=='Running':record['state']='Completed' if child.returncode==0 else 'Failed'
++        finally:
++            if child.poll() is None:child.kill();child.wait(timeout=10)
++            write(target/'execution.json',record)
++    return record
++
++
+ def main():
+     parser=argparse.ArgumentParser(description=__doc__)
+     parser.add_argument('--output',type=Path,required=True)
+@@ -68,6 +164,7 @@ def main():
+                 command=['dotnet',str(runtime/'FantasyCard.Numerics.dll'),'--combat-experience','--candidate',factor,
+                     '--samples',str(args.samples),'--seed-start',str(seed),'--source-sha',head,'--output',str(directory)],state='Queued'))
+     manifest=dict(schema_version=1,registered_at=time.time(),source_sha=head,source_file_sha256=hashlib.sha256((ROOT/'server/tools/FantasyCard.Numerics/CombatExperience.cs').read_bytes()).hexdigest(),
++        source_git_dirty=bool(subprocess.check_output(['git','status','--porcelain'],cwd=ROOT,text=True).strip()),
+         assembly_hashes={name:hashlib.sha256((runtime/name).read_bytes()).hexdigest() for name in files},
+         samples_per_stratum_per_run=args.samples,independent_runs_per_factor=3,max_workers=args.workers,
+         source_config='Same embedded actual config in each frozen Domain assembly; global config mutation is checked by simulator',
+@@ -75,29 +172,8 @@ def main():
+         candidate_activation=False,main_sample_floor_met=args.samples>=1000,jobs=jobs)
+     write(output/'preregistration.json',manifest)
+     stop=output/'STOP'
+-    def run(job):
+-        record=dict(job,state='Running',started_at=time.time());target=Path(job['output'])
+-        if stop.exists():
+-            record.update(state='NotExecuted',reason='operator_stop_before_launch',finished_at=time.time())
+-            write(target/'execution.json',record);return record
+-        write(target/'execution.json',record)
+-        with (target/'execution.log').open('w',encoding='utf8') as log:
+-            child=subprocess.Popen(job['command'],stdout=log,stderr=subprocess.STDOUT,
+-                creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
+-            record['pid']=child.pid;write(target/'execution.json',record);deadline=time.monotonic()+2400
+-            try:
+-                while child.poll() is None and time.monotonic()<deadline and not stop.exists():time.sleep(.5)
+-                if child.poll() is None:
+-                    record['state']='Cancelled' if stop.exists() else 'TimedOut';child.kill()
+-                child.wait(timeout=10)
+-                record.update(exit_code=child.returncode,finished_at=time.time())
+-                if record['state']=='Running':record['state']='Completed' if child.returncode==0 else 'Failed'
+-            finally:
+-                if child.poll() is None:child.kill();child.wait(timeout=10)
+-                write(target/'execution.json',record)
+-        return record
+     with concurrent.futures.ThreadPoolExecutor(max_workers=args.workers) as pool:
+-        results=list(pool.map(run,jobs))
++        results=list(pool.map(lambda job:run_job(job,stop),jobs))
+     controls=validate_controls(output,results)
+     write(output/'controls-report.json',controls)
+     write(output/'results.json',dict(jobs=results,candidate_activation=False,all_completed=all(r['state']=='Completed' for r in results)))
+diff --git a/tools/pr13_simulation_report.py b/tools/pr13_simulation_report.py
+index e0cc831a..9327b5e5 100644
+--- a/tools/pr13_simulation_report.py
++++ b/tools/pr13_simulation_report.py
+@@ -9,6 +9,119 @@ import random
+ import statistics
+ import subprocess
+ 
++ROOT=Path(__file__).resolve().parents[1]
++STRATUM_FIELDS=('Hero','WeaponLevel','Deck','Group','Strategy','Profile')
++OUTCOMES={'Victory','Death','Censored','Error'}
++TARGET_PROFILES={
++    'outer-o6-hp085':'TargetedO6Hp085','outer-o6-hp095':'TargetedO6Hp095',
++    'outer-o6-hp090':'TargetedO6Hp090','outer-o6-interval110':'TargetedO6Interval110',
++    'outer-o6-windup025':'TargetedO6Windup025','outer-o6-windup050':'TargetedO6Windup050'}
++
++
++def candidate_profile(candidate,hero,group):
++    if candidate=='class-passives':
++        return {'Mage':'CoreCardsSpent','Guardian':'FractionalRemainder','Priest':'BaselinePairedControl'}[hero]
++    if candidate not in TARGET_PROFILES:raise ValueError('Unknown candidate: '+str(candidate))
++    return TARGET_PROFILES[candidate] if group=='O6' else 'BaselinePairedControl'
++
++
++def frozen_signature(manifest):
++    fields=('Kind','SourceSha','DomainAssemblySha256','SimulatorAssemblySha256','SourceConfigSha256',
++            'ConfigVersion','Candidate','CutoffSeconds','ActionIntervalSeconds','WeaponLevel')
++    return {**{k:manifest[k] for k in fields},
++            **{k:manifest.get(k) for k in ('StrategyPolicy','ProductionDefaults','PreviewAudit',
++                                          'Decks','Groups','Strategies','CandidateWhitelist','SingleFactorOnly',
++                                          'SourceGitDirty')}}
++
++
++def load_run(directory):
++    """Check the declared matrix against raw rows, including whole missing pairs."""
++    raw=directory/'encounters.jsonl'
++    manifest=json.loads((directory/'manifest.json').read_text(encoding='utf8'))
++    summary=json.loads((directory/'summary.json').read_text(encoding='utf8'))
++    try:
++        frozen_signature(manifest)
++        start=manifest['SeedStart'];samples=manifest['SamplesPerStratum'];level=manifest['WeaponLevel']
++        if type(start) is not int or start<0 or type(samples) is not int or samples<1:
++            raise ValueError('Invalid declared seed block')
++        if type(level) is not int or not 0<=level<=5:raise ValueError('Invalid weapon level')
++        for field in ('CutoffSeconds','ActionIntervalSeconds'):
++            value=manifest[field]
++            if type(value) not in (int,float) or not math.isfinite(value) or value<=0:
++                raise ValueError('Invalid observation policy: '+field)
++        if manifest.get('CandidateActivation') is not False:raise ValueError('Candidate activation is not isolated')
++        if summary['SourceSha']!=manifest['SourceSha']:raise ValueError('Summary source differs')
++        for field in ('Groups','Strategies'):
++            declared=manifest[field]
++            if not isinstance(declared,list) or not declared or any(type(v) is not str or not v for v in declared) or len(set(declared))!=len(declared):
++                raise ValueError('Invalid or duplicate declared matrix dimension: '+field)
++        decks=manifest['Decks']
++        if not isinstance(decks,list) or not decks:raise ValueError('Empty declared decks')
++        deck_keys=[(deck['Hero'],deck['Key']) for deck in decks]
++        if any(type(value) is not str or not value for key in deck_keys for value in key) or len(set(deck_keys))!=len(deck_keys):
++            raise ValueError('Invalid or duplicate declared deck')
++        expected=set()
++        for deck in decks:
++            for group in manifest['Groups']:
++                for strategy in manifest['Strategies']:
++                    for profile in ('Baseline',candidate_profile(manifest['Candidate'],deck['Hero'],group)):
++                        expected.add((deck['Hero'],level,deck['Key'],group,strategy,profile))
++        if not expected:raise ValueError('Empty declared matrix')
++        if sha(raw)!=summary['RawSha256']:raise ValueError('Raw digest differs')
++        values=[];seeds=defaultdict(set)
++        with raw.open(encoding='utf8') as stream:
++            for line in stream:
++                row=json.loads(line);key=tuple(row[k] for k in STRATUM_FIELDS);seed=row['Seed']
++                if key not in expected:raise ValueError('Undeclared stratum: '+str(key))
++                if type(seed) is not int or not start<=seed<start+samples:raise ValueError('Seed outside declared block')
++                if type(row['SeedBlock']) is not int or row['SeedBlock']!=(seed-start)%3:
++                    raise ValueError('SeedBlock differs from declared run')
++                if seed in seeds[key]:raise ValueError('Duplicate seed in stratum: '+str((key,seed)))
++                if row['Outcome'] not in OUTCOMES:raise ValueError('Unknown encounter outcome')
++                for field in ('ObservedSeconds','LongestEffectiveGapSeconds','Damage60','EffectiveShield',
++                              'HealOverflow','ShieldOverflow','PreviewParityChecks'):
++                    value=row[field]
++                    if type(value) not in (int,float) or not math.isfinite(value) or value<0:
++                        raise ValueError('Invalid numeric encounter field: '+field)
++                if row['ObservedSeconds']>manifest['CutoffSeconds']:raise ValueError('Observation exceeds cutoff')
++                seeds[key].add(seed);values.append(row)
++        if type(summary['Total']) is not int or len(values)!=summary['Total']:raise ValueError('Raw count differs')
++        if set(seeds)!=expected or any(len(block)!=samples for block in seeds.values()):
++            raise ValueError('Missing declared stratum or seed pair')
++        if 'ErrorCount' in summary and summary['ErrorCount']!=sum(r['Outcome']=='Error' for r in values):
++            raise ValueError('Raw error count differs')
++    except (KeyError,TypeError) as error:
++        raise ValueError('Missing or invalid run contract: '+str(directory)) from error
++    return manifest,summary,values
++
++
++def sample_budget(blocks):
++    sizes=[dict(seed_start=start,n=n) for start,n in sorted(blocks.items())]
++    met=len(sizes)>=3 and all(block['n']>=1000 for block in sizes)
++    return dict(seed_blocks=sizes,required_independent_blocks=3,required_paired_seeds_per_block=1000,
++                main_sample_floor_met=met,status='BudgetMet' if met else 'Inconclusive',
++                precision_guaranteed=False)
++
++
++def victory_ttk_p95(values):
++    """Identify a finite empirical all-started tail only from observed outcome bounds."""
++    outcomes=Counter(row['Outcome'] for row in values);reasons=[];rank=math.ceil(.95*len(values))
++    victories=sorted(row['ObservedSeconds'] for row in values if row['Outcome']=='Victory')
++    upper=victories[rank-1] if len(victories)>=rank else None
++    # Death has no future victory; censoring only gives a lower bound. The rank
++    # is identified when every compatible completion has the same finite value,
++    # including ties where early censoring cannot move the 95% order statistic.
++    lower=sorted(row['ObservedSeconds'] if row['Outcome'] in ('Victory','Censored')
++                 else math.inf for row in values)[rank-1]
++    if upper is None:reasons.append('insufficient_observed_victories_for_p95')
++    if outcomes['Censored'] and (upper is None or lower!=upper):
++        reasons.append('right_censored_outcomes')
++    if outcomes['Death'] and upper is None:reasons.append('competing_death_outcomes')
++    if outcomes['Error']:reasons.append('error_outcomes')
++    return dict(endpoint='time_to_victory_among_all_started_encounters',population_n=len(values),
++                identified=not reasons,value=None if reasons else upper,missing_reasons=reasons,
++                method='nearest-rank among all starts; death never becomes victory; censored outcomes must not alter the rank; no independent-censoring assumption')
++
+ 
+ def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
+ 
+@@ -30,27 +143,29 @@ def main():
+     parser.add_argument('--inputs',nargs='+',type=Path,required=True)
+     parser.add_argument('--output',type=Path,required=True)
+     args=parser.parse_args();args.output.mkdir(parents=True,exist_ok=True)
+-    rows=defaultdict(list);sources=[];seen=set();runs=defaultdict(set)
++    rows=defaultdict(list);sources=[];seen=set();runs=defaultdict(Counter);signature=None
+     for directory in args.inputs:
+-        raw=directory/'encounters.jsonl';manifest=json.loads((directory/'manifest.json').read_text())
+-        summary=json.loads((directory/'summary.json').read_text());digest=sha(raw)
+-        if digest!=summary['RawSha256']:raise ValueError('Raw digest differs: '+str(raw))
+-        count=0
+-        with raw.open(encoding='utf8') as stream:
+-            for line in stream:
+-                row=json.loads(line);key='/'.join(str(row[k]) for k in ('Hero','WeaponLevel','Deck','Group','Strategy','Profile'))
+-                identity=(key,row['Seed'])
+-                if identity in seen:raise ValueError('Duplicate seed in stratum: '+str(identity))
+-                seen.add(identity);rows[key].append(row);runs[key].add(manifest['SeedStart']);count+=1
+-        if count!=summary['Total']:raise ValueError('Raw count differs: '+str(raw))
++        raw=directory/'encounters.jsonl';manifest,summary,values=load_run(directory);digest=summary['RawSha256']
++        current=frozen_signature(manifest)
++        if signature is not None and signature!=current:raise ValueError('Mixed frozen inputs; report cohorts separately')
++        signature=current
++        for row in values:
++            key='/'.join(str(row[k]) for k in STRATUM_FIELDS);identity=(key,row['Seed'])
++            if identity in seen:raise ValueError('Duplicate seed in stratum: '+str(identity))
++            seen.add(identity);rows[key].append(row);runs[key][manifest['SeedStart']]+=1
++        count=len(values)
+         sources.append(dict(path=str(directory),raw_sha256=digest,raw_bytes=raw.stat().st_size,count=count,
+             manifest_sha256=sha(directory/'manifest.json'),summary_sha256=sha(directory/'summary.json'),
+             source_sha=manifest['SourceSha'],domain_sha256=manifest['DomainAssemblySha256'],
+-            simulator_sha256=manifest['SimulatorAssemblySha256'],seed_start=manifest['SeedStart']))
++            simulator_sha256=manifest['SimulatorAssemblySha256'],config_sha256=manifest['SourceConfigSha256'],
++            source_git_dirty=manifest.get('SourceGitDirty','Unknown'),
++            kind=manifest['Kind'],seed_start=manifest['SeedStart'],samples_per_stratum=manifest['SamplesPerStratum']))
+     strata=[];comparisons=[]
+     for key,values in sorted(rows.items()):
+         outcomes=Counter(row['Outcome'] for row in values);victories=[r for r in values if r['Outcome']=='Victory']
+         strata.append(dict(stratum=key,n=len(values),independent_seed_runs=sorted(runs[key]),outcomes=dict(outcomes),
++            sample_budget=sample_budget(runs[key]),censored_rate=outcomes['Censored']/len(values),
++            victory_ttk_p95_all_started=victory_ttk_p95(values),
+             victory_rate=outcomes['Victory']/len(values),victory_rate_wilson95=wilson(outcomes['Victory'],len(values)),
+             all_outcome_observed_seconds=distribution([r['ObservedSeconds'] for r in values]),
+             victory_seconds=distribution([r['ObservedSeconds'] for r in victories]),
+@@ -64,12 +179,14 @@ def main():
+         if len(alternatives)!=1:raise ValueError('Ambiguous paired profile: '+key)
+         other=alternatives[0];baseline={r['Seed']:r for r in values};candidate={r['Seed']:r for r in rows[other]}
+         if baseline.keys()!=candidate.keys():raise ValueError('Unpaired seeds: '+key)
++        if runs[key]!=runs[other]:raise ValueError('Unpaired seed blocks: '+key)
+         pairs=[(baseline[s],candidate[s]) for s in sorted(baseline)]
+         deltas={field:[b[field]-a[field] for a,b in pairs] for field in ('Damage60','EffectiveShield','ObservedSeconds')}
+         rng=random.Random(20260930)
+         # A paired seed bootstrap, separately per stratum; no per-run P95 averaging.
+         damage=deltas['Damage60'];bootstrap=sorted(statistics.fmean(rng.choices(damage,k=len(damage))) for _ in range(1000))
+         comparisons.append(dict(baseline=key,candidate=other,n=len(pairs),
++            sample_budget=sample_budget(runs[key]),
+             mean_damage60_delta=statistics.fmean(damage),paired_seed_bootstrap_damage60_95=[bootstrap[24],bootstrap[974]],
+             mean_effective_shield_delta=statistics.fmean(deltas['EffectiveShield']),
+             observed_seconds_delta_all_outcomes=distribution(deltas['ObservedSeconds']),
+@@ -77,13 +194,21 @@ def main():
+             baseline_deaths=sum(a['Outcome']=='Death' for a,b in pairs),candidate_deaths=sum(b['Outcome']=='Death' for a,b in pairs),
+             baseline_censored=sum(a['Outcome']=='Censored' for a,b in pairs),candidate_censored=sum(b['Outcome']=='Censored' for a,b in pairs),
+             retain_production_defaults=True))
+-    report=dict(schema_version=1,report_source_sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
++    report=dict(schema_version=2,report_source_sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
++        report_git_dirty=bool(subprocess.check_output(['git','status','--porcelain'],cwd=ROOT,text=True).strip()),
++        report_algorithm_sha256=sha(Path(__file__)),algorithm_version='raw-nearest-rank-paired-seed-bootstrap-v2',
+         sources=sources,total=sum(len(v) for v in rows.values()),errors=sum(r['Outcome']=='Error' for v in rows.values() for r in v),
+-        scope='Actual Domain encounters; default 20-card decks. Synthetic entry; no network, legal route, prepared Boss or human UX claim.',
++        scope='Raw encounter statistics; input kind and frozen provenance recorded per source. No network, legal route, prepared Boss or human UX claim.',
++        frozen_inputs=signature,candidate_recommendation='NotEvaluated',multiple_comparison_plan=None,
++        limitations=['Sample budget is not a precision guarantee.',
++                     'Intervals are descriptive per stratum; no preregistered primary endpoint or multiple-comparison plan was supplied.',
++                     'Victory-only quantiles do not establish an all-started TTK tail with censoring or competing outcomes.'],
+         candidate_activation=False,human_experience_verified=False,strata=strata,paired_comparisons=comparisons)
+     (args.output/'report.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf8')
+-    lines=['# PR13 战斗机器人分层汇总','','来自原始逐战样本；超时、死亡和错误均保留。候选未启用。',
+-           '',f"共 {report['total']:,} 条，运行错误 {report['errors']} 条。每个主要层合并三段互不重叠的种子，分位数从原始样本重算。",'',
++    lines=['# PR13 遭遇原样本分层汇总','','来自输入逐战样本；超时、死亡和错误均保留。候选未启用。',
++           '',f"共 {report['total']:,} 条，运行错误 {report['errors']} 条。各层实际种子块及样本预算见 JSON；分位数从原始样本重算。",'',
++           '少于三个互不重叠种子块或任一块少于1000配对seed时，样本预算为 Inconclusive。预算满足不保证精度；未提供预登记主要终点及多重比较方案，候选推荐为 NotEvaluated。',
++           '全结果观测时长保留截止/死亡；胜局时长只描述胜局。胜局数不足全体开战样本的95%秩、删失仍可能改变该秩或存在错误时，全体击杀时间 P95 记为不可识别；不能由胜局 P95 推断。','',
+            '默认裸装、直接进入指定遭遇的离线模拟；不代表合法完整探索、联网容量或真人体验。Boss 层也不代表完成装备准备后的难度。','',
+            '| 职业/武器/场景/策略/规则 | N | 胜/死/超时 | 全结果观测秒 P50/P95 | 最长无有效动作秒 P95 |',
+            '| --- | ---: | --- | --- | ---: |']
+diff --git a/tools/tests/test_pr13_simulation_contracts.py b/tools/tests/test_pr13_simulation_contracts.py
+new file mode 100644
+index 00000000..182cdedf
+--- /dev/null
++++ b/tools/tests/test_pr13_simulation_contracts.py
+@@ -0,0 +1,352 @@
++"""Pure Python statistical fixtures; no Domain, network, or historic acceptance claims."""
++import contextlib
++import hashlib
++import io
++import json
++import os
++from pathlib import Path
++import sys
++import tempfile
++import unittest
++from unittest.mock import Mock,patch
++
++from tools import pr13_factor_matrix as factors
++from tools import pr13_simulation_report as reports
++
++PROFILES = dict(zip(factors.FACTORS, ('TargetedO6Hp095', 'TargetedO6Hp090',
++                                     'TargetedO6Windup025', 'TargetedO6Windup050')))
++
++
++def row(seed, profile='Baseline', group='O6', hero='Mage', strategy='basic'):
++    windup = 250 if profile == 'TargetedO6Windup025' else 500 if profile == 'TargetedO6Windup050' else 0
++    return dict(Seed=seed, SeedBlock=seed % 3, Hero=hero, WeaponLevel=0, Deck='default',
++                Group=group, Strategy=strategy, Profile=profile, Outcome='Victory',
++                ObservedSeconds=10, LongestEffectiveGapSeconds=1, Damage60=10,
++                EffectiveShield=0, HealOverflow=0, ShieldOverflow=0, PreviewParityChecks=1,
++                FirstWindupExtraMilliseconds=windup, FirstWindupExtensions=1 if windup else 0,
++                FirstWindupIntentIndexes=[0] if windup else [])
++
++
++def fixture(directory, rows, seed_start=0, samples=3, factor='outer-o6-hp095', **changes):
++    directory.mkdir(parents=True, exist_ok=True)
++    manifest = dict(Kind='statistical_fixture', SourceSha='fixture-source',
++                    DomainAssemblySha256='fixture-domain', SimulatorAssemblySha256='fixture-simulator',
++                    SourceConfigSha256='fixture-config', ConfigVersion='fixture-v1',
++                    SeedStart=seed_start, SamplesPerStratum=samples, Candidate=factor,
++                    CutoffSeconds=60, ActionIntervalSeconds=.4, Groups=['O6'], Strategies=['basic'],
++                    Decks=[dict(Hero='Mage', Key='default')], WeaponLevel=0,
++                    CandidateActivation=False, SingleFactorOnly=True, CandidateWhitelist=['O6'])
++    manifest.update(changes)
++    raw = directory / 'encounters.jsonl'
++    raw.write_text(''.join(json.dumps(value) + '\n' for value in rows), encoding='utf8')
++    (directory / 'manifest.json').write_text(json.dumps(manifest), encoding='utf8')
++    (directory / 'summary.json').write_text(json.dumps(dict(
++        SourceSha=manifest['SourceSha'], RawSha256=hashlib.sha256(raw.read_bytes()).hexdigest(),
++        Total=len(rows))), encoding='utf8')
++    return directory
++
++
++class SimulationReportTests(unittest.TestCase):
++    def setUp(self):
++        self.temp = tempfile.TemporaryDirectory()
++        self.addCleanup(self.temp.cleanup)
++        self.root = Path(self.temp.name)
++
++    def paired(self, start=0, samples=3):
++        return [dict(row(seed, profile),SeedBlock=(seed-start)%3) for seed in range(start, start + samples)
++                for profile in ('Baseline', 'TargetedO6Hp095')]
++
++    def report(self, inputs):
++        target = self.root / 'report'
++        argv = ['report', '--inputs', *map(str, inputs), '--output', str(target)]
++        with patch.object(sys, 'argv', argv), contextlib.redirect_stdout(io.StringIO()):
++            exit_code = reports.main()
++        return json.loads((target / 'report.json').read_text()), (target / 'report.md').read_text(), exit_code
++
++    def test_small_single_run_has_no_three_block_claim(self):
++        directory = fixture(self.root / 'input', self.paired())
++        report, markdown, exit_code = self.report([directory])
++        self.assertEqual(exit_code, 0)
++        self.assertNotIn('每个主要层合并三段', markdown)
++        budget = report['strata'][0]['sample_budget']
++        self.assertFalse(budget['main_sample_floor_met'])
++        self.assertEqual(budget['status'], 'Inconclusive')
++        self.assertEqual(budget['seed_blocks'], [{'seed_start': 0, 'n': 3}])
++        self.assertEqual(report['candidate_recommendation'], 'NotEvaluated')
++
++    def test_report_provenance_uses_checkout_when_called_outside_repo(self):
++        directory=fixture(self.root/'input',self.paired())
++        caller=Path.cwd()
++        try:
++            os.chdir(self.root)
++            report,_,_=self.report([directory])
++        finally:
++            os.chdir(caller)
++        self.assertRegex(report['report_source_sha'],r'^[0-9a-f]{40}$')
++        self.assertEqual(report['report_algorithm_sha256'],hashlib.sha256(Path(reports.__file__).read_bytes()).hexdigest())
++
++    def test_three_blocks_of_one_thousand_meet_budget_without_acceptance(self):
++        inputs = [fixture(self.root / str(start), self.paired(start, 1000), seed_start=start, samples=1000)
++                  for start in (0, 1000, 2000)]
++        report, _, _ = self.report(inputs)
++        self.assertTrue(report['paired_comparisons'][0]['sample_budget']['main_sample_floor_met'])
++        self.assertFalse(report['paired_comparisons'][0]['sample_budget']['precision_guaranteed'])
++        self.assertEqual(report['candidate_recommendation'], 'NotEvaluated')
++
++    def test_observed_p95_and_completed_p95_cannot_claim_all_started_ttk(self):
++        rows = self.paired(samples=20)
++        for value in rows:
++            if value['Seed'] >= 10:
++                value.update(Outcome='Censored', ObservedSeconds=60)
++        report, _, _ = self.report([fixture(self.root / 'input', rows, samples=20)])
++        for stratum in report['strata']:
++            self.assertEqual(stratum['all_outcome_observed_seconds']['p95'], 60)
++            self.assertEqual(stratum['victory_seconds']['p95'], 10)
++            self.assertEqual(stratum['censored_rate'], .5)
++            ttk = stratum['victory_ttk_p95_all_started']
++            self.assertIsNone(ttk['value'])
++            self.assertFalse(ttk['identified'])
++            self.assertIn('right_censored_outcomes', ttk['missing_reasons'])
++
++    def test_error_and_death_remain_in_denominator(self):
++        rows = self.paired()
++        for value in rows:
++            if value['Seed'] == 1: value['Outcome'] = 'Death'
++            if value['Seed'] == 2: value['Outcome'] = 'Error'
++        report, _, exit_code = self.report([fixture(self.root / 'input', rows)])
++        self.assertEqual(exit_code, 1)
++        self.assertEqual(report['total'], 6)
++        self.assertEqual(report['errors'], 2)
++        self.assertEqual(report['strata'][0]['victory_rate'], 1 / 3)
++        self.assertFalse(report['strata'][0]['victory_ttk_p95_all_started']['identified'])
++
++    def test_p95_with_small_censoring_uses_all_started_rank_and_censor_bounds(self):
++        for early_censor in (False, True):
++            with self.subTest(early_censor=early_censor):
++                rows = self.paired(samples=100)
++                for value in rows:
++                    value['ObservedSeconds'] = value['Seed'] + 1
++                    if value['Seed'] >= 95:
++                        value.update(Outcome='Censored', ObservedSeconds=1 if early_censor else 120)
++                report, _, _ = self.report([fixture(self.root / 'input', rows, samples=100, CutoffSeconds=120)])
++                for stratum in report['strata']:
++                    ttk = stratum['victory_ttk_p95_all_started']
++                    self.assertEqual(stratum['victory_seconds']['p95'], 91)
++                    self.assertEqual(ttk['population_n'], 100)
++                    self.assertEqual(ttk['identified'], not early_censor)
++                    self.assertEqual(ttk['value'], None if early_censor else 95)
++
++    def test_tied_victories_identify_p95_even_with_early_censoring(self):
++        rows=self.paired(samples=100)
++        for value in rows:
++            if value['Seed']>=95:value.update(Outcome='Censored',ObservedSeconds=1)
++        report,_,_=self.report([fixture(self.root/'input',rows,samples=100)])
++        for stratum in report['strata']:
++            self.assertTrue(stratum['victory_ttk_p95_all_started']['identified'])
++            self.assertEqual(stratum['victory_ttk_p95_all_started']['value'],10)
++        self.assertEqual(report['sources'][0]['source_git_dirty'],'Unknown')
++        self.assertIsInstance(report['report_git_dirty'],bool)
++
++    def test_competing_death_stays_in_all_started_rank(self):
++        rows = self.paired(samples=100)
++        for value in rows:
++            value['ObservedSeconds'] = value['Seed'] + 1
++            if value['Seed'] >= 96: value['Outcome'] = 'Death'
++        report, _, _ = self.report([fixture(self.root / 'input', rows, samples=100, CutoffSeconds=120)])
++        for stratum in report['strata']:
++            self.assertEqual(stratum['victory_seconds']['p95'], 92)
++            self.assertEqual(stratum['victory_ttk_p95_all_started']['value'], 95)
++            self.assertEqual(stratum['victory_ttk_p95_all_started']['population_n'], 100)
++
++    def test_mixed_frozen_inputs_are_rejected(self):
++        for field in ('SourceSha', 'DomainAssemblySha256', 'SimulatorAssemblySha256',
++                      'SourceConfigSha256', 'CutoffSeconds', 'Candidate', 'Decks'):
++            with self.subTest(field=field):
++                first = fixture(self.root / 'a', self.paired())
++                changed = 120 if field == 'CutoffSeconds' else ([dict(Hero='Mage', Key='default', Sha256='different-deck')]
++                           if field == 'Decks' else 'different-fixture-value')
++                other = fixture(self.root / 'b', self.paired(3), seed_start=3, **{field: changed})
++                with self.assertRaises(ValueError): self.report([first, other])
++
++    def test_removed_or_out_of_block_samples_are_rejected(self):
++        for rows in (self.paired()[:-2], self.paired(1)):
++            with self.subTest(rows=rows):
++                with self.assertRaises(ValueError):
++                    self.report([fixture(self.root / 'input', rows)])
++
++    def test_duplicate_seed_and_candidate_without_baseline_are_rejected(self):
++        for rows in (self.paired() + [row(0)], [row(seed, 'TargetedO6Hp095') for seed in range(3)]):
++            with self.subTest(rows=rows):
++                with self.assertRaises(ValueError):
++                    self.report([fixture(self.root / 'input', rows)])
++
++    def test_empty_unknown_and_nonfinite_samples_are_rejected(self):
++        for changed in ([], [dict(row(0), Outcome='Unknown')], [dict(row(0), Damage60=float('nan'))]):
++            with self.subTest(changed=changed):
++                with self.assertRaises(ValueError):
++                    self.report([fixture(self.root / 'input', changed)])
++
++    def test_duplicate_matrix_dimensions_are_not_silent_deduplication(self):
++        for changes in ({'Groups':['O6','O6']},{'Strategies':['basic','basic']},
++                        {'Decks':[dict(Hero='Mage',Key='default')]*2}):
++            with self.subTest(changes=changes),self.assertRaises(ValueError):
++                self.report([fixture(self.root/'input',self.paired(),**changes)])
++
++    def test_same_seed_paired_damage_delta_and_raw_pooled_quantile(self):
++        inputs = []
++        for start in (0, 3, 6):
++            rows = self.paired(start)
++            for value in rows:
++                value['ObservedSeconds'] = value['Seed'] + 1
++                value['Damage60'] = value['Seed'] + (7 if value['Profile'] != 'Baseline' else 0)
++            inputs.append(fixture(self.root / str(start), rows, seed_start=start))
++        report, _, _ = self.report(inputs)
++        comparison = report['paired_comparisons'][0]
++        self.assertEqual(comparison['n'], 9)
++        self.assertEqual(comparison['mean_damage60_delta'], 7)
++        self.assertEqual(comparison['paired_seed_bootstrap_damage60_95'], [7, 7])
++        self.assertEqual(report['strata'][0]['all_outcome_observed_seconds']['p95'], 9)
++        self.assertFalse(comparison['sample_budget']['main_sample_floor_met'])
++
++
++class FactorControlsTests(unittest.TestCase):
++    def setUp(self):
++        self.temp = tempfile.TemporaryDirectory()
++        self.addCleanup(self.temp.cleanup)
++        self.root = Path(self.temp.name)
++        self.samples = 3
++        self.jobs = []
++        for factor in factors.FACTORS:
++            for start in (0, 3, 6):
++                rows = [row(seed, profile, group, hero, strategy)
++                        for seed in range(start, start + self.samples)
++                        for hero in ('Mage', 'Priest', 'Guardian')
++                        for strategy in ('baseline_all_hand', 'basic', 'build')
++                        for group in ('O1', 'O6', 'E1', 'BOSS')
++                        for profile in ('Baseline', PROFILES[factor] if group == 'O6' else 'BaselinePairedControl')]
++                directory = fixture(self.root / factor / str(start), rows, seed_start=start, factor=factor,
++                                    Groups=['O1', 'O6', 'E1', 'BOSS'],
++                                    Strategies=['baseline_all_hand', 'basic', 'build'],
++                                    Decks=[dict(Hero=hero, Key='default') for hero in ('Mage', 'Priest', 'Guardian')])
++                self.jobs.append(dict(factor=factor, seed_start=start, output=str(directory), state='Completed'))
++        (self.root / 'preregistration.json').write_text(json.dumps(dict(
++            source_sha='fixture-source', samples_per_stratum_per_run=3, independent_runs_per_factor=3,
++            assembly_hashes={'FantasyCard.Domain.dll': 'fixture-domain',
++                             'FantasyCard.Numerics.dll': 'fixture-simulator'}, jobs=self.jobs)))
++
++    def change_rows(self, mutate, job_index=0):
++        directory = Path(self.jobs[job_index]['output'])
++        rows = [json.loads(line) for line in (directory / 'encounters.jsonl').read_text().splitlines()]
++        mutate(rows)
++        manifest = json.loads((directory / 'manifest.json').read_text())
++        fixture(directory, rows, **manifest)
++
++    def validate(self, jobs=None):
++        return factors.validate_controls(self.root, self.jobs if jobs is None else jobs)
++
++    def test_valid_smoke_controls_do_not_meet_primary_floor(self):
++        result = self.validate()
++        self.assertTrue(result['passed'], result['errors'])
++        self.assertFalse(result['main_sample_floor_met'])
++        self.assertFalse(result['acceptance_eligible'])
++        self.assertEqual(result['execution_states'], {'Completed': 12})
++
++    def test_duplicate_baseline_or_wrong_candidate_is_not_a_pair(self):
++        for replacement in ('Baseline', 'TargetedO6Hp090'):
++            with self.subTest(replacement=replacement):
++                self.change_rows(lambda rows: [value.update(Profile=replacement) for value in rows
++                                              if value['Group'] == 'O6' and value['Profile'] != 'Baseline'])
++                self.assertFalse(self.validate()['passed'])
++
++    def test_non_o6_changed_and_hp_factor_windup_are_rejected(self):
++        self.change_rows(lambda rows: next(value for value in rows if value['Profile'] == 'BaselinePairedControl').update(Damage60=999))
++        self.assertIn('unaffected_control_changed', [e['kind'] for e in self.validate()['errors']])
++        self.change_rows(lambda rows: next(value for value in rows if value['Profile'] == 'TargetedO6Hp095').update(FirstWindupExtraMilliseconds=250))
++        self.assertIn('unexpected_windup_change', [e['kind'] for e in self.validate()['errors']])
++
++    def test_first_windup_extension_needs_one_matching_index_per_extension(self):
++        self.change_rows(lambda rows: next(value for value in rows if value['Profile'] == 'TargetedO6Windup025').update(FirstWindupIntentIndexes=[]), 6)
++        self.assertIn('first_intent_not_extended', [e['kind'] for e in self.validate()['errors']])
++
++    def test_missing_whole_seed_pair_and_wrong_seed_are_rejected(self):
++        self.change_rows(lambda rows: rows.__setitem__(slice(None), [value for value in rows if value['Seed'] != 2]))
++        self.assertFalse(self.validate()['passed'])
++        self.change_rows(lambda rows: [value.update(Seed=999) for value in rows])
++        self.assertFalse(self.validate()['passed'])
++
++    def test_frozen_assembly_or_wrong_factor_manifest_is_rejected(self):
++        directory = Path(self.jobs[0]['output'])
++        manifest = json.loads((directory / 'manifest.json').read_text())
++        manifest['DomainAssemblySha256'] = 'different-domain'
++        manifest['Candidate'] = 'outer-o6-windup050'
++        (directory / 'manifest.json').write_text(json.dumps(manifest))
++        self.assertFalse(self.validate()['passed'])
++
++    def test_incomplete_preregistration_cannot_hide_unrun_factors_or_blocks(self):
++        path=self.root/'preregistration.json'
++        original=json.loads(path.read_text())
++        for selected in (self.jobs[:3],self.jobs[:-1],self.jobs+[self.jobs[0]]):
++            with self.subTest(jobs=len(selected)):
++                path.write_text(json.dumps(dict(original,jobs=selected)))
++                result=self.validate(selected)
++                self.assertFalse(result['passed'])
++                self.assertEqual(result['errors'][0]['kind'],'invalid_preregistration')
++                self.assertFalse(result['main_sample_floor_met'])
++        path.write_text(json.dumps(dict(original,independent_runs_per_factor=2)))
++        self.assertFalse(self.validate()['passed'])
++
++    def test_cancelled_notexecuted_and_missing_jobs_stay_incomplete(self):
++        for state in ('Cancelled', 'NotExecuted', 'TimedOut', 'Failed'):
++            with self.subTest(state=state):
++                jobs = [dict(job) for job in self.jobs]
++                jobs[0].update(state=state, reason='fixture-stop')
++                result = self.validate(jobs)
++                self.assertFalse(result['passed'])
++                self.assertEqual(result['execution_states'][state], 1)
++                self.assertEqual(result['errors'][0]['state'], state)
++        self.assertFalse(self.validate([])['passed'])
++        self.assertFalse(self.validate(self.jobs[:-1])['passed'])
++        self.assertFalse(self.validate(self.jobs + [self.jobs[0]])['passed'])
++
++    def test_stop_before_launch_records_notexecuted_without_a_child(self):
++        stop = self.root / 'STOP'
++        stop.touch()
++        job = dict(self.jobs[0], state='Queued', command=['must-not-launch'])
++        with patch.object(factors.subprocess, 'Popen', side_effect=AssertionError('launched')):
++            result = factors.run_job(job, stop)
++        self.assertEqual(result['state'], 'NotExecuted')
++        self.assertNotIn('pid', result)
++        self.assertIsNone(result['started_at'])
++
++    def test_launch_failure_is_recorded_without_an_invented_exit_code(self):
++        job = dict(self.jobs[0], state='Queued', command=['fixture-command'])
++        with patch.object(factors.subprocess, 'Popen', side_effect=OSError('fixture launch failure')):
++            result = factors.run_job(job, self.root / 'STOP')
++        self.assertEqual(result['state'], 'Failed')
++        self.assertEqual(result['reason'], 'launch_failed')
++        self.assertIsNone(result['exit_code'])
++        self.assertEqual(json.loads((Path(job['output']) / 'execution.json').read_text()), result)
++
++    def test_running_stop_and_deadline_kill_owned_child_and_preserve_state(self):
++        for cancelled in (True, False):
++            with self.subTest(cancelled=cancelled):
++                stop = self.root / 'STOP'
++                stop.unlink(missing_ok=True)
++                child = Mock(pid=42, returncode=None)
++                def poll():
++                    if cancelled and child.returncode is None: stop.touch()
++                    return child.returncode
++                def kill(): child.returncode = -9
++                child.poll.side_effect = poll
++                child.kill.side_effect = kill
++                job = dict(self.jobs[0], state='Queued', command=['fixture-command'])
++                with patch.object(factors.subprocess, 'Popen', return_value=child), \
++                        patch.object(factors.time, 'monotonic', side_effect=[0, 2401]):
++                    result = factors.run_job(job, stop)
++                self.assertEqual(result['state'], 'Cancelled' if cancelled else 'TimedOut')
++                child.kill.assert_called_once()
++                child.wait.assert_called_once_with(timeout=10)
++
++
++if __name__ == '__main__':
++    unittest.main()

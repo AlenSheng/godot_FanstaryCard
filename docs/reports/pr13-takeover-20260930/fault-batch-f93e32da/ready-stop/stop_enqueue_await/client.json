@@ -1,0 +1,68 @@
+{
+	"Accepted": false,
+	"active_match_id": "",
+	"case": "stop_enqueue_await",
+	"checks": [
+		{
+			"at_unix_ms": 1790800661255,
+			"name": "realtime_connected",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790800661305,
+			"name": "owned_equipment_fixture_seeded",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790800661411,
+			"name": "login_and_bootstrap",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790800661505,
+			"name": "hero_class_confirmed",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790800661656,
+			"name": "create_free_preparation",
+			"passed": true
+		}
+	],
+	"cleanup": {
+		"active_preparation": null,
+		"reason": "server_state_clear",
+		"state": "Passed",
+		"unfinished_match": null,
+		"unfinished_settlement": null
+	},
+	"client_preparation": {},
+	"client_ready_prompt": {},
+	"client_room": false,
+	"client_settlement": false,
+	"client_ticket": {},
+	"connected_count": 1,
+	"coverage": "OFFLINE_POSTGRES_FULL_PROGRAM",
+	"errors": [],
+	"local_terminal": true,
+	"message": "Coordinator cancelled current cycle",
+	"observed_match_id": "",
+	"observed_room_id": "",
+	"own_user_id": "01a0f409-8877-778d-95c1-a42744c10968",
+	"passed": true,
+	"ready_send_after_stop": 0,
+	"ready_send_count": 0,
+	"required_delivered": 0,
+	"required_dropped": false,
+	"route_probe_clear": true,
+	"route_probe_events": [],
+	"stop_boundary": "enqueue_response_held",
+	"ticket_reads": 0,
+	"trace": [
+		{
+			"at_ms": 1899,
+			"boundary": "enqueue_response_held",
+			"event": "coordinator_stop"
+		}
+	]
+}

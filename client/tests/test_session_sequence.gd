@@ -36,6 +36,14 @@ func run_test() -> Dictionary:
 	restored._receive(proto.encode("ServerEnvelope", {"protocol_version": 1, "type": "room.snapshot", "sequence": 2, "payload": proto.encode("RoomSnapshotEvent", {"room_id": "cached-room", "room_revision": 9})}))
 	ok = ok and restored.last_sequence == 2 and restored.room_revision == 9 and not restored.recovering
 	restored._receive(proto.encode("ServerEnvelope", {"protocol_version": 1, "type": "error.command_rejected", "sequence": 3, "payload": proto.encode("CommandRejectedEvent", {"code": "NOT_IN_ROOM"})}))
+	# A packet without a command origin cannot revoke a valid route.
+	ok = ok and restored.room_id == "cached-room" and restored.room_revision == 9
+	restored.current_match_id = "cached-match"
+	restored.room_context_epoch = 7
+	restored.telemetry_context = {"phase": "new-load-phase"}
+	ok = ok and restored.capture_context().get("room_context_epoch", -1) == 7
+	restored._pending_request_started["snapshot-current"] = {"context": restored.capture_context()}
+	restored._receive(proto.encode("ServerEnvelope", {"protocol_version": 1, "type": "error.command_rejected", "sequence": 4, "request_id": "snapshot-current", "payload": proto.encode("CommandRejectedEvent", {"code": "NOT_IN_ROOM"})}))
 	ok = ok and restored.room_id.is_empty() and restored.room_revision == 0
 	restored.free()
 	return {"ok": ok, "message": "Duplicate event ignored; sequence gap locks commands until authoritative snapshot"}

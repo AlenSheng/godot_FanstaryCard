@@ -1,0 +1,444 @@
+{
+  "task_id": "LOAD-02.2",
+  "stage": "S5; S6 Pending MAIN",
+  "integration_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+  "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+  "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+  "effective_room_policy": {
+    "config_version": "gdd-0.70-numerical-1",
+    "actual_client_server_bytes_equal": true,
+    "PB_HTTP_legacy_JSON": false,
+    "ticket_WS_legacy_token_query": false,
+    "attempt_timeout_ms": 10000,
+    "logical_timeout_ms": 30000,
+    "cleanup_timeout_ms": 22000,
+    "bot_fill_ms": 30000,
+    "match_seed": null,
+    "room_origin": "actual production prepare/enqueue/ticket WS/READY; no seeded room replacement",
+    "legal_terminal_driver": "original legal extraction or abandon only; not full Boss or three gameplay routes"
+  },
+  "runtime_image_digest": null,
+  "profile_hash": "47d985a7d8106f8b9b7469dee979012058c4ce355ac11e5d943ad8a7ed1cc4c8",
+  "algorithm_version": "load02-observer-v1",
+  "case_ids": [
+    "LOAD-02.2-T01",
+    "LOAD-02.2-T02",
+    "LOAD-02.2-T03"
+  ],
+  "expected": {
+    "LOAD-02.2-T01": "STOP前超时：业务失败不变取消",
+    "LOAD-02.2-T02": "STOP后正常等待取消：不计服务错误或完成",
+    "LOAD-02.2-T03": "ACK已提交结果未知：pending直到权威核实"
+  },
+  "actual": {
+    "cases": "cases.jsonl",
+    "test_counts": {
+      "focused": {
+        "total": "3",
+        "executed": "3",
+        "passed": "3",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "full_server": {
+        "total": "302",
+        "executed": "302",
+        "passed": "302",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "full_python": {
+        "total": 122,
+        "passed": 122,
+        "failed": 0,
+        "skipped": 0
+      }
+    },
+    "focused_canonical_cases": [
+      {
+        "case_id": "LOAD-02.2-T01",
+        "status": "Passed",
+        "evidence": {
+          "fixture": "focused/ack-client-load02-timeout-before-stop-9e25c6c9bab547ae9d5e2250ed643db7",
+          "receipts": "focused/receipts.jsonl",
+          "original_report": "focused/ack-client-load02-timeout-before-stop-9e25c6c9bab547ae9d5e2250ed643db7/load-result.json",
+          "accounting": "focused/ack-client-load02-timeout-before-stop-9e25c6c9bab547ae9d5e2250ed643db7/load-result.json.accounting.json",
+          "stop_observation": "focused/ack-client-load02-timeout-before-stop-9e25c6c9bab547ae9d5e2250ed643db7/load-result.json.stop-observed.json",
+          "telemetry": "focused/ack-client-load02-timeout-before-stop-9e25c6c9bab547ae9d5e2250ed643db7/load-result.json.telemetry.jsonl"
+        }
+      },
+      {
+        "case_id": "LOAD-02.2-T02",
+        "status": "Passed",
+        "evidence": {
+          "fixture": "focused/ack-client-load02-normal-wait-stop-dd01bb9f56a547c8ba33b5dd890e0f63",
+          "receipts": "focused/receipts.jsonl",
+          "original_report": "focused/ack-client-load02-normal-wait-stop-dd01bb9f56a547c8ba33b5dd890e0f63/load-result.json",
+          "accounting": "focused/ack-client-load02-normal-wait-stop-dd01bb9f56a547c8ba33b5dd890e0f63/load-result.json.accounting.json",
+          "stop_observation": "focused/ack-client-load02-normal-wait-stop-dd01bb9f56a547c8ba33b5dd890e0f63/load-result.json.stop-observed.json",
+          "telemetry": "focused/ack-client-load02-normal-wait-stop-dd01bb9f56a547c8ba33b5dd890e0f63/load-result.json.telemetry.jsonl"
+        }
+      },
+      {
+        "case_id": "LOAD-02.2-T03",
+        "status": "Passed",
+        "evidence": {
+          "fixture": "focused/ack-client-load02-committed-unknown-stop-8565c28a3ceb4442bef9a3e0f4630088",
+          "receipts": "focused/receipts.jsonl",
+          "original_report": "focused/ack-client-load02-committed-unknown-stop-8565c28a3ceb4442bef9a3e0f4630088/load-result.json",
+          "accounting": "focused/ack-client-load02-committed-unknown-stop-8565c28a3ceb4442bef9a3e0f4630088/load-result.json.accounting.json",
+          "stop_observation": "focused/ack-client-load02-committed-unknown-stop-8565c28a3ceb4442bef9a3e0f4630088/load-result.json.stop-observed.json",
+          "telemetry": "focused/ack-client-load02-committed-unknown-stop-8565c28a3ceb4442bef9a3e0f4630088/load-result.json.telemetry.jsonl"
+        }
+      }
+    ],
+    "full_server_canonical_cases": [
+      {
+        "case_id": "LOAD-02.2-T01",
+        "status": "Passed",
+        "evidence": {
+          "fixture": "full-server/ack-client-load02-timeout-before-stop-ae5c5d6263aa4bcb8fcf48e1687628ef",
+          "receipts": "full-server/receipts.jsonl",
+          "original_report": "full-server/ack-client-load02-timeout-before-stop-ae5c5d6263aa4bcb8fcf48e1687628ef/load-result.json",
+          "accounting": "full-server/ack-client-load02-timeout-before-stop-ae5c5d6263aa4bcb8fcf48e1687628ef/load-result.json.accounting.json",
+          "stop_observation": "full-server/ack-client-load02-timeout-before-stop-ae5c5d6263aa4bcb8fcf48e1687628ef/load-result.json.stop-observed.json",
+          "telemetry": "full-server/ack-client-load02-timeout-before-stop-ae5c5d6263aa4bcb8fcf48e1687628ef/load-result.json.telemetry.jsonl"
+        }
+      },
+      {
+        "case_id": "LOAD-02.2-T02",
+        "status": "Passed",
+        "evidence": {
+          "fixture": "full-server/ack-client-load02-normal-wait-stop-cc0abd353d3c4168a46f6a66e3129e63",
+          "receipts": "full-server/receipts.jsonl",
+          "original_report": "full-server/ack-client-load02-normal-wait-stop-cc0abd353d3c4168a46f6a66e3129e63/load-result.json",
+          "accounting": "full-server/ack-client-load02-normal-wait-stop-cc0abd353d3c4168a46f6a66e3129e63/load-result.json.accounting.json",
+          "stop_observation": "full-server/ack-client-load02-normal-wait-stop-cc0abd353d3c4168a46f6a66e3129e63/load-result.json.stop-observed.json",
+          "telemetry": "full-server/ack-client-load02-normal-wait-stop-cc0abd353d3c4168a46f6a66e3129e63/load-result.json.telemetry.jsonl"
+        }
+      },
+      {
+        "case_id": "LOAD-02.2-T03",
+        "status": "Passed",
+        "evidence": {
+          "fixture": "full-server/ack-client-load02-committed-unknown-stop-2988d2857e62419fa77df8a4d399c38b",
+          "receipts": "full-server/receipts.jsonl",
+          "original_report": "full-server/ack-client-load02-committed-unknown-stop-2988d2857e62419fa77df8a4d399c38b/load-result.json",
+          "accounting": "full-server/ack-client-load02-committed-unknown-stop-2988d2857e62419fa77df8a4d399c38b/load-result.json.accounting.json",
+          "stop_observation": "full-server/ack-client-load02-committed-unknown-stop-2988d2857e62419fa77df8a4d399c38b/load-result.json.stop-observed.json",
+          "telemetry": "full-server/ack-client-load02-committed-unknown-stop-2988d2857e62419fa77df8a4d399c38b/load-result.json.telemetry.jsonl"
+        }
+      }
+    ],
+    "reference_release_sha": "65361bcc27c51c28651c86c5dbba4f083a9b39e0",
+    "reference_release_note": "parent verified latest release, not merged into frozen runtime source; unrelated PR/controller/CI coordination belongs to MAIN",
+    "production_changes_in_this_group": 0,
+    "real_focused_failures": 0,
+    "C_PY_first_run_environment_failure": {
+      "total_tests": 122,
+      "errors": 10,
+      "exit_code": 1,
+      "cause": "original tools git rev-parse HEAD unavailable in partial fixed-source copy; minimum actual Git object metadata then succeeded unchanged source",
+      "raw": "full-python.log",
+      "repair_receipt": "git-metadata-environment-repair.json"
+    },
+    "observations": "T01 actual terminal timeout before STOP remains original failed/exit1. T02 normal pending ACK wait resolves cancelled/exit0 with empty original.errors. T03 PG acked1 and pending ACK at STOP; actual full account Bootstrap resolves then cancelled/exit0; no cycle.completed or repeat assets."
+  },
+  "status": "ReadyForAcceptance proposal; not Accepted",
+  "sample_population": {
+    "focused": "three owned accounts/schemas, one original started cycle per canonical case",
+    "full_server": "same fixed-source three canonical cases rerun as part of 302-entry unfiltered Server suite; independent owned fixtures",
+    "counting": "each final cutoff started1=completed+failed+cancelled+pending+incomplete; transport attempt errors separate from failed business cycle",
+    "scope_limitations": "NotApplicableWithReason: canonical offline+PG evidence sufficient; no LIVE/CI added"
+  },
+  "cutoff_monotonic": {
+    "clock_domains": "Godot ticks msec relative to each process; coordinator System.Diagnostics.Stopwatch ticks retained separately in receipts; no cross-clock substitution",
+    "cutoffs": [
+      {
+        "case_id": "LOAD-02.2-T01",
+        "run": "focused",
+        "context": {
+          "run_id": "owned-load02-ack-client-load02-timeout-before-stop-9e25c6c9bab547ae9d5e2250ed643db7",
+          "client_id": "timeout-before-stop",
+          "process_epoch": "1",
+          "cycle_id": "timeout-before-stop:1",
+          "pid": 116589,
+          "session_generation": 1,
+          "room_context_epoch": 1,
+          "active_match_id": "",
+          "original_user_id": "sha256-guid:b85d52bfd98862c522af1c3c12d30d4c3b8734f43f1fb3107f8dcea6bfe4116a",
+          "persisted_fixture_player_id": "sha256-guid:b85d52bfd98862c522af1c3c12d30d4c3b8734f43f1fb3107f8dcea6bfe4116a"
+        },
+        "STOP_observed_Godot_ms": 31388,
+        "final_Godot_ms": 31557,
+        "STOP_partition": {
+          "cancelled": 0,
+          "completed": 0,
+          "failed": 1,
+          "incomplete": 0,
+          "pending": 0,
+          "started": 1
+        },
+        "final_partition": {
+          "cancelled": 0,
+          "completed": 0,
+          "failed": 1,
+          "incomplete": 0,
+          "pending": 0,
+          "started": 1
+        }
+      },
+      {
+        "case_id": "LOAD-02.2-T02",
+        "run": "focused",
+        "context": {
+          "run_id": "owned-load02-ack-client-load02-normal-wait-stop-dd01bb9f56a547c8ba33b5dd890e0f63",
+          "client_id": "normal-wait-stop",
+          "process_epoch": "1",
+          "cycle_id": "normal-wait-stop:1",
+          "pid": 116378,
+          "session_generation": 1,
+          "room_context_epoch": 2,
+          "active_match_id": "sha256-guid:8a38ca190ae3d5e4853200594a197da24db55ecbeb26e307581dca9c6d39a07d",
+          "original_user_id": "sha256-guid:3e1ebc5404dc6c6b778a68637cfbf3354bc31d6b78dd704d983e32bdfbc65012",
+          "persisted_fixture_player_id": "sha256-guid:3e1ebc5404dc6c6b778a68637cfbf3354bc31d6b78dd704d983e32bdfbc65012"
+        },
+        "STOP_observed_Godot_ms": 33856,
+        "final_Godot_ms": 34309,
+        "STOP_partition": {
+          "cancelled": 0,
+          "completed": 0,
+          "failed": 0,
+          "incomplete": 0,
+          "pending": 1,
+          "started": 1
+        },
+        "final_partition": {
+          "cancelled": 1,
+          "completed": 0,
+          "failed": 0,
+          "incomplete": 0,
+          "pending": 0,
+          "started": 1
+        }
+      },
+      {
+        "case_id": "LOAD-02.2-T03",
+        "run": "focused",
+        "context": {
+          "run_id": "owned-load02-ack-client-load02-committed-unknown-stop-8565c28a3ceb4442bef9a3e0f4630088",
+          "client_id": "committed-unknown-stop",
+          "process_epoch": "1",
+          "cycle_id": "committed-unknown-stop:1",
+          "pid": 116714,
+          "session_generation": 1,
+          "room_context_epoch": 2,
+          "active_match_id": "sha256-guid:635cefc43688a4a4e12fa37f32a542222fff0677882cf47732df9041cb35c0ac",
+          "original_user_id": "sha256-guid:01deff1230962c33c50dd0682d2126f97deb61fd7e0f78667c590ff005b3b2e7",
+          "persisted_fixture_player_id": "sha256-guid:01deff1230962c33c50dd0682d2126f97deb61fd7e0f78667c590ff005b3b2e7"
+        },
+        "STOP_observed_Godot_ms": 36862,
+        "final_Godot_ms": 37231,
+        "STOP_partition": {
+          "cancelled": 0,
+          "completed": 0,
+          "failed": 0,
+          "incomplete": 0,
+          "pending": 1,
+          "started": 1
+        },
+        "final_partition": {
+          "cancelled": 1,
+          "completed": 0,
+          "failed": 0,
+          "incomplete": 0,
+          "pending": 0,
+          "started": 1
+        }
+      },
+      {
+        "case_id": "LOAD-02.2-T01",
+        "run": "full-server",
+        "context": {
+          "run_id": "owned-load02-ack-client-load02-timeout-before-stop-ae5c5d6263aa4bcb8fcf48e1687628ef",
+          "client_id": "timeout-before-stop",
+          "process_epoch": "1",
+          "cycle_id": "timeout-before-stop:1",
+          "pid": 122207,
+          "session_generation": 1,
+          "room_context_epoch": 1,
+          "active_match_id": "",
+          "original_user_id": "sha256-guid:6281d372e7f5a5ecc9b5a7c9d80233d25f096d265cfd0a5f78315018c06784a0",
+          "persisted_fixture_player_id": "sha256-guid:6281d372e7f5a5ecc9b5a7c9d80233d25f096d265cfd0a5f78315018c06784a0"
+        },
+        "STOP_observed_Godot_ms": 31350,
+        "final_Godot_ms": 31522,
+        "STOP_partition": {
+          "cancelled": 0,
+          "completed": 0,
+          "failed": 1,
+          "incomplete": 0,
+          "pending": 0,
+          "started": 1
+        },
+        "final_partition": {
+          "cancelled": 0,
+          "completed": 0,
+          "failed": 1,
+          "incomplete": 0,
+          "pending": 0,
+          "started": 1
+        }
+      },
+      {
+        "case_id": "LOAD-02.2-T02",
+        "run": "full-server",
+        "context": {
+          "run_id": "owned-load02-ack-client-load02-normal-wait-stop-cc0abd353d3c4168a46f6a66e3129e63",
+          "client_id": "normal-wait-stop",
+          "process_epoch": "1",
+          "cycle_id": "normal-wait-stop:1",
+          "pid": 121928,
+          "session_generation": 1,
+          "room_context_epoch": 2,
+          "active_match_id": "sha256-guid:75038f807c55bb286b3c9dc9dbdd03e3b5b29936aa352cd81a3b7572d1825674",
+          "original_user_id": "sha256-guid:a6e416fd41638fbed5c6e15e52b4dcb9869dd672bf86862ff8d2e62f280a649c",
+          "persisted_fixture_player_id": "sha256-guid:a6e416fd41638fbed5c6e15e52b4dcb9869dd672bf86862ff8d2e62f280a649c"
+        },
+        "STOP_observed_Godot_ms": 33434,
+        "final_Godot_ms": 33786,
+        "STOP_partition": {
+          "cancelled": 0,
+          "completed": 0,
+          "failed": 0,
+          "incomplete": 0,
+          "pending": 1,
+          "started": 1
+        },
+        "final_partition": {
+          "cancelled": 1,
+          "completed": 0,
+          "failed": 0,
+          "incomplete": 0,
+          "pending": 0,
+          "started": 1
+        }
+      },
+      {
+        "case_id": "LOAD-02.2-T03",
+        "run": "full-server",
+        "context": {
+          "run_id": "owned-load02-ack-client-load02-committed-unknown-stop-2988d2857e62419fa77df8a4d399c38b",
+          "client_id": "committed-unknown-stop",
+          "process_epoch": "1",
+          "cycle_id": "committed-unknown-stop:1",
+          "pid": 122306,
+          "session_generation": 1,
+          "room_context_epoch": 2,
+          "active_match_id": "sha256-guid:a04387c9c9cb441778867599ebecb8bfeb28f719a7186ddd098b0fde68c9d461",
+          "original_user_id": "sha256-guid:e63ee25d848206b18f23e1054baaf741fd6bb55d0d61f16cce0388dd0bef4d15",
+          "persisted_fixture_player_id": "sha256-guid:e63ee25d848206b18f23e1054baaf741fd6bb55d0d61f16cce0388dd0bef4d15"
+        },
+        "STOP_observed_Godot_ms": 37252,
+        "final_Godot_ms": 37640,
+        "STOP_partition": {
+          "cancelled": 0,
+          "completed": 0,
+          "failed": 0,
+          "incomplete": 0,
+          "pending": 1,
+          "started": 1
+        },
+        "final_partition": {
+          "cancelled": 1,
+          "completed": 0,
+          "failed": 0,
+          "incomplete": 0,
+          "pending": 0,
+          "started": 1
+        }
+      }
+    ]
+  },
+  "window_or_drain_or_final": "Original STOP-observed pending/failure snapshot and same-cycle final cutoff; cleanup ACKs cannot increment original cycle.completed",
+  "commands": "commands.json",
+  "tool_versions": {
+    "python": "Python 3.12.14",
+    "dotnet_sdk": "10.0.400",
+    "godot": "4.7.2.stable.official.ed1daf0bf",
+    "postgres": "postgres (PostgreSQL) 18.6",
+    "dotnet_runtimes": "Microsoft.AspNetCore.App 10.0.11 [/workspace/relicround-env/dotnet/usr/share/dotnet/shared/Microsoft.AspNetCore.App]\nMicrosoft.NETCore.App 10.0.11 [/workspace/relicround-env/dotnet/usr/share/dotnet/shared/Microsoft.NETCore.App]"
+  },
+  "exit_codes": {
+    "frozen-build": 0,
+    "frozen-focused": 0,
+    "frozen-full-python": 1,
+    "frozen-full-python-after-git-metadata": 0,
+    "frozen-full-server": 0,
+    "owned-pg-final-readonly": 0,
+    "owned-pg-stop": 0,
+    "owned-pg-status-after-stop": 3
+  },
+  "skip_reasons": [],
+  "asset_and_route_postconditions": {
+    "raw_evidence": "cases.jsonl and focused/full-server receipts retain actual before/STOP/after assets, ownership/locations, ledger/movements/holds, production full Bootstrap and next actual prepare/cancel",
+    "assertions": "all original cleanup Passed; full Bootstrap complete triple clear; no Active/Queued/Matched preparations, Pending holds or owned locked equipment; T01 exact unchanged assets; T02/T03 one settlement/ACK, no duplicate per-currency settlement credit, one original equipment movement; next prepare/cancel reusable",
+    "owned_db_cleanup_is_not_global_ledger_clearance": true,
+    "global_ledger_exoneration": null
+  },
+  "artifact_manifest": {
+    "private_original": "PRIVATE_ARTIFACT_MANIFEST.json",
+    "private_seal": "PRIVATE_ARTIFACT_SEAL.json",
+    "public_derivatives": "MANIFEST.json",
+    "provenance": "EXPORT_PROVENANCE.json",
+    "raw_uploaded": false
+  },
+  "reviewer": {
+    "implementer": "ROOT/team",
+    "independent_acceptance": null
+  },
+  "rollback": {
+    "harness_commit": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+    "method": "revert only the three added LOAD02 harness files; keep all raw/command receipts/history; no production/database rollback from this group"
+  },
+  "remaining_blockers": [
+    "MAIN independent S6 acceptance review pending; CI is not a canonical gate for this OFFLINE+POSTGRES subtask"
+  ],
+  "missing_reasons": {
+    "runtime_image_digest": "actual isolated .NET Program/Godot OS processes, no container image was used",
+    "effective_room_policy.match_seed": "production matchmaker-generated seed not captured by this scoped fixture; not replaced by synthetic seed",
+    "asset_and_route_postconditions.global_ledger_exoneration": "owned isolated PG fixture postconditions do not clear unrelated global ledger anomalies",
+    "reviewer.independent_acceptance": "MAIN S6 independent acceptance is pending; implementation does not sign Accepted."
+  },
+  "stage_results": {
+    "S0": "fixed source/profile/ownership/unchanged production budgets",
+    "S1": "actual three cases existing production behavior proved; no artificial RED claimed",
+    "S2": "ROOT-reviewed additive harness only, no production diff",
+    "S3": "fresh Release build plus Godot syntax/import and focused3 pass",
+    "S4": "fixed exact objects and canonical source contract; no integration outside scope",
+    "S5": "full unfiltered Server302/0/0 and C-PY122/0/0; raw retained",
+    "S6": "Pending MAIN independent review"
+  }
+}

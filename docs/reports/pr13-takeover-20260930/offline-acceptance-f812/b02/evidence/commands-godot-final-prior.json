@@ -1,0 +1,103 @@
+[
+  {
+    "name": "B02-exact-godot",
+    "argv": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "/workspace/pr13-takeover/b02-acceptance-f812/source/client",
+      "--script",
+      "/workspace/pr13-takeover/b02-acceptance-f812/harness/exact_godot.gd"
+    ],
+    "cwd": "/workspace/pr13-takeover/b02-acceptance-f812",
+    "started_utc": "2026-09-30T22:24:12.383253+00:00",
+    "elapsed_seconds": 1.1688495769994915,
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "raw": "evidence/B02-exact-godot.log",
+    "input_manifest_sha256": "603eda9e0963aab1065ac9513d835bf5c942e557f5e8d722e204ab04694a9364",
+    "harness_source_hashes": {
+      "mutate_workbook.py": "7b0b108f8d586214632ea5012515a53904367436846ea54f0f9d6034952d150c",
+      "ExactCases.cs": "a60da09e3ed9c28903cb26f0133423d62e7c61c8e09e27bf7809997c8ae43168",
+      "exact_godot.gd": "d6dc8bbeb35a2b5deb7eeff9637d37d8d7620c8e1e31e9c5b22cccb7c14aceb6",
+      "run_exact.py": "46075ddbb1cf9fe2a132e2d1be08fc88e8a8eaf4fa29974bae35fda633d18b13",
+      "run_baseline.py": "7ef1748eff0e1c2da64c92aba77edf943fde27e6c2d8475f113eb23829510854",
+      "negative-probes.py": "5e6191081ead90da0918fb6ab2e591a2e2cd3072ffa78b03ec6e94c5daa52970",
+      "ExactCases.csproj": "0f4127da9417388a67410369d920b1aecfbf28e0fd5f7a3b8826ce88478a836e"
+    },
+    "env_nonsecret": {
+      "FANTASYCARD_SERVER_URL": "http://127.0.0.1:1",
+      "FANTASYCARD_LOAD_RUN_ID": "b02-isolated",
+      "FANTASYCARD_TEST_POSTGRES": "Host=/workspace/pr13-takeover/b02-acceptance-f812/pgsocket;Port=55482;Database=b02_acceptance;Username=agent;Pooling=false",
+      "B02_EXACT_EVIDENCE": "/workspace/pr13-takeover/b02-acceptance-f812/evidence/exact",
+      "B02_GODOT_OUTPUT": "/workspace/pr13-takeover/b02-acceptance-f812/evidence/exact-godot.json"
+    }
+  },
+  {
+    "name": "C-GODOT-NUM-isolated",
+    "argv": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "/workspace/pr13-takeover/b02-acceptance-f812/source/client",
+      "res://tests/numerical_integration.tscn"
+    ],
+    "cwd": "/workspace/pr13-takeover/b02-acceptance-f812",
+    "started_utc": "2026-09-30T22:24:13.555279+00:00",
+    "elapsed_seconds": 1.133796321999398,
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "raw": "evidence/C-GODOT-NUM-isolated.log",
+    "input_manifest_sha256": "603eda9e0963aab1065ac9513d835bf5c942e557f5e8d722e204ab04694a9364",
+    "harness_source_hashes": {
+      "mutate_workbook.py": "7b0b108f8d586214632ea5012515a53904367436846ea54f0f9d6034952d150c",
+      "ExactCases.cs": "a60da09e3ed9c28903cb26f0133423d62e7c61c8e09e27bf7809997c8ae43168",
+      "exact_godot.gd": "d6dc8bbeb35a2b5deb7eeff9637d37d8d7620c8e1e31e9c5b22cccb7c14aceb6",
+      "run_exact.py": "46075ddbb1cf9fe2a132e2d1be08fc88e8a8eaf4fa29974bae35fda633d18b13",
+      "run_baseline.py": "7ef1748eff0e1c2da64c92aba77edf943fde27e6c2d8475f113eb23829510854",
+      "negative-probes.py": "5e6191081ead90da0918fb6ab2e591a2e2cd3072ffa78b03ec6e94c5daa52970",
+      "ExactCases.csproj": "0f4127da9417388a67410369d920b1aecfbf28e0fd5f7a3b8826ce88478a836e"
+    },
+    "env_nonsecret": {
+      "FANTASYCARD_SERVER_URL": "http://127.0.0.1:1",
+      "FANTASYCARD_LOAD_RUN_ID": "b02-isolated",
+      "FANTASYCARD_TEST_POSTGRES": "Host=/workspace/pr13-takeover/b02-acceptance-f812/pgsocket;Port=55482;Database=b02_acceptance;Username=agent;Pooling=false",
+      "B02_EXACT_EVIDENCE": "/workspace/pr13-takeover/b02-acceptance-f812/evidence/exact",
+      "B02_GODOT_OUTPUT": "/workspace/pr13-takeover/b02-acceptance-f812/evidence/exact-godot.json"
+    }
+  },
+  {
+    "name": "C-GODOT-support",
+    "argv": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "/workspace/pr13-takeover/b02-acceptance-f812/source/client",
+      "--script",
+      "res://tests/run_play_retry.gd"
+    ],
+    "cwd": "/workspace/pr13-takeover/b02-acceptance-f812",
+    "started_utc": "2026-09-30T22:24:14.696350+00:00",
+    "elapsed_seconds": 15.0418346080005,
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "raw": "evidence/C-GODOT-support.log",
+    "input_manifest_sha256": "603eda9e0963aab1065ac9513d835bf5c942e557f5e8d722e204ab04694a9364",
+    "harness_source_hashes": {
+      "mutate_workbook.py": "7b0b108f8d586214632ea5012515a53904367436846ea54f0f9d6034952d150c",
+      "ExactCases.cs": "a60da09e3ed9c28903cb26f0133423d62e7c61c8e09e27bf7809997c8ae43168",
+      "exact_godot.gd": "d6dc8bbeb35a2b5deb7eeff9637d37d8d7620c8e1e31e9c5b22cccb7c14aceb6",
+      "run_exact.py": "46075ddbb1cf9fe2a132e2d1be08fc88e8a8eaf4fa29974bae35fda633d18b13",
+      "run_baseline.py": "7ef1748eff0e1c2da64c92aba77edf943fde27e6c2d8475f113eb23829510854",
+      "negative-probes.py": "5e6191081ead90da0918fb6ab2e591a2e2cd3072ffa78b03ec6e94c5daa52970",
+      "ExactCases.csproj": "0f4127da9417388a67410369d920b1aecfbf28e0fd5f7a3b8826ce88478a836e"
+    },
+    "env_nonsecret": {
+      "FANTASYCARD_SERVER_URL": "http://127.0.0.1:1",
+      "FANTASYCARD_LOAD_RUN_ID": "b02-isolated",
+      "FANTASYCARD_TEST_POSTGRES": "Host=/workspace/pr13-takeover/b02-acceptance-f812/pgsocket;Port=55482;Database=b02_acceptance;Username=agent;Pooling=false",
+      "B02_EXACT_EVIDENCE": "/workspace/pr13-takeover/b02-acceptance-f812/evidence/exact",
+      "B02_GODOT_OUTPUT": "/workspace/pr13-takeover/b02-acceptance-f812/evidence/exact-godot.json"
+    }
+  }
+]

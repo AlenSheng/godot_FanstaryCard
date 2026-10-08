@@ -1,0 +1,239 @@
+{
+  "schema_version": 1,
+  "task": "PR13 independent sampling, coverage and capacity verdict review",
+  "status": "FixedWithEvidence",
+  "created_utc": "2026-09-30T17:08:48Z",
+  "workspace": "/workspace/godot_FanstaryCard",
+  "initial_delegation_head": "b7099ef716235be68395255360cbd5cf6c67baff",
+  "baseline_observed_head": "d4c3212fb32c75d4b9f9f62c08277996611b149c",
+  "final_observed_head": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+  "validated_source_files": {
+    "tools/gameplay_load_test.py": {
+      "sha256": "e5cef5dbd0c63acf67579c3261262ab18346b718b6f32fbab2e265e1e671d52d",
+      "validated_hash_matches": true,
+      "working_tree_equals_final_HEAD": true
+    },
+    "tools/gameplay_load_validation.py": {
+      "sha256": "2165364954a8d2a1fc5ae660561ce9f7e3e991f65bcbed053edb3af242b84bb6",
+      "validated_hash_matches": true,
+      "working_tree_equals_final_HEAD": true
+    },
+    "tools/pr13_runtime_evidence.py": {
+      "sha256": "62d05cb4270174aabbcdf217416530967caeca340b20a84d8223a35c2521eaa3",
+      "validated_hash_matches": true,
+      "working_tree_equals_final_HEAD": true
+    },
+    "tools/tests/test_gameplay_load_sampling_contract.py": {
+      "sha256": "a209589560af471ebd887ef2023f1ae1baae4c58faf650307d995d8a2c2faed5",
+      "validated_hash_matches": true,
+      "working_tree_equals_final_HEAD": true
+    },
+    "docs/reports/pr13-execution-20260930/closeout.json": {
+      "sha256": "c977f1d00b1d6645160da4d74382da3aa7d9be37d3aa307803def58f7f52af63",
+      "validated_hash_matches": true,
+      "working_tree_equals_final_HEAD": true
+    }
+  },
+  "agent_commit_or_push_performed": false,
+  "authorized_edits": [
+    "tools/pr13_runtime_evidence.py",
+    "tools/tests/test_gameplay_load_sampling_contract.py"
+  ],
+  "root_integrated_edit": "tools/gameplay_load_test.py",
+  "instructions": {
+    "read": "server/AGENTS.md",
+    "scope": "Only server/ has AGENTS.md; no root/tools/tests AGENTS.md exists. Server-only server_create and dotnet requirements do not apply to these pure Python tools.",
+    "network_load": false,
+    "deployment": false,
+    "ledger_access": false
+  },
+  "findings": [
+    {
+      "id": "COVERAGE-P0-01",
+      "severity": "P0",
+      "problem": "Duplicate/overlapping observations were accepted by sampling_integrity, and coverage sorted or dropped rows to reconstruct a passing timeline. Conflicting overlapping online/active counts could disappear between two good samples.",
+      "function_counterexample": {
+        "source": "evidence/before-counterexamples.json",
+        "seconds": 600,
+        "target_online": 10,
+        "target_active": 10,
+        "minimum_coverage": 0.95,
+        "before_coverage": 1.0,
+        "before_sampling_passed": true,
+        "before_capacity_applicable_passed": true,
+        "after": "evidence/after-counterexamples.json"
+      },
+      "actual_coordinator_counterexample": {
+        "fixed_injection": "A 9-second status-read delay at t=290 observes at monotonic 299000ms; the next observation is monotonic 300000ms while a 1-second wall-clock step repeats at=100299. Twenty realtime replies per tick keep the registered command-rate threshold unchanged.",
+        "parameters": {
+          "max_seconds": 630,
+          "hold_seconds": 600,
+          "minimum_coverage": 0.95,
+          "minimum_continuous_seconds": 120,
+          "maximum_gap_seconds": 20,
+          "minimum_command_rate": 1
+        },
+        "before": {
+          "artifact": "evidence/coordinator-overlap-before-rate2.json",
+          "exit_code": 0,
+          "acceptance_passed": true,
+          "coverage": 0.9666666666666667,
+          "evidence": "Passed"
+        },
+        "function_fix_intermediate": {
+          "artifact": "evidence/coordinator-overlap-after-rate2.json",
+          "exit_code": 1,
+          "acceptance_passed": false,
+          "evidence": "Passed"
+        },
+        "root_final_integration": {
+          "artifact": "evidence/coordinator-overlap-integrated.json",
+          "exit_code": 3,
+          "acceptance_passed": false,
+          "evidence": "Failed",
+          "load": "Failed",
+          "performance": "Unknown",
+          "trigger": "load_coverage_evidence_invalid"
+        }
+      },
+      "resolution": "Strict increasing monotonic observations, nonnegative time validation, and fail-closed coverage evidence_errors for overlapping/reordered/invalid observation times. Root integrates those evidence_errors into final_evidence_failed and final trigger."
+    },
+    {
+      "id": "COVERAGE-P0-02",
+      "severity": "P0",
+      "problem": "Negative wall/elapsed timestamps could yield 100% passing coverage and passing sampling integrity.",
+      "before": "evidence/before-counterexamples.json",
+      "after": "evidence/after-counterexamples.json",
+      "resolution": "Negative coverage window origin is rejected; negative observation time and invalid elapsed clock origin are invalid evidence."
+    }
+  ],
+  "no_change_with_evidence": [
+    {
+      "path": "tools/gameplay_load_validation.py",
+      "status": "NoChangeWithEvidence",
+      "reason": "Owned event sequence accounting preserves one completed logical-request denominator, a separate retry-attempt denominator, cancellation counts and invalid-latency failure numerator. Existing real-child/staleness checks and new request accounting counterexamples pass.",
+      "evidence": "evidence/preservation-check.json"
+    }
+  ],
+  "validation": {
+    "original_sampler_and_request_tests": {
+      "test_methods": 13,
+      "sampling_methods": 11,
+      "request_methods": 2,
+      "baseline_failure_outcomes": 9,
+      "baseline_failed_methods": 5,
+      "baseline_passed_methods": 8,
+      "failed_method_names": [
+        "test_conflicting_overlap_cannot_hide_a_load_drop",
+        "test_identical_replayed_sample_does_not_count_as_a_new_observation",
+        "test_negative_elapsed_clock_cannot_prove_capacity",
+        "test_reordered_rows_are_not_sorted_into_success",
+        "test_unknown_time_is_not_removed_to_bridge_adjacent_observations"
+      ],
+      "log": "logs/baseline-thirteen-contract-cases.log"
+    },
+    "new_actual_coordinator_tests": {
+      "test_methods": 2,
+      "negative": "test_wall_overlap_is_invalid_in_actual_coordinator_verdict",
+      "positive": "test_legal_complete_window_keeps_capacity_scope_and_exit_zero",
+      "dynamic_repo_path": true,
+      "live_capacity_claim": false
+    },
+    "targeted": {
+      "tests": 90,
+      "exit_code": 0,
+      "log": "logs/integrated-targeted-tests.log"
+    },
+    "full_tools": {
+      "tests": 115,
+      "exit_code": 0,
+      "log": "logs/integrated-full-tools-tests.log"
+    },
+    "py_compile": {
+      "exit_code": 0,
+      "log": "logs/integrated-compile.log"
+    },
+    "diff_check": {
+      "exit_code": 0,
+      "log": "logs/integrated-diff-check.log"
+    },
+    "python": "3.12.14",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41"
+  },
+  "canonical_task_scope": [
+    {
+      "task_id": "LOAD-07.1",
+      "status": "Partial",
+      "verified_offline": "Actual observation time, wall-clock step with slow read, sampling first/tail gap; no deadline-gap fill.",
+      "remaining": "Full canonical probe-blocking/worker saturation LIVE cases remain outside this component review."
+    },
+    {
+      "task_id": "LOAD-07.2",
+      "status": "Partial",
+      "verified_offline": "Real-child exited accounting covered by existing regression; simultaneous online/active and command-rate requirements tested.",
+      "remaining": "Authorized live generator CPU/RSS/host memory/FPS profiles require fresh execution."
+    },
+    {
+      "task_id": "LOAD-07.3",
+      "status": "Partial",
+      "verified_offline": "Duplicate-event loss, event ownership, logical vs attempt denominators; actual temporary audit read in main fixture.",
+      "remaining": "Canonical disk/full-buffer and independent session startup runtime matrix not claimed complete."
+    },
+    {
+      "task_id": "LOAD-07.4",
+      "status": "Partial",
+      "verified_offline": "Full current finalization regression exercised in 90-test run; invalid coverage final evidence explicitly fails.",
+      "remaining": "LIVE generator safety/fault matrix remains runtime work."
+    },
+    {
+      "task_id": "PR13-A02.1",
+      "status": "Partial",
+      "verified_offline": "Same registered target and window; split online/active observations cannot satisfy joint target; unchanged 95% target and other thresholds.",
+      "remaining": "Fresh frozen live load-profile manifest and authorized POSTGRES/CAPACITY runtime evidence."
+    },
+    {
+      "task_id": "PR13-A02.2",
+      "status": "Partial",
+      "verified_offline": "Full stable-window denominator, unobserved tail, missing ticks break continuous hold, ordered actual observations, exact coordinator exit/report contract and legal 600-second positive fixture.",
+      "remaining": "Current integrated SHA real monotonic/live population observations and capacity verdict remain required."
+    }
+  ],
+  "canonical_case_execution_claim": "The 13 helper cases and 2 coordinator cases are repository regressions, not a claim that every canonical LOAD-07.* or A02.* test case or runtime profile was executed.",
+  "preservation": {
+    "ack_conservation_implementation_unchanged": true,
+    "ack_function_sha256": "040225b6520ce741aec363ea996a0f5b602b7e60d943fc795857010c5de7d602",
+    "validation_implementation_unchanged": true,
+    "historical_capacity_working_equals_HEAD": true,
+    "canonical_json_unchanged": true
+  },
+  "historical_capacity": {
+    "source": "evidence/historical-capacity-preserved.json",
+    "rewritten": false,
+    "capacity_10_awake": {
+      "coverage": 0.5833100001017253,
+      "minimum_coverage": 0.95,
+      "window_seconds": 600,
+      "load": "Failed",
+      "performance": "Unknown"
+    },
+    "soak_15_target_10": {
+      "planned_seconds": 1800,
+      "observed_seconds": 598.1850626468658,
+      "stop_reason": "invalid_evidence:monitoring_unavailable",
+      "load": "Failed",
+      "performance": "Unknown"
+    }
+  },
+  "remaining_boundaries": [
+    "No LIVE, POSTGRES, CAPACITY, online network load, deployment, ledger operation or historical rewrite was performed.",
+    "50/100-client capacity has not been established; historical 10-client and interrupted 15-client runs remain failed/unknown.",
+    "MAIN owns the final pure-SHA validation and any canonical task acceptance; offline fixture success does not authorize a capacity acceptance or PR merge."
+  ],
+  "deliverables": {
+    "report": "report.json",
+    "commands": "commands.json",
+    "logs": "logs/",
+    "evidence": "evidence/",
+    "manifest": "manifest.json"
+  }
+}

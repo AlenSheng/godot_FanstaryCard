@@ -53,5 +53,12 @@ jobs:
       - name: Verify tracked files were not modified
         shell: pwsh
         run: |
-          git diff --exit-code -- server/src config protocol
+          git diff --exit-code -- server/src config protocol ':(exclude)**/bin/**' ':(exclude)**/obj/**'
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: numerical-domain-${{ github.sha }}
+          path: test-results/numerics
+          retention-days: 7
+          if-no-files-found: ignore

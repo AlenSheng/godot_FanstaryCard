@@ -1,0 +1,272 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-09-30T16:57:46.111090+00:00",
+  "owner": "simulation_contracts",
+  "state": "ImplementationAndOfflineFixturesVerified_NotAccepted",
+  "source_sha": "d4c3212fb32c75d4b9f9f62c08277996611b149c",
+  "source_git_dirty": true,
+  "source_file_hashes": [
+    {
+      "path": "tools/pr13_factor_matrix.py",
+      "bytes": 12361,
+      "sha256": "7312470168d1ec721845f699a6867937ee00b02aa17fdc4109ada2386a4b35ba"
+    },
+    {
+      "path": "tools/pr13_simulation_report.py",
+      "bytes": 16805,
+      "sha256": "b93138aca1f8f6aa56d3ab3e3e71d4ba78ae70788202498daeeb725888d75fcd"
+    },
+    {
+      "path": "tools/tests/test_pr13_simulation_contracts.py",
+      "bytes": 19996,
+      "sha256": "f82d659a9a59039401068cbd543f73b824d1d5395c1731150d9193d8044c20b4"
+    }
+  ],
+  "baseline_algorithm_sha": "73d4e41ca819d533c8d2ce80952c72c0fab6d6b6",
+  "baseline_archives_verified_against_git": true,
+  "toolchain": {
+    "python": "3.12.14"
+  },
+  "tests": {
+    "simulation_contracts": 25,
+    "full_python": 113,
+    "failures": 0,
+    "skips": 0
+  },
+  "changes": [
+    "Check the complete declared seed/stratum matrix against raw SHA/count, ranges, duplicates, finite fields and frozen source/assembly/config/observation contracts.",
+    "Bind every factor job to a fixed four-factor by three-block preregistration; reject incomplete, repeated or wrong-factor jobs and preserve Cancelled/NotExecuted/TimedOut/Failed.",
+    "Require exact baseline/candidate pairs and unchanged non-O6 controls; audit each first-windup index and forbid changes on HP/default/control rows.",
+    "Report actual independent blocks and 1000 paired seeds per block; insufficient budgets remain Inconclusive and do not establish precision.",
+    "Separate all-outcome observations, victory-only times and empirical all-started time-to-victory P95. Retain death/error/censored denominators; use lower/upper rank bounds to handle censored tails and ties.",
+    "Record derivative HEAD/dirty and algorithm/raw hashes. Missing historical source dirty is explicitly Unknown.",
+    "Keep candidate activation false and recommendations NotEvaluated without a preregistered endpoint and multiple-comparison/economic/human evaluation."
+  ],
+  "counterexamples": [
+    {
+      "case": "duplicate_baseline_pair_in_complete_matrix",
+      "before": true,
+      "after": false,
+      "after_error_kinds": [
+        "invalid_run_contract"
+      ],
+      "expected_after": false
+    },
+    {
+      "case": "no_jobs_with_full_preregistration",
+      "before": true,
+      "after": false,
+      "expected_after": false
+    },
+    {
+      "case": "single_run_three_block_claim",
+      "before": {
+        "rejected": false,
+        "claims_three_blocks": true,
+        "sample_budget": null
+      },
+      "after": {
+        "rejected": false,
+        "claims_three_blocks": false,
+        "sample_budget": {
+          "seed_blocks": [
+            {
+              "seed_start": 0,
+              "n": 3
+            }
+          ],
+          "required_independent_blocks": 3,
+          "required_paired_seeds_per_block": 1000,
+          "main_sample_floor_met": false,
+          "status": "Inconclusive",
+          "precision_guaranteed": false
+        }
+      }
+    },
+    {
+      "case": "mixed_frozen_source",
+      "before": {
+        "rejected": false,
+        "claims_three_blocks": true,
+        "sample_budget": null
+      },
+      "after": {
+        "rejected": true,
+        "error": "Mixed frozen inputs; report cohorts separately"
+      }
+    },
+    {
+      "case": "preregistration_missing_other_three_factors",
+      "before": true,
+      "after": false,
+      "expected_after": false
+    }
+  ],
+  "historical_metadata_review": {
+    "path": "history-metadata-review.json",
+    "cohorts_read": 5,
+    "declared_total_rows": 792000,
+    "original_archive_verified_by_parent": true,
+    "raw_recalculated_in_this_batch": false,
+    "observed_o6_states": {
+      "Completed": 6,
+      "Cancelled": 3,
+      "NotExecuted": 3
+    },
+    "note": "360000 reported class/weapon rows have distinct bf7beea and 0abe4a5 sources; HP95 and HP90 use 6eeff4a. All three-row cohorts declare three 1000-seed blocks. The minimal subset omits indexed large raw deliberately."
+  },
+  "canonical_task_support": [
+    {
+      "id": "PR13-B01.4",
+      "title": "终点与删失",
+      "execution_state": "Partial",
+      "accepted": false,
+      "canonical_cases": [
+        {
+          "id": "PR13-B01.4-T01",
+          "state": "NotExecutedAsCompleteCanonicalCase",
+          "fixture_support_only": true
+        },
+        {
+          "id": "PR13-B01.4-T02",
+          "state": "NotExecutedAsCompleteCanonicalCase",
+          "fixture_support_only": true
+        },
+        {
+          "id": "PR13-B01.4-T03",
+          "state": "NotExecutedAsCompleteCanonicalCase",
+          "fixture_support_only": true
+        }
+      ]
+    },
+    {
+      "id": "PR13-B03.3",
+      "title": "配对样本与区间",
+      "execution_state": "Partial",
+      "accepted": false,
+      "canonical_cases": [
+        {
+          "id": "PR13-B03.3-T01",
+          "state": "NotExecutedAsCompleteCanonicalCase",
+          "fixture_support_only": true
+        },
+        {
+          "id": "PR13-B03.3-T02",
+          "state": "NotExecutedAsCompleteCanonicalCase",
+          "fixture_support_only": true
+        },
+        {
+          "id": "PR13-B03.3-T03",
+          "state": "NotExecutedAsCompleteCanonicalCase",
+          "fixture_support_only": true
+        }
+      ]
+    },
+    {
+      "id": "PR13-B03.4",
+      "title": "profile边界和可重放",
+      "execution_state": "Partial",
+      "accepted": false,
+      "canonical_cases": [
+        {
+          "id": "PR13-B03.4-T01",
+          "state": "NotExecutedAsCompleteCanonicalCase",
+          "fixture_support_only": true
+        },
+        {
+          "id": "PR13-B03.4-T02",
+          "state": "NotExecutedAsCompleteCanonicalCase",
+          "fixture_support_only": true
+        },
+        {
+          "id": "PR13-B03.4-T03",
+          "state": "NotExecutedAsCompleteCanonicalCase",
+          "fixture_support_only": true
+        }
+      ]
+    },
+    {
+      "id": "PR13-B05.2",
+      "title": "单因素HP/预告实验",
+      "execution_state": "Partial",
+      "accepted": false,
+      "canonical_cases": [
+        {
+          "id": "PR13-B05.2-T01",
+          "state": "NotExecutedAsCompleteCanonicalCase",
+          "fixture_support_only": true
+        },
+        {
+          "id": "PR13-B05.2-T02",
+          "state": "NotExecutedAsCompleteCanonicalCase",
+          "fixture_support_only": true
+        },
+        {
+          "id": "PR13-B05.2-T03",
+          "state": "NotExecutedAsCompleteCanonicalCase",
+          "fixture_support_only": true
+        }
+      ]
+    },
+    {
+      "id": "PR13-B05.4",
+      "title": "候选推荐判据",
+      "execution_state": "Partial",
+      "accepted": false,
+      "canonical_cases": [
+        {
+          "id": "PR13-B05.4-T01",
+          "state": "NotExecutedAsCompleteCanonicalCase",
+          "fixture_support_only": true
+        },
+        {
+          "id": "PR13-B05.4-T02",
+          "state": "NotExecutedAsCompleteCanonicalCase",
+          "fixture_support_only": true
+        },
+        {
+          "id": "PR13-B05.4-T03",
+          "state": "NotExecutedAsCompleteCanonicalCase",
+          "fixture_support_only": true
+        }
+      ]
+    },
+    {
+      "id": "PR13-B12.1",
+      "title": "集成来源冻结",
+      "execution_state": "Partial",
+      "accepted": false,
+      "canonical_cases": [
+        {
+          "id": "PR13-B12.1-T01",
+          "state": "NotExecutedAsCompleteCanonicalCase",
+          "fixture_support_only": true
+        },
+        {
+          "id": "PR13-B12.1-T02",
+          "state": "NotExecutedAsCompleteCanonicalCase",
+          "fixture_support_only": true
+        },
+        {
+          "id": "PR13-B12.1-T03",
+          "state": "NotExecutedAsCompleteCanonicalCase",
+          "fixture_support_only": true
+        }
+      ]
+    }
+  ],
+  "independent_review": {
+    "statistical_bounds": "The finite empirical all-started 95th order statistic is reported only when observed victories supply its upper bound and censoring lower bounds cannot change it. Death is never a later victory; any Error blocks the endpoint.",
+    "fixture_quality": "Fixtures assert observable output, full matrix rejection, known exact constant paired deltas/quantiles and process lifecycle states. Historic old-schema unittest errors are retained but not counted as independent product defects."
+  },
+  "remaining_blockers": [
+    "Historical 360000/216000/216000 reports and five underlying source/weapon/factor cohorts were read from verified metadata, not rerun or recalculated. The fifteen raw JSONL files are available in the verified full original package but intentionally omitted from this minimal review subset.",
+    "No fresh actual Domain 4-factor x 3-block experiment was executed. These are deterministic statistical/process fixtures only.",
+    "No full legal route, prepared Boss, PvP role swap, human experience, capacity or economy-per-minute evidence is established.",
+    "No preregistered primary endpoint, multiple-comparison plan or precision budget exists; candidate recommendations remain NotEvaluated.",
+    "Canonical task cases are only partially supported; root must independently run the integrated pure-SHA suite and preserve the original 396-case register."
+  ],
+  "production_defaults_changed": false,
+  "candidate_activation": false,
+  "acceptance_eligible": false
+}

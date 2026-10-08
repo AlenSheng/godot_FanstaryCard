@@ -50,6 +50,8 @@ public sealed class ServerMetricsTests
         metrics.IdentityTokenRejected();
         metrics.IdentityTokenExpired();
         metrics.ObserveMatchmakingQueueDuration(TimeSpan.FromSeconds(11.5));
+        metrics.ObserveMatchLaunchPhase("register", TimeSpan.FromMilliseconds(12.5));
+        metrics.MatchLaunchFailed("register");
         metrics.RoomOpened(4);
         metrics.RoomClosed();
         metrics.ObserveRoomActorQueueLength(3);
@@ -83,6 +85,8 @@ public sealed class ServerMetricsTests
         Assert.Equal([1], measurements["fantasycard.realtime.commands.rejected"]);
         Assert.Equal([1], measurements["fantasycard.identity.signins.succeeded"]);
         Assert.Equal([1], measurements["fantasycard.identity.signins.failed"]);
+        Assert.Equal([1], measurements["fantasycard.match_launch.failures"]);
+        Assert.Equal([12.5], doubleMeasurements["fantasycard.match_launch.phase.duration"]);
         Assert.Equal([1], measurements["fantasycard.identity.tokens.rejected"]);
         Assert.Equal([1], measurements["fantasycard.identity.tokens.expired"]);
         Assert.Equal([11.5], doubleMeasurements["fantasycard.matchmaking.queue.duration"]);

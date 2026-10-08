@@ -1,0 +1,43 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  FantasyCard.ConfigExporter -> /workspace/pr13-takeover/process-recovery/server/tools/FantasyCard.ConfigExporter/bin/Release/net10.0/FantasyCard.ConfigExporter.dll
+  FantasyCard.Contracts -> /workspace/pr13-takeover/process-recovery/server/src/FantasyCard.Contracts/bin/Release/net10.0/FantasyCard.Contracts.dll
+  FantasyCard.Domain -> /workspace/pr13-takeover/process-recovery/server/src/FantasyCard.Domain/bin/Release/net10.0/FantasyCard.Domain.dll
+  FantasyCard.Server -> /workspace/pr13-takeover/process-recovery/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll
+  FantasyCard.Server.Tests -> /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll
+Test run for /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:20.19]     FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_three_entry_cycles_duplicate_READY_and_ACK_release_owned_locks [FAIL]
+  Failed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_three_entry_cycles_duplicate_READY_and_ACK_release_owned_locks [18 s]
+  Error Message:
+   POST /api/v1/settlements/01a0f390-59d8-7349-94d5-9bdc8bef42fa/acknowledge: 400
+  Stack Trace:
+     at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.CallAsync(HttpClient client, HttpMethod method, String path, IMessage body, CancellationToken ct, String requestId) in /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs:line 422
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_three_entry_cycles_duplicate_READY_and_ACK_release_owned_locks() in /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs:line 321
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_three_entry_cycles_duplicate_READY_and_ACK_release_owned_locks() in /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs:line 331
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_three_entry_cycles_duplicate_READY_and_ACK_release_owned_locks() in /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs:line 341
+--- End of stack trace from previous location ---
+  Standard Output Messages:
+ {"caseId":"process-start","recordedAt":"2026-09-30T18:25:00.4817905+00:00","evidence":{"label":"entry-three","Id":17244,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/pr13-takeover/process-recovery/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll","port":37339,"SearchPath":"fc_runtime_test_eb717f259cd149a3bf3c84e470e1e920","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+ {"caseId":"process-stop","recordedAt":"2026-09-30T18:25:18.983253+00:00","evidence":{"label":"entry-three","ProcessId":17244,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/pr13-takeover/process-recovery/evidence/process-recovery-20260930/matrix-attempt2/entry-three-17244.log"}}
+
+
+[xUnit.net 00:00:27.54]     FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK [FAIL]
+  Failed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK [1 s]
+  Error Message:
+   Assert.IsType() Failure: Value is not the exact type
+Expected: typeof(FantasyCard.Contracts.Realtime.ActionExtractEventPayload)
+Actual:   typeof(FantasyCard.Contracts.Realtime.CommandRejectedEventPayload)
+  Stack Trace:
+     at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK() in /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs:line 115
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK() in /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs:line 149
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK() in /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs:line 152
+--- End of stack trace from previous location ---
+  Standard Output Messages:
+ {"caseId":"process-start","recordedAt":"2026-09-30T18:25:24.832087+00:00","evidence":{"label":"extraction-0","Id":17388,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/pr13-takeover/process-recovery/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll","port":35151,"SearchPath":"fc_runtime_test_dc63db8fde1a43c7988a15a86a22ffdf","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+ {"caseId":"process-stop","recordedAt":"2026-09-30T18:25:26.3889937+00:00","evidence":{"label":"extraction-0","ProcessId":17388,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/pr13-takeover/process-recovery/evidence/process-recovery-20260930/matrix-attempt2/extraction-0-17388.log"}}
+
+
+Results File: /workspace/pr13-takeover/process-recovery/evidence/process-recovery-20260930/matrix-attempt2/process-matrix.trx
+
+Failed!  - Failed:     2, Passed:     3, Skipped:     0, Total:     5, Duration: 29 s - FantasyCard.Server.Tests.dll (net10.0)

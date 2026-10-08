@@ -1,0 +1,44 @@
+{
+  "ok": true,
+  "source_commit": "cddb353d321229f81c659e761c90e9688c594abc",
+  "source_tree_dirty": true,
+  "gates": [
+    {
+      "name": "server",
+      "command": [
+        "dotnet",
+        "run",
+        "--project",
+        "/home/runner/work/godot_FanstaryCard/godot_FanstaryCard/server/tools/FantasyCard.Numerics",
+        "-c",
+        "Release",
+        "--",
+        "--preview-vectors",
+        "--output",
+        "/home/runner/work/godot_FanstaryCard/godot_FanstaryCard/test-results/godot/preview-parity/input.json"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "elapsed": 11.86686110496521
+    },
+    {
+      "name": "client",
+      "command": [
+        "/home/runner/work/_temp/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/home/runner/work/godot_FanstaryCard/godot_FanstaryCard/client",
+        "--script",
+        "res://tests/run_preview_vectors.gd"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "elapsed": 0.7221102714538574
+    }
+  ],
+  "vector_count": 1800,
+  "failure_count": 0,
+  "input_sha256": "3016227bd0049a17816485636f27a9215f5f5688178b0994d7e4e88ed5f94d50",
+  "domain_assembly_sha256": "ee85b4e620cc1396bad021f2cbd1c99bcfc817ee3cf07a079e3a0b21ee61d80e",
+  "simulator_assembly_sha256": "36598bf00f84a5dbacdbd76e533bad3df7265fb3e215bb249c0701016f3010e6"
+}

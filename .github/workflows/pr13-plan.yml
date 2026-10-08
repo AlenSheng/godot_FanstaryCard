@@ -1,0 +1,26 @@
+name: PR13 specification checks
+
+on:
+  pull_request:
+    paths:
+      - 'docs/plans/**'
+      - 'tools/pr13_plan.py'
+      - '.github/workflows/pr13-plan.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  specification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - name: Validate complete coverage, references, dependency graph and handbook
+        run: python tools/pr13_plan.py --check

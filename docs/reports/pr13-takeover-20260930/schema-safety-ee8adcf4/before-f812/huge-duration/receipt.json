@@ -1,0 +1,21 @@
+{
+  "fixture": "huge-duration",
+  "pid": 96400,
+  "argv": [
+    "/workspace/relicround-env/venv/bin/python",
+    "-c",
+    "import json,os,pathlib,sys,time\nbase=pathlib.Path(sys.argv[1]); fixture=sys.argv[2]\nrow=dict(client_id='schema-owned',pid=os.getpid(),run_id='schema-run',process_epoch='schema-epoch',status_seq=1,\n now_unix_ms=int(time.time()*1000),online=True,room=True,last_progress_age_ms=0,event_seq_max=1)\nevent=dict(run_id=row['run_id'],client_id=row['client_id'],process_epoch=row['process_epoch'],event_seq=1,\n type='http',duration_ms=2,status=500,ok=False,path='/fixture',phase='playing')\nif fixture=='type-list': event['type']=[]\nif fixture=='type-dict': event['type']={}\nif fixture=='huge-duration': event['duration_ms']=10**400\nif fixture=='huge-timestamp': row['now_unix_ms']=10**400\nif fixture=='huge-event-time': event.update(type='lifecycle',event_type='cycle.started',cycle_id='schema:1',match_id='M',at_unix_ms=10**400)\nrow['telemetry']=[event]; row['operations']=[event] if event['type']=='http' else []\npathlib.Path(str(base)+'.status.json').write_text(json.dumps(row))\npathlib.Path(str(base)+'.telemetry.jsonl').write_text(json.dumps(event)+'\\n')\nprint(json.dumps(dict(pid=os.getpid(),written=True)),flush=True)\ntime.sleep(15)\n",
+    "/workspace/pr13-takeover/schema-safety-review/before-five-f812/huge-duration/client.json",
+    "huge-duration"
+  ],
+  "source": "/workspace/pr13-takeover/schema-safety-review/baseline",
+  "stage": "aggregate_window",
+  "ownership_invalid": 0,
+  "owned_statuses": 1,
+  "event_loss": 0,
+  "unhandled_exception": "OverflowError",
+  "exception_message": "int too large to convert to float",
+  "traceback": "Traceback (most recent call last):\n  File \"/workspace/pr13-takeover/schema-safety-review/reproduce_final.py\", line 61, in <module>\n    window=aggregate_window(events)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/pr13-takeover/schema-safety-review/baseline/tools/gameplay_load_validation.py\", line 65, in aggregate_window\n    if not _number(duration) or duration < 0:\n           ^^^^^^^^^^^^^^^^^\n  File \"/workspace/pr13-takeover/schema-safety-review/baseline/tools/gameplay_load_validation.py\", line 34, in _number\n    return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)\n                                                                               ^^^^^^^^^^^^^^^^^^^^\nOverflowError: int too large to convert to float\n",
+  "child_exit_code": -15,
+  "child_reaped": true
+}

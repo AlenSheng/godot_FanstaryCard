@@ -1,0 +1,16 @@
+2026-09-30 21:39:31.414 UTC [65889] LOG:  starting PostgreSQL 18.6 on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+2026-09-30 21:39:31.414 UTC [65889] LOG:  listening on IPv4 address "127.0.0.1", port 44525
+2026-09-30 21:39:31.415 UTC [65889] LOG:  listening on Unix socket "/tmp/pr13-ack-cycles-jyu0vgt3/.s.PGSQL.44525"
+2026-09-30 21:39:31.417 UTC [65895] LOG:  database system was shut down at 2026-09-30 21:39:31 UTC
+2026-09-30 21:39:31.419 UTC [65889] LOG:  database system is ready to accept connections
+2026-09-30 21:39:51.742 UTC [66082] LOG:  could not receive data from client: Connection reset by peer
+2026-09-30 21:39:51.742 UTC [66082] LOG:  unexpected EOF on client connection with an open transaction
+2026-09-30 21:39:51.742 UTC [66171] LOG:  could not receive data from client: Connection reset by peer
+2026-09-30 21:39:51.742 UTC [66171] LOG:  unexpected EOF on client connection with an open transaction
+2026-09-30 21:39:52.015 UTC [65889] LOG:  received fast shutdown request
+2026-09-30 21:39:52.015 UTC [65889] LOG:  aborting any active transactions
+2026-09-30 21:39:52.016 UTC [65889] LOG:  background worker "logical replication launcher" (PID 65898) exited with exit code 1
+2026-09-30 21:39:52.017 UTC [65893] LOG:  shutting down
+2026-09-30 21:39:52.018 UTC [65893] LOG:  checkpoint starting: shutdown immediate
+2026-09-30 21:39:52.180 UTC [65893] LOG:  checkpoint complete: wrote 1175 buffers (7.2%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.011 s, sync=0.147 s, total=0.164 s; sync files=764, longest=0.002 s, average=0.001 s; distance=8951 kB, estimate=8951 kB; lsn=0/1FC3D30, redo lsn=0/1FC3D30
+2026-09-30 21:39:52.188 UTC [65889] LOG:  database system is shut down

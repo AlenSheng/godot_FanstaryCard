@@ -1,0 +1,361 @@
+{
+  "task_id": "PR13-A05.1",
+  "stage": "S5",
+  "integration_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+  "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+  "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+  "effective_room_policy": {
+    "config_version": "gdd-0.70-numerical-1",
+    "embedded_server_config": "FantasyCard.Config.fantasycard.config.bytes sourcebytes same clientbytes",
+    "client_config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+    "numerical_default_catalog": [
+      {
+        "id": "current",
+        "cards_spent_draw": false,
+        "fractional_guardian": false,
+        "optional_monster_pool": false,
+        "monster_capacity": 5,
+        "budgeted_bot_loot": false,
+        "bot_loot_count": 2,
+        "mortal_bot_pve": false
+      }
+    ],
+    "owned_seed_room_input": {
+      "seed": 73,
+      "mode": "ChaosRealm",
+      "difficulty": "Standard",
+      "hero": "Mage",
+      "equipment": "owned White/Fire Feet DrawInterval level0",
+      "gold": 23,
+      "health_potions": 2,
+      "initial_saved_status": "Running",
+      "initial_saved_phase": "ActionBar at generated evacuation"
+    },
+    "input_boundary": "Owned saved Running fixture; actual subsequent runtime extraction/callbacks and actualOSrestart. No complete Boss/LIVE/capacity claim.",
+    "host_protocol": "PB HTTP AllowLegacyJson=false, ticket WS AllowLegacyAccessTokenQuery=false",
+    "bot_fill_delay_seconds": 30,
+    "gateway_transport_seconds": 10,
+    "gateway_logical_seconds": 30,
+    "request_limits": "Production defaults unchanged; pacing/waits rather than lower limits",
+    "provenance": "Fixed source+config bytes and actual FullHost explicit local env; context/runtime PB/DB observations in raw."
+  },
+  "runtime_image_digest": null,
+  "profile_hash": "b10abfa313551b12d3c88c0f02ea01a6e6d5cf309d2c4cfc2f27c398ea1e09d1",
+  "algorithm_version": "A05GuardProcess/1",
+  "case_ids": [
+    "PR13-A05.1-T01",
+    "PR13-A05.1-T02",
+    "PR13-A05.1-T03"
+  ],
+  "expected": {
+    "PR13-A05.1-T01": "Before commit failure: no completed state; retryable.",
+    "PR13-A05.1-T02": "Committed response loss: same durable receipt restored; assets delivered once.",
+    "PR13-A05.1-T03": "Delayed holds: Pending survives OS restart; no ready/ACK/next-preparation bypass."
+  },
+  "actual": {
+    "canonical_cases": [
+      {
+        "case_id": "PR13-A05.1-T03",
+        "result": "Passed",
+        "actual": {
+          "canonical": [
+            "PR13-A05.1-T03",
+            "PR13-A05.3-T02"
+          ],
+          "matchId": "sha256-guid:d5e6a08d470c9e3c58fcfea4910cce6a229b1f0c5fe6a0201487d94571538245",
+          "RoomId": "sha256-guid:718c2b53b29515e897d246eab3f943b3823bcdb147539ad6fa033cb34c2a5cc3",
+          "receiptId": "sha256-guid:e2bb63470b4719b8e8d1ecb66ce43be31b91961c56cbae7149be9766a49d8855",
+          "playerId": "sha256-guid:b13fbc1ae8c624d147b6d9677e0e5c441070afc39d3ffd82e30e3047931247e9",
+          "equipmentId": "sha256-guid:ff4de95e66b652643d97ab4f9dad228c507dbdf8b5226a016660ffb512955672",
+          "pids": [
+            109862,
+            109949
+          ],
+          "before": {
+            "Gold": 0,
+            "Potions": 0,
+            "Owner": "sha256-guid:b13fbc1ae8c624d147b6d9677e0e5c441070afc39d3ffd82e30e3047931247e9",
+            "Location": "InMatchEquipped",
+            "GoldLedger": 0,
+            "Movements": 0
+          },
+          "after": {
+            "Gold": 23,
+            "Potions": 2,
+            "Owner": "sha256-guid:b13fbc1ae8c624d147b6d9677e0e5c441070afc39d3ffd82e30e3047931247e9",
+            "Location": "Equipped",
+            "GoldLedger": 1,
+            "Movements": 1
+          },
+          "pendingBefore": 4,
+          "committedAfter": 4,
+          "profiles": [
+            "OFFLINE",
+            "POSTGRES",
+            "AUDIT"
+          ],
+          "scope": "owned saved Running input, actual Program and production Godot legal extraction; live Pending interval and actual SIGKILL restart",
+          "acceptedBy": null
+        }
+      },
+      {
+        "case_id": "PR13-A05.1-T02",
+        "result": "Passed",
+        "actual": {
+          "canonical": "PR13-A05.1-T02",
+          "also": "PR13-A05.3-T01",
+          "mode": "committed-response-loss",
+          "matchId": "sha256-guid:855935d668e9f0203b61b3b7c15321bc6c4c57aa4ade194aba2a62bfb400fc3a",
+          "RoomId": "sha256-guid:f928449cde5945620652b5671e8eae3b2241b96e7d44d10cb947be6c34152c9b",
+          "receiptId": "sha256-guid:5d0e0a1ed0766267b86e93494c8021b6d62c5aeaa119a0960f83065ca507cb73",
+          "playerId": "sha256-guid:461fbafdf54200ea72cf5b2647c26b18fc1375095ad60a6ab93bd3cee9682b69",
+          "equipmentId": "sha256-guid:37e165dbdaf1afdb7b1adc9ce152124a73d0e697a89fb06901ae2a35f72dc161",
+          "before": {
+            "Gold": 0,
+            "Potions": 0,
+            "Owner": "sha256-guid:461fbafdf54200ea72cf5b2647c26b18fc1375095ad60a6ab93bd3cee9682b69",
+            "Location": "InMatchEquipped",
+            "GoldLedger": 0,
+            "Movements": 0
+          },
+          "after": {
+            "Gold": 23,
+            "Potions": 2,
+            "Owner": "sha256-guid:461fbafdf54200ea72cf5b2647c26b18fc1375095ad60a6ab93bd3cee9682b69",
+            "Location": "Equipped",
+            "GoldLedger": 1,
+            "Movements": 1
+          },
+          "pids": [
+            110327,
+            110400
+          ],
+          "Dropped": 1,
+          "profiles": [
+            "OFFLINE",
+            "POSTGRES",
+            "AUDIT"
+          ],
+          "acceptedBy": null
+        }
+      },
+      {
+        "case_id": "PR13-A05.1-T01",
+        "result": "Passed",
+        "actual": {
+          "canonical": "PR13-A05.1-T01",
+          "also": "PR13-A05.3-T01",
+          "mode": "precommit",
+          "matchId": "sha256-guid:80681fee62d594fae274f939d7929705932777531eaa7a70b3fe1cf69c80352e",
+          "RoomId": "sha256-guid:b1b173f5e9bbcce9fc03d8f76aab898b778dc0965e537e5c1cf41df292eaf9aa",
+          "receiptId": "sha256-guid:ff39db75d5ac05d6e83d6624aebe1ec430a8b01e522f2f6fb1d54c5d3dadb6c7",
+          "playerId": "sha256-guid:7d4eb378ac088532b88b1a324e62a9881092226dc53e9f06e72dce27b6422740",
+          "equipmentId": "sha256-guid:fa4b6eb46bdbd0865cf447f54c3e59aa549da8d08c60b5f25aa74db4f4883459",
+          "before": {
+            "Gold": 0,
+            "Potions": 0,
+            "Owner": "sha256-guid:7d4eb378ac088532b88b1a324e62a9881092226dc53e9f06e72dce27b6422740",
+            "Location": "InMatchEquipped",
+            "GoldLedger": 0,
+            "Movements": 0
+          },
+          "after": {
+            "Gold": 23,
+            "Potions": 2,
+            "Owner": "sha256-guid:7d4eb378ac088532b88b1a324e62a9881092226dc53e9f06e72dce27b6422740",
+            "Location": "Equipped",
+            "GoldLedger": 1,
+            "Movements": 1
+          },
+          "pids": [
+            110433
+          ],
+          "Dropped": 2,
+          "profiles": [
+            "OFFLINE",
+            "POSTGRES",
+            "AUDIT"
+          ],
+          "acceptedBy": null
+        }
+      }
+    ],
+    "full_suite": {
+      "total": "299",
+      "executed": "299",
+      "passed": "299",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "full_suite_exit_code": 0,
+    "full_suite_trx": "green2/server.trx",
+    "focused_204_fix_counts": {
+      "total": "3",
+      "executed": "3",
+      "passed": "3",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "original_guard_causal": {
+      "ok": true,
+      "failures": [],
+      "stale_during_ack": false,
+      "stale_after_ack": false
+    },
+    "guard_windows": [
+      [
+        "recovered",
+        "uncommitted-loss"
+      ],
+      [
+        "ordinary",
+        "success"
+      ],
+      [
+        "recovered",
+        "committed-loss"
+      ]
+    ],
+    "healthy_newN_passed": true,
+    "raw_receipts": 251,
+    "readonly_snapshot_count": 16,
+    "final_readonly_snapshot_count": 8,
+    "final_audit_zero_counter_count": 64,
+    "final_host_starts": 33,
+    "final_host_stops": 33,
+    "historical_counts": {
+      "baselineRED": "0Passed/1Failed/0Skipped originalbug",
+      "green1": "296Passed/3Failed/0Skipped proved fixture204write abort",
+      "focusedGreen2": "3Passed/0Failed/0Skipped",
+      "finalGreen2": "299Passed/0Failed/0Skipped"
+    },
+    "source_mismatches": [],
+    "build_mismatches": [],
+    "cleanup": "cleanup.json"
+  },
+  "status": "ReadyForIndependentAcceptance",
+  "sample_population": {
+    "final_unfiltered_server_entries": 299,
+    "canonical_A05_1_cases": 3,
+    "A05_final_matrix_entries": 8,
+    "other_final_suite_entries": 291,
+    "baseline_red_entries": 1,
+    "failed_green1_full_entries": 299,
+    "fixture_diagnostic_entries": 3,
+    "combining_historical_runs_into_final_sample": false
+  },
+  "cutoff_monotonic": null,
+  "window_or_drain_or_final": "Final functional matrix at fixed source; per-case before/pending/after windows and sameGodot causal monotonic observations preserved; no aggregate load/capacity cutoff invented.",
+  "commands": "commands.json; exact original events commands.jsonl; C-SERVER full unfiltered green2-server-full; C-AUDIT frozen owned READ ONLY procedure",
+  "tool_versions": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executables": {
+      "dotnet": {
+        "path": "/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet",
+        "bytes": 71808,
+        "sha256": "0a5ec28e49da2c0be91ff3fc8fff53c250c9bbd92b25d3b9bfc5721adba96a0c",
+        "version": "10.0.400"
+      },
+      "postgres": {
+        "path": "/workspace/relicround-env/postgres/bin/postgres",
+        "bytes": 11341880,
+        "sha256": "b1ff36b5145f92cdda1cbd07e71dd6e8ffef300fd54317d2db59a715f5dabad8",
+        "version": "postgres (PostgreSQL) 18.6"
+      },
+      "godot": {
+        "path": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "bytes": 146414384,
+        "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+        "version": "4.7.2.stable.official.ed1daf0bf"
+      }
+    },
+    "runtimes": "Microsoft.AspNetCore.App 10.0.11 [/workspace/relicround-env/dotnet/usr/share/dotnet/shared/Microsoft.AspNetCore.App]\nMicrosoft.NETCore.App 10.0.11 [/workspace/relicround-env/dotnet/usr/share/dotnet/shared/Microsoft.NETCore.App]"
+  },
+  "exit_codes": {
+    "pg-init": 0,
+    "pg-start": 0,
+    "red-restore": 0,
+    "red-build": 0,
+    "red-causal": 1,
+    "harness-compile-attempt1": 0,
+    "harness-godot-syntax": 0,
+    "green-restore": 0,
+    "green-build": 0,
+    "green-server-full": 1,
+    "pg-recovery-check": 0,
+    "green2-restore": 0,
+    "green2-build": 0,
+    "green2-focused": 0,
+    "toolchain-final": 0,
+    "green2-server-full": 0,
+    "pg-final-readonly": 0,
+    "pg-stop": 0,
+    "pg-stopped-status": 3
+  },
+  "skip_reasons": [],
+  "asset_and_route_postconditions": {
+    "canonical": "No completed on precommit failure; durable same receipt after committed loss;4Pending noACK/no nextprepare bypass until4Committed; route/receipt/nextpermission aligned.",
+    "causal": "Original stale_during=false/stale_after=false after guard; ordinary noRecoveryM control; failed ACK authority restores same readyM; committed response loss authority excludesM; real nextprepare/cancel confirmed.",
+    "idempotency": "Same original ACK key/body repeated3 on each primaryfault mode; unchanged reply and ownedassets, goldledger1/extractmovement1. New loss window first3samekey/body; actual uncommitted dropped before forwarding or forwarded200 then response dropped separately.",
+    "healthy_old_new": "A newN remains N while B healthyM continues and extracts; old response/frame delayed/replayed and repeatedREADY cannot replace new association; actualOSrestart retains both.",
+    "asset_conservation": "Owned equipment owner conserved, gold+23/potion+2 exactly once; normalguard primary finalEquipped. HealthynewN cleanup disconnectterminal legitimately puts owned equipmentRelicPile; no repair/compensation/deletion to balance audit.",
+    "audit": "audits.json;8 final READ ONLY snapshots×8 invariants all0; account/ledger/holds/prep/matches/owned movements preserved in private raw.",
+    "cleanup": "cleanup.json:33 finalhosts all matchingstop137, allfinalGodot stop0; ownPGnormalstop0,0schemas/0connections, data/socketremoved; nonrunning PID1-adopted zombie visible accurately reported."
+  },
+  "artifact_manifest": {
+    "private_manifest": "PRIVATE_ARTIFACT_MANIFEST.json",
+    "private_manifest_sha256": "aa0778570eb1bde1e488de7f3b35258724ae4292391ecc34198b8184867f61eb",
+    "public_derivatives": "MANIFEST.json",
+    "private_raw_local_only": true
+  },
+  "reviewer": {
+    "source_and_fixture_review": "ROOT independently owns guard7231/test76d/fixture62772; no child production edits",
+    "independent_acceptance": null
+  },
+  "rollback": "Revert ROOT one-line guard commit and rerun original RED/GREEN and old/new room restore matrix; preserve durable ledger/idempotency history. No DB recovery/ledger repair authorized or done. Owned throwaway schema cleanup follows completed audit.",
+  "remaining_blockers": [
+    "S6 MAIN independent decision pending; no Accepted signing"
+  ],
+  "missing_reasons": {
+    "runtime_image_digest": "Native local dotnet/Godot execution, no container image used; executable SHA/version recorded.",
+    "cutoff_monotonic": "This is a serial bounded functional recovery matrix, not sharedcutoff load experiment. Actual per-case sameGodot monotonic observations are retained; no artificial globalcutoff.",
+    "reviewer.independent_acceptance": "No MAIN decision available in this packet."
+  },
+  "source_chain": {
+    "business_baseline": "f812879e4518fd09bf22656451cb563d62940298",
+    "red_baseline": "2dda41b32ba89f06d5ea722ae8b9469004940c22",
+    "guard": "7231c7499b7220b85c27be48ebbd127d7c0b7038",
+    "tests": "76d7113d3888133a8d08fbd6338db838aa4cb01f",
+    "fixture_fix": "62772be2a1bc28affffc3d057f259c8c5ded8e37"
+  },
+  "scope_notes": [
+    "All copied964 trackedbytes and79 actualfreshbuildartifacts checked after final run. Normal sourceinternal bin/obj were deleted before fixed-source build. Historical tracked artifacts/validation-bin are present in copied source manifest, never executed; actual DLL absolute commandpath and hashes prove freshRelease usage.",
+    "No external LIVE/CI/human participation acceptance gate added to A05.1 contract.",
+    "This worker touched only own source copy/evidence; no mainrepo modification/push/UI changes/new production hooks.",
+    "All historical raw/failure preserved; no archive/upload/online/remote operation.",
+    "This Git export replaces exact GUID identifier values with SHA256(lowercase UTF8 GUID) aliases and removes local DB connection details. Private report and raw are unchanged and separately indexed; no new execution or acceptance is implied."
+  ],
+  "accepted_by": null
+}

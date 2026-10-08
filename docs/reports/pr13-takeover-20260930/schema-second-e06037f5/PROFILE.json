@@ -1,0 +1,22 @@
+{
+  "integration_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+  "profile": "OFFLINE",
+  "canonical_cases": 12,
+  "new_schema_fixtures": [
+    "fmean-overflow",
+    "unhashable-match",
+    "unhashable-event-type"
+  ],
+  "old_schema_fixtures": 5,
+  "owned_child_status_deadline_seconds": 5,
+  "owned_child_lifetime_seconds": 15,
+  "owned_child_reap_wait_seconds": 5,
+  "production_stale_ms": 30000,
+  "finite_float_mean": "Use correctly representable arithmetic mean without overflow of an intermediate float sum; do not reject finite input or drop known failures.",
+  "nonstring_event_type": "Reject as invalid_event_type before business-key hashing.",
+  "nonstring_container_match": "Reject as invalid_business_match_type before business-key hashing.",
+  "optional_match": "None/empty string retained for legitimate pre-match cycle.started; ACK/completed still require matching nonempty string.",
+  "raw_policy": "Immutable prior red and source packets; new owned outputs only.",
+  "public_network": false,
+  "database": false
+}

@@ -1,0 +1,40 @@
+{
+  "production_host": "unchanged Release DLL from build-and-tools.json",
+  "positive_probe_test_files": [
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/bin/Causal/FantasyCard.Server.Tests.deps.json",
+      "bytes": 30447,
+      "sha256": "83ace62d63e556b6b8cc9d846fb998f6dc637cf95f2f1f7d9bbe4dc58f6b1ebb"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/bin/Causal/FantasyCard.Server.Tests.dll",
+      "bytes": 1182208,
+      "sha256": "7e9243b69454e571e61cffaa0433744253d3f32c8da8d5b45c9f3dd98a68c50a"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/bin/Causal/FantasyCard.Server.Tests.pdb",
+      "bytes": 182368,
+      "sha256": "ee2da1074f15b358dd574d4e51939b1e7a5fbddbf4c2dfaf8a3f3df42aa085ac"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/bin/Causal/FantasyCard.Server.Tests.runtimeconfig.json",
+      "bytes": 534,
+      "sha256": "6de883dedefd830a8aa021471bcc1c544590ce43db8db9021e2d0433bbea4ca1"
+    }
+  ],
+  "positive_probe_harness": [
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05AckPollCausalTests.cs",
+      "sha256": "f651dc7b30a7727271ab772fec2994b035fa779e71841cec1b2f4ab57ddef56e"
+    },
+    {
+      "path": "client/tests/pr13_a05_ack_poll_causal.gd",
+      "sha256": "b88eda4cbb2363996f19c2e24b81f949381479a950a294ac21f9b97e946e54c7"
+    }
+  ],
+  "negative_probe_compiled_DLL_hash": null,
+  "missing_reasons": {
+    "negative_probe_compiled_DLL_hash": "bin/Causal was rebuilt before the positive probe; the earlier DLL hash was not frozen. Its exact copied Godot source, raw, and production source proof remain."
+  },
+  "full_suite_scope": "295 entries ran the original seven canonical harness files, before adding the two causal files; no full-suite claim for the later causal build."
+}

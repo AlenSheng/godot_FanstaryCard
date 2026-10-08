@@ -1,0 +1,107 @@
+[
+  {
+    "command": [
+      "dotnet",
+      "build",
+      "FantasyCard.Server.slnx",
+      "-c",
+      "Release",
+      "-v",
+      "minimal"
+    ],
+    "label": "fresh-build",
+    "cwd": "/workspace/godot_FanstaryCard/server",
+    "exit_code": 0,
+    "deadline_seconds": 240,
+    "duration_seconds": 8.716
+  },
+  {
+    "command": [
+      "initdb",
+      "-D",
+      "/workspace/pr13-takeover/cycle-ack-batch-20260930/source-candidate-01/pgdata",
+      "-U",
+      "ack_cycle_owner",
+      "--auth=trust",
+      "--no-locale",
+      "--encoding=UTF8"
+    ],
+    "label": "pg-init",
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "deadline_seconds": 30,
+    "duration_seconds": 0.967
+  },
+  {
+    "command": [
+      "pg_ctl",
+      "-D",
+      "/workspace/pr13-takeover/cycle-ack-batch-20260930/source-candidate-01/pgdata",
+      "-l",
+      "/workspace/pr13-takeover/cycle-ack-batch-20260930/source-candidate-01/pg.log",
+      "-o",
+      "-k /tmp/pr13-ack-cycles-1rsaobs8 -h '' -p 5432",
+      "-w",
+      "start"
+    ],
+    "label": "pg-start",
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "deadline_seconds": 30,
+    "duration_seconds": 0.115
+  },
+  {
+    "command": [
+      "createdb",
+      "-h",
+      "/tmp/pr13-ack-cycles-1rsaobs8",
+      "-U",
+      "ack_cycle_owner",
+      "pr13_ack_cycles"
+    ],
+    "label": "pg-createdb",
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "deadline_seconds": 30,
+    "duration_seconds": 0.165
+  },
+  {
+    "command": [
+      "dotnet",
+      "test",
+      "tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "-c",
+      "Release",
+      "--no-build",
+      "--filter",
+      "FullyQualifiedName~Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes|FullyQualifiedName~Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth|FullyQualifiedName~Full_host_MarkRunning_committed_response_loss|FullyQualifiedName~SupportOnly_actual_Register_conflict|FullyQualifiedName~CaddyfileTests",
+      "--logger",
+      "trx;LogFileName=targeted.trx",
+      "--results-directory",
+      "/workspace/pr13-takeover/cycle-ack-batch-20260930/source-candidate-01/results",
+      "-v",
+      "normal"
+    ],
+    "label": "targeted-tests",
+    "cwd": "/workspace/godot_FanstaryCard/server",
+    "exit_code": 0,
+    "deadline_seconds": 1500,
+    "duration_seconds": 370.39
+  },
+  {
+    "command": [
+      "pg_ctl",
+      "-D",
+      "/workspace/pr13-takeover/cycle-ack-batch-20260930/source-candidate-01/pgdata",
+      "-m",
+      "fast",
+      "-w",
+      "stop"
+    ],
+    "label": "pg-stop",
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "deadline_seconds": 30,
+    "duration_seconds": 0.977
+  }
+]

@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.Json;
 using Google.Protobuf;
 using Google.Protobuf.Reflection;
+using HttpWire = FantasyCard.Contracts.Http.V1;
 
 namespace FantasyCard.Contracts.Http;
 
@@ -119,6 +120,7 @@ public static class HttpDtoMapper
             object? source = wrapItems && field.Name == "items" ? value
                 : value is JsonElement element ? ReadJson(element, field.Name) : binding.Get?.Invoke(value);
             if (source is null) continue;
+            if (WriteSettlementEquipmentName(message, field, source)) continue;
             if (field.IsRepeated)
             {
                 var destination = (IList)field.Accessor.GetValue(message);
@@ -127,6 +129,35 @@ public static class HttpDtoMapper
             else field.Accessor.SetValue(message, ToWire(field, source));
         }
         return message;
+    }
+
+    private static bool WriteSettlementEquipmentName(IMessage message, FieldDescriptor field, object source)
+    {
+        if (message is not HttpWire.SettlementEquipment equipment || field.Name is not ("slot" or "quality" or "element"))
+            return false;
+        var name = source switch
+        {
+            string text => text,
+            JsonElement { ValueKind: JsonValueKind.String } element => element.GetString(),
+            _ => null
+        };
+        if (name is null || int.TryParse(name, NumberStyles.Integer, CultureInfo.InvariantCulture, out _))
+            return false; // Preserve historical numeric values, including numeric JSON strings.
+        var valid = field.Name switch
+        {
+            "slot" => name is "Head" or "Chest" or "Hands" or "Legs" or "Feet",
+            "quality" => name is "White" or "Green" or "Blue" or "Purple" or "Orange" or "Red",
+            "element" => name is "Fire" or "Wood" or "Earth" or "Metal" or "Water",
+            _ => false
+        };
+        if (!valid) throw new InvalidDataException($"Invalid persisted equipment name for {field.FullName}.");
+        switch (field.Name)
+        {
+            case "slot": equipment.SlotName = name; break;
+            case "quality": equipment.QualityName = name; break;
+            case "element": equipment.ElementName = name; break;
+        }
+        return true;
     }
 
     public static object ToDto(IMessage message, Type dtoType)

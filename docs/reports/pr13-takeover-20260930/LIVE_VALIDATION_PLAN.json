@@ -1,0 +1,81 @@
+{
+  "kind": "parent_coordinated_test_server_plan_not_dispatched",
+  "source_sha": "de1157fdf490a5bce3ba888c07519fc957c46782",
+  "source_tree": "90ca365532461eee9df5cd4495b8df260b77b8d6",
+  "created_utc": "2026-09-30T19:16:40.657324+00:00",
+  "restart_authorization": "User2026-09-30 15:10UTC authorized necessary current test-server restart; no repeat question for restart itself.",
+  "target": "Existing authorized test server only; parent resolves identity and approved workflow.",
+  "coordination": {
+    "owner": "parent task",
+    "pr14_owner": "independent deployment task",
+    "mutex": "One online validation/deploy/restart at a time; parent reserves shared server and protects running validation.",
+    "workflow_source": "Reviewed fixed PR14 manual workflow and its exact SHA must be supplied by parent; no guess or local SSH.",
+    "secrets": "GitHubEnvironment only; do not retrieve/export/print SSH tokens, passwords, cookies or private keys.",
+    "dispatch_performed": false
+  },
+  "preflight": [
+    "Record running application source/image digest/deployment marker and current health/readiness/config hash, matching baseline rollback artifact.",
+    "Record current matches/room routes/pending holds and approved synthetic account assets using bounded read-only existing APIs/workflow. Global ledger mismatch remains a separate readonly audit.",
+    "Check disposable local and exact-source CI evidence; review build/image contents, environment and workflow permission scope.",
+    "Review any current durable settlement versus snapshot mismatch. New recovery quarantines inconsistent old rooms and readiness fails; stop for bounded attribution rather than modifying DB state.",
+    "Paired client/server equipment-name protocol compatibility at additive tags8-10; actual owned armor settlement GET/Bootstrap200 must be checked. Old b709/cc6 combined image lacks this fix."
+  ],
+  "batches": [
+    {
+      "id": "LIVE-single-account",
+      "scope": "One approved synthetic account,3continuous normal cycles through actual preparation/match/combat/settlement/ACK; distinct three hero runs by approved account fixture.",
+      "budget_seconds": 900,
+      "client_limit": 1,
+      "purpose": "Actual gateway callback/target-confirmation/ACK/recovery behavior, not capacity.",
+      "run_requirements": [
+        "Freeze exact client/server/config source marker and authorized account ownership.",
+        "Retain raw telemetry and local monotonic timestamps, full HTTP denominators and readonly-preview request mix.",
+        "Log manual target change while readonly preview is outstanding, stale snapshot and reconnect contexts using controlled fault hooks."
+      ]
+    },
+    {
+      "id": "LIVE-ten-accounts",
+      "prerequisite": "Single-account correctness, source/evidence/cleanup checks passed.",
+      "scope": "10approved synthetic accounts,3cycles each; original gameplay load and controlled fault/STOP cases separately registered.",
+      "client_limit": 10,
+      "budget_seconds": 1800,
+      "purpose": "Multi-account gameplay and asset postconditions; does not establish50/100capacity or30minstable hold.",
+      "run_requirements": [
+        "Freeze actual read/write rate limits, FPS, network route, request mix and monitoring availability before launch.",
+        "Do not shorten fights, substitute cached preparation or bypass limits to claim baseline coverage.",
+        "Preparation-to-Boss legal route and real rendered3cycles are independent explicit profiles, not inferred from encounter simulations."
+      ]
+    }
+  ],
+  "stop_conditions": [
+    "Any audit loss/malformed or foreign evidence, missing final status/sequence gap, contradictory/overlapping sampling timeline, child abnormal exit.",
+    "Monitoring unavailable, stale statuses beyond contract, inability to collect required denominators or cleanup evidence.",
+    "Existing bounded resource/health redlines or deployment/current-version mismatch; preserve first/all triggers and applicable dimension result.",
+    "Stop budget expires; do not extend time silently to gain a pass."
+  ],
+  "stop_and_cleanup": {
+    "cancel_business": "Issue owned STOP; cancel current queue/ready and settle/ACK where permitted, retaining unknown writes for recovery.",
+    "grace_seconds": 120,
+    "processes": "Reap only owned clients; abnormal or forced exits cannot prove business cleanup.",
+    "postconditions": [
+      "No owned active queue/ready/room route/pending hold after expected cleanup; compare owned account assets and receipts, exactly-once committed deltas.",
+      "Health/readiness restored and version/config marker verified after necessary restart.",
+      "Final raw audit/status/metrics archived immutably; window/drain/final cutoffs reconciled and zero-cycle accounts kept."
+    ],
+    "rollback": "Restore recorded application artifact/config through reviewed parent workflow if needed; database restoration/rollback is not implied."
+  },
+  "not_authorized": [
+    "Production or other servers",
+    "PR merge or auto-merge",
+    "Balance/ledger edits, data deletion or database restore",
+    "Automatic deploy/restart on every push/PR/CI",
+    "Tunnels, credential extraction or broad network permission changes"
+  ],
+  "remaining_human_and_capacity": [
+    "At least6anonymous participants spanning three heroes and novice/experienced strata,3cycles each: parent schedules separately; no recruitment messages sent.",
+    "50/100load,3paired A/Bgroups and30minsoak require preregistered applicable thresholds and monitoring; no acceptance from the above functional batches."
+  ],
+  "all_accepted": false,
+  "local_correctness_evidence": "pb-equipment-d3c5fe6c/report.json",
+  "checkpoint_test_fix_evidence": "checkpoint-publication-de1157fd/post-commit-source.json"
+}

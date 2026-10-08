@@ -1,0 +1,216 @@
+[
+  {
+    "id": "PR13-A05.1",
+    "title": "持久化失败恢复",
+    "source_instruction": "依据可访问A处理包正文重新明确的细项，非原附件逐字恢复。",
+    "specification_state": "ReviewReady",
+    "execution_state": "NotRevalidated",
+    "accepted_by": null,
+    "requires_before_integration": [
+      "LOAD-05.4",
+      "LOAD-09.2"
+    ],
+    "inputs": "settlement写入/asset holds故障点",
+    "implementation_steps": "提交前/后分别故障，按durable事实决定释放路由和结算可见，不提前成功",
+    "test_cases": [
+      {
+        "id": "PR13-A05.1-T01",
+        "setup_and_injection": "提交前失败",
+        "expected": "无completed/可重试",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "PR13-A05.1-T02",
+        "setup_and_injection": "提交后响应丢",
+        "expected": "同receipt恢复不再发资产",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "PR13-A05.1-T03",
+        "setup_and_injection": "holds延迟",
+        "expected": "未ready不绕过",
+        "executed": false,
+        "evidence": null
+      }
+    ],
+    "pass_criteria": "durable settlement、holds、route、玩家下一局权限一致。",
+    "failure_rule": "任一必测用例与预期不符为Failed；缺输入/环境/证据为Blocked；仅完成部分层次为Partial，不升级Accepted。",
+    "profiles": [
+      "OFFLINE",
+      "POSTGRES",
+      "AUDIT"
+    ],
+    "command_refs": [
+      "C-SERVER",
+      "C-AUDIT"
+    ],
+    "stage_refs": [
+      "S0",
+      "S1",
+      "S2",
+      "S3",
+      "S4",
+      "S5",
+      "S6"
+    ],
+    "runtime_stage": "Required",
+    "runtime_stage_reason": "按所列profile取得真实执行证据；历史结果不能冒充当前集成SHA。",
+    "evidence_root": "outputs/pr13-acceptance/<integration_sha>/PR13-A05.1/",
+    "deliverables": [
+      "report.json（逐条预期/实际/判定）",
+      "cases.jsonl（用例与业务关联）",
+      "commands.json（命令/工具版本/退出码/跳过）",
+      "manifest.json（相对路径/大小/SHA256）"
+    ],
+    "rollback": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。",
+    "gate_refs": [
+      "G2",
+      "G5"
+    ],
+    "historical_execution_state": "Queued"
+  },
+  {
+    "id": "PR13-A05.2",
+    "title": "队友和旧房间隔离",
+    "source_instruction": "依据可访问A处理包正文重新明确的细项，非原附件逐字恢复。",
+    "specification_state": "ReviewReady",
+    "execution_state": "NotRevalidated",
+    "accepted_by": null,
+    "requires_before_integration": [
+      "PR13-A05.1"
+    ],
+    "inputs": "玩家A已终态/B仍活动及新房N",
+    "implementation_steps": "A进入新局后旧房snapshot继续；旧route删除只在仍指旧room时发生",
+    "test_cases": [
+      {
+        "id": "PR13-A05.2-T01",
+        "setup_and_injection": "旧snapshot继续",
+        "expected": "B正常/A的N route不删除",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "PR13-A05.2-T02",
+        "setup_and_injection": "恢复terminal A",
+        "expected": "不重新占旧route",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "PR13-A05.2-T03",
+        "setup_and_injection": "相同玩家新route",
+        "expected": "旧结算callback无权清",
+        "executed": false,
+        "evidence": null
+      }
+    ],
+    "pass_criteria": "A可继续多局、B可完成旧局，旧新room registry与DB关联无污染。",
+    "failure_rule": "任一必测用例与预期不符为Failed；缺输入/环境/证据为Blocked；仅完成部分层次为Partial，不升级Accepted。",
+    "profiles": [
+      "OFFLINE",
+      "POSTGRES",
+      "AUDIT"
+    ],
+    "command_refs": [
+      "C-SERVER",
+      "C-AUDIT"
+    ],
+    "stage_refs": [
+      "S0",
+      "S1",
+      "S2",
+      "S3",
+      "S4",
+      "S5",
+      "S6"
+    ],
+    "runtime_stage": "Required",
+    "runtime_stage_reason": "按所列profile取得真实执行证据；历史结果不能冒充当前集成SHA。",
+    "evidence_root": "outputs/pr13-acceptance/<integration_sha>/PR13-A05.2/",
+    "deliverables": [
+      "report.json（逐条预期/实际/判定）",
+      "cases.jsonl（用例与业务关联）",
+      "commands.json（命令/工具版本/退出码/跳过）",
+      "manifest.json（相对路径/大小/SHA256）"
+    ],
+    "rollback": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。",
+    "gate_refs": [
+      "G2",
+      "G5"
+    ],
+    "historical_execution_state": "Queued"
+  },
+  {
+    "id": "PR13-A05.3",
+    "title": "幂等/重启资产矩阵",
+    "source_instruction": "依据可访问A处理包正文重新明确的细项，非原附件逐字恢复。",
+    "specification_state": "ReviewReady",
+    "execution_state": "NotRevalidated",
+    "accepted_by": null,
+    "requires_before_integration": [
+      "PR13-A05.2"
+    ],
+    "inputs": "一次性PG、ledger/receipt/instance清单",
+    "implementation_steps": "重复请求/ack/通知与重启覆盖持久资源，比较金额和实例集合",
+    "test_cases": [
+      {
+        "id": "PR13-A05.3-T01",
+        "setup_and_injection": "同ack三次",
+        "expected": "一条业务结果",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "PR13-A05.3-T02",
+        "setup_and_injection": "重启在holds完成前",
+        "expected": "恢复同一资产转移",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "PR13-A05.3-T03",
+        "setup_and_injection": "重复ready通知",
+        "expected": "不重复领奖",
+        "executed": false,
+        "evidence": null
+      }
+    ],
+    "pass_criteria": "账户/物品实例/流水在允许交易转移后守恒，不删测试数据伪造通过。",
+    "failure_rule": "任一必测用例与预期不符为Failed；缺输入/环境/证据为Blocked；仅完成部分层次为Partial，不升级Accepted。",
+    "profiles": [
+      "OFFLINE",
+      "POSTGRES",
+      "AUDIT"
+    ],
+    "command_refs": [
+      "C-SERVER",
+      "C-AUDIT"
+    ],
+    "stage_refs": [
+      "S0",
+      "S1",
+      "S2",
+      "S3",
+      "S4",
+      "S5",
+      "S6"
+    ],
+    "runtime_stage": "Required",
+    "runtime_stage_reason": "按所列profile取得真实执行证据；历史结果不能冒充当前集成SHA。",
+    "evidence_root": "outputs/pr13-acceptance/<integration_sha>/PR13-A05.3/",
+    "deliverables": [
+      "report.json（逐条预期/实际/判定）",
+      "cases.jsonl（用例与业务关联）",
+      "commands.json（命令/工具版本/退出码/跳过）",
+      "manifest.json（相对路径/大小/SHA256）"
+    ],
+    "rollback": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。",
+    "gate_refs": [
+      "G2",
+      "G5"
+    ],
+    "historical_execution_state": "Queued"
+  }
+]

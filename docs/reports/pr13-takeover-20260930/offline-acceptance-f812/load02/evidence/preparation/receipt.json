@@ -1,0 +1,21 @@
+{
+  "case_id": "PR13-LOAD-02.4-T01",
+  "original_requirement": "prepare-only 返回 0；报告不得声称负载 Passed",
+  "command": [
+    "python3",
+    "/workspace/pr13-takeover/load02-acceptance-f812/source/tools/gameplay_load_test.py",
+    "--godot",
+    "/usr/bin/python3"
+  ],
+  "started_at_unix": 1790807923.9645681,
+  "ended_at_unix": 1790807924.0797706,
+  "exit_code": 0,
+  "actual_stdout": "Prepared: bounded local run; --smoke validates three cycles by default. --run requires monitoring.\n",
+  "expected_exit": 0,
+  "preparation_only": true,
+  "load_passed_claim": false,
+  "passed": true,
+  "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+  "input_sha256": "e5cef5dbd0c63acf67579c3261262ab18346b718b6f32fbab2e265e1e671d52d",
+  "report_applicability": "No report: production prepare-only exits before run directory; caller records scope explicitly."
+}

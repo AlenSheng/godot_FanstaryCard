@@ -1,0 +1,44 @@
+{
+  "source_sha": "0d4ec7f23df806da7a86f9d954033a718349de7e",
+  "at_utc": "2026-10-01T03:33:02.706608+00:00",
+  "stage": "S0-S5 verified; S6 MAIN pending",
+  "manifest_sha256": "1b2a75e51cff491096014a01bc92c4f6163348e84f70d53610e4db2ddf455a8d",
+  "manifest_files": 442,
+  "file_hashes": {
+    "report.json": "c6ae2a3cb500c0b39ed11021722e9ca2c348ac4cfe280858c49e0398744d58be",
+    "cleanup.json": "484941006739b004ea15927665cc9218adb060c2f87b0ee0e13373da76c2c852",
+    "source-final.json": "0b40fe8f92fc97efce2f9b0e41884e17a901faad65f9da2a7ee0cea49d7d53fc",
+    "build-final.json": "2a54b0b56c82bafe02f758e6b8f0ae81cf36cb986ce7ec521a805f42c40d32cf",
+    "profile.json": "96bce82c613695025cd28ecc8db257222af034450a910d4875fdeb3cc18e48b9",
+    "cases.jsonl": "f8e26969e355368bc76dadb0e20975dfa983c4504098907542356563d017a26c",
+    "safe-summary.json": "0e10b703d1926015ece9ce0408223090d1e04393d016728b66eabaf45ba60be7",
+    "minimal-replay.json": "a7ceab3eca89c653c7f6b69352dc0302e39728cec0494ca2ba509a029376dcec"
+  },
+  "results": [
+    {
+      "profile": "green-unix",
+      "transport": "Unix",
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "elapsed_seconds": 29.95193220499641,
+      "trx": "green-unix/unix.trx"
+    },
+    {
+      "profile": "green-tcp",
+      "transport": "Tcp",
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "elapsed_seconds": 37.38189477499691,
+      "trx": "green-tcp/tcp.trx"
+    }
+  ],
+  "source_files": 967,
+  "build_files": 167,
+  "byte_mismatches": 0,
+  "owned_pg_stopped_and_removed": true,
+  "acceptance_authority": "MAIN; child does not sign Accepted"
+}

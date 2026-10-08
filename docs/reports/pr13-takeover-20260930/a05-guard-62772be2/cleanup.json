@@ -1,0 +1,22 @@
+{
+  "integration_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+  "recorded_at_utc": "2026-10-01T01:33:24.703397+00:00",
+  "pg_pid": 102259,
+  "pg_running": false,
+  "pg_proc_entry_present": true,
+  "pg_process_state": "Z (zombie)",
+  "pg_parent_pid": "1",
+  "process_note": "Fast stop exited0; pg_ctl status3 no server, postmaster.pid removed/socket empty. Exited zombie entry adopted by PID1 remains visible and cannot be reaped by this non-parent worker; no live PG process/listener. No PID1 or unrelated process touched.",
+  "data_path": "/tmp/pr13-a05-guard-2dda-pg",
+  "data_exists": false,
+  "socket_path": "/tmp/pr13-a05-guard-2dda-socket",
+  "socket_exists": false,
+  "listen_scope": "Unix private only; listen_addresses empty",
+  "before_cleanup": "pg-final-status-beforecleanup.json",
+  "stop_command": "commands.jsonl pg-stop exit0 / pg-stopped-status exit3 expected no-server",
+  "log_preserved": "pg.log",
+  "remote_or_other_pg_touched": false,
+  "historical_raw_preserved": true,
+  "owned_schema_cleanup": "actual final READ ONLY query:0 schemas/0otherconnections before owned PG stop and removal",
+  "first_cleanup_probe": "strict proc-existence assertion initially failed because exited PG is zombie; no raw/source/DB mutation; subsequently verified process state and empty socket before removing only owned paths"
+}

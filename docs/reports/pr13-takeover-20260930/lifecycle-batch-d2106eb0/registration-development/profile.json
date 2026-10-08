@@ -1,0 +1,40 @@
+{
+  "canonical": "LOAD-04.4-T02",
+  "base_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
+  "registered_at": "2026-09-30T21:16:33.317491+00:00",
+  "profiles": [
+    "OFFLINE",
+    "POSTGRES"
+  ],
+  "full_program_case": "Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes",
+  "support_only_cases": [
+    "SupportOnly_actual_Register_conflict_retries_same_launch_without_partial_room_or_second_reservation(player-route)",
+    "SupportOnly_actual_Register_conflict_retries_same_launch_without_partial_room_or_second_reservation(room-id)"
+  ],
+  "deadlines_seconds": {
+    "full_program": 90,
+    "support_only_each": 30
+  },
+  "cohort": 4,
+  "normal": "actual PB login/preparation/enqueue/READY/ticket WS",
+  "fault": "first actual MarkRunning UPDATE response withheld through CommandComplete UPDATE 1 and idle ReadyForQuery then close Unix socket",
+  "boundary": "real Register same-room and player-route conflicts repeated twice then remove owned conflict and retry",
+  "pass_criteria": [
+    "same matchId/roomId on all four ticket-backed WS routes",
+    "only one durable match and room snapshot",
+    "MarkRunning replay UPDATE 0 accepts Running",
+    "one match.start equipment movement and one two-potion debit",
+    "actual process restart preserves four routes",
+    "real registry rejects without partial room and recovery has exactly one actor"
+  ],
+  "default_timeouts": "unchanged 30s bot fill, 15s disconnected grace; no production flags",
+  "limits": [
+    "no production Godot gameplay runner in this fixture",
+    "not LIVE or RENDER",
+    "no three gameplay cycles",
+    "full host internal actor count not exposed; external routes/DB and separate component actor count are checked"
+  ],
+  "ownership": "only fresh independent worktree new registration test file; history/raw read-only",
+  "network": "loopback HTTP/WS and owned PG Unix socket only",
+  "stop": "test deadline; child process tree kill; owned schema drop; owned PG stop after batch"
+}

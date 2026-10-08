@@ -1,0 +1,44 @@
+{
+  "ok": true,
+  "source_commit": "73d4e41ca819d533c8d2ce80952c72c0fab6d6b6",
+  "source_tree_dirty": true,
+  "gates": [
+    {
+      "name": "server",
+      "command": [
+        "dotnet",
+        "run",
+        "--project",
+        "/workspace/godot_FanstaryCard/server/tools/FantasyCard.Numerics",
+        "-c",
+        "Release",
+        "--",
+        "--preview-vectors",
+        "--output",
+        "/workspace/pr13-takeover/combat-client/preview-vectors/input.json"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "elapsed": 7.341076612472534
+    },
+    {
+      "name": "client",
+      "command": [
+        "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/godot_FanstaryCard/client",
+        "--script",
+        "res://tests/run_preview_vectors.gd"
+      ],
+      "exit_code": 0,
+      "ok": true,
+      "elapsed": 1.5462796688079834
+    }
+  ],
+  "vector_count": 1800,
+  "failure_count": 0,
+  "input_sha256": "daa81c4bad2bc8f5819bee9b0ac2e540958b8d72b83a048f99785623e2e888ac",
+  "domain_assembly_sha256": "ff205e0dcc389135b075c7ae3cb72c979d5be6f68909cc594da160e8e2de7635",
+  "simulator_assembly_sha256": "f7a8e1f9486bf572878730126900ddc93c19cd7a1b63956c96e679ad00a9ab3d"
+}

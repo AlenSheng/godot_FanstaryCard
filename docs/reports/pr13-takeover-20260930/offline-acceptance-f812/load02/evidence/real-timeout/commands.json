@@ -1,0 +1,39 @@
+[
+  {
+    "stage": "import",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--audio-driver",
+      "Dummy",
+      "--max-fps",
+      "60",
+      "--path",
+      "/workspace/pr13-takeover/load02-acceptance-f812/source/client",
+      "--editor",
+      "--import",
+      "--quit"
+    ],
+    "exit_code": 0,
+    "real_elapsed_seconds": 81.99577865299943,
+    "target": "http://127.0.0.1:35207"
+  },
+  {
+    "stage": "timeout",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--audio-driver",
+      "Dummy",
+      "--max-fps",
+      "60",
+      "--path",
+      "/workspace/pr13-takeover/load02-acceptance-f812/source/client",
+      "--script",
+      "res://tests/load02_timeout_fixture.gd"
+    ],
+    "exit_code": 0,
+    "real_elapsed_seconds": 30.90303081199818,
+    "target": "http://127.0.0.1:35207"
+  }
+]

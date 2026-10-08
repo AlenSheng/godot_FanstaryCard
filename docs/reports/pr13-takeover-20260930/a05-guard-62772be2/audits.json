@@ -1,0 +1,713 @@
+{
+  "red": [
+    {
+      "path": "red/a05-audit-causal-after.json",
+      "sha256": "938e6ed5944649bb81d2d3b08a09adae38317205ecb17b4fe7d9985a90969692",
+      "label": "causal-after",
+      "require_clear": true,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_7acacba1f3bf46f0b7a05f33cfa0eeaa",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "red/a05-audit-causal-before.json",
+      "sha256": "c2a53dc7ccb88f29c3ff8305e4061355d6d29dbc2908aa8b9011365eefeac7d0",
+      "label": "causal-before",
+      "require_clear": false,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_7acacba1f3bf46f0b7a05f33cfa0eeaa",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    }
+  ],
+  "green": [
+    {
+      "path": "green/a05-audit-causal-after.json",
+      "sha256": "55b4acad9537811fcaf5673ccc8530498220e6f2a358ad50e1108be162c70e3c",
+      "label": "causal-after",
+      "require_clear": true,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_2133e42e6a23442889b8feff2174801a",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green/a05-audit-causal-before.json",
+      "sha256": "b1d1888af6f5ce5700340d0821b967dd22ffef9aa6c7876337115d824e063eef",
+      "label": "causal-before",
+      "require_clear": false,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_2133e42e6a23442889b8feff2174801a",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green/a05-audit-db-committed-response-loss-after.json",
+      "sha256": "9b2653e96a3f7146216cd5cc22c89bbe5f0d4d81af0dbcfe163c475ad5966afd",
+      "label": "db-committed-response-loss-after",
+      "require_clear": true,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_d7e04885cff04899afec930f47e6bc9d",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green/a05-audit-db-committed-response-loss-before.json",
+      "sha256": "c4f890160b29847de173c403d35e268e4ac9c56dc5daa5dad5d99363c5b949ea",
+      "label": "db-committed-response-loss-before",
+      "require_clear": false,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_d7e04885cff04899afec930f47e6bc9d",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green/a05-audit-db-precommit-after.json",
+      "sha256": "040c66545e7eb7a10ae99e7f600dfb93aaaa49f216cbc14eca0f5867b45fea80",
+      "label": "db-precommit-after",
+      "require_clear": true,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_ef3515e69d2c4c609fe98e1c219bf260",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green/a05-audit-db-precommit-before.json",
+      "sha256": "ab422bb21bf72bfe858b4287361dd37b50ab2ec3a7d6d27a8918a1bf7b7770e9",
+      "label": "db-precommit-before",
+      "require_clear": false,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_ef3515e69d2c4c609fe98e1c219bf260",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green/a05-audit-guard-ordinary-success-before.json",
+      "sha256": "67f85b19eb75562f2ca95647a92b9971c4f9e9bc9b190ec873b9718f8caaa46d",
+      "label": "guard-ordinary-success-before",
+      "require_clear": false,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_c2d906927211491c8d41fd32d88fb2f1",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green/a05-audit-guard-recovered-committed-loss-before.json",
+      "sha256": "108ec0dbd8b70a54b9b40f9c1599fccfb6c0ad129db9e6605d60d644b49cb3b1",
+      "label": "guard-recovered-committed-loss-before",
+      "require_clear": false,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_6d64a082fccb4238b8f2b3d43f16e8d0",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green/a05-audit-guard-recovered-uncommitted-loss-before.json",
+      "sha256": "1add4cd0a1560fbdd7e0c2232674fc3e9628d5c4755f2200fa6e122fa58c0767",
+      "label": "guard-recovered-uncommitted-loss-before",
+      "require_clear": false,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_b3ba2731d7f9412a9c4623bf9c1982e1",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green/a05-audit-healthy-after.json",
+      "sha256": "3187edb10c5740615009a103a77c6270197d8f53e7b67234a6113b124948dde9",
+      "label": "healthy-after",
+      "require_clear": true,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_bea1d3811df649ceb9dc9aea184723f6",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green/a05-audit-healthy-before.json",
+      "sha256": "e4c29be4630b40eff34bfc6ca66237e7c5d4e0b76524dbfffb0d795cd00c94e3",
+      "label": "healthy-before",
+      "require_clear": false,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_bea1d3811df649ceb9dc9aea184723f6",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green/a05-audit-pending-after.json",
+      "sha256": "f343f153e502e9672b6df78c3e30e7643bf64824f0589fd84f607059a0961fa5",
+      "label": "pending-after",
+      "require_clear": true,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_bfaa8e73258f417d8d3a3b8ec1c0697d",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green/a05-audit-pending-before.json",
+      "sha256": "01121645a2443cf4abe162cb5611d0f987a7a2bb77ccb9dc9c2ce200fd736e4f",
+      "label": "pending-before",
+      "require_clear": false,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_bfaa8e73258f417d8d3a3b8ec1c0697d",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    }
+  ],
+  "green2-focused": [
+    {
+      "path": "green2-focused/a05-audit-guard-ordinary-success-after.json",
+      "sha256": "70fff5c5191b4216f6a24667459d9be41fb19288026e74c9a934db155f6c2ce1",
+      "label": "guard-ordinary-success-after",
+      "require_clear": true,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_92fee0f26e9e4b1a989911e683d93d7c",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2-focused/a05-audit-guard-ordinary-success-before.json",
+      "sha256": "80bb7b7b40e3649689177ecd236fbd757ec6cc4ac345daeefefbc366ffbffeda",
+      "label": "guard-ordinary-success-before",
+      "require_clear": false,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_92fee0f26e9e4b1a989911e683d93d7c",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2-focused/a05-audit-guard-recovered-committed-loss-after.json",
+      "sha256": "ed12e2d3266427b1c3f50bc004961563ad04f35e344b13245347bfa6f2ab20c5",
+      "label": "guard-recovered-committed-loss-after",
+      "require_clear": true,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_fb78a6adbd594156b42191a3c49da3e0",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2-focused/a05-audit-guard-recovered-committed-loss-before.json",
+      "sha256": "f049e5a805e59fc5a14368822af8941e239c942f7cf363509b03e3be46001814",
+      "label": "guard-recovered-committed-loss-before",
+      "require_clear": false,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_fb78a6adbd594156b42191a3c49da3e0",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2-focused/a05-audit-guard-recovered-uncommitted-loss-after.json",
+      "sha256": "87cb97ca5100bef28a8e57325c1876dafa9c94dd45e0cfc534ba6a5d910fc1aa",
+      "label": "guard-recovered-uncommitted-loss-after",
+      "require_clear": true,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_da2cd7f6cf2745659d37101b5840c7ab",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2-focused/a05-audit-guard-recovered-uncommitted-loss-before.json",
+      "sha256": "56f82927fc7516ceea3a1771fa0bd1f0ccddc765bf2d5405eb8547ba4fa213b1",
+      "label": "guard-recovered-uncommitted-loss-before",
+      "require_clear": false,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_da2cd7f6cf2745659d37101b5840c7ab",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    }
+  ],
+  "green2": [
+    {
+      "path": "green2/a05-audit-causal-after.json",
+      "sha256": "04742b3a1492e153e26acb63aaad94fcda6ad80f5db10aa95d3a7dba1559237b",
+      "label": "causal-after",
+      "require_clear": true,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_6ec25cf075c64c98a806a96b6af21e3f",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2/a05-audit-causal-before.json",
+      "sha256": "863fba93fcd82e78f12d2d10252b7f3e656c98efe8e9f4f19aff1b921606e0b9",
+      "label": "causal-before",
+      "require_clear": false,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_6ec25cf075c64c98a806a96b6af21e3f",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2/a05-audit-db-committed-response-loss-after.json",
+      "sha256": "ce5a4fcd17a3151e389e4e31646f9ea0bca692dc18dcb2110f01f42d1de6cb69",
+      "label": "db-committed-response-loss-after",
+      "require_clear": true,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_e003cf59376941249c56121351d294a5",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2/a05-audit-db-committed-response-loss-before.json",
+      "sha256": "0c8159334cf68a31008c59ed0f83ec97a63466ff48813f9a9592e6495587ff52",
+      "label": "db-committed-response-loss-before",
+      "require_clear": false,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_e003cf59376941249c56121351d294a5",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2/a05-audit-db-precommit-after.json",
+      "sha256": "5cdb4a62fdbac3cd39c3b27f9278cc7b40dcaa576c8fbd5a04c1f2ddcc0657a7",
+      "label": "db-precommit-after",
+      "require_clear": true,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_1146e07ef3574ded95fe902a8d287a32",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2/a05-audit-db-precommit-before.json",
+      "sha256": "8d5d980013b913ee7ba4e7d9d27817dd71cb920991c594496dbb1c0bffb066a6",
+      "label": "db-precommit-before",
+      "require_clear": false,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_1146e07ef3574ded95fe902a8d287a32",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2/a05-audit-guard-ordinary-success-after.json",
+      "sha256": "fc7f0a0704c2045c14448efc00053f50bde8241a2923f0721367435682c27b61",
+      "label": "guard-ordinary-success-after",
+      "require_clear": true,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_ba651cb7d32443249ec17d4f167621a3",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2/a05-audit-guard-ordinary-success-before.json",
+      "sha256": "ae75f86a0e9a8ca20a55dc1f9a7d341bc155d615adcb4c13ccd81da58b8ad82c",
+      "label": "guard-ordinary-success-before",
+      "require_clear": false,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_ba651cb7d32443249ec17d4f167621a3",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2/a05-audit-guard-recovered-committed-loss-after.json",
+      "sha256": "1f14a03e45f1c9e258a23a3e0941d9402df134c8fd206ead5946c398be470c5d",
+      "label": "guard-recovered-committed-loss-after",
+      "require_clear": true,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_e83281b36aea4397a8ae11508941417d",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2/a05-audit-guard-recovered-committed-loss-before.json",
+      "sha256": "3fd0c2f88e2f776242be7f9fb65b7da3908ce2e370aaadc8ab0acf5d62efe09e",
+      "label": "guard-recovered-committed-loss-before",
+      "require_clear": false,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_e83281b36aea4397a8ae11508941417d",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2/a05-audit-guard-recovered-uncommitted-loss-after.json",
+      "sha256": "9aa07fd13acb49e6d066b11026542b017d7e8ac0f7a55e3b605ce4e240edb3a0",
+      "label": "guard-recovered-uncommitted-loss-after",
+      "require_clear": true,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_ebbb65d73dd2422bb203df10bc09534b",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2/a05-audit-guard-recovered-uncommitted-loss-before.json",
+      "sha256": "cbff59810c2419718ceb591b5b133f6c25f50963119d14cafb1c731c49ff1bb9",
+      "label": "guard-recovered-uncommitted-loss-before",
+      "require_clear": false,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_ebbb65d73dd2422bb203df10bc09534b",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2/a05-audit-healthy-after.json",
+      "sha256": "61a4f49c5d898f4cf5f4914e1be7092c804e050a7ac0d2a6ee92e409af1369cb",
+      "label": "healthy-after",
+      "require_clear": true,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_5d1171fe0f1e4fa99947acfe2f297dfb",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2/a05-audit-healthy-before.json",
+      "sha256": "7bba1cfd6c20467b5dffc7ed42def6e8537e3bb75002b0506de23c5f5b4e8d33",
+      "label": "healthy-before",
+      "require_clear": false,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_5d1171fe0f1e4fa99947acfe2f297dfb",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2/a05-audit-pending-after.json",
+      "sha256": "6728cf25ed08b9b30e3dfb0d1ad71cc4cb689743b7aa3131ca11ea815c4b36e9",
+      "label": "pending-after",
+      "require_clear": true,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_c85d0f7509904991ae6dd5026cc70657",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2/a05-audit-pending-before.json",
+      "sha256": "f70c1fbe08b557f6b855f93acd6f3b4456673a4a5875d51d90396401fbfa7ab8",
+      "label": "pending-before",
+      "require_clear": false,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_c85d0f7509904991ae6dd5026cc70657",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    }
+  ]
+}

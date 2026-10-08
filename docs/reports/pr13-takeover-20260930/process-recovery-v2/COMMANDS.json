@@ -1,0 +1,22 @@
+{
+  "workdir": "/workspace/pr13-takeover/process-recovery",
+  "activation": "source /workspace/relicround-env/activate.sh",
+  "private_database": "Host=/tmp/pr13-process-recovery-socket;Port=55437;Database=pr13_process_recovery;Username=agent;Pooling=true;Maximum Pool Size=8",
+  "process_server_dll": "/workspace/pr13-takeover/process-recovery/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll",
+  "commands": {
+    "baseline_build": "dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --filter 'FullyQualifiedName~Real_process_pvp_relic_replay_and_extraction_survive_forced_restart|FullyQualifiedName~Real_default_protobuf_preparation_ready_and_room_entry' --logger 'trx;LogFileName=existing-host.trx' --results-directory /workspace/pr13-takeover/process-recovery/evidence/process-recovery-20260930/existing --verbosity minimal",
+    "baseline_with_database": "dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --no-build --filter 'FullyQualifiedName~Real_process_pvp_relic_replay_and_extraction_survive_forced_restart|FullyQualifiedName~Real_default_protobuf_preparation_ready_and_room_entry' --logger 'trx;LogFileName=existing-host.trx' --results-directory /workspace/pr13-takeover/process-recovery/evidence/process-recovery-20260930/existing-db --verbosity minimal",
+    "matrix_attempts_1_to_4": "dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --filter 'FullyQualifiedName~ProcessLifecycleRecoveryTests' --logger 'trx;LogFileName=process-matrix.trx' --results-directory <matrix-attemptN> --verbosity minimal",
+    "P0_red": "dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --filter 'FullyQualifiedName~Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK' --logger 'trx;LogFileName=extraction-red.trx' --results-directory /workspace/pr13-takeover/process-recovery/evidence/process-recovery-20260930/extraction-red-attempt5 --verbosity minimal",
+    "P0_fixed_v2": "dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --filter 'FullyQualifiedName~Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK' --logger 'trx;LogFileName=extraction-fixed.trx' --results-directory /workspace/pr13-takeover/process-recovery/evidence/process-recovery-20260930/extraction-fixed-v2-attempt7 --verbosity minimal",
+    "final_matrix_v2": "dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --no-build --filter 'FullyQualifiedName~ProcessLifecycleRecoveryTests' --logger 'trx;LogFileName=process-matrix.trx' --results-directory /workspace/pr13-takeover/process-recovery/evidence/process-recovery-20260930/final-matrix-v2-attempt8 --verbosity minimal",
+    "parent_overlay_v2": "git apply --reverse evidence/process-recovery-20260930/mapper-fix-root.attempt6.patch && git apply --check mapper-fix-root-v2.patch && git apply mapper-fix-root-v2.patch",
+    "cleanup": "pg_ctl -D /tmp/pr13-process-recovery-pg -m fast -w stop; remove only owned /tmp/pr13-process-recovery-pg and /tmp/pr13-process-recovery-socket after 0 schemas/0 other DB connections"
+  },
+  "per_process_real_argv_and_pids": "each attempt receipts.jsonl process-start/process-stop",
+  "PG_commands": [
+    "initdb -D /tmp/pr13-process-recovery-pg -A trust --no-locale -E UTF8",
+    "pg_ctl -D /tmp/pr13-process-recovery-pg -l <evidence>/postgres.log -o '-c listen_addresses= -c unix_socket_directories=/tmp/pr13-process-recovery-socket -c max_connections=64 -p 55437' -w start",
+    "createdb -h /tmp/pr13-process-recovery-socket -p 55437 pr13_process_recovery"
+  ]
+}

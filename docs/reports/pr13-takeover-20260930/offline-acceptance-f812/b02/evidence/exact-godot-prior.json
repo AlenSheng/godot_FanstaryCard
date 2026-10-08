@@ -1,0 +1,155 @@
+{
+  "failures": [],
+  "ok": true,
+  "rows": [
+    {
+      "actual": {
+        "csharp_wire_rows": [
+          {
+            "card_instance_ids": [
+              "00000050-0000-0000-0000-000000000000",
+              "00000051-0000-0000-0000-000000000000"
+            ],
+            "file": "wire-battle-play_cards-00000050-0000-0000-0000-000000000000.bin",
+            "roundtrip_ids": [
+              "00000050-0000-0000-0000-000000000000",
+              "00000051-0000-0000-0000-000000000000"
+            ]
+          },
+          {
+            "card_instance_ids": [
+              "00000051-0000-0000-0000-000000000000",
+              "00000050-0000-0000-0000-000000000000"
+            ],
+            "file": "wire-battle-play_cards-00000051-0000-0000-0000-000000000000.bin",
+            "roundtrip_ids": [
+              "00000051-0000-0000-0000-000000000000",
+              "00000050-0000-0000-0000-000000000000"
+            ]
+          },
+          {
+            "card_instance_ids": [
+              "00000050-0000-0000-0000-000000000000",
+              "00000051-0000-0000-0000-000000000000"
+            ],
+            "file": "wire-combat-preview-00000050-0000-0000-0000-000000000000.bin",
+            "roundtrip_ids": [
+              "00000050-0000-0000-0000-000000000000",
+              "00000051-0000-0000-0000-000000000000"
+            ]
+          },
+          {
+            "card_instance_ids": [
+              "00000051-0000-0000-0000-000000000000",
+              "00000050-0000-0000-0000-000000000000"
+            ],
+            "file": "wire-combat-preview-00000051-0000-0000-0000-000000000000.bin",
+            "roundtrip_ids": [
+              "00000051-0000-0000-0000-000000000000",
+              "00000050-0000-0000-0000-000000000000"
+            ]
+          }
+        ],
+        "godot_order": [
+          "00000000-0000-0000-0000-000000000001",
+          "00000000-0000-0000-0000-000000000002"
+        ],
+        "godot_reversed": [
+          "00000000-0000-0000-0000-000000000002",
+          "00000000-0000-0000-0000-000000000001"
+        ]
+      },
+      "case_id": "PR13-B02.3-T02"
+    },
+    {
+      "actual": {
+        "after_late_preview": {
+          "_event_revision": 9,
+          "_replayed": false,
+          "_request_id": "current-request",
+          "_room_revision": 9,
+          "_sequence": 1,
+          "attacker_id": "",
+          "authoritative": true,
+          "battle_ended": false,
+          "battle_id": "00000000-0000-0000-0000-000000000020",
+          "card_instance_ids": [
+            "00000000-0000-0000-0000-000000000001",
+            "00000000-0000-0000-0000-000000000002"
+          ],
+          "conflict_cancellation": "",
+          "conflict_pair_count": 0,
+          "control_estimated": false,
+          "core_count": 0,
+          "core_element": "",
+          "damage": 19,
+          "damage_segments": [],
+          "draw_block_seconds": "",
+          "draw_block_speed_seconds": "",
+          "draw_charge": "",
+          "draw_speed_modifier": "",
+          "draw_speed_seconds": "",
+          "heal": 0,
+          "health_cost": 0,
+          "hp_damage": 0,
+          "immediate_draw": 0,
+          "resonance_multiplier": "",
+          "shield_damage": 0,
+          "shield_gain": 0,
+          "source_id": "",
+          "source_revision": 9,
+          "stun_seconds": "",
+          "target_defeated": false,
+          "target_id": "monster-a"
+        },
+        "current_preview": {
+          "_event_revision": 9,
+          "_replayed": false,
+          "_request_id": "current-request",
+          "_room_revision": 9,
+          "_sequence": 1,
+          "attacker_id": "",
+          "authoritative": true,
+          "battle_ended": false,
+          "battle_id": "00000000-0000-0000-0000-000000000020",
+          "card_instance_ids": [
+            "00000000-0000-0000-0000-000000000001",
+            "00000000-0000-0000-0000-000000000002"
+          ],
+          "conflict_cancellation": "",
+          "conflict_pair_count": 0,
+          "control_estimated": false,
+          "core_count": 0,
+          "core_element": "",
+          "damage": 19,
+          "damage_segments": [],
+          "draw_block_seconds": "",
+          "draw_block_speed_seconds": "",
+          "draw_charge": "",
+          "draw_speed_modifier": "",
+          "draw_speed_seconds": "",
+          "heal": 0,
+          "health_cost": 0,
+          "hp_damage": 0,
+          "immediate_draw": 0,
+          "resonance_multiplier": "",
+          "shield_damage": 0,
+          "shield_gain": 0,
+          "source_id": "",
+          "source_revision": 9,
+          "stun_seconds": "",
+          "target_defeated": false,
+          "target_id": "monster-a"
+        },
+        "current_revision": 9,
+        "entry": "production Gateway._receive -> Game._on_event -> _accept_combat_preview",
+        "protocol_sequence": 3,
+        "room_unchanged": true,
+        "stale_revision": 8
+      },
+      "case_id": "PR13-B02.3-T03"
+    }
+  ],
+  "server_override": "http://127.0.0.1:1",
+  "suite": "b02-exact-godot"
+}

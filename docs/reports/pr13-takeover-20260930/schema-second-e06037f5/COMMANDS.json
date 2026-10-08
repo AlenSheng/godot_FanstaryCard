@@ -1,0 +1,89 @@
+{
+  "integration_sha": "e06037f58738d0fbff86090e86d8bd06f8608e04",
+  "source_git_dirty_at_execution": false,
+  "tool_versions": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41"
+  },
+  "commands": [
+    {
+      "id": "NEW3-RED",
+      "argv": [
+        "python",
+        "reproduce.py",
+        "--source",
+        "<owned-ee8-source>",
+        "--output",
+        "<new-red-output>"
+      ],
+      "harness_exit_code": 0,
+      "result": "3 recorded unhandled exceptions; all owned children reaped",
+      "report": "before-ee8/REPORT.json",
+      "not_load_pass": true
+    },
+    {
+      "id": "NEW3-GREEN",
+      "argv": [
+        "python",
+        "reproduce.py",
+        "--source",
+        "<clean-e06037f5>",
+        "--output",
+        "<new-green-output>"
+      ],
+      "harness_exit_code": 0,
+      "result": "0 unhandled exceptions; two invalid archive inputs exit3; valid finite mean1e308 retains2 errors/2 samples with insufficient latency sample quality and incomplete duration-limit classification1",
+      "report": "after-clean-sha/REPORT.json"
+    },
+    {
+      "id": "OLD5-GREEN",
+      "argv": [
+        "python",
+        "reproduce_old_five.py",
+        "--source",
+        "<clean-e06037f5>",
+        "--output",
+        "<new-old5-output>"
+      ],
+      "exit_code": 0,
+      "invalid_exit3_count": 5,
+      "unhandled_exception_count": 0,
+      "report": "old-five-clean-sha/REPORT.json"
+    },
+    {
+      "id": "C-PY",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/tests",
+        "-v"
+      ],
+      "exit_code": 0,
+      "passed": 122,
+      "failed": 0,
+      "skipped": 0,
+      "log": "python-clean-sha.log"
+    },
+    {
+      "id": "LOAD01-EXACT",
+      "argv": [
+        "python",
+        "run_load01.py",
+        "--output",
+        "<new-exact-output>"
+      ],
+      "environment": {
+        "PR13_SOURCE_ROOT": "<clean-e06037f5>",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "exit_code": 0,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "report": "load01-clean-sha/report.json"
+    }
+  ]
+}

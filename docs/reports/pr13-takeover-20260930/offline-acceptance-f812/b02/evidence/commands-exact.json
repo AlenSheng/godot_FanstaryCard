@@ -1,0 +1,23 @@
+[
+  {
+    "name": "B02-exact-csharp",
+    "argv": [
+      "dotnet",
+      "run",
+      "--project",
+      "/workspace/pr13-takeover/b02-acceptance-f812/harness/ExactCases.csproj",
+      "-c",
+      "Release"
+    ],
+    "cwd": "/workspace/pr13-takeover/b02-acceptance-f812",
+    "started_utc": "2026-09-30T22:20:36.001744+00:00",
+    "elapsed_seconds": 6.517206773001817,
+    "exit_code": 134,
+    "expected_exit_code": 0,
+    "postgres": "private owned PG18 Unix socket; no TCP",
+    "env_nonsecret": {
+      "FANTASYCARD_TEST_POSTGRES": "Host=/workspace/pr13-takeover/b02-acceptance-f812/pgsocket;Port=55482;Database=b02_acceptance;Username=agent;Pooling=false"
+    },
+    "raw": "evidence/exact-run.log"
+  }
+]

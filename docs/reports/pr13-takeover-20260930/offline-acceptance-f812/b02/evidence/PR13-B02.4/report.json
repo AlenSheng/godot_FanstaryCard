@@ -1,0 +1,807 @@
+{
+  "task_id": "PR13-B02.4",
+  "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+  "execution_state": "ReadyForIndependentAcceptance",
+  "candidate_decision": "NoChangeWithEvidence",
+  "accepted_by": null,
+  "production_changes": 0,
+  "ui_changes": 0,
+  "new_business_changes": 0,
+  "stages": [
+    {
+      "stage": "S0",
+      "status": "CompleteForReview",
+      "evidence": [
+        "canonical-B02.json",
+        "input_manifest.json",
+        "profile.json",
+        "dependencies.json",
+        "guidance-read.json"
+      ],
+      "note": "Fixed f812 source, twelve canonical cases, ownership and bounded offline/PG commands."
+    },
+    {
+      "stage": "S1",
+      "status": "Passed",
+      "evidence": [
+        "cases.jsonl",
+        "negative-case.json",
+        "B02-exact-csharp-final.log",
+        "B02-exact-godot.log"
+      ],
+      "note": "Current behavior measured; no fabricated before failure. Old API failure is the required compile-negative contract."
+    },
+    {
+      "stage": "S2",
+      "status": "NoChangeWithEvidenceCandidate",
+      "evidence": [
+        "runtime-byte-audit.json",
+        "historical-test-api-migration.patch",
+        "test-intention-count-audit.json"
+      ],
+      "note": "All 2213 tracked runtime/config/proto/exporter files byte-identical to f812; old/current CombatAuthoritativeRules method counts20/20, no removed intentions. Only isolated harness and evidence were added."
+    },
+    {
+      "stage": "S3",
+      "status": "Passed",
+      "evidence": [
+        "commands.json",
+        "cases.jsonl",
+        "suite-results.json",
+        "trx/domain.trx",
+        "trx/server.trx"
+      ],
+      "note": "12/12 exact cases; Domain317 and Server291 whole suites, zero skipped; negative probes exit1 are expected."
+    },
+    {
+      "stage": "S4",
+      "status": "PassedForIndependentReview",
+      "evidence": [
+        "dependencies.json",
+        "exact/locked-room.json",
+        "exact/duel-recovery.json",
+        "exact/old-invalid.json",
+        "exact-godot.json",
+        "config-manifest.json"
+      ],
+      "note": "Owned real PG repository persistence/restore; raw old missing fields and invalid enum read through production repository; production C# and Godot codecs and Gateway/Game protocol entry. Source-table hot update uses isolated XLSX exporter and production ReadNumerics seam, no deployment/reload API claim."
+    },
+    {
+      "stage": "S5",
+      "status": "NotApplicableWithReason",
+      "evidence": [
+        "canonical-B02.json"
+      ],
+      "note": "Canonical B02.1–.4 explicitly require only OFFLINE/POSTGRES and state public load adds no confidence. MAIN approval of this applicability remains S6; no LIVE/CI/human experience gate added."
+    },
+    {
+      "stage": "S6",
+      "status": "Pending",
+      "owner": "MAIN",
+      "note": "Independent artifact check and critical rerun; no Accepted signature."
+    }
+  ],
+  "canonical_subtask": {
+    "id": "PR13-B02.4",
+    "title": "房间策略和恢复",
+    "source_instruction": "核对有效房间policy及快照/PVP/旧版本恢复兼容",
+    "specification_state": "ReviewReady",
+    "execution_state": "NotRevalidated",
+    "accepted_by": null,
+    "requires_before_integration": [
+      "PR13-B02.3"
+    ],
+    "inputs": "effective room policy/config hash及旧快照fixture",
+    "implementation_steps": "创建/PVE/PVP工作副本/持久化/恢复保策略；缺旧字段按已批准默认解释",
+    "test_cases": [
+      {
+        "id": "PR13-B02.4-T01",
+        "setup_and_injection": "当前room热更源表",
+        "expected": "policy不静默换",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "PR13-B02.4-T02",
+        "setup_and_injection": "PVP结束",
+        "expected": "恢复PVE原state",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "PR13-B02.4-T03",
+        "setup_and_injection": "旧snapshot缺策略/无效枚举",
+        "expected": "兼容默认或明确拒绝不半恢复",
+        "executed": false,
+        "evidence": null
+      }
+    ],
+    "pass_criteria": "同SHA客户端/server/proto/Domain/PG适用测试真实执行，新旧room来源可查。",
+    "failure_rule": "任一必测用例与预期不符为Failed；缺输入/环境/证据为Blocked；仅完成部分层次为Partial，不升级Accepted。",
+    "profiles": [
+      "OFFLINE",
+      "POSTGRES"
+    ],
+    "command_refs": [
+      "C-BUILD",
+      "C-DOMAIN",
+      "C-SERVER",
+      "C-GODOT-NUM",
+      "C-PROTO"
+    ],
+    "stage_refs": [
+      "S0",
+      "S1",
+      "S2",
+      "S3",
+      "S4",
+      "S5",
+      "S6"
+    ],
+    "runtime_stage": "NotApplicableWithReason",
+    "runtime_stage_reason": "仅凭指定离线/集成产物即可判定本子项；公网压测不增加该判据可信度。",
+    "evidence_root": "outputs/pr13-acceptance/<integration_sha>/PR13-B02.4/",
+    "deliverables": [
+      "report.json（逐条预期/实际/判定）",
+      "cases.jsonl（用例与业务关联）",
+      "commands.json（命令/工具版本/退出码/跳过）",
+      "manifest.json（相对路径/大小/SHA256）"
+    ],
+    "rollback": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。",
+    "gate_refs": [
+      "G1",
+      "G2",
+      "G5"
+    ],
+    "historical_execution_state": "Queued"
+  },
+  "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+  "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+  "effective_room_policy": "CurrentRhythm/CurrentSteps default; CoreCardsSpent/FractionalRemainder only explicitly selected isolated fixtures; stored policies stay locked",
+  "runtime_image_digest": null,
+  "runtime_image_digest_missing_reason": "Local processes, no container image; executable/build SHA256 supplied in tools-and-build-manifest.json",
+  "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
+  "algorithm_version": "combat-current-b7a6154",
+  "case_ids": [
+    "PR13-B02.4-T01",
+    "PR13-B02.4-T02",
+    "PR13-B02.4-T03"
+  ],
+  "expected": [
+    "policy不静默换",
+    "恢复PVE原state",
+    "兼容默认或明确拒绝不半恢复"
+  ],
+  "actual": [
+    {
+      "source_before_sha256": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+      "source_after_sha256": "094310a6a760cf4d0e0d0c2ec135aa2e0d8dc9c9e0ef4d8497a8d4545953caea",
+      "compiled_content_sha256": "44ff5598669dad202f95c8d13c9cd239016c15ecc6960c0a904d1f3b7c868924",
+      "oldRules": {
+        "CardsSpentDraw": false,
+        "FractionalGuardian": false,
+        "OptionalMonsterPool": false,
+        "MonsterCapacity": 5,
+        "BudgetedBotLoot": false,
+        "BotLootCount": 2,
+        "MortalBotPve": false,
+        "FenxianPolicy": 1,
+        "GuardianPolicy": 1
+      },
+      "changedRules": {
+        "CardsSpentDraw": true,
+        "FractionalGuardian": true,
+        "OptionalMonsterPool": false,
+        "MonsterCapacity": 5,
+        "BudgetedBotLoot": false,
+        "BotLootCount": 2,
+        "MortalBotPve": false,
+        "FenxianPolicy": 2,
+        "GuardianPolicy": 2
+      },
+      "room_hash_before": "4159d9e2ec871ca3eba97654a8248b53f1fbad5394553b50f1aafcee76e64fb2",
+      "room_hash_after": "4159d9e2ec871ca3eba97654a8248b53f1fbad5394553b50f1aafcee76e64fb2",
+      "pg_restored_hash": "4159d9e2ec871ca3eba97654a8248b53f1fbad5394553b50f1aafcee76e64fb2",
+      "old_room_guardian_policy": "CurrentSteps",
+      "new_room_guardian_policy": "FractionalRemainder",
+      "hot_update_scope": "isolated workbook/export; no runtime reload API is present"
+    },
+    {
+      "combat_before_hash": "6c66632d0464768ccad995b96817320f4edf2f9f66dd0381932449dc8cc6b0ee",
+      "combat_after_hash": "6c66632d0464768ccad995b96817320f4edf2f9f66dd0381932449dc8cc6b0ee",
+      "pve_before_hash": "97b222c85c3175abf8c1443be0b4ad532d6b532add891b79cf4b031a9947596b",
+      "pve_after_hash": "97b222c85c3175abf8c1443be0b4ad532d6b532add891b79cf4b031a9947596b",
+      "restored_remainder": 4,
+      "restored_policy": "FractionalRemainder",
+      "pg_persisted_duel": true,
+      "end_reason": "MutualLeave"
+    },
+    {
+      "legacy_missing_fields": [
+        "numerics",
+        "fenxianPolicy",
+        "guardianPolicy",
+        "guardianShieldRemainderTenths"
+      ],
+      "legacy_policy": {
+        "CardsSpentDraw": false,
+        "FractionalGuardian": false,
+        "OptionalMonsterPool": false,
+        "MonsterCapacity": 5,
+        "BudgetedBotLoot": false,
+        "BotLootCount": 2,
+        "MortalBotPve": false,
+        "FenxianPolicy": 1,
+        "GuardianPolicy": 1
+      },
+      "legacy_fenxian": "CurrentRhythm",
+      "legacy_guardian": "CurrentSteps",
+      "invalidRows": [
+        {
+          "rejected": true,
+          "before_hash": "7c5407238014b59ab86b6e69abc8f9a1989556232f14e8b9821defe3f5ad3de8",
+          "after_hash": "7c5407238014b59ab86b6e69abc8f9a1989556232f14e8b9821defe3f5ad3de8",
+          "invalid": {
+            "MaximumHp": 100,
+            "Hp": 1,
+            "Shield": 0,
+            "WeaponLevel": 1,
+            "RandomState": 18435828473538321132,
+            "Deck": {
+              "Hand": [
+                {
+                  "InstanceId": "01a0f46d-0c7c-7d96-9ee4-3bdd7fd1b598",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-75aa-b6d6-38b503fd48d0",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-71ed-9794-51607a4b80b6",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                }
+              ],
+              "Library": [
+                {
+                  "InstanceId": "01a0f46d-0c7c-73d0-9850-c90423063ce3",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7d09-9289-37235dcd3c9f",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7256-914a-95626dde0fd0",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7a37-b0ed-ce8019bcaa0b",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7538-8e0e-df1addaf26d2",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-74a7-90c7-dc9f9f9cca38",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-76d4-8489-00bdf1a8fcab",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7149-b2bd-dd8451192709",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7474-929e-cc66701400b5",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7183-a57e-a05e755e0291",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7488-8ec8-afa2659f04e0",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7bbc-b5db-493aaba7657b",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7f1f-88fa-516776e4afb2",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-72f4-be46-ef3fd970f8f5",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7652-a47c-9267455a72bc",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-72cb-8234-b5f8cf0a49d3",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-73dc-982a-386d83143c26",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                }
+              ],
+              "Discard": [],
+              "DrawCharge": 0
+            },
+            "FenxianCombo": 0,
+            "LastFenxianCore": null,
+            "DrawSpeedRemaining": "00:00:00",
+            "DrawSpeedModifier": 0,
+            "StunRemaining": "00:00:00",
+            "DrawBlockRemaining": "00:00:00",
+            "TargetStunWindows": [],
+            "Equipment": {
+              "Elements": {
+                "FireDamageBonus": 0,
+                "WoodDamageBonus": 0,
+                "EarthDamageBonus": 0,
+                "MetalDamageBonus": 0,
+                "WaterDamageBonus": 0,
+                "FireResistance": 0,
+                "WoodResistance": 0,
+                "EarthResistance": 0,
+                "MetalResistance": 0,
+                "WaterResistance": 0
+              },
+              "PiercingBonus": 0,
+              "BulwarkDamageReduction": 0,
+              "BulwarkShieldBonus": 0,
+              "VitalityHealBonus": 0,
+              "VitalityOvercapBonus": 0,
+              "DrawIntervalModifier": 0,
+              "ForcedEscapeBonus": 0,
+              "HasRapidDraw": false
+            },
+            "DrawBlockSpeedRemaining": "00:00:00",
+            "FenxianChargeLevel": 0,
+            "GuardianShieldRemainderTenths": 0,
+            "FenxianPolicy": 999,
+            "GuardianPolicy": 1
+          }
+        },
+        {
+          "rejected": true,
+          "before_hash": "7c5407238014b59ab86b6e69abc8f9a1989556232f14e8b9821defe3f5ad3de8",
+          "after_hash": "7c5407238014b59ab86b6e69abc8f9a1989556232f14e8b9821defe3f5ad3de8",
+          "invalid": {
+            "MaximumHp": 100,
+            "Hp": 1,
+            "Shield": 0,
+            "WeaponLevel": 1,
+            "RandomState": 18435828473538321132,
+            "Deck": {
+              "Hand": [
+                {
+                  "InstanceId": "01a0f46d-0c7c-7d96-9ee4-3bdd7fd1b598",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-75aa-b6d6-38b503fd48d0",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-71ed-9794-51607a4b80b6",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                }
+              ],
+              "Library": [
+                {
+                  "InstanceId": "01a0f46d-0c7c-73d0-9850-c90423063ce3",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7d09-9289-37235dcd3c9f",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7256-914a-95626dde0fd0",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7a37-b0ed-ce8019bcaa0b",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7538-8e0e-df1addaf26d2",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-74a7-90c7-dc9f9f9cca38",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-76d4-8489-00bdf1a8fcab",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7149-b2bd-dd8451192709",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7474-929e-cc66701400b5",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7183-a57e-a05e755e0291",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7488-8ec8-afa2659f04e0",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7bbc-b5db-493aaba7657b",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7f1f-88fa-516776e4afb2",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-72f4-be46-ef3fd970f8f5",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7652-a47c-9267455a72bc",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-72cb-8234-b5f8cf0a49d3",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-73dc-982a-386d83143c26",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                }
+              ],
+              "Discard": [],
+              "DrawCharge": 0
+            },
+            "FenxianCombo": 0,
+            "LastFenxianCore": null,
+            "DrawSpeedRemaining": "00:00:00",
+            "DrawSpeedModifier": 0,
+            "StunRemaining": "00:00:00",
+            "DrawBlockRemaining": "00:00:00",
+            "TargetStunWindows": [],
+            "Equipment": {
+              "Elements": {
+                "FireDamageBonus": 0,
+                "WoodDamageBonus": 0,
+                "EarthDamageBonus": 0,
+                "MetalDamageBonus": 0,
+                "WaterDamageBonus": 0,
+                "FireResistance": 0,
+                "WoodResistance": 0,
+                "EarthResistance": 0,
+                "MetalResistance": 0,
+                "WaterResistance": 0
+              },
+              "PiercingBonus": 0,
+              "BulwarkDamageReduction": 0,
+              "BulwarkShieldBonus": 0,
+              "VitalityHealBonus": 0,
+              "VitalityOvercapBonus": 0,
+              "DrawIntervalModifier": 0,
+              "ForcedEscapeBonus": 0,
+              "HasRapidDraw": false
+            },
+            "DrawBlockSpeedRemaining": "00:00:00",
+            "FenxianChargeLevel": 0,
+            "GuardianShieldRemainderTenths": 0,
+            "FenxianPolicy": 1,
+            "GuardianPolicy": 999
+          }
+        },
+        {
+          "rejected": true,
+          "before_hash": "7c5407238014b59ab86b6e69abc8f9a1989556232f14e8b9821defe3f5ad3de8",
+          "after_hash": "7c5407238014b59ab86b6e69abc8f9a1989556232f14e8b9821defe3f5ad3de8",
+          "invalid": {
+            "MaximumHp": 100,
+            "Hp": 1,
+            "Shield": 0,
+            "WeaponLevel": 1,
+            "RandomState": 18435828473538321132,
+            "Deck": {
+              "Hand": [
+                {
+                  "InstanceId": "01a0f46d-0c7c-7d96-9ee4-3bdd7fd1b598",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-75aa-b6d6-38b503fd48d0",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-71ed-9794-51607a4b80b6",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                }
+              ],
+              "Library": [
+                {
+                  "InstanceId": "01a0f46d-0c7c-73d0-9850-c90423063ce3",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7d09-9289-37235dcd3c9f",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7256-914a-95626dde0fd0",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7a37-b0ed-ce8019bcaa0b",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7538-8e0e-df1addaf26d2",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-74a7-90c7-dc9f9f9cca38",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-76d4-8489-00bdf1a8fcab",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7149-b2bd-dd8451192709",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7474-929e-cc66701400b5",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7183-a57e-a05e755e0291",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7488-8ec8-afa2659f04e0",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7bbc-b5db-493aaba7657b",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7f1f-88fa-516776e4afb2",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-72f4-be46-ef3fd970f8f5",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-7652-a47c-9267455a72bc",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-72cb-8234-b5f8cf0a49d3",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                },
+                {
+                  "InstanceId": "01a0f46d-0c7c-73dc-982a-386d83143c26",
+                  "CardId": "common-01",
+                  "Level": 0,
+                  "ElementOverride": null
+                }
+              ],
+              "Discard": [],
+              "DrawCharge": 0
+            },
+            "FenxianCombo": 0,
+            "LastFenxianCore": null,
+            "DrawSpeedRemaining": "00:00:00",
+            "DrawSpeedModifier": 0,
+            "StunRemaining": "00:00:00",
+            "DrawBlockRemaining": "00:00:00",
+            "TargetStunWindows": [],
+            "Equipment": {
+              "Elements": {
+                "FireDamageBonus": 0,
+                "WoodDamageBonus": 0,
+                "EarthDamageBonus": 0,
+                "MetalDamageBonus": 0,
+                "WaterDamageBonus": 0,
+                "FireResistance": 0,
+                "WoodResistance": 0,
+                "EarthResistance": 0,
+                "MetalResistance": 0,
+                "WaterResistance": 0
+              },
+              "PiercingBonus": 0,
+              "BulwarkDamageReduction": 0,
+              "BulwarkShieldBonus": 0,
+              "VitalityHealBonus": 0,
+              "VitalityOvercapBonus": 0,
+              "DrawIntervalModifier": 0,
+              "ForcedEscapeBonus": 0,
+              "HasRapidDraw": false
+            },
+            "DrawBlockSpeedRemaining": "00:00:00",
+            "FenxianChargeLevel": 0,
+            "GuardianShieldRemainderTenths": 10,
+            "FenxianPolicy": 1,
+            "GuardianPolicy": 1
+          }
+        }
+      ],
+      "invalid_room_rejected": true,
+      "live_room_hash": "4159d9e2ec871ca3eba97654a8248b53f1fbad5394553b50f1aafcee76e64fb2",
+      "pg_legacy_roundtrip": true,
+      "pg_input_has_missing_fields": true,
+      "pg_invalid_loaded_via_production_repository": true
+    }
+  ],
+  "status": "ReadyForIndependentAcceptance",
+  "sample_population": {
+    "canonical_cases": 3,
+    "case_execution_count": 3,
+    "supporting_suites": {
+      "Domain": 317,
+      "Server": 291
+    },
+    "suite_counts_are_not_exact_case_counts": true
+  },
+  "cutoff_monotonic": "Command durations in commands.json; no performance-window claim",
+  "window_or_drain_or_final": "final_local_evidence",
+  "commands": "commands.json",
+  "tool_versions": {
+    "dotnet_sdk": "10.0.400",
+    "postgres": "18.6",
+    "godot": "4.7.2.stable.official.ed1daf0bf",
+    "tool_raw": [
+      "tool-dotnet.log",
+      "tool-postgres.log",
+      "tool-godot.log"
+    ]
+  },
+  "exit_codes": "commands.json; negative API compile exit1 is expected",
+  "skip_reasons": [],
+  "critical_skips": 0,
+  "asset_and_route_postconditions": "Only synthetic local rooms and owned databases; frozen production source has no changes. PVP/restore and preview state postconditions are hashed in case rows. No production asset/route mutation.",
+  "artifact_manifest": "../manifest.json",
+  "reviewer": "MAIN Pending",
+  "rollback": "No runtime change to rollback; stop only owned PG (completed). Keep source and raw receipts.",
+  "remaining_blockers": [
+    "MAIN S6 independent decision pending"
+  ],
+  "missing_reasons": {
+    "CI": "Not part of canonical command refs for B02; not required or invoked",
+    "LIVE_RENDER_HUMAN": "Canonical runtime stage NotApplicableWithReason; no additional gate"
+  }
+}

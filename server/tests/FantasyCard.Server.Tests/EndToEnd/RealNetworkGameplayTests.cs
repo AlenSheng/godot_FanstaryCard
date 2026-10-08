@@ -185,7 +185,8 @@ public sealed partial class RealNetworkEndToEndTests
             request.Headers.Add("Idempotency-Key", "parallel-upgrade");
             request.Content = JsonContent.Create(new CardMutationRequest(before.Version), options: WebJson);
             using var response = await client.SendAsync(request, ct);
-            response.EnsureSuccessStatusCode();
+            Assert.True(response.IsSuccessStatusCode,
+                $"Concurrent upgrade returned {(int)response.StatusCode}: {await response.Content.ReadAsStringAsync(ct)}");
             return (await response.Content.ReadFromJsonAsync<CardMutationResponse>(WebJson, ct))!;
         }));
         Assert.All(results, result => Assert.Equal(results[0], result));

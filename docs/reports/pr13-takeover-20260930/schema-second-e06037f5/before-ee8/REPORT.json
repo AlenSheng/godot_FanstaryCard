@@ -1,0 +1,93 @@
+{
+  "records": [
+    {
+      "fixture": "fmean-overflow",
+      "pid": 98900,
+      "argv": [
+        "/workspace/relicround-env/venv/bin/python",
+        "-c",
+        "import json,os,pathlib,sys,time\nbase=pathlib.Path(sys.argv[1]); fixture=sys.argv[2]\nrow=dict(client_id='schema-owned',pid=os.getpid(),run_id='schema-run',process_epoch='schema-epoch',status_seq=1,\n now_unix_ms=int(time.time()*1000),online=True,room=True,last_progress_age_ms=0,event_seq_max=1)\nevent=dict(run_id=row['run_id'],client_id=row['client_id'],process_epoch=row['process_epoch'],event_seq=1,\n type='http',duration_ms=2,status=500,ok=False,path='/fixture',phase='playing')\nif fixture=='type-list': event['type']=[]\nif fixture=='type-dict': event['type']={}\nif fixture=='huge-duration': event['duration_ms']=10**400\nif fixture=='huge-timestamp': row['now_unix_ms']=10**400\nif fixture in ('huge-event-time','unhashable-match','unhashable-event-type'):\n event.update(type='lifecycle',event_type='cycle.started',cycle_id='schema:1',match_id='M',at_unix_ms=10**400 if fixture=='huge-event-time' else row['now_unix_ms'])\n if fixture=='unhashable-match': event['match_id']=[]\n if fixture=='unhashable-event-type': event['event_type']=[]\nif fixture=='fmean-overflow': event['duration_ms']=1e308\nevents=[event]\nif fixture=='fmean-overflow': events.append(dict(event,event_seq=2)); row['event_seq_max']=2\nrow['telemetry']=events; row['operations']=events if event['type']=='http' else []\npathlib.Path(str(base)+'.status.json').write_text(json.dumps(row))\npathlib.Path(str(base)+'.telemetry.jsonl').write_text(''.join(json.dumps(e)+'\\n' for e in events))\nprint(json.dumps(dict(pid=os.getpid(),written=True)),flush=True)\ntime.sleep(15)\n",
+        "/workspace/pr13-takeover/schema-second-review-ee8/before-ee8/fmean-overflow/client.json",
+        "fmean-overflow"
+      ],
+      "source": "/workspace/pr13-takeover/schema-second-review-ee8/baseline",
+      "stage": "aggregate_window",
+      "ownership_invalid": 0,
+      "owned_statuses": 1,
+      "event_loss": 0,
+      "unhandled_exception": "OverflowError",
+      "exception_message": "intermediate overflow in fsum",
+      "traceback": "Traceback (most recent call last):\n  File \"/workspace/pr13-takeover/schema-second-review-ee8/reproduce.py\", line 67, in <module>\n    window=aggregate_window(events)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/pr13-takeover/schema-second-review-ee8/baseline/tools/gameplay_load_validation.py\", line 107, in aggregate_window\n    \"http\": latency(completed_http),\n            ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/pr13-takeover/schema-second-review-ee8/baseline/tools/gameplay_load_validation.py\", line 99, in latency\n    return summarize([row[\"duration_ms\"] for row in rows if _number(row.get(\"duration_ms\")) and row[\"duration_ms\"] >= 0])\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/pr13-takeover/schema-second-review-ee8/baseline/tools/gameplay_load_validation.py\", line 18, in summarize\n    \"mean_ms\": statistics.fmean(values), \"max_ms\": max(values)}\n               ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/statistics.py\", line 510, in fmean\n    total = fsum(data)\n            ^^^^^^^^^^\nOverflowError: intermediate overflow in fsum\n",
+      "child_exit_code": -15,
+      "child_reaped": true
+    },
+    {
+      "fixture": "unhashable-match",
+      "pid": 98901,
+      "argv": [
+        "/workspace/relicround-env/venv/bin/python",
+        "-c",
+        "import json,os,pathlib,sys,time\nbase=pathlib.Path(sys.argv[1]); fixture=sys.argv[2]\nrow=dict(client_id='schema-owned',pid=os.getpid(),run_id='schema-run',process_epoch='schema-epoch',status_seq=1,\n now_unix_ms=int(time.time()*1000),online=True,room=True,last_progress_age_ms=0,event_seq_max=1)\nevent=dict(run_id=row['run_id'],client_id=row['client_id'],process_epoch=row['process_epoch'],event_seq=1,\n type='http',duration_ms=2,status=500,ok=False,path='/fixture',phase='playing')\nif fixture=='type-list': event['type']=[]\nif fixture=='type-dict': event['type']={}\nif fixture=='huge-duration': event['duration_ms']=10**400\nif fixture=='huge-timestamp': row['now_unix_ms']=10**400\nif fixture in ('huge-event-time','unhashable-match','unhashable-event-type'):\n event.update(type='lifecycle',event_type='cycle.started',cycle_id='schema:1',match_id='M',at_unix_ms=10**400 if fixture=='huge-event-time' else row['now_unix_ms'])\n if fixture=='unhashable-match': event['match_id']=[]\n if fixture=='unhashable-event-type': event['event_type']=[]\nif fixture=='fmean-overflow': event['duration_ms']=1e308\nevents=[event]\nif fixture=='fmean-overflow': events.append(dict(event,event_seq=2)); row['event_seq_max']=2\nrow['telemetry']=events; row['operations']=events if event['type']=='http' else []\npathlib.Path(str(base)+'.status.json').write_text(json.dumps(row))\npathlib.Path(str(base)+'.telemetry.jsonl').write_text(''.join(json.dumps(e)+'\\n' for e in events))\nprint(json.dumps(dict(pid=os.getpid(),written=True)),flush=True)\ntime.sleep(15)\n",
+        "/workspace/pr13-takeover/schema-second-review-ee8/before-ee8/unhashable-match/client.json",
+        "unhashable-match"
+      ],
+      "source": "/workspace/pr13-takeover/schema-second-review-ee8/baseline",
+      "stage": "read_audit_events -> reconcile_cycles",
+      "ownership_invalid": 0,
+      "owned_statuses": 1,
+      "event_loss": 0,
+      "unhandled_exception": "TypeError",
+      "exception_message": "unhashable type: 'list'",
+      "traceback": "Traceback (most recent call last):\n  File \"/workspace/pr13-takeover/schema-second-review-ee8/reproduce.py\", line 74, in <module>\n    counts=reconcile_cycles(audit,int(time.time()*1000),int(time.time()*1000)+1)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/pr13-takeover/schema-second-review-ee8/baseline/tools/pr13_runtime_evidence.py\", line 144, in reconcile_cycles\n    result = {name: derive(rows) for name, rows in buckets.items()}\n                    ^^^^^^^^^^^^\n  File \"/workspace/pr13-takeover/schema-second-review-ee8/baseline/tools/pr13_runtime_evidence.py\", line 135, in derive\n    seen.add(business_key)\nTypeError: unhashable type: 'list'\n",
+      "child_exit_code": -15,
+      "child_reaped": true
+    },
+    {
+      "fixture": "unhashable-event-type",
+      "pid": 98902,
+      "argv": [
+        "/workspace/relicround-env/venv/bin/python",
+        "-c",
+        "import json,os,pathlib,sys,time\nbase=pathlib.Path(sys.argv[1]); fixture=sys.argv[2]\nrow=dict(client_id='schema-owned',pid=os.getpid(),run_id='schema-run',process_epoch='schema-epoch',status_seq=1,\n now_unix_ms=int(time.time()*1000),online=True,room=True,last_progress_age_ms=0,event_seq_max=1)\nevent=dict(run_id=row['run_id'],client_id=row['client_id'],process_epoch=row['process_epoch'],event_seq=1,\n type='http',duration_ms=2,status=500,ok=False,path='/fixture',phase='playing')\nif fixture=='type-list': event['type']=[]\nif fixture=='type-dict': event['type']={}\nif fixture=='huge-duration': event['duration_ms']=10**400\nif fixture=='huge-timestamp': row['now_unix_ms']=10**400\nif fixture in ('huge-event-time','unhashable-match','unhashable-event-type'):\n event.update(type='lifecycle',event_type='cycle.started',cycle_id='schema:1',match_id='M',at_unix_ms=10**400 if fixture=='huge-event-time' else row['now_unix_ms'])\n if fixture=='unhashable-match': event['match_id']=[]\n if fixture=='unhashable-event-type': event['event_type']=[]\nif fixture=='fmean-overflow': event['duration_ms']=1e308\nevents=[event]\nif fixture=='fmean-overflow': events.append(dict(event,event_seq=2)); row['event_seq_max']=2\nrow['telemetry']=events; row['operations']=events if event['type']=='http' else []\npathlib.Path(str(base)+'.status.json').write_text(json.dumps(row))\npathlib.Path(str(base)+'.telemetry.jsonl').write_text(''.join(json.dumps(e)+'\\n' for e in events))\nprint(json.dumps(dict(pid=os.getpid(),written=True)),flush=True)\ntime.sleep(15)\n",
+        "/workspace/pr13-takeover/schema-second-review-ee8/before-ee8/unhashable-event-type/client.json",
+        "unhashable-event-type"
+      ],
+      "source": "/workspace/pr13-takeover/schema-second-review-ee8/baseline",
+      "stage": "read_audit_events -> reconcile_cycles",
+      "ownership_invalid": 0,
+      "owned_statuses": 1,
+      "event_loss": 0,
+      "unhandled_exception": "TypeError",
+      "exception_message": "unhashable type: 'list'",
+      "traceback": "Traceback (most recent call last):\n  File \"/workspace/pr13-takeover/schema-second-review-ee8/reproduce.py\", line 74, in <module>\n    counts=reconcile_cycles(audit,int(time.time()*1000),int(time.time()*1000)+1)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/pr13-takeover/schema-second-review-ee8/baseline/tools/pr13_runtime_evidence.py\", line 144, in reconcile_cycles\n    result = {name: derive(rows) for name, rows in buckets.items()}\n                    ^^^^^^^^^^^^\n  File \"/workspace/pr13-takeover/schema-second-review-ee8/baseline/tools/pr13_runtime_evidence.py\", line 135, in derive\n    seen.add(business_key)\nTypeError: unhashable type: 'list'\n",
+      "child_exit_code": -15,
+      "child_reaped": true
+    }
+  ],
+  "source_files": [
+    {
+      "path": "tools/gameplay_load_validation.py",
+      "bytes": 17137,
+      "sha256": "83a6d45a4938b09b9bc09ed568603752a7ce3e4520f3bb4e9761e0ab9cabb0d1"
+    },
+    {
+      "path": "tools/gameplay_load_test.py",
+      "bytes": 37312,
+      "sha256": "e5cef5dbd0c63acf67579c3261262ab18346b718b6f32fbab2e265e1e671d52d"
+    },
+    {
+      "path": "tools/cloud_load_test.py",
+      "bytes": 17316,
+      "sha256": "871e753ad1421d09a62bbfc87e244be130c523119803a2645e6fc18385d09ded"
+    },
+    {
+      "path": "tools/pr13_runtime_evidence.py",
+      "bytes": 9786,
+      "sha256": "2f220e7f3bbd4d6819cf89e5da379e257f1eeca9b21ef9e70bde5db32eb8c983"
+    }
+  ],
+  "all_reaped": true,
+  "unhandled_exceptions": 3,
+  "invalid_failures": 0,
+  "Accepted": false
+}

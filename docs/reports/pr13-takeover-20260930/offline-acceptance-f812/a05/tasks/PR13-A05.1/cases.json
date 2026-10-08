@@ -1,0 +1,98 @@
+[
+  {
+    "task_id": "PR13-A05.1",
+    "case_id": "PR13-A05.1-T01",
+    "setup_and_injection": "提交前失败",
+    "expected": "无completed/可重试",
+    "actual": "Real PG settlement INSERT is not forwarded inside the actual open transaction. SQL has zero receipt/holds and unchanged owned assets; production client has no completed receipt and retains retryable M. Release permits real retry and ACK.",
+    "status": "Passed",
+    "executed": true,
+    "profiles": [
+      "OFFLINE",
+      "POSTGRES",
+      "AUDIT"
+    ],
+    "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+    "algorithm_version": "A05ProcessAcceptance/1",
+    "raw": [
+      {
+        "path": "final-release/receipts.jsonl",
+        "line": 119,
+        "record_id": "A05-transaction-fault-observed"
+      },
+      {
+        "path": "final-release/receipts.jsonl",
+        "line": 125,
+        "record_id": "A05-transaction-fault-passed"
+      }
+    ],
+    "full_suite_TRX": "final-release/server.trx",
+    "accepted_by": null,
+    "scope_note": "Primary original case verdict; task full criterion is independently evaluated, including retained causal failure."
+  },
+  {
+    "task_id": "PR13-A05.1",
+    "case_id": "PR13-A05.1-T02",
+    "setup_and_injection": "提交后响应丢",
+    "expected": "同receipt恢复不再发资产",
+    "actual": "Real committed COMMIT response is dropped after backend ReadyForQuery Idle. One durable receipt recovers through actual host restart; identical PB receipt bytes and owned Gold23/Potions2/same equipment, one commit ledger and one settlement movement.",
+    "status": "Passed",
+    "executed": true,
+    "profiles": [
+      "OFFLINE",
+      "POSTGRES",
+      "AUDIT"
+    ],
+    "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+    "algorithm_version": "A05ProcessAcceptance/1",
+    "raw": [
+      {
+        "path": "final-release/receipts.jsonl",
+        "line": 100,
+        "record_id": "A05-db-committed-response-drop"
+      },
+      {
+        "path": "final-release/receipts.jsonl",
+        "line": 109,
+        "record_id": "A05-transaction-fault-passed"
+      }
+    ],
+    "full_suite_TRX": "final-release/server.trx",
+    "accepted_by": null,
+    "scope_note": "Primary original case verdict; task full criterion is independently evaluated, including retained causal failure."
+  },
+  {
+    "task_id": "PR13-A05.1",
+    "case_id": "PR13-A05.1-T03",
+    "setup_and_injection": "holds延迟",
+    "expected": "未ready不绕过",
+    "actual": "Actual extraction produces one durable receipt and four Pending holds under an owned wallet lock. Across SIGKILL/new OS PID, real Bootstrap excludes unready receipt, client ACK is false, actual ACK409 and Free prepare409. Release leads to the same ready receipt and actual ACK/prepare201.",
+    "status": "Passed",
+    "executed": true,
+    "profiles": [
+      "OFFLINE",
+      "POSTGRES",
+      "AUDIT"
+    ],
+    "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+    "algorithm_version": "A05ProcessAcceptance/1",
+    "raw": [
+      {
+        "path": "final-release/receipts.jsonl",
+        "line": 78,
+        "record_id": "A05-runtime-pending-before"
+      },
+      {
+        "path": "final-release/receipts.jsonl",
+        "line": 83,
+        "record_id": "A05-runtime-passed"
+      }
+    ],
+    "full_suite_TRX": "final-release/server.trx",
+    "accepted_by": null,
+    "scope_note": "Primary original case verdict; task full criterion is independently evaluated, including retained causal failure."
+  }
+]

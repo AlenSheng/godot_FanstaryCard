@@ -1170,6 +1170,10 @@ public sealed class PostgresRuntimeIntegrationTests
         Assert.True(recovered.Elapsed >= beforeRestart.Elapsed + TimeSpan.FromSeconds(16));
         Assert.Equal(beforeRestart.RandomStreams, recovered.RandomStreams);
 
+        // Actor commands complete before the asynchronous snapshot observer.
+        // Read the durable checkpoint only after this recovered revision is published.
+        await database.WaitForScalarAsync(1L,
+            "SELECT count(*) FROM room_snapshots WHERE room_id=$1 AND revision >= $2", roomId, recovered.Revision);
         var persisted = Assert.IsType<BattleRoomSnapshot>(await snapshots.GetAsync(roomId, cancellationToken));
         Assert.Equal(RoomPlayerPhase.Dead, Assert.Single(persisted.Players).Phase);
         Assert.True(persisted.Elapsed >= beforeRestart.Elapsed + TimeSpan.FromSeconds(16));
@@ -1573,6 +1577,25 @@ public sealed class PostgresRuntimeIntegrationTests
 
             if (index == 0)
             {
+                // A former match for this player must not leak into a queued ticket replay.
+                var historicalMatchId = Guid.NewGuid();
+                await using (var historicalMatch = database.DataSource.CreateCommand(
+                    "INSERT INTO matches(match_id,room_id,mode,difficulty,seed,config_version,status,created_at) VALUES($1,$2,'ChaosRealm','Standard',0,$3,'Completed',$4)"))
+                {
+                    historicalMatch.Parameters.AddWithValue(historicalMatchId);
+                    historicalMatch.Parameters.AddWithValue(Guid.NewGuid());
+                    historicalMatch.Parameters.AddWithValue(BootstrapRepository.CurrentConfigVersion);
+                    historicalMatch.Parameters.AddWithValue(time.GetUtcNow());
+                    await historicalMatch.ExecuteNonQueryAsync(cancellationToken);
+                }
+                await using (var historicalPlayer = database.DataSource.CreateCommand(
+                    "INSERT INTO match_players(match_id,player_id,preparation_id,is_bot,state) VALUES($1,$2,$3,false,'Settled')"))
+                {
+                    historicalPlayer.Parameters.AddWithValue(historicalMatchId);
+                    historicalPlayer.Parameters.AddWithValue(prepared.PlayerId);
+                    historicalPlayer.Parameters.AddWithValue(Guid.NewGuid());
+                    await historicalPlayer.ExecuteNonQueryAsync(cancellationToken);
+                }
                 Assert.Null(await matchmaking.TryCreateMatchAsync(cancellationToken));
                 Assert.Equal(ticket, await matchmaking.EnqueueAsync(
                     prepared.PlayerId, "match-enqueue-0", new(prepared.PreparationId), cancellationToken));
@@ -1582,6 +1605,8 @@ public sealed class PostgresRuntimeIntegrationTests
         }
 
         var pending = Assert.IsType<PendingMatch>(await matchmaking.TryCreateMatchAsync(cancellationToken));
+        Assert.Equal(pending.MatchId, (await matchmaking.EnqueueAsync(
+            players[0].PlayerId, "match-enqueue-0", new(players[0].PreparationId), cancellationToken)).MatchId);
         Assert.Equal(4, pending.PlayerIds.Count);
         foreach (var player in players)
         {

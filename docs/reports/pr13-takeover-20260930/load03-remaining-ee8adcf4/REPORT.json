@@ -1,0 +1,4805 @@
+{
+  "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+  "tasks": [
+    {
+      "task_id": "LOAD-03.3",
+      "stage": "S3",
+      "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+      "config_source_hash": null,
+      "config_bytes_hash": null,
+      "effective_room_policy": null,
+      "runtime_image_digest": null,
+      "profile_hash": "8f5c8a2def116a38ab518e3511838a43551b495df176f66a45b7f9c420dc44f0",
+      "algorithm_version": "sha256:83a6d45a4938b09b9bc09ed568603752a7ce3e4520f3bb4e9761e0ab9cabb0d1",
+      "case_ids": [
+        "LOAD-03.3-T01",
+        "LOAD-03.3-T02",
+        "LOAD-03.3-T03"
+      ],
+      "expected": [
+        "logical1、attempt2",
+        "失败分子仍1",
+        "只计一次"
+      ],
+      "actual": [
+        {
+          "case_id": "LOAD-03.3-T01",
+          "task_id": "LOAD-03.3",
+          "setup_and_injection": "一个请求两attempt",
+          "expected": "logical1、attempt2",
+          "actual": {
+            "http": {
+              "count": 1,
+              "min_ms": 5,
+              "mean_ms": 5.0,
+              "max_ms": 5,
+              "p50_ms": 5,
+              "p95_ms": 5,
+              "p99_ms": 5
+            },
+            "steady_http": {
+              "count": 1,
+              "min_ms": 5,
+              "mean_ms": 5.0,
+              "max_ms": 5,
+              "p50_ms": 5,
+              "p95_ms": 5,
+              "p99_ms": 5
+            },
+            "cancelled_http": {
+              "count": 0
+            },
+            "realtime": {
+              "count": 0
+            },
+            "rtt": {
+              "count": 0
+            },
+            "phase_http": {
+              "unknown/legacy": {
+                "count": 1,
+                "min_ms": 5,
+                "mean_ms": 5.0,
+                "max_ms": 5,
+                "p50_ms": 5,
+                "p95_ms": 5,
+                "p99_ms": 5
+              }
+            },
+            "error_count": 0,
+            "sample_count": 1,
+            "logical_request_count": 1,
+            "cancelled_count": 0,
+            "all_attempt_count": 2,
+            "attempt_coverage": "measured",
+            "attempt_result_counts": {
+              "unknown": 2
+            },
+            "valid_attempt_latency_count": 2,
+            "valid_latency_count": 1,
+            "latency_sample_quality": {
+              "http": "insufficient",
+              "realtime": "unavailable"
+            },
+            "error_rate": 0.0,
+            "steady_error_count": 0,
+            "steady_sample_count": 1,
+            "steady_error_rate": 0.0,
+            "invalid_metric_count": 0,
+            "invalid_duration_count": 0,
+            "invalid_schema_count": 0,
+            "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+          },
+          "status": "Passed",
+          "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "profile": "OFFLINE",
+          "full_task_criterion_satisfied": false,
+          "Accepted": false
+        },
+        {
+          "case_id": "LOAD-03.3-T02",
+          "task_id": "LOAD-03.3",
+          "setup_and_injection": "失败且duration为NaN",
+          "expected": "失败分子仍1",
+          "actual": {
+            "http": {
+              "count": 0
+            },
+            "steady_http": {
+              "count": 0
+            },
+            "cancelled_http": {
+              "count": 0
+            },
+            "realtime": {
+              "count": 0
+            },
+            "rtt": {
+              "count": 0
+            },
+            "phase_http": {
+              "unknown/legacy": {
+                "count": 0
+              }
+            },
+            "error_count": 1,
+            "sample_count": 1,
+            "logical_request_count": 1,
+            "cancelled_count": 0,
+            "all_attempt_count": null,
+            "attempt_coverage": "unavailable",
+            "attempt_result_counts": {},
+            "valid_attempt_latency_count": 0,
+            "valid_latency_count": 0,
+            "latency_sample_quality": {
+              "http": "insufficient",
+              "realtime": "unavailable"
+            },
+            "error_rate": 1.0,
+            "steady_error_count": 1,
+            "steady_sample_count": 1,
+            "steady_error_rate": 1.0,
+            "invalid_metric_count": 1,
+            "invalid_duration_count": 1,
+            "invalid_schema_count": 0,
+            "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+          },
+          "status": "Passed",
+          "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "profile": "OFFLINE",
+          "full_task_criterion_satisfied": false,
+          "Accepted": false
+        },
+        {
+          "case_id": "LOAD-03.3-T03",
+          "task_id": "LOAD-03.3",
+          "setup_and_injection": "operations重复telemetry",
+          "expected": "只计一次",
+          "actual": {
+            "http": {
+              "count": 1,
+              "min_ms": 5,
+              "mean_ms": 5.0,
+              "max_ms": 5,
+              "p50_ms": 5,
+              "p95_ms": 5,
+              "p99_ms": 5
+            },
+            "steady_http": {
+              "count": 1,
+              "min_ms": 5,
+              "mean_ms": 5.0,
+              "max_ms": 5,
+              "p50_ms": 5,
+              "p95_ms": 5,
+              "p99_ms": 5
+            },
+            "cancelled_http": {
+              "count": 0
+            },
+            "realtime": {
+              "count": 0
+            },
+            "rtt": {
+              "count": 0
+            },
+            "phase_http": {
+              "unknown/legacy": {
+                "count": 1,
+                "min_ms": 5,
+                "mean_ms": 5.0,
+                "max_ms": 5,
+                "p50_ms": 5,
+                "p95_ms": 5,
+                "p99_ms": 5
+              }
+            },
+            "error_count": 0,
+            "sample_count": 1,
+            "logical_request_count": 1,
+            "cancelled_count": 0,
+            "all_attempt_count": null,
+            "attempt_coverage": "unavailable",
+            "attempt_result_counts": {},
+            "valid_attempt_latency_count": 0,
+            "valid_latency_count": 1,
+            "latency_sample_quality": {
+              "http": "insufficient",
+              "realtime": "unavailable"
+            },
+            "error_rate": 0.0,
+            "steady_error_count": 0,
+            "steady_sample_count": 1,
+            "steady_error_rate": 0.0,
+            "invalid_metric_count": 0,
+            "invalid_duration_count": 0,
+            "invalid_schema_count": 0,
+            "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+          },
+          "status": "Passed",
+          "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "profile": "OFFLINE",
+          "full_task_criterion_satisfied": false,
+          "Accepted": false
+        }
+      ],
+      "status": "Partial",
+      "sample_population": {
+        "exact_cases": 3,
+        "capacity_population": null
+      },
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "Actual pending-engine cutoff for .3; explicit synthetic fixture running/drain/final timestamps for .4. Separate populations.",
+      "commands": "COMMANDS.json",
+      "tool_versions": {
+        "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+        "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+        "godot": "4.7.2"
+      },
+      "exit_codes": {
+        "original_case_probe": 0,
+        "harness_probe": 0
+      },
+      "skip_reasons": [],
+      "asset_and_route_postconditions": null,
+      "artifact_manifest": "MANIFEST.json",
+      "reviewer": null,
+      "rollback": "No production patch applied. Retain immutable raw and diagnostic fixture sources.",
+      "remaining_blockers": [
+        {
+          "canonical_requirement": "started=各互斥终态+pending；all_attempt与valid_latency可独立重算。",
+          "actual": "Actual Gateway has2 invoked requests,1 finished and1 held in production _pending_http; production aggregate counts logical1 and exposes neither logical-start nor pending denominator. No start event exists at the pending cutoff.",
+          "evidence": "pending-probe-ee8/REPORT.json",
+          "minimum_files": [
+            "client/network/gateway.gd (request-start/terminal outcome telemetry)",
+            "tools/gameplay_load_validation.py (stateful logical outcome reducer)",
+            "tools/gameplay_load_test.py (cross-window reducer state/final cutoffs)"
+          ],
+          "minimum_next": "Propose reviewed minimal telemetry/reducer implementation under fixed candidate coordination; actual two-request pending/late response counterexample then restart/cancel/timeout/decode outcome matrix, no lowered timeouts."
+        }
+      ],
+      "missing_reasons": {
+        "config_source_hash": "Evidence accounting fixture does not load combat source tables.",
+        "config_bytes_hash": "No combat numerical configuration consumed.",
+        "effective_room_policy": "No battle room instantiated.",
+        "runtime_image_digest": "Local standalone processes, no runtime image used.",
+        "cutoff_monotonic": "Cross-profile common cutoff is not applicable; actual pending request engine/server clocks in raw, distribution clock explicitly synthetic.",
+        "asset_and_route_postconditions": "No accounts or assets in these probes.",
+        "reviewer": "Independent MAIN acceptance not performed; task criterion remains incomplete.",
+        "sample_population.capacity_population": "No capacity claim."
+      },
+      "implementation_steps": "分开success/rejection/timeout/cancelled/decode_error/pending，耗时缺失仅减少valid_latency而不删除请求",
+      "pass_criteria": "started=各互斥终态+pending；all_attempt与valid_latency可独立重算。",
+      "full_pass_criterion_satisfied": false,
+      "Accepted": false,
+      "stage_receipts": [
+        {
+          "task_id": "LOAD-03.3",
+          "stage": "S0",
+          "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "config_source_hash": null,
+          "config_bytes_hash": null,
+          "effective_room_policy": null,
+          "runtime_image_digest": null,
+          "profile_hash": "8f5c8a2def116a38ab518e3511838a43551b495df176f66a45b7f9c420dc44f0",
+          "algorithm_version": "sha256:83a6d45a4938b09b9bc09ed568603752a7ce3e4520f3bb4e9761e0ab9cabb0d1",
+          "case_ids": [
+            "LOAD-03.3-T01",
+            "LOAD-03.3-T02",
+            "LOAD-03.3-T03"
+          ],
+          "expected": [
+            "logical1、attempt2",
+            "失败分子仍1",
+            "只计一次"
+          ],
+          "actual": [
+            {
+              "case_id": "LOAD-03.3-T01",
+              "task_id": "LOAD-03.3",
+              "setup_and_injection": "一个请求两attempt",
+              "expected": "logical1、attempt2",
+              "actual": {
+                "http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "steady_http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 1,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  }
+                },
+                "error_count": 0,
+                "sample_count": 1,
+                "logical_request_count": 1,
+                "cancelled_count": 0,
+                "all_attempt_count": 2,
+                "attempt_coverage": "measured",
+                "attempt_result_counts": {
+                  "unknown": 2
+                },
+                "valid_attempt_latency_count": 2,
+                "valid_latency_count": 1,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.0,
+                "steady_error_count": 0,
+                "steady_sample_count": 1,
+                "steady_error_rate": 0.0,
+                "invalid_metric_count": 0,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            },
+            {
+              "case_id": "LOAD-03.3-T02",
+              "task_id": "LOAD-03.3",
+              "setup_and_injection": "失败且duration为NaN",
+              "expected": "失败分子仍1",
+              "actual": {
+                "http": {
+                  "count": 0
+                },
+                "steady_http": {
+                  "count": 0
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 0
+                  }
+                },
+                "error_count": 1,
+                "sample_count": 1,
+                "logical_request_count": 1,
+                "cancelled_count": 0,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 0,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 1.0,
+                "steady_error_count": 1,
+                "steady_sample_count": 1,
+                "steady_error_rate": 1.0,
+                "invalid_metric_count": 1,
+                "invalid_duration_count": 1,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            },
+            {
+              "case_id": "LOAD-03.3-T03",
+              "task_id": "LOAD-03.3",
+              "setup_and_injection": "operations重复telemetry",
+              "expected": "只计一次",
+              "actual": {
+                "http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "steady_http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 1,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  }
+                },
+                "error_count": 0,
+                "sample_count": 1,
+                "logical_request_count": 1,
+                "cancelled_count": 0,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 1,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.0,
+                "steady_error_count": 0,
+                "steady_sample_count": 1,
+                "steady_error_rate": 0.0,
+                "invalid_metric_count": 0,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            }
+          ],
+          "status": "EvidenceComplete",
+          "sample_population": {
+            "exact_cases": 3,
+            "capacity_population": null
+          },
+          "cutoff_monotonic": null,
+          "window_or_drain_or_final": "Actual pending-engine cutoff for .3; explicit synthetic fixture running/drain/final timestamps for .4. Separate populations.",
+          "commands": "COMMANDS.json",
+          "tool_versions": {
+            "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+            "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+            "godot": "4.7.2"
+          },
+          "exit_codes": {
+            "original_case_probe": 0,
+            "harness_probe": 0
+          },
+          "skip_reasons": [],
+          "asset_and_route_postconditions": null,
+          "artifact_manifest": "MANIFEST.json",
+          "reviewer": null,
+          "rollback": "No production patch applied. Retain immutable raw and diagnostic fixture sources.",
+          "remaining_blockers": [
+            {
+              "canonical_requirement": "started=各互斥终态+pending；all_attempt与valid_latency可独立重算。",
+              "actual": "Actual Gateway has2 invoked requests,1 finished and1 held in production _pending_http; production aggregate counts logical1 and exposes neither logical-start nor pending denominator. No start event exists at the pending cutoff.",
+              "evidence": "pending-probe-ee8/REPORT.json",
+              "minimum_files": [
+                "client/network/gateway.gd (request-start/terminal outcome telemetry)",
+                "tools/gameplay_load_validation.py (stateful logical outcome reducer)",
+                "tools/gameplay_load_test.py (cross-window reducer state/final cutoffs)"
+              ],
+              "minimum_next": "Propose reviewed minimal telemetry/reducer implementation under fixed candidate coordination; actual two-request pending/late response counterexample then restart/cancel/timeout/decode outcome matrix, no lowered timeouts."
+            }
+          ],
+          "missing_reasons": {
+            "config_source_hash": "Evidence accounting fixture does not load combat source tables.",
+            "config_bytes_hash": "No combat numerical configuration consumed.",
+            "effective_room_policy": "No battle room instantiated.",
+            "runtime_image_digest": "Local standalone processes, no runtime image used.",
+            "cutoff_monotonic": "Cross-profile common cutoff is not applicable; actual pending request engine/server clocks in raw, distribution clock explicitly synthetic.",
+            "asset_and_route_postconditions": "No accounts or assets in these probes.",
+            "reviewer": "Independent MAIN acceptance not performed; task criterion remains incomplete.",
+            "sample_population.capacity_population": "No capacity claim."
+          }
+        },
+        {
+          "task_id": "LOAD-03.3",
+          "stage": "S1",
+          "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "config_source_hash": null,
+          "config_bytes_hash": null,
+          "effective_room_policy": null,
+          "runtime_image_digest": null,
+          "profile_hash": "8f5c8a2def116a38ab518e3511838a43551b495df176f66a45b7f9c420dc44f0",
+          "algorithm_version": "sha256:83a6d45a4938b09b9bc09ed568603752a7ce3e4520f3bb4e9761e0ab9cabb0d1",
+          "case_ids": [
+            "LOAD-03.3-T01",
+            "LOAD-03.3-T02",
+            "LOAD-03.3-T03"
+          ],
+          "expected": [
+            "logical1、attempt2",
+            "失败分子仍1",
+            "只计一次"
+          ],
+          "actual": [
+            {
+              "case_id": "LOAD-03.3-T01",
+              "task_id": "LOAD-03.3",
+              "setup_and_injection": "一个请求两attempt",
+              "expected": "logical1、attempt2",
+              "actual": {
+                "http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "steady_http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 1,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  }
+                },
+                "error_count": 0,
+                "sample_count": 1,
+                "logical_request_count": 1,
+                "cancelled_count": 0,
+                "all_attempt_count": 2,
+                "attempt_coverage": "measured",
+                "attempt_result_counts": {
+                  "unknown": 2
+                },
+                "valid_attempt_latency_count": 2,
+                "valid_latency_count": 1,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.0,
+                "steady_error_count": 0,
+                "steady_sample_count": 1,
+                "steady_error_rate": 0.0,
+                "invalid_metric_count": 0,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            },
+            {
+              "case_id": "LOAD-03.3-T02",
+              "task_id": "LOAD-03.3",
+              "setup_and_injection": "失败且duration为NaN",
+              "expected": "失败分子仍1",
+              "actual": {
+                "http": {
+                  "count": 0
+                },
+                "steady_http": {
+                  "count": 0
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 0
+                  }
+                },
+                "error_count": 1,
+                "sample_count": 1,
+                "logical_request_count": 1,
+                "cancelled_count": 0,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 0,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 1.0,
+                "steady_error_count": 1,
+                "steady_sample_count": 1,
+                "steady_error_rate": 1.0,
+                "invalid_metric_count": 1,
+                "invalid_duration_count": 1,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            },
+            {
+              "case_id": "LOAD-03.3-T03",
+              "task_id": "LOAD-03.3",
+              "setup_and_injection": "operations重复telemetry",
+              "expected": "只计一次",
+              "actual": {
+                "http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "steady_http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 1,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  }
+                },
+                "error_count": 0,
+                "sample_count": 1,
+                "logical_request_count": 1,
+                "cancelled_count": 0,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 1,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.0,
+                "steady_error_count": 0,
+                "steady_sample_count": 1,
+                "steady_error_rate": 0.0,
+                "invalid_metric_count": 0,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            }
+          ],
+          "status": "ReproducedFullCriterionGap",
+          "sample_population": {
+            "exact_cases": 3,
+            "capacity_population": null
+          },
+          "cutoff_monotonic": null,
+          "window_or_drain_or_final": "Actual pending-engine cutoff for .3; explicit synthetic fixture running/drain/final timestamps for .4. Separate populations.",
+          "commands": "COMMANDS.json",
+          "tool_versions": {
+            "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+            "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+            "godot": "4.7.2"
+          },
+          "exit_codes": {
+            "original_case_probe": 0,
+            "harness_probe": 0
+          },
+          "skip_reasons": [],
+          "asset_and_route_postconditions": null,
+          "artifact_manifest": "MANIFEST.json",
+          "reviewer": null,
+          "rollback": "No production patch applied. Retain immutable raw and diagnostic fixture sources.",
+          "remaining_blockers": [
+            {
+              "canonical_requirement": "started=各互斥终态+pending；all_attempt与valid_latency可独立重算。",
+              "actual": "Actual Gateway has2 invoked requests,1 finished and1 held in production _pending_http; production aggregate counts logical1 and exposes neither logical-start nor pending denominator. No start event exists at the pending cutoff.",
+              "evidence": "pending-probe-ee8/REPORT.json",
+              "minimum_files": [
+                "client/network/gateway.gd (request-start/terminal outcome telemetry)",
+                "tools/gameplay_load_validation.py (stateful logical outcome reducer)",
+                "tools/gameplay_load_test.py (cross-window reducer state/final cutoffs)"
+              ],
+              "minimum_next": "Propose reviewed minimal telemetry/reducer implementation under fixed candidate coordination; actual two-request pending/late response counterexample then restart/cancel/timeout/decode outcome matrix, no lowered timeouts."
+            }
+          ],
+          "missing_reasons": {
+            "config_source_hash": "Evidence accounting fixture does not load combat source tables.",
+            "config_bytes_hash": "No combat numerical configuration consumed.",
+            "effective_room_policy": "No battle room instantiated.",
+            "runtime_image_digest": "Local standalone processes, no runtime image used.",
+            "cutoff_monotonic": "Cross-profile common cutoff is not applicable; actual pending request engine/server clocks in raw, distribution clock explicitly synthetic.",
+            "asset_and_route_postconditions": "No accounts or assets in these probes.",
+            "reviewer": "Independent MAIN acceptance not performed; task criterion remains incomplete.",
+            "sample_population.capacity_population": "No capacity claim."
+          }
+        },
+        {
+          "task_id": "LOAD-03.3",
+          "stage": "S2",
+          "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "config_source_hash": null,
+          "config_bytes_hash": null,
+          "effective_room_policy": null,
+          "runtime_image_digest": null,
+          "profile_hash": "8f5c8a2def116a38ab518e3511838a43551b495df176f66a45b7f9c420dc44f0",
+          "algorithm_version": "sha256:83a6d45a4938b09b9bc09ed568603752a7ce3e4520f3bb4e9761e0ab9cabb0d1",
+          "case_ids": [
+            "LOAD-03.3-T01",
+            "LOAD-03.3-T02",
+            "LOAD-03.3-T03"
+          ],
+          "expected": [
+            "logical1、attempt2",
+            "失败分子仍1",
+            "只计一次"
+          ],
+          "actual": [
+            {
+              "case_id": "LOAD-03.3-T01",
+              "task_id": "LOAD-03.3",
+              "setup_and_injection": "一个请求两attempt",
+              "expected": "logical1、attempt2",
+              "actual": {
+                "http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "steady_http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 1,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  }
+                },
+                "error_count": 0,
+                "sample_count": 1,
+                "logical_request_count": 1,
+                "cancelled_count": 0,
+                "all_attempt_count": 2,
+                "attempt_coverage": "measured",
+                "attempt_result_counts": {
+                  "unknown": 2
+                },
+                "valid_attempt_latency_count": 2,
+                "valid_latency_count": 1,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.0,
+                "steady_error_count": 0,
+                "steady_sample_count": 1,
+                "steady_error_rate": 0.0,
+                "invalid_metric_count": 0,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            },
+            {
+              "case_id": "LOAD-03.3-T02",
+              "task_id": "LOAD-03.3",
+              "setup_and_injection": "失败且duration为NaN",
+              "expected": "失败分子仍1",
+              "actual": {
+                "http": {
+                  "count": 0
+                },
+                "steady_http": {
+                  "count": 0
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 0
+                  }
+                },
+                "error_count": 1,
+                "sample_count": 1,
+                "logical_request_count": 1,
+                "cancelled_count": 0,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 0,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 1.0,
+                "steady_error_count": 1,
+                "steady_sample_count": 1,
+                "steady_error_rate": 1.0,
+                "invalid_metric_count": 1,
+                "invalid_duration_count": 1,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            },
+            {
+              "case_id": "LOAD-03.3-T03",
+              "task_id": "LOAD-03.3",
+              "setup_and_injection": "operations重复telemetry",
+              "expected": "只计一次",
+              "actual": {
+                "http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "steady_http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 1,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  }
+                },
+                "error_count": 0,
+                "sample_count": 1,
+                "logical_request_count": 1,
+                "cancelled_count": 0,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 1,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.0,
+                "steady_error_count": 0,
+                "steady_sample_count": 1,
+                "steady_error_rate": 0.0,
+                "invalid_metric_count": 0,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            }
+          ],
+          "status": "PendingReviewedMinimalProposal",
+          "sample_population": {
+            "exact_cases": 3,
+            "capacity_population": null
+          },
+          "cutoff_monotonic": null,
+          "window_or_drain_or_final": "Actual pending-engine cutoff for .3; explicit synthetic fixture running/drain/final timestamps for .4. Separate populations.",
+          "commands": "COMMANDS.json",
+          "tool_versions": {
+            "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+            "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+            "godot": "4.7.2"
+          },
+          "exit_codes": {
+            "original_case_probe": 0,
+            "harness_probe": 0
+          },
+          "skip_reasons": [],
+          "asset_and_route_postconditions": null,
+          "artifact_manifest": "MANIFEST.json",
+          "reviewer": null,
+          "rollback": "No production patch applied. Retain immutable raw and diagnostic fixture sources.",
+          "remaining_blockers": [
+            {
+              "canonical_requirement": "started=各互斥终态+pending；all_attempt与valid_latency可独立重算。",
+              "actual": "Actual Gateway has2 invoked requests,1 finished and1 held in production _pending_http; production aggregate counts logical1 and exposes neither logical-start nor pending denominator. No start event exists at the pending cutoff.",
+              "evidence": "pending-probe-ee8/REPORT.json",
+              "minimum_files": [
+                "client/network/gateway.gd (request-start/terminal outcome telemetry)",
+                "tools/gameplay_load_validation.py (stateful logical outcome reducer)",
+                "tools/gameplay_load_test.py (cross-window reducer state/final cutoffs)"
+              ],
+              "minimum_next": "Propose reviewed minimal telemetry/reducer implementation under fixed candidate coordination; actual two-request pending/late response counterexample then restart/cancel/timeout/decode outcome matrix, no lowered timeouts."
+            }
+          ],
+          "missing_reasons": {
+            "config_source_hash": "Evidence accounting fixture does not load combat source tables.",
+            "config_bytes_hash": "No combat numerical configuration consumed.",
+            "effective_room_policy": "No battle room instantiated.",
+            "runtime_image_digest": "Local standalone processes, no runtime image used.",
+            "cutoff_monotonic": "Cross-profile common cutoff is not applicable; actual pending request engine/server clocks in raw, distribution clock explicitly synthetic.",
+            "asset_and_route_postconditions": "No accounts or assets in these probes.",
+            "reviewer": "Independent MAIN acceptance not performed; task criterion remains incomplete.",
+            "sample_population.capacity_population": "No capacity claim."
+          }
+        },
+        {
+          "task_id": "LOAD-03.3",
+          "stage": "S3",
+          "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "config_source_hash": null,
+          "config_bytes_hash": null,
+          "effective_room_policy": null,
+          "runtime_image_digest": null,
+          "profile_hash": "8f5c8a2def116a38ab518e3511838a43551b495df176f66a45b7f9c420dc44f0",
+          "algorithm_version": "sha256:83a6d45a4938b09b9bc09ed568603752a7ce3e4520f3bb4e9761e0ab9cabb0d1",
+          "case_ids": [
+            "LOAD-03.3-T01",
+            "LOAD-03.3-T02",
+            "LOAD-03.3-T03"
+          ],
+          "expected": [
+            "logical1、attempt2",
+            "失败分子仍1",
+            "只计一次"
+          ],
+          "actual": [
+            {
+              "case_id": "LOAD-03.3-T01",
+              "task_id": "LOAD-03.3",
+              "setup_and_injection": "一个请求两attempt",
+              "expected": "logical1、attempt2",
+              "actual": {
+                "http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "steady_http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 1,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  }
+                },
+                "error_count": 0,
+                "sample_count": 1,
+                "logical_request_count": 1,
+                "cancelled_count": 0,
+                "all_attempt_count": 2,
+                "attempt_coverage": "measured",
+                "attempt_result_counts": {
+                  "unknown": 2
+                },
+                "valid_attempt_latency_count": 2,
+                "valid_latency_count": 1,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.0,
+                "steady_error_count": 0,
+                "steady_sample_count": 1,
+                "steady_error_rate": 0.0,
+                "invalid_metric_count": 0,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            },
+            {
+              "case_id": "LOAD-03.3-T02",
+              "task_id": "LOAD-03.3",
+              "setup_and_injection": "失败且duration为NaN",
+              "expected": "失败分子仍1",
+              "actual": {
+                "http": {
+                  "count": 0
+                },
+                "steady_http": {
+                  "count": 0
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 0
+                  }
+                },
+                "error_count": 1,
+                "sample_count": 1,
+                "logical_request_count": 1,
+                "cancelled_count": 0,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 0,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 1.0,
+                "steady_error_count": 1,
+                "steady_sample_count": 1,
+                "steady_error_rate": 1.0,
+                "invalid_metric_count": 1,
+                "invalid_duration_count": 1,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            },
+            {
+              "case_id": "LOAD-03.3-T03",
+              "task_id": "LOAD-03.3",
+              "setup_and_injection": "operations重复telemetry",
+              "expected": "只计一次",
+              "actual": {
+                "http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "steady_http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 1,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  }
+                },
+                "error_count": 0,
+                "sample_count": 1,
+                "logical_request_count": 1,
+                "cancelled_count": 0,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 1,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.0,
+                "steady_error_count": 0,
+                "steady_sample_count": 1,
+                "steady_error_rate": 0.0,
+                "invalid_metric_count": 0,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            }
+          ],
+          "status": "Original3Passed;FullCriterionIncomplete",
+          "sample_population": {
+            "exact_cases": 3,
+            "capacity_population": null
+          },
+          "cutoff_monotonic": null,
+          "window_or_drain_or_final": "Actual pending-engine cutoff for .3; explicit synthetic fixture running/drain/final timestamps for .4. Separate populations.",
+          "commands": "COMMANDS.json",
+          "tool_versions": {
+            "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+            "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+            "godot": "4.7.2"
+          },
+          "exit_codes": {
+            "original_case_probe": 0,
+            "harness_probe": 0
+          },
+          "skip_reasons": [],
+          "asset_and_route_postconditions": null,
+          "artifact_manifest": "MANIFEST.json",
+          "reviewer": null,
+          "rollback": "No production patch applied. Retain immutable raw and diagnostic fixture sources.",
+          "remaining_blockers": [
+            {
+              "canonical_requirement": "started=各互斥终态+pending；all_attempt与valid_latency可独立重算。",
+              "actual": "Actual Gateway has2 invoked requests,1 finished and1 held in production _pending_http; production aggregate counts logical1 and exposes neither logical-start nor pending denominator. No start event exists at the pending cutoff.",
+              "evidence": "pending-probe-ee8/REPORT.json",
+              "minimum_files": [
+                "client/network/gateway.gd (request-start/terminal outcome telemetry)",
+                "tools/gameplay_load_validation.py (stateful logical outcome reducer)",
+                "tools/gameplay_load_test.py (cross-window reducer state/final cutoffs)"
+              ],
+              "minimum_next": "Propose reviewed minimal telemetry/reducer implementation under fixed candidate coordination; actual two-request pending/late response counterexample then restart/cancel/timeout/decode outcome matrix, no lowered timeouts."
+            }
+          ],
+          "missing_reasons": {
+            "config_source_hash": "Evidence accounting fixture does not load combat source tables.",
+            "config_bytes_hash": "No combat numerical configuration consumed.",
+            "effective_room_policy": "No battle room instantiated.",
+            "runtime_image_digest": "Local standalone processes, no runtime image used.",
+            "cutoff_monotonic": "Cross-profile common cutoff is not applicable; actual pending request engine/server clocks in raw, distribution clock explicitly synthetic.",
+            "asset_and_route_postconditions": "No accounts or assets in these probes.",
+            "reviewer": "Independent MAIN acceptance not performed; task criterion remains incomplete.",
+            "sample_population.capacity_population": "No capacity claim."
+          }
+        },
+        {
+          "task_id": "LOAD-03.3",
+          "stage": "S4",
+          "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "config_source_hash": null,
+          "config_bytes_hash": null,
+          "effective_room_policy": null,
+          "runtime_image_digest": null,
+          "profile_hash": "8f5c8a2def116a38ab518e3511838a43551b495df176f66a45b7f9c420dc44f0",
+          "algorithm_version": "sha256:83a6d45a4938b09b9bc09ed568603752a7ce3e4520f3bb4e9761e0ab9cabb0d1",
+          "case_ids": [
+            "LOAD-03.3-T01",
+            "LOAD-03.3-T02",
+            "LOAD-03.3-T03"
+          ],
+          "expected": [
+            "logical1、attempt2",
+            "失败分子仍1",
+            "只计一次"
+          ],
+          "actual": [
+            {
+              "case_id": "LOAD-03.3-T01",
+              "task_id": "LOAD-03.3",
+              "setup_and_injection": "一个请求两attempt",
+              "expected": "logical1、attempt2",
+              "actual": {
+                "http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "steady_http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 1,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  }
+                },
+                "error_count": 0,
+                "sample_count": 1,
+                "logical_request_count": 1,
+                "cancelled_count": 0,
+                "all_attempt_count": 2,
+                "attempt_coverage": "measured",
+                "attempt_result_counts": {
+                  "unknown": 2
+                },
+                "valid_attempt_latency_count": 2,
+                "valid_latency_count": 1,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.0,
+                "steady_error_count": 0,
+                "steady_sample_count": 1,
+                "steady_error_rate": 0.0,
+                "invalid_metric_count": 0,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            },
+            {
+              "case_id": "LOAD-03.3-T02",
+              "task_id": "LOAD-03.3",
+              "setup_and_injection": "失败且duration为NaN",
+              "expected": "失败分子仍1",
+              "actual": {
+                "http": {
+                  "count": 0
+                },
+                "steady_http": {
+                  "count": 0
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 0
+                  }
+                },
+                "error_count": 1,
+                "sample_count": 1,
+                "logical_request_count": 1,
+                "cancelled_count": 0,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 0,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 1.0,
+                "steady_error_count": 1,
+                "steady_sample_count": 1,
+                "steady_error_rate": 1.0,
+                "invalid_metric_count": 1,
+                "invalid_duration_count": 1,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            },
+            {
+              "case_id": "LOAD-03.3-T03",
+              "task_id": "LOAD-03.3",
+              "setup_and_injection": "operations重复telemetry",
+              "expected": "只计一次",
+              "actual": {
+                "http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "steady_http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 1,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  }
+                },
+                "error_count": 0,
+                "sample_count": 1,
+                "logical_request_count": 1,
+                "cancelled_count": 0,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 1,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.0,
+                "steady_error_count": 0,
+                "steady_sample_count": 1,
+                "steady_error_rate": 0.0,
+                "invalid_metric_count": 0,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            }
+          ],
+          "status": "PartialRequiredOutputMissing",
+          "sample_population": {
+            "exact_cases": 3,
+            "capacity_population": null
+          },
+          "cutoff_monotonic": null,
+          "window_or_drain_or_final": "Actual pending-engine cutoff for .3; explicit synthetic fixture running/drain/final timestamps for .4. Separate populations.",
+          "commands": "COMMANDS.json",
+          "tool_versions": {
+            "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+            "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+            "godot": "4.7.2"
+          },
+          "exit_codes": {
+            "original_case_probe": 0,
+            "harness_probe": 0
+          },
+          "skip_reasons": [],
+          "asset_and_route_postconditions": null,
+          "artifact_manifest": "MANIFEST.json",
+          "reviewer": null,
+          "rollback": "No production patch applied. Retain immutable raw and diagnostic fixture sources.",
+          "remaining_blockers": [
+            {
+              "canonical_requirement": "started=各互斥终态+pending；all_attempt与valid_latency可独立重算。",
+              "actual": "Actual Gateway has2 invoked requests,1 finished and1 held in production _pending_http; production aggregate counts logical1 and exposes neither logical-start nor pending denominator. No start event exists at the pending cutoff.",
+              "evidence": "pending-probe-ee8/REPORT.json",
+              "minimum_files": [
+                "client/network/gateway.gd (request-start/terminal outcome telemetry)",
+                "tools/gameplay_load_validation.py (stateful logical outcome reducer)",
+                "tools/gameplay_load_test.py (cross-window reducer state/final cutoffs)"
+              ],
+              "minimum_next": "Propose reviewed minimal telemetry/reducer implementation under fixed candidate coordination; actual two-request pending/late response counterexample then restart/cancel/timeout/decode outcome matrix, no lowered timeouts."
+            }
+          ],
+          "missing_reasons": {
+            "config_source_hash": "Evidence accounting fixture does not load combat source tables.",
+            "config_bytes_hash": "No combat numerical configuration consumed.",
+            "effective_room_policy": "No battle room instantiated.",
+            "runtime_image_digest": "Local standalone processes, no runtime image used.",
+            "cutoff_monotonic": "Cross-profile common cutoff is not applicable; actual pending request engine/server clocks in raw, distribution clock explicitly synthetic.",
+            "asset_and_route_postconditions": "No accounts or assets in these probes.",
+            "reviewer": "Independent MAIN acceptance not performed; task criterion remains incomplete.",
+            "sample_population.capacity_population": "No capacity claim."
+          }
+        },
+        {
+          "task_id": "LOAD-03.3",
+          "stage": "S5",
+          "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "config_source_hash": null,
+          "config_bytes_hash": null,
+          "effective_room_policy": null,
+          "runtime_image_digest": null,
+          "profile_hash": "8f5c8a2def116a38ab518e3511838a43551b495df176f66a45b7f9c420dc44f0",
+          "algorithm_version": "sha256:83a6d45a4938b09b9bc09ed568603752a7ce3e4520f3bb4e9761e0ab9cabb0d1",
+          "case_ids": [
+            "LOAD-03.3-T01",
+            "LOAD-03.3-T02",
+            "LOAD-03.3-T03"
+          ],
+          "expected": [
+            "logical1、attempt2",
+            "失败分子仍1",
+            "只计一次"
+          ],
+          "actual": [
+            {
+              "case_id": "LOAD-03.3-T01",
+              "task_id": "LOAD-03.3",
+              "setup_and_injection": "一个请求两attempt",
+              "expected": "logical1、attempt2",
+              "actual": {
+                "http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "steady_http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 1,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  }
+                },
+                "error_count": 0,
+                "sample_count": 1,
+                "logical_request_count": 1,
+                "cancelled_count": 0,
+                "all_attempt_count": 2,
+                "attempt_coverage": "measured",
+                "attempt_result_counts": {
+                  "unknown": 2
+                },
+                "valid_attempt_latency_count": 2,
+                "valid_latency_count": 1,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.0,
+                "steady_error_count": 0,
+                "steady_sample_count": 1,
+                "steady_error_rate": 0.0,
+                "invalid_metric_count": 0,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            },
+            {
+              "case_id": "LOAD-03.3-T02",
+              "task_id": "LOAD-03.3",
+              "setup_and_injection": "失败且duration为NaN",
+              "expected": "失败分子仍1",
+              "actual": {
+                "http": {
+                  "count": 0
+                },
+                "steady_http": {
+                  "count": 0
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 0
+                  }
+                },
+                "error_count": 1,
+                "sample_count": 1,
+                "logical_request_count": 1,
+                "cancelled_count": 0,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 0,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 1.0,
+                "steady_error_count": 1,
+                "steady_sample_count": 1,
+                "steady_error_rate": 1.0,
+                "invalid_metric_count": 1,
+                "invalid_duration_count": 1,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            },
+            {
+              "case_id": "LOAD-03.3-T03",
+              "task_id": "LOAD-03.3",
+              "setup_and_injection": "operations重复telemetry",
+              "expected": "只计一次",
+              "actual": {
+                "http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "steady_http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 1,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  }
+                },
+                "error_count": 0,
+                "sample_count": 1,
+                "logical_request_count": 1,
+                "cancelled_count": 0,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 1,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.0,
+                "steady_error_count": 0,
+                "steady_sample_count": 1,
+                "steady_error_rate": 0.0,
+                "invalid_metric_count": 0,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            }
+          ],
+          "status": "NotApplicableWithReason",
+          "sample_population": {
+            "exact_cases": 3,
+            "capacity_population": null
+          },
+          "cutoff_monotonic": null,
+          "window_or_drain_or_final": "Actual pending-engine cutoff for .3; explicit synthetic fixture running/drain/final timestamps for .4. Separate populations.",
+          "commands": "COMMANDS.json",
+          "tool_versions": {
+            "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+            "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+            "godot": "4.7.2"
+          },
+          "exit_codes": {
+            "original_case_probe": 0,
+            "harness_probe": 0
+          },
+          "skip_reasons": [],
+          "asset_and_route_postconditions": null,
+          "artifact_manifest": "MANIFEST.json",
+          "reviewer": null,
+          "rollback": "No production patch applied. Retain immutable raw and diagnostic fixture sources.",
+          "remaining_blockers": [
+            {
+              "canonical_requirement": "started=各互斥终态+pending；all_attempt与valid_latency可独立重算。",
+              "actual": "Actual Gateway has2 invoked requests,1 finished and1 held in production _pending_http; production aggregate counts logical1 and exposes neither logical-start nor pending denominator. No start event exists at the pending cutoff.",
+              "evidence": "pending-probe-ee8/REPORT.json",
+              "minimum_files": [
+                "client/network/gateway.gd (request-start/terminal outcome telemetry)",
+                "tools/gameplay_load_validation.py (stateful logical outcome reducer)",
+                "tools/gameplay_load_test.py (cross-window reducer state/final cutoffs)"
+              ],
+              "minimum_next": "Propose reviewed minimal telemetry/reducer implementation under fixed candidate coordination; actual two-request pending/late response counterexample then restart/cancel/timeout/decode outcome matrix, no lowered timeouts."
+            }
+          ],
+          "missing_reasons": {
+            "config_source_hash": "Evidence accounting fixture does not load combat source tables.",
+            "config_bytes_hash": "No combat numerical configuration consumed.",
+            "effective_room_policy": "No battle room instantiated.",
+            "runtime_image_digest": "Local standalone processes, no runtime image used.",
+            "cutoff_monotonic": "Cross-profile common cutoff is not applicable; actual pending request engine/server clocks in raw, distribution clock explicitly synthetic.",
+            "asset_and_route_postconditions": "No accounts or assets in these probes.",
+            "reviewer": "Independent MAIN acceptance not performed; task criterion remains incomplete.",
+            "sample_population.capacity_population": "No capacity claim."
+          }
+        },
+        {
+          "task_id": "LOAD-03.3",
+          "stage": "S6",
+          "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "config_source_hash": null,
+          "config_bytes_hash": null,
+          "effective_room_policy": null,
+          "runtime_image_digest": null,
+          "profile_hash": "8f5c8a2def116a38ab518e3511838a43551b495df176f66a45b7f9c420dc44f0",
+          "algorithm_version": "sha256:83a6d45a4938b09b9bc09ed568603752a7ce3e4520f3bb4e9761e0ab9cabb0d1",
+          "case_ids": [
+            "LOAD-03.3-T01",
+            "LOAD-03.3-T02",
+            "LOAD-03.3-T03"
+          ],
+          "expected": [
+            "logical1、attempt2",
+            "失败分子仍1",
+            "只计一次"
+          ],
+          "actual": [
+            {
+              "case_id": "LOAD-03.3-T01",
+              "task_id": "LOAD-03.3",
+              "setup_and_injection": "一个请求两attempt",
+              "expected": "logical1、attempt2",
+              "actual": {
+                "http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "steady_http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 1,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  }
+                },
+                "error_count": 0,
+                "sample_count": 1,
+                "logical_request_count": 1,
+                "cancelled_count": 0,
+                "all_attempt_count": 2,
+                "attempt_coverage": "measured",
+                "attempt_result_counts": {
+                  "unknown": 2
+                },
+                "valid_attempt_latency_count": 2,
+                "valid_latency_count": 1,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.0,
+                "steady_error_count": 0,
+                "steady_sample_count": 1,
+                "steady_error_rate": 0.0,
+                "invalid_metric_count": 0,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            },
+            {
+              "case_id": "LOAD-03.3-T02",
+              "task_id": "LOAD-03.3",
+              "setup_and_injection": "失败且duration为NaN",
+              "expected": "失败分子仍1",
+              "actual": {
+                "http": {
+                  "count": 0
+                },
+                "steady_http": {
+                  "count": 0
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 0
+                  }
+                },
+                "error_count": 1,
+                "sample_count": 1,
+                "logical_request_count": 1,
+                "cancelled_count": 0,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 0,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 1.0,
+                "steady_error_count": 1,
+                "steady_sample_count": 1,
+                "steady_error_rate": 1.0,
+                "invalid_metric_count": 1,
+                "invalid_duration_count": 1,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            },
+            {
+              "case_id": "LOAD-03.3-T03",
+              "task_id": "LOAD-03.3",
+              "setup_and_injection": "operations重复telemetry",
+              "expected": "只计一次",
+              "actual": {
+                "http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "steady_http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 1,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  }
+                },
+                "error_count": 0,
+                "sample_count": 1,
+                "logical_request_count": 1,
+                "cancelled_count": 0,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 1,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.0,
+                "steady_error_count": 0,
+                "steady_sample_count": 1,
+                "steady_error_rate": 0.0,
+                "invalid_metric_count": 0,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            }
+          ],
+          "status": "NotReadyForAcceptance",
+          "sample_population": {
+            "exact_cases": 3,
+            "capacity_population": null
+          },
+          "cutoff_monotonic": null,
+          "window_or_drain_or_final": "Actual pending-engine cutoff for .3; explicit synthetic fixture running/drain/final timestamps for .4. Separate populations.",
+          "commands": "COMMANDS.json",
+          "tool_versions": {
+            "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+            "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+            "godot": "4.7.2"
+          },
+          "exit_codes": {
+            "original_case_probe": 0,
+            "harness_probe": 0
+          },
+          "skip_reasons": [],
+          "asset_and_route_postconditions": null,
+          "artifact_manifest": "MANIFEST.json",
+          "reviewer": null,
+          "rollback": "No production patch applied. Retain immutable raw and diagnostic fixture sources.",
+          "remaining_blockers": [
+            {
+              "canonical_requirement": "started=各互斥终态+pending；all_attempt与valid_latency可独立重算。",
+              "actual": "Actual Gateway has2 invoked requests,1 finished and1 held in production _pending_http; production aggregate counts logical1 and exposes neither logical-start nor pending denominator. No start event exists at the pending cutoff.",
+              "evidence": "pending-probe-ee8/REPORT.json",
+              "minimum_files": [
+                "client/network/gateway.gd (request-start/terminal outcome telemetry)",
+                "tools/gameplay_load_validation.py (stateful logical outcome reducer)",
+                "tools/gameplay_load_test.py (cross-window reducer state/final cutoffs)"
+              ],
+              "minimum_next": "Propose reviewed minimal telemetry/reducer implementation under fixed candidate coordination; actual two-request pending/late response counterexample then restart/cancel/timeout/decode outcome matrix, no lowered timeouts."
+            }
+          ],
+          "missing_reasons": {
+            "config_source_hash": "Evidence accounting fixture does not load combat source tables.",
+            "config_bytes_hash": "No combat numerical configuration consumed.",
+            "effective_room_policy": "No battle room instantiated.",
+            "runtime_image_digest": "Local standalone processes, no runtime image used.",
+            "cutoff_monotonic": "Cross-profile common cutoff is not applicable; actual pending request engine/server clocks in raw, distribution clock explicitly synthetic.",
+            "asset_and_route_postconditions": "No accounts or assets in these probes.",
+            "reviewer": "Independent MAIN acceptance not performed; task criterion remains incomplete.",
+            "sample_population.capacity_population": "No capacity claim."
+          }
+        }
+      ]
+    },
+    {
+      "task_id": "LOAD-03.4",
+      "stage": "S3",
+      "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+      "config_source_hash": null,
+      "config_bytes_hash": null,
+      "effective_room_policy": null,
+      "runtime_image_digest": null,
+      "profile_hash": "8f5c8a2def116a38ab518e3511838a43551b495df176f66a45b7f9c420dc44f0",
+      "algorithm_version": "sha256:83a6d45a4938b09b9bc09ed568603752a7ce3e4520f3bb4e9761e0ab9cabb0d1",
+      "case_ids": [
+        "LOAD-03.4-T01",
+        "LOAD-03.4-T02",
+        "LOAD-03.4-T03"
+      ],
+      "expected": [
+        "不平均P95",
+        "unavailable/insufficient不写达标",
+        "分子分母同口径"
+      ],
+      "actual": [
+        {
+          "case_id": "LOAD-03.4-T01",
+          "task_id": "LOAD-03.4",
+          "setup_and_injection": "两窗数量不同",
+          "expected": "不平均P95",
+          "actual": {
+            "http": {
+              "count": 20,
+              "min_ms": 5,
+              "mean_ms": 9.75,
+              "max_ms": 100,
+              "p50_ms": 5,
+              "p95_ms": 5,
+              "p99_ms": 100
+            },
+            "steady_http": {
+              "count": 20,
+              "min_ms": 5,
+              "mean_ms": 9.75,
+              "max_ms": 100,
+              "p50_ms": 5,
+              "p95_ms": 5,
+              "p99_ms": 100
+            },
+            "cancelled_http": {
+              "count": 0
+            },
+            "realtime": {
+              "count": 0
+            },
+            "rtt": {
+              "count": 0
+            },
+            "phase_http": {
+              "unknown/legacy": {
+                "count": 20,
+                "min_ms": 5,
+                "mean_ms": 9.75,
+                "max_ms": 100,
+                "p50_ms": 5,
+                "p95_ms": 5,
+                "p99_ms": 100
+              }
+            },
+            "error_count": 0,
+            "sample_count": 20,
+            "logical_request_count": 20,
+            "cancelled_count": 0,
+            "all_attempt_count": null,
+            "attempt_coverage": "unavailable",
+            "attempt_result_counts": {},
+            "valid_attempt_latency_count": 0,
+            "valid_latency_count": 20,
+            "latency_sample_quality": {
+              "http": "sufficient_for_diagnostic_rule",
+              "realtime": "unavailable"
+            },
+            "error_rate": 0.0,
+            "steady_error_count": 0,
+            "steady_sample_count": 20,
+            "steady_error_rate": 0.0,
+            "invalid_metric_count": 0,
+            "invalid_duration_count": 0,
+            "invalid_schema_count": 0,
+            "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+          },
+          "status": "Passed",
+          "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "profile": "OFFLINE",
+          "full_task_criterion_satisfied": false,
+          "Accepted": false
+        },
+        {
+          "case_id": "LOAD-03.4-T02",
+          "task_id": "LOAD-03.4",
+          "setup_and_injection": "N0/N19",
+          "expected": "unavailable/insufficient不写达标",
+          "actual": [
+            {
+              "http": {
+                "count": 0
+              },
+              "steady_http": {
+                "count": 0
+              },
+              "cancelled_http": {
+                "count": 0
+              },
+              "realtime": {
+                "count": 0
+              },
+              "rtt": {
+                "count": 0
+              },
+              "phase_http": {},
+              "error_count": 0,
+              "sample_count": 0,
+              "logical_request_count": 0,
+              "cancelled_count": 0,
+              "all_attempt_count": null,
+              "attempt_coverage": "unavailable",
+              "attempt_result_counts": {},
+              "valid_attempt_latency_count": 0,
+              "valid_latency_count": 0,
+              "latency_sample_quality": {
+                "http": "unavailable",
+                "realtime": "unavailable"
+              },
+              "error_rate": 0.0,
+              "steady_error_count": 0,
+              "steady_sample_count": 0,
+              "steady_error_rate": 0.0,
+              "invalid_metric_count": 0,
+              "invalid_duration_count": 0,
+              "invalid_schema_count": 0,
+              "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+            },
+            {
+              "http": {
+                "count": 19,
+                "min_ms": 5,
+                "mean_ms": 5.0,
+                "max_ms": 5,
+                "p50_ms": 5,
+                "p95_ms": 5,
+                "p99_ms": 5
+              },
+              "steady_http": {
+                "count": 19,
+                "min_ms": 5,
+                "mean_ms": 5.0,
+                "max_ms": 5,
+                "p50_ms": 5,
+                "p95_ms": 5,
+                "p99_ms": 5
+              },
+              "cancelled_http": {
+                "count": 0
+              },
+              "realtime": {
+                "count": 0
+              },
+              "rtt": {
+                "count": 0
+              },
+              "phase_http": {
+                "unknown/legacy": {
+                  "count": 19,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                }
+              },
+              "error_count": 0,
+              "sample_count": 19,
+              "logical_request_count": 19,
+              "cancelled_count": 0,
+              "all_attempt_count": null,
+              "attempt_coverage": "unavailable",
+              "attempt_result_counts": {},
+              "valid_attempt_latency_count": 0,
+              "valid_latency_count": 19,
+              "latency_sample_quality": {
+                "http": "insufficient",
+                "realtime": "unavailable"
+              },
+              "error_rate": 0.0,
+              "steady_error_count": 0,
+              "steady_sample_count": 19,
+              "steady_error_rate": 0.0,
+              "invalid_metric_count": 0,
+              "invalid_duration_count": 0,
+              "invalid_schema_count": 0,
+              "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+            }
+          ],
+          "status": "Passed",
+          "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "profile": "OFFLINE",
+          "full_task_criterion_satisfied": false,
+          "Accepted": false
+        },
+        {
+          "case_id": "LOAD-03.4-T03",
+          "task_id": "LOAD-03.4",
+          "setup_and_injection": "失败请求在错误集合",
+          "expected": "分子分母同口径",
+          "actual": {
+            "http": {
+              "count": 2,
+              "min_ms": 5,
+              "mean_ms": 5.0,
+              "max_ms": 5,
+              "p50_ms": 5,
+              "p95_ms": 5,
+              "p99_ms": 5
+            },
+            "steady_http": {
+              "count": 2,
+              "min_ms": 5,
+              "mean_ms": 5.0,
+              "max_ms": 5,
+              "p50_ms": 5,
+              "p95_ms": 5,
+              "p99_ms": 5
+            },
+            "cancelled_http": {
+              "count": 1,
+              "min_ms": 5,
+              "mean_ms": 5.0,
+              "max_ms": 5,
+              "p50_ms": 5,
+              "p95_ms": 5,
+              "p99_ms": 5
+            },
+            "realtime": {
+              "count": 0
+            },
+            "rtt": {
+              "count": 0
+            },
+            "phase_http": {
+              "unknown/legacy": {
+                "count": 2,
+                "min_ms": 5,
+                "mean_ms": 5.0,
+                "max_ms": 5,
+                "p50_ms": 5,
+                "p95_ms": 5,
+                "p99_ms": 5
+              }
+            },
+            "error_count": 1,
+            "sample_count": 2,
+            "logical_request_count": 3,
+            "cancelled_count": 1,
+            "all_attempt_count": null,
+            "attempt_coverage": "unavailable",
+            "attempt_result_counts": {},
+            "valid_attempt_latency_count": 0,
+            "valid_latency_count": 2,
+            "latency_sample_quality": {
+              "http": "insufficient",
+              "realtime": "unavailable"
+            },
+            "error_rate": 0.5,
+            "steady_error_count": 1,
+            "steady_sample_count": 2,
+            "steady_error_rate": 0.5,
+            "invalid_metric_count": 0,
+            "invalid_duration_count": 0,
+            "invalid_schema_count": 0,
+            "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+          },
+          "status": "Passed",
+          "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "profile": "OFFLINE",
+          "full_task_criterion_satisfied": false,
+          "Accepted": false
+        }
+      ],
+      "status": "Partial",
+      "sample_population": {
+        "exact_cases": 3,
+        "capacity_population": null
+      },
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "Actual pending-engine cutoff for .3; explicit synthetic fixture running/drain/final timestamps for .4. Separate populations.",
+      "commands": "COMMANDS.json",
+      "tool_versions": {
+        "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+        "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+        "godot": "4.7.2"
+      },
+      "exit_codes": {
+        "original_case_probe": 0,
+        "harness_probe": 0
+      },
+      "skip_reasons": [],
+      "asset_and_route_postconditions": null,
+      "artifact_manifest": "MANIFEST.json",
+      "reviewer": null,
+      "rollback": "No production patch applied. Retain immutable raw and diagnostic fixture sources.",
+      "remaining_blockers": [
+        {
+          "canonical_requirement": "分路由/phase输出P50/P95/P99/max、吞吐、样本不足；全局从样本或可合并分布计算; 三截止点和全程指标可重算，末窗零错误不取代全场；算法版本明确。",
+          "actual": "Production aggregate outputs global and phase distributions but no route distribution or throughput. Coordinator retains windows/raw and cycle cutoffs, without full-run HTTP running/drain/final distribution fields. Harness can recompute synthetic fixture raw, but that does not implement missing production fields.",
+          "evidence": "distribution-probe/REPORT.json",
+          "minimum_files": [
+            "tools/gameplay_load_validation.py (route/phase distributions and observed-duration throughput)",
+            "tools/gameplay_load_test.py (raw/mergeable full-run HTTP summaries at actual cutoffs)"
+          ],
+          "minimum_next": "Review full raw immutable aggregation and three-cutoff production output after LOAD03.3 minimal state input exists. Keep sample thresholds and failed requests in denominators. Independent finite-duration edge-case worker remains separate."
+        }
+      ],
+      "missing_reasons": {
+        "config_source_hash": "Evidence accounting fixture does not load combat source tables.",
+        "config_bytes_hash": "No combat numerical configuration consumed.",
+        "effective_room_policy": "No battle room instantiated.",
+        "runtime_image_digest": "Local standalone processes, no runtime image used.",
+        "cutoff_monotonic": "Cross-profile common cutoff is not applicable; actual pending request engine/server clocks in raw, distribution clock explicitly synthetic.",
+        "asset_and_route_postconditions": "No accounts or assets in these probes.",
+        "reviewer": "Independent MAIN acceptance not performed; task criterion remains incomplete.",
+        "sample_population.capacity_population": "No capacity claim."
+      },
+      "implementation_steps": "分路由/phase输出P50/P95/P99/max、吞吐、样本不足；全局从样本或可合并分布计算",
+      "pass_criteria": "三截止点和全程指标可重算，末窗零错误不取代全场；算法版本明确。",
+      "full_pass_criterion_satisfied": false,
+      "Accepted": false,
+      "stage_receipts": [
+        {
+          "task_id": "LOAD-03.4",
+          "stage": "S0",
+          "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "config_source_hash": null,
+          "config_bytes_hash": null,
+          "effective_room_policy": null,
+          "runtime_image_digest": null,
+          "profile_hash": "8f5c8a2def116a38ab518e3511838a43551b495df176f66a45b7f9c420dc44f0",
+          "algorithm_version": "sha256:83a6d45a4938b09b9bc09ed568603752a7ce3e4520f3bb4e9761e0ab9cabb0d1",
+          "case_ids": [
+            "LOAD-03.4-T01",
+            "LOAD-03.4-T02",
+            "LOAD-03.4-T03"
+          ],
+          "expected": [
+            "不平均P95",
+            "unavailable/insufficient不写达标",
+            "分子分母同口径"
+          ],
+          "actual": [
+            {
+              "case_id": "LOAD-03.4-T01",
+              "task_id": "LOAD-03.4",
+              "setup_and_injection": "两窗数量不同",
+              "expected": "不平均P95",
+              "actual": {
+                "http": {
+                  "count": 20,
+                  "min_ms": 5,
+                  "mean_ms": 9.75,
+                  "max_ms": 100,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 100
+                },
+                "steady_http": {
+                  "count": 20,
+                  "min_ms": 5,
+                  "mean_ms": 9.75,
+                  "max_ms": 100,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 100
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 20,
+                    "min_ms": 5,
+                    "mean_ms": 9.75,
+                    "max_ms": 100,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 100
+                  }
+                },
+                "error_count": 0,
+                "sample_count": 20,
+                "logical_request_count": 20,
+                "cancelled_count": 0,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 20,
+                "latency_sample_quality": {
+                  "http": "sufficient_for_diagnostic_rule",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.0,
+                "steady_error_count": 0,
+                "steady_sample_count": 20,
+                "steady_error_rate": 0.0,
+                "invalid_metric_count": 0,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            },
+            {
+              "case_id": "LOAD-03.4-T02",
+              "task_id": "LOAD-03.4",
+              "setup_and_injection": "N0/N19",
+              "expected": "unavailable/insufficient不写达标",
+              "actual": [
+                {
+                  "http": {
+                    "count": 0
+                  },
+                  "steady_http": {
+                    "count": 0
+                  },
+                  "cancelled_http": {
+                    "count": 0
+                  },
+                  "realtime": {
+                    "count": 0
+                  },
+                  "rtt": {
+                    "count": 0
+                  },
+                  "phase_http": {},
+                  "error_count": 0,
+                  "sample_count": 0,
+                  "logical_request_count": 0,
+                  "cancelled_count": 0,
+                  "all_attempt_count": null,
+                  "attempt_coverage": "unavailable",
+                  "attempt_result_counts": {},
+                  "valid_attempt_latency_count": 0,
+                  "valid_latency_count": 0,
+                  "latency_sample_quality": {
+                    "http": "unavailable",
+                    "realtime": "unavailable"
+                  },
+                  "error_rate": 0.0,
+                  "steady_error_count": 0,
+                  "steady_sample_count": 0,
+                  "steady_error_rate": 0.0,
+                  "invalid_metric_count": 0,
+                  "invalid_duration_count": 0,
+                  "invalid_schema_count": 0,
+                  "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+                },
+                {
+                  "http": {
+                    "count": 19,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  },
+                  "steady_http": {
+                    "count": 19,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  },
+                  "cancelled_http": {
+                    "count": 0
+                  },
+                  "realtime": {
+                    "count": 0
+                  },
+                  "rtt": {
+                    "count": 0
+                  },
+                  "phase_http": {
+                    "unknown/legacy": {
+                      "count": 19,
+                      "min_ms": 5,
+                      "mean_ms": 5.0,
+                      "max_ms": 5,
+                      "p50_ms": 5,
+                      "p95_ms": 5,
+                      "p99_ms": 5
+                    }
+                  },
+                  "error_count": 0,
+                  "sample_count": 19,
+                  "logical_request_count": 19,
+                  "cancelled_count": 0,
+                  "all_attempt_count": null,
+                  "attempt_coverage": "unavailable",
+                  "attempt_result_counts": {},
+                  "valid_attempt_latency_count": 0,
+                  "valid_latency_count": 19,
+                  "latency_sample_quality": {
+                    "http": "insufficient",
+                    "realtime": "unavailable"
+                  },
+                  "error_rate": 0.0,
+                  "steady_error_count": 0,
+                  "steady_sample_count": 19,
+                  "steady_error_rate": 0.0,
+                  "invalid_metric_count": 0,
+                  "invalid_duration_count": 0,
+                  "invalid_schema_count": 0,
+                  "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+                }
+              ],
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            },
+            {
+              "case_id": "LOAD-03.4-T03",
+              "task_id": "LOAD-03.4",
+              "setup_and_injection": "失败请求在错误集合",
+              "expected": "分子分母同口径",
+              "actual": {
+                "http": {
+                  "count": 2,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "steady_http": {
+                  "count": 2,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "cancelled_http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 2,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  }
+                },
+                "error_count": 1,
+                "sample_count": 2,
+                "logical_request_count": 3,
+                "cancelled_count": 1,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 2,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.5,
+                "steady_error_count": 1,
+                "steady_sample_count": 2,
+                "steady_error_rate": 0.5,
+                "invalid_metric_count": 0,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            }
+          ],
+          "status": "EvidenceComplete",
+          "sample_population": {
+            "exact_cases": 3,
+            "capacity_population": null
+          },
+          "cutoff_monotonic": null,
+          "window_or_drain_or_final": "Actual pending-engine cutoff for .3; explicit synthetic fixture running/drain/final timestamps for .4. Separate populations.",
+          "commands": "COMMANDS.json",
+          "tool_versions": {
+            "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+            "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+            "godot": "4.7.2"
+          },
+          "exit_codes": {
+            "original_case_probe": 0,
+            "harness_probe": 0
+          },
+          "skip_reasons": [],
+          "asset_and_route_postconditions": null,
+          "artifact_manifest": "MANIFEST.json",
+          "reviewer": null,
+          "rollback": "No production patch applied. Retain immutable raw and diagnostic fixture sources.",
+          "remaining_blockers": [
+            {
+              "canonical_requirement": "分路由/phase输出P50/P95/P99/max、吞吐、样本不足；全局从样本或可合并分布计算; 三截止点和全程指标可重算，末窗零错误不取代全场；算法版本明确。",
+              "actual": "Production aggregate outputs global and phase distributions but no route distribution or throughput. Coordinator retains windows/raw and cycle cutoffs, without full-run HTTP running/drain/final distribution fields. Harness can recompute synthetic fixture raw, but that does not implement missing production fields.",
+              "evidence": "distribution-probe/REPORT.json",
+              "minimum_files": [
+                "tools/gameplay_load_validation.py (route/phase distributions and observed-duration throughput)",
+                "tools/gameplay_load_test.py (raw/mergeable full-run HTTP summaries at actual cutoffs)"
+              ],
+              "minimum_next": "Review full raw immutable aggregation and three-cutoff production output after LOAD03.3 minimal state input exists. Keep sample thresholds and failed requests in denominators. Independent finite-duration edge-case worker remains separate."
+            }
+          ],
+          "missing_reasons": {
+            "config_source_hash": "Evidence accounting fixture does not load combat source tables.",
+            "config_bytes_hash": "No combat numerical configuration consumed.",
+            "effective_room_policy": "No battle room instantiated.",
+            "runtime_image_digest": "Local standalone processes, no runtime image used.",
+            "cutoff_monotonic": "Cross-profile common cutoff is not applicable; actual pending request engine/server clocks in raw, distribution clock explicitly synthetic.",
+            "asset_and_route_postconditions": "No accounts or assets in these probes.",
+            "reviewer": "Independent MAIN acceptance not performed; task criterion remains incomplete.",
+            "sample_population.capacity_population": "No capacity claim."
+          }
+        },
+        {
+          "task_id": "LOAD-03.4",
+          "stage": "S1",
+          "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "config_source_hash": null,
+          "config_bytes_hash": null,
+          "effective_room_policy": null,
+          "runtime_image_digest": null,
+          "profile_hash": "8f5c8a2def116a38ab518e3511838a43551b495df176f66a45b7f9c420dc44f0",
+          "algorithm_version": "sha256:83a6d45a4938b09b9bc09ed568603752a7ce3e4520f3bb4e9761e0ab9cabb0d1",
+          "case_ids": [
+            "LOAD-03.4-T01",
+            "LOAD-03.4-T02",
+            "LOAD-03.4-T03"
+          ],
+          "expected": [
+            "不平均P95",
+            "unavailable/insufficient不写达标",
+            "分子分母同口径"
+          ],
+          "actual": [
+            {
+              "case_id": "LOAD-03.4-T01",
+              "task_id": "LOAD-03.4",
+              "setup_and_injection": "两窗数量不同",
+              "expected": "不平均P95",
+              "actual": {
+                "http": {
+                  "count": 20,
+                  "min_ms": 5,
+                  "mean_ms": 9.75,
+                  "max_ms": 100,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 100
+                },
+                "steady_http": {
+                  "count": 20,
+                  "min_ms": 5,
+                  "mean_ms": 9.75,
+                  "max_ms": 100,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 100
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 20,
+                    "min_ms": 5,
+                    "mean_ms": 9.75,
+                    "max_ms": 100,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 100
+                  }
+                },
+                "error_count": 0,
+                "sample_count": 20,
+                "logical_request_count": 20,
+                "cancelled_count": 0,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 20,
+                "latency_sample_quality": {
+                  "http": "sufficient_for_diagnostic_rule",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.0,
+                "steady_error_count": 0,
+                "steady_sample_count": 20,
+                "steady_error_rate": 0.0,
+                "invalid_metric_count": 0,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            },
+            {
+              "case_id": "LOAD-03.4-T02",
+              "task_id": "LOAD-03.4",
+              "setup_and_injection": "N0/N19",
+              "expected": "unavailable/insufficient不写达标",
+              "actual": [
+                {
+                  "http": {
+                    "count": 0
+                  },
+                  "steady_http": {
+                    "count": 0
+                  },
+                  "cancelled_http": {
+                    "count": 0
+                  },
+                  "realtime": {
+                    "count": 0
+                  },
+                  "rtt": {
+                    "count": 0
+                  },
+                  "phase_http": {},
+                  "error_count": 0,
+                  "sample_count": 0,
+                  "logical_request_count": 0,
+                  "cancelled_count": 0,
+                  "all_attempt_count": null,
+                  "attempt_coverage": "unavailable",
+                  "attempt_result_counts": {},
+                  "valid_attempt_latency_count": 0,
+                  "valid_latency_count": 0,
+                  "latency_sample_quality": {
+                    "http": "unavailable",
+                    "realtime": "unavailable"
+                  },
+                  "error_rate": 0.0,
+                  "steady_error_count": 0,
+                  "steady_sample_count": 0,
+                  "steady_error_rate": 0.0,
+                  "invalid_metric_count": 0,
+                  "invalid_duration_count": 0,
+                  "invalid_schema_count": 0,
+                  "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+                },
+                {
+                  "http": {
+                    "count": 19,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  },
+                  "steady_http": {
+                    "count": 19,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  },
+                  "cancelled_http": {
+                    "count": 0
+                  },
+                  "realtime": {
+                    "count": 0
+                  },
+                  "rtt": {
+                    "count": 0
+                  },
+                  "phase_http": {
+                    "unknown/legacy": {
+                      "count": 19,
+                      "min_ms": 5,
+                      "mean_ms": 5.0,
+                      "max_ms": 5,
+                      "p50_ms": 5,
+                      "p95_ms": 5,
+                      "p99_ms": 5
+                    }
+                  },
+                  "error_count": 0,
+                  "sample_count": 19,
+                  "logical_request_count": 19,
+                  "cancelled_count": 0,
+                  "all_attempt_count": null,
+                  "attempt_coverage": "unavailable",
+                  "attempt_result_counts": {},
+                  "valid_attempt_latency_count": 0,
+                  "valid_latency_count": 19,
+                  "latency_sample_quality": {
+                    "http": "insufficient",
+                    "realtime": "unavailable"
+                  },
+                  "error_rate": 0.0,
+                  "steady_error_count": 0,
+                  "steady_sample_count": 19,
+                  "steady_error_rate": 0.0,
+                  "invalid_metric_count": 0,
+                  "invalid_duration_count": 0,
+                  "invalid_schema_count": 0,
+                  "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+                }
+              ],
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            },
+            {
+              "case_id": "LOAD-03.4-T03",
+              "task_id": "LOAD-03.4",
+              "setup_and_injection": "失败请求在错误集合",
+              "expected": "分子分母同口径",
+              "actual": {
+                "http": {
+                  "count": 2,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "steady_http": {
+                  "count": 2,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "cancelled_http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 2,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  }
+                },
+                "error_count": 1,
+                "sample_count": 2,
+                "logical_request_count": 3,
+                "cancelled_count": 1,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 2,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.5,
+                "steady_error_count": 1,
+                "steady_sample_count": 2,
+                "steady_error_rate": 0.5,
+                "invalid_metric_count": 0,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            }
+          ],
+          "status": "ReproducedFullCriterionGap",
+          "sample_population": {
+            "exact_cases": 3,
+            "capacity_population": null
+          },
+          "cutoff_monotonic": null,
+          "window_or_drain_or_final": "Actual pending-engine cutoff for .3; explicit synthetic fixture running/drain/final timestamps for .4. Separate populations.",
+          "commands": "COMMANDS.json",
+          "tool_versions": {
+            "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+            "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+            "godot": "4.7.2"
+          },
+          "exit_codes": {
+            "original_case_probe": 0,
+            "harness_probe": 0
+          },
+          "skip_reasons": [],
+          "asset_and_route_postconditions": null,
+          "artifact_manifest": "MANIFEST.json",
+          "reviewer": null,
+          "rollback": "No production patch applied. Retain immutable raw and diagnostic fixture sources.",
+          "remaining_blockers": [
+            {
+              "canonical_requirement": "分路由/phase输出P50/P95/P99/max、吞吐、样本不足；全局从样本或可合并分布计算; 三截止点和全程指标可重算，末窗零错误不取代全场；算法版本明确。",
+              "actual": "Production aggregate outputs global and phase distributions but no route distribution or throughput. Coordinator retains windows/raw and cycle cutoffs, without full-run HTTP running/drain/final distribution fields. Harness can recompute synthetic fixture raw, but that does not implement missing production fields.",
+              "evidence": "distribution-probe/REPORT.json",
+              "minimum_files": [
+                "tools/gameplay_load_validation.py (route/phase distributions and observed-duration throughput)",
+                "tools/gameplay_load_test.py (raw/mergeable full-run HTTP summaries at actual cutoffs)"
+              ],
+              "minimum_next": "Review full raw immutable aggregation and three-cutoff production output after LOAD03.3 minimal state input exists. Keep sample thresholds and failed requests in denominators. Independent finite-duration edge-case worker remains separate."
+            }
+          ],
+          "missing_reasons": {
+            "config_source_hash": "Evidence accounting fixture does not load combat source tables.",
+            "config_bytes_hash": "No combat numerical configuration consumed.",
+            "effective_room_policy": "No battle room instantiated.",
+            "runtime_image_digest": "Local standalone processes, no runtime image used.",
+            "cutoff_monotonic": "Cross-profile common cutoff is not applicable; actual pending request engine/server clocks in raw, distribution clock explicitly synthetic.",
+            "asset_and_route_postconditions": "No accounts or assets in these probes.",
+            "reviewer": "Independent MAIN acceptance not performed; task criterion remains incomplete.",
+            "sample_population.capacity_population": "No capacity claim."
+          }
+        },
+        {
+          "task_id": "LOAD-03.4",
+          "stage": "S2",
+          "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "config_source_hash": null,
+          "config_bytes_hash": null,
+          "effective_room_policy": null,
+          "runtime_image_digest": null,
+          "profile_hash": "8f5c8a2def116a38ab518e3511838a43551b495df176f66a45b7f9c420dc44f0",
+          "algorithm_version": "sha256:83a6d45a4938b09b9bc09ed568603752a7ce3e4520f3bb4e9761e0ab9cabb0d1",
+          "case_ids": [
+            "LOAD-03.4-T01",
+            "LOAD-03.4-T02",
+            "LOAD-03.4-T03"
+          ],
+          "expected": [
+            "不平均P95",
+            "unavailable/insufficient不写达标",
+            "分子分母同口径"
+          ],
+          "actual": [
+            {
+              "case_id": "LOAD-03.4-T01",
+              "task_id": "LOAD-03.4",
+              "setup_and_injection": "两窗数量不同",
+              "expected": "不平均P95",
+              "actual": {
+                "http": {
+                  "count": 20,
+                  "min_ms": 5,
+                  "mean_ms": 9.75,
+                  "max_ms": 100,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 100
+                },
+                "steady_http": {
+                  "count": 20,
+                  "min_ms": 5,
+                  "mean_ms": 9.75,
+                  "max_ms": 100,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 100
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 20,
+                    "min_ms": 5,
+                    "mean_ms": 9.75,
+                    "max_ms": 100,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 100
+                  }
+                },
+                "error_count": 0,
+                "sample_count": 20,
+                "logical_request_count": 20,
+                "cancelled_count": 0,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 20,
+                "latency_sample_quality": {
+                  "http": "sufficient_for_diagnostic_rule",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.0,
+                "steady_error_count": 0,
+                "steady_sample_count": 20,
+                "steady_error_rate": 0.0,
+                "invalid_metric_count": 0,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            },
+            {
+              "case_id": "LOAD-03.4-T02",
+              "task_id": "LOAD-03.4",
+              "setup_and_injection": "N0/N19",
+              "expected": "unavailable/insufficient不写达标",
+              "actual": [
+                {
+                  "http": {
+                    "count": 0
+                  },
+                  "steady_http": {
+                    "count": 0
+                  },
+                  "cancelled_http": {
+                    "count": 0
+                  },
+                  "realtime": {
+                    "count": 0
+                  },
+                  "rtt": {
+                    "count": 0
+                  },
+                  "phase_http": {},
+                  "error_count": 0,
+                  "sample_count": 0,
+                  "logical_request_count": 0,
+                  "cancelled_count": 0,
+                  "all_attempt_count": null,
+                  "attempt_coverage": "unavailable",
+                  "attempt_result_counts": {},
+                  "valid_attempt_latency_count": 0,
+                  "valid_latency_count": 0,
+                  "latency_sample_quality": {
+                    "http": "unavailable",
+                    "realtime": "unavailable"
+                  },
+                  "error_rate": 0.0,
+                  "steady_error_count": 0,
+                  "steady_sample_count": 0,
+                  "steady_error_rate": 0.0,
+                  "invalid_metric_count": 0,
+                  "invalid_duration_count": 0,
+                  "invalid_schema_count": 0,
+                  "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+                },
+                {
+                  "http": {
+                    "count": 19,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  },
+                  "steady_http": {
+                    "count": 19,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  },
+                  "cancelled_http": {
+                    "count": 0
+                  },
+                  "realtime": {
+                    "count": 0
+                  },
+                  "rtt": {
+                    "count": 0
+                  },
+                  "phase_http": {
+                    "unknown/legacy": {
+                      "count": 19,
+                      "min_ms": 5,
+                      "mean_ms": 5.0,
+                      "max_ms": 5,
+                      "p50_ms": 5,
+                      "p95_ms": 5,
+                      "p99_ms": 5
+                    }
+                  },
+                  "error_count": 0,
+                  "sample_count": 19,
+                  "logical_request_count": 19,
+                  "cancelled_count": 0,
+                  "all_attempt_count": null,
+                  "attempt_coverage": "unavailable",
+                  "attempt_result_counts": {},
+                  "valid_attempt_latency_count": 0,
+                  "valid_latency_count": 19,
+                  "latency_sample_quality": {
+                    "http": "insufficient",
+                    "realtime": "unavailable"
+                  },
+                  "error_rate": 0.0,
+                  "steady_error_count": 0,
+                  "steady_sample_count": 19,
+                  "steady_error_rate": 0.0,
+                  "invalid_metric_count": 0,
+                  "invalid_duration_count": 0,
+                  "invalid_schema_count": 0,
+                  "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+                }
+              ],
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            },
+            {
+              "case_id": "LOAD-03.4-T03",
+              "task_id": "LOAD-03.4",
+              "setup_and_injection": "失败请求在错误集合",
+              "expected": "分子分母同口径",
+              "actual": {
+                "http": {
+                  "count": 2,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "steady_http": {
+                  "count": 2,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "cancelled_http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 2,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  }
+                },
+                "error_count": 1,
+                "sample_count": 2,
+                "logical_request_count": 3,
+                "cancelled_count": 1,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 2,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.5,
+                "steady_error_count": 1,
+                "steady_sample_count": 2,
+                "steady_error_rate": 0.5,
+                "invalid_metric_count": 0,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            }
+          ],
+          "status": "PendingReviewedMinimalProposal",
+          "sample_population": {
+            "exact_cases": 3,
+            "capacity_population": null
+          },
+          "cutoff_monotonic": null,
+          "window_or_drain_or_final": "Actual pending-engine cutoff for .3; explicit synthetic fixture running/drain/final timestamps for .4. Separate populations.",
+          "commands": "COMMANDS.json",
+          "tool_versions": {
+            "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+            "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+            "godot": "4.7.2"
+          },
+          "exit_codes": {
+            "original_case_probe": 0,
+            "harness_probe": 0
+          },
+          "skip_reasons": [],
+          "asset_and_route_postconditions": null,
+          "artifact_manifest": "MANIFEST.json",
+          "reviewer": null,
+          "rollback": "No production patch applied. Retain immutable raw and diagnostic fixture sources.",
+          "remaining_blockers": [
+            {
+              "canonical_requirement": "分路由/phase输出P50/P95/P99/max、吞吐、样本不足；全局从样本或可合并分布计算; 三截止点和全程指标可重算，末窗零错误不取代全场；算法版本明确。",
+              "actual": "Production aggregate outputs global and phase distributions but no route distribution or throughput. Coordinator retains windows/raw and cycle cutoffs, without full-run HTTP running/drain/final distribution fields. Harness can recompute synthetic fixture raw, but that does not implement missing production fields.",
+              "evidence": "distribution-probe/REPORT.json",
+              "minimum_files": [
+                "tools/gameplay_load_validation.py (route/phase distributions and observed-duration throughput)",
+                "tools/gameplay_load_test.py (raw/mergeable full-run HTTP summaries at actual cutoffs)"
+              ],
+              "minimum_next": "Review full raw immutable aggregation and three-cutoff production output after LOAD03.3 minimal state input exists. Keep sample thresholds and failed requests in denominators. Independent finite-duration edge-case worker remains separate."
+            }
+          ],
+          "missing_reasons": {
+            "config_source_hash": "Evidence accounting fixture does not load combat source tables.",
+            "config_bytes_hash": "No combat numerical configuration consumed.",
+            "effective_room_policy": "No battle room instantiated.",
+            "runtime_image_digest": "Local standalone processes, no runtime image used.",
+            "cutoff_monotonic": "Cross-profile common cutoff is not applicable; actual pending request engine/server clocks in raw, distribution clock explicitly synthetic.",
+            "asset_and_route_postconditions": "No accounts or assets in these probes.",
+            "reviewer": "Independent MAIN acceptance not performed; task criterion remains incomplete.",
+            "sample_population.capacity_population": "No capacity claim."
+          }
+        },
+        {
+          "task_id": "LOAD-03.4",
+          "stage": "S3",
+          "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "config_source_hash": null,
+          "config_bytes_hash": null,
+          "effective_room_policy": null,
+          "runtime_image_digest": null,
+          "profile_hash": "8f5c8a2def116a38ab518e3511838a43551b495df176f66a45b7f9c420dc44f0",
+          "algorithm_version": "sha256:83a6d45a4938b09b9bc09ed568603752a7ce3e4520f3bb4e9761e0ab9cabb0d1",
+          "case_ids": [
+            "LOAD-03.4-T01",
+            "LOAD-03.4-T02",
+            "LOAD-03.4-T03"
+          ],
+          "expected": [
+            "不平均P95",
+            "unavailable/insufficient不写达标",
+            "分子分母同口径"
+          ],
+          "actual": [
+            {
+              "case_id": "LOAD-03.4-T01",
+              "task_id": "LOAD-03.4",
+              "setup_and_injection": "两窗数量不同",
+              "expected": "不平均P95",
+              "actual": {
+                "http": {
+                  "count": 20,
+                  "min_ms": 5,
+                  "mean_ms": 9.75,
+                  "max_ms": 100,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 100
+                },
+                "steady_http": {
+                  "count": 20,
+                  "min_ms": 5,
+                  "mean_ms": 9.75,
+                  "max_ms": 100,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 100
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 20,
+                    "min_ms": 5,
+                    "mean_ms": 9.75,
+                    "max_ms": 100,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 100
+                  }
+                },
+                "error_count": 0,
+                "sample_count": 20,
+                "logical_request_count": 20,
+                "cancelled_count": 0,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 20,
+                "latency_sample_quality": {
+                  "http": "sufficient_for_diagnostic_rule",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.0,
+                "steady_error_count": 0,
+                "steady_sample_count": 20,
+                "steady_error_rate": 0.0,
+                "invalid_metric_count": 0,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            },
+            {
+              "case_id": "LOAD-03.4-T02",
+              "task_id": "LOAD-03.4",
+              "setup_and_injection": "N0/N19",
+              "expected": "unavailable/insufficient不写达标",
+              "actual": [
+                {
+                  "http": {
+                    "count": 0
+                  },
+                  "steady_http": {
+                    "count": 0
+                  },
+                  "cancelled_http": {
+                    "count": 0
+                  },
+                  "realtime": {
+                    "count": 0
+                  },
+                  "rtt": {
+                    "count": 0
+                  },
+                  "phase_http": {},
+                  "error_count": 0,
+                  "sample_count": 0,
+                  "logical_request_count": 0,
+                  "cancelled_count": 0,
+                  "all_attempt_count": null,
+                  "attempt_coverage": "unavailable",
+                  "attempt_result_counts": {},
+                  "valid_attempt_latency_count": 0,
+                  "valid_latency_count": 0,
+                  "latency_sample_quality": {
+                    "http": "unavailable",
+                    "realtime": "unavailable"
+                  },
+                  "error_rate": 0.0,
+                  "steady_error_count": 0,
+                  "steady_sample_count": 0,
+                  "steady_error_rate": 0.0,
+                  "invalid_metric_count": 0,
+                  "invalid_duration_count": 0,
+                  "invalid_schema_count": 0,
+                  "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+                },
+                {
+                  "http": {
+                    "count": 19,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  },
+                  "steady_http": {
+                    "count": 19,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  },
+                  "cancelled_http": {
+                    "count": 0
+                  },
+                  "realtime": {
+                    "count": 0
+                  },
+                  "rtt": {
+                    "count": 0
+                  },
+                  "phase_http": {
+                    "unknown/legacy": {
+                      "count": 19,
+                      "min_ms": 5,
+                      "mean_ms": 5.0,
+                      "max_ms": 5,
+                      "p50_ms": 5,
+                      "p95_ms": 5,
+                      "p99_ms": 5
+                    }
+                  },
+                  "error_count": 0,
+                  "sample_count": 19,
+                  "logical_request_count": 19,
+                  "cancelled_count": 0,
+                  "all_attempt_count": null,
+                  "attempt_coverage": "unavailable",
+                  "attempt_result_counts": {},
+                  "valid_attempt_latency_count": 0,
+                  "valid_latency_count": 19,
+                  "latency_sample_quality": {
+                    "http": "insufficient",
+                    "realtime": "unavailable"
+                  },
+                  "error_rate": 0.0,
+                  "steady_error_count": 0,
+                  "steady_sample_count": 19,
+                  "steady_error_rate": 0.0,
+                  "invalid_metric_count": 0,
+                  "invalid_duration_count": 0,
+                  "invalid_schema_count": 0,
+                  "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+                }
+              ],
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            },
+            {
+              "case_id": "LOAD-03.4-T03",
+              "task_id": "LOAD-03.4",
+              "setup_and_injection": "失败请求在错误集合",
+              "expected": "分子分母同口径",
+              "actual": {
+                "http": {
+                  "count": 2,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "steady_http": {
+                  "count": 2,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "cancelled_http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 2,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  }
+                },
+                "error_count": 1,
+                "sample_count": 2,
+                "logical_request_count": 3,
+                "cancelled_count": 1,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 2,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.5,
+                "steady_error_count": 1,
+                "steady_sample_count": 2,
+                "steady_error_rate": 0.5,
+                "invalid_metric_count": 0,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            }
+          ],
+          "status": "Original3Passed;FullCriterionIncomplete",
+          "sample_population": {
+            "exact_cases": 3,
+            "capacity_population": null
+          },
+          "cutoff_monotonic": null,
+          "window_or_drain_or_final": "Actual pending-engine cutoff for .3; explicit synthetic fixture running/drain/final timestamps for .4. Separate populations.",
+          "commands": "COMMANDS.json",
+          "tool_versions": {
+            "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+            "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+            "godot": "4.7.2"
+          },
+          "exit_codes": {
+            "original_case_probe": 0,
+            "harness_probe": 0
+          },
+          "skip_reasons": [],
+          "asset_and_route_postconditions": null,
+          "artifact_manifest": "MANIFEST.json",
+          "reviewer": null,
+          "rollback": "No production patch applied. Retain immutable raw and diagnostic fixture sources.",
+          "remaining_blockers": [
+            {
+              "canonical_requirement": "分路由/phase输出P50/P95/P99/max、吞吐、样本不足；全局从样本或可合并分布计算; 三截止点和全程指标可重算，末窗零错误不取代全场；算法版本明确。",
+              "actual": "Production aggregate outputs global and phase distributions but no route distribution or throughput. Coordinator retains windows/raw and cycle cutoffs, without full-run HTTP running/drain/final distribution fields. Harness can recompute synthetic fixture raw, but that does not implement missing production fields.",
+              "evidence": "distribution-probe/REPORT.json",
+              "minimum_files": [
+                "tools/gameplay_load_validation.py (route/phase distributions and observed-duration throughput)",
+                "tools/gameplay_load_test.py (raw/mergeable full-run HTTP summaries at actual cutoffs)"
+              ],
+              "minimum_next": "Review full raw immutable aggregation and three-cutoff production output after LOAD03.3 minimal state input exists. Keep sample thresholds and failed requests in denominators. Independent finite-duration edge-case worker remains separate."
+            }
+          ],
+          "missing_reasons": {
+            "config_source_hash": "Evidence accounting fixture does not load combat source tables.",
+            "config_bytes_hash": "No combat numerical configuration consumed.",
+            "effective_room_policy": "No battle room instantiated.",
+            "runtime_image_digest": "Local standalone processes, no runtime image used.",
+            "cutoff_monotonic": "Cross-profile common cutoff is not applicable; actual pending request engine/server clocks in raw, distribution clock explicitly synthetic.",
+            "asset_and_route_postconditions": "No accounts or assets in these probes.",
+            "reviewer": "Independent MAIN acceptance not performed; task criterion remains incomplete.",
+            "sample_population.capacity_population": "No capacity claim."
+          }
+        },
+        {
+          "task_id": "LOAD-03.4",
+          "stage": "S4",
+          "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "config_source_hash": null,
+          "config_bytes_hash": null,
+          "effective_room_policy": null,
+          "runtime_image_digest": null,
+          "profile_hash": "8f5c8a2def116a38ab518e3511838a43551b495df176f66a45b7f9c420dc44f0",
+          "algorithm_version": "sha256:83a6d45a4938b09b9bc09ed568603752a7ce3e4520f3bb4e9761e0ab9cabb0d1",
+          "case_ids": [
+            "LOAD-03.4-T01",
+            "LOAD-03.4-T02",
+            "LOAD-03.4-T03"
+          ],
+          "expected": [
+            "不平均P95",
+            "unavailable/insufficient不写达标",
+            "分子分母同口径"
+          ],
+          "actual": [
+            {
+              "case_id": "LOAD-03.4-T01",
+              "task_id": "LOAD-03.4",
+              "setup_and_injection": "两窗数量不同",
+              "expected": "不平均P95",
+              "actual": {
+                "http": {
+                  "count": 20,
+                  "min_ms": 5,
+                  "mean_ms": 9.75,
+                  "max_ms": 100,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 100
+                },
+                "steady_http": {
+                  "count": 20,
+                  "min_ms": 5,
+                  "mean_ms": 9.75,
+                  "max_ms": 100,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 100
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 20,
+                    "min_ms": 5,
+                    "mean_ms": 9.75,
+                    "max_ms": 100,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 100
+                  }
+                },
+                "error_count": 0,
+                "sample_count": 20,
+                "logical_request_count": 20,
+                "cancelled_count": 0,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 20,
+                "latency_sample_quality": {
+                  "http": "sufficient_for_diagnostic_rule",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.0,
+                "steady_error_count": 0,
+                "steady_sample_count": 20,
+                "steady_error_rate": 0.0,
+                "invalid_metric_count": 0,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            },
+            {
+              "case_id": "LOAD-03.4-T02",
+              "task_id": "LOAD-03.4",
+              "setup_and_injection": "N0/N19",
+              "expected": "unavailable/insufficient不写达标",
+              "actual": [
+                {
+                  "http": {
+                    "count": 0
+                  },
+                  "steady_http": {
+                    "count": 0
+                  },
+                  "cancelled_http": {
+                    "count": 0
+                  },
+                  "realtime": {
+                    "count": 0
+                  },
+                  "rtt": {
+                    "count": 0
+                  },
+                  "phase_http": {},
+                  "error_count": 0,
+                  "sample_count": 0,
+                  "logical_request_count": 0,
+                  "cancelled_count": 0,
+                  "all_attempt_count": null,
+                  "attempt_coverage": "unavailable",
+                  "attempt_result_counts": {},
+                  "valid_attempt_latency_count": 0,
+                  "valid_latency_count": 0,
+                  "latency_sample_quality": {
+                    "http": "unavailable",
+                    "realtime": "unavailable"
+                  },
+                  "error_rate": 0.0,
+                  "steady_error_count": 0,
+                  "steady_sample_count": 0,
+                  "steady_error_rate": 0.0,
+                  "invalid_metric_count": 0,
+                  "invalid_duration_count": 0,
+                  "invalid_schema_count": 0,
+                  "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+                },
+                {
+                  "http": {
+                    "count": 19,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  },
+                  "steady_http": {
+                    "count": 19,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  },
+                  "cancelled_http": {
+                    "count": 0
+                  },
+                  "realtime": {
+                    "count": 0
+                  },
+                  "rtt": {
+                    "count": 0
+                  },
+                  "phase_http": {
+                    "unknown/legacy": {
+                      "count": 19,
+                      "min_ms": 5,
+                      "mean_ms": 5.0,
+                      "max_ms": 5,
+                      "p50_ms": 5,
+                      "p95_ms": 5,
+                      "p99_ms": 5
+                    }
+                  },
+                  "error_count": 0,
+                  "sample_count": 19,
+                  "logical_request_count": 19,
+                  "cancelled_count": 0,
+                  "all_attempt_count": null,
+                  "attempt_coverage": "unavailable",
+                  "attempt_result_counts": {},
+                  "valid_attempt_latency_count": 0,
+                  "valid_latency_count": 19,
+                  "latency_sample_quality": {
+                    "http": "insufficient",
+                    "realtime": "unavailable"
+                  },
+                  "error_rate": 0.0,
+                  "steady_error_count": 0,
+                  "steady_sample_count": 19,
+                  "steady_error_rate": 0.0,
+                  "invalid_metric_count": 0,
+                  "invalid_duration_count": 0,
+                  "invalid_schema_count": 0,
+                  "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+                }
+              ],
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            },
+            {
+              "case_id": "LOAD-03.4-T03",
+              "task_id": "LOAD-03.4",
+              "setup_and_injection": "失败请求在错误集合",
+              "expected": "分子分母同口径",
+              "actual": {
+                "http": {
+                  "count": 2,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "steady_http": {
+                  "count": 2,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "cancelled_http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 2,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  }
+                },
+                "error_count": 1,
+                "sample_count": 2,
+                "logical_request_count": 3,
+                "cancelled_count": 1,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 2,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.5,
+                "steady_error_count": 1,
+                "steady_sample_count": 2,
+                "steady_error_rate": 0.5,
+                "invalid_metric_count": 0,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            }
+          ],
+          "status": "PartialRequiredOutputMissing",
+          "sample_population": {
+            "exact_cases": 3,
+            "capacity_population": null
+          },
+          "cutoff_monotonic": null,
+          "window_or_drain_or_final": "Actual pending-engine cutoff for .3; explicit synthetic fixture running/drain/final timestamps for .4. Separate populations.",
+          "commands": "COMMANDS.json",
+          "tool_versions": {
+            "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+            "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+            "godot": "4.7.2"
+          },
+          "exit_codes": {
+            "original_case_probe": 0,
+            "harness_probe": 0
+          },
+          "skip_reasons": [],
+          "asset_and_route_postconditions": null,
+          "artifact_manifest": "MANIFEST.json",
+          "reviewer": null,
+          "rollback": "No production patch applied. Retain immutable raw and diagnostic fixture sources.",
+          "remaining_blockers": [
+            {
+              "canonical_requirement": "分路由/phase输出P50/P95/P99/max、吞吐、样本不足；全局从样本或可合并分布计算; 三截止点和全程指标可重算，末窗零错误不取代全场；算法版本明确。",
+              "actual": "Production aggregate outputs global and phase distributions but no route distribution or throughput. Coordinator retains windows/raw and cycle cutoffs, without full-run HTTP running/drain/final distribution fields. Harness can recompute synthetic fixture raw, but that does not implement missing production fields.",
+              "evidence": "distribution-probe/REPORT.json",
+              "minimum_files": [
+                "tools/gameplay_load_validation.py (route/phase distributions and observed-duration throughput)",
+                "tools/gameplay_load_test.py (raw/mergeable full-run HTTP summaries at actual cutoffs)"
+              ],
+              "minimum_next": "Review full raw immutable aggregation and three-cutoff production output after LOAD03.3 minimal state input exists. Keep sample thresholds and failed requests in denominators. Independent finite-duration edge-case worker remains separate."
+            }
+          ],
+          "missing_reasons": {
+            "config_source_hash": "Evidence accounting fixture does not load combat source tables.",
+            "config_bytes_hash": "No combat numerical configuration consumed.",
+            "effective_room_policy": "No battle room instantiated.",
+            "runtime_image_digest": "Local standalone processes, no runtime image used.",
+            "cutoff_monotonic": "Cross-profile common cutoff is not applicable; actual pending request engine/server clocks in raw, distribution clock explicitly synthetic.",
+            "asset_and_route_postconditions": "No accounts or assets in these probes.",
+            "reviewer": "Independent MAIN acceptance not performed; task criterion remains incomplete.",
+            "sample_population.capacity_population": "No capacity claim."
+          }
+        },
+        {
+          "task_id": "LOAD-03.4",
+          "stage": "S5",
+          "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "config_source_hash": null,
+          "config_bytes_hash": null,
+          "effective_room_policy": null,
+          "runtime_image_digest": null,
+          "profile_hash": "8f5c8a2def116a38ab518e3511838a43551b495df176f66a45b7f9c420dc44f0",
+          "algorithm_version": "sha256:83a6d45a4938b09b9bc09ed568603752a7ce3e4520f3bb4e9761e0ab9cabb0d1",
+          "case_ids": [
+            "LOAD-03.4-T01",
+            "LOAD-03.4-T02",
+            "LOAD-03.4-T03"
+          ],
+          "expected": [
+            "不平均P95",
+            "unavailable/insufficient不写达标",
+            "分子分母同口径"
+          ],
+          "actual": [
+            {
+              "case_id": "LOAD-03.4-T01",
+              "task_id": "LOAD-03.4",
+              "setup_and_injection": "两窗数量不同",
+              "expected": "不平均P95",
+              "actual": {
+                "http": {
+                  "count": 20,
+                  "min_ms": 5,
+                  "mean_ms": 9.75,
+                  "max_ms": 100,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 100
+                },
+                "steady_http": {
+                  "count": 20,
+                  "min_ms": 5,
+                  "mean_ms": 9.75,
+                  "max_ms": 100,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 100
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 20,
+                    "min_ms": 5,
+                    "mean_ms": 9.75,
+                    "max_ms": 100,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 100
+                  }
+                },
+                "error_count": 0,
+                "sample_count": 20,
+                "logical_request_count": 20,
+                "cancelled_count": 0,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 20,
+                "latency_sample_quality": {
+                  "http": "sufficient_for_diagnostic_rule",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.0,
+                "steady_error_count": 0,
+                "steady_sample_count": 20,
+                "steady_error_rate": 0.0,
+                "invalid_metric_count": 0,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            },
+            {
+              "case_id": "LOAD-03.4-T02",
+              "task_id": "LOAD-03.4",
+              "setup_and_injection": "N0/N19",
+              "expected": "unavailable/insufficient不写达标",
+              "actual": [
+                {
+                  "http": {
+                    "count": 0
+                  },
+                  "steady_http": {
+                    "count": 0
+                  },
+                  "cancelled_http": {
+                    "count": 0
+                  },
+                  "realtime": {
+                    "count": 0
+                  },
+                  "rtt": {
+                    "count": 0
+                  },
+                  "phase_http": {},
+                  "error_count": 0,
+                  "sample_count": 0,
+                  "logical_request_count": 0,
+                  "cancelled_count": 0,
+                  "all_attempt_count": null,
+                  "attempt_coverage": "unavailable",
+                  "attempt_result_counts": {},
+                  "valid_attempt_latency_count": 0,
+                  "valid_latency_count": 0,
+                  "latency_sample_quality": {
+                    "http": "unavailable",
+                    "realtime": "unavailable"
+                  },
+                  "error_rate": 0.0,
+                  "steady_error_count": 0,
+                  "steady_sample_count": 0,
+                  "steady_error_rate": 0.0,
+                  "invalid_metric_count": 0,
+                  "invalid_duration_count": 0,
+                  "invalid_schema_count": 0,
+                  "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+                },
+                {
+                  "http": {
+                    "count": 19,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  },
+                  "steady_http": {
+                    "count": 19,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  },
+                  "cancelled_http": {
+                    "count": 0
+                  },
+                  "realtime": {
+                    "count": 0
+                  },
+                  "rtt": {
+                    "count": 0
+                  },
+                  "phase_http": {
+                    "unknown/legacy": {
+                      "count": 19,
+                      "min_ms": 5,
+                      "mean_ms": 5.0,
+                      "max_ms": 5,
+                      "p50_ms": 5,
+                      "p95_ms": 5,
+                      "p99_ms": 5
+                    }
+                  },
+                  "error_count": 0,
+                  "sample_count": 19,
+                  "logical_request_count": 19,
+                  "cancelled_count": 0,
+                  "all_attempt_count": null,
+                  "attempt_coverage": "unavailable",
+                  "attempt_result_counts": {},
+                  "valid_attempt_latency_count": 0,
+                  "valid_latency_count": 19,
+                  "latency_sample_quality": {
+                    "http": "insufficient",
+                    "realtime": "unavailable"
+                  },
+                  "error_rate": 0.0,
+                  "steady_error_count": 0,
+                  "steady_sample_count": 19,
+                  "steady_error_rate": 0.0,
+                  "invalid_metric_count": 0,
+                  "invalid_duration_count": 0,
+                  "invalid_schema_count": 0,
+                  "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+                }
+              ],
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            },
+            {
+              "case_id": "LOAD-03.4-T03",
+              "task_id": "LOAD-03.4",
+              "setup_and_injection": "失败请求在错误集合",
+              "expected": "分子分母同口径",
+              "actual": {
+                "http": {
+                  "count": 2,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "steady_http": {
+                  "count": 2,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "cancelled_http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 2,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  }
+                },
+                "error_count": 1,
+                "sample_count": 2,
+                "logical_request_count": 3,
+                "cancelled_count": 1,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 2,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.5,
+                "steady_error_count": 1,
+                "steady_sample_count": 2,
+                "steady_error_rate": 0.5,
+                "invalid_metric_count": 0,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            }
+          ],
+          "status": "NotApplicableWithReason",
+          "sample_population": {
+            "exact_cases": 3,
+            "capacity_population": null
+          },
+          "cutoff_monotonic": null,
+          "window_or_drain_or_final": "Actual pending-engine cutoff for .3; explicit synthetic fixture running/drain/final timestamps for .4. Separate populations.",
+          "commands": "COMMANDS.json",
+          "tool_versions": {
+            "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+            "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+            "godot": "4.7.2"
+          },
+          "exit_codes": {
+            "original_case_probe": 0,
+            "harness_probe": 0
+          },
+          "skip_reasons": [],
+          "asset_and_route_postconditions": null,
+          "artifact_manifest": "MANIFEST.json",
+          "reviewer": null,
+          "rollback": "No production patch applied. Retain immutable raw and diagnostic fixture sources.",
+          "remaining_blockers": [
+            {
+              "canonical_requirement": "分路由/phase输出P50/P95/P99/max、吞吐、样本不足；全局从样本或可合并分布计算; 三截止点和全程指标可重算，末窗零错误不取代全场；算法版本明确。",
+              "actual": "Production aggregate outputs global and phase distributions but no route distribution or throughput. Coordinator retains windows/raw and cycle cutoffs, without full-run HTTP running/drain/final distribution fields. Harness can recompute synthetic fixture raw, but that does not implement missing production fields.",
+              "evidence": "distribution-probe/REPORT.json",
+              "minimum_files": [
+                "tools/gameplay_load_validation.py (route/phase distributions and observed-duration throughput)",
+                "tools/gameplay_load_test.py (raw/mergeable full-run HTTP summaries at actual cutoffs)"
+              ],
+              "minimum_next": "Review full raw immutable aggregation and three-cutoff production output after LOAD03.3 minimal state input exists. Keep sample thresholds and failed requests in denominators. Independent finite-duration edge-case worker remains separate."
+            }
+          ],
+          "missing_reasons": {
+            "config_source_hash": "Evidence accounting fixture does not load combat source tables.",
+            "config_bytes_hash": "No combat numerical configuration consumed.",
+            "effective_room_policy": "No battle room instantiated.",
+            "runtime_image_digest": "Local standalone processes, no runtime image used.",
+            "cutoff_monotonic": "Cross-profile common cutoff is not applicable; actual pending request engine/server clocks in raw, distribution clock explicitly synthetic.",
+            "asset_and_route_postconditions": "No accounts or assets in these probes.",
+            "reviewer": "Independent MAIN acceptance not performed; task criterion remains incomplete.",
+            "sample_population.capacity_population": "No capacity claim."
+          }
+        },
+        {
+          "task_id": "LOAD-03.4",
+          "stage": "S6",
+          "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+          "config_source_hash": null,
+          "config_bytes_hash": null,
+          "effective_room_policy": null,
+          "runtime_image_digest": null,
+          "profile_hash": "8f5c8a2def116a38ab518e3511838a43551b495df176f66a45b7f9c420dc44f0",
+          "algorithm_version": "sha256:83a6d45a4938b09b9bc09ed568603752a7ce3e4520f3bb4e9761e0ab9cabb0d1",
+          "case_ids": [
+            "LOAD-03.4-T01",
+            "LOAD-03.4-T02",
+            "LOAD-03.4-T03"
+          ],
+          "expected": [
+            "不平均P95",
+            "unavailable/insufficient不写达标",
+            "分子分母同口径"
+          ],
+          "actual": [
+            {
+              "case_id": "LOAD-03.4-T01",
+              "task_id": "LOAD-03.4",
+              "setup_and_injection": "两窗数量不同",
+              "expected": "不平均P95",
+              "actual": {
+                "http": {
+                  "count": 20,
+                  "min_ms": 5,
+                  "mean_ms": 9.75,
+                  "max_ms": 100,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 100
+                },
+                "steady_http": {
+                  "count": 20,
+                  "min_ms": 5,
+                  "mean_ms": 9.75,
+                  "max_ms": 100,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 100
+                },
+                "cancelled_http": {
+                  "count": 0
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 20,
+                    "min_ms": 5,
+                    "mean_ms": 9.75,
+                    "max_ms": 100,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 100
+                  }
+                },
+                "error_count": 0,
+                "sample_count": 20,
+                "logical_request_count": 20,
+                "cancelled_count": 0,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 20,
+                "latency_sample_quality": {
+                  "http": "sufficient_for_diagnostic_rule",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.0,
+                "steady_error_count": 0,
+                "steady_sample_count": 20,
+                "steady_error_rate": 0.0,
+                "invalid_metric_count": 0,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            },
+            {
+              "case_id": "LOAD-03.4-T02",
+              "task_id": "LOAD-03.4",
+              "setup_and_injection": "N0/N19",
+              "expected": "unavailable/insufficient不写达标",
+              "actual": [
+                {
+                  "http": {
+                    "count": 0
+                  },
+                  "steady_http": {
+                    "count": 0
+                  },
+                  "cancelled_http": {
+                    "count": 0
+                  },
+                  "realtime": {
+                    "count": 0
+                  },
+                  "rtt": {
+                    "count": 0
+                  },
+                  "phase_http": {},
+                  "error_count": 0,
+                  "sample_count": 0,
+                  "logical_request_count": 0,
+                  "cancelled_count": 0,
+                  "all_attempt_count": null,
+                  "attempt_coverage": "unavailable",
+                  "attempt_result_counts": {},
+                  "valid_attempt_latency_count": 0,
+                  "valid_latency_count": 0,
+                  "latency_sample_quality": {
+                    "http": "unavailable",
+                    "realtime": "unavailable"
+                  },
+                  "error_rate": 0.0,
+                  "steady_error_count": 0,
+                  "steady_sample_count": 0,
+                  "steady_error_rate": 0.0,
+                  "invalid_metric_count": 0,
+                  "invalid_duration_count": 0,
+                  "invalid_schema_count": 0,
+                  "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+                },
+                {
+                  "http": {
+                    "count": 19,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  },
+                  "steady_http": {
+                    "count": 19,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  },
+                  "cancelled_http": {
+                    "count": 0
+                  },
+                  "realtime": {
+                    "count": 0
+                  },
+                  "rtt": {
+                    "count": 0
+                  },
+                  "phase_http": {
+                    "unknown/legacy": {
+                      "count": 19,
+                      "min_ms": 5,
+                      "mean_ms": 5.0,
+                      "max_ms": 5,
+                      "p50_ms": 5,
+                      "p95_ms": 5,
+                      "p99_ms": 5
+                    }
+                  },
+                  "error_count": 0,
+                  "sample_count": 19,
+                  "logical_request_count": 19,
+                  "cancelled_count": 0,
+                  "all_attempt_count": null,
+                  "attempt_coverage": "unavailable",
+                  "attempt_result_counts": {},
+                  "valid_attempt_latency_count": 0,
+                  "valid_latency_count": 19,
+                  "latency_sample_quality": {
+                    "http": "insufficient",
+                    "realtime": "unavailable"
+                  },
+                  "error_rate": 0.0,
+                  "steady_error_count": 0,
+                  "steady_sample_count": 19,
+                  "steady_error_rate": 0.0,
+                  "invalid_metric_count": 0,
+                  "invalid_duration_count": 0,
+                  "invalid_schema_count": 0,
+                  "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+                }
+              ],
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            },
+            {
+              "case_id": "LOAD-03.4-T03",
+              "task_id": "LOAD-03.4",
+              "setup_and_injection": "失败请求在错误集合",
+              "expected": "分子分母同口径",
+              "actual": {
+                "http": {
+                  "count": 2,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "steady_http": {
+                  "count": 2,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "cancelled_http": {
+                  "count": 1,
+                  "min_ms": 5,
+                  "mean_ms": 5.0,
+                  "max_ms": 5,
+                  "p50_ms": 5,
+                  "p95_ms": 5,
+                  "p99_ms": 5
+                },
+                "realtime": {
+                  "count": 0
+                },
+                "rtt": {
+                  "count": 0
+                },
+                "phase_http": {
+                  "unknown/legacy": {
+                    "count": 2,
+                    "min_ms": 5,
+                    "mean_ms": 5.0,
+                    "max_ms": 5,
+                    "p50_ms": 5,
+                    "p95_ms": 5,
+                    "p99_ms": 5
+                  }
+                },
+                "error_count": 1,
+                "sample_count": 2,
+                "logical_request_count": 3,
+                "cancelled_count": 1,
+                "all_attempt_count": null,
+                "attempt_coverage": "unavailable",
+                "attempt_result_counts": {},
+                "valid_attempt_latency_count": 0,
+                "valid_latency_count": 2,
+                "latency_sample_quality": {
+                  "http": "insufficient",
+                  "realtime": "unavailable"
+                },
+                "error_rate": 0.5,
+                "steady_error_count": 1,
+                "steady_sample_count": 2,
+                "steady_error_rate": 0.5,
+                "invalid_metric_count": 0,
+                "invalid_duration_count": 0,
+                "invalid_schema_count": 0,
+                "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+              },
+              "status": "Passed",
+              "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+              "profile": "OFFLINE",
+              "full_task_criterion_satisfied": false,
+              "Accepted": false
+            }
+          ],
+          "status": "NotReadyForAcceptance",
+          "sample_population": {
+            "exact_cases": 3,
+            "capacity_population": null
+          },
+          "cutoff_monotonic": null,
+          "window_or_drain_or_final": "Actual pending-engine cutoff for .3; explicit synthetic fixture running/drain/final timestamps for .4. Separate populations.",
+          "commands": "COMMANDS.json",
+          "tool_versions": {
+            "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+            "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+            "godot": "4.7.2"
+          },
+          "exit_codes": {
+            "original_case_probe": 0,
+            "harness_probe": 0
+          },
+          "skip_reasons": [],
+          "asset_and_route_postconditions": null,
+          "artifact_manifest": "MANIFEST.json",
+          "reviewer": null,
+          "rollback": "No production patch applied. Retain immutable raw and diagnostic fixture sources.",
+          "remaining_blockers": [
+            {
+              "canonical_requirement": "分路由/phase输出P50/P95/P99/max、吞吐、样本不足；全局从样本或可合并分布计算; 三截止点和全程指标可重算，末窗零错误不取代全场；算法版本明确。",
+              "actual": "Production aggregate outputs global and phase distributions but no route distribution or throughput. Coordinator retains windows/raw and cycle cutoffs, without full-run HTTP running/drain/final distribution fields. Harness can recompute synthetic fixture raw, but that does not implement missing production fields.",
+              "evidence": "distribution-probe/REPORT.json",
+              "minimum_files": [
+                "tools/gameplay_load_validation.py (route/phase distributions and observed-duration throughput)",
+                "tools/gameplay_load_test.py (raw/mergeable full-run HTTP summaries at actual cutoffs)"
+              ],
+              "minimum_next": "Review full raw immutable aggregation and three-cutoff production output after LOAD03.3 minimal state input exists. Keep sample thresholds and failed requests in denominators. Independent finite-duration edge-case worker remains separate."
+            }
+          ],
+          "missing_reasons": {
+            "config_source_hash": "Evidence accounting fixture does not load combat source tables.",
+            "config_bytes_hash": "No combat numerical configuration consumed.",
+            "effective_room_policy": "No battle room instantiated.",
+            "runtime_image_digest": "Local standalone processes, no runtime image used.",
+            "cutoff_monotonic": "Cross-profile common cutoff is not applicable; actual pending request engine/server clocks in raw, distribution clock explicitly synthetic.",
+            "asset_and_route_postconditions": "No accounts or assets in these probes.",
+            "reviewer": "Independent MAIN acceptance not performed; task criterion remains incomplete.",
+            "sample_population.capacity_population": "No capacity claim."
+          }
+        }
+      ]
+    }
+  ],
+  "original_cases_passed": 6,
+  "ready_tasks": 0,
+  "partial_tasks": 2,
+  "Accepted": 0
+}

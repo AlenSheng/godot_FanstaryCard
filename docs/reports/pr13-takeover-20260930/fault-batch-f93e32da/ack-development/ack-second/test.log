@@ -1,0 +1,72 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  FantasyCard.ConfigExporter -> /workspace/godot_FanstaryCard/server/tools/FantasyCard.ConfigExporter/bin/Release/net10.0/FantasyCard.ConfigExporter.dll
+  FantasyCard.Contracts -> /workspace/godot_FanstaryCard/server/src/FantasyCard.Contracts/bin/Release/net10.0/FantasyCard.Contracts.dll
+  FantasyCard.Domain -> /workspace/godot_FanstaryCard/server/src/FantasyCard.Domain/bin/Release/net10.0/FantasyCard.Domain.dll
+  FantasyCard.Server -> /workspace/godot_FanstaryCard/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll
+  FantasyCard.Server.Tests -> /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll
+Test run for /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:14.27]     FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: "drop-first-committed") [FAIL]
+  Failed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: "drop-first-committed") [12 s]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: 0
+Actual:   1
+  Stack Trace:
+     at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.RunAckGodotAsync(String fixture, Int32 proxyPort, String deviceId, String receiptId, Guid matchId, String mode, CancellationToken ct) in /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs:line 160
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode) in /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs:line 57
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode) in /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs:line 86
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode) in /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs:line 86
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode) in /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs:line 86
+--- End of stack trace from previous location ---
+  Standard Output Messages:
+ {"caseId":"process-start","recordedAt":"2026-09-30T20:19:29.4714325+00:00","evidence":{"label":"ack-drop-first-committed","Id":33008,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.dll","port":34327,"SearchPath":"fc_runtime_test_279a93a936c746f28ed7f4769bc0eaa5","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+ {"caseId":"ack-client-process-stop","recordedAt":"2026-09-30T20:19:40.2568746+00:00","evidence":{"mode":"drop-first-committed","import":true,"Id":33036,"ExitCode":0,"fixture":"/workspace/pr13-takeover/fault-batch-20260930/ack-second/process/ack-client-drop-first-committed-e4b3a160a9a3457586a25c2dc123ae60"}}
+ {"caseId":"ack-client-process-stop","recordedAt":"2026-09-30T20:19:41.1889405+00:00","evidence":{"mode":"drop-first-committed","import":false,"Id":33277,"ExitCode":1,"fixture":"/workspace/pr13-takeover/fault-batch-20260930/ack-second/process/ack-client-drop-first-committed-e4b3a160a9a3457586a25c2dc123ae60"}}
+ {"caseId":"process-stop","recordedAt":"2026-09-30T20:19:41.2333049+00:00","evidence":{"label":"ack-drop-first-committed","ProcessId":33008,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/pr13-takeover/fault-batch-20260930/ack-second/process/ack-drop-first-committed-33008.log"}}
+
+
+[xUnit.net 00:00:26.58]     FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: "drop-all-committed") [FAIL]
+  Failed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: "drop-all-committed") [12 s]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: 0
+Actual:   1
+  Stack Trace:
+     at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.RunAckGodotAsync(String fixture, Int32 proxyPort, String deviceId, String receiptId, Guid matchId, String mode, CancellationToken ct) in /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs:line 160
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode) in /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs:line 57
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode) in /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs:line 86
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode) in /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs:line 86
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode) in /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs:line 86
+--- End of stack trace from previous location ---
+  Standard Output Messages:
+ {"caseId":"process-start","recordedAt":"2026-09-30T20:19:41.4812567+00:00","evidence":{"label":"ack-drop-all-committed","Id":33295,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.dll","port":33691,"SearchPath":"fc_runtime_test_45cb10c0a6c14778bdf9903eb9ad4ddd","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+ {"caseId":"ack-client-process-stop","recordedAt":"2026-09-30T20:19:52.3649701+00:00","evidence":{"mode":"drop-all-committed","import":true,"Id":33336,"ExitCode":0,"fixture":"/workspace/pr13-takeover/fault-batch-20260930/ack-second/process/ack-client-drop-all-committed-72961a7f277f4671924a35821fd04d77"}}
+ {"caseId":"ack-client-process-stop","recordedAt":"2026-09-30T20:19:53.4993147+00:00","evidence":{"mode":"drop-all-committed","import":false,"Id":33575,"ExitCode":1,"fixture":"/workspace/pr13-takeover/fault-batch-20260930/ack-second/process/ack-client-drop-all-committed-72961a7f277f4671924a35821fd04d77"}}
+ {"caseId":"process-stop","recordedAt":"2026-09-30T20:19:53.5811951+00:00","evidence":{"label":"ack-drop-all-committed","ProcessId":33295,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/pr13-takeover/fault-batch-20260930/ack-second/process/ack-drop-all-committed-33295.log"}}
+
+
+[xUnit.net 00:00:39.97]     FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: "drop-all-uncommitted") [FAIL]
+  Failed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: "drop-all-uncommitted") [13 s]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: 0
+Actual:   1
+  Stack Trace:
+     at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.RunAckGodotAsync(String fixture, Int32 proxyPort, String deviceId, String receiptId, Guid matchId, String mode, CancellationToken ct) in /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs:line 160
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode) in /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs:line 57
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode) in /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs:line 86
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode) in /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs:line 86
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(String mode) in /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs:line 86
+--- End of stack trace from previous location ---
+  Standard Output Messages:
+ {"caseId":"process-start","recordedAt":"2026-09-30T20:19:53.8638789+00:00","evidence":{"label":"ack-drop-all-uncommitted","Id":33622,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.dll","port":35751,"SearchPath":"fc_runtime_test_9672ea5346b94a06b7aefaebd25b9928","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+ {"caseId":"ack-client-process-stop","recordedAt":"2026-09-30T20:20:05.572383+00:00","evidence":{"mode":"drop-all-uncommitted","import":true,"Id":33704,"ExitCode":0,"fixture":"/workspace/pr13-takeover/fault-batch-20260930/ack-second/process/ack-client-drop-all-uncommitted-80773b9722a3410d9471c80677be4a1b"}}
+ {"caseId":"ack-client-process-stop","recordedAt":"2026-09-30T20:20:06.9177895+00:00","evidence":{"mode":"drop-all-uncommitted","import":false,"Id":34026,"ExitCode":1,"fixture":"/workspace/pr13-takeover/fault-batch-20260930/ack-second/process/ack-client-drop-all-uncommitted-80773b9722a3410d9471c80677be4a1b"}}
+ {"caseId":"process-stop","recordedAt":"2026-09-30T20:20:06.9548878+00:00","evidence":{"label":"ack-drop-all-uncommitted","ProcessId":33622,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/pr13-takeover/fault-batch-20260930/ack-second/process/ack-drop-all-uncommitted-33622.log"}}
+
+
+Results File: /workspace/pr13-takeover/fault-batch-20260930/ack-second/ack.trx
+
+Failed!  - Failed:     3, Passed:     0, Skipped:     0, Total:     3, Duration: 38 s - FantasyCard.Server.Tests.dll (net10.0)

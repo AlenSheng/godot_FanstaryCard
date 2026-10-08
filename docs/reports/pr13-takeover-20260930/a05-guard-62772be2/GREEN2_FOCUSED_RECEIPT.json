@@ -1,0 +1,108 @@
+{
+  "integration_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+  "trx_sha256": "b8b9be506df7790096c385c21d7b604c6041c35df7eff184347f98f0810a3387",
+  "counters": {
+    "total": "3",
+    "executed": "3",
+    "passed": "3",
+    "failed": "0",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "0",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  },
+  "actual_forwarded_204": [
+    {
+      "label": "guard-recovered-uncommitted-loss",
+      "path": "/api/v1/preparations/sha256-guid:0889076b0b1126e55c6bde9201138c44c5620523716fe834fa37f30c73db68ab",
+      "method": "DELETE",
+      "status": 204,
+      "backendBytes": 0
+    },
+    {
+      "label": "guard-ordinary-success",
+      "path": "/api/v1/preparations/sha256-guid:1ede3a91167765cf303f2b60123bf6325c8f1bfba1bb62cd20543183e32c6458",
+      "method": "DELETE",
+      "status": 204,
+      "backendBytes": 0
+    },
+    {
+      "label": "guard-recovered-committed-loss",
+      "path": "/api/v1/preparations/sha256-guid:66c3d3b40657d9a8f7830ee902559d39615572c04c9244d590304a2c02d7f784",
+      "method": "DELETE",
+      "status": 204,
+      "backendBytes": 0
+    }
+  ],
+  "relay_cleanup": [
+    {
+      "context": "recovered",
+      "outcome": "uncommitted-loss",
+      "errors": [],
+      "expectedRestartTransportFailures": []
+    },
+    {
+      "context": "ordinary",
+      "outcome": "success",
+      "errors": [],
+      "expectedRestartTransportFailures": []
+    },
+    {
+      "context": "recovered",
+      "outcome": "committed-loss",
+      "errors": [],
+      "expectedRestartTransportFailures": []
+    }
+  ],
+  "after_audits": [
+    {
+      "path": "green2-focused/a05-audit-guard-ordinary-success-after.json",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2-focused/a05-audit-guard-recovered-committed-loss-after.json",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2-focused/a05-audit-guard-recovered-uncommitted-loss-after.json",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    }
+  ],
+  "unchanged_assertions": true,
+  "scope": "Diagnostic confirmation of proved 204 fixture fix; final full Server suite still required"
+}

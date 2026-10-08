@@ -54,6 +54,15 @@ func run() -> void:
 	check(slots.equipmentIds == [null,"id",null,null,null], "nullable equipment slots")
 	var effects := Http.from_wire("CardEffectResponse", {"draw_charge":"1.25"})
 	check(effects.drawCharge == 1.25, "effect decimal")
+	# Independent wire: retained numeric tags 1-3, additive name tags 8-10.
+	var equipment_wire := "0802100318044204466565744a055768697465520446697265".hex_decode()
+	var equipment_raw := proto.decode("SettlementEquipment", equipment_wire)
+	check(proto.error.is_empty() and equipment_raw.slot == 2 and equipment_raw.quality == 3 and equipment_raw.element == 4, "historical equipment numeric tags retained")
+	var equipment := proto.decode_http("SettlementEquipment", equipment_wire)
+	check(proto.error.is_empty() and equipment.slot == "Feet" and equipment.quality == "White" and equipment.element == "Fire", "persisted equipment names reach presentation")
+	check(equipment == Http.from_wire("SettlementEquipment", equipment_raw), "direct and reference equipment name adaptation agree")
+	var legacy_equipment := proto.decode_http("SettlementEquipment", "080210031804".hex_decode())
+	check(legacy_equipment.slot == 2 and legacy_equipment.quality == 3 and legacy_equipment.element == 4, "legacy receipt equipment numbers unchanged")
 	check(Http.from_wire("WalletResponse", {"gold":9223372036854775807}).gold == 9223372036854775807, "money stays int64")
 	for entry in Http.REGISTRY.data.endpoints:
 		var path: String = entry.path

@@ -1,0 +1,634 @@
+{
+  "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+  "original_case_primary_results": {
+    "Passed": 9
+  },
+  "full_task_criterion": {
+    "PR13-A05.1": "Partial",
+    "PR13-A05.2": "ReadyForIndependentAcceptance",
+    "PR13-A05.3": "ReadyForIndependentAcceptance"
+  },
+  "not_independent_acceptance": true,
+  "TRX": {
+    "final-release/server.trx": {
+      "path": "final-release/server.trx",
+      "bytes": 583476,
+      "sha256": "be3971e3b8e0caf0ee26d5791b5a9d2af8ec22e6a0cea3ee5f89e42daa7b6822",
+      "counters": {
+        "total": "295",
+        "executed": "295",
+        "passed": "295",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "actual_entry_outcomes": {
+        "Passed": 295
+      },
+      "failed_test_names": []
+    },
+    "final-release/domain.trx": {
+      "path": "final-release/domain.trx",
+      "bytes": 484105,
+      "sha256": "6ad88d37e517e75ad345284e4e363f2aee70aefea3a7469cfaef4e2c17817d49",
+      "counters": {
+        "total": "317",
+        "executed": "317",
+        "passed": "317",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "actual_entry_outcomes": {
+        "Passed": 317
+      },
+      "failed_test_names": []
+    },
+    "final-a05/a05.trx": {
+      "path": "final-a05/a05.trx",
+      "bytes": 80290,
+      "sha256": "fd8cd755e23c5b81756621b334507cb9c3f05a3fcc6ff0f6057831db2f24b11f",
+      "counters": {
+        "total": "4",
+        "executed": "4",
+        "passed": "3",
+        "failed": "1",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "actual_entry_outcomes": {
+        "Passed": 3,
+        "Failed": 1
+      },
+      "failed_test_names": [
+        "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_runtime_pending_holds_survive_OS_restart_without_early_completion"
+      ]
+    },
+    "causal-pending-f812/causal.trx": {
+      "path": "causal-pending-f812/causal.trx",
+      "bytes": 48179,
+      "sha256": "db5731609db050be4ac05358ffa34cda33967ef132cff10a9017b95e1b0178c6",
+      "counters": {
+        "total": "1",
+        "executed": "1",
+        "passed": "0",
+        "failed": "1",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "actual_entry_outcomes": {
+        "Failed": 1
+      },
+      "failed_test_names": [
+        "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Frozen_f812_actual_poll_return_during_ACK_must_not_restore_completed_receipt"
+      ]
+    },
+    "causal-f812/causal.trx": {
+      "path": "causal-f812/causal.trx",
+      "bytes": 13450,
+      "sha256": "e04b7f1cbd82dbdb3755c46ad10aa66f5f0b5c749a4635e452c7e1fc637f909f",
+      "counters": {
+        "total": "1",
+        "executed": "1",
+        "passed": "0",
+        "failed": "1",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "actual_entry_outcomes": {
+        "Failed": 1
+      },
+      "failed_test_names": [
+        "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Frozen_f812_actual_poll_return_during_ACK_must_not_restore_completed_receipt"
+      ]
+    }
+  },
+  "audit": [
+    {
+      "path": "final-release/a05-audit-db-committed-response-loss-after.json",
+      "sha256": "f3d20de10ac5ab6794fef75ff714e41f7a67bbe11688f2f3017580a3796add8a",
+      "require_clear": true,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "transaction": "READ ONLY; rollback; no mutation",
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "raw_accounts_and_rows_omitted": true
+    },
+    {
+      "path": "final-release/a05-audit-db-committed-response-loss-before.json",
+      "sha256": "94928f190f44cc96282537fc178aea534af13b0663df50c6b0ab79495ebfd531",
+      "require_clear": false,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "transaction": "READ ONLY; rollback; no mutation",
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "raw_accounts_and_rows_omitted": true
+    },
+    {
+      "path": "final-release/a05-audit-db-precommit-after.json",
+      "sha256": "e22cfccb41d536c6d7884096b9254c609da9cbbf3a1cf9e5368a239c4c4aa1a1",
+      "require_clear": true,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "transaction": "READ ONLY; rollback; no mutation",
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "raw_accounts_and_rows_omitted": true
+    },
+    {
+      "path": "final-release/a05-audit-db-precommit-before.json",
+      "sha256": "3b897b0fa012758faf8b1ced92adcec507fb1b4631d8eb8e4903d50dee970fba",
+      "require_clear": false,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "transaction": "READ ONLY; rollback; no mutation",
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "raw_accounts_and_rows_omitted": true
+    },
+    {
+      "path": "final-release/a05-audit-healthy-after.json",
+      "sha256": "6165711c160f46fc81bdceb783d4d5298efd7bd3374cccb03bbe673c2ca2eddb",
+      "require_clear": true,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "transaction": "READ ONLY; rollback; no mutation",
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "raw_accounts_and_rows_omitted": true
+    },
+    {
+      "path": "final-release/a05-audit-healthy-before.json",
+      "sha256": "bfaff5fa58cfdadd79c940154aa77d9e487e8bae2e467405ee088c549f32656e",
+      "require_clear": false,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "transaction": "READ ONLY; rollback; no mutation",
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "raw_accounts_and_rows_omitted": true
+    },
+    {
+      "path": "final-release/a05-audit-pending-after.json",
+      "sha256": "40fcff9a492820164b9706938d1b587992f1a0bb31583e4b5e1cb22e7cba0943",
+      "require_clear": true,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "transaction": "READ ONLY; rollback; no mutation",
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "raw_accounts_and_rows_omitted": true
+    },
+    {
+      "path": "final-release/a05-audit-pending-before.json",
+      "sha256": "0377b4c13e5703fd33093ff4adcb3f6ac0da46931f79dfb3deee179f4af189c9",
+      "require_clear": false,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "transaction": "READ ONLY; rollback; no mutation",
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "raw_accounts_and_rows_omitted": true
+    },
+    {
+      "path": "final-a05/a05-audit-db-committed-response-loss-after.json",
+      "sha256": "1a5787ae2094decdf44fe356fc9028b50a5af17cfb544fd8e5f935a013fe919f",
+      "require_clear": true,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "transaction": "READ ONLY; rollback; no mutation",
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "raw_accounts_and_rows_omitted": true
+    },
+    {
+      "path": "final-a05/a05-audit-db-committed-response-loss-before.json",
+      "sha256": "1f2144ca0e9ad586bf43552252d8d13c3876cad0f26ca88610c5be80c847a5a9",
+      "require_clear": false,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "transaction": "READ ONLY; rollback; no mutation",
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "raw_accounts_and_rows_omitted": true
+    },
+    {
+      "path": "final-a05/a05-audit-db-precommit-after.json",
+      "sha256": "ed98e953dc1a3da82d6c7e3334cdbdd6f39044f62b038db57184feb49f6ba832",
+      "require_clear": true,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "transaction": "READ ONLY; rollback; no mutation",
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "raw_accounts_and_rows_omitted": true
+    },
+    {
+      "path": "final-a05/a05-audit-db-precommit-before.json",
+      "sha256": "40d192c6cd6e51541b5619f0a67813f409b41e69169b73bce7dedc635cf9ee8c",
+      "require_clear": false,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "transaction": "READ ONLY; rollback; no mutation",
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "raw_accounts_and_rows_omitted": true
+    },
+    {
+      "path": "final-a05/a05-audit-healthy-after.json",
+      "sha256": "bbac6da4168442f348052a5adc50a4d4e14c905695e4b0d269ced89d3027742d",
+      "require_clear": true,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "transaction": "READ ONLY; rollback; no mutation",
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "raw_accounts_and_rows_omitted": true
+    },
+    {
+      "path": "final-a05/a05-audit-healthy-before.json",
+      "sha256": "62cc64f8a3d7532d6eb11073483bf99f2bdab780a9516769790b4a9d88d33839",
+      "require_clear": false,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "transaction": "READ ONLY; rollback; no mutation",
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "raw_accounts_and_rows_omitted": true
+    },
+    {
+      "path": "final-a05/a05-audit-pending-before.json",
+      "sha256": "cfa9ea84ab536ba27ae28a2337a2e69acf2a58c6b2e2cd2871f5c93ccbcb6cdb",
+      "require_clear": false,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "transaction": "READ ONLY; rollback; no mutation",
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "raw_accounts_and_rows_omitted": true
+    },
+    {
+      "path": "causal-pending-f812/a05-audit-causal-after.json",
+      "sha256": "b68947d64824a9f5ee8137c7925b18fb5732542f047bfb830552ed736954e6a7",
+      "require_clear": true,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "transaction": "READ ONLY; rollback; no mutation",
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "raw_accounts_and_rows_omitted": true
+    },
+    {
+      "path": "causal-pending-f812/a05-audit-causal-before.json",
+      "sha256": "f97d43cb699f23a89d5c019944c620eb9593c8069906109655246f798cc50e6f",
+      "require_clear": false,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "transaction": "READ ONLY; rollback; no mutation",
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "raw_accounts_and_rows_omitted": true
+    }
+  ],
+  "causal_controls": [
+    {
+      "path": "causal-f812/ack-client-a05-causal-d63a66b0d2994c75a3d914a5d755341a/control/result.json",
+      "sha256": "0a8c462c774bafda64e1468f0110d131d44ebbb67b27d83738d06622f96bdf39",
+      "counterexample_confirmed": false,
+      "ok": false,
+      "stale_during_ack": null,
+      "stale_after_ack": null,
+      "observations": [
+        {
+          "check": "actual Running M entry",
+          "monotonic_ms": 1018,
+          "passed": true
+        },
+        {
+          "check": "owned control extract",
+          "monotonic_ms": 1051,
+          "passed": true
+        },
+        {
+          "check": "actual legal extraction",
+          "monotonic_ms": 1052,
+          "passed": true
+        },
+        {
+          "check": "owned control get-released",
+          "monotonic_ms": 6679,
+          "passed": true
+        },
+        {
+          "check": "actual settlement GET loaded M while production poll remains awaited",
+          "monotonic_ms": 6729,
+          "passed": true
+        },
+        {
+          "check": "owned control ack-held",
+          "monotonic_ms": 6745,
+          "passed": true
+        },
+        {
+          "check": "real ACK await performs optimistic clear",
+          "monotonic_ms": 6745,
+          "passed": true
+        },
+        {
+          "check": "owned control poll-released",
+          "monotonic_ms": 6762,
+          "passed": true
+        },
+        {
+          "check": "counterexample: actual old poll restores exact M receipt during ACK await",
+          "monotonic_ms": 6830,
+          "passed": false
+        },
+        {
+          "check": "owned control ack-released",
+          "monotonic_ms": 6862,
+          "passed": true
+        },
+        {
+          "check": "actual production ACK returns success",
+          "monotonic_ms": 7002,
+          "passed": true
+        },
+        {
+          "check": "actual post-ACK Bootstrap confirms completion",
+          "monotonic_ms": 7002,
+          "passed": true
+        },
+        {
+          "check": "counterexample: confirmed ACK leaves exact stale receipt displayed",
+          "monotonic_ms": 7002,
+          "passed": false
+        },
+        {
+          "check": "actual next preparation allowed while stale receipt remains",
+          "monotonic_ms": 7129,
+          "passed": true
+        }
+      ],
+      "account_ids_and_HTTP_contexts_omitted": true
+    },
+    {
+      "path": "causal-pending-f812/ack-client-a05-causal-602e2055809d41ecaef8f530c73f7023/control/result.json",
+      "sha256": "7e805975781dbd5132ee856f30d88e185094e298fcfbbff6ac714ea948d9139c",
+      "counterexample_confirmed": true,
+      "ok": true,
+      "stale_during_ack": true,
+      "stale_after_ack": true,
+      "observations": [
+        {
+          "check": "actual Running M entry",
+          "monotonic_ms": 1117,
+          "passed": true
+        },
+        {
+          "check": "owned control extract",
+          "monotonic_ms": 1151,
+          "passed": true
+        },
+        {
+          "check": "actual legal extraction",
+          "monotonic_ms": 1151,
+          "passed": true
+        },
+        {
+          "check": "owned control restarted",
+          "monotonic_ms": 5243,
+          "passed": true
+        },
+        {
+          "check": "actual Pending OS restart/NOT_IN_ROOM retains recovery M",
+          "monotonic_ms": 5576,
+          "passed": true
+        },
+        {
+          "check": "owned control get-released",
+          "monotonic_ms": 8241,
+          "passed": true
+        },
+        {
+          "check": "actual GET loaded M with recovery M while production poll remains awaited",
+          "monotonic_ms": 8274,
+          "passed": true
+        },
+        {
+          "check": "owned control ack-held",
+          "monotonic_ms": 8324,
+          "passed": true
+        },
+        {
+          "check": "real ACK await performs optimistic clear",
+          "monotonic_ms": 8324,
+          "passed": true
+        },
+        {
+          "check": "owned control poll-released",
+          "monotonic_ms": 8341,
+          "passed": true
+        },
+        {
+          "monotonic_ms": 8425
+        },
+        {
+          "check": "owned control ack-released",
+          "monotonic_ms": 8458,
+          "passed": true
+        },
+        {
+          "check": "actual production ACK returns success",
+          "monotonic_ms": 8591,
+          "passed": true
+        },
+        {
+          "check": "actual post-ACK Bootstrap confirms completion",
+          "monotonic_ms": 8591,
+          "passed": true
+        },
+        {
+          "monotonic_ms": 8591
+        },
+        {
+          "check": "actual next preparation allowed while stale receipt remains",
+          "monotonic_ms": 8758,
+          "passed": true
+        }
+      ],
+      "account_ids_and_HTTP_contexts_omitted": true
+    }
+  ]
+}
