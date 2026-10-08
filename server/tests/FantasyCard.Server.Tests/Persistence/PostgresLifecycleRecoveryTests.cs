@@ -416,6 +416,7 @@ public sealed class PostgresLifecycleRecoveryTests
             {
                 try
                 {
+                    if (_upstream is not UnixDomainSocketEndPoint) server.NoDelay = true;
                     await server.ConnectAsync(_upstream, _shutdown.Token);
                     await using var frontend = new NetworkStream(client, ownsSocket: false);
                     await using var backend = new NetworkStream(server, ownsSocket: false);
@@ -446,7 +447,16 @@ public sealed class PostgresLifecycleRecoveryTests
                                     part.TrimStart().StartsWith(_statement, StringComparison.Ordinal)) &&
                                 Interlocked.Exchange(ref _armed, 0) == 1)
                                 Volatile.Write(ref dropResponse, 1);
-                            if (!inspectRequest && Volatile.Read(ref dropResponse) == 1)
+                            if (!inspectRequest && Volatile.Read(ref dropResponse) == 1 && header[0] == 'C')
+                            {
+                                // Connector reset traffic may still have an Idle Z queued
+                                // when the next Parse is observed. Only the selected command's
+                                // completion can arm the following durable Idle boundary.
+                                var completed = Encoding.UTF8.GetString(payload).TrimEnd('\0');
+                                if (completed == (_statement == "COMMIT" ? "COMMIT" : "UPDATE 1"))
+                                    Volatile.Write(ref dropResponse, 2);
+                            }
+                            if (!inspectRequest && Volatile.Read(ref dropResponse) == 2)
                             {
                                 if (header[0] == 'Z')
                                 {

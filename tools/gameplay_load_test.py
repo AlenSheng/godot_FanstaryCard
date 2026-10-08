@@ -285,7 +285,7 @@ def main():
     stop_file=run_dir/'STOP'
     processes=[]; samples=[]; group_launches=[]; streaks=collections.Counter(); seen={}; status_cache={}
     run_id=uuid.uuid4().hex
-    workload_failed=False; smoke_verified=False; previous_sample_ms=None; previous_generator=None
+    workload_failed=False; smoke_verified=False; previous_sample_ms=None; previous_sample_monotonic_ms=None; previous_generator=None
     started=time.time(); started_monotonic=time.monotonic()
     next_group=started_monotonic; next_sample=started_monotonic+10
     pending_launches=collections.deque(); next_launch=started_monotonic
@@ -355,7 +355,7 @@ def main():
                 workload=workload_snapshot(processes,statuses,sample_ms,now_monotonic_ms=time.monotonic()*1000)
                 workload_failed=workload_failed or workload['workload_failure']
                 fresh, lost_events=new_events(statuses,seen)
-                observed_ms = sample_monotonic_ms - (previous_sample_ms if previous_sample_ms is not None else started_monotonic * 1000)
+                observed_ms = sample_monotonic_ms - (previous_sample_monotonic_ms if previous_sample_monotonic_ms is not None else started_monotonic * 1000)
                 window=aggregate_window(fresh, observed_seconds=observed_ms / 1000 if observed_ms > 0 else None)
                 window['lost_event_count']=lost_events
                 audit_lost=sum(s.get('audit_lost_count',0) for s in statuses if isinstance(s.get('audit_lost_count',0),int) and not isinstance(s.get('audit_lost_count',0),bool) and s.get('audit_lost_count',0)>=0)
@@ -401,12 +401,13 @@ def main():
                     'completed_cycles':sum(n for n in cycle_counts if isinstance(n,int) and not isinstance(n,bool) and n>=0),
                     'invalid_status_files':invalid_files,
                     'generator':generator,
-                    'observed_interval_seconds':None if previous_sample_ms is None else (sample_ms-previous_sample_ms)/1000,
+                    'observed_interval_seconds':None if previous_sample_monotonic_ms is None else (sample_monotonic_ms-previous_sample_monotonic_ms)/1000,
                     'scheduled_at':started+(scheduled_sample_at-started_monotonic),
                     'sample_schedule_lag_ms':round(max(0.0,sample_started-scheduled_sample_at)*1000,2),
                     'sample_collection_ms':round((time.monotonic()-sample_started)*1000,2),
                     'window':window,'health':health,'resources':resource,'reasons':causes,'streaks':dict(streaks)}
                 previous_sample_ms=sample_ms
+                previous_sample_monotonic_ms=sample_monotonic_ms
                 samples.append(row)
                 save(run_dir/'state.json',row)
                 with (run_dir/'samples.jsonl').open('a',encoding='utf-8') as f: f.write(json.dumps(row)+'\n')

@@ -244,6 +244,9 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
         self.assertEqual(report['result_dimensions']['dimensions']['load'], 'Passed')
         self.assertEqual(report['result_dimensions']['dimensions']['evidence'], 'Passed')
         self.assertEqual(report['result_dimensions']['dimensions']['gameplay'], 'NotApplicable')
+        for sample in report['samples'][1:]:
+            self.assertGreater(sample['window']['observed_window_seconds'], 0)
+            self.assertIsNotNone(sample['window']['logical_requests_per_second'])
 
     def test_local_host_diagnostics_never_prove_server_performance(self):
         code, report = self.run_fixture(overlap=False, local_resources=True)

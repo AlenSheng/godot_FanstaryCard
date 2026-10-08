@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 import socket
+import shutil
 import subprocess
 import sys
 import time
@@ -77,8 +78,21 @@ class LocalRuntime(AbstractContextManager):
             listener.bind(("127.0.0.1", 0))
             port = listener.getsockname()[1]
         self.url = f"http://127.0.0.1:{port}"
-        dll = ROOT / "server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll"
-        self.record.update(server_url=self.url, source_sha=run(["git", "rev-parse", "HEAD"], cwd=ROOT).stdout.strip(),
+        source_sha = run(["git", "rev-parse", "HEAD"], cwd=ROOT).stdout.strip()
+        build_command = ["dotnet", "build", "src/FantasyCard.Server/FantasyCard.Server.csproj", "-c", "Release", "--nologo"]
+        built = run(build_command, cwd=ROOT / "server")
+        (self.output / "build.private.log").write_text(built.stdout + built.stderr, encoding="utf8")
+        write(self.output / "build.json", {"command": build_command, "source_sha": source_sha, "exit_code": built.returncode})
+        built.check_returncode()
+        build = ROOT / "server/src/FantasyCard.Server/bin/Release/net10.0"
+        frozen = self.output / "server-frozen"
+        shutil.copytree(build, frozen, ignore=shutil.ignore_patterns("*.pdb", "artifacts", "process-recovery-evidence"))
+        dll = frozen / "FantasyCard.Server.dll"
+        write(self.output / "server-artifacts.json", {"files": [
+            {"path": file.relative_to(frozen).as_posix(), "bytes": file.stat().st_size,
+             "sha256": hashlib.sha256(file.read_bytes()).hexdigest()}
+            for file in sorted(frozen.rglob("*")) if file.is_file()]})
+        self.record.update(server_url=self.url, source_sha=source_sha, build_source_sha=source_sha,
                            server_assembly_sha256=hashlib.sha256(dll.read_bytes()).hexdigest(),
                            candidate_defaults=False)
         connection = f"Host=127.0.0.1;Port={self.info['port']};Database={self.database};Username={self.info['user']};Password={self.info['password']};Timeout=10;Command Timeout=30"
