@@ -39,6 +39,7 @@ var ready_required := false
 var ready_accepted := false
 var ready_deadline_unix_ms := 0
 var ready_attempts := 0
+var ready_successful_sends := 0
 var hero_profile := "Mage"
 var strategy := "baseline_all_hand"
 var strategy_seed := 20260930
@@ -179,6 +180,7 @@ func _run_expedition() -> void:
 	ready_accepted = false
 	ready_deadline_unix_ms = 0
 	ready_attempts = 0
+	ready_successful_sends = 0
 	await Game.enqueue()
 	if stop_requested: return
 	if not _check(not Game.ticket.is_empty(), "enqueue_match"): return
@@ -211,6 +213,7 @@ func _run_expedition() -> void:
 					verified_ready_match_id = verified_match_id
 					if active_match_id != verified_match_id:
 						ready_attempts = 0
+						ready_successful_sends = 0
 						ready_accepted = false
 					active_match_id = verified_match_id
 					ready_required = true
@@ -223,7 +226,11 @@ func _run_expedition() -> void:
 		if Game.room.is_empty() and ready_required and not active_match_id.is_empty() and active_match_id == verified_match_id and not ready_accepted and ready_attempts < 3 and now_ms >= next_ready_send_ms and (ready_deadline_unix_ms == 0 or now_unix_ms < ready_deadline_unix_ms):
 			ready_attempts += 1
 			var sent: bool = Game.gateway.send("room.ready")
+			if sent: ready_successful_sends += 1
 			_on_telemetry({"type": "lifecycle", "event_type": "room.ready.send", "match_id": active_match_id, "attempt_no": ready_attempts, "result": "sent" if sent else "send_failed"})
+			if ready_attempts == 3 and ready_successful_sends == 0:
+				_check(false, "ready_send_exhausted")
+				return
 			next_ready_send_ms = now_ms + 1000
 		await _wait(0.25)
 	if stop_requested: return
