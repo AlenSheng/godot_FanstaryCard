@@ -1,0 +1,149 @@
+{
+  "task_id": "PR13-A10.2",
+  "stage": "S0",
+  "integration_sha": "b2cccdee8fc67a334ddf3343ce242d26caa0b319",
+  "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+  "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+  "effective_room_policy": null,
+  "runtime_image_digest": null,
+  "profile_hash": "5249644c026524c053b8e7a57b8bcc60b427ebe14e6b94d7bb0b261c8bb31ab5",
+  "algorithm_version": "pr13-local-stage-contract-v1",
+  "case_ids": [
+    "PR13-A10.2-T01",
+    "PR13-A10.2-T02",
+    "PR13-A10.2-T03"
+  ],
+  "expected": {
+    "runtime_cases": [
+      {
+        "id": "PR13-A10.2-T01",
+        "setup_and_injection": "单IP auth429",
+        "expected": "限流生效单列",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "PR13-A10.2-T02",
+        "setup_and_injection": "预登录仍写超限",
+        "expected": "不能宣称容量失败/通过",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "PR13-A10.2-T03",
+        "setup_and_injection": "目标online/active持续不足",
+        "expected": "load contract Failed",
+        "executed": false,
+        "evidence": null
+      }
+    ],
+    "pass_criteria": "默认限流保持，50/100各独立声明目标与覆盖；临时覆盖不替代默认容量。"
+  },
+  "actual": {
+    "scope_frozen": true,
+    "runtime_executed": false,
+    "profile_budgets": {
+      "OFFLINE": {
+        "deadline_seconds": 600,
+        "case_deadline_seconds": 30,
+        "godot_case_deadline_seconds": 90,
+        "child_grace_seconds": 10,
+        "cleanup_seconds": 30,
+        "network": "Loopback fixtures only; no default public server",
+        "pass_criteria": "Every mandatory normal/boundary/fault expectation matches; no unclassified failure or mandatory skip",
+        "stop_conditions": [
+          "deadline",
+          "unowned child",
+          "unexpected public network target"
+        ]
+      },
+      "CAPACITY": {
+        "deadline_seconds": 2400,
+        "cleanup_seconds": 120,
+        "online_targets": [
+          50,
+          100
+        ],
+        "active_targets": [
+          50,
+          100
+        ],
+        "warmup_seconds": 180,
+        "hold_seconds": 600,
+        "continuous_seconds": 120,
+        "coverage_fraction": 0.95,
+        "sample_interval_seconds": 10,
+        "max_sample_gap_seconds": 20,
+        "drain_seconds": 60,
+        "soak_seconds": 1800,
+        "ab_pairs": 3,
+        "ab_order": [
+          "AB",
+          "BA",
+          "AB"
+        ],
+        "request_mix": "Frozen original gameplay/default numeric policy; warmup/window/drain/final and logical/attempt counts remain separate",
+        "rate_limits": "Read/write/auth limits stay at actual default values; record effective limits and feasible request mix before each run",
+        "pass_criteria": "Both online and active-in-room meet the declared 50/100 target for >=95% of a 600-second window including >=120 continuous seconds; no evidence gaps; successful owned cleanup",
+        "stop_conditions": [
+          "three consecutive valid historical threshold windows",
+          "monitoring unavailable",
+          "generator available memory below 2 GiB",
+          "invalid evidence",
+          "deadline"
+        ]
+      }
+    },
+    "inputs": "默认10/30/120与每IP请求预算",
+    "dependencies": [
+      "PR13-A10.1"
+    ],
+    "dependency_phase": "S4/S5 integration only",
+    "writer": "MAIN",
+    "write_scope": [
+      "tools/gameplay_load_validation.py",
+      "tools/gameplay_load_test.py",
+      "tools/tests",
+      "docs/plans",
+      "docs/reports",
+      ".github/workflows"
+    ],
+    "task_contract_hash": "cc4f4e97da17e0f14c900d1406b4e636fab3e1e380359939b5385dd2103af040"
+  },
+  "status": "ReadyForAcceptance",
+  "sample_population": null,
+  "cutoff_monotonic": null,
+  "window_or_drain_or_final": null,
+  "commands": [
+    "python tools/pr13_plan.py --check",
+    "python tools/pr13_stages.py check --input <S0 directory>"
+  ],
+  "tool_versions": {
+    "python": "3.10.11",
+    "dotnet_required": "10.0.400"
+  },
+  "exit_codes": [],
+  "skip_reasons": [],
+  "asset_and_route_postconditions": null,
+  "artifact_manifest": "manifest.json",
+  "reviewer": "MAIN",
+  "rollback": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。",
+  "remaining_blockers": [],
+  "missing_reasons": {
+    "effective_room_policy": "No runtime started at S0; default policy source is pinned in source manifest.",
+    "runtime_image_digest": "Local process profile; container image is not selected. Assemblies are hashed after build.",
+    "sample_population": "S0 registers budgets; no runtime sample has been observed.",
+    "cutoff_monotonic": "No runtime cutoff exists before execution.",
+    "window_or_drain_or_final": "No runtime window exists before execution.",
+    "asset_and_route_postconditions": "Measured at S4/S5, never inferred from source."
+  },
+  "accepted_by": null,
+  "stage_states": {
+    "S1": "Queued",
+    "S2": "Queued",
+    "S3": "Queued",
+    "S4": "Queued",
+    "S5": "Queued",
+    "S6": "Queued"
+  }
+}

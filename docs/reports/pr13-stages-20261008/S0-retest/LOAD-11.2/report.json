@@ -1,0 +1,127 @@
+{
+  "task_id": "LOAD-11.2",
+  "stage": "S0",
+  "integration_sha": "b2cccdee8fc67a334ddf3343ce242d26caa0b319",
+  "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+  "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+  "effective_room_policy": null,
+  "runtime_image_digest": null,
+  "profile_hash": "40f2f172341e52bddcaecc4752620f67e27796a8bc19a9f1f984dd4009b0277c",
+  "algorithm_version": "pr13-local-stage-contract-v1",
+  "case_ids": [
+    "LOAD-11.2-T01",
+    "LOAD-11.2-T02",
+    "LOAD-11.2-T03"
+  ],
+  "expected": {
+    "runtime_cases": [
+      {
+        "id": "LOAD-11.2-T01",
+        "setup_and_injection": "同名文件被覆盖",
+        "expected": "hash差异拒绝",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "LOAD-11.2-T02",
+        "setup_and_injection": "敏感token/密钥",
+        "expected": "公共报告移除",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "LOAD-11.2-T03",
+        "setup_and_injection": "原始与派生报告",
+        "expected": "各自hash/父关系明确",
+        "executed": false,
+        "evidence": null
+      }
+    ],
+    "pass_criteria": "可重算资料来源完整，Git仅脱敏摘要，历史字节不被新报告覆盖。"
+  },
+  "actual": {
+    "scope_frozen": true,
+    "runtime_executed": false,
+    "profile_budgets": {
+      "OFFLINE": {
+        "deadline_seconds": 600,
+        "case_deadline_seconds": 30,
+        "godot_case_deadline_seconds": 90,
+        "child_grace_seconds": 10,
+        "cleanup_seconds": 30,
+        "network": "Loopback fixtures only; no default public server",
+        "pass_criteria": "Every mandatory normal/boundary/fault expectation matches; no unclassified failure or mandatory skip",
+        "stop_conditions": [
+          "deadline",
+          "unowned child",
+          "unexpected public network target"
+        ]
+      },
+      "AUDIT": {
+        "deadline_seconds": 600,
+        "cleanup_seconds": 60,
+        "query_limit_rows": 10000,
+        "query_timeout_seconds": 30,
+        "scope": "Original authorized historical files and owned disposable local account ledger; global historical production mismatch remains unresolved without source evidence",
+        "pass_criteria": "Each source file classified present/matching/missing; original raw never modified; asset/ledger/hold invariants reconstructed with explicit bounded account/time scope",
+        "stop_conditions": [
+          "deadline",
+          "hash mismatch",
+          "unbounded query",
+          "write attempted on audit target",
+          "missing access"
+        ]
+      }
+    },
+    "inputs": "当前脚本/proto/生成物/raw及未跟踪相关文件",
+    "dependencies": [
+      "LOAD-11.1",
+      "LOAD-06.4"
+    ],
+    "dependency_phase": "S4/S5 integration only",
+    "writer": "MAIN",
+    "write_scope": [
+      "docs/plans",
+      "docs/reports",
+      ".github/workflows",
+      "tools/pr13_plan.py"
+    ],
+    "task_contract_hash": "1daefd16e8acac04a3962f34283156168928b5bd65825ccfbefa5a3ff2219685"
+  },
+  "status": "ReadyForAcceptance",
+  "sample_population": null,
+  "cutoff_monotonic": null,
+  "window_or_drain_or_final": null,
+  "commands": [
+    "python tools/pr13_plan.py --check",
+    "python tools/pr13_stages.py check --input <S0 directory>"
+  ],
+  "tool_versions": {
+    "python": "3.10.11",
+    "dotnet_required": "10.0.400"
+  },
+  "exit_codes": [],
+  "skip_reasons": [],
+  "asset_and_route_postconditions": null,
+  "artifact_manifest": "manifest.json",
+  "reviewer": "MAIN",
+  "rollback": "只回退文档/工作流变更，保留历史报告和raw；部署回滚另按运行镜像/配置/DB备份演练。",
+  "remaining_blockers": [],
+  "missing_reasons": {
+    "effective_room_policy": "No runtime started at S0; default policy source is pinned in source manifest.",
+    "runtime_image_digest": "Local process profile; container image is not selected. Assemblies are hashed after build.",
+    "sample_population": "S0 registers budgets; no runtime sample has been observed.",
+    "cutoff_monotonic": "No runtime cutoff exists before execution.",
+    "window_or_drain_or_final": "No runtime window exists before execution.",
+    "asset_and_route_postconditions": "Measured at S4/S5, never inferred from source."
+  },
+  "accepted_by": null,
+  "stage_states": {
+    "S1": "Queued",
+    "S2": "Queued",
+    "S3": "Queued",
+    "S4": "Queued",
+    "S5": "Queued",
+    "S6": "Queued"
+  }
+}
