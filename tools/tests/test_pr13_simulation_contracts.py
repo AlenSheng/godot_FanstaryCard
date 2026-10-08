@@ -295,6 +295,36 @@ class FactorControlsTests(unittest.TestCase):
         path.write_text(json.dumps(dict(original,independent_runs_per_factor=2)), encoding="utf-8")
         self.assertFalse(self.validate()['passed'])
 
+    def test_nonzero_preregistered_seed_blocks_are_supported_and_checked(self):
+        path = self.root / 'preregistration.json'
+        registered = json.loads(path.read_text(encoding='utf8'))
+        for job in self.jobs:
+            directory = Path(job['output'])
+            manifest = json.loads((directory / 'manifest.json').read_text(encoding='utf8'))
+            rows = [json.loads(line) for line in (directory / 'encounters.jsonl').read_text(encoding='utf8').splitlines()]
+            for record in rows:
+                record['Seed'] += 100001
+            job['seed_start'] += 100001
+            manifest['SeedStart'] = job['seed_start']
+            fixture(directory, rows, **manifest)
+        registered['seed_start'] = 100001
+        registered['jobs'] = self.jobs
+        path.write_text(json.dumps(registered), encoding='utf8')
+        self.assertTrue(self.validate()['passed'])
+        registered['seed_start'] = 100002
+        path.write_text(json.dumps(registered), encoding='utf8')
+        result = self.validate()
+        self.assertFalse(result['passed'])
+        self.assertEqual(result['errors'][0]['kind'], 'invalid_preregistration')
+
+    def test_matrix_deadline_before_launch_records_notexecuted(self):
+        job = dict(self.jobs[0], matrix_deadline_monotonic=0)
+        with patch.object(factors.subprocess, 'Popen') as launch:
+            result = factors.run_job(job, self.root / 'STOP')
+        launch.assert_not_called()
+        self.assertEqual(result['state'], 'NotExecuted')
+        self.assertEqual(result['reason'], 'matrix_deadline_before_launch')
+
     def test_cancelled_notexecuted_and_missing_jobs_stay_incomplete(self):
         for state in ('Cancelled', 'NotExecuted', 'TimedOut', 'Failed'):
             with self.subTest(state=state):

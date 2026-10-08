@@ -32,7 +32,10 @@ def validate_controls(output, results):
         if type(samples) is not int or samples<3 or registered['independent_runs_per_factor']!=3:
             raise ValueError('Invalid declared sample or independent run budget')
         declared=Counter((job['factor'],job['seed_start']) for job in registered['jobs'])
-        required=Counter((factor,start) for factor in FACTORS for start in (0,samples,samples*2))
+        seed_start=registered.get('seed_start',0)
+        if type(seed_start) is not int or seed_start<0:
+            raise ValueError('Invalid preregistered first seed')
+        required=Counter((factor,start) for factor in FACTORS for start in (seed_start,seed_start+samples,seed_start+samples*2))
         if declared!=required:raise ValueError('Preregistered jobs must cover every factor and all three seed blocks exactly once')
         expected=Counter(identity(job) for job in registered['jobs']);actual=Counter(identity(job) for job in results)
     except (KeyError,TypeError,ValueError) as error:
@@ -114,6 +117,10 @@ def write(path,value):
 
 def run_job(job,stop):
     record=dict(job);target=Path(job['output'])
+    matrix_deadline=job.get('matrix_deadline_monotonic')
+    if matrix_deadline is not None and time.monotonic()>=matrix_deadline:
+        record.update(state='NotExecuted',reason='matrix_deadline_before_launch',started_at=None,finished_at=time.time())
+        write(target/'execution.json',record);return record
     if stop.exists():
         record.update(state='NotExecuted',reason='operator_stop_before_launch',started_at=None,finished_at=time.time())
         write(target/'execution.json',record);return record
@@ -126,7 +133,8 @@ def run_job(job,stop):
         except OSError as error:
             record.update(state='Failed',reason='launch_failed',error=str(error),exit_code=None,finished_at=time.time())
             write(target/'execution.json',record);return record
-        record['pid']=child.pid;write(target/'execution.json',record);deadline=time.monotonic()+2400
+        record['pid']=child.pid;write(target/'execution.json',record);deadline=time.monotonic()+job.get('deadline_seconds',2400)
+        if matrix_deadline is not None:deadline=min(deadline,matrix_deadline)
         try:
             while child.poll() is None and time.monotonic()<deadline and not stop.exists():time.sleep(.5)
             if child.poll() is None:
@@ -148,8 +156,13 @@ def main():
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--samples',type=int,default=1000)
     parser.add_argument('--workers',type=int,default=3)
+    parser.add_argument('--seed-start',type=int,default=0)
+    parser.add_argument('--max-seconds',type=int,default=1800,help='Whole-matrix wall-clock deadline including queued jobs')
+    parser.add_argument('--cutoff-seconds',type=int,default=300,help='Equal default/candidate observation window in each encounter')
     args=parser.parse_args()
     if args.samples<3 or not 1<=args.workers<=3:parser.error('At least3 samples; 1-3 bounded local workers')
+    if args.seed_start<0 or args.seed_start+3*args.samples>2**31-1 or args.max_seconds<1 or not 60<=args.cutoff_seconds<=600:
+        parser.error('Valid disjoint seed interval, positive deadline and 60-600 second encounter cutoff required')
     output=args.output.resolve();output.mkdir(parents=True,exist_ok=False)
     runtime=output/'runtime';runtime.mkdir()
     binary=ROOT/'server/tools/FantasyCard.Numerics/bin/Release/net10.0'
@@ -157,16 +170,20 @@ def main():
     for name in files:shutil.copyfile(binary/name,runtime/name)
     head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     jobs=[]
+    matrix_deadline=time.monotonic()+args.max_seconds
     for factor in FACTORS:
-        for seed in (0,args.samples,args.samples*2):
+        for seed in (args.seed_start,args.seed_start+args.samples,args.seed_start+args.samples*2):
             directory=output/factor/str(seed);directory.mkdir(parents=True)
             jobs.append(dict(factor=factor,seed_start=seed,output=str(directory),
                 command=['dotnet',str(runtime/'FantasyCard.Numerics.dll'),'--combat-experience','--candidate',factor,
-                    '--samples',str(args.samples),'--seed-start',str(seed),'--source-sha',head,'--output',str(directory)],state='Queued'))
+                    '--samples',str(args.samples),'--seed-start',str(seed),'--source-sha',head,
+                    '--cutoff-seconds',str(args.cutoff_seconds),'--output',str(directory)],state='Queued',
+                    deadline_seconds=args.max_seconds,matrix_deadline_monotonic=matrix_deadline))
     manifest=dict(schema_version=1,registered_at=time.time(),source_sha=head,source_file_sha256=hashlib.sha256((ROOT/'server/tools/FantasyCard.Numerics/CombatExperience.cs').read_bytes()).hexdigest(),
         source_git_dirty=bool(subprocess.check_output(['git','status','--porcelain'],cwd=ROOT,text=True).strip()),
         assembly_hashes={name:hashlib.sha256((runtime/name).read_bytes()).hexdigest() for name in files},
         samples_per_stratum_per_run=args.samples,independent_runs_per_factor=3,max_workers=args.workers,
+        seed_start=args.seed_start,max_seconds=args.max_seconds,cutoff_seconds=args.cutoff_seconds,
         source_config='Same embedded actual config in each frozen Domain assembly; global config mutation is checked by simulator',
         scopes='O6 whitelist only; separate HP95/90 and first-windup250/500ms; O1/E1/BOSS paired unchanged controls',
         candidate_activation=False,main_sample_floor_met=args.samples>=1000,jobs=jobs)
