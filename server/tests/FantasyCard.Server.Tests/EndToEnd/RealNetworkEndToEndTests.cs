@@ -67,12 +67,6 @@ public sealed partial class RealNetworkEndToEndTests
         Assert.Equal(3, bootstrap.Decks.Count);
         Assert.NotEmpty(bootstrap.Cards);
 
-        await using (var gold = database.DataSource.CreateCommand(
-            "UPDATE player_wallets SET gold=1000 WHERE player_id=$1"))
-        {
-            gold.Parameters.AddWithValue(signIn.Player.UserId);
-            Assert.Equal(1, await gold.ExecuteNonQueryAsync(timeout.Token));
-        }
         using var shopRequest = new HttpRequestMessage(HttpMethod.Get, "/api/v1/shop/");
         shopRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", signIn.AccessToken);
         using var shopResponse = await client.SendAsync(shopRequest, timeout.Token);
@@ -80,6 +74,16 @@ public sealed partial class RealNetworkEndToEndTests
         var shop = Assert.IsType<ShopResponse>(
             await shopResponse.Content.ReadFromJsonAsync<ShopResponse>(WebJson, timeout.Token));
         var dailyCard = Assert.Single(shop.Products, product => product.ProductId == "daily_card_1");
+        // The daily rotation can select a card priced above 1000. Freeze this
+        // disposable fixture's starting budget from the actual offer, preserving prices.
+        var initialGold = checked(dailyCard.PriceGold + 1000);
+        await using (var gold = database.DataSource.CreateCommand(
+            "UPDATE player_wallets SET gold=$1 WHERE player_id=$2"))
+        {
+            gold.Parameters.AddWithValue(initialGold);
+            gold.Parameters.AddWithValue(signIn.Player.UserId);
+            Assert.Equal(1, await gold.ExecuteNonQueryAsync(timeout.Token));
+        }
         using var dailyPayload = JsonDocument.Parse(dailyCard.Payload);
         var dailyCardId = dailyPayload.RootElement.GetProperty("cardId").GetString()!;
         var copiesBefore = await database.ScalarAsync<int>(
@@ -96,7 +100,7 @@ public sealed partial class RealNetworkEndToEndTests
         var purchase = Assert.IsType<ShopPurchaseResponse>(
             await purchaseResponse.Content.ReadFromJsonAsync<ShopPurchaseResponse>(WebJson, timeout.Token));
         Assert.Equal(dailyCard.ProductId, purchase.ProductId);
-        Assert.Equal(1000 - dailyCard.PriceGold, purchase.GoldAfter);
+        Assert.Equal(initialGold - dailyCard.PriceGold, purchase.GoldAfter);
         Assert.Equal(copiesBefore + 1, await database.ScalarAsync<int>(
             "SELECT copy_count FROM player_cards WHERE player_id=$1 AND card_id=$2",
             signIn.Player.UserId,

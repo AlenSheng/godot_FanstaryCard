@@ -84,6 +84,7 @@ func capture_context() -> Dictionary:
 	if room_context_epoch >= 0: context["room_context_epoch"] = room_context_epoch
 	return context
 var _reusable_http := ReusableHttpClient.new()
+var use_reusable_http := true
 var _pending_request_started: Dictionary = {}
 var _pending_ping_request_id := ""
 var _ping_sent_at: int = 0
@@ -389,7 +390,7 @@ func _request_page(path: String, method: int = HTTPClient.METHOD_GET, data: Vari
 
 func _request_http_transport(path: String, method: int, headers: PackedStringArray,
 		body: PackedByteArray, timeout_ms: int = 10000) -> Array:
-	if not OS.has_feature("web") and not _reusable_http.busy:
+	if use_reusable_http and not OS.has_feature("web") and not _reusable_http.busy:
 		return await _reusable_http.request(get_tree(), base_url, path, method, headers, body, timeout_ms)
 	var http := HTTPRequest.new()
 	http.timeout = float(timeout_ms) / 1000.0

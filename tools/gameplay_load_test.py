@@ -23,6 +23,7 @@ except ImportError:
 from cloud_load_test import ROOT, CLIENT, stop_all, health_probe, read_json
 from gameplay_load_validation import aggregate_window, request_cutoffs, workload_snapshot, owned_statuses, new_events, classify_stop, provenance
 from pr13_runtime_evidence import coverage, reconcile_cycles, result_dimensions, sampling_integrity
+from pr13_local_network import LocalOrigins
 
 QUERIES = {
     'cpu': '100*(1-avg(rate(node_cpu_seconds_total{job="node",instance="node-exporter:9100",mode="idle"}[1m])))',
@@ -31,6 +32,8 @@ QUERIES = {
     'actor_wait': 'histogram_quantile(0.95,sum(rate(fantasycard_room_actor_command_wait_milliseconds_bucket{job="fantasycard",instance="otel-collector:9464"}[5m])) by (le))',
     'server_humans_in_room': 'fantasycard_rooms_humans_active{job="fantasycard",instance="otel-collector:9464"}',
 }
+COVERAGE_METADATA = {'profile','acceptance_scope','launch_interval_seconds','http_transport','resource_source','server_metrics_missing_reason',
+                     'distinct_local_client_ips','client_memory_start_budget_mib','hero_class','strategy','strategy_seed'}
 
 def metrics(base):
     result = dict.fromkeys(QUERIES)
@@ -47,6 +50,22 @@ def metrics(base):
             value=float(matches[0]['value'][1])
             result[key]=value if math.isfinite(value) else None
     except (OSError, ValueError, KeyError, IndexError, TypeError): pass
+    return result
+
+
+def local_host_metrics():
+    """Measured shared Windows/local-host diagnostics; absent actor metrics stay null."""
+    result = dict.fromkeys(QUERIES)
+    if psutil is None:
+        return result
+    try:
+        memory = psutil.virtual_memory()
+        disk = psutil.disk_usage(str(ROOT.anchor))
+        result.update(cpu=psutil.cpu_percent(interval=.2),
+                      memory_available=100 * memory.available / memory.total,
+                      disk_available=100 * disk.free / disk.total)
+    except (OSError, ValueError, psutil.Error):
+        pass
     return result
 
 def save(path, data):
@@ -206,6 +225,11 @@ def main():
     parser.add_argument('--strategy',choices=('baseline_all_hand','basic','build','mixed'),default='baseline_all_hand')
     parser.add_argument('--strategy-seed',type=int,default=20260930)
     parser.add_argument('--prometheus',default='http://127.0.0.1:19090')
+    parser.add_argument('--local-resource-sampling',action='store_true',
+                        help='Owned loopback diagnostic only; shared-host CPU/memory/disk, missing server metrics remain unknown')
+    parser.add_argument('--http-transport',choices=('reusable','legacy'),default='reusable')
+    parser.add_argument('--distinct-local-client-ips',action='store_true',
+                        help='Owned loopback byte relays use real 127.0.0.x client source IPs, preserving default per-IP limits')
     parser.add_argument('--output',type=Path,default=ROOT/'outputs'/'gameplay-load')
     args=parser.parse_args()
     if not Path(args.godot).is_file(): parser.error('Godot executable is missing')
@@ -218,6 +242,10 @@ def main():
         parser.error('A valid --server-url is required')
     if target.hostname not in ('127.0.0.1','localhost','::1') and not args.allow_public_target:
         parser.error('Public targets require --allow-public-target and an explicit --server-url')
+    if args.local_resource_sampling and target.hostname not in ('127.0.0.1','localhost','::1'):
+        parser.error('Local resource sampling requires an owned loopback server')
+    if args.distinct_local_client_ips and (target.scheme!='http' or target.hostname!='127.0.0.1'):
+        parser.error('Distinct local client IPs require an owned HTTP 127.0.0.1 server')
     if not args.run and not args.smoke:
         print('Prepared: bounded local run; --smoke validates three cycles by default. --run requires monitoring.')
         return 0
@@ -225,18 +253,20 @@ def main():
     if args.run and args.smoke_clients!=1: parser.error('--smoke-clients belongs to the smoke profile')
     if args.run and args.load_profile == 'functional-cycles': parser.error('Functional cycles are smoke scenarios and cannot prove capacity')
     if args.run:
-        baseline=metrics(args.prometheus)
+        baseline=local_host_metrics() if args.local_resource_sampling else metrics(args.prometheus)
         if any(baseline[k] is None for k in ('cpu','memory_available','disk_available')):
             parser.error('Host monitoring is unavailable; provide an authorized Prometheus endpoint before --run')
     source=provenance(ROOT, ('tools/gameplay_load_test.py','tools/cloud_load_test.py',
         'tools/gameplay_load_validation.py','client/tests/gameplay_load_client.gd','client/state/game_store.gd',
         'client/network/gateway.gd','client/network/reusable_http_client.gd',
         'tools/pr13_runtime_evidence.py','client/data/catalog.json',
+        'tools/pr13_local_network.py',
         'client/ui/card_details.gd','client/state/element_rules.gd',
         'protocol/realtime/v1/realtime.proto'))
     run_dir=args.output.resolve()/(time.strftime('%Y%m%d-%H%M%S')+'-'+uuid.uuid4().hex[:6])
     run_dir.mkdir(parents=True)
     expected_clients = args.smoke_clients if args.smoke else args.max_groups * args.group_size
+    if args.distinct_local_client_ips and expected_clients>100: parser.error('Local IP origins are bounded to 100 clients')
     contract = {'profile':args.load_profile,
         'acceptance_scope':['execution','evidence','load','gameplay','cleanup'] if args.smoke else ['execution','evidence','load','performance','cleanup'],
         'target_online':expected_clients if args.target_online is None else args.target_online,
@@ -244,8 +274,13 @@ def main():
         'minimum_window':args.hold_seconds,'minimum_continuous':args.minimum_continuous_seconds,
         'minimum_coverage':args.minimum_coverage,'maximum_gap':args.maximum_sample_gap,
         'minimum_command_rate':args.minimum_command_rate,
-        'launch_interval_seconds':args.launch_interval_seconds}
-    coverage([],start=0,end=1,**{k:v for k,v in contract.items() if k not in ('profile','acceptance_scope','launch_interval_seconds')})
+        'launch_interval_seconds':args.launch_interval_seconds,
+        'http_transport':args.http_transport,
+        'resource_source':'shared_local_host_diagnostic' if args.local_resource_sampling else 'preregistered_prometheus',
+        'server_metrics_missing_reason':'No server actor-wait or authoritative room collector configured' if args.local_resource_sampling else None}
+    contract.update(distinct_local_client_ips=args.distinct_local_client_ips,client_memory_start_budget_mib=256,
+                    hero_class=args.hero_class,strategy=args.strategy,strategy_seed=args.strategy_seed)
+    coverage([],start=0,end=1,**{k:v for k,v in contract.items() if k not in COVERAGE_METADATA})
     save(run_dir/'load-contract.json',contract)
     stop_file=run_dir/'STOP'
     processes=[]; samples=[]; group_launches=[]; streaks=collections.Counter(); seen={}; status_cache={}
@@ -254,10 +289,13 @@ def main():
     started=time.time(); started_monotonic=time.monotonic()
     next_group=started_monotonic; next_sample=started_monotonic+10
     pending_launches=collections.deque(); next_launch=started_monotonic
-    groups=0; reason='running'
+    groups=0; reason='running'; local_origins=None; origins_cleanup_complete=True
     group_size=args.smoke_clients if args.smoke else args.group_size
     probes=concurrent.futures.ThreadPoolExecutor(max_workers=2,thread_name_prefix='load-probe')
     try:
+        if args.distinct_local_client_ips:
+            local_origins=LocalOrigins(args.server_url,expected_clients).__enter__()
+            save(run_dir/'client-origins.json',local_origins.records)
         while True:
             now=time.monotonic()
             if stop_file.exists(): reason='operator_stop_file'; break
@@ -273,11 +311,14 @@ def main():
                 next_group=time.monotonic()+args.group_interval
                 print('GROUP SCHEDULED',groups,'accounts',group_size,flush=True)
             if pending_launches and now>=next_launch:
+                if args.run and psutil is not None and psutil.virtual_memory().available<2*1024**3+256*1024**2:
+                    reason='invalid_evidence:generator_memory_low_before_launch'; break
                 launch_group,index=pending_launches.popleft()
                 client_id='g%03dc%02d%s'%(launch_group,index+1,uuid.uuid4().hex[:6])
                 process_epoch=uuid.uuid4().hex
                 report=run_dir/(client_id+'.json')
-                env=dict(os.environ,FANTASYCARD_SERVER_URL=args.server_url,FANTASYCARD_LOAD_CLIENT_ID=client_id,
+                env=dict(os.environ,FANTASYCARD_SERVER_URL=local_origins.origins[len(processes)] if local_origins is not None else args.server_url,FANTASYCARD_LOAD_CLIENT_ID=client_id,
+                    FANTASYCARD_LOAD_HTTP_TRANSPORT=args.http_transport,
                     FANTASYCARD_LOAD_GROUP=str(launch_group),FANTASYCARD_LOAD_REPORT=str(report),
                     FANTASYCARD_LOAD_STOP_FILE=str(stop_file),FANTASYCARD_LOAD_RUN_ID=run_id,
                     FANTASYCARD_LOAD_PROCESS_EPOCH=process_epoch,
@@ -325,7 +366,7 @@ def main():
                 window['command_rejections']=len(rejected)
                 window['command_error_rate']=len(rejected)/len(commands) if commands else 0
                 health_task=probes.submit(health_probe,args.server_url,5)
-                metrics_task=probes.submit(metrics,args.prometheus) if args.run else None
+                metrics_task=(probes.submit(local_host_metrics) if args.local_resource_sampling else probes.submit(metrics,args.prometheus)) if args.run else None
                 probe_tasks=[health_task]+([metrics_task] if metrics_task is not None else [])
                 _,pending_probes=concurrent.futures.wait(probe_tasks,timeout=6)
                 probe_timeout=bool(pending_probes)
@@ -412,6 +453,11 @@ def main():
                         cleanup_error+='; fallback termination failed for PID '+str(process.pid)
         finally:
             for entry in processes: entry['log'].close()
+            if local_origins is not None:
+                try: local_origins.close()
+                except (OSError,RuntimeError,TimeoutError) as exc:
+                    origins_cleanup_complete=False; workload_failed=True
+                    cleanup_error=(cleanup_error+'; ' if cleanup_error else '')+'origin_cleanup:'+type(exc).__name__
         if forced_termination:
             workload_failed=True
             cleanup_error=(cleanup_error+'; ' if cleanup_error else '')+'forced_termination:'+','.join(map(str,forced_termination))
@@ -420,7 +466,7 @@ def main():
         hold_end = stop_issued_ms/1000
         hold_start = max(started, hold_end-args.hold_seconds)
         load_coverage = coverage(samples,start=hold_start,end=max(hold_start+.001,hold_end),
-            **{k:v for k,v in contract.items() if k not in ('profile','acceptance_scope','launch_interval_seconds')})
+            **{k:v for k,v in contract.items() if k not in COVERAGE_METADATA})
         sampling=sampling_integrity(samples,started_monotonic*1000,stop_issued_monotonic_ns/1000000,contract['maximum_gap'])
         final_clients, final_read_errors = read_owned_statuses(processes,status_cache,require_files=True)
         tail, tail_lost = new_events(final_clients,seen)
@@ -442,9 +488,10 @@ def main():
         final_cycle_disagreement = any(s.get('cycles_completed') !=
             cutoffs['final']['cycles_by_client'].get(s['client_id'], 0) for s in final_clients)
         coverage_evidence_failed = bool(load_coverage.get('evidence_errors'))
+        origin_evidence_failed = local_origins is not None and bool(local_origins.errors)
         final_evidence_failed = bool(final_read_errors or tail_lost or tail_window['invalid_metric_count']
             or final_audit_lost or final_audit_invalid or final_cycle_invalid or final_cycle_disagreement or final_errors_invalid
-            or audit_errors or cutoffs['evidence_errors'] or request_distributions['evidence_errors'] or coverage_evidence_failed)
+            or audit_errors or cutoffs['evidence_errors'] or request_distributions['evidence_errors'] or coverage_evidence_failed or origin_evidence_failed)
         # An operator may intentionally end a run before its first sample.
         # That leaves acceptance incomplete, while preserving exit 130. Real
         # malformed/lost evidence or abnormal child exits still take priority.
@@ -465,14 +512,18 @@ def main():
         final_distribution=collections.Counter(cutoffs['final']['cycles_by_client'].values())
         final_distribution[0]=len(cutoffs['zero_cycle_clients'])
         cutoffs['final']['distribution']=dict(sorted(final_distribution.items()))
-        process_cleanup_complete = not cleanup_error and all(p['process'].poll() == 0 for p in processes)
+        process_cleanup_complete = not cleanup_error and origins_cleanup_complete and all(p['process'].poll() == 0 for p in processes)
         business_cleanup=bool(final_clients) and len(final_clients)==len(processes) and all(
             isinstance(client.get('cleanup'), dict) and client['cleanup'].get('state')=='Passed' for client in final_clients)
         performance_inputs={'http_latency_samples':sum(sample['window']['http'].get('count',0) for sample in samples),
             'realtime_latency_samples':sum(sample['window']['realtime'].get('count',0) for sample in samples),
             'scope':'existing bounded diagnostic stop rules; not a formal service SLO'}
-        performance_verified=(reason=='duration_limit' and load_verified and
-            performance_inputs['http_latency_samples']>=20 and performance_inputs['realtime_latency_samples']>=10)
+        performance_inputs['actor_wait_samples']=sum(isinstance(sample.get('resources',{}).get('actor_wait'),(int,float))
+            and not isinstance(sample['resources']['actor_wait'],bool) and math.isfinite(sample['resources']['actor_wait']) for sample in samples)
+        performance_inputs['resource_source']=contract['resource_source']
+        performance_verified=(not args.local_resource_sampling and reason=='duration_limit' and load_verified and
+            performance_inputs['http_latency_samples']>=20 and performance_inputs['realtime_latency_samples']>=10 and
+            performance_inputs['actor_wait_samples']==len(samples))
         business_cleanup_failed = any(isinstance(client.get('cleanup'), dict)
             and client['cleanup'].get('state') == 'Failed' for client in final_clients)
         dimensions=result_dimensions(execution=not reason.startswith('coordinator_error:') and process_cleanup_complete
@@ -494,6 +545,7 @@ def main():
                 (final_cycle_disagreement, 'final_cycle_count_disagreement'),
                 (audit_errors, 'audit_archive_invalid'), (cutoffs['evidence_errors'], 'cycle_evidence_invalid'),
                 (request_distributions['evidence_errors'], 'request_cutoff_evidence_invalid'),
+                (origin_evidence_failed, 'local_origin_evidence_invalid'),
                 (coverage_evidence_failed, 'load_coverage_evidence_invalid'),
                 (post_stop_failure, 'post_stop_process_failure'), (final_business_failed, 'final_business_failure'),
                 (business_cleanup_failed, 'business_cleanup_failed'), (not sampling['passed'], 'sampling_integrity_failed')):
@@ -518,6 +570,9 @@ def main():
                 'after_stop':p['process'].poll()} for p in processes],
             'group_size':group_size,'interval_seconds':args.group_interval,'scope':'real Godot Game store: login once, repeated preparation/match/PVE or PVP/settlement; no market trades',
             'group_launches':group_launches,'samples':samples,'final_clients':final_clients,
+            'local_origin_manifest':local_origins.records if local_origins is not None else None,
+            'local_origin_errors':local_origins.errors if local_origins is not None else [],
+            'local_origin_cleanup_complete':origins_cleanup_complete,
             'acceptance_passed':dimensions['all_applicable_passed'],
             'full_acceptance_passed':dimensions['full_acceptance_passed']}
         try:

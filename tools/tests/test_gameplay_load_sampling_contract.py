@@ -148,7 +148,7 @@ class RequestAccountingContractTests(unittest.TestCase):
 
 
 class CoordinatorSamplingContractTests(unittest.TestCase):
-    def run_fixture(self, *, overlap):
+    def run_fixture(self, *, overlap, local_resources=False, missing_actor=False):
         """Run the real final verdict with fake child/clock/network observations."""
         elapsed = [0.0]
         child = SimpleNamespace(pid=4242, returncode=None)
@@ -200,6 +200,7 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
             argv = ['gameplay_load_test.py', '--run', '--godot', sys.executable,
                 '--max-groups', '1', '--group-size', '1', '--max-seconds', '630',
                 '--hold-seconds', '600', '--output', directory]
+            if local_resources: argv.append('--local-resource-sampling')
             with patch.object(sys, 'argv', argv), patch.object(coordinator, 'time', clock), \
                     patch.object(coordinator, 'subprocess', SimpleNamespace(
                         Popen=launch, STDOUT=subprocess.STDOUT,
@@ -208,7 +209,9 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
                     patch.object(coordinator, 'health_probe', return_value={
                         'ok': True, 'duration_ms': 1, 'status': 200}), \
                     patch.object(coordinator, 'metrics', return_value={
-                        'cpu': 1, 'memory_available': 90, 'disk_available': 90}), \
+                        'cpu': 1, 'memory_available': 90, 'disk_available': 90, 'actor_wait': None if missing_actor else 1}), \
+                    patch.object(coordinator, 'local_host_metrics', return_value={
+                        'cpu': 1, 'memory_available': 90, 'disk_available': 90, 'actor_wait': None, 'server_humans_in_room': None}), \
                     patch.object(coordinator, 'generator_resources', return_value=({}, None)), \
                     patch.object(coordinator, 'read_owned_statuses', side_effect=read_status), \
                     patch.object(coordinator, 'stop_all', side_effect=stop), \
@@ -241,6 +244,19 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
         self.assertEqual(report['result_dimensions']['dimensions']['load'], 'Passed')
         self.assertEqual(report['result_dimensions']['dimensions']['evidence'], 'Passed')
         self.assertEqual(report['result_dimensions']['dimensions']['gameplay'], 'NotApplicable')
+
+    def test_local_host_diagnostics_never_prove_server_performance(self):
+        code, report = self.run_fixture(overlap=False, local_resources=True)
+        self.assertEqual(code, 1)
+        self.assertEqual(report['result_dimensions']['dimensions']['load'], 'Passed')
+        self.assertEqual(report['result_dimensions']['dimensions']['performance'], 'Unknown')
+        self.assertEqual(report['performance_inputs']['actor_wait_samples'], 0)
+        self.assertIsNone(report['samples'][0]['server_confirmed_in_room'])
+
+    def test_missing_actor_wait_is_not_a_zero_latency_success(self):
+        code, report = self.run_fixture(overlap=False, missing_actor=True)
+        self.assertEqual(code, 1)
+        self.assertEqual(report['result_dimensions']['dimensions']['performance'], 'Unknown')
 
 
 if __name__ == '__main__':

@@ -35,7 +35,8 @@ public sealed partial class ProcessLifecycleRecoveryTests
         var ct = deadline.Token;
         var settings = new NpgsqlConnectionStringBuilder(database.ConnectionString);
         await using var proxy = new RegistrationCommitProxy(settings.Host!, settings.Port);
-        settings.Host = proxy.SocketDirectory;
+        settings.Host = proxy.ClientHost;
+        settings.Port = proxy.ClientPort;
         settings.SslMode = SslMode.Disable;
         var port = ReservePort();
         using var client = Client(port);
@@ -243,7 +244,7 @@ public sealed partial class ProcessLifecycleRecoveryTests
     private sealed class RegistrationCommitProxy : IAsyncDisposable
     {
         private const string Statement = "UPDATE matches SET status='Running'";
-        private readonly Socket _listener = new(AddressFamily.Unix, SocketType.Stream, ProtocolType.Unspecified);
+        private readonly Socket _listener;
         private readonly CancellationTokenSource _shutdown = new();
         private readonly Task _acceptor;
         private readonly List<Task> _connections = [];
@@ -251,6 +252,8 @@ public sealed partial class ProcessLifecycleRecoveryTests
         private readonly AddressFamily _upstreamFamily;
         private int _attemptIndex;
         public string SocketDirectory { get; }
+        public string ClientHost { get; }
+        public int ClientPort { get; }
         public ConcurrentQueue<RegistrationCommitAttempt> Attempts { get; } = new();
         public ConcurrentQueue<string> Errors { get; } = new();
 
@@ -272,7 +275,20 @@ public sealed partial class ProcessLifecycleRecoveryTests
                 _upstream = new IPEndPoint(address, port);
                 _upstreamFamily = address.AddressFamily;
             }
-            _listener.Bind(new UnixDomainSocketEndPoint(Path.Combine(SocketDirectory, $".s.PGSQL.{port}")));
+            if (OperatingSystem.IsWindows())
+            {
+                _listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                _listener.Bind(new IPEndPoint(IPAddress.Loopback, 0));
+                ClientHost = "127.0.0.1";
+                ClientPort = ((IPEndPoint)_listener.LocalEndPoint!).Port;
+            }
+            else
+            {
+                _listener = new Socket(AddressFamily.Unix, SocketType.Stream, ProtocolType.Unspecified);
+                _listener.Bind(new UnixDomainSocketEndPoint(Path.Combine(SocketDirectory, $".s.PGSQL.{port}")));
+                ClientHost = SocketDirectory;
+                ClientPort = port;
+            }
             _listener.Listen(40);
             _acceptor = AcceptAsync();
         }
