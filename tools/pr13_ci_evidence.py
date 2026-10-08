@@ -8,6 +8,15 @@ import urllib.parse
 import urllib.request
 
 
+def classify_runs(head, records):
+    matching = [r for r in records if r.get('head_sha') == head]
+    historical = [r for r in records if r.get('head_sha') != head]
+    return dict(current_workflow_count=len(matching), historical_workflow_count=len(historical),
+        all_returned_workflows_passed=bool(matching) and all(
+            r.get('status')=='completed' and r.get('conclusion')=='success' for r in matching),
+        runtime_acceptance=False, missing_reason=None if matching else 'No workflows for the requested source SHA')
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--head')
@@ -29,8 +38,7 @@ def main():
         record['jobs']=[dict(id=job['id'],name=job['name'],status=job['status'],conclusion=job['conclusion'],html_url=job['html_url'],
             steps=[{k:step.get(k) for k in ('name','status','conclusion','number')} for step in job['steps']]) for job in jobs]
         records.append(record)
-    report=dict(checked_at=time.time(),head_sha=head,workflow_runs=records,
-        all_returned_workflows_passed=bool(records) and all(r['status']=='completed' and r['conclusion']=='success' for r in records))
+    report=dict(checked_at=time.time(),head_sha=head,workflow_runs=records,**classify_runs(head,records))
     args.output.parent.mkdir(parents=True,exist_ok=True);args.output.write_text(json.dumps(report,indent=2),encoding='utf8')
     print(json.dumps(dict(head_sha=head,workflows=[dict(name=r['name'],status=r['status'],conclusion=r['conclusion']) for r in records])))
     return 0

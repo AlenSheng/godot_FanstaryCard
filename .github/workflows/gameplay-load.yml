@@ -10,6 +10,10 @@ on:
       - 'tools/pr13_fault_cases.py'
       - 'tools/pr13_audit_replay.py'
       - 'tools/pr13_audit_cases.py'
+      - 'tools/pr13_boundary_cases.py'
+      - 'tools/pr13_public_evidence.py'
+      - 'tools/pr13_evidence_bundle.py'
+      - 'tools/pr13_ci_evidence.py'
       - 'tools/pr13_acceptance_register.py'
       - 'tools/pr13_callback_isolation.py'
       - 'tools/pr13_local_network.py'
@@ -34,6 +38,10 @@ on:
       - 'tools/pr13_fault_cases.py'
       - 'tools/pr13_audit_replay.py'
       - 'tools/pr13_audit_cases.py'
+      - 'tools/pr13_boundary_cases.py'
+      - 'tools/pr13_public_evidence.py'
+      - 'tools/pr13_evidence_bundle.py'
+      - 'tools/pr13_ci_evidence.py'
       - 'tools/pr13_acceptance_register.py'
       - 'tools/pr13_callback_isolation.py'
       - 'tools/pr13_local_network.py'
@@ -122,6 +130,7 @@ jobs:
           python tools/pr13_offline_cases.py --godot "$godot" --output test-results/gameplay-load/offline-cases
           python tools/pr13_fault_cases.py --godot "$godot" --output test-results/gameplay-load/fault-cases
           python tools/pr13_audit_cases.py --output test-results/gameplay-load/audit-cases
+          python tools/pr13_boundary_cases.py --godot "$godot" --output test-results/gameplay-load/boundary-cases
           A3GAME_GODOT_EXECUTABLE="$godot" python tools/pr13_callback_isolation.py --output test-results/gameplay-load/callback-isolation
           FANTASYCARD_SERVER_URL=http://127.0.0.1:1 "$godot" --headless --path client --script res://tests/run_gateway_origin.gd > test-results/gameplay-load/gateway-origin.log 2>&1
           grep -q '"ok":true' test-results/gameplay-load/gateway-origin.log

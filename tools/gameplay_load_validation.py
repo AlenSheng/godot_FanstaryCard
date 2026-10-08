@@ -110,6 +110,13 @@ def aggregate_window(statuses: list[dict], *, observed_seconds: float | None = N
         return row.get("ok") is not True or not isinstance(code, int) or isinstance(code, bool) or not 200 <= code < 300
     def latency(rows: list[dict]) -> dict:
         return summarize([row["duration_ms"] for row in rows if _number(row.get("duration_ms")) and row["duration_ms"] >= 0])
+    transport_phases = {}
+    for name in ("dns_ms", "tcp_connect_ms", "tls_handshake_ms"):
+        values = [row[name] for row in attempts if row.get("timing_source") == "local_monotonic_phase_hook"
+                  and _number(row.get(name)) and row[name] >= 0]
+        transport_phases[name] = dict(summarize(values), p95_ms=summarize(values).get("p95_ms"),
+            quality="measured" if values else "unavailable",
+            missing_reason=None if values else "No attributable local request phase hook in supplied audit")
     # A client-initiated cancellation is recorded, but is not an HTTP service
     # error or a completed request in the error-rate denominator.
     completed_http = [row for row in http if row.get("result") != "cancelled"]
@@ -142,6 +149,7 @@ def aggregate_window(statuses: list[dict], *, observed_seconds: float | None = N
         "attempt_coverage": "measured" if attempts else "unavailable",
         "attempt_result_counts": dict(Counter(str(row.get("result", "unknown")) for row in attempts)),
         "valid_attempt_latency_count": latency(attempts)["count"],
+        "transport_phase_timings": transport_phases,
         "valid_latency_count": latency(completed_http)["count"],
         "latency_sample_quality": {
             "http": "unavailable" if not completed_http else "insufficient" if latency(completed_http)["count"]<20 else "sufficient_for_diagnostic_rule",

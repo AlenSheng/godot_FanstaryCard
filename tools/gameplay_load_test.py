@@ -32,7 +32,7 @@ QUERIES = {
     'actor_wait': 'histogram_quantile(0.95,sum(rate(fantasycard_room_actor_command_wait_milliseconds_bucket{job="fantasycard",instance="otel-collector:9464"}[5m])) by (le))',
     'server_humans_in_room': 'fantasycard_rooms_humans_active{job="fantasycard",instance="otel-collector:9464"}',
 }
-COVERAGE_METADATA = {'profile','acceptance_scope','launch_interval_seconds','http_transport','resource_source','server_metrics_missing_reason',
+COVERAGE_METADATA = {'profile','acceptance_scope','launch_interval_seconds','http_transport','resource_source','server_metrics_missing_reason','client_max_fps','fps_scope',
                      'distinct_local_client_ips','client_memory_start_budget_mib','hero_class','strategy','strategy_seed','cycle_limit_seconds'}
 
 def metrics(base):
@@ -230,10 +230,14 @@ def main():
     parser.add_argument('--local-resource-sampling',action='store_true',
                         help='Owned loopback diagnostic only; shared-host CPU/memory/disk, missing server metrics remain unknown')
     parser.add_argument('--http-transport',choices=('reusable','per-request'),default='reusable')
+    parser.add_argument('--client-max-fps', type=int,
+                        help='Optional 1-240 FPS candidate; creates a distinct workload profile')
     parser.add_argument('--distinct-local-client-ips',action='store_true',
                         help='Owned loopback byte relays use real 127.0.0.x client source IPs, preserving default per-IP limits')
     parser.add_argument('--output',type=Path,default=ROOT/'outputs'/'gameplay-load')
     args=parser.parse_args()
+    if args.client_max_fps is not None and not 1 <= args.client_max_fps <= 240:
+        parser.error('Explicit FPS candidate must be between 1 and 240')
     if not Path(args.godot).is_file(): parser.error('Godot executable is missing')
     if min(args.max_groups,args.max_seconds,args.group_size,args.group_interval,args.smoke_cycles,args.smoke_clients)<1:
         parser.error('Group, duration and cycle limits must be positive')
@@ -280,6 +284,8 @@ def main():
         'minimum_command_rate':args.minimum_command_rate,
         'launch_interval_seconds':args.launch_interval_seconds,
         'http_transport':args.http_transport,
+        'client_max_fps':args.client_max_fps,
+        'fps_scope':'explicit candidate override' if args.client_max_fps is not None else 'unchanged engine/project default',
         'resource_source':'shared_local_host_diagnostic' if args.local_resource_sampling else 'preregistered_prometheus',
         'server_metrics_missing_reason':'No server actor-wait or authoritative room collector configured' if args.local_resource_sampling else None}
     contract.update(distinct_local_client_ips=args.distinct_local_client_ips,client_memory_start_budget_mib=256,
@@ -290,7 +296,7 @@ def main():
     stop_file=run_dir/'STOP'
     processes=[]; samples=[]; group_launches=[]; launch_receipts=[]; streaks=collections.Counter(); seen={}; status_cache={}
     run_id=uuid.uuid4().hex
-    workload_failed=False; smoke_verified=False; previous_sample_ms=None; previous_sample_monotonic_ms=None; previous_generator=None
+    workload_failed=False; smoke_verified=False; previous_sample_monotonic_ms=None; previous_generator=None
     started=time.time(); started_monotonic=time.monotonic()
     next_group=started_monotonic; next_sample=started_monotonic+10
     pending_launches=collections.deque(); next_launch=started_monotonic
@@ -312,6 +318,7 @@ def main():
                 groups+=1
                 pending_launches.extend((groups,index) for index in range(group_size))
                 group_launches.append({'group':groups,'scheduled_at':started+(scheduled_group_at-started_monotonic),
+                    'scheduled_monotonic_ms':scheduled_group_at*1000,'started_monotonic_ms':now*1000,
                     'started_at':group_started_at,'finished_at':None,
                     'clients_scheduled':group_size,'clients':0})
                 next_group=time.monotonic()+args.group_interval
@@ -338,8 +345,10 @@ def main():
                     FANTASYCARD_LOAD_MAX_CYCLES=str(args.smoke_cycles) if args.smoke else '0')
                 log=(run_dir/(client_id+'.log')).open('w',encoding='utf-8')
                 try:
-                    process=subprocess.Popen([args.godot,'--headless','--audio-driver','Dummy','--path',str(CLIENT),
-                        'res://tests/gameplay_load_client.tscn'],cwd=ROOT,env=env,stdout=log,stderr=subprocess.STDOUT,
+                    command=[args.godot,'--headless','--audio-driver','Dummy','--path',str(CLIENT)]
+                    if args.client_max_fps is not None: command+=['--max-fps',str(args.client_max_fps)]
+                    command+=['res://tests/gameplay_load_client.tscn']
+                    process=subprocess.Popen(command,cwd=ROOT,env=env,stdout=log,stderr=subprocess.STDOUT,
                         creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
                 except Exception:
                     log.close()
@@ -355,7 +364,8 @@ def main():
                 launch_receipts[-1].update(pid=process.pid,report_file=report.name,
                     server_origin={'scheme':origin.scheme,'host':origin.hostname,'port':origin.port},
                     hero_class=env['FANTASYCARD_LOAD_HERO_CLASS'],strategy=env['FANTASYCARD_LOAD_STRATEGY'],
-                    strategy_seed=int(env['FANTASYCARD_LOAD_SEED']),cycle_limit_seconds=args.cycle_limit_seconds)
+                    strategy_seed=int(env['FANTASYCARD_LOAD_SEED']),cycle_limit_seconds=args.cycle_limit_seconds,
+                    client_max_fps=args.client_max_fps,command=command)
                 # Checkpoint the real PID/epoch immediately after launch. Never
                 # reconstruct process ownership from final client JSON alone.
                 # The child is already in processes, so a write fault still
@@ -417,7 +427,8 @@ def main():
                 for key in set(streaks)|set(causes): streaks[key]=streaks[key]+1 if key in causes else 0
                 row={'schema_version':4,'at':sample_ms/1000,'sample_monotonic_ms':sample_monotonic_ms,
                     'run_id':run_id,'groups':groups,'clients':len(processes),**workload,
-                    'command_rate':None if previous_sample_ms is None or sample_ms<=previous_sample_ms else len(commands)/((sample_ms-previous_sample_ms)/1000),
+                    'command_rate':None if previous_sample_monotonic_ms is None or observed_ms<=0 else len(commands)/(observed_ms/1000),
+                    'command_rate_clock':'local_monotonic',
                     'completed_cycles':sum(n for n in cycle_counts if isinstance(n,int) and not isinstance(n,bool) and n>=0),
                     'invalid_status_files':invalid_files,
                     'generator':generator,
@@ -426,7 +437,6 @@ def main():
                     'sample_schedule_lag_ms':round(max(0.0,sample_started-scheduled_sample_at)*1000,2),
                     'sample_collection_ms':round((time.monotonic()-sample_started)*1000,2),
                     'window':window,'health':health,'resources':resource,'reasons':causes,'streaks':dict(streaks)}
-                previous_sample_ms=sample_ms
                 previous_sample_monotonic_ms=sample_monotonic_ms
                 samples.append(row)
                 save(run_dir/'state.json',row)
@@ -505,7 +515,16 @@ def main():
         audit_events, audit_errors = read_audit_events(processes, final_clients)
         final_cutoff_ms=int(time.time()*1000)
         cutoffs=reconcile_cycles(audit_events,stop_issued_ms,final_cutoff_ms)
-        request_distributions=request_cutoffs(audit_events,stop_issued_ms,final_cutoff_ms,started_ms=started*1000)
+        try:
+            request_distributions=request_cutoffs(audit_events,stop_issued_ms,final_cutoff_ms,started_ms=started*1000)
+        except ValueError:
+            # Preserve raw timestamps and the completed cleanup when UTC jumps.
+            # No corrected cutoff or elapsed duration is invented for accounting.
+            request_distributions={'algorithm_version':'owned-request-cutoffs-v1',
+                'running':None,'drain':None,'final':None,
+                'evidence_errors':['invalid_request_cutoff_clock'],
+                'cutoffs_unix_ms':{'start':started*1000,'stop':stop_issued_ms,'final':final_cutoff_ms},
+                'missing_reason':'UTC cutoffs reversed; raw retained, local monotonic scheduling unchanged'}
         final_cycle_disagreement = any(s.get('cycles_completed') !=
             cutoffs['final']['cycles_by_client'].get(s['client_id'], 0) for s in final_clients)
         coverage_evidence_failed = bool(load_coverage.get('evidence_errors'))

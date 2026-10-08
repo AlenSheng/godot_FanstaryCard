@@ -149,61 +149,71 @@ class RequestAccountingContractTests(unittest.TestCase):
 
 class CoordinatorSamplingContractTests(unittest.TestCase):
     def run_fixture(self, *, overlap=False, local_resources=False, missing_actor=False, cycle_limit=240,
-                    resource_changes=None, final_status_change=None):
+                    resource_changes=None, final_status_change=None, wall_jump=False, max_groups=1,
+                    client_max_fps=None, generator_observation=None):
         """Run the real final verdict with fake child/clock/network observations."""
         elapsed = [0.0]
-        child = SimpleNamespace(pid=4242, returncode=None)
-        child.poll = lambda: child.returncode
+        children = []
         clock = SimpleNamespace(
-            time=lambda: 100000 + elapsed[0] - (1 if overlap and elapsed[0] >= 300 else 0),
+            time=lambda: 100000 + elapsed[0] - (1800 if wall_jump and elapsed[0] >= 30 else 1 if overlap and elapsed[0] >= 300 else 0),
             monotonic=lambda: elapsed[0],
             monotonic_ns=lambda: int(elapsed[0] * 1e9),
             sleep=lambda seconds: elapsed.__setitem__(0, elapsed[0] + seconds),
             strftime=time.strftime)
-        events = []
+        client_events = {}
         heartbeat = [0]
 
         def launch(*args, env, **kwargs):
             self.assertEqual(env['FANTASYCARD_LOAD_CYCLE_LIMIT_SECONDS'], str(cycle_limit))
+            if client_max_fps is not None:
+                self.assertIn('--max-fps', args[0])
+                self.assertEqual(args[0][args[0].index('--max-fps')+1], str(client_max_fps))
+            child = SimpleNamespace(pid=4242+len(children), returncode=None)
+            child.poll = lambda: child.returncode
+            children.append(child)
             return child
 
         def read_status(processes, cache=None, now_monotonic_ms=None, *, require_files=False):
             if overlap and elapsed[0] == 290:
                 elapsed[0] += 9
-            entry = processes[0]
-            heartbeat[0] += 1
-            if not require_files:
-                types = ['realtime'] * 20 + (['http'] * 20 if not events else [])
-                for kind in types:
-                    events.append(dict(type=kind, event_type=kind,
-                        event_seq=len(events) + 1, at_unix_ms=int(clock.time() * 1000),
-                        run_id=entry['run_id'], client_id=entry['client_id'],
-                        process_epoch=entry['process_epoch'], cycle_id='fixture:1',
-                        match_id='fixture-match', duration_ms=1, status=200, ok=True))
-            ring = events[-300:]
-            status = dict(run_id=entry['run_id'], client_id=entry['client_id'],
-                process_epoch=entry['process_epoch'], pid=child.pid,
-                status_seq=heartbeat[0], now_unix_ms=int(clock.time() * 1000),
-                _received_at_monotonic_ms=clock.monotonic() * 1000,
-                online=True, room=True, last_progress_age_ms=0, cycles_completed=0,
-                event_seq_max=len(events), telemetry=ring,
-                operations=[e for e in ring if e['type'] == 'http'],
-                audit_lost_count=0, errors=[], cleanup={'state': 'Passed'})
-            if require_files and final_status_change: final_status_change(status)
-            Path(str(entry['report']) + '.telemetry.jsonl').write_text(
-                ''.join(json.dumps(e) + '\n' for e in events), encoding='utf8')
-            return [status], 0
+            statuses = []
+            for entry in processes:
+                events = client_events.setdefault(entry['client_id'], [])
+                heartbeat[0] += 1
+                if not require_files:
+                    types = ['realtime'] * 20 + (['http'] * 20 if not events else [])
+                    for kind in types:
+                        events.append(dict(type=kind, event_type=kind,
+                            event_seq=len(events) + 1, at_unix_ms=int(clock.time() * 1000),
+                            run_id=entry['run_id'], client_id=entry['client_id'],
+                            process_epoch=entry['process_epoch'], cycle_id='fixture:1',
+                            match_id='fixture-match', duration_ms=1, status=200, ok=True))
+                ring = events[-300:]
+                status = dict(run_id=entry['run_id'], client_id=entry['client_id'],
+                    process_epoch=entry['process_epoch'], pid=entry['process'].pid,
+                    status_seq=heartbeat[0], now_unix_ms=int(clock.time() * 1000),
+                    _received_at_monotonic_ms=clock.monotonic() * 1000,
+                    online=True, room=True, last_progress_age_ms=0, cycles_completed=0,
+                    event_seq_max=len(events), telemetry=ring,
+                    operations=[e for e in ring if e['type'] == 'http'],
+                    audit_lost_count=0, errors=[], cleanup={'state': 'Passed'})
+                if require_files and final_status_change: final_status_change(status)
+                Path(str(entry['report']) + '.telemetry.jsonl').write_text(
+                    ''.join(json.dumps(e) + '\n' for e in events), encoding='utf8')
+                statuses.append(status)
+            return statuses, 0
 
         def stop(processes, stop_file):
             stop_file.touch()
-            child.returncode = 0
+            for entry in processes: entry['process'].returncode = 0
             return []
 
         with tempfile.TemporaryDirectory() as directory:
             argv = ['gameplay_load_test.py', '--run', '--godot', sys.executable,
-                '--max-groups', '1', '--group-size', '1', '--max-seconds', '630',
+                '--max-groups', str(max_groups), '--group-size', '1', '--max-seconds', '630',
                 '--hold-seconds', '600', '--cycle-limit-seconds', str(cycle_limit), '--output', directory]
             if local_resources: argv.append('--local-resource-sampling')
+            if client_max_fps is not None: argv+=['--client-max-fps',str(client_max_fps)]
             with patch.object(sys, 'argv', argv), patch.object(coordinator, 'time', clock), \
                     patch.object(coordinator, 'subprocess', SimpleNamespace(
                         Popen=launch, STDOUT=subprocess.STDOUT,
@@ -216,7 +226,7 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
                         **(resource_changes or {})}), \
                     patch.object(coordinator, 'local_host_metrics', return_value={
                         'cpu': 1, 'memory_available': 90, 'disk_available': 90, 'actor_wait': None, 'server_humans_in_room': None}), \
-                    patch.object(coordinator, 'generator_resources', return_value=({}, None)), \
+                    patch.object(coordinator, 'generator_resources', return_value=(generator_observation or {}, None)), \
                     patch.object(coordinator, 'read_owned_statuses', side_effect=read_status), \
                     patch.object(coordinator, 'stop_all', side_effect=stop), \
                     contextlib.redirect_stdout(io.StringIO()):
@@ -224,6 +234,34 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
             reports = list(Path(directory).glob('*/report.json'))
             self.assertEqual(len(reports), 1)
             return code, json.loads(reports[0].read_text())
+
+    def test_wall_jump_keeps_group_interval_and_monotonic_command_rate(self):
+        code, report = self.run_fixture(wall_jump=True, max_groups=2)
+        groups=report['group_launches']
+        self.assertEqual(len(groups),2)
+        self.assertEqual(groups[1]['started_monotonic_ms']-groups[0]['started_monotonic_ms'],120000)
+        self.assertLess(groups[1]['started_at'],groups[0]['started_at'])
+        self.assertTrue(all(s['command_rate']==4 for s in report['samples'] if s['groups']==2))
+        self.assertTrue(all(s['command_rate']==2 for s in report['samples'][1:] if s['groups']==1))
+        self.assertFalse(report['sampling_integrity']['passed'])
+        self.assertIn('wall_clock_discontinuity',report['sampling_integrity']['reasons'])
+        self.assertNotEqual(code,0)
+
+    def test_fps_override_remains_distinct_and_records_actual_command(self):
+        code, candidate=self.run_fixture(client_max_fps=30)
+        _, baseline=self.run_fixture()
+        self.assertEqual(code,0)
+        self.assertEqual(candidate['load_contract']['client_max_fps'],30)
+        self.assertNotEqual(candidate['load_contract'],baseline['load_contract'])
+        self.assertIn('--max-fps',candidate['launch_receipts'][0]['command'])
+        self.assertNotIn('--max-fps',baseline['launch_receipts'][0]['command'])
+
+    def test_generator_memory_redline_is_not_server_capacity(self):
+        code,report=self.run_fixture(generator_observation={'available':True,'host_memory_available_bytes':1024**3})
+        self.assertEqual(code,3)
+        self.assertIn('generator_memory_low',report['all_triggers'])
+        self.assertFalse(report['acceptance_passed'])
+
 
     def test_wall_overlap_is_invalid_in_actual_coordinator_verdict(self):
         code, report = self.run_fixture(overlap=True)
