@@ -39,7 +39,9 @@ static func build(ui: Control, host: Control) -> void:
 		ui.button(MonsterPool.text("title") + " (%d)" % pool.get("pending", []).size(), Rect2(1210, 35, 340, 62), func(): MonsterPool.open(host))
 	var numerics: Dictionary = state.get("player", {}).get("numerical_state", {})
 	if numerics.get("guardian_policy", "") == "FractionalRemainder" and Game.hero_class == "Guardian":
-		ui.button("%d / 10" % int(numerics.get("guardian_remainder_tenths", 0)), Rect2(1580, 35, 120, 62), func(): preload("res://ui/numerical_details.gd").show_remainder(host))
+		var remainder: Button = ui.button("%d / 10" % int(numerics.get("guardian_remainder_tenths", 0)), Rect2(1580, 35, 120, 62), func(): preload("res://ui/numerical_details.gd").show_remainder(host))
+		remainder.name = "GuardianRemainder"
+		remainder.tooltip_text = preload("res://ui/numerical_details.gd").text("weapon") % int(numerics.get("guardian_remainder_tenths", 0))
 	var duel: Dictionary = state.get("duel", {})
 	if phase == "Pvp" and bool(duel.get("separate_loot", false)):
 		ui.button(P.localized("loot"), Rect2(1130, 49, 290, 61), func(): MonsterPool.loot(host, duel.get("searchable_loot", [])))
@@ -294,6 +296,8 @@ static func _preview(ui: Control) -> void:
 	if preview.get("control_estimated", false): panel.tooltip_text += "\n" + P.localized("battle_preview_control_estimate")
 	if int(preview.get("heal_overflow", 0)) + int(preview.get("shield_overflow", 0)) > 0:
 		panel.tooltip_text += "\n" + P.localized("battle_preview_overflow") % [int(preview.get("heal_overflow", 0)), int(preview.get("shield_overflow", 0))]
+	if int(preview.get("shield_gain", 0)) + int(preview.get("shield_overflow", 0)) > 0:
+		panel.tooltip_text += "\n" + P.localized("battle_preview_shield_parts") % [int(preview.get("shield_gain", 0)) + int(preview.get("shield_overflow", 0)), int(preview.get("shield_gain", 0)), int(preview.get("shield_overflow", 0))]
 
 static func _duel(ui: Control, host: Control, state: Dictionary) -> void:
 	var player: Dictionary = state.player
