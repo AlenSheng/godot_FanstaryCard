@@ -6,6 +6,10 @@ import json
 from pathlib import Path
 import subprocess
 import time
+try:
+    from .pr13_review_policy import execution_state, HUMAN_TASKS
+except ImportError:
+    from pr13_review_policy import execution_state, HUMAN_TASKS
 
 ROOT=Path(__file__).resolve().parents[1]
 PLAN=ROOT/'docs/plans/PR13_ACCEPTANCE_DETAILS_20260930.json'
@@ -94,8 +98,9 @@ def main():
             observation=observations.get(task['id'],{})
             statuses=[r['status'] for r in task_cases]
             missing_profiles=missing_case_profiles(task,task_cases)
-            state=('Failed' if 'Failed' in statuses else 'ReadyForAcceptance' if all(s=='Passed' for s in statuses) and not missing_profiles
-                   else 'Partial' if any(s=='Passed' for s in statuses) or supporting.get(task['id']) else 'Queued')
+            state=execution_state(task_cases, task['profiles'], human_required=task['id'] in HUMAN_TASKS,
+                                  human_evidence=support.get('human_experience_evidence'))
+            if state=='Queued' and supporting.get(task['id']):state='Partial'
             if observation.get('state') in ('Blocked','InProgress','Failed','Deferred','Partial'):state=observation['state']
             tasks.append(dict(task_id=task['id'],title=task['title'],package_id=package['id'],state=state,
                 accepted_by=None,owner='MAIN',case_counts=dict(Counter(statuses)),
