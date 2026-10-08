@@ -482,6 +482,15 @@ func _select_cards(hand: Array) -> Array:
 				best = ordered.duplicate()
 	return best if not best.is_empty() else all_ids
 
+func _strategy_wait_state() -> Dictionary:
+	var waiting: Dictionary = Game.combat_wait_state().duplicate(true)
+	var hand: Array = Game.room.get("player", {}).get("hand", [])
+	if bool(waiting.get("legal_opportunity",false)) and not hand.is_empty() and _select_cards(hand).is_empty():
+		waiting["reason"] = "strategy_wait"
+		waiting["intentional_hold"] = true
+		waiting["strategy"] = strategy
+	return waiting
+
 func _observe_battle() -> void:
 	var pve: Dictionary = Game.room.get("pve", {})
 	var duel: Dictionary = Game.room.get("duel", {})
@@ -506,7 +515,7 @@ func _observe_battle() -> void:
 		battle_metrics.observed_cards_drawn += new_cards
 		last_effective_ms = Time.get_ticks_msec()
 	observed_hand_ids = hand_ids
-	var waiting: Dictionary = Game.combat_wait_state()
+	var waiting: Dictionary = _strategy_wait_state()
 	_on_telemetry({"type": "battle_observation", "event_type": "battle.observed", "battle_id": battle_id,
 		"elapsed_ms": Time.get_ticks_msec() - battle_started_ms, "waiting": waiting,
 		"last_effective_age_ms": Time.get_ticks_msec() - last_effective_ms,

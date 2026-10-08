@@ -214,6 +214,19 @@ func run_cases() -> void:
     record("PR13-B01.2-T02",probe.battle_metrics.heal==0 and probe.battle_metrics.cards_spent==1 and probe.battle_metrics.effective_actions==0 and probe.battle_metrics.zero_effective_actions==1 and probe.battle_metrics.heal_overflow==null,{"full_hp":store.room.player.combat,"metrics":probe.battle_metrics.duplicate(true),"requested_heal_unpublished":true})
     close(pair)
 
+    pair = fresh(); store = pair[0]; probe = pair[2]
+    store.room.player.hand = [{"instance_id":"single","card_id":"C01","level":0}]
+    probe.strategy="baseline_all_hand"
+    var baseline_wait: Dictionary=probe._strategy_wait_state()
+    var baseline_cards: Array=probe._select_cards(store.room.player.hand)
+    probe.strategy="build"
+    var build_wait: Dictionary=probe._strategy_wait_state()
+    store.room.player.hand=[]
+    var empty_wait: Dictionary=probe._strategy_wait_state()
+    record("PR13-B04.1-T02",baseline_cards==["single"] and baseline_wait.reason=="available" and build_wait.reason=="strategy_wait" and empty_wait.reason=="drawing",
+        {"all_hand":baseline_wait,"build_intentional_hold":build_wait,"actual_empty_hand":empty_wait})
+    close(pair)
+
     var file := FileAccess.open(OS.get_environment("PR13_STATE_REPORT"),FileAccess.WRITE)
     if file == null: quit(1); return
     file.store_string(JSON.stringify({"cases":cases})); file.close()

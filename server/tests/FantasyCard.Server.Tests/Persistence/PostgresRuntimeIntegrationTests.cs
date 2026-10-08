@@ -28,6 +28,35 @@ public sealed class PostgresRuntimeIntegrationTests
     public static bool HasTestDatabase => !string.IsNullOrWhiteSpace(
         Environment.GetEnvironmentVariable("FANTASYCARD_TEST_POSTGRES"));
 
+    [Theory(Skip = "Requires an owned PostgreSQL test database.", SkipUnless = nameof(HasTestDatabase))]
+    [InlineData(HeroClass.Mage, "MAG")]
+    [InlineData(HeroClass.Priest, "PRI")]
+    [InlineData(HeroClass.Guardian, "GUA")]
+    [Trait("Category", "PostgresIntegration")]
+    public async Task Actual_starter_deck_matches_published_twenty_white_level_zero_cards(HeroClass hero, string prefix)
+    {
+        await using var database = await PostgresTestSchema.CreateAsync(migrate: true);
+        var now = DateTimeOffset.UtcNow; var ct = TestContext.Current.CancellationToken;
+        var player = await CreateIdentityRepository(database.DataSource).SignInLocalAsync(
+            "starter-source-" + Guid.NewGuid().ToString("N"), "Starter source",
+            TokenHash(Guid.NewGuid().ToString("N")), now, now.AddHours(1), ct);
+        var raw = await database.ScalarAsync<string>(
+            "SELECT jsonb_agg(dc.card_id ORDER BY dc.slot_index)::text FROM player_deck_cards dc JOIN player_decks d ON d.deck_id=dc.deck_id WHERE d.player_id=$1 AND d.hero_class=$2",
+            player.UserId, (short)hero);
+        var actual = JsonSerializer.Deserialize<string[]>(raw)!;
+        var expected = Enumerable.Range(1, 13).Select(i => $"C{i:D2}").Concat(Enumerable.Range(1, 7).Select(i => $"{prefix}-{i:D2}")).ToArray();
+        Assert.Equal(expected, actual); Assert.Equal(20, actual.Distinct().Count());
+        foreach (var id in actual)
+        {
+            var card = GameConfigCatalog.Current.Cards.Single(c => c.CardId == id);
+            Assert.Equal("White", card.Quality); Assert.True(card.Enabled); Assert.True(card.InitiallyUnlocked);
+            Assert.True(card.HeroClass is null || card.HeroClass == hero);
+            Assert.Equal(0, await database.ScalarAsync<int>("SELECT level FROM player_cards WHERE player_id=$1 AND card_id=$2", player.UserId, id));
+        }
+        TestContext.Current.TestOutputHelper!.WriteLine("PR13_STARTER " + JsonSerializer.Serialize(new
+            { hero, publishedConfigVersion = GameConfigCatalog.Current.Version, cards = actual, rarity = "White", level = 0, actualDatabaseRead = true }));
+    }
+
     [Fact(Skip = "Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.",
         SkipUnless = nameof(HasTestDatabase))]
     [Trait("Category", "PostgresIntegration")]
