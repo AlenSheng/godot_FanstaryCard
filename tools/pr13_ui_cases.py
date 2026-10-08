@@ -18,10 +18,14 @@ def main():
   try:code=process.wait(timeout=90)
   finally:
    if process.poll() is None:process.kill();process.wait(timeout=5)
+ log=(out/'engine.log').read_text(encoding='utf8',errors='replace')
+ native_clean=code==0 and not any(marker in log for marker in ('SCRIPT ERROR','Parse Error','Failed to load script'))
  records=json.loads((out/'native-result.json').read_text(encoding='utf8'))['cases'] if (out/'native-result.json').exists() else []
+ if not native_clean:
+  for record in records:record.update(status='Failed',native_execution_invalid=True)
  for r in records:r.update(setup=contracts[r['case_id']]['setup_and_injection'],expected=contracts[r['case_id']]['expected'])
  (out/'cases.jsonl').write_bytes(''.join(json.dumps(r,ensure_ascii=False,allow_nan=False)+'\n' for r in records).encode())
- write(out/'report.json',{'source_sha':head,'source':{'scope':'actual native Godot store/codec; controlled room/gateway fixtures','input_hashes':inputs},'plan_sha256':sha(plan_path),'executed':len(records),'passed':sum(r['status']=='Passed' for r in records),'exit_code':code,'command':command,'pid':process.pid,'elapsed_seconds':time.monotonic()-started,'profiles_executed':['OFFLINE'],'remaining_profiles':['RENDER'],'accepted':False})
+ write(out/'report.json',{'source_sha':head,'source':{'scope':'actual native Godot store/codec; controlled room/gateway fixtures','input_hashes':inputs},'plan_sha256':sha(plan_path),'executed':len(records),'passed':sum(r['status']=='Passed' for r in records),'exit_code':code,'native_execution_clean':native_clean,'command':command,'pid':process.pid,'elapsed_seconds':time.monotonic()-started,'profiles_executed':['OFFLINE'],'remaining_profiles':['RENDER'],'accepted':False})
  write(out/'manifest.json',{'files':[{'path':p.relative_to(out).as_posix(),'bytes':p.stat().st_size,'sha256':sha(p)} for p in sorted(out.rglob('*')) if p.is_file() and 'runtime' not in p.relative_to(out).parts]})
  print(json.dumps({'exit_code':code,'executed':len(records),'passed':sum(r['status']=='Passed' for r in records)}));return 0 if code==0 and len(records)==11 and all(r['status']=='Passed' for r in records) else 1
 if __name__=='__main__':raise SystemExit(main())
