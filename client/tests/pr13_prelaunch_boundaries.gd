@@ -59,7 +59,8 @@ func run_cases() -> void:
 	var codec := Proto.new()
 	var read: Dictionary = codec.decode("ClientEnvelope",peer.get_packet()) if peer.get_available_packet_count()>0 else {}
 	var body: Dictionary = codec.decode("RoomSnapshotCommand",read.get("payload",PackedByteArray()))
-	var allowed_read: bool = read.get("type")=="room.snapshot.read" and body.get("room_id")=="room-B"
+	var read_context: Dictionary = gateway._pending_request_started.get(str(read.get("request_id","")),{}).get("context",{})
+	var allowed_read: bool = read.get("type")=="room.snapshot.read" and body.is_empty() and read_context.get("room_id")=="room-B" and read_context.get("match_id")=="match-B"
 	gateway._receive(packet("room.snapshot",16,{"match_id":"match-B","room_id":"room-B","room_revision":8},str(read.get("request_id",""))))
 	var authority_applied := gateway.room_id=="room-B" and gateway.current_match_id=="match-B" and not gateway.recovering and gateway.last_sequence==16
 	record("LOAD-04.3-T03",old_snapshot_safe and hint_not_applied and allowed_read and authority_applied,{"old_snapshot_keeps_current_recovery":old_snapshot_safe,"future_hint_not_applied":hint_not_applied,"actual_binary_snapshot_read":allowed_read,"authoritative_snapshot_applied":authority_applied})

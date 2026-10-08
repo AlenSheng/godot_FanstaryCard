@@ -102,7 +102,9 @@ func _read_prelaunch_snapshot() -> void:
 	if not _prelaunch_valid() or _prelaunch_snapshot_attempts >= 3 or Time.get_ticks_msec() < _prelaunch_snapshot_at: return
 	_prelaunch_snapshot_attempts += 1
 	_prelaunch_snapshot_at = Time.get_ticks_msec() + 1000
-	send("room.snapshot.read", {"room_id":_prelaunch_ticket.room_id})
+	# The wire command is empty: the server resolves this account's route.
+	# The verified room identity stays in immutable local request context.
+	send("room.snapshot.read")
 
 func capture_context() -> Dictionary:
 	var context := telemetry_context.duplicate(true)
