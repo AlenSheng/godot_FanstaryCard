@@ -50,11 +50,13 @@ public sealed class ServerMetrics : IDisposable
     private readonly Counter<long> _migrationRuns;
     private readonly Counter<long> _settlementsCreated;
     private readonly Counter<long> _settlementIdempotencyHits;
+    private readonly Histogram<double> _runtimePhaseDuration;
 
     internal Meter SourceMeter => _meter;
 
     public ServerMetrics()
     {
+        _runtimePhaseDuration = _meter.CreateHistogram<double>("fantasycard.runtime.phase.duration", unit: "ms");
         _activeRealtimeConnections = _meter.CreateUpDownCounter<long>(
             "fantasycard.realtime.connections.active", unit: "{connection}");
         _realtimeMessages = _meter.CreateCounter<long>(
@@ -144,6 +146,9 @@ public sealed class ServerMetrics : IDisposable
     }
 
     public void RealtimeConnectionOpened() => _activeRealtimeConnections.Add(1);
+    public void ObserveRuntimePhase(RuntimePhase phase, TimeSpan duration) =>
+        _runtimePhaseDuration.Record(Math.Max(0, duration.TotalMilliseconds),
+            new KeyValuePair<string, object?>("phase", Enum.IsDefined(phase) ? phase.ToString() : "Unknown"));
     public void RealtimeConnectionClosed() => _activeRealtimeConnections.Add(-1);
     public void RealtimeMessageReceived() => _realtimeMessages.Add(1);
     public void ObserveRealtimeMessageBytes(long bytes) => _realtimeMessageBytes.Record(bytes);

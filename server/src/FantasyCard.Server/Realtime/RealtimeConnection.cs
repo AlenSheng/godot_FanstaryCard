@@ -1,9 +1,10 @@
 using System.Net.WebSockets;
 using FantasyCard.Contracts.Realtime;
+using FantasyCard.Server.Common;
 
 namespace FantasyCard.Server.Realtime;
 
-public sealed class RealtimeConnection(WebSocket socket) : IAsyncDisposable
+public sealed class RealtimeConnection(WebSocket socket, ServerMetrics? metrics = null) : IAsyncDisposable
 {
     private readonly SemaphoreSlim _sendGate = new(1, 1);
     public WebSocket Socket { get; } = socket;
@@ -32,11 +33,15 @@ public sealed class RealtimeConnection(WebSocket socket) : IAsyncDisposable
             }
             using var timeout = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
             timeout.CancelAfter(TimeSpan.FromSeconds(5));
-            await _sendGate.WaitAsync(timeout.Token);
+            using (RuntimeTiming.Measure(metrics, RuntimePhase.SocketGateWait, request: message.RequestId))
+                await _sendGate.WaitAsync(timeout.Token);
             try
             {
                 if (Socket.State == WebSocketState.Open)
+                {
+                    using var sendTiming = RuntimeTiming.Measure(metrics, RuntimePhase.SocketSend, request: message.RequestId);
                     await Socket.SendAsync(bytes, WebSocketMessageType.Binary, true, timeout.Token);
+                }
             }
             finally { _sendGate.Release(); }
         }

@@ -131,7 +131,9 @@ public sealed class RoomActor : IAsyncDisposable
             _metrics?.ObserveRoomActorCommandWait(
                 command.CommandName,
                 Stopwatch.GetElapsedTime(command.EnqueuedAt));
-            var snapshot = command.Execute(room);
+            BattleRoomSnapshot? snapshot;
+            using (RuntimeTiming.Measure(_metrics, RuntimePhase.ActorExecute, command.EnqueueContext, room: RoomId.ToString("D")))
+                snapshot = command.Execute(room);
             var feedback = room.DrainCombatFeedback();
             if (command.NotifyObservers)
             {
@@ -248,6 +250,7 @@ public sealed class RoomActor : IAsyncDisposable
     {
         long EnqueuedAt { get; }
         string CommandName { get; }
+        ActivityContext EnqueueContext { get; }
         bool NotifyObservers { get; }
         BattleRoomSnapshot? Execute(BattleRoom room);
     }
@@ -262,6 +265,7 @@ public sealed class RoomActor : IAsyncDisposable
         public Task<TResult> Task => _completion.Task;
 
         public long EnqueuedAt { get; } = Stopwatch.GetTimestamp();
+        public ActivityContext EnqueueContext { get; } = Activity.Current?.Context ?? default;
         public string CommandName => command.GetType().Name;
         public bool NotifyObservers => command.NotifyObservers;
 

@@ -111,7 +111,7 @@ public static class RealtimeEndpoints
 
         var socket = await context.WebSockets.AcceptWebSocketAsync();
         metrics.RealtimeConnectionOpened();
-        await using var connection = new RealtimeConnection(socket);
+        await using var connection = new RealtimeConnection(socket, metrics);
         var replaced = registry.Register(player.UserId, connection);
         var frameReader = new RealtimeFrameReader(
             requestLimits.Value.RealtimeCommandsPerSecond);
