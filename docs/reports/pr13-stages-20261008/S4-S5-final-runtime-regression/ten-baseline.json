@@ -1,0 +1,529 @@
+{
+  "source_sha": "ab4e41836348d8a0c2f871e1d2aed06808d9001c",
+  "state": "Failed",
+  "target_cycles": 30,
+  "natural_cycles": 16,
+  "normal_acknowledgements": 16,
+  "drain_acknowledgements": 6,
+  "cutoffs": {
+    "running": {
+      "acknowledgements": 17,
+      "completed_cycles": 16,
+      "cycles_by_client": {
+        "g001c0137dc56": 3,
+        "g001c02b923ca": 1,
+        "g001c04e5f763": 3,
+        "g001c05150c33": 1,
+        "g001c0654f9ea": 1,
+        "g001c0711cc4a": 3,
+        "g001c0845a8b6": 1,
+        "g001c108de0ef": 3
+      },
+      "acknowledgements_by_client": {
+        "g001c0137dc56": 3,
+        "g001c02b923ca": 1,
+        "g001c03f8a543": 1,
+        "g001c04e5f763": 3,
+        "g001c05150c33": 1,
+        "g001c0654f9ea": 1,
+        "g001c0711cc4a": 3,
+        "g001c0845a8b6": 1,
+        "g001c108de0ef": 3
+      },
+      "distribution": {
+        "1": 4,
+        "3": 4
+      },
+      "fallback_cycles": 0
+    },
+    "drain": {
+      "acknowledgements": 5,
+      "completed_cycles": 0,
+      "cycles_by_client": {},
+      "acknowledgements_by_client": {
+        "g001c02b923ca": 1,
+        "g001c05150c33": 1,
+        "g001c0654f9ea": 1,
+        "g001c0845a8b6": 1,
+        "g001c0993412e": 1
+      },
+      "distribution": {},
+      "fallback_cycles": 0
+    },
+    "final": {
+      "acknowledgements": 22,
+      "completed_cycles": 16,
+      "cycles_by_client": {
+        "g001c0137dc56": 3,
+        "g001c02b923ca": 1,
+        "g001c04e5f763": 3,
+        "g001c05150c33": 1,
+        "g001c0654f9ea": 1,
+        "g001c0711cc4a": 3,
+        "g001c0845a8b6": 1,
+        "g001c108de0ef": 3
+      },
+      "acknowledgements_by_client": {
+        "g001c0137dc56": 3,
+        "g001c02b923ca": 2,
+        "g001c03f8a543": 1,
+        "g001c04e5f763": 3,
+        "g001c05150c33": 2,
+        "g001c0654f9ea": 2,
+        "g001c0711cc4a": 3,
+        "g001c0845a8b6": 2,
+        "g001c0993412e": 1,
+        "g001c108de0ef": 3
+      },
+      "distribution": {
+        "0": 2,
+        "1": 4,
+        "3": 4
+      },
+      "fallback_cycles": 0
+    },
+    "zero_cycle_clients": [
+      "g001c03f8a543",
+      "g001c0993412e"
+    ],
+    "zero_cycle_reason": null,
+    "evidence_errors": [],
+    "stop_ms": 1791483774058,
+    "final_ms": 1791483776489
+  },
+  "clients": [
+    {
+      "client_id": "g001c0137dc56",
+      "hero_class": "Mage",
+      "cycles_completed": 3,
+      "outcome": "completed",
+      "message": "Requested smoke cycles completed",
+      "business_cleanup": "Passed",
+      "audit_lost_count": 0
+    },
+    {
+      "client_id": "g001c02b923ca",
+      "hero_class": "Priest",
+      "cycles_completed": 1,
+      "outcome": "cancelled",
+      "message": "Coordinator cancelled current cycle",
+      "business_cleanup": "Passed",
+      "audit_lost_count": 0
+    },
+    {
+      "client_id": "g001c03f8a543",
+      "hero_class": "Guardian",
+      "cycles_completed": 0,
+      "outcome": "failed",
+      "message": "Expedition did not reach acknowledged settlement",
+      "business_cleanup": "Passed",
+      "audit_lost_count": 0
+    },
+    {
+      "client_id": "g001c04e5f763",
+      "hero_class": "Mage",
+      "cycles_completed": 3,
+      "outcome": "completed",
+      "message": "Requested smoke cycles completed",
+      "business_cleanup": "Passed",
+      "audit_lost_count": 0
+    },
+    {
+      "client_id": "g001c05150c33",
+      "hero_class": "Priest",
+      "cycles_completed": 1,
+      "outcome": "cancelled",
+      "message": "Coordinator cancelled current cycle",
+      "business_cleanup": "Passed",
+      "audit_lost_count": 0
+    },
+    {
+      "client_id": "g001c0654f9ea",
+      "hero_class": "Guardian",
+      "cycles_completed": 1,
+      "outcome": "cancelled",
+      "message": "Coordinator cancelled current cycle",
+      "business_cleanup": "Passed",
+      "audit_lost_count": 0
+    },
+    {
+      "client_id": "g001c0711cc4a",
+      "hero_class": "Mage",
+      "cycles_completed": 3,
+      "outcome": "completed",
+      "message": "Requested smoke cycles completed",
+      "business_cleanup": "Passed",
+      "audit_lost_count": 0
+    },
+    {
+      "client_id": "g001c0845a8b6",
+      "hero_class": "Priest",
+      "cycles_completed": 1,
+      "outcome": "cancelled",
+      "message": "Coordinator cancelled current cycle",
+      "business_cleanup": "Passed",
+      "audit_lost_count": 0
+    },
+    {
+      "client_id": "g001c0993412e",
+      "hero_class": "Guardian",
+      "cycles_completed": 0,
+      "outcome": "cancelled",
+      "message": "Coordinator cancelled current cycle",
+      "business_cleanup": "Passed",
+      "audit_lost_count": 0
+    },
+    {
+      "client_id": "g001c108de0ef",
+      "hero_class": "Mage",
+      "cycles_completed": 3,
+      "outcome": "completed",
+      "message": "Requested smoke cycles completed",
+      "business_cleanup": "Passed",
+      "audit_lost_count": 0
+    }
+  ],
+  "result_dimensions": {
+    "dimensions": {
+      "execution": "Failed",
+      "evidence": "Failed",
+      "load": "Failed",
+      "gameplay": "Failed",
+      "performance": "NotApplicable",
+      "cleanup": "Failed"
+    },
+    "applicable": [
+      "cleanup",
+      "evidence",
+      "execution",
+      "gameplay",
+      "load"
+    ],
+    "all_applicable_passed": false,
+    "full_acceptance_passed": false
+  },
+  "watchdog_stop": null,
+  "runtime_owned_cleanup": true,
+  "database_removed": true,
+  "process_cleanup_complete": false,
+  "business_cleanup_verified": true,
+  "coordinator_cleanup_complete": false,
+  "native_server_trend": {
+    "native_windows": 616,
+    "elapsed_seconds": 614.9989681,
+    "rss_slope_bytes_per_second": 70362.93586218073,
+    "rss_first_bytes": 80855040,
+    "rss_last_bytes": 234242048,
+    "rss_peak_bytes": 240041984,
+    "managed_allocated_bytes_delta": 1636949736,
+    "managed_heap_first_bytes": 7411864,
+    "managed_heap_last_bytes": 67013336,
+    "gc_first": [
+      2,
+      1,
+      0
+    ],
+    "gc_last": [
+      49,
+      2,
+      1
+    ],
+    "leak_proven": false,
+    "capacity_acceptance": false,
+    "interpretation": "Observed RSS trend and independent native allocation/GC evidence; a slope alone does not prove a leak"
+  },
+  "guardian_battles": [
+    {
+      "client_id": "g001c03f8a543",
+      "battle_id": "01a11cb7-c49f-79a4-80d1-8cc69593dc08",
+      "outcome": "Victory",
+      "observed_ms": 64093,
+      "actions": 17,
+      "cards_spent": 19,
+      "hp_damage": 84,
+      "heal": 7,
+      "shield_gain": 45,
+      "longest_effective_gap_ms": 4072
+    },
+    {
+      "client_id": "g001c03f8a543",
+      "battle_id": "01a11cb8-c383-7ac9-a1e2-8ae1fc95c7d1",
+      "outcome": "Victory",
+      "observed_ms": 120016,
+      "actions": 30,
+      "cards_spent": 30,
+      "hp_damage": 126,
+      "heal": 8,
+      "shield_gain": 63,
+      "longest_effective_gap_ms": 4071
+    },
+    {
+      "client_id": "g001c03f8a543",
+      "battle_id": "01a11cba-9d11-729a-9544-ac53d420749f",
+      "outcome": "Victory",
+      "observed_ms": 380102,
+      "actions": 95,
+      "cards_spent": 95,
+      "hp_damage": 200,
+      "heal": 36,
+      "shield_gain": 198,
+      "longest_effective_gap_ms": 4886
+    },
+    {
+      "client_id": "g001c03f8a543",
+      "battle_id": "01a11cc0-6e92-7989-bc32-4f73f41986a8",
+      "outcome": "Censored",
+      "observed_ms": 32466,
+      "actions": 8,
+      "cards_spent": 8,
+      "hp_damage": 0,
+      "heal": 0,
+      "shield_gain": 15,
+      "longest_effective_gap_ms": 4948
+    },
+    {
+      "client_id": "g001c0654f9ea",
+      "battle_id": "01a11cb7-c8a5-7b61-9efa-4137fa74c207",
+      "outcome": "Victory",
+      "observed_ms": 55974,
+      "actions": 15,
+      "cards_spent": 17,
+      "hp_damage": 80,
+      "heal": 0,
+      "shield_gain": 46,
+      "longest_effective_gap_ms": 4072
+    },
+    {
+      "client_id": "g001c0654f9ea",
+      "battle_id": "01a11cb8-a705-7397-b588-8c89ad271e96",
+      "outcome": "Victory",
+      "observed_ms": 92056,
+      "actions": 23,
+      "cards_spent": 23,
+      "hp_damage": 96,
+      "heal": 16,
+      "shield_gain": 44,
+      "longest_effective_gap_ms": 4451
+    },
+    {
+      "client_id": "g001c0654f9ea",
+      "battle_id": "01a11cba-134d-7304-8b4e-5f3da73a0f79",
+      "outcome": "Victory",
+      "observed_ms": 60034,
+      "actions": 15,
+      "cards_spent": 15,
+      "hp_damage": 80,
+      "heal": 8,
+      "shield_gain": 25,
+      "longest_effective_gap_ms": 4071
+    },
+    {
+      "client_id": "g001c0654f9ea",
+      "battle_id": "01a11cbb-0280-71bb-a3d3-de0b7a3a44a8",
+      "outcome": "Terminal",
+      "observed_ms": 135944,
+      "actions": 33,
+      "cards_spent": 33,
+      "hp_damage": 63,
+      "heal": 8,
+      "shield_gain": 67,
+      "longest_effective_gap_ms": 5258
+    },
+    {
+      "client_id": "g001c0654f9ea",
+      "battle_id": "01a11cbd-8000-7d38-beeb-382cea273eda",
+      "outcome": "Victory",
+      "observed_ms": 56008,
+      "actions": 15,
+      "cards_spent": 17,
+      "hp_damage": 86,
+      "heal": 0,
+      "shield_gain": 34,
+      "longest_effective_gap_ms": 4080
+    },
+    {
+      "client_id": "g001c0654f9ea",
+      "battle_id": "01a11cbe-6353-70db-8ed9-87e2f7fa7fb2",
+      "outcome": "Victory",
+      "observed_ms": 99794,
+      "actions": 25,
+      "cards_spent": 25,
+      "hp_damage": 96,
+      "heal": 12,
+      "shield_gain": 55,
+      "longest_effective_gap_ms": 4074
+    },
+    {
+      "client_id": "g001c0654f9ea",
+      "battle_id": "01a11cbf-eddc-714a-95fa-a890ebea3a93",
+      "outcome": "Stopped",
+      "observed_ms": 71002,
+      "actions": 17,
+      "cards_spent": 17,
+      "hp_damage": 89,
+      "heal": 0,
+      "shield_gain": 22,
+      "longest_effective_gap_ms": 4071
+    },
+    {
+      "client_id": "g001c0993412e",
+      "battle_id": "01a11cb8-3b0a-7f12-8117-2632cee51ab1",
+      "outcome": "Victory",
+      "observed_ms": 64119,
+      "actions": 17,
+      "cards_spent": 19,
+      "hp_damage": 84,
+      "heal": 4,
+      "shield_gain": 44,
+      "longest_effective_gap_ms": 4072
+    },
+    {
+      "client_id": "g001c0993412e",
+      "battle_id": "01a11cb9-3921-7917-8b9d-091a2400188a",
+      "outcome": "Victory",
+      "observed_ms": 79486,
+      "actions": 20,
+      "cards_spent": 20,
+      "hp_damage": 92,
+      "heal": 8,
+      "shield_gain": 44,
+      "longest_effective_gap_ms": 4066
+    },
+    {
+      "client_id": "g001c0993412e",
+      "battle_id": "01a11cba-7484-7c24-8b2a-13b2e70e4727",
+      "outcome": "Victory",
+      "observed_ms": 79918,
+      "actions": 20,
+      "cards_spent": 20,
+      "hp_damage": 86,
+      "heal": 8,
+      "shield_gain": 52,
+      "longest_effective_gap_ms": 4446
+    },
+    {
+      "client_id": "g001c0993412e",
+      "battle_id": "01a11cbb-b144-7144-ab4d-ccfdd503790b",
+      "outcome": "Victory",
+      "observed_ms": 75443,
+      "actions": 19,
+      "cards_spent": 19,
+      "hp_damage": 84,
+      "heal": 0,
+      "shield_gain": 45,
+      "longest_effective_gap_ms": 4072
+    },
+    {
+      "client_id": "g001c0993412e",
+      "battle_id": "01a11cbc-dca8-791c-a29f-f6b27b01d2b4",
+      "outcome": "Victory",
+      "observed_ms": 159810,
+      "actions": 40,
+      "cards_spent": 40,
+      "hp_damage": 188,
+      "heal": 24,
+      "shield_gain": 59,
+      "longest_effective_gap_ms": 4473
+    },
+    {
+      "client_id": "g001c0993412e",
+      "battle_id": "01a11cbf-51a2-77f3-bfe9-7e9561f19bdb",
+      "outcome": "Stopped",
+      "observed_ms": 111108,
+      "actions": 27,
+      "cards_spent": 27,
+      "hp_damage": 54,
+      "heal": 8,
+      "shield_gain": 65,
+      "longest_effective_gap_ms": 4072
+    }
+  ],
+  "parents": [
+    {
+      "path": "outputs/pr13-local-20261008/S5/ten-lazy-font-diagnostics/runtime.json",
+      "bytes": 868,
+      "sha256": "b83688de9a89a8a4d0218e8d85ce92c3fac6d0185d5ef4861dac9bffef53762e"
+    },
+    {
+      "path": "outputs/pr13-local-20261008/S5/ten-lazy-font-diagnostics/command.json",
+      "bytes": 1772,
+      "sha256": "04dfad043d955c5a1791061d5235d8943fcad7b82659c45a47ca86edc1b8b1ad"
+    },
+    {
+      "path": "outputs/pr13-local-20261008/S5/ten-lazy-font-diagnostics/database-postconditions.json",
+      "bytes": 151,
+      "sha256": "697fd238887f64f4833a2a6fcc471016f87ba393daa26036928dc77e90119dd9"
+    },
+    {
+      "path": "outputs/pr13-local-20261008/S5/ten-lazy-font-diagnostics/server-metrics.private.jsonl",
+      "bytes": 676111,
+      "sha256": "1f099aa646afba21f45c18118763253d0db4d45b203614097e43337ee92e8cf8"
+    },
+    {
+      "path": "outputs/pr13-local-20261008/S5/ten-lazy-font-diagnostics/load/20261009-021243-7d5849/report.json",
+      "bytes": 6112865,
+      "sha256": "3240bcb716a875bc247393d999e86ce2be1b3c655d2f388af3aee676803c79b0"
+    },
+    {
+      "path": "outputs/pr13-local-20261008/S5/ten-lazy-font-diagnostics/load/20261009-021243-7d5849/launch-manifest.json",
+      "bytes": 286760,
+      "sha256": "a164dbb53382e3c0cd41e329af2e52613fdf1cca35053ee103386b5e91cda656"
+    },
+    {
+      "path": "outputs/pr13-local-20261008/S5/ten-lazy-font-diagnostics/load/20261009-021243-7d5849/samples.jsonl",
+      "bytes": 223255,
+      "sha256": "077b2ed06806d8a0a03f878d70c1dbe90f4550c6cf9c36af32101a35807ec53b"
+    },
+    {
+      "path": "outputs/pr13-local-20261008/S5/ten-lazy-font-diagnostics/load/20261009-021243-7d5849/g001c0137dc56.json.telemetry.jsonl",
+      "bytes": 1774470,
+      "sha256": "e78e661d898341521b7d014eb79a7efb6ae11e5218c5ca7666a0d8cc90648c22"
+    },
+    {
+      "path": "outputs/pr13-local-20261008/S5/ten-lazy-font-diagnostics/load/20261009-021243-7d5849/g001c02b923ca.json.telemetry.jsonl",
+      "bytes": 2435810,
+      "sha256": "83712ee8e8130a8e3aedbee9c8b8f2cfb461c8da55600188da6b0e6e532fce61"
+    },
+    {
+      "path": "outputs/pr13-local-20261008/S5/ten-lazy-font-diagnostics/load/20261009-021243-7d5849/g001c03f8a543.json.telemetry.jsonl",
+      "bytes": 2302895,
+      "sha256": "99b165b63ad8528603ba289661fee70e8b02b93e625fe1199202ac60167dfc61"
+    },
+    {
+      "path": "outputs/pr13-local-20261008/S5/ten-lazy-font-diagnostics/load/20261009-021243-7d5849/g001c04e5f763.json.telemetry.jsonl",
+      "bytes": 1998631,
+      "sha256": "0c9c3cd4999735e5f346efe1d5a00176230ba6e6b2868d5c94f79963e99cb0a2"
+    },
+    {
+      "path": "outputs/pr13-local-20261008/S5/ten-lazy-font-diagnostics/load/20261009-021243-7d5849/g001c05150c33.json.telemetry.jsonl",
+      "bytes": 2282936,
+      "sha256": "290224c0ad83a30501eb7ae10e626fa9e69cdaecb067ede1373221d90f0e7e3e"
+    },
+    {
+      "path": "outputs/pr13-local-20261008/S5/ten-lazy-font-diagnostics/load/20261009-021243-7d5849/g001c0654f9ea.json.telemetry.jsonl",
+      "bytes": 2385739,
+      "sha256": "970177a8b01966f83071a544fff3fc8a64ebb1ce77e83be56af59d02629b01d6"
+    },
+    {
+      "path": "outputs/pr13-local-20261008/S5/ten-lazy-font-diagnostics/load/20261009-021243-7d5849/g001c0711cc4a.json.telemetry.jsonl",
+      "bytes": 2082772,
+      "sha256": "e54da0117a94655828e727b59a7745fbfc522231f118d6c6649cb3717fd37068"
+    },
+    {
+      "path": "outputs/pr13-local-20261008/S5/ten-lazy-font-diagnostics/load/20261009-021243-7d5849/g001c0845a8b6.json.telemetry.jsonl",
+      "bytes": 2281997,
+      "sha256": "097997b1f5c17acfabcd0b810df34d97beb8d7d06e1d2f09ba81807bdefa5dc0"
+    },
+    {
+      "path": "outputs/pr13-local-20261008/S5/ten-lazy-font-diagnostics/load/20261009-021243-7d5849/g001c0993412e.json.telemetry.jsonl",
+      "bytes": 2242915,
+      "sha256": "eeac4fc225bb0722821a10c92d9865251cda9c1cfba916a6441418544047557b"
+    },
+    {
+      "path": "outputs/pr13-local-20261008/S5/ten-lazy-font-diagnostics/load/20261009-021243-7d5849/g001c108de0ef.json.telemetry.jsonl",
+      "bytes": 1909551,
+      "sha256": "3c26c0559159cc78899067dfb884c0ca435c08ee27c8aa1df8a7273c7a7be9af"
+    }
+  ],
+  "interpretation": "Actual mixed-class ten-account original baseline with600s per-cycle and1800s overall budgets. Four Mage clients completed3 each; Priest1 each; Guardian0/1/0. Coordinator/process failure remains Failed although business state and owned host/database cleanup succeeded. No zero-exit, capacity or paired benefit claim."
+}
