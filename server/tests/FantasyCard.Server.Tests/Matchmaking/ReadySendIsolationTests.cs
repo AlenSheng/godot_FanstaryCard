@@ -46,13 +46,13 @@ public sealed class ReadySendIsolationTests
         foreach (var socket in sockets)
         {
             Assert.Equal(["match.found", "room.ready_required", "match.found", "room.ready_required"], socket.Messages.Select(m => m.Type));
-            Assert.Equal([1L, 2L, 3L, 4L], socket.Messages.Select(m => m.Seq));
+            Assert.Equal([1L, 2L, 3L, 4L], socket.Messages.Select(m => m.Sequence));
         }
         foreach (var player in players)
         {
             var replay = events.ReadAfter(player, 0).Events;
             Assert.Equal(["match.found", "room.ready_required", "match.found", "room.ready_required"], replay.Select(m => m.Type));
-            Assert.Equal([1L, 2L, 3L, 4L], replay.Select(m => m.Seq));
+            Assert.Equal([1L, 2L, 3L, 4L], replay.Select(m => m.Sequence));
         }
         foreach (var connection in connections) await connection.DisposeAsync();
         Assert.True(fastCompletedBeforeSlowRelease, "Three healthy peers must receive both messages while the first peer's send remains blocked.");
