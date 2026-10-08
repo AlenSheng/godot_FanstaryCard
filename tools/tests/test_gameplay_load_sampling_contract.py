@@ -148,7 +148,8 @@ class RequestAccountingContractTests(unittest.TestCase):
 
 
 class CoordinatorSamplingContractTests(unittest.TestCase):
-    def run_fixture(self, *, overlap=False, local_resources=False, missing_actor=False, cycle_limit=240):
+    def run_fixture(self, *, overlap=False, local_resources=False, missing_actor=False, cycle_limit=240,
+                    resource_changes=None, final_status_change=None):
         """Run the real final verdict with fake child/clock/network observations."""
         elapsed = [0.0]
         child = SimpleNamespace(pid=4242, returncode=None)
@@ -188,6 +189,7 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
                 event_seq_max=len(events), telemetry=ring,
                 operations=[e for e in ring if e['type'] == 'http'],
                 audit_lost_count=0, errors=[], cleanup={'state': 'Passed'})
+            if require_files and final_status_change: final_status_change(status)
             Path(str(entry['report']) + '.telemetry.jsonl').write_text(
                 ''.join(json.dumps(e) + '\n' for e in events), encoding='utf8')
             return [status], 0
@@ -210,7 +212,8 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
                     patch.object(coordinator, 'health_probe', return_value={
                         'ok': True, 'duration_ms': 1, 'status': 200}), \
                     patch.object(coordinator, 'metrics', return_value={
-                        'cpu': 1, 'memory_available': 90, 'disk_available': 90, 'actor_wait': None if missing_actor else 1}), \
+                        'cpu': 1, 'memory_available': 90, 'disk_available': 90, 'actor_wait': None if missing_actor else 1,
+                        **(resource_changes or {})}), \
                     patch.object(coordinator, 'local_host_metrics', return_value={
                         'cpu': 1, 'memory_available': 90, 'disk_available': 90, 'actor_wait': None, 'server_humans_in_room': None}), \
                     patch.object(coordinator, 'generator_resources', return_value=({}, None)), \
@@ -268,6 +271,15 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
         code, report = self.run_fixture(overlap=False, missing_actor=True)
         self.assertEqual(code, 1)
         self.assertEqual(report['result_dimensions']['dimensions']['performance'], 'Unknown')
+
+    def test_redline_and_final_audit_loss_keep_both_causes_and_exit_three(self):
+        code, report = self.run_fixture(resource_changes={'cpu': 95, 'memory_available': 10},
+                                       final_status_change=lambda row: row.update(audit_lost_count=2))
+        self.assertEqual(code, 3)
+        self.assertIn('cpu_redline', report['all_triggers'])
+        self.assertIn('memory_available_redline', report['all_triggers'])
+        self.assertIn('final_audit_loss', report['all_triggers'])
+        self.assertEqual(report['final_audit_lost_count'], 2)
 
     def test_cycle_observation_budget_is_pinned_without_changing_capacity_targets(self):
         code, report = self.run_fixture(cycle_limit=600)

@@ -21,7 +21,7 @@ import gameplay_load_test as coordinator
 
 class FinalizationTests(unittest.TestCase):
     def run_fixture(self, anomaly=None, *, real_child_after_stop=False, report_write_fails=False,
-                    operator_stop=False, receipt_write_fails=False):
+                    operator_stop=False, receipt_write_fails=False, before_stop=None):
         elapsed = [0.0]
         child = SimpleNamespace(pid=4242, returncode=0)
         child.poll = lambda: child.returncode
@@ -60,6 +60,8 @@ class FinalizationTests(unittest.TestCase):
             Path(str(report) + '.status.json').write_text(json.dumps(status), encoding='utf8')
             Path(str(report) + '.telemetry.jsonl').write_text(
                 ''.join(json.dumps(e) + '\n' for e in events), encoding='utf8')
+            if before_stop:
+                before_stop(dict(report=report, client_id=status['client_id'], process=child), child)
             if operator_stop:
                 Path(env['FANTASYCARD_LOAD_STOP_FILE']).touch()
             return child
@@ -143,6 +145,20 @@ class FinalizationTests(unittest.TestCase):
         self.assertFalse(report['acceptance_passed'])
         self.assertEqual(report['stop_reason'], 'operator_stop_file')
         self.assertEqual(report['result_dimensions']['dimensions']['evidence'], 'Failed')
+
+    def test_business_failure_before_operator_stop_is_preserved(self):
+        def fail(entry, child):
+            self.change_status(entry, lambda s: s.update(errors=[{'message': 'before_stop_business_failure'}]))
+            path = entry['report']
+            row = json.loads(path.read_text(encoding='utf8'))
+            row.update(ok=False, outcome='failed', errors=[{'message': 'before_stop_business_failure'}])
+            path.write_text(json.dumps(row), encoding='utf8')
+            child.returncode = 1
+        code, report = self.run_fixture(operator_stop=True, before_stop=fail)
+        self.assertNotEqual(code, 0)
+        self.assertEqual(report['process_exits'][0]['before_stop'], 1)
+        self.assertIn('final_business_failure', report['all_triggers'])
+        self.assertEqual(report['final_clients'][0]['errors'][0]['message'], 'before_stop_business_failure')
 
     def test_audit_loss_only_in_final_status_invalidates_verdict(self):
         self.assert_invalid(lambda e, c: self.change_status(e, lambda s: s.update(audit_lost_count=1)))

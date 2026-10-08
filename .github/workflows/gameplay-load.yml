@@ -7,6 +7,7 @@ on:
       - 'tools/pr13_runtime_evidence.py'
       - 'tools/pr13_local_checks.py'
       - 'tools/pr13_offline_cases.py'
+      - 'tools/pr13_fault_cases.py'
       - 'tools/pr13_callback_isolation.py'
       - 'tools/pr13_local_network.py'
       - 'tools/pr13_local_runtime.py'
@@ -27,6 +28,7 @@ on:
       - 'tools/pr13_runtime_evidence.py'
       - 'tools/pr13_local_checks.py'
       - 'tools/pr13_offline_cases.py'
+      - 'tools/pr13_fault_cases.py'
       - 'tools/pr13_callback_isolation.py'
       - 'tools/pr13_local_network.py'
       - 'tools/pr13_local_runtime.py'
@@ -112,6 +114,7 @@ jobs:
           python client/tests/run_http_boundary.py --godot "$godot" --output test-results/gameplay-load/http-boundary
           python client/tests/run_http_protobuf_client.py --godot "$godot" --work-dir test-results/gameplay-load/http-fixture
           python tools/pr13_offline_cases.py --godot "$godot" --output test-results/gameplay-load/offline-cases
+          python tools/pr13_fault_cases.py --godot "$godot" --output test-results/gameplay-load/fault-cases
           A3GAME_GODOT_EXECUTABLE="$godot" python tools/pr13_callback_isolation.py --output test-results/gameplay-load/callback-isolation
           FANTASYCARD_SERVER_URL=http://127.0.0.1:1 "$godot" --headless --path client --script res://tests/run_gateway_origin.gd > test-results/gameplay-load/gateway-origin.log 2>&1
           grep -q '"ok":true' test-results/gameplay-load/gateway-origin.log
