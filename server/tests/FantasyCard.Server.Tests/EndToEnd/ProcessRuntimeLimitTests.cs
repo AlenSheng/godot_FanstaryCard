@@ -21,7 +21,7 @@ public sealed partial class ProcessLifecycleRecoveryTests
         for (var i = 0; i < 13; i++)
         {
             using var request = LimitRequest(HttpMethod.Post, "/api/v1/auth/local", new Wire.LocalSignInRequest
-                { DeviceId = "owned-limit-" + Guid.NewGuid().ToString("N"), DisplayName = "Owned limit" });
+                { DeviceId = "owned-limit-" + Guid.NewGuid().ToString("N"), DisplayName = "OwnedLimit" + i });
             using var response = await client.SendAsync(request, ct);
             statuses.Add((int)response.StatusCode); retryAfter |= response.Headers.RetryAfter is not null;
         }
@@ -41,7 +41,7 @@ public sealed partial class ProcessLifecycleRecoveryTests
         using var client = Client(port, ""); await using var host = FullHost.Start(db.ConnectionString, port, "default-economy-limit");
         await host.WaitForHealthAsync(client, "/health/ready", HttpStatusCode.OK, ct);
         using (var request = LimitRequest(HttpMethod.Post, "/api/v1/auth/local", new Wire.LocalSignInRequest
-               { DeviceId = "prelogged-limit-" + Guid.NewGuid().ToString("N"), DisplayName = "Prelogged owned limit" }))
+               { DeviceId = "prelogged-limit-" + Guid.NewGuid().ToString("N"), DisplayName = "PreloggedLimit" }))
         using (var response = await client.SendAsync(request, ct))
         {
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);

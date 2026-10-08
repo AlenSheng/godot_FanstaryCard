@@ -1,4 +1,5 @@
 using FantasyCard.Domain.Configuration;
+using FantasyCard.Domain.Combat;
 using FantasyCard.Domain.Players;
 
 namespace FantasyCard.Domain.Tests.Combat;
