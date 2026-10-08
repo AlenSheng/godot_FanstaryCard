@@ -114,6 +114,8 @@ class Relay:
                 drop = case == "ready_send_all_lost_stop" or (case == "ready_send_lost_reconnect" and not self.fault_complete)
                 disconnect = drop and case == "ready_send_lost_reconnect"
             if direction == "server_to_client":
+                if kind == "room.ready_required" and case == "ready_required_all_lost_ticket":
+                    drop = True
                 if kind == "room.ready_accepted":
                     drop = (case == "ready_accepted_lost_resume" and not self.dropped.get(kind)) or (case == "ready_replies_lost_reconnect" and not self.fault_complete)
                 if kind == "room.started" and case in ("ready_started_lost_reconnect", "ready_replies_lost_reconnect") and not self.fault_complete:
