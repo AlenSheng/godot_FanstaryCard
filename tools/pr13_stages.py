@@ -48,7 +48,7 @@ def canonical_hash(value):
 
 
 def git(*args):
-    return subprocess.check_output(["git", *args], cwd=ROOT, text=True,
+    return subprocess.check_output(["git", "-c", "core.quotepath=false", *args], cwd=ROOT, text=True,
                                    encoding="utf-8").strip()
 
 
@@ -56,6 +56,39 @@ def resolve_reference(ref):
     result = subprocess.run(["git", "rev-parse", "--verify", ref + "^{commit}"], cwd=ROOT,
                             capture_output=True, text=True, encoding="utf-8", timeout=5)
     return result.stdout.strip() if result.returncode == 0 else None
+
+
+def sdk_info(root=ROOT, executable='dotnet'):
+    required=read(root/'server/global.json')['sdk']
+    value={'required_version':required['version'],'roll_forward':required.get('rollForward'),
+           'available':False,'resolved_version':None,'runtime_build_proved':False}
+    try:
+        result=subprocess.run([str(executable),'--version'],cwd=root/'server',capture_output=True,text=True,
+                              encoding='utf8',timeout=20,creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
+        selected=result.stdout.strip()
+        if result.returncode==0 and selected.split('.')[:2]==required['version'].split('.')[:2]:
+            value.update(available=True,resolved_version=selected,missing_reason=None)
+        else:value['missing_reason']='Configured SDK could not be selected; target framework and global.json remain unchanged.'
+    except (OSError,subprocess.TimeoutExpired):
+        value['missing_reason']='Configured SDK is unavailable; no lower target or cached runtime is substituted.'
+    return value
+
+
+def default_policy(catalog_path):
+    rows=read(catalog_path).get('tables',{}).get('NumericalRules',[])
+    if len(rows)!=1 or rows[0].get('id')!='current':raise ValueError('One formal current numerical policy is required')
+    flags=('cards_spent_draw','fractional_guardian','optional_monster_pool','budgeted_bot_loot','mortal_bot_pve')
+    if any(rows[0].get(flag) is not False for flag in flags) or rows[0].get('monster_capacity')!=5:
+        raise ValueError('Formal numerical candidate defaults changed; isolate experiments and retain the frozen default policy')
+    return rows[0]
+
+
+def source_references(checkout_ref, runtime_ref):
+    checkout=resolve_reference(checkout_ref);runtime=resolve_reference(runtime_ref) if runtime_ref else None
+    return {'checkout_sha':checkout,'runtime_reference_sha':runtime,
+            'different_sources':None if checkout is None or runtime is None else checkout!=runtime,
+            'runtime_execution_verified':False,
+            'qualification':'Git references identify code only. A checkout/marker advance does not prove a rebuilt or running image/assembly.'}
 
 
 def file_record(path, root=ROOT):
@@ -150,9 +183,10 @@ def config_identity(root=ROOT):
 
 def source_files():
     files = git("ls-files", "client", "server", "protocol", "tools", "config", ".github/workflows").splitlines()
+    files += git('ls-files','--others','--exclude-standard','--','client','server','protocol','tools','config','.github/workflows').splitlines()
     allowed = {".py", ".gd", ".tscn", ".cs", ".csproj", ".slnx", ".proto", ".json", ".yml", ".ps1", ".sql", ".bytes", ".xlsx", ".godot", ".txt", ".sha256"}
     excluded = {"bin", "obj", "artifacts", ".godot", "local-backups", "__pycache__"}
-    return [ROOT / file for file in files if Path(file).suffix in allowed
+    return [ROOT / file for file in sorted(set(files)) if Path(file).suffix in allowed
             and not excluded.intersection(Path(file).parts)
             and not file.startswith("tools/engine-local/")]
 
@@ -194,6 +228,7 @@ def freeze(output, handbook=None, config_export=None):
     if output.exists():
         raise ValueError("Refusing to overwrite a frozen stage; use a new output directory")
     config = config_identity()
+    config['formal_default_policy']=default_policy(ROOT/'client/data/catalog.json')
     if config_export:
         exported = []
         for folder in ("server", "client"):
@@ -215,6 +250,13 @@ def freeze(output, handbook=None, config_export=None):
             raise ValueError("User handbook differs from canonical plan; resolve scope before freezing")
         user_handbook = {"sha256": digest(handbook), "canonical_content_matches": True}
     blockers = historical_blockers(plan, profiles)
+    sdk = sdk_info()
+    if not sdk['available']:
+        for task_id in ('LOAD-11.1','PR13-A07.4'):
+            blockers[task_id]={'task_id':task_id,'stage':'S0','owner':'MAIN','historical_only':False,
+                'reason':'Required SDK unavailable','missing_input_or_environment':sdk,
+                'affected_gates':['G0','G1','G5'],'unblock_condition':'Provide the configured SDK and rerun the applicable build/tests',
+                'next_action':'Retain source evidence and exact required framework; never downgrade target or call cached assemblies current.'}
     references = {"release_base": resolve_reference("origin/release"),
                   "pr13_head": resolve_reference("origin/fix/gameplay-load-evidence-20260929")}
     missing_references = {name: "Remote reference is absent from this checkout; no historical SHA is substituted."
@@ -266,7 +308,7 @@ def freeze(output, handbook=None, config_export=None):
                                   "write_scope": package["write_scope"], "task_contract_hash": canonical_hash(task)},
                           status="Blocked" if task["id"] in blockers else "ReadyForAcceptance",
                           commands=["python tools/pr13_plan.py --check", "python tools/pr13_stages.py check --input <S0 directory>"],
-                          tool_versions={"python": sys.version.split()[0], "dotnet_required": "10.0.400"},
+                          tool_versions={"python": sys.version.split()[0], "dotnet_required": sdk['required_version'], "sdk_selection":sdk},
                           exit_codes=[], skip_reasons=[], reviewer="MAIN", rollback=task["rollback"],
                           remaining_blockers=[blockers[task["id"]]] if task["id"] in blockers else [],
                           missing_reasons=missing, artifact_manifest="manifest.json",
@@ -279,15 +321,29 @@ def freeze(output, handbook=None, config_export=None):
         write(destination / "report.json", report)
     write(output / "profiles.json", profiles)
     write(output / "ownership.json", ownership)
+    frozen_source_paths={r['path'] for r in source_manifest}
+    changed_source_paths=[p for p in git('diff','HEAD','--name-only').splitlines() if p in frozen_source_paths]
+    untracked_source_paths=[p for p in git('ls-files','--others','--exclude-standard','--','client','server','protocol','tools','config','.github/workflows').splitlines() if p in frozen_source_paths]
+    source_patch_hash=hashlib.sha256()
+    for start in range(0,len(changed_source_paths),32):
+        part=subprocess.check_output(['git','diff','HEAD','--binary','--',*changed_source_paths[start:start+32]],cwd=ROOT)
+        source_patch_hash.update(len(part).to_bytes(8,'big'));source_patch_hash.update(part)
     write(output / "source-manifest.json", {"source_sha": source_sha, "source_tree": git("rev-parse", "HEAD^{tree}"),
-                                           "files": source_manifest, "files_hash": canonical_hash(source_manifest)})
+                                           "files": source_manifest, "files_hash": canonical_hash(source_manifest),
+                                           "source_checkout_dirty":bool(changed_source_paths or untracked_source_paths),
+                                           "untracked_source_paths":untracked_source_paths,
+                                           "tracked_source_diff_sha256":source_patch_hash.hexdigest(),
+                                           "source_patch_algorithm":"sorted frozen-source paths, 32-path chunks, length-prefixed binary git diffs",
+                                           "runtime_build_proved":False})
     write(output / "input-manifest.json", {"files": inputs, "user_handbook": user_handbook, "config": config})
     summary = {"schema_version": 1, "stage": "S0", "kind": "stage_input_freeze_not_runtime_acceptance",
                "date": "2026-10-08", "created_utc": datetime.now(timezone.utc).isoformat(),
                "integration_sha": source_sha, **references, "reference_missing_reasons": missing_references,
+               "historical_runtime_source_reference":source_references(source_sha,plan['runtime_review_sha']),
                "plan_hash": digest(ROOT / PLAN), "plan_logical_hash": canonical_hash(plan),
                "profile_hash": canonical_hash(profiles),
                "config": config, "execution_boundary": profiles["execution_boundary"],
+               "sdk_selection":sdk,
                "counts": {"packages": 33, "tasks": len(reports), "cases": sum(len(x["case_ids"]) for x in reports),
                           "states": dict(Counter(x["status"] for x in reports)), "runtime_accepted": 0},
                "all_s0_ready": not blockers, "runtime_acceptance": False,
