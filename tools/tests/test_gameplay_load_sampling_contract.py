@@ -244,6 +244,13 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
         self.assertEqual(report['load_coverage']['evidence_errors'], [])
         self.assertEqual(report['result_dimensions']['dimensions']['load'], 'Passed')
         self.assertEqual(report['result_dimensions']['dimensions']['evidence'], 'Passed')
+        self.assertEqual(len(report['launch_receipts']), 1)
+        launch = report['launch_receipts'][0]
+        self.assertEqual(launch['pid'], 4242)
+        self.assertEqual(launch['client_id'], report['process_exits'][0]['client_id'])
+        self.assertTrue(launch['process_epoch'])
+        self.assertEqual(launch['server_origin'], {'scheme': 'http', 'host': '127.0.0.1', 'port': 5000})
+        self.assertNotIn('token', launch)
         self.assertEqual(report['result_dimensions']['dimensions']['gameplay'], 'NotApplicable')
         for sample in report['samples'][1:]:
             self.assertGreater(sample['window']['observed_window_seconds'], 0)

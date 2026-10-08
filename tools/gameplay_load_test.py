@@ -288,7 +288,7 @@ def main():
     coverage([],start=0,end=1,**{k:v for k,v in contract.items() if k not in COVERAGE_METADATA})
     save(run_dir/'load-contract.json',contract)
     stop_file=run_dir/'STOP'
-    processes=[]; samples=[]; group_launches=[]; streaks=collections.Counter(); seen={}; status_cache={}
+    processes=[]; samples=[]; group_launches=[]; launch_receipts=[]; streaks=collections.Counter(); seen={}; status_cache={}
     run_id=uuid.uuid4().hex
     workload_failed=False; smoke_verified=False; previous_sample_ms=None; previous_sample_monotonic_ms=None; previous_generator=None
     started=time.time(); started_monotonic=time.monotonic()
@@ -298,6 +298,7 @@ def main():
     group_size=args.smoke_clients if args.smoke else args.group_size
     probes=concurrent.futures.ThreadPoolExecutor(max_workers=2,thread_name_prefix='load-probe')
     try:
+        save(run_dir/'launch-manifest.json',{'schema_version':1,'run_id':run_id,'source':source,'launches':launch_receipts})
         if args.distinct_local_client_ips:
             local_origins=LocalOrigins(args.server_url,expected_clients).__enter__()
             save(run_dir/'client-origins.json',local_origins.records)
@@ -347,6 +348,19 @@ def main():
                     'report':report,'started_at_ms':int(time.time()*1000),
                     'started_at_monotonic_ms':time.monotonic()*1000,
                     'run_id':run_id,'process_epoch':process_epoch})
+                entry=processes[-1]
+                origin=urllib.parse.urlparse(env['FANTASYCARD_SERVER_URL'])
+                launch_receipts.append({key:entry[key] for key in ('client_id','group','run_id','process_epoch',
+                    'started_at_ms','started_at_monotonic_ms')})
+                launch_receipts[-1].update(pid=process.pid,report_file=report.name,
+                    server_origin={'scheme':origin.scheme,'host':origin.hostname,'port':origin.port},
+                    hero_class=env['FANTASYCARD_LOAD_HERO_CLASS'],strategy=env['FANTASYCARD_LOAD_STRATEGY'],
+                    strategy_seed=int(env['FANTASYCARD_LOAD_SEED']),cycle_limit_seconds=args.cycle_limit_seconds)
+                # Checkpoint the real PID/epoch immediately after launch. Never
+                # reconstruct process ownership from final client JSON alone.
+                # The child is already in processes, so a write fault still
+                # reaches owned cleanup and cannot orphan an unrecorded process.
+                save(run_dir/'launch-manifest.json',{'schema_version':1,'run_id':run_id,'source':source,'launches':launch_receipts})
                 group_record=group_launches[launch_group-1]
                 group_record['clients']+=1
                 if group_record['clients']==group_size: group_record['finished_at']=time.time()
@@ -562,6 +576,7 @@ def main():
             'load_window_verified':load_verified,'required_samples':required_samples,
             'stop_issued_monotonic_ns':stop_issued_monotonic_ns,'stop_issued_ms':stop_issued_ms,
             'load_contract':contract,'load_coverage':load_coverage,'result_dimensions':dimensions,
+            'launch_manifest':'launch-manifest.json','launch_receipts':launch_receipts,
             'sampling_integrity':sampling,'started_monotonic_ms':started_monotonic*1000,
             'performance_inputs':performance_inputs,
             'cycle_cutoffs':cutoffs,'request_distributions':request_distributions,'audit_read_errors':audit_errors,
