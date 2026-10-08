@@ -190,6 +190,17 @@ func run_cases() -> void:
     cases = cases.filter(func(row): return not row.has("policy_result"))
     record("PR13-B03.1-T01",policies.all(func(row): return row.repeat),policies)
     record("PR13-B03.1-T02",policies.all(func(row): return row.hidden_independent),policies)
+    var proto_suite: Dictionary = preload("res://tests/test_protobuf.gd").new().run_test()
+    record("LOAD-10.1-T01",proto_suite.ok,proto_suite)
+    var loadout: Array = []
+    for slot in ["Head","Chest","Hands","Legs","Feet"]:
+        loadout.append({"instanceId":slot,"slot":slot,"quality":"Purple","element":"Fire","level":5,"effectAffix":"Bulwark","secondaryTrait":"DrawInterval"})
+    var gains: Dictionary = preload("res://ui/numerical_details.gd").inspect(loadout,"Guardian")
+    var overflow_loadout: Array = loadout.duplicate(true)
+    overflow_loadout[0].quality="Orange"
+    var overflow_gains: Dictionary = preload("res://ui/numerical_details.gd").inspect(overflow_loadout,"Guardian")
+    record("PR13-B08.4-T01",is_equal_approx(float(gains.resistance_Fire.effective),.6) and float(gains.resistance_Fire.excess)>0 and is_equal_approx(float(overflow_gains.resistance_Fire.effective)-float(gains.resistance_Fire.effective),0),{"current":gains.resistance_Fire,"added_raw_above_cap":overflow_gains.resistance_Fire,"effective_delta":float(overflow_gains.resistance_Fire.effective)-float(gains.resistance_Fire.effective)})
+    record("PR13-B08.4-T02",is_equal_approx(float(gains.interval_seconds.effective),1.8) and float(gains.interval_seconds.raw)<1.8,{"equipment_stage":gains.interval_seconds,"combat_draw_block_speed_stage":"tested separately by authoritative PVE rules; not merged into equipment-only preview"})
 
     pair = fresh(); store = pair[0]; gateway = pair[1]; probe = pair[2]
     store.room.player.numerical_state = {"fenxian_policy":"CurrentRhythm","guardian_policy":"CurrentSteps","guardian_remainder_tenths":0}
