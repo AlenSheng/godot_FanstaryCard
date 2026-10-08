@@ -55,6 +55,7 @@ var _settlement_polling := false
 var _settlement_poll_at := 0
 var _settlement_recovery_match_id := ""
 var _room_context_epoch := 0
+var _ready_ticket_verification := ""
 var _room_context_match_id := ""
 var _room_context_room_id := ""
 var _settlement_load_epoch := 0
@@ -677,12 +678,28 @@ func enqueue() -> void:
 	var result: Dictionary = await gateway.request("/api/v1/matches/enqueue", HTTPClient.METHOD_POST, {"preparationId": preparation.preparationId})
 	if generation != gateway.session_generation: return
 	if result.ok: ticket = result.data
+	if result.ok: _verify_ready_ticket()
 	busy = false
 	changed.emit()
 
 func _preparation_config_valid(value: Dictionary) -> bool:
 	var snapshot: Dictionary = value.snapshot if value.get("snapshot") is Dictionary else {}
 	return validate_config(str(snapshot.get("configVersion", "")), "准备")
+
+func _verify_ready_ticket() -> void:
+	if not gateway is Gateway or not room.is_empty() or ticket.is_empty() or ready_prompt.is_empty(): return
+	var ticket_id := str(ticket.get("ticketId", ""))
+	var hint: Dictionary = ready_prompt.duplicate(true)
+	var match_id := str(hint.get("match_id", ""))
+	if ticket_id.is_empty() or match_id.is_empty() or _ready_ticket_verification == ticket_id: return
+	var generation: int = gateway.session_generation
+	var epoch := _room_context_epoch
+	_ready_ticket_verification = ticket_id
+	var result: Dictionary = await gateway.request("/api/v1/matches/tickets/" + ticket_id, HTTPClient.METHOD_GET, null, [0,502,503,504])
+	if _ready_ticket_verification == ticket_id: _ready_ticket_verification = ""
+	if generation != gateway.session_generation or epoch != _room_context_epoch or str(ticket.get("ticketId", "")) != ticket_id or str(ready_prompt.get("match_id", "")) != match_id or not room.is_empty(): return
+	if result.ok and result.data is Dictionary and str(result.data.get("status", "")) == "Matched" and str(result.data.get("matchId", "")) == match_id:
+		gateway.bind_prelaunch_ticket(match_id, str(hint.get("room_id", "")), int(hint.get("deadline_unix_ms", 0)), epoch)
 
 func cancel_preparation() -> void:
 	if busy: return
@@ -1402,7 +1419,9 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 			gateway.room_revision = room.get("room_revision", 0)
 		"map.player_count":
 			if not room.is_empty(): room["map_player_count"] = int(payload.get("player_count", 0))
-		"match.found", "room.ready_required", "room.ready_accepted": ready_prompt = payload
+		"match.found", "room.ready_required", "room.ready_accepted":
+			ready_prompt = payload
+			_verify_ready_ticket()
 		"room.ready_removed":
 			ready_prompt = {}
 			ticket = {}

@@ -77,6 +77,7 @@ var room_context_epoch := -1
 var _prelaunch_ticket: Dictionary = {}
 var _prelaunch_snapshot_attempts := 0
 var _prelaunch_snapshot_at := 0
+var _prelaunch_ready_accepted := false
 
 func bind_prelaunch_ticket(match_id: String, known_room_id: String, deadline_unix_ms: int, epoch: int) -> void:
 	# The caller has just read this account's Matched ticket. Match/room/deadline
@@ -88,6 +89,7 @@ func bind_prelaunch_ticket(match_id: String, known_room_id: String, deadline_uni
 	if identity != _prelaunch_ticket:
 		_prelaunch_snapshot_attempts = 0
 		_prelaunch_snapshot_at = 0
+		_prelaunch_ready_accepted = false
 	_prelaunch_ticket = identity
 
 func _prelaunch_valid() -> bool:
@@ -95,6 +97,12 @@ func _prelaunch_valid() -> bool:
 
 func _expected_match_context() -> String:
 	return str(_prelaunch_ticket.match_id) if _prelaunch_valid() else current_match_id
+
+func _read_prelaunch_snapshot() -> void:
+	if not _prelaunch_valid() or _prelaunch_snapshot_attempts >= 3 or Time.get_ticks_msec() < _prelaunch_snapshot_at: return
+	_prelaunch_snapshot_attempts += 1
+	_prelaunch_snapshot_at = Time.get_ticks_msec() + 1000
+	send("room.snapshot.read", {"room_id":_prelaunch_ticket.room_id})
 
 func capture_context() -> Dictionary:
 	var context := telemetry_context.duplicate(true)
@@ -215,6 +223,7 @@ func end_session(reason: String, notify: bool = true) -> void:
 	room_context_epoch = -1
 	_prelaunch_ticket = {}
 	_prelaunch_snapshot_attempts = 0
+	_prelaunch_ready_accepted = false
 	token = ""
 	token_expires_at = 0.0
 	reconnect_enabled = false
@@ -512,6 +521,7 @@ func _process(_delta: float) -> void:
 		if online and Time.get_ticks_msec() - _last_ping > 10000:
 			var ping_request_id := new_id()
 			if send("ping", {}, ping_request_id): _last_ping = Time.get_ticks_msec()
+		if online and _prelaunch_ready_accepted: _read_prelaunch_snapshot()
 	elif state == WebSocketPeer.STATE_CLOSED:
 		if _retry_at == 0: _schedule_reconnect()
 		if Time.get_ticks_msec() >= _retry_at:
@@ -612,6 +622,11 @@ func _receive(packet: PackedByteArray) -> void:
 		end_session(str(payload.get("reason", "账号已在其他窗口连接，请在此窗口重新登录后继续")))
 		return
 	if sequence <= last_sequence: return
+	if kind == "room.ready_accepted" and _prelaunch_valid() and str(payload.get("match_id", "")) == str(_prelaunch_ticket.match_id) and str(payload.get("room_id", "")) == str(_prelaunch_ticket.room_id):
+		_prelaunch_ready_accepted = true
+		# Allow the coordinator's next iteration to register the room. A
+		# transient NOT_IN_ROOM cannot revoke this prelaunch ticket context.
+		_prelaunch_snapshot_at = maxi(_prelaunch_snapshot_at, Time.get_ticks_msec() + 250)
 	if sequence > last_sequence + 1 and kind not in ["session.snapshot", "room.snapshot"]:
 		if not recovering:
 			recovering = true
@@ -619,10 +634,8 @@ func _receive(packet: PackedByteArray) -> void:
 		# If an earlier required frame can never be delivered, a real future
 		# started packet is only a hint to read authority. Its payload/cursor
 		# is not applied. The independently verified ticket must match it.
-		if kind == "room.started" and _prelaunch_valid() and str(payload.get("match_id", "")) == str(_prelaunch_ticket.match_id) and str(payload.get("room_id", "")) == str(_prelaunch_ticket.room_id) and _prelaunch_snapshot_attempts < 3 and Time.get_ticks_msec() >= _prelaunch_snapshot_at:
-			_prelaunch_snapshot_attempts += 1
-			_prelaunch_snapshot_at = Time.get_ticks_msec() + 1000
-			send("room.snapshot.read", {"room_id":_prelaunch_ticket.room_id})
+		if kind == "room.started" and _prelaunch_valid() and str(payload.get("match_id", "")) == str(_prelaunch_ticket.match_id) and str(payload.get("room_id", "")) == str(_prelaunch_ticket.room_id):
+			_read_prelaunch_snapshot()
 		return
 	var prior_room_callback := false
 	if kind == "room.started" and not room_id.is_empty() and not current_match_id.is_empty():
