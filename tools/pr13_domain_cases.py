@@ -9,6 +9,9 @@ import xml.etree.ElementTree as ET
 ROOT = Path(__file__).resolve().parents[1]
 # Each entry names every required test method. All theory rows must pass.
 MAPPING = {
+    'PR13-B06.3-T01': ['Combat.PausedDrawLedgerTests.Candidate_passive_alone_cannot_sustain_cards_without_natural_time'],
+    'PR13-B06.3-T02': ['Combat.PausedDrawLedgerTests.Printed_double_draw_can_form_a_local_loop_and_action_cap_stays_unfinished'],
+    'PR13-B09.3-T03': ['Rooms.MonsterCardPoolTests.PVP_snapshot_restore_and_return_preserve_pool_instance_identity'],
     'PR13-B02.4-T01': ['Rooms.NumericalPolicySnapshotTests.New_source_policy_does_not_change_a_live_default_room_or_its_saved_instances'],
     'PR13-B12.3-T02': ['Rooms.NumericalPolicySnapshotTests.Rolling_source_back_changes_new_rooms_and_preserves_existing_candidate_room_instances'],
     'LOAD-11.4-T03': ['Rooms.NumericalPolicySnapshotTests.Rolling_source_back_changes_new_rooms_and_preserves_existing_candidate_room_instances'],

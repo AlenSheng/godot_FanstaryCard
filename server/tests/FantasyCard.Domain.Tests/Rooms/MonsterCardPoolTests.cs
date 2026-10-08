@@ -117,6 +117,31 @@ public sealed class MonsterCardPoolTests
     }
 
     private static CombatDeck Deck() => CombatDeck.Create(Enumerable.Repeat("common-01", 20).ToArray(), new Random(31));
+
+    [Fact]
+    public void PVP_snapshot_restore_and_return_preserve_pool_instance_identity()
+    {
+        var room=new BattleRoom(Guid.NewGuid(),"pool-duel",Catalog,53,new NumericalRules(OptionalMonsterPool:true));
+        var first=Guid.NewGuid();var second=Guid.NewGuid();
+        room.AddPlayer(new(first,HeroClass.Mage,Enumerable.Repeat("C01",20).ToArray(),null));
+        room.AddPlayer(new(second,HeroClass.Mage,Enumerable.Repeat("C01",20).ToArray(),null));
+        var player=room.GetPlayer(first);var monster=Monster();
+        player.MonsterPool.Offer("owned-kill",monster);
+        room.DecideMonsterCard(first,monster.InstanceId,true,null,"owned-choice",room.Revision);
+        var beforeCombat=player.Combat.Capture();var beforePool=player.MonsterPool.Capture();
+        var duel=room.StartDuel(first,second,DateTimeOffset.UnixEpoch);
+        Assert.Equal(21,Count(player.Combat.Deck));
+        Assert.Single(player.MonsterPool.Active);
+        var restored=BattleRoom.Restore(room.Capture(),Catalog,999);
+        restored.EndDuelSurvived(duel.DuelId,DuelEndReason.MutualLeave);
+        var returned=restored.GetPlayer(first);
+        Assert.Equivalent(beforeCombat,returned.Combat.Capture(),strict:true);
+        Assert.Equivalent(beforePool,returned.MonsterPool.Capture(),strict:true);
+        Assert.Equal(21,Count(returned.Combat.Deck));
+        Assert.Equal(21,returned.Combat.Deck.Hand.Concat(returned.Combat.Deck.Library).Concat(returned.Combat.Deck.Discard).Select(c=>c.InstanceId).Distinct().Count());
+        returned.MonsterPool.EndRun(returned.Combat.Deck);
+        Assert.Equal(20,Count(returned.Combat.Deck));Assert.Empty(returned.MonsterPool.Active);
+    }
     private static CombatCardInstance Monster() => new(Guid.NewGuid(), "M-FIREBAT");
     private static int Count(CombatDeck deck) => deck.Hand.Count + deck.Library.Count + deck.Discard.Count;
     private static BattleRoom Room(NumericalRules rules)
