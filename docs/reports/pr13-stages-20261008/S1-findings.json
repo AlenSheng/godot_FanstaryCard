@@ -1,0 +1,66 @@
+{
+  "stage": "S1",
+  "runtime_source_sha": "1bc05941476a3ff860aeaaffa163e08f8118b042",
+  "status": "InProgress",
+  "current_scope_source": "S0-retest/summary.json",
+  "findings": [
+    {
+      "tasks": [
+        "PR13-B03.4",
+        "PR13-A07.3"
+      ],
+      "entry": "python -m unittest discover -s tools/tests -v",
+      "actual": {
+        "total": 131,
+        "errors": 10,
+        "error": "UnicodeDecodeError using Windows GBK to read UTF-8 reports"
+      },
+      "before_artifact": {
+        "path": "outputs/pr13-local-20261008/S1/python/before.log",
+        "bytes": 24551,
+        "sha256": "9e93573d4def022260a1dde9da0c4d0f36faf04bd47c9f391db7d86663adc723"
+      }
+    },
+    {
+      "tasks": [
+        "PR13-A03.1",
+        "PR13-A06.3"
+      ],
+      "entry": "python tools/pr13_callback_isolation.py --output <owned-output>",
+      "actual": "UnicodeDecodeError reading UTF-8 catalog at import before Godot launch",
+      "before_artifact": {
+        "path": "outputs/pr13-local-20261008/S1/callback-before.log",
+        "bytes": 466,
+        "sha256": "e3088b774020d4d68da3b41a01c7c80c568fa502785a157fb39f5906e8498cf5"
+      }
+    },
+    {
+      "tasks": [
+        "LOAD-03.4",
+        "LOAD-06.1"
+      ],
+      "entry": "actual aggregate_window entry with two routes",
+      "actual": "No per-route latency or measured throughput fields in coordinator aggregation",
+      "before_artifact": {
+        "path": "outputs/pr13-local-20261008/S1/route-before.json",
+        "bytes": 2479,
+        "sha256": "9a23ce335fb88f6ee8b49eb71753525ead6e37c8deb217bd5fac7333cdf01eae"
+      }
+    },
+    {
+      "tasks": [
+        "PR13-A05.2",
+        "PR13-A05.3",
+        "PR13-A07.2"
+      ],
+      "entry": "Full server suite with owned local PG18 and real Godot",
+      "actual": "Local process socket initialization fails on Windows with cleared SystemRoot; database relay exposes Unix path on Windows",
+      "before_artifact": {
+        "path": "outputs/pr13-local-20261008/S1/server-before.log",
+        "bytes": 362260,
+        "sha256": "e86aa8d9eef4126f3a3b570731821fc6eaaeea1c0380ead8fb0e5ab3882095b7"
+      }
+    }
+  ],
+  "acceptance_passed": false
+}

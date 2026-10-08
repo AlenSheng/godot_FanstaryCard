@@ -1,0 +1,147 @@
+{
+  "task_id": "PR13-B03.1",
+  "stage": "S1",
+  "integration_sha": "1bc05941476a3ff860aeaaffa163e08f8118b042",
+  "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+  "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+  "effective_room_policy": null,
+  "runtime_image_digest": null,
+  "profile_hash": "4d8019069470a0f118a267fb7c6ed85223a42bf29f030872ff84a34d28252781",
+  "algorithm_version": "pr13-local-stage-contract-v1",
+  "case_ids": [
+    "PR13-B03.1-T01",
+    "PR13-B03.1-T02",
+    "PR13-B03.1-T03"
+  ],
+  "expected": {
+    "PR13-B03.1-T01": "相同动作",
+    "PR13-B03.1-T02": "策略动作不变",
+    "PR13-B03.1-T03": "等待有原因不发非法命令"
+  },
+  "actual": {
+    "executed_cases": [],
+    "unexecuted_case_ids": [
+      "PR13-B03.1-T01",
+      "PR13-B03.1-T02",
+      "PR13-B03.1-T03"
+    ],
+    "supporting_suite_results": {
+      "python": {
+        "total": 131,
+        "errors": 10,
+        "exit_code": 1,
+        "log": {
+          "path": "outputs/pr13-local-20261008/S1/python/before.log",
+          "bytes": 24551,
+          "sha256": "9e93573d4def022260a1dde9da0c4d0f36faf04bd47c9f391db7d86663adc723"
+        }
+      },
+      "offline": {
+        "executed": 27,
+        "passed": 27,
+        "source": "1bc05941476a3ff860aeaaffa163e08f8118b042"
+      },
+      "client": {
+        "groups": 5,
+        "passed": 5,
+        "exit_code": 0
+      },
+      "domain": {
+        "total": "317",
+        "executed": "317",
+        "passed": "317",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "preview": {
+        "vectors": 1800,
+        "failures": 0,
+        "exit_code": 0
+      },
+      "http_boundary": {
+        "cases": 13,
+        "exit_code": 0,
+        "ok": true
+      },
+      "http_protobuf": {
+        "codec_checks": 177,
+        "transport_checks": 24,
+        "exit_code": 0,
+        "ok": true
+      },
+      "protocol": {
+        "messages": 134,
+        "routes": 46,
+        "exit_code": 0
+      },
+      "server": {
+        "state": "InProgress",
+        "database": "Owned PostgreSQL 18.6 loopback container",
+        "mandatory_skips_allowed": false
+      }
+    },
+    "supporting_suite_is_not_case_acceptance": true
+  },
+  "status": "Partial",
+  "sample_population": null,
+  "cutoff_monotonic": null,
+  "window_or_drain_or_final": null,
+  "commands": [
+    "Current explicit offline/client/domain/preview/protocol and HTTP entries; see summary.json"
+  ],
+  "tool_versions": {
+    "python": "3.10.11",
+    "dotnet_required": "10.0.400"
+  },
+  "exit_codes": [
+    0,
+    1
+  ],
+  "skip_reasons": [],
+  "asset_and_route_postconditions": null,
+  "artifact_manifest": "manifest.json",
+  "reviewer": "MAIN",
+  "rollback": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。",
+  "remaining_blockers": [
+    {
+      "stage": "S1",
+      "missing_input_or_environment": "Exact normal/boundary/fault fixture coverage and remaining full real process results",
+      "owner": "MAIN",
+      "affected_gates": [
+        "G2",
+        "G3",
+        "G4"
+      ],
+      "unblock_condition": "Implement and execute the missing concrete cases",
+      "next_action": "保留baseline_all_hand，新增确定性basic/build策略；不能看库序/隐藏路线/未来drop"
+    }
+  ],
+  "missing_reasons": {
+    "effective_room_policy": "No runtime started at S0; default policy source is pinned in source manifest.",
+    "runtime_image_digest": "Local process profile; container image is not selected. Assemblies are hashed after build.",
+    "sample_population": "S0 registers budgets; no runtime sample has been observed.",
+    "cutoff_monotonic": "No runtime cutoff exists before execution.",
+    "window_or_drain_or_final": "No runtime window exists before execution.",
+    "asset_and_route_postconditions": "Measured at S4/S5, never inferred from source."
+  },
+  "accepted_by": null,
+  "stage_states": {
+    "S1": "Queued",
+    "S2": "Queued",
+    "S3": "Queued",
+    "S4": "Queued",
+    "S5": "Queued",
+    "S6": "Queued"
+  }
+}

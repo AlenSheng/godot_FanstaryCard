@@ -1,0 +1,85 @@
+{
+  "stage": "S1",
+  "status": "Partial",
+  "runtime_source_sha": "1bc05941476a3ff860aeaaffa163e08f8118b042",
+  "scope_freeze": "S0-retest",
+  "counts": {
+    "tasks": 132,
+    "cases": 396,
+    "executed": 27,
+    "passed": 27,
+    "states": {
+      "ReadyForAcceptance": 8,
+      "Partial": 124
+    }
+  },
+  "support": {
+    "python": {
+      "total": 131,
+      "errors": 10,
+      "exit_code": 1,
+      "log": {
+        "path": "outputs/pr13-local-20261008/S1/python/before.log",
+        "bytes": 24551,
+        "sha256": "9e93573d4def022260a1dde9da0c4d0f36faf04bd47c9f391db7d86663adc723"
+      }
+    },
+    "offline": {
+      "executed": 27,
+      "passed": 27,
+      "source": "1bc05941476a3ff860aeaaffa163e08f8118b042"
+    },
+    "client": {
+      "groups": 5,
+      "passed": 5,
+      "exit_code": 0
+    },
+    "domain": {
+      "total": "317",
+      "executed": "317",
+      "passed": "317",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "preview": {
+      "vectors": 1800,
+      "failures": 0,
+      "exit_code": 0
+    },
+    "http_boundary": {
+      "cases": 13,
+      "exit_code": 0,
+      "ok": true
+    },
+    "http_protobuf": {
+      "codec_checks": 177,
+      "transport_checks": 24,
+      "exit_code": 0,
+      "ok": true
+    },
+    "protocol": {
+      "messages": 134,
+      "routes": 46,
+      "exit_code": 0
+    },
+    "server": {
+      "state": "InProgress",
+      "database": "Owned PostgreSQL 18.6 loopback container",
+      "mandatory_skips_allowed": false
+    }
+  },
+  "runtime_accepted": 0,
+  "server_results_pending": true,
+  "next_action": "S2 fixes for reproduced Windows fixture faults; independent task stages continue only after their own S1 proof"
+}
