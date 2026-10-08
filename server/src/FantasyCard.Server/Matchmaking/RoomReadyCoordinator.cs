@@ -35,20 +35,24 @@ public sealed partial class RoomReadyCoordinator(
 
     public async Task NotifyRequiredAsync(PendingMatch match, CancellationToken cancellationToken)
     {
-        foreach (var playerId in match.PlayerIds)
+        // A room has four seats. Bound concurrent delivery across players,
+        // keeping each player's found/required pair awaited in order.
+        await Parallel.ForEachAsync(match.PlayerIds,
+            new ParallelOptions { MaxDegreeOfParallelism = 4, CancellationToken = cancellationToken },
+            async (playerId, deliveryToken) =>
         {
             var found = eventStore.Create(playerId, "match.found", "matchmaker",
                 new MatchFoundEventPayload(match.MatchId, match.RoomId, match.ReadyDeadline.ToUnixTimeMilliseconds()));
             var startedAt = Stopwatch.GetTimestamp();
-            await connections.SendIfConnectedAsync(playerId, found, cancellationToken);
+            await connections.SendIfConnectedAsync(playerId, found, deliveryToken);
             metrics?.ObserveMatchLaunchPhase("found_send", Stopwatch.GetElapsedTime(startedAt));
             var message = eventStore.Create(playerId, "room.ready_required", "matchmaker",
                 new RoomReadyRequiredEventPayload(match.MatchId, match.RoomId,
                     match.ReadyDeadline.ToUnixTimeMilliseconds(), 0, match.PlayerIds.Count));
             startedAt = Stopwatch.GetTimestamp();
-            await connections.SendIfConnectedAsync(playerId, message, cancellationToken);
+            await connections.SendIfConnectedAsync(playerId, message, deliveryToken);
             metrics?.ObserveMatchLaunchPhase("required_send", Stopwatch.GetElapsedTime(startedAt));
-        }
+        });
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -121,17 +125,19 @@ public sealed partial class RoomReadyCoordinator(
             throw;
         }
 
-        foreach (var playerId in launch.HumanPlayerIds)
+        await Parallel.ForEachAsync(launch.HumanPlayerIds,
+            new ParallelOptions { MaxDegreeOfParallelism = 4, CancellationToken = cancellationToken },
+            async (playerId, deliveryToken) =>
         {
-            startedAt = Stopwatch.GetTimestamp();
-            var state = await actor.ExecuteAsync(new GetRoomClientStateCommand(playerId), cancellationToken);
+            var deliveryStartedAt = Stopwatch.GetTimestamp();
+            var state = await actor.ExecuteAsync(new GetRoomClientStateCommand(playerId), deliveryToken);
             var snapshot = RoomSnapshotProjection.Build(state, playerId, assignment.MatchId, timeProvider.GetUtcNow());
             var started = eventStore.Create(playerId, "room.started", "ready-complete",
                 new RoomStartedEventPayload(assignment.MatchId, assignment.RoomId, assignment.Players.Count, snapshot),
                 roomRevision: state.Snapshot.Revision);
-            await connections.SendIfConnectedAsync(playerId, started, cancellationToken);
-            metrics?.ObserveMatchLaunchPhase("started_send", Stopwatch.GetElapsedTime(startedAt));
-        }
+            await connections.SendIfConnectedAsync(playerId, started, deliveryToken);
+            metrics?.ObserveMatchLaunchPhase("started_send", Stopwatch.GetElapsedTime(deliveryStartedAt));
+        });
 
         foreach (var playerId in launch.RemovedPlayerIds)
         {
