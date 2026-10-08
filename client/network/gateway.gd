@@ -597,6 +597,12 @@ func _receive(packet: PackedByteArray) -> void:
 		recovering = false
 	elif kind == "room.started":
 		current_match_id = str(payload.get("match_id", payload.get("snapshot", {}).get("match_id", current_match_id)))
+		# A sequence-gap resume can finish before the room route is registered.
+		# Its READY replay then has no room snapshot to release recovery. Once
+		# the real start arrives, request authority through the allowed read path.
+		if recovering and not str(payload.get("room_id", "")).is_empty():
+			room_id = str(payload.room_id)
+			send("room.snapshot.read")
 	elif envelope.has("room_revision"):
 		room_revision = maxi(room_revision, int(envelope.room_revision))
 	if kind == "session.snapshot":
