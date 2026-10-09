@@ -635,6 +635,15 @@ func _on_event(kind: String, _payload: Dictionary) -> void:
 	if kind in ["match.found", "room.ready_required", "room.ready_accepted", "room.started", "room.moved", "battle.combo_resolved", "settlement.ready", "match.settled"]:
 		last_progress_ms = Time.get_ticks_msec()
 		_on_telemetry({"type": "lifecycle", "event_type": kind, "match_id": _payload.get("match_id"), "room_id": _payload.get("room_id"), "_origin_context": _payload.get("_origin_context", {}), "battle_id": _payload.get("battle_id"), "request_id": _payload.get("_request_id")})
+	if kind in ["player.died", "action.extract_completed"]:
+		# Preserve terminal authority separately from progress clocks. A command
+		# can already be in flight when this packet reaches a distant client.
+		# Missing wire room/match IDs remain explicit rather than inferred proof.
+		_on_telemetry({"type": "lifecycle", "event_type": kind, "match_id": _payload.get("match_id"), "room_id": _payload.get("room_id"),
+			"wire_match_id_present": _payload.has("match_id"), "wire_room_id_present": _payload.has("room_id"),
+			"player_id": _payload.get("player_id"), "own_player_id": own_user_id, "status": _payload.get("status"), "duel_id": _payload.get("duel_id"),
+			"_sequence": _payload.get("_sequence"), "_event_revision": _payload.get("_event_revision"), "_replayed": _payload.get("_replayed"),
+			"_origin_context": _payload.get("_origin_context", {}), "request_id": _payload.get("_request_id")})
 	events[kind] = int(events.get(kind, 0)) + 1
 	if kind == "error.command_rejected": _on_notice("command_rejected: " + JSON.stringify(_payload))
 

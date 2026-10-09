@@ -58,6 +58,7 @@ var _room_context_epoch := 0
 var _ready_ticket_verification := ""
 var _room_context_match_id := ""
 var _room_context_room_id := ""
+var _terminal_room_context: Dictionary = {}
 var _settlement_load_epoch := 0
 var _settlement_poll_request_epoch := 0
 var settlement_query_failed := false
@@ -103,7 +104,7 @@ func _process(_delta: float) -> void:
 			if _snapshot_request_pending and now - _snapshot_request_at > 3000: _snapshot_request_pending = false
 			_request_snapshot()
 	else: _combat_sync_at = 0
-	if settlement.is_empty() and (phase in ["Extracted", "Dead"] or not _settlement_recovery_match_id.is_empty()) and now >= _settlement_poll_at and not _settlement_polling:
+	if settlement.is_empty() and (phase in ["Extracted", "Dead"] or _room_actions_closed() or not _settlement_recovery_match_id.is_empty()) and now >= _settlement_poll_at and not _settlement_polling:
 		_poll_ready_settlement()
 	var pending_changed := false
 	if not _pending_play.is_empty() and Time.get_ticks_msec() > _play_deadline:
@@ -237,6 +238,7 @@ func _clear_authenticated_state() -> void:
 	_room_context_epoch += 1
 	_room_context_match_id = ""
 	_room_context_room_id = ""
+	_terminal_room_context = {}
 	_settlement_load_epoch += 1
 	_settlement_poll_request_epoch += 1
 	settlement_query_failed = false
@@ -718,6 +720,7 @@ func cancel_preparation() -> void:
 	changed.emit()
 
 func allowed(action: String) -> bool:
+	if _room_actions_closed(): return false
 	var aliases := {"reward.choice.refresh": "choice.refresh", "reward.choice.claim": "choice.pick"}
 	if action == "battle.play_cards" and _target_selection_pending(): return false
 	if action not in LATEST_WINS_ACTIONS and _has_pending_action(action): return false
@@ -816,7 +819,7 @@ func _flush_combat_preview() -> void:
 	else: _preview_request = {}
 
 func _request_snapshot() -> void:
-	if room.is_empty() or not gateway.online or gateway.recovering or _snapshot_request_pending: return
+	if room.is_empty() or _room_actions_closed() or not gateway.online or gateway.recovering or _snapshot_request_pending: return
 	var now := Time.get_ticks_msec()
 	if now - _snapshot_request_at < 80: return
 	_snapshot_request_at = now
@@ -1314,6 +1317,26 @@ func _snapshot_confirms_command(pending: Dictionary, snapshot: Dictionary) -> bo
 func _settlement_match_id() -> String:
 	return str(room.get("match_id", _settlement_recovery_match_id))
 
+func _room_actions_closed() -> bool:
+	if _terminal_room_context.is_empty(): return false
+	return int(_terminal_room_context.session_generation) == gateway.session_generation and int(_terminal_room_context.epoch) == _room_context_epoch and str(_terminal_room_context.match_id) == _settlement_match_id() and str(_terminal_room_context.room_id) == str(room.get("room_id", _room_context_room_id))
+
+func _close_room_actions() -> void:
+	var match_id := _settlement_match_id()
+	var room_id := str(room.get("room_id", _room_context_room_id))
+	if match_id.is_empty() or room_id.is_empty(): return
+	# Terminal authority survives a failed receipt fetch and an older in-flight
+	# snapshot. Only a new room context or authenticated session reopens actions.
+	_terminal_room_context = {"session_generation": gateway.session_generation, "epoch": _room_context_epoch, "match_id": match_id, "room_id": room_id}
+	_settlement_recovery_match_id = match_id
+	_settlement_poll_at = 0
+	_queued_command = {}
+	_latest_commands.clear()
+	_pending_commands.clear()
+	_pending_play = {}
+	selected_cards.clear()
+	clear_combat_preview()
+
 func _adopt_room_context(snapshot: Dictionary) -> void:
 	var match_id := str(snapshot.get("match_id", ""))
 	var room_id := str(snapshot.get("room_id", ""))
@@ -1324,6 +1347,7 @@ func _adopt_room_context(snapshot: Dictionary) -> void:
 		_room_context_epoch += 1
 		_room_context_match_id = match_id
 		_room_context_room_id = room_id
+		_terminal_room_context = {}
 		_settlement_load_epoch += 1
 		_settlement_poll_request_epoch += 1
 		_settlement_loading = ""
@@ -1400,6 +1424,7 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 				if pending.get("confirmed", false) and _snapshot_confirms_command(pending, payload): _pending_commands.erase(request_id)
 			if room.get("room_id", "") != payload.get("room_id", ""): relic_details = {}
 			_sound_snapshot(payload, payload)
+			if str(room.get("player", {}).get("phase", "")) in ["Extracted", "Dead"]: _close_room_actions()
 			_sync_pve_target()
 			var hand: Array = room.get("player", {}).get("hand", []).map(func(card): return card.instance_id)
 			selected_cards = selected_cards.filter(func(id): return id in hand)
@@ -1413,6 +1438,7 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 		"room.started":
 			clear_combat_preview()
 			_sound_snapshot(payload.get("snapshot", {}), payload)
+			if str(room.get("player", {}).get("phase", "")) in ["Extracted", "Dead"]: _close_room_actions()
 			_sync_pve_target()
 			ready_prompt = {}
 			gateway.room_id = payload.room_id
@@ -1432,7 +1458,8 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 			refresh_cache("inventory")
 			notice.emit("确认超时，席位已释放")
 		"settlement.ready", "match.settled":
-			if not str(payload.get("match_id", "")).is_empty() and str(payload.match_id) == _settlement_match_id():
+			if not str(payload.get("settlement_id", "")).is_empty() and not str(payload.get("match_id", "")).is_empty() and str(payload.match_id) == _settlement_match_id():
+				_close_room_actions()
 				_load_settlement(payload.settlement_id)
 		"battle.combo_resolved", "combat.hit":
 			if _feedback_is_current(payload):
@@ -1598,7 +1625,7 @@ func _poll_ready_settlement() -> void:
 		changed.emit()
 
 func retry_settlement() -> void:
-	if str(room.get("player", {}).get("phase", "")) not in ["Extracted", "Dead"] and _settlement_recovery_match_id.is_empty(): return
+	if str(room.get("player", {}).get("phase", "")) not in ["Extracted", "Dead"] and not _room_actions_closed() and _settlement_recovery_match_id.is_empty(): return
 	_poll_ready_settlement()
 
 func acknowledge_settlement() -> bool:

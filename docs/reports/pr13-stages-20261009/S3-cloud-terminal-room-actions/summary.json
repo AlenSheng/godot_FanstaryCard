@@ -1,0 +1,227 @@
+{
+  "source_base_sha": "89929d732ab2cb68ea960abfe62a45c86e043c20",
+  "execution_host": "Tencent cloud",
+  "ok": true,
+  "scope": "Native Godot client regressions, 22 terminal authority checks and load-client parser; exact canonical release bytes",
+  "tests": [
+    {
+      "name": "test_protobuf",
+      "ok": true,
+      "checks": {},
+      "raw_sha256": "a86674c31e60f7a218265a5c43c73d1478bb113c34c1581f092ec387b97de578"
+    },
+    {
+      "name": "test_play_retry",
+      "ok": true,
+      "checks": {},
+      "raw_sha256": "13a99c48ff5bb93312fe7caa00ccdca2995541231979306065e0518479c51278"
+    },
+    {
+      "name": "test_confirmation_snapshot",
+      "ok": true,
+      "checks": {},
+      "raw_sha256": "24699ed8910693ca7d9151ae1dfe86cf25b86fa8631047fd37ad0196eb9bc5a1"
+    },
+    {
+      "name": "test_room_store",
+      "ok": true,
+      "checks": {},
+      "raw_sha256": "4f230f9a9f2568fb706224a64a37913cd58fadd75b519668e239d8f893cd664e"
+    },
+    {
+      "name": "test_audio_events",
+      "ok": true,
+      "checks": {},
+      "raw_sha256": "78418b71313c9dbf63d0469bf6f916eddb93ad688f3c25e9b399f3726af9936a"
+    },
+    {
+      "name": "test_session_platform",
+      "ok": true,
+      "checks": {},
+      "raw_sha256": "067839a9e3673a2a318f82b0e5e181d7e5d6b5fe92e1eb4dd3815c0a63af04f1"
+    },
+    {
+      "name": "test_class_selection",
+      "ok": true,
+      "checks": {},
+      "raw_sha256": "c40cce3109bf64c22939c6c8c5246daa1a97fe377cba4961571de37df54a8f03"
+    },
+    {
+      "name": "test_account_cache",
+      "ok": true,
+      "checks": {},
+      "raw_sha256": "229598454de6526258cd10919d63bb58fee76a1e6c06ed2b61230101422e5ff0"
+    },
+    {
+      "name": "test_preparation_return",
+      "ok": true,
+      "checks": {},
+      "raw_sha256": "720ee5817d2de5cd5fd4c469968f3bb1d49475155ab679ac4efa82b724c6329a"
+    },
+    {
+      "name": "test_settlement_return",
+      "ok": true,
+      "checks": {},
+      "raw_sha256": "3f79b79585dcfcb3ef5f554e83f3280fdb06f9a700d10c105741dc780696c783"
+    },
+    {
+      "name": "test_settlement_polling",
+      "ok": true,
+      "checks": {},
+      "raw_sha256": "f603e27a8c99ad84463c915e2bceeaa04d5901deb73f01a6b02b063f55c8c9c8"
+    },
+    {
+      "name": "test_terminal_room_actions",
+      "ok": true,
+      "checks": {
+        "settlement.ready: notification closes actions before HTTP finishes": true,
+        "settlement.ready: already sent read retained, no additional read": true,
+        "settlement.ready: HTTP failure does not reopen actions": true,
+        "settlement.ready: older playing snapshot cannot reopen room": true,
+        "settlement.ready: failed receipt remains recoverable": true,
+        "settlement.ready: failed acknowledgement keeps terminal authority": true,
+        "settlement.ready: new room restores legal actions": true,
+        "settlement.ready: prior match notification cannot close new room": true,
+        "settlement.ready: malformed receipt does not close room": true,
+        "settlement.ready: authoritative death snapshot closes actions": true,
+        "settlement.ready: authentication reset cannot retain old closure": true,
+        "match.settled: notification closes actions before HTTP finishes": true,
+        "match.settled: already sent read retained, no additional read": true,
+        "match.settled: HTTP failure does not reopen actions": true,
+        "match.settled: older playing snapshot cannot reopen room": true,
+        "match.settled: failed receipt remains recoverable": true,
+        "match.settled: failed acknowledgement keeps terminal authority": true,
+        "match.settled: new room restores legal actions": true,
+        "match.settled: prior match notification cannot close new room": true,
+        "match.settled: malformed receipt does not close room": true,
+        "match.settled: authoritative death snapshot closes actions": true,
+        "match.settled: authentication reset cannot retain old closure": true
+      },
+      "raw_sha256": "cdff36973707681acde1ed00c5b300fde14fb8a7d0c2b89e2fa135c227256ef6"
+    },
+    {
+      "name": "test_art",
+      "ok": true,
+      "checks": {},
+      "raw_sha256": "8d81932809d65a0f2417a0e9740dd63d86096603d3ad5dbe1278cd4c2a5e2f5a"
+    },
+    {
+      "name": "test_item_visual",
+      "ok": true,
+      "checks": {},
+      "raw_sha256": "048850aa3546ce61011588c6577da23189fa507ee865986feea7769af93971d8"
+    },
+    {
+      "name": "test_equipment_name",
+      "ok": true,
+      "checks": {},
+      "raw_sha256": "508d3c698e17f0b04d30962cf2ae6c9185fb3006b8bd65482e24fa537de61ee4"
+    },
+    {
+      "name": "test_equipment_compare",
+      "ok": true,
+      "checks": {},
+      "raw_sha256": "3030c3384946ff71b1f4a78ba65e545098546b8463720a1c27a4eef559e43450"
+    },
+    {
+      "name": "test_combat_preview_state",
+      "ok": true,
+      "checks": {},
+      "raw_sha256": "f4aa09f3c90bc73343c209fe8cc6fdb56ebf562217c4bd1df5bbff74574984c3"
+    },
+    {
+      "name": "test_client_hot_paths",
+      "ok": true,
+      "checks": {},
+      "raw_sha256": "44545876f4c0cd77036730ed44ef89769392fd9c6855abc3a026c064d81a5136"
+    }
+  ],
+  "terminal_checks": 22,
+  "result": {
+    "ok": true,
+    "execution_host": "Tencent cloud",
+    "whole_scope_accepted": false,
+    "overlay": {
+      "client/state/game_store.gd": "a18e9609e6ac6e947e9aebe863ed8d16539b58a078e3c612878d2939f2e76de4",
+      "client/tests/run_play_retry.gd": "3eb82565d94bac671e01faa912d0cb99ee43a3525674bc9853501927c155a3c8",
+      "client/tests/test_terminal_room_actions.gd": "ac42692f1415c8792685e19106264ac7309e479d1e79a8779ed1b9b9c2a57fce",
+      "client/tests/gameplay_load_client.gd": "909a59e4a98915614f95db1c7bb39121d67ceb9f6cc507030665f370dbce7b99"
+    },
+    "container_removed": true,
+    "results": [
+      {
+        "suite": "regressions",
+        "exit_code": 0,
+        "sha256": "22d4c648bd746519bc1da3f64f93ca50728a23026f6f5d8964f217dd46a36141",
+        "script_errors": false
+      },
+      {
+        "suite": "load-parser",
+        "exit_code": 0,
+        "sha256": "d82bc95c3f2d9533ff61022580bf6b08019a5b6d2e343ae186ce50d4c0fad3ed",
+        "script_errors": false
+      }
+    ],
+    "inputs_unchanged": true
+  },
+  "files": [
+    {
+      "path": "executed-inputs/client/state/game_store.gd",
+      "bytes": 90042,
+      "sha256": "a18e9609e6ac6e947e9aebe863ed8d16539b58a078e3c612878d2939f2e76de4"
+    },
+    {
+      "path": "executed-inputs/client/tests/gameplay_load_client.gd",
+      "bytes": 40322,
+      "sha256": "909a59e4a98915614f95db1c7bb39121d67ceb9f6cc507030665f370dbce7b99"
+    },
+    {
+      "path": "executed-inputs/client/tests/run_play_retry.gd",
+      "bytes": 674,
+      "sha256": "3eb82565d94bac671e01faa912d0cb99ee43a3525674bc9853501927c155a3c8"
+    },
+    {
+      "path": "executed-inputs/client/tests/test_terminal_room_actions.gd",
+      "bytes": 4416,
+      "sha256": "ac42692f1415c8792685e19106264ac7309e479d1e79a8779ed1b9b9c2a57fce"
+    },
+    {
+      "path": "load-parser.private.log",
+      "bytes": 101,
+      "sha256": "d82bc95c3f2d9533ff61022580bf6b08019a5b6d2e343ae186ce50d4c0fad3ed"
+    },
+    {
+      "path": "original-native-with-import-failures.private.tar.gz",
+      "bytes": 364386,
+      "sha256": "63fe62fb9e771f3f9bd00ea13080d09ea0e1102ad5e59ae6733527703bb71f2b"
+    },
+    {
+      "path": "preregistration.json",
+      "bytes": 265656,
+      "sha256": "2fac4f2bd2ae2c63dbd7fad5848c6c38b71dcfb00cf81d756101b72c5e60901d"
+    },
+    {
+      "path": "regressions.private.log",
+      "bytes": 9612,
+      "sha256": "22d4c648bd746519bc1da3f64f93ca50728a23026f6f5d8964f217dd46a36141"
+    },
+    {
+      "path": "result.json",
+      "bytes": 976,
+      "sha256": "91789b558d4f72326a38bff9cf7e3b831be3b330a575dc5c3e7ae00c284f0a4c"
+    }
+  ],
+  "original_failures_preserved": true,
+  "whole_scope_accepted": false,
+  "live_acceptance": false,
+  "capacity_accepted": false,
+  "private_archive": {
+    "bytes": 497188,
+    "sha256": "d79f459c98769bdd6029935b6e145c39b8c212d608736375cf56cbf6ef24184c",
+    "all_constituents_verified": true
+  },
+  "staged_git_blobs_match_executed_bytes": true,
+  "production_server_inputs_changed": false,
+  "numeric_changes": false,
+  "pending_live_races": "An already sent read before terminal notification cannot be cancelled by this local fence; preserve and recheck the 31 read/one card original rejection scope"
+}
