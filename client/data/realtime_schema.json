@@ -1,5 +1,5 @@
 {
-  "sha256": "9938368bcf5d8dd5a5f87612a0d276f811bcdd25174094c77ec789131af006d9",
+  "sha256": "73f2c9b5e761a282604abe909324adfa72d6e037648c3aaa1bc3b6c05f8cd9f2",
   "messages": {
     "ClientEnvelope": {
       "1": {
@@ -29,6 +29,18 @@
       "5": {
         "name": "payload",
         "type": "bytes",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "room_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "match_id",
+        "type": "string",
         "repeated": false,
         "optional": false
       }
@@ -1439,6 +1451,18 @@
         "type": "int64",
         "repeated": false,
         "optional": false
+      },
+      "3": {
+        "name": "room_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "match_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
       }
     },
     "ActionSpringEvent": {
@@ -1855,6 +1879,44 @@
       },
       "3": {
         "name": "duel_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "room_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "match_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RoomCommandCancelledEvent": {
+      "1": {
+        "name": "room_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "match_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "command_type",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "reason",
         "type": "string",
         "repeated": false,
         "optional": false

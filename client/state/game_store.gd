@@ -1373,6 +1373,18 @@ func _settlement_request_current(generation: int, context_epoch: int, match_id: 
 
 func _on_event(kind: String, payload: Dictionary) -> void:
 	if kind == "pong": return
+	if kind == "room.command_cancelled":
+		var origin: Dictionary = payload.get("_origin_context", {})
+		if not _rejection_context_current(origin) or str(payload.get("room_id", "")) != str(origin.get("room_id", "")) or str(payload.get("match_id", "")) != str(origin.get("match_id", "")): return
+		if str(payload.get("command_type", "")).is_empty() or str(payload.get("command_type", "")) != str(payload.get("_command_action", "")) or str(payload.get("reason", "")) != "RoomEndedBeforeApply": return
+		# The correlated operation did not execute. Never mark it confirmed or
+		# replay it against another room; the following snapshot is only authority.
+		_close_room_actions()
+		changed.emit()
+		return
+	if kind in ["player.died", "action.extract_completed"]:
+		if _terminal_event_current(kind, payload): _close_room_actions()
+		elif payload.has("room_id") or payload.has("match_id"): return
 	if kind == "room.started" and not room.is_empty() and not str(room.get("match_id", "")).is_empty() and str(payload.get("match_id", "")) != str(room.match_id): return
 	if kind == "error.command_rejected" and payload.get("code", "") == "NOT_IN_ROOM":
 		var origin: Dictionary = payload.get("_origin_context", {})
@@ -1398,7 +1410,7 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 		payload["_retry_handled"] = true
 		return
 	var event_request_id := str(payload.get("_request_id", ""))
-	if not event_request_id.is_empty() and _pending_commands.has(event_request_id) and kind != "error.command_rejected":
+	if not event_request_id.is_empty() and _pending_commands.has(event_request_id) and kind != "error.command_rejected" and payload.get("_command_result", "") != "cancelled":
 		var pending: Dictionary = _pending_commands[event_request_id]
 		pending["confirmed"] = true
 		pending["confirmed_revision"] = int(payload.get("_event_revision", -1))
@@ -1464,6 +1476,8 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 				_load_settlement(payload.settlement_id)
 		"battle.combo_resolved", "combat.hit":
 			if _feedback_is_current(payload):
+				if kind == "combat.hit" and payload.get("target_defeated", false) and str(payload.get("target_id", "")) == str(room.get("player", {}).get("player_id", "")):
+					_close_room_actions()
 				var had_preview := not combat_preview.is_empty() or not _preview_request.is_empty()
 				clear_combat_preview()
 				combat_feedback.emit(payload)
@@ -1493,6 +1507,15 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 				if event_request_id.is_empty(): _request_snapshot()
 		"relic.contents": relic_details[str(payload.get("pile_id", ""))] = payload
 	changed.emit()
+
+func _terminal_event_current(kind: String, payload: Dictionary) -> bool:
+	var match_id := str(payload.get("match_id", ""))
+	var room_id := str(payload.get("room_id", ""))
+	if match_id.is_empty() or room_id.is_empty() or match_id != _settlement_match_id() or room_id != str(room.get("room_id", _room_context_room_id)): return false
+	if kind == "player.died":
+		var player_id := str(room.get("player", {}).get("player_id", ""))
+		return not player_id.is_empty() and str(payload.get("player_id", "")) == player_id
+	return payload.get("status", "") == "Completed"
 
 func _apply_market_event(payload: Dictionary) -> void:
 	var wire: Dictionary = payload.get("listing", {})

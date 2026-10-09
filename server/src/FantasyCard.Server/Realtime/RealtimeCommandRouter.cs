@@ -75,7 +75,7 @@ public sealed partial class RealtimeCommandRouter
         try
         {
             if (string.IsNullOrWhiteSpace(command.RequestId))
-                return await RouteCoreAsync(player, command, traceId, cancellationToken);
+                return await RouteContextualCoreAsync(player, command, traceId, cancellationToken);
 
             var fingerprint = Convert.ToHexString(
                 SHA256.HashData(RealtimeProtobufCodec.EncodeClient(command)));
@@ -83,7 +83,7 @@ public sealed partial class RealtimeCommandRouter
                 player.UserId,
                 command.RequestId,
                 fingerprint,
-                () => RouteCoreAsync(player, command, traceId, cancellationToken));
+                () => RouteContextualCoreAsync(player, command, traceId, cancellationToken));
             if (once.FingerprintMismatch)
             {
                 return
@@ -155,8 +155,8 @@ public sealed partial class RealtimeCommandRouter
                 return [Reject(player.UserId, traceId, command.RequestId, "INVALID_PAYLOAD", "room.snapshot.read payload is required.")];
             if (_roomRegistry is null ||
                 !_roomRegistry.TryGetForPlayer(player.UserId, out var snapshotActor, out var snapshotMatchId) ||
-                snapshotActor is null)
-                return [Reject(player.UserId, traceId, command.RequestId, "NOT_IN_ROOM", "The player is not assigned to an active room.")];
+                snapshotActor is null || !MatchesRequestedRoom(command, snapshotActor, snapshotMatchId))
+                return await ResolveTerminalCommandAsync(player, command, traceId, cancellationToken);
             var state = await snapshotActor.ExecuteAsync(new GetRoomClientStateCommand(player.UserId), cancellationToken);
             return [CreateRoomSnapshot(player.UserId, traceId, command.RequestId, state, snapshotMatchId)];
         }
@@ -211,17 +211,9 @@ public sealed partial class RealtimeCommandRouter
         }
         if (_roomRegistry is null ||
             !_roomRegistry.TryGetForPlayer(player.UserId, out var actor, out var currentMatchId) ||
-            actor is null)
+            actor is null || !MatchesRequestedRoom(command, actor, currentMatchId))
         {
-            return
-            [
-                Reject(
-                    player.UserId,
-                    traceId,
-                    command.RequestId,
-                    "NOT_IN_ROOM",
-                    "The player is not assigned to an active room.")
-            ];
+            return await ResolveTerminalCommandAsync(player, command, traceId, cancellationToken);
         }
         var expectedRevision = command.ExpectedRevision ?? 0;
 

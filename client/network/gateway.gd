@@ -33,6 +33,7 @@ const EVENTS := {
 	"room.ready_required": "RoomReadyRequiredEvent", "room.ready_accepted": "RoomReadyAcceptedEvent",
 	"room.ready_removed": "RoomReadyRemovedEvent", "room.started": "RoomStartedEvent",
 	"room.snapshot": "RoomSnapshotEvent", "room.moved": "RoomMovedEvent",
+	"room.command_cancelled": "RoomCommandCancelledEvent",
 	"map.player_count": "MapPlayerCountEvent",
 	"settlement.ready": "SettlementReadyEvent", "match.settled": "SettlementReadyEvent",
 	"error.command_rejected": "CommandRejectedEvent", "battle.combo_resolved": "BattleComboResolvedEvent",
@@ -122,6 +123,7 @@ func capture_context() -> Dictionary:
 var _reusable_http := ReusableHttpClient.new()
 var use_reusable_http := true
 var _pending_request_started: Dictionary = {}
+var _response_contexts: Dictionary = {}
 var _pending_ping_request_id := ""
 var _ping_sent_at: int = 0
 var _command_cooldown: int = 0
@@ -237,6 +239,7 @@ func end_session(reason: String, notify: bool = true) -> void:
 	_command_cooldown = 0
 	_preview_request_ids = {}
 	_pending_request_started = {}
+	_response_contexts = {}
 	_pending_ping_request_id = ""
 	_ping_sent_at = 0
 	socket.close()
@@ -559,6 +562,10 @@ func send(kind: String, payload: Dictionary = {}, request_id: String = "") -> bo
 	var proto := Proto.new()
 	var effective_request_id := new_id() if request_id.is_empty() else request_id
 	var envelope := {"protocol_version": 1, "type": kind, "request_id": effective_request_id}
+	var origin := capture_context()
+	if kind not in ["ping", "session.resume", "room.ready"] and not str(origin.get("room_id", "")).is_empty() and not str(origin.get("match_id", "")).is_empty():
+		envelope["room_id"] = origin.room_id
+		envelope["match_id"] = origin.match_id
 	if not COMMANDS[kind].is_empty():
 		envelope.payload = proto.encode(COMMANDS[kind], payload)
 		if not proto.error.is_empty(): return false
@@ -571,7 +578,7 @@ func send(kind: String, payload: Dictionary = {}, request_id: String = "") -> bo
 		_preview_request_ids[envelope.request_id] = true
 		if _preview_request_ids.size() > 32: _preview_request_ids.erase(_preview_request_ids.keys()[0])
 	if sent:
-		_pending_request_started[effective_request_id] = {"action": kind, "started_at": Time.get_ticks_msec(), "context": capture_context()}
+		_pending_request_started[effective_request_id] = {"action": kind, "started_at": Time.get_ticks_msec(), "context": origin}
 		if _pending_request_started.size() > 128: _pending_request_started.erase(_pending_request_started.keys()[0])
 		if kind == "ping":
 			_pending_ping_request_id = effective_request_id
@@ -601,14 +608,27 @@ func _receive(packet: PackedByteArray) -> void:
 	payload["_request_id"] = envelope.get("request_id", "")
 	payload["_event_revision"] = envelope.get("room_revision", -1)
 	var response_request_id := str(envelope.get("request_id", ""))
+	for request_id in _response_contexts.keys():
+		if Time.get_ticks_msec() >= int(_response_contexts[request_id].expires_at): _response_contexts.erase(request_id)
 	if _pending_request_started.has(response_request_id):
 		var started: Dictionary = _pending_request_started[response_request_id]
 		payload["_origin_context"] = started.get("context", {}).duplicate(true)
 		_pending_request_started.erase(response_request_id)
+		# An ACK/cancellation and its authoritative snapshot share a request ID.
+		# Retain the immutable origin for every frame, but measure the request once.
+		_response_contexts[response_request_id] = {"context": started.get("context", {}).duplicate(true), "action": started.get("action", ""), "result": "cancelled" if kind == "room.command_cancelled" else "rejected" if kind == "error.command_rejected" else "completed", "expires_at": Time.get_ticks_msec() + 120000}
+		if _response_contexts.size() > 128: _response_contexts.erase(_response_contexts.keys()[0])
 		var duration_ms := Time.get_ticks_msec() - int(started.get("started_at", Time.get_ticks_msec()))
-		var sample := {"type": "realtime", "action": started.get("action", kind), "response_type": kind, "duration_ms": duration_ms, "request_id": response_request_id, "replayed": recovering}
+		payload["_command_action"] = started.get("action", "")
+		payload["_command_result"] = _response_contexts[response_request_id].result
+		var sample := {"type": "realtime", "action": started.get("action", kind), "response_type": kind, "duration_ms": duration_ms, "request_id": response_request_id, "replayed": recovering,
+			"result": "cancelled" if kind == "room.command_cancelled" else "rejected" if kind == "error.command_rejected" else "completed"}
 		sample.merge(started.get("context", {}), false)
 		telemetry.emit(sample)
+	elif _response_contexts.has(response_request_id):
+		payload["_origin_context"] = _response_contexts[response_request_id].context.duplicate(true)
+		payload["_command_action"] = _response_contexts[response_request_id].action
+		payload["_command_result"] = _response_contexts[response_request_id].result
 	if kind == "pong" and response_request_id == _pending_ping_request_id:
 		last_rtt_ms = Time.get_ticks_msec() - _ping_sent_at
 		_pending_ping_request_id = ""
@@ -660,11 +680,19 @@ func _receive(packet: PackedByteArray) -> void:
 		prior_room_callback = str(payload.get("match_id", "")) != current_match_id
 	elif kind == "room.started" and _prelaunch_valid():
 		prior_room_callback = str(payload.get("match_id", "")) != str(_prelaunch_ticket.match_id)
-	elif kind == "room.snapshot" and payload.has("_origin_context"):
-		var origin: Dictionary = payload._origin_context
-		prior_room_callback = (int(origin.get("session_generation", -1)) != session_generation
-			or str(origin.get("match_id", "")) != _expected_match_context()
-			or (room_context_epoch >= 0 and int(origin.get("room_context_epoch", -1)) != room_context_epoch))
+	elif kind == "room.snapshot":
+		var expected := capture_context()
+		if not str(expected.match_id).is_empty():
+			prior_room_callback = str(payload.get("match_id", "")) != str(expected.match_id) or str(payload.get("room_id", "")) != str(expected.room_id)
+		if payload.has("_origin_context"):
+			var origin: Dictionary = payload._origin_context
+			prior_room_callback = prior_room_callback or (int(origin.get("session_generation", -1)) != session_generation
+				or str(origin.get("match_id", "")) != str(expected.match_id)
+				or str(origin.get("room_id", "")) != str(expected.room_id)
+				or (room_context_epoch >= 0 and int(origin.get("room_context_epoch", -1)) != room_context_epoch))
+		elif not response_request_id.is_empty():
+			# Expired/unrecognized request responses need a fresh scoped read.
+			prior_room_callback = true
 	if prior_room_callback:
 		# Consume the session cursor, but an old room callback cannot replace
 		# the current route/revision or release its snapshot recovery lock.

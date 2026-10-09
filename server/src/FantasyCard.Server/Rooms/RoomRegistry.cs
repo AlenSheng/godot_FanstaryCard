@@ -50,7 +50,7 @@ public sealed partial class RoomRegistry(
                 : new RoomLifecycleMetricsTracker(initialSnapshot, metrics, timeProvider);
             var transitionPublisher = eventStore is null
                 ? null
-                : new RoomTransitionEventPublisher(initialSnapshot, eventStore, connections);
+                : new RoomTransitionEventPublisher(initialSnapshot, eventStore, connections, matchId);
             var observer = snapshotRepository is null &&
                 (settlementCoordinator is null || matchId is not { }) &&
                 lifecycleTracker is null && transitionPublisher is null

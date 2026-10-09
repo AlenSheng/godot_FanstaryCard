@@ -39,7 +39,7 @@ public sealed partial class ProcessLifecycleRecoveryTests
         await using var first = FullHost.Start(database.ConnectionString, port, label + "-before");
         var host = first;
         await host.WaitForHealthAsync(client, "/health/ready", HttpStatusCode.OK, ct);
-        await using var relay = new A05GuardRelay(port, outcome, label);
+        await using var relay = new A05GuardRelay(port, outcome, label, legacySnapshotReads: context == "recovered");
         var fixture = CreateAckClientFixture(label);
         CopyFixtureFile(Path.Combine(RepositoryRoot(), "client"), fixture, Path.Combine(RepositoryRoot(), "client/tests/pr13_a05_guard_windows.gd"));
         var control = Path.Combine(fixture, "control"); Directory.CreateDirectory(control);
@@ -87,6 +87,7 @@ public sealed partial class ProcessLifecycleRecoveryTests
                 await A05ControlAsync(control, "ack-retry", new { actual = "no DB mutation; allow the real retry" }, ct);
             }
             await godot;
+            if (context == "recovered") Assert.True(relay.LegacySnapshotReads > 0, "Recovery must exercise actual pre-selector snapshot requests.");
             Assert.Empty(relay.Errors);
             var attempts = relay.Attempts.ToArray();
             Assert.Equal(outcome == "success" ? 1 : outcome == "committed-loss" ? 3 : 4, attempts.Length);

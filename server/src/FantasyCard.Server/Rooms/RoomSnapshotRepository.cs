@@ -50,6 +50,33 @@ public sealed class RoomSnapshotRepository(NpgsqlDataSource dataSource, TimeProv
             : null;
     }
 
+    public async Task<OwnedTerminalCheckpoint?> GetOwnedTerminalAsync(
+        Guid playerId, Guid roomId, Guid matchId, CancellationToken cancellationToken = default)
+    {
+        // A caller-supplied room ID is never sufficient authority. Match membership
+        // and committed terminal state must be established in the same query.
+        await using var command = dataSource.CreateCommand(
+            """
+            SELECT m.seed,s.snapshot_json::text
+            FROM matches m
+            JOIN match_players p ON p.match_id=m.match_id AND p.player_id=$1 AND NOT p.is_bot
+            JOIN room_snapshots s ON s.room_id=m.room_id
+            WHERE m.room_id=$2 AND m.match_id=$3 AND p.state='Settled'
+            """);
+        command.Parameters.AddWithValue(playerId);
+        command.Parameters.AddWithValue(roomId);
+        command.Parameters.AddWithValue(matchId);
+        await using var reader = await command.ExecuteReaderAsync(cancellationToken);
+        if (!await reader.ReadAsync(cancellationToken)) return null;
+        var snapshot = JsonSerializer.Deserialize<BattleRoomSnapshot>(reader.GetString(1), SerializerOptions)
+            ?? throw new InvalidOperationException("The owned terminal checkpoint is invalid.");
+        var player = snapshot.Players.SingleOrDefault(value => value.PlayerId == playerId);
+        if (snapshot.RoomId != roomId || player is null || player.IsBot ||
+            player.Phase is not (RoomPlayerPhase.Dead or RoomPlayerPhase.Extracted))
+            return null;
+        return new(snapshot, reader.GetInt32(0));
+    }
+
     public async Task<IReadOnlyList<PersistedRoomSnapshot>> GetRunningAsync(CancellationToken cancellationToken = default)
     {
         await using var command = dataSource.CreateCommand(
@@ -85,6 +112,8 @@ public sealed class RoomSnapshotRepository(NpgsqlDataSource dataSource, TimeProv
 
     private sealed record SavedCheckpoint(long Revision, string CriticalMarker);
 }
+
+public sealed record OwnedTerminalCheckpoint(BattleRoomSnapshot Snapshot, int Seed);
 
 public sealed record PersistedRoomSnapshot(
     Guid MatchId,

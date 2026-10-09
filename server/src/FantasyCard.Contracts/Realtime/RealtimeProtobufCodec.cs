@@ -60,6 +60,8 @@ public static class RealtimeProtobufCodec
             _ when command.Payload is null => null,
             _ => throw new InvalidDataException($"No protobuf payload schema is registered for command '{command.Type}'.")
         });
+        writer.String(6, command.RoomId?.ToString("D"));
+        writer.String(7, command.MatchId?.ToString("D"));
         return writer.ToArray();
     }
 
@@ -97,7 +99,8 @@ public static class RealtimeProtobufCodec
             _ when payloadBytes.Length == 0 => null,
             _ => throw new InvalidDataException($"No protobuf payload schema is registered for command '{type}'.")
         };
-        return new ClientCommand(type, NullIfEmpty(envelope.String(3)), envelope.OptionalInt64(4), payload);
+        return new ClientCommand(type, NullIfEmpty(envelope.String(3)), envelope.OptionalInt64(4), payload,
+            ParseOptionalGuid(envelope.String(6), type), ParseOptionalGuid(envelope.String(7), type));
     }
 
     public static byte[] EncodeServer(ServerEvent message)
@@ -213,7 +216,7 @@ public static class RealtimeProtobufCodec
         "room.moved" when message.Payload is RoomMovedEventPayload value => Message(w => { w.String(1, value.PlayerId.ToString("D")); w.Int64(2, value.Row); w.Int64(3, value.Column); }),
         "duel.leave_ack" when message.Payload is DuelLeaveEventPayload value => Message(w => { w.String(1, value.DuelId.ToString("D")); w.Bool(2, value.Completed); }),
         "duel.escape_started" or "duel.escape_interrupted" or "duel.escape_failed" when message.Payload is DuelEscapeEventPayload value => Message(w => { w.String(1, value.DuelId.ToString("D")); w.String(2, value.Probability.ToString(System.Globalization.CultureInfo.InvariantCulture)); w.String(3, value.Status); }),
-        "action.extract_started" or "action.extract_cancelled" or "action.extract_completed" when message.Payload is ActionExtractEventPayload value => Message(w => { w.String(1, value.Status); w.Int64(2, (long)value.Remaining.TotalMilliseconds); }),
+        "action.extract_started" or "action.extract_cancelled" or "action.extract_completed" when message.Payload is ActionExtractEventPayload value => Message(w => { w.String(1, value.Status); w.Int64(2, (long)value.Remaining.TotalMilliseconds); w.String(3, value.RoomId?.ToString("D")); w.String(4, value.MatchId?.ToString("D")); }),
         "action.spring_started" or "action.spring_cancelled" or "action.spring_completed" when message.Payload is ActionSpringEventPayload value => Message(w => { w.String(1, value.Status); w.Int64(2, (long)value.Remaining.TotalMilliseconds); }),
         "action.potion_used" when message.Payload is ActionPotionEventPayload value => Message(w => { w.String(1, value.ItemId); w.Int64(2, value.Healed); }),
         "relic.taken" when message.Payload is RelicTakeEventPayload value => Message(w => { w.String(1, value.PileId.ToString("D")); w.String(2, value.ItemId); w.Int64(3, value.PileVersion); }),
@@ -228,7 +231,8 @@ public static class RealtimeProtobufCodec
         }),
         "duel.started" when message.Payload is DuelStartedEventPayload value => Message(w => { w.String(1, value.DuelId.ToString("D")); w.String(2, value.FirstPlayerId.ToString("D")); w.String(3, value.LatePlayerId.ToString("D")); w.Int64(4, value.LatePlayerUnlockAtUnixMs); w.Int64(5, value.LeaveWindowEndsAtUnixMs); }),
         "duel.ended" when message.Payload is DuelEndedEventPayload value => Message(w => { w.String(1, value.DuelId.ToString("D")); w.String(2, value.Reason); w.String(3, value.WinnerId?.ToString("D")); w.Bool(4, value.SnapshotRequired); }),
-        "player.died" when message.Payload is PlayerDiedEventPayload value => Message(w => { w.String(1, value.PlayerId.ToString("D")); w.String(2, value.Cause); w.String(3, value.DuelId?.ToString("D")); }),
+        "player.died" when message.Payload is PlayerDiedEventPayload value => Message(w => { w.String(1, value.PlayerId.ToString("D")); w.String(2, value.Cause); w.String(3, value.DuelId?.ToString("D")); w.String(4, value.RoomId?.ToString("D")); w.String(5, value.MatchId?.ToString("D")); }),
+        "room.command_cancelled" when message.Payload is RoomCommandCancelledEventPayload value => Message(w => { w.String(1, value.RoomId.ToString("D")); w.String(2, value.MatchId.ToString("D")); w.String(3, value.CommandType); w.String(4, value.Reason); }),
         "error.invalid_message" when message.Payload is null => null,
         _ when message.Payload is null => null,
         _ => throw new InvalidDataException($"No protobuf payload schema is registered for event '{message.Type}'.")
@@ -279,7 +283,7 @@ public static class RealtimeProtobufCodec
             "room.moved" => new RoomMovedEventPayload(ParseGuid(payload.String(1), type), (int)payload.Int64(2), (int)payload.Int64(3)),
             "duel.leave_ack" => new DuelLeaveEventPayload(ParseGuid(payload.String(1), type), payload.Bool(2)),
             "duel.escape_started" or "duel.escape_interrupted" or "duel.escape_failed" => new DuelEscapeEventPayload(ParseGuid(payload.String(1), type), double.Parse(payload.String(2), System.Globalization.CultureInfo.InvariantCulture), payload.String(3)),
-            "action.extract_started" or "action.extract_cancelled" or "action.extract_completed" => new ActionExtractEventPayload(payload.String(1), TimeSpan.FromMilliseconds(payload.Int64(2))),
+            "action.extract_started" or "action.extract_cancelled" or "action.extract_completed" => new ActionExtractEventPayload(payload.String(1), TimeSpan.FromMilliseconds(payload.Int64(2)), ParseOptionalGuid(payload.String(3), type), ParseOptionalGuid(payload.String(4), type)),
             "action.spring_started" or "action.spring_cancelled" or "action.spring_completed" => new ActionSpringEventPayload(payload.String(1), TimeSpan.FromMilliseconds(payload.Int64(2))),
             "action.potion_used" => new ActionPotionEventPayload(payload.String(1), checked((int)payload.Int64(2))),
             "relic.taken" => new RelicTakeEventPayload(ParseGuid(payload.String(1), type), payload.String(2), payload.Int64(3)),
@@ -291,7 +295,8 @@ public static class RealtimeProtobufCodec
                 payload.OptionalInt64(4)),
             "duel.started" => new DuelStartedEventPayload(ParseGuid(payload.String(1), type), ParseGuid(payload.String(2), type), ParseGuid(payload.String(3), type), payload.Int64(4), payload.Int64(5)),
             "duel.ended" => new DuelEndedEventPayload(ParseGuid(payload.String(1), type), payload.String(2), ParseOptionalGuid(payload.String(3), type), payload.Bool(4)),
-            "player.died" => new PlayerDiedEventPayload(ParseGuid(payload.String(1), type), payload.String(2), ParseOptionalGuid(payload.String(3), type)),
+            "player.died" => new PlayerDiedEventPayload(ParseGuid(payload.String(1), type), payload.String(2), ParseOptionalGuid(payload.String(3), type), ParseOptionalGuid(payload.String(4), type), ParseOptionalGuid(payload.String(5), type)),
+            "room.command_cancelled" => new RoomCommandCancelledEventPayload(ParseGuid(payload.String(1), type), ParseGuid(payload.String(2), type), payload.String(3), payload.String(4)),
             _ => null
         };
     }

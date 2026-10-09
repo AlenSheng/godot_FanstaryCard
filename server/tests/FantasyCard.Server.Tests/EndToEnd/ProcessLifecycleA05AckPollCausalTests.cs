@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.WebSockets;
 using System.Text.Json;
+using FantasyCard.Contracts.Realtime;
 using FantasyCard.Domain.Players;
 using FantasyCard.Server.Common;
 using FantasyCard.Server.Identity;
@@ -73,6 +74,7 @@ public sealed partial class ProcessLifecycleRecoveryTests
             relay.ReleaseAck();
             await A05ControlAsync(control, "ack-released", new { expected = "actual backend ACK then authoritative post-ACK Bootstrap" }, ct);
             await godot;
+            Assert.True(relay.LegacySnapshotReads > 0, "The lost-route race must exercise actual pre-selector snapshot requests.");
             await A05AuditAsync(database, "causal-after", true, ct);
             Assert.Equal(23L, await database.ScalarAsync<long>("SELECT gold FROM player_wallets WHERE player_id=$1", playerId));
             Assert.Equal(1L, await database.ScalarAsync<long>("SELECT count(*) FROM economy_ledger WHERE reason='settlement.commit'"));
@@ -100,6 +102,8 @@ public sealed partial class ProcessLifecycleRecoveryTests
         private readonly TaskCompletionSource _releasePoll = new(TaskCreationOptions.RunContinuationsAsynchronously);
         private readonly TaskCompletionSource _releaseAck = new(TaskCreationOptions.RunContinuationsAsynchronously);
         private int _getHeld; private int _pollHeld; private int _ackHeld;
+        private int _legacySnapshotReads;
+        public int LegacySnapshotReads => Volatile.Read(ref _legacySnapshotReads);
         public int Port { get; } = ReservePort();
         public TaskCompletionSource SettlementGetHeld { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
         public TaskCompletionSource PollHeld { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -159,7 +163,7 @@ public sealed partial class ProcessLifecycleRecoveryTests
             var uri = new UriBuilder(_backend.BaseAddress!) { Scheme = "ws", Path = context.Request.Path, Query = context.Request.QueryString.Value?.TrimStart('?') }.Uri;
             await upstream.ConnectAsync(uri, _stop.Token); using var downstream = await context.WebSockets.AcceptWebSocketAsync();
             using var linked = CancellationTokenSource.CreateLinkedTokenSource(_stop.Token);
-            var forward = PumpAsync(upstream, downstream, linked.Token); var reverse = PumpAsync(downstream, upstream, linked.Token);
+            var forward = PumpAsync(upstream, downstream, linked.Token); var reverse = PumpLegacySnapshotReadsAsync(downstream, upstream, linked.Token);
             await Task.WhenAny(forward, reverse); linked.Cancel();
             try { await Task.WhenAll(forward, reverse); } catch (Exception error) when (error is OperationCanceledException or WebSocketException) { }
         }
@@ -173,6 +177,16 @@ public sealed partial class ProcessLifecycleRecoveryTests
                 await destination.SendAsync(new ArraySegment<byte>(buffer, 0, frame.Count), frame.MessageType, frame.EndOfMessage, ct);
             }
         }
+        private Task PumpLegacySnapshotReadsAsync(WebSocket source, WebSocket destination, CancellationToken ct) =>
+            ProcessLifecycleRecoveryTests.PumpLegacySnapshotReadsAsync(source, destination, (command, original, legacy) =>
+            {
+                if (command.RoomId is not null && command.MatchId is not null) Interlocked.Increment(ref _legacySnapshotReads);
+                Record("A05-causal-legacy-snapshot-request", new
+                {
+                    command.RequestId, hadSelectors = command.RoomId is not null && command.MatchId is not null,
+                    originalSha256 = A05Sha(original), legacySha256 = A05Sha(legacy)
+                });
+            }, ct);
         public async ValueTask DisposeAsync()
         { _stop.Cancel(); await _listener.StopAsync(); _listener.Dispose(); _backend.Dispose(); _stop.Dispose(); }
     }

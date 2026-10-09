@@ -6,7 +6,8 @@ namespace FantasyCard.Server.Realtime;
 internal sealed class RoomTransitionEventPublisher(
     BattleRoomSnapshot initial,
     RealtimeEventStore eventStore,
-    ConnectionRegistry? connections = null)
+    ConnectionRegistry? connections = null,
+    Guid? matchId = null)
 {
     private BattleRoomSnapshot _previous = initial;
 
@@ -73,7 +74,7 @@ internal sealed class RoomTransitionEventPublisher(
             var before = previous.Players.SingleOrDefault(value => value.PlayerId == player.PlayerId);
             if (before is null || before.Phase == RoomPlayerPhase.Dead || player.IsBot) continue;
             var cause = before.Phase == RoomPlayerPhase.Pvp ? "PvpDeath" : "PveDeath";
-            Add(player.PlayerId, "player.died", new PlayerDiedEventPayload(player.PlayerId, cause, before.CurrentDuelId));
+            Add(player.PlayerId, "player.died", new PlayerDiedEventPayload(player.PlayerId, cause, before.CurrentDuelId, current.RoomId, matchId));
         }
 
         foreach (var player in current.Players)
@@ -85,7 +86,7 @@ internal sealed class RoomTransitionEventPublisher(
             {
                 var completed = player.Phase == RoomPlayerPhase.Extracted;
                 Add(player.PlayerId, completed ? "action.extract_completed" : "action.extract_cancelled",
-                    new ActionExtractEventPayload(completed ? "Completed" : "Cancelled", TimeSpan.Zero));
+                    new ActionExtractEventPayload(completed ? "Completed" : "Cancelled", TimeSpan.Zero, current.RoomId, matchId));
             }
             if (before.SpringDrink is { } spring && spring.Remaining > TimeSpan.Zero && player.SpringDrink is null)
             {

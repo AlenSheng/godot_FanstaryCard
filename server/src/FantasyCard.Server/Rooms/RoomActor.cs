@@ -95,6 +95,7 @@ public sealed class RoomActor : IAsyncDisposable
         if (!_commands.Writer.TryWrite(workItem))
         {
             _metrics?.ObserveRoomActorQueueLength(Interlocked.Decrement(ref _queuedCommands));
+            if (_shutdown.IsCancellationRequested) throw new RoomActorClosedException(RoomId);
             throw new InvalidOperationException("The room actor command queue is full or closed.");
         }
         return new ValueTask<TResult>(workItem.Task);
@@ -295,4 +296,9 @@ public sealed class RoomActor : IAsyncDisposable
             }
         }
     }
+}
+
+public sealed class RoomActorClosedException(Guid roomId) : Exception("The room actor has closed.")
+{
+    public Guid RoomId { get; } = roomId;
 }

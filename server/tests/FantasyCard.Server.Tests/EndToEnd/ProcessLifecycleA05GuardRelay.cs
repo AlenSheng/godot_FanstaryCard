@@ -19,6 +19,9 @@ public sealed partial class ProcessLifecycleRecoveryTests
         private readonly CancellationTokenSource _stop = new();
         private readonly string _outcome;
         private readonly string _label;
+        private readonly bool _legacySnapshotReadsEnabled;
+        private int _legacySnapshotReads;
+        public int LegacySnapshotReads => Volatile.Read(ref _legacySnapshotReads);
         private readonly TaskCompletionSource _releaseGet = new(TaskCreationOptions.RunContinuationsAsynchronously);
         private readonly TaskCompletionSource _releasePoll = new(TaskCreationOptions.RunContinuationsAsynchronously);
         private readonly TaskCompletionSource _releaseAck = new(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -32,9 +35,10 @@ public sealed partial class ProcessLifecycleRecoveryTests
         public TaskCompletionSource SettlementGetHeld { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
         public TaskCompletionSource PollHeld { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
         public TaskCompletionSource AckHeld { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
-        public A05GuardRelay(int backendPort, string outcome, string label)
+        public A05GuardRelay(int backendPort, string outcome, string label, bool legacySnapshotReads = false)
         {
             _outcome = outcome; _label = label;
+            _legacySnapshotReadsEnabled = legacySnapshotReads;
             _backend = new() { BaseAddress = new Uri($"http://127.0.0.1:{backendPort}"), Timeout = TimeSpan.FromSeconds(15) };
             _listener = new HostBuilder().ConfigureWebHost(web => web.UseKestrel().UseUrls($"http://127.0.0.1:{Port}")
                 .Configure(app => { app.UseWebSockets(); app.Run(HandleAsync); })).Build(); _listener.Start();
@@ -121,7 +125,19 @@ public sealed partial class ProcessLifecycleRecoveryTests
             var uri = new UriBuilder(_backend.BaseAddress!) { Scheme = "ws", Path = context.Request.Path, Query = context.Request.QueryString.Value?.TrimStart('?') }.Uri;
             await upstream.ConnectAsync(uri, _stop.Token); using var downstream = await context.WebSockets.AcceptWebSocketAsync();
             using var linked = CancellationTokenSource.CreateLinkedTokenSource(_stop.Token);
-            var forward = PumpAsync(upstream, downstream, linked.Token); var reverse = PumpAsync(downstream, upstream, linked.Token);
+            var forward = PumpAsync(upstream, downstream, linked.Token);
+            var reverse = _legacySnapshotReadsEnabled
+                ? PumpLegacySnapshotReadsAsync(downstream, upstream, (command, original, legacy) =>
+                {
+                    if (command.RoomId is not null && command.MatchId is not null) Interlocked.Increment(ref _legacySnapshotReads);
+                    Record("A05-guard-legacy-snapshot-request", new
+                    {
+                        _label, command.RequestId,
+                        hadSelectors = command.RoomId is not null && command.MatchId is not null,
+                        originalSha256 = A05Sha(original), legacySha256 = A05Sha(legacy)
+                    });
+                }, linked.Token)
+                : PumpAsync(downstream, upstream, linked.Token);
             await Task.WhenAny(forward, reverse); linked.Cancel();
             try { await Task.WhenAll(forward, reverse); } catch (Exception error) when (error is OperationCanceledException or WebSocketException) { }
         }

@@ -4,7 +4,9 @@ public sealed record ClientCommand(
     string Type,
     string? RequestId,
     long? ExpectedRevision,
-    object? Payload);
+    object? Payload,
+    Guid? RoomId = null,
+    Guid? MatchId = null);
 
 public sealed record ServerEvent(
     string Type,
@@ -162,9 +164,10 @@ public sealed record DuelEscapeCommandPayload(Guid DuelId);
 public sealed record DuelEscapeEventPayload(Guid DuelId, double Probability, string Status);
 public sealed record DuelStartedEventPayload(Guid DuelId, Guid FirstPlayerId, Guid LatePlayerId, long LatePlayerUnlockAtUnixMs, long LeaveWindowEndsAtUnixMs);
 public sealed record DuelEndedEventPayload(Guid DuelId, string Reason, Guid? WinnerId, bool SnapshotRequired = true);
-public sealed record PlayerDiedEventPayload(Guid PlayerId, string Cause, Guid? DuelId = null);
+public sealed record PlayerDiedEventPayload(Guid PlayerId, string Cause, Guid? DuelId = null, Guid? RoomId = null, Guid? MatchId = null);
 public sealed record ActionExtractCommandPayload;
-public sealed record ActionExtractEventPayload(string Status, TimeSpan Remaining);
+public sealed record ActionExtractEventPayload(string Status, TimeSpan Remaining, Guid? RoomId = null, Guid? MatchId = null);
+public sealed record RoomCommandCancelledEventPayload(Guid RoomId, Guid MatchId, string CommandType, string Reason);
 public sealed record ActionSpringCommandPayload;
 public sealed record ActionSpringEventPayload(string Status, TimeSpan Remaining);
 public sealed record ActionPotionCommandPayload;

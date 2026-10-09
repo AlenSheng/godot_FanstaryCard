@@ -9,6 +9,9 @@ message ClientEnvelope {
   string request_id = 3;
   optional int64 expected_revision = 4;
   bytes payload = 5;
+  // Optional for legacy clients; paired IDs scope an in-flight room operation.
+  string room_id = 6;
+  string match_id = 7;
 }
 
 message ServerEnvelope {
@@ -196,7 +199,7 @@ message RoomMovedEvent { string player_id = 1; int32 row = 2; int32 column = 3; 
 message DuelLeaveEvent { string duel_id = 1; bool completed = 2; }
 // Probability is an invariant-culture decimal string, matching the existing v1 wire encoding.
 message DuelEscapeEvent { string duel_id = 1; string probability = 2; string status = 3; }
-message ActionExtractEvent { string status = 1; int64 remaining_ms = 2; }
+message ActionExtractEvent { string status = 1; int64 remaining_ms = 2; string room_id = 3; string match_id = 4; }
 message ActionSpringEvent { string status = 1; int64 remaining_ms = 2; }
 message ActionPotionEvent { string item_id = 1; int32 healed = 2; }
 message RelicTakeEvent { string pile_id = 1; string item_id = 2; int64 pile_version = 3; }
@@ -244,7 +247,11 @@ message ActionPotionCommand {}
 message RelicTakeCommand { string pile_id = 1; string item_id = 2; int64 pile_version = 3; string replace_item_id = 4; }
 message DuelStartedEvent { string duel_id = 1; string first_player_id = 2; string late_player_id = 3; int64 late_player_unlock_at_unix_ms = 4; int64 leave_window_ends_at_unix_ms = 5; }
 message DuelEndedEvent { string duel_id = 1; string reason = 2; string winner_id = 3; bool snapshot_required = 4; }
-message PlayerDiedEvent { string player_id = 1; string cause = 2; string duel_id = 3; }
+message PlayerDiedEvent { string player_id = 1; string cause = 2; string duel_id = 3; string room_id = 4; string match_id = 5; }
+
+// The correlated intent was not applied because its own room already ended.
+// This is distinct from a successful mutation and from an invalid command.
+message RoomCommandCancelledEvent { string room_id = 1; string match_id = 2; string command_type = 3; string reason = 4; }
 
 message MapPlayerCountEvent { int32 player_count = 1; }
 

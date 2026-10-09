@@ -161,6 +161,10 @@ RoomActor 每 tick 调 `BotDirector.Decide`，只执行返回的意图：
 
 房间下发快照 / 增量：`room.snapshot`、`room.revision`、`map.player_count`、`duel.started`、`duel.ended`、`battle.*`、`player.died`、`settlement.ready`。小地图投影含 Boss 格、泉水格、自己位置和当前地图活跃玩家总数，不含其他玩家位置。
 
+房间请求的 `ClientEnvelope` 可成对携带 `room_id`、`match_id`（新增字段 6、7，原字段号不变）；新客户端使用发起请求时的房间上下文，旧客户端省略时保持原路由行为。指定旧房间的请求不得执行到该玩家的新房间。`player.died`、`action.extract_*` 的新增房间、对局标识用于核验结束通知的归属。
+
+当串行房间执行器在执行变更前发现本人已死亡或撤离，服务端返回 `room.command_cancelled`（`RoomEndedBeforeApply`）及同一请求的终局 `room.snapshot`，表示意图未执行，不表示成功确认。路由已释放时，只允许按已认证玩家、匹配的房间和对局、非机器人且已提交的 `Settled` 成员状态读取持久终局检查点；检查点中的本人阶段也必须为 `Dead` 或 `Extracted`。该读取不启动房间、不触发结算或资产变更。客户端保留后续响应的原始会话和房间上下文，取消通知不得确认或重放原变更。
+
 登录：原型本地开发身份；Steam 票据服务端向平台验证。微信 `code` 只留接口。
 
 ---
