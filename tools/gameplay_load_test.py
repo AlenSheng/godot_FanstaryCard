@@ -479,7 +479,9 @@ def main():
                     reason='smoke_passed' if smoke_verified else 'smoke_failed'
                     break
                 while next_sample<=time.monotonic(): next_sample+=10
-            if args.smoke and time.monotonic()-started_monotonic>420*args.smoke_cycles: reason='smoke_timeout'; break
+            # The registered overall deadline above applies to smoke as well.
+            # A second fixed 420s/cycle cutoff would truncate a valid 600s/cycle
+            # profile before its declared --max-seconds observation budget.
             time.sleep(.25)
     except KeyboardInterrupt: reason='operator_interrupted'
     except Exception as exc:

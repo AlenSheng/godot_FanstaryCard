@@ -152,7 +152,8 @@ class RequestAccountingContractTests(unittest.TestCase):
 class CoordinatorSamplingContractTests(unittest.TestCase):
     def run_fixture(self, *, overlap=False, local_resources=False, missing_actor=False, cycle_limit=240,
                     resource_changes=None, final_status_change=None, wall_jump=False, max_groups=1,
-                    client_max_fps=None, generator_observation=None, probe_delay_seconds=0, delay_all_probes=False):
+                    client_max_fps=None, generator_observation=None, probe_delay_seconds=0, delay_all_probes=False,
+                    smoke=False, max_seconds=630):
         """Run the real final verdict with fake child/clock/network observations."""
         elapsed = [0.0]
         children = []
@@ -229,8 +230,8 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
             return []
 
         with tempfile.TemporaryDirectory() as directory:
-            argv = ['gameplay_load_test.py', '--run', '--godot', sys.executable,
-                '--max-groups', str(max_groups), '--group-size', '1', '--max-seconds', '630',
+            argv = ['gameplay_load_test.py', '--smoke' if smoke else '--run', '--godot', sys.executable,
+                '--max-groups', str(max_groups), '--group-size', '1', '--max-seconds', str(max_seconds),
                 '--hold-seconds', '600', '--cycle-limit-seconds', str(cycle_limit), '--output', directory]
             if local_resources: argv.append('--local-resource-sampling')
             if client_max_fps is not None: argv+=['--client-max-fps',str(client_max_fps)]
@@ -261,6 +262,20 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
                 self.assertEqual(len(probe_finished),2 if delay_all_probes else 1)
                 result['actual_delayed_fixture_workers']=probe_events
             return code, result
+
+    def test_smoke_uses_registered_1800_second_budget_without_1260_second_cutoff(self):
+        code, report = self.run_fixture(smoke=True, cycle_limit=600, max_seconds=1800)
+        self.assertEqual(report['stop_reason'], 'duration_limit')
+        self.assertGreaterEqual(report['ended'] - report['started'], 1800)
+        self.assertFalse(report['acceptance_passed'])
+        self.assertNotEqual(code, 0)
+
+    def test_smoke_still_obeys_a_shorter_explicit_overall_deadline(self):
+        _, report = self.run_fixture(smoke=True, cycle_limit=600, max_seconds=600)
+        self.assertEqual(report['stop_reason'], 'duration_limit')
+        self.assertGreaterEqual(report['ended'] - report['started'], 600)
+        self.assertLess(report['ended'] - report['started'], 601)
+        self.assertFalse(report['acceptance_passed'])
 
     def test_wall_jump_keeps_group_interval_and_monotonic_command_rate(self):
         code, report = self.run_fixture(wall_jump=True, max_groups=2)
