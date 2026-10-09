@@ -61,6 +61,7 @@ def start(owned_test_bypass=False, image_id=None):
               'effective_admission': {'ip_policy_limits_enabled': not owned_test_bypass,
                                       'realtime_command_quota_enabled': not owned_test_bypass,
                                       'application_database_pool_enabled': not owned_test_bypass},
+              'controller_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
               'candidate_activation': False, 'live_database_used': False}
     config = BASE / 'cache/live-monitoring'
     config.mkdir(mode=0o700, exist_ok=True)
@@ -150,7 +151,9 @@ scrape_configs:
 
         launch('postgres', ['--memory', '192m', '--cpus', '0.3', '-p', '127.0.0.1:25434:5432', '--env-file', str(pg_env)], PG_IMAGE)
         deadline = time.monotonic() + 60
-        while docker('exec', NAMES['postgres'], 'pg_isready', '-U', 'fantasycard', '-d', database, check=False).returncode:
+        # The entrypoint's temporary initialization server accepts Unix sockets
+        # before restarting. TCP readiness proves the final database is serving.
+        while docker('exec', NAMES['postgres'], 'pg_isready', '-h', '127.0.0.1', '-U', 'fantasycard', '-d', database, check=False).returncode:
             if time.monotonic() >= deadline:
                 raise TimeoutError('Owned live-test PostgreSQL readiness')
             time.sleep(1)
@@ -173,6 +176,12 @@ scrape_configs:
         record.update(ok=True, database_name=database, runtime_revision=owned(record, 'server')['Config']['Labels'].get('org.opencontainers.image.revision'),
                       host_server_pid=owned(record, 'server')['State']['Pid'], prometheus_url='http://127.0.0.1:19190', server_url='http://127.0.0.1:28081',
                       config_hashes={p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in [otel, prom]})
+        actual_env = dict(value.split('=', 1) for value in owned(record, 'server')['Config']['Env'])
+        if (actual_env.get('RequestLimits__OwnedTestBypass', 'false').lower() == 'true') != owned_test_bypass:
+            raise ValueError('Effective owned-test bypass environment differs')
+        record['database_max_connections'] = int(docker(
+            'exec', NAMES['postgres'], 'psql', '-X', '-U', 'fantasycard', '-d', database,
+            '-At', '-c', 'SHOW max_connections').stdout.strip())
         save(state, record)
         return record
     except Exception as error:
