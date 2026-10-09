@@ -4,9 +4,9 @@ using FantasyCard.Server.Common;
 namespace FantasyCard.Server.Realtime;
 
 // The budget applies to every complete binary frame, including malformed protobuf.
-internal sealed class RealtimeFrameReader(int permitLimit)
+internal sealed class RealtimeFrameReader(int permitLimit, bool ownedTestBypass = false)
 {
-    private readonly RealtimeCommandRateLimiter _limiter = new(permitLimit);
+    private readonly RealtimeCommandRateLimiter _limiter = new(permitLimit, ownedTestBypass);
     private DateTimeOffset? _lastRateLimitNotice;
 
     public FrameResult Read(byte[] payload, DateTimeOffset now)

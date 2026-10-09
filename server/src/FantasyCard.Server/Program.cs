@@ -17,6 +17,7 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
+RequestLimitExtensions.ValidateOwnedTestBypass(builder.Configuration, builder.Environment);
 var localMetricsFile = builder.Configuration["Diagnostics:LocalMetricsFile"];
 if (!string.IsNullOrWhiteSpace(localMetricsFile))
 {

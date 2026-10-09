@@ -114,7 +114,7 @@ public static class RealtimeEndpoints
         await using var connection = new RealtimeConnection(socket, metrics);
         var replaced = registry.Register(player.UserId, connection);
         var frameReader = new RealtimeFrameReader(
-            requestLimits.Value.RealtimeCommandsPerSecond);
+            requestLimits.Value.RealtimeCommandsPerSecond, requestLimits.Value.OwnedTestBypass);
         try
         {
             // Registration must always be paired with the finally cleanup,

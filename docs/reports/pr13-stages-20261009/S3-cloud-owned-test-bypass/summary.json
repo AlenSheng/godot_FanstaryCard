@@ -1,0 +1,225 @@
+{
+  "execution_host": "Tencent cloud",
+  "base_source_sha": "493e3129858eaf97f875be7bc1ac35bf0337e1f0",
+  "dirty_before_commit": true,
+  "server_counters": {
+    "total": "232",
+    "executed": "232",
+    "passed": "232",
+    "failed": "0",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "0",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  },
+  "tools_result": "197",
+  "cloud_ownership_result": "3",
+  "owned_container_cleanup": true,
+  "input_files": {
+    ".github/workflows/gameplay-load.yml": "0dcda4f8e3fee687116684972fedad4b3624a849d351758658f21a93b6e2e3e0",
+    "client/tests/run_http_boundary.py": "2b97fbe759e6ad2f3158fc8a58d347db9d1aab9da79b988a7851e0166b3c0467",
+    "server/src/FantasyCard.Server/Common/RequestLimits.cs": "8fa6cbf4a56b87d3a332fb811b957dbb6284563d74c0589092fcbc3f82248cf8",
+    "server/src/FantasyCard.Server/Persistence/PersistenceExtensions.cs": "4ab83c1f68e7a408f11189c83c25c0fcc041ed1a4ecdf74759ed3d5a6d195f80",
+    "server/src/FantasyCard.Server/Program.cs": "1709c78f396aa2d64e4552102f9ad468d79877621d5056e717e36efb4d5dd5e4",
+    "server/src/FantasyCard.Server/Realtime/RealtimeEndpoints.cs": "6b68e779bab4b3ebf0552bcbd6b4f0a312e8bed5e9102bf74e12e34f34f44d5d",
+    "server/src/FantasyCard.Server/Realtime/RealtimeFrameReader.cs": "87b93aceecc173e29e9c14667b078c262b2616fbb7cca5f0f01e290cdf7f3fe0",
+    "server/tests/FantasyCard.Server.Tests/Common/RequestLimitTests.cs": "635a9012366f10844e3da62b5946cdf0df1dc68c240ce03447c2e94eb7a4d33b",
+    "server/tests/FantasyCard.Server.Tests/Realtime/ProtobufTicketTests.cs": "9953b160bc4abb6efc31da2ccd2c708796e86eb03d0681a8c6928fb848c43a82",
+    "tools/cloud/pr13/isolated_runtime.py": "1b7ad5debf9fe1830929ab925b13bedb14ca19a841aa994bb4a7fd6e5c483ef6",
+    "tools/tests/test_http_boundary_output.py": "6d708b4f726a04ea6f53606f0deceaf59a5a1c138b115fccb30f9b58de98f748"
+  },
+  "raw_proofs": {
+    "server.private.log": {
+      "bytes": 2141,
+      "sha256": "fe6fb64055602db9ee458549372cadd8b4fc33866eb4715b1858a374f4ee0f70"
+    },
+    "tools.private.log": {
+      "bytes": 32641,
+      "sha256": "3f877e114123a445e16da527237c63d2f8eeb767a9760968aacb0a923ae835cb"
+    },
+    "result.json": {
+      "bytes": 1977,
+      "sha256": "4bdf86a3a477553f34261f4829cb9d0db85e3bf1cf151ce4ed7a3d2a8200d924"
+    },
+    "server-repaired.private.log": {
+      "bytes": 1166,
+      "sha256": "22a6af860b4463e456d7420bd534515b43eb6c783b56e149ab79204e3dd31257"
+    },
+    "cloud-ownership.private.log": {
+      "bytes": 528,
+      "sha256": "800f3d01838749aa161edd1b7e8ac954889f77e2c3a97989d6aa7530f5360c0e"
+    },
+    "callback-isolation.private.log": {
+      "bytes": 143,
+      "sha256": "59f8b579cc7f40e0d5b5eb82e205ce148fe993cbbd9fec15816985bc5ba982a4"
+    },
+    "http-boundary.private.log": {
+      "bytes": 1919,
+      "sha256": "8b7abef687d305079ec24ba6adec65029f560d7ab7e3c1f0646ffea2886403da"
+    },
+    "results/server-repaired.trx": {
+      "bytes": 351582,
+      "sha256": "11a4bac103af224860ad8bae2d07614bc94a55ec88c2f9702645db14c3aa5310"
+    },
+    "callback-isolation/source_manifest.json": {
+      "bytes": 28530,
+      "sha256": "395e20078cd3ed75ec5d25f323015fbd2e72609a61e9560ecf7fa5fe8a7f19a1"
+    },
+    "callback-isolation/godot.stderr.log": {
+      "bytes": 23946,
+      "sha256": "5e342c1d1f132629d98d8198f7febbc9879f49212ae339a281e24c5f866080c5"
+    },
+    "callback-isolation/godot.stdout.log": {
+      "bytes": 7620,
+      "sha256": "5317367fff9f063d934a122bfd3fe48fec22291512729af2dd3713a04e9185c6"
+    },
+    "callback-isolation/report.json": {
+      "bytes": 11618,
+      "sha256": "e59a2c9fed141806052dccbb71f9acec611b1e1e198539a9ff0b313366a37079"
+    },
+    "callback-isolation/commands.json": {
+      "bytes": 1354,
+      "sha256": "f81f4d14d5f78679a639bd1cfe823d3d82322688f763294755735fca93e107d8"
+    },
+    "callback-isolation/manifest.json": {
+      "bytes": 990,
+      "sha256": "fdb498ac8bd7b445b899bcba4242d0fed30bfff5c13f9f702759699844bb4516"
+    },
+    "http-boundary/result.json": {
+      "bytes": 329,
+      "sha256": "bc6efac3b1364b051d49f8485a7d243208079db477df29b33ea9eb6848a8df5a"
+    },
+    "http-boundary/certificate-generation.log": {
+      "bytes": 1281,
+      "sha256": "02982bb411945deeb61a246f055980006352e72f30ac16e35b45205f2c65b0dc"
+    },
+    "http-boundary/boundary.log": {
+      "bytes": 1918,
+      "sha256": "f7c25f749956b2b4ed0d6c9d42167a3c7226112aab3d90339e8379f4f109c118"
+    }
+  },
+  "first_attempt_compilation_failed": true,
+  "ok": true,
+  "scope": "232 Server tests excluding PostgresIntegration; 197 tools tests; 3 cloud ownership tests; actual Linux Godot HTTP/TLS and callback-isolation fixtures. The prior 317-row complete suite is separate evidence and has not yet been rerun on this changed server.",
+  "changed_behavior": {
+    "ip_fixed_window_policies": "No limiter in owned test profile",
+    "realtime_commands_per_second": "No command quota in owned test profile",
+    "application_database_pool": "Pooling disabled in owned test profile; PostgreSQL and physical resources remain bounded"
+  },
+  "default_production_bypass": false,
+  "unsafe_configurations_fail_before_start": true,
+  "acceptance_of_132_tasks": false,
+  "human_experience": "Pending",
+  "capacity_50_100": "Deferred by human",
+  "new_server_cases": [
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Real_same_IP_requests_observe_policy_bypass_only_when_enabled(policy: \"admin\", bypass: False)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Unsafe_bypass_configuration_fails_before_host_starts(environment: \"Development\", urls: \"http://127.0.0.1:28081\", host: \"127.0.0.1\", database: \"pr13_tencent_live_0123456789abcdef\", session: \"\")",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Application_connection_pool_ceiling_is_removed_only_in_owned_test_profile(bypass: False)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Owned_test_realtime_bypass_accepts_burst_without_raising_default_limits",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Real_same_IP_requests_observe_policy_bypass_only_when_enabled(policy: \"admin\", bypass: True)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Guard_accepts_owned_test_and_keeps_disabled_production_configuration_valid",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.ProtobufTicketTests.Owned_test_frame_bypass_keeps_protobuf_validation",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Unsafe_bypass_configuration_fails_before_host_starts(environment: \"Development\", urls: \"http://localhost:28081;http://0.0.0.0:8080\", host: \"127.0.0.1\", database: \"pr13_tencent_live_0123456789abcdef\", session: \"pr13-tencent-20261009\")",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Unsafe_bypass_configuration_fails_before_host_starts(environment: \"Development\", urls: \"http://127.0.0.1:28081\", host: \"postgres\", database: \"pr13_tencent_live_0123456789abcdef\", session: \"pr13-tencent-20261009\")",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Unsafe_bypass_configuration_fails_before_host_starts(environment: \"Development\", urls: \"http://127.0.0.1:28081\", host: \"127.0.0.1\", database: \"fantasycard\", session: \"pr13-tencent-20261009\")",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Real_same_IP_requests_observe_policy_bypass_only_when_enabled(policy: \"market-read\", bypass: False)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Real_same_IP_requests_observe_policy_bypass_only_when_enabled(policy: \"auth\", bypass: True)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Realtime_limiter_requires_a_positive_limit",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Unsafe_bypass_configuration_fails_before_host_starts(environment: \"Development\", urls: \"http://0.0.0.0:28081\", host: \"127.0.0.1\", database: \"pr13_tencent_live_0123456789abcdef\", session: \"pr13-tencent-20261009\")",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Realtime_limiter_releases_only_expired_entries",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Unsafe_bypass_configuration_fails_before_host_starts(environment: \"Production\", urls: \"http://127.0.0.1:28081\", host: \"127.0.0.1\", database: \"pr13_tencent_live_0123456789abcdef\", session: \"pr13-tencent-20261009\")",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Unsafe_bypass_configuration_fails_before_host_starts(environment: \"Development\", urls: \"\", host: \"127.0.0.1\", database: \"pr13_tencent_live_0123456789abcdef\", session: \"pr13-tencent-20261009\")",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Real_same_IP_requests_observe_policy_bypass_only_when_enabled(policy: \"market-read\", bypass: True)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Real_same_IP_requests_observe_policy_bypass_only_when_enabled(policy: \"auth\", bypass: False)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Application_connection_pool_ceiling_is_removed_only_in_owned_test_profile(bypass: True)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Realtime_limiter_rejects_overflow_within_one_second",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Real_same_IP_requests_observe_policy_bypass_only_when_enabled(policy: \"economy-write\", bypass: True)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Real_same_IP_requests_observe_policy_bypass_only_when_enabled(policy: \"economy-write\", bypass: False)",
+      "outcome": "Passed"
+    }
+  ],
+  "tls_negative_case": {
+    "ok": true,
+    "expected_tls_errors": [
+      "ERROR: TLS handshake error: -9984"
+    ],
+    "unexpected_errors": [],
+    "tls_rejection_verified": true,
+    "exit_code": 0
+  }
+}

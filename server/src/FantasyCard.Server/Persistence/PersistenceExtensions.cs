@@ -1,4 +1,5 @@
 using Npgsql;
+using FantasyCard.Server.Common;
 
 namespace FantasyCard.Server.Persistence;
 
@@ -29,11 +30,15 @@ public static class PersistenceExtensions
             .GetSection(PersistenceOptions.SectionName)
             .Get<PersistenceOptions>() ?? new PersistenceOptions();
         Validate(persistence);
+        var testBypass = configuration.GetValue<bool>("RequestLimits:OwnedTestBypass");
 
         services.AddSingleton(_ =>
         {
             var connection = new NpgsqlConnectionStringBuilder(connectionString)
             {
+                // The owned test profile also removes the application pool's
+                // concurrent connection ceiling. PostgreSQL/resource limits remain.
+                Pooling = !testBypass,
                 MaxPoolSize = persistence.MaxPoolSize,
                 MinPoolSize = persistence.MinPoolSize,
                 Timeout = persistence.ConnectionTimeoutSeconds,

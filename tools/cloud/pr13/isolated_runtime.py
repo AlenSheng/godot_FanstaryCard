@@ -46,16 +46,21 @@ def owned(record, role):
     return info
 
 
-def start():
+def start(owned_test_bypass=False, image_id=None):
+    selected_image = image_id or IMAGE
     state = BASE / 'evidence/live-runtime.json'
     if state.exists():
         raise ValueError('An immutable live-test runtime record already exists')
     source = command('git', '-C', str(BASE / 'source'), 'rev-parse', 'HEAD').stdout.strip()
     record = {'source_sha': source, 'execution_host': 'Tencent cloud', 'started_at_unix': time.time(),
-              'containers': {}, 'ok': False, 'image_id': IMAGE,
+              'containers': {}, 'ok': False, 'image_id': selected_image,
               'client_connection': 'Local real Godot clients through strict SSH forwarding; HTTP/ticket WS over SSH is distinct from already verified public HTTPS/WSS.',
               'mode': 'Development on a private loopback test listener; local diagnostics explicitly enabled',
               'default_request_limits': {'auth_per_minute': 10, 'economy_per_minute': 30, 'market_read_per_minute': 120},
+              'owned_test_bypass': owned_test_bypass,
+              'effective_admission': {'ip_policy_limits_enabled': not owned_test_bypass,
+                                      'realtime_command_quota_enabled': not owned_test_bypass,
+                                      'application_database_pool_enabled': not owned_test_bypass},
               'candidate_activation': False, 'live_database_used': False}
     config = BASE / 'cache/live-monitoring'
     config.mkdir(mode=0o700, exist_ok=True)
@@ -68,7 +73,7 @@ def start():
             if docker('inspect', name, check=False).returncode == 0:
                 raise ValueError('A declared test-container name is already occupied')
         live = inspect('fantasycard-cloud-server-1')
-        if live['Image'] != IMAGE:
+        if live['Image'] != selected_image:
             raise ValueError('Production image changed since verified source freeze')
         for role, name in [('otel', 'fantasycard-cloud-otel-collector-1'),
                            ('prometheus', 'fantasycard-cloud-prometheus-1')]:
@@ -133,6 +138,9 @@ scrape_configs:
                           'ProtobufHttp__AllowLegacyJson=false\nRealtime__AllowLegacyAccessTokenQuery=false\n'
                           'Matchmaking__BotFillDelaySeconds=30\nDiagnostics__LocalMetricsFile=/evidence/server-metrics.private.jsonl\n'
                           'OTEL_EXPORTER_OTLP_METRICS_ENDPOINT=http://127.0.0.1:24317\nOTEL_METRIC_EXPORT_INTERVAL=1000\n')
+        if owned_test_bypass:
+            with app_env.open('a') as stream:
+                stream.write('RequestLimits__OwnedTestBypass=true\nRequestLimits__OwnedTestSession=' + LABEL + '\n')
         app_env.chmod(0o600)
 
         def launch(role, args, image, tail=()):
@@ -149,7 +157,7 @@ scrape_configs:
         launch('otel', ['--network', 'host', '--memory', '128m', '--cpus', '0.2', '-v', str(otel) + ':/etc/pr13.yaml:ro'], record['otel_image_id'], ['--config=/etc/pr13.yaml'])
         launch('prometheus', ['--network', 'host', '--memory', '192m', '--cpus', '0.2', '-v', str(prom) + ':/etc/pr13.yml:ro'], record['prometheus_image_id'],
                ['--config.file=/etc/pr13.yml', '--web.listen-address=127.0.0.1:19190', '--storage.tsdb.path=/prometheus', '--storage.tsdb.retention.time=6h'])
-        launch('server', ['--network', 'host', '--memory', '512m', '--cpus', '0.8', '--user', '1000:1000', '--env-file', str(app_env), '-v', str(evidence) + ':/evidence'], IMAGE)
+        launch('server', ['--network', 'host', '--memory', '512m', '--cpus', '0.8', '--user', '1000:1000', '--env-file', str(app_env), '-v', str(evidence) + ':/evidence'], selected_image)
         deadline = time.monotonic() + 120
         while True:
             try:
@@ -203,9 +211,11 @@ def stop(record):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('operation', choices=['start', 'audit', 'stop'])
+    parser.add_argument('--owned-test-bypass', action='store_true', help='Disable IP/realtime quotas and the application connection pool on this owned test instance')
+    parser.add_argument('--image-id', help='Exact verified current production image ID to reuse')
     args = parser.parse_args()
     if args.operation == 'start':
-        value = start()
+        value = start(args.owned_test_bypass, args.image_id)
     else:
         record = json.loads((BASE / 'evidence/live-runtime.json').read_text())
         value = audit(record) if args.operation == 'audit' else stop(record)

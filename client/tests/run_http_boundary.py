@@ -1,6 +1,7 @@
 """Real loopback HTTP framing faults; no production network or credentials."""
 import argparse
 import json
+import re
 import gzip
 import zlib
 import os
@@ -13,6 +14,30 @@ import threading
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from fixture_runtime import isolated_environment
+
+
+def evaluate_output(output, exit_code, tls_fault):
+    rows = []
+    for line in output.splitlines():
+        try:
+            value = json.loads(line)
+            if isinstance(value, dict): rows.append(value)
+        except json.JSONDecodeError:
+            pass
+    summaries = [row for row in rows if row.get('suite') == 'http-boundary']
+    tls_rows = [row for row in rows if row.get('path') == 'invalid-tls']
+    tls_rejected = len(tls_rows) == 1 and tls_rows[0].get('passed') is True and tls_rows[0].get('bytes') == 0
+    errors = [line.strip() for line in output.splitlines()
+              if re.search(r'ERROR:|Parse Error|Failed to load script', line)]
+    expected = [line for line in errors if tls_fault and tls_rejected and
+                re.fullmatch(r'ERROR: TLS handshake error: -[0-9]+', line)]
+    unexpected = [line for line in errors if line not in expected]
+    # Prove the certificate caused the negative case, rather than a timeout.
+    tls_valid = tls_rejected and len(expected) == 1 if tls_fault else not tls_rows
+    return {'ok': exit_code == 0 and len(summaries) == 1 and summaries[0].get('ok') is True and
+                  summaries[0].get('failures') == [] and tls_valid and not unexpected,
+            'expected_tls_errors': expected, 'unexpected_errors': unexpected,
+            'tls_rejection_verified': tls_rejected and len(expected) == 1}
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -98,9 +123,9 @@ def main():
         output = run.stdout + run.stderr
         (work/"boundary.log").write_text(output, encoding="utf8")
         print(output)
-        passed = run.returncode == 0 and "ERROR:" not in output and '"ok":true' in output
-        (work/"result.json").write_text(json.dumps({"ok": passed, "command": command, "exit_code": run.returncode}), encoding="utf8")
-        return 0 if passed else 1
+        result = evaluate_output(output, run.returncode, args.tls_fault)
+        (work/"result.json").write_text(json.dumps({**result, "command": command, "exit_code": run.returncode}), encoding="utf8")
+        return 0 if result['ok'] else 1
     except subprocess.TimeoutExpired as exc:
         output = (exc.stdout or b"") + (exc.stderr or b"")
         if isinstance(output, bytes): output = output.decode("utf8", errors="replace")

@@ -1,0 +1,53 @@
+{
+  "execution_split": {
+    "server": "actual Tencent owned Development test listener and disposable PostgreSQL",
+    "players": "actual Windows Godot clients through strict SSH forwarding"
+  },
+  "request_limits_unchanged": {
+    "auth_per_ip_per_minute": 10,
+    "write_per_ip_per_minute": 30,
+    "read_per_ip_per_minute": 120,
+    "realtime_per_second": 30
+  },
+  "origin_scope": "One cloud loopback source after SSH forwarding; no forged forwarding headers",
+  "attempts": [
+    {
+      "name": "live-ten-baseline",
+      "source_sha": "493e3129858eaf97f875be7bc1ac35bf0337e1f0",
+      "server_runtime_revision": "c351184f3598c3a591fef3e2e5171662161edea3",
+      "actual_local_godot_clients": 10,
+      "launch_interval_seconds": 6.5,
+      "target_natural_cycles": 30,
+      "completed_natural_cycles": 0,
+      "stop_reason": "invalid_evidence:workload_or_generator_failure",
+      "accepted": false,
+      "process_cleanup_complete": false,
+      "business_cleanup_verified": false,
+      "raw_report_sha256": "9e9aaeb9fe54ae047f35b9e0d9798a9460c6d09e28f98ede4a644c1b3e70e7dd",
+      "raw_report_bytes": 3408299,
+      "operator_stop_reason": null
+    },
+    {
+      "name": "live-ten-gradual-retry",
+      "source_sha": "493e3129858eaf97f875be7bc1ac35bf0337e1f0",
+      "server_runtime_revision": "c351184f3598c3a591fef3e2e5171662161edea3",
+      "actual_local_godot_clients": 10,
+      "launch_interval_seconds": 20.0,
+      "target_natural_cycles": 30,
+      "completed_natural_cycles": 8,
+      "stop_reason": "operator_stop_file",
+      "accepted": false,
+      "process_cleanup_complete": true,
+      "business_cleanup_verified": true,
+      "raw_report_sha256": "719f7a87f073c12b3136f4c93039300dcd8a9b9efed922704e7595c7d3554b77",
+      "raw_report_bytes": 5860581,
+      "operator_stop_reason": "Human requested removal of IP/concurrency limits; preserve the incomplete default-limit attempt"
+    }
+  ],
+  "accepted": false,
+  "original_PR13_failed_baselines_closed": false,
+  "historical_accounting_reconstructed": false,
+  "capacity_50_100": "Deferred by human; not run",
+  "human_experience": "Pending 6 humans x 3 matches",
+  "next_profile_authorization": "Human: 测试期间解除IP，并发限制来测试"
+}

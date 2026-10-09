@@ -52,6 +52,7 @@ on:
       - 'tools/pr13_factor_matrix.py'
       - 'tools/pr13_simulation_report.py'
       - 'tools/cloud_load_test.py'
+      - 'tools/cloud/pr13/**'
       - 'tools/tests/**'
       - 'client/network/**'
       - 'client/state/**'
@@ -113,6 +114,7 @@ on:
       - 'tools/pr13_factor_matrix.py'
       - 'tools/pr13_simulation_report.py'
       - 'tools/cloud_load_test.py'
+      - 'tools/cloud/pr13/**'
       - 'tools/tests/**'
       - 'client/network/**'
       - 'client/state/**'
@@ -152,6 +154,7 @@ jobs:
           git rev-parse HEAD > test-results/gameplay-accounting/source-sha.txt
           python --version > test-results/gameplay-accounting/python-version.txt
           python -m unittest discover -s tools/tests -v 2>&1 | tee test-results/gameplay-accounting/unittest.log
+          python -m unittest discover -s tools/cloud/pr13 -v 2>&1 | tee test-results/gameplay-accounting/cloud-ownership.log
           python tools/pr13_control_cases.py --output test-results/gameplay-accounting/control-contract-cases
           python tools/pr13_candidate_cases.py --output test-results/gameplay-accounting/candidate-contract-cases
           python tools/pr13_review_cases.py --output test-results/gameplay-accounting/review-policy-cases

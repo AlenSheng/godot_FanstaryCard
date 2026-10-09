@@ -110,6 +110,22 @@ public sealed class ProtobufTicketTests(ITestOutputHelper output)
         Assert.Equal("error.invalid_message", reader.Read([0x80], now.AddSeconds(1)).ErrorType);
     }
 
+    [Fact]
+    public void Owned_test_frame_bypass_keeps_protobuf_validation()
+    {
+        var reader = new RealtimeFrameReader(1, ownedTestBypass: true);
+        var now = DateTimeOffset.UnixEpoch;
+        foreach (var _ in Enumerable.Range(0, 100))
+        {
+            var invalid = reader.Read([0x80], now);
+            Assert.False(invalid.RateLimited);
+            Assert.Null(invalid.Command);
+            Assert.Equal("error.invalid_message", invalid.ErrorType);
+        }
+        var ping = RealtimeProtobufCodec.EncodeClient(new ClientCommand("ping", "owned-test", null, null));
+        foreach (var _ in Enumerable.Range(0, 100)) Assert.NotNull(reader.Read(ping, now).Command);
+    }
+
     private sealed class TicketClock : TimeProvider
     {
         public DateTimeOffset Now { get; set; } = DateTimeOffset.UnixEpoch;
