@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "state": "Preregistered",
+  "kind": "separate_real_cloud_mixed_class_natural_cycle_retry",
+  "basis": "原600秒与GDD1200轮次保持失败或截止状态；用户接受守护者较长战斗。当前专属云端测试已解除准入和人工CPU配额，数据库连接复用上限256；在这些已验证运行条件及北美延迟基准下，以原1200秒观测预算重跑完整10人三局流程，不通过加速战斗或替换路线完成验收。",
+  "source_decisions": [
+    "docs/plans/PR13_AUTOMATED_COMPLETION_SCOPE_20261009.json",
+    "docs/plans/PR13_GDD_EXPEDITION_BUDGET_20261009.json",
+    "docs/plans/PR13_GUARDIAN_DURATION_BALANCE_DECISION_20261009.json",
+    "docs/plans/PR13_NORTH_AMERICA_POOL_REUSE_CAPACITY_20261009.json",
+    "docs/plans/PR13_CAPACITY100_MONITOR_RETRY_20261009.json"
+  ],
+  "profile": {
+    "clients": 10,
+    "hero_class": "4 Mage, 3 Priest, 3 Guardian",
+    "strategy": "baseline_all_hand",
+    "load_profile": "cyclic-gameplay",
+    "strategy_seed": 20260930,
+    "cycles_per_client": 3,
+    "natural_cycle_target": 30,
+    "cycle_limit_seconds": 1200,
+    "overall_limit_seconds": 3900,
+    "cleanup_seconds": 120,
+    "launch_interval_seconds": 3,
+    "owned_cloud_test_bypass": true,
+    "owned_test_pool_reuse": true,
+    "application_max_pool_size": 256,
+    "database_max_connections": 256,
+    "server_and_postgres_cpu_quotas": 0
+  },
+  "resource_and_latency_policy": {
+    "memory_floor_bytes": 500000000,
+    "per_launch_reserve_bytes": 67108864,
+    "cpu_stop_percent": 85,
+    "disk_available_stop_percent": 15,
+    "actor_wait_p95_stop_ms": 100,
+    "http_p95_limit_ms": 5000,
+    "command_p95_limit_ms": 8000,
+    "health_limit_ms": 10000,
+    "monitor_timeout_seconds": 10,
+    "probe_collection_budget_seconds": 11,
+    "missing_monitoring_stops_test": true
+  },
+  "invariants": {
+    "actual_local_godot_clients_to_owned_tencent_program_and_postgres": true,
+    "client_snapshot_source_sha": "0c4f5eeaa1d0fa71c9745e2e273dbdb69b9c6e84",
+    "actual_server_runtime_revision": "da845cac10fc83fc36d71c7f2d18507eb979e8d9",
+    "client_per_file_hashes_must_match_frozen_snapshot": true,
+    "default_starter_decks_class_and_quality_budgets_unchanged": true,
+    "combat_enemy_movement_and_evacuation_rules_unchanged": true,
+    "no_hidden_route_or_future_deck_access": true,
+    "candidate_numbers_disabled": true,
+    "normal_and_drain_acknowledgements_separate": true,
+    "fallback_or_forced_exit_not_natural_completion": true,
+    "original_failed_censored_and_incomplete_trials_retained": true,
+    "long_combat_alone_does_not_prove_balance_defect": true,
+    "all_rejections_recoveries_and_unknown_business_states_retained": true,
+    "full_raw_sequences_and_read_only_asset_audit_required": true,
+    "exact_owned_process_and_service_cleanup_required": true,
+    "production_test_bypass_remains_disabled": true
+  },
+  "acceptance_limits": [
+    "本轮三局验证不能代替原50/100人容量、600秒负载覆盖或Prepared Boss/PVP矩阵。",
+    "观测截止、异常拒绝、脚本放弃、清理ACK及自然周期分别报告；不回写旧失败。",
+    "较长守护者对局以有效进度和正常终态可达性判断；卡组削弱须有独立平衡证据。",
+    "未完成的132项非真人运行层保持，单轮成功不构成全范围验收。"
+  ],
+  "accepted": false,
+  "human_experience_in_scope": false
+}
