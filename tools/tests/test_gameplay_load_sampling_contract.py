@@ -402,7 +402,7 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
 
     def test_invalid_cycle_budget_is_rejected_before_launch_or_output(self):
         with tempfile.TemporaryDirectory() as directory:
-            for value in (0, 59, 1201, -1):
+            for value in (0, 59, 2401, -1):
                 argv = ['gameplay_load_test.py', '--godot', sys.executable,
                         '--cycle-limit-seconds', str(value), '--output', directory]
                 with patch.object(sys, 'argv', argv), contextlib.redirect_stderr(io.StringIO()):
@@ -416,6 +416,14 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
         self.assertEqual(code, 0)
         self.assertEqual(report['load_contract']['cycle_limit_seconds'], 1200)
         self.assertEqual(report['load_coverage']['minimum_window'], 600)
+
+    def test_explicit_long_combat_budget_keeps_original_capacity_contract(self):
+        code, report = self.run_fixture(cycle_limit=2400)
+        self.assertEqual(code, 0)
+        self.assertEqual(report['load_contract']['cycle_limit_seconds'], 2400)
+        self.assertEqual(report['load_coverage']['minimum_window'], 600)
+        self.assertEqual(report['load_coverage']['minimum_coverage'], .95)
+        self.assertEqual(report['load_coverage']['target_active'], 1)
 
     def test_larger_cycle_budget_still_obeys_explicit_overall_deadline(self):
         _, report = self.run_fixture(smoke=True, cycle_limit=1200, max_seconds=600)

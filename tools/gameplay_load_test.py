@@ -222,7 +222,7 @@ def main():
     parser.add_argument('--smoke-cycles',type=int,default=3)
     parser.add_argument('--smoke-clients',type=int,default=1)
     parser.add_argument('--cycle-limit-seconds',type=int,default=240,
-                        help='Preregistered per-expedition observation limit, 60-1200 seconds; overall deadline still applies')
+                        help='Preregistered per-expedition observation limit, 60-2400 seconds; overall deadline still applies')
     parser.add_argument('--load-profile', choices=('cyclic-gameplay','active-hold','functional-cycles','cleared-extraction'), default='cyclic-gameplay')
     parser.add_argument('--target-online',type=int)
     parser.add_argument('--target-active',type=int)
@@ -269,8 +269,8 @@ def main():
         parser.error('Group, duration and cycle limits must be positive')
     if not math.isfinite(args.launch_interval_seconds) or args.launch_interval_seconds < 0:
         parser.error('Launch spacing must be finite and nonnegative')
-    if not 60<=args.cycle_limit_seconds<=1200:
-        parser.error('Per-expedition observation limit must be between 60 and 1200 seconds')
+    if not 60<=args.cycle_limit_seconds<=2400:
+        parser.error('Per-expedition observation limit must be between 60 and 2400 seconds')
     target=urllib.parse.urlparse(args.server_url)
     if target.scheme not in ('http','https') or not target.hostname:
         parser.error('A valid --server-url is required')

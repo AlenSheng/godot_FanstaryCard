@@ -120,7 +120,7 @@ func _cycle_limit(value: String) -> int:
 	if value.is_empty(): return 240
 	if not value.is_valid_int(): return 0
 	var seconds := int(value)
-	return seconds if seconds >= 60 and seconds <= 1200 else 0
+	return seconds if seconds >= 60 and seconds <= 2400 else 0
 
 func _process(_delta: float) -> void:
 	_update_context()
@@ -378,7 +378,7 @@ func _graceful_cleanup() -> void:
 		while Game.settlement.is_empty() and not Game.room.is_empty() and Time.get_ticks_msec() < settlement_deadline:
 			await _wait(0.2)
 	if Game.room.is_empty() and Game.settlement.is_empty() and (not Game.ticket.is_empty() or not Game.preparation.is_empty()):
-		await Game.cancel_preparation()
+		await _cancel_waiting_preparation(cleanup_generation, cleanup_cycle_match_id, cleanup_preparation_id, cleanup_ticket_id)
 	if not Game.settlement.is_empty():
 		var cleanup_match_id := str(Game.settlement.get("matchId", ""))
 		if await Game.acknowledge_settlement():
@@ -436,6 +436,35 @@ func _graceful_cleanup() -> void:
 			break
 		await _wait(1.0)
 	_on_telemetry({"type": "lifecycle", "event_type": "cleanup.verified", "cleanup": cleanup_result})
+
+func _cancel_waiting_preparation(generation: int, match_id: String, preparation_id: String, ticket_id: String) -> void:
+	if ticket_id.is_empty():
+		await Game.cancel_preparation()
+		return
+	# Enqueue's response remains Queued locally even after assignment. A STOP
+	# must read this account's actual ticket before trying the queued-only DELETE.
+	# Matched tickets keep their context until the real ready deadline/bootstrap
+	# confirms release; a read failure never authorizes clearing or cancellation.
+	var epoch: int = Game._room_context_epoch
+	var ticket_preparation_id := str(Game.ticket.get("preparationId", ""))
+	var authority: Dictionary = await Game.gateway.request("/api/v1/matches/tickets/" + ticket_id, HTTPClient.METHOD_GET, null, [0, 401, 503])
+	var value: Dictionary = authority.data if authority.get("data") is Dictionary else {}
+	var authoritative_match_id: Variant = value.get("matchId")
+	var decision := "defer_unknown"
+	var current: bool = Game.gateway.session_generation == generation and Game._room_context_epoch == epoch and active_match_id == match_id and str(Game.preparation.get("preparationId", "")) == preparation_id and str(Game.ticket.get("ticketId", "")) == ticket_id and str(Game.ticket.get("preparationId", "")) == ticket_preparation_id and Game.room.is_empty() and Game.settlement.is_empty()
+	if not current:
+		decision = "context_changed"
+	elif authority.get("ok", false) and str(value.get("ticketId", "")) == ticket_id and not ticket_preparation_id.is_empty() and str(value.get("preparationId", "")) == ticket_preparation_id:
+		if str(value.get("status", "")) in ["Queued", "Cancelled"] and (authoritative_match_id == null or (authoritative_match_id is String and authoritative_match_id.is_empty())):
+			decision = "cancel_queued"
+		elif str(value.get("status", "")) == "Matched" and authoritative_match_id is String and not authoritative_match_id.is_empty():
+			decision = "defer_matched"
+	_on_telemetry({"type": "lifecycle", "event_type": "cleanup.ticket_authority", "match_id": match_id,
+		"ticket_id": ticket_id, "preparation_id": ticket_preparation_id, "session_generation": generation,
+		"room_context_epoch": epoch, "http_status": authority.get("status"), "authority_status": value.get("status"),
+		"authoritative_ticket_id": value.get("ticketId"), "authoritative_preparation_id": value.get("preparationId"),
+		"decision": decision})
+	if decision == "cancel_queued": await Game.cancel_preparation()
 
 func _update_context() -> void:
 	Game.gateway.telemetry_context = {"run_id": run_id, "client_id": client_id,
