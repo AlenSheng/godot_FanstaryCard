@@ -96,6 +96,17 @@ public sealed class PostgresLifecycleRecoveryTests
             "SELECT health_potion_count FROM player_consumables WHERE player_id=$1", playerId));
         Assert.Equal(1L, await database.ScalarAsync<long>(
             "SELECT count(*) FROM inventory_movements WHERE request_id=$1 AND reason='match.start'", pending.MatchId.ToString("D")));
+        RecordCanonicalLaunch("mark-running-response-loss", new
+        {
+            faultObserved = proxy.DroppedCommittedResponse,
+            durableStatus = await database.ScalarAsync<string>("SELECT status FROM matches WHERE match_id=$1", pending.MatchId),
+            restoredSameRoom = restored!.RoomId == pending.RoomId,
+            restoredSameMatch = restoredMatch == pending.MatchId,
+            roomCount = recovered.GetRoomIds().Count,
+            potionCount = await database.ScalarAsync<int>("SELECT health_potion_count FROM player_consumables WHERE player_id=$1", playerId),
+            startMovementCount = await database.ScalarAsync<long>(
+                "SELECT count(*) FROM inventory_movements WHERE request_id=$1 AND reason='match.start'", pending.MatchId.ToString("D"))
+        });
     }
 
     [Theory(Skip = "Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.",
@@ -134,6 +145,8 @@ public sealed class PostgresLifecycleRecoveryTests
         Assert.Equal("Launching", await database.ScalarAsync<string>(
             "SELECT status FROM matches WHERE match_id=$1", pending.MatchId));
         Assert.False(rooms.ContainsRoom(pending.RoomId));
+        var failedStatus = await database.ScalarAsync<string>("SELECT status FROM matches WHERE match_id=$1", pending.MatchId);
+        var failedRoomPresent = rooms.ContainsRoom(pending.RoomId);
         if (fault == "snapshot")
             await database.ExecuteAsync("DROP TRIGGER reject_launch_checkpoint ON room_snapshots");
         else
@@ -150,6 +163,18 @@ public sealed class PostgresLifecycleRecoveryTests
             "SELECT health_potion_count FROM player_consumables WHERE player_id=$1", playerId));
         Assert.Equal(1L, await database.ScalarAsync<long>(
             "SELECT count(*) FROM inventory_movements WHERE request_id=$1 AND reason='match.start'", pending.MatchId.ToString("D")));
+        RecordCanonicalLaunch(fault, new
+        {
+            failedStatus,
+            failedRoomPresent,
+            durableStatus = await database.ScalarAsync<string>("SELECT status FROM matches WHERE match_id=$1", pending.MatchId),
+            roomCount = rooms.GetRoomIds().Count,
+            sameRoom = actor!.RoomId == pending.RoomId,
+            sameMatch = matchId == pending.MatchId,
+            potionCount = await database.ScalarAsync<int>("SELECT health_potion_count FROM player_consumables WHERE player_id=$1", playerId),
+            startMovementCount = await database.ScalarAsync<long>(
+                "SELECT count(*) FROM inventory_movements WHERE request_id=$1 AND reason='match.start'", pending.MatchId.ToString("D"))
+        });
     }
 
     [Fact(Skip = "Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.",
@@ -297,6 +322,30 @@ public sealed class PostgresLifecycleRecoveryTests
         Assert.Equal(next.RoomId, actor!.RoomId);
         Assert.Equal(nextMatch, matchId);
         Assert.Equal(1L, await database.ScalarAsync<long>("SELECT count(*) FROM match_settlements WHERE match_id=$1", formerMatch));
+    }
+
+    private static readonly object CanonicalEvidenceGate = new();
+
+    private static void RecordCanonicalLaunch(string fault, object actual)
+    {
+        var directory = Environment.GetEnvironmentVariable("FANTASYCARD_PR13_PG_LAUNCH_EVIDENCE");
+        if (string.IsNullOrWhiteSpace(directory))
+            return;
+        var sourceSha = Environment.GetEnvironmentVariable("FANTASYCARD_PR13_SOURCE_SHA");
+        var row = JsonSerializer.Serialize(new
+        {
+            schemaVersion = 1,
+            sourceSha,
+            fault,
+            status = "Passed",
+            scope = "Actual disposable PostgreSQL fixture and native coordinator/recovery; real player LIVE layer remains separate",
+            actual
+        });
+        lock (CanonicalEvidenceGate)
+        {
+            Directory.CreateDirectory(directory);
+            File.AppendAllText(Path.Combine(directory, "launch-receipts.jsonl"), row + Environment.NewLine);
+        }
     }
 
     private static BattleRoom CreateRoom(Guid roomId, params Guid[] playerIds)
