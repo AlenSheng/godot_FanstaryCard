@@ -36,6 +36,7 @@ func run_test() -> Dictionary:
 		store._queued_command = {"action": "battle.play_cards", "payload": {}}
 		store._on_event(notification, {"match_id": "match", "settlement_id": "receipt"})
 		checks[notification + ": notification closes actions before HTTP finishes"] = store._settlement_loading == "receipt" and not store.allowed("battle.play_cards") and not store.command("battle.play_cards", {}) and store._queued_command.is_empty() and store._latest_commands.is_empty()
+		checks[notification + ": ordinary terminal room remains distinct from lost-route recovery"] = store._settlement_recovery_match_id.is_empty()
 		store.refresh_room_snapshot()
 		checks[notification + ": already sent read retained, no additional read"] = in_flight_reads == 1 and gateway.sent.count("room.snapshot.read") == in_flight_reads
 		gateway.receipt_response.emit()

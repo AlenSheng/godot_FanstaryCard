@@ -37,9 +37,18 @@ class Load02Probe:
 				"pending": pending, "incomplete": started - cycles_completed - failed - cancelled - pending}}
 
 	func _write_observation(suffix: String, cutoff: String, outcome: String = "") -> void:
-		var file := FileAccess.open(report_path + suffix, FileAccess.WRITE)
+		var path := report_path + suffix
+		var file := FileAccess.open(path + ".tmp", FileAccess.WRITE)
+		if file == null:
+			push_error("Cannot write owned LOAD02 observation")
+			get_tree().quit(1)
+			return
 		file.store_string(JSON.stringify(_snapshot(cutoff, outcome), "\t"))
+		file.flush()
 		file.close()
+		if DirAccess.rename_absolute(path + ".tmp", path) != OK:
+			push_error("Cannot publish complete LOAD02 observation")
+			get_tree().quit(1)
 
 	func _process(delta: float) -> void:
 		super._process(delta)

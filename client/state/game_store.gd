@@ -1328,7 +1328,8 @@ func _close_room_actions() -> void:
 	# Terminal authority survives a failed receipt fetch and an older in-flight
 	# snapshot. Only a new room context or authenticated session reopens actions.
 	_terminal_room_context = {"session_generation": gateway.session_generation, "epoch": _room_context_epoch, "match_id": match_id, "room_id": room_id}
-	_settlement_recovery_match_id = match_id
+	# Closing a healthy room does not imply its route was lost. The separate
+	# recovery match remains owned by a correlated NOT_IN_ROOM callback.
 	_settlement_poll_at = 0
 	_queued_command = {}
 	_latest_commands.clear()
