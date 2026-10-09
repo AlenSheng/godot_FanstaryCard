@@ -1,0 +1,252 @@
+{
+  "ok": true,
+  "execution_host": "Tencent cloud",
+  "source_sha": "514e6e2697e29869ffbb3f47ead44738eee01ae6",
+  "git_dirty": true,
+  "scope": "Actual disposable PostgreSQL snapshot, permission and read-only fault fixtures; actual ownership adapter; OFFLINE/POSTGRES component evidence only",
+  "native_checks": [
+    {
+      "name": "Snapshot parsing and attribution component regressions",
+      "passed": true,
+      "actual": 0
+    },
+    {
+      "name": "Actual owned Program migrates the disposable PostgreSQL database",
+      "passed": true,
+      "actual": null
+    },
+    {
+      "name": "Empty initial financial snapshot has all eight complete raw tables",
+      "passed": true,
+      "actual": null
+    },
+    {
+      "name": "Complete raw native healthy ledger chain preserves exact integer balances",
+      "passed": true,
+      "actual": null
+    },
+    {
+      "name": "Scoped before/after zero-alert result does not imply whole asset acceptance",
+      "passed": true,
+      "actual": "NoAlertInObservedScope"
+    },
+    {
+      "name": "New native ledger difference blocks assets instead of being called historical",
+      "passed": true,
+      "actual": "NewDifferenceBlocksAssets"
+    },
+    {
+      "name": "Existing attribution requires actual unchanged prior complete raw chain",
+      "passed": true,
+      "actual": "ExistingWithEvidence"
+    },
+    {
+      "name": "PostgreSQL rejects writes in the read-only transaction and raw difference remains",
+      "passed": true,
+      "actual": null
+    },
+    {
+      "name": "Actual restricted database role denies the complete table query",
+      "passed": true,
+      "actual": null
+    },
+    {
+      "name": "Denied or missing complete evidence blocks attribution instead of reporting zero impact",
+      "passed": true,
+      "actual": "Blocked"
+    },
+    {
+      "name": "Fixture fault preserved without automatic ledger reversal or deletion",
+      "passed": true,
+      "actual": null
+    },
+    {
+      "name": "No pending asset holds or live routes before disposable service cleanup",
+      "passed": true,
+      "actual": null
+    }
+  ],
+  "component_regressions": [
+    8,
+    10
+  ],
+  "actual_adapter_capture_passed": true,
+  "raw_table_count": 8,
+  "query_sha256": "ca1dc5e7b234d27ccdc01439e8f12b659f305a7628bbbb461005f42ec1d010e4",
+  "inputs": {
+    "tools/pr13_financial_snapshot.py": {
+      "bytes": 3050,
+      "sha256": "c867556e3d7825431d4c1118c9f3b1ce7484eddaa7d873595e59c69dd27814de"
+    },
+    "tools/tests/test_pr13_financial_snapshot.py": {
+      "bytes": 2002,
+      "sha256": "33a370f82ab9921a034dce413d5cbb6fc0456500847c3e69a880659e8f9691b7"
+    },
+    "tools/cloud/pr13/financial_snapshot.py": {
+      "bytes": 1927,
+      "sha256": "df79d145451a7d32d7aac5b962b31cae9b134f5db3e43a02c768d17308f3fc78"
+    },
+    "tools/cloud/pr13/test_financial_snapshot.py": {
+      "bytes": 1511,
+      "sha256": "3c8f40163914f081a514d33c358264b2b10b9be320c91c27ce645d552640a629"
+    }
+  },
+  "attribution_results": {
+    "normal": {
+      "classification": "NoAlertInObservedScope",
+      "existing_attribution": false,
+      "asset_acceptance": false,
+      "before_alerts": 0,
+      "after_alerts": 0,
+      "changes": [
+        {
+          "identity_sha256": "a2540a12fc8b056b6d4ed0509d6f132216447f83db426f7a5412db8f93ecb62e",
+          "before_row_sha256": null,
+          "after_row_sha256": "0e4a6c74c595ed81860bd346ef64731498c67a7190a746cfa17afa688af733cb"
+        },
+        {
+          "identity_sha256": "90740931bdfc4e4bcb67fa0b33a96c15301c286650c731a7e772f84bcaefc72a",
+          "before_row_sha256": null,
+          "after_row_sha256": "42af007a3dae103c8e8f56799e14366152e1deff88471deab6218f01459b7de0"
+        }
+      ],
+      "files": [
+        {
+          "path": "empty.private.json",
+          "state": "Matching",
+          "bytes": 1108,
+          "sha256": "24f323e2aa253c5ec1f9725d1d799fb3834f0a43378829f25bd98b49c5e45338"
+        },
+        {
+          "path": "healthy.private.json",
+          "state": "Matching",
+          "bytes": 2155,
+          "sha256": "e52660dac6d6e4d9cd9c4a816cbf2b995dce7bdcae52269c7ef5add8fb49a60c"
+        }
+      ],
+      "mutation": false,
+      "scope": "Only these complete owned snapshots; no historical/global attribution or asset acceptance inferred"
+    },
+    "new_difference": {
+      "classification": "NewDifferenceBlocksAssets",
+      "existing_attribution": false,
+      "asset_acceptance": false,
+      "before_alerts": 0,
+      "after_alerts": 1,
+      "changes": [
+        {
+          "identity_sha256": "e74c1b7aacca69add22d3ee439c91b0aeec0f0d5b3c9f751828c99eeb26f2be2",
+          "before_row_sha256": null,
+          "after_row_sha256": "228ff53ff8ba37ff450f45ed75938d5eb53a1cf0020ee1e465c3d69af143415a"
+        }
+      ],
+      "files": [
+        {
+          "path": "healthy.private.json",
+          "state": "Matching",
+          "bytes": 2155,
+          "sha256": "e52660dac6d6e4d9cd9c4a816cbf2b995dce7bdcae52269c7ef5add8fb49a60c"
+        },
+        {
+          "path": "new-difference.private.json",
+          "state": "Matching",
+          "bytes": 2496,
+          "sha256": "0176fead7b362c9057f7749dad388a891095e2646c2fadbf0c86edf40b262f06"
+        }
+      ],
+      "mutation": false,
+      "scope": "Only these complete owned snapshots; no historical/global attribution or asset acceptance inferred"
+    },
+    "existing_difference": {
+      "classification": "ExistingWithEvidence",
+      "existing_attribution": true,
+      "asset_acceptance": false,
+      "before_alerts": 1,
+      "after_alerts": 1,
+      "changes": [],
+      "files": [
+        {
+          "path": "new-difference.private.json",
+          "state": "Matching",
+          "bytes": 2496,
+          "sha256": "0176fead7b362c9057f7749dad388a891095e2646c2fadbf0c86edf40b262f06"
+        },
+        {
+          "path": "existing-difference.private.json",
+          "state": "Matching",
+          "bytes": 2496,
+          "sha256": "cbf9be19c8ffb4b65824085122e26c8d7180e67d33e147f63bfac21fbdcbd501"
+        }
+      ],
+      "mutation": false,
+      "scope": "Only these complete owned snapshots; no historical/global attribution or asset acceptance inferred"
+    },
+    "unavailable": {
+      "classification": "Blocked",
+      "reason": "Unavailable, denied or incomplete read-only ledger evidence",
+      "existing_attribution": false,
+      "asset_acceptance": false,
+      "files": [
+        {
+          "path": "healthy.private.json",
+          "state": "Matching",
+          "bytes": 2155,
+          "sha256": "e52660dac6d6e4d9cd9c4a816cbf2b995dce7bdcae52269c7ef5add8fb49a60c"
+        },
+        {
+          "path": "denied.private.json",
+          "state": "Matching",
+          "bytes": 140,
+          "sha256": "37fac871f5e8e20ada09b3b1d33af1b9289b48ea0cfcc036bd23aaad3b11b07c"
+        }
+      ],
+      "mutation": false
+    }
+  },
+  "cleanup": {
+    "native": {
+      "server": true,
+      "prometheus": true,
+      "otel": true,
+      "postgres": true
+    },
+    "adapter": {
+      "server": true,
+      "prometheus": true,
+      "otel": true,
+      "postgres": true
+    }
+  },
+  "asset_closeout": {
+    "native": {
+      "actual": {
+        "pending_holds": 0,
+        "active_match_players": 0,
+        "settlements": 0,
+        "ledger_rows": 3
+      },
+      "read_only": true,
+      "execution_host": "Tencent cloud"
+    },
+    "adapter": {
+      "actual": {
+        "pending_holds": 0,
+        "active_match_players": 0,
+        "settlements": 0,
+        "ledger_rows": 0
+      },
+      "read_only": true,
+      "execution_host": "Tencent cloud"
+    }
+  },
+  "private_archive_bytes": 10269,
+  "private_archive_sha256": "402ae7f64930f781968dd61429d12dbeca25042fca4fbd62bc3759278c9f9cd3",
+  "whole_scope_accepted": false,
+  "real_player_live_acceptance": false,
+  "financial_acceptance": false,
+  "accepted": false,
+  "older_live_ledger_chain_gap_repaired": false,
+  "older_live_ledger_gap": "Original pooled1200 trial database was removed after aggregate audit; its eight-row chain remains Unknown, not reconstructed",
+  "application_or_numeric_changes_made": false,
+  "future_live_requirement": "Capture both before and after through the owned adapter, preserve complete private rows, then audit and remove the disposable services"
+}
