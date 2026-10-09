@@ -46,7 +46,9 @@ def owned(record, role):
     return info
 
 
-def start(owned_test_bypass=False, image_id=None, database_max_connections=None):
+def start(owned_test_bypass=False, image_id=None, database_max_connections=None, unrestricted_cpu=False):
+    if unrestricted_cpu and not owned_test_bypass:
+        raise ValueError('CPU quota removal requires the owned test bypass')
     if database_max_connections is not None and (not owned_test_bypass or isinstance(database_max_connections, bool) or not isinstance(database_max_connections, int) or not 100 <= database_max_connections <= 512):
         raise ValueError('Database concurrency override requires the owned test bypass and an explicit 100-512 connection budget')
     selected_image = image_id or IMAGE
@@ -60,6 +62,7 @@ def start(owned_test_bypass=False, image_id=None, database_max_connections=None)
               'mode': 'Development on a private loopback test listener; local diagnostics explicitly enabled',
               'default_request_limits': {'auth_per_minute': 10, 'economy_per_minute': 30, 'market_read_per_minute': 120},
               'owned_test_bypass': owned_test_bypass,
+              'unrestricted_application_database_cpu': unrestricted_cpu,
               'effective_admission': {'ip_policy_limits_enabled': not owned_test_bypass,
                                       'realtime_command_quota_enabled': not owned_test_bypass,
                                       'application_database_pool_enabled': not owned_test_bypass},
@@ -153,7 +156,9 @@ scrape_configs:
 
         pg_memory = '384m' if database_max_connections is not None else '192m'
         pg_tail = ['postgres', '-c', 'max_connections=' + str(database_max_connections)] if database_max_connections is not None else ()
-        launch('postgres', ['--memory', pg_memory, '--cpus', '0.3', '-p', '127.0.0.1:25434:5432', '--env-file', str(pg_env)], PG_IMAGE, pg_tail)
+        pg_cpu = [] if unrestricted_cpu else ['--cpus', '0.3']
+        app_cpu = [] if unrestricted_cpu else ['--cpus', '0.8']
+        launch('postgres', ['--memory', pg_memory, *pg_cpu, '-p', '127.0.0.1:25434:5432', '--env-file', str(pg_env)], PG_IMAGE, pg_tail)
         record['database_memory_budget'] = pg_memory
         deadline = time.monotonic() + 60
         # The entrypoint's temporary initialization server accepts Unix sockets
@@ -165,7 +170,7 @@ scrape_configs:
         launch('otel', ['--network', 'host', '--memory', '128m', '--cpus', '0.2', '-v', str(otel) + ':/etc/pr13.yaml:ro'], record['otel_image_id'], ['--config=/etc/pr13.yaml'])
         launch('prometheus', ['--network', 'host', '--memory', '192m', '--cpus', '0.2', '-v', str(prom) + ':/etc/pr13.yml:ro'], record['prometheus_image_id'],
                ['--config.file=/etc/pr13.yml', '--web.listen-address=127.0.0.1:19190', '--storage.tsdb.path=/prometheus', '--storage.tsdb.retention.time=6h'])
-        launch('server', ['--network', 'host', '--memory', '512m', '--cpus', '0.8', '--user', '1000:1000', '--env-file', str(app_env), '-v', str(evidence) + ':/evidence'], selected_image)
+        launch('server', ['--network', 'host', '--memory', '512m', *app_cpu, '--user', '1000:1000', '--env-file', str(app_env), '-v', str(evidence) + ':/evidence'], selected_image)
         deadline = time.monotonic() + 120
         while True:
             try:
@@ -189,6 +194,9 @@ scrape_configs:
             '-At', '-c', 'SHOW max_connections').stdout.strip())
         if database_max_connections is not None and record['database_max_connections'] != database_max_connections:
             raise ValueError('Effective database concurrency differs from the registered override')
+        record['effective_cpu_quotas'] = {role: owned(record,role)['HostConfig']['NanoCpus'] for role in ['server','postgres']}
+        if unrestricted_cpu and any(record['effective_cpu_quotas'].values()):
+            raise ValueError('Owned application/database CPU quotas were not removed')
         save(state, record)
         return record
     except Exception as error:
@@ -230,9 +238,10 @@ def main():
     parser.add_argument('--owned-test-bypass', action='store_true', help='Disable IP/realtime quotas and the application connection pool on this owned test instance')
     parser.add_argument('--image-id', help='Exact verified current production image ID to reuse')
     parser.add_argument('--database-max-connections', type=int, help='Owned bypass only: temporary physical PostgreSQL connection budget, 100-512')
+    parser.add_argument('--unrestricted-cpu', action='store_true', help='Owned bypass only: application and database share the real host CPU without artificial per-container quotas')
     args = parser.parse_args()
     if args.operation == 'start':
-        value = start(args.owned_test_bypass, args.image_id, args.database_max_connections)
+        value = start(args.owned_test_bypass, args.image_id, args.database_max_connections, args.unrestricted_cpu)
     else:
         record = json.loads((BASE / 'evidence/live-runtime.json').read_text())
         value = audit(record) if args.operation == 'audit' else stop(record)

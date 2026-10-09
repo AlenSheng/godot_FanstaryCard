@@ -11,6 +11,12 @@ spec.loader.exec_module(runtime)
 
 
 class OwnershipTests(unittest.TestCase):
+    def test_cpu_quota_removal_requires_owned_bypass_before_mutation(self):
+        with patch.object(runtime, 'docker') as docker:
+            with self.assertRaises(ValueError):
+                runtime.start(unrestricted_cpu=True)
+            docker.assert_not_called()
+
     def test_database_override_requires_owned_bypass_before_mutation(self):
         for bypass, maximum in [(False, 256), (True, 99), (True, 513), (True, True), (True, 256.5)]:
             with self.subTest(bypass=bypass, maximum=maximum), patch.object(runtime, 'docker') as docker:
