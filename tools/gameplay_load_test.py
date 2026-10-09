@@ -91,22 +91,52 @@ def completed_smoke(processes, expected_clients, cycles):
                isinstance(report.get('cycles_completed'),int) and not isinstance(report.get('cycles_completed'),bool) and
                report['cycles_completed']>=cycles for entry,report in zip(processes,reports))
 
-def read_owned_statuses(processes, cache=None, now_monotonic_ms=None, *, require_files=False):
+def read_owned_statuses(processes, cache=None, now_monotonic_ms=None, *, require_files=False, read_errors=None):
     statuses = []
     invalid_files = 0
     for entry in processes:
         path = Path(str(entry['report']) + '.status.json')
+        failures = []
+        disposition = 'unclassified_read_failure'
         try:
-            value=json.loads(path.read_text(encoding='utf8'))
+            # The Windows producer replaces this file while the reader opens
+            # it. Retry only failed I/O, never malformed JSON or foreign data.
+            # A permanent failure still invalidates the sample; a recovered
+            # read must supply an actual heartbeat rather than refresh cache.
+            for attempt in range(1, 4):
+                try:
+                    raw = path.read_text(encoding='utf8')
+                    break
+                except (OSError, UnicodeError) as exc:
+                    failures.append({'client_id': entry['client_id'], 'file': path.name,
+                        'error': type(exc).__name__, 'errno': getattr(exc, 'errno', None),
+                        'winerror': getattr(exc, 'winerror', None), 'attempt': attempt})
+                    if isinstance(exc, (FileNotFoundError, UnicodeError)) or attempt == 3:
+                        raise
+                    time.sleep(.01)
+            try:
+                value=json.loads(raw)
+            except ValueError as exc:
+                failures.append({'client_id': entry['client_id'], 'file': path.name,
+                    'error': type(exc).__name__, 'attempt': attempt,
+                    'line': getattr(exc, 'lineno', None), 'column': getattr(exc, 'colno', None)})
+                raise
+            disposition = 'recovered_read' if failures else None
         except FileNotFoundError:
+            disposition = 'missing_required_file' if require_files else 'missing_file'
             if require_files:
                 invalid_files += 1
             elif cache is not None and entry['client_id'] in cache:
                 statuses.append(cache[entry['client_id']])
+                disposition = 'prior_owned_sample'
             continue
         except (OSError,UnicodeError,ValueError):
+            disposition = 'invalid_file'
             invalid_files += 1
             continue
+        finally:
+            if read_errors is not None:
+                read_errors.extend(dict(failure, disposition=disposition) for failure in failures)
         statuses.append(value)
     owned, invalid_ownership = owned_statuses(processes, statuses)
     receipt_ms=time.monotonic()*1000 if now_monotonic_ms is None else now_monotonic_ms
@@ -428,7 +458,8 @@ def main():
             if now>=next_sample:
                 scheduled_sample_at=next_sample
                 sample_started=time.monotonic()
-                statuses, invalid_files=read_owned_statuses(processes,status_cache)
+                status_read_errors=[]
+                statuses, invalid_files=read_owned_statuses(processes,status_cache,read_errors=status_read_errors)
                 sample_ms=int(time.time()*1000)
                 sample_monotonic_ms=time.monotonic()*1000
                 workload=workload_snapshot(processes,statuses,sample_ms,now_monotonic_ms=time.monotonic()*1000)
@@ -478,6 +509,7 @@ def main():
                     'command_rate_clock':'local_monotonic',
                     'completed_cycles':sum(n for n in cycle_counts if isinstance(n,int) and not isinstance(n,bool) and n>=0),
                     'invalid_status_files':invalid_files,
+                    'status_read_errors':status_read_errors,
                     'generator':generator,
                     'observed_interval_seconds':None if previous_sample_monotonic_ms is None else (sample_monotonic_ms-previous_sample_monotonic_ms)/1000,
                     'scheduled_at':started+(scheduled_sample_at-started_monotonic),
@@ -548,7 +580,8 @@ def main():
         load_coverage = coverage(samples,start=hold_start,end=max(hold_start+.001,hold_end),
             **{k:v for k,v in contract.items() if k not in COVERAGE_METADATA})
         sampling=sampling_integrity(samples,started_monotonic*1000,stop_issued_monotonic_ns/1000000,contract['maximum_gap'])
-        final_clients, final_read_errors = read_owned_statuses(processes,status_cache,require_files=True)
+        final_status_read_errors=[]
+        final_clients, final_read_errors = read_owned_statuses(processes,status_cache,require_files=True,read_errors=final_status_read_errors)
         tail, tail_lost = new_events(final_clients,seen)
         tail_window = aggregate_window(tail)
         final_audit_lost = sum(s.get('audit_lost_count', 0) for s in final_clients
@@ -649,6 +682,7 @@ def main():
             'performance_inputs':performance_inputs,
             'cycle_cutoffs':cutoffs,'request_distributions':request_distributions,'audit_read_errors':audit_errors,
             'final_read_errors':final_read_errors,'tail_lost_event_count':tail_lost,
+            'final_status_read_errors':final_status_read_errors,
             'tail_window':tail_window,'post_stop_failure':post_stop_failure,
             'final_audit_lost_count':final_audit_lost,'final_audit_count_invalid':final_audit_invalid,
             'final_triggers':final_triggers,

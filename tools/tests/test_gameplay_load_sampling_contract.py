@@ -194,7 +194,7 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
             children.append(child)
             return child
 
-        def read_status(processes, cache=None, now_monotonic_ms=None, *, require_files=False):
+        def read_status(processes, cache=None, now_monotonic_ms=None, *, require_files=False, read_errors=None):
             if overlap and elapsed[0] == 290:
                 elapsed[0] += 9
             statuses = []

@@ -3,6 +3,7 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
+from types import SimpleNamespace
 import unittest
 
 from tools.cloud_load_test import stop_all
@@ -105,6 +106,63 @@ class StopTests(unittest.TestCase):
             status_path.unlink()
             self.assertEqual(read_owned_statuses([entry],cache),([status],0))
             self.assertEqual(workload_snapshot([entry],[status],41001)['stale_clients'],['client'])
+
+    def test_status_read_recovers_io_with_new_heartbeat_and_diagnostic(self):
+        import json
+        from unittest.mock import patch
+        entry = {'client_id':'client','report':Path('client.json'),'process':SimpleNamespace(pid=42)}
+        previous = {'client_id':'client','pid':42,'status_seq':1,'_received_at_monotonic_ms':10000}
+        current = {'client_id':'client','pid':42,'status_seq':2}
+        failures = []
+        with patch('gameplay_load_test.Path.read_text', side_effect=[PermissionError(13, 'sharing'), json.dumps(current)]), \
+                patch('gameplay_load_test.time.sleep') as pause:
+            owned, invalid = read_owned_statuses([entry], {'client':previous}, 20000, read_errors=failures)
+        self.assertEqual(invalid, 0)
+        self.assertEqual(owned, [dict(current, _received_at_monotonic_ms=20000)])
+        self.assertEqual(failures[0]['error'], 'PermissionError')
+        self.assertEqual(failures[0]['errno'], 13)
+        self.assertEqual(failures[0]['disposition'], 'recovered_read')
+        pause.assert_called_once_with(.01)
+
+    def test_status_permanent_io_failure_does_not_reuse_cache(self):
+        from unittest.mock import patch
+        entry = {'client_id':'client','report':Path('client.json')}
+        failures = []
+        with patch('gameplay_load_test.Path.read_text', side_effect=PermissionError(13, 'denied')) as read, \
+                patch('gameplay_load_test.time.sleep'):
+            owned, invalid = read_owned_statuses([entry], {'client':{'client_id':'client'}}, read_errors=failures)
+        self.assertEqual((owned, invalid), ([], 1))
+        self.assertEqual(read.call_count, 3)
+        self.assertEqual([row['attempt'] for row in failures], [1, 2, 3])
+        self.assertTrue(all(row['disposition']=='invalid_file' for row in failures))
+
+    def test_status_corruption_is_not_retried_or_hidden(self):
+        from unittest.mock import patch
+        entry = {'client_id':'client','report':Path('client.json')}
+        for data, error_name in [('{"client_id":', 'JSONDecodeError'),
+                (UnicodeDecodeError('utf8', b'\xff', 0, 1, 'invalid'), 'UnicodeDecodeError')]:
+            with self.subTest(error=error_name):
+                failures = []
+                kwargs = {'side_effect':data} if isinstance(data, Exception) else {'return_value':data}
+                with patch('gameplay_load_test.Path.read_text', **kwargs) as read, \
+                        patch('gameplay_load_test.time.sleep') as pause:
+                    owned, invalid = read_owned_statuses([entry], {'client':{'client_id':'client'}}, read_errors=failures)
+                self.assertEqual((owned, invalid), ([], 1))
+                self.assertEqual(failures[0]['error'], error_name)
+                read.assert_called_once()
+                pause.assert_not_called()
+
+    def test_recovered_io_does_not_accept_foreign_status(self):
+        import json
+        from unittest.mock import patch
+        entry = {'client_id':'client','report':Path('client.json'),'run_id':'owned','process':SimpleNamespace(pid=42)}
+        failures = []
+        with patch('gameplay_load_test.Path.read_text', side_effect=[OSError(32, 'sharing'),
+                json.dumps({'client_id':'client','pid':42,'run_id':'foreign','status_seq':2})]), \
+                patch('gameplay_load_test.time.sleep'):
+            owned, invalid = read_owned_statuses([entry], read_errors=failures)
+        self.assertEqual((owned, invalid), ([], 1))
+        self.assertEqual(failures[0]['disposition'], 'recovered_read')
 
     def test_forced_child_is_reported_and_reaped(self):
         child = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(30)'])
