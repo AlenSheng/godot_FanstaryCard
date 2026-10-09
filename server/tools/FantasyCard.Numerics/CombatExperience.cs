@@ -222,6 +222,10 @@ internal static class CombatExperience
             }
             var pve = player.Pve!;
             var openingHp = pve.Monsters.Sum(monster => monster.Hp);
+            row.OpeningEnemyHp = openingHp;
+            row.OpeningEnemyShield = pve.Monsters.Sum(monster => monster.Shield);
+            row.EnemyNonHpInputSha256 = Hash(JsonSerializer.Serialize(pve.Monsters.Select(monster => new
+            { monster.MonsterId, monster.Shield, monster.AttackInterval, monster.ElementalAmplification, monster.Intents }), Json));
             var damage = 0;
             var effectiveAt = -1d;
             var tick = TimeSpan.FromMilliseconds(100);
@@ -445,6 +449,9 @@ internal sealed class EncounterSample(int seed, int seedBlock, string hero, stri
     public string Strategy { get; } = strategy;
     public string Profile { get; } = profile;
     public int WeaponLevel { get; set; }
+    public int OpeningEnemyHp { get; set; }
+    public int OpeningEnemyShield { get; set; }
+    public string? EnemyNonHpInputSha256 { get; set; }
     public string Outcome { get; set; } = "Censored";
     public string? Error { get; set; }
     public double ObservedSeconds { get; set; }
