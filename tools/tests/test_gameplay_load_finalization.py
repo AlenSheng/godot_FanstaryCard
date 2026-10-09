@@ -21,7 +21,8 @@ import gameplay_load_test as coordinator
 
 class FinalizationTests(unittest.TestCase):
     def run_fixture(self, anomaly=None, *, real_child_after_stop=False, report_write_fails=False,
-                    operator_stop=False, receipt_write_fails=False, before_stop=None):
+                    operator_stop=False, receipt_write_fails=False, before_stop=None,
+                    external_stop=False, stop_before_launch=False):
         elapsed = [0.0]
         child = SimpleNamespace(pid=4242, returncode=0)
         child.poll = lambda: child.returncode
@@ -85,6 +86,11 @@ class FinalizationTests(unittest.TestCase):
                 return coordinator_save(path, data)
             argv = ['gameplay_load_test.py', '--smoke', '--godot', sys.executable,
                     '--max-seconds', '20', '--output', directory]
+            if external_stop:
+                signal = Path(directory) / 'EXTERNAL_STOP'
+                argv += ['--stop-file', str(signal)]
+                if stop_before_launch:
+                    signal.touch()
             with patch.object(sys, 'argv', argv), patch.object(coordinator, 'time', clock), \
                     patch.object(coordinator, 'subprocess', SimpleNamespace(
                         Popen=launch, STDOUT=subprocess.STDOUT,
@@ -128,6 +134,25 @@ class FinalizationTests(unittest.TestCase):
         self.assertTrue(report['acceptance_passed'])
         self.assertFalse(report['full_acceptance_passed'])
         self.assertEqual(report['cycle_cutoffs']['final']['completed_cycles'], 3)
+
+    def test_external_guard_stop_before_run_directory_launches_nobody(self):
+        code, report = self.run_fixture(external_stop=True, stop_before_launch=True)
+        self.assertEqual(code, 130)
+        self.assertEqual(report['stop_reason'], 'operator_stop_file')
+        self.assertEqual(report['launch_receipts'], [])
+        self.assertEqual(report['process_exits'], [])
+        self.assertEqual(report['cycle_cutoffs']['final']['completed_cycles'], 0)
+        self.assertFalse(report['acceptance_passed'])
+        self.assertTrue(report['stop_file'].endswith('EXTERNAL_STOP'))
+
+    def test_external_stop_file_is_shared_with_client_and_cleanup(self):
+        code, report = self.run_fixture(external_stop=True, operator_stop=True)
+        self.assertEqual(code, 130)
+        self.assertEqual(report['stop_reason'], 'operator_stop_file')
+        self.assertEqual(len(report['launch_receipts']), 1)
+        self.assertEqual(report['process_exits'][0]['after_stop'], 0)
+        self.assertFalse(report['acceptance_passed'])
+        self.assertTrue(report['stop_file'].endswith('EXTERNAL_STOP'))
 
     def test_launch_receipt_write_fault_still_reaps_the_real_owned_child(self):
         code, report = self.run_fixture(real_child_after_stop=True, receipt_write_fails=True)

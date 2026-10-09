@@ -284,6 +284,8 @@ def main():
     parser.add_argument('--distinct-local-client-ips',action='store_true',
                         help='Owned loopback byte relays use real 127.0.0.x client source IPs, preserving default per-IP limits')
     parser.add_argument('--output',type=Path,default=ROOT/'outputs'/'gameplay-load')
+    parser.add_argument('--stop-file',type=Path,
+                        help='Owned supervisor stop signal; may exist before the run directory is created')
     args=parser.parse_args()
     if args.minimum_generator_memory_bytes < 1 or args.client_memory_start_budget_mib < 1 or (args.minimum_cloud_memory_bytes is not None and args.minimum_cloud_memory_bytes < 1):
         parser.error('Memory floors and launch reserve must be positive')
@@ -372,7 +374,7 @@ def main():
                     cycle_limit_seconds=args.cycle_limit_seconds)
     coverage([],start=0,end=1,**{k:v for k,v in contract.items() if k not in COVERAGE_METADATA})
     save(run_dir/'load-contract.json',contract)
-    stop_file=run_dir/'STOP'
+    stop_file=args.stop_file.resolve() if args.stop_file is not None else run_dir/'STOP'
     processes=[]; samples=[]; group_launches=[]; launch_receipts=[]; streaks=collections.Counter(); seen={}; status_cache={}
     run_id=uuid.uuid4().hex
     workload_failed=False; smoke_verified=False; previous_sample_monotonic_ms=None; previous_generator=None
@@ -673,6 +675,7 @@ def main():
                 (business_cleanup_failed, 'business_cleanup_failed'), (not sampling['passed'], 'sampling_integrity_failed')):
             if failed: final_triggers.append(trigger)
         report_data={'schema_version':5,'started':started,'ended':time.time(),'groups':groups,'clients':len(processes),
+            'stop_file':str(stop_file),
             'stop_reason':reason,'outcome':outcome,'source':source,'cleanup_error':cleanup_error,
             'load_window_verified':load_verified,'required_samples':required_samples,
             'stop_issued_monotonic_ns':stop_issued_monotonic_ns,'stop_issued_ms':stop_issued_ms,
