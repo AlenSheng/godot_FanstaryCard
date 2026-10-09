@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "state": "Preregistered",
+  "human_instruction": "云服务器在北美，有延时正常，放开点测试基准线",
+  "region_source": "Human operator confirms North America",
+  "base_policy": "docs/plans/PR13_NORTH_AMERICA_CPU_CAPACITY_PROFILE_20261009.json",
+  "latency_policy": {
+    "http_p95_limit_ms": 5000,
+    "command_p95_limit_ms": 8000,
+    "health_limit_ms": 10000,
+    "monitor_timeout_seconds": 5,
+    "probe_collection_budget_seconds": 11,
+    "legacy_limits_retained_by_default": true,
+    "previous_failures_retained": true,
+    "basis": "Actual idle strict-SSH health median 1084 ms; cloud loopback median about 10 ms; prior ramp HTTP P95 about 4 s and command P95 about 5.5 s. Separate North America test tolerance, not a global production SLO change."
+  },
+  "unchanged": {
+    "memory_floor_bytes": 500000000,
+    "http_error_stop_fraction": 0.1,
+    "command_rejection_stop_fraction": 0.1,
+    "cpu_stop_percent": 85,
+    "disk_available_stop_percent": 15,
+    "actor_wait_p95_stop_ms": 100,
+    "online_targets": [
+      50,
+      100
+    ],
+    "active_targets": [
+      50,
+      100
+    ],
+    "hold_seconds": 600,
+    "minimum_continuous_seconds": 120,
+    "minimum_coverage": 0.95,
+    "maximum_sample_gap_seconds": 20,
+    "actual_client_http_timeout_ms": 10000,
+    "receipt_asset_ownership_and_evidence_requirements": true,
+    "gameplay_numbers": true
+  },
+  "temporary_test_concurrency_bypass": true,
+  "postgres_max_connections": 256,
+  "capacity_accepted": false,
+  "human_experience_in_scope": false,
+  "resource_policy": {
+    "unrestricted_application_database_cpu": true,
+    "effective_nano_cpus_required": 0,
+    "production_configuration_unchanged": true,
+    "host_cpu_stop_percent": 85,
+    "memory_floor_bytes": 500000000,
+    "postgres_memory_mib": 384,
+    "application_memory_mib": 512,
+    "basis": "Actual owned PostgreSQL 0.3 CPU quota throttled 182349971 microseconds; server logs contained Npgsql/timeout exceptions. Application peak 146612224 bytes, PostgreSQL peak 215040000 bytes, no OOM."
+  },
+  "launch_policy": {
+    "launch_interval_seconds": 3,
+    "clients": [
+      50,
+      100
+    ],
+    "actual_client_count_not_reduced": true,
+    "overall_deadline_seconds": 2400,
+    "warmup_seconds": 180,
+    "soak_seconds": 1800,
+    "hold_seconds": 600,
+    "drain_seconds": 60,
+    "cleanup_seconds": 120,
+    "basis": "Reduce simultaneous cold login requests; targets and final coverage obligations retained"
+  },
+  "accepted": false,
+  "connection_policy": {
+    "owned_test_bypass": true,
+    "owned_test_pool_reuse": true,
+    "application_pooling": true,
+    "application_max_pool_size": 256,
+    "physical_postgres_max_connections": 256,
+    "original_16_connection_ceiling_removed": true,
+    "ip_and_http_quotas_disabled": true,
+    "realtime_quotas_disabled": true,
+    "legacy_unpooled_profile_retained": true,
+    "production_default_pooling": true,
+    "production_default_max_pool_size": 16,
+    "basis": "Previous owned unpooled trial accumulated 19538 actual database sessions and crossed the 85 percent host CPU guard at 50 online / 47 active. Preserve real connection reuse while raising the former application concurrency ceiling."
+  },
+  "acceptance_limits": [
+    "This preregistration is not an actual capacity pass",
+    "All earlier failed profiles and raw triggers retained",
+    "No gameplay/card numerical changes",
+    "Three paired AB runs and other component layers remain separate"
+  ]
+}

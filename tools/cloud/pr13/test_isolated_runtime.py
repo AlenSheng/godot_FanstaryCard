@@ -11,6 +11,13 @@ spec.loader.exec_module(runtime)
 
 
 class OwnershipTests(unittest.TestCase):
+    def test_connection_reuse_requires_owned_identity_and_matching_database_budget(self):
+        for bypass, maximum in [(False,256),(True,None),(True,100),(True,512)]:
+            with self.subTest(bypass=bypass,maximum=maximum), patch.object(runtime,'docker') as docker:
+                with self.assertRaises(ValueError):
+                    runtime.start(owned_test_bypass=bypass,database_max_connections=maximum,owned_test_pool_reuse=True)
+                docker.assert_not_called()
+
     def test_cpu_quota_removal_requires_owned_bypass_before_mutation(self):
         with patch.object(runtime, 'docker') as docker:
             with self.assertRaises(ValueError):

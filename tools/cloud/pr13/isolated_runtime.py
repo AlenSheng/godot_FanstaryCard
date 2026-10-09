@@ -46,7 +46,9 @@ def owned(record, role):
     return info
 
 
-def start(owned_test_bypass=False, image_id=None, database_max_connections=None, unrestricted_cpu=False):
+def start(owned_test_bypass=False, image_id=None, database_max_connections=None, unrestricted_cpu=False, owned_test_pool_reuse=False):
+    if owned_test_pool_reuse and (not owned_test_bypass or database_max_connections != 256):
+        raise ValueError('Owned connection reuse requires test bypass and the matching physical 256-connection budget')
     if unrestricted_cpu and not owned_test_bypass:
         raise ValueError('CPU quota removal requires the owned test bypass')
     if database_max_connections is not None and (not owned_test_bypass or isinstance(database_max_connections, bool) or not isinstance(database_max_connections, int) or not 100 <= database_max_connections <= 512):
@@ -63,9 +65,12 @@ def start(owned_test_bypass=False, image_id=None, database_max_connections=None,
               'default_request_limits': {'auth_per_minute': 10, 'economy_per_minute': 30, 'market_read_per_minute': 120},
               'owned_test_bypass': owned_test_bypass,
               'unrestricted_application_database_cpu': unrestricted_cpu,
+              'owned_test_pool_reuse': owned_test_pool_reuse,
               'effective_admission': {'ip_policy_limits_enabled': not owned_test_bypass,
                                       'realtime_command_quota_enabled': not owned_test_bypass,
-                                      'application_database_pool_enabled': not owned_test_bypass},
+                                      'application_database_pool_enabled': not owned_test_bypass or owned_test_pool_reuse,
+                                      'application_database_pool_max_size': 256 if owned_test_pool_reuse else None if owned_test_bypass else 16,
+                                      'application_default_database_pool_ceiling_enabled': not owned_test_bypass},
               'controller_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
               'candidate_activation': False, 'live_database_used': False}
     config = BASE / 'cache/live-monitoring'
@@ -147,6 +152,9 @@ scrape_configs:
         if owned_test_bypass:
             with app_env.open('a') as stream:
                 stream.write('RequestLimits__OwnedTestBypass=true\nRequestLimits__OwnedTestSession=' + LABEL + '\n')
+        if owned_test_pool_reuse:
+            with app_env.open('a') as stream:
+                stream.write('Persistence__OwnedTestPoolReuse=true\n')
         app_env.chmod(0o600)
 
         def launch(role, args, image, tail=()):
@@ -189,6 +197,8 @@ scrape_configs:
         actual_env = dict(value.split('=', 1) for value in owned(record, 'server')['Config']['Env'])
         if (actual_env.get('RequestLimits__OwnedTestBypass', 'false').lower() == 'true') != owned_test_bypass:
             raise ValueError('Effective owned-test bypass environment differs')
+        if (actual_env.get('Persistence__OwnedTestPoolReuse', 'false').lower() == 'true') != owned_test_pool_reuse:
+            raise ValueError('Effective owned-test connection reuse environment differs')
         record['database_max_connections'] = int(docker(
             'exec', NAMES['postgres'], 'psql', '-X', '-U', 'fantasycard', '-d', database,
             '-At', '-c', 'SHOW max_connections').stdout.strip())
@@ -239,9 +249,10 @@ def main():
     parser.add_argument('--image-id', help='Exact verified current production image ID to reuse')
     parser.add_argument('--database-max-connections', type=int, help='Owned bypass only: temporary physical PostgreSQL connection budget, 100-512')
     parser.add_argument('--unrestricted-cpu', action='store_true', help='Owned bypass only: application and database share the real host CPU without artificial per-container quotas')
+    parser.add_argument('--owned-test-pool-reuse', action='store_true', help='Owned bypass only: retain connection reuse with the matching physical 256-connection budget')
     args = parser.parse_args()
     if args.operation == 'start':
-        value = start(args.owned_test_bypass, args.image_id, args.database_max_connections, args.unrestricted_cpu)
+        value = start(args.owned_test_bypass, args.image_id, args.database_max_connections, args.unrestricted_cpu, args.owned_test_pool_reuse)
     else:
         record = json.loads((BASE / 'evidence/live-runtime.json').read_text())
         value = audit(record) if args.operation == 'audit' else stop(record)

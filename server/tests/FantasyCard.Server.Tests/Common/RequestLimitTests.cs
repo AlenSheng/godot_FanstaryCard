@@ -89,6 +89,32 @@ public sealed class RequestLimitTests
         Assert.Equal(16, connection.MaxPoolSize);
     }
 
+    [Fact]
+    public void Owned_capacity_profile_retains_reuse_with_a_256_connection_budget()
+    {
+        var config = TestConfig();
+        config["Persistence:OwnedTestPoolReuse"] = "true";
+        RequestLimitExtensions.ValidateOwnedTestBypass(config, new TestEnvironment("Development"));
+        var services = new ServiceCollection();
+        services.AddFantasyCardPersistence(config);
+        using var provider = services.BuildServiceProvider();
+        var connection = new NpgsqlConnectionStringBuilder(provider.GetRequiredService<NpgsqlDataSource>().ConnectionString);
+        Assert.True(connection.Pooling);
+        Assert.Equal(256, connection.MaxPoolSize);
+        Assert.Equal(1, connection.MinPoolSize);
+        Assert.Equal(5, connection.Timeout);
+        Assert.Equal(10, connection.CommandTimeout);
+    }
+
+    [Fact]
+    public void Connection_reuse_override_requires_owned_test_bypass()
+    {
+        var config = TestConfig();
+        config["RequestLimits:OwnedTestBypass"] = "false";
+        config["Persistence:OwnedTestPoolReuse"] = "true";
+        Assert.Throws<InvalidOperationException>(() => new ServiceCollection().AddFantasyCardPersistence(config));
+    }
+
     [Theory]
     [InlineData(RequestLimitOptions.AuthPolicy, false)]
     [InlineData(RequestLimitOptions.AdminPolicy, false)]
