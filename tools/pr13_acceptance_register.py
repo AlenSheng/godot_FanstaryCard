@@ -18,6 +18,17 @@ PLAN=ROOT/'docs/plans/PR13_ACCEPTANCE_DETAILS_20260930.json'
 def digest(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def review_scope(path, root=ROOT):
+    if path is None:return dict(in_scope=True, authority='original_plan')
+    source=path.resolve()
+    if not source.is_relative_to(root.resolve()):raise ValueError('Scope decision escaped the repository')
+    decision=json.loads(source.read_text(encoding='utf8'))
+    experience=decision.get('human_experience',{})
+    if decision.get('authority')!='human' or experience.get('in_scope') is not False or experience.get('automated_combat_render_and_metrics_remain_required') is not True or experience.get('do_not_claim_human_tests_passed') is not True:
+        raise ValueError('Explicit human-only exclusion with retained automated acceptance required')
+    return dict(in_scope=False,authority='human',source=dict(path=source.relative_to(root).as_posix(),bytes=source.stat().st_size,sha256=digest(source)))
+
+
 def missing_case_profiles(task, records):
     """A passed OFFLINE case does not discharge its real database/live layers."""
     return {r['case_id']:sorted(set(task['profiles'])-set(r.get('profiles_executed',[])))
@@ -51,10 +62,13 @@ def main():
     parser.add_argument('--support',type=Path,required=True)
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--main-decisions',type=Path)
+    parser.add_argument('--scope-decision',type=Path,help='Explicit current user scope decision; excludes human participation only')
     args=parser.parse_args();output=args.output.resolve();output.mkdir(parents=True,exist_ok=True)
     plan=json.loads(PLAN.read_text(encoding='utf8'));support=json.loads(args.support.read_text(encoding='utf8'))
+    human_scope=review_scope(args.scope_decision)
     expected={c['id']:c for p in plan['packages'] for s in p['subtasks'] for c in s['test_cases']}
     known={s['id'] for p in plan['packages'] for s in p['subtasks']};executed={};files={PLAN,args.support.resolve()}
+    if args.scope_decision:files.add(args.scope_decision.resolve())
     for file in args.case_reports:
         files.add(file.resolve()); report=file.parent/'report.json'
         if not report.is_file():raise ValueError('Case source report missing: '+str(file))
@@ -99,7 +113,7 @@ def main():
             statuses=[r['status'] for r in task_cases]
             missing_profiles=missing_case_profiles(task,task_cases)
             state=execution_state(task_cases, task['profiles'], human_required=task['id'] in HUMAN_TASKS,
-                                  human_evidence=support.get('human_experience_evidence'))
+                                  human_evidence=support.get('human_experience_evidence'),human_in_scope=human_scope['in_scope'])
             if state=='Queued' and supporting.get(task['id']):state='Partial'
             if observation.get('state') in ('Blocked','InProgress','Failed','Deferred','Partial'):state=observation['state']
             tasks.append(dict(task_id=task['id'],title=task['title'],package_id=package['id'],state=state,
@@ -125,8 +139,10 @@ def main():
                 task_states=dict(Counter(t['state'] for t in tasks)),case_states=dict(Counter(c['status'] for c in cases)))
     register=dict(schema_version=1,kind='runtime_execution_register',generated_at=time.time(),integration_source_sha=head,
         plan_sha256=digest(PLAN),release_base=plan['release_base'],counts=counts,all_accepted=False,
-        user_experience_override=support.get('human_experience_decision',
-            '机器人模拟仅作补充；真人验收仍待补。'),
+        human_experience_scope=human_scope,
+        user_experience_override=('按用户本次范围决定移除真人体验；自动战斗、实验、渲染和指标验收仍保留。'
+            if not human_scope['in_scope'] else support.get('human_experience_decision',
+            '机器人模拟仅作补充；真人验收仍待补。')),
         delivery_policy=support.get('delivery_policy', {'state': 'NotRecorded'}),
         production_runtime=support.get('production_runtime'),session_closeout=support.get('session_closeout'),tasks=tasks,gates=gates)
     (output/'register.json').write_text(json.dumps(register,ensure_ascii=False,indent=2),encoding='utf8')

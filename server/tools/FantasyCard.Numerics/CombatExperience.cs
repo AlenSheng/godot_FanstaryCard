@@ -16,6 +16,11 @@ internal static class CombatExperience
     private static readonly JsonSerializerOptions Json = new() { WriteIndented = false };
     private static readonly JsonSerializerOptions PrettyJson = new() { WriteIndented = true };
     private static readonly string[] Groups = ["O1", "O6", "E1", "BOSS"];
+    // Keep the original default matrix, while allowing every actual encounter
+    // to be selected explicitly for coverage and regression diagnosis.
+    private static readonly string[] AllowedGroups =
+        ["O1", "O2", "O3", "O4", "O5", "O6", "O7", "O8",
+         "M1", "M2", "M3", "M4", "M5", "E1", "E2", "E3", "E4", "E5", "E6", "BOSS"];
     private static readonly string[] Strategies = ["baseline_all_hand", "basic", "build"];
 
     public static int Run(string[] args)
@@ -31,7 +36,7 @@ internal static class CombatExperience
             .Select(value => Enum.Parse<HeroClass>(value)).ToArray();
         var output = ReadString(args, "--output", "combat-experience");
         if (samples < 3 || seedStart < 0 || (long)seedStart + samples > int.MaxValue || limit is < 60 or > 600 ||
-            weaponLevel is < 0 or > 5 || groups.Length != groups.Distinct().Count() || groups.Any(group => !Groups.Contains(group)) ||
+            weaponLevel is < 0 or > 5 || groups.Length != groups.Distinct().Count() || groups.Any(group => !AllowedGroups.Contains(group)) ||
             heroes.Length != heroes.Distinct().Count() || heroes.Any(hero => !Enum.IsDefined(hero)) ||
             strategies.Length != strategies.Distinct().Count() || strategies.Any(strategy => !Strategies.Contains(strategy)) ||
             candidateKind is not ("class-passives" or "outer-o6-hp085" or "outer-o6-hp095" or "outer-o6-hp090" or
@@ -182,7 +187,8 @@ internal static class CombatExperience
             var player = room.AddPlayer(new BattleRoomPlayerSetup(Guid.NewGuid(), hero, deck, null, WeaponLevel: weaponLevel));
             row.WeaponLevel = weaponLevel;
             var map = ChaosMapGenerator.Generate(seed, 1).Capture();
-            var layer = group == "BOSS" ? ChaosMapLayer.Core : group.StartsWith('E') ? ChaosMapLayer.Middle : ChaosMapLayer.Outer;
+            var layer = group == "BOSS" ? ChaosMapLayer.Core :
+                group.StartsWith('E') || group.StartsWith('M') ? ChaosMapLayer.Middle : ChaosMapLayer.Outer;
             var cell = group == "BOSS" ? map.Cells.Single(c => c.IsBoss) : map.Cells.First(c => c.Layer == layer && !c.IsBoss);
             var encounter = cell with { MonsterGroupId = group, IsBoss = group == "BOSS", HasSpring = false };
             room.InitializeMap(ChaosMapState.Restore(map with

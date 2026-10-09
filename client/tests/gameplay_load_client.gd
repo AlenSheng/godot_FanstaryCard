@@ -120,7 +120,7 @@ func _cycle_limit(value: String) -> int:
 	if value.is_empty(): return 240
 	if not value.is_valid_int(): return 0
 	var seconds := int(value)
-	return seconds if seconds >= 60 and seconds <= 600 else 0
+	return seconds if seconds >= 60 and seconds <= 1200 else 0
 
 func _process(_delta: float) -> void:
 	_update_context()

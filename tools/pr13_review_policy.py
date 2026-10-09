@@ -19,12 +19,12 @@ def human_complete(evidence):
     return all(p.get('participant_kind')=='human' and p.get('skill_band') and len(set(p.get('natural_cycle_ids',[])))>=3 for p in people)
 
 
-def execution_state(records, required_profiles, *, human_required=False, human_evidence=None):
+def execution_state(records, required_profiles, *, human_required=False, human_evidence=None, human_in_scope=True):
     if any(r.get('status')=='Failed' for r in records):return 'Failed'
     passed=[r for r in records if r.get('executed') is True and r.get('status')=='Passed']
     if len(passed)!=len(records) or not records:return 'Partial' if passed else 'Queued'
     if any(set(required_profiles)-set(r.get('profiles_executed',[])) for r in passed):return 'Partial'
-    if human_required and not human_complete(human_evidence):return 'Partial'
+    if human_required and human_in_scope and not human_complete(human_evidence):return 'Partial'
     return 'ReadyForAcceptance'
 
 
