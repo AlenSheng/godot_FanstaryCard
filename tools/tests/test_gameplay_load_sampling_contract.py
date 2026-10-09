@@ -153,7 +153,7 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
     def run_fixture(self, *, overlap=False, local_resources=False, missing_actor=False, cycle_limit=240,
                     resource_changes=None, final_status_change=None, wall_jump=False, max_groups=1,
                     client_max_fps=None, generator_observation=None, probe_delay_seconds=0, delay_all_probes=False,
-                    smoke=False, max_seconds=630, memory_floor=None):
+                    smoke=False, max_seconds=630, memory_floor=None, latency_limits=None):
         """Run the real final verdict with fake child/clock/network observations."""
         elapsed = [0.0]
         children = []
@@ -237,6 +237,9 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
             if client_max_fps is not None: argv+=['--client-max-fps',str(client_max_fps)]
             if memory_floor is not None:
                 argv+=['--minimum-generator-memory-bytes',str(memory_floor),'--minimum-cloud-memory-bytes',str(memory_floor)]
+            if latency_limits is not None:
+                for flag,value in zip(['--http-p95-limit-ms','--command-p95-limit-ms','--health-limit-ms','--monitor-timeout-seconds'],latency_limits):
+                    argv += [flag,str(value)]
             with patch.object(sys, 'argv', argv), patch.object(coordinator, 'time', clock), \
                     patch.object(coordinator, 'psutil', SimpleNamespace(virtual_memory=lambda: SimpleNamespace(available=3*1024**3))), \
                     patch.object(coordinator, 'subprocess', SimpleNamespace(
@@ -327,6 +330,11 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
         code, report = self.run_fixture(generator_observation={'available':False})
         self.assertEqual(code,3)
         self.assertIn('generator_memory_monitoring_unavailable',report['all_triggers'])
+
+    def test_coordinator_records_separate_north_america_latency_contract(self):
+        code,report=self.run_fixture(latency_limits=[5000,8000,10000,5])
+        self.assertEqual(code,0)
+        self.assertEqual([report['load_contract'][key] for key in ['http_p95_limit_ms','command_p95_limit_ms','health_limit_ms','monitor_timeout_seconds']],[5000,8000,10000,5])
 
 
     def test_wall_overlap_is_invalid_in_actual_coordinator_verdict(self):

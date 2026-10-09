@@ -25,7 +25,7 @@ from gameplay_load_validation import aggregate_window, request_cutoffs, workload
 from pr13_runtime_evidence import coverage, reconcile_cycles, result_dimensions, sampling_integrity
 from pr13_local_network import LocalOrigins
 from pr13_server_diagnostics import current_window
-from pr13_resource_policy import DEFAULT_GENERATOR_FLOOR, memory_causes, launch_memory_ready
+from pr13_resource_policy import DEFAULT_GENERATOR_FLOOR, memory_causes, launch_memory_ready, latency_causes
 
 QUERIES = {
     'cpu': '100*(1-avg(rate(node_cpu_seconds_total{job="node",instance="node-exporter:9100",mode="idle"}[1m])))',
@@ -37,16 +37,17 @@ QUERIES = {
 }
 COVERAGE_METADATA = {'profile','acceptance_scope','launch_interval_seconds','http_transport','resource_source','server_metrics_missing_reason','client_max_fps','fps_scope',
                      'distinct_local_client_ips','client_memory_start_budget_mib','hero_class','strategy','strategy_seed','cycle_limit_seconds',
-                     'minimum_generator_memory_bytes','minimum_cloud_memory_bytes'}
+                     'minimum_generator_memory_bytes','minimum_cloud_memory_bytes',
+                     'http_p95_limit_ms','command_p95_limit_ms','health_limit_ms','monitor_timeout_seconds'}
 
-def metrics(base):
+def metrics(base, timeout_seconds=3):
     result = dict.fromkeys(QUERIES)
     # One snapshot and one bounded network round trip for all independent
     # measurements; the label exists only in this query's result vector.
     query = ' or '.join('label_replace(('+expression+'),"pr13_metric","'+key+'","",".*")'
                         for key,expression in QUERIES.items())
     try:
-        with urllib.request.urlopen(base.rstrip('/')+'/api/v1/query?'+urllib.parse.urlencode({'query':query}),timeout=3) as r:
+        with urllib.request.urlopen(base.rstrip('/')+'/api/v1/query?'+urllib.parse.urlencode({'query':query}),timeout=timeout_seconds) as r:
             rows=json.load(r)['data']['result']
         for key in result:
             matches=[row for row in rows if row.get('metric',{}).get('pr13_metric')==key]
@@ -233,6 +234,10 @@ def main():
     parser.add_argument('--minimum-cloud-memory-bytes',type=int,
                         help='Explicit absolute available-memory floor; otherwise the legacy 15 percent guard applies')
     parser.add_argument('--client-memory-start-budget-mib',type=int,default=256)
+    parser.add_argument('--http-p95-limit-ms',type=int,default=1500)
+    parser.add_argument('--command-p95-limit-ms',type=int,default=2000)
+    parser.add_argument('--health-limit-ms',type=int,default=5000)
+    parser.add_argument('--monitor-timeout-seconds',type=float,default=3)
     parser.add_argument('--minimum-command-rate',type=float,default=1)
     parser.add_argument('--hero-class',choices=('Mage','Priest','Guardian','mixed'),default='Mage')
     parser.add_argument('--strategy',choices=('baseline_all_hand','basic','build','mixed'),default='baseline_all_hand')
@@ -252,6 +257,8 @@ def main():
     args=parser.parse_args()
     if args.minimum_generator_memory_bytes < 1 or args.client_memory_start_budget_mib < 1 or (args.minimum_cloud_memory_bytes is not None and args.minimum_cloud_memory_bytes < 1):
         parser.error('Memory floors and launch reserve must be positive')
+    if any(not 1 <= value <= 60000 for value in [args.http_p95_limit_ms,args.command_p95_limit_ms,args.health_limit_ms]) or not math.isfinite(args.monitor_timeout_seconds) or not 0 < args.monitor_timeout_seconds <= 60:
+        parser.error('Latency limits must be positive and bounded to 60 seconds')
     if args.client_max_fps is not None and not 1 <= args.client_max_fps <= 240:
         parser.error('Explicit FPS candidate must be between 1 and 240')
     if not Path(args.godot).is_file(): parser.error('Godot executable is missing')
@@ -284,7 +291,7 @@ def main():
     if args.run and args.smoke_clients!=1: parser.error('--smoke-clients belongs to the smoke profile')
     if args.run and args.load_profile in ('functional-cycles','cleared-extraction'): parser.error('Functional/cleared extraction cycles are smoke scenarios and cannot prove original capacity')
     if args.run:
-        baseline=local_host_metrics(args.local_server_metrics, args.local_server_pid) if args.local_resource_sampling else metrics(args.prometheus)
+        baseline=local_host_metrics(args.local_server_metrics, args.local_server_pid) if args.local_resource_sampling else metrics(args.prometheus,args.monitor_timeout_seconds)
         memory_key = 'memory_available' if args.minimum_cloud_memory_bytes is None else 'memory_available_bytes'
         if any(baseline[k] is None for k in ('cpu',memory_key,'disk_available')):
             parser.error('Host monitoring is unavailable; provide an authorized Prometheus endpoint before --run')
@@ -329,6 +336,8 @@ def main():
     contract.update(distinct_local_client_ips=args.distinct_local_client_ips,client_memory_start_budget_mib=args.client_memory_start_budget_mib,
                     minimum_generator_memory_bytes=args.minimum_generator_memory_bytes,
                     minimum_cloud_memory_bytes=args.minimum_cloud_memory_bytes,
+                    http_p95_limit_ms=args.http_p95_limit_ms,command_p95_limit_ms=args.command_p95_limit_ms,
+                    health_limit_ms=args.health_limit_ms,monitor_timeout_seconds=args.monitor_timeout_seconds,
                     hero_class=args.hero_class,strategy=args.strategy,strategy_seed=args.strategy_seed,
                     cycle_limit_seconds=args.cycle_limit_seconds)
     coverage([],start=0,end=1,**{k:v for k,v in contract.items() if k not in COVERAGE_METADATA})
@@ -435,10 +444,10 @@ def main():
                 rejected=[t for t in commands if t.get('response_type')=='error.command_rejected']
                 window['command_rejections']=len(rejected)
                 window['command_error_rate']=len(rejected)/len(commands) if commands else 0
-                health_task=probes.submit(health_probe,args.server_url,5)
-                metrics_task=(probes.submit(local_host_metrics, args.local_server_metrics, args.local_server_pid) if args.local_resource_sampling else probes.submit(metrics,args.prometheus)) if args.run else None
+                health_task=probes.submit(health_probe,args.server_url,args.health_limit_ms/1000)
+                metrics_task=(probes.submit(local_host_metrics, args.local_server_metrics, args.local_server_pid) if args.local_resource_sampling else probes.submit(metrics,args.prometheus,args.monitor_timeout_seconds)) if args.run else None
                 probe_tasks=[health_task]+([metrics_task] if metrics_task is not None else [])
-                _,pending_probes=concurrent.futures.wait(probe_tasks,timeout=6)
+                _,pending_probes=concurrent.futures.wait(probe_tasks,timeout=max(args.health_limit_ms/1000,args.monitor_timeout_seconds)+1)
                 probe_timeout=bool(pending_probes)
                 health=health_task.result() if health_task.done() else {'ok':False,'duration_ms':None,'status':0,'error':'probe_timeout'}
                 resource=metrics_task.result() if metrics_task is not None and metrics_task.done() else {}
@@ -448,10 +457,8 @@ def main():
                 causes=[]
                 if probe_timeout: causes.append('probe_timeout')
                 if len(commands)>=10 and window['command_error_rate']>=.1: causes.append('command_rejections_10pct')
-                if not health['ok'] or (health['duration_ms'] is not None and health['duration_ms']>5000): causes.append('health_failed_or_over_5000ms')
                 if window['sample_count']>=20 and window['error_rate']>=.1: causes.append('http_errors_10pct')
-                if window['valid_latency_count']>=20 and window['http'].get('p95_ms',0)>1500: causes.append('http_p95_over_1500ms')
-                if window['realtime'].get('count',0)>=10 and window['realtime'].get('p95_ms',0)>2000: causes.append('command_p95_over_2000ms')
+                causes.extend(latency_causes(window,health,args.http_p95_limit_ms,args.command_p95_limit_ms,args.health_limit_ms))
                 for key,limit,less in [('cpu',85,False),('disk_available',15,True),('actor_wait',100,False)]:
                     value=resource.get(key)
                     if value is not None and (value<limit if less else value>limit): causes.append(key+'_redline')

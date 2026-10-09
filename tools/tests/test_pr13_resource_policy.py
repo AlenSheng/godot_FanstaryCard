@@ -1,5 +1,5 @@
 import unittest
-from tools.pr13_resource_policy import memory_causes, launch_memory_ready
+from tools.pr13_resource_policy import memory_causes, launch_memory_ready, latency_causes
 
 
 class ResourcePolicyTests(unittest.TestCase):
@@ -30,3 +30,18 @@ class ResourcePolicyTests(unittest.TestCase):
         required = 500_000_000 + 64 * 1024 ** 2
         self.assertTrue(launch_memory_ready(required, 500_000_000, 64))
         self.assertFalse(launch_memory_ready(required - 1, 500_000_000, 64))
+
+    def test_north_america_profile_does_not_rewrite_default_latency(self):
+        window={'valid_latency_count':20,'http':{'p95_ms':4000},'realtime':{'count':10,'p95_ms':6000}}
+        health={'ok':True,'duration_ms':9000}
+        self.assertEqual(latency_causes(window,health),['health_failed_or_over_5000ms','http_p95_over_1500ms','command_p95_over_2000ms'])
+        self.assertEqual(latency_causes(window,health,5000,8000,10000),[])
+
+    def test_north_america_boundaries_and_health_failure_remain_stops(self):
+        window={'valid_latency_count':20,'http':{'p95_ms':5000},'realtime':{'count':10,'p95_ms':8000}}
+        health={'ok':True,'duration_ms':10000}
+        self.assertEqual(latency_causes(window,health,5000,8000,10000),[])
+        window['http']['p95_ms']+=1;window['realtime']['p95_ms']+=1;health['duration_ms']+=1
+        self.assertEqual(latency_causes(window,health,5000,8000,10000),['health_failed_or_over_10000ms','http_p95_over_5000ms','command_p95_over_8000ms'])
+        health={'ok':False,'duration_ms':1}
+        self.assertIn('health_failed_or_over_10000ms',latency_causes(window,health,5000,8000,10000))
