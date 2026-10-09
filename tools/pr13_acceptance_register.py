@@ -3,6 +3,7 @@ import argparse
 from collections import Counter
 import hashlib
 import json
+import re
 from pathlib import Path
 import subprocess
 import time
@@ -16,6 +17,29 @@ PLAN=ROOT/'docs/plans/PR13_ACCEPTANCE_DETAILS_20260930.json'
 
 
 def digest(path):return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def plan_identity(path, metadata, root=ROOT):
+    """Retain raw hashes; permit only Git-proven LF/CRLF equivalents."""
+    raw=path.read_bytes();canonical=raw.replace(b'\r\n',b'\n')
+    actual=hashlib.sha256(raw).hexdigest();recorded=metadata.get('plan_sha256')
+    identity=dict(recorded_sha256=recorded,current_bytes_sha256=actual,
+                  canonical_lf_sha256=hashlib.sha256(canonical).hexdigest(),line_endings_equivalent=False)
+    if recorded==actual:return identity
+    permitted={hashlib.sha256(canonical).hexdigest(),hashlib.sha256(canonical.replace(b'\n',b'\r\n')).hexdigest()}
+    source=metadata.get('source_sha','')
+    if recorded not in permitted or not isinstance(source,str) or re.fullmatch(r'[0-9a-f]{40}',source) is None:
+        raise ValueError('Case evidence uses a different acceptance plan')
+    relative=path.resolve().relative_to(root.resolve()).as_posix()
+    result=subprocess.run(['git','-C',str(root),'show',source+':'+relative],capture_output=True,timeout=15)
+    if result.returncode or result.stdout.replace(b'\r\n',b'\n')!=canonical:
+        raise ValueError('Acceptance plan newline equivalence is not proven by its executed Git source')
+    source_canonical=result.stdout.replace(b'\r\n',b'\n')
+    if recorded not in {hashlib.sha256(result.stdout).hexdigest(),hashlib.sha256(source_canonical).hexdigest(),
+                        hashlib.sha256(source_canonical.replace(b'\n',b'\r\n')).hexdigest()}:
+        raise ValueError('Executed acceptance plan byte hash differs')
+    return dict(identity,line_endings_equivalent=True,verified_source_sha=source,
+                verified_git_plan_sha256=hashlib.sha256(result.stdout).hexdigest())
 
 
 def review_scope(path, root=ROOT):
@@ -67,13 +91,14 @@ def main():
     plan=json.loads(PLAN.read_text(encoding='utf8'));support=json.loads(args.support.read_text(encoding='utf8'))
     human_scope=review_scope(args.scope_decision)
     expected={c['id']:c for p in plan['packages'] for s in p['subtasks'] for c in s['test_cases']}
-    known={s['id'] for p in plan['packages'] for s in p['subtasks']};executed={};files={PLAN,args.support.resolve()}
+    known={s['id'] for p in plan['packages'] for s in p['subtasks']};executed={};files={PLAN,args.support.resolve()};plan_sources=[]
     if args.scope_decision:files.add(args.scope_decision.resolve())
     for file in args.case_reports:
         files.add(file.resolve()); report=file.parent/'report.json'
         if not report.is_file():raise ValueError('Case source report missing: '+str(file))
         files.add(report.resolve());metadata=json.loads(report.read_text(encoding='utf8'))
-        if metadata.get('plan_sha256')!=digest(PLAN):raise ValueError('Case evidence uses a different acceptance plan')
+        identity=plan_identity(PLAN,metadata)
+        plan_sources.append(dict(report=str(report.resolve().relative_to(ROOT)),**identity))
         for line in file.read_text(encoding='utf8').splitlines():
             record=json.loads(line);case_id=record['case_id']
             if case_id not in expected or case_id in executed:raise ValueError('Unknown/duplicate case: '+case_id)
@@ -84,7 +109,7 @@ def main():
             if not isinstance(profiles,list) or any(p not in ('OFFLINE','POSTGRES','LIVE','CAPACITY','EXPERIMENT','RENDER','AUDIT') for p in profiles):
                 raise ValueError('Invalid explicit execution profiles: '+case_id)
             executed[case_id]=dict(record,profiles_executed=profiles,evidence=str(file.resolve().relative_to(ROOT)),
-                                 source_sha=metadata.get('source_sha'),source=metadata.get('source'))
+                                 source_sha=metadata.get('source_sha'),source=metadata.get('source'),acceptance_plan_identity=identity)
     supporting={};observations={}
     for item in support['evidence']:
         if set(item['tasks'])-known:raise ValueError('Unknown supporting task')
@@ -138,7 +163,7 @@ def main():
     counts=dict(packages=len(plan['packages']),tasks=len(tasks),cases=len(cases),
                 task_states=dict(Counter(t['state'] for t in tasks)),case_states=dict(Counter(c['status'] for c in cases)))
     register=dict(schema_version=1,kind='runtime_execution_register',generated_at=time.time(),integration_source_sha=head,
-        plan_sha256=digest(PLAN),release_base=plan['release_base'],counts=counts,all_accepted=False,
+        plan_sha256=digest(PLAN),source_plan_identities=plan_sources,release_base=plan['release_base'],counts=counts,all_accepted=False,
         human_experience_scope=human_scope,
         user_experience_override=('按用户本次范围决定移除真人体验；自动战斗、实验、渲染和指标验收仍保留。'
             if not human_scope['in_scope'] else support.get('human_experience_decision',
