@@ -46,7 +46,9 @@ def owned(record, role):
     return info
 
 
-def start(owned_test_bypass=False, image_id=None):
+def start(owned_test_bypass=False, image_id=None, database_max_connections=None):
+    if database_max_connections is not None and (not owned_test_bypass or isinstance(database_max_connections, bool) or not isinstance(database_max_connections, int) or not 100 <= database_max_connections <= 512):
+        raise ValueError('Database concurrency override requires the owned test bypass and an explicit 100-512 connection budget')
     selected_image = image_id or IMAGE
     state = BASE / 'evidence/live-runtime.json'
     if state.exists():
@@ -149,7 +151,10 @@ scrape_configs:
                                                 '--label', 'codex.scope=disposable-cloud', *args, image, *tail).stdout.strip()
             save(state, record)
 
-        launch('postgres', ['--memory', '192m', '--cpus', '0.3', '-p', '127.0.0.1:25434:5432', '--env-file', str(pg_env)], PG_IMAGE)
+        pg_memory = '384m' if database_max_connections is not None else '192m'
+        pg_tail = ['postgres', '-c', 'max_connections=' + str(database_max_connections)] if database_max_connections is not None else ()
+        launch('postgres', ['--memory', pg_memory, '--cpus', '0.3', '-p', '127.0.0.1:25434:5432', '--env-file', str(pg_env)], PG_IMAGE, pg_tail)
+        record['database_memory_budget'] = pg_memory
         deadline = time.monotonic() + 60
         # The entrypoint's temporary initialization server accepts Unix sockets
         # before restarting. TCP readiness proves the final database is serving.
@@ -182,6 +187,8 @@ scrape_configs:
         record['database_max_connections'] = int(docker(
             'exec', NAMES['postgres'], 'psql', '-X', '-U', 'fantasycard', '-d', database,
             '-At', '-c', 'SHOW max_connections').stdout.strip())
+        if database_max_connections is not None and record['database_max_connections'] != database_max_connections:
+            raise ValueError('Effective database concurrency differs from the registered override')
         save(state, record)
         return record
     except Exception as error:
@@ -222,9 +229,10 @@ def main():
     parser.add_argument('operation', choices=['start', 'audit', 'stop'])
     parser.add_argument('--owned-test-bypass', action='store_true', help='Disable IP/realtime quotas and the application connection pool on this owned test instance')
     parser.add_argument('--image-id', help='Exact verified current production image ID to reuse')
+    parser.add_argument('--database-max-connections', type=int, help='Owned bypass only: temporary physical PostgreSQL connection budget, 100-512')
     args = parser.parse_args()
     if args.operation == 'start':
-        value = start(args.owned_test_bypass, args.image_id)
+        value = start(args.owned_test_bypass, args.image_id, args.database_max_connections)
     else:
         record = json.loads((BASE / 'evidence/live-runtime.json').read_text())
         value = audit(record) if args.operation == 'audit' else stop(record)

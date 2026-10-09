@@ -25,16 +25,19 @@ from gameplay_load_validation import aggregate_window, request_cutoffs, workload
 from pr13_runtime_evidence import coverage, reconcile_cycles, result_dimensions, sampling_integrity
 from pr13_local_network import LocalOrigins
 from pr13_server_diagnostics import current_window
+from pr13_resource_policy import DEFAULT_GENERATOR_FLOOR, memory_causes, launch_memory_ready
 
 QUERIES = {
     'cpu': '100*(1-avg(rate(node_cpu_seconds_total{job="node",instance="node-exporter:9100",mode="idle"}[1m])))',
     'memory_available': '100*node_memory_MemAvailable_bytes{job="node",instance="node-exporter:9100"}/node_memory_MemTotal_bytes{job="node",instance="node-exporter:9100"}',
+    'memory_available_bytes': 'node_memory_MemAvailable_bytes{job="node",instance="node-exporter:9100"}',
     'disk_available': '100*node_filesystem_avail_bytes{job="node",instance="node-exporter:9100",mountpoint="/"}/node_filesystem_size_bytes{job="node",instance="node-exporter:9100",mountpoint="/"}',
     'actor_wait': 'histogram_quantile(0.95,sum(rate(fantasycard_room_actor_command_wait_milliseconds_bucket{job="fantasycard",instance="otel-collector:9464"}[5m])) by (le))',
     'server_humans_in_room': 'fantasycard_rooms_humans_active{job="fantasycard",instance="otel-collector:9464"}',
 }
 COVERAGE_METADATA = {'profile','acceptance_scope','launch_interval_seconds','http_transport','resource_source','server_metrics_missing_reason','client_max_fps','fps_scope',
-                     'distinct_local_client_ips','client_memory_start_budget_mib','hero_class','strategy','strategy_seed','cycle_limit_seconds'}
+                     'distinct_local_client_ips','client_memory_start_budget_mib','hero_class','strategy','strategy_seed','cycle_limit_seconds',
+                     'minimum_generator_memory_bytes','minimum_cloud_memory_bytes'}
 
 def metrics(base):
     result = dict.fromkeys(QUERIES)
@@ -64,6 +67,7 @@ def local_host_metrics(server_metrics_file=None, server_pid=None):
         disk = psutil.disk_usage(str(ROOT.anchor))
         result.update(cpu=psutil.cpu_percent(interval=.2),
                       memory_available=100 * memory.available / memory.total,
+                      memory_available_bytes=memory.available,
                       disk_available=100 * disk.free / disk.total)
     except (OSError, ValueError, psutil.Error):
         pass
@@ -225,6 +229,10 @@ def main():
     parser.add_argument('--minimum-continuous-seconds',type=int,default=120)
     parser.add_argument('--minimum-coverage',type=float,default=.95)
     parser.add_argument('--maximum-sample-gap',type=float,default=20)
+    parser.add_argument('--minimum-generator-memory-bytes',type=int,default=DEFAULT_GENERATOR_FLOOR)
+    parser.add_argument('--minimum-cloud-memory-bytes',type=int,
+                        help='Explicit absolute available-memory floor; otherwise the legacy 15 percent guard applies')
+    parser.add_argument('--client-memory-start-budget-mib',type=int,default=256)
     parser.add_argument('--minimum-command-rate',type=float,default=1)
     parser.add_argument('--hero-class',choices=('Mage','Priest','Guardian','mixed'),default='Mage')
     parser.add_argument('--strategy',choices=('baseline_all_hand','basic','build','mixed'),default='baseline_all_hand')
@@ -242,6 +250,8 @@ def main():
                         help='Owned loopback byte relays use real 127.0.0.x client source IPs, preserving default per-IP limits')
     parser.add_argument('--output',type=Path,default=ROOT/'outputs'/'gameplay-load')
     args=parser.parse_args()
+    if args.minimum_generator_memory_bytes < 1 or args.client_memory_start_budget_mib < 1 or (args.minimum_cloud_memory_bytes is not None and args.minimum_cloud_memory_bytes < 1):
+        parser.error('Memory floors and launch reserve must be positive')
     if args.client_max_fps is not None and not 1 <= args.client_max_fps <= 240:
         parser.error('Explicit FPS candidate must be between 1 and 240')
     if not Path(args.godot).is_file(): parser.error('Godot executable is missing')
@@ -275,9 +285,12 @@ def main():
     if args.run and args.load_profile in ('functional-cycles','cleared-extraction'): parser.error('Functional/cleared extraction cycles are smoke scenarios and cannot prove original capacity')
     if args.run:
         baseline=local_host_metrics(args.local_server_metrics, args.local_server_pid) if args.local_resource_sampling else metrics(args.prometheus)
-        if any(baseline[k] is None for k in ('cpu','memory_available','disk_available')):
+        memory_key = 'memory_available' if args.minimum_cloud_memory_bytes is None else 'memory_available_bytes'
+        if any(baseline[k] is None for k in ('cpu',memory_key,'disk_available')):
             parser.error('Host monitoring is unavailable; provide an authorized Prometheus endpoint before --run')
-    source=provenance(ROOT, ('tools/gameplay_load_test.py','tools/cloud_load_test.py',
+        if psutil is None:
+            parser.error('Generator memory monitoring is required before --run')
+    source=provenance(ROOT, ('tools/gameplay_load_test.py','tools/cloud_load_test.py','tools/pr13_resource_policy.py',
         'tools/gameplay_load_validation.py','client/tests/gameplay_load_client.gd','client/state/game_store.gd',
         'client/network/gateway.gd','client/network/reusable_http_client.gd',
         'tools/pr13_runtime_evidence.py','client/data/catalog.json',
@@ -313,7 +326,9 @@ def main():
         'fps_scope':'explicit candidate override' if args.client_max_fps is not None else 'unchanged engine/project default',
         'resource_source':('shared_local_host_and_owned_native_server_diagnostic' if args.local_server_metrics is not None else 'shared_local_host_diagnostic') if args.local_resource_sampling else 'preregistered_prometheus',
         'server_metrics_missing_reason':'No server actor-wait or authoritative room collector configured' if args.local_resource_sampling and args.local_server_metrics is None else None}
-    contract.update(distinct_local_client_ips=args.distinct_local_client_ips,client_memory_start_budget_mib=256,
+    contract.update(distinct_local_client_ips=args.distinct_local_client_ips,client_memory_start_budget_mib=args.client_memory_start_budget_mib,
+                    minimum_generator_memory_bytes=args.minimum_generator_memory_bytes,
+                    minimum_cloud_memory_bytes=args.minimum_cloud_memory_bytes,
                     hero_class=args.hero_class,strategy=args.strategy,strategy_seed=args.strategy_seed,
                     cycle_limit_seconds=args.cycle_limit_seconds)
     coverage([],start=0,end=1,**{k:v for k,v in contract.items() if k not in COVERAGE_METADATA})
@@ -349,7 +364,7 @@ def main():
                 next_group=time.monotonic()+args.group_interval
                 print('GROUP SCHEDULED',groups,'accounts',group_size,flush=True)
             if pending_launches and now>=next_launch:
-                if args.run and psutil is not None and psutil.virtual_memory().available<2*1024**3+256*1024**2:
+                if args.run and not launch_memory_ready(psutil.virtual_memory().available,args.minimum_generator_memory_bytes,args.client_memory_start_budget_mib):
                     reason='invalid_evidence:generator_memory_low_before_launch'; break
                 launch_group,index=pending_launches.popleft()
                 client_id='g%03dc%02d%s'%(launch_group,index+1,uuid.uuid4().hex[:6])
@@ -437,12 +452,12 @@ def main():
                 if window['sample_count']>=20 and window['error_rate']>=.1: causes.append('http_errors_10pct')
                 if window['valid_latency_count']>=20 and window['http'].get('p95_ms',0)>1500: causes.append('http_p95_over_1500ms')
                 if window['realtime'].get('count',0)>=10 and window['realtime'].get('p95_ms',0)>2000: causes.append('command_p95_over_2000ms')
-                for key,limit,less in [('cpu',85,False),('memory_available',15,True),('disk_available',15,True),('actor_wait',100,False)]:
+                for key,limit,less in [('cpu',85,False),('disk_available',15,True),('actor_wait',100,False)]:
                     value=resource.get(key)
                     if value is not None and (value<limit if less else value>limit): causes.append(key+'_redline')
-                if args.run and any(resource.get(k) is None for k in ('cpu','memory_available','disk_available')): causes.append('monitoring_unavailable')
-                if args.run and generator.get('available') and generator.get('host_memory_available_bytes',0)<2*1024**3:
-                    causes.append('generator_memory_low')
+                if args.run:
+                    if any(resource.get(k) is None for k in ('cpu','disk_available')): causes.append('monitoring_unavailable')
+                    causes.extend(memory_causes(resource,generator,args.minimum_generator_memory_bytes,args.minimum_cloud_memory_bytes))
                 if window['invalid_metric_count'] or lost_events or audit_lost or audit_count_invalid or invalid_files or workload['invalid_schema_count']:
                     causes.append('invalid_telemetry'); workload_failed=True
                 if workload['workload_failure']: causes.append('workload_or_generator_failure')
@@ -467,7 +482,7 @@ def main():
                 save(run_dir/'state.json',row)
                 with (run_dir/'samples.jsonl').open('a',encoding='utf-8') as f: f.write(json.dumps(row)+'\n')
                 print('SAMPLE',json.dumps(row),flush=True)
-                evidence_failures=[cause for cause in causes if cause in ('invalid_telemetry','invalid_cycle_count','workload_or_generator_failure','monitoring_unavailable','probe_timeout','generator_memory_low')]
+                evidence_failures=[cause for cause in causes if cause in ('invalid_telemetry','invalid_cycle_count','workload_or_generator_failure','monitoring_unavailable','probe_timeout','generator_memory_low','generator_memory_monitoring_unavailable')]
                 if evidence_failures:
                     reason='invalid_evidence:'+','.join(evidence_failures)
                     break

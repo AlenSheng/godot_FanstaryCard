@@ -153,7 +153,7 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
     def run_fixture(self, *, overlap=False, local_resources=False, missing_actor=False, cycle_limit=240,
                     resource_changes=None, final_status_change=None, wall_jump=False, max_groups=1,
                     client_max_fps=None, generator_observation=None, probe_delay_seconds=0, delay_all_probes=False,
-                    smoke=False, max_seconds=630):
+                    smoke=False, max_seconds=630, memory_floor=None):
         """Run the real final verdict with fake child/clock/network observations."""
         elapsed = [0.0]
         children = []
@@ -178,7 +178,7 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
             return {'ok':True,'duration_ms':1,'status':200}
         def resource_observation(*_args):
             probe_delay('metrics')
-            return {'cpu':1,'memory_available':90,'disk_available':90,'actor_wait':None if missing_actor else 1,**(resource_changes or {})}
+            return {'cpu':1,'memory_available':90,'memory_available_bytes':3*1024**3,'disk_available':90,'actor_wait':None if missing_actor else 1,**(resource_changes or {})}
         def measured_wait(*args,**kwargs):
             started=time.monotonic();result=wait_original(*args,**kwargs)
             if probe_delay_seconds:elapsed[0]+=time.monotonic()-started
@@ -235,7 +235,10 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
                 '--hold-seconds', '600', '--cycle-limit-seconds', str(cycle_limit), '--output', directory]
             if local_resources: argv.append('--local-resource-sampling')
             if client_max_fps is not None: argv+=['--client-max-fps',str(client_max_fps)]
+            if memory_floor is not None:
+                argv+=['--minimum-generator-memory-bytes',str(memory_floor),'--minimum-cloud-memory-bytes',str(memory_floor)]
             with patch.object(sys, 'argv', argv), patch.object(coordinator, 'time', clock), \
+                    patch.object(coordinator, 'psutil', SimpleNamespace(virtual_memory=lambda: SimpleNamespace(available=3*1024**3))), \
                     patch.object(coordinator, 'subprocess', SimpleNamespace(
                         Popen=launch, STDOUT=subprocess.STDOUT,
                         SubprocessError=subprocess.SubprocessError)), \
@@ -245,7 +248,7 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
                     patch.object(coordinator.concurrent.futures,'wait',side_effect=measured_wait), \
                     patch.object(coordinator, 'local_host_metrics', return_value={
                         'cpu': 1, 'memory_available': 90, 'disk_available': 90, 'actor_wait': None, 'server_humans_in_room': None}), \
-                    patch.object(coordinator, 'generator_resources', return_value=(generator_observation or {}, None)), \
+                    patch.object(coordinator, 'generator_resources', return_value=(generator_observation if generator_observation is not None else {'available':True,'host_memory_available_bytes':3*1024**3}, None)), \
                     patch.object(coordinator, 'read_owned_statuses', side_effect=read_status), \
                     patch.object(coordinator, 'stop_all', side_effect=stop), \
                     contextlib.redirect_stdout(io.StringIO()):
@@ -303,6 +306,27 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
         self.assertEqual(code,3)
         self.assertIn('generator_memory_low',report['all_triggers'])
         self.assertFalse(report['acceptance_passed'])
+
+    def test_explicit_500mb_floor_replaces_legacy_percent_and_generator_floor(self):
+        code, report = self.run_fixture(memory_floor=500000000,
+            resource_changes={'memory_available':10,'memory_available_bytes':500000000},
+            generator_observation={'available':True,'host_memory_available_bytes':500000000})
+        self.assertEqual(code,0)
+        self.assertEqual(report['load_contract']['minimum_cloud_memory_bytes'],500000000)
+        self.assertEqual(report['load_contract']['minimum_generator_memory_bytes'],500000000)
+        self.assertNotIn('memory_available_redline',report['all_triggers'])
+
+    def test_absolute_cloud_floor_violation_remains_a_capacity_stop(self):
+        code, report = self.run_fixture(memory_floor=500000000,
+            resource_changes={'memory_available':90,'memory_available_bytes':499999999})
+        self.assertNotEqual(code,0)
+        self.assertIn('memory_available_bytes_redline',report['all_triggers'])
+        self.assertFalse(report['acceptance_passed'])
+
+    def test_generator_missing_monitor_cannot_claim_success(self):
+        code, report = self.run_fixture(generator_observation={'available':False})
+        self.assertEqual(code,3)
+        self.assertIn('generator_memory_monitoring_unavailable',report['all_triggers'])
 
 
     def test_wall_overlap_is_invalid_in_actual_coordinator_verdict(self):
