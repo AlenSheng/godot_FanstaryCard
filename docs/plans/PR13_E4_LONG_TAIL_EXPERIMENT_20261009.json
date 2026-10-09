@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "state": "Preregistered",
+  "kind": "isolated_single_factor_enemy_hp_experiment",
+  "basis": "实际云端 GDD1200 复验 22/30；未完成首局的守护者连续两次石卫战斗约 362、381 秒，之后金卫在约 263 秒处被截止。",
+  "source_decisions": [
+    "docs/plans/PR13_AUTOMATED_COMPLETION_SCOPE_20261009.json",
+    "docs/reports/pr13-stages-20261009/S5-cloud-gdd1200-baseline/summary.json"
+  ],
+  "candidates": ["elite-e4-hp095", "elite-e4-hp090"],
+  "whitelist": ["E4"],
+  "factors": {"maximum_hp_and_opening_hp": [1.0, 0.95, 0.90], "integer_rounding": "floor"},
+  "unchanged": [
+    "石卫初始护盾、攻击、恢复意图、行动间隔、抗性、掉落来源",
+    "玩家生命、职业被动、护盾上限、默认牌组、品质、等级与抽牌规则",
+    "其他怪组、Boss、PVP 和正式配置默认值"
+  ],
+  "matrix": {
+    "heroes": ["Mage", "Priest", "Guardian"],
+    "strategies": ["baseline_all_hand", "basic", "build"],
+    "groups": ["E4", "O1", "E1", "BOSS"],
+    "weapon_level": 0,
+    "paired_seed_blocks": [100001, 101001, 102001],
+    "paired_seeds_per_stratum_per_block": 1000,
+    "observation_seconds": 600,
+    "source_sha_and_assembly_hashes_frozen_at_execution": true,
+    "all_victory_death_censored_and_error_outcomes_retained": true
+  },
+  "controls": {
+    "non_whitelisted_groups_must_be_exact_paired_controls": true,
+    "preview_and_restore_keep_authoritative_rules": true,
+    "raw_sequences_and_hashes_required": true,
+    "review_tail_benefit_and_resource_per_minute_drift": true,
+    "full_route_pvp_and_live_acceptance_remain_separate": true,
+    "no_further_increase_to_gdd_expedition_budget": true
+  },
+  "execution_host": "Tencent cloud",
+  "production_activation": false,
+  "human_experience_in_scope": false
+}

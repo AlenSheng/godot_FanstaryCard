@@ -21,14 +21,16 @@ OUTCOMES={'Victory','Death','Censored','Error'}
 TARGET_PROFILES={
     'outer-o6-hp085':'TargetedO6Hp085','outer-o6-hp095':'TargetedO6Hp095',
     'outer-o6-hp090':'TargetedO6Hp090','outer-o6-interval110':'TargetedO6Interval110',
-    'outer-o6-windup025':'TargetedO6Windup025','outer-o6-windup050':'TargetedO6Windup050'}
+    'outer-o6-windup025':'TargetedO6Windup025','outer-o6-windup050':'TargetedO6Windup050',
+    'elite-e4-hp095':'TargetedE4Hp095','elite-e4-hp090':'TargetedE4Hp090'}
 
 
 def candidate_profile(candidate,hero,group):
     if candidate=='class-passives':
         return {'Mage':'CoreCardsSpent','Guardian':'FractionalRemainder','Priest':'BaselinePairedControl'}[hero]
     if candidate not in TARGET_PROFILES:raise ValueError('Unknown candidate: '+str(candidate))
-    return TARGET_PROFILES[candidate] if group=='O6' else 'BaselinePairedControl'
+    target_group='E4' if candidate.startswith('elite-e4-') else 'O6'
+    return TARGET_PROFILES[candidate] if group==target_group else 'BaselinePairedControl'
 
 
 def frozen_signature(manifest):

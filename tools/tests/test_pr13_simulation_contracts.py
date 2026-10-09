@@ -74,6 +74,22 @@ class SimulationReportTests(unittest.TestCase):
         self.assertEqual(budget['seed_blocks'], [{'seed_start': 0, 'n': 3}])
         self.assertEqual(report['candidate_recommendation'], 'NotEvaluated')
 
+    def test_elite_hp_candidates_keep_other_encounters_as_exact_paired_controls(self):
+        for candidate,profile in [('elite-e4-hp095','TargetedE4Hp095'),('elite-e4-hp090','TargetedE4Hp090')]:
+            with self.subTest(candidate=candidate):
+                rows=[row(seed,profile=name,group=group) for seed in range(3)
+                      for group in ('E4','O6') for name in ('Baseline',profile if group=='E4' else 'BaselinePairedControl')]
+                directory=fixture(self.root/candidate,rows,factor=candidate,Groups=['E4','O6'],CandidateWhitelist=['E4'])
+                _,_,loaded=reports.load_run(directory)
+                self.assertEqual(12,len(loaded))
+                self.assertEqual({'Baseline','BaselinePairedControl'},{value['Profile'] for value in loaded if value['Group']=='O6'})
+
+    def test_elite_hp_candidate_applied_outside_whitelist_is_rejected(self):
+        rows=[row(seed,profile=name,group='O6') for seed in range(3) for name in ('Baseline','TargetedE4Hp095')]
+        directory=fixture(self.root/'wrong-group',rows,factor='elite-e4-hp095',CandidateWhitelist=['E4'])
+        with self.assertRaisesRegex(ValueError,'Undeclared stratum'):
+            reports.load_run(directory)
+
     def test_report_provenance_uses_checkout_when_called_outside_repo(self):
         directory=fixture(self.root/'input',self.paired())
         caller=Path.cwd()

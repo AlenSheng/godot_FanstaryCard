@@ -40,7 +40,8 @@ internal static class CombatExperience
             heroes.Length != heroes.Distinct().Count() || heroes.Any(hero => !Enum.IsDefined(hero)) ||
             strategies.Length != strategies.Distinct().Count() || strategies.Any(strategy => !Strategies.Contains(strategy)) ||
             candidateKind is not ("class-passives" or "outer-o6-hp085" or "outer-o6-hp095" or "outer-o6-hp090" or
-                "outer-o6-interval110" or "outer-o6-windup025" or "outer-o6-windup050"))
+                "outer-o6-interval110" or "outer-o6-windup025" or "outer-o6-windup050" or
+                "elite-e4-hp095" or "elite-e4-hp090"))
             throw new ArgumentException("At least three seeds, a valid seed interval and a 60-600 second cutoff are required.");
         Directory.CreateDirectory(output);
         var config = GameConfigCatalog.Current;
@@ -63,7 +64,8 @@ internal static class CombatExperience
             PrimarySampleFloorMet = samples >= 1_000, CutoffSeconds = limit, ActionIntervalSeconds = .4,
             WeaponLevel = weaponLevel, Candidate = candidateKind,
             SourceConfigSha256 = sourceConfigHash,
-            CandidateWhitelist = candidateKind == "class-passives" ? groups : new[] { "O6" }, SingleFactorOnly = true,
+            CandidateWhitelist = candidateKind == "class-passives" ? groups :
+                new[] { candidateKind.StartsWith("elite-e4-", StringComparison.Ordinal) ? "E4" : "O6" }, SingleFactorOnly = true,
             FirstWindupScope = "Only the first positive intent windup of each O6 monster; subsequent windups and attack intervals unchanged; 100ms tick resolution",
             StrategyPolicy = "baseline_all_hand spends immediately; basic/build wait for three cards or two core cards above 25% HP, then score legal visible subsets",
             RunIdentity = new { SeedStart = seedStart, Samples = samples, Candidate = candidateKind, WeaponLevel = weaponLevel },
@@ -95,6 +97,8 @@ internal static class CombatExperience
                     "outer-o6-interval110" => group == "O6" ? "TargetedO6Interval110" : "BaselinePairedControl",
                     "outer-o6-windup025" => group == "O6" ? "TargetedO6Windup025" : "BaselinePairedControl",
                     "outer-o6-windup050" => group == "O6" ? "TargetedO6Windup050" : "BaselinePairedControl",
+                    "elite-e4-hp095" => group == "E4" ? "TargetedE4Hp095" : "BaselinePairedControl",
+                    "elite-e4-hp090" => group == "E4" ? "TargetedE4Hp090" : "BaselinePairedControl",
                     _ => hero switch { HeroClass.Mage => "CoreCardsSpent", HeroClass.Guardian => "FractionalRemainder", _ => "BaselinePairedControl" }
                 } : "Baseline";
                 var key = $"{hero}/{deck.Key}/{group}/{strategy}/{profile}";
@@ -196,9 +200,11 @@ internal static class CombatExperience
                 Cells = map.Cells.Select(c => c.Position == cell.Position ? encounter : c).ToArray(),
                 SpawnPositions = new[] { cell.Position }
             }));
-            if (profile is "TargetedO6Hp085" or "TargetedO6Hp095" or "TargetedO6Hp090" or "TargetedO6Interval110")
+            if (profile is "TargetedO6Hp085" or "TargetedO6Hp095" or "TargetedO6Hp090" or "TargetedO6Interval110" or
+                "TargetedE4Hp095" or "TargetedE4Hp090")
             {
-                var hpScale = profile switch { "TargetedO6Hp095" => .95, "TargetedO6Hp090" => .90, _ => .85 };
+                var hpScale = profile switch
+                { "TargetedO6Hp095" or "TargetedE4Hp095" => .95, "TargetedO6Hp090" or "TargetedE4Hp090" => .90, _ => .85 };
                 var snapshot = room.Capture();
                 room = BattleRoom.Restore(snapshot with
                 {
