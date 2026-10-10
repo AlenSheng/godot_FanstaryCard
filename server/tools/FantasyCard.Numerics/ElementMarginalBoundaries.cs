@@ -67,7 +67,7 @@ internal static class ElementMarginalBoundaries
             CombatCardInstance Transform(CombatCardInstance c) => swapped && c.CardId == "ET-FIRE-G" ? c with { CardId = replacement } : c;
             var deck = combat.Deck with { Hand = combat.Deck.Hand.Select(Transform).ToArray(), Library = combat.Deck.Library.Select(Transform).ToArray() };
             var arm = BattleRoom.Restore(state with { Players = [playerState with { Combat = combat with { Deck = deck }, Pve = pve }] }, catalog, seed);
-            var current = arm.GetPlayer(player.PlayerId);var target = current.Pve!.Monsters.First();var events = new List<object>();
+            var current = arm.GetPlayer(player.PlayerId);var target = current.Pve!.Monsters[0];var events = new List<object>();
             for (var cast = 0; cast < (caseId == "PR13-B08.2-T02" ? 3 : 1); cast++)
             {
                 // Recycle the same owned instance at zero elapsed time to isolate overlap.
