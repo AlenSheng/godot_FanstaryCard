@@ -1,0 +1,37 @@
+{
+  "preregistration": {
+    "render_source_sha": "8cda9c2e2ed182ee6fa1f9e41751dbb17ded171a",
+    "native_source_sha": "8ff06ef8fff0ed592fae52facca680ddf9a5b8a7",
+    "diagnostic_only": true,
+    "one_matrix_row": true,
+    "fixture_witnesses": 15,
+    "memory_floor_bytes": 500000000,
+    "disk_free_ratio": 0.15,
+    "expected_PNGs": 1,
+    "formal_experiment_pending": true
+  },
+  "result": {
+    "ok": false,
+    "render_source_sha": "8cda9c2e2ed182ee6fa1f9e41751dbb17ded171a",
+    "native_source_sha": "8ff06ef8fff0ed592fae52facca680ddf9a5b8a7",
+    "diagnostic_only": true,
+    "syntax_exit_code": 0,
+    "error": "AssertionError",
+    "detail": "",
+    "whole_task_accepted": false
+  },
+  "outputs": [
+    {
+      "path": "parse.log",
+      "bytes": 499,
+      "sha256": "87ba92b19ad2e954800bd5ade785721c7f439ba9909b1533ba9c5a40b32a2120",
+      "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nWARNING: res://main.tscn:3 - ext_resource, invalid UID: uid://b7n53ftpwyql6 - using text path instead: res://ui/main.gd\n     at: load (scene/resources/resource_format_text.cpp:501)\nWARNING: 9 ObjectDB instances were leaked at exit (run with `--verbose` for details).\n   at: cleanup (core/object/object.cpp:2536)\nERROR: 2 resources still in use at exit (run with --verbose for details).\n   at: clear (core/io/resource.cpp:822)\n"
+    },
+    {
+      "path": "resource-samples.jsonl",
+      "bytes": 132,
+      "sha256": "ce14c0cc2f21edfc04370920cc693e32a03b3fab6e2218a77364e772e267bd0a"
+    }
+  ],
+  "systemd": "MainPID=0\nActiveState=inactive\nSubState=dead\n"
+}
