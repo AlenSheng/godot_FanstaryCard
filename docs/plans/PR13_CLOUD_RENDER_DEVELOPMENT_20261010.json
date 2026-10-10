@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-10",
+  "kind": "owned_cloud_render_functional_validation",
+  "source_base_sha": "19de28bc61cf0169850b1bab1025562c61c1b8fa",
+  "task_ids": ["PR13-B04.3", "PR13-B10.4", "PR13-B11.1", "PR13-B11.4"],
+  "execution_priority": "development_first",
+  "scope": "在腾讯云隔离环境开发实际画面检查，验证等待原因、出牌权限与窄屏中英文提示。",
+  "ownership": ["tools/cloud/pr13/render.Dockerfile", "tools/cloud/pr13/render_runtime.py", "client/tests/pr13_target_wait_frames.gd", "client/tests/pr13_target_wait_frames.tscn"],
+  "rendering": "X11 virtual display and Mesa llvmpipe software OpenGL; actual rendered pixels, not headless",
+  "matrix": {"languages": ["zh-CN", "en"], "resolutions": [[1920,1080],[1280,720],[960,540]], "scenarios": ["manual_queued", "manual_inflight", "fallback_queued", "fallback_inflight", "unrelated_read", "play_submitted", "stunned", "recovering"], "expected_rows": 48, "expected_screenshots": 8},
+  "budget": {"image_build_seconds": 600, "render_seconds": 180, "memory_limit_bytes": 1610612736, "cpu_cores": 1, "memory_safety_floor_bytes": 500000000, "minimum_disk_available_percent": 15},
+  "network": "Image setup uses package repositories; actual renderer has network disabled and no player accounts.",
+  "source_storage": "Reuse only byte-verified immutable task-owned resource snapshots; preserve original raw evidence and all source file bytes.",
+  "cleanup": "Exact owned container ID and label required for teardown; production and unrelated resources preserved.",
+  "acceptance_limits": "Component RENDER evidence does not prove full natural three-cycle LIVE, human usability, hardware FPS or capacity acceptance; formal task states remain separate.",
+  "delivery": "Each completed stage summarized locally and pushed directly to release"
+}
