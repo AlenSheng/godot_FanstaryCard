@@ -1,0 +1,41 @@
+{
+  "ok": true,
+  "actual_dotnet_sdk": "10.0.400",
+  "actual_godot": "4.7.2.stable.official.ed1daf0bf",
+  "actual_python": "Python 3.12.3",
+  "sdk_config": {
+    "sdk": {
+      "version": "10.0.400",
+      "rollForward": "latestFeature",
+      "allowPrerelease": false
+    }
+  },
+  "image_id": "sha256:6ea92944e8779a5bb6e5c40faca53a40a1b02b5a0dcd47fff0815ba9cfbded1f",
+  "container_id": "88703992fdc397d90f9f02d920211df76ad7acaa8d455f7f3616090e554d2cc2",
+  "command": [
+    "create",
+    "--name",
+    "pr13-b02-policy-toolchain",
+    "--label",
+    "codex.owner=pr13-b02-policy-20261010",
+    "--memory",
+    "256m",
+    "--cpus",
+    ".4",
+    "--network",
+    "none",
+    "--user",
+    "1000:1000",
+    "-v",
+    "/home/ubuntu/pr13-acceptance-20261009/evidence/b02-policy-pg-complete/source:/work:ro",
+    "-v",
+    "/home/ubuntu/pr13-acceptance-20261009/cache:/cache:ro",
+    "-w",
+    "/work/server",
+    "sha256:6ea92944e8779a5bb6e5c40faca53a40a1b02b5a0dcd47fff0815ba9cfbded1f",
+    "sh",
+    "-c",
+    "dotnet --version && godot --headless --version && python3 --version"
+  ],
+  "owned_container_removed": true
+}
