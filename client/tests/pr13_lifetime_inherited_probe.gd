@@ -22,6 +22,9 @@ func _run() -> void:
 		else: await run_marginal_vector(vector)
 	Game.gateway = original
 	if gateway != null: gateway.free()
+	Sound.set_process(false)
+	Sound.stop_all()
+	Sound.stop_music()
 	$UI.queue_free()
 	await get_tree().process_frame
 	await RenderingServer.frame_post_draw

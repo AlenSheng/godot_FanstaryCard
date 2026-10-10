@@ -92,6 +92,9 @@ func _run() -> void:
 	var result := {"ok":passed and observations.size() == 18 and DisplayServer.get_name() != "headless","cases":cases,"observations":observations,"rendered_state_checks":marginal_states,"native_source_sha":data.source_sha,"native_vectors_sha256":raw.sha256_text(),"display_driver":DisplayServer.get_name(),"adapter":RenderingServer.get_video_adapter_name()}
 	FileAccess.open(output + "/native-result.json", FileAccess.WRITE).store_string(JSON.stringify(result))
 	# Finish queued view destruction and draw work before the test process exits.
+	Sound.set_process(false)
+	Sound.stop_all()
+	Sound.stop_music()
 	$UI.queue_free()
 	await get_tree().process_frame
 	await RenderingServer.frame_post_draw
