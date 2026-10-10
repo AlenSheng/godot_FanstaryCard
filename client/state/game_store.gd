@@ -736,7 +736,9 @@ func combat_wait_state() -> Dictionary:
 	var remaining_ms := 0
 	if not gateway.online or gateway.recovering:
 		reason = "recovering"
-	elif has_pending_commands():
+	elif _target_selection_pending():
+		reason = "target_confirming"
+	elif _has_pending_action("battle.play_cards") or not _pending_play.is_empty() or not _queued_command.is_empty():
 		reason = "confirming"
 	elif int(player.get("stun_remaining_ms", 0)) > 0:
 		reason = "stunned"
