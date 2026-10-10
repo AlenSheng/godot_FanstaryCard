@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "authority": "human",
+  "date": "2026-10-10",
+  "user_instruction": "云盘空间不够可以把验收通过部分清理一下，另外测试数据尽量存在本地 G 盘，节约云端空间",
+  "primary_local_evidence_root": "G:/Program Files/GodotFiles/godot_FanstaryCard/outputs/pr13-tencent-20261009",
+  "execution_location": "Tencent cloud for native business and renderer tests",
+  "storage_policy": "Use bounded temporary cloud storage for running jobs; transfer completed raw evidence and archives to the local G drive, verify bytes and SHA256 plus archive members, then reclaim owned cloud copies.",
+  "cloud_retention": ["execution summaries", "source and artifact hashes", "cleanup receipts", "active job inputs and outputs"],
+  "cleanup_scope": "Completed passed evidence and owned ended build caches; production data and active jobs excluded.",
+  "failed_results_preserved": true,
+  "acceptance_states_unchanged": true,
+  "memory_floor_bytes": 500000000,
+  "disk_floor_ratio": 0.15
+}
