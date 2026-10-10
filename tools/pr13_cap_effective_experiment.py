@@ -11,6 +11,7 @@ from pathlib import Path
 TICKS=10_000_000
 ARMS=('BaselinePurple','SingleOrangeHead')
 ELEMENTS={'Fire':1,'Wood':2,'Earth':3,'Metal':4,'Water':5}
+COMMON=('C01','C02','C03','C04','C05','C06','C07','C17','C18','C20','C25','C26','C27','C29')
 def require(ok,message):
     if not ok:raise ValueError(message)
 def near(a,b):return math.isfinite(a) and math.isfinite(b) and abs(a-b)<1e-8
@@ -62,6 +63,7 @@ def validate(directory,source,controls=False):
     require(m['schema']=='actual_cap_effective_experiment_v1' and m['source_sha']==s['source_sha']==source and s['passed'] and s['errors']==0,'Exact source/schema/native run differs')
     require(m['samples'] in [3,1000] and m['seed_start']==440001+1000*m['block_index'] and m['equipment_level'] in [0,5] and m['weapon_level']==m['equipment_level'] and m['cutoff_seconds']==600 and m['strategy']=='basic' and not m['candidate_activation'],'Frozen inputs differ')
     require(len(m['deck'])==len(set(m['deck']))==20 and m['card_level']==0 and m['single_item_quality_change'] and m['outcome_effects_descriptive_only'],'Declared budget/interpretation differs')
+    prefix={'Mage':'MAG','Priest':'PRI','Guardian':'GUA'}[m['hero']];require(m['deck']==list(COMMON)+[f'{prefix}-{i:02}' for i in range(1,7)],'Frozen legal source deck differs')
     before,after=m['equipment'];require(len(before)==len(after)==5 and len({i['Slot'] for i in before})==5 and all(a['Quality']=='Purple' and b['Quality']==('Orange' if i==0 else 'Purple') and {k:v for k,v in a.items() if k!='Quality'}=={k:v for k,v in b.items() if k!='Quality'} for i,(a,b) in enumerate(zip(before,after))),'Legal one-quality equipment pair differs')
     raw_resistance=[]
     for index,items in enumerate(m['equipment']):

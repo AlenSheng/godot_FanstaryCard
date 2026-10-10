@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "task_id": "PR13-B08.4",
   "stage": "S0_for_EXPERIMENT",
   "execution_state": "NotExecuted",
@@ -10,7 +10,8 @@
   "equipment_levels": [0, 5],
   "weapon_level": "Equal to declared equipment level (0 or 5); fixed within each pair",
   "other_levels": "All six levels remain in the previous 864-row OFFLINE boundary matrix; this encounter experiment covers the two declared endpoints and does not replace that coverage.",
-  "deck": "C01-C09,C12,C18,C25,C26,C29 and the six class cards 01-06, twenty unique enabled codex cards at level zero; DeckRules validates each hero.",
+  "deck": "C01-C07,C17,C18,C20,C25,C26,C27,C29 and the six class cards 01-06, twenty unique enabled codex cards at level zero; DeckRules validates each hero.",
+  "input_revision": "Before any full experiment, replace three common slots with C17 shield and C20/C27 draw-block sources. Pilot revision 1 lacked these legal sources for Mage T03 and all-hero T02 PVE conversion. Preserve all revision-1 pilot originals; they do not prove the missing predicates. No card values or production deck are changed.",
   "equipment_pair": "Five Purple items in distinct slots versus the same items with Head quality Orange. Same declared element, level, Bulwark affix and DrawInterval trait; at most one Orange, no Red. Every changed numerical attribute is recorded.",
   "pair_interpretation": "One item-quality change affects several existing equipment attributes. Differences in outcomes are descriptive and cannot isolate resistance, draw rate or shield effects. Zero cap marginal means the declared resistance component only, not zero overall equipment benefit.",
   "seed_starts": [440001, 441001, 442001],

@@ -13,7 +13,7 @@ using FantasyCard.Domain.Players;
 internal static class CapEffectiveExperiment
 {
     private static readonly string[] Slots = ["Head", "Chest", "Hands", "Legs", "Feet"];
-    private static readonly string[] Common = ["C01", "C02", "C03", "C04", "C05", "C06", "C07", "C08", "C09", "C12", "C18", "C25", "C26", "C29"];
+    private static readonly string[] Common = ["C01", "C02", "C03", "C04", "C05", "C06", "C07", "C17", "C18", "C20", "C25", "C26", "C27", "C29"];
     private static readonly bool[] UpgradeArms = [false, true];
     internal static string Hash(byte[] bytes) => Convert.ToHexStringLower(SHA256.HashData(bytes));
 
