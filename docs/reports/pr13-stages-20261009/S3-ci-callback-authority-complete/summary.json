@@ -1,0 +1,128 @@
+{
+  "CI_source_sha": "396c4a3adee6206bd4bed6077690188251f779ed",
+  "code_equivalent_current_head": "3896f6ea381551d5cad81713ae75d5b7d264432b",
+  "code_paths_unchanged": true,
+  "workflow_run_id": 38007426252,
+  "all_four_jobs_success": true,
+  "artifacts_verified": [
+    {
+      "name": "gameplay-load-postgres-396c4a3adee6206bd4bed6077690188251f779ed",
+      "bytes": 3349556,
+      "sha256": "87da17cdec6e4a4f18a0ba2bc20d1eabd5fa97edf62caa7aa027ca13babb8919",
+      "entries": 1115,
+      "actual_trx_rows": [
+        {
+          "entry": "postgres-full.trx",
+          "total": 353,
+          "passed": 352,
+          "skipped": 1,
+          "failed": 0,
+          "native_counters": {
+            "total": "353",
+            "executed": "352",
+            "passed": "352",
+            "failed": "0",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          }
+        }
+      ],
+      "callbacks": null
+    },
+    {
+      "name": "gameplay-load-server-396c4a3adee6206bd4bed6077690188251f779ed",
+      "bytes": 100602,
+      "sha256": "162d7a9046c8b81d7e70a7c5b465f53e026dcb84856585819b73bd6d84903ffb",
+      "entries": 1,
+      "actual_trx_rows": [
+        {
+          "entry": "server-offline.trx",
+          "total": 353,
+          "passed": 242,
+          "skipped": 111,
+          "failed": 0,
+          "native_counters": {
+            "total": "353",
+            "executed": "242",
+            "passed": "242",
+            "failed": "0",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          }
+        }
+      ],
+      "callbacks": null
+    },
+    {
+      "name": "gameplay-load-client-396c4a3adee6206bd4bed6077690188251f779ed",
+      "bytes": 3489584,
+      "sha256": "c2df626d51589e0605dec4dc50ef7e1f29c0ca4a4be342afa6359f04436daa58",
+      "entries": 149,
+      "actual_trx_rows": [],
+      "callbacks": [
+        {
+          "id": "PR13-A03.1-T01",
+          "status": "Passed",
+          "all_checks_passed": true
+        },
+        {
+          "id": "PR13-A03.1-T02",
+          "status": "Passed",
+          "all_checks_passed": true
+        },
+        {
+          "id": "PR13-A03.1-T03",
+          "status": "Passed",
+          "all_checks_passed": true
+        },
+        {
+          "id": "PR13-A03.2-T01",
+          "status": "Passed",
+          "all_checks_passed": true
+        },
+        {
+          "id": "PR13-A03.2-T02",
+          "status": "Passed",
+          "all_checks_passed": true
+        },
+        {
+          "id": "PR13-A03.2-T03",
+          "status": "Passed",
+          "all_checks_passed": true
+        }
+      ]
+    },
+    {
+      "name": "gameplay-load-accounting-396c4a3adee6206bd4bed6077690188251f779ed",
+      "bytes": 534183,
+      "sha256": "ddfa1b05dfebcc3b692477e4dbda9b2e0934936710cbbaf675e37810e165058a",
+      "entries": 166,
+      "actual_trx_rows": [],
+      "callbacks": null
+    }
+  ],
+  "ci_postgres_zero_skip": false,
+  "earlier_Tencent_full353_zero_skip_separate": true,
+  "whole_scope_accepted": false,
+  "capacity_accepted": false
+}
