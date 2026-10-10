@@ -182,7 +182,8 @@ internal static class CombatExperience
 
     internal static EncounterSample Simulate(GameConfigCatalog config, CombatCardCatalog catalog,
         HeroClass hero, string deckName, string[] deck, string group, string strategy, string profile,
-        NumericalRules rules, int seed, int block, int limit, int weaponLevel, bool marginalAudit = false)
+        NumericalRules rules, int seed, int block, int limit, int weaponLevel, bool marginalAudit = false,
+        Action<TuningRecoveryCast>? tuningObserver = null)
     {
         var row = new EncounterSample(seed, block, hero.ToString(), deckName, group, strategy, profile);
         try
@@ -256,6 +257,10 @@ internal static class CombatExperience
                         var ids = selected.Select(card => card.InstanceId).ToArray();
                         var definitions = selected.Select(card => catalog.Get(card.CardId, card.Level, card.ElementOverride)).ToArray();
                         var draft = CombatResolver.Resolve(definitions, player.Combat, target.ElementalResistance);
+                        var contract = tuningObserver is null ? null : TuningRecoveryOracle.Calculate(definitions, player.Combat, target.ElementalResistance);
+                        var hpBefore = player.Combat.Hp;
+                        var shieldBefore = player.Combat.Shield;
+                        var effectiveMaximumHpBefore = player.Combat.EffectiveMaximumHp;
                         // Scalar preview parity is verified against the real play. The
                         // preview must leave even persisted RNG and remainder unchanged.
                         var now = DateTimeOffset.UnixEpoch.AddSeconds(time);
@@ -268,6 +273,15 @@ internal static class CombatExperience
                         }
                         var controlBefore = target.StunRemaining.Ticks;
                         var result = room.PlayCards(player.PlayerId, pve.BattleId, target.MonsterId, ids, room.Revision, now);
+                        if (contract is not null)
+                        {
+                            var afterCost = Math.Max(1, hpBefore - Math.Max(0,draft.HealthCost));
+                            var valid = contract.Matches(draft) && result.Heal == Math.Min(draft.Heal,Math.Max(0,effectiveMaximumHpBefore-afterCost));
+                            tuningObserver!(new(row.Seed, row.SeedBlock, row.Hero, row.Deck, row.Group, row.Profile,
+                                row.Actions, time, selected, hpBefore, player.Combat.MaximumHp, shieldBefore, weaponLevel,
+                                player.Combat.Equipment, target.MonsterId, contract, draft, result, valid));
+                            if (!valid) throw new InvalidOperationException("Independent tuning/recovery contract differs from actual resolver.");
+                        }
                         if (marginalAudit)
                         {
                             row.RequestedImmediateCards += result.ImmediateDraw;
