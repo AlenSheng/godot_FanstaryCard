@@ -45,6 +45,35 @@ func key_input(code: int, target: Window) -> void:
 		await get_tree().process_frame
 	pool_traces.append({"route":"Input.parse_input_event targeted window key press/release","key":code,"window_id":target.get_window_id(),"embedded":target.is_embedded(),"focused":target.has_focus()})
 
+func choose_first_active(popup: PopupMenu) -> bool:
+	if not is_instance_valid(popup) or not popup.visible: return false
+	var panel: StyleBox = popup.get_theme_stylebox("panel")
+	var top: float = panel.get_content_margin(SIDE_TOP)
+	var bottom: float = panel.get_content_margin(SIDE_BOTTOM)
+	var height: float = (popup.size.y-top-bottom)/float(popup.item_count)
+	var local_point := Vector2(popup.size.x*.5,top+height*1.5)
+	var screen_point: Vector2 = popup.get_screen_transform()*local_point
+	var window_id: int = popup.get_window_id() if popup.get_window_id()>=0 else get_window().get_window_id()
+	var point: Vector2 = screen_point if popup.is_embedded() else screen_point-Vector2(popup.position)
+	pool_traces.append({"route":"Actual popup mouse selection","window_id":window_id,"embedded":popup.is_embedded(),"popup_position":[popup.position.x,popup.position.y],"popup_size":[popup.size.x,popup.size.y],"point":[point.x,point.y],"item_count":popup.item_count})
+	var motion := InputEventMouseMotion.new()
+	motion.window_id=window_id
+	motion.position=point
+	motion.global_position=point
+	Input.parse_input_event(motion)
+	await get_tree().process_frame
+	for pressed in [true,false]:
+		var event := InputEventMouseButton.new()
+		event.window_id=window_id
+		event.button_index=MOUSE_BUTTON_LEFT
+		event.button_mask=MOUSE_BUTTON_MASK_LEFT if pressed else 0
+		event.pressed=pressed
+		event.position=point
+		event.global_position=point
+		Input.parse_input_event(event)
+		await get_tree().process_frame
+	return true
+
 func snapshot(row: Dictionary, tag: String) -> Dictionary:
 	var codec := Proto.new()
 	var envelope: Dictionary = codec.decode("ServerEnvelope", Marshalls.base64_to_raw(row[tag+"_wire"]))
@@ -99,6 +128,7 @@ func witness(row: Dictionary, language: String, size: Vector2i, fps: int, delay:
 		var embedded: bool = dialog.is_embedded()
 		var bounds := Rect2(Vector2.ZERO if embedded else Vector2(get_window().position),Vector2(size))
 		window_geometry = {"embedded":embedded,"dialog_position":[dialog.position.x,dialog.position.y],"dialog_size":[dialog.size.x,dialog.size.y],"root_position":[get_window().position.x,get_window().position.y],"root_size":[get_window().size.x,get_window().size.y],"viewport_size":[dialog.get_visible_rect().size.x,dialog.get_visible_rect().size.y],"pixel_size":[dialog.get_texture().get_image().get_width(),dialog.get_texture().get_image().get_height()],"window_id":dialog.get_window_id()}
+		FileAccess.open(output+"/geometry-before-click.json",FileAccess.WRITE).store_string(JSON.stringify(window_geometry))
 		geometry = bounds.encloses(Rect2(Vector2(dialog.position),Vector2(dialog.size)))
 		for label in dialog.find_children("*","Label",true,false):
 			if label.is_visible_in_tree() and not label.text.is_empty():
@@ -114,12 +144,15 @@ func witness(row: Dictionary, language: String, size: Vector2i, fps: int, delay:
 			initially_disabled = take!=null and take.disabled
 			var options: Array = dialog.find_children("*","OptionButton",true,false)
 			if not options.is_empty():
+				var option_ref: WeakRef = weakref(options[0])
+				var take_ref: WeakRef = weakref(take)
 				await pointer(options[0])
 				var popup: PopupMenu = options[0].get_popup()
-				await key_input(KEY_DOWN,popup)
-				await key_input(KEY_ENTER,popup)
-				replacement_selected = options[0].selected==1 and take!=null and not take.disabled
-			submitted = await pointer(take)
+				await choose_first_active(popup)
+				var live_option: OptionButton = option_ref.get_ref() as OptionButton
+				var live_take: Button = take_ref.get_ref() as Button
+				replacement_selected = live_option!=null and live_option.selected==1 and live_take!=null and not live_take.disabled
+				submitted = await pointer(live_take)
 		elif pool_case.ends_with("T03"):
 			submitted = await pointer(skip)
 		else:
