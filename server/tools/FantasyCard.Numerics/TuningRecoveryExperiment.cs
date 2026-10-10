@@ -23,6 +23,8 @@ internal static class TuningRecoveryExperiment
             throw new ArgumentException("Exact source, frozen bounded stratum and new output required.");
         var config=GameConfigCatalog.Current;var catalog=CombatCardCatalog.CreatePrototype();var prefix=hero switch { HeroClass.Mage=>"MAG",HeroClass.Priest=>"PRI",_=>"GUA" };
         var baseline=Common.Concat(Enumerable.Range(1,6).Select(i=>$"{prefix}-{i:D2}")).ToArray();var candidate=baseline.Select(id=>id=="ET-WATER-G" ? alternative : id).ToArray();
+        CombatExperience.ValidateDeck(config,hero,baseline);
+        CombatExperience.ValidateDeck(config,hero,candidate);
         PairedDeckBudget.Validate(config,hero,baseline,candidate);Directory.CreateDirectory(output);var start=420001+1000*block;
         File.WriteAllText(Path.Combine(output,"manifest.json"),JsonSerializer.Serialize(new { schema="actual_tuning_recovery_experiment_v1",source_sha=sha,hero=hero.ToString(),group,alternative,block_index=block,seed_start=start,samples,baseline_deck=baseline,candidate_deck=candidate,weapon_level=0,card_level=0,equipment="Empty",strategy="basic",cutoff_seconds=600,candidate_activation=false,config_version=config.Version,config_sha256=Hash(JsonSerializer.SerializeToUtf8Bytes(config)),card_definitions=config.Cards,paired_budget_guard_passed=true }));
         using var events=new EventParts(output);var counters=new Dictionary<string,long>(StringComparer.Ordinal);var rows=0;var errors=0;long rawBytes=0;using var rawHash=IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
