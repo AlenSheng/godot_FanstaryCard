@@ -113,7 +113,8 @@ internal static class ControlProbe
         var resolution = room.PlayCards(player.PlayerId, duel.DuelId, opponent.ToString("D"), [player.Combat.Deck.Hand[0].InstanceId], room.Revision, Now);
         Require(TimeSpan.FromSeconds(resolution.StunSeconds) == converted && target.Combat.StunRemaining == converted, "PVP control did not take full duration.");
         t.Events.Add(new("PR13-B08.1-T03", "pvp-new-window", opponent.ToString("D"), requested.Ticks, converted.Ticks, converted.Ticks,
-            before.Ticks, target.Combat.StunRemaining.Ticks, target.Combat.StunRemaining.Ticks - before.Ticks, 0, t.State(room.Capture())));
+            before.Ticks, target.Combat.StunRemaining.Ticks, target.Combat.StunRemaining.Ticks - before.Ticks,
+            player.Combat.Capture().TargetStunWindows.Single().Remaining.Ticks, t.State(room.Capture())));
         room = BattleRoom.Restore(RoundTrip(room.Capture()), Catalog, t.Seed + 2);
         room.EndDuelSurvived(duel.DuelId, DuelEndReason.MutualLeave);player = room.GetPlayer(player.PlayerId);
         Require(Hash(player.Combat.Capture()) == Hash(frozen) && Hash(player.Pve!.Capture()) == Hash(frozenPve), "PVP return changed frozen PVE state.");

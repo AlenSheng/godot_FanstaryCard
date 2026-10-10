@@ -1,0 +1,51 @@
+name: Authoritative control contract
+
+on:
+  pull_request:
+    paths:
+      - 'tools/FantasyCard.ControlProbe/**'
+      - 'tools/pr13_control_contract.py'
+      - 'server/src/FantasyCard.Domain/**'
+      - 'config/**'
+      - '.github/workflows/control-contract.yml'
+  push:
+    branches: ['release']
+    paths:
+      - 'tools/FantasyCard.ControlProbe/**'
+      - 'tools/pr13_control_contract.py'
+      - 'server/src/FantasyCard.Domain/**'
+      - 'config/**'
+      - '.github/workflows/control-contract.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: control-contract-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  native-controls:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: server/global.json
+      - name: Compile and execute real room control boundaries
+        working-directory: server
+        run: dotnet run --project ../tools/FantasyCard.ControlProbe/FantasyCard.ControlProbe.csproj -c Release -- --output ../test-results/control-contract/pilot --source-sha "$GITHUB_SHA" --seed-start 300001 --samples 3
+      - name: Verify original native events and reject corrupt evidence
+        run: |
+          python3 tools/pr13_control_contract.py --input test-results/control-contract/pilot --output test-results/control-contract/pilot-analysis.json
+          python3 tools/pr13_control_contract.py --input test-results/control-contract/pilot --output test-results/control-contract/guards.json --guards
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: control-contract-${{ github.sha }}
+          path: test-results/control-contract
+          retention-days: 14
