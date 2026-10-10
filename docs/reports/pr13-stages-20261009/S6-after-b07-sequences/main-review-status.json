@@ -1,12 +1,38 @@
 {
   "authority": "MAIN",
-  "state": "PendingCanonicalRender",
-  "task_id": "PR13-B07.3",
-  "current_native_experiment_cases_passed": 3,
-  "remaining_canonical_render_cases": 3,
+  "state": "PendingCurrentCIReview",
+  "applicable_case_profiles_complete": [
+    "PR13-B02.1",
+    "PR13-B02.2",
+    "PR13-B02.3",
+    "PR13-B02.4",
+    "PR13-B10.1",
+    "PR13-B10.2",
+    "PR13-B10.3",
+    "PR13-B07.2"
+  ],
+  "dependency_rule": "Required integration inputs, not entire parent Accepted; no cyclic waiting required",
+  "current_cloud_tests_passed": true,
   "github_ci_state": "NotStarted_AccountBilling",
-  "github_job_count": 1,
+  "github_job_count": 5,
   "github_steps_executed": 0,
-  "main_acceptance_granted": false,
-  "whole_scope_accepted": false
+  "github_passed_not_claimed": true,
+  "whole_scope_accepted": false,
+  "current_guardian_ci_source_sha": "9050456a2116fb844ad2cdc71e48e3df8a9b37e7",
+  "current_guardian_github_job_count": 4,
+  "current_guardian_github_steps_executed": 0,
+  "current_guardian_sequence_review": {
+    "authority": "MAIN",
+    "state": "PendingCanonicalRender",
+    "task_id": "PR13-B07.3",
+    "current_native_experiment_cases_passed": 3,
+    "remaining_canonical_render_cases": 3,
+    "github_ci_state": "NotStarted_AccountBilling",
+    "github_job_count": 1,
+    "github_steps_executed": 0,
+    "main_acceptance_granted": false,
+    "whole_scope_accepted": false
+  },
+  "current_guardian_sequence_canonical_experiment_cases_passed": 3,
+  "current_guardian_sequence_canonical_render_pending": 3
 }
