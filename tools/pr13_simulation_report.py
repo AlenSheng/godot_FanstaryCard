@@ -44,9 +44,13 @@ def frozen_signature(manifest):
 
 def load_run(directory):
     """Check the declared matrix against raw rows, including whole missing pairs."""
-    raw=directory/'encounters.jsonl'
     manifest=json.loads((directory/'manifest.json').read_text(encoding='utf8'))
     summary=json.loads((directory/'summary.json').read_text(encoding='utf8'))
+    try:
+        from .pr13_raw_storage import raw_input, open_raw
+    except ImportError:
+        from pr13_raw_storage import raw_input, open_raw
+    raw, compressed, _ = raw_input(directory, summary)
     try:
         frozen_signature(manifest)
         start=manifest['SeedStart'];samples=manifest['SamplesPerStratum'];level=manifest['WeaponLevel']
@@ -75,9 +79,8 @@ def load_run(directory):
                     for profile in ('Baseline',candidate_profile(manifest['Candidate'],deck['Hero'],group)):
                         expected.add((deck['Hero'],level,deck['Key'],group,strategy,profile))
         if not expected:raise ValueError('Empty declared matrix')
-        if sha(raw)!=summary['RawSha256']:raise ValueError('Raw digest differs')
         values=[];seeds=defaultdict(set)
-        with raw.open(encoding='utf8') as stream:
+        with open_raw(raw, compressed) as stream:
             for line in stream:
                 row=json.loads(line);key=tuple(row[k] for k in STRATUM_FIELDS);seed=row['Seed']
                 if key not in expected:raise ValueError('Undeclared stratum: '+str(key))
@@ -153,7 +156,12 @@ def main():
     args=parser.parse_args();args.output.mkdir(parents=True,exist_ok=True)
     rows=defaultdict(list);sources=[];seen=set();runs=defaultdict(Counter);signature=None
     for directory in args.inputs:
-        raw=directory/'encounters.jsonl';manifest,summary,values=load_run(directory);digest=summary['RawSha256']
+        manifest,summary,values=load_run(directory);digest=summary['RawSha256']
+        try:
+            from .pr13_raw_storage import raw_input
+        except ImportError:
+            from pr13_raw_storage import raw_input
+        raw, compressed, raw_bytes = raw_input(directory, summary)
         current=frozen_signature(manifest)
         if signature is not None and signature!=current:raise ValueError('Mixed frozen inputs; report cohorts separately')
         signature=current
@@ -162,7 +170,7 @@ def main():
             if identity in seen:raise ValueError('Duplicate seed in stratum: '+str(identity))
             seen.add(identity);rows[key].append(row);runs[key][manifest['SeedStart']]+=1
         count=len(values)
-        sources.append(dict(path=str(directory),raw_sha256=digest,raw_bytes=raw.stat().st_size,count=count,
+        sources.append(dict(path=str(directory),raw_sha256=digest,raw_bytes=raw_bytes,count=count,
             manifest_sha256=sha(directory/'manifest.json'),summary_sha256=sha(directory/'summary.json'),
             source_sha=manifest['SourceSha'],domain_sha256=manifest['DomainAssemblySha256'],
             simulator_sha256=manifest['SimulatorAssemblySha256'],config_sha256=manifest['SourceConfigSha256'],

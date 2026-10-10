@@ -3,16 +3,24 @@ import argparse
 import json
 from pathlib import Path
 import subprocess
+import re
+import sys
 
 from pr13_candidate_review import paired_clusters
 from pr13_simulation_report import ROOT, load_run, frozen_signature, sha
-from pr13_render_cases import write
+from pr13_raw_storage import raw_input
+
+
+def write(path, value):
+    path.write_bytes((json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False)+'\n').encode())
 
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--matrix',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--evidence-root',type=Path,default=ROOT)
+    p.add_argument('--analysis-source-sha',help='Verified Git implementation SHA for an immutable cloud source snapshot')
     args=p.parse_args();matrix=args.matrix.resolve();out=args.output.resolve();out.mkdir(parents=True,exist_ok=False)
     prereg=json.loads((matrix/'preregistration.json').read_text(encoding='utf8'))
     execution=json.loads((matrix/'execution.json').read_text(encoding='utf8'))
@@ -29,7 +37,8 @@ def main():
             if summary['ErrorCount']!=0:raise ValueError('Native errors retained, cannot report Passed')
             if level in signatures and signatures[level]!=signature:raise ValueError('Mixed source within a level')
             signatures[level]=signature;total+=len(rows)
-            parents.append(dict(path=directory.relative_to(ROOT).as_posix(),raw_bytes=(directory/'encounters.jsonl').stat().st_size,raw_sha256=summary['RawSha256'],manifest_sha256=sha(directory/'manifest.json'),summary_sha256=sha(directory/'summary.json')))
+            raw,compressed,raw_bytes=raw_input(directory,summary)
+            parents.append(dict(path=directory.relative_to(args.evidence_root.resolve()).as_posix(),raw_bytes=raw_bytes,raw_sha256=summary['RawSha256'],raw_storage=summary.get('RawStorage'),manifest_sha256=sha(directory/'manifest.json'),summary_sha256=sha(directory/'summary.json')))
             for row in rows:
                 key=(row['Deck'],row['Group'],row['Strategy'])
                 target=baseline if row['Profile']=='Baseline' else candidate
@@ -38,7 +47,7 @@ def main():
         for key,a in sorted(baseline.items()):
             b=candidate[key]
             intervals={}
-            for metric in ['EffectiveShield','Victory']:
+            for metric in ['EffectiveShield','ShieldOverflow','Victory']:
                 value=lambda row: int(row['Outcome']=='Victory') if metric=='Victory' else row[metric]
                 intervals[metric]=paired_clusters([dict(seed=r['Seed'],battle='encounter',value=value(r)) for r in a],[dict(seed=r['Seed'],battle='encounter',value=value(r)) for r in b])
             strata.append(dict(deck=key[0],group=key[1],strategy=key[2],n=len(a),paired_intervals=intervals,baseline_outcomes={o:sum(r['Outcome']==o for r in a) for o in ['Victory','Death','Censored','Error']},candidate_outcomes={o:sum(r['Outcome']==o for r in b) for o in ['Victory','Death','Censored','Error']}))
@@ -47,10 +56,12 @@ def main():
     # Exercise the production reporter's mixed-level rejection, with real raw
     # parents. Exit 0 would turn an invalid aggregate into a misleading result.
     invalid=out/'mixed-level-negative'
-    command=['python',str(ROOT/'tools/pr13_simulation_report.py'),'--inputs',str(matrix/'0'/'100001'),str(matrix/'1'/'100001'),'--output',str(invalid)]
+    command=[sys.executable,str(ROOT/'tools/pr13_simulation_report.py'),'--inputs',str(matrix/'0'/'100001'),str(matrix/'1'/'100001'),'--output',str(invalid)]
     r=subprocess.run(command,capture_output=True,text=True,encoding='utf8',timeout=30)
     rejected=r.returncode!=0 and 'Mixed frozen inputs' in r.stderr
-    report=dict(source_sha=prereg['source_sha'],analysis_source_sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),plan_sha256=sha(ROOT/'docs/plans/PR13_ACCEPTANCE_DETAILS_20260930.json'),source=dict(scope=prereg['scope'],native_preregistration_sha256=sha(matrix/'preregistration.json'),execution_sha256=sha(matrix/'execution.json'),analysis_sha256=sha(Path(__file__))),executed=3,passed=3 if weakened[2] and weakened[4] and not weakened[1] and rejected else 0,total_encounter_rows=total,levels=levels,parents=parents,mixed_level_aggregation_rejected=rejected,production_activation=False,human_acceptance=False,candidate_recommendation='Blocked: +2/+4 effective shield and survival regressions require explicit review; legal route/PVP/prepared Boss and other mandatory layers incomplete',accepted=False)
+    analysis_sha=args.analysis_source_sha or subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+    if not re.fullmatch('[0-9a-f]{40}',analysis_sha):raise ValueError('Exact verified analysis source SHA required')
+    report=dict(source_sha=prereg['source_sha'],analysis_source_sha=analysis_sha,plan_sha256=sha(ROOT/'docs/plans/PR13_ACCEPTANCE_DETAILS_20260930.json'),source=dict(scope=prereg['scope'],native_preregistration_sha256=sha(matrix/'preregistration.json'),execution_sha256=sha(matrix/'execution.json'),analysis_sha256=sha(Path(__file__))),executed=3,passed=3 if weakened[2] and weakened[4] and not weakened[1] and rejected else 0,total_encounter_rows=total,levels=levels,parents=parents,mixed_level_aggregation_rejected=rejected,production_activation=False,human_acceptance=False,candidate_recommendation='Blocked: +2/+4 effective shield and survival regressions require explicit review; legal route/PVP/prepared Boss and other mandatory layers incomplete',accepted=False)
     write(out/'report.json',report)
     contracts={c['id']:c for pkg in json.loads((ROOT/'docs/plans/PR13_ACCEPTANCE_DETAILS_20260930.json').read_text(encoding='utf8'))['packages'] for t in pkg['subtasks'] for c in t['test_cases']}
     cases=[]
