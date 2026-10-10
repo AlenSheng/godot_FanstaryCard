@@ -14,6 +14,7 @@ internal static class CapEffectiveExperiment
 {
     private static readonly string[] Slots = ["Head", "Chest", "Hands", "Legs", "Feet"];
     private static readonly string[] Common = ["C01", "C02", "C03", "C04", "C05", "C06", "C07", "C08", "C09", "C12", "C18", "C25", "C26", "C29"];
+    private static readonly bool[] UpgradeArms = [false, true];
     internal static string Hash(byte[] bytes) => Convert.ToHexStringLower(SHA256.HashData(bytes));
 
     public static int Run(string[] args)
@@ -45,7 +46,7 @@ internal static class CapEffectiveExperiment
         using var encounterHash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
         using var events = new CapEventParts(output);
         var counters = new Dictionary<string, long>(StringComparer.Ordinal);
-        var equipment = new[] { false, true }.Select(upgraded => Slots.Select((slot, index) =>
+        var equipment = UpgradeArms.Select(upgraded => Slots.Select((slot, index) =>
             new CombatEquipmentItem(new Guid(440001, 0, 0, 0, 0, 0, 0, 0, 0, 0, (byte)(index + 1)), slot,
                 upgraded && index == 0 ? "Orange" : "Purple", level, element, "Bulwark", "DrawInterval")).ToArray()).ToArray();
         var profiles = equipment.Select(EquipmentCombatRules.Calculate).ToArray();
@@ -56,6 +57,7 @@ internal static class CapEffectiveExperiment
             element = element.ToString(), equipment_level = level, weapon_level = level, block_index = block,
             samples, seed_start = seedStart, deck, strategy = "basic", card_level = 0, cutoff_seconds = 600,
             equipment, profiles, raw_resistance = rawResistance, candidate_activation = false,
+            quality_data = new { Purple = config.EquipmentQuality("Purple"), Orange = config.EquipmentQuality("Orange") },
             config_version = config.Version, config_sha256 = Hash(JsonSerializer.SerializeToUtf8Bytes(config)),
             shield_policy = "CurrentSteps", fenxian_policy = "CurrentRhythm", single_item_quality_change = true,
             outcome_effects_descriptive_only = true, independent_draw_oracle = "piecewise current state integration, full-hand reset"

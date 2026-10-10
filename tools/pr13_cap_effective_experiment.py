@@ -62,6 +62,12 @@ def validate(directory,source,controls=False):
     require(m['samples'] in [3,1000] and m['seed_start']==440001+1000*m['block_index'] and m['equipment_level'] in [0,5] and m['weapon_level']==m['equipment_level'] and m['cutoff_seconds']==600 and m['strategy']=='basic' and not m['candidate_activation'],'Frozen inputs differ')
     require(len(m['deck'])==len(set(m['deck']))==20 and m['card_level']==0 and m['single_item_quality_change'] and m['outcome_effects_descriptive_only'],'Declared budget/interpretation differs')
     before,after=m['equipment'];require(len(before)==len(after)==5 and len({i['Slot'] for i in before})==5 and all(a['Quality']=='Purple' and b['Quality']==('Orange' if i==0 else 'Purple') and {k:v for k,v in a.items() if k!='Quality'}=={k:v for k,v in b.items() if k!='Quality'} for i,(a,b) in enumerate(zip(before,after))),'Legal one-quality equipment pair differs')
+    raw_resistance=[]
+    for index,items in enumerate(m['equipment']):
+        require(all(i['Level']==m['equipment_level'] and i['Element']==m['element'] and i['EffectAffix']=='Bulwark' and i['SecondaryTrait']=='DrawInterval' and i['UniqueAffix'] is None for i in items),'Frozen equipment fields differ')
+        resistance=sum(m['quality_data'][i['Quality']]['Resistance']+i['Level']*m['quality_data'][i['Quality']]['ResistancePerLevel'] for i in items);raw_resistance.append(resistance)
+        draw=sum(m['quality_data'][i['Quality']]['DrawInterval']+i['Level']*m['quality_data'][i['Quality']]['DrawIntervalPerLevel'] for i in items)
+        require(near(resistance,m['raw_resistance'][index]) and near(draw,m['profiles'][index]['DrawIntervalModifier']),'Original legal equipment contributions differ')
     encounters={};outcomes=Counter();counts=Counter();ledger=defaultdict(Counter);witnesses={}
     def encounter(r):
         key=(r['Seed'],r['Profile']);require(key not in encounters and r['Error'] is None and r['Outcome'] in ['Victory','Death','Censored'],'Encounter identity/outcome differs');encounters[key]=r;outcomes[r['Outcome']]+=1
@@ -72,11 +78,13 @@ def validate(directory,source,controls=False):
     def event(r):
         key=(r['Seed'],r['Profile']);require(key in encounters and r['Hero']==m['hero'] and r['Group']==m['group'] and r['SeedBlock']==m['block_index'],'Event stratum/parent differs');arm=r['Profile']+'/';events=ledger[key];event_contract(r);witnesses.setdefault(r['kind'],r)
         require(0<=r['at']<=600,'Event outside observation interval');require(r['equipment']==m['profiles'][ARMS.index(r['Profile'])],'Original equipment profile differs')
+        require(r['before']['MaximumHp']==r['after']['MaximumHp']=={'Mage':70,'Priest':80,'Guardian':100}[m['hero']],'Frozen base HP differs')
         if r['kind']=='cast':
             require(r['action']==events['casts'] and r['weapon_level']==m['weapon_level'],'Original cast sequence differs');events['casts']+=1;events['RequestedShield']+=r['requested'];events['EffectiveShield']+=r['effective'];events['ShieldOverflow']+=r['overflow'];counts[arm+'all_casts']+=1;counts[arm+('T03_positive_shield' if r['card_shield']>0 else 'T03_no_shield')]+=1
             if r['card_shield']>0 and r['before']['Shield']==r['before']['MaximumHp']//2:counts[arm+'T03_full_shield']+=1
             if r['overflow']>0:counts[arm+'T03_overflow']+=1
         else:
+            require(r['element']==m['element'] and near(r['raw_resistance'],raw_resistance[ARMS.index(r['Profile'])]) and near(r['raw_marginal'],raw_resistance[1]-raw_resistance[0]) and near(r['effective_marginal'],min(.6,raw_resistance[1])-min(.6,raw_resistance[0])),'Original legal resistance marginal differs')
             require(r['step']==events['ticks'],'Original tick sequence differs');events['ticks']+=1;counts[arm+'all_ticks']+=1;counts[arm+('T01_capped_ticks' if r['raw_resistance']>=.6 else 'T01_below_cap_ticks')]+=1
             if clamp(4*(1+r['equipment']['DrawIntervalModifier']),1.8,6)==1.8:counts[arm+'T02_equipment_floor_ticks']+=1
             if r['before']['SpeedTicks']>0:counts[arm+'T02_card_speed_ticks']+=1
