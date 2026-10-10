@@ -76,10 +76,48 @@ def corruption_controls(rows, directory):
     return {'ok':True,'controls':controls}
 
 
+def validate_boundaries(path, expected_source):
+    evidence=json.loads(Path(path).read_text())
+    require(evidence['schema']=='actual_element_marginal_boundaries_v1' and evidence['source_sha']==expected_source and evidence['passed'] is True,'Native boundary source/status differs')
+    require(evidence['weapon_level']==evidence['card_level']==0 and evidence['candidate_activation'] is False,'Boundary budget differs')
+    rows=evidence['rows'];expected={(case,hero) for case in ('PR13-B08.2-T01','PR13-B08.2-T02','PR13-B08.2-T03') for hero in ('Mage','Priest','Guardian')}
+    require(len(rows)==9 and {(r['case_id'],r['hero']) for r in rows}==expected,'Boundary strata differ')
+    events=0
+    for row in rows:
+        require(row['passed'] is True and row['paired_budget_guard_passed'] is True and row['natural_seconds']==0,'Boundary execution failed')
+        a=row['baseline_deck'];b=row['candidate_deck'];require(len(a)==len(b)==len(set(a))==len(set(b))==20 and set(a)-set(b)=={'ET-FIRE-G'} and set(b)-set(a)=={row['replacement']},'Boundary must replace one card')
+        arms={arm['profile']:arm['events'] for arm in row['arms']};require(set(arms)=={'BaselineGreenFire','SingleGreenReplacement'},'Both native arms required')
+        for profile,arm in arms.items():
+            require(len(arm)==(3 if row['case_id'].endswith('T02') else 1),'Boundary cast count differs')
+            for cast,event in enumerate(arm):
+                require(event['cast']==cast,'Boundary event order differs');events+=1
+                for name in ('before_state_sha256','after_state_sha256'):
+                    digest=event[name];raw=row['states'][digest];require(hashlib.sha256(raw.encode()).hexdigest()==digest,'Original native state bytes differ')
+                    room=json.loads(raw);require(len(room['Players'])==1 and room['Players'][0]['Combat']['WeaponLevel']==0,'Boundary player state differs')
+                    combat=room['Players'][0]['Combat'];pool=combat['Deck']['Hand']+combat['Deck']['Library']+combat['Deck']['Discard']
+                    require(len(pool)==20 and len({c['InstanceId'] for c in pool})==20 and {c['CardId'] for c in pool}==set(b if profile=='SingleGreenReplacement' else a),'Boundary pool conservation differs')
+                before=json.loads(row['states'][event['before_state_sha256']])['Players'][0];after=json.loads(row['states'][event['after_state_sha256']])['Players'][0]
+                require(len(before['Combat']['Deck']['Hand'])==5,'Boundary must start with a full hand')
+                selected=set(event['selected_cards']);old={c['InstanceId'] for c in before['Combat']['Deck']['Hand'] if c['CardId'] not in selected}
+                require(event['actual_draw']==sum(c['InstanceId'] not in old for c in after['Combat']['Deck']['Hand']),'Native actual draw differs')
+                require(event['requested_draw']==event['actual_draw']+event['immediate_overflow'] and event['immediate_overflow']>=0,'Boundary immediate cap differs')
+                for kind in ('heal','shield'):
+                    require(event['requested_'+kind]==event['effective_'+kind]+event[kind+'_overflow'] and event['effective_'+kind]>=0 and event[kind+'_overflow']>=0,'Boundary recovery accounting differs')
+                require(event['added_control_union_ticks']<=event['admitted_control_ticks']<=event['converted_control_ticks'],'Boundary union/DR differs')
+                if profile=='SingleGreenReplacement':
+                    if row['case_id'].endswith('T01'):require(event['requested_draw']>event['actual_draw']==1,'Water hand cap missing')
+                    elif row['case_id'].endswith('T02'):
+                        first=arm[0]['converted_control_ticks'];require(first>0 and event['admitted_control_ticks']==(first if cast==0 else first//2 if cast==1 else 0),'Current full/half/zero DR differs')
+                        require(event['added_control_union_ticks']==(first if cast==0 else 0) and event['target_control_union_ticks']==first,'Control must use overlap union')
+                    else:require(event['effective_heal']==event['effective_shield']==0 and event['heal_overflow']>0 and event['shield_overflow']>0,'Full caps missing')
+    return {'ok':True,'source_sha':expected_source,'native_rows':len(rows),'native_events':events,'render_executed':False,'full_experiment':False}
+
+
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--input',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--expected-source',required=True);p.add_argument('--controls',action='store_true');args=p.parse_args();require(not args.output.exists(),'New evidence output required')
+    p=argparse.ArgumentParser();p.add_argument('--input',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--expected-source',required=True);p.add_argument('--controls',action='store_true');p.add_argument('--boundaries',type=Path);args=p.parse_args();require(not args.output.exists(),'New evidence output required')
     result,rows=validate(args.input,args.expected_source)
     if args.controls:result['corruption_controls']=corruption_controls(rows,args.input)
+    if args.boundaries:result['boundaries']=validate_boundaries(args.boundaries,args.expected_source)
     args.output.write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result))
 
 
