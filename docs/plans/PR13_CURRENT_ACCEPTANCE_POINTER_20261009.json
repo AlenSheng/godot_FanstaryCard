@@ -1,8 +1,8 @@
 {
   "kind": "current_execution_register_pointer",
-  "current_register": "docs/reports/pr13-stages-20261009/S6-after-b07-sequences/register.json",
+  "current_register": "docs/reports/pr13-stages-20261009/S6-after-b07-authoritative-render/register.json",
   "integration_source_sha": "497c97b0a777eb5ee88ecb1bd37cee4626fac495",
-  "previous_register": "docs/reports/pr13-stages-20261009/S6-after-b07-current/register.json",
+  "previous_register": "docs/reports/pr13-stages-20261009/S6-after-b07-sequences/register.json",
   "whole_scope_accepted": false,
   "human_experience_in_scope": false,
   "execution_policy": {
@@ -15,17 +15,17 @@
     "acceptance_states_unchanged": true
   },
   "latest_development": {
-    "implementation_source_sha": "855178acc72a1aacb8122f2b51b94d267ebb4c10",
+    "implementation_source_sha": "9a5d7ef106ab5378c823383cc4a67189940e1df5",
     "native_execution_source_sha": "edfb67651354fabe67072c213c742f2039eafb03",
-    "analysis_source_sha": "a0e5ee13f2a1f75b667e3af3629b0ea46fc93d9d",
     "task_ids": [
       "PR13-B07.3"
     ],
-    "stage_report": "docs/reports/pr13-stages-20261009/S5-b07-authoritative-sequences/summary.json",
-    "canonical_experiment_cases_passed": 3,
-    "native_sequence_rows": 36000,
-    "experiment_profile_gaps_removed": 3,
-    "canonical_render_pending": true,
+    "stage_report": "docs/reports/pr13-stages-20261009/S5-b07-authoritative-render/summary.json",
+    "canonical_render_cases_passed": 3,
+    "actual_rendered_rows_passed": 54,
+    "rendered_state_checks": 8208,
+    "canonical_render_pending": false,
+    "evidence_coverage_ready": true,
     "main_acceptance_not_granted": true,
     "github_ci_not_started": "AccountBilling"
   },
@@ -131,6 +131,21 @@
       "canonical_cases_supplemented": 0,
       "acceptance_states_unchanged": true,
       "backend_boundary_experiment_pending": true,
+      "github_ci_not_started": "AccountBilling"
+    },
+    {
+      "implementation_source_sha": "855178acc72a1aacb8122f2b51b94d267ebb4c10",
+      "native_execution_source_sha": "edfb67651354fabe67072c213c742f2039eafb03",
+      "analysis_source_sha": "a0e5ee13f2a1f75b667e3af3629b0ea46fc93d9d",
+      "task_ids": [
+        "PR13-B07.3"
+      ],
+      "stage_report": "docs/reports/pr13-stages-20261009/S5-b07-authoritative-sequences/summary.json",
+      "canonical_experiment_cases_passed": 3,
+      "native_sequence_rows": 36000,
+      "experiment_profile_gaps_removed": 3,
+      "canonical_render_pending": true,
+      "main_acceptance_not_granted": true,
       "github_ci_not_started": "AccountBilling"
     }
   ]
