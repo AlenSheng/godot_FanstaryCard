@@ -21,16 +21,23 @@ static func open(host: Control) -> void:
     dialog.title = text("title")
     dialog.min_size = Vector2i(680, 300)
     var box := VBoxContainer.new()
+    box.custom_minimum_size.x = 640
+    box.size.x = 640
     var active: Array = pool.get("active", [])
     var pending: Array = pool.get("pending", [])
     var heading := Label.new()
     heading.text = text("capacity") % [active.size(), int(pool.get("capacity", 5))]
     box.add_child(heading)
     var hint := Label.new()
+    hint.custom_minimum_size.x = 640
+    hint.size.x = 640
     hint.text = text("hint")
     hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
     box.add_child(hint)
     var names := Label.new()
+    names.custom_minimum_size.x = 640
+    names.size.x = 640
+    names.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
     var titles := PackedStringArray()
     for card in active: titles.append(CardDetails.localized_name(str(card.get("card_id", ""))))
     names.text = ", ".join(titles)
@@ -43,6 +50,9 @@ static func open(host: Control) -> void:
         # One candidate per dialog avoids stale callbacks after another mutation.
         var candidate: Dictionary = pending[0]
         var card_label := Label.new()
+        card_label.custom_minimum_size.x = 640
+        card_label.size.x = 640
+        card_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
         card_label.text = CardDetails.localized_name(str(candidate.get("card_id", ""))) + "\n" + CardDetails.face_description(str(candidate.get("card_id", "")))
         box.add_child(card_label)
         var replace := OptionButton.new()

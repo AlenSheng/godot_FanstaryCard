@@ -15,22 +15,24 @@ class PoolGateway extends CodecGateway:
 func pointer(control: Control) -> bool:
 	if control==null or not control.is_visible_in_tree(): return false
 	var viewport: Viewport = control.get_viewport()
-	var point: Vector2 = control.get_global_transform_with_canvas()*(control.size*.5)
-	viewport.notify_mouse_entered()
-	pool_traces.append({"control":str(control.get_path()),"viewport_point":[point.x,point.y],"route":"Control viewport push_input motion/down/up","window_id":control.get_window().get_window_id()})
+	var point: Vector2 = viewport.get_screen_transform()*control.get_global_transform_with_canvas()*(control.size*.5)
+	var window_id: int = control.get_window().get_window_id() if control.get_window().get_window_id()>=0 else get_window().get_window_id()
+	pool_traces.append({"control":str(control.get_path()),"screen_point":[point.x,point.y],"route":"Input.parse_input_event targeted mouse motion/down/up","window_id":window_id})
 	var motion := InputEventMouseMotion.new()
+	motion.window_id=window_id
 	motion.position = point
 	motion.global_position = point
-	viewport.push_input(motion,true)
+	Input.parse_input_event(motion)
 	await get_tree().process_frame
 	for pressed in [true,false]:
 		var event := InputEventMouseButton.new()
+		event.window_id=window_id
 		event.button_index = MOUSE_BUTTON_LEFT
 		event.button_mask = MOUSE_BUTTON_MASK_LEFT if pressed else 0
 		event.pressed = pressed
 		event.position = point
 		event.global_position = point
-		viewport.push_input(event,true)
+		Input.parse_input_event(event)
 		await get_tree().process_frame
 	return true
 
@@ -126,7 +128,7 @@ func witness(row: Dictionary, language: String, size: Vector2i, fps: int, delay:
 	var submitted := false
 	if dialog!=null:
 		var embedded: bool = dialog.is_embedded()
-		var bounds := Rect2(Vector2.ZERO if embedded else Vector2(get_window().position),Vector2(size))
+		var bounds := get_viewport().get_visible_rect() if embedded else Rect2(Vector2(get_window().position),Vector2(size))
 		window_geometry = {"embedded":embedded,"dialog_position":[dialog.position.x,dialog.position.y],"dialog_size":[dialog.size.x,dialog.size.y],"root_position":[get_window().position.x,get_window().position.y],"root_size":[get_window().size.x,get_window().size.y],"viewport_size":[dialog.get_visible_rect().size.x,dialog.get_visible_rect().size.y],"pixel_size":[dialog.get_texture().get_image().get_width(),dialog.get_texture().get_image().get_height()],"window_id":dialog.get_window_id()}
 		FileAccess.open(output+"/geometry-before-click.json",FileAccess.WRITE).store_string(JSON.stringify(window_geometry))
 		geometry = bounds.encloses(Rect2(Vector2(dialog.position),Vector2(dialog.size)))
