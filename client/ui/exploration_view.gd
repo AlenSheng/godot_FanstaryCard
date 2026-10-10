@@ -151,11 +151,11 @@ static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 			# Older snapshots have no phase field; HP does not indicate a completed boss transition.
 			var boss_phase: int = maxi(1, int(monster.get("boss_phase", 1)))
 			var texture: Texture2D = Art.monster(monster.get("monster_id", ""), boss_phase)
-			var enemy: Control = _picture(ui, texture, Rect2(x - 45 * slot_scale, 301, 430 * slot_scale, 202 if can_select_target else 245))
+			var enemy: Control = _picture(ui, texture, Rect2(x - 45 * slot_scale, 301, 430 * slot_scale, 164 if can_select_target else 245))
 			enemy.name = "Monster_" + str(monster.get("monster_id", ""))
 			host._combat_panels[monster.get("monster_id", "")] = enemy
 			if texture == null:
-				ui.panel(Rect2(x + 45 * slot_scale, 306, 250 * slot_scale, 170), SLOT)
+				ui.panel(Rect2(x + 45 * slot_scale, 306, 250 * slot_scale, 150 if can_select_target else 170), SLOT)
 				_center(ui.text(host._monster_name(monster.get("monster_id", "")), Rect2(x + 55 * slot_scale, 356, 230 * slot_scale, 65), 36, P.MUTED))
 			if not alive: enemy.modulate.a = 0.35
 			var element: String = monster.get("intent_element", "None")
@@ -172,7 +172,8 @@ static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 			var name: String = host._monster_name(monster.get("monster_id", ""))
 			if monster.get("monster_id", "") == "annihilation-core": name += P.localized("exploration_boss_phase") % boss_phase
 			if can_select_target and alive:
-				var button: Button = ui.button(name + (P.localized("exploration_target_suffix") if selected else ""), Rect2(x + 10 * slot_scale, 512, 350 * slot_scale, 50), func(): Game.command("battle.select_target", {"battle_id": state.pve.battle_id, "target_id": monster.monster_id}), not Game.allowed("battle.select_target"))
+				# Keep the complete click target above the selected-card preview at y=528.
+				var button: Button = ui.button(name + (P.localized("exploration_target_suffix") if selected else ""), Rect2(x + 10 * slot_scale, 472, 350 * slot_scale, 50), func(): Game.command("battle.select_target", {"battle_id": state.pve.battle_id, "target_id": monster.monster_id}), not Game.allowed("battle.select_target"))
 				button.name = "MonsterTarget_" + str(monster.get("monster_id", ""))
 				# Default button padding otherwise grows this row into the preview.
 				for style_name in ["normal", "hover", "pressed", "disabled"]:
@@ -183,7 +184,7 @@ static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 				button.size = Vector2(350 * slot_scale, 50)
 				if selected: button.add_theme_color_override("font_disabled_color", P.GOLD)
 			if alive and int(monster.get("stun_remaining_ms", 0)) <= 0 and int(monster.get("windup_remaining_ms", 0)) > 0:
-				_center(ui.text(P.localized("exploration_action_soon") % (float(monster.windup_remaining_ms) / 1000), Rect2(x + 15 * slot_scale, 472 if can_select_target else 502, 340 * slot_scale, 35 if can_select_target else 45), 25, P.GOLD))
+				_center(ui.text(P.localized("exploration_action_soon") % (float(monster.windup_remaining_ms) / 1000), Rect2(x + 15 * slot_scale, 432 if can_select_target else 502, 340 * slot_scale, 35 if can_select_target else 45), 25, P.GOLD))
 	_hand(ui, host, state)
 
 static func _hand(ui: Control, host: Control, state: Dictionary) -> void:
