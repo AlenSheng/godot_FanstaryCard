@@ -79,14 +79,14 @@ func _run() -> void:
 		check(codec.error.is_empty(), "Godot_encode_envelope", row)
 		outbound.store_line(JSON.stringify({"case_id":row.case_id, "source_sha":row.source_sha, "wire":Marshalls.raw_to_base64(outbound_wire), "candidate_id":outgoing.candidate_id, "accept":accept, "replacement":outgoing.get("replace_instance_id", ""), "room_id":outgoing_envelope.room_id, "request_id":outgoing_envelope.request_id, "expected_revision":outgoing_envelope.expected_revision}))
 		game.room = before
-		check(game._intent_valid("monster.choose", choice), "original_choice_intent", row)
+		check(game._intent_valid("monster.choose", outgoing), "original_choice_intent", row)
 		check(not game._intent_valid("monster.choose", {"candidate_id":"00000000-0000-0000-0000-000000000001", "accept":accept}), "foreign_candidate_rejected", row)
 		if row.actual.has("replacement"):
-			var invalid: Dictionary = choice.duplicate(true)
+			var invalid: Dictionary = outgoing.duplicate(true)
 			invalid.replace_instance_id = str(row.actual.Base[0].InstanceId)
 			check(not game._intent_valid("monster.choose", invalid), "base_replacement_rejected", row)
 		game.room = after
-		check(not game._intent_valid("monster.choose", choice), "resolved_candidate_not_reused", row)
+		check(not game._intent_valid("monster.choose", outgoing), "resolved_candidate_not_reused", row)
 		count += 1
 		counts[row.case_id] = int(counts.get(row.case_id, 0))+1
 	game.room = {}
