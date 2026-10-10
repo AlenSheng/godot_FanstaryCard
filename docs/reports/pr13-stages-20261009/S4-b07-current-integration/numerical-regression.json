@@ -1,0 +1,39 @@
+{
+  "ok": true,
+  "exit_code": 0,
+  "observations": [
+    {
+      "failures": [],
+      "ok": true,
+      "suite": "numerical-integration"
+    }
+  ],
+  "command": [
+    "create",
+    "--name",
+    "pr13-b07-numerical-regression",
+    "--label",
+    "codex.owner=pr13-b07-ui-20261010",
+    "--memory",
+    "650m",
+    "--cpus",
+    ".3",
+    "--user",
+    "1000:1000",
+    "--network",
+    "none",
+    "-v",
+    "/home/ubuntu/pr13-acceptance-20261009/evidence/b07-ui-compile-attempt2/source:/work:ro",
+    "-v",
+    "/home/ubuntu/pr13-acceptance-20261009/cache:/cache:ro",
+    "-w",
+    "/work/client",
+    "sha256:6ea92944e8779a5bb6e5c40faca53a40a1b02b5a0dcd47fff0815ba9cfbded1f",
+    "godot",
+    "--headless",
+    "--path",
+    "/work/client",
+    "res://tests/numerical_integration.tscn"
+  ],
+  "owned_container_removed": true
+}
