@@ -94,7 +94,7 @@ func development_status_checks() -> Array:
 			if pair[0] > elapsed: expected.append(STATUS_GOLDEN[P.language()][pair[1]] % ("%.1f" % (float(pair[0]-elapsed)/1000.0)))
 		var values_present: bool = expected.all(func(value):return label.text.contains(value)) and label.is_visible_in_tree() == (not expected.is_empty())
 		var readable: bool = expected.is_empty() or (label.get_theme_font_size("font_size") >= 18 and label.get_visible_line_count() == label.get_line_count() and get_viewport().get_visible_rect().encloses(label.get_global_rect()))
-		result.append({"fixture_only":true,"elapsed_ms":elapsed,"actual_text":label.text,"all_expected_values_present":values_present,"readable":readable,"room_state_unchanged":before==JSON.stringify(Game.room),"passed":values_present and readable and before==JSON.stringify(Game.room)})
+		result.append({"fixture_only":true,"elapsed_ms":elapsed,"actual_text":label.text,"all_expected_values_present":values_present,"readable":readable,"font_size":label.get_theme_font_size("font_size"),"label_size":[label.size.x,label.size.y],"line_count":label.get_line_count(),"visible_line_count":label.get_visible_line_count(),"room_state_unchanged":before==JSON.stringify(Game.room),"passed":values_present and readable and before==JSON.stringify(Game.room)})
 	$UI._update_battle_status_labels(0)
 	await RenderingServer.frame_post_draw
 	return result

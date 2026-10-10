@@ -381,7 +381,10 @@ func _set_battle_status_label(label_name: String, stun_ms: int, block_ms: int, e
 	label.size.y = 32.0 * maxi(1, lines.size())
 	var typeface := P.font_for_text(label.text, 23)
 	label.add_theme_font_override("font", typeface)
-	label.add_theme_font_size_override("font_size", P.fit_font_size(typeface, 23, label.size.y, label.size.x - 8.0, label.text))
+	var fitted_size := P.fit_font_size(typeface, 23, label.size.y, label.size.x - 8.0, label.text)
+	if lines.size() > 1:
+		label.size.y = maxf(label.size.y, ceilf(typeface.get_height(fitted_size)) * lines.size() + label.get_theme_constant("line_spacing") * (lines.size() - 1) + 2.0)
+	label.add_theme_font_size_override("font_size", fitted_size)
 	label.visible = not parts.is_empty()
 
 func _refresh_after_admin_update() -> void:
