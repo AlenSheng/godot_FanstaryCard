@@ -371,11 +371,17 @@ func _set_battle_status_label(label_name: String, stun_ms: int, block_ms: int, e
 	var label: Label = _reference.get_node_or_null(label_name) as Label
 	if label == null: return
 	var parts: Array[String] = []
-	if stun_ms > elapsed_ms: parts.append("眩晕 %.1f秒" % (float(stun_ms - elapsed_ms) / 1000.0))
-	if block_ms > elapsed_ms: parts.append("禁抽 %.1f秒" % (float(block_ms - elapsed_ms) / 1000.0))
-	if speed_ms > elapsed_ms: parts.append("抽速 %.1f秒" % (float(speed_ms - elapsed_ms) / 1000.0))
-	if double_ms > elapsed_ms: parts.append("充能×2 %.1f秒" % (float(double_ms - elapsed_ms) / 1000.0))
-	label.text = " · ".join(parts)
+	if stun_ms > elapsed_ms: parts.append(P.localized("battle_status_stun") % ("%.1f" % (float(stun_ms - elapsed_ms) / 1000.0)))
+	if block_ms > elapsed_ms: parts.append(P.localized("battle_status_draw_block") % ("%.1f" % (float(block_ms - elapsed_ms) / 1000.0)))
+	if speed_ms > elapsed_ms: parts.append(P.localized("battle_status_draw_speed") % ("%.1f" % (float(speed_ms - elapsed_ms) / 1000.0)))
+	if double_ms > elapsed_ms: parts.append(P.localized("battle_status_double_charge") % ("%.1f" % (float(double_ms - elapsed_ms) / 1000.0)))
+	var lines: Array[String] = []
+	for index in range(0, parts.size(), 2): lines.append(" · ".join(parts.slice(index, index + 2)))
+	label.text = "\n".join(lines)
+	label.size.y = 32.0 * maxi(1, lines.size())
+	var typeface := P.font_for_text(label.text, 23)
+	label.add_theme_font_override("font", typeface)
+	label.add_theme_font_size_override("font_size", P.fit_font_size(typeface, 23, label.size.y, label.size.x - 8.0, label.text))
 	label.visible = not parts.is_empty()
 
 func _refresh_after_admin_update() -> void:
