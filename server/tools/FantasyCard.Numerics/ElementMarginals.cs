@@ -1,4 +1,5 @@
 using System.IO.Compression;
+using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -11,6 +12,7 @@ using FantasyCard.Domain.Players;
 internal static class ElementMarginals
 {
     internal static readonly string[] Replacements = ["ET-WOOD-G", "ET-EARTH-G", "ET-METAL-G", "ET-WATER-G"];
+    private static readonly string[] Groups = ["O1", "O6", "E1", "BOSS"];
     public static int Run(string[] args)
     {
         string Option(string name, string fallback)
@@ -19,15 +21,15 @@ internal static class ElementMarginals
         }
         var output = Path.GetFullPath(Option("--output", "element-marginals"));
         var sha = Option("--source-sha", "");
-        var start = int.Parse(Option("--seed-start", "400001"));
-        var samples = int.Parse(Option("--samples", "3"));
-        var block = int.Parse(Option("--block-index", "0"));
+        var start = int.Parse(Option("--seed-start", "400001"), CultureInfo.InvariantCulture);
+        var samples = int.Parse(Option("--samples", "3"), CultureInfo.InvariantCulture);
+        var block = int.Parse(Option("--block-index", "0"), CultureInfo.InvariantCulture);
         var heroes = Option("--heroes", "Mage,Priest,Guardian").Split(',').Select(Enum.Parse<HeroClass>).ToArray();
         var groups = Option("--groups", "O1,O6,E1,BOSS").Split(',');
         var alternatives = Option("--replacements", string.Join(',', Replacements)).Split(',');
         if (!Regex.IsMatch(sha, "^[0-9a-f]{40}$") || start < 1 || start > int.MaxValue - 1000 || samples is < 3 or > 1000 || block is < 0 or > 2 ||
             heroes.Length == 0 || heroes.Distinct().Count() != heroes.Length || heroes.Any(hero => !Enum.IsDefined(hero)) ||
-            groups.Length == 0 || groups.Distinct().Count() != groups.Length || groups.Any(group => !new[] { "O1", "O6", "E1", "BOSS" }.Contains(group)) ||
+            groups.Length == 0 || groups.Distinct().Count() != groups.Length || groups.Any(group => !Groups.Contains(group)) ||
             alternatives.Length == 0 || alternatives.Distinct().Count() != alternatives.Length || alternatives.Any(card => !Replacements.Contains(card)) || Directory.Exists(output))
             throw new ArgumentException("Exact source, bounded declared strata and new output required.");
         var config = GameConfigCatalog.Current;var catalog = CombatCardCatalog.CreatePrototype();
