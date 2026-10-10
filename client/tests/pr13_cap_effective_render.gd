@@ -93,6 +93,26 @@ func cap_project_items(native: Array, selected: Dictionary) -> Dictionary:
 	candidate["location"] = "Inventory"
 	return {"before":before, "candidate":candidate, "original_candidate_id":original_id, "display_candidate_id":candidate.instanceId, "identity_projection_only":true}
 
+func cap_shield_preview(actual: Dictionary, screenshot: bool) -> Dictionary:
+	reset_cards(["C09"], actual.hero, int(actual.base_maximum_hp), int(actual.shield_before))
+	Game.hero_class = actual.hero
+	Game.room.player.combat.maximum_hp = int(actual.base_maximum_hp)
+	Game.room.player.weapon_level = int(actual.weapon)
+	Game.selected_cards = ["C09"]
+	# Display the original native boundary ledger as a controlled estimate. It
+	# does not represent a current card definition or a server preview response.
+	Game.combat_preview = {"authoritative":false, "core_element":"Earth", "core_count":1, "damage_segments":[], "hp_damage":0, "shield_damage":0, "heal":0, "shield_gain":int(actual.effective_shield), "heal_overflow":0, "shield_overflow":int(actual.shield_overflow)}
+	await present()
+	var panel: Control = $UI._reference.find_child("CombatPreview", true, false) as Control
+	var expected: String = P.localized("battle_preview_shield_parts") % [int(actual.requested_shield), int(actual.effective_shield), int(actual.shield_overflow)]
+	var values: bool = panel != null and panel.tooltip_text.contains(expected)
+	var estimate: bool = preview_texts().any(func(words):return str(words).contains(P.localized("battle_preview_estimate")))
+	var saved := true
+	if screenshot:
+		await RenderingServer.frame_post_draw
+		saved = get_viewport().get_texture().get_image().save_png(output+"/"+cap_case+"-shield-preview.png")==OK
+	return {"requested":actual.requested_shield,"effective":actual.effective_shield,"overflow":actual.shield_overflow,"cap":actual.shield_cap,"complete_parts_in_actual_tooltip":values,"estimated_label_preserved":estimate,"controlled_native_ledger_projection_only":true,"no_wire_or_card_definition_claim":true,"passed":values and estimate and saved}
+
 func cap_witness(row: Dictionary, final_witness: bool, inactive_projection: bool = false) -> Dictionary:
 	var actual: Dictionary = row.actual
 	var before: Array = actual.before if cap_case.ends_with("T01") else actual.items
@@ -166,7 +186,10 @@ func cap_witness(row: Dictionary, final_witness: bool, inactive_projection: bool
 	else: cap_checks += 1
 	var inactive := {}
 	if cap_case.ends_with("T03") and not inactive_projection: inactive = await cap_witness(row,false,true)
-	return {"hero":actual.hero, "original_native_line_sha256":row.original_line_sha256, "element":actual.get("element", "Fire"), "level":actual.get("level", 5), "original_and_display_identity":projection, "inactive_projection":inactive_projection, "comparison_opened_by_mouse":open_comparison, "gains_opened_by_mouse":gains_opened, "complete_stage_explanations":semantics, "original_values_and_marginal_delta_visible":numbers, "full_text":content, "scroll":scrolling, "popup_closed_by_mouse":closed, "comparison_closed_by_mouse":comparison_closed, "inactive_context":inactive, "input_traces":input_traces.duplicate(true), "passed":open_comparison and gains_opened and semantics and numbers and scrolling.all_lines_reachable and scrolling.last_line_reachable and scrolling.horizontal_scroll_disabled and int(scrolling.font_size)>=18 and bool(scrolling.wrapped) and closed and comparison_closed and image_saved and (inactive.is_empty() or bool(inactive.get("passed",false)))}
+	var shield := {}
+	if cap_case.ends_with("T03") and not inactive_projection:
+		shield = await cap_shield_preview(actual,final_witness and P.language()=="en" and get_window().size.x==960 and Engine.max_fps==60)
+	return {"hero":actual.hero, "original_native_line_sha256":row.original_line_sha256, "element":actual.get("element", "Fire"), "level":actual.get("level", 5), "original_and_display_identity":projection, "inactive_projection":inactive_projection, "comparison_opened_by_mouse":open_comparison, "gains_opened_by_mouse":gains_opened, "complete_stage_explanations":semantics, "original_values_and_marginal_delta_visible":numbers, "full_text":content, "scroll":scrolling, "popup_closed_by_mouse":closed, "comparison_closed_by_mouse":comparison_closed, "inactive_context":inactive, "shield_preview":shield, "input_traces":input_traces.duplicate(true), "passed":open_comparison and gains_opened and semantics and numbers and scrolling.all_lines_reachable and scrolling.last_line_reachable and scrolling.horizontal_scroll_disabled and int(scrolling.font_size)>=18 and bool(scrolling.wrapped) and closed and comparison_closed and image_saved and (inactive.is_empty() or bool(inactive.get("passed",false))) and (shield.is_empty() or bool(shield.get("passed",false)))}
 
 func _run() -> void:
 	DirAccess.make_dir_recursive_absolute(output)
