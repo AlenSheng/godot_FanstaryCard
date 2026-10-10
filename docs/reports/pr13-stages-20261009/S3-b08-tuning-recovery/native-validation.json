@@ -1,0 +1,89 @@
+{
+  "ok": true,
+  "source_sha": "014a601c9a72a8bd2aec357e56a349914f6613f4",
+  "native_rows": 13824,
+  "case_rows": {
+    "PR13-B08.3-T01": 5184,
+    "PR13-B08.3-T02": 5184,
+    "PR13-B08.3-T03": 3456
+  },
+  "raw_bytes_verified": 77549508,
+  "native_files": [
+    {
+      "path": "PR13-B08.3-T01-Guardian.jsonl.gz",
+      "bytes": 2155467,
+      "sha256": "da129f3ff9af088a1f8fa12b8d9108a2992f9137c873ed1753d7fd1d24a6188d",
+      "rows": 1728
+    },
+    {
+      "path": "PR13-B08.3-T01-Mage.jsonl.gz",
+      "bytes": 2179706,
+      "sha256": "1aedfb58b0f9578a9c5dabb2851c8b6041a623f96d8fef59a9bbe232f949e6bd",
+      "rows": 1728
+    },
+    {
+      "path": "PR13-B08.3-T01-Priest.jsonl.gz",
+      "bytes": 2145972,
+      "sha256": "dce5afec391edda0bed1ae2cbc7d564dc9f50128a723444c3e337d11f2d5f3a2",
+      "rows": 1728
+    },
+    {
+      "path": "PR13-B08.3-T02-Guardian.jsonl.gz",
+      "bytes": 2112540,
+      "sha256": "b43c4bf90626370322bb0c1a5423ec42dea5f5fe033b88a7efd89015ff9c2bca",
+      "rows": 1728
+    },
+    {
+      "path": "PR13-B08.3-T02-Mage.jsonl.gz",
+      "bytes": 2147661,
+      "sha256": "65ded5d63f3727f63924cc8938e9bf1935eba7968cc3155261e64a0ead2d9848",
+      "rows": 1728
+    },
+    {
+      "path": "PR13-B08.3-T02-Priest.jsonl.gz",
+      "bytes": 2113671,
+      "sha256": "1f79df175d4355ef652af861cf37460272139b334e1afa7d2711a2a14d60d363",
+      "rows": 1728
+    },
+    {
+      "path": "PR13-B08.3-T03-Guardian.jsonl.gz",
+      "bytes": 1283662,
+      "sha256": "a6e30ef710aaf1e6c52a25cb8712e5acfd799e5d01fd2ec5347ece6a24150e01",
+      "rows": 1152
+    },
+    {
+      "path": "PR13-B08.3-T03-Mage.jsonl.gz",
+      "bytes": 1303049,
+      "sha256": "6f991438442ab28ab2e77a26883cef05fa593806a2ec07ba47a6930a08cd28b5",
+      "rows": 1152
+    },
+    {
+      "path": "PR13-B08.3-T03-Priest.jsonl.gz",
+      "bytes": 1293727,
+      "sha256": "b48152f5ae413efb70f55e3b6422fd7972983e2ecd9d2381f5c0a896ce529f4f",
+      "rows": 1152
+    }
+  ],
+  "render_witnesses": 96,
+  "incorrect_priest_multiplier_counterexamples": 1998,
+  "corruption_controls": [
+    {
+      "name": "selection-order",
+      "rejected": true
+    },
+    {
+      "name": "heal-merge",
+      "rejected": true
+    },
+    {
+      "name": "tuning-counts-as-counter",
+      "rejected": true
+    },
+    {
+      "name": "room-state-hash",
+      "rejected": true
+    }
+  ],
+  "integration_promotion_allowed": false,
+  "main_acceptance_granted": false
+}

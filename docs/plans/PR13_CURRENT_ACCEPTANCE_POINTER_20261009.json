@@ -16,30 +16,22 @@
   },
   "latest_development": {
     "task_ids": [
-      "PR13-B08.2"
+      "PR13-B08.3"
     ],
-    "implementation_source_sha": "4ae9311db3982b0ec902e1e0cb6daf8eeb931d3d",
-    "native_execution_source_sha": "e371315d283f581819d7090b606dc529f61d26fa",
-    "analysis_source_sha": "b5fe354ba3a7dac2c96a615a3509251a32d8071d",
-    "stage_report": "docs/reports/pr13-stages-20261009/S5-b08-element-marginal/summary.json",
-    "render_stage_report": "docs/reports/pr13-stages-20261009/S3-b08-element-render/summary.json",
-    "development_status": "Native experiment and original 1080 display checks passed; short audio probes clean, long normal shutdown and REST fixture regression remain unaccepted",
-    "native_encounter_rows": 288000,
-    "paired_encounters": 144000,
-    "native_boundary_rows": 9,
-    "native_boundary_events": 30,
-    "actual_render_rows": 54,
-    "rendered_state_checks": 1080,
-    "full_experiment_pending": false,
-    "canonical_render_pending": false,
-    "shutdown_resource_diagnostic_pending": true,
+    "implementation_source_sha": "014a601c9a72a8bd2aec357e56a349914f6613f4",
+    "native_execution_source_sha": "014a601c9a72a8bd2aec357e56a349914f6613f4",
+    "stage_report": "docs/reports/pr13-stages-20261009/S3-b08-tuning-recovery/summary.json",
+    "native_contract_rows": 13824,
+    "client_protocol_preview_rows": 13824,
+    "native_contract_passed": true,
+    "canonical_render_pending": true,
+    "formal_experiment_pending": true,
     "evidence_coverage_ready": false,
+    "integration_dependency": "PR13-B08.2",
+    "integration_promotion_allowed": false,
     "main_acceptance_not_granted": true,
     "raw_data_primary_storage": "local_G_drive",
-    "acceptance_states_unchanged": true,
-    "shutdown_fix_attempt_source_sha": "1f419d0bf1cd6187afbe70c8583e20b93d567658",
-    "shutdown_fix_verified": false,
-    "shutdown_diagnostic_report": "docs/reports/pr13-stages-20261009/S4-b08-element-render-shutdown/lifetime-checkpoint/summary.json"
+    "acceptance_states_unchanged": true
   },
   "development_history": [
     {
@@ -229,6 +221,33 @@
       "canonical_render_pending": true,
       "evidence_coverage_ready": false,
       "main_acceptance_not_granted": true
+    },
+    {
+      "task_ids": [
+        "PR13-B08.2"
+      ],
+      "implementation_source_sha": "4ae9311db3982b0ec902e1e0cb6daf8eeb931d3d",
+      "native_execution_source_sha": "e371315d283f581819d7090b606dc529f61d26fa",
+      "analysis_source_sha": "b5fe354ba3a7dac2c96a615a3509251a32d8071d",
+      "stage_report": "docs/reports/pr13-stages-20261009/S5-b08-element-marginal/summary.json",
+      "render_stage_report": "docs/reports/pr13-stages-20261009/S3-b08-element-render/summary.json",
+      "development_status": "Native experiment and original 1080 display checks passed; short audio probes clean, long normal shutdown and REST fixture regression remain unaccepted",
+      "native_encounter_rows": 288000,
+      "paired_encounters": 144000,
+      "native_boundary_rows": 9,
+      "native_boundary_events": 30,
+      "actual_render_rows": 54,
+      "rendered_state_checks": 1080,
+      "full_experiment_pending": false,
+      "canonical_render_pending": false,
+      "shutdown_resource_diagnostic_pending": true,
+      "evidence_coverage_ready": false,
+      "main_acceptance_not_granted": true,
+      "raw_data_primary_storage": "local_G_drive",
+      "acceptance_states_unchanged": true,
+      "shutdown_fix_attempt_source_sha": "1f419d0bf1cd6187afbe70c8583e20b93d567658",
+      "shutdown_fix_verified": false,
+      "shutdown_diagnostic_report": "docs/reports/pr13-stages-20261009/S4-b08-element-render-shutdown/lifetime-checkpoint/summary.json"
     }
   ],
   "evidence_storage_policy": "docs/plans/PR13_EVIDENCE_STORAGE_POLICY_20261010.json",
