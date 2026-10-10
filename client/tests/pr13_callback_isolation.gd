@@ -52,14 +52,26 @@ func _drain() -> void:
 	for _frame in 4: await process_frame
 	checks.requests_completed_within_fixed_budget = game.gateway._pending_http.is_empty()
 
-func _snapshot(match_id: String, room_id := "", phase := "Exploring") -> void:
+func _snapshot(match_id: String, room_id := "", phase := "Exploring", promote := true) -> void:
 	sequence += 1
 	var proto := Proto.new()
-	var snapshot := {"match_id": match_id, "room_id": room_id if not room_id.is_empty() else "room-" + match_id,
+	var next_room_id: String = room_id if not room_id.is_empty() else "room-" + match_id
+	if promote:
+		# This fixture supplies a new verified ticket before delivering its
+		# snapshot. An unrelated snapshot alone cannot promote M to N. Keep the
+		# store's epoch and recovery state intact so adoption must invalidate them.
+		if game.gateway.current_match_id != match_id or game.gateway.room_id != next_room_id:
+			game.gateway.room_id = ""
+			game.gateway.room_revision = 0
+		game.gateway.bind_prelaunch_ticket(match_id, next_room_id,
+			int(Time.get_unix_time_from_system() * 1000.0) + 30000, game._room_context_epoch)
+	var snapshot := {"match_id": match_id, "room_id": next_room_id,
 		"room_revision": 8, "config_version": game.CATALOG.data.version,
 		"player": {"player_id": game.gateway.authenticated_user_id, "phase": phase, "hand": []}}
 	game.gateway._receive(proto.encode("ServerEnvelope", {"protocol_version": 1, "type": "room.snapshot", "sequence": sequence,
 		"room_revision": 8, "payload": proto.encode("RoomSnapshotEvent", snapshot)}))
+	if promote:
+		checks["authoritative_snapshot_" + str(sequence)] = game.room.get("match_id", "") == match_id and game.gateway.room_id == next_room_id
 
 func _origin() -> Dictionary: return game.gateway.capture_context()
 
@@ -172,7 +184,11 @@ func _run() -> void:
 	await _begin("PR13-A03.2-T01")
 	_snapshot(M)
 	origin = _origin()
+	_snapshot(N, "", "Exploring", false)
+	checks.unannounced_N_snapshot_preserves_M = game.room.get("match_id", "") == M and game.gateway.room_id == "room-" + M
 	_snapshot(N)
+	_snapshot(M, "", "Exploring", false)
+	checks.late_M_snapshot_preserves_N = game.room.get("match_id", "") == N and game.gateway.room_id == "room-" + N
 	_error(origin)
 	await _drain()
 	_state("old_M_error_after_authoritative_N_same_session")
