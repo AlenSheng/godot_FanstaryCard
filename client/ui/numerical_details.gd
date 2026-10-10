@@ -23,11 +23,19 @@ const TEXT := {
 	"ja": {"title":"実際の数値変化", "hint":"装備のみの予測。最終結果はサーバーで確定。軽減は盾職のみ。", "upgrade":"強化前 → 強化後（装備時）", "compare":"現在の装備 → 交換後", "columns":"属性：理論値 / 有効値 / 上限超過；有効値の変化", "interval":"ドロー間隔（秒・短いほど速い）", "inactive":"未発動", "weapon":"専用盾の端数：%d / 10", "unsupported":"赤装備固有効果は未開放のため計算しません。"},
 	"ko": {"title":"실제 수치 변화", "hint":"장비만의 예상치이며 서버가 최종 결정합니다. 피해 감소는 수호자에게만 적용됩니다.", "upgrade":"강화 전 → 강화 후 (장착 가정)", "compare":"현재 장비 → 교체 후", "columns":"능력치: 이론 / 유효 / 상한 초과; 유효 변화", "interval":"드로우 간격 (초, 낮을수록 빠름)", "inactive":"비활성", "weapon":"전용 보호막 잔여: %d / 10", "unsupported":"빨간 장비 고유 효과는 아직 계산하지 않습니다."}
 }
+const CAP_TEXT := {
+	"zh-CN": {"not_applicable":"此职业不适用（不是超过上限）", "inactive_affix":"套装未激活（不是超过上限）", "resistance_stage":"元素抗性最高 60%；超过上限的部分不会提高生效抗性。", "draw_stage":"这里只显示装备抽牌间隔。战斗中先合并装备和临时加速，再限制到 1.8–6 秒；PVE 抽牌阻断转加速在限制后将间隔减半，结束后恢复。", "shield_stage":"护盾上限是职业基础生命的一半；请求护盾、实际获得和溢出分别统计。"},
+	"zh-TW": {"not_applicable":"此職業不適用（不是超過上限）", "inactive_affix":"套裝未啟動（不是超過上限）", "resistance_stage":"元素抗性最高 60%；超過上限的部分不會提高生效抗性。", "draw_stage":"這裡只顯示裝備抽牌間隔。戰鬥中先合併裝備和暫時加速，再限制到 1.8–6 秒；PVE 抽牌阻斷轉加速在限制後將間隔減半，結束後恢復。", "shield_stage":"護盾上限是職業基礎生命的一半；請求護盾、實際獲得和溢出分別統計。"},
+	"en": {"not_applicable":"Not applicable to this class (not capped excess)", "inactive_affix":"Set inactive (not capped excess)", "resistance_stage":"Element resistance is capped at 60%; excess adds no effective resistance.", "draw_stage":"This panel shows equipment-only draw intervals. Combat combines equipment and temporary speed, then clamps to 1.8–6 seconds. PVE draw-block conversion halves the interval after that clamp and expires normally.", "shield_stage":"Shield is capped at half the class base health. Requested, effective and overflow shield are counted separately."},
+	"ja": {"not_applicable":"このクラスには適用されません（上限超過ではありません）", "inactive_affix":"セット未発動（上限超過ではありません）", "resistance_stage":"属性耐性の上限は60%。超過分で有効耐性は増えません。", "draw_stage":"装備のみのドロー間隔を表示。戦闘では装備と一時加速を合わせて1.8〜6秒に制限し、その後PVEのドロー阻害変換で間隔を半減します。終了すると元に戻ります。", "shield_stage":"シールド上限はクラス基本HPの半分。要求量・実効量・超過量は別々に記録します。"},
+	"ko": {"not_applicable":"이 직업에는 적용되지 않음 (상한 초과가 아님)", "inactive_affix":"세트 비활성 (상한 초과가 아님)", "resistance_stage":"속성 저항 상한은 60%이며 초과분은 유효 저항을 늘리지 않습니다.", "draw_stage":"장비만의 드로우 간격입니다. 전투에서는 장비와 임시 가속을 합쳐 1.8~6초로 제한한 뒤 PVE 드로우 차단 변환이 간격을 절반으로 줄입니다. 종료되면 복원됩니다.", "shield_stage":"보호막 상한은 직업 기본 체력의 절반입니다. 요청량, 유효량, 초과량을 따로 기록합니다."}
+}
 
 static func text(key: String) -> String:
 	var lang: String = P.language()
 	var words: Dictionary = TEXT.get(lang, TEXT.get(lang.get_slice("-", 0), TEXT.en))
-	return str(words.get(key, key))
+	var cap_words: Dictionary = CAP_TEXT.get(lang, CAP_TEXT.get(lang.get_slice("-", 0), CAP_TEXT.en))
+	return str(words.get(key, cap_words.get(key, key)))
 
 # All values are an equipment-only view; temporary acceleration is intentionally excluded.
 static func inspect(loadout: Array, hero_class: String) -> Dictionary:
@@ -53,8 +61,10 @@ static func inspect(loadout: Array, hero_class: String) -> Dictionary:
 		for field in contributions:
 			var potential: float = floorf(float(contributions[field]) * 100.0 * multiple) / 100.0
 			var effective: float = float(state.values.get(field, 0.0))
-			if field == "bulwark_reduction_percent" and hero_class != "Guardian": effective = 0.0
-			result[field] = {"raw":potential, "effective":effective, "excess":maxf(0, potential - effective), "active":state.active}
+			var applicable: bool = field != "bulwark_reduction_percent" or hero_class == "Guardian"
+			if not applicable: effective = 0.0
+			var status := "NotApplicable" if not applicable else ("Active" if bool(state.active) else "Inactive")
+			result[field] = {"raw":potential, "effective":effective, "excess":maxf(0, potential - effective) if applicable and bool(state.active) else 0.0, "active":state.active, "applicable":applicable, "status":status, "inactive_amount":potential if applicable and not bool(state.active) else 0.0, "not_applicable_amount":potential if not applicable else 0.0}
 	return result
 
 static func show_compare(host: Control, loadout: Array, selected: Dictionary, upgrade: bool = false) -> void:
@@ -65,6 +75,10 @@ static func show_compare(host: Control, loadout: Array, selected: Dictionary, up
 		gear["level"] = mini(5, int(gear.get("level", 0)) + 1)
 	var after: Array = Model.replace_slot(loadout, next)
 	var lines := PackedStringArray([text("upgrade") if upgrade else text("compare"), text("hint"), text("columns"), ""])
+	lines.append(text("resistance_stage"))
+	lines.append(text("draw_stage"))
+	lines.append(text("shield_stage"))
+	lines.append("")
 	var unsupported := false
 	for item in before + after:
 		if str(Model.gear(item).get("quality", "")) == "Red": unsupported = true
@@ -85,6 +99,8 @@ static func show_compare(host: Control, loadout: Array, selected: Dictionary, up
 			var scale: float = 1.0 if key == "interval_seconds" else 100.0
 			var label: String = text("interval") if key == "interval_seconds" else P.word(str(key))
 			lines.append("%s\n  %.2f / %.2f / %.2f → %.2f / %.2f / %.2f  (%+.2f)" % [label, float(a.raw)*scale, float(a.effective)*scale, float(a.excess)*scale, float(b.raw)*scale, float(b.effective)*scale, float(b.excess)*scale, (float(b.effective)-float(a.effective))*scale])
+			if str(b.get("status", "Active")) == "NotApplicable": lines.append(text("not_applicable"))
+			elif str(b.get("status", "Active")) == "Inactive": lines.append(text("inactive_affix"))
 	show_lines(host, lines)
 
 static func show_remainder(host: Control) -> void:
