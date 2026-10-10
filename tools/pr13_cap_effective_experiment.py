@@ -10,6 +10,7 @@ from pathlib import Path
 
 TICKS=10_000_000
 ARMS=('BaselinePurple','SingleOrangeHead')
+ELEMENTS={'Fire':1,'Wood':2,'Earth':3,'Metal':4,'Water':5}
 def require(ok,message):
     if not ok:raise ValueError(message)
 def near(a,b):return math.isfinite(a) and math.isfinite(b) and abs(a-b)<1e-8
@@ -64,7 +65,7 @@ def validate(directory,source,controls=False):
     before,after=m['equipment'];require(len(before)==len(after)==5 and len({i['Slot'] for i in before})==5 and all(a['Quality']=='Purple' and b['Quality']==('Orange' if i==0 else 'Purple') and {k:v for k,v in a.items() if k!='Quality'}=={k:v for k,v in b.items() if k!='Quality'} for i,(a,b) in enumerate(zip(before,after))),'Legal one-quality equipment pair differs')
     raw_resistance=[]
     for index,items in enumerate(m['equipment']):
-        require(all(i['Level']==m['equipment_level'] and i['Element']==m['element'] and i['EffectAffix']=='Bulwark' and i['SecondaryTrait']=='DrawInterval' and i['UniqueAffix'] is None for i in items),'Frozen equipment fields differ')
+        require(all(i['Level']==m['equipment_level'] and i['Element']==ELEMENTS[m['element']] and i['EffectAffix']=='Bulwark' and i['SecondaryTrait']=='DrawInterval' and i['UniqueAffix'] is None for i in items),'Frozen equipment fields differ')
         resistance=sum(m['quality_data'][i['Quality']]['Resistance']+i['Level']*m['quality_data'][i['Quality']]['ResistancePerLevel'] for i in items);raw_resistance.append(resistance)
         draw=sum(m['quality_data'][i['Quality']]['DrawInterval']+i['Level']*m['quality_data'][i['Quality']]['DrawIntervalPerLevel'] for i in items)
         require(near(resistance,m['raw_resistance'][index]) and near(draw,m['profiles'][index]['DrawIntervalModifier']),'Original legal equipment contributions differ')
