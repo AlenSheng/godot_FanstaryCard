@@ -1,0 +1,56 @@
+{
+  "ok": true,
+  "analysis_source_sha": "49ba3183c247282083f558fd3c3f528d2d476fb3",
+  "native_source_sha": "3a984bc64f5346b7f1d134926deec54be928a060",
+  "source_hashes": {
+    "pr13_tuning_recovery_statistics_input.py": "0898bd66e15f2e9551189deb7289a85aea78947e0312600062c80738d906a528",
+    "pr13_tuning_recovery_report.py": "5e5d393dcc7a5014f1fa110a4503d73db9eb552fe789f874e2daac400a988033",
+    "pr13_tuning_recovery_experiment.py": "52d800a28dfbc67772956aa34bb5122d8b6ee353e4a46b06da5624d158a34e30",
+    "pr13_candidate_review.py": "24c60c5ea1bc041328bb2793fd57272a906a7d6526bcebf9745c23a67fac2866",
+    "pr13_element_marginal_report.py": "23382c6545f2170b619d7a07466652f8cc4a25219c8038a366053938cb605e58",
+    "pr13_element_marginals.py": "9ea1b159571ccdb3dd4307ac861a674a93e1888d4e70aac6f8aba33aef45f853"
+  },
+  "actual_cloud_controls": {
+    "ok": true,
+    "source_sha": "3a984bc64f5346b7f1d134926deec54be928a060",
+    "encounters": 2000,
+    "actual_events": 10850,
+    "projection": {
+      "schema": "cloud_validated_tuning_metrics_v1",
+      "source_sha": "3a984bc64f5346b7f1d134926deec54be928a060",
+      "unit": "Mage-O1-ET-WOOD-G-B0",
+      "original_archive_sha256": "3e0cf63a7b712fe066c30c26fee54934a91a9c78e6fb025de1ba4d948d5fad02",
+      "original_archive_bytes": 2709941,
+      "original_raw_encounter_sha256": "255e0999e9663ab723e559057d7674ea7117652e3239f29e12f7062f065cd26d",
+      "original_raw_encounter_bytes": 2670754,
+      "rows": 2000,
+      "projection_raw_bytes": 552811,
+      "projection_raw_sha256": "c679b1499837c2aa3129fae4e5181e294841684920aa15beb6af677bda03c478",
+      "projection_stored_bytes": 14137,
+      "projection_stored_sha256": "0d7accc3027aad9ece138a08acb7476ce98b583f381083ede08c22d06e833111",
+      "original_casts_preserved_on_G": true,
+      "full_native_validation_reperformed_in_projection": false
+    },
+    "negative_controls": [
+      {
+        "name": "wrong-archive-chain",
+        "rejected": true
+      },
+      {
+        "name": "wrong-source",
+        "rejected": true
+      },
+      {
+        "name": "duplicate-paired-seed",
+        "rejected": true
+      },
+      {
+        "name": "missing-original-encounter",
+        "rejected": true
+      }
+    ]
+  },
+  "raw_events_reuploaded": false,
+  "full_statistics_pending": true,
+  "main_acceptance_granted": false
+}
