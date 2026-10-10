@@ -111,10 +111,14 @@ func scroll_details(scroll: ScrollContainer, label: Label) -> Dictionary:
 		wheel.global_position = point
 		get_viewport().push_input(wheel,true)
 		await get_tree().process_frame
+		var wheel_release: InputEventMouseButton = wheel.duplicate()
+		wheel_release.pressed = false
+		get_viewport().push_input(wheel_release,true)
+		await get_tree().process_frame
 	var seen := {}
 	for sample in samples:
 		for index in sample.fully_visible_lines: seen[index] = true
-	return {"actual_wheel_inputs":12,"samples":samples,"line_count":label.get_line_count(),"all_lines_reachable":seen.size()==label.get_line_count(),"last_line_reachable":seen.has(label.get_line_count()-1)}
+	return {"actual_wheel_inputs":12,"actual_wheel_press_release_events":24,"samples":samples,"line_count":label.get_line_count(),"all_lines_reachable":seen.size()==label.get_line_count(),"last_line_reachable":seen.has(label.get_line_count()-1)}
 
 func card_details_check(id: String) -> Dictionary:
 	Game.room = {}
