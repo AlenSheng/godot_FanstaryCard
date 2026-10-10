@@ -1,0 +1,38 @@
+{
+  "ok": true,
+  "controls": [
+    {
+      "fault": "missing-scenario",
+      "rejected": true,
+      "reason": "Incomplete native scenarios"
+    },
+    {
+      "fault": "duplicate-pair",
+      "rejected": true,
+      "reason": "Duplicate or outside frozen seed unit"
+    },
+    {
+      "fault": "changed-cap-golden",
+      "rejected": true,
+      "reason": "Cap/zero golden outcome differs"
+    },
+    {
+      "fault": "changed-pvp-frozen-return",
+      "rejected": true,
+      "reason": "Frozen combat/PVE recovery differs"
+    },
+    {
+      "fault": "preview-state-mutation",
+      "rejected": true,
+      "reason": "Preview full-state mutation or missing preview"
+    },
+    {
+      "fault": "gzip-crc-corruption",
+      "rejected": true,
+      "reason": "Invalid or truncated compressed native evidence"
+    }
+  ],
+  "actual_native_parent_rows": 36,
+  "canonical_experiment_acceptance": false,
+  "verified_at": 1791619266.993088
+}
