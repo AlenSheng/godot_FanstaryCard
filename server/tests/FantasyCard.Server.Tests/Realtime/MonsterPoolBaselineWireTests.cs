@@ -54,7 +54,18 @@ public sealed class MonsterPoolBaselineWireTests
             else { Assert.Null(payload.Player.MonsterPool); Assert.DoesNotContain("monster.choose", payload.AllowedActions); }
             var message = new ServerEvent("room.snapshot", "pool-baseline", payload, "pool-event", 1, DateTimeOffset.UnixEpoch);
             var wire = RealtimeProtobufCodec.EncodeServer(message); var decoded = RealtimeProtobufCodec.DecodeServer(wire);
-            Assert.Equivalent(message, decoded, strict: true); Assert.True(wire.Length <= 16 * 1024);
+            // Empty optional repeated fields are omitted by Protobuf and may
+            // decode as null. Check the pool contract and canonical wire bytes
+            // without imposing a new null-versus-empty rule on unrelated fields.
+            var roundtrip = Assert.IsType<RoomSnapshotEventPayload>(decoded.Payload);
+            Assert.Equal(wire, RealtimeProtobufCodec.EncodeServer(decoded));
+            Assert.Equal(payload.Player.PlayerId, roundtrip.Player.PlayerId);
+            Assert.Equal(payload.Player.Hand, roundtrip.Player.Hand);
+            Assert.Equal(payload.Player.LibraryCount, roundtrip.Player.LibraryCount);
+            Assert.Equal(payload.Player.DiscardCount, roundtrip.Player.DiscardCount);
+            Assert.Equivalent(payload.Player.MonsterPool, roundtrip.Player.MonsterPool, strict: true);
+            Assert.Equal(payload.AllowedActions, roundtrip.AllowedActions);
+            Assert.True(wire.Length <= 16 * 1024);
             var row = new { case_id = optional ? "PR13-B09.1-T02" : "PR13-B09.1-T01", source_sha = Environment.GetEnvironmentVariable("FANTASYCARD_PR13_SOURCE_SHA"),
                 seed, hero = hero.ToString(), optional, legal_deck = cards, actual_actor = playerId, actual_battle = pve.BattleId, actual_killed_monster = target.MonsterId,
                 actual_resolution = result, after_state = room.Capture(), original_projection = payload, response_wire = Convert.ToBase64String(wire), wire_bytes = wire.Length,
