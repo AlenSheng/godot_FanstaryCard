@@ -9,8 +9,10 @@ import subprocess
 import time
 try:
     from .pr13_review_policy import execution_state, HUMAN_TASKS
+    from .pr13_execution_policy import apply_execution_policy, decision_source
 except ImportError:
     from pr13_review_policy import execution_state, HUMAN_TASKS
+    from pr13_execution_policy import apply_execution_policy, decision_source
 
 ROOT=Path(__file__).resolve().parents[1]
 PLAN=ROOT/'docs/plans/PR13_ACCEPTANCE_DETAILS_20260930.json'
@@ -87,6 +89,7 @@ def main():
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--main-decisions',type=Path)
     parser.add_argument('--scope-decision',type=Path,help='Explicit current user scope decision; excludes human participation only')
+    parser.add_argument('--execution-decision',type=Path,help='Explicit development-first execution deferral; does not change acceptance')
     args=parser.parse_args();output=args.output.resolve();output.mkdir(parents=True,exist_ok=True)
     plan=json.loads(PLAN.read_text(encoding='utf8'));support=json.loads(args.support.read_text(encoding='utf8'))
     human_scope=review_scope(args.scope_decision)
@@ -157,6 +160,10 @@ def main():
         apply_main_decisions(tasks,json.loads(args.main_decisions.read_text(encoding='utf8')),head)
     gates=[dict(gate_id=g['id'],name=g['name'],state='NotAccepted',pass_criteria=g['pass'],
                 unfinished=[t['task_id'] for t in tasks if t['task_id'] in g['tasks'] and t['state'] not in ('Accepted','NoChangeWithEvidence')]) for g in plan['gates']]
+    execution_decision=execution_source=None
+    if args.execution_decision:
+        execution_decision,execution_source=decision_source(args.execution_decision,ROOT)
+        files.add(args.execution_decision.resolve())
     manifest=[]
     for file in sorted(files):
         manifest.append(dict(path=str(file.relative_to(ROOT)).replace('\\','/'),bytes=file.stat().st_size,sha256=digest(file)))
@@ -170,6 +177,9 @@ def main():
             '机器人模拟仅作补充；真人验收仍待补。')),
         delivery_policy=support.get('delivery_policy', {'state': 'NotRecorded'}),
         production_runtime=support.get('production_runtime'),session_closeout=support.get('session_closeout'),tasks=tasks,gates=gates)
+    if execution_decision:
+        register=apply_execution_policy(register,execution_decision,execution_source)
+        tasks=register['tasks']
     (output/'register.json').write_text(json.dumps(register,ensure_ascii=False,indent=2),encoding='utf8')
     (output/'cases.jsonl').write_text(''.join(json.dumps(c,ensure_ascii=False,allow_nan=False)+'\n' for c in cases),encoding='utf8')
     (output/'manifest.json').write_text(json.dumps(dict(source_sha=head,files=manifest),indent=2),encoding='utf8')
@@ -180,7 +190,9 @@ def main():
            '| 子项 | 状态 | 已通过用例 | 后续动作 |','| --- | --- | ---: | --- |']
     if support.get('session_closeout'):
         lines[2:2]=['本轮已按用户要求结束。未完成项保留，不再自动执行。详见 [收尾报告](CLOSEOUT.md) 与 [完整任务清单](TASK_CHECKLIST.md)。','']
-    for t in tasks:lines.append(f"| {t['task_id']} {t['title']} | {t['state']} | {t['case_counts'].get('Passed',0)}/3 | {t['next_action'].replace('|','/')} |")
+    if execution_decision:
+        lines[2:2]=['当前按用户决定优先继续开发。环境相关复测暂缓，原失败、缺失层和验收状态保留；详情见 register.json 的 execution_policy。','']
+    for t in tasks:lines.append(f"| {t['task_id']} {t['title']} | {t['state']} | {t['case_counts'].get('Passed',0)}/3 | {t.get('execution_next_action',t['next_action']).replace('|','/')} |")
     lines+=['','## 未达验收门槛','']
     for observation in support.get('observations',[]):
         lines.append(f"- {observation['task_id']}：{observation.get('reason',observation.get('next_action'))}")

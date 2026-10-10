@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "authority": "human",
+  "date": "2026-10-10",
+  "mode": "development_first",
+  "user_steering": [
+    "目前先跳过失败部分，测试机网络环境和配置有可能不支持严格测试",
+    "先进行后续任务开发"
+  ],
+  "deferred_task_ids": [
+    "LOAD-10.2",
+    "PR13-A09.2"
+  ],
+  "deferred_profiles": [
+    "CAPACITY"
+  ],
+  "reason": "用户要求先推进后续开发；当前测试机网络和配置可能不适合严格多局与容量验收。",
+  "environment_cause_verified": false,
+  "resume_condition": "用户恢复相关测试，或在适当环境下重新登记执行条件后复测。",
+  "preserve_failed_results": true,
+  "preserve_missing_profiles": true,
+  "acceptance_waiver": false,
+  "human_experience_in_scope": false,
+  "production_candidates_default_off": true,
+  "delivery": "各阶段本地总结后直接上传 release"
+}
