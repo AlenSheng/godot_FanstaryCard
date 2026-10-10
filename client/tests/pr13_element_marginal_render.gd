@@ -15,6 +15,7 @@ func observe_marginal(vector: Dictionary, identity: String, tag: String) -> Dict
 	var combat: Dictionary = player.Combat
 	var target_id: String = player.Pve.Monsters[0].MonsterId
 	await project_room(room, vector, target_id)
+	Game.room.player.hero_class = vector.hero
 	Game.room.player.library_count = combat.Deck.Library.size()
 	Game.room.player.discard_count = combat.Deck.Discard.size()
 	$UI._render()
@@ -32,8 +33,8 @@ func observe_marginal(vector: Dictionary, identity: String, tag: String) -> Dict
 	for index in range(5):
 		var empty: Control = $UI._reference.get_node_or_null("EmptyHandSlot_%d" % index)
 		slots_match = slots_match and ((empty != null and empty.is_visible_in_tree()) if index >= actual_hand.size() else empty == null)
-	var health_matches := visible_text("%s / %s" % [combat.Hp, combat.MaximumHp])
-	var shield_matches := visible_text(P.localized("exploration_shield_amount") % combat.Shield) if int(combat.Shield) > 0 else true
+	var health_matches := visible_text("%s / %s" % [int(combat.Hp), int(combat.MaximumHp)])
+	var shield_matches := visible_text(P.localized("exploration_shield_amount") % int(combat.Shield)) if int(combat.Shield) > 0 else true
 	var pool_matches := visible_text(P.localized("exploration_library_discard") % [combat.Deck.Library.size(), combat.Deck.Discard.size()])
 	var control := inspect_label("MonsterStatus_0", milliseconds(player.Pve.Monsters[0].StunRemaining))
 	var unchanged: bool = before == JSON.stringify(Game.room)
