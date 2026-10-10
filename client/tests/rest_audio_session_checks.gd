@@ -17,6 +17,7 @@ func run_test(host: Control) -> Dictionary:
 	var original_ready: bool = host._codex_ready
 	var original_mutating: bool = host._codex_mutating
 	var original_screen: String = host.screen
+	var original_deck: Array = host.deck_draft.duplicate()
 	var original_sound := {"muted": Sound.muted, "volume": Sound.volume, "persist": Sound.persist_settings}
 	var fake := SessionGateway.new()
 	fake.persist_session = false
@@ -35,10 +36,14 @@ func run_test(host: Control) -> Dictionary:
 	var listener := func(cue): heard.append(cue)
 	Sound.cue_started.connect(listener)
 	for action in ["card_upgrade", "deck_save", "purchase", "deck_refresh_switch"]:
+		host.deck_draft = []
+		for index in range(1, 14): host.deck_draft.append("C%02d" % index)
+		var prefix: String = {"Mage":"MAG", "Priest":"PRI", "Guardian":"GUA"}.get(Game.hero_class, "MAG")
+		for index in range(1, 8): host.deck_draft.append("%s-%02d" % [prefix, index])
 		fake.paths.clear()
 		fake.responses = [{"result": {"ok": false, "status": 401, "stale_session": true}}]
 		if action == "deck_refresh_switch":
-			fake.responses = [{"result": {"ok": true, "status": 200, "data": {}}}, {"advance_generation": true, "result": {"ok": false, "status": 401, "stale_session": true}}]
+			fake.responses = [{"result": {"ok": false, "status": 409}}, {"advance_generation": true, "result": {"ok": false, "status": 401, "stale_session": true}}]
 		Game.busy = false
 		host._codex_mutating = false
 		heard.clear()
@@ -49,8 +54,9 @@ func run_test(host: Control) -> Dictionary:
 			"purchase": await host._mutate("/shop/purchases", HTTPClient.METHOD_POST, {"productId": "fixture", "quantity": 1})
 		checks["Stale REST audio stays silent: " + action] = heard.is_empty()
 		var expected: Array = ["/api/v1/cards/C01/upgrade"] if action == "card_upgrade" else (["/api/v1/shop/purchases"] if action == "purchase" else ["/api/v1/decks/" + Game.hero_class])
-		if action == "deck_refresh_switch": expected.append("/api/v1/bootstrap")
+		if action == "deck_refresh_switch": expected.append("/api/v1/decks/")
 		checks["Stale REST stops follow-up requests: " + action] = fake.paths == expected
+		checks["Stale REST scenario reaches supplied response: " + action] = fake.responses.is_empty()
 	Game.busy = false
 	host._codex_mutating = false
 	host.owned = [{"cardId": "C01", "craftCost": 1, "copyCount": 1, "level": 0, "version": 1, "currencyKind": "WarriorSoul", "upgradeCost": 5, "upgradeCopyCost": 0, "canUpgrade": true}]
@@ -72,6 +78,7 @@ func run_test(host: Control) -> Dictionary:
 	host._codex_ready = original_ready
 	host._codex_mutating = original_mutating
 	host.screen = original_screen
+	host.deck_draft = original_deck
 	Sound.set_volume(float(original_sound.volume), false)
 	Sound.set_muted(bool(original_sound.muted))
 	Sound.persist_settings = bool(original_sound.persist)
