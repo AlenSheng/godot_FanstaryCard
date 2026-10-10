@@ -1,6 +1,7 @@
 extends "res://tests/pr13_element_marginal_render.gd"
 
 @export var tuning_case := "PR13-B08.3-T01"
+@export var diagnostic_one_row := false
 const TUNING_VECTORS := "res://tests/data/tuning_recovery_native.json"
 const NATIVE_SOURCE := "014a601c9a72a8bd2aec357e56a349914f6613f4"
 const EquipmentDetails = preload("res://ui/equipment_details.gd")
@@ -145,11 +146,16 @@ func card_details_check(id: String) -> Dictionary:
 		image_saved = get_viewport().get_texture().get_image().save_png(output+"/"+tuning_case+"-"+id+"-details.png")==OK
 	var close: Button = $UI._reference.find_child("CloseCardDetails",true,false) as Button
 	var closed := false
+	var close_route := ""
+	var close_disabled := true
+	var mutating: bool = $UI._codex_mutating
 	if close != null:
-		await click_viewport(close.get_global_transform_with_canvas()*(close.size*.5))
+		close_disabled = close.disabled
+		close_route = await click_viewport(close.get_global_transform_with_canvas()*(close.size*.5))
+		await get_tree().process_frame
 		await get_tree().process_frame
 		closed = $UI._codex_card.is_empty()
-	return {"card_id":id,"opened_by_mouse":opened,"complete_semantics":semantics,"actual_full_text":full_text,"readable_wrapped_scroll_area":readable,"scrolling":accessibility,"closed_by_mouse":closed,"passed":opened and semantics and readable and accessibility.all_lines_reachable and accessibility.last_line_reachable and closed and image_saved}
+	return {"card_id":id,"opened_by_mouse":opened,"complete_semantics":semantics,"actual_full_text":full_text,"readable_wrapped_scroll_area":readable,"scrolling":accessibility,"close_button_disabled":close_disabled,"mutating":mutating,"close_hovered_control":close_route,"remaining_selected_detail":$UI._codex_card,"closed_by_mouse":closed,"passed":opened and semantics and readable and accessibility.all_lines_reachable and accessibility.last_line_reachable and closed and image_saved}
 
 func _run() -> void:
 	DirAccess.make_dir_recursive_absolute(output)
@@ -169,11 +175,14 @@ func _run() -> void:
 	Game.gateway = gateway
 	var old_language := P.language()
 	get_window().mode = Window.MODE_WINDOWED
-	for language in ["zh-CN","en"]:
+	var languages: Array = ["en"] if diagnostic_one_row else ["zh-CN","en"]
+	var sizes: Array = [Vector2i(960,540)] if diagnostic_one_row else [Vector2i(1920,1080),Vector2i(1280,720),Vector2i(960,540)]
+	var caps: Array = [60] if diagnostic_one_row else [30,60,144]
+	for language in languages:
 		P.set_language(language)
-		for size in [Vector2i(1920,1080),Vector2i(1280,720),Vector2i(960,540)]:
+		for size in sizes:
 			get_window().size = size
-			for fps in [30,60,144]:
+			for fps in caps:
 				Engine.max_fps = fps
 				var witnesses: Array = []
 				for row in rows: witnesses.append(await render_witness(row))
@@ -183,7 +192,7 @@ func _run() -> void:
 	P.set_language(old_language)
 	Game.gateway = old_gateway
 	gateway.free()
-	var result := {"ok":case_verdicts.get(tuning_case,false) and observations.size()==18 and DisplayServer.get_name()!="headless","observations":observations,"display_driver":DisplayServer.get_name(),"adapter":RenderingServer.get_video_adapter_name(),"native_witness_renders":tuning_checks,"case_id":tuning_case,"scope":"Original native room/router witnesses and real mouse input; software GPU, no LIVE/hardware FPS/human claim."}
+	var result := {"ok":case_verdicts.get(tuning_case,false) and observations.size()==(1 if diagnostic_one_row else 18) and DisplayServer.get_name()!="headless","diagnostic_only":diagnostic_one_row,"observations":observations,"display_driver":DisplayServer.get_name(),"adapter":RenderingServer.get_video_adapter_name(),"native_witness_renders":tuning_checks,"case_id":tuning_case,"scope":"Original native room/router witnesses and real mouse input; software GPU, no LIVE/hardware FPS/human claim."}
 	FileAccess.open(output+"/native-result.json",FileAccess.WRITE).store_string(JSON.stringify(result))
 	Sound.set_process(false)
 	Sound.stop_all()
