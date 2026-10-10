@@ -16,19 +16,17 @@
   },
   "latest_development": {
     "task_ids": [
-      "PR13-B09.1"
+      "PR13-B09.2"
     ],
-    "implementation_source_sha": "feeb8ac2ee517945f235d8f5571f79cb713948f5",
-    "domain_execution_source_sha": "26aa9cd31fe8fa5fd016cb6efc8972039cd5f30d",
-    "wire_execution_source_sha": "feeb8ac2ee517945f235d8f5571f79cb713948f5",
-    "stage_report": "docs/reports/pr13-stages-20261009/S3-b09-pool-baseline/summary.json",
-    "native_offline_and_original_wire_checks_passed": true,
-    "raw_original_rows": 27567,
+    "implementation_source_sha": "0d40967eec730b2cbf266625cab362cb1fd6be2a",
+    "stage_report": "docs/reports/pr13-stages-20261009/S3-b09-pool-capacity/summary.json",
+    "native_domain_checks_passed": 47,
+    "capacity_original_rows": 279,
+    "Godot_numerical_pending": true,
     "canonical_render_pending": true,
     "formal_experiment_pending": true,
     "integration_dependencies": [
-      "PR13-B02.4",
-      "PR13-B03.4"
+      "PR13-B09.1"
     ],
     "integration_promotion_allowed": false,
     "main_acceptance_not_granted": true,
@@ -352,8 +350,29 @@
       "experiment_pilot_ticks": 583820,
       "full_experiment_state": "Running",
       "full_expected_encounters": 720000
+    },
+    {
+      "task_ids": [
+        "PR13-B09.1"
+      ],
+      "implementation_source_sha": "feeb8ac2ee517945f235d8f5571f79cb713948f5",
+      "domain_execution_source_sha": "26aa9cd31fe8fa5fd016cb6efc8972039cd5f30d",
+      "wire_execution_source_sha": "feeb8ac2ee517945f235d8f5571f79cb713948f5",
+      "stage_report": "docs/reports/pr13-stages-20261009/S3-b09-pool-baseline/summary.json",
+      "native_offline_and_original_wire_checks_passed": true,
+      "raw_original_rows": 27567,
+      "canonical_render_pending": true,
+      "formal_experiment_pending": true,
+      "integration_dependencies": [
+        "PR13-B02.4",
+        "PR13-B03.4"
+      ],
+      "integration_promotion_allowed": false,
+      "main_acceptance_not_granted": true,
+      "acceptance_states_unchanged": true,
+      "raw_data_primary_storage": "local_G_drive"
     }
   ],
   "evidence_storage_policy": "docs/plans/PR13_EVIDENCE_STORAGE_POLICY_20261010.json",
-  "latest_storage_checkpoint": "docs/reports/pr13-stages-20261009/evidence-storage-20261010/checkpoint-3/summary.json"
+  "latest_storage_checkpoint": "docs/reports/pr13-stages-20261009/evidence-storage-20261010/checkpoint-6/summary.json"
 }
