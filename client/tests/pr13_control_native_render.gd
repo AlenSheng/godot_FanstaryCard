@@ -2,6 +2,10 @@ extends "res://tests/pr13_guardian_impact_render.gd"
 
 @export var canonical_case := "PR13-B08.1-T01"
 const NATIVE_VECTORS := "res://tests/data/control_contract_native.json"
+const STATUS_GOLDEN := {
+	"zh-CN":{"battle_status_stun":"眩晕 %s秒","battle_status_draw_block":"禁抽 %s秒","battle_status_draw_speed":"抽速 %s秒","battle_status_double_charge":"充能×2 %s秒"},
+	"en":{"battle_status_stun":"Stun %ss","battle_status_draw_block":"Draw blocked %ss","battle_status_draw_speed":"Draw speed %ss","battle_status_double_charge":"Charge ×2 %ss"}
+}
 var rendered_states := 0
 var vector_digest := ""
 
@@ -26,6 +30,7 @@ func project_room(room: Dictionary, vector: Dictionary, target_id: String) -> vo
 	Game.room.room_revision = int(room.Revision)
 	Game.room.player.player_id = player.PlayerId
 	Game.room.player.weapon_level = int(combat.WeaponLevel)
+	Game.room.player.draw_charge = float(combat.Deck.DrawCharge)
 	Game.room.player.combat.maximum_hp = int(combat.MaximumHp)
 	Game.room.player.stun_remaining_ms = milliseconds(combat.StunRemaining)
 	Game.room.player.draw_block_remaining_ms = milliseconds(combat.DrawBlockRemaining)
@@ -55,7 +60,7 @@ func project_room(room: Dictionary, vector: Dictionary, target_id: String) -> vo
 
 func inspect_label(name: String, remaining: int) -> Dictionary:
 	var label: Label = $UI._reference.get_node_or_null(name)
-	var expected: String = P.localized("battle_status_stun") % ("%.1f" % (float(remaining)/1000.0)) if remaining > 0 else ""
+	var expected: String = STATUS_GOLDEN[P.language()]["battle_status_stun"] % ("%.1f" % (float(remaining)/1000.0)) if remaining > 0 else ""
 	var matches: bool = label != null and label.text == expected and label.is_visible_in_tree() == (remaining > 0)
 	var readable := false
 	if label != null:
@@ -86,7 +91,7 @@ func development_status_checks() -> Array:
 		var label: Label = $UI._reference.get_node("PlayerStatus")
 		var expected: Array[String] = []
 		for pair in [[1500,"battle_status_stun"],[2500,"battle_status_draw_block"],[3500,"battle_status_draw_speed"],[4500,"battle_status_double_charge"]]:
-			if pair[0] > elapsed: expected.append(P.localized(pair[1]) % ("%.1f" % (float(pair[0]-elapsed)/1000.0)))
+			if pair[0] > elapsed: expected.append(STATUS_GOLDEN[P.language()][pair[1]] % ("%.1f" % (float(pair[0]-elapsed)/1000.0)))
 		var values_present: bool = expected.all(func(value):return label.text.contains(value)) and label.is_visible_in_tree() == (not expected.is_empty())
 		var readable: bool = expected.is_empty() or (label.get_theme_font_size("font_size") >= 18 and label.get_visible_line_count() == label.get_line_count() and get_viewport().get_visible_rect().encloses(label.get_global_rect()))
 		result.append({"fixture_only":true,"elapsed_ms":elapsed,"actual_text":label.text,"all_expected_values_present":values_present,"readable":readable,"room_state_unchanged":before==JSON.stringify(Game.room),"passed":values_present and readable and before==JSON.stringify(Game.room)})
