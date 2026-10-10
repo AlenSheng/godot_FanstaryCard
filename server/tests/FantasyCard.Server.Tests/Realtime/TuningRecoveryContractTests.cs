@@ -21,6 +21,7 @@ public sealed class TuningRecoveryContractTests
 {
     private static readonly DateTimeOffset Now = DateTimeOffset.UnixEpoch.AddSeconds(10);
     private static readonly JsonSerializerOptions Json = new() { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull };
+    private static readonly string[] VitalitySlots = ["Head", "Chest", "Hands"];
     private static readonly string[] Common = ["C01", "C02", "C03", "C04", "C05", "C06", "C07", "C08", "C09", "C10", "C11", "C15", "ET-FIRE-G", "ET-WATER-G"];
     private static readonly (string Case, string Name, string[] Cards)[] Recipes =
     [
@@ -81,7 +82,7 @@ public sealed class TuningRecoveryContractTests
             .ToDictionary(c => c.CardId, c => new OwnedCard(c.CardId, c.HeroClass, (CardRarity)c.Rarity, 1, false));
         DeckRules.Validate(hero, deck, owned);
         Assert.Equal(20, deck.Distinct().Count());
-        CombatEquipmentItem[] equipmentItems = vitality ? new[] { "Head", "Chest", "Hands" }.Select(slot => new CombatEquipmentItem(Guid.NewGuid(), slot, "Purple", 0, CardElement.Fire, "Vitality", null)).ToArray() : [];
+        CombatEquipmentItem[] equipmentItems = vitality ? VitalitySlots.Select(slot => new CombatEquipmentItem(Guid.NewGuid(), slot, "Purple", 0, CardElement.Fire, "Vitality", null)).ToArray() : [];
         var equipment = EquipmentCombatRules.Calculate(equipmentItems);
         var profile = PlayerProfile.Create(Guid.NewGuid(), "Contract boundary", Now);
         var room = new BattleRoom(Guid.NewGuid(), config.Version, catalog, seed, config.Numerics);
