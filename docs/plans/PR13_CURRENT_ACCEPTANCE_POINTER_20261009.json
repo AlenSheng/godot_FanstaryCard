@@ -1,8 +1,8 @@
 {
   "kind": "current_execution_register_pointer",
-  "current_register": "docs/reports/pr13-stages-20261009/S6-after-b02-policy-postgres/register.json",
+  "current_register": "docs/reports/pr13-stages-20261009/S6-after-b07-current/register.json",
   "integration_source_sha": "497c97b0a777eb5ee88ecb1bd37cee4626fac495",
-  "previous_register": "docs/reports/pr13-stages-20261009/S6-after-b02-preview-postgres/register.json",
+  "previous_register": "docs/reports/pr13-stages-20261009/S6-after-b02-policy-postgres/register.json",
   "whole_scope_accepted": false,
   "human_experience_in_scope": false,
   "execution_policy": {
@@ -15,17 +15,15 @@
     "acceptance_states_unchanged": true
   },
   "latest_development": {
-    "implementation_source_sha": "53e576fcbad6f93fc533383cecc6190282828b67",
+    "implementation_source_sha": "9050456a2116fb844ad2cdc71e48e3df8a9b37e7",
+    "experiment_execution_source_sha": "32a108d9cfdff7d330e9113e4af3a41307ec35c5",
     "task_ids": [
-      "PR13-B02.1",
-      "PR13-B02.2",
-      "PR13-B02.4"
+      "PR13-B07.2"
     ],
-    "stage_report": "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/summary.json",
-    "canonical_postgres_cases_passed": 9,
-    "domain_rows_passed": 338,
-    "godot_numerical_scene_passed": true,
-    "client_regression_suites_passed": 2,
+    "stage_report": "docs/reports/pr13-stages-20261009/S3-b07-current-render/summary.json",
+    "canonical_cases_passed": 3,
+    "current_encounter_rows": 432000,
+    "actual_rendered_rows_passed": 54,
     "evidence_coverage_ready": true,
     "main_acceptance_not_granted": true,
     "github_ci_not_started": "AccountBilling"
@@ -91,6 +89,22 @@
       "client_checks_passed": 8,
       "evidence_coverage_ready": true,
       "main_acceptance_not_granted": true
+    },
+    {
+      "implementation_source_sha": "53e576fcbad6f93fc533383cecc6190282828b67",
+      "task_ids": [
+        "PR13-B02.1",
+        "PR13-B02.2",
+        "PR13-B02.4"
+      ],
+      "stage_report": "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/summary.json",
+      "canonical_postgres_cases_passed": 9,
+      "domain_rows_passed": 338,
+      "godot_numerical_scene_passed": true,
+      "client_regression_suites_passed": 2,
+      "evidence_coverage_ready": true,
+      "main_acceptance_not_granted": true,
+      "github_ci_not_started": "AccountBilling"
     }
   ]
 }
