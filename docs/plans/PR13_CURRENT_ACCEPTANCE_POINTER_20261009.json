@@ -15,25 +15,22 @@
     "acceptance_states_unchanged": true
   },
   "latest_development": {
-    "implementation_source_sha": "f478b790ea03139bd5c42cf415c54576a730de71",
-    "native_execution_source_sha": "90713f2fc032178fdcb2cc26b479070bb822ccaa",
-    "case_execution_source_shas": {
-      "PR13-B08.1-T01": "f478b790ea03139bd5c42cf415c54576a730de71",
-      "PR13-B08.1-T02": "f478b790ea03139bd5c42cf415c54576a730de71",
-      "PR13-B08.1-T03": "f478b790ea03139bd5c42cf415c54576a730de71"
-    },
+    "implementation_source_sha": "e371315d283f581819d7090b606dc529f61d26fa",
+    "native_execution_source_sha": "e371315d283f581819d7090b606dc529f61d26fa",
+    "analysis_source_sha": "e371315d283f581819d7090b606dc529f61d26fa",
     "task_ids": [
-      "PR13-B08.1"
+      "PR13-B08.2"
     ],
-    "stage_report": "docs/reports/pr13-stages-20261009/S5-b08-control-render/summary.json",
-    "canonical_render_cases_passed": 3,
-    "actual_render_rows": 54,
-    "rendered_state_checks": 3240,
-    "development_status_checks": 54,
-    "canonical_render_pending": false,
-    "evidence_coverage_ready": true,
-    "main_acceptance_not_granted": true,
-    "github_ci_not_started": "AccountBilling"
+    "stage_report": "docs/reports/pr13-stages-20261009/S3-b08-element-marginal/summary.json",
+    "statistics_stage_report": "docs/reports/pr13-stages-20261009/S4-b08-element-marginal/summary.json",
+    "development_status": "Native pilot and boundaries passed; full experiment and renderer pending",
+    "native_encounter_rows": 288,
+    "native_boundary_rows": 9,
+    "native_boundary_events": 30,
+    "full_experiment_pending": true,
+    "canonical_render_pending": true,
+    "evidence_coverage_ready": false,
+    "main_acceptance_not_granted": true
   },
   "development_history": [
     {
@@ -184,6 +181,28 @@
       "acceptance_state": "Partial",
       "main_acceptance_not_granted": true,
       "github_ci_not_started": "AccountBilling"
+    },
+    {
+      "implementation_source_sha": "f478b790ea03139bd5c42cf415c54576a730de71",
+      "native_execution_source_sha": "90713f2fc032178fdcb2cc26b479070bb822ccaa",
+      "case_execution_source_shas": {
+        "PR13-B08.1-T01": "f478b790ea03139bd5c42cf415c54576a730de71",
+        "PR13-B08.1-T02": "f478b790ea03139bd5c42cf415c54576a730de71",
+        "PR13-B08.1-T03": "f478b790ea03139bd5c42cf415c54576a730de71"
+      },
+      "task_ids": [
+        "PR13-B08.1"
+      ],
+      "stage_report": "docs/reports/pr13-stages-20261009/S5-b08-control-render/summary.json",
+      "canonical_render_cases_passed": 3,
+      "actual_render_rows": 54,
+      "rendered_state_checks": 3240,
+      "development_status_checks": 54,
+      "canonical_render_pending": false,
+      "evidence_coverage_ready": true,
+      "main_acceptance_not_granted": true,
+      "github_ci_not_started": "AccountBilling"
     }
-  ]
+  ],
+  "evidence_storage_policy": "docs/plans/PR13_EVIDENCE_STORAGE_POLICY_20261010.json"
 }
