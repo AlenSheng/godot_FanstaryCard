@@ -85,7 +85,7 @@ func development_status_checks() -> Array:
 	var result: Array = []
 	var before: String = JSON.stringify(Game.room)
 	for elapsed in [0,2000,5000]:
-		$UI._set_battle_status_label("PlayerStatus",1500,2500,3500,4500,elapsed)
+		$UI._set_battle_status_label("PlayerStatus",1500,2500,elapsed,3500,4500)
 		await get_tree().process_frame
 		await RenderingServer.frame_post_draw
 		var label: Label = $UI._reference.get_node("PlayerStatus")
