@@ -1,5 +1,6 @@
 {
   "schema_version": 1,
+  "revision": 2,
   "task_id": "PR13-B09.2",
   "stage": "S0_for_RENDER",
   "native_source_sha": "1341e160afc67ba826d4b37250c9ec58f8c99462",
@@ -14,6 +15,20 @@
   "consecutive_cycles_per_profile": 3,
   "seed_cycles": [460001, 461001, 462001],
   "units": 27,
+  "execution_scheduling": {
+    "logical_units": 27,
+    "owned_language_segments": 135,
+    "reason": "Observed first full unit: 204 rows in 555 seconds, projected 1102 seconds for 405 rows. Partition future execution by language while retaining every original dimension and the 900 second owned-process ceiling.",
+    "rows_per_language_segment": {"T01": 81, "T02": 81, "T03": 162},
+    "PNGs_per_language_segment": 9,
+    "segment_deadline_seconds": 900,
+    "total_required_rows_unchanged": 14580,
+    "total_required_PNGs_unchanged": 1215,
+    "prior_full_unit_retained": true,
+    "running_native_unit_not_restarted": true,
+    "logical_unit_pass_requires_all_five_languages": true,
+    "authenticated_account_multigame_cycles_still_require_separate_evidence": true
+  },
   "T01_witness_selection": "All three original seed cycles at occupancy capacity minus one; actual entry and accept click, exact candidate payload and original after snapshot.",
   "T02_witness_selection": "Original seed cycles select hand, library and discard replacement respectively; full pool initially disables accept, actual dropdown input chooses the active instance and enables accept, base instances retained.",
   "T03_witness_selection": "Both zero occupancy and full pool for each original seed cycle; actual skip click with no replacement, original after snapshot and no compensation.",

@@ -4,6 +4,7 @@ extends "res://tests/pr13_b10_render_cases.gd"
 @export var pool_hero := "Guardian"
 @export var pool_capacity := 8
 @export var pool_case := "PR13-B09.2-T02"
+@export var pool_language := ""
 const PoolView = preload("res://ui/monster_pool_view.gd")
 const ORIGINAL_SOURCE := "1341e160afc67ba826d4b37250c9ec58f8c99462"
 var pool_traces: Array = []
@@ -203,6 +204,9 @@ func _run() -> void:
 	var old_language := P.language()
 	get_window().mode = Window.MODE_WINDOWED
 	var languages: Array = ["en"] if pool_probe else ["zh-CN","zh-TW","en","ja","ko"]
+	if not pool_language.is_empty():
+		assert(not pool_probe and pool_language in ["zh-CN","zh-TW","en","ja","ko"])
+		languages = [pool_language]
 	var sizes: Array = [Vector2i(960,540)] if pool_probe else [Vector2i(1920,1080),Vector2i(1280,720),Vector2i(960,540)]
 	var caps: Array = [60] if pool_probe else [30,60,144]
 	var delays: Array = [0] if pool_probe else [0,250,1000]
