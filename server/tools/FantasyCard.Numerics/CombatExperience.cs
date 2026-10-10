@@ -183,13 +183,14 @@ internal static class CombatExperience
     internal static EncounterSample Simulate(GameConfigCatalog config, CombatCardCatalog catalog,
         HeroClass hero, string deckName, string[] deck, string group, string strategy, string profile,
         NumericalRules rules, int seed, int block, int limit, int weaponLevel, bool marginalAudit = false,
-        Action<TuningRecoveryCast>? tuningObserver = null)
+        Action<TuningRecoveryCast>? tuningObserver = null, CapEncounterAudit? capAudit = null)
     {
         var row = new EncounterSample(seed, block, hero.ToString(), deckName, group, strategy, profile);
         try
         {
             var room = new BattleRoom(Guid.NewGuid(), config.Version, catalog, seed, rules);
-            var player = room.AddPlayer(new BattleRoomPlayerSetup(Guid.NewGuid(), hero, deck, null, WeaponLevel: weaponLevel));
+            var player = room.AddPlayer(new BattleRoomPlayerSetup(Guid.NewGuid(), hero, deck, null,
+                WeaponLevel: weaponLevel, Equipment: capAudit?.Equipment));
             row.WeaponLevel = weaponLevel;
             var map = ChaosMapGenerator.Generate(seed, 1).Capture();
             var layer = group == "BOSS" ? ChaosMapLayer.Core :
@@ -257,6 +258,7 @@ internal static class CombatExperience
                         var ids = selected.Select(card => card.InstanceId).ToArray();
                         var definitions = selected.Select(card => catalog.Get(card.CardId, card.Level, card.ElementOverride)).ToArray();
                         var draft = CombatResolver.Resolve(definitions, player.Combat, target.ElementalResistance);
+                        var capBefore = capAudit is null ? null : CapPlayerState.Read(player.Combat);
                         var contract = tuningObserver is null ? null : TuningRecoveryOracle.Calculate(definitions, player.Combat, target.ElementalResistance);
                         var hpBefore = player.Combat.Hp;
                         var shieldBefore = player.Combat.Shield;
@@ -273,6 +275,8 @@ internal static class CombatExperience
                         }
                         var controlBefore = target.StunRemaining.Ticks;
                         var result = room.PlayCards(player.PlayerId, pve.BattleId, target.MonsterId, ids, room.Revision, now);
+                        capAudit?.Cast(row, time, selected, definitions, capBefore!,
+                            CapPlayerState.Read(player.Combat), draft, result);
                         if (contract is not null)
                         {
                             var afterCost = Math.Max(1, hpBefore - Math.Max(0,draft.HealthCost));
@@ -331,7 +335,10 @@ internal static class CombatExperience
                     row.ObservedAliveControlUnionTicks += observed;
                     row.ControlUnionTicksByTarget[monster.MonsterId] = row.ControlUnionTicksByTarget.GetValueOrDefault(monster.MonsterId) + observed;
                 }
+                var capTickBefore = capAudit is null ? null : CapPlayerState.Read(player.Combat);
+                var capDrawEnabled = player.Phase is RoomPlayerPhase.Pve or RoomPlayerPhase.Pvp;
                 room.Advance(tick, DateTimeOffset.UnixEpoch.AddSeconds(time + .1));
+                capAudit?.Tick(row, step, time, capDrawEnabled, capTickBefore!, CapPlayerState.Read(player.Combat));
                 if (firstWindupExtra > TimeSpan.Zero)
                 foreach (var monster in pve.Monsters)
                 {

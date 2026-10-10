@@ -13,3 +13,12 @@ dotnet run --project server/tools/FantasyCard.Numerics -- --samples 10000 --play
 The JSON output includes P10/P50/P90/mean for cleared cells, middle-elite encounters and expected non-choice PVE gold/souls/fragments. It also computes the geometry-only minimum number of unique middle elite cells required to visit three distinct middle small-monster corners.
 
 Phase-1 limitations are intentional: this does not yet model combat death, PVP, hidden evacuation discovery, reward-choice equipment, backpack replacement, market transfers, robot loot or paid consumables. Those belong to later AG-04 iterations; this first slice replaces invalid static route assumptions with auditable legal paths.
+
+The PR13 cap contract experiment uses `--cap-effective-experiment --help` for its
+explicit frozen options. It advances real non-bot BattleRoom encounters with a
+legal twenty-card deck, current Purple/one-Orange equipment and visible-hand
+selection. Every cast and tick is retained in bounded gzip parts and reconciled
+by `tools/pr13_cap_effective_experiment.py --controls`. The manifest records all
+equipment attributes: changing one item's quality is not an isolated resistance
+or speed effect. All outcomes, including deaths and observation cutoffs, remain
+present. This tool never changes production candidates or grants acceptance.

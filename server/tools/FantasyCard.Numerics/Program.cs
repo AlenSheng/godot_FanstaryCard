@@ -3,6 +3,11 @@ using System.Text.Json;
 using FantasyCard.Domain.Configuration;
 using FantasyCard.Domain.Rooms;
 
+if (args.Contains("--cap-effective-experiment", StringComparer.Ordinal))
+{
+    return CapEffectiveExperiment.Run(args);
+}
+
 if (args.Contains("--tuning-recovery-experiment", StringComparer.Ordinal))
 {
     return TuningRecoveryExperiment.Run(args);
