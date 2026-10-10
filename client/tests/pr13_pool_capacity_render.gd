@@ -121,7 +121,7 @@ func witness(row: Dictionary, language: String, size: Vector2i, fps: int, delay:
 			submitted = take!=null and not take.disabled and await pointer(take)
 	await get_tree().process_frame
 	var sent: Array = Game.gateway.sent
-	var exact := sent.size()==1 and sent[0].kind=="monster.choose" and sent[0].codec_error.is_empty()
+	var exact: bool = sent.size()==1 and sent[0].kind=="monster.choose" and sent[0].codec_error.is_empty()
 	if exact:
 		var decoded: Dictionary = codec.decode("MonsterCardChooseCommand",sent[0].wire)
 		exact = codec.error.is_empty() and decoded==expected
