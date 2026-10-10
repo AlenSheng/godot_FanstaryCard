@@ -61,9 +61,9 @@ public sealed class MonsterPoolCapacityContractTests
             var replacement = player.MonsterPool.Active[0]; var candidate = Offer(player, "controlled-replacement");
             Relocate(player.Combat.Deck, replacement, pile); var before = room.Capture(); var deck = player.Combat.Deck.Capture();
             Assert.Throws<DomainValidationException>(() => room.DecideMonsterCard(player.PlayerId, candidate.InstanceId, true, null, "full-missing", room.Revision));
-            Assert.Equivalent(before, room.Capture(), strict: true);
+            var missingReplacementAfter = room.Capture(); Assert.Equivalent(before, missingReplacementAfter, strict: true);
             Assert.Throws<DomainValidationException>(() => room.DecideMonsterCard(player.PlayerId, candidate.InstanceId, true, fixture.Base[0].InstanceId, "base-replacement", room.Revision));
-            Assert.Equivalent(before, room.Capture(), strict: true);
+            var baseReplacementAfter = room.Capture(); Assert.Equivalent(before, baseReplacementAfter, strict: true);
             room.DecideMonsterCard(player.PlayerId, candidate.InstanceId, true, replacement.InstanceId, "replace-monster", room.Revision);
             Assert.Equal(deck.Hand.Where(c => c.InstanceId != replacement.InstanceId), player.Combat.Deck.Hand);
             Assert.Equal(deck.Library.Where(c => c.InstanceId != replacement.InstanceId), player.Combat.Deck.Library);
@@ -74,7 +74,8 @@ public sealed class MonsterPoolCapacityContractTests
             UnchangedOutsideDecision(before, room.Capture()); BasePreserved(fixture);
             evidence.Write(new { seed, hero = hero.ToString(), capacity, pile, fixture.Base, fixture.Kill, candidate, replacement,
                 before, after = room.Capture(), missing_replacement_rejected = true, base_replacement_rejected = true,
-                rejected_state = before, fixture_scope = "controlled full pool and pile relocation" });
+                missing_replacement_after = missingReplacementAfter, base_replacement_after = baseReplacementAfter,
+                fixture_scope = "controlled full pool and pile relocation" });
         }
         Assert.Equal(Seeds.Length * 3, evidence.Count);
     }

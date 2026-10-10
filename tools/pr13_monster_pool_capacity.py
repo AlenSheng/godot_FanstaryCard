@@ -68,7 +68,8 @@ def validate(row, source):
         assert len(old_pool["Active"]) == len(new_pool["Active"]) == cap
         assert replacement in old_pool["Active"] and replacement in x[a["pile"]]
         assert a["missing_replacement_rejected"] and a["base_replacement_rejected"]
-        assert a["rejected_state"] == before
+        assert a["missing_replacement_after"] == before
+        assert a["base_replacement_after"] == before
     else:
         assert case.endswith("T03") and len(old_pool["Active"]) == (cap if a["full"] else 0)
     return case
