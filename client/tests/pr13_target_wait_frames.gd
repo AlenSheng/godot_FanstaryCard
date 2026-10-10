@@ -37,6 +37,7 @@ func _run() -> void:
 	gateway.persist_session = false
 	Game.gateway = gateway
 	var old_language: String = P.language()
+	get_window().mode = Window.MODE_WINDOWED
 	for language in ["zh-CN", "en"]:
 		P.set_language(language)
 		for resolution in [Vector2i(1920,1080), Vector2i(1280,720), Vector2i(960,540)]:
@@ -82,15 +83,22 @@ func _run() -> void:
 				var expected_text: String = P.localized("battle_wait_" + expected_reason) if expected_reason != "available" else ""
 				var label_ok: bool = label == null if expected_reason == "available" else label != null and label.text == expected_text and label.is_visible_in_tree() and label.get_visible_line_count() > 0 and bounds.encloses(label.get_global_rect())
 				var play_ok: bool = play != null and play.is_visible_in_tree() and bounds.encloses(play.get_global_rect()) and play.disabled != expected_legal
-				var ok: bool = label_ok and play_ok and waiting.reason == expected_reason and waiting.legal_opportunity == expected_legal
+				var actual_size := get_window().size
+				# Image dimensions describe the actual sampled pixels. Under canvas
+				# stretching ViewportTexture's reported size can differ from them.
+				var frame_image := get_viewport().get_texture().get_image()
+				var pixel_size := frame_image.get_size()
+				var resolution_ok: bool = actual_size == resolution and pixel_size == resolution
+				var ok: bool = label_ok and play_ok and resolution_ok and waiting.reason == expected_reason and waiting.legal_opportunity == expected_legal
 				var screenshot := ""
 				if language == "en" and resolution.x == 960:
 					screenshot = scenario + "_en_960.png"
-					var error := get_viewport().get_texture().get_image().save_png(output + "/" + screenshot)
+					var error := frame_image.save_png(output + "/" + screenshot)
 					if error != OK:
 						ok = false
 						frame_errors.append({"scenario":scenario, "screenshot_error":error})
 				observations.append({"language":language, "resolution":[resolution.x,resolution.y], "scenario":scenario,
+					"actual_window_size":[actual_size.x,actual_size.y], "actual_pixel_size":[pixel_size.x,pixel_size.y], "resolution_matches":resolution_ok,
 					"expected_reason":expected_reason, "waiting":waiting, "actual_text":label.text if label != null else "",
 					"label_visible_and_inside_viewport":label_ok, "play_button_matches_existing_permission":play_ok,
 					"frame_number":Engine.get_frames_drawn(), "screenshot":screenshot, "passed":ok})
