@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "task_id": "PR13-B08.4",
+  "stage": "S0_for_RENDER",
+  "date": "2026-10-11",
+  "native_source_sha": "8ff06ef8fff0ed592fae52facca680ddf9a5b8a7",
+  "native_original_witness_rows": 864,
+  "render_fixture_sha256": "dfdf390177a6a786dce13951b31e5d3067c1b808db86466f68180de4de375597",
+  "render_fixture_bytes": 88002,
+  "original_line_hashes_required": true,
+  "languages": ["zh-CN", "en"],
+  "viewport_sizes": [[1920,1080], [1280,720], [960,540]],
+  "FPS_caps": [30,60,144],
+  "matrix_rows": 54,
+  "native_witness_subset": {
+    "T01": "15 witnesses: seed 430001, level 5, all three heroes and five elements; original before/after legal equipment",
+    "T02": "12 witnesses: seed 430001, levels 0 and 5, baseline/upgraded legal equipment, all three heroes",
+    "T03": "3 witnesses: seed 430001, weapon 5, full shield and card shield 100, all three heroes; inactive and class-inapplicable affixes remain separate"
+  },
+  "native_witness_renders": 540,
+  "required_interactions": ["Open the existing equipment comparison and effective-gains panel using actual mouse input", "Check original theoretical/effective/excess values and marginal delta", "Read complete Chinese/English cap, clamp and PVE conversion explanations", "Scroll every explanation and value into reach with explicit wheel press/release", "Close the actual popup with mouse input", "Check class inapplicability and inactive set do not appear as capped excess", "Check normal shutdown releases resources"],
+  "screenshots": "Final English 960x540 FPS cap 60 screenshots for each canonical case, visually inspected individually",
+  "execution_location": "Tencent cloud X11 software renderer",
+  "hardware_FPS_or_audio_or_live_claim": false,
+  "memory_floor_bytes": 500000000,
+  "disk_free_ratio": 0.15,
+  "raw_storage": "G drive after complete archive/member verification; preserve failed originals and active inputs",
+  "formal_experiment_pending": true,
+  "integration_dependency": "PR13-B08.3",
+  "integration_promotion_allowed": false,
+  "main_acceptance_granted": false,
+  "execution_state": "NotExecuted"
+}
