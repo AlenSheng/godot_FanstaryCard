@@ -58,15 +58,25 @@ func render_witness(row: Dictionary) -> Dictionary:
 	Game._accept_combat_preview(payload)
 	await present()
 	var preview := inspect_preview(row)
+	var selected_order: Array = Game.selected_cards.duplicate()
 	var battle_saved := true
 	if row == last_battle_witness and P.language() == "en" and get_window().size.x == 960 and Engine.max_fps == 60:
 		battle_saved = get_viewport().get_texture().get_image().save_png(output + "/" + tuning_case + "-battle.png") == OK
 	var projected := {"hero":row.hero,"states":{row.before_state_sha256:row.before_state,row.after_state_sha256:row.after_state}}
 	var after: Dictionary = await observe_marginal(projected,row.after_state_sha256,"actual-committed-boundary")
 	tuning_checks += 1
-	return {"hero":row.hero,"weapon_level":row.weapon_level,"equipment_profile":row.equipment_profile,"recipe":row.recipe,"selected_instance_order":Game.selected_cards,"actual_mouse_selection_checks":order_checks,"native_before_sha256":row.before_state_sha256,"native_after_sha256":row.after_state_sha256,"original_protocol_decoded":codec.error.is_empty(),"preview":preview,"after_commit_display":after,"passed":order_checks.all(func(value):return value) and codec.error.is_empty() and preview.passed and after.passed and battle_saved}
+	return {"hero":row.hero,"weapon_level":row.weapon_level,"equipment_profile":row.equipment_profile,"recipe":row.recipe,"selected_instance_order":selected_order,"actual_mouse_selection_checks":order_checks,"native_before_sha256":row.before_state_sha256,"native_after_sha256":row.after_state_sha256,"original_protocol_decoded":codec.error.is_empty(),"preview":preview,"after_commit_display":after,"passed":order_checks.all(func(value):return value) and codec.error.is_empty() and preview.passed and after.passed and battle_saved}
 
 var last_battle_witness: Dictionary = {}
+
+func record_tuning_row(passed: bool, actual: Dictionary, language: String, size: Vector2i, fps: int) -> void:
+	await get_tree().process_frame
+	await RenderingServer.frame_post_draw
+	var pixels := get_viewport().get_texture().get_image()
+	passed = passed and pixels.get_size()==size
+	if not case_verdicts.has(tuning_case): case_verdicts[tuning_case]=true
+	case_verdicts[tuning_case] = case_verdicts[tuning_case] and passed
+	observations.append({"case_id":tuning_case,"language":language,"resolution":[size.x,size.y],"fps_cap":fps,"actual":actual,"actual_pixel_size":[pixels.get_width(),pixels.get_height()],"passed":passed})
 
 func scroll_details(scroll: ScrollContainer, label: Label) -> Dictionary:
 	var samples: Array = []
@@ -161,7 +171,7 @@ func _run() -> void:
 				for row in rows: witnesses.append(await render_witness(row))
 				var details: Array = []
 				for id in ["ET-FIRE-G","ET-WATER-G"]: details.append(await card_details_check(id))
-				await capture_case(tuning_case,witnesses.all(func(row):return row.passed) and details.all(func(row):return row.passed),{"actual_native_witnesses":witnesses,"actual_card_details":details,"original_native_source":NATIVE_SOURCE,"original_native_vectors_sha256":raw.sha256_text(),"controlled_boundary_only":true},language,size,fps)
+				await record_tuning_row(witnesses.all(func(row):return row.passed) and details.all(func(row):return row.passed),{"actual_native_witnesses":witnesses,"actual_card_details":details,"original_native_source":NATIVE_SOURCE,"original_native_vectors_sha256":raw.sha256_text(),"controlled_boundary_only":true},language,size,fps)
 	P.set_language(old_language)
 	Game.gateway = old_gateway
 	gateway.free()
