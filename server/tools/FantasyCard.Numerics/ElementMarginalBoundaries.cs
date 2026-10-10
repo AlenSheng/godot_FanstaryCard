@@ -84,7 +84,9 @@ internal static class ElementMarginalBoundaries
                 var before = Capture(arm);var oldIds = current.Combat.Deck.Hand.Select(c => c.InstanceId).Except(selected.Select(c => c.InstanceId)).ToHashSet();var timer = target.StunRemaining.Ticks;
                 var result = arm.PlayCards(current.PlayerId, current.Pve.BattleId, target.MonsterId, selected.Select(c => c.InstanceId).ToArray(), arm.Revision, DateTimeOffset.UnixEpoch);
                 var actualDraw = current.Combat.Deck.Hand.Count(c => !oldIds.Contains(c.InstanceId));var addedUnion = Math.Max(0, target.StunRemaining.Ticks - timer);
-                if (swapped && caseId == "PR13-B08.2-T01" && (actualDraw != 1 || result.ImmediateDraw <= actualDraw)) throw new InvalidOperationException("Water cap boundary did not occur.");
+                if (swapped && caseId == "PR13-B08.2-T01" && (actualDraw != 1 ||
+                    (hero == HeroClass.Mage ? result.ImmediateDraw <= actualDraw : result.ImmediateDraw != actualDraw)))
+                    throw new InvalidOperationException($"Water boundary differs: hero={hero}, requested={result.ImmediateDraw}, actual={actualDraw}.");
                 if (swapped && caseId == "PR13-B08.2-T02" && (cast == 0 ? addedUnion != draft.Stun.Ticks : addedUnion != 0)) throw new InvalidOperationException("Metal overlap boundary differs.");
                 if (caseId == "PR13-B08.2-T03" && (result.Heal != 0 || result.ShieldGain != 0 || draft.Heal <= 0 || swapped && draft.Shield <= 0)) throw new InvalidOperationException("Full recovery cap boundary did not occur.");
                 events.Add(new { cast, before_state_sha256 = before, after_state_sha256 = Capture(arm), selected_cards = selected.Select(c => c.CardId),

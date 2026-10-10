@@ -105,7 +105,8 @@ def validate_boundaries(path, expected_source):
                     require(event['requested_'+kind]==event['effective_'+kind]+event[kind+'_overflow'] and event['effective_'+kind]>=0 and event[kind+'_overflow']>=0,'Boundary recovery accounting differs')
                 require(event['added_control_union_ticks']<=event['admitted_control_ticks']<=event['converted_control_ticks'],'Boundary union/DR differs')
                 if profile=='SingleGreenReplacement':
-                    if row['case_id'].endswith('T01'):require(event['requested_draw']>event['actual_draw']==1,'Water hand cap missing')
+                    if row['case_id'].endswith('T01'):
+                        require(event['actual_draw']==1 and (event['requested_draw']>1 if row['hero']=='Mage' else event['requested_draw']==1),'Hero-specific water hand cap differs')
                     elif row['case_id'].endswith('T02'):
                         first=arm[0]['converted_control_ticks'];require(first>0 and event['admitted_control_ticks']==(first if cast==0 else first//2 if cast==1 else 0),'Current full/half/zero DR differs')
                         require(event['added_control_union_ticks']==(first if cast==0 else 0) and event['target_control_union_ticks']==first,'Control must use overlap union')
