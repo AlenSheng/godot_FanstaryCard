@@ -110,7 +110,9 @@ def build(dockerfile, output):
     return result
 
 
-def render(image, source, inputs, output, scene):
+def render(image, source, inputs, output, scene, *, expected_rows=48, expected_screenshots=8):
+    if type(expected_rows) is not int or not 1 <= expected_rows <= 5000 or type(expected_screenshots) is not int or not 1 <= expected_screenshots <= 64:
+        raise ValueError('Explicit bounded render matrix and screenshot counts required')
     if not re.fullmatch(r'sha256:[0-9a-f]{64}', image):
         raise ValueError('Immutable renderer image ID required')
     if not scene.startswith('res://tests/') or not scene.endswith('.tscn') or '..' in scene:
@@ -130,7 +132,7 @@ def render(image, source, inputs, output, scene):
     result = {'ok': False, 'render_image': image, 'production_changed': False,
               'scope': 'Cloud software GPU rendered fixture; no hardware FPS, LIVE, human or capacity claim'}
     write(output/'preregistration.json', {'mode': 'render', 'image': image, 'scene': scene,
-          'input_manifest_sha256': sha(inputs), 'expected_matrix_rows': 48, 'expected_screenshots': 8,
+          'input_manifest_sha256': sha(inputs), 'expected_matrix_rows': expected_rows, 'expected_screenshots': expected_screenshots,
           'network': 'none', 'memory_limit_bytes': 1536*1024**2, 'cpu_cores': 1,
           'deadline_seconds': 180, 'launch_resources': launch})
     try:
@@ -158,7 +160,7 @@ def render(image, source, inputs, output, scene):
                       observations=len(native.get('observations', [])), screenshots=len(pixels),
                       display_driver=native.get('display_driver'), adapter=native.get('adapter'))
         result['native_clean'] = not any(marker in text for marker in ['SCRIPT ERROR', 'Parse Error', 'Failed to load script'])
-        result['ok'] = code == 0 and result['native_clean'] and result['native_ok'] and result['observations'] == 48 and len(pixels) == 8 and result['display_driver'] != 'headless'
+        result['ok'] = code == 0 and result['native_clean'] and result['native_ok'] and result['observations'] == expected_rows and len(pixels) == expected_screenshots and result['display_driver'] != 'headless'
     except Exception as error:
         result.update(error=type(error).__name__, detail=str(error))
     finally:
@@ -185,8 +187,10 @@ def main():
     rendering.add_argument('--inputs', type=Path, required=True)
     rendering.add_argument('--output', type=Path, required=True)
     rendering.add_argument('--scene', default='res://tests/pr13_target_wait_frames.tscn')
+    rendering.add_argument('--expected-rows', type=int, default=48)
+    rendering.add_argument('--expected-screenshots', type=int, default=8)
     args = parser.parse_args()
-    result = build(args.dockerfile, args.output) if args.mode == 'build' else render(args.image, args.source, args.inputs, args.output, args.scene)
+    result = build(args.dockerfile, args.output) if args.mode == 'build' else render(args.image, args.source, args.inputs, args.output, args.scene, expected_rows=args.expected_rows, expected_screenshots=args.expected_screenshots)
     print(json.dumps(result))
     return 0 if result['ok'] else 1
 

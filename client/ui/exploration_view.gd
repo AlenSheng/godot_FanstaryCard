@@ -272,9 +272,9 @@ static func _preview(ui: Control) -> void:
 	applied.autowrap_mode = TextServer.AUTOWRAP_OFF
 	applied.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	x += 440
-	for entry in [["heal", "battle_preview_heal", P.TEAL], ["shield_gain", "battle_preview_shield", Color("c4d2d4")]]:
-		if int(preview.get(entry[0], 0)) > 0:
-			ui.text("%s +%s" % [P.localized(entry[1]), preview[entry[0]]], Rect2(x, 12, 130, 34), 22, entry[2], panel, false)
+	for entry in [["heal", "battle_preview_heal", P.TEAL, "heal_overflow"], ["shield_gain", "battle_preview_shield", Color("c4d2d4"), "shield_overflow"]]:
+		if int(preview.get(entry[0], 0)) > 0 or int(preview.get(entry[3], 0)) > 0:
+			ui.text("%s +%s" % [P.localized(entry[1]), preview.get(entry[0], 0)], Rect2(x, 12, 130, 34), 22, entry[2], panel, false)
 			x += 130
 	var effects: Array[String] = []
 	for entry in [["stun_seconds", "眩晕", "秒"], ["draw_block_seconds", "锁抽", "秒"], ["health_cost", "自损", ""], ["immediate_draw", "抽牌", "张"]]:

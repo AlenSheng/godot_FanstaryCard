@@ -26,6 +26,13 @@ class CloudRenderRuntimeTests(unittest.TestCase):
             with self.assertRaises(ValueError): runtime.render('latest', Path('.'), Path('absent'), Path('unused'), 'res://tests/a.tscn')
             docker.assert_not_called()
 
+    def test_empty_boolean_or_unbounded_matrix_cannot_claim_success(self):
+        for rows, screenshots in [(0,8),(True,8),(5001,8),(48,0),(48,True),(48,65)]:
+            with self.subTest(rows=rows,screenshots=screenshots), patch.object(runtime,'docker') as docker:
+                with self.assertRaises(ValueError):
+                    runtime.render(runtime.BASE_IMAGE,Path('.'),Path('absent'),Path('unused'),'res://tests/a.tscn',expected_rows=rows,expected_screenshots=screenshots)
+                docker.assert_not_called()
+
     def test_foreign_or_changed_source_blocks_before_output_and_docker(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory); source = root/'source'; source.mkdir()
