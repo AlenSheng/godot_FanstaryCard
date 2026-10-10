@@ -15,17 +15,16 @@
     "acceptance_states_unchanged": true
   },
   "latest_development": {
-    "implementation_source_sha": "fa27e3f46cfc015ebf2e50bf69fa148b40474869",
+    "implementation_source_sha": "4be450696ba42d647aa9a6dbb4a9c3f767ccef30",
     "task_ids": [
-      "PR13-B04.3",
+      "PR13-B10.1",
       "PR13-B10.4",
-      "PR13-B11.1",
       "PR13-B11.4"
     ],
-    "stage_report": "docs/reports/pr13-stages-20261009/S3-cloud-render-runtime/summary.json",
-    "actual_rendered_matrix_passed": true,
+    "stage_report": "docs/reports/pr13-stages-20261009/S3-target-preview-overlap/summary.json",
+    "actual_gui_input_and_render_matrix_passed": true,
     "acceptance_states_not_upgraded": true,
-    "next_action": "核对并修复选牌预览与目标按钮相交，再验证真实 GUI 指针选择。"
+    "resolved_visual_followup": "Selected-card preview no longer intersects or intercepts monster target buttons."
   },
   "development_history": [
     {
@@ -38,6 +37,19 @@
       "stage_report": "docs/reports/pr13-stages-20261009/S3-combat-wait-feedback/summary.json",
       "native_offline_checks_passed": true,
       "acceptance_states_not_upgraded": true
+    },
+    {
+      "implementation_source_sha": "fa27e3f46cfc015ebf2e50bf69fa148b40474869",
+      "task_ids": [
+        "PR13-B04.3",
+        "PR13-B10.4",
+        "PR13-B11.1",
+        "PR13-B11.4"
+      ],
+      "stage_report": "docs/reports/pr13-stages-20261009/S3-cloud-render-runtime/summary.json",
+      "actual_rendered_matrix_passed": true,
+      "acceptance_states_not_upgraded": true,
+      "next_action": "核对并修复选牌预览与目标按钮相交，再验证真实 GUI 指针选择。"
     }
   ]
 }
