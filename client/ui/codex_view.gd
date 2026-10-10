@@ -206,6 +206,8 @@ static func _details(ui: Control, host: Control) -> void:
 		if level > 0 and not effect_text.is_empty(): effect_text = ("Base: " if P.language() == "en" else "基础：") + effect_text
 		if not effect_text.is_empty(): effect_text += "\n"
 		effect_text += "\n".join(level_effects)
+	var contract: String = CardDetails.contract_text(info)
+	if not contract.is_empty(): effect_text += "\n\n" + contract
 	# Multi-effect cards can exceed this area once current/next-level values
 	# are included. Keep the full explanation scrollable at a readable size.
 	var effect_scroll := _scroll(modal, Rect2(798, 485, 690, 182))

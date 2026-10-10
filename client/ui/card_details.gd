@@ -110,6 +110,13 @@ static func face_description(id: String, level: int = 0, overrides: Dictionary =
 static func _number(value: float) -> String:
 	return str(int(value)) if is_equal_approx(value, round(value)) else ("%.2f" % value).trim_suffix("0").trim_suffix(".")
 
+static func contract_text(card: Dictionary) -> String:
+	var tuning: bool = str(card.get("category", "")) == "ElementTune" or card.get("isElementTuning", card.get("is_element_tuning", false)) == true
+	if not tuning: return ""
+	if P.language() == "en":
+		return "The first elemental card sets the core, including tuning cards. Tuning counts toward same-core resonance, but adds no conflict count or conflict-heal base. Other counter cards can still lower its same-core resonance. Conflict healing is separate from card healing and gets no Priest low-HP or weapon healing multiplier."
+	return "首张元素牌定核，调节牌也可定核并计入同核共振。调节牌不增加向反牌数，也不进入向反回复基数；其他相克牌仍可降低它的同核共振。向反回复与普通治疗分开计算，不叠加牧师临渊或武器治疗倍率。"
+
 static func effect_text(effect: Dictionary) -> String:
 	var lines: Array[String] = []
 	var secondary_damage: int = int(effect.get("secondaryElementalDamage", effect.get("secondary_elemental_damage", 0)))

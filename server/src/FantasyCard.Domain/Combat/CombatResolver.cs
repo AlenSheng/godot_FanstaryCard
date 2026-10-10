@@ -56,8 +56,8 @@ public static class CombatResolver
         var segments = new List<CombatDamageSegment>();
         if (elemental.Length > 0)
         {
-            // The first ordinary elemental card establishes the core. Direct
-            // damage cards do not consume this position.
+            // The first eligible single-element card, including a tuning card,
+            // establishes the core. Direct and dual-element cards do not.
             core = elemental[0].Effect.Element;
             coreCount = elemental.Count(card => card.Effect.Element == core);
             conflictPairCount = elemental.Count(card =>
