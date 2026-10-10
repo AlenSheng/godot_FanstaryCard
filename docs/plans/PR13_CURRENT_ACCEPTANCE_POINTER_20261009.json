@@ -1,8 +1,8 @@
 {
   "kind": "current_execution_register_pointer",
-  "current_register": "docs/reports/pr13-stages-20261009/S6-after-b02-preview-postgres/register.json",
+  "current_register": "docs/reports/pr13-stages-20261009/S6-after-b02-policy-postgres/register.json",
   "integration_source_sha": "497c97b0a777eb5ee88ecb1bd37cee4626fac495",
-  "previous_register": "docs/reports/pr13-stages-20261009/S6-after-b10-render/register.json",
+  "previous_register": "docs/reports/pr13-stages-20261009/S6-after-b02-preview-postgres/register.json",
   "whole_scope_accepted": false,
   "human_experience_in_scope": false,
   "execution_policy": {
@@ -15,16 +15,20 @@
     "acceptance_states_unchanged": true
   },
   "latest_development": {
-    "implementation_source_sha": "5a760e6d92a1123d70a9b73babb4abbb3ea6da9f",
+    "implementation_source_sha": "53e576fcbad6f93fc533383cecc6190282828b67",
     "task_ids": [
-      "PR13-B02.3"
+      "PR13-B02.1",
+      "PR13-B02.2",
+      "PR13-B02.4"
     ],
-    "stage_report": "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/summary.json",
-    "canonical_postgres_cases_passed": 3,
-    "native_pg_rows_passed": 6,
-    "client_checks_passed": 8,
+    "stage_report": "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/summary.json",
+    "canonical_postgres_cases_passed": 9,
+    "domain_rows_passed": 338,
+    "godot_numerical_scene_passed": true,
+    "client_regression_suites_passed": 2,
     "evidence_coverage_ready": true,
-    "main_acceptance_not_granted": true
+    "main_acceptance_not_granted": true,
+    "github_ci_not_started": "AccountBilling"
   },
   "development_history": [
     {
@@ -73,6 +77,18 @@
       "stage_report": "docs/reports/pr13-stages-20261009/S3-b10-required-render/summary.json",
       "canonical_render_cases_passed": 9,
       "actual_rendered_rows_passed": 54,
+      "evidence_coverage_ready": true,
+      "main_acceptance_not_granted": true
+    },
+    {
+      "implementation_source_sha": "5a760e6d92a1123d70a9b73babb4abbb3ea6da9f",
+      "task_ids": [
+        "PR13-B02.3"
+      ],
+      "stage_report": "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/summary.json",
+      "canonical_postgres_cases_passed": 3,
+      "native_pg_rows_passed": 6,
+      "client_checks_passed": 8,
       "evidence_coverage_ready": true,
       "main_acceptance_not_granted": true
     }
