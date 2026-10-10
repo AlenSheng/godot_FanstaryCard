@@ -13,6 +13,7 @@ import socket
 import subprocess
 import sys
 import time
+import urllib.parse
 import urllib.request
 
 import psutil
@@ -34,6 +35,7 @@ def main():
     parser.add_argument('--snapshot-record', type=Path, required=True)
     parser.add_argument('--godot', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--public-route', action='store_true', help='Use the verified IP-restricted HTTPS/WSS owned-test route')
     args = parser.parse_args()
     plan = json.loads(args.plan.read_text('utf-8'))
     runtime = json.loads(args.runtime.read_text('utf-8'))
@@ -62,6 +64,17 @@ def main():
     assert runtime['effective_admission']['application_database_pool_max_size'] == 256
     assert not runtime['effective_admission']['ip_policy_limits_enabled']
     assert not runtime['effective_admission']['realtime_command_quota_enabled']
+    server_url, prometheus_url = 'http://127.0.0.1:28081', 'http://127.0.0.1:19190'
+    if args.public_route:
+        route = runtime['owned_public_route']
+        assert route['enabled'] and route['relay_ready'] and route['restricted_to_test_source']
+        assert route['source_sha'] == source
+        server_url, prometheus_url = route['server_url'], route['prometheus_url']
+        uri = urllib.parse.urlsplit(server_url)
+        assert uri.scheme == 'https' and uri.hostname == 'www.relicbound.cn' and uri.port in (None, 443)
+        assert not uri.username and not uri.password and not uri.query and not uri.fragment
+        assert re.fullmatch(r'/pr13-owned-[0-9a-f]{24}', uri.path)
+        assert prometheus_url == server_url + '/monitor'
     assert snapshot_record['ok'] and snapshot_record['import_exit_code'] == 0
     snapshot = Path(snapshot_record['snapshot'])
     for name, digest in snapshot_record['files'].items():
@@ -73,14 +86,16 @@ def main():
     assert output.is_relative_to(ROOT / 'outputs')
     output.mkdir(exist_ok=False)
     stop_path = output / 'STOP'
-    config = (ROOT / 'server/cloud-env.local.bat').read_text('utf-8-sig')
-    key = os.path.expandvars(re.search(r'set "FANTASYCARD_CLOUD_KEY=(.*?)"', config, re.I)[1])
-    for port in (28081, 19190):
-        try:
-            with socket.create_connection(('127.0.0.1', port), timeout=.3):
-                raise ValueError('Owned forwarding port occupied')
-        except (ConnectionRefusedError, socket.timeout):
-            pass
+    key = None
+    if not args.public_route:
+        config = (ROOT / 'server/cloud-env.local.bat').read_text('utf-8-sig')
+        key = os.path.expandvars(re.search(r'set "FANTASYCARD_CLOUD_KEY=(.*?)"', config, re.I)[1])
+        for port in (28081, 19190):
+            try:
+                with socket.create_connection(('127.0.0.1', port), timeout=.3):
+                    raise ValueError('Owned forwarding port occupied')
+            except (ConnectionRefusedError, socket.timeout):
+                pass
     record = {'source_sha': source, 'client_snapshot_source_sha': snapshot_record['source_sha'],
               'driver_pid': os.getpid(), 'driver_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
               'runtime_revision': runtime['runtime_revision'], 'runtime_image': runtime['image_id'],
@@ -90,7 +105,10 @@ def main():
               'owned_test_bypass': True, 'application_max_pool_size': 256, 'database_max_connections': 256,
               'effective_cpu_quotas': runtime['effective_cpu_quotas'], 'accepted': False,
               'execution_split': {'server': 'Tencent cloud owned private instance', 'players': 'Actual local Windows Godot clients'},
-              'application_tls_scope': 'HTTP/ticket WS inside strict SSH; public HTTPS/WSS remains a separate acceptance scope',
+              'application_tls_scope': ('Actual HTTPS/WSS on the IP-restricted owned-test path; monitor uses HTTPS'
+                                        if args.public_route else 'HTTP/ticket WS inside strict SSH; public HTTPS/WSS remains a separate acceptance scope'),
+              'ssh_forwarding_used_for_workload': not args.public_route,
+              'public_route_configuration_sha256': runtime.get('owned_public_route', {}).get('active_canonical_sha256') if args.public_route else None,
               'forwarding_policy': {'keepalive_seconds': 5, 'missed_keepalives': 2, 'workload_reconnect': False,
                                     'cleanup_only_reconnect_after_stop': True}, 'forwarding_attempts': []}
 
@@ -100,6 +118,7 @@ def main():
         temp.replace(output / 'execution.json')
 
     def start_forwarding(cleanup_only=False):
+        assert not args.public_route
         if cleanup_only:
             assert stop_path.exists(), 'A replacement connection must never resume an interrupted workload'
         command = ['ssh', '-o', 'KexAlgorithms=diffie-hellman-group14-sha256', '-o', 'Ciphers=aes128-ctr',
@@ -126,9 +145,9 @@ def main():
 
     def wait_ready(process, seconds=20):
         deadline = time.monotonic() + seconds
-        while process.poll() is None and time.monotonic() < deadline:
+        while (process is None or process.poll() is None) and time.monotonic() < deadline:
             try:
-                with urllib.request.urlopen('http://127.0.0.1:28081/health/ready', timeout=2) as response:
+                with urllib.request.urlopen(server_url + '/health/ready', timeout=2) as response:
                     if response.status == 200:
                         return True
             except OSError:
@@ -138,9 +157,10 @@ def main():
 
     ssh = child = None
     try:
-        ssh = start_forwarding()
-        assert wait_ready(ssh), 'Owned SSH forwarding failed readiness'
-        baseline = metrics('http://127.0.0.1:19190', 10)
+        if not args.public_route:
+            ssh = start_forwarding()
+        assert wait_ready(ssh), 'Owned endpoint failed readiness'
+        baseline = metrics(prometheus_url, 10)
         free = psutil.virtual_memory().available
         record['prelaunch_resource_check'] = {'resources': baseline, 'generator_available_bytes': free, 'at': time.time()}
         save()
@@ -148,7 +168,7 @@ def main():
         assert not memory_causes(baseline, {'available': True, 'host_memory_available_bytes': free}, floor, floor)
         assert baseline['cpu'] <= 85 and baseline['disk_available'] >= 15
         command = [sys.executable, str(ROOT / 'tools/gameplay_load_test.py'), '--godot', str(args.godot),
-                   '--server-url', 'http://127.0.0.1:28081', '--prometheus', 'http://127.0.0.1:19190']
+                   '--server-url', server_url, '--prometheus', prometheus_url]
         command += (['--smoke', '--smoke-clients', '10', '--smoke-cycles', '3'] if args.mode == 'smoke'
                     else ['--run', '--max-groups', '1', '--group-size', str(args.clients), '--group-interval', '180'])
         command += ['--max-seconds', str(plan['overall_seconds']), '--cycle-limit-seconds', str(plan['cycle_seconds']),
@@ -171,11 +191,11 @@ def main():
             while child.poll() is None:
                 reasons = []
                 resources = {}
-                if ssh.poll() is not None:
+                if ssh is not None and ssh.poll() is not None:
                     record['forwarding_failure_exit_code'] = ssh.returncode
                     reasons.append('ssh_forwarding_exited')
                 elif time.monotonic() >= next_sample:
-                    resources = metrics('http://127.0.0.1:19190', 10)
+                    resources = metrics(prometheus_url, 10)
                     next_sample = time.monotonic() + 10
                     free = psutil.virtual_memory().available
                     reasons = memory_causes(resources, {'available': True, 'host_memory_available_bytes': free}, floor, floor)
@@ -190,7 +210,7 @@ def main():
                     record['stop_issued_at'] = time.time()
                     stop_path.touch()
                     save()
-                    if 'ssh_forwarding_exited' in reasons or 'monitoring_unavailable' in reasons:
+                    if not args.public_route and ('ssh_forwarding_exited' in reasons or 'monitoring_unavailable' in reasons):
                         close_forwarding(ssh)
                         ssh = start_forwarding(cleanup_only=True)
                         record['cleanup_forwarding_ready'] = wait_ready(ssh)
