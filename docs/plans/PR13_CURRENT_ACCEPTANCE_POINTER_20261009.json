@@ -1,8 +1,8 @@
 {
   "kind": "current_execution_register_pointer",
-  "current_register": "docs/reports/pr13-stages-20261009/S6-after-b07-authoritative-render/register.json",
+  "current_register": "docs/reports/pr13-stages-20261009/S6-after-b08-control/register.json",
   "integration_source_sha": "497c97b0a777eb5ee88ecb1bd37cee4626fac495",
-  "previous_register": "docs/reports/pr13-stages-20261009/S6-after-b07-sequences/register.json",
+  "previous_register": "docs/reports/pr13-stages-20261009/S6-after-b07-authoritative-render/register.json",
   "whole_scope_accepted": false,
   "human_experience_in_scope": false,
   "execution_policy": {
@@ -15,17 +15,18 @@
     "acceptance_states_unchanged": true
   },
   "latest_development": {
-    "implementation_source_sha": "9a5d7ef106ab5378c823383cc4a67189940e1df5",
-    "native_execution_source_sha": "edfb67651354fabe67072c213c742f2039eafb03",
+    "implementation_source_sha": "90713f2fc032178fdcb2cc26b479070bb822ccaa",
+    "native_execution_source_sha": "90713f2fc032178fdcb2cc26b479070bb822ccaa",
+    "analysis_source_sha": "90713f2fc032178fdcb2cc26b479070bb822ccaa",
     "task_ids": [
-      "PR13-B07.3"
+      "PR13-B08.1"
     ],
-    "stage_report": "docs/reports/pr13-stages-20261009/S5-b07-authoritative-render/summary.json",
-    "canonical_render_cases_passed": 3,
-    "actual_rendered_rows_passed": 54,
-    "rendered_state_checks": 8208,
-    "canonical_render_pending": false,
-    "evidence_coverage_ready": true,
+    "stage_report": "docs/reports/pr13-stages-20261009/S5-b08-control-contract/summary.json",
+    "canonical_experiment_cases_passed": 3,
+    "native_control_rows": 54000,
+    "actual_control_events": 486000,
+    "canonical_render_pending": true,
+    "acceptance_state": "Partial",
     "main_acceptance_not_granted": true,
     "github_ci_not_started": "AccountBilling"
   },
@@ -145,6 +146,21 @@
       "native_sequence_rows": 36000,
       "experiment_profile_gaps_removed": 3,
       "canonical_render_pending": true,
+      "main_acceptance_not_granted": true,
+      "github_ci_not_started": "AccountBilling"
+    },
+    {
+      "implementation_source_sha": "9a5d7ef106ab5378c823383cc4a67189940e1df5",
+      "native_execution_source_sha": "edfb67651354fabe67072c213c742f2039eafb03",
+      "task_ids": [
+        "PR13-B07.3"
+      ],
+      "stage_report": "docs/reports/pr13-stages-20261009/S5-b07-authoritative-render/summary.json",
+      "canonical_render_cases_passed": 3,
+      "actual_rendered_rows_passed": 54,
+      "rendered_state_checks": 8208,
+      "canonical_render_pending": false,
+      "evidence_coverage_ready": true,
       "main_acceptance_not_granted": true,
       "github_ci_not_started": "AccountBilling"
     }
