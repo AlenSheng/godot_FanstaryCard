@@ -15,7 +15,7 @@ from pr13_candidate_review import paired_clusters, holm_adjust
 from pr13_element_marginals import validate, require
 
 PRIMARY=('Damage30','ImmediateCardsDrawn','ObservedAliveControlUnionTicks','EffectiveHeal','EffectiveShield','HealOverflow','ShieldOverflow')
-SECONDARY=('NetCards','TotalEffectiveDamage','RequestedImmediateCards','RequestedHeal','RequestedShield','AddedAliveControlUnionTicks','Victory')
+SECONDARY=('NetCards','TotalEffectiveDamage','RequestedImmediateCards','RequestedHeal','RequestedShield','AddedAliveControlUnionTicks','Victory','FinalPoolSize','NoCardsSeconds','LongestEffectiveGapSeconds')
 
 
 def beta_fraction(a,b,x):
