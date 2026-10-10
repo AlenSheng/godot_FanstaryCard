@@ -1,0 +1,158 @@
+[
+  {
+    "case_id": "PR13-B07.3-T01",
+    "executed": true,
+    "status": "Passed",
+    "profiles_executed": [
+      "OFFLINE",
+      "EXPERIMENT"
+    ],
+    "setup": "preview/重复/非法",
+    "expected": "余量不增加",
+    "actual": {
+      "native_rows_verified": 36000,
+      "weapon_levels": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "profiles": [
+        "Baseline",
+        "Candidate"
+      ],
+      "independent_seed_blocks": [
+        200001,
+        201001,
+        202001
+      ],
+      "paired_seeds_per_level": 3000,
+      "golden_contract_violations": 0,
+      "scenarios": [
+        "ten repeated pure previews",
+        "illegal target/future revision/duplicate instance/missing instance",
+        "spent instance rejected after one successful commit"
+      ],
+      "full_original_state_texts_and_hashes_retained": true
+    },
+    "profile_execution_source_shas": {
+      "OFFLINE": "edfb67651354fabe67072c213c742f2039eafb03",
+      "EXPERIMENT": "edfb67651354fabe67072c213c742f2039eafb03"
+    },
+    "analysis_source_sha": "a0e5ee13f2a1f75b667e3af3629b0ea46fc93d9d",
+    "evidence": {
+      "report": "docs/reports/pr13-stages-20261009/S5-b07-authoritative-sequences/report.json",
+      "report_sha256": "79c2df183c6450e84b373c95e90f621748c0ee34aee9ad118dd41d0023de5898",
+      "commands": "docs/reports/pr13-stages-20261009/S5-b07-authoritative-sequences/execution.json",
+      "native_result_sha256": "ec9e7d6a678244bedf23146c08b46a499a92b1bebc19760579362708208b21c2",
+      "analysis_result_sha256": "6e48fc54bbb3156a621c3528a7eb3afb60334ff587bc65dedc8e5efa8ff13336"
+    },
+    "scope": "Injected boundary fixtures with actual Domain room/deck/resolver/map/PVP; RENDER/full route/live/capacity remain separate"
+  },
+  {
+    "case_id": "PR13-B07.3-T02",
+    "executed": true,
+    "status": "Passed",
+    "profiles_executed": [
+      "OFFLINE",
+      "EXPERIMENT"
+    ],
+    "setup": "满盾/精确填满/溢出/零盾",
+    "expected": "已满盾或零牌面盾不生成或消耗既有余量；本次整数盾精确填满或超上限时提交余量0；离格ClearShield同时清余量",
+    "actual": {
+      "native_rows_verified": 36000,
+      "weapon_levels": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "profiles": [
+        "Baseline",
+        "Candidate"
+      ],
+      "independent_seed_blocks": [
+        200001,
+        201001,
+        202001
+      ],
+      "paired_seeds_per_level": 3000,
+      "golden_contract_violations": 0,
+      "scenarios": [
+        "five successful room plays at each of six levels",
+        "already-full/zero-empty/zero-full retain remainder",
+        "exact fill/overflow commit zero"
+      ],
+      "full_original_state_texts_and_hashes_retained": true
+    },
+    "profile_execution_source_shas": {
+      "OFFLINE": "edfb67651354fabe67072c213c742f2039eafb03",
+      "EXPERIMENT": "edfb67651354fabe67072c213c742f2039eafb03"
+    },
+    "analysis_source_sha": "a0e5ee13f2a1f75b667e3af3629b0ea46fc93d9d",
+    "evidence": {
+      "report": "docs/reports/pr13-stages-20261009/S5-b07-authoritative-sequences/report.json",
+      "report_sha256": "79c2df183c6450e84b373c95e90f621748c0ee34aee9ad118dd41d0023de5898",
+      "commands": "docs/reports/pr13-stages-20261009/S5-b07-authoritative-sequences/execution.json",
+      "native_result_sha256": "ec9e7d6a678244bedf23146c08b46a499a92b1bebc19760579362708208b21c2",
+      "analysis_result_sha256": "6e48fc54bbb3156a621c3528a7eb3afb60334ff587bc65dedc8e5efa8ff13336"
+    },
+    "scope": "Injected boundary fixtures with actual Domain room/deck/resolver/map/PVP; RENDER/full route/live/capacity remain separate"
+  },
+  {
+    "case_id": "PR13-B07.3-T03",
+    "executed": true,
+    "status": "Passed",
+    "profiles_executed": [
+      "OFFLINE",
+      "EXPERIMENT"
+    ],
+    "setup": "重连/PVP工作副本恢复",
+    "expected": "余量不复制刷收益",
+    "actual": {
+      "native_rows_verified": 36000,
+      "weapon_levels": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "profiles": [
+        "Baseline",
+        "Candidate"
+      ],
+      "independent_seed_blocks": [
+        200001,
+        201001,
+        202001
+      ],
+      "paired_seeds_per_level": 3000,
+      "golden_contract_violations": 0,
+      "scenarios": [
+        "full room JSON restore",
+        "actual PVP play and saved-room reconstruction followed by survival return",
+        "generated-map legal move clears shield/remainder"
+      ],
+      "full_original_state_texts_and_hashes_retained": true
+    },
+    "profile_execution_source_shas": {
+      "OFFLINE": "edfb67651354fabe67072c213c742f2039eafb03",
+      "EXPERIMENT": "edfb67651354fabe67072c213c742f2039eafb03"
+    },
+    "analysis_source_sha": "a0e5ee13f2a1f75b667e3af3629b0ea46fc93d9d",
+    "evidence": {
+      "report": "docs/reports/pr13-stages-20261009/S5-b07-authoritative-sequences/report.json",
+      "report_sha256": "79c2df183c6450e84b373c95e90f621748c0ee34aee9ad118dd41d0023de5898",
+      "commands": "docs/reports/pr13-stages-20261009/S5-b07-authoritative-sequences/execution.json",
+      "native_result_sha256": "ec9e7d6a678244bedf23146c08b46a499a92b1bebc19760579362708208b21c2",
+      "analysis_result_sha256": "6e48fc54bbb3156a621c3528a7eb3afb60334ff587bc65dedc8e5efa8ff13336"
+    },
+    "scope": "Injected boundary fixtures with actual Domain room/deck/resolver/map/PVP; RENDER/full route/live/capacity remain separate"
+  }
+]
