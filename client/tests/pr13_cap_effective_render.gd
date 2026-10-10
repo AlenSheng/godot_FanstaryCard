@@ -6,16 +6,20 @@ const CapDetails = preload("res://ui/numerical_details.gd")
 const CAP_SOURCE := "8ff06ef8fff0ed592fae52facca680ddf9a5b8a7"
 var cap_checks := 0
 var inactive_checks := 0
+var input_traces: Array = []
 
 func cap_button_click(button: Button) -> bool:
 	if button == null or not button.is_visible_in_tree() or button.disabled: return false
 	var viewport: Viewport = button.get_viewport()
-	var point: Vector2 = button.get_global_transform_with_canvas() * (button.size * .5)
-	viewport.notify_mouse_entered()
+	var point: Vector2 = viewport.get_screen_transform() * button.get_global_transform_with_canvas() * (button.size * .5)
+	var response := {"pressed":false}
+	var observe: Callable = func(): response.pressed = true
+	button.pressed.connect(observe)
+	var trace := {"button":button.name,"text":button.text,"viewport":str(viewport.get_path()),"screen_point":[point.x,point.y],"viewport_visible_rect":str(viewport.get_visible_rect()),"button_rect":str(button.get_global_rect()),"final_transform":str(viewport.get_final_transform())}
 	var motion := InputEventMouseMotion.new()
 	motion.position = point
 	motion.global_position = point
-	viewport.push_input(motion, true)
+	Input.parse_input_event(motion)
 	await get_tree().process_frame
 	var press := InputEventMouseButton.new()
 	press.button_index = MOUSE_BUTTON_LEFT
@@ -23,14 +27,17 @@ func cap_button_click(button: Button) -> bool:
 	press.pressed = true
 	press.position = point
 	press.global_position = point
-	viewport.push_input(press, true)
+	Input.parse_input_event(press)
 	await get_tree().process_frame
 	var release: InputEventMouseButton = press.duplicate()
 	release.pressed = false
 	release.button_mask = 0
-	viewport.push_input(release, true)
+	Input.parse_input_event(release)
 	await get_tree().process_frame
-	return true
+	if is_instance_valid(button): button.pressed.disconnect(observe)
+	trace["pressed_signal_observed"] = response.pressed
+	input_traces.append(trace)
+	return bool(response.pressed)
 
 func cap_popup_text(dialog: AcceptDialog) -> String:
 	var texts := PackedStringArray()
@@ -43,8 +50,9 @@ func cap_scroll(dialog: AcceptDialog, scroll: ScrollContainer, label: Label) -> 
 	var samples: Array = []
 	var window_rect := dialog.get_visible_rect()
 	var point: Vector2 = scroll.get_global_transform_with_canvas() * (scroll.size * .5)
+	dialog.notify_mouse_exited()
+	dialog.notify_mouse_entered()
 	for step in range(24):
-		dialog.notify_mouse_entered()
 		var motion := InputEventMouseMotion.new()
 		motion.position = point
 		motion.global_position = point
@@ -121,7 +129,7 @@ func cap_witness(row: Dictionary, final_witness: bool, inactive_projection: bool
 	var numbers := true
 	if cap_case.ends_with("T01"):
 		var wanted := "%.2f / %.2f / %.2f → %.2f / %.2f / %.2f  (%+.2f)" % [float(actual.raw_before)*100, float(actual.effective_before)*100, float(actual.capped_before)*100, float(actual.raw_after)*100, float(actual.effective_after)*100, float(actual.capped_after)*100, float(actual.marginal_effective)*100]
-		numbers = content.contains(wanted) and is_zero_approx(float(actual.marginal_effective))
+		numbers = content.contains(wanted) and is_zero_approx(float(actual.marginal_effective)) and content.contains(CapDetails.stat_name("resistance_"+str(actual.element)))
 	elif cap_case.ends_with("T02"):
 		var raw: float = float(actual.equipment_raw)
 		var interval: float = float(actual.equipment_interval)
@@ -158,7 +166,7 @@ func cap_witness(row: Dictionary, final_witness: bool, inactive_projection: bool
 	else: cap_checks += 1
 	var inactive := {}
 	if cap_case.ends_with("T03") and not inactive_projection: inactive = await cap_witness(row,false,true)
-	return {"hero":actual.hero, "original_native_line_sha256":row.original_line_sha256, "element":actual.get("element", "Fire"), "level":actual.get("level", 5), "original_and_display_identity":projection, "inactive_projection":inactive_projection, "comparison_opened_by_mouse":open_comparison, "gains_opened_by_mouse":gains_opened, "complete_stage_explanations":semantics, "original_values_and_marginal_delta_visible":numbers, "full_text":content, "scroll":scrolling, "popup_closed_by_mouse":closed, "comparison_closed_by_mouse":comparison_closed, "inactive_context":inactive, "passed":open_comparison and gains_opened and semantics and numbers and scrolling.all_lines_reachable and scrolling.last_line_reachable and scrolling.horizontal_scroll_disabled and int(scrolling.font_size)>=18 and bool(scrolling.wrapped) and closed and comparison_closed and image_saved and (inactive.is_empty() or bool(inactive.get("passed",false)))}
+	return {"hero":actual.hero, "original_native_line_sha256":row.original_line_sha256, "element":actual.get("element", "Fire"), "level":actual.get("level", 5), "original_and_display_identity":projection, "inactive_projection":inactive_projection, "comparison_opened_by_mouse":open_comparison, "gains_opened_by_mouse":gains_opened, "complete_stage_explanations":semantics, "original_values_and_marginal_delta_visible":numbers, "full_text":content, "scroll":scrolling, "popup_closed_by_mouse":closed, "comparison_closed_by_mouse":comparison_closed, "inactive_context":inactive, "input_traces":input_traces.duplicate(true), "passed":open_comparison and gains_opened and semantics and numbers and scrolling.all_lines_reachable and scrolling.last_line_reachable and scrolling.horizontal_scroll_disabled and int(scrolling.font_size)>=18 and bool(scrolling.wrapped) and closed and comparison_closed and image_saved and (inactive.is_empty() or bool(inactive.get("passed",false)))}
 
 func _run() -> void:
 	DirAccess.make_dir_recursive_absolute(output)
@@ -190,7 +198,14 @@ func _run() -> void:
 			for fps in caps:
 				Engine.max_fps = fps
 				var results: Array = []
-				for row in vectors: results.append(await cap_witness(row,row==vectors.back()))
+				for row in vectors:
+					input_traces.clear()
+					var result: Dictionary = await cap_witness(row,row==vectors.back())
+					results.append(result)
+					if not bool(result.passed):
+						await RenderingServer.frame_post_draw
+						get_viewport().get_texture().get_image().save_png(output+"/"+cap_case+"-gains.png")
+						break
 				await record_tuning_row(results.all(func(row):return row.passed), {"native_source_sha":CAP_SOURCE,"native_vectors_sha256":raw.sha256_text(),"original_native_witnesses":results,"no_wire_or_live_claim":true},language,size,fps)
 	P.set_language(original_language)
 	Game.hero_class = original_hero

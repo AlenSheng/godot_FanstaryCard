@@ -30,6 +30,21 @@ const CAP_TEXT := {
 	"ja": {"not_applicable":"このクラスには適用されません（上限超過ではありません）", "inactive_affix":"セット未発動（上限超過ではありません）", "resistance_stage":"属性耐性の上限は60%。超過分で有効耐性は増えません。", "draw_stage":"装備のみのドロー間隔を表示。戦闘では装備と一時加速を合わせて1.8〜6秒に制限し、その後PVEのドロー阻害変換で間隔を半減します。終了すると元に戻ります。", "shield_stage":"シールド上限はクラス基本HPの半分。要求量・実効量・超過量は別々に記録します。"},
 	"ko": {"not_applicable":"이 직업에는 적용되지 않음 (상한 초과가 아님)", "inactive_affix":"세트 비활성 (상한 초과가 아님)", "resistance_stage":"속성 저항 상한은 60%이며 초과분은 유효 저항을 늘리지 않습니다.", "draw_stage":"장비만의 드로우 간격입니다. 전투에서는 장비와 임시 가속을 합쳐 1.8~6초로 제한한 뒤 PVE 드로우 차단 변환이 간격을 절반으로 줄입니다. 종료되면 복원됩니다.", "shield_stage":"보호막 상한은 직업 기본 체력의 절반입니다. 요청량, 유효량, 초과량을 따로 기록합니다."}
 }
+const STAT_TEXT := {
+	"zh-CN": {"damage":"%s元素增伤", "resistance":"%s元素抗性", "bulwark_shield_percent":"载壁 · 护盾增益", "bulwark_reduction_percent":"载壁 · 减伤", "piercing_percent":"破击 · 附加直伤", "vitality_heal_percent":"生息 · 回复增益", "vitality_overcap_percent":"生息 · 生命上限增益", "forced_escape":"强制逃脱"},
+	"zh-TW": {"damage":"%s元素增傷", "resistance":"%s元素抗性", "bulwark_shield_percent":"載壁 · 護盾增益", "bulwark_reduction_percent":"載壁 · 減傷", "piercing_percent":"破擊 · 附加直傷", "vitality_heal_percent":"生息 · 回復增益", "vitality_overcap_percent":"生息 · 生命上限增益", "forced_escape":"強制逃脫"},
+	"en": {"damage":"%s Damage Bonus", "resistance":"%s Resistance", "bulwark_shield_percent":"Bulwark · Shield Bonus", "bulwark_reduction_percent":"Bulwark · Damage Reduction", "piercing_percent":"Piercing · Bonus Direct Damage", "vitality_heal_percent":"Vitality · Healing Bonus", "vitality_overcap_percent":"Vitality · Max Health Bonus", "forced_escape":"Forced Escape"},
+	"ja": {"damage":"%s属性ダメージ増加", "resistance":"%s属性耐性", "bulwark_shield_percent":"防壁 · シールド増加", "bulwark_reduction_percent":"防壁 · ダメージ軽減", "piercing_percent":"貫通 · 追加直接ダメージ", "vitality_heal_percent":"活力 · 回復増加", "vitality_overcap_percent":"活力 · 最大HP増加", "forced_escape":"強制脱出"},
+	"ko": {"damage":"%s 속성 피해 증가", "resistance":"%s 속성 저항", "bulwark_shield_percent":"방벽 · 보호막 증가", "bulwark_reduction_percent":"방벽 · 피해 감소", "piercing_percent":"관통 · 추가 직접 피해", "vitality_heal_percent":"생명력 · 회복 증가", "vitality_overcap_percent":"생명력 · 최대 체력 증가", "forced_escape":"강제 탈출"}
+}
+
+static func stat_name(key: String) -> String:
+	if key == "interval_seconds": return text("interval")
+	var language: String = P.language()
+	var words: Dictionary = STAT_TEXT.get(language, STAT_TEXT.get(language.get_slice("-", 0), STAT_TEXT.en))
+	for prefix in ["damage_", "resistance_"]:
+		if key.begins_with(prefix): return str(words[prefix.trim_suffix("_")]) % P.word(key.trim_prefix(prefix))
+	return str(words.get(key, P.word(key)))
 
 static func text(key: String) -> String:
 	var lang: String = P.language()
@@ -97,7 +112,7 @@ static func show_compare(host: Control, loadout: Array, selected: Dictionary, up
 			var b: Dictionary = current.get(key, {"raw":0.0,"effective":0.0,"excess":0.0})
 			if is_zero_approx(float(a.raw)) and is_zero_approx(float(b.raw)): continue
 			var scale: float = 1.0 if key == "interval_seconds" else 100.0
-			var label: String = text("interval") if key == "interval_seconds" else P.word(str(key))
+			var label: String = stat_name(str(key))
 			lines.append("%s\n  %.2f / %.2f / %.2f → %.2f / %.2f / %.2f  (%+.2f)" % [label, float(a.raw)*scale, float(a.effective)*scale, float(a.excess)*scale, float(b.raw)*scale, float(b.effective)*scale, float(b.excess)*scale, (float(b.effective)-float(a.effective))*scale])
 			if str(b.get("status", "Active")) == "NotApplicable": lines.append(text("not_applicable"))
 			elif str(b.get("status", "Active")) == "Inactive": lines.append(text("inactive_affix"))
