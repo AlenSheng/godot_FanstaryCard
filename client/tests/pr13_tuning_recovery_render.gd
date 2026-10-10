@@ -3,11 +3,12 @@ extends "res://tests/pr13_element_marginal_render.gd"
 @export var tuning_case := "PR13-B08.3-T01"
 const TUNING_VECTORS := "res://tests/data/tuning_recovery_native.json"
 const NATIVE_SOURCE := "014a601c9a72a8bd2aec357e56a349914f6613f4"
+const EquipmentDetails = preload("res://ui/equipment_details.gd")
 var tuning_checks := 0
 
 func chosen(row: Dictionary) -> bool:
-	var high := row.recipe in ["water-first","same-core-with-counter","ordinary-plus-conflict"]
-	var vitality := high or row.recipe in ["direct-before-tuning","non-core-tuning"]
+	var high: bool = row.recipe in ["water-first","same-core-with-counter","ordinary-plus-conflict"]
+	var vitality: bool = high or row.recipe in ["direct-before-tuning","non-core-tuning"]
 	return int(row.weapon_level) == (5 if high else 0) and row.equipment_profile == ("VitalitySet" if vitality else "Empty")
 
 func project_before(row: Dictionary) -> void:
@@ -28,7 +29,7 @@ func project_before(row: Dictionary) -> void:
 
 func inspect_preview(row: Dictionary) -> Dictionary:
 	var actual: Dictionary = Game.combat_preview
-	var exact := actual.get("authoritative", false) == true
+	var exact: bool = actual.get("authoritative", false) == true
 	for key in row.expected:
 		if key == "core_element": exact = exact and actual.get(key, "") == row.expected[key]
 		else: exact = exact and absf(float(actual.get(key, 0)) - float(row.expected[key])) < .000001
@@ -39,7 +40,7 @@ func inspect_preview(row: Dictionary) -> Dictionary:
 	if int(row.expected.heal) > 0: displayed = displayed and texts.has("%s +%s" % [P.localized("battle_preview_heal"), int(row.expected.heal)])
 	var formula_visible := panel != null
 	if float(row.expected.resonance_multiplier) > 1: formula_visible = formula_visible and panel.tooltip_text.contains(P.localized("exploration_preview_multiplier") % float(row.expected.resonance_multiplier))
-	if int(row.expected.conflict_pair_count) > 0: formula_visible = formula_visible and panel.tooltip_text.contains(P.localized("exploration_preview_conflict") % [int(row.expected.conflict_pair_count), Details.percent(float(row.expected.conflict_cancellation))])
+	if int(row.expected.conflict_pair_count) > 0: formula_visible = formula_visible and panel.tooltip_text.contains(P.localized("exploration_preview_conflict") % [int(row.expected.conflict_pair_count), EquipmentDetails.percent(float(row.expected.conflict_cancellation))])
 	return {"authoritative_values_exact":exact,"headline_visible":texts.has(headline),"effective_recovery_visible":displayed,"formula_preserved_in_tooltip":formula_visible,"visible_texts":texts,"passed":exact and displayed and formula_visible}
 
 func render_witness(row: Dictionary) -> Dictionary:
@@ -89,7 +90,7 @@ func scroll_details(scroll: ScrollContainer, label: Label) -> Dictionary:
 		await get_tree().process_frame
 		var clip := scroll.get_global_rect().intersection(get_viewport().get_visible_rect())
 		var first: float = label.get_global_rect().position.y
-		var height := float(label.get_line_height(0))*label.get_global_scale().y
+		var height: float = float(label.get_line_height(0))*label.get_global_transform_with_canvas().get_scale().y
 		var visible_lines: Array = []
 		for index in range(label.get_line_count()):
 			var rect := Rect2(label.get_global_rect().position.x,first+height*index,label.get_global_rect().size.x,height)
