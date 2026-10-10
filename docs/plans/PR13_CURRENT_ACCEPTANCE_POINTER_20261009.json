@@ -15,22 +15,28 @@
     "acceptance_states_unchanged": true
   },
   "latest_development": {
-    "implementation_source_sha": "e371315d283f581819d7090b606dc529f61d26fa",
-    "native_execution_source_sha": "e371315d283f581819d7090b606dc529f61d26fa",
-    "analysis_source_sha": "e371315d283f581819d7090b606dc529f61d26fa",
     "task_ids": [
       "PR13-B08.2"
     ],
-    "stage_report": "docs/reports/pr13-stages-20261009/S3-b08-element-marginal/summary.json",
-    "statistics_stage_report": "docs/reports/pr13-stages-20261009/S4-b08-element-marginal/summary.json",
-    "development_status": "Native pilot and boundaries passed; full experiment and renderer pending",
-    "native_encounter_rows": 288,
+    "implementation_source_sha": "4ae9311db3982b0ec902e1e0cb6daf8eeb931d3d",
+    "native_execution_source_sha": "e371315d283f581819d7090b606dc529f61d26fa",
+    "analysis_source_sha": "b5fe354ba3a7dac2c96a615a3509251a32d8071d",
+    "stage_report": "docs/reports/pr13-stages-20261009/S5-b08-element-marginal/summary.json",
+    "render_stage_report": "docs/reports/pr13-stages-20261009/S3-b08-element-render/summary.json",
+    "development_status": "Full native experiment and all original display checks passed; renderer shutdown resource diagnosis pending",
+    "native_encounter_rows": 288000,
+    "paired_encounters": 144000,
     "native_boundary_rows": 9,
     "native_boundary_events": 30,
-    "full_experiment_pending": true,
-    "canonical_render_pending": true,
+    "actual_render_rows": 54,
+    "rendered_state_checks": 1080,
+    "full_experiment_pending": false,
+    "canonical_render_pending": false,
+    "shutdown_resource_diagnostic_pending": true,
     "evidence_coverage_ready": false,
-    "main_acceptance_not_granted": true
+    "main_acceptance_not_granted": true,
+    "raw_data_primary_storage": "local_G_drive",
+    "acceptance_states_unchanged": true
   },
   "development_history": [
     {
@@ -202,6 +208,24 @@
       "evidence_coverage_ready": true,
       "main_acceptance_not_granted": true,
       "github_ci_not_started": "AccountBilling"
+    },
+    {
+      "implementation_source_sha": "e371315d283f581819d7090b606dc529f61d26fa",
+      "native_execution_source_sha": "e371315d283f581819d7090b606dc529f61d26fa",
+      "analysis_source_sha": "e371315d283f581819d7090b606dc529f61d26fa",
+      "task_ids": [
+        "PR13-B08.2"
+      ],
+      "stage_report": "docs/reports/pr13-stages-20261009/S3-b08-element-marginal/summary.json",
+      "statistics_stage_report": "docs/reports/pr13-stages-20261009/S4-b08-element-marginal/summary.json",
+      "development_status": "Native pilot and boundaries passed; full experiment and renderer pending",
+      "native_encounter_rows": 288,
+      "native_boundary_rows": 9,
+      "native_boundary_events": 30,
+      "full_experiment_pending": true,
+      "canonical_render_pending": true,
+      "evidence_coverage_ready": false,
+      "main_acceptance_not_granted": true
     }
   ],
   "evidence_storage_policy": "docs/plans/PR13_EVIDENCE_STORAGE_POLICY_20261010.json"
