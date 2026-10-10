@@ -16,36 +16,24 @@
   },
   "latest_development": {
     "task_ids": [
-      "PR13-B08.4"
+      "PR13-B09.1"
     ],
-    "implementation_source_sha": "8ff06ef8fff0ed592fae52facca680ddf9a5b8a7",
-    "native_execution_source_sha": "8ff06ef8fff0ed592fae52facca680ddf9a5b8a7",
-    "stage_report": "docs/reports/pr13-stages-20261009/S3-b08-cap-effective/summary.json",
-    "native_contract_rows": 864,
-    "client_display_data_rows": 864,
-    "native_contract_passed": true,
+    "implementation_source_sha": "feeb8ac2ee517945f235d8f5571f79cb713948f5",
+    "domain_execution_source_sha": "26aa9cd31fe8fa5fd016cb6efc8972039cd5f30d",
+    "wire_execution_source_sha": "feeb8ac2ee517945f235d8f5571f79cb713948f5",
+    "stage_report": "docs/reports/pr13-stages-20261009/S3-b09-pool-baseline/summary.json",
+    "native_offline_and_original_wire_checks_passed": true,
+    "raw_original_rows": 27567,
     "canonical_render_pending": true,
     "formal_experiment_pending": true,
-    "evidence_coverage_ready": false,
-    "integration_dependency": "PR13-B08.3",
+    "integration_dependencies": [
+      "PR13-B02.4",
+      "PR13-B03.4"
+    ],
     "integration_promotion_allowed": false,
     "main_acceptance_not_granted": true,
-    "raw_data_primary_storage": "local_G_drive",
     "acceptance_states_unchanged": true,
-    "render_implementation_source_sha": "b6e70250a905de0cb94413b1e0fd20ea001c8daf",
-    "renderer_diagnostics_report": "docs/reports/pr13-stages-20261009/S3-b08-cap-render-diagnostics/summary.json",
-    "render_full_matrix_state": "FailedDeadlineDeferred",
-    "passed_short_probe_rows": 1,
-    "S4_review_pending": true,
-    "experiment_tool_source_sha": "b0423bfe6fedc3f034ba12c8400df5ebb8713f32",
-    "experiment_native_source_sha": "b0423bfe6fedc3f034ba12c8400df5ebb8713f32",
-    "experiment_analysis_source_sha": "b0423bfe6fedc3f034ba12c8400df5ebb8713f32",
-    "experiment_pilot_report": "docs/reports/pr13-stages-20261009/S3-b08-cap-encounter-pilot/summary.json",
-    "experiment_pilot_encounters": 720,
-    "experiment_pilot_casts": 33606,
-    "experiment_pilot_ticks": 583820,
-    "full_experiment_state": "Running",
-    "full_expected_encounters": 720000
+    "raw_data_primary_storage": "local_G_drive"
   },
   "development_history": [
     {
@@ -331,6 +319,39 @@
       "render_full_matrix_state": "FailedDeadlineDeferred",
       "passed_short_probe_rows": 1,
       "S4_review_pending": true
+    },
+    {
+      "task_ids": [
+        "PR13-B08.4"
+      ],
+      "implementation_source_sha": "8ff06ef8fff0ed592fae52facca680ddf9a5b8a7",
+      "native_execution_source_sha": "8ff06ef8fff0ed592fae52facca680ddf9a5b8a7",
+      "stage_report": "docs/reports/pr13-stages-20261009/S3-b08-cap-effective/summary.json",
+      "native_contract_rows": 864,
+      "client_display_data_rows": 864,
+      "native_contract_passed": true,
+      "canonical_render_pending": true,
+      "formal_experiment_pending": true,
+      "evidence_coverage_ready": false,
+      "integration_dependency": "PR13-B08.3",
+      "integration_promotion_allowed": false,
+      "main_acceptance_not_granted": true,
+      "raw_data_primary_storage": "local_G_drive",
+      "acceptance_states_unchanged": true,
+      "render_implementation_source_sha": "b6e70250a905de0cb94413b1e0fd20ea001c8daf",
+      "renderer_diagnostics_report": "docs/reports/pr13-stages-20261009/S3-b08-cap-render-diagnostics/summary.json",
+      "render_full_matrix_state": "FailedDeadlineDeferred",
+      "passed_short_probe_rows": 1,
+      "S4_review_pending": true,
+      "experiment_tool_source_sha": "b0423bfe6fedc3f034ba12c8400df5ebb8713f32",
+      "experiment_native_source_sha": "b0423bfe6fedc3f034ba12c8400df5ebb8713f32",
+      "experiment_analysis_source_sha": "b0423bfe6fedc3f034ba12c8400df5ebb8713f32",
+      "experiment_pilot_report": "docs/reports/pr13-stages-20261009/S3-b08-cap-encounter-pilot/summary.json",
+      "experiment_pilot_encounters": 720,
+      "experiment_pilot_casts": 33606,
+      "experiment_pilot_ticks": 583820,
+      "full_experiment_state": "Running",
+      "full_expected_encounters": 720000
     }
   ],
   "evidence_storage_policy": "docs/plans/PR13_EVIDENCE_STORAGE_POLICY_20261010.json",
