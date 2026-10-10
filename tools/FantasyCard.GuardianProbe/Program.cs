@@ -56,6 +56,7 @@ internal static class GuardianProbe
                         PreviewAndReject(trace);
                         CapAndFivePlays(trace);
                         RestorePvpAndLeave(trace, map);
+                        Require(trace.Passed, "Required sequence observations are incomplete.");
                     }
                     catch (Exception error)
                     {
@@ -89,12 +90,14 @@ internal static class GuardianProbe
         var ids = new[] { player.Combat.Deck.Hand[0].InstanceId };
         var before = trace.State("room-before-preview", room.Capture());
         CombatResolution? first = null;
+        var previewStates = new List<string>();
         for (var index = 0; index < 10; index++)
         {
             var preview = room.PreviewCards(player.PlayerId, player.Pve!.BattleId, "fixture-monster", ids, room.Revision, Now);
             Require(Hash(room.Capture()) == before, "Preview changed the full room state.");
             if (first is not null) Require(Hash(preview) == Hash(first), "Repeated preview changed its result.");
             first = preview;
+            previewStates.Add(Hash(room.Capture()));
         }
         var rejects = new List<object>();
         foreach (var fault in new[] { "missing-target", "future-revision", "duplicate-instances", "missing-instance" })
@@ -112,7 +115,7 @@ internal static class GuardianProbe
         var after = trace.State("room-after-commit", room.Capture());
         Reject(() => room.PlayCards(player.PlayerId, player.Pve.BattleId, "fixture-monster", ids, room.Revision, Now));
         Require(Hash(room.Capture()) == after, "Reusing a spent instance changed the room.");
-        trace.Add("PR13-B07.3-T01", "preview-and-rejections", new { previews = 10, before, after, rejects,
+        trace.Add("PR13-B07.3-T01", "preview-and-rejections", new { previews = 10, preview_state_sha256 = previewStates, before, after, rejects,
             spent_instance = ids[0], spent_instance_rejected = true, resolution = actual, remainder = player.Combat.GuardianShieldRemainderTenths });
     }
 
@@ -161,6 +164,7 @@ internal static class GuardianProbe
         var snapshot = room.Capture(); var serialized = JsonSerializer.Serialize(snapshot);
         room = BattleRoom.Restore(RoundTrip(snapshot), Catalog, trace.Seed + 1);
         Require(Hash(room.Capture()) == Hash(snapshot), "Room JSON restore differs from saved state.");
+        var restoredRoomJson = JsonSerializer.Serialize(room.Capture());
         player = room.GetPlayer(player.PlayerId);
         var opponent = Id(trace.Seed, trace.Level, 45);
         room.AddPlayer(new(opponent, HeroClass.Mage, Enumerable.Repeat("common-01", 20).ToArray(), null));
@@ -169,12 +173,13 @@ internal static class GuardianProbe
         var result = room.PlayCards(player.PlayerId, duel.DuelId, opponent.ToString("D"), [player.Combat.Deck.Hand[0].InstanceId], room.Revision, Now);
         var during = trace.State("pvp-work-copy", player.Combat.Capture());
         Require(during != frozen, "The real PVP play did not change its work copy.");
+        var pvpRoomJson = JsonSerializer.Serialize(room.Capture());
         room = BattleRoom.Restore(RoundTrip(room.Capture()), Catalog, trace.Seed + 2);
         room.EndDuelSurvived(duel.DuelId, DuelEndReason.MutualLeave);
         player = room.GetPlayer(player.PlayerId);
         Require(Hash(player.Combat.Capture()) == frozen && Hash(player.Pve!.Capture()) == frozenPve, "PVP return changed frozen PVE combat/battle.");
-        trace.Add("PR13-B07.3-T03", "json-pvp-restoration", new { saved_room_sha256 = Hash(snapshot), saved_room_json = JsonSerializer.Deserialize<JsonElement>(serialized), frozen, frozenPve, during,
-            after = trace.State("pve-after-return", player.Combat.Capture()), pvp_resolution = result });
+        trace.Add("PR13-B07.3-T03", "json-pvp-restoration", new { saved_room_sha256 = Hash(snapshot), saved_room_json = serialized, restored_room_json = restoredRoomJson, pvp_room_json = pvpRoomJson, frozen, frozenPve, during,
+            after = trace.State("pve-after-return", player.Combat.Capture()), after_pve_battle = trace.State("pve-battle-after-return", player.Pve!.Capture()), pvp_resolution = result });
         // Phase injection is explicit boundary setup. The move itself uses the
         // real generated map, legality check, room method and shield clear.
         var movement = Create(trace, 5); room = movement.room; player = movement.player;
@@ -187,12 +192,13 @@ internal static class GuardianProbe
         }).ToArray() };
         room = BattleRoom.Restore(snapshot, Catalog, trace.Seed + 3); player = room.GetPlayer(player.PlayerId);
         var from = player.Position!.Value;
-        var target = room.Map!.GetNeighbors(from).First(next => room.Map.CanMove(from, next));
+        var legalMoves = room.Map!.GetNeighbors(from).Where(next => room.Map.CanMove(from, next)).ToArray();
+        var target = legalMoves[0];
         var beforeMove = trace.State("leave-before", player.Combat.Capture());
         room.MovePlayerAndPair(player.PlayerId, target, room.Revision, Now);
         Require(player.Position == target && player.Combat.Shield == 0 && player.Combat.GuardianShieldRemainderTenths == 0, "Legal movement failed to clear shield and remainder.");
         trace.Add("PR13-B07.3-T03", "legal-map-leave", new { from, target, beforeMove,
-            after = trace.State("leave-after", player.Combat.Capture()), generated_map_seed = trace.Seed, action_bar_phase_injected = true });
+            after = trace.State("leave-after", player.Combat.Capture()), legal_moves = legalMoves, actual_position = player.Position, generated_map_seed = trace.Seed, action_bar_phase_injected = true });
     }
 
     private static (BattleRoom room, RoomPlayerState player) Create(Trace trace, int tag)
