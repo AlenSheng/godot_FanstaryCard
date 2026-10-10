@@ -1,8 +1,8 @@
 {
   "kind": "current_execution_register_pointer",
-  "current_register": "docs/reports/pr13-stages-20261009/S6-after-b08-control/register.json",
+  "current_register": "docs/reports/pr13-stages-20261009/S6-after-b08-control-render/register.json",
   "integration_source_sha": "497c97b0a777eb5ee88ecb1bd37cee4626fac495",
-  "previous_register": "docs/reports/pr13-stages-20261009/S6-after-b07-authoritative-render/register.json",
+  "previous_register": "docs/reports/pr13-stages-20261009/S6-after-b08-control/register.json",
   "whole_scope_accepted": false,
   "human_experience_in_scope": false,
   "execution_policy": {
@@ -15,18 +15,23 @@
     "acceptance_states_unchanged": true
   },
   "latest_development": {
-    "implementation_source_sha": "90713f2fc032178fdcb2cc26b479070bb822ccaa",
+    "implementation_source_sha": "f478b790ea03139bd5c42cf415c54576a730de71",
     "native_execution_source_sha": "90713f2fc032178fdcb2cc26b479070bb822ccaa",
-    "analysis_source_sha": "90713f2fc032178fdcb2cc26b479070bb822ccaa",
+    "case_execution_source_shas": {
+      "PR13-B08.1-T01": "f478b790ea03139bd5c42cf415c54576a730de71",
+      "PR13-B08.1-T02": "f478b790ea03139bd5c42cf415c54576a730de71",
+      "PR13-B08.1-T03": "f478b790ea03139bd5c42cf415c54576a730de71"
+    },
     "task_ids": [
       "PR13-B08.1"
     ],
-    "stage_report": "docs/reports/pr13-stages-20261009/S5-b08-control-contract/summary.json",
-    "canonical_experiment_cases_passed": 3,
-    "native_control_rows": 54000,
-    "actual_control_events": 486000,
-    "canonical_render_pending": true,
-    "acceptance_state": "Partial",
+    "stage_report": "docs/reports/pr13-stages-20261009/S5-b08-control-render/summary.json",
+    "canonical_render_cases_passed": 3,
+    "actual_render_rows": 54,
+    "rendered_state_checks": 3240,
+    "development_status_checks": 54,
+    "canonical_render_pending": false,
+    "evidence_coverage_ready": true,
     "main_acceptance_not_granted": true,
     "github_ci_not_started": "AccountBilling"
   },
@@ -161,6 +166,22 @@
       "rendered_state_checks": 8208,
       "canonical_render_pending": false,
       "evidence_coverage_ready": true,
+      "main_acceptance_not_granted": true,
+      "github_ci_not_started": "AccountBilling"
+    },
+    {
+      "implementation_source_sha": "90713f2fc032178fdcb2cc26b479070bb822ccaa",
+      "native_execution_source_sha": "90713f2fc032178fdcb2cc26b479070bb822ccaa",
+      "analysis_source_sha": "90713f2fc032178fdcb2cc26b479070bb822ccaa",
+      "task_ids": [
+        "PR13-B08.1"
+      ],
+      "stage_report": "docs/reports/pr13-stages-20261009/S5-b08-control-contract/summary.json",
+      "canonical_experiment_cases_passed": 3,
+      "native_control_rows": 54000,
+      "actual_control_events": 486000,
+      "canonical_render_pending": true,
+      "acceptance_state": "Partial",
       "main_acceptance_not_granted": true,
       "github_ci_not_started": "AccountBilling"
     }
