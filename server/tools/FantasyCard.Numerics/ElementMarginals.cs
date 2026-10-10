@@ -13,6 +13,7 @@ internal static class ElementMarginals
 {
     internal static readonly string[] Replacements = ["ET-WOOD-G", "ET-EARTH-G", "ET-METAL-G", "ET-WATER-G"];
     private static readonly string[] Groups = ["O1", "O6", "E1", "BOSS"];
+    private static readonly string[] PrimaryMetrics = ["Damage30", "ImmediateCardsDrawn", "ObservedAliveControlUnionTicks", "EffectiveHeal", "EffectiveShield", "HealOverflow", "ShieldOverflow"];
     public static int Run(string[] args)
     {
         string Option(string name, string fallback)
@@ -40,7 +41,7 @@ internal static class ElementMarginals
         Write(Path.Combine(output, "manifest.json"), new { schema = "actual_element_marginals_v1", source_sha = sha, seed_start = start, samples, block_index = block,
             heroes = heroes.Select(h => h.ToString()), groups, alternatives, card_level = 0, weapon_level = 0, strategy = "basic", cutoff_seconds = 600,
             config_version = config.Version, baseline_card = "ET-FIRE-G", paired_budget_guard_passed = true, candidate_activation = false,
-            primary_metrics = new[] { "Damage30", "ImmediateCardsDrawn", "ObservedAliveControlUnionTicks", "EffectiveHeal", "EffectiveShield", "HealOverflow", "ShieldOverflow" },
+            primary_metrics = PrimaryMetrics,
             draws_scope = "ImmediateCardsDrawn is actual on-play hand arrivals, including charge conversions; RequestedImmediateCards is the immediate request only. No inferred immediate-only overflow.",
             control_scope = "Observed live-target union clips each post-play target timer to the actual next 100ms observation tick; sums independent targets, not printed durations.",
             scope = "Actual encounter simulation with one same-quality Green replacement and fixed resource budget; not a full expedition, LIVE, human or capacity proof.",
