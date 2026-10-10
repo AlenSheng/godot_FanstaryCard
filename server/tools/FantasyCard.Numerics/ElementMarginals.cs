@@ -46,7 +46,8 @@ internal static class ElementMarginals
             control_scope = "Observed live-target union clips each post-play target timer to the actual next 100ms observation tick; sums independent targets, not printed durations.",
             scope = "Actual encounter simulation with one same-quality Green replacement and fixed resource budget; not a full expedition, LIVE, human or capacity proof.",
             tune_table = config.Cards.Where(c => Replacements.Append("ET-FIRE-G").Contains(c.CardId)).Select(c => new { c.CardId, c.Quality, c.Rarity, c.UnlockCost, c.Effect }),
-            baseline_decks = decks.Select(p => new { hero = p.Key.ToString(), cards = p.Value, budget = CombatExperience.Budget(config, p.Value) }) });
+            baseline_decks = decks.Select(p => new { hero = p.Key.ToString(), cards = p.Value,
+                budget = new { rarity = CombatExperience.Budget(config, p.Value).Rarity, unlock_cost = CombatExperience.Budget(config, p.Value).UnlockCost } }) });
         var rawPath = Path.Combine(output, "encounters.jsonl.gz");long rawBytes = 0;var rows = 0;var errors = 0;
         using var digest = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
         using (var file = new FileStream(rawPath, FileMode.CreateNew))
