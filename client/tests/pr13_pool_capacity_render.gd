@@ -15,12 +15,13 @@ class PoolGateway extends CodecGateway:
 func pointer(control: Control) -> bool:
 	if control==null or not control.is_visible_in_tree(): return false
 	var viewport: Viewport = control.get_viewport()
-	var point: Vector2 = viewport.get_screen_transform()*control.get_global_transform_with_canvas()*(control.size*.5)
-	pool_traces.append({"control":str(control.get_path()),"screen_point":[point.x,point.y],"route":"Input.parse_input_event motion/down/up"})
+	var point: Vector2 = control.get_global_transform_with_canvas()*(control.size*.5)
+	viewport.notify_mouse_entered()
+	pool_traces.append({"control":str(control.get_path()),"viewport_point":[point.x,point.y],"route":"Control viewport push_input motion/down/up","window_id":control.get_window().get_window_id()})
 	var motion := InputEventMouseMotion.new()
 	motion.position = point
 	motion.global_position = point
-	Input.parse_input_event(motion)
+	viewport.push_input(motion,true)
 	await get_tree().process_frame
 	for pressed in [true,false]:
 		var event := InputEventMouseButton.new()
@@ -29,19 +30,20 @@ func pointer(control: Control) -> bool:
 		event.pressed = pressed
 		event.position = point
 		event.global_position = point
-		Input.parse_input_event(event)
+		viewport.push_input(event,true)
 		await get_tree().process_frame
 	return true
 
-func key_input(code: int) -> void:
+func key_input(code: int, target: Window) -> void:
 	for pressed in [true,false]:
 		var event := InputEventKey.new()
 		event.keycode = code
 		event.physical_keycode = code
 		event.pressed = pressed
+		event.window_id = target.get_window_id() if target.get_window_id()>=0 else get_window().get_window_id()
 		Input.parse_input_event(event)
 		await get_tree().process_frame
-	pool_traces.append({"route":"Input.parse_input_event key press/release","key":code})
+	pool_traces.append({"route":"Input.parse_input_event targeted window key press/release","key":code,"window_id":target.get_window_id(),"embedded":target.is_embedded(),"focused":target.has_focus()})
 
 func snapshot(row: Dictionary, tag: String) -> Dictionary:
 	var codec := Proto.new()
@@ -86,6 +88,7 @@ func witness(row: Dictionary, language: String, size: Vector2i, fps: int, delay:
 	await RenderingServer.frame_post_draw
 	var dialog := dialog_under($UI)
 	var geometry := false
+	var window_geometry: Dictionary = {}
 	var labels: Array = []
 	var picture := ""
 	var picture_ok := not capture
@@ -93,8 +96,9 @@ func witness(row: Dictionary, language: String, size: Vector2i, fps: int, delay:
 	var replacement_selected := false
 	var submitted := false
 	if dialog!=null:
-		var embedded: bool = dialog.get_parent().get_viewport().gui_embed_subwindows
+		var embedded: bool = dialog.is_embedded()
 		var bounds := Rect2(Vector2.ZERO if embedded else Vector2(get_window().position),Vector2(size))
+		window_geometry = {"embedded":embedded,"dialog_position":[dialog.position.x,dialog.position.y],"dialog_size":[dialog.size.x,dialog.size.y],"root_position":[get_window().position.x,get_window().position.y],"root_size":[get_window().size.x,get_window().size.y],"viewport_size":[dialog.get_visible_rect().size.x,dialog.get_visible_rect().size.y],"pixel_size":[dialog.get_texture().get_image().get_width(),dialog.get_texture().get_image().get_height()],"window_id":dialog.get_window_id()}
 		geometry = bounds.encloses(Rect2(Vector2(dialog.position),Vector2(dialog.size)))
 		for label in dialog.find_children("*","Label",true,false):
 			if label.is_visible_in_tree() and not label.text.is_empty():
@@ -111,8 +115,9 @@ func witness(row: Dictionary, language: String, size: Vector2i, fps: int, delay:
 			var options: Array = dialog.find_children("*","OptionButton",true,false)
 			if not options.is_empty():
 				await pointer(options[0])
-				await key_input(KEY_DOWN)
-				await key_input(KEY_ENTER)
+				var popup: PopupMenu = options[0].get_popup()
+				await key_input(KEY_DOWN,popup)
+				await key_input(KEY_ENTER,popup)
 				replacement_selected = options[0].selected==1 and take!=null and not take.disabled
 			submitted = await pointer(take)
 		elif pool_case.ends_with("T03"):
@@ -138,7 +143,7 @@ func witness(row: Dictionary, language: String, size: Vector2i, fps: int, delay:
 	var all_text: bool = not labels.is_empty() and labels.all(func(label):return label.inside and label.all_lines_visible)
 	var passed: bool = entered and dialog!=null and geometry and all_text and picture_ok and submitted and exact and unchanged_until_response and after_exact and closed
 	if pool_case.ends_with("T02"): passed=passed and initially_disabled and replacement_selected
-	return {"case_id":pool_case,"hero":pool_hero,"capacity":pool_capacity,"native_source_sha":row.source_sha,"seed":row.actual.seed,"cycle":cycle,"language":language,"resolution":[size.x,size.y],"frame_cap":fps,"controlled_response_delay_ms":delay,"entry_clicked":entered,"dialog_inside_window":geometry,"labels":labels,"full_accept_initially_disabled":initially_disabled,"actual_replacement_selected":replacement_selected,"command_exact":exact,"state_unchanged_until_response":unchanged_until_response,"original_after_pool_applied":after_exact,"closed_after_actual_click":closed,"input_traces":pool_traces.duplicate(true),"screenshot":picture,"diagnostic_only":pool_probe,"request_header_projection_only":true,"passed":passed}
+	return {"case_id":pool_case,"hero":pool_hero,"capacity":pool_capacity,"native_source_sha":row.source_sha,"seed":row.actual.seed,"cycle":cycle,"language":language,"resolution":[size.x,size.y],"frame_cap":fps,"controlled_response_delay_ms":delay,"entry_clicked":entered,"dialog_inside_window":geometry,"window_geometry":window_geometry,"labels":labels,"full_accept_initially_disabled":initially_disabled,"actual_replacement_selected":replacement_selected,"command_exact":exact,"state_unchanged_until_response":unchanged_until_response,"original_after_pool_applied":after_exact,"closed_after_actual_click":closed,"input_traces":pool_traces.duplicate(true),"screenshot":picture,"diagnostic_only":pool_probe,"request_header_projection_only":true,"passed":passed}
 
 func _run() -> void:
 	DirAccess.make_dir_recursive_absolute(output)
