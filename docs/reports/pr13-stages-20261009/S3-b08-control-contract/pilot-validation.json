@@ -1,0 +1,38 @@
+{
+  "ok": true,
+  "source_sha": "90713f2fc032178fdcb2cc26b479070bb822ccaa",
+  "native_rows_verified": 18,
+  "native_events_verified": 162,
+  "full_experiment": false,
+  "canonical_experiment_acceptance": false,
+  "analysis_tool_sha256": "d186edbf2554a5bee8f74ff5012c9275ec0f643860b943fd6a036b8e765ec98f",
+  "controls": {
+    "ok": true,
+    "native_corruption_controls": [
+      {
+        "control": "missing-event",
+        "passed": true
+      },
+      {
+        "control": "same-instant-overlap",
+        "passed": true
+      },
+      {
+        "control": "eight-second-boundary",
+        "passed": true
+      },
+      {
+        "control": "target-independence",
+        "passed": true
+      },
+      {
+        "control": "frozen-pve-return",
+        "passed": true
+      },
+      {
+        "control": "gzip-crc",
+        "passed": true
+      }
+    ]
+  }
+}
