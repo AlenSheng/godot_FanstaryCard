@@ -19,7 +19,7 @@ func project_before(row: Dictionary) -> void:
 	assert(row.before_state.sha256_text() == row.before_state_sha256)
 	Game.room.match_id = native.RoomId
 	Game.room.config_version = native.ConfigVersion
-	Game.room.player.phase = "Exploring"
+	Game.room.player.phase = "Pve"
 	Game.room.player.library_count = native.Players[0].Combat.Deck.Library.size()
 	Game.room.player.discard_count = native.Players[0].Combat.Deck.Discard.size()
 	Game.selected_cards = []
@@ -47,7 +47,7 @@ func render_witness(row: Dictionary) -> Dictionary:
 	await project_before(row)
 	var order_checks: Array = []
 	for index in range(row.selected_cards.size()):
-		var clicked := await click_named("Card_" + row.selected_cards[index])
+		var clicked := await click_tuning_node("Card_" + row.selected_cards[index])
 		order_checks.append(clicked and Game.selected_cards == row.ids.slice(0,index+1))
 	var codec := Proto.new()
 	var envelope: Dictionary = codec.decode("ServerEnvelope", Marshalls.base64_to_raw(row.response_wire))
@@ -69,6 +69,13 @@ func render_witness(row: Dictionary) -> Dictionary:
 	return {"hero":row.hero,"weapon_level":row.weapon_level,"equipment_profile":row.equipment_profile,"recipe":row.recipe,"selected_instance_order":selected_order,"actual_mouse_selection_checks":order_checks,"native_before_sha256":row.before_state_sha256,"native_after_sha256":row.after_state_sha256,"original_protocol_decoded":codec.error.is_empty(),"preview":preview,"after_commit_display":after,"passed":order_checks.all(func(value):return value) and codec.error.is_empty() and preview.passed and after.passed and battle_saved}
 
 var last_battle_witness: Dictionary = {}
+
+func click_tuning_node(name: String) -> bool:
+	var button: Button = $UI._reference.find_child(name,true,false) as Button
+	if button==null or not button.is_visible_in_tree() or button.disabled: return false
+	var point := button.get_global_transform_with_canvas()*(button.size*.5)
+	await click_viewport(point)
+	return true
 
 func record_tuning_row(passed: bool, actual: Dictionary, language: String, size: Vector2i, fps: int) -> void:
 	await get_tree().process_frame
@@ -120,7 +127,7 @@ func card_details_check(id: String) -> Dictionary:
 	$UI._quality = ""
 	$UI.owned = [{"cardId":id,"level":0,"copyCount":1,"unlocked":true,"version":1,"craftCost":1,"currencyKind":"WarriorSoul","canDismantle":false}]
 	await present()
-	var opened := await click_named("Card_"+id)
+	var opened := await click_tuning_node("Card_"+id)
 	await get_tree().process_frame
 	await RenderingServer.frame_post_draw
 	var label: Label = $UI._reference.find_child("CardFullEffect",true,false) as Label
@@ -136,7 +143,7 @@ func card_details_check(id: String) -> Dictionary:
 	var image_saved := true
 	if P.language()=="en" and get_window().size.x==960 and Engine.max_fps==60:
 		image_saved = get_viewport().get_texture().get_image().save_png(output+"/"+tuning_case+"-"+id+"-details.png")==OK
-	var close: Button = $UI._reference.get_node_or_null("CardDetails/CloseCardDetails")
+	var close: Button = $UI._reference.find_child("CloseCardDetails",true,false) as Button
 	var closed := false
 	if close != null:
 		await click_viewport(close.get_global_transform_with_canvas()*(close.size*.5))
