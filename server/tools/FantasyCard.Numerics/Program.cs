@@ -3,6 +3,11 @@ using System.Text.Json;
 using FantasyCard.Domain.Configuration;
 using FantasyCard.Domain.Rooms;
 
+if (args.Contains("--element-marginals", StringComparer.Ordinal))
+{
+    return ElementMarginals.Run(args);
+}
+
 if (args.Contains("--preview-vectors", StringComparer.Ordinal))
 {
     return PreviewVectors.Run(args);

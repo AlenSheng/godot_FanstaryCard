@@ -138,7 +138,7 @@ internal static class CombatExperience
         return summary.ErrorCount == 0 ? 0 : 1;
     }
 
-    private static Dictionary<string, string[]> CreateDecks(GameConfigCatalog config, HeroClass hero)
+    internal static Dictionary<string, string[]> CreateDecks(GameConfigCatalog config, HeroClass hero)
     {
         var prefix = hero switch { HeroClass.Mage => "MAG", HeroClass.Priest => "PRI", _ => "GUA" };
         var current = Enumerable.Range(1, 13).Select(i => $"C{i:D2}")
@@ -168,11 +168,11 @@ internal static class CombatExperience
         return result;
     }
 
-    private static (int Rarity, int UnlockCost) Budget(GameConfigCatalog config, string[] deck) =>
+    internal static (int Rarity, int UnlockCost) Budget(GameConfigCatalog config, string[] deck) =>
         (deck.Sum(id => config.Cards.Single(card => card.CardId == id).Rarity),
          deck.Sum(id => config.Cards.Single(card => card.CardId == id).UnlockCost));
 
-    private static void ValidateDeck(GameConfigCatalog config, HeroClass hero, string[] deck)
+    internal static void ValidateDeck(GameConfigCatalog config, HeroClass hero, string[] deck)
     {
         var owned = config.Cards.Where(card => card.Enabled && card.IsCodex && card.MonsterType is null)
             .ToDictionary(card => card.CardId, card => new OwnedCard(card.CardId, card.HeroClass,
@@ -180,9 +180,9 @@ internal static class CombatExperience
         DeckRules.Validate(hero, deck, owned);
     }
 
-    private static EncounterSample Simulate(GameConfigCatalog config, CombatCardCatalog catalog,
+    internal static EncounterSample Simulate(GameConfigCatalog config, CombatCardCatalog catalog,
         HeroClass hero, string deckName, string[] deck, string group, string strategy, string profile,
-        NumericalRules rules, int seed, int block, int limit, int weaponLevel)
+        NumericalRules rules, int seed, int block, int limit, int weaponLevel, bool marginalAudit = false)
     {
         var row = new EncounterSample(seed, block, hero.ToString(), deckName, group, strategy, profile);
         try
@@ -266,7 +266,18 @@ internal static class CombatExperience
                             preview = room.PreviewCards(player.PlayerId, pve.BattleId, target.MonsterId, ids, room.Revision, now);
                             if (before != JsonSerializer.Serialize(room.Capture(), Json)) throw new InvalidOperationException("Preview mutated the room.");
                         }
+                        var controlBefore = target.StunRemaining.Ticks;
                         var result = room.PlayCards(player.PlayerId, pve.BattleId, target.MonsterId, ids, room.Revision, now);
+                        if (marginalAudit)
+                        {
+                            row.RequestedImmediateCards += result.ImmediateDraw;
+                            row.RequestedHeal += draft.Heal;
+                            row.RequestedShield += draft.Shield;
+                            row.RequestedControlTicks += TimeSpan.FromSeconds(definitions.Max(card => card.Effect.StunSeconds)).Ticks;
+                            row.ConvertedControlTicks += draft.Stun.Ticks;
+                            row.AdmittedControlTicks += TimeSpan.FromSeconds(result.StunSeconds).Ticks;
+                            if (!target.IsDead) row.AddedAliveControlUnionTicks += Math.Max(0, target.StunRemaining.Ticks - controlBefore);
+                        }
                         if (preview is not null && (preview.Damage != result.Damage || preview.HpDamage != result.HpDamage ||
                             preview.ShieldDamage != result.ShieldDamage || preview.Heal != result.Heal ||
                             preview.ShieldGain != result.ShieldGain || preview.CoreElement != result.CoreElement ||
@@ -299,6 +310,13 @@ internal static class CombatExperience
                 if (time <= 30) row.Damage30 = damage;
                 if (time <= 60) row.Damage60 = damage;
                 var handBeforeAdvance = player.Combat.Deck.Hand.Select(card => card.InstanceId).ToHashSet();
+                if (marginalAudit && player.Phase == RoomPlayerPhase.Pve)
+                foreach (var monster in pve.Monsters.Where(monster => !monster.IsDead))
+                {
+                    var observed = Math.Min(tick.Ticks, monster.StunRemaining.Ticks);
+                    row.ObservedAliveControlUnionTicks += observed;
+                    row.ControlUnionTicksByTarget[monster.MonsterId] = row.ControlUnionTicksByTarget.GetValueOrDefault(monster.MonsterId) + observed;
+                }
                 room.Advance(tick, DateTimeOffset.UnixEpoch.AddSeconds(time + .1));
                 if (firstWindupExtra > TimeSpan.Zero)
                 foreach (var monster in pve.Monsters)
@@ -469,6 +487,15 @@ internal sealed class EncounterSample(int seed, int seedBlock, string hero, stri
     public int ZeroEffectiveActions { get; set; }
     public int CardsSpent { get; set; }
     public int ImmediateCardsDrawn { get; set; }
+    public int RequestedImmediateCards { get; set; }
+    public int RequestedHeal { get; set; }
+    public int RequestedShield { get; set; }
+    public long RequestedControlTicks { get; set; }
+    public long ConvertedControlTicks { get; set; }
+    public long AdmittedControlTicks { get; set; }
+    public long AddedAliveControlUnionTicks { get; set; }
+    public long ObservedAliveControlUnionTicks { get; set; }
+    public Dictionary<string, long> ControlUnionTicksByTarget { get; } = new(StringComparer.Ordinal);
     public int NaturalCardsDrawn { get; set; }
     public int EffectiveHeal { get; set; }
     public int EffectiveShield { get; set; }
