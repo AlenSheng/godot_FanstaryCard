@@ -1,0 +1,90 @@
+{
+  "source_sha": "8cb953dc49474c2cdbe6a643621fd57e02f7659a",
+  "runtime_revision": "bf516e07a01ad4dc03320155396a152fae46e1ea",
+  "runtime_image": "sha256:246bab3c3368e431db09f5e2565d8d35b03c7bf9cf04b0b64001821aed6b8bd6",
+  "fault_scenario_passed": true,
+  "actual_online_and_active_at_injection": 10,
+  "injected_forwarding_exit": true,
+  "injection_to_stop_seconds": 0.29514,
+  "stop_before_replacement_connection": true,
+  "replacement_connection_cleanup_only": true,
+  "replacement_connections": 1,
+  "cleanup_forwarding_ready": true,
+  "all_10_client_cleanups_passed": true,
+  "process_cleanup_complete": true,
+  "business_cleanup_verified": true,
+  "forced_player_or_coordinator_terminations": 0,
+  "original_coordinator_exit_code": 130,
+  "original_test_acceptance": false,
+  "original_stop_reason": "operator_stop_file",
+  "natural_cycles": 0,
+  "client_final_error_count": 0,
+  "raw_rejections_retained": [
+    {
+      "action": "room.snapshot.read",
+      "phase": "matchmaking"
+    },
+    {
+      "action": "room.snapshot.read",
+      "phase": "matchmaking"
+    },
+    {
+      "action": "room.snapshot.read",
+      "phase": "matchmaking"
+    },
+    {
+      "action": "room.snapshot.read",
+      "phase": "matchmaking"
+    },
+    {
+      "action": "room.snapshot.read",
+      "phase": "matchmaking"
+    },
+    {
+      "action": "room.snapshot.read",
+      "phase": "matchmaking"
+    }
+  ],
+  "cloud_audit": {
+    "actual": {
+      "pending_holds": 0,
+      "active_match_players": 0,
+      "settlements": 10,
+      "ledger_rows": 0
+    },
+    "read_only": true,
+    "execution_host": "Tencent cloud"
+  },
+  "cloud_services_removed": {
+    "server": true,
+    "prometheus": true,
+    "otel": true,
+    "postgres": true
+  },
+  "known_currency_reconciliation_passed": true,
+  "cloud_archive": {
+    "bytes": 32971,
+    "sha256": "ff7bb1cff9c1eaac90df1a47ef6031dc523d2864cce8bcb2236aed77ad5a3b23",
+    "files_verified": 15
+  },
+  "local_archive": {
+    "bytes": 651831,
+    "sha256": "3cf7d1001acfe54d7b3cee755cbea43ff2fbfb24494ed607bb4b0a080fabf691",
+    "files_verified": 57
+  },
+  "frozen_policy": {
+    "memory_floor_bytes": 500000000,
+    "per_launch_reserve_bytes": 67108864,
+    "cpu_stop_percent": 85,
+    "disk_available_stop_percent": 15,
+    "actor_wait_p95_stop_ms": 100,
+    "http_p95_limit_ms": 5000,
+    "command_p95_limit_ms": 8000,
+    "health_limit_ms": 10000,
+    "monitor_timeout_seconds": 10,
+    "missing_monitoring_stops_test": true
+  },
+  "network_resets_eliminated_claim": false,
+  "capacity_accepted": false,
+  "whole_scope_accepted": false
+}
