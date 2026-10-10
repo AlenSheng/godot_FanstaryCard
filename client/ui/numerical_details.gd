@@ -2,6 +2,13 @@ extends RefCounted
 
 const P = preload("res://ui/palette.gd")
 const Model = preload("res://ui/equipment_compare_model.gd")
+const GUARDIAN_IMPACT := {
+	"zh-CN": {"title":"武器额外护盾：逐档对照", "columns":"武器等级 | 当前台阶 | 小数均值 | 变化", "row":"+%d | %.1f | %.1f | %+.1f", "warning":"+2、+4 档的武器额外盾均值下降；+1 改善不能抵消这些档位的下降。", "scope":"仅为武器额外盾均值；实际获得的盾受生命、牌面取整和护盾上限影响，不代表所有等级的生存提升。"},
+	"zh-TW": {"title":"武器額外護盾：逐檔對照", "columns":"武器等級 | 目前階梯 | 小數均值 | 變化", "row":"+%d | %.1f | %.1f | %+.1f", "warning":"+2、+4 檔武器額外盾均值下降；+1 改善不能抵銷這些檔位的下降。", "scope":"僅為武器額外盾均值；實際護盾受生命、牌面取整與護盾上限影響，不代表所有等級的生存提升。"},
+	"en": {"title":"Extra weapon shield: each level", "columns":"Weapon level | Current steps | Fractional mean | Change", "row":"+%d | %.1f | %.1f | %+.1f", "warning":"Levels +2 and +4 have lower mean extra weapon shield. The gain at +1 does not offset those declines.", "scope":"Weapon bonus means only. Health, card rounding and the shield cap affect usable shield; this does not imply better survival at every level."},
+	"ja": {"title":"武器追加シールド：レベル別比較", "columns":"武器レベル | 現行段階 | 小数平均 | 変化", "row":"+%d | %.1f | %.1f | %+.1f", "warning":"+2・+4 の武器追加シールド平均は低下します。+1 の改善で他のレベルの低下は相殺されません。", "scope":"武器追加分の平均のみ。HP、カードの切り捨て、シールド上限が有効量に影響し、全レベルの生存改善を意味しません。"},
+	"ko": {"title":"무기 추가 보호막: 레벨별 비교", "columns":"무기 레벨 | 기존 단계 | 소수 평균 | 변화", "row":"+%d | %.1f | %.1f | %+.1f", "warning":"+2, +4 레벨의 무기 추가 보호막 평균은 감소합니다. +1의 개선이 다른 레벨의 감소를 상쇄하지 않습니다.", "scope":"무기 추가량 평균만 표시합니다. 체력, 카드 버림, 보호막 한도가 유효량에 영향을 주며 모든 레벨의 생존 향상을 뜻하지 않습니다."}
+}
 const TEXT := {
 	"zh-CN": {"title":"实际数值收益", "hint":"装备模拟预览；最终以服务端为准。非盾职业不享受载壁减伤。", "upgrade":"此装备强化前 → 强化后（假设穿戴）", "compare":"当前穿戴 → 替换后", "columns":"属性：理论值 / 生效值 / 超上限；随后为变化", "interval":"抽牌间隔（秒，越低越快）", "inactive":"未激活", "weapon":"专属盾余量：%d / 10", "unsupported":"红装独有词缀未开放，本面板不推算其效果。"},
 	"zh-TW": {"title":"實際數值收益", "hint":"裝備模擬預覽；最終以伺服器為準。非盾職業不享受載壁減傷。", "upgrade":"此裝備強化前 → 強化後（假設穿戴）", "compare":"目前穿戴 → 替換後", "columns":"屬性：理論值 / 生效值 / 超上限；隨後為變化", "interval":"抽牌間隔（秒，越低越快）", "inactive":"未啟動", "weapon":"專屬盾餘量：%d / 10", "unsupported":"紅裝專有詞綴未開放，本面板不推算其效果。"},
@@ -75,7 +82,20 @@ static func show_compare(host: Control, loadout: Array, selected: Dictionary, up
 
 static func show_remainder(host: Control) -> void:
 	var state: Dictionary = Game.room.get("player", {}).get("numerical_state", {})
-	show_lines(host, PackedStringArray([text("weapon") % int(state.get("guardian_remainder_tenths", 0)), str(state.get("guardian_policy", "CurrentSteps"))]))
+	var lines := PackedStringArray([text("weapon") % int(state.get("guardian_remainder_tenths", 0))])
+	if state.get("guardian_policy", "CurrentSteps") == "FractionalRemainder":
+		var labels: Dictionary = GUARDIAN_IMPACT.get(P.language(), GUARDIAN_IMPACT["zh-CN"])
+		lines.append("")
+		lines.append(labels.title)
+		lines.append(labels.columns)
+		var current := [1.0, 1.0, 2.0, 2.0, 3.0, 3.0]
+		var mean := [1.0, 1.4, 1.8, 2.2, 2.6, 3.0]
+		for level in range(6):
+			lines.append(labels.row % [level, current[level], mean[level], mean[level] - current[level]])
+		lines.append("")
+		lines.append(labels.warning)
+		lines.append(labels.scope)
+	show_lines(host, lines)
 
 static func show_lines(host: Control, lines: PackedStringArray) -> void:
 	var dialog := AcceptDialog.new()
@@ -83,6 +103,7 @@ static func show_lines(host: Control, lines: PackedStringArray) -> void:
 	dialog.min_size = Vector2i(850, 500)
 	var scroll := ScrollContainer.new()
 	scroll.custom_minimum_size = Vector2(820, 460)
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	var label := Label.new()
 	label.text = "\n".join(lines)
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
