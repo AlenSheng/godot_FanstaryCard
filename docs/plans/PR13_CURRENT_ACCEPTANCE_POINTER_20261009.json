@@ -1,8 +1,8 @@
 {
   "kind": "current_execution_register_pointer",
-  "current_register": "docs/reports/pr13-stages-20261009/S6-after-b10-render/register.json",
+  "current_register": "docs/reports/pr13-stages-20261009/S6-after-b02-preview-postgres/register.json",
   "integration_source_sha": "497c97b0a777eb5ee88ecb1bd37cee4626fac495",
-  "previous_register": "docs/reports/pr13-stages-20261009/S6-development-first/register.json",
+  "previous_register": "docs/reports/pr13-stages-20261009/S6-after-b10-render/register.json",
   "whole_scope_accepted": false,
   "human_experience_in_scope": false,
   "execution_policy": {
@@ -15,15 +15,14 @@
     "acceptance_states_unchanged": true
   },
   "latest_development": {
-    "implementation_source_sha": "68a6dd1dece06cae4ef126ee3e856d0bf02904c9",
+    "implementation_source_sha": "5a760e6d92a1123d70a9b73babb4abbb3ea6da9f",
     "task_ids": [
-      "PR13-B10.1",
-      "PR13-B10.2",
-      "PR13-B10.3"
+      "PR13-B02.3"
     ],
-    "stage_report": "docs/reports/pr13-stages-20261009/S3-b10-required-render/summary.json",
-    "canonical_render_cases_passed": 9,
-    "actual_rendered_rows_passed": 54,
+    "stage_report": "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/summary.json",
+    "canonical_postgres_cases_passed": 3,
+    "native_pg_rows_passed": 6,
+    "client_checks_passed": 8,
     "evidence_coverage_ready": true,
     "main_acceptance_not_granted": true
   },
@@ -63,6 +62,19 @@
       "actual_gui_input_and_render_matrix_passed": true,
       "acceptance_states_not_upgraded": true,
       "resolved_visual_followup": "Selected-card preview no longer intersects or intercepts monster target buttons."
+    },
+    {
+      "implementation_source_sha": "68a6dd1dece06cae4ef126ee3e856d0bf02904c9",
+      "task_ids": [
+        "PR13-B10.1",
+        "PR13-B10.2",
+        "PR13-B10.3"
+      ],
+      "stage_report": "docs/reports/pr13-stages-20261009/S3-b10-required-render/summary.json",
+      "canonical_render_cases_passed": 9,
+      "actual_rendered_rows_passed": 54,
+      "evidence_coverage_ready": true,
+      "main_acceptance_not_granted": true
     }
   ]
 }
