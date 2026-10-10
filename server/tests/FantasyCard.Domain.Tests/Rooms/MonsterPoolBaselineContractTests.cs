@@ -15,7 +15,7 @@ public sealed class MonsterPoolBaselineContractTests
 {
     private static readonly int[] Seeds = [450001, 451001, 452001];
     private static readonly string[] Groups = ["O1", "O2", "O3", "O4", "O5", "O6", "O7", "O8", "M1", "M2", "M3", "M4", "M5", "E1", "E2", "E3", "E4", "E5", "E6", "BOSS"];
-    private static readonly IReadOnlyDictionary<string, string> Species = new Dictionary<string, string>
+    private static readonly Dictionary<string, string> Species = new()
     {
         ["fire-bat"] = "FireBat", ["thorn-mite"] = "ThornMite", ["murk-snail"] = "MudHydra",
         ["sand-lizard"] = "SandLizard", ["rust-rat"] = "RustRat", ["box-spirit"] = "BoxSpirit",
@@ -136,7 +136,7 @@ public sealed class MonsterPoolBaselineContractTests
             var expected = GameConfigCatalog.Current.Cards.Single(c => c.MonsterType == Species[species]);
             var result = room.PlayCards(player.PlayerId, pve.BattleId, source, [card.InstanceId], room.Revision, DateTimeOffset.UnixEpoch);
             Assert.True(result.TargetDefeated); Assert.True(monster.IsDead);
-            var after = All(player.Combat.Deck).ToArray(); var granted = Assert.Single(after.Where(c => before.All(old => old.InstanceId != c.InstanceId)));
+            var after = All(player.Combat.Deck).ToArray(); var granted = Assert.Single(after, c => before.All(old => old.InstanceId != c.InstanceId));
             Assert.Equal(expected.CardId, granted.CardId); Assert.Equal(0, granted.Level); Assert.Contains(granted, player.Combat.Deck.Discard);
             Assert.Equal(species == "box-spirit" ? monster.Intents[0].Element : (CardElement?)null, granted.ElementOverride);
             Assert.All(before, old => Assert.Contains(old, after)); Assert.Equal(before.Length + 1, after.Length);
