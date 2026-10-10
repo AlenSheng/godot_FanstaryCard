@@ -91,4 +91,9 @@ func _run() -> void:
 	var cases := [{"case_id":marginal_case,"executed":true,"status":"Passed" if passed else "Failed","profiles_executed":["OFFLINE","RENDER"],"actual":{"matrix_rows":18,"native_variants_per_row":3,"rendered_state_checks":marginal_states},"scope":"Actual client UI displays original Room.PlayCards boundary snapshots; all budget-matched arms and classes retained at frozen sample time. No LIVE, hardware FPS or full experiment claim."}]
 	var result := {"ok":passed and observations.size() == 18 and DisplayServer.get_name() != "headless","cases":cases,"observations":observations,"rendered_state_checks":marginal_states,"native_source_sha":data.source_sha,"native_vectors_sha256":raw.sha256_text(),"display_driver":DisplayServer.get_name(),"adapter":RenderingServer.get_video_adapter_name()}
 	FileAccess.open(output + "/native-result.json", FileAccess.WRITE).store_string(JSON.stringify(result))
+	# Finish queued view destruction and draw work before the test process exits.
+	$UI.queue_free()
+	await get_tree().process_frame
+	await RenderingServer.frame_post_draw
+	await get_tree().process_frame
 	get_tree().quit(0 if result.ok else 1)
