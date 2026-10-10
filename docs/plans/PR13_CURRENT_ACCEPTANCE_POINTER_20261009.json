@@ -1,8 +1,8 @@
 {
   "kind": "current_execution_register_pointer",
-  "current_register": "docs/reports/pr13-stages-20261009/S6-development-first/register.json",
+  "current_register": "docs/reports/pr13-stages-20261009/S6-after-b10-render/register.json",
   "integration_source_sha": "497c97b0a777eb5ee88ecb1bd37cee4626fac495",
-  "previous_register": "docs/reports/pr13-stages-20261009/S6-current-after-real-source-audit/register.json",
+  "previous_register": "docs/reports/pr13-stages-20261009/S6-development-first/register.json",
   "whole_scope_accepted": false,
   "human_experience_in_scope": false,
   "execution_policy": {
@@ -15,16 +15,17 @@
     "acceptance_states_unchanged": true
   },
   "latest_development": {
-    "implementation_source_sha": "4be450696ba42d647aa9a6dbb4a9c3f767ccef30",
+    "implementation_source_sha": "68a6dd1dece06cae4ef126ee3e856d0bf02904c9",
     "task_ids": [
       "PR13-B10.1",
-      "PR13-B10.4",
-      "PR13-B11.4"
+      "PR13-B10.2",
+      "PR13-B10.3"
     ],
-    "stage_report": "docs/reports/pr13-stages-20261009/S3-target-preview-overlap/summary.json",
-    "actual_gui_input_and_render_matrix_passed": true,
-    "acceptance_states_not_upgraded": true,
-    "resolved_visual_followup": "Selected-card preview no longer intersects or intercepts monster target buttons."
+    "stage_report": "docs/reports/pr13-stages-20261009/S3-b10-required-render/summary.json",
+    "canonical_render_cases_passed": 9,
+    "actual_rendered_rows_passed": 54,
+    "evidence_coverage_ready": true,
+    "main_acceptance_not_granted": true
   },
   "development_history": [
     {
@@ -50,6 +51,18 @@
       "actual_rendered_matrix_passed": true,
       "acceptance_states_not_upgraded": true,
       "next_action": "核对并修复选牌预览与目标按钮相交，再验证真实 GUI 指针选择。"
+    },
+    {
+      "implementation_source_sha": "4be450696ba42d647aa9a6dbb4a9c3f767ccef30",
+      "task_ids": [
+        "PR13-B10.1",
+        "PR13-B10.4",
+        "PR13-B11.4"
+      ],
+      "stage_report": "docs/reports/pr13-stages-20261009/S3-target-preview-overlap/summary.json",
+      "actual_gui_input_and_render_matrix_passed": true,
+      "acceptance_states_not_upgraded": true,
+      "resolved_visual_followup": "Selected-card preview no longer intersects or intercepts monster target buttons."
     }
   ]
 }
