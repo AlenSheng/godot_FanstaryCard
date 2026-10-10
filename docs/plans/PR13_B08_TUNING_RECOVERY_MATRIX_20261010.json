@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "task_id": "PR13-B08.3",
+  "date": "2026-10-10",
+  "stage": "S0",
+  "execution_policy": "development_first",
+  "prerequisite": {"task_id": "PR13-B08.2", "current_state": "Partial", "integration_promotion_allowed": false},
+  "candidate_activation": false,
+  "profiles_required": ["OFFLINE", "EXPERIMENT", "RENDER"],
+  "execution_location": "Tencent cloud",
+  "primary_evidence_storage": "local G drive",
+  "seed_blocks": [410001, 411001, 412001],
+  "heroes": ["Mage", "Priest", "Guardian"],
+  "weapon_levels": [0, 1, 2, 3, 4, 5],
+  "hp_boundaries": ["one", "quarter", "half", "full"],
+  "encounter_groups": ["O1", "O6", "E1", "BOSS"],
+  "equipment_profiles": [
+    {"id": "Empty", "items": []},
+    {"id": "VitalitySet", "slots": ["Head", "Chest", "Hands"], "quality": "White", "level": 0, "element": "Fire", "effect_affix": "Vitality"}
+  ],
+  "deck_recipe": {"common_cards": ["C01", "C02", "C03", "C04", "C05", "C06", "C07", "C08", "C09", "C10", "C11", "C15", "ET-FIRE-G", "ET-WATER-G"], "class_cards": "Current hero prefix MAG/PRI/GUA, 01 through 06", "unique_cards": 20, "card_level": 0, "ownership": "One enabled codex copy per card, validated by current DeckRules"},
+  "recipes": [
+    {"case_id": "PR13-B08.3-T01", "id": "tuning-first", "selection": ["ET-FIRE-G", "C01", "C06"]},
+    {"case_id": "PR13-B08.3-T01", "id": "water-first", "selection": ["C06", "ET-FIRE-G", "C01"]},
+    {"case_id": "PR13-B08.3-T01", "id": "direct-before-tuning", "selection": ["C11", "ET-FIRE-G", "C01", "C06"]},
+    {"case_id": "PR13-B08.3-T02", "id": "same-core-no-counter", "selection": ["ET-FIRE-G", "C01", "C02"]},
+    {"case_id": "PR13-B08.3-T02", "id": "same-core-with-counter", "selection": ["ET-FIRE-G", "C01", "C02", "C06"]},
+    {"case_id": "PR13-B08.3-T02", "id": "non-core-tuning", "selection": ["C01", "C02", "ET-WATER-G"]},
+    {"case_id": "PR13-B08.3-T03", "id": "conflict-only", "selection": ["C01", "C06"]},
+    {"case_id": "PR13-B08.3-T03", "id": "ordinary-plus-conflict", "selection": ["C01", "C06", "C15"]}
+  ],
+  "expected_native_rows": 13824,
+  "native_validation": ["Actual owned hand instances and conserved twenty-card pool", "Current real equipment calculation", "Original selected order survives C# client codec, actual realtime router and server codec", "Server preview is pure and equals actual Room.PlayCards", "Independent first-eligible/R/P/K/E0 and separate heal rounding oracle", "Godot decodes the original C# wire and compares its preview with the native result"],
+  "experiment_scope": "Exhaustive controlled contract matrix with three seeds, not a balance hypothesis test or representative win-rate estimate; artificial hand, HP and high-HP target boundaries are explicitly recorded.",
+  "render_matrix": {"languages": ["zh-CN", "en"], "sizes": [[1920,1080], [1280,720], [960,540]], "target_fps": [30,60,144], "canonical_cases": 3, "expected_matrix_rows": 54, "hardware_fps_claim": false},
+  "budgets": {"memory_floor_bytes": 500000000, "disk_free_ratio": 0.15, "native_container_memory_mib": 950, "native_cpu_limit": 1, "temporary_RAM_bytes": 536870912, "raw_evidence_bytes": 268435456, "native_deadline_seconds": 1200, "renderer_deadline_seconds_per_case": 600},
+  "human_experience_in_scope": false,
+  "capacity_tests_deferred": true,
+  "main_acceptance_granted": false
+}
