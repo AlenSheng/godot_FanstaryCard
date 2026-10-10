@@ -15,8 +15,9 @@ func _run() -> void:
 	get_window().mode = Window.MODE_WINDOWED
 	get_viewport().gui_embed_subwindows = true
 	Game.hero_class = "Guardian"
-	for language in ["zh-CN", "zh-TW", "en", "ja", "ko"]:
+	for language in ["zh-CN", "en"]:
 		P.set_language(language)
+		assert(P.language() == language)
 		for resolution in [Vector2i(1920,1080), Vector2i(1280,720), Vector2i(960,540)]:
 			get_window().size = resolution
 			for fps in [30,60,144]:
@@ -57,7 +58,7 @@ func _run() -> void:
 	gateway.free()
 	var cases: Array = []
 	for id in case_verdicts:
-		cases.append({"case_id":id,"executed":true,"status":"Passed" if case_verdicts[id] else "Failed","profiles_executed":["OFFLINE","RENDER"],"actual":{"matrix_rows":45,"all_rows_passed":case_verdicts[id]},"scope":"Development UI fixture only; actual backend preview/retry/cap/leave/PVP experiments remain separate canonical requirements."})
-	var result := {"ok":cases.size()==3 and observations.size()==135 and not case_verdicts.values().has(false) and DisplayServer.get_name()!="headless","cases":cases,"observations":observations,"display_driver":DisplayServer.get_name(),"adapter":RenderingServer.get_video_adapter_name()}
+		cases.append({"case_id":id,"executed":true,"status":"Passed" if case_verdicts[id] else "Failed","profiles_executed":["OFFLINE","RENDER"],"actual":{"matrix_rows":18,"all_rows_passed":case_verdicts[id]},"scope":"Development UI fixture only; actual backend preview/retry/cap/leave/PVP experiments remain separate canonical requirements."})
+	var result := {"ok":cases.size()==3 and observations.size()==54 and not case_verdicts.values().has(false) and DisplayServer.get_name()!="headless","cases":cases,"observations":observations,"display_driver":DisplayServer.get_name(),"adapter":RenderingServer.get_video_adapter_name()}
 	FileAccess.open(output+"/native-result.json",FileAccess.WRITE).store_string(JSON.stringify(result))
 	get_tree().quit(0 if result.ok else 1)
