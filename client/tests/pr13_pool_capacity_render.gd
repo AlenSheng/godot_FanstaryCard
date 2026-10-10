@@ -118,6 +118,7 @@ func witness(row: Dictionary, language: String, size: Vector2i, fps: int, delay:
 	await get_tree().process_frame
 	await RenderingServer.frame_post_draw
 	var dialog := dialog_under($UI)
+	var dialog_opened: bool = dialog!=null
 	var geometry := false
 	var window_geometry: Dictionary = {}
 	var labels: Array = []
@@ -176,7 +177,7 @@ func witness(row: Dictionary, language: String, size: Vector2i, fps: int, delay:
 	var after_exact: bool = Game.room.get("player",{}).get("monster_pool",{})==after.player.monster_pool
 	var closed := dialog_under($UI)==null
 	var all_text: bool = not labels.is_empty() and labels.all(func(label):return label.inside and label.all_lines_visible)
-	var passed: bool = entered and dialog!=null and geometry and all_text and picture_ok and submitted and exact and unchanged_until_response and after_exact and closed
+	var passed: bool = entered and dialog_opened and geometry and all_text and picture_ok and submitted and exact and unchanged_until_response and after_exact and closed
 	if pool_case.ends_with("T02"): passed=passed and initially_disabled and replacement_selected
 	return {"case_id":pool_case,"hero":pool_hero,"capacity":pool_capacity,"native_source_sha":row.source_sha,"seed":row.actual.seed,"cycle":cycle,"language":language,"resolution":[size.x,size.y],"frame_cap":fps,"controlled_response_delay_ms":delay,"entry_clicked":entered,"dialog_inside_window":geometry,"window_geometry":window_geometry,"labels":labels,"full_accept_initially_disabled":initially_disabled,"actual_replacement_selected":replacement_selected,"command_exact":exact,"state_unchanged_until_response":unchanged_until_response,"original_after_pool_applied":after_exact,"closed_after_actual_click":closed,"input_traces":pool_traces.duplicate(true),"screenshot":picture,"diagnostic_only":pool_probe,"request_header_projection_only":true,"passed":passed}
 
