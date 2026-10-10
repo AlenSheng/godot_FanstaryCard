@@ -275,7 +275,7 @@ internal static class CombatExperience
                             row.RequestedShield += draft.Shield;
                             row.RequestedControlTicks += TimeSpan.FromSeconds(definitions.Max(card => card.Effect.StunSeconds)).Ticks;
                             row.ConvertedControlTicks += draft.Stun.Ticks;
-                            row.AdmittedControlTicks += TimeSpan.FromSeconds(result.StunSeconds).Ticks;
+                            row.AdmittedControlTicks += (long)Math.Round(result.StunSeconds * TimeSpan.TicksPerSecond);
                             if (!target.IsDead) row.AddedAliveControlUnionTicks += Math.Max(0, target.StunRemaining.Ticks - controlBefore);
                         }
                         if (preview is not null && (preview.Damage != result.Damage || preview.HpDamage != result.HpDamage ||
