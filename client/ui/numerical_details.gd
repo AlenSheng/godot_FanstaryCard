@@ -2,6 +2,13 @@ extends RefCounted
 
 const P = preload("res://ui/palette.gd")
 const Model = preload("res://ui/equipment_compare_model.gd")
+const GUARDIAN_REMAINDER_RULES := {
+	"zh-CN": ["余量按十分之一确定积累，并非随机触发。只有成功出牌才更新；预览、重复请求或被拒绝的操作不增加余量。", "已经满盾或牌面护盾为零时保留余量。本次成功出牌恰好补满或超过护盾上限时，余量清零。", "离开当前格子时，护盾和余量同时清空。"],
+	"zh-TW": ["餘量按十分之一確定累積，並非隨機觸發。只有成功出牌才更新；預覽、重複請求或被拒絕的操作不增加餘量。", "已經滿盾或牌面護盾為零時保留餘量。本次成功出牌恰好補滿或超過護盾上限時，餘量歸零。", "離開目前格子時，護盾和餘量同時清空。"],
+	"en": ["Remainder accumulates deterministically in tenths, without a random trigger. Only a successful play updates it; previews, duplicate requests and rejected actions do not add remainder.", "An already full shield or a card with zero shield keeps the remainder. A successful play that exactly fills or exceeds the shield cap clears it.", "Leaving the current cell clears both shield and remainder."],
+	"ja": ["端数は10分の1単位で確定的に蓄積し、ランダム発動ではありません。成功したプレイだけで更新され、プレビュー・重複要求・拒否された操作では増えません。", "既にシールドが上限に達している場合や、カードのシールドがゼロの場合は端数を保持します。成功したプレイで上限にちょうど達するか超えた場合は端数を消去します。", "現在のマスを離れると、シールドと端数を両方消去します。"],
+	"ko": ["잔여량은 무작위 발동 없이 10분의 1 단위로 확정적으로 누적됩니다. 성공한 카드 사용만 갱신하며 미리보기, 중복 요청, 거부된 행동은 잔여량을 늘리지 않습니다.", "이미 보호막이 가득 찼거나 카드 보호막이 0이면 잔여량을 유지합니다. 성공한 카드 사용으로 한도에 정확히 도달하거나 초과하면 잔여량을 지웁니다.", "현재 칸을 떠나면 보호막과 잔여량이 함께 사라집니다."]
+}
 const GUARDIAN_IMPACT := {
 	"zh-CN": {"title":"武器额外护盾：逐档对照", "columns":"武器等级 | 当前台阶 | 小数均值 | 变化", "row":"+%d | %.1f | %.1f | %+.1f", "warning":"+2、+4 档的武器额外盾均值下降；+1 改善不能抵消这些档位的下降。", "scope":"仅为武器额外盾均值；实际获得的盾受生命、牌面取整和护盾上限影响，不代表所有等级的生存提升。"},
 	"zh-TW": {"title":"武器額外護盾：逐檔對照", "columns":"武器等級 | 目前階梯 | 小數均值 | 變化", "row":"+%d | %.1f | %.1f | %+.1f", "warning":"+2、+4 檔武器額外盾均值下降；+1 改善不能抵銷這些檔位的下降。", "scope":"僅為武器額外盾均值；實際護盾受生命、牌面取整與護盾上限影響，不代表所有等級的生存提升。"},
@@ -85,6 +92,8 @@ static func show_remainder(host: Control) -> void:
 	var lines := PackedStringArray([text("weapon") % int(state.get("guardian_remainder_tenths", 0))])
 	if state.get("guardian_policy", "CurrentSteps") == "FractionalRemainder":
 		var labels: Dictionary = GUARDIAN_IMPACT.get(P.language(), GUARDIAN_IMPACT["zh-CN"])
+		for rule in GUARDIAN_REMAINDER_RULES.get(P.language(), GUARDIAN_REMAINDER_RULES["zh-CN"]):
+			lines.append(str(rule))
 		lines.append("")
 		lines.append(labels.title)
 		lines.append(labels.columns)
