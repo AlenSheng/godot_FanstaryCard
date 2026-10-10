@@ -143,7 +143,7 @@ func cap_witness(row: Dictionary, final_witness: bool, inactive_projection: bool
 		image_saved = get_viewport().get_texture().get_image().save_png(output+"/"+cap_case+"-gains.png")==OK
 	var closed := false
 	if dialog != null:
-		var weak := weakref(dialog)
+		var weak: WeakRef = weakref(dialog)
 		var close_clicked: bool = await cap_button_click(dialog.get_ok_button())
 		await get_tree().process_frame
 		await get_tree().process_frame
