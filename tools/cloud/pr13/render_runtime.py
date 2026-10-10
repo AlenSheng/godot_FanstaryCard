@@ -110,9 +110,12 @@ def build(dockerfile, output):
     return result
 
 
-def render(image, source, inputs, output, scene, *, expected_rows=48, expected_screenshots=8):
+def render(image, source, inputs, output, scene, *, expected_rows=48, expected_screenshots=8,
+           deadline_seconds=180, reserve_output_bytes=64*1024**2):
     if type(expected_rows) is not int or not 1 <= expected_rows <= 5000 or type(expected_screenshots) is not int or not 1 <= expected_screenshots <= 64:
         raise ValueError('Explicit bounded render matrix and screenshot counts required')
+    if type(deadline_seconds) is not int or not 180 <= deadline_seconds <= 900 or type(reserve_output_bytes) is not int or not 16*1024**2 <= reserve_output_bytes <= 256*1024**2:
+        raise ValueError('Explicit bounded software-render deadline and output reservation required')
     if not re.fullmatch(r'sha256:[0-9a-f]{64}', image):
         raise ValueError('Immutable renderer image ID required')
     if not scene.startswith('res://tests/') or not scene.endswith('.tscn') or '..' in scene:
@@ -127,14 +130,14 @@ def render(image, source, inputs, output, scene, *, expected_rows=48, expected_s
         if not path.is_relative_to(source) or sha(path) != digest:
             raise ValueError('Renderer source escaped or changed')
     output.mkdir(parents=True, exist_ok=False)
-    launch = guard(output, reserve_memory=1536*1024**2, reserve_disk=64*1024**2)
+    launch = guard(output, reserve_memory=1536*1024**2, reserve_disk=reserve_output_bytes)
     container = None
     result = {'ok': False, 'render_image': image, 'production_changed': False,
               'scope': 'Cloud software GPU rendered fixture; no hardware FPS, LIVE, human or capacity claim'}
     write(output/'preregistration.json', {'mode': 'render', 'image': image, 'scene': scene,
           'input_manifest_sha256': sha(inputs), 'expected_matrix_rows': expected_rows, 'expected_screenshots': expected_screenshots,
           'network': 'none', 'memory_limit_bytes': 1536*1024**2, 'cpu_cores': 1,
-          'deadline_seconds': 180, 'launch_resources': launch})
+          'deadline_seconds': deadline_seconds, 'reserved_output_bytes': reserve_output_bytes, 'launch_resources': launch})
     try:
         container = docker('run', '-d', '--name', 'pr13-cloud-render-' + uuid.uuid4().hex,
                            '--label', 'codex.task=' + LABEL, '--network', 'none', '--memory', '1536m',
@@ -144,7 +147,7 @@ def render(image, source, inputs, output, scene, *, expected_rows=48, expected_s
                            '-e', 'FANTASYCARD_SERVER_URL=http://127.0.0.1:1',
                            '-e', 'FANTASYCARD_ART_EVIDENCE=/evidence',
                            '-v', str(source/'client')+':/work/client:ro', '-v', str(output)+':/evidence',
-                           image, 'sleep', '240').stdout.strip()
+                           image, 'sleep', str(deadline_seconds+60)).stdout.strip()
         inspect_owned(container)
         command = ['sudo', '-n', 'docker', 'exec', container, 'xvfb-run', '-a', '-s',
                    '-screen 0 1920x1080x24 -nolisten tcp', 'godot', '--path', '/work/client',
@@ -152,7 +155,7 @@ def render(image, source, inputs, output, scene, *, expected_rows=48, expected_s
                    '--audio-driver', 'Dummy', '--max-fps', '30', '--windowed', scene]
         with (output/'engine.log').open('xb') as log:
             process = subprocess.Popen(command, stdout=log, stderr=subprocess.STDOUT)
-            code = wait_process(process, output, time.monotonic()+180)
+            code = wait_process(process, output, time.monotonic()+deadline_seconds)
         text = (output/'engine.log').read_text('utf-8', errors='replace')
         native = json.loads((output/'native-result.json').read_text('utf-8')) if (output/'native-result.json').exists() else {}
         pixels = sorted(output.glob('*.png'))
@@ -161,6 +164,9 @@ def render(image, source, inputs, output, scene, *, expected_rows=48, expected_s
                       display_driver=native.get('display_driver'), adapter=native.get('adapter'))
         result['native_clean'] = not any(marker in text for marker in ['SCRIPT ERROR', 'Parse Error', 'Failed to load script'])
         result['ok'] = code == 0 and result['native_clean'] and result['native_ok'] and result['observations'] == expected_rows and len(pixels) == expected_screenshots and result['display_driver'] != 'headless'
+        result['output_bytes'] = sum(p.stat().st_size for p in output.rglob('*') if p.is_file())
+        result['output_reservation_met'] = result['output_bytes'] <= reserve_output_bytes
+        result['ok'] = result['ok'] and result['output_reservation_met']
     except Exception as error:
         result.update(error=type(error).__name__, detail=str(error))
     finally:
@@ -189,8 +195,10 @@ def main():
     rendering.add_argument('--scene', default='res://tests/pr13_target_wait_frames.tscn')
     rendering.add_argument('--expected-rows', type=int, default=48)
     rendering.add_argument('--expected-screenshots', type=int, default=8)
+    rendering.add_argument('--deadline-seconds', type=int, default=180)
+    rendering.add_argument('--reserve-output-bytes', type=int, default=64*1024**2)
     args = parser.parse_args()
-    result = build(args.dockerfile, args.output) if args.mode == 'build' else render(args.image, args.source, args.inputs, args.output, args.scene, expected_rows=args.expected_rows, expected_screenshots=args.expected_screenshots)
+    result = build(args.dockerfile, args.output) if args.mode == 'build' else render(args.image, args.source, args.inputs, args.output, args.scene, expected_rows=args.expected_rows, expected_screenshots=args.expected_screenshots, deadline_seconds=args.deadline_seconds, reserve_output_bytes=args.reserve_output_bytes)
     print(json.dumps(result))
     return 0 if result['ok'] else 1
 
