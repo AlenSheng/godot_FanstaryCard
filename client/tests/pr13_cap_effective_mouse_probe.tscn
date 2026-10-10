@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3]
+[ext_resource type="Script" path="res://tests/pr13_cap_effective_render.gd" id="1"]
+[ext_resource type="PackedScene" path="res://main.tscn" id="2"]
+[node name="CapEffectiveMouseProbe" type="Node"]
+script = ExtResource("1")
+cap_case = "PR13-B08.4-T01"
+cap_diagnostic_one_row = true
+[node name="UI" parent="." instance=ExtResource("2")]
