@@ -167,6 +167,11 @@ func witness(row: Dictionary, language: String, size: Vector2i, fps: int, delay:
 	if exact:
 		var decoded: Dictionary = codec.decode("MonsterCardChooseCommand",sent[0].wire)
 		exact = codec.error.is_empty() and decoded==expected
+	# Keep the outgoing evidence before applying the authority response, whose
+	# UI refresh can clear the gateway's mutable sent collection.
+	var actual_command_payload: Dictionary = sent[0].payload.duplicate(true) if sent.size()==1 else {}
+	var actual_command_wire: PackedByteArray = sent[0].wire.duplicate() if sent.size()==1 else PackedByteArray()
+	exact = exact and not actual_command_payload.is_empty() and not actual_command_wire.is_empty()
 	var unchanged_until_response: bool = JSON.stringify(Game.room)==JSON.stringify(before)
 	if delay>0: await get_tree().create_timer(float(delay)/1000.0).timeout
 	# The exact original snapshot is the controlled response; request metadata
@@ -180,7 +185,7 @@ func witness(row: Dictionary, language: String, size: Vector2i, fps: int, delay:
 	var all_text: bool = not labels.is_empty() and labels.all(func(label):return label.inside and label.all_lines_visible)
 	var passed: bool = entered and dialog_opened and geometry and all_text and picture_ok and submitted and exact and unchanged_until_response and after_exact and closed
 	if pool_case.ends_with("T02"): passed=passed and initially_disabled and replacement_selected
-	return {"case_id":pool_case,"hero":pool_hero,"capacity":pool_capacity,"native_source_sha":row.source_sha,"seed":row.actual.seed,"cycle":cycle,"native_candidate_id":str(row.actual.candidate.InstanceId),"native_occupancy":row.actual.before.Players[0].MonsterPool.Active.size(),"native_replacement_pile":row.actual.get("pile",""),"actual_command_payload":sent[0].payload if sent.size()==1 else {},"actual_command_wire":Marshalls.raw_to_base64(sent[0].wire) if sent.size()==1 else "","expected_native_wire_payload":Marshalls.raw_to_base64(request.payload),"language":language,"resolution":[size.x,size.y],"frame_cap":fps,"controlled_response_delay_ms":delay,"entry_clicked":entered,"dialog_inside_window":geometry,"window_geometry":window_geometry,"labels":labels,"full_accept_initially_disabled":initially_disabled,"actual_replacement_selected":replacement_selected,"command_exact":exact,"state_unchanged_until_response":unchanged_until_response,"original_after_pool_applied":after_exact,"closed_after_actual_click":closed,"input_traces":pool_traces.duplicate(true),"screenshot":picture,"diagnostic_only":pool_probe,"request_header_projection_only":true,"passed":passed}
+	return {"case_id":pool_case,"hero":pool_hero,"capacity":pool_capacity,"native_source_sha":row.source_sha,"seed":row.actual.seed,"cycle":cycle,"native_candidate_id":str(row.actual.candidate.InstanceId),"native_occupancy":row.actual.before.Players[0].MonsterPool.Active.size(),"native_replacement_pile":row.actual.get("pile",""),"actual_command_payload":actual_command_payload,"actual_command_wire":Marshalls.raw_to_base64(actual_command_wire),"expected_native_wire_payload":Marshalls.raw_to_base64(request.payload),"language":language,"resolution":[size.x,size.y],"frame_cap":fps,"controlled_response_delay_ms":delay,"entry_clicked":entered,"dialog_inside_window":geometry,"window_geometry":window_geometry,"labels":labels,"full_accept_initially_disabled":initially_disabled,"actual_replacement_selected":replacement_selected,"command_exact":exact,"state_unchanged_until_response":unchanged_until_response,"original_after_pool_applied":after_exact,"closed_after_actual_click":closed,"input_traces":pool_traces.duplicate(true),"screenshot":picture,"diagnostic_only":pool_probe,"request_header_projection_only":true,"passed":passed}
 
 func _run() -> void:
 	DirAccess.make_dir_recursive_absolute(output)
