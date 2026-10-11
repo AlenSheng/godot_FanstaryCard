@@ -1,7 +1,7 @@
 """One cloud lease for the B09.4 natural-route development pilot."""
 import fcntl,hashlib,json,os,re,subprocess,time,urllib.request
 from pathlib import Path
-B=Path('/home/ubuntu/pr13-acceptance-20261009');A='b09-continuity-formal-smoke-r2-20261011';OWNER='pr13-cap-'+A;E=B/'evidence'/A;W=B/'work'/A;RAM=Path('/dev/shm/pr13-'+A)
+B=Path('/home/ubuntu/pr13-acceptance-20261009');A='b09-continuity-formal-smoke-r3-20261011';OWNER='pr13-cap-'+A;E=B/'evidence'/A;W=B/'work'/A;RAM=Path('/dev/shm/pr13-'+A)
 IMAGE='sha256:180f524270f6ac28d2fe0ff29707fb392387d7b766f731e41fda1e45e8230520';MEMORY=1024*1024**2;OUTPUT=256*1024**2;FLOOR=500000000
 def require(v,m):
  if not v:raise ValueError(m)

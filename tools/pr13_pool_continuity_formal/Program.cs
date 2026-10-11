@@ -328,7 +328,7 @@ sealed class TypedSession : IAsyncDisposable
     {
         // Instrumentation uses the real public typed snapshot command. These
         // first-seed collector calls are separate from gameplay intent counts.
-        var command = new ClientCommand("room.snapshot", $"collector:{_seed}:{_capacity}:{CollectorSnapshotRequests}", _room.Revision,
+        var command = new ClientCommand("room.snapshot.read", $"collector:{_seed}:{_capacity}:{CollectorSnapshotRequests}", _room.Revision,
             new RoomSnapshotCommandPayload(), _room.RoomId, MatchId);
         var wire = RealtimeProtobufCodec.EncodeClient(command);
         var events = await _router.RouteAsync(PlayerProfile.Create(_owner, "ContinuityFormal", _clock.GetUtcNow()),
