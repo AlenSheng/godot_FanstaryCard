@@ -226,7 +226,7 @@ public sealed class MonsterPoolLegalRouteWireTests
                     Assert.Equivalent(frozen.Pve, returned.Pve, strict: true);
                     Assert.Equivalent(frozen.MonsterPool, returned.MonsterPool, strict: true);
                 }
-                Assert.Single(All(session.Room.GetPlayer(row.OwnerId).Combat.Deck).Where(card => card.InstanceId == row.CandidateId));
+                Assert.Single(All(session.Room.GetPlayer(row.OwnerId).Combat.Deck), card => card.InstanceId == row.CandidateId);
                 AssertBasis(row, session.Room);
             }
 

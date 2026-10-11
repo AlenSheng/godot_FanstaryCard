@@ -16,7 +16,7 @@ def run(name,args,env=None,budget=300,godot=False):
  if godot:assert not any(s.lower() in log.read_text(errors='replace').lower() for s in dirty),'Dirty Godot load/shutdown: '+name
 def native(phase):
  env=os.environ.copy();env['FANTASYCARD_PR13_LEGAL_ROUTE_PHASE']=phase;env['FANTASYCARD_PR13_LEGAL_ROUTE_DIRECTORY']=str(OUT)
- trx=phase+'.trx';run('native-'+phase,['dotnet','test',str(PROJECT),'-c','Release','--no-build','--no-restore','--filter',FILTER,'--results-directory',str(OUT/'test-results'),'--logger','trx;LogFileName='+trx],env,budget=300)
+ trx=phase+'.trx';run('native-'+phase,['dotnet','test',str(PROJECT),'-c','Release','--no-build','--no-restore','--filter',FILTER,'--artifacts-path','/artifacts','--results-directory',str(OUT/'test-results'),'--logger','trx;LogFileName='+trx],env,budget=300)
  ns='{http://microsoft.com/schemas/VisualStudio/TeamTest/2010}'
  counters=ET.parse(OUT/'test-results'/trx).getroot().find(ns+'ResultSummary/'+ns+'Counters').attrib
  assert all(int(counters.get(s,'0'))==0 for s in ('failed','notExecuted','error','timeout','aborted')) and int(counters['passed'])==int(counters['total'])==1
@@ -32,7 +32,7 @@ def godot(mode,batch=None):
  else:assert v['native_rows_received']==72 and v['original_native_frames_received']==189 and v['original_replay_frames_received']==45
  return v
 try:
- run('build',['dotnet','build',str(PROJECT),'-c','Release','-m:1','-p:UseSharedCompilation=false','-p:RestoreIgnoreFailedSources=true','-p:NuGetAudit=false','-p:BuildInParallel=false'],budget=900)
+ run('build',['dotnet','build',str(PROJECT),'-c','Release','-m:1','-p:UseSharedCompilation=false','-p:RestoreIgnoreFailedSources=true','-p:NuGetAudit=false','-p:BuildInParallel=false','--artifacts-path','/artifacts'],budget=900)
  receipts=[native('prepare')]
  for phase in ('kill','choose','final'):godot('encode',phase);receipts.append(native(phase))
  client=godot('receive')
