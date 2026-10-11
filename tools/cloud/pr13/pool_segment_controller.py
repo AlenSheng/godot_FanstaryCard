@@ -31,6 +31,10 @@ CAP_ATTEMPT = 'cap-missing-raw-recovery-r1'
 CAP_OWNER = 'pr13-cap-missing-raw-recovery-r1'
 CAP_UNIT = 'pr13-cap-missing-raw-recovery-mage-e1-water-l5-b0'
 CAP_RAW_UNIT = 'Mage-E1-Water-L5-B0'
+CAP_FULL_GROUP = 'cap-experiment-full-r2'
+CAP_FULL_OWNER = 'pr13-cap-experiment-full-r2'
+CAP_FULL_SOURCE = 'b0423bfe6fedc3f034ba12c8400df5ebb8713f32'
+CAP_FULL_PREFIX = 'pr13-cap-full-r2-'
 MUTABLE_METADATA = {'delivery-manifest.json', 'local-backup-receipt.json',
                     'local-storage-cleanup.json', 'cleanup-intent.json'}
 
@@ -350,10 +354,165 @@ def cap_resource_reservation(root):
         return report
 
 
+def cap_full_cleaned(metadata, output, name, marker):
+    """Release a reservation only from exact retained execution and G evidence."""
+    result = read(metadata / 'result.json')
+    require(result.get('ok') is True and result.get('attempt') == CAP_FULL_OWNER
+            and result.get('unit') == name and result.get('source_sha') == CAP_FULL_SOURCE
+            and result.get('exit_code') == 0 and result.get('oom_killed') is False
+            and result.get('compiled_runtime_unchanged_and_identical_to_original') is True
+            and result.get('source_subset_inputs_unchanged') is True
+            and result.get('owned_container_removed') is True
+            and result.get('main_acceptance_granted') is False
+            and marker.get('result_ok') is True
+            and marker.get('result_path') == str(metadata / 'result.json')
+            and not (metadata / 'finalization-error.json').exists(),
+            'Full cap reservation lacks successful exact native execution')
+    hero, group, element, level, block = name.split('-')
+    block_index = int(block[1:])
+    prereg = read(metadata / 'preregistration.json')
+    expected = {'unit': name, 'hero': hero, 'group': group, 'element': element,
+                'level': int(level[1:]), 'block': block_index,
+                'seed_start': 440001 + block_index * 1000,
+                'seed_end': 441000 + block_index * 1000,
+                'samples_per_arm': 1000, 'expected_encounters': 2000}
+    require(all(prereg.get(key) == value for key, value in expected.items())
+            and prereg.get('source_sha') == CAP_FULL_SOURCE
+            and prereg.get('owner') == CAP_FULL_OWNER
+            and prereg.get('persistent_output_budget_bytes') == marker['persistent_output_budget_bytes'],
+            'Full cap original seed/stratum preregistration differs')
+    manifest_path = metadata / 'delivery-manifest.json'
+    manifest = read(manifest_path)
+    require(manifest.get('kind') == CAP_FULL_GROUP and manifest.get('unit') == name
+            and manifest.get('source_sha') == CAP_FULL_SOURCE and manifest.get('native_encounters') == 2000
+            and manifest.get('whole_task_accepted') is False and manifest.get('files'),
+            'Full cap delivery manifest identity or scope differs')
+    names = set()
+    for row in manifest['files']:
+        member = row['path']
+        require(isinstance(member, str), 'Nonstring full cap member')
+        parts = PurePosixPath(member).parts
+        require(len(parts) >= 2 and not member.startswith('/') and '\\' not in member and ':' not in member
+                and '..' not in parts and '.' not in parts and member not in names
+                and member == PurePosixPath(*parts).as_posix(), 'Unsafe full cap delivery member')
+        names.add(member)
+        if parts[0] == 'metadata':
+            path = metadata.joinpath(*parts[1:])
+            require(path.is_file() and not path.is_symlink() and path.resolve(strict=True).is_relative_to(metadata)
+                    and path.stat().st_size == row['bytes'] and sha(path) == row['sha256'],
+                    'Backed-up full cap execution metadata changed')
+        else:
+            require(len(parts) >= 3 and parts[:2] == ('outputs', name), 'Foreign full cap output member')
+            path = output.joinpath(*parts[2:])
+        require(str(path) == row['source'] and isinstance(row['bytes'], int) and row['bytes'] >= 0
+                and re.fullmatch('[0-9a-f]{64}', row.get('sha256', '')) is not None,
+                'Full cap delivery source/hash/size differs')
+    require({'metadata/result.json', 'metadata/preregistration.json'} <= names,
+            'Full cap manifest omitted original execution evidence')
+    backup = read(metadata / 'local-backup-receipt.json')
+    cleanup = read(metadata / 'local-storage-cleanup.json')
+    flags = ('archive_gzip_CRC_verified', 'all_original_members_sha256_verified',
+             'inner_gzip_CRC_raw_SHA_counts_verified', 'no_native_business_executed_locally')
+    require(backup.get('ok') is True and backup.get('unit') == name and backup.get('source_sha') == CAP_FULL_SOURCE
+            and backup.get('manifest_sha256') == sha(manifest_path)
+            and backup.get('members') == backup.get('members_verified') == len(manifest['files'])
+            and all(backup.get(key) is True for key in flags)
+            and backup.get('raw_encounters_verified') == 2000
+            and backup.get('actual_casts_verified') == manifest['native_casts']
+            and backup.get('actual_ticks_verified') == manifest['native_ticks']
+            and backup.get('raw_events_verified') == manifest['native_casts'] + manifest['native_ticks']
+            and backup.get('whole_task_accepted') is False
+            and re.match(r'^G:[\\/]', backup.get('local_archive', ''), re.IGNORECASE)
+            and re.match(r'^G:[\\/]', backup.get('local_directory', ''), re.IGNORECASE)
+            and re.fullmatch('[0-9a-f]{64}', backup.get('sha256', '')) is not None
+            and isinstance(backup.get('bytes'), int) and backup['bytes'] > 0,
+            'Full cap original G archive/raw evidence gate is incomplete')
+    require(cleanup.get('ok') is True and cleanup.get('unit') == name
+            and cleanup.get('manifest_sha256') == backup['manifest_sha256']
+            and cleanup.get('local_G_archive_sha256') == marker.get('local_G_archive_sha256') == backup['sha256']
+            and cleanup.get('local_G_archive_bytes') == marker.get('local_G_archive_bytes') == backup['bytes']
+            and cleanup.get('output_directory') == str(output) and marker.get('output_cleaned') is True
+            and not output.exists() and not output.is_symlink(),
+            'Full cap exact passed output cleanup is not verified')
+
+
+def cap_full_resource_reservation(root):
+    evidence = root / 'evidence' / CAP_FULL_GROUP
+    units = evidence / 'units'
+    report = {'deferred': False, 'reservation_present': False, 'attempt': CAP_FULL_GROUP,
+              'G_backup_required_before_render': True, 'uncertain_hold': False,
+              'cleaned_reservations_verified': 0}
+    if not evidence.exists() and not evidence.is_symlink():
+        return report
+    try:
+        exact(evidence, root)
+        if not units.exists() and not units.is_symlink():
+            return report
+        exact(units, evidence)
+        for metadata in sorted(units.iterdir()):
+            report.update(reservation_present=True, deferred=True, unit=metadata.name)
+            require(re.fullmatch(r'(Mage|Priest|Guardian)-(O1|O6|E1|BOSS)-(Fire|Wood|Earth|Metal|Water)-L(0|5)-B[012]',
+                                 metadata.name) is not None, 'Foreign full cap reservation unit')
+            exact(metadata, units)
+            output = root / 'work' / CAP_FULL_GROUP / metadata.name
+            exact(output, root, exists=False)
+            marker = read(metadata / 'resource-reservation.json')
+            name = CAP_FULL_PREFIX + metadata.name.lower()
+            budget = marker.get('persistent_output_budget_bytes')
+            require(marker.get('attempt') == CAP_FULL_OWNER and marker.get('unit') == metadata.name
+                    and marker.get('source_sha') == CAP_FULL_SOURCE and marker.get('systemd_unit') == name
+                    and marker.get('output_root') == str(output) and type(budget) is int
+                    and 96 * 1024**2 <= budget <= 512 * 1024**2
+                    and marker.get('reserved_root_bytes') == budget + METADATA_RESERVE,
+                    'Full cap reservation identity/source/budget differs')
+            result = subprocess.run(['systemctl', 'show', name,
+                                     '--property=MainPID,ActiveState,SubState,LoadState,ExecMainStatus'],
+                                    capture_output=True, text=True, timeout=15)
+            require(result.returncode == 0, 'Full cap exact unit could not be inspected')
+            values = dict(line.split('=', 1) for line in result.stdout.splitlines() if '=' in line)
+            require('MainPID' in values and 'ActiveState' in values, 'Incomplete full cap exact unit state')
+            unit = {'unit': name, 'MainPID': int(values['MainPID']), 'ActiveState': values['ActiveState'],
+                    'SubState': values.get('SubState'), 'LoadState': values.get('LoadState'),
+                    'ExecMainStatus': int(values.get('ExecMainStatus', '0'))}
+            report.update(systemd_unit=name, current_unit_state=unit, reservation_status=marker.get('status'))
+            if marker.get('status') == 'Prepared':
+                require(marker.get('G_backup_verified') is False, 'Prepared full cap reservation cannot be G verified')
+                report['reason'] = 'full cap reservation prepared; exact owner must finish or resolve it'
+                return report
+            if marker.get('status') == 'Active':
+                boot = Path('/proc/sys/kernel/random/boot_id').read_text(encoding='utf-8').strip()
+                require(type(marker.get('runner_pid')) is int and marker['runner_pid'] > 0
+                        and marker.get('boot_id') == boot and marker['runner_pid'] == unit['MainPID']
+                        and live(unit) and marker.get('G_backup_verified') is False,
+                        'Full cap active boot/PID differs from exact live native unit')
+                report['reason'] = 'full cap exact native unit is live; await original G backup and cleanup'
+                return report
+            require(marker.get('status') == 'Ended', 'Unknown full cap reservation state')
+            terminal(unit)
+            if marker.get('G_backup_verified') is not True:
+                report['reason'] = 'full cap unit ended; exact G backup and cleanup are still required'
+                return report
+            cap_full_cleaned(metadata, output, metadata.name, marker)
+            report['cleaned_reservations_verified'] += 1
+        # Inspect Docker once after every unit has passed its immutable G gate;
+        # checking the parent also catches any intersecting unit output bind.
+        no_active_bind(root / 'work' / CAP_FULL_GROUP)
+        report.update(deferred=False, reason='all full cap reservations have exact G backup and output cleanup')
+        return report
+    except Exception as error:
+        report.update(deferred=True, uncertain_hold=True,
+                      reason='full cap reservation, terminal execution or G cleanup requires owner inspection',
+                      error=type(error).__name__)
+        return report
+
+
 def resource_status(root):
     reservation = cap_resource_reservation(root)
     if reservation['deferred']:
         return reservation
+    full_reservation = cap_full_resource_reservation(root)
+    if full_reservation['deferred']:
+        return full_reservation
     memory = int(next(line.split()[1] for line in Path('/proc/meminfo').read_text().splitlines()
                       if line.startswith('MemAvailable:'))) * 1024
     disk = os.statvfs(root)
@@ -362,6 +521,7 @@ def resource_status(root):
     available = disk.f_bavail * disk.f_frsize
     deferred = memory < memory_required or available < disk_required
     return {'deferred': deferred, 'uncertain_hold': False, 'cap_reservation': reservation,
+            'cap_full_reservation': full_reservation,
             'memory_available_bytes': memory, 'memory_required_bytes': memory_required,
             'root_free_bytes': available, 'root_free_required_bytes': int(disk_required),
             'reason': ('renderer output/metadata and 500 MB memory reserves unavailable; no startup created'
@@ -388,6 +548,12 @@ def status(evidence, work, plan, segment=None):
               'cleanup_receipts_present': sum((evidence / s['id'] / 'local-storage-cleanup.json').exists() for s in plan['segments']),
               'whole_task_accepted': False}
     result['resource_deferred'] = resource_status(evidence.parents[1])
+    hold = evidence / 'scheduling-hold.json'
+    if hold.exists() or hold.is_symlink():
+        record = read(hold)
+        require(record.get('active') is True and record.get('whole_task_accepted') is False,
+                'Unresolved scheduling hold requires inspection')
+        result['scheduling_hold'] = record
     if segment is not None:
         require(segment in plan['segments'], 'Current segment is not in frozen plan')
         metadata = evidence / segment['id']
@@ -629,9 +795,13 @@ def main():
         print(json.dumps(status(evidence, work, plan, segment)))
         return 0
     lock_path = evidence / '.controller.lock'
-    require(not lock_path.is_symlink(), 'Linked controller lock')
-    with lock_path.open('a+b') as lock:
+    shared_lock_path = root / 'evidence' / 'shared-resource-coordination.lock'
+    require(not lock_path.is_symlink() and not shared_lock_path.is_symlink(), 'Linked controller/coordination lock')
+    # All cap/render mutators acquire the shared lock first. The queue lock is
+    # always second, so independent transports cannot race a new reservation.
+    with shared_lock_path.open('a+b') as coordination, lock_path.open('a+b') as lock:
         try:
+            fcntl.flock(coordination.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
             fcntl.flock(lock.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
         except BlockingIOError:
             print(json.dumps({'ok': True, 'action': 'status', 'controller_busy': True, 'launch_suppressed': True}))

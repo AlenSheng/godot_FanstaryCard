@@ -369,6 +369,21 @@ with tarfile.open(fileobj=sys.stdout.buffer,mode='w|gz',dereference=True) as tar
                    'no_native_restart': True})
         time.sleep(POLL_SECONDS)
 
+    def wait_for_scheduling_hold(self, report):
+        hold = report.get('scheduling_hold', {})
+        require(isinstance(hold, dict) and hold.get('active') is True
+                and hold.get('whole_task_accepted') is False, 'Scheduling hold lacks exact active scope')
+        self.emit({'state': 'waiting_for_owned_cloud_scheduling_hold', 'segment': self.current_segment,
+                   'scheduling_hold': hold, 'current_passed_originals_G_verified_before_wait': self.current_segment is not None,
+                   'no_native_restart': True})
+        time.sleep(POLL_SECONDS)
+
+    def wait_for_coordination(self, report):
+        require(report.get('controller_busy') is True, 'Missing explicit controller coordination state')
+        self.emit({'state': 'waiting_for_cloud_resource_coordination_lock', 'segment': self.current_segment,
+                   'no_mutation_dispatched': True, 'no_native_restart': True})
+        time.sleep(POLL_SECONDS)
+
     def loop(self):
         self.connect()
         while True:
@@ -379,7 +394,8 @@ with tarfile.open(fileobj=sys.stdout.buffer,mode='w|gz',dereference=True) as tar
                        'unit': state.get('unit'), 'rows': state.get('rows'),
                        'completed_segments': state.get('completed_segments'),
                        'cleanup_receipts_present': state.get('cleanup_receipts_present'),
-                       'resource_deferred': state.get('resource_deferred')})
+                       'resource_deferred': state.get('resource_deferred'),
+                       'scheduling_hold': state.get('scheduling_hold')})
             if self.args.once:
                 return
             if self.is_live(state):
@@ -394,17 +410,22 @@ with tarfile.open(fileobj=sys.stdout.buffer,mode='w|gz',dereference=True) as tar
                     raise AttentionRequired('Exact native unit remains live beyond observation budget; preserve it and inspect status')
                 time.sleep(POLL_SECONDS)
                 continue
-            if state.get('resource_deferred', {}).get('deferred') is True and (
-                    self.current_segment is None or state.get('local_cleanup_receipt_present') is True):
-                self.wait_for_resources(state)
-                continue
             if self.current_segment is None:
+                if state.get('scheduling_hold', {}).get('active') is True:
+                    self.wait_for_scheduling_hold(state)
+                    continue
+                if state.get('resource_deferred', {}).get('deferred') is True:
+                    self.wait_for_resources(state)
+                    continue
                 launch = self.mutation('launch-next')
                 if launch.get('all_required_fixture_segments_cleaned'):
                     self.completed_report(launch)
                     return
                 if launch.get('launch_deferred_resources') is True:
                     self.wait_for_resources(launch)
+                    continue
+                if launch.get('scheduling_hold', {}).get('active') is True:
+                    self.wait_for_scheduling_hold(launch)
                     continue
                 require(launch.get('segment') or launch.get('controller_busy'), 'No exact dispatch result')
                 time.sleep(POLL_SECONDS)
@@ -419,6 +440,9 @@ with tarfile.open(fileobj=sys.stdout.buffer,mode='w|gz',dereference=True) as tar
                 self.recovered_cleaned(directory, segment, state)
             else:
                 prepared = self.mutation('prepare-delivery', segment)
+                if prepared.get('controller_busy') is True:
+                    self.wait_for_coordination(prepared)
+                    continue
                 require(prepared.get('action') == 'prepare-delivery' and prepared.get('segment') == segment,
                         'Delivery preparation did not return exact terminal segment')
                 manifest_path = directory / 'delivery-manifest.json'
@@ -433,6 +457,9 @@ with tarfile.open(fileobj=sys.stdout.buffer,mode='w|gz',dereference=True) as tar
                 remote_proof = self.evidence / segment / 'local-backup-receipt.json'
                 self.upload_verified(proof_path, remote_proof)
                 cleaned = self.mutation('cleanup', segment, remote_proof)
+                if cleaned.get('controller_busy') is True:
+                    self.wait_for_coordination(cleaned)
+                    continue
                 require(cleaned.get('action') == 'cleanup' and cleaned.get('cleanup', {}).get('ok') is True,
                         'Cloud reclamation did not return a verified receipt')
                 cleanup_receipt = cleaned['cleanup']
@@ -443,12 +470,25 @@ with tarfile.open(fileobj=sys.stdout.buffer,mode='w|gz',dereference=True) as tar
                     atomic_write(path, cleanup_receipt)
                 self.emit({'state': 'passed_originals_on_G_cloud_output_reclaimed', 'segment': segment,
                            'root_disk_bytes_reclaimed': cleanup_receipt.get('root_disk_bytes_reclaimed')})
+            # A cap reservation or fairness hold may arrive while this passed
+            # segment is being delivered. Finish G verification and reclamation
+            # first; it must not retain cloud pixels merely to defer the next job.
+            scheduling = self.status()
+            if scheduling.get('scheduling_hold', {}).get('active') is True:
+                self.wait_for_scheduling_hold(scheduling)
+                continue
+            if scheduling.get('resource_deferred', {}).get('deferred') is True:
+                self.wait_for_resources(scheduling)
+                continue
             launched = self.mutation('launch-next')
             if launched.get('all_required_fixture_segments_cleaned'):
                 self.completed_report(launched)
                 return
             if launched.get('launch_deferred_resources') is True:
                 self.wait_for_resources(launched)
+                continue
+            if launched.get('scheduling_hold', {}).get('active') is True:
+                self.wait_for_scheduling_hold(launched)
                 continue
             if launched.get('controller_busy'):
                 time.sleep(POLL_SECONDS)
