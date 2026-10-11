@@ -133,7 +133,8 @@ foreach (var capacity in profiles)
                 var poolBefore = player.MonsterPool.Capture();
                 var handBefore = player.Combat.Deck.Hand.ToArray();
                 var choiceWatch = Stopwatch.StartNew();
-                var beforeChoice = session.SnapshotFrame();
+                var captureVector = seed == seedStart && row.MonsterChoices < 3;
+                var beforeChoice = captureVector ? await session.SnapshotFrame() : [];
                 await session.Route("monster.choose", new MonsterCardChooseCommandPayload(candidate.InstanceId, accept, replacement));
                 row.ChoiceCommandWallSeconds += choiceWatch.Elapsed.TotalSeconds;
                 row.NativeCommandCalls++;
@@ -145,7 +146,7 @@ foreach (var capacity in profiles)
                 Require(player.Combat.Deck.Hand.SequenceEqual(handBefore.Where(c => c.InstanceId != replacement)), "Choice created a compensating draw.");
                 Emit("monster-choice", new { candidate, accept, replacement, grantedSources = poolBefore.GrantedSources,
                     controlledWaitSeconds = 2, measuredDecisionWallSeconds = choiceWatch.Elapsed.TotalSeconds });
-                if (seed == seedStart && row.MonsterChoices <= 3)
+                if (captureVector)
                 {
                     var vector = new { source, hero = hero.ToString(), seed, capacity, ownerId = player.PlayerId, roomId = room.RoomId,
                         matchId = session.MatchId, candidateId = candidate.InstanceId, accept, replacement, beforeWire = Convert.ToBase64String(beforeChoice),
@@ -199,6 +200,7 @@ foreach (var capacity in profiles)
     row.TypedResponseCount = session.ResponseCount;
     row.TypedResponseBytes = session.ResponseBytes;
     row.RouterTraceSha256 = session.TraceSha256();
+    row.CollectorSnapshotRequests = session.CollectorSnapshotRequests;
     row.WireTypes = session.RequestTypes;
     row.FinalInventory = player.Inventory.Items.Select(i => new EconomicItem(i.Kind.ToString(), i.ItemId, i.Quantity, i.IsSafe)).ToArray();
     row.RetainedEconomicItems = player.Inventory.Items.Where(i => player.Phase == RoomPlayerPhase.Extracted || i.IsSafe).Select(i => new EconomicItem(i.Kind.ToString(), i.ItemId, i.Quantity, i.IsSafe)).ToArray();
@@ -284,6 +286,7 @@ sealed class RouteRow(string hero, int seed, int capacity, string source, string
     public int TypedResponseCount { get; set; }
     public long TypedResponseBytes { get; set; }
     public string RouterTraceSha256 { get; set; } = "";
+    public int CollectorSnapshotRequests { get; set; }
     public IReadOnlyDictionary<string, int> WireTypes { get; set; } = new Dictionary<string, int>();
     public EconomicItem[] FinalInventory { get; set; } = [];
     public EconomicItem[] RetainedEconomicItems { get; set; } = [];
@@ -311,6 +314,7 @@ sealed class TypedSession : IAsyncDisposable
     public int ResponseCount { get; private set; }
     public long ResponseBytes { get; private set; }
     public Dictionary<string, int> RequestTypes { get; } = new();
+    public int CollectorSnapshotRequests { get; private set; }
     public byte[] LastCommand { get; private set; } = [];
     public byte[][] LastResponses { get; private set; } = [];
     public TypedSession(BattleRoom room, Guid owner, int seed, int capacity)
@@ -320,8 +324,18 @@ sealed class TypedSession : IAsyncDisposable
         _registry.Register(room, MatchId, startTicker: false);
         _router = new(_events, _clock, _registry);
     }
-    public byte[] SnapshotFrame() => RealtimeProtobufCodec.EncodeServer(_events.Create(_owner, "room.snapshot", "continuity-before",
-        RoomSnapshotProjection.Build(new GetRoomClientStateCommand(_owner).Execute(_room), _owner, MatchId, _clock.GetUtcNow()), roomRevision: _room.Revision));
+    public async Task<byte[]> SnapshotFrame()
+    {
+        // Instrumentation uses the real public typed snapshot command. These
+        // first-seed collector calls are separate from gameplay intent counts.
+        var command = new ClientCommand("room.snapshot", $"collector:{_seed}:{_capacity}:{CollectorSnapshotRequests}", _room.Revision,
+            new RoomSnapshotCommandPayload(), _room.RoomId, MatchId);
+        var wire = RealtimeProtobufCodec.EncodeClient(command);
+        var events = await _router.RouteAsync(PlayerProfile.Create(_owner, "ContinuityFormal", _clock.GetUtcNow()),
+            RealtimeProtobufCodec.DecodeClient(wire), "continuity-collector", CancellationToken.None);
+        CollectorSnapshotRequests++;
+        return RealtimeProtobufCodec.EncodeServer(events.Single(e => e.Type == "room.snapshot"));
+    }
     public async Task Route(string type, object payload)
     {
         var command = new ClientCommand(type, $"continuity:{_seed}:{_capacity}:{RequestCount}", _room.Revision, payload, _room.RoomId, MatchId);

@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "task_id": "PR13-B09.4",
+  "original_preregistration_sha256": "7726f092dfa68f164cab4cd9df5d1d19f8e4d520c22b94675c0300c7e3d21609",
+  "no_formal_samples_executed_yet": true,
+  "formal_sample_budget_and_primary_comparisons_unchanged": true,
+  "snapshot_source": "Real public typed room.snapshot router command; no private projection access or reflection",
+  "collector_requests": "First seed and first three choices only, counted separately from gameplay typed requests; its wall/CPU overhead is included in first-seed measured route resource totals and identified per row",
+  "low_discordance_gate": "Fewer than 20 discordant seed pairs gives Inconclusive; a degenerate empirical bootstrap interval cannot prove zero population effect",
+  "bootstrap_resamples": 10000,
+  "bootstrap_seed": 482999,
+  "all_9_units_and_36000_rows_required_before_statistics": true,
+  "missing_smoke_or_render_source_not_promoted": true,
+  "source_files": [
+    {
+      "path": "tools/pr13_pool_continuity_formal/Program.cs",
+      "sha256": "ed695830f022ec8b0ff2dc8fcc07e4e963a57e388ecf656616183e93d071fd4b"
+    },
+    {
+      "path": "tools/cloud/pr13/b09_continuity_formal_smoke_runner.py",
+      "sha256": "ebbf88f6a8e9f27a10d41166d4ca82a939d0ae1604136feea73bd9a467e30b89"
+    },
+    {
+      "path": "tools/cloud/pr13/b09_continuity_statistics.py",
+      "sha256": "ed8e8b7f3fbd4a9cd004d31cb275a613d83f3a21694a077fd2e861982989a6a4"
+    }
+  ],
+  "runtime_scope": "Only test harness changed; compiled product runtime from 5b66 remains separately labelled",
+  "R1_failed_source_and_raw_retained": true,
+  "whole_task_accepted": false
+}
