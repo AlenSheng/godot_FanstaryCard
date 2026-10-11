@@ -80,7 +80,11 @@ func native_rows(path: String) -> Array:
 func natural_witness(row: Dictionary, index: int, locale: String, size: Vector2i, fps: int, delay: int) -> Dictionary:
 	var gateway: NaturalGateway = Game.gateway
 	# Each vector is an independent scoped authority read of its original room.
-	Game._close_room_actions()
+	# These are live original choice snapshots, so do not mark their room as
+	# terminal between successive vectors belonging to the same authority room.
+	for previous_dialog in $UI.find_children("*","AcceptDialog",true,false):
+		previous_dialog.queue_free()
+	await get_tree().process_frame
 	Game.room = {}
 	Game.selected_cards = []
 	Game.hero_class = str(row.hero)
@@ -102,6 +106,8 @@ func natural_witness(row: Dictionary, index: int, locale: String, size: Vector2i
 	gateway._receive(before_wire)
 	var before := native_snapshot(before_wire)
 	var before_applied: bool = Game.room.get("room_id","")==row.roomId and Game.room.get("player",{}).get("monster_pool",{})==before.player.monster_pool
+	var choice_allowed_before_input: bool = Game.allowed("monster.choose")
+	var room_terminal_before_input: bool = Game._room_actions_closed()
 	var request: Dictionary = codec.decode("ClientEnvelope",command_wire)
 	var payload: Dictionary = codec.decode("MonsterCardChooseCommand",request.payload)
 	assert(codec.error.is_empty() and request.type=="monster.choose")
@@ -179,7 +185,7 @@ func natural_witness(row: Dictionary, index: int, locale: String, size: Vector2i
 	var pending_cleared: bool = not Game._pending_commands.has(str(request.request_id))
 	var text_ok: bool = not labels.is_empty() and labels.all(func(label):return label.inside and label.all_lines_visible)
 	var passed: bool = before_applied and entered and opened and submitted and command_exact and pending_registered and unchanged_before_response and after_applied and after_revision and closed and pending_cleared and text_ok and image_ok
-	return {"index":index,"hero":row.hero,"seed":row.seed,"capacity":row.capacity,"candidate_id":row.candidateId,"source_sha":row.source,"reader_source_sha":OS.get_environment("PR13_CONTINUITY_RENDER_SOURCE"),"locale":locale,"resolution":[size.x,size.y],"frame_cap":fps,"controlled_delay_ms":delay,"before_native_snapshot_received":before_applied,"original_command_headers_and_payload_exact":command_exact,"actual_full_command_wire":Marshalls.raw_to_base64(sent[0].wire) if sent.size()==1 else "","product_pending_command_registered":pending_registered,"no_state_change_before_authority":unchanged_before_response,"original_after_native_snapshot_received":after_applied,"after_revision_exact":after_revision,"product_pending_command_cleared":pending_cleared,"actual_original_response_frames":frames,"popup_closed":closed,"visible_labels":labels,"choice_input_usec_includes_render_and_synthetic_pointer_frames":choice_input_usec,"human_decision_time_claimed":false,"screenshot":image_name,"passed":passed}
+	return {"index":index,"hero":row.hero,"seed":row.seed,"capacity":row.capacity,"candidate_id":row.candidateId,"source_sha":row.source,"reader_source_sha":OS.get_environment("PR13_CONTINUITY_RENDER_SOURCE"),"locale":locale,"resolution":[size.x,size.y],"frame_cap":fps,"controlled_delay_ms":delay,"before_native_snapshot_received":before_applied,"choice_allowed_before_input":choice_allowed_before_input,"room_terminal_before_input":room_terminal_before_input,"entry_clicked":entered,"dialog_opened":opened,"choice_submitted":submitted,"original_command_headers_and_payload_exact":command_exact,"actual_full_command_wire":Marshalls.raw_to_base64(sent[0].wire) if sent.size()==1 else "","product_pending_command_registered":pending_registered,"no_state_change_before_authority":unchanged_before_response,"original_after_native_snapshot_received":after_applied,"after_revision_exact":after_revision,"product_pending_command_cleared":pending_cleared,"actual_original_response_frames":frames,"popup_closed":closed,"visible_labels":labels,"choice_input_usec_includes_render_and_synthetic_pointer_frames":choice_input_usec,"human_decision_time_claimed":false,"screenshot":image_name,"passed":passed}
 
 func _run() -> void:
 	output = OS.get_environment("PR13_CONTINUITY_RENDER_OUTPUT")
