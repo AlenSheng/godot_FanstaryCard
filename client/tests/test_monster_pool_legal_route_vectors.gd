@@ -4,8 +4,17 @@ extends RefCounted
 # send is intercepted only to keep this OFFLINE fixture from initiating network I/O.
 class QuietGateway extends "res://network/gateway.gd":
 	var sent: Array = []
+	var fixture_request_id := ""
+	func new_id() -> String:
+		if not fixture_request_id.is_empty():
+			var result := fixture_request_id
+			fixture_request_id = ""
+			return result
+		return super.new_id()
 	func send(kind: String, payload: Dictionary = {}, request_id: String = "") -> bool:
 		sent.append({"kind": kind, "payload": payload, "request_id": request_id})
+		if not request_id.is_empty():
+			_pending_request_started[request_id] = {"action": kind, "started_at": Time.get_ticks_msec(), "context": capture_context().duplicate(true)}
 		return true
 
 var failures: Array = []
@@ -153,9 +162,9 @@ func _receive_row(row: Dictionary) -> void:
 		_check(store.allowed("battle.play_cards") and store._intent_valid("battle.play_cards", row.command.Payload), "actual_store_accepts_legal_native_finishing_intent", row)
 	var request_id := str(row.command.RequestId)
 	var origin: Dictionary = gateway.capture_context().duplicate(true)
-	gateway._pending_request_started[request_id] = {"context": origin, "action": str(row.command.Type), "started_at": Time.get_ticks_msec()}
-	store._pending_commands[request_id] = {"action": str(row.command.Type), "room_id": str(row.command.RoomId),
-		"sent_revision": int(row.command.ExpectedRevision), "confirmed": false}
+	gateway.fixture_request_id = request_id
+	_check(store._send_queued_command({"action": str(row.command.Type), "payload": row.command.Payload.duplicate(true)}), "actual_product_pending_command_registered", row)
+	_check(store._pending_commands.has(request_id) and store._pending_commands[request_id].has("retry") and store._pending_commands[request_id].has("deadline"), "complete_product_pending_command_fields", row)
 	# In the fingerprint control the original accepted snapshot precedes the
 	# changed request rejection in the same original native event sequence.
 	for encoded in row.response_wires:
