@@ -36,18 +36,22 @@
     "first_language_segment_report": "docs/reports/pr13-stages-20261009/S3-b09-pool-render-first-language/summary.json",
     "language_segments_G_verified": 2,
     "language_segments_required": 54,
-    "current_language_segment": "NextPendingAfterRawRecovery",
+    "current_language_segment": "Guardian-8-T01-zh-CN",
     "locale_evidence_gate_report": "docs/reports/pr13-stages-20261009/S0-b09-render-locale-gate/summary.json",
     "zh_TW_operation_wire_only": true,
     "zh_TW_locale_accepted": false,
-    "scheduling_hold_active": true,
+    "scheduling_hold_active": false,
     "legacy_extra_locale_coverage_pending": [
       "zh-TW",
       "ja",
       "ko"
     ],
     "valid_existing_locale_rows": 162,
-    "valid_existing_locale_PNGs": 18
+    "valid_existing_locale_PNGs": 18,
+    "monster_catalog_name_fix_report": "docs/reports/pr13-stages-20261009/S0-b09-monster-name-fix/summary.json",
+    "previous_layout_and_operation_segments_retained": true,
+    "previous_monster_name_render_accepted": false,
+    "corrected_source_canonical_matrix_pending": true
   },
   "development_history": [
     {
@@ -364,10 +368,13 @@
       "experiment_pilot_encounters": 720,
       "experiment_pilot_casts": 33606,
       "experiment_pilot_ticks": 583820,
-      "full_experiment_state": "RuntimeRecoveredMissingRawRerunPending",
+      "full_experiment_state": "MissingRawRecoveredRemainingBlocksPending",
       "full_expected_encounters": 720000,
       "runtime_recovery_report": "docs/reports/pr13-stages-20261009/S0-b08-runtime-recovery/summary.json",
-      "full_G_verified_encounters": 174000
+      "full_G_verified_encounters": 176000,
+      "missing_raw_recovery_report": "docs/reports/pr13-stages-20261009/S3-b08-missing-raw-recovery/summary.json",
+      "full_G_verified_distinct_blocks": 88,
+      "full_remaining_strata_blocks": 272
     },
     {
       "task_ids": [

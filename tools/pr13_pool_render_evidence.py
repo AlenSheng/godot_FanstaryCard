@@ -327,6 +327,9 @@ def verify_segment(directory, manifest, explicit_native=None):
             "Segment observation count mismatch")
     require(segment["expected_PNGs"] == runtime["screenshots"] == 9, "Segment PNG count mismatch")
     original_path, original_proof = resolve_native(directory, manifest, explicit_native)
+    repository = Path(__file__).resolve().parents[1]
+    catalog = {str(card['id']): card for card in read_json(repository / 'client/data/catalog.json')['tables']['Cards']}
+    card_names = read_json(repository / 'client/data/card_names.json')
     original = [r for r in native_rows(original_path, NATIVE_SOURCE)
                 if r["case_id"] == case and r["actual"]["hero"] == hero and r["actual"]["capacity"] == cap]
     if case.endswith("T01"):
@@ -390,6 +393,11 @@ def verify_segment(directory, manifest, explicit_native=None):
                 and label["text"] for label in observation["labels"]), "Rendered label is missing/clipped")
         require(POOL_HINTS[language] in {label["text"] for label in observation["labels"]},
                 "Rendered language-specific pool hint does not match requested locale")
+        candidate_card_id = a['candidate']['CardId']
+        require(candidate_card_id in catalog, 'Original candidate is absent from the production catalog')
+        expected_name = card_names.get(language, {}).get(candidate_card_id, catalog[candidate_card_id]['name'])
+        require(any(label['text'].split('\n')[0] == expected_name for label in observation['labels']),
+                'Rendered candidate name does not use the production localized catalog')
         if "actual_language" in observation:
             require(observation["actual_language"] == language,
                     "Actual selected UI language differs from requested locale")

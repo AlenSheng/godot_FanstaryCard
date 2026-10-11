@@ -27,6 +27,10 @@ OUTPUT_LIMIT = 64 * 1024**2
 METADATA_RESERVE = 16 * 1024**2
 RENDER_MEMORY = 1536 * 1024**2
 LANGUAGES = ('zh-CN', 'en')
+CAP_ATTEMPT = 'cap-missing-raw-recovery-r1'
+CAP_OWNER = 'pr13-cap-missing-raw-recovery-r1'
+CAP_UNIT = 'pr13-cap-missing-raw-recovery-mage-e1-water-l5-b0'
+CAP_RAW_UNIT = 'Mage-E1-Water-L5-B0'
 MUTABLE_METADATA = {'delivery-manifest.json', 'local-backup-receipt.json',
                     'local-storage-cleanup.json', 'cleanup-intent.json'}
 
@@ -273,6 +277,105 @@ def cleaned(metadata, output, segment, plan):
     return cleanup
 
 
+def cap_resource_reservation(root):
+    evidence = root / 'evidence' / CAP_ATTEMPT
+    output = root / 'work' / CAP_ATTEMPT
+    path = evidence / 'resource-reservation.json'
+    if not path.exists() and not path.is_symlink():
+        return {'deferred': False, 'reservation_present': False}
+    report = {'deferred': True, 'reservation_present': True, 'attempt': CAP_ATTEMPT,
+              'systemd_unit': CAP_UNIT, 'G_backup_required_before_render': True,
+              'uncertain_hold': False}
+    try:
+        exact(evidence, root)
+        exact(output, root, exists=False)
+        marker = read(path)
+        require(marker.get('attempt') == CAP_OWNER and marker.get('systemd_unit') == CAP_UNIT
+                and marker.get('output_root') == str(output), 'Reservation identity/path mismatch')
+        result = subprocess.run(['systemctl', 'show', CAP_UNIT,
+                                 '--property=MainPID,ActiveState,SubState,LoadState,ExecMainStatus'],
+                                capture_output=True, text=True, timeout=15)
+        require(result.returncode == 0, 'Reservation exact unit could not be inspected')
+        values = dict(line.split('=', 1) for line in result.stdout.splitlines() if '=' in line)
+        require('MainPID' in values and 'ActiveState' in values, 'Incomplete reservation unit status')
+        unit = {'unit': CAP_UNIT, 'MainPID': int(values['MainPID']), 'ActiveState': values['ActiveState'],
+                'SubState': values.get('SubState'), 'LoadState': values.get('LoadState'),
+                'ExecMainStatus': int(values.get('ExecMainStatus', '0'))}
+        report.update(current_unit_state=unit, reservation_status=marker.get('status'),
+                      G_backup_verified=marker.get('G_backup_verified') is True)
+        if marker.get('status') == 'Active':
+            boot = Path('/proc/sys/kernel/random/boot_id').read_text(encoding='utf-8').strip()
+            require(isinstance(marker.get('runner_pid'), int) and marker['runner_pid'] > 0
+                    and marker.get('boot_id') == boot and marker['runner_pid'] == unit['MainPID']
+                    and live(unit), 'Active reservation boot/PID does not match exact live native unit')
+            require(marker.get('G_backup_verified') is not True, 'Live reservation cannot already be G verified')
+            report['reason'] = 'exact recovery native unit is live; wait for its terminal G backup and cleanup'
+            return report
+        if marker.get('status') == 'Prepared':
+            require(not live(unit), 'Prepared reservation has a live unrecorded native process')
+            report['reason'] = 'recovery reservation prepared; owner must finish or explicitly resolve it'
+            return report
+        require(marker.get('status') == 'Ended', 'Unknown reservation state')
+        terminal(unit)
+        require(marker.get('result_path') == str(evidence / 'result.json'), 'Reservation terminal result path differs')
+        ended = read(evidence / 'result.json')
+        require(ended.get('ok') is True and ended.get('attempt') == CAP_OWNER
+                and ended.get('unit') == CAP_RAW_UNIT and ended.get('exit_code') == 0
+                and ended.get('oom_killed') is False and ended.get('owned_container_removed') is True
+                and marker.get('result_ok') is True, 'Recovery terminal native result is not successful')
+        if marker.get('G_backup_verified') is not True:
+            report['reason'] = 'recovery native result ended; wait for original G archive verification and cleanup'
+            return report
+        backup = read(evidence / 'local-backup-receipt.json')
+        cleanup = read(evidence / 'local-storage-cleanup.json')
+        manifest = evidence / 'delivery-manifest.json'
+        require(manifest.is_file() and not manifest.is_symlink(), 'Recovery original delivery manifest missing or linked')
+        require(backup.get('ok') is True and cleanup.get('ok') is True
+                and re.fullmatch('[0-9a-f]{64}', backup.get('sha256', '')) is not None
+                and isinstance(backup.get('bytes'), int) and backup['bytes'] > 0
+                and backup.get('sha256') == cleanup.get('local_G_archive_sha256')
+                and backup.get('bytes') == cleanup.get('local_G_archive_bytes')
+                and backup.get('manifest_sha256') == cleanup.get('manifest_sha256') == sha(manifest),
+                'Recovery G backup, cloud cleanup and original manifest are not identical')
+        native = output / CAP_RAW_UNIT / 'native'
+        require(not native.exists() and not native.is_symlink(), 'Recovery native original output still occupies cloud storage')
+        no_active_bind(output)
+        report.update(deferred=False, reason='recovery original G backup and exact output cleanup verified',
+                      G_backup_verified=True, archive_sha256=backup['sha256'], manifest_sha256=backup['manifest_sha256'])
+        return report
+    except Exception as error:
+        report.update(deferred=True, uncertain_hold=True,
+                      reason='reservation identity, native terminal or G backup gate requires owner inspection',
+                      error=type(error).__name__)
+        return report
+
+
+def resource_status(root):
+    reservation = cap_resource_reservation(root)
+    if reservation['deferred']:
+        return reservation
+    memory = int(next(line.split()[1] for line in Path('/proc/meminfo').read_text().splitlines()
+                      if line.startswith('MemAvailable:'))) * 1024
+    disk = os.statvfs(root)
+    memory_required = 500000000 + RENDER_MEMORY
+    disk_required = .15 * disk.f_blocks * disk.f_frsize + OUTPUT_LIMIT + METADATA_RESERVE
+    available = disk.f_bavail * disk.f_frsize
+    deferred = memory < memory_required or available < disk_required
+    return {'deferred': deferred, 'uncertain_hold': False, 'cap_reservation': reservation,
+            'memory_available_bytes': memory, 'memory_required_bytes': memory_required,
+            'root_free_bytes': available, 'root_free_required_bytes': int(disk_required),
+            'reason': ('renderer output/metadata and 500 MB memory reserves unavailable; no startup created'
+                       if deferred else 'renderer startup resource reserves available')}
+
+
+def defer_launch(evidence, work, plan, resources, pending):
+    report = status(evidence, work, plan)
+    report.update(action='launch-next', launch_deferred_resources=True,
+                  resource_deferred=resources, reason=resources['reason'], no_startup_created=True,
+                  pending_segment=pending['id'])
+    return report
+
+
 def status(evidence, work, plan, segment=None):
     current_path = evidence / 'current-segment.json'
     current = read(current_path) if current_path.exists() else None
@@ -284,6 +387,7 @@ def status(evidence, work, plan, segment=None):
               'completed_segments': sum((evidence / s['id'] / 'result.json').exists() for s in plan['segments']),
               'cleanup_receipts_present': sum((evidence / s['id'] / 'local-storage-cleanup.json').exists() for s in plan['segments']),
               'whole_task_accepted': False}
+    result['resource_deferred'] = resource_status(evidence.parents[1])
     if segment is not None:
         require(segment in plan['segments'], 'Current segment is not in frozen plan')
         metadata = evidence / segment['id']
@@ -424,6 +528,9 @@ def launch_next(root, evidence, work, plan):
         return {'ok': True, 'action': 'launch-next', 'all_required_fixture_segments_cleaned': True,
                 'required_segments': len(plan['segments']), 'required_rows': plan['all_required_rows'],
                 'required_PNGs': plan['all_required_PNGs'], 'whole_task_accepted': False}
+    resources = resource_status(root)
+    if resources['deferred']:
+        return defer_launch(evidence, work, plan, resources, pending)
     state = unit_status(pending)
     require(not live(state) and state.get('LoadState') == 'not-found', 'Existing unit name must not be relaunched')
     current = evidence / 'current-segment.json'
@@ -437,12 +544,9 @@ def launch_next(root, evidence, work, plan):
     values = dict(line.split('=', 1) for line in original.stdout.splitlines() if '=' in line)
     require(original.returncode == 0 and values.get('MainPID') == '0'
             and values.get('ActiveState') not in ('active', 'activating'), 'Original full render unit is still live or unverified')
-    memory = int(next(line.split()[1] for line in Path('/proc/meminfo').read_text().splitlines()
-                      if line.startswith('MemAvailable:'))) * 1024
-    disk = os.statvfs(root)
-    require(memory >= 500000000 + RENDER_MEMORY, 'Memory reserve for native rendering unavailable')
-    require(disk.f_bavail * disk.f_frsize >= .15 * disk.f_blocks * disk.f_frsize + OUTPUT_LIMIT + METADATA_RESERVE,
-            'Root disk 15 percent floor plus output/metadata reserve unavailable')
+    resources = resource_status(root)
+    if resources['deferred']:
+        return defer_launch(evidence, work, plan, resources, pending)
     shared = exact(evidence / 'shared-source', evidence)
     hashes = read(evidence / 'shared-inputs.json')
     for name, expected in hashes.items():
@@ -453,6 +557,9 @@ def launch_next(root, evidence, work, plan):
                 'Shared source no longer matches frozen input manifest')
     metadata = exact(evidence / pending['id'], evidence, exists=False)
     output = exact(work / pending['id'], work, exists=False)
+    resources = resource_status(root)
+    if resources['deferred']:
+        return defer_launch(evidence, work, plan, resources, pending)
     metadata.mkdir()
     startup = {'state': 'preparing', 'segment': pending, 'unit': state['unit'],
                'render_source_sha': plan['render_source_sha'], 'created_at_unix': time.time(),

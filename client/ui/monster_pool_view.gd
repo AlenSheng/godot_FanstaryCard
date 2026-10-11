@@ -2,6 +2,7 @@ extends RefCounted
 
 const P = preload("res://ui/palette.gd")
 const CardDetails = preload("res://ui/card_details.gd")
+const CatalogIndex = preload("res://data/catalog_index.gd")
 const TEXT := {
     "zh-CN": {"title":"本局怪物卡", "capacity":"已吸收 %d / %d", "accept":"吸收", "skip":"跳过", "replace":"替换已吸收卡", "empty":"没有待处理的怪物卡", "hint":"只影响本局；新卡进入弃牌，不补抽。", "loot":"可搜刮战利品（与战斗装备分开）"},
     "zh-TW": {"title":"本局怪物卡", "capacity":"已吸收 %d / %d", "accept":"吸收", "skip":"略過", "replace":"替換已吸收卡", "empty":"沒有待處理的怪物卡", "hint":"只影響本局；新卡進入棄牌，不補抽。", "loot":"可搜刮戰利品（與戰鬥裝備分開）"},
@@ -39,7 +40,7 @@ static func open(host: Control) -> void:
     names.size.x = 640
     names.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
     var titles := PackedStringArray()
-    for card in active: titles.append(CardDetails.localized_name(str(card.get("card_id", ""))))
+    for card in active: titles.append(CardDetails.localized_name(str(card.get("card_id", "")), CatalogIndex.card(str(card.get("card_id", "")))))
     names.text = ", ".join(titles)
     box.add_child(names)
     if pending.is_empty():
@@ -53,11 +54,11 @@ static func open(host: Control) -> void:
         card_label.custom_minimum_size.x = 640
         card_label.size.x = 640
         card_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-        card_label.text = CardDetails.localized_name(str(candidate.get("card_id", ""))) + "\n" + CardDetails.face_description(str(candidate.get("card_id", "")))
+        card_label.text = CardDetails.localized_name(str(candidate.get("card_id", "")), CatalogIndex.card(str(candidate.get("card_id", "")))) + "\n" + CardDetails.face_description(str(candidate.get("card_id", "")))
         box.add_child(card_label)
         var replace := OptionButton.new()
         replace.add_item(text("replace"))
-        for card in active: replace.add_item(CardDetails.localized_name(str(card.get("card_id", ""))))
+        for card in active: replace.add_item(CardDetails.localized_name(str(card.get("card_id", "")), CatalogIndex.card(str(card.get("card_id", "")))))
         box.add_child(replace)
         var take := Button.new()
         take.text = text("accept")

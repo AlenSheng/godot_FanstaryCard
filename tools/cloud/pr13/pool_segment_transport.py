@@ -360,6 +360,15 @@ with tarfile.open(fileobj=sys.stdout.buffer,mode='w|gz',dereference=True) as tar
                    'PNG_originals': counts['required_PNGs'], 'formal_EXPERIMENT_pending': True,
                    'legacy_nonproduct_locale_evidence_retained': True})
 
+    def wait_for_resources(self, report):
+        resources = report.get('resource_deferred', {})
+        require(isinstance(resources, dict) and resources.get('deferred') is True,
+                'Resource deferral lacks an explicit authoritative gate')
+        self.emit({'state': 'waiting_for_cloud_resource_and_G_backup_gate', 'segment': self.current_segment,
+                   'resource_deferred': resources, 'no_startup_created': report.get('no_startup_created'),
+                   'no_native_restart': True})
+        time.sleep(POLL_SECONDS)
+
     def loop(self):
         self.connect()
         while True:
@@ -369,7 +378,8 @@ with tarfile.open(fileobj=sys.stdout.buffer,mode='w|gz',dereference=True) as tar
                        **counts,
                        'unit': state.get('unit'), 'rows': state.get('rows'),
                        'completed_segments': state.get('completed_segments'),
-                       'cleanup_receipts_present': state.get('cleanup_receipts_present')})
+                       'cleanup_receipts_present': state.get('cleanup_receipts_present'),
+                       'resource_deferred': state.get('resource_deferred')})
             if self.args.once:
                 return
             if self.is_live(state):
@@ -384,11 +394,18 @@ with tarfile.open(fileobj=sys.stdout.buffer,mode='w|gz',dereference=True) as tar
                     raise AttentionRequired('Exact native unit remains live beyond observation budget; preserve it and inspect status')
                 time.sleep(POLL_SECONDS)
                 continue
+            if state.get('resource_deferred', {}).get('deferred') is True and (
+                    self.current_segment is None or state.get('local_cleanup_receipt_present') is True):
+                self.wait_for_resources(state)
+                continue
             if self.current_segment is None:
                 launch = self.mutation('launch-next')
                 if launch.get('all_required_fixture_segments_cleaned'):
                     self.completed_report(launch)
                     return
+                if launch.get('launch_deferred_resources') is True:
+                    self.wait_for_resources(launch)
+                    continue
                 require(launch.get('segment') or launch.get('controller_busy'), 'No exact dispatch result')
                 time.sleep(POLL_SECONDS)
                 continue
@@ -430,6 +447,9 @@ with tarfile.open(fileobj=sys.stdout.buffer,mode='w|gz',dereference=True) as tar
             if launched.get('all_required_fixture_segments_cleaned'):
                 self.completed_report(launched)
                 return
+            if launched.get('launch_deferred_resources') is True:
+                self.wait_for_resources(launched)
+                continue
             if launched.get('controller_busy'):
                 time.sleep(POLL_SECONDS)
                 continue
