@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "source_sha": "581cd9f74962dd61424e77c529b1259afbb39fe7",
+  "collector_revision": "cap-effective-raw-budget-v2",
+  "business_source_sha": "b0423bfe6fedc3f034ba12c8400df5ebb8713f32",
+  "instrumentation_source_sha": "66c7420532536431b906d1fdb1e68d6d3448e6b9",
+  "mixed_input_manifest_sha256": "ab06c98792af1b3766dac9cde3668924529f07ee23a9eb10646e1b4367ca4716",
+  "raw_unit_limit_bytes": 17179869184,
+  "event_raw_bytes": 858888477,
+  "original_two_GiB_budget_satisfied": true,
+  "collector_metadata_complete": true,
+  "encounters": 2000,
+  "pairs": 1000,
+  "actual_casts": 34345,
+  "actual_ticks": 602412,
+  "outcomes": {
+    "Victory": 2000
+  },
+  "case_denominators": {
+    "BaselinePurple/all_casts": 17189,
+    "BaselinePurple/T03_positive_shield": 2058,
+    "BaselinePurple/all_ticks": 301452,
+    "BaselinePurple/T01_capped_ticks": 301452,
+    "BaselinePurple/T02_equipment_floor_ticks": 301452,
+    "BaselinePurple/T03_no_shield": 15131,
+    "BaselinePurple/T02_card_speed_ticks": 131229,
+    "BaselinePurple/T02_expiry_ticks": 1764,
+    "BaselinePurple/T02_PVE_conversion_ticks": 27561,
+    "SingleOrangeHead/all_casts": 17156,
+    "SingleOrangeHead/T03_positive_shield": 2052,
+    "SingleOrangeHead/all_ticks": 300960,
+    "SingleOrangeHead/T01_capped_ticks": 300960,
+    "SingleOrangeHead/T02_equipment_floor_ticks": 300960,
+    "SingleOrangeHead/T03_no_shield": 15104,
+    "SingleOrangeHead/T02_card_speed_ticks": 130845,
+    "SingleOrangeHead/T02_expiry_ticks": 1758,
+    "SingleOrangeHead/T02_PVE_conversion_ticks": 27455
+  },
+  "negative_controls": [
+    {
+      "name": "wrong-resistance-cap",
+      "rejected": true
+    },
+    {
+      "name": "wrong-conversion-stage",
+      "rejected": true
+    },
+    {
+      "name": "wrong-shield-overflow",
+      "rejected": true
+    },
+    {
+      "name": "candidate-policy-enabled",
+      "rejected": true
+    }
+  ],
+  "collector_negative_controls": [
+    {
+      "name": "collector-declared-budget-tampered",
+      "rejected": true
+    },
+    {
+      "name": "collector-event-part-missing",
+      "rejected": true
+    },
+    {
+      "name": "collector-cumulative-budget-exceeded",
+      "rejected": true
+    }
+  ],
+  "full_unit": true,
+  "whole_experiment_complete": false,
+  "required_cases_accepted": false,
+  "main_acceptance_granted": false
+}

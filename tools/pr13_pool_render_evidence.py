@@ -251,11 +251,18 @@ def native_rows(path, expected_sha):
     if path.suffix == ".json":
         data = read_json(path)
         require(data["source_sha"] == expected_sha, "Native fixture source mismatch")
-        return data["rows"]
+        yield from data["rows"]
+        return
+    count = 0
     with path.open(encoding="utf-8") as stream:
-        rows = [json.loads(line) for line in stream if line.strip()]
-    require(rows and all(row["source_sha"] == expected_sha for row in rows), "Native vectors source mismatch")
-    return rows
+        for line in stream:
+            if not line.strip():
+                continue
+            row = json.loads(line)
+            require(row["source_sha"] == expected_sha, "Native vectors source mismatch")
+            count += 1
+            yield row
+    require(count > 0, "Native vectors source mismatch")
 
 
 def resolve_native(directory, manifest, explicit):
