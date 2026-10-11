@@ -20,3 +20,11 @@ There is no direct StartDuel control, artificial HP, injected Offer, relocated
 card, altered map or synthetic client payload. The capacity arms share fixed
 seeds, starting identities and policy. This is a boundary coverage supplement,
 not an independent balance sample, WAN load test or rendering acceptance.
+
+`--guardian-peer-rendezvous` adds a separately declared encounter scenario. The
+primary player keeps the selected hero and published spawn as the meeting point;
+the second player uses the validated standard Guardian deck and walks there by
+real legal movements/PVE. Both players keep their own twenty-card starting deck
+and original hero stats in all capacity arms. This permits testing a Mage who
+holds position against an arriving opponent. Earlier same-hero travelling routes
+and their deaths remain intact; the scenario is not pooled into balance samples.

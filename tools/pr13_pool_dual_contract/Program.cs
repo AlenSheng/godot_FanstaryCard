@@ -12,12 +12,13 @@ using FantasyCard.Server.Rooms;
 
 if (args.SequenceEqual(new[] { "--help" }))
 {
-    Console.WriteLine("--output DIRECTORY --source SHA --hero Mage|Priest|Guardian --seed-start 484001 --seeds 128 [--development-smoke]");
+    Console.WriteLine("--output DIRECTORY --source SHA --hero Mage|Priest|Guardian --seed-start 484001 --seeds 128 [--development-smoke] [--guardian-peer-rendezvous]");
     return;
 }
 if (!OperatingSystem.IsLinux()) throw new InvalidOperationException("Tencent Linux execution required.");
 var smoke = args.Contains("--development-smoke");
-var named = args.Where(x => x != "--development-smoke").ToArray();
+var guardianPeer = args.Contains("--guardian-peer-rendezvous");
+var named = args.Where(x => x is not ("--development-smoke" or "--guardian-peer-rendezvous")).ToArray();
 Check(named.Length == 10, "Five named arguments required.");
 var options = Enumerable.Range(0, 5).ToDictionary(i => named[2 * i], i => named[2 * i + 1]);
 var hero = Enum.Parse<HeroClass>(options["--hero"]);
@@ -33,6 +34,9 @@ var prefix = hero switch { HeroClass.Mage => "MAG", HeroClass.Priest => "PRI", _
 var deck = Enumerable.Range(1, 13).Select(i => $"C{i:D2}").Concat(Enumerable.Range(1, 7).Select(i => $"{prefix}-{i:D2}")).ToArray();
 var owned = config.Cards.Where(c => c.Enabled && c.IsCodex && c.MonsterType is null).ToDictionary(c => c.CardId, c => new OwnedCard(c.CardId, c.HeroClass, (CardRarity)c.Rarity, 1, false));
 DeckRules.Validate(hero, deck, owned);
+var peerHero = guardianPeer ? HeroClass.Guardian : hero;
+var peerDeck = guardianPeer ? Enumerable.Range(1, 13).Select(i => $"C{i:D2}").Concat(Enumerable.Range(1, 7).Select(i => $"GUA-{i:D2}")).ToArray() : deck;
+DeckRules.Validate(peerHero, peerDeck, owned);
 var json = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
 using var events = new StreamWriter(Path.Combine(directory, "events.jsonl"), false, new UTF8Encoding(false));
 var rows = new List<object>();
@@ -41,11 +45,11 @@ foreach (var capacity in new[] { 0, 3, 5, 8 })
 {
     var room = new BattleRoom(Id($"room:{hero}:{seed}"), config.Version, catalog, seed, capacity == 0 ? config.Numerics : config.Numerics with { OptionalMonsterPool = true, MonsterCapacity = capacity });
     var players = new[] { Id($"A:{hero}:{seed}"), Id($"B:{hero}:{seed}") };
-    foreach (var id in players) room.AddPlayer(new BattleRoomPlayerSetup(id, hero, deck, null, IsBot: false));
+    foreach (var id in players) room.AddPlayer(new BattleRoomPlayerSetup(id, id == players[0] ? hero : peerHero, id == players[0] ? deck : peerDeck, null, IsBot: false));
     room.InitializeMap(ChaosMapGenerator.Generate(seed, players.Length));
     var originals = players.ToDictionary(id => id, id => Cards(room.GetPlayer(id)).Select(c => c.InstanceId).ToHashSet());
     var spawns = players.Select(id => room.GetMapProjection(id).Self).ToArray();
-    var rendezvous = room.GetMapProjection(players[0]).Cells.OrderBy(c => spawns.Max(p => p.ManhattanDistance(c.Position))).ThenBy(c => spawns.Sum(p => p.ManhattanDistance(c.Position))).ThenBy(c => c.Layer).ThenBy(c => c.Position.Row).ThenBy(c => c.Position.Column).First().Position;
+    var rendezvous = guardianPeer ? room.GetMapProjection(players[0]).Self : room.GetMapProjection(players[0]).Cells.OrderBy(c => spawns.Max(p => p.ManhattanDistance(c.Position))).ThenBy(c => spawns.Sum(p => p.ManhattanDistance(c.Position))).ThenBy(c => c.Layer).ThenBy(c => c.Position.Row).ThenBy(c => c.Position.Column).First().Position;
     var session = new Session(room, players, Id($"match:{hero}:{seed}:{capacity}"));
     var knownForeign = 0; var choices = 0; var pvp = 0; var restoredPvp = 0; var returnedPvp = 0; var terminalClean = 0; var audits = 0;
     var firstChoiceDone = capacity == 0; var terminalLogged = new HashSet<Guid>();
@@ -143,7 +147,7 @@ foreach (var capacity in new[] { 0, 3, 5, 8 })
             room.Advance(TimeSpan.FromMilliseconds(100), DateTimeOffset.UnixEpoch + room.Elapsed);
         }
         if (reason.Length == 0) reason = returnedPvp > 0 ? "PvpCompleteTerminalBudgetCensored" : "NaturalCombatOrRendezvousBudgetCensored";
-        var row = new { hero = hero.ToString(), seed, capacity, source, players, rendezvous, simulatedSeconds = room.Elapsed.TotalSeconds, knownForeignProbes = knownForeign, ownChoices = choices, naturalPvpEntries = pvp, checkpointRestores = restoredPvp, mutualLeaveReturns = returnedPvp, terminalInvariantChecks = terminalClean, instanceAudits = audits, outcome = reason, finalPhases = players.Select(id => room.GetPlayer(id).Phase.ToString()).ToArray() };
+        var row = new { hero = hero.ToString(), peerHero = peerHero.ToString(), rendezvousPolicy = guardianPeer ? "AnchorPrimaryPublishedSpawn" : "PublicMinimaxSpawnDistance", seed, capacity, source, players, rendezvous, simulatedSeconds = room.Elapsed.TotalSeconds, knownForeignProbes = knownForeign, ownChoices = choices, naturalPvpEntries = pvp, checkpointRestores = restoredPvp, mutualLeaveReturns = returnedPvp, terminalInvariantChecks = terminalClean, instanceAudits = audits, outcome = reason, finalPhases = players.Select(id => room.GetPlayer(id).Phase.ToString()).ToArray() };
         rows.Add(row); Console.WriteLine(JsonSerializer.Serialize(row, json));
     }
     finally { await session.DisposeAsync(); }
