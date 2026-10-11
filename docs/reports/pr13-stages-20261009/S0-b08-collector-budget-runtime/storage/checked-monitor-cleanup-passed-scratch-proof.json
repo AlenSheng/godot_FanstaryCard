@@ -1,0 +1,60 @@
+{
+  "ok": true,
+  "action": "cleanup-passed-scratch",
+  "root_reviewed_exact_readonly_monitor_exception": true,
+  "original_executed_runner_sha256": "56b131dbfcb769f474fc3772115d2c6c1becc86c43bc12ecb50550264503cf26",
+  "original_inputs_sha256": "ab06c98792af1b3766dac9cde3668924529f07ee23a9eb10646e1b4367ca4716",
+  "separate_storage_helper_sha256": "d016e5a1ebd5ef5c93ea7c16d18b35803dad03799bafb0bc35a61a066f9c7b5b",
+  "native_mixed_source_sha": "581cd9f74962dd61424e77c529b1259afbb39fe7",
+  "native_instrumentation_source_sha": "66c7420532536431b906d1fdb1e68d6d3448e6b9",
+  "monitor_exception_inspections": [
+    {
+      "container_id": "2734235cbfa1f9d8f1352cd9a925251f6356021d86ede341f80c6196e799149a",
+      "running": true,
+      "mounts": [
+        {
+          "Type": "bind",
+          "Source": "/",
+          "Destination": "/host",
+          "RW": false
+        },
+        {
+          "Type": "bind",
+          "Source": "/proc",
+          "Destination": "/host/proc",
+          "RW": false
+        },
+        {
+          "Type": "bind",
+          "Source": "/sys",
+          "Destination": "/host/sys",
+          "RW": false
+        }
+      ],
+      "root_exception_only_RW_false": true
+    }
+  ],
+  "all_other_bind_intersections_rejected": true,
+  "only_in_memory_storage_guard_override": true,
+  "original_source_runner_inputs_unchanged": true,
+  "native_build_regressions_pilots_equivalence_rerun": false,
+  "scope": "Storage preparation or passed build-scratch cleanup only",
+  "whole_task_accepted": false,
+  "storage_result": {
+    "ok": true,
+    "attempt": "cap-budget-runtime-r1-20261011",
+    "source_sha": "581cd9f74962dd61424e77c529b1259afbb39fe7",
+    "business_source_sha": "b0423bfe6fedc3f034ba12c8400df5ebb8713f32",
+    "instrumentation_source_sha": "66c7420532536431b906d1fdb1e68d6d3448e6b9",
+    "manifest_sha256": "efea9fbf98ed11ae194f9dc1d153dad30e54a7ed2753be01febc2639898c5c72",
+    "local_G_archive_sha256": "77ff66371a9fe29555e5291b4d755f436225a4068e32e66b7381206e9ccebc49",
+    "local_G_archive_bytes": 26414902,
+    "passed_scratch_removed": "/dev/shm/pr13-cap-budget-runtime-r1-20261011",
+    "allocated_bytes_removed": 27344896,
+    "tmpfs_bytes_reclaimed": 27344896,
+    "persistent_source_runtime_and_three_pilot_sets_retained": true,
+    "failed_originals_retained": true,
+    "whole_task_accepted": false,
+    "full_unit_dispatch_permitted": false
+  }
+}

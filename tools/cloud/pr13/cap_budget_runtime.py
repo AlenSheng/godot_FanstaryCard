@@ -46,6 +46,7 @@ RAW_RAISED = 16 * 1024**3
 DOMAIN_HASHES = {k: v for k, v in recovery.RUNTIME_HASHES.items() if k.startswith('FantasyCard.Domain.')}
 METADATA_RESERVE = 16 * 1024**2
 PILOT_BUDGET = 64 * 1024**2
+MONITOR = '2734235cbfa1f9d8f1352cd9a925251f6356021d86ede341f80c6196e799149a'
 
 
 def require(value, message):
@@ -128,7 +129,15 @@ def terminal_phases(attempt):
 def no_active_bind(targets):
     running = docker('ps', '-q', '--no-trunc').stdout.decode().splitlines()
     for cid in running:
-        for mount in json.loads(docker('inspect', cid).stdout)[0].get('Mounts', []):
+        require(re.fullmatch('[0-9a-f]{64}', cid), 'Full active container identity required')
+        state = json.loads(docker('inspect', cid).stdout)[0]
+        require(state['Id'] == cid, 'Active container inspection identity changed')
+        for mount in state.get('Mounts', []):
+            require(mount.get('Type') in ('bind', 'volume', 'tmpfs'), 'Unknown active mount type')
+            if mount['Type'] != 'bind':
+                continue
+            if cid == MONITOR and mount.get('Source') == '/' and mount.get('RW') is False:
+                continue
             source = Path(mount['Source']).resolve()
             require(not any(source == target or source.is_relative_to(target) or target.is_relative_to(source)
                             for target in targets), 'An active container bind intersects frozen delivery/cleanup originals')
