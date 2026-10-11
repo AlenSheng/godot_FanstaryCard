@@ -19,8 +19,8 @@ import time
 
 
 DEFAULT_ROOT = Path('/home/ubuntu/pr13-acceptance-20261009')
-GROUP = 'pool-render-segments-r2'
-UNIT_PREFIX = 'pr13-pool-segment-r2-'
+GROUP = 'pool-render-segments-r3'
+UNIT_PREFIX = 'pr13-pool-segment-r3-'
 NATIVE_SOURCE = '1341e160afc67ba826d4b37250c9ec58f8c99462'
 MONITOR = '2734235cbfa1f9d8f1352cd9a925251f6356021d86ede341f80c6196e799149a'
 OUTPUT_LIMIT = 64 * 1024**2

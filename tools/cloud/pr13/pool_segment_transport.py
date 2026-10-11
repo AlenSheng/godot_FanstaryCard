@@ -24,7 +24,7 @@ from tools import pr13_pool_render_evidence as verifier
 
 HOST = '43.172.70.182'
 CLOUD_ROOT = '/home/ubuntu/pr13-acceptance-20261009'
-GROUP = 'pool-render-segments-r2'
+GROUP = 'pool-render-segments-r3'
 SEGMENT_RE = r'(Guardian|Mage|Priest)-(3|5|8)-T0[123]-(zh-CN|en)'
 POLL_SECONDS = 30
 MAX_ARCHIVE_BYTES = 96 * 1024**2
@@ -485,7 +485,7 @@ def main():
     parser.add_argument('--cloud-host', required=True)
     parser.add_argument('--cloud-root', required=True)
     parser.add_argument('--private-config', type=Path, required=True)
-    parser.add_argument('--local-root', type=Path, default=Path('outputs/pr13-tencent-20261009/pool-render-segment-r2-raw'))
+    parser.add_argument('--local-root', type=Path, default=Path('outputs/pr13-tencent-20261009/pool-render-segment-r3-raw'))
     parser.add_argument('--controller', required=True)
     parser.add_argument('--once', action='store_true', help='Observe one exact status; do not transfer, reclaim or launch')
     args = parser.parse_args()
