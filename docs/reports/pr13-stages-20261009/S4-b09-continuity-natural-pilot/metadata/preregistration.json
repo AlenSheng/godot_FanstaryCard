@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "task_id": "PR13-B09.4",
+  "status": "DevelopmentPilot_CloudNativePending",
+  "formal_experiment_pre_registration_complete": false,
+  "scope": "Isolated natural route development pilot; does not satisfy full B09.4 by itself",
+  "heroes": [
+    "Mage",
+    "Priest",
+    "Guardian"
+  ],
+  "seeds": [
+    476001,
+    477001,
+    478001
+  ],
+  "profiles": [
+    {
+      "capacity": 0,
+      "rule": "official legacy auto-collection"
+    },
+    {
+      "capacity": 3,
+      "rule": "optional visible-focus selection"
+    },
+    {
+      "capacity": 5,
+      "rule": "optional visible-focus selection"
+    },
+    {
+      "capacity": 8,
+      "rule": "optional visible-focus selection"
+    }
+  ],
+  "expected_routes": 36,
+  "simulation_limit_seconds": 1800,
+  "tick_seconds": 0.1,
+  "natural_map_and_monster_values_unmodified": true,
+  "player_IsBot": false,
+  "legal_unique_base_deck": "C01-C13 plus seven owned hero cards, level zero, weapon zero",
+  "policy": "Hold for three visible hand cards or two focus cards unless HP at or below 25%; play all visible cards in server order; choose focus from known base-deck composition, never hidden library order; accept same-focus positive elemental candidates, replace only a visibly weaker active card when full; request native healing reward and public inward map moves",
+  "controlled_monster_choice_delay_seconds": 2,
+  "controlled_delay_is_human_timing": false,
+  "NoChange_rule": "No stable benefit established by this small pilot: official default remains unchanged, larger preregistered statistics and UI/request/economy acceptance remain pending",
+  "T01": "Record cap5 core availability/casts, wins/deaths/censoring, and interruption cost independently; no guaranteed-benefit assertion",
+  "T02": "Detached hidden library permutation preserves visible input/current decision; explicit hidden-information policy request is rejected; outputs from a leaky policy are invalid",
+  "T03": "NoChange pending formal same-budget statistical comparison; no candidate activation",
+  "runtime_reuse": {
+    "compiled_domain_source_sha": "5b66fc0cb601a7bf7a3b2439daea1a3a9db0f438",
+    "G_backup_receipt": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\outputs\\pr13-tencent-20261009\\b09-native-r3-reader-r4-G-backup\\local-backup-receipt.json",
+    "assemblies": {
+      "FantasyCard.Domain.dll": "844065af3158b40787699752915ed95befbd3c660c2b10dce501f9f4fc29e352",
+      "FantasyCard.Contracts.dll": "a540545644b284926c125d1a3b2b5789c7fbc6a678a61345dabbcecfc649075b",
+      "Google.Protobuf.dll": "d792b92533fec450d21b9ac9e28b337fe25ac4982380eb932027b5fcc2036bf3"
+    },
+    "unchanged_current_Domain_Contracts_protocol_input_proof_required": true
+  },
+  "cloud_limits": {
+    "memory_floor_bytes": 500000000,
+    "root_free_ratio": 0.15,
+    "container_memory_bytes": 1073741824,
+    "owned_output_tmpfs_bytes": 67108864,
+    "external_network": "none",
+    "native_build_deadline_seconds": 300,
+    "native_pilot_deadline_seconds": 1500,
+    "same_slot_serial_execution_required": true
+  },
+  "output_metrics": [
+    "native kills and offer sources",
+    "instance conservation",
+    "core hand availability and core casts",
+    "natural route outcome and censoring",
+    "logical native command calls, not measured HTTP traffic",
+    "controlled waits and measured policy wall time",
+    "route CPU seconds, wall seconds and cumulative process peak working set"
+  ],
+  "remaining_after_pilot": [
+    "larger preregistered formal sample budget and statistics",
+    "actual typed request counts and economy comparison",
+    "current Godot renderer/readback of natural-route data and measured choice workflow",
+    "canonical EXPERIMENT/RENDER and MAIN decision"
+  ],
+  "production_rules_or_config_changed": false,
+  "full_task_accepted": false,
+  "human_experience_in_scope": false,
+  "source_files": [
+    {
+      "path": "tools/pr13_pool_continuity/Continuity.csproj",
+      "bytes": 796,
+      "sha256": "9a480a61ea16dcc464f5b50a5a8db8023a50713cd5bd85c219b43ef74346614d"
+    },
+    {
+      "path": "tools/pr13_pool_continuity/NuGet.Config",
+      "bytes": 113,
+      "sha256": "2142cfb2dfa2c7feefbe40fabcc68b0dfecadafa99a1db9b70239d977cf2a7ef"
+    },
+    {
+      "path": "tools/pr13_pool_continuity/Program.cs",
+      "bytes": 15308,
+      "sha256": "6e143e66bdcf87ab7770222e9fc331a7755ee55c379dc73b3f149ee52e8b39dc"
+    },
+    {
+      "path": "tools/cloud/pr13/b09_continuity_inner.py",
+      "bytes": 1941,
+      "sha256": "577f3cca61ef94c203f8bd69631266d1b4359598573563a6b25def25553cde80"
+    },
+    {
+      "path": "tools/cloud/pr13/b09_continuity_runner.py",
+      "bytes": 5978,
+      "sha256": "d2d58f32cd3cc8636fd3bdc7215de3ad10d7e21a362061297c291d4015b2c4e1"
+    }
+  ],
+  "local_verification": "Python AST and project/config XML metadata only; no native or game execution on local machine"
+}
