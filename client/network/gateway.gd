@@ -42,7 +42,7 @@ const EVENTS := {
 	"battle.target_selected": "BattleTargetSelectedEvent", "reward.choice": "RewardChoiceEvent",
 	"reward.choice.refreshed": "RewardChoiceEvent", "reward.choice.claimed": "RewardChoiceClaimedEvent",
 	"reward.choice_claimed": "RewardChoiceClaimedEvent",
-	"duel.started": "DuelStartedEvent", "duel.ended": "DuelEndedEvent", "duel.leave": "DuelLeaveEvent",
+	"duel.started": "DuelStartedEvent", "duel.ended": "DuelEndedEvent", "duel.leave_ack": "DuelLeaveEvent",
 	"duel.escape_started": "DuelEscapeEvent", "duel.escape_failed": "DuelEscapeEvent",
 	"duel.escape_interrupted": "DuelEscapeEvent", "player.died": "PlayerDiedEvent",
 	"action.potion_used": "ActionPotionEvent", "relic.taken": "RelicTakeEvent", "relic.replaced": "RelicReplacedEvent",

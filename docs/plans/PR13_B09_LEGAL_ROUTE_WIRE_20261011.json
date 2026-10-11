@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "case_id": "PR13-B09.3",
+  "status": "ImplementationStagedAwaitingCloudExecution",
+  "planned_files": {
+    "MonsterPoolLegalRouteWireTests.cs": "server/tests/FantasyCard.Server.Tests/Realtime/MonsterPoolLegalRouteWireTests.cs",
+    "run_monster_pool_legal_route_vectors.gd": "client/tests/run_monster_pool_legal_route_vectors.gd",
+    "test_monster_pool_legal_route_vectors.gd": "client/tests/test_monster_pool_legal_route_vectors.gd",
+    "gateway-duel-leave-ack.patch": "one canonical EVENTS key change in client/network/gateway.gd; apply only when root authorizes after current frozen native run"
+  },
+  "frozen_scope": {
+    "heroes": ["Mage", "Priest", "Guardian"],
+    "seeds": [473001, 474001, 475001],
+    "fixture_count": 9,
+    "base_deck": "13 unique enabled C01-C13 plus 7 unique hero cards; DeckRules.Validate against native enabled codex ownership",
+    "optional_monster_pool": true,
+    "capacity": 5,
+    "production_default_unchanged": true,
+    "initial_boundary": "native generated map uses O1 for two distinct outer spawn cells; owner firebat is reduced to HP1 before one real finishing action",
+    "peer_ownership_control": "preparation uses one explicitly controlled native Domain Room.PlayCards finishing action on the other player's actual O1 instance to reach Choice with its own different pending M-FIREBAT and actual BattleId:MonsterId source; this is not another Godot request. The foreign request must reach candidate lookup, not fail the Pve phase gate.",
+    "offer_source": "native BattleRoom.PlayCards creates unique M-FIREBAT candidate with BattleId:MonsterId provenance; test never calls MonsterPool.Offer",
+    "pvp_boundary": "explicit StartRoomDuelCommand through registered RoomActor; not natural same-cell matching",
+    "terminal_boundary": "register active restored PVP room, AbandonBattleCommand through actor, new late request ID",
+    "client_path": "original native server events -> product gateway._receive -> event_received -> GameStore._on_event; requires actual typed duel.leave_ack duel_id/completed, kill owner/target and terminal scope",
+    "excluded_acceptance": ["LIVE", "MAIN", "natural expedition", "automatic PVP pairing", "GUI", "hardware FPS", "hearing", "capacity", "WAN"]
+  },
+  "execution_order": [
+    {"native_phase": "prepare", "outputs": ["kill-inputs.jsonl", "kill-descriptors.jsonl", "prepare-native-receipt.jsonl"]},
+    {"godot_mode": "encode", "batch": "kill", "input": "kill-descriptors.jsonl", "output": "kill-godot-commands.jsonl"},
+    {"native_phase": "kill", "inputs": ["kill-inputs.jsonl", "kill-godot-commands.jsonl"], "outputs": ["kill-events.jsonl", "choose-inputs.jsonl", "choose-descriptors.jsonl", "kill-native-receipt.jsonl"]},
+    {"godot_mode": "encode", "batch": "choose", "input": "choose-descriptors.jsonl", "output": "choose-godot-commands.jsonl"},
+    {"native_phase": "choose", "inputs": ["choose-inputs.jsonl", "choose-godot-commands.jsonl"], "outputs": ["choose-events.jsonl", "final-inputs.jsonl", "final-descriptors.jsonl", "choose-native-receipt.jsonl"]},
+    {"godot_mode": "encode", "batch": "final", "input": "final-descriptors.jsonl", "output": "final-godot-commands.jsonl"},
+    {"native_phase": "final", "inputs": ["final-inputs.jsonl", "final-godot-commands.jsonl"], "outputs": ["final-events.jsonl", "final-native-receipt.jsonl"]},
+    {"godot_mode": "receive", "inputs": ["kill-events.jsonl", "choose-events.jsonl", "final-events.jsonl"]}
+  ],
+  "native_environment": {
+    "FANTASYCARD_PR13_LEGAL_ROUTE_PHASE": "prepare|kill|choose|final",
+    "FANTASYCARD_PR13_LEGAL_ROUTE_DIRECTORY": "unique owned fresh evidence directory",
+    "FANTASYCARD_PR13_SOURCE_SHA": "exact frozen 40-character source commit"
+  },
+  "godot_environment": {
+    "PR13_LEGAL_ROUTE_GODOT_MODE": "encode|receive",
+    "PR13_LEGAL_ROUTE_BATCH": "kill|choose|final for encode",
+    "PR13_LEGAL_ROUTE_SOURCE": "same exact frozen source commit",
+    "PR13_LEGAL_ROUTE_DIRECTORY": "native evidence directory for receive",
+    "PR13_LEGAL_ROUTE_DESCRIPTORS": "batch descriptors JSONL for encode",
+    "PR13_LEGAL_ROUTE_COMMANDS": "fresh batch Godot commands JSONL for encode",
+    "PR13_LEGAL_ROUTE_GODOT_RESULT": "fresh unique receipt path per invocation"
+  },
+  "required_final_counts": {
+    "distinct_original_godot_commands": 63,
+    "additional_native_domain_preparatory_peer_finishing_controls": 9,
+    "native_routes_including_original_wire_replays": 99,
+    "native_event_evidence_rows": 72,
+    "operations_each": {"kill":9,"foreign":9,"accept":9,"fingerprint-mismatch":9,"restore-receipt":9,"leave-first":9,"leave-second":9,"terminal-late":9},
+    "original_native_frames_including_baselines": 189,
+    "original_replay_frames": 45
+  },
+  "negative_controls": [
+    "two concurrent deliveries of the exact original Godot battle.play_cards wire: full native response replay and one original monster provenance/candidate, no repeated kill mutation",
+    "authenticated different room player chooses owner's actual native candidate: typed COMMAND_REJECTED; complete state unchanged",
+    "same owner, same request ID, changed accept in new complete Godot wire: typed REQUEST_ID_REUSED; complete state unchanged",
+    "concurrent exact original wire duplicate: one revision and instance mutation, exact EventId/Sequence/wire replay",
+    "new router/registry after native BattleRoom.Restore: exact original choose wire yields native receipt replay with complete state unchanged",
+    "new late request ID after actual actor terminal transition: typed room.command_cancelled and snapshot; complete state unchanged",
+    "Godot receives exact original repeated server event bytes: state and delivered event count unchanged"
+  ],
+  "verification_so_far": "Local source reading/static review only; no .NET, Godot, native business oracle, or statistics executed. A confirmed product gateway event mapping omission duel.leave_ack was reported to root; fixture must fail until product correction is present and cloud-tested.",
+  "MAIN_accepted": false,
+  "LIVE_accepted": false
+}
