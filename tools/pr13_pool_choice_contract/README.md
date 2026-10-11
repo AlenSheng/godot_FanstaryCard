@@ -5,3 +5,10 @@ The current classifier records SpringChannelAtFrozenBudget when a legal spring
 channel outlasts the unchanged 1800-second observation window. Completion remains
 required while observation time is available. This changes no game state, policy,
 seed or budget; the original partial Guardian run is preserved separately.
+
+`--fill-first-contract` declares a separate coverage policy: accept until full,
+then alternate replacement/skip and prefer an active monster instance currently
+visible in hand for replacement. It uses the same paired seeds, combat policy,
+1800-second window and real legal commands. The original paired SkipFirst mode
+is unchanged. New coverage runs are paired policy supplements, not independent
+strength samples; absent capacity or hand branches still remain unverified.

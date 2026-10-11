@@ -97,7 +97,8 @@ def verify_choice(row, cards):
             'matching_native_kill_batch_sources': len(matches)}
 
 
-def verify_segment(directory, hero, seed_start, seed_count, catalog_path):
+def verify_segment(directory, hero, seed_start, seed_count, catalog_path,
+                   source_sha='700d237d8ffe155582a3bbd381257da2a688ad8d'):
     directory = Path(directory)
     cards = {x['id']: x for x in json.loads(Path(catalog_path).read_bytes())['tables']['Cards']}
     routes = [json.loads(line) for line in (directory / 'routes.jsonl').read_text().splitlines()]
@@ -106,7 +107,7 @@ def verify_segment(directory, hero, seed_start, seed_count, catalog_path):
         (hero, seed, cap) for seed in range(seed_start, seed_start + seed_count) for cap in (0, 3, 5, 8)}
     groups = {cap: Counter() for cap in (0, 3, 5, 8)}
     for row in routes:
-        assert row['source'] == '700d237d8ffe155582a3bbd381257da2a688ad8d'
+        assert row['source'] == source_sha
         assert row['hiddenOrderNegativeRejected'] and row['instanceConservationChecks'] > 0
         assert row['nativeCommandCalls'] == row['typedRequestCount']
         assert row['outcome'] in ('Dead', 'Extracted', 'ObservationBudgetCensored')
@@ -119,7 +120,7 @@ def verify_segment(directory, hero, seed_start, seed_count, catalog_path):
         for line in stream:
             row = json.loads(line)
             assert row['hero'] == hero and seed_start <= row['seed'] < seed_start + seed_count
-            assert row['source'] == '700d237d8ffe155582a3bbd381257da2a688ad8d'
+            assert row['source'] == source_sha
             if row['kind'] != 'monster-choice':
                 continue
             value = verify_choice(row, cards)

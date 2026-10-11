@@ -16,12 +16,13 @@ using FantasyCard.Server.Rooms;
 // Real PVE, no artificial HP/map/offer/pile changes; default rule stays off.
 if (args.SequenceEqual(new[] { "--help" }))
 {
-    Console.WriteLine("--output DIRECTORY --source SHA --hero Mage|Priest|Guardian --seed-start N --seeds 128 [--development-smoke]");
+    Console.WriteLine("--output DIRECTORY --source SHA --hero Mage|Priest|Guardian --seed-start N --seeds 128 [--development-smoke] [--fill-first-contract]");
     return;
 }
 if (!OperatingSystem.IsLinux()) throw new InvalidOperationException("Cloud Linux execution required.");
 var smoke = args.Contains("--development-smoke");
-var arguments = args.Where(a => a != "--development-smoke").ToArray();
+var fillFirst = args.Contains("--fill-first-contract");
+var arguments = args.Where(a => a is not ("--development-smoke" or "--fill-first-contract")).ToArray();
 if (arguments.Length != 10) throw new ArgumentException("Five named arguments required; see --help.");
 var options = Enumerable.Range(0, 5).ToDictionary(i => arguments[i * 2], i => arguments[i * 2 + 1]);
 var source = options["--source"];
@@ -128,9 +129,15 @@ foreach (var capacity in profiles)
                 // Public candidate/pool and choice counter only. This policy exercises
                 // contracts; it is not the earlier strength/dilution comparison policy.
                 var full = player.MonsterPool.Active.Count >= capacity;
-                var skipFirstAssigned = (seed - seedStart) % 2 == 0; // Frozen external coverage scenario, not hidden game information.
+                var skipFirstAssigned = !fillFirst && (seed - seedStart) % 2 == 0; // Frozen external coverage scenario, not hidden game information.
                 var accept = !(skipFirstAssigned && row.MonsterChoices == 0) && (!full || row.Replaced == 0 || row.MonsterChoices % 2 == 0);
-                Guid? replacement = accept && full ? player.MonsterPool.Active[0].InstanceId : null;
+                // Coverage mode uses only the currently visible hand and active pool.
+                // Prefer a hand instance if it occurs naturally; never move a card
+                // between piles or inspect hidden library order to manufacture it.
+                Guid? replacement = accept && full ? fillFirst
+                    ? player.Combat.Deck.Hand.FirstOrDefault(c => player.MonsterPool.Active.Any(a => a.InstanceId == c.InstanceId))?.InstanceId
+                        ?? player.MonsterPool.Active[0].InstanceId
+                    : player.MonsterPool.Active[0].InstanceId : null;
                 var operation = accept ? replacement is null ? "accept" : "replace" : full ? "skip-full" : player.MonsterPool.Active.Count == 0 ? "skip-empty" : "skip-partial";
                 var resourcesBefore = NonCardState(room.CapturePlayer(player.PlayerId), json);
                 var deckBefore = player.Combat.Deck.Capture();
@@ -177,7 +184,7 @@ foreach (var capacity in profiles)
                 // Natural offers must carry a real native kill source. Never Offer().
                 Require(poolBefore.GrantedSources.Count > 0, "Candidate lacks native provenance.");
                 Require(player.Combat.Deck.Hand.SequenceEqual(handBefore.Where(c => c.InstanceId != replacement)), "Choice created a compensating draw.");
-                Emit("monster-choice", new { candidate, accept, replacement, grantedSources = poolBefore.GrantedSources,
+                Emit("monster-choice", new { candidate, accept, replacement, policy = fillFirst ? "FillFirstVisibleHandReplacement" : "PairedSkipFirstOldestReplacement", grantedSources = poolBefore.GrantedSources,
                     operation, beforeDeck = deckBefore, afterDeck = player.Combat.Deck.Capture(),
                     resourcesBefore, resourcesAfter = NonCardState(afterChoice, json),
                     activeBefore = poolBefore.Active, activeAfter = player.MonsterPool.Active,
