@@ -8,7 +8,20 @@ from pathlib import Path
 from tools.pr13_pool_render_evidence import png_validate
 
 
-def verify_smoke(directory):
+def verify_authority(row):
+    expected = {
+        'foreign': {'negative_original_transport_request_exact', 'negative_transport_request_correlated',
+                    'no_player_mutation_during_controlled_delay', 'rejection_preserved_full_player'},
+        'choice-replay': {'pending_registered', 'no_player_mutation_during_controlled_delay',
+                          'first_original_player_applied', 'first_original_revision_exact',
+                          'pending_cleared', 'replay_kept_full_state', 'replay_original_player_applied'},
+        'pvp-state': {'return_original_player_applied', 'return_original_revision_exact'},
+    }
+    checks = row['authority_checks']
+    assert set(checks) == expected[row['operation']] and all(x is True for x in checks.values())
+
+
+def verify_smoke(directory, authority_checks_required=False):
     root = Path(directory)
     result = json.loads((root / 'native-result.json').read_bytes())
     assert result['ok'] and result['display_driver'] == 'X11'
@@ -19,6 +32,8 @@ def verify_smoke(directory):
         (c, op) for c in (3, 5, 8) for op in ('foreign', 'choice-replay', 'pvp-state')}
     pixels = []
     for row in rows:
+        if authority_checks_required:
+            verify_authority(row)
         assert row['passed'] and row['original_before_snapshot_applied']
         assert row['hero'] == 'Mage' and row['locale'] == 'en' and row['resolution'] == [960, 540]
         assert row['seed'] == 484001
@@ -40,10 +55,11 @@ def verify_smoke(directory):
     assert set(x['path'] for x in pixels) == {p.name for p in root.glob('*.png')}
     return {'ok': True, 'render_observations_verified': 9, 'original_PNG_CRC_and_deflate_verified': 12,
             'software_rendering_only': True, 'foreign_click_and_PVP_leave_input_not_claimed': True,
-            'full_matrix_claimed': False, 'pixels': pixels}
+            'full_matrix_claimed': False, 'explicit_authority_checks_verified': authority_checks_required,
+            'pixels': pixels}
 
 
-def verify_full_segment(directory, hero, locale):
+def verify_full_segment(directory, hero, locale, authority_checks_required=True):
     root = Path(directory)
     result = json.loads((root / 'native-result.json').read_bytes())
     assert result['ok'] and result['display_driver'] == 'X11'
@@ -59,6 +75,8 @@ def verify_full_segment(directory, hero, locale):
     assert len(rows) == len(set(actual)) == 243 and set(actual) == expected
     pixels = []
     for row in rows:
+        if authority_checks_required:
+            verify_authority(row)
         assert row['passed'] and row['original_before_snapshot_applied']
         assert row['hero'] == hero and row['locale'] == locale and row['seed'] == 484001
         assert row['actual_window_size'] == row['resolution'] and row['frame_cap'] == row['requested_frame_cap']
@@ -85,4 +103,5 @@ def verify_full_segment(directory, hero, locale):
             'original_PNG_CRC_and_deflate_verified': 36, 'software_rendering_only': True,
             'frame_caps_are_not_hardware_FPS_measurements': True,
             'delays_are_controlled_fixture_delays_not_WAN_latency_measurements': True,
-            'foreign_click_and_PVP_leave_input_not_claimed': True, 'pixels': pixels}
+            'foreign_click_and_PVP_leave_input_not_claimed': True,
+            'explicit_authority_checks_verified': authority_checks_required, 'pixels': pixels}

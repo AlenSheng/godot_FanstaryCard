@@ -40,17 +40,18 @@ func boundary_witness(row: Dictionary, index: int, locale: String, size: Vector2
 	await get_tree().process_frame
 	var gateway: NaturalGateway = Game.gateway
 	var before := seed_authority(row, str(row.beforeWire))
+	var capture_pixels := fps == 30 and delay == 0
 	await present()
-	await get_tree().create_timer(2.1).timeout
+	if capture_pixels: await get_tree().create_timer(2.1).timeout
 	await RenderingServer.frame_post_draw
 	var before_applied: bool = Game.room.get("player", {}) == before.player
 	var image_names: Array = []
-	var capture_pixels := fps == 30 and delay == 0
 	var labels: Array = []
 	var opened := false
 	var submitted := false
 	var command_exact := false
 	var result_ok := false
+	var authority_checks := {}
 	if row.operation == "pvp-state":
 		var original_pool: Dictionary = before.player.get("monster_pool", {}).duplicate(true)
 		var first_name := "%s_%d_pvp_%s_%d.png" % [row.hero, row.capacity, locale, index]
@@ -63,7 +64,7 @@ func boundary_witness(row: Dictionary, index: int, locale: String, size: Vector2
 		if delay > 0: await get_tree().create_timer(delay / 1000.0).timeout
 		var after := seed_authority(row, str(row.afterSnapshotWire))
 		await present()
-		await get_tree().create_timer(2.1).timeout
+		if capture_pixels: await get_tree().create_timer(2.1).timeout
 		await RenderingServer.frame_post_draw
 		var last_name := "%s_%d_return_%s_%d.png" % [row.hero, row.capacity, locale, index]
 		var last_image_ok := true
@@ -73,6 +74,8 @@ func boundary_witness(row: Dictionary, index: int, locale: String, size: Vector2
 		result_ok = first_image_ok and last_image_ok and before.player.phase == "Pvp" and not before.get("duel", {}).is_empty()
 		result_ok = result_ok and after.player.phase != "Pvp" and after.get("duel", {}).is_empty()
 		result_ok = result_ok and Game.room.get("player", {}).get("monster_pool", {}) == original_pool
+		authority_checks = {"return_original_player_applied":Game.room.get("player", {}) == after.player,"return_original_revision_exact":Game.room.get("room_revision", -1) == after.room_revision}
+		result_ok = result_ok and authority_checks.values().all(func(value): return value)
 	else:
 		var entry: Button
 		for candidate in $UI._reference.find_children("*", "Button", true, false):
@@ -103,26 +106,47 @@ func boundary_witness(row: Dictionary, index: int, locale: String, size: Vector2
 				command_exact = codec.error.is_empty() and actual == request
 		else:
 			# No product control exposes another player's candidate. The negative
-			# original server response is delivered without manufacturing a click.
+			# typed request is recorded by the transport without a product click.
 			var payload: Dictionary = codec.decode("MonsterCardChooseCommand",request.payload)
 			var own: Array = before.player.monster_pool.pending
 			command_exact = not own.any(func(card): return str(card.instance_id) == str(payload.candidate_id))
+			# The decoder supplies default scalar fields. Rebuild the same sparse
+			# product command as the original native request instead of encoding
+			# absent/default replacement text as an additional empty wire field.
+			var transport_payload := {"candidate_id":str(payload.candidate_id),"accept":bool(payload.accept)}
+			if not str(payload.get("replace_instance_id", "")).is_empty(): transport_payload.replace_instance_id = str(payload.replace_instance_id)
+			var sent_foreign := gateway.send("monster.choose",transport_payload,str(request.request_id))
+			var actual_foreign: Dictionary = codec.decode("ClientEnvelope",gateway.sent[-1].wire) if sent_foreign else {}
+			command_exact = command_exact and codec.error.is_empty() and actual_foreign == request
 		var unchanged_before: bool = Game.room.get("player", {}).get("monster_pool", {}) == before.player.monster_pool
+		var pending_registered: bool = Game._pending_commands.has(str(request.request_id))
 		if delay > 0: await get_tree().create_timer(delay / 1000.0).timeout
-		for encoded in row.responseWires: gateway._receive(Marshalls.base64_to_raw(str(encoded)))
+		var unchanged_after_delay: bool = Game.room.get("player", {}) == before.player
+		var expected_after := {}
+		for encoded in row.responseWires:
+			var response_wire := Marshalls.base64_to_raw(str(encoded))
+			var response: Dictionary = codec.decode("ServerEnvelope",response_wire)
+			assert(codec.error.is_empty())
+			if response.type == "room.snapshot": expected_after = native_snapshot(response_wire)
+			gateway._receive(response_wire)
 		await present()
 		if row.operation == "choice-replay":
 			var first_state: Dictionary = Game.room.duplicate(true)
+			var first_applied: bool = not expected_after.is_empty() and Game.room.get("player", {}) == expected_after.player
+			var first_revision: bool = not expected_after.is_empty() and Game.room.get("room_revision", -1) == expected_after.room_revision
+			var pending_cleared: bool = not Game._pending_commands.has(str(request.request_id))
 			if delay > 0: await get_tree().create_timer(delay / 1000.0).timeout
 			for encoded in row.replayWires: gateway._receive(Marshalls.base64_to_raw(str(encoded)))
 			await present()
-			result_ok = result_ok and submitted and first_state == Game.room
+			authority_checks = {"pending_registered":pending_registered,"no_player_mutation_during_controlled_delay":unchanged_after_delay,"first_original_player_applied":first_applied,"first_original_revision_exact":first_revision,"pending_cleared":pending_cleared,"replay_kept_full_state":first_state == Game.room,"replay_original_player_applied":not expected_after.is_empty() and Game.room.get("player", {}) == expected_after.player}
+			result_ok = result_ok and submitted and authority_checks.values().all(func(value): return value)
 		else:
-			result_ok = result_ok and Game.room.get("player", {}).get("monster_pool", {}) == before.player.monster_pool
+			authority_checks = {"negative_original_transport_request_exact":command_exact,"negative_transport_request_correlated":gateway._response_contexts.has(str(request.request_id)),"no_player_mutation_during_controlled_delay":unchanged_after_delay,"rejection_preserved_full_player":Game.room.get("player", {}) == before.player}
+			result_ok = result_ok and authority_checks.values().all(func(value): return value)
 		result_ok = result_ok and opened and command_exact and unchanged_before and not labels.is_empty()
 		result_ok = result_ok and labels.all(func(label): return label.inside and label.all_lines_visible)
 	var passed: bool = before_applied and result_ok
-	return {"hero":row.hero,"capacity":row.capacity,"seed":row.seed,"operation":row.operation,"locale":locale,"resolution":[size.x,size.y],"actual_window_size":[get_window().size.x,get_window().size.y],"frame_cap":Engine.max_fps,"requested_frame_cap":fps,"controlled_response_delay_ms":delay,"native_source_sha":row.source,"original_before_snapshot_applied":before_applied,"dialog_opened":opened,"choice_input_submitted":submitted,"original_command_exact":command_exact,"labels":labels,"screenshots":image_names,"checkpoint_reader_reset_explicit":row.operation=="pvp-state","PVP_leave_button_clicked":false,"foreign_candidate_UI_click_claimed":false,"passed":passed}
+	return {"hero":row.hero,"capacity":row.capacity,"seed":row.seed,"operation":row.operation,"locale":locale,"resolution":[size.x,size.y],"actual_window_size":[get_window().size.x,get_window().size.y],"frame_cap":Engine.max_fps,"requested_frame_cap":fps,"controlled_response_delay_ms":delay,"native_source_sha":row.source,"original_before_snapshot_applied":before_applied,"authority_checks":authority_checks,"dialog_opened":opened,"choice_input_submitted":submitted,"original_command_exact":command_exact,"labels":labels,"screenshots":image_names,"checkpoint_reader_reset_explicit":row.operation=="pvp-state","PVP_leave_button_clicked":false,"foreign_candidate_UI_click_claimed":false,"passed":passed}
 
 func _run() -> void:
 	output = OS.get_environment("PR13_DUAL_RENDER_OUTPUT")
