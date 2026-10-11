@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/inner.py", line 27, in <module>
+    z=m.paired_binary_bootstrap([0]*3000,10000,random.Random(482999));assert z['precision_insufficient'] and z['empirical_degenerate_interval_is_not_proof_of_zero_population_effect'] and z['discordant_seed_pairs']==0
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/statistics.py", line 22, in paired_binary_bootstrap
+    return {'mean':statistics.fmean(differences),'CI95':[quantile(values,.025),quantile(values,.975)],'CI_familywise95':[quantile(values,.05/18),quantile(values,1-.05/18)],'bootstrap_resamples':resamples,'discordant_seed_pairs':discordant,'precision_insufficient':discordant<20,'empirical_degenerate_interval_is_not_proof_of_zero_population_effect':discordant==0}
+                   ^^^^^^^^^^^^^^^^
+AttributeError: module 'statistics' has no attribute 'fmean'
