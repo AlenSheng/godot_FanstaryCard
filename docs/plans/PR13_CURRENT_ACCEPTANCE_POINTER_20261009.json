@@ -1,8 +1,8 @@
 {
   "kind": "current_execution_register_pointer",
-  "current_register": "docs/reports/pr13-stages-20261009/S6-after-a07-current-numerical-postgres/register.json",
+  "current_register": "docs/reports/pr13-stages-20261009/S6-after-b09-natural-choice-formal1536/register.json",
   "integration_source_sha": "497c97b0a777eb5ee88ecb1bd37cee4626fac495",
-  "previous_register": "docs/reports/pr13-stages-20261009/S6-after-b09-pool-full54-render/register.json",
+  "previous_register": "docs/reports/pr13-stages-20261009/S6-after-b09-original-default-off-experiment/register.json",
   "whole_scope_accepted": false,
   "human_experience_in_scope": false,
   "execution_policy": {
@@ -79,7 +79,16 @@
     "current_PG_runtime25_native_skipped": 0,
     "current_PG_runtime25_complete_original_G_backup": true,
     "current_PG_runtime25_latest_stage_report": "docs/reports/pr13-stages-20261009/S4-current-postgres-runtime25-regression/summary.json",
-    "current_native_PG_two_batches_passed_rows": 34
+    "current_native_PG_two_batches_passed_rows": 34,
+    "natural_choice_contract_development_routes": 192,
+    "natural_choice_contract_stage_report": "docs/reports/pr13-stages-20261009/S3-b09-natural-choice-contract-smoke192/summary.json",
+    "natural_choice_formal128_planned_routes": 1536,
+    "natural_choice_formal128_stage_report": "docs/reports/pr13-stages-20261009/S0-b09-natural-choice-formal128-plan/summary.json",
+    "natural_choice_formal128_complete": true,
+    "natural_choice_formal128_actual_routes": 1536,
+    "natural_choice_formal128_complete_G_archives": 3,
+    "natural_choice_formal128_latest_stage_report": "docs/reports/pr13-stages-20261009/S4-b09-natural-choice-formal1536/summary.json",
+    "natural_choice_Mage8_full_replacement_gap_retained": true
   },
   "development_history": [
     {
@@ -513,15 +522,16 @@
   "evidence_storage_policy": "docs/plans/PR13_EVIDENCE_STORAGE_POLICY_20261010.json",
   "latest_storage_checkpoint": "docs/reports/pr13-stages-20261009/S0-passed-natural-cleanup-and-current-CI/summary.json",
   "latest_layer_supplement": {
-    "task_id": "PR13-A07.1",
-    "closed_POSTGRES_cases": [
-      "PR13-A07.1-T01",
-      "PR13-A07.1-T02",
-      "PR13-A07.1-T03"
+    "task_ids": [
+      "PR13-B09.1",
+      "PR13-B09.2"
     ],
-    "source_sha": "63340654c0b0a3a422cf2fed5b3e8925e2ead2ff",
-    "actual_native_source_sha": "9555aa077708af4efa1ee518334306f228e12ef5",
-    "stage_report": "docs/reports/pr13-stages-20261009/S3-a07-current-numerical-postgres-nine/summary.json",
+    "closed_EXPERIMENT_cases": [
+      "PR13-B09.1-T02",
+      "PR13-B09.2-T01"
+    ],
+    "stage_report": "docs/reports/pr13-stages-20261009/S4-b09-natural-choice-formal1536/summary.json",
+    "actual_source_baseline_sha": "700d237d8ffe155582a3bbd381257da2a688ad8d",
     "whole_task_accepted": false
   },
   "latest_execution_checkpoint": {

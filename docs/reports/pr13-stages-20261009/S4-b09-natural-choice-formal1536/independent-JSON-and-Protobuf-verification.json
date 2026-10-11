@@ -1,0 +1,184 @@
+{
+  "ok": true,
+  "inspection_kind": "JSON and Protobuf metadata only; no local game execution or statistical inference",
+  "actual_route_rows": 1536,
+  "choice_events_independently_verified": 15026,
+  "formal_segment_reports": [
+    {
+      "hero": "Mage",
+      "routes": 512,
+      "choice_events_independently_verified": 1434,
+      "groups": {
+        "0": {
+          "routes": 128,
+          "outcome:Dead": 124,
+          "outcome:Extracted": 4
+        },
+        "3": {
+          "routes": 128,
+          "outcome:Dead": 126,
+          "outcome:Extracted": 2,
+          "operation:skip-empty": 64,
+          "replacement-pile:none": 416,
+          "operation:accept": 346,
+          "operation:replace": 62,
+          "replacement-pile:library": 37,
+          "replacement-pile:discard": 25,
+          "operation:skip-full": 6
+        },
+        "5": {
+          "routes": 128,
+          "outcome:Dead": 128,
+          "operation:skip-empty": 64,
+          "replacement-pile:none": 476,
+          "operation:accept": 411,
+          "operation:replace": 2,
+          "replacement-pile:discard": 2,
+          "operation:skip-full": 1
+        },
+        "8": {
+          "routes": 128,
+          "outcome:Dead": 128,
+          "operation:skip-empty": 64,
+          "replacement-pile:none": 478,
+          "operation:accept": 414
+        }
+      },
+      "route_bytes_sha256": "cfb6103545eef442f6cc809adab5ebcde883718256cd165a2d2bb093650206da",
+      "all_declared_routes_and_terminal_censored_outcomes_retained": true,
+      "no_native_game_code_or_statistics_executed_by_verifier": true
+    },
+    {
+      "hero": "Priest",
+      "routes": 512,
+      "choice_events_independently_verified": 5558,
+      "groups": {
+        "0": {
+          "routes": 128,
+          "outcome:Dead": 72,
+          "outcome:ObservationBudgetCensored": 5,
+          "outcome:Extracted": 51
+        },
+        "3": {
+          "routes": 128,
+          "outcome:Dead": 75,
+          "outcome:ObservationBudgetCensored": 8,
+          "outcome:Extracted": 45,
+          "operation:skip-empty": 64,
+          "replacement-pile:none": 1054,
+          "operation:accept": 384,
+          "operation:replace": 730,
+          "replacement-pile:discard": 404,
+          "operation:skip-full": 606,
+          "replacement-pile:library": 326
+        },
+        "5": {
+          "routes": 128,
+          "outcome:Dead": 83,
+          "outcome:ObservationBudgetCensored": 5,
+          "outcome:Extracted": 40,
+          "operation:skip-empty": 64,
+          "replacement-pile:none": 1195,
+          "operation:accept": 640,
+          "operation:replace": 618,
+          "replacement-pile:discard": 339,
+          "operation:skip-full": 491,
+          "replacement-pile:library": 279
+        },
+        "8": {
+          "routes": 128,
+          "outcome:Dead": 94,
+          "outcome:ObservationBudgetCensored": 6,
+          "outcome:Extracted": 28,
+          "operation:skip-empty": 64,
+          "replacement-pile:none": 1458,
+          "operation:accept": 1003,
+          "operation:replace": 503,
+          "replacement-pile:discard": 276,
+          "replacement-pile:library": 227,
+          "operation:skip-full": 391
+        }
+      },
+      "route_bytes_sha256": "75cab4dbe75c16a38034e42f86f8be5dc48f30e71c2ce57249690a2ac66d6fab",
+      "all_declared_routes_and_terminal_censored_outcomes_retained": true,
+      "no_native_game_code_or_statistics_executed_by_verifier": true
+    },
+    {
+      "hero": "Guardian",
+      "routes": 512,
+      "choice_events_independently_verified": 8034,
+      "groups": {
+        "0": {
+          "routes": 128,
+          "outcome:Extracted": 89,
+          "outcome:ObservationBudgetCensored": 29,
+          "outcome:Dead": 10
+        },
+        "3": {
+          "routes": 128,
+          "outcome:ObservationBudgetCensored": 45,
+          "outcome:Extracted": 81,
+          "outcome:Dead": 2,
+          "operation:skip-empty": 64,
+          "replacement-pile:none": 1405,
+          "operation:accept": 384,
+          "operation:replace": 1085,
+          "replacement-pile:discard": 589,
+          "operation:skip-full": 957,
+          "replacement-pile:library": 496
+        },
+        "5": {
+          "routes": 128,
+          "outcome:ObservationBudgetCensored": 53,
+          "outcome:Extracted": 74,
+          "outcome:Dead": 1,
+          "operation:skip-empty": 64,
+          "replacement-pile:none": 1637,
+          "operation:accept": 640,
+          "operation:replace": 1060,
+          "replacement-pile:library": 492,
+          "operation:skip-full": 933,
+          "replacement-pile:discard": 568
+        },
+        "8": {
+          "routes": 128,
+          "outcome:ObservationBudgetCensored": 52,
+          "outcome:Extracted": 69,
+          "outcome:Dead": 7,
+          "operation:skip-empty": 64,
+          "replacement-pile:none": 1904,
+          "operation:accept": 1024,
+          "operation:replace": 943,
+          "replacement-pile:discard": 517,
+          "operation:skip-full": 816,
+          "replacement-pile:library": 426
+        }
+      },
+      "route_bytes_sha256": "1dbffdc4ea038b216dfdd2cd9c416bc403924fc6d70b9c852c8679698dfe5239",
+      "all_declared_routes_and_terminal_censored_outcomes_retained": true,
+      "no_native_game_code_or_statistics_executed_by_verifier": true
+    }
+  ],
+  "four_invalid_metadata_controls": [
+    {
+      "control": "resources_changed",
+      "rejected": true
+    },
+    {
+      "control": "conflict_body_made_identical",
+      "rejected": true
+    },
+    {
+      "control": "native_kill_sources_removed",
+      "rejected": true
+    },
+    {
+      "control": "duplicate_pile_instance",
+      "rejected": true
+    }
+  ],
+  "reviewer_source_sha256": "71ada283aa2d2c0a096e2595c11a380a92354ccfa983f0bd527b96333f79eeef",
+  "all_original_failed_outputs_and_nonterminal_censored_data_retained": true,
+  "missing_branch_not_passed": true,
+  "MAIN_accepted": false
+}
