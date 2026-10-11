@@ -3,6 +3,7 @@ name: Gameplay load offline checks
 on:
   pull_request:
     paths:
+      - 'tools/pr13_*.py'
       - 'tools/gameplay_load*.py'
       - 'tools/pr13_runtime_evidence.py'
       - 'tools/pr13_local_checks.py'
@@ -65,6 +66,7 @@ on:
   push:
     branches: ['release']
     paths:
+      - 'tools/pr13_*.py'
       - 'tools/gameplay_load*.py'
       - 'tools/pr13_runtime_evidence.py'
       - 'tools/pr13_local_checks.py'

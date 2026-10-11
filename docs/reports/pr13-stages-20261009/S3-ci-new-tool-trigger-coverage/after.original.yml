@@ -1,0 +1,320 @@
+name: Gameplay load offline checks
+
+on:
+  pull_request:
+    paths:
+      - 'tools/pr13_*.py'
+      - 'tools/gameplay_load*.py'
+      - 'tools/pr13_runtime_evidence.py'
+      - 'tools/pr13_local_checks.py'
+      - 'tools/pr13_offline_cases.py'
+      - 'tools/pr13_fault_cases.py'
+      - 'tools/pr13_audit_replay.py'
+      - 'tools/pr13_audit_cases.py'
+      - 'tools/pr13_boundary_cases.py'
+      - 'tools/pr13_postgres_cases.py'
+      - 'tools/pr13_ui_cases.py'
+      - 'tools/pr13_state_cases.py'
+      - 'tools/pr13_stop_stage_cases.py'
+      - 'tools/pr13_render_cases.py'
+      - 'tools/pr13_wait_render_cases.py'
+      - 'tools/pr13_source_lifecycle_cases.py'
+      - 'tools/pr13_experience_metric_cases.py'
+      - 'tools/pr13_experience_metrics.py'
+      - 'tools/pr13_guardian_levels.py'
+      - 'tools/pr13_server_phase_cases.py'
+      - 'tools/pr13_server_diagnostics.py'
+      - 'tools/pr13_combined_runtime_cases.py'
+      - 'tools/pr13_ready_recovery_cases.py'
+      - 'tools/pr13_ready_edge_cases.py'
+      - 'tools/pr13_review_cases.py'
+      - 'tools/pr13_review_policy.py'
+      - 'tools/pr13_http_cases.py'
+      - 'tools/pr13_domain_cases.py'
+      - 'tools/pr13_control_cases.py'
+      - 'tools/pr13_candidate_review.py'
+      - 'tools/pr13_candidate_cases.py'
+      - 'tools/pr13_source_cases.py'
+      - 'tools/pr13_lifecycle_cases.py'
+      - 'tools/pr13_stages.py'
+      - 'tools/pr13_suite_coverage.py'
+      - 'tools/pr13_coverage_cases.py'
+      - 'tools/pr13_probe_cases.py'
+      - 'tools/pr13_ledger_attribution.py'
+      - 'tools/pr13_ledger_cases.py'
+      - 'tools/pr13_ledger_postgres_cases.py'
+      - 'tools/pr13_public_evidence.py'
+      - 'tools/pr13_evidence_bundle.py'
+      - 'tools/pr13_ci_evidence.py'
+      - 'tools/pr13_acceptance_register.py'
+      - 'tools/pr13_callback_isolation.py'
+      - 'tools/pr13_local_network.py'
+      - 'tools/pr13_local_runtime.py'
+      - 'tools/pr13_factor_matrix.py'
+      - 'tools/pr13_simulation_report.py'
+      - 'tools/cloud_load_test.py'
+      - 'tools/cloud/pr13/**'
+      - 'tools/tests/**'
+      - 'client/network/**'
+      - 'client/state/**'
+      - 'client/data/**'
+      - 'client/ui/**'
+      - 'client/tests/**'
+      - 'protocol/**'
+      - 'server/**'
+      - '.github/workflows/gameplay-load.yml'
+  push:
+    branches: ['release']
+    paths:
+      - 'tools/pr13_*.py'
+      - 'tools/gameplay_load*.py'
+      - 'tools/pr13_runtime_evidence.py'
+      - 'tools/pr13_local_checks.py'
+      - 'tools/pr13_offline_cases.py'
+      - 'tools/pr13_fault_cases.py'
+      - 'tools/pr13_audit_replay.py'
+      - 'tools/pr13_audit_cases.py'
+      - 'tools/pr13_boundary_cases.py'
+      - 'tools/pr13_postgres_cases.py'
+      - 'tools/pr13_ui_cases.py'
+      - 'tools/pr13_state_cases.py'
+      - 'tools/pr13_stop_stage_cases.py'
+      - 'tools/pr13_render_cases.py'
+      - 'tools/pr13_wait_render_cases.py'
+      - 'tools/pr13_source_lifecycle_cases.py'
+      - 'tools/pr13_experience_metric_cases.py'
+      - 'tools/pr13_experience_metrics.py'
+      - 'tools/pr13_guardian_levels.py'
+      - 'tools/pr13_server_phase_cases.py'
+      - 'tools/pr13_server_diagnostics.py'
+      - 'tools/pr13_combined_runtime_cases.py'
+      - 'tools/pr13_ready_recovery_cases.py'
+      - 'tools/pr13_ready_edge_cases.py'
+      - 'tools/pr13_review_cases.py'
+      - 'tools/pr13_review_policy.py'
+      - 'tools/pr13_http_cases.py'
+      - 'tools/pr13_domain_cases.py'
+      - 'tools/pr13_control_cases.py'
+      - 'tools/pr13_candidate_review.py'
+      - 'tools/pr13_candidate_cases.py'
+      - 'tools/pr13_source_cases.py'
+      - 'tools/pr13_lifecycle_cases.py'
+      - 'tools/pr13_stages.py'
+      - 'tools/pr13_suite_coverage.py'
+      - 'tools/pr13_coverage_cases.py'
+      - 'tools/pr13_probe_cases.py'
+      - 'tools/pr13_ledger_attribution.py'
+      - 'tools/pr13_ledger_cases.py'
+      - 'tools/pr13_ledger_postgres_cases.py'
+      - 'tools/pr13_public_evidence.py'
+      - 'tools/pr13_evidence_bundle.py'
+      - 'tools/pr13_ci_evidence.py'
+      - 'tools/pr13_acceptance_register.py'
+      - 'tools/pr13_callback_isolation.py'
+      - 'tools/pr13_local_network.py'
+      - 'tools/pr13_local_runtime.py'
+      - 'tools/pr13_factor_matrix.py'
+      - 'tools/pr13_simulation_report.py'
+      - 'tools/cloud_load_test.py'
+      - 'tools/cloud/pr13/**'
+      - 'tools/tests/**'
+      - 'client/network/**'
+      - 'client/state/**'
+      - 'client/data/**'
+      - 'client/ui/**'
+      - 'client/tests/**'
+      - 'protocol/**'
+      - 'server/**'
+      - '.github/workflows/gameplay-load.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  accounting:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: server/global.json
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - name: Install load generator metrics dependency
+        run: python -m pip install psutil==7.0.0
+      - name: Offline accounting and process tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p test-results/gameplay-accounting
+          git rev-parse HEAD > test-results/gameplay-accounting/source-sha.txt
+          python --version > test-results/gameplay-accounting/python-version.txt
+          python -m unittest discover -s tools/tests -v 2>&1 | tee test-results/gameplay-accounting/unittest.log
+          python -m unittest discover -s tools/cloud/pr13 -v 2>&1 | tee test-results/gameplay-accounting/cloud-ownership.log
+          python tools/pr13_control_cases.py --output test-results/gameplay-accounting/control-contract-cases
+          python tools/pr13_candidate_cases.py --output test-results/gameplay-accounting/candidate-contract-cases
+          python tools/pr13_review_cases.py --output test-results/gameplay-accounting/review-policy-cases
+          python tools/pr13_experience_metric_cases.py --output test-results/gameplay-accounting/experience-metric-cases
+          python tools/pr13_probe_cases.py --output test-results/gameplay-accounting/probe-contract-cases
+          dotnet run --project server/tools/FantasyCard.ConfigExporter -c Release --artifacts-path "$RUNNER_TEMP/pr13-config-build" -- --input "$PWD/config/FantasyCard_Config.xlsx" --version gdd-0.70-numerical-1 --server-output "$PWD/test-results/gameplay-accounting/config-export/server" --client-output "$PWD/test-results/gameplay-accounting/config-export/client"
+          python tools/pr13_source_cases.py --config-export test-results/gameplay-accounting/config-export --output test-results/gameplay-accounting/source-contract-cases
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: gameplay-load-accounting-${{ github.sha }}
+          path: test-results/gameplay-accounting
+          retention-days: 7
+          if-no-files-found: error
+
+  client:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Install Godot from official distribution
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/godot" test-results/gameplay-load
+          curl --fail --location --retry 2 'https://downloads.godotengine.org/?version=4.7.2&flavor=stable&slug=linux.x86_64.zip&platform=linux.64' -o "$RUNNER_TEMP/godot.zip"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          chmod +x "$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64"
+          "$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64" --version | tee test-results/gameplay-load/godot-version.txt
+          grep -q '^4\.7\.2\.' test-results/gameplay-load/godot-version.txt
+      - name: Import and run client checks with networking disabled
+        shell: bash
+        run: |
+          set -euo pipefail
+          export XDG_DATA_HOME="$RUNNER_TEMP/godot-offline/data"
+          export XDG_CONFIG_HOME="$RUNNER_TEMP/godot-offline/config"
+          export XDG_CACHE_HOME="$RUNNER_TEMP/godot-offline/cache"
+          godot="$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64"
+          sudo -E unshare -n timeout 600 "$godot" --headless --path client --editor --import --quit > test-results/gameplay-load/import.log 2>&1
+          sudo -E unshare -n timeout 90 "$godot" --headless --path client --script res://tests/run_gameplay_load_parse.gd > test-results/gameplay-load/load-parse.log 2>&1
+          FANTASYCARD_LOAD_RUN_ID=pr13-cleanup-authority sudo -E unshare -n timeout 90 "$godot" --headless --path client --script res://tests/test_cleanup_ticket_authority.gd > test-results/gameplay-load/cleanup-authority.log 2>&1
+          sudo -E unshare -n timeout 90 "$godot" --headless --path client --script res://tests/run_play_retry.gd > test-results/gameplay-load/client.log 2>&1
+          ! grep -E 'SCRIPT ERROR|Parse Error|Failed to load script' test-results/gameplay-load/*.log
+          grep -q 'Gameplay load client parses' test-results/gameplay-load/load-parse.log
+          grep -q 'CLEANUP_TICKET_AUTHORITY.*"ok":true' test-results/gameplay-load/cleanup-authority.log
+      - name: Loopback HTTP completeness and protocol fixtures
+        shell: bash
+        run: |
+          set -euo pipefail
+          godot="$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64"
+          python client/tests/run_http_boundary.py --godot "$godot" --output test-results/gameplay-load/http-boundary --tls-fault
+          python client/tests/run_http_protobuf_client.py --godot "$godot" --work-dir test-results/gameplay-load/http-fixture
+          python tools/pr13_offline_cases.py --godot "$godot" --output test-results/gameplay-load/offline-cases
+          python tools/pr13_fault_cases.py --godot "$godot" --output test-results/gameplay-load/fault-cases
+          python tools/pr13_audit_cases.py --output test-results/gameplay-load/audit-cases
+          python tools/pr13_boundary_cases.py --godot "$godot" --output test-results/gameplay-load/boundary-cases
+          python tools/pr13_ui_cases.py --godot "$godot" --output test-results/gameplay-load/ui-contract-cases
+          python tools/pr13_state_cases.py --godot "$godot" --output test-results/gameplay-load/state-contract-cases
+          python tools/pr13_ready_edge_cases.py --godot "$godot" --output test-results/gameplay-load/ready-edge-cases
+          python tools/pr13_ready_edge_cases.py --script prelaunch --godot "$godot" --output test-results/gameplay-load/prelaunch-boundary-cases
+          python tools/pr13_http_cases.py --godot "$godot" --output test-results/gameplay-load/http-context-cases
+          python tools/pr13_http_cases.py --godot "$godot" --output test-results/gameplay-load/http-context-per-request --transport per-request
+          python tools/pr13_ledger_cases.py --output test-results/gameplay-load/ledger-contract-cases
+          A3GAME_GODOT_EXECUTABLE="$godot" python tools/pr13_callback_isolation.py --output test-results/gameplay-load/callback-isolation
+          FANTASYCARD_SERVER_URL=http://127.0.0.1:1 "$godot" --headless --path client --script res://tests/run_gateway_origin.gd > test-results/gameplay-load/gateway-origin.log 2>&1
+          grep -q '"ok":true' test-results/gameplay-load/gateway-origin.log
+          ! grep -E 'SCRIPT ERROR|Parse Error' test-results/gameplay-load/gateway-origin.log
+      - name: Same-session callback races
+        shell: bash
+        run: |
+          set -euo pipefail
+          export XDG_DATA_HOME="$RUNNER_TEMP/godot-offline/data"
+          export XDG_CONFIG_HOME="$RUNNER_TEMP/godot-offline/config"
+          export XDG_CACHE_HOME="$RUNNER_TEMP/godot-offline/cache"
+          sudo -E unshare -n timeout 60 "$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64" --headless --path client --script res://tests/run_lobby_race.gd > test-results/gameplay-load/lobby-race.log 2>&1
+          grep -q '"ok":true' test-results/gameplay-load/lobby-race.log
+          ! grep -E 'SCRIPT ERROR|Parse Error' test-results/gameplay-load/lobby-race.log
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: gameplay-load-client-${{ github.sha }}
+          path: test-results/gameplay-load
+          retention-days: 7
+          if-no-files-found: ignore
+
+  server-contract:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: server/global.json
+      - name: Full server offline regression
+        shell: pwsh
+        working-directory: server
+        run: |
+          dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --logger 'trx;LogFileName=server-offline.trx' --results-directory ../test-results/gameplay-load
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: gameplay-load-server-${{ github.sha }}
+          path: test-results/gameplay-load
+          retention-days: 7
+          if-no-files-found: ignore
+
+  server-postgres:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_DB: fantasycard_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d fantasycard_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      FANTASYCARD_TEST_POSTGRES: Host=127.0.0.1;Port=5432;Username=postgres;Password=postgres;Database=fantasycard_test
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: server/global.json
+      - name: Install pinned Godot for real client and PostgreSQL fault checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/godot-pg" test-results/gameplay-load
+          curl --fail --location --retry 2 'https://downloads.godotengine.org/?version=4.7.2&flavor=stable&slug=linux.x86_64.zip&platform=linux.64' -o "$RUNNER_TEMP/godot-pg.zip"
+          unzip -q "$RUNNER_TEMP/godot-pg.zip" -d "$RUNNER_TEMP/godot-pg"
+          executable="$RUNNER_TEMP/godot-pg/Godot_v4.7.2-stable_linux.x86_64"
+          chmod +x "$executable"
+          "$executable" --version | tee test-results/gameplay-load/godot-pg-version.txt
+          grep -q '^4\.7\.2\.' test-results/gameplay-load/godot-pg-version.txt
+          echo "A3GAME_GODOT_EXECUTABLE=$executable" >> "$GITHUB_ENV"
+          echo "FANTASYCARD_PROCESS_EVIDENCE=$GITHUB_WORKSPACE/test-results/gameplay-load/process-faults" >> "$GITHUB_ENV"
+      - name: Full server and runtime integration on disposable PostgreSQL
+        working-directory: server
+        run: dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --logger 'trx;LogFileName=postgres-full.trx' --results-directory ../test-results/gameplay-load
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: gameplay-load-postgres-${{ github.sha }}
+          path: test-results/gameplay-load
+          retention-days: 7
+          if-no-files-found: ignore
