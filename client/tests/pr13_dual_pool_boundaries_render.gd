@@ -35,7 +35,7 @@ func seed_authority(row: Dictionary, encoded: String) -> Dictionary:
 	$UI.screen = "exploration"
 	return snapshot
 
-func boundary_witness(row: Dictionary, index: int, locale: String, size: Vector2i) -> Dictionary:
+func boundary_witness(row: Dictionary, index: int, locale: String, size: Vector2i, fps: int = 30, delay: int = 0) -> Dictionary:
 	for previous in $UI.find_children("*", "AcceptDialog", true, false): previous.queue_free()
 	await get_tree().process_frame
 	var gateway: NaturalGateway = Game.gateway
@@ -45,6 +45,7 @@ func boundary_witness(row: Dictionary, index: int, locale: String, size: Vector2
 	await RenderingServer.frame_post_draw
 	var before_applied: bool = Game.room.get("player", {}) == before.player
 	var image_names: Array = []
+	var capture_pixels := fps == 30 and delay == 0
 	var labels: Array = []
 	var opened := false
 	var submitted := false
@@ -53,17 +54,22 @@ func boundary_witness(row: Dictionary, index: int, locale: String, size: Vector2
 	if row.operation == "pvp-state":
 		var original_pool: Dictionary = before.player.get("monster_pool", {}).duplicate(true)
 		var first_name := "%s_%d_pvp_%s_%d.png" % [row.hero, row.capacity, locale, index]
-		var first_image_ok: bool = get_viewport().get_texture().get_image().save_png(output + "/" + first_name) == OK
-		image_names.append(first_name)
+		var first_image_ok := true
+		if capture_pixels:
+			first_image_ok = get_viewport().get_texture().get_image().save_png(output + "/" + first_name) == OK
+			image_names.append(first_name)
 		# The native checkpoint rebuild starts a new event stream. Read its actual
 		# public return snapshot through a fresh reader, with the same room/match.
+		if delay > 0: await get_tree().create_timer(delay / 1000.0).timeout
 		var after := seed_authority(row, str(row.afterSnapshotWire))
 		await present()
 		await get_tree().create_timer(2.1).timeout
 		await RenderingServer.frame_post_draw
 		var last_name := "%s_%d_return_%s_%d.png" % [row.hero, row.capacity, locale, index]
-		var last_image_ok: bool = get_viewport().get_texture().get_image().save_png(output + "/" + last_name) == OK
-		image_names.append(last_name)
+		var last_image_ok := true
+		if capture_pixels:
+			last_image_ok = get_viewport().get_texture().get_image().save_png(output + "/" + last_name) == OK
+			image_names.append(last_name)
 		result_ok = first_image_ok and last_image_ok and before.player.phase == "Pvp" and not before.get("duel", {}).is_empty()
 		result_ok = result_ok and after.player.phase != "Pvp" and after.get("duel", {}).is_empty()
 		result_ok = result_ok and Game.room.get("player", {}).get("monster_pool", {}) == original_pool
@@ -81,8 +87,10 @@ func boundary_witness(row: Dictionary, index: int, locale: String, size: Vector2
 				if label.is_visible_in_tree() and not label.text.is_empty():
 					labels.append({"text":label.text,"inside":dialog.get_visible_rect().encloses(label.get_global_rect()),"all_lines_visible":label.get_visible_line_count()==label.get_line_count()})
 			var picture := "%s_%d_%s_%s_%d.png" % [row.hero,row.capacity,row.operation,locale,index]
-			result_ok = dialog.get_texture().get_image().save_png(output + "/" + picture) == OK
-			image_names.append(picture)
+			result_ok = true
+			if capture_pixels:
+				result_ok = dialog.get_texture().get_image().save_png(output + "/" + picture) == OK
+				image_names.append(picture)
 		var codec := Proto.new()
 		var request: Dictionary = codec.decode("ClientEnvelope",Marshalls.base64_to_raw(str(row.commandWire)))
 		assert(codec.error.is_empty())
@@ -100,10 +108,12 @@ func boundary_witness(row: Dictionary, index: int, locale: String, size: Vector2
 			var own: Array = before.player.monster_pool.pending
 			command_exact = not own.any(func(card): return str(card.instance_id) == str(payload.candidate_id))
 		var unchanged_before: bool = Game.room.get("player", {}).get("monster_pool", {}) == before.player.monster_pool
+		if delay > 0: await get_tree().create_timer(delay / 1000.0).timeout
 		for encoded in row.responseWires: gateway._receive(Marshalls.base64_to_raw(str(encoded)))
 		await present()
 		if row.operation == "choice-replay":
 			var first_state: Dictionary = Game.room.duplicate(true)
+			if delay > 0: await get_tree().create_timer(delay / 1000.0).timeout
 			for encoded in row.replayWires: gateway._receive(Marshalls.base64_to_raw(str(encoded)))
 			await present()
 			result_ok = result_ok and submitted and first_state == Game.room
@@ -112,7 +122,7 @@ func boundary_witness(row: Dictionary, index: int, locale: String, size: Vector2
 		result_ok = result_ok and opened and command_exact and unchanged_before and not labels.is_empty()
 		result_ok = result_ok and labels.all(func(label): return label.inside and label.all_lines_visible)
 	var passed: bool = before_applied and result_ok
-	return {"hero":row.hero,"capacity":row.capacity,"seed":row.seed,"operation":row.operation,"locale":locale,"resolution":[size.x,size.y],"native_source_sha":row.source,"original_before_snapshot_applied":before_applied,"dialog_opened":opened,"choice_input_submitted":submitted,"original_command_exact":command_exact,"labels":labels,"screenshots":image_names,"checkpoint_reader_reset_explicit":row.operation=="pvp-state","PVP_leave_button_clicked":false,"foreign_candidate_UI_click_claimed":false,"passed":passed}
+	return {"hero":row.hero,"capacity":row.capacity,"seed":row.seed,"operation":row.operation,"locale":locale,"resolution":[size.x,size.y],"actual_window_size":[get_window().size.x,get_window().size.y],"frame_cap":Engine.max_fps,"requested_frame_cap":fps,"controlled_response_delay_ms":delay,"native_source_sha":row.source,"original_before_snapshot_applied":before_applied,"dialog_opened":opened,"choice_input_submitted":submitted,"original_command_exact":command_exact,"labels":labels,"screenshots":image_names,"checkpoint_reader_reset_explicit":row.operation=="pvp-state","PVP_leave_button_clicked":false,"foreign_candidate_UI_click_claimed":false,"passed":passed}
 
 func _run() -> void:
 	output = OS.get_environment("PR13_DUAL_RENDER_OUTPUT")
@@ -141,16 +151,25 @@ func _run() -> void:
 	var language := OS.get_environment("PR13_DUAL_RENDER_LANGUAGE")
 	P.set_language(language)
 	get_window().mode = Window.MODE_WINDOWED
-	get_window().size = Vector2i(960,540)
-	Engine.max_fps = 30
-	for index in range(rows.size()):
-		var record: Dictionary = await boundary_witness(rows[index],index,language,Vector2i(960,540))
-		observations.append(record)
-		FileAccess.open(output+"/checkpoint.json",FileAccess.WRITE).store_string(JSON.stringify({"rows":observations.size(),"last":record}))
+	var full_matrix := OS.get_environment("PR13_DUAL_RENDER_MODE") == "full"
+	var sizes: Array = [Vector2i(1920,1080),Vector2i(1280,720),Vector2i(960,540)] if full_matrix else [Vector2i(960,540)]
+	var frames: Array = [30,60,144] if full_matrix else [30]
+	var delays: Array = [0,250,1000] if full_matrix else [0]
+	for size in sizes:
+		get_window().size = size
+		await get_tree().process_frame
+		await get_tree().process_frame
+		for fps in frames:
+			Engine.max_fps = fps
+			for delay in delays:
+				for row in rows:
+					var record: Dictionary = await boundary_witness(row,observations.size(),language,size,fps,delay)
+					observations.append(record)
+					FileAccess.open(output+"/checkpoint.json",FileAccess.WRITE).store_string(JSON.stringify({"rows":observations.size(),"last":record}))
 	Game.gateway = old_gateway
 	gateway.event_received.disconnect(Game._on_event)
 	gateway.free()
-	var result := {"ok":observations.size()==9 and observations.all(func(row): return row.passed) and DisplayServer.get_name()!="headless","observations":observations,"display_driver":DisplayServer.get_name(),"adapter":RenderingServer.get_video_adapter_name(),"language":language,"development_smoke":true,"full_matrix_claimed":false,"source_sha":OS.get_environment("PR13_DUAL_RENDER_SOURCE"),"original_vector_source_sha":"2a1d7e649f61aa1dc04bf50899f7cc32bb553d26","human_experience_claimed":false,"MAIN_accepted":false}
+	var result := {"ok":observations.size()==(243 if full_matrix else 9) and observations.all(func(row): return row.passed) and DisplayServer.get_name()!="headless","observations":observations,"display_driver":DisplayServer.get_name(),"adapter":RenderingServer.get_video_adapter_name(),"language":language,"development_smoke":not full_matrix,"full_matrix_claimed":false,"declared_full_segment_executed":full_matrix,"source_sha":OS.get_environment("PR13_DUAL_RENDER_SOURCE"),"original_vector_source_sha":"2a1d7e649f61aa1dc04bf50899f7cc32bb553d26","human_experience_claimed":false,"MAIN_accepted":false}
 	FileAccess.open(output+"/native-result.json",FileAccess.WRITE).store_string(JSON.stringify(result))
 	Sound.set_process(false)
 	Sound.stop_all()

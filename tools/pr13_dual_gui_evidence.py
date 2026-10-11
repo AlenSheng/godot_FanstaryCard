@@ -2,6 +2,7 @@
 from collections import Counter
 import hashlib
 import json
+import itertools
 from pathlib import Path
 
 from tools.pr13_pool_render_evidence import png_validate
@@ -40,3 +41,48 @@ def verify_smoke(directory):
     return {'ok': True, 'render_observations_verified': 9, 'original_PNG_CRC_and_deflate_verified': 12,
             'software_rendering_only': True, 'foreign_click_and_PVP_leave_input_not_claimed': True,
             'full_matrix_claimed': False, 'pixels': pixels}
+
+
+def verify_full_segment(directory, hero, locale):
+    root = Path(directory)
+    result = json.loads((root / 'native-result.json').read_bytes())
+    assert result['ok'] and result['display_driver'] == 'X11'
+    assert 'llvmpipe' in result['adapter'] and not result['development_smoke']
+    assert result['declared_full_segment_executed'] and not result['full_matrix_claimed']
+    assert not result['human_experience_claimed'] and result['language'] == locale
+    assert hero in ('Mage', 'Priest', 'Guardian') and locale in ('zh-CN', 'en')
+    rows = result['observations']
+    expected = set(itertools.product((3, 5, 8), ('foreign', 'choice-replay', 'pvp-state'),
+                   ((1920, 1080), (1280, 720), (960, 540)), (30, 60, 144), (0, 250, 1000)))
+    actual = [(int(x['capacity']), x['operation'], tuple(x['resolution']),
+               int(x['frame_cap']), int(x['controlled_response_delay_ms'])) for x in rows]
+    assert len(rows) == len(set(actual)) == 243 and set(actual) == expected
+    pixels = []
+    for row in rows:
+        assert row['passed'] and row['original_before_snapshot_applied']
+        assert row['hero'] == hero and row['locale'] == locale and row['seed'] == 484001
+        assert row['actual_window_size'] == row['resolution'] and row['frame_cap'] == row['requested_frame_cap']
+        assert row['native_source_sha'] == '2a1d7e649f61aa1dc04bf50899f7cc32bb553d26'
+        assert not row['PVP_leave_button_clicked'] and not row['foreign_candidate_UI_click_claimed']
+        capture = row['frame_cap'] == 30 and row['controlled_response_delay_ms'] == 0
+        if row['operation'] == 'pvp-state':
+            assert row['checkpoint_reader_reset_explicit']
+            count = 2
+        else:
+            assert row['dialog_opened'] and row['original_command_exact']
+            assert row['labels'] and all(x['inside'] and x['all_lines_visible'] for x in row['labels'])
+            assert row['choice_input_submitted'] == (row['operation'] == 'choice-replay')
+            count = 1
+        assert len(row['screenshots']) == (count if capture else 0)
+        for name in row['screenshots']:
+            assert Path(name).name == name
+            p = root / name
+            info = png_validate(p)
+            pixels.append({'path': name, 'sha256': hashlib.sha256(p.read_bytes()).hexdigest(), 'PNG_validation': info})
+    assert len(pixels) == len({x['path'] for x in pixels}) == 36
+    assert set(x['path'] for x in pixels) == {p.name for p in root.glob('*.png')}
+    return {'ok': True, 'hero': hero, 'locale': locale, 'render_observations_verified': 243,
+            'original_PNG_CRC_and_deflate_verified': 36, 'software_rendering_only': True,
+            'frame_caps_are_not_hardware_FPS_measurements': True,
+            'delays_are_controlled_fixture_delays_not_WAN_latency_measurements': True,
+            'foreign_click_and_PVP_leave_input_not_claimed': True, 'pixels': pixels}
