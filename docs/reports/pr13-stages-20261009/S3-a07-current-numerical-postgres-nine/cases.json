@@ -1,0 +1,530 @@
+[
+  {
+    "case_id": "PR13-A07.1-T01",
+    "status": "Passed",
+    "executed": true,
+    "profiles_executed": [
+      "POSTGRES"
+    ],
+    "actual": {
+      "original_native_methods_passed": 9,
+      "native_skipped": 0,
+      "canonical_A07_to_B02_assertion_mapping": [
+        "PR13-B02.1-T01",
+        "PR13-B02.1-T02",
+        "PR13-B02.1-T03"
+      ],
+      "actual_original_receipts": {
+        "PR13-B02.1-T01": {
+          "compilerExitCode": 1,
+          "diagnostics": [
+            "CS1739",
+            "CS1061"
+          ],
+          "obsoleteParameter": "useConsumptionBasedFenxian",
+          "obsoleteProperty": "GuardianShieldRemainder",
+          "compilerLog": "  Determining projects to restore...\n  Restored /tmp/pr13-obsolete-api-b008d251186e4c768666b3437aa1b48f/Probe.csproj (in 119 ms).\n/tmp/pr13-obsolete-api-b008d251186e4c768666b3437aa1b48f/Probe.cs(9,13): error CS1739: The best overload for 'PlayerCombatState' does not have a parameter named 'useConsumptionBasedFenxian' [/tmp/pr13-obsolete-api-b008d251186e4c768666b3437aa1b48f/Probe.csproj]\n/tmp/pr13-obsolete-api-b008d251186e4c768666b3437aa1b48f/Probe.cs(10,19): error CS1061: 'PlayerCombatState' does not contain a definition for 'GuardianShieldRemainder' and no accessible extension method 'GuardianShieldRemainder' accepting a first argument of type 'PlayerCombatState' could be found (are you missing a using directive or an assembly reference?) [/tmp/pr13-obsolete-api-b008d251186e4c768666b3437aa1b48f/Probe.csproj]\n\nBuild FAILED.\n\n/tmp/pr13-obsolete-api-b008d251186e4c768666b3437aa1b48f/Probe.cs(9,13): error CS1739: The best overload for 'PlayerCombatState' does not have a parameter named 'useConsumptionBasedFenxian' [/tmp/pr13-obsolete-api-b008d251186e4c768666b3437aa1b48f/Probe.csproj]\n/tmp/pr13-obsolete-api-b008d251186e4c768666b3437aa1b48f/Probe.cs(10,19): error CS1061: 'PlayerCombatState' does not contain a definition for 'GuardianShieldRemainder' and no accessible extension method 'GuardianShieldRemainder' accepting a first argument of type 'PlayerCombatState' could be found (are you missing a using directive or an assembly reference?) [/tmp/pr13-obsolete-api-b008d251186e4c768666b3437aa1b48f/Probe.csproj]\n    0 Warning(s)\n    2 Error(s)\n\nTime Elapsed 00:00:04.54\n",
+          "probeSource": "using System;\nusing System.Linq;\nusing FantasyCard.Domain.Combat;\nusing FantasyCard.Domain.Players;\npublic static class OldProbe {\n    public static void Verify() {\n        PlayerCombatState state = new PlayerCombatState(HeroClass.Mage,\n            Enumerable.Repeat(\"common-01\", 20).ToArray(), new Random(31),\n            useConsumptionBasedFenxian: true);\n        _ = state.GuardianShieldRemainder;\n    }\n}",
+          "domainAssemblyHash": "844065af3158b40787699752915ed95befbd3c660c2b10dce501f9f4fc29e352",
+          "databaseBeforeHash": "0968144364c42b2208295f808ecf7ba28d829e4068cc20b2967f4dea2241f304",
+          "databaseAfterHash": "0968144364c42b2208295f808ecf7ba28d829e4068cc20b2967f4dea2241f304"
+        },
+        "PR13-B02.1-T02": {
+          "rows": [
+            {
+              "hero": 2,
+              "snapshotHash": "eb7e5fa0fccbd126d31435344b8c20f9bec74c7c4689342dc6b77015f3a3c389",
+              "FenxianDrawPolicy": 1,
+              "GuardianShieldPolicy": 1,
+              "observations": [
+                0,
+                0,
+                1,
+                1,
+                2
+              ]
+            },
+            {
+              "hero": 3,
+              "snapshotHash": "c5e56030ca72064c47bbc4c24cae81a1de39966f1914d3c401df4d7f969d96c1",
+              "FenxianDrawPolicy": 1,
+              "GuardianShieldPolicy": 1,
+              "observations": [
+                2,
+                2,
+                2,
+                2,
+                2
+              ]
+            }
+          ]
+        },
+        "PR13-B02.1-T03": {
+          "rows": [
+            {
+              "hero": "Mage",
+              "count": 1,
+              "draws": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "FenxianDrawPolicy": 2
+            },
+            {
+              "hero": "Mage",
+              "count": 3,
+              "draws": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              "FenxianDrawPolicy": 2
+            },
+            {
+              "hero": "Mage",
+              "count": 5,
+              "draws": [
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2
+              ],
+              "FenxianDrawPolicy": 2
+            },
+            {
+              "hero": "Guardian",
+              "level": 0,
+              "totalWeaponBonus": 5,
+              "GuardianShieldPolicy": 2,
+              "GuardianShieldRemainderTenths": 0
+            },
+            {
+              "hero": "Guardian",
+              "level": 1,
+              "totalWeaponBonus": 7,
+              "GuardianShieldPolicy": 2,
+              "GuardianShieldRemainderTenths": 0
+            },
+            {
+              "hero": "Guardian",
+              "level": 2,
+              "totalWeaponBonus": 9,
+              "GuardianShieldPolicy": 2,
+              "GuardianShieldRemainderTenths": 0
+            },
+            {
+              "hero": "Guardian",
+              "level": 3,
+              "totalWeaponBonus": 11,
+              "GuardianShieldPolicy": 2,
+              "GuardianShieldRemainderTenths": 0
+            },
+            {
+              "hero": "Guardian",
+              "level": 4,
+              "totalWeaponBonus": 13,
+              "GuardianShieldPolicy": 2,
+              "GuardianShieldRemainderTenths": 0
+            },
+            {
+              "hero": "Guardian",
+              "level": 5,
+              "totalWeaponBonus": 15,
+              "GuardianShieldPolicy": 2,
+              "GuardianShieldRemainderTenths": 0
+            }
+          ]
+        }
+      },
+      "original_compiler_diagnostics_preserved": [
+        "CS1739",
+        "CS1061"
+      ],
+      "no_obsolete_API_restored_or_candidate_defaults_changed": true,
+      "remaining_owned_fixture_schemas": 0,
+      "complete_G_originals_SHA_and_CRC_verified": true
+    },
+    "evidence": [
+      "docs/reports/pr13-stages-20261009/S3-a07-current-numerical-postgres-nine/native-result.original.json",
+      "docs/reports/pr13-stages-20261009/S3-a07-current-numerical-postgres-nine/native-nine.original.trx",
+      "docs/reports/pr13-stages-20261009/S3-a07-current-numerical-postgres-nine/actual-manager-terminal-source.json",
+      "docs/reports/pr13-stages-20261009/S3-a07-current-numerical-postgres-nine/source-and-package-frozen-inputs.json",
+      "docs/reports/pr13-stages-20261009/S3-a07-current-numerical-postgres-nine/receipts/PR13-B02.1-T01.json",
+      "docs/reports/pr13-stages-20261009/S3-a07-current-numerical-postgres-nine/receipts/PR13-B02.1-T02.json",
+      "docs/reports/pr13-stages-20261009/S3-a07-current-numerical-postgres-nine/receipts/PR13-B02.1-T03.json"
+    ]
+  },
+  {
+    "case_id": "PR13-A07.1-T02",
+    "status": "Passed",
+    "executed": true,
+    "profiles_executed": [
+      "POSTGRES"
+    ],
+    "actual": {
+      "original_native_methods_passed": 9,
+      "native_skipped": 0,
+      "canonical_A07_to_B02_assertion_mapping": [
+        "PR13-B02.1-T01",
+        "PR13-B02.1-T03",
+        "PR13-B02.4-T02"
+      ],
+      "actual_original_receipts": {
+        "PR13-B02.1-T01": {
+          "compilerExitCode": 1,
+          "diagnostics": [
+            "CS1739",
+            "CS1061"
+          ],
+          "obsoleteParameter": "useConsumptionBasedFenxian",
+          "obsoleteProperty": "GuardianShieldRemainder",
+          "compilerLog": "  Determining projects to restore...\n  Restored /tmp/pr13-obsolete-api-b008d251186e4c768666b3437aa1b48f/Probe.csproj (in 119 ms).\n/tmp/pr13-obsolete-api-b008d251186e4c768666b3437aa1b48f/Probe.cs(9,13): error CS1739: The best overload for 'PlayerCombatState' does not have a parameter named 'useConsumptionBasedFenxian' [/tmp/pr13-obsolete-api-b008d251186e4c768666b3437aa1b48f/Probe.csproj]\n/tmp/pr13-obsolete-api-b008d251186e4c768666b3437aa1b48f/Probe.cs(10,19): error CS1061: 'PlayerCombatState' does not contain a definition for 'GuardianShieldRemainder' and no accessible extension method 'GuardianShieldRemainder' accepting a first argument of type 'PlayerCombatState' could be found (are you missing a using directive or an assembly reference?) [/tmp/pr13-obsolete-api-b008d251186e4c768666b3437aa1b48f/Probe.csproj]\n\nBuild FAILED.\n\n/tmp/pr13-obsolete-api-b008d251186e4c768666b3437aa1b48f/Probe.cs(9,13): error CS1739: The best overload for 'PlayerCombatState' does not have a parameter named 'useConsumptionBasedFenxian' [/tmp/pr13-obsolete-api-b008d251186e4c768666b3437aa1b48f/Probe.csproj]\n/tmp/pr13-obsolete-api-b008d251186e4c768666b3437aa1b48f/Probe.cs(10,19): error CS1061: 'PlayerCombatState' does not contain a definition for 'GuardianShieldRemainder' and no accessible extension method 'GuardianShieldRemainder' accepting a first argument of type 'PlayerCombatState' could be found (are you missing a using directive or an assembly reference?) [/tmp/pr13-obsolete-api-b008d251186e4c768666b3437aa1b48f/Probe.csproj]\n    0 Warning(s)\n    2 Error(s)\n\nTime Elapsed 00:00:04.54\n",
+          "probeSource": "using System;\nusing System.Linq;\nusing FantasyCard.Domain.Combat;\nusing FantasyCard.Domain.Players;\npublic static class OldProbe {\n    public static void Verify() {\n        PlayerCombatState state = new PlayerCombatState(HeroClass.Mage,\n            Enumerable.Repeat(\"common-01\", 20).ToArray(), new Random(31),\n            useConsumptionBasedFenxian: true);\n        _ = state.GuardianShieldRemainder;\n    }\n}",
+          "domainAssemblyHash": "844065af3158b40787699752915ed95befbd3c660c2b10dce501f9f4fc29e352",
+          "databaseBeforeHash": "0968144364c42b2208295f808ecf7ba28d829e4068cc20b2967f4dea2241f304",
+          "databaseAfterHash": "0968144364c42b2208295f808ecf7ba28d829e4068cc20b2967f4dea2241f304"
+        },
+        "PR13-B02.1-T03": {
+          "rows": [
+            {
+              "hero": "Mage",
+              "count": 1,
+              "draws": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "FenxianDrawPolicy": 2
+            },
+            {
+              "hero": "Mage",
+              "count": 3,
+              "draws": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              "FenxianDrawPolicy": 2
+            },
+            {
+              "hero": "Mage",
+              "count": 5,
+              "draws": [
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2
+              ],
+              "FenxianDrawPolicy": 2
+            },
+            {
+              "hero": "Guardian",
+              "level": 0,
+              "totalWeaponBonus": 5,
+              "GuardianShieldPolicy": 2,
+              "GuardianShieldRemainderTenths": 0
+            },
+            {
+              "hero": "Guardian",
+              "level": 1,
+              "totalWeaponBonus": 7,
+              "GuardianShieldPolicy": 2,
+              "GuardianShieldRemainderTenths": 0
+            },
+            {
+              "hero": "Guardian",
+              "level": 2,
+              "totalWeaponBonus": 9,
+              "GuardianShieldPolicy": 2,
+              "GuardianShieldRemainderTenths": 0
+            },
+            {
+              "hero": "Guardian",
+              "level": 3,
+              "totalWeaponBonus": 11,
+              "GuardianShieldPolicy": 2,
+              "GuardianShieldRemainderTenths": 0
+            },
+            {
+              "hero": "Guardian",
+              "level": 4,
+              "totalWeaponBonus": 13,
+              "GuardianShieldPolicy": 2,
+              "GuardianShieldRemainderTenths": 0
+            },
+            {
+              "hero": "Guardian",
+              "level": 5,
+              "totalWeaponBonus": 15,
+              "GuardianShieldPolicy": 2,
+              "GuardianShieldRemainderTenths": 0
+            }
+          ]
+        },
+        "PR13-B02.4-T02": {
+          "beforeHash": "7f06f7b921fe11a58fdea2868e4d13836cfe061517d7989b0c0baf1cdc4c5490",
+          "afterHash": "7f06f7b921fe11a58fdea2868e4d13836cfe061517d7989b0c0baf1cdc4c5490",
+          "restoredAgainHash": "7f06f7b921fe11a58fdea2868e4d13836cfe061517d7989b0c0baf1cdc4c5490",
+          "pvpWorkingRemainder": 8,
+          "restoredPveRemainder": 4,
+          "persistedDuelHash": "3062eff5103eb80c8a4669b78e4809308f4de01e2eec3c8c916b74a04903b5b0",
+          "frozenPveVerified": true
+        }
+      },
+      "original_compiler_diagnostics_preserved": [
+        "CS1739",
+        "CS1061"
+      ],
+      "no_obsolete_API_restored_or_candidate_defaults_changed": true,
+      "remaining_owned_fixture_schemas": 0,
+      "complete_G_originals_SHA_and_CRC_verified": true
+    },
+    "evidence": [
+      "docs/reports/pr13-stages-20261009/S3-a07-current-numerical-postgres-nine/native-result.original.json",
+      "docs/reports/pr13-stages-20261009/S3-a07-current-numerical-postgres-nine/native-nine.original.trx",
+      "docs/reports/pr13-stages-20261009/S3-a07-current-numerical-postgres-nine/actual-manager-terminal-source.json",
+      "docs/reports/pr13-stages-20261009/S3-a07-current-numerical-postgres-nine/source-and-package-frozen-inputs.json",
+      "docs/reports/pr13-stages-20261009/S3-a07-current-numerical-postgres-nine/receipts/PR13-B02.1-T01.json",
+      "docs/reports/pr13-stages-20261009/S3-a07-current-numerical-postgres-nine/receipts/PR13-B02.1-T03.json",
+      "docs/reports/pr13-stages-20261009/S3-a07-current-numerical-postgres-nine/receipts/PR13-B02.4-T02.json"
+    ]
+  },
+  {
+    "case_id": "PR13-A07.1-T03",
+    "status": "Passed",
+    "executed": true,
+    "profiles_executed": [
+      "POSTGRES"
+    ],
+    "actual": {
+      "original_native_methods_passed": 9,
+      "native_skipped": 0,
+      "canonical_A07_to_B02_assertion_mapping": [
+        "PR13-B02.1-T02",
+        "PR13-B02.1-T03",
+        "PR13-B02.4-T01",
+        "PR13-B02.4-T03"
+      ],
+      "actual_original_receipts": {
+        "PR13-B02.1-T02": {
+          "rows": [
+            {
+              "hero": 2,
+              "snapshotHash": "eb7e5fa0fccbd126d31435344b8c20f9bec74c7c4689342dc6b77015f3a3c389",
+              "FenxianDrawPolicy": 1,
+              "GuardianShieldPolicy": 1,
+              "observations": [
+                0,
+                0,
+                1,
+                1,
+                2
+              ]
+            },
+            {
+              "hero": 3,
+              "snapshotHash": "c5e56030ca72064c47bbc4c24cae81a1de39966f1914d3c401df4d7f969d96c1",
+              "FenxianDrawPolicy": 1,
+              "GuardianShieldPolicy": 1,
+              "observations": [
+                2,
+                2,
+                2,
+                2,
+                2
+              ]
+            }
+          ]
+        },
+        "PR13-B02.1-T03": {
+          "rows": [
+            {
+              "hero": "Mage",
+              "count": 1,
+              "draws": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "FenxianDrawPolicy": 2
+            },
+            {
+              "hero": "Mage",
+              "count": 3,
+              "draws": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
+              "FenxianDrawPolicy": 2
+            },
+            {
+              "hero": "Mage",
+              "count": 5,
+              "draws": [
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2,
+                2
+              ],
+              "FenxianDrawPolicy": 2
+            },
+            {
+              "hero": "Guardian",
+              "level": 0,
+              "totalWeaponBonus": 5,
+              "GuardianShieldPolicy": 2,
+              "GuardianShieldRemainderTenths": 0
+            },
+            {
+              "hero": "Guardian",
+              "level": 1,
+              "totalWeaponBonus": 7,
+              "GuardianShieldPolicy": 2,
+              "GuardianShieldRemainderTenths": 0
+            },
+            {
+              "hero": "Guardian",
+              "level": 2,
+              "totalWeaponBonus": 9,
+              "GuardianShieldPolicy": 2,
+              "GuardianShieldRemainderTenths": 0
+            },
+            {
+              "hero": "Guardian",
+              "level": 3,
+              "totalWeaponBonus": 11,
+              "GuardianShieldPolicy": 2,
+              "GuardianShieldRemainderTenths": 0
+            },
+            {
+              "hero": "Guardian",
+              "level": 4,
+              "totalWeaponBonus": 13,
+              "GuardianShieldPolicy": 2,
+              "GuardianShieldRemainderTenths": 0
+            },
+            {
+              "hero": "Guardian",
+              "level": 5,
+              "totalWeaponBonus": 15,
+              "GuardianShieldPolicy": 2,
+              "GuardianShieldRemainderTenths": 0
+            }
+          ]
+        },
+        "PR13-B02.4-T01": {
+          "oldRoom": "62b5bc6c-9d3c-4ded-9f15-47d47288606d",
+          "newRoom": "0c540a7a-9148-4339-8196-b6c0aeb1def9",
+          "rollbackRoom": "04525758-4bae-493d-9623-d7679a7c1570",
+          "oldSourceHash": "e9de90c98b3d04150f79748339cf0ee022c48778994c2b71c9c78f75d6294885",
+          "candidateSourceHash": "1c4c064cea15d7fa2e3ee9f24479e4f482f83937c37da3a3aceac0d157f7a418",
+          "rollbackSourceHash": "e9de90c98b3d04150f79748339cf0ee022c48778994c2b71c9c78f75d6294885",
+          "oldBeforeHash": "13828150132039cfc6b837462b72ffffc3e1b36deb4c7d674f7a31dcd947aab0",
+          "oldAfterHash": "13828150132039cfc6b837462b72ffffc3e1b36deb4c7d674f7a31dcd947aab0",
+          "databaseBeforeHash": "d94c0cf9c141afedddbde79a08bed4fcd5a596ceaaf99dfe5e27cd1fe0e7304b",
+          "databaseAfterHash": "d94c0cf9c141afedddbde79a08bed4fcd5a596ceaaf99dfe5e27cd1fe0e7304b",
+          "candidateFrozen": true,
+          "newRoomCandidateEnabled": true,
+          "rollbackNewRoomDefaults": true
+        },
+        "PR13-B02.4-T03": {
+          "legacyMissingFields": [
+            "numerics",
+            "fenxianPolicy",
+            "guardianPolicy",
+            "guardianShieldRemainderTenths"
+          ],
+          "restoredFenxian": 1,
+          "restoredGuardian": 1,
+          "faults": [
+            {
+              "field": "fenxianPolicy",
+              "rejected": true,
+              "liveBeforeHash": "96b3ef7eb28df6db1bf189994d3418ea76d39be8f7e154176b334caeac4ec611",
+              "liveAfterHash": "96b3ef7eb28df6db1bf189994d3418ea76d39be8f7e154176b334caeac4ec611",
+              "injectedDatabaseHash": "e3a7f3ab2ff6f0e55810d08acdfac907fcd96897e9ce24a3f06fba41db284fc8",
+              "databaseAfterRejectionHash": "e3a7f3ab2ff6f0e55810d08acdfac907fcd96897e9ce24a3f06fba41db284fc8"
+            },
+            {
+              "field": "guardianPolicy",
+              "rejected": true,
+              "liveBeforeHash": "96b3ef7eb28df6db1bf189994d3418ea76d39be8f7e154176b334caeac4ec611",
+              "liveAfterHash": "96b3ef7eb28df6db1bf189994d3418ea76d39be8f7e154176b334caeac4ec611",
+              "injectedDatabaseHash": "0e3d9eaa0f32d09061933eca8ab188d2c668cbb8c1e0630192f91461fa213c31",
+              "databaseAfterRejectionHash": "0e3d9eaa0f32d09061933eca8ab188d2c668cbb8c1e0630192f91461fa213c31"
+            },
+            {
+              "field": "guardianShieldRemainderTenths",
+              "rejected": true,
+              "liveBeforeHash": "96b3ef7eb28df6db1bf189994d3418ea76d39be8f7e154176b334caeac4ec611",
+              "liveAfterHash": "96b3ef7eb28df6db1bf189994d3418ea76d39be8f7e154176b334caeac4ec611",
+              "injectedDatabaseHash": "09041cb404c96cda4bfe302095133370b56451142ec2634b9110238a636b3a67",
+              "databaseAfterRejectionHash": "09041cb404c96cda4bfe302095133370b56451142ec2634b9110238a636b3a67"
+            }
+          ]
+        }
+      },
+      "original_compiler_diagnostics_preserved": [
+        "CS1739",
+        "CS1061"
+      ],
+      "no_obsolete_API_restored_or_candidate_defaults_changed": true,
+      "remaining_owned_fixture_schemas": 0,
+      "complete_G_originals_SHA_and_CRC_verified": true
+    },
+    "evidence": [
+      "docs/reports/pr13-stages-20261009/S3-a07-current-numerical-postgres-nine/native-result.original.json",
+      "docs/reports/pr13-stages-20261009/S3-a07-current-numerical-postgres-nine/native-nine.original.trx",
+      "docs/reports/pr13-stages-20261009/S3-a07-current-numerical-postgres-nine/actual-manager-terminal-source.json",
+      "docs/reports/pr13-stages-20261009/S3-a07-current-numerical-postgres-nine/source-and-package-frozen-inputs.json",
+      "docs/reports/pr13-stages-20261009/S3-a07-current-numerical-postgres-nine/receipts/PR13-B02.1-T02.json",
+      "docs/reports/pr13-stages-20261009/S3-a07-current-numerical-postgres-nine/receipts/PR13-B02.1-T03.json",
+      "docs/reports/pr13-stages-20261009/S3-a07-current-numerical-postgres-nine/receipts/PR13-B02.4-T01.json",
+      "docs/reports/pr13-stages-20261009/S3-a07-current-numerical-postgres-nine/receipts/PR13-B02.4-T03.json"
+    ]
+  }
+]
