@@ -1,8 +1,8 @@
 {
   "kind": "current_execution_register_pointer",
-  "current_register": "docs/reports/pr13-stages-20261009/S6-after-b09-natural-choice-formal1536/register.json",
+  "current_register": "docs/reports/pr13-stages-20261009/S6-after-current-process29-native/register.json",
   "integration_source_sha": "497c97b0a777eb5ee88ecb1bd37cee4626fac495",
-  "previous_register": "docs/reports/pr13-stages-20261009/S6-after-b09-original-default-off-experiment/register.json",
+  "previous_register": "docs/reports/pr13-stages-20261009/S6-after-b09-natural-choice-formal1536/register.json",
   "whole_scope_accepted": false,
   "human_experience_in_scope": false,
   "execution_policy": {
@@ -88,7 +88,14 @@
     "natural_choice_formal128_actual_routes": 1536,
     "natural_choice_formal128_complete_G_archives": 3,
     "natural_choice_formal128_latest_stage_report": "docs/reports/pr13-stages-20261009/S4-b09-natural-choice-formal1536/summary.json",
-    "natural_choice_Mage8_full_replacement_gap_retained": true
+    "natural_choice_Mage8_full_replacement_gap_retained": true,
+    "current_process_native_passed_rows": 29,
+    "current_process_native_distinct_methods": 17,
+    "current_process_native_skipped": 0,
+    "current_process_G_originals_verified": 3456,
+    "current_process_native_stage_report": "docs/reports/pr13-stages-20261009/S4-current-process29-native-regression/summary.json",
+    "current_process_wrapper_failed_original_retained": true,
+    "current_process_native_metadata_verification_passed": true
   },
   "development_history": [
     {
@@ -522,16 +529,12 @@
   "evidence_storage_policy": "docs/plans/PR13_EVIDENCE_STORAGE_POLICY_20261010.json",
   "latest_storage_checkpoint": "docs/reports/pr13-stages-20261009/S0-passed-natural-cleanup-and-current-CI/summary.json",
   "latest_layer_supplement": {
-    "task_ids": [
-      "PR13-B09.1",
-      "PR13-B09.2"
+    "task_id": "PR13-A03.4",
+    "closed_POSTGRES_cases": [
+      "PR13-A03.4-T02"
     ],
-    "closed_EXPERIMENT_cases": [
-      "PR13-B09.1-T02",
-      "PR13-B09.2-T01"
-    ],
-    "stage_report": "docs/reports/pr13-stages-20261009/S4-b09-natural-choice-formal1536/summary.json",
-    "actual_source_baseline_sha": "700d237d8ffe155582a3bbd381257da2a688ad8d",
+    "source_sha": "c41b4f5190c67d76779a86369bd2d2abfd284629",
+    "stage_report": "docs/reports/pr13-stages-20261009/S4-current-process29-native-regression/summary.json",
     "whole_task_accepted": false
   },
   "latest_execution_checkpoint": {

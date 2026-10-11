@@ -1,0 +1,163 @@
+[
+  {
+    "case_id": "PR13-A03.4-T02",
+    "status": "Passed",
+    "executed": true,
+    "profiles_executed": [
+      "POSTGRES"
+    ],
+    "actual": {
+      "same_match_context_while_four_holds_pending_before_and_after_real_OS_restart": true,
+      "original_A05_pending_receipt": {
+        "caseId": "A05-runtime-passed",
+        "recordedAt": "2026-10-11T19:22:03.9042522+00:00",
+        "evidence": {
+          "canonical": [
+            "PR13-A05.1-T03",
+            "PR13-A05.3-T02"
+          ],
+          "matchId": "5592608e-9294-4d60-95ca-0f3ab72eeb35",
+          "RoomId": "530f4adb-d482-4d7a-b5c1-c7827d07708f",
+          "receiptId": "01a12c69-e708-78a1-ac7b-09606c2f6b8c",
+          "playerId": "01a12c69-b3e3-7f73-bb84-72921716625c",
+          "equipmentId": "01a12c69-b4ad-7596-91db-613a02900a18",
+          "pids": [
+            1032,
+            1075
+          ],
+          "before": {
+            "Gold": 0,
+            "Potions": 0,
+            "Owner": "01a12c69-b3e3-7f73-bb84-72921716625c",
+            "Location": "InMatchEquipped",
+            "GoldLedger": 0,
+            "Movements": 0
+          },
+          "after": {
+            "Gold": 23,
+            "Potions": 2,
+            "Owner": "01a12c69-b3e3-7f73-bb84-72921716625c",
+            "Location": "Equipped",
+            "GoldLedger": 1,
+            "Movements": 1
+          },
+          "pendingBefore": 4,
+          "committedAfter": 4,
+          "profiles": [
+            "OFFLINE",
+            "POSTGRES",
+            "AUDIT"
+          ],
+          "scope": "owned saved Running input, actual Program and production Godot legal extraction; live Pending interval and actual SIGKILL restart",
+          "acceptedBy": null
+        }
+      },
+      "actual_Godot_checks": [
+        {
+          "check": "actual PB login/bootstrap/WS recovered Running M",
+          "passed": true
+        },
+        {
+          "check": "owned control extract",
+          "passed": true
+        },
+        {
+          "check": "legal production extract command sent",
+          "passed": true
+        },
+        {
+          "check": "owned control pending",
+          "passed": true
+        },
+        {
+          "check": "pending-before-restart Pending not displayed as ready",
+          "passed": true
+        },
+        {
+          "check": "pending-before-restart original recovery match retained",
+          "passed": true
+        },
+        {
+          "check": "pending-before-restart no premature client completion",
+          "passed": true
+        },
+        {
+          "check": "pending-before-restart actual pending ACK rejected 409",
+          "passed": true
+        },
+        {
+          "check": "pending-before-restart actual next preparation rejected",
+          "passed": true
+        },
+        {
+          "check": "owned control restarted",
+          "passed": true
+        },
+        {
+          "check": "production Gateway automatically reconnects after OS restart",
+          "passed": true
+        },
+        {
+          "check": "pending-after-restart Pending not displayed as ready",
+          "passed": true
+        },
+        {
+          "check": "pending-after-restart original recovery match retained",
+          "passed": true
+        },
+        {
+          "check": "pending-after-restart no premature client completion",
+          "passed": true
+        },
+        {
+          "check": "pending-after-restart actual pending ACK rejected 409",
+          "passed": true
+        },
+        {
+          "check": "pending-after-restart actual next preparation rejected",
+          "passed": true
+        },
+        {
+          "check": "owned control released",
+          "passed": true
+        },
+        {
+          "check": "release exposes same durable receipt",
+          "passed": true
+        },
+        {
+          "check": "release preserves M ownership",
+          "passed": true
+        },
+        {
+          "check": "actual production ACK completes",
+          "passed": true
+        },
+        {
+          "check": "confirmed M cleared",
+          "passed": true
+        },
+        {
+          "check": "next preparation permitted only after completion",
+          "passed": true
+        },
+        {
+          "check": "next preparation cleanup via actual API",
+          "passed": true
+        }
+      ],
+      "assets_once_only": true,
+      "real_WAN_LIVE_profile_claimed": false
+    },
+    "evidence": [
+      "docs/reports/pr13-stages-20261009/S4-current-process29-native-regression/native-process29.original.trx",
+      "docs/reports/pr13-stages-20261009/S4-current-process29-native-regression/independent-verification.json",
+      "docs/reports/pr13-stages-20261009/S4-current-process29-native-regression/source-equivalence.json",
+      "docs/reports/pr13-stages-20261009/S4-current-process29-native-regression/pending-holds-observations.json",
+      "docs/reports/pr13-stages-20261009/S4-current-process29-native-regression/pending-control/pending-before-restart.json",
+      "docs/reports/pr13-stages-20261009/S4-current-process29-native-regression/pending-control/pending-after-restart.json",
+      "docs/reports/pr13-stages-20261009/S4-current-process29-native-regression/pending-control/ready.json",
+      "docs/reports/pr13-stages-20261009/S4-current-process29-native-regression/pending-control/completed.json"
+    ]
+  }
+]
