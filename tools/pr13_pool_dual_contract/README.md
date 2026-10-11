@@ -28,3 +28,8 @@ real legal movements/PVE. Both players keep their own twenty-card starting deck
 and original hero stats in all capacity arms. This permits testing a Mage who
 holds position against an arriving opponent. Earlier same-hero travelling routes
 and their deaths remain intact; the scenario is not pooled into balance samples.
+
+`--capture-render-vectors` collects actual typed public snapshots for one known
+foreign rejection, one original choice and exact replay, and one PVP/return per
+route. Snapshot collector requests and render replay probes are explicit extra
+instrumentation. No domain snapshot is converted into a synthetic server frame.

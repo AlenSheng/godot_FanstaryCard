@@ -12,13 +12,14 @@ using FantasyCard.Server.Rooms;
 
 if (args.SequenceEqual(new[] { "--help" }))
 {
-    Console.WriteLine("--output DIRECTORY --source SHA --hero Mage|Priest|Guardian --seed-start 484001 --seeds 128 [--development-smoke] [--guardian-peer-rendezvous]");
+    Console.WriteLine("--output DIRECTORY --source SHA --hero Mage|Priest|Guardian --seed-start 484001 --seeds 128 [--development-smoke] [--guardian-peer-rendezvous] [--capture-render-vectors]");
     return;
 }
 if (!OperatingSystem.IsLinux()) throw new InvalidOperationException("Tencent Linux execution required.");
 var smoke = args.Contains("--development-smoke");
 var guardianPeer = args.Contains("--guardian-peer-rendezvous");
-var named = args.Where(x => x is not ("--development-smoke" or "--guardian-peer-rendezvous")).ToArray();
+var captureRender = args.Contains("--capture-render-vectors");
+var named = args.Where(x => x is not ("--development-smoke" or "--guardian-peer-rendezvous" or "--capture-render-vectors")).ToArray();
 Check(named.Length == 10, "Five named arguments required.");
 var options = Enumerable.Range(0, 5).ToDictionary(i => named[2 * i], i => named[2 * i + 1]);
 var hero = Enum.Parse<HeroClass>(options["--hero"]);
@@ -53,6 +54,7 @@ foreach (var capacity in new[] { 0, 3, 5, 8 })
     var session = new Session(room, players, Id($"match:{hero}:{seed}:{capacity}"));
     var knownForeign = 0; var choices = 0; var pvp = 0; var restoredPvp = 0; var returnedPvp = 0; var terminalClean = 0; var audits = 0;
     var firstChoiceDone = capacity == 0; var terminalLogged = new HashSet<Guid>();
+    var captured = new HashSet<string>();
     var reason = "";
     try
     {
@@ -64,12 +66,14 @@ foreach (var capacity in new[] { 0, 3, 5, 8 })
                 {
                     var requester = players.Single(id => id != owner);
                     var candidate = room.GetPlayer(owner).MonsterPool.Pending[0];
+                    var beforeWire = captureRender && captured.Add("foreign") ? await session.Snapshot(requester) : null;
                     var before = room.Capture(); var beforeBytes = JsonSerializer.Serialize(before, json);
                     var response = await session.Send(requester, "monster.choose", new MonsterCardChooseCommandPayload(candidate.InstanceId, true), allowRejected: true);
                     var rejection = response.Events.Single();
                     Check(rejection.Type == "error.command_rejected" && rejection.Payload is CommandRejectedEventPayload { Code: "COMMAND_REJECTED", Detail: "The monster candidate no longer exists." }, "Known eligible player rejection was not specifically candidate ownership.");
                     Check(JsonSerializer.Serialize(room.Capture(), json) == beforeBytes, "Foreign candidate changed the room.");
                     Emit("known-foreign-candidate", new { owner, requester, candidate, before, after = room.Capture(), response.Command, response.Responses, requesterOwnPending = room.GetPlayer(requester).MonsterPool.Pending.ToArray(), ownerSources = room.GetPlayer(owner).MonsterPool.Capture().GrantedSources });
+                    if (beforeWire is not null) Render("foreign", requester, beforeWire, response);
                     knownForeign++;
                 }
                 firstChoiceDone = true;
@@ -97,11 +101,19 @@ foreach (var capacity in new[] { 0, 3, 5, 8 })
                     {
                         var accept = player.MonsterPool.Active.Count < capacity;
                         var before = room.CapturePlayer(id);
+                        var beforeWire = captureRender && captured.Add("choice-replay") ? await session.Snapshot(id) : null;
                         var response = await session.Send(id, "monster.choose", new MonsterCardChooseCommandPayload(candidate.InstanceId, accept));
                         var after = room.CapturePlayer(id);
                         Check(player.Combat.Deck.Hand.SequenceEqual(before.Combat.Deck.Hand), "Choice created a compensating draw.");
                         if (accept) Check(player.Combat.Deck.Discard.Count(c => c.InstanceId == candidate.InstanceId) == 1, "Candidate did not enter discard exactly once.");
                         Emit("own-candidate-choice", new { owner = id, candidate, accept, before, after, response.Command, response.Responses }); choices++;
+                        if (beforeWire is not null)
+                        {
+                            var state = JsonSerializer.Serialize(room.Capture(), json);
+                            var replay = await session.Replay(id, response.Command);
+                            Check(JsonSerializer.Serialize(room.Capture(), json) == state, "Render replay duplicated an instance.");
+                            Render("choice-replay", id, beforeWire, response, replay.Responses);
+                        }
                     }
                     var healing = reward.Options.FirstOrDefault(o => o.Kind == RewardChoiceKind.ImmediateHeal);
                     await session.Send(id, "reward.choice.claim", new RewardChoiceClaimCommandPayload((healing ?? reward.Options[0]).OptionId));
@@ -158,6 +170,7 @@ foreach (var capacity in new[] { 0, 3, 5, 8 })
                             Check(players.All(p => room.GetPlayer(p).Phase == RoomPlayerPhase.Pvp && room.GetPlayer(p).Position == room.GetPlayer(players[0]).Position), "Legal move did not pair the two natural players.");
                             Check(players.All(p => room.GetPlayer(p).MonsterPool.Active.Count > 0) || capacity == 0, "PVP entered without natural active pool.");
                             Emit("natural-pvp-entry", new { rendezvous, entryPosition = room.GetPlayer(players[0]).Position, response.Command, response.Responses, checkpoint }); pvp++;
+                            var pvpWire = captureRender && captured.Add("pvp-state") ? await session.Snapshot(players[0]) : null;
                             var checkpointBytes = JsonSerializer.SerializeToUtf8Bytes(checkpoint, json);
                             var restored = BattleRoom.Restore(JsonSerializer.Deserialize<BattleRoomSnapshot>(checkpointBytes, json)!, catalog, seed);
                             foreach (var p in players)
@@ -178,9 +191,20 @@ foreach (var capacity in new[] { 0, 3, 5, 8 })
                                 Check(JsonSerializer.Serialize(room.GetPlayer(p).MonsterPool.Capture(), json) == JsonSerializer.Serialize(checkpoint.Players.Single(x => x.PlayerId == p).MonsterPool, json), "Return changed active pool.");
                             }
                             Emit("pvp-mutual-leave-return", new { before = checkpoint, after = room.Capture(), leave.Command, leave.Responses }); returnedPvp++;
+                            if (pvpWire is not null)
+                            {
+                                var afterWire = await session.Snapshot(players[0]);
+                                Render("pvp-state", players[0], pvpWire, leave, afterSnapshot: afterWire);
+                            }
                             
     }
     void Emit(string kind, object data) { events.WriteLine(JsonSerializer.Serialize(new { hero = hero.ToString(), seed, capacity, source, kind, data }, json)); events.Flush(); }
+    void Render(string operation, Guid owner, byte[] before, Delivery delivery, byte[][]? replay = null, byte[]? afterSnapshot = null)
+    {
+        var vector = new { hero = hero.ToString(), peerHero = peerHero.ToString(), seed, capacity, source, operation, ownerId = owner, roomId = room.RoomId, matchId = session.MatchId,
+            beforeWire = before, commandWire = delivery.Command, responseWires = delivery.Responses, replayWires = replay ?? [], afterSnapshotWire = afterSnapshot };
+        File.AppendAllText(Path.Combine(directory, "render-vectors.jsonl"), JsonSerializer.Serialize(vector, json) + "\n");
+    }
 }
 File.WriteAllText(Path.Combine(directory, "routes.jsonl"), string.Join('\n', rows.Select(r => JsonSerializer.Serialize(r, json))) + "\n");
 File.WriteAllText(Path.Combine(directory, "result.json"), JsonSerializer.Serialize(new { ok = true, hero = hero.ToString(), source, routes = rows.Count, naturalCombat = true, typedRouterIntents = true, directActorDuelControls = false, productionChanged = false, missingBranchesNotAccepted = true, developmentSmoke = smoke }, json) + "\n");
@@ -215,6 +239,18 @@ sealed class Session : IAsyncDisposable
         var events = await _router.RouteAsync(PlayerProfile.Create(owner, "DualBoundary", _clock.GetUtcNow()), RealtimeProtobufCodec.DecodeClient(command), "dual-native", CancellationToken.None);
         if (events.Count == 0 || !allowRejected && events.Any(e => e.Type.StartsWith("error.", StringComparison.Ordinal) || e.Type == "room.command_cancelled")) throw new InvalidOperationException("Legal dual intent rejected: " + JsonSerializer.Serialize(events));
         return new(command, events.Select(RealtimeProtobufCodec.EncodeServer).ToArray(), events);
+    }
+    public async Task<byte[]> Snapshot(Guid owner)
+    {
+        var result = await Send(owner, "room.snapshot.read", new RoomSnapshotCommandPayload());
+        return RealtimeProtobufCodec.EncodeServer(result.Events.Single(e => e.Type == "room.snapshot"));
+    }
+    public async Task<Delivery> Replay(Guid owner, byte[] original)
+    {
+        if (!_players.Contains(owner)) throw new InvalidOperationException("Replay owner is not registered.");
+        var events = await _router.RouteAsync(PlayerProfile.Create(owner, "DualBoundary", _clock.GetUtcNow()), RealtimeProtobufCodec.DecodeClient(original), "dual-replay", CancellationToken.None);
+        if (events.Count == 0 || events.Any(e => e.Type.StartsWith("error.", StringComparison.Ordinal))) throw new InvalidOperationException("Original replay rejected.");
+        return new(original, events.Select(RealtimeProtobufCodec.EncodeServer).ToArray(), events);
     }
     public ValueTask DisposeAsync() => _registry.DisposeAsync();
 }
