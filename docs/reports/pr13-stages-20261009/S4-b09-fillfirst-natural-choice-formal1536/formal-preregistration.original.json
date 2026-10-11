@@ -1,0 +1,72 @@
+{
+  "attempt": "natural-choice-fillfirst-smoke-r1-20261012",
+  "source_release_base_sha": "690419420a1ef1c118af3defddd7d53dc706c095",
+  "compiled_game_source_sha": "9555aa077708af4efa1ee518334306f228e12ef5",
+  "harness_source_kind": "exact frozen working tree bytes in input manifest; compiled only on Tencent",
+  "runner_sha256": "617159d107fb1df960852d43980eda9d3b80f0b901aaa34471f469d8c08c248b",
+  "policy": "FillFirstVisibleHandReplacement; accept all unfilled natural offers; at full alternate replacement and skip; replace first visible active hand instance if available, otherwise oldest visible active; combat, legal map navigation, healing and public-information rules unchanged",
+  "heroes": [
+    "Mage",
+    "Priest",
+    "Guardian"
+  ],
+  "capacity_arms": [
+    0,
+    3,
+    5,
+    8
+  ],
+  "smoke_seed_start": 484001,
+  "smoke_seed_count": 16,
+  "smoke_routes": 192,
+  "fixed_simulated_seconds": 1800,
+  "formal_seed_block_if_smoke_passes": [
+    484001,
+    484128
+  ],
+  "formal_routes_planned": 1536,
+  "same_seeds_not_independent_strength_samples": true,
+  "original_formal1536_and36000_results_preserved": true,
+  "no_HP_offer_pile_map_modification": true,
+  "memory_floor_bytes": 500000000,
+  "root_floor_ratio": 0.15,
+  "no_zero_branch_acceptance": true,
+  "MAIN_accepted": false,
+  "attempt_family": "natural-choice-fillfirst-formal128-r1-20261012",
+  "formal_smoke_G_receipt": {
+    "ok": true,
+    "native_ok": true,
+    "archive_sha256": "339023d047a0b1d7f02cbaa2e19a28c9a85f7cd8ca67441df10f6b1a35cbf44a",
+    "archive_bytes": 17022152,
+    "manifest_sha256": "e2db2cd47a43b125c214b315ca246ebc06af288c55f6fa3793ca90cd297edc5d",
+    "local_directory": "G:\\PR13Evidence\\natural-choice-fillfirst-smoke-r1",
+    "local_archive": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\outputs\\pr13-tencent-20261009\\natural-choice-fillfirst-smoke-r1-complete-originals-on-G\\delivery.private.tar.gz",
+    "all_original_members_SHA_verified": true,
+    "archive_gzip_CRC_verified": true,
+    "members_verified": 133,
+    "cloud_cleanup_performed": false,
+    "MAIN_accepted": false
+  },
+  "required_formal_routes": 1536,
+  "required_formal_hero_routes": 512,
+  "runners": [
+    {
+      "hero": "Mage",
+      "attempt": "natural-choice-fillfirst-formal128-mage-r1-20261012",
+      "runner_local_file": "natural_choice_fillfirst_formal128_mage_r1_cloud_runner.original.py",
+      "runner_sha256": "c93f0e574ce97c726e8ebe64ab03d3b2252be30732e2d3deedbb301cee45001f"
+    },
+    {
+      "hero": "Priest",
+      "attempt": "natural-choice-fillfirst-formal128-priest-r1-20261012",
+      "runner_local_file": "natural_choice_fillfirst_formal128_priest_r1_cloud_runner.original.py",
+      "runner_sha256": "7b87007ea528c7b4aab76e2d0e03ccad08996a3d09fce653bdfb628fa82b30b1"
+    },
+    {
+      "hero": "Guardian",
+      "attempt": "natural-choice-fillfirst-formal128-guardian-r1-20261012",
+      "runner_local_file": "natural_choice_fillfirst_formal128_guardian_r1_cloud_runner.original.py",
+      "runner_sha256": "5344dafd0b2b47d4a9309ea8e8705940b9bd57a28c1dbd8e2a45ef7de8ad9f4b"
+    }
+  ]
+}
