@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "task_id": "PR13-B09.4",
+  "scope": "Current Godot UI, gateway and GameStore read all original natural-choice protocol vectors from the complete preregistered native matrix",
+  "native_source_sha": "0d56ceccf526f6ae8973f57da152d67faf93a5d5",
+  "native_formal_units_required": 9,
+  "native_formal_routes_required": 36000,
+  "input_inclusion": "Every original render-vectors.jsonl row from every fixed hero and seed block; no outcome, candidate or capacity filtering",
+  "heroes": ["Mage", "Priest", "Guardian"],
+  "seed_block_starts": [479001, 480001, 481001],
+  "locales": ["zh-CN", "en"],
+  "resolutions": [[1920, 1080], [1280, 720], [960, 540]],
+  "frame_caps": [30, 60, 144],
+  "controlled_response_delay_ms": [0, 250, 1000],
+  "required_segments": 18,
+  "observations_per_native_vector_per_locale": 27,
+  "captures_per_native_vector_per_locale": 3,
+  "capture_condition": "Every resolution with frame cap 30 and controlled response delay 0",
+  "validity": [
+    "Original before snapshot through the product gateway with an actual scoped snapshot-read request context",
+    "Original candidate, visible active-card order and intended accept, skip or replacement",
+    "Actual UI input through window mouse motion, press and release",
+    "Complete outgoing ClientEnvelope headers and typed payload match the original native command",
+    "Complete product pending-command registration and no state change before the original authority frames",
+    "Every original after frame through the product gateway and GameStore",
+    "Exact native after pool and revision, pending command cleared, popup closed and visible label geometry",
+    "Sources and original vectors unchanged, normal engine shutdown and all raw output on G"
+  ],
+  "choice_cost_measurement": "Elapsed synthetic pointer and rendered-frame time from opening the actual pool entry to submitting the original choice; reported separately from native command CPU/wall and the controlled response delay",
+  "development_smoke": "All rows in one original hero-seed input, en, 960x540, frame cap 30, delay 0; excluded from formal RENDER totals",
+  "guardrails": {
+    "minimum_memory_bytes": 500000000,
+    "minimum_cloud_root_free_ratio": 0.15,
+    "production_rule_changed": false,
+    "human_experience_excluded": true,
+    "hardware_FPS_claimed": false,
+    "WAN_latency_claimed": false
+  },
+  "acceptance": {
+    "all_18_segments_required": true,
+    "all_original_pngs_visual_review_required": true,
+    "partial_segments_do_not_accept_whole_B09_4": true,
+    "MAIN_acceptance_requires_separate_full_scope_review": true
+  }
+}
