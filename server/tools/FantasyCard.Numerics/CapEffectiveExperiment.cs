@@ -12,6 +12,11 @@ using FantasyCard.Domain.Players;
 // candidates, and a one-item quality pair is not an isolated cap-effect estimate.
 internal static class CapEffectiveExperiment
 {
+    internal const long DefaultRawUnitLimitBytes = 2147483648L;
+    internal const long MinimumRawUnitLimitBytes = 128L * 1024 * 1024;
+    internal const long MaximumRawUnitLimitBytes = 32L * 1024 * 1024 * 1024;
+    internal const string CollectorRevision = "cap-effective-raw-budget-v2";
+    internal const string BusinessSourceSha = "b0423bfe6fedc3f034ba12c8400df5ebb8713f32";
     private static readonly string[] Slots = ["Head", "Chest", "Hands", "Legs", "Feet"];
     private static readonly string[] Common = ["C01", "C02", "C03", "C04", "C05", "C06", "C07", "C17", "C18", "C20", "C25", "C26", "C27", "C29"];
     private static readonly bool[] UpgradeArms = [false, true];
@@ -21,7 +26,7 @@ internal static class CapEffectiveExperiment
     {
         if (args.Contains("--help", StringComparer.Ordinal))
         {
-            Console.WriteLine("--cap-effective-experiment --source-sha <40hex> --output <new-directory> --hero Mage|Priest|Guardian --group O1|O6|E1|BOSS --element Fire|Wood|Earth|Metal|Water --equipment-level 0|5 --block-index 0|1|2 --samples 3|1000");
+            Console.WriteLine("--cap-effective-experiment --source-sha <actual-mixed-40hex> --business-source-sha b0423bfe6fedc3f034ba12c8400df5ebb8713f32 --instrumentation-source-sha <published-collector-code-40hex> --mixed-input-manifest-sha256 <frozen-input-manifest-64hex> --output <new-directory> --hero Mage|Priest|Guardian --group O1|O6|E1|BOSS --element Fire|Wood|Earth|Metal|Water --equipment-level 0|5 --block-index 0|1|2 --samples 3|1000 [--cap-raw-unit-limit-bytes <134217728..34359738368; default 2147483648>]");
             return 0;
         }
         string Option(string key)
@@ -31,10 +36,21 @@ internal static class CapEffectiveExperiment
             return args[index + 1];
         }
         var sha = Option("--source-sha"); var output = Path.GetFullPath(Option("--output"));
+        var businessSource = Option("--business-source-sha");
+        var instrumentationSource = Option("--instrumentation-source-sha");
+        var mixedInputManifest = Option("--mixed-input-manifest-sha256");
+        var rawLimitExplicit = args.Contains("--cap-raw-unit-limit-bytes", StringComparer.Ordinal);
+        var rawUnitLimit = rawLimitExplicit
+            ? long.Parse(Option("--cap-raw-unit-limit-bytes"), CultureInfo.InvariantCulture)
+            : DefaultRawUnitLimitBytes;
         var hero = Enum.Parse<HeroClass>(Option("--hero")); var element = Enum.Parse<CardElement>(Option("--element"));
         var group = Option("--group"); var level = int.Parse(Option("--equipment-level"), CultureInfo.InvariantCulture);
         var block = int.Parse(Option("--block-index"), CultureInfo.InvariantCulture); var samples = int.Parse(Option("--samples"), CultureInfo.InvariantCulture);
-        if (!Regex.IsMatch(sha, "^[0-9a-f]{40}$") || Directory.Exists(output) || !Enum.IsDefined(hero) ||
+        if (!Regex.IsMatch(sha, "^[0-9a-f]{40}$") || businessSource != BusinessSourceSha || sha == businessSource ||
+            !Regex.IsMatch(instrumentationSource, "^[0-9a-f]{40}$") || instrumentationSource == businessSource ||
+            !Regex.IsMatch(mixedInputManifest, "^[0-9a-f]{64}$") ||
+            rawUnitLimit is < MinimumRawUnitLimitBytes or > MaximumRawUnitLimitBytes ||
+            Directory.Exists(output) || !Enum.IsDefined(hero) ||
             !Enum.IsDefined(element) || element == CardElement.None || group is not ("O1" or "O6" or "E1" or "BOSS") ||
             level is not (0 or 5) || block is < 0 or > 2 || samples is not (3 or 1000))
             throw new ArgumentException("Exact source, new output and declared bounded cap stratum required.");
@@ -44,16 +60,20 @@ internal static class CapEffectiveExperiment
         CombatExperience.ValidateDeck(config, hero, deck); Directory.CreateDirectory(output);
         var seedStart = 440001 + 1000 * block; var rows = 0; var errors = 0; long encounterBytes = 0;
         using var encounterHash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
-        using var events = new CapEventParts(output);
+        using var events = new CapEventParts(output, rawUnitLimit);
         var counters = new Dictionary<string, long>(StringComparer.Ordinal);
         var equipment = UpgradeArms.Select(upgraded => Slots.Select((slot, index) =>
             new CombatEquipmentItem(new Guid(440001, 0, 0, 0, 0, 0, 0, 0, 0, 0, (byte)(index + 1)), slot,
                 upgraded && index == 0 ? "Orange" : "Purple", level, element, "Bulwark", "DrawInterval")).ToArray()).ToArray();
         var profiles = equipment.Select(EquipmentCombatRules.Calculate).ToArray();
         var rawResistance = equipment.Select(items => items.Sum(item => config.EquipmentQuality(item.Quality).Resistance + item.Level * config.EquipmentQuality(item.Quality).ResistancePerLevel)).ToArray();
-        File.WriteAllText(Path.Combine(output, "manifest.json"), JsonSerializer.Serialize(new
+        void WriteManifest(bool complete) => File.WriteAllText(Path.Combine(output, "manifest.json"), JsonSerializer.Serialize(new
         {
-            schema = "actual_cap_effective_experiment_v1", source_sha = sha, hero = hero.ToString(), group,
+            schema = "actual_cap_effective_experiment_v2", source_sha = sha, business_source_sha = businessSource,
+            instrumentation_source_sha = instrumentationSource, mixed_input_manifest_sha256 = mixedInputManifest,
+            collector_revision = CollectorRevision, raw_unit_limit_bytes = rawUnitLimit,
+            raw_unit_limit_explicit = rawLimitExplicit, event_raw_bytes = events.RawBytes, collection_complete = complete,
+            hero = hero.ToString(), group,
             element = element.ToString(), equipment_level = level, weapon_level = level, block_index = block,
             samples, seed_start = seedStart, deck, strategy = "basic", card_level = 0, cutoff_seconds = 600,
             equipment, profiles, raw_resistance = rawResistance, candidate_activation = false,
@@ -62,27 +82,41 @@ internal static class CapEffectiveExperiment
             shield_policy = "CurrentSteps", fenxian_policy = "CurrentRhythm", single_item_quality_change = true,
             outcome_effects_descriptive_only = true, independent_draw_oracle = "piecewise current state integration, full-hand reset"
         }));
+        WriteManifest(false);
         var rawPath = Path.Combine(output, "encounters.jsonl.gz");
-        using (var gzip = new GZipStream(new FileStream(rawPath, FileMode.CreateNew), CompressionLevel.Fastest))
-        for (var seed = seedStart; seed < seedStart + samples; seed++)
-        for (var arm = 0; arm < 2; arm++)
+        var collectionComplete = false;
+        try
         {
-            var profileName = arm == 0 ? "BaselinePurple" : "SingleOrangeHead";
-            var audit = new CapEncounterAudit(profiles[arm], element, rawResistance[arm], rawResistance[1] - rawResistance[0],
-                Math.Min(.6, rawResistance[1]) - Math.Min(.6, rawResistance[0]), events, counters);
-            var row = CombatExperience.Simulate(config, catalog, hero, "CapLegalTwenty", deck, group, "basic", profileName,
-                config.Numerics, seed, block, 600, level, marginalAudit: true, capAudit: audit);
-            if (row.Outcome == "Error") errors++;
-            if (events.BudgetExceeded) throw new InvalidOperationException("Frozen event budget exceeded; preserve original partial files.");
-            var bytes = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(row) + "\n"); encounterBytes += bytes.Length;
-            if (encounterBytes > 128 * 1024 * 1024) throw new InvalidOperationException("Encounter raw budget exceeded.");
-            gzip.Write(bytes); encounterHash.AppendData(bytes); rows++;
+            using (var gzip = new GZipStream(new FileStream(rawPath, FileMode.CreateNew), CompressionLevel.Fastest))
+            for (var seed = seedStart; seed < seedStart + samples; seed++)
+            for (var arm = 0; arm < 2; arm++)
+            {
+                var profileName = arm == 0 ? "BaselinePurple" : "SingleOrangeHead";
+                var audit = new CapEncounterAudit(profiles[arm], element, rawResistance[arm], rawResistance[1] - rawResistance[0],
+                    Math.Min(.6, rawResistance[1]) - Math.Min(.6, rawResistance[0]), events, counters);
+                var row = CombatExperience.Simulate(config, catalog, hero, "CapLegalTwenty", deck, group, "basic", profileName,
+                    config.Numerics, seed, block, 600, level, marginalAudit: true, capAudit: audit);
+                if (row.Outcome == "Error") errors++;
+                if (events.BudgetExceeded) throw new InvalidOperationException("Declared event budget exceeded; preserve original partial files.");
+                var bytes = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(row) + "\n"); encounterBytes += bytes.Length;
+                if (encounterBytes > 128 * 1024 * 1024) throw new InvalidOperationException("Encounter raw budget exceeded.");
+                gzip.Write(bytes); encounterHash.AppendData(bytes); rows++;
+            }
+            collectionComplete = true;
         }
-        events.Dispose();
+        finally
+        {
+            events.Dispose();
+            WriteManifest(collectionComplete);
+        }
         var passed = errors == 0 && rows == samples * 2 && !counters.Keys.Any(k => k.EndsWith("mismatch", StringComparison.Ordinal));
         var summary = new
         {
-            passed, source_sha = sha, rows, errors, actual_casts = events.Casts, actual_ticks = events.Ticks,
+            passed, source_sha = sha, business_source_sha = businessSource, collector_revision = CollectorRevision,
+            instrumentation_source_sha = instrumentationSource, mixed_input_manifest_sha256 = mixedInputManifest,
+            raw_unit_limit_bytes = rawUnitLimit, raw_unit_limit_explicit = rawLimitExplicit,
+            event_raw_bytes = events.RawBytes, collection_complete = collectionComplete,
+            rows, errors, actual_casts = events.Casts, actual_ticks = events.Ticks,
             raw_bytes = encounterBytes, raw_sha256 = Convert.ToHexStringLower(encounterHash.GetHashAndReset()),
             stored_bytes = new FileInfo(rawPath).Length, stored_sha256 = Hash(File.ReadAllBytes(rawPath)),
             case_denominators = counters, event_parts = events.Parts, full_unit = samples == 1000,
@@ -179,12 +213,13 @@ internal sealed class CapEncounterAudit(CombatEquipmentProfile equipment, CardEl
     }
 }
 
-internal sealed class CapEventParts(string output) : IDisposable
+internal sealed class CapEventParts(string output, long rawUnitLimitBytes) : IDisposable
 {
     public List<object> Parts { get; } = [];
     public long Casts { get; private set; }
     public long Ticks { get; private set; }
     public bool BudgetExceeded { get; private set; }
+    public long RawBytes => _total;
     private long _total, _partBytes, _partCount;
     private string? _path;
     private GZipStream? _gzip;
@@ -192,7 +227,7 @@ internal sealed class CapEventParts(string output) : IDisposable
     public void Write(object value, bool cast)
     {
         var bytes = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(value) + "\n");
-        if (_total + bytes.Length > 2147483648L) { BudgetExceeded = true; throw new InvalidOperationException("Original event budget exceeded."); }
+        if (_total + bytes.Length > rawUnitLimitBytes) { BudgetExceeded = true; throw new InvalidOperationException("Declared event budget exceeded."); }
         if (_gzip is null || _partBytes + bytes.Length > 128 * 1024 * 1024)
         {
             Close(); _path = Path.Combine(output, $"cap-events-{Parts.Count:D3}.jsonl.gz");
