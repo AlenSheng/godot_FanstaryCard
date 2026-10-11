@@ -26,7 +26,7 @@ MONITOR = '2734235cbfa1f9d8f1352cd9a925251f6356021d86ede341f80c6196e799149a'
 OUTPUT_LIMIT = 64 * 1024**2
 METADATA_RESERVE = 16 * 1024**2
 RENDER_MEMORY = 1536 * 1024**2
-LANGUAGES = ('zh-CN', 'zh-TW', 'en', 'ja', 'ko')
+LANGUAGES = ('zh-CN', 'en')
 MUTABLE_METADATA = {'delivery-manifest.json', 'local-backup-receipt.json',
                     'local-storage-cleanup.json', 'cleanup-intent.json'}
 
@@ -75,14 +75,15 @@ def segment_plan(evidence):
     require(plan.get('native_source_sha') == NATIVE_SOURCE and plan.get('whole_task_accepted') is False,
             'Plan source or scope changed')
     require(re.fullmatch('[0-9a-f]{40}', plan.get('render_source_sha', '')) is not None, 'Missing frozen render source')
+    require(plan.get('languages') == list(LANGUAGES), 'Product queue must declare the existing Chinese and English locales')
     expected = []
     for hero, capacity, case, language in itertools.product(
             ('Guardian', 'Mage', 'Priest'), (8, 5, 3), ('T02', 'T01', 'T03'), LANGUAGES):
         expected.append({'id': f'{hero}-{capacity}-{case}-{language}', 'hero': hero, 'capacity': capacity,
                          'case': 'PR13-B09.2-' + case, 'language': language,
                          'expected_rows': 162 if case == 'T03' else 81, 'expected_PNGs': 9})
-    require(plan.get('segments') == expected, 'Frozen 135 segment order/matrix changed')
-    require(plan.get('all_required_rows') == 14580 and plan.get('all_required_PNGs') == 1215,
+    require(plan.get('segments') == expected, 'Frozen 54 product-locale segment order/matrix changed')
+    require(plan.get('all_required_rows') == 5832 and plan.get('all_required_PNGs') == 486,
             'Frozen full matrix size changed')
     return plan
 
@@ -278,6 +279,8 @@ def status(evidence, work, plan, segment=None):
     if segment is None:
         segment = current
     result = {'ok': True, 'action': 'status', 'render_source_sha': plan['render_source_sha'],
+              'required_segments': len(plan['segments']), 'required_rows': plan['all_required_rows'],
+              'required_PNGs': plan['all_required_PNGs'],
               'completed_segments': sum((evidence / s['id'] / 'result.json').exists() for s in plan['segments']),
               'cleanup_receipts_present': sum((evidence / s['id'] / 'local-storage-cleanup.json').exists() for s in plan['segments']),
               'whole_task_accepted': False}
@@ -394,6 +397,15 @@ def cleanup(evidence, work, plan, segment, backup_path):
 
 
 def launch_next(root, evidence, work, plan):
+    hold = evidence / 'scheduling-hold.json'
+    if hold.exists():
+        record = read(hold)
+        require(record.get('active') is True and record.get('whole_task_accepted') is False,
+                'Unresolved scheduling hold requires inspection')
+        report = status(evidence, work, plan)
+        report.update(action='launch-next', launch_suppressed=True,
+                      reason='explicit evidence scheduling hold; existing native work is preserved')
+        return report
     pending = None
     for segment in plan['segments']:
         metadata = evidence / segment['id']
@@ -409,7 +421,9 @@ def launch_next(root, evidence, work, plan):
         pending = segment
         break
     if pending is None:
-        return {'ok': True, 'action': 'launch-next', 'all_135_fixture_segments_cleaned': True, 'whole_task_accepted': False}
+        return {'ok': True, 'action': 'launch-next', 'all_required_fixture_segments_cleaned': True,
+                'required_segments': len(plan['segments']), 'required_rows': plan['all_required_rows'],
+                'required_PNGs': plan['all_required_PNGs'], 'whole_task_accepted': False}
     state = unit_status(pending)
     require(not live(state) and state.get('LoadState') == 'not-found', 'Existing unit name must not be relaunched')
     current = evidence / 'current-segment.json'

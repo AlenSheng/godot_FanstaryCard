@@ -22,6 +22,13 @@ RESOLUTIONS = ((1920, 1080), (1280, 720), (960, 540))
 FPS = (30, 60, 144)
 DELAYS = (0, 250, 1000)
 LANGUAGES = ("zh-CN", "zh-TW", "en", "ja", "ko")
+POOL_HINTS = {
+    "zh-CN": "只影响本局；新卡进入弃牌，不补抽。",
+    "zh-TW": "只影響本局；新卡進入棄牌，不補抽。",
+    "en": "This run only. New cards enter discard; no bonus draw.",
+    "ja": "今回の探索のみ。新カードは捨て札へ。追加ドローなし。",
+    "ko": "이번 탐험에만 적용. 새 카드는 버린 카드 더미로 이동하며 추가 드로우는 없습니다."
+}
 NATIVE_RELATIVE = "attempt-2/outputs/wire-vectors.jsonl"
 
 
@@ -381,6 +388,11 @@ def verify_segment(directory, manifest, explicit_native=None):
                     and observation["actual_replacement_selected"] is True, "Full-pool replacement control failed")
         require(observation["labels"] and all(label["inside"] is True and label["all_lines_visible"] is True
                 and label["text"] for label in observation["labels"]), "Rendered label is missing/clipped")
+        require(POOL_HINTS[language] in {label["text"] for label in observation["labels"]},
+                "Rendered language-specific pool hint does not match requested locale")
+        if "actual_language" in observation:
+            require(observation["actual_language"] == language,
+                    "Actual selected UI language differs from requested locale")
         require(observation["input_traces"], "Missing actual input trace")
         picture = observation["screenshot"]
         should_capture = key[2] == 0 and original is next(iter(originals.values()))

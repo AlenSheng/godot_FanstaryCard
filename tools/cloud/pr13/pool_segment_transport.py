@@ -25,7 +25,7 @@ from tools import pr13_pool_render_evidence as verifier
 HOST = '43.172.70.182'
 CLOUD_ROOT = '/home/ubuntu/pr13-acceptance-20261009'
 GROUP = 'pool-render-segments-r2'
-SEGMENT_RE = r'(Guardian|Mage|Priest)-(3|5|8)-T0[123]-(zh-CN|zh-TW|en|ja|ko)'
+SEGMENT_RE = r'(Guardian|Mage|Priest)-(3|5|8)-T0[123]-(zh-CN|en)'
 POLL_SECONDS = 30
 MAX_ARCHIVE_BYTES = 96 * 1024**2
 
@@ -346,11 +346,27 @@ with tarfile.open(fileobj=sys.stdout.buffer,mode='w|gz',dereference=True) as tar
         self.emit({'state': 'prior_G_backup_and_cloud_cleanup_revalidated', 'segment': segment,
                    'matrix_rows': verified['matrix_rows_verified'], 'PNG_originals': 9})
 
+    @staticmethod
+    def required_counts(report):
+        counts = {key: report.get(key) for key in ('required_segments', 'required_rows', 'required_PNGs')}
+        require(counts == {'required_segments': 54, 'required_rows': 5832, 'required_PNGs': 486},
+                'Cloud required product-locale matrix differs from the frozen scope')
+        return counts
+
+    def completed_report(self, report):
+        counts = self.required_counts(report)
+        self.emit({'state': 'all_required_fixture_segments_G_verified_and_cloud_cleaned',
+                   **counts, 'full_fixture_matrix_rows': counts['required_rows'],
+                   'PNG_originals': counts['required_PNGs'], 'formal_EXPERIMENT_pending': True,
+                   'legacy_nonproduct_locale_evidence_retained': True})
+
     def loop(self):
         self.connect()
         while True:
             state = self.status()
+            counts = self.required_counts(state)
             self.emit({'state': 'observed_cloud_status', 'segment': self.current_segment,
+                       **counts,
                        'unit': state.get('unit'), 'rows': state.get('rows'),
                        'completed_segments': state.get('completed_segments'),
                        'cleanup_receipts_present': state.get('cleanup_receipts_present')})
@@ -370,10 +386,8 @@ with tarfile.open(fileobj=sys.stdout.buffer,mode='w|gz',dereference=True) as tar
                 continue
             if self.current_segment is None:
                 launch = self.mutation('launch-next')
-                if launch.get('all_135_fixture_segments_cleaned'):
-                    self.emit({'state': 'all_135_fixture_segments_G_verified_and_cloud_cleaned',
-                               'full_fixture_matrix_rows': 14580, 'PNG_originals': 1215,
-                               'formal_EXPERIMENT_pending': True})
+                if launch.get('all_required_fixture_segments_cleaned'):
+                    self.completed_report(launch)
                     return
                 require(launch.get('segment') or launch.get('controller_busy'), 'No exact dispatch result')
                 time.sleep(POLL_SECONDS)
@@ -413,10 +427,8 @@ with tarfile.open(fileobj=sys.stdout.buffer,mode='w|gz',dereference=True) as tar
                 self.emit({'state': 'passed_originals_on_G_cloud_output_reclaimed', 'segment': segment,
                            'root_disk_bytes_reclaimed': cleanup_receipt.get('root_disk_bytes_reclaimed')})
             launched = self.mutation('launch-next')
-            if launched.get('all_135_fixture_segments_cleaned'):
-                self.emit({'state': 'all_135_fixture_segments_G_verified_and_cloud_cleaned',
-                           'full_fixture_matrix_rows': 14580, 'PNG_originals': 1215,
-                           'formal_EXPERIMENT_pending': True})
+            if launched.get('all_required_fixture_segments_cleaned'):
+                self.completed_report(launched)
                 return
             if launched.get('controller_busy'):
                 time.sleep(POLL_SECONDS)
