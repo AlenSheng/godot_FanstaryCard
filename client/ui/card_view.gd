@@ -180,9 +180,8 @@ func _monster_text(id: String, info: Dictionary, effect: String, selected: bool,
 	banner.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(banner)
 	var title_text := P.localized("monster") + " " + CardDetails.localized_name(id, info)
-	var title := _text(title_text, Rect2(19, 28, 180, 34), 21, P.PAPER)
+	var title := _text(title_text, Rect2(19, 28, 180, 34), 21, P.PAPER, true, P.font("title"))
 	title.name = "MonsterName"
-	title.add_theme_font_override("font", P.font("title"))
 	_text(effect, Rect2(21, 304, 176, 38), 17, P.PAPER)
 	if id == "M-BOXSPIRIT":
 		var element: String = info.get("element", "None")
@@ -199,7 +198,7 @@ func _fit_card_effect_font(label: Label, requested_size: int) -> void:
 		fitted_size -= 1
 	label.add_theme_font_size_override("font_size", fitted_size)
 
-func _text(value: String, rect: Rect2, font_size: int, color: Color, fit_to_rect: bool = true) -> Label:
+func _text(value: String, rect: Rect2, font_size: int, color: Color, fit_to_rect: bool = true, typeface_override: Font = null) -> Label:
 	var label := Label.new()
 	var display_text := P.localized_text(value)
 	label.text = display_text
@@ -208,7 +207,7 @@ func _text(value: String, rect: Rect2, font_size: int, color: Color, fit_to_rect
 	label.autowrap_mode = TextServer.AUTOWRAP_ARBITRARY
 	label.clip_text = true
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var typeface := P.font_for_text(display_text, font_size)
+	var typeface: Font = typeface_override if typeface_override != null else P.font_for_text(display_text, font_size)
 	label.add_theme_font_override("font", typeface)
 	label.add_theme_font_size_override("font_size", P.fit_font_size(typeface, font_size, rect.size.y, rect.size.x - 8.0, display_text) if fit_to_rect else font_size)
 	label.add_theme_color_override("font_color", color)

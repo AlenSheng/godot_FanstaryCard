@@ -313,7 +313,8 @@ static func _duel(ui: Control, host: Control, state: Dictionary) -> void:
 	var opponent: Control = _picture(ui, Art.portrait(opponent_class) if P.CLASSES.has(opponent_class) else Art.texture("UI/Encounter/encounter_enemy_frame_normal.png"), Rect2(1516, 142, 268, 308))
 	host._combat_panels[duel.get("opponent_id", "")] = opponent
 	ui.text(duel.get("opponent_name", "同格旅人") + " · " + P.word(opponent_class), Rect2(1129, 161, 380, 53), 31, P.GOLD)
-	ui.button(P.localized("opponent_stats"), Rect2(1534, 462, 252, 55), func(): host._show_battle_details(duel.get("opponent_status", {})))
+	var opponent_stats: Button = ui.button(P.localized("opponent_stats"), Rect2(1534, 462, 252, 55), func(): host._show_battle_details(duel.get("opponent_status", {})))
+	opponent_stats.name = "DuelOpponentStatsButton"
 	_health(ui, duel.get("opponent", {}), Rect2(1128, 229, 358, 120), true)
 	_status(ui, "OpponentStatus", Rect2(1128, 350, 390, 32))
 	var seconds: float = maxf(0, (float(duel.get("leave_window_ends_at_unix_ms", 0)) - Time.get_unix_time_from_system() * 1000) / 1000)
@@ -325,11 +326,11 @@ static func _duel(ui: Control, host: Control, state: Dictionary) -> void:
 	if duel.has("escape_remaining_ms"):
 		_center(ui.text(P.localized("exploration_escaping") % (float(duel.escape_remaining_ms) / 1000), Rect2(803, 480, 310, 44), 27, P.TEAL))
 	if not Game.allowed("battle.play_cards"):
-		ui.picture(Art.texture("UI/Encounter/encounter_lock_icon_normal.png"), Rect2(1290, 443, 47, 48))
-	ui.text(P.localized("waiting_action"), Rect2(1350, 443, 330, 48), 26, P.GOLD)
+		ui.picture(Art.texture("UI/Encounter/encounter_lock_icon_normal.png"), Rect2(1076, 527, 47, 48))
+	var waiting_label: Label = ui.text(P.localized("waiting_action"), Rect2(1128, 527, 400, 48), 26, P.GOLD)
+	waiting_label.name = "DuelWaitLabel"
 	ui.text(P.localized("own_hand"), Rect2(80, 622, 330, 54), 34, P.GOLD)
 	_passive(ui, player.get("hero_class", ""), Rect2(80, 703, 330, 117))
-	_hand(ui, host, state)
 
 static func _map(ui: Control, host: Control, state: Dictionary) -> void:
 	_title(ui, "混沌领域")

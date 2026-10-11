@@ -52,7 +52,15 @@ func boundary_witness(row: Dictionary, index: int, locale: String, size: Vector2
 	var command_exact := false
 	var result_ok := false
 	var authority_checks := {}
+	var combat_layout_checks := {}
+	var combat_layout_observation := {}
 	if row.operation == "pvp-state":
+		var waiting_label: Label = $UI._reference.find_child("DuelWaitLabel", true, false)
+		var opponent_stats: Button = $UI._reference.find_child("DuelOpponentStatsButton", true, false)
+		var monster_names: Array = $UI._reference.find_children("MonsterName", "Label", true, false).filter(func(label): return label.is_visible_in_tree())
+		var original_monster_count: int = before.player.get("hand", []).filter(func(card): return str(card.get("card_id", "")).begins_with("M-")).size()
+		combat_layout_observation = {"original_hand_card_ids":before.player.get("hand", []).map(func(card): return str(card.get("card_id", ""))),"original_monster_count":original_monster_count,"visible_monster_name_count":monster_names.size(),"reference_path":str($UI._reference.get_path()),"visible_label_paths":$UI._reference.find_children("*", "Label", true, false).filter(func(label): return label.is_visible_in_tree()).map(func(label): return {"name":str(label.name),"path":str(label.get_path()),"text":label.text})}
+		combat_layout_checks = {"waiting_and_opponent_controls_present":waiting_label != null and opponent_stats != null,"waiting_does_not_intersect_opponent_stats":waiting_label != null and opponent_stats != null and not waiting_label.get_global_rect().intersects(opponent_stats.get_global_rect()),"monster_name_count_matches_original_hand":monster_names.size() == original_monster_count,"all_monster_name_glyphs_fit":monster_names.all(func(label): return label.get_theme_font("font").get_string_size(label.text, HORIZONTAL_ALIGNMENT_LEFT, -1.0, label.get_theme_font_size("font_size")).x <= label.size.x - 8.0 and label.get_visible_line_count() == label.get_line_count())}
 		var original_pool: Dictionary = before.player.get("monster_pool", {}).duplicate(true)
 		var first_name := "%s_%d_pvp_%s_%d.png" % [row.hero, row.capacity, locale, index]
 		var first_image_ok := true
@@ -76,6 +84,7 @@ func boundary_witness(row: Dictionary, index: int, locale: String, size: Vector2
 		result_ok = result_ok and Game.room.get("player", {}).get("monster_pool", {}) == original_pool
 		authority_checks = {"return_original_player_applied":Game.room.get("player", {}) == after.player,"return_original_revision_exact":Game.room.get("room_revision", -1) == after.room_revision}
 		result_ok = result_ok and authority_checks.values().all(func(value): return value)
+		result_ok = result_ok and combat_layout_checks.values().all(func(value): return value)
 	else:
 		var entry: Button
 		for candidate in $UI._reference.find_children("*", "Button", true, false):
@@ -146,7 +155,7 @@ func boundary_witness(row: Dictionary, index: int, locale: String, size: Vector2
 		result_ok = result_ok and opened and command_exact and unchanged_before and not labels.is_empty()
 		result_ok = result_ok and labels.all(func(label): return label.inside and label.all_lines_visible)
 	var passed: bool = before_applied and result_ok
-	return {"hero":row.hero,"capacity":row.capacity,"seed":row.seed,"operation":row.operation,"locale":locale,"resolution":[size.x,size.y],"actual_window_size":[get_window().size.x,get_window().size.y],"frame_cap":Engine.max_fps,"requested_frame_cap":fps,"controlled_response_delay_ms":delay,"native_source_sha":row.source,"original_before_snapshot_applied":before_applied,"authority_checks":authority_checks,"dialog_opened":opened,"choice_input_submitted":submitted,"original_command_exact":command_exact,"labels":labels,"screenshots":image_names,"checkpoint_reader_reset_explicit":row.operation=="pvp-state","PVP_leave_button_clicked":false,"foreign_candidate_UI_click_claimed":false,"passed":passed}
+	return {"hero":row.hero,"capacity":row.capacity,"seed":row.seed,"operation":row.operation,"locale":locale,"resolution":[size.x,size.y],"actual_window_size":[get_window().size.x,get_window().size.y],"frame_cap":Engine.max_fps,"requested_frame_cap":fps,"controlled_response_delay_ms":delay,"native_source_sha":row.source,"original_before_snapshot_applied":before_applied,"authority_checks":authority_checks,"combat_layout_checks":combat_layout_checks,"combat_layout_observation":combat_layout_observation,"dialog_opened":opened,"choice_input_submitted":submitted,"original_command_exact":command_exact,"labels":labels,"screenshots":image_names,"checkpoint_reader_reset_explicit":row.operation=="pvp-state","PVP_leave_button_clicked":false,"foreign_candidate_UI_click_claimed":false,"passed":passed}
 
 func _run() -> void:
 	output = OS.get_environment("PR13_DUAL_RENDER_OUTPUT")
