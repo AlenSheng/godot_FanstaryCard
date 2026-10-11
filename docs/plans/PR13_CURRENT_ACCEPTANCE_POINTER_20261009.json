@@ -32,7 +32,11 @@
     "acceptance_states_unchanged": true,
     "raw_data_primary_storage": "local_G_drive",
     "capture_recovery_report": "docs/reports/pr13-stages-20261009/S0-b09-pool-capture-recovery/summary.json",
-    "first_language_segment_independent_gate_passed": false
+    "first_language_segment_independent_gate_passed": true,
+    "first_language_segment_report": "docs/reports/pr13-stages-20261009/S3-b09-pool-render-first-language/summary.json",
+    "language_segments_G_verified": 1,
+    "language_segments_required": 135,
+    "current_language_segment": "Guardian-8-T02-zh-TW"
   },
   "development_history": [
     {
@@ -349,8 +353,10 @@
       "experiment_pilot_encounters": 720,
       "experiment_pilot_casts": 33606,
       "experiment_pilot_ticks": 583820,
-      "full_experiment_state": "Running",
-      "full_expected_encounters": 720000
+      "full_experiment_state": "RuntimeRecoveredMissingRawRerunPending",
+      "full_expected_encounters": 720000,
+      "runtime_recovery_report": "docs/reports/pr13-stages-20261009/S0-b08-runtime-recovery/summary.json",
+      "full_G_verified_encounters": 174000
     },
     {
       "task_ids": [
@@ -417,5 +423,5 @@
     }
   ],
   "evidence_storage_policy": "docs/plans/PR13_EVIDENCE_STORAGE_POLICY_20261010.json",
-  "latest_storage_checkpoint": "docs/reports/pr13-stages-20261009/evidence-storage-20261010/checkpoint-6/summary.json"
+  "latest_storage_checkpoint": "docs/reports/pr13-stages-20261009/evidence-storage-20261010/checkpoint-7/summary.json"
 }
