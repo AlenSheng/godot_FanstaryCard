@@ -1,7 +1,7 @@
 """One explicitly leased Tencent B09.3 run. Frozen inputs, bounded owned output."""
 import hashlib,json,os,re,subprocess,time,urllib.request
 from pathlib import Path
-B=Path('/home/ubuntu/pr13-acceptance-20261009');A='b09-legal-route-r1-20261011';OWNER='pr13-cap-'+A;E=B/'evidence'/A;W=B/'work'/A;SOURCE=W/'source';RAM=Path('/dev/shm/pr13-'+A);IMAGE='sha256:180f524270f6ac28d2fe0ff29707fb392387d7b766f731e41fda1e45e8230520'
+B=Path('/home/ubuntu/pr13-acceptance-20261009');A='b09-legal-route-r2-20261011';OWNER='pr13-cap-'+A;E=B/'evidence'/A;W=B/'work'/A;SOURCE=W/'source';RAM=Path('/dev/shm/pr13-'+A);IMAGE='sha256:180f524270f6ac28d2fe0ff29707fb392387d7b766f731e41fda1e45e8230520'
 FLOOR=500000000;RAM_BUDGET=128*1024**2;MEMORY=1536*1024**2;DEADLINE=2400
 def require(v,m):
  if not v:raise ValueError(m)
@@ -53,6 +53,10 @@ def run():
    info=owned(cid)
    if info['State']['Running']:docker('stop','--time','10',cid)
    owned(cid);docker('rm',cid);result['owned_container_removed']=True
-  original_inputs(meta);result['source_and_packages_unchanged']=True;health();write(E/'run-result.json',result)
+  try:
+   original_inputs(meta);result['source_and_packages_unchanged']=True
+  except Exception as error:
+   result.update(ok=False,source_and_packages_unchanged=False,input_validation_error=str(error),failed_originals_retained=True)
+  health();write(E/'run-result.json',result)
  print(json.dumps(result));return 0 if result['ok'] else 1
 if __name__=='__main__':raise SystemExit(run())
