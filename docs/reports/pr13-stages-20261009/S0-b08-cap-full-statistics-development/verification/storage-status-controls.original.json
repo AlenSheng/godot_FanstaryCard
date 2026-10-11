@@ -1,0 +1,53 @@
+{
+  "ok": true,
+  "scope": "synthetic storage/status metadata only",
+  "controls": [
+    {
+      "name": "exact_full_ID_readonly_monitor_allowed",
+      "ok": true
+    },
+    {
+      "name": "monitor_RW_rejected",
+      "rejected": true
+    },
+    {
+      "name": "monitor_parent_bind_rejected",
+      "rejected": true
+    },
+    {
+      "name": "monitor_identity_alias_rejected",
+      "rejected": true
+    },
+    {
+      "name": "ordinary_child_bind_rejected",
+      "rejected": true
+    },
+    {
+      "name": "complete_terminal_status",
+      "authoritative": true,
+      "ok": true
+    },
+    {
+      "name": "missing_MainPID",
+      "authoritative": false,
+      "ok": true
+    },
+    {
+      "name": "systemctl_nonzero",
+      "authoritative": false,
+      "ok": true
+    },
+    {
+      "name": "unloaded_unit",
+      "authoritative": false,
+      "ok": true
+    },
+    {
+      "name": "wrong_unit_identity",
+      "authoritative": false,
+      "ok": true
+    }
+  ],
+  "no_native_or_statistical_computation_executed": true,
+  "MAIN_accepted": false
+}

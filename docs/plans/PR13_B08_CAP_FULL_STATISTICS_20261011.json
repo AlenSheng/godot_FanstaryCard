@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "kind": "PR13-B08.4-full-descriptive-statistics",
+  "date": "2026-10-11",
+  "formal_plan": "docs/plans/PR13_B08_CAP_EFFECTIVE_EXPERIMENT_20261011.json",
+  "formal_plan_sha256": "4e868fa8571fdd5bd75b693024144aafe0c5f50008d9adfef20bff6db5863fd5",
+  "logical_units": 360,
+  "strata": 120,
+  "blocks_per_stratum": 3,
+  "encounters": 720000,
+  "pairs": 360000,
+  "successful_native_executions": 361,
+  "matrix": {
+    "heroes": [
+      "Mage",
+      "Priest",
+      "Guardian"
+    ],
+    "groups": [
+      "O1",
+      "O6",
+      "E1",
+      "BOSS"
+    ],
+    "elements": [
+      "Fire",
+      "Wood",
+      "Earth",
+      "Metal",
+      "Water"
+    ],
+    "equipment_and_weapon_levels": [
+      0,
+      5
+    ],
+    "seed_starts": [
+      440001,
+      441001,
+      442001
+    ],
+    "samples_per_arm_per_block": 1000
+  },
+  "source_contract": {
+    "business_source_sha": "b0423bfe6fedc3f034ba12c8400df5ebb8713f32",
+    "old_v1_units": 90,
+    "original_G_units": 87,
+    "named_missing_raw_recovery_units": 1,
+    "r2_units": 2,
+    "new_v2_units": 270,
+    "mixed_source_sha": "581cd9f74962dd61424e77c529b1259afbb39fe7",
+    "instrumentation_source_sha": "66c7420532536431b906d1fdb1e68d6d3448e6b9",
+    "mixed_input_manifest_sha256": "ab06c98792af1b3766dac9cde3668924529f07ee23a9eb10646e1b4367ca4716",
+    "source_subset_files": 372,
+    "unchanged_business_files": 370,
+    "exact_overrides": [
+      "server/tools/FantasyCard.Numerics/CapEffectiveExperiment.cs",
+      "tools/pr13_cap_effective_experiment.py"
+    ],
+    "original_domain_hashes_identical": true,
+    "numerics_runtime_identical": false,
+    "old_raw_unit_budget_bytes": 2147483648,
+    "new_unit_explicit_budget_min_bytes": 17179869184,
+    "new_unit_explicit_budget_max_bytes": 34359738368,
+    "new_budget_must_match_each_frozen_preregistration": true,
+    "event_part_raw_max_bytes": 134217728
+  },
+  "adoption_contract": {
+    "adoption_sha256": "198578607d8eb89f4961374caf1f02d4b3ec18ebccdd382c0e6a5b4efb10e12a",
+    "missing_original_raw_result_sha256": "38ed8979d4bc0119c654e2487e72705a74eb14a1d522e3c9bc999611b0af7695",
+    "named_recovery_result_sha256": "427d0b675953aecad1308e6029c49f888ad3a8116779523934e209c1462735cc",
+    "missing_original_success_is_execution_only_not_an_extra_logical_pair": true
+  },
+  "projection": {
+    "original_encounters_gzip_untouched": true,
+    "original_per_unit_native_and_validator_metadata": true,
+    "original_G_receipts_and_cloud_cleanup_byte_anchors": true,
+    "all_original_raw_events_retained_on_G": true,
+    "event_oracle": "Reuse independently cloud-validated complete original event streams and G CRC/SHA proof; do not recompute event effects from the encounter projection",
+    "local_work": "Original archive/member hashes, CRC, JSON identity/count projection and synthetic metadata negative controls only",
+    "max_projected_input_bytes": 268435456,
+    "incomplete_projection_statistics_forbidden": true
+  },
+  "statistics": {
+    "execution_location": "Tencent cloud only",
+    "all_outcomes": [
+      "Victory",
+      "Death",
+      "Censored",
+      "Error"
+    ],
+    "Error": "Never omit or replace Error; all 360 native units must declare and independently validate zero Errors before successful full computation",
+    "arms": [
+      "BaselinePurple",
+      "SingleOrangeHead"
+    ],
+    "numerical_metrics": [
+      "WeaponLevel",
+      "OpeningEnemyHp",
+      "OpeningEnemyShield",
+      "Actions",
+      "EffectiveActions",
+      "ZeroEffectiveActions",
+      "CardsSpent",
+      "ImmediateCardsDrawn",
+      "RequestedImmediateCards",
+      "RequestedHeal",
+      "RequestedShield",
+      "RequestedControlTicks",
+      "ConvertedControlTicks",
+      "AdmittedControlTicks",
+      "AddedAliveControlUnionTicks",
+      "ObservedAliveControlUnionTicks",
+      "NaturalCardsDrawn",
+      "EffectiveHeal",
+      "EffectiveShield",
+      "HealOverflow",
+      "ShieldOverflow",
+      "Damage10",
+      "Damage30",
+      "Damage60",
+      "TotalEffectiveDamage",
+      "RemainingMonsterHp",
+      "RemainingPlayerHp",
+      "FinalPoolSize",
+      "PreviewParityChecks",
+      "FirstWindupExtensions",
+      "ObservedSeconds",
+      "FirstEffectiveSeconds",
+      "LongestEffectiveGapSeconds",
+      "NoCardsSeconds",
+      "PlayerStunSeconds",
+      "DrawBlockedSeconds",
+      "FullHandSeconds",
+      "TargetControlSeconds",
+      "LegalOpportunitySeconds",
+      "StrategyHoldSeconds",
+      "MonsterHpProgressRatio",
+      "FirstWindupExtraMilliseconds"
+    ],
+    "nullable_metric": "FirstEffectiveSeconds; retain null count and pairs with either null separately",
+    "summaries": [
+      "count",
+      "null_count",
+      "min",
+      "max",
+      "sum",
+      "mean",
+      "p10",
+      "p25",
+      "p50",
+      "p75",
+      "p90"
+    ],
+    "quantiles": "Linear interpolation at (n-1)*p",
+    "stratum_scope": "Every hero/group/element/level separately, all three blocks combined; no pooled outcome comparison substituted",
+    "paired_outcomes": "All 16 Purple->Orange outcome transition cells, including zero Error cells",
+    "paired_metrics": "Descriptive Orange-minus-Purple paired difference distributions for every original numeric EncounterSample field, with null-pair counts; no effect thresholds",
+    "structured_fields": [
+      "ControlUnionTicksByTarget: distribution per semantic target when present and present encounter count",
+      "FirstWindupIntentIndexes: individual index and exact ordered sequence frequencies"
+    ],
+    "floating_representation_only": "Per-unit aggregate ObservedSeconds*10 reconciliation uses absolute 1e-6 ticks for binary floating sum; original cloud oracle already validates every tick/encounter; no effect-value tolerance",
+    "guardian_duration": "Long progressing Guardian encounters retain Death/Censored/observed duration; duration is not a balance failure reason"
+  },
+  "case_coverage": {
+    "authority": "Original formal plan and original independently validated actual case_denominators, never inferred from rounded outcome averages",
+    "report_scope": "Every hero/group/element/level and each arm, sum exactly three full blocks",
+    "T01_L5": [
+      "T01_capped_ticks"
+    ],
+    "T01_L0_separate": [
+      "T01_below_cap_ticks"
+    ],
+    "T02": [
+      "T02_equipment_floor_ticks",
+      "T02_card_speed_ticks",
+      "T02_PVE_conversion_ticks",
+      "T02_expiry_ticks"
+    ],
+    "T03": [
+      "T03_positive_shield",
+      "T03_full_shield",
+      "T03_overflow"
+    ],
+    "status_when_positive": "Observed",
+    "status_when_zero_or_missing": "Gap, never N/A or Passed",
+    "zero_shield_not_substituted_for_positive_cases": true,
+    "no_new_effect_thresholds": true
+  },
+  "cloud_isolation": {
+    "image_sha": "sha256:6ea92944e8779a5bb6e5c40faca53a40a1b02b5a0dcd47fff0815ba9cfbded1f",
+    "memory_bytes": 996147200,
+    "memory_floor_bytes": 500000000,
+    "cpus": 1,
+    "root_free_ratio_floor": 0.15,
+    "network": "none",
+    "source_and_input_mounts": "readonly",
+    "output": "owned /dev/shm, bounded 64 MiB; persist only after root floor and byte guards",
+    "deadline_seconds": 1800,
+    "diagnostic_limit_bytes": 25165824,
+    "other_active_jobs": "Defer startup for resources; never stop cap/render jobs",
+    "owned_cleanup": "Only after authoritative stopped container/systemd and complete G archive/member proof"
+  },
+  "statistical_inference": false,
+  "p_values": false,
+  "multiple_testing": false,
+  "equivalence_or_causal_claims": false,
+  "candidate_changes": false,
+  "card_value_changes": false,
+  "required_cases_accepted": false,
+  "formal_EXPERIMENT_accepted": false,
+  "MAIN_accepted": false,
+  "acceptance_note": "Successful descriptive computation is not formal EXPERIMENT/MAIN promotion. Missing registered actual predicates remain Gap and require separate closure. Human and capacity requirements remain outside this artifact."
+}
