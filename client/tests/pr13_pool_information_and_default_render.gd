@@ -107,8 +107,17 @@ func public_state() -> Dictionary:
 
 func save_control_capture(row: Dictionary, variant: String, locale: String, size: Vector2i, fps: int, delay: int) -> String:
 	if int(row.seed) != 450001 or fps != 30 or delay != 0: return ""
+	# Allow deferred product refreshes to complete before reading the texture.
+	for frame in range(4):
+		await get_tree().process_frame
+		await RenderingServer.frame_post_draw
 	var name := "%s_%s_%s_%s_%d.png" % [row.case_id,row.hero,variant,locale,size.x]
-	assert(get_viewport().get_texture().get_image().save_png(output + "/" + name) == OK)
+	if bool(row.optional):
+		var popup := dialog_under($UI)
+		assert(popup != null and popup.visible)
+		assert(popup.get_texture().get_image().save_png(output + "/" + name) == OK)
+	else:
+		assert(get_viewport().get_texture().get_image().save_png(output + "/" + name) == OK)
 	return name
 
 func controlled_witness(row: Dictionary, index: int, locale: String, size: Vector2i, fps: int, delay: int) -> Dictionary:
@@ -126,7 +135,7 @@ func controlled_witness(row: Dictionary, index: int, locale: String, size: Vecto
 		await RenderingServer.frame_post_draw
 		original_labels = popup_labels()
 	var captures: Array = []
-	var first := save_control_capture(row, "original", locale, size, fps, delay)
+	var first: String = await save_control_capture(row, "original", locale, size, fps, delay)
 	if not first.is_empty(): captures.append(first)
 	var unsupported := "room.library.read"
 	var gateway: NaturalGateway = Game.gateway
@@ -154,7 +163,7 @@ func controlled_witness(row: Dictionary, index: int, locale: String, size: Vecto
 		visible_state_and_labels_equal = entered and injected_public == baseline_public and injected_labels == original_labels
 		# Native-source eligibility is byte equality, independent of decoder tolerance.
 		injected_original_source_eligible = injected_wire == original
-		var picture := save_control_capture(row, "hidden_extension", locale, size, fps, delay)
+		var picture: String = await save_control_capture(row, "hidden_extension", locale, size, fps, delay)
 		if not picture.is_empty(): captures.append(picture)
 	var off_policy_unchanged: bool = bool(row.optional) or (original_entry == null and not Game.allowed("monster.choose") and not Game.room.get("player", {}).has("monster_pool"))
 	var text_geometry_ok: bool = not bool(row.optional) or (not original_labels.is_empty() and original_labels.all(func(label):return label.inside and label.all_lines_visible))
@@ -166,7 +175,7 @@ func controlled_witness(row: Dictionary, index: int, locale: String, size: Vecto
 		"unknown_extension_field":HIDDEN_EXTENSION_FIELD if bool(row.optional) else 0,"actual_hidden_library_fields_and_ids_absent_from_public_state":no_hidden_field_or_ids,
 		"public_state_and_popup_labels_unchanged_by_extension":visible_state_and_labels_equal,"injected_frame_eligible_as_original_native_experiment":injected_original_source_eligible,
 		"default_optional_pool_entry_and_choice_absent":off_policy_unchanged,"full_formal_default_rule_changed":false,"original_popup_opened":original_open,
-		"visible_labels":original_labels,"captures":captures,"controlled_injection_only":true,"natural_experiment_samples_added":0,"human_experience_claimed":false,"passed":passed}
+		"visible_labels":original_labels,"captures":captures,"capture_scope":"popup" if bool(row.optional) else "root_viewport","controlled_injection_only":true,"natural_experiment_samples_added":0,"human_experience_claimed":false,"passed":passed}
 
 func _run() -> void:
 	output = OS.get_environment("PR13_INFORMATION_RENDER_OUTPUT")
