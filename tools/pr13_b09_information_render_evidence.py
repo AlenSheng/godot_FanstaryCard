@@ -62,10 +62,9 @@ def fields(raw):
 
 
 def injected_frame_control(original, injected, ids):
-    import base64
     before, after = fields(original), fields(injected)
-    require([(n, t, v) for n, t, v, _ in before if n != 4] ==
-            [(n, t, v) for n, t, v, _ in after if n != 4], 'Original envelope metadata changed')
+    require([chunk for n, _, _, chunk in before if n != 4] ==
+            [chunk for n, _, _, chunk in after if n != 4], 'Original envelope metadata bytes changed')
     before_payload = [v for n, t, v, _ in before if n == 4 and t == 2]
     after_payload = [v for n, t, v, _ in after if n == 4 and t == 2]
     require(len(before_payload) == len(after_payload) == 1, 'Exactly one actual server-envelope payload required')

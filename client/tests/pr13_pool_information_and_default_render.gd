@@ -11,19 +11,49 @@ func varint_bytes(value: int) -> PackedByteArray:
 	result.append(value)
 	return result
 
+func read_control_varint(raw: PackedByteArray, cursor: int) -> Array:
+	var value := 0
+	for shift in range(0,70,7):
+		assert(cursor < raw.size())
+		var byte: int = raw[cursor]
+		cursor += 1
+		value |= (byte & 127) << shift
+		if (byte & 128) == 0: return [value,cursor]
+	assert(false, "Invalid native envelope varint")
+	return []
+
 func hidden_extension(original: PackedByteArray, ids: Array) -> PackedByteArray:
-	var codec := Proto.new()
-	var envelope: Dictionary = codec.decode("ServerEnvelope", original)
-	assert(codec.error.is_empty() and envelope.type == "room.snapshot")
 	var injected: PackedByteArray = JSON.stringify({"hidden_library_order":ids}).to_utf8_buffer()
-	var payload: PackedByteArray = envelope.payload.duplicate()
-	payload.append_array(varint_bytes((HIDDEN_EXTENSION_FIELD << 3) | 2))
-	payload.append_array(varint_bytes(injected.size()))
-	payload.append_array(injected)
-	envelope.payload = payload
-	var wire: PackedByteArray = codec.encode("ServerEnvelope", envelope)
-	assert(codec.error.is_empty() and wire != original)
-	return wire
+	var cursor := 0
+	while cursor < original.size():
+		var tag := read_control_varint(original,cursor)
+		cursor = int(tag[1])
+		var number: int = int(tag[0]) >> 3
+		var wire_type: int = int(tag[0]) & 7
+		if wire_type == 2:
+			var length_position := cursor
+			var length := read_control_varint(original,cursor)
+			cursor = int(length[1])
+			var end := cursor + int(length[0])
+			assert(end <= original.size())
+			if number == 4:
+				var payload := original.slice(cursor,end)
+				payload.append_array(varint_bytes((HIDDEN_EXTENSION_FIELD << 3) | 2))
+				payload.append_array(varint_bytes(injected.size()))
+				payload.append_array(injected)
+				var result := original.slice(0,length_position)
+				result.append_array(varint_bytes(payload.size()))
+				result.append_array(payload)
+				result.append_array(original.slice(end))
+				assert(result != original)
+				return result
+			cursor = end
+		elif wire_type == 0: cursor = int(read_control_varint(original,cursor)[1])
+		elif wire_type == 1: cursor += 8
+		elif wire_type == 5: cursor += 4
+		else: assert(false, "Unsupported native envelope field")
+	assert(false, "Original native envelope payload missing")
+	return PackedByteArray()
 
 func prepare_native_context(row: Dictionary) -> void:
 	var gateway: NaturalGateway = Game.gateway
@@ -101,8 +131,7 @@ func controlled_witness(row: Dictionary, index: int, locale: String, size: Vecto
 	var unsupported := "room.library.read"
 	var gateway: NaturalGateway = Game.gateway
 	gateway.sent.clear()
-	var denied_by_action_gate: bool = not Game.allowed(unsupported)
-	Game.command(unsupported, {"fields":["hand","library-order"]})
+	var denied_by_action_gate: bool = not Game.allowed(unsupported) and not Game.command(unsupported, {"fields":["hand","library-order"]})
 	var denied_by_schema_gate: bool = not gateway.send(unsupported, {"fields":["library-order"]})
 	var no_unsupported_packet: bool = gateway.sent.is_empty() and Game._pending_commands.is_empty()
 	var injected_applied := true
@@ -131,7 +160,7 @@ func controlled_witness(row: Dictionary, index: int, locale: String, size: Vecto
 	var text_geometry_ok: bool = not bool(row.optional) or (not original_labels.is_empty() and original_labels.all(func(label):return label.inside and label.all_lines_visible))
 	var passed: bool = original_wait_clean and original_applied and denied_by_action_gate and denied_by_schema_gate and no_unsupported_packet and injected_applied and no_hidden_field_or_ids and visible_state_and_labels_equal and not injected_original_source_eligible and off_policy_unchanged and text_geometry_ok
 	return {"case_id":row.case_id,"index":index,"hero":row.hero,"seed":row.seed,"locale":locale,"resolution":[size.x,size.y],"frame_cap":fps,"controlled_delay_ms":delay,
-		"original_native_source_sha":row.source_sha,"original_response_wire":row.original_response_wire,"injected_response_wire":Marshalls.raw_to_base64(injected_wire),
+		"original_native_source_sha":row.source_sha,"original_response_wire":row.original_response_wire,"injected_response_wire":Marshalls.raw_to_base64(injected_wire) if not injected_wire.is_empty() else "",
 		"original_snapshot_applied_without_projection":original_applied,"no_state_change_while_controlled_snapshot_waiting":original_wait_clean,
 		"unsupported_hidden_order_action_denied":denied_by_action_gate,"unsupported_hidden_order_schema_denied":denied_by_schema_gate,"no_hidden_order_packet_or_pending_command":no_unsupported_packet,
 		"unknown_extension_field":HIDDEN_EXTENSION_FIELD if bool(row.optional) else 0,"actual_hidden_library_fields_and_ids_absent_from_public_state":no_hidden_field_or_ids,
