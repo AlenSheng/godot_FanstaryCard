@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "stage": "storage_checkpoint",
+  "checkpoint": 9,
+  "completed_at_utc": "2026-10-11T02:13:32.996917+00:00",
+  "storage_action_completed_and_verified": true,
+  "action": "G backup and exact offload of terminal successful host Godot inputs",
+  "target_files": [
+    "/home/ubuntu/pr13-acceptance-20261009/cache/cleanup-authority-godot/Godot_v4.7.2-stable_linux.x86_64",
+    "/home/ubuntu/pr13-acceptance-20261009/cache/godot-linux.zip"
+  ],
+  "input_files_removed": 2,
+  "root_disk_bytes_reclaimed": 224280576,
+  "root_disk_MiB_reclaimed": 213.89,
+  "root_headroom_above_15_percent_bytes_at_cleanup": 487120076,
+  "root_floor_ratio": 0.15,
+  "G_archive_bytes": 155688873,
+  "G_archive_sha256": "f067c6e35639129e8558e77c0abf9c356a27198a08188a36995b2abd6491b369",
+  "G_archive_path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\outputs\\pr13-tencent-20261009\\host-godot-cache-backup\\delivery.private.tar.gz",
+  "G_archive_original_members_verified": 7,
+  "G_input_members_verified": 2,
+  "G_member_SHA_modes_outer_CRC_ZIP_inner_CRC_and_binary_SHA_verified": true,
+  "successful_original_OFFLINE_gate": {
+    "native_Godot_checks": 85,
+    "coordinator_regressions": 61,
+    "source_sha": "4c5b9043fc287b831c67d55a21b83b7fca76124e",
+    "git_dirty": true,
+    "engine_sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+  },
+  "old_OFFLINE_gate_not_rerun_for_this_storage_action": true,
+  "current_immutable_images_retained": [
+    "sha256:6ea92944e8779a5bb6e5c40faca53a40a1b02b5a0dcd47fff0815ba9cfbded1f",
+    "sha256:180f524270f6ac28d2fe0ff29707fb392387d7b766f731e41fda1e45e8230520"
+  ],
+  "restore_mapping_report": "restore-mapping.json",
+  "restore_before_legacy_host_runners_or_ZIP_bootstrap": true,
+  "current_compiled_cap_and_image_contained_Godot_require_removed_inputs": false,
+  "source_failed_attempts_1_to_7_logs_NuGet_current_imports_other_cache_and_production_retained": true,
+  "raw_data_primary_storage": "local_G_drive",
+  "local_verifier_compatibility_repaired": {
+    "runtime": "Python 3.10",
+    "cause": "SpooledTemporaryFile lacked seekable required by zipfile.open",
+    "repair": "TemporaryFile under local G backup directory stores compressed ZIP only",
+    "full_archive_verifier_rerun_passed_before_cloud_cleanup": true,
+    "initial_incomplete_verification_did_not_authorize_cleanup": true
+  },
+  "no_executable_expansion": true,
+  "no_native_business_executed_for_storage_action": true,
+  "cloud_health_status_at_cleanup": 200,
+  "uncompressed_raw_cumulative_budget_is_not_persistent_disk_reservation": true,
+  "512_MiB_recovery_or_future_batch_resource_sufficiency_claimed": false,
+  "whole_scope_accepted": false,
+  "PR13_accepted": false,
+  "MAIN_accepted": false,
+  "acceptance_states_unchanged": true
+}
