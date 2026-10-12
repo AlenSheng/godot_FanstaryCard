@@ -48,7 +48,8 @@ static func build(ui: Control, host: Control) -> void:
 
 static func _title(ui: Control, value: String, battle: bool = false) -> void:
 	ui.picture(Art.texture("UI/Encounter/encounter_title_plate_normal.png"), Rect2(50, 28, 480, 96))
-	_center(ui.text(value, Rect2(74, 37, 426, 73), 44, P.PAPER))
+	# Keep translated titles inside the plate's central panel, clear of its ornaments.
+	_center(ui.text(value, Rect2(116, 37, 344, 73), 44, P.PAPER))
 
 static func _center(label: Label) -> Label:
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
