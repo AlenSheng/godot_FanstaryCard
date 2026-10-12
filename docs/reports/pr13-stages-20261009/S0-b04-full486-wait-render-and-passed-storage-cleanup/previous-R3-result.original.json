@@ -1,0 +1,15 @@
+{
+  "ok": false,
+  "source_sha": "e745bee30335407c4e8df4ae533641e90c516bde",
+  "attempt": "B04-wait-boundary-render-r3-20261012",
+  "candidate_activation": false,
+  "MAIN_accepted": false,
+  "error": "AssertionError",
+  "detail": "",
+  "traceback": "Traceback (most recent call last):\n  File \"/home/ubuntu/pr13-acceptance-20261009/evidence/B04-wait-boundary-render-r3-20261012/runner.original.py\", line 57, in <module>\n    native=json.loads((RAM/'outputs/native-result.json').read_bytes());rows=native['observations'];expected={(h,l,(x,y),f,d,c) for h in ('Mage','Priest','Guardian') for l in ('zh-CN','en') for x,y in ((1920,1080),(1280,720),(960,540)) for f in (30,60,144) for d in (0,100,300) for c in ('PR13-B04.3-T01','PR13-B04.3-T02','PR13-B04.3-T03')};keys=[(r['hero'],r['language'],tuple(r['resolution']),r['fps_cap'],r['controlled_response_delay_ms'],r['case_id']) for r in rows];assert len(rows)==len(set(keys))==486 and set(keys)==expected and all(r['passed'] for r in rows);assert native['ok'] and not native['failures'] and native['source_sha']==SOURCE and native['display_driver']!='headless';pngs=list((RAM/'outputs').glob('*.png'));assert len(pngs)==18;logs='\\n'.join(p.read_text(errors='replace') for p in (RAM/'outputs').glob('*.original.log'));assert not any(m.lower() in logs.lower() for m in ('SCRIPT ERROR','Parse Error','Failed to load script','ObjectDB instances were leaked','resources still in use'));assert not owned()['State']['OOMKilled'];result.update(ok=True,native_clean=True,original_rows_passed=486,screenshots=18,display_driver=native['display_driver'],adapter=native['adapter'],oom_killed=False,full_matrix_verified=True,source_inputs_match_git=True,visual_review_pending=True,canonical_RENDER_profile_closed=0)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ^^^^^^^^^^^^^\nAssertionError\n",
+  "failed_originals_retained": true,
+  "owned_container_removed": true,
+  "shared_source_and_fixture_unchanged": true,
+  "owned_overlay_unmounted": true,
+  "RAM_outputs_and_generated_upper_retained_for_G": true
+}

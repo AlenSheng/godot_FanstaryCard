@@ -1,0 +1,15 @@
+{
+  "ok": false,
+  "source_sha": "e745bee30335407c4e8df4ae533641e90c516bde",
+  "attempt": "B04-wait-boundary-render-r2-20261012",
+  "candidate_activation": false,
+  "MAIN_accepted": false,
+  "error": "AssertionError",
+  "detail": "parse failed",
+  "traceback": "Traceback (most recent call last):\n  File \"/home/ubuntu/pr13-acceptance-20261009/evidence/B04-wait-boundary-render-r2-20261012/runner.original.py\", line 55, in <module>\n    phase('parse',['docker','exec',cid,'godot','--headless','--path','/client','--check-only','--script','res://tests/b04_wait_boundary_frames_r1.gd'],120)\n  File \"/home/ubuntu/pr13-acceptance-20261009/evidence/B04-wait-boundary-render-r2-20261012/runner.original.py\", line 54, in phase\n    log.close();code=child.returncode;save(E/(name+'-exit.original.json'),{'exit_code':code,'deadline_seconds':deadline});assert code==0,name+' failed'\n                                                                                                                                 ^^^^^^^\nAssertionError: parse failed\n",
+  "failed_originals_retained": true,
+  "owned_container_removed": true,
+  "shared_source_and_fixture_unchanged": true,
+  "owned_overlay_unmounted": true,
+  "RAM_outputs_and_generated_upper_retained_for_G": true
+}
