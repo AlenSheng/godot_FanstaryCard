@@ -1,0 +1,44 @@
+{
+  "kind": "production_Godot_full_Program_real_PostgreSQL_HTTP_context_and_retry",
+  "source_sha": "2ddf34763b2a3f4c5aee22e2fd1749568cc6d41e",
+  "original_assertion_fixture_sha256": "a57ad6a5cba775130063c56bdb3962cc8e06d79bf425c6a4779776d5c271d983",
+  "candidate_fixture_sha256": "31cacfda28d3c7ac3eb500ebb0f246a80760a25e1a29da7b7582172df926debe",
+  "arms": [
+    "per-request",
+    "reusable"
+  ],
+  "native_rows_per_arm": 13,
+  "target_POSTGRES_cases": [
+    "LOAD-06.1-T01",
+    "LOAD-06.1-T02",
+    "LOAD-06.1-T03",
+    "LOAD-08.2-T01",
+    "LOAD-08.2-T02",
+    "LOAD-08.2-T03",
+    "LOAD-08.3-T01",
+    "LOAD-08.3-T02",
+    "LOAD-08.3-T03"
+  ],
+  "target_POSTGRES_profiles": 9,
+  "runtime_guard_minimum_available_bytes": 500000000,
+  "deadline_native_arm_seconds": 120,
+  "seed_or_asset_SQL_writes_permitted": false,
+  "initial_funding": "Production test_ account gold mail claimed through actual Godot API",
+  "lost_response_injection": "Forward actual purchase and receive committed 200 response before returning controlled 503; retry forwards the same original body and Idempotency-Key",
+  "required_DB_postconditions": [
+    "Two distinct actual authenticated players per arm",
+    "Exactly one shop purchase and one Gold ledger debit for lost-response original request",
+    "Exactly one granted health potion for that request; two total purchases including the independent overlapping-write guard",
+    "Wallet final balance equals original claimed balance minus two actual configured potion prices",
+    "Fresh GET sees committed profile version while earlier delayed GET retains old version",
+    "No assets or stock are seeded, edited or repaired with SQL"
+  ],
+  "production_changed": false,
+  "EXPERIMENT_acceptance_claimed": false,
+  "MAIN_accepted": false,
+  "prior_original_failed_attempt": "real-pg-http-context-r1-20261012",
+  "initialization_repair": "Account names test_pg_old_A/B and test_pg_reuse_A/B retain the production test_ mail path and satisfy the unchanged 20-character name rule; failed initialization quits with bounded original status/error diagnostics",
+  "all_nine_target_original_predicates_retained": true,
+  "native_deadlines_unchanged": true,
+  "original_failed_cloud_outputs_kept": true
+}
