@@ -1,0 +1,9 @@
+[Unit]
+Description=PR13 current native previous-code and PG backup rollback audit
+[Service]
+Type=exec
+User=root
+WorkingDirectory=/opt/fantasycard-github
+ExecStart=/usr/bin/python3 /home/ubuntu/pr13-acceptance-20261009/evidence/current-code-rollback-native-r4-20261012/outer.original.py
+RuntimeMaxSec=4200
+Restart=no
