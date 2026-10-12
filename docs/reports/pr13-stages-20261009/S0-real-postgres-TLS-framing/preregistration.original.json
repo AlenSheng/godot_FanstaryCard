@@ -1,0 +1,50 @@
+{
+  "kind": "actual_authenticated_PostgreSQL_body_over_owned_verified_TLS_framing",
+  "source_sha": "e32f756b52c7a9e6f46779acc0c3eabfa23ac081",
+  "candidate_fixture_sha256": "8485302cf05bc1e1825462ea7ca9ad3dd5c84f69a02ed034965209495f1967f4",
+  "target_POSTGRES_cases": [
+    "LOAD-08.1-T01",
+    "LOAD-08.1-T02",
+    "LOAD-08.1-T03"
+  ],
+  "native_rows_per_arm": 3,
+  "transport_control": "Original per-request gateway plus original reusable binary HTTP client",
+  "native_deadline_seconds": 120,
+  "runtime_memory_floor_bytes": 500000000,
+  "production_changed": false,
+  "system_certificate_trust_modified": false,
+  "isolated_project_CA_bundle": "/evidence/private-tls/ca.pem",
+  "Godot_CA_setting_primary_source": "https://docs.godotengine.org/en/4.6/classes/class_projectsettings.html#class-projectsettings-property-network-tls-certificate-bundle-override",
+  "all_success_profile_bytes_from_actual_PostgreSQL": true,
+  "framing_faults": [
+    "Complete content-length with server close",
+    "Complete close-delimited body",
+    "Complete chunked body",
+    "Content-length truncated by one original byte",
+    "Chunked body without final zero chunk",
+    "Original protobuf profile plus declared unknown optional field padding over 2MiB",
+    "Unknown self-signed certificate outside the fixture CA bundle"
+  ],
+  "required_native_negatives": [
+    "Incomplete framing returns failure and no successful partial body",
+    "No insecure TLS options or fallback used",
+    "Untrusted TLS never reaches backend",
+    "Original 2MiB body ceiling retained"
+  ],
+  "required_DB_postconditions": [
+    "One real authenticated player/session",
+    "Profile version remains 1",
+    "Wallet and potions remain 0",
+    "No shop purchase or economy asset write caused by these read-only tests"
+  ],
+  "MAIN_accepted": false,
+  "EXPERIMENT_acceptance_claimed": false,
+  "prior_failed_original_attempt": "real-pg-tls-framing-r1-20261012",
+  "fixture_corrections": [
+    "Empty negative-response bodies are hashed by finishing an empty SHA256 context without calling Godot update(empty)",
+    "The positive close-delimited TLS fixture sends close_notify before closing; truncated negative fixtures retain their abrupt termination"
+  ],
+  "T01_complete_body_assertions_retained": true,
+  "T02_truncation_assertions_retained": true,
+  "T03_CA_and_2MiB_assertions_retained": true
+}
