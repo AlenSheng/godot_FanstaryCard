@@ -1,0 +1,9 @@
+[Unit]
+Description=PR13 additive controlled T03 Room.PlayCards pilot
+[Service]
+Type=exec
+User=root
+WorkingDirectory=/opt/fantasycard-github
+ExecStart=/usr/bin/python3 /home/ubuntu/pr13-acceptance-20261009/evidence/T03-conditioned-pilot-r1-20261012/outer.original.py
+RuntimeMaxSec=1800
+Restart=no
