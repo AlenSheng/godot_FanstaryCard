@@ -1,0 +1,46 @@
+{
+  "ok": true,
+  "native_clean": true,
+  "owned_container_removed": true,
+  "source_inputs_match_git": true,
+  "implementation_source_sha": "58c4e9e08c50aa831934f1451181163c98936d6c",
+  "actual_cloud_PID": 3537066,
+  "original_env_source_path": "/opt/fantasycard-github/server/.env",
+  "actual_original_env_bytes": 341,
+  "original_env_SHA256": "b6447257f742989ad27f1ba583432800424c50febd46904e9bd627ae089d8987",
+  "controlled_changed_copy_SHA256": "6a90a851dfa5aa7e4a0367b3d218be5106f9d868d023c6acecadf5a15ebbbf35",
+  "restored_owned_copy_SHA256": "b6447257f742989ad27f1ba583432800424c50febd46904e9bd627ae089d8987",
+  "original_file_bytes_inode_mtime_and_mode_unchanged": true,
+  "actual_owned_backup_and_restore_byte_equal": true,
+  "private_copies_mode_0600_and_removed_before_archive": true,
+  "original_private_env_contents_never_published_or_archived": true,
+  "actual_current_source_deploy_path_verified": true,
+  "deployment_claim_from_actual_restoration_hash": {
+    "code_review_closed": false,
+    "historical_environment_restoration_recorded": true,
+    "current_runtime_health": "Unknown",
+    "runtime_rollback_verified": false,
+    "reason": "Code review state and a historical file restoration do not verify a current deployed runtime."
+  },
+  "actual_health_not_checked_by_this_audit": true,
+  "production_runtime_rollback_not_performed": true,
+  "source_inputs": [
+    {
+      "path": "tools/pr13_review_policy.py",
+      "bytes": 3299,
+      "sha256": "ea767e56e412336a70599e89d4084496584314b8e4c06f7a26231acc82c9fcb1"
+    },
+    {
+      "path": "tools/pr13_public_evidence.py",
+      "bytes": 3445,
+      "sha256": "0ef3e13f1720fd2ebb760a5fc24ea4fe0928c44c979d3c7fc10ea55389a27b5f"
+    },
+    {
+      "path": "server/deploy/fantasycard-update.sh",
+      "bytes": 9333,
+      "sha256": "39162289db3bd8b78411711d9024b67b25c7ede9bc7857c9eb2c2062b0cfebe2"
+    }
+  ],
+  "scope": "Actual current production .env bytes copied and restored in an isolated owned file only; actual source file never mutated. Hash proves only this owned restoration instance, not historical restoration, deployed health, production rollback or PG restore",
+  "MAIN_accepted": false
+}
