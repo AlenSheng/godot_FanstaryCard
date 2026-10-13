@@ -1,0 +1,1855 @@
+{
+  "ok": true,
+  "case_id": "PR13-B03.3-T01",
+  "implementation_business_sha": "b0423bfe6fedc3f034ba12c8400df5ebb8713f32",
+  "original_analysis_source_sha": "5f6fd687c67ab60a2d283974ab3591b989dc479c",
+  "secondary_current_source_sha": "d61627589db07ed22a6186db49b67451c6728d31",
+  "original_encounters": 720000,
+  "actual_original_paired_battles": 360000,
+  "actual_original_unique_seed_clusters": 3000,
+  "actual_battles_per_original_seed": 120,
+  "original_independent_seed_blocks": 3,
+  "actual_paired_cluster_result": {
+    "paired_battles": 360000,
+    "independent_seed_clusters": 3000,
+    "mean_delta": -0.8404444444444445,
+    "paired_seed_cluster_bootstrap95": [
+      -0.84687,
+      -0.8338566666666666
+    ],
+    "bootstrap_seed": 20260930,
+    "resamples": 1000,
+    "precision_guaranteed": false,
+    "capacity_acceptance": false,
+    "production_activation": false
+  },
+  "same_seed_repeated_battles_not_counted_as_independent": true,
+  "actual_original_outcomes": {
+    "Victory": 720000
+  },
+  "controlled_incomplete_pair_checks": [
+    {
+      "name": "one_actual_baseline_row_removed",
+      "rejected": true,
+      "reason": "All paired battles, including unfinished outcomes, must remain present",
+      "original_rows_not_modified": true
+    },
+    {
+      "name": "empty",
+      "rejected": true,
+      "reason": "All paired battles, including unfinished outcomes, must remain present",
+      "original_rows_not_modified": true
+    }
+  ],
+  "primary_metric": "ObservedSeconds",
+  "scope": "Postcollection method contract replay of full immutable actual Domain encounter originals; clustered interval is diagnostic, no confirmatory strength inference, no natural-cycle, capacity, candidate or MAIN acceptance",
+  "original_descriptive_statistics_and314_zero_counts_unchanged": true,
+  "no_new_native_encounters_or_samples": true,
+  "original_projection_validator_sha256": "9482825398f23f9a2961afb1090032b11ffaff5429cdd6acc7b9e0dda7ac4f5e",
+  "paired_review_source_sha256": "24c60c5ea1bc041328bb2793fd57272a906a7d6526bcebf9745c23a67fac2866",
+  "original_dataset_sha256": "acdaac7e3995b58a476a6515aaabca653b63675e650742418562bd31724f079e",
+  "formal_EXPERIMENT_case_review_pending": true,
+  "MAIN_accepted": false,
+  "units": [
+    {
+      "unit": "Mage-O1-Fire-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "9a8db2f5eb7ae3f4c9de347a2c9921d30139a23619794f0a45d0b593914b80ca"
+    },
+    {
+      "unit": "Mage-O1-Fire-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "2f86c0972c65d9d93f3a07eeca2f8e0741e0d90b1489c253fae8b0a8d95c8d60"
+    },
+    {
+      "unit": "Mage-O1-Fire-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "f2ec3593c3d38812ce5e5026ba0661629b8c3dd3b682eb4f65920c4312ff7b8d"
+    },
+    {
+      "unit": "Mage-O1-Fire-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "d098349a5a4063c30089f89fc5e50ab45980a321123ad9d33d0fe04c29f89fbb"
+    },
+    {
+      "unit": "Mage-O1-Fire-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "41c0f2cc774be8af361d2966bd68d3a41031ae65c2bce9e3129cbcf62be7c695"
+    },
+    {
+      "unit": "Mage-O1-Fire-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "b2fa4c6bad34cd7002c3557e3c3394c28f41f74b2b9ff943ed3892f6e3c525ca"
+    },
+    {
+      "unit": "Mage-O1-Wood-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "98a37dd69649d15bfbc88c34e5d24bcc522e54f2be95125e302546c667eb230e"
+    },
+    {
+      "unit": "Mage-O1-Wood-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "3211f75ff2098b885493d87d96f1eb3b5c70da93650eb8e18cb6eb46b472c8b8"
+    },
+    {
+      "unit": "Mage-O1-Wood-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "7ebe05f24ddab926382bc4bf15667d3ee0a75bb1cbd84a252eb2d804575ca0c5"
+    },
+    {
+      "unit": "Mage-O1-Wood-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "97498c943e569580708a9661961ee3cd1d004442e15c95d1745f9a5504d7b1de"
+    },
+    {
+      "unit": "Mage-O1-Wood-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "81ca343d82590d58b957bbe62980d67f7da5d4e5216d29173d1fd086b8a85c32"
+    },
+    {
+      "unit": "Mage-O1-Wood-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "217e76bbf9d426c244fb648fb412cf2ebe5915e7b2e5aa8ca2c519a165d9593f"
+    },
+    {
+      "unit": "Mage-O1-Earth-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "e0bd09bb455572e2b989f9078461a62d70b2f016cb6fd2ae8d5c3245018af76c"
+    },
+    {
+      "unit": "Mage-O1-Earth-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "04aea7745b4cf2e456933a40beb78ed83aa208f7fdf94432c4abd490de4f3c57"
+    },
+    {
+      "unit": "Mage-O1-Earth-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "7101143a6ee86fbfc3480c8041af9c81e59b2b090c8a077447c69f8a0e317f04"
+    },
+    {
+      "unit": "Mage-O1-Earth-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "133f42d8afe01ff853b6dbd3fda7d558f791b1f7510345cafaa5963b68978e0d"
+    },
+    {
+      "unit": "Mage-O1-Earth-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "69fe52d9795a29adc740057968a507a547ad801e1d19543fcacdfe886d428dc8"
+    },
+    {
+      "unit": "Mage-O1-Earth-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "711d77fb5dc35ef1437baa6f189d08c0d326c424c09f4a29e826588124b52ee7"
+    },
+    {
+      "unit": "Mage-O1-Metal-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "1702bb7157e3efd328949fe936ef1f481fe9ed83c78aa6dc892df39d90412096"
+    },
+    {
+      "unit": "Mage-O1-Metal-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "7571886012408027aa19227a2d6c8c910d43a1e78e1850aed0f77f797054d4ca"
+    },
+    {
+      "unit": "Mage-O1-Metal-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "350b96be9b42ddfdffa2cd5e9f0ecb5511a1c887afaa789ea5fc37b1152eefa5"
+    },
+    {
+      "unit": "Mage-O1-Metal-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "e762109492aeddf8828ca5bb828d31f641a5fcd324becde4d9e3135f6faa112e"
+    },
+    {
+      "unit": "Mage-O1-Metal-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "3f884a81ab7c62a058308e022f6f07c3fbb735f3b38d379fc68bd29dd65b76db"
+    },
+    {
+      "unit": "Mage-O1-Metal-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "0b7c0f619fe98a4fd631dd02c77c208888cb78ec1b953fa9f35e448971ce62b4"
+    },
+    {
+      "unit": "Mage-O1-Water-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "2883d74317895a82fef3bc447d418f283959aa2b55bf6922562e934fdd666d2b"
+    },
+    {
+      "unit": "Mage-O1-Water-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "e8501b943219320798a64fc222a7a4adc7b8744d8bcc38a7097d1d3aa6a47570"
+    },
+    {
+      "unit": "Mage-O1-Water-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "2999e2be29ca958d1ac489ae0480cef585a3cc6a84c135ca835983efd5113ba9"
+    },
+    {
+      "unit": "Mage-O1-Water-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "37ec49238b14c056e46ab0d485702f2a8d7acc883a2986fc58160ffc83e0684b"
+    },
+    {
+      "unit": "Mage-O1-Water-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "3fe862014b0e78c664ed678c38cf17ebdaf4a0bfbb35af65f0df43bd21edafe1"
+    },
+    {
+      "unit": "Mage-O1-Water-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "4b7b6c33832cdcc850f2192677d24ec20dc9f06ed70e95b74d68bb4bbbb08654"
+    },
+    {
+      "unit": "Mage-O6-Fire-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "5a87beb283501dfff7cfc7ae0fda251cc7d35a1f992cf7d4b95ca886448350b1"
+    },
+    {
+      "unit": "Mage-O6-Fire-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "67ce4ae2f2dedf01f6e2f7958fc40e007a5b7c063ea02d3abf144b125a551b16"
+    },
+    {
+      "unit": "Mage-O6-Fire-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "a3c2fd3e3c8fd0b2608923b6fa1e8f42ce767106983f391bd00a2e7a868d6b55"
+    },
+    {
+      "unit": "Mage-O6-Fire-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "31c2af40ff53132657eb2309adca13c4e59768b7972ec9bcb873c67ffac2e18e"
+    },
+    {
+      "unit": "Mage-O6-Fire-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "47ce5d877418abeafc27f4d577bfbf9cf1eeb7c2b6773c46e99a52a6cd52684a"
+    },
+    {
+      "unit": "Mage-O6-Fire-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "2e3e982d2f28e019a759806e1f28148d20527affdc9329fc2631fa4595d2c3a5"
+    },
+    {
+      "unit": "Mage-O6-Wood-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "20c33d51e89fe81014105cd3f42f85ab26f5907edad653b050780aae4a88c0d3"
+    },
+    {
+      "unit": "Mage-O6-Wood-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "064903eece5cbcd0771c2645ca8ffe49cbc3a43ef8a64dc145048e13aed9b848"
+    },
+    {
+      "unit": "Mage-O6-Wood-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "0c0311f9a2fcfd355fdce90e24559285ec76bdf9fd8db1515d8b2fd8f79b4d62"
+    },
+    {
+      "unit": "Mage-O6-Wood-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "5674c9a3c1e53d74b9d89f6ea958aa34deab5387753f6b981b562edeff7a0dec"
+    },
+    {
+      "unit": "Mage-O6-Wood-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "6984f289d43c0360b135e5a4fc9f2b7bc13a68048b2cbac704214b92c22b41eb"
+    },
+    {
+      "unit": "Mage-O6-Wood-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "8c74a793f9d234501d116cfd8a8d89c79d6e8e649a95ef1f708e4c5fa546922e"
+    },
+    {
+      "unit": "Mage-O6-Earth-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "c44f2d1dbead313a4b0307738c83edd122532271f6058e3125dd300f60142eb2"
+    },
+    {
+      "unit": "Mage-O6-Earth-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "ab02355cea9956ae6a94ab8a83cd6b971b06512f34b77a8519633659a94027b2"
+    },
+    {
+      "unit": "Mage-O6-Earth-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "6733bdb8a4ac4d377d5770c399b91f6bffb7dba3405e6256b9808ac6d4b8ecfd"
+    },
+    {
+      "unit": "Mage-O6-Earth-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "ea4739670cdd4aeb7c7a3084618edb0f504e3803077e95fe69c66720ebf8c09b"
+    },
+    {
+      "unit": "Mage-O6-Earth-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "284e595b834b72edc223bf2fb8f87d593f7c3931a284eb18b1d14fbb25a39055"
+    },
+    {
+      "unit": "Mage-O6-Earth-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "f78e6b6a0161205aabc1263278e262d00080920d5ebd94701e71c867bc294563"
+    },
+    {
+      "unit": "Mage-O6-Metal-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "1c00f70be528150c740a0be47936d1fa5c67278af2375573975cb37de1b52c98"
+    },
+    {
+      "unit": "Mage-O6-Metal-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "0265c42e5a92a80741de2f038075a5143905e20c77bf1f0aa58ab26089f86472"
+    },
+    {
+      "unit": "Mage-O6-Metal-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "1b5def725204e6547c398f06dfcc6e097cb7a6861470d1f71c87a8a164207810"
+    },
+    {
+      "unit": "Mage-O6-Metal-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "bf6ed9e87fa3fc12380afb9815765a71e48793047f4d1c256848e8e63b4f7553"
+    },
+    {
+      "unit": "Mage-O6-Metal-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "89b71f57710840b1273bda37bc81151e69d82787a25f0a0a23d77805582ab980"
+    },
+    {
+      "unit": "Mage-O6-Metal-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "b9a63f4cf746bf1923d68e3463be0d3782c02bd34768b817a0ed40f61bc2a2a1"
+    },
+    {
+      "unit": "Mage-O6-Water-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "d8b2f3a4e419afd01f08a57ae78eac4df71fd8b0ba61ae0c22d7581d9acba713"
+    },
+    {
+      "unit": "Mage-O6-Water-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "08a9910b33934da28b50c97f1a2c59469801d3f3f6da7dc2538f397c5da4295c"
+    },
+    {
+      "unit": "Mage-O6-Water-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "f0c74ea41802c110512884323ba853463e5a1fa59f5c969177790cca82c6f66d"
+    },
+    {
+      "unit": "Mage-O6-Water-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "18fb6c2c0e32306116cbcb70b8be05c1d149a2fdd44587e4b80b866175b3971d"
+    },
+    {
+      "unit": "Mage-O6-Water-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "a373927d02dc8c4400f00afcace1ebfd1077b492008b55fa88cbe171ad844f7e"
+    },
+    {
+      "unit": "Mage-O6-Water-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "14e89890b619978ee9b7d1053dd137ce179ce73565b94be310fb504260045440"
+    },
+    {
+      "unit": "Mage-E1-Fire-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "df157d3efe9d169a90d8e9f06cf477e13db766bc1522df22eb0c63da900240ec"
+    },
+    {
+      "unit": "Mage-E1-Fire-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "395fe9dd59b1cd8dd7f146451dc479d20404b6487c86a6a86a12da59b6aafde8"
+    },
+    {
+      "unit": "Mage-E1-Fire-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "5e7f95abfeb2fa0289a60aaba6c1cd6693ebd5f4fc5d978fadb8f6e5a7499fe1"
+    },
+    {
+      "unit": "Mage-E1-Fire-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "4854876a82e03065ac29d0b19800cefdb6c9ff9857ee7f484c76c7c1d7f1ac7e"
+    },
+    {
+      "unit": "Mage-E1-Fire-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "d3726b1dae891e929d4a058dc071cd6a9aed89e8967e4ab29b9cb14794919e8f"
+    },
+    {
+      "unit": "Mage-E1-Fire-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "98c4af1086393455118400a3897e4fc34c02362d090360f845af05bdbb04a407"
+    },
+    {
+      "unit": "Mage-E1-Wood-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "bc13e14ebddd672526eaaf95fe01e9694bb87eb7278688442ce29e9cfe700ba0"
+    },
+    {
+      "unit": "Mage-E1-Wood-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "d1ae0e7d94c116424ebd23acd57977456f851adea79b7e4e63c16adef0edc3ab"
+    },
+    {
+      "unit": "Mage-E1-Wood-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "b7678899a9a375f7058ddb0f94401bc5772affa807d9140ec70712da42421c02"
+    },
+    {
+      "unit": "Mage-E1-Wood-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "772b5620d0bb9f884d01f7f322f9f1bd81aaf6c98dcd92c13b9b23bca28053c3"
+    },
+    {
+      "unit": "Mage-E1-Wood-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "7ef5f439386700905a52343cc3de3ceddefc418e2a0bcd1cbcf0a27f7573e093"
+    },
+    {
+      "unit": "Mage-E1-Wood-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "4943fe329e69f96afa51b5f4408e1febe6950735ae6db0d6734ba988ee56e09d"
+    },
+    {
+      "unit": "Mage-E1-Earth-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "268d4e999f124f4e79c422491f3efe257f5555336e78e65453576f81e3e2bbc3"
+    },
+    {
+      "unit": "Mage-E1-Earth-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "afd0b409de1178b1b80cda0a0c46a912d7f84f5016c5114a47b3c2f3c36653c0"
+    },
+    {
+      "unit": "Mage-E1-Earth-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "83b231601956d6a0565d024cd183ab6a631cc16ed154348bc632102ea97762e5"
+    },
+    {
+      "unit": "Mage-E1-Earth-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "50ef6b998ab99484d166fa2596340cf64b4501040c3408907c6e2e8191614e51"
+    },
+    {
+      "unit": "Mage-E1-Earth-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "d8f024efb555506e9599d2fcef7772078a8364d68c3f288040d7c6ddc1b0a579"
+    },
+    {
+      "unit": "Mage-E1-Earth-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "8541d799d30224e1d28a4433d6999ce5cc8643b2a1e9ce90934c0c85e8dad988"
+    },
+    {
+      "unit": "Mage-E1-Metal-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "56e6ab40d73b2586c7e3ae13cd5da84fa40d08b18fed95fdaf02f684c279772a"
+    },
+    {
+      "unit": "Mage-E1-Metal-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "33a9a51bbce3ada35a8917a6066185cc085a5fc413832cf27dd8c25f62ce7c2f"
+    },
+    {
+      "unit": "Mage-E1-Metal-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "e949140a023a683838807a55d0d00ddd8348aff07e7745c46b4a2fafe135cb3a"
+    },
+    {
+      "unit": "Mage-E1-Metal-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "00e9bae45ee18132473d7cdabe5f4ff4c41295c0d43a45b3f6e542140a1321ec"
+    },
+    {
+      "unit": "Mage-E1-Metal-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "fa953bf817f95adaa14ffcc7d7c840b117a35ea19c78d9922cb8e578cd2fce41"
+    },
+    {
+      "unit": "Mage-E1-Metal-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "c0aa12700d08816e76aa93a5394f295fed1bfd2cb4ac171af986055ba8bef0ef"
+    },
+    {
+      "unit": "Mage-E1-Water-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "a3d64ddcf5f4a15d10da85705af49128089bfbced1ecfc4d6fd6a8db6295f807"
+    },
+    {
+      "unit": "Mage-E1-Water-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "9cefe7ab7dd2b1aeebc8a2642a88c116ed989360505789f34587785cf63cec70"
+    },
+    {
+      "unit": "Mage-E1-Water-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "e7c66cbafe3a485a085aa0939c292ae6eaf3cb0fc52e808aece58d57f3459692"
+    },
+    {
+      "unit": "Mage-E1-Water-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "2c7559836d6efaa29cb0283700d472bd2290cd80ea3960f50521e5d408f16abe"
+    },
+    {
+      "unit": "Mage-E1-Water-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "eb803212de8281ce3246513dab96aeee10736414d89e5a73f4ce7b60aea1c62c"
+    },
+    {
+      "unit": "Mage-E1-Water-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "3ac26760a8c8700881ce3ae2b412bf7168f082eccf7db0cdfbbb1ec8466ca742"
+    },
+    {
+      "unit": "Mage-BOSS-Fire-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "47b24c2c5dd8ec37a9c125b58cce472f8f18017b5b9f07cb632a49012342cf53"
+    },
+    {
+      "unit": "Mage-BOSS-Fire-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "f98712c97acdf6e824f609024d5dd838e2b7651239fd24729f4b30a2fb73897c"
+    },
+    {
+      "unit": "Mage-BOSS-Fire-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "7a18ca98130cb40883c9324301e642a29a007cee165d129de317ad967484bd89"
+    },
+    {
+      "unit": "Mage-BOSS-Fire-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "dedd50604bb90a467059e75702f7d1b21a6c47cee0851d1b57f6d07ee7760a61"
+    },
+    {
+      "unit": "Mage-BOSS-Fire-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "d8be0a9e18233fe39d05c5cfd4ab0017e4ce0256a93480a5e000264d2da09d16"
+    },
+    {
+      "unit": "Mage-BOSS-Fire-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "d51732528c4dd8e009e1c00f8a4e0a9c7a145b101ac7864feb21598681a2577b"
+    },
+    {
+      "unit": "Mage-BOSS-Wood-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "142424bfc86b14247d70c3c9b86ecd0a69cbf9e5dacb0406ffa18349e12b39cc"
+    },
+    {
+      "unit": "Mage-BOSS-Wood-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "314f42f93486c846133b16352513df513a9177850c18d4b305d8c25153457cc0"
+    },
+    {
+      "unit": "Mage-BOSS-Wood-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "a32a1981eb4740ce98857ac5672b1e7b6519a13a1e4aa0850286ba4a16665482"
+    },
+    {
+      "unit": "Mage-BOSS-Wood-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "9f78818d66da7c3143140f801f57ef271cb64b58723c503df6eaca0447a72c09"
+    },
+    {
+      "unit": "Mage-BOSS-Wood-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "a59bddba29ccfe28b7dee855a48ac3336069f0deef04bda912a0efd6c9d1ee9d"
+    },
+    {
+      "unit": "Mage-BOSS-Wood-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "a143e12285243a58513af784735cae444ab65e89ec642802dd8e753ff118dd0e"
+    },
+    {
+      "unit": "Mage-BOSS-Earth-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "5721375d8a97f163392ecba0b57d88d979aeab9b6e132645ce654d825ae6cb7e"
+    },
+    {
+      "unit": "Mage-BOSS-Earth-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "b026c476a8c80d54c2ed9d284b37a2acf2ddf57f4336f9f6cd589b8e65efd13d"
+    },
+    {
+      "unit": "Mage-BOSS-Earth-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "4169324cf9382c04a10eb217999b9bef8130be69802ca68f7625c3115547c381"
+    },
+    {
+      "unit": "Mage-BOSS-Earth-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "d11255c3bfc0e0ae194a232a672161f4b627f131ea25aee384ac1ee6380e222b"
+    },
+    {
+      "unit": "Mage-BOSS-Earth-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "f5dcc4baadd66a5f62540fdb2a4ed490a27ae9a29803ee1215c7ac79344232d2"
+    },
+    {
+      "unit": "Mage-BOSS-Earth-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "4ae2802f82dbc2fa628a87b7c4b8f1690f2c42e4d56cd326a18fc96c3ae59624"
+    },
+    {
+      "unit": "Mage-BOSS-Metal-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "d13c7a43d32ea970c8fc18f5059d673f287b18bf759e369301cc7d3b782329bc"
+    },
+    {
+      "unit": "Mage-BOSS-Metal-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "adc41a2cec523d031f2085c8e01795338d90de454cbcf73562e284d05a12f47d"
+    },
+    {
+      "unit": "Mage-BOSS-Metal-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "fe9fa4edcfacfa03d81264fefe24b3d025923dedb309b2f84fea48316b3d3b08"
+    },
+    {
+      "unit": "Mage-BOSS-Metal-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "d4abb002c5745168330143e87dbdf57e37ad95c2bd9811c38fc74a5dafd2bdb8"
+    },
+    {
+      "unit": "Mage-BOSS-Metal-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "85480ae50e289e58d83a4daf6d74c106d628d53dbcd459ed19d81acfea220eb0"
+    },
+    {
+      "unit": "Mage-BOSS-Metal-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "7aeb30ef30a5982f14c7d63528633d76de6f9c24f766fdbf8ccf41d426d48c0e"
+    },
+    {
+      "unit": "Mage-BOSS-Water-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "7ea50857484dd9d8edbcdc65dc94573ed612cffa572c059d6e90e2f9d950f6ad"
+    },
+    {
+      "unit": "Mage-BOSS-Water-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "cecb8d4f01391f266e77723b50aa4e55d39d5f348de800c84d63260bba10ddb7"
+    },
+    {
+      "unit": "Mage-BOSS-Water-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "633353175dc49a79a3013d585c5698abe29675b867b7157112c6a4b5188d9466"
+    },
+    {
+      "unit": "Mage-BOSS-Water-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "bd322f4d9c31095f27a940892680d2239cc94678e8f256cd5e84941defee1347"
+    },
+    {
+      "unit": "Mage-BOSS-Water-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "e83267a4b1704b2aa2b8ac712385f9afde0230bdca462b1768e0d4c365debca7"
+    },
+    {
+      "unit": "Mage-BOSS-Water-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "b41763738198e581c0e488f6e5dd92490a5c2df9317155937711b0f04b6e725f"
+    },
+    {
+      "unit": "Priest-O1-Fire-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "4603a3f781c115f04cba2d94930664681685f7ede567665cb3d1a1b7a6d5757a"
+    },
+    {
+      "unit": "Priest-O1-Fire-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "f0c212a9bd95a5eea3ebb809633ddf5393b4374fb13966a65b9ff7bca9989588"
+    },
+    {
+      "unit": "Priest-O1-Fire-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "43dd07b378c34080bdd4f70e010c8b21d0eaf70a140aa790dd6843807af1ca9c"
+    },
+    {
+      "unit": "Priest-O1-Fire-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "1c2dc5fc5dc34415ae4686671bfc41d05d9a9e085d16c7739854b559d9fc9572"
+    },
+    {
+      "unit": "Priest-O1-Fire-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "223c1f67646a93187506cc42fd604e0ca75b16ac3138b34ace8c8be439a5c5c3"
+    },
+    {
+      "unit": "Priest-O1-Fire-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "aec9cbbbd3dd36fc8285b0797edf41489cc2ea3df25e100d4e2bc225168392b0"
+    },
+    {
+      "unit": "Priest-O1-Wood-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "db57e2207f6dce7ecc5098a719152db14a29252bdf2da80a98deeb3d7e682f21"
+    },
+    {
+      "unit": "Priest-O1-Wood-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "212d1b7c9011545b101c7340ee82d8911e194e2ffbb340e50867dbc3be50c3da"
+    },
+    {
+      "unit": "Priest-O1-Wood-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "54a3ff627ceb3267eae080ed9ef6291020ce10b45126f76acc1106a6fcd8549e"
+    },
+    {
+      "unit": "Priest-O1-Wood-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "b91d14920fe37dc1eb8fc173faad6b873561a1ee455a0b154847711ea90c30fd"
+    },
+    {
+      "unit": "Priest-O1-Wood-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "7e6492e0c0a03ed0b3becf114cbd7243891dafef1f2e308f05da36ffdb164af3"
+    },
+    {
+      "unit": "Priest-O1-Wood-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "5b0294cf572332d801bae30702346f94051fa2caf00d70bd23e1ba622b9ba878"
+    },
+    {
+      "unit": "Priest-O1-Earth-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "8c9b1e2fc4bfac548915be370ca826ac5e765f6f6a546c876b977cfbcd18e65c"
+    },
+    {
+      "unit": "Priest-O1-Earth-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "b0ad7c71a8174081f5655ce88ff5ff9c6aadcf54c33cfcb4fc4d16fc957b2b66"
+    },
+    {
+      "unit": "Priest-O1-Earth-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "4463825f24731fb725bb3c2b399a90c529b80a0771f6b915b0c2086d9e556d78"
+    },
+    {
+      "unit": "Priest-O1-Earth-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "5541a4b9198b3e039ba9d91c944484e7e54574dbe988c992a2158774953d73e4"
+    },
+    {
+      "unit": "Priest-O1-Earth-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "79bc2f38eff7c73ddc4c3971ff21e5f57cfcd8424ff072e408d8ce714d241992"
+    },
+    {
+      "unit": "Priest-O1-Earth-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "8e2381646cfa6e4b4ab92a7ec18aff8c322ae9f03278370978ed1a7a1e71c879"
+    },
+    {
+      "unit": "Priest-O1-Metal-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "995f91df84f62a177f80d8675e0525e5ca18752e02995368ab56603fc4d78f6f"
+    },
+    {
+      "unit": "Priest-O1-Metal-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "e7c04dc9b1644083ca1036b83204033ffd476a26e0303a44cb3af79e1ee77f6f"
+    },
+    {
+      "unit": "Priest-O1-Metal-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "aabc16b47a795aa73b6d73187980524c47e9723120bb72ce76b1b2d3958ef264"
+    },
+    {
+      "unit": "Priest-O1-Metal-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "932ee83c43e71f4c7a3195174ad26e8a4a782d8eca60edc6be526616c7755792"
+    },
+    {
+      "unit": "Priest-O1-Metal-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "4bfb45cce8b2adfe0493a106bc38c1f9683e254fb176eae6697915b70573f049"
+    },
+    {
+      "unit": "Priest-O1-Metal-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "e797011ab120e94d4ee333900c6a30f5a40582eb33824ba8c8e89b550213f43c"
+    },
+    {
+      "unit": "Priest-O1-Water-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "92de400a069605b12d1ad15316219ea94f673fafc156a065cb3b24fad247f66f"
+    },
+    {
+      "unit": "Priest-O1-Water-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "dc178604473830997d54af3bb5e58a89c02cebd63c962872220ba4cb360b48bd"
+    },
+    {
+      "unit": "Priest-O1-Water-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "2d7ebf19822d4050912a215d92ff85b6f8bf8e512ce97168faf2da7a41e997ee"
+    },
+    {
+      "unit": "Priest-O1-Water-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "b2ef62603ef632eae78c4a162d6b93f211e7c082277b21833b15d40d45c0d5ce"
+    },
+    {
+      "unit": "Priest-O1-Water-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "cb4298f64ba5c07e5c6df913bfa9f6e6ef4d03bed6c6ee253fc4ab4ca05f495d"
+    },
+    {
+      "unit": "Priest-O1-Water-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "bb96e8db084a1c1b3909513e910faac8fcc11d29616856a83f6031260089380f"
+    },
+    {
+      "unit": "Priest-O6-Fire-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "86e97d5958510f40ec1f49b9edfb525f23125b0ba61f658243eef9b068336f1f"
+    },
+    {
+      "unit": "Priest-O6-Fire-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "5ac8c5b2d836085629e20eb654d8775c8da9e9364540407c473a78eac6d8c91b"
+    },
+    {
+      "unit": "Priest-O6-Fire-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "7a92d73fab49a547c80d07f8ac310f2be9376b6b17a9c86f52c5a8323a4e3152"
+    },
+    {
+      "unit": "Priest-O6-Fire-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "fac27f0a58318bd945f7628d9815d71b305e5fac66dd4f2a288987c6bb0fde69"
+    },
+    {
+      "unit": "Priest-O6-Fire-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "b724ddcc73649876d54da0cfa27c85c9026d041d1abfbce76233943e04f92bf9"
+    },
+    {
+      "unit": "Priest-O6-Fire-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "0eb595b3e10ff5be418341b437612494af11c59939a565454ec58034403de136"
+    },
+    {
+      "unit": "Priest-O6-Wood-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "2f4d7aa48c838a21c7b9e6ef75a1dba5ec52ef1739c6c40588b6a947f22ac049"
+    },
+    {
+      "unit": "Priest-O6-Wood-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "62e20bfdc064c4588570c993dbaea20a6a8f0cd54c3cbf7ccf7070d21cd528e1"
+    },
+    {
+      "unit": "Priest-O6-Wood-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "1d3c917c0ddcfbfe2e9dc01a928f94060feb7fc00c9fb7cbfa779858d75ee749"
+    },
+    {
+      "unit": "Priest-O6-Wood-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "681a61f3a9136bb361193d8582aecef9938a12305828ffc61b3ac7baadbb80fd"
+    },
+    {
+      "unit": "Priest-O6-Wood-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "18d810cc4a08a25b7f08bc4ea8ed50027253f680b427f24b4334115e3418ea80"
+    },
+    {
+      "unit": "Priest-O6-Wood-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "ffdc9570c6c39efd6997576d1f6445aadfc88a65b9bc783861c4640828a7e4bd"
+    },
+    {
+      "unit": "Priest-O6-Earth-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "ccd7c767195c699f21cd6d3f5601d505275c3a6cc291e0bad94c36e95f26c790"
+    },
+    {
+      "unit": "Priest-O6-Earth-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "1b820e6a64e31efe656a50c860462aa1ef2596b4743385df2406957c1ec952cb"
+    },
+    {
+      "unit": "Priest-O6-Earth-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "48b1969c9c9376f676f35a62d3d1237df9135a4553e6a745b13f8d7117fca0f7"
+    },
+    {
+      "unit": "Priest-O6-Earth-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "68f1fb2d23d5b6acf0bade1e9570b797885cd9202ea12b577a51fc23f232f441"
+    },
+    {
+      "unit": "Priest-O6-Earth-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "633d655de3c0a25c6d7aa454c2b89a382935faf2f1bd8645b48868bb68de8aaf"
+    },
+    {
+      "unit": "Priest-O6-Earth-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "c2b8cfe444e177da99e4a234fd1b2e161d2d24ade14036b023167e3267a50b59"
+    },
+    {
+      "unit": "Priest-O6-Metal-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "cfb36c87f62bbd6824365ef9a8605f32d5a9ec5ebf1497d9910f501ce2ed8ade"
+    },
+    {
+      "unit": "Priest-O6-Metal-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "bc8b3c903950709fd5738c8f78144de02246dd21d7d3be4b7de28f133c643895"
+    },
+    {
+      "unit": "Priest-O6-Metal-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "af56f0c1b411e092d59fe667189e7c099ea8c1eb782f7cd115f0ac787e0dee5b"
+    },
+    {
+      "unit": "Priest-O6-Metal-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "a93e7fb3dcbc317e8c6403e6ec7ab2b40a7a31daef0ff234f15ba9b0d84729a3"
+    },
+    {
+      "unit": "Priest-O6-Metal-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "1150e296348bfe8e87e3097574d98b630678a551d4f20537aea1386f07d89d9f"
+    },
+    {
+      "unit": "Priest-O6-Metal-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "e29534d5fef55627533e6843d868756525b148059f84e6ba924b1cb2c292e303"
+    },
+    {
+      "unit": "Priest-O6-Water-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "9818bb118434ed17c3f53f538d24345bd33cabb5d299c582cd5580a1181ad823"
+    },
+    {
+      "unit": "Priest-O6-Water-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "5286d5f4165bcceed3318a09ac49edaccfd46c817d948a56460324132606f828"
+    },
+    {
+      "unit": "Priest-O6-Water-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "1ac867a322b51f3ac38b10ffafd391d49f327d1ccb0e462fb8ac59f00a657ad1"
+    },
+    {
+      "unit": "Priest-O6-Water-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "d4db309475416f5488850a24e7eca04137b5882c6d54c6d6cb1db1c72cbb5a75"
+    },
+    {
+      "unit": "Priest-O6-Water-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "9e48f0e807dc01d2cf7ec3d8066432481e44e62c28044c97aa05f8719579681e"
+    },
+    {
+      "unit": "Priest-O6-Water-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "80bb13c30d843e27c37d9932265a3a383535052c981c1a5063a5958542fef4e4"
+    },
+    {
+      "unit": "Priest-E1-Fire-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "4ed92ca82823a2eba9b5fd46b30207b96aa76f185333cc60ceec68fac117d253"
+    },
+    {
+      "unit": "Priest-E1-Fire-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "d3468b1c94f745c973c5ae073d526fe4cc117d937239e630bb9eaa2d2ed62bed"
+    },
+    {
+      "unit": "Priest-E1-Fire-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "a17504c37e262c163c67371fc945d020010aab49d6ee4737f508da7f283b1fdc"
+    },
+    {
+      "unit": "Priest-E1-Fire-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "07ff3690484b446911bffdf04b36969734bf73fcc263b99aef2378d8a9cd815b"
+    },
+    {
+      "unit": "Priest-E1-Fire-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "1bd2dfabd6834c73c1fb4349d14f9a5903e3d8fd5cccb738624fa142a1653091"
+    },
+    {
+      "unit": "Priest-E1-Fire-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "0356ce882d939167795706b298590ed206d3175a1e4dd6f9ea5d853f8c814c39"
+    },
+    {
+      "unit": "Priest-E1-Wood-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "f9dfd30577815de6ef783bb66f8e613856435d8a78883c007cec1ef437253c70"
+    },
+    {
+      "unit": "Priest-E1-Wood-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "a78c240c07f04b1783630e7cb889d006c498065541b37c34b85f71bc2506bc60"
+    },
+    {
+      "unit": "Priest-E1-Wood-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "72826570d2662e92073da3bd27075f7f098b208e0692d7533c47a774681bfa36"
+    },
+    {
+      "unit": "Priest-E1-Wood-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "095873f0bf3b8048f514e4ce28eaa99eb9ece2528c680a90115e206356afd5cf"
+    },
+    {
+      "unit": "Priest-E1-Wood-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "a6df0e1b2f55172c273ab7ce85ba67be9e3d9b1120a99986fa2e93ecf85b4daa"
+    },
+    {
+      "unit": "Priest-E1-Wood-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "5a9f1c60bee57444a34196c591adad2abc736a3f92ce071efa2a7aa7c55c9cd6"
+    },
+    {
+      "unit": "Priest-E1-Earth-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "2d83da0c598bc0d9e3471171a95f9da5ed5179f147df720fd68f782a8c434d15"
+    },
+    {
+      "unit": "Priest-E1-Earth-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "73ade725f85af8a16b5746978d327fc9b5f96b68171007470d1d8057dfe90dc3"
+    },
+    {
+      "unit": "Priest-E1-Earth-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "08fff8f56fe4628f4d182c5ac9a5a0ebaed80178cc6b5bf25ca6cd8394f22237"
+    },
+    {
+      "unit": "Priest-E1-Earth-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "edbb4a1c946363509dc11f14e9fb9d8858864e3304be919f06b827557a21922b"
+    },
+    {
+      "unit": "Priest-E1-Earth-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "07587ff9b6b6ccceb0d1e35e100534de76683febb3e44eb668a1814879ff7a58"
+    },
+    {
+      "unit": "Priest-E1-Earth-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "7877ab2f2c041e96454d2ff4daabc0be79fac088a0f873aac719f3d6833a31fd"
+    },
+    {
+      "unit": "Priest-E1-Metal-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "71ef3cf85ae4b07f3f9017482168caeaaa8d3eb3f36401da2452dd1bbc4bcb61"
+    },
+    {
+      "unit": "Priest-E1-Metal-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "675c73bc17d078cf30fbd066e5c968c2a11c966b0d6985f81bc6f4de4e01aade"
+    },
+    {
+      "unit": "Priest-E1-Metal-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "67d2ab8e2f48549e89e2daa25100cae52d95df89412afbec5cf0463b31e490c4"
+    },
+    {
+      "unit": "Priest-E1-Metal-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "906290f4e130a5fe5393d77866886199a2775b974b7efc11110e0dbdda518d90"
+    },
+    {
+      "unit": "Priest-E1-Metal-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "0bf32802b3ed45902299a5922bbf3458ef781a318d15094724d069462606726c"
+    },
+    {
+      "unit": "Priest-E1-Metal-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "e954598708b1041a933423b525e28b03ee849b180ac07d3b7d5583200a17914e"
+    },
+    {
+      "unit": "Priest-E1-Water-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "960d8a74dee638e607bab53426633fc7a184c9236ebe26dbc3d6c6599d700d17"
+    },
+    {
+      "unit": "Priest-E1-Water-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "4af5a2e043ed5aadc7ce6e26f811ec6d600aef3dee78dd29c5269c814e9630a0"
+    },
+    {
+      "unit": "Priest-E1-Water-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "00d99f4362211263b429fe2eb3012f3fd7e3ab94f89c59ee8d0956e210b5b1a7"
+    },
+    {
+      "unit": "Priest-E1-Water-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "fb752b84012a66e167828d76b31a12482029f575036d25901a184de3b52b89b3"
+    },
+    {
+      "unit": "Priest-E1-Water-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "37f114f0393c84ce2d5697b4cee84e2051314333b154bf6e09e8633d4811ab56"
+    },
+    {
+      "unit": "Priest-E1-Water-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "91c9443cc5e93a4d2a817489b690a2f015740734aa1011173cade66d96dc689e"
+    },
+    {
+      "unit": "Priest-BOSS-Fire-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "4c7946bde7773be9bd5cae1fb69bf40ee0a87e8e61feb6365749786339cbb69b"
+    },
+    {
+      "unit": "Priest-BOSS-Fire-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "829b9394e1e7fe47bbde4d29cfa23c9a0d4f06567d0fbe79b061610273651b78"
+    },
+    {
+      "unit": "Priest-BOSS-Fire-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "a08b664be3f0b93b22b9a17068a9c3070be36921a672baef299db3ecc6f1ffa8"
+    },
+    {
+      "unit": "Priest-BOSS-Fire-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "b5f73087c62d47f24e6ba4dd7e00e656315507d76443523f99c6e35ab91aed4b"
+    },
+    {
+      "unit": "Priest-BOSS-Fire-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "5479b230d41b48357d18f4098d7cd5eb76422a3e6c12ef886de2677c6e600187"
+    },
+    {
+      "unit": "Priest-BOSS-Fire-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "18a972b9f10b9b4e90f63e96052fea108bda43e0932e5977b3615953a71d6047"
+    },
+    {
+      "unit": "Priest-BOSS-Wood-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "16fe02a1ea5dcc92a1774cfa584d687c95ed957a5f286639b8d78b7ad21f940e"
+    },
+    {
+      "unit": "Priest-BOSS-Wood-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "6291e6949988d6b431c94262477deb185b4e746e7fc8b0da212ab508f3ac7932"
+    },
+    {
+      "unit": "Priest-BOSS-Wood-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "a9160bc814f9349d697d57e47dd7b17b65b5f001447a0dd496ee1c14036cd9c5"
+    },
+    {
+      "unit": "Priest-BOSS-Wood-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "609d09cebbb2f22be203c6d3756e26cf1186c7e1467730252816c7a056e5439c"
+    },
+    {
+      "unit": "Priest-BOSS-Wood-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "f92d9c878562de026ffd076ed2b77249441ed789a27b548b93ee860c4c9ce017"
+    },
+    {
+      "unit": "Priest-BOSS-Wood-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "d1b7d9447dd70decee4895fdfbe32369e84f2691f746e09b932be6ab249a8b2f"
+    },
+    {
+      "unit": "Priest-BOSS-Earth-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "a94534da03357785052d3687288d30ae7c2c5472d4cf873808e7504563871a96"
+    },
+    {
+      "unit": "Priest-BOSS-Earth-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "805b892bb7d00174f5791959196372e6eed58eef419e9dc9592d5eca6bbe9e67"
+    },
+    {
+      "unit": "Priest-BOSS-Earth-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "3e878f530beaa8a1b482437b806822499839864cab96fd2ac1abeda7775452d7"
+    },
+    {
+      "unit": "Priest-BOSS-Earth-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "f4cc061f705abbf8f0ed2fbf19f8f4ed984c2e32d2ae2e3269a78a39400ab352"
+    },
+    {
+      "unit": "Priest-BOSS-Earth-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "d9af96b73b72a0b867aa8e20d20cbc6e978773e085e016a1869fe913cc7768e8"
+    },
+    {
+      "unit": "Priest-BOSS-Earth-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "463a012b28ce777c6db39204b6ba7798ca45cb9ca179a2e85cdaf75d25137568"
+    },
+    {
+      "unit": "Priest-BOSS-Metal-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "f378f9b175a61fd1158328a123fbd883824071db88218c4807d7fb4a0bfcd7ad"
+    },
+    {
+      "unit": "Priest-BOSS-Metal-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "7c80be602cbb309a39fbbb9de5c775eff1099050719e38f92dfb69c4cb960e71"
+    },
+    {
+      "unit": "Priest-BOSS-Metal-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "2e10d05cd8e785e5126b729b9b31576e81c5c546b69ed8ecf1b02046e892558e"
+    },
+    {
+      "unit": "Priest-BOSS-Metal-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "389ab87230b573a36762d3403db2129461e58347cf3363eec80a0f013569b51b"
+    },
+    {
+      "unit": "Priest-BOSS-Metal-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "1af867ad3de37a60c1eb81c40573efb2fe76836b8936e840365b1a67da2c7a05"
+    },
+    {
+      "unit": "Priest-BOSS-Metal-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "8f1564c23610d5337ceba44a3fbd1957adc16a977ff7c19acb19d6ecd0e1cf81"
+    },
+    {
+      "unit": "Priest-BOSS-Water-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "686d85de65be2d7e8101febf253bdb611f2bb9ec2f2e4d082c1c168db680d7ce"
+    },
+    {
+      "unit": "Priest-BOSS-Water-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "8077990ddb95fb72033f2438dab504ef41baea019530f8f3b23c9287ef25b633"
+    },
+    {
+      "unit": "Priest-BOSS-Water-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "6ccb1cb08c094d039851a06f078c73dc3b8ff3f4efd36a4996d39de2b6221977"
+    },
+    {
+      "unit": "Priest-BOSS-Water-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "7db95f679334d0652821da4b8d1c407117eab5bdda326abb5d87062862faf915"
+    },
+    {
+      "unit": "Priest-BOSS-Water-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "940d7d9c22557343591d22eeacf49054ad8809a310ff6848593b532274e77e65"
+    },
+    {
+      "unit": "Priest-BOSS-Water-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "fa861fdd32e4406cab2c86c7579eee624075255910492ccab6522acfd56af16b"
+    },
+    {
+      "unit": "Guardian-O1-Fire-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "16bf719e44c7fe79496cf45be7bd37f40c93b9f0c2f16fd6cce14bb1098d36ad"
+    },
+    {
+      "unit": "Guardian-O1-Fire-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "8202eab6ce5574dede4c79f8b502a74b41bd7a455dc01b74f6c7d005168a4e6d"
+    },
+    {
+      "unit": "Guardian-O1-Fire-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "89820b7a7ce9cfe3252730fab98deff941e759f7c219f94a8d200b86756a2750"
+    },
+    {
+      "unit": "Guardian-O1-Fire-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "7ae4286c9197e9ff7b0ac22bcda54b73d547eb8347dff959f9222e8e050039e1"
+    },
+    {
+      "unit": "Guardian-O1-Fire-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "6e54a7e724d77234ad7b5d30743f0c8a169d6654a08bebb3f65f644514f35b11"
+    },
+    {
+      "unit": "Guardian-O1-Fire-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "33636d645434799823583ba47676a91956e0e48ee6ded44f3fcf79916efa4e50"
+    },
+    {
+      "unit": "Guardian-O1-Wood-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "887ea0005dc919f16324bb4879de3755df189fe754f379b3fc8ad802cee5cfc3"
+    },
+    {
+      "unit": "Guardian-O1-Wood-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "d5954f3610802cee0fdb2e25f192a3f7fc7bfb8f5614d81b170c078bb4bbec5d"
+    },
+    {
+      "unit": "Guardian-O1-Wood-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "f473548b5ab4c3d649c8ef36bf09b41d3bdd0dfacd0898d9090d5bdbd79331a6"
+    },
+    {
+      "unit": "Guardian-O1-Wood-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "f6dde2a12ae91146fef384493e8965c54057e59959e3c150c00940575770eca9"
+    },
+    {
+      "unit": "Guardian-O1-Wood-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "c235d7145e6cef9928d13dbdd6c1381fb42daa2b4ed2169855a042f987dbf81d"
+    },
+    {
+      "unit": "Guardian-O1-Wood-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "8d65b94cc6f4a756a7b4d3ac0d3f875b3e821b52118b3d9ef713b778a681e0bb"
+    },
+    {
+      "unit": "Guardian-O1-Earth-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "3898a281b7321982b1c81fa83fd6c3d348322de3663b12e4fd8a57d0ea6fb40b"
+    },
+    {
+      "unit": "Guardian-O1-Earth-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "7346e4f9723ad21d33fd67a3effbdfd1df3330bea8549b69c56205aa89994e74"
+    },
+    {
+      "unit": "Guardian-O1-Earth-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "b3b25fbd222f7c994e65f7a44e9b6df49b3f4d5bd6d587696bd4db56d3eb5eb1"
+    },
+    {
+      "unit": "Guardian-O1-Earth-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "db56b3fa2a23e1a8595909dbc6e9d5e15f4fd16f293f9e6f57fd79a37d89abcc"
+    },
+    {
+      "unit": "Guardian-O1-Earth-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "75a1206a2b5122c7783661b7a3e0c89ed15dbf6222b24a1d85bc66468d5d5868"
+    },
+    {
+      "unit": "Guardian-O1-Earth-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "12bceb382bef610c8736774051ab07de926d5093de8d540815442f11a2c9b7ff"
+    },
+    {
+      "unit": "Guardian-O1-Metal-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "57cf44846fd2afd203436aedd38b18d6ff0d012d3d31ac7c7f470828f8d060d3"
+    },
+    {
+      "unit": "Guardian-O1-Metal-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "f0315ee8975349985d11bafc1527a4000dde23811e5b8cb8b4e87e4f0339461c"
+    },
+    {
+      "unit": "Guardian-O1-Metal-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "237920647d306bd2750fbb70e9c0ab6b284af4e5245688e1e2802cb5d0188716"
+    },
+    {
+      "unit": "Guardian-O1-Metal-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "6db6b124c91be83b8baec927d0de4058cd0ce8ef484884a8a3bd6a604c1a50e9"
+    },
+    {
+      "unit": "Guardian-O1-Metal-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "9d72d3442a907e334ab406f3a34ebfe50e71f124523902cc0b513976fb42f400"
+    },
+    {
+      "unit": "Guardian-O1-Metal-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "b1a2e3eb6971313b6da3cb98de388818763f78578dd5deeaf295994ca37d7fe4"
+    },
+    {
+      "unit": "Guardian-O1-Water-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "83d789477b433313acbac8effc11ea2199b00dfb36d4e11c0cb52888518a059f"
+    },
+    {
+      "unit": "Guardian-O1-Water-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "68fecbb2c330d9232f3eb03bec3f327a9265c9acabde7b1840948e1d0ab5ea4e"
+    },
+    {
+      "unit": "Guardian-O1-Water-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "ca3cdd7fd6aef04015b689b25572b057f05d12a5712a247f40ed83c75cdd4b38"
+    },
+    {
+      "unit": "Guardian-O1-Water-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "8ca60e212326b1667c4999f5852add3d18753f906c1ec8169fb62c3caad53696"
+    },
+    {
+      "unit": "Guardian-O1-Water-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "0b057b8a6adebd2ff5630f2bc2d157bf94b25072f595dd6a399623af7d9239ca"
+    },
+    {
+      "unit": "Guardian-O1-Water-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "1355539876d4802f4829e9249f08dcab0ddaf86d11e7f65d666493eebdc3b907"
+    },
+    {
+      "unit": "Guardian-O6-Fire-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "c765a557e52c375d27c26de492864690ddf73e9f34c18400bd7a0311197cf1f7"
+    },
+    {
+      "unit": "Guardian-O6-Fire-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "31fd591df40d4e97f38be1eee0ac0994eee3b40171a679814b9c15923205df58"
+    },
+    {
+      "unit": "Guardian-O6-Fire-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "63b7f98e253e24b7dd36d2ba678a74118c8990936acd345fc4f5b95117b629dd"
+    },
+    {
+      "unit": "Guardian-O6-Fire-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "d544b0190b440289cb5fe0fe9a146b08c9843654396247c03e8e3fde3b797852"
+    },
+    {
+      "unit": "Guardian-O6-Fire-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "f0914da991a86a1c3f5fdd4934f159a37c23ab61d1a0451082f17351823eaccb"
+    },
+    {
+      "unit": "Guardian-O6-Fire-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "2e49291c5f1dac0664579b24fd4b37c62b960798920f4d45b78e262c65128959"
+    },
+    {
+      "unit": "Guardian-O6-Wood-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "90880888d01bf57d495915f98470bbf9395bca0b87f55053470be9fb186d7eef"
+    },
+    {
+      "unit": "Guardian-O6-Wood-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "9b6eee2cd11784690b5167813f5eadc06134f77c62922074a832920692c90e92"
+    },
+    {
+      "unit": "Guardian-O6-Wood-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "d6409c714e6827176d65ad3cd5ef4c3505c1182bd2c81892f6206c9b5215c28f"
+    },
+    {
+      "unit": "Guardian-O6-Wood-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "24c1a62cd6c773b031be87138f3ffd570afa40fdc5aff32f41d51c990f2b16a7"
+    },
+    {
+      "unit": "Guardian-O6-Wood-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "aeb296bf55b7eb908835dce167b2737f20135e69f7c1ea3cc3e36d3b9aae7ed3"
+    },
+    {
+      "unit": "Guardian-O6-Wood-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "e43f5deeafe4c6e3be2762d512dbb56f6732c3ca071c9be267a149974de2e0a1"
+    },
+    {
+      "unit": "Guardian-O6-Earth-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "88ebe4ac603fe79ccc48299ee33ccb06925a4e9c23890d4ff561f08e8399bdaf"
+    },
+    {
+      "unit": "Guardian-O6-Earth-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "432a8e132a6c2aff2c4ee3247ada6a2a1ef1d1ed3ede770b918f0b567454457e"
+    },
+    {
+      "unit": "Guardian-O6-Earth-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "b7948df2f26fd359c467d2d08ffffb23ee255303cf8789bdbb84bc4432a2b70f"
+    },
+    {
+      "unit": "Guardian-O6-Earth-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "b5372a9916ac9da24f4d3ec97895d83932cff88ee531d4b10a88439d09668555"
+    },
+    {
+      "unit": "Guardian-O6-Earth-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "1b0e4686fa95fb7518ea8169ad4018d8a76612d5b964899f0d63ae7f4886cc9f"
+    },
+    {
+      "unit": "Guardian-O6-Earth-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "bb32901c62e37c69adeb66188f1b516a71287906cdf19b00e271c7f817d2ac95"
+    },
+    {
+      "unit": "Guardian-O6-Metal-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "c1bd3cca00e3b5b46f789738a0acbb9210d187a2e581a75e496b8f06cf120e60"
+    },
+    {
+      "unit": "Guardian-O6-Metal-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "77b3dd7babaef61a976355fc0d082dffa59e317ff6a9d648251dfc5e86547fa3"
+    },
+    {
+      "unit": "Guardian-O6-Metal-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "a28bfdcf970efc3ebdf0751e2df55e355f33f0526828a1475041e331eda53934"
+    },
+    {
+      "unit": "Guardian-O6-Metal-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "3031645cd89026a81546008bc1bb39e22c1ca2420541ab2e40e7193dcce52d05"
+    },
+    {
+      "unit": "Guardian-O6-Metal-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "4b7df937141abc9c9d2abaf80220a2c26074063134fbb7bd0d40a7146b89bd30"
+    },
+    {
+      "unit": "Guardian-O6-Metal-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "cd79d885c4b1fd65373ffc74f7da26f6d39b8d9fae109f55d4c70e43af801cc4"
+    },
+    {
+      "unit": "Guardian-O6-Water-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "e84f8a965a3947e69e604900c08a457bff55565b32785f84099c5f1ffb7baad7"
+    },
+    {
+      "unit": "Guardian-O6-Water-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "541468c2f3e940988abb9488b7316fee655b7a18eaf059a81f016ea81a87355b"
+    },
+    {
+      "unit": "Guardian-O6-Water-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "ef83ffdbd84bd726c9e2e958775a8fda2d1d2c703110fe9bc8d1ee431c1dad5b"
+    },
+    {
+      "unit": "Guardian-O6-Water-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "fffa2f13ef48d0057e86ea77847c47e2a26de32f7e40d23344c7980748dd0512"
+    },
+    {
+      "unit": "Guardian-O6-Water-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "74d3335c4de642574f8162829b7ff9afff6a434a502484ebf60815d5fd46cd48"
+    },
+    {
+      "unit": "Guardian-O6-Water-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "3c5b589964a9f54a10a6feb3269fe7345d611df1c962f259d5390f82f3b4e2c3"
+    },
+    {
+      "unit": "Guardian-E1-Fire-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "5e894ebe7866bea4c45630b57c444b2bfc1ea5af1435231032554fd282ef6712"
+    },
+    {
+      "unit": "Guardian-E1-Fire-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "db1ce2a50b45e5ebc4632a7d06c37f1b5bc637ba81af3788c7eff7025dc3973c"
+    },
+    {
+      "unit": "Guardian-E1-Fire-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "6f79a3d370f6500b9825c063df369785df7974d09afeb04f918c5f4ece4cafe2"
+    },
+    {
+      "unit": "Guardian-E1-Fire-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "cbf2f59ea733a4a7789653ce256aa9a1d6f593a2a878f8726e62c4d34acd737c"
+    },
+    {
+      "unit": "Guardian-E1-Fire-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "3a85a8dc639071b65712c2c857cfac9a2999e4d69ac1137635a0f91f95020946"
+    },
+    {
+      "unit": "Guardian-E1-Fire-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "560bebcb984d0fd6a465a932c5e80126439edadf6baf550a2e6f6e04dc71521f"
+    },
+    {
+      "unit": "Guardian-E1-Wood-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "3f45f390311147668f93d3e47ab42ac85c4fa286a6bcb83d7c5bf5b49d9fe288"
+    },
+    {
+      "unit": "Guardian-E1-Wood-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "e1dd6eccdabcfc1575eaf079293d288ccb2ef5d458f1d5e499219750d264789a"
+    },
+    {
+      "unit": "Guardian-E1-Wood-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "4e6045baaef338699e2b127c4699de27a5e90c94aa2a9d561dac5799a98a8e38"
+    },
+    {
+      "unit": "Guardian-E1-Wood-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "26d84d137e3d248b77da7f27fd0c6aee9e8b70c11efa7ef364d071fb72474203"
+    },
+    {
+      "unit": "Guardian-E1-Wood-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "b2c2fe87afc371230c8f35aaecadbdfc3a5d5b1e639edd8e610dbf146830f451"
+    },
+    {
+      "unit": "Guardian-E1-Wood-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "eb884e6def36f6cab881ecaebfc53154b830b78409a8736d4625537d18dd5a1c"
+    },
+    {
+      "unit": "Guardian-E1-Earth-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "e3dbe8d78acb249f8c3bd1dfe1e09c95f1e01dbb8904081072041ec0fd92956f"
+    },
+    {
+      "unit": "Guardian-E1-Earth-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "f062feb39090765db7c7168e92ab8406592083e12609d6af838e907596724c1a"
+    },
+    {
+      "unit": "Guardian-E1-Earth-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "014cc243b37c699cc741d494d37b2e855295835451f71bc669982a7ff31a431b"
+    },
+    {
+      "unit": "Guardian-E1-Earth-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "63262d72f2445834df7b8aecb2ed51ef341dd77fbf0f29753803dea58d0bd14d"
+    },
+    {
+      "unit": "Guardian-E1-Earth-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "1cffbd57449e63085a8a8c47e62d70feaa58ba76b3e7408c4945037b527ba12e"
+    },
+    {
+      "unit": "Guardian-E1-Earth-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "325fc97cef2949ff4399b2c9ce712a25041176b8dd26f20afadfefe5430a752f"
+    },
+    {
+      "unit": "Guardian-E1-Metal-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "349c1563da57841a48c2b7eeba75131fa65a804e05c35ba17304277f6e2de823"
+    },
+    {
+      "unit": "Guardian-E1-Metal-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "9e83d003aec580ae0ca66cd99128f6e93167667e304c0fc6267fd42e1462195a"
+    },
+    {
+      "unit": "Guardian-E1-Metal-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "a64c917823367db1fba771cce37fc0afcb8c077e9d6444920793c795d5a7163d"
+    },
+    {
+      "unit": "Guardian-E1-Metal-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "978bb03aa6e229036ee54c6d67ef42da878c7ea98e55ef12d3b32bc9f2d72893"
+    },
+    {
+      "unit": "Guardian-E1-Metal-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "7ac7d82833739f06abe1e732d1e045bdb32504208ca0b4265b17e7f7e270496e"
+    },
+    {
+      "unit": "Guardian-E1-Metal-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "79b81d126a146d7208d909c9d858ad38fbbf8163031900a6796d8ebee4bb5e3b"
+    },
+    {
+      "unit": "Guardian-E1-Water-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "6d5882341a53c8a0312195b51fa5e62272d6f99958d0234e3bd99ab0db97bc0c"
+    },
+    {
+      "unit": "Guardian-E1-Water-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "25db563116a1714f83af777136b3f8a26a5cbf05b142c8876b9de764cf52bd74"
+    },
+    {
+      "unit": "Guardian-E1-Water-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "fab22ba1e27a7fdf6645650105956721937b9ed56f56d9c9f7e7e94b227a05d0"
+    },
+    {
+      "unit": "Guardian-E1-Water-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "73044f96d849682571f26687214682f5ec0ba815485f690b0480b8b1ccadfc67"
+    },
+    {
+      "unit": "Guardian-E1-Water-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "6d44a94d21ec4168a37ece00800c61f53d2f7c423ab4bcd3375c3678ef0da320"
+    },
+    {
+      "unit": "Guardian-E1-Water-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "11d4945811a4f9904fa3fdafdd3cc8d64daf4706ff81869a5c40bc45b54db798"
+    },
+    {
+      "unit": "Guardian-BOSS-Fire-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "62c213dbb87b42e094d3434a879266c245602144cb89ebd232c96e3a9621ed0a"
+    },
+    {
+      "unit": "Guardian-BOSS-Fire-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "e853985e2b3a55ad28e1c2ccbe35d0b42a8af0841d59dba51661077b26a683ce"
+    },
+    {
+      "unit": "Guardian-BOSS-Fire-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "6e58b71c40b133dd5154e59df8b25bb1339fa62f7325c256ec4728a16fe7e5cb"
+    },
+    {
+      "unit": "Guardian-BOSS-Fire-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "2590aecb5f10e9626371b16b7e43a86ce4ee8d156b2a6e3bcffbec146efdd328"
+    },
+    {
+      "unit": "Guardian-BOSS-Fire-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "9136114b5e8a3fbcef1e623ae29cbe91a32df0f0fc1bf79c14a28e2c68d5100b"
+    },
+    {
+      "unit": "Guardian-BOSS-Fire-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "438e87473f8dbfc5b94c619480af2fce7de5929bfe7e338c77e15186274d36e4"
+    },
+    {
+      "unit": "Guardian-BOSS-Wood-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "d584ff2b6b2b168dbdac88ee67e0cb4d0c7fc0fbb1a66ccfea4db9f2eb7ea35a"
+    },
+    {
+      "unit": "Guardian-BOSS-Wood-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "48f3cf1dfb0205477b5c58e4048ed3b0a9cc9eeec2502770044855913d6a0e97"
+    },
+    {
+      "unit": "Guardian-BOSS-Wood-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "59968d8673cabfca7cc3e5d3392d8bd1492f1d4f7454064ce546aedf4c5bbd72"
+    },
+    {
+      "unit": "Guardian-BOSS-Wood-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "73e9490a5e96320b366c4206333559f70dd5e814e7a0f14523895a4d70fdff0a"
+    },
+    {
+      "unit": "Guardian-BOSS-Wood-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "7899d750983e078fea597215b08df80b78c6bda4fc7badd0c4ef2aa4a103332a"
+    },
+    {
+      "unit": "Guardian-BOSS-Wood-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "e23b752e84f30b3839b10895da7d03a24120be26bfac5b5ca1fe8123cbdf7ffc"
+    },
+    {
+      "unit": "Guardian-BOSS-Earth-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "ad47384b1a5f360eb60633d5bc18ba874c6cf819fbd76b1bcd08e6b8bfab7af2"
+    },
+    {
+      "unit": "Guardian-BOSS-Earth-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "bd9e18df812af9f8d6e334a8f324f8c1c4e2e9c7700ce40c183aab9b7ac33a57"
+    },
+    {
+      "unit": "Guardian-BOSS-Earth-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "2f3f6528dc0cc11d55ee82f87fc57ee874c8253d0f3e4a385f638573414297df"
+    },
+    {
+      "unit": "Guardian-BOSS-Earth-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "5762172591b7aad74f42cb980280a0dd8228325f1a6e27094725be51de2541ab"
+    },
+    {
+      "unit": "Guardian-BOSS-Earth-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "463a71ef662ac83bd90c5035fb3cc56930f2a79713b1544e1eb9ff315355ed25"
+    },
+    {
+      "unit": "Guardian-BOSS-Earth-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "bad988e79bdb4b3e738c9adc51107900f8995fbb9ec33284f50cc272900c791b"
+    },
+    {
+      "unit": "Guardian-BOSS-Metal-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "f766227aa83598f76bbb1eefe5c49262609721266b14f07193f79669079589e6"
+    },
+    {
+      "unit": "Guardian-BOSS-Metal-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "7eb26151cb150c1d09615975f2c8972efb7257b54f97fc6933e18a3a2b5dcda6"
+    },
+    {
+      "unit": "Guardian-BOSS-Metal-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "f220b14d44234247eb589e634e520e7cdafbabf86185488d1f13e91d4cd06fa6"
+    },
+    {
+      "unit": "Guardian-BOSS-Metal-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "64f50333a73d5f9a0726438ea3d95f82023e1ff2c54ff8a4b8835566ae6a02dd"
+    },
+    {
+      "unit": "Guardian-BOSS-Metal-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "a93782f35ec016d51728f5bad607b52b3f01f36f4054f88e4ca7827e726f014e"
+    },
+    {
+      "unit": "Guardian-BOSS-Metal-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "1de98ec46b52577a3b6358edaf96dbf6b8ac0c4f24c5282c88ee7418bb97b6e7"
+    },
+    {
+      "unit": "Guardian-BOSS-Water-L0-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "4f0e8208661f86c589aa1189f37b28c4803b160fe70ed8d3c396c51acff0bf9a"
+    },
+    {
+      "unit": "Guardian-BOSS-Water-L0-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "4f895dd11aeeab44636faf860d0d00a3be387af48564735971e834f360ad25d4"
+    },
+    {
+      "unit": "Guardian-BOSS-Water-L0-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "c567bb62967c405d03a16ec79e1e05c1a5e44976ffcc6ab9e2ff31d918caa955"
+    },
+    {
+      "unit": "Guardian-BOSS-Water-L5-B0",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "123d59696637dbc1ff8574733e54d3d5025a6097f12d55f08949c158ce506652"
+    },
+    {
+      "unit": "Guardian-BOSS-Water-L5-B1",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "c3536324bbeab48a7624effb98b16265a954e9256468661bb7387abeb64e1755"
+    },
+    {
+      "unit": "Guardian-BOSS-Water-L5-B2",
+      "original_encounters": 2000,
+      "original_encounter_gzip_sha256": "613ac39799e51e14687404740f243b38490a06dad8bc888c70914573a2955e30"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+[Unit]
+Description=Owned full720000 original seed-cluster method replay
+[Service]
+Type=exec
+User=root
+ExecStart=/usr/bin/python3 /home/ubuntu/pr13-acceptance-20261009/evidence/B03-full-original-seed-cluster-r1-20261013/controller.original.py run
+RuntimeMaxSec=1900
+Restart=no
