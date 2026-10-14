@@ -1,0 +1,15 @@
+Test run for /artifacts/numerical-failure/bin/FantasyCard.Server.Tests/release/FantasyCard.Server.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+  Failed FantasyCard.Server.Tests.Persistence.PostgresNumericalContractTests.Exact_GDD_fire_contexts_restore_from_database_to_46_72_113 [1 s]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: Tuple (47, 0, Fire, 3, 0)
+Actual:   Tuple (46, 0, Fire, 3, 0)
+  Stack Trace:
+     at FantasyCard.Server.Tests.Persistence.PostgresNumericalContractTests.Vector(PostgresTestSchema db, String name, CombatCardDefinition[] cards, Int32 damage, Int32 heal, Nullable`1 core, Int32 coreCount, Int32 pairs, Double cancellation, Double resonance, CombatEquipmentProfile equipment, Dictionary`2 resistance, HeroClass hero, Int32 damageTaken) in /control/numerical-failure-source/server/tests/FantasyCard.Server.Tests/Persistence/PostgresNumericalContractTests.cs:line 295
+   at FantasyCard.Server.Tests.Persistence.PostgresNumericalContractTests.Exact_GDD_fire_contexts_restore_from_database_to_46_72_113() in /control/numerical-failure-source/server/tests/FantasyCard.Server.Tests/Persistence/PostgresNumericalContractTests.cs:line 166
+   at FantasyCard.Server.Tests.Persistence.PostgresNumericalContractTests.Exact_GDD_fire_contexts_restore_from_database_to_46_72_113() in /control/numerical-failure-source/server/tests/FantasyCard.Server.Tests/Persistence/PostgresNumericalContractTests.cs:line 167
+--- End of stack trace from previous location ---
+Results File: /output/gate-controls/load-passed-numerical-failed/native/actual.original.trx
+
+Failed!  - Failed:     1, Passed:     0, Skipped:     0, Total:     1, Duration: 1 s - FantasyCard.Server.Tests.dll (net10.0)
