@@ -1,0 +1,21 @@
+{
+  "mode": "prepare-only",
+  "actual_child_exit_code": 0,
+  "actual_report": {
+    "prepared_only": true,
+    "actual_stdout": "Prepared: bounded local run; --smoke validates three cycles by default. --run requires monitoring.\n",
+    "load_run_started": false,
+    "acceptance_passed": false,
+    "actual_cli": [
+      "/opt/pr13-venv/bin/python3",
+      "/control/context/tools/gameplay_load_test.py",
+      "--godot",
+      "/opt/pr13-venv/bin/python3",
+      "--output",
+      "/output/coordinator-fixtures/prepare-only/actual-preparation-output"
+    ]
+  },
+  "return_code_source": "coordinator.main return propagated as child exit",
+  "injection_scope": "Current coordinator and existing frozen fake observation/clock/child fixtures, with real owned child cleanup for hang and real CLI preparation. Integrated while real PostgreSQL room is held; no live load or capacity claim",
+  "all_raw_fixture_files_preserved": true
+}
