@@ -1,0 +1,42 @@
+{
+  "ok": true,
+  "canonical_POSTGRES_profiles_closed": 4,
+  "exact_case_ids": [
+    "LOAD-04.2-T01",
+    "LOAD-04.2-T03",
+    "PR13-A04.1-T02",
+    "PR13-A04.1-T03"
+  ],
+  "missing_profiles_before": {
+    "LIVE": 106,
+    "POSTGRES": 83,
+    "EXPERIMENT": 117,
+    "CAPACITY": 36,
+    "AUDIT": 3,
+    "RENDER": 41
+  },
+  "missing_profiles_after": {
+    "LIVE": 106,
+    "POSTGRES": 79,
+    "EXPERIMENT": 117,
+    "CAPACITY": 36,
+    "AUDIT": 3,
+    "RENDER": 41
+  },
+  "missing_profile_cells_after": 382,
+  "task_states": {
+    "Accepted": 14,
+    "ReadyForAcceptance": 28,
+    "Partial": 88,
+    "Failed": 2
+  },
+  "A04_1_all_POSTGRES_complete_LIVE_retained": true,
+  "LOAD_04_2_T02_POSTGRES_retained": true,
+  "actual_native_case_count": 3,
+  "baseline_not_counted_as_new_canonical_case": true,
+  "expiry_one_actual_execution_aliases_three_cases": true,
+  "original_negative_business_outcomes_not_gameplay_success": true,
+  "acceptance_granted": false,
+  "all_other_layers_failed_tasks_gates_and_human_sample_decisions_retained": true,
+  "MAIN_accepted": false
+}
