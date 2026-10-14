@@ -1,0 +1,17 @@
+sh: locale: not found
+2026-10-14 08:02:52.439 UTC [45] WARNING:  no usable system locales were found
+initdb: warning: enabling "trust" authentication for local connections
+initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or --auth-local and --auth-host, the next time you run initdb.
+2026-10-14 08:02:54.022 UTC [1] LOG:  starting PostgreSQL 18.6 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+2026-10-14 08:02:54.023 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+2026-10-14 08:02:54.023 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+2026-10-14 08:02:54.025 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-10-14 08:02:54.028 UTC [85] LOG:  database system was shut down at 2026-10-14 08:02:53 UTC
+2026-10-14 08:02:54.031 UTC [1] LOG:  database system is ready to accept connections
+2026-10-14 08:04:32.768 UTC [1] LOG:  received fast shutdown request
+2026-10-14 08:04:32.768 UTC [1] LOG:  aborting any active transactions
+2026-10-14 08:04:32.772 UTC [1] LOG:  background worker "logical replication launcher" (PID 88) exited with exit code 1
+2026-10-14 08:04:32.775 UTC [83] LOG:  shutting down
+2026-10-14 08:04:32.775 UTC [83] LOG:  checkpoint starting: shutdown immediate
+2026-10-14 08:04:32.793 UTC [83] LOG:  checkpoint complete: wrote 779 buffers (38.0%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 1 recycled; write=0.005 s, sync=0.008 s, total=0.019 s; sync files=1609, longest=0.001 s, average=0.001 s; distance=16476 kB, estimate=16476 kB; lsn=0/2BBF938, redo lsn=0/2BBF938
+2026-10-14 08:04:32.802 UTC [1] LOG:  database system is shut down
