@@ -1,0 +1,8 @@
+{
+  "failed_checker": "verify_A042_ordered_required_PG_complete_G_R2.py",
+  "failed_checker_sha256": "9671a7f6cd851b5f454a13bfd27a70353ba0cf9daffdd0726287e046a0895a9e",
+  "actual_assertion_failure_line": 62,
+  "reason": "Observer executes on initial acceptance frame before original sequence-gap buffering drains; load flag is still false there, but true before actual delayed required delivery. Preserve original native logs and original strict before/immediate/stable predicates.",
+  "native_tests_rerun": false,
+  "case_pass_criteria_reduced": false
+}
