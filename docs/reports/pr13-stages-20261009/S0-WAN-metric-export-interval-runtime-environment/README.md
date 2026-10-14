@@ -1,0 +1,9 @@
+# 实际云服务指标导出间隔测试设置
+
+实际运行环境未设置OTEL_METRIC_EXPORT_INTERVAL；产品以AddOtlpExporter创建默认周期Reader。官方.NET OTLP文档说明默认每60秒导出，并支持该环境变量。Prometheus原采样15秒，10秒协调器的首三playing窗口可能早于新actor直方图具备rate样本。首次取消原件及第二次未启动玩家的就绪失败都保留。
+
+只临时将该环境变量设为1000ms，仍使用原当前保护镜像和全部其他环境／测试限额。真正客户端连接数、活跃成员与Pending持有必须均0。当前数据库已新备份并完整G盘SHA及EOF核验；私有原环境保存为root0600文件供恢复，所有秘密和数据库备份不上Git。
+
+仅重建server容器，PostgreSQL容器保持，健康和严格HTTPS检查通过且全资产计数前后一致才算应用成功；异常恢复原环境，同一未知切换不重发。测试后恢复该单个变量的原缺省状态。该变化让已存在的指标及时导出，10秒观测、三窗口CPU／磁盘／actor门、500MB底线和业务判据仍保持。未修改任何产品源代码、数字或场景合同。
+
+来源：https://github.com/open-telemetry/opentelemetry-dotnet/blob/main/src/OpenTelemetry.Exporter.OpenTelemetryProtocol/README.md
