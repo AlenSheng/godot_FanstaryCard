@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "G:\Program Files\GodotFiles\godot_FanstaryCard\outputs\pr13-tencent-20261009\B04_full_R1_G_resume_driver_R3.original.py", line 115, in <module>
+    main()
+  File "G:\Program Files\GodotFiles\godot_FanstaryCard\outputs\pr13-tencent-20261009\B04_full_R1_G_resume_driver_R3.original.py", line 100, in main
+    launched = d.remote('launch')
+  File "G:\Program Files\GodotFiles\godot_FanstaryCard\outputs\pr13-tencent-20261009\B04_full_R1_G_driver.original.py", line 18, in remote
+    c=transport.connect()
+  File "G:\Program Files\GodotFiles\godot_FanstaryCard\outputs\pr13-tencent-20261009\strict_compressed_TCP_NODELAY_cloud_transport.py", line 8, in connect
+    c=paramiko.SSHClient();c.load_system_host_keys(str(Path.home()/'.ssh/known_hosts'));c.set_missing_host_key_policy(paramiko.RejectPolicy());c.connect('43.172.70.182',username='ubuntu',key_filename=key,look_for_keys=False,allow_agent=False,timeout=10,banner_timeout=12,auth_timeout=12,transport_factory=factory,compress=True);assert c.get_transport().sock.getsockopt(socket.IPPROTO_TCP,socket.TCP_NODELAY)==1 and c.get_transport().local_compression=='zlib@openssh.com';return c
+  File "G:\Program Files\GodotFiles\godot_FanstaryCard\outputs\pr13-local-20261008\runtime\lib\site-packages\paramiko\client.py", line 455, in connect
+    server_key = t.get_remote_server_key()
+  File "G:\Program Files\GodotFiles\godot_FanstaryCard\outputs\pr13-local-20261008\runtime\lib\site-packages\paramiko\transport.py", line 947, in get_remote_server_key
+    raise SSHException("No existing session")
+paramiko.ssh_exception.SSHException: No existing session
