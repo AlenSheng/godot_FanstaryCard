@@ -1,0 +1,59 @@
+{
+  "kind": "HumanRevisedB04Complete540FinalStatisticsPreregistration",
+  "source_base_sha": "16040f9773a5cad010ce3c2b91d2d8e58e35110f",
+  "required_parts": 540,
+  "required_encounters": 21600,
+  "strata": 36,
+  "independent_seed_blocks": 3,
+  "paired_seeds_per_block_per_stratum": 100,
+  "paired_seeds_per_stratum": 300,
+  "original_seed_block_spacing": 1000,
+  "bootstrap_resamples": 1000,
+  "bootstrap_seed": 20260930,
+  "source_sha": "f9a8c643e3119f7b273aa23ea443e84e7e1bbab9",
+  "compiled_source_sha": "9555aa077708af4efa1ee518334306f228e12ef5",
+  "human_reduction_decision": "docs/plans/PR13_HUMAN_TENFOLD_SAMPLE_DECISION_20261014.json",
+  "SDK_image": "sha256:180f524270f6ac28d2fe0ff29707fb392387d7b766f731e41fda1e45e8230520",
+  "memory_floor_bytes": 500000000,
+  "SDK_memory_mib": 896,
+  "root_disk_floor_fraction": 0.15,
+  "statistics_wall_deadline_seconds": 3600,
+  "persistent_output_quota_bytes": 33554432,
+  "selected_original_restore_files": 2700,
+  "original_native_resimulation_allowed": false,
+  "partial_primary_denominator_allowed": false,
+  "death_censored_outcomes_may_be_dropped": false,
+  "default_candidate_runtime_flags_changed": false,
+  "local_numerical_or_statistical_execution_allowed": false,
+  "case_specific_review_after_statistics_required": true,
+  "MAIN_accepted": false,
+  "control_files": [
+    {
+      "path": "controller.original.py",
+      "bytes": 7974,
+      "sha256": "5cb322872e3285b9a3c2a565c9ff9aa2383cb5dd54d986222ff70c57cf7f1743"
+    },
+    {
+      "path": "statistics.original.py",
+      "bytes": 10029,
+      "sha256": "e91b864c32bc2a9f9e5dd447ae7b5aa5018c5bdf0c832f87b383a286da6496a0"
+    },
+    {
+      "path": "pr13_candidate_review.py",
+      "bytes": 8444,
+      "sha256": "24c60c5ea1bc041328bb2793fd57272a906a7d6526bcebf9745c23a67fac2866"
+    },
+    {
+      "path": "study-plan.original.json",
+      "bytes": 121263,
+      "sha256": "9c97bd5dfe19cf84a896429f9b927c3707e35a576aeb6dc453a4e2a257f66bfc"
+    },
+    {
+      "path": "config-reference.original.json",
+      "bytes": 222643,
+      "sha256": "7c2074f343435809291936a2f41c996c7d7fe383d3968ded9c7f21e87c648072"
+    }
+  ],
+  "current_study_attempt": "B04-single-factor-reduced-ram-r3-20261014",
+  "current_statistics_attempt": "B04-reduced-final-statistics-r2-20261014"
+}
