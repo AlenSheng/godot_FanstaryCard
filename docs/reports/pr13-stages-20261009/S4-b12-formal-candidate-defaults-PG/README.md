@@ -1,0 +1,7 @@
+# PR13 B12正式候选误开启真实PG矩阵通过
+
+腾讯云实际十项PG合同通过、零跳过、无OOM。新增方法在真实PG持有当前配置/默认20张守护者房间，正式默认守卫exit0；分别仅开启cards_spent_draw、fractional_guardian、optional_monster_pool、budgeted_bot_loot、mortal_bot_pve及把monster_capacity改6，六负例均以正式默认变化原因exit3阻止。
+
+七次从PG恢复的房间快照/持久字节hash前后相等，默认CurrentRhythm/CurrentSteps仍保持，matches和snapshot均1，未把任何候选写入房间或生产配置。隔离源码仅增加一个测试方法，生产Domain程序集仍844065af。
+
+671完整原件及归档SHA/CRC、328执行源和8当前配置文件独立复核；在真实终态、零schema、容器移除和无外部挂载后回收约51.3MB拥有副本。完整源/编译/副本和回执在G盘，元数据/共享/失败输入保留。S4只归档实际结果，不替代EXPERIMENT/RENDER、整体回归或MAIN。
