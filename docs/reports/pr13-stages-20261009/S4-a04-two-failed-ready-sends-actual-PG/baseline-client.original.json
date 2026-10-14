@@ -1,0 +1,274 @@
+{
+	"Accepted": false,
+	"active_match_id": "01a139df-f449-7cee-a28f-20907e1373fe",
+	"actual_load_ready_attempts": 1,
+	"actual_load_ready_successful_sends": 1,
+	"case": "normal_ready",
+	"checks": [
+		{
+			"at_unix_ms": 1791972309871,
+			"name": "realtime_connected",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1791972309954,
+			"name": "owned_equipment_fixture_seeded",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1791972310143,
+			"name": "login_and_bootstrap",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1791972310238,
+			"name": "hero_class_confirmed",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1791972310388,
+			"name": "create_free_preparation",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1791972310471,
+			"name": "enqueue_match",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1791972343536,
+			"name": "room_started",
+			"passed": true
+		}
+	],
+	"cleanup": {
+		"active_preparation": null,
+		"reason": "server_state_clear",
+		"state": "Passed",
+		"unfinished_match": null,
+		"unfinished_settlement": null
+	},
+	"client_preparation": {},
+	"client_ready_prompt": {},
+	"client_room": false,
+	"client_settlement": false,
+	"client_ticket": {},
+	"connected_count": 1,
+	"coverage": "OFFLINE_POSTGRES_FULL_PROGRAM",
+	"errors": [],
+	"expected_match_id": "01a139df-f449-7cee-a28f-20907e1373fe",
+	"expected_room_id": "01a139df-f449-7a24-8247-3ffa513f2f79",
+	"local_terminal": true,
+	"message": "Coordinator cancelled current cycle",
+	"observed_match_id": "01a139df-f449-7cee-a28f-20907e1373fe",
+	"observed_room_id": "01a139df-f449-7a24-8247-3ffa513f2f79",
+	"own_user_id": "01a139df-7871-7a4d-ae94-7522e130361b",
+	"passed": true,
+	"ready_send_after_stop": 0,
+	"ready_send_count": 1,
+	"required_delivered": 1,
+	"required_dropped": false,
+	"resume_send_count": 0,
+	"route_probe_clear": true,
+	"route_probe_events": [],
+	"stop_boundary": "room_started_then_stop",
+	"ticket_reads": 18,
+	"trace": [
+		{
+			"at_ms": 2111,
+			"event": "ticket_response",
+			"read_no": 1,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 4277,
+			"event": "ticket_response",
+			"read_no": 2,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 6443,
+			"event": "ticket_response",
+			"read_no": 3,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 8610,
+			"event": "ticket_response",
+			"read_no": 4,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 10776,
+			"event": "ticket_response",
+			"read_no": 5,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 12943,
+			"event": "ticket_response",
+			"read_no": 6,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 15109,
+			"event": "ticket_response",
+			"read_no": 7,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 17276,
+			"event": "ticket_response",
+			"read_no": 8,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 19443,
+			"event": "ticket_response",
+			"read_no": 9,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 21609,
+			"event": "ticket_response",
+			"read_no": 10,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 23776,
+			"event": "ticket_response",
+			"read_no": 11,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 25942,
+			"event": "ticket_response",
+			"read_no": 12,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 28109,
+			"event": "ticket_response",
+			"read_no": 13,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 30276,
+			"event": "ticket_response",
+			"read_no": 14,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 32425,
+			"event": "actual_server_envelope",
+			"kind": "match.found",
+			"match_id": "01a139df-f449-7cee-a28f-20907e1373fe",
+			"room_id": "01a139df-f449-7a24-8247-3ffa513f2f79",
+			"sequence": 5,
+			"sequence_before": 4
+		},
+		{
+			"at_ms": 32426,
+			"event": "actual_server_envelope",
+			"kind": "room.ready_required",
+			"match_id": "01a139df-f449-7cee-a28f-20907e1373fe",
+			"room_id": "01a139df-f449-7a24-8247-3ffa513f2f79",
+			"sequence": 6,
+			"sequence_before": 5
+		},
+		{
+			"at_ms": 32426,
+			"event": "required_transport_boundary",
+			"ticket_inflight": true
+		},
+		{
+			"at_ms": 32442,
+			"event": "ticket_response",
+			"read_no": 16,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 32442,
+			"event": "ticket_response",
+			"read_no": 16,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 34609,
+			"event": "ticket_response",
+			"read_no": 17,
+			"status": "Matched"
+		},
+		{
+			"after_stop": false,
+			"at_ms": 34609,
+			"event": "room.ready.attempt",
+			"online": true
+		},
+		{
+			"at_ms": 34625,
+			"event": "actual_server_envelope",
+			"kind": "room.ready_accepted",
+			"match_id": "01a139df-f449-7cee-a28f-20907e1373fe",
+			"room_id": "01a139df-f449-7a24-8247-3ffa513f2f79",
+			"sequence": 7,
+			"sequence_before": 6
+		},
+		{
+			"at_ms": 34677,
+			"event": "ticket_response",
+			"read_no": 18,
+			"status": "Matched"
+		},
+		{
+			"at_ms": 35009,
+			"event": "actual_server_envelope",
+			"kind": "room.started",
+			"match_id": "01a139df-f449-7cee-a28f-20907e1373fe",
+			"room_id": "01a139df-f449-7a24-8247-3ffa513f2f79",
+			"sequence": 9,
+			"sequence_before": 8
+		},
+		{
+			"at_ms": 35143,
+			"boundary": "room_started_then_stop",
+			"event": "coordinator_stop"
+		},
+		{
+			"at_ms": 35176,
+			"event": "actual_server_envelope",
+			"kind": "room.snapshot",
+			"match_id": "01a139df-f449-7cee-a28f-20907e1373fe",
+			"room_id": "01a139df-f449-7a24-8247-3ffa513f2f79",
+			"sequence": 11,
+			"sequence_before": 10
+		},
+		{
+			"at_ms": 35192,
+			"event": "actual_server_envelope",
+			"kind": "room.snapshot",
+			"match_id": "01a139df-f449-7cee-a28f-20907e1373fe",
+			"room_id": "01a139df-f449-7a24-8247-3ffa513f2f79",
+			"sequence": 12,
+			"sequence_before": 11
+		},
+		{
+			"at_ms": 35559,
+			"event": "actual_server_envelope",
+			"kind": "room.snapshot",
+			"match_id": "01a139df-f449-7cee-a28f-20907e1373fe",
+			"room_id": "01a139df-f449-7a24-8247-3ffa513f2f79",
+			"sequence": 13,
+			"sequence_before": 12
+		},
+		{
+			"at_ms": 35577,
+			"event": "actual_server_envelope",
+			"kind": "room.snapshot",
+			"match_id": "01a139df-f449-7cee-a28f-20907e1373fe",
+			"room_id": "01a139df-f449-7a24-8247-3ffa513f2f79",
+			"sequence": 15,
+			"sequence_before": 14
+		}
+	]
+}
