@@ -1,0 +1,4 @@
+{
+  "exit_code": 1,
+  "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/pr13-runtime-activation-after-unexecuted-stdin-r2.original.py\", line 26, in <module>\n    lock=Path('/tmp/fantasycard-update.lock').open('a');fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/pathlib.py\", line 1015, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nPermissionError: [Errno 13] Permission denied: '/tmp/fantasycard-update.lock'\n"
+}
