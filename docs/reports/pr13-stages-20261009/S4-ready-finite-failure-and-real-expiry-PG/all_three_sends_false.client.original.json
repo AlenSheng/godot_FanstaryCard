@@ -1,0 +1,246 @@
+{
+	"Accepted": false,
+	"active_match_id": "01a13a46-53b9-7e94-af8a-d2a69a783c04",
+	"actual_load_ready_attempts": 3,
+	"actual_load_ready_successful_sends": 0,
+	"case": "all_three_sends_false",
+	"checks": [
+		{
+			"at_unix_ms": 1791979019205,
+			"name": "realtime_connected",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1791979019305,
+			"name": "owned_equipment_fixture_seeded",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1791979019444,
+			"name": "login_and_bootstrap",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1791979019539,
+			"name": "hero_class_confirmed",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1791979019689,
+			"name": "create_free_preparation",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1791979019772,
+			"name": "enqueue_match",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1791979052320,
+			"name": "ready_send_exhausted",
+			"passed": false
+		}
+	],
+	"cleanup": {
+		"active_preparation": null,
+		"reason": "server_state_clear",
+		"state": "Passed",
+		"unfinished_match": null,
+		"unfinished_settlement": null
+	},
+	"client_preparation": {},
+	"client_ready_prompt": {},
+	"client_room": false,
+	"client_settlement": false,
+	"client_ticket": {},
+	"connected_count": 1,
+	"coverage": "OFFLINE_POSTGRES_FULL_PROGRAM",
+	"errors": [],
+	"expected_match_id": "01a13a46-53b9-7e94-af8a-d2a69a783c04",
+	"expected_room_id": "01a13a46-53b9-729a-8659-232acb827d46",
+	"local_terminal": true,
+	"message": "Expedition did not reach acknowledged settlement",
+	"observed_match_id": "",
+	"observed_room_id": "",
+	"original_finish_ok": false,
+	"own_user_id": "01a13a45-d8cd-7cfe-82f8-efd721d449a1",
+	"passed": true,
+	"ready_send_after_stop": 0,
+	"ready_send_count": 3,
+	"required_delivered": 1,
+	"required_dropped": false,
+	"resume_send_count": 0,
+	"route_probe_clear": true,
+	"route_probe_events": [],
+	"stop_boundary": "expected_bounded_ready_send_exhausted_terminal",
+	"ticket_reads": 18,
+	"trace": [
+		{
+			"at_ms": 2143,
+			"event": "ticket_response",
+			"read_no": 1,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 4310,
+			"event": "ticket_response",
+			"read_no": 2,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 6477,
+			"event": "ticket_response",
+			"read_no": 3,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 8643,
+			"event": "ticket_response",
+			"read_no": 4,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 10810,
+			"event": "ticket_response",
+			"read_no": 5,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 12976,
+			"event": "ticket_response",
+			"read_no": 6,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 15143,
+			"event": "ticket_response",
+			"read_no": 7,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 17309,
+			"event": "ticket_response",
+			"read_no": 8,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 19476,
+			"event": "ticket_response",
+			"read_no": 9,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 21643,
+			"event": "ticket_response",
+			"read_no": 10,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 23809,
+			"event": "ticket_response",
+			"read_no": 11,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 25976,
+			"event": "ticket_response",
+			"read_no": 12,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 28142,
+			"event": "ticket_response",
+			"read_no": 13,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 30309,
+			"event": "ticket_response",
+			"read_no": 14,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 32259,
+			"event": "actual_server_envelope",
+			"kind": "match.found",
+			"match_id": "01a13a46-53b9-7e94-af8a-d2a69a783c04",
+			"room_id": "01a13a46-53b9-729a-8659-232acb827d46",
+			"sequence": 5,
+			"sequence_before": 4
+		},
+		{
+			"at_ms": 32259,
+			"event": "actual_server_envelope",
+			"kind": "room.ready_required",
+			"match_id": "01a13a46-53b9-7e94-af8a-d2a69a783c04",
+			"room_id": "01a13a46-53b9-729a-8659-232acb827d46",
+			"sequence": 6,
+			"sequence_before": 5
+		},
+		{
+			"at_ms": 32259,
+			"event": "required_transport_boundary",
+			"ticket_inflight": true
+		},
+		{
+			"at_ms": 32309,
+			"event": "ticket_response",
+			"read_no": 15,
+			"status": "Matched"
+		},
+		{
+			"at_ms": 32476,
+			"event": "ticket_response",
+			"read_no": 16,
+			"status": "Matched"
+		},
+		{
+			"after_stop": false,
+			"at_ms": 32476,
+			"event": "room.ready.attempt",
+			"online": true
+		},
+		{
+			"at_ms": 32476,
+			"attempt": 1,
+			"event": "controlled_all_send_false",
+			"socket_write_performed": false
+		},
+		{
+			"after_stop": false,
+			"at_ms": 33525,
+			"event": "room.ready.attempt",
+			"online": true
+		},
+		{
+			"at_ms": 33525,
+			"attempt": 2,
+			"event": "controlled_all_send_false",
+			"socket_write_performed": false
+		},
+		{
+			"at_ms": 34642,
+			"event": "ticket_response",
+			"read_no": 17,
+			"status": "Matched"
+		},
+		{
+			"after_stop": false,
+			"at_ms": 34642,
+			"event": "room.ready.attempt",
+			"online": true
+		},
+		{
+			"at_ms": 34642,
+			"attempt": 3,
+			"event": "controlled_all_send_false",
+			"socket_write_performed": false
+		},
+		{
+			"at_ms": 34692,
+			"event": "ticket_response",
+			"read_no": 18,
+			"status": "Matched"
+		}
+	]
+}
