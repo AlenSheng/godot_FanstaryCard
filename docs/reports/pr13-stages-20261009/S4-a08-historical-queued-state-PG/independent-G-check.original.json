@@ -1,0 +1,1298 @@
+{
+  "ok": true,
+  "case_ids": [
+    "PR13-A08.2-T01",
+    "PR13-A08.2-T02",
+    "PR13-A08.2-T03"
+  ],
+  "profile": "POSTGRES",
+  "actual_native_PG_rows": 10,
+  "native_clean": true,
+  "owned_container_removed": true,
+  "source_inputs_match_git": true,
+  "original_nine_regression_rows": 9,
+  "new_state_matrix_methods": 1,
+  "native_skipped": 0,
+  "all_original_G_members_rehashed": 673,
+  "archive_SHA_and_CRC_rechecked": true,
+  "current_source_members": 328,
+  "current_classification_input_files": 3,
+  "implementation_source_sha": "3402aea0eca46b83cc08ab3a9fbeec3889564528",
+  "actual_state_subprocess_modes": 3,
+  "controlled_legacy_queue_tasks": 48,
+  "controlled_absent_case_records": 144,
+  "historical_raw_reconciliation_performed": false,
+  "current_real_B48_register_reclassified": false,
+  "actual_load_or_capacity_samples": 0,
+  "production_domain_assembly_unchanged": true,
+  "actuals": {
+    "PR13-A08.2-T01": {
+      "roomId": "d216919c-e060-4d86-b775-385067191ab2",
+      "actualConfigVersion": "gdd-0.70-numerical-1",
+      "cards": [
+        "C01",
+        "C02",
+        "C03",
+        "C04",
+        "C05",
+        "C06",
+        "C07",
+        "C08",
+        "C09",
+        "C10",
+        "C11",
+        "C12",
+        "C13",
+        "GUA-01",
+        "GUA-02",
+        "GUA-03",
+        "GUA-04",
+        "GUA-05",
+        "GUA-06",
+        "GUA-07"
+      ],
+      "actualStateGuard": {
+        "ok": true,
+        "mode": "historical-counts",
+        "actual_policy_output": {
+          "historical_passed": 191,
+          "historical_skipped": 62,
+          "current_passed": 0,
+          "comparison_state": "Blocked",
+          "runtime_revalidated": false
+        },
+        "declared_inputs": {
+          "historical_passed": 191,
+          "historical_skipped": 62,
+          "raw_reconciled": false,
+          "input_authority": "Explicit controlled historical-count predicate from PR13-A08.2-T01"
+        },
+        "scope": "Exact current review policy with declared historical/absent metadata faults; no actual 191/62 historical raw validation, current B48 acceptance, or 130/139 raw reconciliation"
+      },
+      "actualExitCode": 0,
+      "snapshotBeforeHash": "ef1f9fc23e70373fe9b89425a239de37fbbab2f4c6b4ba90d4a280c24fb6fb43",
+      "snapshotAfterHash": "ef1f9fc23e70373fe9b89425a239de37fbbab2f4c6b4ba90d4a280c24fb6fb43",
+      "databaseBeforeHash": "bb9fd9315898f50bd4fb2cf8c48903566ece658696e5ab67b2a92be262b6a8c6",
+      "databaseAfterHash": "bb9fd9315898f50bd4fb2cf8c48903566ece658696e5ab67b2a92be262b6a8c6",
+      "actualMatches": 1,
+      "actualSnapshots": 1,
+      "productionSourceModified": false,
+      "actualHistoricalRawReconciliation": false,
+      "actualLoadOrCapacitySamples": 0
+    },
+    "PR13-A08.2-T02": {
+      "roomId": "d216919c-e060-4d86-b775-385067191ab2",
+      "actualConfigVersion": "gdd-0.70-numerical-1",
+      "cards": [
+        "C01",
+        "C02",
+        "C03",
+        "C04",
+        "C05",
+        "C06",
+        "C07",
+        "C08",
+        "C09",
+        "C10",
+        "C11",
+        "C12",
+        "C13",
+        "GUA-01",
+        "GUA-02",
+        "GUA-03",
+        "GUA-04",
+        "GUA-05",
+        "GUA-06",
+        "GUA-07"
+      ],
+      "actualStateGuard": {
+        "ok": true,
+        "mode": "queued-fortyeight",
+        "actual_policy_output": {
+          "historical_queue_tasks": 48,
+          "actual_classifier_observations": [
+            {
+              "task_id": "PR13-B01.1",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B01.1-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B01.1-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B01.1-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B01.2",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B01.2-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B01.2-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B01.2-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B01.3",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B01.3-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B01.3-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B01.3-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B01.4",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B01.4-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B01.4-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B01.4-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B02.1",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B02.1-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B02.1-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B02.1-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B02.2",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B02.2-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B02.2-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B02.2-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B02.3",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B02.3-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B02.3-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B02.3-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B02.4",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B02.4-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B02.4-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B02.4-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B03.1",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B03.1-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B03.1-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B03.1-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B03.2",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B03.2-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B03.2-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B03.2-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B03.3",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B03.3-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B03.3-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B03.3-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B03.4",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B03.4-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B03.4-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B03.4-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B04.1",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B04.1-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B04.1-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B04.1-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B04.2",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B04.2-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B04.2-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B04.2-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B04.3",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B04.3-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B04.3-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B04.3-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B04.4",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B04.4-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B04.4-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B04.4-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B05.1",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B05.1-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B05.1-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B05.1-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B05.2",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B05.2-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B05.2-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B05.2-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B05.3",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B05.3-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B05.3-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B05.3-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B05.4",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B05.4-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B05.4-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B05.4-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B06.1",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B06.1-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B06.1-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B06.1-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B06.2",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B06.2-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B06.2-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B06.2-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B06.3",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B06.3-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B06.3-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B06.3-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B06.4",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B06.4-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B06.4-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B06.4-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B07.1",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B07.1-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B07.1-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B07.1-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B07.2",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B07.2-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B07.2-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B07.2-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B07.3",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B07.3-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B07.3-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B07.3-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B07.4",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B07.4-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B07.4-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B07.4-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B08.1",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B08.1-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B08.1-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B08.1-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B08.2",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B08.2-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B08.2-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B08.2-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B08.3",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B08.3-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B08.3-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B08.3-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B08.4",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B08.4-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B08.4-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B08.4-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B09.1",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B09.1-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B09.1-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B09.1-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B09.2",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B09.2-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B09.2-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B09.2-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B09.3",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B09.3-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B09.3-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B09.3-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B09.4",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B09.4-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B09.4-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B09.4-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B10.1",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B10.1-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B10.1-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B10.1-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B10.2",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B10.2-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B10.2-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B10.2-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B10.3",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B10.3-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B10.3-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B10.3-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B10.4",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B10.4-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B10.4-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B10.4-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B11.1",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B11.1-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B11.1-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B11.1-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B11.2",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B11.2-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B11.2-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B11.2-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B11.3",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B11.3-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B11.3-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B11.3-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B11.4",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B11.4-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B11.4-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B11.4-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B12.1",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B12.1-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B12.1-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B12.1-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B12.2",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B12.2-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B12.2-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B12.2-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B12.3",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B12.3-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B12.3-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B12.3-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            },
+            {
+              "task_id": "PR13-B12.4",
+              "legacy_specification_state": "ReviewReady",
+              "legacy_queue_state": "Queued",
+              "controlled_execution_records": [
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B12.4-T01"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B12.4-T02"
+                },
+                {
+                  "executed": false,
+                  "status": "NotExecuted",
+                  "case_id": "PR13-B12.4-T03"
+                }
+              ],
+              "actual_classification": "Queued"
+            }
+          ],
+          "controlled_current_passed": 0,
+          "current_real_B_register_was_not_reclassified": true
+        },
+        "declared_inputs": {
+          "queue": "Exact current tracked legacy queue; not the current execution register",
+          "execution": "Three explicitly absent controlled case records for each of all 48 tasks"
+        },
+        "scope": "Exact current review policy with declared historical/absent metadata faults; no actual 191/62 historical raw validation, current B48 acceptance, or 130/139 raw reconciliation"
+      },
+      "actualExitCode": 0,
+      "snapshotBeforeHash": "ef1f9fc23e70373fe9b89425a239de37fbbab2f4c6b4ba90d4a280c24fb6fb43",
+      "snapshotAfterHash": "ef1f9fc23e70373fe9b89425a239de37fbbab2f4c6b4ba90d4a280c24fb6fb43",
+      "databaseBeforeHash": "bb9fd9315898f50bd4fb2cf8c48903566ece658696e5ab67b2a92be262b6a8c6",
+      "databaseAfterHash": "bb9fd9315898f50bd4fb2cf8c48903566ece658696e5ab67b2a92be262b6a8c6",
+      "actualMatches": 1,
+      "actualSnapshots": 1,
+      "productionSourceModified": false,
+      "actualHistoricalRawReconciliation": false,
+      "actualLoadOrCapacitySamples": 0
+    },
+    "PR13-A08.2-T03": {
+      "roomId": "d216919c-e060-4d86-b775-385067191ab2",
+      "actualConfigVersion": "gdd-0.70-numerical-1",
+      "cards": [
+        "C01",
+        "C02",
+        "C03",
+        "C04",
+        "C05",
+        "C06",
+        "C07",
+        "C08",
+        "C09",
+        "C10",
+        "C11",
+        "C12",
+        "C13",
+        "GUA-01",
+        "GUA-02",
+        "GUA-03",
+        "GUA-04",
+        "GUA-05",
+        "GUA-06",
+        "GUA-07"
+      ],
+      "actualStateGuard": {
+        "ok": true,
+        "mode": "unresolved-thirty",
+        "actual_policy_output": {
+          "historical_passed": 130,
+          "historical_skipped": 0,
+          "current_passed": 0,
+          "comparison_state": "Blocked",
+          "runtime_revalidated": false,
+          "reported_other_cutoff_count": 139,
+          "raw_reconciliation_performed": false
+        },
+        "declared_inputs": {
+          "reported_count": 130,
+          "reported_other_cutoff_count": 139,
+          "raw_reconciled": false,
+          "input_authority": "Explicit controlled unresolved-count predicate from PR13-A08.2-T03"
+        },
+        "scope": "Exact current review policy with declared historical/absent metadata faults; no actual 191/62 historical raw validation, current B48 acceptance, or 130/139 raw reconciliation"
+      },
+      "actualExitCode": 0,
+      "snapshotBeforeHash": "ef1f9fc23e70373fe9b89425a239de37fbbab2f4c6b4ba90d4a280c24fb6fb43",
+      "snapshotAfterHash": "ef1f9fc23e70373fe9b89425a239de37fbbab2f4c6b4ba90d4a280c24fb6fb43",
+      "databaseBeforeHash": "bb9fd9315898f50bd4fb2cf8c48903566ece658696e5ab67b2a92be262b6a8c6",
+      "databaseAfterHash": "bb9fd9315898f50bd4fb2cf8c48903566ece658696e5ab67b2a92be262b6a8c6",
+      "actualMatches": 1,
+      "actualSnapshots": 1,
+      "productionSourceModified": false,
+      "actualHistoricalRawReconciliation": false,
+      "actualLoadOrCapacitySamples": 0
+    }
+  },
+  "all_other_canonical_profiles_retained": true,
+  "MAIN_accepted": false
+}
