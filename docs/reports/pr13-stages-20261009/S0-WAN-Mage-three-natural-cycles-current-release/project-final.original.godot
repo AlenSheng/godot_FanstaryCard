@@ -1,0 +1,16 @@
+config_version=5
+[application]
+config/name="PR13 WAN Mage natural3 r1"
+config/use_custom_user_dir=true
+config/custom_user_dir_name="pr13-WAN-Mage-natural3-r1"
+run/main_scene="res://tests/gameplay_load_client.tscn"
+config/features=PackedStringArray("4.7")
+[autoload]
+Game="*res://state/game_store.gd"
+[platform]
+server_url="https://www.relicbound.cn"
+development/local_auth=true
+steam/app_id=0
+[rendering]
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
