@@ -1,0 +1,597 @@
+[
+  {
+    "case_id": "LOAD-04.1-T02",
+    "executed": true,
+    "status": "Passed",
+    "profiles_executed": [
+      "POSTGRES"
+    ],
+    "setup": "第二局旧started",
+    "expected": "不覆盖新match",
+    "source_sha": "2b5a1cf78f37e4acd44cac063d7961628821755f",
+    "actual": {
+      "actual_completed_cycles": 1,
+      "actual_load_ready_attempts": 1,
+      "actual_load_ready_successful_sends": 1,
+      "ready_send_count": 2,
+      "ready_send_after_stop": 0,
+      "observed_match_id": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+      "observed_room_id": "01a13a26-2ff4-7049-8115-157a2aede156",
+      "active_match_id": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+      "own_user_id": "01a13a25-2fce-71e2-bf46-22d2b0a8f466",
+      "cleanup": {
+        "active_preparation": null,
+        "reason": "server_state_clear",
+        "state": "Passed",
+        "unfinished_match": null,
+        "unfinished_settlement": null
+      },
+      "local_terminal": true,
+      "route_probe_clear": true,
+      "observations": [
+        {
+          "at_ms": 32916,
+          "bytes": 1222,
+          "event": "first_original_started_captured",
+          "match_id": "01a13a25-abf3-7dcb-8605-32a6a48232f3",
+          "sequence": 9
+        },
+        {
+          "action": "battle.abandon",
+          "at_ms": 32917,
+          "event": "first_cycle_legal_exit_sent",
+          "match_id": "01a13a25-abf3-7dcb-8605-32a6a48232f3"
+        },
+        {
+          "at_ms": 66664,
+          "event": "real_second_started_seen",
+          "match_id": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+          "sequence": 20
+        },
+        {
+          "at_ms": 67863,
+          "cycles_completed": 1,
+          "event": "old_started_before",
+          "gateway_last_sequence": 23,
+          "gateway_ready_sends": 2,
+          "load_active_match": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+          "load_ready_accepted": true,
+          "load_ready_attempts": 1,
+          "load_successful_sends": 1,
+          "match_id": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+          "ready_prompt": {},
+          "room_id": "01a13a26-2ff4-7049-8115-157a2aede156"
+        },
+        {
+          "at_ms": 67864,
+          "cycles_completed": 1,
+          "event": "old_started_immediate_after",
+          "gateway_last_sequence": 23,
+          "gateway_ready_sends": 2,
+          "load_active_match": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+          "load_ready_accepted": true,
+          "load_ready_attempts": 1,
+          "load_successful_sends": 1,
+          "match_id": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+          "ready_prompt": {},
+          "room_id": "01a13a26-2ff4-7049-8115-157a2aede156"
+        },
+        {
+          "at_ms": 69079,
+          "cycles_completed": 1,
+          "event": "old_started_stable_after",
+          "gateway_last_sequence": 23,
+          "gateway_ready_sends": 2,
+          "load_active_match": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+          "load_ready_accepted": true,
+          "load_ready_attempts": 1,
+          "load_successful_sends": 1,
+          "match_id": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+          "ready_prompt": {},
+          "room_id": "01a13a26-2ff4-7049-8115-157a2aede156"
+        }
+      ],
+      "original_captured_and_delivered_started_sha256": "a58989928a96f87752870a290cdac6424291eba0fa8321dd6014457f4d44fec9",
+      "postgres_postconditions": {
+        "equipment_states": [
+          {
+            "instance_id": "9df80dba-f7d2-4f8a-9fa7-42a04fe13b8e",
+            "owner_id": "01a13a25-2fce-71e2-bf46-22d2b0a8f466",
+            "location": "RelicPile"
+          }
+        ],
+        "non_bot_player_ids": [
+          "01a13a25-2fce-71e2-bf46-22d2b0a8f466",
+          "01a13a25-2fce-71e2-bf46-22d2b0a8f466"
+        ],
+        "death_equipment_movements": 1,
+        "preparations": [
+          {
+            "status": "Settled"
+          },
+          {
+            "status": "Settled"
+          }
+        ],
+        "tickets": [
+          {
+            "status": "Matched"
+          },
+          {
+            "status": "Matched"
+          }
+        ],
+        "human_match_states": [
+          {
+            "state": "Settled"
+          },
+          {
+            "state": "Settled"
+          }
+        ],
+        "locked_equipment": 0,
+        "preparation_asset_rows": 1,
+        "equipment_locks": 1,
+        "equipment_releases": 0,
+        "pending_settlement_holds": 0,
+        "settlements": 2,
+        "rooms": 2,
+        "matches": 2,
+        "match_rows": [
+          {
+            "match_id": "01a13a25-abf3-7dcb-8605-32a6a48232f3",
+            "room_id": "01a13a25-abf3-7db5-b902-2fc9f0a06823",
+            "status": "Completed",
+            "created_at_unix_ms": 1791976909805.996,
+            "ready_deadline_unix_ms": 1791976924805.996,
+            "observed_at_unix_ms": 1791976948266.226
+          },
+          {
+            "match_id": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+            "room_id": "01a13a26-2ff4-7049-8115-157a2aede156",
+            "status": "Completed",
+            "created_at_unix_ms": 1791976943601.934,
+            "ready_deadline_unix_ms": 1791976958601.934,
+            "observed_at_unix_ms": 1791976948266.226
+          }
+        ],
+        "ready_deadline_seconds": [
+          15.0,
+          15.0
+        ]
+      }
+    },
+    "evidence": [
+      {
+        "path": "docs/reports/pr13-stages-20261009/S4-a04-real-second-cycle-old-started-PG/independent-G-check.original.json",
+        "scope": "Original old packet identity, actual first ACK, real second room and stable second-cycle state/counters plus SQL"
+      },
+      {
+        "path": "docs/reports/pr13-stages-20261009/S4-a04-real-second-cycle-old-started-PG/target-client.original.json",
+        "scope": "Original decoder and production load observations"
+      },
+      {
+        "path": "docs/reports/pr13-stages-20261009/S4-empty-ready-wire-and-three-old-cycle-PG-aliases/old-cycle-current-independent-G-check.original.json",
+        "scope": "Rehashed full original G/native evidence and current source equality, real old M started in new N, current room/ready/counters stable"
+      }
+    ],
+    "scope": "Tencent actual Godot load/Gateway decoder/full Program/Postgres. First real cycle legally abandoned and ACKed, second same-player room receives original first started frame twice. No reencoding or business-state assignment; only first cycle counted complete, second drains after assertions. LIVE retained.",
+    "original_canonical_case": "PR13-A04.2-T03",
+    "native_reexecution_count": 0,
+    "same_actual_two_cycle_execution_alias": true
+  },
+  {
+    "case_id": "LOAD-05.2-T01",
+    "executed": true,
+    "status": "Passed",
+    "profiles_executed": [
+      "POSTGRES"
+    ],
+    "setup": "第一局回包在第二局到达",
+    "expected": "不恢复旧room",
+    "source_sha": "2b5a1cf78f37e4acd44cac063d7961628821755f",
+    "actual": {
+      "actual_completed_cycles": 1,
+      "actual_load_ready_attempts": 1,
+      "actual_load_ready_successful_sends": 1,
+      "ready_send_count": 2,
+      "ready_send_after_stop": 0,
+      "observed_match_id": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+      "observed_room_id": "01a13a26-2ff4-7049-8115-157a2aede156",
+      "active_match_id": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+      "own_user_id": "01a13a25-2fce-71e2-bf46-22d2b0a8f466",
+      "cleanup": {
+        "active_preparation": null,
+        "reason": "server_state_clear",
+        "state": "Passed",
+        "unfinished_match": null,
+        "unfinished_settlement": null
+      },
+      "local_terminal": true,
+      "route_probe_clear": true,
+      "observations": [
+        {
+          "at_ms": 32916,
+          "bytes": 1222,
+          "event": "first_original_started_captured",
+          "match_id": "01a13a25-abf3-7dcb-8605-32a6a48232f3",
+          "sequence": 9
+        },
+        {
+          "action": "battle.abandon",
+          "at_ms": 32917,
+          "event": "first_cycle_legal_exit_sent",
+          "match_id": "01a13a25-abf3-7dcb-8605-32a6a48232f3"
+        },
+        {
+          "at_ms": 66664,
+          "event": "real_second_started_seen",
+          "match_id": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+          "sequence": 20
+        },
+        {
+          "at_ms": 67863,
+          "cycles_completed": 1,
+          "event": "old_started_before",
+          "gateway_last_sequence": 23,
+          "gateway_ready_sends": 2,
+          "load_active_match": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+          "load_ready_accepted": true,
+          "load_ready_attempts": 1,
+          "load_successful_sends": 1,
+          "match_id": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+          "ready_prompt": {},
+          "room_id": "01a13a26-2ff4-7049-8115-157a2aede156"
+        },
+        {
+          "at_ms": 67864,
+          "cycles_completed": 1,
+          "event": "old_started_immediate_after",
+          "gateway_last_sequence": 23,
+          "gateway_ready_sends": 2,
+          "load_active_match": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+          "load_ready_accepted": true,
+          "load_ready_attempts": 1,
+          "load_successful_sends": 1,
+          "match_id": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+          "ready_prompt": {},
+          "room_id": "01a13a26-2ff4-7049-8115-157a2aede156"
+        },
+        {
+          "at_ms": 69079,
+          "cycles_completed": 1,
+          "event": "old_started_stable_after",
+          "gateway_last_sequence": 23,
+          "gateway_ready_sends": 2,
+          "load_active_match": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+          "load_ready_accepted": true,
+          "load_ready_attempts": 1,
+          "load_successful_sends": 1,
+          "match_id": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+          "ready_prompt": {},
+          "room_id": "01a13a26-2ff4-7049-8115-157a2aede156"
+        }
+      ],
+      "original_captured_and_delivered_started_sha256": "a58989928a96f87752870a290cdac6424291eba0fa8321dd6014457f4d44fec9",
+      "postgres_postconditions": {
+        "equipment_states": [
+          {
+            "instance_id": "9df80dba-f7d2-4f8a-9fa7-42a04fe13b8e",
+            "owner_id": "01a13a25-2fce-71e2-bf46-22d2b0a8f466",
+            "location": "RelicPile"
+          }
+        ],
+        "non_bot_player_ids": [
+          "01a13a25-2fce-71e2-bf46-22d2b0a8f466",
+          "01a13a25-2fce-71e2-bf46-22d2b0a8f466"
+        ],
+        "death_equipment_movements": 1,
+        "preparations": [
+          {
+            "status": "Settled"
+          },
+          {
+            "status": "Settled"
+          }
+        ],
+        "tickets": [
+          {
+            "status": "Matched"
+          },
+          {
+            "status": "Matched"
+          }
+        ],
+        "human_match_states": [
+          {
+            "state": "Settled"
+          },
+          {
+            "state": "Settled"
+          }
+        ],
+        "locked_equipment": 0,
+        "preparation_asset_rows": 1,
+        "equipment_locks": 1,
+        "equipment_releases": 0,
+        "pending_settlement_holds": 0,
+        "settlements": 2,
+        "rooms": 2,
+        "matches": 2,
+        "match_rows": [
+          {
+            "match_id": "01a13a25-abf3-7dcb-8605-32a6a48232f3",
+            "room_id": "01a13a25-abf3-7db5-b902-2fc9f0a06823",
+            "status": "Completed",
+            "created_at_unix_ms": 1791976909805.996,
+            "ready_deadline_unix_ms": 1791976924805.996,
+            "observed_at_unix_ms": 1791976948266.226
+          },
+          {
+            "match_id": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+            "room_id": "01a13a26-2ff4-7049-8115-157a2aede156",
+            "status": "Completed",
+            "created_at_unix_ms": 1791976943601.934,
+            "ready_deadline_unix_ms": 1791976958601.934,
+            "observed_at_unix_ms": 1791976948266.226
+          }
+        ],
+        "ready_deadline_seconds": [
+          15.0,
+          15.0
+        ]
+      }
+    },
+    "evidence": [
+      {
+        "path": "docs/reports/pr13-stages-20261009/S4-a04-real-second-cycle-old-started-PG/independent-G-check.original.json",
+        "scope": "Original old packet identity, actual first ACK, real second room and stable second-cycle state/counters plus SQL"
+      },
+      {
+        "path": "docs/reports/pr13-stages-20261009/S4-a04-real-second-cycle-old-started-PG/target-client.original.json",
+        "scope": "Original decoder and production load observations"
+      },
+      {
+        "path": "docs/reports/pr13-stages-20261009/S4-empty-ready-wire-and-three-old-cycle-PG-aliases/old-cycle-current-independent-G-check.original.json",
+        "scope": "Rehashed full original G/native evidence and current source equality, real old M started in new N, current room/ready/counters stable"
+      }
+    ],
+    "scope": "Tencent actual Godot load/Gateway decoder/full Program/Postgres. First real cycle legally abandoned and ACKed, second same-player room receives original first started frame twice. No reencoding or business-state assignment; only first cycle counted complete, second drains after assertions. LIVE retained.",
+    "original_canonical_case": "PR13-A04.2-T03",
+    "native_reexecution_count": 0,
+    "same_actual_two_cycle_execution_alias": true
+  },
+  {
+    "case_id": "PR13-A04.4-T03",
+    "executed": true,
+    "status": "Passed",
+    "profiles_executed": [
+      "POSTGRES"
+    ],
+    "setup": "多局迟到事件",
+    "expected": "只影响原cycle",
+    "source_sha": "2b5a1cf78f37e4acd44cac063d7961628821755f",
+    "actual": {
+      "actual_completed_cycles": 1,
+      "actual_load_ready_attempts": 1,
+      "actual_load_ready_successful_sends": 1,
+      "ready_send_count": 2,
+      "ready_send_after_stop": 0,
+      "observed_match_id": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+      "observed_room_id": "01a13a26-2ff4-7049-8115-157a2aede156",
+      "active_match_id": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+      "own_user_id": "01a13a25-2fce-71e2-bf46-22d2b0a8f466",
+      "cleanup": {
+        "active_preparation": null,
+        "reason": "server_state_clear",
+        "state": "Passed",
+        "unfinished_match": null,
+        "unfinished_settlement": null
+      },
+      "local_terminal": true,
+      "route_probe_clear": true,
+      "observations": [
+        {
+          "at_ms": 32916,
+          "bytes": 1222,
+          "event": "first_original_started_captured",
+          "match_id": "01a13a25-abf3-7dcb-8605-32a6a48232f3",
+          "sequence": 9
+        },
+        {
+          "action": "battle.abandon",
+          "at_ms": 32917,
+          "event": "first_cycle_legal_exit_sent",
+          "match_id": "01a13a25-abf3-7dcb-8605-32a6a48232f3"
+        },
+        {
+          "at_ms": 66664,
+          "event": "real_second_started_seen",
+          "match_id": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+          "sequence": 20
+        },
+        {
+          "at_ms": 67863,
+          "cycles_completed": 1,
+          "event": "old_started_before",
+          "gateway_last_sequence": 23,
+          "gateway_ready_sends": 2,
+          "load_active_match": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+          "load_ready_accepted": true,
+          "load_ready_attempts": 1,
+          "load_successful_sends": 1,
+          "match_id": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+          "ready_prompt": {},
+          "room_id": "01a13a26-2ff4-7049-8115-157a2aede156"
+        },
+        {
+          "at_ms": 67864,
+          "cycles_completed": 1,
+          "event": "old_started_immediate_after",
+          "gateway_last_sequence": 23,
+          "gateway_ready_sends": 2,
+          "load_active_match": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+          "load_ready_accepted": true,
+          "load_ready_attempts": 1,
+          "load_successful_sends": 1,
+          "match_id": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+          "ready_prompt": {},
+          "room_id": "01a13a26-2ff4-7049-8115-157a2aede156"
+        },
+        {
+          "at_ms": 69079,
+          "cycles_completed": 1,
+          "event": "old_started_stable_after",
+          "gateway_last_sequence": 23,
+          "gateway_ready_sends": 2,
+          "load_active_match": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+          "load_ready_accepted": true,
+          "load_ready_attempts": 1,
+          "load_successful_sends": 1,
+          "match_id": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+          "ready_prompt": {},
+          "room_id": "01a13a26-2ff4-7049-8115-157a2aede156"
+        }
+      ],
+      "original_captured_and_delivered_started_sha256": "a58989928a96f87752870a290cdac6424291eba0fa8321dd6014457f4d44fec9",
+      "postgres_postconditions": {
+        "equipment_states": [
+          {
+            "instance_id": "9df80dba-f7d2-4f8a-9fa7-42a04fe13b8e",
+            "owner_id": "01a13a25-2fce-71e2-bf46-22d2b0a8f466",
+            "location": "RelicPile"
+          }
+        ],
+        "non_bot_player_ids": [
+          "01a13a25-2fce-71e2-bf46-22d2b0a8f466",
+          "01a13a25-2fce-71e2-bf46-22d2b0a8f466"
+        ],
+        "death_equipment_movements": 1,
+        "preparations": [
+          {
+            "status": "Settled"
+          },
+          {
+            "status": "Settled"
+          }
+        ],
+        "tickets": [
+          {
+            "status": "Matched"
+          },
+          {
+            "status": "Matched"
+          }
+        ],
+        "human_match_states": [
+          {
+            "state": "Settled"
+          },
+          {
+            "state": "Settled"
+          }
+        ],
+        "locked_equipment": 0,
+        "preparation_asset_rows": 1,
+        "equipment_locks": 1,
+        "equipment_releases": 0,
+        "pending_settlement_holds": 0,
+        "settlements": 2,
+        "rooms": 2,
+        "matches": 2,
+        "match_rows": [
+          {
+            "match_id": "01a13a25-abf3-7dcb-8605-32a6a48232f3",
+            "room_id": "01a13a25-abf3-7db5-b902-2fc9f0a06823",
+            "status": "Completed",
+            "created_at_unix_ms": 1791976909805.996,
+            "ready_deadline_unix_ms": 1791976924805.996,
+            "observed_at_unix_ms": 1791976948266.226
+          },
+          {
+            "match_id": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+            "room_id": "01a13a26-2ff4-7049-8115-157a2aede156",
+            "status": "Completed",
+            "created_at_unix_ms": 1791976943601.934,
+            "ready_deadline_unix_ms": 1791976958601.934,
+            "observed_at_unix_ms": 1791976948266.226
+          }
+        ],
+        "ready_deadline_seconds": [
+          15.0,
+          15.0
+        ]
+      }
+    },
+    "evidence": [
+      {
+        "path": "docs/reports/pr13-stages-20261009/S4-a04-real-second-cycle-old-started-PG/independent-G-check.original.json",
+        "scope": "Original old packet identity, actual first ACK, real second room and stable second-cycle state/counters plus SQL"
+      },
+      {
+        "path": "docs/reports/pr13-stages-20261009/S4-a04-real-second-cycle-old-started-PG/target-client.original.json",
+        "scope": "Original decoder and production load observations"
+      },
+      {
+        "path": "docs/reports/pr13-stages-20261009/S4-empty-ready-wire-and-three-old-cycle-PG-aliases/old-cycle-current-independent-G-check.original.json",
+        "scope": "Rehashed full original G/native evidence and current source equality, real old M started in new N, current room/ready/counters stable"
+      }
+    ],
+    "scope": "Tencent actual Godot load/Gateway decoder/full Program/Postgres. First real cycle legally abandoned and ACKed, second same-player room receives original first started frame twice. No reencoding or business-state assignment; only first cycle counted complete, second drains after assertions. LIVE retained.",
+    "original_canonical_case": "PR13-A04.2-T03",
+    "native_reexecution_count": 0,
+    "same_actual_two_cycle_execution_alias": true
+  },
+  {
+    "case_id": "LOAD-04.1-T03",
+    "executed": true,
+    "status": "Passed",
+    "profiles_executed": [
+      "POSTGRES"
+    ],
+    "setup": "空RoomReadyCommand",
+    "expected": "不私塞未约定字段",
+    "source_sha": "a7e11c9605c4595f1985f9e0cc783312222c9d16",
+    "actual": {
+      "actual_socket_buffers": [
+        {
+          "metadata_file": "actual-ready-wire-59b009eac08786f551bf3590728e8934.original.json",
+          "actual_socket_binary_file": "actual-ready-wire-59b009eac08786f551bf3590728e8934.original.bin",
+          "actual_socket_binary_sha256": "24266c3e5a1688e4bf61f0cfb2915931b4f24e1481e5015ef8541dd5e387fa34",
+          "packet_bytes": 50,
+          "empty_command_payload_bytes": 0,
+          "actual_envelope_keys": [
+            "protocol_version",
+            "type",
+            "request_id",
+            "payload",
+            "room_id",
+            "match_id"
+          ],
+          "raw_wire_field_numbers": [
+            1,
+            2,
+            3,
+            5
+          ]
+        }
+      ],
+      "actual_empty_payload": true,
+      "raw_unknown_or_match_room_revision_wire_fields": false,
+      "real_server_room_and_Postgres_verified": true,
+      "real_route_asset_postconditions_clear": true,
+      "decoded_default_keys_not_wire_presence_evidence": true
+    },
+    "evidence": [
+      {
+        "path": "docs/reports/pr13-stages-20261009/S4-empty-ready-wire-and-three-old-cycle-PG-aliases/wire-independent-G-check.original.json",
+        "scope": "Actual raw field numbers and zero bytes payload, no unknown tags, server/SQL acceptance and cleanup"
+      },
+      {
+        "path": "docs/reports/pr13-stages-20261009/S4-empty-ready-wire-and-three-old-cycle-PG-aliases/observed-owned-gateway.original.gd",
+        "scope": "Observation-only copy around unchanged actual socket.put_packet, no serializer/field/send changes"
+      }
+    ],
+    "scope": "One actual Godot ready socket buffer capture and full Program/isolated PG. No synthetic encoding or private protocol additions; production source unchanged. LIVE retained."
+  }
+]
