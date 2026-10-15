@@ -111,7 +111,7 @@ static func _status(ui: Control, name: String, rect: Rect2) -> void:
 	label.name = name
 	label.visible = false
 
-static func _passive(ui: Control, hero_class: String, rect: Rect2) -> void:
+static func _passive(ui: Control, hero_class: String, rect: Rect2, above_preview: bool = false) -> void:
 	var names := {"Mage": P.localized("exploration_passive_mage_name"), "Priest": P.localized("exploration_passive_priest_name"), "Guardian": P.localized("exploration_passive_guardian_name")}
 	if not names.has(hero_class): return
 	var descriptions := {"Mage": "同核连放，加快抽牌", "Priest": "生命越低，治疗与控场越强", "Guardian": "生命越高，上盾越厚"}
@@ -123,8 +123,12 @@ static func _passive(ui: Control, hero_class: String, rect: Rect2) -> void:
 	frame.tooltip_text = P.localized("exploration_passive_tooltip") % [names[hero_class], BattleDetails.description(status) if not status.is_empty() else P.localized_text(descriptions[hero_class])]
 	var icon: TextureRect = _picture(ui, Art.passive(hero_class), Rect2(rect.position + Vector2(12, 9), Vector2(66, rect.size.y - 18)))
 	icon.name = "PlayerPassiveIcon_" + hero_class
-	ui.text(P.localized("signature_prefix") + names[hero_class], Rect2(rect.position + Vector2(89, 8), Vector2(rect.size.x - 100, 36)), 25, P.GOLD)
-	ui.text(descriptions[hero_class], Rect2(rect.position + Vector2(89, 44), Vector2(rect.size.x - 103, rect.size.y - 49)), 20, P.MUTED)
+	var title_inset := 18.0 if above_preview else 8.0
+	var description_inset := 53.0 if above_preview else 44.0
+	var title: Label = ui.text(P.localized("signature_prefix") + names[hero_class], Rect2(rect.position + Vector2(89, title_inset), Vector2(rect.size.x - (110 if above_preview else 100), 32 if above_preview else 36)), 25, P.GOLD)
+	title.name = "PlayerPassiveTitle_" + hero_class
+	var description: Label = ui.text(descriptions[hero_class], Rect2(rect.position + Vector2(89, description_inset), Vector2(rect.size.x - (113 if above_preview else 103), rect.size.y - description_inset - (18 if above_preview else 5))), 20, P.MUTED)
+	description.name = "PlayerPassiveDescription_" + hero_class
 
 static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 	var player: Dictionary = state.get("player", {})
@@ -139,7 +143,8 @@ static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 		ui.text(P.CLASSES.get(player.get("hero_class", Game.hero_class), P.CLASSES.Mage)[0], Rect2(80, 615, 350, 48), 34, P.GOLD)
 		_health(ui, player.get("combat", {}), Rect2(80, 670, 310, 115))
 		_status(ui, "PlayerStatus", Rect2(80, 785, 375, 32))
-		_passive(ui, player.get("hero_class", ""), Rect2(621, 443, 317, 122))
+		# Leave the entire signature frame above the preview, including its final text line.
+		_passive(ui, player.get("hero_class", ""), Rect2(621, 369, 350, 144), true)
 		var monsters: Array = state.get("pve", {}).get("monsters", [])
 		var can_select_target := BattleTargets.living(state.get("pve", {})).size() > 1
 		var target_id := str(BattleTargets.current(state.get("pve", {})).get("monster_id", ""))

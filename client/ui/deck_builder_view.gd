@@ -39,8 +39,19 @@ static func _search_and_filters(ui: Control, host: Control) -> LineEdit:
 		var quality: String = QUALITIES[i]
 		var selected: bool = host._quality == quality
 		var key := "filter_button_selected.png" if quality.is_empty() else "filter_button_%s%s.png" % [quality.to_lower(), "_selected" if selected else ""]
-		var filter: Button = ui.button("全部" if quality.is_empty() else P.word(quality), Rect2(676 + i * 94, 132, 86, 62), func(): host._quality = quality; host._deck_builder_scroll = 0; host._render(), false, PREFIX + key)
+		var filter: Button = ui.button("全部" if quality.is_empty() else P.word(quality), Rect2(676 + i * 94, 132, 92, 62), func(): host._quality = quality; host._deck_builder_scroll = 0; host._render(), false, PREFIX + key)
 		filter.name = "DeckFilter_" + ("All" if quality.is_empty() else quality)
+		# Narrow filters need their own padding and the font actually drawn by the button.
+		for state_name in ["normal", "hover", "pressed", "disabled"]:
+			var style: StyleBox = filter.get_theme_stylebox(state_name).duplicate()
+			style.set_content_margin(SIDE_LEFT, 8)
+			style.set_content_margin(SIDE_RIGHT, 8)
+			style.set_content_margin(SIDE_TOP, 6)
+			style.set_content_margin(SIDE_BOTTOM, 6)
+			filter.add_theme_stylebox_override(state_name, style)
+		filter.size = Vector2(92, 62)
+		filter.tooltip_text = filter.text
+		P.fit_control_font(filter, filter.get_theme_font("font"), 22, 28.0)
 	return search
 
 static func _owned_cards(ui: Control, host: Control) -> Dictionary:
@@ -132,6 +143,7 @@ static func _deck_row(ui: Control, host: Control, index: int, rect: Rect2) -> vo
 	if effect.is_empty():
 		var parts: PackedStringArray = host._card_text(id).split("\n\n", true, 1)
 		effect = parts[1] if parts.size() > 1 else host._card_text(id)
+	row.tooltip_text = "%s\n%s\n\n%s" % [name_label.text, effect, P.localized("remove_from_deck")]
 	var effect_label: Label = ui.text(effect.replace("\n", " "), Rect2(rect.position + Vector2(244, 1), Vector2(316, rect.size.y - 2)), 16, P.MUTED)
 	effect_label.name = "DeckCardEffect_%02d" % (index + 1)
 	effect_label.autowrap_mode = TextServer.AUTOWRAP_OFF
