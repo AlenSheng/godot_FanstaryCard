@@ -1,0 +1,377 @@
+{
+  "kind": "VerifiedFrozenPVEStatisticsWithEndpointInterpretationLimits",
+  "at_local": "2026-10-16T11:15:50.755345+08:00",
+  "scope": {
+    "hero": "Mage",
+    "deck": "legal default20",
+    "strata": 144,
+    "pairs_per_stratum": 300,
+    "seed_IDs_reused_across_strata": true,
+    "not43200independentclusters": true,
+    "started_encounters": 86400,
+    "outcomes": {
+      "Victory": 43924,
+      "Death": 42476
+    }
+  },
+  "numeric_verification": {
+    "primary_mean_CI_pairs": 1440,
+    "primary_exact_hypotheses": 288,
+    "postcast_mean_CI_pairs": 432,
+    "postcast_exact_joint_hypotheses": 432,
+    "both_independent_readers_ok": true,
+    "no_rerun": true
+  },
+  "preserved_primary_Holm288_rejections": {
+    "empty60_paired_median_zero_exact_sign": 84,
+    "death_marginal_equality_exact_McNemar": 7
+  },
+  "supplementary_Holm432_rejections_by_actual_computed_test": {
+    "empty60_paired_median_zero_exact_sign": 78,
+    "death_marginal_equality_exact_McNemar": 7,
+    "post_action_empty60_paired_median_zero_exact_sign": 78
+  },
+  "post_empty60_mean_delta_cells": {
+    "positive": 96,
+    "negative": 0,
+    "zero": 48
+  },
+  "strategy_ranges": [
+    {
+      "strategy": "baseline_all_hand",
+      "cells": 24,
+      "post_action_empty60_mean_delta_seconds_range": [
+        0.14933333333333332,
+        0.7846666666666667
+      ],
+      "damage30_mean_delta_range": [
+        -1.3666666666666667,
+        -0.6333333333333333
+      ],
+      "damage60_mean_delta_range": [
+        -3.433333333333333,
+        0.0
+      ],
+      "death_probability_mean_delta_range": [
+        0.0,
+        0.0033333333333333335
+      ],
+      "post_action_empty60_pointwise_CI_excludes_zero_positive": 24
+    },
+    {
+      "strategy": "basic",
+      "cells": 24,
+      "post_action_empty60_mean_delta_seconds_range": [
+        0.13566666666666669,
+        0.347
+      ],
+      "damage30_mean_delta_range": [
+        -1.47,
+        -0.42
+      ],
+      "damage60_mean_delta_range": [
+        -4.296666666666667,
+        0.0
+      ],
+      "death_probability_mean_delta_range": [
+        0.0,
+        0.04666666666666667
+      ],
+      "post_action_empty60_pointwise_CI_excludes_zero_positive": 24
+    },
+    {
+      "strategy": "build",
+      "cells": 24,
+      "post_action_empty60_mean_delta_seconds_range": [
+        0.03766666666666667,
+        1.1056666666666666
+      ],
+      "damage30_mean_delta_range": [
+        -5.57,
+        -0.03333333333333333
+      ],
+      "damage60_mean_delta_range": [
+        -13.993333333333334,
+        0.0
+      ],
+      "death_probability_mean_delta_range": [
+        0.0,
+        0.43666666666666665
+      ],
+      "post_action_empty60_pointwise_CI_excludes_zero_positive": 24
+    },
+    {
+      "strategy": "five_core_prefer",
+      "cells": 24,
+      "post_action_empty60_mean_delta_seconds_range": [
+        0.0,
+        0.0
+      ],
+      "damage30_mean_delta_range": [
+        -1.8733333333333333,
+        -1.29
+      ],
+      "damage60_mean_delta_range": [
+        -4.276666666666666,
+        0.0
+      ],
+      "death_probability_mean_delta_range": [
+        0.0,
+        0.02
+      ],
+      "post_action_empty60_pointwise_CI_excludes_zero_positive": 0
+    },
+    {
+      "strategy": "single_core",
+      "cells": 24,
+      "post_action_empty60_mean_delta_seconds_range": [
+        0.216,
+        1.0
+      ],
+      "damage30_mean_delta_range": [
+        -1.7266666666666666,
+        -0.5066666666666667
+      ],
+      "damage60_mean_delta_range": [
+        -4.283333333333333,
+        0.0
+      ],
+      "death_probability_mean_delta_range": [
+        0.0,
+        0.013333333333333334
+      ],
+      "post_action_empty60_pointwise_CI_excludes_zero_positive": 24
+    },
+    {
+      "strategy": "three_core_prefer",
+      "cells": 24,
+      "post_action_empty60_mean_delta_seconds_range": [
+        0.0,
+        0.0
+      ],
+      "damage30_mean_delta_range": [
+        -1.94,
+        -1.35
+      ],
+      "damage60_mean_delta_range": [
+        -4.346666666666667,
+        0.0
+      ],
+      "death_probability_mean_delta_range": [
+        0.0,
+        0.02
+      ],
+      "post_action_empty60_pointwise_CI_excludes_zero_positive": 0
+    }
+  ],
+  "death_cells_rejecting_in_frozen_Holm432": [
+    {
+      "stratum": {
+        "Index": 14,
+        "WeaponLevel": 0,
+        "Group": "E1",
+        "Strategy": "build",
+        "Deck": "default"
+      },
+      "discordant": {
+        "candidate_only_deaths": 77,
+        "baseline_only_deaths": 0,
+        "total_started_pairs": 300
+      },
+      "death_probability_mean_delta": 0.25666666666666665,
+      "pointwise_bootstrap95": [
+        0.20666666666666667,
+        0.30666666666666664
+      ],
+      "frozen_Holm432_p": 4.963083675318166e-21
+    },
+    {
+      "stratum": {
+        "Index": 38,
+        "WeaponLevel": 1,
+        "Group": "E1",
+        "Strategy": "build",
+        "Deck": "default"
+      },
+      "discordant": {
+        "candidate_only_deaths": 87,
+        "baseline_only_deaths": 0,
+        "total_started_pairs": 300
+      },
+      "death_probability_mean_delta": 0.29,
+      "pointwise_bootstrap95": [
+        0.24333333333333335,
+        0.3433333333333333
+      ],
+      "frozen_Holm432_p": 5.169878828456423e-24
+    },
+    {
+      "stratum": {
+        "Index": 62,
+        "WeaponLevel": 2,
+        "Group": "E1",
+        "Strategy": "build",
+        "Deck": "default"
+      },
+      "discordant": {
+        "candidate_only_deaths": 100,
+        "baseline_only_deaths": 0,
+        "total_started_pairs": 300
+      },
+      "death_probability_mean_delta": 0.3333333333333333,
+      "pointwise_bootstrap95": [
+        0.28,
+        0.39
+      ],
+      "frozen_Holm432_p": 6.5790999495432385e-28
+    },
+    {
+      "stratum": {
+        "Index": 86,
+        "WeaponLevel": 3,
+        "Group": "E1",
+        "Strategy": "build",
+        "Deck": "default"
+      },
+      "discordant": {
+        "candidate_only_deaths": 108,
+        "baseline_only_deaths": 0,
+        "total_started_pairs": 300
+      },
+      "death_probability_mean_delta": 0.36,
+      "pointwise_bootstrap95": [
+        0.30333333333333334,
+        0.4166666666666667
+      ],
+      "frozen_Holm432_p": 2.6500796034768365e-30
+    },
+    {
+      "stratum": {
+        "Index": 110,
+        "WeaponLevel": 4,
+        "Group": "E1",
+        "Strategy": "build",
+        "Deck": "default"
+      },
+      "discordant": {
+        "candidate_only_deaths": 122,
+        "baseline_only_deaths": 0,
+        "total_started_pairs": 300
+      },
+      "death_probability_mean_delta": 0.4066666666666667,
+      "pointwise_bootstrap95": [
+        0.35333333333333333,
+        0.46
+      ],
+      "frozen_Holm432_p": 1.621241808654099e-34
+    },
+    {
+      "stratum": {
+        "Index": 133,
+        "WeaponLevel": 5,
+        "Group": "E1",
+        "Strategy": "basic",
+        "Deck": "default"
+      },
+      "discordant": {
+        "candidate_only_deaths": 14,
+        "baseline_only_deaths": 0,
+        "total_started_pairs": 300
+      },
+      "death_probability_mean_delta": 0.04666666666666667,
+      "pointwise_bootstrap95": [
+        0.02666666666666667,
+        0.07333333333333333
+      ],
+      "frozen_Holm432_p": 0.032958984375
+    },
+    {
+      "stratum": {
+        "Index": 134,
+        "WeaponLevel": 5,
+        "Group": "E1",
+        "Strategy": "build",
+        "Deck": "default"
+      },
+      "discordant": {
+        "candidate_only_deaths": 131,
+        "baseline_only_deaths": 0,
+        "total_started_pairs": 300
+      },
+      "death_probability_mean_delta": 0.43666666666666665,
+      "pointwise_bootstrap95": [
+        0.37666666666666665,
+        0.49333333333333335
+      ],
+      "frozen_Holm432_p": 3.1738347472201763e-37
+    }
+  ],
+  "interpretation": {
+    "kind": "PostVerificationEndpointInterpretationReviewNotReanalysis",
+    "at_local": "2026-10-16T11:15:50.755345+08:00",
+    "numerical_outputs_and_both_independent_verifiers_passed": true,
+    "original_test_labels_retained_unchanged": true,
+    "all_144cells_have_more_than_half_zero_grid_differences": true,
+    "minimum_ties_among300": 194,
+    "maximum_ties_among300": 300,
+    "empirical_paired_difference_median_at_grid_resolution": 0,
+    "example_stratum0": {
+      "positive": 41,
+      "negative": 0,
+      "ties": 259
+    },
+    "calculated_sign_test_null": "P(D>0 | D!=0)=1/2 among nonzero paired differences",
+    "unconditional_population_median_shift_inference_accepted": false,
+    "mean_shift_familywise_test_performed": false,
+    "pointwise_mean_CIs_preserved_as_descriptive": true,
+    "reason": "With a point mass at0, conditional nonzero sign balance is not equivalent to the weak null that0 is a population median. All observed strata have majority ties; rejection after removing ties cannot be reported as a nonzero full-sample paired-difference median.",
+    "analytic_counterexample_no_simulation": {
+      "Pr_D_zero": 0.9,
+      "Pr_D_positive": 0.1,
+      "Pr_D_negative": 0,
+      "population_median": 0,
+      "conditional_positive_given_nonzero": 1
+    },
+    "death_exact_McNemar_endpoint_unchanged": true,
+    "method_change_or_statistic_reexecution": false,
+    "sources": [
+      {
+        "title": "NIST sign test, binomial sign balance excluding ties",
+        "url": "https://www.itl.nist.gov/div898/software/dataplot/refman1/auxillar/signtest.htm",
+        "used_for": "Defines nonzero sign counts and H0 P(+)=P(-); interpretation of this dataset is a separate mathematical inference."
+      },
+      {
+        "title": "statsmodels sign_test notes",
+        "url": "https://www.statsmodels.org/stable/generated/statsmodels.stats.descriptivestats.sign_test.html",
+        "used_for": "Explicitly discards values equal to mu0 and uses N(+)+N(-) trials."
+      }
+    ],
+    "no_acceptance_or_candidate_activation": true
+  },
+  "original_results_SHA256": {
+    "primary": "b43a602c0cad89ac08ab007e1167fab87cf613b63ffa2ac7732637c678f0c508",
+    "postcast": "9f6d18d03eaa6cba5321e4076aeac57fc84ab2a2899e4f5bcd4afaad6bb98a8f",
+    "primary_independent": "0113a62c454fdfa61df61d870a2f6e9c371ce2c36795644ebfefa1a3d7fbfdcf",
+    "postcast_independent": "2cb31154551ff96c6408e8974e0f4accf3042cff3f046e4f22d79ba56fc5c8db"
+  },
+  "G_custody": {
+    "directory": "outputs/pr13-tencent-20261009/B06-timed-paired-statistics-completed-originals-20261016-r1",
+    "original_files": 52,
+    "archive_SHA256": "1e9ff739c777a5bc8ead0ef333e4687723e72dc16b4ff66cc6131434c008a1c1",
+    "all_original_member_SHA_and_gzip_CRC_verified": true
+  },
+  "whole_goal_complete": false,
+  "register_gate_MAIN_changed": false,
+  "candidate_activation": false,
+  "scope_reconciliation": {
+    "fixed_two_missing_groups_retained": 14,
+    "separate_normal_four_target_groups_witnessed": 14,
+    "uniform_normal_four_full_matrix_or_strength_claimed": false,
+    "B06_4_required_profiles": [
+      "OFFLINE",
+      "EXPERIMENT"
+    ],
+    "authenticated_WSS_not_added_as_B06_gate": true,
+    "latest_B06_case_review": "PR13_B06_TWELVE_CASE_SCOPE_REVIEW_20261016_R5.json"
+  }
+}
