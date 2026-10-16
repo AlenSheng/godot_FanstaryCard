@@ -20,6 +20,8 @@ static var _textures: Dictionary = {}
 static var _styles: Dictionary = {}
 
 static func clear_texture_cache() -> void:
+	# Cached styles also own textures; live controls keep their own references.
+	_styles.clear()
 	_textures.clear()
 
 static func texture(key: String) -> Texture2D:
