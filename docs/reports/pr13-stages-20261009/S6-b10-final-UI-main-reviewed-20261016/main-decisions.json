@@ -1,0 +1,130 @@
+{
+  "authority": "MAIN",
+  "stage": "S6",
+  "integration_source_sha": "e18c21d05183ef51d857cd938e9b117fcc01f931",
+  "human_authorization": "尽量把相对独立的待验收项先通过到已验收部分，释放相关临时测试数据；UI有遮挡和效果不好的需要一起修改，做最终效果验收。",
+  "task_decisions": [
+    {
+      "task_id": "PR13-B10.1",
+      "state": "Accepted",
+      "runtime_review_sha": "68a6dd1dece06cae4ef126ee3e856d0bf02904c9",
+      "reason": "原始同源真实 GUI/codec/store 的9规范案例中本项3例通过；依赖B02.3已验收。当前选牌顺序改用高对比徽标，18张复用画面明确逐张可读，重选顺序2/1与原始协议顺序一致；当前store/codec相关源未改变。",
+      "evidence": [
+        {
+          "path": "docs/reports/pr13-stages-20261009/S3-b10-required-render/native-result.json",
+          "bytes": 29357,
+          "sha256": "ad9b42520fd6697a2eb7808e878dbaa399d7c68bb73a417c6a86d28215e4474b"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261009/S3-b10-required-render/summary.json",
+          "bytes": 3275,
+          "sha256": "7c6ab06c6badaf6016455f2fef4a7cc313316a33582fa769f14aa583a4028f1a"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261009/S6-b10-final-UI-main-reviewed-20261016/case-review.json",
+          "bytes": 26288,
+          "sha256": "f5db701f114d76e40abfc6b66d64a94a7af1480b4b789bc2662054eebf8f1df6"
+        }
+      ],
+      "rollback": "按原细则回退相应客户端显示提交；保留未确认结算、服务器资产、重放游标和全部原始失败证据。",
+      "scope_limit": "本项OFFLINE/RENDER合同与当前UI效果；不据此通过LIVE/容量/强度或全局G0-G5。36图R1原整轮严格退出失败保留，未改写为全通过；单帧规范收尾与18图R2分别记录。",
+      "current_UI_byte_identities": [
+        {
+          "path": "client/ui/exploration_view.gd",
+          "before_sha256": "80e147e401690ce327d851ecfa5ee71be67ffeee92e385eaabd76e4037e829e7",
+          "after_sha256": "57845bc212715e0eb5604f6cb9e1a87035b2929e234cb31f86504d3c487a78dd",
+          "bytes": 44587
+        },
+        {
+          "path": "client/data/localization_battle.json",
+          "before_sha256": "93348978ab5fbbc280fd1eb5cf3ae5f7a92bcd4405bf0e430d9992feadb38759",
+          "after_sha256": "7a0c1a603daaaad41ea12f85abab8a2ff7a59bb2b1f53be56e9acf9a7d87272a",
+          "bytes": 5015
+        }
+      ],
+      "canonical_original_sources_not_relabelled": true
+    },
+    {
+      "task_id": "PR13-B10.2",
+      "state": "Accepted",
+      "runtime_review_sha": "68a6dd1dece06cae4ef126ee3e856d0bf02904c9",
+      "reason": "原有效0/溢出、近cap有效1/理论6及中英文案例来源保留。当前溢出值直接可见；R2补拍确认英文控制单位不夹中文、PVP完整职业名可读。36张布局画面加三职业中英文PVE/PVP的12张最小分辨率被动说明组件图逐张审查通过，未改公式或显示隐藏未来信息。",
+      "evidence": [
+        {
+          "path": "docs/reports/pr13-stages-20261009/S3-b10-required-render/native-result.json",
+          "bytes": 29357,
+          "sha256": "ad9b42520fd6697a2eb7808e878dbaa399d7c68bb73a417c6a86d28215e4474b"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261009/S3-b10-required-render/summary.json",
+          "bytes": 3275,
+          "sha256": "7c6ab06c6badaf6016455f2fef4a7cc313316a33582fa769f14aa583a4028f1a"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261009/S6-b10-final-UI-main-reviewed-20261016/case-review.json",
+          "bytes": 26288,
+          "sha256": "f5db701f114d76e40abfc6b66d64a94a7af1480b4b789bc2662054eebf8f1df6"
+        }
+      ],
+      "rollback": "按原细则回退相应客户端显示提交；保留未确认结算、服务器资产、重放游标和全部原始失败证据。",
+      "scope_limit": "本项OFFLINE/RENDER合同与当前UI效果；不据此通过LIVE/容量/强度或全局G0-G5。36图R1原整轮严格退出失败保留，未改写为全通过；单帧规范收尾与18图R2分别记录。",
+      "current_UI_byte_identities": [
+        {
+          "path": "client/ui/exploration_view.gd",
+          "before_sha256": "80e147e401690ce327d851ecfa5ee71be67ffeee92e385eaabd76e4037e829e7",
+          "after_sha256": "57845bc212715e0eb5604f6cb9e1a87035b2929e234cb31f86504d3c487a78dd",
+          "bytes": 44587
+        },
+        {
+          "path": "client/data/localization_battle.json",
+          "before_sha256": "93348978ab5fbbc280fd1eb5cf3ae5f7a92bcd4405bf0e430d9992feadb38759",
+          "after_sha256": "7a0c1a603daaaad41ea12f85abab8a2ff7a59bb2b1f53be56e9acf9a7d87272a",
+          "bytes": 5015
+        }
+      ],
+      "canonical_original_sources_not_relabelled": true
+    },
+    {
+      "task_id": "PR13-B10.3",
+      "state": "Accepted",
+      "runtime_review_sha": "68a6dd1dece06cae4ef126ee3e856d0bf02904c9",
+      "reason": "原快速双击、await未确认、断线重复输入的3规范GUI/store案例保留；去重和权威确认逻辑源未改变。当前待确认与可操作/恢复状态画面明确，PVP等待提示不再遮挡预览或在可操作时误显；18条R2原始检查严格退出通过。",
+      "evidence": [
+        {
+          "path": "docs/reports/pr13-stages-20261009/S3-b10-required-render/native-result.json",
+          "bytes": 29357,
+          "sha256": "ad9b42520fd6697a2eb7808e878dbaa399d7c68bb73a417c6a86d28215e4474b"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261009/S3-b10-required-render/summary.json",
+          "bytes": 3275,
+          "sha256": "7c6ab06c6badaf6016455f2fef4a7cc313316a33582fa769f14aa583a4028f1a"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261009/S6-b10-final-UI-main-reviewed-20261016/case-review.json",
+          "bytes": 26288,
+          "sha256": "f5db701f114d76e40abfc6b66d64a94a7af1480b4b789bc2662054eebf8f1df6"
+        }
+      ],
+      "rollback": "按原细则回退相应客户端显示提交；保留未确认结算、服务器资产、重放游标和全部原始失败证据。",
+      "scope_limit": "本项OFFLINE/RENDER合同与当前UI效果；不据此通过LIVE/容量/强度或全局G0-G5。36图R1原整轮严格退出失败保留，未改写为全通过；单帧规范收尾与18图R2分别记录。",
+      "current_UI_byte_identities": [
+        {
+          "path": "client/ui/exploration_view.gd",
+          "before_sha256": "80e147e401690ce327d851ecfa5ee71be67ffeee92e385eaabd76e4037e829e7",
+          "after_sha256": "57845bc212715e0eb5604f6cb9e1a87035b2929e234cb31f86504d3c487a78dd",
+          "bytes": 44587
+        },
+        {
+          "path": "client/data/localization_battle.json",
+          "before_sha256": "93348978ab5fbbc280fd1eb5cf3ae5f7a92bcd4405bf0e430d9992feadb38759",
+          "after_sha256": "7a0c1a603daaaad41ea12f85abab8a2ff7a59bb2b1f53be56e9acf9a7d87272a",
+          "bytes": 5015
+        }
+      ],
+      "canonical_original_sources_not_relabelled": true
+    }
+  ],
+  "whole_scope_accepted": false,
+  "no_completed_numeric_PG_statistics_or_full_UI_matrix_rerun": true
+}

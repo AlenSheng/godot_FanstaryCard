@@ -127,7 +127,7 @@ static func _passive(ui: Control, hero_class: String, rect: Rect2, above_preview
 	var description_inset := 53.0 if above_preview else 44.0
 	var title: Label = ui.text(P.localized("signature_prefix") + names[hero_class], Rect2(rect.position + Vector2(89, title_inset), Vector2(rect.size.x - (110 if above_preview else 100), 32 if above_preview else 36)), 25, P.GOLD)
 	title.name = "PlayerPassiveTitle_" + hero_class
-	var description: Label = ui.text(descriptions[hero_class], Rect2(rect.position + Vector2(89, description_inset), Vector2(rect.size.x - (113 if above_preview else 103), rect.size.y - description_inset - (18 if above_preview else 5))), 20, P.MUTED)
+	var description: Label = ui.text(descriptions[hero_class], Rect2(rect.position + Vector2(89, description_inset), Vector2(rect.size.x - (113 if above_preview else 103), rect.size.y - description_inset - (18 if above_preview else 5))), 18, P.MUTED, null, false)
 	description.name = "PlayerPassiveDescription_" + hero_class
 
 static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
@@ -206,8 +206,16 @@ static func _hand(ui: Control, host: Control, state: Dictionary) -> void:
 			ui.card(host, card.get("card_id", ""), rect, func(): Game.toggle_card(card.instance_id), card.get("instance_id", "") in Game.selected_cards, not Game.allowed("battle.play_cards"), {"level": int(card.get("level", 0)), "element_override": str(card.get("element_override", "")), "battle_target_element": target_element, "selected_overlay": true})
 			var play_index := Game.selected_cards.find(card.get("instance_id", ""))
 			if play_index >= 0:
-				var order_label: Label = ui.text(str(play_index + 1), Rect2(rect.position.x + 9, rect.position.y + 9, 34, 36), 28, P.GOLD)
+				var order_label: Label = ui.text(str(play_index + 1), Rect2(rect.position.x + 20, rect.position.y + 20, 50, 50), 32, P.GOLD)
 				order_label.name = "PlayOrder_%s" % index
+				# Keep play order clear over the artwork and decorative frame.
+				order_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+				order_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+				order_label.z_index = 2
+				var order_style := P.box(Color("101b21"), P.GOLD, 2)
+				for side in [SIDE_LEFT, SIDE_TOP, SIDE_RIGHT, SIDE_BOTTOM]: order_style.set_content_margin(side, 0)
+				order_label.add_theme_stylebox_override("normal", order_style)
+				order_label.tooltip_text = P.localized("battle_selection_order") % (play_index + 1)
 		else:
 			var empty_slot := _picture(ui, Art.texture(EMPTY_HAND_SLOT), rect)
 			empty_slot.name = "EmptyHandSlot_%s" % index
@@ -283,8 +291,10 @@ static func _preview(ui: Control) -> void:
 			ui.text("%s +%s" % [P.localized(entry[1]), preview.get(entry[0], 0)], Rect2(x, 12, 130, 34), 22, entry[2], panel, false)
 			x += 130
 	var effects: Array[String] = []
-	for entry in [["stun_seconds", "眩晕", "秒"], ["draw_block_seconds", "锁抽", "秒"], ["health_cost", "自损", ""], ["immediate_draw", "抽牌", "张"]]:
-		if float(preview.get(entry[0], 0)) > 0: effects.append("%s %s%s" % [entry[1], preview[entry[0]], entry[2]])
+	if int(preview.get("heal_overflow", 0)) > 0: effects.append(P.localized("battle_preview_heal_overflow") % preview.heal_overflow)
+	if int(preview.get("shield_overflow", 0)) > 0: effects.append(P.localized("battle_preview_shield_overflow") % preview.shield_overflow)
+	for entry in [["stun_seconds", "battle_status_stun"], ["draw_block_seconds", "battle_status_draw_block"], ["health_cost", "battle_preview_health_cost"], ["immediate_draw", "battle_preview_draw_cards"]]:
+		if float(preview.get(entry[0], 0)) > 0: effects.append(P.localized(entry[1]) % preview[entry[0]])
 	if float(preview.get("draw_charge", "0")) > 0: effects.append(P.localized("exploration_preview_charge") % Details.percent(float(preview.draw_charge)))
 	if float(preview.get("draw_speed_seconds", "0")) > 0:
 		effects.append(P.localized("exploration_preview_draw_speed") % [Details.percent(float(preview.get("draw_speed_modifier", "0"))), preview.draw_speed_seconds])
@@ -318,7 +328,11 @@ static func _duel(ui: Control, host: Control, state: Dictionary) -> void:
 	var opponent_class: String = duel.get("opponent_class", "")
 	var opponent: Control = _picture(ui, Art.portrait(opponent_class) if P.CLASSES.has(opponent_class) else Art.texture("UI/Encounter/encounter_enemy_frame_normal.png"), Rect2(1516, 142, 268, 308))
 	host._combat_panels[duel.get("opponent_id", "")] = opponent
-	ui.text(duel.get("opponent_name", "同格旅人") + " · " + P.word(opponent_class), Rect2(1129, 161, 380, 53), 31, P.GOLD)
+	var class_key: String = {"Mage":"battle_class_mage", "Priest":"battle_class_priest", "Guardian":"battle_class_guardian"}.get(opponent_class, "")
+	var class_title: String = P.localized(class_key) if not class_key.is_empty() else P.word(opponent_class)
+	var opponent_title: Label = ui.text(duel.get("opponent_name", "同格旅人") + " · " + class_title, Rect2(1129, 161, 380, 53), 27, P.GOLD)
+	opponent_title.name = "DuelOpponentTitle"
+	opponent_title.tooltip_text = opponent_title.text
 	var opponent_stats: Button = ui.button(P.localized("opponent_stats"), Rect2(1534, 462, 252, 55), func(): host._show_battle_details(duel.get("opponent_status", {})))
 	opponent_stats.name = "DuelOpponentStatsButton"
 	_health(ui, duel.get("opponent", {}), Rect2(1128, 229, 358, 120), true)
@@ -332,9 +346,9 @@ static func _duel(ui: Control, host: Control, state: Dictionary) -> void:
 	if duel.has("escape_remaining_ms"):
 		_center(ui.text(P.localized("exploration_escaping") % (float(duel.escape_remaining_ms) / 1000), Rect2(803, 480, 310, 44), 27, P.TEAL))
 	if not Game.allowed("battle.play_cards"):
-		ui.picture(Art.texture("UI/Encounter/encounter_lock_icon_normal.png"), Rect2(1076, 527, 47, 48))
-	var waiting_label: Label = ui.text(P.localized("waiting_action"), Rect2(1128, 527, 400, 48), 26, P.GOLD)
-	waiting_label.name = "DuelWaitLabel"
+		ui.picture(Art.texture("UI/Encounter/encounter_lock_icon_normal.png"), Rect2(1076, 477, 42, 42))
+		var waiting_label: Label = ui.text(P.localized("waiting_action"), Rect2(1128, 477, 400, 42), 24, P.GOLD)
+		waiting_label.name = "DuelWaitLabel"
 	ui.text(P.localized("own_hand"), Rect2(80, 622, 330, 54), 34, P.GOLD)
 	_passive(ui, player.get("hero_class", ""), Rect2(80, 703, 330, 117))
 

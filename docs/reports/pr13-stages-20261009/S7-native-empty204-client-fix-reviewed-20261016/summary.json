@@ -1,0 +1,48 @@
+{
+  "kind": "ReviewedNativeEmpty204ClientFixAndQueuedTerminalCase",
+  "source_baseline_release": "e18c21d05183ef51d857cd938e9b117fcc01f931",
+  "product_source_baseline_equivalent": "69f6794721354cd6e57f4445a2d33fe929909959",
+  "changed_file": "client/network/gateway.gd",
+  "changed_file_SHA256": "3dbb12b735a5269ff46fbff15baa1f83b28c32efde72f54d3e8537fb3fd643b4",
+  "problem": "Native HTTPRequest one-off path reports status0 for a real empty204 response,causing cancellation retries evenafter server cancellation",
+  "change": "Native one-off and busy-shared fallback requests use independent existing ReusableHttpClient instances and close them after completion",
+  "validation": {
+    "original204_HTTPRequest_local_replay": "failedwithtransportresult4 at both0and100msclosegrace;baseline preserved",
+    "original204_existing_ReusableHttpClient": "204successatbothclosegraces",
+    "candidate_native_per_request": "Passed",
+    "candidate_shared_idle": "Passed",
+    "candidate_actual_busy_concurrent_fallback": "Passed",
+    "real_public_case_id": "PR13-A04.1-T02",
+    "real_public_case_pass": true,
+    "real_ticket_statuses": [
+      "Queued",
+      "Queued",
+      "Cancelled"
+    ],
+    "production_READY_loop_queries": 3,
+    "READY_wire_messages": 0,
+    "actual_control_and_cleanup_DELETE_HTTP_statuses": [
+      204,
+      204
+    ],
+    "raw_events": 42,
+    "independent_HTTP_and_google_protobuf_and_SQL_checks": "Passed",
+    "cleanup": "Passed",
+    "normal_cycles_claimed": 0,
+    "independent_report_SHA256": "6c851f4cf1f4ad8d5f1b78d67926a90e0aa30efed3158f3f5a525eb36e15a6a0",
+    "G_archive_files": 188,
+    "G_archive_SHA256": "e4675a5b72553900c10ec9e0b703a0bc1bee4b9bb71bb680464838c898e03527",
+    "all_members_SHA_and_gzip_CRC_verified": true
+  },
+  "scope_limits": [
+    "NativeWindows first-party client and the declared publicrelay path",
+    "WebHTTPRequestcodepath retained;Web runtime not revalidated",
+    "No capacity,defaultpath latency SLO,RENDER or human-experience claim",
+    "Previousbaselinefailures preserved;T03replayfeedbackremainsopen",
+    "No automatic register/gate/MAIN acceptance"
+  ],
+  "server_changed_or_deployed": false,
+  "global_configuration_changed": false,
+  "resource_floor_fraction": 0.05,
+  "MAIN_accepted": false
+}

@@ -434,6 +434,13 @@ func _request_http_transport(path: String, method: int, headers: PackedStringArr
 		body: PackedByteArray, timeout_ms: int = 10000) -> Array:
 	if use_reusable_http and not OS.has_feature("web") and not _reusable_http.busy:
 		return await _reusable_http.request(get_tree(), base_url, path, method, headers, body, timeout_ms)
+	if not OS.has_feature("web"):
+		# Native one-off/concurrent requests must handle empty 204 replies too.
+		# Keep them independent of the shared connection and close on completion.
+		var one_off := ReusableHttpClient.new()
+		var response: Array = await one_off.request(get_tree(), base_url, path, method, headers, body, timeout_ms)
+		one_off.close()
+		return response
 	var http := HTTPRequest.new()
 	http.timeout = float(timeout_ms) / 1000.0
 	http.body_size_limit = 2 * 1024 * 1024
