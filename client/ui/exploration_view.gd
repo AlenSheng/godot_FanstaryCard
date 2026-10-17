@@ -563,6 +563,14 @@ static func _rewards(ui: Control, host: Control, reward: Dictionary) -> void:
 	ui.button(P.localized("exploration_refresh_cost") % [60, 180, 450][mini(count, 2)] if count < 3 else P.localized("refresh_exhausted"), Rect2(746, 830, 425, 91), func(): Game.command("reward.choice.refresh"), count >= 3 or not Game.allowed("reward.choice.refresh"))
 	ui.text(P.localized("exploration_current_layer") % [P.localized("exploration_outer"), P.localized("exploration_middle"), P.localized("exploration_inner")][clampi(int(reward.get("layer", 0)), 0, 2)], Rect2(1275, 845, 334, 64), 29, P.MUTED)
 
+static func build_recovery(ui: Control) -> void:
+	ui.picture(Art.texture(PANEL), Rect2(480, 150, 960, 766))
+	_center(ui.text(P.localized("ui_restoring_run"), Rect2(545, 285, 830, 100), 64, P.GOLD))
+	var message := P.localized("settlement_query_failed" if Game.settlement_query_failed else "settlement_recovery_pending")
+	_center(ui.text(message, Rect2(598, 418, 724, 120), 34, P.PAPER))
+	ui.button(P.localized("settlement_retry"), Rect2(716, 650, 488, 84), Game.retry_settlement, Game.busy)
+	ui.button(P.localized("reconnect"), Rect2(716, 752, 488, 72), Game.reconnect, Game.busy)
+
 static func _settlement_pending(ui: Control, phase: String) -> void:
 	ui.picture(Art.texture(PANEL), Rect2(480, 150, 960, 766))
 	_center(ui.text(P.localized("settlement_pending_extract" if phase == "Extracted" else "settlement_pending_battle"), Rect2(545, 285, 830, 100), 64, P.GOLD))

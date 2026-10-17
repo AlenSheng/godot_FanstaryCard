@@ -26,6 +26,8 @@ func build(source: Control) -> void:
 				var move: Vector2i = host.get_meta("pending_move")
 				Exploration.show_midlayer(self, host, move.x, move.y)
 			else: host.remove_meta("pending_move")
+	elif not Game._settlement_recovery_match_id.is_empty():
+		Exploration.build_recovery(self)
 	elif not Game.ready_prompt.is_empty():
 		_ready_prompt()
 	else:
@@ -208,8 +210,14 @@ func _hall() -> void:
 	portal_frame.position = portal_rect.position
 	portal_frame.size = portal_rect.size
 	text(P.localized("enter_chaos"), Rect2(1110, 180, 595, 76), 48, P.GOLD).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	var prep_button := button(P.localized("nav_prep"), Rect2(1140, 640, 520, 96), host._navigate.bind("prep"), Game.busy, ORANGE)
+	var ack_pending := not Game._settlement_ack_pending_id.is_empty()
+	var prep_caption := P.localized("settlement_ack_pending_title" if ack_pending else "nav_prep")
+	var prep_button := button(prep_caption, Rect2(1140, 640, 520, 96), host._navigate.bind("prep"), Game.busy, ORANGE)
 	prep_button.set_meta("sound_cue", "")
+	if ack_pending:
+		var confirmation := text(P.localized("settlement_ack_pending_message"), Rect2(990, 746, 835, 46), 24, P.PAPER)
+		confirmation.name = "SettlementConfirmationStatus"
+		confirmation.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	var entries := [["cards", "UI/Shop/card_pack.png", "hall_entry_cards"], ["gear", "UI/Item/exploration_prep_item_icon_chest.png", "hall_entry_gear"], ["deck", "UI/Hall/entry_icon_deck_build.png", "hall_entry_deck"], ["shop", "UI/Item/exploration_prep_item_icon_gold.png", "hall_entry_shop"], ["market", "UI/Hall/entry_icon_market.png", "hall_entry_market"], ["prep", "UI/Shop/backpack_advanced.png", "hall_entry_prep"], ["enhance", "UI/Shop/equipment_fragment_pack.png", "hall_entry_enhance"]]
 	for i in range(entries.size()):
 		var rect := Rect2(56 + i * 259, 802, 242, 223)

@@ -486,7 +486,7 @@ func _render() -> void:
 		if has_meta("pending_move"): remove_meta("pending_move")
 	_view_cell = room_cell
 	var use_reference: bool = not Game.lobby.is_empty() and Game.lobby.get("unfinishedMatch") == null
-	if not Game.room.is_empty() or not Game.settlement.is_empty(): use_reference = true
+	if not Game.room.is_empty() or not Game.settlement.is_empty() or not Game._settlement_recovery_match_id.is_empty(): use_reference = true
 	var card_page := screen if use_reference and screen in ["cards", "deck"] and not screen_loading and Game.room.is_empty() and Game.settlement.is_empty() and Game.ready_prompt.is_empty() else ""
 	var page_key := _card_page_key(card_page) if not card_page.is_empty() else 0
 	var cached_view: Control = _card_page_cache.get(card_page) as Control
@@ -1653,7 +1653,8 @@ func _return_from_settlement() -> void:
 
 func _toast(message: String) -> void:
 	if is_instance_valid(tips_overlay):
-		tips_overlay.show_tip(message)
+		var settlement_notice := not Game.settlement.is_empty()
+		tips_overlay.show_tip(message, 0.09 if settlement_notice else TipsOverlay.VIEWPORT_Y_RATIO)
 
 func _show_ban_dialog(reason: String) -> void:
 	if not reason.begins_with("账号已被封禁"): return

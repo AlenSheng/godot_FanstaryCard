@@ -49,7 +49,7 @@ func _init() -> void:
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	panel.add_child(label)
 
-func show_tip(message: String) -> void:
+func show_tip(message: String, viewport_y_ratio: float = VIEWPORT_Y_RATIO) -> void:
 	var localized := P.localized_text(message).strip_edges()
 	if P.is_unlocalized_english_sentence(localized): localized = P.localized("operation_rejected")
 	if localized.is_empty():
@@ -60,7 +60,7 @@ func show_tip(message: String) -> void:
 	if is_instance_valid(_tween):
 		_tween.kill()
 	label.text = localized
-	_layout_at_start()
+	_layout_at_start(viewport_y_ratio)
 	panel.visible = true
 	panel.modulate = Color.WHITE
 	panel.scale = Vector2(0.96, 0.96)
@@ -84,7 +84,7 @@ func clear() -> void:
 func start_position() -> Vector2:
 	return _start_position
 
-func _layout_at_start() -> void:
+func _layout_at_start(viewport_y_ratio: float = VIEWPORT_Y_RATIO) -> void:
 	var viewport_size := Vector2(1920, 1080)
 	if is_inside_tree():
 		viewport_size = get_viewport().get_visible_rect().size
@@ -104,7 +104,7 @@ func _layout_at_start() -> void:
 	panel.custom_minimum_size = panel.size
 	_start_position = Vector2(
 		(viewport_size.x - panel.size.x) * 0.5,
-		viewport_size.y * VIEWPORT_Y_RATIO - panel.size.y * 0.5
+		viewport_size.y * viewport_y_ratio - panel.size.y * 0.5
 	)
 	panel.position = _start_position
 
