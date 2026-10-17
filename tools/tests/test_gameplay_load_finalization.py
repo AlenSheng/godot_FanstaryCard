@@ -22,12 +22,12 @@ import gameplay_load_test as coordinator
 class FinalizationTests(unittest.TestCase):
     def run_fixture(self, anomaly=None, *, real_child_after_stop=False, report_write_fails=False,
                     operator_stop=False, receipt_write_fails=False, before_stop=None,
-                    external_stop=False, stop_before_launch=False):
+                    external_stop=False, stop_before_launch=False, wall_jump_seconds=0):
         elapsed = [0.0]
         child = SimpleNamespace(pid=4242, returncode=0)
         child.poll = lambda: child.returncode
         clock = SimpleNamespace(
-            time=lambda: 100000 + elapsed[0],
+            time=lambda: 100000 + elapsed[0] + (wall_jump_seconds if elapsed[0] >= 7 else 0),
             monotonic=lambda: elapsed[0],
             monotonic_ns=lambda: int(elapsed[0] * 1e9),
             sleep=lambda seconds: elapsed.__setitem__(0, elapsed[0] + seconds),
@@ -57,7 +57,7 @@ class FinalizationTests(unittest.TestCase):
                           cycles_completed=3, event_seq_max=6, telemetry=events,
                           operations=[], audit_lost_count=0, errors=[],
                           cleanup={'state': 'Passed'})
-            report.write_text(json.dumps(dict(status, ok=True)), encoding='utf8')
+            report.write_text(json.dumps(dict(status, ok=True, outcome="completed")), encoding='utf8')
             Path(str(report) + '.status.json').write_text(json.dumps(status), encoding='utf8')
             Path(str(report) + '.telemetry.jsonl').write_text(
                 ''.join(json.dumps(e) + '\n' for e in events), encoding='utf8')
@@ -120,6 +120,17 @@ class FinalizationTests(unittest.TestCase):
         change(status)
         path.write_text(json.dumps(status), encoding='utf8')
 
+    @staticmethod
+    def change_terminal(entry, change):
+        """Mirror an actual client writing both terminal artifacts coherently."""
+        FinalizationTests.change_status(entry, change)
+        path = entry['report']
+        report = json.loads(path.read_text(encoding='utf8'))
+        change(report)
+        if report.get('errors') or report.get('cleanup', {}).get('state') == 'Failed':
+            report.update(ok=False, outcome='failed')
+        path.write_text(json.dumps(report), encoding='utf8')
+
     def assert_invalid(self, anomaly):
         code, report = self.run_fixture(anomaly)
         self.assertEqual(code, 3)
@@ -134,6 +145,22 @@ class FinalizationTests(unittest.TestCase):
         self.assertTrue(report['acceptance_passed'])
         self.assertFalse(report['full_acceptance_passed'])
         self.assertEqual(report['cycle_cutoffs']['final']['completed_cycles'], 3)
+
+    def test_forward_wall_jump_before_first_sample_invalidates_cutoff_rates(self):
+        code, report = self.run_fixture(wall_jump_seconds=3600)
+        self.assertEqual(code, 3)
+        self.assertFalse(report['acceptance_passed'])
+        self.assertFalse(report['cutoff_clock_quality']['qualified'])
+        self.assertIn('coordinator_wall_clock_discontinuity',
+                      report['cutoff_clock_quality']['evidence_errors'])
+        self.assertIsNone(report['request_distributions']['running'])
+        self.assertIsNone(report['request_distributions']['drain'])
+        self.assertIsNone(report['request_distributions']['final']['logical_requests_per_second'])
+        self.assertIsNone(report['cycle_cutoffs']['running'])
+        self.assertIsNone(report['cycle_cutoffs']['drain'])
+        self.assertEqual(report['cycle_cutoffs']['final']['completed_cycles'], 3)
+        self.assertTrue(report['business_cleanup_verified'])
+        self.assertEqual(report['result_dimensions']['dimensions']['evidence'], 'Failed')
 
     def test_external_guard_stop_before_run_directory_launches_nobody(self):
         code, report = self.run_fixture(external_stop=True, stop_before_launch=True)
@@ -274,7 +301,7 @@ class FinalizationTests(unittest.TestCase):
         self.assertFalse(report['acceptance_passed'])
 
     def test_business_error_only_after_stop_prevents_smoke_acceptance(self):
-        code, report = self.run_fixture(lambda e, c: self.change_status(
+        code, report = self.run_fixture(lambda e, c: self.change_terminal(
             e, lambda s: s.update(errors=[{'message': 'late unexpected write failure'}])))
         self.assertEqual(code, 1)
         self.assertFalse(report['acceptance_passed'])
@@ -282,7 +309,7 @@ class FinalizationTests(unittest.TestCase):
         self.assertIn('final_business_failure', report['all_triggers'])
 
     def test_explicit_business_cleanup_failure_stays_failed(self):
-        code, report = self.run_fixture(lambda e, c: self.change_status(
+        code, report = self.run_fixture(lambda e, c: self.change_terminal(
             e, lambda s: s.update(cleanup={'state': 'Failed'})))
         self.assertEqual(code, 1)
         self.assertEqual(report['result_dimensions']['dimensions']['cleanup'], 'Failed')

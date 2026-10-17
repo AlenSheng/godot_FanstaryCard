@@ -60,8 +60,25 @@ func run_cases() -> void:
     var minimum_wait: bool = not terminals.is_empty() and terminals[0].duration_ms>=5000 and results.get("retry",{}).get("ok",false)
     var stable: bool = attempts.size()==2 and terminals.size()==1 and attempts.all(func(row): return row.logical_request_id==terminals[0].logical_request_id)
     record("LOAD-08.3-T01",minimum_wait,{"attempts":proof(attempts),"logical":proof(terminals),"server_minimum_ms":5000})
-    record("LOAD-06.1-T01",stable,{"attempts":proof(attempts),"logical":proof(terminals)})
     record("PR13-A06.3-T02",stable and attempts.all(func(row): return row.phase=="playing") and terminals[0].phase=="playing",{"attempts":proof(attempts),"logical":proof(terminals),"current_phase":"settlement"})
+    close(gateway)
+
+    gateway = fresh()
+    path = "/api/v1/shop/purchases?mode=retry-write-two"
+    dispatch(gateway,path,"retry-write-two",HTTPClient.METHOD_POST)
+    await until("retry-write-two")
+    attempts = for_path(path,"http_attempt")
+    terminals = for_path(path,"http")
+    var retry_stats: Dictionary = await gateway.request("/api/v1/client-info")
+    var received: Array = retry_stats.get("data",{}).get("retryWriteTwoAttempts",[])
+    var write_stable: bool = results.get("retry-write-two",{}).get("ok",false) and attempts.size()==3 and terminals.size()==1 and received.size()==3
+    if write_stable:
+        var logical_id: String = str(terminals[0].logical_request_id)
+        write_stable = attempts[0].status==503 and attempts[1].status==503 and attempts[2].status==200
+        write_stable = write_stable and attempts.all(func(row):return row.logical_request_id==logical_id)
+        write_stable = write_stable and received.all(func(row):return row.key_sha256==logical_id.sha256_text() and row.trace_sha256==logical_id.sha256_text() and row.body_sha256==received[0].body_sha256)
+        for index in 3: write_stable=write_stable and int(attempts[index].attempt_no)==index+1
+    record("LOAD-06.1-T01",write_stable,{"attempts":proof(attempts),"logical":proof(terminals),"received_post_attempts":received,"actual_write_attempts":3,"actual_retries":2,"asset_scope":"in-memory fixture only"})
     close(gateway)
 
     gateway = fresh()

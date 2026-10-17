@@ -140,9 +140,23 @@ static func show_remainder(host: Control) -> void:
 static func show_lines(host: Control, lines: PackedStringArray) -> void:
 	var dialog := AcceptDialog.new()
 	dialog.title = text("title")
-	dialog.min_size = Vector2i(850, 500)
+	var dialog_theme := P.theme()
+	dialog_theme.default_font_size = 26
+	dialog_theme.set_stylebox("panel", "AcceptDialog", P.box(Color("10272e"), P.GOLD))
+	var window_frame := P.box(Color("10272e"), P.GOLD)
+	window_frame.set_expand_margin(SIDE_TOP, 36)
+	window_frame.content_margin_top = 36
+	dialog_theme.set_stylebox("embedded_border", "Window", window_frame)
+	dialog_theme.set_stylebox("embedded_unfocused_border", "Window", window_frame.duplicate())
+	dialog_theme.set_font("title_font", "Window", P.font("title"))
+	dialog_theme.set_font_size("title_font_size", "Window", 28)
+	dialog_theme.set_color("title_color", "Window", P.GOLD)
+	dialog.theme = dialog_theme
+	var available := host.get_viewport_rect().size
+	var popup_size := Vector2i(mini(1320, int(available.x) - 96), mini(860, int(available.y) - 96))
+	dialog.min_size = Vector2i(mini(1080, popup_size.x), mini(640, popup_size.y))
 	var scroll := ScrollContainer.new()
-	scroll.custom_minimum_size = Vector2(820, 460)
+	scroll.custom_minimum_size = Vector2(popup_size.x - 64, popup_size.y - 128)
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	var label := Label.new()
 	label.text = "\n".join(lines)
@@ -151,6 +165,7 @@ static func show_lines(host: Control, lines: PackedStringArray) -> void:
 	scroll.add_child(label)
 	dialog.add_child(scroll)
 	host.add_child(dialog)
+	dialog.get_ok_button().text = P.localized("confirm")
 	dialog.confirmed.connect(dialog.queue_free)
 	dialog.canceled.connect(dialog.queue_free)
-	dialog.popup_centered()
+	dialog.popup_centered(popup_size)

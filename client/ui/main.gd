@@ -1770,14 +1770,28 @@ func _float_number(node: Control, value: String, tint: Color, index: int) -> voi
 	number.name = "CombatNumber"
 	number.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	number.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	number.size = Vector2(170, 54)
-	number.position = node.global_position + Vector2(maxf(0.0, node.size.x * 0.5 - 85.0) + index * 32.0, -62.0 - index * 26.0)
+	var actor_to_ui := get_global_transform_with_canvas().affine_inverse() * node.get_global_transform_with_canvas()
+	var ui_scale := maxf(0.1, minf(absf(actor_to_ui.get_scale().x), absf(actor_to_ui.get_scale().y)))
+	var base_scale := Vector2.ONE * ui_scale
+	var text_width := P.font("number").get_string_size(value, HORIZONTAL_ALIGNMENT_LEFT, -1, 42).x
+	number.size = Vector2(maxf(170.0, text_width + 16.0), 54)
+	number.scale = base_scale
+	var top: Vector2 = actor_to_ui * Vector2(node.size.x * 0.5, 0)
+	var travel := 72.0 * ui_scale
+	var margin := 12.0 * ui_scale
+	var peak_size := number.size * ui_scale * 1.08
+	var position := top + Vector2(-number.size.x * ui_scale * 0.5 + index * 32.0 * ui_scale, (maxf(98.0, node.size.y * 0.25) + index * 26.0) * ui_scale)
+	position.x = clampf(position.x, margin, maxf(margin, size.x - peak_size.x - margin))
+	position.y = clampf(position.y, travel + margin, maxf(travel + margin, size.y - peak_size.y - margin))
+	number.position = position
+	number.set_meta("combat_float_travel", travel)
+	number.set_meta("combat_float_ui_scale", ui_scale)
 	number.z_index = 20
 	number.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var tween := number.create_tween().set_parallel(true)
-	tween.tween_property(number, "position:y", number.position.y - 72, 0.78).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tween.tween_property(number, "scale", Vector2(1.08, 1.08), 0.1)
-	tween.chain().tween_property(number, "scale", Vector2.ONE, 0.12)
+	tween.tween_property(number, "position:y", position.y - travel, 0.78).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(number, "scale", base_scale * 1.08, 0.1)
+	tween.chain().tween_property(number, "scale", base_scale, 0.12)
 	tween.parallel().tween_property(number, "modulate:a", 0.0, 0.78)
 	tween.chain().tween_callback(number.queue_free)
 

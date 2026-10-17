@@ -7,6 +7,7 @@ from __future__ import annotations
 import argparse
 import collections
 import concurrent.futures
+import hashlib
 import json
 import math
 import os
@@ -21,8 +22,9 @@ try:
 except ImportError:
     psutil = None
 from cloud_load_test import ROOT, CLIENT, stop_all, health_probe, read_json
-from gameplay_load_validation import aggregate_window, request_cutoffs, workload_snapshot, owned_statuses, new_events, classify_stop, provenance
+from gameplay_load_validation import aggregate_window, workload_profile_identity, native_frame_observations, assess_cutoff_clock, request_cutoffs, workload_snapshot, owned_statuses, new_events, classify_stop, provenance
 from pr13_runtime_evidence import coverage, reconcile_cycles, result_dimensions, sampling_integrity
+from pr13_audit_archive import read_owned_audits
 from pr13_local_network import LocalOrigins
 from pr13_server_diagnostics import current_window
 from pr13_resource_policy import DEFAULT_GENERATOR_FLOOR, memory_causes, launch_memory_ready, latency_causes
@@ -38,7 +40,8 @@ QUERIES = {
 COVERAGE_METADATA = {'profile','acceptance_scope','launch_interval_seconds','http_transport','resource_source','server_metrics_missing_reason','client_max_fps','fps_scope',
                      'distinct_local_client_ips','client_memory_start_budget_mib','hero_class','strategy','strategy_seed','cycle_limit_seconds',
                      'minimum_generator_memory_bytes','minimum_cloud_memory_bytes',
-                     'http_p95_limit_ms','command_p95_limit_ms','health_limit_ms','monitor_timeout_seconds'}
+                     'http_p95_limit_ms','command_p95_limit_ms','health_limit_ms','monitor_timeout_seconds',
+                     'maximum_run_seconds','workload_profile_id','workload_profile_qualified','workload_profile_missing_reason'}
 
 def metrics(base, timeout_seconds=3):
     result = dict.fromkeys(QUERIES)
@@ -105,7 +108,11 @@ def read_owned_statuses(processes, cache=None, now_monotonic_ms=None, *, require
             # read must supply an actual heartbeat rather than refresh cache.
             for attempt in range(1, 4):
                 try:
+                    if path.stat().st_size > MAX_NATIVE_FINAL_REPORT_BYTES:
+                        raise ValueError('Native status byte limit exceeded')
                     raw = path.read_text(encoding='utf8')
+                    if len(raw.encode('utf8')) > MAX_NATIVE_FINAL_REPORT_BYTES:
+                        raise ValueError('Native status byte limit exceeded')
                     break
                 except (OSError, UnicodeError) as exc:
                     failures.append({'client_id': entry['client_id'], 'file': path.name,
@@ -166,73 +173,126 @@ def read_owned_statuses(processes, cache=None, now_monotonic_ms=None, *, require
 
 
 def read_audit_events(processes, final_clients):
-    """Read each launch's immutable audit, checking ownership and final watermark.
+    """Validate bounded original segments and spool owned events off heap."""
+    return read_owned_audits(processes, final_clients)
 
-    A valid status ring cannot repair a gap in the full JSONL archive. Foreign
-    rows are diagnosed and excluded from business counts, never relabelled.
+
+MAX_NATIVE_FINAL_REPORT_BYTES = 8 * 1024 * 1024
+
+
+def read_native_final_reports(processes, final_clients, *, max_bytes=MAX_NATIVE_FINAL_REPORT_BYTES):
+    """Validate terminal JSON independently of the last heartbeat/status file.
+
+    A valid status cannot repair a missing, corrupt, foreign, or contradictory
+    primary report. Keep raw files intact and record only bounded diagnostics.
     """
-    events, errors = [], []
+    reports, errors = [], []
     final_by_id = {row['client_id']: row for row in final_clients}
     for entry in processes:
-        cid = entry['client_id']
-        expected = 1
+        cid, path = entry['client_id'], Path(entry['report'])
+        context = dict(client_id=cid, file=path.name)
         try:
-            with Path(str(entry['report']) + '.telemetry.jsonl').open(encoding='utf8') as archive:
-                for line_number, line in enumerate(archive, 1):
-                    try:
-                        row = json.loads(line)
-                    except ValueError:
-                        errors.append(dict(client_id=cid, line=line_number, error='invalid_json'))
-                        continue
-                    if not isinstance(row, dict) or any(row.get(k) != entry.get(k)
-                            for k in ('run_id', 'client_id', 'process_epoch')):
-                        errors.append(dict(client_id=cid, line=line_number, error='foreign_event_context'))
-                        continue
-                    seq = row.get('event_seq')
-                    if not isinstance(seq, int) or isinstance(seq, bool) or seq < 1:
-                        errors.append(dict(client_id=cid, line=line_number, error='invalid_event_sequence'))
-                        continue
-                    if seq != expected:
-                        errors.append(dict(client_id=cid, line=line_number, error='event_sequence_gap_or_reorder',
-                                           expected=expected, actual=seq))
-                    if seq < expected:
-                        continue
-                    expected = seq + 1
-                    events.append(row)
-        except (OSError, UnicodeError) as exc:
-            errors.append(dict(client_id=cid, error=type(exc).__name__))
-        maximum = final_by_id.get(cid, {}).get('event_seq_max')
-        if (not isinstance(maximum, int) or isinstance(maximum, bool) or maximum < 0
-                or maximum != expected - 1):
-            errors.append(dict(client_id=cid, error='final_audit_watermark_mismatch',
-                               final_event_seq_max=maximum, audit_event_seq_max=expected - 1))
-    return events, errors
+            with path.open('rb') as stream:
+                raw = stream.read(max_bytes + 1)
+            if len(raw) > max_bytes:
+                errors.append(dict(context, error='native_final_report_too_large', limit_bytes=max_bytes))
+                continue
+            context.update(bytes=len(raw), sha256=hashlib.sha256(raw).hexdigest())
+            report = json.loads(raw.decode('utf-8'))
+        except (OSError, UnicodeError, ValueError) as exc:
+            errors.append(dict(context, error='native_final_read_failed', error_type=type(exc).__name__,
+                               line=getattr(exc, 'lineno', None), column=getattr(exc, 'colno', None)))
+            continue
+        if not isinstance(report, dict):
+            errors.append(dict(context, error='native_final_not_object'))
+            continue
+        if (type(report.get('pid')) is not int or report['pid'] != entry['process'].pid
+                or any(report.get(k) != entry.get(k) for k in ('client_id', 'run_id', 'process_epoch'))):
+            errors.append(dict(context, error='native_final_foreign_context'))
+            continue
+        invalid = []
+        for key in ('cycles_completed', 'event_seq_max', 'audit_lost_count'):
+            if type(report.get(key)) is not int or report[key] < 0:
+                invalid.append(key)
+        if type(report.get('ok')) is not bool:
+            invalid.append('ok')
+        if report.get('outcome') not in ('completed', 'cancelled', 'failed'):
+            invalid.append('outcome')
+        if not isinstance(report.get('errors'), list):
+            invalid.append('errors')
+        if (not isinstance(report.get('cleanup'), dict)
+                or report['cleanup'].get('state') not in ('Passed', 'Failed', 'Unknown')):
+            invalid.append('cleanup')
+        if invalid:
+            errors.append(dict(context, error='native_final_invalid_schema', fields=invalid))
+            continue
+        status = final_by_id.get(cid)
+        if status is None:
+            errors.append(dict(context, error='native_final_status_missing'))
+        else:
+            fields = ('cycles_completed', 'event_seq_max', 'audit_lost_count', 'errors', 'cleanup')
+            different = [key for key in fields if report[key] != status.get(key)]
+            for key in ('hero_class', 'strategy', 'strategy_seed', 'load_profile', 'cycle_limit_seconds', 'audit_storage'):
+                if key in report and report[key] != status.get(key):
+                    different.append(key)
+            if different:
+                errors.append(dict(context, error='native_final_status_disagreement', fields=different))
+        report['_primary_report_sha256'] = context['sha256']
+        report['_primary_report_bytes'] = len(raw)
+        reports.append(report)
+    return reports, errors
 
 
 def generator_resources(processes, previous):
     if psutil is None:
         return {'available':False,'reason':'psutil_missing'}, previous
     now=time.monotonic()
-    cpu_by_pid={}; rss_bytes=0; threads=0; handles=0; write_bytes=0; measured=0
-    for pid in [os.getpid()]+[entry['process'].pid for entry in processes if entry['process'].poll() is None]:
+    cpu_by_pid={}; observations=[]; excluded=[]
+    expected=[{'pid':os.getpid(),'role':'coordinator'}]
+    for entry in processes:
+        code=entry['process'].poll()
+        if code is None:
+            expected.append({'pid':entry['process'].pid,'role':'native','client_id':entry['client_id'],
+                'run_id':entry.get('run_id'),'process_epoch':entry.get('process_epoch')})
+        else:
+            excluded.append({'pid':entry['process'].pid,'client_id':entry['client_id'],'exit_code':code})
+    for entry in expected:
+        row=dict(entry)
         try:
-            process=psutil.Process(pid)
-            times=process.cpu_times()
-            cpu_by_pid[pid]=times.user+times.system
-            rss_bytes+=process.memory_info().rss
-            threads+=process.num_threads()
-            if hasattr(process,'num_handles'): handles+=process.num_handles()
-            if hasattr(process,'io_counters'): write_bytes+=process.io_counters().write_bytes
-            measured+=1
-        except (psutil.NoSuchProcess,psutil.AccessDenied,OSError):
-            continue
-    cpu_delta=sum(max(0.0, seconds-previous[1][pid]) for pid,seconds in cpu_by_pid.items() if previous is not None and pid in previous[1])
-    cpu_percent=None if previous is None or now<=previous[0] else round(100*cpu_delta/(now-previous[0]),2)
-    result={'available':True,'measured_processes':measured,'cpu_percent_of_one_core':cpu_percent,
-            'logical_cores':psutil.cpu_count(logical=True),'rss_bytes':rss_bytes,
-            'host_memory_available_bytes':psutil.virtual_memory().available,
-            'threads':threads,'handles':handles if os.name=='nt' else None,'write_bytes_cumulative':write_bytes}
+            process=psutil.Process(entry['pid']);times=process.cpu_times()
+            seconds=times.user+times.system;cpu_by_pid[entry['pid']]=seconds
+            row.update(available=True,rss_bytes=process.memory_info().rss,threads=process.num_threads())
+            if previous is None or entry['pid'] not in previous[1] or now<=previous[0]:
+                row.update(cpu_percent_of_one_core=None,cpu_missing_reason='first_or_new_process_counter')
+            else:
+                row.update(cpu_percent_of_one_core=round(100*max(0,seconds-previous[1][entry['pid']])/(now-previous[0]),2),cpu_missing_reason=None)
+            for key,method,field in [('handles','num_handles',None),('write_bytes_cumulative','io_counters','write_bytes')]:
+                try:
+                    value=getattr(process,method)();row[key]=getattr(value,field) if field else value
+                    row[key+'_missing_reason']=None
+                except (AttributeError,psutil.NoSuchProcess,psutil.AccessDenied,OSError) as error:
+                    row[key]=None;row[key+'_missing_reason']=type(error).__name__
+        except (psutil.NoSuchProcess,psutil.AccessDenied,OSError) as error:
+            row.update(available=False,missing_reason=type(error).__name__,rss_bytes=None,cpu_percent_of_one_core=None,threads=None,handles=None,write_bytes_cumulative=None)
+        row.update(packet_send_rate=None,packet_send_rate_missing_reason='No per-process socket packet counter hook; command completion rates are reported separately')
+        observations.append(row)
+    def complete_sum(key):
+        values=[row.get(key) for row in observations]
+        return sum(values) if all(value is not None for value in values) else None
+    measured=sum(row.get('available') is True for row in observations)
+    result={'available':True,'measured_processes':measured,'processes':observations,
+        'excluded_exited_native_processes':excluded,'native_alive_processes':len(expected)-1,
+        'cpu_percent_of_one_core':complete_sum('cpu_percent_of_one_core'),
+        'cpu_missing_reason':None if complete_sum('cpu_percent_of_one_core') is not None else 'First/new/unavailable process counters; partial totals are not a full generator CPU measurement',
+        'logical_cores':psutil.cpu_count(logical=True),'rss_bytes':complete_sum('rss_bytes'),
+        'rss_missing_reason':None if complete_sum('rss_bytes') is not None else 'One or more owned process RSS observations unavailable',
+        'host_memory_available_bytes':psutil.virtual_memory().available,'threads':complete_sum('threads'),
+        'handles':complete_sum('handles'),'handles_missing_reason':None if complete_sum('handles') is not None else 'One or more owned process handle observations unavailable',
+        'write_bytes_cumulative':complete_sum('write_bytes_cumulative'),
+        'packet_send_rate':None,'packet_send_rate_missing_reason':'No attributable per-process socket packet counter; I/O writes are not network packets',
+        'scope':'Measured local generator/coordinator processes, separate from cloud server metrics'}
     return result,(now,cpu_by_pid)
+
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
@@ -332,7 +392,7 @@ def main():
     source=provenance(ROOT, ('tools/gameplay_load_test.py','tools/cloud_load_test.py','tools/pr13_resource_policy.py',
         'tools/gameplay_load_validation.py','client/tests/gameplay_load_client.gd','client/state/game_store.gd',
         'client/network/gateway.gd','client/network/reusable_http_client.gd',
-        'tools/pr13_runtime_evidence.py','client/data/catalog.json',
+        'tools/pr13_runtime_evidence.py','tools/pr13_audit_archive.py','client/data/catalog.json',
         'tools/pr13_local_network.py',
         'client/ui/card_details.gd','client/state/element_rules.gd',
         'protocol/realtime/v1/realtime.proto'))
@@ -371,7 +431,13 @@ def main():
                     http_p95_limit_ms=args.http_p95_limit_ms,command_p95_limit_ms=args.command_p95_limit_ms,
                     health_limit_ms=args.health_limit_ms,monitor_timeout_seconds=args.monitor_timeout_seconds,
                     hero_class=args.hero_class,strategy=args.strategy,strategy_seed=args.strategy_seed,
-                    cycle_limit_seconds=args.cycle_limit_seconds)
+                    cycle_limit_seconds=args.cycle_limit_seconds,maximum_run_seconds=args.max_seconds)
+    profile_sources=dict(source.get('sha256',{}))
+    profile_sources.update(source.get('active_client_project',{}).get('input_hashes',{}))
+    profile_identity=workload_profile_identity(contract,profile_sources)
+    contract.update(workload_profile_id=profile_identity['workload_profile_id'],workload_profile_qualified=profile_identity['qualified'],
+        workload_profile_missing_reason=profile_identity['missing_reason'])
+    save(run_dir/'workload-profile.json',profile_identity)
     coverage([],start=0,end=1,**{k:v for k,v in contract.items() if k not in COVERAGE_METADATA})
     save(run_dir/'load-contract.json',contract)
     stop_file=args.stop_file.resolve() if args.stop_file is not None else run_dir/'STOP'
@@ -487,6 +553,8 @@ def main():
                 workload['server_confirmed_in_room']=resource.get('server_humans_in_room')
                 workload['server_count_scope']='all registered non-bot active player routes on this server; no per-run labels'
                 generator,previous_generator=generator_resources(processes,previous_generator)
+                active_native_pids={entry['process'].pid for entry in processes if entry['process'].poll() is None}
+                generator['native_frame_observations']=native_frame_observations([s for s in statuses if s.get('pid') in active_native_pids])
                 causes=[]
                 if probe_timeout: causes.append('probe_timeout')
                 if len(commands)>=10 and window['command_error_rate']>=.1: causes.append('command_rejections_10pct')
@@ -584,6 +652,7 @@ def main():
         sampling=sampling_integrity(samples,started_monotonic*1000,stop_issued_monotonic_ns/1000000,contract['maximum_gap'])
         final_status_read_errors=[]
         final_clients, final_read_errors = read_owned_statuses(processes,status_cache,require_files=True,read_errors=final_status_read_errors)
+        native_final_reports, native_report_errors = read_native_final_reports(processes, final_clients)
         tail, tail_lost = new_events(final_clients,seen)
         tail_window = aggregate_window(tail)
         final_audit_lost = sum(s.get('audit_lost_count', 0) for s in final_clients
@@ -594,26 +663,47 @@ def main():
         final_cycle_invalid = any(not isinstance(s.get('cycles_completed'), int)
             or isinstance(s.get('cycles_completed'), bool) or s['cycles_completed'] < 0 for s in final_clients)
         final_errors_invalid = any(not isinstance(s.get('errors'), list) for s in final_clients)
-        final_business_failed = any(bool(s.get('errors')) for s in final_clients)
+        final_business_failed = (any(bool(s.get('errors')) for s in final_clients)
+            or any(bool(row['errors']) for row in native_final_reports))
         post_stop_failure = any(p['process'].poll() not in (0,None) for p in processes)
         audit_events, audit_errors = read_audit_events(processes, final_clients)
         final_cutoff_ms=int(time.time()*1000)
-        cutoffs=reconcile_cycles(audit_events,stop_issued_ms,final_cutoff_ms)
+        final_cutoff_monotonic_ns=time.monotonic_ns()
+        cutoff_clock=assess_cutoff_clock(started*1000,stop_issued_ms,final_cutoff_ms,
+            start_monotonic_ms=started_monotonic*1000,
+            stop_monotonic_ms=stop_issued_monotonic_ns/1000000,
+            final_monotonic_ms=final_cutoff_monotonic_ns/1000000)
         try:
-            request_distributions=request_cutoffs(audit_events,stop_issued_ms,final_cutoff_ms,started_ms=started*1000)
-        except ValueError:
+            cutoffs=reconcile_cycles(audit_events,stop_issued_ms,final_cutoff_ms,
+                cutoff_clock_qualified=cutoff_clock['qualified'])
+        except (OSError, ValueError, RecursionError) as exc:
+            audit_errors.append({'error':'audit_stream_analysis_failed','exception':type(exc).__name__})
+            cutoffs=reconcile_cycles([],stop_issued_ms,final_cutoff_ms,
+                cutoff_clock_qualified=cutoff_clock['qualified'])
+            cutoffs['evidence_errors'].append('audit_stream_analysis_failed')
+        try:
+            request_distributions=request_cutoffs(audit_events,stop_issued_ms,final_cutoff_ms,started_ms=started*1000,
+                cutoff_clock_qualified=cutoff_clock['qualified'])
+        except (OSError, ValueError, RecursionError) as exc:
+            audit_errors.append({'error':'audit_request_analysis_failed','exception':type(exc).__name__})
             # Preserve raw timestamps and the completed cleanup when UTC jumps.
             # No corrected cutoff or elapsed duration is invented for accounting.
             request_distributions={'algorithm_version':'owned-request-cutoffs-v1',
                 'running':None,'drain':None,'final':None,
-                'evidence_errors':['invalid_request_cutoff_clock'],
+                'evidence_errors':['invalid_request_cutoff_clock' if not cutoff_clock['qualified'] else 'invalid_audit_stream'],
                 'cutoffs_unix_ms':{'start':started*1000,'stop':stop_issued_ms,'final':final_cutoff_ms},
-                'missing_reason':'UTC cutoffs reversed; raw retained, local monotonic scheduling unchanged'}
+                'missing_reason':'Audit/cutoff analysis unavailable; raw retained, local monotonic scheduling unchanged'}
+        finally:
+            if hasattr(audit_events, 'close'):
+                try:
+                    audit_events.close()
+                except OSError as exc:
+                    audit_errors.append({'error':'audit_spool_cleanup_failed','exception':type(exc).__name__})
         final_cycle_disagreement = any(s.get('cycles_completed') !=
             cutoffs['final']['cycles_by_client'].get(s['client_id'], 0) for s in final_clients)
         coverage_evidence_failed = bool(load_coverage.get('evidence_errors'))
         origin_evidence_failed = local_origins is not None and bool(local_origins.errors)
-        final_evidence_failed = bool(final_read_errors or tail_lost or tail_window['invalid_metric_count']
+        final_evidence_failed = bool(final_read_errors or native_report_errors or tail_lost or tail_window['invalid_metric_count']
             or final_audit_lost or final_audit_invalid or final_cycle_invalid or final_cycle_disagreement or final_errors_invalid
             or audit_errors or cutoffs['evidence_errors'] or request_distributions['evidence_errors'] or coverage_evidence_failed or origin_evidence_failed)
         # An operator may intentionally end a run before its first sample.
@@ -650,6 +740,8 @@ def main():
             performance_inputs['actor_wait_samples']==len(samples))
         business_cleanup_failed = any(isinstance(client.get('cleanup'), dict)
             and client['cleanup'].get('state') == 'Failed' for client in final_clients)
+        business_cleanup_failed = business_cleanup_failed or any(
+            row['cleanup']['state'] == 'Failed' for row in native_final_reports)
         dimensions=result_dimensions(execution=not reason.startswith('coordinator_error:') and process_cleanup_complete
                 and not final_business_failed,
             evidence=not bool(final_evidence_failed or not sampling['passed'] or
@@ -663,6 +755,7 @@ def main():
             outcome={'classification':'incomplete_acceptance','passed':False,'exit_code':1}
         final_triggers = []
         for failed, trigger in ((final_read_errors, 'final_status_read_failed'),
+                (native_report_errors, 'native_final_report_invalid'),
                 (tail_lost, 'tail_event_loss'), (tail_window['invalid_metric_count'], 'tail_invalid_metric'),
                 (final_audit_lost, 'final_audit_loss'), (final_audit_invalid, 'final_audit_count_invalid'),
                 (final_cycle_invalid, 'final_cycle_count_invalid'), (final_errors_invalid, 'final_errors_schema_invalid'),
@@ -679,6 +772,7 @@ def main():
             'stop_reason':reason,'outcome':outcome,'source':source,'cleanup_error':cleanup_error,
             'load_window_verified':load_verified,'required_samples':required_samples,
             'stop_issued_monotonic_ns':stop_issued_monotonic_ns,'stop_issued_ms':stop_issued_ms,
+            'final_cutoff_monotonic_ns':final_cutoff_monotonic_ns,'cutoff_clock_quality':cutoff_clock,
             'load_contract':contract,'load_coverage':load_coverage,'result_dimensions':dimensions,
             'launch_manifest':'launch-manifest.json','launch_receipts':launch_receipts,
             'sampling_integrity':sampling,'started_monotonic_ms':started_monotonic*1000,
@@ -686,6 +780,10 @@ def main():
             'cycle_cutoffs':cutoffs,'request_distributions':request_distributions,'audit_read_errors':audit_errors,
             'final_read_errors':final_read_errors,'tail_lost_event_count':tail_lost,
             'final_status_read_errors':final_status_read_errors,
+            'native_final_report_errors':native_report_errors,
+            'native_final_reports':[{key:row[key] for key in ('client_id','pid','ok','outcome','cycles_completed',
+                'event_seq_max','audit_lost_count','cleanup','_primary_report_sha256','_primary_report_bytes')} for row in native_final_reports],
+            'native_final_report_limit_bytes':MAX_NATIVE_FINAL_REPORT_BYTES,
             'tail_window':tail_window,'post_stop_failure':post_stop_failure,
             'final_audit_lost_count':final_audit_lost,'final_audit_count_invalid':final_audit_invalid,
             'final_triggers':final_triggers,

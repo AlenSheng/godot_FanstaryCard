@@ -87,8 +87,35 @@ def coverage(samples, *, start, end, target_online, target_active,
             "evidence_errors": evidence_errors}
 
 
-def reconcile_cycles(events, stop_ms, final_ms):
+def reconcile_cycles(events, stop_ms, final_ms, *, cutoff_clock_qualified=True):
     """One derivation for total/table/cutoffs; never infer cycles from process exit."""
+    if type(cutoff_clock_qualified) is not bool:
+        raise ValueError('Explicit cutoff clock qualification required')
+    if getattr(events, '_owned_audit_stream_version', None) == 1:
+        business, stream_errors = [], set()
+        for e in events:
+            if not isinstance(e, dict):
+                stream_errors.add('invalid_event'); continue
+            identity = tuple(e.get(k) for k in ('run_id','client_id','process_epoch','event_seq'))
+            if (any(not isinstance(v,str) or not v for v in identity[:3]) or
+                    type(identity[3]) is not int or identity[3] < 1 or
+                    not finite(e.get('at_unix_ms')) or e['at_unix_ms'] < 0 or
+                    not isinstance(e.get('cycle_id'),str) or not e['cycle_id']):
+                stream_errors.add('missing_context'); continue
+            kind = e.get('event_type')
+            if not isinstance(kind,str) or not kind:
+                stream_errors.add('invalid_event_type'); continue
+            if e.get('match_id') is not None and not isinstance(e['match_id'],str):
+                stream_errors.add('invalid_business_match_type'); continue
+            if kind in ('settlement.acknowledged','cycle.completed') and (
+                    not isinstance(e.get('match_id'),str) or not e['match_id']):
+                stream_errors.add('missing_business_context'); continue
+            if kind in ('settlement.acknowledged','cycle.completed','battle.abandon.fallback'):
+                business.append({k:e.get(k) for k in ('run_id','client_id','process_epoch','event_seq',
+                                                     'at_unix_ms','cycle_id','match_id','event_type')})
+        result = reconcile_cycles(business, stop_ms, final_ms, cutoff_clock_qualified=cutoff_clock_qualified)
+        result['evidence_errors'] = sorted(set(result['evidence_errors']) | stream_errors)
+        return result
     unique = {}
     errors = []
     for e in events:
@@ -112,9 +139,10 @@ def reconcile_cycles(events, stop_ms, final_ms):
         unique.setdefault(identity, e)
     buckets = {"running": [], "drain": [], "final": []}
     for e in unique.values():
-        if e["at_unix_ms"] > final_ms: continue
+        if cutoff_clock_qualified and e["at_unix_ms"] > final_ms: continue
         buckets["final"].append(e)
-        buckets["running" if e["at_unix_ms"] <= stop_ms else "drain"].append(e)
+        if cutoff_clock_qualified:
+            buckets["running" if e["at_unix_ms"] <= stop_ms else "drain"].append(e)
     acknowledgements = {}
     business_fields = ('run_id', 'client_id', 'process_epoch', 'cycle_id', 'match_id')
     for e in buckets['final']:
@@ -146,9 +174,14 @@ def reconcile_cycles(events, stop_ms, final_ms):
                 "distribution": dict(sorted(Counter(complete.values()).items())),
                 "fallback_cycles": len(fallback)}
     result = {name: derive(rows) for name, rows in buckets.items()}
-    for key in ("acknowledgements", "completed_cycles"):
-        if result["running"][key] + result["drain"][key] != result["final"][key]:
-            errors.append("cutoff_conservation")
+    if cutoff_clock_qualified:
+        for key in ("acknowledgements", "completed_cycles"):
+            if result["running"][key] + result["drain"][key] != result["final"][key]:
+                errors.append("cutoff_conservation")
+    else:
+        result['running'] = result['drain'] = None
+        result['cutoff_classification'] = 'Unavailable: coordinator cutoff clock unqualified; final contains all caller-owned audit events'
+        errors.append('cutoff_clock_unqualified')
     # Zero-cycle clients must be taken from a launch manifest, never guessed here.
     result["zero_cycle_clients"] = None
     result["zero_cycle_reason"] = "requires_launch_manifest"

@@ -1,7 +1,9 @@
 """Pure gameplay-load accounting. No network calls and no server-side writes."""
 from __future__ import annotations
 
+import copy
 import hashlib
+import json
 import math
 import platform
 import statistics
@@ -163,19 +165,67 @@ def aggregate_window(statuses: list[dict], *, observed_seconds: float | None = N
     }
 
 
+def assess_cutoff_clock(start_unix_ms, stop_unix_ms, final_unix_ms, *,
+                        start_monotonic_ms, stop_monotonic_ms,
+                        final_monotonic_ms=None, maximum_drift_ms=1000):
+    """Qualify coordinator UTC cutoffs without inventing a corrected clock map.
+
+    The tolerance covers adjacent timestamp capture jitter. This only checks
+    the coordinator's own clock observations, not clock mapping to other hosts.
+    """
+    points = {'start': start_unix_ms, 'stop': stop_unix_ms, 'final': final_unix_ms}
+    monotonic = {'start': start_monotonic_ms, 'stop': stop_monotonic_ms,
+                 'final': final_monotonic_ms}
+    errors = []
+    drifts = {}
+    if not _number(maximum_drift_ms) or maximum_drift_ms < 0:
+        raise ValueError('Finite nonnegative cutoff clock tolerance required')
+    if any(not _number(value) or value < 0 for value in points.values()):
+        errors.append('invalid_coordinator_unix_cutoffs')
+    elif stop_unix_ms < start_unix_ms or final_unix_ms < stop_unix_ms:
+        errors.append('invalid_coordinator_unix_order')
+    if any(not _number(monotonic[k]) or monotonic[k] < 0 for k in ('start', 'stop')):
+        errors.append('missing_coordinator_monotonic_cutoffs')
+    elif monotonic['stop'] < monotonic['start']:
+        errors.append('invalid_coordinator_monotonic_order')
+    elif not errors:
+        drifts['running'] = ((stop_unix_ms - start_unix_ms) -
+                             (stop_monotonic_ms - start_monotonic_ms))
+    if not _number(final_monotonic_ms) or final_monotonic_ms < 0:
+        errors.append('missing_final_coordinator_monotonic_cutoff')
+    elif _number(stop_monotonic_ms) and final_monotonic_ms < stop_monotonic_ms:
+        errors.append('invalid_coordinator_monotonic_order')
+    elif not errors:
+        drifts['final'] = ((final_unix_ms - start_unix_ms) -
+                          (final_monotonic_ms - start_monotonic_ms))
+        drifts['drain'] = ((final_unix_ms - stop_unix_ms) -
+                          (final_monotonic_ms - stop_monotonic_ms))
+    if any(abs(value) > maximum_drift_ms for value in drifts.values()):
+        errors.append('coordinator_wall_clock_discontinuity')
+    return {'algorithm_version': 'coordinator-cutoff-clock-v1',
+            'qualified': not errors, 'evidence_errors': sorted(set(errors)),
+            'maximum_capture_drift_ms': maximum_drift_ms,
+            'wall_minus_monotonic_elapsed_ms': drifts,
+            'cutoffs_unix_ms': points, 'cutoffs_monotonic_ms': monotonic,
+            'clock_mapping_corrected': False,
+            'scope': 'Local coordinator capture consistency; no cross-process or host mapping inferred'}
+
+
 def request_cutoffs(events: list[dict], stop_ms: float, final_ms: float,
-                    *, started_ms: float | None = None) -> dict:
+                    *, started_ms: float | None = None, cutoff_clock_qualified: bool = True) -> dict:
     """Recompute request distributions from the owned immutable audit, not window P95s.
 
     Completion timestamps partition running and STOP drain. Origin context is
     retained in each raw record even when completion occurs in a later cycle.
     Caller ownership/sequence audit errors must also invalidate runtime evidence.
     """
-    if not isinstance(events, list) or not _number(stop_ms) or not _number(final_ms) or final_ms < stop_ms:
+    if type(cutoff_clock_qualified) is not bool:
+        raise ValueError("Explicit cutoff clock qualification required")
+    if not (isinstance(events, list) or getattr(events, '_owned_audit_stream_version', None) == 1) or not _number(stop_ms) or not _number(final_ms) or (cutoff_clock_qualified and final_ms < stop_ms):
         raise ValueError("Invalid request cutoff interval")
-    if started_ms is not None and (not _number(started_ms) or started_ms > stop_ms):
+    if started_ms is not None and (not _number(started_ms) or (cutoff_clock_qualified and started_ms > stop_ms)):
         raise ValueError("Invalid request start cutoff")
-    before, drain, seen, errors = [], [], set(), []
+    before, drain, all_owned, seen, errors = [], [], [], set(), []
     for row in events:
         if not isinstance(row, dict):
             errors.append("invalid_event_container")
@@ -190,19 +240,44 @@ def request_cutoffs(events: list[dict], stop_ms: float, final_ms: float,
             errors.append("missing_request_context")
             continue
         identity = (*context, seq)
-        if identity in seen:
+        if getattr(events, '_owned_audit_stream_version', None) != 1 and identity in seen:
             errors.append("duplicate_request_event")
             continue
-        seen.add(identity)
-        if timestamp > final_ms or (started_ms is not None and timestamp < started_ms):
-            errors.append("request_outside_run_cutoffs")
-            continue
-        (before if timestamp <= stop_ms else drain).append(row)
+        if getattr(events, '_owned_audit_stream_version', None) != 1:
+            seen.add(identity)
+        else:
+            fields = ('type','event_type','duration_ms','status','ok','result','phase','label','path','route',
+                      'timing_source','dns_ms','tcp_connect_ms','tls_handshake_ms')
+            compact = {}
+            for key in fields:
+                if key in row:
+                    value = row[key]
+                    if isinstance(value, (dict,list)):
+                        errors.append('invalid_metric_field_container')
+                        value = False
+                    compact[key] = value
+            row = compact
+        if not cutoff_clock_qualified:
+            all_owned.append(row)
+        else:
+            if timestamp > final_ms or (started_ms is not None and timestamp < started_ms):
+                errors.append("request_outside_run_cutoffs")
+                continue
+            (before if timestamp <= stop_ms else drain).append(row)
 
     def aggregate(rows, elapsed):
         return aggregate_window([{"operations": [row for row in rows if row.get("type", row.get("event_type")) == "http"],
                                   "telemetry": [row for row in rows if row.get("type", row.get("event_type")) != "http"]}],
                                 observed_seconds=elapsed if elapsed is not None and elapsed > 0 else None)
+
+    if not cutoff_clock_qualified:
+        final = aggregate(all_owned, None)
+        final['throughput_missing_reason'] = 'coordinator_cutoff_clock_unqualified'
+        return {"algorithm_version": "owned-request-cutoffs-v1",
+                "running": None, "drain": None, "final": final,
+                "evidence_errors": errors + ['cutoff_clock_unqualified'],
+                "cutoffs_unix_ms": {"start": started_ms, "stop": stop_ms, "final": final_ms},
+                "classification": "Full caller-owned audit retained; running/drain membership unavailable because coordinator cutoff clock is unqualified"}
 
     return {"algorithm_version": "owned-request-cutoffs-v1",
             "running": aggregate(before, None if started_ms is None else (stop_ms - started_ms) / 1000),
@@ -408,6 +483,43 @@ def classify_stop(reason: str, *, smoke_verified: bool = False, load_verified: b
     else:
         classification, code = "incomplete_or_failed", 1
     return {"classification": classification, "passed": code == 0, "exit_code": code}
+
+
+def workload_profile_identity(contract: dict, source_hashes: dict) -> dict:
+    """A family name alone does not identify changed FPS, policy or source bytes."""
+    if not isinstance(contract, dict) or not contract or not isinstance(source_hashes, dict):
+        raise ValueError('Explicit workload contract and source hashes required')
+    definition = {'contract': copy.deepcopy(contract), 'source_hashes': dict(source_hashes)}
+    canonical = json.dumps(definition, sort_keys=True, separators=(',', ':'), allow_nan=False)
+    qualified = bool(source_hashes) and all(isinstance(v, str) and len(v) == 64
+        and all(c in '0123456789abcdef' for c in v) for v in source_hashes.values())
+    return {'algorithm_version': 'complete-workload-profile-v1',
+            'profile_family': contract.get('profile'),
+            'workload_profile_id': 'workload:' + hashlib.sha256(canonical.encode()).hexdigest(),
+            'qualified': qualified,
+            'missing_reason': None if qualified else 'source_byte_hashes_unavailable',
+            'definition': definition}
+
+
+def native_frame_observations(statuses: list[dict]) -> list[dict]:
+    """Read already-owned native status frames; never substitute the FPS argument."""
+    result = []
+    for status in statuses:
+        observation = {'client_id': status.get('client_id'), 'pid': status.get('pid')}
+        frame = status.get('generator_frame_clock')
+        if not isinstance(frame, dict):
+            observation.update(process_fps=None, missing_reason='native_frame_clock_not_published')
+        elif (type(frame.get('process_frames')) is not int or frame['process_frames'] < 0
+                or not _number(frame.get('observed_ms')) or frame['observed_ms'] <= 0):
+            observation.update(process_fps=None, missing_reason='native_frame_observation_interval_unavailable')
+        else:
+            observation.update(process_fps=frame['process_frames'] * 1000 / frame['observed_ms'],
+                process_frames=frame['process_frames'], observed_ms=frame['observed_ms'],
+                engine_max_fps=frame.get('engine_max_fps'),
+                scope='Owned SceneTree process frames/local elapsed clock; not rendered FPS or network packets',
+                missing_reason=None)
+        result.append(observation)
+    return result
 
 
 def provenance(root: Path, paths: tuple[str, ...]) -> dict:

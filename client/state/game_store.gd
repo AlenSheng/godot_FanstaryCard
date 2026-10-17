@@ -112,6 +112,12 @@ func _process(_delta: float) -> void:
 		pending_changed = true
 	for request_id in _pending_commands.keys():
 		if Time.get_ticks_msec() > int(_pending_commands[request_id].get("deadline", 0)):
+			var expired: Dictionary = _pending_commands[request_id]
+			var timeout := {"type":"command_lifecycle", "event_type":"command.state_timeout" if expired.get("confirmed", false) else "command.timeout",
+				"request_id":request_id, "action":expired.get("action", ""), "result":"state_timeout" if expired.get("confirmed", false) else "timeout",
+				"execution_outcome":"confirmed_state_missing" if expired.get("confirmed", false) else "unknown", "trace_only":true}
+			timeout.merge(expired.get("origin_context", {}), false)
+			_on_gateway_telemetry(timeout)
 			if _pending_commands[request_id].get("confirmed", false):
 				# The write succeeded, but its new state is still missing. Restore
 				# the authoritative room through reconnect rather than resend it.
@@ -866,6 +872,27 @@ func _preview_context(ids: Array) -> Dictionary:
 		"target": battle.get("opponent", {}).duplicate(true) if room.has("duel") else _monster_by_id(battle).duplicate(true),
 		"opponent_status": battle.get("opponent_status", {}).duplicate(true), "opponent_class": battle.get("opponent_class", "")}
 
+func _preview_recovery_auxiliary(estimate: Dictionary, authority: Dictionary) -> Dictionary:
+	var result := {}
+	for spec in [["heal", "heal_overflow"], ["shield_gain", "shield_overflow"]]:
+		var gain: String = spec[0]
+		var overflow: String = spec[1]
+		if authority.has(overflow):
+			if typeof(authority[overflow]) == TYPE_INT and int(authority[overflow]) >= 0:
+				result[overflow] = authority[overflow]
+				result[overflow + "_source"] = "authority"
+			else:
+				result[overflow + "_source"] = "unavailable"
+				result[overflow + "_missing_reason"] = "invalid_authority_auxiliary_value"
+		elif typeof(estimate.get(overflow)) == TYPE_INT and int(estimate[overflow]) >= 0 and typeof(estimate.get(gain)) == TYPE_INT and estimate[gain] == authority.get(gain, 0):
+			result[overflow] = estimate[overflow]
+			result[overflow + "_source"] = "snapshot_estimate"
+			result[overflow + "_authority_missing_reason"] = "not_published_in_realtime_protocol"
+		else:
+			result[overflow + "_source"] = "unavailable"
+			result[overflow + "_missing_reason"] = "local_estimate_unavailable_or_disagrees_with_authority"
+	return result
+
 func _accept_combat_preview(payload: Dictionary) -> void:
 	if payload.get("_replayed", false): return
 	if not allowed("battle.play_cards") or not target_alive(combat_target_id()): return
@@ -877,7 +904,11 @@ func _accept_combat_preview(payload: Dictionary) -> void:
 	if payload.has("battle_id") and payload.battle_id != context.battle_id: return
 	if payload.has("target_id") and payload.target_id != context.target_id: return
 	if payload.has("card_instance_ids") and payload.card_instance_ids != context.card_instance_ids: return
+	var auxiliary := _preview_recovery_auxiliary(_calculate_combat_preview(selected_cards), payload)
 	combat_preview = payload.duplicate(true)
+	for field in ["heal_overflow", "shield_overflow"]:
+		if auxiliary.get(field + "_source", "") == "unavailable": combat_preview.erase(field)
+	combat_preview.merge(auxiliary, true)
 	combat_preview["source_revision"] = revision
 	combat_preview["authoritative"] = true
 	combat_preview["control_estimated"] = false
@@ -1276,7 +1307,7 @@ func _send_queued_command(queued: Dictionary) -> bool:
 	if gateway.send(queued.action, queued.payload, request_id):
 		var deadline := Time.get_ticks_msec() + 3000
 		_play_deadline = deadline
-		_pending_commands[request_id] = {"action": queued.action, "payload": queued.payload.duplicate(true), "room_id": room.get("room_id", ""), "sent_revision": int(room.get("room_revision", 0)), "retry": queued.get("retry", false), "deadline": deadline}
+		_pending_commands[request_id] = {"action": queued.action, "payload": queued.payload.duplicate(true), "room_id": room.get("room_id", ""), "sent_revision": int(room.get("room_revision", 0)), "retry": queued.get("retry", false), "deadline": deadline, "origin_context": gateway.capture_context()}
 		if queued.action == "battle.play_cards":
 			_pending_play = {"request_id": request_id, "room_id": room.get("room_id", ""), "payload": queued.payload.duplicate(true), "retry": queued.get("retry", false)}
 		_sound_commands[request_id] = {"action": queued.action, "room_id": room.get("room_id", "")}

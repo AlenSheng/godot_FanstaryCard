@@ -39,7 +39,8 @@ static func build(ui: Control, host: Control) -> void:
 		ui.button(MonsterPool.text("title") + " (%d)" % pool.get("pending", []).size(), Rect2(1210, 35, 340, 62), func(): MonsterPool.open(host))
 	var numerics: Dictionary = state.get("player", {}).get("numerical_state", {})
 	if numerics.get("guardian_policy", "") == "FractionalRemainder" and Game.hero_class == "Guardian":
-		var remainder: Button = ui.button("%d / 10" % int(numerics.get("guardian_remainder_tenths", 0)), Rect2(1580, 35, 120, 62), func(): preload("res://ui/numerical_details.gd").show_remainder(host))
+		var remainder_bounds := Rect2(980, 49, 120, 61) if phase in ["Pve", "Pvp"] else Rect2(1580, 35, 120, 62)
+		var remainder: Button = ui.button("%d / 10" % int(numerics.get("guardian_remainder_tenths", 0)), remainder_bounds, func(): preload("res://ui/numerical_details.gd").show_remainder(host))
 		remainder.name = "GuardianRemainder"
 		remainder.tooltip_text = preload("res://ui/numerical_details.gd").text("weapon") % int(numerics.get("guardian_remainder_tenths", 0))
 	var duel: Dictionary = state.get("duel", {})
@@ -109,6 +110,16 @@ static func _health(ui: Control, combat: Dictionary, rect: Rect2, enemy: bool = 
 static func _status(ui: Control, name: String, rect: Rect2) -> void:
 	var label: Label = ui.text("", rect, 23, P.TEAL)
 	label.name = name
+	if name.begins_with("MonsterStatus_"):
+		var style := P.box(P.INK, Color("47626a"), 1)
+		style.set_corner_radius_all(6)
+		style.content_margin_left = 4
+		style.content_margin_right = 4
+		style.content_margin_top = 0
+		style.content_margin_bottom = 0
+		label.add_theme_stylebox_override("normal", style)
+		label.add_theme_color_override("font_outline_color", P.INK)
+		label.add_theme_constant_override("outline_size", 2)
 	label.visible = false
 
 static func _passive(ui: Control, hero_class: String, rect: Rect2, above_preview: bool = false) -> void:
@@ -174,7 +185,8 @@ static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 			else:
 				_center(ui.text(P.localized("defeated"), Rect2(x + 24 * slot_scale, 126, 315 * slot_scale, 58), 32, P.MUTED))
 			_health(ui, monster, Rect2(x + 24 * slot_scale, 190, 315 * slot_scale, 114), true)
-			_status(ui, "MonsterStatus_%d" % index, Rect2(x + 24 * slot_scale, 308, 350 * slot_scale, 32))
+			var status_y := 308.0 if int(monster.get("shield", 0)) > 0 else 266.0
+			_status(ui, "MonsterStatus_%d" % index, Rect2(x + 24 * slot_scale, status_y, 350 * slot_scale, 32))
 			var name: String = host._monster_name(monster.get("monster_id", ""))
 			if monster.get("monster_id", "") == "annihilation-core": name += P.localized("exploration_boss_phase") % boss_phase
 			if can_select_target and alive:
@@ -291,8 +303,14 @@ static func _preview(ui: Control) -> void:
 			ui.text("%s +%s" % [P.localized(entry[1]), preview.get(entry[0], 0)], Rect2(x, 12, 130, 34), 22, entry[2], panel, false)
 			x += 130
 	var effects: Array[String] = []
-	if int(preview.get("heal_overflow", 0)) > 0: effects.append(P.localized("battle_preview_heal_overflow") % preview.heal_overflow)
-	if int(preview.get("shield_overflow", 0)) > 0: effects.append(P.localized("battle_preview_shield_overflow") % preview.shield_overflow)
+	if int(preview.get("heal_overflow", 0)) > 0:
+		var key := "battle_preview_heal_overflow_estimate" if preview.get("heal_overflow_source", "") == "snapshot_estimate" else "battle_preview_heal_overflow"
+		effects.append(P.localized(key) % preview.heal_overflow)
+	elif preview.get("heal_overflow_source", "") == "unavailable": effects.append(P.localized("battle_preview_heal_overflow_unknown"))
+	if int(preview.get("shield_overflow", 0)) > 0:
+		var key := "battle_preview_shield_overflow_estimate" if preview.get("shield_overflow_source", "") == "snapshot_estimate" else "battle_preview_shield_overflow"
+		effects.append(P.localized(key) % preview.shield_overflow)
+	elif preview.get("shield_overflow_source", "") == "unavailable": effects.append(P.localized("battle_preview_shield_overflow_unknown"))
 	for entry in [["stun_seconds", "battle_status_stun"], ["draw_block_seconds", "battle_status_draw_block"], ["health_cost", "battle_preview_health_cost"], ["immediate_draw", "battle_preview_draw_cards"]]:
 		if float(preview.get(entry[0], 0)) > 0: effects.append(P.localized(entry[1]) % preview[entry[0]])
 	if float(preview.get("draw_charge", "0")) > 0: effects.append(P.localized("exploration_preview_charge") % Details.percent(float(preview.draw_charge)))
@@ -312,9 +330,12 @@ static func _preview(ui: Control) -> void:
 	panel.tooltip_text = P.localized("exploration_preview_tooltip") % [actual_damage, shield_damage, hp_damage, " · ".join(formula), " · ".join(effects)]
 	if preview.get("control_estimated", false): panel.tooltip_text += "\n" + P.localized("battle_preview_control_estimate")
 	if int(preview.get("heal_overflow", 0)) + int(preview.get("shield_overflow", 0)) > 0:
-		panel.tooltip_text += "\n" + P.localized("battle_preview_overflow") % [int(preview.get("heal_overflow", 0)), int(preview.get("shield_overflow", 0))]
+		var overflow_key := "battle_preview_overflow_estimate" if preview.get("heal_overflow_source", "") == "snapshot_estimate" or preview.get("shield_overflow_source", "") == "snapshot_estimate" else "battle_preview_overflow"
+		panel.tooltip_text += "\n" + P.localized(overflow_key) % [int(preview.get("heal_overflow", 0)), int(preview.get("shield_overflow", 0))]
 	if int(preview.get("shield_gain", 0)) + int(preview.get("shield_overflow", 0)) > 0:
-		panel.tooltip_text += "\n" + P.localized("battle_preview_shield_parts") % [int(preview.get("shield_gain", 0)) + int(preview.get("shield_overflow", 0)), int(preview.get("shield_gain", 0)), int(preview.get("shield_overflow", 0))]
+		var parts_key := "battle_preview_shield_parts_estimate" if preview.get("shield_overflow_source", "") == "snapshot_estimate" else "battle_preview_shield_parts"
+		if preview.get("shield_overflow_source", "") == "unavailable": panel.tooltip_text += "\n" + P.localized("battle_preview_shield_parts_unknown") % int(preview.get("shield_gain", 0))
+		else: panel.tooltip_text += "\n" + P.localized(parts_key) % [int(preview.get("shield_gain", 0)) + int(preview.get("shield_overflow", 0)), int(preview.get("shield_gain", 0)), int(preview.get("shield_overflow", 0))]
 
 static func _duel(ui: Control, host: Control, state: Dictionary) -> void:
 	var player: Dictionary = state.player

@@ -219,6 +219,8 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
                     operations=[e for e in ring if e['type'] == 'http'],
                     audit_lost_count=0, errors=[], cleanup={'state': 'Passed'})
                 if require_files and final_status_change: final_status_change(status)
+                if require_files:
+                    entry['report'].write_text(json.dumps(dict(status, ok=True, outcome='completed')), encoding='utf8')
                 Path(str(entry['report']) + '.telemetry.jsonl').write_text(
                     ''.join(json.dumps(e) + '\n' for e in events), encoding='utf8')
                 statuses.append(status)
