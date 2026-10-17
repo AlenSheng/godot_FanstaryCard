@@ -574,9 +574,9 @@ func _render() -> void:
 		"shop": _shop()
 		"market": _market()
 
-func _label(parent: Node, text: String, size: int = 24, color: Color = P.PAPER) -> Label:
+func _label(parent: Node, text: String, size: int = 24, color: Color = P.PAPER, localize: bool = true) -> Label:
 	var node := Label.new()
-	var display_text := P.localized_text(text)
+	var display_text := P.localized_text(text) if localize else text
 	var typeface := P.font_for_text(display_text, size)
 	node.add_theme_font_override("font", typeface)
 	node.text = display_text
@@ -736,7 +736,7 @@ func _navigate(value: String) -> void:
 func _hall() -> void:
 	_label(content, "余火营地", 56, P.GOLD)
 	var identity := _row(content)
-	_label(identity, "%s · UID %s" % [Game.lobby.player.get("displayName", ""), Game.lobby.player.get("userId", "")], 20, P.MUTED)
+	_label(identity, "%s · UID %s" % [Game.lobby.player.get("displayName", ""), Game.lobby.player.get("userId", "")], 20, P.MUTED, false)
 	_button(identity, "切换账号", Game.logout, Game.busy)
 	var classes := _row(content)
 	for key in P.CLASSES:

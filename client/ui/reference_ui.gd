@@ -46,9 +46,9 @@ func build(source: Control) -> void:
 			"market": _market()
 	text(Game.connection, Rect2(1260, 1038, 620, 30), 18, P.MUTED).horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 
-func text(value: String, rect: Rect2, font_size: int = 24, color: Color = P.PAPER, parent: Node = null, fit_to_rect: bool = true) -> Label:
+func text(value: String, rect: Rect2, font_size: int = 24, color: Color = P.PAPER, parent: Node = null, fit_to_rect: bool = true, localize: bool = true) -> Label:
 	var label := Label.new()
-	var display_text := P.localized_text(value)
+	var display_text := P.localized_text(value) if localize else value
 	label.text = display_text
 	var typeface := P.font_for_text(display_text, font_size)
 	label.add_theme_font_override("font", typeface)
@@ -127,7 +127,7 @@ func _header() -> void:
 		return_button.set_meta("sound_cue", "")
 		text(names.get(host.screen, "营地"), Rect2(240, 30, 500, 60), 38, P.GOLD)
 	var player: Dictionary = Game.lobby.get("player", {})
-	var identity := text("%s\nUID %s" % [player.get("displayName", ""), player.get("userId", "")], Rect2(745, 25, 530, 70), 20, P.MUTED)
+	var identity := text("%s\nUID %s" % [player.get("displayName", ""), player.get("userId", "")], Rect2(745, 25, 530, 70), 20, P.MUTED, null, true, false)
 	identity.name = "AccountIdentity"
 	var legacy_switch := button("切换账号", Rect2(1285, 32, 180, 52), Game.logout, Game.busy)
 	legacy_switch.name = "SwitchAccountButton"
