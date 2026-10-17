@@ -1,0 +1,177 @@
+{
+  "kind": "LOAD082CurrentNativeSingleflightPairedEXPERIMENTReview",
+  "verified_unique_case_profiles": 3,
+  "case_arm_observations": 36,
+  "profiles_newly_executed": [
+    "EXPERIMENT"
+  ],
+  "formal_task_state": "Partial",
+  "formal_state_changes": false,
+  "plan_pair_blocks": 6,
+  "actual_native_arms": 12,
+  "paired_load_axes": {
+    "transports": [
+      "per-request",
+      "reusable"
+    ],
+    "callers": [
+      2,
+      4,
+      8
+    ],
+    "response_padding_bytes": [
+      256,
+      16384,
+      98304
+    ],
+    "counterbalanced_order": true
+  },
+  "pairs": [
+    {
+      "transport": "per-request",
+      "block": 1,
+      "callers": 2,
+      "payload_padding_bytes": 256,
+      "baseline_burst_requests": 2,
+      "current_burst_requests": 1,
+      "saved_underlying_requests": 1,
+      "all_three_cases_in_both_arms_passed": true
+    },
+    {
+      "transport": "per-request",
+      "block": 2,
+      "callers": 4,
+      "payload_padding_bytes": 16384,
+      "baseline_burst_requests": 4,
+      "current_burst_requests": 1,
+      "saved_underlying_requests": 3,
+      "all_three_cases_in_both_arms_passed": true
+    },
+    {
+      "transport": "per-request",
+      "block": 3,
+      "callers": 8,
+      "payload_padding_bytes": 98304,
+      "baseline_burst_requests": 8,
+      "current_burst_requests": 1,
+      "saved_underlying_requests": 7,
+      "all_three_cases_in_both_arms_passed": true
+    },
+    {
+      "transport": "reusable",
+      "block": 1,
+      "callers": 2,
+      "payload_padding_bytes": 256,
+      "baseline_burst_requests": 2,
+      "current_burst_requests": 1,
+      "saved_underlying_requests": 1,
+      "all_three_cases_in_both_arms_passed": true
+    },
+    {
+      "transport": "reusable",
+      "block": 2,
+      "callers": 4,
+      "payload_padding_bytes": 16384,
+      "baseline_burst_requests": 4,
+      "current_burst_requests": 1,
+      "saved_underlying_requests": 3,
+      "all_three_cases_in_both_arms_passed": true
+    },
+    {
+      "transport": "reusable",
+      "block": 3,
+      "callers": 8,
+      "payload_padding_bytes": 98304,
+      "baseline_burst_requests": 8,
+      "current_burst_requests": 1,
+      "saved_underlying_requests": 7,
+      "all_three_cases_in_both_arms_passed": true
+    }
+  ],
+  "same_caller_reads_each_arm_group": 28,
+  "baseline_physical_burst_requests": 28,
+  "current_physical_burst_requests": 6,
+  "saved_physical_burst_requests": 22,
+  "observed_synthetic_mix_reduction_percent": 78.57142857142857,
+  "production_request_volume_latency_WAN_TLS_TTI_or_capacity_benefit_claimed": false,
+  "baseline_kind": "One test-only insertion makes GET fingerprints unique; original request_page method otherwise exact. Current arm uses unmodified working Gateway; write guard unchanged. Not an old-release benchmark.",
+  "original_byte_hash_checks": 220,
+  "binary64bit_and_unknown_field_decode_preserved": true,
+  "original_late_response_order_and_cache_freshness_verified_all12arms": true,
+  "source_inputs_verified": 2127,
+  "current_gateway_sha256": "1622b28ff98e0be7b75bb3ae8cf89c8d2cbab3877f6d924cc85301f6020e6637",
+  "source_manifest_sha256": "d2e2acdd38541f664d02cc7a2196facdaa09f85c443dd0694ba837496bcf45ad",
+  "old_PG_current_function_review": {
+    "request": {
+      "same_normalized_function_text": true,
+      "old_text_sha256": "378f473ee5d787080b8542eae00bee6958a32383e5198afa5cf53175faafa15f",
+      "current_text_sha256": "378f473ee5d787080b8542eae00bee6958a32383e5198afa5cf53175faafa15f"
+    },
+    "_request_page": {
+      "same_normalized_function_text": true,
+      "old_text_sha256": "2d4d05623fcf0b5a7514e78b459b3bdefab8be6e59372f76d9f0e59edf800287",
+      "current_text_sha256": "2d4d05623fcf0b5a7514e78b459b3bdefab8be6e59372f76d9f0e59edf800287"
+    },
+    "_request_http_transport": {
+      "same_normalized_function_text": false,
+      "old_text_sha256": "5834d6055aa7391c682450aec901c8e6bf98b4c64c384f04650900190f9811ca",
+      "current_text_sha256": "ef051a27d74b128000411511abbe876a8cdc7a1be39f5e54b278b2219eec1cf5"
+    },
+    "_decode_http_response": {
+      "same_normalized_function_text": true,
+      "old_text_sha256": "2cef16ed86692277ddcb22caca5e7de0c3a79840f1fb43417608ee8989828b15",
+      "current_text_sha256": "2cef16ed86692277ddcb22caca5e7de0c3a79840f1fb43417608ee8989828b15"
+    },
+    "_emit_http_attempt": {
+      "same_normalized_function_text": true,
+      "old_text_sha256": "4bb784a64a20528468a00677558ee451def558eb1d72ca92dec26f627da6652d",
+      "current_text_sha256": "4bb784a64a20528468a00677558ee451def558eb1d72ca92dec26f627da6652d"
+    },
+    "capture_context": {
+      "same_normalized_function_text": true,
+      "old_text_sha256": "fa11d75d56498e6a667ab01d48976914f597a9a0ebf052a9b0ab0f4c7e1f26ae",
+      "current_text_sha256": "fa11d75d56498e6a667ab01d48976914f597a9a0ebf052a9b0ab0f4c7e1f26ae"
+    },
+    "end_session": {
+      "same_normalized_function_text": true,
+      "old_text_sha256": "00850600710b5791ff14bdd56dc3766df7c9b7242f9774202f64b6bfecc527ea",
+      "current_text_sha256": "00850600710b5791ff14bdd56dc3766df7c9b7242f9774202f64b6bfecc527ea"
+    },
+    "accept_session": {
+      "same_normalized_function_text": true,
+      "old_text_sha256": "d1ed6369d35564b805f58b62ce41575cd442463d34e1fd499c547372af6e4d2d",
+      "current_text_sha256": "d1ed6369d35564b805f58b62ce41575cd442463d34e1fd499c547372af6e4d2d"
+    }
+  },
+  "old_PG_wholesale_current_requalification": false,
+  "old_PG_scope": "Original real-PG 2ddf347 observations remain valid in their declared version; request transport differs, so do not relabel as current full PG. LF-only comparison is explicit,not raw byte identity.",
+  "local_fixture_controls_passed": 12,
+  "original_fixture_type_name_error_and_five_HTTP_requests_retained": true,
+  "original_SceneTree_compile_failure_retained": true,
+  "native_starts_including_parse": 14,
+  "maximum_native_starts": 16,
+  "main_experiment_synthetic_HTTP_requests": 196,
+  "control_HTTP_requests_including_failed_control": 12,
+  "all_synthetic_HTTP_requests": 208,
+  "HTTP_cap": 300,
+  "all_native_processes_terminal": true,
+  "all_fixture_sockets_and_threads_closed": true,
+  "native_engine_and_stdout_clean_for_all12_arms": true,
+  "new_gameplay_accounts": 0,
+  "new_matches": 0,
+  "cloud_actions": false,
+  "product_code_changes": [],
+  "all_local_test_code_and_failed_evidence_preserved": true,
+  "Npgsql_pool_wait_gap_in_B113_still_open": true,
+  "no_additional_cloud_metrics_attempt": "Npgsql10.0.3 MetricsReporter has pending/timeouts/create-time metrics; they do not supply exact pool-borrow wait duration. Primary source retained in local boundary note.",
+  "human_experience_excluded": true,
+  "official_remaining_unaccepted_tasks": 77,
+  "canonical132tasks396cases_preserved": true,
+  "canonical_register_gate_MAIN_changes": false,
+  "canonical_pointer_sha256": "9a4eca654ae7bd63d1dcea46ee12f6efe42e11b194eedf6b1044d8783281db74",
+  "canonical_register_sha256": "aff75d05738e356c21b5fe42d9c433f6a597a6e6ed58f2041523312bfd3bcffe",
+  "private_original_root": "G:\\PR13Evidence\\load082-current-singleflight-experiment-20261018-r1-originals",
+  "private_original_manifest_sha256": "2c13a02170c4c30f40920984b48286b48ce2152f65d6a23a4b4886cca6f81241",
+  "private_declared_original_members": 410,
+  "all_original_raw_wire_logs_sources_not_in_Git": true
+}
