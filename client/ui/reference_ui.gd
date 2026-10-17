@@ -230,9 +230,14 @@ func _hall() -> void:
 		entry_background.stretch_mode = TextureRect.STRETCH_SCALE
 		var entry_icon := Art.image(entry_content, Art.texture(entries[i][1]), Vector2.ZERO)
 		entry_icon.position = Vector2(25, 12)
-		entry_icon.size = Vector2(168, 130)
+		entry_icon.size = Vector2(168, 88)
 		picture(Art.texture("UI/Hall/entry_frame.png"), rect)
-		var entry_title := text(P.localized(entries[i][2]), Rect2(rect.position + Vector2(18, 143), Vector2(206, 50)), 28, P.GOLD)
+		var entry_caption := P.localized(entries[i][2])
+		var entry_title := text(entry_caption, Rect2(rect.position + Vector2(18, 112), Vector2(206, 70)), 28, P.GOLD, null, false)
+		var entry_font := P.font_for_text(entry_caption, 28)
+		var title_lines := maxi(1, entry_caption.count("\n") + 1)
+		var title_line_height := (70.0 - entry_title.get_theme_constant("line_spacing") * (title_lines - 1) - 2.0) / float(title_lines)
+		entry_title.add_theme_font_size_override("font_size", P.fit_font_size(entry_font, 28, title_line_height, 198.0, entry_caption))
 		entry_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		entry_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	var version_label := text(P.localized("client_version") % str(Game.CATALOG.data.version), Rect2(42, 1038, 900, 30), 18, P.MUTED)

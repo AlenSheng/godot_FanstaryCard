@@ -1,0 +1,93 @@
+{
+  "R1_failures": [
+    {
+      "hero": "Mage",
+      "attempt": "r1",
+      "native_ok": false,
+      "actual_distinct_matches": 1,
+      "cause": "Harness requested legacy battle_exit caption absent from current UI; no product defect established",
+      "original_failure_retained": true
+    },
+    {
+      "hero": "Mage",
+      "attempt": "r2",
+      "native_ok": false,
+      "actual_distinct_matches": 0,
+      "cause": "Duplicate checkpoint filename after successful synthetic initial item seed; mutation not replayed",
+      "original_failure_retained": true
+    },
+    {
+      "hero": "Mage",
+      "attempt": "r3",
+      "native_ok": false,
+      "actual_distinct_matches": 1,
+      "cause": "Harness expected nonexistent command_confirmation key; actual reason confirming and real visible action-pending message correct",
+      "original_failure_retained": true
+    },
+    {
+      "hero": "Mage",
+      "attempt": "r4",
+      "native_ok": false,
+      "actual_distinct_matches": 2,
+      "cause": "Two completed cycles; 20s observer ended before original 30s logical HTTP budget",
+      "original_failure_retained": true
+    },
+    {
+      "hero": "Mage",
+      "attempt": "r5",
+      "native_ok": false,
+      "actual_distinct_matches": 2,
+      "cause": "Two completed cycles; 20s observer ended while real preparation HTTP still in flight",
+      "original_failure_retained": true
+    },
+    {
+      "hero": "Priest",
+      "attempt": "r1",
+      "native_ok": false,
+      "actual_distinct_matches": 3,
+      "cause": "Two main cycles; third preparation actually ended HTTP429 after original30s retry budget; helpers-only third world retained in count",
+      "original_failure_retained": true
+    }
+  ],
+  "R1_actual_unique_matches": 9,
+  "R1_actual_accounts": 21,
+  "R1_player_match_rows": 36,
+  "R1_Settled_members_and_ACKs": 35,
+  "R1_removed_member": 1,
+  "R1_synthetic_initial_items_one_per_fresh_main_attempt": 6,
+  "default_limits": {
+    "window_seconds": 60,
+    "AuthPermitLimit": 10,
+    "EconomyWritePermitLimit": 30,
+    "MarketReadPermitLimit": 120
+  },
+  "R2_private_only_limits": {
+    "AuthPermitLimit": 100,
+    "EconomyWritePermitLimit": 200,
+    "MarketReadPermitLimit": 500
+  },
+  "actual_dotnet_environment_limits_verified": true,
+  "OwnedTestBypass": false,
+  "unchanged_READY_seconds": 15,
+  "unchanged_HTTP_per_attempt_seconds": 10,
+  "unchanged_HTTP_logical_budget_seconds": 30,
+  "observer_grace_20_to_35_seconds_is_not_SUT_timeout_change": true,
+  "self_match_cap_revisions": [
+    12,
+    15,
+    21
+  ],
+  "self_cap_revised_before_additional_round": true,
+  "R2_actual_unique_matches": 9,
+  "combined_actual_unique_matches": 18,
+  "combined_actual_player_match_rows": 72,
+  "combined_Settled_and_ACKs": 71,
+  "combined_removed_members": 1,
+  "current_cumulative_match_cap": 21,
+  "conservative_player_start_cap": 84,
+  "user_task_default_cap": 300,
+  "matching_budget_or_criteria_not_relaxed_for_correctness": true,
+  "default_limit_round_remains_failed": true,
+  "no_natural_victory_or_capacity_claim": true,
+  "helper_cycle_gate_added_to_avoid_helper_only_world_when_main_fails": true
+}

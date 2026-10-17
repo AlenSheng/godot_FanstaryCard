@@ -138,7 +138,7 @@ static func _passive(ui: Control, hero_class: String, rect: Rect2, above_preview
 	var description_inset := 53.0 if above_preview else 44.0
 	var title: Label = ui.text(P.localized("signature_prefix") + names[hero_class], Rect2(rect.position + Vector2(89, title_inset), Vector2(rect.size.x - (110 if above_preview else 100), 32 if above_preview else 36)), 25, P.GOLD)
 	title.name = "PlayerPassiveTitle_" + hero_class
-	var description: Label = ui.text(descriptions[hero_class], Rect2(rect.position + Vector2(89, description_inset), Vector2(rect.size.x - (113 if above_preview else 103), rect.size.y - description_inset - (18 if above_preview else 5))), 18, P.MUTED, null, false)
+	var description: Label = ui.text(descriptions[hero_class], Rect2(rect.position + Vector2(89, description_inset), Vector2(rect.size.x - (113 if above_preview else 103), rect.size.y - description_inset - (10 if above_preview else 5))), 18, P.MUTED, null, false)
 	description.name = "PlayerPassiveDescription_" + hero_class
 
 static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
@@ -155,7 +155,7 @@ static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 		_health(ui, player.get("combat", {}), Rect2(80, 670, 310, 115))
 		_status(ui, "PlayerStatus", Rect2(80, 785, 375, 32))
 		# Leave the entire signature frame above the preview, including its final text line.
-		_passive(ui, player.get("hero_class", ""), Rect2(621, 369, 350, 144), true)
+		_passive(ui, player.get("hero_class", ""), Rect2(621, 357, 350, 156), true)
 		var monsters: Array = state.get("pve", {}).get("monsters", [])
 		var can_select_target := BattleTargets.living(state.get("pve", {})).size() > 1
 		var target_id := str(BattleTargets.current(state.get("pve", {})).get("monster_id", ""))
