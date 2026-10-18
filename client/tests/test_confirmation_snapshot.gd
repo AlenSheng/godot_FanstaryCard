@@ -11,9 +11,14 @@ class TestGateway extends "res://network/gateway.gd":
 		reconnects += 1
 		online = false
 
-func _snapshot(revision: int, room_id: String = "room") -> Dictionary:
-	return {"room_id": room_id, "room_revision": revision, "player": {"phase": "Choice", "hand": []},
+func _snapshot(revision: int, room_id: String = "room", consumed: bool = false) -> Dictionary:
+	var snapshot := {"room_id": room_id, "room_revision": revision, "player": {"phase": "Choice", "hand": []},
 		"allowed_actions": ["choice.pick"], "reward_choice": {"options": [{"option_id": "reward"}]}}
+	if consumed:
+		snapshot.erase("reward_choice")
+		snapshot.allowed_actions = []
+		snapshot.player.phase = "Action"
+	return snapshot
 
 func run_test() -> Dictionary:
 	var checks := {}
@@ -26,7 +31,7 @@ func run_test() -> Dictionary:
 		store.room = _snapshot(10)
 		store._send_queued_command({"action": "reward.choice.claim", "payload": {"option_id": "reward"}})
 		var request_id: String = gateway.sent[0].request_id
-		if scenario == "snapshot_before_ack": store._on_event("room.snapshot", _snapshot(11))
+		if scenario == "snapshot_before_ack": store._on_event("room.snapshot", _snapshot(11, "room", true))
 		store._on_event("reward.choice_claimed", {"_request_id": request_id, "_event_revision": -1 if scenario == "missing_revision" else 11})
 		if scenario == "snapshot_before_ack": checks[scenario] = not store.has_pending_commands()
 		else:
@@ -44,7 +49,7 @@ func run_test() -> Dictionary:
 				store.free()
 				gateway.free()
 				continue
-			store._on_event("room.snapshot", _snapshot(11))
+			store._on_event("room.snapshot", _snapshot(11, "room", true))
 			checks[scenario] = held and not store.has_pending_commands() and gateway.sent.filter(func(row): return row.kind == "reward.choice.claim").size() == 1
 		store.free()
 		gateway.free()

@@ -1,0 +1,1345 @@
+{
+  "scope": "OFFLINE full Native client with controlled sends; zero LIVE worlds",
+  "cases": [
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "ack_then_same_reward: applied snapshot releases confirmation",
+      "verdict": "Passed",
+      "baseline": "Failed"
+    },
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "ack_then_same_reward: initial command sent",
+      "verdict": "Passed",
+      "baseline": "Passed"
+    },
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "ack_then_same_reward: old reward keeps confirmation pending",
+      "verdict": "Passed",
+      "baseline": "Failed"
+    },
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "ack_then_same_reward: second claim cannot be sent",
+      "verdict": "Passed",
+      "baseline": "Failed"
+    },
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "cached_missing_revision: applied snapshot releases confirmation",
+      "verdict": "Passed",
+      "baseline": "Failed"
+    },
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "cached_missing_revision: initial command sent",
+      "verdict": "Passed",
+      "baseline": "Passed"
+    },
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "cached_missing_revision: old reward keeps confirmation pending",
+      "verdict": "Passed",
+      "baseline": "Failed"
+    },
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "cached_missing_revision: second claim cannot be sent",
+      "verdict": "Passed",
+      "baseline": "Failed"
+    },
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "cached_revision_ahead: applied snapshot releases confirmation",
+      "verdict": "Passed",
+      "baseline": "Failed"
+    },
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "cached_revision_ahead: initial command sent",
+      "verdict": "Passed",
+      "baseline": "Passed"
+    },
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "cached_revision_ahead: old reward keeps confirmation pending",
+      "verdict": "Passed",
+      "baseline": "Failed"
+    },
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "cached_revision_ahead: second claim cannot be sent",
+      "verdict": "Passed",
+      "baseline": "Failed"
+    },
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "distinct next choice does not stall old confirmation",
+      "verdict": "Passed",
+      "baseline": "Passed"
+    },
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "exact event revision with reward removed confirms",
+      "verdict": "Passed",
+      "baseline": "Passed"
+    },
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "legacy choice alias also requires consumed option",
+      "verdict": "Passed",
+      "baseline": "Failed"
+    },
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "older snapshot never confirms claim",
+      "verdict": "Passed",
+      "baseline": "Passed"
+    },
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "other command confirmation remains revision based",
+      "verdict": "Passed",
+      "baseline": "Passed"
+    },
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "other room never confirms claim",
+      "verdict": "Passed",
+      "baseline": "Passed"
+    },
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "real protobuf preserves absent success revision",
+      "verdict": "Passed",
+      "baseline": "Passed"
+    },
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "same revision without event revision cannot confirm",
+      "verdict": "Passed",
+      "baseline": "Passed"
+    },
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "selected_not_first: applied snapshot releases confirmation",
+      "verdict": "Passed",
+      "baseline": "Failed"
+    },
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "selected_not_first: initial command sent",
+      "verdict": "Passed",
+      "baseline": "Passed"
+    },
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "selected_not_first: old reward keeps confirmation pending",
+      "verdict": "Passed",
+      "baseline": "Failed"
+    },
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "selected_not_first: second claim cannot be sent",
+      "verdict": "Passed",
+      "baseline": "Failed"
+    },
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "snapshot_then_ack: applied snapshot releases confirmation",
+      "verdict": "Passed",
+      "baseline": "Failed"
+    },
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "snapshot_then_ack: initial command sent",
+      "verdict": "Passed",
+      "baseline": "Passed"
+    },
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "snapshot_then_ack: old reward keeps confirmation pending",
+      "verdict": "Passed",
+      "baseline": "Failed"
+    },
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "snapshot_then_ack: second claim cannot be sent",
+      "verdict": "Passed",
+      "baseline": "Failed"
+    },
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "timeout: initial command sent",
+      "verdict": "Passed",
+      "baseline": "Passed"
+    },
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "timeout: missing authority reconnects without repeating write",
+      "verdict": "Passed",
+      "baseline": "Failed"
+    },
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "timeout: old reward keeps confirmation pending",
+      "verdict": "Passed",
+      "baseline": "Failed"
+    },
+    {
+      "suite": "test_reward_claim_confirmation.gd",
+      "case": "timeout: second claim cannot be sent",
+      "verdict": "Passed",
+      "baseline": "Failed"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "ack_before_snapshot",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "missing_revision",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "no_per_frame_snapshot_loop",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "old_snapshot",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "other_room",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_connection_transition_invalidates_authority",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_debounce_preserves_explicit_latest_order",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_explicit_play_after_gdd_fallback_uses_survivor",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_gdd_death_fallback_keeps_left_to_right_target",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_hit_invalidates_authority_before_snapshot",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_live_authority_event_is_displayed",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_local_feedback_is_immediate_estimate",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_manual_target_click_invalidates_old_preview",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_manual_target_confirmation_blocks_old_target_play",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_new_selection_rejects_inflight_old_order",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_no_preview_per_frame_loop",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_old_battle_hit_keeps_current_authority",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_preview_rejection_does_not_retry_business_command",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_readonly_preview_does_not_mutate_health_or_hand",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_reject_changed_config",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_reject_changed_future_revision",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_reject_changed_hand_level",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_reject_changed_health",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_reject_changed_policy",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_reject_changed_recovering",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_reject_changed_replayed",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_reject_changed_shield",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_reject_changed_status",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_reject_changed_stun",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_reject_changed_target_death",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_reject_changed_target_health",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_reject_changed_weapon",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_reject_changed_wrong_order",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_reject_changed_wrong_target",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_selection_sends_one_readonly_preview",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_target_event_invalidates_authority_before_snapshot",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "preview_timeout_does_not_resubmit_preview",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "silent_draw_refresh_is_bounded",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "snapshot_before_ack",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "synthetic_hit_refreshes_hand",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_confirmation_snapshot.gd",
+      "case": "timeout",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_late_ready_rejection.gd",
+      "case": "actual store adopts authoritative start and one epoch",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_late_ready_rejection.gd",
+      "case": "both actual READY sends precede late responses",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_late_ready_rejection.gd",
+      "case": "diagnostic cannot confirm pending business operation",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_late_ready_rejection.gd",
+      "case": "diagnostic cannot trigger a snapshot confirmation read",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_late_ready_rejection.gd",
+      "case": "foreign_worker keeps real rejection/error path",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_late_ready_rejection.gd",
+      "case": "invalid_epoch_type keeps real rejection/error path",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_late_ready_rejection.gd",
+      "case": "joined READY no longer emits user or probe errors",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_late_ready_rejection.gd",
+      "case": "late READY retains exactly one original rejected measurement",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_late_ready_rejection.gd",
+      "case": "missing_epoch keeps real rejection/error path",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_late_ready_rejection.gd",
+      "case": "missing_origin keeps real rejection/error path",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_late_ready_rejection.gd",
+      "case": "missing_session keeps real rejection/error path",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_late_ready_rejection.gd",
+      "case": "next_cycle keeps real rejection/error path",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_late_ready_rejection.gd",
+      "case": "normal client raw rejection is still measured once",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_late_ready_rejection.gd",
+      "case": "normal client without load instrumentation resolves same-room late READY",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_late_ready_rejection.gd",
+      "case": "not_joined keeps real rejection/error path",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_late_ready_rejection.gd",
+      "case": "old_session keeps real rejection/error path",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_late_ready_rejection.gd",
+      "case": "other_error keeps real rejection/error path",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_late_ready_rejection.gd",
+      "case": "real owned WebSocket opens",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_late_ready_rejection.gd",
+      "case": "replayed keeps real rejection/error path",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_late_ready_rejection.gd",
+      "case": "resolved observation does not confirm rejected command",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_late_ready_rejection.gd",
+      "case": "same_ids_reentered keeps real rejection/error path",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_late_ready_rejection.gd",
+      "case": "unchanged_epoch keeps real rejection/error path",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_late_ready_rejection.gd",
+      "case": "uncorrelated keeps real rejection/error path",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_late_ready_rejection.gd",
+      "case": "uncorrelated start still has Unknown business origin",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_late_ready_rejection.gd",
+      "case": "verified late READY remains diagnostic with frozen origin",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_late_ready_rejection.gd",
+      "case": "wrong_action keeps real rejection/error path",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_late_ready_rejection.gd",
+      "case": "wrong_match keeps real rejection/error path",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_late_ready_rejection.gd",
+      "case": "wrong_room keeps real rejection/error path",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_gateway_receive_ownership.gd",
+      "case": "RTT keeps actual correlation key and elapsed clock",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_gateway_receive_ownership.gd",
+      "case": "actual owned WebSocket is open",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_gateway_receive_ownership.gd",
+      "case": "actual ping and received pong retain frozen dispatch context across observer change",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_gateway_receive_ownership.gd",
+      "case": "guard prefers known original dispatch over current receiver",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_gateway_receive_ownership.gd",
+      "case": "malformed null correlated origin remains unknown despite receive hint",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_gateway_receive_ownership.gd",
+      "case": "missing correlated origin cannot borrow receive owner or current cycle",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_gateway_receive_ownership.gd",
+      "case": "uncorrelated pong cannot invent another RTT",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_gateway_receive_ownership.gd",
+      "case": "uncorrelated push keeps unknown business cycle and phase",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_gateway_receive_ownership.gd",
+      "case": "uncorrelated push owner is captured before reentrant event callbacks",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_gateway_bootstrap_context.gd",
+      "case": "bootstrap identity does not start session or reset replay beyond fresh defaults",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_gateway_bootstrap_context.gd",
+      "case": "bootstrap is initial phase and existing first cycle identity without completion credit",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_gateway_bootstrap_context.gd",
+      "case": "known empty room and match stay empty at bootstrap",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_gateway_bootstrap_context.gd",
+      "case": "missing-client cannot invent complete worker identity",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_gateway_bootstrap_context.gd",
+      "case": "missing-epoch cannot invent complete worker identity",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_gateway_bootstrap_context.gd",
+      "case": "normal-client cannot invent complete worker identity",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_gateway_bootstrap_context.gd",
+      "case": "provided worker identity is present immediately after ready before a requester",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_session_sequence.gd",
+      "case": "duplicate_control_reason_trace_without_state_change",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_session_sequence.gd",
+      "case": "foreign_started_reason_preserves_route_and_recovery",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_session_sequence.gd",
+      "case": "guard_trace_has_no_auth_or_packet_payload",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_session_sequence.gd",
+      "case": "ordinary_duplicate_does_not_add_control_trace_volume",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_session_sequence.gd",
+      "case": "same_context_positive_control_still_delivered",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_gateway_replay.gd",
+      "case": "first actual gap requests one resume",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_gateway_replay.gd",
+      "case": "40 identical replay markers do not amplify resume",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_gateway_replay.gd",
+      "case": "replay markers do not reset heartbeat clock",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_gateway_replay.gd",
+      "case": "replay markers emit connected once",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_gateway_replay.gd",
+      "case": "older connection markers cannot rewind current marker",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_gateway_replay.gd",
+      "case": "contiguous missing events finish recovery",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_gateway_replay.gd",
+      "case": "completed recovery stays complete on marker replay",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_gateway_replay.gd",
+      "case": "new peer accepts a restarted sequence stream",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_gateway_replay.gd",
+      "case": "cached room snapshot requested once per peer",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_gateway_replay.gd",
+      "case": "same numeric marker on a new peer is accepted",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_gateway_replay.gd",
+      "case": "authoritative snapshot remains applicable",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_terminal_command_context.gd",
+      "case": "action.extract_completed: closed room sends no additional read",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_terminal_command_context.gd",
+      "case": "action.extract_completed: foreign terminal frames trigger no read",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_terminal_command_context.gd",
+      "case": "action.extract_completed: other match keeps current actions",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_terminal_command_context.gd",
+      "case": "action.extract_completed: other room keeps current actions",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_terminal_command_context.gd",
+      "case": "action.extract_completed: terminal closes without confirming or replaying intent",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_terminal_command_context.gd",
+      "case": "authentication reset clears follow-up contexts",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_terminal_command_context.gd",
+      "case": "cancellation action must match original request",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_terminal_command_context.gd",
+      "case": "cancellation stale room_context_epoch cannot end self",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_terminal_command_context.gd",
+      "case": "cancellation stale session_generation cannot end self",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_terminal_command_context.gd",
+      "case": "cancellation without command identity cannot end self",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_terminal_command_context.gd",
+      "case": "cancelled request measured once with distinct result",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_terminal_command_context.gd",
+      "case": "follow-up retains old epoch and cannot release new recovery",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_terminal_command_context.gd",
+      "case": "fresh scoped read releases recovery",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_terminal_command_context.gd",
+      "case": "gap defers cancellation delivery for authoritative recovery",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_terminal_command_context.gd",
+      "case": "ignored follow-up trace is separate from one cancellation measurement",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_terminal_command_context.gd",
+      "case": "player.died: closed room sends no additional read",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_terminal_command_context.gd",
+      "case": "player.died: foreign terminal frames trigger no read",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_terminal_command_context.gd",
+      "case": "player.died: other match keeps current actions",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_terminal_command_context.gd",
+      "case": "player.died: other room keeps current actions",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_terminal_command_context.gd",
+      "case": "player.died: terminal closes without confirming or replaying intent",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_terminal_command_context.gd",
+      "case": "room.command_cancelled: closed room sends no additional read",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_terminal_command_context.gd",
+      "case": "room.command_cancelled: foreign terminal frames trigger no read",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_terminal_command_context.gd",
+      "case": "room.command_cancelled: other match keeps current actions",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_terminal_command_context.gd",
+      "case": "room.command_cancelled: other room keeps current actions",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_terminal_command_context.gd",
+      "case": "room.command_cancelled: terminal closes without confirming or replaying intent",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_terminal_command_context.gd",
+      "case": "teammate death cannot end self",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_terminal_command_context.gd",
+      "case": "terminal follow-up after gap never confirms cancelled mutation",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_terminal_command_context.gd",
+      "case": "unsolicited old snapshot cannot replace current room",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_progress.gd",
+      "case": "actual store expiry emits unknown timeout and removes without retry",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_progress.gd",
+      "case": "confirmed state timeout remains distinct and preserves existing recovery",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_progress.gd",
+      "case": "diagnostic trace contains no packet or authentication bytes",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_progress.gd",
+      "case": "legal Priest 80 over 70 display data untouched",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_progress.gd",
+      "case": "new draw is legal progress despite zero damage with explicit reason",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_progress.gd",
+      "case": "pong and duplicate snapshots only advance transport",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_progress.gd",
+      "case": "positive effective combo still advances gameplay",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_progress.gd",
+      "case": "same hand observed twice does not invent another opportunity",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_progress.gd",
+      "case": "sent rejected and unknown timeout are independent not gameplay success",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_progress.gd",
+      "case": "waiting stage distinguishes command acceptance",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_progress.gd",
+      "case": "waiting stage distinguishes started",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_progress.gd",
+      "case": "waiting stage distinguishes ticket authority",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_progress.gd",
+      "case": "waiting stage locates acknowledgement instead of generic settlement",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_progress.gd",
+      "case": "zero effect combo cannot keep gameplay alive",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_audit_storage.gd",
+      "case": "UTF8 byte bound applies before retaining oversized ring or buffer row",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_audit_storage.gd",
+      "case": "actual FileAccess open failure counts all nine lost and clears buffer",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_audit_storage.gd",
+      "case": "cap remains latched and accounts every later event as lost",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_audit_storage.gd",
+      "case": "explicit tiny fixture limits produce multiple bounded append-only segments",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_audit_storage.gd",
+      "case": "final storage counters reconcile exact file bytes and zero tail buffer",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_audit_storage.gd",
+      "case": "later flush never overwrites an earlier segment",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_audit_storage.gd",
+      "case": "normal records remain accountable after rejected oversized record",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_audit_storage.gd",
+      "case": "restored own path resumes but earlier loss is never erased",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_audit_storage.gd",
+      "case": "rotation preserves every sequence and complete UTF8 records",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_audit_storage.gd",
+      "case": "total archive bound refuses extra records without silent wraparound",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_audit_storage.gd",
+      "case": "unexpected existing archive bytes remain untouched and evidence loses event",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_ready_deadline_guard.gd",
+      "case": "READY metadata keeps dispatch identity without adding route fields to wire",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_ready_deadline_guard.gd",
+      "case": "authority deadline memory is explicitly capped8",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_ready_deadline_guard.gd",
+      "case": "current-match event latch uses earliest cached deadline",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_ready_deadline_guard.gd",
+      "case": "foreign mutable hint never supplies verified match deadline",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_ready_deadline_guard.gd",
+      "case": "later required cannot extend same match original deadline",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_ready_deadline_guard.gd",
+      "case": "new-match authority deadline survives old active latch and cleared hint",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_ready_deadline_guard.gd",
+      "case": "owned actual WebSocket peer opens",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_ready_deadline_guard.gd",
+      "case": "same real elapsed deadline prevents next write without recovery flag",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_ready_deadline_guard.gd",
+      "case": "same-scope rebind cannot extend original absolute deadline",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_ready_deadline_guard.gd",
+      "case": "same-scope rebind preserves confirmed READY and read budget",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_ready_deadline_guard.gd",
+      "case": "unverified READY cannot write even outside recovery",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_ready_deadline_guard.gd",
+      "case": "verified unexpired positive control still writes one READY",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_contexts.gd",
+      "case": "STOP drain window is separate from original business phase",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_contexts.gd",
+      "case": "captured source identity remains immutable",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_contexts.gd",
+      "case": "local synchronous context remains local",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_contexts.gd",
+      "case": "malformed null origin remains explicitly unknown",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_contexts.gd",
+      "case": "missing asynchronous context is Unknown not current cycle",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_contexts.gd",
+      "case": "no diagnostic HTTP traffic becomes gameplay progress",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_dispatch_origin_reentrancy.gd",
+      "case": "actual packet still targets original room and match",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_dispatch_origin_reentrancy.gd",
+      "case": "fallback telemetry captured before reentrant send observer changed context",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_dispatch_origin_reentrancy.gd",
+      "case": "owned real WebSocket is open",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_dispatch_origin_reentrancy.gd",
+      "case": "pending route revision and sound owner remain at dispatch",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_dispatch_origin_reentrancy.gd",
+      "case": "real fallback command was selected and dispatched",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_dispatch_origin_reentrancy.gd",
+      "case": "store pending command captures dispatch origin before synchronous signals",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_control_flow.gd",
+      "case": "class STOP follows real run/login branch into cleanup and cancelled0",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_control_flow.gd",
+      "case": "class STOP is not a false login or hero-confirmation failure",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_control_flow.gd",
+      "case": "class login captures owner before first asynchronous call",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_control_flow.gd",
+      "case": "dead current target selects first living target exactly once",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_control_flow.gd",
+      "case": "empty-hand branch preserves old wait/continue without fake play",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_control_flow.gd",
+      "case": "frame clock names process frames without claiming rendered FPS",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_control_flow.gd",
+      "case": "functional cycles never use cyclic stagnation fallback",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_control_flow.gd",
+      "case": "login STOP follows real run/login branch into cleanup and cancelled0",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_control_flow.gd",
+      "case": "login STOP is not a false login or hero-confirmation failure",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_control_flow.gd",
+      "case": "login login captures owner before first asynchronous call",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_control_flow.gd",
+      "case": "non-battle phase falls through to other legal actions",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_control_flow.gd",
+      "case": "play branch forwards selected order once",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    },
+    {
+      "suite": "test_load_control_flow.gd",
+      "case": "pre60second controlled boundary does not abandon",
+      "verdict": "Passed",
+      "baseline": "RelatedRegression"
+    }
+  ],
+  "capacity_verdict_unchanged": "Failed",
+  "canonical_states_changed": false
+}

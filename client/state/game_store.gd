@@ -1349,7 +1349,13 @@ func _snapshot_confirms_command(pending: Dictionary, snapshot: Dictionary) -> bo
 	if str(snapshot.get("room_id", "")) != str(pending.get("room_id", "")): return false
 	var revision := int(snapshot.get("room_revision", -1))
 	var confirmed_revision := int(pending.get("confirmed_revision", -1))
-	return revision >= confirmed_revision if confirmed_revision >= 0 else revision > int(pending.get("sent_revision", 0))
+	if not (revision >= confirmed_revision if confirmed_revision >= 0 else revision > int(pending.get("sent_revision", 0))): return false
+	if pending.get("action", "") in ["reward.choice.claim", "choice.pick"]:
+		# A shared room revision can advance while our old reward is still visible.
+		# The success event has no revision; wait until its unique option is gone.
+		var option_id := str(pending.get("payload", {}).get("option_id", ""))
+		if not option_id.is_empty() and snapshot.get("reward_choice", {}).get("options", []).any(func(option): return str(option.get("option_id", "")) == option_id): return false
+	return true
 
 func _settlement_match_id() -> String:
 	return str(room.get("match_id", _settlement_recovery_match_id))
