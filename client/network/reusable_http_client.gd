@@ -79,12 +79,27 @@ func request(tree: SceneTree, origin: String, path: String, method: int,
 			if response_body.decode_u32(response_body.size() - 4) > body_limit:
 				return _failure(HTTPRequest.RESULT_BODY_SIZE_LIMIT_EXCEEDED)
 		var expanded := response_body.decompress_dynamic(body_limit, FileAccess.COMPRESSION_GZIP if encoding == "gzip" else FileAccess.COMPRESSION_DEFLATE)
-		if expanded.is_empty(): return _failure(HTTPRequest.RESULT_BODY_DECOMPRESS_FAILED)
+		if expanded.is_empty() and not _is_complete_empty_compressed_body(response_body, encoding == "deflate"):
+			return _failure(HTTPRequest.RESULT_BODY_DECOMPRESS_FAILED)
 		response_body = expanded
 	if _client.get_status() != HTTPClient.STATUS_CONNECTED:
 		close()
 	busy = false
 	return [HTTPRequest.RESULT_SUCCESS, code, response_headers, response_body, reused]
+
+func _is_complete_empty_compressed_body(body: PackedByteArray, use_deflate: bool) -> bool:
+	if body.is_empty(): return false
+	var stream := StreamPeerGZIP.new()
+	if stream.start_decompression(use_deflate) != OK: return false
+	var accepted: Array = stream.put_partial_data(body)
+	var complete := false
+	if accepted[0] == OK and accepted[1] == body.size() and stream.get_available_bytes() == 0:
+		# A finished inflater consumes no probe byte. A truncated stream must
+		# consume it or fail, so an empty output alone cannot prove success.
+		var boundary: Array = stream.put_partial_data(PackedByteArray([0]))
+		complete = boundary[0] == OK and boundary[1] == 0 and stream.get_available_bytes() == 0
+	stream.clear()
+	return complete
 
 func _failure(result: int) -> Array:
 	close()
