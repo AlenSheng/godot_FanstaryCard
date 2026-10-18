@@ -633,6 +633,25 @@ func _capture_receive_owner() -> Dictionary:
 		if current.has(key): received[key] = current[key]
 	return received
 
+func _ready_rejection_has_joined_context(payload: Dictionary) -> bool:
+	# A READY can be in flight when its verified lobby becomes the joined room.
+	# Require that exact one-step transition; keep the wire result rejected.
+	if payload.get("code", "") != "READY_NOT_FOUND" or payload.get("_command_action", "") != "room.ready" or payload.get("_command_result", "") != "rejected": return false
+	if str(payload.get("_request_id", "")).is_empty() or payload.get("_replayed", true): return false
+	var origin_value: Variant = payload.get("_origin_context")
+	if not origin_value is Dictionary: return false
+	var origin: Dictionary = origin_value
+	if typeof(origin.get("session_generation")) != TYPE_INT or typeof(origin.get("room_context_epoch")) != TYPE_INT: return false
+	if int(origin.session_generation) != session_generation or int(origin.room_context_epoch) < 0 or room_context_epoch != int(origin.room_context_epoch) + 1: return false
+	if current_match_id.is_empty() or room_id.is_empty(): return false
+	if typeof(origin.get("match_id")) != TYPE_STRING or typeof(origin.get("room_id")) != TYPE_STRING: return false
+	if origin.match_id != current_match_id or origin.room_id != room_id: return false
+	for key in ["run_id", "client_id", "process_epoch", "cycle_id"]:
+		if origin.has(key) != telemetry_context.has(key): return false
+		if origin.has(key):
+			if typeof(origin[key]) != TYPE_STRING or str(origin[key]).is_empty() or origin[key] == "Unknown" or origin[key] != telemetry_context[key]: return false
+	return true
+
 func _emit_lifecycle_guard(observation: Dictionary, payload: Dictionary, receive_owner: Dictionary) -> void:
 	var correlated := payload.has("_origin_context")
 	var origin_value: Variant = payload.get("_origin_context", {})
@@ -802,6 +821,13 @@ func _receive(packet: PackedByteArray) -> void:
 		if _preview_request_ids.has(payload.get("_request_id", "")):
 			_preview_request_ids.erase(payload._request_id)
 			event_received.emit("combat.preview_rejected", payload)
+			return
+		if _ready_rejection_has_joined_context(payload):
+			_emit_lifecycle_guard({"type":"protocol_observation", "event_type":"room.ready.rejection_resolved", "decision":"Resolved", "trace_only":true,
+				"reason":"already_entered_same_room", "code":payload.code, "detail":payload.get("detail", ""), "response_type":kind, "result":"rejected",
+				"request_id":response_request_id, "sequence":sequence, "verified_room_context_epoch":room_context_epoch,
+				"verified_match_id":current_match_id, "verified_room_id":room_id}, payload, receive_owner)
+			# Diagnostics never enter business-event confirmation consumers.
 			return
 		if payload.get("code", "") == "NOT_IN_ROOM":
 			var origin: Dictionary = payload.get("_origin_context", {})
