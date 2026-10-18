@@ -27,6 +27,7 @@ from pr13_runtime_evidence import coverage, reconcile_cycles, result_dimensions,
 from pr13_audit_archive import read_owned_audits
 from pr13_local_network import LocalOrigins
 from pr13_server_diagnostics import current_window
+from pr13_status_snapshot import SerializedStatusCache
 from pr13_resource_policy import DEFAULT_GENERATOR_FLOOR, memory_causes, disk_causes, launch_memory_ready, latency_causes
 
 QUERIES = {
@@ -160,9 +161,14 @@ def read_owned_statuses(processes, cache=None, now_monotonic_ms=None, *, require
         previous=cache.get(status['client_id']) if cache is not None else None
         prior_sequence=previous.get('status_seq',0) if previous else 0
         if previous and sequence<=prior_sequence:
-            owned[index]=dict(previous)
-            if sequence<prior_sequence: invalid_ownership+=1
-            elif status != {key: value for key, value in previous.items() if key != '_received_at_monotonic_ms'}:
+            if sequence==prior_sequence and status == {key: value for key, value in previous.items() if key != '_received_at_monotonic_ms'}:
+                # Equal producer content already exists in the current decode.
+                # Retain its original receipt without retaining another full tree.
+                if '_received_at_monotonic_ms' in previous:
+                    status['_received_at_monotonic_ms']=previous['_received_at_monotonic_ms']
+                owned[index]=status
+            else:
+                owned[index]=dict(previous)
                 invalid_ownership+=1
         else: status['_received_at_monotonic_ms']=receipt_ms
     owned=[status for status in owned if status.get('status_seq') is None or
@@ -394,6 +400,7 @@ def main():
         if psutil is None:
             parser.error('Generator memory monitoring is required before --run')
     source=provenance(ROOT, ('tools/gameplay_load_test.py','tools/cloud_load_test.py','tools/pr13_resource_policy.py',
+        'tools/pr13_status_snapshot.py',
         'tools/gameplay_load_validation.py','client/tests/gameplay_load_client.gd','client/state/game_store.gd',
         'client/network/gateway.gd','client/network/reusable_http_client.gd',
         'tools/pr13_runtime_evidence.py','tools/pr13_audit_archive.py','client/data/catalog.json',
@@ -446,7 +453,7 @@ def main():
     coverage([],start=0,end=1,**{k:v for k,v in contract.items() if k not in COVERAGE_METADATA})
     save(run_dir/'load-contract.json',contract)
     stop_file=args.stop_file.resolve() if args.stop_file is not None else run_dir/'STOP'
-    processes=[]; samples=[]; group_launches=[]; launch_receipts=[]; streaks=collections.Counter(); seen={}; status_cache={}
+    processes=[]; samples=[]; group_launches=[]; launch_receipts=[]; streaks=collections.Counter(); seen={}; status_cache=SerializedStatusCache()
     run_id=uuid.uuid4().hex
     workload_failed=False; smoke_verified=False; previous_sample_monotonic_ms=None; previous_generator=None
     started=time.time(); started_monotonic=time.monotonic()
@@ -572,6 +579,7 @@ def main():
                 generator,previous_generator=generator_resources(processes,previous_generator)
                 active_native_pids={entry['process'].pid for entry in processes if entry['process'].poll() is None}
                 generator['native_frame_observations']=native_frame_observations([s for s in statuses if s.get('pid') in active_native_pids])
+                generator['status_cache']={'representation':'lossless-zlib-json-v1','entries':len(status_cache),'compressed_payload_bytes':status_cache.retained_bytes,'decoded_snapshot_bytes':status_cache.decoded_snapshot_bytes,'byte_scope':'serialized payload only; not total Python heap'}
                 causes=[]
                 if probe_timeout: causes.append('probe_timeout')
                 if len(commands)>=10 and window['command_error_rate']>=.1: causes.append('command_rejections_10pct')
@@ -621,6 +629,9 @@ def main():
                     smoke_verified=smoke_result
                     reason='smoke_passed' if smoke_verified else 'smoke_failed'
                     break
+                # Raw producer files remain intact; the next tick needs only
+                # compressed snapshots and monotonic/event cursors in memory.
+                statuses=fresh=commands=rejected=None
                 while next_sample<=time.monotonic(): next_sample+=10
             # The registered overall deadline above applies to smoke as well.
             # A second fixed 420s/cycle cutoff would truncate a valid 600s/cycle
@@ -630,6 +641,7 @@ def main():
     except Exception as exc:
         reason='coordinator_error:'+type(exc).__name__+':'+str(exc)
     finally:
+        statuses=fresh=commands=rejected=None
         probes.shutdown(wait=False,cancel_futures=True)
         before_stop={p['client_id']:p['process'].poll() for p in processes}
         # A process that failed before STOP is not an intentional shutdown.
