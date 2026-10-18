@@ -23,6 +23,17 @@ def memory_causes(resource, generator, generator_floor=DEFAULT_GENERATOR_FLOOR,
     return causes
 
 
+def disk_causes(resource, minimum_percent=15.0):
+    if (not isinstance(minimum_percent, (int, float)) or isinstance(minimum_percent, bool)
+            or not math.isfinite(minimum_percent) or not 5 <= minimum_percent <= 100):
+        raise ValueError('Cloud disk minimum must be finite and between 5 and 100 percent')
+    value = resource.get('disk_available')
+    if (not isinstance(value, (int, float)) or isinstance(value, bool)
+            or not math.isfinite(value) or not 0 <= value <= 100):
+        return ['monitoring_unavailable']
+    return ['disk_available_redline'] if value < minimum_percent else []
+
+
 def launch_memory_ready(available_bytes, floor, start_budget_mib):
     return available_bytes >= floor + start_budget_mib * 1024 ** 2
 

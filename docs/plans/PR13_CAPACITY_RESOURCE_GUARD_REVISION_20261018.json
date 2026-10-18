@@ -1,0 +1,60 @@
+{
+  "kind": "ExplicitResourceGuardRevisionNoAcceptancePromotion",
+  "authority": "Current user goal permits temporary test limits and clearly disclosed repeated-test revisions;cloud disk/RAM safety floor5percent.",
+  "legacy_default_disk_minimum_percent": 15,
+  "explicit_revised_disk_minimum_percent": 5,
+  "minimum_allowed_explicit_disk_percent": 5,
+  "old15percent_failures_retained_and_not_passed": true,
+  "actual_profile_is_distinct_in_complete_workload_identity": true,
+  "unchanged_original_capacity_requirements": {
+    "online_targets": [
+      50,
+      100
+    ],
+    "active_targets": [
+      50,
+      100
+    ],
+    "hold_seconds": 600,
+    "minimum_continuous_seconds": 120,
+    "minimum_coverage": 0.95,
+    "maximum_sample_gap_seconds": 20
+  },
+  "current_ten_ramp": {
+    "clients": 10,
+    "generator_minimum_RAM_bytes": 2147483648,
+    "client_start_reserve_MiB": 256,
+    "cloud_RAM_minimum_bytes": 500000000,
+    "cloud_RAM_goal_fraction_minimum": 0.05,
+    "load_profile": "active-hold",
+    "overall_seconds": 900,
+    "client_logic_not_reduced": true,
+    "default_request_quota_capacity_claim": false,
+    "temporary_owned_bypass_and_pool_reuse": true,
+    "private_PG_max_connections": 256,
+    "app_PG_CPU_quota": 0
+  },
+  "legacy_explicit_capacity_command_distinguished": {
+    "generator_RAM_floor_bytes": 500000000,
+    "cloud_RAM_floor_bytes": 500000000,
+    "per_start_reserve_MiB": 64,
+    "not_equal_current_stricter_generator_defaults": true
+  },
+  "self_native_start_cap_revisions": [
+    11,
+    21,
+    31
+  ],
+  "actual_native_starts": 24,
+  "actual_live_clients_by_round": [
+    4,
+    7,
+    10
+  ],
+  "actual_new_world_matches": 18,
+  "maximum_allround_world_matches": 300,
+  "revision_reason": "Retain original4/7clientfailedcohorts and perform requiredsourcefixregressions+freshfull10;noauditrelaxationorclienttargetreduction.",
+  "guard_rejection_receipt": "Persist exact single available-memory reading and required reserve before any rejected process launch.",
+  "canonical_register_gate_MAIN_changes": false,
+  "original50_100capacity_accepted": false
+}

@@ -27,7 +27,7 @@ from pr13_runtime_evidence import coverage, reconcile_cycles, result_dimensions,
 from pr13_audit_archive import read_owned_audits
 from pr13_local_network import LocalOrigins
 from pr13_server_diagnostics import current_window
-from pr13_resource_policy import DEFAULT_GENERATOR_FLOOR, memory_causes, launch_memory_ready, latency_causes
+from pr13_resource_policy import DEFAULT_GENERATOR_FLOOR, memory_causes, disk_causes, launch_memory_ready, latency_causes
 
 QUERIES = {
     'cpu': '100*(1-avg(rate(node_cpu_seconds_total{job="node",instance="node-exporter:9100",mode="idle"}[1m])))',
@@ -39,7 +39,7 @@ QUERIES = {
 }
 COVERAGE_METADATA = {'profile','acceptance_scope','launch_interval_seconds','http_transport','resource_source','server_metrics_missing_reason','client_max_fps','fps_scope',
                      'distinct_local_client_ips','client_memory_start_budget_mib','hero_class','strategy','strategy_seed','cycle_limit_seconds',
-                     'minimum_generator_memory_bytes','minimum_cloud_memory_bytes',
+                     'minimum_generator_memory_bytes','minimum_cloud_memory_bytes','minimum_cloud_disk_percent',
                      'http_p95_limit_ms','command_p95_limit_ms','health_limit_ms','monitor_timeout_seconds',
                      'maximum_run_seconds','workload_profile_id','workload_profile_qualified','workload_profile_missing_reason'}
 
@@ -323,6 +323,8 @@ def main():
     parser.add_argument('--minimum-generator-memory-bytes',type=int,default=DEFAULT_GENERATOR_FLOOR)
     parser.add_argument('--minimum-cloud-memory-bytes',type=int,
                         help='Explicit absolute available-memory floor; otherwise the legacy 15 percent guard applies')
+    parser.add_argument('--minimum-cloud-disk-percent',type=float,default=15.0,
+                        help='Explicit per-run cloud free-disk minimum, 5-100 percent; legacy default remains 15')
     parser.add_argument('--client-memory-start-budget-mib',type=int,default=256)
     parser.add_argument('--http-p95-limit-ms',type=int,default=1500)
     parser.add_argument('--command-p95-limit-ms',type=int,default=2000)
@@ -351,6 +353,8 @@ def main():
         parser.error('Memory floors and launch reserve must be positive')
     if any(not 1 <= value <= 60000 for value in [args.http_p95_limit_ms,args.command_p95_limit_ms,args.health_limit_ms]) or not math.isfinite(args.monitor_timeout_seconds) or not 0 < args.monitor_timeout_seconds <= 60:
         parser.error('Latency limits must be positive and bounded to 60 seconds')
+    if not math.isfinite(args.minimum_cloud_disk_percent) or not 5 <= args.minimum_cloud_disk_percent <= 100:
+        parser.error('Cloud disk minimum must be finite and between 5 and 100 percent')
     if args.client_max_fps is not None and not 1 <= args.client_max_fps <= 240:
         parser.error('Explicit FPS candidate must be between 1 and 240')
     if not Path(args.godot).is_file(): parser.error('Godot executable is missing')
@@ -428,6 +432,7 @@ def main():
     contract.update(distinct_local_client_ips=args.distinct_local_client_ips,client_memory_start_budget_mib=args.client_memory_start_budget_mib,
                     minimum_generator_memory_bytes=args.minimum_generator_memory_bytes,
                     minimum_cloud_memory_bytes=args.minimum_cloud_memory_bytes,
+                    minimum_cloud_disk_percent=args.minimum_cloud_disk_percent,
                     http_p95_limit_ms=args.http_p95_limit_ms,command_p95_limit_ms=args.command_p95_limit_ms,
                     health_limit_ms=args.health_limit_ms,monitor_timeout_seconds=args.monitor_timeout_seconds,
                     hero_class=args.hero_class,strategy=args.strategy,strategy_seed=args.strategy_seed,
@@ -471,7 +476,19 @@ def main():
                 next_group=time.monotonic()+args.group_interval
                 print('GROUP SCHEDULED',groups,'accounts',group_size,flush=True)
             if pending_launches and now>=next_launch:
-                if args.run and not launch_memory_ready(psutil.virtual_memory().available,args.minimum_generator_memory_bytes,args.client_memory_start_budget_mib):
+                admission_available_bytes = psutil.virtual_memory().available if args.run else None
+                if args.run and not launch_memory_ready(admission_available_bytes,args.minimum_generator_memory_bytes,args.client_memory_start_budget_mib):
+                    save(run_dir/'launch-admission-rejected.json', {
+                        'schema_version':1,'run_id':run_id,'process_started':False,
+                        'observed_at_monotonic_ns':time.monotonic_ns(),
+                        'available_bytes':admission_available_bytes,
+                        'floor_bytes':args.minimum_generator_memory_bytes,
+                        'start_budget_mib':args.client_memory_start_budget_mib,
+                        'required_bytes':args.minimum_generator_memory_bytes+args.client_memory_start_budget_mib*1024**2,
+                        'next_client_number':len(processes)+1,
+                        'scheduled_group':pending_launches[0][0],
+                        'scheduled_index':pending_launches[0][1],
+                        'measurement_source':'psutil.virtual_memory().available at rejected admission'})
                     reason='invalid_evidence:generator_memory_low_before_launch'; break
                 launch_group,index=pending_launches.popleft()
                 client_id='g%03dc%02d%s'%(launch_group,index+1,uuid.uuid4().hex[:6])
@@ -560,11 +577,13 @@ def main():
                 if len(commands)>=10 and window['command_error_rate']>=.1: causes.append('command_rejections_10pct')
                 if window['sample_count']>=20 and window['error_rate']>=.1: causes.append('http_errors_10pct')
                 causes.extend(latency_causes(window,health,args.http_p95_limit_ms,args.command_p95_limit_ms,args.health_limit_ms))
-                for key,limit,less in [('cpu',85,False),('disk_available',15,True),('actor_wait',100,False)]:
+                for key,limit,less in [('cpu',85,False),('actor_wait',100,False)]:
                     value=resource.get(key)
                     if value is not None and (value<limit if less else value>limit): causes.append(key+'_redline')
+                if args.run or resource.get('disk_available') is not None:
+                    causes.extend(disk_causes(resource,args.minimum_cloud_disk_percent))
                 if args.run:
-                    if any(resource.get(k) is None for k in ('cpu','disk_available')): causes.append('monitoring_unavailable')
+                    if resource.get('cpu') is None: causes.append('monitoring_unavailable')
                     causes.extend(memory_causes(resource,generator,args.minimum_generator_memory_bytes,args.minimum_cloud_memory_bytes))
                 if window['invalid_metric_count'] or lost_events or audit_lost or audit_count_invalid or invalid_files or workload['invalid_schema_count']:
                     causes.append('invalid_telemetry'); workload_failed=True
@@ -775,6 +794,7 @@ def main():
             'final_cutoff_monotonic_ns':final_cutoff_monotonic_ns,'cutoff_clock_quality':cutoff_clock,
             'load_contract':contract,'load_coverage':load_coverage,'result_dimensions':dimensions,
             'launch_manifest':'launch-manifest.json','launch_receipts':launch_receipts,
+            'launch_admission_rejection':read_json(run_dir/'launch-admission-rejected.json'),
             'sampling_integrity':sampling,'started_monotonic_ms':started_monotonic*1000,
             'performance_inputs':performance_inputs,
             'cycle_cutoffs':cutoffs,'request_distributions':request_distributions,'audit_read_errors':audit_errors,

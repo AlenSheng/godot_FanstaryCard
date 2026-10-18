@@ -119,6 +119,7 @@ func _ready() -> void:
 	Game.gateway.last_sequence = 0
 	Game.gateway.room_id = ""
 	Game.gateway.room_revision = 0
+	_update_context()
 	Game.notice.connect(_on_notice)
 	Game.gateway.failed.connect(_on_notice)
 	Game.gateway.event_received.connect(_on_event)
@@ -144,6 +145,7 @@ func _process(_delta: float) -> void:
 
 func _run() -> void:
 	stage = "login"
+	_update_context()
 	await _login()
 	if stop_requested:
 		await _graceful_cleanup()
@@ -674,6 +676,18 @@ func _on_telemetry(sample: Dictionary) -> void:
 	telemetry.append(copy)
 	if telemetry.size() > 300: telemetry.pop_front()
 
+func _lifecycle_sample(payload: Dictionary, sample: Dictionary) -> Dictionary:
+	# An unsolicited push has no client dispatch. Keep its business origin
+	# Unknown while retaining the owner captured at the Gateway receive site.
+	if not payload.has("_origin_context"):
+		var owner_value: Variant = payload.get("_receive_owner_context", {})
+		if owner_value is Dictionary:
+			for key in ["run_id", "client_id", "process_epoch"]:
+				if owner_value.has(key): sample[key] = owner_value[key]
+			sample["context_capture_kind"] = "uncorrelated_receive"
+			sample["record_owner_source"] = "gateway_receive"
+	return sample
+
 func _on_event(kind: String, _payload: Dictionary) -> void:
 	last_transport_progress_ms = Time.get_ticks_msec()
 	last_transport_progress_reason = kind
@@ -716,17 +730,17 @@ func _on_event(kind: String, _payload: Dictionary) -> void:
 		last_effective_ms = Time.get_ticks_msec()
 	if kind in ["match.found", "room.ready_required", "room.ready_accepted", "room.started", "room.moved", "battle.combo_resolved", "settlement.ready", "match.settled"]:
 		var advances := effective_combo if kind == "battle.combo_resolved" else kind in ["room.started", "room.moved", "settlement.ready", "match.settled"] or (kind == "room.ready_accepted" and ready_accepted and event_match_id == verified_ready_match_id)
-		_on_telemetry({"type": "lifecycle", "event_type": kind, "match_id": _payload.get("match_id"), "room_id": _payload.get("room_id"), "_origin_context": _payload.get("_origin_context", {}), "battle_id": _payload.get("battle_id"), "request_id": _payload.get("_request_id"),
-			"transport_progress":true, "gameplay_progress":advances, "progress_reason":"effective_combo" if effective_combo else kind})
+		_on_telemetry(_lifecycle_sample(_payload, {"type": "lifecycle", "event_type": kind, "match_id": _payload.get("match_id"), "room_id": _payload.get("room_id"), "_origin_context": _payload.get("_origin_context", {}), "battle_id": _payload.get("battle_id"), "request_id": _payload.get("_request_id"),
+			"transport_progress":true, "gameplay_progress":advances, "progress_reason":"effective_combo" if effective_combo else kind}))
 	if kind in ["player.died", "action.extract_completed"]:
 		# Preserve terminal authority separately from progress clocks. A command
 		# can already be in flight when this packet reaches a distant client.
 		# Missing wire room/match IDs remain explicit rather than inferred proof.
-		_on_telemetry({"type": "lifecycle", "event_type": kind, "match_id": _payload.get("match_id"), "room_id": _payload.get("room_id"),
+		_on_telemetry(_lifecycle_sample(_payload, {"type": "lifecycle", "event_type": kind, "match_id": _payload.get("match_id"), "room_id": _payload.get("room_id"),
 			"wire_match_id_present": _payload.has("match_id"), "wire_room_id_present": _payload.has("room_id"),
 			"player_id": _payload.get("player_id"), "own_player_id": own_user_id, "status": _payload.get("status"), "duel_id": _payload.get("duel_id"),
 			"_sequence": _payload.get("_sequence"), "_event_revision": _payload.get("_event_revision"), "_replayed": _payload.get("_replayed"),
-			"_origin_context": _payload.get("_origin_context", {}), "request_id": _payload.get("_request_id")})
+			"_origin_context": _payload.get("_origin_context", {}), "request_id": _payload.get("_request_id")}))
 	events[kind] = int(events.get(kind, 0)) + 1
 	if kind == "error.command_rejected": _on_notice("command_rejected: " + JSON.stringify(_payload))
 

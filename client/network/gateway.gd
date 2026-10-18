@@ -147,6 +147,14 @@ func _ready() -> void:
 	if not OS.get_environment("FANTASYCARD_LOAD_RUN_ID").is_empty():
 		persist_session = false
 		device_id = "load-" + new_id()
+		# Game may refresh client-info before the load scene is ready. Capture
+		# this process's declared owner before that first asynchronous request.
+		var load_run := OS.get_environment("FANTASYCARD_LOAD_RUN_ID").strip_edges()
+		var load_client := OS.get_environment("FANTASYCARD_LOAD_CLIENT_ID").strip_edges()
+		var load_epoch := OS.get_environment("FANTASYCARD_LOAD_PROCESS_EPOCH").strip_edges()
+		if not load_run.is_empty() and not load_client.is_empty() and not load_epoch.is_empty():
+			telemetry_context = {"run_id": load_run, "client_id": load_client,
+				"process_epoch": load_epoch, "cycle_id": load_client + ":1", "phase": "initial"}
 		return
 	var config := ConfigFile.new()
 	if config.load("user://session.cfg") == OK:
@@ -616,7 +624,26 @@ func send(kind: String, payload: Dictionary = {}, request_id: String = "") -> bo
 	if sent: socket.poll()
 	return sent
 
+func _capture_receive_owner() -> Dictionary:
+	# Physical receive ownership is known independently of an originating
+	# request. Never infer a business cycle or phase for unsolicited frames.
+	var current := capture_context()
+	var received := {}
+	for key in ["run_id", "client_id", "process_epoch"]:
+		if current.has(key): received[key] = current[key]
+	return received
+
+func _emit_lifecycle_guard(observation: Dictionary, payload: Dictionary, receive_owner: Dictionary) -> void:
+	var correlated := payload.has("_origin_context")
+	var origin_value: Variant = payload.get("_origin_context", {})
+	var origin: Dictionary = origin_value if origin_value is Dictionary else {}
+	observation.merge(origin if correlated else receive_owner, false)
+	observation["context_capture_kind"] = "request" if correlated else "uncorrelated_receive"
+	observation["record_owner_source"] = "dispatch" if correlated else "gateway_receive"
+	telemetry.emit(observation)
+
 func _receive(packet: PackedByteArray) -> void:
+	var receive_owner := _capture_receive_owner()
 	var proto := Proto.new()
 	var envelope := proto.decode("ServerEnvelope", packet)
 	if not proto.error.is_empty() or envelope.get("protocol_version", 0) != 1:
@@ -659,10 +686,12 @@ func _receive(packet: PackedByteArray) -> void:
 		payload["_origin_context"] = _response_contexts[response_request_id].context.duplicate(true)
 		payload["_command_action"] = _response_contexts[response_request_id].action
 		payload["_command_result"] = _response_contexts[response_request_id].result
-	if kind == "pong" and response_request_id == _pending_ping_request_id:
+	if kind == "pong" and not _pending_ping_request_id.is_empty() and response_request_id == _pending_ping_request_id:
 		last_rtt_ms = Time.get_ticks_msec() - _ping_sent_at
 		_pending_ping_request_id = ""
-		telemetry.emit({"type": "rtt", "duration_ms": last_rtt_ms})
+		var rtt_sample := {"type": "rtt", "duration_ms": last_rtt_ms, "request_id": response_request_id}
+		rtt_sample.merge(payload.get("_origin_context", {}), false)
+		telemetry.emit(rtt_sample)
 	if kind in ["combat.previewed", "error.command_rejected"]:
 		payload["_request_id"] = envelope.get("request_id", "")
 		payload["_room_revision"] = envelope.get("room_revision", -1)
@@ -694,8 +723,8 @@ func _receive(packet: PackedByteArray) -> void:
 		return
 	if sequence <= last_sequence:
 		if kind in ["match.found", "room.ready_required", "room.ready_accepted", "room.started"]:
-			telemetry.emit({"type":"lifecycle_guard", "event_type":kind, "decision":"Ignored", "trace_only":true,
-				"reason":"stale_or_duplicate_sequence", "sequence":sequence, "last_sequence":last_sequence})
+			_emit_lifecycle_guard({"type":"lifecycle_guard", "event_type":kind, "decision":"Ignored", "trace_only":true,
+				"reason":"stale_or_duplicate_sequence", "sequence":sequence, "last_sequence":last_sequence}, payload, receive_owner)
 		return
 	if kind == "room.ready_accepted" and _prelaunch_valid() and str(payload.get("match_id", "")) == str(_prelaunch_ticket.match_id) and str(payload.get("room_id", "")) == str(_prelaunch_ticket.room_id):
 		_prelaunch_ready_accepted = true
@@ -732,10 +761,10 @@ func _receive(packet: PackedByteArray) -> void:
 			prior_room_callback = true
 	if prior_room_callback:
 		var expected_context := capture_context()
-		telemetry.emit({"type":"lifecycle_guard", "event_type":kind, "decision":"Ignored", "trace_only":true,
+		_emit_lifecycle_guard({"type":"lifecycle_guard", "event_type":kind, "decision":"Ignored", "trace_only":true,
 			"reason":"prior_room_context", "sequence":sequence, "last_sequence":last_sequence,
 			"expected_match_id":expected_context.get("match_id", ""), "expected_room_id":expected_context.get("room_id", ""),
-			"received_match_id":payload.get("match_id", ""), "received_room_id":payload.get("room_id", "")})
+			"received_match_id":payload.get("match_id", ""), "received_room_id":payload.get("room_id", "")}, payload, receive_owner)
 		# Consume the session cursor, but an old room callback cannot replace
 		# the current route/revision or release its snapshot recovery lock.
 		last_sequence = sequence
@@ -791,4 +820,6 @@ func _receive(packet: PackedByteArray) -> void:
 		failed.emit(payload.get("detail", "操作被拒绝"))
 		if not room_id.is_empty(): send("room.snapshot.read")
 		return
+	if not payload.has("_origin_context") and kind in ["match.found", "room.ready_required", "room.ready_accepted", "room.started", "room.moved", "battle.combo_resolved", "settlement.ready", "match.settled", "player.died", "action.extract_completed"]:
+		payload["_receive_owner_context"] = receive_owner.duplicate(true)
 	event_received.emit(kind, payload)

@@ -153,7 +153,7 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
     def run_fixture(self, *, overlap=False, local_resources=False, missing_actor=False, cycle_limit=240,
                     resource_changes=None, final_status_change=None, wall_jump=False, max_groups=1,
                     client_max_fps=None, generator_observation=None, probe_delay_seconds=0, delay_all_probes=False,
-                    smoke=False, max_seconds=630, memory_floor=None, latency_limits=None):
+                    smoke=False, max_seconds=630, memory_floor=None, latency_limits=None, disk_floor=None):
         """Run the real final verdict with fake child/clock/network observations."""
         elapsed = [0.0]
         children = []
@@ -237,6 +237,7 @@ class CoordinatorSamplingContractTests(unittest.TestCase):
                 '--hold-seconds', '600', '--cycle-limit-seconds', str(cycle_limit), '--output', directory]
             if local_resources: argv.append('--local-resource-sampling')
             if client_max_fps is not None: argv+=['--client-max-fps',str(client_max_fps)]
+            if disk_floor is not None: argv+=['--minimum-cloud-disk-percent',str(disk_floor)]
             if memory_floor is not None:
                 argv+=['--minimum-generator-memory-bytes',str(memory_floor),'--minimum-cloud-memory-bytes',str(memory_floor)]
             if latency_limits is not None:

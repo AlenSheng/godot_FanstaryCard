@@ -11,6 +11,7 @@ class GameStub extends Node:
  var ready_prompt: Dictionary={}
  var _class_switch_request_active: bool=false
  var login_started: bool=false
+ var login_context: Dictionary={}
  var class_started: bool=false
  var mode: String="login"
  var permitted: Array=[]
@@ -18,6 +19,7 @@ class GameStub extends Node:
  var selected_cards: Array=[]
  var play_calls: int=0
  func login(_url: String,_name: String) -> void:
+  login_context=gateway.telemetry_context.duplicate(true)
   login_started=true;await Engine.get_main_loop().process_frame
   if mode=="class":lobby={"player":{"selectedClass":"Guardian"}};gateway.online=true
  func select_class(_hero: String) -> void:class_started=true;_class_switch_request_active=true
@@ -43,6 +45,7 @@ func run_test() -> Dictionary:
   var game:=GameStub.new();var gateway:=GatewayStub.new();game.gateway=gateway;game.mode=mode;var probe:=Probe.new();tree.root.add_child(probe);probe.Game=game;probe.run_id="stop-control";probe.client_id=mode;probe.process_epoch="fixture";probe.report_path=root+"/stop-"+mode+".json";probe.stop_file=root+"/STOP-"+mode+".request";probe.last_status_at_ms=Time.get_ticks_msec();probe._run()
   var until_ms: int=Time.get_ticks_msec()+3000
   while not (game.login_started if mode=="login" else game.class_started) and Time.get_ticks_msec()<until_ms:await tree.process_frame
+  checks[mode+" login captures owner before first asynchronous call"] = game.login_context.get("run_id")=="stop-control" and game.login_context.get("client_id")==mode and game.login_context.get("process_epoch")=="fixture" and game.login_context.get("cycle_id")==mode+":1" and game.login_context.get("phase")=="login"
   var reached: bool=game.login_started if mode=="login" else game.class_started
   FileAccess.open(probe.stop_file,FileAccess.WRITE).store_string("owned STOP control");probe._process(0.0)
   while probe.finish_calls.is_empty() and Time.get_ticks_msec()<until_ms:await tree.process_frame
