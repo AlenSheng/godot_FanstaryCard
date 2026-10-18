@@ -28,6 +28,7 @@ from pr13_audit_archive import read_owned_audits
 from pr13_local_network import LocalOrigins
 from pr13_server_diagnostics import current_window
 from pr13_status_snapshot import SerializedStatusCache
+from pr13_native_package import verify_package, launch_command, package_environment, package_unchanged, runtime_capabilities
 from pr13_resource_policy import DEFAULT_GENERATOR_FLOOR, memory_causes, disk_causes, launch_memory_ready, latency_causes
 
 QUERIES = {
@@ -39,7 +40,7 @@ QUERIES = {
     'server_humans_in_room': 'fantasycard_rooms_humans_active{job="fantasycard",instance="otel-collector:9464"}',
 }
 COVERAGE_METADATA = {'profile','acceptance_scope','launch_interval_seconds','http_transport','resource_source','server_metrics_missing_reason','client_max_fps','fps_scope',
-                     'distinct_local_client_ips','client_memory_start_budget_mib','hero_class','strategy','strategy_seed','cycle_limit_seconds',
+                     'client_runtime','native_package_sha256','distinct_local_client_ips','client_memory_start_budget_mib','hero_class','strategy','strategy_seed','cycle_limit_seconds',
                      'minimum_generator_memory_bytes','minimum_cloud_memory_bytes','minimum_cloud_disk_percent',
                      'http_p95_limit_ms','command_p95_limit_ms','health_limit_ms','monitor_timeout_seconds',
                      'maximum_run_seconds','workload_profile_id','workload_profile_qualified','workload_profile_missing_reason'}
@@ -307,6 +308,8 @@ def main():
     # On Windows the small *_console.exe is a launcher with a different PID
     # from the engine process. Own the actual engine PID for status validation.
     parser.add_argument('--godot',default=r'F:\GitHubFiles\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64.exe')
+    parser.add_argument('--native-package',type=Path,help='Verified complete debug package; directly owns its Native PID')
+    parser.add_argument('--native-package-contract',type=Path,help='Exact executable/PCK/current source input verification contract')
     parser.add_argument('--server-url',default='http://127.0.0.1:5000')
     parser.add_argument('--allow-public-target',action='store_true')
     parser.add_argument('--max-groups',type=int,default=2)
@@ -363,10 +366,18 @@ def main():
         parser.error('Cloud disk minimum must be finite and between 5 and 100 percent')
     if args.client_max_fps is not None and not 1 <= args.client_max_fps <= 240:
         parser.error('Explicit FPS candidate must be between 1 and 240')
-    if not Path(args.godot).is_file(): parser.error('Godot executable is missing')
+    if args.native_package is None and not Path(args.godot).is_file(): parser.error('Godot executable is missing')
+    if args.native_package_contract is not None and args.native_package is None: parser.error('Package contract requires --native-package')
+    if args.native_package is not None and (args.native_package_contract is None or args.client_project is None or args.client_max_fps is not None):
+        parser.error('Verified debug package requires its contract, explicit complete client project and uncapped FPS')
     active_client = CLIENT if args.client_project is None else args.client_project.resolve()
     if not (active_client/'project.godot').is_file() or not (active_client/'tests/gameplay_load_client.tscn').is_file():
         parser.error('The actual client project and gameplay scene are required')
+    native_package_proof=None
+    if args.native_package is not None:
+        names=subprocess.check_output(['git','ls-files','client'],cwd=ROOT,text=True).splitlines()
+        try: native_package_proof=verify_package(args.native_package,args.native_package_contract,active_client,names)
+        except (OSError,ValueError,TypeError) as error: parser.error(str(error))
     if min(args.max_groups,args.max_seconds,args.group_size,args.group_interval,args.smoke_cycles,args.smoke_clients)<1:
         parser.error('Group, duration and cycle limits must be positive')
     if not math.isfinite(args.launch_interval_seconds) or args.launch_interval_seconds < 0:
@@ -400,13 +411,16 @@ def main():
         if psutil is None:
             parser.error('Generator memory monitoring is required before --run')
     source=provenance(ROOT, ('tools/gameplay_load_test.py','tools/cloud_load_test.py','tools/pr13_resource_policy.py',
-        'tools/pr13_status_snapshot.py',
+        'tools/pr13_status_snapshot.py','tools/pr13_native_package.py',
         'tools/gameplay_load_validation.py','client/tests/gameplay_load_client.gd','client/state/game_store.gd',
         'client/network/gateway.gd','client/network/reusable_http_client.gd',
         'tools/pr13_runtime_evidence.py','tools/pr13_audit_archive.py','client/data/catalog.json',
         'tools/pr13_local_network.py',
         'client/ui/card_details.gd','client/state/element_rules.gd',
         'protocol/realtime/v1/realtime.proto'))
+    if native_package_proof is not None:
+        source['native_package']=dict(native_package_proof)
+        source['sha256'].update({'native-package/'+key:native_package_proof[key+'_sha256'] for key in ('executable','pck','contract')})
     if args.client_project is not None:
         # Preserve the actual executed bytes independently of later checkout
         # edits. No claim that an arbitrary replacement project is equivalent.
@@ -444,6 +458,8 @@ def main():
                     health_limit_ms=args.health_limit_ms,monitor_timeout_seconds=args.monitor_timeout_seconds,
                     hero_class=args.hero_class,strategy=args.strategy,strategy_seed=args.strategy_seed,
                     cycle_limit_seconds=args.cycle_limit_seconds,maximum_run_seconds=args.max_seconds)
+    contract.update(client_runtime='verified-debug-package' if native_package_proof else 'editor',
+                    native_package_sha256=native_package_proof['pck_sha256'] if native_package_proof else None)
     profile_sources=dict(source.get('sha256',{}))
     profile_sources.update(source.get('active_client_project',{}).get('input_hashes',{}))
     profile_identity=workload_profile_identity(contract,profile_sources)
@@ -456,6 +472,7 @@ def main():
     processes=[]; samples=[]; group_launches=[]; launch_receipts=[]; streaks=collections.Counter(); seen={}; status_cache=SerializedStatusCache()
     run_id=uuid.uuid4().hex
     workload_failed=False; smoke_verified=False; previous_sample_monotonic_ms=None; previous_generator=None
+    package_source_failed=False
     started=time.time(); started_monotonic=time.monotonic()
     next_group=started_monotonic; next_sample=started_monotonic+10
     pending_launches=collections.deque(); next_launch=started_monotonic
@@ -514,11 +531,13 @@ def main():
                     FANTASYCARD_LOAD_RUN_SECONDS=str(args.max_seconds),
                     FANTASYCARD_LOAD_CYCLE_LIMIT_SECONDS=str(args.cycle_limit_seconds),
                     FANTASYCARD_LOAD_MAX_CYCLES=str(args.smoke_cycles) if args.smoke else '0')
+                feature_report=run_dir/(client_id+'.runtime-features.json') if native_package_proof else None
+                if native_package_proof:
+                    if feature_report.exists(): raise FileExistsError('Owned runtime capability report already exists')
+                    env.update(package_environment(feature_report))
                 log=(run_dir/(client_id+'.log')).open('w',encoding='utf-8')
                 try:
-                    command=[args.godot,'--headless','--audio-driver','Dummy','--path',str(active_client)]
-                    if args.client_max_fps is not None: command+=['--max-fps',str(args.client_max_fps)]
-                    command+=['res://tests/gameplay_load_client.tscn']
+                    command=launch_command(args.godot,active_client,package=args.native_package,max_fps=args.client_max_fps)
                     process=subprocess.Popen(command,cwd=ROOT,env=env,stdout=log,stderr=subprocess.STDOUT,
                         creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
                 except Exception:
@@ -529,6 +548,7 @@ def main():
                     'started_at_monotonic_ms':time.monotonic()*1000,
                     'run_id':run_id,'process_epoch':process_epoch})
                 entry=processes[-1]
+                if feature_report is not None: entry['runtime_feature_report']=feature_report
                 origin=urllib.parse.urlparse(env['FANTASYCARD_SERVER_URL'])
                 launch_receipts.append({key:entry[key] for key in ('client_id','group','run_id','process_epoch',
                     'started_at_ms','started_at_monotonic_ms')})
@@ -537,6 +557,9 @@ def main():
                     hero_class=env['FANTASYCARD_LOAD_HERO_CLASS'],strategy=env['FANTASYCARD_LOAD_STRATEGY'],
                     strategy_seed=int(env['FANTASYCARD_LOAD_SEED']),cycle_limit_seconds=args.cycle_limit_seconds,
                     client_max_fps=args.client_max_fps,command=command)
+                launch_receipts[-1].update(client_runtime='verified-debug-package' if native_package_proof else 'editor',
+                    runtime_feature_file=feature_report.name if feature_report is not None else None,
+                    native_package_sha256=native_package_proof['pck_sha256'] if native_package_proof else None)
                 # Checkpoint the real PID/epoch immediately after launch. Never
                 # reconstruct process ownership from final client JSON alone.
                 # The child is already in processes, so a write fault still
@@ -671,6 +694,24 @@ def main():
                 except (OSError,RuntimeError,TimeoutError) as exc:
                     origins_cleanup_complete=False; workload_failed=True
                     cleanup_error=(cleanup_error+'; ' if cleanup_error else '')+'origin_cleanup:'+type(exc).__name__
+        if native_package_proof is not None:
+            capability_reports=[];package_errors=[]
+            try:
+                intact=package_unchanged(native_package_proof)
+                if not intact: package_errors.append({'error':'native_package_changed_during_run'})
+            except (OSError,ValueError) as error:
+                intact=False;package_errors.append({'error':'native_package_read_failed','type':type(error).__name__})
+            for entry in processes:
+                try:
+                    observation=runtime_capabilities(entry['runtime_feature_report'])
+                    observation.update(client_id=entry['client_id'],expected_Native_PID=entry['process'].pid,
+                        owner_scope='Unique owned launch path; process identity independently checked in status/final Native report')
+                    capability_reports.append(observation)
+                except (OSError,ValueError,TypeError) as error:
+                    package_errors.append({'client_id':entry['client_id'],'error':'native_runtime_capability_invalid','type':type(error).__name__})
+            package_source_failed=bool(package_errors)
+            source['native_package'].update(unchanged_after_run=intact,capability_reports=capability_reports,evidence_errors=package_errors)
+            workload_failed=workload_failed or package_source_failed
         if forced_termination:
             workload_failed=True
             cleanup_error=(cleanup_error+'; ' if cleanup_error else '')+'forced_termination:'+','.join(map(str,forced_termination))
@@ -736,7 +777,7 @@ def main():
         origin_evidence_failed = local_origins is not None and bool(local_origins.errors)
         final_evidence_failed = bool(final_read_errors or native_report_errors or tail_lost or tail_window['invalid_metric_count']
             or final_audit_lost or final_audit_invalid or final_cycle_invalid or final_cycle_disagreement or final_errors_invalid
-            or audit_errors or cutoffs['evidence_errors'] or request_distributions['evidence_errors'] or coverage_evidence_failed or origin_evidence_failed)
+            or audit_errors or cutoffs['evidence_errors'] or request_distributions['evidence_errors'] or coverage_evidence_failed or origin_evidence_failed or package_source_failed)
         # An operator may intentionally end a run before its first sample.
         # That leaves acceptance incomplete, while preserving exit 130. Real
         # malformed/lost evidence or abnormal child exits still take priority.
@@ -794,6 +835,7 @@ def main():
                 (audit_errors, 'audit_archive_invalid'), (cutoffs['evidence_errors'], 'cycle_evidence_invalid'),
                 (request_distributions['evidence_errors'], 'request_cutoff_evidence_invalid'),
                 (origin_evidence_failed, 'local_origin_evidence_invalid'),
+                (package_source_failed, 'native_package_evidence_invalid'),
                 (coverage_evidence_failed, 'load_coverage_evidence_invalid'),
                 (post_stop_failure, 'post_stop_process_failure'), (final_business_failed, 'final_business_failure'),
                 (business_cleanup_failed, 'business_cleanup_failed'), (not sampling['passed'], 'sampling_integrity_failed')):

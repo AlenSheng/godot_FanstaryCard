@@ -1,0 +1,74 @@
+{
+  "kind": "ReviewedFormalSourceAndCompactVerification",
+  "formal_sources": [
+    {
+      "path": "tools/gameplay_load_test.py",
+      "bytes": 66507,
+      "sha256": "883e15f8257d1af3e75eb8e73c71442d7466808a2e58fa4ba67671c43b963feb"
+    },
+    {
+      "path": "tools/pr13_native_package.py",
+      "bytes": 6290,
+      "sha256": "61a83f9efd49b1255d1c78ad7dd3dcb456747791f84b48ac80901b6157099af2"
+    },
+    {
+      "path": "tools/tests/test_pr13_native_package.py",
+      "bytes": 5351,
+      "sha256": "58cb391f64de5c6465a664060f2f73becaddb8a3ee77e11ea7956563a888800f"
+    }
+  ],
+  "inputs": [
+    {
+      "role": "private-package-controls",
+      "file": "local-package-controls.original.json",
+      "bytes": 1117,
+      "sha256": "ed25f0918be5172ca6823347fc99685ce952929689902829905b595ef2cdc2d3"
+    },
+    {
+      "role": "private-capability-controls",
+      "file": "local-runtime-capability-controls.original.json",
+      "bytes": 530,
+      "sha256": "0df71db8e9d329e08c39b00232bb1a3b3911bb8f5ee39b3e212ae186a2f3985f"
+    },
+    {
+      "role": "actual-package-source-contract",
+      "file": "complete-current-debug-package.contract.json",
+      "bytes": 276302,
+      "sha256": "f1c4423ff3f726a9282a39cbb37c02492fc7ded658ffaed85b6b1dd1b1374cd7"
+    },
+    {
+      "role": "candidate-prepare",
+      "file": "candidate-prepare.terminal.original.json",
+      "bytes": 990,
+      "sha256": "1bfdd57551cc60ae8e42dd1f6b8796e0deed1d8df409bc2f3d542983e5db2091"
+    },
+    {
+      "role": "formal64",
+      "file": "formal-python-regressions.original.json",
+      "bytes": 11471,
+      "sha256": "4c454403387358b9f716d0a5d25ca3b42f317cead555ec6ec5b117bee1531792"
+    },
+    {
+      "role": "actual-coordinator-and-PG-review",
+      "file": "coordinated-package-durable-review.original.json",
+      "bytes": 1851,
+      "sha256": "49ed66f69039993249af77ea4364db745b2d353b8e9b1bff6a7733e81b6e75ba"
+    },
+    {
+      "role": "final29G",
+      "file": "cloud-final-all-G-SHA-verified.original.json",
+      "bytes": 471,
+      "sha256": "d0ff431c1db7646480f0c32799f649e900acd49be47627fda76cacebf81f8408"
+    },
+    {
+      "role": "final-scope",
+      "file": "final-cloud-scope.original.json",
+      "bytes": 482,
+      "sha256": "7997f8f0abf217f7c11471e41ef351eeb2b2cb5fb25be7ec057aa777823b01b2"
+    }
+  ],
+  "private_binary_keys_raws_or_temporary_test_code_published": false,
+  "new_gameworlds": 1,
+  "conservative_budget": 235,
+  "canonical_register_gate_MAIN_changed": false
+}
