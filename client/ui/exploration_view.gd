@@ -128,6 +128,12 @@ static func _passive(ui: Control, hero_class: String, rect: Rect2, above_preview
 	var descriptions := {"Mage": "同核连放，加快抽牌", "Priest": "生命越低，治疗与控场越强", "Guardian": "生命越高，上盾越厚"}
 	var status: Dictionary = Game.room.get("player", {}).get("battle_status", {})
 	if not status.is_empty(): descriptions[hero_class] = BattleDetails.passive_text(status)
+	if hero_class == "Priest" and Game.room.has("duel"):
+		descriptions[hero_class] = descriptions[hero_class].replace(" · ", "\n")
+	if hero_class == "Mage" and Game.room.has("duel"):
+		var parts: PackedStringArray = descriptions[hero_class].split(" · ")
+		if parts.size() == 3:
+			descriptions[hero_class] = parts[0] + " · " + parts[1] + "\n" + parts[2]
 	var frame: Control = ui.panel(rect)
 	frame.name = "PlayerPassive_" + hero_class
 	frame.mouse_filter = Control.MOUSE_FILTER_PASS
@@ -370,8 +376,8 @@ static func _duel(ui: Control, host: Control, state: Dictionary) -> void:
 		ui.picture(Art.texture("UI/Encounter/encounter_lock_icon_normal.png"), Rect2(1076, 477, 42, 42))
 		var waiting_label: Label = ui.text(P.localized("waiting_action"), Rect2(1128, 477, 400, 42), 24, P.GOLD)
 		waiting_label.name = "DuelWaitLabel"
-	ui.text(P.localized("own_hand"), Rect2(80, 622, 330, 54), 34, P.GOLD)
-	_passive(ui, player.get("hero_class", ""), Rect2(80, 703, 330, 117))
+	ui.text(P.localized("own_hand"), Rect2(80, 600, 330, 54), 34, P.GOLD)
+	_passive(ui, player.get("hero_class", ""), Rect2(80, 665, 350, 160), true)
 
 static func _map(ui: Control, host: Control, state: Dictionary) -> void:
 	_title(ui, "混沌领域")
