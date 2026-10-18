@@ -85,12 +85,15 @@ func run_test() -> Dictionary:
 	gateway.event_received.connect(func(kind, payload): delivered.append({"kind": kind, "payload": payload}))
 	gateway._pending_request_started["late"] = {"context": gateway.capture_context(), "action": "battle.play_cards", "started_at": Time.get_ticks_msec()}
 	gateway._receive(_packet(proto, "room.command_cancelled", "RoomCommandCancelledEvent", 1, {"room_id": "room", "match_id": "match", "command_type": "battle.play_cards", "reason": "RoomEndedBeforeApply"}, "late"))
-	checks["cancelled request measured once with distinct result"] = samples.size() == 1 and samples[0].result == "cancelled"
+	checks["cancelled request measured once with distinct result"] = samples.filter(func(sample): return sample.get("type", "") == "realtime").size() == 1 and samples[0].result == "cancelled"
 	# The same IDs in a later local context must not accept an old second frame.
 	gateway.room_context_epoch = 2
 	gateway.recovering = true
 	gateway._receive(_packet(proto, "room.snapshot", "RoomSnapshotEvent", 2, {"room_id": "room", "match_id": "match", "room_revision": 99}, "late"))
-	checks["follow-up retains old epoch and cannot release new recovery"] = gateway.room_revision == 0 and gateway.recovering and delivered.size() == 1 and samples.size() == 1 and gateway.last_sequence == 2
+	var measurements: Array = samples.filter(func(sample): return sample.get("type", "") == "realtime")
+	var ignored: Array = samples.filter(func(sample): return sample.get("type", "") == "lifecycle_guard")
+	checks["follow-up retains old epoch and cannot release new recovery"] = gateway.room_revision == 0 and gateway.recovering and delivered.size() == 1 and measurements.size() == 1 and gateway.last_sequence == 2
+	checks["ignored follow-up trace is separate from one cancellation measurement"] = ignored.size() == 1 and ignored[0].reason == "prior_room_context" and ignored[0].trace_only and measurements[0].result == "cancelled"
 	gateway._receive(_packet(proto, "room.snapshot", "RoomSnapshotEvent", 3, {"room_id": "other-room", "match_id": "other-match", "room_revision": 99}))
 	checks["unsolicited old snapshot cannot replace current room"] = gateway.room_id == "room" and gateway.current_match_id == "match" and gateway.room_revision == 0
 	gateway._pending_request_started["current"] = {"context": gateway.capture_context(), "action": "room.snapshot.read", "started_at": Time.get_ticks_msec()}

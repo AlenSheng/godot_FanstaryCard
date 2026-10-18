@@ -1304,17 +1304,21 @@ func _sound_event(kind: String, payload: Dictionary) -> void:
 
 func _send_queued_command(queued: Dictionary) -> bool:
 	var request_id: String = gateway.new_id()
-	if gateway.send(queued.action, queued.payload, request_id):
+	var dispatched: Dictionary = queued.duplicate(true)
+	var origin_context: Dictionary = gateway.capture_context()
+	var sent_room_id: String = str(room.get("room_id", ""))
+	var sent_revision: int = int(room.get("room_revision", 0))
+	if gateway.send(dispatched.action, dispatched.payload, request_id):
 		var deadline := Time.get_ticks_msec() + 3000
 		_play_deadline = deadline
-		_pending_commands[request_id] = {"action": queued.action, "payload": queued.payload.duplicate(true), "room_id": room.get("room_id", ""), "sent_revision": int(room.get("room_revision", 0)), "retry": queued.get("retry", false), "deadline": deadline, "origin_context": gateway.capture_context()}
-		if queued.action == "battle.play_cards":
-			_pending_play = {"request_id": request_id, "room_id": room.get("room_id", ""), "payload": queued.payload.duplicate(true), "retry": queued.get("retry", false)}
-		_sound_commands[request_id] = {"action": queued.action, "room_id": room.get("room_id", "")}
+		_pending_commands[request_id] = {"action": dispatched.action, "payload": dispatched.payload.duplicate(true), "room_id": sent_room_id, "sent_revision": sent_revision, "retry": dispatched.get("retry", false), "deadline": deadline, "origin_context": origin_context}
+		if dispatched.action == "battle.play_cards":
+			_pending_play = {"request_id": request_id, "room_id": sent_room_id, "payload": dispatched.payload.duplicate(true), "retry": dispatched.get("retry", false)}
+		_sound_commands[request_id] = {"action": dispatched.action, "room_id": sent_room_id}
 		if _sound_commands.size() > 64: _sound_commands.erase(_sound_commands.keys()[0])
 		changed.emit()
 		return true
-	elif queued.get("retry", false):
+	elif dispatched.get("retry", false):
 		notice.emit("操作未发出，请在连接恢复后重试")
 	return false
 

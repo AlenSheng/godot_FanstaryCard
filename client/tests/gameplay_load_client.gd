@@ -22,10 +22,16 @@ var operations: Array = []
 var telemetry: Array = []
 var audit_buffer: Array[String] = []
 var audit_lost_count := 0
+var audit_segment_bytes: Array[int] = []
+var audit_bytes_written := 0
+var audit_events_written := 0
+var audit_last_error := ""
+var audit_writer_failed := false
 var status_seq := 0
 var events: Dictionary = {}
 var errors: Array = []
 var own_user_id := ""
+var started_process_frames := 0
 var scenario_started := false
 var scenario_finished := false
 var Game: Node
@@ -33,11 +39,15 @@ var cycles_completed := 0
 var max_cycles := 0
 var stage := "starting"
 var last_progress_ms := 0
+var last_transport_progress_ms := 0
+var last_gameplay_progress_reason := "not_started"
+var last_transport_progress_reason := "not_started"
 var active_match_id := ""
 var verified_ready_match_id := ""
 var ready_required := false
 var ready_accepted := false
 var ready_deadline_unix_ms := 0
+var known_ready_deadlines: Dictionary = {}
 var ready_attempts := 0
 var ready_successful_sends := 0
 var hero_profile := "Mage"
@@ -92,7 +102,9 @@ func _ready() -> void:
 	stop_file = OS.get_environment("FANTASYCARD_LOAD_STOP_FILE").strip_edges()
 	if report_path.is_empty(): report_path = ProjectSettings.globalize_path("res://evidence/cloud-load/%s.json" % client_id)
 	started_at_ms = Time.get_ticks_msec()
+	started_process_frames = Engine.get_process_frames()
 	last_progress_ms = started_at_ms
+	last_transport_progress_ms = started_at_ms
 	max_cycles = int(OS.get_environment("FANTASYCARD_LOAD_MAX_CYCLES"))
 	hero_profile = OS.get_environment("FANTASYCARD_LOAD_HERO_CLASS")
 	if hero_profile not in ["Mage", "Priest", "Guardian"]: hero_profile = "Mage"
@@ -145,6 +157,10 @@ func _run() -> void:
 	var class_deadline := Time.get_ticks_msec() + 30000
 	while Game._class_switch_request_active and Time.get_ticks_msec() < class_deadline and not stop_requested:
 		await _wait(0.1)
+	if stop_requested:
+		await _graceful_cleanup()
+		await _finish(false, "Coordinator cancelled class selection", 0)
+		return
 	if not _check(str(Game.lobby.get("player", {}).get("selectedClass", "")) == hero_profile, "hero_class_confirmed"):
 		await _graceful_cleanup()
 		await _finish(false, "Hero class was not confirmed")
@@ -159,9 +175,8 @@ func _run() -> void:
 			await _graceful_cleanup()
 			await _finish(false, "Expedition did not reach acknowledged settlement")
 			return
-		_on_telemetry({"type": "lifecycle", "event_type": "cycle.completed", "match_id": active_match_id})
+		_on_telemetry({"type": "lifecycle", "event_type": "cycle.completed", "match_id": active_match_id, "gameplay_progress":true, "progress_reason":"cycle_acknowledged"})
 		cycles_completed += 1
-		last_progress_ms = Time.get_ticks_msec()
 		if max_cycles > 0 and cycles_completed >= max_cycles: break
 		stage = "between_matches"
 		await _wait(2.0)
@@ -177,16 +192,18 @@ func _login() -> void:
 	var deadline := Time.get_ticks_msec() + 30000
 	while Time.get_ticks_msec() < deadline and (Game.lobby.is_empty() or not Game.gateway.online) and not stop_requested:
 		await _wait(0.25)
+	if stop_requested: return
 	_check(Game.gateway.online, "realtime_connected")
 
 func _run_expedition() -> void:
 	cycle_battles_won = 0
 	_update_context()
+	stage = "preparation"
 	await Game.prepare("Free", 0)
 	if stop_requested: return
 	if not _check(not Game.preparation.is_empty(), "create_free_preparation"): return
 	_on_telemetry({"type": "lifecycle", "event_type": "preparation.created",
-		"preparation_id": Game.preparation.get("preparationId", "")})
+		"preparation_id": Game.preparation.get("preparationId", ""), "gameplay_progress":true, "progress_reason":"preparation_created"})
 	active_match_id = ""
 	verified_ready_match_id = ""
 	ready_required = false
@@ -194,12 +211,13 @@ func _run_expedition() -> void:
 	ready_deadline_unix_ms = 0
 	ready_attempts = 0
 	ready_successful_sends = 0
+	stage = "enqueue"
 	await Game.enqueue()
 	if stop_requested: return
 	if not _check(not Game.ticket.is_empty(), "enqueue_match"): return
 	_on_telemetry({"type": "lifecycle", "event_type": "match.queued",
 		"preparation_id": Game.preparation.get("preparationId", ""),
-		"ticket_id": Game.ticket.get("ticketId", "")})
+		"ticket_id": Game.ticket.get("ticketId", ""), "gameplay_progress":true, "progress_reason":"match_queued"})
 	stage = "matchmaking"
 	var deadline := Time.get_ticks_msec() + 60000
 	var next_ready_send_ms := 0
@@ -230,9 +248,13 @@ func _run_expedition() -> void:
 						ready_accepted = false
 					active_match_id = verified_match_id
 					ready_required = true
-					ready_deadline_unix_ms = int(Game.ready_prompt.get("deadline_unix_ms", 0)) if str(Game.ready_prompt.get("match_id", "")) == verified_match_id else 0
+					ready_deadline_unix_ms = _ready_deadline_for_match(verified_match_id)
 					if Game.gateway.has_method("bind_prelaunch_ticket") and str(Game.ready_prompt.get("match_id", "")) == verified_match_id:
 						Game.gateway.bind_prelaunch_ticket(verified_match_id, str(Game.ready_prompt.get("room_id", "")), ready_deadline_unix_ms, int(Game.get("_room_context_epoch")))
+					ready_deadline_unix_ms = _ready_deadline_for_match(verified_match_id)
+					if ready_deadline_unix_ms > 0 and int(Time.get_unix_time_from_system()*1000.0) >= ready_deadline_unix_ms:
+						_check(false, "ready_deadline_expired")
+						return
 				elif str(ticket_result.data.get("status", "")) in ["Cancelled", "Expired"]:
 					_check(false, "ready_ticket_terminal")
 					return
@@ -270,24 +292,11 @@ func _run_expedition() -> void:
 				continue
 			# This is an explicit script fallback, never a combat victory. Network
 			# events and zero-damage combos cannot reset the effective-progress timer.
-			if load_profile == "cyclic-gameplay" and Game.allowed("battle.abandon") and Time.get_ticks_msec() - last_effective_ms > 60000:
-				if Game.command("battle.abandon"):
-					_on_telemetry({"type": "lifecycle", "event_type": "battle.abandon.fallback", "match_id": active_match_id})
+			if _try_stagnation_fallback():
 				await _wait(0.4)
 				continue
-			var pve: Dictionary = Game.room.get("pve", {})
-			var current_dead: bool = pve.get("monsters", []).any(func(monster): return str(monster.get("monster_id", "")) == str(pve.get("current_target_id", "")) and int(monster.get("hp", 0)) <= 0)
-			if current_dead and Game.allowed("battle.select_target"):
-				for monster in pve.get("monsters", []):
-					if int(monster.get("hp", 0)) > 0:
-						Game.command("battle.select_target", {"battle_id": pve.get("battle_id", ""), "target_id": monster.get("monster_id", "")})
-						break
-			elif Game.allowed("battle.play_cards"):
-				var hand: Array = Game.room.get("player", {}).get("hand", [])
-				if not hand.is_empty():
-					Game.selected_cards.clear()
-					for instance_id in _select_cards(hand): Game.toggle_card(instance_id)
-					Game.play_cards()
+			if _try_battle_action():
+				pass
 			elif Game.allowed("reward.choice.claim"):
 				var options: Array = Game.room.get("reward_choice", {}).get("options", [])
 				if not options.is_empty():
@@ -324,8 +333,36 @@ func _run_expedition() -> void:
 		var settlement_match_id := str(Game.settlement.get("matchId", ""))
 		var acknowledged: bool = await Game.acknowledge_settlement()
 		_on_telemetry({"type": "lifecycle", "event_type": "settlement.acknowledged" if acknowledged else "settlement.ack_failed",
-			"match_id": settlement_match_id})
+			"match_id": settlement_match_id, "gameplay_progress":acknowledged, "progress_reason":"settlement_acknowledged" if acknowledged else "ack_failed"})
 		scenario_finished = _check(acknowledged and settlement_match_id == active_match_id and Game.room.is_empty() and Game.settlement.is_empty(), "settlement_acknowledged")
+
+func _try_battle_action() -> bool:
+	var pve: Dictionary = Game.room.get("pve", {})
+	var current_dead: bool = pve.get("monsters", []).any(func(monster): return str(monster.get("monster_id", "")) == str(pve.get("current_target_id", "")) and int(monster.get("hp", 0)) <= 0)
+	if current_dead and Game.allowed("battle.select_target"):
+		for monster in pve.get("monsters", []):
+			if int(monster.get("hp", 0)) > 0:
+				Game.command("battle.select_target", {"battle_id": pve.get("battle_id", ""), "target_id": monster.get("monster_id", "")})
+				break
+		return true
+	elif Game.allowed("battle.play_cards"):
+		var hand: Array = Game.room.get("player", {}).get("hand", [])
+		if not hand.is_empty():
+			Game.selected_cards.clear()
+			for instance_id in _select_cards(hand): Game.toggle_card(instance_id)
+			Game.play_cards()
+		return true
+	return false
+
+func _try_stagnation_fallback() -> bool:
+	if load_profile != "cyclic-gameplay" or not Game.allowed("battle.abandon") or Time.get_ticks_msec() - last_effective_ms <= 60000:
+		return false
+	var origin: Dictionary = Game.gateway.capture_context()
+	if Game.command("battle.abandon"):
+		_on_telemetry({"type": "lifecycle", "event_type": "battle.abandon.fallback", "match_id": active_match_id,
+			"battle_id": origin.get("battle_id"), "_origin_context": origin})
+	# Preserve the original loop's wait/continue even if a permitted send failed.
+	return true
 
 func _should_extract(visited: Dictionary) -> bool:
 	if not Game.allowed("action.extract"): return false
@@ -467,6 +504,9 @@ func _cancel_waiting_preparation(generation: int, match_id: String, preparation_
 	if decision == "cancel_queued": await Game.cancel_preparation()
 
 func _update_context() -> void:
+	# A new authoritative battle is known before the local metrics tracker initializes.
+	var battle: Dictionary = Game.room.get("duel", Game.room.get("pve", {}))
+	var battle_id := str(battle.get("duel_id", battle.get("battle_id", "")))
 	Game.gateway.telemetry_context = {"run_id": run_id, "client_id": client_id,
 		"process_epoch": process_epoch, "cycle_id": "%s:%d" % [client_id, cycles_completed + 1],
 		"phase": _current_phase(), "hero_class": hero_profile, "strategy": strategy,
@@ -476,7 +516,7 @@ func _update_context() -> void:
 		"config_package_unavailable_reason": "package_not_present" if _config_package_hash()==null else null,
 		"battle_seed": null, "battle_seed_unavailable_reason": "not_published_by_authoritative_protocol",
 		"effective_room_policy": Game.room.get("player", {}).get("numerical_state", {}).duplicate(true),
-		"battle_id": current_battle_id}
+		"battle_id": battle_id}
 
 func _select_cards(hand: Array) -> Array:
 	var all_ids: Array = hand.map(func(card): return str(card.get("instance_id", "")))
@@ -547,6 +587,8 @@ func _observe_battle() -> void:
 	if new_cards > 0:
 		battle_metrics.observed_cards_drawn += new_cards
 		last_effective_ms = Time.get_ticks_msec()
+		_on_telemetry({"type":"lifecycle", "event_type":"battle.cards_observed", "battle_id":battle_id,
+			"new_card_instances":new_cards, "gameplay_progress":true, "progress_reason":"new_draw_opportunity"})
 	observed_hand_ids = hand_ids
 	var waiting: Dictionary = _strategy_wait_state()
 	_on_telemetry({"type": "battle_observation", "event_type": "battle.observed", "battle_id": battle_id,
@@ -569,37 +611,76 @@ func _close_battle_metrics(outcome: String) -> void:
 
 func _on_telemetry(sample: Dictionary) -> void:
 	var copy: Dictionary = sample.duplicate(true)
+	var now := Time.get_ticks_msec()
+	var sample_type := str(sample.get("type", ""))
+	var response_received := sample_type in ["rtt", "realtime"] or (sample_type == "http" and int(sample.get("status", 0)) > 0)
+	copy["transport_progress"] = bool(sample.get("transport_progress", false)) or response_received
+	copy["gameplay_progress"] = bool(sample.get("gameplay_progress", false))
+	if copy.transport_progress:
+		last_transport_progress_ms = now
+		last_transport_progress_reason = str(sample.get("event_type", sample_type))
+	if copy.gameplay_progress:
+		last_progress_ms = now
+		last_gameplay_progress_reason = str(sample.get("progress_reason", sample.get("event_type", "unknown")))
+	copy["gameplay_progress_reason"] = last_gameplay_progress_reason
+	copy["transport_progress_age_ms"] = maxi(0, now - last_transport_progress_ms)
+	copy["gameplay_progress_age_ms"] = maxi(0, now - last_progress_ms)
 	# Command feedback carries its dispatch context, including late responses.
 	# Never assign the current cycle to a previous cycle's completion.
-	var origin: Dictionary = sample.get("_origin_context", {})
+	var origin_value: Variant = sample.get("_origin_context", {})
+	var origin: Dictionary = origin_value if origin_value is Dictionary else {}
 	for key in origin:
-		if not copy.has(key): copy[key] = origin[key]
-	for key in ["room_id", "match_id"]:
-		if copy.get(key) == null:
-			copy[key] = origin.get(key, Game.room.get(key, active_match_id if key == "match_id" else ""))
+		if not copy.has(key) or copy[key] == null: copy[key] = origin[key]
+	var asynchronous := sample_type in ["http", "http_attempt", "realtime", "realtime_timeout", "rtt", "command_lifecycle", "lifecycle_guard", "protocol_observation"] or sample.has("_origin_context")
+	var local_context := {"run_id": run_id, "client_id": client_id, "process_epoch": process_epoch,
+		"cycle_id": "%s:%d" % [client_id, cycles_completed + 1], "phase": _current_phase(),
+		"room_id": Game.room.get("room_id", ""), "match_id": Game.room.get("match_id", active_match_id)}
+	var context_keys: Array[String] = ["run_id", "client_id", "process_epoch", "cycle_id", "phase", "room_id", "match_id"]
+	if sample_type in ["http", "http_attempt"]: context_keys.append("logical_request_id")
+	var missing_fields: Array[String] = []
+	for key in context_keys:
+		var value: Variant = copy.get(key)
+		var absent: bool = not value is String or value == "Unknown" or (key not in ["room_id", "match_id"] and value.is_empty())
+		if not absent: continue
+		if asynchronous:
+			copy[key] = "Unknown"
+			missing_fields.append(key)
+		elif local_context.has(key):
+			copy[key] = local_context[key]
+	# The observer owns storage/sequence; the business identity belongs to
+	# the dispatch. Missing asynchronous context must never borrow this frame.
+	copy["observer_context"] = local_context
+	copy["origin_context_state"] = ("Complete" if missing_fields.is_empty() else "Unknown") if asynchronous else "Local"
+	copy["origin_context_missing_fields"] = missing_fields
+	copy["observation_phase"] = "drain" if stop_requested or finishing else "active"
 	event_seq += 1
-	copy["run_id"] = run_id
-	copy["client_id"] = client_id
-	copy["process_epoch"] = process_epoch
 	copy["event_seq"] = event_seq
 	copy["event_type"] = sample.get("event_type", sample.get("type", "unknown"))
-	copy["cycle_id"] = copy.get("cycle_id", "%s:%d" % [client_id, cycles_completed + 1])
-	copy["phase"] = copy.get("phase", _current_phase())
 	copy["monotonic_ms"] = Time.get_ticks_msec()
 	copy["at_unix_ms"] = int(Time.get_unix_time_from_system() * 1000.0)
 	if not copy.has("battle_seed"):
 		copy["battle_seed"] = null
 		copy["battle_seed_unavailable_reason"] = "not_published_by_authoritative_protocol"
+	var serialized := JSON.stringify(copy)
+	if serialized.to_utf8_buffer().size() + 1 > _audit_record_limit_bytes():
+		audit_lost_count += 1
+		audit_last_error = "record_size_limit"
+		return
 	if copy.get("type", "") == "http":
 		operations.append(copy)
 		if operations.size() > 300: operations.pop_front()
-	audit_buffer.append(JSON.stringify(copy))
+	audit_buffer.append(serialized)
 	if audit_buffer.size() >= 64: _flush_audit()
 	telemetry.append(copy)
 	if telemetry.size() > 300: telemetry.pop_front()
 
 func _on_event(kind: String, _payload: Dictionary) -> void:
+	last_transport_progress_ms = Time.get_ticks_msec()
+	last_transport_progress_reason = kind
+	var effective_combo := false
 	var event_match_id := str(_payload.get("match_id", ""))
+	if kind in ["match.found", "room.ready_required", "room.ready_accepted"] and not event_match_id.is_empty():
+		_remember_ready_deadline(event_match_id, int(_payload.get("deadline_unix_ms", 0)))
 	if kind in ["match.found", "room.ready_required", "room.ready_accepted", "room.started"] and not event_match_id.is_empty():
 		# Acceptance can arrive from a previous cycle while enqueue awaits its
 		# response. Only the current ticket read may authorize that latch; an
@@ -608,7 +689,7 @@ func _on_event(kind: String, _payload: Dictionary) -> void:
 		if event_match_id == active_match_id:
 			if kind == "room.ready_required" and not ready_accepted:
 				ready_required = true
-				ready_deadline_unix_ms = int(_payload.get("deadline_unix_ms", 0))
+				ready_deadline_unix_ms = _ready_deadline_for_match(event_match_id)
 			elif kind == "room.ready_accepted" and event_match_id == verified_ready_match_id: ready_accepted = true
 			elif kind == "room.started": ready_accepted = true
 	if kind == "battle.combo_resolved" and str(_payload.get("attacker_id", "")) == own_user_id:
@@ -621,6 +702,7 @@ func _on_event(kind: String, _payload: Dictionary) -> void:
 				battle_metrics[field] += value
 				effective += value
 			if effective > 0:
+				effective_combo = true
 				battle_metrics.effective_actions += 1
 				if battle_metrics.first_effective_ms == null: battle_metrics.first_effective_ms = Time.get_ticks_msec() - battle_started_ms
 				battle_metrics.longest_effective_gap_ms = maxi(int(battle_metrics.longest_effective_gap_ms), Time.get_ticks_msec() - last_effective_action_ms)
@@ -633,8 +715,9 @@ func _on_event(kind: String, _payload: Dictionary) -> void:
 	if kind in ["room.moved", "battle.target_selected", "settlement.ready", "match.settled"]:
 		last_effective_ms = Time.get_ticks_msec()
 	if kind in ["match.found", "room.ready_required", "room.ready_accepted", "room.started", "room.moved", "battle.combo_resolved", "settlement.ready", "match.settled"]:
-		last_progress_ms = Time.get_ticks_msec()
-		_on_telemetry({"type": "lifecycle", "event_type": kind, "match_id": _payload.get("match_id"), "room_id": _payload.get("room_id"), "_origin_context": _payload.get("_origin_context", {}), "battle_id": _payload.get("battle_id"), "request_id": _payload.get("_request_id")})
+		var advances := effective_combo if kind == "battle.combo_resolved" else kind in ["room.started", "room.moved", "settlement.ready", "match.settled"] or (kind == "room.ready_accepted" and ready_accepted and event_match_id == verified_ready_match_id)
+		_on_telemetry({"type": "lifecycle", "event_type": kind, "match_id": _payload.get("match_id"), "room_id": _payload.get("room_id"), "_origin_context": _payload.get("_origin_context", {}), "battle_id": _payload.get("battle_id"), "request_id": _payload.get("_request_id"),
+			"transport_progress":true, "gameplay_progress":advances, "progress_reason":"effective_combo" if effective_combo else kind})
 	if kind in ["player.died", "action.extract_completed"]:
 		# Preserve terminal authority separately from progress clocks. A command
 		# can already be in flight when this packet reaches a distant client.
@@ -663,26 +746,110 @@ func _wait(seconds: float) -> void:
 func _current_phase() -> String:
 	match stage:
 		"login": return "login"
-		"starting", "expedition": return "initial"
+		"starting", "expedition", "preparation", "enqueue": return "initial"
 		"matchmaking": return "matchmaking"
 		"playing": return "playing"
 		"settlement": return "settlement"
 		_: return "cleanup"
 
+func _audit_segment_limit_bytes() -> int:
+	return 16 * 1024 * 1024
+
+func _audit_record_limit_bytes() -> int:
+	return 64 * 1024
+
+func _audit_max_segments() -> int:
+	return 8
+
+func _audit_segment_path(index: int) -> String:
+	return report_path + ".telemetry" + ("" if index == 0 else "." + str(index)) + ".jsonl"
+
+func _audit_storage_observation() -> Dictionary:
+	var pending_bytes := 0
+	for line in audit_buffer: pending_bytes += line.to_utf8_buffer().size() + 1
+	return {"version":1, "record_limit_bytes":_audit_record_limit_bytes(), "segment_limit_bytes":_audit_segment_limit_bytes(),
+		"max_segments":_audit_max_segments(), "segment_count":audit_segment_bytes.size(), "segment_bytes":audit_segment_bytes.duplicate(),
+		"bytes_written":audit_bytes_written, "events_written":audit_events_written,
+		"buffer_count":audit_buffer.size(), "buffer_serialized_bytes":pending_bytes, "last_error":audit_last_error}
+
 func _flush_audit() -> void:
 	if audit_buffer.is_empty(): return
-	var path := report_path + ".telemetry.jsonl"
-	var audit := FileAccess.open(path, FileAccess.READ_WRITE if FileAccess.file_exists(path) else FileAccess.WRITE)
-	if audit == null:
+	if audit_writer_failed:
 		audit_lost_count += audit_buffer.size()
 		audit_buffer.clear()
 		return
-	audit.seek_end()
-	for line in audit_buffer: audit.store_line(line)
-	audit.flush()
-	if audit.get_error() != OK: audit_lost_count += audit_buffer.size()
-	audit.close()
+	var completed := 0
+	var unflushed := 0
+	var audit: FileAccess = null
+	for line in audit_buffer:
+		var raw := (line + "\n").to_utf8_buffer()
+		if raw.size() > _audit_record_limit_bytes() or raw.size() > _audit_segment_limit_bytes():
+			audit_last_error = "record_size_limit"
+			audit_lost_count += 1
+			completed += 1
+			continue
+		if audit_segment_bytes.is_empty(): audit_segment_bytes.append(0)
+		var index := audit_segment_bytes.size() - 1
+		if int(audit_segment_bytes[index]) + raw.size() > _audit_segment_limit_bytes():
+			if audit != null:
+				audit.flush()
+				if audit.get_error() != OK:
+					audit_last_error = "flush_failed"
+					audit_lost_count += audit_buffer.size() - completed + unflushed
+					audit_writer_failed = true
+					audit.close()
+					audit_buffer.clear()
+					return
+				audit.close()
+				audit = null
+				unflushed = 0
+			if audit_segment_bytes.size() >= _audit_max_segments():
+				audit_last_error = "archive_size_limit"
+				audit_lost_count += audit_buffer.size() - completed
+				audit_writer_failed = true
+				break
+			audit_segment_bytes.append(0)
+			index += 1
+		if audit == null:
+			var path := _audit_segment_path(index)
+			audit = FileAccess.open(path, FileAccess.READ_WRITE if FileAccess.file_exists(path) else FileAccess.WRITE)
+			if audit == null:
+				audit_last_error = "open_failed"
+				audit_lost_count += audit_buffer.size() - completed
+				break
+			if audit.get_length() != int(audit_segment_bytes[index]):
+				audit_last_error = "unexpected_existing_bytes"
+				audit_lost_count += audit_buffer.size() - completed
+				audit_writer_failed = true
+				break
+			audit.seek_end()
+		audit.store_buffer(raw)
+		if audit.get_error() != OK:
+			audit_last_error = "write_failed"
+			audit_lost_count += audit_buffer.size() - completed
+			audit_writer_failed = true
+			break
+		audit_segment_bytes[index] += raw.size()
+		audit_bytes_written += raw.size()
+		audit_events_written += 1
+		unflushed += 1
+		completed += 1
+	if audit != null:
+		audit.flush()
+		if audit.get_error() != OK:
+			audit_last_error = "flush_failed"
+			audit_lost_count += unflushed
+			audit_writer_failed = true
+		audit.close()
 	audit_buffer.clear()
+
+func _frame_clock_observation() -> Dictionary:
+	var observed_ms := maxi(0, Time.get_ticks_msec() - started_at_ms)
+	var frames := maxi(0, Engine.get_process_frames() - started_process_frames)
+	return {"process_frames": frames, "observed_ms": observed_ms,
+		"mean_process_fps": float(frames) * 1000.0 / float(observed_ms) if observed_ms > 0 else null,
+		"engine_max_fps": Engine.max_fps, "clock": "local Time.get_ticks_msec",
+		"scope": "SceneTree process frames, including headless; not rendered FPS or network packet rate"}
 
 func _write_status() -> void:
 	status_seq += 1
@@ -690,6 +857,13 @@ func _write_status() -> void:
 	var status: Dictionary = {"client_id": client_id, "group": group_id, "pid": OS.get_process_id(), "started_at_unix_ms": int((Time.get_unix_time_from_system() - float(Time.get_ticks_msec() - started_at_ms) / 1000.0) * 1000.0), "now_unix_ms": int(Time.get_unix_time_from_system() * 1000.0), "online": Game.gateway.online, "socket_state": Game.gateway.socket.get_ready_state(), "room": not Game.room.is_empty(), "stage": stage, "last_progress_age_ms": Time.get_ticks_msec() - last_progress_ms, "cycles_completed": cycles_completed, "scenario_started": scenario_started, "scenario_finished": scenario_finished, "checks": checks, "operations": operations, "telemetry": telemetry, "events": events, "errors": errors}
 	status.merge({"status_seq": status_seq, "run_id": run_id, "process_epoch": process_epoch, "event_seq_max": event_seq, "phase": _current_phase(), "cycle_id": "%s:%d" % [client_id, cycles_completed + 1], "audit_lost_count": audit_lost_count,
 		"cleanup": cleanup_result, "hero_class": hero_profile, "strategy": strategy, "strategy_seed": strategy_seed, "load_profile": load_profile})
+	status["audit_storage"] = _audit_storage_observation()
+	status["generator_frame_clock"] = _frame_clock_observation()
+	status["transport_progress_age_ms"] = maxi(0, Time.get_ticks_msec() - last_transport_progress_ms)
+	status["gameplay_progress_age_ms"] = maxi(0, Time.get_ticks_msec() - last_progress_ms)
+	status["gameplay_progress_reason"] = last_gameplay_progress_reason
+	status["transport_progress_reason"] = last_transport_progress_reason
+	status["waiting_stage"] = _progress_waiting_stage()
 	status["cycle_limit_seconds"] = cycle_limit_seconds
 	var file := FileAccess.open(report_path + ".status.json.tmp", FileAccess.WRITE)
 	if file != null:
@@ -703,10 +877,39 @@ func _finish(ok: bool, message: String, exit_code: int = -1) -> void:
 	_flush_audit()
 	var report: Dictionary = {"ok": ok, "message": message, "client_id": client_id, "group": group_id, "pid": OS.get_process_id(), "user_id": own_user_id, "started_at_unix_ms": int(Time.get_unix_time_from_system() * 1000.0) - (Time.get_ticks_msec() - started_at_ms), "ended_at_unix_ms": int(Time.get_unix_time_from_system() * 1000.0), "elapsed_ms": Time.get_ticks_msec() - started_at_ms, "cycles_completed": cycles_completed, "checks": checks, "operations": operations, "telemetry": telemetry, "events": events, "errors": errors}
 	report.merge({"run_id": run_id, "process_epoch": process_epoch, "event_seq_max": event_seq, "audit_lost_count": audit_lost_count, "cleanup": cleanup_result, "hero_class": hero_profile, "strategy": strategy, "strategy_seed": strategy_seed, "load_profile": load_profile, "outcome": "completed" if ok else ("cancelled" if exit_code == 0 else "failed")})
+	report["audit_storage"] = _audit_storage_observation()
+	report["generator_frame_clock"] = _frame_clock_observation()
 	report["cycle_limit_seconds"] = cycle_limit_seconds
+	report["transport_progress_age_ms"] = maxi(0, Time.get_ticks_msec() - last_transport_progress_ms)
+	report["gameplay_progress_age_ms"] = maxi(0, Time.get_ticks_msec() - last_progress_ms)
+	report["gameplay_progress_reason"] = last_gameplay_progress_reason
+	report["transport_progress_reason"] = last_transport_progress_reason
+	report["waiting_stage"] = _progress_waiting_stage()
 	var file := FileAccess.open(report_path, FileAccess.WRITE)
 	if file != null:
 		file.store_string(JSON.stringify(report, "\t"))
 		file.close()
 	_write_status()
 	get_tree().quit(exit_code if exit_code >= 0 else (0 if ok else 1))
+
+func _progress_waiting_stage() -> String:
+	if stage == "settlement": return "settlement_acknowledgement"
+	if stage == "matchmaking":
+		return "started" if ready_accepted else "ready_acceptance" if ready_successful_sends > 0 else "ticket_authority"
+	if stage == "playing":
+		if not Game.settlement.is_empty(): return "settlement_acknowledgement"
+		if Game.has_pending_commands(): return "command_confirmation"
+		if not Game.room.get("pve", Game.room.get("duel", {})).is_empty(): return str(_strategy_wait_state().get("reason", "battle"))
+	return stage
+
+func _remember_ready_deadline(match_id: String, deadline_ms: int) -> void:
+	if match_id.is_empty() or deadline_ms <= 0: return
+	# Preserve the first authoritative deadline even after ready_removed clears
+	# the UI hint. A late callback cannot extend this match's known lifetime.
+	known_ready_deadlines[match_id] = mini(int(known_ready_deadlines.get(match_id, deadline_ms)), deadline_ms)
+	while known_ready_deadlines.size() > 8: known_ready_deadlines.erase(known_ready_deadlines.keys()[0])
+
+func _ready_deadline_for_match(match_id: String) -> int:
+	if str(Game.ready_prompt.get("match_id", "")) == match_id:
+		_remember_ready_deadline(match_id, int(Game.ready_prompt.get("deadline_unix_ms", 0)))
+	return int(known_ready_deadlines.get(match_id, 0))

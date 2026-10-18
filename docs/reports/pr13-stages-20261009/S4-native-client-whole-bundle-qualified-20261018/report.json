@@ -1,0 +1,405 @@
+{
+  "kind": "WholeNativeClientSourceAndPermanentRegressionQualification",
+  "whole_source_files": [
+    {
+      "path": "client/network/gateway.gd",
+      "bytes": 43878,
+      "sha256": "40545689e8c5bfaeb253fabb04464b135530d10a0d99a17ecd3c4aecf93ee3a6",
+      "original_dirty_status": " M"
+    },
+    {
+      "path": "client/state/game_store.gd",
+      "bytes": 94183,
+      "sha256": "8b19a23149c92a14d22390934d2267e9f4614f34c2984887d72ef7b40a0cdb01",
+      "original_dirty_status": "clean_or_new_this_review"
+    },
+    {
+      "path": "client/tests/gameplay_load_client.gd",
+      "bytes": 50768,
+      "sha256": "8961b8fe21bc950b0ccf150eeb024ce8dec7e645d7b9e0159604a42d9384f64a",
+      "original_dirty_status": " M"
+    },
+    {
+      "path": "client/tests/run_gateway_origin.gd",
+      "bytes": 391,
+      "sha256": "51d6f5eaf755172f951bd1c4a994c81265a045761dd715018ce039bce4cdc4a5",
+      "original_dirty_status": " M"
+    },
+    {
+      "path": "client/tests/test_session_sequence.gd",
+      "bytes": 6395,
+      "sha256": "0431ab17d7640fd311ff7f451423f203538d29c39918e0e65204961554e1ed66",
+      "original_dirty_status": " M"
+    },
+    {
+      "path": "client/tests/test_terminal_command_context.gd",
+      "bytes": 8507,
+      "sha256": "de5ed84ef7d2377f7ea61f93538f8b1802ce7b614dbd716d97b7178b7b9bf9c8",
+      "original_dirty_status": " M"
+    },
+    {
+      "path": "client/ui/monster_pool_view.gd",
+      "bytes": 9022,
+      "sha256": "fd84cd84da9bb5964e7b555b86b5df0492fa94753ef4653e82296e0fc719420a",
+      "original_dirty_status": " M"
+    },
+    {
+      "path": "client/tests/test_gateway_replay.gd",
+      "bytes": 4166,
+      "sha256": "ccb99fec0ef4f70675a29255e054034f1357a6601bb9c008d7be253f18171f6d",
+      "original_dirty_status": "??"
+    },
+    {
+      "path": "client/tests/test_load_audit_storage.gd",
+      "bytes": 5994,
+      "sha256": "727d644b471a5f529de453cf40bb734446d9dec7bd536ac0d9ae5995f99b7add",
+      "original_dirty_status": "??"
+    },
+    {
+      "path": "client/tests/test_load_progress.gd",
+      "bytes": 5492,
+      "sha256": "2d40dc387bff9624cbb58b6cf53c14ed03cd00b71e624c46173ff9ae51b40a01",
+      "original_dirty_status": "??"
+    },
+    {
+      "path": "client/tests/test_ready_deadline_guard.gd",
+      "bytes": 7335,
+      "sha256": "6a6d7c38a37d5b4beccb946dcac48da5291cdf05d49fbd35fd51ed6bb86b80af",
+      "original_dirty_status": "??"
+    },
+    {
+      "path": "client/tests/test_load_contexts.gd",
+      "bytes": 2557,
+      "sha256": "b632bf22e678f94e0d61906c48af7b2433f56b8ec4a03bac09560c196f55464b",
+      "original_dirty_status": "clean_or_new_this_review"
+    },
+    {
+      "path": "client/tests/test_dispatch_origin_reentrancy.gd",
+      "bytes": 4412,
+      "sha256": "bd839fddaee693bd05e679b2bb3a2f6b247387edcfad5ec1537f3ab56207ce64",
+      "original_dirty_status": "clean_or_new_this_review"
+    },
+    {
+      "path": "client/tests/test_load_control_flow.gd",
+      "bytes": 5697,
+      "sha256": "5b9cb22ea07b7e22ea2d14855c580b99746b5f539036b3fe9dadc9cceb38f0f0",
+      "original_dirty_status": "clean_or_new_this_review"
+    },
+    {
+      "path": "client/tests/run_native_regressions.gd",
+      "bytes": 1712,
+      "sha256": "2bc02b60a110802572b7add9e96851d93c0f85d7b3c0b688697dc83f5264acbe",
+      "original_dirty_status": "clean_or_new_this_review"
+    },
+    {
+      "path": "client/tests/run_native_regressions.tscn",
+      "bytes": 182,
+      "sha256": "242a5cabca5601f8d4aa3f1f5bca6a85847e9894c1184b57eae9b469f9e0902e",
+      "original_dirty_status": "clean_or_new_this_review"
+    }
+  ],
+  "file_count": 16,
+  "no_selective_hunk_recomposition": true,
+  "old_mixed_native_source_now_whole_file_reviewed": true,
+  "resolves_A063_workspace_only_native_source_delivery_gap": true,
+  "source_behaviors": {
+    "same_peer_session_connected_replay_guard": true,
+    "READY_unverified_or_expired_not_sent": true,
+    "same_scope_READY_absolute_deadline_only_tightens": true,
+    "same_scope_READY_confirmed_state_and_snapshot_budget_preserved": true,
+    "READY_wire_observation_has_frozen_origin_but_wire_has_no_room_match": true,
+    "fallback_and_pending_origin_captured_before_reentrant_signals": true,
+    "pending_route_revision_and_sound_owner_frozen": true,
+    "load_transport_and_gameplay_progress_clocks_separate": true,
+    "effective_combo_new_draw_are_real_progress_zero_effect_is_not": true,
+    "legal_Priest80_over70_fixture_untouched": true,
+    "audit_UTF8_record_segment_total_limits_and_existing_original_protection": true,
+    "class_or_login_STOP_cleanup_cancelled0_control_flow": true,
+    "source_context_Unknown_and_drain_separate_from_business_phase": true
+  },
+  "qualified_suites": {
+    "test_session_sequence.gd": {
+      "run": "after-r1",
+      "checks": {
+        "duplicate_control_reason_trace_without_state_change": true,
+        "foreign_started_reason_preserves_route_and_recovery": true,
+        "guard_trace_has_no_auth_or_packet_payload": true,
+        "ordinary_duplicate_does_not_add_control_trace_volume": true,
+        "same_context_positive_control_still_delivered": true
+      }
+    },
+    "test_gateway_replay.gd": {
+      "run": "after-r1",
+      "checks": {
+        "first actual gap requests one resume": true,
+        "40 identical replay markers do not amplify resume": true,
+        "replay markers do not reset heartbeat clock": true,
+        "replay markers emit connected once": true,
+        "older connection markers cannot rewind current marker": true,
+        "contiguous missing events finish recovery": true,
+        "completed recovery stays complete on marker replay": true,
+        "new peer accepts a restarted sequence stream": true,
+        "cached room snapshot requested once per peer": true,
+        "same numeric marker on a new peer is accepted": true,
+        "authoritative snapshot remains applicable": true
+      }
+    },
+    "test_terminal_command_context.gd": {
+      "run": "after-r1",
+      "checks": {
+        "action.extract_completed: closed room sends no additional read": true,
+        "action.extract_completed: foreign terminal frames trigger no read": true,
+        "action.extract_completed: other match keeps current actions": true,
+        "action.extract_completed: other room keeps current actions": true,
+        "action.extract_completed: terminal closes without confirming or replaying intent": true,
+        "authentication reset clears follow-up contexts": true,
+        "cancellation action must match original request": true,
+        "cancellation stale room_context_epoch cannot end self": true,
+        "cancellation stale session_generation cannot end self": true,
+        "cancellation without command identity cannot end self": true,
+        "cancelled request measured once with distinct result": true,
+        "follow-up retains old epoch and cannot release new recovery": true,
+        "fresh scoped read releases recovery": true,
+        "gap defers cancellation delivery for authoritative recovery": true,
+        "ignored follow-up trace is separate from one cancellation measurement": true,
+        "player.died: closed room sends no additional read": true,
+        "player.died: foreign terminal frames trigger no read": true,
+        "player.died: other match keeps current actions": true,
+        "player.died: other room keeps current actions": true,
+        "player.died: terminal closes without confirming or replaying intent": true,
+        "room.command_cancelled: closed room sends no additional read": true,
+        "room.command_cancelled: foreign terminal frames trigger no read": true,
+        "room.command_cancelled: other match keeps current actions": true,
+        "room.command_cancelled: other room keeps current actions": true,
+        "room.command_cancelled: terminal closes without confirming or replaying intent": true,
+        "teammate death cannot end self": true,
+        "terminal follow-up after gap never confirms cancelled mutation": true,
+        "unsolicited old snapshot cannot replace current room": true
+      }
+    },
+    "test_load_progress.gd": {
+      "run": "after-r1",
+      "checks": {
+        "actual store expiry emits unknown timeout and removes without retry": true,
+        "confirmed state timeout remains distinct and preserves existing recovery": true,
+        "diagnostic trace contains no packet or authentication bytes": true,
+        "legal Priest 80 over 70 display data untouched": true,
+        "new draw is legal progress despite zero damage with explicit reason": true,
+        "pong and duplicate snapshots only advance transport": true,
+        "positive effective combo still advances gameplay": true,
+        "same hand observed twice does not invent another opportunity": true,
+        "sent rejected and unknown timeout are independent not gameplay success": true,
+        "waiting stage distinguishes command acceptance": true,
+        "waiting stage distinguishes started": true,
+        "waiting stage distinguishes ticket authority": true,
+        "waiting stage locates acknowledgement instead of generic settlement": true,
+        "zero effect combo cannot keep gameplay alive": true
+      }
+    },
+    "test_load_audit_storage.gd": {
+      "run": "after-r1",
+      "checks": {
+        "UTF8 byte bound applies before retaining oversized ring or buffer row": true,
+        "actual FileAccess open failure counts all nine lost and clears buffer": true,
+        "cap remains latched and accounts every later event as lost": true,
+        "explicit tiny fixture limits produce multiple bounded append-only segments": true,
+        "final storage counters reconcile exact file bytes and zero tail buffer": true,
+        "later flush never overwrites an earlier segment": true,
+        "normal records remain accountable after rejected oversized record": true,
+        "restored own path resumes but earlier loss is never erased": true,
+        "rotation preserves every sequence and complete UTF8 records": true,
+        "total archive bound refuses extra records without silent wraparound": true,
+        "unexpected existing archive bytes remain untouched and evidence loses event": true
+      }
+    },
+    "test_load_contexts.gd": {
+      "run": "after-r1",
+      "checks": {
+        "STOP drain window is separate from original business phase": true,
+        "captured source identity remains immutable": true,
+        "local synchronous context remains local": true,
+        "malformed null origin remains explicitly unknown": true,
+        "missing asynchronous context is Unknown not current cycle": true,
+        "no diagnostic HTTP traffic becomes gameplay progress": true
+      }
+    },
+    "test_dispatch_origin_reentrancy.gd": {
+      "run": "after-r1",
+      "checks": {
+        "actual packet still targets original room and match": true,
+        "fallback telemetry captured before reentrant send observer changed context": true,
+        "owned real WebSocket is open": true,
+        "pending route revision and sound owner remain at dispatch": true,
+        "real fallback command was selected and dispatched": true,
+        "store pending command captures dispatch origin before synchronous signals": true
+      }
+    },
+    "test_ready_deadline_guard.gd": {
+      "run": "after-r2",
+      "checks": {
+        "READY metadata keeps dispatch identity without adding route fields to wire": true,
+        "authority deadline memory is explicitly capped8": true,
+        "current-match event latch uses earliest cached deadline": true,
+        "foreign mutable hint never supplies verified match deadline": true,
+        "later required cannot extend same match original deadline": true,
+        "new-match authority deadline survives old active latch and cleared hint": true,
+        "owned actual WebSocket peer opens": true,
+        "same real elapsed deadline prevents next write without recovery flag": true,
+        "same-scope rebind cannot extend original absolute deadline": true,
+        "same-scope rebind preserves confirmed READY and read budget": true,
+        "unverified READY cannot write even outside recovery": true,
+        "verified unexpired positive control still writes one READY": true
+      }
+    },
+    "test_load_control_flow.gd": {
+      "run": "after-r3",
+      "checks": {
+        "class STOP follows real run/login branch into cleanup and cancelled0": true,
+        "class STOP is not a false login or hero-confirmation failure": true,
+        "dead current target selects first living target exactly once": true,
+        "empty-hand branch preserves old wait/continue without fake play": true,
+        "frame clock names process frames without claiming rendered FPS": true,
+        "functional cycles never use cyclic stagnation fallback": true,
+        "login STOP follows real run/login branch into cleanup and cancelled0": true,
+        "login STOP is not a false login or hero-confirmation failure": true,
+        "non-battle phase falls through to other legal actions": true,
+        "play branch forwards selected order once": true,
+        "pre60second controlled boundary does not abandon": true
+      }
+    }
+  },
+  "qualified_suite_count": 9,
+  "true_check_count": 104,
+  "qualification_composition": "7passed full-after suites pluscorrectedREADYonly plusnewcontrolflowonly;SUTproductbytesunchangedbetweenfollowups;no fictionalfinalsingle9suitepass",
+  "no_final_single_run9suite_all_pass_claim": true,
+  "original_whole_before_after_failures_retained": true,
+  "before_source_failures": {
+    "test_ready_deadline_guard.gd": [
+      "READY metadata keeps dispatch identity without adding route fields to wire",
+      "current-match event latch uses earliest cached deadline",
+      "same real elapsed deadline prevents next write without recovery flag",
+      "same-scope rebind cannot extend original absolute deadline",
+      "same-scope rebind preserves confirmed READY and read budget"
+    ],
+    "test_dispatch_origin_reentrancy.gd": [
+      "fallback telemetry captured before reentrant send observer changed context",
+      "store pending command captures dispatch origin before synchronous signals"
+    ]
+  },
+  "first_private_snapshot_missing_dependency_failure_retained": true,
+  "decoded_default_field_presence_test_false_positive_corrected_without_protocol_change": true,
+  "READY_actual_wire_field_numbers": [
+    1,
+    2,
+    3,
+    5
+  ],
+  "READY_raw_wire_SHA256": "79f8a976852461fd452c41c949a486d2de2043a4490e4759625cec1941eceef0",
+  "no_production_READY15second_rule_change": true,
+  "fixture_READYdeadline_ms": 500,
+  "no_correctness_or_execution_limit_relaxation": true,
+  "native_process_starts": [
+    {
+      "round": "after-r1",
+      "PID": 15136,
+      "exit": 1,
+      "forced": false,
+      "suite_count": 8,
+      "driver_ok": false,
+      "script_error_count": 0
+    },
+    {
+      "round": "after-r2",
+      "PID": 25668,
+      "exit": 0,
+      "forced": false,
+      "suite_count": 1,
+      "driver_ok": true,
+      "script_error_count": 0
+    },
+    {
+      "round": "after-r3",
+      "PID": 86492,
+      "exit": 0,
+      "forced": false,
+      "suite_count": 1,
+      "driver_ok": true,
+      "script_error_count": 0
+    },
+    {
+      "round": "before-r1",
+      "PID": 70388,
+      "exit": 1,
+      "forced": true,
+      "suite_count": 0,
+      "driver_ok": false,
+      "script_error_count": 6
+    },
+    {
+      "round": "before-r2",
+      "PID": 63928,
+      "exit": 1,
+      "forced": false,
+      "suite_count": 7,
+      "driver_ok": false,
+      "script_error_count": 0
+    }
+  ],
+  "native_start_count": 5,
+  "native_start_cap": 12,
+  "actual_file_audit_fixture_events_generated": 254,
+  "all_load_recorder_events_conservative_static_upper_bound": 332,
+  "record_cap": 400,
+  "local_application_WS_packet_upper_bound": 6,
+  "WS_packet_cap": 32,
+  "all_started_native_processes_terminal": true,
+  "all_owned_peers_listeners_and_test_files_bounded": true,
+  "UI_component_reuse": {
+    "direct_dependencies_exact": 9,
+    "assets_exact": 1259,
+    "prior_RENDER_contexts": 228,
+    "new_RENDER_executions": 0,
+    "actual_prior_images_reinspected": [
+      {
+        "path": "G:\\PR13Evidence\\b091-natural-source-current-UI-20261018-originals\\runs\\smoke-en\\Mage_479001_en_960_0_after.png",
+        "sha256": "51b1c10b18d311271b7bc9016b533f5ba4f8678567ab311d2b3275d333225ff9"
+      },
+      {
+        "path": "G:\\PR13Evidence\\b091-natural-source-current-UI-20261018-originals\\runs\\matrix-zh-CN\\Mage_481001_zh-CN_960_14.png",
+        "sha256": "df8b7b40e571fcf1b2664e68d9cedafa39c607cbf0025a6157afa5f5510a9dee"
+      }
+    ],
+    "not_new_whole_source_RENDER_claim": true
+  },
+  "literal_dependency_edges_closed": 26,
+  "all_dynamic9suite_dependencies_present": true,
+  "formal_tests_added_instead_of_temporary_driver_source": true,
+  "source_format_diff_check_passed": true,
+  "other716original_dirty_paths_preserved": true,
+  "privacy_tools_and_acceptance_pointer_explicitly_not_in_scope": true,
+  "new_accounts": 0,
+  "new_matches": 0,
+  "new_cloud_actions": false,
+  "no_new_PG_LIVE_RENDER_capacity_or_production_performance_acceptance": true,
+  "controlflow_stubs_not_claimed_actual_auth_or_asset_cleanup": true,
+  "historical_HTTPRequest_unsafe_reference_not_newly_fixed_here": true,
+  "human_experience_excluded": true,
+  "server_source_build_or_CSharp_tests": false,
+  "official_remaining_unaccepted_tasks": 77,
+  "canonical132tasks396cases_preserved": true,
+  "canonical_register_gate_MAIN_changes": false,
+  "canonical_pointer_sha256": "9a4eca654ae7bd63d1dcea46ee12f6efe42e11b194eedf6b1044d8783281db74",
+  "canonical_register_sha256": "aff75d05738e356c21b5fe42d9c433f6a597a6e6ed58f2041523312bfd3bcffe",
+  "private_original_root": "G:\\PR13Evidence\\native-client-bundle-review-20261018-r1-originals",
+  "private_original_manifest_sha256": "67b6749525a57c9ef140c9325042797d53ce1185fcee8c66de0fd2ae0cfdf55a",
+  "private_declared_original_members": 125,
+  "raw_originals_and_temporary_review_scripts_not_in_Git": true,
+  "postqualification_format_only_adjustment": {
+    "path": "client/tests/test_gateway_replay.gd",
+    "tested_original_sha256": "600d30bd336628bd73d5b7174e4ce517ed7ea8cc7b4db83584432b72a7d007c3",
+    "shipped_sha256": "ccb99fec0ef4f70675a29255e054034f1357a6601bb9c008d7be253f18171f6d",
+    "only_extra_blank_EOF_lines_removed": true,
+    "all_bytes_except_trailing_linebreaks_identical": true,
+    "no_new_test_execution_for_format_only_change": true
+  }
+}

@@ -89,7 +89,10 @@ func bind_prelaunch_ticket(match_id: String, known_room_id: String, deadline_uni
 	if room_context_epoch >= 0 and room_context_epoch != epoch: return
 	room_context_epoch = epoch
 	var identity := {"match_id":match_id,"room_id":known_room_id,"deadline_unix_ms":deadline_unix_ms,"session_generation":session_generation,"room_context_epoch":epoch}
-	if identity != _prelaunch_ticket:
+	var same_scope := not _prelaunch_ticket.is_empty() and str(_prelaunch_ticket.match_id) == match_id and str(_prelaunch_ticket.room_id) == known_room_id and int(_prelaunch_ticket.session_generation) == session_generation and int(_prelaunch_ticket.room_context_epoch) == epoch
+	if same_scope:
+		identity.deadline_unix_ms = mini(int(_prelaunch_ticket.deadline_unix_ms), deadline_unix_ms)
+	else:
 		_prelaunch_snapshot_attempts = 0
 		_prelaunch_snapshot_at = 0
 		_prelaunch_ready_accepted = false
@@ -506,6 +509,7 @@ func connect_realtime() -> void:
 		_schedule_reconnect()
 		return
 	socket = WebSocketPeer.new()
+	_connected_sequence = 0
 	socket.inbound_buffer_size = 65536
 	socket.outbound_buffer_size = 32768
 	var url := base_url.replace("https://", "wss://").replace("http://", "ws://")
@@ -521,6 +525,7 @@ func _schedule_reconnect() -> void:
 	# scheduling the next authenticated connection, keeping logical context.
 	socket.close()
 	socket = WebSocketPeer.new()
+	_connected_sequence = 0
 	_retry_at = Time.get_ticks_msec() + int(_backoff * 1000)
 	_backoff = minf(_backoff * 2.0, 30.0)
 	connection_changed.emit("连接中断，正在重连")
@@ -563,6 +568,9 @@ func send(kind: String, payload: Dictionary = {}, request_id: String = "") -> bo
 		end_session("登录已过期，请重新登录")
 		return false
 	if not COMMANDS.has(kind) or socket.get_ready_state() != WebSocketPeer.STATE_OPEN: return false
+	# READY has no route fields on wire; only a current verified, unexpired
+	# prelaunch ticket can authorize sending it, including outside recovery.
+	if kind == "room.ready" and not _prelaunch_valid(): return false
 	if Time.get_ticks_msec() < _command_cooldown: return false
 	if recovering and kind not in ["ping", "session.resume", "room.snapshot.read"]:
 		if kind != "room.ready" or not _prelaunch_valid(): return false
@@ -587,9 +595,23 @@ func send(kind: String, payload: Dictionary = {}, request_id: String = "") -> bo
 	if sent:
 		_pending_request_started[effective_request_id] = {"action": kind, "started_at": Time.get_ticks_msec(), "context": origin}
 		if _pending_request_started.size() > 128: _pending_request_started.erase(_pending_request_started.keys()[0])
+		if kind not in ["ping", "session.resume", "room.snapshot.read", "combat.preview", "relic.read"]:
+			var dispatched := {"type":"command_lifecycle", "event_type":"command.sent", "action":kind, "request_id":effective_request_id, "result":"sent", "trace_only":true}
+			dispatched.merge(origin, false)
+			telemetry.emit(dispatched)
 		if kind == "ping":
 			_pending_ping_request_id = effective_request_id
 			_ping_sent_at = Time.get_ticks_msec()
+	if sent and kind == "room.ready":
+		var wire_hash := HashingContext.new()
+		wire_hash.start(HashingContext.HASH_SHA256)
+		wire_hash.update(encoded)
+		var observation := {"type":"protocol_observation", "event_type":"room.ready.sent", "trace_only":true,
+			"request_id":effective_request_id, "payload_bytes":envelope.get("payload", PackedByteArray()).size(),
+			"payload_fields":payload.size(), "has_room_id":envelope.has("room_id"), "has_match_id":envelope.has("match_id"),
+			"wire_sha256":wire_hash.finish().hex_encode()}
+		observation.merge(origin, false)
+		telemetry.emit(observation)
 	if sent: socket.poll()
 	return sent
 
@@ -645,6 +667,9 @@ func _receive(packet: PackedByteArray) -> void:
 		payload["_room_revision"] = envelope.get("room_revision", -1)
 	if kind == "combat.previewed": _preview_request_ids.erase(envelope.get("request_id", ""))
 	if kind == "session.connected":
+		# Replay includes connection markers; only the first marker on this peer
+		# may start recovery. New peers reset the marker even if the stream restarts.
+		if sequence <= _connected_sequence: return
 		_connected_sequence = sequence
 		online = true
 		_backoff = 1.0
@@ -666,7 +691,11 @@ func _receive(packet: PackedByteArray) -> void:
 	if kind == "session.replaced":
 		end_session(str(payload.get("reason", "账号已在其他窗口连接，请在此窗口重新登录后继续")))
 		return
-	if sequence <= last_sequence: return
+	if sequence <= last_sequence:
+		if kind in ["match.found", "room.ready_required", "room.ready_accepted", "room.started"]:
+			telemetry.emit({"type":"lifecycle_guard", "event_type":kind, "decision":"Ignored", "trace_only":true,
+				"reason":"stale_or_duplicate_sequence", "sequence":sequence, "last_sequence":last_sequence})
+		return
 	if kind == "room.ready_accepted" and _prelaunch_valid() and str(payload.get("match_id", "")) == str(_prelaunch_ticket.match_id) and str(payload.get("room_id", "")) == str(_prelaunch_ticket.room_id):
 		_prelaunch_ready_accepted = true
 		# Allow the coordinator's next iteration to register the room. A
@@ -701,6 +730,11 @@ func _receive(packet: PackedByteArray) -> void:
 			# Expired/unrecognized request responses need a fresh scoped read.
 			prior_room_callback = true
 	if prior_room_callback:
+		var expected_context := capture_context()
+		telemetry.emit({"type":"lifecycle_guard", "event_type":kind, "decision":"Ignored", "trace_only":true,
+			"reason":"prior_room_context", "sequence":sequence, "last_sequence":last_sequence,
+			"expected_match_id":expected_context.get("match_id", ""), "expected_room_id":expected_context.get("room_id", ""),
+			"received_match_id":payload.get("match_id", ""), "received_room_id":payload.get("room_id", "")})
 		# Consume the session cursor, but an old room callback cannot replace
 		# the current route/revision or release its snapshot recovery lock.
 		last_sequence = sequence
