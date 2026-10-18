@@ -369,10 +369,11 @@ func _request_page(path: String, method: int = HTTPClient.METHOD_GET, data: Vari
 		var response: Array = await _request_http_transport(path, method, headers, body, mini(10000, maxi(1, request_deadline - Time.get_ticks_msec())))
 		if response[0] != HTTPRequest.RESULT_SUCCESS and int(response[1]) == 0:
 			result = {"ok": false, "status": 0, "error": "无法连接服务器"}
+			var terminal_transport_failure: bool = response[0] in [HTTPRequest.RESULT_BODY_SIZE_LIMIT_EXCEEDED, HTTPRequest.RESULT_BODY_DECOMPRESS_FAILED]
 			_emit_http_attempt(path, method, key, generation, attempt_count, attempt_started_at, 0,
 				"timeout" if response[0] == HTTPRequest.RESULT_TIMEOUT else "transport_error",
-				0, 0.0, delay * 1000.0 if attempt < 2 else 0.0)
-			if response[0] == HTTPRequest.RESULT_BODY_SIZE_LIMIT_EXCEEDED: break
+				0, 0.0, delay * 1000.0 if attempt < 2 and not terminal_transport_failure else 0.0)
+			if terminal_transport_failure: break
 		else:
 			if generation != session_generation:
 				_emit_http_attempt(path, method, key, generation, attempt_count, attempt_started_at, int(response[1]), "cancelled", response[3].size(), 0.0, 0.0, response.size() > 4 and response[4])
