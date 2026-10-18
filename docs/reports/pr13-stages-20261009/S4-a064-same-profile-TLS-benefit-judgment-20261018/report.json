@@ -1,0 +1,558 @@
+{
+  "kind": "A064ActualSameProfileTLSBenefitJudgment",
+  "source_code_changes": {
+    "path": "tools/pr13_candidate_review.py",
+    "before_sha256": "24c60c5ea1bc041328bb2793fd57272a906a7d6526bcebf9745c23a67fac2866",
+    "after_sha256": "d1a326636d63d9d6d6c48f4fbe2eebbb92c33df5ad72624a0ba2dbf847714f22",
+    "only_append_new_transport_review_functions": true,
+    "frozen_proposal_unchanged": true,
+    "formal_test_path": "tools/tests/test_pr13_transport_benefit_review.py",
+    "formal_test_sha256": "0d80bf5fe69caf83d31c3935b74cbbd105c4b676b4961b0d14ef4ea593582ace",
+    "runtime_candidate_defaults_unchanged": true
+  },
+  "frozen_policy_before_sampling_SHA256": "fb9e1c1bd714efa315da3f88f3d6a6643e844d0e0e8d41b279c2ffa9582b9dd7",
+  "actual_root_policy_output_equal_frozen_proposal": true,
+  "formal_unit_tests": {
+    "command": [
+      "python",
+      "-B",
+      "-m",
+      "unittest",
+      "tools.tests.test_pr13_transport_benefit_review"
+    ],
+    "exit_observed": 0,
+    "tests_observed": 8,
+    "result": "OK",
+    "evidence_capture": "actual prior exec tool response exit0,not a new test execution",
+    "source_SHA256": "d1a326636d63d9d6d6c48f4fbe2eebbb92c33df5ad72624a0ba2dbf847714f22",
+    "test_SHA256": "0d80bf5fe69caf83d31c3935b74cbbd105c4b676b4961b0d14ef4ea593582ace",
+    "actual_physical_summaries_rejudged_by_root_functions_identical": true
+  },
+  "positive_rounds": [
+    {
+      "round": 1,
+      "baseline": {
+        "tag": "round1-per-request",
+        "round": 1,
+        "mode": "per-request",
+        "profile": "normal",
+        "launched": 20,
+        "success": 16,
+        "failure": 4,
+        "pending_final": 0,
+        "unexpected_failures": 0,
+        "source_config_hash": "f9280801545b8faa155f1bcc79fc121ce04235738228522bf6aeee917dd49251",
+        "request_mix_hash": "088a79112ab79882d650cbf8f83b2058db0fbfed02bc32c0dd1e3a1796a18e4d",
+        "response_byte_profile_hash": "54eca1971cd96bdbda03975be5dafe09bb4ea0eddddd914c25ba4c35a95e9c8d",
+        "schedule_profile": "18sequential+2concurrent;50mscutoff;3000mstransportdeadline;alltaildrained;240processfps",
+        "all_terminal_mean_ms": 114.3178,
+        "success_only_elapsed_ms": {
+          "n": 16,
+          "mean": 131.367125,
+          "p50": 47.533,
+          "p95_nearest_rank": 938.005,
+          "p99_nearest_rank": 938.005,
+          "maximum": 938.005
+        },
+        "all_terminal_elapsed_ms": {
+          "n": 20,
+          "mean": 114.3178,
+          "p50": 47.658,
+          "p95_nearest_rank": 296.454,
+          "p99_nearest_rank": 938.005,
+          "maximum": 938.005
+        },
+        "measurement_cutoff_counts": {
+          "success": 14,
+          "failure": 4,
+          "pending": 2
+        },
+        "actual_server_connections": 20,
+        "actual_server_reused_requests": 0,
+        "actual_server_reuse_rate": 0.0,
+        "native_success_reused_flags": 0,
+        "same_live_pair_fixture_label": "pair-1",
+        "completed_rows_and_pending_conserve20": true
+      },
+      "candidate": {
+        "tag": "round1-reusable",
+        "round": 1,
+        "mode": "reusable",
+        "profile": "normal",
+        "launched": 20,
+        "success": 16,
+        "failure": 4,
+        "pending_final": 0,
+        "unexpected_failures": 0,
+        "source_config_hash": "f9280801545b8faa155f1bcc79fc121ce04235738228522bf6aeee917dd49251",
+        "request_mix_hash": "088a79112ab79882d650cbf8f83b2058db0fbfed02bc32c0dd1e3a1796a18e4d",
+        "response_byte_profile_hash": "54eca1971cd96bdbda03975be5dafe09bb4ea0eddddd914c25ba4c35a95e9c8d",
+        "schedule_profile": "18sequential+2concurrent;50mscutoff;3000mstransportdeadline;alltaildrained;240processfps",
+        "all_terminal_mean_ms": 104.47819999999999,
+        "success_only_elapsed_ms": {
+          "n": 16,
+          "mean": 121.25075,
+          "p50": 34.054,
+          "p95_nearest_rank": 930.925,
+          "p99_nearest_rank": 930.925,
+          "maximum": 930.925
+        },
+        "all_terminal_elapsed_ms": {
+          "n": 20,
+          "mean": 104.47819999999999,
+          "p50": 34.072,
+          "p95_nearest_rank": 296.412,
+          "p99_nearest_rank": 930.925,
+          "maximum": 930.925
+        },
+        "measurement_cutoff_counts": {
+          "success": 14,
+          "failure": 4,
+          "pending": 2
+        },
+        "actual_server_connections": 6,
+        "actual_server_reused_requests": 14,
+        "actual_server_reuse_rate": 0.7,
+        "native_success_reused_flags": 13,
+        "same_live_pair_fixture_label": "pair-1",
+        "completed_rows_and_pending_conserve20": true
+      },
+      "review": {
+        "production_activation": false,
+        "production_defaults_retained": true,
+        "performance_acceptance": false,
+        "capacity_acceptance": false,
+        "state": "EligibleForPairedRoundReview",
+        "reason": "correctness_and_workload_profiles_matched",
+        "all_terminal_mean_delta_ms": -9.839600000000019
+      }
+    },
+    {
+      "round": 2,
+      "baseline": {
+        "tag": "round2-per-request",
+        "round": 2,
+        "mode": "per-request",
+        "profile": "normal",
+        "launched": 20,
+        "success": 16,
+        "failure": 4,
+        "pending_final": 0,
+        "unexpected_failures": 0,
+        "source_config_hash": "f9280801545b8faa155f1bcc79fc121ce04235738228522bf6aeee917dd49251",
+        "request_mix_hash": "088a79112ab79882d650cbf8f83b2058db0fbfed02bc32c0dd1e3a1796a18e4d",
+        "response_byte_profile_hash": "54eca1971cd96bdbda03975be5dafe09bb4ea0eddddd914c25ba4c35a95e9c8d",
+        "schedule_profile": "18sequential+2concurrent;50mscutoff;3000mstransportdeadline;alltaildrained;240processfps",
+        "all_terminal_mean_ms": 113.30315,
+        "success_only_elapsed_ms": {
+          "n": 16,
+          "mean": 130.956875,
+          "p50": 47.561,
+          "p95_nearest_rank": 937.904,
+          "p99_nearest_rank": 937.904,
+          "maximum": 937.904
+        },
+        "all_terminal_elapsed_ms": {
+          "n": 20,
+          "mean": 113.30315,
+          "p50": 47.561,
+          "p95_nearest_rank": 296.295,
+          "p99_nearest_rank": 937.904,
+          "maximum": 937.904
+        },
+        "measurement_cutoff_counts": {
+          "success": 14,
+          "failure": 4,
+          "pending": 2
+        },
+        "actual_server_connections": 20,
+        "actual_server_reused_requests": 0,
+        "actual_server_reuse_rate": 0.0,
+        "native_success_reused_flags": 0,
+        "same_live_pair_fixture_label": "pair-2",
+        "completed_rows_and_pending_conserve20": true
+      },
+      "candidate": {
+        "tag": "round2-reusable",
+        "round": 2,
+        "mode": "reusable",
+        "profile": "normal",
+        "launched": 20,
+        "success": 16,
+        "failure": 4,
+        "pending_final": 0,
+        "unexpected_failures": 0,
+        "source_config_hash": "f9280801545b8faa155f1bcc79fc121ce04235738228522bf6aeee917dd49251",
+        "request_mix_hash": "088a79112ab79882d650cbf8f83b2058db0fbfed02bc32c0dd1e3a1796a18e4d",
+        "response_byte_profile_hash": "54eca1971cd96bdbda03975be5dafe09bb4ea0eddddd914c25ba4c35a95e9c8d",
+        "schedule_profile": "18sequential+2concurrent;50mscutoff;3000mstransportdeadline;alltaildrained;240processfps",
+        "all_terminal_mean_ms": 103.4683,
+        "success_only_elapsed_ms": {
+          "n": 16,
+          "mean": 120.822125,
+          "p50": 33.506,
+          "p95_nearest_rank": 924.091,
+          "p99_nearest_rank": 924.091,
+          "maximum": 924.091
+        },
+        "all_terminal_elapsed_ms": {
+          "n": 20,
+          "mean": 103.4683,
+          "p50": 33.506,
+          "p95_nearest_rank": 289.248,
+          "p99_nearest_rank": 924.091,
+          "maximum": 924.091
+        },
+        "measurement_cutoff_counts": {
+          "success": 14,
+          "failure": 4,
+          "pending": 2
+        },
+        "actual_server_connections": 6,
+        "actual_server_reused_requests": 14,
+        "actual_server_reuse_rate": 0.7,
+        "native_success_reused_flags": 13,
+        "same_live_pair_fixture_label": "pair-2",
+        "completed_rows_and_pending_conserve20": true
+      },
+      "review": {
+        "production_activation": false,
+        "production_defaults_retained": true,
+        "performance_acceptance": false,
+        "capacity_acceptance": false,
+        "state": "EligibleForPairedRoundReview",
+        "reason": "correctness_and_workload_profiles_matched",
+        "all_terminal_mean_delta_ms": -9.834850000000003
+      }
+    },
+    {
+      "round": 3,
+      "baseline": {
+        "tag": "round3-per-request",
+        "round": 3,
+        "mode": "per-request",
+        "profile": "normal",
+        "launched": 20,
+        "success": 16,
+        "failure": 4,
+        "pending_final": 0,
+        "unexpected_failures": 0,
+        "source_config_hash": "f9280801545b8faa155f1bcc79fc121ce04235738228522bf6aeee917dd49251",
+        "request_mix_hash": "088a79112ab79882d650cbf8f83b2058db0fbfed02bc32c0dd1e3a1796a18e4d",
+        "response_byte_profile_hash": "54eca1971cd96bdbda03975be5dafe09bb4ea0eddddd914c25ba4c35a95e9c8d",
+        "schedule_profile": "18sequential+2concurrent;50mscutoff;3000mstransportdeadline;alltaildrained;240processfps",
+        "all_terminal_mean_ms": 115.91690000000001,
+        "success_only_elapsed_ms": {
+          "n": 16,
+          "mean": 133.3653125,
+          "p50": 47.876,
+          "p95_nearest_rank": 937.827,
+          "p99_nearest_rank": 937.827,
+          "maximum": 937.827
+        },
+        "all_terminal_elapsed_ms": {
+          "n": 20,
+          "mean": 115.91690000000001,
+          "p50": 47.87,
+          "p95_nearest_rank": 296.488,
+          "p99_nearest_rank": 937.827,
+          "maximum": 937.827
+        },
+        "measurement_cutoff_counts": {
+          "success": 14,
+          "failure": 4,
+          "pending": 2
+        },
+        "actual_server_connections": 20,
+        "actual_server_reused_requests": 0,
+        "actual_server_reuse_rate": 0.0,
+        "native_success_reused_flags": 0,
+        "same_live_pair_fixture_label": "pair-3",
+        "completed_rows_and_pending_conserve20": true
+      },
+      "candidate": {
+        "tag": "round3-reusable",
+        "round": 3,
+        "mode": "reusable",
+        "profile": "normal",
+        "launched": 20,
+        "success": 16,
+        "failure": 4,
+        "pending_final": 0,
+        "unexpected_failures": 0,
+        "source_config_hash": "f9280801545b8faa155f1bcc79fc121ce04235738228522bf6aeee917dd49251",
+        "request_mix_hash": "088a79112ab79882d650cbf8f83b2058db0fbfed02bc32c0dd1e3a1796a18e4d",
+        "response_byte_profile_hash": "54eca1971cd96bdbda03975be5dafe09bb4ea0eddddd914c25ba4c35a95e9c8d",
+        "schedule_profile": "18sequential+2concurrent;50mscutoff;3000mstransportdeadline;alltaildrained;240processfps",
+        "all_terminal_mean_ms": 105.05874999999999,
+        "success_only_elapsed_ms": {
+          "n": 16,
+          "mean": 121.5339375,
+          "p50": 33.285,
+          "p95_nearest_rank": 930.486,
+          "p99_nearest_rank": 930.486,
+          "maximum": 930.486
+        },
+        "all_terminal_elapsed_ms": {
+          "n": 20,
+          "mean": 105.05874999999999,
+          "p50": 33.708,
+          "p95_nearest_rank": 309.311,
+          "p99_nearest_rank": 930.486,
+          "maximum": 930.486
+        },
+        "measurement_cutoff_counts": {
+          "success": 14,
+          "failure": 4,
+          "pending": 2
+        },
+        "actual_server_connections": 6,
+        "actual_server_reused_requests": 14,
+        "actual_server_reuse_rate": 0.7,
+        "native_success_reused_flags": 13,
+        "same_live_pair_fixture_label": "pair-3",
+        "completed_rows_and_pending_conserve20": true
+      },
+      "review": {
+        "production_activation": false,
+        "production_defaults_retained": true,
+        "performance_acceptance": false,
+        "capacity_acceptance": false,
+        "state": "EligibleForPairedRoundReview",
+        "reason": "correctness_and_workload_profiles_matched",
+        "all_terminal_mean_delta_ms": -10.858150000000023
+      }
+    }
+  ],
+  "three_round_judgment": {
+    "state": "Inconclusive",
+    "reason": "three_round_precision_not_sufficient_for_95percent_benefit",
+    "round_reviews": [
+      {
+        "production_activation": false,
+        "production_defaults_retained": true,
+        "performance_acceptance": false,
+        "capacity_acceptance": false,
+        "state": "EligibleForPairedRoundReview",
+        "reason": "correctness_and_workload_profiles_matched",
+        "all_terminal_mean_delta_ms": -9.839600000000019
+      },
+      {
+        "production_activation": false,
+        "production_defaults_retained": true,
+        "performance_acceptance": false,
+        "capacity_acceptance": false,
+        "state": "EligibleForPairedRoundReview",
+        "reason": "correctness_and_workload_profiles_matched",
+        "all_terminal_mean_delta_ms": -9.834850000000003
+      },
+      {
+        "production_activation": false,
+        "production_defaults_retained": true,
+        "performance_acceptance": false,
+        "capacity_acceptance": false,
+        "state": "EligibleForPairedRoundReview",
+        "reason": "correctness_and_workload_profiles_matched",
+        "all_terminal_mean_delta_ms": -10.858150000000023
+      }
+    ],
+    "paired_rounds": 3,
+    "candidate_minus_baseline_round_mean_ms": [
+      -9.839600000000019,
+      -9.834850000000003,
+      -10.858150000000023
+    ],
+    "mean_delta_ms": -10.177533333333349,
+    "exact_round_bootstrap_resamples": 27,
+    "descriptive_cluster_bootstrap95_ms": [
+      -10.858150000000023,
+      -9.834850000000003
+    ],
+    "exact_signflip_states": 8,
+    "two_sided_signflip_p": 0.25,
+    "inference_assumption": "independent paired rounds with sign symmetry under null;only3rounds,not a guarantee",
+    "bootstrap_interval_precision_guaranteed": false,
+    "production_activation": false,
+    "production_defaults_retained": true,
+    "performance_acceptance": false,
+    "capacity_acceptance": false
+  },
+  "candidate_effect_state": "Inconclusive",
+  "production_activation": false,
+  "production_defaults_retained": true,
+  "not_NoChange_equivalence_or95percent_benefit_claim": true,
+  "T01_naive_success_only_P95_ms": [
+    938.005,
+    296.417
+  ],
+  "T01_failure_counts": [
+    4,
+    5
+  ],
+  "T01_unexpected_failure_counts": [
+    0,
+    1
+  ],
+  "T01_rejects_controlled_regression": true,
+  "T01_control_is_deliberate_fixture_fault_not_SUT_regression": true,
+  "T02_actual_byte_and_mix_mismatch_judgments": {
+    "control-byte-mismatch": {
+      "production_activation": false,
+      "production_defaults_retained": true,
+      "performance_acceptance": false,
+      "capacity_acceptance": false,
+      "state": "DiagnosticOnly",
+      "reason": "workload_or_response_bytes_differ",
+      "mismatched": [
+        "response_byte_profile_hash"
+      ]
+    },
+    "control-mix-mismatch": {
+      "production_activation": false,
+      "production_defaults_retained": true,
+      "performance_acceptance": false,
+      "capacity_acceptance": false,
+      "state": "DiagnosticOnly",
+      "reason": "workload_or_response_bytes_differ",
+      "mismatched": [
+        "request_mix_hash"
+      ]
+    }
+  },
+  "T02_not_causal_benefit": true,
+  "global_quantiles_from_original_rows_not_mean_round_P95": {
+    "pooled-per-request": {
+      "success_elapsed_ms": {
+        "n": 48,
+        "mean": 131.89643750000002,
+        "p50": 47.842,
+        "p95_nearest_rank": 937.827,
+        "p99_nearest_rank": 938.005,
+        "maximum": 938.005
+      },
+      "all_terminal_elapsed_ms": {
+        "n": 60,
+        "mean": 114.51261666666666,
+        "p50": 47.818,
+        "p95_nearest_rank": 296.488,
+        "p99_nearest_rank": 938.005,
+        "maximum": 938.005
+      },
+      "global_quantiles_from_all_original_rows_not_mean_round_quantiles": true
+    },
+    "pooled-reusable": {
+      "success_elapsed_ms": {
+        "n": 48,
+        "mean": 121.20227083333333,
+        "p50": 33.639,
+        "p95_nearest_rank": 924.091,
+        "p99_nearest_rank": 930.925,
+        "maximum": 930.925
+      },
+      "all_terminal_elapsed_ms": {
+        "n": 60,
+        "mean": 104.33508333333333,
+        "p50": 33.661,
+        "p95_nearest_rank": 309.311,
+        "p99_nearest_rank": 930.925,
+        "maximum": 930.925
+      },
+      "global_quantiles_from_all_original_rows_not_mean_round_quantiles": true
+    }
+  },
+  "same_request_and_wire_byte_profiles_three_positive_pairs": true,
+  "same_live_owned_TLS_fixture_per_pair_from_source_and_continuous_counters": true,
+  "planned_profiles18sequential2concurrent": true,
+  "pending_at_cutoff_each_arm": 2,
+  "pending_final_each_arm": 0,
+  "positive_outcomes_each_arm": {
+    "launched": 20,
+    "success": 16,
+    "failure": 4,
+    "planned_failure_breakdown": {
+      "HTTP404": 2,
+      "transport_truncated": 2
+    }
+  },
+  "all_failures_and_pending_kept_in_counts": true,
+  "all_terminal_mean_primary_not_success_only_selector": true,
+  "actual_server_connection_counts_three_pairs": [
+    [
+      20,
+      6
+    ],
+    [
+      20,
+      6
+    ],
+    [
+      20,
+      6
+    ]
+  ],
+  "actual_server_reuse_rates": [
+    [
+      0.0,
+      0.7
+    ],
+    [
+      0.0,
+      0.7
+    ],
+    [
+      0.0,
+      0.7
+    ]
+  ],
+  "legacy_unsafe_HTTPRequest_not_used_as_baseline": true,
+  "prior_current66boundarychecks_reused_by_exactcomponent_andfunction_identity": {
+    "reused_boundary_report": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\reports\\pr13-stages-20261009\\S4-load081-TLS-framing-and-empty-compression-fix-20261018\\README.md",
+    "current_native_component_and_function_byte_qualification": {
+      "_request_http_transport": {
+        "exact_normalized_function_text": true,
+        "current_function_SHA256": "ef051a27d74b128000411511abbe876a8cdc7a1be39f5e54b278b2219eec1cf5"
+      },
+      "_request_page": {
+        "exact_normalized_function_text": true,
+        "current_function_SHA256": "2d4d05623fcf0b5a7514e78b459b3bdefab8be6e59372f76d9f0e59edf800287"
+      },
+      "_decode_http_response": {
+        "exact_normalized_function_text": true,
+        "current_function_SHA256": "2cef16ed86692277ddcb22caca5e7de0c3a79840f1fb43417608ee8989828b15"
+      }
+    },
+    "native_reusable_component_SHA256": "fb43fc1b384a3e129d8ebde0d4cdf97dfd48205c380a6813191235d1fcc292f8",
+    "source_files_all_match_current_Root": true,
+    "prior_bad_TLS_close_chunked_limits_not_rerun": true,
+    "historicalHTTPRequestunsafe_reference_not_baseline": true,
+    "not_new_full_boundary_experiment": true
+  },
+  "initial_calibration_native_completed20_but_semantic_probe_used_wrong_schema": true,
+  "initial_calibration_not_rewritten_as_passed": true,
+  "fresh_sameorigin_cohort_after_correction_not_spliced_oldserver": true,
+  "actual_new_cohort_native_arms": 9,
+  "native_starts_including_unqualified_calibration": 10,
+  "native_start_cap": 12,
+  "total_HTTP_requests_including_calibration_and_controls": 208,
+  "HTTP_cap": 300,
+  "cohort_original_wire_and_native_body_hash_checks_each": 180,
+  "local_fixture_policy_controls": 18,
+  "all_native_processes_and_owned_TLS_servers_sockets_threads_terminal": true,
+  "no_correctness_or_budget_relaxation": true,
+  "no_new_RESTretry_WAN_fullPG_LIVE_RENDER_capacity_production_latency_claim": true,
+  "new_accounts": 0,
+  "new_matches": 0,
+  "cloud_actions": false,
+  "human_experience_excluded": true,
+  "formal_task_state": "Partial",
+  "formal_remaining_unaccepted_tasks": 77,
+  "canonical132tasks396cases_preserved": true,
+  "canonical_register_gate_MAIN_changes": false,
+  "canonical_pointer_sha256": "9a4eca654ae7bd63d1dcea46ee12f6efe42e11b194eedf6b1044d8783281db74",
+  "canonical_register_sha256": "aff75d05738e356c21b5fe42d9c433f6a597a6e6ed58f2041523312bfd3bcffe",
+  "all_original716dirty_paths_preserved": true,
+  "private_original_root": "G:\\PR13Evidence\\a064-current-transport-benefit-20261018-r1-originals",
+  "private_original_manifest_sha256": "a1244f0df33767b339fe57f2cf30ef134f4903f7f1234da674c417972ad4fb8f",
+  "private_declared_original_members": 531,
+  "raw_samples_temporary_drivers_and_fixture_keys_not_committed": true
+}

@@ -110,3 +110,39 @@ def resource_gap_review(baseline, candidate):
                 side_effects=['empty_hand_wait_increased'] if change['no_cards_seconds']>0 else [],
                 single_card_resource_decreased=change['resource_per_card']<0,
                 production_activation=False,retain_default=True)
+
+
+# Conservative native transport judgments. They never activate a runtime flag.
+def transport_review(baseline, candidate):
+    """Compare complete fixed-mix observations;successful-only latency cannot excuse failures."""
+    import math
+    profile_keys=('source_config_hash','request_mix_hash','response_byte_profile_hash','schedule_profile')
+    required_counts=('launched','success','failure','pending_final','unexpected_failures')
+    for arm in (baseline,candidate):
+        if any(type(arm.get(k)) is not int or arm[k]<0 for k in required_counts):raise ValueError('Nonnegative exact outcome counts required')
+        if arm['success']+arm['failure']+arm['pending_final']!=arm['launched']:raise ValueError('Every launched request needs exactly one terminal or pending state')
+        if arm['unexpected_failures']>arm['failure']:raise ValueError('Unexpected failures exceed observed failures')
+        if any(not isinstance(arm.get(k),str) or not arm[k] for k in profile_keys):raise ValueError('Measured workload and response-byte identity required')
+        if arm['pending_final']==0 and (type(arm.get('all_terminal_mean_ms')) not in (int,float) or not math.isfinite(arm['all_terminal_mean_ms']) or arm['all_terminal_mean_ms']<0):raise ValueError('Finite all-terminal elapsed mean required')
+    common={'production_activation':False,'production_defaults_retained':True,'performance_acceptance':False,'capacity_acceptance':False}
+    if min(baseline['launched'],candidate['launched'])<20:return dict(common,state='Unknown',reason='frozen_request_budget_not_met')
+    if candidate['unexpected_failures']>baseline['unexpected_failures']:return dict(common,state='Failed',reason='correctness_regression_despite_possible_success_only_latency_gain')
+    mismatch=[k for k in profile_keys if baseline[k]!=candidate[k]]
+    if baseline['launched']!=candidate['launched']:mismatch.append('launched')
+    if mismatch:return dict(common,state='DiagnosticOnly',reason='workload_or_response_bytes_differ',mismatched=mismatch)
+    if baseline['pending_final'] or candidate['pending_final']:return dict(common,state='Inconclusive',reason='terminal_outcomes_pending')
+    if baseline['unexpected_failures'] or candidate['unexpected_failures']:return dict(common,state='Failed',reason='unexpected_fixture_outcome')
+    return dict(common,state='EligibleForPairedRoundReview',reason='correctness_and_workload_profiles_matched',all_terminal_mean_delta_ms=candidate['all_terminal_mean_ms']-baseline['all_terminal_mean_ms'])
+
+
+def transport_three_round_review(pairs):
+    """Exact bounded round-cluster resampling;three clusters do not prove production benefit."""
+    import itertools,math,statistics
+    if len(pairs)!=3:raise ValueError('Exactly the three frozen paired rounds required')
+    reviews=[transport_review(a,b) for a,b in pairs]
+    if any(r['state']!='EligibleForPairedRoundReview' for r in reviews):return {'state':'Inconclusive','reason':'not_all_rounds_comparable','round_reviews':reviews,'production_activation':False,'performance_acceptance':False}
+    deltas=[r['all_terminal_mean_delta_ms'] for r in reviews];observed=statistics.fmean(deltas)
+    bootstrap=sorted(statistics.fmean(deltas[i] for i in indexes) for indexes in itertools.product(range(3),repeat=3))
+    null=[statistics.fmean(d*s for d,s in zip(deltas,signs)) for signs in itertools.product((-1,1),repeat=3)]
+    p=sum(abs(v)>=abs(observed)-1e-12 for v in null)/len(null)
+    return {'state':'Inconclusive','reason':'three_round_precision_not_sufficient_for_95percent_benefit','round_reviews':reviews,'paired_rounds':3,'candidate_minus_baseline_round_mean_ms':deltas,'mean_delta_ms':observed,'exact_round_bootstrap_resamples':27,'descriptive_cluster_bootstrap95_ms':[bootstrap[math.ceil(.025*27)-1],bootstrap[math.ceil(.975*27)-1]],'exact_signflip_states':8,'two_sided_signflip_p':p,'inference_assumption':'independent paired rounds with sign symmetry under null;only3rounds,not a guarantee','bootstrap_interval_precision_guaranteed':False,'production_activation':False,'production_defaults_retained':True,'performance_acceptance':False,'capacity_acceptance':False}
