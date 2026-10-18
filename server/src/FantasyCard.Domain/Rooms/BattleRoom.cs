@@ -1230,9 +1230,9 @@ public sealed partial class BattleRoom
 
     private bool TerminateBotsWhenNoRealPlayersRemain()
     {
-        var realPlayers = _players.Values.Where(player => !player.IsBot).ToArray();
-        if (realPlayers.Length == 0 || realPlayers.Any(player =>
-                player.Phase is not (RoomPlayerPhase.Dead or RoomPlayerPhase.Extracted)))
+        var remainingRealPlayers = _players.Values.Count(player => !player.IsBot &&
+            player.Phase is not (RoomPlayerPhase.Dead or RoomPlayerPhase.Extracted));
+        if (!BotRules.ShouldEndRoom(remainingRealPlayers))
             return false;
 
         _duels.Clear();
