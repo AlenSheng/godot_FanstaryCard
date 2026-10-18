@@ -61,6 +61,9 @@ var battle_started_ms := 0
 var last_effective_ms := 0
 var observed_hand_ids: Array = []
 var terminal_battle_ids: Dictionary = {}
+var battle_metric_context: Dictionary = {}
+var battle_suspended_ms := 0
+var _suspended_pve_metrics: Dictionary = {}
 var load_profile := "cyclic-gameplay"
 var hold_seconds := 600
 var run_seconds := 1800
@@ -566,23 +569,98 @@ func _strategy_wait_state() -> Dictionary:
 		waiting["strategy"] = strategy
 	return waiting
 
+func _battle_metric_origin(battle_id: String) -> Dictionary:
+	return {"run_id": run_id, "client_id": client_id, "process_epoch": process_epoch,
+		"cycle_id": "%s:%d" % [client_id, cycles_completed + 1], "phase": _current_phase(),
+		"room_id": Game.room.get("room_id", ""), "match_id": Game.room.get("match_id", active_match_id),
+		"battle_id": battle_id, "battle_kind": "Pvp" if Game.room.has("duel") else "Pve"}
+
+func _remember_terminal_battle(battle_id: String) -> void:
+	terminal_battle_ids[battle_id] = true
+	if terminal_battle_ids.size() > 100: terminal_battle_ids.erase(terminal_battle_ids.keys()[0])
+
+func _emit_battle_summary(battle_id: String, metrics: Dictionary, origin: Dictionary, started_ms: int, suspended_ms: int, gap_ms: int, outcome: String, censor_reason: String = "") -> void:
+	metrics["observed_ms"] = Time.get_ticks_msec() - started_ms
+	metrics["observed_clock"] = "wall"
+	metrics["suspended_ms"] = suspended_ms
+	metrics["active_observed_ms"] = int(metrics.observed_ms) - suspended_ms
+	metrics["effective_gap_clock"] = "active_excluding_suspended_pve"
+	metrics["longest_effective_gap_ms"] = maxi(int(metrics.longest_effective_gap_ms), gap_ms)
+	metrics["outcome"] = outcome
+	if not censor_reason.is_empty(): metrics["censor_reason"] = censor_reason
+	_on_telemetry({"type": "battle_summary", "event_type": "battle.summary", "battle_id": battle_id,
+		"metrics": metrics.duplicate(true), "_origin_context": origin.duplicate(true)})
+
+func _close_suspended_pve_metrics(battle_id: String, reason: String) -> void:
+	var saved: Dictionary = _suspended_pve_metrics[battle_id]
+	_suspended_pve_metrics.erase(battle_id)
+	var paused_ms: int = Time.get_ticks_msec() - int(saved.paused_at_ms)
+	_emit_battle_summary(battle_id, saved.metrics, saved.origin, int(saved.started_ms),
+		int(saved.suspended_ms) + paused_ms, int(saved.gap_at_pause_ms), "Censored", reason)
+	_remember_terminal_battle(battle_id)
+
+func _discard_stale_suspended_pve_metrics() -> void:
+	var current: Dictionary = _battle_metric_origin("")
+	for battle_id in _suspended_pve_metrics.keys():
+		var origin: Dictionary = _suspended_pve_metrics[battle_id].origin
+		if ["run_id", "client_id", "process_epoch", "cycle_id", "room_id", "match_id"].any(func(key): return origin.get(key) != current.get(key)):
+			_close_suspended_pve_metrics(str(battle_id), "RoomContextChangedWhileSuspended")
+
+func _suspend_pve_metrics() -> void:
+	var now := Time.get_ticks_msec()
+	var gap := now - last_effective_action_ms
+	battle_metrics["longest_effective_gap_ms"] = maxi(int(battle_metrics.longest_effective_gap_ms), gap)
+	_suspended_pve_metrics[current_battle_id] = {"metrics": battle_metrics.duplicate(true),
+		"origin": battle_metric_context.duplicate(true), "started_ms": battle_started_ms,
+		"suspended_ms": battle_suspended_ms, "paused_at_ms": now, "gap_at_pause_ms": gap,
+		"last_effective_ms": last_effective_ms, "last_effective_action_ms": last_effective_action_ms,
+		"observed_hand_ids": observed_hand_ids.duplicate()}
+	_on_telemetry({"type": "battle_lifecycle", "event_type": "battle.suspended", "trace_only": true,
+		"battle_id": current_battle_id, "_origin_context": battle_metric_context.duplicate(true)})
+	current_battle_id = ""
+	battle_metrics = {}
+	battle_metric_context = {}
+
 func _observe_battle() -> void:
 	var pve: Dictionary = Game.room.get("pve", {})
-	var duel: Dictionary = Game.room.get("duel", {})
-	var battle_id := str(pve.get("battle_id", duel.get("duel_id", "")))
+	var is_duel: bool = Game.room.has("duel")
+	var battle: Dictionary = Game.room.get("duel", pve)
+	var battle_id := str(battle.get("duel_id", battle.get("battle_id", "")))
+	_discard_stale_suspended_pve_metrics()
 	if terminal_battle_ids.has(battle_id): return
 	if battle_id != current_battle_id:
-		_close_battle_metrics("PhaseChanged")
+		# The producer retains frozen PVE alongside the active duel. Neither its
+		# identity, reset hand nor paused time belongs to the PVP observation.
+		if not battle_metrics.is_empty() and is_duel and current_battle_id == str(pve.get("battle_id", "")) and battle_metric_context.get("battle_kind") == "Pve":
+			_suspend_pve_metrics()
+		else:
+			_close_battle_metrics("PhaseChanged")
 		current_battle_id = battle_id
 		if battle_id.is_empty(): return
-		battle_started_ms = Time.get_ticks_msec()
-		last_effective_ms = battle_started_ms
-		last_effective_action_ms = battle_started_ms
-		observed_hand_ids = Game.room.get("player", {}).get("hand", []).map(func(card): return str(card.get("instance_id", "")))
-		battle_metrics = {"battle_id": battle_id, "actions": 0, "effective_actions": 0, "zero_effective_actions": 0,
-			"hp_damage": 0, "shield_damage": 0, "heal": 0, "shield_gain": 0, "observed_cards_drawn": 0,
-			"cards_spent":0, "heal_overflow":null, "heal_overflow_unavailable_reason":"not_published_by_authoritative_event",
-			"first_effective_ms": null, "longest_effective_gap_ms": 0}
+		if not is_duel and _suspended_pve_metrics.has(battle_id):
+			var saved: Dictionary = _suspended_pve_metrics[battle_id]
+			_suspended_pve_metrics.erase(battle_id)
+			var paused_ms: int = Time.get_ticks_msec() - int(saved.paused_at_ms)
+			battle_metrics = saved.metrics
+			battle_metric_context = saved.origin
+			battle_started_ms = int(saved.started_ms)
+			battle_suspended_ms = int(saved.suspended_ms) + paused_ms
+			last_effective_ms = int(saved.last_effective_ms) + paused_ms
+			last_effective_action_ms = int(saved.last_effective_action_ms) + paused_ms
+			observed_hand_ids = saved.observed_hand_ids
+			_on_telemetry({"type": "battle_lifecycle", "event_type": "battle.resumed", "trace_only": true,
+				"battle_id": battle_id, "_origin_context": battle_metric_context.duplicate(true)})
+		else:
+			battle_started_ms = Time.get_ticks_msec()
+			battle_suspended_ms = 0
+			battle_metric_context = _battle_metric_origin(battle_id)
+			last_effective_ms = battle_started_ms
+			last_effective_action_ms = battle_started_ms
+			observed_hand_ids = Game.room.get("player", {}).get("hand", []).map(func(card): return str(card.get("instance_id", "")))
+			battle_metrics = {"battle_id": battle_id, "actions": 0, "effective_actions": 0, "zero_effective_actions": 0,
+				"hp_damage": 0, "shield_damage": 0, "heal": 0, "shield_gain": 0, "observed_cards_drawn": 0,
+				"cards_spent":0, "heal_overflow":null, "heal_overflow_unavailable_reason":"not_published_by_authoritative_event",
+				"first_effective_ms": null, "first_active_effective_ms": null, "longest_effective_gap_ms": 0}
 	if battle_id.is_empty(): return
 	var hand_ids: Array = Game.room.get("player", {}).get("hand", []).map(func(card): return str(card.get("instance_id", "")))
 	var new_cards: int = hand_ids.filter(func(instance_id): return not observed_hand_ids.has(instance_id)).size()
@@ -594,22 +672,24 @@ func _observe_battle() -> void:
 	observed_hand_ids = hand_ids
 	var waiting: Dictionary = _strategy_wait_state()
 	_on_telemetry({"type": "battle_observation", "event_type": "battle.observed", "battle_id": battle_id,
-		"elapsed_ms": Time.get_ticks_msec() - battle_started_ms, "waiting": waiting,
+		"elapsed_ms": Time.get_ticks_msec() - battle_started_ms, "suspended_ms": battle_suspended_ms,
+		"active_elapsed_ms": Time.get_ticks_msec() - battle_started_ms - battle_suspended_ms, "waiting": waiting,
 		"last_effective_age_ms": Time.get_ticks_msec() - last_effective_ms,
 		"player_hp": Game.room.get("player", {}).get("combat", {}).get("hp"), "player_shield": Game.room.get("player", {}).get("combat", {}).get("shield"),
 		"library_count": Game.room.get("player", {}).get("library_count"), "discard_count": Game.room.get("player", {}).get("discard_count"),
-		"monsters": pve.get("monsters", []).map(func(monster): return {"id": monster.get("monster_id"), "hp": monster.get("hp"), "shield": monster.get("shield"), "stun_remaining_ms": monster.get("stun_remaining_ms")})})
+		"monsters": [] if is_duel else pve.get("monsters", []).map(func(monster): return {"id": monster.get("monster_id"), "hp": monster.get("hp"), "shield": monster.get("shield"), "stun_remaining_ms": monster.get("stun_remaining_ms")})})
 
 func _close_battle_metrics(outcome: String) -> void:
 	if not battle_metrics.is_empty():
-		terminal_battle_ids[current_battle_id] = true
-		if terminal_battle_ids.size() > 100: terminal_battle_ids.erase(terminal_battle_ids.keys()[0])
-		battle_metrics["observed_ms"] = Time.get_ticks_msec() - battle_started_ms
-		battle_metrics["longest_effective_gap_ms"] = maxi(int(battle_metrics.longest_effective_gap_ms), Time.get_ticks_msec() - last_effective_action_ms)
-		battle_metrics["outcome"] = outcome
-		_on_telemetry({"type": "battle_summary", "event_type": "battle.summary", "battle_id": current_battle_id, "metrics": battle_metrics.duplicate(true)})
+		_remember_terminal_battle(current_battle_id)
+		_emit_battle_summary(current_battle_id, battle_metrics, battle_metric_context, battle_started_ms,
+			battle_suspended_ms, Time.get_ticks_msec() - last_effective_action_ms, outcome)
 	current_battle_id = ""
 	battle_metrics = {}
+	battle_metric_context = {}
+	if outcome in ["Stopped", "Terminal", "Censored", "ScenarioAbandon"]:
+		for battle_id in _suspended_pve_metrics.keys():
+			_close_suspended_pve_metrics(str(battle_id), outcome + "WhileSuspended")
 
 func _on_telemetry(sample: Dictionary) -> void:
 	var copy: Dictionary = sample.duplicate(true)
@@ -718,7 +798,9 @@ func _on_event(kind: String, _payload: Dictionary) -> void:
 			if effective > 0:
 				effective_combo = true
 				battle_metrics.effective_actions += 1
-				if battle_metrics.first_effective_ms == null: battle_metrics.first_effective_ms = Time.get_ticks_msec() - battle_started_ms
+				if battle_metrics.first_effective_ms == null:
+					battle_metrics.first_effective_ms = Time.get_ticks_msec() - battle_started_ms
+					battle_metrics.first_active_effective_ms = int(battle_metrics.first_effective_ms) - battle_suspended_ms
 				battle_metrics.longest_effective_gap_ms = maxi(int(battle_metrics.longest_effective_gap_ms), Time.get_ticks_msec() - last_effective_action_ms)
 				last_effective_action_ms = Time.get_ticks_msec()
 				last_effective_ms = Time.get_ticks_msec()
