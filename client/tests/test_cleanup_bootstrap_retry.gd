@@ -113,10 +113,14 @@ func run_test() -> Dictionary:
 		var name := "terminal_"+str(response.status)+"_"+str(response.data == null)
 		checks[name+" is not retried or treated clear"] = c.gateway.calls == 1 and c.probe.cleanup_result.state == "Unknown" and _retries(c).is_empty() and _preserved(c)
 		_free(c)
+	for response in [{"ok":false,"status":0,"error":"Synthetic pagination failure"},{"ok":false,"status":500,"error":"Missing decoded error body"},{"ok":true,"status":200}]:
+		c = _case([response]); await c.probe._graceful_cleanup()
+		checks["partial_gateway_"+str(response.status)+"_"+str(response.ok)+" remains Unknown without unsafe dictionary access"] = c.gateway.calls == 1 and c.probe.cleanup_result.state == "Unknown" and c.probe.cleanup_result.get("bootstrap_read_failures") == 1 and _retries(c).is_empty() and _preserved(c)
+		_free(c)
 	for mode in ["session","match","preparation","ticket","backoff_session"]:
 		c = _case([_failure(),_clear()],mode); await c.probe._graceful_cleanup()
 		checks[mode+" change blocks a new request and clear"] = c.gateway.calls == 1 and c.probe.cleanup_result.state == "Unknown" and c.probe.cleanup_result.reason == "cleanup_context_changed" and _preserved(c) and c.game.ack_receipts.is_empty()
-		checks[mode+" physical failed read is counted despite context cancellation"] = c.probe.cleanup_result.get("bootstrap_read_attempts") == 1 and c.probe.cleanup_result.get("bootstrap_read_failures") == 1 and c.probe.cleanup_result.get("bootstrap_read_retries") == 0 and c.probe.cleanup_result.get("bootstrap_last_http_status") == 500
+		checks[mode+" failed verification call is counted despite context cancellation"] = c.probe.cleanup_result.get("bootstrap_read_attempts") == 1 and c.probe.cleanup_result.get("bootstrap_read_failures") == 1 and c.probe.cleanup_result.get("bootstrap_read_retries") == 0 and c.probe.cleanup_result.get("bootstrap_last_http_status") == 500
 		_free(c)
 	c = _case([_clear()],"session"); await c.probe._graceful_cleanup()
 	checks["successful read from cancelled context cannot clear or become a read failure"] = c.probe.cleanup_result.state == "Unknown" and c.probe.cleanup_result.reason == "cleanup_context_changed" and _preserved(c) and c.probe.cleanup_result.get("bootstrap_read_failures") == 0 and c.probe.cleanup_result.get("bootstrap_last_http_status") == 200 and c.gateway.calls == 1

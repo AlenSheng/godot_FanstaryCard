@@ -451,7 +451,7 @@ func _graceful_cleanup() -> void:
 		bootstrap_read_attempts += 1
 		var verification: Dictionary = await Game.gateway.request("/api/v1/bootstrap", HTTPClient.METHOD_GET, null, [0, 401, 503])
 		bootstrap_last_http_status = int(verification.get("status", 0))
-		var verification_failed: bool = not verification.ok or not verification.data is Dictionary
+		var verification_failed: bool = not verification.get("ok", false) or not verification.get("data") is Dictionary
 		if verification_failed: bootstrap_read_failures += 1
 		if not _cleanup_context_is_current(cleanup_generation, cleanup_cycle_match_id, cleanup_preparation_id, cleanup_ticket_id):
 			cleanup_result = {"state": "Unknown", "reason": "cleanup_context_changed"}
@@ -459,7 +459,7 @@ func _graceful_cleanup() -> void:
 		if verification_failed:
 			# Retry only a decoded transient error from this read. Writes, auth,
 			# decode failures and unresolved receipts keep their existing contracts.
-			var may_retry: bool = not verification.ok and verification.data is Dictionary and bootstrap_last_http_status in [500, 502, 503, 504] and not verification.get("stale_session", false)
+			var may_retry: bool = not verification.get("ok", false) and verification.get("data") is Dictionary and bootstrap_last_http_status in [500, 502, 503, 504] and not verification.get("stale_session", false)
 			if not may_retry: break
 			if Time.get_ticks_msec() + 1000 >= cleanup_deadline:
 				cleanup_result = {"state": "Unknown", "reason": "verification_deadline_reached"}
