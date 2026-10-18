@@ -434,12 +434,42 @@ func _graceful_cleanup() -> void:
 	cleanup_result = {"state": "Unknown", "reason": "verification_failed"}
 	var cleanup_deadline := Time.get_ticks_msec() + 22000
 	var cleanup_ack_attempts := 0
+	var bootstrap_read_attempts := 0
+	var bootstrap_read_failures := 0
+	var bootstrap_read_retries := 0
+	var bootstrap_last_http_status := 0
+	var bootstrap_retry_pending := false
 	while Time.get_ticks_msec() < cleanup_deadline:
-		var verification: Dictionary = await Game.gateway.request("/api/v1/bootstrap", HTTPClient.METHOD_GET, null, [0, 401, 503])
-		if not verification.ok or not verification.data is Dictionary: break
-		if Game.gateway.session_generation != cleanup_generation or active_match_id != cleanup_cycle_match_id or str(Game.preparation.get("preparationId", "")) not in ["", cleanup_preparation_id] or str(Game.ticket.get("ticketId", "")) not in ["", cleanup_ticket_id]:
+		if not _cleanup_context_is_current(cleanup_generation, cleanup_cycle_match_id, cleanup_preparation_id, cleanup_ticket_id):
 			cleanup_result = {"state": "Unknown", "reason": "cleanup_context_changed"}
 			break
+		if bootstrap_retry_pending:
+			bootstrap_read_retries += 1
+			_on_telemetry({"type": "lifecycle", "event_type": "cleanup.bootstrap_retry", "match_id": cleanup_cycle_match_id,
+				"status": bootstrap_last_http_status, "retry_index": bootstrap_read_retries, "gameplay_progress": false})
+			bootstrap_retry_pending = false
+		bootstrap_read_attempts += 1
+		var verification: Dictionary = await Game.gateway.request("/api/v1/bootstrap", HTTPClient.METHOD_GET, null, [0, 401, 503])
+		bootstrap_last_http_status = int(verification.get("status", 0))
+		var verification_failed: bool = not verification.ok or not verification.data is Dictionary
+		if verification_failed: bootstrap_read_failures += 1
+		if not _cleanup_context_is_current(cleanup_generation, cleanup_cycle_match_id, cleanup_preparation_id, cleanup_ticket_id):
+			cleanup_result = {"state": "Unknown", "reason": "cleanup_context_changed"}
+			break
+		if verification_failed:
+			# Retry only a decoded transient error from this read. Writes, auth,
+			# decode failures and unresolved receipts keep their existing contracts.
+			var may_retry: bool = not verification.ok and verification.data is Dictionary and bootstrap_last_http_status in [500, 502, 503, 504] and not verification.get("stale_session", false)
+			if not may_retry: break
+			if Time.get_ticks_msec() + 1000 >= cleanup_deadline:
+				cleanup_result = {"state": "Unknown", "reason": "verification_deadline_reached"}
+				break
+			if bootstrap_read_retries >= 2:
+				cleanup_result = {"state": "Unknown", "reason": "verification_retry_exhausted"}
+				break
+			bootstrap_retry_pending = true
+			await _wait(1.0)
+			continue
 		if str(verification.data.get("configVersion", "")) != str(Game.CATALOG.data.version) or not verification.data.has_all(["activePreparation", "unfinishedMatch", "unfinishedSettlement"]):
 			cleanup_result = {"state": "Unknown", "reason": "invalid_bootstrap_contract"}
 			break
@@ -478,7 +508,12 @@ func _graceful_cleanup() -> void:
 			Game.changed.emit()
 			break
 		await _wait(1.0)
+	cleanup_result.merge({"bootstrap_read_attempts": bootstrap_read_attempts, "bootstrap_read_failures": bootstrap_read_failures,
+		"bootstrap_read_retries": bootstrap_read_retries, "bootstrap_last_http_status": bootstrap_last_http_status}, true)
 	_on_telemetry({"type": "lifecycle", "event_type": "cleanup.verified", "cleanup": cleanup_result})
+
+func _cleanup_context_is_current(generation: int, match_id: String, preparation_id: String, ticket_id: String) -> bool:
+	return Game.gateway.session_generation == generation and active_match_id == match_id and str(Game.preparation.get("preparationId", "")) in ["", preparation_id] and str(Game.ticket.get("ticketId", "")) in ["", ticket_id]
 
 func _cancel_waiting_preparation(generation: int, match_id: String, preparation_id: String, ticket_id: String) -> void:
 	if ticket_id.is_empty():
