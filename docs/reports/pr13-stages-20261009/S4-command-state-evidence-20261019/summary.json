@@ -1,0 +1,107 @@
+{
+  "scope": "Client-side command state evidence instrumentation;offline qualification",
+  "status": "Passed offline80 and consumer integration;real capacity and original14 attribution Pending",
+  "source_parent_release": "79228e3a19d60b9c1f6839461d363f220d6b174c",
+  "source_files": {
+    "client/network/gateway.gd": "9104d33ab9e466c6c32a30f1d8c984586459ce9fd3f76ec905ba9b32248dc7fc",
+    "client/tests/gameplay_load_client.gd": "396b42b1dc2bea47b8b819c928fb910c177e79c1fb424b570a78f25462684a26",
+    "client/tests/run_native_regressions.gd": "0add5c75e15ac4f9c3d7e436a9c10b1af7a6ee76e768277f7fe169ecc3296180",
+    "client/tests/test_command_state_observation.gd": "3a5a99c4c76f5b11f2d589ac12baae7a915365b4bd3d4dce233a2c82062e5e40"
+  },
+  "new_checks": 28,
+  "affected_existing_checks": 52,
+  "total_current_checks": 80,
+  "suites": [
+    {
+      "name": "test_command_state_observation.gd",
+      "checks": 28,
+      "passed": true
+    },
+    {
+      "name": "test_active_battle_observation.gd",
+      "checks": 17,
+      "passed": true
+    },
+    {
+      "name": "test_load_contexts.gd",
+      "checks": 6,
+      "passed": true
+    },
+    {
+      "name": "test_dispatch_origin_reentrancy.gd",
+      "checks": 6,
+      "passed": true
+    },
+    {
+      "name": "test_gateway_receive_ownership.gd",
+      "checks": 9,
+      "passed": true
+    },
+    {
+      "name": "test_load_progress.gd",
+      "checks": 14,
+      "passed": true
+    }
+  ],
+  "new_worlds": 0,
+  "new_real_accounts": 0,
+  "local_Native_starts": 8,
+  "startup_budget_revisions_before_execution": [
+    2,
+    3,
+    5,
+    7,
+    8
+  ],
+  "initial_fixture_abort_kept": true,
+  "missing_feature_baseline22_and_integrity_baselines3plus3_kept": true,
+  "packet_scope": "Metadata from actual encoded envelope and schema-declared battle field;unknown/null input keys cannot supply encoded evidence",
+  "dispatch_scope": "Synchronous callback after encoding;local state,not server execution state;route/epoch/revision mismatch explicit",
+  "snapshot_scope": "Immutable physical receive owner;unsolicited business origin remains Unknown;replayed/foreign/incomplete observations cannot qualify dedup",
+  "critical_state_dedup": "Phase,activeIDs,stun flag,permissions and owner changes;ordinary HP/revision ticks do not add state observations",
+  "progress_or_cycle_credit_added": false,
+  "health_values_normalized_or_flagged": false,
+  "legal80over70_control_Passed": true,
+  "wire_and_business_command_encoding_changed": false,
+  "extra_network_requests_added": false,
+  "raw_auth_or_card_payload_logged": false,
+  "rejection_whitelist_added": false,
+  "acceptance_thresholds_relaxed": false,
+  "old14_verdict": "Unclassified preserved",
+  "original100_verdict": "Failed preserved",
+  "consumer_integration": {
+    "ok": true,
+    "native_events": 4,
+    "trace_only_records": 3,
+    "realtime_latency_records": 1,
+    "latency_fixture_p95_ms": 5,
+    "completed_cycles": 0,
+    "new_worlds": 0,
+    "source_native_audit_SHA256": "4700bf16b124bf9dbdde6537fa341a17d1ffb2313b1a574044717ff499e6a619",
+    "no_new_Native_run_for_this_readback": true,
+    "scope": "Synthetic single latency fixture;not real performance"
+  },
+  "original240_full_suite_not_rerun": true,
+  "existing_unchanged_checks_reused_except52affected": true,
+  "current_complete_package_refresh_required": true,
+  "prior79228_UI_package_preserved_as_historical": true,
+  "expected_next_tracked_client_inputs": 2142,
+  "expected_next_original_scripts": 179,
+  "canonical_register_gate_MAIN_changes": false,
+  "official_counts": {
+    "Accepted": 55,
+    "Partial": 67,
+    "Ready": 10,
+    "remaining": 77,
+    "tasks": 132,
+    "cases": 396
+  },
+  "evidence": {
+    "final_native_report_SHA256": "561648b6a7e8f54083f819e1b738337eb61b1c79ca21aed122a14a7be150d851",
+    "consumer_readback_SHA256": "2cece22db58c051ebcc3847aa63637edf26f541f6e2ccd168dd5d7c9b240ce88",
+    "missing_feature_baseline_SHA256": "c89e830f5db7ead44aa81c737362aca2964ca4d254820165f0cbfc49611d7648",
+    "packet_integrity_baseline_SHA256": "887c7e68c900fda894477ebec9ae50ffe042a153d782737616647117848f5fbc",
+    "snapshot_integrity_baseline_SHA256": "89547d9a9f226773cb14251cd189f9277984114d16910d9f6062bbb4a2e2899d"
+  },
+  "raw_logs_controls_and_synthetic_records_kept_out_of_Git": true
+}

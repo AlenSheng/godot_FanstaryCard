@@ -605,7 +605,16 @@ func send(kind: String, payload: Dictionary = {}, request_id: String = "") -> bo
 		_pending_request_started[effective_request_id] = {"action": kind, "started_at": Time.get_ticks_msec(), "context": origin}
 		if _pending_request_started.size() > 128: _pending_request_started.erase(_pending_request_started.keys()[0])
 		if kind not in ["ping", "session.resume", "room.snapshot.read", "combat.preview", "relic.read"]:
-			var dispatched := {"type":"command_lifecycle", "event_type":"command.sent", "action":kind, "request_id":effective_request_id, "result":"sent", "trace_only":true}
+			var packet_battle_field := ""
+			for field in proto.schema.get(COMMANDS[kind], {}).values():
+				if field.name in ["battle_id", "duel_id"]:
+					packet_battle_field = field.name
+					break
+			var packet_battle_value: Variant = payload.get(packet_battle_field) if not packet_battle_field.is_empty() else null
+			var dispatched := {"type":"command_lifecycle", "event_type":"command.sent", "action":kind, "request_id":effective_request_id, "result":"sent", "trace_only":true,
+				"packet_room_id":envelope.get("room_id", ""), "packet_match_id":envelope.get("match_id", ""),
+				"packet_expected_revision":envelope.get("expected_revision"), "packet_battle_id":packet_battle_value if packet_battle_value is String else "",
+				"packet_battle_field":packet_battle_field, "packet_has_battle_field":packet_battle_value is String}
 			dispatched.merge(origin, false)
 			telemetry.emit(dispatched)
 		if kind == "ping":
@@ -846,6 +855,6 @@ func _receive(packet: PackedByteArray) -> void:
 		failed.emit(payload.get("detail", "操作被拒绝"))
 		if not room_id.is_empty(): send("room.snapshot.read")
 		return
-	if not payload.has("_origin_context") and kind in ["match.found", "room.ready_required", "room.ready_accepted", "room.started", "room.moved", "battle.combo_resolved", "settlement.ready", "match.settled", "player.died", "action.extract_completed"]:
+	if not payload.has("_origin_context") and kind in ["room.snapshot", "match.found", "room.ready_required", "room.ready_accepted", "room.started", "room.moved", "battle.combo_resolved", "settlement.ready", "match.settled", "player.died", "action.extract_completed"]:
 		payload["_receive_owner_context"] = receive_owner.duplicate(true)
 	event_received.emit(kind, payload)

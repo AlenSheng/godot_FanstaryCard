@@ -64,6 +64,7 @@ var terminal_battle_ids: Dictionary = {}
 var battle_metric_context: Dictionary = {}
 var battle_suspended_ms := 0
 var _suspended_pve_metrics: Dictionary = {}
+var _last_authority_command_signature: Dictionary = {}
 var load_profile := "cyclic-gameplay"
 var hold_seconds := 600
 var run_seconds := 1800
@@ -691,6 +692,95 @@ func _close_battle_metrics(outcome: String) -> void:
 		for battle_id in _suspended_pve_metrics.keys():
 			_close_suspended_pve_metrics(str(battle_id), outcome + "WhileSuspended")
 
+func _state_dict(value: Variant) -> Dictionary:
+	return value if value is Dictionary else {}
+
+func _command_room_state(room: Dictionary) -> Dictionary:
+	var player := _state_dict(room.get("player"))
+	var pve := _state_dict(room.get("pve"))
+	var duel := _state_dict(room.get("duel"))
+	var combat := _state_dict(player.get("combat"))
+	var phase_value: Variant = player.get("phase")
+	var phase: String = phase_value if phase_value is String else ""
+	var pve_id := str(pve.get("battle_id", ""))
+	var duel_id := str(duel.get("duel_id", ""))
+	var actions: Variant = room.get("allowed_actions", [])
+	return {"room_id": str(room.get("room_id", "")), "match_id": str(room.get("match_id", "")),
+		"room_revision": room.get("room_revision"), "player_id": str(player.get("player_id", "")), "player_phase": phase,
+		"stun_remaining_ms": player.get("stun_remaining_ms", 0), "stun_field_present": player.has("stun_remaining_ms"),
+		"allowed_actions": actions.duplicate(true) if actions is Array else [], "allowed_actions_valid": actions is Array and actions.all(func(action): return action is String),
+		"pve_battle_id": pve_id, "duel_id": duel_id,
+		"active_battle_kind": "Duel" if phase == "Pvp" and not duel_id.is_empty() else ("Pve" if phase == "Pve" and not pve_id.is_empty() else "None"),
+		"active_battle_id": duel_id if phase == "Pvp" else (pve_id if phase == "Pve" else ""),
+		"player_hp": combat.get("hp"), "base_maximum_hp": combat.get("maximum_hp"), "effective_maximum_hp": combat.get("effective_maximum_hp")}
+
+func _command_dispatch_state(sample: Dictionary) -> Dictionary:
+	var state := _command_room_state(Game.room)
+	var result := {"capture_site": "synchronous_command_sent_callback_after_encode", "local_snapshot": state,
+		"identity_binding": "Unknown", "revision_relation": "Unknown", "battle_relation": "Unknown", "server_execution_state": "NotObserved"}
+	for key in ["request_id", "run_id", "client_id", "process_epoch", "cycle_id", "room_id", "match_id", "packet_room_id", "packet_match_id"]:
+		if not sample.get(key) is String or str(sample[key]).is_empty() or sample[key] == "Unknown": return result
+	if sample.run_id != run_id or sample.client_id != client_id or sample.process_epoch != process_epoch or sample.cycle_id != "%s:%d" % [client_id, cycles_completed + 1]:
+		result.identity_binding = "OriginMismatch"
+		return result
+	var current: Dictionary = Game.gateway.capture_context()
+	for key in ["session_generation", "room_context_epoch"]:
+		if typeof(sample.get(key)) != TYPE_INT or typeof(current.get(key)) != TYPE_INT: return result
+		if sample[key] != current[key]:
+			result.identity_binding = "OriginMismatch"
+			return result
+	if sample.room_id != state.room_id or sample.match_id != state.match_id or sample.packet_room_id != state.room_id or sample.packet_match_id != state.match_id or current.get("room_id") != state.room_id or current.get("match_id") != state.match_id or state.player_id != own_user_id:
+		result.identity_binding = "RouteMismatch"
+		return result
+	result.identity_binding = "SameCurrentRoute"
+	var sent: Variant = sample.get("packet_expected_revision")
+	var observed: Variant = state.room_revision
+	if typeof(sent) == TYPE_INT and typeof(observed) == TYPE_INT:
+		result.revision_relation = "SameSnapshotRevision" if sent == observed else ("EarlierSnapshotRevision" if observed < sent else "LaterSnapshotRevision")
+	var packet_battle := str(sample.get("packet_battle_id", ""))
+	result.battle_relation = "NoBattleFieldValue" if packet_battle.is_empty() else ("SameActiveBattle" if packet_battle == state.active_battle_id else "DifferentActiveBattle")
+	return result
+
+func _observe_authority_command_state(payload: Dictionary) -> void:
+	var state := _command_room_state(payload)
+	var owner := _state_dict(payload.get("_receive_owner_context"))
+	var origin := _state_dict(payload.get("_origin_context"))
+	var current: Dictionary = {}
+	var binding := "Unknown"
+	if not state.room_id.is_empty() and not state.match_id.is_empty() and not state.player_id.is_empty() and not own_user_id.is_empty():
+		current = Game.gateway.capture_context()
+		binding = "SameCurrentRoute" if state.room_id == current.get("room_id") and state.match_id == current.get("match_id") and state.player_id == own_user_id else "RouteMismatch"
+	if bool(payload.get("_replayed", false)): binding = "Replayed"
+	if binding == "SameCurrentRoute":
+		var physical: Dictionary = origin if not origin.is_empty() else owner
+		for key in ["run_id", "client_id", "process_epoch"]:
+			var expected: String = {"run_id":run_id,"client_id":client_id,"process_epoch":process_epoch}[key]
+			if not physical.get(key) is String or str(physical[key]).is_empty() or physical[key] == "Unknown": binding = "Unknown"; break
+			if physical[key] != expected: binding = "OriginMismatch"; break
+		if not origin.is_empty():
+			for key in ["session_generation", "room_context_epoch"]:
+				if typeof(origin.get(key)) != TYPE_INT or origin[key] != current.get(key): binding = "OriginMismatch"; break
+	var sequence: Variant = payload.get("_sequence")
+	var missing: Array[String] = []
+	if typeof(state.room_revision) != TYPE_INT or int(state.room_revision) < 0: missing.append("room_revision")
+	if typeof(sequence) != TYPE_INT or int(sequence) < 0: missing.append("sequence")
+	if state.player_phase.is_empty(): missing.append("player_phase")
+	if not state.allowed_actions_valid: missing.append("allowed_actions")
+	if typeof(state.stun_remaining_ms) != TYPE_INT or int(state.stun_remaining_ms) < 0: missing.append("stun_remaining_ms")
+	var quality := "Complete" if missing.is_empty() else "Incomplete"
+	var signature := {"room_id":state.room_id,"match_id":state.match_id,"player_id":state.player_id,"player_phase":state.player_phase,
+		"pve_battle_id":state.pve_battle_id,"duel_id":state.duel_id,"stunned":typeof(state.stun_remaining_ms) == TYPE_INT and state.stun_remaining_ms > 0,
+		"allowed_actions":state.allowed_actions,"session_generation":current.get("session_generation"),"room_context_epoch":current.get("room_context_epoch")}
+	if binding == "SameCurrentRoute" and quality == "Complete":
+		if signature == _last_authority_command_signature: return
+		_last_authority_command_signature = signature.duplicate(true)
+	_on_telemetry(_lifecycle_sample(payload, {"type":"authority_state", "event_type":"room.command_state_observed", "trace_only":true,
+		"room_id":payload.get("room_id"), "match_id":payload.get("match_id"), "request_id":payload.get("_request_id"),
+		"_origin_context":origin, "authority_state":{"snapshot":state,"identity_binding":binding,"state_evidence_quality":quality,"missing_fields":missing,"sequence":sequence,
+		"event_revision":payload.get("_event_revision"),"replayed":payload.get("_replayed"),"receive_owner":owner.duplicate(true),
+		"local_session_generation_at_capture":current.get("session_generation"),"local_room_context_epoch_at_capture":current.get("room_context_epoch")},
+		"gameplay_progress":false}))
+
 func _on_telemetry(sample: Dictionary) -> void:
 	var copy: Dictionary = sample.duplicate(true)
 	var now := Time.get_ticks_msec()
@@ -738,6 +828,8 @@ func _on_telemetry(sample: Dictionary) -> void:
 	event_seq += 1
 	copy["event_seq"] = event_seq
 	copy["event_type"] = sample.get("event_type", sample.get("type", "unknown"))
+	if sample_type == "command_lifecycle" and copy.event_type == "command.sent":
+		copy["dispatch_state"] = _command_dispatch_state(copy)
 	copy["monotonic_ms"] = Time.get_ticks_msec()
 	copy["at_unix_ms"] = int(Time.get_unix_time_from_system() * 1000.0)
 	if not copy.has("battle_seed"):
@@ -771,6 +863,7 @@ func _lifecycle_sample(payload: Dictionary, sample: Dictionary) -> Dictionary:
 func _on_event(kind: String, _payload: Dictionary) -> void:
 	last_transport_progress_ms = Time.get_ticks_msec()
 	last_transport_progress_reason = kind
+	if kind == "room.snapshot": _observe_authority_command_state(_payload)
 	var effective_combo := false
 	var event_match_id := str(_payload.get("match_id", ""))
 	if kind in ["match.found", "room.ready_required", "room.ready_accepted"] and not event_match_id.is_empty():
