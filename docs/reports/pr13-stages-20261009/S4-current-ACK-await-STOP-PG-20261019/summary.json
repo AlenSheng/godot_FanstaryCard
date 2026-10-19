@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "kind": "Current original Runner actual ACK-await STOP before/after PG commit; local Native/API/PG/WS execution",
+  "base_release": "f809b84868df4400f0d73de48737c2f632fef101",
+  "canonical_case_supported": "LOAD-05.3-T02, scoped LOCAL POSTGRES and actual realtime composition; no automatic case/profile promotion",
+  "cases": [
+    {
+      "id": "ack-stop-1",
+      "mode": "before-commit",
+      "SQL_ACK_at_gate": "NULL",
+      "STOP_consumed_while_busy_pending": true,
+      "release_after_STOP_observed": true,
+      "base_runner_checks_passed": 4,
+      "independent_case_checks_passed": 11,
+      "outcome": "cancelled",
+      "report_ok_is_false_expected": true,
+      "Native_exit": 0,
+      "Native_peak_RSS_bytes": 112467968,
+      "elapsed_ms": 1972,
+      "natural_cycles": 0,
+      "cleanup": "Passed",
+      "cleanup_read_attempts": 2,
+      "decoded_read500_failures_retained": 1,
+      "read_retry_count": 1,
+      "logical_and_transport_ACK_requests": 1,
+      "real_WS_handshake_status": 101,
+      "real_WS_server_bytes": 496,
+      "audit_lost_count": 0
+    },
+    {
+      "id": "ack-stop-2",
+      "mode": "after-commit-before-response",
+      "SQL_ACK_at_gate": "committed before client response",
+      "STOP_consumed_while_busy_pending": true,
+      "release_after_STOP_observed": true,
+      "base_runner_checks_passed": 4,
+      "independent_case_checks_passed": 11,
+      "outcome": "cancelled",
+      "report_ok_is_false_expected": true,
+      "Native_exit": 0,
+      "Native_peak_RSS_bytes": 112820224,
+      "elapsed_ms": 1648,
+      "natural_cycles": 0,
+      "cleanup": "Passed",
+      "cleanup_read_attempts": 2,
+      "decoded_read500_failures_retained": 1,
+      "read_retry_count": 1,
+      "logical_and_transport_ACK_requests": 1,
+      "real_WS_handshake_status": 101,
+      "real_WS_server_bytes": 496,
+      "audit_lost_count": 0
+    }
+  ],
+  "current_runtime_SHA256": {
+    "Server": "245265ff30515b9103a88e2a24e24a03eb3ebdfb294a1871eea1a59d4a406b57",
+    "Domain": "57ba955abc21b45153349aa203193c3f185b089c392eacde150460b70e396e0c"
+  },
+  "source_binding": {
+    "current_client_text_inputs": 60,
+    "current_original_Runner_SHA256": "17174f0f46afb1de41cb7da666f57ec2f801fb372d4ba97f85247876ea3c73aa",
+    "current_server_source_inputs": 328,
+    "before_after_bytes_equal": true,
+    "fixture_substitutions": [
+      "Existing account _login instead of creating account; actual Game.login/auth/bootstrap/WS kept",
+      "Existing receipt ACK entry instead of creating expedition; actual Store ACK kept",
+      "Observers call super original ready/process/cleanup; original run/finish not overridden"
+    ],
+    "not_a_full_gameplay_UI_or_WAN_profile": true
+  },
+  "execution": {
+    "PG_API_actual_boots": 1,
+    "Native_started": 2,
+    "Native_exits": [
+      0,
+      0
+    ],
+    "HTTP_requests": 18,
+    "real_WS_channels": 4,
+    "worlds_accounts_cloud_calls": 0,
+    "new_world_quota_unchanged": {
+      "used": 180,
+      "maximum": 180,
+      "prior": 420,
+      "ceiling": 600
+    },
+    "existing_nine_cleanup_cases_replayed": false,
+    "assertions": {
+      "independent_case_checks": 22,
+      "original_runner_checks": 8,
+      "gate_sql_timing_assets_source_process_checks_separate": true
+    }
+  },
+  "assets": {
+    "tables": 9,
+    "rows": 28316,
+    "four_checkpoint_rows_and_hashes_equal": true,
+    "counts_initial": {
+      "players": 100,
+      "matches": 180,
+      "settlements": 720,
+      "unack": 9,
+      "holds": 0,
+      "locked": 0,
+      "running": 0,
+      "quota": {
+        "used": 180,
+        "maximum": 180,
+        "prior": 420,
+        "ceiling": 600
+      }
+    },
+    "counts_final": {
+      "players": 100,
+      "matches": 180,
+      "settlements": 720,
+      "unack": 7,
+      "holds": 0,
+      "locked": 0,
+      "running": 0,
+      "quota": {
+        "used": 180,
+        "maximum": 180,
+        "prior": 420,
+        "ceiling": 600
+      }
+    },
+    "two_existing_receipts_ACKed_on_new_local_copy": true,
+    "remaining7_unack_are_outside_this_two_case_scope_not_new_failures": true
+  },
+  "failure_history_and_budget": {
+    "R1": "pg_ctl restricted-token error87/error3 inside sandbox before any PG/API/Native start; raw stderr preserved",
+    "R2": "same reviewed require_escalated path; 1 actual PG/API boot and2 Native total; no bypass or extra test budget",
+    "expected_faults": "one decoded bootstrap500 percase; report ok=false with cancelled/exit0 by contract",
+    "actual_product_failure_this_run": false,
+    "all4raw_injected_error_notice_entries_retained": true,
+    "duplicate_notice_cause": "Same injected500 via Gateway.failed direct runner binding and Store forwarding to Game.notice;2HTTP500s not4requests",
+    "reviewer_assumption_failure": "Initial read-only reviewer expected empty errors/guessed5checks; corrected from actual raw notices and4checks percase, original reviewer preserved; no product replay",
+    "all_old_failed_originals_retained": true,
+    "actual_100_capacity_failure_not_relabelled_passed": true,
+    "memory_disk5percent_floor_checked": true,
+    "no_correctness_criteria_lowered": true
+  },
+  "closeout": {
+    "PG_stopped": true,
+    "API_exit": 0,
+    "all5owned_PIDs_absent": true,
+    "forced_shutdown": false,
+    "all702_status_SHA_preserved": true,
+    "register_gate_MAIN_changed": false,
+    "canonical132tasks396cases_unchanged": true,
+    "canonical_unaccepted": 77,
+    "GDDv070_priority_and_user_Priest_raw80over70_legal": true,
+    "whole_goal_complete": false
+  },
+  "evidence_SHA256": {
+    "preregistered.original.json": "02ea505d2ae0f5727a72aac6ff3e8fdbe8a55276e1b829d7d8ea07ed78e3459f",
+    "revision-before-R2.original.json": "44cd719c7df24bd2d89bfaca3db15a50d1e8a0e5e649e065be625212d08f7f15",
+    "driver-and-fixture-before-start.original.json": "f6ae882a04706c838a46ac2db1c9c6e0f6c663fe0d8a37c10eedd5720e879e6f",
+    "driver-result.original.json": "30231ec92420fcf9b73b08b8222ebbe716796d91d5ea2bb591ba120c02596790",
+    "proxy-HTTP-records.private-original.json": "d90f034516f0db238f001044e7b3df9526accfe11f75231b21151a8e1be402ad",
+    "proxy-WS-records.original.json": "cf14eda3cd9ade5a53ce2510988da09ed3c1efb63dc1cc4204fb1b8f1909a4af",
+    "independent-postexecution-review.original.json": "591d5cb993c11a0b29776a5fd2815c73cc7b05a132b17fee716c9c4f4f389bb2"
+  },
+  "scope_limits": [
+    "Two existing-receipt local cancellation timing cases only; no new expeditions, no WAN delay/loss/capacity performance claim",
+    "No render/user-experience acceptance from this headless execution",
+    "Delayed successful ACK responses here; old response-lost/idempotent-retry nine cases reused, not repeated",
+    "Source and current DLL are explicit; old41b results not relabelled245",
+    "Await-holds and broader twelve-phase original historical matrix remain separate requirements; no full LOAD-05.3 acceptance"
+  ]
+}
