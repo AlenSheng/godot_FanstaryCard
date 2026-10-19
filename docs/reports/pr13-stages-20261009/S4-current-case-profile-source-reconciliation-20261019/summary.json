@@ -1,0 +1,308 @@
+{
+  "schema_version": 1,
+  "kind": "Read-only canonical case/profile evidence locator and exact current-source reconciliation;not new runtime acceptance",
+  "base_release": "25fc778d8037db30067f1ad7b289a1297e115990",
+  "canonical_scope": {
+    "tasks": 132,
+    "cases": 396,
+    "Accepted": 55,
+    "Partial": 67,
+    "ReadyForAcceptance": 10,
+    "unaccepted": 77,
+    "registered_missing_case_profile_pairs": 294,
+    "automatic_closures": 0
+  },
+  "locator_index": {
+    "immediate_report_directories": 637,
+    "top_level_JSON_metadata_files_read": 2943,
+    "metadata_bytes_read": 78542180,
+    "explicit_case_locators": 5859,
+    "distinct_cases_with_locators": 393,
+    "registered_gap_pairs_with_mentions": 294,
+    "case_profile_completion_inferred_from_mentions": false,
+    "gap_cases_with_review_or_recommendation_LOCATORS": 30,
+    "read_errors": 0,
+    "scoped_skips": {
+      "register_files": 117,
+      "over2MiB_metadata": 4
+    },
+    "scope": "Immediatetop-levelJSONmetadataonly;notnested/rawJSONL/allformats. Locatorsareunreviewedclaimsuntilcase/scope/source/originalverification.",
+    "all2943readmetadata_SHA_rechecked_closeout": true,
+    "closeout_source_metadata_changes": 0
+  },
+  "LOAD053_originals": {
+    "files_SHA_reverified": 495,
+    "bytes": 11364108,
+    "scoped_LIVE_case_supports_retained": 3,
+    "original_failed_whole_rounds9_10_12_retained": true,
+    "await_stage_coverage_retained": 12,
+    "case_reviews": [
+      {
+        "case_id": "LOAD-05.3-T01",
+        "registered_missing_profile": "LIVE",
+        "retained_case_declared_LIVE_support": "Passed",
+        "retained_await_scope": [
+          "pre-room R2/R3",
+          "R12 current original entering cancellation independently reviewed"
+        ],
+        "qualification_exact_as_original": "Original R1/R9/R10/R12 whole failures preserved. R12 correct case support uses actual contract historicalMatched + Removed/Cancelled/no locks; no old result overwrite.",
+        "new_review_verdict": "RetainedHistoricalScopedLIVEProof;currentwholeprofileNOTinferredfromoldlabel",
+        "originals_integrity_rechecked": true,
+        "all_failed_original_whole_rounds_preserved": true,
+        "current_runner_whole_bytes_equal": false,
+        "current_source_followup": "Reviewactualpaththroughchangedcleanup/context/telemetryfunctions;usecurrentwireandrealPGsupplementswiththeirseparatescope. Onlyrunnewtargetedcaseif materiallychangedpathremainsuncovered;do notrerunalloldawaitsautomatically.",
+        "automatic_profile_closure": false
+      },
+      {
+        "case_id": "LOAD-05.3-T02",
+        "registered_missing_profile": "LIVE",
+        "retained_case_declared_LIVE_support": "Passed",
+        "retained_await_scope": [
+          "R5 before-commit and after-commit real ACK STOP"
+        ],
+        "qualification_exact_as_original": "Unknown while client has no authoritative result; eventual one durable ACK and no cycle credit.",
+        "new_review_verdict": "RetainedHistoricalScopedLIVEProof;currentwholeprofileNOTinferredfromoldlabel",
+        "originals_integrity_rechecked": true,
+        "all_failed_original_whole_rounds_preserved": true,
+        "current_runner_whole_bytes_equal": false,
+        "current_source_followup": "Reviewactualpaththroughchangedcleanup/context/telemetryfunctions;usecurrentwireandrealPGsupplementswiththeirseparatescope. Onlyrunnewtargetedcaseif materiallychangedpathremainsuncovered;do notrerunalloldawaitsautomatically.",
+        "automatic_profile_closure": false
+      },
+      {
+        "case_id": "LOAD-05.3-T03",
+        "registered_missing_profile": "LIVE",
+        "retained_case_declared_LIVE_support": "Passed",
+        "retained_await_scope": [
+          "R8 actual Pending hold/restart/valid effectiveM/Unknown and eventual recovery"
+        ],
+        "qualification_exact_as_original": "Current owned terminal room is legitimate recoveryM representation. Separate empty-room recovery flag path not claimed.",
+        "new_review_verdict": "RetainedHistoricalScopedLIVEProof;currentwholeprofileNOTinferredfromoldlabel",
+        "originals_integrity_rechecked": true,
+        "all_failed_original_whole_rounds_preserved": true,
+        "current_runner_whole_bytes_equal": false,
+        "current_source_followup": "Reviewactualpaththroughchangedcleanup/context/telemetryfunctions;usecurrentwireandrealPGsupplementswiththeirseparatescope. Onlyrunnewtargetedcaseif materiallychangedpathremainsuncovered;do notrerunalloldawaitsautomatically.",
+        "automatic_profile_closure": false
+      }
+    ]
+  },
+  "LOAD053_current_client": {
+    "executed_inputs_compared": 2127,
+    "changed_input_count": 14,
+    "changed_input_categories": {
+      "OtherClientInput": 1,
+      "GDScript": 13
+    },
+    "changed_inputs": [
+      {
+        "path": "client/data/localization_templates.json",
+        "executed_SHA256": "8f0225c6af0dc1349d16b7fe32a7acdb49762dc429fb7cd4be740a7726988a8e",
+        "current_SHA256": "bea61252fa24ce42e836a00409ea814413876b6f99eea0e5e1ef725d0a33bba2",
+        "category": "OtherClientInput"
+      },
+      {
+        "path": "client/network/gateway.gd",
+        "executed_SHA256": "1622b28ff98e0be7b75bb3ae8cf89c8d2cbab3877f6d924cc85301f6020e6637",
+        "current_SHA256": "9104d33ab9e466c6c32a30f1d8c984586459ce9fd3f76ec905ba9b32248dc7fc",
+        "category": "GDScript"
+      },
+      {
+        "path": "client/network/reusable_http_client.gd",
+        "executed_SHA256": "964f8babc258a38664d9cc3d07b96df2a2f823a230a283f1c91155efe51082b1",
+        "current_SHA256": "fb43fc1b384a3e129d8ebde0d4cdf97dfd48205c380a6813191235d1fcc292f8",
+        "category": "GDScript"
+      },
+      {
+        "path": "client/state/game_store.gd",
+        "executed_SHA256": "5a5ca76967ca5ae550829da6b6634c53934987d97f35e01d74caf4f397a25c7a",
+        "current_SHA256": "f585306278224555c4e5bc033bb162f69b10ea45fb95e6c07b60a31071441c21",
+        "category": "GDScript"
+      },
+      {
+        "path": "client/tests/gameplay_load_client.gd",
+        "executed_SHA256": "6d75f801bb241ce395219b8628cba9d8e36fd396db5778a07700770e1da34b5c",
+        "current_SHA256": "17174f0f46afb1de41cb7da666f57ec2f801fb372d4ba97f85247876ea3c73aa",
+        "category": "GDScript"
+      },
+      {
+        "path": "client/tests/run_play_retry.gd",
+        "executed_SHA256": "eeeee0470585c541e59fb4aea106db6882ff383fa2dfbe53fc65733501fa13f5",
+        "current_SHA256": "a208a860942a32246d406a90a42f642e36e4cbf07a0f203625730f5c8040d094",
+        "category": "GDScript"
+      },
+      {
+        "path": "client/tests/test_confirmation_snapshot.gd",
+        "executed_SHA256": "4fe26f7605034e1d73d02b8f665dc1360865489670759c4408eb964fcb4675cc",
+        "current_SHA256": "7f693cccfddbf5dc2a41fc53c0d312912425b17e1dfd64aec7b9e8dd96e4e73c",
+        "category": "GDScript"
+      },
+      {
+        "path": "client/ui/exploration_view.gd",
+        "executed_SHA256": "979c5145d72882de0919cf0fa1e006b16e494b4eda44fc41e9f20cea7e665b52",
+        "current_SHA256": "2c514216804d30fa28f511fb9ede8bd3536acd2f349c4c59b66e2a5a0d708c86",
+        "category": "GDScript"
+      },
+      {
+        "path": "client/ui/main.gd",
+        "executed_SHA256": "f1e50f0ceb76bbaf726ff3918e77e1b5226ff74cc208b8b856700716f6993a31",
+        "current_SHA256": "89ca2b63d87937d3acd1a6c27742ef8c6ac3e164bde036db6d9c2edcc0ac5e66",
+        "category": "GDScript"
+      },
+      {
+        "path": "client/ui/monster_pool_view.gd",
+        "executed_SHA256": "0df30559f5dc0deb220fd5eb019b778f843cbf35dfa565c4e05a497b82c84712",
+        "current_SHA256": "fd84cd84da9bb5964e7b555b86b5df0492fa94753ef4653e82296e0fc719420a",
+        "category": "GDScript"
+      },
+      {
+        "path": "client/ui/reference_ui.gd",
+        "executed_SHA256": "27251d1b599d11db4933530789b979af44427f501a881d3aaae58b912f7fbfcd",
+        "current_SHA256": "aac052435d29061c537b4d5387c6879da22d2bc5c1586e0c10689aca2edfd04e",
+        "category": "GDScript"
+      },
+      {
+        "path": "client/ui/tips_overlay.gd",
+        "executed_SHA256": "78fb7260f8a8a464ac1c5872f1261eb3731568739081facd1f2fc7c282a190bc",
+        "current_SHA256": "6ae3c6dcecf098e20897e07a7251c6d0ce2450f6f56da914d406a416f8ff07e3",
+        "category": "GDScript"
+      },
+      {
+        "path": "client/tests/test_load_progress.gd",
+        "executed_SHA256": "ef7fea5fb5849868f83d5c7514ce5897c310607ad6917c7815ae98ef32ed441a",
+        "current_SHA256": "2d40dc387bff9624cbb58b6cf53c14ed03cd00b71e624c46173ff9ae51b40a01",
+        "category": "GDScript"
+      },
+      {
+        "path": "client/tests/test_ready_deadline_guard.gd",
+        "executed_SHA256": "f92925107d10fc34e21262d933630eadc7c7906b96c8418ac3bf4425a5713fe7",
+        "current_SHA256": "6a6d7c38a37d5b4beccb946dcac48da5291cdf05d49fbd35fd51ed6bb86b80af",
+        "category": "GDScript"
+      }
+    ],
+    "old_runner_SHA256": "6d75f801bb241ce395219b8628cba9d8e36fd396db5778a07700770e1da34b5c",
+    "current_runner_SHA256": "17174f0f46afb1de41cb7da666f57ec2f801fb372d4ba97f85247876ea3c73aa",
+    "runner_changed_functions": [
+      "_close_battle_metrics",
+      "_graceful_cleanup",
+      "_observe_battle",
+      "_on_event",
+      "_on_telemetry",
+      "_ready",
+      "_run",
+      "_try_stagnation_fallback"
+    ],
+    "runner_added_functions": [
+      "_battle_metric_origin",
+      "_cleanup_context_is_current",
+      "_close_suspended_pve_metrics",
+      "_command_dispatch_state",
+      "_command_room_state",
+      "_discard_stale_suspended_pve_metrics",
+      "_emit_battle_summary",
+      "_lifecycle_sample",
+      "_observe_authority_command_state",
+      "_remember_terminal_battle",
+      "_state_dict",
+      "_suspend_pve_metrics"
+    ],
+    "runner_unchanged_functions": 28,
+    "whole_executed_input_byte_equivalence": false,
+    "hash_change_not_automatic_product_failure": true
+  },
+  "three_current_core_file_deltas": [
+    {
+      "path": "client/network/gateway.gd",
+      "old_actual_SHA256_matches_executed_manifest": true,
+      "old_SHA256": "1622b28ff98e0be7b75bb3ae8cf89c8d2cbab3877f6d924cc85301f6020e6637",
+      "current_SHA256": "9104d33ab9e466c6c32a30f1d8c984586459ce9fd3f76ec905ba9b32248dc7fc",
+      "changed_functions": [
+        "_ready",
+        "_receive",
+        "_request_page",
+        "bind_prelaunch_ticket",
+        "send"
+      ],
+      "added_functions": [
+        "_capture_receive_owner",
+        "_emit_lifecycle_guard",
+        "_ready_rejection_has_joined_context"
+      ],
+      "unchanged_function_count": 20
+    },
+    {
+      "path": "client/network/reusable_http_client.gd",
+      "old_actual_SHA256_matches_executed_manifest": true,
+      "old_SHA256": "964f8babc258a38664d9cc3d07b96df2a2f823a230a283f1c91155efe51082b1",
+      "current_SHA256": "fb43fc1b384a3e129d8ebde0d4cdf97dfd48205c380a6813191235d1fcc292f8",
+      "changed_functions": [
+        "request"
+      ],
+      "added_functions": [
+        "_is_complete_empty_compressed_body"
+      ],
+      "unchanged_function_count": 3
+    },
+    {
+      "path": "client/state/game_store.gd",
+      "old_actual_SHA256_matches_executed_manifest": true,
+      "old_SHA256": "5a5ca76967ca5ae550829da6b6634c53934987d97f35e01d74caf4f397a25c7a",
+      "current_SHA256": "f585306278224555c4e5bc033bb162f69b10ea45fb95e6c07b60a31071441c21",
+      "changed_functions": [
+        "_send_queued_command",
+        "_snapshot_confirms_command"
+      ],
+      "added_functions": [],
+      "unchanged_function_count": 92
+    }
+  ],
+  "matching_server_anchors": [
+    {
+      "path": "server/src/FantasyCard.Server/Matchmaking/MatchmakingRepository.cs",
+      "current_SHA256": "e522ce90f21eedf362f15d4dd3177b349635359826da8ad15b0239f039b91ee4",
+      "matches_retained_local_anchor": true
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Matchmaking/PreparationRepository.cs",
+      "current_SHA256": "85508021c826310865d0485608bb8a2451c2c363190221b24a32bc8cb4116e9f",
+      "matches_retained_local_anchor": true
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Matchmaking/RoomReadyCoordinator.cs",
+      "current_SHA256": "aa33f7c1a03cf99f01bd18365e54f1a015d0ee9b328093176fd245795b98a26a",
+      "matches_retained_local_anchor": true
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V006__matchmaking.sql",
+      "current_SHA256": "388a5910240722d485fbc4f5834b0ee89bd58a24342b86f77526d2fc80acaa9e",
+      "matches_retained_local_anchor": true
+    }
+  ],
+  "supplement_scope_boundaries": {
+    "current_wire_report_matches_runner_bytes": true,
+    "wire_is_synthetic_loopback_not_realPG_cancel_matrix": true,
+    "realPG9receipt_server_DLL_then": "41bcae8847dce31a5fa92a2e1b4276690369441f8614bd57a056ca962a09ac7e",
+    "current_equivalent_server_DLL": "245265ff30515b9103a88e2a24e24a03eb3ebdfb294a1871eea1a59d4a406b57",
+    "not_relabelled_as_same_execution_or_automatically_composed_whole_currentLIVEproof": true
+  },
+  "next_work_selection": [
+    "Preserve historical LOAD0533case proof and originalwhole failures;do notrepeat all12awaitsbydefault",
+    "Review changed cleanup/context/receive/command paths against qualified increments;new integration test onlywhere currentcomposition proof remains absent",
+    "Beforetesting LOAD043planning-onlyID gaps,compareactual A04/A03 equivalent requirements;caseIDmentionabsenceisnotproofnobodytestedthebehavior",
+    "Retained B113T03reviewexplicitly says pendingholdreadonlybranch/affectedRENDERunexecuted;existingB112heldrecovery remains distinct"
+  ],
+  "review_coordinator_issues": "Exactcanonical_casesfield and frozencheckpoint resume handling corrected;one inlinequery SyntaxError occurred beforeexecution. Originalhelpers/issue receipts retained;no SUTtestfailureororiginalrewritten.",
+  "evidence_SHA256": {
+    "preregistered.before-readonly-index.original.json": "2871fc3f807b745f3981fe769afb4168d7e0739f2b551ed1858b3159e42fde8f",
+    "all-current-top-level-case-review-locators.private.json": "de3fff9d068d1a955504fa4a7c00326352a1558a066de99af54b6068f4f3f27b",
+    "missing-profile-evidence-locator-frontier.private.json": "31e44d1ef609997f63fa323a0d0619e60df56f6cda09ca8e89267683a10fcfff",
+    "LOAD053-originals-current-source-and-scope-review.original.json": "9db24745c34b4bd5d15232c717ac191f55e519c25839e59ced2791de1e5e208c",
+    "LOAD053-three-core-files-current-function-deltas.original.json": "fe17b09b26f0f4ecc428cd429e2b88ea04f7d9a3a59d7c49830b773ee96a878d",
+    "index2943-metadata-closeout-identity.original.json": "7d1c9cc5d39548cc41da771cad93c1f955a6975be1b537aff844267d240717d0",
+    "readonly-coordinator-issues.transcribed.json": "7953d2219cd37609e543dc049166659618ac132a4c30b6bb41fd9c4cd4b7a8fe"
+  },
+  "new_tests_Native_game_worlds_cloud_calls_uploads_deployments": 0,
+  "product_code_config_UI_resources_modified": false,
+  "all702_status_SHA_preserved": true,
+  "GDD_v070_priority_userPriestartifact_raw80over70_legal_preserved": true,
+  "register_gate_MAIN_changed": false,
+  "whole_goal_complete": false
+}
