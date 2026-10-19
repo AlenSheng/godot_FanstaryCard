@@ -191,12 +191,26 @@ func _hall() -> void:
 		var class_portrait: Texture2D = Art.texture("UI/Hall/class_card_portrait_%s.png" % hero_class.to_lower())
 		if hero_class == "Priest": class_portrait = Art.portrait(hero_class)
 		picture(class_portrait, Rect2(card_rect.position + Vector2(8, 7), Vector2(104, 124))).name = "ClassPortrait_" + hero_class
-		text(P.CLASSES[hero_class][0], Rect2(card_rect.position + Vector2(118, 25), Vector2(116, 30)), 22, P.GOLD).name = "ClassName_" + hero_class
-		picture(Art.texture("UI/Hall/class_card_heart.png"), Rect2(card_rect.position + Vector2(119, 74), Vector2(27, 27))).name = "ClassHeart"
-		text(str(P.CLASSES[hero_class][2]), Rect2(card_rect.position + Vector2(148, 75), Vector2(42, 28)), 23, P.GOLD).name = "ClassMaximumHp_" + hero_class
+		var hero_title := P.localized_text(P.CLASSES[hero_class][0])
+		var class_name_rect := Rect2(card_rect.position + Vector2(118, 25), Vector2(card_rect.size.x - 128, 30))
+		var class_name_size := 22
+		if P.language() == "en":
+			hero_title = hero_title.replace(" · ", "\n")
+			class_name_rect.position = card_rect.position + Vector2(114, 18)
+			class_name_rect.size = Vector2(163, 66)
+			class_name_size = 20
+		var title_label := text(hero_title, class_name_rect, class_name_size, P.GOLD, null, true, false)
+		title_label.name = "ClassName_" + hero_class
+		if P.language() == "en": title_label.add_theme_constant_override("line_spacing", 0)
+		var stats_offset := 12.0 if P.language() == "en" else 0.0
+		var stats_x_offset := -6.0 if P.language() == "en" else 0.0
+		picture(Art.texture("UI/Hall/class_card_heart.png"), Rect2(card_rect.position + Vector2(119 + stats_x_offset, 74 + stats_offset), Vector2(27, 27))).name = "ClassHeart"
+		text(str(P.CLASSES[hero_class][2]), Rect2(card_rect.position + Vector2(148 + stats_x_offset, 75 + stats_offset), Vector2(42, 28)), 23, P.GOLD).name = "ClassMaximumHp_" + hero_class
 		var class_label := P.localized_text({"Priest": "牧师", "Mage": "法师", "Guardian": "守护者"}[hero_class])
-		var class_type_rect := Rect2(card_rect.position + Vector2(194, 73), Vector2(card_rect.size.x - 200, 32))
-		text(class_label, class_type_rect, 22, P.GOLD).name = "ClassType_" + hero_class
+		var class_type_rect := Rect2(card_rect.position + Vector2(194, 73 + stats_offset), Vector2(card_rect.size.x - 200, 32))
+		if P.language() == "en":
+			class_type_rect.position.x -= 8
+		text(class_label, class_type_rect, 22, P.GOLD, null, true, false).name = "ClassType_" + hero_class
 	# The live frontend is deliberately 2D-only. Character art is a static
 	# portrait layer over the generated layered backdrop; no GLB is instantiated.
 	picture(Art.portrait(Game.hero_class), Rect2(310, 255, 570, 550)).name = "HeroPortrait"
