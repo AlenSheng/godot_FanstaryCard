@@ -1,0 +1,66 @@
+{
+  "census": {
+    "PID": 111200,
+    "terminal": true,
+    "candidates": 16046,
+    "scope_counts": {
+      "G_originals": 8725,
+      "repository": 1758,
+      "repository_outputs": 5043,
+      "task_controls": 520
+    },
+    "counts": {
+      "ParsedWithReferences": 4336,
+      "ParsedWithoutRecognizedFileReferences": 6503,
+      "DuplicateContent_ReferToContentRecord": 5207
+    },
+    "unique_contents": 10839,
+    "recognized_file_references": 688713,
+    "different_from_frozen_index_count": 2,
+    "ledger_sha256": "9fde72ea79eb36033673914132596d8f653467c542922a835d2fd415b663f6a2",
+    "seconds": 33.875,
+    "not_yet_all_lineage_resolved": true,
+    "arbitrary_non_manifest_JSON_schema_coverage_not_claimed": true,
+    "not_whole_LOAD112_acceptance": true
+  },
+  "index_hash_qualification": {
+    "census_reported_index_differences": 2,
+    "actual_known_hash_changes": 0,
+    "two_initial_extended_path_errors_match_retained_resolution_sha256": true,
+    "all_original_census_and_index_bytes_retained": true,
+    "unknown_expected_hash_not_mislabeled_as_changed_file": true
+  },
+  "uninspected_public_formats": {
+    ".png": 773,
+    ".py": 585,
+    ".godot": 22,
+    ".gd": 203,
+    ".cs": 73,
+    ".tscn": 14,
+    ".csproj": 12,
+    ".diff": 2,
+    ".original": 9,
+    ".patch": 6,
+    ".service": 12,
+    ".gz": 2,
+    ".bin": 9,
+    "": 63,
+    ".sql": 3,
+    ".uid": 134,
+    ".observed": 6,
+    ".proto": 3,
+    ".pb": 210,
+    ".sha256": 2,
+    ".cache-9": 29,
+    ".tag": 1,
+    ".xlsx": 1,
+    ".bytes": 1
+  },
+  "remaining": [
+    "Resolve every recognized reference with declared root/schema; do not guess from matching basenames or hash alone.",
+    "Qualify 6503 unique contents with no recognized references; candidate census does not cover arbitrary JSON schemas by filename.",
+    "Review 2175 non-summary types and source/opaque privacy scope; unsupported bytes are now rejected by the public ZIP exporter.",
+    "Join seeds, flags, hardware, region and selector to actual execution parents, with missing or historical values explicit.",
+    "Complete current-source evidence review and independent acceptance within user-confirmed register/MAIN scope."
+  ]
+}

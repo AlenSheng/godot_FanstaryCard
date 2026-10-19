@@ -29,12 +29,16 @@ def scrub(value):
     value = re.sub(r'-----BEGIN [^\r\n]*PRIVATE KEY-----.*?-----END [^\r\n]*PRIVATE KEY-----',
                    '[redacted private key block]', value, flags=re.S)
     value = re.sub(r'(?i)\bBearer[ \t]+[A-Za-z0-9._~+/-][A-Za-z0-9._~+/=-]*', 'Bearer [redacted]', value)
+    value = re.sub(r'(?i)\b(?:proxy-)?authorization[ \t]*[:=][ \t]*Basic[ \t]+[A-Za-z0-9+/=_-]{8,}',
+                   'Authorization: Basic [redacted]', value)
+    value = re.sub(r'(?i)\b[a-z][a-z0-9+.-]*://[^\s/@:]+:[^\s/@]+@',
+                   '[redacted credential URI]@', value)
     value = re.sub(r'\beyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\b', '[redacted JWT]', value)
-    return re.sub(r'(?im)^.*(?:TEST_SERVER_SSH_KEY|GH_TOKEN|accessToken|access_token|api[_-]?key|password)\s*["\']?\s*[:=].*$',
+    return re.sub(r'(?im)^.*(?:TEST_SERVER_SSH_KEY|GH_TOKEN|accessToken|access_token|api[_-]?key|client[_-]?secret|refresh[_-]?token|private[_-]?key|password|pwd)\s*["\']?\s*[:=].*$',
                   '[redacted credential assignment]', value)
 
 
-def read_report(root_fd, relative):
+def read_report_bytes(root_fd, relative):
     """Open relative to pinned directory descriptors; reject links and devices."""
     parts = Path(relative).parts
     directory = os.dup(root_fd)
@@ -50,9 +54,15 @@ def read_report(root_fd, relative):
             info = os.fstat(stream.fileno())
             if not stat.S_ISREG(info.st_mode) or info.st_nlink != 1:
                 raise ValueError('Report must be a regular file with one link')
-            return stream.read().decode('utf-8', errors='replace')
+            if info.st_size > 64 * 1024**2:
+                raise ValueError('Report exceeds bounded size')
+            return stream.read(64 * 1024**2 + 1)
     finally:
         os.close(directory)
+
+
+def read_report(root_fd, relative):
+    return read_report_bytes(root_fd, relative).decode('utf-8', errors='replace')
 
 
 def export(source, destination, profile):
@@ -80,13 +90,20 @@ def export(source, destination, profile):
         if root_fd is not None:
             for relative in PROFILES[profile]:
                 try:
-                    value = scrub(read_report(root_fd, relative)).encode('utf-8')
+                    original = read_report_bytes(root_fd, relative)
+                    if len(original) > 64 * 1024**2:
+                        raise ValueError('Report exceeds bounded size')
+                    value = scrub(original.decode('utf-8', errors='replace')).encode('utf-8')
                     target = destination / relative
                     target.parent.mkdir(parents=True, exist_ok=True)
                     with target.open('xb') as stream:
                         stream.write(value)
                     inventory['files'].append({'name': relative, 'bytes': len(value),
-                                               'sha256': hashlib.sha256(value).hexdigest()})
+                                               'sha256': hashlib.sha256(value).hexdigest(),
+                                               'source_bytes': len(original),
+                                               'source_sha256': hashlib.sha256(original).hexdigest(),
+                                               'relation': 'redacted_from' if value != original else 'copied_from',
+                                               'source_private_not_uploaded': True})
                 except FileNotFoundError:
                     inventory['missing'].append(relative)
                 except (OSError, ValueError) as error:

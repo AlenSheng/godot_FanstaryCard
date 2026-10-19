@@ -1,10 +1,14 @@
 """Immutable public archive checks, including secret-safe rejection."""
+import base64
 import hashlib
+import os
+import zipfile
 import json
 from pathlib import Path
 import tempfile
 import unittest
-from tools.pr13_public_evidence import inspect_public,validated_files,derived_identity
+from unittest.mock import patch
+from tools.pr13_public_evidence import inspect_public,validated_files,validated_payloads,derived_identity
 from tools.pr13_ci_evidence import classify_runs
 from tools.pr13_acceptance_register import missing_case_profiles
 from tools.gameplay_load_validation import aggregate_window
@@ -52,5 +56,92 @@ class PublicEvidenceTests(unittest.TestCase):
         tls=result['transport_phase_timings']['tls_handshake_ms']
         self.assertIsNone(tls['p95_ms']); self.assertEqual(tls['quality'],'unavailable')
         self.assertTrue(tls['missing_reason'])
+
+
+    def test_private_text_encodings_and_formats_reject_without_echo(self):
+        body=base64.b64encode(b'synthetic-only-credential-block-material-for-test').decode()
+        pem='-----BEGIN OPENSSH PRIVATE KEY-----\n'+body+'\n-----END OPENSSH PRIVATE KEY-----\n'
+        cases=[('key.md',pem),('key.json',json.dumps({'details':pem})),
+               ('uri.md','postgresql://controlled:synthetic-only-uri-value@localhost/db'),
+               ('header.log','Authorization: Basic '+base64.b64encode(b'controlled:synthetic-only-basic-value').decode()),
+               ('settings.yml','api_key: synthetic-only-colon-value'),
+               ('settings.txt','Host=localhost;Pwd=synthetic-only-pwd-value;')]
+        with tempfile.TemporaryDirectory() as directory:
+            for name,value in cases:
+                with self.subTest(name=name):
+                    path=Path(directory)/name;path.write_text(value,encoding='utf8')
+                    with self.assertRaises(ValueError) as caught:inspect_public(path)
+                    self.assertNotIn('synthetic-only',str(caught.exception));self.assertNotIn(body,str(caught.exception))
+
+    def test_sudo_directory_and_masked_values_keep_real_password_checks(self):
+        safe='    root : PWD=/ ; USER=root ; COMMAND=/usr/bin/docker inspect controlled-id'
+        accepted=[('journal.log',safe),('journal.json',json.dumps({'MESSAGE':safe})),
+                  ('ci.log','token=***'),('masked.json',json.dumps({'authorization':'<redacted>'}))]
+        rejected=[safe+' API_KEY=synthetic-only-command-secret',
+                  'Host=localhost;PWD=synthetic-only-password;',
+                  'root : PWD=synthetic-only-password; USER=root ; COMMAND=/usr/bin/true']
+        with tempfile.TemporaryDirectory() as directory:
+            for name,value in accepted:
+                path=Path(directory)/name;path.write_text(value,encoding='utf8');inspect_public(path)
+            for value in rejected:
+                path=Path(directory)/'credentials.log';path.write_text(value,encoding='utf8')
+                with self.assertRaises(ValueError):inspect_public(path)
+
+    def test_safe_references_certificates_and_null_fields_are_allowed(self):
+        cases=[('workflow.yml','token: ${{ secrets.GITHUB_TOKEN }}\npassword: ${PGPASSWORD}\n'),
+               ('safe.json',json.dumps({'token':None,'password':'','authorization':{},'tokens_count':512})),
+               ('cert.md','-----BEGIN CERTIFICATE-----\nQUJDREVGR0hJSktMTU5PUFFSUlNUVVZXWFlaQUJDREVGRw==\n-----END CERTIFICATE-----')]
+        with tempfile.TemporaryDirectory() as directory:
+            for name,value in cases:
+                path=Path(directory)/name;path.write_text(value,encoding='utf8');inspect_public(path)
+
+    def test_same_file_and_hardlink_cannot_claim_independent_lineage(self):
+        with tempfile.TemporaryDirectory() as directory:
+            raw=Path(directory)/'raw.json';raw.write_bytes(b'{}')
+            with self.assertRaises(ValueError):derived_identity(raw,raw)
+            alias=Path(directory)/'alias.json';os.link(raw,alias)
+            with self.assertRaises(ValueError):derived_identity(raw,alias)
+
+    def test_case_variants_of_private_runtime_path_are_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);path=root/'RUNTIME'/'safe.json';path.parent.mkdir();path.write_bytes(b'{}')
+            entry={'path':'RUNTIME/safe.json','bytes':2,'sha256':hashlib.sha256(b'{}').hexdigest()}
+            with self.assertRaises(ValueError):validated_files(root,[entry])
+
+    def test_archive_writes_only_validated_bytes_if_source_changes_later(self):
+        from tools import pr13_evidence_bundle as bundle
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);register=root/'reports';register.mkdir();path=root/'safe.json';path.write_bytes(b'{}')
+            entry={'path':'safe.json','bytes':2,'sha256':hashlib.sha256(b'{}').hexdigest()}
+            (register/'manifest.json').write_text(json.dumps({'source_sha':'a'*40,'files':[entry]}))
+            original=bundle.validated_payloads
+            def replace_after_snapshot(folder,entries):
+                result=original(folder,entries)
+                path.write_text(json.dumps({'access_token':'synthetic-only-replacement'}))
+                return result
+            output=root/'public.zip'
+            with patch.object(bundle,'ROOT',root),patch.object(bundle,'validated_payloads',side_effect=replace_after_snapshot),patch('sys.argv',['bundle','--register',str(register),'--output',str(output)]),patch('builtins.print'):
+                self.assertEqual(bundle.main(),0)
+            with zipfile.ZipFile(output) as archive:self.assertEqual(archive.read('safe.json'),b'{}')
+
+    def test_public_archive_rejects_opaque_types_without_breaking_source_hash_checks(self):
+        from tools import pr13_evidence_bundle as bundle
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);register=root/'reports';register.mkdir();path=root/'proof.bin';path.write_bytes(b'PRIVATE_SYNTHETIC_OPAQUE_FIXTURE')
+            entry={'path':path.name,'bytes':path.stat().st_size,'sha256':hashlib.sha256(path.read_bytes()).hexdigest()}
+            # Source readers may verify arbitrary source bytes without publishing them.
+            self.assertEqual(validated_files(root,[entry]),[path.resolve()])
+            (register/'manifest.json').write_text(json.dumps({'source_sha':'a'*40,'files':[entry]}));output=root/'public.zip'
+            with patch.object(bundle,'ROOT',root),patch('sys.argv',['bundle','--register',str(register),'--output',str(output)]):
+                with self.assertRaises(ValueError):bundle.main()
+            self.assertFalse(output.exists())
+
+    def test_missing_source_identity_rejects_before_creating_bundle(self):
+        from tools import pr13_evidence_bundle as bundle
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);register=root/'reports';register.mkdir();(register/'manifest.json').write_text('{"files":[]}');output=root/'public.zip'
+            with patch.object(bundle,'ROOT',root),patch('sys.argv',['bundle','--register',str(register),'--output',str(output)]):
+                with self.assertRaises(ValueError):bundle.main()
+            self.assertFalse(output.exists())
 
 if __name__ == '__main__': unittest.main()

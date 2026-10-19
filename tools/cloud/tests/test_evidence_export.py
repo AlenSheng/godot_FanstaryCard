@@ -1,3 +1,5 @@
+import base64
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -39,6 +41,9 @@ class EvidenceExport(unittest.TestCase):
                 self.assertEqual(names, set(allowed)|{'evidence-inventory.json'})
                 for relative in allowed:
                     self.assertEqual((source/relative).read_bytes(), (root/'public'/relative).read_bytes())
+                    row=next(row for row in result['files'] if row['name']==relative)
+                    self.assertEqual(row['source_sha256'],hashlib.sha256((source/relative).read_bytes()).hexdigest())
+                    self.assertEqual(row['relation'],'copied_from')
 
     def test_partial_failed_fixture_keeps_diagnostics_without_runtime(self):
         with tempfile.TemporaryDirectory() as folder:
@@ -108,6 +113,16 @@ class EvidenceExport(unittest.TestCase):
     def test_noncredential_bearer_assertion_log_is_unchanged(self):
         value='HTTP fixture: ticket URL without bearer = true\n'
         self.assertEqual(exporter.scrub(value),value)
+
+
+
+class CredentialScrub(unittest.TestCase):
+    def test_basic_uri_pwd_and_private_blocks_do_not_leave_values(self):
+        body=base64.b64encode(b'synthetic-only-private-block-material-in-export').decode()
+        value='ERROR: original diagnosis retained\nAuthorization: Basic '+base64.b64encode(b'controlled:synthetic-only-basic-value').decode()+'\npostgresql://controlled:synthetic-only-uri-value@localhost/db\nHost=localhost;Pwd=synthetic-only-pwd-value;\n-----BEGIN PRIVATE KEY-----\n'+body+'\n-----END PRIVATE KEY-----\n'
+        result=exporter.scrub(value)
+        self.assertIn('ERROR: original diagnosis retained',result)
+        self.assertNotIn('synthetic-only',result);self.assertNotIn(body,result)
 
 
 if __name__=='__main__':unittest.main()
