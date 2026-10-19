@@ -1,0 +1,948 @@
+{
+  "schema_version": 1,
+  "kind": "Requested local release formal code/art intake and clean resource/function integration verification;readonly PR13 status",
+  "base_release": "98e63b74dc7110d30cbf66c684b5db18f010f801",
+  "formal_intake": {
+    "runtime_client_files": 1643,
+    "server_protocol_source_files": 195,
+    "all_disk_files_equal_tracked_blobs": true,
+    "new_uncommitted_game_code_or_art": 0,
+    "all_tracked_files": 20157,
+    "hidden_skip_assume_flags": 0,
+    "714_ignored_external_GameFactory_files": "Existing local-only development environment;start-client.bat directly launchesGodot. Notgamecodepending forrelease. Exclude unchanged.",
+    "remaining_worktree702": "One modified canonical pointer plus701untracked docs/evidence files preserved;notblindlystaged"
+  },
+  "resource_integration": {
+    "literal_refs": 758,
+    "art_manifest_mappings": 563,
+    "card_art": {
+      "total": 232,
+      "codex": 220,
+      "monster_cards": 12
+    },
+    "monster_runtime_IDs": 16,
+    "monster_species": 12,
+    "native_resources": 623,
+    "native_main_scene_instantiable": true,
+    "native_resource_types": {
+      "AudioStreamMP3": 6,
+      "AudioStreamWAV": 35,
+      "CompressedTexture2D": 574,
+      "VideoStreamTheora": 1,
+      "PackedScene": 5,
+      "FontFile": 2,
+      "InstantiablePackedScene": 1
+    },
+    "verified_PIL_and_WAV": 609,
+    "qualified_native_suites": [
+      "test_art.gd",
+      "test_bundled_fonts.gd",
+      "test_item_visual.gd",
+      "test_card_view.gd",
+      "test_sound_service.gd",
+      "test_native_scripts.gd",
+      "test_protobuf.gd",
+      "test_request_numbers.gd",
+      "test_battle_targets.gd",
+      "test_bounded_bar.gd",
+      "test_account_cache.gd",
+      "test_card_pool.gd"
+    ],
+    "focused_suites": 12,
+    "codex_cardpool_smoke": "Pass:220slots,visible mounting,detail action,scroll reuse,filtering,deck/hall navigation,ownership invalidation,account reset",
+    "new_Game_worlds_accounts": 0,
+    "game_cloud_calls": 0,
+    "new_product_logic_or_art_changes": false,
+    "README_change": "Direct fresh-checkout Godot validation commands;externalGameFactory dependency clarified;current220+12counts;historical418batch labelled;existingCRLFnormalizedLFwithsemanticdiff"
+  },
+  "failure_and_budget_disclosure": {
+    "initial_static_false_alarm": "o-fire-bat catalog numerical/template row is not factory runtime ID;runtime usesfire-bat. All16actualIDs mapped. Originalscanfailedresultretained,no config/artaliaschanged.",
+    "R1_import": "Exit0 but sandbox failed readingrootCAstore;notqualified. Oldlogs/cache kept;R2sameescalationflow cleanimport passed,noglobalcertificate/TLSchange.",
+    "R2_combined_suite": "Four suites actuallypassed then fixture called SceneTree.run_test;scriptcoroutinefailed. Owned180s watchdog terminatedprocess;exitcode/terminal notpersisted byoldcontroller,keptunknown. OriginaldriverNative_started1undercountedactual2starts;actualreceiptsareauthoritative.",
+    "R3": "ReusequalifiedR2cleanimport+4suite stdoutrows;rerunresource loadonlybecauseR2perresourceresultsnotpersisted;immutablecheckpointnowstored. Remaining7RefCounted suites plusindependentSceneTreecardpool andcardpagepassed. ThreeNativeexit0andcleandiagnostics.",
+    "cumulative_Native_limits": "3 ->4 beforeR2 ->6 beforeR3;actual6 (R1one,R2two,R3three). World/account count0. Nofunctionalcriteriaweakened.",
+    "duplicate_stdout_and_engine_same_results": "Twoidenticalrecordsperstandalone/CardPagePID,countasoneexecutioneach",
+    "all_original_failures_source_logs_and_local_code_retained": true,
+    "5percent_memory_disk_and2GiB_limit_preserved": true,
+    "all6owned_PIDs_absent": true
+  },
+  "PR13_status": {
+    "source_register_SHA256": "aff75d05738e356c21b5fe42d9c433f6a597a6e6ed58f2041523312bfd3bcffe",
+    "source_generated_at": "2026-10-17T14:06:49.292189+08:00",
+    "packages": 33,
+    "tasks": 132,
+    "base_cases": 396,
+    "base_case_states": {
+      "Passed": 396
+    },
+    "task_states": {
+      "Accepted": 55,
+      "Partial": 67,
+      "ReadyForAcceptance": 10
+    },
+    "accepted_percent": 41.7,
+    "unaccepted": 77,
+    "registered_gap_cases": 189,
+    "registered_gap_pairs": 294,
+    "registered_gap_profiles": {
+      "LIVE": 72,
+      "POSTGRES": 64,
+      "EXPERIMENT": 83,
+      "CAPACITY": 36,
+      "AUDIT": 1,
+      "RENDER": 38
+    },
+    "gates": [
+      {
+        "gate_id": "G0",
+        "name": "来源、范围与基线",
+        "state": "NotAccepted"
+      },
+      {
+        "gate_id": "G1",
+        "name": "离线、进程与合同",
+        "state": "NotAccepted"
+      },
+      {
+        "gate_id": "G2",
+        "name": "玩法闭环和资产/战斗合同",
+        "state": "NotAccepted"
+      },
+      {
+        "gate_id": "G3",
+        "name": "观测、历史和体验对账",
+        "state": "NotAccepted"
+      },
+      {
+        "gate_id": "G4",
+        "name": "传输收益、原容量、候选体验",
+        "state": "NotAccepted"
+      },
+      {
+        "gate_id": "G5",
+        "name": "当前证据、源配置和回滚交付",
+        "state": "NotAccepted"
+      }
+    ],
+    "readonly_snapshot_not_updated_for_recent_supplements": true
+  },
+  "PR13_tasks_readonly": [
+    {
+      "task_id": "LOAD-01.1",
+      "title": "输入schema",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "LOAD-01.2",
+      "title": "唯一进程归属",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "LOAD-01.3",
+      "title": "拆分负载人数",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "LOAD-01.4",
+      "title": "真实进程反例",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "LOAD-02.1",
+      "title": "多维结果模型",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "LOAD-02.2",
+      "title": "STOP前后边界",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "LOAD-02.3",
+      "title": "有界清理和应急报告",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "LOAD-02.4",
+      "title": "退出码兼容",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "LOAD-03.1",
+      "title": "事件水位",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "LOAD-03.2",
+      "title": "生命周期阶段",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "LOAD-03.3",
+      "title": "请求完整分母",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "LOAD-03.4",
+      "title": "分布与错误率",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "LOAD-04.1",
+      "title": "当前匹配状态机",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "LOAD-04.2",
+      "title": "有界ready发送",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "LOAD-04.3",
+      "title": "缺通知/started恢复",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 4
+    },
+    {
+      "task_id": "LOAD-04.4",
+      "title": "ready全矩阵",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 3
+    },
+    {
+      "task_id": "LOAD-05.1",
+      "title": "服务端ack完成依据",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "LOAD-05.2",
+      "title": "跨局状态隔离",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "LOAD-05.3",
+      "title": "各await取消",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 3
+    },
+    {
+      "task_id": "LOAD-05.4",
+      "title": "幂等三局矩阵",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 3
+    },
+    {
+      "task_id": "LOAD-06.1",
+      "title": "HTTP不可变上下文",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "LOAD-06.2",
+      "title": "生命周期/玩法进度",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "LOAD-06.3",
+      "title": "服务端分段",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 5
+    },
+    {
+      "task_id": "LOAD-06.4",
+      "title": "时间/缺失/脱敏",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "LOAD-07.1",
+      "title": "有界探测调度",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "LOAD-07.2",
+      "title": "实际发压与资源",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "LOAD-07.3",
+      "title": "有界JSONL与session隔离",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "LOAD-07.4",
+      "title": "发压器故障矩阵",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "LOAD-08.1",
+      "title": "TLS连接复用边界",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 3
+    },
+    {
+      "task_id": "LOAD-08.2",
+      "title": "GET单飞一致性",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 3
+    },
+    {
+      "task_id": "LOAD-08.3",
+      "title": "有界去同步重试",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 3
+    },
+    {
+      "task_id": "LOAD-08.4",
+      "title": "结算轻量查询",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 5
+    },
+    {
+      "task_id": "LOAD-09.1",
+      "title": "enqueue回放关联",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "LOAD-09.2",
+      "title": "launch与旧路由恢复",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 3
+    },
+    {
+      "task_id": "LOAD-09.3",
+      "title": "慢连接隔离候选",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 6
+    },
+    {
+      "task_id": "LOAD-09.4",
+      "title": "实例级热点裁决",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 5
+    },
+    {
+      "task_id": "LOAD-10.1",
+      "title": "独立离线/协议套件",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 9
+    },
+    {
+      "task_id": "LOAD-10.2",
+      "title": "真实同账号三局",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 6
+    },
+    {
+      "task_id": "LOAD-10.3",
+      "title": "全链路故障用例",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 7
+    },
+    {
+      "task_id": "LOAD-10.4",
+      "title": "同负载性能与保持",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 8
+    },
+    {
+      "task_id": "LOAD-11.1",
+      "title": "基线来源冻结",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "LOAD-11.2",
+      "title": "全量manifest脱敏",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "LOAD-11.3",
+      "title": "可重复CI覆盖",
+      "state": "ReadyForAcceptance",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "LOAD-11.4",
+      "title": "MAIN交付与回滚",
+      "state": "ReadyForAcceptance",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-A01.1",
+      "title": "历史raw取证",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-A01.2",
+      "title": "统一三截止点",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-A01.3",
+      "title": "差异逐事件解释",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 1
+    },
+    {
+      "task_id": "PR13-A01.4",
+      "title": "单来源报告生成",
+      "state": "ReadyForAcceptance",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-A02.1",
+      "title": "负载模型预登记",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 6
+    },
+    {
+      "task_id": "PR13-A02.2",
+      "title": "时间覆盖验收函数",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 6
+    },
+    {
+      "task_id": "PR13-A02.3",
+      "title": "STOP尾部证据",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 6
+    },
+    {
+      "task_id": "PR13-A02.4",
+      "title": "服务端后置清理",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 3
+    },
+    {
+      "task_id": "PR13-A03.1",
+      "title": "真实入口反例",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 6
+    },
+    {
+      "task_id": "PR13-A03.2",
+      "title": "旧局回调隔离",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 6
+    },
+    {
+      "task_id": "PR13-A03.3",
+      "title": "ack丢响应恢复",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 4
+    },
+    {
+      "task_id": "PR13-A03.4",
+      "title": "三局和回归",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 4
+    },
+    {
+      "task_id": "PR13-A04.1",
+      "title": "丢required主动恢复",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 3
+    },
+    {
+      "task_id": "PR13-A04.2",
+      "title": "ready乱序/send失败",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 3
+    },
+    {
+      "task_id": "PR13-A04.3",
+      "title": "启动失败与恢复",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 3
+    },
+    {
+      "task_id": "PR13-A04.4",
+      "title": "多局/STOP组合",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 3
+    },
+    {
+      "task_id": "PR13-A05.1",
+      "title": "持久化失败恢复",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-A05.2",
+      "title": "队友和旧房间隔离",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-A05.3",
+      "title": "幂等/重启资产矩阵",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-A05.4",
+      "title": "ledgerChainMismatches告警归因",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-A06.1",
+      "title": "响应完整性fixture",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 3
+    },
+    {
+      "task_id": "PR13-A06.2",
+      "title": "连接失效/并发/会话",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 3
+    },
+    {
+      "task_id": "PR13-A06.3",
+      "title": "请求开始context",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 3
+    },
+    {
+      "task_id": "PR13-A06.4",
+      "title": "边界与收益复验",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 3
+    },
+    {
+      "task_id": "PR13-A07.1",
+      "title": "旧数值合同定位",
+      "state": "ReadyForAcceptance",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-A07.2",
+      "title": "全PG关键矩阵",
+      "state": "ReadyForAcceptance",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-A07.3",
+      "title": "CI触发和证据",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 2
+    },
+    {
+      "task_id": "PR13-A07.4",
+      "title": "MAIN复跑适用套件",
+      "state": "ReadyForAcceptance",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-A08.1",
+      "title": "运行来源与历史基线",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 1
+    },
+    {
+      "task_id": "PR13-A08.2",
+      "title": "任务状态同步",
+      "state": "ReadyForAcceptance",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-A08.3",
+      "title": "隔离回滚演练",
+      "state": "ReadyForAcceptance",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-A08.4",
+      "title": "交付来源与未完清单",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 3
+    },
+    {
+      "task_id": "PR13-A09.1",
+      "title": "固定集成验收输入",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 9
+    },
+    {
+      "task_id": "PR13-A09.2",
+      "title": "多账号正常三局",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 8
+    },
+    {
+      "task_id": "PR13-A09.3",
+      "title": "全故障与资产后置",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 7
+    },
+    {
+      "task_id": "PR13-A09.4",
+      "title": "独立裁决反馈",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 9
+    },
+    {
+      "task_id": "PR13-A10.1",
+      "title": "三组成对A/B预登记",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 3
+    },
+    {
+      "task_id": "PR13-A10.2",
+      "title": "默认限流建立负载",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 3
+    },
+    {
+      "task_id": "PR13-A10.3",
+      "title": "长期资源回收",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 3
+    },
+    {
+      "task_id": "PR13-A10.4",
+      "title": "性能收益和容量裁决",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 3
+    },
+    {
+      "task_id": "PR13-B01.1",
+      "title": "战斗关联合同",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-B01.2",
+      "title": "通信、机会和有效进展",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-B01.3",
+      "title": "分层体验指标",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-B01.4",
+      "title": "终点与删失",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-B02.1",
+      "title": "过期测试API迁移",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-B02.2",
+      "title": "真实Resolver规则向量",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-B02.3",
+      "title": "预览/协议/权威一致",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-B02.4",
+      "title": "房间策略和恢复",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-B03.1",
+      "title": "三种脚本策略",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-B03.2",
+      "title": "同预算场景矩阵",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-B03.3",
+      "title": "配对样本与区间",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-B03.4",
+      "title": "profile边界和可重放",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-B04.1",
+      "title": "真实默认牌表诊断",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 6
+    },
+    {
+      "task_id": "PR13-B04.2",
+      "title": "单卡替换候选",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 6
+    },
+    {
+      "task_id": "PR13-B04.3",
+      "title": "抽牌与等待提示",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 3
+    },
+    {
+      "task_id": "PR13-B04.4",
+      "title": "初始体验裁决",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 6
+    },
+    {
+      "task_id": "PR13-B05.1",
+      "title": "具体怪物归因",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 2
+    },
+    {
+      "task_id": "PR13-B05.2",
+      "title": "单因素HP/预告实验",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 3
+    },
+    {
+      "task_id": "PR13-B05.3",
+      "title": "强度/经济边界",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 3
+    },
+    {
+      "task_id": "PR13-B05.4",
+      "title": "候选推荐判据",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 3
+    },
+    {
+      "task_id": "PR13-B06.1",
+      "title": "CurrentRhythm对照",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 3
+    },
+    {
+      "task_id": "PR13-B06.2",
+      "title": "CoreCardsSpent候选",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 3
+    },
+    {
+      "task_id": "PR13-B06.3",
+      "title": "复合过牌长序列",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 3
+    },
+    {
+      "task_id": "PR13-B06.4",
+      "title": "候选体验和版本",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 3
+    },
+    {
+      "task_id": "PR13-B07.1",
+      "title": "当前与定点表",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-B07.2",
+      "title": "存量+2/+4影响",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-B07.3",
+      "title": "余量提交/清零",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-B07.4",
+      "title": "有效盾和余量显示",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-B08.1",
+      "title": "既有8秒控制合同",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-B08.2",
+      "title": "同品质单卡边际",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-B08.3",
+      "title": "主核/抵消/回复合同",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-B08.4",
+      "title": "帽内有效值和候选条件",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-B09.1",
+      "title": "实际怪物pool基线",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 3
+    },
+    {
+      "task_id": "PR13-B09.2",
+      "title": "3/5/8位候选",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 2
+    },
+    {
+      "task_id": "PR13-B09.3",
+      "title": "来源、幂等和状态切换",
+      "state": "ReadyForAcceptance",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-B09.4",
+      "title": "连续性与选择成本",
+      "state": "ReadyForAcceptance",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-B10.1",
+      "title": "顺序/主核可见",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-B10.2",
+      "title": "有效值与多语言说明",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-B10.3",
+      "title": "本地按下与权威成功",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-B10.4",
+      "title": "帧率/延迟/失效目标",
+      "state": "Accepted",
+      "registered_missing_case_profile_pairs": 0
+    },
+    {
+      "task_id": "PR13-B11.1",
+      "title": "可见等待状态",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 6
+    },
+    {
+      "task_id": "PR13-B11.2",
+      "title": "结算UI恢复",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 5
+    },
+    {
+      "task_id": "PR13-B11.3",
+      "title": "有证据才轻量化",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 8
+    },
+    {
+      "task_id": "PR13-B11.4",
+      "title": "有渲染三局和窄屏",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 4
+    },
+    {
+      "task_id": "PR13-B12.1",
+      "title": "集成来源冻结",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 6
+    },
+    {
+      "task_id": "PR13-B12.2",
+      "title": "独立off/on和体验矩阵",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 9
+    },
+    {
+      "task_id": "PR13-B12.3",
+      "title": "配置生成与版本回滚",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 6
+    },
+    {
+      "task_id": "PR13-B12.4",
+      "title": "全量最终裁决",
+      "state": "Partial",
+      "registered_missing_case_profile_pairs": 8
+    }
+  ],
+  "scope_limits": [
+    "Resource/code/maintainedofflineintegrationpass doesnotproveentireGDDcomplete orall132tasksAccepted",
+    "Canonicalstatussourcefrozen20261017;recentcase-specificsupplementspublishedbutregister/gate/MAINnotautomaticallyrewritten",
+    "294registeredcase/profilepairsarenot294freshfailuresandnotautomaticallya newretestqueue",
+    "623assets native-load;existingGLBlegacyresources loadednotruntime3Dinstantiation;noexport/Steamreal-ticket/platformreleaseclaim",
+    "No freshlive/PG/capacityrerun;reuseexistingcurrentPG/WS/renderproofseparately;no newUIpixelqualityclaimfromheadlesssmoke"
+  ],
+  "evidence_SHA256": {
+    "preregistered.original.json": "d3784612b820c4f78d6166df9f49952c10ef976cd07dc123d2e90e407695f86f",
+    "revision-before-R3.original.json": "4c2822e1ee3d0784a4659c296f9424fdac5f6fbdb4075be9141639cebe8d84b6",
+    "retained-four-qualified-suites.original.json": "5425a520e60f6784fee59616458a2fd89e9c688443f720d3b01733dcd8db80c1",
+    "native-resource-suite-result.original.json": "209f97770a47c3519dfcdb4695221e21cbe29c1f4ac47271ad3174b9fd0b1352",
+    "native-resource-suite-result.original.json.resources-checkpoint.original.json": "46885366b7333cf5d449398fd8f4286c19ec9b903aa903cce190621e12ad4fdd",
+    "native-integration-driver-result.original.json": "3227446788f8567e545a599bb7b9ee15504dfaf571ef5a7746b2164a48e23641",
+    "all-formal-directory-final-intake.original.json": "6c3cecd0de9782bc78d1c7b94b956c3cf5b8bc9437f7438dd7aaf1e34622e889",
+    "external-framework-classification-and-README-review.original.json": "21af93c13cc413d6dfde71440320ad1008b54efb156579d63468cf2946f575ff",
+    "independent-integration-and-status-review.original.json": "006a1bf08d7b13236b01b1913305b595e9a02345c625994cec0ffa766a49d076"
+  },
+  "preservation": {
+    "all702status_SHA_preserved": true,
+    "register_gate_MAIN_changed": false,
+    "canonical132tasks396cases_scope_unchanged": true,
+    "GDDv070_and_user_Priest_artifact_raw80over70_legal": true,
+    "whole_goal_complete": false
+  }
+}

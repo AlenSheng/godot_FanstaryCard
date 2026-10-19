@@ -14,7 +14,7 @@
 https://www.relicbound.cn
 ```
 
-也可直接运行本地客户端引擎：
+已配置本地 GameFactory-3A 开发工具和引擎定位的工作区，还可使用 Python 适配器：
 
 ```powershell
 python tools/client_engine.py play
@@ -37,8 +37,8 @@ python tools/client_engine.py play
 成功登录后记住服务端返回的名称，下次启动默认填入。访问 token 仅在内存中。
 切换账号会清空上一账号的房间、职业选择、图鉴与装备页面缓存。调试构建可使用本地开发登录；
 Steam 登录适配已接入，真实验票需配置 AppID、GodotSteam 插件与服务端平台参数。
-引擎路径读取 `A3GAME_GODOT_EXECUTABLE` 或本机 `tools/engine-local` 的验证记录。
-首次资源导入可运行 `python tools/client_engine.py import`。
+Python 适配器读取 `A3GAME_GODOT_EXECUTABLE` 或本机 `tools/engine-local` 的验证记录。
+首次资源导入由 `start-client.bat` 自动执行，独立验证命令见下方验证入口。
 
 ## 已接入
 
@@ -60,6 +60,19 @@ Steam 登录适配已接入，真实验票需配置 AppID、GodotSteam 插件与
 新增 `battle.select_target` 投影回归修复：旧目标死亡后仍可选择最后一只存活怪。
 
 ## 验证入口
+
+从仓库根目录验证普通签出的资源导入、卡池与图鉴交互。先将
+`A3GAME_GODOT_EXECUTABLE` 指向 Godot 4.7.2 可执行文件，再运行：
+
+```powershell
+& $env:A3GAME_GODOT_EXECUTABLE --headless --editor --path ./client --import --quit
+& $env:A3GAME_GODOT_EXECUTABLE --headless --path ./client --audio-driver Dummy --script res://tests/test_card_pool.gd
+& $env:A3GAME_GODOT_EXECUTABLE --headless --path ./client --audio-driver Dummy res://tests/test_card_page_smoke.tscn
+```
+
+`start-client.bat` 直接定位并启动 Godot，首次启动会导入资源。
+`tools/client_engine.py` 使用另外配置的本地 `GameFactory-3A` 及引擎定位；
+该外部开发工具目录在本机排除，不随游戏仓库交付。已配置该工具的工作区还可运行：
 
 ```powershell
 python tools/client_engine.py validate
@@ -92,7 +105,7 @@ python tools/client_engine.py codex-integration
 
 ## 本轮进展与待办
 
-- 200 张普通/职业卡插画、三职业肖像和 12 种配置内怪物已建立映射，
+- 220 张图鉴卡插画、12 张怪物卡、三职业肖像和 12 种运行时怪物已建立映射，
   湮核两阶段与怪物卡共用的主体资源已接入。旧补图清单 27 项对应的 28 张 PNG 均已存在；
   冰霜幽灵图片仅待确认物种身份，暂无对应服务器 ID，不需要重复生成。
   怪物卡框顶边、本命武器框及完整视觉一致性仍需复核，详见
@@ -154,10 +167,10 @@ python tools/client_engine.py codex-integration
 `server/AGENTS.md` 引用的 `.agents/skills/server_create/SKILL.md` 在本仓库与本机
 技能目录均不存在；本次小范围修复遵循现有 GDD、SERVER_SPEC 与服务端测试约定。
 
-## 用户资源导入
+## 用户资源导入（2026-09-10 历史批次）
 
 `Cards/Art` 和 `UI` 为原始资源；导入脚本保留原图和 Unity `.meta`，
-当前 `client/assets/imported` 共 418 张位图：217 张 UI、200 张图鉴插画和 1 张怪物卡背景；
+该批次 `client/assets/imported` 共 418 张位图：217 张 UI、200 张图鉴插画和 1 张怪物卡背景；
 卡牌插画归一化为 512×768。
 `manifest.json` 记录来源哈希、服务器卡 ID 映射和原始九宫格边距。
 运行时由 `ui/art.gd` 缓存纹理，`ui/card_view.gd` 统一绘制图鉴和手牌，
@@ -211,7 +224,7 @@ GLB保留几何/基础色，程序纹理和完整灯光以blend/PNG为准。
 
 当前资源状态统一见 [美术及配套资源清单](../docs/UI_MISSING_ASSETS.md)
 及 `docs/ui_missing_assets.json`。旧 27 项对应的 28 张 PNG 已齐，原始生成描述仅作归档；
-现有 200 张图鉴插画无需重复生成。待办集中于冰霜幽灵身份确认、卡框与武器框复核、
+现有 220 张图鉴插画无需重复生成。待办集中于冰霜幽灵身份确认、卡框与武器框复核、
 完整视觉验收，以及 15 模块效果图源目录归档恢复。字体授权、音效资源与播放接入已于
 2026-09-10 补齐，证据见 [字体与音效接入记录](../docs/FONT_AUDIO_INTEGRATION_20260910.md)。
 遗物内容、PVP 公开信息与分类伤害预览已在本轮补齐，仍不属于图片生成需求。
