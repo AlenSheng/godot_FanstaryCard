@@ -103,7 +103,60 @@ def load_run(directory):
             raise ValueError('Raw error count differs')
     except (KeyError,TypeError) as error:
         raise ValueError('Missing or invalid run contract: '+str(directory)) from error
+    validate_hp_candidate_inputs(manifest,values)
     return manifest,summary,values
+
+
+
+def validate_hp_candidate_inputs(manifest, rows):
+    """Reject recorded extra factors; this does not prove unrecorded runtime inputs."""
+    candidate=manifest['Candidate']
+    if candidate not in ('outer-o6-hp085','outer-o6-hp095','outer-o6-hp090',
+                         'elite-e4-hp095','elite-e4-hp090'):return
+    target='E4' if candidate.startswith('elite-e4-') else 'O6'
+    if manifest.get('SingleFactorOnly') is not True or manifest.get('CandidateWhitelist')!=[target]:
+        raise ValueError('HP candidate must declare one factor and its exact whitelist')
+    pairs=defaultdict(dict)
+    for row in rows:
+        key=tuple(row[k] for k in STRATUM_FIELDS[:-1])+(row['Seed'],)
+        pairs[key][row['Profile']]=row
+    fields=('OpeningEnemyHp','OpeningEnemyShield','EnemyNonHpInputSha256',
+            'FirstWindupExtraMilliseconds','FirstWindupExtensions','FirstWindupIntentIndexes')
+    scale=85 if candidate.endswith('085') else 90 if candidate.endswith('090') else 95
+    for key,pair in pairs.items():
+        baseline=pair['Baseline'];other=pair[candidate_profile(candidate,key[0],key[3])]
+        # Keep failed native rows available to the report's Error denominator.
+        # They cannot establish a valid comparison or a successful recommendation.
+        if any(row['Outcome']=='Error' for row in pair.values()):continue
+        if key[3]!=target:
+            if {k:v for k,v in baseline.items() if k!='Profile'}!={k:v for k,v in other.items() if k!='Profile'}:
+                raise ValueError('Non-whitelisted HP control changed: '+str(key))
+            continue
+        recorded=any(field in row for row in pair.values() for field in fields[:3])
+        # Minimal statistical fixtures remain explicitly synthetic. Actual native
+        # inputs must carry the opening-state evidence, never infer it from a flag.
+        if not recorded and manifest['Kind']=='statistical_fixture':continue
+        for row in pair.values():
+            if any(field not in row for field in fields):
+                raise ValueError('Missing HP candidate opening-state evidence: '+str(key))
+            digest=row['EnemyNonHpInputSha256']
+            if type(digest) is not str or len(digest)!=64 or any(c not in '0123456789abcdef' for c in digest):
+                raise ValueError('Invalid HP candidate non-HP fingerprint: '+str(key))
+            if (type(row['OpeningEnemyHp']) is not int or row['OpeningEnemyHp']<=0 or
+                    type(row['OpeningEnemyShield']) is not int or row['OpeningEnemyShield']<0):
+                raise ValueError('Invalid HP candidate opening values: '+str(key))
+            if (type(row['FirstWindupExtraMilliseconds']) not in (int,float) or
+                    row['FirstWindupExtraMilliseconds']!=0 or
+                    type(row['FirstWindupExtensions']) is not int or row['FirstWindupExtensions']!=0 or
+                    row['FirstWindupIntentIndexes']!=[]):
+                raise ValueError('HP candidate also changed first windup: '+str(key))
+        if (baseline['OpeningEnemyShield']!=other['OpeningEnemyShield'] or
+                baseline['EnemyNonHpInputSha256']!=other['EnemyNonHpInputSha256']):
+            raise ValueError('HP candidate changed a recorded non-HP input: '+str(key))
+        # sum(floor(each HP * scale)) <= floor(sum(HP) * scale). Exact
+        # per-monster rounding cannot be recovered from the aggregate alone.
+        if other['OpeningEnemyHp']>baseline['OpeningEnemyHp']*scale//100:
+            raise ValueError('HP candidate exceeds declared scaled opening HP: '+str(key))
 
 
 def sample_budget(blocks):

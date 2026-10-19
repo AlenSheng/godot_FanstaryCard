@@ -84,6 +84,54 @@ class SimulationReportTests(unittest.TestCase):
                 self.assertEqual(12,len(loaded))
                 self.assertEqual({'Baseline','BaselinePairedControl'},{value['Profile'] for value in loaded if value['Group']=='O6'})
 
+    def hp_opening_rows(self):
+        return [dict(value,OpeningEnemyHp=184 if value['Profile']=='Baseline' else 174,
+                     OpeningEnemyShield=24,EnemyNonHpInputSha256='a'*64)
+                for value in self.paired()]
+
+    def test_hp_opening_guard_accepts_recorded_valid_pair_and_preserves_error_rows(self):
+        rows=self.hp_opening_rows()
+        directory=fixture(self.root/'valid-hp',rows,Kind='actual_domain_encounter_simulation')
+        self.assertEqual(6,len(reports.load_run(directory)[2]))
+        for value in rows:
+            if value['Seed']==1:
+                value.update(Outcome='Error',OpeningEnemyHp=0,EnemyNonHpInputSha256=None)
+        report,_,exit_code=self.report([fixture(self.root/'failed-hp',rows,Kind='actual_domain_encounter_simulation')])
+        self.assertEqual(1,exit_code)
+        self.assertEqual(2,report['errors'])
+        self.assertEqual(6,report['total'])
+
+    def test_hp_opening_guard_rejects_extra_factors_and_malformed_fingerprints(self):
+        changes=[dict(EnemyNonHpInputSha256='b'*64),dict(OpeningEnemyShield=25),
+                 dict(FirstWindupExtraMilliseconds=250,FirstWindupExtensions=1,FirstWindupIntentIndexes=[0]),
+                 dict(OpeningEnemyHp=184),dict(OpeningEnemyHp=0),dict(OpeningEnemyHp=True),
+                 dict(OpeningEnemyShield=True),dict(EnemyNonHpInputSha256=None),
+                 dict(EnemyNonHpInputSha256=''),dict(EnemyNonHpInputSha256='g'*64),
+                 dict(FirstWindupExtraMilliseconds=False),dict(FirstWindupExtensions=False)]
+        for index,change in enumerate(changes):
+            with self.subTest(change=change):
+                rows=self.hp_opening_rows();rows[1].update(change)
+                with self.assertRaises(ValueError):reports.load_run(fixture(self.root/('bad-hp-'+str(index)),rows))
+
+    def test_hp_opening_guard_requires_actual_evidence_and_exact_factor_metadata(self):
+        changes=[dict(SingleFactorOnly=False),dict(SingleFactorOnly=None),
+                 dict(CandidateWhitelist=['O6','O1']),dict(CandidateWhitelist=[])]
+        for index,change in enumerate(changes):
+            with self.subTest(change=change):
+                with self.assertRaises(ValueError):reports.load_run(fixture(self.root/('bad-factor-'+str(index)),self.paired(),**change))
+        with self.assertRaises(ValueError):
+            reports.load_run(fixture(self.root/'missing-native-fields',self.paired(),Kind='actual_domain_encounter_simulation'))
+        rows=self.hp_opening_rows();del rows[1]['EnemyNonHpInputSha256']
+        with self.assertRaises(ValueError):reports.load_run(fixture(self.root/'missing-one-field',rows))
+
+    def test_hp_opening_guard_keeps_non_whitelisted_controls_byte_equivalent(self):
+        rows=[row(seed,profile=name,group=group) for seed in range(3) for group in ('E4','O6')
+              for name in ('Baseline','TargetedE4Hp095' if group=='E4' else 'BaselinePairedControl')]
+        control=next(value for value in rows if value['Group']=='O6' and value['Profile']=='BaselinePairedControl')
+        control['Damage60']+=1
+        with self.assertRaisesRegex(ValueError,'Non-whitelisted HP control changed'):
+            reports.load_run(fixture(self.root/'changed-control',rows,factor='elite-e4-hp095',Groups=['E4','O6'],CandidateWhitelist=['E4']))
+
     def test_elite_hp_candidate_applied_outside_whitelist_is_rejected(self):
         rows=[row(seed,profile=name,group='O6') for seed in range(3) for name in ('Baseline','TargetedE4Hp095')]
         directory=fixture(self.root/'wrong-group',rows,factor='elite-e4-hp095',CandidateWhitelist=['E4'])
@@ -276,7 +324,11 @@ class FactorControlsTests(unittest.TestCase):
 
     def test_non_o6_changed_and_hp_factor_windup_are_rejected(self):
         self.change_rows(lambda rows: next(value for value in rows if value['Profile'] == 'BaselinePairedControl').update(Damage60=999))
-        self.assertIn('unaffected_control_changed', [e['kind'] for e in self.validate()['errors']])
+        result=self.validate()
+        self.assertFalse(result['passed'])
+        self.assertTrue(any(e['kind']=='invalid_run_contract' and 'Non-whitelisted HP control changed' in e['reason']
+                            for e in result['errors']))
+        self.change_rows(lambda rows: next(value for value in rows if value['Profile'] == 'BaselinePairedControl').update(Damage60=10))
         self.change_rows(lambda rows: next(value for value in rows if value['Profile'] == 'TargetedO6Hp095').update(FirstWindupExtraMilliseconds=250))
         self.assertIn('unexpected_windup_change', [e['kind'] for e in self.validate()['errors']])
 
