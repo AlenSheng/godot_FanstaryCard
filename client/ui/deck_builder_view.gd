@@ -103,9 +103,9 @@ static func _deck_panel(ui: Control, host: Control) -> void:
 	var limit_label: Label = ui.text(limit_text, Rect2(1290, 211, 570, 32), 19, P.MUTED)
 	limit_label.name = "DeckOrangeLimits"
 	limit_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	var rows_rect := Rect2(1280, 251, 590, 642)
+	var rows_rect := Rect2(1280, 251, 590, 660)
 	for index in range(DECK_SIZE):
-		_deck_row(ui, host, index, Rect2(rows_rect.position + Vector2(0, index * 32), Vector2(rows_rect.size.x, 30)))
+		_deck_row(ui, host, index, Rect2(rows_rect.position + Vector2(0, index * 33), Vector2(rows_rect.size.x, 32)))
 	var auto: Button = ui.button(P.localized("auto_build"), Rect2(1280, 920, 270, 68), auto_build.bind(host), Game.busy, ui.BLUE)
 	auto.name = "AutoBuildDeck"
 	var done: Button = ui.button(P.localized("finish_deck"), Rect2(1580, 920, 290, 68), host._save_deck, Game.busy, ui.ORANGE)
@@ -134,7 +134,7 @@ static func _deck_row(ui: Control, host: Control, index: int, rect: Rect2) -> vo
 		empty.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		empty.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		return
-	var name_label: Label = ui.text(CardDetails.localized_name(id, info), Rect2(rect.position + Vector2(28, 1), Vector2(205, rect.size.y - 2)), 18, P.PAPER)
+	var name_label: Label = ui.text(CardDetails.localized_name(id, info), Rect2(rect.position + Vector2(28, 1), Vector2(205, rect.size.y - 2)), 22, P.PAPER)
 	name_label.name = "DeckCardName_%02d" % (index + 1)
 	name_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	name_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
@@ -144,7 +144,7 @@ static func _deck_row(ui: Control, host: Control, index: int, rect: Rect2) -> vo
 		var parts: PackedStringArray = host._card_text(id).split("\n\n", true, 1)
 		effect = parts[1] if parts.size() > 1 else host._card_text(id)
 	row.tooltip_text = "%s\n%s\n\n%s" % [name_label.text, effect, P.localized("remove_from_deck")]
-	var effect_label: Label = ui.text(effect.replace("\n", " "), Rect2(rect.position + Vector2(244, 1), Vector2(316, rect.size.y - 2)), 16, P.MUTED)
+	var effect_label: Label = ui.text(effect.replace("\n", " "), Rect2(rect.position + Vector2(244, 1), Vector2(316, rect.size.y - 2)), 20, P.MUTED)
 	effect_label.name = "DeckCardEffect_%02d" % (index + 1)
 	effect_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	effect_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
