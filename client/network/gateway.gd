@@ -81,6 +81,7 @@ var _prelaunch_ticket: Dictionary = {}
 var _prelaunch_snapshot_attempts := 0
 var _prelaunch_snapshot_at := 0
 var _prelaunch_ready_accepted := false
+var _prelaunch_started_read_pending := false
 
 func bind_prelaunch_ticket(match_id: String, known_room_id: String, deadline_unix_ms: int, epoch: int) -> void:
 	# The caller has just read this account's Matched ticket. Match/room/deadline
@@ -96,6 +97,7 @@ func bind_prelaunch_ticket(match_id: String, known_room_id: String, deadline_uni
 		_prelaunch_snapshot_attempts = 0
 		_prelaunch_snapshot_at = 0
 		_prelaunch_ready_accepted = false
+		_prelaunch_started_read_pending = false
 	_prelaunch_ticket = identity
 
 func _prelaunch_valid() -> bool:
@@ -105,7 +107,13 @@ func _expected_match_context() -> String:
 	return str(_prelaunch_ticket.match_id) if _prelaunch_valid() else current_match_id
 
 func _read_prelaunch_snapshot() -> void:
-	if not _prelaunch_valid() or _prelaunch_snapshot_attempts >= 3 or Time.get_ticks_msec() < _prelaunch_snapshot_at: return
+	# The three speculative reads can finish before registration succeeds.
+	# A matching start is a new authority hint: allow one more scoped read,
+	# still throttled and within the original deadline. Repeated hints cannot
+	# rearm beyond four total reads or apply their payload across a gap.
+	var limit := 4 if _prelaunch_started_read_pending else 3
+	if not _prelaunch_valid() or _prelaunch_snapshot_attempts >= limit or Time.get_ticks_msec() < _prelaunch_snapshot_at: return
+	_prelaunch_started_read_pending = false
 	_prelaunch_snapshot_attempts += 1
 	_prelaunch_snapshot_at = Time.get_ticks_msec() + 1000
 	# The wire command is empty: the server resolves this account's route.
@@ -241,6 +249,7 @@ func end_session(reason: String, notify: bool = true) -> void:
 	_prelaunch_ticket = {}
 	_prelaunch_snapshot_attempts = 0
 	_prelaunch_ready_accepted = false
+	_prelaunch_started_read_pending = false
 	token = ""
 	token_expires_at = 0.0
 	reconnect_enabled = false
@@ -562,7 +571,7 @@ func _process(_delta: float) -> void:
 		if online and _pending_ping_request_id.is_empty() and Time.get_ticks_msec() - _last_ping > PING_INTERVAL_MS:
 			var ping_request_id := new_id()
 			if send("ping", {}, ping_request_id): _last_ping = Time.get_ticks_msec()
-		if online and _prelaunch_ready_accepted: _read_prelaunch_snapshot()
+		if online and (_prelaunch_ready_accepted or _prelaunch_started_read_pending): _read_prelaunch_snapshot()
 	elif state == WebSocketPeer.STATE_CLOSED:
 		if _retry_at == 0: _schedule_reconnect()
 		if Time.get_ticks_msec() >= _retry_at:
@@ -767,7 +776,17 @@ func _receive(packet: PackedByteArray) -> void:
 		# started packet is only a hint to read authority. Its payload/cursor
 		# is not applied. The independently verified ticket must match it.
 		if kind == "room.started" and _prelaunch_valid() and str(payload.get("match_id", "")) == str(_prelaunch_ticket.match_id) and str(payload.get("room_id", "")) == str(_prelaunch_ticket.room_id):
+			_prelaunch_started_read_pending = true
 			_read_prelaunch_snapshot()
+		return
+	if kind == "room.ready_required" and _prelaunch_valid() and _prelaunch_ready_accepted and str(payload.get("match_id", "")) == str(_prelaunch_ticket.match_id) and str(payload.get("room_id", "")) == str(_prelaunch_ticket.room_id):
+		# Own READY was already accepted for this verified lobby. A late hint
+		# cannot reopen confirmation or replace the displayed accepted count.
+		_emit_lifecycle_guard({"type":"lifecycle_guard", "event_type":kind, "decision":"Ignored", "trace_only":true,
+			"reason":"already_ready_accepted", "sequence":sequence, "last_sequence":last_sequence,
+			"received_match_id":payload.get("match_id", ""), "received_room_id":payload.get("room_id", "")}, payload, receive_owner)
+		last_sequence = sequence
+		_save_session()
 		return
 	var prior_room_callback := false
 	if kind == "room.started" and not room_id.is_empty() and not current_match_id.is_empty():

@@ -173,7 +173,14 @@ def start_client(args: argparse.Namespace, report_dir: Path, stop_file: Path, gr
 
 
 def stop_all(processes: list[dict], stop_file: Path, grace_seconds: float = 35) -> list[int]:
-    stop_file.write_text("stop", encoding="utf-8")
+    # An external supervisor may own a readable marker that we cannot rewrite.
+    # Its existence has already signalled STOP; preserve that signal and reason.
+    try:
+        with stop_file.open("x", encoding="utf-8") as marker:
+            marker.write("stop")
+    except FileExistsError:
+        if not stop_file.is_file():
+            raise IsADirectoryError("Existing STOP marker is not a regular file: " + str(stop_file))
     deadline = time.monotonic() + max(0, grace_seconds)
     while time.monotonic() < deadline:
         alive = [entry for entry in processes if entry["process"].poll() is None]

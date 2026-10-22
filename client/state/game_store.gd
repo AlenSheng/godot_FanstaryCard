@@ -622,6 +622,7 @@ func _commit_class_selection() -> void:
 			_pending_class = ""
 			break
 		if result.ok:
+			_lobby_request_epoch += 1
 			lobby.player = result.data
 			# A newer click remains visually authoritative until its own save completes.
 			if _pending_class.is_empty():
@@ -1647,6 +1648,9 @@ func _load_settlement(id: String) -> void:
 	var load_epoch := _settlement_load_epoch
 	var context_epoch := _room_context_epoch
 	var generation: int = gateway.session_generation
+	# Give a normal detail read one polling interval before automatic recovery.
+	# A stalled detail must not block the same-match committed-receipt projection.
+	_settlement_poll_at = maxi(_settlement_poll_at, Time.get_ticks_msec() + 2500)
 	var result: Dictionary = await gateway.request("/api/v1/settlements/" + id)
 	if generation != gateway.session_generation: return
 	if load_epoch != _settlement_load_epoch: return
@@ -1672,7 +1676,7 @@ func _poll_ready_settlement() -> void:
 	_settlement_poll_at = Time.get_ticks_msec() + 2500
 	var generation: int = gateway.session_generation
 	# Bootstrap exposes only settlements whose asset holds have finished committing.
-	var result: Dictionary = await gateway.request("/api/v1/bootstrap", HTTPClient.METHOD_GET, null, [0, 502, 503, 504])
+	var result: Dictionary = await gateway.request("/api/v1/bootstrap?settlementMatchId=" + match_id.uri_encode(), HTTPClient.METHOD_GET, null, [0, 502, 503, 504])
 	if generation != gateway.session_generation: return
 	if poll_epoch != _settlement_poll_request_epoch: return
 	_settlement_polling = false

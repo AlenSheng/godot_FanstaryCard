@@ -164,8 +164,20 @@ class Handler(BaseHTTPRequestHandler):
         released = plan["gate"].wait(REQUEST_GATE_SECONDS)
         receipt = {"settlement_id": plan.get("receipt_id", ""), "match_id": plan.get("match_id", ""),
                    "player_id": plan.get("account", "callback-A"), "result": "Dead", "details": {}}
-        data = bootstrap(receipt if plan.get("receipt_id") else None, plan.get("account", "callback-A")) if self.path == "/api/v1/bootstrap" else receipt
-        self.respond(200, encode("BootstrapResponse" if self.path == "/api/v1/bootstrap" else "SettlementResponse", data), "application/protobuf")
+        is_bootstrap = uri.path == "/api/v1/bootstrap"
+        if is_bootstrap and uri.query:
+            selector = parse_qs(uri.query).get("settlementMatchId", [])
+            if len(selector) != 1 or selector[0] != plan.get("match_id"):
+                raise ValueError("Planned settlement projection must select its exact match")
+            # Production keeps the existing BootstrapResponse wire contract
+            # and omits catalogs from this ready-only projection.
+            data = {"server_time": "2026-10-21T00:00:00+00:00", "config_version": VERSION,
+                    "unfinished_settlement": receipt if plan.get("receipt_id") else None}
+        elif is_bootstrap:
+            data = bootstrap(receipt if plan.get("receipt_id") else None, plan.get("account", "callback-A"))
+        else:
+            data = receipt
+        self.respond(200, encode("BootstrapResponse" if is_bootstrap else "SettlementResponse", data), "application/protobuf")
         with self.server.lock:
             plan["done"] = True
             record.update(status=200, gate_released=released, completed_ns=time.monotonic_ns())

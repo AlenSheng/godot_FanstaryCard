@@ -267,6 +267,10 @@ Godot 的 `client/platform/platform_service.gd` 已封装 GodotSteam 单例初�
 }
 ```
 
+已知当前 `matchId`、尚未知结算 ID 时，可请求 `GET /api/v1/bootstrap?settlementMatchId={matchId}`。该模式沿用同一 `BootstrapResponse` Protobuf，只填充 `serverTime`、`configVersion` 和 `unfinishedSettlement`，不读取或返回卡牌、牌组、经济、背包和市场目录。客户端只能将它用于结算恢复，不能用这份投影替换大厅缓存。
+
+投影在同一查询快照中限定当前调用者和指定 match，且只返回未 ACK、没有 Pending asset holds 的收据；未找到、非本人、尚未就绪或已确认均为 `unfinishedSettlement = null`。参数必须是一个非空 UUID，空值、无效值或重复参数返回 400；未鉴权仍优先返回 401。省略该参数时，原完整 Bootstrap 行为保持。新客户端访问旧服务端时，旧服务端忽略此参数并返回完整 Bootstrap，恢复消费者仍只接纳同 match 的就绪收据。详情接口的 200 不能作为资产已提交的判据。
+
 死亡结算提交后身上五件防具进遗物堆，对应配装栏保持空。开局与死亡都 **不发放绑定白鞋**。专属武器始终保留，不进遗物堆。
 
 客户端完成结算弹窗数据绑定后调用：
@@ -589,7 +593,7 @@ Idempotency-Key: settlement-ack-018f90dc
 
 `GET /api/v1/matches/tickets/{ticketId}` 查询本人 ticket；不存在返回 404。
 
-`DELETE /api/v1/matches/tickets/{ticketId}` 必须带 `Idempotency-Key`。Queued 取消后 preparation 回到 Active，锁定装备恢复 `Equipped`。同键改 ticket 返回 409。已开房返回 409，不能用取消准备接口代替。
+`DELETE /api/v1/matches/tickets/{ticketId}` 必须带 `Idempotency-Key`。Queued 取消后 ticket 与对应的 Queued preparation 均变为 `Cancelled`，锁定装备恢复 `Equipped`；再次入队前需重新创建准备。同键改 ticket 返回 409。已匹配的 ticket 不能通过此接口取消，返回 409；Matched 历史票据可能保留，由权威成员、准备与 Bootstrap 状态判断是否仍占用资源，不能仅凭历史票据状态判定收尾失败。
 
 ## 10. WebSocket
 

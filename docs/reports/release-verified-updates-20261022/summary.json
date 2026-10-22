@@ -1,0 +1,75 @@
+{
+  "kind": "VerifiedFunctionalUpdatesRelease",
+  "created_utc": "2026-10-22T02:43:56.785201+00:00",
+  "base_release": "86ddee230a785d793757da6d0d24056a64a25955",
+  "source_files": 30,
+  "scope": [
+    "Prelaunch authoritative recovery and stale READY/room isolation",
+    "Settlement projection scoped to authenticated caller and match, ready asset holds only",
+    "Class-selection epoch and stalled settlement recovery",
+    "Preserve native button clicks across same-context UI refresh",
+    "Honor HTTP Connection: close",
+    "Bounded STOP, fallback completion and native coverage evidence gates"
+  ],
+  "validation": {
+    "local_Godot_resources": 4,
+    "local_Godot_regressions": 24,
+    "local_Godot_actual_exit": 0,
+    "local_mode": "headless Dummy60 hidden BelowNormal",
+    "Python_tests_passed": 37,
+    "Python_actual_exit": 0,
+    "Server_native_tests": 5,
+    "Server_passed": 5,
+    "Server_skipped": 0,
+    "Server_actual_exit": 0,
+    "Server_run": "user-release-LF-PG-01a152f7-r5-20261022",
+    "Server_real_HTTP_and_actual_private_Postgres": true,
+    "Server_source": "Fresh staged Git LF sources, cached NuGet dependencies, actual DLL identities attached; not a clean dependency rebuild claim"
+  },
+  "preserved_failures": [
+    {
+      "run": "local-server-offline-initial",
+      "result": "MSB1009 missing csproj, zero tests"
+    },
+    {
+      "run": "local-server-offline-r3-wrapper",
+      "result": "Native encoding2 passed, PostgreSQL2 not executed; wrapper count assertion failed"
+    },
+    {
+      "run": "cloud-R1",
+      "result": "Linux apphost absent; discovery failure, zero tests"
+    },
+    {
+      "run": "cloud-R2",
+      "result": "4 passed 1 failed: missing project directory fixture"
+    },
+    {
+      "run": "cloud-R3",
+      "result": "4 passed 1 failed: process-log directory read-only fixture"
+    },
+    {
+      "run": "cloud-R4",
+      "result": "Container mountpoint absent; native zero runs, created container recorded then removed"
+    }
+  ],
+  "correction": "R5 added authentic source/project directory and empty process-log mountpoint backed by owned writable RAM; production code and native DLLs unchanged from fresh build. No acceptance criteria relaxed.",
+  "acceptance_boundary": {
+    "Accepted": 100,
+    "Partial": 24,
+    "Ready": 8,
+    "unaccepted": 32,
+    "missing_case_profile_pairs": 62,
+    "six_global_gates": "NotAccepted",
+    "whole_project_accepted": false,
+    "scope_note": "Verified functional changes released. Parent task, full hosted CI, missing historical evidence and resource-insufficient 50/100-client capacity remain unaccepted. Human experience excluded."
+  },
+  "excluded_work": [
+    "Unexecuted hosted workflow edits",
+    ".github/workflows/numerical-acceptance.yml",
+    "Draft execution pointer and incomplete reports/raw archives"
+  ],
+  "assets": "No newly generated art in this release; previously accepted formal assets remain on release.",
+  "cloud_action": "Push release remote then reboot existing cloud OS once; no new image deployment is claimed.",
+  "raw_evidence_root": "G:\\PR13Evidence\\release-all-verified-and-reboot-20261022-r1-originals",
+  "source_manifest": "source-manifest.json"
+}

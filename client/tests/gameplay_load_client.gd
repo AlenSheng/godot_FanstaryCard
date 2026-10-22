@@ -336,6 +336,7 @@ func _run_expedition() -> void:
 		await _wait(8.0)
 	if not Game.settlement.is_empty():
 		stage = "settlement"
+		_update_context()
 		var settlement_match_id := str(Game.settlement.get("matchId", ""))
 		var acknowledged: bool = await Game.acknowledge_settlement()
 		_on_telemetry({"type": "lifecycle", "event_type": "settlement.acknowledged" if acknowledged else "settlement.ack_failed",
@@ -407,21 +408,9 @@ func _graceful_cleanup() -> void:
 	var cleanup_ticket_id := str(Game.ticket.get("ticketId", ""))
 	_update_context()
 	_close_battle_metrics("Stopped" if stop_requested else "Terminal")
-	# A deliberate drain uses the same legal exit as a player. Its abandon/ACK
-	# is recorded separately and cannot increase completed gameplay cycles.
-	if Game.settlement.is_empty() and not Game.room.is_empty():
-		var exit_deadline := Time.get_ticks_msec() + 6000
-		while Time.get_ticks_msec() < exit_deadline and Game.settlement.is_empty():
-			var exit_action := "battle.abandon" if Game.allowed("battle.abandon") else "action.extract" if Game.allowed("action.extract") else ""
-			if not exit_action.is_empty() and Game.command(exit_action):
-				_on_telemetry({"type": "lifecycle", "event_type": "cleanup.exit_requested", "match_id": active_match_id, "action": exit_action})
-				break
-			await _wait(0.2)
-		var settlement_deadline := Time.get_ticks_msec() + 6000
-		while Game.settlement.is_empty() and not Game.room.is_empty() and Time.get_ticks_msec() < settlement_deadline:
-			await _wait(0.2)
 	if Game.room.is_empty() and Game.settlement.is_empty() and (not Game.ticket.is_empty() or not Game.preparation.is_empty()):
 		await _cancel_waiting_preparation(cleanup_generation, cleanup_cycle_match_id, cleanup_preparation_id, cleanup_ticket_id)
+	await _drain_cleanup_room(cleanup_generation, cleanup_cycle_match_id, cleanup_preparation_id, cleanup_ticket_id)
 	if not Game.settlement.is_empty():
 		var cleanup_match_id := str(Game.settlement.get("matchId", ""))
 		if await Game.acknowledge_settlement():
@@ -511,6 +500,31 @@ func _graceful_cleanup() -> void:
 	cleanup_result.merge({"bootstrap_read_attempts": bootstrap_read_attempts, "bootstrap_read_failures": bootstrap_read_failures,
 		"bootstrap_read_retries": bootstrap_read_retries, "bootstrap_last_http_status": bootstrap_last_http_status}, true)
 	_on_telemetry({"type": "lifecycle", "event_type": "cleanup.verified", "cleanup": cleanup_result})
+
+func _drain_cleanup_room(generation: int, match_id: String, preparation_id: String, ticket_id: String) -> void:
+	# A READY already sent before STOP can join after the ticket read returns.
+	# Keep that verified route open within the existing exit budget, then use
+	# the same legal exit/ACK as a room that was present when cleanup began.
+	var awaiting_join: bool = not match_id.is_empty() and verified_ready_match_id == match_id and not Game.ticket.is_empty()
+	if not Game.settlement.is_empty() or (Game.room.is_empty() and not awaiting_join): return
+	var exit_deadline := Time.get_ticks_msec() + 6000
+	while Time.get_ticks_msec() < exit_deadline and Game.settlement.is_empty():
+		if not _cleanup_context_is_current(generation, match_id, preparation_id, ticket_id): return
+		if Game.room.is_empty():
+			if Game.ticket.is_empty(): return
+			await _wait(0.2)
+			continue
+		if str(Game.room.get("match_id", "")) != match_id: return
+		var exit_action := "battle.abandon" if Game.allowed("battle.abandon") else "action.extract" if Game.allowed("action.extract") else ""
+		if not exit_action.is_empty() and Game.command(exit_action):
+			_on_telemetry({"type": "lifecycle", "event_type": "cleanup.exit_requested", "match_id": match_id, "action": exit_action})
+			break
+		await _wait(0.2)
+	var settlement_deadline := Time.get_ticks_msec() + 6000
+	while Game.settlement.is_empty() and not Game.room.is_empty() and Time.get_ticks_msec() < settlement_deadline:
+		if not _cleanup_context_is_current(generation, match_id, preparation_id, ticket_id): return
+		if str(Game.room.get("match_id", "")) != match_id: return
+		await _wait(0.2)
 
 func _cleanup_context_is_current(generation: int, match_id: String, preparation_id: String, ticket_id: String) -> bool:
 	return Game.gateway.session_generation == generation and active_match_id == match_id and str(Game.preparation.get("preparationId", "")) in ["", preparation_id] and str(Game.ticket.get("ticketId", "")) in ["", ticket_id]
@@ -1095,9 +1109,27 @@ func _write_status() -> void:
 		file.close()
 		DirAccess.rename_absolute(report_path + ".status.json.tmp", report_path + ".status.json")
 
+func _prepare_audio_exit() -> Dictionary:
+	# Match the existing native audio regressions: retire playback before the
+	# scene tree and audio buses are destroyed, rather than during _exit_tree.
+	# Minimal recorder fixtures intentionally omit the Sound autoload.
+	var sound = get_node_or_null("/root/Sound")
+	if sound == null:
+		return {"service_present": false, "stop_requested": false, "drain_ms": 0}
+	var started := Time.get_ticks_msec()
+	sound.set_process(false)
+	sound.set_music_context("")
+	sound.stop_all()
+	sound.stop_music()
+	await get_tree().process_frame
+	await get_tree().create_timer(0.15).timeout
+	return {"service_present": true, "stop_requested": true,
+		"drain_ms": Time.get_ticks_msec() - started}
+
 func _finish(ok: bool, message: String, exit_code: int = -1) -> void:
 	if finished: return
 	finished = true
+	var audio_shutdown: Dictionary = await _prepare_audio_exit()
 	_flush_audit()
 	var report: Dictionary = {"ok": ok, "message": message, "client_id": client_id, "group": group_id, "pid": OS.get_process_id(), "user_id": own_user_id, "started_at_unix_ms": int(Time.get_unix_time_from_system() * 1000.0) - (Time.get_ticks_msec() - started_at_ms), "ended_at_unix_ms": int(Time.get_unix_time_from_system() * 1000.0), "elapsed_ms": Time.get_ticks_msec() - started_at_ms, "cycles_completed": cycles_completed, "checks": checks, "operations": operations, "telemetry": telemetry, "events": events, "errors": errors}
 	report.merge({"run_id": run_id, "process_epoch": process_epoch, "event_seq_max": event_seq, "audit_lost_count": audit_lost_count, "cleanup": cleanup_result, "hero_class": hero_profile, "strategy": strategy, "strategy_seed": strategy_seed, "load_profile": load_profile, "outcome": "completed" if ok else ("cancelled" if exit_code == 0 else "failed")})
@@ -1109,6 +1141,7 @@ func _finish(ok: bool, message: String, exit_code: int = -1) -> void:
 	report["gameplay_progress_reason"] = last_gameplay_progress_reason
 	report["transport_progress_reason"] = last_transport_progress_reason
 	report["waiting_stage"] = _progress_waiting_stage()
+	report["audio_shutdown"] = audio_shutdown
 	var file := FileAccess.open(report_path, FileAccess.WRITE)
 	if file != null:
 		file.store_string(JSON.stringify(report, "\t"))

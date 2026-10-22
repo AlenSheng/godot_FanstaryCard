@@ -67,9 +67,14 @@ func request(tree: SceneTree, origin: String, path: String, method: int,
 	# Framing proves the compressed wire body is complete. Decode only after
 	# that check, with the same limit on the expanded body as HTTPRequest.
 	var encoding := ""
+	var connection_close := false
 	for header in response_headers:
-		if header.get_slice(":", 0).strip_edges().to_lower() == "content-encoding":
-			encoding = header.substr(header.find(":") + 1).strip_edges().to_lower()
+		var name := header.get_slice(":", 0).strip_edges().to_lower()
+		var value := header.substr(header.find(":") + 1).strip_edges().to_lower()
+		if name == "content-encoding": encoding = value
+		elif name == "connection":
+			for token in value.split(","):
+				if token.strip_edges() == "close": connection_close = true
 	if encoding not in ["", "identity"]:
 		if encoding not in ["gzip", "deflate"]:
 			return _failure(HTTPRequest.RESULT_BODY_DECOMPRESS_FAILED)
@@ -82,7 +87,8 @@ func request(tree: SceneTree, origin: String, path: String, method: int,
 		if expanded.is_empty() and not _is_complete_empty_compressed_body(response_body, encoding == "deflate"):
 			return _failure(HTTPRequest.RESULT_BODY_DECOMPRESS_FAILED)
 		response_body = expanded
-	if _client.get_status() != HTTPClient.STATUS_CONNECTED:
+	# The peer can advertise closure before its FIN reaches us.
+	if connection_close or _client.get_status() != HTTPClient.STATUS_CONNECTED:
 		close()
 	busy = false
 	return [HTTPRequest.RESULT_SUCCESS, code, response_headers, response_body, reused]

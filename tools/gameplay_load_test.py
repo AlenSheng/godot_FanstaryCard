@@ -814,12 +814,25 @@ def main():
             and client['cleanup'].get('state') == 'Failed' for client in final_clients)
         business_cleanup_failed = business_cleanup_failed or any(
             row['cleanup']['state'] == 'Failed' for row in native_final_reports)
+        normal_required = args.smoke and args.load_profile != 'functional-cycles'
+        normal_by_client = cutoffs['final']['normal_cycles_by_client']
+        normal_verified = (len(processes) == expected_clients and all(
+            normal_by_client.get(entry['client_id'], 0) >= args.smoke_cycles
+            for entry in processes))
+        normal_cycle_requirement = {
+            'required': normal_required,
+            'passed': normal_verified if normal_required else None,
+            'minimum_per_client': args.smoke_cycles if normal_required else None,
+            'normal_cycles_by_client': normal_by_client,
+            'scope': cutoffs['normal_completion_scope'],
+            'functional_workflow_only': args.load_profile == 'functional-cycles'}
         dimensions=result_dimensions(execution=not reason.startswith('coordinator_error:') and process_cleanup_complete
                 and not final_business_failed,
             evidence=not bool(final_evidence_failed or not sampling['passed'] or
                 reason.startswith('invalid_evidence:') or reason.startswith('coordinator_error:')),
             load=load_coverage['passed'] if args.run else smoke_verified,
-            gameplay=smoke_verified and not final_business_failed if args.smoke else None,
+            gameplay=(smoke_verified and not final_business_failed and
+                (not normal_required or normal_verified)) if args.smoke else None,
             performance=False if args.run and reason.startswith('redline:') else True if args.run and performance_verified else None,
             cleanup=False if not process_cleanup_complete or business_cleanup_failed else (True if business_cleanup else None),
             applicable=contract['acceptance_scope'])
@@ -838,7 +851,8 @@ def main():
                 (package_source_failed, 'native_package_evidence_invalid'),
                 (coverage_evidence_failed, 'load_coverage_evidence_invalid'),
                 (post_stop_failure, 'post_stop_process_failure'), (final_business_failed, 'final_business_failure'),
-                (business_cleanup_failed, 'business_cleanup_failed'), (not sampling['passed'], 'sampling_integrity_failed')):
+                (business_cleanup_failed, 'business_cleanup_failed'), (not sampling['passed'], 'sampling_integrity_failed'),
+                (normal_required and smoke_verified and not normal_verified, 'normal_cycle_requirement_not_met')):
             if failed: final_triggers.append(trigger)
         report_data={'schema_version':5,'started':started,'ended':time.time(),'groups':groups,'clients':len(processes),
             'stop_file':str(stop_file),
@@ -851,7 +865,8 @@ def main():
             'launch_admission_rejection':read_json(run_dir/'launch-admission-rejected.json'),
             'sampling_integrity':sampling,'started_monotonic_ms':started_monotonic*1000,
             'performance_inputs':performance_inputs,
-            'cycle_cutoffs':cutoffs,'request_distributions':request_distributions,'audit_read_errors':audit_errors,
+            'cycle_cutoffs':cutoffs,'normal_cycle_requirement':normal_cycle_requirement,
+            'request_distributions':request_distributions,'audit_read_errors':audit_errors,
             'final_read_errors':final_read_errors,'tail_lost_event_count':tail_lost,
             'final_status_read_errors':final_status_read_errors,
             'native_final_report_errors':native_report_errors,

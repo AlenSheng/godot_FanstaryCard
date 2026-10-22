@@ -54,6 +54,8 @@ var potion_count := 0
 var edit_mode := false
 var screen_loading := false
 var _render_pending := false
+var _left_pointer_down := false
+var _pointer_render_context: Array = []
 var mail_modal_lock := false
 var _midlayer_seen: Dictionary = {}
 var _login_name := ""
@@ -129,6 +131,10 @@ func _process(_delta: float) -> void:
 		_check_memory_redline()
 
 func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_WINDOW_FOCUS_OUT:
+		_left_pointer_down = false
+		_pointer_render_context.clear()
+		if _render_pending: _render.call_deferred()
 	if what == NOTIFICATION_OS_MEMORY_WARNING and is_instance_valid(_card_pool):
 		_trim_card_pool_for_memory(true)
 
@@ -273,11 +279,30 @@ func _build_shell() -> void:
 	version_label.offset_bottom = -12
 	_login_version_label = version_label
 
+func _render_interaction_context() -> Array:
+	return [Game.gateway.session_generation, Game.room.get("match_id", ""), Game.room.get("room_id", ""),
+		Game.room.get("player", {}).get("phase", ""), Game._room_actions_closed(),
+		Game.settlement.get("settlementId", ""), Game._settlement_recovery_match_id, screen]
+
+func _input(event: InputEvent) -> void:
+	if not event is InputEventMouseButton or event.button_index != MOUSE_BUTTON_LEFT: return
+	_left_pointer_down = event.pressed
+	if event.pressed:
+		_pointer_render_context = _render_interaction_context()
+	else:
+		_pointer_render_context.clear()
+		if _render_pending: _render.call_deferred()
+
 func _schedule_render() -> void:
 	if mail_modal_lock: return
 	_sync_account_session()
 	if is_instance_valid(_game_title): _game_title.text = P.localized("game_title")
-	if _render_pending: return
+	if _render_pending:
+		if _left_pointer_down and _pointer_render_context != _render_interaction_context():
+			_left_pointer_down = false
+			_pointer_render_context.clear()
+			_render.call_deferred()
+		return
 	_render_pending = true
 	_render.call_deferred()
 
@@ -476,6 +501,14 @@ func _reset_account_ui() -> void:
 			child.queue_free()
 
 func _render() -> void:
+	# Rebuilding the pressed button before release cancels its native click.
+	# Keep only this interaction's view; a new session/room/phase still renders.
+	if _left_pointer_down and _pointer_render_context == _render_interaction_context():
+		_render_pending = true
+		return
+	if _left_pointer_down:
+		_left_pointer_down = false
+		_pointer_render_context.clear()
 	_render_pending = false
 	_sync_draw_charge_visual()
 	var room_cell := "%s:%s:%s" % [Game.room.get("room_id", ""), Game.room.get("self", {}).get("row", -1), Game.room.get("self", {}).get("column", -1)]

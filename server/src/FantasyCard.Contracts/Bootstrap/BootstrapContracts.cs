@@ -34,3 +34,9 @@ public sealed record BootstrapResponse(
     public MailListResponse? Mail { get; init; }
     public PreparationResponse? ActivePreparation { get; init; }
 }
+
+// Opt-in recovery projection of the existing BootstrapResponse wire contract.
+public sealed record BootstrapSettlementProjection(
+    DateTimeOffset ServerTime,
+    string ConfigVersion,
+    SettlementResponse? UnfinishedSettlement);

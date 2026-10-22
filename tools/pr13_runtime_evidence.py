@@ -107,12 +107,14 @@ def reconcile_cycles(events, stop_ms, final_ms, *, cutoff_clock_qualified=True):
                 stream_errors.add('invalid_event_type'); continue
             if e.get('match_id') is not None and not isinstance(e['match_id'],str):
                 stream_errors.add('invalid_business_match_type'); continue
-            if kind in ('settlement.acknowledged','cycle.completed') and (
+            if (kind in ('settlement.acknowledged','cycle.completed','battle.abandon.fallback','battle.abandon.scenario') or
+                    (kind == 'command.sent' and e.get('action') == 'battle.abandon')) and (
                     not isinstance(e.get('match_id'),str) or not e['match_id']):
                 stream_errors.add('missing_business_context'); continue
-            if kind in ('settlement.acknowledged','cycle.completed','battle.abandon.fallback'):
+            if (kind in ('settlement.acknowledged','cycle.completed','battle.abandon.fallback','battle.abandon.scenario') or
+                    (kind == 'command.sent' and e.get('action') == 'battle.abandon')):
                 business.append({k:e.get(k) for k in ('run_id','client_id','process_epoch','event_seq',
-                                                     'at_unix_ms','cycle_id','match_id','event_type')})
+                                                     'at_unix_ms','cycle_id','match_id','event_type','completion_stage','observation_phase','action')})
         result = reconcile_cycles(business, stop_ms, final_ms, cutoff_clock_qualified=cutoff_clock_qualified)
         result['evidence_errors'] = sorted(set(result['evidence_errors']) | stream_errors)
         return result
@@ -131,7 +133,8 @@ def reconcile_cycles(events, stop_ms, final_ms, *, cutoff_clock_qualified=True):
             errors.append('invalid_event_type'); continue
         if e.get('match_id') is not None and not isinstance(e['match_id'], str):
             errors.append('invalid_business_match_type'); continue
-        if e.get('event_type') in ('settlement.acknowledged','cycle.completed') and (
+        if (e.get('event_type') in ('settlement.acknowledged','cycle.completed','battle.abandon.fallback','battle.abandon.scenario') or
+                (e.get('event_type') == 'command.sent' and e.get('action') == 'battle.abandon')) and (
                 not isinstance(e.get('match_id'),str) or not e['match_id']):
             errors.append('missing_business_context');continue
         if identity in unique and unique[identity] != e:
@@ -154,9 +157,26 @@ def reconcile_cycles(events, stop_ms, final_ms, *, cutoff_clock_qualified=True):
             key = tuple(e[k] for k in business_fields)
             if key not in acknowledgements or acknowledgements[key] >= e['event_seq']:
                 errors.append('completion_without_prior_matching_acknowledgement')
+    # Classify by the complete owned business identity, including origins that
+    # were emitted before a cutoff but acknowledged in its drain interval.
+    origins = {}
+    for event in buckets['final']:
+        kind = event.get('event_type')
+        origin = ('fallback' if kind == 'battle.abandon.fallback' else
+                  'scenario' if kind == 'battle.abandon.scenario' else
+                  'drain_only' if kind in ('settlement.acknowledged', 'cycle.completed')
+                  and event.get('completion_stage') == 'drain_ack_only' else
+                  'unclassified' if kind == 'command.sent'
+                  and event.get('action') == 'battle.abandon' else None)
+        if origin:
+            key = tuple(event.get(field) for field in business_fields)
+            origins.setdefault(key, []).append((origin, event['event_seq']))
+
     def derive(rows):
         ack = Counter()
         complete = Counter()
+        categories = {name: Counter() for name in (
+            "normal", "fallback", "scenario", "drain_only", "unclassified")}
         fallback = set()
         seen = set()
         for e in rows:
@@ -166,13 +186,35 @@ def reconcile_cycles(events, stop_ms, final_ms, *, cutoff_clock_qualified=True):
                 errors.append("duplicate_business_completion"); continue
             seen.add(business_key)
             if kind == "settlement.acknowledged": ack[e["client_id"]] += 1
-            if kind == "cycle.completed": complete[e["client_id"]] += 1
-            if kind == "battle.abandon.fallback": fallback.add((e["client_id"], e["cycle_id"]))
+            if kind == "cycle.completed":
+                complete[e["client_id"]] += 1
+                key = tuple(e.get(field) for field in business_fields)
+                recorded = origins.get(key, [])
+                labels = {origin for origin, _ in recorded}
+                # A send trace establishes an attempt, not authoritative death.
+                # A declared origin resolves that uncertainty for this workflow.
+                declared = labels - {'unclassified'}
+                if declared:
+                    labels = declared
+                category = next(iter(labels)) if len(labels) == 1 else 'normal'
+                if len(labels) > 1:
+                    errors.append('conflicting_completion_origins')
+                    category = 'unclassified'
+                if any(sequence > e['event_seq'] for _, sequence in recorded):
+                    errors.append('completion_origin_after_completion')
+                    category = 'unclassified'
+                categories[category][e['client_id']] += 1
+            if kind == "battle.abandon.fallback":
+                fallback.add(tuple(e.get(field) for field in business_fields))
         return {"acknowledgements": sum(ack.values()), "completed_cycles": sum(complete.values()),
                 "cycles_by_client": dict(sorted(complete.items())),
                 "acknowledgements_by_client": dict(sorted(ack.items())),
                 "distribution": dict(sorted(Counter(complete.values()).items())),
-                "fallback_cycles": len(fallback)}
+                "fallback_cycles": len(fallback),
+                **{name + '_completed_cycles': sum(counts.values())
+                   for name, counts in categories.items()},
+                **{name + '_cycles_by_client': dict(sorted(counts.items()))
+                   for name, counts in categories.items()}}
     result = {name: derive(rows) for name, rows in buckets.items()}
     if cutoff_clock_qualified:
         for key in ("acknowledgements", "completed_cycles"):
@@ -182,6 +224,11 @@ def reconcile_cycles(events, stop_ms, final_ms, *, cutoff_clock_qualified=True):
         result['running'] = result['drain'] = None
         result['cutoff_classification'] = 'Unavailable: coordinator cutoff clock unqualified; final contains all caller-owned audit events'
         errors.append('cutoff_clock_unqualified')
+    result['completion_classification_algorithm'] = 'owned-cycle-origins-v1'
+    result['normal_completion_scope'] = (
+        'Acknowledged cycle without a recorded fallback, functional abandon or drain-only origin; '
+        'undeclared abandon attempts remain unclassified; '
+        'not proof of combat victory, full route coverage or capacity')
     # Zero-cycle clients must be taken from a launch manifest, never guessed here.
     result["zero_cycle_clients"] = None
     result["zero_cycle_reason"] = "requires_launch_manifest"

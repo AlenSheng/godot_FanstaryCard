@@ -61,6 +61,36 @@ public sealed class BootstrapRepository(
         };
     }
 
+    public async Task<BootstrapSettlementProjection> GetSettlementAsync(
+        Guid playerId,
+        Guid matchId,
+        CancellationToken cancellationToken)
+    {
+        await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
+        await using var command = new NpgsqlCommand("""
+            SELECT s.settlement_id,s.match_id,s.player_id,s.result,s.details_json::text,s.created_at
+            FROM match_settlements s
+            WHERE s.player_id=$1 AND s.match_id=$2
+              AND s.acknowledged_at IS NULL
+              AND NOT EXISTS (
+                  SELECT 1 FROM settlement_asset_holds h
+                  WHERE h.settlement_id=s.settlement_id AND h.state='Pending')
+            ORDER BY s.created_at DESC,s.settlement_id DESC
+            LIMIT 1
+            """, connection);
+        command.Parameters.AddWithValue(playerId);
+        command.Parameters.AddWithValue(matchId);
+        await using var reader = await command.ExecuteReaderAsync(cancellationToken);
+        SettlementResponse? settlement = null;
+        if (await reader.ReadAsync(cancellationToken))
+        {
+            using var details = JsonDocument.Parse(reader.GetString(4));
+            settlement = new SettlementResponse(reader.GetGuid(0), reader.GetGuid(1), reader.GetGuid(2),
+                reader.GetString(3), details.RootElement.Clone(), reader.GetFieldValue<DateTimeOffset>(5));
+        }
+        return new BootstrapSettlementProjection(timeProvider.GetUtcNow(), CurrentConfigVersion, settlement);
+    }
+
     private sealed record CoreState(
         WalletResponse Wallet, MaterialsResponse Materials,
         IReadOnlyList<ClassWeaponResponse> Weapons, IReadOnlyList<LoadoutResponse> Loadouts,
