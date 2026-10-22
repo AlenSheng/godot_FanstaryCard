@@ -55,6 +55,7 @@ func show_tip(message: String, viewport_y_ratio: float = VIEWPORT_Y_RATIO) -> vo
 	if localized.is_empty():
 		clear()
 		return
+	offset = Vector2.ZERO
 	_serial += 1
 	var serial := _serial
 	if is_instance_valid(_tween):
@@ -73,7 +74,17 @@ func show_tip(message: String, viewport_y_ratio: float = VIEWPORT_Y_RATIO) -> vo
 	_tween.tween_property(panel, "modulate:a", 0.0, FADE_DURATION).set_delay(DISPLAY_DURATION - FADE_DURATION)
 	_tween.finished.connect(_finish.bind(serial))
 
+func set_viewport_anchor(viewport_y_ratio: float = VIEWPORT_Y_RATIO) -> void:
+	if not panel.visible: return
+	var viewport_size := get_viewport().get_visible_rect().size
+	# Translate the whole layer; the running rise/fade tween and its lifetime
+	# remain unchanged when the underlying screen changes.
+	var target := Vector2((viewport_size.x - panel.size.x) * 0.5,
+		viewport_size.y * viewport_y_ratio - panel.size.y * 0.5)
+	offset = target - _start_position
+
 func clear() -> void:
+	offset = Vector2.ZERO
 	_serial += 1
 	if is_instance_valid(_tween):
 		_tween.kill()
@@ -82,7 +93,7 @@ func clear() -> void:
 	panel.modulate = Color.WHITE
 
 func start_position() -> Vector2:
-	return _start_position
+	return _start_position + offset
 
 func _layout_at_start(viewport_y_ratio: float = VIEWPORT_Y_RATIO) -> void:
 	var viewport_size := Vector2(1920, 1080)

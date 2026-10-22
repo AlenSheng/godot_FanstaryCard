@@ -1,0 +1,77 @@
+{
+  "kind": "VerifiedSettlementCombatFeedbackAndNoticeLifecycleFix",
+  "at_utc": "2026-10-22T07:41:42.651923+00:00",
+  "accepted_scope": "Automated settlement/combat-feedback UI effect acceptance only",
+  "root_source_changes": [
+    {
+      "path": "client/ui/tips_overlay.gd",
+      "before_SHA": "6ae3c6dcecf098e20897e07a7251c6d0ce2450f6f56da914d406a416f8ff07e3",
+      "after_SHA": "6b0762ed3800e139abad3bf591fdce134c4b662606122055a36ce5f1acaacdcf",
+      "root_exact_after_bytes": true
+    },
+    {
+      "path": "client/ui/main.gd",
+      "before_SHA": "6735b3d746e7fd340a3f4e1fbeda37d05f9048055cccae2e2007280f277fa002",
+      "after_SHA": "21b7e76537845468a32989369d2f079a72101adaa50c7bd7c284b85476cf3977",
+      "root_exact_after_bytes": true
+    },
+    {
+      "path": "client/tests/test_tips_overlay.gd",
+      "before_SHA": "6eda36d6d2cbc2e9a0b7c94bbba7369b5fd1d4d3f159cab125046650fec1cf59",
+      "after_SHA": "cdd01733141d8f1a6d09180b51ac3719c907104b92f33714b3d67d93d013b0d8",
+      "root_exact_after_bytes": true
+    }
+  ],
+  "original_release_base": "e24ac80789c9f0b6eb24d17a4c9ad143d7cdf770",
+  "behavior": "Remove old battle floating labels on battle/room/session/phase boundary while preserving ordinary and final-hit feedback. Translate an existing notice layer to settlement anchor without restarting its Tween,serial or lifetime.",
+  "regressions": "57 combat boundary checks,132 two-language/three-resolution originalnegative/candidatepositive/text/Tween/expiry checks,24 existing native+6related suites including expanded tips regression; local headless Dummy60/CNO/BelowNormal.",
+  "actual_cloud_render": "48 original lossless Xvfb/llvmpipe frames,132 current checks,428 independent pixel/source/clock checks,12 clock witnesses,native0/controllertrue/noOOM. 2locales x3 resolutions x2variants x4states. No hardware FPS claim.",
+  "visual_review": {
+    "ok": true,
+    "scope": "Automated settlement/combat-feedback UI effect acceptance only",
+    "reviewed_all48_original_images_via_2_contacts": true,
+    "full_resolution_reviewed": [
+      "en-960-candidate-v3-settlement-first-frame.webp",
+      "en-1920-candidate-v3-settlement-notice-expired.webp",
+      "zh-CN-960-candidate-v3-settlement-first-frame.webp",
+      "zh-CN-1920-candidate-v3-settlement-notice-expired.webp"
+    ],
+    "new24_frames_visual_passed_all6locale_resolution_pairs": true,
+    "old24_negative_control_frames_preserved": true,
+    "no_candidate_title_obstruction_or_float_remnant_or_clipped_tip": true,
+    "notice_text_same_Tween_serial_and_original2s_animation_expiry_retained": true,
+    "existing_blue_gold_style_consistent_no_ImageGen_needed": true,
+    "offline_connection_notice_fixture_not_permanent_server_outage": true,
+    "natural_death_not_QA_failure_legal_HP80over70_unchanged": true
+  },
+  "IMPORTANT_original_failures_preserved": {
+    "R1": "Disk guard rejected before APP,no native. Original6hostfiles retained.",
+    "R2": "512MiB OOM1/native-9,15images/28RAMmembers/14hostoriginals retained G.",
+    "R3": "1664MiB native0/36frames but visual review found old toast hiding title; visual acceptance withheld,not relabelled pass.",
+    "R4": "Same V3 product code,native1/reportfalse/16 expiry assertions failed,48images/62RAMmembers/14hostoriginals retained. Used wall2200ms instead of animation clock. Original raw flags unchanged.",
+    "R5": "Registered observation correction reads original Tween elapsed frame deltas;2.0s constant unchanged,no custom_step/speed/time_scale/early hide. Actual clock witnesses show wall1.201s versusTween0.549s after screenshots. Current native0/48frames all checks passed; this does not rewrite R4."
+  },
+  "resource_revision_disclosure": "Only single private renderer ceiling512->1664MiB after actual OOM. Host MemAvailable>500MB/free>3GB/fraction>=4.9% and permanent production fingerprint/health200 unchanged. Three retired upload archive hardlinks14.139MB reclaimed only after exact G SHA verified; runtime/source/raw failures retained.",
+  "resource_samples": 612,
+  "minimum_MemAvailable": 2331316224,
+  "minimum_disk_fraction": 0.049047326152749336,
+  "minimum_disk_free_bytes": 3104206848,
+  "G_RAM_members": 61,
+  "G_RAM_archive_SHA": "74e058e30097c6b5a8f8e326afba0bcde7a223f362fba29292ad756fa0571684",
+  "G_RAM_archive_bytes": 48167980,
+  "G_final_host_originals": 13,
+  "full_G_member_verification_before_RAM_ACK_teardown": true,
+  "unchanged_function_bodies": [
+    "_return_from_settlement",
+    "_button",
+    "_render_interaction_context",
+    "_unhandled_key_input"
+  ],
+  "prior_current30_LIVE_PG_truth": "Separate current ten-account batch normal30/ACK30,23Dead7Extracted,10native0/notices0; no repeat due UI fix. UI replay uses frozen actual U01 cycle2 state and controlled warning/damage.",
+  "source_epoch_disclosure": "Live13frames and real3 Return callbacks came from original main6735...;post-fix48frames from main21b7.../tips6b07... offline replay,with unchanged GameStore/driver/server. Not all30 rendered after patch or new LIVE under patched UI.",
+  "new_natural_games_or_capacity_human_balance_acceptance": false,
+  "production_deploy_or_OS_reboot_repeated": false,
+  "whole_project_accepted": false,
+  "primary_Tween_clock_contract": "https://docs.godotengine.org/en/stable/classes/class_tween.html#class-tween-method-get-total-elapsed-time",
+  "G": "G:\\PR13Evidence\\settlement-combat-float-cleanup-20261022-r1-originals\\cloud-replay-r5-originals"
+}

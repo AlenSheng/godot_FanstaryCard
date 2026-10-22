@@ -56,6 +56,7 @@ var screen_loading := false
 var _render_pending := false
 var _left_pointer_down := false
 var _pointer_render_context: Array = []
+var _combat_feedback_context: Array = []
 var mail_modal_lock := false
 var _midlayer_seen: Dictionary = {}
 var _login_name := ""
@@ -500,6 +501,27 @@ func _reset_account_ui() -> void:
 			remove_child(child)
 			child.queue_free()
 
+func _current_combat_feedback_context() -> Array:
+	if not Game.settlement.is_empty() or Game.gateway.recovering: return []
+	var phase: String = str(Game.room.get("player", {}).get("phase", ""))
+	if phase not in ["Pve", "Pvp"]: return []
+	var battle: Dictionary = Game.room.get("duel", Game.room.get("pve", {}))
+	var battle_id: String = str(battle.get("duel_id", battle.get("battle_id", "")))
+	if battle_id.is_empty(): return []
+	return [Game.gateway.session_generation, Game._room_context_epoch,
+		Game.room.get("match_id", ""), Game.room.get("room_id", ""), phase, battle_id]
+
+func _sync_combat_feedback_context() -> void:
+	var context := _current_combat_feedback_context()
+	if context == _combat_feedback_context: return
+	_combat_feedback_context = context
+	for child in get_children():
+		if child.get_meta("combat_float", false) != true: continue
+		var tween: Variant = child.get_meta("combat_float_tween", null)
+		if tween is Tween: tween.kill()
+		remove_child(child)
+		child.queue_free()
+
 func _render() -> void:
 	# Rebuilding the pressed button before release cancels its native click.
 	# Keep only this interaction's view; a new session/room/phase still renders.
@@ -510,6 +532,8 @@ func _render() -> void:
 		_left_pointer_down = false
 		_pointer_render_context.clear()
 	_render_pending = false
+	_sync_combat_feedback_context()
+	tips_overlay.set_viewport_anchor(0.09 if not Game.settlement.is_empty() else TipsOverlay.VIEWPORT_Y_RATIO)
 	_sync_draw_charge_visual()
 	var room_cell := "%s:%s:%s" % [Game.room.get("room_id", ""), Game.room.get("self", {}).get("row", -1), Game.room.get("self", {}).get("column", -1)]
 	if room_cell != _view_cell or Game.room.get("player", {}).get("phase", "") != "ActionBar":
@@ -1715,6 +1739,8 @@ func _health_bar(parent: Node, combat: Dictionary) -> void:
 		parent.add_child(shield)
 
 func _feedback(payload: Dictionary) -> void:
+	var context := _current_combat_feedback_context()
+	if context.is_empty() or context != _combat_feedback_context: return
 	var target: Control = _combat_panels.get(payload.get("target_id", ""))
 	if is_instance_valid(target):
 		_hit_reaction(target)
@@ -1802,6 +1828,7 @@ func _float_number(node: Control, value: String, tint: Color, index: int) -> voi
 	var number := _label(self, value, 42, tint)
 	number.add_theme_font_override("font", P.font("number"))
 	number.name = "CombatNumber"
+	number.set_meta("combat_float", true)
 	number.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	number.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	var actor_to_ui := get_global_transform_with_canvas().affine_inverse() * node.get_global_transform_with_canvas()
@@ -1823,6 +1850,7 @@ func _float_number(node: Control, value: String, tint: Color, index: int) -> voi
 	number.z_index = 20
 	number.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var tween := number.create_tween().set_parallel(true)
+	number.set_meta("combat_float_tween", tween)
 	tween.tween_property(number, "position:y", position.y - travel, 0.78).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tween.tween_property(number, "scale", base_scale * 1.08, 0.1)
 	tween.chain().tween_property(number, "scale", base_scale, 0.12)
