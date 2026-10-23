@@ -1,0 +1,34 @@
+{
+  "kind": "HostedBoundaryFixtureUpdatedToExistingUnqualifiedClockContract",
+  "source_before_commit": "8ace90d1a4ef207bff087ef9e41f77897d86796d",
+  "original_failed_job": 120559834911,
+  "original_failed_source": "29c17f0205d94ee761f531e5e3faa4032b414240",
+  "original_failed_cases": [
+    "LOAD-06.4-T01",
+    "LOAD-07.1-T03"
+  ],
+  "actual_expected_behavior": "Unqualified clock retains full caller-owned final request counts; running/drain attribution and throughput rates are unavailable; acceptance stays false.",
+  "old_fixture_assumption": "Expected final statistics to be entirely absent.",
+  "fix": {
+    "path": "tools/pr13_boundary_cases.py",
+    "before_sha256": "66f76824d3b489f67c6ff6a449021044f726b341a4d8734976fe608eca6cd6e3",
+    "after_sha256": "fe5b753c0663ee85a9652cc7fce01a0481395c33039752151c43da486b6d7752",
+    "clock_contract": "Retain owned final counts; refuse cutoff partitions and rates; original code3/120000ms group spacing and monotonic command-rate assertions retained.",
+    "local_Godot_headless_Dummy_no_window_low_priority": true,
+    "production_or_accounting_implementation_not_changed": true
+  },
+  "clock_unit_Passed8": true,
+  "actual_native_boundary_Passed12": true,
+  "actual_source_report": {
+    "bytes": 1606,
+    "sha256": "8e85f4a2cf4a8e78b771a207af577471a363e239130e293dba14009053514580"
+  },
+  "native_Godot_headless_Dummy_no_window_below_normal": true,
+  "legacy_failures_and_artifact_kept": true,
+  "original_120000ms_spacing_and_monotonic_rate_assertions_retained": true,
+  "real_clock_or_gameplay_implementation_changed": false,
+  "any_acceptance_or_performance_threshold_relaxed": false,
+  "production_or_database_changed": false,
+  "new_hosted_CI_result_not_yet_observed": true,
+  "whole_project_accepted": false
+}

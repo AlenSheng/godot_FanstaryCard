@@ -29,11 +29,11 @@ def native_fps(output,godot):
         directory=output/('native-default' if cap is None else 'native-fps-30'); directory.mkdir()
         report=directory/'result.json'
         env=isolated_environment(directory,FANTASYCARD_SERVER_URL='http://127.0.0.1:1',FANTASYCARD_LOAD_RUN_ID='fps-profile-probe',PR13_FPS_REPORT=str(report))
-        command=[godot,'--headless','--path',str(ROOT/'client')]
+        command=[godot,'--headless','--audio-driver','Dummy','--path',str(ROOT/'client')]
         if cap is not None: command+=['--max-fps',str(cap)]
         command+=['--script','res://tests/pr13_fps_probe.gd']
         with (directory/'engine.log').open('wb') as log:
-            child=subprocess.Popen(command,env=env,stdout=log,stderr=subprocess.STDOUT,creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
+            child=subprocess.Popen(command,env=env,stdout=log,stderr=subprocess.STDOUT,creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0)|getattr(subprocess,'BELOW_NORMAL_PRIORITY_CLASS',0))
             try: code=child.wait(timeout=15)
             finally:
                 if child.poll() is None: child.kill();child.wait(timeout=5)
@@ -58,7 +58,19 @@ def main():
         groups=report['group_launches']
         interval=groups[1]['started_monotonic_ms']-groups[0]['started_monotonic_ms']
         rates=[s['command_rate'] for s in report['samples'][1:]]
-        return {'exit_code':code,'group_interval_ms':interval,'command_rates':rates,'report':report,'native_clock':native}, code==3 and interval==120000 and all(r in (2,4) for r in rates) and report['request_distributions']['final'] is None
+        cutoffs=report['request_distributions']; final=cutoffs['final']
+        # An unqualified coordinator clock invalidates partition/rate claims;
+        # caller-owned final counts remain available for audit.
+        clock_rejected=(not report['cutoff_clock_quality']['qualified'] and
+                        'cutoff_clock_unqualified' in cutoffs['evidence_errors'] and
+                        cutoffs['running'] is None and cutoffs['drain'] is None and
+                        final is not None and final['logical_request_count']>0 and
+                        final['observed_window_seconds'] is None and
+                        final['logical_requests_per_second'] is None and
+                        final['completed_requests_per_second'] is None and
+                        final['throughput_missing_reason']=='coordinator_cutoff_clock_unqualified' and
+                        not report['acceptance_passed'])
+        return {'exit_code':code,'group_interval_ms':interval,'command_rates':rates,'report':report,'native_clock':native}, code==3 and interval==120000 and all(r in (2,4) for r in rates) and clock_rejected
 
     def memory():
         code,report=sampler.run_fixture(generator_observation={'available':True,'host_memory_available_bytes':1024**3})
