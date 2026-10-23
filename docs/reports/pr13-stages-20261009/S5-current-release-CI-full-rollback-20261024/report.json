@@ -1,0 +1,496 @@
+{
+  "kind": "CurrentReleaseHostedFullSuitesAndNativeRollback_OriginalArtifactsVerified",
+  "generated_UTC": "2026-10-23T18:38:59.430680+00:00",
+  "tested_source_sha": "1cf7250b59e35aa93c73c631f97ccf16ac1d2dc2",
+  "hosted_run": {
+    "id": 40002147843,
+    "url": "https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/40002147843",
+    "conclusion": "success",
+    "four_actual_runners": true,
+    "raw_run": {
+      "path": "G:\\PR13Evidence\\release-current-native-PG-final-20261024-r228-originals\\run.original.json",
+      "bytes": 13588,
+      "sha256": "395f92629870840e58b9415bea3b5adcd0059b83c0aaf01997f9ede7289d6ccd"
+    },
+    "raw_jobs": {
+      "path": "G:\\PR13Evidence\\release-current-native-PG-final-20261024-r228-originals\\jobs.original.json",
+      "bytes": 11006,
+      "sha256": "965193ca125a2b9d28ab95f213470a8f899423d00d692804473e5d13b4b927a4"
+    }
+  },
+  "native_PG": {
+    "rows": 418,
+    "passed": 418,
+    "skipped": 0,
+    "critical_methods10": {
+      "Persisted_current_contract_does_not_revive_obsolete_boolean_or_remainder_API": 1,
+      "Default_persisted_constructor_stays_current_rhythm_and_current_steps": 1,
+      "Explicit_candidate_enums_survive_database_restore_and_have_independent_assertions": 1,
+      "Persisted_resolver_context_preserves_first_core_floor_tuning_and_dual_element_contracts": 1,
+      "Exact_GDD_fire_contexts_restore_from_database_to_46_72_113": 1,
+      "Priest_card_heal_and_conflict_E0_remain_separate_after_database_restore": 1,
+      "New_policy_source_changes_new_rooms_without_changing_current_persisted_room": 1,
+      "Persisted_PVP_working_copy_restores_complete_original_PVE_and_policy": 1,
+      "Missing_legacy_policy_fields_use_defaults_and_invalid_values_reject_before_mutation": 1,
+      "Actual_code_rollback_and_native_backup_restore_preserve_once_only_assets": 1
+    },
+    "gate": {
+      "path": "docs/reports/pr13-stages-20261009/S5-current-release-CI-full-rollback-20261024/native-postgres-coverage.json",
+      "bytes": 507,
+      "sha256": "66046cf0d32480e6b8e7a2c860885597a864b4729378ff1610a3362f39e9741b"
+    },
+    "actual_native": {
+      "path": "G:\\PR13Evidence\\release-current-native-PG-final-20261024-r228-originals\\postgres-full.original.trx",
+      "bytes": 1479051,
+      "sha256": "15bd30de7db0bc0cb47ce264c2edab0807d5f39c42d73771dda422d3d36659d7"
+    },
+    "artifact_id": 12522993895,
+    "zip_bytes": 3573215,
+    "zip_sha256": "ad0ff0cf007b7d817bd96814bca125741eb601f9be08778df0f27619f6a56827",
+    "members_CRC_SHA_verified": 1125,
+    "raw_result": {
+      "path": "G:\\PR13Evidence\\release-current-native-PG-final-20261024-r228-originals\\result.original.json",
+      "bytes": 5003,
+      "sha256": "7cfff9a3fbada8cd0622cfb84b1437c9e0d399e175174761917b1b5a5ab22774"
+    }
+  },
+  "native_rollback": {
+    "exact_previous_source": "0cf43dba7a28e936f82bc3e73ed9c6427092c2fb",
+    "fresh_rebuild_not_original87e_binary": true,
+    "actual_current_snapshot_restored_by_old_runtime": true,
+    "actual_legal_extraction_assets_once": true,
+    "actual_custom_dump_hash_matches_receipt": true,
+    "actual_native_restore_same_balance_one_ledger_no_asset_copy": true,
+    "actual_owned_clone_removed": true,
+    "source_build_runtime_manifest_verified": true,
+    "checks": {
+      "native_rows418_all_passed_skip0": true,
+      "critical10_method_rows1_each": true,
+      "current_native_gate_CoveredForMainReview": true,
+      "uploaded_native_gate_matches_rederived": true,
+      "actual_code_rollback_receipt": true,
+      "actual_backup_receipt": true,
+      "actual_clone_removed": true,
+      "old_source_exact_pinned": true,
+      "dump_matches_actual_receipt": true,
+      "old_DLL_matches_build_manifest": true,
+      "all4_jobs_native_success": true
+    },
+    "scope": "Exact pinned current-to0cf code/config pair and owned ephemeral PG only; no production database restore or universal older-version compatibility."
+  },
+  "offline_accounting": {
+    "unfiltered_Python": {
+      "cloud-ownership.log": 8,
+      "unittest.log": 363
+    },
+    "structured_case_sets": [
+      {
+        "artifact_id": 12522732074,
+        "path": "audit-cases/cases.jsonl",
+        "rows": 9,
+        "outcomes": {
+          "Passed": 9
+        }
+      },
+      {
+        "artifact_id": 12522732074,
+        "path": "boundary-cases/cases.jsonl",
+        "rows": 12,
+        "outcomes": {
+          "Passed": 12
+        }
+      },
+      {
+        "artifact_id": 12522732074,
+        "path": "callback-isolation/cases.jsonl",
+        "rows": 6,
+        "outcomes": {
+          "Passed": 6
+        }
+      },
+      {
+        "artifact_id": 12522732074,
+        "path": "fault-cases/cases.jsonl",
+        "rows": 16,
+        "outcomes": {
+          "Passed": 16
+        }
+      },
+      {
+        "artifact_id": 12522732074,
+        "path": "http-context-cases/cases.jsonl",
+        "rows": 12,
+        "outcomes": {
+          "Passed": 12
+        }
+      },
+      {
+        "artifact_id": 12522732074,
+        "path": "http-context-per-request/cases.jsonl",
+        "rows": 12,
+        "outcomes": {
+          "Passed": 12
+        }
+      },
+      {
+        "artifact_id": 12522732074,
+        "path": "ledger-contract-cases/cases.jsonl",
+        "rows": 3,
+        "outcomes": {
+          "Passed": 3
+        }
+      },
+      {
+        "artifact_id": 12522732074,
+        "path": "offline-cases/cases.jsonl",
+        "rows": 34,
+        "outcomes": {
+          "Passed": 34
+        }
+      },
+      {
+        "artifact_id": 12522732074,
+        "path": "prelaunch-boundary-cases/cases.jsonl",
+        "rows": 3,
+        "outcomes": {
+          "Passed": 3
+        }
+      },
+      {
+        "artifact_id": 12522732074,
+        "path": "ready-edge-cases/cases.jsonl",
+        "rows": 4,
+        "outcomes": {
+          "Passed": 4
+        }
+      },
+      {
+        "artifact_id": 12522732074,
+        "path": "state-contract-cases/cases.jsonl",
+        "rows": 40,
+        "outcomes": {
+          "Passed": 40
+        }
+      },
+      {
+        "artifact_id": 12522732074,
+        "path": "ui-contract-cases/cases.jsonl",
+        "rows": 11,
+        "outcomes": {
+          "Passed": 11
+        }
+      },
+      {
+        "artifact_id": 12522227485,
+        "path": "candidate-contract-cases/cases.jsonl",
+        "rows": 30,
+        "outcomes": {
+          "Passed": 30
+        }
+      },
+      {
+        "artifact_id": 12522227485,
+        "path": "control-contract-cases/cases.jsonl",
+        "rows": 27,
+        "outcomes": {
+          "Passed": 27
+        }
+      },
+      {
+        "artifact_id": 12522227485,
+        "path": "experience-metric-cases/cases.jsonl",
+        "rows": 3,
+        "outcomes": {
+          "Passed": 3
+        }
+      },
+      {
+        "artifact_id": 12522227485,
+        "path": "probe-contract-cases/cases.jsonl",
+        "rows": 2,
+        "outcomes": {
+          "Passed": 2
+        }
+      },
+      {
+        "artifact_id": 12522227485,
+        "path": "review-policy-cases/cases.jsonl",
+        "rows": 13,
+        "outcomes": {
+          "Passed": 13
+        }
+      },
+      {
+        "artifact_id": 12522227485,
+        "path": "source-contract-cases/cases.jsonl",
+        "rows": 7,
+        "outcomes": {
+          "Passed": 7
+        }
+      }
+    ],
+    "raw_artifacts": {
+      "path": "G:\\PR13Evidence\\release-current-native-artifacts-20261024-r220-originals\\derived-observation.json",
+      "bytes": 181666,
+      "sha256": "14e8abf3b5a46f039132bebdf911b63a856f258b07f3ed31baa23489c6c6ce9c"
+    }
+  },
+  "offline_server": {
+    "rows": 418,
+    "passed": 288,
+    "skipped": 130,
+    "skip_names": [
+      "FantasyCard.Server.Tests.Persistence.PostgresMailReaderLifetimeTests.Disposed_reader_alias_can_close_a_subsequent_pool_borrowers_reader",
+      "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_guard_preserves_ordinary_context_and_authoritative_ACK_recovery(context: \"ordinary\", outcome: \"success\")",
+      "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Four_humans_enqueue_ready_and_launch_one_persisted_room",
+      "FantasyCard.Server.Tests.Persistence.PostgresNumericalContractTests.Exact_GDD_fire_contexts_restore_from_database_to_46_72_113",
+      "FantasyCard.Server.Tests.Persistence.PostgresRedEquipmentQuotaTests.Concurrent_red_drops_allow_only_one_claim_per_server_week",
+      "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Bootstrap_projection_real_HTTP_preserves_auth_scope_pending_errors_and_full_legacy_response",
+      "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"cycles-middle-uncommitted-loss\")",
+      "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_LOAD02_timeout_STOP_preserves_original_business_truth(mode: \"normal-wait-stop\", caseId: \"LOAD-02.2-T02\")",
+      "FantasyCard.Server.Tests.Persistence.PostgresCombatPreviewTests.Repeated_preview_of_restored_checkpoint_is_pure_and_matches_commit(hero: Guardian, fractional: False)",
+      "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Extraction_settlement_commits_all_assets_once_and_releases_notification",
+      "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_LOAD02_timeout_STOP_preserves_original_business_truth(mode: \"timeout-before-stop\", caseId: \"LOAD-02.2-T01\")",
+      "FantasyCard.Server.Tests.Persistence.PostgresMarketRelistingTests.Forward_migration_preserves_sold_history_and_resale_replays_without_double_transfer",
+      "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Settlement_worker_restart_recovers_pending_holds_exactly_once",
+      "FantasyCard.Server.Tests.Persistence.PostgresBotOnlyRoomTerminationTests.Bot_only_actor_tick_completes_match_without_creating_player_assets",
+      "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_LOAD02_timeout_STOP_preserves_original_business_truth(mode: \"committed-unknown-stop\", caseId: \"LOAD-02.2-T03\")",
+      "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_settlement_transaction_fault_recovers_without_duplicate_assets(mode: \"committed-response-loss\")",
+      "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_quarantines_contradictory_terminal_checkpoint_but_recovers_next_room",
+      "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_pvp_relic_replay_and_extraction_survive_forced_restart",
+      "FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Insufficient_souls_roll_back_and_concurrent_upgrade_replays_spend_once",
+      "FantasyCard.Server.Tests.Persistence.PostgresBootstrapBatchTests.Cancelling_a_blocked_batch_releases_reader_and_small_pool_for_next_bootstrap",
+      "FantasyCard.Server.Tests.Persistence.PostgresNameIdentityTests.Same_device_different_names_create_separate_accounts_and_returning_names_restore_assets",
+      "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Concurrent_first_sign_in_provisions_one_complete_player_aggregate",
+      "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_supports_login_bootstrap_and_websocket_ping",
+      "FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Saved_decks_are_protected_and_owned_cards_cannot_be_acquired_again",
+      "FantasyCard.Server.Tests.Persistence.PostgresNumericalContractTests.Missing_legacy_policy_fields_use_defaults_and_invalid_values_reject_before_mutation",
+      "FantasyCard.Server.Tests.Persistence.PostgresCombatPreviewTests.Stale_preview_after_committed_checkpoint_is_rejected_without_overwriting_current_state",
+      "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Preparation_create_replay_conflict_and_cancel_release_are_atomic",
+      "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Settlement_commit_response_loss_recovers_same_receipt_and_credits_assets_once",
+      "FantasyCard.Server.Tests.Persistence.PostgresBootstrapBatchTests.Optional_tail_result_sets_advance_correctly_and_filter_pending_acknowledged_and_other_players",
+      "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Class_weapon_enhancement_rolls_back_and_replays_without_material_consumption",
+      "FantasyCard.Server.Tests.Persistence.PostgresBootstrapBatchTests.All_result_sets_map_distinct_values_and_preserve_nullable_equipment_slots",
+      "FantasyCard.Server.Tests.Persistence.PostgresNumericalContractTests.Default_persisted_constructor_stays_current_rhythm_and_current_steps",
+      "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_healthy_teammate_old_room_and_new_room_survive_real_callbacks_and_OS_restart",
+      "FantasyCard.Server.Tests.Persistence.PostgresEnhancementQuoteTests.Class_weapon_quotes_never_require_a_material_and_cap_at_five",
+      "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it",
+      "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Settlement_asset_commit_rolls_back_the_whole_batch_and_withholds_notification",
+      "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Protobuf_real_database_login_bootstrap_profile_deck_and_cross_format_purchase",
+      "FantasyCard.Server.Tests.Persistence.PostgresCombatPreviewTests.Repeated_preview_of_restored_checkpoint_is_pure_and_matches_commit(hero: Guardian, fractional: True)",
+      "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Shop_daily_cards_are_deterministic_and_purchase_grants_exact_card_once",
+      "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_concurrent_card_upgrade_retries_spend_once",
+      "FantasyCard.Server.Tests.Persistence.PostgresMarketRelistingTests.Concurrent_same_item_listing_has_one_active_owner_and_same_key_replays",
+      "FantasyCard.Server.Tests.Persistence.PostgresNumericalContractTests.Persisted_PVP_working_copy_restores_complete_original_PVE_and_policy",
+      "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Actual_default_single_IP_auth_limit_is_separate_from_capacity",
+      "FantasyCard.Server.Tests.Persistence.PostgresRoomEquipmentTests.Extraction_applies_worn_reward_unequipped_armor_and_recycling_in_one_replay_safe_transaction",
+      "FantasyCard.Server.Tests.Persistence.PostgresRedEquipmentQuotaTests.New_server_week_can_claim_again_and_exposes_audit_snapshot",
+      "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(scenario: \"ticket-expiry\")",
+      "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK",
+      "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Concurrent_market_purchase_transfers_equipment_and_gold_exactly_once",
+      "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.SupportOnly_actual_Register_conflict_retries_same_launch_without_partial_room_or_second_reservation(conflict: \"player-route\")",
+      "FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Fourth_and_fifth_levels_consume_souls_without_card_copies",
+      "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: \"drop-first-committed\")",
+      "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Actual_code_rollback_and_native_backup_restore_preserve_once_only_assets",
+      "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_cold_start_commits_durable_pending_holds_once",
+      "FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Preparation_freezes_trained_level_despite_later_upgrades",
+      "FantasyCard.Server.Tests.Persistence.PostgresRoomEquipmentTests.Invalid_final_loadout_rolls_back_generated_equipment_gold_and_all_holds",
+      "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_default_protobuf_preparation_ready_and_room_entry",
+      "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Launch_failure_retries_without_duplicate_room_or_asset_reservation(fault: \"snapshot\")",
+      "FantasyCard.Server.Tests.Persistence.PostgresNumericalContractTests.Priest_card_heal_and_conflict_E0_remain_separate_after_database_restore",
+      "FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Full_codex_craft_and_dismantle_use_each_soul_pool_and_replay_once",
+      "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Match_timeout_removes_unready_human_and_fills_room_with_bots",
+      "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: \"drop-first-committed-restart\")",
+      "FantasyCard.Server.Tests.Persistence.PostgresNameIdentityTests.Names_owned_by_platform_accounts_cannot_be_claimed_by_local_login_or_another_platform_identity",
+      "FantasyCard.Server.Tests.Persistence.PostgresEnhancementQuoteTests.Low_level_or_locked_equipment_cannot_consume_an_unrequested_material",
+      "FantasyCard.Server.Tests.Persistence.PostgresEnhancementQuoteTests.Armor_quote_matches_actual_cost_and_counts_only_available_same_quality_materials",
+      "FantasyCard.Server.Tests.Persistence.PostgresEnhancementQuoteTests.Market_list_projects_the_actual_equipment_attributes",
+      "FantasyCard.Server.Tests.Persistence.PostgresMarketRelistingTests.Cancelled_or_expired_history_does_not_block_new_listing(expire: False)",
+      "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Queued_STOP_cancellation_releases_assets_once_and_allows_next_preparation",
+      "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_three_entry_cycles_duplicate_READY_and_ACK_release_owned_locks",
+      "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_retry_accepts_the_committed_result_without_reopening_terminal_matches",
+      "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"stop-before-commit\")",
+      "FantasyCard.Server.Tests.Persistence.PostgresOwnedPoolReuseTests.Owned_reuse_profile_can_hold_more_than_the_original_16_connections",
+      "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Actual_prelogged_account_still_observes_default_economy_write_limit",
+      "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Actual_starter_deck_matches_published_twenty_white_level_zero_cards(hero: Guardian, prefix: \"GUA\")",
+      "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes",
+      "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"stop-after-commit\")",
+      "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_runtime_pending_holds_survive_OS_restart_without_early_completion",
+      "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"cycles-middle-response-loss\")",
+      "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Recovery_validates_durable_terminal_checkpoint_and_preserves_next_route(staleCheckpoint: False)",
+      "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Death_settlement_moves_worn_equipment_to_relic_and_clears_loadout",
+      "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_switching_names_registers_distinct_uids_and_relogin_restores_the_original_account",
+      "FantasyCard.Server.Tests.Persistence.PostgresTerminalContextTests.Owned_terminal_fallback_reads_old_match_and_cancels_without_mutating_new_room_or_assets(phase: Extracted)",
+      "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_guard_preserves_ordinary_context_and_authoritative_ACK_recovery(context: \"recovered\", outcome: \"committed-loss\")",
+      "FantasyCard.Server.Tests.Persistence.PostgresOwnedPoolReuseTests.Owned_profile_reuses_actual_backend_only_when_explicitly_enabled(reuse: True, expectedBackends: 1)",
+      "FantasyCard.Server.Tests.Persistence.PostgresCombatPreviewTests.Repeated_preview_of_restored_checkpoint_is_pure_and_matches_commit(hero: Priest, fractional: False)",
+      "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Frozen_f812_actual_poll_return_during_ACK_must_not_restore_completed_receipt",
+      "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.V013_upgrades_legacy_card_ids_and_allows_orange_rarity",
+      "FantasyCard.Server.Tests.Persistence.PostgresMarketRelistingTests.Cancelled_or_expired_history_does_not_block_new_listing(expire: True)",
+      "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Actual_starter_deck_matches_published_twenty_white_level_zero_cards(hero: Priest, prefix: \"PRI\")",
+      "FantasyCard.Server.Tests.Persistence.PostgresBootstrapProjectionTests.Projection_is_scoped_to_caller_match_unacknowledged_and_completed_holds_without_writes",
+      "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Equipment_enhancement_rolls_back_failure_and_consumes_bound_material_once",
+      "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Red_equipment_enhancement_rejects_orange_and_consumes_red_material",
+      "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Concurrent_deck_writes_allow_one_version_winner_and_replay_its_response",
+      "FantasyCard.Server.Tests.Persistence.PostgresNumericalContractTests.Explicit_candidate_enums_survive_database_restore_and_have_independent_assertions",
+      "FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Each_upgrade_uses_its_own_soul_pool_and_replays_without_changing_quality",
+      "FantasyCard.Server.Tests.Persistence.PostgresNameIdentityTests.Returning_login_repairs_missing_cards_and_preserves_complete_account",
+      "FantasyCard.Server.Tests.Persistence.PostgresMigrationTests.Concurrent_migration_restart_and_checksum_rejection",
+      "FantasyCard.Server.Tests.Persistence.PostgresOwnedPoolReuseTests.Owned_profile_reuses_actual_backend_only_when_explicitly_enabled(reuse: False, expectedBackends: 8)",
+      "FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Cumulative_upgrade_spend_is_refunded_once_and_last_copy_resets_level",
+      "FantasyCard.Server.Tests.Persistence.PostgresRoomEquipmentTests.Looter_cannot_create_the_victims_pending_reward_and_can_equip_it_after_custody_commits",
+      "FantasyCard.Server.Tests.Persistence.PostgresNumericalContractTests.Persisted_resolver_context_preserves_first_core_floor_tuning_and_dual_element_contracts",
+      "FantasyCard.Server.Tests.Persistence.PostgresNumericalContractTests.New_policy_source_changes_new_rooms_without_changing_current_persisted_room",
+      "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.RoomActor_death_preserves_safe_assets_and_moves_losses_to_relic",
+      "FantasyCard.Server.Tests.Persistence.PostgresTerminalContextTests.Owned_terminal_fallback_reads_old_match_and_cancels_without_mutating_new_room_or_assets(phase: Dead)",
+      "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: \"drop-all-committed\")",
+      "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Snapshot_write_failure_withholds_settlement_until_terminal_checkpoint_retry",
+      "FantasyCard.Server.Tests.Persistence.PostgresNumericalContractTests.Persisted_current_contract_does_not_revive_obsolete_boolean_or_remainder_API",
+      "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_default_binary_routes_ticket_security_and_real_sample_benchmark",
+      "FantasyCard.Server.Tests.Common.RuntimeTimingTests.Actual_pool_acquisition_wait_is_separate_from_replay_SQL_execution",
+      "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Running_room_restart_restores_actor_and_compensates_snapshot_downtime",
+      "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Legacy_identity_tables_upgrade_and_existing_player_is_provisioned_idempotently",
+      "FantasyCard.Server.Tests.Persistence.PostgresMailReaderLifetimeTests.Concurrent_mail_reads_complete_with_a_single_pooled_connection",
+      "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: \"drop-all-uncommitted\")",
+      "FantasyCard.Server.Tests.Persistence.PostgresCombatPreviewTests.Repeated_preview_of_restored_checkpoint_is_pure_and_matches_commit(hero: Mage, fractional: False)",
+      "FantasyCard.Server.Tests.Persistence.PostgresTerminalContextTests.Membership_match_pair_bot_and_durable_phase_are_all_required",
+      "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.RoomActor_extraction_commits_settlement_and_removes_terminal_room",
+      "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_binary_business_equipment_cards_market_mail_matchmaking",
+      "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.SupportOnly_actual_Register_conflict_retries_same_launch_without_partial_room_or_second_reservation(conflict: \"room-id\")",
+      "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Inventory_and_class_loadout_reads_return_complete_lobby_assets",
+      "FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Insufficient_souls_and_concurrent_requests_cannot_duplicate_or_partially_apply",
+      "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Recovery_validates_durable_terminal_checkpoint_and_preserves_next_route(staleCheckpoint: True)",
+      "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_guard_preserves_ordinary_context_and_authoritative_ACK_recovery(context: \"recovered\", outcome: \"uncommitted-loss\")",
+      "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_Running_room_resumes_after_abrupt_OS_process_restart",
+      "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Actual_starter_deck_matches_published_twenty_white_level_zero_cards(hero: Mage, prefix: \"MAG\")",
+      "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Shop_failures_and_replays_do_not_partially_debit_or_grant_assets",
+      "FantasyCard.Server.Tests.Persistence.PostgresCombatPreviewTests.Protocol_roundtrip_preserves_order_and_authoritative_core_after_database_restore",
+      "FantasyCard.Server.Tests.Persistence.PostgresNameIdentityTests.Unique_index_rejects_duplicate_names_and_local_profile_updates_cannot_change_account_identity",
+      "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(scenario: \"ban-idle\")",
+      "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_settlement_transaction_fault_recovers_without_duplicate_assets(mode: \"precommit\")",
+      "FantasyCard.Server.Tests.Persistence.PostgresBootstrapProjectionTests.Projection_does_not_wait_on_locked_wallet_or_card_catalog_tables",
+      "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Launch_failure_retries_without_duplicate_room_or_asset_reservation(fault: \"registry\")"
+    ],
+    "scope": "Optional environment skips are retained and never converted to passes; full PG job separately passes all418."
+  },
+  "current_local": {
+    "full_solution_build_exit0": true,
+    "warnings0_errors0": true,
+    "domain_passed388_skip0": true,
+    "source": {
+      "path": "G:\\PR13Evidence\\release-current-full-build-domain-20261024-r225-originals\\source-manifest.original.json",
+      "bytes": 161768,
+      "sha256": "0652077a97890fc547b7eb2dc2ced37beecee486baf77184917eac595ae74879"
+    },
+    "result": {
+      "path": "G:\\PR13Evidence\\release-current-full-build-domain-20261024-r225-originals\\result.original.json",
+      "bytes": 1177,
+      "sha256": "40253af04a53f99387ebbf11125fe41a0db824ec205e4ea9a10c799bdd62b9a5"
+    },
+    "committed_sources_freshly_built": true,
+    "first_env_template_preflight_refusal_retained": {
+      "path": "G:\\PR13Evidence\\release-current-full-build-domain-20261024-r225-originals\\first-extraction-error.original.json",
+      "bytes": 310,
+      "sha256": "fd26ec6a71af43a2d666b62f874f09f7c25d9bc2a520271596a58b25b29b1093"
+    }
+  },
+  "source_equivalence": {
+    "map": {
+      "path": "G:\\PR13Evidence\\release-current-source-map-20261024-r222-originals\\source-map.original.json",
+      "bytes": 7039,
+      "sha256": "3b585cf6ce70c3ef74e1558081607293663ce4e6e54a42ec1ede2804df8fd05e"
+    },
+    "production_protocol_config_resources_unchanged_from_deployed4a": true,
+    "workspace_GDD_raw_pins_match": true,
+    "committed_GDD_LF_bytes_differ_from_workspace_CRLF_but_exact4a_to_current_committed_blobs_equal": true,
+    "raw_byte_hashes_not_conflated": true,
+    "first_raw_pin_comparison_failure_retained": {
+      "path": "G:\\PR13Evidence\\release-current-source-map-20261024-r222-originals\\first-raw-pin-comparison.original.json",
+      "bytes": 1418,
+      "sha256": "5d15edec528b9925dafe5353febd57974fa08df7d5f457b6205cc1d043b4475e"
+    }
+  },
+  "trigger_T01": {
+    "execution_source_sha": "745138332ba87d178fa70be03c8cdc1b6dd5a322",
+    "review_source_sha": "1cf7250b59e35aa93c73c631f97ccf16ac1d2dc2",
+    "original": {
+      "path": "G:\\PR13Evidence\\A073-ready-only-trigger-review-20261024-r229-originals\\source-and-trigger-review.original.json",
+      "bytes": 2429,
+      "sha256": "70b01a10eaf61bc61f60f02c27642936c6af057271d9a7facea876f1489b3c69"
+    },
+    "actual_PG_TRX": {
+      "path": "G:\\PR13Evidence\\A073-ready-only-trigger-review-20261024-r229-originals\\trigger-postgres-full.original.trx",
+      "bytes": 1479569,
+      "sha256": "059338de1a1998f5304ecc195783ab277ec9c5c1e3876a0de51de5ff94037f2b"
+    },
+    "actual_PG_observation": {
+      "path": "G:\\PR13Evidence\\A073-ready-only-trigger-review-20261024-r229-originals\\trigger-native-PG-observation.original.json",
+      "bytes": 1484,
+      "sha256": "9416e1be0750b309e5474961731079473a04a57ebbf85344acb1a08cfddc7cd7"
+    },
+    "criterion": "Only READY source change must trigger related workflow. Actual push745 plus docs-only receipt triggered real PG job and nine numerical methods.",
+    "historical_whole_run_and_job_cancelled_not_passed": true,
+    "historical417_pass1_skip_not_relabelled": true,
+    "unchanged_event_sections_and_READY_fixture_verified_against_current_HEAD": true,
+    "current1cf_full418_pass_is_separate": true,
+    "reviewed_POSTGRES_profile_closed": true,
+    "T02_actual_fork_not_executed": true,
+    "first_cancelled_step_assumption_error_preserved": {
+      "path": "G:\\PR13Evidence\\A073-ready-only-trigger-review-20261024-r229-originals\\first-review-assumption-error.original.json",
+      "bytes": 282,
+      "sha256": "eb6b547b217edfae051da84964d486a993569f59f7ddc55b54957edd8a6fc665"
+    }
+  },
+  "execution_budget_revision": {
+    "job_minutes20_to30": true,
+    "individual_rollback_seconds180_unchanged": true,
+    "individual_gameplay_deadlines_unchanged": true,
+    "business_resource_and_capacity_redlines_unchanged": true,
+    "previous_report": "docs/reports/pr13-stages-20261009/S5-release-CI-complete-rollback-fixture-20261024/report.json"
+  },
+  "prior_failed_runs_preserved": [
+    {
+      "id": 39996078609,
+      "state": "failure_accounting_and_clock_fixture"
+    },
+    {
+      "id": 39996740947,
+      "state": "failure_clock_fixture"
+    },
+    {
+      "id": 39997517131,
+      "state": "failure_READY_deadline_fixture"
+    },
+    {
+      "id": 39998774323,
+      "state": "cancelled_NotPassed"
+    }
+  ],
+  "production": {
+    "readonly": {
+      "path": "G:\\PR13Evidence\\release-current-production-readonly-20261024-r226-originals\\production-readonly-observation.original.json",
+      "bytes": 799,
+      "sha256": "f2501d41d3681e0cdd8abe7461861cbf4932241a7096c32a54afae39425a5612"
+    },
+    "ready_health": 200,
+    "image": "sha256:e647601a9fa6dd7e1934907699f7d9c58c0965da2116b1325b826ba458ee6a3e",
+    "container": "9a3886577aefffc42bd89fe0f1ee86f4f2aafff04756df09bc6b61e274ee1112",
+    "boot_id": "4eab2634-08f1-4535-96d6-6ad1a54b1b3d",
+    "application_still_approved4a": true,
+    "approved_application_update_report": "docs/reports/pr13-stages-20261009/S5-production-release-4a9215fe-application-updated-20261023/report.json",
+    "historical_Sept27_ledger_anomaly_still_NotAccepted_no_repair": true,
+    "no_application_update_or_OS_reboot_or_data_mutation_during_this_review": true,
+    "current_disk_free_ratio": 0.03257784208151508,
+    "current_disk_below_functional4_8percent_and_original15percent": true,
+    "no_capacity_retry_or_pass_claim": true
+  },
+  "commands": {
+    "path": "docs/reports/pr13-stages-20261009/S5-current-release-CI-full-rollback-20261024/commands.json",
+    "bytes": 2312,
+    "sha256": "912097ddaf999cf7c639aad1b638d3bd99383cb0fe9d87987569aa1626fa2856"
+  },
+  "new_case_profile_pairs_closed": 1,
+  "whole_tasks_accepted": 0,
+  "human_experience_excluded": true,
+  "whole_project_accepted": false
+}

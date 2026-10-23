@@ -1,15 +1,15 @@
 # PR13 自动测试与验收上下文
 
-> Latest execution checkpoint, 2026-10-23: archive worker PID25368/session66445 has ended normally (native0), all18421 R3 queue objects attempted,325355 member records,3412 findings,0 source-read errors/outer identity mismatches. Do not poll/restart that completed worker. All14 original PG physical snapshot memberships are receipt/manifest/member-hash verified; no PG readiness polling is needed. LOAD112 remains Partial: original-content queue1, archive-only content queue28, structural/path observations226; decoder/parent-graph/privacy review continues. Register now105 Accepted24 Partial3 Ready;27 tasks and47 case-profile pairs unaccepted (including current A01.4 single-source report MAIN decision). Direct human approval received for application-only update retaining the exact old ledger anomaly as unpassed, with no asset or ledger repair. Application update completed 2026-10-23 09:39:39 CST and was independently verified at09:42:08 CST. Runtime is release4a9215fe/imagee647601a/container9a388657;12 health checks pass; PG/env/boot unchanged. Deployment worker has finished successfully: do not redispatch. The exact historical ledger mismatch remains NotAccepted, without asset or ledger repair.
+> Latest execution checkpoint, 2026-10-23: archive worker PID25368/session66445 has ended normally (native0), all18421 R3 queue objects attempted,325355 member records,3412 findings,0 source-read errors/outer identity mismatches. Do not poll/restart that completed worker. All14 original PG physical snapshot memberships are receipt/manifest/member-hash verified; no PG readiness polling is needed. LOAD112 remains Partial: original-content queue1, archive-only content queue27, structural/path observations226; decoder/parent-graph/privacy review continues. Register now105 Accepted24 Partial3 Ready;27 tasks and46 case-profile pairs unaccepted (T01 actual hosted READY trigger closed; actual fork T02 remains). Direct human approval received for application-only update retaining the exact old ledger anomaly as unpassed, with no asset or ledger repair. Application update completed 2026-10-23 09:39:39 CST and was independently verified at09:42:08 CST. Runtime is release4a9215fe/imagee647601a/container9a388657;12 health checks pass; PG/env/boot unchanged. Deployment worker has finished successfully: do not redispatch. The exact historical ledger mismatch remains NotAccepted, without asset or ledger repair.
 
 
 2026-10-16：本次用户已确认继续 Godot FanstaryCard / PR13。每次接续先读本页、根目录 GDD.md 的覆盖规则，再按具体问题回读 GDD_BASE_v0.69.md 和相关实现文档。不得根据日志表面数值直接判异常。
 
 ## 当前入口快照（2026-10-23）
 
-权威入口仍是 `PR13_CURRENT_ACCEPTANCE_POINTER_20261009.json`，现指向 `S6-A014-current-accepted-20261024/register.json`：105 Accepted、24 Partial、3 ReadyForAcceptance，27 项整体验收未通过，47 个 case/profile 缺口，G0–G5 均 NotAccepted。后文按日期保留的旧数量是历史快照，不覆盖当前入口。
+权威入口仍是 `PR13_CURRENT_ACCEPTANCE_POINTER_20261009.json`，现指向 `S6-current-hosted-CI-trigger-profile-20261024/register.json`：105 Accepted、24 Partial、3 ReadyForAcceptance，27 项整体验收未通过，46 个 case/profile 缺口，G0–G5 均 NotAccepted。后文按日期保留的旧数量是历史快照，不覆盖当前入口。
 
-本地 HEAD 与远端 release 均为 `4a9215fee6f8c50da79e9895e408717fbd9118de`。当前 SHA 的 hosted CI run `39742974053` 有 4 个失败 job，但全部 runner_id=0、steps=[]，实际测试步骤为 0。2026-10-23 从该运行的原生公开 UI 实际读到四条当前 annotation：近期付款失败或需要提高消费额度，具体哪一条件未确定。旧 connector 不支持 annotation 端点的回执原件保留；本次隐藏浏览器只读未登录、未打开或修改计费设置、未重跑 CI。不能授予 A07.3 T01/T02 POSTGRES 或 fork/trigger 验收。当前报告见 `S5-current4a-CI-annotation-confirmed-20261023`，旧观察 `S5-current4a-hosted-CI-prestart-20261022` 保留。
+Current tested source and remote release before this evidence publication: 1cf7250b59e35aa93c73c631f97ccf16ac1d2dc2. Hosted run40002147843 completed all4 jobs successfully; actual PG418/418 skip0 plus native rollback/dump/asset-once/clone-cleanup receipts verified. Current committed full solution builds with0 warnings/errors and Domain388/388 skip0. Old4a run39742974053 prestart annotation is retained as historical evidence, not the current blocker; no billing settings were opened or changed. See S5-current-release-CI-full-rollback-20261024/report.json.
 
 GDD 两卷本次重核 SHA256：`GDD.md=7375f9615d4612a617cdb6295a020037016ecef061964c0200b52c2def9d44f6`，`GDD_BASE_v0.69.md=bccf36529f8f3aa599118521df573425e00b6ab5f76b42d1eaca881d2831bde1`。合法 80/70 等既有数值解释继续按下列文档依据处理；真人体验排除、仅使用当前云主机、容量不足项保留未通过、本地无窗口测试的用户约束继续有效。
 
@@ -5104,3 +5104,35 @@ PR13-A08.2/A08.3 已分别由 MAIN 验收。当前 PG 原生10/10包括原9数�
 PR13-A01.4已由MAIN验收。新增 `tools/pr13_single_source_report.py` 从单一版本化模型生成正文/总表/分布/清单，--check重新读取原始数据并比较所有视图，不信任编辑后的model；禁止覆写已归档输出。17针对性单测通过。真实旧2客户端6局归档重新校验gzip CRC/tar/内嵌原件及4份源文件，在当前算法依赖上实际CLI重放：5视图跨不同目录逐字节稳定；正文最终周期6→7被exit3拒绝；旧算法另存并保留15%资源红线，覆盖当前输出请求exit3。3个旧聚合函数AST与留存原代码一致，不宣称整个改动模块等价。
 
 原运行9b385/服务器bf516与旧报告保持原身份，原始档案及派生结果未改；当前报告基线4a加显式未提交生成器/测试代码，不能当原运行已在4a执行。原始50/100历史缺口和A013 AUDIT缺口继续未通过，未关闭47个profile缺口、未新增游戏或启动Godot/云/PG；G3仅移除已验收A014的unfinished成员，全部门状态仍NotAccepted。见 `S5-A014-current-single-source-report-20261024/report.json`、`S6-A014-current-accepted-20261024/main-decisions.json`。
+
+
+## 2026-10-24 release直接交付及真实CI进行中
+
+已按用户直接release授权推送并回读确认：29c17f02提交8辅助代码+768公开元数据+本地总结，随后8ace90d1修复unittest discover相对导入、2a08a43a修复时钟边界夹具、74513833修复新增READY组件的过期deadline断言，完整失败/原件保留。当前远端release=745138332ba87d178fa70be03c8cdc1b6dd5a322；仅测试/报告/夹具变更，正式游戏代码/协议/配置/资源包未改，正式服继续4a应用/imagee647，未再次部署/重启/修账。
+
+Git陈旧空index锁经6小时前时间/0字节/无Git进程/独占打开验证后删除；第一次精确暂存后的Win206参数长度检查错误保留，改读完整索引流再验证777白名单提交。旧宽泛只读引用观察器停止并改有界类型路径扫描，不作为成功全量扫描。
+
+重要外部状态变化：hosted CI已真实启动runner/steps，不能继续把旧4a的付费预启动失败当作当前阻塞。29c原PG artifact实际418行=417Passed/1NotExecuted（原代码回滚需历史二进制环境，保持skip）、9关键数值均Passed；整体run仍Failed，accounting/client错误原件未改。导入修复实际discovery8通过且8ace hosted accounting成功；时钟8+真实边界12通过，保留最终归属计数但拒绝失格时钟的分段/速率，未放宽门槛。READY4/prelaunch3/idle1及真实Game权威清理、后续HTTP两模式/ledger/callback/来源/lobby race均无窗口通过。
+
+当前745唯一代码改动是新增READY测试（另有回执文档），已实际触发push workflow39998774323；最新API观察该run仍in_progress，PG job120569117746、client120569118220等待最终artifact，accounting/server-contract已success。不得重启该run或沿用其他SHA绿灯；A073/A074及全局门均未新增验收，仍105Accepted/24Partial/3Ready、27项/47profile缺口未通过。见 `S5-release-current-publication-CI-progress-20261024/report.json`。
+
+
+2026-10-24 最新已验证等待：当前release74513833的run39998774323在2026-10-23T17:59:07.805209Z原生API确认仍live；accounting/client/server-contract已success，PG job120569117746已进入真实Full server and runtime integration步骤，不能因观察等待而重启或dispatch。当前原始TRX/skip清单尚待该job结束，不能提前写整个CI通过或授予A073/A074。源29c实际PG417Passed/1skip与9数值Passed记录是其他SHA历史执行，保留不改。
+
+
+2026-10-24 当前release进一步更新为1cf7250b59e35aa93c73c631f97ccf16ac1d2dc2，精确远端已确认。当前真正live的run=40002147843，PG job120580713066，runner1000001647；旧745的run39998774323已原生确认terminal cancelled，PG不可写通过，也不能再等待/重启它。其accounting/client/server-contract success原件保留。
+
+新CI提供缺失的回滚夹具：带disposable-local/task标签的独占PG，ready_stop_ci库，公开固定0cf源码剔除旧跟踪缓存后构建冻结旧二进制、显式SHA与容器ID；备份/进程日志保管；TRX必须包含10关键方法且任何skip/failed均拒绝覆盖通过。实际旧417+1skip被新gate判Blocked、原本地418+0skip为Covered，5真实进程gate单测及4提取Bash块语法通过，Python覆盖步骤AST有效。首次本地旧源码提取误含跟踪packages缓存导致Windows路径错误，发生在restore/build/APP/PG前；原件保留、排除缓存后固定源码publish已实跑成功，不冒称重建件等于原87e历史二进制。执行基础设施预算明确20→30分钟以覆盖新增历史构建；单项180s/玩法期限/原资源与性能红线全部不变。
+
+当前新run各job已实际启动，尚无完整artifact结论；不关闭A073/A074/全局门，不把旧SHA绿灯改标新SHA。105Accepted/24Partial/3Ready、27项47profile缺口不变；正式服仍4a/imagee647、未部署/重启/修账。
+
+
+2026-10-24: One exact archived historical gameplay workflow body was recovered from its original gzip/tar member and verified against immutable committed c1f4212b raw bytes. Local ephemeral PG authentication agrees with the owned service configuration; read-only checkout and absence of production credentials/deployment were reviewed. The current unchanged public guard still refuses this exact raw body, which remains private; prior finding is retained. Only archive source context is resolved: queue28 to27 objects/28 observations; no case/profile, runtime, global privacy, or whole LOAD112 acceptance. Original content1, structural226 and old-client2124 semantic frontiers remain. Report S5-LOAD112-archived-workflow-context-20261024/report.json.
+
+## 2026-10-24 Current release CI native closure and scoped trigger review
+
+Current tested1cf hosted run40002147843 is success with four real runners. Full PG418 Passed,0 skipped; ten mandatory numerical/rollback methods each executed once. All1125 ZIP members CRC/SHA verified; fresh pinned0cf runtime manifest, actual code rollback, native custom dump SHA, restored balance/one ledger and owned clone cleanup receipts verified. Rebuilt Linux0cf runtime is distinct from retained original Windows87e. Accounting363+8 and244 structured contract cases pass; server offline288 Passed/130 optional skips remains separate. Current strict full solution build0 warnings/errors and Domain388/388 also pass, all local children single-core no-window/below-normal with no Godot.
+
+T01 only-READY-source change at745 actually triggered hosted PG integration: the original step completed with numerical9 passed and full417/1 rollback skip, while the whole run/job is Cancelled and remains NotPassed. Exact event/filter sections and READY fixture bytes match current1cf; current full418/0skip is separate direct evidence. MAIN closes only T01 POSTGRES trigger profile47 to46; actual fork-PR T02 remains unexecuted, A073 Partial and all task states/gates unchanged. No fabricated current-head trigger or cancelled-to-pass conversion.
+
+Explicit execution envelope revision: job20 to30 minutes includes added pinned historical build; individual rollback180 seconds, gameplay deadlines, business acceptance and original resource/capacity criteria are unchanged. All earlier fixture failures/cancelled runs and observer/preflight errors remain. Production readonly health200 confirms same approved4a image/container/boot/environment; current disk3.26percent is below even functional4.8percent, so no new cloud capacity work or acceptance. Sept27 ledger anomaly remains unpassed under direct application-only approval; no new deployment/reboot/data repair. Current report/decision: S5-current-release-CI-full-rollback-20261024/report.json; S6-current-hosted-CI-trigger-profile-20261024/case-profile-review.json.
