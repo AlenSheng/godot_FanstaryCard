@@ -1,0 +1,350 @@
+{
+  "ok": true,
+  "at": "2026-10-23T22:21:11.281526+00:00",
+  "functional_fault_families_loss_reorder_timeout_restart_STOP_no_skip": [
+    {
+      "fault_family": "loss_restart",
+      "actual_test_name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: \"drop-first-committed-restart\")",
+      "outcome": "Passed",
+      "duration": "00:00:11.2354182",
+      "source_sha": "1cf7250b59e35aa93c73c631f97ccf16ac1d2dc2",
+      "actual_run_id": 40002147843,
+      "actual_PG_job_id": 120580713066,
+      "no_new_execution": true,
+      "scope": "Exact named functional native/PG/Godot control only. No mapping all418 tests to handbook rows or original100/50capacity."
+    },
+    {
+      "fault_family": "uncommitted_timeout_retry",
+      "actual_test_name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: \"drop-all-uncommitted\")",
+      "outcome": "Passed",
+      "duration": "00:00:11.4525547",
+      "source_sha": "1cf7250b59e35aa93c73c631f97ccf16ac1d2dc2",
+      "actual_run_id": 40002147843,
+      "actual_PG_job_id": 120580713066,
+      "no_new_execution": true,
+      "scope": "Exact named functional native/PG/Godot control only. No mapping all418 tests to handbook rows or original100/50capacity."
+    },
+    {
+      "fault_family": "timeout_STOP",
+      "actual_test_name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_LOAD02_timeout_STOP_preserves_original_business_truth(mode: \"timeout-before-stop\", caseId: \"LOAD-02.2-T01\")",
+      "outcome": "Passed",
+      "duration": "00:00:36.0196698",
+      "source_sha": "1cf7250b59e35aa93c73c631f97ccf16ac1d2dc2",
+      "actual_run_id": 40002147843,
+      "actual_PG_job_id": 120580713066,
+      "no_new_execution": true,
+      "scope": "Exact named functional native/PG/Godot control only. No mapping all418 tests to handbook rows or original100/50capacity."
+    },
+    {
+      "fault_family": "STOP_before_commit",
+      "actual_test_name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"stop-before-commit\")",
+      "outcome": "Passed",
+      "duration": "00:00:36.2578474",
+      "source_sha": "1cf7250b59e35aa93c73c631f97ccf16ac1d2dc2",
+      "actual_run_id": 40002147843,
+      "actual_PG_job_id": 120580713066,
+      "no_new_execution": true,
+      "scope": "Exact named functional native/PG/Godot control only. No mapping all418 tests to handbook rows or original100/50capacity."
+    },
+    {
+      "fault_family": "STOP_after_commit",
+      "actual_test_name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"stop-after-commit\")",
+      "outcome": "Passed",
+      "duration": "00:00:36.0849000",
+      "source_sha": "1cf7250b59e35aa93c73c631f97ccf16ac1d2dc2",
+      "actual_run_id": 40002147843,
+      "actual_PG_job_id": 120580713066,
+      "no_new_execution": true,
+      "scope": "Exact named functional native/PG/Godot control only. No mapping all418 tests to handbook rows or original100/50capacity."
+    },
+    {
+      "fault_family": "old_room_callbacks_restart",
+      "actual_test_name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_healthy_teammate_old_room_and_new_room_survive_real_callbacks_and_OS_restart",
+      "outcome": "Passed",
+      "duration": "00:02:01.5624571",
+      "source_sha": "1cf7250b59e35aa93c73c631f97ccf16ac1d2dc2",
+      "actual_run_id": 40002147843,
+      "actual_PG_job_id": 120580713066,
+      "no_new_execution": true,
+      "scope": "Exact named functional native/PG/Godot control only. No mapping all418 tests to handbook rows or original100/50capacity."
+    },
+    {
+      "fault_family": "pending_holds_restart",
+      "actual_test_name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_runtime_pending_holds_survive_OS_restart_without_early_completion",
+      "outcome": "Passed",
+      "duration": "00:00:29.8107055",
+      "source_sha": "1cf7250b59e35aa93c73c631f97ccf16ac1d2dc2",
+      "actual_run_id": 40002147843,
+      "actual_PG_job_id": 120580713066,
+      "no_new_execution": true,
+      "scope": "Exact named functional native/PG/Godot control only. No mapping all418 tests to handbook rows or original100/50capacity."
+    }
+  ],
+  "actual_current_source_PG_suite418_passed0skip": {
+    "source_sha": "1cf7250b59e35aa93c73c631f97ccf16ac1d2dc2",
+    "run_id": 40002147843,
+    "job_id": 120580713066,
+    "TRX_sha": "15bd30de7db0bc0cb47ce264c2edab0807d5f39c42d73771dda422d3d36659d7",
+    "artifact_sha": "ad0ff0cf007b7d817bd96814bca125741eb601f9be08778df0f27619f6a56827",
+    "ZIP_CRC_members1125_verified": true,
+    "not_a_blanket_handbook_orcapacity_claim": true
+  },
+  "exact_A033_timeout_source": {
+    "case_id": "PR13-A03.3-T02",
+    "actual": "真实N同一key三次ACK均未接触后端，Native实际超时10010/10000/6933ms，逻辑30009ms；原Store返回false并恢复N收据，不计完成。公开重试新逻辑key、同SID，才一次完成。",
+    "report": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\reports\\pr13-stages-20261009\\S5-A033-A034-current-ACK-threecycle-20261021\\report.json",
+    "SHA": "3259fa8b27184c95f8bb95a0a991425197b1a8cc4add52759f03d5205ee58d89"
+  },
+  "exact_READY_STOP_source": {
+    "case_id": "PR13-A04.4-T01",
+    "actual": "Fresh currentoriginalmain130/Native0cancelled0/cleanupPassed STOPbeforeanyREADY, sameM actualdeadlineRemoved/prepCancelled/historyMatchedlegal/no receiptACKlock; current9bdriver/Core8eb exact.",
+    "original_parent": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\load103-final-two-awaits-current-main-20261021-r1\\independent-final-two-await-review.original.json",
+    "original_parent_SHA_reopened": "e2233d5f28ab07b2e34bd8a801700d330ab1c498ddc2a63f6c01187d24ac7cb7"
+  },
+  "A023_fulloriginalrunner_badfinal_exit7_EOF_refusal_source": {
+    "report": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\reports\\pr13-stages-20261009\\S5-A023-current-fullrunner-PG-faults-reviewed-20261022\\report.json",
+    "SHA": "acf4ac87d94437cc211c46c0c5bd1b320dd157fa9692e4406ef54a032c8fe794",
+    "all3functionalPGclosed_originalCAPACITYstillmissing": true
+  },
+  "mandatory_own_rows3_injection_expected_actual_exit_hash": [
+    {
+      "mandatory_A093_case": "PR13-A09.3-T01",
+      "injection": "Fourth committed ACK reply removed, ownedProgram SIGKILL, same key retry",
+      "expected": "Once-onlyresources",
+      "actual_evidence": "G:\\PR13Evidence\\A093-current-asset-and-final-evidence-20261024-r332-originals\\result.private.original.json",
+      "exit": "Native4x0, originalcoordinator3 expected for coupled bad-final source",
+      "hash_receipts": "Bothactualcaptured73B replies exactsameSHA; durablePGbefore/after/final8groupssame"
+    },
+    {
+      "mandatory_A093_case": "PR13-A09.3-T02",
+      "injection": "Real oldMHTTP/PBcallbacks continue whileA is alreadyinN; B progressesoldM andOSrestart",
+      "expected": "NewNroute notdeleted",
+      "actual_evidence": "G:\\PR13Evidence\\A093-route-render-GDD-qualified-20261024-r334-originals\\result.private.original.json",
+      "exit": "OriginalnativeTRX1Passed0skip/OS0,protocol19,24native mouse-select/clear frames",
+      "hash_receipts": "Originalsource/native/UI/PGfiles SHA-reopened; B revision25->403, A/Nfour actualstates same"
+    },
+    {
+      "mandatory_A093_case": "PR13-A09.3-T03",
+      "injection": "Exact1byte finalstatus JSON physicallyreplacesdeclaredownedinput afteroriginalgoodwrite",
+      "expected": "InvalidEvidence, notnormal cleanup",
+      "actual_evidence": "G:\\PR13Evidence\\A093-current-asset-and-final-evidence-20261024-r332-originals\\result.private.original.json",
+      "exit": "Originalmain3/acceptancefalse/businesscleanupfalse/processcleanuptrue",
+      "hash_receipts": "Badbyte andoriginalgoodSHA+UID/client/PID/epoch correlated; currentreader rejectsbadwithgoodcache, restoresgoodidentity"
+    }
+  ],
+  "A02_A06_all60catalog_rows_are_input_contracts_not_implicit_allprofile_acceptance": true,
+  "scope_basis": "CanonicalA093 names exactly3mandatorycases,4profiles OFFLINE/POSTGRES/LIVE/RENDER,noCAPACITY; prerequisiteA092. InputA02-A06 fault families linked above. No original100/50 or outstandingA021/A022PG4/CAP12,or global36CAP claims from functional controls. Alltheircurrentunpassedstates retained.",
+  "all_upstream_explicit_MAIN16_reopened": [
+    {
+      "task_id": "PR13-A03.1",
+      "state": "Accepted",
+      "explicit_MAIN_locations_reopened": [
+        "/latest_A031_current_independent_acceptance"
+      ],
+      "canonical_case_ids": [
+        "PR13-A03.1-T01",
+        "PR13-A03.1-T02",
+        "PR13-A03.1-T03"
+      ],
+      "source_scope": "Existing scoped component decisions used as fault-family lineage, not new execution or broader capacity/hardware acceptance."
+    },
+    {
+      "task_id": "PR13-A03.2",
+      "state": "Accepted",
+      "explicit_MAIN_locations_reopened": [
+        "/latest_A032_current_acceptance"
+      ],
+      "canonical_case_ids": [
+        "PR13-A03.2-T01",
+        "PR13-A03.2-T02",
+        "PR13-A03.2-T03"
+      ],
+      "source_scope": "Existing scoped component decisions used as fault-family lineage, not new execution or broader capacity/hardware acceptance."
+    },
+    {
+      "task_id": "PR13-A03.3",
+      "state": "Accepted",
+      "explicit_MAIN_locations_reopened": [
+        "/latest_joint_A033_A034_acceptance/0"
+      ],
+      "canonical_case_ids": [
+        "PR13-A03.3-T01",
+        "PR13-A03.3-T02",
+        "PR13-A03.3-T03"
+      ],
+      "source_scope": "Existing scoped component decisions used as fault-family lineage, not new execution or broader capacity/hardware acceptance."
+    },
+    {
+      "task_id": "PR13-A03.4",
+      "state": "Accepted",
+      "explicit_MAIN_locations_reopened": [
+        "/latest_joint_A033_A034_acceptance/1"
+      ],
+      "canonical_case_ids": [
+        "PR13-A03.4-T01",
+        "PR13-A03.4-T02",
+        "PR13-A03.4-T03"
+      ],
+      "source_scope": "Existing scoped component decisions used as fault-family lineage, not new execution or broader capacity/hardware acceptance."
+    },
+    {
+      "task_id": "PR13-A04.1",
+      "state": "Accepted",
+      "explicit_MAIN_locations_reopened": [
+        "/latest_A041_A042_acceptance/0"
+      ],
+      "canonical_case_ids": [
+        "PR13-A04.1-T01",
+        "PR13-A04.1-T02",
+        "PR13-A04.1-T03"
+      ],
+      "source_scope": "Existing scoped component decisions used as fault-family lineage, not new execution or broader capacity/hardware acceptance."
+    },
+    {
+      "task_id": "PR13-A04.2",
+      "state": "Accepted",
+      "explicit_MAIN_locations_reopened": [
+        "/latest_A041_A042_acceptance/1"
+      ],
+      "canonical_case_ids": [
+        "PR13-A04.2-T01",
+        "PR13-A04.2-T02",
+        "PR13-A04.2-T03"
+      ],
+      "source_scope": "Existing scoped component decisions used as fault-family lineage, not new execution or broader capacity/hardware acceptance."
+    },
+    {
+      "task_id": "PR13-A04.3",
+      "state": "Accepted",
+      "explicit_MAIN_locations_reopened": [
+        "/latest_A043_A044_acceptance/0"
+      ],
+      "canonical_case_ids": [
+        "PR13-A04.3-T01",
+        "PR13-A04.3-T02",
+        "PR13-A04.3-T03"
+      ],
+      "source_scope": "Existing scoped component decisions used as fault-family lineage, not new execution or broader capacity/hardware acceptance."
+    },
+    {
+      "task_id": "PR13-A04.4",
+      "state": "Accepted",
+      "explicit_MAIN_locations_reopened": [
+        "/latest_A043_A044_acceptance/1"
+      ],
+      "canonical_case_ids": [
+        "PR13-A04.4-T01",
+        "PR13-A04.4-T02",
+        "PR13-A04.4-T03"
+      ],
+      "source_scope": "Existing scoped component decisions used as fault-family lineage, not new execution or broader capacity/hardware acceptance."
+    },
+    {
+      "task_id": "PR13-A05.1",
+      "state": "Accepted",
+      "explicit_MAIN_locations_reopened": [
+        "task.main_decision"
+      ],
+      "canonical_case_ids": [
+        "PR13-A05.1-T01",
+        "PR13-A05.1-T02",
+        "PR13-A05.1-T03"
+      ],
+      "source_scope": "Existing scoped component decisions used as fault-family lineage, not new execution or broader capacity/hardware acceptance."
+    },
+    {
+      "task_id": "PR13-A05.2",
+      "state": "Accepted",
+      "explicit_MAIN_locations_reopened": [
+        "task.main_decision"
+      ],
+      "canonical_case_ids": [
+        "PR13-A05.2-T01",
+        "PR13-A05.2-T02",
+        "PR13-A05.2-T03"
+      ],
+      "source_scope": "Existing scoped component decisions used as fault-family lineage, not new execution or broader capacity/hardware acceptance."
+    },
+    {
+      "task_id": "PR13-A05.3",
+      "state": "Accepted",
+      "explicit_MAIN_locations_reopened": [
+        "task.main_decision"
+      ],
+      "canonical_case_ids": [
+        "PR13-A05.3-T01",
+        "PR13-A05.3-T02",
+        "PR13-A05.3-T03"
+      ],
+      "source_scope": "Existing scoped component decisions used as fault-family lineage, not new execution or broader capacity/hardware acceptance."
+    },
+    {
+      "task_id": "PR13-A05.4",
+      "state": "Accepted",
+      "explicit_MAIN_locations_reopened": [
+        "task.main_decision"
+      ],
+      "canonical_case_ids": [
+        "PR13-A05.4-T01",
+        "PR13-A05.4-T02",
+        "PR13-A05.4-T03"
+      ],
+      "source_scope": "Existing scoped component decisions used as fault-family lineage, not new execution or broader capacity/hardware acceptance."
+    },
+    {
+      "task_id": "PR13-A06.1",
+      "state": "Accepted",
+      "explicit_MAIN_locations_reopened": [
+        "/latest_A06_current_acceptance/0"
+      ],
+      "canonical_case_ids": [
+        "PR13-A06.1-T01",
+        "PR13-A06.1-T02",
+        "PR13-A06.1-T03"
+      ],
+      "source_scope": "Existing scoped component decisions used as fault-family lineage, not new execution or broader capacity/hardware acceptance."
+    },
+    {
+      "task_id": "PR13-A06.2",
+      "state": "Accepted",
+      "explicit_MAIN_locations_reopened": [
+        "/latest_A06_current_acceptance/1"
+      ],
+      "canonical_case_ids": [
+        "PR13-A06.2-T01",
+        "PR13-A06.2-T02",
+        "PR13-A06.2-T03"
+      ],
+      "source_scope": "Existing scoped component decisions used as fault-family lineage, not new execution or broader capacity/hardware acceptance."
+    },
+    {
+      "task_id": "PR13-A06.3",
+      "state": "Accepted",
+      "explicit_MAIN_locations_reopened": [
+        "/latest_A06_current_acceptance/2"
+      ],
+      "canonical_case_ids": [
+        "PR13-A06.3-T01",
+        "PR13-A06.3-T02",
+        "PR13-A06.3-T03"
+      ],
+      "source_scope": "Existing scoped component decisions used as fault-family lineage, not new execution or broader capacity/hardware acceptance."
+    },
+    {
+      "task_id": "PR13-A06.4",
+      "state": "Accepted",
+      "explicit_MAIN_locations_reopened": [
+        "/latest_A06_current_acceptance/3"
+      ],
+      "canonical_case_ids": [
+        "PR13-A06.4-T01",
+        "PR13-A06.4-T02",
+        "PR13-A06.4-T03"
+      ],
+      "source_scope": "Existing scoped component decisions used as fault-family lineage, not new execution or broader capacity/hardware acceptance."
+    }
+  ],
+  "no_new_gameplay_or_asset_mutations": true,
+  "no_criteria_relaxed": true,
+  "whole_project_accepted": false
+}

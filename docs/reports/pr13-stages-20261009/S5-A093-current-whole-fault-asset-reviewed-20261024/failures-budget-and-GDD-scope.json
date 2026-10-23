@@ -1,0 +1,73 @@
+{
+  "kind": "DocumentCorrectedExpectation_NoCriteriaRelaxation",
+  "IMPORTANT_original_joint_observer_failure": {
+    "rowsPassed": 8,
+    "rowsFailed": 7,
+    "service_controller_exit1_kept": true,
+    "current_qualification": "GDD_BASE2.5.2actualarmorRelicPile/inventory0/12loadouts5null; not originalobserverpass",
+    "actual_main_exit3_remains_InvalidEvidence": true
+  },
+  "GDD_original_rule_and_wrong_expectation": {
+    "kind": "DocumentCorrectionNotGameplayRelaxation",
+    "case_ids": [
+      "PR13-A09.3-T01",
+      "PR13-A09.3-T03"
+    ],
+    "original_private_expectation": {
+      "post_death_inventory_count": 1,
+      "post_death_equipped_count": 1,
+      "item_location": "Equipped",
+      "binding_assumed_death_protection": true
+    },
+    "original_observer_service_and_controller_failed_results_kept": true,
+    "authority": [
+      {
+        "path": "GDD_BASE_v0.69.md",
+        "lines": [
+          300,
+          316
+        ],
+        "sha256": "bccf36529f8f3aa599118521df573425e00b6ab5f76b42d1eaca881d2831bde1",
+        "rule": "PVE/PVP death: five worn armor pieces go to RelicPile, corresponding loadout slots empty; no starter or death replacement shoes; bound is not death immunity."
+      },
+      {
+        "path": "GDD.md",
+        "sha256": "7375f9615d4612a617cdb6295a020037016ecef061964c0200b52c2def9d44f6",
+        "rule": "Main v0.70 does not override this armor-death disposition; user-confirmed legal80over70 remains separate and untouched."
+      }
+    ],
+    "corrected_independent_expectation": {
+      "post_death_inventory_count": 0,
+      "post_death_equipped_armor_count": 0,
+      "actual_seeded_items4_once_each_to": "RelicPile",
+      "actual_equipment_rows4_preserved": true,
+      "all12_loadouts_five_slots_null_offline_dump_proven": true,
+      "UI_weapon_retained_and_empty_five_armor_slots": true,
+      "renderer15_real_nonblank_ready_frames_and_native_mouse_navigation_still_required": true,
+      "samekey_ACK_after_actual_restart_byteexact_and_once_assets_still_required": true,
+      "original_main_must_reject_that_rendered_actor_bad_final1byte_as_exit3": true
+    },
+    "not_relaxed": [
+      "API_10s_attempt_30s_logical_deadline",
+      "world_UID_item_budget",
+      "source_hash_integrity",
+      "real_renderer_and_nonblank_pixels",
+      "once_only_assets",
+      "bad_final_evidence_must_reject"
+    ],
+    "no_raw_mutation": true,
+    "no_new_realworld_replay_for_this_correction": true,
+    "no_product_or_server_mutation": true,
+    "qualification_label": "文档校正预期后复核；不冒称原观察器通过"
+  },
+  "all_T02_R1_R2_R3_and_joint_R1_R2_R3_original_failures_kept": true,
+  "source_and_SQL_audit_only_errata": "Sourceauditorr330assumedpluraloverlays, correctedusingactualdeclaredP.files overlaypath. OfflineSQLparserr333guessed equipped_loadouts insteadactual player_loadouts; originaldecodedSQL retained andr334qualified. No product/rawdata/deadline/criterionchange ornewbusiness replay.",
+  "sample_budget_no_reset": "Combinedsourcehistoricalcumulativeworlds3UID16items13; T02historical8matchrecords20UID4initialitems; no newgame/model/account orreplay. Existingconservativecharges preserved, notsuccess totals.",
+  "new_gameplay_or_models_or_accounts0": true,
+  "no_rule_deadline_body_hash_source_or_capacity_criteria_relaxed": true,
+  "currentreview_GDD_pins_intact": true,
+  "capacity100_50_andA021_A022_PG4_still_unpassed": true,
+  "original_fullmain_false_acceptance_businesscleanup_flags_kept": true,
+  "human_experience_excluded": true,
+  "no_product_UI_GDD_config_asset_changes": true
+}
