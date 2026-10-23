@@ -1,0 +1,221 @@
+{
+  "ok": true,
+  "phase": "populate",
+  "schema": "pr13_a084_owned",
+  "records": [
+    {
+      "hero": "Mage",
+      "room": "fe0c1c8f-44f5-42d9-85c4-7be82497afe0",
+      "match": "ba8c136e-ead7-4ba1-a7a4-a356d206e5b9",
+      "player": "b92c6206-a6c6-489e-a703-615cbe15a02b",
+      "snapshot_file": "Mage.snapshot.original.json",
+      "snapshot_SHA": "64d3bf19c31c8501504a370b877e9d3653bcb2422259de446137ca3aee1e4d52"
+    },
+    {
+      "hero": "Priest",
+      "room": "36023925-3aac-4429-a92b-2cec2626baef",
+      "match": "c5ae1396-f0da-4419-80f9-11a206bb60e7",
+      "player": "1e70081a-b458-4c5e-b718-0d51018bd6ec",
+      "snapshot_file": "Priest.snapshot.original.json",
+      "snapshot_SHA": "3408c423a089db4f048bfbbc32b4acfedea174d1d395bb7aa87b4ba790d6b80c"
+    },
+    {
+      "hero": "Guardian",
+      "room": "b1985115-6d34-479a-8fd1-061b93ccb638",
+      "match": "87639006-fe9a-4ff5-9717-366af4b28378",
+      "player": "d3cada44-34e2-485a-840f-94e25ef1f3d3",
+      "snapshot_file": "Guardian.snapshot.original.json",
+      "snapshot_SHA": "87cf41119bd33708e62881b19db4d4b38b77343dc88ff8eba21cb42ddbf014dd"
+    }
+  ],
+  "actual_new_logical_roomIDs": 3,
+  "actual_same_ID_restore_objects": 0,
+  "actual_matches": 3,
+  "actual_room_snapshots": 3,
+  "actual_wallets": 0,
+  "actual_ledger": 0,
+  "actual_inventory_movements": 0,
+  "actual_reconciliation": {
+    "NegativeAccountCount": 0,
+    "ActiveListingAssetMismatchCount": 0,
+    "OrphanMarketListedEquipmentCount": 0,
+    "SoldListingMismatchCount": 0,
+    "MarketTransactionAmountMismatchCount": 0,
+    "LedgerChainMismatchCount": 0,
+    "TotalViolationCount": 0,
+    "IsHealthy": true
+  },
+  "actual_owned_delivery_journal": [
+    {
+      "case_id": "PR13-A08.4-T01",
+      "evidence": {
+        "case_id": "PR13-A08.4-T01",
+        "historical_env_restoration_record": {
+          "path": "docs/reports/pr13-stages-20261009/S3-a08-original-env-owned-copy-restoration-audit/result.original.json",
+          "sha256": "8e4fd6343200cd61052d40aed5edde40a0482a8b921a7c139e0ff184888f8e62",
+          "historical_only": true,
+          "original_env_SHA256": "b6447257f742989ad27f1ba583432800424c50febd46904e9bd627ae089d8987",
+          "restored_owned_copy_SHA256": "b6447257f742989ad27f1ba583432800424c50febd46904e9bd627ae089d8987"
+        },
+        "current_runtime_health_observation": null,
+        "new_production_env_read_or_restore": false
+      }
+    },
+    {
+      "case_id": "PR13-A08.4-T02",
+      "evidence": {
+        "case_id": "PR13-A08.4-T02",
+        "current_runtime_health_observation": null,
+        "health_not_observed_for_this_delivery_scope": true,
+        "actual_owned_PG_restore_does_not_verify_deployed_application_health": true
+      }
+    },
+    {
+      "case_id": "PR13-A08.4-T03",
+      "evidence": {
+        "case_id": "PR13-A08.4-T03",
+        "runtime_acceptance": false,
+        "delivery_override_SHA": "eb8d253db4fccbf3aa1c2957656eb9580ce80b2f6dd415f01b873fdb51a0a7eb",
+        "production_activation": false,
+        "delivery_override_path": "docs/plans/PR13_DELIVERY_DECISION_20261008.json",
+        "local_summary_required": true,
+        "actual_unaccepted_tasks": [
+          {
+            "state": "Partial",
+            "task_id": "LOAD-10.1"
+          },
+          {
+            "state": "Partial",
+            "task_id": "LOAD-10.2"
+          },
+          {
+            "state": "Partial",
+            "task_id": "LOAD-10.3"
+          },
+          {
+            "state": "Partial",
+            "task_id": "LOAD-10.4"
+          },
+          {
+            "state": "Partial",
+            "task_id": "LOAD-11.2"
+          },
+          {
+            "state": "ReadyForAcceptance",
+            "task_id": "LOAD-11.4"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-A01.3"
+          },
+          {
+            "state": "ReadyForAcceptance",
+            "task_id": "PR13-A01.4"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-A02.1"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-A02.2"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-A02.3"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-A02.4"
+          },
+          {
+            "state": "ReadyForAcceptance",
+            "task_id": "PR13-A07.1"
+          },
+          {
+            "state": "ReadyForAcceptance",
+            "task_id": "PR13-A07.2"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-A07.3"
+          },
+          {
+            "state": "ReadyForAcceptance",
+            "task_id": "PR13-A07.4"
+          },
+          {
+            "state": "ReadyForAcceptance",
+            "task_id": "PR13-A08.1"
+          },
+          {
+            "state": "ReadyForAcceptance",
+            "task_id": "PR13-A08.2"
+          },
+          {
+            "state": "ReadyForAcceptance",
+            "task_id": "PR13-A08.3"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-A08.4"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-A09.1"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-A09.2"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-A09.3"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-A09.4"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-A10.1"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-A10.2"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-A10.3"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-A10.4"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-B12.1"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-B12.2"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-B12.3"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-B12.4"
+          }
+        ],
+        "draft_PR_updates_required": false,
+        "actual_current_register_SHA": "b317d55d6e593d2413ed59d64afa4037b00a8990360d3b398f0447435af01416",
+        "actual_current_register_path": "docs/reports/pr13-stages-20261009/S6-current-B124-final-machine-layers-closed-20261022/register.json"
+      }
+    }
+  ],
+  "actualDomainSHA": "f91d19f7d9aa1a381cfd2299261ce4687dc615e9961e91be272a49a7f9ce47ce",
+  "actualServerSHA": "dd56dfc4e3ec3de941f85e12a2d1fa3c25a5b4a07be3d2b17eaed2de624d4ead",
+  "no_network_auth_no_production_assets": true
+}

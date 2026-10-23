@@ -1,0 +1,15 @@
+# 修复READY停止后迟到入房漏清理，补四个真实边界；完整T03仍Partial
+
+R1在首份实际READY被代理等待PG截面时，Native实际发出三次READY，全部发生于外部STOP前。首帧按声明移除，后两帧在STOP后正常转发。原脚本先看到空room、权威票据Matched并defer，随即关闭WS，错过后来真实开局；21次Bootstrap后仍Unknown，PG为Running／Active，未发出合法退出。原Native退出0、errors0、主程序130仅表示人工停止，business_cleanup_verified实际false。该整轮保持Failed，只有1世界／1真实账号／0完成周期／0ACK，后续三组未执行。没有把合法Mage70血量或Matched历史当成异常。
+
+当前收尾先核对待入房票据，再在原6秒合法退出预算内保持同一已验证match的连接，接住迟到入房后按原方式退出、结算ACK；会话、cycle、准备、票据及实际match身份不符则不操作新路由。仅改变_graceful_cleanup编排并提取受保护的_drain_cleanup_room；48个其他原函数、ACK／关连接／完整Bootstrap核验尾段逐字节相同，6秒退出、6秒结算等待、22秒核验和35秒协调器宽限均未放宽。两个修改文件已先COW，旧冻结工程未被连带修改。23组现有原生回归全过，新增六类迟到当前路由、变更会话、异match、未验证、已有room及票据释放共12个校验通过，无脚本或退出泄漏。首个本地候选因动态Game引用无法推导awaiting_join类型而解析失败；旧候选及日志保留，显式bool修正后两个直接解析检查和23组真实Native通过，未把坏候选上传云端。本地均headless／Dummy／60fps／无窗口／低优先级。
+
+R2使用当前9babe9驱动、2147输入、8eb Program和49ce配置，四次未包裹的原主程序、13个真实Native执行READY迟到入房、MOVE在途、ACK后端接触前和ACK200已提交未交付四组。READY保留原三次重试，额外明确最少2.6秒的STOP前代理等待，确保同一积压条件；只移除首帧，另外两次真实READY在STOP后被服务端接受，真实room.started随后到达Native，原合法退出与drain ACK1完成、cleanup Passed、完成周期0。实际失败因而在该有界作用域关闭，旧R1仍Failed；不是通过屏蔽其他重试、伪造room或延长超时取得绿灯。
+
+MOVE原请求在既有3秒命令超时后才真实room.moved完成，超时记录、相同requestId的迟到完成和playing来源全部保留，迟到结果归drain，没有伪造正常周期。两个ACK组的实际PG截面分别目标ACK记录0／1、receipt未确认／已确认，原请求／回应在STOP后成功交付并保留settlement来源。四个原主程序均130／operator_stopped／passed=false，13个Native退出0、业务清理Passed、errors0、强杀0，引擎无退出资源泄漏。4个真实世界／13份receipt／13个唯一ACK，只有一位非目标账号在STOP前实际完成了一个functional scenario周期，scenario completed=1、normal completed=0；其他12位取消，不用该周期掩盖失败。212项独立核对通过。
+
+按协调器时间窗，ACK为running2／drain11；按Native读到STOP的观测阶段则active1／drain12。MOVE组其中一个原ACK在Native已读STOP后、协调器轮询落戳前129毫秒完成，因此两种统计不同；原observation_phase、completion_stage和时间窗分别保留，不强行改成一致。尾部审计全部分片字节、序号、所有权、高水位及计数守恒通过。归档首次返回的嵌套控制元数据超出8192字节观察上限，随后只读复核已存在的同一远端归档并下载逐SHA／CRC验证，未重建归档或重跑对局。
+
+预算在R2执行前冻结：原四世界自限因必要READY修复复验增为五，实际R1一世界加R2四世界，共14真实账号；此前T01/T02两世界／8完成流程、进房前4账号／0世界及更早LOAD103、所有LOAD101/102历史均保留，不重置。1301是源码／raw原件文件数，不是测试局数。本次隔离实例认证30／写120／读480、RT30且bypass=false；原10／30／120准入与容量未据此通过。500MB／5percent仅功能资源底线，应用1024MiB／CPU1.25、PG384MiB／CPU0.25、tmpfs512MiB／WAL64，无host端口或生产volume。生产ID、镜像、启动时间、环境摘要与health200保持。完整原件和源码1301成员G封存；2147客户端由既有G3042的2144同源文件加驱动／普通场景／上下文测试3份覆盖核验。随后再次核对103包文件、2147客户端SHA、owner、unit PID0／inactive与自有容器消失，仅清理临时云输入。云raw、PG dump、本地源、共享缓存及旧失败G266保留。
+
+本轮没有修改产品UI、资源、协议、数值、服务端或Python判定逻辑，无需ImageGen，无Git提交／合并／推送或生产部署。完整T03仍需Pending在当前音频退出下的真实长收尾与35秒裸入口宽限、局间等待及旧12-await当前来源复核；LIVE／POSTGRES／CAPACITY缺口保持，不能从本轮有界READY结果推断任意迟到、停服或容量。88 Accepted／36 Partial／8 Ready、44未整体验收、164个case/profile缺口不变，其他131任务及全局gate不变。

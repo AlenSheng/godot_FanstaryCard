@@ -1,0 +1,193 @@
+{
+  "kind": "NativeArchiveQueueCompletedAndAll14PGMembershipsVerified_NotWholeAcceptance",
+  "generated_at": "2026-10-23T09:20:01.934573+08:00",
+  "task_id": "LOAD-11.2",
+  "state": "Partial",
+  "native_worker_terminal_observation": {
+    "kind": "ToolObservedNativeCompletion_NotFabricatedChildReceipt",
+    "exec_session": 66445,
+    "native_tool_exit_observed": 0,
+    "expected_PID": 25368,
+    "expected_creation": "2026-10-22T22:40:28.614842+08:00",
+    "PID_absent_in_following_CIM_observation": true,
+    "last_native_output_finished": true,
+    "termination": "AllFrozenQueueObjectsAttempted",
+    "observed_at": "2026-10-23T09:20:01.844383+08:00"
+  },
+  "closed_archive_queue": {
+    "termination": "AllFrozenQueueObjectsAttempted",
+    "all_frozen_queue_objects_attempted": true,
+    "counts": {
+      "candidate_paths": 23722,
+      "unique_content_objects": 18421,
+      "outer_objects_processed": 18421,
+      "outer_identity_mismatches": 0,
+      "source_read_errors": 0,
+      "members": 325355,
+      "findings": 3412,
+      "nested_references": 18107,
+      "archive_layer_completion_events": 18443,
+      "compressed_bytes_hashed": 117964755401,
+      "decoded_bytes_read": 1081405488280
+    },
+    "prior_outer_attempts_retained_without_replay": 1323,
+    "supported_total_objects": 19744,
+    "elapsed_seconds": 38158.20300000001,
+    "native_result_sha256": "1c1559c22b71a164dbec43772bc31f6cf537d6de93b7a229353190c5a547acd8"
+  },
+  "all_frozen_outer_objects_attempted_is_not_all_archive_layers_or_findings_accepted": true,
+  "native_findings_3412_require_content_structure_decoder_and_parent_graph_review": true,
+  "format_specific_pending10_is_historical_worker_start_metadata_and_separate_PCK_results_remain_independent": true,
+  "new_original_snapshot_bindings": 1,
+  "new_actual_file_members_verified": 1434,
+  "native_receipt_member_binding": {
+    "manifest_path": "pvp-visible-full-source-20261019-r1-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+    "manifest_sha256": "0193c6445bf356a1b2fb0bcbea506783faf6258b49b265920c5755a5f9aceb35",
+    "manifest_bytes": 227178,
+    "archive_source": {
+      "root": "private-G",
+      "path": "pvp-visible-full-source-20261019-r1-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+      "bytes": 8136037,
+      "sha256": "ffe4ac5a7733f368e149be2f4f83a0a28f71a033e1d1a757d6e46a6e74945b6d",
+      "frozen_snapshot_alias_paths": 2
+    },
+    "receipt_path": "G:\\PR13Evidence\\pvp-visible-full-source-20261019-r1-originals\\cloud-originals-before-PG-cleanup\\physical-before-PG-cleanup.archive-ready.original.json",
+    "receipt_sha256": "922d4c18ab41b63fec845d36b23f33d52d8081bc7e3ebdc73261ee2f4f461ae8",
+    "receipt_binds_both_actual_manifest_and_archive": true,
+    "complete_native_tar_and_gzip_footer": true,
+    "stable_outer_hash_equals_frozen_inventory": true,
+    "expected_files": 1434,
+    "actual_files": 1434,
+    "missing_paths": [],
+    "extra_paths": [],
+    "different_hash_paths": [],
+    "invalid_paths": [],
+    "state": "ExactReceiptBoundWholePGDATAMembershipVerified",
+    "old_capacity_or_transaction_case_success_not_inferred": true
+  },
+  "previous_verified_PG_memberships_retained_without_payload_replay": 13,
+  "previous_PG_binding_report": {
+    "path": "docs/reports/pr13-stages-20261009/S5-LOAD112-PG-additional-completed-memberships-20261023-r10/report.json",
+    "bytes": 5525,
+    "sha256": "0c4dd3e85a11618eca470b37137264c13f72ebcb8faf7ee797e3efba8855430c"
+  },
+  "current_verified_snapshot_memberships": 14,
+  "total_original_snapshot_manifests": 14,
+  "remaining_pending_snapshot_manifests": 0,
+  "same_original_receipts_bind_manifest_and_archive_exact_bytes": true,
+  "no_missing_extra_duplicate_invalid_or_changed_members": true,
+  "final_captured_prefixes_equal_complete_closed_worker_files": true,
+  "raw_archive_payload_reparsed_or_database_connected_or_restored": false,
+  "original_capacity_transaction_runtime_case_failures_unchanged": true,
+  "raw_G_custody": {
+    "directory": "G:\\PR13Evidence\\LOAD112-PGDATA-final-membership-20261023-r11-originals",
+    "items": [
+      {
+        "path": "native-prefixes/R3-outer.private-exact-prefix.jsonl",
+        "bytes": 9471240,
+        "sha256": "34084b80ded7d806b3fff628574bd85755cee3e49e47e0b102c8d9ecd4a523ec",
+        "capture_equals_complete_closed_native_file": true
+      },
+      {
+        "path": "native-prefixes/R3-members.private-exact-prefix.jsonl",
+        "bytes": 262815834,
+        "sha256": "f19dca658f482601bed36449506f27d295342bf18091d6772651c9e41a00229e",
+        "capture_equals_complete_closed_native_file": true
+      },
+      {
+        "path": "exact-manifest-receipts/ffe4ac5a7733f368e149be2f4f83a0a28f71a033e1d1a757d6e46a6e74945b6d/manifest.private-original.json",
+        "bytes": 227178,
+        "sha256": "0193c6445bf356a1b2fb0bcbea506783faf6258b49b265920c5755a5f9aceb35"
+      },
+      {
+        "path": "exact-manifest-receipts/ffe4ac5a7733f368e149be2f4f83a0a28f71a033e1d1a757d6e46a6e74945b6d/receipt.private-original.json",
+        "bytes": 822,
+        "sha256": "922d4c18ab41b63fec845d36b23f33d52d8081bc7e3ebdc73261ee2f4f461ae8"
+      },
+      {
+        "path": "completed-membership-binding/executed-membership-binding-source.original.py",
+        "bytes": 7298,
+        "sha256": "0cf4aaa7b5d166165b0e0ef769bea6e0d4eec23a107d3a1f351b01bdefaafb6f"
+      },
+      {
+        "path": "completed-membership-binding/result.original.json",
+        "bytes": 3362,
+        "sha256": "bcb3650e550eb0ae9d57bcb2759ca7e2789ee017197becb4da7b0852e3cca368"
+      },
+      {
+        "path": "closed-native-worker/result.original.json",
+        "bytes": 1454,
+        "sha256": "1c1559c22b71a164dbec43772bc31f6cf537d6de93b7a229353190c5a547acd8"
+      },
+      {
+        "path": "closed-native-worker/started.original.json",
+        "bytes": 3025,
+        "sha256": "a49e594fdff03eaaec2f0d3d3a1f173486702df2e0ce1b01e3b9a4a9bcef05d8"
+      },
+      {
+        "path": "closed-native-worker/executed-engine.original.py",
+        "bytes": 16125,
+        "sha256": "a372fb211d708e3ae812653f6f4dc5b996c4f7b30486eae0e815fb8f9438ffd5"
+      },
+      {
+        "path": "closed-native-worker/executed-worker.original.py",
+        "bytes": 14019,
+        "sha256": "e3b00380b93a101190ac88e28a4a4ea41d45c4f7b0a2844bc74b8ef521ac3911"
+      },
+      {
+        "path": "closed-native-worker/input-candidates.private.snapshot.jsonl",
+        "bytes": 8409325,
+        "sha256": "8aa45d27d76491febad23732f4a5724ea4ad4bfb387e62e8e1aa4539097aa67f"
+      },
+      {
+        "path": "closed-native-worker/findings.metadata-only.private.original.jsonl",
+        "bytes": 2703664,
+        "sha256": "fa267ca15c14b776c77e559f67f93a194b3a448232a299e1a32d1840ebef3426"
+      },
+      {
+        "path": "preparation-source.original.py",
+        "bytes": 1220,
+        "sha256": "0d5c2d66954c5cdcd98286f78cfa9fda2352b79114c8d905d9ffcce9fdb80b01"
+      },
+      {
+        "path": "publication-source.original.py",
+        "bytes": 11996,
+        "sha256": "e12e13e13ca7d3ff4453dc58b9d4b170cbd25e6613ac108d1d7765eede22466c"
+      },
+      {
+        "path": "native-terminal-tool-observation.original.json",
+        "bytes": 408,
+        "sha256": "de14000a69de05cd917939ed47bcab18c3a2965d5d51aca272002d59d3f77792"
+      },
+      {
+        "path": "pointer-before.exact-copy.json",
+        "bytes": 116510,
+        "sha256": "997483f7c33e5c0e8a378eb36fe93bdc8211e88714ec6d25589e9242c969e039"
+      }
+    ]
+  },
+  "source_content_queue_unchanged": {
+    "path": "G:\\PR13Evidence\\LOAD112-Python-active-guard-regex-intent-20261023-r31-originals\\remaining220-content-review-queue.private.original.jsonl",
+    "bytes": 375648,
+    "sha256": "79256c35d0e550be8d88d2bab4e58534fa101d11b1965a4abaa8aa1947c056ee",
+    "remaining_objects": 220,
+    "remaining_aliases": 1133,
+    "derived_frozen_queue_not_a_new_full_source_inventory": true
+  },
+  "current_register": "docs/reports/pr13-stages-20261009/S6-current4a-CI-annotation-20261023/register.json",
+  "current_register_sha256_unchanged": "bb5f21d73fc6a0abcf83e4cbade831954ec7f171e9d0281846a72c3d2a49718d",
+  "task_counts_unchanged": {
+    "Accepted": 100,
+    "Partial": 24,
+    "ReadyForAcceptance": 8,
+    "Failed": 0
+  },
+  "whole_tasks_unaccepted": 32,
+  "missing_case_profile_pairs": 47,
+  "public_guard_sha256_unchanged": "2969671beea4bad2158c09577ea1da86ed7e5bdb8e3ccaa1457a6c023442b4d9",
+  "new_game_samples": 0,
+  "case_profiles_closed": 0,
+  "whole_LOAD112_accepted": false,
+  "whole_project_accepted": false,
+  "Godot_release_push_production_update_reboot_or_asset_repair_performed": false
+}

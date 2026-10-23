@@ -1,0 +1,1364 @@
+{
+  "kind": "LargePrivateFormatsAndExplicitEncodingReview_NotPublicExportOrSUTPass",
+  "generated_at": "2026-10-23T03:33:44.044312+08:00",
+  "task_id": "LOAD-11.2",
+  "state": "Partial",
+  "large_private_format_review": {
+    "kind": "Remaining29LargePrivateObjects_BoundedFullByteFormatInspection",
+    "ok": true,
+    "actual_stream_controls": 25,
+    "objects_reviewed": 29,
+    "counts": {
+      "format_intent_bound_observation_aliases": 30,
+      "exact_private_bytes_inspected": 3874322879,
+      "ExactPrivateLargeFormatInspected_PublicWholeFileSizeRejectionRetained": 29
+    },
+    "results": [
+      {
+        "sha256": "37dc5ada4c4208eb59a0abed51354a4349afb0e0eee7cfedac51fb67e33a2bf9",
+        "bytes": 67434063,
+        "frozen_observation_aliases": 2,
+        "actual_exact_source_alias": {
+          "root": "private-G",
+          "path": "load112-declared-root-namespace-20261018-r1/whole-namespace-witness-plan.private.json",
+          "public_report_text": false,
+          "reason": "OversizedTextNeedsStreamingAndStructuredInspection"
+        },
+        "state": "ExactPrivateLargeFormatInspected_PublicWholeFileSizeRejectionRetained",
+        "format_observation": {
+          "format": "PrivateStrictUTF8JSONEventStream",
+          "events": {
+            "start_map": 243599,
+            "map_key": 1014218,
+            "number": 546891,
+            "start_array": 215599,
+            "string": 492292,
+            "end_array": 215599,
+            "boolean": 989,
+            "end_map": 243599,
+            "null": 22526
+          },
+          "maximum_depth": 7,
+          "maximum_scalar_UTF8_bytes": 210,
+          "failures": [],
+          "bytes": 67434063,
+          "sha256": "37dc5ada4c4208eb59a0abed51354a4349afb0e0eee7cfedac51fb67e33a2bf9",
+          "whole_report_loaded": false,
+          "public_export_denied": true
+        },
+        "original_64MiB_public_export_limit_unchanged": true,
+        "source_payloads_retained_in_place_not_deleted_or_rewritten": true,
+        "no_credential_freedom_or_gameplay_success_inferred": true
+      },
+      {
+        "sha256": "0510ea4f6d69fcbc2e08e8e21910db38ed3e4fa6dfa53e90a57396706f00a0ce",
+        "bytes": 68260138,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "workspace",
+          "path": "outputs/pr13-local-20261008/S5/simulation-primary/outer-o6-windup050/102001/encounters.jsonl",
+          "public_report_text": false,
+          "reason": "OversizedTextNeedsStreamingAndStructuredInspection"
+        },
+        "state": "ExactPrivateLargeFormatInspected_PublicWholeFileSizeRejectionRetained",
+        "format_observation": {
+          "format": "PrivateUTF8PhysicalJSONLRecordStream",
+          "physical_records": 72000,
+          "nonempty_records_parsed": 72000,
+          "maximum_physical_record_bytes": 1008,
+          "failure_counts": {},
+          "bytes": 68260138,
+          "sha256": "0510ea4f6d69fcbc2e08e8e21910db38ed3e4fa6dfa53e90a57396706f00a0ce",
+          "whole_file_loaded": false,
+          "public_export_denied": true
+        },
+        "original_64MiB_public_export_limit_unchanged": true,
+        "source_payloads_retained_in_place_not_deleted_or_rewritten": true,
+        "no_credential_freedom_or_gameplay_success_inferred": true
+      },
+      {
+        "sha256": "088a3514fb8286a5dce17dcfb516a29010f76ac4eceebcc4d67a39908a17df90",
+        "bytes": 68169026,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "workspace",
+          "path": "outputs/pr13-local-20261008/S5/simulation-primary/outer-o6-hp090/100001/encounters.jsonl",
+          "public_report_text": false,
+          "reason": "OversizedTextNeedsStreamingAndStructuredInspection"
+        },
+        "state": "ExactPrivateLargeFormatInspected_PublicWholeFileSizeRejectionRetained",
+        "format_observation": {
+          "format": "PrivateUTF8PhysicalJSONLRecordStream",
+          "physical_records": 72000,
+          "nonempty_records_parsed": 72000,
+          "maximum_physical_record_bytes": 1008,
+          "failure_counts": {},
+          "bytes": 68169026,
+          "sha256": "088a3514fb8286a5dce17dcfb516a29010f76ac4eceebcc4d67a39908a17df90",
+          "whole_file_loaded": false,
+          "public_export_denied": true
+        },
+        "original_64MiB_public_export_limit_unchanged": true,
+        "source_payloads_retained_in_place_not_deleted_or_rewritten": true,
+        "no_credential_freedom_or_gameplay_success_inferred": true
+      },
+      {
+        "sha256": "0983b9a3520eb14f39db01ee11c52d04adfd6db7817d28b078648ef9b6db4177",
+        "bytes": 72794001,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "private-G",
+          "path": "WAN-Guardian-long-natural3-r1/run/cloud-monitor.original.jsonl",
+          "public_report_text": false,
+          "reason": "OversizedTextNeedsStreamingAndStructuredInspection"
+        },
+        "state": "ExactPrivateLargeFormatInspected_PublicWholeFileSizeRejectionRetained",
+        "format_observation": {
+          "format": "PrivateUTF8PhysicalJSONLRecordStream",
+          "physical_records": 199,
+          "nonempty_records_parsed": 199,
+          "maximum_physical_record_bytes": 392253,
+          "failure_counts": {},
+          "bytes": 72794001,
+          "sha256": "0983b9a3520eb14f39db01ee11c52d04adfd6db7817d28b078648ef9b6db4177",
+          "whole_file_loaded": false,
+          "public_export_denied": true
+        },
+        "original_64MiB_public_export_limit_unchanged": true,
+        "source_payloads_retained_in_place_not_deleted_or_rewritten": true,
+        "no_credential_freedom_or_gameplay_success_inferred": true
+      },
+      {
+        "sha256": "0b7bbe2be3f86149f8c5ecf12c187f6bd0f8ed7153ac06c9cd71f5caee7c5f9f",
+        "bytes": 68268019,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "workspace",
+          "path": "outputs/pr13-local-20261008/S5/simulation-primary/outer-o6-windup050/100001/encounters.jsonl",
+          "public_report_text": false,
+          "reason": "OversizedTextNeedsStreamingAndStructuredInspection"
+        },
+        "state": "ExactPrivateLargeFormatInspected_PublicWholeFileSizeRejectionRetained",
+        "format_observation": {
+          "format": "PrivateUTF8PhysicalJSONLRecordStream",
+          "physical_records": 72000,
+          "nonempty_records_parsed": 72000,
+          "maximum_physical_record_bytes": 1008,
+          "failure_counts": {},
+          "bytes": 68268019,
+          "sha256": "0b7bbe2be3f86149f8c5ecf12c187f6bd0f8ed7153ac06c9cd71f5caee7c5f9f",
+          "whole_file_loaded": false,
+          "public_export_denied": true
+        },
+        "original_64MiB_public_export_limit_unchanged": true,
+        "source_payloads_retained_in_place_not_deleted_or_rewritten": true,
+        "no_credential_freedom_or_gameplay_success_inferred": true
+      },
+      {
+        "sha256": "206d8be80117160a3b79e2f3c0ca4a93b2c4fcac4ea1e740de997888721dc85d",
+        "bytes": 120494823,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "private-G",
+          "path": "natural-choice-fillfirst-formal128-priest-r1/native-output/Priest/events.jsonl",
+          "public_report_text": false,
+          "reason": "OversizedTextNeedsStreamingAndStructuredInspection"
+        },
+        "state": "ExactPrivateLargeFormatInspected_PublicWholeFileSizeRejectionRetained",
+        "format_observation": {
+          "format": "PrivateUTF8PhysicalJSONLRecordStream",
+          "physical_records": 12664,
+          "nonempty_records_parsed": 12664,
+          "maximum_physical_record_bytes": 27127,
+          "failure_counts": {},
+          "bytes": 120494823,
+          "sha256": "206d8be80117160a3b79e2f3c0ca4a93b2c4fcac4ea1e740de997888721dc85d",
+          "whole_file_loaded": false,
+          "public_export_denied": true
+        },
+        "original_64MiB_public_export_limit_unchanged": true,
+        "source_payloads_retained_in_place_not_deleted_or_rewritten": true,
+        "no_credential_freedom_or_gameplay_success_inferred": true
+      },
+      {
+        "sha256": "2cc7daf5bb96f2a8eb672371e4ef976126ca73a96f38fb8fcbb18a24a52575fd",
+        "bytes": 142385398,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "private-G",
+          "path": "load112-declared-root-namespace-20261018-r1/review-controls/stage-local/remaining-declared-locations.private.json",
+          "public_report_text": false,
+          "reason": "OversizedTextNeedsStreamingAndStructuredInspection"
+        },
+        "state": "ExactPrivateLargeFormatInspected_PublicWholeFileSizeRejectionRetained",
+        "format_observation": {
+          "format": "PrivateStrictUTF8JSONEventStream",
+          "events": {
+            "start_map": 264435,
+            "map_key": 2247290,
+            "string": 1303894,
+            "number": 370667,
+            "end_map": 264435,
+            "start_array": 132276,
+            "end_array": 132276,
+            "null": 176133,
+            "boolean": 132160
+          },
+          "maximum_depth": 7,
+          "maximum_scalar_UTF8_bytes": 304,
+          "failures": [],
+          "bytes": 142385398,
+          "sha256": "2cc7daf5bb96f2a8eb672371e4ef976126ca73a96f38fb8fcbb18a24a52575fd",
+          "whole_report_loaded": false,
+          "public_export_denied": true
+        },
+        "original_64MiB_public_export_limit_unchanged": true,
+        "source_payloads_retained_in_place_not_deleted_or_rewritten": true,
+        "no_credential_freedom_or_gameplay_success_inferred": true
+      },
+      {
+        "sha256": "2ecc231bceddfaf23ab4f4aec165f0290583fc00a947aeb10d2736261c9f4083",
+        "bytes": 68171065,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "workspace",
+          "path": "outputs/pr13-local-20261008/S5/simulation-primary/outer-o6-hp090/101001/encounters.jsonl",
+          "public_report_text": false,
+          "reason": "OversizedTextNeedsStreamingAndStructuredInspection"
+        },
+        "state": "ExactPrivateLargeFormatInspected_PublicWholeFileSizeRejectionRetained",
+        "format_observation": {
+          "format": "PrivateUTF8PhysicalJSONLRecordStream",
+          "physical_records": 72000,
+          "nonempty_records_parsed": 72000,
+          "maximum_physical_record_bytes": 1007,
+          "failure_counts": {},
+          "bytes": 68171065,
+          "sha256": "2ecc231bceddfaf23ab4f4aec165f0290583fc00a947aeb10d2736261c9f4083",
+          "whole_file_loaded": false,
+          "public_export_denied": true
+        },
+        "original_64MiB_public_export_limit_unchanged": true,
+        "source_payloads_retained_in_place_not_deleted_or_rewritten": true,
+        "no_credential_freedom_or_gameplay_success_inferred": true
+      },
+      {
+        "sha256": "2f395e37ad38263c783db69b79fc540c3641a494be4bb367bc6f863e578291b7",
+        "bytes": 68260171,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "workspace",
+          "path": "outputs/pr13-local-20261008/S5/simulation-primary/outer-o6-windup025/102001/encounters.jsonl",
+          "public_report_text": false,
+          "reason": "OversizedTextNeedsStreamingAndStructuredInspection"
+        },
+        "state": "ExactPrivateLargeFormatInspected_PublicWholeFileSizeRejectionRetained",
+        "format_observation": {
+          "format": "PrivateUTF8PhysicalJSONLRecordStream",
+          "physical_records": 72000,
+          "nonempty_records_parsed": 72000,
+          "maximum_physical_record_bytes": 1008,
+          "failure_counts": {},
+          "bytes": 68260171,
+          "sha256": "2f395e37ad38263c783db69b79fc540c3641a494be4bb367bc6f863e578291b7",
+          "whole_file_loaded": false,
+          "public_export_denied": true
+        },
+        "original_64MiB_public_export_limit_unchanged": true,
+        "source_payloads_retained_in_place_not_deleted_or_rewritten": true,
+        "no_credential_freedom_or_gameplay_success_inferred": true
+      },
+      {
+        "sha256": "4440f66a4cf113f73dbdf34173262fc46473abaff41962297de1f368b0f51f7b",
+        "bytes": 121942519,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "private-G",
+          "path": "natural-choice-formal128-priest-r1/native-output/Priest/events.jsonl",
+          "public_report_text": false,
+          "reason": "OversizedTextNeedsStreamingAndStructuredInspection"
+        },
+        "state": "ExactPrivateLargeFormatInspected_PublicWholeFileSizeRejectionRetained",
+        "format_observation": {
+          "format": "PrivateUTF8PhysicalJSONLRecordStream",
+          "physical_records": 12832,
+          "nonempty_records_parsed": 12832,
+          "maximum_physical_record_bytes": 26846,
+          "failure_counts": {},
+          "bytes": 121942519,
+          "sha256": "4440f66a4cf113f73dbdf34173262fc46473abaff41962297de1f368b0f51f7b",
+          "whole_file_loaded": false,
+          "public_export_denied": true
+        },
+        "original_64MiB_public_export_limit_unchanged": true,
+        "source_payloads_retained_in_place_not_deleted_or_rewritten": true,
+        "no_credential_freedom_or_gameplay_success_inferred": true
+      },
+      {
+        "sha256": "53266b9c559553f6186a6afbaf5bc2b1f18d8ee0829c6c61b2cdf3d4354c1de1",
+        "bytes": 270920716,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "private-G",
+          "path": "natural-dual-boundary-formal128-priest-r1/native-output/Priest/events.jsonl",
+          "public_report_text": false,
+          "reason": "OversizedTextNeedsStreamingAndStructuredInspection"
+        },
+        "state": "ExactPrivateLargeFormatInspected_PublicWholeFileSizeRejectionRetained",
+        "format_observation": {
+          "format": "PrivateUTF8PhysicalJSONLRecordStream",
+          "physical_records": 19334,
+          "nonempty_records_parsed": 19334,
+          "maximum_physical_record_bytes": 66138,
+          "failure_counts": {},
+          "bytes": 270920716,
+          "sha256": "53266b9c559553f6186a6afbaf5bc2b1f18d8ee0829c6c61b2cdf3d4354c1de1",
+          "whole_file_loaded": false,
+          "public_export_denied": true
+        },
+        "original_64MiB_public_export_limit_unchanged": true,
+        "source_payloads_retained_in_place_not_deleted_or_rewritten": true,
+        "no_credential_freedom_or_gameplay_success_inferred": true
+      },
+      {
+        "sha256": "5d5d7906cd5cdd0b3839ff497b67145ded693453a899fc5a6795173e4ee71df9",
+        "bytes": 68176224,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "workspace",
+          "path": "outputs/pr13-local-20261008/S5/simulation-primary/outer-o6-hp095/101001/encounters.jsonl",
+          "public_report_text": false,
+          "reason": "OversizedTextNeedsStreamingAndStructuredInspection"
+        },
+        "state": "ExactPrivateLargeFormatInspected_PublicWholeFileSizeRejectionRetained",
+        "format_observation": {
+          "format": "PrivateUTF8PhysicalJSONLRecordStream",
+          "physical_records": 72000,
+          "nonempty_records_parsed": 72000,
+          "maximum_physical_record_bytes": 1007,
+          "failure_counts": {},
+          "bytes": 68176224,
+          "sha256": "5d5d7906cd5cdd0b3839ff497b67145ded693453a899fc5a6795173e4ee71df9",
+          "whole_file_loaded": false,
+          "public_export_denied": true
+        },
+        "original_64MiB_public_export_limit_unchanged": true,
+        "source_payloads_retained_in_place_not_deleted_or_rewritten": true,
+        "no_credential_freedom_or_gameplay_success_inferred": true
+      },
+      {
+        "sha256": "6b47c3fcc050ca6dbd1a4cc84462914e14926567c8ed35b540126ecadf59041b",
+        "bytes": 180386727,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "private-G",
+          "path": "natural-choice-formal128-guardian-r2/native-output/Guardian/events.jsonl",
+          "public_report_text": false,
+          "reason": "OversizedTextNeedsStreamingAndStructuredInspection"
+        },
+        "state": "ExactPrivateLargeFormatInspected_PublicWholeFileSizeRejectionRetained",
+        "format_observation": {
+          "format": "PrivateUTF8PhysicalJSONLRecordStream",
+          "physical_records": 18470,
+          "nonempty_records_parsed": 18470,
+          "maximum_physical_record_bytes": 26804,
+          "failure_counts": {},
+          "bytes": 180386727,
+          "sha256": "6b47c3fcc050ca6dbd1a4cc84462914e14926567c8ed35b540126ecadf59041b",
+          "whole_file_loaded": false,
+          "public_export_denied": true
+        },
+        "original_64MiB_public_export_limit_unchanged": true,
+        "source_payloads_retained_in_place_not_deleted_or_rewritten": true,
+        "no_credential_freedom_or_gameplay_success_inferred": true
+      },
+      {
+        "sha256": "83294f03f1a48c7532236588ba9d9c4e20f4178c7bb8ed7fad1ce867b5720fe6",
+        "bytes": 68168852,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "workspace",
+          "path": "outputs/pr13-local-20261008/S5/simulation-primary/outer-o6-hp095/102001/encounters.jsonl",
+          "public_report_text": false,
+          "reason": "OversizedTextNeedsStreamingAndStructuredInspection"
+        },
+        "state": "ExactPrivateLargeFormatInspected_PublicWholeFileSizeRejectionRetained",
+        "format_observation": {
+          "format": "PrivateUTF8PhysicalJSONLRecordStream",
+          "physical_records": 72000,
+          "nonempty_records_parsed": 72000,
+          "maximum_physical_record_bytes": 1008,
+          "failure_counts": {},
+          "bytes": 68168852,
+          "sha256": "83294f03f1a48c7532236588ba9d9c4e20f4178c7bb8ed7fad1ce867b5720fe6",
+          "whole_file_loaded": false,
+          "public_export_denied": true
+        },
+        "original_64MiB_public_export_limit_unchanged": true,
+        "source_payloads_retained_in_place_not_deleted_or_rewritten": true,
+        "no_credential_freedom_or_gameplay_success_inferred": true
+      },
+      {
+        "sha256": "863f1bbc027110d049221695c75d5bdc96b67a8758f7a1a811dd81243439d57d",
+        "bytes": 79533941,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "private-G",
+          "path": "load112-declared-root-namespace-20261018-r1/remaining77413-declared-reference-frontier.private.json",
+          "public_report_text": false,
+          "reason": "OversizedTextNeedsStreamingAndStructuredInspection"
+        },
+        "state": "ExactPrivateLargeFormatInspected_PublicWholeFileSizeRejectionRetained",
+        "format_observation": {
+          "format": "PrivateStrictUTF8JSONEventStream",
+          "events": {
+            "start_map": 154827,
+            "map_key": 1316025,
+            "start_array": 77414,
+            "number": 216966,
+            "string": 756170,
+            "end_array": 77414,
+            "null": 110646,
+            "boolean": 77416,
+            "end_map": 154827
+          },
+          "maximum_depth": 5,
+          "maximum_scalar_UTF8_bytes": 298,
+          "failures": [],
+          "bytes": 79533941,
+          "sha256": "863f1bbc027110d049221695c75d5bdc96b67a8758f7a1a811dd81243439d57d",
+          "whole_report_loaded": false,
+          "public_export_denied": true
+        },
+        "original_64MiB_public_export_limit_unchanged": true,
+        "source_payloads_retained_in_place_not_deleted_or_rewritten": true,
+        "no_credential_freedom_or_gameplay_success_inferred": true
+      },
+      {
+        "sha256": "869ffd1f9f0ed2c2f72c8915a697acc61471e704e9c7655d25bc5e50fb7141e2",
+        "bytes": 366255693,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "private-G",
+          "path": "natural-dual-boundary-formal128-guardian-r1/native-output/Guardian/events.jsonl",
+          "public_report_text": false,
+          "reason": "OversizedTextNeedsStreamingAndStructuredInspection"
+        },
+        "state": "ExactPrivateLargeFormatInspected_PublicWholeFileSizeRejectionRetained",
+        "format_observation": {
+          "format": "PrivateUTF8PhysicalJSONLRecordStream",
+          "physical_records": 23179,
+          "nonempty_records_parsed": 23179,
+          "maximum_physical_record_bytes": 68490,
+          "failure_counts": {},
+          "bytes": 366255693,
+          "sha256": "869ffd1f9f0ed2c2f72c8915a697acc61471e704e9c7655d25bc5e50fb7141e2",
+          "whole_file_loaded": false,
+          "public_export_denied": true
+        },
+        "original_64MiB_public_export_limit_unchanged": true,
+        "source_payloads_retained_in_place_not_deleted_or_rewritten": true,
+        "no_credential_freedom_or_gameplay_success_inferred": true
+      },
+      {
+        "sha256": "86a200df2d03bae651e539d4fb5fb464a98434381c885d90fdb47cd7eee868b5",
+        "bytes": 68268089,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "workspace",
+          "path": "outputs/pr13-local-20261008/S5/simulation-primary/outer-o6-windup050/101001/encounters.jsonl",
+          "public_report_text": false,
+          "reason": "OversizedTextNeedsStreamingAndStructuredInspection"
+        },
+        "state": "ExactPrivateLargeFormatInspected_PublicWholeFileSizeRejectionRetained",
+        "format_observation": {
+          "format": "PrivateUTF8PhysicalJSONLRecordStream",
+          "physical_records": 72000,
+          "nonempty_records_parsed": 72000,
+          "maximum_physical_record_bytes": 1007,
+          "failure_counts": {},
+          "bytes": 68268089,
+          "sha256": "86a200df2d03bae651e539d4fb5fb464a98434381c885d90fdb47cd7eee868b5",
+          "whole_file_loaded": false,
+          "public_export_denied": true
+        },
+        "original_64MiB_public_export_limit_unchanged": true,
+        "source_payloads_retained_in_place_not_deleted_or_rewritten": true,
+        "no_credential_freedom_or_gameplay_success_inferred": true
+      },
+      {
+        "sha256": "8aba0923bdc04954b5f6bdb1ac258b7d465751781bbf01823490a019537fff56",
+        "bytes": 128911557,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "private-G",
+          "path": "capacity-command-state100-20261019-r1-originals/actual-capacity-command-state100-r1/coordinator-output/20261019-041430-2b7325/report.json",
+          "public_report_text": false,
+          "reason": "OversizedTextNeedsStreamingAndStructuredInspection"
+        },
+        "state": "ExactPrivateLargeFormatInspected_PublicWholeFileSizeRejectionRetained",
+        "format_observation": {
+          "format": "PrivateStrictUTF8JSONEventStream",
+          "events": {
+            "start_map": 200547,
+            "map_key": 2753326,
+            "number": 883578,
+            "string": 1391419,
+            "boolean": 150036,
+            "end_map": 200547,
+            "start_array": 59431,
+            "end_array": 59431,
+            "null": 180825
+          },
+          "maximum_depth": 8,
+          "maximum_scalar_UTF8_bytes": 1197,
+          "failures": [],
+          "bytes": 128911557,
+          "sha256": "8aba0923bdc04954b5f6bdb1ac258b7d465751781bbf01823490a019537fff56",
+          "whole_report_loaded": false,
+          "public_export_denied": true
+        },
+        "original_64MiB_public_export_limit_unchanged": true,
+        "source_payloads_retained_in_place_not_deleted_or_rewritten": true,
+        "no_credential_freedom_or_gameplay_success_inferred": true
+      },
+      {
+        "sha256": "915f98af9905aba5d3562f5266025d7f230b76f2b417040247acac958717bfab",
+        "bytes": 263110634,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "private-G",
+          "path": "natural-dual-anchor-formal128-mage-r1/native-output/Mage/events.jsonl",
+          "public_report_text": false,
+          "reason": "OversizedTextNeedsStreamingAndStructuredInspection"
+        },
+        "state": "ExactPrivateLargeFormatInspected_PublicWholeFileSizeRejectionRetained",
+        "format_observation": {
+          "format": "PrivateUTF8PhysicalJSONLRecordStream",
+          "physical_records": 19218,
+          "nonempty_records_parsed": 19218,
+          "maximum_physical_record_bytes": 62836,
+          "failure_counts": {},
+          "bytes": 263110634,
+          "sha256": "915f98af9905aba5d3562f5266025d7f230b76f2b417040247acac958717bfab",
+          "whole_file_loaded": false,
+          "public_export_denied": true
+        },
+        "original_64MiB_public_export_limit_unchanged": true,
+        "source_payloads_retained_in_place_not_deleted_or_rewritten": true,
+        "no_credential_freedom_or_gameplay_success_inferred": true
+      },
+      {
+        "sha256": "98af549bcc2e07ba87ab4710b864624f3f806bd5ee245d25113254f166fb415a",
+        "bytes": 121744238,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "private-G",
+          "path": "natural-choice-formal128-guardian-r1/native-output/Guardian/events.jsonl",
+          "public_report_text": false,
+          "reason": "OversizedTextNeedsStreamingAndStructuredInspection"
+        },
+        "state": "ExactPrivateLargeFormatInspected_PublicWholeFileSizeRejectionRetained",
+        "format_observation": {
+          "format": "PrivateUTF8PhysicalJSONLRecordStream",
+          "physical_records": 12491,
+          "nonempty_records_parsed": 12491,
+          "maximum_physical_record_bytes": 26723,
+          "failure_counts": {},
+          "bytes": 121744238,
+          "sha256": "98af549bcc2e07ba87ab4710b864624f3f806bd5ee245d25113254f166fb415a",
+          "whole_file_loaded": false,
+          "public_export_denied": true
+        },
+        "original_64MiB_public_export_limit_unchanged": true,
+        "source_payloads_retained_in_place_not_deleted_or_rewritten": true,
+        "no_credential_freedom_or_gameplay_success_inferred": true
+      },
+      {
+        "sha256": "9e7d9ef14495a2f828fc62053798329050311cfec0d07b85af897cb4d818fbb4",
+        "bytes": 84727651,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "private-G",
+          "path": "capacity-current100-20261018-r1-originals/actual-capacity100-r1/coordinator-output/20261018-162106-71ee15/report.json",
+          "public_report_text": false,
+          "reason": "OversizedTextNeedsStreamingAndStructuredInspection"
+        },
+        "state": "ExactPrivateLargeFormatInspected_PublicWholeFileSizeRejectionRetained",
+        "format_observation": {
+          "format": "PrivateStrictUTF8JSONEventStream",
+          "events": {
+            "start_map": 136413,
+            "map_key": 1826140,
+            "number": 535347,
+            "string": 988011,
+            "boolean": 102885,
+            "end_map": 136413,
+            "null": 81032,
+            "start_array": 49629,
+            "end_array": 49629
+          },
+          "maximum_depth": 9,
+          "maximum_scalar_UTF8_bytes": 1201,
+          "failures": [],
+          "bytes": 84727651,
+          "sha256": "9e7d9ef14495a2f828fc62053798329050311cfec0d07b85af897cb4d818fbb4",
+          "whole_report_loaded": false,
+          "public_export_denied": true
+        },
+        "original_64MiB_public_export_limit_unchanged": true,
+        "source_payloads_retained_in_place_not_deleted_or_rewritten": true,
+        "no_credential_freedom_or_gameplay_success_inferred": true
+      },
+      {
+        "sha256": "a48905cee72b6765d9c8c381dd4bd89743d3f9c1dc09ea1dbc12ca17f56fff15",
+        "bytes": 386436430,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "private-G",
+          "path": "natural-dual-anchor-formal128-guardian-r1/native-output/Guardian/events.jsonl",
+          "public_report_text": false,
+          "reason": "OversizedTextNeedsStreamingAndStructuredInspection"
+        },
+        "state": "ExactPrivateLargeFormatInspected_PublicWholeFileSizeRejectionRetained",
+        "format_observation": {
+          "format": "PrivateUTF8PhysicalJSONLRecordStream",
+          "physical_records": 23010,
+          "nonempty_records_parsed": 23010,
+          "maximum_physical_record_bytes": 67118,
+          "failure_counts": {},
+          "bytes": 386436430,
+          "sha256": "a48905cee72b6765d9c8c381dd4bd89743d3f9c1dc09ea1dbc12ca17f56fff15",
+          "whole_file_loaded": false,
+          "public_export_denied": true
+        },
+        "original_64MiB_public_export_limit_unchanged": true,
+        "source_payloads_retained_in_place_not_deleted_or_rewritten": true,
+        "no_credential_freedom_or_gameplay_success_inferred": true
+      },
+      {
+        "sha256": "a5afc5f9c649d9d3e865b1e79d1745e090de0aa3932d9fa5916e12d4b3c516d0",
+        "bytes": 122684080,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "private-G",
+          "path": "capacity-current100-debug-20261018-r2-originals/actual-capacity100-debug-r2/coordinator-output/20261018-203104-ce2557/report.json",
+          "public_report_text": false,
+          "reason": "OversizedTextNeedsStreamingAndStructuredInspection"
+        },
+        "state": "ExactPrivateLargeFormatInspected_PublicWholeFileSizeRejectionRetained",
+        "format_observation": {
+          "format": "PrivateStrictUTF8JSONEventStream",
+          "events": {
+            "start_map": 194689,
+            "map_key": 2625333,
+            "number": 840912,
+            "string": 1318886,
+            "boolean": 140803,
+            "end_map": 194689,
+            "start_array": 56057,
+            "end_array": 56057,
+            "null": 181418
+          },
+          "maximum_depth": 7,
+          "maximum_scalar_UTF8_bytes": 1200,
+          "failures": [],
+          "bytes": 122684080,
+          "sha256": "a5afc5f9c649d9d3e865b1e79d1745e090de0aa3932d9fa5916e12d4b3c516d0",
+          "whole_report_loaded": false,
+          "public_export_denied": true
+        },
+        "original_64MiB_public_export_limit_unchanged": true,
+        "source_payloads_retained_in_place_not_deleted_or_rewritten": true,
+        "no_credential_freedom_or_gameplay_success_inferred": true
+      },
+      {
+        "sha256": "a979a583dde62605cc6eca56273ca36b55fda919971e291171168147192186b7",
+        "bytes": 68175005,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "workspace",
+          "path": "outputs/pr13-local-20261008/S5/simulation-primary/outer-o6-hp095/100001/encounters.jsonl",
+          "public_report_text": false,
+          "reason": "OversizedTextNeedsStreamingAndStructuredInspection"
+        },
+        "state": "ExactPrivateLargeFormatInspected_PublicWholeFileSizeRejectionRetained",
+        "format_observation": {
+          "format": "PrivateUTF8PhysicalJSONLRecordStream",
+          "physical_records": 72000,
+          "nonempty_records_parsed": 72000,
+          "maximum_physical_record_bytes": 1008,
+          "failure_counts": {},
+          "bytes": 68175005,
+          "sha256": "a979a583dde62605cc6eca56273ca36b55fda919971e291171168147192186b7",
+          "whole_file_loaded": false,
+          "public_export_denied": true
+        },
+        "original_64MiB_public_export_limit_unchanged": true,
+        "source_payloads_retained_in_place_not_deleted_or_rewritten": true,
+        "no_credential_freedom_or_gameplay_success_inferred": true
+      },
+      {
+        "sha256": "afc814e93cafa3274e0414b58b9a04050e32dd42065233ec7027e947e0903542",
+        "bytes": 183870610,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "private-G",
+          "path": "natural-choice-fillfirst-formal128-guardian-r1/native-output/Guardian/events.jsonl",
+          "public_report_text": false,
+          "reason": "OversizedTextNeedsStreamingAndStructuredInspection"
+        },
+        "state": "ExactPrivateLargeFormatInspected_PublicWholeFileSizeRejectionRetained",
+        "format_observation": {
+          "format": "PrivateUTF8PhysicalJSONLRecordStream",
+          "physical_records": 18687,
+          "nonempty_records_parsed": 18687,
+          "maximum_physical_record_bytes": 26858,
+          "failure_counts": {},
+          "bytes": 183870610,
+          "sha256": "afc814e93cafa3274e0414b58b9a04050e32dd42065233ec7027e947e0903542",
+          "whole_file_loaded": false,
+          "public_export_denied": true
+        },
+        "original_64MiB_public_export_limit_unchanged": true,
+        "source_payloads_retained_in_place_not_deleted_or_rewritten": true,
+        "no_credential_freedom_or_gameplay_success_inferred": true
+      },
+      {
+        "sha256": "b110e413616d327768e8551a692894c674468028b8f0681f2d2ba381aeda6431",
+        "bytes": 342072973,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "private-G",
+          "path": "natural-dual-anchor-formal128-priest-r1/native-output/Priest/events.jsonl",
+          "public_report_text": false,
+          "reason": "OversizedTextNeedsStreamingAndStructuredInspection"
+        },
+        "state": "ExactPrivateLargeFormatInspected_PublicWholeFileSizeRejectionRetained",
+        "format_observation": {
+          "format": "PrivateUTF8PhysicalJSONLRecordStream",
+          "physical_records": 21448,
+          "nonempty_records_parsed": 21448,
+          "maximum_physical_record_bytes": 66012,
+          "failure_counts": {},
+          "bytes": 342072973,
+          "sha256": "b110e413616d327768e8551a692894c674468028b8f0681f2d2ba381aeda6431",
+          "whole_file_loaded": false,
+          "public_export_denied": true
+        },
+        "original_64MiB_public_export_limit_unchanged": true,
+        "source_payloads_retained_in_place_not_deleted_or_rewritten": true,
+        "no_credential_freedom_or_gameplay_success_inferred": true
+      },
+      {
+        "sha256": "bfd4b2c2b473b87d40bae86c26d1f5cf9ff0016bce2165cb4ed325b10805f2a4",
+        "bytes": 68268123,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "workspace",
+          "path": "outputs/pr13-local-20261008/S5/simulation-primary/outer-o6-windup025/100001/encounters.jsonl",
+          "public_report_text": false,
+          "reason": "OversizedTextNeedsStreamingAndStructuredInspection"
+        },
+        "state": "ExactPrivateLargeFormatInspected_PublicWholeFileSizeRejectionRetained",
+        "format_observation": {
+          "format": "PrivateUTF8PhysicalJSONLRecordStream",
+          "physical_records": 72000,
+          "nonempty_records_parsed": 72000,
+          "maximum_physical_record_bytes": 1008,
+          "failure_counts": {},
+          "bytes": 68268123,
+          "sha256": "bfd4b2c2b473b87d40bae86c26d1f5cf9ff0016bce2165cb4ed325b10805f2a4",
+          "whole_file_loaded": false,
+          "public_export_denied": true
+        },
+        "original_64MiB_public_export_limit_unchanged": true,
+        "source_payloads_retained_in_place_not_deleted_or_rewritten": true,
+        "no_credential_freedom_or_gameplay_success_inferred": true
+      },
+      {
+        "sha256": "d1118cf87b40f960b2befc84b0ae4054ff4e5f87fd2043be9cec656635e39b49",
+        "bytes": 68268129,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "workspace",
+          "path": "outputs/pr13-local-20261008/S5/simulation-primary/outer-o6-windup025/101001/encounters.jsonl",
+          "public_report_text": false,
+          "reason": "OversizedTextNeedsStreamingAndStructuredInspection"
+        },
+        "state": "ExactPrivateLargeFormatInspected_PublicWholeFileSizeRejectionRetained",
+        "format_observation": {
+          "format": "PrivateUTF8PhysicalJSONLRecordStream",
+          "physical_records": 72000,
+          "nonempty_records_parsed": 72000,
+          "maximum_physical_record_bytes": 1007,
+          "failure_counts": {},
+          "bytes": 68268129,
+          "sha256": "d1118cf87b40f960b2befc84b0ae4054ff4e5f87fd2043be9cec656635e39b49",
+          "whole_file_loaded": false,
+          "public_export_denied": true
+        },
+        "original_64MiB_public_export_limit_unchanged": true,
+        "source_payloads_retained_in_place_not_deleted_or_rewritten": true,
+        "no_credential_freedom_or_gameplay_success_inferred": true
+      },
+      {
+        "sha256": "f4b635f9c1c352276954ec6218863806aadcb36d17068f67736ddd4b2efeff08",
+        "bytes": 68163984,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "workspace",
+          "path": "outputs/pr13-local-20261008/S5/simulation-primary/outer-o6-hp090/102001/encounters.jsonl",
+          "public_report_text": false,
+          "reason": "OversizedTextNeedsStreamingAndStructuredInspection"
+        },
+        "state": "ExactPrivateLargeFormatInspected_PublicWholeFileSizeRejectionRetained",
+        "format_observation": {
+          "format": "PrivateUTF8PhysicalJSONLRecordStream",
+          "physical_records": 72000,
+          "nonempty_records_parsed": 72000,
+          "maximum_physical_record_bytes": 1008,
+          "failure_counts": {},
+          "bytes": 68163984,
+          "sha256": "f4b635f9c1c352276954ec6218863806aadcb36d17068f67736ddd4b2efeff08",
+          "whole_file_loaded": false,
+          "public_export_denied": true
+        },
+        "original_64MiB_public_export_limit_unchanged": true,
+        "source_payloads_retained_in_place_not_deleted_or_rewritten": true,
+        "no_credential_freedom_or_gameplay_success_inferred": true
+      }
+    ],
+    "ijson_version": "3.6.0",
+    "backend": "yajl2_c",
+    "private_format_only_not_sensitive_value_clearance": true,
+    "all_original_whole_file_public_size_rejections_retained": true,
+    "source_payloads_not_modified_or_removed": true,
+    "original_case_verdicts_not_changed": true,
+    "new_game_samples": 0,
+    "case_profiles_closed": 0,
+    "whole_LOAD112_accepted": false,
+    "elapsed_seconds": 143.82800000000861
+  },
+  "large_format_counts": {
+    "PrivateStrictUTF8JSONEventStream": 6,
+    "PrivateUTF8PhysicalJSONLRecordStream": 23
+  },
+  "large_original_bytes_inspected": 3874322879,
+  "large_original_observation_aliases": 30,
+  "actual_stream_controls": 25,
+  "original_large_payloads_retained_in_place": true,
+  "large_payloads_not_claimed_newly_backed_up_by_this_metadata_closure": true,
+  "no_large_input_deleted_or_rewritten": true,
+  "whole_file_public64MiB_limit_unchanged_and_rejection_retained": true,
+  "format_syntax_not_runtime_credential_freedom_or_execution_verdict": true,
+  "encoding_review": {
+    "kind": "Remaining19EncodingObjects_ExplicitBOMOnly",
+    "ok": true,
+    "objects_reviewed": 19,
+    "counts": {
+      "NoExplicitBOM_ProducerEncodingStillUnqualified": 19
+    },
+    "results": [
+      {
+        "sha256": "cfeda1c4a73b6999aa78c52fdef2bf4d739574368cae360db5aa81fb4f9e47a7",
+        "bytes": 150804,
+        "frozen_observation_aliases": 9,
+        "actual_exact_source_alias": {
+          "root": "workspace",
+          "path": "tools/engine-local/protected/template-build.log",
+          "public_report_text": false,
+          "reason": "Public evidence text is not UTF-8"
+        },
+        "public_UTF8_export_rule_not_modified": true,
+        "decoded_values_or_snippets_not_exported": true,
+        "original_public_rejection": "Public evidence text is not UTF-8",
+        "explicit_BOM_encoding": null,
+        "state": "NoExplicitBOM_ProducerEncodingStillUnqualified"
+      },
+      {
+        "sha256": "df0eb6226a3093d00b20bf3d71c30ef1b73b8b5aeb7b9104a2578a91eddffda2",
+        "bytes": 20,
+        "frozen_observation_aliases": 6,
+        "actual_exact_source_alias": {
+          "root": "private-H",
+          "path": "load092-paired-fault-experiment-r5/0001-pg-start-dispatch.stdout.original.log",
+          "public_report_text": false,
+          "reason": "Public evidence text is not UTF-8"
+        },
+        "public_UTF8_export_rule_not_modified": true,
+        "decoded_values_or_snippets_not_exported": true,
+        "original_public_rejection": "Public evidence text is not UTF-8",
+        "explicit_BOM_encoding": null,
+        "state": "NoExplicitBOM_ProducerEncodingStillUnqualified"
+      },
+      {
+        "sha256": "dd269ccb43c508088b5a167e486992f22ca81c73e544ef93ea8ed842549ac2d8",
+        "bytes": 50,
+        "frozen_observation_aliases": 5,
+        "actual_exact_source_alias": {
+          "root": "private-H",
+          "path": "load063-prometheus-boundary-r2/005-PG-stop.stdout.original.log",
+          "public_report_text": false,
+          "reason": "Public evidence text is not UTF-8"
+        },
+        "public_UTF8_export_rule_not_modified": true,
+        "decoded_values_or_snippets_not_exported": true,
+        "original_public_rejection": "Public evidence text is not UTF-8",
+        "explicit_BOM_encoding": null,
+        "state": "NoExplicitBOM_ProducerEncodingStillUnqualified"
+      },
+      {
+        "sha256": "2aa304cb19e17d2921840d4fe6a0b39a9dbb78f45ad67341b54b81792ab9fdcf",
+        "bytes": 62,
+        "frozen_observation_aliases": 2,
+        "actual_exact_source_alias": {
+          "root": "workspace",
+          "path": "outputs/pr13-tencent-20261009/cap-full-final-B1-metadata-recovery-r2-process.stderr.log",
+          "public_report_text": false,
+          "reason": "Public evidence text is not UTF-8"
+        },
+        "public_UTF8_export_rule_not_modified": true,
+        "decoded_values_or_snippets_not_exported": true,
+        "original_public_rejection": "Public evidence text is not UTF-8",
+        "explicit_BOM_encoding": null,
+        "state": "NoExplicitBOM_ProducerEncodingStillUnqualified"
+      },
+      {
+        "sha256": "01ce006d0999462955de57732d5f18ba820c65325cefeb46298c9c80176c77fd",
+        "bytes": 1062,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "workspace",
+          "path": "outputs/pr13-tencent-20261009/full-statistics-original-G-backup-r4-process.stderr.log",
+          "public_report_text": false,
+          "reason": "Public evidence text is not UTF-8"
+        },
+        "public_UTF8_export_rule_not_modified": true,
+        "decoded_values_or_snippets_not_exported": true,
+        "original_public_rejection": "Public evidence text is not UTF-8",
+        "explicit_BOM_encoding": null,
+        "state": "NoExplicitBOM_ProducerEncodingStillUnqualified"
+      },
+      {
+        "sha256": "04169e901bb0034161de2635315a13c606117decc48bf0e3a81cb273e950637f",
+        "bytes": 73,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "private-H",
+          "path": "load092-paired-fault-experiment-r4/0003-PG-owned-stop.stdout.original.log",
+          "public_report_text": false,
+          "reason": "Public evidence text is not UTF-8"
+        },
+        "public_UTF8_export_rule_not_modified": true,
+        "decoded_values_or_snippets_not_exported": true,
+        "original_public_rejection": "Public evidence text is not UTF-8",
+        "explicit_BOM_encoding": null,
+        "state": "NoExplicitBOM_ProducerEncodingStillUnqualified"
+      },
+      {
+        "sha256": "06e6d2913d6d5d55a50a67ff26c2903b7a8612bb387b31a0ef96a3e571535d92",
+        "bytes": 63171,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "workspace",
+          "path": "outputs/protobuf_client/editmode-run2.log",
+          "public_report_text": false,
+          "reason": "Public evidence text is not UTF-8"
+        },
+        "public_UTF8_export_rule_not_modified": true,
+        "decoded_values_or_snippets_not_exported": true,
+        "original_public_rejection": "Public evidence text is not UTF-8",
+        "explicit_BOM_encoding": null,
+        "state": "NoExplicitBOM_ProducerEncodingStillUnqualified"
+      },
+      {
+        "sha256": "10ab41939cea5eeefa15f84bddf4c9fd7d69b724b2e58f46efac8a21fbbcd80a",
+        "bytes": 3826,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "workspace",
+          "path": "outputs/pr13-tencent-20261009/natural-Priest480001-both-locales-actual-visual-review.json",
+          "public_report_text": false,
+          "reason": "Public evidence text is not UTF-8"
+        },
+        "public_UTF8_export_rule_not_modified": true,
+        "decoded_values_or_snippets_not_exported": true,
+        "original_public_rejection": "Public evidence text is not UTF-8",
+        "explicit_BOM_encoding": null,
+        "state": "NoExplicitBOM_ProducerEncodingStillUnqualified"
+      },
+      {
+        "sha256": "1be05dd08f57b23574c6a4596e7a9182011c77e22e29d9875d8214ae61bc5550",
+        "bytes": 139680,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "private-G",
+          "path": "native-debug-template-20261018-r1-originals/template-debug-build.private-original.log",
+          "public_report_text": false,
+          "reason": "Public evidence text is not UTF-8"
+        },
+        "public_UTF8_export_rule_not_modified": true,
+        "decoded_values_or_snippets_not_exported": true,
+        "original_public_rejection": "Public evidence text is not UTF-8",
+        "explicit_BOM_encoding": null,
+        "state": "NoExplicitBOM_ProducerEncodingStillUnqualified"
+      },
+      {
+        "sha256": "4cf908915d8d21653078f052a1d85ab10bf1a8730778a8c00e78377251893df9",
+        "bytes": 1271,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "workspace",
+          "path": "outputs/pr13-tencent-20261009/dual-GUI-authority-full-six-segment-controller-r2/queue_dual-GUI-full-guardian-zh-cn-r2_between_native_units_once.py-stderr.txt",
+          "public_report_text": false,
+          "reason": "Public evidence text is not UTF-8"
+        },
+        "public_UTF8_export_rule_not_modified": true,
+        "decoded_values_or_snippets_not_exported": true,
+        "original_public_rejection": "Public evidence text is not UTF-8",
+        "explicit_BOM_encoding": null,
+        "state": "NoExplicitBOM_ProducerEncodingStillUnqualified"
+      },
+      {
+        "sha256": "4fdf7b5f576c1a230c91cfd28901df3403edbf8222247a827e8d93070bf88b7d",
+        "bytes": 64,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "private-H",
+          "path": "load092-paired-fault-experiment-r5/0180-PG-owned-stop.stdout.original.log",
+          "public_report_text": false,
+          "reason": "Public evidence text is not UTF-8"
+        },
+        "public_UTF8_export_rule_not_modified": true,
+        "decoded_values_or_snippets_not_exported": true,
+        "original_public_rejection": "Public evidence text is not UTF-8",
+        "explicit_BOM_encoding": null,
+        "state": "NoExplicitBOM_ProducerEncodingStillUnqualified"
+      },
+      {
+        "sha256": "742f7362bc76ffe7afa399c1a677cf7f525552f3603b77d1863cee8987bdacca",
+        "bytes": 1902,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "workspace",
+          "path": "outputs/pr13-tencent-20261009/cap-T03-full18-RENDER-publication-process.stderr.log",
+          "public_report_text": false,
+          "reason": "Public evidence text is not UTF-8"
+        },
+        "public_UTF8_export_rule_not_modified": true,
+        "decoded_values_or_snippets_not_exported": true,
+        "original_public_rejection": "Public evidence text is not UTF-8",
+        "explicit_BOM_encoding": null,
+        "state": "NoExplicitBOM_ProducerEncodingStillUnqualified"
+      },
+      {
+        "sha256": "9355ce72d2584e0a7b6a5fe41bfff3581875b667397665046e49fc79d0d56d98",
+        "bytes": 3104,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "private-H",
+          "path": "load063-current-live-trace-r2/live-client.stdout.original.log",
+          "public_report_text": false,
+          "reason": "Public evidence text is not UTF-8"
+        },
+        "public_UTF8_export_rule_not_modified": true,
+        "decoded_values_or_snippets_not_exported": true,
+        "original_public_rejection": "Public evidence text is not UTF-8",
+        "explicit_BOM_encoding": null,
+        "state": "NoExplicitBOM_ProducerEncodingStillUnqualified"
+      },
+      {
+        "sha256": "9b0f28038519986b355f66252eebe3afa9411cff8c0d7fe8e19e70d5b3b37fb6",
+        "bytes": 77,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "private-H",
+          "path": "load092-paired-fault-experiment-r4/0001-pg-start.stdout.original.log",
+          "public_report_text": false,
+          "reason": "Public evidence text is not UTF-8"
+        },
+        "public_UTF8_export_rule_not_modified": true,
+        "decoded_values_or_snippets_not_exported": true,
+        "original_public_rejection": "Public evidence text is not UTF-8",
+        "explicit_BOM_encoding": null,
+        "state": "NoExplicitBOM_ProducerEncodingStillUnqualified"
+      },
+      {
+        "sha256": "afcfbb7dd40a75c61937236881476bcfb4d9e6198a268060cf1cfcd06edb89ed",
+        "bytes": 56,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "private-H",
+          "path": "load092-paired-fault-experiment-r4/0001-pg-start.stderr.original.log",
+          "public_report_text": false,
+          "reason": "Public evidence text is not UTF-8"
+        },
+        "public_UTF8_export_rule_not_modified": true,
+        "decoded_values_or_snippets_not_exported": true,
+        "original_public_rejection": "Public evidence text is not UTF-8",
+        "explicit_BOM_encoding": null,
+        "state": "NoExplicitBOM_ProducerEncodingStillUnqualified"
+      },
+      {
+        "sha256": "bf164def218cd9c79f9d8b48cc6dc66653d67b01f1bae6171fcfc2c1d24556d9",
+        "bytes": 8518,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "workspace",
+          "path": "docs/network-protobuf-migration/server-api-report.md",
+          "public_report_text": false,
+          "reason": "Public evidence text is not UTF-8"
+        },
+        "public_UTF8_export_rule_not_modified": true,
+        "decoded_values_or_snippets_not_exported": true,
+        "original_public_rejection": "Public evidence text is not UTF-8",
+        "explicit_BOM_encoding": null,
+        "state": "NoExplicitBOM_ProducerEncodingStillUnqualified"
+      },
+      {
+        "sha256": "cec12b0c0ece6659db2f5f520642404b3bf423652debab0c5366011b47bd40a2",
+        "bytes": 1016,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "private-H",
+          "path": "load063-current-live-trace-r1/001-initdb.stdout.original.log",
+          "public_report_text": false,
+          "reason": "Public evidence text is not UTF-8"
+        },
+        "public_UTF8_export_rule_not_modified": true,
+        "decoded_values_or_snippets_not_exported": true,
+        "original_public_rejection": "Public evidence text is not UTF-8",
+        "explicit_BOM_encoding": null,
+        "state": "NoExplicitBOM_ProducerEncodingStillUnqualified"
+      },
+      {
+        "sha256": "ceed556ca5aeee91324f4bc76b0963757c4cd1d0767e67864071ba4d5815e823",
+        "bytes": 4043,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "workspace",
+          "path": "outputs/pr13-tencent-20261009/T03-full18-publication-prefix-recovery-r2-process.stderr.log",
+          "public_report_text": false,
+          "reason": "Public evidence text is not UTF-8"
+        },
+        "public_UTF8_export_rule_not_modified": true,
+        "decoded_values_or_snippets_not_exported": true,
+        "original_public_rejection": "Public evidence text is not UTF-8",
+        "explicit_BOM_encoding": null,
+        "state": "NoExplicitBOM_ProducerEncodingStillUnqualified"
+      },
+      {
+        "sha256": "e19acb118b5cbcf189d315dffb4765551e6eafdbeabbe1ae88baa6e8ac023019",
+        "bytes": 906,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "private-H",
+          "path": "current-ready-fault-matrix-r4/corrected-future-proxy-validation.stderr.original.log",
+          "public_report_text": false,
+          "reason": "Public evidence text is not UTF-8"
+        },
+        "public_UTF8_export_rule_not_modified": true,
+        "decoded_values_or_snippets_not_exported": true,
+        "original_public_rejection": "Public evidence text is not UTF-8",
+        "explicit_BOM_encoding": null,
+        "state": "NoExplicitBOM_ProducerEncodingStillUnqualified"
+      }
+    ],
+    "no_unlabeled_encoding_guess_or_source_transcode_written": true,
+    "decoded_source_values_not_published": true,
+    "actual_command_or_game_execution_not_inferred": true,
+    "all_original_public_UTF8_rejections_retained": true,
+    "new_game_samples": 0,
+    "case_profiles_closed": 0,
+    "whole_LOAD112_accepted": false
+  },
+  "all19_unlabeled_encoding_objects_still_unqualified": true,
+  "encoding_raw_private_custody": {
+    "ok": true,
+    "directory": "G:\\PR13Evidence\\LOAD112-remaining-BOM-encoding-20261023-r1-originals",
+    "items": [
+      {
+        "path": "cfeda1c4a73b6999aa78c52fdef2bf4d739574368cae360db5aa81fb4f9e47a7.private-original.bin",
+        "bytes": 150804,
+        "sha256": "cfeda1c4a73b6999aa78c52fdef2bf4d739574368cae360db5aa81fb4f9e47a7"
+      },
+      {
+        "path": "df0eb6226a3093d00b20bf3d71c30ef1b73b8b5aeb7b9104a2578a91eddffda2.private-original.bin",
+        "bytes": 20,
+        "sha256": "df0eb6226a3093d00b20bf3d71c30ef1b73b8b5aeb7b9104a2578a91eddffda2"
+      },
+      {
+        "path": "dd269ccb43c508088b5a167e486992f22ca81c73e544ef93ea8ed842549ac2d8.private-original.bin",
+        "bytes": 50,
+        "sha256": "dd269ccb43c508088b5a167e486992f22ca81c73e544ef93ea8ed842549ac2d8"
+      },
+      {
+        "path": "2aa304cb19e17d2921840d4fe6a0b39a9dbb78f45ad67341b54b81792ab9fdcf.private-original.bin",
+        "bytes": 62,
+        "sha256": "2aa304cb19e17d2921840d4fe6a0b39a9dbb78f45ad67341b54b81792ab9fdcf"
+      },
+      {
+        "path": "01ce006d0999462955de57732d5f18ba820c65325cefeb46298c9c80176c77fd.private-original.bin",
+        "bytes": 1062,
+        "sha256": "01ce006d0999462955de57732d5f18ba820c65325cefeb46298c9c80176c77fd"
+      },
+      {
+        "path": "04169e901bb0034161de2635315a13c606117decc48bf0e3a81cb273e950637f.private-original.bin",
+        "bytes": 73,
+        "sha256": "04169e901bb0034161de2635315a13c606117decc48bf0e3a81cb273e950637f"
+      },
+      {
+        "path": "06e6d2913d6d5d55a50a67ff26c2903b7a8612bb387b31a0ef96a3e571535d92.private-original.bin",
+        "bytes": 63171,
+        "sha256": "06e6d2913d6d5d55a50a67ff26c2903b7a8612bb387b31a0ef96a3e571535d92"
+      },
+      {
+        "path": "10ab41939cea5eeefa15f84bddf4c9fd7d69b724b2e58f46efac8a21fbbcd80a.private-original.bin",
+        "bytes": 3826,
+        "sha256": "10ab41939cea5eeefa15f84bddf4c9fd7d69b724b2e58f46efac8a21fbbcd80a"
+      },
+      {
+        "path": "1be05dd08f57b23574c6a4596e7a9182011c77e22e29d9875d8214ae61bc5550.private-original.bin",
+        "bytes": 139680,
+        "sha256": "1be05dd08f57b23574c6a4596e7a9182011c77e22e29d9875d8214ae61bc5550"
+      },
+      {
+        "path": "4cf908915d8d21653078f052a1d85ab10bf1a8730778a8c00e78377251893df9.private-original.bin",
+        "bytes": 1271,
+        "sha256": "4cf908915d8d21653078f052a1d85ab10bf1a8730778a8c00e78377251893df9"
+      },
+      {
+        "path": "4fdf7b5f576c1a230c91cfd28901df3403edbf8222247a827e8d93070bf88b7d.private-original.bin",
+        "bytes": 64,
+        "sha256": "4fdf7b5f576c1a230c91cfd28901df3403edbf8222247a827e8d93070bf88b7d"
+      },
+      {
+        "path": "742f7362bc76ffe7afa399c1a677cf7f525552f3603b77d1863cee8987bdacca.private-original.bin",
+        "bytes": 1902,
+        "sha256": "742f7362bc76ffe7afa399c1a677cf7f525552f3603b77d1863cee8987bdacca"
+      },
+      {
+        "path": "9355ce72d2584e0a7b6a5fe41bfff3581875b667397665046e49fc79d0d56d98.private-original.bin",
+        "bytes": 3104,
+        "sha256": "9355ce72d2584e0a7b6a5fe41bfff3581875b667397665046e49fc79d0d56d98"
+      },
+      {
+        "path": "9b0f28038519986b355f66252eebe3afa9411cff8c0d7fe8e19e70d5b3b37fb6.private-original.bin",
+        "bytes": 77,
+        "sha256": "9b0f28038519986b355f66252eebe3afa9411cff8c0d7fe8e19e70d5b3b37fb6"
+      },
+      {
+        "path": "afcfbb7dd40a75c61937236881476bcfb4d9e6198a268060cf1cfcd06edb89ed.private-original.bin",
+        "bytes": 56,
+        "sha256": "afcfbb7dd40a75c61937236881476bcfb4d9e6198a268060cf1cfcd06edb89ed"
+      },
+      {
+        "path": "bf164def218cd9c79f9d8b48cc6dc66653d67b01f1bae6171fcfc2c1d24556d9.private-original.bin",
+        "bytes": 8518,
+        "sha256": "bf164def218cd9c79f9d8b48cc6dc66653d67b01f1bae6171fcfc2c1d24556d9"
+      },
+      {
+        "path": "cec12b0c0ece6659db2f5f520642404b3bf423652debab0c5366011b47bd40a2.private-original.bin",
+        "bytes": 1016,
+        "sha256": "cec12b0c0ece6659db2f5f520642404b3bf423652debab0c5366011b47bd40a2"
+      },
+      {
+        "path": "ceed556ca5aeee91324f4bc76b0963757c4cd1d0767e67864071ba4d5815e823.private-original.bin",
+        "bytes": 4043,
+        "sha256": "ceed556ca5aeee91324f4bc76b0963757c4cd1d0767e67864071ba4d5815e823"
+      },
+      {
+        "path": "e19acb118b5cbcf189d315dffb4765551e6eafdbeabbe1ae88baa6e8ac023019.private-original.bin",
+        "bytes": 906,
+        "sha256": "e19acb118b5cbcf189d315dffb4765551e6eafdbeabbe1ae88baa6e8ac023019"
+      }
+    ],
+    "all19_raw_files_re_read_and_hashed": true,
+    "no_unlabeled_encoding_decoding_or_public_export": true
+  },
+  "combined_existing_intent_or_private_format_objects": 177,
+  "combined_existing_observation_aliases": 2265,
+  "original_frozen_content_objects": 679,
+  "original_frozen_path_observations": 8200,
+  "remaining_content_objects": 502,
+  "remaining_priorities": {
+    "EncodingIntent": 19,
+    "StructuredFormatIntent": 1,
+    "SourceLanguageExpressionIntent": 375,
+    "PrivateStructuredOrRuntimeContent": 107
+  },
+  "raw_metadata_G_custody": {
+    "directory": "G:\\PR13Evidence\\LOAD112-large-private-format-and-encoding-20261023-r1-originals",
+    "items": [
+      {
+        "path": "native-executions/remaining-large-private-format-review-20261023-r1/actual-stream-controls-qualified.original.json",
+        "bytes": 2211,
+        "sha256": "5fbcb32d528391c59330277251280ef66f1f623946bf161762ef4ddbc2cf9b7a"
+      },
+      {
+        "path": "native-executions/remaining-large-private-format-review-20261023-r1/executed-full-stream-review-source.original.py",
+        "bytes": 9149,
+        "sha256": "484cfb95b96d5d5d9b147208de643a9ec9a1649b9aa767115f678dae6b21f8d6"
+      },
+      {
+        "path": "native-executions/remaining-large-private-format-review-20261023-r1/progress.snapshot.json",
+        "bytes": 288,
+        "sha256": "16e42f35aa6737d8b9646f58e7c3de81eeed3fe68c48561d409aef17159d13e6"
+      },
+      {
+        "path": "native-executions/remaining-large-private-format-review-20261023-r1/result.original.json",
+        "bytes": 37154,
+        "sha256": "08ab824cddc4e32f22f80215bb23a2ce302601de5e337992cac7db6060062eed"
+      },
+      {
+        "path": "native-executions/remaining-BOM-encoding-review-20261023-r1/executed-encoding-review-source.original.py",
+        "bytes": 4220,
+        "sha256": "8666b7fe3b05c5d857d0fd84d5d386362eef1596f3ea94078735f6875fa75cb9"
+      },
+      {
+        "path": "native-executions/remaining-BOM-encoding-review-20261023-r1/result.original.json",
+        "bytes": 14096,
+        "sha256": "d15b7023942bc798b62e62994ef0e3fa803e8437efe82cc067b053ae4f3a82c3"
+      },
+      {
+        "path": "encoding-private-custody-closure.exact-copy.json",
+        "bytes": 4499,
+        "sha256": "d2190d9c0a7f7468fdbb21518fb9ef6af3318ceb2feb539b30499c00446b6d3f"
+      },
+      {
+        "path": "existing-ijson-runtime-custody.original.json",
+        "bytes": 6960,
+        "sha256": "90dc4cb5f0e2b0420cfa126864173fcd331aed90133ccdee614a493c8631851a"
+      },
+      {
+        "path": "remaining502-content-review-queue.private.original.jsonl",
+        "bytes": 1606113,
+        "sha256": "8beb162c01efc2fc3c33f99d7d8a043d3a5d7de5fee1eab3869190f0f95db475"
+      },
+      {
+        "path": "publication-source.original.py",
+        "bytes": 9115,
+        "sha256": "83627e5dbf0904886fbd706b39f78ca963d2d959e9fdc68e2a61f2c1f3c69c6b"
+      },
+      {
+        "path": "pointer-before.exact-copy.json",
+        "bytes": 96951,
+        "sha256": "7cd6ac44bad5ee3941aa32c634f77428d078f705c755690e4b435af3f60dd4d1"
+      }
+    ]
+  },
+  "current_register": "docs/reports/pr13-stages-20261009/S6-current4a-CI-observation-20261022/register.json",
+  "task_counts_unchanged": {
+    "Accepted": 100,
+    "Partial": 24,
+    "Ready": 8
+  },
+  "whole_tasks_unaccepted": 32,
+  "missing_case_profile_pairs": 47,
+  "new_game_samples": 0,
+  "case_profiles_closed": 0,
+  "whole_LOAD112_accepted": false,
+  "whole_project_acceptance_granted": false,
+  "production_application_switch_performed": false
+}

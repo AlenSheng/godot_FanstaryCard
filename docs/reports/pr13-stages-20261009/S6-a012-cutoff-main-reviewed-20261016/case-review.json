@@ -1,0 +1,482 @@
+{
+  "kind": "A012ThreeCurrentSourceCutoffCasesReviewed",
+  "authority": "MAIN",
+  "at_local": "2026-10-16T19:54:50.616390+08:00",
+  "task_id": "PR13-A01.2",
+  "pass_criteria": "每cutoff的总ack=逐客户端和=各至少k次人数之和；无法关联事件明确缺证据。",
+  "all_required_case_profiles_covered": true,
+  "dependency": {
+    "task_id": "PR13-A01.1",
+    "state": "Accepted"
+  },
+  "case_reviews": [
+    {
+      "case_id": "PR13-A01.2-T01",
+      "expected": "仅收尾计数",
+      "profiles": [
+        "OFFLINE",
+        "AUDIT"
+      ],
+      "reviewed_AUDIT_actual": {
+        "algorithm": "pr13-audit-replay-v1",
+        "status": "Derived",
+        "raw_read": true,
+        "files": [
+          {
+            "path": "events.original.jsonl",
+            "state": "Matching",
+            "bytes": 494,
+            "sha256": "37e5c9323b0c4ef8c14d59c13570b0a6e9975bd61430e98a213c97ae624850be"
+          }
+        ],
+        "raw_errors": [],
+        "derived": {
+          "running": {
+            "acknowledgements": 0,
+            "completed_cycles": 0,
+            "cycles_by_client": {},
+            "acknowledgements_by_client": {},
+            "distribution": {},
+            "fallback_cycles": 0
+          },
+          "drain": {
+            "acknowledgements": 1,
+            "completed_cycles": 1,
+            "cycles_by_client": {
+              "controlled-client": 1
+            },
+            "acknowledgements_by_client": {
+              "controlled-client": 1
+            },
+            "distribution": {
+              "1": 1
+            },
+            "fallback_cycles": 0
+          },
+          "final": {
+            "acknowledgements": 1,
+            "completed_cycles": 1,
+            "cycles_by_client": {
+              "controlled-client": 1
+            },
+            "acknowledgements_by_client": {
+              "controlled-client": 1
+            },
+            "distribution": {
+              "1": 1
+            },
+            "fallback_cycles": 0
+          },
+          "zero_cycle_clients": null,
+          "zero_cycle_reason": "requires_launch_manifest",
+          "evidence_errors": [],
+          "stop_ms": 100,
+          "final_ms": 200
+        },
+        "evidence_errors": [],
+        "event_differences": [
+          {
+            "client_id": "controlled-client",
+            "cycle_id": "controlled-client:1",
+            "event_seq": 1,
+            "event_type": "settlement.acknowledged",
+            "at_unix_ms": 110,
+            "cutoff": "drain"
+          },
+          {
+            "client_id": "controlled-client",
+            "cycle_id": "controlled-client:1",
+            "event_seq": 2,
+            "event_type": "cycle.completed",
+            "at_unix_ms": 120,
+            "cutoff": "drain"
+          }
+        ],
+        "check_denominators": {
+          "failed_clients": 0,
+          "failed_checks": 0
+        },
+        "legacy_redlines": null,
+        "legacy_request_statistics": null,
+        "current_acceptance": false,
+        "historical_recovery": false
+      },
+      "original_AUDIT_source_sha": "b20bdf20308301901a0a58aefcb6422315795e29",
+      "cutoff_conservation": [
+        {
+          "cutoff": "running",
+          "ack_total": 0,
+          "ack_by_client": {},
+          "clients_with_at_least_k_ACK": {},
+          "completed_cycles": 0,
+          "completed_cycle_distribution_is_separate": {}
+        },
+        {
+          "cutoff": "drain",
+          "ack_total": 1,
+          "ack_by_client": {
+            "controlled-client": 1
+          },
+          "clients_with_at_least_k_ACK": {
+            "1": 1
+          },
+          "completed_cycles": 1,
+          "completed_cycle_distribution_is_separate": {
+            "1": 1
+          }
+        },
+        {
+          "cutoff": "final",
+          "ack_total": 1,
+          "ack_by_client": {
+            "controlled-client": 1
+          },
+          "clients_with_at_least_k_ACK": {
+            "1": 1
+          },
+          "completed_cycles": 1,
+          "completed_cycle_distribution_is_separate": {
+            "1": 1
+          }
+        }
+      ],
+      "passed": true,
+      "OFFLINE_coverage": "Existing canonical component evidence retained; no new OFFLINE execution claimed"
+    },
+    {
+      "case_id": "PR13-A01.2-T02",
+      "expected": "一次",
+      "profiles": [
+        "OFFLINE",
+        "AUDIT"
+      ],
+      "reviewed_AUDIT_actual": {
+        "algorithm": "pr13-audit-replay-v1",
+        "status": "Derived",
+        "raw_read": true,
+        "files": [
+          {
+            "path": "events.original.jsonl",
+            "state": "Matching",
+            "bytes": 984,
+            "sha256": "d96067b46930519daad228deb9e70fd6701a42215bf1959552ddecad11353448"
+          }
+        ],
+        "raw_errors": [],
+        "derived": {
+          "running": {
+            "acknowledgements": 1,
+            "completed_cycles": 1,
+            "cycles_by_client": {
+              "controlled-client": 1
+            },
+            "acknowledgements_by_client": {
+              "controlled-client": 1
+            },
+            "distribution": {
+              "1": 1
+            },
+            "fallback_cycles": 0
+          },
+          "drain": {
+            "acknowledgements": 0,
+            "completed_cycles": 0,
+            "cycles_by_client": {},
+            "acknowledgements_by_client": {},
+            "distribution": {},
+            "fallback_cycles": 0
+          },
+          "final": {
+            "acknowledgements": 1,
+            "completed_cycles": 1,
+            "cycles_by_client": {
+              "controlled-client": 1
+            },
+            "acknowledgements_by_client": {
+              "controlled-client": 1
+            },
+            "distribution": {
+              "1": 1
+            },
+            "fallback_cycles": 0
+          },
+          "zero_cycle_clients": null,
+          "zero_cycle_reason": "requires_launch_manifest",
+          "evidence_errors": [],
+          "stop_ms": 100,
+          "final_ms": 200
+        },
+        "evidence_errors": [],
+        "event_differences": [
+          {
+            "client_id": "controlled-client",
+            "cycle_id": "controlled-client:1",
+            "event_seq": 1,
+            "event_type": "settlement.acknowledged",
+            "at_unix_ms": 99,
+            "cutoff": "running"
+          },
+          {
+            "client_id": "controlled-client",
+            "cycle_id": "controlled-client:1",
+            "event_seq": 2,
+            "event_type": "cycle.completed",
+            "at_unix_ms": 99,
+            "cutoff": "running"
+          }
+        ],
+        "check_denominators": {
+          "failed_clients": 0,
+          "failed_checks": 0
+        },
+        "legacy_redlines": null,
+        "legacy_request_statistics": null,
+        "current_acceptance": false,
+        "historical_recovery": false
+      },
+      "original_AUDIT_source_sha": "b20bdf20308301901a0a58aefcb6422315795e29",
+      "cutoff_conservation": [
+        {
+          "cutoff": "running",
+          "ack_total": 1,
+          "ack_by_client": {
+            "controlled-client": 1
+          },
+          "clients_with_at_least_k_ACK": {
+            "1": 1
+          },
+          "completed_cycles": 1,
+          "completed_cycle_distribution_is_separate": {
+            "1": 1
+          }
+        },
+        {
+          "cutoff": "drain",
+          "ack_total": 0,
+          "ack_by_client": {},
+          "clients_with_at_least_k_ACK": {},
+          "completed_cycles": 0,
+          "completed_cycle_distribution_is_separate": {}
+        },
+        {
+          "cutoff": "final",
+          "ack_total": 1,
+          "ack_by_client": {
+            "controlled-client": 1
+          },
+          "clients_with_at_least_k_ACK": {
+            "1": 1
+          },
+          "completed_cycles": 1,
+          "completed_cycle_distribution_is_separate": {
+            "1": 1
+          }
+        }
+      ],
+      "passed": true,
+      "OFFLINE_coverage": "Existing canonical component evidence retained; no new OFFLINE execution claimed"
+    },
+    {
+      "case_id": "PR13-A01.2-T03",
+      "expected": "Unknown不补造",
+      "profiles": [
+        "OFFLINE",
+        "AUDIT"
+      ],
+      "reviewed_AUDIT_actual": {
+        "actual_original_replay": {
+          "algorithm": "pr13-audit-replay-v1",
+          "status": "Derived",
+          "raw_read": true,
+          "files": [
+            {
+              "path": "events.original.jsonl",
+              "state": "Matching",
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          ],
+          "raw_errors": [],
+          "derived": {
+            "running": {
+              "acknowledgements": 0,
+              "completed_cycles": 0,
+              "cycles_by_client": {},
+              "acknowledgements_by_client": {},
+              "distribution": {},
+              "fallback_cycles": 0
+            },
+            "drain": {
+              "acknowledgements": 0,
+              "completed_cycles": 0,
+              "cycles_by_client": {},
+              "acknowledgements_by_client": {},
+              "distribution": {},
+              "fallback_cycles": 0
+            },
+            "final": {
+              "acknowledgements": 0,
+              "completed_cycles": 0,
+              "cycles_by_client": {},
+              "acknowledgements_by_client": {},
+              "distribution": {},
+              "fallback_cycles": 0
+            },
+            "zero_cycle_clients": null,
+            "zero_cycle_reason": "requires_launch_manifest",
+            "evidence_errors": [],
+            "stop_ms": 100,
+            "final_ms": 200
+          },
+          "evidence_errors": [],
+          "event_differences": [],
+          "check_denominators": {
+            "failed_clients": 0,
+            "failed_checks": 0
+          },
+          "legacy_redlines": null,
+          "legacy_request_statistics": null,
+          "current_acceptance": false,
+          "historical_recovery": false
+        },
+        "controlled_final_status_counter": {
+          "cycles_completed": 1,
+          "event_seq_max": 0,
+          "authority": "controlled-process-status-counter"
+        },
+        "actual_missing_ack_dimension_classifier": {
+          "dimensions": {
+            "execution": "Passed",
+            "evidence": "Unknown",
+            "load": "NotApplicable",
+            "gameplay": "Unknown",
+            "performance": "NotApplicable",
+            "cleanup": "NotApplicable"
+          },
+          "applicable": [
+            "evidence",
+            "execution",
+            "gameplay"
+          ],
+          "all_applicable_passed": false,
+          "full_acceptance_passed": false
+        },
+        "status_counter_never_used_as_verified_completed_cycle": true
+      },
+      "original_AUDIT_source_sha": "b20bdf20308301901a0a58aefcb6422315795e29",
+      "cutoff_conservation": [
+        {
+          "cutoff": "running",
+          "ack_total": 0,
+          "ack_by_client": {},
+          "clients_with_at_least_k_ACK": {},
+          "completed_cycles": 0,
+          "completed_cycle_distribution_is_separate": {}
+        },
+        {
+          "cutoff": "drain",
+          "ack_total": 0,
+          "ack_by_client": {},
+          "clients_with_at_least_k_ACK": {},
+          "completed_cycles": 0,
+          "completed_cycle_distribution_is_separate": {}
+        },
+        {
+          "cutoff": "final",
+          "ack_total": 0,
+          "ack_by_client": {},
+          "clients_with_at_least_k_ACK": {},
+          "completed_cycles": 0,
+          "completed_cycle_distribution_is_separate": {}
+        }
+      ],
+      "passed": true,
+      "OFFLINE_coverage": "Existing canonical component evidence retained; no new OFFLINE execution claimed"
+    }
+  ],
+  "current_source_equivalence": [
+    {
+      "path": "tools/pr13_runtime_evidence.py",
+      "before": "971dedc310e2a8311b938a544a9895935e39c63a62acd8658c9da97d15d14a09",
+      "after": "6a0a7683fadd2d0927e21d9e77f55895fd35042b3bf42c32421493784a69c60d",
+      "changed": true,
+      "AST_identical": true,
+      "line_endings_only": true
+    },
+    {
+      "path": "tools/pr13_audit_replay.py",
+      "before": "873808f1180fba28c34f3eb5c06102aeabd3317c937ba360c7d719b932354e8b",
+      "after": "873808f1180fba28c34f3eb5c06102aeabd3317c937ba360c7d719b932354e8b",
+      "changed": false,
+      "AST_identical": true,
+      "line_endings_only": true
+    },
+    {
+      "path": "tools/cloud_load_test.py",
+      "before": "6d165686f2f31bc16ba8305a95c31fa1176611acad29e71dd1c2d7173de1293f",
+      "after": "08042e6f1e72fc730ed92feca3f8a2bca2b09959ec200c8ce42284c6367018af",
+      "changed": true,
+      "AST_identical": true,
+      "line_endings_only": true
+    }
+  ],
+  "verified_stage_originals": [
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S5-current-cutoff-denominator-six-audit\\cases.jsonl",
+      "bytes": 14405,
+      "sha256": "dbe0c4d2fcf113d8ab43850bcccd5af5e438e7417d34dd28fff366682e108c34"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S5-current-cutoff-denominator-six-audit\\complete-original-G-receipt.json",
+      "bytes": 596,
+      "sha256": "f57960b6826b706d8f108ad6db3766cdb2004132579542dd29282d4eb605baeb"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S5-current-cutoff-denominator-six-audit\\controlled-inputs.original.json",
+      "bytes": 15349,
+      "sha256": "33d5d9d03ad015f45bc0d40be8d4a3448e08c470318532e339cf509ea19914a0"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S5-current-cutoff-denominator-six-audit\\independent-verification.json",
+      "bytes": 695,
+      "sha256": "8d222b50cca7848a5288b2799dd5fffd0590e95b1f1e5bd9c3b74cf1c9b4a4c9"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S5-current-cutoff-denominator-six-audit\\input-ledger.original.json",
+      "bytes": 1349,
+      "sha256": "09f8515990757e3f8b8e5ca1ac56f38c14fbadd5241ce457c60dbcd6c69cf67b"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S5-current-cutoff-denominator-six-audit\\README.md",
+      "bytes": 864,
+      "sha256": "0f292a29a37c4bd9cb90fac2b7177894679be968a74a105e56dcf49431f8282e"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S5-current-cutoff-denominator-six-audit\\result.original.json",
+      "bytes": 413,
+      "sha256": "377ff18106c7c5920d6d2e7495eaa2a7e843fbc8088e7c5f5a6cc1ba10cdcce0"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S5-current-cutoff-denominator-six-audit\\runner.original.py",
+      "bytes": 7588,
+      "sha256": "565106174c5876528116ea83faab75a9f5b98d65e61769bebd84befbae5ef920"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S5-current-cutoff-denominator-six-audit\\summary.json",
+      "bytes": 891,
+      "sha256": "d8944ae44eb4c409cd7b2e2e994420e4018586a157fcb20ba5311fec156c99c1"
+    }
+  ],
+  "verified_native_original_files": 25,
+  "original_cloud_tests_not_rerun": true,
+  "original_register": {
+    "path": "docs/reports/pr13-stages-20261009/S6-a011-inventory-main-reviewed-20261016/register.json",
+    "sha256": "c8ebb6badff655067db55041f2548c10d819cbb2f880b9742bf87b99549b99c3"
+  },
+  "pointer_before_sha256": "cde22ba1247ba7a15da93b6ef1f588b830eb4e8017addfb74be7ff2316d8a9da",
+  "missing_historical_raw_recovered": false,
+  "same_algorithm_same_raw_not_reexecuted_or_rewritten": true,
+  "ACK_tail_distribution_not_confused_with_completed_cycle_distribution": true,
+  "case_scope": "Three controlled cutoff/duplication/Unknown contracts only; no recovered86/90 or130/139 raw and no gameplay or capacity acceptance",
+  "whole_scope_or_G3_acceptance": false
+}

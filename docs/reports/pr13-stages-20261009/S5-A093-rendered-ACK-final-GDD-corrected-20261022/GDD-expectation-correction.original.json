@@ -1,0 +1,53 @@
+{
+  "kind": "DocumentCorrectionNotGameplayRelaxation",
+  "case_ids": [
+    "PR13-A09.3-T01",
+    "PR13-A09.3-T03"
+  ],
+  "original_private_expectation": {
+    "post_death_inventory_count": 1,
+    "post_death_equipped_count": 1,
+    "item_location": "Equipped",
+    "binding_assumed_death_protection": true
+  },
+  "original_observer_service_and_controller_failed_results_kept": true,
+  "authority": [
+    {
+      "path": "GDD_BASE_v0.69.md",
+      "lines": [
+        300,
+        316
+      ],
+      "sha256": "bccf36529f8f3aa599118521df573425e00b6ab5f76b42d1eaca881d2831bde1",
+      "rule": "PVE/PVP death: five worn armor pieces go to RelicPile, corresponding loadout slots empty; no starter or death replacement shoes; bound is not death immunity."
+    },
+    {
+      "path": "GDD.md",
+      "sha256": "7375f9615d4612a617cdb6295a020037016ecef061964c0200b52c2def9d44f6",
+      "rule": "Main v0.70 does not override this armor-death disposition; user-confirmed legal80over70 remains separate and untouched."
+    }
+  ],
+  "corrected_independent_expectation": {
+    "post_death_inventory_count": 0,
+    "post_death_equipped_armor_count": 0,
+    "actual_seeded_items4_once_each_to": "RelicPile",
+    "actual_equipment_rows4_preserved": true,
+    "all12_loadouts_five_slots_null_offline_dump_proven": true,
+    "UI_weapon_retained_and_empty_five_armor_slots": true,
+    "renderer15_real_nonblank_ready_frames_and_native_mouse_navigation_still_required": true,
+    "samekey_ACK_after_actual_restart_byteexact_and_once_assets_still_required": true,
+    "original_main_must_reject_that_rendered_actor_bad_final1byte_as_exit3": true
+  },
+  "not_relaxed": [
+    "API_10s_attempt_30s_logical_deadline",
+    "world_UID_item_budget",
+    "source_hash_integrity",
+    "real_renderer_and_nonblank_pixels",
+    "once_only_assets",
+    "bad_final_evidence_must_reject"
+  ],
+  "no_raw_mutation": true,
+  "no_new_realworld_replay_for_this_correction": true,
+  "no_product_or_server_mutation": true,
+  "qualification_label": "文档校正预期后复核；不冒称原观察器通过"
+}

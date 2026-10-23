@@ -1,0 +1,250 @@
+{
+  "audit": {
+    "algorithm": "pr13-audit-replay-v1",
+    "check_denominators": {
+      "failed_checks": 0,
+      "failed_clients": 0
+    },
+    "current_acceptance": false,
+    "derived": {
+      "completion_classification_algorithm": "owned-cycle-origins-v1",
+      "drain": {
+        "acknowledgements": 0,
+        "acknowledgements_by_client": {},
+        "completed_cycles": 0,
+        "cycles_by_client": {},
+        "distribution": {},
+        "drain_only_completed_cycles": 0,
+        "drain_only_cycles_by_client": {},
+        "fallback_completed_cycles": 0,
+        "fallback_cycles": 0,
+        "fallback_cycles_by_client": {},
+        "normal_completed_cycles": 0,
+        "normal_cycles_by_client": {},
+        "scenario_completed_cycles": 0,
+        "scenario_cycles_by_client": {},
+        "unclassified_completed_cycles": 0,
+        "unclassified_cycles_by_client": {}
+      },
+      "evidence_errors": [],
+      "final": {
+        "acknowledgements": 6,
+        "acknowledgements_by_client": {
+          "g001c018dde07": 3,
+          "g001c02b3c17e": 3
+        },
+        "completed_cycles": 6,
+        "cycles_by_client": {
+          "g001c018dde07": 3,
+          "g001c02b3c17e": 3
+        },
+        "distribution": {
+          "3": 2
+        },
+        "drain_only_completed_cycles": 0,
+        "drain_only_cycles_by_client": {},
+        "fallback_completed_cycles": 0,
+        "fallback_cycles": 0,
+        "fallback_cycles_by_client": {},
+        "normal_completed_cycles": 6,
+        "normal_cycles_by_client": {
+          "g001c018dde07": 3,
+          "g001c02b3c17e": 3
+        },
+        "scenario_completed_cycles": 0,
+        "scenario_cycles_by_client": {},
+        "unclassified_completed_cycles": 0,
+        "unclassified_cycles_by_client": {}
+      },
+      "final_ms": 1791588910730,
+      "normal_completion_scope": "Acknowledged cycle without a recorded fallback, functional abandon or drain-only origin; undeclared abandon attempts remain unclassified; not proof of combat victory, full route coverage or capacity",
+      "running": {
+        "acknowledgements": 6,
+        "acknowledgements_by_client": {
+          "g001c018dde07": 3,
+          "g001c02b3c17e": 3
+        },
+        "completed_cycles": 6,
+        "cycles_by_client": {
+          "g001c018dde07": 3,
+          "g001c02b3c17e": 3
+        },
+        "distribution": {
+          "3": 2
+        },
+        "drain_only_completed_cycles": 0,
+        "drain_only_cycles_by_client": {},
+        "fallback_completed_cycles": 0,
+        "fallback_cycles": 0,
+        "fallback_cycles_by_client": {},
+        "normal_completed_cycles": 6,
+        "normal_cycles_by_client": {
+          "g001c018dde07": 3,
+          "g001c02b3c17e": 3
+        },
+        "scenario_completed_cycles": 0,
+        "scenario_cycles_by_client": {},
+        "unclassified_completed_cycles": 0,
+        "unclassified_cycles_by_client": {}
+      },
+      "stop_ms": 1791588910679,
+      "zero_cycle_clients": null,
+      "zero_cycle_reason": "requires_launch_manifest"
+    },
+    "event_differences": [
+      {
+        "at_unix_ms": 1791588158832,
+        "client_id": "g001c018dde07",
+        "cutoff": "running",
+        "cycle_id": "g001c018dde07:1",
+        "event_seq": 633,
+        "event_type": "settlement.acknowledged"
+      },
+      {
+        "at_unix_ms": 1791588158832,
+        "client_id": "g001c018dde07",
+        "cutoff": "running",
+        "cycle_id": "g001c018dde07:1",
+        "event_seq": 634,
+        "event_type": "cycle.completed"
+      },
+      {
+        "at_unix_ms": 1791588340162,
+        "client_id": "g001c018dde07",
+        "cutoff": "running",
+        "cycle_id": "g001c018dde07:2",
+        "event_seq": 1276,
+        "event_type": "settlement.acknowledged"
+      },
+      {
+        "at_unix_ms": 1791588340162,
+        "client_id": "g001c018dde07",
+        "cutoff": "running",
+        "cycle_id": "g001c018dde07:2",
+        "event_seq": 1277,
+        "event_type": "cycle.completed"
+      },
+      {
+        "at_unix_ms": 1791588517742,
+        "client_id": "g001c018dde07",
+        "cutoff": "running",
+        "cycle_id": "g001c018dde07:3",
+        "event_seq": 1891,
+        "event_type": "settlement.acknowledged"
+      },
+      {
+        "at_unix_ms": 1791588517742,
+        "client_id": "g001c018dde07",
+        "cutoff": "running",
+        "cycle_id": "g001c018dde07:3",
+        "event_seq": 1892,
+        "event_type": "cycle.completed"
+      },
+      {
+        "at_unix_ms": 1791588239299,
+        "client_id": "g001c02b3c17e",
+        "cutoff": "running",
+        "cycle_id": "g001c02b3c17e:1",
+        "event_seq": 905,
+        "event_type": "settlement.acknowledged"
+      },
+      {
+        "at_unix_ms": 1791588239299,
+        "client_id": "g001c02b3c17e",
+        "cutoff": "running",
+        "cycle_id": "g001c02b3c17e:1",
+        "event_seq": 906,
+        "event_type": "cycle.completed"
+      },
+      {
+        "at_unix_ms": 1791588501205,
+        "client_id": "g001c02b3c17e",
+        "cutoff": "running",
+        "cycle_id": "g001c02b3c17e:2",
+        "event_seq": 1830,
+        "event_type": "settlement.acknowledged"
+      },
+      {
+        "at_unix_ms": 1791588501205,
+        "client_id": "g001c02b3c17e",
+        "cutoff": "running",
+        "cycle_id": "g001c02b3c17e:2",
+        "event_seq": 1831,
+        "event_type": "cycle.completed"
+      },
+      {
+        "at_unix_ms": 1791588904731,
+        "client_id": "g001c02b3c17e",
+        "cutoff": "running",
+        "cycle_id": "g001c02b3c17e:3",
+        "event_seq": 3272,
+        "event_type": "settlement.acknowledged"
+      },
+      {
+        "at_unix_ms": 1791588904732,
+        "client_id": "g001c02b3c17e",
+        "cutoff": "running",
+        "cycle_id": "g001c02b3c17e:3",
+        "event_seq": 3273,
+        "event_type": "cycle.completed"
+      }
+    ],
+    "evidence_errors": [],
+    "files": [
+      {
+        "bytes": 4404,
+        "path": "execution.json",
+        "sha256": "900160ab3b5ae28a3e8649473c952a30f5ed57a7e3458d5337465ac9bc8d8d87",
+        "state": "Matching"
+      },
+      {
+        "bytes": 1911633,
+        "path": "load/20261010-071939-fa63ca/report.json",
+        "sha256": "759ff1764df90ac0d23dea10dc462feeb908dcd6393516b3f97bae09d7969139",
+        "state": "Matching"
+      },
+      {
+        "bytes": 1917505,
+        "path": "load/20261010-071939-fa63ca/g001c018dde07.json.telemetry.jsonl",
+        "sha256": "bab3b33b14ac3b3a18ecaf7f184a6375affa7ed55771ab2dd26f858274f31620",
+        "state": "Matching"
+      },
+      {
+        "bytes": 3273428,
+        "path": "load/20261010-071939-fa63ca/g001c02b3c17e.json.telemetry.jsonl",
+        "sha256": "e27474aadfee4b9e36a3221aa475f6c5daa64f4fec45a51051762abb12e3be87",
+        "state": "Matching"
+      }
+    ],
+    "historical_recovery": false,
+    "legacy_redlines": null,
+    "legacy_request_statistics": null,
+    "raw_errors": [],
+    "raw_read": true,
+    "status": "Derived"
+  },
+  "check_denominator_scope": "No separate check records supplied; zero check denominators do not prove no business failures",
+  "contexts": [
+    {
+      "client_id": "g001c018dde07",
+      "process_epoch": "b60b21ccbf4c4725b406d9e5a316cdb9",
+      "run_id": "5d47c4fbcb754beb8c6b8f22db37ccd0"
+    },
+    {
+      "client_id": "g001c02b3c17e",
+      "process_epoch": "bf374ba183ae49b3a4ca24722280a9a5",
+      "run_id": "5d47c4fbcb754beb8c6b8f22db37ccd0"
+    }
+  ],
+  "cutoff_basis": "Explicit frozen original STOP/final values; no new clock qualification inferred",
+  "generator": "pr13-single-source-report-v1",
+  "original_runtime_source_not_inferred_from_replay_code": true,
+  "run_id": "5d47c4fbcb754beb8c6b8f22db37ccd0",
+  "schema_version": 1,
+  "source_code_sha256": {
+    "cloud_load_test.py": "9a1f51571c62c1cbe8c1be39c5b15c855ce1c13ca364eb18237cf276ab30e9dd",
+    "pr13_audit_replay.py": "873808f1180fba28c34f3eb5c06102aeabd3317c937ba360c7d719b932354e8b",
+    "pr13_runtime_evidence.py": "63c95c1a9d1a51f8195edb8b1956a761d59230debffe45c7231172b8109e11c8",
+    "pr13_single_source_report.py": "574ee0a7e9446bebe6d2a8318f47a61f808ad2a0fbcfcad0c94bd3179be90208"
+  }
+}

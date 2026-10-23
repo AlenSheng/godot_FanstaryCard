@@ -16,9 +16,10 @@ public sealed partial class ProcessLifecycleRecoveryTests
 {
     public static bool HasOwnedRollbackFixture => HasPrivateDatabase &&
         File.Exists(Environment.GetEnvironmentVariable("FANTASYCARD_PROCESS_PREVIOUS_SERVER_DLL")) &&
-        !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("FANTASYCARD_TEST_DOCKER_CONTAINER"));
+        (!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("FANTASYCARD_TEST_DOCKER_CONTAINER")) ||
+         !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("FANTASYCARD_TEST_NATIVE_PG_OWNERSHIP")));
 
-    [Fact(Skip = "Requires an owned PG container and an immutable previous local server binary.", SkipUnless = nameof(HasOwnedRollbackFixture))]
+    [Fact(Skip = "Requires an owned isolated PG fixture and an immutable previous local server binary.", SkipUnless = nameof(HasOwnedRollbackFixture))]
     [Trait("Category", "PostgresIntegration")]
     public async Task Actual_code_rollback_and_native_backup_restore_preserve_once_only_assets()
     {
@@ -28,13 +29,22 @@ public sealed partial class ProcessLifecycleRecoveryTests
         Assert.StartsWith(ownedRoot, oldDll, StringComparison.OrdinalIgnoreCase);
         var oldHash = Convert.ToHexStringLower(SHA256.HashData(await File.ReadAllBytesAsync(oldDll, ct)));
         Assert.Equal(Environment.GetEnvironmentVariable("FANTASYCARD_PROCESS_PREVIOUS_SERVER_SHA256"), oldHash);
-        var container = Environment.GetEnvironmentVariable("FANTASYCARD_TEST_DOCKER_CONTAINER")!;
-        var inspected = await DockerTextAsync(["inspect", container], ct);
-        using var metadata = JsonDocument.Parse(inspected);
-        var labels = metadata.RootElement[0].GetProperty("Config").GetProperty("Labels");
-        Assert.Equal("disposable-local", labels.GetProperty("codex.scope").GetString());
-        Assert.Equal("pr13-stages-20261008", labels.GetProperty("codex.task").GetString());
-        var containerId = metadata.RootElement[0].GetProperty("Id").GetString();
+        var container = Environment.GetEnvironmentVariable("FANTASYCARD_TEST_DOCKER_CONTAINER");
+        var ownership = Environment.GetEnvironmentVariable("FANTASYCARD_TEST_NATIVE_PG_OWNERSHIP");
+        Assert.NotEqual(string.IsNullOrWhiteSpace(container), string.IsNullOrWhiteSpace(ownership));
+        NativeRollbackPostgres? native = null;
+        string? containerId = null;
+        if (!string.IsNullOrWhiteSpace(ownership))
+            native = await NativeRollbackPostgres.VerifyAsync(Environment.GetEnvironmentVariable("FANTASYCARD_TEST_POSTGRES")!, ownership, ct);
+        else
+        {
+            var inspected = await DockerTextAsync(["inspect", container!], ct);
+            using var metadata = JsonDocument.Parse(inspected);
+            var labels = metadata.RootElement[0].GetProperty("Config").GetProperty("Labels");
+            Assert.Equal("disposable-local", labels.GetProperty("codex.scope").GetString());
+            Assert.Equal("pr13-stages-20261008", labels.GetProperty("codex.task").GetString());
+            containerId = metadata.RootElement[0].GetProperty("Id").GetString();
+        }
 
         await using var db = await PostgresTestSchema.CreateAsync(migrate: true);
         var settings = new NpgsqlConnectionStringBuilder(db.ConnectionString);
@@ -79,14 +89,18 @@ public sealed partial class ProcessLifecycleRecoveryTests
         Directory.CreateDirectory(EvidenceDirectory);
         var dump = Path.GetFullPath(Path.Combine(EvidenceDirectory, "owned-rollback-backup.dump"));
         Assert.StartsWith(ownedRoot, dump, StringComparison.OrdinalIgnoreCase);
-        await DumpAsync(container, settings.Username!, settings.Database!, settings.SearchPath!, dump, ct);
+        if (native is null) await DumpAsync(container!, settings.Username!, settings.Database!, settings.SearchPath!, dump, ct);
+        else await native.DumpAsync(settings.Database!, settings.SearchPath!, dump, ct);
         Assert.InRange(new FileInfo(dump).Length, 1, 64 * 1024 * 1024);
         var dumpHash = Convert.ToHexStringLower(SHA256.HashData(await File.ReadAllBytesAsync(dump, ct)));
         var restoredName = "ready_stop_" + Guid.NewGuid().ToString("N"); var created = false;
         try
         {
-            await DockerTextAsync(["exec", container, "createdb", "-U", settings.Username!, restoredName], ct); created = true;
-            await RestoreAsync(container, settings.Username!, restoredName, dump, ct);
+            if (native is null) await DockerTextAsync(["exec", container!, "createdb", "-U", settings.Username!, restoredName], ct);
+            else await native.TextAsync("createdb", [restoredName], ct);
+            created = true;
+            if (native is null) await RestoreAsync(container!, settings.Username!, restoredName, dump, ct);
+            else await native.RestoreAsync(restoredName, dump, ct);
             var restoredSettings = new NpgsqlConnectionStringBuilder(db.ConnectionString) { Database = restoredName };
             await using var restored = NpgsqlDataSource.Create(restoredSettings.ConnectionString);
             var repository = new SettlementRepository(restored, TimeProvider.System, metrics);
@@ -100,7 +114,7 @@ public sealed partial class ProcessLifecycleRecoveryTests
             await using var reader = await check.ExecuteReaderAsync(ct); Assert.True(await reader.ReadAsync(ct));
             Assert.Equal(gold + 23, reader.GetInt64(0)); Assert.Equal(player.Id, reader.GetGuid(1)); Assert.Equal("Equipped", reader.GetString(2));
             Assert.Equal(1L, reader.GetInt64(3)); Assert.Equal(0L, reader.GetInt64(4));
-            Record("actual-native-backup-restore", new { containerId, dumpSha256 = dumpHash, dumpBytes = new FileInfo(dump).Length,
+            Record("actual-native-backup-restore", new { containerId, nativePostmasterPid = native?.PostmasterPid, dumpSha256 = dumpHash, dumpBytes = new FileInfo(dump).Length,
                 nativeTools = "pg_dump custom schema backup and pg_restore into a newly owned isolated database",
                 originalBalance = gold + 23, restoredBalance = reader.GetInt64(0), committedLedgerRows = 1,
                 repeatedAckAndHoldCommitDoNotCopyAssets = true, assetCorrection = false,
@@ -108,7 +122,11 @@ public sealed partial class ProcessLifecycleRecoveryTests
         }
         finally
         {
-            if (created) await DockerTextAsync(["exec", container, "dropdb", "--force", "-U", settings.Username!, restoredName], CancellationToken.None);
+            if (created)
+            {
+                if (native is null) await DockerTextAsync(["exec", container!, "dropdb", "--force", "-U", settings.Username!, restoredName], CancellationToken.None);
+                else await native.TextAsync("dropdb", ["--force", restoredName], CancellationToken.None);
+            }
             Record("owned-restored-database-removed", new { created, removed = created, restoredName });
         }
     }

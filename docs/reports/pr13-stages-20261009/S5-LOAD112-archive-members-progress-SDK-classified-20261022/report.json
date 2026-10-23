@@ -1,0 +1,393 @@
+{
+  "kind": "LiveArchiveMemberAuditCheckpoint_FourExactSDKObjectsClassified_NoAcceptancePromotion",
+  "generated_at": "2026-10-22T20:47:11.860872+08:00",
+  "task_id": "LOAD-11.2",
+  "state": "Partial",
+  "frozen_input_scope": {
+    "kind": "ArchiveCandidateCensusOfCapturedPhysicalInventoryPrefix_NotMemberInspection",
+    "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\file-identities.private.original.jsonl",
+    "captured_prefix_bytes": 148723358,
+    "captured_prefix_sha256": "45f9e78f61b624200a77966ab2b4d57cf312775909bda8b9576b5fd8936e886f",
+    "candidate_paths": 11567,
+    "unique_content_objects": 10277,
+    "logical_compressed_bytes": 93800195474,
+    "unique_compressed_bytes": 92426156078,
+    "format_candidate_counts": {
+      "tar.xz": 3,
+      "zip": 24,
+      "zip-package": 103,
+      "tar.gz": 1072,
+      "tar": 35,
+      "gzip": 10330
+    },
+    "additional_package_archive_candidates_not_in_R2_archive_suffix_list": 103,
+    "source_physical_inventory_still_running": true,
+    "archive_members_inspected": 0,
+    "whole_LOAD112_accepted": false,
+    "future_inventory_prefix_delta_and_nested_members_pending": true,
+    "no_source_bytes_modified": true
+  },
+  "additional_package_archive_candidates": 103,
+  "qualified_observer_controls": {
+    "count": 16,
+    "all_passed": true,
+    "engine_sha256": "d1034cf329d0bb3f22918f509988900ee998048c12c028c034eb6d8514d6ec4a",
+    "scope": "Nested sensitive data, gzip CRC/footer, traversal/link non-extraction, duplicate member identities, empty gzip, malformed JSONL and resource deferral"
+  },
+  "actual_archive_progress_snapshot": {
+    "pid": 37424,
+    "started_unix_ns": 1792672425035927600,
+    "current": {
+      "root": "workspace",
+      "path": "outputs/pr13-tencent-20261009/pool-passed-build-delivery.private.tar.gz",
+      "bytes": 11621315,
+      "sha256": "16bc77f562ecb456f730ac20ecdc03999008be343aebe59b099295cc4d2be004",
+      "frozen_snapshot_alias_paths": 1
+    },
+    "counts": {
+      "candidate_paths": 11567,
+      "unique_content_objects": 10277,
+      "outer_objects_processed": 136,
+      "outer_identity_mismatches": 0,
+      "source_read_errors": 0,
+      "members": 82290,
+      "findings": 1779,
+      "nested_references": 765,
+      "archive_layer_completion_events": 1065,
+      "compressed_bytes_hashed": 5512063798,
+      "decoded_bytes_read": 8374696992
+    },
+    "current_outer_decoded_bytes": 32972446,
+    "elapsed_seconds": 800.625,
+    "finished": false,
+    "BelowNormal": true,
+    "Windows_background_mode": true,
+    "whole_LOAD112_accepted": false
+  },
+  "actual_physical_inventory_progress_snapshot": {
+    "PID": 62892,
+    "started_at_unix_ns": 1792668205850451500,
+    "current": "private-G:Ready-terminal-PG-r1/work/source/.git/objects/2b/3548cbfb1ebb6cfdbde51f367254f1d2efa164",
+    "counts": {
+      "files": 1098671,
+      "logical_bytes": 574594826845,
+      "unique_objects": 532056,
+      "hashed_bytes": 261603095323,
+      "private_text_checked": 172490,
+      "public_text_checked": 12845,
+      "findings": 5757,
+      "archives": 12750,
+      "changed": 0,
+      "errors": 11,
+      "reparse": 0
+    },
+    "cache_entries": 532056,
+    "elapsed_seconds": 5014.2970000000205,
+    "finished": false,
+    "BelowNormal": true,
+    "Windows_background_mode": true
+  },
+  "snapshot_counts_are_not_whole_corpus_completion_or_immutable_original_results": true,
+  "exact_SDK_classification": {
+    "source_objects": [
+      {
+        "source_relative": "CHANGELOG.md",
+        "bytes": 217742,
+        "sha256": "22ea1d9bd6a4e4b38477dd7881c61a0a7af5643f3778d0c8486a7ce9f21bcc48",
+        "actual_archive_parents": [
+          "a18ce0ccec3ecc40b0dd6c4f5132ca934e9fb7c2979717940ff32aee1eb35481",
+          "f0c95e750cb5f2a75c9ba54103722b241b185c4ea92c15d914575da95a1b3cf0"
+        ],
+        "category": "SDKReleaseProse_CPPQualifiedIdentifier_NotRuntimeToken",
+        "limitations": "Raw changelog still fails generic public-result validation; no exporter bypass.",
+        "production_credentials_observed_in_this_object": false,
+        "raw_guard_rejection_or_source_rule_hit_preserved": true,
+        "original_bytes_modified": false
+      },
+      {
+        "source_relative": "doc/classes/HTTPClient.xml",
+        "bytes": 34836,
+        "sha256": "36f66bafc8e778c94c46532c85d2c0241d230650bbcedd51cb1a444439675069",
+        "actual_archive_parents": [
+          "a18ce0ccec3ecc40b0dd6c4f5132ca934e9fb7c2979717940ff32aee1eb35481",
+          "f0c95e750cb5f2a75c9ba54103722b241b185c4ea92c15d914575da95a1b3cf0"
+        ],
+        "category": "SDKDocumentation_ControlledQueryStringExample_NotApplicationCredential",
+        "limitations": "Raw documentation remains rejected by the generic public-result inspector.",
+        "production_credentials_observed_in_this_object": false,
+        "raw_guard_rejection_or_source_rule_hit_preserved": true,
+        "original_bytes_modified": false
+      },
+      {
+        "source_relative": "modules/mono/editor/Godot.NET.Sdk/Godot.SourceGenerators/GodotEnums.cs",
+        "bytes": 3466,
+        "sha256": "0a2e08779e04b1542baabe95daf2fabc6d10476c291bec7d1e468ca3fcef3992",
+        "actual_archive_parents": [
+          "a18ce0ccec3ecc40b0dd6c4f5132ca934e9fb7c2979717940ff32aee1eb35481",
+          "f0c95e750cb5f2a75c9ba54103722b241b185c4ea92c15d914575da95a1b3cf0"
+        ],
+        "category": "SDKCSharpEnumConstant_NotCredentialAssignment",
+        "limitations": "Source-sensitive-text rule remains unchanged; no claim that a source literal is an actual password value.",
+        "production_credentials_observed_in_this_object": false,
+        "raw_guard_rejection_or_source_rule_hit_preserved": true,
+        "original_bytes_modified": false
+      },
+      {
+        "source_relative": "thirdparty/icu4c/godot_data.json",
+        "bytes": 283,
+        "sha256": "7e2858fcf07b27ad3b723e37317c81c60807c069b8ca58cccc3ae788213bd63c",
+        "actual_archive_parents": [
+          "a18ce0ccec3ecc40b0dd6c4f5132ca934e9fb7c2979717940ff32aee1eb35481",
+          "f0c95e750cb5f2a75c9ba54103722b241b185c4ea92c15d914575da95a1b3cf0"
+        ],
+        "category": "SDKSourceConfig_SyntaxProfileMismatch_NotPublicEvidenceJSON",
+        "limitations": "The ICU consumer format was not separately validated; this classification does not assert strict JSON validity or SDK build acceptance.",
+        "production_credentials_observed_in_this_object": false,
+        "raw_guard_rejection_or_source_rule_hit_preserved": true,
+        "original_bytes_modified": false
+      }
+    ],
+    "actual_archive_observations": 8,
+    "classification_checks": 34,
+    "raw_guard_rejections_and_source_bytes_preserved": true,
+    "all_other_policy_hits_still_unclassified": true
+  },
+  "raw_custody": {
+    "directory": "G:\\PR13Evidence\\LOAD112-archive-observer-progress-20261022-r1-originals",
+    "items": [
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-20261022-r1\\started.original.json",
+        "G_path": "archive/started.original.json",
+        "bytes": 1968,
+        "sha256": "071c52ad9c9effff0388babfc588264d0708739a5d8ba3f8f41fdf62ff0ca06a",
+        "live_output_prefix_or_progress_snapshot_only": false
+      },
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-20261022-r1\\progress.snapshot.json",
+        "G_path": "archive/progress.captured.snapshot.json",
+        "bytes": 908,
+        "sha256": "a3791a00bc2e2508185bc1782c7f137f1462266555db06558051b97110fbf315",
+        "live_output_prefix_or_progress_snapshot_only": true
+      },
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\progress.original.json",
+        "G_path": "physical/progress.captured.snapshot.json",
+        "bytes": 633,
+        "sha256": "ea18166d1495c5ea3801a74a8946dd288274f136c80b0ea5087db28f3688ae2b",
+        "live_output_prefix_or_progress_snapshot_only": true
+      },
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-20261022-r1\\executed-engine.original.py",
+        "G_path": "archive/executed-engine.original.py",
+        "bytes": 14460,
+        "sha256": "d1034cf329d0bb3f22918f509988900ee998048c12c028c034eb6d8514d6ec4a",
+        "live_output_prefix_or_progress_snapshot_only": false
+      },
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-20261022-r1\\executed-worker.original.py",
+        "G_path": "archive/executed-worker.original.py",
+        "bytes": 9935,
+        "sha256": "7fe9b89a217ca5e0c3a6cfbe6692fe7be969971f3273cb4ec8aacf50b50414c4",
+        "live_output_prefix_or_progress_snapshot_only": false
+      },
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-20261022-r1\\input-candidates.private.snapshot.jsonl",
+        "G_path": "archive/input-candidates.private.snapshot.jsonl",
+        "bytes": 3317881,
+        "sha256": "1490d04ddf5881d275f65c84f74bc4151cf4acb6669d86a78ed2e48e29dc5925",
+        "live_output_prefix_or_progress_snapshot_only": false
+      },
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-20261022-r1\\member-identities.private.original.jsonl",
+        "G_path": "archive/member-identities.private.captured-prefix.snapshot.jsonl",
+        "bytes": 61267614,
+        "sha256": "ab28e2461b510534e87837517c03a2036baa48a7f060de78753c364e2cbf406c",
+        "live_output_prefix_or_progress_snapshot_only": true
+      },
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-20261022-r1\\findings.metadata-only.private.original.jsonl",
+        "G_path": "archive/findings.metadata-only.private.captured-prefix.snapshot.jsonl",
+        "bytes": 1433011,
+        "sha256": "00445922e56379601566a0210ae910b90b829f9450fef2d3aceb21c09403795a",
+        "live_output_prefix_or_progress_snapshot_only": true
+      },
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-20261022-r1\\outer-identities.private.original.jsonl",
+        "G_path": "archive/outer-identities.private.captured-prefix.snapshot.jsonl",
+        "bytes": 68340,
+        "sha256": "ea265a5040e9895883da55db594957bdd179e227ef22f7b31eae523a2a0cb98a",
+        "live_output_prefix_or_progress_snapshot_only": true
+      },
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-controls-r2-20261022\\observer-controls-qualified.original.json",
+        "G_path": "controls/observer-controls-qualified.original.json",
+        "bytes": 2024,
+        "sha256": "b8b412804ef17dd8ea3c7ecb222d7702e5f8c3f2bc671eeac74ed9c08de8c9ac",
+        "live_output_prefix_or_progress_snapshot_only": false
+      },
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-controls-r2-20261022\\observer-controls\\bad-footer.tar.gz",
+        "G_path": "controls/inputs-and-results/bad-footer.tar.gz",
+        "bytes": 129,
+        "sha256": "ab29aae25b70a576446e36b64a1aa1b32be5d85efc54f00b48178cdd817aa6fd",
+        "live_output_prefix_or_progress_snapshot_only": false
+      },
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-controls-r2-20261022\\observer-controls\\bad-footer.tar.gz.metadata.json",
+        "G_path": "controls/inputs-and-results/bad-footer.tar.gz.metadata.json",
+        "bytes": 851,
+        "sha256": "f3ccc6e28f9a85120d4975c6c94edc1a1231cbf618492731f000e66fd645568a",
+        "live_output_prefix_or_progress_snapshot_only": false
+      },
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-controls-r2-20261022\\observer-controls\\budget.zip",
+        "G_path": "controls/inputs-and-results/budget.zip",
+        "bytes": 144,
+        "sha256": "f3ab2893f56364aefe882f600bc64e942793f066de178f539ad38c5c7e9b9e46",
+        "live_output_prefix_or_progress_snapshot_only": false
+      },
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-controls-r2-20261022\\observer-controls\\budget.zip.metadata.json",
+        "G_path": "controls/inputs-and-results/budget.zip.metadata.json",
+        "bytes": 340,
+        "sha256": "0e9924b5c7ec414e2614e6eba5ff6494d6366f70fa094646455fb1bc616b61dc",
+        "live_output_prefix_or_progress_snapshot_only": false
+      },
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-controls-r2-20261022\\observer-controls\\duplicate.zip",
+        "G_path": "controls/inputs-and-results/duplicate.zip",
+        "bytes": 228,
+        "sha256": "a04a02e94f9eb6574b764a712745e4abf29aa9035c7995e8771954c437b2e96d",
+        "live_output_prefix_or_progress_snapshot_only": false
+      },
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-controls-r2-20261022\\observer-controls\\duplicate.zip.metadata.json",
+        "G_path": "controls/inputs-and-results/duplicate.zip.metadata.json",
+        "bytes": 1767,
+        "sha256": "084687b2682dbde6d50541ace88da97f55bb4c4620c598cdd169ecd4a0bc3455",
+        "live_output_prefix_or_progress_snapshot_only": false
+      },
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-controls-r2-20261022\\observer-controls\\empty.gz",
+        "G_path": "controls/inputs-and-results/empty.gz",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "live_output_prefix_or_progress_snapshot_only": false
+      },
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-controls-r2-20261022\\observer-controls\\empty.gz.metadata.json",
+        "G_path": "controls/inputs-and-results/empty.gz.metadata.json",
+        "bytes": 361,
+        "sha256": "60f71e677aca857d0b5f09730a86c2ea552c370c80aaf24b26afb674d0af8da0",
+        "live_output_prefix_or_progress_snapshot_only": false
+      },
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-controls-r2-20261022\\observer-controls\\nested-sensitive.zip",
+        "G_path": "controls/inputs-and-results/nested-sensitive.zip",
+        "bytes": 224,
+        "sha256": "8ef1a47d6e350d657d3f13323fea2f1f7a82abefa7cd88489474faee98c33410",
+        "live_output_prefix_or_progress_snapshot_only": false
+      },
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-controls-r2-20261022\\observer-controls\\nested-sensitive.zip.metadata.json",
+        "G_path": "controls/inputs-and-results/nested-sensitive.zip.metadata.json",
+        "bytes": 2279,
+        "sha256": "d3c98f3434289200d6d07e19da480fc058ab2177995bd851adb129cb81780509",
+        "live_output_prefix_or_progress_snapshot_only": false
+      },
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-controls-r2-20261022\\observer-controls\\nested.tar.gz",
+        "G_path": "controls/inputs-and-results/nested.tar.gz",
+        "bytes": 205,
+        "sha256": "4efa03e299c305df148f1fb4864e12bc29285bb661fd86b5e4bd0cc5ac73b74d",
+        "live_output_prefix_or_progress_snapshot_only": false
+      },
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-controls-r2-20261022\\observer-controls\\nested.tar.gz.metadata.json",
+        "G_path": "controls/inputs-and-results/nested.tar.gz.metadata.json",
+        "bytes": 1584,
+        "sha256": "2bd92b13cea3658f709f86031badc0adced449e62e034dc4a95f66c439443834",
+        "live_output_prefix_or_progress_snapshot_only": false
+      },
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-controls-r2-20261022\\observer-controls\\records.jsonl.gz",
+        "G_path": "controls/inputs-and-results/records.jsonl.gz",
+        "bytes": 54,
+        "sha256": "cf8d7ef58487741531d3c27c4ada7eab5bc94d013449a8cc19db5e20495f3c90",
+        "live_output_prefix_or_progress_snapshot_only": false
+      },
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-controls-r2-20261022\\observer-controls\\records.jsonl.gz.metadata.json",
+        "G_path": "controls/inputs-and-results/records.jsonl.gz.metadata.json",
+        "bytes": 1887,
+        "sha256": "032a3104ede019d7ea069d3290eb735ee5f9d10fb6b3ebc3850acc9f7b40d64c",
+        "live_output_prefix_or_progress_snapshot_only": false
+      },
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-controls-r2-20261022\\observer-controls\\unsafe.tar",
+        "G_path": "controls/inputs-and-results/unsafe.tar",
+        "bytes": 10240,
+        "sha256": "081a3c0ecb9c02a4700c94ab26e976fce8f1e756698292c0856487a9a0f08267",
+        "live_output_prefix_or_progress_snapshot_only": false
+      },
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-controls-r2-20261022\\observer-controls\\unsafe.tar.metadata.json",
+        "G_path": "controls/inputs-and-results/unsafe.tar.metadata.json",
+        "bytes": 1844,
+        "sha256": "45f315df71ae81c9dc0a81627f4c4cd33b32be06aee6b483bcf268aa5085221f",
+        "live_output_prefix_or_progress_snapshot_only": false
+      },
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\first-SDK-hit-classification-20261022-r1\\classification.original.json",
+        "G_path": "classification/classification.original.json",
+        "bytes": 7691,
+        "sha256": "b00c301e100720e5aba77e6dce9e9e32ec9f8e2d2a74aeec4950c424f35d142f",
+        "live_output_prefix_or_progress_snapshot_only": false
+      },
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\first-SDK-hit-classification-20261022-r1\\actual-eight-archive-observations.private.snapshot.json",
+        "G_path": "classification/actual-eight-archive-observations.private.snapshot.json",
+        "bytes": 7407,
+        "sha256": "ee43150c56ed1f0d1e9b490d22d95e1046970c1cebcf9bc6ce1f33ff44382947",
+        "live_output_prefix_or_progress_snapshot_only": false
+      },
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\first-SDK-hit-classification-20261022-r1\\qualified-two-outer-identities.private.snapshot.json",
+        "G_path": "classification/qualified-two-outer-identities.private.snapshot.json",
+        "bytes": 1288,
+        "sha256": "13d9566e6f4b65ae6e95d8c1e8838a8b4f5bd62c5210e32c971cc928b8885093",
+        "live_output_prefix_or_progress_snapshot_only": false
+      },
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\first-SDK-hit-classification-20261022-r1\\executed-classifier.original.py",
+        "G_path": "classification/executed-classifier.original.py",
+        "bytes": 8234,
+        "sha256": "eebfae4a2df09fba20ec8319faf00118775a25f0da018e1b0d8144961f8c26c8",
+        "live_output_prefix_or_progress_snapshot_only": false
+      },
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\publish_LOAD112_archive_progress_20261022.py",
+        "G_path": "publication-source.original.py",
+        "bytes": 6715,
+        "sha256": "01a1a4a49f5312f77fbd42a0bb8dd2140f9916aa73dec712cd098667f978b056",
+        "live_output_prefix_or_progress_snapshot_only": false
+      }
+    ],
+    "all_written_G_bytes_rehashed": true
+  },
+  "remaining": [
+    "Finish current physical and frozen archive queues",
+    "Consume and resolve physical read-error records after their producer flushes them",
+    "Audit future physical-inventory delta, unrecognized container formats and deferred nested blobs",
+    "Classify all remaining policy and historical negative-fixture observations by exact content",
+    "Complete related raw-to-derived parent graph"
+  ],
+  "new_game_samples": 0,
+  "case_profiles_closed": 0,
+  "whole_LOAD112_accepted": false,
+  "whole_project_acceptance_granted": false,
+  "current_register_reference": "docs/reports/pr13-stages-20261009/S6-current4a-CI-observation-20261022/register.json",
+  "task_states_and_all_global_gates_unchanged": true,
+  "production_deployment_legacy_exception_still_pending": true,
+  "production_switch_performed_by_this_audit": false
+}

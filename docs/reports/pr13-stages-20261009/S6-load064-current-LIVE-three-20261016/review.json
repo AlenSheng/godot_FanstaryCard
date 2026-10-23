@@ -1,0 +1,165 @@
+{
+  "kind": "CurrentNativePublicTimingUnavailableAndReportBoundaryChecks",
+  "at_local": "2026-10-16T20:01:29.710350+08:00",
+  "case_ids": [
+    "LOAD-06.4-T01",
+    "LOAD-06.4-T02",
+    "LOAD-06.4-T03"
+  ],
+  "profiles_executed": [
+    "LIVE"
+  ],
+  "POSTGRES_profiles_closed": 0,
+  "case_pass": true,
+  "cases": [
+    {
+      "case_id": "LOAD-06.4-T01",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "LIVE"
+      ],
+      "setup": "本地单调钟测耗时",
+      "expected": "正确非负",
+      "actual": {
+        "actual_HTTP_rows": 98,
+        "min_duration_ms": 317,
+        "max_duration_ms": 1802,
+        "ordered_monotonic_event_prefixes": true,
+        "source_uses_GetTicks_not_cross_host_UTC": true,
+        "logical_duration_covers_own_actual_attempts": true,
+        "external_curl_or_cloud_health_not_merged": true
+      },
+      "scope": "Actual Windows native public HTTPS login/ticket telemetry from running owned study; no completed natural-cycle or capacity claim.",
+      "evidence": [
+        "actual-public-telemetry-summary.json"
+      ]
+    },
+    {
+      "case_id": "LOAD-06.4-T02",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "LIVE"
+      ],
+      "setup": "无TLS阶段hook",
+      "expected": "null+unavailable",
+      "actual": {
+        "actual_transport_phase_summary": {
+          "dns_ms": {
+            "count": 0,
+            "p95_ms": null,
+            "quality": "unavailable",
+            "missing_reason": "No attributable local request phase hook in supplied audit"
+          },
+          "tcp_connect_ms": {
+            "count": 0,
+            "p95_ms": null,
+            "quality": "unavailable",
+            "missing_reason": "No attributable local request phase hook in supplied audit"
+          },
+          "tls_handshake_ms": {
+            "count": 0,
+            "p95_ms": null,
+            "quality": "unavailable",
+            "missing_reason": "No attributable local request phase hook in supplied audit"
+          }
+        },
+        "total_request_duration_not_substituted_for_TLS_DNS_TCP": true
+      },
+      "scope": "Current production aggregation of exact actual native public HTTPS request attempts with no phase hooks; unknown transport stages explicitly unavailable.",
+      "evidence": [
+        "actual-public-telemetry-summary.json"
+      ]
+    },
+    {
+      "case_id": "LOAD-06.4-T03",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "LIVE"
+      ],
+      "setup": "token/票据正文",
+      "expected": "脱敏审查拒绝入报告",
+      "actual": {
+        "actual_login_and_ticket_telemetry_passed_public_guard": true,
+        "raw_auth_or_ticket_response_bodies_logged": false,
+        "sensitive_candidate_rejections": [
+          {
+            "controlled_candidate": 1,
+            "rejected": true,
+            "error_excludes_value": true,
+            "actual_credential_read_or_network_injection": false
+          },
+          {
+            "controlled_candidate": 2,
+            "rejected": true,
+            "error_excludes_value": true,
+            "actual_credential_read_or_network_injection": false
+          },
+          {
+            "controlled_candidate": 3,
+            "rejected": true,
+            "error_excludes_value": true,
+            "actual_credential_read_or_network_injection": false
+          }
+        ]
+      },
+      "scope": "Actual LIVE login/ticket report-output integration plus declared synthetic sensitive-field rejection at the existing report guard; no real credential read and no network-body injection claim.",
+      "evidence": [
+        "actual-public-telemetry-summary.json"
+      ]
+    }
+  ],
+  "new_gameplay_samples": 0,
+  "source_live_job_not_restarted_or_changed": true,
+  "raw_prefix_sources": [
+    {
+      "client_id": "PR13NFG01",
+      "native_PID": 120632,
+      "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\pr13-continuation\\natural-followup-r1\\study\\run\\PR13NFG01\\player.original.json.telemetry.jsonl",
+      "snapshot": "inputs\\PR13NFG01.prefix128.original.jsonl",
+      "prefix_bytes": 127440,
+      "prefix_sha256": "f785431beabbac4dbf8e57c7a6a6c1fbaa6a990608d9c0f85865856f50f7aaa0",
+      "first_event_seq": 1,
+      "last_event_seq": 128,
+      "http_logical": 24,
+      "http_attempts": 24,
+      "capture_scope": "Immutable first128 complete actual native events,not full run or natural-cycle verdict"
+    },
+    {
+      "client_id": "PR13NFP01",
+      "native_PID": 99772,
+      "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\pr13-continuation\\natural-followup-r1\\study\\run\\PR13NFP01\\player.original.json.telemetry.jsonl",
+      "snapshot": "inputs\\PR13NFP01.prefix128.original.jsonl",
+      "prefix_bytes": 127208,
+      "prefix_sha256": "afbe875dc5dcbf6ebd9c48f79f8c1b2c7d1693609978d6ceaff0c1ab49343daf",
+      "first_event_seq": 1,
+      "last_event_seq": 128,
+      "http_logical": 25,
+      "http_attempts": 25,
+      "capture_scope": "Immutable first128 complete actual native events,not full run or natural-cycle verdict"
+    }
+  ],
+  "public_source_files": [
+    {
+      "path": "client/network/gateway.gd",
+      "sha256": "4761c4781e209abe0e41c1931305c10c37142e2dc326d7e2f1ce3ea91787740e"
+    },
+    {
+      "path": "client/tests/gameplay_load_client.gd",
+      "sha256": "909a59e4a98915614f95db1c7bb39121d67ceb9f6cc507030665f370dbce7b99"
+    },
+    {
+      "path": "tools/gameplay_load_validation.py",
+      "sha256": "41a83f43cbd905383835f6dc328fc3271a295a07c6c80e451b157710c5c48e81"
+    },
+    {
+      "path": "tools/pr13_public_evidence.py",
+      "sha256": "0ef3e13f1720fd2ebb760a5fc24ea4fe0928c44c979d3c7fc10ea55389a27b5f"
+    }
+  ],
+  "natural_cycle_verdict_separate": true,
+  "capacity_or_human_claim": false,
+  "register_promoted": false
+}

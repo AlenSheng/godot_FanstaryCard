@@ -1,0 +1,44 @@
+{
+  "state": "CoveredForMainReview",
+  "pipeline_exit": 0,
+  "native_exit": 0,
+  "source_reference": "e24ac80789c9f0b6eb24d17a4c9ad143d7cdf770",
+  "expected_source_reference": "e24ac80789c9f0b6eb24d17a4c9ad143d7cdf770",
+  "source_is_reference_not_clean_build_claim": true,
+  "actual_input_manifest_SHA": "ee53f016cb68c5c1ed1cbc2953ebf4284bbd5c0c6561612b2b36d762efe46e83",
+  "TRX_SHA": "15c4be515169e5e9fbc433a2b0b7cbd581877fe7eea3c72f9536d648b48ab918",
+  "required_manifest_SHA": "decc5d0110c95d9d56f76a5fd8056aa815af34b03309520f9f23ea311fbcdd04",
+  "required_methods": {
+    "Projection_is_scoped_to_caller_match_unacknowledged_and_completed_holds_without_writes": 1,
+    "Projection_does_not_wait_on_locked_wallet_or_card_catalog_tables": 1,
+    "Bootstrap_projection_real_HTTP_preserves_auth_scope_pending_errors_and_full_legacy_response": 1,
+    "Projection_uses_existing_bootstrap_wire_fields_without_catalogs": 2
+  },
+  "coverage": {
+    "state": "CoveredForMainReview",
+    "missing_assertion_rows": {},
+    "failed_cases": [],
+    "skipped_cases": [],
+    "counters": {
+      "total": 5,
+      "executed": 5,
+      "passed": 5,
+      "failed": 0,
+      "error": 0,
+      "timeout": 0,
+      "aborted": 0,
+      "inconclusive": 0,
+      "passedButRunAborted": 0,
+      "notRunnable": 0,
+      "notExecuted": 0,
+      "disconnected": 0,
+      "warning": 0,
+      "completed": 0,
+      "inProgress": 0,
+      "pending": 0
+    },
+    "acceptance": false
+  },
+  "task_or_project_acceptance": false,
+  "scope": "Declared native PG method coverage and source reference only; not full hosted workflow or deployment"
+}

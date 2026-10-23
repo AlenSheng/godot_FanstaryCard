@@ -1,0 +1,223 @@
+{
+  "kind": "LegacyEvidenceExactByteRecovery_NotNewGameOrWholeAcceptance",
+  "generated_at": "2026-10-23T00:40:07.267171+08:00",
+  "task_id": "LOAD-11.2",
+  "state": "Partial",
+  "cause_proven_in_actual_isolated_Git_profiles": 2,
+  "cause": "core.autocrlf newline conversion where legacy evidence directory lacked -text",
+  "recovered_files": 1514,
+  "recovered_bytes": 49723516,
+  "known_manifest_claim_version_conflicts": 0,
+  "scope": "docs/reports/pr13-takeover-20260930",
+  "transformation": "Restore original LF bytes only when exact original size and SHA-256 match",
+  "expected_manifest_JSON_values_unchanged": 36,
+  "manifest_files_also_authorized_recovery_targets": 6,
+  "all_recovered_bytes_independently_re_read_and_hashed": true,
+  "native_Git_check_attr_text_unset_paths": 1514,
+  "attribute_rule_added": "docs/reports/pr13-takeover-20260930/** -text",
+  "all_original_current_versions_G_closed_before_any_write": {
+    "ok": true,
+    "archive_bytes": 6648693,
+    "archive_sha256": "960fc29880c76c61ad048ea7c6fd3b5de1a6c1c7cbb72561af91380d6bf7564e",
+    "members_independently_re_read_and_hashed": 1555,
+    "target_original_files": 1514,
+    "original_manifest_files": 36,
+    "member_ledger_sha256": "8cc54caa285ecb829bda894a4d919395d759e9c7683ae354470315d4c39b738d",
+    "before_any_workspace_write": true,
+    "closed_unix_ns": 1792686912225366700
+  },
+  "prior_mismatch_manifests_revalidated": 33,
+  "original_guard_validation_counts": {
+    "ExactManifestBytesAndUnchangedOriginalPublicGuardPassed": 26,
+    "member_payloads": 1867,
+    "member_bytes": 49469526,
+    "StillRejectedByUnchangedOriginalPublicGuard": 7
+  },
+  "original_guard_source_sha256": "2969671beea4bad2158c09577ea1da86ed7e5bdb8e3ccaa1457a6c023442b4d9",
+  "remaining_original_guard_rejections": [
+    {
+      "manifest": "docs/reports/pr13-takeover-20260930/callback-isolation-v1/fixed/manifest.json",
+      "same_locator_profile": "CandidateCurrentManifestSiblingTree_OriginalProducerBaseNotInferred",
+      "prior_reason": "Evidence changed after immutable manifest",
+      "status": "StillRejectedByUnchangedOriginalPublicGuard",
+      "reason": "Credential-like value in public evidence"
+    },
+    {
+      "manifest": "docs/reports/pr13-takeover-20260930/callback-isolation-v1/manifest.json",
+      "same_locator_profile": "CandidateCurrentManifestSiblingTree_OriginalProducerBaseNotInferred",
+      "prior_reason": "Evidence changed after immutable manifest",
+      "status": "StillRejectedByUnchangedOriginalPublicGuard",
+      "reason": "Credential-like value in public evidence"
+    },
+    {
+      "manifest": "docs/reports/pr13-takeover-20260930/callback-isolation-v1/red/manifest.json",
+      "same_locator_profile": "CandidateCurrentManifestSiblingTree_OriginalProducerBaseNotInferred",
+      "prior_reason": "Evidence changed after immutable manifest",
+      "status": "StillRejectedByUnchangedOriginalPublicGuard",
+      "reason": "Credential-like value in public evidence"
+    },
+    {
+      "manifest": "docs/reports/pr13-takeover-20260930/coverage-check/manifest.json",
+      "same_locator_profile": "CandidateCurrentManifestSiblingTree_OriginalProducerBaseNotInferred",
+      "prior_reason": "Evidence changed after immutable manifest",
+      "status": "StillRejectedByUnchangedOriginalPublicGuard",
+      "reason": "Public evidence missing"
+    },
+    {
+      "manifest": "docs/reports/pr13-takeover-20260930/fault-batch-f93e32da/callback-combined/manifest.json",
+      "same_locator_profile": "CandidateCurrentManifestSiblingTree_OriginalProducerBaseNotInferred",
+      "prior_reason": "Evidence changed after immutable manifest",
+      "status": "StillRejectedByUnchangedOriginalPublicGuard",
+      "reason": "Credential-like value in public evidence"
+    },
+    {
+      "manifest": "docs/reports/pr13-takeover-20260930/load03-remaining-ee8adcf4/MANIFEST.json",
+      "same_locator_profile": "CandidateCurrentManifestSiblingTree_OriginalProducerBaseNotInferred",
+      "prior_reason": "Evidence changed after immutable manifest",
+      "status": "StillRejectedByUnchangedOriginalPublicGuard",
+      "reason": "Private/runtime artifact in public manifest"
+    },
+    {
+      "manifest": "docs/reports/pr13-takeover-20260930/process-recovery-v2/MANIFEST.json",
+      "same_locator_profile": "CandidateCurrentManifestSiblingTree_OriginalProducerBaseNotInferred",
+      "prior_reason": "Evidence changed after immutable manifest",
+      "status": "StillRejectedByUnchangedOriginalPublicGuard",
+      "reason": "Credential-like value in public evidence"
+    }
+  ],
+  "remaining_rejection_counts": {
+    "Credential-like value in public evidence": 5,
+    "Public evidence missing": 1,
+    "Private/runtime artifact in public manifest": 1
+  },
+  "sibling_locator_does_not_prove_original_producer_base": true,
+  "other_prior_public_guard_rejections_or_unqualified_profiles_not_cleared": true,
+  "all_prior_native_guard_failures_retained": true,
+  "observer_failure_epochs_retained": [
+    "R1 temp path suffix exceeded normal Windows path handling after 1093 replacements; 421 remaining rows continued with extended paths.",
+    "R2 final observer incorrectly demanded unchanged raw bytes for six manifest files that were themselves authorized recovery targets. All six retain equal JSON values and match original declared hashes. No recovery rows repeated."
+  ],
+  "restored_suffix_counts": {
+    ".json": 723,
+    ".md": 15,
+    ".sql": 1,
+    ".jsonl": 193,
+    ".py": 39,
+    ".log": 414,
+    ".trx": 34,
+    "": 31,
+    ".gd": 25,
+    ".proto": 3,
+    ".cs": 11,
+    ".txt": 14,
+    ".sha256": 2,
+    ".godot": 2,
+    ".tag": 1,
+    ".patch": 5,
+    ".csproj": 1
+  },
+  "raw_G_custody": {
+    "directory": "G:\\PR13Evidence\\LOAD112-legacy-byte-recovery-20261023-r1-originals",
+    "new_metadata_items_independently_rehashed": [
+      {
+        "path": "recovery-execution/executed-final-verification-source.original.py",
+        "bytes": 6098,
+        "sha256": "2da0dc27412a727f3d8c70b04a7ea31e7786f11b5795e358dedf0703b7448cd9"
+      },
+      {
+        "path": "recovery-execution/executed-Git-controls-r2-source.original.py",
+        "bytes": 2639,
+        "sha256": "a14a5843c7db9b56063d9bacd4d584017fe176e20482bdb1ec95ee5b60fec5d3"
+      },
+      {
+        "path": "recovery-execution/executed-planner-source.original.py",
+        "bytes": 4440,
+        "sha256": "9ad418120b7d050951bfcbe3202dcfdfd70448504407e62b8f10fca740fb5637"
+      },
+      {
+        "path": "recovery-execution/execution-result.original.json",
+        "bytes": 31169,
+        "sha256": "1b1b1c0a0a9a9bfcc0700b270d5d07da0c28bf93ff766e7bdee4261ec9edbeac"
+      },
+      {
+        "path": "recovery-execution/first-epoch-native-failure.original.json",
+        "bytes": 511,
+        "sha256": "3ed0a17ea8209fb967ca9faf862d00e4f032fdfda127140b50ed079909b0ea72"
+      },
+      {
+        "path": "recovery-execution/G-custody-closure.exact-copy.json",
+        "bytes": 423,
+        "sha256": "3031733426111ceae3102e2b516e321d45b161b970afe97240b1fac7f97a0ce4"
+      },
+      {
+        "path": "recovery-execution/Git-attribute-controls-qualified-r2.original.json",
+        "bytes": 1303,
+        "sha256": "c64211cb63c4fdca2bdec7073f8f0d96e9a925f000bae609a4b697ff910fc3d2"
+      },
+      {
+        "path": "recovery-execution/native-Git-check-attr.original.bin",
+        "bytes": 173380,
+        "sha256": "c3ade613264309279a344a142096c5db8cc6814e5deb9d72497e1993dead4a16"
+      },
+      {
+        "path": "recovery-execution/plan.original.json",
+        "bytes": 1142812,
+        "sha256": "45a50e74a3949895bd82396b7de169243702a7c976153fab19c6894fa1f44223"
+      },
+      {
+        "path": "recovery-execution/restored-targets-r2-continuation.original.jsonl",
+        "bytes": 110742,
+        "sha256": "d09cd95eb13002afa36d08a1747cba12f8196d16d0dd98bcba63b12975619d11"
+      },
+      {
+        "path": "recovery-execution/restored-targets.original.jsonl",
+        "bytes": 289814,
+        "sha256": "292cba7d076b8e096ae3e821986c13a1289e62b7eda78152af4ec53072ab992a"
+      },
+      {
+        "path": "prior-failures/public-manifest-profile-validation-20261022-r1/result.original.json",
+        "bytes": 565387,
+        "sha256": "1f962aac626cef349b25de3aa6206d615c11504e88529b022349f477ea85c28b"
+      },
+      {
+        "path": "prior-failures/public-manifest-schema-adapters-20261023-r1/result.original.json",
+        "bytes": 24955,
+        "sha256": "6af0fafc2c1e169b25c4a76038ba8eadafcf5487f7e05e6251ce0d6f1d7df563"
+      },
+      {
+        "path": "prior-failures/public-manifest-rejection-triage-20261023-r1/result.original.json",
+        "bytes": 1148563,
+        "sha256": "33f2d14e7fac54778eaee1c40cae7e825a1a326cfdf3a04fb77bf6f042a75d5b"
+      },
+      {
+        "path": "prior-failures/public-manifest-rejection-triage-20261023-r1/expanded-textual-byte-diagnostics.original.json",
+        "bytes": 60091,
+        "sha256": "81bfa22502b2b76d7c6d586fec0dbd79ee2071e784a294744b7ccc0f28e1c029"
+      },
+      {
+        "path": "current-byte-preservation.gitattributes",
+        "bytes": 230,
+        "sha256": "f3ef1e5d97f52158e820b74a5fe1d317079238b9512557105c0502adeb2151fa"
+      },
+      {
+        "path": "executed-publication-source.original.py",
+        "bytes": 7274,
+        "sha256": "0e0c6a82b9b99429d85c9d7ff069713027c2eccb3befafc0dcad38069191af3e"
+      }
+    ]
+  },
+  "current_register": "docs/reports/pr13-stages-20261009/S6-current4a-CI-observation-20261022/register.json",
+  "task_counts_unchanged": {
+    "Accepted": 100,
+    "Partial": 24,
+    "Ready": 8
+  },
+  "whole_tasks_unaccepted": 32,
+  "missing_case_profile_pairs": 47,
+  "new_game_samples": 0,
+  "case_profiles_closed": 0,
+  "whole_LOAD112_accepted": false,
+  "whole_project_acceptance_granted": false,
+  "production_application_switch_performed": false,
+  "release_source_commit_unchanged": "4a9215fee6f8c50da79e9895e408717fbd9118de"
+}

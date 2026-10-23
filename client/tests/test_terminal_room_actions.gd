@@ -46,7 +46,7 @@ func run_test() -> Dictionary:
 		checks[notification + ": older playing snapshot cannot reopen room"] = not store.allowed("battle.play_cards") and gateway.sent.count("room.snapshot.read") == in_flight_reads
 		gateway.hold_receipt = false
 		store.retry_settlement()
-		checks[notification + ": failed receipt remains recoverable"] = gateway.requests.back() == "/api/v1/bootstrap" and store.settlement_query_failed
+		checks[notification + ": failed receipt remains recoverable"] = gateway.requests.back() == "/api/v1/bootstrap?settlementMatchId=" + str(snapshot.match_id).uri_encode() and store.settlement_query_failed
 		store.settlement = {"settlementId": "receipt", "matchId": "match"}
 		var acknowledged: bool = await store.acknowledge_settlement()
 		checks[notification + ": failed acknowledgement keeps terminal authority"] = not acknowledged and store.settlement.get("settlementId", "") == "receipt" and not store.allowed("battle.play_cards")

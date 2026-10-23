@@ -1,0 +1,783 @@
+{
+  "kind": "ActualLIVEFinalFaultsWithReproducedPrimaryJSONBugFix",
+  "cases_closed": [
+    {
+      "case_id": "LOAD-07.4-T01",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "LIVE"
+      ],
+      "actual": {
+        "directory": "live-final-r2",
+        "case": "BAD_FINAL_JSON",
+        "actual_report": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-final-r2\\BAD_FINAL_JSON\\run\\20261017-053426-563548\\report.json",
+        "actual_report_sha256": "8c455f62fa166d03ba0375a3d4ac0b220f6a7911c561703fe609fd9d590c9676",
+        "primary_path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-final-r2\\BAD_FINAL_JSON\\run\\20261017-053426-563548\\g001c01d00ec3.json",
+        "primary_bytes": 7,
+        "primary_sha256": "be302461cda285db3ed2d45fb767b23e08ca8808b35a638009937df22b332d73",
+        "status_sha256": "a8279552def9814f36dac6baf2e7e9dafbf9e50520391b0d199a74344b062600",
+        "before_fault_report_sha256": "09fd131873fa0de4997a10956dc80991ac7bb5234e1478ba4db2ccd4b50cfab4",
+        "PID": 27904,
+        "user_id": "01a146a3-4852-777c-820c-3053bc179100",
+        "coordinator_return": 3,
+        "process_exits": [
+          {
+            "client_id": "g001c01d00ec3",
+            "before_stop": null,
+            "after_stop": 0
+          }
+        ],
+        "forced_termination_pids": [],
+        "actual_dimensions": {
+          "execution": "Passed",
+          "evidence": "Failed",
+          "load": "Failed",
+          "gameplay": "NotApplicable",
+          "performance": "Unknown",
+          "cleanup": "Passed"
+        },
+        "fault": {
+          "actual_requested_exit": 0,
+          "at_process_ms": 26332,
+          "case": "BAD_FINAL_JSON",
+          "cleanup_state_before_fault": {
+            "active_preparation": null,
+            "reason": "server_state_clear",
+            "state": "Passed",
+            "unfinished_match": null,
+            "unfinished_settlement": null
+          },
+          "copy_error": 0,
+          "fault": "Only primary terminal report JSON malformed; final heartbeat/status remains valid",
+          "original_requested_exit": 0,
+          "pid": 27904,
+          "status_copy_error": 0,
+          "stop_seen": true
+        },
+        "actual_audit_rows": 52,
+        "all_audit_sequences_owned_and_complete": true,
+        "normal_cycles": 0,
+        "all_triggers": [
+          "disk_available_redline",
+          "duration_limit",
+          "native_final_report_invalid"
+        ],
+        "current_reader_only_replay_errors": [
+          {
+            "client_id": "g001c01d00ec3",
+            "file": "g001c01d00ec3.json",
+            "bytes": 7,
+            "sha256": "be302461cda285db3ed2d45fb767b23e08ca8808b35a638009937df22b332d73",
+            "error": "native_final_read_failed",
+            "error_type": "JSONDecodeError",
+            "line": 1,
+            "column": 2
+          }
+        ],
+        "reader_replay_is_not_new_LIVE_execution": true,
+        "status": "Passed",
+        "meaning": "Current actual rerun detects same inherited nativefault despite validfinalstatus, exit3/evidenceFailed, nativecleanupPassed"
+      },
+      "scope": "Actual currentfullnative project/sameprojectLIVE,declaredtestfinalfault,ownPID andnewsyntheticaccount; originalnonpassingrun outcomesretained, no capacity/performance/human/render success"
+    },
+    {
+      "case_id": "LOAD-07.4-T02",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "LIVE"
+      ],
+      "actual": {
+        "directory": "live-final-faults-r1",
+        "case": "EXIT7",
+        "actual_report": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-final-faults-r1\\EXIT7\\run\\20261017-052923-0980d8\\report.json",
+        "actual_report_sha256": "2bf9cfd36ab55d03f714bcab7af1719bdd3e7101e712555313b91ef4ea9f079a",
+        "primary_path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-final-faults-r1\\EXIT7\\run\\20261017-052923-0980d8\\g001c0151d31f.json",
+        "primary_bytes": 91566,
+        "primary_sha256": "b47a129edaddaca9a9960a4049371988af963a7993589cbf0028d3033ab03b9c",
+        "status_sha256": "d89492f9709b3367e57b9f325494bfd7dbb8c7705c0a90281950cc47f145565c",
+        "before_fault_report_sha256": "b47a129edaddaca9a9960a4049371988af963a7993589cbf0028d3033ab03b9c",
+        "PID": 27420,
+        "user_id": "01a1469e-ab3a-7e32-aa85-720703fd2246",
+        "coordinator_return": 3,
+        "process_exits": [
+          {
+            "client_id": "g001c0151d31f",
+            "before_stop": null,
+            "after_stop": 7
+          }
+        ],
+        "forced_termination_pids": [],
+        "actual_dimensions": {
+          "execution": "Failed",
+          "evidence": "Passed",
+          "load": "Failed",
+          "gameplay": "NotApplicable",
+          "performance": "Unknown",
+          "cleanup": "Failed"
+        },
+        "fault": {
+          "actual_requested_exit": 7,
+          "at_process_ms": 25880,
+          "case": "EXIT7",
+          "cleanup_state_before_fault": {
+            "active_preparation": null,
+            "reason": "server_state_clear",
+            "state": "Passed",
+            "unfinished_match": null,
+            "unfinished_settlement": null
+          },
+          "copy_error": 0,
+          "fault": "Real native exit7 after actual STOP/cleanup; no process returncode mock",
+          "original_requested_exit": 0,
+          "pid": 27420,
+          "status_copy_error": 0,
+          "stop_seen": true
+        },
+        "actual_audit_rows": 52,
+        "all_audit_sequences_owned_and_complete": true,
+        "normal_cycles": 0,
+        "all_triggers": [
+          "disk_available_redline",
+          "duration_limit",
+          "post_stop_process_failure"
+        ],
+        "current_reader_only_replay_errors": [],
+        "reader_replay_is_not_new_LIVE_execution": true,
+        "status": "Passed",
+        "meaning": "Actual nativeexit7 afterSTOP remainscleanupFailed; newcurrentreader independentlyvalidates originalprimary/status, cleanup/schedulerbyteunchanged"
+      },
+      "scope": "Actual currentfullnative project/sameprojectLIVE,declaredtestfinalfault,ownPID andnewsyntheticaccount; originalnonpassingrun outcomesretained, no capacity/performance/human/render success"
+    },
+    {
+      "case_id": "LOAD-07.4-T03",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "LIVE"
+      ],
+      "actual": {
+        "directory": "live-final-faults-r1",
+        "case": "OWNED_HANG",
+        "actual_report": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-final-faults-r1\\OWNED_HANG\\run\\20261017-052952-136ab0\\report.json",
+        "actual_report_sha256": "7de77d1f140f94b83b9fe4eff67b16a33cca866ef52a18d8804e1227c8c0bd06",
+        "primary_path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-final-faults-r1\\OWNED_HANG\\run\\20261017-052952-136ab0\\g001c01d0aadf.json",
+        "primary_bytes": 91562,
+        "primary_sha256": "ca101e43d32afd1cbc908f451065d50c8383113c3c0c7f743f3cabf3b9543867",
+        "status_sha256": "956bd704bec9e2aa676365858ce3f5a226d01d0040157456af9a6b9c33d2b7dd",
+        "before_fault_report_sha256": "ca101e43d32afd1cbc908f451065d50c8383113c3c0c7f743f3cabf3b9543867",
+        "PID": 22024,
+        "user_id": "01a1469f-1abc-795e-9586-ea51d14666d0",
+        "coordinator_return": 3,
+        "process_exits": [
+          {
+            "client_id": "g001c01d0aadf",
+            "before_stop": null,
+            "after_stop": 1
+          }
+        ],
+        "forced_termination_pids": [
+          22024
+        ],
+        "actual_dimensions": {
+          "execution": "Failed",
+          "evidence": "Passed",
+          "load": "Failed",
+          "gameplay": "NotApplicable",
+          "performance": "Unknown",
+          "cleanup": "Failed"
+        },
+        "fault": {
+          "actual_requested_exit": 0,
+          "at_process_ms": 25795,
+          "case": "OWNED_HANG",
+          "cleanup_state_before_fault": {
+            "active_preparation": null,
+            "reason": "server_state_clear",
+            "state": "Passed",
+            "unfinished_match": null,
+            "unfinished_settlement": null
+          },
+          "copy_error": 0,
+          "fault": "Owned native main thread blocks after actual STOP/cleanup; coordinator must bound and force this PID",
+          "original_requested_exit": 0,
+          "pid": 22024,
+          "status_copy_error": 0,
+          "stop_seen": true
+        },
+        "actual_audit_rows": 52,
+        "all_audit_sequences_owned_and_complete": true,
+        "normal_cycles": 0,
+        "all_triggers": [
+          "disk_available_redline",
+          "duration_limit",
+          "post_stop_process_failure"
+        ],
+        "current_reader_only_replay_errors": [],
+        "reader_replay_is_not_new_LIVE_execution": true,
+        "status": "Passed",
+        "actual_cleanup_elapsed_ms": 35500.0,
+        "sentinel_pid": 124160,
+        "sentinel_survived_coordinator_cleanup": true,
+        "sentinel_own_normal_exit": 0,
+        "actual_taskkill_command": [
+          "taskkill",
+          "/PID",
+          "22024",
+          "/T",
+          "/F"
+        ],
+        "meaning": "Original35s grace thenonlyownednative forced; nootherPID touched, sentinelrealalive andownnormalexit"
+      },
+      "scope": "Actual currentfullnative project/sameprojectLIVE,declaredtestfinalfault,ownPID andnewsyntheticaccount; originalnonpassingrun outcomesretained, no capacity/performance/human/render success"
+    }
+  ],
+  "original_failed_primary_JSON_LIVE": {
+    "directory": "live-final-faults-r1",
+    "case": "BAD_FINAL_JSON",
+    "actual_report": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-final-faults-r1\\BAD_FINAL_JSON\\run\\20261017-052854-f13eca\\report.json",
+    "actual_report_sha256": "cc5b86e029f12b4a35cfd6444840b36e7da29c538b6e6d83f8fab85a0271a54a",
+    "primary_path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-final-faults-r1\\BAD_FINAL_JSON\\run\\20261017-052854-f13eca\\g001c01b1115e.json",
+    "primary_bytes": 7,
+    "primary_sha256": "be302461cda285db3ed2d45fb767b23e08ca8808b35a638009937df22b332d73",
+    "status_sha256": "a17b06cb74772368876e235a7b4c097247e69f4eda4e46783fbb8030a5f281f5",
+    "before_fault_report_sha256": "44f49d57c695245ee104ca20a5874581d2da996bbbd56c74cb13f2281a407513",
+    "PID": 96024,
+    "user_id": "01a1469e-3759-7c39-9417-70bb80064dce",
+    "coordinator_return": 1,
+    "process_exits": [
+      {
+        "client_id": "g001c01b1115e",
+        "before_stop": null,
+        "after_stop": 0
+      }
+    ],
+    "forced_termination_pids": [],
+    "actual_dimensions": {
+      "execution": "Passed",
+      "evidence": "Passed",
+      "load": "Failed",
+      "gameplay": "NotApplicable",
+      "performance": "Unknown",
+      "cleanup": "Passed"
+    },
+    "fault": {
+      "actual_requested_exit": 0,
+      "at_process_ms": 25878,
+      "case": "BAD_FINAL_JSON",
+      "cleanup_state_before_fault": {
+        "active_preparation": null,
+        "reason": "server_state_clear",
+        "state": "Passed",
+        "unfinished_match": null,
+        "unfinished_settlement": null
+      },
+      "copy_error": 0,
+      "fault": "Only primary terminal report JSON malformed; final heartbeat/status remains valid",
+      "original_requested_exit": 0,
+      "pid": 96024,
+      "status_copy_error": 0,
+      "stop_seen": true
+    },
+    "actual_audit_rows": 52,
+    "all_audit_sequences_owned_and_complete": true,
+    "normal_cycles": 0,
+    "all_triggers": [
+      "disk_available_redline",
+      "duration_limit"
+    ],
+    "current_reader_only_replay_errors": [
+      {
+        "client_id": "g001c01b1115e",
+        "file": "g001c01b1115e.json",
+        "bytes": 7,
+        "sha256": "be302461cda285db3ed2d45fb767b23e08ca8808b35a638009937df22b332d73",
+        "error": "native_final_read_failed",
+        "error_type": "JSONDecodeError",
+        "line": 1,
+        "column": 2
+      }
+    ],
+    "reader_replay_is_not_new_LIVE_execution": true,
+    "status": "Failed",
+    "meaning": "Actual old coordinator misses only-primary malformedJSON; overall capacitywasalreadyfalse, evidence incorrectlyPassed; originalnotretagged"
+  },
+  "all_original_execution_records": [
+    {
+      "directory": "live-final-faults-r1",
+      "case": "BAD_FINAL_JSON",
+      "actual_report": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-final-faults-r1\\BAD_FINAL_JSON\\run\\20261017-052854-f13eca\\report.json",
+      "actual_report_sha256": "cc5b86e029f12b4a35cfd6444840b36e7da29c538b6e6d83f8fab85a0271a54a",
+      "primary_path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-final-faults-r1\\BAD_FINAL_JSON\\run\\20261017-052854-f13eca\\g001c01b1115e.json",
+      "primary_bytes": 7,
+      "primary_sha256": "be302461cda285db3ed2d45fb767b23e08ca8808b35a638009937df22b332d73",
+      "status_sha256": "a17b06cb74772368876e235a7b4c097247e69f4eda4e46783fbb8030a5f281f5",
+      "before_fault_report_sha256": "44f49d57c695245ee104ca20a5874581d2da996bbbd56c74cb13f2281a407513",
+      "PID": 96024,
+      "user_id": "01a1469e-3759-7c39-9417-70bb80064dce",
+      "coordinator_return": 1,
+      "process_exits": [
+        {
+          "client_id": "g001c01b1115e",
+          "before_stop": null,
+          "after_stop": 0
+        }
+      ],
+      "forced_termination_pids": [],
+      "actual_dimensions": {
+        "execution": "Passed",
+        "evidence": "Passed",
+        "load": "Failed",
+        "gameplay": "NotApplicable",
+        "performance": "Unknown",
+        "cleanup": "Passed"
+      },
+      "fault": {
+        "actual_requested_exit": 0,
+        "at_process_ms": 25878,
+        "case": "BAD_FINAL_JSON",
+        "cleanup_state_before_fault": {
+          "active_preparation": null,
+          "reason": "server_state_clear",
+          "state": "Passed",
+          "unfinished_match": null,
+          "unfinished_settlement": null
+        },
+        "copy_error": 0,
+        "fault": "Only primary terminal report JSON malformed; final heartbeat/status remains valid",
+        "original_requested_exit": 0,
+        "pid": 96024,
+        "status_copy_error": 0,
+        "stop_seen": true
+      },
+      "actual_audit_rows": 52,
+      "all_audit_sequences_owned_and_complete": true,
+      "normal_cycles": 0,
+      "all_triggers": [
+        "disk_available_redline",
+        "duration_limit"
+      ],
+      "current_reader_only_replay_errors": [
+        {
+          "client_id": "g001c01b1115e",
+          "file": "g001c01b1115e.json",
+          "bytes": 7,
+          "sha256": "be302461cda285db3ed2d45fb767b23e08ca8808b35a638009937df22b332d73",
+          "error": "native_final_read_failed",
+          "error_type": "JSONDecodeError",
+          "line": 1,
+          "column": 2
+        }
+      ],
+      "reader_replay_is_not_new_LIVE_execution": true,
+      "status": "Failed",
+      "meaning": "Actual old coordinator misses only-primary malformedJSON; overall capacitywasalreadyfalse, evidence incorrectlyPassed; originalnotretagged"
+    },
+    {
+      "directory": "live-final-faults-r1",
+      "case": "EXIT7",
+      "actual_report": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-final-faults-r1\\EXIT7\\run\\20261017-052923-0980d8\\report.json",
+      "actual_report_sha256": "2bf9cfd36ab55d03f714bcab7af1719bdd3e7101e712555313b91ef4ea9f079a",
+      "primary_path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-final-faults-r1\\EXIT7\\run\\20261017-052923-0980d8\\g001c0151d31f.json",
+      "primary_bytes": 91566,
+      "primary_sha256": "b47a129edaddaca9a9960a4049371988af963a7993589cbf0028d3033ab03b9c",
+      "status_sha256": "d89492f9709b3367e57b9f325494bfd7dbb8c7705c0a90281950cc47f145565c",
+      "before_fault_report_sha256": "b47a129edaddaca9a9960a4049371988af963a7993589cbf0028d3033ab03b9c",
+      "PID": 27420,
+      "user_id": "01a1469e-ab3a-7e32-aa85-720703fd2246",
+      "coordinator_return": 3,
+      "process_exits": [
+        {
+          "client_id": "g001c0151d31f",
+          "before_stop": null,
+          "after_stop": 7
+        }
+      ],
+      "forced_termination_pids": [],
+      "actual_dimensions": {
+        "execution": "Failed",
+        "evidence": "Passed",
+        "load": "Failed",
+        "gameplay": "NotApplicable",
+        "performance": "Unknown",
+        "cleanup": "Failed"
+      },
+      "fault": {
+        "actual_requested_exit": 7,
+        "at_process_ms": 25880,
+        "case": "EXIT7",
+        "cleanup_state_before_fault": {
+          "active_preparation": null,
+          "reason": "server_state_clear",
+          "state": "Passed",
+          "unfinished_match": null,
+          "unfinished_settlement": null
+        },
+        "copy_error": 0,
+        "fault": "Real native exit7 after actual STOP/cleanup; no process returncode mock",
+        "original_requested_exit": 0,
+        "pid": 27420,
+        "status_copy_error": 0,
+        "stop_seen": true
+      },
+      "actual_audit_rows": 52,
+      "all_audit_sequences_owned_and_complete": true,
+      "normal_cycles": 0,
+      "all_triggers": [
+        "disk_available_redline",
+        "duration_limit",
+        "post_stop_process_failure"
+      ],
+      "current_reader_only_replay_errors": [],
+      "reader_replay_is_not_new_LIVE_execution": true,
+      "status": "Passed",
+      "meaning": "Actual nativeexit7 afterSTOP remainscleanupFailed; newcurrentreader independentlyvalidates originalprimary/status, cleanup/schedulerbyteunchanged"
+    },
+    {
+      "directory": "live-final-faults-r1",
+      "case": "OWNED_HANG",
+      "actual_report": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-final-faults-r1\\OWNED_HANG\\run\\20261017-052952-136ab0\\report.json",
+      "actual_report_sha256": "7de77d1f140f94b83b9fe4eff67b16a33cca866ef52a18d8804e1227c8c0bd06",
+      "primary_path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-final-faults-r1\\OWNED_HANG\\run\\20261017-052952-136ab0\\g001c01d0aadf.json",
+      "primary_bytes": 91562,
+      "primary_sha256": "ca101e43d32afd1cbc908f451065d50c8383113c3c0c7f743f3cabf3b9543867",
+      "status_sha256": "956bd704bec9e2aa676365858ce3f5a226d01d0040157456af9a6b9c33d2b7dd",
+      "before_fault_report_sha256": "ca101e43d32afd1cbc908f451065d50c8383113c3c0c7f743f3cabf3b9543867",
+      "PID": 22024,
+      "user_id": "01a1469f-1abc-795e-9586-ea51d14666d0",
+      "coordinator_return": 3,
+      "process_exits": [
+        {
+          "client_id": "g001c01d0aadf",
+          "before_stop": null,
+          "after_stop": 1
+        }
+      ],
+      "forced_termination_pids": [
+        22024
+      ],
+      "actual_dimensions": {
+        "execution": "Failed",
+        "evidence": "Passed",
+        "load": "Failed",
+        "gameplay": "NotApplicable",
+        "performance": "Unknown",
+        "cleanup": "Failed"
+      },
+      "fault": {
+        "actual_requested_exit": 0,
+        "at_process_ms": 25795,
+        "case": "OWNED_HANG",
+        "cleanup_state_before_fault": {
+          "active_preparation": null,
+          "reason": "server_state_clear",
+          "state": "Passed",
+          "unfinished_match": null,
+          "unfinished_settlement": null
+        },
+        "copy_error": 0,
+        "fault": "Owned native main thread blocks after actual STOP/cleanup; coordinator must bound and force this PID",
+        "original_requested_exit": 0,
+        "pid": 22024,
+        "status_copy_error": 0,
+        "stop_seen": true
+      },
+      "actual_audit_rows": 52,
+      "all_audit_sequences_owned_and_complete": true,
+      "normal_cycles": 0,
+      "all_triggers": [
+        "disk_available_redline",
+        "duration_limit",
+        "post_stop_process_failure"
+      ],
+      "current_reader_only_replay_errors": [],
+      "reader_replay_is_not_new_LIVE_execution": true,
+      "status": "Passed",
+      "actual_cleanup_elapsed_ms": 35500.0,
+      "sentinel_pid": 124160,
+      "sentinel_survived_coordinator_cleanup": true,
+      "sentinel_own_normal_exit": 0,
+      "actual_taskkill_command": [
+        "taskkill",
+        "/PID",
+        "22024",
+        "/T",
+        "/F"
+      ],
+      "meaning": "Original35s grace thenonlyownednative forced; nootherPID touched, sentinelrealalive andownnormalexit"
+    },
+    {
+      "directory": "live-final-r2",
+      "case": "BAD_FINAL_JSON",
+      "actual_report": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-final-r2\\BAD_FINAL_JSON\\run\\20261017-053426-563548\\report.json",
+      "actual_report_sha256": "8c455f62fa166d03ba0375a3d4ac0b220f6a7911c561703fe609fd9d590c9676",
+      "primary_path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-final-r2\\BAD_FINAL_JSON\\run\\20261017-053426-563548\\g001c01d00ec3.json",
+      "primary_bytes": 7,
+      "primary_sha256": "be302461cda285db3ed2d45fb767b23e08ca8808b35a638009937df22b332d73",
+      "status_sha256": "a8279552def9814f36dac6baf2e7e9dafbf9e50520391b0d199a74344b062600",
+      "before_fault_report_sha256": "09fd131873fa0de4997a10956dc80991ac7bb5234e1478ba4db2ccd4b50cfab4",
+      "PID": 27904,
+      "user_id": "01a146a3-4852-777c-820c-3053bc179100",
+      "coordinator_return": 3,
+      "process_exits": [
+        {
+          "client_id": "g001c01d00ec3",
+          "before_stop": null,
+          "after_stop": 0
+        }
+      ],
+      "forced_termination_pids": [],
+      "actual_dimensions": {
+        "execution": "Passed",
+        "evidence": "Failed",
+        "load": "Failed",
+        "gameplay": "NotApplicable",
+        "performance": "Unknown",
+        "cleanup": "Passed"
+      },
+      "fault": {
+        "actual_requested_exit": 0,
+        "at_process_ms": 26332,
+        "case": "BAD_FINAL_JSON",
+        "cleanup_state_before_fault": {
+          "active_preparation": null,
+          "reason": "server_state_clear",
+          "state": "Passed",
+          "unfinished_match": null,
+          "unfinished_settlement": null
+        },
+        "copy_error": 0,
+        "fault": "Only primary terminal report JSON malformed; final heartbeat/status remains valid",
+        "original_requested_exit": 0,
+        "pid": 27904,
+        "status_copy_error": 0,
+        "stop_seen": true
+      },
+      "actual_audit_rows": 52,
+      "all_audit_sequences_owned_and_complete": true,
+      "normal_cycles": 0,
+      "all_triggers": [
+        "disk_available_redline",
+        "duration_limit",
+        "native_final_report_invalid"
+      ],
+      "current_reader_only_replay_errors": [
+        {
+          "client_id": "g001c01d00ec3",
+          "file": "g001c01d00ec3.json",
+          "bytes": 7,
+          "sha256": "be302461cda285db3ed2d45fb767b23e08ca8808b35a638009937df22b332d73",
+          "error": "native_final_read_failed",
+          "error_type": "JSONDecodeError",
+          "line": 1,
+          "column": 2
+        }
+      ],
+      "reader_replay_is_not_new_LIVE_execution": true,
+      "status": "Passed",
+      "meaning": "Current actual rerun detects same inherited nativefault despite validfinalstatus, exit3/evidenceFailed, nativecleanupPassed"
+    }
+  ],
+  "actual_new_native_clients": 4,
+  "maximum_per_task": 300,
+  "new_networkless_python_sentinels": 1,
+  "normal_cycles": 0,
+  "regression_tests": 136,
+  "current_source_hashes": {
+    "tools/gameplay_load_test.py": "a0397f5201dbb36c8e1b36798861bb3d44208c2f233ff4fbd862bb2d4ebfddbf",
+    "tools/cloud_load_test.py": "08042e6f1e72fc730ed92feca3f8a2bca2b09959ec200c8ce42284c6367018af",
+    "tools/tests/test_gameplay_load_finalization.py": "2be23fc1651b54cbdf6aa21115adbd84f6bdd15221a0a20e0276e4d130a5c6ef",
+    "tools/tests/test_gameplay_load_sampling_contract.py": "5c23163ab7753f49fc2564eb19ca715e19359e7ed949941298e93c3f442d3e93",
+    "tools/tests/test_native_final_report.py": "f949f90c0246196396ae5f0064bcf67c21492ce3c955653e4cf91e52b3160415",
+    "client/tests/gameplay_load_client.gd": "6aeafa23c3750f02316db61f5774867b9768c4c2700c9db180ddb15ca3887fb0"
+  },
+  "scheduler_and_cleanup_qualification": {
+    "main_try_body_and_handlers_AST_equal_before_after": true,
+    "stop_all_source_exact_unchanged": true,
+    "new_check_only_after_owned_cleanup": true,
+    "R1_exit7_hang_NOT_rerun_under_new_source": true,
+    "R1_exit7_hang_originals_current_reader_revalidated": true
+  },
+  "prior_16_actual_native_final_reports_revalidated": [
+    {
+      "task_folder": "live-bounded-probes-r1",
+      "client_id": "g001c0197a2c4",
+      "PID": 58756,
+      "primary_sha256": "ec89ffbde73c6a3b76468d1fb2efe2a64886240e79994b29a2c0c594c55a08f0",
+      "final_status_sha256": "a49e63877d3520e1361bc3596ed7faad1cc51b1b8e3308708795534579aa4930",
+      "new_primary_reader_passed": true,
+      "new_runtime_execution": false
+    },
+    {
+      "task_folder": "live-bounded-probes-r1",
+      "client_id": "g002c01efaedd",
+      "PID": 102008,
+      "primary_sha256": "1f04b6d8872172a9f2697c62b98d685c9379a311d7ba6e31dcc4104a0152db08",
+      "final_status_sha256": "5e4c8fcd4c5a4f8142d62b2ca41e1c12c968611aba4013ace51f2c9c3880a18a",
+      "new_primary_reader_passed": true,
+      "new_runtime_execution": false
+    },
+    {
+      "task_folder": "live-bounded-probes-r1",
+      "client_id": "g003c01e1ff5d",
+      "PID": 86368,
+      "primary_sha256": "1091726e6c8dd6342a389a78d940f9a5a2868d402129394d512ccc73099a1654",
+      "final_status_sha256": "febce126da72c83022e4c9aff6e14bc695ef1f10f194dc79dcd855b7aeec6037",
+      "new_primary_reader_passed": true,
+      "new_runtime_execution": false
+    },
+    {
+      "task_folder": "live-bounded-probes-r1",
+      "client_id": "g004c01dac8ae",
+      "PID": 86936,
+      "primary_sha256": "cb2b8548e0e0040695379d969aa636249ddaadc61a013cca97af33325ce19bca",
+      "final_status_sha256": "c3c3f7c675d9b02aa66430786be6e158e3e1a04f5845a202e98af01c6a6f355b",
+      "new_primary_reader_passed": true,
+      "new_runtime_execution": false
+    },
+    {
+      "task_folder": "live-bounded-probes-r1",
+      "client_id": "g001c016848d2",
+      "PID": 49604,
+      "primary_sha256": "e5ed5f089c86f1ea72e305a041ea17fd82535a72ad6489a90079a0575ac58c40",
+      "final_status_sha256": "d3a2061ba06a49b0f7c4d262e677a5080dc01cad6bffa3806909e2902b5c6d81",
+      "new_primary_reader_passed": true,
+      "new_runtime_execution": false
+    },
+    {
+      "task_folder": "live-bounded-probes-r1",
+      "client_id": "g001c01d72727",
+      "PID": 91752,
+      "primary_sha256": "281ba35b0819928ec8a0de0764e9ca9a6fc37955261d6911b76dd3361d5598d2",
+      "final_status_sha256": "0825ecefe2a85bca780876d9939f630666d43075a21b04f6a7c326794fb40831",
+      "new_primary_reader_passed": true,
+      "new_runtime_execution": false
+    },
+    {
+      "task_folder": "live-bounded-probes-r1",
+      "client_id": "g002c01f04680",
+      "PID": 56204,
+      "primary_sha256": "7adc43e833414fc892a851b38d73f466cc01a7c602293315b131ff7234dc9000",
+      "final_status_sha256": "2d667906be657f2ece17350be44711595420551f64d70351af23b5eb881b3dc3",
+      "new_primary_reader_passed": true,
+      "new_runtime_execution": false
+    },
+    {
+      "task_folder": "live-bounded-probes-r1",
+      "client_id": "g003c01732174",
+      "PID": 117660,
+      "primary_sha256": "3b053e5d0f94a06f056f90aee1e3ccf58d8638ba767fd13b2613546e74853075",
+      "final_status_sha256": "cb59ebdcccb5020516951edc63e7ea5cb8727694af3ca3d5dcdff894890ec33f",
+      "new_primary_reader_passed": true,
+      "new_runtime_execution": false
+    },
+    {
+      "task_folder": "live-generator-resources-r1",
+      "client_id": "g001c014558e9",
+      "PID": 96948,
+      "primary_sha256": "5b0a18814644e6424f83503c2a23b2a86b2e6c5974022a541316ade792cad17e",
+      "final_status_sha256": "d34eae817c8bede6f4162931eb7e2fc3da9e15d3ec8644212a26d85430639ab1",
+      "new_primary_reader_passed": true,
+      "new_runtime_execution": false
+    },
+    {
+      "task_folder": "live-generator-resources-r1",
+      "client_id": "g001c015be383",
+      "PID": 114236,
+      "primary_sha256": "fa0f841868cf6e6e4beb03f19a988a1a1ddcbb8b7a70e225500db551e4a4fdbb",
+      "final_status_sha256": "06acd9e5460127f8284b92988db539a2c9346efd551e84a059938df69be7b496",
+      "new_primary_reader_passed": true,
+      "new_runtime_execution": false
+    },
+    {
+      "task_folder": "live-generator-resources-r1",
+      "client_id": "g001c0161b9fa",
+      "PID": 51160,
+      "primary_sha256": "ee56861aabb334accd8763c70597970f45c9a3025abd9558ae1c2910b2238fdf",
+      "final_status_sha256": "f3769db98bb5ce4747ad3ac1a4c156d732896045275e28b58514a75d4e3c9b9e",
+      "new_primary_reader_passed": true,
+      "new_runtime_execution": false
+    },
+    {
+      "task_folder": "live-generator-resources-r1",
+      "client_id": "g001c01d738fe",
+      "PID": 70564,
+      "primary_sha256": "af44712fc56d95f0e98a22878226b7f5fd5a7ccbd5cd6fb74fe5f0eb952e84f3",
+      "final_status_sha256": "9b7ba05bc5c958b3beae6b96c5254109fc906c2e58a7d7d9a35d36162cd54b3b",
+      "new_primary_reader_passed": true,
+      "new_runtime_execution": false
+    },
+    {
+      "task_folder": "live-jsonl-session-r1",
+      "client_id": "g001c01b18b4b",
+      "PID": 47036,
+      "primary_sha256": "d331eb5b7fb89de5aecdd80a047227403cc633578ccce578edba1d5ae6a9dbc6",
+      "final_status_sha256": "b92dfd3a4f3822cb724d273b6506f2e43666bf6264c8f10c0dad8ece96096c52",
+      "new_primary_reader_passed": true,
+      "new_runtime_execution": false
+    },
+    {
+      "task_folder": "live-jsonl-session-r1",
+      "client_id": "g001c0143af18",
+      "PID": 110868,
+      "primary_sha256": "f17bb75377c47431ae1e94d189c54a204e1848eec018895cdbf413b0d47bd0f5",
+      "final_status_sha256": "7028c512ec59ceaee22fb3bcee790b82226e2fc3c305eade79372d53b8b81350",
+      "new_primary_reader_passed": true,
+      "new_runtime_execution": false
+    },
+    {
+      "task_folder": "live-jsonl-session-r1",
+      "client_id": "g001c02302b78",
+      "PID": 86504,
+      "primary_sha256": "126e9cfe62dc589ee06c67ff04242b4b6b1608056b27b967bd363098124d5549",
+      "final_status_sha256": "d4aa08e79f844a8c3dbb9fdac28aba0168325177002b1c154764eae21ac170d6",
+      "new_primary_reader_passed": true,
+      "new_runtime_execution": false
+    },
+    {
+      "task_folder": "live-jsonl-session-r1",
+      "client_id": "g001c011abb91",
+      "PID": 128684,
+      "primary_sha256": "eef96f3cac3f635aaa390b89438a4a0815d5a89cdc151199ac3ccd8e7ecf2b3e",
+      "final_status_sha256": "160985f36e73c4dc01b69e2a2b0acb0edf9fb9a800d6c2e7f4fe38e378b56927",
+      "new_primary_reader_passed": true,
+      "new_runtime_execution": false
+    }
+  ],
+  "source_scope": "Python terminalevidencechecks and coherence of testfixtures only; actualgame/client/server/card/UI/numericalrules unchanged",
+  "primary_report_read_limit_bytes": 8388608,
+  "all_owned_processes_terminal": true,
+  "all_bridges_terminal": true,
+  "physical_resource_exhaustion": false,
+  "source_upload_bytes": 0,
+  "cloud_environment_and_limits_unchanged": true,
+  "original15pct_disk_standard_passed": false,
+  "SQL_cleanup": {
+    "players": 4,
+    "owned_active_humans": 0,
+    "pending_holds": 0,
+    "locked_equipment": 0,
+    "preparations": 4,
+    "tickets": 4,
+    "members": 0,
+    "settlements": 0,
+    "ACK_records": 0
+  },
+  "whole_task_accepted": false,
+  "task_state": "Partial",
+  "dependencies": {
+    "LOAD-07.2": "Accepted",
+    "LOAD-07.3": "Partial"
+  },
+  "pointer_sha256": "afda3ce38a32db748d5ebd42bb82ae8d30f35c05fef10f0a9c843f27046ce300",
+  "parent_register": {
+    "path": "docs/reports/pr13-stages-20261009/S6-load073-LIVE-profile-review-20261017/register.json",
+    "sha256": "a3b520c3f71b9f1ae65f7a0aa0e1b80095b88acc6e566e7fb01cf2701c20a113"
+  },
+  "criteria_relaxed": false,
+  "fault_detection_fixed_not_waived": true,
+  "capacity_success": false,
+  "human_or_RENDER_or_performance_benefit": false,
+  "preparation_path_error_before_any_additional_native_start_retained": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-final-faults-r1\\preparation-failure-observation.json"
+}

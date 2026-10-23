@@ -1,0 +1,100 @@
+{
+  "task_id": "LOAD-10.3",
+  "case_id": "LOAD-10.3-T03",
+  "state": "Partial",
+  "actual_stage_subset": {
+    "actual_stage_subset_passed": [
+      "READY-latejoin",
+      "MOVE-inflight",
+      "ACK-before-backend",
+      "ACK-after-commit-before-delivery"
+    ],
+    "original_main_exits": [
+      130,
+      130,
+      130,
+      130
+    ],
+    "original_main_passed_flags": [
+      false,
+      false,
+      false,
+      false
+    ],
+    "actual_Native_exits": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "Native_outcomes": {
+      "cancelled": 12,
+      "completed": 1
+    },
+    "actual_R2_DBworlds": 4,
+    "actual_R2_UIDs": 13,
+    "actual_receipts_ACKs": 13,
+    "original_completed_cycles": 1,
+    "scenario_completed_cycles": 1,
+    "normal_completed_cycles": 0,
+    "coordinator_running_window_ACKs": 2,
+    "coordinator_drain_window_ACKs": 11,
+    "Native_observed_active_ACKs": 1,
+    "Native_observed_drain_ACKs": 12,
+    "different_STOP_observation_points_preserved": true,
+    "READY_actual_preSTOP_sends3_queued_afterSTOP_accepted2": true,
+    "READY_actual_afterSTOP_roomstart_legalexit_drainACK1_cycles0": true,
+    "MOVE_actual_timeout_and_late_same_request_completed_retained": true,
+    "ACK_actual_PG_target_records_at_boundary": [
+      0,
+      1
+    ],
+    "all13_cleanupPassed_engineclean_no_forced_termination": true,
+    "independent_checks": 212,
+    "actual_local23Native_suites_passed": true,
+    "new_six_route_cases12checks": true
+  },
+  "finding": {
+    "id": "LOAD103-READY-STOP-LateJoin",
+    "state": "ClosedCurrentBoundedScope",
+    "R1_whole_batch_state": "Failed_retained",
+    "R1_actual": "Native0/errors0/main130 operator_stopped but business_cleanup_verified=false/Unknown; PGRunning/Active,3READYsentbeforeSTOP and2queuedafterSTOP,earlyWSclose,nolegalexit. No gameplayerroror70HPanomaly.",
+    "fix": "Resolve waiting ticket first; same verified late match can arrive during existing6s legal-exit budget before WSclose; preserve session/cycle/preparation/ticket/actualmatch guards,then normal legalexit/ACK. Existing48functions and ACK/fullBootstrap suffix unchanged; only cleanup orchestration changed plus newguardedhelper.",
+    "validation": "Same backloggedREADY,explicitminimum2.6spreSTOPgate ensures3actualpreSTOPsends,firstonlyremoved,twoothersactualacceptedafterSTOP;currentNativeactualroomstart->legalexit->ACK1/cleanupPassed/cycles0. Actual23Nativeand12newrouteguardchecks;212independent runtimechecks.",
+    "limits_unchanged": "Exit6s/settlement6s/verify22s/stop_all35s;no thresholdrelaxation.",
+    "remaining_scope": "No arbitrary delay/outage, Pending long shutdown with current audio, between-matches, full T03 or capacity acceptance",
+    "old_G266": "G:\\PR13Evidence\\load103-original-main-live-STOP4-20261021-r1-failure-originals"
+  },
+  "new_case_profiles_closed": [],
+  "remaining_missing_case_profiles": {
+    "LOAD-10.3-T01": [
+      "CAPACITY"
+    ],
+    "LOAD-10.3-T02": [
+      "CAPACITY"
+    ],
+    "LOAD-10.3-T03": [
+      "CAPACITY",
+      "LIVE",
+      "POSTGRES"
+    ]
+  },
+  "whole_case_profile_or_task_notaccepted": true,
+  "G": "G:\\PR13Evidence\\load103-original-main-live-STOP4-20261021-r2-originals",
+  "Gmembers": 1301,
+  "archiveSHA": "87599ee2f18620696e52bfd6f1fb932177b07163a8c23de872a6343fe686029e",
+  "all103_package_and2147_client_inputs_verified_thenexactownedcleanup": true,
+  "source2147_parent2144_same_plus3overlay": true,
+  "production_unchanged": true,
+  "budget_revision": "docs/plans/PR13_LOAD103_READY_LATEJOIN_FIX_BUDGET_REVISION_20261021.json",
+  "whole_project_accepted": false
+}

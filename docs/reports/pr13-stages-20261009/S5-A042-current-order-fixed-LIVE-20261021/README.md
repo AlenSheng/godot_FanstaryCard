@@ -1,0 +1,19 @@
+# A04.2 当前 READY 乱序与发送失败：修复后用例通过，等待上游验收
+
+关闭3个LIVE缺口，137→134。当前92 Accepted／30 Partial／10 Ready，仍40项未整体验收；A04.2三例各层级已齐，但A04.1仍Partial，故只列ReadyForAcceptance。其他131任务及全部global gate不变。
+
+**R1整体未通过，原件保留。** 一Native同UID/session/peer真实两局，原始READY循环第一次及第二次本地send=false，第三次实际调用原Gateway.send并得到服务端accepted；无多余发送、两局完成两份唯一ACK。第一局实际required原payload被放进实际started外壳，除type/payload外所有外壳字段保留，确保通知确实经过当前原始接收入口，而非只触发旧sequence去重。第二局把第一局实际started原payload放进当前N外壳，原Gateway忽略旧M、N完整业务字典不变，后续权威snapshot恢复N。
+
+R1 Native8项、原程序11项及service/controller都返回true／OS0／引擎干净，但MAIN没有据此整体通过：独立读取迟到required前后原件，ready_prompt从ready_players1/required_players1变成0/1，原ReferenceUI直接使用该字典显示“已确认0/1”。driver accepted保持true且不重发，只能证明联机流程没回退，不能掩盖界面确认人数回退。MAIN将R1整轮列Failed、T02保留失败，91项独立核对原件、原producer true和两局／两ACK都不改写。
+
+修复仅在当前Gateway接收流程新增同一verified、未过期prelaunch且自身READY已accepted的required忽略分支，位于sequence去重和缺口恢复之后。必须match和room都匹配才命中；只消耗实际session游标、记录already_ready_accepted，不向业务/UI消费者发过期提示。未确认、新匹配、其他room、session更换继续原流程；不修改协议数据、确认人数、服务器、时限、次数或资源。原函数其余字节保持，原文件COW替换，冻结R1和G盘原件不变。
+
+**R2按原标准复测通过。** 同样一个真实Native、同UID/session/peer、两个不同M，原始完整_run／_run_expedition／ACK／cleanup保留，仅声明本地前两次false与两处原通知payload替换。第一局恰3次READY尝试、1次socket实际成功，第二局恰1次；actualaccepted后旧required现在由原Gateway记录Ignored，完整业务字典包括ready_prompt从1/1保持1/1，无新READY。第二局旧M started仍只消耗session序号，N完整业务字典保持；两个真实权威snapshot分别恢复M和N。两局正常完成和cleanup通过，PG恰2world／1真实UID／2收据／2唯一ACK，无Pending、装备、流水或未释放准备。
+
+两轮新增物理对局2+2=4、真实UID2，没有把每轮共享的两局按三案例重复计成六局；R2上限在执行前因真实UI问题修订，R1历史数量和原失败不重置。没有放宽任何业务或时间标准。包中复用的equipment_id／lock_application_name字段未参与本项执行；实际controller无种装或行锁操作，PG装备和流水均0。publicabandon是本次明确的功能终态，不称自然胜利、正常容量周期或真人体验。
+
+当前序号去重、启动快照恢复、READY拒绝处理三份现有OFFLINE套件全过，实际headless／Dummy／60FPS／无窗口／低优先级，OS0且无脚本错误、解析错误或资源泄漏。本地私有夹具最初PackedByteArray哈希API错误、协议字段定位校正和R2校验器路径复用错误均保留；第一次错误场景进程按路径、完整命令、创建时间两次核实后单独停止，云端0场。代理在上传前按官方仓库proto和两份真实归档started/required报文校验，额外三个损坏向量均被拒绝。
+
+本轮确认界面效果通过真实Native模型及原UI渲染绑定语义验证，未新增像素截图，不扩张为分辨率、布局或美术验收；界面/资源文件无修改，无需ImageGen。现有正式排版/风格证据仍限定其原范围。合法Mage70／Priest80／Guardian100及已确认80/70边界按完整GDD处理，不钳制或误报。
+
+R1 G74与R2完整源码包、2151输入重建、原PB/HTTP/遥测/PGdump/控制器及回归原件均SHA/CRC封存。确认unit PID0/inactive、自有容器消失、108包文件和2151输入SHA、owner和精确根路径、生产指纹与health200后，只清理自有临时云输入；云raw、本地代码、G和共享缓存保留。仅使用当前云主机，容量不足继续未通过；功能500MB/5percent余量不能代替容量SLO。无新增Git提交、推送或生产部署，原release86ddee23只含先前已验收UI资源。

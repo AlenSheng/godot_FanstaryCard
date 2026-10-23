@@ -1,0 +1,76 @@
+{
+  "review_scope": "MAIN_case_LIVE_actual_ACK_attemptdeadline",
+  "task_id": "LOAD-10.2",
+  "case_id": "LOAD-10.2-T02",
+  "state": "Partial",
+  "case_profiles_closed": {
+    "LOAD-10.2-T02": [
+      "LIVE"
+    ]
+  },
+  "whole_task_accepted": false,
+  "remaining_missing_case_profiles": {
+    "LOAD-10.2-T01": [
+      "CAPACITY"
+    ],
+    "LOAD-10.2-T02": [
+      "CAPACITY"
+    ],
+    "LOAD-10.2-T03": [
+      "CAPACITY"
+    ]
+  },
+  "actual": {
+    "actual_world1_currentProgram8eb_PG4users_4realMage_originalrun_andcoordinator": true,
+    "actual_first_native_HTTP_attempt_timeout_ms": 10016,
+    "actual_logical_ACK_success_elapsed_ms": 11232,
+    "actual_proxy_first_connection_close_age_ms": 12515.009024,
+    "actual_native_timeout_before_proxyclose": true,
+    "physicalACK5_logical4_durable4": true,
+    "target2physicalsame_key_trace_body_actual_binaryACKresponses_identical": true,
+    "actualPGreceipt_andpersistent_idempotency_record_before_after_EXACT": true,
+    "actualtargetcycle_ACK_completed_each1": true,
+    "allPG4Deadreceipts_ACKed_holds0_unACKed0_items0": true,
+    "actualNative4verboseclean_R3": true,
+    "coordinator1_expectedfallback4normal0_notnaturalpass": true,
+    "R1_VM_exit_resource_finding_notclosed": true
+  },
+  "R1_resource_finding_stillOpen_mandatory": {
+    "id": "LOAD102-R1-NativeExitObjectRefs",
+    "state": "Open",
+    "mandatory_before_whole_acceptance": true,
+    "observed_clients": 1,
+    "total_clients": 4,
+    "observed": "NativeOSexit0 andbusinesscleanupPassed butObjectDB2/resources1atexit",
+    "runtime_log_SHA": "2813f2bc06ff753874cbda4ae84666570684ef91fc4bf4dc94e6843b9b149d30",
+    "client_id": "g001c015ff744",
+    "scope": "VMexitreferencecleanupfinding;notyetproofpersistentservermemoryleak; no data-lossorledgerfailure observed",
+    "next": "Useverboseisolatedno-login/zero-worldshutdownprobe,diagnoseactualclasses;preserveR1anddo notblindlyrerunmatchedbusinesscases.",
+    "investigation": {
+      "updated_at_local": "2026-10-21T02:59:06.874394+08:00",
+      "zero_world_probes": 18,
+      "Windows": 6,
+      "Linux": 12,
+      "controlled_conditions": "PendingHTTP,timer,smallbootstrapcleanup,40470Bbackgrounddecodeand4parallelcleanup",
+      "all_probes_no_VM_exit_warning": true,
+      "R2_actual_world1_players4_verbose_clean": true,
+      "source_fix_applied": false,
+      "cause_unresolved": true,
+      "original_R1_warning_kept": true,
+      "conclusion": "R2andprobesdidnotreproduce; do notmarkfixedorclosethismandatoryfinding.",
+      "next": "ContinueactualACKdeadlinefaultcoveragewithverboseenabledandwatchrecurrence; ifrecurscaptureexactresourceclasses. Avoidspeculativeteardownpatchfromnegativeprobes.",
+      "R3_ACK_timeout_round": {
+        "actualNative4verboseclean": true,
+        "real10sACKtimeoutrecovery_verified": true,
+        "no_code_fix_or_rootcause_claim": true,
+        "oldfinding_remainsOpen": true
+      }
+    }
+  },
+  "originalstrict30natural_andCAPACITY_notaccepted": true,
+  "native_timeout10s_logical30s_nochange": true,
+  "observer_errors_preserved_no_SUT_native_rerun_to_fixobserver": true,
+  "G367_parent3042_verified_sourcecleaned": true,
+  "no_threshold_sample_or_rule_relaxation": true,
+  "whole_project_accepted": false
+}

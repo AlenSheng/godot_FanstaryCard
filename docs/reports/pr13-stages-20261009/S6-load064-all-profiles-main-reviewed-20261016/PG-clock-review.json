@@ -1,0 +1,629 @@
+{
+  "kind": "LOAD064TwoMissingPGClockCasesCoveredByVerifiedExistingNativeOriginals",
+  "at_local": "2026-10-16T20:37:59.125919+08:00",
+  "task_id": "LOAD-06.4",
+  "case_profiles_closed": 2,
+  "cases": [
+    {
+      "case_id": "LOAD-06.4-T01",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "POSTGRES"
+      ],
+      "setup": "本地单调钟测耗时",
+      "expected": "正确非负",
+      "actual": {
+        "reused_native_transport": "reusable",
+        "local_monotonic_attempt_durations_ms": [
+          66,
+          50
+        ],
+        "local_monotonic_logical_duration_ms": 5149,
+        "server_minimum_retry_after_ms": 5000,
+        "real_full_Program_and_disposable_Postgres": true,
+        "successful_backend_response": 200,
+        "same_exact_timing_implementation": true,
+        "no_new_native_execution": true
+      },
+      "scope": "Read-only contract mapping of an immutable original real Godot/full Program/disposable PG run. The current timing and reusable source path is identical. Does not claim the changed native one-off204 path was tested in that old run."
+    },
+    {
+      "case_id": "LOAD-06.4-T02",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "POSTGRES"
+      ],
+      "setup": "无TLS阶段hook",
+      "expected": "null+unavailable",
+      "actual": {
+        "attributable_phase_hooks_in_actual_input": false,
+        "transport_phase_timings": {
+          "dns_ms": {
+            "count": 0,
+            "p95_ms": null,
+            "quality": "unavailable",
+            "missing_reason": "No attributable local request phase hook in supplied audit"
+          },
+          "tcp_connect_ms": {
+            "count": 0,
+            "p95_ms": null,
+            "quality": "unavailable",
+            "missing_reason": "No attributable local request phase hook in supplied audit"
+          },
+          "tls_handshake_ms": {
+            "count": 0,
+            "p95_ms": null,
+            "quality": "unavailable",
+            "missing_reason": "No attributable local request phase hook in supplied audit"
+          }
+        },
+        "total_request_duration_not_used_as_phase_latency": true,
+        "isolated_loopback_backend_is_HTTP_not_a_TLS_measurement": true,
+        "same_actual_native_execution_as_T01": true,
+        "no_new_native_execution": true
+      },
+      "scope": "Current aggregation of the same real PG-backed native request records, with absent phase hooks explicitly unavailable. No TLS handshake duration or duplicate PG execution claimed."
+    }
+  ],
+  "current_source_path_equivalence": {
+    "checks": [
+      {
+        "function": "_request_page",
+        "normalized_text_equal": true,
+        "executed_sha256": "2d4d05623fcf0b5a7514e78b459b3bdefab8be6e59372f76d9f0e59edf800287",
+        "current_sha256": "2d4d05623fcf0b5a7514e78b459b3bdefab8be6e59372f76d9f0e59edf800287"
+      },
+      {
+        "function": "_emit_http_attempt",
+        "normalized_text_equal": true,
+        "executed_sha256": "4bb784a64a20528468a00677558ee451def558eb1d72ca92dec26f627da6652d",
+        "current_sha256": "4bb784a64a20528468a00677558ee451def558eb1d72ca92dec26f627da6652d"
+      },
+      {
+        "function": "normalize_request",
+        "normalized_text_equal": true,
+        "executed_sha256": "bdac4cf5b3ae089bde1592d6f98c062f14383529f1b4c26cac27cb4b517639fa",
+        "current_sha256": "bdac4cf5b3ae089bde1592d6f98c062f14383529f1b4c26cac27cb4b517639fa"
+      },
+      {
+        "function": "normalize_response",
+        "normalized_text_equal": true,
+        "executed_sha256": "2dec51c32a14bd59aa2fccdce9f4710a8f66b0aad726e2133f32f1122b3ea493",
+        "current_sha256": "2dec51c32a14bd59aa2fccdce9f4710a8f66b0aad726e2133f32f1122b3ea493"
+      },
+      {
+        "function": "_decode_http_response",
+        "normalized_text_equal": true,
+        "executed_sha256": "2cef16ed86692277ddcb22caca5e7de0c3a79840f1fb43417608ee8989828b15",
+        "current_sha256": "2cef16ed86692277ddcb22caca5e7de0c3a79840f1fb43417608ee8989828b15"
+      },
+      {
+        "file": "network/reusable_http_client.gd",
+        "normalized_text_equal": true
+      },
+      {
+        "file": "network/http_protocol.gd",
+        "normalized_text_equal": true
+      },
+      {
+        "file": "network/protobuf.gd",
+        "normalized_text_equal": true
+      },
+      {
+        "function": "_request_http_transport",
+        "original_reusable_first_branch_preserved": true,
+        "new_native_one_off_204_transport_excluded_from_reusable_path": true
+      },
+      {
+        "data": "http_schema.json",
+        "normalized_text_equal": true,
+        "comparison": "Parsed JSON structure; byte hashes may differ by formatting"
+      },
+      {
+        "data": "realtime_schema.json",
+        "normalized_text_equal": true,
+        "comparison": "Parsed JSON structure; byte hashes may differ by formatting"
+      },
+      {
+        "route": "/api/v1/bootstrap",
+        "normalized_text_equal": true,
+        "comparison": "Selected executed route only; registry outside selected paths may differ"
+      },
+      {
+        "route": "/api/v1/auth/local",
+        "normalized_text_equal": true,
+        "comparison": "Selected executed route only; registry outside selected paths may differ"
+      },
+      {
+        "data": "HTTP protocol envelope",
+        "normalized_text_equal": true
+      }
+    ],
+    "all_required_equal": true,
+    "scope": "Only executed reusable PG arm and unchanged timing/decode implementation; no blanket full-source equality claim"
+  },
+  "actual_older_execution_source_sha": "2ddf34763b2a3f4c5aee22e2fd1749568cc6d41e",
+  "current_full_gateway_source_is_not_claimed_identical": true,
+  "selected_reusable_clock_path_is_current_identical": true,
+  "original_native_rows_not_rerun": 26,
+  "selected_original_request_family_reused_once_for_two_properties": true,
+  "new_gameplay_or_PG_executions": 0,
+  "stage_files_verified": [
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-real-postgres-HTTP-context-nine\\candidate-fixture.original.gd",
+      "bytes": 14694,
+      "sha256": "31cacfda28d3c7ac3eb500ebb0f246a80760a25e1a29da7b7582172df926debe"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-real-postgres-HTTP-context-nine\\cases.jsonl",
+      "bytes": 20353,
+      "sha256": "396c925f6e01c7bcca5afbb0ebcdd7ac118ffb89c61738cbaf6cfe69f11280b6"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-real-postgres-HTTP-context-nine\\compiled-server.original.json",
+      "bytes": 124,
+      "sha256": "a13933adf7263ac823d3b18f9f53de01bc8215b65e864af193ce9c462db9b2b5"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-real-postgres-HTTP-context-nine\\complete-original-G-receipt.json",
+      "bytes": 615,
+      "sha256": "b253ce1dd16a8d8ae597734ced1490015398b8c31d787a89c736a7862b579625"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-real-postgres-HTTP-context-nine\\independent-original-verification.json",
+      "bytes": 579,
+      "sha256": "8bb4cfc7afa0dcacefe2583d63e4e9db8b9edb6eedd32e4b2cc3e3e7daa58841"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-real-postgres-HTTP-context-nine\\inner-runner.original.py",
+      "bytes": 10270,
+      "sha256": "15b80877d3f81cf1b9917cbc373295b8c0cd6fd05836347236404139f08eed4e"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-real-postgres-HTTP-context-nine\\native-result.original.json",
+      "bytes": 4649,
+      "sha256": "549b7338631ca01f6749f2299d468ee69f68ffb28b998ce2a577a619d5313351"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-real-postgres-HTTP-context-nine\\native-runner.original.py",
+      "bytes": 9760,
+      "sha256": "9ab4cb834da79c8aac0593cfe1cab342f83aef49cee20c6e8577eda4f0b83923"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-real-postgres-HTTP-context-nine\\native-started.original.json",
+      "bytes": 539,
+      "sha256": "8e181d4dcefe8eb3d3b3cc2ca100693bfeb24b7feaaf962f1789ac81eb684df5"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-real-postgres-HTTP-context-nine\\original-failed-R1-G-receipt.json",
+      "bytes": 590,
+      "sha256": "d1cf4f7d2588dd1a7c4e7a755e01a206d4be6ee85978114902dbb64f864b05d0"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-real-postgres-HTTP-context-nine\\passed-output-cleanup.original.json",
+      "bytes": 408,
+      "sha256": "b8152f03a27754550d65ed13e27271b2d9a05d6326883f380f1a5d2bc89901a1"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-real-postgres-HTTP-context-nine\\per-request\\database-postconditions-request.original.json",
+      "bytes": 961,
+      "sha256": "2ca0ef424801f9abcc03db239e0a48c4a261bff78d532236ec33a1e7592fa8a7"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-real-postgres-HTTP-context-nine\\per-request\\database-query.original.sql",
+      "bytes": 1586,
+      "sha256": "98767c71e1a10c63ddc26e71f4daf096a195ac235b126de5991b395b0b765b46"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-real-postgres-HTTP-context-nine\\per-request\\database-response.original.json",
+      "bytes": 349,
+      "sha256": "c0a796454ecc23e991dcff501e369b3570946687f9c6400975923b6dd7e5327a"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-real-postgres-HTTP-context-nine\\per-request\\godot.original.log",
+      "bytes": 98,
+      "sha256": "af09008a6f0a90561792408980c608b468abc4bce3fef232d34163b53263d973"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-real-postgres-HTTP-context-nine\\per-request\\native-result.original.json",
+      "bytes": 9797,
+      "sha256": "8553762f13a17087db727fdbbc237fe6f7239712af59a1d9ec702367355e165b"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-real-postgres-HTTP-context-nine\\per-request\\opaque-proxy.original.json",
+      "bytes": 16606,
+      "sha256": "13c78b119611e6ddcfdbef94f5398ee5f27fe2c2cad333431263ae8744190e8e"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-real-postgres-HTTP-context-nine\\preregistration.original.json",
+      "bytes": 2233,
+      "sha256": "df7f15ec3efb783b220a67685ce1f110506c41ef627b18271a1bac7a0867ce82"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-real-postgres-HTTP-context-nine\\README.md",
+      "bytes": 1414,
+      "sha256": "dc4cacaf6f201d6f6497b3ba6b98bb3ac2775ddb8dfb50065994d722cb06a1e8"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-real-postgres-HTTP-context-nine\\reusable\\database-postconditions-request.original.json",
+      "bytes": 958,
+      "sha256": "4e41a88554146461261afc50aa64eaf8eba17e9c8be24961ab0085187f9eeed9"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-real-postgres-HTTP-context-nine\\reusable\\database-query.original.sql",
+      "bytes": 1586,
+      "sha256": "283ba8eb569c103887716cd7ff1a0d5d4618ef4f030bc0174f41f301fc7727d5"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-real-postgres-HTTP-context-nine\\reusable\\database-response.original.json",
+      "bytes": 349,
+      "sha256": "992e33e0e34c992e87f4a02db4950031ac412d9f962c6e41b4d0fd928db2c371"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-real-postgres-HTTP-context-nine\\reusable\\godot.original.log",
+      "bytes": 98,
+      "sha256": "af09008a6f0a90561792408980c608b468abc4bce3fef232d34163b53263d973"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-real-postgres-HTTP-context-nine\\reusable\\native-result.original.json",
+      "bytes": 9798,
+      "sha256": "6982bd35aa5342f11260f96cc26782d57c9aab24da9b081b12eb83445310f724"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-real-postgres-HTTP-context-nine\\reusable\\opaque-proxy.original.json",
+      "bytes": 16606,
+      "sha256": "f41bd660832b25446e7affe13520949a3efdd5ee5c7291882362e37e916f9551"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-real-postgres-HTTP-context-nine\\summary.json",
+      "bytes": 1776,
+      "sha256": "6eadd9ccb9a8b4b8a95d90a4d5aaef9bf223d78fedd129bb829e383e9384b61c"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-real-postgres-HTTP-context-nine\\terminal-journal.original.jsonl",
+      "bytes": 6339,
+      "sha256": "39e23a8d0336ff5eaa14566fe65485dda91aa28306bf45e1c2c4be795bcf18bb"
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-real-postgres-HTTP-context-nine\\toolchain.original.json",
+      "bytes": 85,
+      "sha256": "b90a406d4c19ac9962d921657b40e03c928011d8165f6eb7321d284354c9d2dc"
+    }
+  ],
+  "frozen_executed_client_inputs_verified": [
+    {
+      "path": "data/card_descriptions.json",
+      "sha256": "9d07c99d1a64cdeb01b7b90414c410b306262808704fbb12b11d4c496a1c8263",
+      "bytes": 55407,
+      "verified_from": "original_G_copy"
+    },
+    {
+      "path": "data/card_names.json",
+      "sha256": "2f0c0a511d138a27e451fb0ac2382ac1ab5efccf74879695f3ac6aa84fcbef05",
+      "bytes": 5746,
+      "verified_from": "original_G_copy"
+    },
+    {
+      "path": "data/catalog.json",
+      "sha256": "fa284e27b3afbd20b754b989e56f1e8030eb5d17befcbd114a4796d0c897eb2d",
+      "bytes": 396138,
+      "verified_from": "original_G_copy"
+    },
+    {
+      "path": "data/catalog_index.gd",
+      "sha256": "177f3c38694b4ba93b64a22b70b520afde84d8ed2c1ba2186f7268e8cf7f30a7",
+      "bytes": 1217,
+      "verified_from": "original_G_copy"
+    },
+    {
+      "path": "data/equipment_compare_text.json",
+      "sha256": "be74f08327751a8518cc5330d583130142153f455382291b08741f05ac4e8faa",
+      "bytes": 1759,
+      "verified_from": "original_G_copy"
+    },
+    {
+      "path": "data/http_endpoints.json",
+      "sha256": "b2b7467812569bf9ab158e87ccc141f2edca6e56ce5d5636ca8477729b51a482",
+      "bytes": 12116,
+      "verified_from": "Exact original recorded Git blob; archived pathname now absent. This is source data,not reconstructed native raw."
+    },
+    {
+      "path": "data/http_schema.json",
+      "sha256": "5b16f625d7c7e4c46a986bc2e0469de6a70374b0d330a17be1008c756c741bff",
+      "bytes": 41094,
+      "verified_from": "original_G_copy"
+    },
+    {
+      "path": "data/localization_battle.json",
+      "sha256": "ec98312e4cfc7b27c80a99fa2876931651e3c6753ca22b5a0d508c1e288dc19e",
+      "bytes": 4196,
+      "verified_from": "original_G_copy"
+    },
+    {
+      "path": "data/localization_brand.json",
+      "sha256": "0b903acce2a4b1d10059e7849e357963dccd90bbf605f7341f63f04d59f6ff3d",
+      "bytes": 231,
+      "verified_from": "original_G_copy"
+    },
+    {
+      "path": "data/localization_config.json",
+      "sha256": "bf449bc795cde5e7b6f283a1bf8a88b051db7290489374164b5ad48efb51e529",
+      "bytes": 13730,
+      "verified_from": "original_G_copy"
+    },
+    {
+      "path": "data/localization_modules.json",
+      "sha256": "659f0a6a4540fff99ab4db8b49112b49aec032221b9bb1286bf056b27c8dc56c",
+      "bytes": 26425,
+      "verified_from": "original_G_copy"
+    },
+    {
+      "path": "data/localization_templates.json",
+      "sha256": "959aea99fecabc89a2ddd3ab36e21b9a86da27c3a635522a35c1fab3abcb37b9",
+      "bytes": 5787,
+      "verified_from": "original_G_copy"
+    },
+    {
+      "path": "data/localization_ui_gaps.json",
+      "sha256": "23cba93dcf2033472c88c2babb59df33e7436a3114500c2771b84d2b88189d0d",
+      "bytes": 18465,
+      "verified_from": "original_G_copy"
+    },
+    {
+      "path": "data/login_localization.json",
+      "sha256": "40162cffc677ff43be65515c7312c8ba4b911f93850eb5973a1e5546c78ef068",
+      "bytes": 865,
+      "verified_from": "original_G_copy"
+    },
+    {
+      "path": "data/random_names.json",
+      "sha256": "bfee93001035c025ef4211c7af7d6a6982bda29ec007ddd2afa74ddf658c99b1",
+      "bytes": 1919,
+      "verified_from": "original_G_copy"
+    },
+    {
+      "path": "data/realtime_schema.json",
+      "sha256": "97dc1ce3be02e33b0dbd9ceef4e902234388f98a96fbef3d8654d48e3e109e16",
+      "bytes": 43194,
+      "verified_from": "original_G_copy"
+    },
+    {
+      "path": "data/ui_config.json",
+      "sha256": "0af3d9a0f1a637673910f5747197fa7ec7fc2f8da25173c1987496506fee8c79",
+      "bytes": 104,
+      "verified_from": "original_G_copy"
+    },
+    {
+      "path": "network/gateway.gd",
+      "sha256": "ac8df283e2a95238dc8f4caee593ad9229587d2fc128feccab9a6f9228b64581",
+      "bytes": 41025,
+      "verified_from": "original_G_copy"
+    },
+    {
+      "path": "network/http_protocol.gd",
+      "sha256": "c8fbd5d4c0d42368b14c99125b8d2493f58d7dddf405260cbfaf5b8f05b64205",
+      "bytes": 4982,
+      "verified_from": "original_G_copy"
+    },
+    {
+      "path": "network/protobuf.gd",
+      "sha256": "3572b9c313a18b14d35c815b1e09d08ef392a450a8292a55161a31c90a8ee8a3",
+      "bytes": 10466,
+      "verified_from": "original_G_copy"
+    },
+    {
+      "path": "network/reusable_http_client.gd",
+      "sha256": "006a279017c0ad72971f1694dfd5f494321e65c11263b3d9e5cf6dc3ee01be45",
+      "bytes": 5859,
+      "verified_from": "original_G_copy"
+    },
+    {
+      "path": "project.godot",
+      "sha256": "da43ee1ad476b043913ca2f58215fbb66efe1cea1e847ee937fbc18803bc4577",
+      "bytes": 130,
+      "verified_from": "original_G_copy"
+    },
+    {
+      "path": "tests/http_protobuf_fixture.py",
+      "sha256": "710b5cc633cebfbf31dda878c8c9f5a3ffe368338e13f9c271d4e1ba8cb97ff9",
+      "bytes": 6244,
+      "verified_from": "original_G_copy"
+    },
+    {
+      "path": "tests/pr13_real_pg_http_context.gd",
+      "sha256": "31cacfda28d3c7ac3eb500ebb0f246a80760a25e1a29da7b7582172df926debe",
+      "bytes": 14694,
+      "verified_from": "original_G_copy"
+    }
+  ],
+  "actual_reusable_native_samples": {
+    "attempts": [
+      {
+        "attempt": 1,
+        "cycle_id": "cycle-first",
+        "duration_ms": 66,
+        "logical_request_id": "godot-2a8939ede31801d5c42c6857c44a29e5",
+        "phase": "playing",
+        "result": "http_error",
+        "status": 429,
+        "type": "http_attempt"
+      },
+      {
+        "attempt": 2,
+        "cycle_id": "cycle-first",
+        "duration_ms": 50,
+        "logical_request_id": "godot-2a8939ede31801d5c42c6857c44a29e5",
+        "phase": "playing",
+        "result": "success",
+        "status": 200,
+        "type": "http_attempt"
+      }
+    ],
+    "logical": [
+      {
+        "attempt": 2,
+        "cycle_id": "cycle-first",
+        "duration_ms": 5149,
+        "logical_request_id": "godot-2a8939ede31801d5c42c6857c44a29e5",
+        "phase": "playing",
+        "result": "success",
+        "status": 200,
+        "type": "http"
+      }
+    ]
+  },
+  "current_metrics_derived": {
+    "http": {
+      "count": 1,
+      "min_ms": 5149,
+      "mean_ms": 5149,
+      "max_ms": 5149,
+      "p50_ms": 5149,
+      "p95_ms": 5149,
+      "p99_ms": 5149
+    },
+    "steady_http": {
+      "count": 1,
+      "min_ms": 5149,
+      "mean_ms": 5149,
+      "max_ms": 5149,
+      "p50_ms": 5149,
+      "p95_ms": 5149,
+      "p99_ms": 5149
+    },
+    "cancelled_http": {
+      "count": 0
+    },
+    "realtime": {
+      "count": 0
+    },
+    "rtt": {
+      "count": 0
+    },
+    "phase_http": {
+      "playing": {
+        "count": 1,
+        "min_ms": 5149,
+        "mean_ms": 5149,
+        "max_ms": 5149,
+        "p50_ms": 5149,
+        "p95_ms": 5149,
+        "p99_ms": 5149
+      }
+    },
+    "route_http": {
+      "unknown/legacy": {
+        "count": 1,
+        "min_ms": 5149,
+        "mean_ms": 5149,
+        "max_ms": 5149,
+        "p50_ms": 5149,
+        "p95_ms": 5149,
+        "p99_ms": 5149,
+        "logical_request_count": 1,
+        "error_count": 1,
+        "cancelled_count": 0,
+        "latency_sample_quality": "insufficient"
+      }
+    },
+    "observed_window_seconds": null,
+    "logical_requests_per_second": null,
+    "completed_requests_per_second": null,
+    "throughput_missing_reason": "No measured observation interval supplied",
+    "logical_result_counts": {
+      "success": 1
+    },
+    "error_count": 1,
+    "sample_count": 1,
+    "logical_request_count": 1,
+    "cancelled_count": 0,
+    "all_attempt_count": 2,
+    "attempt_coverage": "measured",
+    "attempt_result_counts": {
+      "http_error": 1,
+      "success": 1
+    },
+    "valid_attempt_latency_count": 2,
+    "transport_phase_timings": {
+      "dns_ms": {
+        "count": 0,
+        "p95_ms": null,
+        "quality": "unavailable",
+        "missing_reason": "No attributable local request phase hook in supplied audit"
+      },
+      "tcp_connect_ms": {
+        "count": 0,
+        "p95_ms": null,
+        "quality": "unavailable",
+        "missing_reason": "No attributable local request phase hook in supplied audit"
+      },
+      "tls_handshake_ms": {
+        "count": 0,
+        "p95_ms": null,
+        "quality": "unavailable",
+        "missing_reason": "No attributable local request phase hook in supplied audit"
+      }
+    },
+    "valid_latency_count": 1,
+    "latency_sample_quality": {
+      "http": "insufficient",
+      "realtime": "unavailable"
+    },
+    "error_rate": 1.0,
+    "steady_error_count": 1,
+    "steady_sample_count": 1,
+    "steady_error_rate": 1.0,
+    "invalid_metric_count": 0,
+    "invalid_duration_count": 0,
+    "invalid_schema_count": 0,
+    "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+  },
+  "real_disposable_PG_SQL_postconditions": {
+    "player_id": "01a12db6-fabf-7f19-bde3-dcdc2798c167",
+    "profile_version": 2,
+    "selected_class": 2,
+    "gold": 99800,
+    "potions": 2,
+    "total_shop_rows": 2,
+    "total_price": 200,
+    "lost_rows": 1,
+    "lost_quantity": 1,
+    "lost_price": 100,
+    "lost_ledger_rows": 1,
+    "lost_ledger_delta": -100,
+    "overlap_rows": 1,
+    "other_gold": 100000,
+    "other_potions": 0
+  },
+  "actual_backend_response_proof": [
+    {
+      "method": "GET",
+      "path": "/api/v1/players/me?mode=retry-five",
+      "fault_mode": "retry-five",
+      "backend_status": 200,
+      "original_backend_response_sha256": "6b3eb07e64a8f2c0e559886a88e6c42a601d9aa26b75667c2ef9effea9879eaa",
+      "original_backend_response_bytes": 127,
+      "request_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "request_key_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_id": "godot-2a8939ede31801d5c42c6857c44a29e5",
+      "client_loopback_peer_port": 54814
+    }
+  ],
+  "prerequisite_proof": "Original owned full Program compiled from frozen sources, real disposable PostgreSQL, actual26native rows/zero skips, exact21client inputs and terminal manager proof; originals unchanged.",
+  "dependencies": [
+    {
+      "id": "LOAD-11.1",
+      "state": "Accepted"
+    }
+  ],
+  "all_dependencies_accepted": true,
+  "current_register": {
+    "path": "docs/reports/pr13-stages-20261009/S6-a092-auto-abandon-LIVE-one-20261016/register.json",
+    "sha256": "14ff4529321c20fdf80a5f96fc7914f06d0779d006cfc487addf7f4df71be7da"
+  },
+  "pointer_sha256": "9c65d1eb9e543fb671e89364c27ae8adb5f50df80ba67fceb5054a7f2e866d81",
+  "existing_LIVE_three_case_report": "docs/reports/pr13-stages-20261009/S6-load064-current-LIVE-three-20261016/summary.json",
+  "no_capacity_RENDER_EXPERIMENT_or_human_claim": true
+}

@@ -1,0 +1,9 @@
+# LOAD-06.3 整项 MAIN 验收通过
+
+三个案例的OFFLINE、POSTGRES和LIVE共9个支持已逐项复核。T01真实失败HTTP409周期与服务端trace关联，连接获取约473.6ms、SQL约1.4ms，以100ns原时间戳证明不重叠。内部数据库锁等待未独立测量，仍为null并附原因。T02当前真实TCP慢接收场景SocketSend约1202.7ms、同连接及room的最近前序actor约0.15ms；按串行route→send和实际时序关联，未虚构actor的request tag。T03实际PG身份夹具、生产者六种phase与真实Prometheus接收查询分别有证据，业务标签数量有界。
+
+历史229条实际原生TRX重新核验原SHA，仅选取三个对应测试方法；它们均Passed且保留原测量。完整测试文件、RuntimeTiming、ServerMetrics、RealtimeConnection和MatchmakingRepository与历史源按LF规范化逐字节一致。RoomActor仅增加关闭队列异常分支及异常类，reader执行计时完整方法相同；当前真实Program另行覆盖actor/send边界。当前8个相关完整源文件与实际runtime713文件构建清单一致，不将旧测试DLL冒充当前DLL。历史已完成6000条Meter样本复用，未重跑或计作本次新量。
+
+当前trace48项、导出边界78项及MAIN36项审查通过。原准备参数／Ready时序／未占满池失败，以及本次过早查询失败全部保留；SDK固定instance GUID解释修正见S4报告。未放宽资产、玩法或高基数业务标签判据。完整两卷GDD SHA、合法80/70和基础L护盾保持。
+
+仅本项Partial→Accepted，当前74 Accepted、50 Partial、8 Ready，58项未验收，缺口231→230。其他131任务及G0–G5原状态保持，本项通过不构成容量、整体性能、最终UI或全项目通过。继续其余未验收项，LOAD063累计104/200世界和292/300命令额度不重置。没有产品修改、Git操作或生产变更。

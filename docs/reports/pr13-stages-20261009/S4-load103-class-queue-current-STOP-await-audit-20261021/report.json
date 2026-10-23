@@ -1,0 +1,188 @@
+{
+  "cases": [
+    {
+      "case_id": "LOAD-10.3-T03",
+      "executed": true,
+      "status": "Partial",
+      "stage_subset_status": "Passed",
+      "profiles_executed": [
+        "LIVE",
+        "POSTGRES"
+      ],
+      "full_case_profile_passed": false,
+      "new_missing_profiles_closed": [],
+      "actual": {
+        "task_id": "LOAD-10.3",
+        "case_id": "LOAD-10.3-T03",
+        "state": "Partial",
+        "new_stage_subset": "Passed",
+        "class_queue_records": [
+          {
+            "mode": "class",
+            "original_main_exit": 130,
+            "Native_exit": 0,
+            "Native_outcome": "cancelled",
+            "Native_cleanup": "Passed",
+            "raw_audit_events": 13,
+            "Native_reportSHA": "e053cdf9b63e8277b56f5372806b808a2dc55b77afe1984a3f92463ba8dae934",
+            "UID": "01a15c19-f6a2-758e-a3b3-cb2158fe8b44",
+            "cycles": 0,
+            "ACKs": 0,
+            "audio_drain_ms": 164,
+            "response_bytes": 136,
+            "STOP_observed_before_release_ms": 987,
+            "HTTP_target_terminal_in_Native": false,
+            "response_delivery": "Actual backend200 held; original client cancelled and closed before proxy write; no fake late-HTTP success",
+            "origin_stage": "login"
+          },
+          {
+            "mode": "queue",
+            "original_main_exit": 130,
+            "Native_exit": 0,
+            "Native_outcome": "cancelled",
+            "Native_cleanup": "Passed",
+            "raw_audit_events": 32,
+            "Native_reportSHA": "40b3828272007129e2ebdb630597a10b8947bc16563406483504b853e2ca7a42",
+            "UID": "01a15c1a-1ba9-7e43-a50d-25e1ed696ced",
+            "cycles": 0,
+            "ACKs": 0,
+            "audio_drain_ms": 164,
+            "STOP_issued_ms_after_wait_entry": 3,
+            "STOP_observed_monotonic_ms_after_wait_entry": 17,
+            "Native_STOP_vs_coordinator_stamp_ms": -231,
+            "preparation_count": 1,
+            "ticket_count": 1,
+            "no_second_preparation": true,
+            "maximumHp70_legal": true
+          }
+        ],
+        "independent_checks": 46,
+        "additional_DBworlds": 0,
+        "additional_UIDs": 2,
+        "new_completed_cycles": 0,
+        "new_case_profiles_closed": [],
+        "current_await_boundaries_supported": 10,
+        "current_await_boundary_gaps": [
+          "Matched entering before any READY",
+          "active Pve original400ms wait"
+        ],
+        "whole_case_profiles_LIVE_POSTGRES_still_missing": true,
+        "capacity": "Resource-insufficient profiles remain NotAccepted; human current-host-only decision applies. No new host/paid resize/local load.",
+        "remaining_missing_case_profiles": {
+          "LOAD-10.3-T01": [
+            "CAPACITY"
+          ],
+          "LOAD-10.3-T02": [
+            "CAPACITY"
+          ],
+          "LOAD-10.3-T03": [
+            "CAPACITY",
+            "LIVE",
+            "POSTGRES"
+          ]
+        },
+        "whole_project_accepted": false,
+        "G": "G:\\PR13Evidence\\load103-class-queue-complete-20261021-r1-originals",
+        "Gmembers49_raw59_not_games": true,
+        "source106_client2148_verified_then_exact_owned_cloud_inputs_removed": true,
+        "production_unchanged": true,
+        "criteria_relaxed": false
+      },
+      "source": {
+        "base_HEAD": "6f00f322952a104bb8d165687395a609def0781c",
+        "dirty_not_clean_HEAD_claim": true,
+        "current_root_driverSHA": "9babe9bbcaaf5d9e8e59b7a037870b7338fbb82d0d0b4c618d9b4631b464496a",
+        "current_cloud_load_testSHA": "9a1f51571c62c1cbe8c1be39c5b15c855ce1c13ca364eb18237cf276ab30e9dd",
+        "client_inputs2148": "Root2147 plus explicit private Scene overlay and one read-only observer; original base _process/_wait/_finish called unchanged",
+        "observer_scope": "Records only; no business state/counter/result rewrite, no manual recovery",
+        "ProgramSHA": "8ebfaebfcc7a593488f727a84a70131958ff71af3c0aecc9f699819fcbe291d6"
+      },
+      "scope": "Class-save actual server success cancelled before response delivery; queued original250ms wait STOP17ms, public cancellation. Both original mains exit130/operator_stopped/passedfalse; Native0/cancelled0/cleanupPassed, not natural-cycle success. Full12 await matrix still needs2 current specific boundaries.",
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S4-load103-class-queue-current-STOP-await-audit-20261021/README.md",
+        "docs/reports/pr13-stages-20261009/S4-load103-class-queue-current-STOP-await-audit-20261021/report.json",
+        "docs/reports/pr13-stages-20261009/S4-load103-class-queue-current-STOP-await-audit-20261021/await-coverage.json"
+      ],
+      "business_criteria_relaxed": false,
+      "whole_task_accepted": false
+    }
+  ],
+  "decision": {
+    "task_id": "LOAD-10.3",
+    "case_id": "LOAD-10.3-T03",
+    "state": "Partial",
+    "new_stage_subset": "Passed",
+    "class_queue_records": [
+      {
+        "mode": "class",
+        "original_main_exit": 130,
+        "Native_exit": 0,
+        "Native_outcome": "cancelled",
+        "Native_cleanup": "Passed",
+        "raw_audit_events": 13,
+        "Native_reportSHA": "e053cdf9b63e8277b56f5372806b808a2dc55b77afe1984a3f92463ba8dae934",
+        "UID": "01a15c19-f6a2-758e-a3b3-cb2158fe8b44",
+        "cycles": 0,
+        "ACKs": 0,
+        "audio_drain_ms": 164,
+        "response_bytes": 136,
+        "STOP_observed_before_release_ms": 987,
+        "HTTP_target_terminal_in_Native": false,
+        "response_delivery": "Actual backend200 held; original client cancelled and closed before proxy write; no fake late-HTTP success",
+        "origin_stage": "login"
+      },
+      {
+        "mode": "queue",
+        "original_main_exit": 130,
+        "Native_exit": 0,
+        "Native_outcome": "cancelled",
+        "Native_cleanup": "Passed",
+        "raw_audit_events": 32,
+        "Native_reportSHA": "40b3828272007129e2ebdb630597a10b8947bc16563406483504b853e2ca7a42",
+        "UID": "01a15c1a-1ba9-7e43-a50d-25e1ed696ced",
+        "cycles": 0,
+        "ACKs": 0,
+        "audio_drain_ms": 164,
+        "STOP_issued_ms_after_wait_entry": 3,
+        "STOP_observed_monotonic_ms_after_wait_entry": 17,
+        "Native_STOP_vs_coordinator_stamp_ms": -231,
+        "preparation_count": 1,
+        "ticket_count": 1,
+        "no_second_preparation": true,
+        "maximumHp70_legal": true
+      }
+    ],
+    "independent_checks": 46,
+    "additional_DBworlds": 0,
+    "additional_UIDs": 2,
+    "new_completed_cycles": 0,
+    "new_case_profiles_closed": [],
+    "current_await_boundaries_supported": 10,
+    "current_await_boundary_gaps": [
+      "Matched entering before any READY",
+      "active Pve original400ms wait"
+    ],
+    "whole_case_profiles_LIVE_POSTGRES_still_missing": true,
+    "capacity": "Resource-insufficient profiles remain NotAccepted; human current-host-only decision applies. No new host/paid resize/local load.",
+    "remaining_missing_case_profiles": {
+      "LOAD-10.3-T01": [
+        "CAPACITY"
+      ],
+      "LOAD-10.3-T02": [
+        "CAPACITY"
+      ],
+      "LOAD-10.3-T03": [
+        "CAPACITY",
+        "LIVE",
+        "POSTGRES"
+      ]
+    },
+    "whole_project_accepted": false,
+    "G": "G:\\PR13Evidence\\load103-class-queue-complete-20261021-r1-originals",
+    "Gmembers49_raw59_not_games": true,
+    "source106_client2148_verified_then_exact_owned_cloud_inputs_removed": true,
+    "production_unchanged": true,
+    "criteria_relaxed": false
+  },
+  "old_failures_retained": true
+}

@@ -1,0 +1,13 @@
+# 原主程序四个进房前STOP阶段通过；T03仍Partial
+
+当前2147客户端／64475511驱动、8eb完整Program／49ce配置和独立PG，串行运行原始未包裹gameplay_load_test.py四次，每次1个真实Native。登录、准备、入队和票据查询分别取得真实200／201／202／200响应，代理不改内容或状态，先写原命令指定的外部STOP文件，1秒后交付同一真实成功结果。原主程序和Native的_process／_run／_finish、原stop_all35秒宽限、审计读取、分类和尾部统计均保留，没有伪造返回或注入读取结果。
+
+四次原主程序都实际退出130、operator_stopped、passed=false，Native均退出0且outcome=cancelled、ok=false、errors0、cleanup Passed。零完成周期、零ACK，不把有序退出当验收通过。实际迟到HTTP依原trace/path、状态和响应大小关联，均在STOP后且归observation_phase=drain，同时保留发起时login／initial／initial／matchmaking阶段和Complete来源。每份审计的全部分片字节、序号、身份和高水位完整，尾事件丢失0、强杀0；音频清理等待164毫秒，日志无脚本或退出资源泄漏，代理最终线程和socket均0。101项独立核对通过。
+
+隔离PG每次仅新增一个真实账号，最终4玩家、3个准备和2个票据全部按原业务取消，world／member／receipt／ACK／装备锁均0。登录取消发生于原_login为own_user_id赋值之前，Native原字段空字符串保持；通过该串行实际PG新增身份单独核对，不回填原件。初始账号钱包和材料行各4，不能称零新增初始资产。本轮零世界／零玩家周期；此前T01+T02共2世界／8周期及所有更早LOAD103和其他任务预算继续保留。
+
+独立观察器第一次把Godot的HTTP方法枚举和代理字符串直接比较，导致关联为空。实际同trace／path诊断确认三个POST为2、一个GET为0，修正观察器后核对通过；旧脚本和错误说明保留，未重跑真实测试、改原件或放宽规则。本地假HTTPecho只校验代理控制，不能算Program、PG、Godot或完整main证据。正式PG启动先检查目标库可查询且PID1为最终postgres，避免曾记录的临时初始化pg_isready误就绪。
+
+原限流auth10／write30／read120／RT30未改，500MB／5percent仍是功能底线，不是容量SLO。应用1024MiB／CPU1.25，PG384MiB／CPU0.25，tmpfs512MiB／WAL64，无host端口或生产volume。本地没有Godot窗口、焦点或桌面输入。294个源码／控制器／raw／PGdump原件完成G SHA及CRC封存，2147输入由已有G3042的2145同源文件及驱动／普通场景2份覆盖核验；随后精确核对103包文件、2147客户端SHA、owner、unit PID0／inactive、自有容器消失及生产身份／环境摘要和health200后，清理临时云输入。云raw、本地代码、共享缓存和G保留。没有产品玩法／血量／UI／协议变更，也无Git提交、合并、推送或生产部署。
+
+这补的是原六阶段Native消费者观察所缺的当前完整main取消／尾部链路，仍仅四个进房前阶段。T03的ready、gameplay、settlement/Pending、ACK及between等其余覆盖与旧12-await当前函数来源复核尚待完成，完整LIVE／POSTGRES与CAPACITY均不关缺口。当前audio exit的长收尾与35秒宽限尚未实测；旧Pending观察器会在父_finish前手动恢复，不能拿该观察器总时间证明当前生产宽限，也没有据此放宽或修改代码。88 Accepted／36 Partial／8 Ready、44未整体验收、164个case/profile缺口保持，其他131任务及全部全局gate不变。

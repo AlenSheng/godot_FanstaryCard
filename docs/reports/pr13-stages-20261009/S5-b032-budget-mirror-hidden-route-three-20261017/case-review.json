@@ -1,0 +1,209 @@
+{
+  "kind": "MAINIndependentSameBudgetAndHiddenRouteThreeCaseReview",
+  "three_case_profiles_passed": true,
+  "cases": [
+    {
+      "case_id": "PR13-B03.2-T01",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "EXPERIMENT"
+      ],
+      "actual": {
+        "PVE_actual_starts": 216,
+        "actual_casts": 2173,
+        "legal_current_builds": 6,
+        "all_same_budget_pairs": 3,
+        "raw_outcomes": {
+          "Victory": 43,
+          "Censored": 173
+        },
+        "censored_rate": 0.8009259259259259
+      },
+      "scope": "Current actualDomain/Numerics default versus C01→C17 one-card same-budget comparator, threeheroes/policies/seeds and four group types; not full five archetype matrix or strength inference."
+    },
+    {
+      "case_id": "PR13-B03.2-T02",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "EXPERIMENT"
+      ],
+      "actual": {
+        "actual_PVP_rooms": 36,
+        "actual_player_participations": 72,
+        "mirrored_side_pairs": 18,
+        "actual_opening_hand": 3,
+        "mirrored_resources": true,
+        "current_engine_exact_full_frozen_state_restore_assertions": 36
+      },
+      "scope": "Real StartDuel/EndDuelSurvived both sides from the same full snapshot. No autonomous combat, winner, TTK or PVP experience claim. Raw mirror resources independently recomputed; full state restoration proven by executed exact equality assertions in frozen probe source."
+    },
+    {
+      "case_id": "PR13-B03.2-T03",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "EXPERIMENT"
+      ],
+      "actual": {
+        "native_scenarios": 9,
+        "actual_hidden_maps_changed": 9,
+        "same_official_projections": 9,
+        "same_seed_current_policy_actions": 9,
+        "actual_legal_moves_confirmed": 9,
+        "observations": [
+          {
+            "policy": "baseline_all_hand",
+            "seed": 610001,
+            "actual_move": {
+              "column": 1,
+              "row": 0
+            },
+            "hidden_map_changed": true,
+            "official_payload_equal": true,
+            "actual_move_legal": true
+          },
+          {
+            "policy": "baseline_all_hand",
+            "seed": 610002,
+            "actual_move": {
+              "column": 1,
+              "row": 0
+            },
+            "hidden_map_changed": true,
+            "official_payload_equal": true,
+            "actual_move_legal": true
+          },
+          {
+            "policy": "baseline_all_hand",
+            "seed": 610003,
+            "actual_move": {
+              "column": 1,
+              "row": 0
+            },
+            "hidden_map_changed": true,
+            "official_payload_equal": true,
+            "actual_move_legal": true
+          },
+          {
+            "policy": "basic",
+            "seed": 610001,
+            "actual_move": {
+              "column": 1,
+              "row": 0
+            },
+            "hidden_map_changed": true,
+            "official_payload_equal": true,
+            "actual_move_legal": true
+          },
+          {
+            "policy": "basic",
+            "seed": 610002,
+            "actual_move": {
+              "column": 1,
+              "row": 0
+            },
+            "hidden_map_changed": true,
+            "official_payload_equal": true,
+            "actual_move_legal": true
+          },
+          {
+            "policy": "basic",
+            "seed": 610003,
+            "actual_move": {
+              "column": 1,
+              "row": 0
+            },
+            "hidden_map_changed": true,
+            "official_payload_equal": true,
+            "actual_move_legal": true
+          },
+          {
+            "policy": "build",
+            "seed": 610001,
+            "actual_move": {
+              "column": 1,
+              "row": 0
+            },
+            "hidden_map_changed": true,
+            "official_payload_equal": true,
+            "actual_move_legal": true
+          },
+          {
+            "policy": "build",
+            "seed": 610002,
+            "actual_move": {
+              "column": 1,
+              "row": 0
+            },
+            "hidden_map_changed": true,
+            "official_payload_equal": true,
+            "actual_move_legal": true
+          },
+          {
+            "policy": "build",
+            "seed": 610003,
+            "actual_move": {
+              "column": 1,
+              "row": 0
+            },
+            "hidden_map_changed": true,
+            "official_payload_equal": true,
+            "actual_move_legal": true
+          }
+        ]
+      },
+      "scope": "Actual authoritative hidden future monster/evacuation/treasure mutation with byte-identical official projection, current native seeded visible-only chooser,actual legal move. Controlled snapshot entry to ActionBar,not natural clear or optimal-route proof."
+    }
+  ],
+  "whole_task_accepted": false,
+  "task_state": "Partial",
+  "remaining_task_scope": [
+    "Full five archetype deck axes (pure core/sustain/control-draw/tuning mixed core) are not supplied by current generator; current runtime generator outputs default only for allthree classes. Explicit C01→C17 comparator is an isolated case test,not fabricated published archetype coverage."
+  ],
+  "new_PVE_encounters": 216,
+  "new_PVP_rooms": 36,
+  "new_PVP_player_participations": 72,
+  "new_valid_route_scenarios": 9,
+  "route_diagnostic_scenarios": 1,
+  "conservative_total_encounters_including_diagnostic": 298,
+  "ceiling": 300,
+  "task_remaining_new_scenario_budget": 2,
+  "not_pooled_TTK_populations": true,
+  "PVE_outcomes": {
+    "Victory": 43,
+    "Censored": 173
+  },
+  "PVE_censored_rate": 0.8009259259259259,
+  "policy_strength": "Inconclusive/not tested",
+  "capacity_benefit": "Not tested",
+  "diagnostic_failures_retained": [
+    "MatrixR1 incorrectly assumed current CreateDecks supplied theme_single_swap for every class; rejected before first scene. R2 explicitly validates current default and C01→C17 comparator with production PairedDeckBudget.",
+    "RouteR1 official projection and action were unchanged, but consumer room dictionary included four transport metadata fields after snapshot. Compare only exact documented official payload, retain both raw dictionaries. R1 unaccepted."
+  ],
+  "source_scope": {
+    "HEAD": "20c38ec6884af640f86ce4c0b3175a20ca557a6e",
+    "current_driver_sha256": "e873ba517619d2c862ca7322dd7bdea80f9c860aa2170e5aa1c11c741573f6eb",
+    "current_CSharp_source_files_rehashed": 45
+  },
+  "scope_limits": [
+    "No five archetype/main whole task acceptance; downstream dependency remains open.",
+    "60s synthetic PVE,36no-combat controlled PVP mirror rooms and9ActionBar route boundaries have different endpoints/clocks; do not pool as victories or natural cycles.",
+    "Route control uses legal20-card Priest boundary entry at PRI01level3 while same-budget matrix hasalllevels0; separate frozen profiles,not a shared strength comparison.",
+    "No fullProgram/auth/PG/LIVE/capacity/render or human claim. No cloud/source upload or production change."
+  ],
+  "owned_jobs_terminal": true,
+  "source_upload_bytes": 0,
+  "pointer_sha256": "3f7d7e6911751ff9577c77e3322e29b549512953612427621e3cdfeefc1db721",
+  "parent_register": {
+    "path": "docs/reports/pr13-stages-20261009/S6-three-strategy-main-reviewed-20261017/register.json",
+    "sha256": "652180da38aaf3f795a48221c5dcd521733d0da6648a325b08e7e4d1bd7f6ebe"
+  },
+  "raw_hashes": {
+    "PVE": "188fcf899305e05c058aaad9f60cef67ed3acc0a939a874b6f2b80926a51437c",
+    "PVP": "37eedb0310a2d26399b7fb6866ee9de8c0347c1469b5ce387d3d0fed7962bb06",
+    "budgets": "dfd1051ff0f2b3bcd2e0569684eed829e6867c2861cce07013eab826c49c343e",
+    "route_authority": "f59d6b0ea9262679bd7d645ec80858ec78914bd5854cd77f059deadb98136e27"
+  }
+}

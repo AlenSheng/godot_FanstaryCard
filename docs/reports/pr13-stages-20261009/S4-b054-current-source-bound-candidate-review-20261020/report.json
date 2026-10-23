@@ -1,0 +1,177 @@
+{
+  "summary": {
+    "kind": "B054WholeMAINAccepted_CriterionProcedureNotBenefit",
+    "counts": {
+      "Accepted": 86,
+      "Partial": 38,
+      "ReadyForAcceptance": 8,
+      "Failed": 0
+    },
+    "remaining_unaccepted": 46,
+    "missing_case_profile_pairs": 186,
+    "B054Accepted": true,
+    "actual_current_candidate_effects": [
+      {
+        "profile": "TargetedE4Hp095",
+        "state": "Blocked",
+        "reason": "strength_or_economy_drift_requires_review",
+        "defaultsretained": true
+      },
+      {
+        "profile": "TargetedE4Hp090",
+        "state": "Blocked",
+        "reason": "strength_or_economy_drift_requires_review",
+        "defaultsretained": true
+      },
+      {
+        "profile": "TargetedE4Windup025",
+        "state": "Inconclusive",
+        "reason": "preregistered_budget_not_met",
+        "defaultsretained": true
+      },
+      {
+        "profile": "TargetedE4Windup050",
+        "state": "Inconclusive",
+        "reason": "preregistered_budget_not_met",
+        "defaultsretained": true
+      }
+    ],
+    "actual_HP_P95_point_improvement": 0.054929964295523215,
+    "actual_family_Holm_p": {
+      "TargetedE4Hp090": 1.0,
+      "TargetedE4Hp095": 1.0,
+      "TargetedE4Windup025": 1.0,
+      "TargetedE4Windup050": 1.0
+    },
+    "T01_injected_reported15_andcrosszero_not_measured": true,
+    "actual_current9newflowworlds_naturalVictory36_1to80_1_seconds": true,
+    "NoChangeonlyO6controlledflow_scope": true,
+    "actual_source72_all34Victory38Death_kept": true,
+    "new9of100states_140analysis_evaluations": true,
+    "G385members_source300": true,
+    "MAIN50independentchecks": true,
+    "newUI_Godot_cloud_DB0": true,
+    "no_primarybenefit_oractivation": true,
+    "other131tasks_allgates_unchanged": true,
+    "whole_project_accepted": false
+  },
+  "cases": [
+    {
+      "case_id": "PR13-B05.4-T01",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "EXPERIMENT"
+      ],
+      "setup": "点估计15%但区间跨0",
+      "expected": "Inconclusive",
+      "actual": {
+        "actual_current_source_bound_estimation": "ReusecompletecurrentB05372outcomes34Victory38Death, primarydiagnosticGuardianE4,4profilefamily, paired27draws/signswap8each;actualsourceSHAandparentGbound",
+        "explicit_new_uncertain_report_claim_injection": "Reported+.15,CI[-.05,.35],bestcasepcontrol0 aredeclaredtestinputs, NOTmeasuredbenefit/CI/pvalue;originalactualestimates kept",
+        "current_guard_result": "Inconclusive; neveractivates; threshold isdraftnotSLO",
+        "old_OFFLINE_controls_not_relabelled": true
+      },
+      "source_sha": "6f00f322952a104bb8d165687395a609def0781c",
+      "actual_source": {
+        "Domain_SHA": "c825018a513d027d784bb75e734556fe2b98a221c709b0a9c902e80f481ecd30",
+        "actual_current_parent72_SHA": "68c10f6fc591a51916830628b2ca425e45d13ab87fcb3affb671974e9c7814cf",
+        "current_source_bound_estimator_andguard_phase": true,
+        "controlled_T01_claim_not_measured_gameplay15pct": true,
+        "actual_new_flow_wholeRootsource_afterhookundo_exact": true
+      },
+      "scope": "Candidatecriterion/procedure validation andcurrentdiagnosticdata review,not efficacy/precision/equivalence/activation/human/LIVE/capacity acceptance. T01 explicitreported-claimfaultkeptseparatefromactualestimates.",
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S4-b054-current-source-bound-candidate-review-20261020/report.json",
+        "docs/reports/pr13-stages-20261009/S4-b054-current-source-bound-candidate-review-20261020/cases.jsonl",
+        "docs/reports/pr13-stages-20261009/S5-b054-whole-MAIN-20261020/main-review.json",
+        "docs/reports/pr13-stages-20261009/S6-current-B054-accepted-20261020/main-task-decision.json"
+      ],
+      "private_originals": "G:\\PR13Evidence\\b054-current-recommendation-criteria-20261020-originals"
+    },
+    {
+      "case_id": "PR13-B05.4-T02",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "EXPERIMENT"
+      ],
+      "setup": "任一漂移触阈",
+      "expected": "专项Blocked",
+      "actual": {
+        "actual_current_observed_resource_per_combatminute": "HP095+5.1777357%,HP090+9.5405994% fromactualsame-rewardB053ledgers",
+        "current_guard_results": "BothspecialreviewBlocked, defaultretained, nodrop/pricecompensation",
+        "full_victory_death_denominators_andunidentifiedTTKs_retained": true
+      },
+      "source_sha": "6f00f322952a104bb8d165687395a609def0781c",
+      "actual_source": {
+        "Domain_SHA": "c825018a513d027d784bb75e734556fe2b98a221c709b0a9c902e80f481ecd30",
+        "actual_current_parent72_SHA": "68c10f6fc591a51916830628b2ca425e45d13ab87fcb3affb671974e9c7814cf",
+        "current_source_bound_estimator_andguard_phase": true,
+        "controlled_T01_claim_not_measured_gameplay15pct": true,
+        "actual_new_flow_wholeRootsource_afterhookundo_exact": true
+      },
+      "scope": "Candidatecriterion/procedure validation andcurrentdiagnosticdata review,not efficacy/precision/equivalence/activation/human/LIVE/capacity acceptance. T01 explicitreported-claimfaultkeptseparatefromactualestimates.",
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S4-b054-current-source-bound-candidate-review-20261020/report.json",
+        "docs/reports/pr13-stages-20261009/S4-b054-current-source-bound-candidate-review-20261020/cases.jsonl",
+        "docs/reports/pr13-stages-20261009/S5-b054-whole-MAIN-20261020/main-review.json",
+        "docs/reports/pr13-stages-20261009/S6-current-B054-accepted-20261020/main-task-decision.json"
+      ],
+      "private_originals": "G:\\PR13Evidence\\b054-current-recommendation-criteria-20261020-originals"
+    },
+    {
+      "case_id": "PR13-B05.4-T03",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "EXPERIMENT"
+      ],
+      "setup": "流程修复后无长尾",
+      "expected": "NoChangeWithEvidence",
+      "actual": {
+        "new_actual_flow_worlds9": "3hero3newseed O6,actualwrongtargetrejectedpureat0, thenunmodifiedcurrentbuildstrategycorrecttargettonaturalVictory",
+        "actual_terminal_seconds": [
+          46.5,
+          47.7,
+          36.1,
+          68.1,
+          68.1,
+          52.1,
+          72.1,
+          72.1,
+          80.1
+        ],
+        "current_decision": {
+          "state": "NoChangeWithEvidence",
+          "reason": "no_supported_change_to_default",
+          "underlying_review": {
+            "state": "NoBenefitForMainReview",
+            "reason": "current_controlled_O6_flow_corrected_all9_naturalvictories_under240s_no_numericchange_needed",
+            "source_native_cohort_SHA": "397c413122adf33fa807f80e30828a6f9dedc2fe981f64278fb1ca690231bef2"
+          },
+          "uncertainty_retained": true,
+          "equivalence_claim": false,
+          "production_defaults_retained": true,
+          "production_activation": false
+        },
+        "scope": "NoChangeonlythiscompletedcontrolledO6workflow, noactualproductfix/WANcause/E4taildisappearedclaim"
+      },
+      "source_sha": "6f00f322952a104bb8d165687395a609def0781c",
+      "actual_source": {
+        "Domain_SHA": "c825018a513d027d784bb75e734556fe2b98a221c709b0a9c902e80f481ecd30",
+        "actual_current_parent72_SHA": "68c10f6fc591a51916830628b2ca425e45d13ab87fcb3affb671974e9c7814cf",
+        "current_source_bound_estimator_andguard_phase": true,
+        "controlled_T01_claim_not_measured_gameplay15pct": true,
+        "actual_new_flow_wholeRootsource_afterhookundo_exact": true
+      },
+      "scope": "Candidatecriterion/procedure validation andcurrentdiagnosticdata review,not efficacy/precision/equivalence/activation/human/LIVE/capacity acceptance. T01 explicitreported-claimfaultkeptseparatefromactualestimates.",
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S4-b054-current-source-bound-candidate-review-20261020/report.json",
+        "docs/reports/pr13-stages-20261009/S4-b054-current-source-bound-candidate-review-20261020/cases.jsonl",
+        "docs/reports/pr13-stages-20261009/S5-b054-whole-MAIN-20261020/main-review.json",
+        "docs/reports/pr13-stages-20261009/S6-current-B054-accepted-20261020/main-task-decision.json"
+      ],
+      "private_originals": "G:\\PR13Evidence\\b054-current-recommendation-criteria-20261020-originals"
+    }
+  ]
+}

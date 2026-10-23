@@ -536,6 +536,7 @@ public sealed partial class ProcessLifecycleRecoveryTests
     private static readonly object EvidenceGate = new();
     private static void ConfigureOwnedProcessEnvironment(ProcessStartInfo start, string? fixture = null)
     {
+        start.CreateNoWindow = true;
         start.Environment.Clear();
         if (OperatingSystem.IsWindows())
         {
@@ -544,6 +545,8 @@ public sealed partial class ProcessLifecycleRecoveryTests
             start.Environment["SystemRoot"] = systemRoot;
         }
         if (fixture is null) return;
+        start.ArgumentList.Add("--audio-driver");
+        start.ArgumentList.Add("Dummy");
         foreach (var name in new[] { "XDG_DATA_HOME", "XDG_CONFIG_HOME", "XDG_CACHE_HOME", "APPDATA", "LOCALAPPDATA", "TEMP", "TMP" })
         {
             if (!OperatingSystem.IsWindows() && (name is "APPDATA" or "LOCALAPPDATA" or "TEMP" or "TMP")) continue;

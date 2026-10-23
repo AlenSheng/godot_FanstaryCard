@@ -1,0 +1,572 @@
+{
+  "kind": "GeneratedAudioPackSourceReferencesAndWAVHeadersVerified_NoPlaybackOrEffectAcceptance",
+  "generated_at": "2026-10-23T13:09:16.065509+08:00",
+  "task_id": "LOAD-11.2",
+  "state": "Partial",
+  "exact_audio_reference_bindings": 107,
+  "source_manifest_versions": 3,
+  "unique_WAV_body_objects": 37,
+  "selected_current_client_manifest_WAV_body_objects": 35,
+  "path_schema_WAV_header_and_duration_boundary_controls_passed": 19,
+  "boundary_controls": [
+    {
+      "name": "exact audio URI",
+      "actual": "ui_click.wav",
+      "expected": "ui_click.wav",
+      "passed": true
+    },
+    {
+      "name": "parent rejected",
+      "actual": null,
+      "expected": null,
+      "passed": true
+    },
+    {
+      "name": "nested name rejected",
+      "actual": null,
+      "expected": null,
+      "passed": true
+    },
+    {
+      "name": "other namespace rejected",
+      "actual": null,
+      "expected": null,
+      "passed": true
+    },
+    {
+      "name": "remote URI rejected",
+      "actual": null,
+      "expected": null,
+      "passed": true
+    },
+    {
+      "name": "backslash rejected",
+      "actual": null,
+      "expected": null,
+      "passed": true
+    },
+    {
+      "name": "alternate stream rejected",
+      "actual": null,
+      "expected": null,
+      "passed": true
+    },
+    {
+      "name": "other codec deferred",
+      "actual": null,
+      "expected": null,
+      "passed": true
+    },
+    {
+      "name": "NUL rejected",
+      "actual": null,
+      "expected": null,
+      "passed": true
+    },
+    {
+      "name": "valid silent control",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "stereo mismatch",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "sample-rate mismatch",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "sample-width mismatch",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "duration mismatch",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "truncated data",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "bad RIFF",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "empty frames",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "boolean format version",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "boolean duration",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    }
+  ],
+  "declared_generator_AST_locator_contract": {
+    "path": "tools/generate_game_audio.py",
+    "bytes": 22185,
+    "sha256": "6a0629066966649e87bef8551fad59be4dffe5f534265040254d0474a04dd2f4",
+    "output_WAV_mapping_lines": [
+      402,
+      429
+    ],
+    "logical_URI_mapping_lines": [
+      416,
+      443
+    ],
+    "same_output_manifest_write_lines": [
+      423,
+      448
+    ],
+    "recognized_retained_legacy_names": [
+      "music_battle.wav",
+      "music_hall.wav"
+    ],
+    "producer_source_AST_read_only_not_executed": true
+  },
+  "locator_rule": "Pinned generator emits output/key.wav and output/manifest.json with logical res://assets/audio/key.wav",
+  "manifest_alias_and_full_resource_key_verified_before_sibling_body_lookup": true,
+  "global_same_hash_or_unrelated_filename_search_not_used": true,
+  "all_bound_body_SHA256_values_match_original_declarations": true,
+  "all_bound_bodies_match_PCM_16bit_mono_48000Hz_positive_complete_frames_and_original_4decimal_duration": true,
+  "measured_WAV_headers": [
+    {
+      "sha256": "62b9b007c222cffcea580bcdd52c3aaa5f0bffb550a8ba7badf08ad6bd364ba4",
+      "bytes": 13484,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 6720,
+      "duration_seconds": 0.14,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "31960eda8dbabcb73937f842474bf046e623d52f86856d1d60d9591750591a93",
+      "bytes": 14444,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 7200,
+      "duration_seconds": 0.15,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "581a5c83c50eb446b2c79cbec1fedb80a744b248a3bf1bad3e70a525896cc620",
+      "bytes": 24044,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 12000,
+      "duration_seconds": 0.25,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "472ed8820c973d900671b4dbd8503c272c7caa3c7c1e0855846f5623ce19aad9",
+      "bytes": 28844,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 14400,
+      "duration_seconds": 0.3,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "cbcc234e9792105c2509e10ecdab2fba3a5a2ca3e30a0ad920d7bb19d274de0d",
+      "bytes": 25964,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 12960,
+      "duration_seconds": 0.27,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "4e2fb82936882b2dcae1c12cb9951502e98180780f319e8db926884524059b28",
+      "bytes": 37484,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 18720,
+      "duration_seconds": 0.39,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "7d7b0bce554f32614badd1ae2a7dbf985bc83c6c64ff55d61494577fd1c8f9d9",
+      "bytes": 41324,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 20640,
+      "duration_seconds": 0.43,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "45ade01e7537f69c93e665642cfda7c28dd3ea1f9fd4ede80aa3425abaa78380",
+      "bytes": 30764,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 15360,
+      "duration_seconds": 0.32,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "cce819faeb1c87fcefe739cbd2ae68d0161a3907e176972ea7157b4350f6d3fd",
+      "bytes": 46124,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 23040,
+      "duration_seconds": 0.48,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "efdef10da7e76cb6795eed9d9f6416aaf962398d890e8a14c82d68330b71b80b",
+      "bytes": 40364,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 20160,
+      "duration_seconds": 0.42,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "319006da510850e833f5b9de1cd1c1c0fe9f71bb56fd83bcfa7d74608458a400",
+      "bytes": 61484,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 30720,
+      "duration_seconds": 0.64,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "09ce19da7c16b279722e078afad1207558ae84706fc58a91df2dba4220b0cbe3",
+      "bytes": 49004,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 24480,
+      "duration_seconds": 0.51,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "0a8c47abad2740f920c24a0f8e57fef3f235139b7f65c8c1d4229b3b99938d63",
+      "bytes": 67244,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 33600,
+      "duration_seconds": 0.7,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "b3e550f33d198086fd60e326c5353dd2cff423ed69af481e34ed015d8f4d579a",
+      "bytes": 37484,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 18720,
+      "duration_seconds": 0.39,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "4e03392c75e24106ae24a64a6441ad6a1ae4da825ceb57b44b6a77336c0af804",
+      "bytes": 89324,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 44640,
+      "duration_seconds": 0.93,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "7930240da01c6ab8ba00bc151b92d2a35054088b5c59b4c9ef78a456f4d08a5e",
+      "bytes": 31724,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 15840,
+      "duration_seconds": 0.33,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "c4f707fc7237fee10e4f4b46afd0d291e783741197a407925c26bf92fc8d88b2",
+      "bytes": 47084,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 23520,
+      "duration_seconds": 0.49,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "5bb417a3a5f222130cd913abc551dd1f425744e4d2ab3f27fc88bfa6c8876d53",
+      "bytes": 25004,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 12480,
+      "duration_seconds": 0.26,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "454f36c627d42c0720119aa034f3dd255570f169a6a0c9db7f1daebfc7e6d2c1",
+      "bytes": 78764,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 39360,
+      "duration_seconds": 0.82,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "0832a76e5a332543e951fbdafdb689a760b6ac16a6a0bec76e91542daf70762b",
+      "bytes": 97964,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 48960,
+      "duration_seconds": 1.02,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "e80db54002da96a462c1b04b6694dc4919a0ce110c9feaff4d124ec34b4e5f2a",
+      "bytes": 85484,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 42720,
+      "duration_seconds": 0.89,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "ef0d66e62e5ff70949bc52284613445d86feabb2b9e228b55980898176b44b6c",
+      "bytes": 25004,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 12480,
+      "duration_seconds": 0.26,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "0dc77c8f364903d7a2e5eb58eb2d0ce19a8e3c9b33a7381d79975974abda027e",
+      "bytes": 32684,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 16320,
+      "duration_seconds": 0.34,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "43b3259e558f111955a81a529c900c3ec7864e8176bbb981926ac6f6f33de901",
+      "bytes": 19244,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 9600,
+      "duration_seconds": 0.2,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "3dc52f15eb1816fc866f67691e46b3f84f0ad65b6784e6f5150f711aa245db26",
+      "bytes": 28844,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 14400,
+      "duration_seconds": 0.3,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "0c572e8818a7c7617d700eee21aa7f0a4ae575267c44b1d344c4c6c88528a29c",
+      "bytes": 24044,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 12000,
+      "duration_seconds": 0.25,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "e1f1e3b754564948b1d94a9c664b6feebf4887df243312de8b19507d79d98b00",
+      "bytes": 82604,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 41280,
+      "duration_seconds": 0.86,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "42503f54d8c9e12038aeb99d7aed203fbca946e68091f6d6926b2dba5bc8b788",
+      "bytes": 22124,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 11040,
+      "duration_seconds": 0.23,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "28ae1b3e39d42029f620e9df42e90f73c8054c8bc46c282168c22b3933db67ac",
+      "bytes": 34604,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 17280,
+      "duration_seconds": 0.36,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "5090375a3a8d8598c713cb0fc94fe61377c40400417baaa31c4b30f3e52e8eca",
+      "bytes": 32684,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 16320,
+      "duration_seconds": 0.34,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "acb2b635a7825fb688b79a4a88414eea42a9a943be2129d6804d17a076e7a577",
+      "bytes": 41324,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 20640,
+      "duration_seconds": 0.43,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "f0122d907ef292b9b65f3940f0b25e64c97b85d485d94ab912307c1c3f8e58c2",
+      "bytes": 36524,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 18240,
+      "duration_seconds": 0.38,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "7dc6f0d7b6ccce3a565b08c07f206b3a55663147356ce2a265d956a5b106d8c4",
+      "bytes": 92204,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 46080,
+      "duration_seconds": 0.96,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "8d4dee9fef702c562651490601d189689b4204807d8855fb1fe3355617601904",
+      "bytes": 2304044,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 1152000,
+      "duration_seconds": 24.0,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "20facf4b48e8742218f64d4a772936dc1714a57088a9467f2059fadeb91b1967",
+      "bytes": 2304044,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 1152000,
+      "duration_seconds": 24.0,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "5458944efbdaba4c7f97bd45d9ea058334fd1775b94d167dfab32317535c884d",
+      "bytes": 4608044,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 2304000,
+      "duration_seconds": 48.0,
+      "compression": "NONE"
+    },
+    {
+      "sha256": "61dc4e6293b34520cab9aa00544b4e4bae58fa455f0dd23b3b44b4f9a856ba23",
+      "bytes": 4608044,
+      "PCM_channels": 1,
+      "PCM_sample_width_bytes": 2,
+      "sample_rate_hz": 48000,
+      "frames": 2304000,
+      "duration_seconds": 48.0,
+      "compression": "NONE"
+    }
+  ],
+  "retained_legacy_music_reference_bindings": 2,
+  "retained_legacy_inputs_not_regenerated_deleted_or_reintroduced_to_current_game": true,
+  "actual_alias_attempt_failure_counts_retained": {},
+  "current_client_manifest_alias_attempt_issues": [],
+  "producer_not_executed_and_source_audio_not_modified": true,
+  "no_audio_playback_Godot_start_or_listener_experience_test": true,
+  "audio_quality_import_engine_mixing_and_whole_current_audio_library_not_accepted_from_header_checks": true,
+  "MP3_or_other_unlisted_resource_schemas_not_qualified_by_this_WAV_profile": true,
+  "original_null_byte_fields_expected_hashes_and_old_failures_preserved": true,
+  "private_proof_ledger": {
+    "path": "G:\\PR13Evidence\\LOAD112-audio-pack-reference-bindings-20261023-r69-originals\\exact-audio-pack-reference-bindings.private.original.jsonl",
+    "bytes": 204332,
+    "sha256": "9ad7b825777393abbf403e49d87c990a4be77250296dcfd92d7ca4c6486e8f92",
+    "records": 107
+  },
+  "verified_private_custody": {
+    "path": "G:\\PR13Evidence\\LOAD112-audio-pack-binding-publication-20261023-r70-originals\\verified-audio-binding-custody.original.json",
+    "bytes": 15245,
+    "sha256": "7e7ddffc284cc51bf950a9f999c5f73b62d9800a3c33452b7c826111188c48c4"
+  },
+  "size_omitting_reference_records_before": 3801,
+  "size_omitting_reference_records_after": 3694,
+  "remaining_size_omitting_queue": {
+    "path": "G:\\PR13Evidence\\LOAD112-audio-pack-reference-bindings-20261023-r69-originals\\remaining-size-omitting-declaration-review.private.original.jsonl",
+    "bytes": 1765255,
+    "sha256": "a4ba9e2611c96916d6b82c7ef447b1286cec1e2af220225186981eccf58084b5",
+    "records": 3694,
+    "unique_declared_digests": 2364
+  },
+  "regular_declared_size_unobserved_pairs_unchanged": 4844,
+  "original_content_review_queue_unchanged": 192,
+  "archive_delta_content_review_queue_unchanged": 497,
+  "structural_path_observations_pending_unchanged": 226,
+  "register": "docs/reports/pr13-stages-20261009/S6-current4a-CI-annotation-20261023/register.json",
+  "register_sha256_unchanged": "bb5f21d73fc6a0abcf83e4cbade831954ec7f171e9d0281846a72c3d2a49718d",
+  "task_counts_unchanged": {
+    "Accepted": 100,
+    "Partial": 24,
+    "ReadyForAcceptance": 8,
+    "Failed": 0
+  },
+  "new_game_samples": 0,
+  "case_profiles_closed": 0,
+  "whole_LOAD112_accepted": false,
+  "whole_project_accepted": false,
+  "new_Godot_or_cloud_operation": false
+}

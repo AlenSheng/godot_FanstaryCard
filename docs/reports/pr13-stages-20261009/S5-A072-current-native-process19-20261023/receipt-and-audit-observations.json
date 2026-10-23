@@ -1,0 +1,393 @@
+{
+  "kind": "DerivedCountsAndReadonlyAuditCounters_NoAssetRowsOrSessionMaterial",
+  "native_receipt_case_ids": {
+    "process-start": 26,
+    "ack-runner-process-stop": 8,
+    "ACK-STOP-observed": 2,
+    "ACK-CYCLE-attempts-stop-before-commit": 1,
+    "ACK-CYCLE-stop-before-commit": 1,
+    "process-stop": 26,
+    "ACK-CYCLE-attempts-cycles-middle-uncommitted-loss": 1,
+    "ACK-CYCLE-cycles-middle-uncommitted-loss": 1,
+    "ACK-CYCLE-attempts-cycles-middle-response-loss": 1,
+    "ACK-CYCLE-cycles-middle-response-loss": 1,
+    "ACK-CYCLE-attempts-stop-after-commit": 1,
+    "ACK-CYCLE-stop-after-commit": 1,
+    "A05-readonly-audit": 16,
+    "A05-client-start": 16,
+    "A05-client-stop": 16,
+    "A05-guard-bootstrap-authority": 22,
+    "A05-guard-GET-held": 3,
+    "A05-guard-ACK-held": 3,
+    "A05-guard-ACK-backend": 5,
+    "A05-guard-no-content-forwarded": 3,
+    "A05-guard-window-passed": 3,
+    "A05-guard-relay-cleanup": 3,
+    "A05-guard-legacy-snapshot-request": 10,
+    "A05-guard-ACK-unforwarded": 3,
+    "A05-db-relay-upstream": 2,
+    "A05-db-committed-response-drop": 1,
+    "A05-transaction-fault-observed": 2,
+    "A05-same-ACK": 6,
+    "A05-transaction-fault-passed": 2,
+    "A05-db-relay-cleanup": 2,
+    "A05-db-precommit-drop": 40,
+    "A05-original-ready": 1,
+    "A05-old-callback-held": 1,
+    "A05-duplicate-ready-delivery": 3,
+    "A05-old-callback-released": 1,
+    "A05-healthy-M-and-N": 1,
+    "A05-healthy-passed": 1,
+    "A05-callback-relay-cleanup": 1,
+    "ack-client-process-stop": 8,
+    "ACK-FAULT-attempts-drop-all-committed": 1,
+    "ACK-FAULT-drop-all-committed": 1,
+    "ACK-FAULT-combined-restart": 1,
+    "ACK-FAULT-attempts-drop-first-committed-restart": 1,
+    "ACK-FAULT-drop-first-committed-restart": 1,
+    "ACK-FAULT-attempts-drop-all-uncommitted": 1,
+    "ACK-FAULT-drop-all-uncommitted": 1,
+    "ACK-FAULT-attempts-drop-first-committed": 1,
+    "ACK-FAULT-drop-first-committed": 1,
+    "LOAD02-process-exit": 6,
+    "LOAD-02.2-T01-gate": 1,
+    "LOAD-02.2-T01-STOP": 1,
+    "LOAD-02.2-T01-original-final": 1,
+    "LOAD-02.2-T01": 1,
+    "LOAD-02.2-T01-relay-finally": 1,
+    "LOAD-02.2-T02-gate": 1,
+    "LOAD-02.2-T02-STOP": 1,
+    "LOAD-02.2-T02-original-final": 1,
+    "LOAD-02.2-T02": 1,
+    "LOAD-02.2-T02-relay-finally": 1,
+    "LOAD-02.2-T03-gate": 1,
+    "LOAD-02.2-T03-STOP": 1,
+    "LOAD-02.2-T03-original-final": 1,
+    "LOAD-02.2-T03": 1,
+    "LOAD-02.2-T03-relay-finally": 1,
+    "A05-causal-http-forwarded": 15,
+    "A05-causal-legacy-snapshot-request": 5,
+    "A05-causal-actual-host-killed": 1,
+    "A05-causal-settlement-get-held": 1,
+    "A05-causal-ready-poll-held": 1,
+    "A05-causal-ack-held-before-backend": 1,
+    "A05-causal-counterexample": 1,
+    "A05-runtime-before": 1,
+    "A05-runtime-pending-before": 1,
+    "A05-runtime-passed": 1
+  },
+  "readonly_audits": [
+    {
+      "label": "causal-after",
+      "require_clear": true,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "original": {
+        "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\receipts\\a05-audit-causal-after.json",
+        "bytes": 6927,
+        "sha256": "e501af820e251d6d111ee32582184f924c1f2fa7bb3bebec8e2d449699685adf"
+      }
+    },
+    {
+      "label": "causal-before",
+      "require_clear": false,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "original": {
+        "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\receipts\\a05-audit-causal-before.json",
+        "bytes": 1664,
+        "sha256": "1dc7bb42532ec18fb2f1fb9aa0c069ae5c92772151ec1c2227efc00db2ea8fa0"
+      }
+    },
+    {
+      "label": "db-committed-response-loss-after",
+      "require_clear": true,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "original": {
+        "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\receipts\\a05-audit-db-committed-response-loss-after.json",
+        "bytes": 5144,
+        "sha256": "7a0f0a2bfd6b2f8c45616586e8f756e82735b6f21fde90d9f69f1487193bac42"
+      }
+    },
+    {
+      "label": "db-committed-response-loss-before",
+      "require_clear": false,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "original": {
+        "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\receipts\\a05-audit-db-committed-response-loss-before.json",
+        "bytes": 1684,
+        "sha256": "a52fa73fb46b1b2c43ad71901884ce94a15d3a28c0e76414eac6ab3df09db49d"
+      }
+    },
+    {
+      "label": "db-precommit-after",
+      "require_clear": true,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "original": {
+        "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\receipts\\a05-audit-db-precommit-after.json",
+        "bytes": 5129,
+        "sha256": "ac1e23a66befb859365261a6ee620f9dd09d68fa4fb7d39fa0060b1e5ece2b24"
+      }
+    },
+    {
+      "label": "db-precommit-before",
+      "require_clear": false,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "original": {
+        "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\receipts\\a05-audit-db-precommit-before.json",
+        "bytes": 1670,
+        "sha256": "0727393e41adf6bf56e1c0a3524d522f79c962eaf9d1e8fecd5fd3702578723d"
+      }
+    },
+    {
+      "label": "guard-ordinary-success-after",
+      "require_clear": true,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "original": {
+        "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\receipts\\a05-audit-guard-ordinary-success-after.json",
+        "bytes": 6942,
+        "sha256": "343a20a69f7c451638221e2cf591fd1be6f8818267a284e685bd24fce882f65c"
+      }
+    },
+    {
+      "label": "guard-ordinary-success-before",
+      "require_clear": false,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "original": {
+        "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\receipts\\a05-audit-guard-ordinary-success-before.json",
+        "bytes": 1679,
+        "sha256": "96d89f5b0c868558a65a9734ec4108d676c03510d9d33a2a3feaeb11b0c60e36"
+      }
+    },
+    {
+      "label": "guard-recovered-committed-loss-after",
+      "require_clear": true,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "original": {
+        "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\receipts\\a05-audit-guard-recovered-committed-loss-after.json",
+        "bytes": 6952,
+        "sha256": "ecdf64fd1a73f76a95c34996b37633fa9914e516039ec6110a4d8ad4a0d67f5d"
+      }
+    },
+    {
+      "label": "guard-recovered-committed-loss-before",
+      "require_clear": false,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "original": {
+        "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\receipts\\a05-audit-guard-recovered-committed-loss-before.json",
+        "bytes": 1688,
+        "sha256": "74d6404cfa2be0c76061136604b8a004f63dda450b9baa1f0e688b6463b23d0b"
+      }
+    },
+    {
+      "label": "guard-recovered-uncommitted-loss-after",
+      "require_clear": true,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "original": {
+        "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\receipts\\a05-audit-guard-recovered-uncommitted-loss-after.json",
+        "bytes": 6954,
+        "sha256": "4667667f3dbb5fbd53b89239d4db3bdd032d32ec0e799e3bbc9a6b6edd56043c"
+      }
+    },
+    {
+      "label": "guard-recovered-uncommitted-loss-before",
+      "require_clear": false,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "original": {
+        "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\receipts\\a05-audit-guard-recovered-uncommitted-loss-before.json",
+        "bytes": 1690,
+        "sha256": "3192efaec68c014e6efdc25e507ab803465676639fe079be5a72496c2132e368"
+      }
+    },
+    {
+      "label": "healthy-after",
+      "require_clear": true,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "original": {
+        "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\receipts\\a05-audit-healthy-after.json",
+        "bytes": 17223,
+        "sha256": "660e3263ed6817130a7e4f5fdd20f08c6e9c4f945f352a0329f65b77b054ed67"
+      }
+    },
+    {
+      "label": "healthy-before",
+      "require_clear": false,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "original": {
+        "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\receipts\\a05-audit-healthy-before.json",
+        "bytes": 2077,
+        "sha256": "b9df039b2ada54e8ef98c7aa9222339e27fcacf1301daf86aa31ebb465daff37"
+      }
+    },
+    {
+      "label": "pending-after",
+      "require_clear": true,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "original": {
+        "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\receipts\\a05-audit-pending-after.json",
+        "bytes": 6928,
+        "sha256": "7ce959fe2d3855e7612bd19ae719a9f3e162f7bdca3882cad4c984e4e715bf10"
+      }
+    },
+    {
+      "label": "pending-before",
+      "require_clear": false,
+      "counters": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      },
+      "original": {
+        "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\receipts\\a05-audit-pending-before.json",
+        "bytes": 1664,
+        "sha256": "ead4f6b4a46ac1a51625b69c8cd7ceaeef8d7c19d34c64c8f90f343d2fa99539"
+      }
+    }
+  ],
+  "original_receipts": {
+    "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\receipts\\receipts.jsonl",
+    "bytes": 799678,
+    "sha256": "b09cbc06b23824869b4a3239ae449a5160d13f456e82fe3c9afb081ad35a295a"
+  },
+  "raw_private_originals_not_exported": true,
+  "in_receipt_A05_sourceSha_field_missing": true,
+  "source_identity_basis": "Exact frozen source manifest, actual fresh build logs and immutable current test assembly; do not fill absent original receipt fields retroactively"
+}

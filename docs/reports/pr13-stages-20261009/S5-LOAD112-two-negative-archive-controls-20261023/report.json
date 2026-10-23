@@ -1,0 +1,154 @@
+{
+  "kind": "ExactTwoArchiveNegativeControls_ContextOnly",
+  "state": "ScopedContextResolved",
+  "qualified_prior_controls": {
+    "path": "G:\\PR13Evidence\\LOAD112-archive-observer-progress-20261022-r1-originals\\controls\\observer-controls-qualified.original.json",
+    "bytes": 2024,
+    "sha256": "b8b412804ef17dd8ea3c7ecb222d7702e5f8c3f2bc671eeac74ed9c08de8c9ac"
+  },
+  "qualified_prior_engine": {
+    "path": "G:\\PR13Evidence\\LOAD112-archive-observer-progress-20261022-r1-originals\\archive\\executed-engine.original.py",
+    "bytes": 14460,
+    "sha256": "d1034cf329d0bb3f22918f509988900ee998048c12c028c034eb6d8514d6ec4a"
+  },
+  "creator_source_read_now": {
+    "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112_archive_engine_controls_r2_20261022.py",
+    "bytes": 6016,
+    "sha256": "c9c2088ce3167577e68c1eb4e68888ac6acdb194eace1a63fc55139f59e0e76f"
+  },
+  "creator_historical_execution_hash_not_separately_claimed": true,
+  "resolutions": [
+    {
+      "identity": {
+        "bytes": 35,
+        "sha256": "423e6f8f1c0a9e1192a7432556cdd0c543b22a374cf3debe6be771102b5af42b"
+      },
+      "classification": "ControlledNestedSensitiveJSON_NegativeInput",
+      "parent_chain": [
+        {
+          "member": "inner.zip",
+          "bytes": 159,
+          "sha256": "caef817b2ff39436e11920e814590b7aa1e9b8a6e667f7efd2dff9ac3afddf00",
+          "CRC_verified": true
+        },
+        {
+          "member": "private.json",
+          "bytes": 35,
+          "sha256": "423e6f8f1c0a9e1192a7432556cdd0c543b22a374cf3debe6be771102b5af42b",
+          "CRC_verified": true
+        }
+      ],
+      "outer_original": {
+        "path": "G:\\PR13Evidence\\LOAD112-archive-observer-progress-20261022-r1-originals\\controls\\inputs-and-results\\nested-sensitive.zip",
+        "bytes": 224,
+        "sha256": "8ef1a47d6e350d657d3f13323fea2f1f7a82abefa7cd88489474faee98c33410"
+      },
+      "creator_literal": {
+        "line": 57,
+        "bytes": 35,
+        "sha256": "423e6f8f1c0a9e1192a7432556cdd0c543b22a374cf3debe6be771102b5af42b"
+      },
+      "original_finding": {
+        "epoch": "r3",
+        "native_finding_ordinal": 3409,
+        "native_line_sha256": "4558bf5dccdfaf6856c8f03dd23cd989fe1e16a5c21ed9807eaecc33490e79da",
+        "outer_source": {
+          "root": "private-G",
+          "path": "LOAD112-archive-observer-progress-20261022-r1-originals/controls/inputs-and-results/nested-sensitive.zip",
+          "bytes": 224,
+          "sha256": "8ef1a47d6e350d657d3f13323fea2f1f7a82abefa7cd88489474faee98c33410",
+          "frozen_snapshot_alias_paths": 1
+        },
+        "reason": "Sensitive field in public evidence: password",
+        "original_finding_retained": true,
+        "parent_archive_sha256": "caef817b2ff39436e11920e814590b7aa1e9b8a6e667f7efd2dff9ac3afddf00",
+        "member_name": "private.json",
+        "member_ordinal": 1,
+        "depth": 1
+      },
+      "current_guard_rejection": {
+        "type": "ValueError",
+        "reason": "Sensitive field in public evidence: password"
+      },
+      "raw_content_public_export_allowed": false,
+      "original_finding_and_private_input_preserved": true
+    },
+    {
+      "identity": {
+        "bytes": 40,
+        "sha256": "fb7709f55dbcb4fd9d3a3821a7976c1526aa4c25c5ec28a809822300bb761e79"
+      },
+      "classification": "ControlledMalformedJSONL_NegativeInput",
+      "parent_chain": [
+        {
+          "member": "records.jsonl",
+          "bytes": 40,
+          "sha256": "fb7709f55dbcb4fd9d3a3821a7976c1526aa4c25c5ec28a809822300bb761e79",
+          "gzip_footer_and_CRC_verified": true
+        }
+      ],
+      "outer_original": {
+        "path": "G:\\PR13Evidence\\LOAD112-archive-observer-progress-20261022-r1-originals\\controls\\inputs-and-results\\records.jsonl.gz",
+        "bytes": 54,
+        "sha256": "cf8d7ef58487741531d3c27c4ada7eab5bc94d013449a8cc19db5e20495f3c90"
+      },
+      "creator_literal": {
+        "line": 80,
+        "bytes": 40,
+        "sha256": "fb7709f55dbcb4fd9d3a3821a7976c1526aa4c25c5ec28a809822300bb761e79"
+      },
+      "original_finding": {
+        "epoch": "r3",
+        "native_finding_ordinal": 3410,
+        "native_line_sha256": "41ed4395aeebdc0663d181be997c499fcac0820c2b18415e452567ce4be674ea",
+        "outer_source": {
+          "root": "private-G",
+          "path": "LOAD112-archive-observer-progress-20261022-r1-originals/controls/inputs-and-results/records.jsonl.gz",
+          "bytes": 54,
+          "sha256": "cf8d7ef58487741531d3c27c4ada7eab5bc94d013449a8cc19db5e20495f3c90",
+          "frozen_snapshot_alias_paths": 1
+        },
+        "reason": "MalformedOrNonUTF8PrivateJSONLRecord",
+        "original_finding_retained": true,
+        "parent_archive_sha256": "cf8d7ef58487741531d3c27c4ada7eab5bc94d013449a8cc19db5e20495f3c90",
+        "member_name": "records.jsonl",
+        "member_ordinal": 1,
+        "depth": 0
+      },
+      "current_guard_rejection": {
+        "type": "ValueError",
+        "reason": "Malformed public evidence JSON"
+      },
+      "raw_content_public_export_allowed": false,
+      "original_finding_and_private_input_preserved": true
+    }
+  ],
+  "prior_archive_queue": {
+    "path": "G:\\PR13Evidence\\LOAD112-old-client-seekable-publication-20261023-r153-originals\\remaining-archive-content-review.private.original.jsonl",
+    "bytes": 25937,
+    "sha256": "f8590a572ed78e9571fe17d9f43a8e76437b4d39dfea1ce56f39930176e48411",
+    "records": 30,
+    "remaining_objects": 30,
+    "finding_observations": 31,
+    "private_custody_dispositions_are_not_public_export_or_global_privacy_permission": true,
+    "whole_task_accepted": false
+  },
+  "new_archive_queue": {
+    "path": "G:\\PR13Evidence\\LOAD112-two-negative-archive-controls-20261023-r167-originals\\remaining-archive-content-review.private.original.jsonl",
+    "bytes": 25312,
+    "sha256": "982e7b825e71171c3750d83b6e878fed4553f70134f175e3e7314b8d45e53a27",
+    "records": 28,
+    "remaining_objects": 28,
+    "finding_observations": 29
+  },
+  "original_content_queue1_unchanged": true,
+  "structural_path_observations226_unchanged": true,
+  "old_client2124_child_semantic_review_still_pending": true,
+  "original_negative_findings_not_relabelled_as_guard_passes": true,
+  "only_expected_control_intent_resolved": true,
+  "no_other_sensitive_or_malformed_content_exempted": true,
+  "strict_public_guard_changed": false,
+  "case_profiles_closed": 0,
+  "whole_LOAD112_or_project_accepted": false,
+  "no_game_or_engine_or_network_or_production_process_started": true
+}

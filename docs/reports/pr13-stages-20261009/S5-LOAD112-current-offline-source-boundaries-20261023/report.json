@@ -1,0 +1,130 @@
+{
+  "kind": "CurrentSavedSourceOfflineBoundaries_WindowsErrorsPreserved_POSIXOnlyMethodsRetried",
+  "generated_at": "2026-10-23T19:37:04.301722+08:00",
+  "task_id": "LOAD-11.2",
+  "state": "Partial",
+  "Windows_original_run": {
+    "methods_run": 36,
+    "passed_methods_retained_without_resampling": 30,
+    "errored_methods_retained": 6,
+    "errored_subcase_or_method_occurrences": 11,
+    "raw_summary": "FAILED (errors=11)",
+    "error_categories": {
+      "ExportNoFollowDirectoryCapabilityUnavailable": 6,
+      "WindowsSymlinkPrivilegeUnavailable": 4,
+      "MkfifoUnavailableOnWindows": 1
+    },
+    "raw_log": {
+      "path": "G:\\PR13Evidence\\LOAD112-public-source-offline-unit-tests-20261023-r124-originals\\runtime\\offline-source-audit\\unittest-output.private-original.log",
+      "bytes": 14694,
+      "sha256": "fe67f89d5c5d164369b01cce75182f84745e724058f6f5fca98f232884a47d22"
+    },
+    "reconciled_result_is_derived_not_recovered_original_result_object": true,
+    "original_native_process_exit_code": 1,
+    "observer_subtest_event_count_assertion_failure_preserved": true
+  },
+  "POSIX_scoped_retry": {
+    "methods_run": 6,
+    "passed_methods": 6,
+    "failed_methods": 0,
+    "errors": 0,
+    "skipped": 0,
+    "method_ids": [
+      "tools.cloud.tests.test_evidence_export.EvidenceExport.test_all_profiles_keep_complete_named_reports_and_never_open_private_paths",
+      "tools.cloud.tests.test_evidence_export.EvidenceExport.test_links_and_non_regular_allowed_names_are_rejected_without_reading",
+      "tools.cloud.tests.test_evidence_export.EvidenceExport.test_missing_source_still_records_that_no_reports_ran",
+      "tools.cloud.tests.test_evidence_export.EvidenceExport.test_partial_failed_fixture_keeps_diagnostics_without_runtime",
+      "tools.cloud.tests.test_evidence_export.EvidenceExport.test_rejected_path_cli_fails_but_emits_only_safe_partial_diagnostics",
+      "tools.cloud.tests.test_evidence_export.EvidenceExport.test_symlinked_source_ancestor_is_not_followed"
+    ],
+    "subtest_status_counts": {
+      "Passed": 7
+    },
+    "observer_complete": true,
+    "source_files_unchanged": true,
+    "python_version": "3.12.3",
+    "process_uid": 65534,
+    "runtime_image": "sha256:180f524270f6ac28d2fe0ff29707fb392387d7b766f731e41fda1e45e8230520",
+    "source_manifest_sha256": "bcbbb491cd6da55ba4ab0a64a9d3bd6c0d25479f87c9c01b4994214e3ac99a15",
+    "native_result": {
+      "path": "G:\\PR13Evidence\\LOAD112-POSIX-export-retry-20261023-r130-originals\\runtime\\cloud-native-originals\\result.private.json",
+      "bytes": 5055,
+      "sha256": "d6ce227670096cecd6d0b051583f9e74b7aeed8a01240a958d8373e213c82383"
+    },
+    "private_raw_log": {
+      "path": "G:\\PR13Evidence\\LOAD112-POSIX-export-retry-20261023-r130-originals\\runtime\\cloud-native-originals\\unittest-output.private.log",
+      "bytes": 1230,
+      "sha256": "1ba85a633354dbc80c01244218c573bced9d6d1e1c269c0ed4858db1f6472c9e"
+    }
+  },
+  "Windows30_and_Linux6_are_separate_native_runs_not_one_fresh36_green_suite": true,
+  "Windows_unsupported_no_follow_symlink_privilege_and_FIFO_results_not_relabelled_passed": true,
+  "original_export_security_checks_and_all_source_assertions_unchanged": true,
+  "corrected_retry_observer_records_main_methods_and_subtests_separately": true,
+  "original_incomplete_Windows_observer_and_byte_response_serialization_failures_preserved": true,
+  "isolation": {
+    "current_cloud_host_only": true,
+    "new_image_downloads": 0,
+    "network": "none",
+    "readonly_source": true,
+    "memory_limit_bytes": 134217728,
+    "cpus_limit": 0.3,
+    "pids_limit": 32,
+    "user_uid": 65534,
+    "capabilities_dropped": true,
+    "no_new_privileges": true,
+    "image_environment_cleared_before_Python": true,
+    "Docker_socket_or_production_data_not_mounted": true
+  },
+  "owned_container_removed_and_exact_uploaded5_source_files_removed_only_after_G_custody": true,
+  "raw_remote_outputs_owner_manifest_status_and_cleanup_receipt_retained": true,
+  "hosted_CI_live_Postgres_gameplay_Godot_or_full_manifest_source_acceptance_not_granted": true,
+  "source_saved_working_bytes_authoritative_no_whole_image_or_all_current_SHA_CI_claim": true,
+  "source_manifest": {
+    "source_HEAD": "4a9215fee6f8c50da79e9895e408717fbd9118de",
+    "files": [
+      {
+        "path": "tools/cloud/export_evidence.py",
+        "bytes": 7391,
+        "sha256": "4e66d7398a0be0f8d56a4445c97a5a85ff99a11a9e5169f911e30924d1cab54f"
+      },
+      {
+        "path": "tools/cloud/tests/test_evidence_export.py",
+        "bytes": 8337,
+        "sha256": "2cb0d88b53bd302b8f0907a3c1aa6310698257541c5e5d884c48b54f3a463187"
+      },
+      {
+        "path": "runner.py",
+        "bytes": 5077,
+        "sha256": "e8f8db89d04fdf96918f40d6c0ea0f36b0396b1f381319c05762434d7655e335"
+      },
+      {
+        "path": "selection.json",
+        "bytes": 806,
+        "sha256": "a3382a364f1205ccf802f0e197eb34479a8c602e667f921c662f173a8cc6435f"
+      }
+    ]
+  },
+  "verified_private_custody": {
+    "path": "G:\\PR13Evidence\\LOAD112-current-offline-source-tests-publication-20261023-r132-originals\\verified-offline-source-test-custody.original.json",
+    "bytes": 8183,
+    "sha256": "2d45ced38e94ce6459972cbb3374ccd783daacc439d33a9b95233a09e56e77d5"
+  },
+  "original_content_objects_unchanged": 33,
+  "archive_content_objects_unchanged": 91,
+  "omitted_size_reference_records_unchanged": 8,
+  "regular_sized_unobserved_pairs_unchanged": 4844,
+  "structural_path_observations_unchanged": 226,
+  "register": "docs/reports/pr13-stages-20261009/S6-current4a-CI-annotation-20261023/register.json",
+  "register_sha256_unchanged": "bb5f21d73fc6a0abcf83e4cbade831954ec7f171e9d0281846a72c3d2a49718d",
+  "task_counts_unchanged": {
+    "Accepted": 100,
+    "Partial": 24,
+    "ReadyForAcceptance": 8,
+    "Failed": 0
+  },
+  "new_game_samples": 0,
+  "case_profiles_closed": 0,
+  "whole_LOAD112_accepted": false,
+  "whole_project_accepted": false
+}

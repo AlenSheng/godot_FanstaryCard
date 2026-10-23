@@ -1,0 +1,109 @@
+{
+  "SchemaVersion": 1,
+  "Kind": "actual_domain_encounter_simulation",
+  "SourceSha": "86ddee230a785d793757da6d0d24056a64a25955",
+  "ConfigVersion": "gdd-0.70-numerical-1",
+  "SamplesPerStratum": 3,
+  "SeedStart": 20261022,
+  "DomainAssemblySha256": "db2a29cd07b04b96999167b781a2982d8aed3515c6081d12d73d32763a571d9f",
+  "SimulatorAssemblySha256": "10cb4613ca029bb5ffd7f5814336a531345e4a1e09d1390db359f378398943f0",
+  "PreviewAudit": "first_three_legal_actions_per_encounter",
+  "SeedBlocks": [
+    {
+      "Block": 0,
+      "Seeds": [
+        20261022
+      ]
+    },
+    {
+      "Block": 1,
+      "Seeds": [
+        20261023
+      ]
+    },
+    {
+      "Block": 2,
+      "Seeds": [
+        20261024
+      ]
+    }
+  ],
+  "PrimarySampleFloorMet": false,
+  "CutoffSeconds": 60,
+  "ActionIntervalSeconds": 0.4,
+  "WeaponLevel": 0,
+  "Candidate": "class-passives",
+  "SourceConfigSha256": "5f9d2c8b5a41a086faa383add2a5d4235c484853c461a572aeaa1f6c2366dd1d",
+  "CandidateWhitelist": [
+    "O1"
+  ],
+  "SingleFactorOnly": true,
+  "FirstWindupScope": "Only the first positive intent windup of each O6 monster; subsequent windups and attack intervals unchanged; 100ms tick resolution",
+  "StrategyPolicy": "baseline_all_hand spends immediately; basic/build wait for three cards or two core cards above 25% HP, then score legal visible subsets",
+  "RunIdentity": {
+    "SeedStart": 20261022,
+    "Samples": 3,
+    "Candidate": "class-passives",
+    "WeaponLevel": 0
+  },
+  "Scope": "Synthetic encounter entry, not a legal full expedition route or network capacity proof",
+  "Outcomes": [
+    "Victory",
+    "Death",
+    "Censored",
+    "Error"
+  ],
+  "ProductionDefaults": {
+    "CardsSpentDraw": false,
+    "FractionalGuardian": false,
+    "OptionalMonsterPool": false,
+    "MonsterCapacity": 5,
+    "BudgetedBotLoot": false,
+    "BotLootCount": 2,
+    "MortalBotPve": false,
+    "FenxianPolicy": 1,
+    "GuardianPolicy": 1
+  },
+  "CandidateActivation": false,
+  "Strategies": [
+    "baseline_all_hand"
+  ],
+  "Groups": [
+    "O1"
+  ],
+  "Decks": [
+    {
+      "Hero": "Mage",
+      "Key": "default",
+      "CardIds": [
+        "C01",
+        "C02",
+        "C03",
+        "C04",
+        "C05",
+        "C06",
+        "C07",
+        "C08",
+        "C09",
+        "C10",
+        "C11",
+        "C12",
+        "C13",
+        "MAG-01",
+        "MAG-02",
+        "MAG-03",
+        "MAG-04",
+        "MAG-05",
+        "MAG-06",
+        "MAG-07"
+      ],
+      "Level": 0,
+      "Ownership": "one enabled codex copy per selected card",
+      "Budget": {
+        "Rarity": 20,
+        "UnlockCost": 0
+      },
+      "Sha256": "7a3bc5b183a1967c0e7ce14d59162adb47bfa20ea2ccfe980a3bd8c14a09211e"
+    }
+  ]
+}

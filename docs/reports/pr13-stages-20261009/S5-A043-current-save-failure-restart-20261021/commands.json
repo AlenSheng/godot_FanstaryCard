@@ -1,0 +1,65 @@
+{
+  "Native_started": {
+    "PID": 29,
+    "command": [
+      "/control/godot_verbose",
+      "--headless",
+      "--audio-driver",
+      "Dummy",
+      "--max-fps",
+      "60",
+      "--path",
+      "/repo/client",
+      "res://tests/A043_save.tscn"
+    ],
+    "expected_original_exit": 0,
+    "owned_forced_Program_restart_expected": true
+  },
+  "Native_terminal": {
+    "PID": 29,
+    "actual_exit": 0
+  },
+  "Program0": {
+    "PID": 7,
+    "startticks": 295167239,
+    "commandSHA": "e2161d93313d4bba234cabe6aacf0c42a74e601e444df56ddf6a96e0f272546f",
+    "executable": "/usr/share/dotnet/dotnet"
+  },
+  "Program0_forced_terminal": {
+    "verified_identity": {
+      "PID": 7,
+      "startticks": 295167239,
+      "commandSHA": "e2161d93313d4bba234cabe6aacf0c42a74e601e444df56ddf6a96e0f272546f",
+      "executable": "/usr/share/dotnet/dotnet"
+    },
+    "actual_exit": -9,
+    "declared_fault_SIGKILL": true,
+    "no_container_or_other_process_stopped": true
+  },
+  "Program1": {
+    "PID": 45,
+    "startticks": 295171117,
+    "commandSHA": "e2161d93313d4bba234cabe6aacf0c42a74e601e444df56ddf6a96e0f272546f",
+    "executable": "/usr/share/dotnet/dotnet"
+  },
+  "observer_compile": {
+    "command": [
+      "C:\\Program Files\\dotnet\\dotnet.EXE",
+      "build",
+      "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\A043-current-save-failure-restart-20261021-r1\\observer\\A043Observer.csproj",
+      "--configuration",
+      "Release",
+      "--artifacts-path",
+      "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\A043-current-save-failure-restart-20261021-r1\\observer\\artifacts",
+      "--disable-build-servers",
+      "--ignore-failed-sources",
+      "/m:1",
+      "/p:UseSharedCompilation=false"
+    ],
+    "actual_exit": 0,
+    "CNO_BelowNormal_singleworker": true
+  },
+  "versions": "Godot4.7.2/currentProgram8eb/config49ce/PG18.6/read-onlynet10observer",
+  "skips": [],
+  "scope": "One originalfullrunner controlledpublicabandon/ACK afteractualSavefailure+forcedrestart; no natural/capacity/render/humanclaim"
+}

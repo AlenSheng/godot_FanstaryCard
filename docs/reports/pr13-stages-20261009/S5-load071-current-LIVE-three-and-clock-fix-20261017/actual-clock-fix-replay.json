@@ -1,0 +1,368 @@
+{
+  "kind": "CurrentClockFixReplayOfImmutableActualLiveAudit",
+  "new_native_clients": 0,
+  "current_scheduler_text_equal_executed_LIVE_source": true,
+  "cases": {
+    "T01": {
+      "original_report_sha256": "364d9472da337189944c4e83b2c927ee27de511ec6ca2895df1746c492498852",
+      "owned_audit_records": 264,
+      "healthy_cutoff_distributions_byte_semantics_unchanged": true
+    },
+    "T02": {
+      "original_report_sha256": "c8f1d5e8ba30c8ee752295b5b723eea500696294ef9b435a08196f66592d01c2",
+      "owned_audit_records": 44,
+      "healthy_cutoff_distributions_byte_semantics_unchanged": true
+    },
+    "T03": {
+      "original_report_sha256": "f81f9a53d7c2ffbe859d0d55b87de6ba255a3b0550907f4299144a3b22b4d71d",
+      "owned_audit_records": 142,
+      "original_bad_observed_running_seconds": 3626.0975634765623,
+      "actual_running_monotonic_seconds": 26.094,
+      "original_bad_logical_RPS": 0.016822492757617793,
+      "original_bad_value_invalidated_not_replaced_with_invented_value": true,
+      "clock_quality": {
+        "algorithm_version": "coordinator-cutoff-clock-v1",
+        "qualified": false,
+        "evidence_errors": [
+          "coordinator_wall_clock_discontinuity",
+          "missing_final_coordinator_monotonic_cutoff"
+        ],
+        "maximum_capture_drift_ms": 1000,
+        "wall_minus_monotonic_elapsed_ms": {
+          "running": 3600003.5634765625
+        },
+        "cutoffs_unix_ms": {
+          "start": 1792180750454.4365,
+          "stop": 1792184376552,
+          "final": 1792184379572
+        },
+        "cutoffs_monotonic_ms": {
+          "start": 1963253765.0,
+          "stop": 1963279859.0,
+          "final": null
+        },
+        "clock_mapping_corrected": false,
+        "scope": "Local coordinator capture consistency; no cross-process or host mapping inferred"
+      },
+      "current_request_cutoffs": {
+        "algorithm_version": "owned-request-cutoffs-v1",
+        "running": null,
+        "drain": null,
+        "final": {
+          "http": {
+            "count": 58,
+            "min_ms": 193,
+            "mean_ms": 406.43,
+            "max_ms": 1566,
+            "p50_ms": 221,
+            "p95_ms": 1264,
+            "p99_ms": 1566
+          },
+          "steady_http": {
+            "count": 49,
+            "min_ms": 193,
+            "mean_ms": 337.33,
+            "max_ms": 1264,
+            "p50_ms": 214,
+            "p95_ms": 1111,
+            "p99_ms": 1264
+          },
+          "cancelled_http": {
+            "count": 3,
+            "min_ms": 796,
+            "mean_ms": 965.67,
+            "max_ms": 1237,
+            "p50_ms": 864,
+            "p95_ms": 1237,
+            "p99_ms": 1237
+          },
+          "realtime": {
+            "count": 4,
+            "min_ms": 200,
+            "mean_ms": 244.75,
+            "max_ms": 290,
+            "p50_ms": 200,
+            "p95_ms": 290,
+            "p99_ms": 290
+          },
+          "rtt": {
+            "count": 4,
+            "min_ms": 200,
+            "mean_ms": 244.75,
+            "max_ms": 290,
+            "p50_ms": 200,
+            "p95_ms": 290,
+            "p99_ms": 290
+          },
+          "phase_http": {
+            "login": {
+              "count": 15,
+              "min_ms": 197,
+              "mean_ms": 538.33,
+              "max_ms": 1264,
+              "p50_ms": 331,
+              "p95_ms": 1264,
+              "p99_ms": 1264
+            },
+            "initial": {
+              "count": 9,
+              "min_ms": 200,
+              "mean_ms": 469,
+              "max_ms": 1111,
+              "p50_ms": 304,
+              "p95_ms": 1111,
+              "p99_ms": 1111
+            },
+            "matchmaking": {
+              "count": 22,
+              "min_ms": 200,
+              "mean_ms": 240.41,
+              "max_ms": 311,
+              "p50_ms": 214,
+              "p95_ms": 310,
+              "p99_ms": 311
+            },
+            "cleanup": {
+              "count": 12,
+              "min_ms": 193,
+              "mean_ms": 499,
+              "max_ms": 1566,
+              "p50_ms": 214,
+              "p95_ms": 1566,
+              "p99_ms": 1566
+            }
+          },
+          "route_http": {
+            "/api/v1/client-info": {
+              "count": 3,
+              "min_ms": 1044,
+              "mean_ms": 1142.33,
+              "max_ms": 1264,
+              "p50_ms": 1119,
+              "p95_ms": 1264,
+              "p99_ms": 1264,
+              "logical_request_count": 6,
+              "error_count": 0,
+              "cancelled_count": 3,
+              "latency_sample_quality": "insufficient"
+            },
+            "/api/v1/auth/local": {
+              "count": 3,
+              "min_ms": 304,
+              "mean_ms": 586.67,
+              "max_ms": 1125,
+              "p50_ms": 331,
+              "p95_ms": 1125,
+              "p99_ms": 1125,
+              "logical_request_count": 3,
+              "error_count": 0,
+              "cancelled_count": 0,
+              "latency_sample_quality": "insufficient"
+            },
+            "/api/v1/bootstrap": {
+              "count": 6,
+              "min_ms": 400,
+              "mean_ms": 880.67,
+              "max_ms": 1566,
+              "p50_ms": 613,
+              "p95_ms": 1566,
+              "p99_ms": 1566,
+              "logical_request_count": 6,
+              "error_count": 0,
+              "cancelled_count": 0,
+              "latency_sample_quality": "insufficient"
+            },
+            "/api/v1/realtime/ticket": {
+              "count": 3,
+              "min_ms": 197,
+              "mean_ms": 238.33,
+              "max_ms": 307,
+              "p50_ms": 211,
+              "p95_ms": 307,
+              "p99_ms": 307,
+              "logical_request_count": 3,
+              "error_count": 0,
+              "cancelled_count": 0,
+              "latency_sample_quality": "insufficient"
+            },
+            "/api/v1/players/me": {
+              "count": 3,
+              "min_ms": 200,
+              "mean_ms": 244,
+              "max_ms": 311,
+              "p50_ms": 221,
+              "p95_ms": 311,
+              "p99_ms": 311,
+              "logical_request_count": 3,
+              "error_count": 0,
+              "cancelled_count": 0,
+              "latency_sample_quality": "insufficient"
+            },
+            "/api/v1/preparations": {
+              "count": 3,
+              "min_ms": 207,
+              "mean_ms": 246,
+              "max_ms": 310,
+              "p50_ms": 221,
+              "p95_ms": 310,
+              "p99_ms": 310,
+              "logical_request_count": 3,
+              "error_count": 0,
+              "cancelled_count": 0,
+              "latency_sample_quality": "insufficient"
+            },
+            "/api/v1/inventory": {
+              "count": 6,
+              "min_ms": 193,
+              "mean_ms": 239,
+              "max_ms": 310,
+              "p50_ms": 213,
+              "p95_ms": 310,
+              "p99_ms": 310,
+              "logical_request_count": 6,
+              "error_count": 0,
+              "cancelled_count": 0,
+              "latency_sample_quality": "insufficient"
+            },
+            "/api/v1/matches/enqueue": {
+              "count": 3,
+              "min_ms": 772,
+              "mean_ms": 922,
+              "max_ms": 1111,
+              "p50_ms": 883,
+              "p95_ms": 1111,
+              "p99_ms": 1111,
+              "logical_request_count": 3,
+              "error_count": 0,
+              "cancelled_count": 0,
+              "latency_sample_quality": "insufficient"
+            },
+            "/api/v1/matches/tickets/{ticketId:guid}": {
+              "count": 28,
+              "min_ms": 193,
+              "mean_ms": 239.89,
+              "max_ms": 311,
+              "p50_ms": 214,
+              "p95_ms": 310,
+              "p99_ms": 311,
+              "logical_request_count": 28,
+              "error_count": 0,
+              "cancelled_count": 0,
+              "latency_sample_quality": "sufficient_for_diagnostic_rule"
+            }
+          },
+          "observed_window_seconds": null,
+          "logical_requests_per_second": null,
+          "completed_requests_per_second": null,
+          "throughput_missing_reason": "coordinator_cutoff_clock_unqualified",
+          "logical_result_counts": {
+            "cancelled": 3,
+            "success": 58
+          },
+          "error_count": 0,
+          "sample_count": 58,
+          "logical_request_count": 61,
+          "cancelled_count": 3,
+          "all_attempt_count": 61,
+          "attempt_coverage": "measured",
+          "attempt_result_counts": {
+            "cancelled": 3,
+            "success": 58
+          },
+          "valid_attempt_latency_count": 61,
+          "transport_phase_timings": {
+            "dns_ms": {
+              "count": 0,
+              "p95_ms": null,
+              "quality": "unavailable",
+              "missing_reason": "No attributable local request phase hook in supplied audit"
+            },
+            "tcp_connect_ms": {
+              "count": 0,
+              "p95_ms": null,
+              "quality": "unavailable",
+              "missing_reason": "No attributable local request phase hook in supplied audit"
+            },
+            "tls_handshake_ms": {
+              "count": 0,
+              "p95_ms": null,
+              "quality": "unavailable",
+              "missing_reason": "No attributable local request phase hook in supplied audit"
+            }
+          },
+          "valid_latency_count": 58,
+          "latency_sample_quality": {
+            "http": "sufficient_for_diagnostic_rule",
+            "realtime": "insufficient"
+          },
+          "error_rate": 0.0,
+          "steady_error_count": 0,
+          "steady_sample_count": 49,
+          "steady_error_rate": 0.0,
+          "invalid_metric_count": 0,
+          "invalid_duration_count": 0,
+          "invalid_schema_count": 0,
+          "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+        },
+        "evidence_errors": [
+          "cutoff_clock_unqualified"
+        ],
+        "cutoffs_unix_ms": {
+          "start": 1792180750454.4365,
+          "stop": 1792184376552,
+          "final": 1792184379572
+        },
+        "classification": "Full caller-owned audit retained; running/drain membership unavailable because coordinator cutoff clock is unqualified"
+      },
+      "current_cycle_cutoffs": {
+        "running": null,
+        "drain": null,
+        "final": {
+          "acknowledgements": 0,
+          "completed_cycles": 0,
+          "cycles_by_client": {},
+          "acknowledgements_by_client": {},
+          "distribution": {},
+          "fallback_cycles": 0
+        },
+        "cutoff_classification": "Unavailable: coordinator cutoff clock unqualified; final contains all caller-owned audit events",
+        "zero_cycle_clients": null,
+        "zero_cycle_reason": "requires_launch_manifest",
+        "evidence_errors": [
+          "cutoff_clock_unqualified"
+        ],
+        "stop_ms": 1792184376552,
+        "final_ms": 1792184379572
+      },
+      "expected_new_producer_evidence_dimension": "Failed",
+      "regression_scope": "Actual raw audit replay through current helpers; original R1 writer report untouched. Final monotonic cutoff absent in R1 is not reconstructed. New writer now records it; STOP discrepancy alone already proves discontinuity."
+    }
+  },
+  "source_hashes": {
+    "tools/gameplay_load_test.py": "34d6871dac1e5f184d4d5ee807edb986098df96a7a5d0782fd95ae8be0c3a244",
+    "tools/gameplay_load_validation.py": "8ecd83a82b9dd91ed37f3fc67e5291baeb0725b8c66d035e8e248c71c57331a5",
+    "tools/pr13_runtime_evidence.py": "e5da3ab84a213dc2741065e7c35c242b9f5bb25057707e1391e73c26da878be0"
+  },
+  "unit_regression": {
+    "exit_code": 0,
+    "command": [
+      "C:\\Users\\SHENGJIAHAO\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
+      "-X",
+      "utf8",
+      "-B",
+      "-m",
+      "unittest",
+      "tools.tests.test_coordinator_cutoff_clock",
+      "tools.tests.test_gameplay_load_validation",
+      "tools.tests.test_pr13_runtime_evidence",
+      "tools.tests.test_gameplay_load_sampling_contract",
+      "tools.tests.test_gameplay_load_finalization"
+    ],
+    "cwd": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard",
+    "elapsed_seconds": 11.25,
+    "stdout_sha256": "d01c417cdd9300e20e80acb58830c837e522c6fcb8fe4116b424c7ed10bfef03",
+    "new_native_gameplay_clients": 0,
+    "network": false,
+    "terminal": true
+  }
+}

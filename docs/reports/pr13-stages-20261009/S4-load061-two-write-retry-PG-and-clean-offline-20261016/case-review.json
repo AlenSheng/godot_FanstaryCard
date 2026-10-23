@@ -1,0 +1,260 @@
+{
+  "kind": "MAINCompleteLOAD061CaseByCaseReview",
+  "all_required_profiles_verified": true,
+  "cases": [
+    {
+      "case_id": "LOAD-06.1-T01",
+      "OFFLINE": "Current both transports12/12; actual native and receiver hashes",
+      "POSTGRES": "New actual three-write PG run",
+      "LIVE": "Current three cases real public responses; controlled fault relay",
+      "passed": true
+    },
+    {
+      "case_id": "LOAD-06.1-T02",
+      "OFFLINE": "Current both transports12/12; actual native and receiver hashes",
+      "POSTGRES": "Preserved original real reusable PG run, selected source equivalence verified",
+      "LIVE": "Current three cases real public responses; controlled fault relay",
+      "passed": true
+    },
+    {
+      "case_id": "LOAD-06.1-T03",
+      "OFFLINE": "Current both transports12/12; actual native and receiver hashes",
+      "POSTGRES": "Preserved original real reusable PG run, selected source equivalence verified",
+      "LIVE": "Current three cases real public responses; controlled fault relay",
+      "passed": true
+    }
+  ],
+  "new_PG_native_rows_passed": 1,
+  "new_PG_write_attempts": 3,
+  "new_PG_retries": 2,
+  "new_PG_SQL": {
+    "player_id": "01a14543-30da-7374-8251-d73dc28c21a8",
+    "gold": 99900,
+    "potions": 1,
+    "purchase_rows": 1,
+    "request_rows": 1,
+    "quantity": 1,
+    "price": 100,
+    "ledger_rows": 1,
+    "ledger_delta": -100,
+    "other_gold": 100000,
+    "other_potions": 0
+  },
+  "new_OFFLINE_native_rows": 24,
+  "new_OFFLINE_transports": [
+    "reusable",
+    "per-request"
+  ],
+  "OFFLINE_engine_errors": 0,
+  "old_OFFLINE_T01_one_GET_retry_mapping_withdrawn": true,
+  "old_PG_T01_one_GET_retry_mapping_kept_withdrawn": true,
+  "fixed_product_files": [],
+  "fixed_test_files": [
+    "client/tests/pr13_http_context_cases.gd",
+    "tools/pr13_http_cases.py"
+  ],
+  "working_tree_source_hashes": {
+    "client/data/http_endpoints.json": "d16c40750d7a52f90cabe944bc2bfec965577b41513f51a45a35157989a281e8",
+    "client/data/http_schema.json": "75bbfee7ed51c19a14d17bd009866ff1c706bf3e0e255a9f4e46d13673b25f1d",
+    "client/data/realtime_schema.json": "421a99d4f69e3656204d57b02bc4fdee680bdf3ad6dee35dd3f58bd742b1b3cd",
+    "client/network/gateway.gd": "4761c4781e209abe0e41c1931305c10c37142e2dc326d7e2f1ce3ea91787740e",
+    "client/network/gateway.gd.uid": "d3a4b8e279a09c9ab0e0bd17b3d8c03e04366149ca52991dbde9e21820306af2",
+    "client/network/http_protocol.gd": "9c10ce36d3f38566b68a8ad922a61cbe74b56065ba100b0ce436d989d546d733",
+    "client/network/http_protocol.gd.uid": "b2bc61821829e8ab8d43b90c47d3be31e6b4a8abaf5aed18372ce303cf162ec8",
+    "client/network/protobuf.gd": "31fbdedfa4a49899d692c66ba7e4b67b35cd885809b2cd861f29e513358a4e67",
+    "client/network/protobuf.gd.uid": "d8ebc4da9c3b5e8af5670643e8ffc521c691d9797d1240dee130dbdf5e016548",
+    "client/network/reusable_http_client.gd": "964f8babc258a38664d9cc3d07b96df2a2f823a230a283f1c91155efe51082b1",
+    "client/network/reusable_http_client.gd.uid": "8b48ab7c415aa84bc50829092258e55f0b3727572ad699c2c05d623947c28b6c",
+    "client/tests/fixture_runtime.py": "7aaa48a741706e81d908a14d9d101fa970de7febb671a58f7c86a198ac7d2db7",
+    "client/tests/http_protobuf_fixture.py": "fb0b7a941cebc495a4b59d3494999826a8ebb72c6b30355aaf9bf3e846722f86",
+    "client/tests/pr13_http_context_cases.gd": "b8835d17ea2e8d0ec9645b17c32ca778d3ee219deba2f5f3ebede6af1a611438",
+    "tools/pr13_http_cases.py": "d6b756e341e0cbe1e6fabe4660ea9bc6c27ba3c6b507a9c671109d7004f6cf39"
+  },
+  "current_HEAD": "20c38ec6884af640f86ce4c0b3175a20ca557a6e",
+  "source_identity_limit": "HEAD plus exact uncommitted test-input hashes. Current production selected paths equal cached source2ddf; no full Gateway equivalence or new native204 execution in old PG claim.",
+  "production_source_bytes_uploaded": 0,
+  "cloud_server_environment_changed": false,
+  "game_encounters": 0,
+  "failed_and_invalid_controls_preserved": {
+    "PG_R1": "Permission failure before native execution; available13 members verified",
+    "PG_R2": "Restore/build0,editor import1,no nativecases; available13 members verified,not all generated logs present at read; no game bug inferred",
+    "old_OFFLINE_unisolated": "Assertions12/12 per arm but applicationautoload invalidWS headers; original native_clean=true rejected by MAIN; stricter checker and minimal component project now clean"
+  },
+  "test_environment_changes_only": [
+    "R2 nonsecret input permissions corrected",
+    "R3 skipped unnecessary editor import after direct native syntax0; no rendering coverage claim",
+    "R3 disk runtime bounded128MB instead of tmpfs",
+    "Current OFFLINE runner copies and rehashes Gateway-only project, rejects engineERROR and resource leaks"
+  ],
+  "resource_rule_disclosure": {
+    "old_template_disk_floor": 0.15,
+    "old_template_memory_floor_bytes": 500000000,
+    "this_goal_preregistered_floor_fraction": 0.05,
+    "minimum_observed_disk_fraction": 0.14413356538595057,
+    "minimum_observed_available_memory": 2195673088,
+    "actual_memory_above_old500MB": true,
+    "production_limits_changed": false,
+    "business_criteria_relaxed": false
+  },
+  "cloud_cleanup_verified": true,
+  "backup_R3_members_rehashed": 25,
+  "PG_source_equivalence": {
+    "all_selected_paths_equal": true,
+    "checks": [
+      {
+        "function": "request",
+        "equal": true,
+        "original_sha256": "378f473ee5d787080b8542eae00bee6958a32383e5198afa5cf53175faafa15f",
+        "current_sha256": "378f473ee5d787080b8542eae00bee6958a32383e5198afa5cf53175faafa15f"
+      },
+      {
+        "function": "_request_page",
+        "equal": true,
+        "original_sha256": "2d4d05623fcf0b5a7514e78b459b3bdefab8be6e59372f76d9f0e59edf800287",
+        "current_sha256": "2d4d05623fcf0b5a7514e78b459b3bdefab8be6e59372f76d9f0e59edf800287"
+      },
+      {
+        "function": "_emit_http_attempt",
+        "equal": true,
+        "original_sha256": "4bb784a64a20528468a00677558ee451def558eb1d72ca92dec26f627da6652d",
+        "current_sha256": "4bb784a64a20528468a00677558ee451def558eb1d72ca92dec26f627da6652d"
+      },
+      {
+        "function": "_decode_http_response",
+        "equal": true,
+        "original_sha256": "2cef16ed86692277ddcb22caca5e7de0c3a79840f1fb43417608ee8989828b15",
+        "current_sha256": "2cef16ed86692277ddcb22caca5e7de0c3a79840f1fb43417608ee8989828b15"
+      },
+      {
+        "function": "normalize_request",
+        "equal": true,
+        "original_sha256": "bdac4cf5b3ae089bde1592d6f98c062f14383529f1b4c26cac27cb4b517639fa",
+        "current_sha256": "bdac4cf5b3ae089bde1592d6f98c062f14383529f1b4c26cac27cb4b517639fa"
+      },
+      {
+        "function": "normalize_response",
+        "equal": true,
+        "original_sha256": "2dec51c32a14bd59aa2fccdce9f4710a8f66b0aad726e2133f32f1122b3ea493",
+        "current_sha256": "2dec51c32a14bd59aa2fccdce9f4710a8f66b0aad726e2133f32f1122b3ea493"
+      },
+      {
+        "file": "network/reusable_http_client.gd",
+        "equal": true
+      },
+      {
+        "file": "network/http_protocol.gd",
+        "equal": true
+      },
+      {
+        "file": "network/protobuf.gd",
+        "equal": true
+      },
+      {
+        "function": "_request_http_transport reusable branch",
+        "equal": true,
+        "current_new_native_one_off_branch_excluded": true
+      },
+      {
+        "route": "/api/v1/auth/local",
+        "equal": true
+      },
+      {
+        "route": "/api/v1/mail",
+        "equal": true
+      },
+      {
+        "route": "/api/v1/mail/{mailId}/claim",
+        "equal": true
+      },
+      {
+        "route": "/api/v1/economy/wallet",
+        "equal": true
+      },
+      {
+        "route": "/api/v1/shop/purchases",
+        "equal": true
+      },
+      {
+        "protocol_envelope": true,
+        "equal": true
+      },
+      {
+        "data": "http_schema.json",
+        "equal": true
+      },
+      {
+        "data": "realtime_schema.json",
+        "equal": true
+      }
+    ],
+    "production_git_diff": [],
+    "production_working_diff": [],
+    "current_HEAD": "20c38ec6884af640f86ce4c0b3175a20ca557a6e",
+    "original_production_source": "2ddf34763b2a3f4c5aee22e2fd1749568cc6d41e",
+    "scope": "Exact selected reusable HTTP key/decode/retry path and actual API contracts; no whole Gateway equality, no new native204 branch or websocket replay claim.",
+    "old_archived_endpoint_path_missing_locally": true,
+    "endpoint_source_evidence": "Exact original Git blob hash equals original frozen manifest and current remote file; source only, not reconstructed runtime bytes."
+  },
+  "original_PG_T02_T03_reused_paths": [
+    "G:\\PR13Evidence\\real-PG-HTTP-context-r2-complete-originals\\native-output\\reusable\\native-result.original.json",
+    "G:\\PR13Evidence\\real-PG-HTTP-context-r2-complete-originals\\native-output\\reusable\\opaque-proxy.original.json"
+  ],
+  "prior_LIVE_review": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\reports\\pr13-stages-20261009\\S4-load061-current-LIVE-three-20261016\\case-review.json",
+  "limits": [
+    "HTTP context/retry/terminal contract only; no networkSLO,capacity,room-cycle,render or human acceptance.",
+    "LIVE T01 ticket headers stable does not prove once-only minting; new actualPG purchase SQL supplies once-only financial effect.",
+    "Old100ms controlled PG timeout and current LIVE10s attempt deadline are different declared test controls,not a production deadline change."
+  ],
+  "pointer_sha256": "d17d7c84072528245910f9b39c2ae4df85162eafd99c7b945d3eef1dff6a3599",
+  "parent_register": {
+    "path": "docs/reports/pr13-stages-20261009/S6-load061-LIVE-reviewed-PG-gap-corrected-20261016/register.json",
+    "sha256": "4257eef3ac0ae14a247716280e49cafc73d60c03f17f88e21c3602fbf2156741"
+  },
+  "review_artifacts": [
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\cloud-write-retry-r3\\complete-originals.tar.gz",
+      "bytes": 108123,
+      "sha256": "5394dd7527391f935002c434ab6bd2c06548ea265e31be191d3c9400ceb65ac1"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\cloud-write-retry-r3\\cleanup-receipt.original.json",
+      "bytes": 846,
+      "sha256": "b47a8b34734a7cf5e9461fd1622da8078a6a98f71444f8fdd219878a37989349"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\cloud-write-retry-r3\\originals\\runtime\\reusable\\native-result.original.json",
+      "bytes": 4361,
+      "sha256": "ee5b2dc96a81d08446e99eeaa76af8aee0ddf0fd56ad55b4e79c2aa604c5e2a4"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\cloud-write-retry-r3\\originals\\runtime\\reusable\\opaque-proxy.original.json",
+      "bytes": 7060,
+      "sha256": "0c5b939fe6daad2bca477b4ad2ee0145ef733e3259f60dc3535a2c6a8e79ea45"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\cloud-write-retry-r3\\originals\\runtime\\reusable\\database-response.original.json",
+      "bytes": 244,
+      "sha256": "8f9eda75092b293a5274b0453ca06a5ad94cebb35180ee3709d7f180845562e9"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\offline-http-two-write-retries-r2\\reusable\\report.json",
+      "bytes": 2139,
+      "sha256": "c307ef02b8a53f6a67eee3c9d21c73414d8acdccef18fbb7d0488164019bd0a0"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\offline-http-two-write-retries-r2\\reusable\\native-result.json",
+      "bytes": 8849,
+      "sha256": "41fe713ee9dad7a04fbf245badb9a51ab378acd912d5830be4c4cf07a123dfa2"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\offline-http-two-write-retries-r2\\per-request\\report.json",
+      "bytes": 2142,
+      "sha256": "232372750c45718c6f12e2dbd8f9d23279a039b8356a336c5001908079b7c772"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\offline-http-two-write-retries-r2\\per-request\\native-result.json",
+      "bytes": 8849,
+      "sha256": "07077f8f9057155518973ef56441515c74a2db778c25fe2efca06130f6a656a0"
+    }
+  ]
+}

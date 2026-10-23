@@ -1,0 +1,220 @@
+{
+  "kind": "HistoricalArchiveNegativeControls_ExactIntentAndCurrentNativeGuardQualified",
+  "generated_at": "2026-10-22T20:57:09.271022+08:00",
+  "task_id": "LOAD-11.2",
+  "checks": [
+    {
+      "name": "historical context receipt identifies positive and retained negative controls",
+      "passed": true
+    },
+    {
+      "name": "actual good control has one original plus distinct manifest",
+      "passed": true
+    },
+    {
+      "name": "actual control input matches frozen inventory good",
+      "passed": true
+    },
+    {
+      "name": "unchanged real archive guard expected outcome good",
+      "passed": true
+    },
+    {
+      "name": "rechecking an existing good extraction does not rewrite originals",
+      "passed": true
+    },
+    {
+      "name": "original control bytes and timestamps unchanged good",
+      "passed": true
+    },
+    {
+      "name": "G exact existing input custody good",
+      "passed": true
+    },
+    {
+      "name": "actual control input matches frozen inventory corrupt",
+      "passed": true
+    },
+    {
+      "name": "unchanged real archive guard expected outcome corrupt",
+      "passed": true
+    },
+    {
+      "name": "original control bytes and timestamps unchanged corrupt",
+      "passed": true
+    },
+    {
+      "name": "G exact existing input custody corrupt",
+      "passed": true
+    },
+    {
+      "name": "actual control input matches frozen inventory duplicate",
+      "passed": true
+    },
+    {
+      "name": "unchanged real archive guard expected outcome duplicate",
+      "passed": true
+    },
+    {
+      "name": "original control bytes and timestamps unchanged duplicate",
+      "passed": true
+    },
+    {
+      "name": "G exact existing input custody duplicate",
+      "passed": true
+    },
+    {
+      "name": "actual control input matches frozen inventory symlink",
+      "passed": true
+    },
+    {
+      "name": "unchanged real archive guard expected outcome symlink",
+      "passed": true
+    },
+    {
+      "name": "original control bytes and timestamps unchanged symlink",
+      "passed": true
+    },
+    {
+      "name": "G exact existing input custody symlink",
+      "passed": true
+    },
+    {
+      "name": "actual control input matches frozen inventory traversal",
+      "passed": true
+    },
+    {
+      "name": "unchanged real archive guard expected outcome traversal",
+      "passed": true
+    },
+    {
+      "name": "original control bytes and timestamps unchanged traversal",
+      "passed": true
+    },
+    {
+      "name": "G exact existing input custody traversal",
+      "passed": true
+    },
+    {
+      "name": "actual control input matches frozen inventory unlisted",
+      "passed": true
+    },
+    {
+      "name": "unchanged real archive guard expected outcome unlisted",
+      "passed": true
+    },
+    {
+      "name": "original control bytes and timestamps unchanged unlisted",
+      "passed": true
+    },
+    {
+      "name": "G exact existing input custody unlisted",
+      "passed": true
+    }
+  ],
+  "checks_count": 27,
+  "input_resolutions": [
+    {
+      "path": "outputs/pr13-tencent-20261009/cap-transport-archive-check-5e0da9179b304d4696a3b72ee8504d29/good.tar.gz",
+      "bytes": 276,
+      "sha256": "703be2eeb808c5456c99d649a4a8022be6bca701eb41ad703ffafe2d9b5a9556",
+      "expected_guard_outcome": "Passed",
+      "actual_guard_outcome": "Passed",
+      "guard_error_metadata": null,
+      "classification": "ControlledHistoricalPositiveArchive",
+      "current_guard_executed": true,
+      "original_input_modified": false
+    },
+    {
+      "path": "outputs/pr13-tencent-20261009/cap-transport-archive-check-5e0da9179b304d4696a3b72ee8504d29/corrupt.tar.gz",
+      "bytes": 276,
+      "sha256": "0bcb55c5175f7ba5f3cd7855bde8b6e7f153edde12226b72d119761087ba417f",
+      "expected_guard_outcome": "Rejected",
+      "actual_guard_outcome": "Rejected",
+      "guard_error_metadata": {
+        "type": "BadGzipFile",
+        "message": "CRC check failed 0x84da6fb2 != 0x84da6fb3"
+      },
+      "classification": "ControlledHistoricalNegativeArchive_NotUnexpectedProductCorruption",
+      "current_guard_executed": true,
+      "original_input_modified": false
+    },
+    {
+      "path": "outputs/pr13-tencent-20261009/cap-transport-archive-check-5e0da9179b304d4696a3b72ee8504d29/duplicate.tar.gz",
+      "bytes": 288,
+      "sha256": "17a3b59cbd8b34c4d51a94804808074641a34b8bcde9f31064e08d01f94ff3ba",
+      "expected_guard_outcome": "Rejected",
+      "actual_guard_outcome": "Rejected",
+      "guard_error_metadata": {
+        "type": "AttentionRequired",
+        "message": "Duplicate or excessive archive members"
+      },
+      "classification": "ControlledHistoricalNegativeArchive_NotUnexpectedProductCorruption",
+      "current_guard_executed": true,
+      "original_input_modified": false
+    },
+    {
+      "path": "outputs/pr13-tencent-20261009/cap-transport-archive-check-5e0da9179b304d4696a3b72ee8504d29/symlink.tar.gz",
+      "bytes": 310,
+      "sha256": "d7a441653acba0a34f4ee5acca41517c227178883dbd477c52248136e049d9a9",
+      "expected_guard_outcome": "Rejected",
+      "actual_guard_outcome": "Rejected",
+      "guard_error_metadata": {
+        "type": "AttentionRequired",
+        "message": "Tar links, directories and special entries rejected"
+      },
+      "classification": "ControlledHistoricalNegativeArchive_NotUnexpectedProductCorruption",
+      "current_guard_executed": true,
+      "original_input_modified": false
+    },
+    {
+      "path": "outputs/pr13-tencent-20261009/cap-transport-archive-check-5e0da9179b304d4696a3b72ee8504d29/traversal.tar.gz",
+      "bytes": 302,
+      "sha256": "60a67c8887cdd8a8afb4daa7fea81d50b2794fcdfd72cb0693833d60a361ec42",
+      "expected_guard_outcome": "Rejected",
+      "actual_guard_outcome": "Rejected",
+      "guard_error_metadata": {
+        "type": "ValueError",
+        "message": "Absolute or traversing member path"
+      },
+      "classification": "ControlledHistoricalNegativeArchive_NotUnexpectedProductCorruption",
+      "current_guard_executed": true,
+      "original_input_modified": false
+    },
+    {
+      "path": "outputs/pr13-tencent-20261009/cap-transport-archive-check-5e0da9179b304d4696a3b72ee8504d29/unlisted.tar.gz",
+      "bytes": 299,
+      "sha256": "bdc62a06ee6c2b52539ff910aa29812d5da166ee98716d1eb27a5bc5c0f96fc5",
+      "expected_guard_outcome": "Rejected",
+      "actual_guard_outcome": "Rejected",
+      "guard_error_metadata": {
+        "type": "AttentionRequired",
+        "message": "Archive/manifest original member count differs"
+      },
+      "classification": "ControlledHistoricalNegativeArchive_NotUnexpectedProductCorruption",
+      "current_guard_executed": true,
+      "original_input_modified": false
+    }
+  ],
+  "current_guard_sha256": "784ae9e9fe45492026128b59f467daa0d0ed2c670a818477ff00986a45b26f30",
+  "actual_python_version": "3.9.13",
+  "actual_guard_invocations": 7,
+  "existing_good_extraction_recheck_preserved_bytes_and_timestamps": true,
+  "positive_archives": 1,
+  "expected_negative_archives": 5,
+  "classification_scope": "Only these6 exact content-addressed retained controls; any unrelated corrupt/unlisted archive remains unclassified",
+  "failed_preflight_retained": {
+    "round": "r1",
+    "native_import_exit": 1,
+    "cause": "Python3.10 environment lacks unused network-import dependency Paramiko",
+    "guard_function_not_executed": true,
+    "requalified_existing_runtime": "Anaconda Python3.9.13 with installed dependency",
+    "network_access_package_install_or_SUT_guard_change": false
+  },
+  "raw_G": "G:\\PR13Evidence\\LOAD112-historical-archive-controls-current-20261022-r2-originals",
+  "no_source_input_changes": true,
+  "new_game_samples": 0,
+  "case_profiles_closed": 0,
+  "whole_LOAD112_accepted": false,
+  "production_switch_performed": false
+}

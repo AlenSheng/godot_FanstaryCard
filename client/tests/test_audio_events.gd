@@ -1,13 +1,6 @@
 extends RefCounted
 
-class AudioGateway extends Node:
-	const EVENTS := {}
-	var online := true
-	var recovering := false
-	var token := ""
-	var room_id := ""
-	var room_revision := 0
-	var session_generation := 0
+class AudioGateway extends "res://network/gateway.gd":
 	var sent: Array = []
 	func new_id() -> String: return "sound-request-" + str(sent.size())
 	func send(kind: String, payload: Dictionary = {}, request_id: String = "") -> bool:
@@ -24,6 +17,9 @@ func _dispatch(store: Node, gateway: Node, action: String) -> String:
 func run_test() -> Dictionary:
 	var store = load("res://state/game_store.gd").new()
 	var gateway := AudioGateway.new()
+	gateway.persist_session = false
+	gateway.online = true
+	gateway.base_url = "http://127.0.0.1:1"
 	store.gateway = gateway
 	var sounds: Array = []
 	var checks: Dictionary = {}

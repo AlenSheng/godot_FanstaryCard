@@ -1,0 +1,119 @@
+{
+  "kind": "MAINIndependentActualStatisticalIntegrityTwoCaseReview",
+  "two_case_profiles_passed": true,
+  "cases": [
+    {
+      "case_id": "PR13-B03.3-T02",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "EXPERIMENT"
+      ],
+      "actual": {
+        "actual_encounters": 6,
+        "raw_originals_immutable": true,
+        "derived_mutation_results": [
+          {
+            "mutation": "one_incomplete_removed",
+            "rows_after": 5,
+            "derived_checksum_and_Total_coherent": true,
+            "rejected": true,
+            "reason": "Missing declared stratum or seed pair"
+          },
+          {
+            "mutation": "whole_seed_pair_removed",
+            "rows_after": 4,
+            "derived_checksum_and_Total_coherent": true,
+            "rejected": true,
+            "reason": "Missing declared stratum or seed pair"
+          },
+          {
+            "mutation": "seed_outside_frozen_block",
+            "rows_after": 6,
+            "derived_checksum_and_Total_coherent": true,
+            "rejected": true,
+            "reason": "Seed outside declared block"
+          }
+        ]
+      },
+      "scope": "Six actual current Domain/Numerics official run rows/manifests; actual postcollection evidence mutation on clearly derived copies,not native engine or original data mutation. Production report rejects coherent-checksum deletion of real incomplete rows/pairs."
+    },
+    {
+      "case_id": "PR13-B03.3-T03",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "EXPERIMENT"
+      ],
+      "actual": {
+        "actual_encounters": 6,
+        "censored_rate": 1,
+        "all_started_TTK_P95": null,
+        "budget": "Inconclusive",
+        "candidate_recommendation": "NotEvaluated",
+        "strata_victory_rate_Wilson95": [
+          [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ],
+          [
+            5.551115123125783e-17,
+            0.5614970317550454
+          ]
+        ],
+        "precision_floor_1000_x3_unchanged": true
+      },
+      "scope": "Actual small-N/highcensoring control passed conservative rejection/no-precision behavior; not a successful strength estimate or a completed main sampling budget."
+    }
+  ],
+  "actual_new_encounters": 6,
+  "observed_outcomes": {
+    "Censored": 6
+  },
+  "new_B032_scenes": 0,
+  "B032_budget_298_unchanged": true,
+  "whole_task_accepted": false,
+  "remaining_scope": [
+    "B03.2 dependency still Partial for five archetype coverage; no downstream MAIN acceptance.",
+    "This small controlled integrity study does not complete preregistered main strength/sampling scope. Existing large original T01 cluster evidence remains separate and is not rerun.",
+    "Production report conservatively retains no supplied primary/multiple comparison warning; local plan preregisters this integrity control,not a formal candidate benefit analysis. No unadjusted significance/strength recommendation."
+  ],
+  "derived_fault_results": [
+    {
+      "mutation": "one_incomplete_removed",
+      "rows_after": 5,
+      "derived_checksum_and_Total_coherent": true,
+      "rejected": true,
+      "reason": "Missing declared stratum or seed pair"
+    },
+    {
+      "mutation": "whole_seed_pair_removed",
+      "rows_after": 4,
+      "derived_checksum_and_Total_coherent": true,
+      "rejected": true,
+      "reason": "Missing declared stratum or seed pair"
+    },
+    {
+      "mutation": "seed_outside_frozen_block",
+      "rows_after": 6,
+      "derived_checksum_and_Total_coherent": true,
+      "rejected": true,
+      "reason": "Seed outside declared block"
+    }
+  ],
+  "native_original_hashes_unchanged": {
+    "encounters.jsonl": "f64b296178504007db9c98a586ee3cde51ff45464ef2b94b5914d4aaa72878ea",
+    "manifest.json": "30347b4168863b3f1b7e88f26ba25d7d3c6644b93713bbec088d5150f9dabc98",
+    "summary.json": "3c72efcebb4e2faa7d2005a3724eac9bb5ff6d1f733ff30d949ea06ef38ba6b2"
+  },
+  "report_sha256": "b8eb27b46ecc3f173385f321d8e006195e13d0a8845eea803fa9e1cb6f39b8dd",
+  "scope": "Current official actualDomain experiment pipeline and production report on six actual incomplete encounters; copied evidence tampering tests,not fabricated pure rows.",
+  "sample_criteria_relaxed": false,
+  "source_upload_bytes": 0,
+  "all_jobs_terminal": true,
+  "pointer_sha256": "1950f0ea5924acb0c77ca3876ca2bee36f8fe95e2ab3fdbd83de979e75ab0f70",
+  "parent_register": {
+    "path": "docs/reports/pr13-stages-20261009/S6-b032-three-profiles-whole-task-partial-20261017/register.json",
+    "sha256": "cf6b2858409add5a5d78c13b342bb1740eafe6ef56718743e05ab39592e7a954"
+  }
+}

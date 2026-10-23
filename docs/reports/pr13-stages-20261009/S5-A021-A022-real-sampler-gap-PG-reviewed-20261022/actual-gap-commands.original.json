@@ -1,0 +1,636 @@
+{
+  "original_coordinator": {
+    "PID": 57,
+    "start_ticks": "2773711",
+    "args": [
+      "python3",
+      "-B",
+      "/repo/tools/gameplay_load_test.py",
+      "--smoke",
+      "--godot",
+      "/inputs/control/godot_Dummy_verbose",
+      "--server-url",
+      "http://127.0.0.1:5014",
+      "--smoke-clients",
+      "2",
+      "--smoke-cycles",
+      "1",
+      "--max-seconds",
+      "150",
+      "--cycle-limit-seconds",
+      "2400",
+      "--load-profile",
+      "active-hold",
+      "--hero-class",
+      "Guardian",
+      "--strategy",
+      "baseline_all_hand",
+      "--target-online",
+      "2",
+      "--target-active",
+      "2",
+      "--hold-seconds",
+      "120",
+      "--minimum-continuous-seconds",
+      "70",
+      "--minimum-coverage",
+      ".95",
+      "--maximum-sample-gap",
+      "20",
+      "--minimum-command-rate",
+      "0",
+      "--client-project",
+      "/repo/client",
+      "--client-max-fps",
+      "60",
+      "--local-resource-sampling",
+      "--minimum-generator-memory-bytes",
+      "500000000",
+      "--minimum-cloud-memory-bytes",
+      "500000000",
+      "--minimum-cloud-disk-percent",
+      "5",
+      "--output",
+      "/evidence/actual-coordinator"
+    ]
+  },
+  "original_terminal": {
+    "PID": 57,
+    "actual_exit": 3
+  },
+  "actual_SIGSTOP": {
+    "PID": 57,
+    "start_ticks": "2773711",
+    "actual_OS_state": "T",
+    "at_monotonic": 27794.305569617,
+    "at_unix_ns": 1792664947284673999,
+    "last_two_original_samples": [
+      {
+        "schema_version": 4,
+        "at": 1792664936.787,
+        "sample_monotonic_ms": 27783808.306305,
+        "run_id": "8919acb9cade4d4bb4938b39b06a95c8",
+        "groups": 1,
+        "clients": 2,
+        "alive_processes": 2,
+        "fresh_status_clients": 2,
+        "online": 2,
+        "in_room": 2,
+        "room_state_clients": 2,
+        "active_in_room": 2,
+        "server_confirmed_in_room": null,
+        "invalid_schema_count": 0,
+        "failed_processes": [],
+        "stale_clients": [],
+        "stalled_clients": [],
+        "missing_clients": [],
+        "invalid_clients": [],
+        "workload_failure": false,
+        "server_count_scope": "all registered non-bot active player routes on this server; no per-run labels",
+        "command_rate": 1.3970654447539852,
+        "command_rate_clock": "local_monotonic",
+        "completed_cycles": 0,
+        "invalid_status_files": 0,
+        "status_read_errors": [],
+        "generator": {
+          "available": true,
+          "measured_processes": 3,
+          "processes": [
+            {
+              "pid": 57,
+              "role": "coordinator",
+              "available": true,
+              "rss_bytes": 38985728,
+              "threads": 2,
+              "cpu_percent_of_one_core": 0.2,
+              "cpu_missing_reason": null,
+              "handles": null,
+              "handles_missing_reason": "AttributeError",
+              "write_bytes_cumulative": 0,
+              "write_bytes_cumulative_missing_reason": null,
+              "packet_send_rate": null,
+              "packet_send_rate_missing_reason": "No per-process socket packet counter hook; command completion rates are reported separately"
+            },
+            {
+              "pid": 92,
+              "role": "native",
+              "client_id": "g001c0144f5e6",
+              "run_id": "8919acb9cade4d4bb4938b39b06a95c8",
+              "process_epoch": "2cdb135706d6432dafa99fac88ce3885",
+              "available": true,
+              "rss_bytes": 131592192,
+              "threads": 6,
+              "cpu_percent_of_one_core": 2.1,
+              "cpu_missing_reason": null,
+              "handles": null,
+              "handles_missing_reason": "AttributeError",
+              "write_bytes_cumulative": 0,
+              "write_bytes_cumulative_missing_reason": null,
+              "packet_send_rate": null,
+              "packet_send_rate_missing_reason": "No per-process socket packet counter hook; command completion rates are reported separately"
+            },
+            {
+              "pid": 99,
+              "role": "native",
+              "client_id": "g001c023a317a",
+              "run_id": "8919acb9cade4d4bb4938b39b06a95c8",
+              "process_epoch": "7d4ab07c995340ba8793c65cc1926abe",
+              "available": true,
+              "rss_bytes": 132083712,
+              "threads": 6,
+              "cpu_percent_of_one_core": 2.0,
+              "cpu_missing_reason": null,
+              "handles": null,
+              "handles_missing_reason": "AttributeError",
+              "write_bytes_cumulative": 0,
+              "write_bytes_cumulative_missing_reason": null,
+              "packet_send_rate": null,
+              "packet_send_rate_missing_reason": "No per-process socket packet counter hook; command completion rates are reported separately"
+            }
+          ],
+          "excluded_exited_native_processes": [],
+          "native_alive_processes": 2,
+          "cpu_percent_of_one_core": 4.3,
+          "cpu_missing_reason": null,
+          "logical_cores": 2,
+          "rss_bytes": 302661632,
+          "rss_missing_reason": null,
+          "host_memory_available_bytes": 2499743744,
+          "threads": 14,
+          "handles": null,
+          "handles_missing_reason": "One or more owned process handle observations unavailable",
+          "write_bytes_cumulative": 0,
+          "packet_send_rate": null,
+          "packet_send_rate_missing_reason": "No attributable per-process socket packet counter; I/O writes are not network packets",
+          "scope": "Measured local generator/coordinator processes, separate from cloud server metrics",
+          "native_frame_observations": [
+            {
+              "client_id": "g001c0144f5e6",
+              "pid": 92,
+              "process_fps": 59.99289123590941,
+              "process_frames": 2363,
+              "observed_ms": 39388,
+              "engine_max_fps": 60,
+              "scope": "Owned SceneTree process frames/local elapsed clock; not rendered FPS or network packets",
+              "missing_reason": null
+            },
+            {
+              "client_id": "g001c023a317a",
+              "pid": 99,
+              "process_fps": 60.05168262171845,
+              "process_frames": 2045,
+              "observed_ms": 34054,
+              "engine_max_fps": 60,
+              "scope": "Owned SceneTree process frames/local elapsed clock; not rendered FPS or network packets",
+              "missing_reason": null
+            }
+          ],
+          "status_cache": {
+            "representation": "lossless-zlib-json-v1",
+            "entries": 2,
+            "compressed_payload_bytes": 27137,
+            "decoded_snapshot_bytes": 369326,
+            "byte_scope": "serialized payload only; not total Python heap"
+          }
+        },
+        "observed_interval_seconds": 10.02100513799861,
+        "scheduled_at": 1792664936.646131,
+        "sample_schedule_lag_ms": 133.17,
+        "sample_collection_ms": 12.94,
+        "window": {
+          "http": {
+            "count": 10,
+            "min_ms": 49,
+            "mean_ms": 49.9,
+            "max_ms": 51,
+            "p50_ms": 50,
+            "p95_ms": 51,
+            "p99_ms": 51
+          },
+          "steady_http": {
+            "count": 10,
+            "min_ms": 49,
+            "mean_ms": 49.9,
+            "max_ms": 51,
+            "p50_ms": 50,
+            "p95_ms": 51,
+            "p99_ms": 51
+          },
+          "cancelled_http": {
+            "count": 0
+          },
+          "realtime": {
+            "count": 14,
+            "min_ms": 14,
+            "mean_ms": 18.21,
+            "max_ms": 45,
+            "p50_ms": 16,
+            "p95_ms": 45,
+            "p99_ms": 45
+          },
+          "rtt": {
+            "count": 2,
+            "min_ms": 16,
+            "mean_ms": 16.5,
+            "max_ms": 17,
+            "p50_ms": 16,
+            "p95_ms": 17,
+            "p99_ms": 17
+          },
+          "phase_http": {
+            "matchmaking": {
+              "count": 10,
+              "min_ms": 49,
+              "mean_ms": 49.9,
+              "max_ms": 51,
+              "p50_ms": 50,
+              "p95_ms": 51,
+              "p99_ms": 51
+            }
+          },
+          "route_http": {
+            "/api/v1/matches/tickets/{ticketId:guid}": {
+              "count": 10,
+              "min_ms": 49,
+              "mean_ms": 49.9,
+              "max_ms": 51,
+              "p50_ms": 50,
+              "p95_ms": 51,
+              "p99_ms": 51,
+              "logical_request_count": 10,
+              "error_count": 0,
+              "cancelled_count": 0,
+              "latency_sample_quality": "insufficient"
+            }
+          },
+          "observed_window_seconds": 10.02100513799861,
+          "logical_requests_per_second": 0.9979038891099895,
+          "completed_requests_per_second": 0.9979038891099895,
+          "throughput_missing_reason": null,
+          "logical_result_counts": {
+            "success": 10
+          },
+          "error_count": 0,
+          "sample_count": 10,
+          "logical_request_count": 10,
+          "cancelled_count": 0,
+          "all_attempt_count": 10,
+          "attempt_coverage": "measured",
+          "attempt_result_counts": {
+            "success": 10
+          },
+          "valid_attempt_latency_count": 10,
+          "transport_phase_timings": {
+            "dns_ms": {
+              "count": 0,
+              "p95_ms": null,
+              "quality": "unavailable",
+              "missing_reason": "No attributable local request phase hook in supplied audit"
+            },
+            "tcp_connect_ms": {
+              "count": 0,
+              "p95_ms": null,
+              "quality": "unavailable",
+              "missing_reason": "No attributable local request phase hook in supplied audit"
+            },
+            "tls_handshake_ms": {
+              "count": 0,
+              "p95_ms": null,
+              "quality": "unavailable",
+              "missing_reason": "No attributable local request phase hook in supplied audit"
+            }
+          },
+          "valid_latency_count": 10,
+          "latency_sample_quality": {
+            "http": "insufficient",
+            "realtime": "sufficient_for_diagnostic_rule"
+          },
+          "error_rate": 0.0,
+          "steady_error_count": 0,
+          "steady_sample_count": 10,
+          "steady_error_rate": 0.0,
+          "invalid_metric_count": 0,
+          "invalid_duration_count": 0,
+          "invalid_schema_count": 0,
+          "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels",
+          "lost_event_count": 0,
+          "audit_lost_count": 0,
+          "command_rejections": 2,
+          "command_error_rate": 0.14285714285714285
+        },
+        "health": {
+          "at_unix_ms": 1792664936791,
+          "duration_ms": 3.09,
+          "status": 200,
+          "ok": true
+        },
+        "resources": {},
+        "reasons": [
+          "command_rejections_10pct"
+        ],
+        "streaks": {
+          "command_rejections_10pct": 1
+        }
+      },
+      {
+        "schema_version": 4,
+        "at": 1792664946.812,
+        "sample_monotonic_ms": 27793833.473447002,
+        "run_id": "8919acb9cade4d4bb4938b39b06a95c8",
+        "groups": 1,
+        "clients": 2,
+        "alive_processes": 2,
+        "fresh_status_clients": 2,
+        "online": 2,
+        "in_room": 2,
+        "room_state_clients": 2,
+        "active_in_room": 2,
+        "server_confirmed_in_room": null,
+        "invalid_schema_count": 0,
+        "failed_processes": [],
+        "stale_clients": [],
+        "stalled_clients": [],
+        "missing_clients": [],
+        "invalid_clients": [],
+        "workload_failure": false,
+        "server_count_scope": "all registered non-bot active player routes on this server; no per-run labels",
+        "command_rate": 1.9949792074990296,
+        "command_rate_clock": "local_monotonic",
+        "completed_cycles": 0,
+        "invalid_status_files": 0,
+        "status_read_errors": [],
+        "generator": {
+          "available": true,
+          "measured_processes": 3,
+          "processes": [
+            {
+              "pid": 57,
+              "role": "coordinator",
+              "available": true,
+              "rss_bytes": 39518208,
+              "threads": 2,
+              "cpu_percent_of_one_core": 0.1,
+              "cpu_missing_reason": null,
+              "handles": null,
+              "handles_missing_reason": "AttributeError",
+              "write_bytes_cumulative": 0,
+              "write_bytes_cumulative_missing_reason": null,
+              "packet_send_rate": null,
+              "packet_send_rate_missing_reason": "No per-process socket packet counter hook; command completion rates are reported separately"
+            },
+            {
+              "pid": 92,
+              "role": "native",
+              "client_id": "g001c0144f5e6",
+              "run_id": "8919acb9cade4d4bb4938b39b06a95c8",
+              "process_epoch": "2cdb135706d6432dafa99fac88ce3885",
+              "available": true,
+              "rss_bytes": 131964928,
+              "threads": 6,
+              "cpu_percent_of_one_core": 2.19,
+              "cpu_missing_reason": null,
+              "handles": null,
+              "handles_missing_reason": "AttributeError",
+              "write_bytes_cumulative": 0,
+              "write_bytes_cumulative_missing_reason": null,
+              "packet_send_rate": null,
+              "packet_send_rate_missing_reason": "No per-process socket packet counter hook; command completion rates are reported separately"
+            },
+            {
+              "pid": 99,
+              "role": "native",
+              "client_id": "g001c023a317a",
+              "run_id": "8919acb9cade4d4bb4938b39b06a95c8",
+              "process_epoch": "7d4ab07c995340ba8793c65cc1926abe",
+              "available": true,
+              "rss_bytes": 132554752,
+              "threads": 6,
+              "cpu_percent_of_one_core": 2.19,
+              "cpu_missing_reason": null,
+              "handles": null,
+              "handles_missing_reason": "AttributeError",
+              "write_bytes_cumulative": 0,
+              "write_bytes_cumulative_missing_reason": null,
+              "packet_send_rate": null,
+              "packet_send_rate_missing_reason": "No per-process socket packet counter hook; command completion rates are reported separately"
+            }
+          ],
+          "excluded_exited_native_processes": [],
+          "native_alive_processes": 2,
+          "cpu_percent_of_one_core": 4.4799999999999995,
+          "cpu_missing_reason": null,
+          "logical_cores": 2,
+          "rss_bytes": 304037888,
+          "rss_missing_reason": null,
+          "host_memory_available_bytes": 2486202368,
+          "threads": 14,
+          "handles": null,
+          "handles_missing_reason": "One or more owned process handle observations unavailable",
+          "write_bytes_cumulative": 0,
+          "packet_send_rate": null,
+          "packet_send_rate_missing_reason": "No attributable per-process socket packet counter; I/O writes are not network packets",
+          "scope": "Measured local generator/coordinator processes, separate from cloud server metrics",
+          "native_frame_observations": [
+            {
+              "client_id": "g001c0144f5e6",
+              "pid": 92,
+              "process_fps": 59.99433060662509,
+              "process_frames": 2963,
+              "observed_ms": 49388,
+              "engine_max_fps": 60,
+              "scope": "Owned SceneTree process frames/local elapsed clock; not rendered FPS or network packets",
+              "missing_reason": null
+            },
+            {
+              "client_id": "g001c023a317a",
+              "pid": 99,
+              "process_fps": 60.040844111640574,
+              "process_frames": 2646,
+              "observed_ms": 44070,
+              "engine_max_fps": 60,
+              "scope": "Owned SceneTree process frames/local elapsed clock; not rendered FPS or network packets",
+              "missing_reason": null
+            }
+          ],
+          "status_cache": {
+            "representation": "lossless-zlib-json-v1",
+            "entries": 2,
+            "compressed_payload_bytes": 34573,
+            "decoded_snapshot_bytes": 506847,
+            "byte_scope": "serialized payload only; not total Python heap"
+          }
+        },
+        "observed_interval_seconds": 10.025167142003774,
+        "scheduled_at": 1792664946.646131,
+        "sample_schedule_lag_ms": 153.65,
+        "sample_collection_ms": 16.89,
+        "window": {
+          "http": {
+            "count": 0
+          },
+          "steady_http": {
+            "count": 0
+          },
+          "cancelled_http": {
+            "count": 0
+          },
+          "realtime": {
+            "count": 20,
+            "min_ms": 15,
+            "mean_ms": 16.7,
+            "max_ms": 18,
+            "p50_ms": 17,
+            "p95_ms": 18,
+            "p99_ms": 18
+          },
+          "rtt": {
+            "count": 2,
+            "min_ms": 16,
+            "mean_ms": 16.5,
+            "max_ms": 17,
+            "p50_ms": 16,
+            "p95_ms": 17,
+            "p99_ms": 17
+          },
+          "phase_http": {},
+          "route_http": {},
+          "observed_window_seconds": 10.025167142003774,
+          "logical_requests_per_second": 0.0,
+          "completed_requests_per_second": 0.0,
+          "throughput_missing_reason": null,
+          "logical_result_counts": {},
+          "error_count": 0,
+          "sample_count": 0,
+          "logical_request_count": 0,
+          "cancelled_count": 0,
+          "all_attempt_count": null,
+          "attempt_coverage": "unavailable",
+          "attempt_result_counts": {},
+          "valid_attempt_latency_count": 0,
+          "transport_phase_timings": {
+            "dns_ms": {
+              "count": 0,
+              "p95_ms": null,
+              "quality": "unavailable",
+              "missing_reason": "No attributable local request phase hook in supplied audit"
+            },
+            "tcp_connect_ms": {
+              "count": 0,
+              "p95_ms": null,
+              "quality": "unavailable",
+              "missing_reason": "No attributable local request phase hook in supplied audit"
+            },
+            "tls_handshake_ms": {
+              "count": 0,
+              "p95_ms": null,
+              "quality": "unavailable",
+              "missing_reason": "No attributable local request phase hook in supplied audit"
+            }
+          },
+          "valid_latency_count": 0,
+          "latency_sample_quality": {
+            "http": "unavailable",
+            "realtime": "sufficient_for_diagnostic_rule"
+          },
+          "error_rate": 0.0,
+          "steady_error_count": 0,
+          "steady_sample_count": 0,
+          "steady_error_rate": 0.0,
+          "invalid_metric_count": 0,
+          "invalid_duration_count": 0,
+          "invalid_schema_count": 0,
+          "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels",
+          "lost_event_count": 0,
+          "audit_lost_count": 0,
+          "command_rejections": 0,
+          "command_error_rate": 0.0
+        },
+        "health": {
+          "at_unix_ms": 1792664946815,
+          "duration_ms": 2.41,
+          "status": 200,
+          "ok": true
+        },
+        "resources": {},
+        "reasons": [],
+        "streaks": {
+          "command_rejections_10pct": 0
+        }
+      }
+    ],
+    "native_before": [
+      {
+        "client_id": "g001c0144f5e6",
+        "PID": 92,
+        "start_ticks": "2774367",
+        "OS_state": "S",
+        "online": true,
+        "room": true,
+        "stage": "playing",
+        "event_seq_max": 143,
+        "status_seq": 10,
+        "process_frames": 2963,
+        "errors": [],
+        "audit_lost": 0
+      },
+      {
+        "client_id": "g001c023a317a",
+        "PID": 99,
+        "start_ticks": "2774392",
+        "OS_state": "S",
+        "online": true,
+        "room": true,
+        "stage": "playing",
+        "event_seq_max": 118,
+        "status_seq": 9,
+        "process_frames": 2646,
+        "errors": [],
+        "audit_lost": 0
+      }
+    ],
+    "only_coordinator_paused": true
+  },
+  "actual_SIGCONT": {
+    "PID": 57,
+    "start_ticks": "2773711",
+    "at_monotonic": 27820.345052423,
+    "at_unix_ns": 1792664973324155784,
+    "actual_pause_wall_seconds": 26.039485624998633,
+    "same_coordinator_continued": true
+  },
+  "actual_native_and_PG_mid": {
+    "coordinator_OS_state": "T",
+    "native_mid": [
+      {
+        "client_id": "g001c0144f5e6",
+        "PID": 92,
+        "start_ticks": "2774367",
+        "OS_state": "S",
+        "online": true,
+        "room": true,
+        "stage": "playing",
+        "event_seq_max": 183,
+        "status_seq": 12,
+        "process_frames": 3564,
+        "errors": [],
+        "audit_lost": 0
+      },
+      {
+        "client_id": "g001c023a317a",
+        "PID": 99,
+        "start_ticks": "2774392",
+        "OS_state": "S",
+        "online": true,
+        "room": true,
+        "stage": "playing",
+        "event_seq_max": 182,
+        "status_seq": 12,
+        "process_frames": 3547,
+        "errors": [],
+        "audit_lost": 0
+      }
+    ],
+    "actual_PG_snapshot": "actual-PG-during-gap.original.json",
+    "actual_current_native_frames_advanced": true
+  }
+}

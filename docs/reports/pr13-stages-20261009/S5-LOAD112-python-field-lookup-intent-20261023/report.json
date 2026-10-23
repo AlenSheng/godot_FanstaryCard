@@ -1,0 +1,156 @@
+{
+  "kind": "PythonFixedIdentifierFieldLookupIntent_NotRuntimeOrPublicExportAcceptance",
+  "generated_at": "2026-10-23T04:35:39.120264+08:00",
+  "task_id": "LOAD-11.2",
+  "state": "Partial",
+  "actual_static_source_objects_reviewed": 312,
+  "control_checks": 40,
+  "controls_passed": 40,
+  "previous_16_controls_retained": true,
+  "new_controls_include_literal_defaults_keys_bases_and_branch_negatives": true,
+  "new_scoped_field_lookup_source_objects": 2,
+  "new_frozen_aliases_explained": 13,
+  "objects": [
+    {
+      "sha256": "1c58831bb2cca1a06cf36f56ba8b6b7c8c1c12b38e13150e47f01e06dc3f4c25",
+      "bytes": 20834,
+      "frozen_observation_aliases": 11,
+      "scoped_AST_basis_counts": {
+        "FixedIdentifierGetLookup_NoNonemptyLiteralFallback_NotRuntimeValue": 1
+      },
+      "original_strict_source_predicate_still_rejects": true,
+      "public_export_allowed": false
+    },
+    {
+      "sha256": "a63532fc498f76e2f4fa298a9d5aed2117db2694764e5e483aae96fee7341fe9",
+      "bytes": 4247,
+      "frozen_observation_aliases": 2,
+      "scoped_AST_basis_counts": {
+        "FixedIdentifierGetLookup_NoNonemptyLiteralFallback_NotRuntimeValue": 1
+      },
+      "original_strict_source_predicate_still_rejects": true,
+      "public_export_allowed": false
+    }
+  ],
+  "original_baseline_classifier_sha256": "611543d3620b63c973629451ff88334c2c6764f1293786e16155ee5a9147610b",
+  "public_guard_sha256_unchanged": "2969671beea4bad2158c09577ea1da86ed7e5bdb8e3ccaa1457a6c023442b4d9",
+  "strict_public_rejection_and_all_old_negative_expectations_retained": true,
+  "embedded_Python_transport_probe": {
+    "parseable_literals": 21,
+    "explicit_python_c_transports": 1,
+    "qualified_literals": 0,
+    "all_left_pending": true
+  },
+  "fstring_source_probe": {
+    "pending_Python_objects": 312,
+    "qualifiable_fstring_sensitive_sites": 0,
+    "new_qualifications": 0
+  },
+  "combined_scoped_intent_or_private_format_objects": 217,
+  "combined_frozen_observation_aliases": 3058,
+  "original_frozen_content_objects": 679,
+  "original_frozen_path_observations": 8200,
+  "remaining_content_objects": 462,
+  "remaining_aliases": 5142,
+  "remaining_priorities": {
+    "EncodingIntent": 19,
+    "StructuredFormatIntent": 1,
+    "SourceLanguageExpressionIntent": 373,
+    "PrivateStructuredOrRuntimeContent": 69
+  },
+  "current_private_queue": {
+    "path": "G:\\PR13Evidence\\LOAD112-python-field-lookup-intent-20261023-r2-originals\\remaining462-content-review-queue.private.original.jsonl",
+    "bytes": 1404912,
+    "sha256": "3c58b4a390b14f4dcd8c8a842cf5cb1500eb6950265ee0318c5959c6d54cb31f"
+  },
+  "reviewed_source_imported_or_executed": false,
+  "source_or_runtime_credential_freedom_claimed": false,
+  "raw_G_custody": {
+    "directory": "G:\\PR13Evidence\\LOAD112-python-field-lookup-intent-20261023-r2-originals",
+    "items": [
+      {
+        "path": "native-review/python-field-lookup-intent-20261023-r2/controls.original.json",
+        "bytes": 55123,
+        "sha256": "212b8723eac7bb73c1946c980a6c3dc5b27eb22adbacab3749eb889786f2e683"
+      },
+      {
+        "path": "native-review/python-field-lookup-intent-20261023-r2/executed-extension-classifier.original.py",
+        "bytes": 2042,
+        "sha256": "852f118c5b0a1fd3c6a44e062e3d977cb80c98f550f83a9c099553e67467c392"
+      },
+      {
+        "path": "native-review/python-field-lookup-intent-20261023-r2/executed-review-source.original.py",
+        "bytes": 6742,
+        "sha256": "24e07af6d4e340154f3332a0764b77ad800a8d210c152014648c6f0aefdb7f9c"
+      },
+      {
+        "path": "native-review/python-field-lookup-intent-20261023-r2/result.private.original.json",
+        "bytes": 819338,
+        "sha256": "10d51918fc39f006207e4026dfccd4f5dd545ec8b61827da7c18ddb3c8874544"
+      },
+      {
+        "path": "native-review/python-source-context-probe-20261023-r1/executed-source.original.py",
+        "bytes": 4805,
+        "sha256": "7c9aab54d09f22c6540ffa253151d21a7d4213def8b5490aaab1437390984307"
+      },
+      {
+        "path": "native-review/python-source-context-probe-20261023-r1/result.private.original.json",
+        "bytes": 1122997,
+        "sha256": "a171e82ba82a8b2a13c72e45c93ece0117ebc8411868c07200300abf82e0adc3"
+      },
+      {
+        "path": "native-review/python-embedded-transport-probe-20261023-r1/executed-source.original.py",
+        "bytes": 4561,
+        "sha256": "7d6ab4d4e41edf5eb5e15854b08b23a18b58366e41afcbe1101159af77949732"
+      },
+      {
+        "path": "native-review/python-embedded-transport-probe-20261023-r1/result.private.original.json",
+        "bytes": 18720,
+        "sha256": "c8388a4cc155e8ddffd9a124c9f51eca48aaf355ca4ba72a4c569eac76479795"
+      },
+      {
+        "path": "baseline-classifier.exact-copy.py",
+        "bytes": 7270,
+        "sha256": "611543d3620b63c973629451ff88334c2c6764f1293786e16155ee5a9147610b"
+      },
+      {
+        "path": "publication-source.original.py",
+        "bytes": 9692,
+        "sha256": "5c9e5a9d3e01dd85873b5e28f2de98a07c4cde5310357d8a9eb5a5b8cda52764"
+      },
+      {
+        "path": "exact-qualified-sources.private/1c58831bb2cca1a06cf36f56ba8b6b7c8c1c12b38e13150e47f01e06dc3f4c25.private-original.py",
+        "bytes": 20834,
+        "sha256": "1c58831bb2cca1a06cf36f56ba8b6b7c8c1c12b38e13150e47f01e06dc3f4c25"
+      },
+      {
+        "path": "exact-qualified-sources.private/a63532fc498f76e2f4fa298a9d5aed2117db2694764e5e483aae96fee7341fe9.private-original.py",
+        "bytes": 4247,
+        "sha256": "a63532fc498f76e2f4fa298a9d5aed2117db2694764e5e483aae96fee7341fe9"
+      },
+      {
+        "path": "remaining462-content-review-queue.private.original.jsonl",
+        "bytes": 1404912,
+        "sha256": "3c58b4a390b14f4dcd8c8a842cf5cb1500eb6950265ee0318c5959c6d54cb31f"
+      },
+      {
+        "path": "pointer-before.exact-copy.json",
+        "bytes": 100091,
+        "sha256": "665ae7501dd35ade205800a11ffa601fa256fd4a14b5f5f3f978b41e8b9cfe33"
+      }
+    ]
+  },
+  "current_register": "docs/reports/pr13-stages-20261009/S6-current4a-CI-observation-20261022/register.json",
+  "task_counts_unchanged": {
+    "Accepted": 100,
+    "Partial": 24,
+    "Ready": 8
+  },
+  "whole_tasks_unaccepted": 32,
+  "missing_case_profile_pairs": 47,
+  "new_game_samples": 0,
+  "case_profiles_closed": 0,
+  "whole_LOAD112_accepted": false,
+  "whole_project_acceptance_granted": false,
+  "production_application_switch_performed": false
+}

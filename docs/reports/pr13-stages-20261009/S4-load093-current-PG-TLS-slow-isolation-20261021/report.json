@@ -1,0 +1,183 @@
+{
+  "summary": {
+    "kind": "LOAD093WholeMAINAccepted_RealPGTLSControlledSlowIsolation",
+    "counts": {
+      "Accepted": 87,
+      "Partial": 37,
+      "ReadyForAcceptance": 8,
+      "Failed": 0
+    },
+    "remaining_unaccepted": 45,
+    "missing_case_profile_pairs": 180,
+    "LOAD093Accepted": true,
+    "actualPG6matches24players_preparations_members": true,
+    "actualTLS50contexts_192wiremessages": true,
+    "actual3paired_normal_wait_ms": [
+      {
+        "round": 0,
+        "reference_normal_mean_ms": 2421.600733333333,
+        "current_normal_mean_ms": 2.7209333333333334,
+        "current_minus_reference_ms": -2418.8797999999997,
+        "matched_normalized_byte_profile": true
+      },
+      {
+        "round": 1,
+        "reference_normal_mean_ms": 2402.607033333333,
+        "current_normal_mean_ms": 0.6065999999999999,
+        "current_minus_reference_ms": -2402.000433333333,
+        "matched_normalized_byte_profile": true
+      },
+      {
+        "round": 2,
+        "reference_normal_mean_ms": 2400.1778,
+        "current_normal_mean_ms": 0.3021333333333333,
+        "current_minus_reference_ms": -2399.875666666667,
+        "matched_normalized_byte_profile": true
+      }
+    ],
+    "current32pending_16KiB_andreplayorder_passed": true,
+    "matched6of20_socket50of100_227attempts": true,
+    "R1startup_failure0matches0sockets_preserved": true,
+    "current1147_independent_MAIN13checks": true,
+    "G885members_source714": true,
+    "exactownedR1R2source_cleanup_complete_raw_local_kept": true,
+    "production_identityhealth200_unchanged": true,
+    "root_source_limits_config_unchanged": true,
+    "no_globalperformance_or_capacityclaim": true,
+    "other131tasks_allgates_unchanged": true,
+    "whole_project_accepted": false
+  },
+  "cases": [
+    {
+      "case_id": "LOAD-09.3-T01",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "POSTGRES",
+        "EXPERIMENT"
+      ],
+      "setup": "一慢三正常",
+      "expected": "正常玩家等待可量化且不无限拖住",
+      "actual": {
+        "actualPG": "6realmatches,24identity/provisionedplayers,24preparations,24match_players,actualreposnotGUIDonly",
+        "actualTLS": "PurposebuiltKestrelWSSendpoint,exactephemeralcertificatepin,actualcurrentCoordinator/Registry/Connection/Codec/EventStore",
+        "actual3pairedrounds": [
+          {
+            "round": 0,
+            "reference_normal_mean_ms": 2421.600733333333,
+            "current_normal_mean_ms": 2.7209333333333334,
+            "current_minus_reference_ms": -2418.8797999999997,
+            "matched_normalized_byte_profile": true
+          },
+          {
+            "round": 1,
+            "reference_normal_mean_ms": 2402.607033333333,
+            "current_normal_mean_ms": 0.6065999999999999,
+            "current_minus_reference_ms": -2402.000433333333,
+            "matched_normalized_byte_profile": true
+          },
+          {
+            "round": 2,
+            "reference_normal_mean_ms": 2400.1778,
+            "current_normal_mean_ms": 0.3021333333333333,
+            "current_minus_reference_ms": -2399.875666666667,
+            "matched_normalized_byte_profile": true
+          }
+        ],
+        "controlled_sender1200ms_delay_only_firstplayer": "2pairsfound/required seq1..4;3normals actualreceiveclock whilefirstslowblocks",
+        "current_normal_required_ms_range": [
+          0.2773,
+          3.0133
+        ],
+        "reference_normal_required_ms_range": [
+          2400.1462,
+          2421.7262
+        ],
+        "reference_scope": "Currentmethodsourcecopy degree4to1 only,notoldrelease",
+        "no_infinite_same_match_normal_delay_observed": true
+      },
+      "source_sha": "6f00f322952a104bb8d165687395a609def0781c",
+      "actual_source": {
+        "Server_SHA": "8ebfaebfcc7a593488f727a84a70131958ff71af3c0aecc9f699819fcbe291d6",
+        "Contracts_SHA": "256061561f6fd8992cd5e10ab208875ee010a411e6e9974055f10a918b56b845",
+        "current713compileinputs_exact": true,
+        "reference_currentmethod_onlydegree4to1": true,
+        "localcompile_andmetadata_native0_beforecloud": true
+      },
+      "scope": "ActualPGidentity/preparation/matching andcurrentdispatcher/realTLS/protobuf/eventreplay boundary. Controlledsenderstall,notProgram/authHTTP/WAN/capacity/onlinebenefit claim;found/requiredonly,notroom.started deliveryperf.",
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S4-load093-current-PG-TLS-slow-isolation-20261021/report.json",
+        "docs/reports/pr13-stages-20261009/S4-load093-current-PG-TLS-slow-isolation-20261021/cases.jsonl",
+        "docs/reports/pr13-stages-20261009/S5-load093-whole-MAIN-20261021/main-review.json",
+        "docs/reports/pr13-stages-20261009/S6-current-LOAD093-accepted-20261021/main-task-decision.json"
+      ],
+      "private_originals": "G:\\PR13Evidence\\load093-current-PG-TLS-slow-isolation-20261021-originals"
+    },
+    {
+      "case_id": "LOAD-09.3-T02",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "POSTGRES",
+        "EXPERIMENT"
+      ],
+      "setup": "pending发送32/16KiB保护",
+      "expected": "继续有效",
+      "actual": {
+        "actualcurrent32pending_then33": "RealTLSsocket abort, allqueuedpendingdrained0; limitsunmodified",
+        "actualwirebytes": "Encoded16384 actualbinarydelivered,16385 closes1009beforeextraSocketSend",
+        "same_actualPGmember_context": true,
+        "no_broad_memory_or_network_stability_claim": true
+      },
+      "source_sha": "6f00f322952a104bb8d165687395a609def0781c",
+      "actual_source": {
+        "Server_SHA": "8ebfaebfcc7a593488f727a84a70131958ff71af3c0aecc9f699819fcbe291d6",
+        "Contracts_SHA": "256061561f6fd8992cd5e10ab208875ee010a411e6e9974055f10a918b56b845",
+        "current713compileinputs_exact": true,
+        "reference_currentmethod_onlydegree4to1": true,
+        "localcompile_andmetadata_native0_beforecloud": true
+      },
+      "scope": "ActualPGidentity/preparation/matching andcurrentdispatcher/realTLS/protobuf/eventreplay boundary. Controlledsenderstall,notProgram/authHTTP/WAN/capacity/onlinebenefit claim;found/requiredonly,notroom.started deliveryperf.",
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S4-load093-current-PG-TLS-slow-isolation-20261021/report.json",
+        "docs/reports/pr13-stages-20261009/S4-load093-current-PG-TLS-slow-isolation-20261021/cases.jsonl",
+        "docs/reports/pr13-stages-20261009/S5-load093-whole-MAIN-20261021/main-review.json",
+        "docs/reports/pr13-stages-20261009/S6-current-LOAD093-accepted-20261021/main-task-decision.json"
+      ],
+      "private_originals": "G:\\PR13Evidence\\load093-current-PG-TLS-slow-isolation-20261021-originals"
+    },
+    {
+      "case_id": "LOAD-09.3-T03",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "POSTGRES",
+        "EXPERIMENT"
+      ],
+      "setup": "found/required重放",
+      "expected": "同玩家先后次序不变",
+      "actual": {
+        "actual_per_player_originalwire": "found/required/found/required seq1/2/3/4",
+        "actualreplay": "actualEventStoreReadAfter toanewrealWSSconnection,all4eventids/sequences/payloads byteexact",
+        "independentprotobuf": "192original/replay actualbinarymessages parsed independently,match/room IDs boundtoactualPGmembers",
+        "owned_after": "6registries0,ownedslots0,50socketcontexts closed"
+      },
+      "source_sha": "6f00f322952a104bb8d165687395a609def0781c",
+      "actual_source": {
+        "Server_SHA": "8ebfaebfcc7a593488f727a84a70131958ff71af3c0aecc9f699819fcbe291d6",
+        "Contracts_SHA": "256061561f6fd8992cd5e10ab208875ee010a411e6e9974055f10a918b56b845",
+        "current713compileinputs_exact": true,
+        "reference_currentmethod_onlydegree4to1": true,
+        "localcompile_andmetadata_native0_beforecloud": true
+      },
+      "scope": "ActualPGidentity/preparation/matching andcurrentdispatcher/realTLS/protobuf/eventreplay boundary. Controlledsenderstall,notProgram/authHTTP/WAN/capacity/onlinebenefit claim;found/requiredonly,notroom.started deliveryperf.",
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S4-load093-current-PG-TLS-slow-isolation-20261021/report.json",
+        "docs/reports/pr13-stages-20261009/S4-load093-current-PG-TLS-slow-isolation-20261021/cases.jsonl",
+        "docs/reports/pr13-stages-20261009/S5-load093-whole-MAIN-20261021/main-review.json",
+        "docs/reports/pr13-stages-20261009/S6-current-LOAD093-accepted-20261021/main-task-decision.json"
+      ],
+      "private_originals": "G:\\PR13Evidence\\load093-current-PG-TLS-slow-isolation-20261021-originals"
+    }
+  ]
+}

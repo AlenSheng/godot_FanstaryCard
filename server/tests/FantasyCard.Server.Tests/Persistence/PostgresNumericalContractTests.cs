@@ -59,7 +59,7 @@ public sealed class PostgresNumericalContractTests
                 "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup>" +
                 "<ItemGroup><Reference Include=\"FantasyCard.Domain\"><HintPath>" + SecurityElement.Escape(assembly) +
                 "</HintPath></Reference></ItemGroup></Project>", Ct);
-            var start = new ProcessStartInfo("dotnet") { WorkingDirectory = directory, RedirectStandardOutput = true, RedirectStandardError = true };
+            var start = new ProcessStartInfo("dotnet") { WorkingDirectory = directory, RedirectStandardOutput = true, RedirectStandardError = true, CreateNoWindow = true };
             foreach (var arg in new[] { "build", "Probe.csproj", "--nologo", "--verbosity", "minimal", "-p:UseSharedCompilation=false", "-p:NuGetAudit=false", "-maxcpucount:1" }) start.ArgumentList.Add(arg);
             using var process = Process.Start(start) ?? throw new InvalidOperationException("Native compiler did not start.");
             var stdout = process.StandardOutput.ReadToEndAsync(Ct);
