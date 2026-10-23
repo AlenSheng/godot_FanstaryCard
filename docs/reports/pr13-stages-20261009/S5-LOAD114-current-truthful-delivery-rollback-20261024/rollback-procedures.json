@@ -1,0 +1,103 @@
+{
+  "kind": "ThreeIndependentlyDescribedBoundedRollbackProcedures_NotProductionRollbackClaim",
+  "code": {
+    "actual_method": "Actual_code_rollback_and_native_backup_restore_preserve_once_only_assets",
+    "actual_source": "1cf7250b59e35aa93c73c631f97ccf16ac1d2dc2",
+    "previous_source": "0cf43dba7a28e936f82bc3e73ed9c6427092c2fb",
+    "scope": "Exact current1cf same-product4a to rebuilt pinned0cf runtime/config pair; not universal or previous production7c image rollback.",
+    "actual_receipt": {
+      "caseId": "actual-code-rollback",
+      "recordedAt": "2026-10-23T18:29:48.0063772+00:00",
+      "evidence": {
+        "oldServerSha256": "510d13ff8f0068093b9d7ccebb56880a6e1ff9d3eaf7059b966ba4abd56415e0",
+        "match": "024ae6e2-f186-4a44-9a97-f2258469b593",
+        "receiptId": "01a16a06-b66e-7927-a554-64da7c9c0231",
+        "currentSnapshotRestoredByPreviousBinary": true,
+        "legalExtractionAfterRollback": true,
+        "originalAssetsOnce": true,
+        "scope": "only the declared current and retained 0cf43db binary/config pair; no production deployment or arbitrary older compatibility claim"
+      }
+    },
+    "reproducible_entry": ".github/workflows/gameplay-load.yml server-postgres pinned previous runtime build plus full native suite",
+    "ownership": "Only labelled disposable-local or exact verified owned native PG; never the production database"
+  },
+  "configuration": {
+    "actual_method": "Current_policy_source_rollback_preserves_nonzero_assets_and_old_room_policies",
+    "actual_native_command": {
+      "path": "G:\\PR13Evidence\\LOAD114-nonzero-policy-asset-PG-20261024-r267-originals\\nonzero-policy-asset-native.command.original.json",
+      "bytes": 524,
+      "sha256": "9d64e31525c50b2f1469e5acfb85cdc60a37f449d8de380910ba002fc720a4f3"
+    },
+    "current_fixture_manifest": {
+      "path": "G:\\PR13Evidence\\LOAD114-nonzero-policy-asset-PG-20261024-r267-originals\\source-manifest.original.json",
+      "bytes": 121781,
+      "sha256": "2d9499b3ae87ab2483e6ff5bcff4dada556073bafc4d5e28448eecd85e22e760"
+    },
+    "current_original_TRX": {
+      "path": "G:\\PR13Evidence\\LOAD114-nonzero-policy-asset-PG-20261024-r267-originals\\runtime\\results\\policy-assets.trx",
+      "bytes": 5000,
+      "sha256": "c49b7c876b2c7461eb7551b144c4e0c0809f3788205e1e984ab44be0732dbfe5"
+    },
+    "current_data_qualification": {
+      "path": "G:\\PR13Evidence\\LOAD114-policy-assets-native-qualification-20261024-r268-originals\\result.original.json",
+      "bytes": 5321,
+      "sha256": "18d25ca8a60e1dc77f58970f0ba9cc6c43234cd52c0dbf8565e9abceb9db854f"
+    },
+    "scope": "Actual policy-source/snapshot rollback, nonzero PG repository assets and duplicate settlement/hold/ACK replay only; no arbitrary workbook/schema or deployed program rollback.",
+    "requires": "Fresh owned localhost PG, actual compiled private fixture, FANTASYCARD_TEST_POSTGRES only in environment and FANTASYCARD_PROCESS_EVIDENCE in a new private output directory",
+    "new_owned_test_room_records4": true,
+    "total_record_upper_bound_including_bad_name_attempt5": true
+  },
+  "database": {
+    "actual_receipt": {
+      "caseId": "actual-native-backup-restore",
+      "recordedAt": "2026-10-23T18:29:48.3883462+00:00",
+      "evidence": {
+        "containerId": "ad68abb8c4c6a16eb2015176e017d70ae9c586067cda9dd731c69c301d806e2c",
+        "nativePostmasterPid": null,
+        "dumpSha256": "471e03b99857181469adf0ed346c688000090d6dbd97ea6a5264b290673a8e4c",
+        "dumpBytes": 123690,
+        "nativeTools": "pg_dump custom schema backup and pg_restore into a newly owned isolated database",
+        "originalBalance": 23,
+        "restoredBalance": 23,
+        "committedLedgerRows": 1,
+        "repeatedAckAndHoldCommitDoNotCopyAssets": true,
+        "assetCorrection": false,
+        "scope": "same restored database scope, never combine original/clone balances or repair deleted historical ledgers"
+      }
+    },
+    "actual_owned_clone_removed": {
+      "caseId": "owned-restored-database-removed",
+      "recordedAt": "2026-10-23T18:29:48.5515845+00:00",
+      "evidence": {
+        "created": true,
+        "removed": true,
+        "restoredName": "ready_stop_894a70f664c2423990b27a47dd4f82e6"
+      }
+    },
+    "scope": "Actual native schema backup restored into new owned database and repeated ACK/hold commit preserved once-only assets; no merging original/clone balances.",
+    "source_dump_is_private_and_hash_bound": true,
+    "steps": [
+      "Verify the exact retained private custom dump SHA and native tool ownership.",
+      "Restore the declared schema into a newly created owned disposable database.",
+      "Verify settlement identity, same balance, one committed ledger entry and no new asset copy after repeated ACK/hold commits.",
+      "Remove only the exact owned restored database after validation."
+    ],
+    "original_and_clone_balances_never_merged": true
+  },
+  "production_standby": {
+    "running_image": "sha256:e647601a9fa6dd7e1934907699f7d9c58c0965da2116b1325b826ba458ee6a3e",
+    "source_commit": "4a9215fee6f8c50da79e9895e408717fbd9118de",
+    "retained_previous_image_exists": true,
+    "retained_previous_image_id": "sha256:7c13e8ebbfec9a554dfd20a8d78ee223e15a4286c4875606ae82e7d46d226ef2",
+    "retained_fresh_backup": {
+      "bytes": 4757214,
+      "sha256": "8ae0f2fdd1d219a5cedd679e068af962706b60db2dafe9cf72e23e22c2d020ce"
+    },
+    "actual_current_health200": true,
+    "actual_production_rollback_performed": false,
+    "old_previous_production7c_pair_not_rehearsed_by_this_review": true,
+    "production_backup_not_restored_by_this_review": true
+  },
+  "strict_scope": "These are exact bounded code-pair, configuration-policy/snapshot and owned-native-database rehearsals. No arbitrary older binary, workbook, database schema migration, current production backup restore or deployed runtime rollback is asserted."
+}

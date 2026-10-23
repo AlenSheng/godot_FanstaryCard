@@ -1,0 +1,65 @@
+{
+  "kind": "Current132DispositionsAndExactMinimumChildInputs",
+  "source_sha": "e69338979012d6f4940066d503ba0fc23dc8aebc",
+  "current_source_register": {
+    "path": "docs/reports/pr13-stages-20261009/S6-A074-current-frozen-integration-accepted-20261024/register.json",
+    "bytes": 17278891,
+    "sha256": "f5b6160efc53f4dea9c0527ec0431a07bd8cefacc3fce5494449a1b3a83d4c89"
+  },
+  "current_106_MAIN_formats": {
+    "task.main_decision": 31,
+    "task.main_acceptance_decision": 31,
+    "register-root": 44
+  },
+  "all_current_MAIN_decision_locations_verified": true,
+  "input_dispositions": {
+    "path": "docs/reports/pr13-stages-20261009/S5-LOAD114-current-truthful-delivery-rollback-20261024/input-dispositions132.jsonl",
+    "bytes": 120730,
+    "sha256": "9616c0b6a7e501299f30efde955dce6dd71e7d301f90ad166461e5528bbe1a12"
+  },
+  "minimum_child_review": {
+    "path": "G:\\PR13Evidence\\LOAD114-minimum-child-contract-review-20261024-r269-originals\\result.original.json",
+    "bytes": 3346,
+    "sha256": "51199ba0168d2bb586de0d3a944f73e935c00bc068f7be70793cd72d539fd8ce"
+  },
+  "canonical_dependency_rule": "requires_before_integration约束S4/S5所需产物；测试设计和S0/S1可提前。依赖为最小子项合同，不把整个父包Accepted作为前置造成循环。",
+  "parents_still_Partial": true,
+  "no_parent_or_G4_G5_acceptance_inferred": true,
+  "actual_human_scope": {
+    "in_scope": false,
+    "authority": "human",
+    "source": {
+      "path": "docs/plans/PR13_AUTOMATED_COMPLETION_SCOPE_20261009.json",
+      "bytes": 1901,
+      "sha256": "e0537304998d956cdf70a5415cc3060d859f28414b726dc0710e9fa33b27e011"
+    }
+  },
+  "direct_release_override": {
+    "schema_version": 1,
+    "decision_date": "2026-10-08",
+    "authority": "Direct human instruction in this session",
+    "user_instruction": "不需要写入草稿，把要写草稿的都在本地做一次总结直接合入传到远端release",
+    "destination": "origin/release",
+    "merge_release": true,
+    "draft_pr_updates": false,
+    "local_summary_required": true,
+    "supersedes": [
+      "The delivery-only merge_release=false field in the immutable S0 preregistration",
+      "Draft retention and publication decisions in the historical PR13 handbook"
+    ],
+    "acceptance_rule": "Merge authorization does not imply runtime acceptance. Retain concrete current results, failures, missing cases, capacity gaps and pending human acceptance.",
+    "execution_profiles": "PR13_LOCAL_PROFILES_20261008.json remains the immutable source of budgets, targets, stop conditions and default-off candidate policy.",
+    "human_experience_decision": "机器人模拟补充体验，真人验收仍待补",
+    "deleted_history_decision": "已删除，如果文件缺失则重新测试",
+    "production_deployment": false,
+    "remaining_work": "Continue the original S0-S6 implementation and staged verification; publish local summaries directly to release without inventing acceptance."
+  },
+  "historical_delivery_policy_productionFalse_and_humanPending_are_time_scoped_not_latest_status": true,
+  "current_application_only_authority": "docs/plans/PR13_PRODUCTION_APPLICATION_ONLY_DECISION_20261023.json",
+  "product_source_tree_unchanged_from_deployed4a": {
+    "path": "G:\\PR13Evidence\\LOAD114-three-rollback-custody-20261024-r266-originals\\result.original.json",
+    "bytes": 4727,
+    "sha256": "30830ecdf85de133ebb0c2ca3febae3c8c555ea6263659204f1934c090706f74"
+  },
+  "frozen_runtime1cf_evidence_not_relabelled_current_metadata_HEAD": true
+}
