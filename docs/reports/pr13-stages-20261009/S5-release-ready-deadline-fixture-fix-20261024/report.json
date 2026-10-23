@@ -1,0 +1,119 @@
+{
+  "kind": "ReadyExpiredPromptDispatchFixtureCurrentContract",
+  "source_before_commit": "2a08a43af811c508f5b9dc45804d7c5602e76396",
+  "original_hosted_failed_job": 120564805669,
+  "original_local_failed_run": "G:/PR13Evidence/release-ready-component-repro-20261024-r202-originals",
+  "actual_failure": "Expired prompt had zero READY sends and one verified Matched ticket read; production driver correctly records ready_deadline_expired. Fixture expected a later ticket-terminal read.",
+  "delta": {
+    "path": "client/tests/pr13_ready_edges.gd",
+    "before_sha256": "f8ab8e8b14a76a11221d72cb13b9051fa18b36391a7edbaaaa69c0119b991ab1",
+    "after_sha256": "54843d79c1a475a78cc0578aa030ec3ca58055cee027dc33a380f7c68fde8d26",
+    "expired_fixture_expectation": "One authority read,zero sends/attempts/successes,explicit deadline rejection,under10seconds",
+    "real_authoritative_cleanup_not_claimed_by_this_dispatch_component": true,
+    "other_three_scenarios_and_production_driver_unchanged": true
+  },
+  "native_verification": {
+    "ok": true,
+    "components": [
+      {
+        "mode": "ready",
+        "exit_code": 0,
+        "executed": 4,
+        "passed": 4,
+        "native_clean": true
+      },
+      {
+        "mode": "prelaunch",
+        "exit_code": 0,
+        "executed": 3,
+        "passed": 3,
+        "native_clean": true
+      },
+      {
+        "mode": "idle",
+        "exit_code": 0,
+        "executed": 1,
+        "passed": 1,
+        "native_clean": true
+      }
+    ],
+    "real_Game_cleanup_authority_passed": true,
+    "all_children_headless_no_window_below_normal": true,
+    "new_live_game_samples": 0
+  },
+  "remaining_offline_client_pipeline": {
+    "ok": true,
+    "phases": [
+      {
+        "phase": "http-reuse",
+        "exit_code": 0,
+        "command": [
+          "C:\\Users\\SHENGJIAHAO\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
+          "-B",
+          "tools/pr13_http_cases.py",
+          "--godot",
+          "G:\\Program Files\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64.exe",
+          "--output",
+          "G:\\PR13Evidence\\release-client-remaining-pipeline-20261024-r204-originals\\http-reuse"
+        ]
+      },
+      {
+        "phase": "http-per-request",
+        "exit_code": 0,
+        "command": [
+          "C:\\Users\\SHENGJIAHAO\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
+          "-B",
+          "tools/pr13_http_cases.py",
+          "--godot",
+          "G:\\Program Files\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64.exe",
+          "--output",
+          "G:\\PR13Evidence\\release-client-remaining-pipeline-20261024-r204-originals\\http-per-request",
+          "--transport",
+          "per-request"
+        ]
+      },
+      {
+        "phase": "ledger",
+        "exit_code": 0,
+        "command": [
+          "C:\\Users\\SHENGJIAHAO\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
+          "-B",
+          "tools/pr13_ledger_cases.py",
+          "--output",
+          "G:\\PR13Evidence\\release-client-remaining-pipeline-20261024-r204-originals\\ledger"
+        ]
+      },
+      {
+        "phase": "callback",
+        "exit_code": 0,
+        "command": [
+          "C:\\Users\\SHENGJIAHAO\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
+          "-B",
+          "tools/pr13_callback_isolation.py",
+          "--output",
+          "G:\\PR13Evidence\\release-client-remaining-pipeline-20261024-r204-originals\\callback"
+        ]
+      },
+      {
+        "phase": "gateway-origin",
+        "exit_code": 0,
+        "source_script": "res://tests/run_gateway_origin.gd"
+      },
+      {
+        "phase": "lobby-race",
+        "exit_code": 0,
+        "source_script": "res://tests/run_lobby_race.gd"
+      }
+    ],
+    "all_children_no_window_below_normal": true,
+    "only_loopback_network_used": true,
+    "no_new_live_game_samples": true
+  },
+  "scope": "This READY component checks pre-dispatch refusal; real Game cleanup authority is independently exercised. It does not claim cloud ticket expiry, PG asset restoration or full canonical runtime acceptance.",
+  "same_original_deadline_no_send_and_bounded_retry_requirements": true,
+  "all_other_fixture_scenarios_retained": true,
+  "production_driver_and_default_configuration_not_changed": true,
+  "old_failure_kept_not_relabelled": true,
+  "new_hosted_result_not_yet_observed": true,
+  "whole_project_accepted": false
+}

@@ -68,11 +68,11 @@ func run_cases() -> void:
 			passed=gateway.sends.size()==3 and probe.ready_successful_sends==1 and not probe.checks.any(func(c):return not c.passed)
 		elif scenario=="expired":
 			id="LOAD-04.2-T03"
-			passed=gateway.sends.is_empty() and gateway.reads==2 and probe.checks.any(func(c):return c.name=="ready_ticket_terminal" and not c.passed)
+			passed=gateway.sends.is_empty() and gateway.reads==1 and probe.ready_attempts==0 and probe.ready_successful_sends==0 and probe.checks.any(func(c):return c.name=="ready_deadline_expired" and not c.passed) and duration<10000
 		else:
 			id="PR13-A04.1-T02"
 			passed=gateway.sends.is_empty() and gateway.reads==3 and probe.checks.any(func(c):return c.name=="ready_ticket_terminal" and not c.passed)
-		cases.append({"case_id":id,"executed":true,"status":"Passed" if passed else "Failed","profiles_executed":["OFFLINE"],"actual":{"scenario":scenario,"sends":gateway.sends,"successful_sends":probe.ready_successful_sends,"ticket_reads":gateway.reads,"checks":probe.checks,"elapsed_ms":duration},"scope":"Actual production READY loop; declared controlled ticket/dispatch boundary. Poll sleep shortened but retry/query clocks unchanged. No server room, PG asset or natural cycle claimed."})
+		cases.append({"case_id":id,"executed":true,"status":"Passed" if passed else "Failed","profiles_executed":["OFFLINE"],"actual":{"scenario":scenario,"sends":gateway.sends,"successful_sends":probe.ready_successful_sends,"ticket_reads":gateway.reads,"checks":probe.checks,"elapsed_ms":duration},"scope":"Actual production READY loop; declared controlled ticket/dispatch boundary. Expired prompt verifies pre-dispatch deadline refusal; authoritative cancellation is covered separately by the real Game cleanup fixture. Poll sleep shortened but retry/query clocks unchanged. No server room, PG asset or natural cycle claimed."})
 		probe.free();store.free();gateway.free()
 	FileAccess.open(OS.get_environment("PR13_READY_EDGES"),FileAccess.WRITE).store_string(JSON.stringify({"cases":cases}))
 	print(JSON.stringify({"executed":cases.size(),"passed":cases.filter(func(c):return c.status=="Passed").size()}))
