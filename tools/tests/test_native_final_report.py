@@ -4,7 +4,7 @@ from pathlib import Path
 from types import SimpleNamespace
 import tempfile
 import unittest
-from . import test_gameplay_load_finalization as finalization
+from tools.tests import test_gameplay_load_finalization as finalization
 from tools import gameplay_load_test as runner
 
 
