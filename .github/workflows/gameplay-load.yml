@@ -271,23 +271,27 @@ jobs:
 
   server-postgres:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # Includes the separately pinned historical build and real client faults.
+    # Individual test deadlines and performance redlines remain unchanged.
+    timeout-minutes: 30
     services:
       postgres:
         image: postgres:18
         env:
-          POSTGRES_DB: fantasycard_test
+          POSTGRES_DB: ready_stop_ci
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
         ports:
           - 5432:5432
         options: >-
-          --health-cmd "pg_isready -U postgres -d fantasycard_test"
+          --health-cmd "pg_isready -U postgres -d ready_stop_ci"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+          --label codex.scope=disposable-local
+          --label codex.task=pr13-stages-20261008
     env:
-      FANTASYCARD_TEST_POSTGRES: Host=127.0.0.1;Port=5432;Username=postgres;Password=postgres;Database=fantasycard_test
+      FANTASYCARD_TEST_POSTGRES: Host=127.0.0.1;Port=5432;Username=postgres;Password=postgres;Database=ready_stop_ci
     steps:
       - uses: actions/checkout@v7
         with:
@@ -307,10 +311,70 @@ jobs:
           "$executable" --version | tee test-results/gameplay-load/godot-pg-version.txt
           grep -q '^4\.7\.2\.' test-results/gameplay-load/godot-pg-version.txt
           echo "A3GAME_GODOT_EXECUTABLE=$executable" >> "$GITHUB_ENV"
-          echo "FANTASYCARD_PROCESS_EVIDENCE=$GITHUB_WORKSPACE/test-results/gameplay-load/process-faults" >> "$GITHUB_ENV"
+          echo "FANTASYCARD_PROCESS_EVIDENCE=$GITHUB_WORKSPACE/outputs/pr13-local-20261008/ci-process-faults" >> "$GITHUB_ENV"
+      - name: Build immutable pinned previous server for code and native backup rollback
+        shell: bash
+        env:
+          OWNED_POSTGRES_CONTAINER: ${{ job.services.postgres.id }}
+        run: |
+          set -euo pipefail
+          previous=0cf43dba7a28e936f82bc3e73ed9c6427092c2fb
+          previous_source="$RUNNER_TEMP/pr13-previous-source"
+          previous_runtime="$GITHUB_WORKSPACE/outputs/pr13-local-20261008/ci-previous-0cf43db"
+          mkdir -p "$previous_source" "$previous_runtime" test-results/gameplay-load
+          git fetch --no-tags --depth=1 https://github.com/AlenSheng/godot_FanstaryCard.git "$previous"
+          git archive "$previous" server protocol config \
+            ':(exclude)server/.packages' ':(exclude)server/.artifacts' \
+            ':(exclude,glob)**/bin/**' ':(exclude,glob)**/obj/**' \
+            | tar -xf - -C "$previous_source"
+          # Run from the current server directory so the already-pinned SDK is used.
+          (cd server && dotnet publish "$previous_source/server/src/FantasyCard.Server/FantasyCard.Server.csproj" -c Release --no-self-contained --artifacts-path "$RUNNER_TEMP/pr13-previous-build" --output "$previous_runtime" -p:UseSharedCompilation=false) 2>&1 | tee test-results/gameplay-load/previous-server-build.log
+          test -s "$previous_runtime/FantasyCard.Server.dll"
+          previous_hash="$(sha256sum "$previous_runtime/FantasyCard.Server.dll" | cut -d ' ' -f1)"
+          dotnet --version > test-results/gameplay-load/rollback-sdk-version.txt
+          printf '%s\n' "$previous" > test-results/gameplay-load/previous-source-sha.txt
+          (cd "$previous_runtime" && find . -type f -print0 | sort -z | xargs -0 sha256sum) > test-results/gameplay-load/previous-runtime-sha256.txt
+          echo "FANTASYCARD_PROCESS_PREVIOUS_SERVER_DLL=$previous_runtime/FantasyCard.Server.dll" >> "$GITHUB_ENV"
+          echo "FANTASYCARD_PROCESS_PREVIOUS_SERVER_SHA256=$previous_hash" >> "$GITHUB_ENV"
+          echo "FANTASYCARD_PROCESS_SOURCE_SHA=$GITHUB_SHA" >> "$GITHUB_ENV"
+          echo "FANTASYCARD_TEST_DOCKER_CONTAINER=$OWNED_POSTGRES_CONTAINER" >> "$GITHUB_ENV"
       - name: Full server and runtime integration on disposable PostgreSQL
         working-directory: server
         run: dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --logger 'trx;LogFileName=postgres-full.trx' --results-directory ../test-results/gameplay-load
+      - name: Require complete native PostgreSQL rows with no skips
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from tools.pr13_suite_coverage import assess_trx
+          required = {
+              'Persisted_current_contract_does_not_revive_obsolete_boolean_or_remainder_API': 1,
+              'Default_persisted_constructor_stays_current_rhythm_and_current_steps': 1,
+              'Explicit_candidate_enums_survive_database_restore_and_have_independent_assertions': 1,
+              'Persisted_resolver_context_preserves_first_core_floor_tuning_and_dual_element_contracts': 1,
+              'Exact_GDD_fire_contexts_restore_from_database_to_46_72_113': 1,
+              'Priest_card_heal_and_conflict_E0_remain_separate_after_database_restore': 1,
+              'New_policy_source_changes_new_rooms_without_changing_current_persisted_room': 1,
+              'Persisted_PVP_working_copy_restores_complete_original_PVE_and_policy': 1,
+              'Missing_legacy_policy_fields_use_defaults_and_invalid_values_reject_before_mutation': 1,
+              'Actual_code_rollback_and_native_backup_restore_preserve_once_only_assets': 1,
+          }
+          result = assess_trx(Path('test-results/gameplay-load/postgres-full.trx'), required)
+          Path('test-results/gameplay-load/postgres-coverage.json').write_text(json.dumps(result, indent=2) + '\n')
+          if result['state'] != 'CoveredForMainReview':
+              raise SystemExit(3)
+          PY
+      - name: Preserve owned process evidence and native rollback dump
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -d outputs/pr13-local-20261008/ci-process-faults ]; then
+            mkdir -p test-results/gameplay-load/process-faults
+            cp -a outputs/pr13-local-20261008/ci-process-faults/. test-results/gameplay-load/process-faults/
+          fi
       - uses: actions/upload-artifact@v7
         if: always()
         with:
