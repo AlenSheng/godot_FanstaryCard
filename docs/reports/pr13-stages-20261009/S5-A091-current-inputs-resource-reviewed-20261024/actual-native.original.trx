@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="cc7d9496-8d3b-4da0-908b-3c1fef4eca59" name="@628f1d5970bd 2026-10-23 20:59:56" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-23T20:59:56.1434608+00:00" queuing="2026-10-23T20:59:56.1434609+00:00" start="2026-10-23T20:57:31.5449429+00:00" finish="2026-10-23T20:59:56.1499504+00:00" />
+  <TestSettings name="default" id="99661bfb-8ca5-4cd2-803c-02d2992d739a">
+    <Deployment runDeploymentRoot="_628f1d5970bd_2026-10-23_20_59_56" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="097eb69f-7f94-4a4e-9786-b38ccbbd378d" testId="001cdb73-b6b2-48d0-547c-8d5bec69f4bb" testName="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_healthy_teammate_old_room_and_new_room_survive_real_callbacks_and_OS_restart" computerName="628f1d5970bd" duration="00:02:21.9451730" startTime="2026-10-23T20:57:34.0253111+00:00" endTime="2026-10-23T20:59:56.0023550+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="097eb69f-7f94-4a4e-9786-b38ccbbd378d">
+      <Output>
+        <StdOut>{"caseId":"A05-readonly-audit","recordedAt":"2026-10-23T20:57:36.7029803+00:00","evidence":{"label":"healthy-before","requireClear":false,"path":"/evidence/process/a05-audit-healthy-before.json","querySha256":"4eb80847a08ee651eda621af2f29b294655149bc0ed7b336137fb8a0f036c0ef","resultSha256":"191fa8a168c35b600ae444dd8a226991358ceb89493f931290d9d2d4c2dc761b","actual":"owned schema queries ran in READ ONLY transaction and rolled back"}}
+{"caseId":"process-start","recordedAt":"2026-10-23T20:57:37.0702352+00:00","evidence":{"label":"a05-healthy-before","Id":213,"executable":"dotnet","dll":"/runtime/FantasyCard.Server.dll","port":44711,"SearchPath":"fc_runtime_test_067cd661e7e24fb1bd9c6f52a1ae76e0","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+{"caseId":"A05-client-start","recordedAt":"2026-10-23T20:57:41.3778948+00:00","evidence":{"import":true,"Id":257,"fixture":"/evidence/process/ack-client-a05-healthy-5891e1f54d7d40788bd468656f019a2b","script":"pr13_a05_healthy_old_room.gd","executable":"/inputs/control/godot_adapter"}}
+{"caseId":"A05-client-stop","recordedAt":"2026-10-23T20:57:49.5941221+00:00","evidence":{"import":true,"Id":257,"ExitCode":0,"fixture":"/evidence/process/ack-client-a05-healthy-5891e1f54d7d40788bd468656f019a2b","script":"pr13_a05_healthy_old_room.gd"}}
+{"caseId":"A05-client-start","recordedAt":"2026-10-23T20:57:49.6158339+00:00","evidence":{"import":false,"Id":314,"fixture":"/evidence/process/ack-client-a05-healthy-5891e1f54d7d40788bd468656f019a2b","script":"pr13_a05_healthy_old_room.gd","executable":"/inputs/control/godot_adapter"}}
+{"caseId":"A05-duplicate-ready-delivery","recordedAt":"2026-10-23T20:58:18.8574958+00:00","evidence":{"delivery":1,"bodySha256":"975190785dd52ac39e6e9a616feb7664962df1d39c4996aec07d528b89e06302","original":"unchanged actual authority frame"}}
+{"caseId":"A05-duplicate-ready-delivery","recordedAt":"2026-10-23T20:58:18.8616247+00:00","evidence":{"delivery":2,"bodySha256":"975190785dd52ac39e6e9a616feb7664962df1d39c4996aec07d528b89e06302","original":"unchanged actual authority frame"}}
+{"caseId":"A05-duplicate-ready-delivery","recordedAt":"2026-10-23T20:58:18.8617838+00:00","evidence":{"delivery":3,"bodySha256":"975190785dd52ac39e6e9a616feb7664962df1d39c4996aec07d528b89e06302","original":"unchanged actual authority frame"}}
+{"caseId":"A05-healthy-M-and-N","recordedAt":"2026-10-23T20:58:26.0853156+00:00","evidence":{"formerMatch":"a77bde9e-e3ef-401e-8cb4-ef1a87f132b1","formerRoom":"b38a9431-d116-4925-9cc5-e6a613f988bc","nextMatch":"01a16a8e-774f-7741-a15f-da980ce8114e","nextRoom":"01a16a8e-774f-75bb-ae5c-59d48081c50c","playerId":"01a16a8e-0894-7af8-9c77-bcfa6ed04da2","teammateId":"01a16a8e-0a09-7ed2-853a-8e0481e227b4","SettlementId":"01a16a8e-6973-7241-9b78-88e7cf770766","before":{"Gold":0,"Potions":0,"Owner":"01a16a8e-0894-7af8-9c77-bcfa6ed04da2","Location":"InMatchEquipped","GoldLedger":0,"Movements":0},"afterM":{"Gold":23,"Potions":2,"Owner":"01a16a8e-0894-7af8-9c77-bcfa6ed04da2","Location":"Equipped","GoldLedger":1,"Movements":1},"bBeforeRevision":30,"bCurrentRevision":424,"delayedResponseSha256":"339cb13a126e8cf6e89f8e33456720452df51885a4fd01901e599898a08117cb","duplicateReady":3,"ProcessId":213}}
+{"caseId":"process-stop","recordedAt":"2026-10-23T20:58:26.205902+00:00","evidence":{"label":"a05-healthy-before","ProcessId":213,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/evidence/process/a05-healthy-before-213.log"}}
+{"caseId":"process-start","recordedAt":"2026-10-23T20:58:26.2172017+00:00","evidence":{"label":"a05-healthy-after","Id":650,"executable":"dotnet","dll":"/runtime/FantasyCard.Server.dll","port":44711,"SearchPath":"fc_runtime_test_067cd661e7e24fb1bd9c6f52a1ae76e0","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+{"caseId":"A05-client-stop","recordedAt":"2026-10-23T20:58:38.2214102+00:00","evidence":{"import":false,"Id":314,"ExitCode":0,"fixture":"/evidence/process/ack-client-a05-healthy-5891e1f54d7d40788bd468656f019a2b","script":"pr13_a05_healthy_old_room.gd"}}
+{"caseId":"A05-readonly-audit","recordedAt":"2026-10-23T20:59:55.2302122+00:00","evidence":{"label":"healthy-after","requireClear":true,"path":"/evidence/process/a05-audit-healthy-after.json","querySha256":"4eb80847a08ee651eda621af2f29b294655149bc0ed7b336137fb8a0f036c0ef","resultSha256":"1df4a12add7b4e43bea598ba1db7b9abe7532cc97c355283eef38a2a26aa82f0","actual":"owned schema queries ran in READ ONLY transaction and rolled back"}}
+{"caseId":"A05-healthy-passed","recordedAt":"2026-10-23T20:59:55.2339182+00:00","evidence":{"canonical":["PR13-A05.2-T01","PR13-A05.2-T02","PR13-A05.2-T03","PR13-A05.3-T03"],"formerMatch":"a77bde9e-e3ef-401e-8cb4-ef1a87f132b1","nextMatch":"01a16a8e-774f-7741-a15f-da980ce8114e","formerRoom":"b38a9431-d116-4925-9cc5-e6a613f988bc","nextRoom":"01a16a8e-774f-75bb-ae5c-59d48081c50c","playerId":"01a16a8e-0894-7af8-9c77-bcfa6ed04da2","teammateId":"01a16a8e-0a09-7ed2-853a-8e0481e227b4","equipmentId":"01a16a8e-0b2b-7954-8f35-511ec2791ac9","pids":[213,650],"finalAssets":{"Gold":23,"Potions":2,"Owner":"01a16a8e-0894-7af8-9c77-bcfa6ed04da2","Location":"RelicPile","GoldLedger":1,"Movements":1},"bResult":"Extracted","bCredit":23,"acknowledged":6,"profiles":["OFFLINE","POSTGRES","AUDIT"],"acceptedBy":null,"scope":"healthy saved M; A actual PB preparation/enqueue/READY enters N; unchanged real M response/frame delayed and replayed; real OS restart while B healthy; B normal extraction; N cleanup is disconnect terminal"}}
+{"caseId":"process-stop","recordedAt":"2026-10-23T20:59:55.2630246+00:00","evidence":{"label":"a05-healthy-after","ProcessId":650,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/evidence/process/a05-healthy-after-650.log"}}
+{"caseId":"A05-callback-relay-cleanup","recordedAt":"2026-10-23T20:59:55.2868583+00:00","evidence":{"Port":36533,"errors":[],"expectedRestartTransportFailures":["System.Net.Http.HttpRequestException"]}}</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_healthy_teammate_old_room_and_new_room_survive_real_callbacks_and_OS_restart" storage="/inputs/native/fantasycard.server.tests.dll" id="001cdb73-b6b2-48d0-547c-8d5bec69f4bb">
+      <Execution id="097eb69f-7f94-4a4e-9786-b38ccbbd378d" />
+      <TestMethod codeBase="/inputs/native/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests" name="A05_healthy_teammate_old_room_and_new_room_survive_real_callbacks_and_OS_restart" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="001cdb73-b6b2-48d0-547c-8d5bec69f4bb" executionId="097eb69f-7f94-4a4e-9786-b38ccbbd378d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.0+00ab0a9ec4 (64-bit .NET 10.0.11)
+[xUnit.net 00:00:00.27]   Discovering: FantasyCard.Server.Tests
+[xUnit.net 00:00:01.54]   Discovered:  FantasyCard.Server.Tests
+[xUnit.net 00:00:01.79]   Starting:    FantasyCard.Server.Tests
+[xUnit.net 00:02:23.91]   Finished:    FantasyCard.Server.Tests
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

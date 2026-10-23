@@ -1,0 +1,196 @@
+{
+  "kind": "PreregisteredFunctionalResourceRevision_AllOldFailuresPreserved",
+  "experiment": {
+    "kind": "A091R5CurrentManagedAssemblyWithExactLinuxNativeApphostSupplement",
+    "root_review_sha": "6391685c4e6e14150bacdfcedae5ea75ee49398c",
+    "actual_compile_integration_sha": "1cf7250b59e35aa93c73c631f97ccf16ac1d2dc2",
+    "cases": [
+      "PR13-A09.1-T01",
+      "PR13-A09.1-T02",
+      "PR13-A09.1-T03"
+    ],
+    "profiles": [
+      "OFFLINE",
+      "POSTGRES",
+      "LIVE",
+      "RENDER"
+    ],
+    "new_original_native_runs_max": 1,
+    "new_logical_rooms_max": 2,
+    "new_automated_accounts_max": 5,
+    "cumulative_conservative_room_budget": 14,
+    "cumulative_automated_account_budget": 25,
+    "R1_actual_room_count_unknown_not_zeroed": true,
+    "prior_R1_native_failure_R2_lossy_failure_R3_controller_unknown_retained": true,
+    "resource_revision": {
+      "before": {
+        "disk_free_fraction_gte": 0.049,
+        "disk_free_bytes_gt": 3000000000,
+        "MemAvailable_bytes_gt": 500000000
+      },
+      "after": {
+        "disk_free_fraction_gte": 0.03,
+        "disk_free_bytes_gt": 1500000000,
+        "MemAvailable_bytes_gt": 500000000
+      },
+      "applies_to": "Owned two-room functional provenance test only; original capacity 15 percent and workload unchanged",
+      "reason": "Same sole cloud host now has about 3.24 percent disk free. Thin inputs and RAM PG/screens/evidence avoid disk-heavy test state. Human allowed repeated-test limit relaxation; register before new run.",
+      "max_new_host_disk_budget_bytes": 33554432
+    },
+    "original_native_180s_and_botfill30_unchanged": true,
+    "render18_lossless_bit_exact_and_visual_review_required": true,
+    "record_every_guard_predicate_before_assert_fsync": true,
+    "PGDATA_tmpfs512MiB_screens256MiB_evidence384MiB": true,
+    "production_no_port_bind_no_config_data_changes": true,
+    "production_identity_env_health_frozen_every_sample": true,
+    "current_strict_public_guard_unchanged": true,
+    "whole_project_or_capacity_pass_not_claimed": true,
+    "human_excluded": true,
+    "local_Godot_GUI_fullscreen_focus0": true,
+    "new_native_compile0_reuse_explicit_current_build": true,
+    "prebuilt_seekable_RAM_archive_G_fullSHA_allmembers_before_ACK": true,
+    "preregistered_at_unix_ns": 1792788999571047600,
+    "prelaunch_only_failures": {
+      "local_old_manifest6_current_files": true,
+      "cloud_install_effective_source_list_not_updated": true,
+      "old_cloud_install_failed_before_launch_marker_unit_containers_or_native": true,
+      "additional_native_runs_rooms_accounts": 0,
+      "correction": "Effective P.source_files now equals frozen execution manifest exactly; six delta bodies hash against both lists before new launch",
+      "old_uploaded_payload_reused_by_exact_path_SHA_hardlinks": true
+    },
+    "transport_observation_revision": {
+      "controller_seconds1500_prior1200": true,
+      "custody_ACK_seconds1200_prior900": true,
+      "systemd_seconds1700_prior1400": true,
+      "native_deadline180_and_botfill30_unchanged": true
+    },
+    "R4_actual_native_exit1_no_discovered_or_executed_cases_rooms_accounts0": true,
+    "R4_planning_charge_not_removed_from_conservative_totals": true,
+    "R4_original_controller_failed_all299_resource_samples_passed_and_saved": true,
+    "R4_zero_render_no_profile_credit": true,
+    "R4_native_launcher_missing_not_business_failure": true,
+    "R4_raw1359_G_before_ACK_original_controller_APP1_retained": true,
+    "native_apphost_compatibility": {
+      "source": "G:\\PR13Evidence\\A073-current-CI-PG-20261021-r1-originals\\cloud-raw-verified\\runs\\r4\\native-executed\\FantasyCard.Server.Tests",
+      "sha256": "ba599dcc430382ba526df132fd666b9c8b31864db474e7d0f8b17b7c7ad5d3b0",
+      "ELF64_machine_x86_64": true,
+      "managed_target_name": "FantasyCard.Server.Tests.dll",
+      "same_runtime_options": {
+        "tfm": "net10.0",
+        "frameworks": [
+          {
+            "name": "Microsoft.NETCore.App",
+            "version": "10.0.0"
+          },
+          {
+            "name": "Microsoft.AspNetCore.App",
+            "version": "10.0.0"
+          }
+        ],
+        "configProperties": {
+          "MSTest.EnableParentProcessQuery": true,
+          "System.Globalization.Invariant": false,
+          "System.Reflection.Metadata.MetadataUpdater.IsSupported": false,
+          "System.Runtime.Serialization.EnableUnsafeBinaryFormatterSerialization": false
+        }
+      },
+      "managed_DLL_reused_from_current_clean1cf_build_not_old143": true,
+      "required_real_discovery_before_native_case": true
+    },
+    "real_ListTests_before_original_case_once": true,
+    "no_additional_business_native_render_capacity_threshold_relaxation": true,
+    "all_prior_failures_preserved_no_whole_project_acceptance": true
+  },
+  "prelaunch_transport_custody_timeout_revision": {
+    "controller_seconds1500_prior1200": true,
+    "custody_ACK_seconds1200_prior900": true,
+    "systemd_seconds1700_prior1400": true,
+    "native_deadline180_and_botfill30_unchanged": true
+  },
+  "IMPORTANT_functional_disk_floor_changed": {
+    "before_fraction": 0.049,
+    "after_fraction": 0.03,
+    "before_bytes_gt": 3000000000,
+    "after_bytes_gt": 1500000000,
+    "MemAvailable_gt_unchanged": 500000000,
+    "scope": "Only this two-room five-account functional provenance test on the sole current cloud host.",
+    "original_capacity_disk_fraction15percent_and_original_workloads_unchanged": true
+  },
+  "actual_new450_samples": {
+    "samples": 450,
+    "failed_samples": 0,
+    "minimum_MemAvailable": 1657921536,
+    "minimum_disk_fraction": 0.030672028417902845,
+    "minimum_disk_free_bytes": 1941233664,
+    "maximum_observed_sample_gap_seconds": 1.350564054,
+    "thresholds": {
+      "disk_free_fraction_gte": 0.03,
+      "disk_free_bytes_gt": 1500000000,
+      "MemAvailable_bytes_gt": 500000000
+    },
+    "sample_values_fsynced_before_guard_assertion": true
+  },
+  "native_deadline180_botfill30_render_lossless_unchanged": true,
+  "original_failed_R1_native_and_R2_lossy_results_retained": true,
+  "R3_original_controller_failed_bad_sample_values_Unknown_not_reconstructed": true,
+  "R4_native_attempt": {
+    "actual_APP_exit": 1,
+    "discovery_case_count": 0,
+    "executed_case_count": 0,
+    "new_rooms_accounts": 0,
+    "render_count": 0,
+    "profiles_credited": 0,
+    "cause": "Windows current build had no Linux native test apphost; failed before any Fact execution.",
+    "original_raw_G_custody": {
+      "path": "G:\\PR13Evidence\\A091-current-live-provenance-20261024-r4-prep3-originals\\G-RAM-native-verified.original.json",
+      "bytes": 669,
+      "sha256": "d5a4106f2fce6a6f13f527aacc87d06447166b4e37c4b0daaa1afa3ef9864ca0"
+    },
+    "original_controller_result": {
+      "path": "G:\\PR13Evidence\\A091-current-live-provenance-20261024-r4-prep3-originals\\cloud-host-metadata\\controller-result.original.json",
+      "bytes": 219,
+      "sha256": "6b9ff1a0e7830bd4e9e7087ffb4029735059b322adc1ca36322bc013f246df4a"
+    },
+    "all299_resource_samples_passed_does_not_make_failed_native_attempt_pass": true
+  },
+  "preparation_failures_retained": {
+    "old_client2148_manifest_detected_six_updated_current_release_files": true,
+    "effective_plan_source_list_was_stale_installer_failed_before_native": true,
+    "local_runtimeconfig_locator_absent_fixed_using_actual_manifest_SHA_not_fabricated_body": true
+  },
+  "post_native_observer_false_retained": {
+    "original_false": {
+      "path": "G:\\PR13Evidence\\A091-current-live-provenance-20261024-r5-prep2-originals\\final-qualification.original.json",
+      "bytes": 142,
+      "sha256": "4fe6312be850da2dd273cf83615668dd7aa5c4fe7cce6becdf610fd59f2cb66f"
+    },
+    "cause": "Observer hardcoded R249 DLL hash27bb, but this run deliberately used fresh R252 strict-build DLLb64b.",
+    "corrected_qualified": {
+      "path": "G:\\PR13Evidence\\A091-current-live-provenance-20261024-r5-prep2-originals\\final-qualification-r303.original.json",
+      "bytes": 2836,
+      "sha256": "025ece10acf5a8325cc19156e63047c7ae964e6f2166861d3247942024692d3b"
+    },
+    "frozen_plan_native_manifest_actual_R252_output_and_actual_DLL_SHAs_all_b64b": true,
+    "business_native_reruns_for_observer_correction": 0
+  },
+  "transport": {
+    "R4_direct_transport_three196608B_short_chunks_preserved": true,
+    "R4_and_R5_prebuilt_RAM_archives_native_OpenSSH_4MiB_parts_fullSHA_all_members_verified": true,
+    "new_gameplay_reruns_for_transport": 0
+  },
+  "planning_budget": {
+    "cumulative_conservative_rooms": 14,
+    "cumulative_automated_account_budget": 25,
+    "R1_actual_created_room_count_unknown_not_zeroed": true,
+    "R4_planning_charge_retained_even_though_no_case_executed": true,
+    "R5_new_rooms_max": 2,
+    "R5_new_accounts_max": 5
+  },
+  "all_three_owned_input_roots_removed_after_G_source_custody": {
+    "path": "G:\\PR13Evidence\\A091-owned-input-cleanup-20261024-r304-originals\\cleanup.stdout.original.json",
+    "bytes": 1134,
+    "sha256": "880a098f1470bfa0e43fa4bfd082c486ff755cbf32c91dc654c8a41c2d73d9fd"
+  },
+  "original_cloud_raw_shared_base_images_capacity_PG_data_retained": true,
+  "current_original_resource_or_capacity_criteria_not_claimed_passed": true
+}
