@@ -3,7 +3,7 @@
   "round_id": "current-rebuild-20261024-r1",
   "user_scope": "重建当前版本新一轮（推荐）",
   "adjudicated_at_UTC": "2026-10-24T16:53:31.837189+00:00",
-  "current_status": "PartiallyVerified_NotAccepted_capacity_duration_and_sample_budget_scopes_retained",
+  "current_status": "PartiallyVerified_NotAccepted_capacity_execution_100_duration_and_sample_budget_scopes_retained",
   "GDD_main_sha256": "7375f9615d4612a617cdb6295a020037016ecef061964c0200b52c2def9d44f6",
   "config_package_sha256": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
   "legal_base_HP": {
@@ -49,6 +49,14 @@
       "normal_ACKs": 30,
       "unique_server_matches": 15,
       "default_duration_acceptance_claimed": false
+    },
+    "distributed_adjudicator_QA_unit_tests": 83,
+    "stronger60_for50active_overlap_component_only": {
+      "actual_native_producers": 60,
+      "minimum_global_active": 50,
+      "shared_window_seconds": 600,
+      "coverage": 1.0,
+      "whole_capacity_accepted": false
     }
   },
   "numeric_budget_and_limits": {
@@ -70,14 +78,18 @@
       "owned_server_rate_quotas_raised_for_capacity_only": true,
       "cloud_disk_guard_15_to5percent_with3GB_floor": true,
       "mixed_observation240_to480_to600_seconds": true,
-      "final_normal_scenario": "Mage_only_cleared-extraction",
+      "final_normal_scenario": "Full_mixed_three_classes_original_cyclic_route_baseline_all_hand2400s_observation",
       "gameplay_balance_or_local6GiB_reserve_unchanged": true,
-      "normal_cycles_final_server_quotas_restored": true
+      "normal_cycles_final_server_quotas_restored": true,
+      "prior_scoped_normal_scenario": "Mage_only_cleared-extraction",
+      "normal_original1200_to2400seconds_disclosed": true,
+      "capacity_stronger60_producers_while_minimum50active_unchanged": true,
+      "capacity_zero_notice_failure_gate_not_waived": true
     }
   },
   "current_unpassed": {
-    "cloud_capacity50": "NotPassed_GeneratorResourceAdmission_28started_native29_rejected_before_6GiB_reserve",
-    "cloud_capacity100": "NotExecuted_ResourceUnavailable_same_first50_group_cannot_be_admitted",
+    "cloud_capacity50": "Exact50_R3_load_failed; stronger60_R4_minimum50active_600s_overlap_passed_component_only; original_execution_failed_four_play_rejections_not_waived",
+    "cloud_capacity100": "NotExecuted_original50_full_acceptance_not_passed; actual100_admission_and_sustained_window_unproven; no_capacity_ceiling_inferred_from60",
     "factor_candidate_benefit_acceptance": "Inconclusive_reduced_budget",
     "default_cycle_duration_acceptance": "NotEvaluated_functional_only_3of30_room_to_ACK_over1200s_max2065_844"
   },
@@ -100,7 +112,7 @@
   },
   "historical_register_not_modified": true,
   "human_experience_excluded": true,
-  "local_Godot": "Headless_Dummy_audio_CREATE_NO_WINDOW_BelowNormal_last4_CPUs_6GiB_reserve; all_owned_children_and_forward_tunnel_terminal",
+  "local_Godot": "All_owned_R4_native_and_forward_tunnel_terminal; actual32Windows_native_window_handles0_BelowNormal_last4_CPUs; minimum_available_memory9714544640B_above6GiB; other_projects_untouched",
   "formal_service": "Existing_formal_app_and_PG_identity_image_start_environment_unchanged_readyHTTP200;44_unused_project_test_PG_volumes_cleared_under_direct_user_permission;active_formal_DB_not_cleared",
   "report_files": [
     "foundation.json",
@@ -112,10 +124,10 @@
   "last_executed_game_source_reference": "4e6ff10cba4597e9ea21a6e5a6ae3479c25082c5",
   "whole_project_accepted": false,
   "formal_service_last_readonly_probe": {
-    "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\continuation-20261024-cleanup-r1\\cloud-teardown-terminal.original.json",
+    "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\distributed60-for50-20261025-r4\\cloud-cleanup-terminal.original.json",
     "ready_HTTP": 200,
     "container_image_start_environment_unchanged": true,
-    "root_disk_available_bytes": 8267292672
+    "root_disk_available_bytes": 8021413888
   },
   "validated_UI_source_overrides": {
     "client/tests/art_preview.gd": "f6d7f4e352c44c092afb301a221dbeff34167653f09842fe9b6cd334ff8a84ba",
@@ -132,7 +144,10 @@
     "continuation-20261024/cycles-scoped-result.json",
     "continuation-20261024/UI-result.json",
     "continuation-20261024/CI-release-recheck.json",
-    "continuation-20261025/mixed-normal-r6.json"
+    "continuation-20261025/mixed-normal-r6.json",
+    "continuation-20261025/distributed50-r3-notpassed.json",
+    "continuation-20261025/distributed-QA-validation.json",
+    "continuation-20261025/distributed60-for50-r4-notpassed.json"
   ],
   "current_release_CI": {
     "tested_game_source": "d2d3c3ee0b01c0ef45c545023b84a6fe9fab8c13",
@@ -141,5 +156,13 @@
     "PostgreSQL_skipped": 0,
     "report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261024/CI-release-recheck.json"
   },
-  "active_capacity_study": "Distributed50_two_full_native25_partitions_Preparing_NotExecuted"
+  "active_capacity_study": "Distributed60_for50active_r4_completed_NotPassed_four_rejected_play_requests_original_execution_failed",
+  "last_continuation_at_unix_ms": 1792878251225.3865,
+  "latest_QA_source_release": {
+    "head": "32e493a3da6745b34c8e7f41475d902288279b4f",
+    "local_targeted_tests": 83,
+    "CI_run": 40134290798,
+    "full_CI_status": "InProgress_when_summary_written; accounting_client_server_contract_passed",
+    "game_runtime_trees_unchanged": true
+  }
 }
