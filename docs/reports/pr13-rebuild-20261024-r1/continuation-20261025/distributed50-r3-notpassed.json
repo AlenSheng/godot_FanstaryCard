@@ -1,0 +1,132 @@
+{
+  "kind": "Actual distributed full-native50 study original failed verdict and scoped reanalysis",
+  "source_head": "4e6ff10cba4597e9ea21a6e5a6ae3479c25082c5",
+  "status": "NotPassed_original_load_coverage_and_cloud_spool_and_joint_clock_qualification",
+  "actual_native_clients": {
+    "Windows": 25,
+    "cloud": 25,
+    "total": 50
+  },
+  "actual_server_humans_peak50_verified": true,
+  "profile": "active-hold_Guardian_baseline_all_hand_uncapped_full_official_Godot4_7_2",
+  "same_original50_seeds20260930through20260979_partitioned_without_duplicates": true,
+  "duration_seconds_each": 960,
+  "per_host_hold_window_seconds": 720,
+  "joint_predeclared_window_seconds": 600,
+  "required_coverage": 0.95,
+  "Windows": {
+    "original_outcome": {
+      "classification": "incomplete_or_failed",
+      "passed": false,
+      "exit_code": 1
+    },
+    "dimensions": {
+      "dimensions": {
+        "execution": "Passed",
+        "evidence": "Passed",
+        "load": "Failed",
+        "gameplay": "NotApplicable",
+        "performance": "Unknown",
+        "cleanup": "Passed"
+      },
+      "applicable": [
+        "cleanup",
+        "evidence",
+        "execution",
+        "load",
+        "performance"
+      ],
+      "all_applicable_passed": false,
+      "full_acceptance_passed": false
+    },
+    "compliant_seconds": 430.47199988365173,
+    "coverage": 0.597877777616183,
+    "continuous_seconds": 150.32999992370605,
+    "process_cleanup": true,
+    "business_cleanup": true
+  },
+  "cloud": {
+    "original_outcome": {
+      "classification": "invalid_workload_or_evidence",
+      "passed": false,
+      "exit_code": 3
+    },
+    "dimensions": {
+      "dimensions": {
+        "execution": "Passed",
+        "evidence": "Failed",
+        "load": "Failed",
+        "gameplay": "NotApplicable",
+        "performance": "Unknown",
+        "cleanup": "Passed"
+      },
+      "applicable": [
+        "cleanup",
+        "evidence",
+        "execution",
+        "load",
+        "performance"
+      ],
+      "all_applicable_passed": false,
+      "full_acceptance_passed": false
+    },
+    "compliant_seconds": 312.0530004501343,
+    "coverage": 0.43340694506963096,
+    "continuous_seconds": 101.05200004577637,
+    "original_audit_spool_disk_floor": true,
+    "raw_originals_complete_and_G_replay_verified": true,
+    "process_cleanup": true,
+    "business_cleanup": true
+  },
+  "actual_main_failure": "Natural settlements and real rematching repeatedly reduced in-room humans below50; both original coverage gates remained unchanged and failed.",
+  "clock_capture_issue": {
+    "Windows_equal_monotonic_capture_pairs": 8,
+    "Windows_RTTs_all0_due_coarse_clock": true,
+    "joint_guard_original_invalid_clock_round_trip_retained": true,
+    "next_collector_requires_explicit_spacing_without_rewriting_original_times": true
+  },
+  "derived_complete_original_audit_replay": {
+    "both_hosts_request_evidence_errors_empty": true,
+    "HTTP_count": 1214,
+    "RT_count": 46967,
+    "HTTP_P95_ms": 737,
+    "RT_P95_ms": 445,
+    "scope": "Combined original running request durations; no averaging of P95s, not a joint-window service SLO or capacity pass"
+  },
+  "final_isolated_backend": {
+    "humans": 0,
+    "pending_holds": 0,
+    "matches_including_preregistered_warmup": 27
+  },
+  "cloud_G_original_archive": {
+    "archive": "/var/tmp/fc-distributed50-cohort-capture-20261025-r3/cloud25.original.tar.xz",
+    "bytes": 5732640,
+    "sha256": "a4a198bbcad39f056518cdff18a30fda44d47c238e305dc318effdec985679db",
+    "manifest_SHA256": "86b021ecf6501ac887875210d173403fd417c2c8bf31fef68f41f814f7baf67e",
+    "members": 121
+  },
+  "all_original_members_SHA_verified": true,
+  "no_forced_native_termination": true,
+  "original_reports_and_failures_not_rewritten": true,
+  "whole_project_accepted": false,
+  "at_ns": 1792875939432537700,
+  "full_cloud_originals_and_database_backup": {
+    "bytes": 6864276,
+    "sha256": "7339e287871df4aa54c2263c60d09cb7f8828b1b1f0955b4c0dba61b074fe54c",
+    "files": 343,
+    "every_member_SHA256_verified_on_G": true,
+    "database_dump_sha256": "c09a35985363d94815bfa1c8270fc52e48240a90c0dc6bf582439eed75c91051",
+    "actual_separate_DB_restore_verified": true,
+    "restored_matches": 27,
+    "restored_settlements": 88,
+    "restored_pending_holds": 0,
+    "scratch_DB_dropped_after_verification": true
+  },
+  "backed_cloud_temporary_cleanup": {
+    "owned_stopped_containers_removed": 7,
+    "owned_old_root_removed": true,
+    "new_source_Git_worktree_moved_intact": true,
+    "additional_freed_bytes": 506220544,
+    "formal_ready_HTTP": 200
+  }
+}
