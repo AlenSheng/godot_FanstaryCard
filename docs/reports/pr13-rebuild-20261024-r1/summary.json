@@ -41,7 +41,8 @@
       "gameplay_checks": 100,
       "layout_errors": 0
     },
-    "verified_G_backup_then_owned_cloud_teardown": true
+    "verified_G_backup_then_owned_cloud_teardown": true,
+    "current_release_full_PG_CI_418_no_skip": true
   },
   "numeric_budget_and_limits": {
     "route_samples_each": 300,
@@ -121,6 +122,14 @@
     "continuation-20261024/capacity-resource-result.json",
     "continuation-20261024/cleanup.json",
     "continuation-20261024/cycles-scoped-result.json",
-    "continuation-20261024/UI-result.json"
-  ]
+    "continuation-20261024/UI-result.json",
+    "continuation-20261024/CI-release-recheck.json"
+  ],
+  "current_release_CI": {
+    "tested_game_source": "d2d3c3ee0b01c0ef45c545023b84a6fe9fab8c13",
+    "workflows_passed": 2,
+    "PostgreSQL_actual_passed": 418,
+    "PostgreSQL_skipped": 0,
+    "report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261024/CI-release-recheck.json"
+  }
 }
