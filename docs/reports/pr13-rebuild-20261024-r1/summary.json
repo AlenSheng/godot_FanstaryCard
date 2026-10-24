@@ -3,7 +3,7 @@
   "round_id": "current-rebuild-20261024-r1",
   "user_scope": "重建当前版本新一轮（推荐）",
   "adjudicated_at_UTC": "2026-10-24T16:53:31.837189+00:00",
-  "current_status": "PartiallyVerified_NotAccepted_capacity_and_original_mixed_cycle_gaps_retained",
+  "current_status": "PartiallyVerified_NotAccepted_capacity_duration_and_sample_budget_scopes_retained",
   "GDD_main_sha256": "7375f9615d4612a617cdb6295a020037016ecef061964c0200b52c2def9d44f6",
   "config_package_sha256": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
   "legal_base_HP": {
@@ -42,7 +42,14 @@
       "layout_errors": 0
     },
     "verified_G_backup_then_owned_cloud_teardown": true,
-    "current_release_full_PG_CI_418_no_skip": true
+    "current_release_full_PG_CI_418_no_skip": true,
+    "mixed_class_normal_cycles_relaxed2400s": {
+      "accounts": 10,
+      "cycles_each": 3,
+      "normal_ACKs": 30,
+      "unique_server_matches": 15,
+      "default_duration_acceptance_claimed": false
+    }
   },
   "numeric_budget_and_limits": {
     "route_samples_each": 300,
@@ -71,8 +78,8 @@
   "current_unpassed": {
     "cloud_capacity50": "NotPassed_GeneratorResourceAdmission_28started_native29_rejected_before_6GiB_reserve",
     "cloud_capacity100": "NotExecuted_ResourceUnavailable_same_first50_group_cannot_be_admitted",
-    "original_mixed10accounts3normalcycles": "NotPassed_3partial_attempts_retained_Mage_only_pass_does_not_replace",
-    "factor_candidate_benefit_acceptance": "Inconclusive_reduced_budget"
+    "factor_candidate_benefit_acceptance": "Inconclusive_reduced_budget",
+    "default_cycle_duration_acceptance": "NotEvaluated_functional_only_3of30_room_to_ACK_over1200s_max2065_844"
   },
   "separately_preserved_historical_or_external_unpassed": {
     "old86_90_130_139_originals": "NotRecovered_new_results_do_not_replace_old_events",
@@ -88,7 +95,8 @@
     "final_focused_CI": "10passed0skip_strict_gate_covered_no_test_or_TRX_rewrite",
     "continuation_mixed_cycles": "7_then10_then17_of30_normal_participations_in_three_partial_mixed_attempts; final30_of30_is_Mage_only",
     "cloud_card_page": "Low_free_memory_cache_trim_is_documented_degradation_not_an_HP_or_pool_regression; unmodified_Windows_test_passed",
-    "capacity50": "Original_evidence_and_load_failed_cleanupUnknown_preserved; later0pendingholds_does_not_rewrite_original_cutoff"
+    "capacity50": "Original_evidence_and_load_failed_cleanupUnknown_preserved; later0pendingholds_does_not_rewrite_original_cutoff",
+    "original_mixed_cycles_before_r6": "240s7of30_480s10of30_alternative600s17of30_original1200s24of30_failures_retained; current2400sfull3class30of30_functional_only"
   },
   "historical_register_not_modified": true,
   "human_experience_excluded": true,
@@ -101,7 +109,7 @@
     "server-full-ci.json",
     "postgres-rollback-recheck.json"
   ],
-  "last_executed_game_source_reference": "667ed611cfb195fafe211ac5444589a437fcb306",
+  "last_executed_game_source_reference": "4e6ff10cba4597e9ea21a6e5a6ae3479c25082c5",
   "whole_project_accepted": false,
   "formal_service_last_readonly_probe": {
     "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\continuation-20261024-cleanup-r1\\cloud-teardown-terminal.original.json",
@@ -116,14 +124,15 @@
     "client/ui/main.gd": "600ec8dcd4c6a26c524fefef6d429b92b4b4e6971a74082dfc18f85f65e3d108",
     "client/ui/inventory_view.gd": "fd2e6f9593b8e9492f563db8a91324687595d2060a6ae690b9ae12dffbed26e6"
   },
-  "current_continuation_report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261024/README.md",
+  "current_continuation_report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/README.md",
   "continuation_public_reports": [
     "continuation-20261024/backup-and-teardown.json",
     "continuation-20261024/capacity-resource-result.json",
     "continuation-20261024/cleanup.json",
     "continuation-20261024/cycles-scoped-result.json",
     "continuation-20261024/UI-result.json",
-    "continuation-20261024/CI-release-recheck.json"
+    "continuation-20261024/CI-release-recheck.json",
+    "continuation-20261025/mixed-normal-r6.json"
   ],
   "current_release_CI": {
     "tested_game_source": "d2d3c3ee0b01c0ef45c545023b84a6fe9fab8c13",
@@ -131,5 +140,6 @@
     "PostgreSQL_actual_passed": 418,
     "PostgreSQL_skipped": 0,
     "report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261024/CI-release-recheck.json"
-  }
+  },
+  "active_capacity_study": "Distributed50_two_full_native25_partitions_Preparing_NotExecuted"
 }

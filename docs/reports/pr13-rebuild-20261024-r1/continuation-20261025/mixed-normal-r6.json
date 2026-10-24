@@ -1,0 +1,66 @@
+{
+  "ok": true,
+  "normal_ACKs": 30,
+  "actors": 10,
+  "per_actor_normal_minimum": 3,
+  "hero_distribution": {
+    "Mage": 4,
+    "Priest": 3,
+    "Guardian": 3
+  },
+  "per_cycle_observation_limit_seconds": 2400,
+  "all_applicable_dimensions": {
+    "dimensions": {
+      "execution": "Passed",
+      "evidence": "Passed",
+      "load": "Passed",
+      "gameplay": "Passed",
+      "performance": "NotApplicable",
+      "cleanup": "Passed"
+    },
+    "applicable": [
+      "cleanup",
+      "evidence",
+      "execution",
+      "gameplay",
+      "load"
+    ],
+    "all_applicable_passed": true,
+    "full_acceptance_passed": false
+  },
+  "process_cleanup_complete": true,
+  "business_cleanup_verified": true,
+  "unique_match_ids": 15,
+  "duration_identity": "Observed client_id plus authoritative match_id; original Unknown cycle_id on room.started is preserved, not rewritten",
+  "derived_duration_rows": 30,
+  "maximum_room_to_ACK_seconds": 2065.844,
+  "cycles_room_to_ACK_over1200_seconds": 3,
+  "does_not_claim_design_target_duration_acceptance": true,
+  "source_report_sha256": "1717e04d0e3bede909c9c6a3dd4ae8546da7b1d75495220f4a473e094ee21f0e",
+  "kind": "Original mixed-class normal-cycle functional acceptance with explicit observation relaxation",
+  "status": "Passed_functional_mixed10x3_with2400second_observation",
+  "source_head": "4e6ff10cba4597e9ea21a6e5a6ae3479c25082c5",
+  "load_profile": "cyclic-gameplay",
+  "strategy": "baseline_all_hand",
+  "normal_definition_unchanged": true,
+  "prior1200second_run24of30_remains_NotPassed": true,
+  "important_relaxation": "Per-expedition observation1200to2400seconds; same3classes10accounts each3normalACKs. No baseline card policy, route, balance, FPS or ACK criterion changed.",
+  "maximum_observed_room_to_ACK_seconds": 2065.844,
+  "observed_cycles_over1200_seconds": 3,
+  "does_not_establish_default_duration_performance_or_capacity": true,
+  "G_verified_original_backup": {
+    "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\mixed-cycle-audit-20261025-r2\\r6-cloud-originals\\evidence.original.tar.xz",
+    "bytes": 6834824,
+    "sha256": "4ffed44f8206b52ef318b6cabb4bc7cf546757997fb8e1c3e9eaf727e48731f5",
+    "verified_files": 310,
+    "every_member_SHA256_verified": true
+  },
+  "owned_database": {
+    "matches": 15,
+    "settlements": 30,
+    "pending_holds": 0,
+    "dump_SHA256": "c222172f897967e71fa3dd73969a6d8d25525cdbced72788a175b0c0693106c7"
+  },
+  "actual_dump_restore_verified_separate_owned_database": true,
+  "whole_project_accepted": false
+}
