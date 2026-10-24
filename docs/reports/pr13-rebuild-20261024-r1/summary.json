@@ -89,7 +89,7 @@
     }
   },
   "current_unpassed": {
-    "cloud_capacity50": "Exact50_R3_load_failed; stronger60_R4_50active600s_component_passed_but_execution_failed; R5_60peak_early_monitoring_stop_failed; no_original_failure_overridden",
+    "cloud_capacity50": "R3_load_failed;R4_50active600s_component_only;R5_monitoring_failed;R6_three_windows_realtime_P95_over2000ms_failed; all_originals_retained",
     "cloud_capacity100": "NotExecuted_original50_full_acceptance_not_passed; actual100_admission_and_sustained_window_unproven; no_capacity_ceiling_inferred_from60",
     "factor_candidate_benefit_acceptance": "Inconclusive_reduced_budget",
     "default_cycle_duration_acceptance": "NotEvaluated_functional_only_3of30_room_to_ACK_over1200s_max2065_844"
@@ -113,7 +113,7 @@
   },
   "historical_register_not_modified": true,
   "human_experience_excluded": true,
-  "local_Godot": "All_owned_R4_native_and_forward_tunnel_terminal; actual32Windows_native_window_handles0_BelowNormal_last4_CPUs; minimum_available_memory9714544640B_above6GiB; other_projects_untouched",
+  "local_Godot": "All_owned_R5_R6_native_and_tunnels_terminal; CNO_BelowNormal_last4native_CPUs_6GiBfloor; R6onlySSH_control_all16CPUs_BelowNormal_and_no_compression; other_projects_untouched",
   "formal_service": "Existing_formal_app_and_PG_identity_image_start_environment_unchanged_readyHTTP200;44_unused_project_test_PG_volumes_cleared_under_direct_user_permission;active_formal_DB_not_cleared",
   "report_files": [
     "foundation.json",
@@ -125,10 +125,10 @@
   "last_executed_game_source_reference": "4e6ff10cba4597e9ea21a6e5a6ae3479c25082c5",
   "whole_project_accepted": false,
   "formal_service_last_readonly_probe": {
-    "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\distributed60-for50-20261025-r4\\cloud-cleanup-terminal.original.json",
+    "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\command-execution-observer-20261025-r6\\cloud-cleanup-terminal.original.json",
     "ready_HTTP": 200,
     "container_image_start_environment_unchanged": true,
-    "root_disk_available_bytes": 8021413888
+    "root_disk_available_bytes": 8044371968
   },
   "validated_UI_source_overrides": {
     "client/tests/art_preview.gd": "f6d7f4e352c44c092afb301a221dbeff34167653f09842fe9b6cd334ff8a84ba",
@@ -150,7 +150,8 @@
     "continuation-20261025/distributed-QA-validation.json",
     "continuation-20261025/distributed60-for50-r4-notpassed.json",
     "continuation-20261025/CI-distributed-tools-release.json",
-    "continuation-20261025/execution-observer-r5-notpassed.json"
+    "continuation-20261025/execution-observer-r5-notpassed.json",
+    "continuation-20261025/execution-observer-r6-notpassed.json"
   ],
   "current_release_CI": {
     "tested_source_commit": "32e493a3da6745b34c8e7f41475d902288279b4f",
@@ -162,8 +163,8 @@
     "offline_tools_passed": 446,
     "report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/CI-distributed-tools-release.json"
   },
-  "active_capacity_study": "Execution_observer_R6_declared60_for50active_controller_started; actual_verdict_pending",
-  "last_continuation_at_unix_ms": 1792883952576.4607,
+  "active_capacity_study": "Execution_observer_R6_completed_NotPassed_original_realtime_latency_redline;owned_runtime_cleaned",
+  "last_continuation_at_unix_ms": 1792884786796.3008,
   "latest_QA_source_release": {
     "head": "32e493a3da6745b34c8e7f41475d902288279b4f",
     "local_targeted_tests": 83,
@@ -186,6 +187,11 @@
     "all_actual_full_snapshot_digests_and_semantics_verified": true,
     "original_R4_four_requests_not_reconstructed": true,
     "no_error_waiver": true,
-    "report": "continuation-20261025/execution-observer-r5-notpassed.json"
+    "report": "continuation-20261025/execution-observer-r5-notpassed.json",
+    "latest_round": "command-execution-observer-20261025-r6",
+    "latest_status": "NotPassed_original_realtime_P95_redline",
+    "new_exact_state_bindings": 11,
+    "total_R5_R6_exact_state_bindings": 22,
+    "latest_report": "continuation-20261025/execution-observer-r6-notpassed.json"
   }
 }

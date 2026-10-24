@@ -1,0 +1,160 @@
+{
+  "kind": "Second actual native60 diagnostic round; original performance redline retained",
+  "status": "NotPassed_Windows_three_consecutive_realtime_latency_windows_over2000ms",
+  "source_head": "4e6ff10cba4597e9ea21a6e5a6ae3479c25082c5",
+  "predeclared_profile": "full-native60-for50active",
+  "same_full_uncapped_official_Godot4_7_2": true,
+  "hosts": [
+    {
+      "host": "windows",
+      "clients": 32,
+      "original_stop": "redline:command_p95_over_2000ms",
+      "original_outcome": {
+        "classification": "performance_redline",
+        "passed": false,
+        "exit_code": 2
+      },
+      "original_dimensions": {
+        "dimensions": {
+          "execution": "Failed",
+          "evidence": "Passed",
+          "load": "Failed",
+          "gameplay": "NotApplicable",
+          "performance": "Failed",
+          "cleanup": "Passed"
+        },
+        "applicable": [
+          "cleanup",
+          "evidence",
+          "execution",
+          "load",
+          "performance"
+        ],
+        "all_applicable_passed": false,
+        "full_acceptance_passed": false
+      },
+      "native_processes_exit0": true,
+      "process_cleanup": true,
+      "business_cleanup": true,
+      "minimum_host_available_memory_bytes": 9228980224
+    },
+    {
+      "host": "cloud",
+      "clients": 28,
+      "original_stop": "operator_stop_file",
+      "original_outcome": {
+        "classification": "operator_stopped",
+        "passed": false,
+        "exit_code": 130
+      },
+      "original_dimensions": {
+        "dimensions": {
+          "execution": "Passed",
+          "evidence": "Passed",
+          "load": "Failed",
+          "gameplay": "NotApplicable",
+          "performance": "Unknown",
+          "cleanup": "Passed"
+        },
+        "applicable": [
+          "cleanup",
+          "evidence",
+          "execution",
+          "load",
+          "performance"
+        ],
+        "all_applicable_passed": false,
+        "full_acceptance_passed": false
+      },
+      "native_processes_exit0": true,
+      "process_cleanup": true,
+      "business_cleanup": true,
+      "minimum_host_available_memory_bytes": 608210944
+    }
+  ],
+  "target50active_joint600s_not_reached": true,
+  "original_performance_redline": {
+    "Windows_realtime_P95_ms_three_consecutive_windows": [
+      2021,
+      3383,
+      3445
+    ],
+    "limit_ms": 2000,
+    "server_actor_wait_ms_near4_75_not_an_end_to_end_latency_measure": true
+  },
+  "predeclared_measurement_controls": {
+    "only_SSH_control_process_all16logical_CPUs_BelowNormal_and_compression_off": true,
+    "Godot_and_coordinators_unchanged_CNO_BelowNormal_last4logical_CPUs": true,
+    "original6GiB_Windows500MB_cloud3GB_and5percent_disk_floors_preserved": true,
+    "combined_changes_do_not_prove_single_factor_causality": true
+  },
+  "read_only_owned_input_storage_deduplication": {
+    "deduplicated_groups": 923,
+    "replaced_duplicate_paths": 3358,
+    "duplicate_logical_bytes": 523821229,
+    "actual_additional_root_free_bytes": 530370560,
+    "owned_input_paths_preserved": true,
+    "same_file_bytes_verified_before_and_after": true,
+    "outside_tree_hardlinks_created": false,
+    "Git_content_delta_empty": true
+  },
+  "observer_qualification": {
+    "sha256": "3ed7edf25da2e14231a841af4b5b8a085589c87501ccabb70df0c67a18af26ae",
+    "Windows_actual_loopback_checks": 37,
+    "Linux_same_image_actual_loopback_checks": 37,
+    "legal_unequipped_model_HP70_80_100_explicitly_verified": true,
+    "extra_controlled_model_room_executions": 6,
+    "extra_model_player_executions": 12,
+    "qualification_real_accounts_or_natural_matches": 0,
+    "qualification_not_capacity_acceptance": true
+  },
+  "actual_execution_state_evidence": {
+    "unique_native_rejections_and_actor_snapshot_bindings": 11,
+    "typed_full_snapshot_digests_and_semantic_roundtrips_verified": 11,
+    "missing_named_cards_actually_absent_from_hand": 8,
+    "moves_rejected_while_authoritative_phase_PveActive": 2,
+    "reward_choice_rejected_after_authoritative_phase_ActionBar_PveCleared": 1,
+    "observer_internal_errors": 0,
+    "dropped_records": 0,
+    "capture_compute_ms_range": [
+      0.625485,
+      82.002063
+    ],
+    "compute_scope": "Actual reader lookup and two immutable typed snapshots; excludes outer journal serialization, not total request duration",
+    "underlying_latency_cause_or_stale_intent_cause": "Unproven; existing data does not isolate local CPU, transport or all observation overhead",
+    "original_errors_not_whitelisted_or_overridden": true
+  },
+  "Windows_generator_resource_snapshot": {
+    "CPU_percent_of_one_core_range": [
+      324.83,
+      343.04
+    ],
+    "native_clients": 32,
+    "coordinator_plus_native_measured_processes": 33,
+    "allowed_native_logical_CPU_count": 4,
+    "machine_logical_CPU_count": 16,
+    "mean_native_process_FPS_near144_not_renderedFPS": true,
+    "RSS_and_incremental_launch_headroom_not_multiplied_as_capacity_proof": true
+  },
+  "backup": {
+    "G_full_archive_bytes": 6569176,
+    "sha256": "52c9f926fb8c44bee3903755da616c6e26444465e313447c67344f99b3f02134",
+    "every_member_SHA256_verified": 448,
+    "actual_DB_restore_audit": "matches|16\nsettlements|64\npending_holds|0\n",
+    "scratch_DB_dropped": true
+  },
+  "cleanup": {
+    "owned_containers_removed": 7,
+    "owned_network_worktree_and_temporary_root_removed": true,
+    "source_nonGit_inputs_backed_and_matched": 78,
+    "additional_freed_bytes": 4358176768,
+    "cloud_available_bytes": 8044371968,
+    "formal_service_identity_unchanged": true,
+    "formal_ready_HTTP": 200,
+    "formal_DB_not_cleared": true
+  },
+  "capacity100": "NotExecuted_original50_full_acceptance_prerequisite_still_failed; no_server_capacity_ceiling_inferred",
+  "whole_capacity_accepted": false,
+  "whole_project_accepted": false,
+  "at_unix_ms": 1792884786795.3005
+}
