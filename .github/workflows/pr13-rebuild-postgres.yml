@@ -1,6 +1,11 @@
 name: Current rebuild PostgreSQL and rollback evidence
 
 on:
+  workflow_call:
+    inputs:
+      acceptance_round:
+        required: true
+        type: string
   workflow_dispatch:
     inputs:
       acceptance_round:

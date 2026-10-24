@@ -17,6 +17,11 @@ on:
         required: false
         default: 10000
         type: number
+      focused_pg_recheck:
+        description: Only the declared nine PostgreSQL contracts and current-round rebuilt rollback
+        required: false
+        default: false
+        type: boolean
 permissions:
   contents: read
 concurrency:
@@ -24,6 +29,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   acceptance:
+    if: ${{ !inputs.focused_pg_recheck }}
     runs-on: ubuntu-latest
     timeout-minutes: 25
     services:
@@ -157,3 +163,8 @@ jobs:
           path: test-results/acceptance
           if-no-files-found: error
           retention-days: 7
+  rebuild-postgres-recheck:
+    if: ${{ inputs.focused_pg_recheck }}
+    uses: ./.github/workflows/pr13-rebuild-postgres.yml
+    with:
+      acceptance_round: ${{ inputs.acceptance_round }}
