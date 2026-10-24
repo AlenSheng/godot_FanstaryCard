@@ -57,7 +57,8 @@
       "shared_window_seconds": 600,
       "coverage": 1.0,
       "whole_capacity_accepted": false
-    }
+    },
+    "current_release_offline_tools_CI446": true
   },
   "numeric_budget_and_limits": {
     "route_samples_each": 300,
@@ -147,14 +148,18 @@
     "continuation-20261025/mixed-normal-r6.json",
     "continuation-20261025/distributed50-r3-notpassed.json",
     "continuation-20261025/distributed-QA-validation.json",
-    "continuation-20261025/distributed60-for50-r4-notpassed.json"
+    "continuation-20261025/distributed60-for50-r4-notpassed.json",
+    "continuation-20261025/CI-distributed-tools-release.json"
   ],
   "current_release_CI": {
-    "tested_game_source": "d2d3c3ee0b01c0ef45c545023b84a6fe9fab8c13",
-    "workflows_passed": 2,
+    "tested_source_commit": "32e493a3da6745b34c8e7f41475d902288279b4f",
+    "game_runtime_equal_to": "4e6ff10cba4597e9ea21a6e5a6ae3479c25082c5",
+    "workflows_passed": 1,
+    "jobs_passed": 4,
     "PostgreSQL_actual_passed": 418,
     "PostgreSQL_skipped": 0,
-    "report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261024/CI-release-recheck.json"
+    "offline_tools_passed": 446,
+    "report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/CI-distributed-tools-release.json"
   },
   "active_capacity_study": "Distributed60_for50active_r4_completed_NotPassed_four_rejected_play_requests_original_execution_failed",
   "last_continuation_at_unix_ms": 1792878251225.3865,
@@ -162,7 +167,10 @@
     "head": "32e493a3da6745b34c8e7f41475d902288279b4f",
     "local_targeted_tests": 83,
     "CI_run": 40134290798,
-    "full_CI_status": "InProgress_when_summary_written; accounting_client_server_contract_passed",
-    "game_runtime_trees_unchanged": true
+    "full_CI_status": "Passed_four_jobs_actual418PG_no_skip",
+    "game_runtime_trees_unchanged": true,
+    "offline_tool_tests_passed": 446,
+    "cloud_ownership_passed": 8,
+    "report": "continuation-20261025/CI-distributed-tools-release.json"
   }
 }

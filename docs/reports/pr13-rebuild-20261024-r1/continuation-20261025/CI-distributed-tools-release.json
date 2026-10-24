@@ -1,0 +1,68 @@
+{
+  "kind": "Actual release QA-source CI results; capacity failures retained",
+  "tested_source_commit": "32e493a3da6745b34c8e7f41475d902288279b4f",
+  "game_runtime_equal_to_frozen_capacity_source": "4e6ff10cba4597e9ea21a6e5a6ae3479c25082c5",
+  "workflow_run": 40134290798,
+  "workflow_status": "completed",
+  "conclusion": "success",
+  "url": "https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/40134290798",
+  "jobs_passed": [
+    "accounting",
+    "client",
+    "server-contract",
+    "server-postgres"
+  ],
+  "actual_unit_rows": {
+    "offline_tools_passed": 446,
+    "cloud_ownership_passed": 8,
+    "targeted_distributed_suite83_included_in446": true
+  },
+  "actual_native_Server_offline_rows": {
+    "Passed": 288,
+    "NotExecuted": 130,
+    "not_promoted_as_executed_PostgreSQL_coverage": true
+  },
+  "actual_native_PostgreSQL_rows": {
+    "Passed": 418,
+    "Failed": 0,
+    "NotExecuted": 0,
+    "native_summary_counters_match": true,
+    "strict_coverage_state": "CoveredForMainReview",
+    "missing_required_assertion_rows": {},
+    "coverage_tool_whole_acceptance_flag": false
+  },
+  "official_CI_artifacts_saved_on_G_with_TLS_and_official_digest_verified": [
+    {
+      "id": 12576781218,
+      "name": "gameplay-load-accounting-32e493a3da6745b34c8e7f41475d902288279b4f",
+      "bytes": 550427,
+      "sha256": "32a3e6ba823bf561e0761a5591dcaa778ba6a260ac85323d551c68fe62782256",
+      "every_ZIP_member_SHA256_verified": 166
+    },
+    {
+      "id": 12576816114,
+      "name": "gameplay-load-client-32e493a3da6745b34c8e7f41475d902288279b4f",
+      "bytes": 3586375,
+      "sha256": "b5d0fccfd9dc40289df0b37533c6be1fa11d2ecc1669aef6dadc8be1a3d5df87",
+      "every_ZIP_member_SHA256_verified": 175
+    },
+    {
+      "id": 12576363675,
+      "name": "gameplay-load-postgres-32e493a3da6745b34c8e7f41475d902288279b4f",
+      "bytes": 3574163,
+      "sha256": "a8fd3eae0d878e798b03c6d7ec1d530c409b9f0160841a7bf68daec29d16c908",
+      "every_ZIP_member_SHA256_verified": 1125
+    },
+    {
+      "id": 12575807987,
+      "name": "gameplay-load-server-32e493a3da6745b34c8e7f41475d902288279b4f",
+      "bytes": 119511,
+      "sha256": "e04937ea7ea4d64332c4001da6ac8eeaedb539d0366b6eefbf76837b7f24c1be",
+      "every_ZIP_member_SHA256_verified": 1
+    }
+  ],
+  "whole_capacity_or_project_accepted": false,
+  "capacity_R3_R4_execution_and_load_failures_not_overridden_by_CI": true,
+  "later_publication_report_only_all_source_trees_equal_tested_commit": true,
+  "at_UTC": "2026-10-24T21:51:12.269461+00:00"
+}
