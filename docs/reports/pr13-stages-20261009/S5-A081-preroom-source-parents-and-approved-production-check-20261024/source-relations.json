@@ -1,0 +1,90 @@
+{
+  "kind": "A081-one-historical-run-family-source-parent-join",
+  "family": "current-preroom-stop-r1",
+  "original_checkout_reference_not_compiled_build": "6f00f322952a104bb8d165687395a609def0781c",
+  "actual_plan_vs_draft": {
+    "actual_control_plan_local_code_checked": true,
+    "pre_dispatch_before_freeze_local_code_checked": false,
+    "byte_distinct": true,
+    "actual_control_plan_sha256": "0fa11138d50ef3229856d5e6178a7348dd3e3eb6032e49718d8e9f103a6434f5",
+    "control_manifest_members_reopened_exact": 6
+  },
+  "input_scope": {
+    "declared_current_client_inputs": 2146,
+    "declared_dirty_test_overlay_fixtures": 2,
+    "all_client_source_bodies_newly_rechecked": false,
+    "runtime_manifest_files": 21,
+    "runtime_byte_providers_reopened_exact": 21,
+    "providers_not_claimed_original_runtime_paths": true,
+    "original_PG_dump_sha256": "029bc8df38e64930c3426a74ce95f63683f9000e9f575c3e31b4c624a14fb971",
+    "PG_dump_not_replayed": true
+  },
+  "runtime": {
+    "container_environment_image": "sha256:180f524270f6ac28d2fe0ff29707fb392387d7b766f731e41fda1e45e8230520",
+    "server_from_separate_runtime_volume": "8ebfaebfcc7a593488f727a84a70131958ff71af3c0aecc9f699819fcbe291d6",
+    "original_control_calls_frozen_guard_before_APP_create": true,
+    "actual_producer_APP_operation": "docker create then start",
+    "audit_did_not_execute_original_producer": true,
+    "compiler_source_family": "8eb paired DLL/PDB from previous r401/r402",
+    "actual_client_and_Domain_embedded_package_sha256": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+    "same_package_not_effective_environment_or_policy_equivalence": true
+  },
+  "original_native_actors": [
+    {
+      "mode": "class",
+      "original_ok": false,
+      "original_outcome": "cancelled",
+      "cycles_completed": 0
+    },
+    {
+      "mode": "login",
+      "original_ok": false,
+      "original_outcome": "cancelled",
+      "cycles_completed": 0
+    },
+    {
+      "mode": "prepare",
+      "original_ok": false,
+      "original_outcome": "cancelled",
+      "cycles_completed": 0
+    }
+  ],
+  "actor_report_joins": {
+    "count": 3,
+    "PID_matches_original_report": true,
+    "run_id_client_id_process_epoch_preserved": true,
+    "three_distinct_process_epochs": true,
+    "host_controller_PID_separate_from_container_native_PID": true,
+    "actual_APP_namespace_and_owner_unit_retained_private": true,
+    "original_individual_Godot_executable_digest": "missing_not_recorded",
+    "current_executable_hash_not_substituted_for_old_engine": true
+  },
+  "limits": {
+    "not_three_new_runs_or_new_gameplay": true,
+    "not_all_historical_or_new_run_coverage": true,
+    "source_relationship_does_not_promote_cancelled_outcomes": true,
+    "whole_A081_accepted": false
+  },
+  "private_proofs": {
+    "run_parent_join": {
+      "path": "G:\\PR13Evidence\\A081-preroom-stop-run-parent-join-20261024-r410-originals\\result.original.json",
+      "bytes": 1049,
+      "sha256": "f54d3fd539d547daa47a17b954828895d6d16c6c3e8d1a0ec7f3813ab84a1b33"
+    },
+    "independent_recheck": {
+      "path": "G:\\PR13Evidence\\A081-preroom-source-independent-verification-20261024-r413-originals\\result.original.json",
+      "bytes": 1058,
+      "sha256": "9bb2f0ca79db2446f2f084e29f67813c0ce48461bd6d946cacbc1cac98c23351"
+    },
+    "production_readonly": {
+      "path": "G:\\PR13Evidence\\production-approved-app-readonly-check-20261024-r412-originals\\result.original.json",
+      "bytes": 980,
+      "sha256": "1dc04a96bda358ca1ed2943a1919ed75498e131d9c4c95cf337dafae645e1eef"
+    },
+    "fork_environment_readonly": {
+      "path": "G:\\PR13Evidence\\A073-fork-environment-readonly-feasibility-20261024-r411-originals\\result.private.original.json",
+      "bytes": 7489,
+      "sha256": "b223b9314b7ee1dd5b91792c4f029cf4131af00c27c3370fe31c0b4bcc3f8de5"
+    }
+  }
+}
