@@ -40,7 +40,7 @@ jobs:
           --health-interval 5s --health-timeout 5s --health-retries 12
     env:
       FANTASYCARD_TEST_POSTGRES: Host=127.0.0.1;Port=5432;Database=ready_stop_rebuild_r1;Username=rebuild_test;Password=rebuild_test_only;Pooling=true
-      FANTASYCARD_PROCESS_EVIDENCE: ${{ github.workspace }}/test-results/rebuild-pg/process
+      FANTASYCARD_PROCESS_EVIDENCE: ${{ github.workspace }}/outputs/pr13-local-20261008/current-rebuild-r1/process
       DOTNET_CLI_TELEMETRY_OPTOUT: '1'
       DOTNET_NOLOGO: '1'
       REBUILD_ROUND: ${{ inputs.acceptance_round }}
@@ -131,6 +131,17 @@ jobs:
           (root / 'ten-methods-passed.json').write_text(json.dumps({'executed': 10, 'passed': 10, 'skipped': 0, 'round': policy['round']}, indent=2) + '\n')
           PY
           sha256sum -c test-results/rebuild-pg/previous-runtime-sha256.txt > test-results/rebuild-pg/previous-runtime-after-check.log
+      - name: Preserve owned rollback originals for the artifact
+        if: always()
+        shell: python
+        run: |
+          import os, pathlib, shutil
+          source = pathlib.Path(os.environ['FANTASYCARD_PROCESS_EVIDENCE'])
+          owned = pathlib.Path('outputs/pr13-local-20261008/current-rebuild-r1').resolve()
+          assert source.resolve().is_relative_to(owned)
+          if source.exists():
+              assert not source.is_symlink() and all(not path.is_symlink() for path in source.rglob('*'))
+              shutil.copytree(source, pathlib.Path('test-results/rebuild-pg/process'))
       - uses: actions/upload-artifact@v7
         if: always()
         with:
