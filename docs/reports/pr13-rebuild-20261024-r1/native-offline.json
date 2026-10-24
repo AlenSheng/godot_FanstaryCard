@@ -1,0 +1,110 @@
+{
+  "kind": "Current-round actual offline native client checks",
+  "round_id": "current-rebuild-20261024-r1",
+  "current_code_reference": "33b8a3202260268e1c908f42b0a78f07f7a2a3f8",
+  "scope": "OFFLINE fixture states, real native engine and owned local socket/file regressions. No real login, authoritative world or real-render visual acceptance.",
+  "import_passed": true,
+  "native_regression_suites_passed": 24,
+  "named_regression_checks_passed": 388,
+  "card_pool_passed": true,
+  "numerical_projection_passed": true,
+  "shipped_script_instantiation_check_passed": true,
+  "card_page": "ResourceStopped_NotAccepted",
+  "phases": [
+    {
+      "phase": "native-regressions",
+      "PID": 68580,
+      "exit": 0,
+      "guard_stop": null,
+      "minimum_local_free_bytes": 6503251968,
+      "state": "Passed",
+      "terminal": {
+        "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\native-offline\\native-regressions-terminal.original.json",
+        "bytes": 6353,
+        "sha256": "7f9a1d24d8e90d89e0fb6de190cd8dd75d8084bf465e53711d57e9fcd12ccc40"
+      }
+    },
+    {
+      "phase": "card-pool",
+      "PID": 18752,
+      "exit": 0,
+      "guard_stop": null,
+      "minimum_local_free_bytes": 6869970944,
+      "state": "Passed",
+      "terminal": {
+        "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\native-offline\\card-pool-terminal.original.json",
+        "bytes": 740,
+        "sha256": "5d2628233cc6e3afb3ba0b1d5a5728b7fd022041a2b72436de29e6a6eb844242"
+      }
+    },
+    {
+      "phase": "card-page",
+      "PID": 4584,
+      "exit": 1,
+      "guard_stop": "local_memory_below_declared_6GiB",
+      "minimum_local_free_bytes": 6437429248,
+      "state": "ResourceStopped_NotAccepted",
+      "terminal": {
+        "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\native-offline\\card-page-terminal.original.json",
+        "bytes": 1860,
+        "sha256": "a3fa645667cc88f76c58e7094701f5bc64359bde2c37aae72a0612cec7aeccbc"
+      }
+    },
+    {
+      "phase": "numerical",
+      "PID": 65188,
+      "exit": 0,
+      "guard_stop": null,
+      "minimum_local_free_bytes": 6975188992,
+      "state": "Passed",
+      "terminal": {
+        "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\native-offline\\numerical-terminal.original.json",
+        "bytes": 351,
+        "sha256": "44b77831a0b1463c9c1f0a8a5ddefda3176253296e3d8fa704c252e661cd7fb8"
+      }
+    },
+    {
+      "phase": "compile-probe",
+      "PID": 32436,
+      "exit": 0,
+      "guard_stop": null,
+      "minimum_local_free_bytes": 6914772992,
+      "state": "Passed",
+      "terminal": {
+        "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\native-offline\\compile-probe-terminal.original.json",
+        "bytes": 667,
+        "sha256": "31d460954d95ffe5ad860f91876ee34a5b5c90a3d91f770e84952f54150d7ba7"
+      }
+    }
+  ],
+  "execution": "--headless --audio-driver Dummy with CREATE_NO_WINDOW and BelowNormal creation flag",
+  "actual_display_driver": "headless",
+  "actual_private_userdata_confirmed": true,
+  "local_free_RAM_reserve_bytes": 6442450944,
+  "copied_project_identity": {
+    "frozen_tracked_files": 2148,
+    "raw_unchanged_files": 2086,
+    "import_metadata_CRLF_LF_only": 62,
+    "all_62_records_equal_after_line_ending_normalization_no_parameter_change": true,
+    "scripts_config_original_assets_raw_unchanged": true,
+    "extra_probe_script_and_scene_private_only": true,
+    "whole_project_bit_identical_claim": false,
+    "original_manifest": {
+      "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\preflight\\native-client-project-frozen.original.json",
+      "bytes": 415328,
+      "sha256": "16fc29bd7264a60825f54faecf681907bc65830466e2a39941442017caa408c6"
+    },
+    "actual_metadata_adjudication": {
+      "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\preflight\\native-import-metadata-newlines.original.json",
+      "bytes": 35033,
+      "sha256": "2b325d4129b4906487b86ec60b31038950f70beba3e1aa73759c996ddb2873ba"
+    }
+  },
+  "suite_report": {
+    "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\native-offline\\native-regressions.report.original.json",
+    "bytes": 29838,
+    "sha256": "ebdfec7548e4c9fbb229bb6c7ad74240131a0a3f6f693477677ede82cf92edb0"
+  },
+  "all_godot_children_terminal": true,
+  "whole_round_accepted": false
+}

@@ -21,7 +21,7 @@
     "bytes": 180858888,
     "sha256": "ab1824f85bfd8e0e4128182c000c4003a3e042245b2967848d089b2a04b22424",
     "actual_headless_version": "4.7.2.stable.official.ed1daf0bf",
-    "native_child_not_yet_started": true
+    "native_child_not_yet_started": false
   },
   "dotnet_SDK": "10.0.400",
   "fixture_isolation": "Owned isolated databases and player identities only; no production DB restore, asset or ledger writes.",
@@ -59,13 +59,16 @@
     "local_preflight": "Passed",
     "tooling_guards_and_callback": "Passed_49",
     "domain": "Passed_388_after_frozen_published_config_dependency_fix",
-    "server_and_real_PostgreSQL": "Queued",
-    "native_fullclient_pilot": "NotExecuted",
-    "normal_cycles": "NotExecuted",
-    "UI_real_renderer": "NotExecuted",
-    "capacity50_100": "NotExecuted_resource_admission_required",
+    "server_and_real_PostgreSQL": "Full_CI_417_pass_1_NotExecuted_strict_gate_blocked_focused_recheck_prepared",
+    "native_fullclient_pilot": "NotExecuted_resource_admission_failed",
+    "normal_cycles": "NotExecuted_resource_admission_failed",
+    "UI_real_renderer": "NotExecuted_ResourceUnavailable",
+    "capacity50_100": "NotExecuted_ResourceUnavailable",
     "real_fork": "NotExecuted_retained_unpassed",
-    "overall_current_round": "Running_NotAccepted"
+    "overall_current_round": "Running_NotAccepted",
+    "native_offline_regressions": "Passed_24_suites_388_checks",
+    "card_pool_numerical_and_scripts": "Passed",
+    "card_page": "ResourceStopped_NotAccepted"
   },
   "legacy_server_create_skill_missing": true,
   "server_business_implementation_not_modified": true,
@@ -78,5 +81,11 @@
     "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\preregistered-plan.original.json",
     "bytes": 2890,
     "sha256": "7dd28fa1f20ea38e40c90ea7a627b7c0c2083dc88904c8b2e2b011152aafd1c7"
+  },
+  "new_round_rollback_baseline": {
+    "previous_source": "0cf43dba7a28e936f82bc3e73ed9c6427092c2fb",
+    "compiled_now_not_recovered_historical_original": true,
+    "expected_focused_methods": 10,
+    "original_CI_failure_not_overwritten": true
   }
 }

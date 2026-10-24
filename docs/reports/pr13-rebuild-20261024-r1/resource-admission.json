@@ -1,0 +1,59 @@
+{
+  "kind": "Current-round resource admission and preserved unexecuted scopes",
+  "round_id": "current-rebuild-20261024-r1",
+  "cloud_host": "Current existing host only",
+  "cloud_root_disk": {
+    "before_free_bytes": 2059403264,
+    "before_free_percent": 3.253914075813692,
+    "after_free_bytes": 2057601024,
+    "after_free_percent": 3.2510664868025896,
+    "normal_guard_minimum_percent": 15,
+    "lowest_parser_permitted_percent": 5,
+    "admission_passed": false
+  },
+  "no_guard_limits_relaxed": true,
+  "local_reserve_bytes": 6442450944,
+  "fullnative_capacity_start_budget_bytes_per_client": 268435456,
+  "local_required_free_for50_bytes": 19864223744,
+  "local_required_free_for100_bytes": 33285996544,
+  "local_heavy_cardpage_stopped_on_resource_guard": {
+    "phase": "card-page",
+    "PID": 4584,
+    "exit": 1,
+    "guard_stop": "local_memory_below_declared_6GiB",
+    "minimum_local_free_bytes": 6437429248,
+    "state": "ResourceStopped_NotAccepted",
+    "terminal": {
+      "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\native-offline\\card-page-terminal.original.json",
+      "bytes": 1860,
+      "sha256": "a3fa645667cc88f76c58e7094701f5bc64359bde2c37aae72a0612cec7aeccbc"
+    }
+  },
+  "capacity50_100": "NotExecuted_ResourceUnavailable",
+  "native4pilot_and10accounts3normalcycles": "NotExecuted_no_isolated_live_backend_admitted",
+  "UI_real_renderer": "NotExecuted_ResourceUnavailable",
+  "low_concurrency_offline_results_do_not_substitute_capacity": true,
+  "formal_application_unchanged": {
+    "id": "9a3886577aefffc42bd89fe0f1ee86f4f2aafff04756df09bc6b61e274ee1112",
+    "image": "sha256:e647601a9fa6dd7e1934907699f7d9c58c0965da2116b1325b826ba458ee6a3e",
+    "started": "2026-10-23T01:38:31.393085673Z",
+    "same_container_image_start_env_ports_as_before": true,
+    "ready_HTTP_status": 200
+  },
+  "owned_cloud_containers_and_networks_created": false,
+  "production_restart_deploy_ledger_restore_or_asset_write_performed": false,
+  "historical_evidence_missing_and_actual_fork_environment_unavailable": "Retained_unpassed_separately",
+  "whole_round_accepted": false,
+  "original_cloud_probes": [
+    {
+      "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\cloud\\preflight.original.json",
+      "bytes": 1248,
+      "sha256": "67f44594d5bc9e759b5453303f330d867f6008682bec6e60c2bff031807b7002"
+    },
+    {
+      "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\cloud\\post-test-readonly.original.json",
+      "bytes": 1282,
+      "sha256": "5be280d2a1cf4f3a604048c2701cc0a4d4b7bbd20771a0b1c28734eae420d0ca"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "kind": "Actual current full hosted CI, original red result preserved",
+  "round_id": "current-rebuild-20261024-r1",
+  "source": "33b8a3202260268e1c908f42b0a78f07f7a2a3f8",
+  "run_id": 40086452501,
+  "run_url": "https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/40086452501",
+  "workflow_conclusion": "failure",
+  "domain": {
+    "total": 388,
+    "passed": 388,
+    "skipped": 0,
+    "failed": 0
+  },
+  "server": {
+    "total_rows": 418,
+    "executed": 417,
+    "passed": 417,
+    "failed": 0,
+    "actual_NotExecuted_rows": 1,
+    "native_exit": 0,
+    "unexecuted_method": "Actual_code_rollback_and_native_backup_restore_preserve_once_only_assets",
+    "unexecuted_reason": "Requires an owned isolated PG fixture and an immutable previous local server binary.",
+    "native_summary_notExecuted_attribute": 0,
+    "native_summary_vs_row_inconsistency_preserved": true
+  },
+  "strict_PG_evidence_gate": {
+    "state": "Blocked",
+    "reason": "native_TRX_invalid_or_inconsistent",
+    "native_exit": 0,
+    "gate_not_weakened_and_TRX_not_rewritten": true
+  },
+  "route_profiles": [
+    {
+      "Samples": 300,
+      "PlayerCount": 1,
+      "ConfigVersion": "gdd-0.70-numerical-1"
+    },
+    {
+      "Samples": 300,
+      "PlayerCount": 2,
+      "ConfigVersion": "gdd-0.70-numerical-1"
+    },
+    {
+      "Samples": 300,
+      "PlayerCount": 4,
+      "ConfigVersion": "gdd-0.70-numerical-1"
+    }
+  ],
+  "factor_controls": {
+    "native_jobs": 12,
+    "states": {
+      "Completed": 12
+    },
+    "base_seed_samples_per_profile": 3,
+    "control_comparison_rows_total": 2592,
+    "comparison_rows_per_independent_factor_profile": 216,
+    "paired_controls_checked": 972,
+    "first_intent_extensions_checked": 162,
+    "checks_passed": true,
+    "acceptance_eligible": false,
+    "sample_budget_status": "Inconclusive",
+    "candidate_activation": false,
+    "scope": "Small per-factor instrumented control comparisons; no live gameplay matches, capacity proof or candidate benefit acceptance."
+  },
+  "artifact": {
+    "id": 12557567805,
+    "zip_bytes": 4143905,
+    "zip_sha256": "44f2e521a88932df33b1e63c8487d2b22cfa04085a7df927e2b5e87d7a89cacc",
+    "members": 1198,
+    "private_originals_retained": true
+  },
+  "original_evidence": [
+    {
+      "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\ci\\artifact-12557567805-members\\domain.trx",
+      "bytes": 621846,
+      "sha256": "a70c17ff29f7ddbff1725482671d733df1e66d8d72876413f4a88228b84b1491"
+    },
+    {
+      "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\ci\\artifact-12557567805-members\\server.trx",
+      "bytes": 1479220,
+      "sha256": "8f7be39ec58f7cbc183d2e6713345cf89f0a7b1e9737dfddc81506616b5ca092"
+    },
+    {
+      "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\ci\\artifact-12557567805-members\\postgres-coverage.json",
+      "bytes": 1765,
+      "sha256": "145ba6d40dc4caa336da8b112445c55c73d2b115a86cb831743a845de2efc566"
+    },
+    {
+      "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\ci\\artifact-12557567805-members\\round-policy.json",
+      "bytes": 215,
+      "sha256": "46fea6156ce93510a9b86a2f01b34548b85a3a1becd91df84f8fc5dc1348028d"
+    },
+    {
+      "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\ci\\artifact-12557567805-members\\assemblies-sha256.txt",
+      "bytes": 44440,
+      "sha256": "06c90e584c396b5ba635ea34e67a57b8fb71ea40215fb56ea9334246331fc0a3"
+    },
+    {
+      "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\ci\\artifact-12557567805-members\\godot-pg-sha256.txt",
+      "bytes": 132,
+      "sha256": "8598cecb2767f3383657f65e0ef9c4fa522c761f0885d26f0712a37c8d27a3cd"
+    }
+  ],
+  "next_step": "Independently execute the exact nine required PG contracts plus the skipped rollback in a labeled disposable database; compile the declared 0cf43db previous source now, not replace historical originals.",
+  "full_workflow_or_whole_round_accepted": false
+}

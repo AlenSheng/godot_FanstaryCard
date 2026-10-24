@@ -1,0 +1,135 @@
+name: Current rebuild PostgreSQL and rollback evidence
+
+on:
+  workflow_dispatch:
+    inputs:
+      acceptance_round:
+        description: Separate prospective round; historical originals remain missing
+        required: true
+        default: current-rebuild-20261024-r1
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr13-rebuild-postgres-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  owned-postgres-recheck:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: rebuild_test
+          POSTGRES_PASSWORD: rebuild_test_only
+          POSTGRES_DB: ready_stop_rebuild_r1
+        ports: ['5432:5432']
+        options: >-
+          --label codex.scope=disposable-local
+          --label codex.task=pr13-stages-20261008
+          --health-cmd "pg_isready -U rebuild_test -d ready_stop_rebuild_r1"
+          --health-interval 5s --health-timeout 5s --health-retries 12
+    env:
+      FANTASYCARD_TEST_POSTGRES: Host=127.0.0.1;Port=5432;Database=ready_stop_rebuild_r1;Username=rebuild_test;Password=rebuild_test_only;Pooling=true
+      FANTASYCARD_PROCESS_EVIDENCE: ${{ github.workspace }}/test-results/rebuild-pg/process
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      DOTNET_NOLOGO: '1'
+      REBUILD_ROUND: ${{ inputs.acceptance_round }}
+      PREVIOUS_SOURCE: 0cf43dba7a28e936f82bc3e73ed9c6427092c2fb
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@v7
+        with:
+          ref: 0cf43dba7a28e936f82bc3e73ed9c6427092c2fb
+          path: outputs/pr13-local-20261008/current-rebuild-r1/previous-source
+          persist-credentials: false
+          sparse-checkout: |
+            server
+            config
+            protocol
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: server/global.json
+      - name: Pin both sources and the explicit ten-test scope
+        shell: python
+        run: |
+          import json, os, pathlib, re, subprocess
+          assert os.environ['REBUILD_ROUND'] == 'current-rebuild-20261024-r1'
+          root = pathlib.Path('test-results/rebuild-pg')
+          root.mkdir(parents=True)
+          head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+          previous = pathlib.Path('outputs/pr13-local-20261008/current-rebuild-r1/previous-source')
+          old_head = subprocess.check_output(['git', '-C', str(previous), 'rev-parse', 'HEAD'], text=True).strip()
+          assert head == os.environ['GITHUB_SHA'] and old_head == os.environ['PREVIOUS_SOURCE']
+          methods = list(json.loads(pathlib.Path('.github/pr13-required-postgres-methods.json').read_text())['required_methods'])
+          assert len(methods) == 9 and all(re.fullmatch('[A-Za-z0-9_]+', name) for name in methods)
+          methods.append('Actual_code_rollback_and_native_backup_restore_preserve_once_only_assets')
+          with open(os.environ['GITHUB_ENV'], 'a') as output:
+              output.write('REBUILD_TEST_FILTER=' + '|'.join('FullyQualifiedName~' + name for name in methods) + '\n')
+          (root / 'source.txt').write_text(head + '\n')
+          (root / 'policy.json').write_text(json.dumps({
+              'round': os.environ['REBUILD_ROUND'], 'current_source': head,
+              'previous_source': old_head, 'explicit_test_methods': methods,
+              'previous_runtime_built_now_not_recovered_historical_original': True,
+              'original_full_CI_and_skipped_test_record_retained': True,
+              'no_test_assertion_or_TRX_counter_rewritten': True,
+              'production_connection_or_restore': False
+          }, indent=2) + '\n')
+      - name: Build an immutable previous runtime from retained Git source
+        shell: bash
+        working-directory: server
+        run: |
+          set -euo pipefail
+          base="$GITHUB_WORKSPACE/outputs/pr13-local-20261008/current-rebuild-r1"
+          dotnet publish "$base/previous-source/server/src/FantasyCard.Server/FantasyCard.Server.csproj" -c Release -p:UseAppHost=false -o "$base/previous-runtime" 2>&1 | tee ../test-results/rebuild-pg/previous-build.log
+          find "$base/previous-runtime" -type f -print0 | sort -z | xargs -0 sha256sum > ../test-results/rebuild-pg/previous-runtime-sha256.txt
+          chmod -R a-w "$base/previous-runtime"
+          echo "FANTASYCARD_PROCESS_PREVIOUS_SERVER_DLL=$base/previous-runtime/FantasyCard.Server.dll" >> "$GITHUB_ENV"
+          echo "FANTASYCARD_PROCESS_PREVIOUS_SERVER_SHA256=$(sha256sum "$base/previous-runtime/FantasyCard.Server.dll" | cut -d' ' -f1)" >> "$GITHUB_ENV"
+      - name: Build current tests and execute nine PG contracts plus actual rollback
+        shell: bash
+        working-directory: server
+        env:
+          FANTASYCARD_TEST_DOCKER_CONTAINER: ${{ job.services.postgres.id }}
+        run: |
+          set -euo pipefail
+          dotnet build tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release 2>&1 | tee ../test-results/rebuild-pg/current-build.log
+          find src tests -path '*/bin/Release/net10.0/*' -type f '(' -name '*.dll' -o -name '*.pdb' ')' -print0 | sort -z | xargs -0 sha256sum > ../test-results/rebuild-pg/current-assemblies-sha256.txt
+          set +e
+          dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj --no-build -c Release --filter "$REBUILD_TEST_FILTER" --logger 'trx;LogFileName=postgres-recheck.trx' --results-directory ../test-results/rebuild-pg 2>&1 | tee ../test-results/rebuild-pg/tests.log
+          statuses=("${PIPESTATUS[@]}")
+          set -e
+          printf '%s\n' "${statuses[0]}" > ../test-results/rebuild-pg/native-exit.txt
+          if [ "${statuses[0]}" -ne 0 ]; then exit "${statuses[0]}"; fi
+          exit "${statuses[1]}"
+      - name: Require ten executed passes and verify original strict PG evidence gate
+        if: ${{ !cancelled() }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/pr13_ci_pg_artifact_gate.py --trx test-results/rebuild-pg/postgres-recheck.trx --required-methods .github/pr13-required-postgres-methods.json --source-file test-results/rebuild-pg/source.txt --expected-source "$GITHUB_SHA" --native-exit-file test-results/rebuild-pg/native-exit.txt --output test-results/rebuild-pg/postgres-coverage.json
+          python3 - <<'PY'
+          import json, pathlib, xml.etree.ElementTree as ET
+          root = pathlib.Path('test-results/rebuild-pg')
+          policy = json.loads((root / 'policy.json').read_text())
+          tree = ET.parse(root / 'postgres-recheck.trx')
+          rows = tree.findall('.//{*}UnitTestResult')
+          assert len(rows) == 10 and all(row.get('outcome') == 'Passed' for row in rows)
+          for name in policy['explicit_test_methods']:
+              assert sum(row.get('testName', '').endswith('.' + name) for row in rows) == 1, name
+          (root / 'ten-methods-passed.json').write_text(json.dumps({'executed': 10, 'passed': 10, 'skipped': 0, 'round': policy['round']}, indent=2) + '\n')
+          PY
+          sha256sum -c test-results/rebuild-pg/previous-runtime-sha256.txt > test-results/rebuild-pg/previous-runtime-after-check.log
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: rebuild-postgres-${{ github.sha }}
+          path: test-results/rebuild-pg
+          if-no-files-found: error
+          retention-days: 7
