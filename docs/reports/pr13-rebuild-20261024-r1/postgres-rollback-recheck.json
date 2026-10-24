@@ -1,0 +1,107 @@
+{
+  "kind": "Current-round strict PG and actual rollback recheck, original failures retained",
+  "round_id": "current-rebuild-20261024-r1",
+  "source": "5d788b8da3a2444bcee74d7240caa663f8d071ec",
+  "run_id": 40088875379,
+  "run_url": "https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/40088875379",
+  "workflow_conclusion": "success",
+  "test_rows": {
+    "total": 10,
+    "executed": 10,
+    "passed": 10,
+    "failed": 0,
+    "skipped": 0
+  },
+  "strict_PG_gate": {
+    "state": "CoveredForMainReview",
+    "required_methods": 9,
+    "native_exit": 0,
+    "gate_and_assertions_unmodified": true,
+    "independent_original_artifact_reassessment_passed": true
+  },
+  "current_full_server_case_coverage": {
+    "original_full_run": 40086452501,
+    "full_run_rows": 418,
+    "original_passed": 417,
+    "original_NotExecuted": 1,
+    "original_workflow_red_result_preserved": true,
+    "original_unexecuted_fact_same_testId_now_passed": "d74d3368-223a-b84a-1629-df072f2b5f2b",
+    "focused_passed_overlapping_original_passes": 9,
+    "distinct_testIds_observed_pass_across_two_runs": 418,
+    "all418_declared_server_cases_covered_across_runs": true,
+    "same_server_test_client_config_protocol_and_tool_Git_inputs_between_test_refs": true,
+    "single_physical_full_418_pass_run_claimed": false
+  },
+  "previous_runtime": {
+    "source": "0cf43dba7a28e936f82bc3e73ed9c6427092c2fb",
+    "built_now_not_recovered_historical_original": true,
+    "server_dll_sha256": "bf25b7b387109e2c89c824e7b109378ecf4fde92ebe2a40cf6d4cc7d1b8dafb7",
+    "immutable_files_verified_after_tests": 21,
+    "current_snapshot_restored_by_previous_binary": true,
+    "legal_extraction_after_rollback": true,
+    "original_assets_once": true
+  },
+  "new_owned_backup_restore": {
+    "format": "PostgreSQL_custom_dump",
+    "bytes": 124505,
+    "sha256": "eef263e78974e379f6653dc08d864e84ffe11d9b4bd857b7bf6df1dacc0ca9a3",
+    "original_balance": 23,
+    "restored_balance": 23,
+    "committed_ledger_rows": 1,
+    "repeated_ACK_and_hold_commit_do_not_duplicate_assets": true,
+    "asset_correction": false,
+    "restored_owned_database_removed": true,
+    "production_database_touched": false,
+    "old_missing_history_recovered": false
+  },
+  "preserved_failed_attempt": {
+    "run_id": 40088536573,
+    "passed": 9,
+    "failed": 1,
+    "reason": "Fixture evidence path rejected outside the owned backup root at ProcessRollbackBackupTests.cs line91. Repaired workflow output location only; original TRX retained."
+  },
+  "native_business_conditions_or_limits_relaxed": false,
+  "original_evidence": [
+    {
+      "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\ci-focused-path-repair\\artifact-12557643312-members\\postgres-recheck.trx",
+      "bytes": 20661,
+      "sha256": "91105a89a7e716f1d8cad60adaa38763bb4a8349112da4ae8ff5f4c0d416aef7"
+    },
+    {
+      "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\ci-focused-path-repair\\artifact-12557643312-members\\postgres-coverage.json",
+      "bytes": 2167,
+      "sha256": "fa1bb8ac15e812ba169385231e37f30a0be179d660571f4881f2beec6c9170ef"
+    },
+    {
+      "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\ci-focused-path-repair\\artifact-12557643312-members\\previous-runtime-sha256.txt",
+      "bytes": 4516,
+      "sha256": "09256cbfc1f6858b563c65375105a4841eecab0cf146053630bb1cb9e9feed25"
+    },
+    {
+      "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\ci-focused-path-repair\\artifact-12557643312-members\\previous-runtime-after-check.log",
+      "bytes": 3214,
+      "sha256": "979943e28813c76f5ce0ddcf353869caf4701492e7cb90d11c1dc4039c10f099"
+    },
+    {
+      "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\ci-focused-path-repair\\artifact-12557643312-members\\policy.json",
+      "bytes": 1258,
+      "sha256": "0af663bb1b8b967a382112f50195040fcfac5e18d486fe2dd2468b8c33ae976e"
+    },
+    {
+      "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\ci-focused-path-repair\\artifact-12557643312-members\\process\\receipts.jsonl",
+      "bytes": 3062,
+      "sha256": "75323418f365d145a0f4930e78958e9af30dd05f11701b3d3ac2ed42b2a7d93d"
+    },
+    {
+      "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\ci-focused-path-repair\\artifact-12557643312-members\\process\\owned-rollback-backup.dump",
+      "bytes": 124505,
+      "sha256": "eef263e78974e379f6653dc08d864e84ffe11d9b4bd857b7bf6df1dacc0ca9a3"
+    }
+  ],
+  "artifact": {
+    "id": 12557643312,
+    "zip_bytes": 40098,
+    "zip_sha256": "91b5b6d952dfb9006b5b5e642023f40f78d13c9c8f879e695c05200908221b08"
+  },
+  "whole_project_or_round_accepted": false
+}
