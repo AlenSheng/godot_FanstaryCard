@@ -163,10 +163,16 @@ static func _relic(ui: Control, host: Control, state: Dictionary, pile_id: Strin
 
 static func _description(ui: Control, host: Control, item: Dictionary, rect: Rect2) -> void:
 	var scroll: ScrollContainer = ui._scroll(rect)
-	var label: Label = host._label(scroll, Details.description(item), 21)
+	var label := Label.new()
+	label.text = P.localized_text(Details.description(item))
+	label.add_theme_font_override("font", P.font_for_text(label.text, 21))
+	label.add_theme_font_size_override("font_size", 21)
+	label.add_theme_color_override("font_color", P.PAPER)
 	label.custom_minimum_size.x = rect.size.x - 28
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	scroll.add_child(label)
 	var positions: Dictionary = host.get_meta("item_detail_scroll", {})
 	var id: String = item.get("item_id", "")
 	scroll.set_deferred("scroll_vertical", int(positions.get(id, 0)))

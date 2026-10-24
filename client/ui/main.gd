@@ -1741,6 +1741,15 @@ func _health_bar(parent: Node, combat: Dictionary) -> void:
 func _feedback(payload: Dictionary) -> void:
 	var context := _current_combat_feedback_context()
 	if context.is_empty() or context != _combat_feedback_context: return
+	# Preview invalidation queues a view rebuild after this signal. Let that
+	# render finish, then animate the current controls for the captured owner.
+	var owned_payload := payload.duplicate(true)
+	await get_tree().process_frame
+	_play_combat_feedback(owned_payload, context)
+
+func _play_combat_feedback(payload: Dictionary, context: Array) -> void:
+	if not is_inside_tree() or is_queued_for_deletion(): return
+	if context != _current_combat_feedback_context() or context != _combat_feedback_context: return
 	var target: Control = _combat_panels.get(payload.get("target_id", ""))
 	if is_instance_valid(target):
 		_hit_reaction(target)

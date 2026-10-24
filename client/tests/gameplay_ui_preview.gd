@@ -1,5 +1,6 @@
 extends "res://tests/art_preview.gd"
 
+const ART = preload("res://ui/art.gd")
 var checks: Dictionary = {}
 
 func _ready() -> void:
@@ -14,7 +15,6 @@ func _ready() -> void:
 	Game.configuration_error = ""
 	Game.busy = false
 	$UI._codex_ready = true
-	$UI._view_cell = "completion-room:3:2"
 
 func _run() -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output))
@@ -22,20 +22,23 @@ func _run() -> void:
 		get_window().size = resolution
 		var suffix := "_%s" % resolution.x
 		Game.room = _room_fixture()
+		$UI._render()
+		await get_tree().process_frame
+		await get_tree().process_frame
 		$UI.set_meta("inventory_open", true)
 		$UI.set_meta("inventory_selected", "pack-35")
 		$UI.set_meta("relic_pile", "")
 		await _capture("inventory_36" + suffix)
 		_check($UI._reference.find_children("InventorySlot_*", "Button", true, false).size() == 36, "36 slots" + suffix)
 		for index in [33, 34, 35]:
-			var slot: Button = $UI._reference.get_node("InventorySlot_%s" % index)
-			var marker := slot.get_node_or_null("SlotMarker") as Label
-			_check((marker != null and marker.text.begins_with("安全")) or slot.text.begins_with("安全"), "Safe slot %s" % index + suffix)
+			var slot: Button = $UI._reference.get_node("InventorySlotsScroll/InventorySlotsContent/InventorySlot_%s" % index)
+			var safe_frame := slot.get_node_or_null("SafeSlotFrame") as TextureRect
+			_check(safe_frame != null and safe_frame.texture == ART.SAFE_SLOT_FRAME_TEXTURE and safe_frame.mouse_filter == Control.MOUSE_FILTER_IGNORE, "Safe slot %s" % index + suffix)
 			_check(slot._can_drop_data(Vector2.ZERO, {"room_id": "completion-room", "inventory_item_id": "pack-0"}), "Same-room inventory drag" + suffix)
 			_check(not slot._can_drop_data(Vector2.ZERO, {"room_id": "different-room", "inventory_item_id": "pack-0"}), "Foreign-room drag rejected" + suffix)
-		var equipment_slot: Button = $UI._reference.get_node("InventorySlot_0")
-		_check(equipment_slot.get_node_or_null("QualityBackground") != null, "Equipment quality background" + suffix)
-		_check(equipment_slot.get_node_or_null("QualityFrame") != null, "Equipment quality frame" + suffix)
+		var equipment_slot: Button = $UI._reference.get_node("InventorySlotsScroll/InventorySlotsContent/InventorySlot_0")
+		_check(equipment_slot.find_child("QualityBackground", true, false) != null, "Equipment quality background" + suffix)
+		_check(equipment_slot.find_child("QualityFrame", true, false) != null, "Equipment quality frame" + suffix)
 		_check(equipment_slot.size == Vector2(96, 96), "Equipment slot keeps common cell size" + suffix)
 		var description_scroll: ScrollContainer = _description_scroll()
 		_check(description_scroll != null, "Long equipment details can scroll" + suffix)
@@ -115,18 +118,23 @@ func _run() -> void:
 		Game.room.allowed_actions += ["battle.play_cards", "battle.select_target"]
 		Game.room.pve = {"battle_id": "completion-battle", "current_target_id": "fire-bat", "monsters": [{"monster_id": "fire-bat", "maximum_hp": 44, "hp": 31, "shield": 8, "intent_kind": "Attack", "intent_value": 5, "intent_element": "Fire"}]}
 		Game.selected_cards = ["hand-0", "hand-1"]
-		Game.combat_preview = {"core_element": "Fire", "core_count": 2, "damage_segments": [{"kind": "Fire", "amount": 51}, {"kind": "Direct", "amount": 3}], "heal": 7, "shield_gain": 8, "shield_damage": 8, "hp_damage": 46, "stun_seconds": "1.2", "draw_charge": "0.3", "resonance_multiplier": "1.2", "conflict_pair_count": 1, "conflict_cancellation": "0.2"}
+		Game.combat_preview = {"authoritative": true, "core_element": "Fire", "core_count": 2, "damage_segments": [{"kind": "Fire", "amount": 51}, {"kind": "Direct", "amount": 3}], "heal": 7, "shield_gain": 8, "shield_damage": 8, "hp_damage": 46, "stun_seconds": "1.2", "draw_charge": "0.3", "resonance_multiplier": "1.2", "conflict_pair_count": 1, "conflict_cancellation": "0.2"}
 		await _capture("combat_preview" + suffix)
 		_check($UI._reference.get_node_or_null("CombatPreview") != null and _all_text().contains("火 51") and _all_text().contains("直伤 3") and _all_text().contains("实际 54（盾8/血46）"), "Final combat preview rendered" + suffix)
-		_check($UI._reference.get_node_or_null("CombatPreview").tooltip_text.contains("相生 ×1.20") and $UI._reference.get_node_or_null("CombatPreview").tooltip_text.contains("相克 1组 · 抵消 20%"), "Combat preview formula details rendered" + suffix)
+		_check($UI._reference.get_node_or_null("CombatPreview").tooltip_text.contains($UI.P.localized("exploration_preview_multiplier") % 1.2) and $UI._reference.get_node_or_null("CombatPreview").tooltip_text.contains($UI.P.localized("exploration_preview_conflict") % [1, $UI.EquipmentDetails.percent(0.2)]), "Combat preview formula details rendered" + suffix)
 		var source_before: Vector2 = $UI._combat_panels["preview-player"].position
 		var target_before: Vector2 = $UI._combat_panels["fire-bat"].position
 		Game._on_event("combat.hit", {"battle_id": "completion-battle", "source_id": "preview-player", "target_id": "fire-bat", "damage_segments": [{"kind": "Fire", "amount": 51}, {"kind": "Metal", "amount": 6}, {"kind": "Direct", "amount": 3}, {"kind": "Water", "amount": 0}], "heal": 7, "shield_gain": 8})
-		await get_tree().create_timer(0.1).timeout
-		var source_after: Control = $UI._combat_panels["preview-player"]
-		var target_after: Control = $UI._combat_panels["fire-bat"]
-		_check(source_after.scale.x > 1.0 and source_after.position.x != source_before.x and target_after.scale.x < 1.0 and target_after.position.y < target_before.y, "Directional attack and upward hit reactions survive event dispatch" + suffix)
-		_check(target_after.modulate.r > target_after.modulate.g * 1.8 and target_after.modulate.r > target_after.modulate.b * 1.8, "Hit texture briefly turns red" + suffix)
+		var saw_directional_reaction := false
+		var saw_red_hit := false
+		for frame in range(10):
+			await get_tree().process_frame
+			var source_after: Control = $UI._combat_panels["preview-player"]
+			var target_after: Control = $UI._combat_panels["fire-bat"]
+			saw_directional_reaction = saw_directional_reaction or (source_after.scale.x > 1.0 and source_after.position.x != source_before.x and target_after.scale.x < 1.0 and target_after.position.y < target_before.y)
+			saw_red_hit = saw_red_hit or (target_after.modulate.r > target_after.modulate.g * 1.8 and target_after.modulate.r > target_after.modulate.b * 1.8)
+		_check(saw_directional_reaction, "Directional attack and upward hit reactions survive event dispatch" + suffix)
+		_check(saw_red_hit, "Hit texture briefly turns red" + suffix)
 		for entry in [["火 51", $UI.P.ELEMENT.Fire], ["金 6", $UI.P.ELEMENT.Metal], ["直 3", $UI.P.DIRECT_DAMAGE], ["+7", $UI.P.TEAL], ["+8", Color("c4d2d4")]]:
 			var found := false
 			for child in $UI.get_children():
@@ -135,6 +143,14 @@ func _run() -> void:
 		RenderingServer.force_draw(false)
 		get_viewport().get_texture().get_image().save_png(output + "/combat_feedback" + suffix + ".png")
 		screenshot_count += 1
+		Game._on_event("combat.hit", {"battle_id": "completion-battle", "source_id": "preview-player", "target_id": "fire-bat", "damage_segments": [{"kind": "Fire", "amount": 1}]})
+		Game.room.pve.battle_id = "next-battle"
+		$UI._render()
+		await get_tree().process_frame
+		await get_tree().process_frame
+		_check(not $UI._combat_panels["fire-bat"].has_meta("combat_reaction_tween"), "Deferred feedback cannot cross battle context" + suffix)
+		Game.room.pve.battle_id = "completion-battle"
+		$UI._render()
 		$UI._show_battle_details(Game.room.player.battle_status)
 		await _capture("battle_status" + suffix, false)
 		_check(_all_text().contains("充能等级 3/5"), "Mage charge level appears in passive details" + suffix)
@@ -158,7 +174,7 @@ func _run() -> void:
 		await _capture("boxspirit_elements" + suffix)
 		var badges: Array = $UI._reference.find_children("MonsterElement", "Label", true, false)
 		_check(badges.size() == 2, "Both box spirit instances rendered" + suffix)
-		for entry in [["火", "火伤 7", $UI.P.ELEMENT.Fire], ["直伤", "直伤 7", Color.WHITE]]:
+		for entry in [["火", "火伤7", $UI.P.ELEMENT.Fire], ["直伤", "直伤7", Color.WHITE]]:
 			_check(badges.any(func(badge): return badge.text == entry[0] and badge.get_parent().tooltip_text.contains(entry[1]) and badge.get_theme_color("font_color").is_equal_approx(entry[2])), "Box spirit instance " + entry[0] + suffix)
 		Game.room.player.hand = [{"instance_id": "speed-card", "card_id": "C18"}]
 		Game.selected_cards = ["speed-card"]

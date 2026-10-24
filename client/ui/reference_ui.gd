@@ -761,12 +761,15 @@ func _preparation() -> void:
 		for item in host.inventory.get("equipments", []):
 			if item.get("instanceId", "") in equipped_ids: equipped_items.append(item)
 	_equipment_summary(equipped_items, Rect2(65, 822, 680, 178), int(snap.get("maximumHp", P.CLASSES[Game.hero_class][2])))
-	text(P.localized("bag"), Rect2(845, 145, 550, 65), 38, P.GOLD)
+	text(P.localized("bag"), Rect2(845, 145, 240, 65), 38, P.GOLD).name = "PreparationBagTitle"
+	if locked:
+		var summary := P.localized("locked_deck_summary") % [snap.get("cardIds", []).size(), int(snap.get("maximumHp", P.CLASSES[Game.hero_class][2]))]
+		text(summary, Rect2(1090, 145, 740, 34), 23, P.GOLD).name = "PreparationDeckSummary"
 	var consumables: Dictionary = host.inventory.get("consumables", {})
 	var stock := {"Advanced": int(consumables.get("advancedBagCount", 0)), "Top": int(consumables.get("topBagCount", 0))}
 	if not locked and host.bag_tier != "Free" and stock.get(host.bag_tier, 0) <= 0:
 		host.bag_tier = "Free"
-	text(P.localized("bag_stock_summary") % [stock.Advanced, stock.Top], Rect2(1390, 162, 440, 38), 23, P.MUTED)
+	text(P.localized("bag_stock_summary") % [stock.Advanced, stock.Top], Rect2(1090, 186, 740, 28), 21, P.MUTED).name = "PreparationBagStockSummary"
 	var tier: String = snap.get("backpackTier", host.bag_tier)
 	var capacity: int = int(snap.get("backpackCapacity", {"Free": 20, "Advanced": 28, "Top": 36}.get(tier, 20)))
 	var safe_slots: Array = snap.get("safeSlotIndexes", [] if tier == "Free" else ([27] if tier == "Advanced" else [33, 34, 35]))

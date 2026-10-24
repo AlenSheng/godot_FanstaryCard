@@ -1,0 +1,161 @@
+{
+  "round": "current-rebuild-20261024-r1",
+  "status": "PassedOnlyForExplicitMageScopedScenario_MixedScenariosRemainNotPassed",
+  "important_scope_change": "After3partial mixed-class attempts, final run uses Mage-only cleared-extraction. This is not an all-class or original random-inward cyclic pass.",
+  "final_scope": {
+    "accounts": 10,
+    "class": "Mage",
+    "normal_cycles_each": 3,
+    "acknowledged_normal_participations": 30,
+    "actual_unique_server_matches": 10,
+    "profile": "cleared-extraction",
+    "natural_death_or_legal_extraction_with_normal_ACK_only": true,
+    "scripted_abandon_or_drain_only_not_counted_normal": true,
+    "default_server_auth10_write30_read120_RT30": true,
+    "real_distinct_loopback_source_IPs_no_header_spoofing": true,
+    "same_full_native_Godot4_7_2_no_FPS_override": true
+  },
+  "original_mixed_goal_passed": false,
+  "observation_and_scenario_relaxations_recorded": true,
+  "attempts": [
+    {
+      "attempt": "pilot-r1",
+      "profile": "functional-cycles",
+      "class_scope": "mixed",
+      "observation_limit_seconds": 120,
+      "accounts": 4,
+      "required_normal_cycles_each": null,
+      "completed_normal_participations": 0,
+      "actors_with_normal_completions": 0,
+      "original_outcome": {
+        "classification": "smoke_passed",
+        "passed": true,
+        "exit_code": 0
+      },
+      "all_applicable_passed": true,
+      "normal_requirement_passed": null,
+      "original": {
+        "remote_path": "/home/ubuntu/pr13-current-rebuild-20261024-r1/results/pilot-r1/coordinator/20261024-130850-23fc08/report.json",
+        "bytes": 3286067,
+        "sha256": "92770cd9fcf4e229434d3610f43cab87a4f82da5c200ea23299dabb9adfe4045"
+      }
+    },
+    {
+      "attempt": "normal-r1",
+      "profile": "cyclic-gameplay",
+      "class_scope": "mixed",
+      "observation_limit_seconds": 240,
+      "accounts": 10,
+      "required_normal_cycles_each": 3,
+      "completed_normal_participations": 7,
+      "actors_with_normal_completions": 7,
+      "original_outcome": {
+        "classification": "invalid_workload_or_evidence",
+        "passed": false,
+        "exit_code": 3
+      },
+      "all_applicable_passed": false,
+      "normal_requirement_passed": false,
+      "original": {
+        "remote_path": "/home/ubuntu/pr13-current-rebuild-20261024-r1/results/normal-r1/coordinator/20261024-133843-63e3b0/report.json",
+        "bytes": 8905688,
+        "sha256": "676a2760d9a595622431fb0a1c52b577e8995f159126851bd1f6a8486bf202c9"
+      }
+    },
+    {
+      "attempt": "normal-r2",
+      "profile": "cyclic-gameplay",
+      "class_scope": "mixed",
+      "observation_limit_seconds": 480,
+      "accounts": 10,
+      "required_normal_cycles_each": 3,
+      "completed_normal_participations": 10,
+      "actors_with_normal_completions": 6,
+      "original_outcome": {
+        "classification": "invalid_workload_or_evidence",
+        "passed": false,
+        "exit_code": 3
+      },
+      "all_applicable_passed": false,
+      "normal_requirement_passed": false,
+      "original": {
+        "remote_path": "/home/ubuntu/pr13-current-rebuild-20261024-r1/results/normal-r2/coordinator/20261024-142013-ec6e65/report.json",
+        "bytes": 9518532,
+        "sha256": "097db8fe689323067cfdcfec3da287ab45554d007367fdbc58639e1659644d56"
+      }
+    },
+    {
+      "attempt": "normal-r3",
+      "profile": "cleared-extraction",
+      "class_scope": "mixed",
+      "observation_limit_seconds": 600,
+      "accounts": 10,
+      "required_normal_cycles_each": 3,
+      "completed_normal_participations": 17,
+      "actors_with_normal_completions": 8,
+      "original_outcome": {
+        "classification": "invalid_workload_or_evidence",
+        "passed": false,
+        "exit_code": 3
+      },
+      "all_applicable_passed": false,
+      "normal_requirement_passed": false,
+      "original": {
+        "remote_path": "/home/ubuntu/pr13-current-rebuild-20261024-r1/results/normal-r3/coordinator/20261024-145219-9ae4e7/report.json",
+        "bytes": 10055551,
+        "sha256": "fb09518f68d6897adea0ec787a2625e26735a5cc44135eb62e0e45760b3e3b2d"
+      }
+    },
+    {
+      "attempt": "normal-r4",
+      "profile": "cleared-extraction",
+      "class_scope": "Mage",
+      "observation_limit_seconds": 600,
+      "accounts": 10,
+      "required_normal_cycles_each": 3,
+      "completed_normal_participations": 30,
+      "actors_with_normal_completions": 10,
+      "original_outcome": {
+        "classification": "smoke_passed",
+        "passed": true,
+        "exit_code": 0
+      },
+      "all_applicable_passed": true,
+      "normal_requirement_passed": true,
+      "original": {
+        "remote_path": "/home/ubuntu/pr13-current-rebuild-20261024-r1/results/normal-r4/coordinator/20261024-154849-0e8d39/report.json",
+        "bytes": 10111919,
+        "sha256": "13082b62c61028926b6a584a8a71afdbb5236bca5cc6ebfdf29762fd30d14413"
+      }
+    }
+  ],
+  "actual_final_dimensions": {
+    "dimensions": {
+      "execution": "Passed",
+      "evidence": "Passed",
+      "load": "Passed",
+      "gameplay": "Passed",
+      "performance": "NotApplicable",
+      "cleanup": "Passed"
+    },
+    "applicable": [
+      "cleanup",
+      "evidence",
+      "execution",
+      "gameplay",
+      "load"
+    ],
+    "all_applicable_passed": true,
+    "full_acceptance_passed": false
+  },
+  "all_final_native_process_and_business_cleanup_passed": true,
+  "HP_adjudication": "Priest80_Mage70_Guardian100 are legal base maxima; no generic100HP anomaly rule. Partial rounds had observation-window completion failures, not an HP violation.",
+  "owned_database_postrun": {
+    "database": "ready_stop_rebuild_normalmage",
+    "matches": 10,
+    "settlements": 30,
+    "pending_holds": 0
+  },
+  "no_formal_player_assets_or_ledger_modified": true,
+  "whole_project_acceptance": false
+}

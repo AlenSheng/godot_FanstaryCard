@@ -143,12 +143,13 @@ func _portrait_previews(suffix: String) -> void:
 	Game.hero_class = "Mage"
 
 func _shop_fixture() -> Dictionary:
+	# The HTTP Protobuf gateway supplies ShopProductPayload as an object.
 	var products: Array = []
 	for kind in ["Cards", "EquipmentFragments", "AdvancedBag", "TopBag", "WarriorSoul", "HealthPotion"]:
-		products.append({"kind": kind, "productId": "fixture-" + kind, "priceGold": 120, "purchased": 0, "limit": 3, "payload": JSON.stringify({"count": 3} if kind == "Cards" else {"amount": 1})})
+		products.append({"kind": kind, "productId": "fixture-" + kind, "priceGold": 120, "purchased": 0, "limit": 3, "payload": ({"count": 3} if kind == "Cards" else {"amount": 1})})
 	for hero_class in ["Priest", "Mage", "Guardian"]:
-		products.append({"kind": "ClassSoul", "productId": "fixture-" + hero_class, "priceGold": 400, "purchased": 0, "limit": 1, "payload": JSON.stringify({"heroClass": hero_class, "amount": 12})})
-	products.append({"kind": "Cards", "productId": "fixture-daily", "priceGold": 150, "purchased": 0, "limit": 1, "alreadyOwned": true, "payload": JSON.stringify({"cardId": "C01", "count": 1})})
+		products.append({"kind": "ClassSoul", "productId": "fixture-" + hero_class, "priceGold": 400, "purchased": 0, "limit": 1, "payload": {"heroClass": hero_class, "amount": 12}})
+	products.append({"kind": "Cards", "productId": "fixture-daily", "priceGold": 150, "purchased": 0, "limit": 1, "alreadyOwned": true, "payload": {"cardId": "C01", "count": 1}})
 	return {"products": products}
 
 func _check_shop() -> void:
@@ -160,7 +161,7 @@ func _check_shop() -> void:
 			layout_errors.append("Missing server product row: " + product.productId)
 			continue
 		var image: TextureRect = node.get_node("ProductArt")
-		var payload: Dictionary = JSON.parse_string(product.payload)
+		var payload: Dictionary = product.payload
 		if image.texture == null: layout_errors.append("Empty server product image: " + product.productId)
 		if product.kind in ["Cards", "EquipmentFragments", "AdvancedBag", "TopBag"] and not payload.has("cardId") and image.texture != Art.product(product.kind):
 			layout_errors.append("New shop artwork not applied: " + product.kind)
@@ -275,6 +276,18 @@ func _regressions() -> void:
 	Game.preparation = {"snapshot": {"heroClass": "Guardian", "maximumHp": 99, "cardIds": locked_cards, "equipmentIds": ["frozen", null, null, null, null], "equipmentSnapshots": [{"instanceId": "frozen", "slot": "Head", "quality": "Green", "level": 4, "element": "Fire"}], "classWeaponLevel": 4, "backpackTier": "Top", "backpackCapacity": 36, "safeSlotIndexes": [33, 34, 35], "potionCount": 2}}
 	$UI.screen = "prep"
 	$UI._render()
+	var previous_resolution := get_window().size
+	for resolution in [Vector2i(1920, 1080), Vector2i(1280, 720)]:
+		get_window().size = resolution
+		await _capture("prep_locked_snapshot_%s" % resolution.x)
+		var summary := $UI._reference.get_node_or_null("PreparationDeckSummary") as Label
+		var bag_title := $UI._reference.get_node_or_null("PreparationBagTitle") as Label
+		var stock := $UI._reference.get_node_or_null("PreparationBagStockSummary") as Label
+		if summary == null or bag_title == null or stock == null:
+			layout_errors.append("Locked preparation header is missing")
+		elif summary.get_global_rect().intersects(bag_title.get_global_rect()) or summary.get_global_rect().intersects(stock.get_global_rect()):
+			layout_errors.append("Locked preparation summary overlaps bag heading or stock")
+	get_window().size = previous_resolution
 	var labels := ""
 	for node in $UI._reference.get_children():
 		if node is Label: labels += node.text + "\n"
@@ -297,6 +310,8 @@ func _regressions() -> void:
 	if not $UI._reference.find_child("Product_fixture-TopBag", true, false).get_node("Purchase").disabled:
 		layout_errors.append("Paid bag purchase requires current inventory")
 	$UI._shop_inventory_ready = true
+	for product in $UI.shop.products:
+		if product.productId == "fixture-daily": product.alreadyOwned = false
 	$UI._render()
 	var daily: Node = $UI._reference.find_child("Product_fixture-daily", true, false)
 	daily.get_node("Purchase").pressed.emit()

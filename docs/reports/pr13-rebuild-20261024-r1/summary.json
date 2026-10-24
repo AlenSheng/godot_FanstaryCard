@@ -2,8 +2,8 @@
   "kind": "Current-version rebuild round result with unpassed scopes retained",
   "round_id": "current-rebuild-20261024-r1",
   "user_scope": "重建当前版本新一轮（推荐）",
-  "adjudicated_at_UTC": "2026-10-24T11:17:39.043042+00:00",
-  "current_status": "PartiallyVerified_NotAccepted",
+  "adjudicated_at_UTC": "2026-10-24T16:53:31.837189+00:00",
+  "current_status": "PartiallyVerified_NotAccepted_capacity_and_original_mixed_cycle_gaps_retained",
   "GDD_main_sha256": "7375f9615d4612a617cdb6295a020037016ecef061964c0200b52c2def9d44f6",
   "config_package_sha256": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
   "legal_base_HP": {
@@ -26,7 +26,22 @@
       "passed": 10,
       "skipped": 0
     },
-    "actual_current_round_rollback_backup_restore_once_only_assets": true
+    "actual_current_round_rollback_backup_restore_once_only_assets": true,
+    "card_page_Windows_full_native_unmodified_test": true,
+    "functional_native4_pilot": true,
+    "Mage_scoped_normal_cycles": {
+      "accounts": 10,
+      "cycles_each": 3,
+      "normal_ACKs": 30,
+      "unique_server_matches": 10
+    },
+    "UI_real_renderer": {
+      "art_screenshots": 68,
+      "gameplay_screenshots": 34,
+      "gameplay_checks": 100,
+      "layout_errors": 0
+    },
+    "verified_G_backup_then_owned_cloud_teardown": true
   },
   "numeric_budget_and_limits": {
     "route_samples_each": 300,
@@ -42,15 +57,20 @@
     "derived_control_comparison_rows_total": 2592,
     "factor_controls_not_live_world_count_or_capacity_acceptance": true,
     "candidate_benefit_sample_budget": "Inconclusive",
-    "real_native_live_worlds_started_by_local_round_driver": 0,
-    "quota_sampling_gameplay_or_memory_limits_relaxed": false,
-    "local_memory_reserve_bytes": 6442450944
+    "local_memory_reserve_bytes": 6442450944,
+    "continuation_relaxations": {
+      "owned_server_rate_quotas_raised_for_capacity_only": true,
+      "cloud_disk_guard_15_to5percent_with3GB_floor": true,
+      "mixed_observation240_to480_to600_seconds": true,
+      "final_normal_scenario": "Mage_only_cleared-extraction",
+      "gameplay_balance_or_local6GiB_reserve_unchanged": true,
+      "normal_cycles_final_server_quotas_restored": true
+    }
   },
   "current_unpassed": {
-    "cloud_capacity50_100": "NotExecuted_ResourceUnavailable_root_disk_about3.25percent_below5percent_minimum",
-    "fullnative4pilot_and10accounts3normalcycles": "NotExecuted_no_admitted_isolated_live_backend",
-    "card_page": "ResourceStopped_when_local_free_RAM_below6GiB",
-    "real_renderer_UI_and_style_acceptance": "NotExecuted_ResourceUnavailable",
+    "cloud_capacity50": "NotPassed_GeneratorResourceAdmission_28started_native29_rejected_before_6GiB_reserve",
+    "cloud_capacity100": "NotExecuted_ResourceUnavailable_same_first50_group_cannot_be_admitted",
+    "original_mixed10accounts3normalcycles": "NotPassed_3partial_attempts_retained_Mage_only_pass_does_not_replace",
     "factor_candidate_benefit_acceptance": "Inconclusive_reduced_budget"
   },
   "separately_preserved_historical_or_external_unpassed": {
@@ -64,12 +84,15 @@
     "first_local_Domain": "Original387pass1fail preserved; fixture publication dependencies then fixed and388passed_no_skip",
     "original_full_CI": "417passed1NotExecuted_nativeTRXsummary_inconsistent_strict_gate_blocked_original_red_preserved",
     "first_focused_CI": "9passed1failed_owned_evidence_path_guard_original_retained",
-    "final_focused_CI": "10passed0skip_strict_gate_covered_no_test_or_TRX_rewrite"
+    "final_focused_CI": "10passed0skip_strict_gate_covered_no_test_or_TRX_rewrite",
+    "continuation_mixed_cycles": "7_then10_then17_of30_normal_participations_in_three_partial_mixed_attempts; final30_of30_is_Mage_only",
+    "cloud_card_page": "Low_free_memory_cache_trim_is_documented_degradation_not_an_HP_or_pool_regression; unmodified_Windows_test_passed",
+    "capacity50": "Original_evidence_and_load_failed_cleanupUnknown_preserved; later0pendingholds_does_not_rewrite_original_cutoff"
   },
   "historical_register_not_modified": true,
   "human_experience_excluded": true,
-  "local_Godot": "Headless_Dummy_audio_CREATE_NO_WINDOW_BelowNormal_private_userdata_confirmed_all_children_terminal",
-  "formal_service": "No deploy_restart_asset_ledger_restore_or_write_performed_this_round; current formal readyHTTP200 and identity_image_start_environment unchanged in read-only probes.",
+  "local_Godot": "Headless_Dummy_audio_CREATE_NO_WINDOW_BelowNormal_last4_CPUs_6GiB_reserve; all_owned_children_and_forward_tunnel_terminal",
+  "formal_service": "Existing_formal_app_and_PG_identity_image_start_environment_unchanged_readyHTTP200;44_unused_project_test_PG_volumes_cleared_under_direct_user_permission;active_formal_DB_not_cleared",
   "report_files": [
     "foundation.json",
     "native-offline.json",
@@ -77,15 +100,27 @@
     "server-full-ci.json",
     "postgres-rollback-recheck.json"
   ],
-  "last_executed_game_source_reference": "5d788b8da3a2444bcee74d7240caa663f8d071ec",
+  "last_executed_game_source_reference": "667ed611cfb195fafe211ac5444589a437fcb306",
   "whole_project_accepted": false,
   "formal_service_last_readonly_probe": {
-    "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\cloud\\final-readonly.original.json",
-    "bytes": 1281,
-    "sha256": "30bcbcfd8f72465f2f48f793c915ecf74330f5d177928b427139ea351cbe3365",
-    "probe_unix_time": 1792840732.5679197,
+    "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\continuation-20261024-cleanup-r1\\cloud-teardown-terminal.original.json",
     "ready_HTTP": 200,
     "container_image_start_environment_unchanged": true,
-    "root_disk_available_percent": 3.255337870319243
-  }
+    "root_disk_available_bytes": 8267292672
+  },
+  "validated_UI_source_overrides": {
+    "client/tests/art_preview.gd": "f6d7f4e352c44c092afb301a221dbeff34167653f09842fe9b6cd334ff8a84ba",
+    "client/ui/reference_ui.gd": "f63d470a4d6613bb4edfa38e31b8a6aab94827ee4c72dea50efd82f79688137f",
+    "client/tests/gameplay_ui_preview.gd": "1055015dbead31cf4c881565995970f26d0e4c6f9a4c2061f6fed6fe453dbae5",
+    "client/ui/main.gd": "600ec8dcd4c6a26c524fefef6d429b92b4b4e6971a74082dfc18f85f65e3d108",
+    "client/ui/inventory_view.gd": "fd2e6f9593b8e9492f563db8a91324687595d2060a6ae690b9ae12dffbed26e6"
+  },
+  "current_continuation_report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261024/README.md",
+  "continuation_public_reports": [
+    "continuation-20261024/backup-and-teardown.json",
+    "continuation-20261024/capacity-resource-result.json",
+    "continuation-20261024/cleanup.json",
+    "continuation-20261024/cycles-scoped-result.json",
+    "continuation-20261024/UI-result.json"
+  ]
 }
