@@ -89,7 +89,7 @@
     }
   },
   "current_unpassed": {
-    "cloud_capacity50": "Exact50_R3_load_failed; stronger60_R4_minimum50active_600s_overlap_passed_component_only; original_execution_failed_four_play_rejections_not_waived",
+    "cloud_capacity50": "Exact50_R3_load_failed; stronger60_R4_50active600s_component_passed_but_execution_failed; R5_60peak_early_monitoring_stop_failed; no_original_failure_overridden",
     "cloud_capacity100": "NotExecuted_original50_full_acceptance_not_passed; actual100_admission_and_sustained_window_unproven; no_capacity_ceiling_inferred_from60",
     "factor_candidate_benefit_acceptance": "Inconclusive_reduced_budget",
     "default_cycle_duration_acceptance": "NotEvaluated_functional_only_3of30_room_to_ACK_over1200s_max2065_844"
@@ -149,7 +149,8 @@
     "continuation-20261025/distributed50-r3-notpassed.json",
     "continuation-20261025/distributed-QA-validation.json",
     "continuation-20261025/distributed60-for50-r4-notpassed.json",
-    "continuation-20261025/CI-distributed-tools-release.json"
+    "continuation-20261025/CI-distributed-tools-release.json",
+    "continuation-20261025/execution-observer-r5-notpassed.json"
   ],
   "current_release_CI": {
     "tested_source_commit": "32e493a3da6745b34c8e7f41475d902288279b4f",
@@ -161,8 +162,8 @@
     "offline_tools_passed": 446,
     "report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/CI-distributed-tools-release.json"
   },
-  "active_capacity_study": "Distributed60_for50active_r4_completed_NotPassed_four_rejected_play_requests_original_execution_failed",
-  "last_continuation_at_unix_ms": 1792878251225.3865,
+  "active_capacity_study": "Execution_observer_R6_declared60_for50active_controller_started; actual_verdict_pending",
+  "last_continuation_at_unix_ms": 1792883952576.4607,
   "latest_QA_source_release": {
     "head": "32e493a3da6745b34c8e7f41475d902288279b4f",
     "local_targeted_tests": 83,
@@ -172,5 +173,19 @@
     "offline_tool_tests_passed": 446,
     "cloud_ownership_passed": 8,
     "report": "continuation-20261025/CI-distributed-tools-release.json"
+  },
+  "latest_execution_diagnostic": {
+    "round": "command-execution-observer-20261025-r5",
+    "status": "NotPassed_early_Windows_monitoring_probe_timeout",
+    "actual_peak_native_clients": 60,
+    "actual_server_refusals_exactly_bound": 11,
+    "conditions_verified": {
+      "missing_card_at_execution": 7,
+      "abandon_after_authoritative_Choice_PveCleared": 4
+    },
+    "all_actual_full_snapshot_digests_and_semantics_verified": true,
+    "original_R4_four_requests_not_reconstructed": true,
+    "no_error_waiver": true,
+    "report": "continuation-20261025/execution-observer-r5-notpassed.json"
   }
 }
