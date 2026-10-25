@@ -28,6 +28,7 @@ class LoadProbe:
 				"pending_ack": Game._settlement_ack_pending_id,
 				"stage": stage, "cycles_completed": cycles_completed}))
 		if not stop_requested and stage == "playing" and not Game.has_pending_commands():
+			_observe_owned_entry()
 			var terminal_action := "action.extract" if Game.allowed("action.extract") else "battle.abandon" if Game.allowed("battle.abandon") else ""
 			if not terminal_action.is_empty() and Game.command(terminal_action):
 				if terminal_action == "action.extract": legal_extractions += 1
@@ -36,8 +37,22 @@ class LoadProbe:
 
 	func _on_event(kind: String, payload: Dictionary) -> void:
 		super._on_event(kind, payload)
-		if kind == "room.started" and str(payload.get("match_id", "")) not in entered_matches:
-			entered_matches.append(str(payload.get("match_id", "")))
+		if kind in ["room.started", "room.snapshot"]: _observe_owned_entry()
+
+	func _observe_owned_entry() -> void:
+		# A valid room snapshot may precede the now-duplicate start event.
+		# Count actual entry before the legal terminal driver, never from ACK.
+		if stop_requested or stage not in ["matchmaking", "playing"] or Game.room.is_empty(): return
+		var match_id := str(Game.room.get("match_id", ""))
+		var room_id := str(Game.room.get("room_id", ""))
+		if match_id.is_empty() or room_id.is_empty() or match_id != Game.gateway.current_match_id or room_id != Game.gateway.room_id: return
+		if own_user_id.is_empty() or str(Game.room.get("player", {}).get("player_id", "")) != own_user_id: return
+		if str(Game.room.get("player", {}).get("phase", "")) not in ["ActionBar", "Pve", "Pvp", "Choice"]: return
+		if not Game.gateway.online or Game.gateway.recovering or Game.gateway.room_context_epoch != Game._room_context_epoch: return
+		if match_id in entered_matches: return
+		entered_matches.append(match_id)
+		_on_telemetry({"type":"lifecycle", "event_type":"fixture.entry_observed", "match_id":match_id,
+			"room_id":room_id, "entry_source":"current_owned_room_state", "trace_only":true})
 
 	func _on_telemetry(sample: Dictionary) -> void:
 		super._on_telemetry(sample)

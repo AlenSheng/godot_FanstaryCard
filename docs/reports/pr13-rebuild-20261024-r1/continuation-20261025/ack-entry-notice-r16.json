@@ -1,0 +1,83 @@
+{
+  "kind": "ACK fixture actual-entry accounting and gameplay notice obstruction corrected; fresh PG CI pending",
+  "base_release": "cd04376556f7deb9cd8e68cbdb25d802a40500e7",
+  "previous_CI": {
+    "run": 40160727347,
+    "url": "https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/40160727347",
+    "source": "cd04376556f7deb9cd8e68cbdb25d802a40500e7",
+    "server_PG_passed": 417,
+    "failed": 1,
+    "skipped": 0,
+    "failed_mode": "stop-after-commit",
+    "retained_as_failed": true,
+    "all4_official_artifacts_G_whole_and_member_verified": true
+  },
+  "fixture_problem": "An actual owned room snapshot was applied before a duplicate room.started event was correctly discarded; the fixture counted only the start callback. STOP cancellation then exceeded the incorrectly zero recorded entries.",
+  "fixture_correction": [
+    "Observe the current owned nonterminal room state before the legal terminal driver and after actual snapshot/start callbacks",
+    "Require matching current gateway room, match, epoch and actual participant; online and not recovering",
+    "Deduplicate actual match IDs; STOP and cleanup cannot add entries",
+    "No invented start event, completed cycle, ACK, SQL result backfill or stale-event guard change"
+  ],
+  "controlled_fixture": {
+    "checks": 13,
+    "original_failed": 1,
+    "fixed_passed": 13,
+    "offline_no_actual_STOP_ACK_claim": true
+  },
+  "UI": {
+    "problem": "The default rising notice obscured ActionBar HP text in waiting and restored frames at both1920x1080 and1280x720",
+    "correction": "Room notices use the existing top anchor shared with settlement notices; duration, style and fading remain unchanged",
+    "same_actual_renderer_controls": 26,
+    "original_geometry_failures": 4,
+    "fixed_checks_passed": 26,
+    "actual_fixed_frames": 8,
+    "actual_baseline_frames_retained": 8,
+    "visual_review_all_fixed_frames": true,
+    "visible_text_overlap": 0,
+    "out_of_viewport_notice": 0,
+    "network_none_actual_software_renderer": true,
+    "no_new_image_resources_needed": true,
+    "G_verified_original_files": 46,
+    "G_archive_SHA256": "0566cf17f55ef446b40ea1833b05f68211fe098477088e19e2f21503707e59fe"
+  },
+  "full_local_native": {
+    "runs": [
+      {
+        "label": "final-common-with-notice",
+        "exit": 0,
+        "minimum_available_bytes": 8683077632,
+        "suites": 26,
+        "named_checks": 382
+      },
+      {
+        "label": "final-extended-with-notice",
+        "exit": 0,
+        "minimum_available_bytes": 9446940672,
+        "suites": 26,
+        "named_checks": 487
+      }
+    ],
+    "suites_each": 26,
+    "overlap_not_unique_sum": true,
+    "headless_Dummy_CREATE_NO_WINDOW_BelowNormal_last4_CPUs": true,
+    "memory_floor_bytes": 6442450944,
+    "unexpected_script_or_resource_errors": 0
+  },
+  "source_SHA256": {
+    "client/ui/main.gd": "7d4a72cada8af920906a03efff58dfc8918cdd3270f3654e872010f5214240dc",
+    "client/tests/pr13_ack_stop_cycles.gd": "bc698d94541fbc1b23d8a483bcaf3071fc61485d852a92644f37815bfd3ea342",
+    "client/tests/test_ack_entry_observation.gd": "b776271b558455a61094c67677aa198f9a2947827c5bb5eb7274d5243b29dacc",
+    "client/tests/test_ack_entry_observation.gd.uid": "8f9d87fabac4a4a9f154b6e5b13751d7862d149dcc212e2c3a3e1e66ff7de185",
+    "client/tests/run_play_retry.gd": "59d803b05886b5fd5d712ae469b2461ec236a695d39e636f76ca8bfacf41572c",
+    "client/tests/run_native_regressions.gd": "3f1b5013a5b9cbd5b39dcaf33b209d9168f91c6c0b01a3e490f7a5a6a0e93058"
+  },
+  "server_business_protocol_config_GDD_numbers_unchanged": true,
+  "legal_HP80_70_100_and_80over70_sentinel_unchanged": true,
+  "no_capacity_or_clock_or_resource_limit_relaxed": true,
+  "new_source_PG_CI": "Pending_after_publication",
+  "fresh_capacity": "NotExecuted",
+  "actual100": "NotExecuted",
+  "whole_project_accepted": false,
+  "at_unix_ms": 1792903859804.917
+}

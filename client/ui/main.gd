@@ -533,7 +533,7 @@ func _render() -> void:
 		_pointer_render_context.clear()
 	_render_pending = false
 	_sync_combat_feedback_context()
-	tips_overlay.set_viewport_anchor(0.09 if not Game.settlement.is_empty() else TipsOverlay.VIEWPORT_Y_RATIO)
+	tips_overlay.set_viewport_anchor(_notice_anchor())
 	_sync_draw_charge_visual()
 	var room_cell := "%s:%s:%s" % [Game.room.get("room_id", ""), Game.room.get("self", {}).get("row", -1), Game.room.get("self", {}).get("column", -1)]
 	if room_cell != _view_cell or Game.room.get("player", {}).get("phase", "") != "ActionBar":
@@ -1709,10 +1709,13 @@ func _return_from_settlement() -> void:
 	Game.acknowledge_settlement()
 	_navigate("hall")
 
+func _notice_anchor() -> float:
+	# Gameplay HP and action information occupy the default notice height.
+	return 0.09 if not Game.room.is_empty() or not Game.settlement.is_empty() else TipsOverlay.VIEWPORT_Y_RATIO
+
 func _toast(message: String) -> void:
 	if is_instance_valid(tips_overlay):
-		var settlement_notice := not Game.settlement.is_empty()
-		tips_overlay.show_tip(message, 0.09 if settlement_notice else TipsOverlay.VIEWPORT_Y_RATIO)
+		tips_overlay.show_tip(message, _notice_anchor())
 
 func _show_ban_dialog(reason: String) -> void:
 	if not reason.begins_with("账号已被封禁"): return

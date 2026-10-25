@@ -342,7 +342,7 @@
     "official_artifacts_all4_G_verified": true
   },
   "latest_recorder_fix": {
-    "state": "Controlled43_and_local24plus24_and_Linux_CI24_passed;fresh_R14_actual25plus25_running_not_accepted",
+    "state": "Controlled43_and_local24plus24_and_CI_passed;actual_R14_completed_NotPassed",
     "report": "continuation-20261025/recorder-authority-gap-r14.json",
     "common_named_checks": 310,
     "extended_named_checks": 415,
@@ -357,7 +357,7 @@
       },
       "observed_both25_online_and_in_room": true,
       "latency_profile": "north-america-5s-8s-10s-monitor10s",
-      "shared600second_window_and_full_adjudication_pending": true,
+      "shared600second_window_and_full_adjudication_pending": false,
       "same_prior_stall_latency_coverage_and_resource_thresholds": true,
       "actual_Windows_visible_windows": 0,
       "all25_BelowNormal_last4_CPUs": true,
@@ -403,9 +403,15 @@
     "CI_complete_verified": true
   },
   "latest_rejected_write_fix": {
-    "state": "59controls_passed_against46_original_failures;25plus25_native_suites_passed;CI_UI_and_capacity_pending",
+    "state": "59controlled_and_local25plus25_passed;actual_UI_obstruction_fixed_in_R16;sourceCI417passed1fixture_failed;capacity_pending",
     "report": "continuation-20261025/rejected-write-refresh-r15.json",
     "no_generic_write_retry_or_error_waiver": true
   },
-  "clock_reporting_correction": "R14 local0ms accepted by current validator; direct failure cloud1610ms over1500ms; new actual strict-clock stream qualification passed without limit relaxation"
+  "clock_reporting_correction": "R14 local0ms accepted by current validator; direct failure cloud1610ms over1500ms; new actual strict-clock stream qualification passed without limit relaxation",
+  "latest_ACK_fixture_and_notice_fix": {
+    "state": "controlled13_and_actual_UI26_passed;local26plus26_passed;fresh_CI_pending",
+    "report": "continuation-20261025/ack-entry-notice-r16.json",
+    "prior_CI_failure_preserved": true,
+    "no_previous_capacity_failure_waived": true
+  }
 }
