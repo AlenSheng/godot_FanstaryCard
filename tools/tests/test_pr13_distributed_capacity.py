@@ -9,7 +9,8 @@ import unittest
 import uuid
 
 from tools.pr13_distributed_capacity import (Capture, ENGINE_VERSION, OFFICIAL_ENGINE,
-    SERVER_IMAGE, SOURCE_FILES, assess_captures, canonical, load_git_reference, strict_json)
+    SERVER_IMAGE, SOURCE_FILES, NORTH_AMERICA_LATENCY_PROFILE, assess_captures,
+    canonical, latency_policy, load_git_reference, strict_json)
 from tools.gameplay_load_validation import aggregate_window, workload_profile_identity
 from tools.tests.test_pr13_distributed_load import BASE, probe
 
@@ -23,8 +24,10 @@ def json_bytes(value):
 
 
 class SyntheticStudy:
-    def __init__(self, root, *, cloud_seed_start=None, stronger_population=False):
+    def __init__(self, root, *, cloud_seed_start=None, stronger_population=False,
+                 latency_profile=None, http_ms=10, command_ms=10):
         self.root = Path(root)
+        self.http_ms, self.command_ms = http_ms, command_ms
         self.reference = dict(head='1' * 40,
             controls={p:hashlib.sha256(p.encode()).hexdigest() for p in SOURCE_FILES},
             client={'client/project.godot':'2' * 64, 'client/tests/gameplay_load_client.gd':'3' * 64})
@@ -47,6 +50,8 @@ class SyntheticStudy:
             window_start_ms=(BASE + 300) * 1000, window_end_ms=(BASE + 900) * 1000)
         if stronger_population:
             self.spec.update(target_online_clients=60, workload_profile='full-native60-for50active')
+        if latency_profile is not None:
+            self.spec['latency_profile'] = latency_profile
         self.report_names, self.files, self.roots, self.native_names, self.users = {}, {}, {}, {}, []
         for p in partitions:
             self.build_host(p)
@@ -104,8 +109,7 @@ class SyntheticStudy:
             strategy_seed=p['seed_start'], client_max_fps=None, client_runtime='editor',
             target_online=count, target_active=p.get('target_active', count), maximum_run_seconds=960,
             minimum_window=720, minimum_continuous=120, minimum_coverage=.95,
-            maximum_gap=20.0, minimum_command_rate=1, http_p95_limit_ms=1500,
-            command_p95_limit_ms=2000, health_limit_ms=5000,
+            maximum_gap=20.0, minimum_command_rate=1, **latency_policy(self.spec),
             minimum_generator_memory_bytes=p['memory_floor_bytes'],
             minimum_cloud_memory_bytes=500000000, minimum_cloud_disk_percent=5.0,
             cycle_limit_seconds=240, http_transport='reusable', resource_source='preregistered_prometheus')
@@ -128,9 +132,9 @@ class SyntheticStudy:
                 report_file=cid + '.json', command=command, client_max_fps=None,
                 server_origin=p['server_origin'], client_runtime='editor')
             receipts.append(receipt)
-            events = [dict(type='realtime', duration_ms=10, result='success', at_unix_ms=(start + j * 10 - .5) * 1000)
+            events = [dict(type='realtime', duration_ms=self.command_ms, result='success', at_unix_ms=(start + j * 10 - .5) * 1000)
                       for j in range(6, 97)]
-            events.append(dict(type='http', duration_ms=10, status=200, ok=True, result='success', phase='playing',
+            events.append(dict(type='http', duration_ms=self.http_ms, status=200, ok=True, result='success', phase='playing',
                                route='/api/v1/bootstrap', at_unix_ms=(start + 99.1) * 1000))
             events.sort(key=lambda x:x['at_unix_ms'])
             for seq, event in enumerate(events, 1):
@@ -392,6 +396,102 @@ class CapacityEvidenceTests(unittest.TestCase):
         ref=load_git_reference(repo,head)
         self.assertEqual(hashlib.sha256(b'original:client/full-resource.bin').hexdigest(),ref['client']['client/full-resource.bin'])
         self.assertEqual(set(SOURCE_FILES),set(ref['controls']))
+
+
+class LatencyProfileTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory(prefix='pr13-latency-profile-')
+        self.addCleanup(self.temp.cleanup)
+
+    def study(self, **kwargs):
+        return SyntheticStudy(self.temp.name, **kwargs)
+
+    def test_omitted_profile_keeps_default_limits_and_explicit_default_verdict(self):
+        s = self.study()
+        result = s.assess()
+        self.assertTrue(result['capacity_accepted'], result)
+        self.assertTrue(result['default_latency_capacity_accepted'])
+        self.assertEqual('default', result['latency_profile'])
+        self.assertEqual(1500, result['latency_limits']['http_p95_limit_ms'])
+        self.assertEqual(3, result['latency_limits']['monitor_timeout_seconds'])
+
+    def test_documented_WAN_boundary_pass_is_only_the_explicit_scoped_verdict(self):
+        s = self.study(latency_profile=NORTH_AMERICA_LATENCY_PROFILE, http_ms=5000, command_ms=8000)
+        for host in s.roots:
+            r = s.report(host)
+            for sample in r['samples']:
+                sample['health']['duration_ms'] = 10000
+            s.put_report(host, r)
+        result = s.assess()
+        self.assertTrue(result['capacity_accepted'], result)
+        self.assertFalse(result['default_latency_capacity_accepted'])
+        self.assertFalse(result['whole_project_accepted'])
+        self.assertEqual(NORTH_AMERICA_LATENCY_PROFILE, result['latency_profile'])
+        self.assertEqual(5000, result['pooled_running_latency']['http']['p95_ms'])
+        self.assertEqual(8000, result['pooled_running_latency']['realtime']['p95_ms'])
+
+    def test_default_does_not_accept_WAN_contract_without_spec_opt_in(self):
+        s = self.study(latency_profile=NORTH_AMERICA_LATENCY_PROFILE)
+        s.spec.pop('latency_profile'); s.bind_spec()
+        result = s.assess()
+        self.assertFalse(result['capacity_accepted'])
+        self.assertIn('changed_native_workload_contract', result['evidence_errors'])
+
+    def test_spec_opt_in_cannot_relax_a_cohort_run_under_default_contract(self):
+        s = self.study()
+        s.spec['latency_profile'] = NORTH_AMERICA_LATENCY_PROFILE; s.bind_spec()
+        self.assertIn('changed_native_workload_contract', s.assess()['evidence_errors'])
+
+    def test_unknown_or_structured_policy_cannot_supply_arbitrary_limits(self):
+        s = self.study()
+        for value in ['anything', None, True, {'http_p95_limit_ms': 60000}]:
+            with self.subTest(profile=value):
+                s.spec['latency_profile'] = value; s.bind_spec()
+                self.assertIn('unknown_latency_profile', s.assess()['evidence_errors'])
+
+    def test_WAN_monitor_budget_is_bound_to_actual_cohort_contract(self):
+        s = self.study(latency_profile=NORTH_AMERICA_LATENCY_PROFILE)
+        r = s.report('windows'); r['load_contract']['monitor_timeout_seconds'] = 60
+        s.put_report('windows', r)
+        self.assertIn('changed_native_workload_contract', s.assess()['evidence_errors'])
+
+    def test_WAN_HTTP_one_ms_over_boundary_still_fails_raw_pooled_gate(self):
+        s = self.study(latency_profile=NORTH_AMERICA_LATENCY_PROFILE, http_ms=5001)
+        result = s.assess()
+        self.assertFalse(result['capacity_accepted'])
+        self.assertIn('pooled_raw_latency_redline', result['evidence_errors'])
+
+    def test_WAN_command_one_ms_over_boundary_still_fails_window_replay(self):
+        s = self.study(latency_profile=NORTH_AMERICA_LATENCY_PROFILE, command_ms=8001)
+        self.assertIn('original_sustained_redline_replay_failed', s.assess()['evidence_errors'])
+
+    def test_WAN_health_one_ms_over_boundary_still_fails(self):
+        s = self.study(latency_profile=NORTH_AMERICA_LATENCY_PROFILE)
+        r = s.report('cloud')
+        for sample in r['samples'][30:33]:
+            sample['health']['duration_ms'] = 10001
+        s.put_report('cloud', r)
+        self.assertIn('original_sustained_redline_replay_failed', s.assess()['evidence_errors'])
+
+    def test_WAN_profile_does_not_waive_memory_or_failed_execution(self):
+        s = self.study(latency_profile=NORTH_AMERICA_LATENCY_PROFILE)
+        r = s.report('cloud'); r['outcome']['passed'] = False
+        s.put_report('cloud', r)
+        self.assertIn('original_cohort_did_not_pass', s.assess()['evidence_errors'])
+        r['outcome']['passed'] = True; s.put_report('cloud', r)
+        supervisor = s.get('cloud', 'supervisor.json')
+        supervisor['resources'][50]['memory_available_bytes'] = 499999999
+        s.put('cloud', 'supervisor.json', supervisor)
+        self.assertIn('host_memory_reserve_breached', s.assess()['evidence_errors'])
+
+    def test_WAN_profile_does_not_accept_49_active_players(self):
+        s = self.study(latency_profile=NORTH_AMERICA_LATENCY_PROFILE)
+        for host in s.roots:
+            r = s.report(host)
+            for sample in r['samples']:
+                sample['server_confirmed_in_room'] = 49
+            s.put_report(host, r)
+        self.assertFalse(s.assess()['capacity_accepted'])
 
 
 class StrongerPopulationTests(unittest.TestCase):

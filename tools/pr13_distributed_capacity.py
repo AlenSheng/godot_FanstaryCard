@@ -48,11 +48,27 @@ SOURCE_FILES = (
     'protocol/realtime/v1/realtime.proto',
 )
 REQUIRED_DIMENSIONS = {'execution', 'evidence', 'load', 'performance', 'cleanup'}
+DEFAULT_LATENCY_PROFILE = 'default'
+NORTH_AMERICA_LATENCY_PROFILE = 'north-america-5s-8s-10s-monitor10s'
 
 
 def require(condition, reason):
     if not condition:
         raise ValueError(reason)
+
+
+def latency_policy(spec):
+    """Only a preregistered profile may select the documented WAN tolerance.
+
+    The coordinator contract, every window and pooled raw requests must all
+    match the same profile. Population, evidence and resource gates are shared.
+    """
+    profile = spec.get('latency_profile', DEFAULT_LATENCY_PROFILE)
+    require(type(profile) is str and profile in
+            (DEFAULT_LATENCY_PROFILE, NORTH_AMERICA_LATENCY_PROFILE), 'unknown_latency_profile')
+    values = (1500, 2000, 5000, 3) if profile == DEFAULT_LATENCY_PROFILE else (5000, 8000, 10000, 10)
+    return dict(zip(('http_p95_limit_ms', 'command_p95_limit_ms', 'health_limit_ms',
+                     'monitor_timeout_seconds'), values))
 
 
 def canonical(value):
@@ -250,14 +266,14 @@ def audit_cohort(capture, spec, partition, reference):
     report = capture.json(report_name)
     directory = PurePosixPath(report_name).parent
     contract, samples = report['load_contract'], report['samples']
+    policy = latency_policy(spec)
     count, platform = partition['clients'], partition['platform']
     require(platform in OFFICIAL_ENGINE and count > 0 and type(count) is int, 'invalid_partition')
     expected = dict(profile='active-hold', hero_class='Guardian', strategy='baseline_all_hand',
                     strategy_seed=partition['seed_start'], client_max_fps=None, client_runtime='editor',
                     target_online=count, target_active=partition.get('target_active', count), maximum_run_seconds=960,
                     minimum_window=720, minimum_continuous=120, minimum_coverage=.95,
-                    maximum_gap=20.0, minimum_command_rate=1, http_p95_limit_ms=1500,
-                    command_p95_limit_ms=2000, health_limit_ms=5000,
+                    maximum_gap=20.0, minimum_command_rate=1, **policy,
                     minimum_generator_memory_bytes=partition['memory_floor_bytes'],
                     minimum_cloud_memory_bytes=500000000, minimum_cloud_disk_percent=5.0,
                     cycle_limit_seconds=240, http_transport='reusable')
@@ -391,7 +407,8 @@ def audit_cohort(capture, spec, partition, reference):
                 require(finite(frame['engine_max_fps']) and frame['engine_max_fps'] == 0, 'native_FPS_override_observed')
         require(finite(s['resources'].get('cpu')) and finite(s['resources'].get('actor_wait')),
                 'original_server_metric_missing')
-        causes = latency_causes(s['window'], s['health'], 1500, 2000, 5000)
+        causes = latency_causes(s['window'], s['health'], policy['http_p95_limit_ms'],
+                                policy['command_p95_limit_ms'], policy['health_limit_ms'])
         causes += memory_causes(s['resources'], s['generator'], partition['memory_floor_bytes'], 500000000)
         causes += disk_causes(s['resources'], 5)
         if s['resources']['cpu'] > 85:
@@ -444,8 +461,12 @@ def audit_cohort(capture, spec, partition, reference):
 
 def assess_captures(spec, captures, reference, backend_before, backend_after):
     """Capacity verdict for this study only; never promotes whole-project status."""
-    result = dict(capacity_accepted=False, whole_project_accepted=False, evidence_errors=[])
+    result = dict(capacity_accepted=False, default_latency_capacity_accepted=False,
+                  whole_project_accepted=False, evidence_errors=[])
     try:
+        policy = latency_policy(spec)
+        profile = spec.get('latency_profile', DEFAULT_LATENCY_PROFILE)
+        result.update(latency_profile=profile, latency_limits=policy)
         require(spec['source_head'] == reference['head'] and type(spec['target_clients']) is int and spec['target_clients'] == 50 and
                 spec['reference_host_id'] == 'windows', 'wrong_registered_study')
         require(type(spec['world_budget']) is int and 1 <= spec['world_budget'] <= 300,
@@ -495,11 +516,13 @@ def assess_captures(spec, captures, reference, backend_before, backend_after):
         pooled = {family:summarize([v for r in audited for v in r['request_distributions']['_raw_running_latencies'][family]])
                   for family in ('http', 'realtime')}
         require(pooled['http']['count'] >= 40 and pooled['realtime']['count'] >= 20 and
-                pooled['http']['p95_ms'] <= 1500 and pooled['realtime']['p95_ms'] <= 2000,
+                pooled['http']['p95_ms'] <= policy['http_p95_limit_ms'] and
+                pooled['realtime']['p95_ms'] <= policy['command_p95_limit_ms'],
                 'pooled_raw_latency_redline')
         for r in audited:
             r['request_distributions'].pop('_raw_running_latencies')
         result.update(capacity_accepted=True, participants=population, target_active=50, overlap=overlap,
+                      default_latency_capacity_accepted=profile == DEFAULT_LATENCY_PROFILE,
                       per_host_latency={r['host_id']:r['request_distributions']['running'] for r in audited},
                       pooled_running_latency=pooled,
                       original_single_generator_failure_not_reclassified=True)
@@ -532,7 +555,8 @@ def main(argv=None):
     except (OSError, KeyError, TypeError, ValueError, RecursionError) as error:
         result = dict(capacity_accepted=False, whole_project_accepted=False,
                       evidence_errors=[str(error) if isinstance(error, ValueError) else type(error).__name__])
-    result.update(algorithm_version='distributed-full-native-capacity-v1',
+    result.update(algorithm_version='distributed-full-native-capacity-v2-explicit-latency-profile',
+                  adjudicator_source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                   captured_input_sha256=hashlib.sha256(raw).hexdigest())
     with args.output.open('xb') as out:
         out.write(json.dumps(result, indent=2, allow_nan=False).encode() + b'\n')

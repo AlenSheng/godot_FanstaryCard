@@ -178,35 +178,29 @@
     "continuation-20261025/CI-pending-timeout-release-r7.json",
     "continuation-20261025/recovery-ui-cloud-r7.json",
     "continuation-20261025/corrected50-r8-notpassed.json",
-    "continuation-20261025/corrected-mixed-cycles-r9-running.json"
+    "continuation-20261025/corrected-mixed-cycles-r9-running.json",
+    "continuation-20261025/CI-recovery-UI-release-r7.json"
   ],
   "current_release_CI": {
-    "tested_source_commit": "2c37fdf981dd418d8deface583630574f7b6b2c3",
-    "workflow_run": 40145574386,
-    "url": "https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/40145574386",
-    "workflow_conclusion": "success",
-    "jobs_passed": 4,
-    "official_artifacts_G_backup": 4,
-    "all_original_archive_digests_and_members_verified": true,
-    "PostgreSQL": {
-      "actual_passed": 418,
-      "skipped": 0,
-      "strict_coverage_missing_assertions": {},
-      "coverage_acceptance": false
-    },
-    "server_offline": {
-      "passed": 288,
-      "not_executed": 130
-    },
-    "client_original_3second_wire_fixture_passed": true,
-    "this_CI_precedes_UI_followup_source_changes": true,
-    "whole_capacity_accepted": false,
+    "kind": "Exact timeout recovery UI source CI receipt; does not award capacity",
+    "tested_source_commit": "84600ec3e4d5546e09f0d32652c84d5ab4f5daa1",
+    "workflow_run": 40148194557,
+    "url": "https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/40148194557",
+    "all_four_jobs": "success",
+    "actual_PostgreSQL_passed": 418,
+    "actual_PostgreSQL_skipped": 0,
+    "strict_missing_assertions": {},
     "offline_tools_passed": 446,
     "cloud_ownership_passed": 8,
-    "UI_followup_source_CI_pending": true
+    "actual_timeout_recovery_checks": 48,
+    "server_offline_passed": 288,
+    "server_offline_not_executed": 130,
+    "official_artifacts": 4,
+    "official_digests_and_all_ZIP_members_verified_on_G": true,
+    "whole_capacity_accepted": false
   },
   "active_capacity_study": "R8_exact50_NotPassed;R9_corrected_source_full_mixed_normal_cycles_Running",
-  "last_continuation_at_unix_ms": 1792890205316.263,
+  "last_continuation_at_unix_ms": 1792890622286.4932,
   "latest_QA_source_release": {
     "head": "32e493a3da6745b34c8e7f41475d902288279b4f",
     "local_targeted_tests": 83,
@@ -238,7 +232,7 @@
   },
   "latest_client_fix": {
     "base_release": "125f1f32e1d68e3d1e91f14289dadc88d08f00a1",
-    "status": "UI_render_and_local_native_passed; R7_functional4_passed; R8_capacity_notpassed; R9_full_normal_running; exactUI_source_CI_pending",
+    "status": "UI_actual_render_and_exact_source_four_job_CI_passed; R8_capacity_failed; R9_full_normal_running",
     "report": "continuation-20261025/pending-timeout-recovery-r7.json",
     "controlled_checks": 48,
     "real_loopback_3second_checks": 7,
@@ -257,7 +251,17 @@
   "UI_followup_CI": {
     "source_commit": "84600ec3e4d5546e09f0d32652c84d5ab4f5daa1",
     "run": 40148194557,
-    "status": "in_progress",
-    "result_not_yet_claimed": true
+    "status": "completed_success_four_jobs",
+    "result_not_yet_claimed": true,
+    "original_artifacts_all4_backed_and_verified": true,
+    "PG_passed": 418,
+    "PG_skipped": 0
+  },
+  "prospective_latency_profile": {
+    "name": "north-america-5s-8s-10s-monitor10s",
+    "state": "UnitVerified_LiveNotStarted",
+    "tests_passed": 157,
+    "source_plan": "docs/plans/PR13_REBUILD_NORTH_AMERICA_LATENCY_R10_20261025.json",
+    "default_failures_retained": true
   }
 }
