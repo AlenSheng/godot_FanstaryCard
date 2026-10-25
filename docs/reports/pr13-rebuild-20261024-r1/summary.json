@@ -117,7 +117,7 @@
     }
   },
   "current_unpassed": {
-    "cloud_capacity50": "R10_NotPassed_after_native_progress_stall; R14_recorder_authority_gap_defect_reproduced_and_fixed_in43controls; no_new_actual_capacity_verdict_yet",
+    "cloud_capacity50": "R14_NA50_actual_cohorts_running_not_yet_accepted;previous_R10_progress_stall_not_reclassified",
     "cloud_capacity100": "NotExecuted; full100_verifier168_offline_checks_passed_not_actual_capacity; wait_for_scoped50_and_actual_resource_admission;no_ceiling_inferred_from_smaller_run",
     "factor_candidate_benefit_acceptance": "Inconclusive_reduced_budget",
     "default_cycle_duration_acceptance": "NotEvaluated_functional_only_3of30_room_to_ACK_over1200s_max2065_844"
@@ -150,7 +150,7 @@
     "server-full-ci.json",
     "postgres-rollback-recheck.json"
   ],
-  "last_executed_game_source_reference": "917deb16b0e817054a11dd751ac543e0f1a4af0a",
+  "last_executed_game_source_reference": "c655d1ba2702febb26bbf247c75e063349d26311",
   "whole_project_accepted": false,
   "formal_service_last_readonly_probe": {
     "phase": "R8_actual_restore_then_owned_transition",
@@ -251,8 +251,8 @@
     "whole_project_accepted": false,
     "at_unix_ms": 1792892806295.2988
   },
-  "active_capacity_study": "R9_normal30_functionally_passed; R10_NA50_NotPassed_original_retained; R14_recorder_gap_fix_locally_verified_fresh_capacity_pending",
-  "last_continuation_at_unix_ms": 1792896472879.854,
+  "active_capacity_study": "R14_recorder_fix_actual_NA50_25plus25_running;R9_normal30_functionally_passed;R10_failed_originals_retained",
+  "last_continuation_at_unix_ms": 1792897468959.422,
   "latest_QA_source_release": {
     "head": "32e493a3da6745b34c8e7f41475d902288279b4f",
     "local_targeted_tests": 83,
@@ -342,11 +342,60 @@
     "official_artifacts_all4_G_verified": true
   },
   "latest_recorder_fix": {
-    "state": "Controlled_reproduction43cases_16oldFailures_fixed43Passed; full24plus24_native_passed; fresh_capacity_and_CI_pending",
+    "state": "Controlled43_and_local24plus24_and_Linux_CI24_passed;fresh_R14_actual25plus25_running_not_accepted",
     "report": "continuation-20261025/recorder-authority-gap-r14.json",
     "common_named_checks": 310,
     "extended_named_checks": 415,
     "stall_threshold_unchanged_ms": 90000,
-    "product_client_gameplay_unchanged": true
+    "product_client_gameplay_unchanged": true,
+    "actual_cloud_followup": {
+      "source": "c655d1ba2702febb26bbf247c75e063349d26311",
+      "new_exact50_status": "Running_not_accepted",
+      "actual_native_clients": {
+        "windows": 25,
+        "cloud": 25
+      },
+      "observed_both25_online_and_in_room": true,
+      "latency_profile": "north-america-5s-8s-10s-monitor10s",
+      "shared600second_window_and_full_adjudication_pending": true,
+      "same_prior_stall_latency_coverage_and_resource_thresholds": true,
+      "actual_Windows_visible_windows": 0,
+      "all25_BelowNormal_last4_CPUs": true,
+      "R10_prior_actual_DB_restore": {
+        "matches": 14,
+        "settlements": 54,
+        "pending_holds": 0,
+        "all54_participant_identities_match_original_backend_snapshot": true,
+        "scratch_database_dropped": true
+      },
+      "R10_owned_cleanup": {
+        "containers_removed": 6,
+        "old_network_and_root_removed": true,
+        "original_source_cache_moved_intact": true,
+        "nonGit_inputs_verified": 78,
+        "additional_freed_bytes": 222502912,
+        "disk_free_at_transition": 3882729472
+      },
+      "new_four_client_warmup_passed_separately": true,
+      "formal_identity_unchanged": true,
+      "formal_ready_HTTP": 200,
+      "formal_DB_not_cleared": true,
+      "new_source_CI": {
+        "run": 40155892481,
+        "passed_jobs": [
+          "accounting",
+          "client",
+          "server-contract"
+        ],
+        "PG_status": "InProgress",
+        "Linux_common_suites": 24,
+        "Linux_named_checks": 310,
+        "tool_checks": 468,
+        "cloud_ownership_checks": 8,
+        "three_official_artifacts_G_verified": true
+      },
+      "whole_project_accepted": false,
+      "at_unix_ms": 1792897468958.4229
+    }
   }
 }
