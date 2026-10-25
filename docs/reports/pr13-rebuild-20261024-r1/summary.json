@@ -117,7 +117,7 @@
     }
   },
   "current_unpassed": {
-    "cloud_capacity50": "R14_fixed_recorder_completed_NoStall_but_load36_16pct59_91pct_two_sameCycle_DuelInactive_rejections_and_clock_probe_invalid_NotPassed",
+    "cloud_capacity50": "R16_independent60for50_completed_NotPassed_Windows75_05pct_cloud98_76pct_four_DuelInactive_RPC_rejections_and_cloud_spool_disk_floor;G_replay_valid_not_retroactive_pass",
     "cloud_capacity100": "NotExecuted; full100_verifier168_offline_checks_passed_not_actual_capacity; wait_for_scoped50_and_actual_resource_admission;no_ceiling_inferred_from_smaller_run",
     "factor_candidate_benefit_acceptance": "Inconclusive_reduced_budget",
     "default_cycle_duration_acceptance": "NotEvaluated_functional_only_3of30_room_to_ACK_over1200s_max2065_844"
@@ -416,9 +416,20 @@
     "CI_report": "continuation-20261025/CI-ack-notice-r16.json"
   },
   "latest_Guardian_notice_fix": {
-    "state": "Controlled48_and_actual12frames48checks_and_native26plus26_passed;new_UI_source_CI_pending",
+    "state": "Controlled48_actual12frames48checks_native26plus26_and_all4CI_passed;PG418_no_skip",
     "report": "continuation-20261025/Guardian-notice-r17.json",
     "whole_UI_not_yet_accepted": true,
     "no_GDD_or_server_or_load_gate_change": true
+  },
+  "latest_rejected_state_capacity": {
+    "state": "Completed_NotPassed_60for50_scope",
+    "source": "8c8d72fa2e765561277f606af4703676a3d0d843",
+    "report": "continuation-20261025/rejected-state60-r16-notpassed.json",
+    "G_original_files": 476,
+    "actual_DB_restored": true,
+    "restored_matches": 31,
+    "restored_settlements": 115,
+    "pending_holds": 0,
+    "recovered_cloud_audits_on_G_no_cycle_disagreement": true
   }
 }
