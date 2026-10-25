@@ -180,28 +180,67 @@
     "continuation-20261025/corrected50-r8-notpassed.json",
     "continuation-20261025/corrected-mixed-cycles-r9-running.json",
     "continuation-20261025/CI-recovery-UI-release-r7.json",
-    "continuation-20261025/archive-reclamation-r11.json"
+    "continuation-20261025/archive-reclamation-r11.json",
+    "continuation-20261025/CI-north-america-profile-release-r10.json"
   ],
   "current_release_CI": {
-    "kind": "Exact timeout recovery UI source CI receipt; does not award capacity",
-    "tested_source_commit": "84600ec3e4d5546e09f0d32652c84d5ab4f5daa1",
-    "workflow_run": 40148194557,
-    "url": "https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/40148194557",
-    "all_four_jobs": "success",
-    "actual_PostgreSQL_passed": 418,
+    "kind": "Complete explicit North America policy source CI receipt; actual capacity remains unpassed",
+    "tested_source_commit": "4a026f6a5fcfa7072c151bb16b3a624e87b1165b",
+    "runtime_workflow": {
+      "id": 40149616981,
+      "conclusion": "success",
+      "jobs_passed": 4
+    },
+    "specification_workflow": {
+      "id": 40149616935,
+      "conclusion": "success"
+    },
+    "actual_PostgreSQL_result_rows": {
+      "Passed": 418
+    },
     "actual_PostgreSQL_skipped": 0,
     "strict_missing_assertions": {},
-    "offline_tools_passed": 446,
-    "cloud_ownership_passed": 8,
-    "actual_timeout_recovery_checks": 48,
-    "server_offline_passed": 288,
-    "server_offline_not_executed": 130,
-    "official_artifacts": 4,
-    "official_digests_and_all_ZIP_members_verified_on_G": true,
-    "whole_capacity_accepted": false
+    "offline_tool_tests": 457,
+    "cloud_ownership_tests": 8,
+    "new_latency_policy_cases": 11,
+    "actual_client_timeout_checks": 48,
+    "server_offline_result_rows": {
+      "Passed": 288,
+      "NotExecuted": 130
+    },
+    "all_original_ZIP_and_member_digests_verified_on_G": true,
+    "artifacts": [
+      {
+        "id": 12581947933,
+        "name": "gameplay-load-accounting-4a026f6a5fcfa7072c151bb16b3a624e87b1165b",
+        "bytes": 550769,
+        "sha256": "474ee050c9fa0c278aa4df29804fc60c85baf4329276ddd99aeb10a661e32af7"
+      },
+      {
+        "id": 12582043128,
+        "name": "gameplay-load-client-4a026f6a5fcfa7072c151bb16b3a624e87b1165b",
+        "bytes": 3587251,
+        "sha256": "283bc721d164bb32266f1c44e3ad22ad6c774abd6b61a72d796276719f192fea"
+      },
+      {
+        "id": 12582089682,
+        "name": "gameplay-load-postgres-4a026f6a5fcfa7072c151bb16b3a624e87b1165b",
+        "bytes": 3579618,
+        "sha256": "c00d42e9da82ecc013554b2bc1fd523c98d2594a506e5ecfe7d0e1a14a05f1b4"
+      },
+      {
+        "id": 12582431572,
+        "name": "gameplay-load-server-4a026f6a5fcfa7072c151bb16b3a624e87b1165b",
+        "bytes": 119477,
+        "sha256": "772a154ece73dad45af1d438dda2d3a3fc90ef868e30849c5126f776a4841710"
+      }
+    ],
+    "whole_capacity_accepted": false,
+    "does_not_cover_new100_source917deb16": true,
+    "at_unix_ms": 1792891853334.6516
   },
   "active_capacity_study": "R8_exact50_NotPassed;R9_corrected_source_full_mixed_normal_cycles_Running",
-  "last_continuation_at_unix_ms": 1792891516871.22,
+  "last_continuation_at_unix_ms": 1792891853335.6516,
   "latest_QA_source_release": {
     "head": "32e493a3da6745b34c8e7f41475d902288279b4f",
     "local_targeted_tests": 83,
@@ -263,7 +302,9 @@
     "state": "UnitVerified_LiveNotStarted",
     "tests_passed": 157,
     "source_plan": "docs/plans/PR13_REBUILD_NORTH_AMERICA_LATENCY_R10_20261025.json",
-    "default_failures_retained": true
+    "default_failures_retained": true,
+    "CI_source": "4a026f6a5fcfa7072c151bb16b3a624e87b1165b",
+    "complete_CI_verified": true
   },
   "archive_duplicate_reclamation": {
     "archives": 7,
@@ -279,5 +320,10 @@
     "base_release": "e66d8e6d3ec13906032e4267dcb0a3caa4e18fbd",
     "plan": "docs/plans/PR13_REBUILD_DISTRIBUTED100_EVIDENCE_R12_20261025.json",
     "resource_guards_unchanged": true
+  },
+  "latest_100_verifier_CI": {
+    "source": "917deb16b0e817054a11dd751ac543e0f1a4af0a",
+    "workflow": 40150579006,
+    "status": "InProgress_not_claimed_by_old_CI"
   }
 }
