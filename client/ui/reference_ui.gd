@@ -26,7 +26,7 @@ func build(source: Control) -> void:
 				var move: Vector2i = host.get_meta("pending_move")
 				Exploration.show_midlayer(self, host, move.x, move.y)
 			else: host.remove_meta("pending_move")
-	elif not Game._settlement_recovery_match_id.is_empty():
+	elif not Game._settlement_recovery_match_id.is_empty() or Game.room_authority_recovering():
 		Exploration.build_recovery(self)
 	elif not Game.ready_prompt.is_empty():
 		_ready_prompt()

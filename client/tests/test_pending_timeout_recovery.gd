@@ -69,6 +69,7 @@ func run_test() -> Dictionary:
 				checks[label + ": no replay of uncertain write or stale selection"] = gateway.sent.filter(func(row): return row.kind == action).size() == 1 and store.selected_cards.is_empty() and store._preview_request.is_empty()
 				checks[label + ": keeps original unknown execution telemetry"] = telemetry.any(func(row): return row.get("event_type") == "command.timeout" and row.get("request_id") == original and row.get("execution_outcome") == "unknown")
 				checks[label + ": keeps the original match for a receipt during recovery"] = store._settlement_match_id() == "timeout-match"
+				checks[label + ": explicit room-authority recovery is visible to the UI"] = store.room_authority_recovering()
 				checks[label + ": queued write cannot escape on the timeout frame"] = gateway.sent.all(func(row): return row.kind != "battle.select_target")
 				store._process(0)
 				checks[label + ": recovery does not repeat per frame"] = gateway.reconnects == 1
@@ -82,6 +83,7 @@ func run_test() -> Dictionary:
 				fresh.player.hand = [{"instance_id": "new-card"}]
 				fresh.reward_choice.options = [{"option_id": "new-reward"}]
 				store._on_event("room.snapshot", fresh)
+				checks[label + ": fresh scoped authority retires the recovery UI"] = not store.room_authority_recovering()
 				checks[label + ": snapshot alone cannot bypass transport recovery"] = not store.command(action, payload) and gateway.sent.filter(func(row): return row.kind == action).size() == 1
 				gateway.online = true
 				gateway.recovering = false

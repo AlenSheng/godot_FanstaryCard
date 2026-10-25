@@ -1373,10 +1373,13 @@ func _snapshot_confirms_command(pending: Dictionary, snapshot: Dictionary) -> bo
 		if not option_id.is_empty() and snapshot.get("reward_choice", {}).get("options", []).any(func(option): return str(option.get("option_id", "")) == option_id): return false
 	return true
 
+func room_authority_recovering() -> bool:
+	return not _command_recovery_context.is_empty() and int(_command_recovery_context.get("session_generation", -1)) == gateway.session_generation and int(_command_recovery_context.get("room_context_epoch", -1)) == _room_context_epoch
+
 func _settlement_match_id() -> String:
 	var match_id := str(room.get("match_id", _settlement_recovery_match_id))
 	if not match_id.is_empty(): return match_id
-	if int(_command_recovery_context.get("session_generation", -1)) == gateway.session_generation and int(_command_recovery_context.get("room_context_epoch", -1)) == _room_context_epoch:
+	if room_authority_recovering():
 		return str(_command_recovery_context.get("match_id", ""))
 	return ""
 

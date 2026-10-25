@@ -572,6 +572,10 @@ static func _rewards(ui: Control, host: Control, reward: Dictionary) -> void:
 static func build_recovery(ui: Control) -> void:
 	ui.picture(Art.texture(PANEL), Rect2(480, 150, 960, 766))
 	_center(ui.text(P.localized("ui_restoring_run"), Rect2(545, 285, 830, 100), 64, P.GOLD))
+	if Game.room_authority_recovering():
+		_center(ui.text(Game.connection, Rect2(598, 418, 724, 120), 34, P.PAPER))
+		ui.button(P.localized("reconnect"), Rect2(716, 650, 488, 84), Game.reconnect, Game.busy)
+		return
 	var message := P.localized("settlement_query_failed" if Game.settlement_query_failed else "settlement_recovery_pending")
 	_center(ui.text(message, Rect2(598, 418, 724, 120), 34, P.PAPER))
 	ui.button(P.localized("settlement_retry"), Rect2(716, 650, 488, 84), Game.retry_settlement, Game.busy)

@@ -544,6 +544,7 @@ func _render() -> void:
 	_view_cell = room_cell
 	var use_reference: bool = not Game.lobby.is_empty() and Game.lobby.get("unfinishedMatch") == null
 	if not Game.room.is_empty() or not Game.settlement.is_empty() or not Game._settlement_recovery_match_id.is_empty(): use_reference = true
+	if Game.room_authority_recovering(): use_reference = true
 	var card_page := screen if use_reference and screen in ["cards", "deck"] and not screen_loading and Game.room.is_empty() and Game.settlement.is_empty() and Game.ready_prompt.is_empty() else ""
 	var page_key := _card_page_key(card_page) if not card_page.is_empty() else 0
 	var cached_view: Control = _card_page_cache.get(card_page) as Control

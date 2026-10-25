@@ -154,20 +154,37 @@
     "continuation-20261025/CI-distributed-tools-release.json",
     "continuation-20261025/execution-observer-r5-notpassed.json",
     "continuation-20261025/execution-observer-r6-notpassed.json",
-    "continuation-20261025/pending-timeout-recovery-r7.json"
+    "continuation-20261025/pending-timeout-recovery-r7.json",
+    "continuation-20261025/CI-pending-timeout-release-r7.json",
+    "continuation-20261025/recovery-ui-cloud-r7.json"
   ],
   "current_release_CI": {
-    "tested_source_commit": "32e493a3da6745b34c8e7f41475d902288279b4f",
-    "game_runtime_equal_to": "4e6ff10cba4597e9ea21a6e5a6ae3479c25082c5",
-    "workflows_passed": 1,
+    "tested_source_commit": "2c37fdf981dd418d8deface583630574f7b6b2c3",
+    "workflow_run": 40145574386,
+    "url": "https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/40145574386",
+    "workflow_conclusion": "success",
     "jobs_passed": 4,
-    "PostgreSQL_actual_passed": 418,
-    "PostgreSQL_skipped": 0,
+    "official_artifacts_G_backup": 4,
+    "all_original_archive_digests_and_members_verified": true,
+    "PostgreSQL": {
+      "actual_passed": 418,
+      "skipped": 0,
+      "strict_coverage_missing_assertions": {},
+      "coverage_acceptance": false
+    },
+    "server_offline": {
+      "passed": 288,
+      "not_executed": 130
+    },
+    "client_original_3second_wire_fixture_passed": true,
+    "this_CI_precedes_UI_followup_source_changes": true,
+    "whole_capacity_accepted": false,
     "offline_tools_passed": 446,
-    "report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/CI-distributed-tools-release.json"
+    "cloud_ownership_passed": 8,
+    "UI_followup_source_CI_pending": true
   },
-  "active_capacity_study": "R7_client_ambiguous_timeout_fix_local_native_verified; corrected_client_cloud_and_capacity_pending",
-  "last_continuation_at_unix_ms": 1792886897614.4182,
+  "active_capacity_study": "R7_client_timeout_and_recovery_UI_verified; corrected4_functional_smoke_passed; corrected50_100_pending",
+  "last_continuation_at_unix_ms": 1792889350535.3293,
   "latest_QA_source_release": {
     "head": "32e493a3da6745b34c8e7f41475d902288279b4f",
     "local_targeted_tests": 83,
@@ -199,17 +216,19 @@
   },
   "latest_client_fix": {
     "base_release": "125f1f32e1d68e3d1e91f14289dadc88d08f00a1",
-    "status": "Passed_local_native_regressions_CI_and_cloud_pending",
+    "status": "Passed_local_native_and4client_cloud_functional; UI_followup_CI_pending",
     "report": "continuation-20261025/pending-timeout-recovery-r7.json",
-    "controlled_checks": 42,
+    "controlled_checks": 48,
     "real_loopback_3second_checks": 7,
     "common_native_suites": 24,
     "extended_native_suites": 24,
     "overlapping_named_checks": [
-      278,
+      284,
       389
     ],
     "deadline_ms_unchanged": 3000,
-    "no_capacity_failure_override": true
+    "no_capacity_failure_override": true,
+    "UI_report": "continuation-20261025/recovery-ui-cloud-r7.json",
+    "cloud_capacity_accepted": false
   }
 }
