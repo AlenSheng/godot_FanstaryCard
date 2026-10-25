@@ -181,18 +181,19 @@
     "continuation-20261025/corrected-mixed-cycles-r9-running.json",
     "continuation-20261025/CI-recovery-UI-release-r7.json",
     "continuation-20261025/archive-reclamation-r11.json",
-    "continuation-20261025/CI-north-america-profile-release-r10.json"
+    "continuation-20261025/CI-north-america-profile-release-r10.json",
+    "continuation-20261025/CI-full100-verifier-release-r12.json"
   ],
   "current_release_CI": {
-    "kind": "Complete explicit North America policy source CI receipt; actual capacity remains unpassed",
-    "tested_source_commit": "4a026f6a5fcfa7072c151bb16b3a624e87b1165b",
+    "kind": "Full100 evidence verifier source complete CI; actual100 capacity not executed",
+    "tested_source_commit": "917deb16b0e817054a11dd751ac543e0f1a4af0a",
     "runtime_workflow": {
-      "id": 40149616981,
+      "id": 40150579006,
       "conclusion": "success",
       "jobs_passed": 4
     },
     "specification_workflow": {
-      "id": 40149616935,
+      "id": 40150578884,
       "conclusion": "success"
     },
     "actual_PostgreSQL_result_rows": {
@@ -200,9 +201,10 @@
     },
     "actual_PostgreSQL_skipped": 0,
     "strict_missing_assertions": {},
-    "offline_tool_tests": 457,
+    "offline_tool_tests": 468,
     "cloud_ownership_tests": 8,
-    "new_latency_policy_cases": 11,
+    "new_full100_cases": 11,
+    "preserved_explicit_latency_cases": 11,
     "actual_client_timeout_checks": 48,
     "server_offline_result_rows": {
       "Passed": 288,
@@ -211,36 +213,36 @@
     "all_original_ZIP_and_member_digests_verified_on_G": true,
     "artifacts": [
       {
-        "id": 12581947933,
-        "name": "gameplay-load-accounting-4a026f6a5fcfa7072c151bb16b3a624e87b1165b",
-        "bytes": 550769,
-        "sha256": "474ee050c9fa0c278aa4df29804fc60c85baf4329276ddd99aeb10a661e32af7"
+        "id": 12582079650,
+        "name": "gameplay-load-accounting-917deb16b0e817054a11dd751ac543e0f1a4af0a",
+        "bytes": 550890,
+        "sha256": "82173d1c88e17c48c10a7799b7aaff4f63e4c7c74e1a7080f1f96f3c482a3096"
       },
       {
-        "id": 12582043128,
-        "name": "gameplay-load-client-4a026f6a5fcfa7072c151bb16b3a624e87b1165b",
-        "bytes": 3587251,
-        "sha256": "283bc721d164bb32266f1c44e3ad22ad6c774abd6b61a72d796276719f192fea"
+        "id": 12582272983,
+        "name": "gameplay-load-client-917deb16b0e817054a11dd751ac543e0f1a4af0a",
+        "bytes": 3587201,
+        "sha256": "604f03fb0fa1f9dd43415ff53c537b4d2eb613e1a9f306bbdf2c4ff61fc1e808"
       },
       {
-        "id": 12582089682,
-        "name": "gameplay-load-postgres-4a026f6a5fcfa7072c151bb16b3a624e87b1165b",
-        "bytes": 3579618,
-        "sha256": "c00d42e9da82ecc013554b2bc1fd523c98d2594a506e5ecfe7d0e1a14a05f1b4"
+        "id": 12582921606,
+        "name": "gameplay-load-postgres-917deb16b0e817054a11dd751ac543e0f1a4af0a",
+        "bytes": 3585630,
+        "sha256": "e4f4f148ea8270a6dfcdefeb0486ca390a7de7199c3e01295437fbea9beb6266"
       },
       {
-        "id": 12582431572,
-        "name": "gameplay-load-server-4a026f6a5fcfa7072c151bb16b3a624e87b1165b",
-        "bytes": 119477,
-        "sha256": "772a154ece73dad45af1d438dda2d3a3fc90ef868e30849c5126f776a4841710"
+        "id": 12581983228,
+        "name": "gameplay-load-server-917deb16b0e817054a11dd751ac543e0f1a4af0a",
+        "bytes": 119762,
+        "sha256": "6ecaff0a4d953aac40bb495e19978b75117885bf6fffba66c7cc5a22477621bf"
       }
     ],
-    "whole_capacity_accepted": false,
-    "does_not_cover_new100_source917deb16": true,
-    "at_unix_ms": 1792891853334.6516
+    "actual_full100_capacity": "NotExecuted",
+    "whole_project_accepted": false,
+    "at_unix_ms": 1792892806295.2988
   },
   "active_capacity_study": "R8_exact50_NotPassed;R9_corrected_source_full_mixed_normal_cycles_Running",
-  "last_continuation_at_unix_ms": 1792891853335.6516,
+  "last_continuation_at_unix_ms": 1792892806296.294,
   "latest_QA_source_release": {
     "head": "32e493a3da6745b34c8e7f41475d902288279b4f",
     "local_targeted_tests": 83,
@@ -315,7 +317,7 @@
     "report": "continuation-20261025/archive-reclamation-r11.json"
   },
   "full100_verifier": {
-    "state": "168_offline_checks_passed_Live100_not_executed",
+    "state": "168_local_and468_CI_checks_passed;actual418_PG_no_skip;Live100_NotExecuted",
     "new_cases": 11,
     "base_release": "e66d8e6d3ec13906032e4267dcb0a3caa4e18fbd",
     "plan": "docs/plans/PR13_REBUILD_DISTRIBUTED100_EVIDENCE_R12_20261025.json",
@@ -324,6 +326,9 @@
   "latest_100_verifier_CI": {
     "source": "917deb16b0e817054a11dd751ac543e0f1a4af0a",
     "workflow": 40150579006,
-    "status": "InProgress_not_claimed_by_old_CI"
+    "status": "Completed_success_all_four_jobs",
+    "actual_PG_rows_passed": 418,
+    "PG_skipped": 0,
+    "official_artifacts_all4_G_verified": true
   }
 }
