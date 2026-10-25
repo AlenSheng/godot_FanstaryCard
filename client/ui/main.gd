@@ -1710,7 +1710,10 @@ func _return_from_settlement() -> void:
 	_navigate("hall")
 
 func _notice_anchor() -> float:
-	# Gameplay HP and action information occupy the default notice height.
+	# Battle headers contain Guardian remainder and separate-loot controls.
+	if str(Game.room.get("player", {}).get("phase", "")) in ["Pve", "Pvp"]:
+		return TipsOverlay.VIEWPORT_Y_RATIO
+	# Action HP and action information occupy the default notice height.
 	return 0.09 if not Game.room.is_empty() or not Game.settlement.is_empty() else TipsOverlay.VIEWPORT_Y_RATIO
 
 func _toast(message: String) -> void:

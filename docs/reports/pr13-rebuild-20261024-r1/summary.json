@@ -409,9 +409,16 @@
   },
   "clock_reporting_correction": "R14 local0ms accepted by current validator; direct failure cloud1610ms over1500ms; new actual strict-clock stream qualification passed without limit relaxation",
   "latest_ACK_fixture_and_notice_fix": {
-    "state": "controlled13_and_actual_UI26_passed;local26plus26_passed;fresh_CI_pending",
+    "state": "Controlled13_and_native26plus26_and_all4CI_passed;actualPG418_no_skip;Guardian_UI_followup_R17",
     "report": "continuation-20261025/ack-entry-notice-r16.json",
     "prior_CI_failure_preserved": true,
-    "no_previous_capacity_failure_waived": true
+    "no_previous_capacity_failure_waived": true,
+    "CI_report": "continuation-20261025/CI-ack-notice-r16.json"
+  },
+  "latest_Guardian_notice_fix": {
+    "state": "Controlled48_and_actual12frames48checks_and_native26plus26_passed;new_UI_source_CI_pending",
+    "report": "continuation-20261025/Guardian-notice-r17.json",
+    "whole_UI_not_yet_accepted": true,
+    "no_GDD_or_server_or_load_gate_change": true
   }
 }
