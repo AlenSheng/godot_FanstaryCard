@@ -117,7 +117,7 @@
     }
   },
   "current_unpassed": {
-    "cloud_capacity50": "R10_NorthAmerica_exact50_reached25plus25_in_room_then_Windows_native_progress_stall; original exit3_cloud130_and_jointNotPassed_retained; recorder_recovery_lifecycle_under_controlled_reproduction",
+    "cloud_capacity50": "R10_NotPassed_after_native_progress_stall; R14_recorder_authority_gap_defect_reproduced_and_fixed_in43controls; no_new_actual_capacity_verdict_yet",
     "cloud_capacity100": "NotExecuted; full100_verifier168_offline_checks_passed_not_actual_capacity; wait_for_scoped50_and_actual_resource_admission;no_ceiling_inferred_from_smaller_run",
     "factor_candidate_benefit_acceptance": "Inconclusive_reduced_budget",
     "default_cycle_duration_acceptance": "NotEvaluated_functional_only_3of30_room_to_ACK_over1200s_max2065_844"
@@ -191,7 +191,8 @@
     "continuation-20261025/CI-north-america-profile-release-r10.json",
     "continuation-20261025/CI-full100-verifier-release-r12.json",
     "continuation-20261025/corrected-mixed-normal-r9-passed.json",
-    "continuation-20261025/north-america50-r10-notpassed.json"
+    "continuation-20261025/north-america50-r10-notpassed.json",
+    "continuation-20261025/recorder-authority-gap-r14.json"
   ],
   "current_release_CI": {
     "kind": "Full100 evidence verifier source complete CI; actual100 capacity not executed",
@@ -250,8 +251,8 @@
     "whole_project_accepted": false,
     "at_unix_ms": 1792892806295.2988
   },
-  "active_capacity_study": "R9_mixed_normal30_functionally_passed; R10_NA_exact50_NotPassed; all_originals_G_verified_and_owned_services_stopped",
-  "last_continuation_at_unix_ms": 1792894963441.36,
+  "active_capacity_study": "R9_normal30_functionally_passed; R10_NA50_NotPassed_original_retained; R14_recorder_gap_fix_locally_verified_fresh_capacity_pending",
+  "last_continuation_at_unix_ms": 1792896472879.854,
   "latest_QA_source_release": {
     "head": "32e493a3da6745b34c8e7f41475d902288279b4f",
     "local_targeted_tests": 83,
@@ -339,5 +340,13 @@
     "actual_PG_rows_passed": 418,
     "PG_skipped": 0,
     "official_artifacts_all4_G_verified": true
+  },
+  "latest_recorder_fix": {
+    "state": "Controlled_reproduction43cases_16oldFailures_fixed43Passed; full24plus24_native_passed; fresh_capacity_and_CI_pending",
+    "report": "continuation-20261025/recorder-authority-gap-r14.json",
+    "common_named_checks": 310,
+    "extended_named_checks": 415,
+    "stall_threshold_unchanged_ms": 90000,
+    "product_client_gameplay_unchanged": true
   }
 }

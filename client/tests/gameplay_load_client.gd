@@ -625,6 +625,11 @@ func _battle_metric_origin(battle_id: String) -> Dictionary:
 		"room_id": Game.room.get("room_id", ""), "match_id": Game.room.get("match_id", active_match_id),
 		"battle_id": battle_id, "battle_kind": "Pvp" if Game.room.has("duel") else "Pve"}
 
+func _battle_metrics_own_current_room() -> bool:
+	if battle_metrics.is_empty() or Game.room.is_empty() or Game.room_authority_recovering(): return false
+	var current := _battle_metric_origin(current_battle_id)
+	return ["run_id", "client_id", "process_epoch", "cycle_id", "room_id", "match_id"].all(func(key): return battle_metric_context.get(key) == current.get(key))
+
 func _remember_terminal_battle(battle_id: String) -> void:
 	terminal_battle_ids[battle_id] = true
 	if terminal_battle_ids.size() > 100: terminal_battle_ids.erase(terminal_battle_ids.keys()[0])
@@ -672,6 +677,9 @@ func _suspend_pve_metrics() -> void:
 	battle_metric_context = {}
 
 func _observe_battle() -> void:
+	# An uncertain write temporarily removes room authority, not the battle.
+	# Keep its counters and clock; a network recovery is not suspended PVE time.
+	if Game.room_authority_recovering(): return
 	var pve: Dictionary = Game.room.get("pve", {})
 	var is_duel: bool = Game.room.has("duel")
 	var battle: Dictionary = Game.room.get("duel", pve)
@@ -929,7 +937,7 @@ func _on_event(kind: String, _payload: Dictionary) -> void:
 			elif kind == "room.ready_accepted" and event_match_id == verified_ready_match_id: ready_accepted = true
 			elif kind == "room.started": ready_accepted = true
 	if kind == "battle.combo_resolved" and str(_payload.get("attacker_id", "")) == own_user_id:
-		if not battle_metrics.is_empty() and str(_payload.get("battle_id", "")) == current_battle_id:
+		if _battle_metrics_own_current_room() and str(_payload.get("battle_id", "")) == current_battle_id:
 			battle_metrics.actions += 1
 			battle_metrics.cards_spent += _payload.get("card_instance_ids",[]).size()
 			var effective := 0
