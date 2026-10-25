@@ -179,7 +179,8 @@
     "continuation-20261025/recovery-ui-cloud-r7.json",
     "continuation-20261025/corrected50-r8-notpassed.json",
     "continuation-20261025/corrected-mixed-cycles-r9-running.json",
-    "continuation-20261025/CI-recovery-UI-release-r7.json"
+    "continuation-20261025/CI-recovery-UI-release-r7.json",
+    "continuation-20261025/archive-reclamation-r11.json"
   ],
   "current_release_CI": {
     "kind": "Exact timeout recovery UI source CI receipt; does not award capacity",
@@ -200,7 +201,7 @@
     "whole_capacity_accepted": false
   },
   "active_capacity_study": "R8_exact50_NotPassed;R9_corrected_source_full_mixed_normal_cycles_Running",
-  "last_continuation_at_unix_ms": 1792890622286.4932,
+  "last_continuation_at_unix_ms": 1792891078532.4436,
   "latest_QA_source_release": {
     "head": "32e493a3da6745b34c8e7f41475d902288279b4f",
     "local_targeted_tests": 83,
@@ -263,5 +264,13 @@
     "tests_passed": 157,
     "source_plan": "docs/plans/PR13_REBUILD_NORTH_AMERICA_LATENCY_R10_20261025.json",
     "default_failures_retained": true
+  },
+  "archive_duplicate_reclamation": {
+    "archives": 7,
+    "members": 2323,
+    "G_bytes_rehashed": 70637328,
+    "actual_freed_bytes": 70647808,
+    "G_originals_and_cloud_metadata_retained": true,
+    "report": "continuation-20261025/archive-reclamation-r11.json"
   }
 }
