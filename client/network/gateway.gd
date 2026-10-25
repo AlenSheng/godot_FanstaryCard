@@ -872,7 +872,7 @@ func _receive(packet: PackedByteArray) -> void:
 		event_received.emit(kind, payload)
 		if payload.get("_retry_handled", false): return
 		failed.emit(payload.get("detail", "操作被拒绝"))
-		if not room_id.is_empty(): send("room.snapshot.read")
+		if not payload.get("_state_refresh_handled", false) and not room_id.is_empty(): send("room.snapshot.read")
 		return
 	if not payload.has("_origin_context") and kind in ["room.snapshot", "match.found", "room.ready_required", "room.ready_accepted", "room.started", "room.moved", "battle.combo_resolved", "settlement.ready", "match.settled", "player.died", "action.extract_completed"]:
 		payload["_receive_owner_context"] = receive_owner.duplicate(true)

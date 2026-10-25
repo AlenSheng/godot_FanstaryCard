@@ -194,7 +194,8 @@
     "continuation-20261025/north-america50-r10-notpassed.json",
     "continuation-20261025/recorder-authority-gap-r14.json",
     "continuation-20261025/CI-recorder-gap-release-r14.json",
-    "continuation-20261025/recorder-fixed50-r14-notpassed.json"
+    "continuation-20261025/recorder-fixed50-r14-notpassed.json",
+    "continuation-20261025/rejected-write-refresh-r15.json"
   ],
   "current_release_CI": {
     "offline_tools_passed": 468,
@@ -250,8 +251,8 @@
     "whole_project_accepted": false,
     "at_unix_ms": 1792897782468.2437
   },
-  "active_capacity_study": "R14_terminal_NotPassed_all_originals_G_verified; next_rejection_state_latch_clock_collection_and_load_supply",
-  "last_continuation_at_unix_ms": 1792899105733.881,
+  "active_capacity_study": "R14_NotPassed_retained;R15_rejection_state_protection_and_clock_stream_locally_qualified;fresh_capacity_pending",
+  "last_continuation_at_unix_ms": 1792901155873.1836,
   "latest_QA_source_release": {
     "head": "32e493a3da6745b34c8e7f41475d902288279b4f",
     "local_targeted_tests": 83,
@@ -400,5 +401,11 @@
       "at_unix_ms": 1792897468958.4229
     },
     "CI_complete_verified": true
-  }
+  },
+  "latest_rejected_write_fix": {
+    "state": "59controls_passed_against46_original_failures;25plus25_native_suites_passed;CI_UI_and_capacity_pending",
+    "report": "continuation-20261025/rejected-write-refresh-r15.json",
+    "no_generic_write_retry_or_error_waiver": true
+  },
+  "clock_reporting_correction": "R14 local0ms accepted by current validator; direct failure cloud1610ms over1500ms; new actual strict-clock stream qualification passed without limit relaxation"
 }

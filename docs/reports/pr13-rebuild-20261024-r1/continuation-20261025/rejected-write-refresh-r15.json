@@ -1,0 +1,77 @@
+{
+  "kind": "Post-rejection stale-write protection reproduced and locally verified; fresh live capacity and UI render pending",
+  "base_release": "e17a2497872cc58550a8cc7231377e4d41dcde3b",
+  "actual_original_product_source": "c655d1ba2702febb26bbf247c75e063349d26311",
+  "problem": "The first semantic rejection retired the pending write, then another intent reused the old room before the following state response. Gateway also scheduled an uncorrelated read.",
+  "resulting_behavior": [
+    "Keep the original rejection and failure signal; never retry a generic rejected write",
+    "Retire stale selection and unsent intents; block same and other room writes behind one owned state read",
+    "Only its current room/session/epoch, nonreplayed, nonstale matching response releases the gate",
+    "Register before send so synchronous snapshot callbacks cannot leave a stuck gate",
+    "A failed or unanswered read enters existing authority recovery after the original3second budget",
+    "Keep explicit revision-conflict retry once and terminal/new-session guards separate",
+    "Gateway skips only the duplicate state read; it still emits the original rejection failure"
+  ],
+  "counterfactual": {
+    "same_final_controls": 59,
+    "original_failed": 46,
+    "original_passed": 13,
+    "fixed_passed": 59,
+    "actual_protobuf_rejection_dispatch_checked": true,
+    "actual_elapsed3second_budget_checked": true,
+    "all_earlier_failed_test_logs_and_source_snapshots_retained": true
+  },
+  "full_local_native": {
+    "common_suites": 25,
+    "common_named_checks": 369,
+    "extended_suites": 25,
+    "extended_named_checks": 474,
+    "overlap_not_unique_sum": true,
+    "no_unexpected_script_or_resource_diagnostic": true,
+    "full_official_engine_headless_Dummy_CNO_BelowNormal_last4": true,
+    "minimum_available_bytes": 8754163712,
+    "memory_floor_bytes": 6442450944
+  },
+  "clock_collection_qualification": {
+    "scope": "Readonly actual time frames; no gameplay or retrospective clock repair",
+    "same_strict_authenticated_SSH_stream": true,
+    "local_sample_inside_actual40ms_bracket": true,
+    "actual_max_RTT_ms": {
+      "windows": 62.0,
+      "cloud": 765.0
+    },
+    "all_probes_retained": true,
+    "same_original_clock_validator_passed": true,
+    "limits_unchanged": {
+      "maximum_round_trip_ms": 1500,
+      "maximum_clock_drift_ms": 250,
+      "maximum_uncertainty_ms": 3000
+    },
+    "source_SHA256": "cfbb8e34b82a108527d0a5bdc5aa789122f7e7c21ac7e98c39e8144a2eb78992",
+    "first_qualification_type_adapter_failure_retained_before_success": true
+  },
+  "R14_clock_reporting_correction": "Current clock_envelope accepts local0ms; the direct R14 rejection was cloud1610ms over registered1500ms. Zero-width local intervals are reported as a precision observation only.",
+  "unchanged_limits": {
+    "generic_write_deadline_ms": 3000,
+    "state_recovery_budget_ms": 3000,
+    "native_stall_ms": 90000,
+    "latency_profile": "north-america-5s-8s-10s-monitor10s",
+    "coverage_and_memory_and_disk": true,
+    "GDD_numbers_and_server_and_protocol_schema": true,
+    "no_error_whitelist_or_past_capacity_failure_waived": true
+  },
+  "source_SHA256": {
+    "client/state/game_store.gd": "9fbe23c786ca8efc841c2837fc574cef472ad8d953444d1198701407b71b6655",
+    "client/network/gateway.gd": "87c14996c0a7b9712591989b043c73cdd58838e28d6548ef1a5e59b5ca08ab39",
+    "client/tests/test_rejected_command_state.gd": "e62366f78da29c5ed9259e645b138123e817a017de241983c95a072a803f5f39",
+    "client/tests/test_rejected_command_state.gd.uid": "fd64ff1046479d9ed3d1e97671a5bec0fd41c5432b15fe87e81a9353279bd649",
+    "client/tests/run_play_retry.gd": "0911fcf21cc084bec5bc7de2887422642a10b5f44d5842c5a1e946a3220f078e",
+    "client/tests/run_native_regressions.gd": "d0d25654b2654f7166b116a2ccfafa7342a422a646de7f6fb58e96c8f15d8916"
+  },
+  "UI_rejection_wait_state_render": "Pending_after_publication",
+  "new_source_CI": "Pending",
+  "fresh_capacity": "NotExecuted",
+  "actual100": "NotExecuted",
+  "whole_project_accepted": false,
+  "at_unix_ms": 1792901155872.184
+}

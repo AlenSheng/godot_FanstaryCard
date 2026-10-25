@@ -69,6 +69,7 @@ var _pending_play: Dictionary = {}
 var _play_deadline: int = 0
 var _pending_commands: Dictionary = {}
 var _command_recovery_context: Dictionary = {}
+var _rejected_state_request: Dictionary = {}
 var _combat_sync_at := 0
 var _latest_commands: Dictionary = {}
 var _snapshot_request_at: int = 0
@@ -84,6 +85,12 @@ func _process(_delta: float) -> void:
 	_process_client_info()
 	_check_shop_rotation()
 	var now := Time.get_ticks_msec()
+	var pending_changed := false
+	if not _rejected_state_request.is_empty():
+		if not _rejected_state_current(): _rejected_state_request = {}
+		elif now >= int(_rejected_state_request.deadline):
+			_recover_room_authority()
+			pending_changed = true
 	if room.has("extraction_remaining_ms"):
 		if _extraction_sync_at == 0:
 			_extraction_sync_at = now + 1000
@@ -105,7 +112,6 @@ func _process(_delta: float) -> void:
 	else: _combat_sync_at = 0
 	if settlement.is_empty() and (phase in ["Extracted", "Dead"] or _room_actions_closed() or not _settlement_recovery_match_id.is_empty()) and now >= _settlement_poll_at and not _settlement_polling:
 		_poll_ready_settlement()
-	var pending_changed := false
 	if not _pending_play.is_empty() and Time.get_ticks_msec() > _play_deadline:
 		_pending_play = {}
 		pending_changed = true
@@ -127,18 +133,7 @@ func _process(_delta: float) -> void:
 			# Never replay the ambiguous write under a new request identity.
 			# Retain receipt ownership, but remove stale action data. A transport
 			# connection marker alone cannot make the old room writable again.
-			_command_recovery_context = {"session_generation": gateway.session_generation, "room_context_epoch": _room_context_epoch,
-				"room_id": str(room.get("room_id", "")), "match_id": _settlement_match_id()}
-			room = {}
-			selected_cards.clear()
-			clear_combat_preview()
-			_pending_commands.clear()
-			_pending_play = {}
-			_latest_commands.clear()
-			_queued_command = {}
-			_snapshot_request_pending = false
-			gateway.recovering = true
-			gateway.connect_realtime()
+			_recover_room_authority()
 			pending_changed = true
 			break
 	if not _queued_command.is_empty() and Time.get_ticks_msec() > _queue_deadline:
@@ -148,6 +143,21 @@ func _process(_delta: float) -> void:
 	_flush_latest_commands()
 	_flush_combat_preview()
 	if pending_changed: changed.emit()
+
+func _recover_room_authority() -> void:
+	_command_recovery_context = {"session_generation": gateway.session_generation, "room_context_epoch": _room_context_epoch,
+		"room_id": str(room.get("room_id", "")), "match_id": _settlement_match_id()}
+	_rejected_state_request = {}
+	room = {}
+	selected_cards.clear()
+	clear_combat_preview()
+	_pending_commands.clear()
+	_pending_play = {}
+	_latest_commands.clear()
+	_queued_command = {}
+	_snapshot_request_pending = false
+	gateway.recovering = true
+	gateway.connect_realtime()
 
 func _check_shop_rotation() -> void:
 	if gateway == null or gateway.token.is_empty() or lobby.is_empty(): return
@@ -247,6 +257,7 @@ func _clear_authenticated_state() -> void:
 	_pending_play = {}
 	_pending_commands.clear()
 	_command_recovery_context = {}
+	_rejected_state_request = {}
 	_latest_commands.clear()
 	_snapshot_request_pending = false
 	_settlement_loading = ""
@@ -740,21 +751,21 @@ func cancel_preparation() -> void:
 	changed.emit()
 
 func allowed(action: String) -> bool:
-	if _room_actions_closed(): return false
+	if _room_actions_closed() or _rejected_state_current(): return false
 	var aliases := {"reward.choice.refresh": "choice.refresh", "reward.choice.claim": "choice.pick"}
 	if action == "battle.play_cards" and _target_selection_pending(): return false
 	if action not in LATEST_WINS_ACTIONS and _has_pending_action(action): return false
 	return configuration_error.is_empty() and gateway.online and not gateway.recovering and (action in room.get("allowed_actions", []) or aliases.get(action, "") in room.get("allowed_actions", []))
 
 func has_pending_commands() -> bool:
-	return not _pending_commands.is_empty() or not _latest_commands.is_empty() or not _queued_command.is_empty()
+	return _rejected_state_current() or not _pending_commands.is_empty() or not _latest_commands.is_empty() or not _queued_command.is_empty()
 
 func combat_wait_state() -> Dictionary:
 	var player: Dictionary = room.get("player", {})
 	var hand: Array = player.get("hand", [])
 	var reason := "available"
 	var remaining_ms := 0
-	if not gateway.online or gateway.recovering:
+	if not gateway.online or gateway.recovering or _rejected_state_current():
 		reason = "recovering"
 	elif _target_selection_pending():
 		reason = "target_confirming"
@@ -841,7 +852,7 @@ func _flush_combat_preview() -> void:
 	else: _preview_request = {}
 
 func _request_snapshot() -> void:
-	if room.is_empty() or _room_actions_closed() or not gateway.online or gateway.recovering or _snapshot_request_pending: return
+	if room.is_empty() or _room_actions_closed() or _rejected_state_current() or not gateway.online or gateway.recovering or _snapshot_request_pending: return
 	var now := Time.get_ticks_msec()
 	if now - _snapshot_request_at < 80: return
 	_snapshot_request_at = now
@@ -1344,12 +1355,16 @@ func _retry_rejected_command(payload: Dictionary) -> bool:
 	var pending: Dictionary = _pending_commands[request_id]
 	_pending_commands.erase(request_id)
 	if pending.action == "battle.play_cards": _pending_play = {}
-	# Retry only an explicit pre-execution rejection, never an ambiguous timeout.
-	if pending.get("confirmed", false) or pending.retry or payload.get("_replayed", false) or Time.get_ticks_msec() > int(pending.get("deadline", 0)) or (pending.action == "battle.play_cards" and Time.get_ticks_msec() > _play_deadline): return false
 	var is_revision_conflict: bool = payload.get("code", "") == "REVISION_CONFLICT" or (
 		payload.get("code", "") == "COMMAND_REJECTED" and
 		str(payload.get("detail", "")).begins_with("Room revision conflict."))
-	if not is_revision_conflict: return false
+	if not is_revision_conflict:
+		# The rejection is final, but its initiating view may already be stale.
+		# Read authority once; never retry this write or hide the rejection.
+		if payload.get("code", "") == "COMMAND_REJECTED" and not pending.get("confirmed", false) and not payload.get("_replayed", false) and _refresh_rejected_room_state(pending): payload["_state_refresh_handled"] = true
+		return false
+	# Retry only an explicit pre-execution revision rejection, never an ambiguous timeout.
+	if pending.get("confirmed", false) or pending.retry or payload.get("_replayed", false) or Time.get_ticks_msec() > int(pending.get("deadline", 0)) or (pending.action == "battle.play_cards" and Time.get_ticks_msec() > _play_deadline): return false
 	if pending.room_id != room.get("room_id", "") or not allowed(pending.action) or not _queued_command.is_empty(): return false
 	var snapshot_id: String = gateway.new_id()
 	_queued_command = {"action": pending.action, "payload": pending.payload, "retry": true, "room_id": pending.room_id, "snapshot_id": snapshot_id}
@@ -1359,6 +1374,36 @@ func _retry_rejected_command(payload: Dictionary) -> bool:
 		return false
 	_snapshot_request_pending = true
 	_sound_commands.erase(request_id)
+	return true
+
+func _rejected_state_current() -> bool:
+	return not _rejected_state_request.is_empty() and int(_rejected_state_request.session_generation) == gateway.session_generation and int(_rejected_state_request.room_context_epoch) == _room_context_epoch and str(_rejected_state_request.room_id) == str(room.get("room_id", "")) and str(_rejected_state_request.match_id) == str(room.get("match_id", ""))
+
+func _refresh_rejected_room_state(pending: Dictionary) -> bool:
+	if _rejected_state_current(): return true
+	if room.is_empty() or pending.get("room_id", "") != room.get("room_id", "") or int(pending.get("session_generation", -1)) != gateway.session_generation or int(pending.get("room_context_epoch", -1)) != _room_context_epoch: return false
+	var snapshot_id: String = gateway.new_id()
+	var now := Time.get_ticks_msec()
+	_rejected_state_request = {"session_generation":gateway.session_generation,"room_context_epoch":_room_context_epoch,
+		"room_id":str(room.get("room_id", "")),"match_id":str(room.get("match_id", "")),
+		"sent_revision":int(pending.get("sent_revision", 0)),"snapshot_id":snapshot_id,"deadline":now + 3000}
+	selected_cards.clear()
+	clear_combat_preview()
+	_latest_commands.clear()
+	_queued_command = {}
+	_snapshot_request_at = now
+	_snapshot_request_pending = true
+	if not gateway.send("room.snapshot.read", {}, snapshot_id) and _rejected_state_request.get("snapshot_id", "") == snapshot_id: _snapshot_request_pending = false
+	return true
+
+func _rejected_snapshot_confirms(payload: Dictionary) -> bool:
+	if not _rejected_state_current() or payload.get("_replayed", false) or str(payload.get("_request_id", "")) != str(_rejected_state_request.snapshot_id): return false
+	if str(payload.get("room_id", "")) != str(_rejected_state_request.room_id) or str(payload.get("match_id", "")) != str(_rejected_state_request.match_id): return false
+	if int(payload.get("room_revision", -1)) < maxi(int(_rejected_state_request.sent_revision), int(room.get("room_revision", 0))): return false
+	if payload.has("_origin_context"):
+		var origin: Dictionary = payload._origin_context
+		for key in ["session_generation", "room_context_epoch", "room_id", "match_id"]:
+			if origin.get(key) != _rejected_state_request.get(key): return false
 	return true
 
 func _snapshot_confirms_command(pending: Dictionary, snapshot: Dictionary) -> bool:
@@ -1398,6 +1443,7 @@ func _close_room_actions() -> void:
 	# recovery match remains owned by a correlated NOT_IN_ROOM callback.
 	_settlement_poll_at = 0
 	_queued_command = {}
+	_rejected_state_request = {}
 	_latest_commands.clear()
 	_pending_commands.clear()
 	_pending_play = {}
@@ -1410,6 +1456,7 @@ func _adopt_room_context(snapshot: Dictionary) -> void:
 	if match_id.is_empty() or room_id.is_empty(): return
 	_command_recovery_context = {}
 	if match_id != _room_context_match_id or room_id != _room_context_room_id:
+		_rejected_state_request = {}
 		# A new authoritative room ends ownership of every old recovery request.
 		# Keep an epoch so leaving and returning to the same IDs cannot revive one.
 		_room_context_epoch += 1
@@ -1440,6 +1487,7 @@ func _settlement_request_current(generation: int, context_epoch: int, match_id: 
 
 func _on_event(kind: String, payload: Dictionary) -> void:
 	if kind == "pong": return
+	var rejected_state_confirmed: bool = kind == "room.snapshot" and _rejected_snapshot_confirms(payload)
 	if kind == "room.command_cancelled":
 		var origin: Dictionary = payload.get("_origin_context", {})
 		if not _rejection_context_current(origin) or str(payload.get("room_id", "")) != str(origin.get("room_id", "")) or str(payload.get("match_id", "")) != str(origin.get("match_id", "")): return
@@ -1504,6 +1552,7 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 				if pending.get("confirmed", false) and _snapshot_confirms_command(pending, payload): _pending_commands.erase(request_id)
 			if room.get("room_id", "") != payload.get("room_id", ""): relic_details = {}
 			_sound_snapshot(payload, payload)
+			if rejected_state_confirmed: _rejected_state_request = {}
 			if str(room.get("player", {}).get("phase", "")) in ["Extracted", "Dead"]: _close_room_actions()
 			_sync_pve_target()
 			var hand: Array = room.get("player", {}).get("hand", []).map(func(card): return card.instance_id)

@@ -112,7 +112,9 @@
     "all10_Windows_probe_intervals_zero_ms": true,
     "one_cloud_after_probe_RTT_ms": 1610,
     "registered_max_RTT_ms": 1500,
-    "no_bad_probe_discarded_or_rewritten": true
+    "no_bad_probe_discarded_or_rewritten": true,
+    "zero_ms_local_probe_is_not_rejected_by_current_envelope_validator": true,
+    "direct_rejection_reason": "Cloud after probe1610ms exceeds registered1500ms; local0ms is retained as a precision observation, not a separate rejection"
   },
   "recorder_fix_observation": {
     "prior_R10_90second_progress_stall_not_repeated": true,
