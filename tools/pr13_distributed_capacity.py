@@ -467,21 +467,23 @@ def assess_captures(spec, captures, reference, backend_before, backend_after):
         policy = latency_policy(spec)
         profile = spec.get('latency_profile', DEFAULT_LATENCY_PROFILE)
         result.update(latency_profile=profile, latency_limits=policy)
-        require(spec['source_head'] == reference['head'] and type(spec['target_clients']) is int and spec['target_clients'] == 50 and
+        target = spec['target_clients']
+        require(spec['source_head'] == reference['head'] and type(target) is int and target in (50, 100) and
                 spec['reference_host_id'] == 'windows', 'wrong_registered_study')
         require(type(spec['world_budget']) is int and 1 <= spec['world_budget'] <= 300,
                 'world_budget_exceeds_user_limit')
         partitions = spec['partitions']
-        population = spec.get('target_online_clients', 50)
-        require(type(population) is int and population in (50, 60), 'unregistered_online_population')
-        expected_partitions = {'windows': (25, 25), 'cloud': (25, 25)} if population == 50 else {
-            'windows': (32, 27), 'cloud': (28, 23)}
-        require(population == 50 or spec.get('workload_profile') == 'full-native60-for50active',
+        population = spec.get('target_online_clients', target)
+        require(type(population) is int and population in ((50, 60) if target == 50 else (100,)),
+                'unregistered_online_population')
+        expected_partitions = ({'windows': (32, 27), 'cloud': (28, 23)} if population == 60 else
+                               {host: (target // 2, target // 2) for host in ('windows', 'cloud')})
+        require(population != 60 or spec.get('workload_profile') == 'full-native60-for50active',
                 'stronger_population_profile_not_declared')
         require(len(partitions) == len(captures) == 2 and {p['host_id'] for p in partitions} == {'windows', 'cloud'} and
                 all(type(p['clients']) is int and type(p.get('target_active', p['clients'])) is int and
                     (p['clients'], p.get('target_active', p['clients'])) == expected_partitions[p['host_id']]
-                    for p in partitions), 'wrong_full50_partitions')
+                    for p in partitions), 'wrong_full' + str(target) + '_partitions')
         require(next(p for p in partitions if p['host_id'] == 'windows')['memory_floor_bytes'] >= 6442450944 and
                 next(p for p in partitions if p['host_id'] == 'cloud')['memory_floor_bytes'] >= 500000000, 'host_reserve_reduced')
         fields = ('app_id', 'app_image', 'app_started_at', 'environment_sha256', 'pg_id', 'database',
@@ -507,12 +509,12 @@ def assess_captures(spec, captures, reference, backend_before, backend_after):
                 {uuid.UUID(v).hex for v in backend_before.get('settled_user_ids', [])} == excluded,
                 'warmup_participants_not_explicitly_closed_before_study')
         require(len(users) == population and {uuid.UUID(v).hex for v in backend_after['settled_user_ids']} == users | excluded,
-                'server_participants_do_not_match_all50_native_users')
+                'server_participants_do_not_match_all' + str(target) + '_native_users')
         seeds = [s for r in audited for s in r['seeds']]
         require(len(set(seeds)) == population and set(seeds) == set(range(spec['seed_start'], spec['seed_start'] + population)),
-                'not_original_full50_seed_distribution')
+                'not_original_full' + str(target) + '_seed_distribution')
         overlap = joint_overlap(audited, spec)
-        require(overlap['joint_overlap_passed'], 'shared_full50_window_not_verified')
+        require(overlap['joint_overlap_passed'], 'shared_full' + str(target) + '_window_not_verified')
         pooled = {family:summarize([v for r in audited for v in r['request_distributions']['_raw_running_latencies'][family]])
                   for family in ('http', 'realtime')}
         require(pooled['http']['count'] >= 40 and pooled['realtime']['count'] >= 20 and
@@ -521,7 +523,7 @@ def assess_captures(spec, captures, reference, backend_before, backend_after):
                 'pooled_raw_latency_redline')
         for r in audited:
             r['request_distributions'].pop('_raw_running_latencies')
-        result.update(capacity_accepted=True, participants=population, target_active=50, overlap=overlap,
+        result.update(capacity_accepted=True, participants=population, target_active=target, overlap=overlap,
                       default_latency_capacity_accepted=profile == DEFAULT_LATENCY_PROFILE,
                       per_host_latency={r['host_id']:r['request_distributions']['running'] for r in audited},
                       pooled_running_latency=pooled,
@@ -555,7 +557,7 @@ def main(argv=None):
     except (OSError, KeyError, TypeError, ValueError, RecursionError) as error:
         result = dict(capacity_accepted=False, whole_project_accepted=False,
                       evidence_errors=[str(error) if isinstance(error, ValueError) else type(error).__name__])
-    result.update(algorithm_version='distributed-full-native-capacity-v2-explicit-latency-profile',
+    result.update(algorithm_version='distributed-full-native-capacity-v3-registered50or100-latency-profile',
                   adjudicator_source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                   captured_input_sha256=hashlib.sha256(raw).hexdigest())
     with args.output.open('xb') as out:

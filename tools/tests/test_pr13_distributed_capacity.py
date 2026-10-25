@@ -25,15 +25,16 @@ def json_bytes(value):
 
 class SyntheticStudy:
     def __init__(self, root, *, cloud_seed_start=None, stronger_population=False,
-                 latency_profile=None, http_ms=10, command_ms=10):
+                 latency_profile=None, http_ms=10, command_ms=10, target_clients=50):
         self.root = Path(root)
+        assert target_clients in (50, 100) and (not stronger_population or target_clients == 50)
         self.http_ms, self.command_ms = http_ms, command_ms
         self.reference = dict(head='1' * 40,
             controls={p:hashlib.sha256(p.encode()).hexdigest() for p in SOURCE_FILES},
             client={'client/project.godot':'2' * 64, 'client/tests/gameplay_load_client.gd':'3' * 64})
         partitions = []
-        for host, platform, offset in [('windows', 'windows', 0), ('cloud', 'linux', 32 if stronger_population else 25)]:
-            count = (32 if host == 'windows' else 28) if stronger_population else 25
+        for host, platform, offset in [('windows', 'windows', 0), ('cloud', 'linux', 32 if stronger_population else target_clients // 2)]:
+            count = (32 if host == 'windows' else 28) if stronger_population else target_clients // 2
             partitions.append(dict(host_id=host, platform=platform, clients=count,
                 seed_start=20260930 + offset, memory_floor_bytes=6442450944 if offset == 0 else 500000000,
                 engine_path='G:\\engine\\godot.exe' if offset == 0 else '/usr/local/bin/godot',
@@ -45,7 +46,7 @@ class SyntheticStudy:
         if cloud_seed_start is not None:
             partitions[1]['seed_start'] = cloud_seed_start
         self.spec = dict(study_id=identifier('study'), owner=identifier('owner'), source_head=self.reference['head'], world_budget=300,
-            target_clients=50, reference_host_id='windows', seed_start=20260930, partitions=partitions,
+            target_clients=target_clients, reference_host_id='windows', seed_start=20260930, partitions=partitions,
             registered_at_reference_ms=(BASE - 30) * 1000,
             window_start_ms=(BASE + 300) * 1000, window_end_ms=(BASE + 900) * 1000)
         if stronger_population:
@@ -174,7 +175,7 @@ class SyntheticStudy:
             active = p.get('target_active', count) if second >= 60 else 0; alive = min(count, second)
             samples.append(dict(at=start+second, sample_monotonic_ms=mono+second*1000,
                 run_id=run, online=alive, active_in_room=active, alive_processes=alive, fresh_status_clients=alive,
-                server_confirmed_in_room=50 if active else 0,
+                server_confirmed_in_room=self.spec['target_clients'] if active else 0,
                 command_rate=None if second==0 else window['realtime']['count']/10,
                 workload_failure=False, reasons=[], failed_processes=[], stale_clients=[], stalled_clients=[],
                 missing_clients=[], invalid_clients=[], window=window,
@@ -492,6 +493,88 @@ class LatencyProfileTests(unittest.TestCase):
                 sample['server_confirmed_in_room'] = 49
             s.put_report(host, r)
         self.assertFalse(s.assess()['capacity_accepted'])
+
+
+class HundredPlayerEvidenceTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory(prefix='pr13-full100-evidence-')
+        self.addCleanup(self.temp.cleanup)
+
+    def study(self, **kwargs):
+        return SyntheticStudy(self.temp.name, target_clients=100, **kwargs)
+
+    def test_full100_synthetic_evidence_can_only_award_registered_capacity(self):
+        s = self.study()
+        result = s.assess()
+        self.assertTrue(result['capacity_accepted'], result)
+        self.assertEqual(100, result['participants'])
+        self.assertEqual(100, result['target_active'])
+        self.assertTrue(result['default_latency_capacity_accepted'])
+        self.assertFalse(result['whole_project_accepted'])
+
+    def test_100_WAN_profile_still_is_not_default_latency_acceptance(self):
+        s = self.study(latency_profile=NORTH_AMERICA_LATENCY_PROFILE, http_ms=5000, command_ms=8000)
+        result = s.assess()
+        self.assertTrue(result['capacity_accepted'], result)
+        self.assertEqual(100, result['participants'])
+        self.assertFalse(result['default_latency_capacity_accepted'])
+        self.assertFalse(result['whole_project_accepted'])
+
+    def test_50_participant_evidence_cannot_be_relabelled100(self):
+        s = SyntheticStudy(self.temp.name)
+        s.spec['target_clients'] = 100; s.bind_spec()
+        self.assertIn('wrong_full100_partitions', s.assess()['evidence_errors'])
+
+    def test_stronger60_for50_evidence_cannot_be_relabelled100(self):
+        s = SyntheticStudy(self.temp.name, stronger_population=True)
+        s.spec['target_clients'] = 100; s.bind_spec()
+        self.assertIn('unregistered_online_population', s.assess()['evidence_errors'])
+
+    def test_arbitrary_joint_target_is_not_enabled_by100_support(self):
+        s = self.study()
+        for target in [True, 99, 200]:
+            with self.subTest(target=target):
+                s.spec['target_clients'] = target; s.bind_spec()
+                self.assertIn('wrong_registered_study', s.assess()['evidence_errors'])
+
+    def test_99_actual_launches_fail_despite_good_summary(self):
+        s = self.study()
+        r = s.report('cloud'); r['clients'] = 49; s.put_report('cloud', r)
+        self.assertIn('cohort_count_mismatch', s.assess()['evidence_errors'])
+
+    def test_global_server_gauge99_cannot_prove100(self):
+        s = self.study()
+        for host in s.roots:
+            r = s.report(host)
+            for sample in r['samples']:
+                sample['server_confirmed_in_room'] = 99
+            s.put_report(host, r)
+        self.assertIn('shared_full100_window_not_verified', s.assess()['evidence_errors'])
+
+    def test_one_partition49_active_is_not100_active(self):
+        s = self.study()
+        r = s.report('cloud')
+        for sample in r['samples']:
+            sample['active_in_room'] = min(sample['active_in_room'], 49)
+        s.put_report('cloud', r)
+        self.assertIn('original_load_coverage_replay_failed', s.assess()['evidence_errors'])
+
+    def test_100_strategy_seeds_must_still_be_disjoint_full_population(self):
+        s = self.study(cloud_seed_start=20260955)
+        self.assertIn('not_original_full100_seed_distribution', s.assess()['evidence_errors'])
+
+    def test_100_still_refuses_resource_below_current_cloud_floor(self):
+        s = self.study(latency_profile=NORTH_AMERICA_LATENCY_PROFILE)
+        supervisor = s.get('cloud', 'supervisor.json')
+        supervisor['resources'][50]['memory_available_bytes'] = 499999999
+        s.put('cloud', 'supervisor.json', supervisor)
+        self.assertIn('host_memory_reserve_breached', s.assess()['evidence_errors'])
+
+    def test_100_actual_users_cannot_reuse_an_authenticated_identity(self):
+        s = self.study()
+        user = s.get('cloud', s.native_names['cloud'][0])['user_id']
+        s.change_native('cloud', 1, lambda n: n.update(user_id=user))
+        self.assertIn('duplicate_or_empty_server_user', s.assess()['evidence_errors'])
 
 
 class StrongerPopulationTests(unittest.TestCase):
