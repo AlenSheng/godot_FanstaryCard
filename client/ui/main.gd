@@ -533,7 +533,7 @@ func _render() -> void:
 		_pointer_render_context.clear()
 	_render_pending = false
 	_sync_combat_feedback_context()
-	tips_overlay.set_viewport_anchor(_notice_anchor())
+	tips_overlay.set_viewport_anchor(_notice_anchor(), _notice_width_ratio())
 	_sync_draw_charge_visual()
 	var room_cell := "%s:%s:%s" % [Game.room.get("room_id", ""), Game.room.get("self", {}).get("row", -1), Game.room.get("self", {}).get("column", -1)]
 	if room_cell != _view_cell or Game.room.get("player", {}).get("phase", "") != "ActionBar":
@@ -1716,9 +1716,12 @@ func _notice_anchor() -> float:
 	# Action HP and action information occupy the default notice height.
 	return 0.09 if not Game.room.is_empty() or not Game.settlement.is_empty() else TipsOverlay.VIEWPORT_Y_RATIO
 
+func _notice_width_ratio() -> float:
+	return TipsOverlay.COMBAT_MAX_WIDTH_RATIO if str(Game.room.get("player", {}).get("phase", "")) in ["Pve", "Pvp"] else TipsOverlay.MAX_WIDTH_RATIO
+
 func _toast(message: String) -> void:
 	if is_instance_valid(tips_overlay):
-		tips_overlay.show_tip(message, _notice_anchor())
+		tips_overlay.show_tip(message, _notice_anchor(), _notice_width_ratio())
 
 func _show_ban_dialog(reason: String) -> void:
 	if not reason.begins_with("账号已被封禁"): return

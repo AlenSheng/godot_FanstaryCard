@@ -8,6 +8,7 @@ const RISE_DISTANCE := 56.0
 const VIEWPORT_Y_RATIO := 0.28
 const MIN_WIDTH := 180.0
 const MAX_WIDTH_RATIO := 0.72
+const COMBAT_MAX_WIDTH_RATIO := 0.17
 const HORIZONTAL_PADDING := 48.0
 const VERTICAL_PADDING := 16.0
 
@@ -16,6 +17,8 @@ var label: Label
 var _tween: Tween
 var _serial := 0
 var _start_position := Vector2.ZERO
+var _layout_width_ratio := MAX_WIDTH_RATIO
+var _layout_viewport_width := 0.0
 
 func _init() -> void:
 	layer = 120
@@ -49,7 +52,7 @@ func _init() -> void:
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	panel.add_child(label)
 
-func show_tip(message: String, viewport_y_ratio: float = VIEWPORT_Y_RATIO) -> void:
+func show_tip(message: String, viewport_y_ratio: float = VIEWPORT_Y_RATIO, max_width_ratio: float = MAX_WIDTH_RATIO) -> void:
 	var localized := P.localized_text(message).strip_edges()
 	if P.is_unlocalized_english_sentence(localized): localized = P.localized("operation_rejected")
 	if localized.is_empty():
@@ -61,7 +64,7 @@ func show_tip(message: String, viewport_y_ratio: float = VIEWPORT_Y_RATIO) -> vo
 	if is_instance_valid(_tween):
 		_tween.kill()
 	label.text = localized
-	_layout_at_start(viewport_y_ratio)
+	_layout_at_start(viewport_y_ratio, max_width_ratio)
 	panel.visible = true
 	panel.modulate = Color.WHITE
 	panel.scale = Vector2(0.96, 0.96)
@@ -74,9 +77,12 @@ func show_tip(message: String, viewport_y_ratio: float = VIEWPORT_Y_RATIO) -> vo
 	_tween.tween_property(panel, "modulate:a", 0.0, FADE_DURATION).set_delay(DISPLAY_DURATION - FADE_DURATION)
 	_tween.finished.connect(_finish.bind(serial))
 
-func set_viewport_anchor(viewport_y_ratio: float = VIEWPORT_Y_RATIO) -> void:
+func set_viewport_anchor(viewport_y_ratio: float = VIEWPORT_Y_RATIO, max_width_ratio: float = MAX_WIDTH_RATIO) -> void:
 	if not panel.visible: return
 	var viewport_size := get_viewport().get_visible_rect().size
+	if not is_equal_approx(_layout_width_ratio, max_width_ratio) or not is_equal_approx(_layout_viewport_width, viewport_size.x):
+		_measure_panel(viewport_size, max_width_ratio)
+		panel.pivot_offset = panel.size * 0.5
 	# Translate the whole layer; the running rise/fade tween and its lifetime
 	# remain unchanged when the underlying screen changes.
 	var target := Vector2((viewport_size.x - panel.size.x) * 0.5,
@@ -95,10 +101,22 @@ func clear() -> void:
 func start_position() -> Vector2:
 	return _start_position + offset
 
-func _layout_at_start(viewport_y_ratio: float = VIEWPORT_Y_RATIO) -> void:
+func _layout_at_start(viewport_y_ratio: float = VIEWPORT_Y_RATIO, max_width_ratio: float = MAX_WIDTH_RATIO) -> void:
 	var viewport_size := Vector2(1920, 1080)
 	if is_inside_tree():
 		viewport_size = get_viewport().get_visible_rect().size
+	_measure_panel(viewport_size, max_width_ratio)
+	_start_position = Vector2(
+		(viewport_size.x - panel.size.x) * 0.5,
+		viewport_size.y * viewport_y_ratio - panel.size.y * 0.5
+	)
+	panel.position = _start_position
+
+func _measure_panel(viewport_size: Vector2, max_width_ratio: float) -> void:
+	_layout_width_ratio = max_width_ratio
+	_layout_viewport_width = viewport_size.x
+	# Reset an already wrapped notice without measuring at zero text width.
+	label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	label.custom_minimum_size = Vector2.ZERO
 	label.reset_size()
 	panel.custom_minimum_size = Vector2.ZERO
@@ -106,18 +124,20 @@ func _layout_at_start(viewport_y_ratio: float = VIEWPORT_Y_RATIO) -> void:
 	var font_size := label.get_theme_font_size("font_size")
 	var natural_text_width := font.get_string_size(label.text, HORIZONTAL_ALIGNMENT_LEFT, -1.0, font_size).x
 	var natural_width := natural_text_width + HORIZONTAL_PADDING
-	var target_width := clampf(natural_width, MIN_WIDTH, viewport_size.x * MAX_WIDTH_RATIO)
+	var maximum_width := maxf(1.0, viewport_size.x * max_width_ratio)
+	var target_width := clampf(natural_width, minf(MIN_WIDTH, maximum_width), maximum_width)
 	var text_width := maxf(1.0, target_width - HORIZONTAL_PADDING)
 	label.autowrap_mode = TextServer.AUTOWRAP_OFF if natural_text_width <= text_width else TextServer.AUTOWRAP_WORD_SMART
 	var measured_text := font.get_multiline_string_size(label.text, HORIZONTAL_ALIGNMENT_CENTER, text_width, font_size)
 	label.custom_minimum_size = Vector2(text_width, measured_text.y)
-	panel.size = Vector2(target_width, measured_text.y + VERTICAL_PADDING)
-	panel.custom_minimum_size = panel.size
-	_start_position = Vector2(
-		(viewport_size.x - panel.size.x) * 0.5,
-		viewport_size.y * viewport_y_ratio - panel.size.y * 0.5
-	)
-	panel.position = _start_position
+	# Wrapping while the label still has zero width can cache one line per
+	# character. Measure the child at its final width before sizing the panel.
+	label.size = label.custom_minimum_size
+	label.update_minimum_size()
+	panel.update_minimum_size()
+	var target_size := Vector2(target_width, maxf(measured_text.y, label.get_combined_minimum_size().y) + VERTICAL_PADDING)
+	panel.size = target_size
+	panel.custom_minimum_size = target_size
 
 func _finish(serial: int) -> void:
 	if serial != _serial:
