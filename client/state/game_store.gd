@@ -68,6 +68,7 @@ var _queue_deadline: int = 0
 var _pending_play: Dictionary = {}
 var _play_deadline: int = 0
 var _pending_commands: Dictionary = {}
+var _command_recovery_context: Dictionary = {}
 var _combat_sync_at := 0
 var _latest_commands: Dictionary = {}
 var _snapshot_request_at: int = 0
@@ -82,8 +83,6 @@ var _sound_terminal_rooms: Dictionary = {}
 func _process(_delta: float) -> void:
 	_process_client_info()
 	_check_shop_rotation()
-	_flush_latest_commands()
-	_flush_combat_preview()
 	var now := Time.get_ticks_msec()
 	if room.has("extraction_remaining_ms"):
 		if _extraction_sync_at == 0:
@@ -118,23 +117,36 @@ func _process(_delta: float) -> void:
 				"execution_outcome":"confirmed_state_missing" if expired.get("confirmed", false) else "unknown", "trace_only":true}
 			timeout.merge(expired.get("origin_context", {}), false)
 			_on_gateway_telemetry(timeout)
-			if _pending_commands[request_id].get("confirmed", false):
-				# The write succeeded, but its new state is still missing. Restore
-				# the authoritative room through reconnect rather than resend it.
-				room = {}
-				selected_cards.clear()
-				clear_combat_preview()
-				_pending_commands.clear()
-				gateway.recovering = true
-				gateway.connect_realtime()
+			if str(expired.get("room_id", "")) != str(room.get("room_id", "")) or int(expired.get("session_generation", -1)) != gateway.session_generation or int(expired.get("room_context_epoch", -1)) != _room_context_epoch:
+				_pending_commands.erase(request_id)
 				pending_changed = true
-				break
-			_pending_commands.erase(request_id)
+				continue
+			# A missing reply does not prove that the write failed. Both an
+			# unknown outcome and a confirmed write without its new state must
+			# recover authority before another intent can use the stale room.
+			# Never replay the ambiguous write under a new request identity.
+			# Retain receipt ownership, but remove stale action data. A transport
+			# connection marker alone cannot make the old room writable again.
+			_command_recovery_context = {"session_generation": gateway.session_generation, "room_context_epoch": _room_context_epoch,
+				"room_id": str(room.get("room_id", "")), "match_id": _settlement_match_id()}
+			room = {}
+			selected_cards.clear()
+			clear_combat_preview()
+			_pending_commands.clear()
+			_pending_play = {}
+			_latest_commands.clear()
+			_queued_command = {}
+			_snapshot_request_pending = false
+			gateway.recovering = true
+			gateway.connect_realtime()
 			pending_changed = true
+			break
 	if not _queued_command.is_empty() and Time.get_ticks_msec() > _queue_deadline:
 		_queued_command = {}
 		notice.emit("操作未发出，请在连接恢复后重试")
 		pending_changed = true
+	_flush_latest_commands()
+	_flush_combat_preview()
 	if pending_changed: changed.emit()
 
 func _check_shop_rotation() -> void:
@@ -234,6 +246,7 @@ func _clear_authenticated_state() -> void:
 	_queued_command = {}
 	_pending_play = {}
 	_pending_commands.clear()
+	_command_recovery_context = {}
 	_latest_commands.clear()
 	_snapshot_request_pending = false
 	_settlement_loading = ""
@@ -1309,10 +1322,12 @@ func _send_queued_command(queued: Dictionary) -> bool:
 	var origin_context: Dictionary = gateway.capture_context()
 	var sent_room_id: String = str(room.get("room_id", ""))
 	var sent_revision: int = int(room.get("room_revision", 0))
+	var sent_generation: int = gateway.session_generation
+	var sent_context_epoch := _room_context_epoch
 	if gateway.send(dispatched.action, dispatched.payload, request_id):
 		var deadline := Time.get_ticks_msec() + 3000
 		_play_deadline = deadline
-		_pending_commands[request_id] = {"action": dispatched.action, "payload": dispatched.payload.duplicate(true), "room_id": sent_room_id, "sent_revision": sent_revision, "retry": dispatched.get("retry", false), "deadline": deadline, "origin_context": origin_context}
+		_pending_commands[request_id] = {"action": dispatched.action, "payload": dispatched.payload.duplicate(true), "room_id": sent_room_id, "sent_revision": sent_revision, "session_generation": sent_generation, "room_context_epoch": sent_context_epoch, "retry": dispatched.get("retry", false), "deadline": deadline, "origin_context": origin_context}
 		if dispatched.action == "battle.play_cards":
 			_pending_play = {"request_id": request_id, "room_id": sent_room_id, "payload": dispatched.payload.duplicate(true), "retry": dispatched.get("retry", false)}
 		_sound_commands[request_id] = {"action": dispatched.action, "room_id": sent_room_id}
@@ -1359,7 +1374,11 @@ func _snapshot_confirms_command(pending: Dictionary, snapshot: Dictionary) -> bo
 	return true
 
 func _settlement_match_id() -> String:
-	return str(room.get("match_id", _settlement_recovery_match_id))
+	var match_id := str(room.get("match_id", _settlement_recovery_match_id))
+	if not match_id.is_empty(): return match_id
+	if int(_command_recovery_context.get("session_generation", -1)) == gateway.session_generation and int(_command_recovery_context.get("room_context_epoch", -1)) == _room_context_epoch:
+		return str(_command_recovery_context.get("match_id", ""))
+	return ""
 
 func _room_actions_closed() -> bool:
 	if _terminal_room_context.is_empty(): return false
@@ -1386,6 +1405,7 @@ func _adopt_room_context(snapshot: Dictionary) -> void:
 	var match_id := str(snapshot.get("match_id", ""))
 	var room_id := str(snapshot.get("room_id", ""))
 	if match_id.is_empty() or room_id.is_empty(): return
+	_command_recovery_context = {}
 	if match_id != _room_context_match_id or room_id != _room_context_room_id:
 		# A new authoritative room ends ownership of every old recovery request.
 		# Keep an epoch so leaving and returning to the same IDs cannot revive one.
@@ -1752,6 +1772,7 @@ func acknowledge_settlement() -> bool:
 	if generation != gateway.session_generation: return false
 	if result.ok:
 		_settlement_recovery_match_id = ""
+		_command_recovery_context = {}
 		_settlement_loading = ""
 		_settlement_polling = false
 		_settlement_poll_at = 0

@@ -45,7 +45,7 @@ func run_test() -> Dictionary:
 			elif scenario == "timeout":
 				store._pending_commands[request_id].deadline = Time.get_ticks_msec() - 1
 				store._process(0)
-				checks[scenario] = held and gateway.reconnects == 1 and store.room.is_empty() and gateway.recovering and gateway.sent.filter(func(row): return row.kind == "reward.choice.claim").size() == 1
+				checks[scenario] = held and gateway.reconnects == 1 and store.room.is_empty() and gateway.recovering and not store.command("reward.choice.claim", {"option_id": "reward"}) and gateway.sent.filter(func(row): return row.kind == "reward.choice.claim").size() == 1
 				store.free()
 				gateway.free()
 				continue

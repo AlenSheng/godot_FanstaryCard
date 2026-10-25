@@ -63,9 +63,14 @@ func run_test() -> Dictionary:
 	store._pending_commands["unconfirmed"] = {"deadline":0, "action":"battle.play_cards", "origin_context":{"match_id":"old-match","room_id":"old-room","cycle_id":"old-cycle"}}
 	store._process(0.0)
 	checks["actual store expiry emits unknown timeout and removes without retry"] = traces.size() == 1 and traces[0].event_type == "command.timeout" and traces[0].execution_outcome == "unknown" and traces[0].match_id == "old-match" and traces[0].cycle_id == "old-cycle" and store._pending_commands.is_empty() and gateway.recovery_requests == 0
-	store._pending_commands["confirmed"] = {"deadline":0, "action":"room.move", "confirmed":true, "origin_context":{"match_id":"old-match","room_id":"old-room"}}
+	store.room = {"room_id":"current-room", "match_id":"current-match", "player":{"phase":"ActionBar"}}
+	store._pending_commands["confirmed"] = {"deadline":0, "action":"room.move", "room_id":"current-room", "session_generation":gateway.session_generation, "room_context_epoch":store._room_context_epoch, "confirmed":true, "origin_context":{"match_id":"current-match","room_id":"current-room"}}
 	store._process(0.0)
 	checks["confirmed state timeout remains distinct and preserves existing recovery"] = traces.size() == 2 and traces[1].event_type == "command.state_timeout" and traces[1].result == "state_timeout" and traces[1].execution_outcome == "confirmed_state_missing" and gateway.recovery_requests == 1 and store._pending_commands.is_empty()
+	store.room = {"room_id":"new-room", "match_id":"new-match", "player":{"phase":"ActionBar"}}
+	store._pending_commands["old-confirmed"] = {"deadline":0, "action":"room.move", "room_id":"current-room", "session_generation":gateway.session_generation, "room_context_epoch":store._room_context_epoch, "confirmed":true, "origin_context":{"match_id":"current-match","room_id":"current-room"}}
+	store._process(0.0)
+	checks["obsolete confirmed timeout cannot recover over a new room"] = gateway.recovery_requests == 1 and store.room.get("room_id") == "new-room" and store._pending_commands.is_empty()
 	checks["diagnostic trace contains no packet or authentication bytes"] = traces.all(func(sample): return not sample.has("payload") and not sample.has("Authorization") and not sample.has("access_token"))
 	probe.free()
 	store.free()
