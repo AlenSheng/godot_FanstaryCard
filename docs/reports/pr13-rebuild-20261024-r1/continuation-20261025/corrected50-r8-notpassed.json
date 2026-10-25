@@ -1,0 +1,78 @@
+{
+  "kind": "Corrected exact50 native capacity R8 not passed; original failure retained",
+  "source_commit": "84600ec3e4d5546e09f0d32652c84d5ab4f5daa1",
+  "planned": {
+    "Windows_clients": 25,
+    "cloud_clients": 25,
+    "each_target_active": 25,
+    "shared_seconds": 600,
+    "hold_seconds": 720,
+    "coverage": 0.95,
+    "world_budget": 300
+  },
+  "actual": {
+    "Windows_native_launched": 10,
+    "cloud_native_launched": 25,
+    "cloud_peak_online": 25,
+    "common50_window_not_reached": true,
+    "Windows_first_health_HTTP": 200,
+    "Windows_health_duration_ms": 3544.73,
+    "Windows_stop_reason": "invalid_evidence:monitoring_unavailable,monitoring_unavailable,monitoring_unavailable",
+    "Windows_exit": 3,
+    "cloud_peer_stop_exit": 130,
+    "three_monitoring_reasons_are_missing_fields_in_one_sample_not_three_periods": true,
+    "Windows_process_cleanup": true,
+    "Windows_origin_cleanup": true,
+    "Windows_business_cleanup_at_original_cutoff": false,
+    "cloud_process_and_business_cleanup": true,
+    "no_forced_Windows_native_kill": true,
+    "no_OOM": true,
+    "Windows_minimum_available_bytes": 10472374272
+  },
+  "joint_adjudication": {
+    "capacity_accepted": false,
+    "whole_project_accepted": false,
+    "evidence_errors": [
+      "cohort_count_mismatch"
+    ],
+    "source_head": "84600ec3e4d5546e09f0d32652c84d5ab4f5daa1",
+    "frozen_client_tree": "606fcf52ff3101713d765ff695757e68f1561bd5",
+    "algorithm_version": "distributed-full-native-capacity-v1",
+    "captured_input_sha256": "ed7bdc2ac54d250336c69454c5ed562c3e8bf9046bdd288998379f44ec7623e5"
+  },
+  "interpretation": [
+    "Health returned200; do not report this as a5000ms health timeout or server outage",
+    "Actual source/engine hashes before and after were observed; partial native cohort cannot prove50 capacity",
+    "Missing monitor fields and original false business cleanup remain unpassed even though later DB export has0pending holds",
+    "No exact root cause between local scheduling, transport, and monitor requests proved",
+    "No lowered FPS, lite client, error waiver, or changed latency/coverage/resource threshold"
+  ],
+  "resource_storage_only_dedupe": {
+    "identical_owned_tree_groups": 923,
+    "duplicate_paths": 3358,
+    "actual_freed_bytes": 530386944,
+    "all_original_resource_paths_and_bytes_kept": true,
+    "no_external_tree_hardlinks": true
+  },
+  "backup_then_teardown": {
+    "G_original_files_SHA256_verified": 352,
+    "DB_actual_restore": {
+      "matches": 8,
+      "settlements": 29,
+      "pending_holds": 0,
+      "scratch_dropped": true
+    },
+    "old_owned_stopped_containers_removed": 7,
+    "untracked_source_inputs_verified": 78,
+    "old_root_removed": true,
+    "full_source_and_import_cache_moved_to_R9": true,
+    "additional_freed_bytes": 110821376,
+    "cloud_available_bytes_after_transition": 3840274432,
+    "formal_identity_unchanged": true,
+    "formal_ready_HTTP": 200,
+    "formal_DB_not_cleared": true
+  },
+  "capacity100": "NotExecuted_original50_not_passed; no resource capacity ceiling inferred from partial run",
+  "whole_project_accepted": false,
+  "at_unix_ms": 1792890205314.263
+}

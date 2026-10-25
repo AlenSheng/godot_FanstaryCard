@@ -58,7 +58,27 @@
       "coverage": 1.0,
       "whole_capacity_accepted": false
     },
-    "current_release_offline_tools_CI446": true
+    "current_release_offline_tools_CI446": true,
+    "R7_timeout_UI_actual_render": {
+      "frames": 4,
+      "checks": 12,
+      "layout_errors": 0,
+      "resolutions": [
+        [
+          1920,
+          1080
+        ],
+        [
+          1280,
+          720
+        ]
+      ],
+      "common_native_suites": 24,
+      "common_named_checks": 284,
+      "timeout_checks": 48,
+      "extended_native_suites": 24,
+      "extended_named_checks": 389
+    }
   },
   "numeric_budget_and_limits": {
     "route_samples_each": 300,
@@ -89,12 +109,11 @@
     }
   },
   "current_unpassed": {
-    "cloud_capacity50": "R3_load_failed;R4_50active600s_component_only;R5_monitoring_failed;R6_three_windows_realtime_P95_over2000ms_failed; all_originals_retained",
+    "cloud_capacity50": "R8_corrected_client_exact50_stopped_at_Windows10_due_monitoring_unavailable_cloud25_peer_stopped; cohort_count_mismatch; original business cleanup false retained",
     "cloud_capacity100": "NotExecuted_original50_full_acceptance_not_passed; actual100_admission_and_sustained_window_unproven; no_capacity_ceiling_inferred_from60",
     "factor_candidate_benefit_acceptance": "Inconclusive_reduced_budget",
     "default_cycle_duration_acceptance": "NotEvaluated_functional_only_3of30_room_to_ACK_over1200s_max2065_844",
-    "corrected_client_cloud_natural_gameplay": "NotExecuted_after_R7_client_fix",
-    "R7_timeout_UI_render": "NotYetRendered_after_behavior_change"
+    "corrected_client_cloud_natural_gameplay": "R7_functional4_single_cycle_passed; R9_full_mixed10_each3_Running_not_accepted"
   },
   "separately_preserved_historical_or_external_unpassed": {
     "old86_90_130_139_originals": "NotRecovered_new_results_do_not_replace_old_events",
@@ -115,7 +134,7 @@
   },
   "historical_register_not_modified": true,
   "human_experience_excluded": true,
-  "local_Godot": "All_owned_R5_R6_native_and_tunnels_terminal; CNO_BelowNormal_last4native_CPUs_6GiBfloor; R6onlySSH_control_all16CPUs_BelowNormal_and_no_compression; other_projects_untouched",
+  "local_Godot": "R8_owned_local_native_and_tunnel_terminal; no foreground windows; CNO_BelowNormal_last4_6GiB_floor; R9_cloud_only",
   "formal_service": "Existing_formal_app_and_PG_identity_image_start_environment_unchanged_readyHTTP200;44_unused_project_test_PG_volumes_cleared_under_direct_user_permission;active_formal_DB_not_cleared",
   "report_files": [
     "foundation.json",
@@ -124,13 +143,14 @@
     "server-full-ci.json",
     "postgres-rollback-recheck.json"
   ],
-  "last_executed_game_source_reference": "4e6ff10cba4597e9ea21a6e5a6ae3479c25082c5",
+  "last_executed_game_source_reference": "84600ec3e4d5546e09f0d32652c84d5ab4f5daa1",
   "whole_project_accepted": false,
   "formal_service_last_readonly_probe": {
-    "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\command-execution-observer-20261025-r6\\cloud-cleanup-terminal.original.json",
+    "phase": "R8_actual_restore_then_owned_transition",
     "ready_HTTP": 200,
     "container_image_start_environment_unchanged": true,
-    "root_disk_available_bytes": 8044371968
+    "root_disk_available_bytes": 3840274432,
+    "formal_DB_not_cleared": true
   },
   "validated_UI_source_overrides": {
     "client/tests/art_preview.gd": "f6d7f4e352c44c092afb301a221dbeff34167653f09842fe9b6cd334ff8a84ba",
@@ -156,7 +176,9 @@
     "continuation-20261025/execution-observer-r6-notpassed.json",
     "continuation-20261025/pending-timeout-recovery-r7.json",
     "continuation-20261025/CI-pending-timeout-release-r7.json",
-    "continuation-20261025/recovery-ui-cloud-r7.json"
+    "continuation-20261025/recovery-ui-cloud-r7.json",
+    "continuation-20261025/corrected50-r8-notpassed.json",
+    "continuation-20261025/corrected-mixed-cycles-r9-running.json"
   ],
   "current_release_CI": {
     "tested_source_commit": "2c37fdf981dd418d8deface583630574f7b6b2c3",
@@ -183,8 +205,8 @@
     "cloud_ownership_passed": 8,
     "UI_followup_source_CI_pending": true
   },
-  "active_capacity_study": "R7_client_timeout_and_recovery_UI_verified; corrected4_functional_smoke_passed; corrected50_100_pending",
-  "last_continuation_at_unix_ms": 1792889350535.3293,
+  "active_capacity_study": "R8_exact50_NotPassed;R9_corrected_source_full_mixed_normal_cycles_Running",
+  "last_continuation_at_unix_ms": 1792890205316.263,
   "latest_QA_source_release": {
     "head": "32e493a3da6745b34c8e7f41475d902288279b4f",
     "local_targeted_tests": 83,
@@ -216,7 +238,7 @@
   },
   "latest_client_fix": {
     "base_release": "125f1f32e1d68e3d1e91f14289dadc88d08f00a1",
-    "status": "Passed_local_native_and4client_cloud_functional; UI_followup_CI_pending",
+    "status": "UI_render_and_local_native_passed; R7_functional4_passed; R8_capacity_notpassed; R9_full_normal_running; exactUI_source_CI_pending",
     "report": "continuation-20261025/pending-timeout-recovery-r7.json",
     "controlled_checks": 48,
     "real_loopback_3second_checks": 7,
@@ -229,6 +251,13 @@
     "deadline_ms_unchanged": 3000,
     "no_capacity_failure_override": true,
     "UI_report": "continuation-20261025/recovery-ui-cloud-r7.json",
-    "cloud_capacity_accepted": false
+    "cloud_capacity_accepted": false,
+    "UI_source_commit": "84600ec3e4d5546e09f0d32652c84d5ab4f5daa1"
+  },
+  "UI_followup_CI": {
+    "source_commit": "84600ec3e4d5546e09f0d32652c84d5ab4f5daa1",
+    "run": 40148194557,
+    "status": "in_progress",
+    "result_not_yet_claimed": true
   }
 }
