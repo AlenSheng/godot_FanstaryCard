@@ -50,6 +50,7 @@ var ready_deadline_unix_ms := 0
 var known_ready_deadlines: Dictionary = {}
 var ready_attempts := 0
 var ready_successful_sends := 0
+var _ready_sent_peer_id := 0
 var hero_profile := "Mage"
 var strategy := "baseline_all_hand"
 var strategy_seed := 20260930
@@ -217,6 +218,7 @@ func _run_expedition() -> void:
 	ready_deadline_unix_ms = 0
 	ready_attempts = 0
 	ready_successful_sends = 0
+	_ready_sent_peer_id = 0
 	stage = "enqueue"
 	await Game.enqueue()
 	if stop_requested: return
@@ -231,7 +233,6 @@ func _run_expedition() -> void:
 	var verified_match_id := ""
 	while Game.room.is_empty() and Time.get_ticks_msec() < deadline and not stop_requested:
 		var now_ms := Time.get_ticks_msec()
-		var now_unix_ms := int(Time.get_unix_time_from_system() * 1000.0)
 		# Poll the authoritative ticket even when the required notification was
 		# missed. A matched ticket may trigger a bounded ready retry; the server
 		# remains authoritative about the ready deadline and membership.
@@ -251,6 +252,7 @@ func _run_expedition() -> void:
 					if active_match_id != verified_match_id:
 						ready_attempts = 0
 						ready_successful_sends = 0
+						_ready_sent_peer_id = 0
 						ready_accepted = false
 					active_match_id = verified_match_id
 					ready_required = true
@@ -264,17 +266,8 @@ func _run_expedition() -> void:
 				elif str(ticket_result.data.get("status", "")) in ["Cancelled", "Expired"]:
 					_check(false, "ready_ticket_terminal")
 					return
-		now_ms = Time.get_ticks_msec()
-		now_unix_ms = int(Time.get_unix_time_from_system() * 1000.0)
-		if Game.room.is_empty() and ready_required and not active_match_id.is_empty() and active_match_id == verified_match_id and not ready_accepted and ready_attempts < 3 and now_ms >= next_ready_send_ms and (ready_deadline_unix_ms == 0 or now_unix_ms < ready_deadline_unix_ms):
-			ready_attempts += 1
-			var sent: bool = Game.gateway.send("room.ready")
-			if sent: ready_successful_sends += 1
-			_on_telemetry({"type": "lifecycle", "event_type": "room.ready.send", "match_id": active_match_id, "attempt_no": ready_attempts, "result": "sent" if sent else "send_failed"})
-			if ready_attempts == 3 and ready_successful_sends == 0:
-				_check(false, "ready_send_exhausted")
-				return
-			next_ready_send_ms = now_ms + 1000
+		next_ready_send_ms = _try_ready_confirmation(verified_match_id, next_ready_send_ms)
+		if next_ready_send_ms < 0: return
 		await _wait(0.25)
 	if stop_requested: return
 	if not _check(not Game.room.is_empty() and str(Game.room.get("match_id", "")) == active_match_id,
@@ -342,6 +335,28 @@ func _run_expedition() -> void:
 		_on_telemetry({"type": "lifecycle", "event_type": "settlement.acknowledged" if acknowledged else "settlement.ack_failed",
 			"match_id": settlement_match_id, "gameplay_progress":acknowledged, "progress_reason":"settlement_acknowledged" if acknowledged else "ack_failed"})
 		scenario_finished = _check(acknowledged and settlement_match_id == active_match_id and Game.room.is_empty() and Game.settlement.is_empty(), "settlement_acknowledged")
+
+func _try_ready_confirmation(verified_match_id: String, next_send_ms: int) -> int:
+	var now_ms := Time.get_ticks_msec()
+	var now_unix_ms := int(Time.get_unix_time_from_system() * 1000.0)
+	if not (Game.room.is_empty() and ready_required and not active_match_id.is_empty() and active_match_id == verified_match_id and not ready_accepted and ready_attempts < 3 and now_ms >= next_send_ms and (ready_deadline_unix_ms == 0 or now_unix_ms < ready_deadline_unix_ms)):
+		return next_send_ms
+	# WSS preserves this peer's write order. Wait for its first READY result;
+	# another request can otherwise arrive after that lobby has already started.
+	# A replaced peer may recover within the same original deadline/retry budget.
+	var peer_id: int = Game.gateway.socket.get_instance_id()
+	if ready_successful_sends > 0 and _ready_sent_peer_id == peer_id:
+		return next_send_ms
+	ready_attempts += 1
+	var sent: bool = Game.gateway.send("room.ready")
+	if sent:
+		ready_successful_sends += 1
+		_ready_sent_peer_id = peer_id
+	_on_telemetry({"type": "lifecycle", "event_type": "room.ready.send", "match_id": active_match_id, "attempt_no": ready_attempts, "result": "sent" if sent else "send_failed"})
+	if ready_attempts == 3 and ready_successful_sends == 0:
+		_check(false, "ready_send_exhausted")
+		return -1
+	return now_ms + 1000
 
 func _try_battle_action() -> bool:
 	var pve: Dictionary = Game.room.get("pve", {})
