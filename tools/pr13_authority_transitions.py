@@ -216,7 +216,7 @@ def review_authority_refusals(events, native_reports, *, policy=STRICT_POLICY, c
                           combos[key][0].get('battle_id') == before['packet_battle_id'] and
                           combos[key][0].get('gameplay_progress') is True and _when(combos[key][0]) >= _when(before))
             if (r.get('replayed') is False and _context(r, before) and _when(r) >= _when(before) and
-                    ((r.get('result') == 'success' and r.get('response_type') == 'battle.combo_resolved' and good_combo) or
+                    ((r.get('result') == 'completed' and r.get('response_type') == 'battle.combo_resolved' and good_combo) or
                      (r.get('result') == 'rejected' and r.get('response_type') == 'error.command_rejected' and key in targets))):
                 completed.add(key)
         result['verified_completed_play_requests'] = len(completed)
@@ -283,7 +283,7 @@ def review_authority_refusals(events, native_reports, *, policy=STRICT_POLICY, c
                          next_send['packet_battle_id'] == legal['active_battle_id'], 'new_intent_not_bound_to_new_authority')
                 _require(len(responses[next_key]) == len(combos[next_key]) == 1, 'missing_unique_new_success')
                 reply, combo = responses[next_key][0], combos[next_key][0]
-                _require(reply.get('result') == 'success' and reply.get('response_type') == 'battle.combo_resolved' and
+                _require(reply.get('result') == 'completed' and reply.get('response_type') == 'battle.combo_resolved' and
                          reply.get('replayed') is False and _context(reply, origin) and _context(combo, origin) and
                          combo.get('battle_id') == legal['active_battle_id'] and combo.get('gameplay_progress') is True,
                          'new_intent_not_successfully_resolved')

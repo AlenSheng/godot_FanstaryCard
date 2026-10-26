@@ -2,6 +2,7 @@
 import copy
 import json
 import unittest
+from pathlib import Path
 
 from tools.pr13_authority_transitions import (AUTHORITY_TRANSITION_POLICY as POLICY,
     DETAIL_DUEL, DETAIL_STUN, review_authority_refusals)
@@ -35,7 +36,7 @@ def sent(request, mono, phase='Pve', battle='pve', rev=10):
                 selection_valid=True, selected_ids_in_current_hand=True, target_id='target', target_alive_in_current_view=True)))
 
 
-def response(request, mono, result='success'):
+def response(request, mono, result='completed'):
     return row('realtime', mono, action='battle.play_cards', request_id=request, result=result,
         replayed=False, response_type='error.command_rejected' if result=='rejected' else 'battle.combo_resolved')
 
@@ -94,6 +95,24 @@ class AuthorityTransitionTests(unittest.TestCase):
         self.assertTrue(r['passed'],r);self.assertEqual(1,len(r['expected_requests']))
         self.assertEqual(100,r['verified_completed_play_requests'])
         self.assertEqual(original,self.reports);self.assertFalse(r['capacity_acceptance'])
+
+    def test_actual_native_completed_response_enters_denominator(self):
+        path=Path(__file__).parent/'fixtures/pr13_native_completed_play.json'
+        captured=json.loads(path.read_text(encoding='utf-8'))
+        original=copy.deepcopy(captured)
+        r=review(captured['events'],[captured['native']])
+        self.assertTrue(r['passed'],r)
+        self.assertEqual(1,r['verified_completed_play_requests'])
+        self.assertEqual(original,captured)
+        self.assertFalse(r['capacity_acceptance'])
+
+    def test_http_success_word_is_not_a_native_realtime_completion(self):
+        path=Path(__file__).parent/'fixtures/pr13_native_completed_play.json'
+        captured=json.loads(path.read_text(encoding='utf-8'))
+        reply=next(e for e in captured['events'] if e['event_type']=='realtime')
+        reply['result']='success'
+        r=review(captured['events'],[captured['native']])
+        self.assertEqual(0,r['verified_completed_play_requests'])
 
     def test_complete_new_stun_waits_for_authoritative_release(self):
         e,n=fixture(stun=True);r=review(e,n)
@@ -156,7 +175,7 @@ class AuthorityTransitionTests(unittest.TestCase):
 
     def test_failed_or_replayed_new_success_fails(self):
         self.mutate('realtime','next')['result']='rejected';self.rejected()
-        self.mutate('realtime','next')['result']='success';self.mutate('realtime','next')['replayed']=True;self.rejected()
+        self.mutate('realtime','next')['result']='completed';self.mutate('realtime','next')['replayed']=True;self.rejected()
 
     def test_late_new_combo_is_not_ignored(self):
         c=self.mutate('battle.combo_resolved','next');c['monotonic_ms']=3201;c['at_unix_ms']=13201;self.rejected()
