@@ -171,6 +171,7 @@ class SyntheticStudy:
             raw = json_bytes(native); self.write(host, name, raw)
             native_summaries.append(dict(client_id=cid, _primary_report_sha256=hashlib.sha256(raw).hexdigest(), _primary_report_bytes=len(raw)))
             finals.append(copy.deepcopy(native))
+            finals[-1].pop('user_id',None)  # Real heartbeats intentionally omit login identity.
             env = dict(FANTASYCARD_LOAD_CLIENT_ID=cid, FANTASYCARD_LOAD_RUN_ID=run,
                 FANTASYCARD_LOAD_PROCESS_EPOCH=epoch, FANTASYCARD_LOAD_PROFILE='active-hold',
                 FANTASYCARD_LOAD_MAX_CYCLES='0', FANTASYCARD_LOAD_SEED=str(seed),
@@ -218,7 +219,8 @@ class SyntheticStudy:
             native_final_reports=native_summaries, final_clients=finals,
             process_exits=[dict(client_id=r['client_id'], before_stop=None, after_stop=0) for r in receipts])
         if self.spec.get('authority_transition_policy'):
-            report['authority_transition_review']=review_authority_refusals(all_events,finals,
+            primary=[self.get(host,name) for name in self.native_names[host]]
+            report['authority_transition_review']=review_authority_refusals(all_events,primary,
                 policy=AUTHORITY_TRANSITION_POLICY,cutoff_clock_qualified=True)
         self.put_report(host, report)
         self.put(host, 'engine.json', dict(before_sha256=OFFICIAL_ENGINE[platform], after_sha256=OFFICIAL_ENGINE[platform],

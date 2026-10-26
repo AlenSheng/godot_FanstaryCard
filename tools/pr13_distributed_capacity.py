@@ -263,6 +263,7 @@ def _replay_audits(processes, final_clients, report):
 
 
 def audit_cohort(capture, spec, partition, reference):
+    primary_natives = []
     capture.verify_all()
     meta = capture.json('host-capture.original.json')
     require(meta['spec_sha256'] == hashlib.sha256(canonical(spec)).hexdigest() and meta['host_id'] == partition['host_id'],
@@ -366,6 +367,7 @@ def audit_cohort(capture, spec, partition, reference):
         require(PurePosixPath(receipt['report_file']).name == receipt['report_file'], 'unsafe_native_report_name')
         raw = capture.raw(native_name)
         native = strict_json(raw)
+        primary_natives.append(native)
         primary, final = primary_by[cid], final_by[cid]
         require(hashlib.sha256(raw).hexdigest() == primary['_primary_report_sha256'] and len(raw) == primary['_primary_report_bytes'],
                 'native_primary_digest_disagreement')
@@ -414,7 +416,7 @@ def audit_cohort(capture, spec, partition, reference):
         events, errors = read_owned_audits(processes, list(final_by.values()))
         require(not errors, 'authority_review_audit_unavailable')
         try:
-            transition = review_authority_refusals(events, list(final_by.values()), policy=AUTHORITY_TRANSITION_POLICY,
+            transition = review_authority_refusals(events, primary_natives, policy=AUTHORITY_TRANSITION_POLICY,
                 cutoff_clock_qualified=report['cutoff_clock_quality']['qualified'])
         finally:
             events.close()

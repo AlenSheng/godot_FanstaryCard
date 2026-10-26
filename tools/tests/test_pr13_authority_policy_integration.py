@@ -21,10 +21,10 @@ class NativeBusinessReviewTests(unittest.TestCase):
         self.assertTrue(failed);self.assertIsNone(review)
 
     def test_explicit_policy_reviews_without_mutating_primary_or_status(self):
-        e,n=fixture();status=copy.deepcopy(n);original=copy.deepcopy(n)
+        e,n=fixture();status=copy.deepcopy(n);status[0].pop('user_id');original=copy.deepcopy(n);original_status=copy.deepcopy(status)
         failed,r=coordinator.review_native_business_errors(e,n,status,policy=AUTHORITY_TRANSITION_POLICY,clock_qualified=True)
         self.assertFalse(failed,r);self.assertTrue(r['original_errors_unchanged'])
-        self.assertEqual(original,n);self.assertEqual(original,status)
+        self.assertEqual(original,n);self.assertEqual(original_status,status)
 
     def test_healthy_status_cannot_hide_primary_error(self):
         e,n=fixture();status=copy.deepcopy(n);status[0]['errors']=[]

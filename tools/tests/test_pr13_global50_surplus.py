@@ -20,6 +20,7 @@ class GlobalFiftyTests(unittest.TestCase):
             self.study.put_report(host, r)
 
     def test_full60_supply_can_prove_only_registered_global50(self):
+        self.assertNotIn('user_id',self.study.report('windows')['final_clients'][0])
         result = self.study.assess()
         self.assertTrue(result['capacity_accepted'], result)
         self.assertEqual((60, 50), (result['participants'], result['target_active']))
