@@ -14,6 +14,8 @@ from tools.pr13_distributed_capacity import (Capture, ENGINE_VERSION, OFFICIAL_E
 from tools.gameplay_load_validation import aggregate_window, workload_profile_identity
 from tools.tests.test_pr13_distributed_load import BASE, probe
 from tools.pr13_authority_transitions import AUTHORITY_TRANSITION_POLICY, POLICY_SOURCE_FILES, review_authority_refusals
+from tools.pr13_authority_transitions import CAPACITY_RECOVERY_POLICY_V2
+from tools.pr13_distributed_load import GLOBAL50_AGGREGATE_PROFILE, AGGREGATE_LATENCY_PROFILE
 
 
 def identifier(text):
@@ -26,15 +28,16 @@ def json_bytes(value):
 
 class SyntheticStudy:
     def __init__(self, root, *, cloud_seed_start=None, stronger_population=False,
-                 latency_profile=None, http_ms=10, command_ms=10, target_clients=50, global_surplus=False):
+                 latency_profile=None, http_ms=10, command_ms=10, target_clients=50, global_surplus=False, aggregate=False):
         self.root = Path(root)
         assert target_clients in (50, 100) and (not stronger_population or target_clients == 50)
         assert not global_surplus or target_clients == 50 and not stronger_population
+        assert not aggregate or target_clients == 50 and not stronger_population and not global_surplus
         self.http_ms, self.command_ms = http_ms, command_ms
         self.reference = dict(head='1' * 40,
             controls={p:hashlib.sha256(p.encode()).hexdigest() for p in SOURCE_FILES},
             client={'client/project.godot':'2' * 64, 'client/tests/gameplay_load_client.gd':'3' * 64})
-        if global_surplus:
+        if global_surplus or aggregate:
             source_root=Path(__file__).resolve().parents[2]
             self.reference['controls'].update({p:hashlib.sha256((source_root/p).read_bytes()).hexdigest() for p in POLICY_SOURCE_FILES})
         partitions = []
@@ -42,6 +45,8 @@ class SyntheticStudy:
             count = (32 if host == 'windows' else 28) if stronger_population else target_clients // 2
             if global_surplus:
                 count, offset = (35, 0) if host == 'windows' else (25, 35)
+            if aggregate:
+                count, offset = (40, 0) if host == 'windows' else (20, 40)
             partitions.append(dict(host_id=host, platform=platform, clients=count,
                 seed_start=20260930 + offset, memory_floor_bytes=6442450944 if offset == 0 else 500000000,
                 engine_path='G:\\engine\\godot.exe' if offset == 0 else '/usr/local/bin/godot',
@@ -52,6 +57,9 @@ class SyntheticStudy:
                 partitions[-1]['target_active'] = 27 if host == 'windows' else 23
             if global_surplus:
                 partitions[-1]['target_active'] = 25 if host == 'windows' else 15
+            if aggregate:
+                partitions[-1]['target_active'] = 30 if host == 'windows' else 10
+                partitions[-1]['target_online'] = partitions[-1]['target_active']
         if cloud_seed_start is not None:
             partitions[1]['seed_start'] = cloud_seed_start
         self.spec = dict(study_id=identifier('study'), owner=identifier('owner'), source_head=self.reference['head'], world_budget=300,
@@ -63,6 +71,10 @@ class SyntheticStudy:
         if global_surplus:
             self.spec.update(target_online_clients=60, workload_profile='full-native60-global50-win35-cloud25',
                              authority_transition_policy=AUTHORITY_TRANSITION_POLICY)
+        if aggregate:
+            self.spec.update(target_online_clients=50, native_supply_clients=60, workload_profile=GLOBAL50_AGGREGATE_PROFILE,
+                authority_transition_policy=CAPACITY_RECOVERY_POLICY_V2, latency_profile=AGGREGATE_LATENCY_PROFILE,
+                latency_warning_budget_fraction=.05, prior_capacity_worlds=253, combined_capacity_world_cap=300, world_budget=47)
         if latency_profile is not None:
             self.spec['latency_profile'] = latency_profile
         self.report_names, self.files, self.roots, self.native_names, self.users = {}, {}, {}, {}, []
@@ -72,7 +84,7 @@ class SyntheticStudy:
             environment_sha256='4' * 64, pg_id='b' * 64, database='ready_stop_unit',
             study_id=self.spec['study_id'], owner=self.spec['owner'], read_only_app=True,
             initial_humans=0, initial_matches=0, settled_user_ids=[])
-        self.after = dict(self.before, final_humans=0, pending_holds=0, matches=13, settled_user_ids=list(self.users))
+        self.after = dict(self.before, final_humans=0, pending_holds=0, matches=15 if aggregate else 13, settled_user_ids=list(self.users))
 
     def write(self, host, name, data):
         p = self.roots[host] / name
@@ -120,7 +132,7 @@ class SyntheticStudy:
         directory = 'coordinator/run'; self.report_names[host] = directory + '/report.json'
         contract = dict(profile='active-hold', hero_class='Guardian', strategy='baseline_all_hand',
             strategy_seed=p['seed_start'], client_max_fps=None, client_runtime='editor',
-            target_online=count, target_active=p.get('target_active', count), maximum_run_seconds=960,
+            target_online=p.get('target_online',count), target_active=p.get('target_active', count), maximum_run_seconds=960,
             minimum_window=720, minimum_continuous=120, minimum_coverage=.95,
             maximum_gap=20.0, minimum_command_rate=1, **latency_policy(self.spec),
             minimum_generator_memory_bytes=p['memory_floor_bytes'],
@@ -187,7 +199,7 @@ class SyntheticStudy:
             window = aggregate_window([dict(operations=[e for e in selected if e['type']=='http'],
                                            telemetry=[e for e in selected if e['type']=='realtime'])], observed_seconds=10)
             window.update(lost_event_count=0, audit_lost_count=0, command_error_rate=0)
-            active_count = count if self.spec.get('workload_profile') == 'full-native60-global50-win35-cloud25' else p.get('target_active', count)
+            active_count = count if self.spec.get('workload_profile') in ('full-native60-global50-win35-cloud25',GLOBAL50_AGGREGATE_PROFILE) else p.get('target_active', count)
             active = active_count if second >= 60 else 0; alive = min(count, second)
             samples.append(dict(at=start+second, sample_monotonic_ms=mono+second*1000,
                 run_id=run, online=alive, active_in_room=active, alive_processes=alive, fresh_status_clients=alive,
@@ -221,7 +233,7 @@ class SyntheticStudy:
         if self.spec.get('authority_transition_policy'):
             primary=[self.get(host,name) for name in self.native_names[host]]
             report['authority_transition_review']=review_authority_refusals(all_events,primary,
-                policy=AUTHORITY_TRANSITION_POLICY,cutoff_clock_qualified=True)
+                policy=self.spec['authority_transition_policy'],cutoff_clock_qualified=True)
         self.put_report(host, report)
         self.put(host, 'engine.json', dict(before_sha256=OFFICIAL_ENGINE[platform], after_sha256=OFFICIAL_ENGINE[platform],
             version=ENGINE_VERSION, requested_path=p['engine_path'], real_path=p['engine_path'],
@@ -233,7 +245,7 @@ class SyntheticStudy:
         self.put(host, 'clocks.json', [probe(host, -10, 'before', skew=skew, mono_origin=mono),
                                       probe(host, 980, 'after', skew=skew, mono_origin=mono)])
         self.put(host, 'supervisor.json', dict(terminal=dict(ok=True, guard_stop=None), resources=[
-            dict(monotonic_ms=mono+t*1000, memory_available_bytes=14000000000, root_disk_free_bytes=5000000000)
+            dict(monotonic_ms=mono+t*1000, memory_available_bytes=(20000000000 if host=='windows' else 3000000000) if self.spec.get('workload_profile')==GLOBAL50_AGGREGATE_PROFILE else 14000000000, root_disk_free_bytes=5000000000, root_disk_available_percent=20)
             for t in range(0, 975, 5)]))
         self.put(host, 'host-capture.original.json', dict(host_id=host,
             spec_sha256=hashlib.sha256(canonical(self.spec)).hexdigest(), report_file=self.report_names[host],

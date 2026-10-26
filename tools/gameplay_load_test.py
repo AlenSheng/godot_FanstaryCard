@@ -25,7 +25,7 @@ from cloud_load_test import ROOT, CLIENT, stop_all, health_probe, read_json
 from gameplay_load_validation import aggregate_window, workload_profile_identity, native_frame_observations, assess_cutoff_clock, request_cutoffs, workload_snapshot, owned_statuses, new_events, classify_stop, provenance
 from pr13_runtime_evidence import coverage, reconcile_cycles, result_dimensions, sampling_integrity
 from pr13_audit_archive import read_owned_audits
-from pr13_authority_transitions import (STRICT_POLICY, AUTHORITY_TRANSITION_POLICY,
+from pr13_authority_transitions import (STRICT_POLICY, AUTHORITY_TRANSITION_POLICY, CAPACITY_RECOVERY_POLICY_V2,
     POLICY_SOURCE_FILES, review_authority_refusals)
 from pr13_local_network import LocalOrigins
 from pr13_server_diagnostics import current_window
@@ -358,7 +358,7 @@ def main():
     parser.add_argument('--health-limit-ms',type=int,default=5000)
     parser.add_argument('--monitor-timeout-seconds',type=float,default=3)
     parser.add_argument('--minimum-command-rate',type=float,default=1)
-    parser.add_argument('--authority-transition-policy',choices=(STRICT_POLICY,AUTHORITY_TRANSITION_POLICY),default=STRICT_POLICY,
+    parser.add_argument('--authority-transition-policy',choices=(STRICT_POLICY,AUTHORITY_TRANSITION_POLICY,CAPACITY_RECOVERY_POLICY_V2),default=STRICT_POLICY,
                         help='Explicit documented-state review; original strict behavior is the default')
     parser.add_argument('--hero-class',choices=('Mage','Priest','Guardian','mixed'),default='Mage')
     parser.add_argument('--strategy',choices=('baseline_all_hand','basic','build','mixed'),default='baseline_all_hand')
@@ -841,6 +841,8 @@ def main():
         performance_inputs['actor_wait_samples']=sum(isinstance(sample.get('resources',{}).get('actor_wait'),(int,float))
             and not isinstance(sample['resources']['actor_wait'],bool) and math.isfinite(sample['resources']['actor_wait']) for sample in samples)
         performance_inputs['resource_source']=contract['resource_source']
+        if args.authority_transition_policy == CAPACITY_RECOVERY_POLICY_V2:
+            performance_inputs['scope']='Revised capacity diagnostic;pooled raw latency and shared warning-time budget require sealed joint replay'
         performance_verified=(not args.local_resource_sampling and reason=='duration_limit' and load_verified and
             performance_inputs['http_latency_samples']>=20 and performance_inputs['realtime_latency_samples']>=10 and
             performance_inputs['actor_wait_samples']==len(samples))

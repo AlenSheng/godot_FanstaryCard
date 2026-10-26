@@ -17,18 +17,24 @@ import uuid
 import urllib.parse
 
 try:
-    from .pr13_distributed_load import joint_overlap, clock_envelope, GLOBAL50_SURPLUS_PROFILE, GLOBAL50_SURPLUS_PARTITIONS
+    from .pr13_distributed_load import (joint_overlap, clock_envelope, GLOBAL50_SURPLUS_PROFILE,
+        GLOBAL50_SURPLUS_PARTITIONS, GLOBAL50_AGGREGATE_PROFILE, GLOBAL50_AGGREGATE_PARTITIONS,
+        AGGREGATE_LATENCY_PROFILE, AGGREGATE_WARNING_FRACTION)
     from .pr13_runtime_evidence import coverage, sampling_integrity, reconcile_cycles, finite
     from .gameplay_load_validation import workload_profile_identity, assess_cutoff_clock, request_cutoffs, summarize
     from .pr13_audit_archive import read_owned_audits, validate_storage
-    from .pr13_authority_transitions import AUTHORITY_TRANSITION_POLICY, POLICY_SOURCE_FILES, review_authority_refusals
+    from .pr13_authority_transitions import (AUTHORITY_TRANSITION_POLICY, CAPACITY_RECOVERY_POLICY_V2,
+        POLICY_SOURCE_FILES, review_authority_refusals)
     from .pr13_resource_policy import latency_causes, memory_causes, disk_causes
 except ImportError:
-    from pr13_distributed_load import joint_overlap, clock_envelope, GLOBAL50_SURPLUS_PROFILE, GLOBAL50_SURPLUS_PARTITIONS
+    from pr13_distributed_load import (joint_overlap, clock_envelope, GLOBAL50_SURPLUS_PROFILE,
+        GLOBAL50_SURPLUS_PARTITIONS, GLOBAL50_AGGREGATE_PROFILE, GLOBAL50_AGGREGATE_PARTITIONS,
+        AGGREGATE_LATENCY_PROFILE, AGGREGATE_WARNING_FRACTION)
     from pr13_runtime_evidence import coverage, sampling_integrity, reconcile_cycles, finite
     from gameplay_load_validation import workload_profile_identity, assess_cutoff_clock, request_cutoffs, summarize
     from pr13_audit_archive import read_owned_audits, validate_storage
-    from pr13_authority_transitions import AUTHORITY_TRANSITION_POLICY, POLICY_SOURCE_FILES, review_authority_refusals
+    from pr13_authority_transitions import (AUTHORITY_TRANSITION_POLICY, CAPACITY_RECOVERY_POLICY_V2,
+        POLICY_SOURCE_FILES, review_authority_refusals)
     from pr13_resource_policy import latency_causes, memory_causes, disk_causes
 
 
@@ -52,6 +58,9 @@ SOURCE_FILES = (
 REQUIRED_DIMENSIONS = {'execution', 'evidence', 'load', 'performance', 'cleanup'}
 DEFAULT_LATENCY_PROFILE = 'default'
 NORTH_AMERICA_LATENCY_PROFILE = 'north-america-5s-8s-10s-monitor10s'
+AGGREGATE_INITIAL_MEMORY = {'windows': 14092861440, 'cloud': 2446157056}
+AGGREGATE_WORLD_CAP = 300
+AGGREGATE_PRIOR_WORLDS_MINIMUM = 253
 
 
 def require(condition, reason):
@@ -67,7 +76,11 @@ def latency_policy(spec):
     """
     profile = spec.get('latency_profile', DEFAULT_LATENCY_PROFILE)
     require(type(profile) is str and profile in
-            (DEFAULT_LATENCY_PROFILE, NORTH_AMERICA_LATENCY_PROFILE), 'unknown_latency_profile')
+            (DEFAULT_LATENCY_PROFILE, NORTH_AMERICA_LATENCY_PROFILE, AGGREGATE_LATENCY_PROFILE), 'unknown_latency_profile')
+    if profile == AGGREGATE_LATENCY_PROFILE:
+        require(spec.get('workload_profile') == GLOBAL50_AGGREGATE_PROFILE and
+                spec.get('latency_warning_budget_fraction') == AGGREGATE_WARNING_FRACTION,
+                'aggregate_latency_budget_not_registered')
     values = (1500, 2000, 5000, 3) if profile == DEFAULT_LATENCY_PROFILE else (5000, 8000, 10000, 10)
     return dict(zip(('http_p95_limit_ms', 'command_p95_limit_ms', 'health_limit_ms',
                      'monitor_timeout_seconds'), values))
@@ -110,7 +123,7 @@ def load_git_reference(repository, head, *, workload_profile=None):
         if path.startswith('client/') or path in SOURCE_FILES + POLICY_SOURCE_FILES:
             require(kind == 'blob' and mode in ('100644', '100755'), 'nonregular_frozen_input')
             tree[path] = oid
-    if POLICY_SOURCE_FILES[0] in tree or workload_profile == GLOBAL50_SURPLUS_PROFILE:
+    if POLICY_SOURCE_FILES[0] in tree or workload_profile in (GLOBAL50_SURPLUS_PROFILE, GLOBAL50_AGGREGATE_PROFILE):
         controls += POLICY_SOURCE_FILES
     require(set(controls) <= set(tree) and 'client/project.godot' in tree, 'incomplete_frozen_source')
     hashes = {}
@@ -274,21 +287,23 @@ def audit_cohort(capture, spec, partition, reference):
     contract, samples = report['load_contract'], report['samples']
     policy = latency_policy(spec)
     count, platform = partition['clients'], partition['platform']
+    aggregate = spec.get('workload_profile') == GLOBAL50_AGGREGATE_PROFILE
     require(platform in OFFICIAL_ENGINE and count > 0 and type(count) is int, 'invalid_partition')
     require(platform == ('windows' if partition['host_id']=='windows' else 'linux'), 'changed_registered_host_platform')
     expected = dict(profile='active-hold', hero_class='Guardian', strategy='baseline_all_hand',
                     strategy_seed=partition['seed_start'], client_max_fps=None, client_runtime='editor',
-                    target_online=count, target_active=partition.get('target_active', count), maximum_run_seconds=960,
+                    target_online=partition['target_online'] if aggregate else count, target_active=partition.get('target_active', count), maximum_run_seconds=960,
                     minimum_window=720, minimum_continuous=120, minimum_coverage=.95,
                     maximum_gap=20.0, minimum_command_rate=1, **policy,
                     minimum_generator_memory_bytes=partition['memory_floor_bytes'],
                     minimum_cloud_memory_bytes=500000000, minimum_cloud_disk_percent=5.0,
                     cycle_limit_seconds=240, http_transport='reusable')
-    transition_policy = spec.get('workload_profile') == GLOBAL50_SURPLUS_PROFILE
+    transition_policy = spec.get('workload_profile') in (GLOBAL50_SURPLUS_PROFILE, GLOBAL50_AGGREGATE_PROFILE)
+    required_transition_policy = CAPACITY_RECOVERY_POLICY_V2 if aggregate else AUTHORITY_TRANSITION_POLICY
     if transition_policy:
-        require(spec.get('authority_transition_policy') == AUTHORITY_TRANSITION_POLICY,
+        require(spec.get('authority_transition_policy') == required_transition_policy,
                 'global50_authority_policy_not_registered')
-        expected['authority_transition_policy'] = AUTHORITY_TRANSITION_POLICY
+        expected['authority_transition_policy'] = required_transition_policy
     else:
         require('authority_transition_policy' not in contract and 'authority_transition_policy' not in spec,
                 'authority_policy_outside_registered_global50')
@@ -321,7 +336,7 @@ def audit_cohort(capture, spec, partition, reference):
     identity = workload_profile_identity(identity_contract, source['sha256'])
     require(identity['qualified'] and identity['workload_profile_id'] == contract['workload_profile_id'], 'workload_identity_mismatch')
     stop, start = report['stop_issued_ms'] / 1000, report['started']
-    load = coverage(samples, start=max(start, stop - 720), end=stop, target_online=count,
+    load = coverage(samples, start=max(start, stop - 720), end=stop, target_online=expected['target_online'],
                     target_active=partition.get('target_active', count),
                     minimum_window=720, minimum_continuous=120, minimum_coverage=.95, maximum_gap=20)
     require(load['passed'], 'original_load_coverage_replay_failed')
@@ -416,7 +431,7 @@ def audit_cohort(capture, spec, partition, reference):
         events, errors = read_owned_audits(processes, list(final_by.values()))
         require(not errors, 'authority_review_audit_unavailable')
         try:
-            transition = review_authority_refusals(events, primary_natives, policy=AUTHORITY_TRANSITION_POLICY,
+            transition = review_authority_refusals(events, primary_natives, policy=required_transition_policy,
                 cutoff_clock_qualified=report['cutoff_clock_quality']['qualified'])
         finally:
             events.close()
@@ -456,9 +471,15 @@ def audit_cohort(capture, spec, partition, reference):
             'host_supervisor_did_not_pass')
     require(supervisor['resources'] and all(finite(r['memory_available_bytes']) and
             r['memory_available_bytes'] >= partition['memory_floor_bytes'] for r in supervisor['resources']), 'host_memory_reserve_breached')
+    if aggregate:
+        require(supervisor['resources'][0]['memory_available_bytes'] >= AGGREGATE_INITIAL_MEMORY[partition['host_id']],
+                'whole_native_queue_memory_not_admitted')
     if platform == 'linux':
         require(all(finite(r['root_disk_free_bytes']) and r['root_disk_free_bytes'] >= 3000000000
                     for r in supervisor['resources']), 'cloud_absolute_disk_floor_breached')
+        if aggregate:
+            require(all(finite(r.get('root_disk_available_percent')) and r['root_disk_available_percent'] >= 5
+                        for r in supervisor['resources']), 'cloud_percent_disk_floor_breached')
     resource_points = [r['monotonic_ms'] for r in supervisor['resources']]
     require(all(finite(p) for p in resource_points) and
             resource_points[0] <= report['started_monotonic_ms'] and
@@ -500,24 +521,38 @@ def assess_captures(spec, captures, reference, backend_before, backend_after):
         require(type(spec['world_budget']) is int and 1 <= spec['world_budget'] <= 300,
                 'world_budget_exceeds_user_limit')
         partitions = spec['partitions']
-        population = spec.get('target_online_clients', target)
+        aggregate = spec.get('workload_profile') == GLOBAL50_AGGREGATE_PROFILE
+        population = spec.get('native_supply_clients') if aggregate else spec.get('target_online_clients', target)
+        if aggregate:
+            require(type(spec.get('target_online_clients')) is int and spec['target_online_clients'] == 50,
+                    'aggregate_actual_online_target_not50')
+            prior = spec.get('prior_capacity_worlds')
+            require(type(prior) is int and AGGREGATE_PRIOR_WORLDS_MINIMUM <= prior < AGGREGATE_WORLD_CAP and
+                    type(spec.get('combined_capacity_world_cap')) is int and spec['combined_capacity_world_cap'] == AGGREGATE_WORLD_CAP and
+                    spec['world_budget'] <= AGGREGATE_WORLD_CAP - prior,
+                    'cumulative_capacity_budget_reset_or_exceeded')
+        else:
+            require('native_supply_clients' not in spec, 'supply_field_outside_aggregate_profile')
         require(type(population) is int and population in ((50, 60) if target == 50 else (100,)),
                 'unregistered_online_population')
         expected_partitions = ({'windows': (32, 27), 'cloud': (28, 23)} if population == 60 else
                                {host: (target // 2, target // 2) for host in ('windows', 'cloud')})
-        global_surplus = spec.get('workload_profile') == GLOBAL50_SURPLUS_PROFILE
+        global_surplus = spec.get('workload_profile') in (GLOBAL50_SURPLUS_PROFILE, GLOBAL50_AGGREGATE_PROFILE)
         if global_surplus:
             require(target == 50 and population == 60, 'invalid_global50_surplus_population')
-            expected_partitions = GLOBAL50_SURPLUS_PARTITIONS
+            expected_partitions = GLOBAL50_AGGREGATE_PARTITIONS if aggregate else GLOBAL50_SURPLUS_PARTITIONS
             for path in POLICY_SOURCE_FILES:
                 require(reference['controls'].get(path) == hashlib.sha256((Path(__file__).resolve().parents[1]/path).read_bytes()).hexdigest(),
                         'policy_runtime_source_not_frozen')
-        require(population != 60 or spec.get('workload_profile') in ('full-native60-for50active', GLOBAL50_SURPLUS_PROFILE),
+        require(population != 60 or spec.get('workload_profile') in ('full-native60-for50active', GLOBAL50_SURPLUS_PROFILE, GLOBAL50_AGGREGATE_PROFILE),
                 'stronger_population_profile_not_declared')
         require(len(partitions) == len(captures) == 2 and {p['host_id'] for p in partitions} == {'windows', 'cloud'} and
                 all(type(p['clients']) is int and type(p.get('target_active', p['clients'])) is int and
                     (p['clients'], p.get('target_active', p['clients'])) == expected_partitions[p['host_id']]
                     for p in partitions), 'wrong_full' + str(target) + '_partitions')
+        if aggregate:
+            require(all(type(p.get('target_online')) is int and p['target_online'] == expected_partitions[p['host_id']][1]
+                        for p in partitions), 'wrong_aggregate_host_online_floor')
         require(next(p for p in partitions if p['host_id'] == 'windows')['memory_floor_bytes'] >= 6442450944 and
                 next(p for p in partitions if p['host_id'] == 'cloud')['memory_floor_bytes'] >= 500000000, 'host_reserve_reduced')
         fields = ('app_id', 'app_image', 'app_started_at', 'environment_sha256', 'pg_id', 'database',
@@ -563,8 +598,12 @@ def assess_captures(spec, captures, reference, backend_before, backend_after):
                       pooled_running_latency=pooled,
                       original_single_generator_failure_not_reclassified=True)
         if global_surplus:
-            result.update(authority_transition_policy=AUTHORITY_TRANSITION_POLICY,
+            result.update(authority_transition_policy=CAPACITY_RECOVERY_POLICY_V2 if aggregate else AUTHORITY_TRANSITION_POLICY,
                           authority_transition_reviews={r['host_id']:r['authority_transition_review'] for r in audited})
+        if aggregate:
+            result.update(conditional_revised_capacity_scope=True, original_strict_profile_accepted=False,
+                          inferred_short_stun_requests={r['host_id']:r['authority_transition_review']['inferred_short_stun_requests']
+                                                        for r in audited})
     except (OSError, KeyError, TypeError, ValueError, RecursionError, StopIteration) as error:
         result['evidence_errors'].append(str(error) if isinstance(error, ValueError) else type(error).__name__)
     return result
@@ -595,9 +634,12 @@ def main(argv=None):
     except (OSError, KeyError, TypeError, ValueError, RecursionError) as error:
         result = dict(capacity_accepted=False, whole_project_accepted=False,
                       evidence_errors=[str(error) if isinstance(error, ValueError) else type(error).__name__])
+    aggregate_profile = (isinstance(data,dict) and isinstance(data.get('spec'),dict) and
+                         data['spec'].get('workload_profile') == GLOBAL50_AGGREGATE_PROFILE)
     global_profile = (isinstance(data,dict) and isinstance(data.get('spec'),dict) and
                       data['spec'].get('workload_profile') == GLOBAL50_SURPLUS_PROFILE)
-    algorithm = ('distributed-full-native-capacity-v4-global50-levelsets-authority-v1'
+    algorithm = ('distributed-full-native-capacity-v5-actual50-budgeted-recovery-v2' if aggregate_profile else
+                 'distributed-full-native-capacity-v4-global50-levelsets-authority-v1'
                  if global_profile else
                  'distributed-full-native-capacity-v3-registered50or100-latency-profile')
     result.update(algorithm_version=algorithm,

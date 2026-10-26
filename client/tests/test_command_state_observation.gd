@@ -76,6 +76,7 @@ func run_test() -> Dictionary:
 	_free(c)
 	var edges:Dictionary=await run_packet_metadata_edges();checks.merge(edges.checks)
 	var authority_edges:Dictionary=await run_authority_integrity_edges();checks.merge(authority_edges.checks)
+	var refusal_edges:Dictionary=run_refusal_capture_edges();checks.merge(refusal_edges.checks)
 	return {"ok":not checks.values().has(false),"checks":checks,"scope":"OFFLINE actual recorder and Gateway over owned WebSocket;synthetic states;no real authority worlds,no rejection whitelist or acceptance relaxation"}
 
 func run_packet_metadata_edges() -> Dictionary:
@@ -109,3 +110,46 @@ func run_authority_integrity_edges() -> Dictionary:
 	var actionbar=_room();actionbar.player.phase="ActionBar";actionbar.allowed_actions=[];incomplete=_snapshot(actionbar);incomplete.allowed_actions={};p._on_event("room.snapshot",incomplete);p._on_event("room.snapshot",_snapshot(actionbar));row=p.telemetry[-1]
 	checks["malformed permission list cannot suppress valid empty permissions"]=row.get("authority_state",{}).get("state_evidence_quality")=="Complete" and row.get("authority_state",{}).get("snapshot",{}).get("allowed_actions_valid",false)
 	_free(c);return {"ok":not checks.values().has(false),"checks":checks,"scope":"OFFLINE incomplete snapshot dedup integrity;no authority world"}
+
+func run_refusal_capture_edges() -> Dictionary:
+	var checks := {}
+	for mode in ["current", "old-cycle", "replayed", "drain", "missing-owner"]:
+		var c := _case()
+		var p = c.probe
+		var w = c.gateway
+		var original := _room()
+		p.last_progress_ms = 123
+		p._on_event("room.snapshot", _snapshot(original))
+		var count: int = p.telemetry.filter(func(v): return v.get("event_type") == "room.command_state_observed").size()
+		var rejected := _sent(w)
+		rejected.type = "realtime"
+		rejected.event_type = "realtime"
+		rejected.response_type = "error.command_rejected"
+		rejected.result = "rejected"
+		rejected.replayed = false
+		match mode:
+			"old-cycle": rejected.cycle_id = "client:0"
+			"replayed": rejected.replayed = true
+			"drain": p.stop_requested = true
+			"missing-owner": rejected.erase("process_epoch")
+		p._on_telemetry(rejected)
+		var fresh := original.duplicate(true)
+		fresh.room_revision = 41
+		fresh.player.combat.hp = 81
+		p._on_event("room.snapshot", _snapshot(fresh))
+		var rows: Array = p.telemetry.filter(func(v): return v.get("event_type") == "room.command_state_observed")
+		if mode == "current":
+			checks["current refusal captures fresh zero-stun revision without mutating state"] = rows.size() == count + 1 and rows[-1].authority_state.snapshot.room_revision == 41 and rows[-1].authority_state.post_refusal_revision_capture and c.game.room == original and p.last_progress_ms == 123
+			p._on_event("room.snapshot", _snapshot(fresh))
+			checks["identical authority frame is still deduplicated inside recovery burst"] = p.telemetry.filter(func(v): return v.get("event_type") == "room.command_state_observed").size() == rows.size()
+			p._authority_refusal_trace_until_ms = 0
+			fresh.room_revision = 42
+			p._on_event("room.snapshot", _snapshot(fresh))
+			var after: int = p.telemetry.filter(func(v): return v.get("event_type") == "room.command_state_observed").size()
+			fresh.room_revision = 43
+			p._on_event("room.snapshot", _snapshot(fresh))
+			checks["expired recovery horizon returns to sparse ordinary revision trace"] = p.telemetry.filter(func(v): return v.get("event_type") == "room.command_state_observed").size() == after and not p.telemetry[-1].authority_state.post_refusal_revision_capture
+		else:
+			checks[mode + " refusal cannot arm current authority revision burst"] = rows.size() == count and p._authority_refusal_trace_until_ms == 0
+		_free(c)
+	return {"ok": not checks.values().has(false), "checks": checks, "scope": "OFFLINE recorder episode/owner controls;no new worlds and no reconstructed old snapshot"}

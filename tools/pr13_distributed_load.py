@@ -14,6 +14,11 @@ except ImportError:
 
 GLOBAL50_SURPLUS_PROFILE = 'full-native60-global50-win35-cloud25'
 GLOBAL50_SURPLUS_PARTITIONS = {'windows': (35, 25), 'cloud': (25, 15)}
+GLOBAL50_AGGREGATE_PROFILE = 'full-native60-global50-aggregate-v2'
+GLOBAL50_AGGREGATE_PARTITIONS = {'windows': (40, 30), 'cloud': (20, 10)}
+AGGREGATE_LATENCY_PROFILE = 'north-america-pooled5s8s-window95-v2'
+AGGREGATE_WARNING_FRACTION = .05
+AGGREGATE_WARNING_REASONS = frozenset(('http_p95_over_5000ms', 'command_p95_over_8000ms'))
 
 
 def _union(intervals):
@@ -25,6 +30,46 @@ def _union(intervals):
         else:
             merged.append([left, right])
     return merged
+
+
+def _latency_alert_budget(samples, envelope, start, end, maximum_gap):
+    """Bound the union of isolated alert windows; retain all original reasons."""
+    intervals, streak, alerts = [], 0, 0
+    for index, row in enumerate(samples):
+        reasons = row['reasons']
+        if any(not isinstance(reason, str) for reason in reasons):
+            raise ValueError('malformed_latency_alert_reason')
+        warning = any(reason in AGGREGATE_WARNING_REASONS for reason in reasons)
+        streak = streak + 1 if warning else 0
+        if streak >= 3:
+            raise ValueError('three_consecutive_latency_alert_windows')
+        if not index:
+            if reasons and start / 1000 <= row['at'] + envelope['upper_ms'] / 1000 < end / 1000:
+                raise ValueError('first_latency_alert_window_unbounded')
+            continue
+        previous = samples[index - 1]
+        gap = row['at'] - previous['at']
+        if not 0 < gap <= maximum_gap:
+            raise ValueError('invalid_latency_alert_window_gap')
+        # Expand warning windows, unlike the eroded compliant intervals.
+        left = max(start / 1000, previous['at'] + envelope['lower_ms'] / 1000)
+        right = min(end / 1000, row['at'] + envelope['upper_ms'] / 1000)
+        if right <= left:
+            continue
+        if any(reason not in AGGREGATE_WARNING_REASONS for reason in reasons):
+            raise ValueError('non_latency_alert_in_shared_window')
+        if warning:
+            alerts += 1
+            intervals.append([left, right])
+    intervals = _union(intervals)
+    seconds = sum(right - left for left, right in intervals)
+    fraction = seconds / ((end - start) / 1000)
+    if fraction > AGGREGATE_WARNING_FRACTION + 1e-12:
+        raise ValueError('latency_alert_time_exceeds5percent')
+    return dict(passed=True, fraction=fraction, maximum_fraction=AGGREGATE_WARNING_FRACTION,
+                clock_expanded_warning_seconds=seconds, warning_windows=alerts,
+                intervals_reference_seconds=intervals,
+                pooled_raw_latency_check_still_required=True, original_sample_reasons_preserved=True)
 
 
 def _certified_active_runs(samples, count, active, envelope, start, end, maximum_gap):
@@ -161,7 +206,8 @@ def joint_overlap(cohorts, contract):
     try:
         start, end = contract['window_start_ms'], contract['window_end_ms']
         target = contract['target_clients']
-        population = contract.get('target_online_clients', target)
+        aggregate = contract.get('workload_profile') == GLOBAL50_AGGREGATE_PROFILE
+        population = contract.get('native_supply_clients') if aggregate else contract.get('target_online_clients', target)
         reference_host = contract['reference_host_id']
         duration = (end - start) / 1000
         maximum_gap = contract.get('maximum_gap_seconds', 20)
@@ -176,11 +222,18 @@ def joint_overlap(cohorts, contract):
             raise ValueError('invalid_or_relaxed_joint_contract')
         if not isinstance(cohorts, list) or len(cohorts) < 2:
             raise ValueError('missing_distinct_generator_cohorts')
-        global_surplus = contract.get('workload_profile') == GLOBAL50_SURPLUS_PROFILE
+        global_surplus = contract.get('workload_profile') == GLOBAL50_SURPLUS_PROFILE or aggregate
         if global_surplus and (target != 50 or population != 60 or len(cohorts) != 2):
             raise ValueError('invalid_global50_surplus_population')
+        if aggregate:
+            if (not _integer(contract.get('target_online_clients'), 1) or contract.get('target_online_clients') != 50 or
+                    contract.get('latency_profile') != AGGREGATE_LATENCY_PROFILE or
+                    contract.get('latency_warning_budget_fraction') != AGGREGATE_WARNING_FRACTION):
+                raise ValueError('aggregate50_budget_not_registered')
+        elif 'native_supply_clients' in contract:
+            raise ValueError('supply_field_outside_aggregate_profile')
         hosts, total, total_active, shared = set(), 0, 0, None
-        levels = {}
+        levels, latency_reviews = {}, {}
         host_results, reference_points = [], []
         for cohort in cohorts:
             host = cohort['host_id']
@@ -189,7 +242,8 @@ def joint_overlap(cohorts, contract):
             if (not isinstance(host, str) or not host or host in hosts or not _integer(count, 1) or
                     not _integer(active, 1) or active > count):
                 raise ValueError('invalid_or_duplicate_host_identity')
-            if global_surplus and GLOBAL50_SURPLUS_PARTITIONS.get(host) != (count, active):
+            registered_partitions = GLOBAL50_AGGREGATE_PARTITIONS if aggregate else GLOBAL50_SURPLUS_PARTITIONS
+            if global_surplus and registered_partitions.get(host) != (count, active):
                 raise ValueError('wrong_global50_surplus_partitions')
             hosts.add(host)
             total += count
@@ -206,15 +260,19 @@ def joint_overlap(cohorts, contract):
                         any(not isinstance(row.get(k), list) for k in ('reasons', 'failed_processes', 'stale_clients', 'stalled_clients', 'missing_clients', 'invalid_clients'))):
                     raise ValueError('invalid_raw_sample')
                 confirmed = row.get('server_confirmed_in_room')
+                residual = [r for r in row['reasons'] if not (aggregate and r in AGGREGATE_WARNING_REASONS)]
+                online_ok = active <= row['online'] <= count if aggregate else row['online'] == count
                 certified = (finite(confirmed) and confirmed == int(confirmed) and target <= confirmed <= population and
-                             row['online'] == count and active <= row['active_in_room'] <= count and
+                             online_ok and active <= row['active_in_room'] <= min(count, row['online']) and
                              row['alive_processes'] == count and row['fresh_status_clients'] == count and
-                             not any(row[k] for k in ('reasons', 'failed_processes', 'stale_clients', 'stalled_clients', 'missing_clients', 'invalid_clients')))
+                             not residual and not any(row[k] for k in ('failed_processes', 'stale_clients', 'stalled_clients', 'missing_clients', 'invalid_clients')))
                 normalized.append(dict(row, workload_failure=row['workload_failure'] or not certified))
             if any(b['sample_monotonic_ms'] <= a['sample_monotonic_ms'] for a, b in zip(samples, samples[1:])):
                 raise ValueError('nonincreasing_monotonic_samples')
             envelope = clock_envelope(cohort['clock_probes'], samples, host_id=host,
                                       window_start_ms=start, window_end_ms=end)
+            if aggregate:
+                latency_reviews[host] = _latency_alert_budget(samples, envelope, start, end, maximum_gap)
             reference_points.extend(envelope.pop('reference_points'))
             if host == reference_host:
                 reference_points.extend((s['at'] * 1000, s['sample_monotonic_ms']) for s in samples)
@@ -223,7 +281,7 @@ def joint_overlap(cohorts, contract):
                         raise ValueError('reference_host_monotonic_basis_mismatch')
                     reference_points.append((p['remote_unix_ms'], p['remote_monotonic_ms']))
             measured = coverage(normalized, start=samples[0]['at'], end=samples[-1]['at'],
-                                target_online=count, target_active=active, maximum_gap=maximum_gap)
+                                target_online=active if aggregate else count, target_active=active, maximum_gap=maximum_gap)
             if measured['evidence_errors']:
                 raise ValueError('invalid_original_observation_timeline')
             # Erode whole continuous runs once. Eroding every sample interval
@@ -236,7 +294,7 @@ def joint_overlap(cohorts, contract):
                     certified_runs.append([lo, hi])
             shared = certified_runs if shared is None else _intersect(shared, certified_runs)
             if global_surplus:
-                levels[host] = {k: _certified_active_runs(normalized, count, k, envelope, start, end, maximum_gap)
+                levels[host] = {k: _certified_active_runs(normalized, k if aggregate else count, k, envelope, start, end, maximum_gap)
                                 for k in range(active, count + 1)}
             host_results.append(dict(host_id=host, clients=count, target_active=active, clock=envelope,
                                      certified_runs_reference_seconds=certified_runs))
@@ -249,8 +307,15 @@ def joint_overlap(cohorts, contract):
             # The25/15 local floors alone prove only40. Require an actual
             # clock-certified sum of at least50 native active clients by
             # intersecting every possible50-summing pair of count level sets.
-            shared = _union([interval for windows in range(25, 36)
+            minimum_windows, maximum_windows = (30, 40) if aggregate else (25, 35)
+            shared = _union([interval for windows in range(minimum_windows, maximum_windows + 1)
                              for interval in _intersect(levels['windows'][windows], levels['cloud'][50-windows])])
+        if aggregate:
+            all_warning_intervals = _union([interval for review in latency_reviews.values()
+                                           for interval in review['intervals_reference_seconds']])
+            warning_seconds = sum(right - left for left, right in all_warning_intervals)
+            if warning_seconds / duration > AGGREGATE_WARNING_FRACTION + 1e-12:
+                raise ValueError('joint_latency_alert_time_exceeds5percent')
         _stable_clock(reference_points, 250)
         seconds = sum(b - a for a, b in shared)
         longest = max((b - a for a, b in shared), default=0)
@@ -263,6 +328,12 @@ def joint_overlap(cohorts, contract):
         if global_surplus:
             output.update(native_active_aggregation='clock-eroded-count-level-set-union',
                           necessary_host_active_floor_sum=40, actual_native_active_required=50)
+        if aggregate:
+            output.update(native_supply_clients=population, target_online_clients=50,
+                          latency_warning_reviews=latency_reviews,
+                          joint_latency_warning_seconds=warning_seconds,
+                          joint_latency_warning_fraction=warning_seconds / duration,
+                          revised_aggregate_policy=True, original_strict_profile_accepted=False)
     except (KeyError, TypeError, ValueError, ZeroDivisionError) as error:
         output['evidence_errors'].append(str(error) if isinstance(error, ValueError) else 'malformed_joint_input')
     return output

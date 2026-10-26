@@ -51,6 +51,7 @@ var known_ready_deadlines: Dictionary = {}
 var ready_attempts := 0
 var ready_successful_sends := 0
 var _ready_sent_peer_id := 0
+var _authority_refusal_trace_until_ms := 0
 var hero_profile := "Mage"
 var strategy := "baseline_all_hand"
 var strategy_seed := 20260930
@@ -219,6 +220,7 @@ func _run_expedition() -> void:
 	ready_attempts = 0
 	ready_successful_sends = 0
 	_ready_sent_peer_id = 0
+	_authority_refusal_trace_until_ms = 0
 	stage = "enqueue"
 	await Game.enqueue()
 	if stop_requested: return
@@ -860,12 +862,18 @@ func _observe_authority_command_state(payload: Dictionary) -> void:
 	var signature := {"room_id":state.room_id,"match_id":state.match_id,"player_id":state.player_id,"player_phase":state.player_phase,
 		"pve_battle_id":state.pve_battle_id,"duel_id":state.duel_id,"stunned":typeof(state.stun_remaining_ms) == TYPE_INT and state.stun_remaining_ms > 0,
 		"allowed_actions":state.allowed_actions,"session_generation":current.get("session_generation"),"room_context_epoch":current.get("room_context_epoch")}
+	var refusal_capture: bool = Time.get_ticks_msec() < _authority_refusal_trace_until_ms
+	if refusal_capture:
+		# Preserve fresh zero-stun revisions during a bounded recovery episode.
+		# Ordinary ticks outside this window keep their original sparse trace.
+		signature["room_revision"] = state.room_revision
+		signature["stun_remaining_ms"] = state.stun_remaining_ms
 	if binding == "SameCurrentRoute" and quality == "Complete":
 		if signature == _last_authority_command_signature: return
 		_last_authority_command_signature = signature.duplicate(true)
 	_on_telemetry(_lifecycle_sample(payload, {"type":"authority_state", "event_type":"room.command_state_observed", "trace_only":true,
 		"room_id":payload.get("room_id"), "match_id":payload.get("match_id"), "request_id":payload.get("_request_id"),
-		"_origin_context":origin, "authority_state":{"snapshot":state,"identity_binding":binding,"state_evidence_quality":quality,"missing_fields":missing,"sequence":sequence,
+		"_origin_context":origin, "authority_state":{"snapshot":state,"identity_binding":binding,"state_evidence_quality":quality,"missing_fields":missing,"sequence":sequence,"post_refusal_revision_capture":refusal_capture,
 		"event_revision":payload.get("_event_revision"),"replayed":payload.get("_replayed"),"receive_owner":owner.duplicate(true),
 		"local_session_generation_at_capture":current.get("session_generation"),"local_room_context_epoch_at_capture":current.get("room_context_epoch")},
 		"gameplay_progress":false}))
@@ -914,6 +922,8 @@ func _on_telemetry(sample: Dictionary) -> void:
 	copy["origin_context_state"] = ("Complete" if missing_fields.is_empty() else "Unknown") if asynchronous else "Local"
 	copy["origin_context_missing_fields"] = missing_fields
 	copy["observation_phase"] = "drain" if stop_requested or finishing else "active"
+	if sample_type == "realtime" and copy.get("action") == "battle.play_cards" and copy.get("result") == "rejected" and not copy.get("replayed", true) and copy.observation_phase == "active" and copy.origin_context_state == "Complete" and copy.get("run_id") == run_id and copy.get("client_id") == client_id and copy.get("process_epoch") == process_epoch and copy.get("cycle_id") == "%s:%d" % [client_id, cycles_completed + 1] and copy.get("room_id") == local_context.room_id and copy.get("match_id") == local_context.match_id:
+		_authority_refusal_trace_until_ms = maxi(_authority_refusal_trace_until_ms, now + 16000)
 	event_seq += 1
 	copy["event_seq"] = event_seq
 	copy["event_type"] = sample.get("event_type", sample.get("type", "unknown"))
