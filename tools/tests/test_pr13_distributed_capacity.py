@@ -140,7 +140,8 @@ class SyntheticStudy:
             cycle_limit_seconds=240, http_transport='reusable', resource_source='preregistered_prometheus')
         if self.spec.get('authority_transition_policy'):
             contract['authority_transition_policy']=self.spec['authority_transition_policy']
-        identity = workload_profile_identity(contract, self.reference['controls'])
+        identity_sources=dict(self.reference['controls']);identity_sources.update(self.reference['client'])
+        identity = workload_profile_identity(contract, identity_sources)
         contract.update(workload_profile_id=identity['workload_profile_id'], workload_profile_qualified=True,
                         workload_profile_missing_reason=None)
         receipts, native_summaries, finals, inspections, frame_rows = [], [], [], [], []
