@@ -17,16 +17,18 @@ import uuid
 import urllib.parse
 
 try:
-    from .pr13_distributed_load import joint_overlap, clock_envelope
+    from .pr13_distributed_load import joint_overlap, clock_envelope, GLOBAL50_SURPLUS_PROFILE, GLOBAL50_SURPLUS_PARTITIONS
     from .pr13_runtime_evidence import coverage, sampling_integrity, reconcile_cycles, finite
     from .gameplay_load_validation import workload_profile_identity, assess_cutoff_clock, request_cutoffs, summarize
     from .pr13_audit_archive import read_owned_audits, validate_storage
+    from .pr13_authority_transitions import AUTHORITY_TRANSITION_POLICY, POLICY_SOURCE_FILES, review_authority_refusals
     from .pr13_resource_policy import latency_causes, memory_causes, disk_causes
 except ImportError:
-    from pr13_distributed_load import joint_overlap, clock_envelope
+    from pr13_distributed_load import joint_overlap, clock_envelope, GLOBAL50_SURPLUS_PROFILE, GLOBAL50_SURPLUS_PARTITIONS
     from pr13_runtime_evidence import coverage, sampling_integrity, reconcile_cycles, finite
     from gameplay_load_validation import workload_profile_identity, assess_cutoff_clock, request_cutoffs, summarize
     from pr13_audit_archive import read_owned_audits, validate_storage
+    from pr13_authority_transitions import AUTHORITY_TRANSITION_POLICY, POLICY_SOURCE_FILES, review_authority_refusals
     from pr13_resource_policy import latency_causes, memory_causes, disk_causes
 
 
@@ -87,7 +89,7 @@ def strict_json(data):
     return json.loads(data.decode('utf-8'), object_pairs_hook=unique, parse_constant=invalid)
 
 
-def load_git_reference(repository, head):
+def load_git_reference(repository, head, *, workload_profile=None):
     """Hash actual immutable Git blob contents, not caller-provided hash claims."""
     require(isinstance(head, str) and len(head) == 40 and all(c in '0123456789abcdef' for c in head), 'invalid_source_head')
     flags = getattr(subprocess, 'CREATE_NO_WINDOW', 0) | getattr(subprocess, 'BELOW_NORMAL_PRIORITY_CLASS', 0)
@@ -97,6 +99,7 @@ def load_git_reference(repository, head):
         require(r.returncode == 0, 'frozen_git_object_unavailable')
         return r.stdout
     require(git('rev-parse', '--verify', head + '^{commit}').decode().strip() == head, 'frozen_commit_mismatch')
+    controls = SOURCE_FILES
     tree = {}
     for record in git('ls-tree', '-r', '-z', head, '--', 'client', 'tools', 'protocol').split(b'\0'):
         if not record:
@@ -104,10 +107,12 @@ def load_git_reference(repository, head):
         meta, name = record.split(b'\t', 1)
         mode, kind, oid = meta.decode().split()
         path = name.decode()
-        if path.startswith('client/') or path in SOURCE_FILES:
+        if path.startswith('client/') or path in SOURCE_FILES + POLICY_SOURCE_FILES:
             require(kind == 'blob' and mode in ('100644', '100755'), 'nonregular_frozen_input')
             tree[path] = oid
-    require(set(SOURCE_FILES) <= set(tree) and 'client/project.godot' in tree, 'incomplete_frozen_source')
+    if POLICY_SOURCE_FILES[0] in tree or workload_profile == GLOBAL50_SURPLUS_PROFILE:
+        controls += POLICY_SOURCE_FILES
+    require(set(controls) <= set(tree) and 'client/project.godot' in tree, 'incomplete_frozen_source')
     hashes = {}
     child = subprocess.Popen(['git', 'cat-file', '--batch'], cwd=repository, env=env,
                              stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
@@ -137,7 +142,7 @@ def load_git_reference(repository, head):
             child.wait(timeout=10)
         child.stdout.close()
     return dict(head=head, client_tree=git('rev-parse', head + ':client').decode().strip(),
-                controls={p: hashes[tree[p]] for p in SOURCE_FILES},
+                controls={p: hashes[tree[p]] for p in controls},
                 client={p: hashes[o] for p, o in tree.items() if p.startswith('client/')})
 
 
@@ -269,6 +274,7 @@ def audit_cohort(capture, spec, partition, reference):
     policy = latency_policy(spec)
     count, platform = partition['clients'], partition['platform']
     require(platform in OFFICIAL_ENGINE and count > 0 and type(count) is int, 'invalid_partition')
+    require(platform == ('windows' if partition['host_id']=='windows' else 'linux'), 'changed_registered_host_platform')
     expected = dict(profile='active-hold', hero_class='Guardian', strategy='baseline_all_hand',
                     strategy_seed=partition['seed_start'], client_max_fps=None, client_runtime='editor',
                     target_online=count, target_active=partition.get('target_active', count), maximum_run_seconds=960,
@@ -277,6 +283,14 @@ def audit_cohort(capture, spec, partition, reference):
                     minimum_generator_memory_bytes=partition['memory_floor_bytes'],
                     minimum_cloud_memory_bytes=500000000, minimum_cloud_disk_percent=5.0,
                     cycle_limit_seconds=240, http_transport='reusable')
+    transition_policy = spec.get('workload_profile') == GLOBAL50_SURPLUS_PROFILE
+    if transition_policy:
+        require(spec.get('authority_transition_policy') == AUTHORITY_TRANSITION_POLICY,
+                'global50_authority_policy_not_registered')
+        expected['authority_transition_policy'] = AUTHORITY_TRANSITION_POLICY
+    else:
+        require('authority_transition_policy' not in contract and 'authority_transition_policy' not in spec,
+                'authority_policy_outside_registered_global50')
     require(all(k in contract and contract[k] == v for k, v in expected.items()), 'changed_native_workload_contract')
     require(report['clients'] == count and report['group_size'] == count and report['groups'] == 1,
             'cohort_count_mismatch')
@@ -358,7 +372,7 @@ def audit_cohort(capture, spec, partition, reference):
         require(all(native.get(k) == receipt[k] for k in ('pid', 'client_id', 'process_epoch', 'run_id', 'hero_class', 'strategy', 'strategy_seed')),
                 'native_report_foreign_context')
         require(native['load_profile'] == 'active-hold' and native['cycle_limit_seconds'] == 240 and
-                native['outcome'] in ('completed', 'cancelled') and not native['errors'] and native['audit_lost_count'] == 0 and
+                native['outcome'] in ('completed', 'cancelled') and (transition_policy or not native['errors']) and native['audit_lost_count'] == 0 and
                 native['cleanup']['state'] == 'Passed', 'native_business_or_cleanup_failure')
         require(all(native[k] == final[k] for k in ('cycles_completed', 'event_seq_max', 'audit_lost_count', 'errors', 'cleanup', 'audit_storage')),
                 'native_final_heartbeat_disagreement')
@@ -396,6 +410,16 @@ def audit_cohort(capture, spec, partition, reference):
         processes.append(dict(client_id=cid, run_id=receipt['run_id'], process_epoch=epoch,
                               report=capture.path(native_name)))
     require(seeds == set(range(partition['seed_start'], partition['seed_start'] + count)), 'cohort_seed_partition_mismatch')
+    if transition_policy:
+        events, errors = read_owned_audits(processes, list(final_by.values()))
+        require(not errors, 'authority_review_audit_unavailable')
+        try:
+            transition = review_authority_refusals(events, list(final_by.values()), policy=AUTHORITY_TRANSITION_POLICY,
+                cutoff_clock_qualified=report['cutoff_clock_quality']['qualified'])
+        finally:
+            events.close()
+        require(transition['passed'] and report.get('authority_transition_review') == transition,
+                'authority_transition_replay_failed')
     require(len({r['run_id'] for r in receipts}) == 1, 'mixed_coordinator_run_ids')
     run_id = receipts[0]['run_id']
     streaks = {}
@@ -456,7 +480,8 @@ def audit_cohort(capture, spec, partition, reference):
     return dict(host_id=partition['host_id'], clients=count, target_active=partition.get('target_active', count),
                 samples=frames, clock_probes=clocks,
                 users=users, pids=pids, epochs=epochs, client_ids=clients, seeds=seeds,
-                run_id=run_id, request_distributions=requests)
+                run_id=run_id, request_distributions=requests,
+                authority_transition_review=transition if transition_policy else None)
 
 
 def assess_captures(spec, captures, reference, backend_before, backend_after):
@@ -478,7 +503,14 @@ def assess_captures(spec, captures, reference, backend_before, backend_after):
                 'unregistered_online_population')
         expected_partitions = ({'windows': (32, 27), 'cloud': (28, 23)} if population == 60 else
                                {host: (target // 2, target // 2) for host in ('windows', 'cloud')})
-        require(population != 60 or spec.get('workload_profile') == 'full-native60-for50active',
+        global_surplus = spec.get('workload_profile') == GLOBAL50_SURPLUS_PROFILE
+        if global_surplus:
+            require(target == 50 and population == 60, 'invalid_global50_surplus_population')
+            expected_partitions = GLOBAL50_SURPLUS_PARTITIONS
+            for path in POLICY_SOURCE_FILES:
+                require(reference['controls'].get(path) == hashlib.sha256((Path(__file__).resolve().parents[1]/path).read_bytes()).hexdigest(),
+                        'policy_runtime_source_not_frozen')
+        require(population != 60 or spec.get('workload_profile') in ('full-native60-for50active', GLOBAL50_SURPLUS_PROFILE),
                 'stronger_population_profile_not_declared')
         require(len(partitions) == len(captures) == 2 and {p['host_id'] for p in partitions} == {'windows', 'cloud'} and
                 all(type(p['clients']) is int and type(p.get('target_active', p['clients'])) is int and
@@ -528,6 +560,9 @@ def assess_captures(spec, captures, reference, backend_before, backend_after):
                       per_host_latency={r['host_id']:r['request_distributions']['running'] for r in audited},
                       pooled_running_latency=pooled,
                       original_single_generator_failure_not_reclassified=True)
+        if global_surplus:
+            result.update(authority_transition_policy=AUTHORITY_TRANSITION_POLICY,
+                          authority_transition_reviews={r['host_id']:r['authority_transition_review'] for r in audited})
     except (OSError, KeyError, TypeError, ValueError, RecursionError, StopIteration) as error:
         result['evidence_errors'].append(str(error) if isinstance(error, ValueError) else type(error).__name__)
     return result
@@ -542,10 +577,11 @@ def main(argv=None):
     args = parser.parse_args(argv)
     require(args.input.stat().st_size <= 64 * 1024**2, 'study_input_too_large')
     raw = args.input.read_bytes()
+    data = {}
     try:
         data = strict_json(raw)
         spec = data['spec']
-        reference = load_git_reference(args.source_repository, spec['source_head'])
+        reference = load_git_reference(args.source_repository, spec['source_head'],workload_profile=spec.get('workload_profile'))
         captures = {}
         for c in data['captures']:
             require(c['host_id'] not in captures, 'duplicate_capture_host')
@@ -557,7 +593,12 @@ def main(argv=None):
     except (OSError, KeyError, TypeError, ValueError, RecursionError) as error:
         result = dict(capacity_accepted=False, whole_project_accepted=False,
                       evidence_errors=[str(error) if isinstance(error, ValueError) else type(error).__name__])
-    result.update(algorithm_version='distributed-full-native-capacity-v3-registered50or100-latency-profile',
+    global_profile = (isinstance(data,dict) and isinstance(data.get('spec'),dict) and
+                      data['spec'].get('workload_profile') == GLOBAL50_SURPLUS_PROFILE)
+    algorithm = ('distributed-full-native-capacity-v4-global50-levelsets-authority-v1'
+                 if global_profile else
+                 'distributed-full-native-capacity-v3-registered50or100-latency-profile')
+    result.update(algorithm_version=algorithm,
                   adjudicator_source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                   captured_input_sha256=hashlib.sha256(raw).hexdigest())
     with args.output.open('xb') as out:

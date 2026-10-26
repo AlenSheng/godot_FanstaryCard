@@ -762,9 +762,20 @@ func _command_room_state(room: Dictionary) -> Dictionary:
 	var pve_id := str(pve.get("battle_id", ""))
 	var duel_id := str(duel.get("duel_id", ""))
 	var actions: Variant = room.get("allowed_actions", [])
+	var raw_hand: Variant = player.get("hand")
+	var hand_ids: Array[String] = []
+	var hand_valid := raw_hand is Array
+	if raw_hand is Array:
+		for instance in raw_hand:
+			if not instance is Dictionary or not instance.get("instance_id") is String or str(instance.instance_id).is_empty() or instance.instance_id in hand_ids:
+				hand_valid = false
+				break
+			hand_ids.append(instance.instance_id)
+	if not hand_valid: hand_ids.clear()
 	return {"room_id": str(room.get("room_id", "")), "match_id": str(room.get("match_id", "")),
 		"room_revision": room.get("room_revision"), "player_id": str(player.get("player_id", "")), "player_phase": phase,
 		"stun_remaining_ms": player.get("stun_remaining_ms", 0), "stun_field_present": player.has("stun_remaining_ms"),
+		"hand_instance_ids": hand_ids, "hand_instance_ids_valid": hand_valid,
 		"allowed_actions": actions.duplicate(true) if actions is Array else [], "allowed_actions_valid": actions is Array and actions.all(func(action): return action is String),
 		"pve_battle_id": pve_id, "duel_id": duel_id,
 		"active_battle_kind": "Duel" if phase == "Pvp" and not duel_id.is_empty() else ("Pve" if phase == "Pve" and not pve_id.is_empty() else "None"),
@@ -790,6 +801,12 @@ func _command_dispatch_state(sample: Dictionary) -> Dictionary:
 		result.identity_binding = "RouteMismatch"
 		return result
 	result.identity_binding = "SameCurrentRoute"
+	var selected: Variant = sample.get("packet_card_instance_ids")
+	var target: Variant = sample.get("packet_target_id")
+	result["play_input_evidence"] = {"hand_valid":state.hand_instance_ids_valid,
+		"selection_valid":sample.get("packet_card_instance_ids_valid",false),
+		"selected_ids_in_current_hand":sample.get("packet_card_instance_ids_valid",false) and state.hand_instance_ids_valid and selected is Array and selected.all(func(id): return id in state.hand_instance_ids),
+		"target_id":target,"target_alive_in_current_view":target is String and not target.is_empty() and Game.target_alive(target)}
 	var sent: Variant = sample.get("packet_expected_revision")
 	var observed: Variant = state.room_revision
 	if typeof(sent) == TYPE_INT and typeof(observed) == TYPE_INT:

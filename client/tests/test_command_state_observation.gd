@@ -62,6 +62,7 @@ func run_test() -> Dictionary:
 		var bytes:PackedByteArray=peer.get_packet() if peer.get_available_packet_count()>0 else PackedByteArray();var codec=load("res://network/protobuf.gd").new();var packet:Dictionary=codec.decode("ClientEnvelope",bytes);var body:Dictionary=codec.decode("BattlePlayCardsCommand",packet.get("payload",PackedByteArray()));row=p.telemetry[-1]
 		checks["wire envelope identity revision and payload remain original"]=sent and packet.get("room_id")=="room" and packet.get("match_id")=="match" and packet.get("expected_revision")==40 and body.get("battle_id")=="pve"
 		checks["packet metadata survives synchronous reentrancy"]=row.get("packet_room_id")==packet.get("room_id") and row.get("packet_match_id")==packet.get("match_id") and row.get("packet_expected_revision")==packet.get("expected_revision") and row.get("packet_battle_id")==body.get("battle_id")
+		checks["selected instance metadata equals actual owned socket wire"]=row.get("packet_card_instance_ids_valid",false) and row.get("packet_card_instance_ids")==body.get("card_instance_ids") and row.get("packet_target_id")==body.get("target_id")
 		checks["changed local owner is not labelled original send state"]=row.get("dispatch_state",{}).get("identity_binding")=="OriginMismatch"
 	w.socket.close();peer.close();listener.stop();_free(c)
 	c=_case();p=c.probe;g=c.game;w=c.gateway

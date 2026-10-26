@@ -12,6 +12,34 @@ try:
 except ImportError:
     from pr13_runtime_evidence import coverage, finite
 
+GLOBAL50_SURPLUS_PROFILE = 'full-native60-global50-win35-cloud25'
+GLOBAL50_SURPLUS_PARTITIONS = {'windows': (35, 25), 'cloud': (25, 15)}
+
+
+def _union(intervals):
+    """Union already-certified intervals without bridging a real gap."""
+    merged = []
+    for left, right in sorted(intervals):
+        if merged and left <= merged[-1][1]:
+            merged[-1][1] = max(merged[-1][1], right)
+        else:
+            merged.append([left, right])
+    return merged
+
+
+def _certified_active_runs(samples, count, active, envelope, start, end, maximum_gap):
+    measured = coverage(samples, start=samples[0]['at'], end=samples[-1]['at'],
+                        target_online=count, target_active=active, maximum_gap=maximum_gap)
+    if measured['evidence_errors']:
+        raise ValueError('invalid_original_observation_timeline')
+    result = []
+    for left, right in _runs(measured['intervals']):
+        lo = max(start / 1000, left + envelope['upper_ms'] / 1000)
+        hi = min(end / 1000, right + envelope['lower_ms'] / 1000)
+        if hi > lo:
+            result.append([lo, hi])
+    return result
+
 
 def _integer(value, minimum=0):
     return type(value) is int and value >= minimum
@@ -148,7 +176,11 @@ def joint_overlap(cohorts, contract):
             raise ValueError('invalid_or_relaxed_joint_contract')
         if not isinstance(cohorts, list) or len(cohorts) < 2:
             raise ValueError('missing_distinct_generator_cohorts')
+        global_surplus = contract.get('workload_profile') == GLOBAL50_SURPLUS_PROFILE
+        if global_surplus and (target != 50 or population != 60 or len(cohorts) != 2):
+            raise ValueError('invalid_global50_surplus_population')
         hosts, total, total_active, shared = set(), 0, 0, None
+        levels = {}
         host_results, reference_points = [], []
         for cohort in cohorts:
             host = cohort['host_id']
@@ -157,6 +189,8 @@ def joint_overlap(cohorts, contract):
             if (not isinstance(host, str) or not host or host in hosts or not _integer(count, 1) or
                     not _integer(active, 1) or active > count):
                 raise ValueError('invalid_or_duplicate_host_identity')
+            if global_surplus and GLOBAL50_SURPLUS_PARTITIONS.get(host) != (count, active):
+                raise ValueError('wrong_global50_surplus_partitions')
             hosts.add(host)
             total += count
             total_active += active
@@ -201,12 +235,22 @@ def joint_overlap(cohorts, contract):
                 if hi > lo:
                     certified_runs.append([lo, hi])
             shared = certified_runs if shared is None else _intersect(shared, certified_runs)
+            if global_surplus:
+                levels[host] = {k: _certified_active_runs(normalized, count, k, envelope, start, end, maximum_gap)
+                                for k in range(active, count + 1)}
             host_results.append(dict(host_id=host, clients=count, target_active=active, clock=envelope,
                                      certified_runs_reference_seconds=certified_runs))
         if reference_host not in hosts:
             raise ValueError('missing_reference_host_cohort')
-        if total != population or total_active != target:
+        expected_active_sum = 40 if global_surplus else target
+        if total != population or total_active != expected_active_sum:
             raise ValueError('partition_does_not_equal_joint_target')
+        if global_surplus:
+            # The25/15 local floors alone prove only40. Require an actual
+            # clock-certified sum of at least50 native active clients by
+            # intersecting every possible50-summing pair of count level sets.
+            shared = _union([interval for windows in range(25, 36)
+                             for interval in _intersect(levels['windows'][windows], levels['cloud'][50-windows])])
         _stable_clock(reference_points, 250)
         seconds = sum(b - a for a, b in shared)
         longest = max((b - a for a, b in shared), default=0)
@@ -216,6 +260,9 @@ def joint_overlap(cohorts, contract):
                       compliant_seconds=seconds, coverage=ratio,
                       longest_continuous_seconds=longest,
                       common_intervals_reference_seconds=shared, hosts=host_results)
+        if global_surplus:
+            output.update(native_active_aggregation='clock-eroded-count-level-set-union',
+                          necessary_host_active_floor_sum=40, actual_native_active_required=50)
     except (KeyError, TypeError, ValueError, ZeroDivisionError) as error:
         output['evidence_errors'].append(str(error) if isinstance(error, ValueError) else 'malformed_joint_input')
     return output

@@ -624,6 +624,16 @@ func send(kind: String, payload: Dictionary = {}, request_id: String = "") -> bo
 				"packet_room_id":envelope.get("room_id", ""), "packet_match_id":envelope.get("match_id", ""),
 				"packet_expected_revision":envelope.get("expected_revision"), "packet_battle_id":packet_battle_value if packet_battle_value is String else "",
 				"packet_battle_field":packet_battle_field, "packet_has_battle_field":packet_battle_value is String}
+			if kind == "battle.play_cards":
+				var raw_ids: Variant = payload.get("card_instance_ids")
+				var ids_valid: bool = raw_ids is Array and not raw_ids.is_empty() and raw_ids.all(func(id): return id is String and not id.is_empty())
+				if ids_valid:
+					var seen := {}
+					for id in raw_ids: seen[id] = true
+					ids_valid = seen.size() == raw_ids.size()
+				dispatched["packet_card_instance_ids"] = raw_ids.duplicate(true) if ids_valid else []
+				dispatched["packet_card_instance_ids_valid"] = ids_valid
+				dispatched["packet_target_id"] = payload.get("target_id")
 			dispatched.merge(origin, false)
 			telemetry.emit(dispatched)
 		if kind == "ping":

@@ -25,6 +25,8 @@ from cloud_load_test import ROOT, CLIENT, stop_all, health_probe, read_json
 from gameplay_load_validation import aggregate_window, workload_profile_identity, native_frame_observations, assess_cutoff_clock, request_cutoffs, workload_snapshot, owned_statuses, new_events, classify_stop, provenance
 from pr13_runtime_evidence import coverage, reconcile_cycles, result_dimensions, sampling_integrity
 from pr13_audit_archive import read_owned_audits
+from pr13_authority_transitions import (STRICT_POLICY, AUTHORITY_TRANSITION_POLICY,
+    POLICY_SOURCE_FILES, review_authority_refusals)
 from pr13_local_network import LocalOrigins
 from pr13_server_diagnostics import current_window
 from pr13_status_snapshot import SerializedStatusCache
@@ -39,7 +41,7 @@ QUERIES = {
     'actor_wait': 'histogram_quantile(0.95,sum(rate(fantasycard_room_actor_command_wait_milliseconds_bucket{job="fantasycard",instance="otel-collector:9464"}[5m])) by (le))',
     'server_humans_in_room': 'fantasycard_rooms_humans_active{job="fantasycard",instance="otel-collector:9464"}',
 }
-COVERAGE_METADATA = {'profile','acceptance_scope','launch_interval_seconds','http_transport','resource_source','server_metrics_missing_reason','client_max_fps','fps_scope',
+COVERAGE_METADATA = {'authority_transition_policy','profile','acceptance_scope','launch_interval_seconds','http_transport','resource_source','server_metrics_missing_reason','client_max_fps','fps_scope',
                      'client_runtime','native_package_sha256','distinct_local_client_ips','client_memory_start_budget_mib','hero_class','strategy','strategy_seed','cycle_limit_seconds',
                      'minimum_generator_memory_bytes','minimum_cloud_memory_bytes','minimum_cloud_disk_percent',
                      'http_p95_limit_ms','command_p95_limit_ms','health_limit_ms','monitor_timeout_seconds',
@@ -250,6 +252,22 @@ def read_native_final_reports(processes, final_clients, *, max_bytes=MAX_NATIVE_
     return reports, errors
 
 
+def review_native_business_errors(events, primary_reports, final_clients, *, policy, clock_qualified):
+    """Resolve only the explicit policy; a status cannot repair primary errors."""
+    strict_failure = any(bool(n.get('errors')) for n in primary_reports + final_clients)
+    if policy == STRICT_POLICY:
+        return strict_failure, None
+    reviewed = review_authority_refusals(events, primary_reports, policy=policy,
+                                         cutoff_clock_qualified=clock_qualified)
+    primary_errors = {n['client_id']:n['errors'] for n in primary_reports}
+    if (len(primary_errors) != len(primary_reports) or len(final_clients) != len(primary_reports) or
+            {n['client_id'] for n in final_clients} != set(primary_errors) or
+            any(n.get('errors') != primary_errors.get(n['client_id']) for n in final_clients)):
+        reviewed['passed'] = False
+        reviewed['evidence_errors'].append({'reason':'primary_status_error_disagreement'})
+    return not reviewed['passed'], reviewed
+
+
 def generator_resources(processes, previous):
     if psutil is None:
         return {'available':False,'reason':'psutil_missing'}, previous
@@ -340,6 +358,8 @@ def main():
     parser.add_argument('--health-limit-ms',type=int,default=5000)
     parser.add_argument('--monitor-timeout-seconds',type=float,default=3)
     parser.add_argument('--minimum-command-rate',type=float,default=1)
+    parser.add_argument('--authority-transition-policy',choices=(STRICT_POLICY,AUTHORITY_TRANSITION_POLICY),default=STRICT_POLICY,
+                        help='Explicit documented-state review; original strict behavior is the default')
     parser.add_argument('--hero-class',choices=('Mage','Priest','Guardian','mixed'),default='Mage')
     parser.add_argument('--strategy',choices=('baseline_all_hand','basic','build','mixed'),default='baseline_all_hand')
     parser.add_argument('--strategy-seed',type=int,default=20260930)
@@ -403,6 +423,8 @@ def main():
     if args.run and args.smoke: parser.error('Choose --smoke or --run')
     if args.run and args.smoke_clients!=1: parser.error('--smoke-clients belongs to the smoke profile')
     if args.run and args.load_profile in ('functional-cycles','cleared-extraction'): parser.error('Functional/cleared extraction cycles are smoke scenarios and cannot prove original capacity')
+    if args.authority_transition_policy != STRICT_POLICY and (not args.run or args.load_profile != 'active-hold'):
+        parser.error('Documented authority-transition review requires an explicitly registered active-hold run')
     if args.run:
         baseline=local_host_metrics(args.local_server_metrics, args.local_server_pid) if args.local_resource_sampling else metrics(args.prometheus,args.monitor_timeout_seconds)
         memory_key = 'memory_available' if args.minimum_cloud_memory_bytes is None else 'memory_available_bytes'
@@ -417,7 +439,7 @@ def main():
         'tools/pr13_runtime_evidence.py','tools/pr13_audit_archive.py','client/data/catalog.json',
         'tools/pr13_local_network.py',
         'client/ui/card_details.gd','client/state/element_rules.gd',
-        'protocol/realtime/v1/realtime.proto'))
+        'protocol/realtime/v1/realtime.proto',*POLICY_SOURCE_FILES))
     if native_package_proof is not None:
         source['native_package']=dict(native_package_proof)
         source['sha256'].update({'native-package/'+key:native_package_proof[key+'_sha256'] for key in ('executable','pck','contract')})
@@ -460,6 +482,8 @@ def main():
                     cycle_limit_seconds=args.cycle_limit_seconds,maximum_run_seconds=args.max_seconds)
     contract.update(client_runtime='verified-debug-package' if native_package_proof else 'editor',
                     native_package_sha256=native_package_proof['pck_sha256'] if native_package_proof else None)
+    if args.authority_transition_policy != STRICT_POLICY:
+        contract['authority_transition_policy'] = args.authority_transition_policy
     profile_sources=dict(source.get('sha256',{}))
     profile_sources.update(source.get('active_client_project',{}).get('input_hashes',{}))
     profile_identity=workload_profile_identity(contract,profile_sources)
@@ -737,6 +761,8 @@ def main():
         final_errors_invalid = any(not isinstance(s.get('errors'), list) for s in final_clients)
         final_business_failed = (any(bool(s.get('errors')) for s in final_clients)
             or any(bool(row['errors']) for row in native_final_reports))
+        original_native_business_failed = final_business_failed
+        authority_transition_review = None
         post_stop_failure = any(p['process'].poll() not in (0,None) for p in processes)
         audit_events, audit_errors = read_audit_events(processes, final_clients)
         final_cutoff_ms=int(time.time()*1000)
@@ -766,6 +792,14 @@ def main():
                 'cutoffs_unix_ms':{'start':started*1000,'stop':stop_issued_ms,'final':final_cutoff_ms},
                 'missing_reason':'Audit/cutoff analysis unavailable; raw retained, local monotonic scheduling unchanged'}
         finally:
+            if args.authority_transition_policy != STRICT_POLICY:
+                try:
+                    final_business_failed, authority_transition_review = review_native_business_errors(
+                        audit_events,native_final_reports,final_clients,policy=args.authority_transition_policy,
+                        clock_qualified=cutoff_clock['qualified'])
+                except (OSError,ValueError,TypeError,KeyError,RecursionError) as exc:
+                    audit_errors.append({'error':'authority_transition_analysis_failed','exception':type(exc).__name__})
+                    final_business_failed = True
             if hasattr(audit_events, 'close'):
                 try:
                     audit_events.close()
@@ -867,6 +901,8 @@ def main():
             'performance_inputs':performance_inputs,
             'cycle_cutoffs':cutoffs,'normal_cycle_requirement':normal_cycle_requirement,
             'request_distributions':request_distributions,'audit_read_errors':audit_errors,
+            'original_native_business_failed':original_native_business_failed,
+            'authority_transition_review':authority_transition_review,
             'final_read_errors':final_read_errors,'tail_lost_event_count':tail_lost,
             'final_status_read_errors':final_status_read_errors,
             'native_final_report_errors':native_report_errors,
