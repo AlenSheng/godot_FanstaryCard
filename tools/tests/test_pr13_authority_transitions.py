@@ -247,5 +247,42 @@ class AuthorityTransitionTests(unittest.TestCase):
     def test_nonobject_error_json_is_not_an_exception(self):
         self.reports[0]['errors'][0]['message']='command_rejected: []';self.rejected()
 
+    def test_authority_update_in_flight_before_rejection_is_valid_evidence(self):
+        a=self.mutate('room.command_state_observed');a['monotonic_ms']=150;a['at_unix_ms']=10150
+        a['authority_state']['sequence']=9
+        r=review(self.events,self.reports)
+        self.assertTrue(r['passed'],r)
+        self.assertEqual('in_flight_before_rejection',r['expected_requests'][0]['authority_observation_relation'])
+
+    def test_stun_can_be_observed_before_the_rejection_frame(self):
+        e,n=fixture(stun=True)
+        a=next(v for v in e if v['event_type']=='room.command_state_observed');a['monotonic_ms']=150;a['at_unix_ms']=10150
+        self.assertTrue(review(e,n)['passed'])
+
+    def test_old_authority_before_dispatch_does_not_excuse_known_bad_input(self):
+        a=self.mutate('room.command_state_observed');a['monotonic_ms']=50;a['at_unix_ms']=10050
+        self.rejected()
+
+    def test_gateway_header_may_be_newer_than_local_full_snapshot(self):
+        s=self.mutate('command.sent','rejected');s['packet_expected_revision']=11
+        s['dispatch_state']['revision_relation']='EarlierSnapshotRevision'
+        self.assertTrue(review(self.events,self.reports)['passed'])
+
+    def test_parallel_play_during_rejected_request_cannot_be_hidden(self):
+        a=self.mutate('room.command_state_observed');a['monotonic_ms']=150;a['at_unix_ms']=10150
+        self.events.append(sent('parallel',175,'Pvp','duel',11));self.rejected()
+
+    def test_unrelated_earlier_state_is_not_the_stun_release(self):
+        e,n=fixture(stun=True)
+        early=authority(250,rev=11,stun=0)
+        for v in e:
+            if v['event_type']=='room.command_state_observed':
+                v['authority_state']['snapshot']['room_revision']+=1;v['authority_state']['sequence']+=1
+            if v.get('request_id')=='next' and v['event_type']=='command.sent':
+                v['packet_expected_revision']=13;v['dispatch_state']['local_snapshot']['room_revision']=13
+        self.assertTrue(review(e+[early],n)['passed'])
+        no_release=[v for v in e if not(v['event_type']=='room.command_state_observed' and v['monotonic_ms']==3600)]
+        self.assertFalse(review(no_release+[early],n)['passed'])
+
 
 if __name__=='__main__':unittest.main()

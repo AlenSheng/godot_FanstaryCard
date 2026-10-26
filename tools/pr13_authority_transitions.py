@@ -202,7 +202,7 @@ def review_authority_refusals(events, native_reports, *, policy=STRICT_POLICY, c
             elif kind == 'battle.combo_resolved':
                 combos[key].append(e)
             if cid in interested and kind in ('command.sent', 'room.command_state_observed'):
-                if any(k[0] == cid and _number(e.get('at_unix_ms')) and t['at'] <= e['at_unix_ms'] <= t['at'] + 20000
+                if any(k[0] == cid and _number(e.get('at_unix_ms')) and t['at']-3000 <= e['at_unix_ms'] <= t['at'] + 20000
                        for k, t in targets.items()):
                     timelines[cid].append(e)
         valid_sends = {key for key, values in sent.items() if len(values) == 1 and _valid_send(values[0], reports[key[0]])}
@@ -236,16 +236,25 @@ def review_authority_refusals(events, native_reports, *, policy=STRICT_POLICY, c
                 _require(_number(rejected.get('at_unix_ms')) and abs(rejected['at_unix_ms']-t['at']) <= 100 and
                          type(body.get('_sequence')) is int and body['_sequence'] >= 0,
                          'native_error_not_bound_to_rejection_frame')
+                _require(not any(e.get('event_type')=='command.sent' and e.get('action')=='battle.play_cards' and
+                         e.get('request_id')!=request and _when(before)<_when(e)<=rejected_time for e in timelines[cid]),
+                         'parallel_play_before_rejected_outcome')
                 states = []
                 for e in timelines[cid]:
                     s = _authority(e, origin, native)
-                    if (s is not None and _when(e) >= rejected_time and
-                            e['authority_state']['sequence'] >= body['_sequence'] and
-                            s['room_revision'] > before['packet_expected_revision']):
+                    if (s is not None and _when(e) > _when(before) and
+                            (_when(e) < rejected_time or e['authority_state']['sequence'] >= body['_sequence']) and
+                            s['room_revision'] > dispatch['room_revision'] and
+                            s['room_revision'] >= before['packet_expected_revision']):
                         states.append((e, s))
                 states.sort(key=lambda pair: _when(pair[0]))
                 _require(bool(states), 'missing_fresh_authority')
-                first, fresh = states[0]
+                matching = [(e,s) for e,s in states if s['player_phase']=='Pvp' and s['active_battle_kind']=='Duel' and
+                    _text(s['active_battle_id']) and
+                    ((body['detail']==DETAIL_DUEL and s['active_battle_id']!=before['packet_battle_id'] and s['stun_remaining_ms']==0) or
+                     (body['detail']==DETAIL_STUN and s['active_battle_id']==before['packet_battle_id'] and s['stun_remaining_ms']>0))]
+                _require(bool(matching), 'missing_documented_authority_transition')
+                first, fresh = matching[0]
                 _require(_when(first)[0] - rejected_time[0] <= 3000, 'fresh_authority_late')
                 _require(fresh['player_phase'] == 'Pvp' and fresh['active_battle_kind'] == 'Duel' and
                          _text(fresh['active_battle_id']), 'wrong_new_authority_phase')
@@ -256,7 +265,7 @@ def review_authority_refusals(events, native_reports, *, policy=STRICT_POLICY, c
                 else:
                     _require(dispatch['player_phase'] == 'Pvp' and fresh['active_battle_id'] == before['packet_battle_id'] and
                              fresh['stun_remaining_ms'] > 0, 'not_observed_new_stun')
-                    releases = [(e, s) for e, s in states[1:] if s['active_battle_id'] == fresh['active_battle_id'] and
+                    releases = [(e, s) for e, s in states if _when(e)>_when(first) and s['active_battle_id'] == fresh['active_battle_id'] and
                                 s['player_phase'] == 'Pvp' and s['stun_remaining_ms'] == 0]
                     _require(bool(releases), 'missing_authoritative_stun_release')
                     release, legal = releases[0]
@@ -284,6 +293,8 @@ def review_authority_refusals(events, native_reports, *, policy=STRICT_POLICY, c
                 cycles[(cid, origin['cycle_id'])] += 1
                 result['expected_requests'].append(dict(client_id=cid, request_id=request, detail=body['detail'],
                     cycle_id=origin['cycle_id'], fresh_authority_ms=_when(first)[0]-rejected_time[0],
+                    authority_after_send_ms=_when(first)[0]-_when(before)[0],
+                    authority_observation_relation='in_flight_before_rejection' if _when(first)<rejected_time else 'after_rejection',
                     recovery_success_ms=max(_when(reply)[0], _when(combo)[0])-rejected_time[0]))
             except (ValueError, KeyError, TypeError) as exc:
                 result['evidence_errors'].append(dict(client_id=key[0], request_id=key[1], reason=str(exc)))
