@@ -15,6 +15,9 @@ class ReadyStore extends Node:
 	func enqueue() -> void: ticket={"ticketId":"controlled-ticket"}
 
 class ReadyGateway extends Node:
+	# The producer now binds a pending READY to this transport instance.
+	# This declared dispatch stub needs the same peer identity as the real API.
+	var socket := WebSocketPeer.new()
 	var store: Node
 	var probe: Node
 	var scenario := ""
@@ -73,6 +76,7 @@ func run_cases() -> void:
 			id="PR13-A04.1-T02"
 			passed=gateway.sends.is_empty() and gateway.reads==3 and probe.checks.any(func(c):return c.name=="ready_ticket_terminal" and not c.passed)
 		cases.append({"case_id":id,"executed":true,"status":"Passed" if passed else "Failed","profiles_executed":["OFFLINE"],"actual":{"scenario":scenario,"sends":gateway.sends,"successful_sends":probe.ready_successful_sends,"ticket_reads":gateway.reads,"checks":probe.checks,"elapsed_ms":duration},"scope":"Actual production READY loop; declared controlled ticket/dispatch boundary. Expired prompt verifies pre-dispatch deadline refusal; authoritative cancellation is covered separately by the real Game cleanup fixture. Poll sleep shortened but retry/query clocks unchanged. No server room, PG asset or natural cycle claimed."})
+		gateway.socket.close()
 		probe.free();store.free();gateway.free()
 	FileAccess.open(OS.get_environment("PR13_READY_EDGES"),FileAccess.WRITE).store_string(JSON.stringify({"cases":cases}))
 	print(JSON.stringify({"executed":cases.size(),"passed":cases.filter(func(c):return c.status=="Passed").size()}))
