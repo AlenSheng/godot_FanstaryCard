@@ -15,7 +15,7 @@ from tools.gameplay_load_validation import aggregate_window, workload_profile_id
 from tools.tests.test_pr13_distributed_load import BASE, probe
 from tools.pr13_authority_transitions import AUTHORITY_TRANSITION_POLICY, POLICY_SOURCE_FILES, review_authority_refusals
 from tools.pr13_authority_transitions import CAPACITY_RECOVERY_POLICY_V2
-from tools.pr13_distributed_load import GLOBAL50_AGGREGATE_PROFILE, AGGREGATE_LATENCY_PROFILE
+from tools.pr13_distributed_load import GLOBAL50_AGGREGATE_PROFILE, AGGREGATE_LATENCY_PROFILE, THREE_HOST100_PROFILE
 
 
 def identifier(text):
@@ -28,7 +28,8 @@ def json_bytes(value):
 
 class SyntheticStudy:
     def __init__(self, root, *, cloud_seed_start=None, stronger_population=False,
-                 latency_profile=None, http_ms=10, command_ms=10, target_clients=50, global_surplus=False, aggregate=False):
+                 latency_profile=None, http_ms=10, command_ms=10, target_clients=50, global_surplus=False, aggregate=False,
+                 three_host100=False):
         self.root = Path(root)
         assert target_clients in (50, 100) and (not stronger_population or target_clients == 50)
         assert not global_surplus or target_clients == 50 and not stronger_population
@@ -37,20 +38,26 @@ class SyntheticStudy:
         self.reference = dict(head='1' * 40,
             controls={p:hashlib.sha256(p.encode()).hexdigest() for p in SOURCE_FILES},
             client={'client/project.godot':'2' * 64, 'client/tests/gameplay_load_client.gd':'3' * 64})
-        if global_surplus or aggregate:
+        assert not three_host100 or target_clients == 100 and not (stronger_population or global_surplus or aggregate)
+        if global_surplus or aggregate or three_host100:
             source_root=Path(__file__).resolve().parents[2]
             self.reference['controls'].update({p:hashlib.sha256((source_root/p).read_bytes()).hexdigest() for p in POLICY_SOURCE_FILES})
         partitions = []
-        for host, platform, offset in [('windows', 'windows', 0), ('cloud', 'linux', 32 if stronger_population else target_clients // 2)]:
+        hosts = [('windows', 'windows', 0), ('cloud', 'linux', 32 if stronger_population else target_clients // 2)]
+        if three_host100:
+            hosts = [('windows','windows',0), ('sjh','windows',30), ('cloud','linux',80)]
+        for host, platform, offset in hosts:
             count = (32 if host == 'windows' else 28) if stronger_population else target_clients // 2
             if global_surplus:
                 count, offset = (35, 0) if host == 'windows' else (25, 35)
             if aggregate:
                 count, offset = (40, 0) if host == 'windows' else (20, 40)
+            if three_host100:
+                count = {'windows':30,'sjh':50,'cloud':20}[host]
             partitions.append(dict(host_id=host, platform=platform, clients=count,
-                seed_start=20260930 + offset, memory_floor_bytes=6442450944 if offset == 0 else 500000000,
-                engine_path='G:\\engine\\godot.exe' if offset == 0 else '/usr/local/bin/godot',
-                project_path='G:\\fixture\\client' if offset == 0 else '/fixture/client',
+                seed_start=20260930 + offset, memory_floor_bytes=6442450944 if platform == 'windows' else 500000000,
+                engine_path='G:\\engine\\godot.exe' if platform == 'windows' else '/usr/local/bin/godot',
+                project_path='G:\\fixture\\client' if platform == 'windows' else '/fixture/client',
                 server_origin=dict(scheme='http', host='127.0.0.1', port=18641 if offset == 0 else 18541),
                 cpu_affinity=[12, 13, 14, 15]))
             if stronger_population:
@@ -75,6 +82,14 @@ class SyntheticStudy:
             self.spec.update(target_online_clients=50, native_supply_clients=60, workload_profile=GLOBAL50_AGGREGATE_PROFILE,
                 authority_transition_policy=CAPACITY_RECOVERY_POLICY_V2, latency_profile=AGGREGATE_LATENCY_PROFILE,
                 latency_warning_budget_fraction=.05, prior_capacity_worlds=253, combined_capacity_world_cap=300, world_budget=47)
+        if three_host100:
+            self.spec.update(workload_profile=THREE_HOST100_PROFILE, target_online_clients=100,
+                authority_transition_policy=CAPACITY_RECOVERY_POLICY_V2, latency_profile=AGGREGATE_LATENCY_PROFILE,
+                latency_warning_budget_fraction=.05, prior_capacity_worlds=301, world_budget=100)
+            helper='tools/pr13_three_host_windows.py'
+            self.reference['controllers']={helper:hashlib.sha256((Path(__file__).resolve().parents[2]/helper).read_bytes()).hexdigest()}
+            for partition in partitions:
+                if partition['platform']=='windows':partition['machine_name']='SJH' if partition['host_id']=='sjh' else 'other-windows'
         if latency_profile is not None:
             self.spec['latency_profile'] = latency_profile
         self.report_names, self.files, self.roots, self.native_names, self.users = {}, {}, {}, {}, []
@@ -246,11 +261,13 @@ class SyntheticStudy:
         self.put(host, 'clocks.json', [probe(host, -10, 'before', skew=skew, mono_origin=mono),
                                       probe(host, 980, 'after', skew=skew, mono_origin=mono)])
         self.put(host, 'supervisor.json', dict(terminal=dict(ok=True, guard_stop=None), resources=[
-            dict(monotonic_ms=mono+t*1000, memory_available_bytes=(20000000000 if host=='windows' else 3000000000) if self.spec.get('workload_profile')==GLOBAL50_AGGREGATE_PROFILE else 14000000000, root_disk_free_bytes=5000000000, root_disk_available_percent=20)
+            dict(monotonic_ms=mono+t*1000, memory_available_bytes=(20000000000 if platform=='windows' else 3000000000) if self.spec.get('workload_profile') in (GLOBAL50_AGGREGATE_PROFILE,THREE_HOST100_PROFILE) else 14000000000, root_disk_free_bytes=5000000000, root_disk_available_percent=20)
             for t in range(0, 975, 5)]))
         self.put(host, 'host-capture.original.json', dict(host_id=host,
             spec_sha256=hashlib.sha256(canonical(self.spec)).hexdigest(), report_file=self.report_names[host],
-            engine_file='engine.json', process_file='processes.json', clock_file='clocks.json', supervisor_file='supervisor.json'))
+            engine_file='engine.json', process_file='processes.json', clock_file='clocks.json', supervisor_file='supervisor.json',
+            **({'machine_name':p['machine_name'],'controller_sha256':self.reference['controllers']['tools/pr13_three_host_windows.py']}
+               if self.spec.get('workload_profile')==THREE_HOST100_PROFILE and platform=='windows' else {})))
 
     def assess(self):
         captures = {h:Capture(self.roots[h], list(self.files[h].values())) for h in self.roots}

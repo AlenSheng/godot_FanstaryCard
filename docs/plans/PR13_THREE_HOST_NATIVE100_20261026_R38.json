@@ -1,0 +1,62 @@
+{
+  "kind": "Prospective_new_actual100_native_three_host_test",
+  "state": "Preparation_only_no_native_or_cloud_test_services_started",
+  "base_source": "0fbf2002dce254d226fa3117f63644a5f2b8948b",
+  "profile": "full-native100-sjh50-windows30-cloud20-v1",
+  "user_directive": "SJH50_local30_cloud20_actual100",
+  "owner_thread": "01a1737c-c1cf-7342-92cd-7cea01eded79",
+  "separate_from_completed_prior_user_acceptance": true,
+  "prior_actual_worlds": 301,
+  "prior_acceptance_sha256": "e3124ef4b7ed1d5f028fc10a58180da449220f48a92467859d22969db7039a66",
+  "new_world_hard_cap_including_warmup_failed_attempts": 100,
+  "absolute_cumulative_hard_cap": 401,
+  "prior_over300_rule_is_not_new_actual100_technical_proof": true,
+  "partitions": {
+    "windows": {
+      "clients": 30,
+      "platform": "windows",
+      "machine_name": "YK-SHENGJIAHAO",
+      "initial_available_bytes": 12247367680,
+      "minimum_available_bytes": 6442450944
+    },
+    "sjh": {
+      "clients": 50,
+      "platform": "windows",
+      "machine_name": "SJH",
+      "initial_available_bytes": 15938355200,
+      "minimum_available_bytes": 6442450944
+    },
+    "cloud": {
+      "clients": 20,
+      "platform": "linux",
+      "initial_available_bytes_after_infra_warmup": 2446157056,
+      "minimum_available_bytes": 500000000
+    }
+  },
+  "per_native_startup_guard_bytes": 268435456,
+  "cloud_disk_floor_bytes": 3000000000,
+  "cloud_disk_floor_percent": 5,
+  "window_seconds": 600,
+  "minimum_coverage": 0.95,
+  "minimum_continuous_seconds": 120,
+  "maximum_sample_gap_seconds": 20,
+  "per_host_hold_seconds": 720,
+  "coordinator_max_seconds": 960,
+  "actual_global_online_and_active": 100,
+  "original_native_participants_and_raw_evidence_required": 100,
+  "predeclared_latency_profile": "north-america-pooled5s8s-window95-v2",
+  "HTTP_p95_ms": 5000,
+  "command_p95_ms": 8000,
+  "isolated_warning_union_fraction_all3hosts": 0.05,
+  "three_consecutive_latency_redlines_fail": true,
+  "authority_transition_policy": "capacity-budgeted-authority-recovery-v2",
+  "normal_UI_and_gameplay_rules_unchanged": true,
+  "legal80_70_sentinels_preserved": true,
+  "human_experience_excluded": true,
+  "formal_service_and_other_projects_must_be_untouched": true,
+  "temporary_cloud_authorization_and_test_limits_restore_after_stop": true,
+  "no_capacity_load_without_all3stable_and_per_launch_admission": true,
+  "no_duplicate_live_handles": true,
+  "new_test_count_so_far": 0,
+  "at_ns": 1793023231619602900
+}
