@@ -24,6 +24,8 @@ def main(argv=None):
     args=parser.parse_args(argv)
     config=json.loads(args.config.read_text(encoding='utf-8'))
     assert os.name=='nt' and os.environ['COMPUTERNAME']==config['machine_name']=='SJH'
+    if config.get('dependency_path'):sys.path.insert(0,config['dependency_path'])
+    import psutil
     token=config['bearer_token'];assert isinstance(token,str) and len(token)>=48
     root=args.config.resolve(strict=True).parent
     source=Path(config['source_root']).resolve(strict=True)
@@ -36,6 +38,9 @@ def main(argv=None):
     def status():
         terminal=node/'terminal.original.json'
         return dict(machine_name='SJH',source_head=config['source_head'],registered=registered.exists(),
+            memory_available_bytes=psutil.virtual_memory().available,
+            logical_cpus=os.cpu_count(),cpu_percent=psutil.cpu_percent(interval=.1),
+            evidence_disk_available_bytes=psutil.disk_usage(root.anchor).free,
             job_PID=job.pid if job is not None else None,job_exit=job.poll() if job is not None else None,
             terminal=json.loads(terminal.read_text(encoding='utf-8')) if terminal.exists() else None,
             stop_requested=stop.exists(),at_unix_ms=time.time_ns()/1e6,monotonic_ms=time.monotonic_ns()/1e6)
