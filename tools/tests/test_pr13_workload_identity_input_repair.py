@@ -4,6 +4,7 @@ import hashlib
 import subprocess
 import tempfile
 import unittest
+from unittest import mock
 from pathlib import Path
 
 from tools import pr13_distributed_capacity as c
@@ -11,6 +12,7 @@ from tools.gameplay_load_validation import workload_profile_identity
 from tools.tests.test_pr13_distributed_capacity import SyntheticStudy
 
 COLLECTOR='7b0f6008f4527c5c1536e9090d7d21820e72551a'
+REPAIR='34f1d55dd022a806edb642339872292616a29b34'
 ROOT=Path(__file__).resolve().parents[2]
 
 
@@ -38,7 +40,7 @@ class WorkloadIdentityInputRepairTests(unittest.TestCase):
     def test_original_criteria_equal_only_after_named_identity_repair(self):
         flags=getattr(subprocess,'CREATE_NO_WINDOW',0)
         old=subprocess.check_output(['git','show',COLLECTOR+':tools/pr13_distributed_capacity.py'],cwd=ROOT,creationflags=flags)
-        current=(ROOT/'tools/pr13_distributed_capacity.py').read_bytes()
+        current=subprocess.check_output(['git','show',REPAIR+':tools/pr13_distributed_capacity.py'],cwd=ROOT,creationflags=flags)
         projection=c._identity_criteria_projection(current)
         self.assertEqual(c._identity_criteria_projection(old),projection)
         for before,after in [('minimum_coverage=.95','minimum_coverage=.1'),
@@ -52,7 +54,14 @@ class WorkloadIdentityInputRepairTests(unittest.TestCase):
         ref=c.load_git_reference(ROOT,COLLECTOR,workload_profile='full-native60-global50-aggregate-v2')
         self.assertFalse(c._runtime_policy_source_matches('tools/pr13_distributed_capacity.py',ref))
         ref['_identity_source_repair_repository']=str(ROOT)
-        self.assertTrue(c._runtime_policy_source_matches('tools/pr13_distributed_capacity.py',ref))
+        # Later user-directed budget changes must not silently enter the old
+        # identity-only review. The exact frozen repair revision still works.
+        self.assertFalse(c._runtime_policy_source_matches('tools/pr13_distributed_capacity.py',ref))
+        repair=subprocess.check_output(['git','show',REPAIR+':tools/pr13_distributed_capacity.py'],cwd=ROOT,
+            creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
+        target=(ROOT/'tools/pr13_distributed_capacity.py').resolve();read_bytes=Path.read_bytes
+        with mock.patch.object(Path,'read_bytes',lambda p:repair if p.resolve()==target else read_bytes(p)):
+            self.assertTrue(c._runtime_policy_source_matches('tools/pr13_distributed_capacity.py',ref))
         ref['controls']['tools/pr13_authority_transitions.py']='0'*64
         self.assertFalse(c._runtime_policy_source_matches('tools/pr13_authority_transitions.py',ref))
 

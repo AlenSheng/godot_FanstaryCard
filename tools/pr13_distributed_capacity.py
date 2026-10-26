@@ -62,6 +62,7 @@ NORTH_AMERICA_LATENCY_PROFILE = 'north-america-5s-8s-10s-monitor10s'
 AGGREGATE_INITIAL_MEMORY = {'windows': 14092861440, 'cloud': 2446157056}
 AGGREGATE_WORLD_CAP = 300
 AGGREGATE_PRIOR_WORLDS_MINIMUM = 253
+USER_FINAL_ACCEPTANCE_POLICY = 'user-20261026-100-then50-over300'
 
 
 def require(condition, reason):
@@ -574,9 +575,13 @@ def assess_captures(spec, captures, reference, backend_before, backend_after):
             require(type(spec.get('target_online_clients')) is int and spec['target_online_clients'] == 50,
                     'aggregate_actual_online_target_not50')
             prior = spec.get('prior_capacity_worlds')
-            require(type(prior) is int and AGGREGATE_PRIOR_WORLDS_MINIMUM <= prior < AGGREGATE_WORLD_CAP and
+            original_budget = (type(prior) is int and AGGREGATE_PRIOR_WORLDS_MINIMUM <= prior < AGGREGATE_WORLD_CAP and
                     type(spec.get('combined_capacity_world_cap')) is int and spec['combined_capacity_world_cap'] == AGGREGATE_WORLD_CAP and
-                    spec['world_budget'] <= AGGREGATE_WORLD_CAP - prior,
+                    spec['world_budget'] <= AGGREGATE_WORLD_CAP - prior and 'user_final_acceptance_policy' not in spec)
+            final_user_round = (spec.get('user_final_acceptance_policy') == USER_FINAL_ACCEPTANCE_POLICY and
+                type(prior) is int and prior == 284 and type(spec.get('combined_capacity_world_cap')) is int and
+                spec['combined_capacity_world_cap'] == 324 and spec['world_budget'] == 40)
+            require(original_budget or final_user_round,
                     'cumulative_capacity_budget_reset_or_exceeded')
         else:
             require('native_supply_clients' not in spec, 'supply_field_outside_aggregate_profile')
@@ -651,6 +656,10 @@ def assess_captures(spec, captures, reference, backend_before, backend_after):
             result.update(conditional_revised_capacity_scope=True, original_strict_profile_accepted=False,
                           inferred_short_stun_requests={r['host_id']:r['authority_transition_review']['inferred_short_stun_requests']
                                                         for r in audited})
+            if spec.get('user_final_acceptance_policy') == USER_FINAL_ACCEPTANCE_POLICY:
+                result.update(user_final_acceptance_policy=USER_FINAL_ACCEPTANCE_POLICY,
+                    user_over300_condition_reached=spec['prior_capacity_worlds']+backend_after['matches']>300,
+                    cumulative_actual_worlds=spec['prior_capacity_worlds']+backend_after['matches'])
     except (OSError, KeyError, TypeError, ValueError, RecursionError, StopIteration) as error:
         result['evidence_errors'].append(str(error) if isinstance(error, ValueError) else type(error).__name__)
     return result
