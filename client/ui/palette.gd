@@ -4,6 +4,10 @@ static var _body_font: FontFile
 static var _title_font: FontFile
 static var _number_font: FontVariation
 static var _fonts_ready := false
+static var _scaled_body_font: FontFile
+static var _scaled_title_font: FontFile
+static var _scaled_number_font: FontVariation
+static var _scaled_fonts_ready := false
 static var _language := "zh-CN"
 static var _locale_config: Dictionary = {}
 static var _source_aliases: Dictionary = {}
@@ -16,6 +20,10 @@ static func clear_runtime_fonts() -> void:
 	_title_font = null
 	_number_font = null
 	_fonts_ready = false
+	_scaled_body_font = null
+	_scaled_title_font = null
+	_scaled_number_font = null
+	_scaled_fonts_ready = false
 
 const INK := Color("172d35")
 const PAPER := Color("efe3c7")
@@ -81,6 +89,13 @@ static func font(role: String = "body") -> Font:
 		_title_font = load(_locale_config.languages[_language].fonts.title)
 		_body_font.allow_system_fallback = false
 		_title_font.allow_system_fallback = false
+		for typeface in [_body_font, _title_font]:
+			typeface.antialiasing = TextServer.FONT_ANTIALIASING_GRAY
+			typeface.hinting = TextServer.HINTING_NORMAL
+			typeface.force_autohinter = true
+			typeface.subpixel_positioning = TextServer.SUBPIXEL_POSITIONING_ONE_QUARTER
+			typeface.oversampling = 2.0
+			typeface.generate_mipmaps = true
 		_title_font.fallbacks = [_body_font]
 		_number_font = FontVariation.new()
 		_number_font.base_font = _body_font
@@ -91,6 +106,31 @@ static func font(role: String = "body") -> Font:
 		"title": return _title_font
 		"number": return _number_font
 	return _body_font
+
+## Card faces have their own fractional transform in addition to window scaling.
+## Distance-field glyphs keep those transformed edges sharp at all grid sizes.
+static func scaled_font(role: String = "body") -> Font:
+	if not _scaled_fonts_ready:
+		_scaled_body_font = _distance_field_font(font("body") as FontFile)
+		_scaled_title_font = _distance_field_font(font("title") as FontFile)
+		_scaled_title_font.fallbacks = [_scaled_body_font]
+		_scaled_number_font = FontVariation.new()
+		_scaled_number_font.base_font = _scaled_body_font
+		_scaled_number_font.opentype_features = {"pwid": 0}
+		_scaled_fonts_ready = true
+	match role:
+		"title": return _scaled_title_font
+		"number": return _scaled_number_font
+	return _scaled_body_font
+
+static func _distance_field_font(source: FontFile) -> FontFile:
+	var result := FontFile.new()
+	result.data = source.data
+	result.allow_system_fallback = false
+	result.multichannel_signed_distance_field = true
+	result.msdf_size = 96
+	result.msdf_pixel_range = 8
+	return result
 
 static func _ensure_locale() -> void:
 	if _locale_config.is_empty():
@@ -242,6 +282,7 @@ static func set_language(value: String) -> void:
 	if _language == value: return
 	_language = value
 	_fonts_ready = false
+	_scaled_fonts_ready = false
 	_formatted_alias_cache.clear()
 	_save_language()
 
@@ -304,14 +345,14 @@ static func languages() -> Dictionary:
 	_ensure_locale()
 	return _locale_config.get("languages", {})
 
-static func font_for_text(value: String, size: int = 24) -> Font:
+static func font_for_text(value: String, size: int = 24, scaled: bool = false) -> Font:
 	var numeric := not value.is_empty()
 	for character in value:
 		if character not in "0123456789+-−.,:%/ ×":
 			numeric = false
 			break
-	if numeric: return font("number")
-	return font("title") if size >= 32 and value.length() <= 26 and not value.contains("\n") else font("body")
+	var role := "number" if numeric else ("title" if size >= 32 and value.length() <= 26 and not value.contains("\n") else "body")
+	return scaled_font(role) if scaled else font(role)
 
 static func fit_font_size(typeface: Font, requested: int, height: float, width: float = -1.0, value: String = "") -> int:
 	var fitted := requested
@@ -334,10 +375,24 @@ static func fit_control_font(control: Control, typeface: Font, requested: int, h
 	if not is_instance_valid(control): return
 	var update := func() -> void:
 		if not is_instance_valid(control): return
+		# Containers allocate their children after insertion. Fitting the initial
+		# zero-width rectangle shrinks the font and therefore its minimum size,
+		# trapping labels at one pixel before layout can give them room.
+		if control.size.x <= horizontal_padding + 1.0:
+			if control.get_theme_font_size("font_size") != requested:
+				control.add_theme_font_size_override("font_size", requested)
+			return
 		var value := str(control.get("text"))
 		var width := maxf(1.0, control.size.x - horizontal_padding)
-		var height := control.size.y
-		control.add_theme_font_size_override("font_size", fit_font_size(typeface, requested, height, width, value))
+		# A container-managed label's height comes from its font, rather than an
+		# authored text box. Keep that minimum height independent of font fitting.
+		var height := -1.0 if control.get_parent() is Container else control.size.y
+		# Wrapping container labels grow vertically; fitting their whole paragraph
+		# on one line would make translated help text unnecessarily tiny.
+		var wrapping_container_label: bool = control is Label and control.get_parent() is Container and control.autowrap_mode != TextServer.AUTOWRAP_OFF
+		var fitted: int = requested if wrapping_container_label else fit_font_size(typeface, requested, height, width, value)
+		if control.get_theme_font_size("font_size") != fitted:
+			control.add_theme_font_size_override("font_size", fitted)
 	control.resized.connect(update)
 	# Resized will refit after layout. The initial size is already available
 	# here; deferring a lambda can retain a card that was returned to the pool.

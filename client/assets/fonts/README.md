@@ -38,3 +38,23 @@ Upstream projects:
 Full CJK fonts are intentionally retained rather than trimming to current UI
 copy. These families do not promise every Unicode emoji or every historic rare
 ideograph; no UI behavior should rely on a machine's emoji font.
+
+## Resolution-independent UI clarity
+
+The shared palette explicitly configures grayscale antialiasing, full automatic
+hinting, quarter-pixel positioning, 2x raster oversampling and mipmaps for normal
+UI text. The settings are applied to the loaded font resources, so imported
+cache defaults do not determine the shipped profile.
+
+Card faces also have a fractional local transform. They use separate MSDF font
+resources derived from the same complete bundled font data (96px source size,
+8px distance range). This preserves sharp card text through both grid and window
+scaling. Number variants retain the existing `pwid: 0` feature. No font binaries,
+weights, license files or character coverage were replaced.
+
+Actual side-by-side raster/full-hint/2x/MSDF comparisons were captured at
+960x540,1280x720 and1920x1080. Standard text uses the 2x profile; transformed card
+text uses MSDF. See the current UI review report for original evidence and final
+multilingual layout validation.
+
+Reference: https://docs.godotengine.org/en/stable/tutorials/ui/gui_using_fonts.html

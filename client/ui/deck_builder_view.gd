@@ -51,7 +51,7 @@ static func _search_and_filters(ui: Control, host: Control) -> LineEdit:
 			filter.add_theme_stylebox_override(state_name, style)
 		filter.size = Vector2(92, 62)
 		filter.tooltip_text = filter.text
-		P.fit_control_font(filter, filter.get_theme_font("font"), 22, 28.0)
+		P.fit_control_font(filter, filter.get_theme_font("font"), 22, 20.0)
 	return search
 
 static func _owned_cards(ui: Control, host: Control) -> Dictionary:
@@ -61,7 +61,7 @@ static func _owned_cards(ui: Control, host: Control) -> Dictionary:
 	scroll.name = "DeckOwnedScroll"
 	var grid := CardGridView.new()
 	grid.name = "DeckOwnedGrid"
-	grid.columns = 4
+	grid.columns = CardGridView.display_layout(host, 4, 236.0, 1182.0, 48.0).columns
 	grid.add_theme_constant_override("h_separation", 48)
 	grid.add_theme_constant_override("v_separation", 42)
 	scroll.add_child(grid)
@@ -89,7 +89,9 @@ static func _fill_owned_grid(host: Control, grid: GridContainer, scroll: ScrollC
 			"callback": _activate_owned.bind(host, id, scroll), "selected": in_deck, "disabled": Game.busy,
 			"options": {"collection": true, "copy_count": int(entry.get("copyCount", 0)), "level": int(entry.get("level", 0))},
 			"tooltip": reason if not reason.is_empty() else "加入编组"})
-	grid.configure(host, scroll, entries, 236.0)
+	var layout := CardGridView.display_layout(host, 4, 236.0, 1182.0, 48.0)
+	grid.columns = layout.columns
+	grid.configure(host, scroll, entries, layout.side)
 	count.text = P.localized("owned_cards_count").format({"count": entries.size()})
 
 static func _deck_panel(ui: Control, host: Control) -> void:

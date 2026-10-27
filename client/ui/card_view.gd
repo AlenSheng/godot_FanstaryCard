@@ -70,8 +70,7 @@ func configure(id: String, info: Dictionary, description: String, selected: bool
 		var level := int(options.get("level", 0))
 		# card_view.gdshader moves the frame's text panel below the portrait:
 		# its usable interior is y=303..357, not the source texture's y=256..348.
-		var title := _text(CardDetails.localized_name(id, info), Rect2(24, 304, 170, 26), 18, P.GOLD)
-		title.add_theme_font_override("font", P.font("title"))
+		var title := _text(CardDetails.localized_name(id, info), Rect2(24, 304, 170, 26), 18, P.PAPER if unowned else P.GOLD, true, P.scaled_font("title"))
 		title.name = "CardName"
 		var effect_label := _text(effect.replace("\n", " "), Rect2(24, 331, 170, 24), 16, P.PAPER, false)
 		effect_label.name = "CardEffect"
@@ -91,7 +90,10 @@ func configure(id: String, info: Dictionary, description: String, selected: bool
 			for side in [SIDE_LEFT, SIDE_TOP, SIDE_RIGHT, SIDE_BOTTOM]: selection_style.set_content_margin(side, 0)
 			selection.add_theme_stylebox_override("normal", selection_style)
 	for child in get_children():
-		if child is CanvasItem and child.material == null: child.use_parent_material = true
+		# Ownership remains visible in the illustration/frame. Keep readable text
+		# on the standard font path rather than dimming glyphs with that shader.
+		if child is Label: child.use_parent_material = false
+		elif child is CanvasItem and child.material == null: child.use_parent_material = true
 
 func _face_description(id: String, fallback: String) -> String:
 	var locale := P.language()
@@ -180,7 +182,7 @@ func _monster_text(id: String, info: Dictionary, effect: String, selected: bool,
 	banner.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(banner)
 	var title_text := P.localized("monster") + " " + CardDetails.localized_name(id, info)
-	var title := _text(title_text, Rect2(19, 28, 180, 34), 21, P.PAPER, true, P.font("title"))
+	var title := _text(title_text, Rect2(19, 28, 180, 34), 21, P.PAPER, true, P.scaled_font("title"))
 	title.name = "MonsterName"
 	_text(effect, Rect2(21, 304, 176, 38), 17, P.PAPER)
 	if id == "M-BOXSPIRIT":
@@ -189,7 +191,7 @@ func _monster_text(id: String, info: Dictionary, effect: String, selected: bool,
 	_text("已选 · 本局怪物卡" if selected else "本局怪物卡", Rect2(24, 344, 170, 19), 13, P.GOLD if selected else Color("d3b6ab")).name = "MonsterFooter"
 
 func _fit_card_effect_font(label: Label, requested_size: int) -> void:
-	var typeface: Font = P.font_for_text(label.text, requested_size)
+	var typeface: Font = P.font_for_text(label.text, requested_size, true)
 	var fitted_size: int = requested_size
 	while fitted_size > 12:
 		var text_size := typeface.get_string_size(label.text, HORIZONTAL_ALIGNMENT_CENTER, -1.0, fitted_size)
@@ -207,7 +209,7 @@ func _text(value: String, rect: Rect2, font_size: int, color: Color, fit_to_rect
 	label.autowrap_mode = TextServer.AUTOWRAP_ARBITRARY
 	label.clip_text = true
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var typeface: Font = typeface_override if typeface_override != null else P.font_for_text(display_text, font_size)
+	var typeface: Font = typeface_override if typeface_override != null else P.font_for_text(display_text, font_size, true)
 	label.add_theme_font_override("font", typeface)
 	label.add_theme_font_size_override("font_size", P.fit_font_size(typeface, font_size, rect.size.y, rect.size.x - 8.0, display_text) if fit_to_rect else font_size)
 	label.add_theme_color_override("font_color", color)

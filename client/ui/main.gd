@@ -117,6 +117,7 @@ func _ready() -> void:
 	Game.cache_changed.connect(_on_cache_changed)
 	Game.authentication_required.connect(_show_ban_dialog)
 	Game.combat_feedback.connect(_feedback)
+	get_window().size_changed.connect(_on_card_window_size_changed)
 	_build_shell()
 	var audio_settings := AudioSettings.new()
 	audio_settings.name = "AudioSettings"
@@ -167,9 +168,13 @@ func _trim_card_pool_for_memory(force: bool = false) -> void:
 	Art.clear_texture_cache()
 
 func _card_page_key(page: String) -> int:
-	return hash([page, P.language(), _quality, _search, _codex_ready, _codex_mutating,
+	return hash([page, P.language(), get_window().size, _quality, _search, _codex_ready, _codex_mutating,
 		Game.busy, Game.hero_class, Game.connection, owned, deck_draft, Game.deck(),
 		Game.lobby.get("materials", {}), Game.lobby.get("wallet", {})])
+
+func _on_card_window_size_changed() -> void:
+	if screen in ["cards", "deck"] and not Game.lobby.is_empty() and Game.room.is_empty() and Game.settlement.is_empty():
+		_schedule_render()
 
 func _set_card_page_cache_key(page: String) -> void:
 	if is_instance_valid(_card_page_cache.get(page)):
@@ -252,12 +257,15 @@ func _build_shell() -> void:
 	var top := HBoxContainer.new()
 	root_column.add_child(top)
 	var game_title := _label(top, P.localized("game_title"), 38, P.GOLD)
+	game_title.autowrap_mode = TextServer.AUTOWRAP_OFF
 	game_title.name = "GameTitle"
 	_game_title = game_title
 	var spacer := Control.new()
 	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	top.add_child(spacer)
 	status_label = _label(top, "", 20, P.MUTED)
+	status_label.custom_minimum_size.x = 420
+	status_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var scroll := ScrollContainer.new()
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -641,7 +649,9 @@ func _label(parent: Node, text: String, size: int = 24, color: Color = P.PAPER, 
 	node.add_theme_font_size_override("font_size", size)
 	node.add_theme_color_override("font_color", color)
 	node.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	node.clip_text = true
+	# Container-managed labels need their shaped text height for layout. Fixed
+	# overlay labels still clip to their authored rectangles.
+	node.clip_text = not parent is Container
 	parent.add_child(node)
 	P.fit_control_font(node, typeface, size)
 	return node
@@ -656,8 +666,13 @@ func _button(parent: Node, text: String, callback: Callable, disabled: bool = fa
 	button.pressed.connect(callback)
 	var button_key := key if not key.is_empty() else ("UI/CardCodex/card_codex_action_button_orange.png" if _is_positive_button(text) else "UI/CardCodex/card_codex_action_button_blue.png")
 	Art.button(button, button_key)
+	if parent is HBoxContainer:
+		var caption_width := 0.0
+		for line in button.text.split("\n"):
+			caption_width = maxf(caption_width, button.get_theme_font("font").get_string_size(line, HORIZONTAL_ALIGNMENT_LEFT, -1, 24).x)
+		button.custom_minimum_size.x = clampf(ceilf(caption_width) + 48.0, 120.0, 420.0)
 	parent.add_child(button)
-	P.fit_control_font(button, P.font_for_text(button.text, 24), 24, 48.0)
+	P.fit_control_font(button, button.get_theme_font("font"), 24, 48.0)
 	return button
 
 func _is_positive_button(value: String) -> bool:
@@ -685,8 +700,9 @@ func _login() -> void:
 	_label(content, "搜寻遗物，组合五行，带着战利品归来。", 30)
 	var row := _row(content)
 	var panel := _panel(row)
+	panel.add_theme_constant_override("separation", 12)
 	var panel_frame: Control = panel.get_parent()
-	panel_frame.size_flags_stretch_ratio = 0.25
+	panel_frame.size_flags_stretch_ratio = 0.32
 	panel_frame.custom_minimum_size.x = 340
 	_label(panel, "启程", 40)
 	_label(panel, P.localized("nickname"), 22, P.MUTED)
@@ -696,15 +712,15 @@ func _login() -> void:
 	name_input.max_length = 20
 	name_input.text_changed.connect(func(value): _login_name = value)
 	panel.add_child(name_input)
-	_button(panel, P.localized("random_name"), func():
+	var randomize_button := _button(panel, P.localized("random_name"), func():
 		_login_name = _random_login_name(_login_name)
 		name_input.text = _login_name
 	, Game.busy, "UI/CardCodex/card_codex_action_button_orange.png")
+	randomize_button.tooltip_text = P.localized("random_name_hint")
 	if OS.is_debug_build():
-		_button(panel, P.localized("local_dev_login"), func(): Game.login(LOCAL_SERVER_URL, _login_name), Game.busy, "UI/CardCodex/card_codex_action_button_blue.png")
+		var local_button := _button(panel, P.localized("local_dev_login"), func(): Game.login(LOCAL_SERVER_URL, _login_name), Game.busy, "UI/CardCodex/card_codex_action_button_blue.png")
+		local_button.tooltip_text = P.localized_text("本地服仅用于开发联调；原有入口连接腾讯云外网服务器。")
 	_label(panel, P.localized("nickname_hint"), 20, P.MUTED)
-	_label(panel, P.localized("random_name_hint"), 18, P.MUTED)
-	_label(panel, "本地服仅用于开发联调；原有入口连接腾讯云外网服务器。", 18, P.MUTED)
 	_button(panel, P.localized("cloud_login"), func(): Game.login(CLOUD_SERVER_URL, _login_name), Game.busy, "UI/CardCodex/card_codex_action_button_orange.png")
 	var steam_reason: String = Game.platform.login_unavailable_reason()
 	_button(panel, "Steam 登录", func(): Game.login_steam(CLOUD_SERVER_URL, _login_name), Game.busy or not steam_reason.is_empty())
@@ -713,7 +729,7 @@ func _login() -> void:
 	if not Game.configuration_error.is_empty(): _label(panel, Game.configuration_error, 22, P.GOLD)
 	var center_space := Control.new()
 	center_space.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	center_space.size_flags_stretch_ratio = 0.45
+	center_space.size_flags_stretch_ratio = 0.38
 	row.add_child(center_space)
 	var about := _panel(row)
 	var about_frame: Control = about.get_parent()

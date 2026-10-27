@@ -6,6 +6,14 @@ var failures: Array[String] = []
 var output := "res://evidence/deck_builder"
 
 func _ready() -> void:
+	var evidence_directory := OS.get_environment("FANTASYCARD_ART_EVIDENCE")
+	if not evidence_directory.is_empty(): output = evidence_directory
+	Sound.persist_settings = false
+	Sound.stop_all()
+	Sound.set_music_context("")
+	Sound.stop_music()
+	Sound._headless_runtime = true
+	Sound.set_process(false)
 	get_viewport().set_disable_input(true)
 	Game.set_process(false)
 	Game.gateway.set_process(false)
@@ -42,6 +50,8 @@ func _run() -> void:
 	$UI.owned.append(_owned(incompatible, $UI.cards[incompatible]))
 	var initial: Array = eligible.slice(0, 3)
 	Game.lobby.decks = [{"heroClass": "Mage", "cardIds": initial, "version": 1}]
+	Game.lobby.cards = $UI.owned
+	$UI._sync_account_session()
 	$UI.screen = "deck"
 	$UI._codex_ready = true
 	await $UI._navigate("deck")
@@ -93,9 +103,28 @@ func _run() -> void:
 	await _capture("deck_builder_full_1920")
 	get_window().size = Vector2i(960, 540)
 	await _capture("deck_builder_960")
+	var draft_before_locale: Array = $UI.deck_draft.duplicate()
+	for locale in ["en", "zh-CN", "en"]:
+		var settings := $UI.get_node("AudioSettings")
+		settings.show_settings()
+		await _settle()
+		var language: OptionButton = settings._popup.find_children("*", "OptionButton", true, false)[0]
+		language.item_selected.emit(P.languages().keys().find(locale))
+		await _settle()
+		_check(P.language() == locale, "The actual settings language callback must apply " + locale)
+		_check($UI.deck_draft == draft_before_locale, "Language changes must preserve the unsaved deck")
+		await _show_owned_card(str(draft_before_locale[0]))
+		var localized_card: Button = $UI._reference.find_child("DeckCard_" + str(draft_before_locale[0]), true, false)
+		var badge: Label = localized_card.get_node("SelectedIndicator") if localized_card != null else null
+		_check(badge != null and badge.text == P.localized_text("已选"), "Pooled selected-card text must refresh for " + locale)
+		await _capture("deck_locale_%s_%s" % [locale, str(Time.get_ticks_usec())])
 	var report := {"ok": failures.is_empty(), "failures": failures}
 	FileAccess.open(output + "/report.json", FileAccess.WRITE).store_string(JSON.stringify(report, "  "))
 	print(JSON.stringify(report))
+	Sound.stop_all()
+	Sound.set_music_context("")
+	Sound.stop_music()
+	await get_tree().create_timer(0.35).timeout
 	get_tree().quit(0 if failures.is_empty() else 1)
 
 func _owned(id: String, info: Dictionary) -> Dictionary:
@@ -107,7 +136,8 @@ func _show_owned_card(id: String) -> void:
 	if grid == null or scroll == null: return
 	for index in range(grid.get_child_count()):
 		if grid.get_child(index).name != "OwnedSlot_" + id: continue
-		scroll.scroll_vertical = int(index / 4) * int(236.0 * 376.0 / 218.0 + 42.0)
+		var target_slot: Control = grid.get_child(index)
+		scroll.scroll_vertical = roundi(target_slot.position.y)
 		for frame in range(4): await get_tree().process_frame
 		return
 

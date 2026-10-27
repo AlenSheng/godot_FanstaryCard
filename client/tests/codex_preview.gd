@@ -5,8 +5,15 @@ const CardDetails = preload("res://ui/card_details.gd")
 var failures: Array = []
 var output := "res://evidence/codex"
 var screenshot_count := 0
+var touch_observations: Array = []
 
 func _ready() -> void:
+	Sound.persist_settings = false
+	Sound.stop_all()
+	Sound.set_music_context("")
+	Sound.stop_music()
+	Sound._headless_runtime = true
+	Sound.set_process(false)
 	var evidence_directory := OS.get_environment("FANTASYCARD_CODEX_EVIDENCE")
 	if not evidence_directory.is_empty(): output = evidence_directory
 	# Fixture setup uses signal activation; desktop input must not change the selected card.
@@ -35,6 +42,8 @@ func _run() -> void:
 		var kind: String = "WarriorSoul" if info.hero_class == null else str(info.hero_class) + "Soul"
 		$UI.owned.append({"cardId": id, "heroClass": info.hero_class, "unlocked": owned, "copyCount": 1 if owned else 0, "level": 0, "version": 1, "craftCost": 10 if info.hero_class == null else 12, "dismantleRefund": 2 if info.hero_class == null else 3, "currencyKind": kind, "upgradeSoulSpent": 0, "canDismantle": owned})
 	var cached_owned_count: int = $UI.owned.size()
+	Game.lobby.cards = $UI.owned
+	$UI._sync_account_session()
 	await $UI._navigate("cards")
 	_check($UI._codex_ready and $UI.owned.size() == cached_owned_count, "Re-entering the codex must reuse its session cache")
 	await _capture("collection")
@@ -158,9 +167,13 @@ func _run() -> void:
 	_finish()
 
 func _finish() -> void:
-	var report := {"ok": failures.is_empty(), "fixture_only": true, "screenshots": screenshot_count, "failures": failures}
+	var report := {"ok": failures.is_empty(), "fixture_only": true, "screenshots": screenshot_count, "failures": failures, "touch_observations": touch_observations}
 	FileAccess.open(output + "/report.json", FileAccess.WRITE).store_string(JSON.stringify(report, "  "))
 	print(JSON.stringify(report))
+	Sound.stop_all()
+	Sound.set_music_context("")
+	Sound.stop_music()
+	await get_tree().create_timer(0.35).timeout
 	get_tree().quit(0 if failures.is_empty() else 1)
 
 func _drag_check() -> void:
@@ -209,6 +222,8 @@ func _drag_check() -> void:
 	await get_tree().process_frame
 	_check($UI._codex_card.is_empty(), "Escape must close details")
 	scroll = $UI._reference.find_child("CodexScroll", true, false)
+	_check(scroll.interaction_enabled and $UI._reference.get_node_or_null("CardDetails") == null, "Escape must remove the actual details layer and restore list interaction")
+	touch_observations.append(_touch_state(scroll, "before"))
 	var before_scroll := scroll.scroll_vertical
 	var touch := InputEventScreenTouch.new()
 	touch.index = 0
@@ -216,12 +231,14 @@ func _drag_check() -> void:
 	touch.pressed = true
 	Input.parse_input_event(touch)
 	await get_tree().process_frame
+	touch_observations.append(_touch_state(scroll, "after_press"))
 	var touch_drag := InputEventScreenDrag.new()
 	touch_drag.index = 0
 	touch_drag.position = Vector2(300, 490)
 	touch_drag.relative = Vector2(0, -220)
 	Input.parse_input_event(touch_drag)
 	await get_tree().process_frame
+	touch_observations.append(_touch_state(scroll, "after_drag"))
 	touch.pressed = false
 	touch.position = touch_drag.position
 	Input.parse_input_event(touch)
@@ -238,7 +255,8 @@ func _show_card(grid: GridContainer, id: String) -> void:
 	if index < 0: return
 	var scroll := $UI._reference.find_child("CodexScroll", true, false) as ScrollContainer
 	if scroll == null: return
-	scroll.scroll_vertical = int(index / 8) * int(184.0 * 376.0 / 218.0 + 42.0)
+	var target_slot: Control = grid.get_child(index)
+	scroll.scroll_vertical = roundi(target_slot.position.y)
 	for i in range(4): await get_tree().process_frame
 
 func _capture(label: String, rebuild: bool = true) -> void:
@@ -255,3 +273,7 @@ func _capture(label: String, rebuild: bool = true) -> void:
 
 func _check(value: bool, message: String) -> void:
 	if not value: failures.append(message)
+
+func _touch_state(scroll: ScrollContainer, stage: String) -> Dictionary:
+	var current: ScrollContainer = $UI._reference.find_child("CodexScroll", true, false)
+	return {"stage": stage, "instance": scroll.get_instance_id(), "current_instance": current.get_instance_id(), "rect": str(scroll.get_global_rect()), "interaction": scroll.interaction_enabled, "held": scroll._held, "touch_index": scroll._touch_index, "value": scroll.scroll_vertical, "queued": scroll.is_queued_for_deletion()}

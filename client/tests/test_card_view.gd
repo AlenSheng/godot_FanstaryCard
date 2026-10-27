@@ -15,6 +15,10 @@ func run_test() -> Dictionary:
 	if card.material == null or not card.material.get_shader_parameter("grayscale"): errors.append("Unowned card must be grayscale")
 	if not card.get_node("Illustration").use_parent_material or not card.get_node("CardFrame").material.get_shader_parameter("grayscale"):
 		errors.append("Grayscale must cover both illustration and frame")
+	if card.get_node("CardName").use_parent_material or card.get_node("CardEffect").use_parent_material:
+		errors.append("Clickable unowned-card text must not inherit the dimming shader")
+	if not card.get_node("CardName").get_theme_color("font_color").is_equal_approx(load("res://ui/palette.gd").PAPER):
+		errors.append("Unowned card names need the readable paper foreground")
 	if card.get_node("Illustration").size != Vector2(190, 285): errors.append("Codex portrait must retain a 2:3 rectangle")
 	if card.get_node("CardEffect").text != "火伤8": errors.append("Card face must use the catalog's compact description")
 	_check_text(card, ["CardName", "CardEffect", "ClassSymbol"], errors)

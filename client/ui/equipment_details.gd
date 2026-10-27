@@ -12,9 +12,12 @@ static func title(item: Dictionary) -> String:
 	var gear: Dictionary = equipment(item)
 	if gear.is_empty(): return P.word(item.get("kind", "物品"))
 	var affix: String = str(gear.get("effect_affix", gear.get("effectAffix", "")))
+	var attributes := ("" if P.language() == "zh-CN" else " ").join([P.word(gear.get("quality", "")), P.word(gear.get("element", "")), P.word(gear.get("slot", "装备"))])
 	if affix not in ["", "<null>"]:
-		return "%s·%s%s%s +%s" % [P.word(affix), P.word(gear.get("quality", "")), P.word(gear.get("element", "")), P.word(gear.get("slot", "装备")), gear.get("level", 0)]
-	return "%s%s %s +%s" % [P.word(gear.get("quality", "")), P.word(gear.get("element", "")), P.word(gear.get("slot", "装备")), gear.get("level", 0)]
+		return "%s%s%s +%s" % [P.word(affix), "·" if P.language() == "zh-CN" else " · ", attributes, gear.get("level", 0)]
+	if P.language() == "zh-CN":
+		return "%s%s %s +%s" % [P.word(gear.get("quality", "")), P.word(gear.get("element", "")), P.word(gear.get("slot", "装备")), gear.get("level", 0)]
+	return "%s +%s" % [attributes, gear.get("level", 0)]
 
 static func description(item: Dictionary) -> String:
 	var gear: Dictionary = equipment(item)

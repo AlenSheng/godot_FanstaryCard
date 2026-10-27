@@ -271,6 +271,7 @@ func _section_title(parent: Node, text: String) -> void:
 	label.custom_minimum_size.y = 30
 
 func _label(parent: Node, text: String, size: int, color: Color, role: String = "body") -> Label:
+	size = _readable_font_size(size)
 	var label := Label.new()
 	label.text = text
 	label.add_theme_font_override("font", P.font(role))
@@ -288,7 +289,7 @@ func _badge(parent: Node, text: String, tint: Color) -> void:
 	badge.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	badge.custom_minimum_size = Vector2(94, 30)
 	badge.add_theme_font_override("font", P.font())
-	badge.add_theme_font_size_override("font_size", 17)
+	badge.add_theme_font_size_override("font_size", _readable_font_size(17))
 	badge.add_theme_color_override("font_color", tint.lightened(0.25))
 	var style := StyleBoxFlat.new()
 	style.bg_color = tint.darkened(0.68)
@@ -297,6 +298,10 @@ func _badge(parent: Node, text: String, tint: Color) -> void:
 	style.set_corner_radius_all(10)
 	badge.add_theme_stylebox_override("normal", style)
 	parent.add_child(badge)
+
+func _readable_font_size(requested: int) -> int:
+	var pixel_scale := float(get_window().size.x) / get_viewport_rect().size.x
+	return maxi(requested, ceili(12.0 / maxf(pixel_scale, 0.01)))
 
 func _attribute_name(entry: Dictionary) -> String:
 	match entry.kind:

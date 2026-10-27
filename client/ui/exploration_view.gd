@@ -12,6 +12,7 @@ const CellIndex = preload("res://ui/cell_index.gd")
 const BattleTargets = preload("res://state/battle_targets.gd")
 const TemporaryBagItem = preload("res://ui/temporary_bag_item.gd")
 const ItemVisual = preload("res://ui/item_visual.gd")
+const MOVE_ACTION_ICON: Texture2D = preload("res://assets/generated/ui/exploration_move_compass.png")
 const PANEL := "UI/CardCodex/card_codex_dialog_panel_normal.png"
 const SLOT := Art.COMMON_CELL_KEY
 const EMPTY_HAND_SLOT := "UI/Codex/qframe_empty_gray.png"
@@ -522,7 +523,8 @@ static func _actions(ui: Control, host: Control, state: Dictionary) -> void:
 		action_button.name = "Action_" + action_name
 		var key: String = {"action.spring": "UI/Action/spring_clean.png", "action.potion": ITEM + "potion.png", "action.extract": "UI/Action/extract_gate_clean.png"}.get(action, "UI/Action/relic_pile_clean.png" if relic else "")
 		if key.is_empty():
-			_center(tile.text("→", Rect2(rect.position + Vector2(55, 27), Vector2(154, 149)), 96, P.TEAL))
+			var icon: TextureRect = _picture(tile, MOVE_ACTION_ICON, Rect2(rect.position + Vector2(42, 20), Vector2(180, 160)))
+			icon.name = "ActionIcon_" + action_name
 		else:
 			var icon: TextureRect = _picture(tile, Art.texture(key), Rect2(rect.position + Vector2(42, 20), Vector2(180, 160)))
 			icon.name = "ActionIcon_" + action_name

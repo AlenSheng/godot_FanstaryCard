@@ -1,0 +1,172 @@
+{
+  "at": "2026-10-27T21:22:03.999225+08:00",
+  "goal_state": "active",
+  "whole_visual_acceptance": false,
+  "previous_progress": "progress-r2.json",
+  "no_popup_mode": {
+    "script_check": "Headless project scene",
+    "rendering": "CreateProcessW on newly-created inactive Win32 desktop;thread desktop monitored",
+    "SwitchDesktop_calls": 0,
+    "visible_fallback": false,
+    "input_desktop_query": "Read-only optional;unavailable observations retained as null"
+  },
+  "matrix": {
+    "locales": [
+      "zh-CN",
+      "en"
+    ],
+    "resolutions": [
+      [
+        960,
+        540
+      ],
+      [
+        1280,
+        720
+      ],
+      [
+        1920,
+        1080
+      ]
+    ],
+    "scenarios_per_combination": 44,
+    "required_frames": 264
+  },
+  "actual_latest_attempts": {
+    "readability13": {
+      "PID": 12320,
+      "native_exit": 1,
+      "stop_reason": "MemoryReserveBreached",
+      "seconds": 11.3,
+      "PNGs": 10,
+      "review_created": false,
+      "private_desktop_checks": 42,
+      "all_checked_threads_on_private_desktop": true,
+      "active_input_desktop_unchanged": true,
+      "desktop_switch_calls": 0,
+      "actual_game_matches": 0,
+      "free_bytes_after": 6849073152
+    },
+    "modal14": {
+      "terminal_not_created": true,
+      "native_started": false,
+      "reason": "InputDesktop read rejection before GPU"
+    },
+    "modal15": {
+      "PID": 37960,
+      "native_exit": 0,
+      "stop_reason": null,
+      "seconds": 7.55,
+      "PNGs": 6,
+      "review_created": true,
+      "private_desktop_checks": 28,
+      "all_checked_threads_on_private_desktop": true,
+      "active_input_desktop_unchanged": null,
+      "input_desktop_observation_limited": true,
+      "desktop_switch_calls": 0,
+      "actual_game_matches": 0,
+      "free_bytes_after": 10650587136
+    },
+    "matrix16-en960": {
+      "terminal_not_created": true,
+      "native_started": false,
+      "reason": "Resource admission rejection before GPU"
+    }
+  },
+  "current_fixes_awaiting_full_matrix": [
+    "Unowned card text detached from dimming material;paper name color",
+    "Mail detail scrolling and full title tooltips",
+    "Mail two-column attachments with independent name/amount height",
+    "Enhancement benefits scroll rather than tiny text",
+    "Dynamic catalog and deck columns retain readable card labels",
+    "Compact login actions"
+  ],
+  "fixture_corrections": [
+    "Open language list using OptionButton.show_popup,not bare PopupMenu.popup",
+    "Durable per-frame original journal",
+    "Record disabled button colors separately",
+    "Add mail attachment top and settings bottom captures"
+  ],
+  "resource_policy": {
+    "reserve_GiB": 6,
+    "startup_budget_GiB": 1,
+    "three_samples_min7GiB": true,
+    "sequential": true,
+    "other_projects_modified": false
+  },
+  "queue": "G:\\PR13Evidence\\ui-visual-review-20261027-r1\\queue17",
+  "source_changes": [
+    {
+      "path": "client/ui/palette.gd",
+      "sha256": "b0491892a85924cc79c922f1f3f71ac53b0bfcca9068076e2d7810495e37fb2a",
+      "bytes": 36189
+    },
+    {
+      "path": "client/ui/main.gd",
+      "sha256": "97a1ae26cd09c05211f29f4658182730f3c0ac78f66451504156923a26b62658",
+      "bytes": 94685
+    },
+    {
+      "path": "client/ui/reference_ui.gd",
+      "sha256": "d265260a148ec1a72f22190c7d66766186894c38d692542f1c4a93fc458dbf45",
+      "bytes": 77480
+    },
+    {
+      "path": "client/ui/card_grid_view.gd",
+      "sha256": "8ccdd54c485cb180856f8ecd6599803617f9b6193508a0e343c3e15031d88164",
+      "bytes": 5435
+    },
+    {
+      "path": "client/ui/card_view.gd",
+      "sha256": "d0fe3cb3e4ac369e43dbcc8c569281da9145fcc572a026d49c4dfffae0ed9bc5",
+      "bytes": 11844
+    },
+    {
+      "path": "client/ui/codex_view.gd",
+      "sha256": "bd796c6f8aa07c9498718474f6d7d60c3b2904c65f6a81bd24e9a4834b7f27c3",
+      "bytes": 18502
+    },
+    {
+      "path": "client/ui/deck_builder_view.gd",
+      "sha256": "9ed7a27f6a218987758bfbc55c3e468ddebcb3f410eb33cdec11ac750775bfdf",
+      "bytes": 20659
+    },
+    {
+      "path": "client/ui/exploration_view.gd",
+      "sha256": "853b262db6550bb4ed85e1b9ddb79940f03738bcf0061c29c093601d8c2b9eb1",
+      "bytes": 47576
+    },
+    {
+      "path": "client/tests/codex_preview.gd",
+      "sha256": "ce1b8f16d74de6c387cdca99efc7192bc1ac9a884c353f5e9f59b60973c141c0",
+      "bytes": 13470
+    },
+    {
+      "path": "client/tests/deck_builder_preview.gd",
+      "sha256": "945708c3a958d29ffc393f09d281645077574b5c22ab4ebb34ea379ed0c6ee91",
+      "bytes": 6830
+    },
+    {
+      "path": "client/tests/test_card_view.gd",
+      "sha256": "dd5096ad6d708532e2e994d083b37be4d7f6c5f956ec8438b04580adabe776a0",
+      "bytes": 9412
+    },
+    {
+      "path": "client/tests/ui_visual_review.gd",
+      "sha256": "fc70ae28aeccb63aa36f9c8f9938a073ff6925d0e1bd5718a32cafe855148d49",
+      "bytes": 20377
+    },
+    {
+      "path": "client/tests/ui_visual_validation.gd",
+      "sha256": "08c5ece8fbcf01290d282ddeb9662e30c4c4100407e52a0f0ef358c098ab6442",
+      "bytes": 1783
+    },
+    {
+      "path": "client/assets/generated/ui/exploration_move_compass.png",
+      "sha256": "b2b53f73c94482410a2cf4fdf6a066e05a23662bd85d57b606e318a90ee5a0c5",
+      "bytes": 2557094
+    }
+  ],
+  "historical_capacity_work_reopened": false,
+  "new_game_matches": 0
+}

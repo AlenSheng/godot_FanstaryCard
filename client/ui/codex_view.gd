@@ -43,6 +43,16 @@ static func build(ui: Control, host: Control) -> void:
 		var key := "filter_button_selected.png" if quality.is_empty() else "filter_button_%s%s.png" % [quality.to_lower(), "_selected" if selected else ""]
 		var filter: Button = ui.button("全部" if quality.is_empty() else P.word(quality), Rect2(1090 + i * 132, 132, 116, 62), func(): host._quality = quality; host._codex_scroll = 0; host._render(), false, PREFIX + key)
 		filter.name = "Filter_" + ("All" if quality.is_empty() else quality)
+		for state_name in ["normal", "hover", "pressed", "disabled"]:
+			var style: StyleBox = filter.get_theme_stylebox(state_name).duplicate()
+			style.set_content_margin(SIDE_LEFT, 8)
+			style.set_content_margin(SIDE_RIGHT, 8)
+			style.set_content_margin(SIDE_TOP, 6)
+			style.set_content_margin(SIDE_BOTTOM, 6)
+			filter.add_theme_stylebox_override(state_name, style)
+		filter.size = Vector2(116, 62)
+		filter.tooltip_text = filter.text
+		P.fit_control_font(filter, filter.get_theme_font("font"), 24, 20.0)
 	var count: Label = ui.text("", Rect2(48, 208, 1050, 35), 20, P.MUTED)
 	count.name = "CollectionCount"
 	var scroll := _scroll(ui, Rect2(42, 257, 1840, 758))
@@ -50,7 +60,7 @@ static func build(ui: Control, host: Control) -> void:
 	scroll.interaction_enabled = host._codex_card.is_empty()
 	var grid := CardGridView.new()
 	grid.name = "CardGrid"
-	grid.columns = 8
+	grid.columns = CardGridView.display_layout(host, 8, 184.0, 1840.0, 47.0).columns
 	grid.add_theme_constant_override("h_separation", 47)
 	grid.add_theme_constant_override("v_separation", 42)
 	scroll.add_child(grid)
@@ -86,7 +96,9 @@ static func _fill_grid(ui: Control, host: Control, grid: GridContainer, scroll: 
 			if scroll.can_activate(): _open_details(ui, host, id, scroll),
 			"options": {"collection": true, "copy_count": copies, "level": int(owned.get("level", 0))},
 			"tooltip_suffix": card_tooltip_suffix(copies)})
-	grid.configure(host, scroll, entries, 184.0)
+	var layout := CardGridView.display_layout(host, 8, 184.0, 1840.0, 47.0)
+	grid.columns = layout.columns
+	grid.configure(host, scroll, entries, layout.side)
 	count.text = P.localized("collected_count") % [collected, total]
 	if entries.size() != total: count.text += filtered_count(entries.size())
 	if not host._codex_ready: count.text += "    " + P.localized("collection_not_ready")
@@ -152,7 +164,7 @@ static func _details(ui: Control, host: Control) -> void:
 	var owned: bool = copies > 0
 	var hero: Variant = info.get("hero_class")
 	var kind: String = entry.get("currencyKind", "WarriorSoul" if hero == null else str(hero) + "Soul")
-	var material: String = SOUL_NAMES.get(kind, kind)
+	var material: String = P.word(kind)
 	var cost := int(entry.get("craftCost", 0))
 	var refund := int(entry.get("dismantleRefund", 0))
 	var balance: int = host._card_material(kind)
