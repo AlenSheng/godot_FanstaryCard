@@ -1,0 +1,221 @@
+{
+  "date": "2026-10-27",
+  "at": "2026-10-27T18:21:25.731725+08:00",
+  "kind": "CurrentVersionFourAcceptedByExplicitUserLocalSimulationScope_FinalCloseout",
+  "user_scope_decision": {
+    "id": "USER-CURRENT-LOCAL-SIM-FOUR-ACCEPTANCE-20261027-R1",
+    "authority": "DirectHumanUserLatestMessage",
+    "text": "这四项按本机模拟口径完成当前版本验收，历史原件和真实外部fork未实测的缺口单独保留，不再阻塞本轮。同步总报告和接续文档并推送release，结束本轮任务，不再补测100人。",
+    "scope": "CurrentVersionOnly_LocalSimulation_ExplicitUserAcceptance",
+    "historical_originals_or_real_external_fork_recovery_claimed": false,
+    "historical_and_external_gaps_current_round_blocking": false,
+    "original_strict_register_and_results_not_rewritten": true,
+    "new_tests_required": false,
+    "automatic100_retest": false,
+    "at": "2026-10-27T18:21:25.731725+08:00"
+  },
+  "current_round_verdict": "AcceptedAndComplete",
+  "goal_objective": "继续执行剩下四项未通过任务",
+  "goal_status": "complete",
+  "goal_tool_transition": "Apply complete after release publication and final verification",
+  "four_current_accepted_task_ids": [
+    "LOAD-11.2",
+    "PR13-A01.3",
+    "PR13-A07.3",
+    "PR13-A08.1"
+  ],
+  "current_task_results": [
+    {
+      "task_id": "LOAD-11.2",
+      "current_verdict": "Accepted",
+      "scope": "CurrentVersionOnly_LocalSimulation_ExplicitUserAcceptance",
+      "passed_local_case_ids": [
+        "LOAD-11.2-T01",
+        "LOAD-11.2-T02",
+        "LOAD-11.2-T03"
+      ],
+      "historical_external_gap_unpassed_and_nonblocking": true
+    },
+    {
+      "task_id": "PR13-A01.3",
+      "current_verdict": "Accepted",
+      "scope": "CurrentVersionOnly_LocalSimulation_ExplicitUserAcceptance",
+      "passed_local_case_ids": [
+        "PR13-A01.3-T01",
+        "PR13-A01.3-T02",
+        "PR13-A01.3-T03"
+      ],
+      "historical_external_gap_unpassed_and_nonblocking": true
+    },
+    {
+      "task_id": "PR13-A07.3",
+      "current_verdict": "Accepted",
+      "scope": "CurrentVersionOnly_LocalSimulation_ExplicitUserAcceptance",
+      "passed_local_case_ids": [
+        "PR13-A07.3-T01",
+        "PR13-A07.3-T02",
+        "PR13-A07.3-T03"
+      ],
+      "historical_external_gap_unpassed_and_nonblocking": true
+    },
+    {
+      "task_id": "PR13-A08.1",
+      "current_verdict": "Accepted",
+      "scope": "CurrentVersionOnly_LocalSimulation_ExplicitUserAcceptance",
+      "passed_local_case_ids": [
+        "PR13-A08.1-T01",
+        "PR13-A08.1-T02",
+        "PR13-A08.1-T03"
+      ],
+      "historical_external_gap_unpassed_and_nonblocking": true
+    }
+  ],
+  "current_effective132_counts": {
+    "Accepted": 120,
+    "ClosedByUserAgreement": 12,
+    "Partial": 0,
+    "ReadyForAcceptance": 0
+  },
+  "remaining_current_task_count": 0,
+  "remaining_current_noncapacity_task_count": 0,
+  "all_current_dependencies_resolved_in_scope": true,
+  "local_evidence": {
+    "report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/LOCAL_GAP_RESIMULATION_ACCEPTANCE_20261027_R1.json",
+    "report_identity": {
+      "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\reports\\pr13-rebuild-20261024-r1\\continuation-20261025\\LOCAL_GAP_RESIMULATION_ACCEPTANCE_20261027_R1.json",
+      "bytes": 24179,
+      "sha256": "12fdbe162937be542beed6ddd7df42eea6a0459ceeeffae542dd966182391b34"
+    },
+    "four_case_groups_passed": 4,
+    "explicit_passed": 12,
+    "regression_passed": 31,
+    "simulated_cycles": 229,
+    "actual_native_game_matches": 0,
+    "exact_source_files": 282,
+    "local_input_files_SHA_verified": 690,
+    "actual_PG_original_rows_reverified": 418,
+    "actual_PG_original_skipped": 0,
+    "new_PG_runs": 0,
+    "actual_external_fork_PR_runs": 0,
+    "existing_PG_parent_source_trees_equal_current": true
+  },
+  "historical_external_gaps_not_blocking": [
+    {
+      "task_id": "LOAD-11.2",
+      "original_strict_state": "Partial",
+      "historical_or_external_verdict": "RetainedUnpassed",
+      "concrete_gaps": [
+        "当前相关完整来源/原始到派生图仍未整体闭合；3005个声明大小/SHA身份未补齐，其中1610属于已搜索Sept29历史范围，1395为其它声明。本批3396个精确副本与队列关联，新增匹配0。",
+        "旧因果源/原模块的历史执行关系1条仍保留；当前0fb官方CI方法与30项记录输入只按R3限定范围使用，不能替代全部旧模块/历史来源。",
+        "7个运行环境归档15555条第一层记录、另2258条包内记录、旧客户端2186条角色记录以及226条结构来源分类已完成。完成的分类子项不再列为待核对；全体当前脚本/proto/生成物/raw及未跟踪输入的来源和适用性仍须满足原完整性要求。"
+      ],
+      "blocking_current_round": false,
+      "exclusion_authority": "USER-CURRENT-LOCAL-SIM-FOUR-ACCEPTANCE-20261027-R1",
+      "originals_recovered": false,
+      "actual_external_fork_PR_executed": false
+    },
+    {
+      "task_id": "PR13-A01.3",
+      "original_strict_state": "Partial",
+      "historical_or_external_verdict": "RetainedUnpassed",
+      "concrete_gaps": [
+        "缺20260929-155805-888652/report.json原件：10,524,360字节，SHA256 113a3ca65f4b858c9933e3fd21d7ad799ba4fe75bfd6b85d0b2282509f4de780。",
+        "缺20260929-161746-51e014/report.json原件：19,743,677字节，SHA256 fe0e50f6cc6ae4801e23600e9c53840c5923e5626fca4c501a93b5e3b7cb71ee。",
+        "因此PR13-A01.3-T02/AUDIT所需86/90、130/139的逐client/cycle/event差额与准确STOP因果仍不能核对；新的正常运行不能替代这两次历史事件。"
+      ],
+      "blocking_current_round": false,
+      "exclusion_authority": "USER-CURRENT-LOCAL-SIM-FOUR-ACCEPTANCE-20261027-R1",
+      "originals_recovered": false,
+      "actual_external_fork_PR_executed": false
+    },
+    {
+      "task_id": "PR13-A07.3",
+      "original_strict_state": "Partial",
+      "historical_or_external_verdict": "RetainedUnpassed",
+      "concrete_gaps": [
+        "PR13-A07.3-T02/POSTGRES缺真实外部fork PR的执行身份、对应workflow/job/SHA与PG原始结果。",
+        "2026-10-24用户已明确“没有，保留该项未通过”；此决定未被后续容量放行覆盖。"
+      ],
+      "blocking_current_round": false,
+      "exclusion_authority": "USER-CURRENT-LOCAL-SIM-FOUR-ACCEPTANCE-20261027-R1",
+      "originals_recovered": false,
+      "actual_external_fork_PR_executed": false
+    },
+    {
+      "task_id": "PR13-A08.1",
+      "original_strict_state": "ReadyForAcceptance",
+      "historical_or_external_verdict": "RetainedUnpassed",
+      "concrete_gaps": [
+        "4次原editor客户端运行未记录各自原Godot引擎摘要；Group1原运行overlay摘要未记录，现有程序路径、镜像标签或嵌入配置hash不能补记当时实际执行身份。",
+        "13次Sept29声明运行的原始payload备份仍未找到，完整历史/新增run全集及source/config/image/有效环境与room策略的运行父链未整体裁定完成。",
+        "现有3份PG备份、8份环境/限制/控制文件和保留的旧回滚镜像是部分备份，不等于这13次原运行的原件或镜像/config关联证明。"
+      ],
+      "blocking_current_round": false,
+      "exclusion_authority": "USER-CURRENT-LOCAL-SIM-FOUR-ACCEPTANCE-20261027-R1",
+      "originals_recovered": false,
+      "actual_external_fork_PR_executed": false
+    }
+  ],
+  "prior_five_current_acceptance_unchanged": {
+    "task_ids": [
+      "PR13-B12.1",
+      "PR13-B12.2",
+      "PR13-B12.3",
+      "PR13-B12.4",
+      "PR13-A08.4"
+    ],
+    "report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/CURRENT_VERSION_FIVE_ACCEPTED_20261027.json"
+  },
+  "capacity12_closure_unchanged": {
+    "task_ids": [
+      "LOAD-10.1",
+      "LOAD-10.2",
+      "LOAD-10.3",
+      "LOAD-10.4",
+      "PR13-A02.1",
+      "PR13-A02.2",
+      "PR13-A02.3",
+      "PR13-A02.4",
+      "PR13-A10.1",
+      "PR13-A10.2",
+      "PR13-A10.3",
+      "PR13-A10.4"
+    ],
+    "no_additional_capacity_rounds": true,
+    "native50_empirical_basis_preserved": true,
+    "native100_generator_limited_original_NotPassed_preserved": true,
+    "100_server_capacity_failure_not_proven": true,
+    "SJH_CPU4_to24_adjustment_preserved": true
+  },
+  "old_source_register": {
+    "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\reports\\pr13-stages-20261009\\S6-A094-current-whole-adjudication-accepted-20261024\\register.json",
+    "bytes": 17458066,
+    "sha256": "9ac429158cac97e00481becd1f1773096dd846eb07c12589bf561d92b26030a8",
+    "unchanged": true,
+    "original_task_state_counts": {
+      "Accepted": 111,
+      "Partial": 20,
+      "ReadyForAcceptance": 1
+    }
+  },
+  "current_disposition_overlay": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/CURRENT_TASK_DISPOSITIONS_LOCAL_SIM_ACCEPTED_20261027.json",
+  "prior_current_disposition_overlay": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/CURRENT_TASK_DISPOSITIONS_FIVE_ACCEPTED_20261027.json",
+  "original_strict_global_register_and_gates_not_overwritten": true,
+  "no_current_blocking_conditions": true,
+  "pending_current_required_questions": [],
+  "new_tests_started_this_decision": 0,
+  "automatic100_retest": false,
+  "further_automatic_tests": false,
+  "round_ended": true,
+  "old_raw_failure_and_CPU_reports_preserved": true,
+  "private_closeout_evidence_root": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\current-four-local-user-acceptance-20261027-r1",
+  "no_running_owned_simulation_handles_or_matching_automation": {
+    "owned_local_simulation_live_processes": 0,
+    "matching_thread_resource_test_automations": [],
+    "legacy_automation_id_file_present": false,
+    "new_processes_stopped": 0,
+    "new_tests_started": 0,
+    "no100_retest": true,
+    "checked_at": "2026-10-27T18:18:49.854880+08:00"
+  }
+}
