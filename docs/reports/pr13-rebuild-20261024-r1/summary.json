@@ -3,7 +3,7 @@
   "round_id": "current-rebuild-20261024-r1",
   "user_scope": "重建当前版本新一轮（推荐）",
   "adjudicated_at_UTC": "2026-10-27T03:36:41.463701+00:00",
-  "current_status": "Prior_round_accepted_and_closed;current5accepted_and_capacity12closed;remaining4_goal_blocked_on_missing_originals_and_actual_external_fork_evidence;objective_not_complete;no_auto100_retest",
+  "current_status": "CurrentLocalGapResimulation4groups12casesAnd31regressionsPassed;418originalPGreverifiedWithSameCodeTrees;originalStrictFourStillUnaccepted;current5andCapacity12Unchanged;no100Retest",
   "GDD_main_sha256": "7375f9615d4612a617cdb6295a020037016ecef061964c0200b52c2def9d44f6",
   "config_package_sha256": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
   "legal_base_HP": {
@@ -1059,5 +1059,27 @@
       "needed_to_resume": "Original time-bound run witnesses or byte-verifiable matching backups;current binaries/new runs cannot retroactively witness old execution"
     }
   ],
-  "goal_blocked_audit_at": "2026-10-27T17:32:40.868282+08:00"
+  "goal_blocked_audit_at": "2026-10-27T17:32:40.868282+08:00",
+  "latest_local_gap_resimulation_acceptance": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/LOCAL_GAP_RESIMULATION_ACCEPTANCE_20261027_R1.json",
+  "current_local_simulation_layer": {
+    "verdict": "Passed",
+    "local_case_groups_passed": 4,
+    "explicit_passed": 12,
+    "existing_regression_passed": 31,
+    "simulated_cycles": 229,
+    "actual_native_games": 0,
+    "reverified_original_PG_passes": 418,
+    "new_PG_runs": 0,
+    "actual_external_fork_PR_runs": 0,
+    "original_strict_whole_task_verdicts_unchanged": true
+  },
+  "latest_user_followup": {
+    "instruction": "缺失的部分本机重新模拟，补上缺口推进任务验收",
+    "date": "2026-10-27",
+    "status": "CompletedForCurrentLocalSimulationScope",
+    "report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/LOCAL_GAP_RESIMULATION_ACCEPTANCE_20261027_R1.json",
+    "new_evidence_since_prior_blocked_audit": true,
+    "prior_consecutive_blocked_audit_not_reused_for_this_new_request": true,
+    "original_strict_goal_status_last_observed": "blocked"
+  }
 }

@@ -1,3 +1,5 @@
+> **本机补缺模拟验收（2026-10-27 R1）：四组12个明确用例、31项回归全部通过，新生成229个受控周期并保留逐事件差额，690份本轮输入全部验SHA匹配；原实际PG418／0跳过已复验且六棵代码树一致。本轮结论是“当前本机模拟层通过”，历史原件／旧运行身份与真实外部fork缺口仍单列，原严格四项整项状态不改。已通过五项、容量12项收口、原失败与CPU调整保留，不补测100人。见[本机模拟报告](<G:/Program Files/GodotFiles/godot_FanstaryCard/docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/LOCAL_GAP_RESIMULATION_ACCEPTANCE_20261027_R1.md>)。下方阻塞审计是本次新指令前的历史状态。**
+
 > **四项目标阻塞审计（2026-10-27）：目标blocked，未完成，4项仍未整项通过。R7之后三个连续目标轮次没有新原件／原运行见证／真实fork执行证据，结束重复自动检查；已完成的归档角色和226条结构来源分类不再重做。恢复需要原执行机器或备份位置、匹配原件／来源见证及真实fork资料。当前5项通过和容量12项收口保持，原失败及CPU调整记录保留，不补测100人。见[阻塞审计](<G:/Program Files/GodotFiles/godot_FanstaryCard/docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_BLOCKED_AUDIT_20261027.md>)。下方active进展为历史快照。**
 
 > **四项目标第七批进展（2026-10-27）：目标active，4项仍未整项通过。已找到SHA67bf...的旧GUI完整逻辑清单，沿其中真实位置重新核对3365份G盘原件和31份差异副本，3396份全部匹配，32项差异归档CRC/SHA通过。最后1条结构来源缺口闭合，原226条分类全部完成；坏包与业务失败均保留。3005个缺失身份新增匹配0，历史来源/真实fork缺口仍在。当前5项通过、容量12项收口不变，不补测100人。见[第七批进展](<G:/Program Files/GodotFiles/godot_FanstaryCard/docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_EXECUTION_R7_20261027.md>)。**
