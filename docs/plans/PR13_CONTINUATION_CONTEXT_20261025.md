@@ -1,3 +1,5 @@
+> **四项目标第五批进展（2026-10-27）：目标active，4项仍未整项通过。6条gzip回复已与三轮原生A06.1-T03负向用例、实际线包和原生产者连接：CRC/截断拒绝符合预期，原拒绝保留。结构适用性待核对由17条降至11条；3005个缺失身份新增匹配0。当前5项通过、容量12项收口不变，不补测100人。见[第五批进展](<G:/Program Files/GodotFiles/godot_FanstaryCard/docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_EXECUTION_R5_20261027.md>)。**
+
 > **四项目标第四批进展（2026-10-27）：目标active，4项仍未整项通过。7个运行环境归档15,555条第一层记录、旧客户端2,186条记录完成私有输入角色核对；另2,258条包内记录单独计数。226条结构记录已具体分类：201条镜像链接、8条故意拒绝样例、11条实际损坏归档、6条无效gzip HTTP体；后17条的当前依赖关系仍待闭合，原拒绝均保留。3,005个缺失身份新增匹配0。模板用途已按用户确认闭合。当前5项通过、容量12项收口不变，不补测100人。见[第四批进展](<G:/Program Files/GodotFiles/godot_FanstaryCard/docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_EXECUTION_R4_20261027.md>)。**
 
 > **四项目标第三批进展（2026-10-27）：目标active，4项仍未整项通过。已从0fb官方原始TRX、同次控制文件和Git输入重新核对当前因果方法：418行全Passed，选中方法Passed，30项已记录输入全部匹配该版本Git。旧DLL/PDB和原执行未恢复，不能把本批证明推广到全部来源或其它3005声明。容量12项收口、当前5项通过不变，不补测100人。见[第三批进展](<G:/Program Files/GodotFiles/godot_FanstaryCard/docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_EXECUTION_R3_20261027.md>)。**
