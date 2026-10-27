@@ -1,0 +1,254 @@
+{
+  "state": "Exact_CI_artifacts_verified;R37_terminal;user301acceptance_complete",
+  "source": "0fbf2002dce254d226fa3117f63644a5f2b8948b",
+  "parent": "34f1d55dd022a806edb642339872292616a29b34",
+  "user_directive": "先按100人来测试，如果100人未通过则转向50人再测试一轮，超过300场则认为通过，本地和云端配置较差没必要死磕100人在线，但是允许尝试，合理分配本地和云端模拟登录人数情况",
+  "native100_admission": {
+    "kind": "Full100native resource admission only;no reduced client run",
+    "proposed_native_partition": {
+      "Windows": 80,
+      "Linux": 20
+    },
+    "Windows_required_bytes": 21474836480,
+    "cloud_after_infra_warmup_required_bytes": 2446157056,
+    "local_stable_samples": [
+      {
+        "at_ns": 1793011613958905700,
+        "available_bytes": 16643493888,
+        "host_CPU_percent": 2.2
+      },
+      {
+        "at_ns": 1793011615985269400,
+        "available_bytes": 16641331200,
+        "host_CPU_percent": 2.5
+      },
+      {
+        "at_ns": 1793011618003041600,
+        "available_bytes": 16644988928,
+        "host_CPU_percent": 1.8
+      }
+    ],
+    "admitted": false,
+    "native_clients_started": 0,
+    "new_worlds": 0,
+    "local_reserve": 6442450944,
+    "startup_guard": 268435456,
+    "decision_if_not_admitted": "User-directed fallback to one50target round",
+    "user_directive": "先按100人来测试，如果100人未通过则转向50人再测试一轮，超过300场则认为通过，本地和云端配置较差没必要死磕100人在线，但是允许尝试，合理分配本地和云端模拟登录人数情况"
+  },
+  "native100_empirical_capacity_claimed": false,
+  "fallback": "Exactly_one_final50target_round;60realnative40Windows20Linux",
+  "source_freeze": {
+    "ok": true,
+    "head": "0fbf2002dce254d226fa3117f63644a5f2b8948b",
+    "parent": "34f1d55dd022a806edb642339872292616a29b34",
+    "branch": "codex/capacity-global50-r29-20261026",
+    "files": [
+      "tools/pr13_distributed_capacity.py",
+      "tools/tests/test_pr13_workload_identity_input_repair.py",
+      "tools/tests/test_pr13_user_final_capacity_budget.py",
+      "docs/plans/PR13_USER_FINAL_CAPACITY_ROUND_20261026_R36.json"
+    ],
+    "focused_tests_passed": 46,
+    "client_tree_byte_identical_to_Windows28_513_and29_436_source7b0": true,
+    "actual_prior_worlds": 284,
+    "user_final_round_max_new40": true,
+    "absolute_cumulative_cap": 324,
+    "user_over300_waiver_separate_from_technical_result": true,
+    "new_live_worlds": 0,
+    "full_exact_CI_pending": true,
+    "at_ns": 1793012173901813300
+  },
+  "focused_QA": {
+    "passed": true,
+    "tests": 46,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "new_live_worlds": 0,
+    "at_ns": 1793012029126780400
+  },
+  "exact_CI": {
+    "id": 40311272218,
+    "name": "Gameplay load offline checks",
+    "head_sha": "0fbf2002dce254d226fa3117f63644a5f2b8948b",
+    "head_branch": "codex/capacity-global50-r29-20261026",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/40311272218",
+    "run_attempt": 1
+  },
+  "active_CI_watcher_session": null,
+  "Windows_native_reuse": "Client tree byte-identical to tested7b0 common28/513 andextended29/436",
+  "prior_actual_worlds": 284,
+  "max_new_worlds_this_only_final_round": 40,
+  "absolute_cumulative_cap": 324,
+  "user_acceptance_condition": "Strictly_actual_cumulative_worlds_greater_than300_after_final_round_or_guarded_termination;technical_dimensions_and100_not_observed_labels_retained",
+  "resource_guards_unchanged": true,
+  "R37_controls_assembled_not_started": {
+    "ok": true,
+    "source": "0fbf2002dce254d226fa3117f63644a5f2b8948b",
+    "native_supply": {
+      "Windows": 40,
+      "Linux": 20
+    },
+    "actual_global_target": 50,
+    "prior_worlds": 284,
+    "final_round_max_new40": true,
+    "absolute_cumulative_cap": 324,
+    "policy": "user-20261026-100-then50-over300",
+    "native_or_services_started": false,
+    "new_live_worlds": 0,
+    "files": [
+      {
+        "path": "G:\\PR13Evidence\\capacity50_support_r37.py",
+        "sha256": "cb97a471c4db16b0cde9f4a27d985194c5f0aa70ed32afc6e2fbd7af50a5394b"
+      },
+      {
+        "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\capacity50-userfinal-20261026-r37\\capacity50_support_r37.py.original",
+        "sha256": "cb97a471c4db16b0cde9f4a27d985194c5f0aa70ed32afc6e2fbd7af50a5394b"
+      },
+      {
+        "path": "G:\\PR13Evidence\\capacity50_win40_supervisor_r37.py",
+        "sha256": "aa64b952db4ee2a326a9b7e44180335a5ddc42fdefae3051d12287fdcea3d181"
+      },
+      {
+        "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\capacity50-userfinal-20261026-r37\\capacity50_win40_supervisor_r37.py.original",
+        "sha256": "aa64b952db4ee2a326a9b7e44180335a5ddc42fdefae3051d12287fdcea3d181"
+      },
+      {
+        "path": "G:\\PR13Evidence\\run_capacity50_parent_r37.py",
+        "sha256": "02206f674fc93fb71a965257150370ccc83c621abec5d8ede0014571ddf1561b"
+      },
+      {
+        "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\capacity50-userfinal-20261026-r37\\run_capacity50_parent_r37.py.original",
+        "sha256": "02206f674fc93fb71a965257150370ccc83c621abec5d8ede0014571ddf1561b"
+      },
+      {
+        "path": "G:\\PR13Evidence\\finalize_capacity50_r37.py",
+        "sha256": "51d0d1d4d98d884e544eb192ad89e1f33b41cbf4323916554b4e14f3a1a41701"
+      },
+      {
+        "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\capacity50-userfinal-20261026-r37\\finalize_capacity50_r37.py.original",
+        "sha256": "51d0d1d4d98d884e544eb192ad89e1f33b41cbf4323916554b4e14f3a1a41701"
+      },
+      {
+        "path": "G:\\PR13Evidence\\run_capacity50_pipeline_r37.py",
+        "sha256": "3fa349b8ea3fa7ee2ce005ef731ce824408c31545b258852e427835ab1ccb280"
+      },
+      {
+        "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\capacity50-userfinal-20261026-r37\\run_capacity50_pipeline_r37.py.original",
+        "sha256": "3fa349b8ea3fa7ee2ce005ef731ce824408c31545b258852e427835ab1ccb280"
+      },
+      {
+        "path": "G:\\PR13Evidence\\finish_capacity50_evidence_r37.py",
+        "sha256": "9f21473f8e2217d698875a05668bbe4fed358182305cde971a2ab5ff68dd5798"
+      },
+      {
+        "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\capacity50-userfinal-20261026-r37\\finish_capacity50_evidence_r37.py.original",
+        "sha256": "9f21473f8e2217d698875a05668bbe4fed358182305cde971a2ab5ff68dd5798"
+      },
+      {
+        "path": "G:\\PR13Evidence\\restore_capacity50_DB_r37.py",
+        "sha256": "97a80cb2c7607be640583dd34864d93dbe83886e97351214d505ca70db318f43"
+      },
+      {
+        "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\capacity50-userfinal-20261026-r37\\restore_capacity50_DB_r37.py.original",
+        "sha256": "97a80cb2c7607be640583dd34864d93dbe83886e97351214d505ca70db318f43"
+      },
+      {
+        "path": "G:\\PR13Evidence\\cleanup_capacity50_r37.py",
+        "sha256": "0e8566ec0247530a5bf9bd96b8034e2325d3902e533fc0e16d67219b308a8b61"
+      },
+      {
+        "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\capacity50-userfinal-20261026-r37\\cleanup_capacity50_r37.py.original",
+        "sha256": "0e8566ec0247530a5bf9bd96b8034e2325d3902e533fc0e16d67219b308a8b61"
+      },
+      {
+        "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\capacity50-userfinal-20261026-r37\\capacity-infra.original.py",
+        "sha256": "cf5f3da2ecf0b8606cb1f52eeb269db4329f593063fa4d90059cf4f6fa5861fe"
+      },
+      {
+        "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\capacity50-userfinal-20261026-r37\\cloud-cohort-driver.original.py",
+        "sha256": "b7acfb695c6e4dbe5c3a6f74977f10e9ddc0f4d248c59863a57da0fed5d5bc6e"
+      },
+      {
+        "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\capacity50-userfinal-20261026-r37\\cloud-full-backup-controller.original.py",
+        "sha256": "b0c2dc2dc5178b2d51c28e471f5501c01958f20ed3b1e11a09bb92dec845c774"
+      },
+      {
+        "path": "G:\\PR13Evidence\\prepare_capacity40plus20_r37.py",
+        "sha256": "77e8f5f93371b9ac3e4f0ae2a5148183e54135bdb750ad18026fd39458a517bf"
+      },
+      {
+        "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\capacity50-userfinal-20261026-r37\\preparer.original.py",
+        "sha256": "77e8f5f93371b9ac3e4f0ae2a5148183e54135bdb750ad18026fd39458a517bf"
+      }
+    ]
+  },
+  "new_live_worlds": 0,
+  "whole_project_accepted": false,
+  "at_ns": 1793012512319099000,
+  "final_source_CI_gate": {
+    "ok": true,
+    "source": "0fbf2002dce254d226fa3117f63644a5f2b8948b",
+    "run": 40311272218,
+    "workflow_url": "https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/40311272218",
+    "four_jobs_passed": true,
+    "all_four_official_artifacts_and_members_G_verified": true,
+    "artifacts": [
+      {
+        "id": 12645587563,
+        "name": "gameplay-load-postgres-0fbf2002dce254d226fa3117f63644a5f2b8948b",
+        "bytes": 3612145,
+        "sha256": "741d29eeacee8ba93adeed4bbaffb13e24a7e0abbd31cecb8a407762c82ee763",
+        "all_members_verified": true,
+        "members": 1125
+      },
+      {
+        "id": 12645047131,
+        "name": "gameplay-load-client-0fbf2002dce254d226fa3117f63644a5f2b8948b",
+        "bytes": 3590452,
+        "sha256": "4237721e2491626120c0e83f30191cadd02f3e0013e73b84e8d4d6c2c52f37ec",
+        "all_members_verified": true,
+        "members": 175
+      },
+      {
+        "id": 12644852663,
+        "name": "gameplay-load-server-0fbf2002dce254d226fa3117f63644a5f2b8948b",
+        "bytes": 119753,
+        "sha256": "0a5101ebe8e2221863d0f5a9532545013d9407a24ef96e8bdc1e3cffd572ef52",
+        "all_members_verified": true,
+        "members": 1
+      },
+      {
+        "id": 12644399380,
+        "name": "gameplay-load-accounting-0fbf2002dce254d226fa3117f63644a5f2b8948b",
+        "bytes": 555582,
+        "sha256": "01ed349c72ca69e69a0a90348c452828ef5b688957e6a83ad263a2cd95cea628",
+        "all_members_verified": true,
+        "members": 166
+      }
+    ],
+    "PG_rows": {
+      "Passed": 418
+    },
+    "PG_skipped": 0,
+    "strict_missing_assertions": {},
+    "CI_Linux_native_suites": 29,
+    "CI_Linux_native_named_checks": 436,
+    "offline_server_rows": {
+      "Passed": 288,
+      "NotExecuted": 130
+    },
+    "tool_tests_passed": 612,
+    "cloud_ownership_tests_passed": 8,
+    "old_source_CI_and_local_failures_retained": true,
+    "new_live_capacity_worlds": 0,
+    "capacity50_or100_accepted": false,
+    "whole_project_accepted": false,
+    "at_ns": 1793013320390837800
+  },
+  "final_round_terminal_report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/FINAL_USER_ACCEPTANCE_20261026.json",
+  "preregistration_fields_are_historical_not_current_execution_status": true
+}

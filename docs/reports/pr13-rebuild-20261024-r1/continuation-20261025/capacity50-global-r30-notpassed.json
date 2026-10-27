@@ -1,0 +1,201 @@
+{
+  "state": "Completed_NotPassed_all_originals_and_DB_restore_verified_owned_cleanup_complete",
+  "source": "cb8010f7dc5043c9011aa95a238f1bf5bbd7e8f7",
+  "workload_profile": "full-native60-global50-win35-cloud25",
+  "authority_transition_policy": "documented-authority-transition-v1",
+  "actual_native_supply": 60,
+  "all60_native_exit0": true,
+  "hosts": {
+    "windows": {
+      "outcome": {
+        "classification": "incomplete_or_failed",
+        "passed": false,
+        "exit_code": 1
+      },
+      "dimensions": {
+        "execution": "Failed",
+        "evidence": "Passed",
+        "load": "Failed",
+        "gameplay": "NotApplicable",
+        "performance": "Unknown",
+        "cleanup": "Unknown"
+      },
+      "coverage": {
+        "coverage": 0.9174611111481984,
+        "longest_continuous_seconds": 380.6970000267029,
+        "observed_seconds": 710.6879999637604,
+        "compliant_seconds": 660.5720000267029
+      },
+      "native_processes": 35,
+      "all_native_exits0": true,
+      "original_errors": 21,
+      "classifier_verified_completed_play_requests": 6,
+      "classifier_evidence_errors": [
+        {
+          "client_id": "g001c01e67977",
+          "request_id": "f9ae84d77d55684f9d118c7eebf7df4d",
+          "reason": "new_intent_not_successfully_resolved"
+        },
+        {
+          "client_id": "g001c01e67977",
+          "request_id": "09c882862db4652def4d2704a68f472a",
+          "reason": "new_intent_not_successfully_resolved"
+        },
+        {
+          "client_id": "g001c16e063cc",
+          "request_id": "a4757bf097fc8b9b2b0e2f47877a77d8",
+          "reason": "missing_unique_new_success"
+        },
+        {
+          "client_id": "g001c16e063cc",
+          "request_id": "55b4f1e37bd871bd2d6cf381223702cb",
+          "reason": "missing_documented_authority_transition"
+        },
+        {
+          "client_id": "g001c2010307d",
+          "request_id": "7066f4e9fea3927606fd0a7cec3622e2",
+          "reason": "new_intent_not_successfully_resolved"
+        },
+        {
+          "client_id": "g001c22cf2fcf",
+          "request_id": "0c845cdc4b9707d1cd3bbb08b00075b6",
+          "reason": "new_intent_not_successfully_resolved"
+        },
+        {
+          "reason": "refusal_fraction_exceeds1percent"
+        }
+      ],
+      "audit_errors": [],
+      "native_final_errors": [],
+      "original_strict_business_failed": true,
+      "guard_stop": null
+    },
+    "cloud": {
+      "outcome": {
+        "classification": "incomplete_acceptance",
+        "passed": false,
+        "exit_code": 1
+      },
+      "dimensions": {
+        "execution": "Failed",
+        "evidence": "Passed",
+        "load": "Passed",
+        "gameplay": "NotApplicable",
+        "performance": "Passed",
+        "cleanup": "Passed"
+      },
+      "coverage": {
+        "coverage": 0.9876972221665912,
+        "longest_continuous_seconds": 711.1419999599457,
+        "observed_seconds": 711.1419999599457,
+        "compliant_seconds": 711.1419999599457
+      },
+      "native_processes": 25,
+      "all_native_exits0": true,
+      "original_errors": 6,
+      "classifier_verified_completed_play_requests": 2,
+      "classifier_evidence_errors": [
+        {
+          "client_id": "g001c12f048f0",
+          "request_id": "c3de6ca44b7324452170093a14587726",
+          "reason": "new_intent_not_successfully_resolved"
+        },
+        {
+          "client_id": "g001c14087dc5",
+          "request_id": "e231faed917e78670aab55a806e363f5",
+          "reason": "new_intent_not_successfully_resolved"
+        },
+        {
+          "reason": "refusal_fraction_exceeds1percent"
+        }
+      ],
+      "audit_errors": [],
+      "native_final_errors": [],
+      "original_strict_business_failed": true,
+      "guard_stop": null
+    }
+  },
+  "original_joint": {
+    "capacity_accepted": false,
+    "default_latency_capacity_accepted": false,
+    "whole_project_accepted": false,
+    "evidence_errors": [
+      "original_cohort_did_not_pass"
+    ],
+    "latency_profile": "north-america-5s-8s-10s-monitor10s",
+    "latency_limits": {
+      "http_p95_limit_ms": 5000,
+      "command_p95_limit_ms": 8000,
+      "health_limit_ms": 10000,
+      "monitor_timeout_seconds": 10
+    },
+    "source_head": "cb8010f7dc5043c9011aa95a238f1bf5bbd7e8f7",
+    "frozen_client_tree": "31fa840ad3db8e4455f35cd310d24bd8abb0bccc",
+    "algorithm_version": "distributed-full-native-capacity-v4-global50-levelsets-authority-v1",
+    "adjudicator_source_sha256": "f4d799e7820b03fe916d630a5d18f2ff69e9d951cfc8e6ea675ebe5356721082",
+    "captured_input_sha256": "c6ac927c5a3ad04d01bca96b55aa147795de9e25deeefedd3ffd69b263d69c36"
+  },
+  "actual_restore": {
+    "ok": true,
+    "restored_matches": 31,
+    "restored_settlements": 106,
+    "pending_holds": 0,
+    "duplicate_match_player_settlements": 0,
+    "actual_unique_participants": 64,
+    "all_participants_equal_original_backend_snapshot": true,
+    "scratch_DB_dropped": true,
+    "owned_PG_stopped_again": true,
+    "original_failed_capacity_and_evidence_outcomes_retained": true,
+    "formal_identity_unchanged": true,
+    "formal_ready_HTTP": 200,
+    "formal_DB_not_cleared": true
+  },
+  "original_backup": {
+    "ok": true,
+    "archive": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\capacity50-global-20261026-r30\\full-cloud-originals\\evidence.original.tar.xz",
+    "bytes": 6732508,
+    "sha256": "0fbd3970ec7e8d2329e77be6c0b7ee5ea47df50b2e5576c1893b17956ba4f99d",
+    "manifest_SHA256": "f83d0e58228df613794e3380a1d62f146f86225ea6fc5bb38cc7958e17ab0a7a",
+    "verified_original_files": 331,
+    "verified_logical_bytes": 249666734,
+    "all_member_paths_regular_safe_distinct": true,
+    "every_original_member_SHA256_verified": true,
+    "at_ns": 1792995255373485100,
+    "CNO_BelowNormal_last4_CPUs": true
+  },
+  "owned_cleanup": {
+    "ok": true,
+    "at_ns": 1792995332568227081,
+    "all_G_originals_and_actual_restore_verified": true,
+    "late_restore_originals_G_preserved": true,
+    "own_stopped_containers_removed": 6,
+    "owned_empty_network_removed": true,
+    "only_restored_owned_PG_and_hash_verified_result_duplicates_removed": true,
+    "temporary_owned_environment_files_removed": true,
+    "shared_source_and_import_cache_retained": true,
+    "G_originals_cloud_archive_and_source_metadata_retained": true,
+    "actual_freed_bytes": 472035328,
+    "cloud_available_bytes": 3753889792,
+    "formal_identity_unchanged": true,
+    "formal_ready_HTTP": 200,
+    "formal_DB_not_cleared": true
+  },
+  "root_protected_files_unchanged": true,
+  "capacity_world_budget": {
+    "prior": 222,
+    "actual_this_attempt_including_warmup": 31,
+    "cumulative_used": 253,
+    "cap": 300,
+    "remaining": 47
+  },
+  "documented_tooling_issue": "Classifier expects realtime result success but unchanged production gateway emits completed;fix pending;raw failures not promoted",
+  "admission_metadata_path_reuse_disclosed": true,
+  "GDD_rules_unchanged": true,
+  "human_experience_excluded": true,
+  "capacity50_accepted": false,
+  "capacity100_accepted": false,
+  "whole_project_accepted": false,
+  "next": "Correct actual result vocabulary and diagnose sampled coverage from sealed originals before any new live run",
+  "external_originals": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\capacity50-global-20261026-r30",
+  "at_ns": 1792995588863947500
+}

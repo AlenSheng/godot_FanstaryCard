@@ -43,7 +43,22 @@
       50,
       100
     ],
-    "resource_probe_not_capacity_pass": true
+    "resource_probe_not_capacity_pass": true,
+    "latest_user_capacity_exception": {
+      "policy_id": "user-20261027-over300-final-closeout",
+      "actual_cumulative_worlds": 356,
+      "user_condition_met": true,
+      "further_rounds": false,
+      "automatic100_retest": false,
+      "other_task_caps_unchanged": true
+    },
+    "historical_user_capacity_exception_before_20261027": {
+      "policy_id": "user-20261026-100-then50-over300",
+      "actual_cumulative_worlds": 301,
+      "user_condition_met": true,
+      "further_rounds": false,
+      "other_task_caps_unchanged": true
+    }
   },
   "resource_policy": {
     "current_cloud_host_only": true,
@@ -61,18 +76,18 @@
     "domain": "Passed_388_after_frozen_published_config_dependency_fix",
     "server_and_real_PostgreSQL": "Covered_418_declared_testIds_across_full417_and_completed_rollback_recheck",
     "native_fullclient_pilot": "Passed_4_owned_full_native_clients",
-    "normal_cycles": "Passed_original_mixed_baseline_all_hand10accounts_each3normalACK_with_observation2400s",
-    "UI_real_renderer": "Passed_fixture_renderer68art34gameplay100checks_HumanExcluded",
-    "capacity50_100": "NotPassed50_generator_resource_NotExecuted100",
+    "normal_cycles": "Passed_current2eecaf4_mixed10accounts_each3normalACK_observation2400s_actual_DB_restore",
+    "UI_real_renderer": "Passed_R19_final72frames360checks_plus_retained68art34gameplay_HumanExcluded",
+    "capacity50_100": "User_accepted356_and_closed;R34_real_global50_600s100percent_passed;R39_generator_limited_NotPassed_not_server100failure;no_auto_retest",
     "real_fork": "NotExecuted_retained_unpassed",
-    "overall_current_round": "PartiallyVerified_NotAccepted_capacity_duration_and_sample_budget_scopes_retained",
-    "native_offline_regressions": "Passed_24_suites_388_checks",
+    "overall_current_round": "Completed_user_scoped_acceptance_under_explicit_relaxed_stopping_condition;all_strict_technical_gates_not_claimed",
+    "native_offline_regressions": "Windows_common28suites513checks_extended29suites436checks;Linux29suites436checks;overlap_not_summed",
     "card_pool_numerical_and_scripts": "Passed",
     "card_page": "Passed_original_unmodified_Windows_test_cloud_low_memory_trim_expected",
     "current_round_rollback_and_backup_restore": "Passed_actual_new_owned_database_0cf43db_rebuilt_baseline",
     "strict_PG_nine_method_gate": "CoveredForMainReview",
     "routes": "Completed_300_per_1_2_4_player_profile_diagnostic_only",
-    "factor_controls": "Passed_instrumentation_small_budget_Inconclusive_candidate_acceptance",
+    "factor_controls": "Passed_original_controls;R22_existing_data_assessed_Inconclusive9seedclusters_no_new_encounters_or_activation",
     "cloud_cleanup_and_backup": "Passed_G_SHA_verified_then_owned_fixture_removed"
   },
   "legacy_server_create_skill_missing": true,
@@ -109,6 +124,29 @@
     "verified_G_backup_before_owned_fixture_delete": true,
     "latest_report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/README.md",
     "normal_cycle_observation_relaxation_seconds": 2400,
-    "normal_cycle_default_duration_not_promoted": true
+    "normal_cycle_default_duration_not_promoted": true,
+    "latest_context": "docs/plans/PR13_CONTINUATION_CONTEXT_20261025.md",
+    "latest_R20_actual_normal_ACKs": 30,
+    "current_default1200_duration_exceedances": 1,
+    "goal_status": "complete",
+    "resource_wait_heartbeat_id": "automation",
+    "latest_source_QA": "0fbf2002dce254d226fa3117f63644a5f2b8948b",
+    "latest_R30_capacity_running_report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/capacity50-global-r30-running.json",
+    "latest_R31_policy_fix": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/capacity-policy-r31-completed-contract-fix.json",
+    "latest_R33_policy_QA": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/capacity-aggregate-r33-implemented-QA.json",
+    "resource_wait_heartbeat_status": "ABSENT_confirmed",
+    "final_acceptance_report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/FINAL_USER_ACCEPTANCE_20261027.md",
+    "final_machine_acceptance": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/FINAL_USER_ACCEPTANCE_20261027.json",
+    "actual_capacity_worlds": 356,
+    "no_further_capacity_rounds": true,
+    "automatic100_retest": false,
+    "remaining_status_audit": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/UNPASSED_TASKS_REVIEW_20261027.json"
+  },
+  "final_closeout_execution_policy": {
+    "accepted": true,
+    "closed": true,
+    "automatic_capacity_retest": false,
+    "automatic100_retest": false,
+    "new_explicit_user_instruction_required_to_resume": true
   }
 }

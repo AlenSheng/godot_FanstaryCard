@@ -1,0 +1,370 @@
+{
+  "state": "Completed_contract_fix_exact_all4CI_and_all4artifacts_verified;capacity_remains_NotPassed",
+  "source": "7ce9b970d0410c4b083c48a2a2839dea91a1d63b",
+  "parent": "cb8010f7dc5043c9011aa95a238f1bf5bbd7e8f7",
+  "branch": "codex/capacity-global50-r29-20261026",
+  "exact_CI": {
+    "id": 40280892186,
+    "name": "Gameplay load offline checks",
+    "head_sha": "7ce9b970d0410c4b083c48a2a2839dea91a1d63b",
+    "head_branch": "codex/capacity-global50-r29-20261026",
+    "status": "queued",
+    "conclusion": null,
+    "html_url": "https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/40280892186",
+    "run_attempt": 1
+  },
+  "focused_tests_passed": 49,
+  "actual_native_fixture_before_count": 0,
+  "actual_native_fixture_after_count": 1,
+  "criterion_change": "None;only_actual_completed_vocabulary_fixed;HTTP_success_not_accepted",
+  "corrected_replay": {
+    "classifier_worktree_sha256": "f00ed9b58098604b235c40dc68a62892fcbdde1ce12493153ef5243a4bd5b004",
+    "only_result_vocabulary_corrected": true,
+    "hosts": [
+      {
+        "host": "windows",
+        "corrected_vocabulary_review": {
+          "policy": "documented-authority-transition-v1",
+          "passed": false,
+          "expected_requests": [
+            {
+              "client_id": "g001c01e67977",
+              "request_id": "09c882862db4652def4d2704a68f472a",
+              "detail": "A stunned player cannot play cards.",
+              "cycle_id": "g001c01e67977:1",
+              "fresh_authority_ms": -2,
+              "authority_after_send_ms": 514,
+              "authority_observation_relation": "in_flight_before_rejection",
+              "recovery_success_ms": 1588
+            },
+            {
+              "client_id": "g001c01e67977",
+              "request_id": "f9ae84d77d55684f9d118c7eebf7df4d",
+              "detail": "Duel is not active in this room.",
+              "cycle_id": "g001c01e67977:1",
+              "fresh_authority_ms": 1080,
+              "authority_after_send_ms": 1755,
+              "authority_observation_relation": "after_rejection",
+              "recovery_success_ms": 2186
+            },
+            {
+              "client_id": "g001c2010307d",
+              "request_id": "7066f4e9fea3927606fd0a7cec3622e2",
+              "detail": "A stunned player cannot play cards.",
+              "cycle_id": "g001c2010307d:1",
+              "fresh_authority_ms": 354,
+              "authority_after_send_ms": 1037,
+              "authority_observation_relation": "after_rejection",
+              "recovery_success_ms": 3569
+            },
+            {
+              "client_id": "g001c22cf2fcf",
+              "request_id": "0c845cdc4b9707d1cd3bbb08b00075b6",
+              "detail": "A stunned player cannot play cards.",
+              "cycle_id": "g001c22cf2fcf:1",
+              "fresh_authority_ms": 2,
+              "authority_after_send_ms": 778,
+              "authority_observation_relation": "after_rejection",
+              "recovery_success_ms": 1177
+            }
+          ],
+          "unclassified_errors": [
+            {
+              "client_id": "g001c16e063cc",
+              "index": 0,
+              "reason": "unassociated_native_error"
+            },
+            {
+              "client_id": "g001c16e063cc",
+              "index": 1,
+              "reason": "unassociated_native_error"
+            },
+            {
+              "client_id": "g001c16e063cc",
+              "index": 2,
+              "reason": "unassociated_native_error"
+            },
+            {
+              "client_id": "g001c16e063cc",
+              "index": 3,
+              "reason": "unassociated_native_error"
+            },
+            {
+              "client_id": "g001c16e063cc",
+              "index": 4,
+              "reason": "unassociated_native_error"
+            },
+            {
+              "client_id": "g001c16e063cc",
+              "index": 5,
+              "reason": "unassociated_native_error"
+            },
+            {
+              "client_id": "g001c244a38cb",
+              "index": 0,
+              "reason": "unassociated_native_error"
+            },
+            {
+              "client_id": "g001c244a38cb",
+              "index": 1,
+              "reason": "unassociated_native_error"
+            },
+            {
+              "client_id": "g001c244a38cb",
+              "index": 2,
+              "reason": "unassociated_native_error"
+            }
+          ],
+          "evidence_errors": [
+            {
+              "client_id": "g001c16e063cc",
+              "request_id": "a4757bf097fc8b9b2b0e2f47877a77d8",
+              "reason": "missing_unique_new_success"
+            },
+            {
+              "client_id": "g001c16e063cc",
+              "request_id": "55b4f1e37bd871bd2d6cf381223702cb",
+              "reason": "missing_documented_authority_transition"
+            },
+            {
+              "reason": "multiple_refusals_in_actor_cycle"
+            }
+          ],
+          "algorithm_version": "documented-authority-transition-v1",
+          "original_errors_unchanged": true,
+          "capacity_acceptance": false,
+          "server_execution_state": "NotObserved",
+          "original_error_count": 21,
+          "verified_completed_play_requests": 7632
+        },
+        "primary_reports_unchanged": true,
+        "original_outcome_unchanged": {
+          "classification": "incomplete_or_failed",
+          "passed": false,
+          "exit_code": 1
+        }
+      },
+      {
+        "host": "cloud",
+        "corrected_vocabulary_review": {
+          "policy": "documented-authority-transition-v1",
+          "passed": true,
+          "expected_requests": [
+            {
+              "client_id": "g001c12f048f0",
+              "request_id": "c3de6ca44b7324452170093a14587726",
+              "detail": "Duel is not active in this room.",
+              "cycle_id": "g001c12f048f0:1",
+              "fresh_authority_ms": 9,
+              "authority_after_send_ms": 14,
+              "authority_observation_relation": "after_rejection",
+              "recovery_success_ms": 423
+            },
+            {
+              "client_id": "g001c14087dc5",
+              "request_id": "e231faed917e78670aab55a806e363f5",
+              "detail": "A stunned player cannot play cards.",
+              "cycle_id": "g001c14087dc5:1",
+              "fresh_authority_ms": 16,
+              "authority_after_send_ms": 19,
+              "authority_observation_relation": "after_rejection",
+              "recovery_success_ms": 3617
+            }
+          ],
+          "unclassified_errors": [],
+          "evidence_errors": [],
+          "algorithm_version": "documented-authority-transition-v1",
+          "original_errors_unchanged": true,
+          "capacity_acceptance": false,
+          "server_execution_state": "NotObserved",
+          "original_error_count": 6,
+          "verified_completed_play_requests": 5725
+        },
+        "primary_reports_unchanged": true,
+        "original_outcome_unchanged": {
+          "classification": "incomplete_acceptance",
+          "passed": false,
+          "exit_code": 1
+        }
+      }
+    ],
+    "historical_R30_joint_and_cohort_failures_retained": true,
+    "capacity_acceptance": false,
+    "new_live_worlds": 0,
+    "at_ns": 1792996008592958800
+  },
+  "same_declared_global_overlap": {
+    "joint_overlap_passed": false,
+    "capacity_acceptance": false,
+    "scope": "Clock-bounded shared-window overlap only",
+    "evidence_errors": [],
+    "remaining_required_checks": [
+      "Original cohort evidence and latency gates",
+      "Actual official full native executable and identical game inputs",
+      "Distinct process-client-user identities on both hosts",
+      "One unchanged isolated backend and real global human gauge",
+      "Original process and business cleanup for every participant"
+    ],
+    "target_clients": 50,
+    "target_online_clients": 60,
+    "window_seconds": 600.0,
+    "compliant_seconds": 537.8681681156158,
+    "coverage": 0.8964469468593598,
+    "longest_continuous_seconds": 324.92184829711914,
+    "common_intervals_reference_seconds": [
+      [
+        1792994435.9551518,
+        1792994760.877
+      ],
+      [
+        1792994791.800416,
+        1792994980.743
+      ],
+      [
+        1792995011.951416,
+        1792995035.9551518
+      ]
+    ],
+    "hosts": [
+      {
+        "host_id": "windows",
+        "clients": 35,
+        "target_active": 25,
+        "clock": {
+          "lower_ms": -500.0,
+          "upper_ms": 546.416015625,
+          "maximum_round_trip_ms": 47.0,
+          "measured_remote_drift_ms": 18.0,
+          "measured_reference_drift_ms": 9.40576171875,
+          "before_probes": 5,
+          "after_probes": 5
+        },
+        "certified_runs_reference_seconds": [
+          [
+            1792994435.9551518,
+            1792994760.877
+          ],
+          [
+            1792994791.800416,
+            1792994980.743
+          ],
+          [
+            1792995011.951416,
+            1792995035.9551518
+          ]
+        ]
+      },
+      {
+        "host_id": "cloud",
+        "clients": 25,
+        "target_active": 15,
+        "clock": {
+          "lower_ms": -1264.3251953125,
+          "upper_ms": 341.198486328125,
+          "maximum_round_trip_ms": 594.0,
+          "measured_remote_drift_ms": 0.98291015625,
+          "measured_reference_drift_ms": 19.40625,
+          "before_probes": 5,
+          "after_probes": 5
+        },
+        "certified_runs_reference_seconds": [
+          [
+            1792994435.9551518,
+            1792995035.9551518
+          ]
+        ]
+      }
+    ],
+    "native_active_aggregation": "clock-eroded-count-level-set-union",
+    "necessary_host_active_floor_sum": 40,
+    "actual_native_active_required": 50
+  },
+  "raw_online_observation_correction": {
+    "fresh_status_clients_in_low_online_sample": 35,
+    "stale_clients": 0,
+    "native_processes_alive": 35,
+    "online": 21,
+    "active_in_room": 20,
+    "server_global_humans": 57,
+    "meaning": "Fresh statuses reported transient native WebSocket disconnection/recovery;server gauge not substituted"
+  },
+  "local_whole_tools": "NotStarted;resource_admission_failed_before_child_spawn",
+  "latest_resource_readonly": {
+    "at_UTC": "2026-10-26T06:35:19.5578844Z",
+    "available_bytes": 3188269056,
+    "other_Unity_tasks_busy": true,
+    "other_processes_untouched": true
+  },
+  "new_live_worlds": 0,
+  "cumulative_capacity_worlds": 253,
+  "remaining_capacity_worlds": 47,
+  "no_live_Godot_or_test_service_handles": true,
+  "CI_watcher_exec_session": null,
+  "heartbeat_status": "PAUSED_current_goal_following_CI",
+  "capacity50_accepted": false,
+  "capacity100_accepted": false,
+  "whole_project_accepted": false,
+  "next": "Follow_same_exact_CI_and_verify_all4artifacts;inspect_remaining_stun_or_ready_transitions;new_live_run_requires_fresh_complete_queue_admission_and_remaining47_world_DBcap",
+  "external_originals": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\capacity-policy-followup-20261026-r31",
+  "at_ns": 1792998342923193000,
+  "final_source_CI_gate": {
+    "ok": true,
+    "source": "7ce9b970d0410c4b083c48a2a2839dea91a1d63b",
+    "run": 40280892186,
+    "workflow_url": "https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/40280892186",
+    "four_jobs_passed": true,
+    "all_four_official_artifacts_and_members_G_verified": true,
+    "artifacts": [
+      {
+        "id": 12632946056,
+        "name": "gameplay-load-postgres-7ce9b970d0410c4b083c48a2a2839dea91a1d63b",
+        "bytes": 3610882,
+        "sha256": "ea2bdec59caf360b1865f20d5b7f8bff64e2781e70bda0e39eb2eb64ee8607d5",
+        "all_members_verified": true,
+        "members": 1125
+      },
+      {
+        "id": 12632475032,
+        "name": "gameplay-load-client-7ce9b970d0410c4b083c48a2a2839dea91a1d63b",
+        "bytes": 3589598,
+        "sha256": "d36baa53828d6695715f86098b3f9e1cb763f8b6f81658c60156c7ac204da3fe",
+        "all_members_verified": true,
+        "members": 175
+      },
+      {
+        "id": 12632460106,
+        "name": "gameplay-load-server-7ce9b970d0410c4b083c48a2a2839dea91a1d63b",
+        "bytes": 120352,
+        "sha256": "dacccb462b631f9fbd9f09d047a02a9e99d6784e603f1be032f9dcf627308915",
+        "all_members_verified": true,
+        "members": 1
+      },
+      {
+        "id": 12632203206,
+        "name": "gameplay-load-accounting-7ce9b970d0410c4b083c48a2a2839dea91a1d63b",
+        "bytes": 552932,
+        "sha256": "ea7ea5dfc846103eb3d43f53195854d1047107cb4479a84c3a97148e4e545fcc",
+        "all_members_verified": true,
+        "members": 166
+      }
+    ],
+    "PG_rows": {
+      "Passed": 418
+    },
+    "PG_skipped": 0,
+    "strict_missing_assertions": {},
+    "CI_Linux_native_suites": 27,
+    "CI_Linux_native_named_checks": 393,
+    "offline_server_rows": {
+      "Passed": 288,
+      "NotExecuted": 130
+    },
+    "tool_tests_passed": 538,
+    "cloud_ownership_tests_passed": 8,
+    "old_source_CI_and_local_failures_retained": true,
+    "new_live_capacity_worlds": 0,
+    "capacity50_or100_accepted": false,
+    "whole_project_accepted": false,
+    "at_ns": 1792997772707600100
+  }
+}

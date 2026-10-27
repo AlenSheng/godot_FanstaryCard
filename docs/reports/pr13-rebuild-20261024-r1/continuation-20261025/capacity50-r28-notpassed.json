@@ -1,0 +1,226 @@
+{
+  "kind": "R28 exact25+25 capacity execution completed NotPassed; originals retained",
+  "at_ns": 1792982200566444900,
+  "source": "2eecaf49c1b081bcba5fb5d95d2c620df7e1f9d9",
+  "actual_native_clients": {
+    "windows": 25,
+    "cloud": 25
+  },
+  "all50_native_exit_zero": true,
+  "registered_shared_window_seconds": 600,
+  "registered_per_host_hold_seconds": 720,
+  "original_coverage_minimum": 0.95,
+  "original_joint_result": {
+    "capacity_accepted": false,
+    "default_latency_capacity_accepted": false,
+    "whole_project_accepted": false,
+    "evidence_errors": [
+      "original_cohort_did_not_pass"
+    ],
+    "latency_profile": "north-america-5s-8s-10s-monitor10s",
+    "latency_limits": {
+      "http_p95_limit_ms": 5000,
+      "command_p95_limit_ms": 8000,
+      "health_limit_ms": 10000,
+      "monitor_timeout_seconds": 10
+    },
+    "source_head": "2eecaf49c1b081bcba5fb5d95d2c620df7e1f9d9",
+    "frozen_client_tree": "4aeba21b2521f00ce094e7df4168f03070f91c05",
+    "algorithm_version": "distributed-full-native-capacity-v3-registered50or100-latency-profile",
+    "adjudicator_source_sha256": "8143c5f7b8736282264cde6cf88f259e400ff5271ee40b60246b5d2e658dacc7",
+    "captured_input_sha256": "2cd1f1d8857082ebd4d7e3be5817836b3c16b8dcb90ef75bb641346ba85f9cd1"
+  },
+  "hosts": [
+    {
+      "host": "windows",
+      "actual_clients": 25,
+      "original_outcome": {
+        "classification": "incomplete_or_failed",
+        "passed": false,
+        "exit_code": 1
+      },
+      "original_dimensions": {
+        "execution": "Failed",
+        "evidence": "Passed",
+        "load": "Failed",
+        "gameplay": "NotApplicable",
+        "performance": "Unknown",
+        "cleanup": "Passed"
+      },
+      "original_coverage": {
+        "passed": false,
+        "window_seconds": 720.0,
+        "observed_seconds": 710.5649998188019,
+        "compliant_seconds": 250.22300004959106,
+        "coverage": 0.3475319445133209,
+        "longest_continuous_seconds": 120.36699986457825,
+        "target_online": 25,
+        "target_active": 25,
+        "minimum_command_rate": 1.0,
+        "maximum_gap": 20.0,
+        "minimum_window": 720,
+        "minimum_continuous": 120,
+        "minimum_coverage": 0.95,
+        "evidence_errors": []
+      },
+      "original_audit_errors": [],
+      "forced_native_terminations": [],
+      "native_exit_counts": {
+        "0": 25
+      },
+      "actual_raw_request_P95_ms": {
+        "http": 1055,
+        "realtime": 704,
+        "rtt": 721
+      }
+    },
+    {
+      "host": "cloud",
+      "actual_clients": 25,
+      "original_outcome": {
+        "classification": "incomplete_or_failed",
+        "passed": false,
+        "exit_code": 1
+      },
+      "original_dimensions": {
+        "execution": "Passed",
+        "evidence": "Passed",
+        "load": "Failed",
+        "gameplay": "NotApplicable",
+        "performance": "Unknown",
+        "cleanup": "Passed"
+      },
+      "original_coverage": {
+        "passed": false,
+        "window_seconds": 720.0,
+        "observed_seconds": 711.0390000343323,
+        "compliant_seconds": 321.27299976348877,
+        "coverage": 0.44621249967151216,
+        "longest_continuous_seconds": 89.80499982833862,
+        "target_online": 25,
+        "target_active": 25,
+        "minimum_command_rate": 1.0,
+        "maximum_gap": 20.0,
+        "minimum_window": 720,
+        "minimum_continuous": 120,
+        "minimum_coverage": 0.95,
+        "evidence_errors": []
+      },
+      "original_audit_errors": [],
+      "forced_native_terminations": [],
+      "native_exit_counts": {
+        "0": 25
+      },
+      "actual_raw_request_P95_ms": {
+        "http": 223,
+        "realtime": 22,
+        "rtt": 15
+      }
+    }
+  ],
+  "unique_rejected_RPCs": 4,
+  "same_RPC_notice_callbacks_each": 3,
+  "rejected_RPC_types": {
+    "stun": 2,
+    "Pve_to_Pvp": 2
+  },
+  "actual_state_transition_observations": [
+    {
+      "detail": "A stunned player cannot play cards.",
+      "dispatch_phase": "Pvp",
+      "dispatch_stun_ms": 0,
+      "first_new_authority_after_rejection_ms": 38,
+      "first_new_authority_phase": "Pvp",
+      "first_new_authority_stun_ms": 500,
+      "first_following_play_intent_after_rejection_ms": 4041,
+      "server_exact_execution_state": "NotObserved"
+    },
+    {
+      "detail": "Duel is not active in this room.",
+      "dispatch_phase": "Pve",
+      "dispatch_stun_ms": 0,
+      "first_new_authority_after_rejection_ms": 795,
+      "first_new_authority_phase": "Pvp",
+      "first_new_authority_stun_ms": 0,
+      "first_following_play_intent_after_rejection_ms": 857,
+      "server_exact_execution_state": "NotObserved"
+    },
+    {
+      "detail": "Duel is not active in this room.",
+      "dispatch_phase": "Pve",
+      "dispatch_stun_ms": 0,
+      "first_new_authority_after_rejection_ms": 283,
+      "first_new_authority_phase": "Pvp",
+      "first_new_authority_stun_ms": 0,
+      "first_following_play_intent_after_rejection_ms": 285,
+      "server_exact_execution_state": "NotObserved"
+    },
+    {
+      "detail": "A stunned player cannot play cards.",
+      "dispatch_phase": "Pvp",
+      "dispatch_stun_ms": 0,
+      "first_new_authority_after_rejection_ms": 388,
+      "first_new_authority_phase": "Pvp",
+      "first_new_authority_stun_ms": 700,
+      "first_following_play_intent_after_rejection_ms": 4198,
+      "server_exact_execution_state": "NotObserved"
+    }
+  ],
+  "inference_disclosure": "All four dispatch views were same-current-route, stun0. New higher-revision authority states show two Pve-to-Pvp transitions and two newly active stuns. This supports a state-transition explanation; exact server execution state was not instrumented. Original execution failure is not waived.",
+  "latency_scope": "Existing disclosed NorthAmerica5s/8s/10s profile; default capacity not promoted",
+  "no_resource_guard_stop_or_OOM_or_forced_native_termination": true,
+  "observed_minimum_available_bytes": {
+    "windows": 10533208064,
+    "cloud": 728551424
+  },
+  "full_original_backup": {
+    "G_files": 331,
+    "archive_SHA256": "6c84be9162a511b2c167481c705668a8e8920f3991a8e6a83856ed54689d5008",
+    "all_members_verified": true
+  },
+  "actual_restore": {
+    "ok": true,
+    "restored_matches": 30,
+    "restored_settlements": 95,
+    "pending_holds": 0,
+    "duplicate_match_player_settlements": 0,
+    "actual_unique_participants": 54,
+    "all_participants_equal_original_backend_snapshot": true,
+    "scratch_DB_dropped": true,
+    "owned_PG_stopped_again": true,
+    "original_failed_capacity_and_evidence_outcomes_retained": true,
+    "formal_identity_unchanged": true,
+    "formal_ready_HTTP": 200,
+    "formal_DB_not_cleared": true
+  },
+  "owned_cleanup": {
+    "ok": true,
+    "at_ns": 1792981788378409401,
+    "all331_G_originals_and_actual_restore_verified": true,
+    "late_restore_originals_G_preserved": true,
+    "own_stopped_containers_removed": 6,
+    "owned_empty_network_removed": true,
+    "only_restored_owned_PG_and_hash_verified_result_duplicates_removed": true,
+    "temporary_owned_environment_files_removed": true,
+    "shared_source_and_import_cache_retained": true,
+    "G_originals_cloud_archive_and_source_metadata_retained": true,
+    "actual_freed_bytes": 501354496,
+    "cloud_available_bytes": 3807789056,
+    "formal_identity_unchanged": true,
+    "formal_ready_HTTP": 200,
+    "formal_DB_not_cleared": true
+  },
+  "actual_worlds_including_capacity_warmup": 30,
+  "cumulative_prior_worlds": 192,
+  "cumulative_actual_capacity_worlds": 222,
+  "cumulative_capacity_cap": 300,
+  "remaining_capacity_worlds": 78,
+  "budget_not_reset": true,
+  "GDD_rules_and_assets_and_production_service_unchanged": true,
+  "human_experience_excluded": true,
+  "heartbeat_status": "PAUSED",
+  "capacity50_accepted": false,
+  "capacity100_accepted": false,
+  "whole_project_accepted": false,
+  "next_step": "Prospective full-native surplus supply with unchanged global50 requirement, plus independently tested documentation-bound rejection classification; preserve this strict failed study."
+}

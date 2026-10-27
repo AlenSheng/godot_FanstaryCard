@@ -1,0 +1,222 @@
+{
+  "state": "Completed_exact6be_all4CI_and4artifacts_verified;Windows_native_pending",
+  "source": "6be9071b87d0c5d53747bccde83e05bd731d77e3",
+  "parent": "d1865daf4aca8b8239d67fad3872366679d5133c",
+  "branch": "codex/capacity-global50-r29-20261026",
+  "source_changes": "Native automatic READY producer and declared test fixtures;Gateway/server/UI/config/protocol unchanged",
+  "original_classifier_fix_all4CI_verified": {
+    "ok": true,
+    "source": "7ce9b970d0410c4b083c48a2a2839dea91a1d63b",
+    "run": 40280892186,
+    "workflow_url": "https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/40280892186",
+    "four_jobs_passed": true,
+    "all_four_official_artifacts_and_members_G_verified": true,
+    "artifacts": [
+      {
+        "id": 12632946056,
+        "name": "gameplay-load-postgres-7ce9b970d0410c4b083c48a2a2839dea91a1d63b",
+        "bytes": 3610882,
+        "sha256": "ea2bdec59caf360b1865f20d5b7f8bff64e2781e70bda0e39eb2eb64ee8607d5",
+        "all_members_verified": true,
+        "members": 1125
+      },
+      {
+        "id": 12632475032,
+        "name": "gameplay-load-client-7ce9b970d0410c4b083c48a2a2839dea91a1d63b",
+        "bytes": 3589598,
+        "sha256": "d36baa53828d6695715f86098b3f9e1cb763f8b6f81658c60156c7ac204da3fe",
+        "all_members_verified": true,
+        "members": 175
+      },
+      {
+        "id": 12632460106,
+        "name": "gameplay-load-server-7ce9b970d0410c4b083c48a2a2839dea91a1d63b",
+        "bytes": 120352,
+        "sha256": "dacccb462b631f9fbd9f09d047a02a9e99d6784e603f1be032f9dcf627308915",
+        "all_members_verified": true,
+        "members": 1
+      },
+      {
+        "id": 12632203206,
+        "name": "gameplay-load-accounting-7ce9b970d0410c4b083c48a2a2839dea91a1d63b",
+        "bytes": 552932,
+        "sha256": "ea7ea5dfc846103eb3d43f53195854d1047107cb4479a84c3a97148e4e545fcc",
+        "all_members_verified": true,
+        "members": 166
+      }
+    ],
+    "PG_rows": {
+      "Passed": 418
+    },
+    "PG_skipped": 0,
+    "strict_missing_assertions": {},
+    "CI_Linux_native_suites": 27,
+    "CI_Linux_native_named_checks": 393,
+    "offline_server_rows": {
+      "Passed": 288,
+      "NotExecuted": 130
+    },
+    "tool_tests_passed": 538,
+    "cloud_ownership_tests_passed": 8,
+    "old_source_CI_and_local_failures_retained": true,
+    "new_live_capacity_worlds": 0,
+    "capacity50_or100_accepted": false,
+    "whole_project_accepted": false,
+    "at_ns": 1792997772707600100
+  },
+  "first_READY_source_original_failed_CI": {
+    "source": "d1865daf4aca8b8239d67fad3872366679d5133c",
+    "CI_run": 40283698398,
+    "native28_suites_passed": true,
+    "native_named_checks": 400,
+    "new_owned_WebSocket_checks": {
+      "checks": {
+        "a replaced real peer retains bounded recovery before original deadline": true,
+        "actual acceptance latch suppresses further confirmations": true,
+        "actual producer writes its first empty READY": true,
+        "expired authority deadline still prohibits another write": true,
+        "owned WebSocket opens": true,
+        "same peer cannot repeat pending READY after original retry interval": true,
+        "unverified match cannot use a new attempt": true
+      },
+      "ok": true,
+      "scope": "OFFLINE actual producer and real owned WebSocket packets, delayed confirmation and replaced peer; no external server/world or capacity verdict"
+    },
+    "whole_client_job_passed": false,
+    "failure": "Declared ReadyGateway dispatch stub lacks the newly required real peer identity;actual28native suites clean",
+    "correction": "Add actual WebSocketPeer identity and close it in stub;all existing assertions unchanged",
+    "new_live_worlds": 0,
+    "at_ns": 1792999341243260800
+  },
+  "new_exact_CI": {
+    "id": 40285439144,
+    "name": "Gameplay load offline checks",
+    "head_sha": "6be9071b87d0c5d53747bccde83e05bd731d77e3",
+    "head_branch": "codex/capacity-global50-r29-20261026",
+    "status": "queued",
+    "conclusion": null,
+    "html_url": "https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/40285439144",
+    "run_attempt": 1
+  },
+  "latest_jobs": {
+    "client": "success",
+    "accounting": "success",
+    "server-contract": "success",
+    "server-postgres": "in_progress"
+  },
+  "active_exact_CI_watcher_session": null,
+  "initial_failed_source_watcher_session75896": "Terminal_failed;do_not_restart",
+  "local_native28_regression": "NotStarted_resource_floor",
+  "local_last_readonly": {
+    "UTC": "2026-10-26T07:29:58.3864377Z",
+    "available_bytes": 6204604416,
+    "below6GiB": true
+  },
+  "actual_updated_memory_plan": {
+    "kind": "Updated planning from actual R30;not a live admission",
+    "original_reserves_unchanged": {
+      "local": 6442450944,
+      "cloud": 500000000,
+      "startup": 268435456
+    },
+    "observed": {
+      "windows": {
+        "source": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\capacity50-global-20261026-r30\\win35\\resources.original.json",
+        "initial_available_bytes": 13546856448,
+        "minimum_available_bytes": 7099809792,
+        "host_decrease_bytes": 6447046656,
+        "observed_count": 35,
+        "rounded_planning_bytes_per_process": 184549376,
+        "basis": "Whole original host available-memory decrease, including steady-state growth;no shared RSS double count"
+      },
+      "cloud": {
+        "source": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\capacity50-global-20261026-r30\\cloud25-originals\\capture\\supervisor.original.json",
+        "initial_available_bytes": 2695815168,
+        "minimum_available_bytes": 690421760,
+        "host_decrease_bytes": 2005393408,
+        "observed_count": 25,
+        "rounded_planning_bytes_per_process": 83886080,
+        "basis": "Whole original host available-memory decrease, including steady-state growth;no shared RSS double count"
+      }
+    },
+    "35Windows_required_bytes": 13170114560,
+    "25cloud_required_bytes": 2865587456,
+    "proposed40Windows_required_bytes": 14092861440,
+    "proposed20cloud_required_bytes": 2446157056,
+    "proposed40plus20_total_native_supply": 60,
+    "actual_global_required_still50": true,
+    "old128MiB_and_Cloud76point5MB_planning_must_not_be_reused_for_full_new_runs": true,
+    "new_live_worlds": 0,
+    "at_ns": 1792999612307283500
+  },
+  "prospective_next_profile_plan": "docs/plans/PR13_CAPACITY_ACTUAL50_RECOVERY_BUDGET_PROPOSAL_20261026_R33.json",
+  "prospective_next_profile_implemented": false,
+  "new_live_worlds": 0,
+  "cumulative_capacity_worlds": 253,
+  "remaining_capacity_worlds": 47,
+  "current_capacity50_or100_accepted": false,
+  "whole_project_accepted": false,
+  "heartbeat": "PAUSED_goal_has_live_CI_and_development_work",
+  "external_originals": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\ready-confirmation-qa-20261026-r32",
+  "at_ns": 1793000025495827400,
+  "final_source_CI_gate": {
+    "ok": true,
+    "source": "6be9071b87d0c5d53747bccde83e05bd731d77e3",
+    "run": 40285439144,
+    "workflow_url": "https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/40285439144",
+    "four_jobs_passed": true,
+    "all_four_official_artifacts_and_members_G_verified": true,
+    "artifacts": [
+      {
+        "id": 12635125240,
+        "name": "gameplay-load-postgres-6be9071b87d0c5d53747bccde83e05bd731d77e3",
+        "bytes": 3602757,
+        "sha256": "eabffa27076b4fa0108bc9f20afb424a5358eef775d66c1e2d8719bf015e60f3",
+        "all_members_verified": true,
+        "members": 1125
+      },
+      {
+        "id": 12633992351,
+        "name": "gameplay-load-server-6be9071b87d0c5d53747bccde83e05bd731d77e3",
+        "bytes": 119785,
+        "sha256": "5e30e4b553d7ea7a09bfd09f0df753c1ffe8133dc421c13f7092752dd512215b",
+        "all_members_verified": true,
+        "members": 1
+      },
+      {
+        "id": 12633802933,
+        "name": "gameplay-load-client-6be9071b87d0c5d53747bccde83e05bd731d77e3",
+        "bytes": 3589963,
+        "sha256": "d8fc53c3e77199745dd964a4ea04475ddd692a4481875ed6cfb0f507e667c088",
+        "all_members_verified": true,
+        "members": 175
+      },
+      {
+        "id": 12633349277,
+        "name": "gameplay-load-accounting-6be9071b87d0c5d53747bccde83e05bd731d77e3",
+        "bytes": 553146,
+        "sha256": "515420bbf659b9541d0cb04b2632ed6b55ca9046ab40cdaf071cf9430d8c4ce1",
+        "all_members_verified": true,
+        "members": 166
+      }
+    ],
+    "PG_rows": {
+      "Passed": 418
+    },
+    "PG_skipped": 0,
+    "strict_missing_assertions": {},
+    "offline_server_rows": {
+      "NotExecuted": 130,
+      "Passed": 288
+    },
+    "CI_Linux_native_suites": 28,
+    "CI_Linux_native_named_checks": 400,
+    "tool_tests_passed": 538,
+    "cloud_ownership_tests_passed": 8,
+    "old_source_CI_and_local_failures_retained": true,
+    "new_live_capacity_worlds": 0,
+    "capacity50_or100_accepted": false,
+    "whole_project_accepted": false,
+    "at_ns": 1793000417429624600
+  }
+}

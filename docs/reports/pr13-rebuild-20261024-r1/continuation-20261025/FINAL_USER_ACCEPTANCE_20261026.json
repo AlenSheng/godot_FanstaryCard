@@ -1,0 +1,416 @@
+{
+  "state": "Completed_current_user_goal_under_explicit_over300_capacity_acceptance_condition",
+  "user_capacity_accepted": true,
+  "acceptance_basis": "Direct user:100first;notpassedfallback50oneadditionalround;actual cumulativeover300treatedaccepted",
+  "user_condition_met": true,
+  "actual_prior_worlds": 284,
+  "actual_new_worlds": 17,
+  "actual_cumulative_worlds": 301,
+  "no_history_reset": true,
+  "no_further_test_rounds": true,
+  "empirical_native50_R34": {
+    "accepted": true,
+    "source": "7b0f6008f4527c5c1536e9090d7d21820e72551a",
+    "reviewer": "34f1d55dd022a806edb642339872292616a29b34",
+    "actual_native_supply": 60,
+    "target": 50,
+    "window_seconds": 600,
+    "coverage": 1.0,
+    "continuous_seconds": 600,
+    "latency_warning_budget_consumed_seconds": 0,
+    "inferred_stun_events_used": 0,
+    "original_failed_identity_verdict_retained": true
+  },
+  "native100": {
+    "technical_state": "NotAdmitted_NotEmpiricallyVerified",
+    "proposed_partition": {
+      "Windows": 80,
+      "Linux": 20
+    },
+    "source": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\user-final-capacity-plan-20261026-r36\\native100-resource-admission.original.json",
+    "required_Windows_bytes": 21474836480,
+    "actual_available_about_bytes": 16644000000,
+    "native_started": 0,
+    "new_worlds": 0,
+    "no_claim_of100technical_pass": true
+  },
+  "final_R37_technical": {
+    "accepted": false,
+    "original_joint": {
+      "capacity_accepted": false,
+      "default_latency_capacity_accepted": false,
+      "whole_project_accepted": false,
+      "evidence_errors": [
+        "original_cohort_did_not_pass"
+      ],
+      "latency_profile": "north-america-pooled5s8s-window95-v2",
+      "latency_limits": {
+        "http_p95_limit_ms": 5000,
+        "command_p95_limit_ms": 8000,
+        "health_limit_ms": 10000,
+        "monitor_timeout_seconds": 10
+      },
+      "source_head": "0fbf2002dce254d226fa3117f63644a5f2b8948b",
+      "frozen_client_tree": "33802c85918089cbd2a367b2e7426da9591a7e74",
+      "algorithm_version": "distributed-full-native-capacity-v5-actual50-budgeted-recovery-v2",
+      "adjudicator_source_sha256": "9cc90132f1386f6b9df9018de69926f7e91e0b38498a10e78682edfb535ee657",
+      "captured_input_sha256": "1e3175b0e71852067d67609f778be8497411cc59ecc348657360d4f94dd075d3"
+    },
+    "hosts": {
+      "windows": {
+        "outcome": {
+          "classification": "invalid_workload_or_evidence",
+          "passed": false,
+          "exit_code": 3
+        },
+        "stop_reason": "redline:command_p95_over_8000ms",
+        "dimensions": {
+          "execution": "Failed",
+          "evidence": "Failed",
+          "load": "Failed",
+          "gameplay": "NotApplicable",
+          "performance": "Failed",
+          "cleanup": "Failed"
+        },
+        "forced_termination_pids": [
+          20740,
+          41000,
+          65264,
+          16872,
+          27052,
+          50948,
+          62884,
+          70240,
+          35164,
+          59880,
+          59060,
+          16944,
+          32604,
+          61096,
+          20908
+        ],
+        "native_final_report_errors": [
+          {
+            "client_id": "g001c02a9c62f",
+            "file": "g001c02a9c62f.json",
+            "error": "native_final_read_failed",
+            "error_type": "FileNotFoundError",
+            "line": null,
+            "column": null
+          },
+          {
+            "client_id": "g001c038cabc9",
+            "file": "g001c038cabc9.json",
+            "error": "native_final_read_failed",
+            "error_type": "FileNotFoundError",
+            "line": null,
+            "column": null
+          },
+          {
+            "client_id": "g001c05939f07",
+            "file": "g001c05939f07.json",
+            "error": "native_final_read_failed",
+            "error_type": "FileNotFoundError",
+            "line": null,
+            "column": null
+          },
+          {
+            "client_id": "g001c06dc2ba3",
+            "file": "g001c06dc2ba3.json",
+            "error": "native_final_read_failed",
+            "error_type": "FileNotFoundError",
+            "line": null,
+            "column": null
+          },
+          {
+            "client_id": "g001c08b1e7c2",
+            "file": "g001c08b1e7c2.json",
+            "error": "native_final_read_failed",
+            "error_type": "FileNotFoundError",
+            "line": null,
+            "column": null
+          },
+          {
+            "client_id": "g001c14023cde",
+            "file": "g001c14023cde.json",
+            "error": "native_final_read_failed",
+            "error_type": "FileNotFoundError",
+            "line": null,
+            "column": null
+          },
+          {
+            "client_id": "g001c15bcd473",
+            "file": "g001c15bcd473.json",
+            "error": "native_final_read_failed",
+            "error_type": "FileNotFoundError",
+            "line": null,
+            "column": null
+          },
+          {
+            "client_id": "g001c17c893e5",
+            "file": "g001c17c893e5.json",
+            "error": "native_final_read_failed",
+            "error_type": "FileNotFoundError",
+            "line": null,
+            "column": null
+          },
+          {
+            "client_id": "g001c1854690f",
+            "file": "g001c1854690f.json",
+            "error": "native_final_read_failed",
+            "error_type": "FileNotFoundError",
+            "line": null,
+            "column": null
+          },
+          {
+            "client_id": "g001c20cb5135",
+            "file": "g001c20cb5135.json",
+            "error": "native_final_read_failed",
+            "error_type": "FileNotFoundError",
+            "line": null,
+            "column": null
+          },
+          {
+            "client_id": "g001c24f61530",
+            "file": "g001c24f61530.json",
+            "error": "native_final_read_failed",
+            "error_type": "FileNotFoundError",
+            "line": null,
+            "column": null
+          },
+          {
+            "client_id": "g001c268022e6",
+            "file": "g001c268022e6.json",
+            "error": "native_final_read_failed",
+            "error_type": "FileNotFoundError",
+            "line": null,
+            "column": null
+          },
+          {
+            "client_id": "g001c281b4f89",
+            "file": "g001c281b4f89.json",
+            "error": "native_final_read_failed",
+            "error_type": "FileNotFoundError",
+            "line": null,
+            "column": null
+          },
+          {
+            "client_id": "g001c32587931",
+            "file": "g001c32587931.json",
+            "error": "native_final_read_failed",
+            "error_type": "FileNotFoundError",
+            "line": null,
+            "column": null
+          }
+        ],
+        "original_native_business_failed": false,
+        "runtime_seconds_before_stop": 263.69857958984375,
+        "minimum_available_bytes": 13667368960,
+        "resource_floor_kept": true,
+        "supervisor_guard": null
+      },
+      "cloud": {
+        "outcome": {
+          "classification": "operator_stopped",
+          "passed": false,
+          "exit_code": 130
+        },
+        "stop_reason": "operator_stop_file",
+        "dimensions": {
+          "execution": "Passed",
+          "evidence": "Passed",
+          "load": "Failed",
+          "gameplay": "NotApplicable",
+          "performance": "Unknown",
+          "cleanup": "Passed"
+        },
+        "forced_termination_pids": [],
+        "native_final_report_errors": [],
+        "original_native_business_failed": false,
+        "runtime_seconds_before_stop": 313.11902221679685,
+        "minimum_available_bytes": 1074860032,
+        "resource_floor_kept": true,
+        "supervisor_guard": "peer_or_parent_stop"
+      }
+    },
+    "available_original_files_verified": 312,
+    "some_native_final_evidence_invalid_due_forced_own_process_cleanup_is_not_hidden": true
+  },
+  "final_R37_actual_restore": {
+    "ok": true,
+    "restored_matches": 17,
+    "restored_settlements": 65,
+    "pending_holds": 0,
+    "duplicate_match_player_settlements": 0,
+    "actual_unique_participants": 64,
+    "all_participants_equal_original_backend_snapshot": true,
+    "scratch_DB_dropped": true,
+    "owned_PG_stopped_again": true,
+    "original_failed_capacity_and_evidence_outcomes_retained": true,
+    "formal_identity_unchanged": true,
+    "formal_ready_HTTP": 200,
+    "formal_DB_not_cleared": true
+  },
+  "final_R37_owned_cleanup": {
+    "ok": true,
+    "at_ns": 1793014173396986045,
+    "all_G_originals_and_actual_restore_verified": true,
+    "late_restore_originals_G_preserved": true,
+    "own_stopped_containers_removed": 6,
+    "owned_empty_network_removed": true,
+    "only_restored_owned_PG_and_hash_verified_result_duplicates_removed": true,
+    "temporary_owned_environment_files_removed": true,
+    "shared_source_and_import_cache_retained": true,
+    "G_originals_cloud_archive_and_source_metadata_retained": true,
+    "actual_freed_bytes": 239128576,
+    "cloud_available_bytes": 3666374656,
+    "formal_identity_unchanged": true,
+    "formal_ready_HTTP": 200,
+    "formal_DB_not_cleared": true
+  },
+  "normal_R20": {
+    "accepted_functional": true,
+    "accounts": 10,
+    "normal_ACKs": 30,
+    "worlds": 18,
+    "observation_relaxation": {
+      "original_seconds": 1200,
+      "functional_observation_seconds": 2400,
+      "previous_failures_retained": true,
+      "current_confirmed_room_to_ACK_over1200_count": 1,
+      "current_confirmed_room_to_ACK_max_seconds": 1600.528,
+      "measurement": "Per participant successful same-match native room_started check to settlement.acknowledged; excludes queue wait",
+      "original1200_duration_accepted": false,
+      "not_a_balance_or_typical_duration_guarantee": true
+    },
+    "victory_or_default1200_acceptance_not_claimed": true
+  },
+  "final_UI": {
+    "classes": [
+      "Mage",
+      "Priest",
+      "Guardian"
+    ],
+    "locales": [
+      "zh-CN",
+      "en"
+    ],
+    "resolutions": [
+      "1920x1080",
+      "1280x720"
+    ],
+    "phases": [
+      "ActionBar",
+      "Pve",
+      "Pvp"
+    ],
+    "states": [
+      "rejected_wait",
+      "fresh_state_restored"
+    ],
+    "actual_frames": 72,
+    "checks": 360,
+    "text_inside_backing_checked": true,
+    "full_notice_rise_sweep_avoids_visible_Label_and_Button_text": true,
+    "layout_errors": 0,
+    "native_renderer_exit": 0,
+    "OOMKilled": false,
+    "resource_guard_stop": null,
+    "offline_network_none_no_real_accounts_or_worlds": true,
+    "all72_visual_reviewed_via6_sheets_and2_full_resolution_originals": true,
+    "full_G_original_files": 89,
+    "full_G_archive_bytes": 144682500,
+    "full_G_archive_SHA256": "cb9554a0fbde2c4babc21fe1b90661051958dfe918e6b1c30c51a8be69f89891"
+  },
+  "pinned_rule_documents": [
+    {
+      "path": "GDD.md",
+      "sha256": "7375f9615d4612a617cdb6295a020037016ecef061964c0200b52c2def9d44f6"
+    },
+    {
+      "path": "GDD_BASE_v0.69.md",
+      "sha256": "bccf36529f8f3aa599118521df573425e00b6ab5f76b42d1eaca881d2831bde1"
+    },
+    {
+      "path": "docs/README.md",
+      "sha256": "8ce1a8f11591d4de6c98ca4adf510a8966b83172f86ded7efce52b2731065399"
+    },
+    {
+      "path": "docs/CLIENT_IMPLEMENTATION_PLAN.md",
+      "sha256": "14b2018b8eb90ea12abf284eff8fdfee0e5fc14f06bf3d635850afed6cf2c58e"
+    },
+    {
+      "path": "docs/SERVER_SPEC.md",
+      "sha256": "9ca5f8f046e64694fd1962984ee7a6c7ee97f05970aad667a2c901e87bb03f19"
+    },
+    {
+      "path": "docs/END_TO_END_FLOW_AND_PROTOCOL.md",
+      "sha256": "9cfa008191669bea7fbbae4b8ee6ee42edd2e9cf4c1f41d388f0e60fc7a4c7c2"
+    }
+  ],
+  "protected_root_inputs_unchanged": true,
+  "production_UI_assets_server_config_protocol_GDD_not_changed_by_final_capacity_rounds": true,
+  "historical_missing_originals_real_fork_and_candidate_benefit_unverified_not_promoted": true,
+  "whole_project_technical_all_gates_accepted": false,
+  "current_user_scoped_acceptance_completed": true,
+  "heartbeat_delete_result": "not_found;automation already absent,no futureresource_wakeup",
+  "requirement_audit": [
+    {
+      "requirement": "Pin GDD and project protocol context;preserve legal80/70",
+      "evidence": "all6fileSHA equal pinned;native observer actual regressions and unmodified rules",
+      "state": "Verified"
+    },
+    {
+      "requirement": "Continue remaining capacity;100 first then50 final round",
+      "evidence": "10080/20threepointNotAdmitted;R34real60for50 formallypassed;R37onlyadditionalreal60for50performed",
+      "state": "Verified_with100_resource_not_executed_disclosure"
+    },
+    {
+      "requirement": "Quantity reduction and bounded per-task matches",
+      "evidence": "existing route profiles300;capacityledgeractual301 with direct later over300user instruction;R37DBcap40/absolute324",
+      "state": "Verified_under_latest_user_override"
+    },
+    {
+      "requirement": "Exclude human experience",
+      "evidence": "all reports humanexcluded;no human study claimed",
+      "state": "Verified"
+    },
+    {
+      "requirement": "Fix occlusion/style and final visual inspection",
+      "evidence": "R19final72actualframes360checks0layoutErrors;89originalsverifiedR21;UI/assetsbyteidentical",
+      "state": "Verified"
+    },
+    {
+      "requirement": "ImageGen if existing resources inadequate",
+      "evidence": "final renderedstyleaccepted;no new art needed",
+      "state": "NotApplicable_condition_not_triggered"
+    },
+    {
+      "requirement": "Disclose relaxed conditions and historical failures",
+      "evidence": "2400vs1200normalbudget,R33NAandtransientbudgets,originalR34identityfailureandR35repair,R37technicalfailed,user301decisionseparate",
+      "state": "Verified"
+    },
+    {
+      "requirement": "Latest user acceptance stop afterover300;no more rounds",
+      "evidence": "actualDB284+17=301;backuprestore17worlds65settlements64users;cleanup6owned;no furtherqueue",
+      "state": "Verified_user_condition_met"
+    }
+  ],
+  "at_ns": 1793014577156685800,
+  "final_source_CI_verified": {
+    "source": "0fbf2002dce254d226fa3117f63644a5f2b8948b",
+    "run": 40311272218,
+    "four_jobs_passed": true,
+    "all_four_official_artifacts_and_members_G_verified": true,
+    "PG_rows": {
+      "Passed": 418
+    },
+    "PG_skipped": 0,
+    "CI_Linux_native_suites": 29,
+    "CI_Linux_native_named_checks": 436,
+    "tool_tests_passed": 612,
+    "cloud_ownership_tests_passed": 8
+  },
+  "final_local_owned_test_handles_alive": [],
+  "completion_audit_at_ns": 1793015008536802500
+}
