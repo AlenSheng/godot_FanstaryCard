@@ -1,0 +1,206 @@
+{
+  "date": "2026-10-27",
+  "state": "Active_FourTaskGoal_SDKPrivateInputRolesQualified_WholeTasksNotComplete",
+  "goal_objective": "继续执行剩下四项未通过任务",
+  "goal_status_observed": "active",
+  "goal_turn_classification": "Progress",
+  "remaining_whole_task_count": 4,
+  "new_whole_task_acceptances": 0,
+  "records": [
+    {
+      "task_id": "LOAD-11.2",
+      "title": "全量manifest脱敏",
+      "original_state": "Partial",
+      "whole_task_accepted_this_review": false,
+      "retained_whole_task_state": "Partial",
+      "own_registered_machine_layers_passed": false,
+      "own_evidence_finding": "已存在的脱敏/父子身份控制用例通过；本轮80份公开元数据严格检查通过；563份已有内容副本再次验SHA通过。",
+      "original_dependencies": [
+        "LOAD-11.1",
+        "LOAD-06.4"
+      ],
+      "effective_unaccepted_direct_dependencies": [],
+      "concrete_gaps": [
+        "当前相关完整清单及original→derived父图仍未闭合；3005个大小/摘要字节身份未补齐，其中1610属于已搜索Sept29历史范围、1395为其它声明。",
+        "7个大归档已有4个完成当前私有输入角色核对，仍有3个待处理；15555条第一层记录已有5497条完成、10058条待处理。另核对SDK内8个NuGet包的2258条嵌套成员。旧客户端2124子项、226结构性引用等其它前沿保留，不同计数维度不相加。",
+        "仅当实际引用证明某资料不适用于当前正向验收时才能分类为不适用；被当前验收实际依赖的原件缺失仍需补齐。私有输入角色核对不提供原始二进制公开许可，也不证明任意二进制不含秘密。"
+      ],
+      "minimum_evidence_needed": [
+        "继续补齐实际相关源码/proto/生成物/raw及未跟踪输入的大小/SHA、种子/flags/硬件/region/selector及原始→派生关系。",
+        "逐项完成剩余归档、旧客户端与结构性引用的适用性和来源核对；当前正向验收依赖的缺失资料必须取得真实可核对原件。"
+      ],
+      "existing_evidence_reports": [
+        "docs/reports/pr13-stages-20261009/S5-LOAD112-G-Git-content-and-current-remaining-review-20261024/report.json",
+        "docs/reports/pr13-stages-20261009/S5-LOAD112-G-Git-content-and-current-remaining-review-20261024/remaining-task-review.json",
+        "docs/reports/pr13-stages-20261009/S5-LOAD112-current-repo-roots-and-source-availability-20261024/report.json"
+      ],
+      "no_new_runtime_test_required_or_started_for_this_review": true,
+      "current_disposition": "Partial",
+      "not_blocking_current_five_by_user_scope": false,
+      "closed_subitems_this_turn": [
+        "SDK层4572个文件和718个目录的大小/SHA、实际文件格式及私有输入角色已核对。",
+        "8个NuGet包2258条成员完成CRC、大小/摘要及包上下文核对；原始包和源字节不改写。",
+        "6份含注释/尾随逗号的原JSON保持原状，新增私有JSONC派生视图和父关系；7个读取器控制断言通过，公开校验器未放宽。",
+        "31条原公开校验拒绝逐内容重新关联：26条JSON/模板格式，5条敏感样式均位于XML API文档。拒绝不删除，也不当作31个生产凭据泄漏。"
+      ],
+      "template_purpose_no_longer_pending": true,
+      "new_readonly_evidence": "对3005个未补齐字节目标与新NuGet成员做精确大小/SHA关联，新增匹配0；对53个DLL/PDB新目标在C盘相关任务缓存定位，588个名称候选、38个大小候选无摘要匹配。"
+    },
+    {
+      "task_id": "PR13-A01.3",
+      "title": "差异逐事件解释",
+      "original_state": "Partial",
+      "whole_task_accepted_this_review": false,
+      "retained_whole_task_state": "Partial",
+      "own_registered_machine_layers_passed": false,
+      "own_evidence_finding": "旧52个采样进程/77项账本映射及合成审计合同已有证据，本次未重跑。",
+      "original_dependencies": [
+        "PR13-A01.2"
+      ],
+      "effective_unaccepted_direct_dependencies": [],
+      "concrete_gaps": [
+        "缺20260929-155805-888652/report.json原件：10,524,360字节，SHA256 113a3ca65f4b858c9933e3fd21d7ad799ba4fe75bfd6b85d0b2282509f4de780。",
+        "缺20260929-161746-51e014/report.json原件：19,743,677字节，SHA256 fe0e50f6cc6ae4801e23600e9c53840c5923e5626fca4c501a93b5e3b7cb71ee。",
+        "因此PR13-A01.3-T02/AUDIT所需86/90、130/139的逐client/cycle/event差额与准确STOP因果仍不能核对；新的正常运行不能替代这两次历史事件。"
+      ],
+      "minimum_evidence_needed": [
+        "上述指定原件及同一原运行审计/周期/停止记录，或能逐字节验证为同一原件的备份。现有已查G盘/云端/归档范围未找到，不重复同一全盘搜索。"
+      ],
+      "existing_evidence_reports": [
+        "docs/reports/pr13-stages-20261009/S5-a013-actual-legacy-map-and-missing-originals-20261017/review.json",
+        "docs/reports/pr13-stages-20261009/S5-A081-G-and-cloud-historical-backup-search-20261024/backup-search.json"
+      ],
+      "no_new_runtime_test_required_or_started_for_this_review": true,
+      "current_disposition": "Partial",
+      "not_blocking_current_five_by_user_scope": false,
+      "new_readonly_evidence": "新增C盘Codex工作树、任务目录及临时缓存定向检索：67281个文件条目、36个report.json名称，两个指定大小的候选0，未找回两份原报告。未重复G盘或云端搜索，不构成全局不存在证明。"
+    },
+    {
+      "task_id": "PR13-A07.3",
+      "title": "CI触发和证据",
+      "original_state": "Partial",
+      "whole_task_accepted_this_review": false,
+      "retained_whole_task_state": "Partial",
+      "own_registered_machine_layers_passed": false,
+      "own_evidence_finding": "同仓push/READY-only触发和完整PG418/0跳过证据已有；它们的事件和仓库身份不等于外部fork PR。",
+      "original_dependencies": [
+        "PR13-A07.2"
+      ],
+      "effective_unaccepted_direct_dependencies": [],
+      "concrete_gaps": [
+        "PR13-A07.3-T02/POSTGRES缺真实外部fork PR的执行身份、对应workflow/job/SHA与PG原始结果。",
+        "2026-10-24用户已明确“没有，保留该项未通过”；此决定未被后续容量放行覆盖。"
+      ],
+      "minimum_evidence_needed": [
+        "只有后续出现真实可用的fork来源及同一PR/运行的PG证据才能重审。当前不新增账号、组织、PR或工作流，不重复索要环境。"
+      ],
+      "existing_evidence_reports": [
+        "docs/reports/pr13-stages-20261009/S6-A073-user-keeps-actual-fork-PR-unpassed-20261024/decision.json",
+        "docs/reports/pr13-stages-20261009/S6-current-hosted-CI-trigger-profile-20261024/case-profile-review.json"
+      ],
+      "no_new_runtime_test_required_or_started_for_this_review": true,
+      "current_disposition": "Partial",
+      "not_blocking_current_five_by_user_scope": false,
+      "new_readonly_evidence": "现有GitHub连接列出的安装账号为AlenSheng个人账号；包含fork的同名仓库查询仅返回原仓库，未发现可用外部fork执行资料。未创建账号、组织、fork、PR或workflow；该查询不排除不同名称且未返回的fork。"
+    },
+    {
+      "task_id": "PR13-A08.1",
+      "title": "运行来源与历史基线",
+      "original_state": "ReadyForAcceptance",
+      "whole_task_accepted_this_review": false,
+      "retained_whole_task_state": "ReadyForAcceptance",
+      "own_registered_machine_layers_passed": false,
+      "own_evidence_finding": "已有9组DLL/PDB配对、429项编译文档校验及269个唯一源码字节体；42条有界启动来源已父链连接，1个container ID已正确排除；6组大报告与450条客户端启动回执已关联。",
+      "original_dependencies": [
+        "LOAD-11.1"
+      ],
+      "effective_unaccepted_direct_dependencies": [],
+      "concrete_gaps": [
+        "4次原editor客户端运行未记录各自原Godot引擎摘要；Group1原运行overlay摘要未记录，现有程序路径、镜像标签或嵌入配置hash不能补记当时实际执行身份。",
+        "13次Sept29声明运行的原始payload备份仍未找到，完整历史/新增run全集及source/config/image/有效环境与room策略的运行父链未整体裁定完成。",
+        "现有3份PG备份、8份环境/限制/控制文件和保留的旧回滚镜像是部分备份，不等于这13次原运行的原件或镜像/config关联证明。"
+      ],
+      "minimum_evidence_needed": [
+        "可与具体原run连接的当时引擎/overlay/源码/config/镜像/有效策略原始见证及完整run清单；现有有界字段归档不能扩展为全历史证明。"
+      ],
+      "existing_evidence_reports": [
+        "docs/reports/pr13-stages-20261009/S5-A081-original-compiler-inputs-and-missing-image-symbols-20261024/report.json",
+        "docs/reports/pr13-stages-20261009/S5-A081-last18-and-bounded42-startup-source-parents-20261024/report.json",
+        "docs/reports/pr13-stages-20261009/S5-A081-G-and-cloud-historical-backup-search-20261024/backup-search.json"
+      ],
+      "no_new_runtime_test_required_or_started_for_this_review": true,
+      "current_disposition": "ReadyForAcceptance",
+      "not_blocking_current_five_by_user_scope": true,
+      "new_readonly_evidence": "只读检查Windows历史镜像哈希事件来源：本次可读AppLocker最早2026-10-27、CodeIntegrity最早2026-10-25，未覆盖已在10月20日归档的旧编辑器运行；Sysmon/Security元数据查询不可读，不将查询失败当作日志不存在。未启用日志、改策略或运行旧引擎。"
+    }
+  ],
+  "SDK_batch": {
+    "queue_parent_sha256": "b47a51f79680f4b3afa795f0ea34a6d77c0958209f1bd2d3335b4123e39403dd",
+    "firstlevel_rows": 5290,
+    "regular_files": 4572,
+    "directories": 718,
+    "qualified_firstlevel_rows": 5290,
+    "pending_firstlevel_rows": 0,
+    "nested_package_count": 8,
+    "nested_rows": 2258,
+    "qualified_nested_rows": 2258,
+    "pending_nested_rows": 0,
+    "private_parent_role_complete": true,
+    "metadata_parser_control_assertions": 7
+  },
+  "raw_guard_refusals": {
+    "raw_refusal_records": 31,
+    "distinct_source_bodies": 30,
+    "reason_counts": {
+      "Credential-like value in public evidence": 5,
+      "Malformed public evidence JSON": 26
+    },
+    "all_refusals_reproduced_on_exact_original_bytes": true,
+    "source_roles_bound_without_export_allowlist_change": true,
+    "new_nuget_member_byte_provider_matches": 0,
+    "not_universal_secret_absence_or_live_credential_assertion": true
+  },
+  "archive_private_role_frontier": {
+    "qualified_parent_objects": 4,
+    "pending_parent_objects": 3,
+    "qualified_firstlevel_rows": 5497,
+    "pending_firstlevel_rows": 10058,
+    "additional_nested_NuGet_rows_qualified": 2258,
+    "no_raw_export_or_vendor_authenticity_or_universal_secret_absence_permission": true
+  },
+  "new_C53_lookup": {
+    "target_pairs": 53,
+    "target_basenames": 12,
+    "file_entries": 67285,
+    "name_candidates": 588,
+    "exact_size_candidates": 38,
+    "exact_matches": 0,
+    "not_repeat_of_previous_two_report_target_set": true,
+    "no_old_binary_rebuilt_or_executed": true,
+    "no_global_absence_claim": true
+  },
+  "still_open_source_frontiers": {
+    "unobserved_size_SHA_pairs": 3005,
+    "historical_Sept29_pairs": 1610,
+    "other_pairs": 1395,
+    "old_client_children": 2124,
+    "structural_observations": 226,
+    "old_causal_source_execution_relation": 1,
+    "template_purpose_questions": 0,
+    "counts_may_overlap_and_are_not_new_gameplay_tests": true
+  },
+  "next_work_priority": "Trace actual current-positive report/case/producer references and source applicability,including A05 historical causal declaration;no exclusion from directory name,source label or absence of direct references alone. Continue applicable remaining image/oldclient/structural inputs.",
+  "original_execution_machine_question": {
+    "state": "Awaiting_user_information",
+    "question_about": "Sept29runs155805and161746 original execution host",
+    "no_assumption_or_remote_actions_based_on_unanswered_question": true
+  },
+  "private_proofs_root": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\remaining-four-execution-20261027-r2",
+  "prior_progress_preserved": "REMAINING_FOUR_EXECUTION_R1_20261027.json",
+  "current5_accepted_and_capacity12_closed_unchanged": true,
+  "automatic100_retest": false,
+  "no_gameplay_engine_SDK_PG_or_CI_execution": true,
+  "only_metadata_reader_control_assertions": 7,
+  "original_failures_and_guard_refusals_preserved": true,
+  "at": "2026-10-27T14:34:48.886186+08:00"
+}
