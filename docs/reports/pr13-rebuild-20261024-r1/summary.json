@@ -3,7 +3,7 @@
   "round_id": "current-rebuild-20261024-r1",
   "user_scope": "重建当前版本新一轮（推荐）",
   "adjudicated_at_UTC": "2026-10-27T03:36:41.463701+00:00",
-  "current_status": "Prior_round_accepted_and_closed;current5accepted_and_capacity12closed;four_followup_goal_active;HTTP6_actual_negative_case_sources_qualified;whole4still_unaccepted;no_auto100_retest",
+  "current_status": "Prior_round_accepted_and_closed;current5accepted_and_capacity12closed;four_followup_goal_active;nine_original_recovery_archives_and_one_failed_capture_context_qualified;B09_logical_manifest_gap_retained;whole4still_unaccepted;no_auto100_retest",
   "GDD_main_sha256": "7375f9615d4612a617cdb6295a020037016ecef061964c0200b52c2def9d44f6",
   "config_package_sha256": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
   "legal_base_HP": {
@@ -844,7 +844,7 @@
   "historical_prospective_capacity_plan": "docs/plans/PR13_CAPACITY_ACTUAL50_RECOVERY_BUDGET_PROPOSAL_20261026_R33.json",
   "final_sync_date": "2026-10-27",
   "all_raw_failure_and_CPU_records_retained": true,
-  "remaining_task_status_audit": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_EXECUTION_R5_20261027.json",
+  "remaining_task_status_audit": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_EXECUTION_R6_20261027.json",
   "original_register_not_accepted_task_counts": {
     "Partial": 20,
     "ReadyForAcceptance": 1,
@@ -888,7 +888,7 @@
     "automatic100_retest": false
   },
   "latest_current_version_five_acceptance": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/CURRENT_VERSION_FIVE_ACCEPTED_20261027.json",
-  "remaining_four_gap_report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_EXECUTION_R5_20261027.json",
+  "remaining_four_gap_report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_EXECUTION_R6_20261027.json",
   "current_version_five_accepted_task_ids": [
     "PR13-B12.1",
     "PR13-B12.2",
@@ -921,7 +921,7 @@
   "historical_noncapacity_nine_review": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/NONCAPACITY_NINE_REVIEW_20261027.json",
   "latest_current_acceptance_review": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/CURRENT_VERSION_FIVE_ACCEPTED_20261027.json",
   "prior_current_unpassed_scope_before_five_acceptance": {},
-  "latest_remaining_four_execution_progress": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_EXECUTION_R5_20261027.json",
+  "latest_remaining_four_execution_progress": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_EXECUTION_R6_20261027.json",
   "active_followup_goal": {
     "objective": "继续执行剩下四项未通过任务",
     "status_observed": "active",
@@ -962,10 +962,12 @@
     "all_native_ledger_bindings": 226,
     "all20_outer_size_SHA_verified": true,
     "current_dispositions": {
-      "ActualIncompleteOrInvalidHistoricalArchive_RetainedNotCleared": 11,
       "IntentionalNegativeArchiveFixture_OriginalRejectionRetained": 8,
       "ImageFilesystemLinkMetadataQualified_UnsafeHostExtractionStillRejected": 201,
-      "IntentionalHTTPDecodeNegativeFixture_ExpectedRejectionVerified_NotMissingPositivePayload": 6
+      "IntentionalHTTPDecodeNegativeFixture_ExpectedRejectionVerified_NotMissingPositivePayload": 6,
+      "FailedHistoricalTransfer_SeparateCompleteOriginalRecoveryVerified": 9,
+      "EmptyCapture_ExplicitFailedServerStage_NotPositiveWireEvidence": 1,
+      "PartialGUITransport_LogicalRecoveryManifestAndProviderMapPending": 1
     },
     "image_link_metadata_qualified": 201,
     "intentional_negative_fixture_rows": 14,
@@ -977,7 +979,11 @@
     "no_extraction_link_follow_or_code_execution": true,
     "no_whole_LOAD112_acceptance": true,
     "HTTP_negative_case_applicability_qualified_rows": 6,
-    "remaining_historical_source_applicability_pending_rows": 11
+    "remaining_historical_source_applicability_pending_rows": 1,
+    "separate_original_recovery_archive_rows_qualified": 9,
+    "failed_empty_capture_context_qualified": 1,
+    "old_separate_empty_package_reference_not_cleared": true,
+    "no_raw_failed_archive_promoted_to_valid": true
   },
   "LOAD112_template_purpose_current_disposition": "UserConfirmed_LocalSample_NeverDeployed_OriginalRawGuardRefusalRetained",
   "LOAD112_HTTP6_expected_negative_case_review": {
@@ -991,5 +997,48 @@
     "not_a_whole_LOAD112_acceptance": true,
     "whole_four_tasks_unaccepted": true,
     "no_new_HTTP_gameplay_Godot_or_capacity_run": true
+  },
+  "LOAD112_remaining11_recovery_review": {
+    "original_scope_pending_rows": 11,
+    "new_concrete_recovery_or_failed_capture_contexts_qualified": 10,
+    "remaining_structural_source_applicability_rows": 1,
+    "GUI_logical_manifest_members": 3396,
+    "GUI_current_exact_providers_in_two_recorded_roots": 31,
+    "GUI_provider_locators_still_needed_in_these_roots": 3365,
+    "scope_not_global_absence": true,
+    "verified_recovery_containers": 8,
+    "all_original_bad_bytes_and_failures_preserved": true,
+    "old_separate_empty_package_reference_not_cleared": true,
+    "whole_LOAD112_not_accepted": true,
+    "whole_remaining_four_not_accepted": true,
+    "no_new_native_gameplay_render_PG_or_capacity_execution": true
+  },
+  "LOAD112_B09_distinct_logical_manifest_gap": {
+    "historical_recovery_receipt": {
+      "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\reports\\pr13-stages-20261009\\S0-b09-original-GUI-storage-recovery\\complete-original-G-receipt.json",
+      "bytes": 640,
+      "sha256": "f77ca75be8472721a3a0a7d90f5891bb2b4fd52716ad0c206331cbbff09a5e39"
+    },
+    "receipt_declared_complete_logical_manifest_SHA": "67bf9d32a14900e04775f877efcc5e9b952d3df0df5280851a4fac42ca4a39e6",
+    "receipt_declared_logical_member_count": 3396,
+    "current_delivery_manifest": {
+      "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\outputs\\pr13-tencent-20261009\\dual-boundary-GUI-smoke-r1-complete-originals-on-G\\delivery-manifest.json",
+      "bytes": 1265554,
+      "sha256": "2106d2a14330ce5fd07bf5a50313f0fed02a547d009655d42d0be4951496a89e"
+    },
+    "current_delivery_manifest_exact_member_of_failed_original_archive": {
+      "name": "manifest.json",
+      "bytes": 1265554,
+      "sha256": "2106d2a14330ce5fd07bf5a50313f0fed02a547d009655d42d0be4951496a89e"
+    },
+    "two_manifest_identities_equal": false,
+    "same_member_count_does_not_establish_same_manifest_or_provider_graph": true,
+    "current_failed_delivery_manifest_members": 3396,
+    "current_exact_failed_delivery_input_providers_at_two_recorded_roots": 31,
+    "other_failed_delivery_input_provider_locators_not_found_in_those_roots": 3365,
+    "complete_logical_manifest_body_and_provider_map_need_location_before_full_recovery_claim": true,
+    "no_global_data_loss_or_absence_claim": true,
+    "raw_failed_tar_and_historical_receipt_unchanged": true,
+    "no_positive_original_execution_relabelled": true
   }
 }

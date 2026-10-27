@@ -1,0 +1,441 @@
+{
+  "date": "2026-10-27",
+  "state": "RemainingFourActive_NineFailedArchiveRecoveriesAndOneFailedEmptyCaptureQualified_B09LogicalSourceMapPending",
+  "goal_objective": "继续执行剩下四项未通过任务",
+  "goal_status_observed": "active",
+  "goal_turn_classification": "Progress",
+  "remaining_whole_task_count": 4,
+  "new_whole_task_acceptances": 0,
+  "records": [
+    {
+      "task_id": "LOAD-11.2",
+      "title": "全量manifest脱敏",
+      "original_state": "Partial",
+      "whole_task_accepted_this_review": false,
+      "retained_whole_task_state": "Partial",
+      "own_registered_machine_layers_passed": false,
+      "own_evidence_finding": "已存在的脱敏/父子身份控制用例通过；本轮80份公开元数据严格检查通过；563份已有内容副本再次验SHA通过。",
+      "original_dependencies": [
+        "LOAD-11.1",
+        "LOAD-06.4"
+      ],
+      "effective_unaccepted_direct_dependencies": [],
+      "concrete_gaps": [
+        "当前相关完整来源/原始到派生图尚未整体闭合；3005个声明大小/SHA身份未补齐，新增1550条已验证副本记录与队列精确关联仍无新匹配。",
+        "226条结构记录中，9个实际坏传输已与独立完整原件恢复件连接，1个零字节捕获已与明确失败的server阶段连接；原坏包/拒绝不改。仍有1组旧GUI完整逻辑恢复清单及其副本位置映射待定位。",
+        "旧GUI失败包内交付清单SHA2106d2a14330ce5fd07bf5a50313f0fed02a547d009655d42d0be4951496a89e，与历史完整恢复回执所记逻辑清单SHA67bf9d32a14900e04775f877efcc5e9b952d3df0df5280851a4fac42ca4a39e6不同，不能按同样3396项互换。两个指定记录目录中核对到31个交付成员精确副本，其余3365项的副本位置在该范围未定位；不据此推定全局不存在，也不与3005队列相加。",
+        "正向验收实际依赖的缺失资料仍需补齐；恢复回执、当前Git或同名不同摘要模块不能代替具体原件/执行身份。"
+      ],
+      "minimum_evidence_needed": [
+        "继续补齐实际相关源码/proto/生成物/raw及未跟踪输入的大小/SHA、种子/flags/硬件/region/selector及原始→派生关系。",
+        "逐项完成剩余归档、旧客户端与结构性引用的适用性和来源核对；当前正向验收依赖的缺失资料必须取得真实可核对原件。"
+      ],
+      "existing_evidence_reports": [
+        "docs/reports/pr13-stages-20261009/S5-LOAD112-G-Git-content-and-current-remaining-review-20261024/report.json",
+        "docs/reports/pr13-stages-20261009/S5-LOAD112-G-Git-content-and-current-remaining-review-20261024/remaining-task-review.json",
+        "docs/reports/pr13-stages-20261009/S5-LOAD112-current-repo-roots-and-source-availability-20261024/report.json"
+      ],
+      "no_new_runtime_test_required_or_started_for_this_review": true,
+      "current_disposition": "Partial",
+      "not_blocking_current_five_by_user_scope": false,
+      "closed_subitems_this_turn": [
+        "B08失败备份、两个B04单元、LOAD041、LOAD083、A091、B06两次中断和矩阵ZIP共9条原坏传输，已核对其独立恢复件的外层身份、内部成员及原回执/清单关系。8个恢复容器全部实际读完，TAR压缩尾或ZIP CRC核对通过。",
+        "LOAD041明确核对source/328项与runtime/21项，另有一项归档清单；A091明确核对993项数据与另1项原始清单。未将元数据成员或重复basename误当异常。",
+        "零字节Guardian-False gzip所在原attempt-4明记server exit1、整体未通过；该文件不能支持正向线包证据。其用途不推广给其它相同空摘要别名，也不关闭旧的另一条空包引用。",
+        "旧GUI交付清单与坏包内manifest逐字节一致，但与完整逻辑恢复回执的清单摘要不同；保持该缺口，不用31项差异副本冒充3396项全量齐备。"
+      ],
+      "template_purpose_no_longer_pending": true,
+      "new_readonly_evidence": "余11条结构来源核对完成10条；最后1组是旧GUI逻辑清单与副本映射未闭合。所有原始坏包和业务失败保留，未按传输恢复结果升级整项验收。",
+      "current_positive_causal_support": {
+        "current_CI_execution_record_qualified": true,
+        "current_recorded_client_input_bytes_qualified": 30,
+        "current_source_commit_association": "Officialrun40311272218/artifact12645587563/name0fb+rawtestdefinitionandGitmethodsource",
+        "current_test_module_original_bytes_recovered_by_this_review": false,
+        "complete_compiler_provenance_claimed": false,
+        "historical_old_probe_DLL_PDB_execution_recovered": false,
+        "historical_relation1_retained": true,
+        "all_current_positive_source_dependencies_audited": false,
+        "other3005_declarations_nonapplicability_not_inferred": true
+      }
+    },
+    {
+      "task_id": "PR13-A01.3",
+      "title": "差异逐事件解释",
+      "original_state": "Partial",
+      "whole_task_accepted_this_review": false,
+      "retained_whole_task_state": "Partial",
+      "own_registered_machine_layers_passed": false,
+      "own_evidence_finding": "旧52个采样进程/77项账本映射及合成审计合同已有证据，本次未重跑。",
+      "original_dependencies": [
+        "PR13-A01.2"
+      ],
+      "effective_unaccepted_direct_dependencies": [],
+      "concrete_gaps": [
+        "缺20260929-155805-888652/report.json原件：10,524,360字节，SHA256 113a3ca65f4b858c9933e3fd21d7ad799ba4fe75bfd6b85d0b2282509f4de780。",
+        "缺20260929-161746-51e014/report.json原件：19,743,677字节，SHA256 fe0e50f6cc6ae4801e23600e9c53840c5923e5626fca4c501a93b5e3b7cb71ee。",
+        "因此PR13-A01.3-T02/AUDIT所需86/90、130/139的逐client/cycle/event差额与准确STOP因果仍不能核对；新的正常运行不能替代这两次历史事件。"
+      ],
+      "minimum_evidence_needed": [
+        "上述指定原件及同一原运行审计/周期/停止记录，或能逐字节验证为同一原件的备份。现有已查G盘/云端/归档范围未找到，不重复同一全盘搜索。"
+      ],
+      "existing_evidence_reports": [
+        "docs/reports/pr13-stages-20261009/S5-a013-actual-legacy-map-and-missing-originals-20261017/review.json",
+        "docs/reports/pr13-stages-20261009/S5-A081-G-and-cloud-historical-backup-search-20261024/backup-search.json"
+      ],
+      "no_new_runtime_test_required_or_started_for_this_review": true,
+      "current_disposition": "Partial",
+      "not_blocking_current_five_by_user_scope": false,
+      "new_readonly_evidence": "本批读取20个指定归档的现有可读成员并精确匹配两份旧报告的大小/SHA，未恢复。损坏归档未改写或升格为有效原件。此前C盘定向检索结论保留，不构成全局不存在证明。"
+    },
+    {
+      "task_id": "PR13-A07.3",
+      "title": "CI触发和证据",
+      "original_state": "Partial",
+      "whole_task_accepted_this_review": false,
+      "retained_whole_task_state": "Partial",
+      "own_registered_machine_layers_passed": false,
+      "own_evidence_finding": "同仓push/READY-only触发和完整PG418/0跳过证据已有；它们的事件和仓库身份不等于外部fork PR。",
+      "original_dependencies": [
+        "PR13-A07.2"
+      ],
+      "effective_unaccepted_direct_dependencies": [],
+      "concrete_gaps": [
+        "PR13-A07.3-T02/POSTGRES缺真实外部fork PR的执行身份、对应workflow/job/SHA与PG原始结果。",
+        "2026-10-24用户已明确“没有，保留该项未通过”；此决定未被后续容量放行覆盖。"
+      ],
+      "minimum_evidence_needed": [
+        "只有后续出现真实可用的fork来源及同一PR/运行的PG证据才能重审。当前不新增账号、组织、PR或工作流，不重复索要环境。"
+      ],
+      "existing_evidence_reports": [
+        "docs/reports/pr13-stages-20261009/S6-A073-user-keeps-actual-fork-PR-unpassed-20261024/decision.json",
+        "docs/reports/pr13-stages-20261009/S6-current-hosted-CI-trigger-profile-20261024/case-profile-review.json"
+      ],
+      "no_new_runtime_test_required_or_started_for_this_review": true,
+      "current_disposition": "Partial",
+      "not_blocking_current_five_by_user_scope": false,
+      "new_readonly_evidence": "现有GitHub连接列出的安装账号为AlenSheng个人账号；包含fork的同名仓库查询仅返回原仓库，未发现可用外部fork执行资料。未创建账号、组织、fork、PR或workflow；该查询不排除不同名称且未返回的fork。"
+    },
+    {
+      "task_id": "PR13-A08.1",
+      "title": "运行来源与历史基线",
+      "original_state": "ReadyForAcceptance",
+      "whole_task_accepted_this_review": false,
+      "retained_whole_task_state": "ReadyForAcceptance",
+      "own_registered_machine_layers_passed": false,
+      "own_evidence_finding": "已有9组DLL/PDB配对、429项编译文档校验及269个唯一源码字节体；42条有界启动来源已父链连接，1个container ID已正确排除；6组大报告与450条客户端启动回执已关联。",
+      "original_dependencies": [
+        "LOAD-11.1"
+      ],
+      "effective_unaccepted_direct_dependencies": [],
+      "concrete_gaps": [
+        "4次原editor客户端运行未记录各自原Godot引擎摘要；Group1原运行overlay摘要未记录，现有程序路径、镜像标签或嵌入配置hash不能补记当时实际执行身份。",
+        "13次Sept29声明运行的原始payload备份仍未找到，完整历史/新增run全集及source/config/image/有效环境与room策略的运行父链未整体裁定完成。",
+        "现有3份PG备份、8份环境/限制/控制文件和保留的旧回滚镜像是部分备份，不等于这13次原运行的原件或镜像/config关联证明。"
+      ],
+      "minimum_evidence_needed": [
+        "可与具体原run连接的当时引擎/overlay/源码/config/镜像/有效策略原始见证及完整run清单；现有有界字段归档不能扩展为全历史证明。"
+      ],
+      "existing_evidence_reports": [
+        "docs/reports/pr13-stages-20261009/S5-A081-original-compiler-inputs-and-missing-image-symbols-20261024/report.json",
+        "docs/reports/pr13-stages-20261009/S5-A081-last18-and-bounded42-startup-source-parents-20261024/report.json",
+        "docs/reports/pr13-stages-20261009/S5-A081-G-and-cloud-historical-backup-search-20261024/backup-search.json"
+      ],
+      "no_new_runtime_test_required_or_started_for_this_review": true,
+      "current_disposition": "ReadyForAcceptance",
+      "not_blocking_current_five_by_user_scope": true,
+      "new_readonly_evidence": "本批从指定保留归档完整成员按大小/SHA检索旧因果DLL/PDB及原c1f TRX，未新增匹配；不以当前CI或新解析代替原历史执行身份。此前Windows日志来源范围结论保留。"
+    }
+  ],
+  "current_causal_evidence": {
+    "source_commit": "0fbf2002dce254d226fa3117f63644a5f2b8948b",
+    "official_run": 40311272218,
+    "official_artifact_id": 12645587563,
+    "archive_sha256": "741d29eeacee8ba93adeed4bbaffb13e24a7e0abbd31cecb8a407762c82ee763",
+    "actual_PG_rows": 418,
+    "actual_passed_rows": 418,
+    "skipped_rows": 0,
+    "selected_method": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Frozen_f812_actual_poll_return_during_ACK_must_not_restore_completed_receipt",
+    "selected_testId": "cced657c-a5fc-bcc1-8012-4db237653eea",
+    "selected_outcome": "Passed",
+    "current_harness_path_is_binRelease_not_old_binCausal": true,
+    "source_contains_actual_legacy_snapshot_positive_count_assertion": true,
+    "independent_stdout_legacy_marker_count_observed": 0,
+    "control_outcome": {
+      "ok": true,
+      "counterexample_confirmed": false,
+      "stale_during_ack": false,
+      "stale_after_ack": false
+    },
+    "recorded_client_inputs_available_exactly_from_current_Git": 30,
+    "scope_qualification": {
+      "current_CI_execution_record_qualified": true,
+      "current_recorded_client_input_bytes_qualified": 30,
+      "current_source_commit_association": "Officialrun40311272218/artifact12645587563/name0fb+rawtestdefinitionandGitmethodsource",
+      "current_test_module_original_bytes_recovered_by_this_review": false,
+      "complete_compiler_provenance_claimed": false,
+      "historical_old_probe_DLL_PDB_execution_recovered": false,
+      "historical_relation1_retained": true,
+      "all_current_positive_source_dependencies_audited": false,
+      "other3005_declarations_nonapplicability_not_inferred": true
+    }
+  },
+  "archive_private_role_frontier": {
+    "qualified_parent_objects": 7,
+    "pending_parent_objects": 0,
+    "qualified_firstlevel_rows": 15555,
+    "pending_firstlevel_rows": 0,
+    "additional_nested_NuGet_rows_qualified": 2258,
+    "old_client_firstlevel_rows_qualified": 2186,
+    "old_client_regular_files_qualified": 2124,
+    "old_client_directories_qualified": 62,
+    "old_client_import_source_edges_present": 628,
+    "private_input_role_review_only": true,
+    "no_raw_export_or_vendor_authenticity_or_universal_secret_absence_permission": true
+  },
+  "still_open_source_frontiers": {
+    "unobserved_size_SHA_pairs": 3005,
+    "historical_Sept29_pairs": 1610,
+    "other_pairs": 1395,
+    "structural_observations": 226,
+    "old_causal_source_execution_relation": 1,
+    "template_purpose_questions": 0,
+    "counts_may_overlap_and_are_not_new_gameplay_tests": true,
+    "old_client_private_role_pending": 0,
+    "structural_concrete_dispositions": 226,
+    "structural_historical_source_applicability_pending": 1,
+    "source_queue3005_new_exact_provider_pairs": 0
+  },
+  "private_proofs_root": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\remaining-four-execution-20261027-r6",
+  "original_execution_machine_question": {
+    "state": "Awaiting_user_information",
+    "question_about": "Sept29runs155805and161746 original execution host",
+    "no_assumption_or_remote_actions_based_on_unanswered_question": true
+  },
+  "next_work_priority": [
+    "优先定位旧GUI完整逻辑恢复清单67bf9d32a14900e04775f877efcc5e9b952d3df0df5280851a4fac42ca4a39e6及其原副本映射；不得将失败交付清单2106...或31项差异副本视为完整恢复。仅沿已记录元数据/实际引用定位。",
+    "继续以当前实际案例/构建/运行父链确定缺失字节的必需性，历史失败和未恢复字节不作不适用豁免。",
+    "原执行机器/备份位置问题仍待答复；A01.3、A07.3、A08.1的原件/真实fork/历史身份前提不变。无新线索不重复G盘或云端全盘搜索，不补测100人。"
+  ],
+  "no_old_execution_claim_or_case_scope_waiver": true,
+  "old_four_gaps_and_all_original_failures_preserved": true,
+  "current5_accepted_and_capacity12_closed_unchanged": true,
+  "automatic100_retest": false,
+  "no_new_gameplay_Godot_PG_SDK_or_CI_execution": true,
+  "at": "2026-10-27T17:10:34.298368+08:00",
+  "structural_current_review": {
+    "original_structural_rows": 226,
+    "all_native_ledger_bindings": 226,
+    "all20_outer_size_SHA_verified": true,
+    "current_dispositions": {
+      "IntentionalNegativeArchiveFixture_OriginalRejectionRetained": 8,
+      "ImageFilesystemLinkMetadataQualified_UnsafeHostExtractionStillRejected": 201,
+      "IntentionalHTTPDecodeNegativeFixture_ExpectedRejectionVerified_NotMissingPositivePayload": 6,
+      "FailedHistoricalTransfer_SeparateCompleteOriginalRecoveryVerified": 9,
+      "EmptyCapture_ExplicitFailedServerStage_NotPositiveWireEvidence": 1,
+      "PartialGUITransport_LogicalRecoveryManifestAndProviderMapPending": 1
+    },
+    "image_link_metadata_qualified": 201,
+    "intentional_negative_fixture_rows": 14,
+    "historical_invalid_or_incomplete_archive_rows": 11,
+    "historical_invalid_gzip_HTTP_reply_rows": 6,
+    "all226_have_concrete_disposition": true,
+    "historical_invalid_sources_current_applicability_unresolved": true,
+    "original226_rejections_not_erased": true,
+    "no_extraction_link_follow_or_code_execution": true,
+    "no_whole_LOAD112_acceptance": true,
+    "HTTP_negative_case_applicability_qualified_rows": 6,
+    "remaining_historical_source_applicability_pending_rows": 1,
+    "separate_original_recovery_archive_rows_qualified": 9,
+    "failed_empty_capture_context_qualified": 1,
+    "old_separate_empty_package_reference_not_cleared": true,
+    "no_raw_failed_archive_promoted_to_valid": true
+  },
+  "new_byte_provider_recovery": {
+    "outer_sources_verified": 20,
+    "all20_expected_size_SHA_verified": true,
+    "archive_entries_observed": 3639,
+    "providers": 0,
+    "unique_provider_pairs": 0,
+    "original3005_exact_provider_pairs": 0,
+    "extra_named_historical_target_pairs": 0,
+    "no_extract_no_execute_no_link_follow": true,
+    "incomplete_archives_never_promoted_to_valid": true
+  },
+  "OS64_resolution": {
+    "initial_pending_rows": 64,
+    "resolved_rows": 64,
+    "empty_OCI_opaque_metadata_markers": 37,
+    "installed_tool_source_or_known_format_contexts": 27,
+    "actual_historical_producer_execution_not_inferred": true,
+    "OCI_specification": "https://github.com/opencontainers/image-spec/blob/v1.1.1/layer.md#opaque-whiteout"
+  },
+  "old_client_review": {
+    "firstlevel_rows": 2186,
+    "regular_files": 2124,
+    "directories": 62,
+    "all_file_CRC_and_SHA_verified": true,
+    "import_descriptors": 628,
+    "declared_import_source_targets_present": 628,
+    "resource_URI_literal_observations": 3054,
+    "full_dependency_graph_not_claimed": true,
+    "raw_body_public_export_allowed": false
+  },
+  "whole_task_status_unchanged": true,
+  "private_proof_metadata": [
+    {
+      "name": "remaining11-original-rows.private.original.json",
+      "bytes": 19163,
+      "sha256": "d9f8fa57eece3b00d850d2be498bbb18d244d180b68708ef5846b230bbf6cefb"
+    },
+    {
+      "name": "remaining11-source-and-recovery-dispositions.private.derived.json",
+      "bytes": 21607,
+      "sha256": "4e7b38f5e04bb0a2537550a2083b36f653a638178c9c58177fc167281aee00bb"
+    },
+    {
+      "name": "verified-recovery-containers-and-members.private.derived.json",
+      "bytes": 424849,
+      "sha256": "108bee2a0ce80ecc436e27d49a392d925d607140ca063ce6ff31cf0bb72f0f6d"
+    },
+    {
+      "name": "recovery-context-input-identities.private.original.json",
+      "bytes": 10117,
+      "sha256": "ceebde30e508393cc5eb15ad206ce6132cbfed7d826a07789fa38eefe1412103"
+    },
+    {
+      "name": "remaining11-current-summary.derived.json",
+      "bytes": 677,
+      "sha256": "9cf949a82ffc453241bca264f3dc08bb26611c4065209a2e4b509f7c0b405e09"
+    },
+    {
+      "name": "B09-logical-current-provider-bindings.private.derived.json",
+      "bytes": 17922,
+      "sha256": "f43b450e721223f59195237a9d9e279c66b91c28cb0109dd67ffccb7762f1ccf"
+    },
+    {
+      "name": "B09-logical-unlocated-in-two-roots.private.derived.json",
+      "bytes": 1236163,
+      "sha256": "fe79ee303c7176e1b7b4de89628b030b951f99696e33f90c00db441f0d68fc21"
+    },
+    {
+      "name": "B09-distinct-manifest-and-current-provider-gap.derived.json",
+      "bytes": 1630,
+      "sha256": "15c55952bae21b088649feb9043fd37878990a7b2e34a5f8481d66fe475a8cfd"
+    },
+    {
+      "name": "recovery-container3005-provider-join.private.derived.json",
+      "bytes": 207,
+      "sha256": "fa117d73bc069afea0918293a70dfb75a3846a72e7b41178aa24df6f4bff305b"
+    },
+    {
+      "name": "verifier-v1-v3-scope-corrections.original.json",
+      "bytes": 773,
+      "sha256": "96c421e72da7045ab7f1aa27a53ca2199528e0a78455f64eeabbf3a9e0d42edc"
+    },
+    {
+      "name": "verify-original11-recovery-and-current-providers.original.py",
+      "bytes": 14203,
+      "sha256": "7713e705a5a10f38e5e676a0043ec7ac8bcb256c4818c73c1e55697eae1ee48b"
+    },
+    {
+      "name": "verify-original11-recovery-and-current-providers-v2.original.py",
+      "bytes": 14223,
+      "sha256": "09c89c931522f8a79bbfab29c817c71108a924ae59b67c97136a4899af3988e4"
+    },
+    {
+      "name": "verify-original11-recovery-and-current-providers-v3.original.py",
+      "bytes": 14426,
+      "sha256": "0092d1d68f85c98145db656b54db8393f249d4ef2c5c075260d8bf1b1bfccda6"
+    },
+    {
+      "name": "verify-original11-recovery-and-current-providers-v4.original.py",
+      "bytes": 14922,
+      "sha256": "e498f42672a395b92fe5c9596ca91971f88e142e46194962ad3294637d6319a1"
+    },
+    {
+      "name": "verify-B09-distinct-manifest-identities.original.py",
+      "bytes": 2471,
+      "sha256": "b9c80193023d04166157fb6f5f1e5b448d0382a6afa669978d6cdfeff9c66dab"
+    }
+  ],
+  "previous_progress_report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_EXECUTION_R5_20261027.json",
+  "previous_private_proofs_root": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\remaining-four-execution-20261027-r5",
+  "HTTP6_actual_negative_case_review": {
+    "original_R4_scope_pending_structural_rows": 17,
+    "HTTP6_expected_negative_case_bindings_completed": 6,
+    "remaining_structural_source_applicability_rows": 11,
+    "original226_findings_all_retained": true,
+    "intentional_negative_fixture_rows_current": 14,
+    "image_namespace_link_metadata_rows_current": 201,
+    "actual_historical_invalid_or_incomplete_archive_rows_current": 11,
+    "not_a_whole_LOAD112_acceptance": true,
+    "whole_four_tasks_unaccepted": true,
+    "no_new_HTTP_gameplay_Godot_or_capacity_run": true
+  },
+  "new_exact_producer_literal_lookup": {
+    "scope": "ActualRetainedLOAD102andLOAD094ProducerPrograms_ExactASTLiteralValues_NotNewlyRebuiltPayloads",
+    "verified_producer_members": 46,
+    "parsed_producer_programs": 46,
+    "original_literal_values_considered": 4955,
+    "new_unique_exact3005_provider_pairs": 0,
+    "no_producers_or_native_programs_executed": true,
+    "no_scope_waiver_or_execution_recovery": true
+  },
+  "prior_thread_exact_producer_lookup": {
+    "matched_records": 10,
+    "literal_attempts": 0,
+    "new_unique_exact_providers": 0,
+    "load102_exact_provider_found": false,
+    "no_global_absence_claim": true
+  },
+  "new_byte_provider_recovery_this_turn": 0,
+  "remaining11_recovery_review": {
+    "original_scope_pending_rows": 11,
+    "new_concrete_recovery_or_failed_capture_contexts_qualified": 10,
+    "remaining_structural_source_applicability_rows": 1,
+    "GUI_logical_manifest_members": 3396,
+    "GUI_current_exact_providers_in_two_recorded_roots": 31,
+    "GUI_provider_locators_still_needed_in_these_roots": 3365,
+    "scope_not_global_absence": true,
+    "verified_recovery_containers": 8,
+    "all_original_bad_bytes_and_failures_preserved": true,
+    "old_separate_empty_package_reference_not_cleared": true,
+    "whole_LOAD112_not_accepted": true,
+    "whole_remaining_four_not_accepted": true,
+    "no_new_native_gameplay_render_PG_or_capacity_execution": true
+  },
+  "B09_distinct_manifest_gap": {
+    "historical_recovery_receipt": {
+      "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\reports\\pr13-stages-20261009\\S0-b09-original-GUI-storage-recovery\\complete-original-G-receipt.json",
+      "bytes": 640,
+      "sha256": "f77ca75be8472721a3a0a7d90f5891bb2b4fd52716ad0c206331cbbff09a5e39"
+    },
+    "receipt_declared_complete_logical_manifest_SHA": "67bf9d32a14900e04775f877efcc5e9b952d3df0df5280851a4fac42ca4a39e6",
+    "receipt_declared_logical_member_count": 3396,
+    "current_delivery_manifest": {
+      "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\outputs\\pr13-tencent-20261009\\dual-boundary-GUI-smoke-r1-complete-originals-on-G\\delivery-manifest.json",
+      "bytes": 1265554,
+      "sha256": "2106d2a14330ce5fd07bf5a50313f0fed02a547d009655d42d0be4951496a89e"
+    },
+    "current_delivery_manifest_exact_member_of_failed_original_archive": {
+      "name": "manifest.json",
+      "bytes": 1265554,
+      "sha256": "2106d2a14330ce5fd07bf5a50313f0fed02a547d009655d42d0be4951496a89e"
+    },
+    "two_manifest_identities_equal": false,
+    "same_member_count_does_not_establish_same_manifest_or_provider_graph": true,
+    "current_failed_delivery_manifest_members": 3396,
+    "current_exact_failed_delivery_input_providers_at_two_recorded_roots": 31,
+    "other_failed_delivery_input_provider_locators_not_found_in_those_roots": 3365,
+    "complete_logical_manifest_body_and_provider_map_need_location_before_full_recovery_claim": true,
+    "no_global_data_loss_or_absence_claim": true,
+    "raw_failed_tar_and_historical_receipt_unchanged": true,
+    "no_positive_original_execution_relabelled": true
+  },
+  "recovery_current3005_exact_provider_join": {
+    "verified_regular_provider_records_considered": 1550,
+    "new_unique_missing3005_pairs": 0,
+    "full_SHA_and_size_exact_join": true,
+    "not_a_historical_execution_recovery": true
+  }
+}
