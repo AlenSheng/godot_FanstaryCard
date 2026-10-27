@@ -3,7 +3,7 @@
   "round_id": "current-rebuild-20261024-r1",
   "user_scope": "重建当前版本新一轮（推荐）",
   "adjudicated_at_UTC": "2026-10-27T03:36:41.463701+00:00",
-  "current_status": "Accepted_and_closed_current_round;capacity12_closed;five_current_version_tasks_accepted_by_explicit_user_scope;four_evidence_or_environment_gaps_retained;no_automatic100_retest",
+  "current_status": "Prior_round_accepted_and_closed;current5accepted_and_capacity12closed;four_followup_goal_active;LOAD112_source_purpose_closed_and_private_archive_role_progress;no_auto100_retest",
   "GDD_main_sha256": "7375f9615d4612a617cdb6295a020037016ecef061964c0200b52c2def9d44f6",
   "config_package_sha256": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
   "legal_base_HP": {
@@ -176,12 +176,13 @@
     "LOAD-11.2": {
       "state": "Partial",
       "concrete_gaps": [
-        "原完整清单及original→derived递归父图未闭合；现有队列仍有3005个大小/摘要字节身份未补齐，其中1610属于已搜索的Sept29历史范围、1395为其它声明。",
-        "artifacts/shadowsocks-deploy/config.template.json有1项来源用途未证实；不把模板名当作安全占位符证据，也不认定为当前生产凭据。",
-        "现有563个相同字节提供者不是原位置或原执行身份的证明。本次release新增145个路径中11个大小候选（31,996字节）没有补出新匹配。"
+        "当前相关完整清单及original→derived父图仍未闭合；3005个大小/摘要字节身份未补齐，其中1610属于已搜索Sept29历史范围、1395为其它声明。",
+        "7个大归档中已完成3个当前私有输入角色核对，仍有4个对应工作单；15555个第一层成员记录中已核对207条，15348条待处理。旧客户端2124个子项、226个结构性引用等其它前沿仍保留，计数维度可能重叠，不相加为总任务数。",
+        "仅当实际引用证明某资料不适用于当前正向验收时才能分类为不适用；被当前验收实际依赖的原件缺失仍需补齐。私有输入角色核对不提供原始二进制公开许可，也不证明任意二进制不含秘密。"
       ],
       "minimum_evidence_needed": [
-        "能核对原声明大小和SHA的剩余字节资料及其真实父/派生关系、原相关执行上下文；对未确定模板提供可信来源与用途说明。"
+        "继续补齐实际相关源码/proto/生成物/raw及未跟踪输入的大小/SHA、种子/flags/硬件/region/selector及原始→派生关系。",
+        "逐项完成剩余归档、旧客户端与结构性引用的适用性和来源核对；当前正向验收依赖的缺失资料必须取得真实可核对原件。"
       ]
     },
     "PR13-A01.3": {
@@ -533,7 +534,7 @@
   "latest_takeover_verification": "continuation-20261025/takeover-verification-r21.json",
   "continuation_context": "docs/plans/PR13_CONTINUATION_CONTEXT_20261025.md",
   "latest_candidate_evidence_review": "continuation-20261025/candidate-evidence-r22-inconclusive.json",
-  "goal_status": "complete",
+  "goal_status": "active",
   "latest_resource_blocked_audit": "continuation-20261025/resource-blocked-r23.json",
   "resource_wait": {
     "kind": "User chose to wait for other local work to finish before continuing capacity testing",
@@ -843,7 +844,7 @@
   "historical_prospective_capacity_plan": "docs/plans/PR13_CAPACITY_ACTUAL50_RECOVERY_BUDGET_PROPOSAL_20261026_R33.json",
   "final_sync_date": "2026-10-27",
   "all_raw_failure_and_CPU_records_retained": true,
-  "remaining_task_status_audit": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_GAPS_20261027.json",
+  "remaining_task_status_audit": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_EXECUTION_R1_20261027.json",
   "original_register_not_accepted_task_counts": {
     "Partial": 20,
     "ReadyForAcceptance": 1,
@@ -887,7 +888,7 @@
     "automatic100_retest": false
   },
   "latest_current_version_five_acceptance": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/CURRENT_VERSION_FIVE_ACCEPTED_20261027.json",
-  "remaining_four_gap_report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_GAPS_20261027.json",
+  "remaining_four_gap_report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_EXECUTION_R1_20261027.json",
   "current_version_five_accepted_task_ids": [
     "PR13-B12.1",
     "PR13-B12.2",
@@ -919,5 +920,24 @@
   },
   "historical_noncapacity_nine_review": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/NONCAPACITY_NINE_REVIEW_20261027.json",
   "latest_current_acceptance_review": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/CURRENT_VERSION_FIVE_ACCEPTED_20261027.json",
-  "prior_current_unpassed_scope_before_five_acceptance": {}
+  "prior_current_unpassed_scope_before_five_acceptance": {},
+  "latest_remaining_four_execution_progress": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_EXECUTION_R1_20261027.json",
+  "active_followup_goal": {
+    "objective": "继续执行剩下四项未通过任务",
+    "status_observed": "active",
+    "turn_classification": "Progress",
+    "new_whole_task_passes": 0,
+    "remaining_tasks": 4,
+    "scope": "Onlyremaining4;capacity12closed/current5acceptedunchanged",
+    "no_automatic100_retest": true
+  },
+  "LOAD112_template_purpose_questions_remaining": 0,
+  "LOAD112_current_private_archive_role_frontier": {
+    "qualified_parent_objects": 3,
+    "pending_parent_objects": 4,
+    "qualified_firstlevel_rows": 207,
+    "pending_firstlevel_rows": 15348,
+    "whole_task_accepted": false,
+    "raw_public_export_permission": false
+  }
 }
