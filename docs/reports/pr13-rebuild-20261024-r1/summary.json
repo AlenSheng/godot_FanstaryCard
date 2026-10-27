@@ -3,7 +3,7 @@
   "round_id": "current-rebuild-20261024-r1",
   "user_scope": "重建当前版本新一轮（推荐）",
   "adjudicated_at_UTC": "2026-10-27T03:36:41.463701+00:00",
-  "current_status": "Prior_round_accepted_and_closed;current5accepted_and_capacity12closed;four_followup_goal_active;all226_structural_source_dispositions_and_B09_3396providers_verified;whole4still_unaccepted;no_auto100_retest",
+  "current_status": "Prior_round_accepted_and_closed;current5accepted_and_capacity12closed;remaining4_goal_blocked_on_missing_originals_and_actual_external_fork_evidence;objective_not_complete;no_auto100_retest",
   "GDD_main_sha256": "7375f9615d4612a617cdb6295a020037016ecef061964c0200b52c2def9d44f6",
   "config_package_sha256": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
   "legal_base_HP": {
@@ -534,7 +534,7 @@
   "latest_takeover_verification": "continuation-20261025/takeover-verification-r21.json",
   "continuation_context": "docs/plans/PR13_CONTINUATION_CONTEXT_20261025.md",
   "latest_candidate_evidence_review": "continuation-20261025/candidate-evidence-r22-inconclusive.json",
-  "goal_status": "active",
+  "goal_status": "blocked",
   "latest_resource_blocked_audit": "continuation-20261025/resource-blocked-r23.json",
   "resource_wait": {
     "kind": "User chose to wait for other local work to finish before continuing capacity testing",
@@ -844,7 +844,7 @@
   "historical_prospective_capacity_plan": "docs/plans/PR13_CAPACITY_ACTUAL50_RECOVERY_BUDGET_PROPOSAL_20261026_R33.json",
   "final_sync_date": "2026-10-27",
   "all_raw_failure_and_CPU_records_retained": true,
-  "remaining_task_status_audit": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_EXECUTION_R7_20261027.json",
+  "remaining_task_status_audit": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_BLOCKED_AUDIT_20261027.json",
   "original_register_not_accepted_task_counts": {
     "Partial": 20,
     "ReadyForAcceptance": 1,
@@ -888,7 +888,7 @@
     "automatic100_retest": false
   },
   "latest_current_version_five_acceptance": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/CURRENT_VERSION_FIVE_ACCEPTED_20261027.json",
-  "remaining_four_gap_report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_EXECUTION_R7_20261027.json",
+  "remaining_four_gap_report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_BLOCKED_AUDIT_20261027.json",
   "current_version_five_accepted_task_ids": [
     "PR13-B12.1",
     "PR13-B12.2",
@@ -924,12 +924,16 @@
   "latest_remaining_four_execution_progress": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_EXECUTION_R7_20261027.json",
   "active_followup_goal": {
     "objective": "继续执行剩下四项未通过任务",
-    "status_observed": "active",
-    "turn_classification": "Progress",
+    "status_observed": "blocked",
+    "turn_classification": "NoProgress_ThirdConsecutiveMissingInputAudit",
     "new_whole_task_passes": 0,
     "remaining_tasks": 4,
     "scope": "Onlyremaining4;capacity12closed/current5acceptedunchanged",
-    "no_automatic100_retest": true
+    "no_automatic100_retest": true,
+    "consecutive_same_blocker_turns": 3,
+    "last_actual_progress_report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_EXECUTION_R7_20261027.json",
+    "blocked_report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_BLOCKED_AUDIT_20261027.json",
+    "objective_achieved": false
   },
   "LOAD112_template_purpose_questions_remaining": 0,
   "LOAD112_current_private_archive_role_frontier": {
@@ -1029,5 +1033,31 @@
     "original_bad_archive_retained": true,
     "other_runtime_execution_identity_or_whole_task_acceptance_not_inferred": true
   },
-  "LOAD112_B09_prior_gap_report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_EXECUTION_R6_20261027.json"
+  "LOAD112_B09_prior_gap_report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_EXECUTION_R6_20261027.json",
+  "latest_remaining_four_blocked_audit": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_BLOCKED_AUDIT_20261027.json",
+  "last_actual_remaining_four_progress": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_EXECUTION_R7_20261027.json",
+  "goal_blocking_conditions": [
+    {
+      "task_id": "LOAD-11.2",
+      "missing_input_or_witness": "3005 declared size/SHA bodies or actual-reference proof of nonapplicability;complete current-related original/derived source graph;historical causal execution relation1",
+      "already_finished": "7 runtime archive role objects/15555 first-level records,2258 additional NuGet records,2186 old-client records,226 structural source dispositions,3396 GUI original byte providers",
+      "needed_to_resume": "Actual matching source originals or new original locator/producer evidence;do not repeat completed classification or infer nonapplicability from directory/version names"
+    },
+    {
+      "task_id": "PR13-A01.3",
+      "missing_input_or_witness": "20260929-155805-888652/report.json10524360B SHA113a3ca65f4b858c9933e3fd21d7ad799ba4fe75bfd6b85d0b2282509f4de780;20260929-161746-51e014/report.json19743677B SHAfe0e50f6cc6ae4801e23600e9c53840c5923e5626fca4c501a93b5e3b7cb71ee;same-run cycle/event/STOP evidence",
+      "needed_to_resume": "Original execution machine or accessible backup containing exact two reports and matching original audit"
+    },
+    {
+      "task_id": "PR13-A07.3",
+      "missing_input_or_witness": "Actual external fork PR T02 POSTGRES event/repository/head SHA/workflow/job/raw TRX identity",
+      "needed_to_resume": "Actual available external fork PR and matching evidence;existing user decision keeps unpassed;do not create accounts or substitute same-repo PR"
+    },
+    {
+      "task_id": "PR13-A08.1",
+      "missing_input_or_witness": "Four original editor engine hashes,Group1 original overlay hash,13 historical payloads and complete run source/config/image/effective-policy parent graph",
+      "needed_to_resume": "Original time-bound run witnesses or byte-verifiable matching backups;current binaries/new runs cannot retroactively witness old execution"
+    }
+  ],
+  "goal_blocked_audit_at": "2026-10-27T17:32:40.868282+08:00"
 }
