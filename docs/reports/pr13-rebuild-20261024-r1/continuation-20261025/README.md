@@ -1,3 +1,5 @@
+> **四项目标第三批进展（2026-10-27）：目标active，4项仍未整项通过。已从0fb官方原始TRX、同次控制文件和Git输入重新核对当前因果方法：418行全Passed，选中方法Passed，30项已记录输入全部匹配该版本Git。旧DLL/PDB和原执行未恢复，不能把本批证明推广到全部来源或其它3005声明。容量12项收口、当前5项通过不变，不补测100人。见[第三批进展](<G:/Program Files/GodotFiles/godot_FanstaryCard/docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_EXECUTION_R3_20261027.md>)。**
+
 > **四项目标第二批进展（2026-10-27）：目标active，4项仍未整项通过。SDK层5290条第一层记录和2258条包内记录完成私有输入角色核对；原7个归档现有4个已核对、3个待审，第一层记录5497完成、10058待处理。31条公开校验拒绝保留，未新增原文公开许可。下一步核对当前正向验收实际依赖的来源关系，不按目录名或版本标签豁免缺失输入。当前5项通过、容量12项收口不变，不补测100人。详见[第二批进展](<G:/Program Files/GodotFiles/godot_FanstaryCard/docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_EXECUTION_R2_20261027.md>)。**
 
 > **四项目标继续执行（2026-10-27，第一批）：目标active，4项仍未整项通过。已依据用户确认闭合本地样例模板用途问题；已核对3个归档对象的207条当前私有输入角色记录，仍有4个归档角色对象待处理。另完成C盘新命名空间的旧报告定向搜索、Windows日志来源和GitHub现有能力只读核查，尚未取回历史原件或真实fork执行证据。容量12项收口、当前版本5项通过不变，不补测100人。见[本批进展](<G:/Program Files/GodotFiles/godot_FanstaryCard/docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_EXECUTION_R1_20261027.md>)；下方旧“目标结束”指先前容量/五项阶段，不表示当前四项目标完成。**
