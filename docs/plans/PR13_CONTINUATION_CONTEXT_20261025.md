@@ -1,3 +1,5 @@
+> **九项接续核查（2026-10-27）：容量相关12项已按约定收口，不再补测100人。其余9项已用现有证据核查；新增整项通过0项，5项自身机器层通过但受A08.1来源依赖阻塞，其余4项分别缺全量清单/来源、两份历史报告、真实fork或原运行身份资料。当前处置层为111 Accepted＋12按约定收口＋9未整项通过，原132项历史台账和所有失败不改写。详见[九项核查报告](<G:/Program Files/GodotFiles/godot_FanstaryCard/docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/NONCAPACITY_NINE_REVIEW_20261027.md>)。本次只做现有资料核验，不重启容量队列。**
+
 # PR13 当前接续上下文 最终收口 2026年10月27日
 
 > **本轮已按用户约定验收通过并结束。** 实际累计356场（301＋33＋22），按超过300场的明确约定放行；以已通过的真实50人容量为实测依据。50人共同窗口连续600秒、覆盖率100%。最终结论见[最终验收报告](<G:/Program Files/GodotFiles/godot_FanstaryCard/docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/FINAL_USER_ACCEPTANCE_20261027.md>)和[机器可读结果](<G:/Program Files/GodotFiles/godot_FanstaryCard/docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/FINAL_USER_ACCEPTANCE_20261027.json>)。
