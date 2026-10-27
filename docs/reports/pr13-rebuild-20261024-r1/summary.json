@@ -3,7 +3,7 @@
   "round_id": "current-rebuild-20261024-r1",
   "user_scope": "重建当前版本新一轮（推荐）",
   "adjudicated_at_UTC": "2026-10-27T03:36:41.463701+00:00",
-  "current_status": "Accepted_and_closed_under_user_over300_agreement;356actual_worlds;verified_native50;native100_generator_limited_not_server_failure;no_automatic100_retest",
+  "current_status": "Accepted_and_closed_current_round;capacity12_closed;five_current_version_tasks_accepted_by_explicit_user_scope;four_evidence_or_environment_gaps_retained;no_automatic100_retest",
   "GDD_main_sha256": "7375f9615d4612a617cdb6295a020037016ecef061964c0200b52c2def9d44f6",
   "config_package_sha256": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
   "legal_base_HP": {
@@ -112,6 +112,18 @@
       "continuous_seconds": 600,
       "original_failure_retained": true,
       "default_strict_accepted": false
+    },
+    "current_version_five_tasks_after_explicit_historical_dependency_scope_decision": {
+      "task_ids": [
+        "PR13-B12.1",
+        "PR13-B12.2",
+        "PR13-B12.3",
+        "PR13-B12.4",
+        "PR13-A08.4"
+      ],
+      "scope": "CurrentVersionOnly_ExistingEvidence_UserHistoricalA081DependencyException",
+      "new_runtime_tests": 0,
+      "report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/CURRENT_VERSION_FIVE_ACCEPTED_20261027.json"
     }
   },
   "numeric_budget_and_limits": {
@@ -160,7 +172,51 @@
       "cloud_disk_percent": 5
     }
   },
-  "current_unpassed": {},
+  "current_unpassed": {
+    "LOAD-11.2": {
+      "state": "Partial",
+      "concrete_gaps": [
+        "原完整清单及original→derived递归父图未闭合；现有队列仍有3005个大小/摘要字节身份未补齐，其中1610属于已搜索的Sept29历史范围、1395为其它声明。",
+        "artifacts/shadowsocks-deploy/config.template.json有1项来源用途未证实；不把模板名当作安全占位符证据，也不认定为当前生产凭据。",
+        "现有563个相同字节提供者不是原位置或原执行身份的证明。本次release新增145个路径中11个大小候选（31,996字节）没有补出新匹配。"
+      ],
+      "minimum_evidence_needed": [
+        "能核对原声明大小和SHA的剩余字节资料及其真实父/派生关系、原相关执行上下文；对未确定模板提供可信来源与用途说明。"
+      ]
+    },
+    "PR13-A01.3": {
+      "state": "Partial",
+      "concrete_gaps": [
+        "缺20260929-155805-888652/report.json原件：10,524,360字节，SHA256 113a3ca65f4b858c9933e3fd21d7ad799ba4fe75bfd6b85d0b2282509f4de780。",
+        "缺20260929-161746-51e014/report.json原件：19,743,677字节，SHA256 fe0e50f6cc6ae4801e23600e9c53840c5923e5626fca4c501a93b5e3b7cb71ee。",
+        "因此PR13-A01.3-T02/AUDIT所需86/90、130/139的逐client/cycle/event差额与准确STOP因果仍不能核对；新的正常运行不能替代这两次历史事件。"
+      ],
+      "minimum_evidence_needed": [
+        "上述指定原件及同一原运行审计/周期/停止记录，或能逐字节验证为同一原件的备份。现有已查G盘/云端/归档范围未找到，不重复同一全盘搜索。"
+      ]
+    },
+    "PR13-A07.3": {
+      "state": "Partial",
+      "concrete_gaps": [
+        "PR13-A07.3-T02/POSTGRES缺真实外部fork PR的执行身份、对应workflow/job/SHA与PG原始结果。",
+        "2026-10-24用户已明确“没有，保留该项未通过”；此决定未被后续容量放行覆盖。"
+      ],
+      "minimum_evidence_needed": [
+        "只有后续出现真实可用的fork来源及同一PR/运行的PG证据才能重审。当前不新增账号、组织、PR或工作流，不重复索要环境。"
+      ]
+    },
+    "PR13-A08.1": {
+      "state": "ReadyForAcceptance",
+      "concrete_gaps": [
+        "4次原editor客户端运行未记录各自原Godot引擎摘要；Group1原运行overlay摘要未记录，现有程序路径、镜像标签或嵌入配置hash不能补记当时实际执行身份。",
+        "13次Sept29声明运行的原始payload备份仍未找到，完整历史/新增run全集及source/config/image/有效环境与room策略的运行父链未整体裁定完成。",
+        "现有3份PG备份、8份环境/限制/控制文件和保留的旧回滚镜像是部分备份，不等于这13次原运行的原件或镜像/config关联证明。"
+      ],
+      "minimum_evidence_needed": [
+        "可与具体原run连接的当时引擎/overlay/源码/config/镜像/有效策略原始见证及完整run清单；现有有界字段归档不能扩展为全历史证明。"
+      ]
+    }
+  },
   "separately_preserved_historical_or_external_unpassed": {
     "old86_90_130_139_originals": "NotRecovered_new_results_do_not_replace_old_events",
     "other_old_source_engine_and_capacity_history_gaps": "NotRecovered",
@@ -660,7 +716,7 @@
     "factor_candidate_benefit_acceptance": "R22_Inconclusive_verified67originals_9seed_clusters_each_factor_all81O6pairs_both_victory_HPmeanTTK7.97pct_12.49pct_not15pct_tail_proof_windupTTKzero;no_new_encounters",
     "default_cycle_duration_acceptance": "NotPassed_current_R20_1of30_confirmed_room_to_ACK_over1200s_max1600.528;functional2400s_passed"
   },
-  "current_unpassed_interpretation": "No blocking automatic work remains in the user-agreed round. Retained technical gaps remain nonblocking and are not promoted to empirical passes.",
+  "current_unpassed_interpretation": "Only the four retained non-capacity evidence/environment tasks remain unaccepted. Capacity12 stays closed and historical A081 gaps do not block the five explicitly accepted current-version tasks; no automatic retesting.",
   "whole_project_accepted_scope": "Existing false means all original strict whole-project gates including historical/external gaps; current_round_accepted and current_user_scoped_accepted are the final current-round decision.",
   "execution_policy": {
     "round_closed": true,
@@ -787,16 +843,16 @@
   "historical_prospective_capacity_plan": "docs/plans/PR13_CAPACITY_ACTUAL50_RECOVERY_BUDGET_PROPOSAL_20261026_R33.json",
   "final_sync_date": "2026-10-27",
   "all_raw_failure_and_CPU_records_retained": true,
-  "remaining_task_status_audit": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/NONCAPACITY_NINE_REVIEW_20261027.json",
+  "remaining_task_status_audit": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_GAPS_20261027.json",
   "original_register_not_accepted_task_counts": {
     "Partial": 20,
     "ReadyForAcceptance": 1,
     "total_non_Accepted": 21,
     "current_round_blocking": 0
   },
-  "latest_noncapacity_nine_review": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/NONCAPACITY_NINE_REVIEW_20261027.json",
-  "current_132_task_dispositions": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/CURRENT_TASK_DISPOSITIONS_20261027.json",
-  "effective_remaining_noncapacity_task_count": 9,
+  "latest_noncapacity_nine_review": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/CURRENT_VERSION_FIVE_ACCEPTED_20261027.json",
+  "current_132_task_dispositions": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/CURRENT_TASK_DISPOSITIONS_FIVE_ACCEPTED_20261027.json",
+  "effective_remaining_noncapacity_task_count": 4,
   "capacity_12_tasks_closed_by_user_agreement": [
     "LOAD-10.1",
     "LOAD-10.2",
@@ -813,11 +869,55 @@
   ],
   "noncapacity_review_result": {
     "reviewed": 9,
+    "new_whole_accepted": 5,
+    "acceptance_scope": "CurrentVersionOnly_ExplicitUserHistoricalA081DependencyException",
+    "own_machine_layers_passed": 5,
+    "remaining_whole_tasks": 4,
+    "new_runtime_tests": 0,
+    "capacity12_closed": true,
+    "automatic100_retest": false
+  },
+  "prior_noncapacity_review_result_before_five_acceptance": {
+    "reviewed": 9,
     "new_whole_accepted": 0,
     "own_machine_layers_passed": 5,
     "remaining_whole_tasks": 9,
     "new_runtime_tests": 0,
     "capacity12_closed": true,
     "automatic100_retest": false
-  }
+  },
+  "latest_current_version_five_acceptance": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/CURRENT_VERSION_FIVE_ACCEPTED_20261027.json",
+  "remaining_four_gap_report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_GAPS_20261027.json",
+  "current_version_five_accepted_task_ids": [
+    "PR13-B12.1",
+    "PR13-B12.2",
+    "PR13-B12.3",
+    "PR13-B12.4",
+    "PR13-A08.4"
+  ],
+  "current_noncapacity_unpassed_task_ids": [
+    "LOAD-11.2",
+    "PR13-A01.3",
+    "PR13-A07.3",
+    "PR13-A08.1"
+  ],
+  "current_effective132_counts": {
+    "Accepted": 116,
+    "ClosedByUserAgreement": 12,
+    "Partial": 3,
+    "ReadyForAcceptance": 1
+  },
+  "A081_historical_dependency_nonblocking_for_current_five": {
+    "id": "user-20261027-A081-historical-provenance-nonblocking-current-five",
+    "authority": "Direct user instruction",
+    "text": "A08.1的历史来源缺口保留未通过，但不再阻塞其余5项的当前版本验收。按现有证据完成这5项验收，另外4项的具体缺口和原始失败继续保留，更新总报告、接续文档并推送release，不再补测100人。",
+    "scope": "Current version acceptance for A08.4 and B12.1-B12.4 only",
+    "historical_A081_status_not_changed": true,
+    "other_four_gaps_not_waived": true,
+    "other_own_business_criteria_not_waived": true,
+    "new_runtime_tests": 0
+  },
+  "historical_noncapacity_nine_review": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/NONCAPACITY_NINE_REVIEW_20261027.json",
+  "latest_current_acceptance_review": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/CURRENT_VERSION_FIVE_ACCEPTED_20261027.json",
+  "prior_current_unpassed_scope_before_five_acceptance": {}
 }

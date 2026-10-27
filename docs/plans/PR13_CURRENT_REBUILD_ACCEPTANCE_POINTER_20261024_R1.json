@@ -26,7 +26,7 @@
     "candidate_benefit": "Inconclusive_reduced_budget"
   },
   "latest_context": "docs/plans/PR13_CONTINUATION_CONTEXT_20261025.md",
-  "latest_verification": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\final-acceptance-project-sync-20261027\\sync-verification.derived.json",
+  "latest_verification": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\current-version-five-acceptance-20261027-r1\\acceptance-verification.derived.json",
   "goal_status": "complete",
   "latest_resource_audit": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/resource-blocked-r23.json",
   "resource_wait_status": "Ended;heartbeat_absent;no_automatic100_retest;new_explicit_user_request_required_to_resume",
@@ -120,9 +120,9 @@
   },
   "final_sync_date": "2026-10-27",
   "latest_CPU_contrast_report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/R39_CPU_UNRESTRICTED_20261027.json",
-  "latest_noncapacity_nine_review": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/NONCAPACITY_NINE_REVIEW_20261027.json",
-  "current_132_task_dispositions": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/CURRENT_TASK_DISPOSITIONS_20261027.json",
-  "effective_remaining_noncapacity_task_count": 9,
+  "latest_noncapacity_nine_review": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/CURRENT_VERSION_FIVE_ACCEPTED_20261027.json",
+  "current_132_task_dispositions": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/CURRENT_TASK_DISPOSITIONS_FIVE_ACCEPTED_20261027.json",
+  "effective_remaining_noncapacity_task_count": 4,
   "capacity_12_tasks_closed_by_user_agreement": [
     "LOAD-10.1",
     "LOAD-10.2",
@@ -139,11 +139,54 @@
   ],
   "noncapacity_review_result": {
     "reviewed": 9,
+    "new_whole_accepted": 5,
+    "acceptance_scope": "CurrentVersionOnly_ExplicitUserHistoricalA081DependencyException",
+    "own_machine_layers_passed": 5,
+    "remaining_whole_tasks": 4,
+    "new_runtime_tests": 0,
+    "capacity12_closed": true,
+    "automatic100_retest": false
+  },
+  "prior_noncapacity_review_result_before_five_acceptance": {
+    "reviewed": 9,
     "new_whole_accepted": 0,
     "own_machine_layers_passed": 5,
     "remaining_whole_tasks": 9,
     "new_runtime_tests": 0,
     "capacity12_closed": true,
     "automatic100_retest": false
-  }
+  },
+  "latest_current_version_five_acceptance": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/CURRENT_VERSION_FIVE_ACCEPTED_20261027.json",
+  "remaining_four_gap_report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_GAPS_20261027.json",
+  "current_version_five_accepted_task_ids": [
+    "PR13-B12.1",
+    "PR13-B12.2",
+    "PR13-B12.3",
+    "PR13-B12.4",
+    "PR13-A08.4"
+  ],
+  "current_noncapacity_unpassed_task_ids": [
+    "LOAD-11.2",
+    "PR13-A01.3",
+    "PR13-A07.3",
+    "PR13-A08.1"
+  ],
+  "current_effective132_counts": {
+    "Accepted": 116,
+    "ClosedByUserAgreement": 12,
+    "Partial": 3,
+    "ReadyForAcceptance": 1
+  },
+  "A081_historical_dependency_nonblocking_for_current_five": {
+    "id": "user-20261027-A081-historical-provenance-nonblocking-current-five",
+    "authority": "Direct user instruction",
+    "text": "A08.1的历史来源缺口保留未通过，但不再阻塞其余5项的当前版本验收。按现有证据完成这5项验收，另外4项的具体缺口和原始失败继续保留，更新总报告、接续文档并推送release，不再补测100人。",
+    "scope": "Current version acceptance for A08.4 and B12.1-B12.4 only",
+    "historical_A081_status_not_changed": true,
+    "other_four_gaps_not_waived": true,
+    "other_own_business_criteria_not_waived": true,
+    "new_runtime_tests": 0
+  },
+  "historical_noncapacity_nine_review": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/NONCAPACITY_NINE_REVIEW_20261027.json",
+  "latest_current_acceptance_review": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/CURRENT_VERSION_FIVE_ACCEPTED_20261027.json"
 }

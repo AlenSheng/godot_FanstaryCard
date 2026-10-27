@@ -1,3 +1,5 @@
+> **最新范围裁决（2026-10-27）：按用户明确指令，A08.4、B12.1、B12.2、B12.3、B12.4的当前版本验收通过。A08.1历史来源缺口继续保留未通过，但不再阻塞这5项。当前处置层为116 Accepted＋12按约定收口＋4未通过（LOAD-11.2、A01.3、A07.3、A08.1）。原始台账、失败和CPU调整记录保留；容量12项收口，不再补测100人。见[五项通过报告](<G:/Program Files/GodotFiles/godot_FanstaryCard/docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/CURRENT_VERSION_FIVE_ACCEPTED_20261027.md>)及[四项具体缺口](<G:/Program Files/GodotFiles/godot_FanstaryCard/docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_GAPS_20261027.md>)。下方九项仍未通过的旧结论为本次范围调整前的历史快照。**
+
 > **九项接续核查（2026-10-27）：容量相关12项已按约定收口，不再补测100人。其余9项已用现有证据核查；新增整项通过0项，5项自身机器层通过但受A08.1来源依赖阻塞，其余4项分别缺全量清单/来源、两份历史报告、真实fork或原运行身份资料。当前处置层为111 Accepted＋12按约定收口＋9未整项通过，原132项历史台账和所有失败不改写。详见[九项核查报告](<G:/Program Files/GodotFiles/godot_FanstaryCard/docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/NONCAPACITY_NINE_REVIEW_20261027.md>)。本次只做现有资料核验，不重启容量队列。**
 
 # PR13 当前接续上下文 最终收口 2026年10月27日
